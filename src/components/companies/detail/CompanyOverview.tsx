@@ -152,10 +152,10 @@ export function CompanyOverview({
           <div className="flex items-baseline gap-4">
             <Text className="text-3xl lg:text-6xl md:text-4xl sm:text-3xl font-light text-orange-2 tracking-tighter leading-none">
               {(
-                selectedPeriod.emissions?.calculatedTotalEmissions || 0
+                selectedPeriod.emissions?.calculatedTotalEmissions || 'No Data'
               ).toLocaleString("sv-SE")}
               <span className="text-lg lg:text-2xl md:text-lg sm:text-sm ml-2 text-grey">
-                {t("companies.overview.tonsCO2e")}
+                {t(selectedPeriod.emissions?.calculatedTotalEmissions === 0 ? ' ' : "companies.overview.tonsCO2e")}
               </span>
             </Text>
           </div>
