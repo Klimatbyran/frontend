@@ -5,7 +5,8 @@ export interface CompanyEditInputFieldProps {
   type: "date" | "number" | "text";
   value: number | string;
   name: string;
-  verified: boolean;
+  showVerified?: boolean;
+  verified?: boolean;
   onInputChange: (name: string, value: string) => void
 }
 
@@ -13,6 +14,7 @@ export function CompanyEditInputField({
   type,
   value,
   name,
+  showVerified = true,
   verified,
   onInputChange
 }: CompanyEditInputFieldProps) {
@@ -27,8 +29,8 @@ export function CompanyEditInputField({
 
   return (
     <div key={name + "-container"} className="flex items-center w-[187px] ms-2 py-2 border-r border-white">
-      <Input key={name} name={name} type={type} onChange={handleChange} className="w-[150px] bg-black-1" defaultValue={value}></Input>
-      <IconCheckbox key={name + "-checkbox"} defaultChecked={verified} name={name + "-checkbox"} onCheckedChange={handleCheckboxChange}></IconCheckbox>
+      <Input key={name} name={name} type={type} onChange={handleChange} className="w-[150px] bg-black-1" defaultValue={type === 'date' ? value : undefined} placeholder={String(value)}></Input>
+      {showVerified && <IconCheckbox key={name + "-checkbox"} defaultChecked={verified} name={name + "-checkbox"} onCheckedChange={handleCheckboxChange}/>}
     </div>
   );
 }

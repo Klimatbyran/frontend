@@ -22,7 +22,7 @@ export function mapCompanyEditFormToRequestBody(selectedPeriods, formData: Map<s
                 verified: (formData.get("scope-1-" + period.id + "-checkbox") === "true")
             }
         }
-        periodUpdate.emissions.scope2 = {};
+
         if(formData.has("scope-2-mb-" + period.id)) {
             periodUpdate.emissions.scope2.mb = parseInt(formData.get("scope-2-mb-" + period.id) || "0") ?? 0;
         }
@@ -32,6 +32,7 @@ export function mapCompanyEditFormToRequestBody(selectedPeriods, formData: Map<s
         if(formData.has("scope-2-unknown-" + period.id)) {
             periodUpdate.emissions.scope2.unknown = parseInt(formData.get("scope-2-unknown-" + period.id) || "0") ?? 0;
         }
+
         if(formData.has("scope-2-unknown-" + period.id + "-checkbox")
         || formData.has("scope-2-lb-" + period.id + "-checkbox")
         || formData.has("scope-2-mb-" + period.id + "-checkbox")) {

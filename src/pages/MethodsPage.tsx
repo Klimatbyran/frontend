@@ -115,7 +115,7 @@ export function MethodsPage() {
           {/* Calculations Section */}
           <AccordionGroup
             title={t("methodsPage.accordion.calculations.title")}
-            value="sources"
+            value="calculations"
           >
             <div className="prose prose-invert w-[90%] max-w-5xl mx-auto space-y-8">
               <p>{t("methodsPage.accordion.calculations.paragraph1")}</p>

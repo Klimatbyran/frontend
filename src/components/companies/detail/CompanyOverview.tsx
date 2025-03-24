@@ -158,7 +158,7 @@ export function CompanyOverview({
                 localizeUnit(selectedPeriod.emissions?.calculatedTotalEmissions || 0, currentLanguage)
               }
               <span className="text-lg lg:text-2xl md:text-lg sm:text-sm ml-2 text-grey">
-                {t("companies.overview.tonsCO2e")}
+                {t(selectedPeriod.emissions?.calculatedTotalEmissions === 0 ? ' ' : "companies.overview.tonsCO2e")}
               </span>
             </Text>
           </div>
