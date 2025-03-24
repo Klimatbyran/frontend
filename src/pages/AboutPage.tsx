@@ -100,7 +100,7 @@ export function AboutPage() {
               <p>
                 {t("aboutPage.boardSection.links.stadgar")}{" "}
                 <a
-                  href="https://www.klimatkollen.se/stadgar.pdf"
+                  href="/documents/stadgar.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="underline hover:text-white"
@@ -109,7 +109,7 @@ export function AboutPage() {
                 </a>
                 {", "}{" "}
                 <a
-                  href="https://www.klimatkollen.se/uppforandekod.pdf"
+                  href="/documents/uppforandekod.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="underline hover:text-white"
@@ -118,7 +118,7 @@ export function AboutPage() {
                 </a>{" "}
                 {t("aboutPage.boardSection.links.and")}{" "}
                 <a
-                  href="https://www.klimatkollen.se/antikorruptionspolicy.pdf"
+                  href="/documents/antikorruptionspolicy.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="underline hover:text-white"
@@ -160,25 +160,25 @@ export function AboutPage() {
           >
             <div className="prose prose-invert w-[90%] max-w-5xl mx-auto space-y-8">
               <div className="space-y-4">
-                <Text variant="h4">
+                <Text className="text-blue-2 font-bold text-2xl">
                   {t("aboutPage.previousProjectsSection.kommunprojektetTitle")}
                 </Text>
-                <p>
+                <Text variant="body">
                   {t(
                     "aboutPage.previousProjectsSection.kommunprojektetDescription"
                   )}
-                </p>
+                </Text>
               </div>
 
               <div className="space-y-4">
-                <Text variant="h1">
+                <Text className="text-blue-2 font-bold text-2xl">
                   {t("aboutPage.previousProjectsSection.riksdagsvaletTitle")}
                 </Text>
-                <p>
+                <Text variant="body">
                   {t(
                     "aboutPage.previousProjectsSection.riksdagsvaletDescription"
                   )}
-                </p>
+                </Text>
                 <div className="space-y-6 max-w-3xl">
                   <LinkButton
                     title={t(

@@ -9,9 +9,14 @@
     "methodology": "Sources and Method",
     "newsletter": "Newsletter",
     "openMenu": "Open Menu",
-    "closeMenu": "Close Menu"
+    "closeMenu": "Close Menu",
+    "articles": "Articles",
+    "reports": "Reports"
   },
   "footer": {
+    "login": "Login",
+    "logout": "Logout",
+    "welcome": "Welcome",
     "contactUs": "Contact Us",
     "description": "Klimatkollen is a citizen platform that provides climate data and is developed with open <0>source code</0>.",
     "privacyTerms": "Privacy & Terms",
@@ -25,7 +30,11 @@
     "emailPlaceholder": "Your email address",
     "subscribeButton": "Subscribe",
     "privacyNotice": "When you submit your details, they will be processed by Klimatbyrån, the non-profit association behind Klimatkollen. You have the right to information on how",
-    "privacyLink": "your personal data is processed."
+    "privacyLink": "your personal data is processed.",
+    "errorEmptyEmail": "Please enter a valid email address.",
+    "errorInvalidEmail": "Please enter a valid email address.",
+    "errorGeneric": "An error occurred. Please try again later.",
+    "successMessage": "Thank you! You have now subscribed to our newsletter."
   },
   "landingPage": {
     "metaTitle": "Open climate data for citizens",
@@ -37,7 +46,7 @@
       "company": {
         "reduceEmissions": "reducing emissions",
         "scope3Emissions": "scope 3 emissions",
-        "meetParisAgreement": "meet the Paris Agreement"
+        "meetParisAgreement": "meeting the Paris Agreement"
       },
       "municipality": {
         "reduceEmissions": "reducing emissions",
@@ -51,8 +60,8 @@
     "bestPerformers": "Who is the best?",
     "bestMunicipalities": "Sweden's best municipalities",
     "municipalitiesDescription": "By average annual reduction in emissions since the Paris Agreement (2015)",
-    "bestCompanies": "Top Companies in Emission Reduction",
-    "companiesDescription": "Emissions reduction between 2023 and 2024",
+    "largestEmittor": "Company with the largest emissions",
+    "companiesDescription": "Emissions from the most recently reported year",
     "aboutUsTitle": "Who are we?",
     "aboutUsContent": "Klimatkollen is a citizen platform that provides climate data and builds support for reducing emissions in line with the Paris Agreement. We believe in the power of simple, engaging data visualization to enhance knowledge and drive participation in the climate conversation.",
     "tabName": {
@@ -88,7 +97,7 @@
     "financingSection": {
       "title": "How We Are Funded",
       "paragraph1": "In 2024 and 2025, Klimatkollen will receive financial support from Google.org as one of two Swedish recipients of the Google.org Impact Challenge: Tech for Social Good.",
-      "paragraph2": "In 2023, Klimatkollen was funded by Postkodstiftelsen. Our 2022 launch was made possible through support from WWF Sweden, ClimateView, We Don’t Have Time, and Argand Partners.",
+      "paragraph2": "In 2023, Klimatkollen was funded by Postkodstiftelsen. Our 2022 launch was made possible through support from WWF Sweden, ClimateView, We Don't Have Time, and Argand Partners.",
       "paragraph3": "Much of our work relies on voluntary efforts, and we welcome new partners and financial support to help us scale up!",
       "donate": "Would you like to support our work?",
       "donateDescription": "Every donation helps us expand and share more data.",
@@ -103,15 +112,18 @@
       "klimatmalTitle": "Climate Goals",
       "klimatmalText": "An analysis of the political parties' climate goals for Sweden",
       "utslappsberakningTitle": "Emission Calculation",
-      "utslappsberakningText": "A projection of how emissions would increase or decrease under each party’s policies."
+      "utslappsberakningText": "A projection of how emissions would increase or decrease under each party's policies."
     }
   },
   "insightsPage": {
-    "title": "Insights",
-    "description": "In-depth analyses and reports on Sweden’s climate transition.",
-    "newsletter": "Subscribe to our newsletter",
-    "readMore": "Read more",
-    "subscribeNewsletter": "Subscribe to our newsletter"
+    "title": "Articles",
+    "description": "Articles and updates about Klimatkollen and the climate transition.",
+    "readMore": "Read more"
+  },
+  "reportsPage": {
+    "title": "Reports",
+    "description": "In-depth analyses and reports on Sweden's climate transition.",
+    "readMore": "Read more"
   },
   "blogDetailPage": {
     "loading": "Loading...",
@@ -129,20 +141,24 @@
     "noFiltersFound": "No matching filters found.",
     "sortingOptions": {
       "emissionsChange": "Change in Emissions (%)",
-      "totalEmissions": "Total emissions",
-      "scope3Coverage": "Scope 3 coverage",
-      "name": "Name"
+      "totalEmissions": "Total Emissions",
+      "scope3Coverage": "Scope 3 Coverage",
+      "nameAsc": "Company Name A-Z",
+      "nameDesc": "Company Name Z-A"
     },
     "sector": "Sector",
     "errorTitle": "Failed to retrieve company information",
     "errorDescription": "Please try again later",
-    "title": "Company Emissions",
-    "description": "Overview of companies’ climate impact and sustainability efforts",
-    "searchPlaceholder": "Search (separate with a comma)",
+    "title": "Company Climate Data",
+    "description": "Overview of companies' climate impact and sustainability efforts",
+    "searchPlaceholder": "Search companies (separate with a comma)",
     "noCompaniesFound": "No companies found",
     "tryDifferentCriteria": "Try adjusting your search criteria.",
     "sorting": "Sorting By:",
-    "filtering": "Filter:"
+    "filtering": "Filter:",
+    "allSectors": "All sectors",
+    "sectionTitle": "Companies",
+    "noCompaniesInSection": "No companies in this section"
   },
   "companyDetailPage": {
     "errorTitle": "Unable to retrieve company information",
@@ -153,12 +169,12 @@
   "methodsPage": {
     "header": {
       "title": "Sources and Method",
-      "description": "Our starting point is the Paris Agreement’s 1.5°C target, and all our data sources are publicly available. Click on the headings to learn more."
+      "description": "Our starting point is the Paris Agreement's 1.5°C target, and all our data sources are publicly available. Click on the headings to learn more."
     },
     "accordion": {
       "parisAgreement": {
         "title": "Klimatkollen and the Paris Agreement",
-        "paragraph1": "The Paris Agreement is a legally binding international treaty between the world’s nations, aimed at limiting global warming to well below 2°C, with a target of 1.5°C.",
+        "paragraph1": "The Paris Agreement is a legally binding international treaty between the world's nations, aimed at limiting global warming to well below 2°C, with a target of 1.5°C.",
         "paragraph2": "To meet this target, global greenhouse gas emissions must be halved by 2030 (compared to 1990 levels) and reduced to near-zero by 2050. However, emissions are <0>still increasing</0> worldwide.",
         "paragraph3": "Under the Paris Agreement, wealthier nations must take greater responsibility, as their historically high emissions mean they have already used a significant share of the remaining carbon budget needed to limit global warming. Sweden is among these countries and should lead the way in reducing emissions while also supporting more vulnerable nations in their transition.",
         "link": {
@@ -213,21 +229,26 @@
           }
         }
       },
+      "calculations": {
+        "title": "About Our Calculations",
+        "paragraph1": "The emissions data for municipalities is based on SMHI's national emissions database for the years 1990–2022. For 2022–2024, emissions have been approximated based on historical trends to provide data up to the present day.",
+        "paragraph2": "<0>Here</0> you can read an example of how we calculate key figures for municipal emissions (link in Swedish)."
+      },
       "co2Budgets": {
         "title": "About Carbon Budgets",
-        "paragraph1": "A carbon budget represents the amount of carbon dioxide that can be emitted before atmospheric CO₂ levels rise high enough to exceed the Paris Agreement’s 1.5°C target.",
+        "paragraph1": "A carbon budget represents the amount of carbon dioxide that can be emitted before atmospheric CO₂ levels rise high enough to exceed the Paris Agreement's 1.5°C target.",
         "paragraph2": "According to a <0>calculation</0> by researchers at Uppsala University and the Tyndall Centre in the UK, as of 2024, approximately 340 gigatonnes of CO₂ remain globally for a 50% chance of keeping temperature rise below 1.5°C. At the current rate of emissions, this global budget will be depleted in about eight years.",
-        "paragraph3": "Using this global budget, the researchers have also estimated Sweden’s national carbon budget for a fair climate transition.",
-        "paragraph4": "Their calculations show that, from January 2024, Sweden has a national carbon allowance of 80 million tonnes to stay on track for the 1.5°C target. For an 83% chance of keeping warming below 2°C, the budget increases to 285 million tonnes. By comparison, Sweden’s total greenhouse gas emissions in 2022 were 45.2 million tonnes.",
-        "paragraph5": "At Sweden’s current rate of emissions, the 1.5°C carbon budget will be used up in 1.8 years, while the 2°C budget will last 6.4 years. To stay within the 1.5°C target, Sweden must cut emissions by at least 35% per year starting in 2024. If aiming for the 2°C target, annual reductions of at least 13.5% are needed.",
-        "paragraph6": "Klimatkollen has allocated the new national carbon budget (80 million tonnes, including emissions from international aviation and shipping) to Sweden’s municipalities, using the same method that was applied to break down the global budget nationally.",
+        "paragraph3": "Using this global budget, the researchers have also estimated Sweden's national carbon budget for a fair climate transition.",
+        "paragraph4": "Their calculations show that, from January 2024, Sweden has a national carbon allowance of 80 million tonnes to stay on track for the 1.5°C target. For an 83% chance of keeping warming below 2°C, the budget increases to 285 million tonnes. By comparison, Sweden's total greenhouse gas emissions in 2022 were 45.2 million tonnes.",
+        "paragraph5": "At Sweden's current rate of emissions, the 1.5°C carbon budget will be used up in 1.8 years, while the 2°C budget will last 6.4 years. To stay within the 1.5°C target, Sweden must cut emissions by at least 35% per year starting in 2024. If aiming for the 2°C target, annual reductions of at least 13.5% are needed.",
+        "paragraph6": "Klimatkollen has allocated the new national carbon budget (80 million tonnes, including emissions from international aviation and shipping) to Sweden's municipalities, using the same method that was applied to break down the global budget nationally.",
         "paragraph7": "These local carbon budgets enable comparisons between actual emissions and the reductions needed. Klimatkollen presents carbon budgets for municipalities both as numerical values and as development curves, illustrating the necessary decline in emissions to stay in line with the Paris Agreement.",
         "paragraph8": "In addition to the Tyndall model used by Klimatkollen, there are other approaches to calculating a national carbon budget. For example, see Chalmers <0>here</0>."
       },
       "emissionTypes": {
         "title": "Different Types of Emissions",
         "paragraph1": "Klimatkollen is an independent fact-based platform that follows established standards for emissions reporting. The climate data we present reflects the boundaries and assumptions used in carbon budget calculations. For example, carbon budgets cannot be directly linked to all greenhouse gas emissions, as other gases like methane, nitrous oxide, and water vapour are also included in overall climate impact assessments.",
-        "paragraph2": "Emissions from cement production are excluded from the IPCC’s global carbon budget and, as a result, are also omitted from Sweden’s carbon budget and emissions data. This specifically affects the municipalities of Gotland, Skövde, and Mörbylånga, where cement production is currently or has previously taken place.",
+        "paragraph2": "Emissions from cement production are excluded from the IPCC's global carbon budget and, as a result, are also omitted from Sweden's carbon budget and emissions data. This specifically affects the municipalities of Gotland, Skövde, and Mörbylånga, where cement production is currently or has previously taken place.",
         "paragraph3": "Sweden also has a significant climate impact from goods imported from other countries, leading to emissions abroad. These consumption-based emissions are not included in the carbon budget.",
         "paragraph4": "Similarly, emissions from forests and land (known as biogenic emissions) are also excluded from the carbon budget.",
         "paragraph5": "In reality, climate-impacting emissions are much higher than the territorial fossil carbon emissions typically reported by authorities and the media. The data currently displayed on Klimatkollen reflects these territorial emissions.",
@@ -238,7 +259,7 @@
   "municipalitiesPage": {
     "errorTitle": "Failed to retrieve municipality information",
     "errorDescription": "Please try again later",
-    "title": "Municipality Comparison",
+    "title": "Municipality Reports",
     "description": "Overview of emissions and transition in municipalities",
     "filter": {
       "searchPlaceholder": "Search for municipalities (separate w/ commas)",
@@ -306,14 +327,14 @@
     "healthCare": "Healthcare",
     "financials": "Financials",
     "informationTechnology": "Information Technology",
-    "communicationServices": "Communication",
+    "communicationServices": "Communication Services",
     "utilities": "Utilities",
     "realEstate": "Real Estate"
   },
   "scope": {
     "scope1": "Direct emissions from sources owned or controlled by the organisation.",
     "scope2": "Indirect emissions from the production of purchased electricity, steam, heat, and cooling consumed by the organisation.",
-    "scope3": "Indirect emissions from the organisation’s value chain, including suppliers and customers.",
+    "scope3": "Indirect emissions from the organisation's value chain, including suppliers and customers.",
     "biogenic": "Biogenic emissions refer to carbon dioxide emissions from non-fossil (i.e., renewable) sources, such as the combustion of biofuels or by-products from paper production. Under the GHG Protocol, these emissions are reported separately from Scope 1–3, as they are part of the natural carbon cycle."
   },
   "team": {
@@ -340,6 +361,10 @@
     "kayla": {
       "role": "Developer",
       "description": "Frontend developer with a passion for sustainability and user-friendly digital solutions. Previously worked as an environmental consultant focused on interpreting regulations and calculating greenhouse gas emissions for companies."
+    },
+    "catharina": {
+      "role": "Communicator",
+      "description": "Communicator and filmmaker focusing on climate and sustainability, active in organisation Ett hållbart Lidingö, with a background as a management consultant."
     }
   },
   "board": {
@@ -457,7 +482,7 @@
       "emissionsChangeRateInfo": "Change rate of emissions compared to the previous reporting period.",
       "turnover": "Turnover",
       "employees": "Employees",
-      "companyReport": "Company Report",
+      "companyReport": "Sustainability Report",
       "missingReport": "Missing Report"
     },
     "dataView": {
@@ -524,7 +549,7 @@
       "tonsCO2e": "tons CO₂e",
       "clickToFilter": "Click to filter out",
       "resetAll": "Reset All",
-      "showingCategories": "Showing {shown} of {total} categories. Filtered categories:"
+      "showingCategories": "Showing {{shown}} of {{total}} categories. Filtered categories:"
     },
     "scope3Data": {
       "categories": "Scope 3 Categories",
@@ -615,5 +640,30 @@
       "title": "Changes have been saved!",
       "description": "Changes to the reporting period have been made successfully"
     }
+  },
+  "authCallbackPage": {
+    "failed": "Authentication failed",
+    "success": {
+      "title": "Logged in",
+      "description": "Welcome"
+    }
+  },
+  "privacyPage": {
+    "seoTitle": "Privacy Policy - Klimatkollen",
+    "seoDescription": "Read about how Klimatkollen processes personal data and protects your privacy.",
+    "seoHeading": "Privacy Policy",
+    "seoText": "Klimatkollen values your personal privacy and complies with the General Data Protection Regulation (GDPR).",
+    "title": "How Klimatkollen Processes Personal Data",
+    "lastUpdated": "Last updated: {{date}}",
+    "responsibilityTitle": "Data Controller",
+    "responsibilityText": "Klimatbyrån with organization number 802537-8814 is the data controller when the organization processes personal data.",
+    "dataCollectionTitle": "What data do we process?",
+    "dataCollectionText": "The personal data we collect is primarily information that you provide yourself (name, address, mobile number, etc.) when, for example, you sign up for our newsletter or become a member. You may also be employed by a partner or other contact of Klimatbyrån, in which case the personal data is your contact information at work.",
+    "whyTitle": "Why do we process personal data?",
+    "whyText1": "We process the data to fulfill the commitments associated with the purpose stated at the time of collection or for the collaboration. Otherwise, we use your information only for purposes related to Klimatbyrån's own activities. We do not share your information with third parties.",
+    "whyText2": "Klimatbyrån values personal integrity. Handling personal data correctly and securely is a priority for us. Those who entrust us with their information should feel secure.",
+    "whyText3": "We comply with the General Data Protection Regulation and other laws and regulations in the data protection area. You always have the right to request correction or deletion of your personal data.",
+    "contactTitle": "Contact Us",
+    "contactText1": "If you have questions or requests regarding the handling of your personal data, please contact us."
   }
 }

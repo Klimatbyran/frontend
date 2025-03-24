@@ -68,7 +68,7 @@ export function MethodsPage() {
                 />
               </p>
               <p>{t("methodsPage.accordion.parisAgreement.paragraph3")}</p>
-              <div className="space-y-6 max-w-3xl">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl">
                 <LinkButton
                   title={t("methodsPage.accordion.parisAgreement.link.title")}
                   text={t("methodsPage.accordion.parisAgreement.link.text")}
@@ -109,6 +109,30 @@ export function MethodsPage() {
                   />
                 ))}
               </div>
+            </div>
+          </AccordionGroup>
+
+          {/* Calculations Section */}
+          <AccordionGroup
+            title={t("methodsPage.accordion.calculations.title")}
+            value="calculations"
+          >
+            <div className="prose prose-invert w-[90%] max-w-5xl mx-auto space-y-8">
+              <p>{t("methodsPage.accordion.calculations.paragraph1")}</p>
+              <p>
+                <Trans
+                  i18nKey="methodsPage.accordion.calculations.paragraph2"
+                  components={[
+                    <a
+                      title="Här"
+                      className="underline hover:text-white transition-colors"
+                      href="https://docs.google.com/document/d/1MihysUkfunbV0LjwSUCiGSqWQSo5U03K0RMbRsVBL7U"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    />,
+                  ]}
+                />
+              </p>
             </div>
           </AccordionGroup>
 

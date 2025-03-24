@@ -1,5 +1,3 @@
-import { IconCheckbox } from "@/components/ui/icon-checkbox";
-import { Input } from "@/components/ui/input";
 import { CompanyEditRow } from "./CompanyEditRow";
 import { CompanyEditInputField, CompanyEmptyField } from "./CompanyEditField";
 import { useCategoryMetadata } from "@/hooks/useCategories";
@@ -9,19 +7,19 @@ export function CompanyEditScope3({ periods, onInputChange }) {
 
   if (
     periods.length <= 0 ||
-    periods[0].emissions.scope3 === undefined ||
-    periods[0].emissions.scope3.categories === undefined
+    periods[0].emissions?.scope3 === undefined ||
+    periods[0].emissions?.scope3?.categories === undefined
   ) {
     return <></>;
   }
 
   const getCategoryValue = (index: number, categories) => {
-    const category = categories.find((category) => category.category === index);
-    return category !== undefined ? category.total : 0;
+    const category = categories.find((category) => category.category - 1 === index);
+    return category !== undefined ? category.total : '';
   };
 
   const getCategoryVerified = (index: number, categories) => {
-    const category = categories.find((category) => category.category === index);
+    const category = categories.find((category) => category.category - 1 === index);
     return category !== undefined ? (category.metadata?.verifiedBy) : false;
   };
 
@@ -45,9 +43,9 @@ export function CompanyEditScope3({ periods, onInputChange }) {
                   name: "scope-3-" + period.id + "-" + (index + 1),
                   value: getCategoryValue(
                     index,
-                    period.emissions.scope3.categories
-                  ),                                
-                  verified: getCategoryVerified(index, period.emissions.scope3.categories),
+                    period.emissions.scope3?.categories
+                  ),
+                  verified: getCategoryVerified(index, period.emissions?.scope3?.categories),
                   onInputChange
                 })
               )}

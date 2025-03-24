@@ -21,7 +21,7 @@ export function ContentBlock({ title, content, className }: ContentBlockProps) {
           <Text className="text-grey text-md md:text-2xl">{title}</Text>
         </div>
 
-        <Text className="max-w-full md:max-w-[90%] text-md md:text-4xl leading-[1.2] md:leading-[1.1] tracking-[-0.02em] break-words">
+        <Text className="max-w-full md:max-w-[90%] text-md md:text-2xl leading-[1.2] md:leading-[1.1] tracking-[-0.02em] break-words">
           {content}
         </Text>
       </div>

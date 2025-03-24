@@ -35,7 +35,7 @@ export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
   return (
     <Link
       to={`/municipalities/${municipality.name}`}
-      className="block bg-black-2 rounded-level-2 p-8 space-y-8 hover:bg-black-1/80 transition-colors"
+      className="block bg-black-2 rounded-level-2 p-8 space-y-8 transition-all duration-300 hover:shadow-[0_0_10px_rgba(153,207,255,0.15)] hover:bg-[#1a1a1a]"
     >
       <div className="space-y-6">
         <h2 className="text-3xl font-light">{municipality.name}</h2>

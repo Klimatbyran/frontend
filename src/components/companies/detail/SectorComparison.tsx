@@ -5,7 +5,7 @@ import { Building2 } from "lucide-react";
 import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
 import { ScopeReportingList } from "./ScopeReportingList";
-import { SECTOR_NAMES } from "@/lib/constants/sectors";
+import { SECTOR_NAMES } from "@/hooks/useCompanyFilters";
 import type { RankedCompany } from "@/hooks/useCompanies";
 import {
   Select,

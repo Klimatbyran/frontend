@@ -7,6 +7,7 @@ import { Text } from "@/components/ui/text";
 import { useTranslation } from "react-i18next";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { createSlug } from "@/lib/utils";
+import { CompanyScope3 } from "@/components/companies/detail/CompanyScope3";
 
 export function CompanyDetailPage() {
   const { t } = useTranslation();
@@ -174,20 +175,22 @@ export function CompanyDetailPage() {
         />
 
         <CompanyHistory company={company} />
-        {/* <CompanyScope3
-        emissions={selectedPeriod.emissions!}
-        year={new Date(selectedPeriod.endDate).getFullYear()}
-        isRealEstate={company.industry?.industryGics?.sectorCode === "60"}
-        historicalData={sortedPeriods
-          .filter((period) => period.emissions?.scope3?.categories?.length > 0)
-          .map((period) => ({
-            year: new Date(period.endDate).getFullYear(),
-            categories: period.emissions!.scope3!.categories!,
-          }))
-          .sort((a, b) => a.year - b.year)}
-      />
+        <CompanyScope3
+          emissions={selectedPeriod.emissions!}
+          historicalData={sortedPeriods
+            .filter(
+              (period) =>
+                period.emissions?.scope3?.categories &&
+                period.emissions.scope3.categories.length > 0
+            )
+            .map((period) => ({
+              year: new Date(period.endDate).getFullYear(),
+              categories: period.emissions!.scope3!.categories!,
+            }))
+            .sort((a, b) => a.year - b.year)}
+        />
 
-      <CompanySectorComparison company={company} /> */}
+        {/* <CompanySectorComparison company={company} /> */}
       </div>
     </>
   );

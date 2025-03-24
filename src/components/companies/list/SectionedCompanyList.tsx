@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/accordion";
 import { CompanyCard } from "./CompanyCard";
 import type { RankedCompany } from "@/types/company";
-import { SECTOR_NAMES, SECTOR_ORDER } from "@/lib/constants/sectors";
+import { SECTOR_ORDER, useSectorNames } from "@/hooks/useCompanyFilters";
 import { useTranslation } from "react-i18next";
 
 interface SectionedCompanyListProps {
@@ -19,6 +19,7 @@ export function SectionedCompanyList({
   sortBy,
 }: SectionedCompanyListProps) {
   const { t } = useTranslation();
+  const sectorNames = useSectorNames();
 
   // Group companies by sector
   const companiesBySector = companies.reduce((acc, company) => {
@@ -45,23 +46,21 @@ export function SectionedCompanyList({
       switch (sortBy) {
         case "emissions_reduction":
           return b.metrics.emissionsReduction - a.metrics.emissionsReduction;
-        case "emissions":
+        case "total_emissions":
           return (
             (b.reportingPeriods[0]?.emissions?.calculatedTotalEmissions || 0) -
             (a.reportingPeriods[0]?.emissions?.calculatedTotalEmissions || 0)
           );
-        case "turnover":
+        case "scope3_coverage":
           return (
-            (b.reportingPeriods[0]?.economy?.turnover?.value || 0) -
-            (a.reportingPeriods[0]?.economy?.turnover?.value || 0)
+            (b.reportingPeriods[0]?.emissions?.scope3?.categories?.length ||
+              0) -
+            (a.reportingPeriods[0]?.emissions?.scope3?.categories?.length || 0)
           );
-        case "employees":
-          return (
-            (b.reportingPeriods[0]?.economy?.employees?.value || 0) -
-            (a.reportingPeriods[0]?.economy?.employees?.value || 0)
-          );
-        case "name":
+        case "name_asc":
           return a.name.localeCompare(b.name);
+        case "name_desc":
+          return b.name.localeCompare(a.name);
         default:
           return 0;
       }
@@ -85,7 +84,7 @@ export function SectionedCompanyList({
               <AccordionTrigger className="rounded-level-2 p-6 hover:no-underline hover:bg-black-2 data-[state=open]:hover:bg-black-2">
                 <div className="flex items-center gap-4">
                   <h2 className="text-2xl font-light">
-                    {t(SECTOR_NAMES[sectorCode]) ||
+                    {sectorNames[sectorCode as keyof typeof sectorNames] ||
                       t("companies.sectionedCompanyList.otherCompanies")}
                   </h2>
                   <span className="text-grey">
@@ -99,9 +98,9 @@ export function SectionedCompanyList({
                   {sectorCompanies.map((company) => (
                     <div
                       key={company.wikidataId}
-                      className="group overflow-hidden rounded-level-2"
+                      className="block rounded-level-2"
                     >
-                      <div className="transition-all duration-300 group-hover:scale-[1.02] group-hover:shadow-[0_0_30px_rgba(153,207,255,0.15)]">
+                      <div>
                         <CompanyCard {...company} />
                       </div>
                     </div>

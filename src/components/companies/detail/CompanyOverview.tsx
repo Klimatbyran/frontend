@@ -15,6 +15,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { Pen } from "lucide-react";
+import { useSectorNames, SectorCode } from "@/hooks/useCompanyFilters";
 
 interface CompanyOverviewProps {
   company: CompanyDetails;
@@ -34,13 +35,19 @@ export function CompanyOverview({
   const { t } = useTranslation();
   const isMobile = useScreenSize();
   const [showMore, setShowMore] = useState(false);
-  const {isAuthenticated} = useAuth();
+  const { token } = useAuth();
   const navigate = useNavigate();
+  const sectorNames = useSectorNames();
+  
   const periodYear = new Date(selectedPeriod.endDate).getFullYear();
-  const sectorName =
-    company.industry?.industryGics?.sv?.sectorName ||
-    company.industry?.industryGics?.en?.sectorName ||
-    t("company.unknownSector");
+  
+  // Get the translated sector name using the sector code
+  const sectorCode = company.industry?.industryGics?.sectorCode as SectorCode | undefined;
+  const sectorName = sectorCode 
+    ? sectorNames[sectorCode]
+    : company.industry?.industryGics?.sv?.sectorName || 
+      company.industry?.industryGics?.en?.sectorName || 
+      t("companies.overview.unknownSector");
 
   const yearOverYearChange =
     previousPeriod && selectedPeriod.emissions?.calculatedTotalEmissions
@@ -61,7 +68,7 @@ export function CompanyOverview({
           <div className="flex items-center gap-4">
             <Text className=" text-4xl lg:text-6xl">{company.name}</Text>
             <div className='flex flex-col h-full justify-around'>
-              {isAuthenticated() && (
+              {token && (
                 <Button variant="outline" size="sm" className="gap-2 mt-2" onClick={() => navigate("edit")}>
                     Edit
                     <div className="w-5 h-5 rounded-full bg-orange-5/30 text-orange-2 text-xs flex items-center justify-center">
@@ -143,12 +150,12 @@ export function CompanyOverview({
             {t("companies.overview.totalEmissions")} {periodYear}
           </Text>
           <div className="flex items-baseline gap-4">
-            <Text className="lg:text-6xl md:text-4xl sm:text-3xl font-light text-orange-2 tracking-tighter leading-none">
+            <Text className="text-3xl lg:text-6xl md:text-4xl sm:text-3xl font-light text-orange-2 tracking-tighter leading-none">
               {(
-                selectedPeriod.emissions?.calculatedTotalEmissions || 0
+                selectedPeriod.emissions?.calculatedTotalEmissions || 'No Data'
               ).toLocaleString("sv-SE")}
-              <span className="lg:text-2xl md:text-lg sm:text-sm ml-2 text-grey">
-                {t("companies.overview.tonsCO2e")}
+              <span className="text-lg lg:text-2xl md:text-lg sm:text-sm ml-2 text-grey">
+                {t(selectedPeriod.emissions?.calculatedTotalEmissions === 0 ? ' ' : "companies.overview.tonsCO2e")}
               </span>
             </Text>
           </div>
@@ -158,7 +165,7 @@ export function CompanyOverview({
           <Text className="mb-2 lg:text-lg md:text-base sm:text-sm">
             {t("companies.overview.changeSinceLastYear")}
           </Text>
-          <Text className="lg:text-6xl md:text-4xl sm:text-3xl font-light tracking-tighter leading-none">
+          <Text className="text-3xl lg:text-6xl md:text-4xl sm:text-3xl font-light tracking-tighter leading-none">
             {yearOverYearChange !== null ? (
               <span
                 className={
@@ -180,26 +187,26 @@ export function CompanyOverview({
       <div className="mt-12 bg-black-1 rounded-level-2 p-8 md:p-6 sm:p-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <Text className="mb-2 text-lg md:text-base sm:text-sm">
+            <Text className="mb-2 text-base md:text-base sm:text-sm">
               {t("companies.overview.turnover")} ({periodYear})
             </Text>
-            <Text className="text-lg md:text-base sm:text-sm">
+            <Text className="text-base md:text-base sm:text-sm">
               {selectedPeriod.economy?.turnover?.value
                 ? `${(selectedPeriod.economy.turnover.value / 1e9).toFixed(
                     1
                   )} mdr ${selectedPeriod.economy.turnover.currency}`
-                : t("company.notReported")}
+                : t("companies.overview.notReported")}
             </Text>
           </div>
 
           <div>
-            <Text className="text-lg md:text-base sm:text-sm mb-2">
+            <Text className="text-base md:text-base sm:text-sm mb-2">
               {t("companies.overview.employees")} ({periodYear})
             </Text>
-            <Text className="text-lg md:text-base sm:text-sm">
+            <Text className="text-base md:text-base sm:text-sm">
               {selectedPeriod.economy?.employees?.value
                 ? selectedPeriod.economy.employees.value.toLocaleString("sv-SE")
-                : t("company.notReported")}
+                : t("companies.overview.notReported")}
             </Text>
           </div>
 

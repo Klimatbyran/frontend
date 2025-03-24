@@ -7,11 +7,17 @@ interface LinkButtonProps {
   link: string;
 }
 
-export function LinkButton({ title, text, link }: LinkButtonProps) {
+export function LinkButton({
+  title,
+  text,
+  link
+}: LinkButtonProps) {
   return (
     <a
       href={link}
       className="block bg-black-1 rounded-level-2 p-6 hover:bg-blue-5/30 transition-colors text-white hover:text-blue-2"
+      target="_blank"
+      rel="noopener noreferrer"
     >
       <div className="flex items-center justify-between mb-2">
         <Text className="font-bold underline">{title}</Text>

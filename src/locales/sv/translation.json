@@ -9,9 +9,14 @@
     "methodology": "Källor och metod",
     "newsletter": "Nyhetsbrev",
     "openMenu": "Öppna meny",
-    "closeMenu": "Stäng meny"
+    "closeMenu": "Stäng meny",
+    "articles": "Artiklar",
+    "reports": "Rapporter"
   },
   "footer": {
+    "login": "Logga in",
+    "logout": "Logga ut",
+    "welcome": "Välkommen",
     "contactUs": "Kontakta oss",
     "description": "Klimatkollen är en medborgarplattform som tillgängliggör klimatdata och är utvecklad med öppen <0>källkod</0>.",
     "privacyTerms": "Privacy & Terms",
@@ -23,8 +28,13 @@
     "subscribe": "Prenumerera på vårt nyhetsbrev",
     "emailPlaceholder": "Din e-postadress",
     "subscribeButton": "Prenumerera",
+    "description": "Håll dig informerad med vårt nyhetsbrev - få de senaste uppdateringarna om utsläpp direkt till din inkorg.",
     "privacyNotice": "När du lämnat dina uppgifter kommer de att behandlas av Klimatbyrån ideell förening som står bakom Klimatkollen. Du har rätt till information om hur",
-    "privacyLink": "dina personuppgifter behandlas."
+    "privacyLink": "dina personuppgifter behandlas.",
+    "errorEmptyEmail": "Vänligen fyll i en giltig e-postadress.",
+    "errorInvalidEmail": "Vänligen fyll i en giltig e-postadress.",
+    "errorGeneric": "Ett fel uppstod. Vänligen försök igen senare.",
+    "successMessage": "Tack! Du har nu prenumererat på vårt nyhetsbrev."
   },
   "landingPage": {
     "metaTitle": "Öppen klimatdata för medborgare",
@@ -50,8 +60,8 @@
     "bestPerformers": "Vilka är bäst?",
     "bestMunicipalities": "Sveriges bästa kommuner",
     "municipalitiesDescription": "Årlig utsläppsminskning sedan Parisavtalet 2015",
-    "bestCompanies": "Företag som minskat utsläppen mest",
-    "companiesDescription": "Utsläppsminskning mellan 2023 och 2024",
+    "largestEmittor": "Företag med störst utsläpp",
+    "companiesDescription": "Utsläpp från senaste rapporterade året",
     "aboutUsTitle": "Vilka är vi?",
     "aboutUsContent": "Klimatkollen är en medborgarplattform som tillgängliggör klimatdata och bygger stöd för minskade utsläpp enligt Parisavtalet. Vi tror på kraften i enkel och tilltalande datavisualisering för att öka kunskapen och engagemanget kring klimatdebatten.",
     "tabName": {
@@ -106,11 +116,14 @@
     }
   },
   "insightsPage": {
-    "title": "Insikter",
-    "description": "Fördjupande analyser och rapporter om klimatomställningen i Sverige",
-    "newsletter": "Prenumerera på nyhetsbrev",
-    "readMore": "Läs mer",
-    "subscribeNewsletter": "Prenumerera på nyhetsbrev"
+    "title": "Artiklar",
+    "description": "Artiklar och uppdateringar om Klimatkollen och klimatomställningen.",
+    "readMore": "Läs mer"
+  },
+  "reportsPage": {
+    "title": "Rapporter",
+    "description": "Fördjupande analyser och rapporter om klimatomställningen i Sverige.",
+    "readMore": "Läs mer"
   },
   "blogDetailPage": {
     "loading": "Laddar...",
@@ -127,21 +140,23 @@
     "searchInFilter": "Sök i filter...",
     "noFiltersFound": "Inga filter hittades.",
     "sortingOptions": {
-      "emissionsChange": "utsläppsförändring",
+      "emissionsChange": "Utsläppsförändring (%)",
       "totalEmissions": "Totala utsläpp",
-      "scope3Coverage": "Scope 3-utsläpp",
-      "name": "Namn"
+      "scope3Coverage": "Scope 3-rapportering",
+      "nameAsc": "Företagsnamn A-Ö",
+      "nameDesc": "Företagsnamn Ö-A"
     },
     "sector": "Sektor",
     "errorTitle": "Det gick inte att hämta företagsinformation",
     "errorDescription": "Försök igen senare",
-    "title": "Företagsrapporter",
+    "title": "Företagens klimatdata",
     "description": "Översikt över företagens klimatpåverkan och hållbarhetsarbete",
-    "searchPlaceholder": "Sök (separera med ,)",
+    "searchPlaceholder": "Sök företag (separera med komma)",
     "noCompaniesFound": "Inga företag hittades",
     "tryDifferentCriteria": "Försök med andra sökkriterier",
     "sorting": "Sorterar:",
-    "filtering": "Filter:"
+    "filtering": "Filter:",
+    "allSectors": "Alla sektorer"
   },
   "companyDetailPage": {
     "errorTitle": "Det gick inte att hämta företagsinformation",
@@ -151,7 +166,7 @@
   },
   "methodsPage": {
     "header": {
-      "title": "Källor och Metod",
+      "title": "Källor och metod",
       "description": "Vår utgångspunkt är Parisavtalets 1,5-gradersmål och våra datakällor är offentliga. Klicka på rubrikerna för att läsa mer."
     },
     "accordion": {
@@ -212,7 +227,7 @@
           },
           "upphandlingsmyndigheten": {
             "title": "Upphandlingsmyndigheten",
-            "text": "nformation om klimatkrav vid kommunernas upphandlingar",
+            "text": "Information om klimatkrav vid kommunernas upphandlingar",
             "link": "https://www.klimatkollen.se/data/procurements/NUE2022_DATA_2023-12-20.xlsx"
           },
           "greenpeace": {
@@ -221,6 +236,11 @@
             "link": "https://docs.google.com/spreadsheets/d/1EdHUa49HJZn0rXqM-6tChdim4TJzXnwA/edit#gid=1040317160"
           }
         }
+      },
+      "calculations": {
+        "title": "Om våra beräkningar",
+        "paragraph1": "Utsläppsdata för kommunerna bygger på SMHI:s nationella emissionsdatabas för åren 1990-2022 och har för 2022–2024 approximerats utifrån historiska trender för att kunna visa data fram till idag.",
+        "paragraph2": "<0>Här</0> kan du läsa ett exempel på hur vi beräknar nyckeltal för kommuners utsläpp."
       },
       "co2Budgets": {
         "title": "Om koldioxidbudgetar",
@@ -247,7 +267,7 @@
   "municipalitiesPage": {
     "errorTitle": "Det gick inte att hämta kommuninformation",
     "errorDescription": "Försök igen senare",
-    "title": "Jämförelse kommuner",
+    "title": "Kommunrapporter",
     "description": "Översikt över utsläpp och omställning i kommunerna",
     "filter": {
       "searchPlaceholder": "Sök kommun (flera: separera med komma)",
@@ -349,6 +369,10 @@
     "kayla": {
       "role": "Utvecklare",
       "description": "Frontendutvecklare med passion för hållbarhet och användarvänliga digitala lösningar. Har tidigare arbetat som miljökonsult med fokus på att tolka regleringar och beräkna växthusgasutsläpp för företag."
+    },
+    "catharina": {
+      "role": "Kommunikatör",
+      "description": "Kommunikatör och filmare med fokus på klimat och hållbarhet, är med och driver Ett hållbart Lidingö, har en bakgrund som managementkonsult."
     }
   },
   "board": {
@@ -466,7 +490,7 @@
       "emissionsChangeRateInfo": "Förändringstakt för utsläpp jämfört med föregående rapporteringsperiod.",
       "turnover": "Omsättning",
       "employees": "Anställda",
-      "companyReport": "Företagsrapport",
+      "companyReport": "Hållbarhetsrapport",
       "missingReport": "Saknar report"
     },
     "dataView": {
@@ -533,7 +557,7 @@
       "tonsCO2e": "ton CO₂e",
       "clickToFilter": "Klicka för att filtrera bort",
       "resetAll": "Återställ alla",
-      "showingCategories": "Visar {shown} av {total} kategorier. Filtrerade kategorier:"
+      "showingCategories": "Visar {{shown}} av {{total}} kategorier. Filtrerade kategorier:"
     },
     "scope3Data": {
       "categories": "Scope 3-kategorier",
@@ -624,5 +648,30 @@
       "title": "Ändringar sparade!",
       "description": "Rapporteringsperioden har nu uppdaterats"
     }
+  },
+  "authCallbackPage": {
+    "failed": "Autentisering misslyckades",
+    "success": {
+      "title": "Inloggad",
+      "description": "Välkommen"
+    }
+  },
+  "privacyPage": {
+    "seoTitle": "Integritetspolicy - Klimatkollen",
+    "seoDescription": "Läs om hur Klimatkollen behandlar personuppgifter och värnar om din integritet.",
+    "seoHeading": "Integritetspolicy",
+    "seoText": "Klimatkollen värnar om din personliga integritet och följer dataskyddsförordningen (GDPR).",
+    "title": "Hur Klimatkollen behandlar personuppgifter",
+    "lastUpdated": "Senast publicerad: {{date}}",
+    "responsibilityTitle": "Personuppgiftsansvar",
+    "responsibilityText": "Klimatbyrån med organisationsnummer 802537-8814 är personuppgiftsansvarig när föreningens verksamheter behandlar personuppgifter.",
+    "dataCollectionTitle": "Vilka uppgifter behandlar vi?",
+    "dataCollectionText": "De personuppgifter vi samlar in är i första hand sådana som du själv uppger (namn, adress, mobilnummer etc.) när du exempelvis skriver upp dig för vårt nyhetsbrev eller blir medlem. Du kan också vara anställd hos en samarbetspartner eller annan kontakt till Klimatbyrån, då är personuppgifterna dina kontaktuppgifter i arbetet.",
+    "whyTitle": "Varför behandlar vi personuppgifterna?",
+    "whyText1": "Vi behandlar uppgifterna för att kunna fullfölja de åtaganden som är kopplade till det syfte som uppges vid insamlingstillfället eller för samarbetet. I övrigt använder vi dina uppgifter endast för ändamål som rör Klimatbyråns egen verksamhet. Vi lämnar inte ut uppgifterna till tredje part.",
+    "whyText2": "Klimatbyrån värnar om den personliga integriteten. Att hantera personuppgifter korrekt och säkert är en prioriterad fråga för oss. De som anförtror oss sina uppgifter ska vara trygga.",
+    "whyText3": "Vi följer Dataskyddsförordningen och de andra lagar och regler som gäller på dataskyddsområdet. Du har alltid rätt att begära korrigering eller radering av dina personliga uppgifter.",
+    "contactTitle": "Kontakta Oss",
+    "contactText1": "Om du har frågor eller önskemål kring hantering av dina personuppgifter, vänligen kontakta oss."
   }
 }

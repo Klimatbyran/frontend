@@ -8,8 +8,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { getCategoryColor } from "@/lib/constants/emissions";
 import { useTranslation } from "react-i18next";
+import { useCategoryMetadata } from "@/hooks/useCategories";
 
 type SortOption = "emissions" | "turnover" | "employees" | "name";
 
@@ -25,6 +25,7 @@ export function CompanyList() {
   const { companies, loading, error } = useCompanies();
   const [sortBy, setSortBy] = useState<SortOption>("emissions");
   const [sortedCompanies, setSortedCompanies] = useState(companies);
+  const { getCategoryColor } = useCategoryMetadata();
 
   // Memoize the sorting function to prevent unnecessary recalculations
   const getSortedCompanies = useMemo(

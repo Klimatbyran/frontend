@@ -17,7 +17,11 @@ function SocialLinks() {
           className="p-2 md:p-3 bg-black-1 rounded-full hover:bg-black-1/80 transition-colors"
           title={title}
         >
-          <Icon className="w-5 h-5 md:w-6 md:h-6" aria-label={title} />
+          {typeof Icon === "string" ? (
+            <img src={Icon} alt={title} className="w-5 h-5 md:w-6 md:h-6" />
+          ) : (
+            <Icon className="w-5 h-5 md:w-6 md:h-6" aria-label={title} />
+          )}
         </a>
       ))}
     </div>
@@ -37,10 +41,9 @@ function PartnerLogos() {
 }
 
 export function Footer() {
-  const { t } = useTranslation()
-  const { getAuthUrl, isAuthenticated, parseToken, logout } = useAuth()
-  const userinfo = parseToken()
-  const navigate = useNavigate()
+  const { t } = useTranslation();
+  const { login, logout, token, user } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <footer className="bg-black-2 py-4 md:py-8">
@@ -86,41 +89,41 @@ export function Footer() {
           <a
             href="https://creativecommons.org/licenses/by-sa/4.0/"
             className="hover:text-white transition-colors"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             {t("footer.ccBySa")}
           </a>
-          {!isAuthenticated() && (
+          {!token && (
             <a
-              onClick={() => {
-                window.location.href = getAuthUrl
-                  ? getAuthUrl()
-                  : "#";
-              }}
+              onClick={() => login()}
               className="hover:text-white transition-colors cursor-pointer"
             >
-              Login
+              {t("footer.login")}
             </a>
           )}
-          {isAuthenticated() && (
-              <a
-                onClick={() => {
-                  logout();
-                  navigate("/");
-                }}
-                className="hover:text-white cursor-pointer transition-colors"
-              >
-                Logout
-              </a>
-            )}
-          {isAuthenticated() && userinfo && (
+          {token && (
+            <a
+              onClick={() => {
+                logout();
+                navigate("/");
+              }}
+              className="hover:text-white cursor-pointer transition-colors"
+            >
+              {t("footer.logout")}
+            </a>
+          )}
+          {token && user && (
             <div className="hover:text-white ms-auto flex items-center">
-              <span>Välkommen, {userinfo?.name ?? ""}</span>
+              <span>
+                {t("footer.welcome")}, {user?.name ?? ""}
+              </span>
               <Avatar className="flex-shrink-0 ms-1">
                 <AvatarImage
                   className="w-[45px] h-[45px] border border-grey rounded-full"
-                  src={userinfo.githubImageUrl || ""}
+                  src={user.githubImageUrl || ""}
                 />
-                <AvatarFallback>{userinfo?.name ?? ""}</AvatarFallback>
+                <AvatarFallback>{user?.name ?? ""}</AvatarFallback>
               </Avatar>
             </div>
           )}

@@ -92,7 +92,7 @@ export function InsightsPage() {
   }, []);
 
   // Prepare SEO data
-  const canonicalUrl = "https://klimatkollen.se/insights";
+  const canonicalUrl = "https://klimatkollen.se/insights/articles";
   const pageTitle = `${t("insightsPage.title")} - Klimatkollen`;
   const pageDescription = t("insightsPage.description");
 

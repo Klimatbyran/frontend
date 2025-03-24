@@ -9,6 +9,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 import { useCategoryMetadata } from "@/hooks/useCategories";
+import { useScreenSize } from "@/hooks/useScreenSize";
 
 interface EmissionsBreakdownProps {
   emissions: {
@@ -48,6 +49,7 @@ export function EmissionsBreakdown({
     upstreamCategories,
     downstreamCategories,
   } = useCategoryMetadata();
+  const isMobile = useScreenSize();
 
   if (!emissions) return null;
 
@@ -136,7 +138,11 @@ export function EmissionsBreakdown({
             <Text variant="h4">{t("emissionsBreakdown.scope3Categories")}</Text>
           )}
 
-          <div className="grid grid-cols-2 gap-16">
+          <div
+            className={`grid ${
+              isMobile ? "grid-cols-1" : "grid-cols-2"
+            } gap-16`}
+          >
             {/* Upstream Categories */}
             <div className="space-y-8">
               <Text variant="h5" className="text-grey">
@@ -181,7 +187,7 @@ export function EmissionsBreakdown({
                             </span>
                           </Text>
                         ) : (
-                          <Text variant="body">
+                          <Text variant="body" className="text-grey">
                             {t("emissionsBreakdown.notReported")}
                           </Text>
                         )}
@@ -236,7 +242,7 @@ export function EmissionsBreakdown({
                             </span>
                           </Text>
                         ) : (
-                          <Text variant="body">
+                          <Text variant="body" className="text-grey">
                             {t("emissionsBreakdown.notReported")}
                           </Text>
                         )}

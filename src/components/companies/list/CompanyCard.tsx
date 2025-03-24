@@ -14,7 +14,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { SECTOR_NAMES } from "@/lib/constants/sectors";
+import { useSectorNames, SectorCode } from "@/hooks/useCompanyFilters";
 import type { RankedCompany } from "@/types/company";
 import { Text } from "@/components/ui/text";
 import { useScreenSize } from "@/hooks/useScreenSize";
@@ -39,11 +39,11 @@ export function CompanyCard({
   industry,
   reportingPeriods,
 }: CompanyCardProps) {
-
   const isMobile = useScreenSize();
 
   const { t } = useTranslation();
   const { getCategoryColor } = useCategoryMetadata();
+  const sectorNames = useSectorNames();
 
   const latestPeriod = reportingPeriods[0];
   const previousPeriod = reportingPeriods[1];
@@ -61,7 +61,7 @@ export function CompanyCard({
     : t("companies.card.noData");
 
   const sectorName = industry?.industryGics?.sectorCode
-    ? t(SECTOR_NAMES[industry.industryGics.sectorCode])
+    ? sectorNames[industry.industryGics.sectorCode as SectorCode]
     : t("companies.card.unknownSector");
 
   // Find the largest scope 3 category
@@ -80,7 +80,7 @@ export function CompanyCard({
     <div className="relative rounded-level-2">
       <Link
         to={`/companies/${wikidataId}`}
-        className="block bg-black-2 rounded-level-2 p-8 space-y-8 transition-all duration-300 hover:shadow-[0_0_30px_rgba(153,207,255,0.15)] hover:bg-[#1a1a1a]"
+        className="block bg-black-2 rounded-level-2 p-8 space-y-8 transition-all duration-300 hover:shadow-[0_0_10px_rgba(153,207,255,0.15)] hover:bg-[#1a1a1a]"
       >
         <div className="flex items-start justify-between rounded-level-2">
           <div className="space-y-2">
@@ -133,7 +133,11 @@ export function CompanyCard({
             <Building2 className="w-6 h-6" />
           </div>
         </div>
-        <div className={isMobile ? "flex flex-col gap-4" : "grid grid-cols-2 gap-4"}>
+        <div
+          className={
+            isMobile ? "flex flex-col gap-4" : "grid grid-cols-2 gap-4"
+          }
+        >
           <div className="space-y-2">
             <div className="flex items-center gap-2 text-grey mb-2 text-lg">
               <TrendingDown className="w-4 h-4" />

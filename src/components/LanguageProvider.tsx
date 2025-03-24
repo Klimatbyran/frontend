@@ -12,6 +12,7 @@ import {
   getLanguageUrl,
   SupportedLanguage,
 } from "@/lib/languageDetection";
+import { I18nextProvider } from "react-i18next";
 
 // Create context for language
 interface LanguageContextType {
@@ -67,10 +68,12 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
   };
 
   return (
-    <LanguageContext.Provider
-      value={{ currentLanguage, changeLanguage, getLocalizedPath }}
-    >
-      {children}
-    </LanguageContext.Provider>
+    <I18nextProvider i18n={i18n}>
+      <LanguageContext.Provider
+        value={{ currentLanguage, changeLanguage, getLocalizedPath }}
+      >
+        {children}
+      </LanguageContext.Provider>
+    </I18nextProvider>
   );
 }

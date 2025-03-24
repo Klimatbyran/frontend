@@ -9,6 +9,7 @@ import {
   Legend,
   Tooltip,
   TooltipProps,
+  ReferenceLine,
 } from "recharts";
 import { useTranslation } from "react-i18next";
 
@@ -28,6 +29,7 @@ export const MunicipalityEmissionsGraph: FC<
   MunicipalityEmissionsGraphProps
 > = ({ projectedData }) => {
   const { t } = useTranslation();
+  const currentYear = new Date().getFullYear();
 
   if (!projectedData || projectedData.length === 0) {
     return <div>{t("municipalities.graph.noData")}</div>;
@@ -132,6 +134,18 @@ export const MunicipalityEmissionsGraph: FC<
             strokeDasharray="4 4"
             dot={false}
             name={t("municipalities.graph.parisAgreement")}
+          />
+          <ReferenceLine
+            x={currentYear}
+            stroke="#FDB768"
+            strokeWidth={1}
+            label={{
+              value: currentYear,
+              position: "top",
+              fill: "#FDB768",
+              fontSize: 12,
+              fontWeight: "normal",
+            }}
           />
         </LineChart>
       </ResponsiveContainer>

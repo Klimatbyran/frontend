@@ -5,7 +5,7 @@ import { authMiddleware } from './auth-middleware';
 // Determine the base URL based on the environment
 // For sitemap generation (Node.js environment), use the public API
 // For browser environment, use the relative path
-const baseUrl = typeof window === 'undefined' 
+export const baseUrl = typeof window === 'undefined' 
   ? 'https://api.klimatkollen.se/api' 
   : '/api';
 const client = createClient<paths>({ baseUrl });

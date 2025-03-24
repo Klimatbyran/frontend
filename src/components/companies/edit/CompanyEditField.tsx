@@ -29,7 +29,7 @@ export function CompanyEditInputField({
 
   return (
     <div key={name + "-container"} className="flex items-center w-[187px] ms-2 py-2 border-r border-white">
-      <Input key={name} name={name} type={type} onChange={handleChange} className="w-[150px] bg-black-1" defaultValue={value}></Input>
+      <Input key={name} name={name} type={type} onChange={handleChange} className="w-[150px] bg-black-1" defaultValue={type === 'date' ? value : undefined} placeholder={String(value)}></Input>
       {showVerified && <IconCheckbox key={name + "-checkbox"} defaultChecked={verified} name={name + "-checkbox"} onCheckedChange={handleCheckboxChange}/>}
     </div>
   );

@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EmissionsBreakdown } from "./EmissionsBreakdown";
 import { Scope3Chart } from "./Scope3Chart";
-import { RealEstateScope3History } from "./RealEstateScope3History";
 import {
   Select,
   SelectContent,
@@ -35,7 +34,6 @@ interface Scope3DataProps {
     } | null;
     biogenicEmissions?: { total: number; unit: string } | null;
   } | null;
-  year: number;
   className?: string;
   isRealEstate?: boolean;
   historicalData?: Array<{
@@ -50,9 +48,7 @@ interface Scope3DataProps {
 
 export function Scope3Data({
   emissions,
-  year,
   className,
-  isRealEstate,
   historicalData,
 }: Scope3DataProps) {
   const { t } = useTranslation();
@@ -68,6 +64,10 @@ export function Scope3Data({
         (a, b) => b - a
       )
     : [];
+
+  // Get the latest year from historical data or use current year as fallback
+  const latestYear =
+    availableYears.length > 0 ? availableYears[0] : new Date().getFullYear();
 
   // Get categories for selected year
   const selectedCategories =
@@ -85,43 +85,46 @@ export function Scope3Data({
     },
   };
 
+  // Determine the year to display
+  const displayYear =
+    selectedYear === "latest" ? latestYear : parseInt(selectedYear);
+
   return (
     <div className={className}>
       <div className="flex items-center justify-between mb-8">
         <Text variant="h3">{t("companies.scope3Data.categories")}</Text>
-        {historicalData && historicalData.length > 0 && (
-          <Select value={selectedYear} onValueChange={setSelectedYear}>
-            <SelectTrigger className="w-[180px] bg-black-1">
-              <SelectValue placeholder={t("companies.scope3Data.selectYear")} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="latest">
-                {t("companies.scope3Data.latestYear")}
-              </SelectItem>
-              {availableYears.map((year) => (
-                <SelectItem key={year} value={year.toString()}>
-                  {year}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        )}
       </div>
-
-      <Tabs defaultValue="chart" className="space-y-8">
-        <TabsList className="bg-black-1">
-          <TabsTrigger value="chart">
-            {t("companies.scope3Data.visualization")}
-          </TabsTrigger>
-          <TabsTrigger value="data">
-            {t("companies.scope3Data.data")}
-          </TabsTrigger>
-          {isRealEstate && historicalData && (
-            <TabsTrigger value="history">
-              {t("companies.scope3Data.historicalDevelopment")}
+      <Tabs defaultValue="chart" className="space-y-2">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+          <TabsList className="bg-black-1 w-full sm:w-auto flex">
+            <TabsTrigger value="chart" className="flex-1 text-center">
+              {t("companies.scope3Data.visualization")}
             </TabsTrigger>
+            <TabsTrigger value="data" className="flex-1 text-center">
+              {t("companies.scope3Data.data")}
+            </TabsTrigger>
+          </TabsList>
+
+          {historicalData && historicalData.length > 0 && (
+            <Select value={selectedYear} onValueChange={setSelectedYear}>
+              <SelectTrigger className="w-full sm:w-[180px] bg-black-1">
+                <SelectValue
+                  placeholder={t("companies.scope3Data.selectYear")}
+                />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="latest">
+                  {t("companies.scope3Data.latestYear")}
+                </SelectItem>
+                {availableYears.map((year) => (
+                  <SelectItem key={year} value={year.toString()}>
+                    {year}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           )}
-        </TabsList>
+        </div>
 
         <TabsContent value="chart">
           <Scope3Chart
@@ -132,21 +135,15 @@ export function Scope3Data({
 
         <TabsContent value="data">
           <EmissionsBreakdown
-            emissions={{ scope3: selectedEmissions.scope3 }}
-            year={selectedYear === "latest" ? year : parseInt(selectedYear)}
+            emissions={{
+              scope3: selectedEmissions.scope3,
+              calculatedTotalEmissions: selectedEmissions.scope3?.total || 0,
+            }}
+            year={displayYear}
             className="bg-transparent p-0"
             showOnlyScope3={true}
           />
         </TabsContent>
-
-        {isRealEstate && historicalData && (
-          <TabsContent value="history">
-            <RealEstateScope3History
-              data={historicalData}
-              className="bg-transparent p-0"
-            />
-          </TabsContent>
-        )}
       </Tabs>
     </div>
   );

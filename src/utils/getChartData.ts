@@ -24,7 +24,8 @@ export function getChartData(processedPeriods: EmissionPeriod[]): ChartData[] {
   );
 
   const historicalData = sortedPeriods.map((period) => {
-    const year = new Date(period.startDate).getFullYear();
+    const year = new Date(period.endDate).getFullYear();
+
 
     // Capture original values before overriding with 0 for graph continuity
     const categoryData = [...categoryKeys].reduce<Record<string, number | null>>(

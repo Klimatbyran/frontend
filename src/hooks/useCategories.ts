@@ -12,21 +12,23 @@ import {
   Recycle,
   Home,
   Search,
-  Layers
+  Layers,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Layer } from "recharts";
 
 export const useCategoryMetadata = () => {
   const { t } = useTranslation();
 
-  const categoryMetadata: Record<number, {
-    icon: LucideIcon;
-    color: string;
-    name: string;
-    description: string;
-  }> = {
+  const categoryMetadata: Record<
+    number,
+    {
+      icon: LucideIcon;
+      color: string;
+      name: string;
+      description: string;
+    }
+  > = {
     1: {
       icon: Package,
       color: "var(--blue-2)",
@@ -125,7 +127,6 @@ export const useCategoryMetadata = () => {
     },
   };
 
-
   const getCategoryIcon = (id: number): LucideIcon => {
     return categoryMetadata[id]?.icon || Package;
   };
@@ -135,11 +136,24 @@ export const useCategoryMetadata = () => {
   };
 
   const getCategoryName = (id: number): string => {
-    return categoryMetadata[id]?.name || t(`category.${id}.name`, `Kategori ${id}`);
+    return (
+      categoryMetadata[id]?.name || t(`category.${id}.name`, `Kategori ${id}`)
+    );
   };
 
   const getCategoryDescription = (id: number): string => {
     return categoryMetadata[id]?.description || "";
+  };
+
+  const getCategoryFilterColors = (category: number) => {
+    const color = getCategoryColor(category)
+      .replace("var(--", "")
+      .replace(")", "");
+    const [palette, shade] = color.split("-");
+    return {
+      bg: `bg-${palette}-5/30`,
+      text: `text-${palette}-${shade}`,
+    };
   };
 
   return {
@@ -148,6 +162,7 @@ export const useCategoryMetadata = () => {
     getCategoryColor,
     getCategoryName,
     getCategoryDescription,
+    getCategoryFilterColors,
     upstreamCategories: [1, 2, 3, 4, 5, 6, 7, 8],
     downstreamCategories: [9, 10, 11, 12, 13, 14, 15],
   };

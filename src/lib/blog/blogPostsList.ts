@@ -1,5 +1,3 @@
-import { language } from "gray-matter";
-
 export enum CategoryEnum {
   Methodology = "Metodik",
   Analysis = "Analys",
@@ -20,6 +18,7 @@ export type BlogPostMeta = {
   category: CategoryEnum;
   image?: string;
   language?: LangEnum;
+  link?: string;
   author?: {
     name: string;
     avatar: string;

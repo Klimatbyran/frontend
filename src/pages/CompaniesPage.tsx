@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { useCompanies } from "@/hooks/useCompanies";
 import { CompanyCard } from "@/components/companies/list/CompanyCard";
 import { SectionedCompanyList } from "@/components/companies/list/SectionedCompanyList";
@@ -20,21 +20,20 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Badge } from "@/components/ui/badge";
-import { SECTORS, SECTOR_NAMES } from "@/lib/constants/sectors";
+import {
+  SECTORS,
+  useCompanyFilters,
+  useSortOptions,
+  type CompanySector,
+  type SortOption,
+  useSectors,
+  useSectorNames,
+  SectorCode,
+} from "@/hooks/useCompanyFilters";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { useTranslation } from "react-i18next";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { cn } from "@/lib/utils";
-
-type CompanySector = (typeof SECTORS)[number]["value"];
-type SortOption = (typeof SORT_OPTIONS)[number]["value"];
-
-const SORT_OPTIONS = [
-  { value: "emissions_reduction", label: "Utsläppsminskning" },
-  { value: "total_emissions", label: "Totala utsläpp" },
-  { value: "scope3_coverage", label: "Scope 3-rapportering" },
-  { value: "name", label: "Företagsnamn" },
-] as const;
 
 type FilterBadge = {
   type: "filter" | "sort";
@@ -110,11 +109,10 @@ function FilterGroup({ title, items, selected, onSelect }: FilterGroupProps) {
           onSelect={() => {
             if (item.value === "all") {
               onSelect([]);
+            } else if (selected.includes(item.value)) {
+              onSelect(selected.filter((s) => s !== item.value));
             } else {
-              const newValue = selected.includes(item.value)
-                ? selected.filter((v) => v !== item.value)
-                : [...selected, item.value];
-              onSelect(newValue);
+              onSelect([...selected, item.value]);
             }
           }}
           className="flex items-center justify-between"
@@ -136,7 +134,7 @@ function SortGroup({ sortBy, setSortBy }: SortGroupProps) {
   const { t } = useTranslation();
   return (
     <CommandGroup heading={t("companiesPage.sortBy")}>
-      {SORT_OPTIONS.map((option) => (
+      {useSortOptions().map((option) => (
         <CommandItem
           key={option.value}
           onSelect={() => setSortBy(option.value)}
@@ -164,6 +162,8 @@ function FilterCommands({
   setSortBy,
 }: FilterCommandsProps) {
   const { t } = useTranslation();
+  const sectorOptions = useSectors();
+
   return (
     <Command>
       <CommandInput placeholder={t("companiesPage.searchInFilter")} />
@@ -171,7 +171,7 @@ function FilterCommands({
         <CommandEmpty>{t("companiesPage.noFiltersFound")}</CommandEmpty>
         <FilterGroup
           title={t("companiesPage.sector")}
-          items={SECTORS}
+          items={sectorOptions}
           selected={sectors}
           onSelect={setSectors}
         />
@@ -184,83 +184,38 @@ function FilterCommands({
 
 export function CompaniesPage() {
   const { t } = useTranslation();
-  const { companies, loading, error } = useCompanies();
-  const [sectors, setSectors] = useState<CompanySector[]>([]);
-  const [sortBy, setSortBy] = useState<SortOption>("emissions_reduction");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filterOpen, setFilterOpen] = useState(false);
   const isMobile = useScreenSize();
+  const { companies, loading, error } = useCompanies();
+  const [filterOpen, setFilterOpen] = useState(false);
+  const sortOptions = useSortOptions();
+  const sectorNames = useSectorNames();
+
+  const {
+    searchQuery,
+    setSearchQuery,
+    sectors,
+    setSectors,
+    sortBy,
+    setSortBy,
+    filteredCompanies,
+  } = useCompanyFilters(companies);
 
   const activeFilters: FilterBadge[] = [
     ...sectors.map((sec) => ({
       type: "filter" as const,
-      label: String(SECTORS.find((s) => s.value === sec)?.label ?? sec),
+      label:
+        sec === "all"
+          ? t("companiesPage.allSectors")
+          : sectorNames[sec as SectorCode] || sec,
       onRemove: () => setSectors((prev) => prev.filter((s) => s !== sec)),
     })),
     {
       type: "sort" as const,
       label: String(
-        SORT_OPTIONS.find((s) => s.value === sortBy)?.label ?? sortBy
+        sortOptions.find((s) => s.value === sortBy)?.label ?? sortBy
       ),
     },
   ];
-
-  const filteredCompanies = useMemo(() => {
-    const filtered = companies.filter((company) => {
-      if (sectors.length === 0 && !searchQuery) {
-        return true;
-      }
-
-      const matchesSector =
-        sectors.length === 0 ||
-        sectors.some(
-          (sec) => company.industry?.industryGics?.sectorCode === sec
-        );
-
-      const matchesSearch =
-        !searchQuery ||
-        searchQuery
-          .toLowerCase()
-          .split(",")
-          .map((term) => term.trim())
-          .some(
-            (term) =>
-              company.name.toLowerCase().includes(term) ||
-              (company.industry?.industryGics?.sectorCode &&
-                t(SECTOR_NAMES[company.industry.industryGics.sectorCode])
-                  ?.toLowerCase()
-                  .includes(term))
-          );
-
-      return matchesSector && matchesSearch;
-    });
-
-    return [...filtered].sort((a, b) => {
-      switch (sortBy) {
-        case "emissions_reduction":
-          return (
-            (b.metrics?.emissionsReduction || 0) -
-            (a.metrics?.emissionsReduction || 0)
-          );
-        case "total_emissions":
-          return (
-            (b.reportingPeriods[0]?.emissions?.calculatedTotalEmissions || 0) -
-            (a.reportingPeriods[0]?.emissions?.calculatedTotalEmissions || 0)
-          );
-        case "scope3_coverage": {
-          const bCoverage =
-            b.reportingPeriods[0]?.emissions?.scope3?.categories?.length || 0;
-          const aCoverage =
-            a.reportingPeriods[0]?.emissions?.scope3?.categories?.length || 0;
-          return bCoverage - aCoverage;
-        }
-        case "name":
-          return a.name.localeCompare(b.name);
-        default:
-          return 0;
-      }
-    });
-  }, [companies, sectors, searchQuery, sortBy]);
 
   if (loading) {
     return (
@@ -352,9 +307,13 @@ export function CompaniesPage() {
         <SectionedCompanyList
           companies={filteredCompanies.map(({ ...rest }) => ({
             ...rest,
+            metrics: {
+              emissionsReduction: 0,
+              displayReduction: "0%",
+            },
             reportingPeriods: rest.reportingPeriods.map((period) => ({
               ...period,
-              id: period.startDate, // Using startDate as temporary id
+              id: period.startDate,
             })),
           }))}
           sortBy={sortBy}
@@ -364,10 +323,16 @@ export function CompaniesPage() {
           {filteredCompanies.map((company) => (
             <div
               key={company.wikidataId}
-              className="group overflow-hidden rounded-level-2"
+              className="block rounded-level-2"
             >
-              <div className="transition-all duration-300 group-hover:scale-[1.02] group-hover:shadow-[0_0_30px_rgba(153,207,255,0.15)]">
-                <CompanyCard {...company} />
+              <div>
+                <CompanyCard
+                  {...company}
+                  metrics={{
+                    emissionsReduction: 0,
+                    displayReduction: "0%",
+                  }}
+                />
               </div>
             </div>
           ))}
