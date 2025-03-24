@@ -64,7 +64,6 @@ export function CompanyOverview({
     (a, b) => new Date(b.endDate).getTime() - new Date(a.endDate).getTime()
   );
 
-  console.log(previousPeriod?.emissions?.calculatedTotalEmissions)
   return (
     <div className="bg-black-2 rounded-level-1 p-16">
       <div className="flex items-start justify-between mb-12">
