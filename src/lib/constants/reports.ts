@@ -22,7 +22,7 @@ export const reports = [
     date: "2024-06-01",
     excerpt: "En analys av 150 svenska storbolags klimatredovisning 2023",
     readTime: "15 min",
-    category: "Årsrapport",
+    category: "Rapport",
     author: {
       name: "Alexandra Palmquist",
       avatar: "/people/alex.jpg",
@@ -39,7 +39,7 @@ export const reports = [
     excerpt:
       "An analysis of 150 major Swedish companies' climate reporting 2023",
     readTime: "15 min",
-    category: "Annual Report",
+    category: "Report",
     author: {
       name: "Alexandra Palmquist",
       avatar: "/people/alex.jpg",
