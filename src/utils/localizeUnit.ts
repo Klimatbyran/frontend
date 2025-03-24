@@ -1,4 +1,4 @@
-export const localizeUnit = (unit: number | Date | string, currentLanguage: string) => {
+export const localizeUnit = (unit: number | Date, currentLanguage: string) => {
     
     const formatNumber = (num: number) => num.toLocaleString(
       currentLanguage === 'sv' 

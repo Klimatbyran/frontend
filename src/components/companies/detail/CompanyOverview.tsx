@@ -64,6 +64,7 @@ export function CompanyOverview({
     (a, b) => new Date(b.endDate).getTime() - new Date(a.endDate).getTime()
   );
 
+  console.log(previousPeriod?.emissions?.calculatedTotalEmissions)
   return (
     <div className="bg-black-2 rounded-level-1 p-16">
       <div className="flex items-start justify-between mb-12">
@@ -154,9 +155,12 @@ export function CompanyOverview({
           </Text>
           <div className="flex items-baseline gap-4">
             <Text className="text-3xl lg:text-6xl md:text-4xl sm:text-3xl font-light text-orange-2 tracking-tighter leading-none">
-              {
-                localizeUnit(selectedPeriod.emissions?.calculatedTotalEmissions || 0, currentLanguage)
-              }
+            {
+              selectedPeriod.emissions?.calculatedTotalEmissions === 0
+              ? t("companies.overview.notReported")
+              : localizeUnit(selectedPeriod.emissions?.calculatedTotalEmissions, currentLanguage)
+            }
+
               <span className="text-lg lg:text-2xl md:text-lg sm:text-sm ml-2 text-grey">
                 {t(selectedPeriod.emissions?.calculatedTotalEmissions === 0 ? ' ' : "companies.overview.tonsCO2e")}
               </span>

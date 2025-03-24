@@ -85,8 +85,6 @@ export function EmissionsHistory({
     [processedPeriods]
   );
 
-  console.log(chartData)
-
   const handleClick = (data: any) => {
     if (data?.activePayload?.[0]?.payload?.total) {
       onYearSelect?.(data.activePayload[0].payload.year.toString());
