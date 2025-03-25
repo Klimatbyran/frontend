@@ -18,6 +18,7 @@ import { Pen } from "lucide-react";
 import { useSectorNames, SectorCode } from "@/hooks/useCompanyFilters";
 import { useLanguage } from "@/components/LanguageProvider";
 import { localizeUnit } from "@/utils/localizeUnit";
+import { cn } from "@/lib/utils";
 
 interface CompanyOverviewProps {
   company: CompanyDetails;
@@ -153,7 +154,10 @@ export function CompanyOverview({
             {t("companies.overview.totalEmissions")} {periodYear}
           </Text>
           <div className="flex items-baseline gap-4">
-            <Text className="text-3xl lg:text-6xl md:text-4xl sm:text-3xl font-light text-orange-2 tracking-tighter leading-none">
+            <Text className={cn("text-3xl lg:text-6xl md:text-4xl sm:text-3xl font-light tracking-tighter leading-none", selectedPeriod.emissions?.calculatedTotalEmissions === 0
+      ? "text-grey"
+      : "text-orange-2"
+  )}>
             {
               selectedPeriod.emissions?.calculatedTotalEmissions === 0
               ? t("companies.overview.noData")
