@@ -12,13 +12,13 @@ interface MunicipalityCardProps {
 
 export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
   const { t } = useTranslation();
-  const meetsParis = municipality.budgetRunsOut === "Håller budget";
+  const meetsParis = !municipality.budgetRunsOut && municipality.budget;
 
   const lastYearEmission = municipality.approximatedHistoricalEmission.at(-1);
   const lastYearEmissionsKtons = lastYearEmission
     ? (lastYearEmission.value / 1000).toFixed(1)
     : t("municipalities.card.noData");
-  const lastYear = lastYearEmission?.year.toString();
+  const lastYear = lastYearEmission?.year.toString() || "";
 
   const emissionsChangeExists = municipality.historicalEmissionChangePercent;
   const positiveEmissionsChange = emissionsChangeExists > 0 ? "+" : "";
@@ -66,14 +66,14 @@ export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
             <div className="flex items-center text-sm text-grey mt-2">
               {t("municipalities.card.netZero")}
               <Text variant="body" className="text-green-3 ml-1">
-                {municipality.hitNetZero.toString()}
+                {municipality.hitNetZero?.toString()}
               </Text>
             </div>
           ) : (
             <div className="flex items-center text-sm text-grey mt-2">
               {t("municipalities.card.budgetRunsOut")}
               <Text variant="body" className="text-pink-3 ml-1">
-                {municipality.budgetRunsOut.toString()}
+                {municipality.budgetRunsOut?.toString()}
               </Text>
             </div>
           )}
