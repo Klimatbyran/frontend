@@ -1,24 +1,24 @@
-import { useEffect, useState } from "react"
-import { motion, Variants } from "framer-motion"
+import { useEffect, useState } from "react";
+import { motion, Variants } from "framer-motion";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 interface TypewriterProps {
-  text: string | string[]
-  speed?: number
-  initialDelay?: number
-  waitTime?: number
-  deleteSpeed?: number
-  loop?: boolean
-  className?: string
-  showCursor?: boolean
-  hideCursorOnType?: boolean
-  cursorChar?: string | React.ReactNode
+  text: string | string[];
+  speed?: number;
+  initialDelay?: number;
+  waitTime?: number;
+  deleteSpeed?: number;
+  loop?: boolean;
+  className?: string;
+  showCursor?: boolean;
+  hideCursorOnType?: boolean;
+  cursorChar?: string | React.ReactNode;
   cursorAnimationVariants?: {
-    initial: Variants["initial"]
-    animate: Variants["animate"]
-  }
-  cursorClassName?: string
+    initial: Variants["initial"];
+    animate: Variants["animate"];
+  };
+  cursorClassName?: string;
 }
 
 const Typewriter = ({
@@ -46,55 +46,55 @@ const Typewriter = ({
     },
   },
 }: TypewriterProps) => {
-  const [displayText, setDisplayText] = useState("")
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [isDeleting, setIsDeleting] = useState(false)
-  const [currentTextIndex, setCurrentTextIndex] = useState(0)
+  const [displayText, setDisplayText] = useState("");
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [currentTextIndex, setCurrentTextIndex] = useState(0);
 
-  const texts = Array.isArray(text) ? text : [text]
+  const texts = Array.isArray(text) ? text : [text];
 
   useEffect(() => {
-    let timeout: NodeJS.Timeout
+    let timeout: NodeJS.Timeout;
 
-    const currentText = texts[currentTextIndex]
+    const currentText = texts[currentTextIndex] || "";
 
     const startTyping = () => {
       if (isDeleting) {
         if (displayText === "") {
-          setIsDeleting(false)
+          setIsDeleting(false);
           if (currentTextIndex === texts.length - 1 && !loop) {
-            return
+            return;
           }
-          setCurrentTextIndex((prev) => (prev + 1) % texts.length)
-          setCurrentIndex(0)
-          timeout = setTimeout(() => {}, waitTime)
+          setCurrentTextIndex((prev) => (prev + 1) % texts.length);
+          setCurrentIndex(0);
+          timeout = setTimeout(() => {}, waitTime);
         } else {
           timeout = setTimeout(() => {
-            setDisplayText((prev) => prev.slice(0, -1))
-          }, deleteSpeed)
+            setDisplayText((prev) => prev.slice(0, -1));
+          }, deleteSpeed);
         }
       } else {
         if (currentIndex < currentText.length) {
           timeout = setTimeout(() => {
-            setDisplayText((prev) => prev + currentText[currentIndex])
-            setCurrentIndex((prev) => prev + 1)
-          }, speed)
+            setDisplayText((prev) => prev + currentText[currentIndex]);
+            setCurrentIndex((prev) => prev + 1);
+          }, speed);
         } else if (texts.length > 1) {
           timeout = setTimeout(() => {
-            setIsDeleting(true)
-          }, waitTime)
+            setIsDeleting(true);
+          }, waitTime);
         }
       }
-    }
+    };
 
     // Apply initial delay only at the start
     if (currentIndex === 0 && !isDeleting && displayText === "") {
-      timeout = setTimeout(startTyping, initialDelay)
+      timeout = setTimeout(startTyping, initialDelay);
     } else {
-      startTyping()
+      startTyping();
     }
 
-    return () => clearTimeout(timeout)
+    return () => clearTimeout(timeout);
   }, [
     currentIndex,
     displayText,
@@ -105,7 +105,7 @@ const Typewriter = ({
     texts,
     currentTextIndex,
     loop,
-  ])
+  ]);
 
   return (
     <div className={`inline whitespace-pre-wrap tracking-tight ${className}`}>
@@ -116,7 +116,8 @@ const Typewriter = ({
           className={cn(
             cursorClassName,
             hideCursorOnType &&
-              (currentIndex < texts[currentTextIndex].length || isDeleting)
+              (currentIndex < (texts[currentTextIndex] || "").length ||
+                isDeleting)
               ? "hidden"
               : ""
           )}
@@ -127,7 +128,7 @@ const Typewriter = ({
         </motion.span>
       )}
     </div>
-  )
-}
+  );
+};
 
-export { Typewriter }
+export { Typewriter };
