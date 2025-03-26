@@ -100,7 +100,7 @@ export function Scope3Chart({ categories, className }: Scope3ChartProps) {
   };
 
   const RADIAN = Math.PI / 180;
-  const renderCustomizedLabel = ({
+ /*  const renderCustomizedLabel = ({
     cx,
     cy,
     midAngle,
@@ -144,7 +144,7 @@ export function Scope3Chart({ categories, className }: Scope3ChartProps) {
       </text>
     );
   };
-
+ */
   return (
     <div
       className={cn("bg-black-2 rounded-level-1 p-4 md:p-8 lg:p-8", className)}
