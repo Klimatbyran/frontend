@@ -205,26 +205,26 @@ export function Scope3Chart({ categories, className }: Scope3ChartProps) {
 
       <div
         ref={containerRef}
-        className="h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] flex"
+        className="h-[500px] sm:h-[500px] flex-col-reverse md:h-[500px] lg:h-[600px]  flex lg:flex-row md:flex-col-reverse sm:flex-col-reverse xs:flex-col-reverse"
       >
-        <div>
-        <ul>
-          {
-            chartData.map((dataItem) => {
-              return (
-                <li>
-                  <span className="font-bold">
-                    {dataItem.percentage.toFixed(1)}%
-                  </span>
-                  <span className="font-light">
-                    - {dataItem.name}
-                  </span>
-                </li>
-              );
-            })
-          }
-        </ul>
-      </div>
+        <div className="">
+          <ul>
+            {
+              chartData.map((dataItem) => {
+                return (
+                  <li key={dataItem.name}>
+                    <span className="font-bold">
+                      {dataItem.percentage.toFixed(1)}%
+                    </span>
+                    <span className="font-light">
+                      - {dataItem.name}
+                    </span>
+                  </li>
+                );
+              })
+            }
+          </ul>
+        </div>
         <ResponsiveContainer width="50%" height="100%">
           <PieChart>
             <Pie
