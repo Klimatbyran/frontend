@@ -10,6 +10,8 @@ import { cn } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 import { useCategoryMetadata } from "@/hooks/useCategories";
 import { useScreenSize } from "@/hooks/useScreenSize";
+import { useLanguage } from "@/components/LanguageProvider";
+import { localizeUnit } from "@/utils/localizeUnit";
 
 interface EmissionsBreakdownProps {
   emissions: {
@@ -50,6 +52,7 @@ export function EmissionsBreakdown({
     downstreamCategories,
   } = useCategoryMetadata();
   const isMobile = useScreenSize();
+  const { currentLanguage } = useLanguage();
 
   if (!emissions) return null;
 
@@ -181,7 +184,7 @@ export function EmissionsBreakdown({
                         </div>
                         {reportedCategory ? (
                           <Text variant="body" className="text-blue-2">
-                            {reportedCategory.total.toLocaleString()}
+                            {localizeUnit(reportedCategory.total, currentLanguage)}
                             <span className="text-sm text-grey ml-2">
                               {reportedCategory.unit}
                             </span>
@@ -236,7 +239,7 @@ export function EmissionsBreakdown({
                         </div>
                         {reportedCategory ? (
                           <Text variant="body" className="text-blue-2">
-                            {reportedCategory.total.toLocaleString()}
+                            {localizeUnit(reportedCategory.total, currentLanguage)}
                             <span className="text-sm text-grey ml-2">
                               {reportedCategory.unit}
                             </span>

@@ -10,13 +10,15 @@ import { useMunicipalities } from "@/hooks/useMunicipalities";
 import { useTranslation } from "react-i18next";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { useEffect } from "react";
+import { useLanguage } from "@/components/LanguageProvider";
+import { localizeUnit } from "@/utils/localizeUnit";
 
 export function LandingPage() {
   const { t, i18n } = useTranslation();
   const [selectedTab, setSelectedTab] = useState("companies");
   const { companies } = useCompanies();
   const { getTopMunicipalities } = useMunicipalities();
-  const currentLanguage = i18n.language;
+  const { currentLanguage } = useLanguage()
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -49,14 +51,6 @@ export function LandingPage() {
     t("landingPage.typewriter.municipality.climatePlans"),
   ];
 
-  // Format number according to current language
-  const formatNumber = (value: number) => {
-    return value.toLocaleString(currentLanguage === "sv" ? "sv-SE" : "en-US", {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    });
-  };
-
   // Get top 5 companies by total emissions
   const largestCompanyEmitters = companies
     .sort(
@@ -71,9 +65,9 @@ export function LandingPage() {
       value:
         company.reportingPeriods.at(0)?.emissions?.calculatedTotalEmissions ||
         0,
-      displayValue: formatNumber(
+      displayValue: localizeUnit(
         company.reportingPeriods.at(0)?.emissions?.calculatedTotalEmissions || 0
-      ),
+      , currentLanguage),
     }));
 
   // Get top 5 municipalities by emissions reduction

@@ -12,6 +12,8 @@ import {
   ReferenceLine,
 } from "recharts";
 import { useTranslation } from "react-i18next";
+import { useLanguage } from "../LanguageProvider";
+import { localizeUnit } from "@/utils/localizeUnit";
 
 interface DataPoint {
   year: number;
@@ -30,6 +32,7 @@ export const MunicipalityEmissionsGraph: FC<
 > = ({ projectedData }) => {
   const { t } = useTranslation();
   const currentYear = new Date().getFullYear();
+  const { currentLanguage } = useLanguage();
 
   if (!projectedData || projectedData.length === 0) {
     return <div>{t("municipalities.graph.noData")}</div>;
@@ -54,8 +57,8 @@ export const MunicipalityEmissionsGraph: FC<
                   {t(`municipalities.graph.${entry.dataKey}`)}:
                 </span>
                 <span style={{ color: entry.color }}>
-                  {((entry.value as number) / 1000).toFixed(1)}{" "}
-                  {t("municipalities.graph.unit")}
+                {localizeUnit((entry.value as number) / 1000, currentLanguage)}{" "}
+                {t("municipalities.graph.unit")}
                 </span>
               </div>
             );

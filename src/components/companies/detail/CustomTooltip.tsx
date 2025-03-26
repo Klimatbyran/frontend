@@ -1,5 +1,7 @@
 import { useCategoryMetadata } from "@/hooks/useCategories";
 import { useTranslation } from "react-i18next";
+import { localizeUnit } from "@/utils/localizeUnit";
+import { useLanguage } from "@/components/LanguageProvider";
 
 interface CustomTooltipProps {
   active?: boolean;
@@ -14,8 +16,10 @@ export const CustomTooltip = ({
 }: CustomTooltipProps) => {
   const { t } = useTranslation();
   const { getCategoryName } = useCategoryMetadata();
+  const { currentLanguage} = useLanguage();
 
   if (active && payload && payload.length) {
+  
     return (
       <div className="bg-black-1 px-4 py-3 rounded-level-2">
         <div className="text-sm font-medium mb-2">{label}</div>
@@ -35,7 +39,7 @@ export const CustomTooltip = ({
           const displayValue =
             originalValue === null
               ? t("companies.tooltip.noDataAvailable")
-              : `${Math.round(entry.value).toLocaleString()} ${t(
+              : `${localizeUnit(Math.round(entry.value), currentLanguage)} ${t(
                   "companies.tooltip.tonsCO2e"
                 )}`;
 

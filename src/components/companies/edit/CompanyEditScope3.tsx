@@ -14,12 +14,12 @@ export function CompanyEditScope3({ periods, onInputChange }) {
   }
 
   const getCategoryValue = (index: number, categories) => {
-    const category = categories.find((category) => category.category === index);
+    const category = categories.find((category) => category.category - 1 === index);
     return category !== undefined ? category.total : '';
   };
 
   const getCategoryVerified = (index: number, categories) => {
-    const category = categories.find((category) => category.category === index);
+    const category = categories.find((category) => category.category - 1 === index);
     return category !== undefined ? (category.metadata?.verifiedBy) : false;
   };
 
@@ -44,7 +44,7 @@ export function CompanyEditScope3({ periods, onInputChange }) {
                   value: getCategoryValue(
                     index,
                     period.emissions.scope3?.categories
-                  ),                                
+                  ),
                   verified: getCategoryVerified(index, period.emissions?.scope3?.categories),
                   onInputChange
                 })

@@ -5,18 +5,23 @@ import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
 import type { Municipality } from "@/types/municipality";
 import { CardInfo } from "./MunicipalityCardInfo";
+import { localizeUnit } from "@/utils/localizeUnit";
+import { useLanguage } from "@/components/LanguageProvider";
+
 
 interface MunicipalityCardProps {
   municipality: Municipality;
 }
 
+
 export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
   const { t } = useTranslation();
   const meetsParis = !municipality.budgetRunsOut && municipality.budget;
+  const { currentLanguage } = useLanguage();
 
   const lastYearEmission = municipality.approximatedHistoricalEmission.at(-1);
   const lastYearEmissionsKtons = lastYearEmission
-    ? (lastYearEmission.value / 1000).toFixed(1)
+    ? localizeUnit((lastYearEmission.value / 1000), currentLanguage)
     : t("municipalities.card.noData");
   const lastYear = lastYearEmission?.year.toString() || "";
 
@@ -24,7 +29,7 @@ export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
   const positiveEmissionsChange = emissionsChangeExists > 0 ? "+" : "";
   const emissionsChange = emissionsChangeExists
     ? positiveEmissionsChange +
-      Math.ceil(emissionsChangeExists).toLocaleString("sv-SE") +
+      Math.ceil(emissionsChangeExists) +
       "%"
     : t("municipalities.card.noData");
 
@@ -66,14 +71,24 @@ export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
             <div className="flex items-center text-sm text-grey mt-2">
               {t("municipalities.card.netZero")}
               <Text variant="body" className="text-green-3 ml-1">
-                {municipality.hitNetZero?.toString()}
+                {municipality.hitNetZero
+                  ? localizeUnit(
+                      new Date(municipality.hitNetZero),
+                      currentLanguage
+                    )
+                  : t("municipalityDetailPage.never")}
               </Text>
             </div>
           ) : (
             <div className="flex items-center text-sm text-grey mt-2">
               {t("municipalities.card.budgetRunsOut")}
               <Text variant="body" className="text-pink-3 ml-1">
-                {municipality.budgetRunsOut?.toString()}
+                {municipality.budgetRunsOut
+                  ? localizeUnit(
+                      new Date(municipality.budgetRunsOut),
+                      currentLanguage
+                    )
+                  : t("municipalityDetailPage.budgetHolds")}
               </Text>
             </div>
           )}

@@ -1,6 +1,8 @@
 import { Building2, TreePine } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Text } from "@/components/ui/text";
+import { useLanguage } from "./LanguageProvider";
+import { localizeUnit } from "@/utils/localizeUnit";
 
 interface RankedListProps {
   title: string;
@@ -26,6 +28,9 @@ export function RankedList({
   textColor,
   unit,
 }: RankedListProps) {
+
+  const { currentLanguage } = useLanguage();
+
   return (
     <div className={cn("bg-black-2 rounded-level-2 p-4 md:p-8", className)}>
       <div className="flex items-center justify-between mb-2 md:mb-4">
@@ -72,10 +77,10 @@ export function RankedList({
                     textColor
                   )}
                 >
-                  {item.displayValue || item.value.toFixed(1)}
+                  {localizeUnit(item.value, currentLanguage) || item.value.toFixed(1)}
                 </span>
-                <span className={cn("text-grey", unit !== "%" && "ml-2")}>
-                  {unit}
+                <span className={cn("text-grey", unit !== " %" && "ml-2")}>
+                  {unit.padStart(1, " ")}
                 </span>
               </div>
             </div>

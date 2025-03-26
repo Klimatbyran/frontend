@@ -20,6 +20,8 @@ import { Text } from "@/components/ui/text";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { useTranslation } from "react-i18next";
 import { useCategoryMetadata } from "@/hooks/useCategories";
+import { useLanguage } from "@/components/LanguageProvider";
+import { localizeUnit } from "@/utils/localizeUnit";
 
 type CompanyCardProps = Pick<
   RankedCompany,
@@ -44,6 +46,7 @@ export function CompanyCard({
   const { t } = useTranslation();
   const { getCategoryColor } = useCategoryMetadata();
   const sectorNames = useSectorNames();
+  const { currentLanguage } = useLanguage();
 
   const latestPeriod = reportingPeriods[0];
   const previousPeriod = reportingPeriods[1];
@@ -57,7 +60,7 @@ export function CompanyCard({
 
   const employeeCount = latestPeriod?.economy?.employees?.value;
   const formattedEmployeeCount = employeeCount
-    ? employeeCount.toLocaleString()
+    ? localizeUnit(employeeCount, currentLanguage)
     : t("companies.card.noData");
 
   const sectorName = industry?.industryGics?.sectorCode
@@ -156,7 +159,7 @@ export function CompanyCard({
             <div className="text-3xl font-light">
               {currentEmissions ? (
                 <span className="text-orange-3">
-                  {Math.ceil(currentEmissions).toLocaleString("sv-SE")}
+                  {localizeUnit(Math.ceil(currentEmissions), currentLanguage)}
                   <span className="text-lg text-grey ml-1">tCO₂e</span>
                 </span>
               ) : (
@@ -187,7 +190,7 @@ export function CompanyCard({
                   }
                 >
                   {emissionsChange > 0 ? "+" : ""}
-                  {Math.ceil(emissionsChange).toLocaleString("sv-SE")}%
+                  {localizeUnit(Math.ceil(emissionsChange), currentLanguage)}%
                 </span>
               ) : (
                 <span className="text-grey">{t("companies.card.noData")}</span>
@@ -207,7 +210,7 @@ export function CompanyCard({
               </Text>
               <Text variant="h6">
                 {latestPeriod.economy.turnover.value
-                  ? (latestPeriod.economy.turnover.value / 1e9).toFixed(1)
+                  ? localizeUnit(latestPeriod.economy.turnover.value / 1e9, currentLanguage)
                   : t("companies.card.noData")}{" "}
                 mdr
                 <span className="text-lg text-grey ml-1">

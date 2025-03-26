@@ -5,7 +5,7 @@ env:
   REGISTRY: ghcr.io
   # github.repository as <account>/<repo>
   IMAGE_NAME: klimatbyran/frontend # FIXME restore to ${{ github.repository }} as soon as repos are merged
-  VITE_MAILCHIMP_URL: "https://klimatkollen.us14.list-manage.com/subscribe/post?u=05a01ccba58f4e27fc277b621&amp;id=133270842a"
+  VITE_MAILCHIMP_URL: https://klimatkollen.us14.list-manage.com/subscribe/post?u=05a01ccba58f4e27fc277b621&amp;id=133270842a
 
 on:
   push:

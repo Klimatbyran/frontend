@@ -6,6 +6,8 @@ import { X, RotateCcw } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useCategoryMetadata } from "@/hooks/useCategories";
 import { useTranslation } from "react-i18next";
+import { useLanguage } from "@/components/LanguageProvider";
+import { localizeUnit } from "@/utils/localizeUnit";
 
 interface Scope3ChartProps {
   categories: Array<{
@@ -50,6 +52,7 @@ export function Scope3Chart({ categories, className }: Scope3ChartProps) {
     useCategoryMetadata();
   const { size, containerRef } = useResponsiveSize();
   const { t } = useTranslation();
+  const { currentLanguage } = useLanguage();
 
   const filteredCategories = categories.filter(
     (cat) => !excludedCategories.includes(cat.category)
@@ -88,8 +91,8 @@ export function Scope3Chart({ categories, className }: Scope3ChartProps) {
             {t("companies.scope3Chart.category", { number: data.category })}
           </Text>
           <Text variant="h4">{data.name}</Text>
-          <Text>{Math.round(data.value).toLocaleString()} ton CO₂e</Text>
-          <Text className="text-grey">({data.percentage.toFixed(1)}%)</Text>
+          <Text>{localizeUnit(Math.round(data.value), currentLanguage)} ton CO₂e</Text>
+          <Text className="text-grey">({localizeUnit(data.percentage, currentLanguage)}%)</Text>
           <Text variant="small" className="text-blue-2 mt-2">
             {t("companies.scope3Chart.clickToFilter")}
           </Text>
@@ -113,7 +116,7 @@ export function Scope3Chart({ categories, className }: Scope3ChartProps) {
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
     const y = cy + radius * Math.sin(-midAngle * RADIAN);
     const anchor = x > cx ? "start" : "end";
-    const percentage = (percent * 100).toFixed(1);
+    const percentage = localizeUnit(percent * 100, currentLanguage);
     const data = chartData[index];
 
     // Split the category name into words
