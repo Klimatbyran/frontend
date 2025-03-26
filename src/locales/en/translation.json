@@ -303,6 +303,7 @@
     "never": "Never",
     "emissionsDevelopment": "Emissions development",
     "inThousandTons": "In thousand tons CO₂",
+    "noParisPath": "The municipality's carbon budget has been exhausted, which means that no Paris Agreement line is shown in the graph below",
     "futureEmissions": "Future emissions",
     "annualChangeSince2015": "Annual emission change since 2015",
     "reductionToMeetParis": "Emission reduction to meet the Paris Agreement",

@@ -311,6 +311,7 @@
     "never": "Aldrig",
     "emissionsDevelopment": "Utsläppsutveckling",
     "inThousandTons": "I tusen ton CO₂",
+    "noParisPath": "Kommunens koldioxidbudget är förbrukad, vilket innebär att ingen linje för Parisavtalet visas i grafen nedan",
     "futureEmissions": "Framtida utsläpp",
     "annualChangeSince2015": "Årlig utsläppsförändring sedan 2015",
     "reductionToMeetParis": "Utsläppsminskning för att klara Parisavtalet",
