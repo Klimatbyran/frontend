@@ -205,9 +205,27 @@ export function Scope3Chart({ categories, className }: Scope3ChartProps) {
 
       <div
         ref={containerRef}
-        className="h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px]"
+        className="h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] flex"
       >
-        <ResponsiveContainer width="100%" height="100%">
+        <div>
+        <ul>
+          {
+            chartData.map((dataItem) => {
+              return (
+                <li>
+                  <span className="font-bold">
+                    {dataItem.percentage.toFixed(1)}%
+                  </span>
+                  <span className="font-light">
+                    - {dataItem.name}
+                  </span>
+                </li>
+              );
+            })
+          }
+        </ul>
+      </div>
+        <ResponsiveContainer width="50%" height="100%">
           <PieChart>
             <Pie
               data={chartData}
@@ -219,8 +237,8 @@ export function Scope3Chart({ categories, className }: Scope3ChartProps) {
               paddingAngle={2}
               dataKey="value"
               nameKey="name"
-              label={size.showLabels ? renderCustomizedLabel : undefined}
-              labelLine={false}
+/*               label={size.showLabels ? renderCustomizedLabel : undefined}
+ */              labelLine={false}
               onClick={(entry) => handleCategoryClick(entry.category)}
               className="cursor-pointer"
             >
