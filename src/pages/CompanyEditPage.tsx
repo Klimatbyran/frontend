@@ -41,6 +41,11 @@ export function CompanyEditPage() {
         }, [] as CompanyDetails["reportingPeriods"])
       : [];
 
+  if(selectedPeriods.length === 0 && company?.reportingPeriods.length !== undefined && company.reportingPeriods.length > 0) {
+    company.reportingPeriods.sort((a, b) => b.endDate > a.endDate ? -1 : 1);
+    selectedPeriods.push(company.reportingPeriods[company.reportingPeriods.length - 1]);
+  }
+
   if (loading || isUpdating) {
     return (
       <div className="animate-pulse space-y-16">
