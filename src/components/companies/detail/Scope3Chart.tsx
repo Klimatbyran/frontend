@@ -4,7 +4,7 @@ import { Text } from "@/components/ui/text";
 import { Button } from "@/components/ui/button";
 import { X, RotateCcw } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useCategoryMetadata } from "@/hooks/useCategories";
+import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
 import { localizeUnit } from "@/utils/localizeUnit";

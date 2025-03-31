@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import type { CompanyDetails as Company } from "@/types/company";
+import type { CompanyDetails as Company, RankedCompany } from "@/types/company";
 
 export const SECTOR_NAMES = {
   "10": "Energi",
@@ -66,13 +66,36 @@ export const useSectors = () => {
   const { t } = useTranslation();
   const sectorNames = useSectorNames();
 
-  return [
-    { value: "all", label: t("companiesPage.allSectors") },
-    ...SECTOR_ORDER.map((code) => ({
-      value: code,
-      label: sectorNames[code],
-    })),
-  ] as const;
+  // Cast the first item to the expected type
+  const allSectorsOption = {
+    value: "all" as "all",
+    label: t("companiesPage.allSectors") as "Alla sektorer",
+  };
+
+  // Create the sector options with the correct types
+  const sectorOptions = Object.entries(sectorNames).map(([value, label]) => ({
+    value,
+    label: label as
+      | "Energi"
+      | "Material"
+      | "Industri"
+      | "Sällanköpsvaror"
+      | "Dagligvaror"
+      | "Hälsovård"
+      | "Finans"
+      | "IT"
+      | "Kommunikation"
+      | "Kraftförsörjning"
+      | "Fastigheter",
+  }));
+
+  // Filter out the "all" option from the sector options
+  const filteredOptions = sectorOptions.filter(
+    (option) => option.value !== "all"
+  );
+
+  // Return the array with the correct type
+  return [allSectorsOption, ...filteredOptions] as const;
 };
 
 export const useSortOptions = () => {
@@ -109,7 +132,94 @@ export type SortOption =
   | "name_asc"
   | "name_desc";
 
-export const useCompanyFilters = (companies: Company[]) => {
+// Add sector color types
+export interface SectorColor {
+  base: string;
+  scope1: string;
+  scope2: string;
+  scope3: string;
+}
+
+export type SectorColors = {
+  [key in SectorCode]: SectorColor;
+};
+
+// Add the sector colors
+export const sectorColors: SectorColors = {
+  "10": {
+    base: "var(--green-4)",
+    scope1: "var(--green-4)",
+    scope2: "var(--green-3)",
+    scope3: "var(--green-2)",
+  },
+  "15": {
+    base: "var(--blue-4)",
+    scope1: "var(--blue-4)",
+    scope2: "var(--blue-3)",
+    scope3: "var(--blue-2)",
+  },
+  "20": {
+    base: "var(--pink-4)",
+    scope1: "var(--pink-4)",
+    scope2: "var(--pink-3)",
+    scope3: "var(--pink-2)",
+  },
+  "25": {
+    base: "var(--orange-4)",
+    scope1: "var(--orange-4)",
+    scope2: "var(--orange-3)",
+    scope3: "var(--orange-2)",
+  },
+  "30": {
+    base: "var(--green-3)",
+    scope1: "var(--green-3)",
+    scope2: "var(--green-2)",
+    scope3: "var(--green-1)",
+  },
+  "35": {
+    base: "var(--blue-3)",
+    scope1: "var(--blue-3)",
+    scope2: "var(--blue-2)",
+    scope3: "var(--blue-1)",
+  },
+  "40": {
+    base: "var(--pink-3)",
+    scope1: "var(--pink-3)",
+    scope2: "var(--pink-2)",
+    scope3: "var(--pink-1)",
+  },
+  "45": {
+    base: "var(--orange-3)",
+    scope1: "var(--orange-3)",
+    scope2: "var(--orange-2)",
+    scope3: "var(--orange-1)",
+  },
+  "50": {
+    base: "var(--blue-2)",
+    scope1: "var(--blue-2)",
+    scope2: "var(--blue-3)",
+    scope3: "var(--blue-1)",
+  },
+  "55": {
+    base: "var(--green-2)",
+    scope1: "var(--green-2)",
+    scope2: "var(--green-3)",
+    scope3: "var(--green-1)",
+  },
+  "60": {
+    base: "var(--pink-2)",
+    scope1: "var(--pink-2)",
+    scope2: "var(--pink-3)",
+    scope3: "var(--pink-1)",
+  },
+};
+
+export const getCompanyColors = (index: number) => {
+  const colors = Object.values(sectorColors);
+  return colors[index % colors.length];
+};
+
+export const useCompanyFilters = (companies: RankedCompany[]) => {
   const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
   const [sectors, setSectors] = useState<CompanySector[]>([]);
@@ -201,3 +311,54 @@ export const useCompanyFilters = (companies: Company[]) => {
     sortOptions,
   };
 };
+
+// Update the useCompanyColors hook to use CSS variables
+export function useCompanyColors() {
+  const companyColorPalettes = [
+    // Blue palette
+    {
+      base: "var(--blue-5)",
+      scope1: "var(--blue-5)",
+      scope2: "var(--blue-3)",
+      scope3: "var(--blue-1)",
+    },
+    {
+      base: "var(--blue-4)",
+      scope1: "var(--blue-4)",
+      scope2: "var(--blue-2)",
+      scope3: "var(--blue-1)",
+    },
+    {
+      base: "var(--blue-3)",
+      scope1: "var(--blue-3)",
+      scope2: "var(--blue-5)",
+      scope3: "var(--blue-1)",
+    },
+
+    // Green palette
+    {
+      base: "var(--green-5)",
+      scope1: "var(--green-5)",
+      scope2: "var(--green-3)",
+      scope3: "var(--green-1)",
+    },
+    // Pink palette
+    {
+      base: "var(--pink-5)",
+      scope1: "var(--pink-5)",
+      scope2: "var(--pink-3)",
+      scope3: "var(--pink-1)",
+    },
+    // Orange palette
+    {
+      base: "var(--orange-5)",
+      scope1: "var(--orange-5)",
+      scope2: "var(--orange-3)",
+      scope3: "var(--orange-1)",
+    },
+  ];
+
+  return (index: number) => {
+    return companyColorPalettes[index % companyColorPalettes.length];
+  };
+}

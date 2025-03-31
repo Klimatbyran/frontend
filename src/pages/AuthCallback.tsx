@@ -1,4 +1,4 @@
-import { useEffect,} from "react";
+import { useEffect, useRef,} from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/contexts/ToastContext";
@@ -10,8 +10,12 @@ export const AuthCallback = () => {
   const location = useLocation();
   const { authenticate, token } = useAuth();
   const { showToast } = useToast();
-  
+  const called = useRef(false)
+
   useEffect(() => {
+    if (called.current) return // prevent rerender caused by StrictMode
+    
+    called.current = true
     const params = new URLSearchParams(location.search);
     const code = params.get('code')
     const error = params.get('error');

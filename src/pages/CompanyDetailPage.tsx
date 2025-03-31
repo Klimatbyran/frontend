@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { useCompanyDetails } from "@/hooks/useCompanyDetails";
+import { useCompanyDetails } from "@/hooks/companies/useCompanyDetails";
 import { CompanyOverview } from "@/components/companies/detail/CompanyOverview";
 import { CompanyHistory } from "@/components/companies/detail/CompanyHistory";
 import { Text } from "@/components/ui/text";

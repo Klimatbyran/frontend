@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { Building2, TrendingDown, Users, Wallet } from "lucide-react";
-import { useCompanies } from "@/hooks/useCompanies";
+import { useCompanies } from "@/hooks/companies/useCompanies";
 import {
   Select,
   SelectContent,
@@ -9,7 +9,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useTranslation } from "react-i18next";
-import { useCategoryMetadata } from "@/hooks/useCategories";
+import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useLanguage } from "@/components/LanguageProvider";
 import { localizeUnit } from "@/utils/localizeUnit";
 

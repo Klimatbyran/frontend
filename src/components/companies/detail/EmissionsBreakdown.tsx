@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
-import { useCategoryMetadata } from "@/hooks/useCategories";
+import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { useLanguage } from "@/components/LanguageProvider";
 import { localizeUnit } from "@/utils/localizeUnit";

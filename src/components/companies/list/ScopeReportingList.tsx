@@ -1,7 +1,7 @@
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
-import { getCategoryIcon, getCategoryColor } from '@/lib/constants/emissions';
+import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import {
   Tooltip,
   TooltipContent,
@@ -19,10 +19,14 @@ interface ScopeReportingListProps {
   className?: string;
 }
 
-export function ScopeReportingList({ companies, className }: ScopeReportingListProps) {
+export function ScopeReportingList({
+  companies,
+  className,
+}: ScopeReportingListProps) {
+  const { getCategoryIcon, getCategoryColor } = useCategoryMetadata();
   return (
     <div className={cn("space-y-4", className)}>
-      {companies.map(company => (
+      {companies.map((company) => (
         <Link
           key={company.id}
           to={`/companies/${company.id}`}
@@ -31,21 +35,24 @@ export function ScopeReportingList({ companies, className }: ScopeReportingListP
             company.isCurrentCompany ? "bg-blue-5/30" : "bg-black-1"
           )}
         >
-          <Text variant="large" className="flex-1">{company.name}</Text>
+          <Text variant="h5" className="flex-1">
+            {company.name}
+          </Text>
 
           {/* Scope 3 category icons */}
           <div className="flex gap-2 flex-wrap">
-            {company.reportedCategories.map(categoryId => {
+            {company.reportedCategories.map((categoryId) => {
               const Icon = getCategoryIcon(categoryId);
               const color = getCategoryColor(categoryId);
               return (
                 <TooltipProvider key={categoryId}>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <div className="w-8 h-8 rounded-full flex items-center justify-center"
-                        style={{ 
+                      <div
+                        className="w-8 h-8 rounded-full flex items-center justify-center"
+                        style={{
                           backgroundColor: `color-mix(in srgb, ${color} 30%, transparent)`,
-                          color: color
+                          color: color,
                         }}
                       >
                         <Icon className="w-4 h-4" />

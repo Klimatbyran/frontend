@@ -1,2 +1,2 @@
 // Re-export everything from the split files
-export * from "../../hooks/useCompanyFilters";
+export * from "../../hooks/companies/useCompanyFilters";

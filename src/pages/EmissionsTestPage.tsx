@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import { useCompanies } from "@/hooks/useCompanies";
+import { useCompanies } from "@/hooks/companies/useCompanies";
 import { EmissionsHistory } from "@/components/companies/detail/EmissionsHistory";
 import { Text } from "@/components/ui/text";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import type { Company } from "@/hooks/useCompanies";
+import type { Company } from "@/hooks/companies/useCompanies";
 
 interface FeatureToggle {
   id: string;

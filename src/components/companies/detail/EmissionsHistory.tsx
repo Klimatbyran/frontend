@@ -23,7 +23,7 @@ import { getChartData } from "../../../utils/getChartData";
 import { CustomTooltip } from "./CustomTooltip";
 import { DataViewSelector } from "./DataViewSelector";
 import { useTranslation } from "react-i18next";
-import { useCategoryMetadata } from "@/hooks/useCategories";
+import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useLanguage } from "@/components/LanguageProvider";
 
 

@@ -1,4 +1,4 @@
-import { useCategoryMetadata } from "@/hooks/useCategories";
+import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useTranslation } from "react-i18next";
 import { localizeUnit } from "@/utils/localizeUnit";
 import { useLanguage } from "@/components/LanguageProvider";

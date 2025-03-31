@@ -11,11 +11,11 @@ import type { CompanyDetails, ReportingPeriod } from "@/types/company";
 import { useTranslation } from "react-i18next";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { useState } from "react";
-import { useAuth } from '@/contexts/AuthContext';
-import { Button } from '@/components/ui/button';
-import { useNavigate } from 'react-router-dom';
+import { useAuth } from "@/contexts/AuthContext";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 import { Pen } from "lucide-react";
-import { useSectorNames, SectorCode } from "@/hooks/useCompanyFilters";
+import { useSectorNames, SectorCode } from "@/hooks/companies/useCompanyFilters";
 import { useLanguage } from "@/components/LanguageProvider";
 import { localizeUnit } from "@/utils/localizeUnit";
 import { cn } from "@/lib/utils";
@@ -44,13 +44,15 @@ export function CompanyOverview({
   const { currentLanguage } = useLanguage();
   
   const periodYear = new Date(selectedPeriod.endDate).getFullYear();
-  
+
   // Get the translated sector name using the sector code
-  const sectorCode = company.industry?.industryGics?.sectorCode as SectorCode | undefined;
-  const sectorName = sectorCode 
+  const sectorCode = company.industry?.industryGics?.sectorCode as
+    | SectorCode
+    | undefined;
+  const sectorName = sectorCode
     ? sectorNames[sectorCode]
-    : company.industry?.industryGics?.sv?.sectorName || 
-      company.industry?.industryGics?.en?.sectorName || 
+    : company.industry?.industryGics?.sv?.sectorName ||
+      company.industry?.industryGics?.en?.sectorName ||
       t("companies.overview.unknownSector");
 
   const yearOverYearChange =
@@ -71,16 +73,21 @@ export function CompanyOverview({
         <div className="space-y-4">
           <div className="flex items-center gap-4">
             <Text className=" text-4xl lg:text-6xl">{company.name}</Text>
-            <div className='flex flex-col h-full justify-around'>
+            <div className="flex flex-col h-full justify-around">
               {token && (
-                <Button variant="outline" size="sm" className="gap-2 mt-2" onClick={() => navigate("edit")}>
-                    Edit
-                    <div className="w-5 h-5 rounded-full bg-orange-5/30 text-orange-2 text-xs flex items-center justify-center">
-                      <Pen />
-                    </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="gap-2 mt-2"
+                  onClick={() => navigate("edit")}
+                >
+                  Edit
+                  <div className="w-5 h-5 rounded-full bg-orange-5/30 text-orange-2 text-xs flex items-center justify-center">
+                    <Pen />
+                  </div>
                 </Button>
               )}
-            </div>            
+            </div>
           </div>
           {isMobile ? (
             <div>
@@ -150,7 +157,10 @@ export function CompanyOverview({
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
         <div>
-          <Text variant="body" className="mb-2 lg:text-lg md:text-base sm:text-sm">
+          <Text
+            variant="body"
+            className="mb-2 lg:text-lg md:text-base sm:text-sm"
+          >
             {t("companies.overview.totalEmissions")} {periodYear}
           </Text>
           <div className="flex items-baseline gap-4">

@@ -1,4 +1,5 @@
 import type { paths } from "@/lib/api-types";
+import { DivideIcon as LucideIcon } from 'lucide-react';
 
 // Base company type from API with simplified industry structure
 export interface BaseCompany {
@@ -122,4 +123,27 @@ export interface Scope3HistoricalData {
     total: number;
     unit: string;
   }>;
+}
+
+export interface TrendData {
+  decreasing: Array<{
+    company: RankedCompany;
+    changePercent: number;
+    baseYear: string;
+    currentYear: string;
+  }>;
+  increasing: Array<{
+    company: RankedCompany;
+    changePercent: number;
+    baseYear: string;
+    currentYear: string;
+  }>;
+  noComparable: RankedCompany[];
+}
+
+export interface TrendCardInfo {
+  title: string;
+  icon: typeof LucideIcon;
+  color: string;
+  textColor: string;
 }

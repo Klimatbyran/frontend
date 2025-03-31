@@ -5,7 +5,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RankedList } from "@/components/RankedList";
 import { ContentBlock } from "@/components/ContentBlock";
 import { Typewriter } from "@/components/ui/typewriter";
-import { useCompanies } from "@/hooks/useCompanies";
+import { useCompanies } from "@/hooks/companies/useCompanies";
 import { useMunicipalities } from "@/hooks/useMunicipalities";
 import { useTranslation } from "react-i18next";
 import { PageSEO } from "@/components/SEO/PageSEO";

@@ -6,7 +6,10 @@ import {
 } from "@/components/ui/accordion";
 import { CompanyCard } from "./CompanyCard";
 import type { RankedCompany } from "@/types/company";
-import { SECTOR_ORDER, useSectorNames } from "@/hooks/useCompanyFilters";
+import {
+  SECTOR_ORDER,
+  useSectorNames,
+} from "@/hooks/companies/useCompanyFilters";
 import { useTranslation } from "react-i18next";
 
 interface SectionedCompanyListProps {
