@@ -105,6 +105,16 @@ export function CompanyEditPage() {
     }    
   };
 
+  const resetPeriod = (year: number) => {
+    const updatedFormData = new Map(formData);
+    for(const key of formData.keys()) {
+      if(key.includes(year.toString())) {
+        updatedFormData.delete(key);
+      }
+    }
+    setFormData(updatedFormData);
+  }
+
   return (
     <div className="space-y-16 max-w-[1400px] mx-auto">
       <div className="bg-black-2 rounded-level-1 p-16">
@@ -114,7 +124,7 @@ export function CompanyEditPage() {
       />
       {selectedPeriods !== null && selectedPeriods.length > 0 && (
         <form onSubmit={handleSubmit} ref={formRef}>
-        <CompanyEditPeriod periods={selectedPeriods} onInputChange={handleInputChange} formData={formData}></CompanyEditPeriod>
+        <CompanyEditPeriod periods={selectedPeriods} onInputChange={handleInputChange} formData={formData} resetPeriod={resetPeriod}></CompanyEditPeriod>
         <CompanyEditScope1 periods={selectedPeriods} onInputChange={handleInputChange} formData={formData}></CompanyEditScope1>
         <CompanyEditScope2 periods={selectedPeriods} onInputChange={handleInputChange} formData={formData}></CompanyEditScope2>
         <CompanyEditScope3 periods={selectedPeriods} onInputChange={handleInputChange} formData={formData}></CompanyEditScope3>
