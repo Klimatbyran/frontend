@@ -4,7 +4,9 @@
   "header": {
     "companies": "Companies",
     "municipalities": "Municipalities",
-    "about": "About Us",
+    "about": "About",
+    "aboutUs": "About Us",
+    "products": "Products",
     "insights": "Insights",
     "methodology": "Sources and Method",
     "newsletter": "Newsletter",

@@ -4,7 +4,9 @@
   "header": {
     "companies": "Företag",
     "municipalities": "Kommuner",
-    "about": "Om oss",
+    "about": "Om",
+    "aboutUs": "Om oss",
+    "products": "Produkter",
     "insights": "Insikter",
     "methodology": "Källor och metod",
     "newsletter": "Nyhetsbrev",

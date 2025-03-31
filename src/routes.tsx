@@ -20,6 +20,7 @@ import { NotFoundPage } from "./pages/NotFoundPage";
 import { ReportsPage } from "./pages/ReportsPage";
 import { PrivacyPage } from "./pages/PrivacyPage";
 import { UnauthorizedErrorPage } from "./pages/error/UnauthorizedErrorPage";
+import ProductsPage from "./pages/ProductsPage";
 
 export function AppRoutes() {
   const { currentLanguage } = useLanguage();
@@ -51,15 +52,16 @@ export function AppRoutes() {
         path={`${basePath}/companies/:id/:slug`}
         element={<CompanyDetailPage />}
       />
-
       <Route
         path={`${basePath}/foretag/:slug-:id`}
         element={<CompanyDetailPage />}
       />
-
-      <Route element={<ProtectedRoute/>}>
-        <Route path={`${basePath}/companies/:id/edit`} element={<CompanyEditPage/>}/>
-      </Route> 
+      <Route element={<ProtectedRoute />}>
+        <Route
+          path={`${basePath}/companies/:id/edit`}
+          element={<CompanyEditPage />}
+        />
+      </Route>
 
       {/* Municipalities routes */}
       <Route
@@ -79,6 +81,7 @@ export function AppRoutes() {
       <Route path={`${basePath}/insights/:id`} element={<BlogDetailPage />} />
       <Route path={`${basePath}/learn-more`} element={<LearnMorePage />} />
       <Route path={`${basePath}/privacy`} element={<PrivacyPage />} />
+      <Route path={`${basePath}/products`} element={<ProductsPage />} />
 
       {/* Error pages */}
       <Route path={`${basePath}/error/:code`} element={<ErrorPage />} />
@@ -86,7 +89,7 @@ export function AppRoutes() {
       {/* This catch-all should now only handle invalid routes */}
       <Route path={`${basePath}/*`} element={<NotFoundPage />} />
 
-      <Route path={`${basePath}/403`} element={<UnauthorizedErrorPage/>} />
+      <Route path={`${basePath}/403`} element={<UnauthorizedErrorPage />} />
       <Route path="auth/callback" element={<AuthCallback />} />
     </Routes>
   );
