@@ -28,7 +28,7 @@ export function DownloadCard({
       <a
         href={downloadUrl}
         download
-        className="inline-flex items-center justify-center gap-2 rounded-md bg-black-2 px-6 py-3 text-base font-medium text-white shadow-lg hover:bg-black-1 w-full transition-all border border-black-1"
+        className="inline-flex items-center justify-center gap-2 rounded-md bg-black-2 px-6 py-3 text-base font-medium text-blue-2 shadow-lg hover:bg-black-1 w-full transition-all border border-black-1"
       >
         <Download className="h-5 w-5" />
         {downloadText}
