@@ -120,7 +120,7 @@ function ProductsPage() {
   );
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="max-w-[1200px] mx-auto space-y-20">
       <PageHeader
         title={t("productsPage.title")}
         description={t("productsPage.description")}

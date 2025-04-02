@@ -155,6 +155,32 @@
       }
     }
   },
+  "downloadsPage": {
+    "title": "Download Database",
+    "description": "Access our comprehensive climate database in multiple formats. Choose the format that best suits your needs for analysis and research.",
+    "csvFormat": "CSV Format",
+    "csvDescription": "Download the database in CSV format. Perfect for data analysis in tools like Python, R, or any spreadsheet software. Includes all fields with comma-separated values.",
+    "excelFormat": "Excel Format",
+    "excelDescription": "Download the database in Excel format. Perfect for data analysis in tools like Microsoft Excel or Google Sheets. Includes all fields with comma-separated values.",
+    "txtFormat": "TXT Format",
+    "txtDescription": "Download the database in TXT format. Perfect for data analysis in tools like Notepad or any text editor. Includes all fields with comma-separated values.",
+    "requestAccess": "Get Data",
+    "csvDownload": "Download CSV",
+    "excelDownload": "Download Excel",
+    "txtDownload": "Download TXT",
+    "download": "Download",
+    "dataStructure": "Data Structure",
+    "fileSizeAndFormat": "File Size and Format",
+    "downloadInformation": "Download Information",
+    "usageLicense": "Usage License",
+    "dataDictionary": "Data Dictionary",
+    "dataDictionaryDescription": "Each format includes a data dictionary explaining the fields and their meanings.",
+    "dataDictionaryDownload": "Download Data Dictionary",
+    "dataDictionaryDownloadDescription": "Download the data dictionary in TXT format. Perfect for data analysis in tools like Notepad or any text editor. Includes all fields with comma-separated values.",
+    "dataStructureDescription": "All download formats contain the same data structure with consistent field names and data types. Each format includes a data dictionary explaining the fields and their meanings.",
+    "fileSizeAndFormatDescription": "CSV: ~50MB, UTF-8 encoded with comma separators Excel: ~60MB, XLSX format with multiple sheets Text: ~45MB, UTF-8 encoded with tab delimiters",
+    "usageLicenseDescription": "The downloaded data is provided under a research and analysis license. You are free to use the data for research, analysis, and non-commercial purposes. Please attribute Klimatkollen when using the data."
+  },
   "insightsPage": {
     "title": "Articles",
     "description": "Articles and updates about Klimatkollen and the climate transition.",
