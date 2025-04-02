@@ -10,6 +10,8 @@ import {
 import { PageHeader } from "@/components/layout/PageHeader";
 import { useTranslation } from "react-i18next";
 import { ProductCard } from "@/components/products/ProductCard";
+import { useState } from "react";
+import { RequestAccessModal } from "@/components/products/RequestAccessModal";
 
 interface DataCategoryProps {
   icon: React.ReactNode;
@@ -37,16 +39,17 @@ const DataCategory = ({
         : ""
     }`}
   >
-    <div className="flex items-center gap-3 mb-3">
+    <div className="flex items-center gap-3 mb-3 text-white">
       {icon}
-      <h3 className="text-lg font-light text-gray-300">{title}</h3>
+      <h3 className="text-lg font-light">{title}</h3>
     </div>
-    <p className="text-gray-400">{description}</p>
+    <p className="text-grey">{description}</p>
   </div>
 );
 
 function ProductsPage() {
   const { t } = useTranslation();
+  const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
 
   const apiFeatures = [
     {
@@ -85,6 +88,12 @@ function ProductsPage() {
   const apiActions = (
     <>
       <a
+        href="mailto:hej@klimatkollen.se?subject=API%20Access%20Pricing%20Request&body=Hi%2C%0A%0AI'm%20interested%20in%20learning%20more%20about%20the%20API%20direct%20access%20pricing.%0A%0ABest%20regards"
+        className="inline-flex items-center justify-center rounded-md bg-green-4 px-6 py-3 text-base font-medium text-white shadow-lg hover:bg-green-3 w-full transition-all"
+      >
+        {t("productsPage.apiAccess.contactPricing")}
+      </a>
+      <a
         href="https://api.klimatkollen.se/api/"
         target="_blank"
         rel="noopener noreferrer"
@@ -92,22 +101,22 @@ function ProductsPage() {
       >
         {t("productsPage.apiAccess.viewDocs")}
       </a>
-      <a
-        href="mailto:hej@klimatkollen.se?subject=API%20Access%20Pricing%20Request&body=Hi%2C%0A%0AI'm%20interested%20in%20learning%20more%20about%20the%20API%20direct%20access%20pricing.%0A%0ABest%20regards"
-        className="inline-flex items-center justify-center rounded-md bg-green-4 px-6 py-3 text-base font-medium text-white shadow-lg hover:bg-green-3 w-full transition-all"
-      >
-        {t("productsPage.apiAccess.contactPricing")}
-      </a>
     </>
   );
 
   const freeActions = (
-    <a
-      href="mailto:contact@klimatkollen.se?subject=Free%20Access%20Request&body=Hi%2C%0A%0AI%20would%20like%20to%20request%20free%20access%20to%20the%20data.%0A%0ABest%20regards"
-      className="inline-flex items-center justify-center rounded-md bg-blue-4 px-6 py-3 text-base font-medium text-white shadow-lg hover:bg-blue-3 w-full transition-all"
-    >
-      {t("productsPage.freeAccess.requestAccess")}
-    </a>
+    <>
+      <button
+        onClick={() => setIsRequestModalOpen(true)}
+        className="inline-flex items-center justify-center rounded-md bg-blue-4 px-6 py-3 text-base font-medium text-white shadow-lg hover:bg-blue-3 w-full transition-all"
+      >
+        {t("productsPage.freeAccess.requestAccess")}
+      </button>
+      <RequestAccessModal
+        isOpen={isRequestModalOpen}
+        onClose={() => setIsRequestModalOpen(false)}
+      />
+    </>
   );
 
   return (
