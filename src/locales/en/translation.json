@@ -117,6 +117,44 @@
       "utslappsberakningText": "A projection of how emissions would increase or decrease under each party's policies."
     }
   },
+  "productsPage": {
+    "title": "Access Climate Impact Data",
+    "description": "Get access to Klimatkollen's climate database, featuring corporate emissions data, sustainability reports, and municipal environmental metrics through our API.",
+   "viewDocumentation": "View API Documentation →",
+    "apiAccess": {
+      "title": "Direct API Access",
+      "description": "Real-time access to our climate database through our documented REST API with comprehensive endpoints.",
+      "realtime": "Real-time data access",
+      "documentation": "Full API documentation",
+      "secure": "Secure API endpoints",
+      "support": "Priority support",
+      "contactPricing": "Contact for Pricing",
+      "viewDocs": "View API Documentation"
+    },
+    "freeAccess": {
+      "title": "Free Database Access",
+      "description": "Access our comprehensive climate database through bi-yearly data dumps, perfect for research and analysis.",
+      "export": "Complete database export every 6 months",
+      "data": "Corporate and municipality climate data",
+      "license": "Free to use for non-commercial purposes",
+      "requestAccess": "Request Access"
+    },
+    "dataOverview": {
+      "title": "Available Data  ",
+      "corporate": {
+        "title": "Corporate Emissions Data",
+        "description": "Access to detailed emissions data from Swedish companies, including scope 1, 2, and 3 emissions, as well as supply chain data."
+      },
+      "reports": {
+        "title": "Sustainability Reports",  
+        "description": "Access to sustainability reports from Swedish companies, including annual reports and sustainability reports."
+      },
+      "municipality": {
+        "title": "Municipality Climate Data",
+        "description": "Access to climate data from Swedish municipalities, including emissions data, climate plans, and climate actions."
+      }
+    }
+  },
   "insightsPage": {
     "title": "Articles",
     "description": "Articles and updates about Klimatkollen and the climate transition.",
