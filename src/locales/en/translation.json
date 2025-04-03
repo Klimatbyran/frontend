@@ -496,7 +496,8 @@
       "title": "Historical Emissions",
       "tooltip": "Historical emissions; click on a point to remove the line from the graph. Hover over a point to see the values for the reporting period.",
       "unit": "Tons CO₂e per year",
-      "totalEmissions": "Total Emissions"
+      "totalEmissions": "Total Emissions",
+      "total": "Total"
     },
     "list": {
       "error": {

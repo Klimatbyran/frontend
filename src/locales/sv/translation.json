@@ -504,7 +504,8 @@
       "title": "Historiska utsläpp",
       "tooltip": "Historiska utsläpp och trend mot 2030. Klicka på en punkt för att ta bort linjen från grafen. Hovra över punkten för att se värdena för rapporteringsperioden.",
       "unit": "Ton CO₂e per år",
-      "totalEmissions": "Totala utsläpp"
+      "totalEmissions": "Totala utsläpp",
+      "total": "Totalt"
     },
     "list": {
       "error": {
