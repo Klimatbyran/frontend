@@ -120,7 +120,7 @@
   "productsPage": {
     "title": "Access Climate Impact Data",
     "description": "Get access to Klimatkollen's climate database, featuring corporate emissions data, sustainability reports, and municipal environmental metrics through our API.",
-   "viewDocumentation": "View API Documentation →",
+    "viewDocumentation": "View API Documentation →",
     "apiAccess": {
       "title": "Direct API Access",
       "description": "Real-time access to our climate database through our documented REST API with comprehensive endpoints.",
@@ -146,13 +146,20 @@
         "description": "Access to detailed emissions data from Swedish companies, including scope 1, 2, and 3 emissions, as well as supply chain data."
       },
       "reports": {
-        "title": "Sustainability Reports",  
+        "title": "Sustainability Reports",
         "description": "Access to sustainability reports from Swedish companies, including annual reports and sustainability reports."
       },
       "municipality": {
         "title": "Municipality Climate Data",
         "description": "Access to climate data from Swedish municipalities, including emissions data, climate plans, and climate actions."
       }
+    },
+    "requestAccess": {
+      "title": "Request Access",
+      "description": "Request access to the Klimatkollen API to get real-time access to our climate database through our documented REST API with comprehensive endpoints.",
+      "emailLabel": "Email",
+      "formatLabel": "Reason for access",
+      "submit": "Request Access"
     }
   },
   "downloadsPage": {
@@ -246,7 +253,7 @@
       "ghgProtocolScopes": "(GHG Protocol Scopes)",
       "totalEmissions": "Total Emissions",
       "scope1": "Scope 1",
-      "scope2": "Scope 2",  
+      "scope2": "Scope 2",
       "scope3": "Scope 3",
       "scope3Upstream": "Scope 3 (Upstream)",
       "scope3Downstream": "Scope 3 (Downstream)",

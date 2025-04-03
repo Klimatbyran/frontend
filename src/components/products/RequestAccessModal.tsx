@@ -21,13 +21,13 @@ export const RequestAccessModal = ({
 }: RequestAccessModalProps) => {
   const { t } = useTranslation();
   const [email, setEmail] = useState("");
-  const [format, setFormat] = useState("csv");
+  const [format, setFormat] = useState("work");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Form submitted:", { email, format });
     setEmail("");
-    setFormat("csv");
+    setFormat("work");
     onClose();
   };
 
@@ -62,7 +62,7 @@ export const RequestAccessModal = ({
                   as="h3"
                   className="text-lg font-medium leading-6 text-white mb-4"
                 >
-                  {t("requestAccess.title")}
+                  {t("productsPage.requestAccess.title")}
                 </Dialog.Title>
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
@@ -70,7 +70,7 @@ export const RequestAccessModal = ({
                       htmlFor="email"
                       className="block text-sm font-medium text-grey mb-2"
                     >
-                      {t("requestAccess.emailLabel")}
+                      {t("productsPage.requestAccess.emailLabel")}
                     </label>
                     <input
                       type="email"
@@ -86,11 +86,11 @@ export const RequestAccessModal = ({
                       htmlFor="format"
                       className="block text-sm font-medium text-grey mb-2"
                     >
-                      {t("requestAccess.formatLabel")}
+                      {t("productsPage.requestAccess.formatLabel")}
                     </label>
                     <DropdownMenu>
                       <DropdownMenuTrigger className="w-full px-3 py-2 bg-black-1 border border-black-1 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-4 flex justify-between items-center">
-                        {format.toUpperCase()}
+                        {format.toLowerCase()}
                         <ChevronDown className="h-4 w-4" />
                       </DropdownMenuTrigger>
                       <DropdownMenuContent className="bg-black-2 border border-black-1">
@@ -98,14 +98,14 @@ export const RequestAccessModal = ({
                           value={format}
                           onValueChange={setFormat}
                         >
-                          <DropdownMenuRadioItem value="csv">
-                            CSV
+                          <DropdownMenuRadioItem value="work">
+                            Work
                           </DropdownMenuRadioItem>
-                          <DropdownMenuRadioItem value="excel">
-                            Excel
+                          <DropdownMenuRadioItem value="hobby">
+                            Hobby
                           </DropdownMenuRadioItem>
-                          <DropdownMenuRadioItem value="txt">
-                            TXT
+                          <DropdownMenuRadioItem value="curiosity">
+                            Curiosity
                           </DropdownMenuRadioItem>
                         </DropdownMenuRadioGroup>
                       </DropdownMenuContent>
@@ -123,7 +123,7 @@ export const RequestAccessModal = ({
                       type="submit"
                       className="inline-flex justify-center rounded-md bg-blue-4 px-4 py-2 text-sm font-medium text-white hover:bg-blue-3 focus:outline-none focus:ring-2 focus:ring-blue-4"
                     >
-                      {t("requestAccess.submit")}
+                      {t("productsPage.requestAccess.submit")}
                     </button>
                   </div>
                 </form>
