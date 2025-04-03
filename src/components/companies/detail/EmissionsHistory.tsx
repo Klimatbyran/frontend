@@ -153,13 +153,20 @@ export function EmissionsHistory({
         <ResponsiveContainer width="100%" height="100%" className="w-full">
           <LineChart
             data={chartData}
-            margin={{ top: 10, right: 10, left: 0, bottom: 10 }}
+            margin={{ top: 20, right: 20, left: 10, bottom: 10 }}
             onClick={handleClick}
           >
             <ReferenceLine 
+              label={{
+                value: 'Base year',
+                position: "top",
+                fill: "white",
+                fontSize: 12,
+                fontWeight: "normal",
+              }}
               x={companyBaseYear} 
               stroke="#878787" 
-              strokeDasharray="5 5" 
+              strokeDasharray="4 4" 
             />
             <XAxis
               dataKey="year"
@@ -177,8 +184,7 @@ export function EmissionsHistory({
                     fontWeight={`${isBaseYear ? 'bold' : 'normal' }`}
                   >
                     {payload.value}
-                  </text>
-                  
+                  </text>     
                 )
               }}
               padding={{ left: 0, right: 0 }}
