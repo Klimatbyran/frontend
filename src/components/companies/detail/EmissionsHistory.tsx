@@ -184,7 +184,8 @@ export function EmissionsHistory({
                     fontWeight={`${isBaseYear ? 'bold' : 'normal' }`}
                   >
                     {payload.value}
-                  </text>     
+                  </text>
+                  
                 )
               }}
               padding={{ left: 0, right: 0 }}
@@ -199,7 +200,7 @@ export function EmissionsHistory({
               padding={{ top: 0, bottom: 0 }}
               tickFormatter={(value) => new Intl.NumberFormat(currentLanguage === 'sv' ? 'sv-SE' : 'en-US').format(value)}
             />
-            <Tooltip content={<CustomTooltip />} />
+            <Tooltip content={<CustomTooltip companyBaseYear={companyBaseYear} />} />
 
             {dataView === "overview" && (
               <>
