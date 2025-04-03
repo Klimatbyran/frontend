@@ -4,7 +4,9 @@
   "header": {
     "companies": "Företag",
     "municipalities": "Kommuner",
-    "about": "Om oss",
+    "about": "Om",
+    "aboutUs": "Om oss",
+    "products": "Produkter",
     "insights": "Insikter",
     "methodology": "Källor och metod",
     "newsletter": "Nyhetsbrev",
@@ -115,6 +117,77 @@
       "utslappsberakningText": "Beräkning av hur utsläppen skulle minska eller öka med partiernas politik"
     }
   },
+  "productsPage": {
+    "title": "Få tillgång till klimatdata",
+    "description": "Få tillgång till Klimatkollens klimatdatabas, innehållande företagens utsläpp, hållbarhetsrapporter och kommunens klimatdata via vår API.",
+    "viewDocumentation": "Visa API-dokumentation →",
+    "apiAccess": {
+      "title": "Direkt API-åtkomst",
+      "description": "Real-time åtkomst till vår klimatdatabas via vår dokumenterade REST API med fullständiga slutpunkter.",
+      "realtime": "Real-time data access",
+      "documentation": "Full API documentation",
+      "secure": "Secure API endpoints",
+      "support": "Priority support",
+      "contactPricing": "Contact for Pricing",
+      "viewDocs": "View API Documentation"
+    },
+    "freeAccess": {
+      "title": "Gratis databasåtkomst",
+      "description": "Få tillgång till vår kompletta klimatdatabas genom bi-årliga datadumpningar, perfekt för forskning och analys.",
+      "export": "Komplett databasexport var 6:e månad",
+      "data": "Företag och kommuners klimatdata",
+      "license": "Gratis att använda för icke-kommersiellt bruk",
+      "requestAccess": "Hämta data"
+    },
+    "dataOverview": {
+      "title": "Tillgänglig data",
+      "corporate": {
+        "title": "Företagens klimatdata",
+        "description": "Tillgång till detaljerad utsläppdata från svenska företag, inklusive scope 1, 2 och 3 utsläpp, samt värdekedjauppgifter."
+      },
+      "reports": {
+        "title": "Hållbarhetsrapporter",
+        "description": "Tillgång till hållbarhetsrapporter från svenska företag, inklusive årsredovisningar och hållbarhetsrapporter."
+      },
+      "municipality": {
+        "title": "Kommunens klimatdata",
+        "description": "Tillgång till klimatdata från svenska kommuner, inklusive emissionsdata, klimatplaner och klimatåtgärder."
+      }
+    },
+    "requestAccess": {
+      "title": "Begär åtkomst",
+      "description": "Begär åtkomst till Klimatkollens API för att få real-time åtkomst till vår klimatdatabas via vår dokumenterade REST API med fullständiga slutpunkter.",
+      "emailLabel": "E-post",
+      "formatLabel": "Anledning till åtkomst",
+      "submit": "Begär åtkomst"
+    }
+  },
+  "downloadsPage": {
+    "title": "Hämta databas",
+    "description": "Hämta vår kompletta klimatdatabas i flera format. Välj det format som passar dina behov för analys och forskning.", 
+    "csvFormat": "CSV-format",
+    "csvDescription": "Hämta databasen i CSV-format. Perfekt för dataanalys i verktyg som Python, R eller vilken kalkylbladsprogram som helst. Innehåller alla fält med kommaseparerade värden.",
+    "excelFormat": "Excel-format",
+    "excelDescription": "Hämta databasen i Excel-format. Perfekt för dataanalys i Microsoft Excel eller Google Sheets. Innehåller alla fält med kommaseparerade värden.",
+    "txtFormat": "TXT-format",
+    "txtDescription": "Hämta databasen i TXT-format. Perfekt för dataanalys i textredigerare som Notepad eller vilken textredigerare som helst. Innehåller alla fält med kommaseparerade värden.",
+    "requestAccess": "Hämta data",
+    "csvDownload": "Hämta CSV",
+    "excelDownload": "Hämta Excel",
+    "txtDownload": "Hämta TXT",
+    "download": "Hämta",
+    "dataStructure": "Databasstruktur",
+    "fileSizeAndFormat": "Filstorlek och format",
+    "downloadInformation": "Hämta information",
+    "usageLicense": "Användningslicens",
+    "dataDictionary": "Databasordbok",
+    "dataDictionaryDescription": "Varje format innehåller en databasordbok för att förklara fält och deras betydelse.",
+    "dataDictionaryDownload": "Hämta databasordbok",
+    "dataDictionaryDownloadDescription": "Hämta databasordbok i TXT-format. Perfekt för dataanalys i textredigerare som Notepad eller vilken textredigerare som helst. Innehåller alla fält med kommaseparerade värden.",
+    "dataStructureDescription": "Alla nedladdningsformat innehåller samma databasstruktur med konsekventa fältnamn och datatyper. Varje format innehåller en databasordbok för att förklara fält och deras betydelse.",
+    "fileSizeAndFormatDescription": "CSV: ~50MB, UTF-8-kodad med komma-separerade värden Excel: ~60MB, XLSX-format med flera blad Text: ~45MB, UTF-8-kodad med tabb-separerade värden",
+    "usageLicenseDescription": "Nedladdade data tillhandahålls under en forsknings- och analyslicens. Du är fri att använda data för forskning, analys och icke-kommersiellt bruk. Vänligen ange Klimatkollen när du använder data."
+  }, 
   "insightsPage": {
     "title": "Artiklar",
     "description": "Artiklar och uppdateringar om Klimatkollen och klimatomställningen.",
