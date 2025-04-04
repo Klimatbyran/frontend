@@ -130,7 +130,7 @@ export function CompanyCard({
             <p className="text-grey text-sm line-clamp-2">{description}</p>
           </div>
           <div
-            className="w-12 h-12 rounded-full flex items-center justify-center"
+            className="w-12 h-12 rounded-full flex shrink-0 items-center justify-center"
             style={{
               backgroundColor: `color-mix(in srgb, ${categoryColor} 30%, transparent)`,
               color: categoryColor,
