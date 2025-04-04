@@ -24,7 +24,7 @@ import { useScreenSize } from "@/hooks/useScreenSize";
 import { useTranslation } from "react-i18next";
 import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useLanguage } from "@/components/LanguageProvider";
-import { localizeUnit } from "@/utils/localizeUnit";
+import { localizeNumber, localizeUnit } from "@/utils/localizeUnit";
 
 type CompanyCardProps = Pick<
   RankedCompany,
@@ -63,7 +63,7 @@ export function CompanyCard({
 
   const employeeCount = latestPeriod?.economy?.employees?.value;
   const formattedEmployeeCount = employeeCount
-    ? localizeUnit(employeeCount, currentLanguage)
+    ? localizeNumber(employeeCount, currentLanguage, { maximumFractionDigits: 0 })
     : t("companies.card.noData");
 
   const sectorName = industry?.industryGics?.sectorCode
