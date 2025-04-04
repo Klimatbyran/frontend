@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { Pen } from "lucide-react";
 import { useSectorNames, SectorCode } from "@/hooks/companies/useCompanyFilters";
 import { useLanguage } from "@/components/LanguageProvider";
-import { localizeUnit } from "@/utils/localizeUnit";
+import { localizeNumber, localizeUnit } from "@/utils/localizeUnit";
 import { cn } from "@/lib/utils";
 
 interface CompanyOverviewProps {
@@ -66,6 +66,11 @@ export function CompanyOverview({
   const sortedPeriods = [...company.reportingPeriods].sort(
     (a, b) => new Date(b.endDate).getTime() - new Date(a.endDate).getTime()
   );
+
+  const formattedEmployeeCount = selectedPeriod.economy?.employees?.value
+    ? localizeNumber(selectedPeriod.economy.employees.value, currentLanguage, { maximumFractionDigits: 0 })
+    : t("companies.overview.notReported")
+
 
   return (
     <div className="bg-black-2 rounded-level-1 p-16">
@@ -222,11 +227,7 @@ export function CompanyOverview({
             <Text className="text-base md:text-base sm:text-sm mb-2">
               {t("companies.overview.employees")} ({periodYear})
             </Text>
-            <Text className="text-base md:text-base sm:text-sm">
-              {selectedPeriod.economy?.employees?.value
-                ? localizeUnit(selectedPeriod.economy.employees.value, currentLanguage)
-                : t("companies.overview.notReported")}
-            </Text>
+            <Text className="text-base md:text-base sm:text-sm">{formattedEmployeeCount}</Text>
           </div>
 
           {selectedPeriod?.reportURL && (
