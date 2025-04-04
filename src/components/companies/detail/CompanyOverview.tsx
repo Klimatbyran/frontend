@@ -42,7 +42,6 @@ export function CompanyOverview({
   const navigate = useNavigate();
   const sectorNames = useSectorNames();
   const { currentLanguage } = useLanguage();
-  
   const periodYear = new Date(selectedPeriod.endDate).getFullYear();
 
   // Get the translated sector name using the sector code
