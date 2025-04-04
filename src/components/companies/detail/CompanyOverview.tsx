@@ -20,7 +20,7 @@ import {
   SectorCode,
 } from "@/hooks/companies/useCompanyFilters";
 import { useLanguage } from "@/components/LanguageProvider";
-import { localizeUnit } from "@/utils/localizeUnit";
+import { localizeNumber, localizeUnit } from "@/utils/localizeUnit";
 import { cn } from "@/lib/utils";
 
 interface CompanyOverviewProps {
@@ -55,20 +55,25 @@ export function CompanyOverview({
   const sectorName = sectorCode
     ? sectorNames[sectorCode]
     : company.industry?.industryGics?.sv?.sectorName ||
-      company.industry?.industryGics?.en?.sectorName ||
-      t("companies.overview.unknownSector");
+    company.industry?.industryGics?.en?.sectorName ||
+    t("companies.overview.unknownSector");
 
   const yearOverYearChange =
     previousPeriod && selectedPeriod.emissions?.calculatedTotalEmissions
       ? ((selectedPeriod.emissions.calculatedTotalEmissions -
-          (previousPeriod.emissions?.calculatedTotalEmissions || 0)) /
-          (previousPeriod.emissions?.calculatedTotalEmissions || 1)) *
-        100
+        (previousPeriod.emissions?.calculatedTotalEmissions || 0)) /
+        (previousPeriod.emissions?.calculatedTotalEmissions || 1)) *
+      100
       : null;
 
   const sortedPeriods = [...company.reportingPeriods].sort(
     (a, b) => new Date(b.endDate).getTime() - new Date(a.endDate).getTime(),
   );
+
+  const formattedEmployeeCount = selectedPeriod.economy?.employees?.value
+    ? localizeNumber(selectedPeriod.economy.employees.value, currentLanguage, { maximumFractionDigits: 0 })
+    : t("companies.overview.notReported")
+
 
   return (
     <div className="bg-black-2 rounded-level-1 p-16">
@@ -178,9 +183,9 @@ export function CompanyOverview({
               {selectedPeriod.emissions?.calculatedTotalEmissions === 0
                 ? t("companies.overview.noData")
                 : localizeUnit(
-                    selectedPeriod.emissions?.calculatedTotalEmissions,
-                    currentLanguage,
-                  )}
+                  selectedPeriod.emissions?.calculatedTotalEmissions,
+                  currentLanguage,
+                )}
               <span className="text-lg lg:text-2xl md:text-lg sm:text-sm ml-2 text-grey">
                 {t(
                   selectedPeriod.emissions?.calculatedTotalEmissions === 0
@@ -224,9 +229,9 @@ export function CompanyOverview({
             <Text className="text-base md:text-base sm:text-sm">
               {selectedPeriod.economy?.turnover?.value
                 ? `${localizeUnit(
-                    selectedPeriod.economy.turnover.value / 1e9,
-                    currentLanguage,
-                  )} mdr ${selectedPeriod.economy.turnover.currency}`
+                  selectedPeriod.economy.turnover.value / 1e9,
+                  currentLanguage,
+                )} mdr ${selectedPeriod.economy.turnover.currency}`
                 : t("companies.overview.notReported")}
             </Text>
           </div>
@@ -235,14 +240,7 @@ export function CompanyOverview({
             <Text className="text-base md:text-base sm:text-sm mb-2">
               {t("companies.overview.employees")} ({periodYear})
             </Text>
-            <Text className="text-base md:text-base sm:text-sm">
-              {selectedPeriod.economy?.employees?.value
-                ? localizeUnit(
-                    selectedPeriod.economy.employees.value,
-                    currentLanguage,
-                  )
-                : t("companies.overview.notReported")}
-            </Text>
+            <Text className="text-base md:text-base sm:text-sm">{formattedEmployeeCount}</Text>
           </div>
 
           {selectedPeriod?.reportURL && (
