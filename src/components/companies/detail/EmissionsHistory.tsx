@@ -158,7 +158,7 @@ export function EmissionsHistory({
           >
             <ReferenceLine 
               label={{
-                value: 'Base year',
+                value: t("companies.emissionsHistory.baseYear"),
                 position: "top",
                 fill: "white",
                 fontSize: 12,
@@ -216,7 +216,6 @@ export function EmissionsHistory({
                 />
               </>
             )}
-
             {dataView === "scopes" && (
               <>
                 {!hiddenScopes.includes("scope1") && (

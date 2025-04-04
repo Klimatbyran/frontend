@@ -564,7 +564,8 @@
       "unit": "Tons CO₂e per year",
       "totalEmissions": "Total Emissions",
       "baseYear": "Base year",
-      "baseYearInfo": "The base year refers to a specific year chosen as a reference point against which future emissions are compared."
+      "baseYearInfo": "The base year refers to a specific year chosen as a reference point against which future emissions are compared.",
+      "total": "Total"
     },
     "list": {
       "error": {
