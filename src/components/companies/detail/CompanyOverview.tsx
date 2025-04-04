@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { Pen } from "lucide-react";
 import { useSectorNames, SectorCode } from "@/hooks/companies/useCompanyFilters";
 import { useLanguage } from "@/components/LanguageProvider";
-import { localizeNumber, localizeUnit } from "@/utils/localizeUnit";
+import { localizeEmployeeCount, localizeUnit } from "@/utils/localizeUnit";
 import { cn } from "@/lib/utils";
 
 interface CompanyOverviewProps {
@@ -68,7 +68,7 @@ export function CompanyOverview({
   );
 
   const formattedEmployeeCount = selectedPeriod.economy?.employees?.value
-    ? localizeNumber(selectedPeriod.economy.employees.value, currentLanguage, { maximumFractionDigits: 0 })
+    ? localizeEmployeeCount(selectedPeriod.economy.employees.value, currentLanguage)
     : t("companies.overview.notReported")
 
 

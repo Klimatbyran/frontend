@@ -18,9 +18,13 @@ const defaultNumberFormatOptions = {
   maximumFractionDigits: 1
 }
 
-export const localizeNumber = (nr: number,
+const localizeNumber = (nr: number,
   currentLanguage: SupportedLanguage,
   options: Intl.NumberFormatOptions = defaultNumberFormatOptions) => {
 
   return new Intl.NumberFormat(currentLanguage === 'sv' ? 'sv-SE' : 'en-US', options).format(nr)
 }
+
+export const localizeEmployeeCount = (count: number, currentLanguage: SupportedLanguage) =>
+  localizeNumber(count, currentLanguage, { maximumFractionDigits: 0 })
+
