@@ -7,7 +7,7 @@ interface CustomTooltipProps {
   active?: boolean;
   payload?: any[];
   label?: string;
-  companyBaseYear: number;
+  companyBaseYear: number | undefined;
 }
 
 export const CustomTooltip = ({
