@@ -49,12 +49,12 @@ export function RankedList({
         </div>
       </div>
 
-      <div className="space-y-6">
-        <Text className="text-md text-grey">{description}</Text>
+      <div className="grid gap-y-6 grid-cols-[auto_1fr_auto]">
+        <Text className="col-span-full text-md text-grey">{description}</Text>
         {initialItems.map((item, index) => (
           <a
             key={item.id || index}
-            className="grid grid-cols-[auto_1fr] items-center gap-4 hover:bg-black-1 transition-colors rounded-lg"
+            className="grid grid-cols-subgrid col-span-full items-center gap-4 hover:bg-black-1 transition-colors rounded-lg"
             href={
               (type === "municipality" ? "/municipalities/" : "/companies/") +
               (item.id || item.name)
@@ -68,21 +68,19 @@ export function RankedList({
             >
               {String(index + 1).padStart(2, "0")}
             </span>
-            <div className="grid grid-cols-1 md:grid-cols-2 items-center md:gap-4">
-              <span className="text-base md:text-lg">{item.name}</span>
-              <div className="flex items-center md:justify-end">
-                <span
-                  className={cn(
-                    "text-base md:text-lg md:text-right",
-                    textColor
-                  )}
-                >
-                  {localizeUnit(item.value, currentLanguage) || item.value.toFixed(1)}
-                </span>
-                <span className={cn("text-grey", unit !== " %" && "ml-2")}>
-                  {unit.padStart(1, " ")}
-                </span>
-              </div>
+            <span className="text-base md:text-lg">{item.name}</span>
+            <div className="flex items-center md:justify-end">
+              <span
+                className={cn(
+                  "text-base md:text-lg md:text-right",
+                  textColor
+                )}
+              >
+                {localizeUnit(item.value, currentLanguage) || item.value.toFixed(1)}
+              </span>
+              <span className={cn("text-grey", unit !== " %" && "ml-2")}>
+                {unit.padStart(1, " ")}
+              </span>
             </div>
           </a>
         ))}
