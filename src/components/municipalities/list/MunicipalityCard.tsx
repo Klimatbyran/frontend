@@ -16,14 +16,14 @@ interface MunicipalityCardProps {
 
 export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
   const { t } = useTranslation();
-  const meetsParis = municipality.budgetRunsOut === "Håller budget";
+  const meetsParis = !municipality.budgetRunsOut && municipality.budget;
   const { currentLanguage } = useLanguage();
-  
+
   const lastYearEmission = municipality.approximatedHistoricalEmission.at(-1);
   const lastYearEmissionsKtons = lastYearEmission
     ? localizeUnit((lastYearEmission.value / 1000), currentLanguage)
     : t("municipalities.card.noData");
-  const lastYear = lastYearEmission?.year.toString();
+  const lastYear = lastYearEmission?.year.toString() || "";
 
   const emissionsChangeExists = municipality.historicalEmissionChangePercent;
   const positiveEmissionsChange = emissionsChangeExists > 0 ? "+" : "";
@@ -71,14 +71,24 @@ export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
             <div className="flex items-center text-sm text-grey mt-2">
               {t("municipalities.card.netZero")}
               <Text variant="body" className="text-green-3 ml-1">
-                {localizeUnit(new Date(municipality.hitNetZero), currentLanguage)}
+                {municipality.hitNetZero
+                  ? localizeUnit(
+                      new Date(municipality.hitNetZero),
+                      currentLanguage
+                    )
+                  : t("municipalityDetailPage.never")}
               </Text>
             </div>
           ) : (
             <div className="flex items-center text-sm text-grey mt-2">
               {t("municipalities.card.budgetRunsOut")}
               <Text variant="body" className="text-pink-3 ml-1">
-                {localizeUnit(new Date(municipality.budgetRunsOut), currentLanguage)}
+                {municipality.budgetRunsOut
+                  ? localizeUnit(
+                      new Date(municipality.budgetRunsOut),
+                      currentLanguage
+                    )
+                  : t("municipalityDetailPage.budgetHolds")}
               </Text>
             </div>
           )}
