@@ -22,6 +22,13 @@ import {
 import { useLanguage } from "@/components/LanguageProvider";
 import { localizeUnit } from "@/utils/localizeUnit";
 import { cn } from "@/lib/utils";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Info } from "lucide-react";
 
 interface CompanyOverviewProps {
   company: CompanyDetails;
@@ -193,9 +200,34 @@ export function CompanyOverview({
         </div>
 
         <div>
-          <Text className="mb-2 lg:text-lg md:text-base sm:text-sm">
-            {t("companies.overview.changeSinceLastYear")}
-          </Text>
+          <div className="flex items-center gap-2">
+            <Text className="mb-2 lg:text-lg md:text-base sm:text-sm">
+              {t("companies.overview.changeSinceLastYear")}
+            </Text>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <Info className="w-4 h-4 mb-2" />
+                </TooltipTrigger>
+                <TooltipContent className="max-w-80">
+                  {yearOverYearChange !== null ? (
+                    yearOverYearChange <= -80 || yearOverYearChange >= 80 ? (
+                      <>
+                        <p>{t("companies.card.emissionsChangeRateInfo")}</p>
+                        <p className="my-2">
+                          {t("companies.card.emissionsChangeRateInfoExtended")}
+                        </p>
+                      </>
+                    ) : (
+                      <p>{t("companies.card.emissionsChangeRateInfo")}</p>
+                    )
+                  ) : (
+                    <p>{t("companies.card.noData")}</p>
+                  )}
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
           <Text className="text-3xl lg:text-6xl md:text-4xl sm:text-3xl font-light tracking-tighter leading-none">
             {yearOverYearChange !== null ? (
               <span

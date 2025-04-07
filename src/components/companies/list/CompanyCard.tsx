@@ -82,6 +82,8 @@ export function CompanyCard({
     ? getCategoryColor(largestCategory.category)
     : "var(--blue-2)";
 
+  console.log(emissionsChange);
+
   return (
     <div className="relative rounded-level-2">
       <Link
@@ -179,8 +181,23 @@ export function CompanyCard({
                   <TooltipTrigger>
                     <Info className="w-4 h-4" />
                   </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{t("companies.card.emissionsChangeRateInfo")}</p>
+                  <TooltipContent className="max-w-80">
+                    {emissionsChange !== null ? (
+                      emissionsChange <= -80 || emissionsChange >= 80 ? (
+                        <>
+                          <p>{t("companies.card.emissionsChangeRateInfo")}</p>
+                          <p className="my-2">
+                            {t(
+                              "companies.card.emissionsChangeRateInfoExtended",
+                            )}
+                          </p>
+                        </>
+                      ) : (
+                        <p>{t("companies.card.emissionsChangeRateInfo")}</p>
+                      )
+                    ) : (
+                      <p>{t("companies.card.noData")}</p>
+                    )}
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>

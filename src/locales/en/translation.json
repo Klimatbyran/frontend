@@ -546,6 +546,7 @@
       "totalEmissionsInfo": "Total Emissions (Scope 1 & 2)",
       "emissionsChangeRate": "Change Rate",
       "emissionsChangeRateInfo": "Change rate of emissions compared to the previous reporting period.",
+      "emissionsChangeRateInfoExtended": "This value is so large due to inconsistencies in reported data, thus the change in percentages is not representative of actual changes.",
       "turnover": "Turnover",
       "employees": "Employees",
       "companyReport": "Sustainability Report",
