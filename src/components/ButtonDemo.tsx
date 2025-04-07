@@ -25,10 +25,21 @@ export function ButtonDemo() {
       <div className="space-y-4">
         <h3 className="text-sm font-light text-grey mb-4">Text Only</h3>
         <div className="flex gap-4">
-          <Button variant="outline" className="rounded-level-2">Button Text</Button>
-          <Button variant="outline" className="rounded-level-2 opacity-80">Button Text</Button>
-          <Button variant="outline" className="rounded-level-2 ring-1 ring-white">Button Text</Button>
-          <Button variant="outline" className="rounded-level-2" disabled>Button Text</Button>
+          <Button variant="outline" className="rounded-level-2">
+            Button Text
+          </Button>
+          <Button variant="outline" className="rounded-level-2 opacity-80">
+            Button Text
+          </Button>
+          <Button
+            variant="outline"
+            className="rounded-level-2 ring-1 ring-white"
+          >
+            Button Text
+          </Button>
+          <Button variant="outline" className="rounded-level-2" disabled>
+            Button Text
+          </Button>
         </div>
       </div>
 
@@ -38,13 +49,26 @@ export function ButtonDemo() {
           <Button variant="icon" size="icon" className="rounded-level-2">
             <ArrowLeft className="h-4 w-4" />
           </Button>
-          <Button variant="icon" size="icon" className="rounded-level-2 opacity-80">
+          <Button
+            variant="icon"
+            size="icon"
+            className="rounded-level-2 opacity-80"
+          >
             <ArrowLeft className="h-4 w-4" />
           </Button>
-          <Button variant="icon" size="icon" className="rounded-level-2 ring-1 ring-white">
+          <Button
+            variant="icon"
+            size="icon"
+            className="rounded-level-2 ring-1 ring-white"
+          >
             <ArrowLeft className="h-4 w-4" />
           </Button>
-          <Button variant="icon" size="icon" className="rounded-level-2" disabled>
+          <Button
+            variant="icon"
+            size="icon"
+            className="rounded-level-2"
+            disabled
+          >
             <ArrowLeft className="h-4 w-4" />
           </Button>
         </div>

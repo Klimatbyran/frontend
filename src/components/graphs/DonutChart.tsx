@@ -1,4 +1,4 @@
-import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from 'recharts';
+import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from "recharts";
 
 interface DonutChartProps {
   data: Array<{
@@ -21,7 +21,7 @@ export function DonutChart({ data }: DonutChartProps) {
   };
 
   const getColor = (colorKey: string) => {
-    const [palette, shade] = colorKey.split('.');
+    const [palette, shade] = colorKey.split(".");
     return `var(--${palette}-${shade})`;
   };
 
@@ -39,7 +39,15 @@ export function DonutChart({ data }: DonutChartProps) {
           paddingAngle={8}
           dataKey="value"
           nameKey="label"
-          label={({ cx, cy, midAngle, innerRadius, outerRadius, value, index }) => {
+          label={({
+            cx,
+            cy,
+            midAngle,
+            innerRadius,
+            outerRadius,
+            value,
+            index,
+          }) => {
             const RADIAN = Math.PI / 180;
             const radius = outerRadius + 30;
             const x = cx + radius * Math.cos(-midAngle * RADIAN);
@@ -51,7 +59,7 @@ export function DonutChart({ data }: DonutChartProps) {
                 x={x}
                 y={y}
                 fill="#878787"
-                textAnchor={x > cx ? 'start' : 'end'}
+                textAnchor={x > cx ? "start" : "end"}
                 dominantBaseline="central"
                 fontSize={12}
               >
@@ -61,7 +69,7 @@ export function DonutChart({ data }: DonutChartProps) {
           }}
         >
           {data.map((entry, index) => (
-            <Cell 
+            <Cell
               key={`cell-${index}`}
               fill={getColor(entry.color)}
               strokeWidth={0}

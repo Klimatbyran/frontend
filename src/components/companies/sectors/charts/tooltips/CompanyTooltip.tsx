@@ -11,7 +11,8 @@ const CompanyTooltip: React.FC<TooltipProps<number, string>> = ({
   const { t } = useTranslation();
 
   // Extract company data
-  const companyName = name || data.name || t("companies.sectorGraphs.unknownCompany");
+  const companyName =
+    name || data.name || t("companies.sectorGraphs.unknownCompany");
   const totalEmissions = value || 0;
 
   // Calculate percentage of sector total

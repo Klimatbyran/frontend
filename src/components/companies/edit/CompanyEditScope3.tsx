@@ -14,13 +14,17 @@ export function CompanyEditScope3({ periods, onInputChange }) {
   }
 
   const getCategoryValue = (index: number, categories) => {
-    const category = categories.find((category) => category.category - 1 === index);
-    return category !== undefined ? category.total : '';
+    const category = categories.find(
+      (category) => category.category - 1 === index,
+    );
+    return category !== undefined ? category.total : "";
   };
 
   const getCategoryVerified = (index: number, categories) => {
-    const category = categories.find((category) => category.category - 1 === index);
-    return category !== undefined ? (category.metadata?.verifiedBy) : false;
+    const category = categories.find(
+      (category) => category.category - 1 === index,
+    );
+    return category !== undefined ? category.metadata?.verifiedBy : false;
   };
 
   return (
@@ -45,14 +49,17 @@ export function CompanyEditScope3({ periods, onInputChange }) {
                   name: "scope-3-" + period.id + "-" + (index + 1),
                   value: getCategoryValue(
                     index,
-                    period.emissions.scope3?.categories
+                    period.emissions.scope3?.categories,
                   ),
-                  verified: getCategoryVerified(index, period.emissions?.scope3?.categories),
-                  onInputChange
-                })
+                  verified: getCategoryVerified(
+                    index,
+                    period.emissions?.scope3?.categories,
+                  ),
+                  onInputChange,
+                }),
               )}
             ></CompanyEditRow>
-          )
+          ),
       )}
     </>
   );

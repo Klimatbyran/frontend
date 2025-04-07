@@ -40,7 +40,7 @@ export const useCategoryInfo = (): Record<string, TrendCardInfo> => {
 
 export const useTrendAnalysis = (
   companies: RankedCompany[],
-  selectedSectors: string[]
+  selectedSectors: string[],
 ): TrendData => {
   return useMemo(() => {
     const trends: TrendData = {
@@ -52,7 +52,7 @@ export const useTrendAnalysis = (
     companies.forEach((company) => {
       if (
         !selectedSectors.includes(
-          company.industry?.industryGics.sectorCode || ""
+          company.industry?.industryGics.sectorCode || "",
         )
       ) {
         return;

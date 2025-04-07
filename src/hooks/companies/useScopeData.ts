@@ -1,14 +1,14 @@
-import { useMemo } from 'react';
-import { RankedCompany } from '@/types/company';
+import { useMemo } from "react";
+import { RankedCompany } from "@/types/company";
 
 export const useScopeData = (
   companies: RankedCompany[],
   selectedSectors: string[],
-  selectedYear: string
+  selectedYear: string,
 ) => {
   const scopeData = useMemo(() => {
-    const filteredCompanies = companies.filter(company => 
-      selectedSectors.includes(company.industry?.industryGics.sectorCode || '')
+    const filteredCompanies = companies.filter((company) =>
+      selectedSectors.includes(company.industry?.industryGics.sectorCode || ""),
     );
 
     const data = {
@@ -16,13 +16,13 @@ export const useScopeData = (
       scope2: { total: 0, companies: 0 },
       scope3: {
         upstream: { total: 0, companies: 0 },
-        downstream: { total: 0, companies: 0 }
-      }
+        downstream: { total: 0, companies: 0 },
+      },
     };
 
-    filteredCompanies.forEach(company => {
-      const period = company.reportingPeriods.find(p => 
-        p.startDate.startsWith(selectedYear)
+    filteredCompanies.forEach((company) => {
+      const period = company.reportingPeriods.find((p) =>
+        p.startDate.startsWith(selectedYear),
       );
 
       if (period?.emissions) {
@@ -49,12 +49,13 @@ export const useScopeData = (
     return data;
   }, [companies, selectedSectors, selectedYear]);
 
-  const totalEmissions = useMemo(() => 
-    scopeData.scope1.total + 
-    scopeData.scope2.total + 
-    scopeData.scope3.upstream.total + 
-    scopeData.scope3.downstream.total,
-    [scopeData]
+  const totalEmissions = useMemo(
+    () =>
+      scopeData.scope1.total +
+      scopeData.scope2.total +
+      scopeData.scope3.upstream.total +
+      scopeData.scope3.downstream.total,
+    [scopeData],
   );
 
   return { scopeData, totalEmissions };

@@ -32,7 +32,7 @@ export function ScopeReportingList({
           to={`/companies/${company.id}`}
           className={cn(
             "flex items-center gap-6 p-6 rounded-level-2 hover:bg-black-1/50 transition-colors cursor-pointer",
-            company.isCurrentCompany ? "bg-blue-5/30" : "bg-black-1"
+            company.isCurrentCompany ? "bg-blue-5/30" : "bg-black-1",
           )}
         >
           <Text variant="h5" className="flex-1">

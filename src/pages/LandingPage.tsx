@@ -18,7 +18,7 @@ export function LandingPage() {
   const [selectedTab, setSelectedTab] = useState("companies");
   const { companies } = useCompanies();
   const { getTopMunicipalities } = useMunicipalities();
-  const { currentLanguage } = useLanguage()
+  const { currentLanguage } = useLanguage();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -56,7 +56,7 @@ export function LandingPage() {
     .sort(
       (a, b) =>
         (b.reportingPeriods[0]?.emissions?.calculatedTotalEmissions || 0) -
-        (a.reportingPeriods[0]?.emissions?.calculatedTotalEmissions || 0)
+        (a.reportingPeriods[0]?.emissions?.calculatedTotalEmissions || 0),
     )
     .slice(0, 5)
     .map((company) => ({
@@ -66,8 +66,10 @@ export function LandingPage() {
         company.reportingPeriods.at(0)?.emissions?.calculatedTotalEmissions ||
         0,
       displayValue: localizeUnit(
-        company.reportingPeriods.at(0)?.emissions?.calculatedTotalEmissions || 0
-      , currentLanguage),
+        company.reportingPeriods.at(0)?.emissions?.calculatedTotalEmissions ||
+          0,
+        currentLanguage,
+      ),
     }));
 
   // Get top 5 municipalities by emissions reduction

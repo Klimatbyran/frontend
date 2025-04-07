@@ -1,5 +1,5 @@
 import type { paths } from "@/lib/api-types";
-import { DivideIcon as LucideIcon } from 'lucide-react';
+import { DivideIcon as LucideIcon } from "lucide-react";
 
 // Base company type from API with simplified industry structure
 export interface BaseCompany {

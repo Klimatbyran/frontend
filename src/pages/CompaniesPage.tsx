@@ -251,9 +251,7 @@ export function CompaniesPage() {
   // Detect environment on component mount
   useEffect(() => {
     const hostname = window.location.hostname;
-    const isDev =
-      hostname.includes("stage.") ||
-      hostname.includes("localhost")
+    const isDev = hostname.includes("stage.") || hostname.includes("localhost");
 
     setIsDevEnvironment(isDev);
 
@@ -277,7 +275,7 @@ export function CompaniesPage() {
           {
             type: "sort" as const,
             label: String(
-              sortOptions.find((s) => s.value === sortBy)?.label ?? sortBy
+              sortOptions.find((s) => s.value === sortBy)?.label ?? sortBy,
             ),
           },
         ]
@@ -316,7 +314,7 @@ export function CompaniesPage() {
       <div
         className={cn(
           isMobile ? "relative" : "sticky top-0 z-10",
-          "bg-black px-4 pt-12 md:pt-16 pb-4 shadow-md"
+          "bg-black px-4 pt-12 md:pt-16 pb-4 shadow-md",
         )}
       >
         <div className="absolute inset-0 w-full bg-black -z-10" />
@@ -333,7 +331,7 @@ export function CompaniesPage() {
                   "h-8 px-3 rounded-none",
                   viewMode === "graphs"
                     ? "bg-blue-5/30 text-blue-2"
-                    : "text-grey"
+                    : "text-grey",
                 )}
                 onClick={() => setViewMode("graphs")}
                 title={t("companiesPage.viewModes.graphs")}
@@ -345,7 +343,9 @@ export function CompaniesPage() {
                 size="sm"
                 className={cn(
                   "h-8 px-3 rounded-none",
-                  viewMode === "list" ? "bg-blue-5/30 text-blue-2" : "text-grey"
+                  viewMode === "list"
+                    ? "bg-blue-5/30 text-blue-2"
+                    : "text-grey",
                 )}
                 onClick={() => setViewMode("list")}
                 title={t("companiesPage.viewModes.list")}
@@ -382,7 +382,7 @@ export function CompaniesPage() {
             <div
               className={cn(
                 "flex flex-wrap gap-2",
-                isMobile ? "w-full" : "flex-1"
+                isMobile ? "w-full" : "flex-1",
               )}
             >
               <FilterBadges filters={activeFilters} />

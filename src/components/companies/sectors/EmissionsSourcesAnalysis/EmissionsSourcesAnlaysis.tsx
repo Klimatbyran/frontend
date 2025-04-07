@@ -21,7 +21,7 @@ const EmissionsSourcesAnalysis: React.FC<EmissionsSourcesAnalysisProps> = ({
   const { scopeData, totalEmissions } = useScopeData(
     companies,
     selectedSectors,
-    selectedYear
+    selectedYear,
   );
   const isMobile = useScreenSize();
   const { t } = useTranslation();

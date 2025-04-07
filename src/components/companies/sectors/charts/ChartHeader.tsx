@@ -93,8 +93,8 @@ const ChartHeader: React.FC<ChartHeaderProps> = ({
               isMobile
                 ? "flex flex-col gap-3 w-full"
                 : isTablet
-                ? "flex items-center justify-between w-full"
-                : "flex items-center gap-4 ml-auto"
+                  ? "flex items-center justify-between w-full"
+                  : "flex items-center gap-4 ml-auto"
             }`}
           >
             <div
@@ -102,8 +102,8 @@ const ChartHeader: React.FC<ChartHeaderProps> = ({
                 isMobile
                   ? "w-full"
                   : isTablet
-                  ? "text-left"
-                  : "flex items-center gap-4"
+                    ? "text-left"
+                    : "flex items-center gap-4"
               }
             >
               <div className="text-sm text-grey">

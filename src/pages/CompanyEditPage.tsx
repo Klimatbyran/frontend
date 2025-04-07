@@ -19,7 +19,7 @@ export function CompanyEditPage() {
   const { company, loading, error, refetch } = useCompanyDetails(id!);
   const [selectedYears, setSelectedYears] = useState<string[]>([]);
   const [formData, setFormData] = useState<Map<string, string>>(
-    new Map<string, string>()
+    new Map<string, string>(),
   );
   const formRef = useRef<HTMLFormElement | null>(null);
   const [isUpdating, setIsUpdating] = useState(false);
@@ -27,18 +27,21 @@ export function CompanyEditPage() {
 
   const selectedPeriods =
     company !== undefined
-      ? selectedYears.reduce((periods, year) => {
-          const period = [...company.reportingPeriods].find(
-            (reportingPeriod) =>
-              new Date(reportingPeriod.endDate).getFullYear().toString() ===
-              year
-          );
-          if (period !== undefined) {
-            periods.push(period);
-          }
-          periods.sort((a, b) => (b.endDate > a.endDate ? -1 : 1));
-          return periods;
-        }, [] as CompanyDetails["reportingPeriods"])
+      ? selectedYears.reduce(
+          (periods, year) => {
+            const period = [...company.reportingPeriods].find(
+              (reportingPeriod) =>
+                new Date(reportingPeriod.endDate).getFullYear().toString() ===
+                year,
+            );
+            if (period !== undefined) {
+              periods.push(period);
+            }
+            periods.sort((a, b) => (b.endDate > a.endDate ? -1 : 1));
+            return periods;
+          },
+          [] as CompanyDetails["reportingPeriods"],
+        )
       : [];
 
   if (loading || isUpdating) {
@@ -81,14 +84,15 @@ export function CompanyEditPage() {
     event.preventDefault();
     if (formRef.current !== null) {
       const inputs = formRef.current.querySelectorAll("input");
-      for(const input of inputs) {
+      for (const input of inputs) {
+        if (input.type === "checkbox") {
+          if (input.checked === input.defaultChecked) continue;
 
-        if(input.type === "checkbox") {
-          if (input.checked === input.defaultChecked) continue
-
-          setFormData(formData.set(input.name, input.checked ? "true" : "false"));
+          setFormData(
+            formData.set(input.name, input.checked ? "true" : "false"),
+          );
         } else {
-          if (input.value === input.defaultValue) continue
+          if (input.value === input.defaultValue) continue;
 
           setFormData(formData.set(input.name, input.value));
         }
@@ -97,14 +101,14 @@ export function CompanyEditPage() {
     if (id !== undefined) {
       await updateReportingPeriods(
         id,
-        mapCompanyEditFormToRequestBody(selectedPeriods, formData)
+        mapCompanyEditFormToRequestBody(selectedPeriods, formData),
       );
       await refetch();
       setSelectedYears(selectedYears);
       setIsUpdating(false);
       showToast(
         t("companyEditPage.success.title"),
-        t("companyEditPage.success.description")
+        t("companyEditPage.success.description"),
       );
     }
   };

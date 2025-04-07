@@ -1,5 +1,13 @@
-import { Info } from 'lucide-react';
-import { ResponsiveContainer, ScatterChart, Scatter, XAxis, YAxis, ZAxis, Tooltip } from 'recharts';
+import { Info } from "lucide-react";
+import {
+  ResponsiveContainer,
+  ScatterChart,
+  Scatter,
+  XAxis,
+  YAxis,
+  ZAxis,
+  Tooltip,
+} from "recharts";
 import {
   Dialog,
   DialogContent,
@@ -15,32 +23,35 @@ interface EmissionsComparisonProps {
 
 const COMPARISONS = [
   {
-    name: 'Genomsnittlig svensk',
+    name: "Genomsnittlig svensk",
     value: 4.2,
-    unit: 'ton CO₂e per år',
-    description: 'En genomsnittlig svensk släpper ut cirka 4,2 ton CO₂e per år',
-    color: '#99CFFF', // blue-2
+    unit: "ton CO₂e per år",
+    description: "En genomsnittlig svensk släpper ut cirka 4,2 ton CO₂e per år",
+    color: "#99CFFF", // blue-2
   },
   {
-    name: 'Sveriges totala utsläpp',
+    name: "Sveriges totala utsläpp",
     value: 44400000,
-    unit: 'ton CO₂e per år',
-    description: 'Sveriges territoriella utsläpp är cirka 44,4 miljoner ton CO₂e per år',
-    color: '#F48F2A', // orange-3
+    unit: "ton CO₂e per år",
+    description:
+      "Sveriges territoriella utsläpp är cirka 44,4 miljoner ton CO₂e per år",
+    color: "#F48F2A", // orange-3
   },
   {
-    name: 'Bilkörning (10000 km)',
+    name: "Bilkörning (10000 km)",
     value: 1.7,
-    unit: 'ton CO₂e',
-    description: 'En genomsnittlig bensinbil släpper ut cirka 170g CO₂e per kilometer',
-    color: '#F0759A', // pink-3
+    unit: "ton CO₂e",
+    description:
+      "En genomsnittlig bensinbil släpper ut cirka 170g CO₂e per kilometer",
+    color: "#F0759A", // pink-3
   },
   {
-    name: 'Flygresor (10 timmar)',
+    name: "Flygresor (10 timmar)",
     value: 2.5,
-    unit: 'ton CO₂e',
-    description: 'En genomsnittlig flygresa släpper ut cirka 250kg CO₂e per flygtimme',
-    color: '#AAE506', // green-3
+    unit: "ton CO₂e",
+    description:
+      "En genomsnittlig flygresa släpper ut cirka 250kg CO₂e per flygtimme",
+    color: "#AAE506", // green-3
   },
 ];
 
@@ -48,23 +59,27 @@ export function EmissionsComparison({ emissions }: EmissionsComparisonProps) {
   // Transform data for the bubble chart
   const chartData = [
     // Company's emissions
-    [{
-      name: 'Företagets utsläpp',
-      value: emissions,
-      description: `${Math.round(emissions).toLocaleString()} ton CO₂e`,
-      color: '#FFFFFF',
-      x: 50,
-      y: 50,
-    }],
+    [
+      {
+        name: "Företagets utsläpp",
+        value: emissions,
+        description: `${Math.round(emissions).toLocaleString()} ton CO₂e`,
+        color: "#FFFFFF",
+        x: 50,
+        y: 50,
+      },
+    ],
     // Add comparison values as separate series
-    ...COMPARISONS.map((comparison, index) => [{
-      name: comparison.name,
-      value: comparison.value,
-      description: `${comparison.value.toLocaleString()} ${comparison.unit}`,
-      color: comparison.color,
-      x: 50 + ((index + 1) * 150),
-      y: 50,
-    }]),
+    ...COMPARISONS.map((comparison, index) => [
+      {
+        name: comparison.name,
+        value: comparison.value,
+        description: `${comparison.value.toLocaleString()} ${comparison.unit}`,
+        color: comparison.color,
+        x: 50 + (index + 1) * 150,
+        y: 50,
+      },
+    ]),
   ];
 
   // Custom tooltip component
@@ -73,14 +88,15 @@ export function EmissionsComparison({ emissions }: EmissionsComparisonProps) {
       const data = payload[0].payload;
       return (
         <div className="bg-black-1 px-4 py-3 rounded-level-2">
-          <Text variant="small" className="text-grey">{data.name}</Text>
+          <Text variant="small" className="text-grey">
+            {data.name}
+          </Text>
           <Text variant="large">{data.description}</Text>
           {data.value !== emissions && (
             <Text variant="small" className="text-grey">
-              {data.value < emissions 
+              {data.value < emissions
                 ? `${Math.round(emissions / data.value).toLocaleString()}× större än detta`
-                : `${Math.round(data.value / emissions).toLocaleString()}× större än företagets utsläpp`
-              }
+                : `${Math.round(data.value / emissions).toLocaleString()}× större än företagets utsläpp`}
             </Text>
           )}
         </div>
@@ -99,24 +115,29 @@ export function EmissionsComparison({ emissions }: EmissionsComparisonProps) {
       </DialogTrigger>
       <DialogContent className="max-w-4xl">
         <DialogHeader>
-          <DialogTitle>Vad betyder {Math.round(emissions).toLocaleString()} ton CO₂e?</DialogTitle>
+          <DialogTitle>
+            Vad betyder {Math.round(emissions).toLocaleString()} ton CO₂e?
+          </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-8 py-6">
           <Text className="text-grey">
-            För att sätta utsläppen i perspektiv kan vi jämföra med några vardagliga exempel.
-            Storleken på cirklarna representerar mängden utsläpp.
+            För att sätta utsläppen i perspektiv kan vi jämföra med några
+            vardagliga exempel. Storleken på cirklarna representerar mängden
+            utsläpp.
           </Text>
 
           <div className="h-[400px]">
             <ResponsiveContainer width="100%" height="100%">
-              <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+              <ScatterChart
+                margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
+              >
                 <XAxis type="number" dataKey="x" domain={[0, 800]} hide />
                 <YAxis type="number" dataKey="y" domain={[0, 100]} hide />
-                <ZAxis 
-                  type="number" 
-                  dataKey="value" 
-                  range={[400, 2000]} 
+                <ZAxis
+                  type="number"
+                  dataKey="value"
+                  range={[400, 2000]}
                   scale="log"
                 />
                 <Tooltip content={<CustomTooltip />} />
@@ -143,8 +164,9 @@ export function EmissionsComparison({ emissions }: EmissionsComparisonProps) {
           </div>
 
           <Text className="text-grey text-sm">
-            Notera: Storleken på cirklarna är logaritmiskt skalade för att kunna visa både stora och små värden.
-            Jämförelserna är förenklade och baserade på genomsnittliga värden.
+            Notera: Storleken på cirklarna är logaritmiskt skalade för att kunna
+            visa både stora och små värden. Jämförelserna är förenklade och
+            baserade på genomsnittliga värden.
           </Text>
         </div>
       </DialogContent>

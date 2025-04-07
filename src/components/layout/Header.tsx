@@ -34,7 +34,7 @@ export function Header() {
       <button
         onClick={() => changeLanguage("en")}
         className={cn(
-          currentLanguage === "en" && "bg-black-1 rounded-full px-1"
+          currentLanguage === "en" && "bg-black-1 rounded-full px-1",
         )}
       >
         🇬🇧
@@ -43,7 +43,7 @@ export function Header() {
       <button
         onClick={() => changeLanguage("sv")}
         className={cn(
-          currentLanguage === "sv" && "bg-black-1 rounded-full px-1"
+          currentLanguage === "sv" && "bg-black-1 rounded-full px-1",
         )}
       >
         🇸🇪
@@ -107,7 +107,7 @@ export function Header() {
                       "flex items-center gap-2 px-3 py-3 h-full transition-all text-sm",
                       location.pathname.startsWith(item.path)
                         ? "bg-black-1 text-white"
-                        : "text-grey hover:text-white"
+                        : "text-grey hover:text-white",
                     )}
                   >
                     {item.icon}
@@ -140,13 +140,13 @@ export function Header() {
                     "flex items-center gap-2 px-3 py-3 h-full text-sm",
                     matchPath(item.path, location.pathname)
                       ? "bg-black-1 text-white"
-                      : "text-grey hover:text-white"
+                      : "text-grey hover:text-white",
                   )}
                 >
                   {item.icon}
                   <span>{item.label}</span>
                 </Link>
-              )
+              ),
             )}
             <div className="ml-4 h-full flex items-center">
               <LanguageButtons className={"hidden md:flex mx-4 "} />

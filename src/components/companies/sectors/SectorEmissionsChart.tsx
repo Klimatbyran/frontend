@@ -78,7 +78,7 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
     selectedSectors,
     selectedSector,
     chartType,
-    selectedYear
+    selectedYear,
   );
 
   const [legendData, setLegendData] = useState<any[]>([]);
@@ -96,7 +96,7 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
 
     const [sector] = data.activePayload[0].dataKey.split("_scope");
     const sectorCode = Object.entries(sectorNames).find(
-      ([_, name]) => name === sector
+      ([_, name]) => name === sector,
     )?.[0];
 
     if (sectorCode) {
@@ -150,10 +150,10 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
                       selectedSector
                         ? getCompanyColors(index).base
                         : "sectorCode" in entry
-                        ? sectorColors[
-                            entry.sectorCode as keyof typeof sectorColors
-                          ]?.base || "#888888"
-                        : "#888888"
+                          ? sectorColors[
+                              entry.sectorCode as keyof typeof sectorColors
+                            ]?.base || "#888888"
+                          : "#888888"
                     }
                   />
                 ))}

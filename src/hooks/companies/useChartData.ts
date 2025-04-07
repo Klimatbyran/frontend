@@ -7,7 +7,7 @@ export const useChartData = (
   selectedSectors: string[],
   selectedSector: string | null,
   chartType: "stacked-total" | "pie",
-  selectedYear: string
+  selectedYear: string,
 ) => {
   const sectorNames = useSectorNames();
 
@@ -33,7 +33,7 @@ export const useChartData = (
             companies.forEach((company) => {
               if (company.industry?.industryGics.sectorCode === sectorCode) {
                 const periodForYear = company.reportingPeriods.find((period) =>
-                  period.startDate.startsWith(year)
+                  period.startDate.startsWith(year),
                 );
 
                 if (periodForYear?.emissions) {
@@ -61,7 +61,7 @@ export const useChartData = (
             companies.forEach((company) => {
               if (company.industry?.industryGics.sectorCode === sectorCode) {
                 const periodForYear = company.reportingPeriods.find((period) =>
-                  period.startDate.startsWith(year)
+                  period.startDate.startsWith(year),
                 );
 
                 if (periodForYear?.emissions) {
@@ -97,13 +97,13 @@ export const useChartData = (
     if (selectedSector) {
       const sectorCompanies = companies.filter(
         (company) =>
-          company.industry?.industryGics.sectorCode === selectedSector
+          company.industry?.industryGics.sectorCode === selectedSector,
       );
 
       const companyData = sectorCompanies
         .map((company) => {
           const periodForYear = company.reportingPeriods.find((period) =>
-            period.startDate.startsWith(selectedYear)
+            period.startDate.startsWith(selectedYear),
           );
 
           const scope1 = periodForYear?.emissions?.scope1?.total || 0;
@@ -125,7 +125,7 @@ export const useChartData = (
 
       const sectorTotal = companyData.reduce(
         (sum, item) => sum + item.value,
-        0
+        0,
       );
 
       return companyData.map((item) => ({
@@ -158,7 +158,7 @@ export const useChartData = (
 
     const totalEmissions = sectorTotals.reduce(
       (sum, sector) => sum + sector.value,
-      0
+      0,
     );
     return sectorTotals.map((sector) => ({ ...sector, total: totalEmissions }));
   }, [
@@ -176,7 +176,7 @@ export const useChartData = (
 
   const years = useMemo(
     () => Array.from(new Set(chartData.map((d) => d.year))).sort(),
-    [chartData]
+    [chartData],
   );
 
   return {

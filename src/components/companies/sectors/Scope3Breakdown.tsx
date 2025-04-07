@@ -135,12 +135,12 @@ const Scope3Breakdown: React.FC<Scope3BreakdownProps> = ({
         const sectorName =
           SECTOR_NAMES[sectorCode as keyof typeof SECTOR_NAMES];
         const sectorCompanies = companies.filter(
-          (company) => company.industry?.industryGics.sectorCode === sectorCode
+          (company) => company.industry?.industryGics.sectorCode === sectorCode,
         );
 
         const totalScope3 = sectorCompanies.reduce((total, company) => {
           const period = company.reportingPeriods.find((p) =>
-            p.startDate.startsWith(selectedYear)
+            p.startDate.startsWith(selectedYear),
           );
           return (
             total + (period?.emissions?.scope3?.calculatedTotalEmissions || 0)
@@ -150,7 +150,7 @@ const Scope3Breakdown: React.FC<Scope3BreakdownProps> = ({
         const reportedCategories = new Set<string>();
         sectorCompanies.forEach((company) => {
           const period = company.reportingPeriods.find((p) =>
-            p.startDate.startsWith(selectedYear)
+            p.startDate.startsWith(selectedYear),
           );
           if (period?.emissions?.scope3?.categories) {
             period.emissions.scope3.categories.forEach((cat) => {
@@ -167,10 +167,10 @@ const Scope3Breakdown: React.FC<Scope3BreakdownProps> = ({
         const specificInfo =
           sectorSpecificInfo[sectorCode as keyof typeof sectorSpecificInfo];
         const reportedUpstream = specificInfo.upstream.filter((cat) =>
-          reportedCategories.has(cat)
+          reportedCategories.has(cat),
         );
         const reportedDownstream = specificInfo.downstream.filter((cat) =>
-          reportedCategories.has(cat)
+          reportedCategories.has(cat),
         );
 
         return {
@@ -282,7 +282,7 @@ const Scope3Breakdown: React.FC<Scope3BreakdownProps> = ({
                               getCategoryIcon(getCategoryIdByName(source)),
                               {
                                 className: "h-3 w-3 text-blue-3",
-                              }
+                              },
                             )}
                             <span className="text-xs text-grey">{source}</span>
                           </div>
@@ -310,7 +310,7 @@ const Scope3Breakdown: React.FC<Scope3BreakdownProps> = ({
                               getCategoryIcon(getCategoryIdByName(source)),
                               {
                                 className: "h-3 w-3 text-green-3",
-                              }
+                              },
                             )}
                             <span className="text-xs text-grey">{source}</span>
                           </div>

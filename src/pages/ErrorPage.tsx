@@ -14,7 +14,7 @@ export function ErrorPage() {
   const canonicalUrl = `https://klimatkollen.se/error/${errorCode}`;
   const pageTitle = `${errorCode} - ${t("errorPage.title")} - Klimatkollen`;
   const pageDescription = t(
-    isServerError ? "errorPage.serverDescription" : "errorPage.description"
+    isServerError ? "errorPage.serverDescription" : "errorPage.description",
   );
 
   const structuredData = {
