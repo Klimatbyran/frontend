@@ -1,6 +1,8 @@
 import React from "react";
 import { X } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useLanguage } from "@/components/LanguageProvider";
+import { formatEmissionsAbsolute } from "@/utils/localizeUnit";
 
 interface DetailPopupProps {
   year: string;
@@ -20,6 +22,8 @@ const DetailPopup: React.FC<DetailPopupProps> = ({
   onClose,
 }) => {
   const { t } = useTranslation();
+  const { currentLanguage } = useLanguage();
+
   const total = scope1 + scope2 + scope3;
 
   return (
@@ -43,7 +47,7 @@ const DetailPopup: React.FC<DetailPopupProps> = ({
               {t("companies.sectorGraphs.total")}
             </h4>
             <p className="text-2xl font-light text-white">
-              {total.toLocaleString()} tCO₂e
+              {total.toLocaleString()} {t("emissionsUnit")}
             </p>
           </div>
 
@@ -54,7 +58,8 @@ const DetailPopup: React.FC<DetailPopupProps> = ({
                   {t("companies.sectorGraphs.scope1")}
                 </span>
                 <span className="text-sm text-white">
-                  {scope1.toLocaleString()} tCO₂e
+                  {formatEmissionsAbsolute(scope1, currentLanguage)}{" "}
+                  {t("emissionsUnit")}
                 </span>
               </div>
               <div className="h-2 bg-black-1 rounded-full overflow-hidden">
@@ -71,7 +76,8 @@ const DetailPopup: React.FC<DetailPopupProps> = ({
                   {t("companies.sectorGraphs.scope2")}
                 </span>
                 <span className="text-sm text-white">
-                  {scope2.toLocaleString()} tCO₂e
+                  {formatEmissionsAbsolute(scope2, currentLanguage)}{" "}
+                  {t("emissionsUnit")}
                 </span>
               </div>
               <div className="h-2 bg-black-1 rounded-full overflow-hidden">
@@ -88,7 +94,8 @@ const DetailPopup: React.FC<DetailPopupProps> = ({
                   {t("companies.sectorGraphs.scope3")}
                 </span>
                 <span className="text-sm text-white">
-                  {scope3.toLocaleString()} tCO₂e
+                  {formatEmissionsAbsolute(scope3, currentLanguage)}{" "}
+                  {t("emissionsUnit")}
                 </span>
               </div>
               <div className="h-2 bg-black-1 rounded-full overflow-hidden">

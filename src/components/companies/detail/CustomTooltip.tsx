@@ -1,6 +1,6 @@
 import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useTranslation } from "react-i18next";
-import { localizeUnit } from "@/utils/localizeUnit";
+import { formatEmissionsAbsolute, localizeUnit } from "@/utils/localizeUnit";
 import { useLanguage } from "@/components/LanguageProvider";
 
 interface CustomTooltipProps {
@@ -58,7 +58,7 @@ export const CustomTooltip = ({
           const displayValue =
             originalValue === null
               ? t("companies.tooltip.noDataAvailable")
-              : `${localizeUnit(Math.round(entry.value), currentLanguage)} ${t(
+              : `${formatEmissionsAbsolute(Math.round(entry.value), currentLanguage)} ${t(
                   "companies.tooltip.tonsCO2e",
                 )}`;
 

@@ -1,6 +1,7 @@
 {
   "yes": "Ja",
   "no": "Nej",
+  "emissionsUnit": "tCO₂e",
   "header": {
     "companies": "Företag",
     "municipalities": "Kommuner",
@@ -648,7 +649,7 @@
     },
     "tooltip": {
       "noDataAvailable": "Ingen data tillgänglig",
-      "tonsCO2e": "ton CO₂e"
+      "tonsCO2e": "tCO₂e"
     }
   },
   "municipalities": {

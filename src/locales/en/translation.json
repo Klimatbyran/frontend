@@ -1,6 +1,7 @@
 {
   "yes": "Yes",
   "no": "No",
+  "emissionsUnit": "tCO₂e",
   "header": {
     "companies": "Companies",
     "municipalities": "Municipalities",
@@ -640,7 +641,7 @@
     },
     "tooltip": {
       "noDataAvailable": "No Data Available",
-      "tonsCO2e": "tons CO₂e"
+      "tonsCO2e": "tCO₂e"
     }
   },
   "municipalities": {

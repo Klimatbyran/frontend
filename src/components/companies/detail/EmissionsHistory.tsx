@@ -26,6 +26,7 @@ import { DataViewSelector } from "./DataViewSelector";
 import { useTranslation } from "react-i18next";
 import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useLanguage } from "@/components/LanguageProvider";
+import { formatEmissionsAbsolute } from "@/utils/localizeUnit";
 
 export function EmissionsHistory({
   reportingPeriods,
@@ -198,9 +199,7 @@ export function EmissionsHistory({
               domain={[0, "auto"]}
               padding={{ top: 0, bottom: 0 }}
               tickFormatter={(value) =>
-                new Intl.NumberFormat(
-                  currentLanguage === "sv" ? "sv-SE" : "en-US",
-                ).format(value)
+                formatEmissionsAbsolute(value, currentLanguage)
               }
             />
             <Tooltip content={<CustomTooltip companyBaseYear={companyBaseYear} />} />

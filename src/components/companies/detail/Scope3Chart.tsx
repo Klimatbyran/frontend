@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
-import { localizeUnit } from "@/utils/localizeUnit";
+import { formatEmissionsAbsolute, localizeUnit } from "@/utils/localizeUnit";
 
 interface Scope3ChartProps {
   categories: Array<{
@@ -92,7 +92,8 @@ export function Scope3Chart({ categories, className }: Scope3ChartProps) {
           </Text>
           <Text variant="h4">{data.name}</Text>
           <Text>
-            {localizeUnit(Math.round(data.value), currentLanguage)} ton CO₂e
+            {formatEmissionsAbsolute(Math.round(data.value), currentLanguage)}{" "}
+            {t("emissionsUnit")}
           </Text>
           <Text className="text-grey">
             ({localizeUnit(data.percentage, currentLanguage)}%)

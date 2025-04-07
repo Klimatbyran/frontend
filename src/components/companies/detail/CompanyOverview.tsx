@@ -21,8 +21,8 @@ import {
 } from "@/hooks/companies/useCompanyFilters";
 import { useLanguage } from "@/components/LanguageProvider";
 import {
+  formatEmissionsAbsolute,
   formatEmployeeCount,
-  formatTotalEmissions,
   localizeUnit,
 } from "@/utils/localizeUnit";
 import { cn } from "@/lib/utils";
@@ -186,9 +186,10 @@ export function CompanyOverview({
                   : "text-orange-2",
               )}
             >
-              {selectedPeriod.emissions?.calculatedTotalEmissions === 0
+              {!selectedPeriod.emissions ||
+              selectedPeriod.emissions?.calculatedTotalEmissions === 0
                 ? t("companies.overview.noData")
-                : formatTotalEmissions(
+                : formatEmissionsAbsolute(
                     selectedPeriod.emissions.calculatedTotalEmissions,
                     currentLanguage,
                   )}
@@ -196,7 +197,7 @@ export function CompanyOverview({
                 {t(
                   selectedPeriod.emissions?.calculatedTotalEmissions === 0
                     ? " "
-                    : "companies.overview.tonsCO2e",
+                    : "emissionsUnit",
                 )}
               </span>
             </Text>

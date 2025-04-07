@@ -1,6 +1,8 @@
 import React from "react";
 import { TooltipProps } from "recharts";
 import { useTranslation } from "react-i18next";
+import { formatEmissionsAbsolute } from "@/utils/localizeUnit";
+import { useLanguage } from "@/components/LanguageProvider";
 const CustomTooltip: React.FC<TooltipProps<number, string>> = ({
   active,
   payload,
@@ -8,6 +10,7 @@ const CustomTooltip: React.FC<TooltipProps<number, string>> = ({
 }) => {
   if (!active || !payload || !payload.length) return null;
   const { t } = useTranslation();
+  const { currentLanguage } = useLanguage();
 
   // Group payload items by sector and calculate totals
   const sectorTotals: { [key: string]: { total: number; color: string } } = {};
@@ -43,7 +46,8 @@ const CustomTooltip: React.FC<TooltipProps<number, string>> = ({
               <span className="text-sm font-medium">{sector}</span>
             </div>
             <div className="text-xs text-grey">
-              {Math.round(total).toLocaleString()} tCO₂e
+              {formatEmissionsAbsolute(Math.round(total), currentLanguage)}{" "}
+              {t("emissionsUnit")}
               <span className="ml-1">
                 ({((total / yearTotal) * 100).toFixed(1)}%)
               </span>
@@ -58,7 +62,8 @@ const CustomTooltip: React.FC<TooltipProps<number, string>> = ({
             {t("companies.sectorGraphs.yearTotal")}
           </span>
           <span className="font-medium">
-            {Math.round(yearTotal).toLocaleString()} tCO₂e
+            {formatEmissionsAbsolute(Math.round(yearTotal), currentLanguage)}{" "}
+            {t("emissionsUnit")}
           </span>
         </div>
       </div>

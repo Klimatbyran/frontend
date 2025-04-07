@@ -27,6 +27,7 @@ import ChartHeader from "./charts/ChartHeader";
 import PieLegend from "./charts/PieLegend";
 import EmissionsTrendAnalysis from "./EmissionsTrendAnalysis/EmissionsTrendAnalysis";
 import EmissionsSourcesAnalysis from "./EmissionsSourcesAnalysis/EmissionsSourcesAnlaysis";
+import { useTranslation } from "react-i18next";
 
 interface EmissionsChartProps {
   companies: RankedCompany[];
@@ -66,6 +67,7 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
   companies,
   selectedSectors,
 }) => {
+  const { t } = useTranslation();
   const sectorNames = useSectorNames();
 
   const [chartType, setChartType] = useState<ChartType>("pie");
@@ -193,7 +195,7 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
               />
               <YAxis
                 label={{
-                  value: "tCO₂e",
+                  value: t("emissionsUnit"),
                   angle: -90,
                   position: "insideLeft",
                   fill: "#888888",

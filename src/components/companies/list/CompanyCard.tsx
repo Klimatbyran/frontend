@@ -167,7 +167,9 @@ export function CompanyCard({
               {currentEmissions ? (
                 <span className="text-orange-3">
                   {formatEmissionsAbsolute(currentEmissions, currentLanguage)}
-                  <span className="text-lg text-grey ml-1">tCO₂e</span>
+                  <span className="text-lg text-grey ml-1">
+                    {t("emissionsUnit")}
+                  </span>
                 </span>
               ) : (
                 <span className="text-grey">{t("companies.card.noData")}</span>
