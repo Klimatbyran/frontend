@@ -20,7 +20,7 @@ import {
   SectorCode,
 } from "@/hooks/companies/useCompanyFilters";
 import { useLanguage } from "@/components/LanguageProvider";
-import { localizeEmployeeCount, localizeUnit } from "@/utils/localizeUnit";
+import { formatEmployeeCount, localizeUnit } from "@/utils/localizeUnit";
 import { cn } from "@/lib/utils";
 
 interface CompanyOverviewProps {
@@ -71,7 +71,7 @@ export function CompanyOverview({
   );
 
   const formattedEmployeeCount = selectedPeriod.economy?.employees?.value
-    ? localizeEmployeeCount(
+    ? formatEmployeeCount(
         selectedPeriod.economy.employees.value,
         currentLanguage,
       )

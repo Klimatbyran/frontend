@@ -25,6 +25,6 @@ const localizeNumber = (nr: number,
   return new Intl.NumberFormat(currentLanguage === 'sv' ? 'sv-SE' : 'en-US', options).format(nr)
 }
 
-export const localizeEmployeeCount = (count: number, currentLanguage: SupportedLanguage) =>
+export const formatEmployeeCount = (count: number, currentLanguage: SupportedLanguage) =>
   localizeNumber(count, currentLanguage, { maximumFractionDigits: 0 })
 
