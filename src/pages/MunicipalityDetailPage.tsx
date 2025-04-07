@@ -10,7 +10,7 @@ import { MunicipalityLinkCard } from "@/components/municipalities/MunicipalityLi
 import { useTranslation } from "react-i18next";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { useEffect } from "react";
-import { localizeUnit } from "@/utils/localizeUnit";
+import { formatEmissionsAbsolute, localizeUnit } from "@/utils/localizeUnit";
 import { useLanguage } from "@/components/LanguageProvider";
 
 export function MunicipalityDetailPage() {
@@ -38,8 +38,8 @@ export function MunicipalityDetailPage() {
 
   const lastYearEmissions = municipality.approximatedHistoricalEmission.at(-1);
   const lastYear = lastYearEmissions?.year;
-  const lastYearEmissionsKTon = lastYearEmissions
-    ? localizeUnit(lastYearEmissions.value / 1000, currentLanguage)
+  const lastYearEmissionsTon = lastYearEmissions
+    ? formatEmissionsAbsolute(lastYearEmissions.value, currentLanguage)
     : "N/A";
 
   // Prepare SEO data
@@ -49,7 +49,7 @@ export function MunicipalityDetailPage() {
   )} - Klimatkollen`;
   const pageDescription = t("municipalityDetailPage.metaDescription", {
     municipality: municipality.name,
-    emissions: lastYearEmissionsKTon,
+    emissions: lastYearEmissionsTon,
     year: lastYear,
   });
 
@@ -80,7 +80,7 @@ export function MunicipalityDetailPage() {
         <p>
           {t("municipalityDetailPage.seoText.intro", {
             municipality: municipality.name,
-            emissions: lastYearEmissionsKTon,
+            emissions: lastYearEmissionsTon,
             year: lastYear,
           })}
         </p>
@@ -130,8 +130,8 @@ export function MunicipalityDetailPage() {
               title={t("municipalityDetailPage.totalEmissions", {
                 year: lastYear,
               })}
-              value={lastYearEmissionsKTon}
-              unit={t("municipalityDetailPage.thousandTons")}
+              value={lastYearEmissionsTon}
+              unit={t("emissionsUnit")}
               valueClassName="text-orange-2"
             />
             <MunicipalityStatCard
@@ -177,7 +177,7 @@ export function MunicipalityDetailPage() {
               {t("municipalityDetailPage.emissionsDevelopment")}
             </Text>
             <Text className="text-grey">
-              {t("municipalityDetailPage.inThousandTons")}
+              {t("municipalityDetailPage.inTons")}
             </Text>
           </div>
           <div className="mt-8 mr-8">

@@ -5,7 +5,7 @@ import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
 import type { Municipality } from "@/types/municipality";
 import { CardInfo } from "./MunicipalityCardInfo";
-import { localizeUnit } from "@/utils/localizeUnit";
+import { formatEmissionsAbsolute, localizeUnit } from "@/utils/localizeUnit";
 import { useLanguage } from "@/components/LanguageProvider";
 
 interface MunicipalityCardProps {
@@ -18,8 +18,8 @@ export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
   const { currentLanguage } = useLanguage();
 
   const lastYearEmission = municipality.approximatedHistoricalEmission.at(-1);
-  const lastYearEmissionsKtons = lastYearEmission
-    ? localizeUnit(lastYearEmission.value / 1000, currentLanguage)
+  const lastYearEmissions = lastYearEmission
+    ? formatEmissionsAbsolute(lastYearEmission.value, currentLanguage)
     : t("municipalities.card.noData");
   const lastYear = lastYearEmission?.year.toString();
 
@@ -91,9 +91,9 @@ export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
         <CardInfo
           title={t("municipalities.card.emission", { year: lastYear })}
           tooltip={t("municipalities.card.emissionInfo", { year: lastYear })}
-          value={lastYearEmissionsKtons}
+          value={lastYearEmissions}
           textColor="text-orange-3"
-          unit={t("municipalities.card.kTCO2")}
+          unit={t("emissionsUnit")}
         />
         <CardInfo
           title={t("municipalities.card.changeRate")}
