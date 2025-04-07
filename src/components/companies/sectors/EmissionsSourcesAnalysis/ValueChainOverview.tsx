@@ -112,7 +112,7 @@ const ValueChainOverview: React.FC = () => {
                         <div
                           className={`w-1 h-1 rounded-full ${stage.color.replace(
                             "text-",
-                            "bg-"
+                            "bg-",
                           )}`}
                         />
                         {detail}
@@ -167,7 +167,7 @@ const ValueChainOverview: React.FC = () => {
                         <div
                           className={`w-1 h-1 rounded-full shrink-0 mt-1.5 ${stage.color.replace(
                             "text-",
-                            "bg-"
+                            "bg-",
                           )}`}
                         />
                         <span className="text-xs text-grey">{detail}</span>
@@ -218,7 +218,7 @@ const ValueChainOverview: React.FC = () => {
                       <div
                         className={`w-1 h-1 rounded-full shrink-0 mt-1.5 ${stage.color.replace(
                           "text-",
-                          "bg-"
+                          "bg-",
                         )}`}
                       />
                       <span className="text-xs text-grey">{detail}</span>

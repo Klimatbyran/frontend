@@ -15,19 +15,21 @@ const paddingMap = {
   large: "p-16",
 };
 
-export function Block({ 
-  children, 
+export function Block({
+  children,
   className,
   level = 2,
-  padding = "medium"
+  padding = "medium",
 }: BlockProps) {
   return (
-    <div className={cn(
-      "bg-black-2",
-      level === 1 ? "rounded-level-1" : "rounded-level-2",
-      paddingMap[padding],
-      className
-    )}>
+    <div
+      className={cn(
+        "bg-black-2",
+        level === 1 ? "rounded-level-1" : "rounded-level-2",
+        paddingMap[padding],
+        className,
+      )}
+    >
       {children}
     </div>
   );

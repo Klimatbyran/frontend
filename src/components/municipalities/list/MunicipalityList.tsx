@@ -29,7 +29,7 @@ export function MunicipalityList({
         .filter((term) => term.length > 0);
 
       return searchTerms.some((term) =>
-        municipality.name.toLowerCase().startsWith(term)
+        municipality.name.toLowerCase().startsWith(term),
       );
     }
 

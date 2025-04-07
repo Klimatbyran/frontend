@@ -30,7 +30,8 @@ export const blogMetadata: BlogPostMeta[] = [
   {
     id: "hållbara-kolet",
     title: "Låt kolet stanna i jorden",
-    excerpt: "Den totala mängden kolatomer är konstant, men vi kan omfördela det på rätt sätt. Klimatåtgärder handlar om att låta kolet stanna kvar i jorden, så att det inte förbränns och släpper ut koldioxid.",
+    excerpt:
+      "Den totala mängden kolatomer är konstant, men vi kan omfördela det på rätt sätt. Klimatåtgärder handlar om att låta kolet stanna kvar i jorden, så att det inte förbränns och släpper ut koldioxid.",
     date: "2025-03-28",
     readTime: "5 min",
     category: CategoryEnum.Analysis,
@@ -124,5 +125,5 @@ export const blogMetadata: BlogPostMeta[] = [
       avatar: "/people/ola.jpg",
     },
     relatedPosts: ["klimatmal", "metod"],
-  }
+  },
 ];

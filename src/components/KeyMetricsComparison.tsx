@@ -1,5 +1,5 @@
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface MetricValue {
   value: string;
@@ -32,13 +32,10 @@ export function KeyMetricsComparison({
   data,
   onPrevious,
   onNext,
-  className
+  className,
 }: KeyMetricsComparisonProps) {
   return (
-    <div className={cn(
-      "bg-black-2 rounded-level-2 p-8",
-      className
-    )}>
+    <div className={cn("bg-black-2 rounded-level-2 p-8", className)}>
       <div className="flex items-center justify-between mb-12">
         <h2 className="text-3xl font-light">{title}</h2>
         <div className="flex gap-2">
@@ -108,10 +105,12 @@ interface MetricCardProps {
 
 function MetricCard({ value, label, className }: MetricCardProps) {
   return (
-    <div className={cn(
-      "rounded-level-2 p-4 flex flex-col justify-between min-h-[120px]",
-      className
-    )}>
+    <div
+      className={cn(
+        "rounded-level-2 p-4 flex flex-col justify-between min-h-[120px]",
+        className,
+      )}
+    >
       <span className="text-3xl font-light">{value}</span>
       <span className="text-xs text-grey uppercase">{label}</span>
     </div>

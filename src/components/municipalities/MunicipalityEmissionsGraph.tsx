@@ -57,8 +57,11 @@ export const MunicipalityEmissionsGraph: FC<
                   {t(`municipalities.graph.${entry.dataKey}`)}:
                 </span>
                 <span style={{ color: entry.color }}>
-                {localizeUnit((entry.value as number) / 1000, currentLanguage)}{" "}
-                {t("municipalities.graph.unit")}
+                  {localizeUnit(
+                    (entry.value as number) / 1000,
+                    currentLanguage,
+                  )}{" "}
+                  {t("municipalities.graph.unit")}
                 </span>
               </div>
             );

@@ -3,7 +3,7 @@ import { CompanyEditInputField, CompanyEmptyField } from "./CompanyEditField";
 import { useTranslation } from "react-i18next";
 
 export function CompanyEditScope2({ periods, onInputChange }) {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
     <>
@@ -15,16 +15,16 @@ export function CompanyEditScope2({ periods, onInputChange }) {
         fields={periods.map((period) => CompanyEmptyField())}
       ></CompanyEditRow>
       <CompanyEditRow
-      key={"scope-2-mb"}
+        key={"scope-2-mb"}
         name={t("companyEditPage.rowName.marketBased")}
         fields={periods.map((period) =>
           CompanyEditInputField({
             type: "number",
             name: "scope-2-mb-" + period.id,
-            value: period.emissions?.scope2?.mb ?? '',            
+            value: period.emissions?.scope2?.mb ?? "",
             verified: period.emissions?.scope2?.metadata?.verifiedBy,
-            onInputChange
-          })
+            onInputChange,
+          }),
         )}
       ></CompanyEditRow>
       <CompanyEditRow
@@ -34,10 +34,10 @@ export function CompanyEditScope2({ periods, onInputChange }) {
           CompanyEditInputField({
             type: "number",
             name: "scope-2-lb-" + period.id,
-            value: period.emissions?.scope2?.lb ?? '',            
+            value: period.emissions?.scope2?.lb ?? "",
             verified: period.emissions?.scope2?.metadata?.verifiedBy,
-            onInputChange
-          })
+            onInputChange,
+          }),
         )}
       ></CompanyEditRow>
       <CompanyEditRow
@@ -47,10 +47,10 @@ export function CompanyEditScope2({ periods, onInputChange }) {
           CompanyEditInputField({
             type: "number",
             name: "scope-2-unknown-" + period.id,
-            value: period.emissions?.scope2?.unknown ?? '',            
+            value: period.emissions?.scope2?.unknown ?? "",
             verified: period.emissions?.scope2?.metadata?.verifiedBy,
-            onInputChange
-          })
+            onInputChange,
+          }),
         )}
       ></CompanyEditRow>
     </>

@@ -24,7 +24,7 @@ const CustomTooltip: React.FC<TooltipProps<number, string>> = ({
 
   const yearTotal = Object.values(sectorTotals).reduce(
     (sum, { total }) => sum + total,
-    0
+    0,
   );
 
   return (

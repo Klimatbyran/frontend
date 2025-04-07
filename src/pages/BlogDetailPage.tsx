@@ -256,7 +256,7 @@ export function BlogDetailPage() {
                       <Text className="text-grey">{post.excerpt}</Text>
                     </div>
                   </Link>
-                )
+                ),
             )}
           </div>
         </div>

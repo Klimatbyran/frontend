@@ -32,7 +32,7 @@ const ScopeModal: React.FC<ScopeModalProps> = ({
       .map((sectorCode) => {
         const sectorName = sectorNames[sectorCode as keyof typeof sectorNames];
         const sectorCompanies = companies.filter(
-          (company) => company.industry?.industryGics.sectorCode === sectorCode
+          (company) => company.industry?.industryGics.sectorCode === sectorCode,
         );
 
         let total = 0;
@@ -43,7 +43,7 @@ const ScopeModal: React.FC<ScopeModalProps> = ({
 
         sectorCompanies.forEach((company) => {
           const period = company.reportingPeriods.find((p) =>
-            p.startDate.startsWith(selectedYear)
+            p.startDate.startsWith(selectedYear),
           );
 
           if (period?.emissions) {
@@ -173,7 +173,7 @@ const ScopeModal: React.FC<ScopeModalProps> = ({
                                   100
                                 ).toFixed(1)}
                                 {t(
-                                  "companiesPage.sectorGraphs.percentOfSector"
+                                  "companiesPage.sectorGraphs.percentOfSector",
                                 )}
                               </div>
                             </div>

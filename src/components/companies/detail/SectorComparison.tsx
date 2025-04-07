@@ -36,13 +36,13 @@ export function SectorComparison({
   const sortedCompanies = [...sectorCompanies].sort(
     (a, b) =>
       (b.metrics?.emissionsReduction || 0) -
-      (a.metrics?.emissionsReduction || 0)
+      (a.metrics?.emissionsReduction || 0),
   );
 
   // Find the current company's rank
   const currentCompanyRank =
     sortedCompanies.findIndex(
-      (c) => c.wikidataId === currentCompany.wikidataId
+      (c) => c.wikidataId === currentCompany.wikidataId,
     ) + 1;
 
   // Transform companies data for the scope reporting list
@@ -88,7 +88,7 @@ export function SectorComparison({
                     "flex items-center justify-between p-6 rounded-level-2",
                     company.wikidataId === currentCompany.wikidataId
                       ? "bg-blue-5/30"
-                      : "bg-black-1"
+                      : "bg-black-1",
                   )}
                 >
                   <div className="flex items-center gap-6">
@@ -102,7 +102,7 @@ export function SectorComparison({
                     className={cn(
                       company.metrics?.emissionsReduction >= 0
                         ? "text-green-3"
-                        : "text-pink-3"
+                        : "text-pink-3",
                     )}
                   >
                     {company.metrics?.emissionsReduction > 0 ? "+" : ""}
@@ -133,7 +133,7 @@ export function SectorComparison({
                       "flex items-center justify-between p-6 rounded-level-2",
                       company.wikidataId === currentCompany.wikidataId
                         ? "bg-blue-5/30"
-                        : "bg-black-1"
+                        : "bg-black-1",
                     )}
                   >
                     <Text variant="h6">{company.name}</Text>

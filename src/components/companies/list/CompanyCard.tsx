@@ -74,7 +74,7 @@ export function CompanyCard({
   const scope3Categories = latestPeriod?.emissions?.scope3?.categories || [];
   const largestCategory = scope3Categories.reduce(
     (max, current) => (current.total > (max?.total || 0) ? current : max),
-    scope3Categories[0]
+    scope3Categories[0],
   );
 
   // Get the color for the largest category
@@ -213,7 +213,10 @@ export function CompanyCard({
               </Text>
               <Text variant="h6">
                 {latestPeriod.economy.turnover.value
-                  ? localizeUnit(latestPeriod.economy.turnover.value / 1e9, currentLanguage)
+                  ? localizeUnit(
+                      latestPeriod.economy.turnover.value / 1e9,
+                      currentLanguage,
+                    )
                   : t("companies.card.noData")}{" "}
                 mdr
                 <span className="text-lg text-grey ml-1">

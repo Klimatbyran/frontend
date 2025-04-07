@@ -7,18 +7,18 @@ async function generateApi() {
 
   try {
     console.log(
-      `Fetching OpenAPI schema from: ${API_BASE_URL}/api/openapi.json`
+      `Fetching OpenAPI schema from: ${API_BASE_URL}/api/openapi.json`,
     );
     execSync(
       `npx openapi-typescript ${API_BASE_URL}/api/openapi.json -o ${outputPath}`,
       {
         stdio: "inherit",
-      }
+      },
     );
   } catch (error) {
     console.error(
       "Failed to generate API types:",
-      error instanceof Error ? error.message : "Unknown error occurred"
+      error instanceof Error ? error.message : "Unknown error occurred",
     );
     process.exit(1);
   }

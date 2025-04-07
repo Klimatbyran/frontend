@@ -28,7 +28,6 @@ export function RankedList({
   textColor,
   unit,
 }: RankedListProps) {
-
   const { currentLanguage } = useLanguage();
 
   return (
@@ -38,7 +37,7 @@ export function RankedList({
         <div
           className={cn(
             "w-10 h-10 rounded-full flex items-center justify-center",
-            type === "municipality" ? "bg-[#FDE7CE]" : "bg-[#D4E7F7]"
+            type === "municipality" ? "bg-[#FDE7CE]" : "bg-[#D4E7F7]",
           )}
         >
           {type === "municipality" ? (
@@ -63,7 +62,7 @@ export function RankedList({
             <span
               className={cn(
                 "text-2xl md:text-5xl font-light",
-                type === "municipality" ? "text-orange-2" : "text-blue-2"
+                type === "municipality" ? "text-orange-2" : "text-blue-2",
               )}
             >
               {String(index + 1).padStart(2, "0")}
@@ -71,12 +70,10 @@ export function RankedList({
             <span className="text-base md:text-lg">{item.name}</span>
             <div className="flex items-center md:justify-end">
               <span
-                className={cn(
-                  "text-base md:text-lg md:text-right",
-                  textColor
-                )}
+                className={cn("text-base md:text-lg md:text-right", textColor)}
               >
-                {localizeUnit(item.value, currentLanguage) || item.value.toFixed(1)}
+                {localizeUnit(item.value, currentLanguage) ||
+                  item.value.toFixed(1)}
               </span>
               <span className={cn("text-grey", unit !== " %" && "ml-2")}>
                 {unit.padStart(1, " ")}

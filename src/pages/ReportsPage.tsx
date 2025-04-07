@@ -8,7 +8,6 @@ import { reports } from "@/lib/constants/reports";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useScreenSize } from "@/hooks/useScreenSize";
 
-
 // Component for report metadata (category, date, read time)
 function ReportMeta({
   category,
@@ -20,7 +19,7 @@ function ReportMeta({
   readTime: string;
 }) {
   const isMobile = useScreenSize();
-  
+
   return (
     <div className="flex items-center gap-4">
       <span
@@ -92,7 +91,7 @@ export function ReportsPage() {
 
   // First, get all reports in the current language
   const reportsInCurrentLanguage = reports.filter(
-    (report) => report.language === currentLanguage
+    (report) => report.language === currentLanguage,
   );
 
   // If there are no reports in the current language, use Swedish reports

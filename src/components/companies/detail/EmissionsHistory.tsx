@@ -26,7 +26,6 @@ import { useTranslation } from "react-i18next";
 import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useLanguage } from "@/components/LanguageProvider";
 
-
 export function EmissionsHistory({
   reportingPeriods,
   onYearSelect,
@@ -58,9 +57,9 @@ export function EmissionsHistory({
   const hasScope3Categories = useMemo(
     () =>
       reportingPeriods.some(
-        (period) => period.emissions?.scope3?.categories?.length ?? 0 > 0
+        (period) => period.emissions?.scope3?.categories?.length ?? 0 > 0,
       ),
-    [reportingPeriods]
+    [reportingPeriods],
   );
 
   const [dataView, setDataView] = useState<DataView>(() => {
@@ -76,13 +75,13 @@ export function EmissionsHistory({
       features.interpolateScope3
         ? interpolateScope3Categories(reportingPeriods)
         : reportingPeriods,
-    [reportingPeriods, features.interpolateScope3]
+    [reportingPeriods, features.interpolateScope3],
   );
 
   // Process data based on view
   const chartData = useMemo(
     () => getChartData(processedPeriods),
-    [processedPeriods]
+    [processedPeriods],
   );
 
   const handleClick = (data: any) => {
@@ -99,7 +98,7 @@ export function EmissionsHistory({
   // Add toggle handler
   const handleScopeToggle = (scope: "scope1" | "scope2" | "scope3") => {
     setHiddenScopes((prev) =>
-      prev.includes(scope) ? prev.filter((s) => s !== scope) : [...prev, scope]
+      prev.includes(scope) ? prev.filter((s) => s !== scope) : [...prev, scope],
     );
   };
 
@@ -168,7 +167,11 @@ export function EmissionsHistory({
               width={80}
               domain={[0, "auto"]}
               padding={{ top: 0, bottom: 0 }}
-              tickFormatter={(value) => new Intl.NumberFormat(currentLanguage === 'sv' ? 'sv-SE' : 'en-US').format(value)}
+              tickFormatter={(value) =>
+                new Intl.NumberFormat(
+                  currentLanguage === "sv" ? "sv-SE" : "en-US",
+                ).format(value)
+              }
             />
             <Tooltip content={<CustomTooltip />} />
 
@@ -248,7 +251,7 @@ export function EmissionsHistory({
               Object.keys(chartData[0])
                 .filter(
                   (key) =>
-                    key.startsWith("cat") && !key.includes("Interpolated")
+                    key.startsWith("cat") && !key.includes("Interpolated"),
                 )
                 .map((categoryKey) => {
                   const categoryId = parseInt(categoryKey.replace("cat", ""));
@@ -345,15 +348,15 @@ export function EmissionsHistory({
                   scope === "scope1"
                     ? "#F0759A"
                     : scope === "scope2"
-                    ? "#E2FF8D"
-                    : "#99CFFF",
+                      ? "#E2FF8D"
+                      : "#99CFFF",
               }}
             >
               {scope === "scope1"
                 ? "Scope 1"
                 : scope === "scope2"
-                ? "Scope 2"
-                : "Scope 3"}
+                  ? "Scope 2"
+                  : "Scope 3"}
               <X className="w-3 h-3" />
             </button>
           ))}

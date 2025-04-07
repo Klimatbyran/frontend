@@ -1,11 +1,7 @@
-import { useState } from 'react';
+import { useState } from "react";
 import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
-import {
-  Tabs,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface Municipality {
   id: string;
@@ -32,16 +28,16 @@ export function MunicipalityComparison({
   euTarget = 3.8,
   unit = "m",
   municipalities,
-  className
+  className,
 }: MunicipalityComparisonProps) {
-  const [activeTab, setActiveTab] = useState('cyklarna');
+  const [activeTab, setActiveTab] = useState("cyklarna");
 
   const tabs = [
-    { id: 'cyklarna', label: 'Cyklarna' },
-    { id: 'elbilarna', label: 'Elbilarna' },
-    { id: 'klimatplanerna', label: 'Klimatplanerna' },
-    { id: 'konsumtionen', label: 'Konsumtionen' },
-    { id: 'laddarna', label: 'Laddarna' },
+    { id: "cyklarna", label: "Cyklarna" },
+    { id: "elbilarna", label: "Elbilarna" },
+    { id: "klimatplanerna", label: "Klimatplanerna" },
+    { id: "konsumtionen", label: "Konsumtionen" },
+    { id: "laddarna", label: "Laddarna" },
   ];
 
   return (
@@ -77,13 +73,13 @@ export function MunicipalityComparison({
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="bg-transparent border border-black-1 p-2 h-auto">
-          {tabs.map(tab => (
+          {tabs.map((tab) => (
             <TabsTrigger
               key={tab.id}
               value={tab.id}
               className={cn(
                 "rounded-full data-[state=active]:bg-white data-[state=active]:text-black",
-                "transition-colors hover:text-white"
+                "transition-colors hover:text-white",
               )}
             >
               {tab.label}
@@ -101,7 +97,7 @@ export function MunicipalityComparison({
           >
             <div className="flex items-center gap-8">
               <Text variant="large" className="text-blue-2 w-12">
-                {String(index + 1).padStart(2, '0')}
+                {String(index + 1).padStart(2, "0")}
               </Text>
               <Text variant="large">{municipality.name}</Text>
             </div>
@@ -111,16 +107,17 @@ export function MunicipalityComparison({
                 <span className="text-sm text-grey ml-1">{unit}</span>
               </Text>
               {municipality.change && (
-                <Text 
-                  variant="small" 
+                <Text
+                  variant="small"
                   className={cn(
                     "px-2 rounded",
-                    municipality.change > 0 
-                      ? "text-green-3 bg-green-5/30" 
-                      : "text-pink-3 bg-pink-5/30"
+                    municipality.change > 0
+                      ? "text-green-3 bg-green-5/30"
+                      : "text-pink-3 bg-pink-5/30",
                   )}
                 >
-                  {municipality.change > 0 ? '+' : ''}{municipality.change}%
+                  {municipality.change > 0 ? "+" : ""}
+                  {municipality.change}%
                 </Text>
               )}
             </div>

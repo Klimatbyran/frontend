@@ -57,9 +57,12 @@ export function AppRoutes() {
         element={<CompanyDetailPage />}
       />
 
-      <Route element={<ProtectedRoute/>}>
-        <Route path={`${basePath}/companies/:id/edit`} element={<CompanyEditPage/>}/>
-      </Route> 
+      <Route element={<ProtectedRoute />}>
+        <Route
+          path={`${basePath}/companies/:id/edit`}
+          element={<CompanyEditPage />}
+        />
+      </Route>
 
       {/* Municipalities routes */}
       <Route
@@ -86,7 +89,7 @@ export function AppRoutes() {
       {/* This catch-all should now only handle invalid routes */}
       <Route path={`${basePath}/*`} element={<NotFoundPage />} />
 
-      <Route path={`${basePath}/403`} element={<UnauthorizedErrorPage/>} />
+      <Route path={`${basePath}/403`} element={<UnauthorizedErrorPage />} />
       <Route path="auth/callback" element={<AuthCallback />} />
     </Routes>
   );

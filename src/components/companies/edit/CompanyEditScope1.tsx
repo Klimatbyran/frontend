@@ -11,10 +11,10 @@ export function CompanyEditScope1({ periods, onInputChange }) {
         CompanyEditInputField({
           name: "scope-1-" + period.id,
           type: "number",
-          value: period.emissions?.scope1?.total ?? '',
+          value: period.emissions?.scope1?.total ?? "",
           verified: period.emissions?.scope1?.metadata?.verifiedBy,
-          onInputChange
-        })
+          onInputChange,
+        }),
       )}
     ></CompanyEditRow>
   );
