@@ -24,7 +24,11 @@ import { useScreenSize } from "@/hooks/useScreenSize";
 import { useTranslation } from "react-i18next";
 import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useLanguage } from "@/components/LanguageProvider";
-import { formatEmployeeCount, localizeUnit } from "@/utils/localizeUnit";
+import {
+  formatEmployeeCount,
+  formatEmissionsAbsolute,
+  localizeUnit,
+} from "@/utils/localizeUnit";
 
 type CompanyCardProps = Pick<
   RankedCompany,
@@ -162,7 +166,7 @@ export function CompanyCard({
             <div className="text-3xl font-light">
               {currentEmissions ? (
                 <span className="text-orange-3">
-                  {localizeUnit(Math.ceil(currentEmissions), currentLanguage)}
+                  {formatEmissionsAbsolute(currentEmissions, currentLanguage)}
                   <span className="text-lg text-grey ml-1">tCO₂e</span>
                 </span>
               ) : (

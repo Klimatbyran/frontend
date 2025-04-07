@@ -20,7 +20,11 @@ import {
   SectorCode,
 } from "@/hooks/companies/useCompanyFilters";
 import { useLanguage } from "@/components/LanguageProvider";
-import { formatEmployeeCount, localizeUnit } from "@/utils/localizeUnit";
+import {
+  formatEmployeeCount,
+  formatTotalEmissions,
+  localizeUnit,
+} from "@/utils/localizeUnit";
 import { cn } from "@/lib/utils";
 
 interface CompanyOverviewProps {
@@ -184,8 +188,8 @@ export function CompanyOverview({
             >
               {selectedPeriod.emissions?.calculatedTotalEmissions === 0
                 ? t("companies.overview.noData")
-                : localizeUnit(
-                    selectedPeriod.emissions?.calculatedTotalEmissions,
+                : formatTotalEmissions(
+                    selectedPeriod.emissions.calculatedTotalEmissions,
                     currentLanguage,
                   )}
               <span className="text-lg lg:text-2xl md:text-lg sm:text-sm ml-2 text-grey">
