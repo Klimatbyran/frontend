@@ -82,8 +82,6 @@ export function CompanyCard({
     ? getCategoryColor(largestCategory.category)
     : "var(--blue-2)";
 
-  console.log(emissionsChange);
-
   return (
     <div className="relative rounded-level-2">
       <Link
