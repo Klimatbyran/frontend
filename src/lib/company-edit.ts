@@ -57,7 +57,21 @@ export function mapCompanyEditFormToRequestBody(selectedPeriods, formData: Map<s
         }
         periodsUpdate.push(periodUpdate);
     }
+
+    const metadata: {
+        comment?: string,
+        source?: string
+    } = {};
+
+    if(formData.get('comment')) {
+        metadata.comment = formData.get('comment');
+    }
+
+    if(formData.get('source')) {
+        metadata.source = formData.get('source');
+    }
     return {
-        reportingPeriods: periodsUpdate
+        reportingPeriods: periodsUpdate,
+        metadata
     };
 }
