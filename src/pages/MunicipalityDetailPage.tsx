@@ -31,21 +31,22 @@ export function MunicipalityDetailPage() {
     municipality.procurementScore === "2"
       ? t("municipalityDetailPage.procurementScore.high")
       : municipality.procurementScore === "1"
-      ? t("municipalityDetailPage.procurementScore.medium")
-      : t("municipalityDetailPage.procurementScore.low");
+        ? t("municipalityDetailPage.procurementScore.medium")
+        : t("municipalityDetailPage.procurementScore.low");
 
   const emissionsData = transformEmissionsData(municipality);
 
   const lastYearEmissions = municipality.approximatedHistoricalEmission.at(-1);
   const lastYear = lastYearEmissions?.year;
-  const lastYearEmissionsKTon = lastYearEmissions
-    ? localizeUnit(lastYearEmissions.value / 1000, currentLanguage) || "N/A"
-    : "N/A";
+  const lastYearEmissionsKTon =
+    lastYearEmissions?.value != null
+      ? localizeUnit(lastYearEmissions.value / 1000, currentLanguage)
+      : "N/A";
 
   // Prepare SEO data
   const canonicalUrl = `https://klimatkollen.se/municipalities/${id}`;
   const pageTitle = `${municipality.name} - ${t(
-    "municipalityDetailPage.metaTitle"
+    "municipalityDetailPage.metaTitle",
   )} - Klimatkollen`;
   const pageDescription = t("municipalityDetailPage.metaDescription", {
     municipality: municipality.name,
@@ -108,7 +109,7 @@ export function MunicipalityDetailPage() {
           {t("municipalityDetailPage.seoText.consumptionText", {
             municipality: municipality.name,
             consumption: (municipality.totalConsumptionEmission / 1000).toFixed(
-              1
+              1,
             ),
           })}
         </p>
@@ -156,7 +157,7 @@ export function MunicipalityDetailPage() {
                 municipality.hitNetZero
                   ? localizeUnit(
                       new Date(municipality.hitNetZero),
-                      currentLanguage
+                      currentLanguage,
                     ) || t("municipalityDetailPage.never")
                   : t("municipalityDetailPage.never")
               }
@@ -164,7 +165,7 @@ export function MunicipalityDetailPage() {
                 !municipality.hitNetZero ||
                   new Date(municipality.hitNetZero) > new Date("2050-01-01")
                   ? "text-pink-3"
-                  : "text-green-3"
+                  : "text-green-3",
               )}
             />
           </div>
@@ -197,7 +198,7 @@ export function MunicipalityDetailPage() {
               title: t("municipalityDetailPage.annualChangeSince2015"),
               value: `${localizeUnit(
                 municipality.historicalEmissionChangePercent,
-                currentLanguage
+                currentLanguage,
               )}%`,
               valueClassName: "text-orange-2",
             },
@@ -206,7 +207,7 @@ export function MunicipalityDetailPage() {
               value: municipality.neededEmissionChangePercent
                 ? `-${localizeUnit(
                     municipality.neededEmissionChangePercent,
-                    currentLanguage
+                    currentLanguage,
                   )}%`
                 : t("municipalityDetailPage.cannotReduceToParis"),
               valueClassName: municipality.neededEmissionChangePercent
@@ -217,7 +218,7 @@ export function MunicipalityDetailPage() {
               title: t("municipalityDetailPage.consumptionEmissionsPerCapita"),
               value: localizeUnit(
                 municipality.totalConsumptionEmission / 1000,
-                currentLanguage
+                currentLanguage,
               ),
               valueClassName: "text-orange-2",
             },
@@ -262,7 +263,7 @@ export function MunicipalityDetailPage() {
               title: t("municipalityDetailPage.electricCarChange"),
               value: `${localizeUnit(
                 municipality.electricCarChangePercent * 100,
-                currentLanguage
+                currentLanguage,
               )}%`,
               valueClassName: "text-orange-2",
             },
@@ -271,7 +272,7 @@ export function MunicipalityDetailPage() {
               value: municipality.electricVehiclePerChargePoints
                 ? localizeUnit(
                     municipality.electricVehiclePerChargePoints,
-                    currentLanguage
+                    currentLanguage,
                   )
                 : t("municipalityDetailPage.noChargePoints"),
               valueClassName: municipality.electricVehiclePerChargePoints
@@ -281,8 +282,8 @@ export function MunicipalityDetailPage() {
             {
               title: t("municipalityDetailPage.bicycleMetrePerCapita"),
               value: localizeUnit(
-                municipality.electricVehiclePerChargePoints,
-                currentLanguage
+                municipality.bicycleMetrePerCapita,
+                currentLanguage,
               ),
               valueClassName: "text-orange-2",
             },

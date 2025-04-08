@@ -80,8 +80,10 @@ export function RealEstateScope3History({
   // Get unique categories across all years
   const uniqueCategories = Array.from(
     new Set(
-      data.flatMap((yearData) => yearData.categories.map((cat) => cat.category))
-    )
+      data.flatMap((yearData) =>
+        yearData.categories.map((cat) => cat.category),
+      ),
+    ),
   ).sort();
 
   const CustomTooltip = ({ active, payload, label }: any) => {

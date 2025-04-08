@@ -80,10 +80,10 @@ export function useCompanies() {
   const getCompaniesBySector = (sectorCode: string) => {
     return (companies || [])
       .filter(
-        (company) => company.industry?.industryGics?.sectorCode === sectorCode
+        (company) => company.industry?.industryGics?.sectorCode === sectorCode,
       )
       .sort(
-        (a, b) => b.metrics.emissionsReduction - a.metrics.emissionsReduction
+        (a, b) => b.metrics.emissionsReduction - a.metrics.emissionsReduction,
       );
   };
 

@@ -6,6 +6,7 @@ import {
   XAxis,
   YAxis,
   Tooltip,
+  ReferenceLine
 } from "recharts";
 import { Info, X } from "lucide-react";
 import {
@@ -23,14 +24,14 @@ import { getChartData } from "../../../utils/getChartData";
 import { CustomTooltip } from "./CustomTooltip";
 import { DataViewSelector } from "./DataViewSelector";
 import { useTranslation } from "react-i18next";
-import { useCategoryMetadata } from "@/hooks/useCategories";
+import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useLanguage } from "@/components/LanguageProvider";
-
 
 export function EmissionsHistory({
   reportingPeriods,
   onYearSelect,
   className,
+  baseYear,
   features = {
     interpolateScope3: true,
     guessBaseYear: true,
@@ -52,15 +53,14 @@ export function EmissionsHistory({
     );
   }
   const isMobile = useScreenSize();
-
   const { currentLanguage } = useLanguage();
 
   const hasScope3Categories = useMemo(
     () =>
       reportingPeriods.some(
-        (period) => period.emissions?.scope3?.categories?.length ?? 0 > 0
+        (period) => period.emissions?.scope3?.categories?.length ?? 0 > 0,
       ),
-    [reportingPeriods]
+    [reportingPeriods],
   );
 
   const [dataView, setDataView] = useState<DataView>(() => {
@@ -70,19 +70,21 @@ export function EmissionsHistory({
     return "overview";
   });
 
+  const companyBaseYear = baseYear?.year;
+
   // Only interpolate if the feature is enabled
   const processedPeriods = useMemo(
     () =>
       features.interpolateScope3
         ? interpolateScope3Categories(reportingPeriods)
         : reportingPeriods,
-    [reportingPeriods, features.interpolateScope3]
+    [reportingPeriods, features.interpolateScope3],
   );
 
   // Process data based on view
   const chartData = useMemo(
     () => getChartData(processedPeriods),
-    [processedPeriods]
+    [processedPeriods],
   );
 
   const handleClick = (data: any) => {
@@ -99,7 +101,7 @@ export function EmissionsHistory({
   // Add toggle handler
   const handleScopeToggle = (scope: "scope1" | "scope2" | "scope3") => {
     setHiddenScopes((prev) =>
-      prev.includes(scope) ? prev.filter((s) => s !== scope) : [...prev, scope]
+      prev.includes(scope) ? prev.filter((s) => s !== scope) : [...prev, scope],
     );
   };
 
@@ -115,6 +117,7 @@ export function EmissionsHistory({
       }
     });
   };
+
 
   return (
     <div
@@ -149,15 +152,41 @@ export function EmissionsHistory({
         <ResponsiveContainer width="100%" height="100%" className="w-full">
           <LineChart
             data={chartData}
-            margin={{ top: 10, right: 10, left: 0, bottom: 10 }}
+            margin={{ top: 20, right: 20, left: 10, bottom: 10 }}
             onClick={handleClick}
           >
+            <ReferenceLine 
+              label={{
+                value: t("companies.emissionsHistory.baseYear"),
+                position: "top",
+                fill: "white",
+                fontSize: 12,
+                fontWeight: "normal",
+              }}
+              x={companyBaseYear} 
+              stroke="#878787" 
+              strokeDasharray="4 4" 
+            />
             <XAxis
               dataKey="year"
               stroke="#878787"
               tickLine={false}
               axisLine={true}
-              tick={{ fontSize: 12 }}
+              tick={({ x, y, payload }) => {
+                const isBaseYear = payload.value === companyBaseYear;
+                return (
+                  <text
+                    x={x - 15}
+                    y={y + 10}
+                    fontSize={12}
+                    fill={`${isBaseYear ? 'white' : '#878787' }`}
+                    fontWeight={`${isBaseYear ? 'bold' : 'normal' }`}
+                  >
+                    {payload.value}
+                  </text>
+                  
+                )
+              }}
               padding={{ left: 0, right: 0 }}
             />
             <YAxis
@@ -168,9 +197,13 @@ export function EmissionsHistory({
               width={80}
               domain={[0, "auto"]}
               padding={{ top: 0, bottom: 0 }}
-              tickFormatter={(value) => new Intl.NumberFormat(currentLanguage === 'sv' ? 'sv-SE' : 'en-US').format(value)}
+              tickFormatter={(value) =>
+                new Intl.NumberFormat(
+                  currentLanguage === "sv" ? "sv-SE" : "en-US",
+                ).format(value)
+              }
             />
-            <Tooltip content={<CustomTooltip />} />
+            <Tooltip content={<CustomTooltip companyBaseYear={companyBaseYear} />} />
 
             {dataView === "overview" && (
               <>
@@ -186,7 +219,6 @@ export function EmissionsHistory({
                 />
               </>
             )}
-
             {dataView === "scopes" && (
               <>
                 {!hiddenScopes.includes("scope1") && (
@@ -249,7 +281,7 @@ export function EmissionsHistory({
               Object.keys(chartData[0])
                 .filter(
                   (key) =>
-                    key.startsWith("cat") && !key.includes("Interpolated")
+                    key.startsWith("cat") && !key.includes("Interpolated"),
                 )
                 .map((categoryKey) => {
                   const categoryId = parseInt(categoryKey.replace("cat", ""));
@@ -346,15 +378,15 @@ export function EmissionsHistory({
                   scope === "scope1"
                     ? "#F0759A"
                     : scope === "scope2"
-                    ? "#E2FF8D"
-                    : "#99CFFF",
+                      ? "#E2FF8D"
+                      : "#99CFFF",
               }}
             >
               {scope === "scope1"
                 ? "Scope 1"
                 : scope === "scope2"
-                ? "Scope 2"
-                : "Scope 3"}
+                  ? "Scope 2"
+                  : "Scope 3"}
               <X className="w-3 h-3" />
             </button>
           ))}

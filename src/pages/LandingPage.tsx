@@ -5,7 +5,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RankedList } from "@/components/RankedList";
 import { ContentBlock } from "@/components/ContentBlock";
 import { Typewriter } from "@/components/ui/typewriter";
-import { useCompanies } from "@/hooks/useCompanies";
+import { useCompanies } from "@/hooks/companies/useCompanies";
 import { useMunicipalities } from "@/hooks/useMunicipalities";
 import { useTranslation } from "react-i18next";
 import { PageSEO } from "@/components/SEO/PageSEO";
@@ -18,7 +18,7 @@ export function LandingPage() {
   const [selectedTab, setSelectedTab] = useState("companies");
   const { companies } = useCompanies();
   const { getTopMunicipalities } = useMunicipalities();
-  const { currentLanguage } = useLanguage()
+  const { currentLanguage } = useLanguage();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -56,7 +56,7 @@ export function LandingPage() {
     .sort(
       (a, b) =>
         (b.reportingPeriods[0]?.emissions?.calculatedTotalEmissions || 0) -
-        (a.reportingPeriods[0]?.emissions?.calculatedTotalEmissions || 0)
+        (a.reportingPeriods[0]?.emissions?.calculatedTotalEmissions || 0),
     )
     .slice(0, 5)
     .map((company) => ({
@@ -66,8 +66,10 @@ export function LandingPage() {
         company.reportingPeriods.at(0)?.emissions?.calculatedTotalEmissions ||
         0,
       displayValue: localizeUnit(
-        company.reportingPeriods.at(0)?.emissions?.calculatedTotalEmissions || 0
-      , currentLanguage),
+        company.reportingPeriods.at(0)?.emissions?.calculatedTotalEmissions ||
+          0,
+        currentLanguage,
+      ),
     }));
 
   // Get top 5 municipalities by emissions reduction

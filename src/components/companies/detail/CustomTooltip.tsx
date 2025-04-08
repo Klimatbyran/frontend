@@ -1,4 +1,4 @@
-import { useCategoryMetadata } from "@/hooks/useCategories";
+import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useTranslation } from "react-i18next";
 import { localizeUnit } from "@/utils/localizeUnit";
 import { useLanguage } from "@/components/LanguageProvider";
@@ -7,22 +7,41 @@ interface CustomTooltipProps {
   active?: boolean;
   payload?: any[];
   label?: string;
+  companyBaseYear: number | undefined;
 }
 
 export const CustomTooltip = ({
   active,
   payload,
   label,
+  companyBaseYear,
 }: CustomTooltipProps) => {
   const { t } = useTranslation();
   const { getCategoryName } = useCategoryMetadata();
   const { currentLanguage} = useLanguage();
 
   if (active && payload && payload.length) {
-  
+    if (payload.length === 3) {
+      const totalEmissions = payload[0]?.payload.total;
+
+      const companyTotal = {
+        dataKey: "total",
+        name: t("companies.emissionsHistory.total"),
+        color: "white",
+        payload: {
+          year: payload[0]?.payload.year,
+          total: totalEmissions,
+        },
+        value: totalEmissions,
+      };
+      payload = [companyTotal, ...payload];
+    }
+    
+    const isBaseYear = companyBaseYear === payload[0].payload.year;
+    
     return (
-      <div className="bg-black-1 px-4 py-3 rounded-level-2">
-        <div className="text-sm font-medium mb-2">{label}</div>
+      <div className="bg-black-1 px-4 py-3 rounded-level-2 max-w-[525px] ">
+        <div className="text-sm font-medium mb-2">{label}{isBaseYear ? '*' : ''}</div>
         {payload.map((entry: any) => {
           if (entry.dataKey === "gap") return null;
 
@@ -40,16 +59,32 @@ export const CustomTooltip = ({
             originalValue === null
               ? t("companies.tooltip.noDataAvailable")
               : `${localizeUnit(Math.round(entry.value), currentLanguage)} ${t(
-                  "companies.tooltip.tonsCO2e"
+                  "companies.tooltip.tonsCO2e",
                 )}`;
 
           return (
-            <div key={entry.dataKey} className="text-sm">
+            <div
+              key={entry.dataKey}
+              className={`
+              ${entry.dataKey === "total" ? "my-2 font-medium" : "my-0"} 
+              text-grey mr-2 text-sm
+            `}
+            >
               <span className="text-grey mr-2">{name}:</span>
               <span style={{ color: entry.color }}>{displayValue}</span>
             </div>
           );
+          
         })}
+            {
+                isBaseYear
+                ? 
+                  <span className="text-grey mr-2 text-sm">
+                    <br></br>
+                    *{t('companies.emissionsHistory.baseYearInfo')}
+                  </span>
+                : null                
+              }
       </div>
     );
   }

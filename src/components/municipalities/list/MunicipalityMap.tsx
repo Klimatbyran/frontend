@@ -35,7 +35,7 @@ export function MunicipalityMap({
   const getColor = (value: number) => {
     const normalizedValue = (value - min) / (max - min);
     return `rgb(${Math.round(153 + normalizedValue * 102)}, ${Math.round(
-      207 + normalizedValue * 48
+      207 + normalizedValue * 48,
     )}, ${Math.round(255)})`;
   };
 

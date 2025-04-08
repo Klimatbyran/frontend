@@ -14,14 +14,17 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useSectorNames, SectorCode } from "@/hooks/useCompanyFilters";
+import {
+  useSectorNames,
+  SectorCode,
+} from "@/hooks/companies/useCompanyFilters";
 import type { RankedCompany } from "@/types/company";
 import { Text } from "@/components/ui/text";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { useTranslation } from "react-i18next";
-import { useCategoryMetadata } from "@/hooks/useCategories";
+import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useLanguage } from "@/components/LanguageProvider";
-import { localizeUnit } from "@/utils/localizeUnit";
+import { localizeEmployeeCount, localizeUnit } from "@/utils/localizeUnit";
 
 type CompanyCardProps = Pick<
   RankedCompany,
@@ -60,7 +63,7 @@ export function CompanyCard({
 
   const employeeCount = latestPeriod?.economy?.employees?.value;
   const formattedEmployeeCount = employeeCount
-    ? localizeUnit(employeeCount, currentLanguage)
+    ? localizeEmployeeCount(employeeCount, currentLanguage)
     : t("companies.card.noData");
 
   const sectorName = industry?.industryGics?.sectorCode
@@ -71,7 +74,7 @@ export function CompanyCard({
   const scope3Categories = latestPeriod?.emissions?.scope3?.categories || [];
   const largestCategory = scope3Categories.reduce(
     (max, current) => (current.total > (max?.total || 0) ? current : max),
-    scope3Categories[0]
+    scope3Categories[0],
   );
 
   // Get the color for the largest category
@@ -127,7 +130,7 @@ export function CompanyCard({
             <p className="text-grey text-sm line-clamp-2">{description}</p>
           </div>
           <div
-            className="w-12 h-12 rounded-full flex items-center justify-center"
+            className="w-12 h-12 rounded-full flex shrink-0 items-center justify-center"
             style={{
               backgroundColor: `color-mix(in srgb, ${categoryColor} 30%, transparent)`,
               color: categoryColor,
@@ -176,8 +179,23 @@ export function CompanyCard({
                   <TooltipTrigger>
                     <Info className="w-4 h-4" />
                   </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{t("companies.card.emissionsChangeRateInfo")}</p>
+                  <TooltipContent className="max-w-80">
+                    {emissionsChange !== null ? (
+                      emissionsChange <= -80 || emissionsChange >= 80 ? (
+                        <>
+                          <p>{t("companies.card.emissionsChangeRateInfo")}</p>
+                          <p className="my-2">
+                            {t(
+                              "companies.card.emissionsChangeRateInfoExtended",
+                            )}
+                          </p>
+                        </>
+                      ) : (
+                        <p>{t("companies.card.emissionsChangeRateInfo")}</p>
+                      )
+                    ) : (
+                      <p>{t("companies.card.noData")}</p>
+                    )}
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
@@ -210,7 +228,10 @@ export function CompanyCard({
               </Text>
               <Text variant="h6">
                 {latestPeriod.economy.turnover.value
-                  ? localizeUnit(latestPeriod.economy.turnover.value / 1e9, currentLanguage)
+                  ? localizeUnit(
+                      latestPeriod.economy.turnover.value / 1e9,
+                      currentLanguage,
+                    )
                   : t("companies.card.noData")}{" "}
                 mdr
                 <span className="text-lg text-grey ml-1">

@@ -10,12 +10,12 @@ interface BlockHeaderProps {
   className?: string;
 }
 
-export function BlockHeader({ 
-  title, 
-  description, 
+export function BlockHeader({
+  title,
+  description,
   icon,
   action,
-  className 
+  className,
 }: BlockHeaderProps) {
   return (
     <div className={cn("flex items-start justify-between mb-12", className)}>

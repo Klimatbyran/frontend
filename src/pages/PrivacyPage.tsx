@@ -43,7 +43,10 @@ export function PrivacyPage() {
                   {t("privacyPage.dataCollectionTitle")}
                 </Text>
               </div>
-              <Text variant="body" className="text-base md:text-base sm:text-sm">
+              <Text
+                variant="body"
+                className="text-base md:text-base sm:text-sm"
+              >
                 {t("privacyPage.dataCollectionText")}
               </Text>
             </div>

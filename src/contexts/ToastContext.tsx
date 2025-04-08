@@ -1,25 +1,24 @@
-import React, { createContext, useContext, useState } from 'react';
-import * as Toast from '@radix-ui/react-toast';
+import React, { createContext, useContext, useState } from "react";
+import * as Toast from "@radix-ui/react-toast";
 
 export interface ToastContext {
-    showToast: (title: string, message: string) => void
+  showToast: (title: string, message: string) => void;
 }
 
 const ToastContext = createContext<ToastContext>({} as ToastContext);
 
 export const useToast = () => {
-  
   const context = useContext(ToastContext);
   if (!context) {
-    throw new Error('useToast must be used within a ToastProvider');
+    throw new Error("useToast must be used within a ToastProvider");
   }
   return context;
 };
 
-export const ToastProvider = ({children}: {children: React.ReactNode}) => {
+export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
   const [open, setOpen] = useState(false);
-  const [message, setMessage] = useState('');
-  const [title, setTitle] = useState('');
+  const [message, setMessage] = useState("");
+  const [title, setTitle] = useState("");
 
   const showToast = (title: string, message: string) => {
     setTitle(title);

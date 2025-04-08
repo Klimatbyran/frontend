@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
-import { useCategoryMetadata } from "@/hooks/useCategories";
+import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { useLanguage } from "@/components/LanguageProvider";
 import { localizeUnit } from "@/utils/localizeUnit";
@@ -154,7 +154,7 @@ export function EmissionsBreakdown({
               <div className="space-y-4">
                 {upstreamCategories.map((categoryId) => {
                   const reportedCategory = scope3Categories.find(
-                    (c) => c.category === categoryId
+                    (c) => c.category === categoryId,
                   );
                   const Icon = getCategoryIcon(categoryId);
 
@@ -184,7 +184,10 @@ export function EmissionsBreakdown({
                         </div>
                         {reportedCategory ? (
                           <Text variant="body" className="text-blue-2">
-                            {localizeUnit(reportedCategory.total, currentLanguage)}
+                            {localizeUnit(
+                              reportedCategory.total,
+                              currentLanguage,
+                            )}
                             <span className="text-sm text-grey ml-2">
                               {reportedCategory.unit}
                             </span>
@@ -209,7 +212,7 @@ export function EmissionsBreakdown({
               <div className="space-y-4">
                 {downstreamCategories.map((categoryId) => {
                   const reportedCategory = scope3Categories.find(
-                    (c) => c.category === categoryId
+                    (c) => c.category === categoryId,
                   );
                   const Icon = getCategoryIcon(categoryId);
 
@@ -239,7 +242,10 @@ export function EmissionsBreakdown({
                         </div>
                         {reportedCategory ? (
                           <Text variant="body" className="text-blue-2">
-                            {localizeUnit(reportedCategory.total, currentLanguage)}
+                            {localizeUnit(
+                              reportedCategory.total,
+                              currentLanguage,
+                            )}
                             <span className="text-sm text-grey ml-2">
                               {reportedCategory.unit}
                             </span>

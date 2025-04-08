@@ -1,0 +1,47 @@
+name: 🔁 Change Request
+description: Request a change or improvement to an existing feature or workflow.
+title: "[Change Request]: "
+labels: ["change-request"]
+assignees: []
+body:
+  - type: textarea
+    id: background
+    attributes:
+      label: Background / Why This Change?
+      description: What’s the context for this request? Why is the change needed or helpful?
+      placeholder: |
+        E.g. Users are confused about the wording on the settings page...
+    validations:
+      required: true
+
+  - type: textarea
+    id: change
+    attributes:
+      label: What Should Be Changed?
+      description: Describe the requested change as clearly as possible. Include any proposed text or design ideas if applicable.
+      placeholder: |
+        E.g. Add additional section to the about page
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots or Visuals (optional)
+      description: Add screenshots or links if they help explain the request.
+      placeholder: |
+        Drag and drop images here, or paste them inline.
+    validations:
+      required: false
+
+  - type: dropdown
+    id: urgency
+    attributes:
+      label: Urgency
+      description: How urgent is this change?
+      options:
+        - Nice to have
+        - Important, but not urgent
+        - High (blocking release or critical for users)
+    validations:
+      required: true
