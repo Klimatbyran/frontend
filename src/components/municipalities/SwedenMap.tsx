@@ -1,119 +1,290 @@
-import { useMemo } from "react";
-import { cn } from "@/lib/utils";
+import React from "react";
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { Text } from "@/components/ui/text";
+  ComposableMap,
+  Geographies,
+  Geography,
+  ZoomableGroup,
+} from "react-simple-maps";
+import { ZoomIn, ZoomOut, RotateCcw } from "lucide-react";
+import { t } from "i18next";
 
 interface Municipality {
-  id: string;
   name: string;
   value: number;
-  path: string;
+  bicycleMetrePerCapita: number;
+  historicalEmissionChangePercent: number;
+  neededEmissionChangePercent: number;
+  hitNetZero: string;
+  budgetRunsOut: string;
+  electricCarChangePercent: number;
+  climatePlanYear: number;
+  totalConsumptionEmission: number;
+  electricVehiclePerChargePoints: number;
+  procurementScore: string;
+}
+
+interface DataPoint {
+  label: string;
+  key: keyof Municipality;
+  unit: string;
+  description?: string;
+  higherIsBetter: boolean;
 }
 
 interface SwedenMapProps {
-  data: Municipality[];
-  selectedId?: string;
-  onSelect?: (id: string) => void;
-  className?: string;
+  geoData: JSON;
+  municipalityData: Municipality[];
+  selectedDataPoint: DataPoint;
+  onMunicipalityClick: (name: string) => void;
 }
 
-export function SwedenMap({
-  data,
-  selectedId,
-  onSelect,
-  className,
+function SwedenMap({
+  geoData,
+  municipalityData,
+  selectedDataPoint,
+  onMunicipalityClick,
 }: SwedenMapProps) {
-  // Calculate value ranges for color scaling
-  const { min, max } = useMemo(() => {
-    const values = data.map((d) => d.value);
-    return {
-      min: Math.min(...values),
-      max: Math.max(...values),
-    };
-  }, [data]);
+  const [hoveredMunicipality, setHoveredMunicipality] = React.useState<
+    string | null
+  >(null);
+  const [hoveredValue, setHoveredValue] = React.useState<number | null>(null);
+  const [hoveredRank, setHoveredRank] = React.useState<number | null>(null);
+  const [position, setPosition] = React.useState<{
+    coordinates: [number, number];
+    zoom: number;
+  }>({
+    coordinates: [17, 63],
+    zoom: 1,
+  });
 
-  // Get color based on value
-  const getColor = (value: number) => {
-    const normalizedValue = (value - min) / (max - min);
-    return `rgb(${Math.round(153 + normalizedValue * 102)}, ${Math.round(207 + normalizedValue * 48)}, ${Math.round(255)})`;
+  // Calculate min and max values for the color scale
+  const values = municipalityData.map(
+    (m) => m[selectedDataPoint.key] as number,
+  );
+  const minValue = Math.min(...values);
+  const maxValue = Math.max(...values);
+
+  // Sort municipalities by the selected metric for ranking
+  const sortedMunicipalities = [...municipalityData].sort((a, b) => {
+    const aValue = a[selectedDataPoint.key] as number;
+    const bValue = b[selectedDataPoint.key] as number;
+    return selectedDataPoint.higherIsBetter ? bValue - aValue : aValue - bValue;
+  });
+
+  const handleZoomIn = () => {
+    if (position.zoom >= 4) return;
+    setPosition((pos) => ({ ...pos, zoom: pos.zoom * 1.5 }));
   };
 
-  return (
-    <div className={cn("relative", className)}>
-      {/* Legend */}
-      <div className="absolute right-0 top-0 space-y-8">
-        <div>
-          <Text variant="large">RIKSSNITT</Text>
-          <Text className="text-7xl font-light">
-            2.8<span className="text-2xl">m</span>
-          </Text>
-        </div>
-        <div>
-          <Text variant="large">EU:S MÅLBILD</Text>
-          <Text className="text-7xl font-light">
-            3.8<span className="text-2xl">m</span>
-          </Text>
-        </div>
-      </div>
+  const handleZoomOut = () => {
+    if (position.zoom <= 0.5) return;
+    setPosition((pos) => ({ ...pos, zoom: pos.zoom / 1.5 }));
+  };
 
-      <svg
-        viewBox="0 0 200 400"
-        className="w-full max-w-[500px]"
-        style={{ filter: "drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.1))" }}
-      >
-        <g>
-          {data.map((municipality) => (
-            <TooltipProvider key={municipality.id}>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <path
-                    d={municipality.path}
-                    fill={getColor(municipality.value)}
-                    stroke={
-                      selectedId === municipality.id ? "white" : "#2E2E2E"
-                    }
-                    strokeWidth={selectedId === municipality.id ? "2" : "0.5"}
-                    className="transition-colors cursor-pointer hover:brightness-110"
-                    onClick={() => onSelect?.(municipality.id)}
-                  />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <div className="space-y-1">
-                    <Text variant="small">{municipality.name}</Text>
-                    <Text variant="large">
-                      {municipality.value.toFixed(1)}m
-                    </Text>
-                  </div>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          ))}
-        </g>
-      </svg>
+  const handleReset = () => {
+    setPosition({ coordinates: [17, 63], zoom: 1 });
+  };
 
-      {/* Color scale legend */}
-      <div className="absolute left-0 bottom-0 bg-black-1 rounded-level-2 p-4">
-        <Text variant="small" className="text-grey mb-2">
-          Cykelväg per invånare
-        </Text>
-        <div className="flex items-center gap-2">
+  const handleMoveEnd = (position: {
+    coordinates: [number, number];
+    zoom: number;
+  }) => {
+    setPosition(position);
+  };
+
+  const getMunicipalityData = (
+    name: string,
+  ): { value: number | null; rank: number | null } => {
+    const municipality = municipalityData.find(
+      (m) => m.name.toLowerCase() === name.toLowerCase(),
+    );
+    if (!municipality) return { value: null, rank: null };
+
+    const value = municipality[selectedDataPoint.key] as number;
+    const rank =
+      sortedMunicipalities.findIndex((m) => m.name === municipality.name) + 1;
+
+    return { value, rank };
+  };
+
+  const getColorByValue = (value: number | null): string => {
+    if (value === null) return "#1a1a1a";
+
+    const normalizedValue = (value - minValue) / (maxValue - minValue);
+    // Adjust color value based on whether higher or lower is better
+    const colorValue = selectedDataPoint.higherIsBetter
+      ? normalizedValue
+      : 1 - normalizedValue;
+
+    // Use a more subtle color palette
+    const hue = colorValue * 120; // Green (120) to Red (0)
+    return `hsl(${hue}, 70%, ${20 + colorValue * 30}%)`; // Darker colors
+  };
+
+  const renderGradientLegend = () => {
+    const width = 200;
+    const height = 20;
+
+    // Always show worse values on the left and better values on the right
+    const leftValue = selectedDataPoint.higherIsBetter ? minValue : maxValue;
+    const rightValue = selectedDataPoint.higherIsBetter ? maxValue : minValue;
+
+    return (
+      <div className="absolute bottom-4 right-4 bg-black/40 backdrop-blur-sm p-4 rounded-2xl">
+        <p className="text-white/70 text-sm mb-2">{selectedDataPoint.label}</p>
+        <div className="flex items-center">
+          <span className="text-white/50 text-xs mr-2">
+            {leftValue.toFixed(1)}
+            {selectedDataPoint.unit}
+          </span>
           <div
-            className="w-24 h-2 rounded-full"
-            style={{
-              background: `linear-gradient(to right, rgb(153, 207, 255), rgb(255, 255, 255))`,
-            }}
-          />
-          <div className="flex justify-between w-full text-xs text-grey">
-            <span>{min.toFixed(1)}m</span>
-            <span>{max.toFixed(1)}m</span>
+            className="relative"
+            style={{ width: `${width}px`, height: `${height}px` }}
+          >
+            <div
+              className="absolute inset-0 rounded-full"
+              style={{
+                background: `linear-gradient(to right, ${getColorByValue(leftValue)}, ${getColorByValue(rightValue)})`,
+              }}
+            />
           </div>
+          <span className="text-white/50 text-xs ml-2">
+            {rightValue.toFixed(1)}
+            {selectedDataPoint.unit}
+          </span>
         </div>
       </div>
+    );
+  };
+
+  const renderZoomControls = () => (
+    <div className="absolute top-4 right-4 flex flex-col gap-2">
+      <button
+        onClick={handleZoomIn}
+        aria-label="Zoom in"
+        className="p-2 bg-black/40 backdrop-blur-sm rounded-xl hover:bg-black/60 transition-colors disabled:opacity-50"
+        disabled={position.zoom >= 4}
+      >
+        <ZoomIn className="w-5 h-5 text-white/70" />
+      </button>
+      <button
+        onClick={handleZoomOut}
+        aria-label="Zoom out"
+        className="p-2 bg-black/40 backdrop-blur-sm rounded-xl hover:bg-black/60 transition-colors disabled:opacity-50"
+        disabled={position.zoom <= 0.5}
+      >
+        <ZoomOut className="w-5 h-5 text-white/70" />
+      </button>
+      <button
+        onClick={handleReset}
+        aria-label="Reset zoom"
+        className="p-2 bg-black/40 backdrop-blur-sm rounded-xl hover:bg-black/60 transition-colors"
+      >
+        <RotateCcw className="w-5 h-5 text-white/70" />
+      </button>
+    </div>
+  );
+
+  return (
+    <div className="relative flex-1 w-full">
+      <ComposableMap
+        projection="geoMercator"
+        projectionConfig={{
+          scale: 1800,
+        }}
+        style={{
+          width: "100%",
+          height: "100%",
+          backgroundColor: "#000",
+        }}
+      >
+        <ZoomableGroup
+          zoom={position.zoom}
+          center={position.coordinates}
+          onMoveEnd={handleMoveEnd}
+          maxZoom={4}
+          minZoom={0.5}
+        >
+          <Geographies geography={geoData}>
+            {({ geographies }) =>
+              geographies.map((geo) => {
+                const { value, rank } = getMunicipalityData(
+                  geo.properties.name,
+                );
+                return (
+                  <Geography
+                    key={geo.rsmKey}
+                    geography={geo}
+                    onMouseEnter={() => {
+                      setHoveredMunicipality(geo.properties.name);
+                      setHoveredValue(value);
+                      setHoveredRank(rank);
+                    }}
+                    onMouseLeave={() => {
+                      setHoveredMunicipality(null);
+                      setHoveredValue(null);
+                      setHoveredRank(null);
+                    }}
+                    onClick={() => onMunicipalityClick(geo.properties.name)}
+                    style={{
+                      default: {
+                        fill: getColorByValue(value),
+                        stroke: "#333",
+                        strokeWidth: 0.2,
+                        outline: "none",
+                        cursor: "pointer",
+                      },
+                      hover: {
+                        fill: value === null ? "#333" : getColorByValue(value),
+                        stroke: "#666",
+                        strokeWidth: 0.4,
+                        outline: "none",
+                      },
+                      pressed: {
+                        fill: value === null ? "#333" : getColorByValue(value),
+                        stroke: "#666",
+                        strokeWidth: 0.4,
+                        outline: "none",
+                      },
+                    }}
+                    tabIndex={-1}
+                  />
+                );
+              })
+            }
+          </Geographies>
+        </ZoomableGroup>
+      </ComposableMap>
+
+      {hoveredMunicipality && (
+        <div className="absolute top-4 left-4 bg-black/40 backdrop-blur-sm p-4 rounded-2xl">
+          <p className="text-white font-medium text-xl">
+            {hoveredMunicipality}
+          </p>
+          {hoveredValue !== null && hoveredRank !== null && (
+            <div className="space-y-1 mt-2">
+              <p className="text-white/70">
+                {selectedDataPoint.label}:{" "}
+                <span className="text-[#C6F6D5]">
+                  {hoveredValue.toFixed(1)}
+                  {selectedDataPoint.unit}
+                </span>
+              </p>
+              <p className="text-white/50 text-sm">
+                {t("municipalityList.rank", {
+                  rank: String(hoveredRank),
+                  total: String(municipalityData.length),
+                })}
+              </p>
+            </div>
+          )}
+        </div>
+      )}
+
+      {renderGradientLegend()}
+      {renderZoomControls()}
     </div>
   );
 }
+
+export default SwedenMap;
