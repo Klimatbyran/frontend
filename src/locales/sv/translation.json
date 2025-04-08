@@ -736,18 +736,18 @@
           }
         },
         "topPerformers": {
-          "titleBest": "Bäst presterande kommuner",
+          "titleBest": "Bästa kommuner",
           "titleTop": "Toppresterande kommuner"
         },
         "improvement": {
-          "title": "Förbättringsområden"
+          "title": "Sämsta kommuner"
         }
       },
       "viewToggle": {
         "showList": "Visa lista",
         "showMap": "Visa karta"
       },
-      "municipalityList": {
+      "rankedList": {
         "search": {
           "placeholder": "Sök kommuner..."
         },

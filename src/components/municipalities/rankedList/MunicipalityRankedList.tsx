@@ -58,7 +58,7 @@ function RankedList({
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/50 w-5 h-5" />
           <input
             type="text"
-            placeholder={t("municipalities.list.RankedList.search.placeholder")}
+            placeholder={t("municipalities.list.rankedList.search.placeholder")}
             value={searchTerm}
             onChange={(e) => {
               setSearchTerm(e.target.value);

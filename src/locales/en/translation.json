@@ -733,14 +733,14 @@
           "titleTop": "Top Performing Municipalities"
         },
         "improvement": {
-          "title": "Areas for Improvement"
+          "title": "Worst Performing Municipalities"
         }
       },
       "viewToggle": {
         "showList": "Show List",
         "showMap": "Show Map"
       },
-      "municipalityList": {
+      "rankedList": {
         "search": {
           "placeholder": "Search municipalities..."
         },
