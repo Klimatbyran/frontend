@@ -672,6 +672,80 @@
       "unit": "tons CO₂e",
       "total": "Total",
       "year": "Year"
+    },
+    "list": {
+      "dataSelector": {
+        "label": "Select Data Point",
+        "tooltips": {
+          "higherBetter": "Higher values are better",
+          "lowerBetter": "Lower values are better"
+        },
+        "dataPoints": {
+          "historicalEmissionChange": {
+            "label": "Historical Emission Change",
+            "description": "Historical change in emissions"
+          },
+          "requiredEmissionChange": {
+            "label": "Required Emission Change",
+            "description": "Required change in emissions to meet climate goals"
+          },
+          "electricCarGrowth": {
+            "label": "Electric Car Growth",
+            "description": "Change in electric car adoption"
+          },
+          "totalConsumptionEmission": {
+            "label": "Total Consumption Emission",
+            "description": "Total emissions from consumption"
+          },
+          "evsPerChargePoint": {
+            "label": "EVs per Charge Point",
+            "description": "Number of electric vehicles per charging point"
+          },
+          "bicycleInfrastructure": {
+            "label": "Bicycle Infrastructure",
+            "description": "Bicycle path meters per capita"
+          }
+        }
+      },
+      "insights": {
+        "title": "Insights",
+        "noData": {
+          "municipality": "No municipality data available",
+          "metric": "No data available for {metric}"
+        },
+        "keyStatistics": {
+          "title": "Key Statistics",
+          "average": "Average {metric}",
+          "range": {
+            "label": "Range",
+            "description": "Difference between highest and lowest values",
+            "fromTo": "From {min} to {max}"
+          },
+          "distribution": {
+            "label": "Distribution",
+            "description": "How the values are spread",
+            "aboveAverage": "{count} municipalities above average",
+            "belowAverage": "{count} municipalities below average"
+          }
+        },
+        "topPerformers": {
+          "titleBest": "Best Performing Municipalities",
+          "titleTop": "Top Performing Municipalities"
+        },
+        "improvement": {
+          "title": "Areas for Improvement"
+        }
+      },
+      "viewToggle": {
+        "showList": "Show List",
+        "showMap": "Show Map"
+      },
+      "municipalityList": {
+        "search": {
+          "placeholder": "Search municipalities..."
+        },
+        "rank": "Rank: {rank} of {total}"
+      }
     }
   },
   "errorPage": {
