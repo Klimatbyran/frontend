@@ -270,7 +270,7 @@ export function MunicipalityDetailPage() {
             {
               title: t("municipalityDetailPage.bicycleMetrePerCapita"),
               value: localizeUnit(
-                municipality.electricVehiclePerChargePoints,
+                municipality.bicycleMetrePerCapita,
                 currentLanguage,
               ),
               valueClassName: "text-orange-2",
