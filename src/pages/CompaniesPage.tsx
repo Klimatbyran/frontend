@@ -83,7 +83,7 @@ function FilterPopover({
       >
         <Command className="bg-transparent">
           <CommandInput
-            placeholder={t("companiesPage.filterPlaceholder")}
+            placeholder={t("companiesPage.searchInFilter")}
             className="border-b border-black-1"
           />
           <CommandList className="max-h-[300px]">
