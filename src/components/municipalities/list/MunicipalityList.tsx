@@ -40,13 +40,13 @@ export function MunicipalityList({
     const directionMultiplier = sortDirection === "best" ? 1 : -1;
     switch (sortBy) {
       case "meets_paris": {
-        const aMeetsParis = a.budgetRunsOut === "Håller budget";
-        const bMeetsParis = b.budgetRunsOut === "Håller budget";
+        const aMeetsParis = a.budgetRunsOut === null;
+        const bMeetsParis = b.budgetRunsOut === null;
         if (aMeetsParis && bMeetsParis) {
           return (
             directionMultiplier *
-            (new Date(a.hitNetZero).getTime() -
-              new Date(b.hitNetZero).getTime())
+            ((a.hitNetZero ? new Date(a.hitNetZero).getTime() : 0) -
+              (b.hitNetZero ? new Date(b.hitNetZero).getTime() : 0))
           );
         }
         if (aMeetsParis) {
@@ -57,8 +57,8 @@ export function MunicipalityList({
         }
         return (
           directionMultiplier *
-          (new Date(b.budgetRunsOut).getTime() -
-            new Date(a.budgetRunsOut).getTime())
+          ((b.budgetRunsOut ? new Date(b.budgetRunsOut).getTime() : 0) -
+            (a.budgetRunsOut ? new Date(a.budgetRunsOut).getTime() : 0))
         );
       }
       case "name":
