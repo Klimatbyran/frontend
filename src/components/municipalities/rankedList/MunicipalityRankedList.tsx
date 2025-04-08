@@ -1,21 +1,7 @@
 import React, { useState } from "react";
 import { Search, ChevronLeft, ChevronRight } from "lucide-react";
 import { t } from "i18next";
-
-interface Municipality {
-  name: string;
-  value: number;
-  bicycleMetrePerCapita: number;
-  historicalEmissionChangePercent: number;
-  neededEmissionChangePercent: number;
-  hitNetZero: string;
-  budgetRunsOut: string;
-  electricCarChangePercent: number;
-  climatePlanYear: number;
-  totalConsumptionEmission: number;
-  electricVehiclePerChargePoints: number;
-  procurementScore: string;
-}
+import { Municipality } from "@/types/municipality";
 
 interface DataPoint {
   label: string;
@@ -25,17 +11,17 @@ interface DataPoint {
   higherIsBetter: boolean;
 }
 
-interface MunicipalityListProps {
+interface RankedListProps {
   municipalityData: Municipality[];
   selectedDataPoint: DataPoint;
   onMunicipalityClick: (name: string) => void;
 }
 
-function MunicipalityList({
+function RankedList({
   municipalityData,
   selectedDataPoint,
   onMunicipalityClick,
-}: MunicipalityListProps) {
+}: RankedListProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
@@ -72,9 +58,7 @@ function MunicipalityList({
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/50 w-5 h-5" />
           <input
             type="text"
-            placeholder={t(
-              "municipalities.list.municipalityList.search.placeholder",
-            )}
+            placeholder={t("municipalities.list.RankedList.search.placeholder")}
             value={searchTerm}
             onChange={(e) => {
               setSearchTerm(e.target.value);
@@ -159,4 +143,4 @@ function MunicipalityList({
   );
 }
 
-export default MunicipalityList;
+export default RankedList;

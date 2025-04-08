@@ -1,19 +1,5 @@
 import { t } from "i18next";
-
-interface Municipality {
-  name: string;
-  value: number;
-  bicycleMetrePerCapita: number;
-  historicalEmissionChangePercent: number;
-  neededEmissionChangePercent: number;
-  hitNetZero: string;
-  budgetRunsOut: string;
-  electricCarChangePercent: number;
-  climatePlanYear: number;
-  totalConsumptionEmission: number;
-  electricVehiclePerChargePoints: number;
-  procurementScore: string;
-}
+import { Municipality } from "@/types/municipality";
 
 interface DataPoint {
   label: string;

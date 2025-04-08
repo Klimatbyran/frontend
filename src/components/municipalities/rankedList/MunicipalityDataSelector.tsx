@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { BarChart3, ChevronDown } from "lucide-react";
 import { t } from "i18next";
+import { Municipality } from "@/types/municipality";
 
 interface DataPoint {
   label: string;
@@ -8,21 +9,6 @@ interface DataPoint {
   unit: string;
   description?: string;
   higherIsBetter: boolean;
-}
-
-interface Municipality {
-  name: string;
-  value: number;
-  bicycleMetrePerCapita: number;
-  historicalEmissionChangePercent: number;
-  neededEmissionChangePercent: number;
-  hitNetZero: string;
-  budgetRunsOut: string;
-  electricCarChangePercent: number;
-  climatePlanYear: number;
-  totalConsumptionEmission: number;
-  electricVehiclePerChargePoints: number;
-  procurementScore: string;
 }
 
 interface DataSelectorProps {
@@ -143,7 +129,7 @@ function DataSelector({
           </button>
 
           {isOpen && (
-            <div className="absolute z-50 w-full mt-2 bg-gray-800/90 rounded-2xl shadow-lg overflow-hidden backdrop-blur-sm">
+            <div className="absolute z-500 w-full mt-2 bg-gray-800/90 rounded-2xl shadow-lg overflow-hidden backdrop-blur-sm">
               {dataPoints.map((dataPoint) => (
                 <button
                   key={dataPoint.key}

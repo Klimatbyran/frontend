@@ -7,22 +7,7 @@ import {
 } from "react-simple-maps";
 import { ZoomIn, ZoomOut, RotateCcw } from "lucide-react";
 import { t } from "i18next";
-
-interface Municipality {
-  name: string;
-  value: number;
-  bicycleMetrePerCapita: number;
-  historicalEmissionChangePercent: number;
-  neededEmissionChangePercent: number;
-  hitNetZero: string;
-  budgetRunsOut: string;
-  electricCarChangePercent: number;
-  climatePlanYear: number;
-  totalConsumptionEmission: number;
-  electricVehiclePerChargePoints: number;
-  procurementScore: string;
-}
-
+import { Municipality } from "@/types/municipality";
 interface DataPoint {
   label: string;
   key: keyof Municipality;
@@ -32,7 +17,7 @@ interface DataPoint {
 }
 
 interface SwedenMapProps {
-  geoData: JSON;
+  geoData: any;
   municipalityData: Municipality[];
   selectedDataPoint: DataPoint;
   onMunicipalityClick: (name: string) => void;
