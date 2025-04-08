@@ -82,7 +82,7 @@ export function Header() {
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-black-2 h-10 lg:h-12">
+    <header className="fixed w-screen overflow-x-hidden overflow-y-hidden top-0 left-0 right-0 z-50 bg-black-2 h-10 lg:h-12">
       <div className="container mx-auto px-4 flex items-center justify-between pt-2 lg:pt-0">
         <Link to="/" className="flex items-center gap-2 text-base font-medium">
           Klimatkollen
