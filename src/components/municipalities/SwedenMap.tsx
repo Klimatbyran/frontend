@@ -271,7 +271,7 @@ function SwedenMap({
                 </span>
               </p>
               <p className="text-white/50 text-sm">
-                {t("municipalityList.rank", {
+                {t("municipalities.list.municipalityList.rank", {
                   rank: String(hoveredRank),
                   total: String(municipalityData.length),
                 })}
