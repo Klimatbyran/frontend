@@ -554,7 +554,7 @@
       "totalEmissionsInfo": "Totala utsläpp (Scope 1 & 2)",
       "emissionsChangeRate": "Förändringstakt",
       "emissionsChangeRateInfo": "Förändringstakt för utsläpp jämfört med föregående rapporteringsperiod.",
-      "emissionsChangeRateInfoExtended": "Det här värdet är så högt på grund av inkonsekvent rapporterad data, vilket gör att procentförändringen inte speglar verkliga förändringar.",
+      "emissionsChangeRateInfoExtended": "Det här värdet är ovanligt högt på grund av inkonsekvent rapportering mellan de två senaste perioderna, vilket gör att procentförändringen inte speglar den faktiska utvecklingen.",
       "turnover": "Omsättning",
       "employees": "Anställda",
       "companyReport": "Hållbarhetsrapport",
