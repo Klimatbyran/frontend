@@ -1,6 +1,7 @@
 {
   "yes": "Ja",
   "no": "Nej",
+  "emissionsUnit": "tCO₂e",
   "header": {
     "companies": "Företag",
     "municipalities": "Kommuner",
@@ -369,15 +370,14 @@
       "low": "Nej"
     },
     "totalEmissions": "Totala utsläpp {{year}}",
-    "thousandTons": " tusen ton CO₂",
     "budgetRunsOut": "Koldioxidbudgeten tar slut",
     "budgetKept": "Koldioxidbudgeten tar slut",
     "budgetHolds": "Håller budget",
     "hitNetZero": "Når nettonoll",
     "never": "Aldrig",
     "emissionsDevelopment": "Utsläppsutveckling",
-    "inThousandTons": "I tusen ton CO₂",
     "noParisPath": "Kommunens koldioxidbudget är förbrukad, vilket innebär att ingen linje för Parisavtalet visas i grafen nedan",
+    "inTons": "I ton CO₂",
     "futureEmissions": "Framtida utsläpp",
     "annualChangeSince2015": "Årlig utsläppsförändring sedan 2015",
     "reductionToMeetParis": "Utsläppsminskning för att klara Parisavtalet",
@@ -651,7 +651,7 @@
     },
     "tooltip": {
       "noDataAvailable": "Ingen data tillgänglig",
-      "tonsCO2e": "ton CO₂e"
+      "tonsCO2e": "tCO₂e"
     }
   },
   "municipalities": {
@@ -664,7 +664,6 @@
       "emissionRanking": "UTSLÄPPSRANKING",
       "emission": "Utsläpp {{year}}",
       "emissionInfo": "Kommunens utsläpp av CO₂e för år {{year}}.",
-      "kTCO2": "tCO₂e",
       "changeRate": "Förändringstakt",
       "changeRateInfo": "Förändringstakt för utsläppen sedan Parisavtalet tecknades 2015.",
       "climatePlan": "Klimatplan",
@@ -678,7 +677,6 @@
       "trend": "Trend",
       "parisAgreement": "Parisavtalet",
       "paris": "Parisavtalet",
-      "unit": "ton CO₂e",
       "total": "Totalt",
       "year": "År"
     }

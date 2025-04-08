@@ -13,7 +13,7 @@ import {
 } from "recharts";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "../LanguageProvider";
-import { localizeUnit } from "@/utils/localizeUnit";
+import { formatEmissionsAbsolute, localizeUnit } from "@/utils/localizeUnit";
 
 interface DataPoint {
   year: number;
@@ -57,11 +57,11 @@ export const MunicipalityEmissionsGraph: FC<
                   {t(`municipalities.graph.${entry.dataKey}`)}:
                 </span>
                 <span style={{ color: entry.color }}>
-                  {localizeUnit(
-                    (entry.value as number) / 1000,
+                  {formatEmissionsAbsolute(
+                    entry.value as number,
                     currentLanguage,
                   )}{" "}
-                  {t("municipalities.graph.unit")}
+                  {t("emissionsUnit")}
                 </span>
               </div>
             );
@@ -100,7 +100,9 @@ export const MunicipalityEmissionsGraph: FC<
             tickLine={false}
             axisLine={false}
             tick={{ fontSize: 12 }}
-            tickFormatter={(value) => (value / 1000).toFixed(0)}
+            tickFormatter={(value) =>
+              formatEmissionsAbsolute(value, currentLanguage)
+            }
             width={80}
             domain={[0, "auto"]}
             padding={{ top: 0, bottom: 0 }}

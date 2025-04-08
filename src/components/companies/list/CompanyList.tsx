@@ -11,7 +11,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useLanguage } from "@/components/LanguageProvider";
-import { localizeEmployeeCount, localizeUnit } from "@/utils/localizeUnit";
+import { formatEmployeeCount, localizeUnit } from "@/utils/localizeUnit";
 
 type SortOption = "emissions" | "turnover" | "employees" | "name";
 
@@ -178,7 +178,7 @@ export function CompanyList() {
                       </span>
                     </div>
                     <div className="text-lg font-light">
-                      {localizeEmployeeCount(employees.value, currentLanguage)}
+                      {formatEmployeeCount(employees.value, currentLanguage)}
                     </div>
                   </div>
                 )}

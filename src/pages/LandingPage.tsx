@@ -11,7 +11,7 @@ import { useTranslation } from "react-i18next";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { useEffect } from "react";
 import { useLanguage } from "@/components/LanguageProvider";
-import { localizeUnit } from "@/utils/localizeUnit";
+import { formatEmissionsAbsolute, localizeUnit } from "@/utils/localizeUnit";
 
 export function LandingPage() {
   const { t, i18n } = useTranslation();
@@ -65,7 +65,7 @@ export function LandingPage() {
       value:
         company.reportingPeriods.at(0)?.emissions?.calculatedTotalEmissions ||
         0,
-      displayValue: localizeUnit(
+      displayValue: formatEmissionsAbsolute(
         company.reportingPeriods.at(0)?.emissions?.calculatedTotalEmissions ||
           0,
         currentLanguage,
@@ -200,7 +200,7 @@ export function LandingPage() {
                 items={largestCompanyEmitters}
                 type="company"
                 textColor="text-pink-3"
-                unit="tCO₂e"
+                unit={t("emissionsUnit")}
               />
             </div>
           </div>
