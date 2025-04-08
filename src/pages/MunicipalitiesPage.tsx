@@ -10,7 +10,7 @@ import MunicipalityFilter from "@/components/municipalities/list/MunicipalityLis
 import DataSelector, {
   dataPoints,
 } from "@/components/municipalities/rankedList/MunicipalityDataSelector";
-import { RankedList } from "@/components/RankedList";
+import RankedList from "@/components/municipalities/rankedList/MunicipalityRankedList";
 import InsightsPanel from "@/components/municipalities/rankedList/MunicipalityInsightsPanel";
 import SwedenMap from "@/components/municipalities/SwedenMap";
 import municipalityGeoJson from "@/data/municipalityGeo.json";

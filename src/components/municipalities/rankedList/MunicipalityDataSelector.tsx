@@ -107,7 +107,7 @@ function DataSelector({
   }, []);
 
   return (
-    <div className="bg-gray-900/80 backdrop-blur-sm rounded-2xl p-4 mb-6">
+    <div className="bg-black-2 rounded-2xl p-4 mb-6">
       <div className="flex flex-col gap-2">
         <div className="flex items-center gap-2">
           <BarChart3 className="w-6 h-6 text-white/50" />
@@ -118,18 +118,18 @@ function DataSelector({
         <div className="relative" ref={dropdownRef}>
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="w-full flex items-center justify-between p-3 rounded-xl bg-gray-800/80 text-white hover:bg-gray-700/80 transition-colors"
+            className="w-full flex items-center justify-between p-3 rounded-xl bg-black-1 text-white transition-colors"
           >
             <span className="text-left font-medium">
               {selectedDataPoint.label}
             </span>
             <ChevronDown
-              className={`w-5 h-5 text-white/70 transition-transform ${isOpen ? "rotate-180" : ""}`}
+              className={`w-5 h-5 text-white transition-transform ${isOpen ? "rotate-180" : ""}`}
             />
           </button>
 
           {isOpen && (
-            <div className="absolute z-500 w-full mt-2 bg-gray-800/90 rounded-2xl shadow-lg overflow-hidden backdrop-blur-sm">
+            <div className="absolute z-50 w-full mt-2 bg-black-1 rounded-2xl shadow-lg overflow-hidden backdrop-blur-sm">
               {dataPoints.map((dataPoint) => (
                 <button
                   key={dataPoint.key}
@@ -140,7 +140,7 @@ function DataSelector({
                   className={`w-full text-left px-4 py-3 text-sm transition-colors
                     ${
                       selectedDataPoint.key === dataPoint.key
-                        ? "bg-gray-700/80 text-[#C6F6D5]"
+                        ? "bg-gray-700/80 text-blue-300"
                         : "text-white hover:bg-gray-700/80"
                     }
                   `}

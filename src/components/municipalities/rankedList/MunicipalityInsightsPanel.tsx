@@ -145,8 +145,8 @@ function InsightsPanel({
             <h3 className="text-white text-lg font-semibold mb-4">
               {t(
                 selectedDataPoint.higherIsBetter
-                  ? "insights.topPerformers.titleTop"
-                  : "insights.topPerformers.titleBest",
+                  ? "municipalities.list.insights.topPerformers.titleTop"
+                  : "municipalities.list.insights.topPerformers.titleBest",
               )}
             </h3>
             <div className="space-y-2">
