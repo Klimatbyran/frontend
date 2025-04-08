@@ -33,6 +33,14 @@ export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
     municipality.climatePlanLink === "Saknar plan" ||
     municipality.climatePlanLink === undefined;
 
+  const hitNetZeroDate = municipality.hitNetZero
+    ? new Date(municipality.hitNetZero)
+    : null;
+
+  const budgetRunsOutDate = municipality.budgetRunsOut
+    ? new Date(municipality.budgetRunsOut)
+    : null;
+
   return (
     <Link
       to={`/municipalities/${municipality.name}`}
@@ -67,11 +75,8 @@ export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
             <div className="flex items-center text-sm text-grey mt-2">
               {t("municipalities.card.netZero")}
               <Text variant="body" className="text-green-3 ml-1">
-                {municipality.hitNetZero
-                  ? localizeUnit(
-                      new Date(municipality.hitNetZero),
-                      currentLanguage,
-                    )
+                {hitNetZeroDate && !isNaN(hitNetZeroDate.getTime())
+                  ? localizeUnit(hitNetZeroDate, currentLanguage)
                   : t("municipalityDetailPage.never")}
               </Text>
             </div>
@@ -79,11 +84,8 @@ export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
             <div className="flex items-center text-sm text-grey mt-2">
               {t("municipalities.card.budgetRunsOut")}
               <Text variant="body" className="text-pink-3 ml-1">
-                {municipality.budgetRunsOut
-                  ? localizeUnit(
-                      new Date(municipality.budgetRunsOut),
-                      currentLanguage,
-                    )
+                {budgetRunsOutDate && !isNaN(budgetRunsOutDate.getTime())
+                  ? localizeUnit(budgetRunsOutDate, currentLanguage)
                   : t("municipalityDetailPage.budgetHolds")}
               </Text>
             </div>
