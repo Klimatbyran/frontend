@@ -7,7 +7,11 @@ import { cn } from "@/lib/utils";
 import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
-import { formatEmissionsAbsolute, localizeUnit } from "@/utils/localizeUnit";
+import {
+  formatEmissionsAbsolute,
+  formatPercent,
+  localizeUnit,
+} from "@/utils/localizeUnit";
 
 interface Scope3ChartProps {
   categories: Array<{
@@ -96,7 +100,7 @@ export function Scope3Chart({ categories, className }: Scope3ChartProps) {
             {t("emissionsUnit")}
           </Text>
           <Text className="text-grey">
-            ({localizeUnit(data.percentage, currentLanguage)}%)
+            ({formatPercent(data.percentage / 100, currentLanguage)})
           </Text>
           <Text variant="small" className="text-blue-2 mt-2">
             {t("companies.scope3Chart.clickToFilter")}
@@ -121,7 +125,7 @@ export function Scope3Chart({ categories, className }: Scope3ChartProps) {
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
     const y = cy + radius * Math.sin(-midAngle * RADIAN);
     const anchor = x > cx ? "start" : "end";
-    const percentage = localizeUnit(percent * 100, currentLanguage);
+    const percentage = formatPercent(percent, currentLanguage);
     const data = chartData[index];
 
     // Split the category name into words
@@ -147,7 +151,7 @@ export function Scope3Chart({ categories, className }: Scope3ChartProps) {
           </tspan>
         )}
         <tspan x={x} dy="16">
-          {percentage}%
+          {percentage}
         </tspan>
       </text>
     );
