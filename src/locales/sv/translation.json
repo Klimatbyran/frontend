@@ -724,7 +724,7 @@
           "title": "Nyckelstatistik",
           "average": "Genomsnittligt {{metric}}",
           "range": {
-            "label": "Omfång",
+            "label": "Spann",
             "description": "Skillnad mellan högsta och lägsta värde",
             "fromTo": "Från {{min}} till {{max}}"
           },
