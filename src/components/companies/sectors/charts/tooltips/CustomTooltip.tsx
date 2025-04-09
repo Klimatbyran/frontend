@@ -1,7 +1,7 @@
 import React from "react";
 import { TooltipProps } from "recharts";
 import { useTranslation } from "react-i18next";
-import { formatEmissionsAbsolute } from "@/utils/localizeUnit";
+import { formatEmissionsAbsolute, formatPercent } from "@/utils/localizeUnit";
 import { useLanguage } from "@/components/LanguageProvider";
 const CustomTooltip: React.FC<TooltipProps<number, string>> = ({
   active,
@@ -49,7 +49,7 @@ const CustomTooltip: React.FC<TooltipProps<number, string>> = ({
               {formatEmissionsAbsolute(Math.round(total), currentLanguage)}{" "}
               {t("emissionsUnit")}
               <span className="ml-1">
-                ({((total / yearTotal) * 100).toFixed(1)}%)
+                ({formatPercent(total / yearTotal, currentLanguage)})
               </span>
             </div>
           </div>

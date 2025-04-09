@@ -28,6 +28,7 @@ import {
   formatEmployeeCount,
   formatEmissionsAbsolute,
   localizeUnit,
+  formatPercentChange,
 } from "@/utils/localizeUnit";
 
 type CompanyCardProps = Pick<
@@ -213,8 +214,10 @@ export function CompanyCard({
                     emissionsChange < 0 ? "text-green-3" : "text-pink-3"
                   }
                 >
-                  {emissionsChange > 0 ? "+" : ""}
-                  {localizeUnit(Math.ceil(emissionsChange), currentLanguage)}%
+                  {formatPercentChange(
+                    Math.ceil(emissionsChange) / 100,
+                    currentLanguage,
+                  )}
                 </span>
               ) : (
                 <span className="text-grey">{t("companies.card.noData")}</span>
