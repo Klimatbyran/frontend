@@ -7,7 +7,9 @@ import {
 } from "react-simple-maps";
 import { t } from "i18next";
 import { Municipality } from "@/types/municipality";
-import { MapZoomControls } from "./MunicipalityMapZoomControls";
+import { MapZoomControls } from "./MapZoomControls";
+import { MapGradientLegend } from "./MapLegendGradient";
+import { MapTooltip } from "./MapTooltip";
 interface DataPoint {
   label: string;
   key: keyof Municipality;
@@ -107,38 +109,18 @@ function SwedenMap({
   };
 
   const renderGradientLegend = () => {
-    const width = 200;
-    const height = 20;
-
     // Always show worse values on the left and better values on the right
     const leftValue = selectedDataPoint.higherIsBetter ? minValue : maxValue;
     const rightValue = selectedDataPoint.higherIsBetter ? maxValue : minValue;
 
     return (
-      <div className="absolute bottom-4 right-4 bg-black/40 backdrop-blur-sm p-4 rounded-2xl">
-        <p className="text-white/70 text-sm mb-2">{selectedDataPoint.label}</p>
-        <div className="flex items-center">
-          <span className="text-white/50 text-xs mr-2">
-            {leftValue.toFixed(1)}
-            {selectedDataPoint.unit}
-          </span>
-          <div
-            className="relative"
-            style={{ width: `${width}px`, height: `${height}px` }}
-          >
-            <div
-              className="absolute inset-0 rounded-full"
-              style={{
-                background: `linear-gradient(to right, ${getColorByValue(leftValue)}, ${getColorByValue(rightValue)})`,
-              }}
-            />
-          </div>
-          <span className="text-white/50 text-xs ml-2">
-            {rightValue.toFixed(1)}
-            {selectedDataPoint.unit}
-          </span>
-        </div>
-      </div>
+      <MapGradientLegend
+        label={selectedDataPoint.label}
+        leftValue={leftValue}
+        rightValue={rightValue}
+        unit={selectedDataPoint.unit}
+        getColor={getColorByValue}
+      />
     );
   };
 
@@ -224,28 +206,14 @@ function SwedenMap({
       </ComposableMap>
 
       {hoveredMunicipality && (
-        <div className="absolute top-4 left-4 bg-black/40 backdrop-blur-sm p-4 rounded-2xl">
-          <p className="text-white font-medium text-xl">
-            {hoveredMunicipality}
-          </p>
-          {hoveredValue !== null && hoveredRank !== null && (
-            <div className="space-y-1 mt-2">
-              <p className="text-white/70">
-                {selectedDataPoint.label}:{" "}
-                <span className="text-[#C6F6D5]">
-                  {hoveredValue.toFixed(1)}
-                  {selectedDataPoint.unit}
-                </span>
-              </p>
-              <p className="text-white/50 text-sm">
-                {t("municipalities.list.rankedList.rank", {
-                  rank: String(hoveredRank),
-                  total: String(municipalityData.length),
-                })}
-              </p>
-            </div>
-          )}
-        </div>
+        <MapTooltip
+          name={hoveredMunicipality}
+          value={hoveredValue}
+          rank={hoveredRank}
+          label={selectedDataPoint.label}
+          unit={selectedDataPoint.unit}
+          total={municipalityData.length}
+        />
       )}
 
       {renderGradientLegend()}

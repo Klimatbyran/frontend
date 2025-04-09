@@ -68,7 +68,7 @@ function InsightsPanel({
   const belowAverageCount = values.filter((val) => val < average).length;
 
   return (
-    <div className="bg-white/5 backdrop-blur-sm rounded-level-2 p-8 h-full flex flex-col min-h-0">
+    <div className="bg-white/5 backdrop-blur-sm rounded-level-2 p-8 h-full min-w-screen-lg flex flex-col min-h-0">
       <h2 className="text-white text-2xl font-bold mb-6">
         {t("municipalities.list.insights.title")} - {selectedDataPoint.label}
       </h2>
