@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Scope3Data } from "./Scope3Data";
 import type { Emissions, Scope3HistoricalData } from "@/types/company";
 
@@ -10,6 +11,8 @@ export function CompanyScope3({
   emissions,
   historicalData,
 }: CompanyScope3Props) {
+  const { t } = useTranslation();
+
   if (!emissions?.scope3?.categories?.length) {
     return null;
   }
@@ -20,7 +23,8 @@ export function CompanyScope3({
     scope3: emissions.scope3
       ? {
           total: emissions.scope3.calculatedTotalEmissions,
-          unit: emissions.scope3.statedTotalEmissions?.unit || "tCO2e",
+          unit:
+            emissions.scope3.statedTotalEmissions?.unit || t("emissionsUnit"),
           categories: emissions.scope3.categories,
         }
       : null,

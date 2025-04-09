@@ -1,6 +1,7 @@
 {
   "yes": "Ja",
   "no": "Nej",
+  "emissionsUnit": "tCO₂e",
   "header": {
     "companies": "Företag",
     "municipalities": "Kommuner",
@@ -76,7 +77,7 @@
     },
     "mainContent": {
       "title": "Vad är Klimatkollen?",
-      "paragraph1": "Klimatkollen är en medborgarplattform som hjälper medborgare, företag och organisationer att få koll på klimatomställningen, genom att samla in och visualisera klimatdata.",
+      "paragraph1": "Klimatkollen är en öppen och medborgardriven plattform som hjälper individer, företag och organisationer att följa klimatomställningen genom att använda AI för att samla in, analysera och sprida viktig klimatdata.",
       "paragraph2": "Vi visar hur det går med utsläppen, jämfört med hur det borde gå, så att det blir begripligt för allmänheten, bidrar till en faktabaserad debatt och stärker opinionen för klimatåtgärder.",
       "paragraph3": "Vår vision är att beslutsfattare i politik och näringsliv ska påverkas av en välinformerad och växande opinion till att genomföra åtgärder som sänker utsläppen i linje med Parisavtalet.",
       "paragraph4": "Klimatkollen lanserades i mars 2022 och drivs av den ideella föreningen Klimatbyrån. Initiativtagare är Ola Spännar och Frida Berry Eklund. Vi började med lokal klimatdata för Sveriges kommuner. Från 2024 visas klimatdata även för företag."
@@ -369,17 +370,18 @@
       "low": "Nej"
     },
     "totalEmissions": "Totala utsläpp {{year}}",
-    "thousandTons": " tusen ton CO₂",
     "budgetRunsOut": "Koldioxidbudgeten tar slut",
     "budgetKept": "Koldioxidbudgeten tar slut",
     "budgetHolds": "Håller budget",
     "hitNetZero": "Når nettonoll",
     "never": "Aldrig",
     "emissionsDevelopment": "Utsläppsutveckling",
-    "inThousandTons": "I tusen ton CO₂",
+    "noParisPath": "Kommunens koldioxidbudget är förbrukad, vilket innebär att ingen linje för Parisavtalet visas i grafen nedan",
+    "inTons": "I ton CO₂",
     "futureEmissions": "Framtida utsläpp",
     "annualChangeSince2015": "Årlig utsläppsförändring sedan 2015",
     "reductionToMeetParis": "Utsläppsminskning för att klara Parisavtalet",
+    "cannotReduceToParis": "Klarar ej Parisavtalet",
     "consumptionEmissionsPerCapita": "Konsumtionsutsläpp per invånare i ton CO₂",
     "climatePlan": "Klimatplan",
     "noPlan": "Saknar plan",
@@ -649,7 +651,7 @@
     },
     "tooltip": {
       "noDataAvailable": "Ingen data tillgänglig",
-      "tonsCO2e": "ton CO₂e"
+      "tonsCO2e": "tCO₂e"
     }
   },
   "municipalities": {
@@ -662,7 +664,6 @@
       "emissionRanking": "UTSLÄPPSRANKING",
       "emission": "Utsläpp {{year}}",
       "emissionInfo": "Kommunens utsläpp av CO₂e för år {{year}}.",
-      "kTCO2": "tCO₂e",
       "changeRate": "Förändringstakt",
       "changeRateInfo": "Förändringstakt för utsläppen sedan Parisavtalet tecknades 2015.",
       "climatePlan": "Klimatplan",
@@ -676,7 +677,6 @@
       "trend": "Trend",
       "parisAgreement": "Parisavtalet",
       "paris": "Parisavtalet",
-      "unit": "ton CO₂e",
       "total": "Totalt",
       "year": "År"
     }

@@ -2,6 +2,8 @@ import React from "react";
 import { PieChart, BarChart3, ArrowLeft } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useScreenSize } from "@/hooks/useScreenSize";
+import { formatEmissionsAbsolute } from "@/utils/localizeUnit";
+import { useLanguage } from "@/components/LanguageProvider";
 
 interface ChartHeaderProps {
   selectedSector: string | null;
@@ -27,6 +29,7 @@ const ChartHeader: React.FC<ChartHeaderProps> = ({
 }) => {
   const { isMobile, isTablet } = useScreenSize();
   const { t } = useTranslation();
+  const { currentLanguage } = useLanguage();
 
   return (
     <div className="flex flex-col gap-4">
@@ -111,7 +114,11 @@ const ChartHeader: React.FC<ChartHeaderProps> = ({
                   ? t("companiesPage.sectorGraphs.sectorTotal")
                   : t("companiesPage.sectorGraphs.total")}
                 <span className="ml-2 text-xl font-light text-white">
-                  {Math.round(totalEmissions).toLocaleString()} tCO₂e
+                  {formatEmissionsAbsolute(
+                    Math.round(totalEmissions),
+                    currentLanguage,
+                  )}{" "}
+                  {t("emissionsUnit")}
                 </span>
               </div>
             </div>

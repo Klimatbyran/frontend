@@ -137,7 +137,7 @@ const ScopeModal: React.FC<ScopeModalProps> = ({
                         className="text-xl font-light"
                         style={{ color: sectorColor }}
                       >
-                        {sector.total.toLocaleString()} tCO₂e
+                        {sector.total.toLocaleString()} {t("emissionsUnit")}
                       </div>
                       <div className="text-sm text-grey">
                         {sector.companies.length}{" "}
@@ -165,7 +165,8 @@ const ScopeModal: React.FC<ScopeModalProps> = ({
                                 className="text-sm"
                                 style={{ color: sectorColor }}
                               >
-                                {company.emissions.toLocaleString()} tCO₂e
+                                {company.emissions.toLocaleString()}{" "}
+                                {t("emissionsUnit")}
                               </div>
                               <div className="text-xs text-grey">
                                 {(
@@ -192,7 +193,8 @@ const ScopeModal: React.FC<ScopeModalProps> = ({
                               className="text-sm"
                               style={{ color: sectorColor }}
                             >
-                              {company.emissions.toLocaleString()} tCO₂e
+                              {company.emissions.toLocaleString()}{" "}
+                              {t("emissionsUnit")}
                             </div>
                             <div className="text-xs text-grey">
                               {(

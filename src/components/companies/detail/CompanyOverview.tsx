@@ -20,7 +20,11 @@ import {
   SectorCode,
 } from "@/hooks/companies/useCompanyFilters";
 import { useLanguage } from "@/components/LanguageProvider";
-import { localizeEmployeeCount, localizeUnit } from "@/utils/localizeUnit";
+import {
+  formatEmissionsAbsolute,
+  formatEmployeeCount,
+  localizeUnit,
+} from "@/utils/localizeUnit";
 import { cn } from "@/lib/utils";
 import {
   Tooltip,
@@ -78,7 +82,7 @@ export function CompanyOverview({
   );
 
   const formattedEmployeeCount = selectedPeriod.economy?.employees?.value
-    ? localizeEmployeeCount(
+    ? formatEmployeeCount(
         selectedPeriod.economy.employees.value,
         currentLanguage,
       )
@@ -189,17 +193,18 @@ export function CompanyOverview({
                   : "text-orange-2",
               )}
             >
-              {selectedPeriod.emissions?.calculatedTotalEmissions === 0
+              {!selectedPeriod.emissions ||
+              selectedPeriod.emissions?.calculatedTotalEmissions === 0
                 ? t("companies.overview.noData")
-                : localizeUnit(
-                    selectedPeriod.emissions?.calculatedTotalEmissions,
+                : formatEmissionsAbsolute(
+                    selectedPeriod.emissions.calculatedTotalEmissions,
                     currentLanguage,
                   )}
               <span className="text-lg lg:text-2xl md:text-lg sm:text-sm ml-2 text-grey">
                 {t(
                   selectedPeriod.emissions?.calculatedTotalEmissions === 0
                     ? " "
-                    : "companies.overview.tonsCO2e",
+                    : "emissionsUnit",
                 )}
               </span>
             </Text>

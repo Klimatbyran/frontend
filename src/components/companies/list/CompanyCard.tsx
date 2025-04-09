@@ -24,7 +24,11 @@ import { useScreenSize } from "@/hooks/useScreenSize";
 import { useTranslation } from "react-i18next";
 import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useLanguage } from "@/components/LanguageProvider";
-import { localizeEmployeeCount, localizeUnit } from "@/utils/localizeUnit";
+import {
+  formatEmployeeCount,
+  formatEmissionsAbsolute,
+  localizeUnit,
+} from "@/utils/localizeUnit";
 
 type CompanyCardProps = Pick<
   RankedCompany,
@@ -63,7 +67,7 @@ export function CompanyCard({
 
   const employeeCount = latestPeriod?.economy?.employees?.value;
   const formattedEmployeeCount = employeeCount
-    ? localizeEmployeeCount(employeeCount, currentLanguage)
+    ? formatEmployeeCount(employeeCount, currentLanguage)
     : t("companies.card.noData");
 
   const sectorName = industry?.industryGics?.sectorCode
@@ -162,8 +166,10 @@ export function CompanyCard({
             <div className="text-3xl font-light">
               {currentEmissions ? (
                 <span className="text-orange-3">
-                  {localizeUnit(Math.ceil(currentEmissions), currentLanguage)}
-                  <span className="text-lg text-grey ml-1">tCO₂e</span>
+                  {formatEmissionsAbsolute(currentEmissions, currentLanguage)}
+                  <span className="text-lg text-grey ml-1">
+                    {t("emissionsUnit")}
+                  </span>
                 </span>
               ) : (
                 <span className="text-grey">{t("companies.card.noData")}</span>

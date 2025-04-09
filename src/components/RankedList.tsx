@@ -11,7 +11,7 @@ interface RankedListProps {
     id?: string;
     name: string;
     value: number;
-    displayValue?: string;
+    displayValue: string;
   }>;
   type: "municipality" | "company";
   className?: string;
@@ -28,8 +28,6 @@ export function RankedList({
   textColor,
   unit,
 }: RankedListProps) {
-  const { currentLanguage } = useLanguage();
-
   return (
     <div className={cn("bg-black-2 rounded-level-2 p-4 md:p-8", className)}>
       <div className="flex items-center justify-between mb-2 md:mb-4">
@@ -72,8 +70,7 @@ export function RankedList({
               <span
                 className={cn("text-base md:text-lg md:text-right", textColor)}
               >
-                {localizeUnit(item.value, currentLanguage) ||
-                  item.value.toFixed(1)}
+                {item.displayValue}
               </span>
               <span className={cn("text-grey", unit !== " %" && "ml-2")}>
                 {unit.padStart(1, " ")}

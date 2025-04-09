@@ -8,6 +8,9 @@ import {
   CategoryType,
 } from "@/hooks/companies/useCategories";
 import { useScreenSize } from "@/hooks/useScreenSize";
+import { useTranslation } from "react-i18next";
+import { formatEmissionsAbsolute } from "@/utils/localizeUnit";
+import { useLanguage } from "@/components/LanguageProvider";
 
 interface Scope3BreakdownProps {
   companies: RankedCompany[];
@@ -103,6 +106,9 @@ const Scope3Breakdown: React.FC<Scope3BreakdownProps> = ({
   selectedSectors,
   selectedYear,
 }) => {
+  const { t } = useTranslation();
+  const { currentLanguage } = useLanguage();
+
   const isMobile = useScreenSize();
   const {
     getCategoryIcon,
@@ -256,7 +262,8 @@ const Scope3Breakdown: React.FC<Scope3BreakdownProps> = ({
                   {sector.sectorName}
                 </h4>
                 <div className="text-xs text-grey">
-                  {sector.totalScope3.toLocaleString()} tCO₂e
+                  {formatEmissionsAbsolute(sector.totalScope3, currentLanguage)}{" "}
+                  {t("emissionsUnit")}
                 </div>
               </div>
 
