@@ -83,6 +83,7 @@ function InsightsPanel({
             belowAverageCount={belowAverageCount}
             selectedDataPoint={selectedDataPoint}
           />
+
           <InsightsList
             title={t(
               selectedDataPoint.higherIsBetter

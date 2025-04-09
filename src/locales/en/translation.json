@@ -723,7 +723,6 @@
           },
           "distribution": {
             "label": "Distribution",
-            "description": "How the values are spread",
             "aboveAverage": "{{count}} municipalities above average",
             "belowAverage": "{{count}} municipalities below average"
           }

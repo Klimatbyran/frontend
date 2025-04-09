@@ -20,13 +20,13 @@ export default function InsightStatistics({
 }: InsightStatisticsProps) {
   return (
     <div className="bg-white/10 rounded-level-2 p-8">
-      <h3 className="text-white text-lg font-semibold mb-4">
+      <h3 className="text-white text-lg font-semibold">
         {t("municipalities.list.insights.keyStatistics.title")}
       </h3>
-      <div className="space-y-3">
+      <div className="space-y-2">
         <p className="text-white/70 text-sm">
           {t("municipalities.list.insights.keyStatistics.average", {
-            metric: selectedDataPoint.label,
+            metric: selectedDataPoint.label.toLowerCase(),
           })}
         </p>
         <p className="text-white text-2xl font-bold">
@@ -69,11 +69,6 @@ export default function InsightStatistics({
               )}
             </p>
           </div>
-          <p className="text-white/50 text-xs mt-1">
-            {t(
-              "municipalities.list.insights.keyStatistics.distribution.description",
-            )}
-          </p>
         </div>
       </div>
     </div>

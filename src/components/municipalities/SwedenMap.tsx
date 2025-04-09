@@ -5,9 +5,9 @@ import {
   Geography,
   ZoomableGroup,
 } from "react-simple-maps";
-import { ZoomIn, ZoomOut, RotateCcw } from "lucide-react";
 import { t } from "i18next";
 import { Municipality } from "@/types/municipality";
+import { MapZoomControls } from "./MunicipalityMapZoomControls";
 interface DataPoint {
   label: string;
   key: keyof Municipality;
@@ -143,35 +143,17 @@ function SwedenMap({
   };
 
   const renderZoomControls = () => (
-    <div className="absolute top-4 right-4 flex flex-col gap-2">
-      <button
-        onClick={handleZoomIn}
-        aria-label="Zoom in"
-        className="p-2 bg-black/40 backdrop-blur-sm rounded-xl hover:bg-black/60 transition-colors disabled:opacity-50"
-        disabled={position.zoom >= 4}
-      >
-        <ZoomIn className="w-5 h-5 text-white/70" />
-      </button>
-      <button
-        onClick={handleZoomOut}
-        aria-label="Zoom out"
-        className="p-2 bg-black/40 backdrop-blur-sm rounded-xl hover:bg-black/60 transition-colors disabled:opacity-50"
-        disabled={position.zoom <= 0.5}
-      >
-        <ZoomOut className="w-5 h-5 text-white/70" />
-      </button>
-      <button
-        onClick={handleReset}
-        aria-label="Reset zoom"
-        className="p-2 bg-black/40 backdrop-blur-sm rounded-xl hover:bg-black/60 transition-colors"
-      >
-        <RotateCcw className="w-5 h-5 text-white/70" />
-      </button>
-    </div>
+    <MapZoomControls
+      onZoomIn={handleZoomIn}
+      onZoomOut={handleZoomOut}
+      onReset={handleReset}
+      canZoomIn={true}
+      canZoomOut={true}
+    />
   );
 
   return (
-    <div className="relative flex-1 w-full">
+    <div className="relative flex-1 h-full w-full">
       <ComposableMap
         projection="geoMercator"
         projectionConfig={{
