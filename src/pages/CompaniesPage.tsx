@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useCompanies } from "@/hooks/companies/useCompanies";
 import { CompanyCard } from "@/components/companies/list/CompanyCard";
-import { SectionedCompanyList } from "@/components/companies/list/SectionedCompanyList";
+import { CompanyList } from "@/components/companies/list/CompanyList";
 import { Filter, Check, X, BarChart, List } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -411,7 +411,7 @@ export function CompaniesPage() {
         />
       ) : // Always show list view in production
       sectors.length === 0 && !searchQuery ? (
-        <SectionedCompanyList
+        <CompanyList
           companies={filteredCompanies.map(({ ...rest }) => ({
             ...rest,
             metrics: {
@@ -423,7 +423,6 @@ export function CompaniesPage() {
               id: period.startDate,
             })),
           }))}
-          sortBy={sortBy}
         />
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

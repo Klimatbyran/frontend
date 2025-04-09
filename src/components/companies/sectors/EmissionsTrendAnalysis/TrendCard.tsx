@@ -1,7 +1,9 @@
 import React from "react";
 import { X } from "lucide-react";
 import { TrendCardInfo } from "@/types/company";
-import CompanyList from "./CompanyList";
+import TrendCompanyList from "./TrendCompanyList";
+
+
 
 interface TrendCardProps {
   category: "decreasing" | "increasing" | "noComparable";
@@ -58,7 +60,7 @@ const TrendCard: React.FC<TrendCardProps> = ({
                 <X className="h-5 w-5" />
               </button>
             </div>
-            <CompanyList category={category} data={data} />
+            <TrendCompanyList category={category} data={data} />
           </>
         ) : (
           <>
