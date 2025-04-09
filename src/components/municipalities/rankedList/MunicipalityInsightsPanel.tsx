@@ -1,7 +1,9 @@
 import { t } from "i18next";
 import { Municipality } from "@/types/municipality";
+import InsightsList from "./MunicipalityInsightsList";
+import InsightStatistics from "./MunicipalityKeyInsights";
 
-interface DataPoint {
+export interface DataPoint {
   label: string;
   key: keyof Municipality;
   unit: string;
@@ -20,7 +22,7 @@ function InsightsPanel({
 }: InsightsPanelProps) {
   if (!municipalityData?.length) {
     return (
-      <div className="bg-white/5 backdrop-blur-sm rounded-lg p-6 h-full flex items-center justify-center">
+      <div className="bg-white/5 backdrop-blur-sm rounded-level-2 p-8 h-full flex items-center justify-center">
         <p className="text-white text-lg">
           {t("municipalities.list.insights.noData.municipality")}
         </p>
@@ -36,7 +38,7 @@ function InsightsPanel({
 
   if (!validData.length) {
     return (
-      <div className="bg-white/5 backdrop-blur-sm rounded-lg p-6 h-full flex items-center justify-center">
+      <div className="bg-white/5 backdrop-blur-sm rounded-level-2 p-8 h-full flex items-center justify-center">
         <p className="text-white text-lg">
           {t("municipalities.list.insights.noData.metric", {
             metric: selectedDataPoint.label,
@@ -66,130 +68,40 @@ function InsightsPanel({
   const belowAverageCount = values.filter((val) => val < average).length;
 
   return (
-    <div className="bg-white/5 backdrop-blur-sm rounded-lg p-6 h-full flex flex-col min-h-0">
+    <div className="bg-white/5 backdrop-blur-sm rounded-level-2 p-8 h-full flex flex-col min-h-0">
       <h2 className="text-white text-2xl font-bold mb-6">
         {t("municipalities.list.insights.title")} - {selectedDataPoint.label}
       </h2>
 
       <div className="flex-1 overflow-y-auto min-h-0 pr-2">
         <div className="space-y-6">
-          <div className="bg-white/10 rounded-lg p-4">
-            <h3 className="text-white text-lg font-semibold mb-4">
-              {t("municipalities.list.insights.keyStatistics.title")}
-            </h3>
-            <div className="space-y-3">
-              <div>
-                <p className="text-white/70 text-sm">
-                  {t("municipalities.list.insights.keyStatistics.average", {
-                    metric: selectedDataPoint.label,
-                  })}
-                </p>
-                <p className="text-white text-2xl font-bold">
-                  {!isNaN(average) ? average.toFixed(1) : "0"}
-                  {selectedDataPoint.unit}
-                </p>
-              </div>
-              <div>
-                <p className="text-white/70 text-sm">
-                  {t("municipalities.list.insights.keyStatistics.range.label")}
-                </p>
-                <p className="text-white text-2xl font-bold">
-                  {t(
-                    "municipalities.list.insights.keyStatistics.range.fromTo",
-                    {
-                      min: minValue.toFixed(1) + selectedDataPoint.unit,
-                      max: maxValue.toFixed(1) + selectedDataPoint.unit,
-                    },
-                  )}
-                </p>
-                <p className="text-white/50 text-xs mt-1">
-                  {t(
-                    "municipalities.list.insights.keyStatistics.range.description",
-                  )}
-                </p>
-              </div>
-              <div>
-                <p className="text-white/70 text-sm">
-                  {t(
-                    "municipalities.list.insights.keyStatistics.distribution.label",
-                  )}
-                </p>
-                <div className="space-y-1">
-                  <p className="text-white text-sm">
-                    {t(
-                      "municipalities.list.insights.keyStatistics.distribution.aboveAverage",
-                      {
-                        count: aboveAverageCount,
-                      },
-                    )}
-                  </p>
-                  <p className="text-white text-sm">
-                    {t(
-                      "municipalities.list.insights.keyStatistics.distribution.belowAverage",
-                      {
-                        count: belowAverageCount,
-                      },
-                    )}
-                  </p>
-                </div>
-                <p className="text-white/50 text-xs mt-1">
-                  {t(
-                    "municipalities.list.insights.keyStatistics.distribution.description",
-                  )}
-                </p>
-              </div>
-            </div>
-          </div>
+          <InsightStatistics
+            average={average}
+            minValue={minValue}
+            maxValue={maxValue}
+            aboveAverageCount={aboveAverageCount}
+            belowAverageCount={belowAverageCount}
+            selectedDataPoint={selectedDataPoint}
+          />
+          <InsightsList
+            title={t(
+              selectedDataPoint.higherIsBetter
+                ? "municipalities.list.insights.topPerformers.titleTop"
+                : "municipalities.list.insights.topPerformers.titleBest",
+            )}
+            municipalities={topMunicipalities}
+            dataPointKey={selectedDataPoint.key}
+            unit={selectedDataPoint.unit}
+            textColor="text-green-3"
+          />
 
-          <div className="bg-white/10 rounded-lg p-4">
-            <h3 className="text-white text-lg font-semibold mb-4">
-              {t(
-                selectedDataPoint.higherIsBetter
-                  ? "municipalities.list.insights.topPerformers.titleTop"
-                  : "municipalities.list.insights.topPerformers.titleBest",
-              )}
-            </h3>
-            <div className="space-y-2">
-              {topMunicipalities.map((municipality, index) => (
-                <div
-                  key={municipality.name}
-                  className="flex items-center justify-between"
-                >
-                  <div className="flex items-center gap-2">
-                    <span className="text-white/70">{index + 1}.</span>
-                    <span className="text-blue-400">{municipality.name}</span>
-                  </div>
-                  <span className="text-blue-400 font-semibold">
-                    {(municipality[selectedDataPoint.key] as number).toFixed(1)}
-                    {selectedDataPoint.unit}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="bg-white/10 rounded-lg p-4">
-            <h3 className="text-white text-lg font-semibold mb-4">
-              {t("municipalities.list.insights.improvement.title")}
-            </h3>
-            <div className="space-y-2">
-              {bottomMunicipalities.map((municipality, index) => (
-                <div
-                  key={municipality.name}
-                  className="flex items-center justify-between"
-                >
-                  <div className="flex items-center gap-2">
-                    <span className="text-white/70">{index + 1}.</span>
-                    <span className="text-red-400">{municipality.name}</span>
-                  </div>
-                  <span className="text-red-400 font-semibold">
-                    {(municipality[selectedDataPoint.key] as number).toFixed(1)}
-                    {selectedDataPoint.unit}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
+          <InsightsList
+            title={t("municipalities.list.insights.improvement.title")}
+            municipalities={bottomMunicipalities}
+            dataPointKey={selectedDataPoint.key}
+            unit={selectedDataPoint.unit}
+            textColor="text-pink-3"
+          />
         </div>
       </div>
     </div>

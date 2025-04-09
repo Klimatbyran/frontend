@@ -718,21 +718,21 @@
         "title": "Insikter",
         "noData": {
           "municipality": "Ingen kommundata tillgänglig",
-          "metric": "Ingen data tillgänglig för {metric}"
+          "metric": "Ingen data tillgänglig för {{metric}}"
         },
         "keyStatistics": {
           "title": "Nyckelstatistik",
-          "average": "Genomsnittligt {metric}",
+          "average": "Genomsnittligt {{metric}}",
           "range": {
             "label": "Omfång",
             "description": "Skillnad mellan högsta och lägsta värde",
-            "fromTo": "Från {min} till {max}"
+            "fromTo": "Från {{min}} till {{max}}"
           },
           "distribution": {
             "label": "Fördelning",
             "description": "Hur värdena är fördelade",
-            "aboveAverage": "{count} kommuner över genomsnittet",
-            "belowAverage": "{count} kommuner under genomsnittet"
+            "aboveAverage": "{{count}} kommuner över genomsnittet",
+            "belowAverage": "{{count}} kommuner under genomsnittet"
           }
         },
         "topPerformers": {
@@ -751,7 +751,7 @@
         "search": {
           "placeholder": "Sök kommuner..."
         },
-        "rank": "Placering: {rank} av {total}"
+        "rank": "Placering: {{rank}} av {{total}}"
       }
     }
   },

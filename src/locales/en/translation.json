@@ -711,21 +711,21 @@
         "title": "Insights",
         "noData": {
           "municipality": "No municipality data available",
-          "metric": "No data available for {metric}"
+          "metric": "No data available for {{metric}}"
         },
         "keyStatistics": {
           "title": "Key Statistics",
-          "average": "Average {metric}",
+          "average": "Average {{metric}}",
           "range": {
             "label": "Range",
             "description": "Difference between highest and lowest values",
-            "fromTo": "From {min} to {max}"
+            "fromTo": "From {{min}} to {{max}}"
           },
           "distribution": {
             "label": "Distribution",
             "description": "How the values are spread",
-            "aboveAverage": "{count} municipalities above average",
-            "belowAverage": "{count} municipalities below average"
+            "aboveAverage": "{{count}} municipalities above average",
+            "belowAverage": "{{count}} municipalities below average"
           }
         },
         "topPerformers": {
@@ -744,7 +744,7 @@
         "search": {
           "placeholder": "Search municipalities..."
         },
-        "rank": "Rank: {rank} of {total}"
+        "rank": "Rank: {{rank}} of {{total}}"
       }
     }
   },
