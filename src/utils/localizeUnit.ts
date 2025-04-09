@@ -53,3 +53,14 @@ export function formatPercentChange(
     signDisplay: "exceptZero",
   }).format(value);
 }
+
+export function formatPercent(
+  value: number,
+  currentLanguage: SupportedLanguage,
+) {
+  return new Intl.NumberFormat(currentLanguage, {
+    style: "percent",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 1,
+  }).format(value);
+}
