@@ -17,14 +17,14 @@ interface RankedListProps {
   onMunicipalityClick: (name: string) => void;
 }
 
-function RankedList({
+function MunicipalityRankedList({
   municipalityData,
   selectedDataPoint,
   onMunicipalityClick,
 }: RankedListProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 20;
+  const itemsPerPage = 7;
 
   const sortedData = [...municipalityData].sort((a, b) => {
     const aValue = a[selectedDataPoint.key] as number;
@@ -52,7 +52,7 @@ function RankedList({
   };
 
   return (
-    <div className="bg-[#121212] rounded-2xl h-full flex flex-col border border-white/10">
+    <div className="bg-black-2 rounded-2xl flex flex-col border border-white/10">
       <div className="p-4 border-b border-white/10">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/50 w-5 h-5" />
@@ -64,7 +64,7 @@ function RankedList({
               setSearchTerm(e.target.value);
               setCurrentPage(1);
             }}
-            className="w-full pl-10 pr-4 py-2 bg-black/40 text-white rounded-xl placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/20"
+            className="w-full pl-10 pr-4 py-2 bg-black-3 text-white rounded-xl placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/20"
           />
         </div>
       </div>
@@ -120,7 +120,7 @@ function RankedList({
                     onClick={() => handlePageChange(page)}
                     className={`w-8 h-8 rounded-xl text-sm transition-colors ${
                       currentPage === page
-                        ? "bg-white/10 text-[#C6F6D5]"
+                        ? "bg-white/10 text-orange-2"
                         : "text-white/70 hover:bg-black/40"
                     }`}
                   >
@@ -143,4 +143,4 @@ function RankedList({
   );
 }
 
-export default RankedList;
+export default MunicipalityRankedList;

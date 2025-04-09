@@ -10,21 +10,12 @@ import MunicipalityFilter from "@/components/municipalities/list/MunicipalityLis
 import DataSelector, {
   dataPoints,
 } from "@/components/municipalities/rankedList/MunicipalityDataSelector";
-import RankedList from "@/components/municipalities/rankedList/MunicipalityRankedList";
+import MunicipalityRankedList from "@/components/municipalities/rankedList/MunicipalityRankedList";
 import InsightsPanel from "@/components/municipalities/rankedList/MunicipalityInsightsPanel";
 import SwedenMap from "@/components/municipalities/map/SwedenMap";
 import municipalityGeoJson from "@/data/municipalityGeo.json";
 
 type SortOption = "meets_paris" | "name";
-
-interface GeoJsonFeature {
-  type: string;
-  properties: {
-    name: string;
-    [key: string]: any;
-  };
-  geometry: any;
-}
 
 export function MunicipalitiesPage() {
   const { t } = useTranslation();
@@ -128,7 +119,7 @@ export function MunicipalitiesPage() {
               onMunicipalityClick={handleMunicipalityClick}
             />
           ) : (
-            <RankedList
+            <MunicipalityRankedList
               municipalityData={municipalities}
               selectedDataPoint={selectedDataPoint}
               onMunicipalityClick={handleMunicipalityClick}

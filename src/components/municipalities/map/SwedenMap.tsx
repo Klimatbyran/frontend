@@ -5,7 +5,6 @@ import {
   Geography,
   ZoomableGroup,
 } from "react-simple-maps";
-import { t } from "i18next";
 import { Municipality } from "@/types/municipality";
 import { MapZoomControls } from "./MapZoomControls";
 import { MapGradientLegend } from "./MapLegendGradient";
