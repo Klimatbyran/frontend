@@ -679,6 +679,79 @@
       "paris": "Parisavtalet",
       "total": "Totalt",
       "year": "År"
+    },
+    "list": {
+      "dataSelector": {
+        "label": "Välj datapunkt",
+        "tooltips": {
+          "higherBetter": "Högre värden är bättre",
+          "lowerBetter": "Lägre värden är bättre"
+        },
+        "dataPoints": {
+          "historicalEmissionChange": {
+            "label": "Historisk utsläppsförändring",
+            "description": "Historisk förändring av utsläpp"
+          },
+          "requiredEmissionChange": {
+            "label": "Nödvändig utsläppsminskning",
+            "description": "Nödvändig minskning av utsläpp för att nå klimatmålen"
+          },
+          "electricCarGrowth": {
+            "label": "Tillväxt av elbilar",
+            "description": "Förändring i andel elbilar"
+          },
+          "totalConsumptionEmission": {
+            "label": "Totala konsumtionsutsläpp",
+            "description": "Totala utsläpp från konsumtion"
+          },
+          "evsPerChargePoint": {
+            "label": "Elbilar per laddpunkt",
+            "description": "Antal elbilar per laddningspunkt"
+          },
+          "bicycleInfrastructure": {
+            "label": "Cykelinfrastruktur",
+            "description": "Meter cykelväg per invånare"
+          }
+        }
+      },
+      "insights": {
+        "title": "Insikter",
+        "noData": {
+          "municipality": "Ingen kommundata tillgänglig",
+          "metric": "Ingen data tillgänglig för {{metric}}"
+        },
+        "keyStatistics": {
+          "title": "Nyckelstatistik",
+          "average": "Genomsnittligt {{metric}}",
+          "range": {
+            "label": "Spann",
+            "description": "Skillnad mellan högsta och lägsta värde",
+            "fromTo": "Från {{min}} till {{max}}"
+          },
+          "distribution": {
+            "label": "Fördelning",
+            "aboveAverage": "{{count}} kommuner över genomsnittet",
+            "belowAverage": "{{count}} kommuner under genomsnittet"
+          }
+        },
+        "topPerformers": {
+          "titleBest": "Bästa kommuner",
+          "titleTop": "Toppresterande kommuner"
+        },
+        "improvement": {
+          "title": "Sämsta kommuner"
+        }
+      },
+      "viewToggle": {
+        "showList": "Visa lista",
+        "showMap": "Visa karta"
+      },
+      "rankedList": {
+        "search": {
+          "placeholder": "Sök kommuner..."
+        },
+        "rank": "Placering: {{rank}} av {{total}}"
+      }
     }
   },
   "errorPage": {
