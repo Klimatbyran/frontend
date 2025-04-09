@@ -10,7 +10,12 @@ import { MunicipalityLinkCard } from "@/components/municipalities/MunicipalityLi
 import { useTranslation } from "react-i18next";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { useEffect } from "react";
-import { formatEmissionsAbsolute, localizeUnit } from "@/utils/localizeUnit";
+import {
+  formatEmissionsAbsolute,
+  formatPercent,
+  formatPercentChange,
+  localizeUnit,
+} from "@/utils/localizeUnit";
 import { useLanguage } from "@/components/LanguageProvider";
 
 export function MunicipalityDetailPage() {
@@ -195,19 +200,19 @@ export function MunicipalityDetailPage() {
           items={[
             {
               title: t("municipalityDetailPage.annualChangeSince2015"),
-              value: `${localizeUnit(
-                municipality.historicalEmissionChangePercent,
+              value: `${formatPercentChange(
+                municipality.historicalEmissionChangePercent / 100,
                 currentLanguage,
-              )}%`,
+              )}`,
               valueClassName: "text-orange-2",
             },
             {
               title: t("municipalityDetailPage.reductionToMeetParis"),
               value: municipality.neededEmissionChangePercent
-                ? `-${localizeUnit(
-                    municipality.neededEmissionChangePercent,
+                ? `${formatPercentChange(
+                    -municipality.neededEmissionChangePercent / 100,
                     currentLanguage,
-                  )}%`
+                  )}`
                 : t("municipalityDetailPage.cannotReduceToParis"),
               valueClassName: municipality.neededEmissionChangePercent
                 ? "text-green-3"
@@ -260,10 +265,10 @@ export function MunicipalityDetailPage() {
           items={[
             {
               title: t("municipalityDetailPage.electricCarChange"),
-              value: `${localizeUnit(
-                municipality.electricCarChangePercent * 100,
+              value: `${formatPercent(
+                municipality.electricCarChangePercent,
                 currentLanguage,
-              )}%`,
+              )}`,
               valueClassName: "text-orange-2",
             },
             {
