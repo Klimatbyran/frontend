@@ -1,7 +1,7 @@
 import React from "react";
 import { X } from "lucide-react";
 import { TrendCardInfo } from "@/types/company";
-import CompanyList from "./CompanyList";
+import { CompanyList } from "../../list/CompanyList";
 
 interface TrendCardProps {
   category: "decreasing" | "increasing" | "noComparable";
