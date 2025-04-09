@@ -49,7 +49,12 @@ const CustomTooltip: React.FC<TooltipProps<number, string>> = ({
               {formatEmissionsAbsolute(Math.round(total), currentLanguage)}{" "}
               {t("emissionsUnit")}
               <span className="ml-1">
-                ({formatPercent(total / yearTotal, currentLanguage)})
+                (
+                {formatPercent(
+                  yearTotal > 0 ? total / yearTotal : 0,
+                  currentLanguage,
+                )}
+                )
               </span>
             </div>
           </div>
