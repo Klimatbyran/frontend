@@ -1,5 +1,5 @@
 import { useLanguage } from "@/components/LanguageProvider";
-import { formatEmissionsAbsolute } from "@/utils/localizeUnit";
+import { formatEmissionsAbsolute, formatPercent } from "@/utils/localizeUnit";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
@@ -68,7 +68,7 @@ const ScopeCard: React.FC<ScopeCardProps> = ({
             {t("companiesPage.sectorGraphs.shareOfTotal")}
           </div>
           <div className={`text-sm ${color.replace("bg-", "text-")}`}>
-            {percent.toFixed(1)}%
+            {formatPercent(percent, currentLanguage)}
           </div>
         </div>
 
