@@ -97,6 +97,7 @@ function SwedenMap({
     if (value === null) return "#1a1a1a";
 
     const normalizedValue = (value - minValue) / (maxValue - minValue);
+
     // Adjust color value based on whether higher or lower is better
     const colorValue = selectedDataPoint.higherIsBetter
       ? normalizedValue
@@ -143,7 +144,6 @@ function SwedenMap({
         style={{
           width: "100%",
           height: "100%",
-          backgroundColor: "#000",
         }}
       >
         <ZoomableGroup
