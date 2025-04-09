@@ -153,7 +153,7 @@ function SwedenMap({
   );
 
   return (
-    <div className="relative flex-1 h-full w-full">
+    <div className="relative flex-1 h-full max-w-screen-lg">
       <ComposableMap
         projection="geoMercator"
         projectionConfig={{
