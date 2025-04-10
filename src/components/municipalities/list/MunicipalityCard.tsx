@@ -5,7 +5,11 @@ import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
 import type { Municipality } from "@/types/municipality";
 import { CardInfo } from "./MunicipalityCardInfo";
-import { formatEmissionsAbsolute, localizeUnit } from "@/utils/localizeUnit";
+import {
+  formatEmissionsAbsolute,
+  formatPercentChange,
+  localizeUnit,
+} from "@/utils/localizeUnit";
 import { useLanguage } from "@/components/LanguageProvider";
 
 interface MunicipalityCardProps {
@@ -24,9 +28,11 @@ export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
   const lastYear = lastYearEmission?.year.toString() || "";
 
   const emissionsChangeExists = municipality.historicalEmissionChangePercent;
-  const positiveEmissionsChange = emissionsChangeExists > 0 ? "+" : "";
   const emissionsChange = emissionsChangeExists
-    ? positiveEmissionsChange + Math.ceil(emissionsChangeExists) + "%"
+    ? formatPercentChange(
+        Math.ceil(emissionsChangeExists) / 100,
+        currentLanguage,
+      )
     : t("municipalities.card.noData");
 
   const noClimatePlan =

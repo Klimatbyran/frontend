@@ -23,6 +23,7 @@ import { useLanguage } from "@/components/LanguageProvider";
 import {
   formatEmissionsAbsolute,
   formatEmployeeCount,
+  formatPercentChange,
   localizeUnit,
 } from "@/utils/localizeUnit";
 import { cn } from "@/lib/utils";
@@ -247,8 +248,10 @@ export function CompanyOverview({
                   yearOverYearChange < 0 ? "text-green-3" : "text-pink-3"
                 }
               >
-                {yearOverYearChange > 0 ? "+" : ""}
-                {Math.ceil(yearOverYearChange).toLocaleString("sv-SE")}%
+                {formatPercentChange(
+                  Math.ceil(yearOverYearChange) / 100,
+                  currentLanguage,
+                )}
               </span>
             ) : (
               <span className="text-grey">

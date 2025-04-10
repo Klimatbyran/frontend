@@ -5,7 +5,7 @@ import {
   getCompanyColors,
 } from "@/hooks/companies/useCompanyFilters";
 import { useScreenSize } from "@/hooks/useScreenSize";
-import { formatEmissionsAbsolute } from "@/utils/localizeUnit";
+import { formatEmissionsAbsolute, formatPercent } from "@/utils/localizeUnit";
 import { useLanguage } from "@/components/LanguageProvider";
 
 interface PieLegendProps {
@@ -53,10 +53,10 @@ const PieLegend: React.FC<PieLegendProps> = ({
     >
       {payload.map((entry, index) => {
         console.log("Entry in map:", entry);
-        const percentage = (
-          (entry.payload.value / entry.payload.total) *
-          100
-        ).toFixed(1);
+        const percentage = formatPercent(
+          entry.payload.value / entry.payload.total,
+          currentLanguage,
+        );
 
         let color;
         if (selectedSector) {
@@ -98,7 +98,7 @@ const PieLegend: React.FC<PieLegendProps> = ({
                   )}{" "}
                   {t("emissionsUnit")}
                 </span>
-                <span>{percentage}%</span>
+                <span>{percentage}</span>
               </div>
             </div>
           </div>
