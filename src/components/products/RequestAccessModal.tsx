@@ -22,7 +22,7 @@ export const RequestAccessModal = ({
 }: RequestAccessModalProps) => {
   const { t } = useTranslation();
   const [email, setEmail] = useState("");
-  const [reason, setReason] = useState("work");
+  const [reason, setReason] = useState("Work");
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
   const MAILCHIMP_URL = import.meta.env.VITE_MAILCHIMP_DATABASE_URL || "https://";
@@ -144,14 +144,14 @@ export const RequestAccessModal = ({
                                 value={reason}
                                 onValueChange={setReason}
                               >
-                                <DropdownMenuRadioItem value="work">
-                                  Work
+                                <DropdownMenuRadioItem value="Work">
+                                  {t("productsPage.requestAccess.reasonWork")}
                                 </DropdownMenuRadioItem>
-                                <DropdownMenuRadioItem value="hobby">
-                                  Hobby
+                                <DropdownMenuRadioItem value="Hobby">
+                                  {t("productsPage.requestAccess.reasonHobby")}
                                 </DropdownMenuRadioItem>
-                                <DropdownMenuRadioItem value="curiosity">
-                                  Curiosity
+                                <DropdownMenuRadioItem value="Curiosity">
+                                  {t("productsPage.requestAccess.reasonCuriosity")}
                                 </DropdownMenuRadioItem>
                               </DropdownMenuRadioGroup>
                             </DropdownMenuContent>
@@ -184,7 +184,7 @@ export const RequestAccessModal = ({
                             onClick={onClose}
                             className="px-4 py-2 text-sm font-medium text-grey hover:text-white focus:outline-none"
                           >
-                            {t("common.cancel")}
+                            {t("productsPage.requestAccess.cancel")}
                           </button>
                           <button
                             type="submit"
