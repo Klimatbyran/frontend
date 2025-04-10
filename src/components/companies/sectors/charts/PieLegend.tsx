@@ -5,6 +5,8 @@ import {
   getCompanyColors,
 } from "@/hooks/companies/useCompanyFilters";
 import { useScreenSize } from "@/hooks/useScreenSize";
+import { formatEmissionsAbsolute } from "@/utils/localizeUnit";
+import { useLanguage } from "@/components/LanguageProvider";
 
 interface PieLegendProps {
   payload: any[];
@@ -19,6 +21,8 @@ const PieLegend: React.FC<PieLegendProps> = ({
 }) => {
   const isMobile = useScreenSize();
   const { t } = useTranslation();
+  const { currentLanguage } = useLanguage();
+
   const navigateToCompany = (wikidataId: string) => {
     window.location.href = `/companies/${wikidataId}`;
   };
@@ -88,7 +92,11 @@ const PieLegend: React.FC<PieLegendProps> = ({
               </div>
               <div className="text-xs text-grey flex justify-between">
                 <span>
-                  {Math.round(entry.payload.value).toLocaleString()} tCO₂e
+                  {formatEmissionsAbsolute(
+                    Math.round(entry.payload.value),
+                    currentLanguage,
+                  )}{" "}
+                  {t("emissionsUnit")}
                 </span>
                 <span>{percentage}%</span>
               </div>

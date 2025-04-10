@@ -11,7 +11,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useLanguage } from "@/components/LanguageProvider";
-import { localizeUnit } from "@/utils/localizeUnit";
+import { formatEmployeeCount, localizeUnit } from "@/utils/localizeUnit";
 
 type SortOption = "emissions" | "turnover" | "employees" | "name";
 
@@ -58,7 +58,7 @@ export function CompanyList() {
         }
       });
     },
-    []
+    [],
   );
 
   // Update sorted companies when companies or sort option changes
@@ -120,7 +120,7 @@ export function CompanyList() {
           const largestCategory = scope3Categories.reduce(
             (max, current) =>
               current.total > (max?.total || 0) ? current : max,
-            scope3Categories[0]
+            scope3Categories[0],
           );
 
           // Get the color for the largest category
@@ -178,7 +178,7 @@ export function CompanyList() {
                       </span>
                     </div>
                     <div className="text-lg font-light">
-                      {localizeUnit(employees.value, currentLanguage)}
+                      {formatEmployeeCount(employees.value, currentLanguage)}
                     </div>
                   </div>
                 )}
@@ -192,7 +192,11 @@ export function CompanyList() {
                       </span>
                     </div>
                     <div className="text-lg font-light">
-                      {localizeUnit(emissions.scope1And2.total / 1000, currentLanguage)}k
+                      {localizeUnit(
+                        emissions.scope1And2.total / 1000,
+                        currentLanguage,
+                      )}
+                      k
                       <span className="text-xs text-grey ml-1">
                         {emissions.scope1And2.unit}
                       </span>

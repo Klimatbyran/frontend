@@ -22,7 +22,6 @@ export function CompanyEditInputField({
   onInputChange,
   formData
 }: CompanyEditInputFieldProps) {
-
   const handleChange = (event) => {
     onInputChange(name, event.target.value, value);
   }
@@ -59,10 +58,10 @@ export function CompanyEditInputField({
       {displayAddition === "verification" && <IconCheckbox key={name + "-checkbox"} defaultChecked={verified} checked={currentVerified} name={name + "-checkbox"} onCheckedChange={handleCheckboxChange}/>}
       {displayAddition === "topBracket" && topBracket}
       {displayAddition === "bottomBracket" && bottomBracket}
+
     </div>
   );
 }
-
 export function CompanyYearHeaderField({ text, reset, id }: { text: string, reset: (year: number) => undefined, id: number}) { 
 
   const handleClick = () => {
@@ -76,6 +75,11 @@ export function CompanyYearHeaderField({ text, reset, id }: { text: string, rese
 }
 
 export function CompanyEmptyField() {
-  return <div key={Math.random() * 1000 + "-container"} className="w-[187px] py-2 border-r ms-2 border-white min-h-[36px]"></div>;
+  return (
+    <div
+      key={Math.random() * 1000 + "-container"}
+      className="w-[187px] py-2 border-r ms-2 border-white min-h-[36px]"
+    ></div>
+  );
 }
  

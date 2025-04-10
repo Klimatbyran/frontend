@@ -27,6 +27,7 @@ import ChartHeader from "./charts/ChartHeader";
 import PieLegend from "./charts/PieLegend";
 import EmissionsTrendAnalysis from "./EmissionsTrendAnalysis/EmissionsTrendAnalysis";
 import EmissionsSourcesAnalysis from "./EmissionsSourcesAnalysis/EmissionsSourcesAnlaysis";
+import { useTranslation } from "react-i18next";
 
 interface EmissionsChartProps {
   companies: RankedCompany[];
@@ -66,6 +67,7 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
   companies,
   selectedSectors,
 }) => {
+  const { t } = useTranslation();
   const sectorNames = useSectorNames();
 
   const [chartType, setChartType] = useState<ChartType>("pie");
@@ -78,7 +80,7 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
     selectedSectors,
     selectedSector,
     chartType,
-    selectedYear
+    selectedYear,
   );
 
   const [legendData, setLegendData] = useState<any[]>([]);
@@ -96,7 +98,7 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
 
     const [sector] = data.activePayload[0].dataKey.split("_scope");
     const sectorCode = Object.entries(sectorNames).find(
-      ([_, name]) => name === sector
+      ([_, name]) => name === sector,
     )?.[0];
 
     if (sectorCode) {
@@ -150,10 +152,10 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
                       selectedSector
                         ? getCompanyColors(index).base
                         : "sectorCode" in entry
-                        ? sectorColors[
-                            entry.sectorCode as keyof typeof sectorColors
-                          ]?.base || "#888888"
-                        : "#888888"
+                          ? sectorColors[
+                              entry.sectorCode as keyof typeof sectorColors
+                            ]?.base || "#888888"
+                          : "#888888"
                     }
                   />
                 ))}
@@ -193,7 +195,7 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
               />
               <YAxis
                 label={{
-                  value: "tCO₂e",
+                  value: t("emissionsUnit"),
                   angle: -90,
                   position: "insideLeft",
                   fill: "#888888",

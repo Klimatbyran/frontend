@@ -91,7 +91,7 @@ export const useSectors = () => {
 
   // Filter out the "all" option from the sector options
   const filteredOptions = sectorOptions.filter(
-    (option) => option.value !== "all"
+    (option) => option.value !== "all",
   );
 
   // Return the array with the correct type

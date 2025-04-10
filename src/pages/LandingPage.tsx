@@ -11,14 +11,14 @@ import { useTranslation } from "react-i18next";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { useEffect } from "react";
 import { useLanguage } from "@/components/LanguageProvider";
-import { localizeUnit } from "@/utils/localizeUnit";
+import { formatEmissionsAbsolute, localizeUnit } from "@/utils/localizeUnit";
 
 export function LandingPage() {
   const { t, i18n } = useTranslation();
   const [selectedTab, setSelectedTab] = useState("companies");
   const { companies } = useCompanies();
   const { getTopMunicipalities } = useMunicipalities();
-  const { currentLanguage } = useLanguage()
+  const { currentLanguage } = useLanguage();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -56,7 +56,7 @@ export function LandingPage() {
     .sort(
       (a, b) =>
         (b.reportingPeriods[0]?.emissions?.calculatedTotalEmissions || 0) -
-        (a.reportingPeriods[0]?.emissions?.calculatedTotalEmissions || 0)
+        (a.reportingPeriods[0]?.emissions?.calculatedTotalEmissions || 0),
     )
     .slice(0, 5)
     .map((company) => ({
@@ -65,9 +65,11 @@ export function LandingPage() {
       value:
         company.reportingPeriods.at(0)?.emissions?.calculatedTotalEmissions ||
         0,
-      displayValue: localizeUnit(
-        company.reportingPeriods.at(0)?.emissions?.calculatedTotalEmissions || 0
-      , currentLanguage),
+      displayValue: formatEmissionsAbsolute(
+        company.reportingPeriods.at(0)?.emissions?.calculatedTotalEmissions ||
+          0,
+        currentLanguage,
+      ),
     }));
 
   // Get top 5 municipalities by emissions reduction
@@ -198,7 +200,7 @@ export function LandingPage() {
                 items={largestCompanyEmitters}
                 type="company"
                 textColor="text-pink-3"
-                unit="tCO₂e"
+                unit={t("emissionsUnit")}
               />
             </div>
           </div>

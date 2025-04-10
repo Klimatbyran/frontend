@@ -48,7 +48,7 @@ export function detectLanguageFromPath(path: string): SupportedLanguage {
  */
 export function getLanguageUrl(
   path: string,
-  language: SupportedLanguage
+  language: SupportedLanguage,
 ): string {
   // Normalize path by removing any existing language prefix
   const normalizedPath = path.replace(/^\/(en|sv)/, "");

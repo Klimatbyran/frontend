@@ -339,10 +339,10 @@ export const allMunicipalities = Object.values(regions).flat();
 
 // Get region for a municipality
 export function getRegionForMunicipality(
-  municipality: string
+  municipality: string,
 ): Region | undefined {
   return Object.entries(regions).find(([_, municipalities]) =>
-    municipalities.includes(municipality)
+    municipalities.includes(municipality),
   )?.[0] as Region | undefined;
 }
 
@@ -360,6 +360,6 @@ export function getMunicipalityId(municipality: string): string {
 // Get municipality by ID
 export function getMunicipalityById(id: string): Municipality | undefined {
   return allMunicipalities.find(
-    (municipality) => getMunicipalityId(municipality) === id
+    (municipality) => getMunicipalityId(municipality) === id,
   );
 }

@@ -8,7 +8,7 @@ interface TrendCardsProps {
   trends: TrendData;
   selectedCategory: "decreasing" | "increasing" | "noComparable" | null;
   onCategorySelect: (
-    category: "decreasing" | "increasing" | "noComparable" | null
+    category: "decreasing" | "increasing" | "noComparable" | null,
   ) => void;
 }
 

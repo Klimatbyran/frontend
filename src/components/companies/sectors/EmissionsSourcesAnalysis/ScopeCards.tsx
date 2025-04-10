@@ -56,7 +56,7 @@ const ScopeCards: React.FC<ScopeCardsProps> = ({
           color="bg-blue-3"
           percent={(scopeData.scope3.upstream.total / totalEmissions) * 100}
           description={t(
-            "companiesPage.sectorGraphs.scope3UpstreamDescription"
+            "companiesPage.sectorGraphs.scope3UpstreamDescription",
           )}
           onClick={() => setSelectedScope("scope3_upstream")}
         />
@@ -68,7 +68,7 @@ const ScopeCards: React.FC<ScopeCardsProps> = ({
           color="bg-green-3"
           percent={(scopeData.scope3.downstream.total / totalEmissions) * 100}
           description={t(
-            "companiesPage.sectorGraphs.scope3DownstreamDescription"
+            "companiesPage.sectorGraphs.scope3DownstreamDescription",
           )}
           onClick={() => setSelectedScope("scope3_downstream")}
         />
@@ -81,10 +81,10 @@ const ScopeCards: React.FC<ScopeCardsProps> = ({
             selectedScope === "scope1"
               ? t("companiesPage.sectorGraphs.scope1")
               : selectedScope === "scope2"
-              ? t("companiesPage.sectorGraphs.scope2")
-              : selectedScope === "scope3_upstream"
-              ? t("companiesPage.sectorGraphs.scope3Upstream")
-              : t("companiesPage.sectorGraphs.scope3Downstream")
+                ? t("companiesPage.sectorGraphs.scope2")
+                : selectedScope === "scope3_upstream"
+                  ? t("companiesPage.sectorGraphs.scope3Upstream")
+                  : t("companiesPage.sectorGraphs.scope3Downstream")
           }
           onClose={() => setSelectedScope(null)}
           companies={companies}

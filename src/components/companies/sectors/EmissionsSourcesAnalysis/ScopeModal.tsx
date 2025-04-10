@@ -32,7 +32,7 @@ const ScopeModal: React.FC<ScopeModalProps> = ({
       .map((sectorCode) => {
         const sectorName = sectorNames[sectorCode as keyof typeof sectorNames];
         const sectorCompanies = companies.filter(
-          (company) => company.industry?.industryGics.sectorCode === sectorCode
+          (company) => company.industry?.industryGics.sectorCode === sectorCode,
         );
 
         let total = 0;
@@ -43,7 +43,7 @@ const ScopeModal: React.FC<ScopeModalProps> = ({
 
         sectorCompanies.forEach((company) => {
           const period = company.reportingPeriods.find((p) =>
-            p.startDate.startsWith(selectedYear)
+            p.startDate.startsWith(selectedYear),
           );
 
           if (period?.emissions) {
@@ -137,7 +137,7 @@ const ScopeModal: React.FC<ScopeModalProps> = ({
                         className="text-xl font-light"
                         style={{ color: sectorColor }}
                       >
-                        {sector.total.toLocaleString()} tCO₂e
+                        {sector.total.toLocaleString()} {t("emissionsUnit")}
                       </div>
                       <div className="text-sm text-grey">
                         {sector.companies.length}{" "}
@@ -165,7 +165,8 @@ const ScopeModal: React.FC<ScopeModalProps> = ({
                                 className="text-sm"
                                 style={{ color: sectorColor }}
                               >
-                                {company.emissions.toLocaleString()} tCO₂e
+                                {company.emissions.toLocaleString()}{" "}
+                                {t("emissionsUnit")}
                               </div>
                               <div className="text-xs text-grey">
                                 {(
@@ -173,7 +174,7 @@ const ScopeModal: React.FC<ScopeModalProps> = ({
                                   100
                                 ).toFixed(1)}
                                 {t(
-                                  "companiesPage.sectorGraphs.percentOfSector"
+                                  "companiesPage.sectorGraphs.percentOfSector",
                                 )}
                               </div>
                             </div>
@@ -192,7 +193,8 @@ const ScopeModal: React.FC<ScopeModalProps> = ({
                               className="text-sm"
                               style={{ color: sectorColor }}
                             >
-                              {company.emissions.toLocaleString()} tCO₂e
+                              {company.emissions.toLocaleString()}{" "}
+                              {t("emissionsUnit")}
                             </div>
                             <div className="text-xs text-grey">
                               {(

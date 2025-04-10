@@ -11,6 +11,7 @@ import rehypeKatex from "rehype-katex";
 import rehypeRaw from "rehype-raw";
 import { BlogPostMeta, blogMetadata } from "../lib/blog/blogPostsList";
 import { useTranslation } from "react-i18next";
+import { useScreenSize } from "@/hooks/useScreenSize";
 
 // Import Markdown files
 const markdownFiles = import.meta.glob("/src/lib/blog/posts/*.md", {
@@ -28,6 +29,7 @@ export function BlogDetailPage() {
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
   const location = useLocation();
+  const { isMobile } = useScreenSize();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -98,7 +100,11 @@ export function BlogDetailPage() {
     : [];
 
   return (
-    <div className="max-w-[1200px] mx-auto space-y-16">
+    <div
+      className={`max-w-[1200px] mx-auto ${
+        isMobile ? "space-y-8" : "space-y-16"
+      } px-4`}
+    >
       {/* Navigation */}
       <div className="flex items-center justify-between">
         <Button variant="ghost" size="sm" className="gap-2" asChild>
@@ -123,8 +129,8 @@ export function BlogDetailPage() {
       </div>
 
       {/* Hero Section */}
-      <div className="space-y-8">
-        <div className="flex items-center gap-4">
+      <div className={`space-y-${isMobile ? "4" : "8"}`}>
+        <div className="flex flex-wrap items-center gap-4">
           <span className="px-3 py-1 bg-blue-5/50 rounded-full text-blue-2 text-sm">
             {blogPost.metadata.category}
           </span>
@@ -140,14 +146,24 @@ export function BlogDetailPage() {
           </div>
         </div>
 
-        <Text variant="display">{blogPost.metadata.title}</Text>
+        <Text
+          variant={isMobile ? "h1" : "display"}
+          className={isMobile ? "text-3xl" : ""}
+        >
+          {blogPost.metadata.title}
+        </Text>
+
         <Text variant="body" className="text-grey max-w-3xl">
           {blogPost.metadata.excerpt}
         </Text>
       </div>
 
       {/* Featured Image */}
-      <div className="relative h-[500px] rounded-level-1 overflow-hidden">
+      <div
+        className={`relative ${
+          isMobile ? "h-[250px]" : "h-[500px]"
+        } rounded-level-1 overflow-hidden`}
+      >
         <img
           src={blogPost.metadata.image}
           alt={blogPost.metadata.title}
@@ -240,7 +256,7 @@ export function BlogDetailPage() {
                       <Text className="text-grey">{post.excerpt}</Text>
                     </div>
                   </Link>
-                )
+                ),
             )}
           </div>
         </div>

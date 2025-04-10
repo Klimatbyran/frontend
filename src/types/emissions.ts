@@ -22,6 +22,7 @@ export interface EmissionsHistoryProps {
   onYearSelect?: (year: string) => void;
   className?: string;
   features?: EmissionsFeatures;
+  baseYear?: { id: string; year: number; metadata: { id: string; comment: string | null; source: string | null; updatedAt: string; user: { name: string; }; verifiedBy: { name: string; } | null; }; } | null
 }
 
 export type DataView = "overview" | "scopes" | "categories";

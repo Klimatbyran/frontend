@@ -31,7 +31,7 @@ const KeyInsights: React.FC<KeyInsightsProps> = ({
       title: t("companiesPage.sectorGraphs.supplyChainImpact"),
       description: (value) =>
         `${t("companiesPage.sectorGraphs.scope3UpstreamDetails")}${value}${t(
-          "companiesPage.sectorGraphs.ofTotalEmissionsDescription"
+          "companiesPage.sectorGraphs.ofTotalEmissionsDescription",
         )}`,
       value: scopeData.scope3.upstream.total,
       total: totalEmissions,
@@ -43,9 +43,9 @@ const KeyInsights: React.FC<KeyInsightsProps> = ({
       title: t("companiesPage.sectorGraphs.operationalFootprint"),
       description: (value) =>
         `${t(
-          "companiesPage.sectorGraphs.directEmissionsDescription"
+          "companiesPage.sectorGraphs.directEmissionsDescription",
         )}${value}${t(
-          "companiesPage.sectorGraphs.ofTotalFootprintDescription"
+          "companiesPage.sectorGraphs.ofTotalFootprintDescription",
         )}`,
       value: scopeData.scope1.total,
       total: totalEmissions,
@@ -57,7 +57,7 @@ const KeyInsights: React.FC<KeyInsightsProps> = ({
       title: t("companiesPage.sectorGraphs.productLifecycle"),
       description: (value) =>
         `${t(
-          "companiesPage.sectorGraphs.downstreamActivitiesDescription"
+          "companiesPage.sectorGraphs.downstreamActivitiesDescription",
         )}${value}${t("companiesPage.sectorGraphs.toTotalEmissions")}`,
       value: scopeData.scope3.downstream.total,
       total: totalEmissions,

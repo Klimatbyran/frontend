@@ -1,24 +1,25 @@
 import { Route, Routes, Navigate } from "react-router-dom";
-import { LandingPage } from "./pages/LandingPage";
-import { CompaniesPage } from "./pages/CompaniesPage";
+import { useEffect } from "react";
+import ProtectedRoute from "./components/ProtectedRoute";
+import { useLanguage } from "./components/LanguageProvider";
+import { LanguageRedirect } from "@/components/LanguageRedirect";
+import { AboutPage } from "./pages/AboutPage";
+import { AuthCallback } from "./pages/AuthCallback";
+import { BlogDetailPage } from "./pages/BlogDetailPage";
+import { CompanyEditPage } from "./pages/CompanyEditPage";
 import { CompanyDetailPage } from "./pages/CompanyDetailPage";
+import { CompaniesPage } from "./pages/CompaniesPage";
+import { ErrorPage } from "./pages/ErrorPage";
+import { InsightsPage } from "./pages/InsightsPage";
+import { LandingPage } from "./pages/LandingPage";
+import { LearnMorePage } from "./pages/LearnMorePage";
+import { MethodsPage } from "./pages/MethodsPage";
 import { MunicipalitiesPage } from "./pages/MunicipalitiesPage";
 import { MunicipalityDetailPage } from "./pages/MunicipalityDetailPage";
-import { AboutPage } from "./pages/AboutPage";
-import { MethodsPage } from "./pages/MethodsPage";
-import { InsightsPage } from "./pages/InsightsPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
-import { ErrorPage } from "./pages/ErrorPage";
-import { useLanguage } from "./components/LanguageProvider";
-import { useEffect } from "react";
-import { LanguageRedirect } from "@/components/LanguageRedirect";
 import { ReportsPage } from "./pages/ReportsPage";
-import { BlogDetailPage } from "./pages/BlogDetailPage";
-import { UnauthorizedErrorPage } from "./pages/error/UnauthorizedErrorPage";
-import { AuthCallback } from "./pages/AuthCallback";
-import { CompanyEditPage } from "./pages/CompanyEditPage";
-import ProtectedRoute from "./components/ProtectedRoute";
 import { PrivacyPage } from "./pages/PrivacyPage";
+import { UnauthorizedErrorPage } from "./pages/error/UnauthorizedErrorPage";
 
 export function AppRoutes() {
   const { currentLanguage } = useLanguage();
@@ -56,9 +57,12 @@ export function AppRoutes() {
         element={<CompanyDetailPage />}
       />
 
-      <Route element={<ProtectedRoute/>}>
-        <Route path={`${basePath}/companies/:id/edit`} element={<CompanyEditPage/>}/>
-      </Route> 
+      <Route element={<ProtectedRoute />}>
+        <Route
+          path={`${basePath}/companies/:id/edit`}
+          element={<CompanyEditPage />}
+        />
+      </Route>
 
       {/* Municipalities routes */}
       <Route
@@ -76,6 +80,7 @@ export function AppRoutes() {
       <Route path={`${basePath}/articles`} element={<InsightsPage />} />
       <Route path={`${basePath}/reports`} element={<ReportsPage />} />
       <Route path={`${basePath}/insights/:id`} element={<BlogDetailPage />} />
+      <Route path={`${basePath}/learn-more`} element={<LearnMorePage />} />
       <Route path={`${basePath}/privacy`} element={<PrivacyPage />} />
 
       {/* Error pages */}
@@ -84,7 +89,7 @@ export function AppRoutes() {
       {/* This catch-all should now only handle invalid routes */}
       <Route path={`${basePath}/*`} element={<NotFoundPage />} />
 
-      <Route path={`${basePath}/403`} element={<UnauthorizedErrorPage/>} />
+      <Route path={`${basePath}/403`} element={<UnauthorizedErrorPage />} />
       <Route path="auth/callback" element={<AuthCallback />} />
     </Routes>
   );

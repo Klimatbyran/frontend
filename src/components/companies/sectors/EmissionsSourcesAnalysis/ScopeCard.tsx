@@ -1,3 +1,5 @@
+import { useLanguage } from "@/components/LanguageProvider";
+import { formatEmissionsAbsolute } from "@/utils/localizeUnit";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
@@ -23,6 +25,8 @@ const ScopeCard: React.FC<ScopeCardProps> = ({
   onClick,
 }) => {
   const { t } = useTranslation();
+  const { currentLanguage } = useLanguage();
+
   return (
     <div
       className="bg-black- border border-black-1 rounded-lg p-6 space-y-4 cursor-pointer hover:scale-105 transition-transform duration-200"
@@ -45,7 +49,8 @@ const ScopeCard: React.FC<ScopeCardProps> = ({
           <div
             className={`text-xl font-light ${color.replace("bg-", "text-")}`}
           >
-            {value.toLocaleString()} tCO₂e
+            {formatEmissionsAbsolute(value, currentLanguage)}{" "}
+            {t("emissionsUnit")}
           </div>
         </div>
 

@@ -26,8 +26,8 @@ export function CompanyEditHeader({
   }, []);
 
   const selected = (options, action) => {
-    onYearsSelect(options.map(option => option.value));
-  }
+    onYearsSelect(options.map((option) => option.value));
+  };
 
   return (
     <div className="flex items-start justify-between mb-12">
@@ -55,14 +55,14 @@ export function CompanyEditHeader({
                 backgroundColor: "#2E2E2E",
                 border: "none",
               }),
-              option: (baseStyles, {isFocused}) => ({
+              option: (baseStyles, { isFocused }) => ({
                 ...baseStyles,
                 backgroundColor: isFocused ? "#3A3A3A" : "#2E2E2E",
               }),
               multiValueLabel: (baseStyles) => ({
                 ...baseStyles,
                 backgroundColor: "#878787",
-                color: "white"
+                color: "white",
               }),
               multiValue: (baseStyles) => ({
                 ...baseStyles,
@@ -70,8 +70,8 @@ export function CompanyEditHeader({
               }),
               multiValueRemove: (baseStyles) => ({
                 ...baseStyles,
-                backgroundColor: "#878787"
-              })
+                backgroundColor: "#878787",
+              }),
             }}
           ></Select>
         </div>

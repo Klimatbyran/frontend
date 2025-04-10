@@ -28,6 +28,22 @@ export type BlogPostMeta = {
 
 export const blogMetadata: BlogPostMeta[] = [
   {
+    id: "hållbara-kolet",
+    title: "Låt kolet stanna i jorden",
+    excerpt:
+      "Den totala mängden kolatomer är konstant, men vi kan omfördela det på rätt sätt. Klimatåtgärder handlar om att låta kolet stanna kvar i jorden, så att det inte förbränns och släpper ut koldioxid.",
+    date: "2025-03-28",
+    readTime: "5 min",
+    category: CategoryEnum.Analysis,
+    image: "/images/blogImages/matthias-heyde-co2-unsplash.jpg",
+    language: LangEnum.SE,
+    author: {
+      name: "John Carlbäck, volontär och rådgivare",
+      avatar: "/people/carlback_john.jpg",
+    },
+    relatedPosts: ["klimatmal", "utslappsberakning"],
+  },
+  {
     id: "ai-process-del-1",
     title:
       "Så kan AI hjälpa oss förstå företagens klimatdata. Del 1 – Översikt",

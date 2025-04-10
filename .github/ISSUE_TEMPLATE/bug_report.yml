@@ -1,0 +1,67 @@
+name: 🐛 Bug Report
+description: Report something that's broken or not working as expected.
+title: "[Bug]: "
+labels: ["bug"]
+assignees: ["kaylawoodbury"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug! Please fill out sections below as applicable to the issue.
+  
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: What environment are you seeing the bug in?
+      placeholder: "e.g. staging or production"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: urgency
+    attributes:
+      label: Urgency
+      description: How urgent is this bug?
+      options:
+        - Low (nice to have)
+        - Medium (should be updated soon)
+        - High (blocking release or critical for users)
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: How can we reproduce the bug? Or where can we find the bug?
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. Observe '...'
+    validations:
+      required: false
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happened?
+    validations:
+      required: true
+
+  - type: textarea
+    id: images
+    attributes:
+      label: Screenshots
+      description: Paste any screenshots that help illustrate the problem.
+    validations:
+      required: false

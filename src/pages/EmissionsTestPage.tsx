@@ -28,7 +28,7 @@ function findTestCases(companies: Company[]): TestCases {
     // Company with inconsistent scope 3 reporting
     inconsistentScope3: companies.find((company) => {
       const scope3Reports = company.reportingPeriods.filter(
-        (p) => p.emissions?.scope3?.categories?.length > 0
+        (p) => p.emissions?.scope3?.categories?.length > 0,
       );
       const totalReports = company.reportingPeriods.length;
       return scope3Reports.length > 0 && scope3Reports.length < totalReports;
@@ -38,7 +38,7 @@ function findTestCases(companies: Company[]): TestCases {
     zeroToReporting: companies.find((company) => {
       const periods = [...company.reportingPeriods].sort(
         (a, b) =>
-          new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+          new Date(a.startDate).getTime() - new Date(b.startDate).getTime(),
       );
       return (
         periods.length >= 3 &&
@@ -60,7 +60,7 @@ function findTestCases(companies: Company[]): TestCases {
       const hasConsistentData = company.reportingPeriods.every(
         (p) =>
           p.emissions?.calculatedTotalEmissions > 0 &&
-          p.emissions?.scope3?.categories?.length > 0
+          p.emissions?.scope3?.categories?.length > 0,
       );
       return company.reportingPeriods.length >= 5 && hasConsistentData;
     }),
@@ -72,8 +72,8 @@ function findTestCases(companies: Company[]): TestCases {
         company.reportingPeriods.every(
           (p) =>
             p.emissions?.calculatedTotalEmissions > 0 &&
-            !p.emissions?.scope3?.categories?.length
-        )
+            !p.emissions?.scope3?.categories?.length,
+        ),
     ),
 
     // Company with no emissions data
@@ -81,8 +81,8 @@ function findTestCases(companies: Company[]): TestCases {
       (company) =>
         company.reportingPeriods.length > 0 &&
         company.reportingPeriods.every(
-          (p) => !p.emissions?.calculatedTotalEmissions
-        )
+          (p) => !p.emissions?.calculatedTotalEmissions,
+        ),
     ),
   };
 }
@@ -135,8 +135,8 @@ export function EmissionsTestPage() {
   const toggleFeature = (id: string) => {
     setFeatureToggles((prev) =>
       prev.map((toggle) =>
-        toggle.id === id ? { ...toggle, enabled: !toggle.enabled } : toggle
-      )
+        toggle.id === id ? { ...toggle, enabled: !toggle.enabled } : toggle,
+      ),
     );
   };
 
@@ -163,7 +163,7 @@ export function EmissionsTestPage() {
   const renderTestCase = (
     title: string,
     description: string,
-    company: Company | undefined
+    company: Company | undefined,
   ) => (
     <div className="bg-black-2 rounded-level-2 p-8">
       <Text variant="h3" className="mb-4">
@@ -206,7 +206,7 @@ export function EmissionsTestPage() {
       <div
         className={cn(
           "bg-black-3 transition-all duration-300",
-          isFixed ? "h-[280px] invisible" : "h-auto visible"
+          isFixed ? "h-[280px] invisible" : "h-auto visible",
         )}
       >
         <div className="max-w-[1400px] mx-auto p-8">
@@ -248,7 +248,7 @@ export function EmissionsTestPage() {
       <div
         className={cn(
           "fixed top-0 left-0 right-0 z-50 bg-black-3/95 backdrop-blur-sm transition-all duration-300",
-          isFixed ? "translate-y-0" : "-translate-y-full"
+          isFixed ? "translate-y-0" : "-translate-y-full",
         )}
       >
         <div className="max-w-[1400px] mx-auto p-4">
@@ -281,19 +281,19 @@ export function EmissionsTestPage() {
             {renderTestCase(
               "Inconsistent Scope 3 Reporting",
               "Company reports scope 3 emissions for some years but not all. Tests the interpolation and visualization of incomplete scope 3 data.",
-              testCases.inconsistentScope3
+              testCases.inconsistentScope3,
             )}
 
             {renderTestCase(
               "Zero to Active Reporting",
               "Company starts with zero emissions then begins reporting. Tests the handling of zero values and trend calculations.",
-              testCases.zeroToReporting
+              testCases.zeroToReporting,
             )}
 
             {renderTestCase(
               "Missing Years",
               "Company has gaps in reporting years. Tests the visualization and trend calculation with incomplete time series.",
-              testCases.missingYears
+              testCases.missingYears,
             )}
           </div>
         </div>
@@ -305,19 +305,19 @@ export function EmissionsTestPage() {
             {renderTestCase(
               "Long Reporting History",
               "Company with many years of consistent reporting. Shows how the visualization handles larger datasets.",
-              testCases.manyYearsReporting
+              testCases.manyYearsReporting,
             )}
 
             {renderTestCase(
               "No Scope 3 Data",
               "Company that reports emissions but has no scope 3 data. Tests the handling of missing scope categories.",
-              testCases.noScope3
+              testCases.noScope3,
             )}
 
             {renderTestCase(
               "No Emissions Data",
               "Company with reporting periods but no emissions data. Tests the handling of completely missing data.",
-              testCases.noEmissions
+              testCases.noEmissions,
             )}
           </div>
         </div>

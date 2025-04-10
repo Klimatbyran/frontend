@@ -1,6 +1,7 @@
 {
   "yes": "Ja",
   "no": "Nej",
+  "emissionsUnit": "tCO₂e",
   "header": {
     "companies": "Företag",
     "municipalities": "Kommuner",
@@ -76,7 +77,7 @@
     },
     "mainContent": {
       "title": "Vad är Klimatkollen?",
-      "paragraph1": "Klimatkollen är en medborgarplattform som hjälper medborgare, företag och organisationer att få koll på klimatomställningen, genom att samla in och visualisera klimatdata.",
+      "paragraph1": "Klimatkollen är en öppen och medborgardriven plattform som hjälper individer, företag och organisationer att följa klimatomställningen genom att använda AI för att samla in, analysera och sprida viktig klimatdata.",
       "paragraph2": "Vi visar hur det går med utsläppen, jämfört med hur det borde gå, så att det blir begripligt för allmänheten, bidrar till en faktabaserad debatt och stärker opinionen för klimatåtgärder.",
       "paragraph3": "Vår vision är att beslutsfattare i politik och näringsliv ska påverkas av en välinformerad och växande opinion till att genomföra åtgärder som sänker utsläppen i linje med Parisavtalet.",
       "paragraph4": "Klimatkollen lanserades i mars 2022 och drivs av den ideella föreningen Klimatbyrån. Initiativtagare är Ola Spännar och Frida Berry Eklund. Vi började med lokal klimatdata för Sveriges kommuner. Från 2024 visas klimatdata även för företag."
@@ -369,17 +370,18 @@
       "low": "Nej"
     },
     "totalEmissions": "Totala utsläpp {{year}}",
-    "thousandTons": " tusen ton CO₂",
     "budgetRunsOut": "Koldioxidbudgeten tar slut",
     "budgetKept": "Koldioxidbudgeten tar slut",
     "budgetHolds": "Håller budget",
     "hitNetZero": "Når nettonoll",
     "never": "Aldrig",
     "emissionsDevelopment": "Utsläppsutveckling",
-    "inThousandTons": "I tusen ton CO₂",
+    "noParisPath": "Kommunens koldioxidbudget är förbrukad, vilket innebär att ingen linje för Parisavtalet visas i grafen nedan",
+    "inTons": "I ton CO₂",
     "futureEmissions": "Framtida utsläpp",
     "annualChangeSince2015": "Årlig utsläppsförändring sedan 2015",
     "reductionToMeetParis": "Utsläppsminskning för att klara Parisavtalet",
+    "cannotReduceToParis": "Klarar ej Parisavtalet",
     "consumptionEmissionsPerCapita": "Konsumtionsutsläpp per invånare i ton CO₂",
     "climatePlan": "Klimatplan",
     "noPlan": "Saknar plan",
@@ -554,6 +556,7 @@
       "totalEmissionsInfo": "Totala utsläpp (Scope 1 & 2)",
       "emissionsChangeRate": "Förändringstakt",
       "emissionsChangeRateInfo": "Förändringstakt för utsläpp jämfört med föregående rapporteringsperiod.",
+      "emissionsChangeRateInfoExtended": "Det här värdet är ovanligt högt på grund av inkonsekvent rapportering mellan de två senaste perioderna, vilket gör att procentförändringen inte speglar den faktiska utvecklingen.",
       "turnover": "Omsättning",
       "employees": "Anställda",
       "companyReport": "Hållbarhetsrapport",
@@ -570,7 +573,10 @@
       "title": "Historiska utsläpp",
       "tooltip": "Historiska utsläpp och trend mot 2030. Klicka på en punkt för att ta bort linjen från grafen. Hovra över punkten för att se värdena för rapporteringsperioden.",
       "unit": "Ton CO₂e per år",
-      "totalEmissions": "Totala utsläpp"
+      "totalEmissions": "Totala utsläpp",
+      "baseYear": "Basår",
+      "baseYearInfo": "Basår syftar på ett specifikt år som väljs som referenspunkt för att jämföra framtida utsläpp mot.",
+      "total": "Totalt"
     },
     "list": {
       "error": {
@@ -645,7 +651,7 @@
     },
     "tooltip": {
       "noDataAvailable": "Ingen data tillgänglig",
-      "tonsCO2e": "ton CO₂e"
+      "tonsCO2e": "tCO₂e"
     }
   },
   "municipalities": {
@@ -658,7 +664,6 @@
       "emissionRanking": "UTSLÄPPSRANKING",
       "emission": "Utsläpp {{year}}",
       "emissionInfo": "Kommunens utsläpp av CO₂e för år {{year}}.",
-      "kTCO2": "tCO₂e",
       "changeRate": "Förändringstakt",
       "changeRateInfo": "Förändringstakt för utsläppen sedan Parisavtalet tecknades 2015.",
       "climatePlan": "Klimatplan",
@@ -672,7 +677,6 @@
       "trend": "Trend",
       "parisAgreement": "Parisavtalet",
       "paris": "Parisavtalet",
-      "unit": "ton CO₂e",
       "total": "Totalt",
       "year": "År"
     }
@@ -739,5 +743,55 @@
     "whyText3": "Vi följer Dataskyddsförordningen och de andra lagar och regler som gäller på dataskyddsområdet. Du har alltid rätt att begära korrigering eller radering av dina personliga uppgifter.",
     "contactTitle": "Kontakta Oss",
     "contactText1": "Om du har frågor eller önskemål kring hantering av dina personuppgifter, vänligen kontakta oss."
+  },
+  "learnMorePage": {
+    "title": "Globala utsläpp",
+    "subtitle": "Varför mätning, rapportering och transparens kring utsläpp är avgörande för att uppnå verklig förändring.",
+    "impactTitle": "Förstå påverkan",
+    "impactDescription": "Varje partikel representerar miljontals ton CO₂-utsläpp. Titta hur de ackumuleras över tid, vilket visar den exponentiella tillväxten av globala utsläpp sedan den industriella revolutionen.",
+    "impactDescription2": "Denna visualisering visar hur utsläppen har ökat dramatiskt sedan 1950, med en särskilt snabb tillväxt under senare decennier.",
+    "trackingTitle": "Mätning för att hantera",
+    "trackingDescription": "Vi kan inte effektivt minska vad som inte mäts. Noggranna mätningar av utsläpp är grunden för meningsfulla klimatåtgärder.",
+    "companies": "Företag",
+    "companiesDescription": "Företagens utsläpp utgör en betydande del av världens koldioxidutsläpp. Genom att mäta utsläppen kan företag identifiera minskningsmöjligheter.",
+    "communities": "Samhällen",
+    "communitiesDescription": "Samhällen behöver förstå sina koldioxidutsläpp för att kunna implementera effektiva minskningsstrategier och hållbara metoder.",
+    "countries": "Länder",
+    "countriesDescription": "Nationell utsläppsdata är kritisk för att kunna ställa och uppnå klimatmål, samt för att kunna hålla länder ansvariga för sina åtaganden.",
+    "dataGaps": "Luckor i datan",
+    "dataGapsDescription": "Om utsläppsdata saknas eller är felaktig begränsas vår möjlighet att fatta informerade beslut och genomföra effektiva klimatåtgärder.",
+    "whyTrackingMatters": "Varför mätning är viktigt",
+    "whyTrackingMattersDescription": "Komplett utsläppsmätning är avgörande för:",
+    "trackingBenefits": [
+      "Att sätta vetenskapligt baserade minskningsmål",
+      "Att identifiera de mest effektiva minskningsstrategierna",
+      "Att övervaka framsteg över tid",
+      "Att säkerställa ansvar och transparens",
+      "Att underlätta informerade policy- och regleringsbeslut"
+    ],
+    "csrdTitle": "Framtiden för utsläppsrapportering",
+    "csrdDescription": "EU:s direktiv om företagens hållbarhetsrapportering (CSRD) innebär ett betydande steg framåt mot standardiserad och omfattande utsläppsrapportering.",
+    "currentChallenges": "Historiska rapporteringsutmaningar",
+    "currentChallengesDescription1": "Inkonsekventa metoder mellan företag och regioner",
+    "currentChallengesDescription2": "Begränsad täckning av utsläpp",
+    "currentChallengesDescription3": "Brist på standardiserade verifieringsprocesser",
+    "currentChallengesDescription4": "Svårigheter med att följa framsteg mot Parisavtalets mål",
+    "csrdImprovements": "CSRD förbättringar",
+    "csrdImprovementsDescription1": "Standardiserade rapporteringskrav inom EU",
+    "csrdImprovementsDescription2": "Komplett täckning av miljöpåverkan",
+    "csrdImprovementsDescription3": "Obligatoriskt tredjepartssäkerställande",
+    "csrdImprovementsDescription4": "Digital taggning för förbättrad dataåtkomst och transparens",
+    "parisAlignment": "Anpassning till Parisavtalet",
+    "parisAlignmentDescription": "CSRD hjälper till att spåra framsteg mot Parisavtalets mål genom:",
+    "parisAlignmentDescription1": "Att kräva detaljerade övergångsplaner",
+    "parisAlignmentDescription2": "Att kräva vetenskapligt baserade mål",
+    "parisAlignmentDescription3": "Att säkerställa konsekvent framstegsspårning",
+    "implementationTimeline": "Implementeringstidslinje",
+    "implementationSteps": [
+      "2024: Stora börsnoterade företag",
+      "2025: Stora företag som ännu inte rapporterar",
+      "2026: Börsnoterade SMF och andra företag",
+      "Gradvis expansion för att täcka fler företag"
+    ]
   }
 }

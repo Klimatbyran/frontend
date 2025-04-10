@@ -1,6 +1,8 @@
 import React from "react";
 import { TooltipProps } from "recharts";
 import { useTranslation } from "react-i18next";
+import { useLanguage } from "@/components/LanguageProvider";
+import { formatEmissionsAbsolute } from "@/utils/localizeUnit";
 const CompanyTooltip: React.FC<TooltipProps<number, string>> = ({
   active,
   payload,
@@ -9,9 +11,11 @@ const CompanyTooltip: React.FC<TooltipProps<number, string>> = ({
 
   const { name, value, payload: data } = payload[0];
   const { t } = useTranslation();
+  const { currentLanguage } = useLanguage();
 
   // Extract company data
-  const companyName = name || data.name || t("companies.sectorGraphs.unknownCompany");
+  const companyName =
+    name || data.name || t("companies.sectorGraphs.unknownCompany");
   const totalEmissions = value || 0;
 
   // Calculate percentage of sector total
@@ -27,7 +31,11 @@ const CompanyTooltip: React.FC<TooltipProps<number, string>> = ({
         <div className="flex justify-between">
           <span>{t("companies.sectorGraphs.totalEmissions")}: </span>
           <span className="text-white font-medium">
-            {Math.round(totalEmissions).toLocaleString()} tCO₂e
+            {formatEmissionsAbsolute(
+              Math.round(totalEmissions),
+              currentLanguage,
+            )}{" "}
+            {t("emissionsUnit")}
           </span>
         </div>
         <div className="flex justify-between">

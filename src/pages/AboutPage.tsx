@@ -165,7 +165,7 @@ export function AboutPage() {
                 </Text>
                 <Text variant="body">
                   {t(
-                    "aboutPage.previousProjectsSection.kommunprojektetDescription"
+                    "aboutPage.previousProjectsSection.kommunprojektetDescription",
                   )}
                 </Text>
               </div>
@@ -176,23 +176,23 @@ export function AboutPage() {
                 </Text>
                 <Text variant="body">
                   {t(
-                    "aboutPage.previousProjectsSection.riksdagsvaletDescription"
+                    "aboutPage.previousProjectsSection.riksdagsvaletDescription",
                   )}
                 </Text>
                 <div className="space-y-6 max-w-3xl">
                   <LinkButton
                     title={t(
-                      "aboutPage.previousProjectsSection.klimatmalTitle"
+                      "aboutPage.previousProjectsSection.klimatmalTitle",
                     )}
                     text={t("aboutPage.previousProjectsSection.klimatmalText")}
                     link="/insights/klimatmal"
                   />
                   <LinkButton
                     title={t(
-                      "aboutPage.previousProjectsSection.utslappsberakningTitle"
+                      "aboutPage.previousProjectsSection.utslappsberakningTitle",
                     )}
                     text={t(
-                      "aboutPage.previousProjectsSection.utslappsberakningText"
+                      "aboutPage.previousProjectsSection.utslappsberakningText",
                     )}
                     link="/insights/utslappsberakning"
                   />

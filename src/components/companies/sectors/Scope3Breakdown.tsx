@@ -8,6 +8,9 @@ import {
   CategoryType,
 } from "@/hooks/companies/useCategories";
 import { useScreenSize } from "@/hooks/useScreenSize";
+import { useTranslation } from "react-i18next";
+import { formatEmissionsAbsolute } from "@/utils/localizeUnit";
+import { useLanguage } from "@/components/LanguageProvider";
 
 interface Scope3BreakdownProps {
   companies: RankedCompany[];
@@ -103,6 +106,9 @@ const Scope3Breakdown: React.FC<Scope3BreakdownProps> = ({
   selectedSectors,
   selectedYear,
 }) => {
+  const { t } = useTranslation();
+  const { currentLanguage } = useLanguage();
+
   const isMobile = useScreenSize();
   const {
     getCategoryIcon,
@@ -135,12 +141,12 @@ const Scope3Breakdown: React.FC<Scope3BreakdownProps> = ({
         const sectorName =
           SECTOR_NAMES[sectorCode as keyof typeof SECTOR_NAMES];
         const sectorCompanies = companies.filter(
-          (company) => company.industry?.industryGics.sectorCode === sectorCode
+          (company) => company.industry?.industryGics.sectorCode === sectorCode,
         );
 
         const totalScope3 = sectorCompanies.reduce((total, company) => {
           const period = company.reportingPeriods.find((p) =>
-            p.startDate.startsWith(selectedYear)
+            p.startDate.startsWith(selectedYear),
           );
           return (
             total + (period?.emissions?.scope3?.calculatedTotalEmissions || 0)
@@ -150,7 +156,7 @@ const Scope3Breakdown: React.FC<Scope3BreakdownProps> = ({
         const reportedCategories = new Set<string>();
         sectorCompanies.forEach((company) => {
           const period = company.reportingPeriods.find((p) =>
-            p.startDate.startsWith(selectedYear)
+            p.startDate.startsWith(selectedYear),
           );
           if (period?.emissions?.scope3?.categories) {
             period.emissions.scope3.categories.forEach((cat) => {
@@ -167,10 +173,10 @@ const Scope3Breakdown: React.FC<Scope3BreakdownProps> = ({
         const specificInfo =
           sectorSpecificInfo[sectorCode as keyof typeof sectorSpecificInfo];
         const reportedUpstream = specificInfo.upstream.filter((cat) =>
-          reportedCategories.has(cat)
+          reportedCategories.has(cat),
         );
         const reportedDownstream = specificInfo.downstream.filter((cat) =>
-          reportedCategories.has(cat)
+          reportedCategories.has(cat),
         );
 
         return {
@@ -256,7 +262,8 @@ const Scope3Breakdown: React.FC<Scope3BreakdownProps> = ({
                   {sector.sectorName}
                 </h4>
                 <div className="text-xs text-grey">
-                  {sector.totalScope3.toLocaleString()} tCO₂e
+                  {formatEmissionsAbsolute(sector.totalScope3, currentLanguage)}{" "}
+                  {t("emissionsUnit")}
                 </div>
               </div>
 
@@ -282,7 +289,7 @@ const Scope3Breakdown: React.FC<Scope3BreakdownProps> = ({
                               getCategoryIcon(getCategoryIdByName(source)),
                               {
                                 className: "h-3 w-3 text-blue-3",
-                              }
+                              },
                             )}
                             <span className="text-xs text-grey">{source}</span>
                           </div>
@@ -310,7 +317,7 @@ const Scope3Breakdown: React.FC<Scope3BreakdownProps> = ({
                               getCategoryIcon(getCategoryIdByName(source)),
                               {
                                 className: "h-3 w-3 text-green-3",
-                              }
+                              },
                             )}
                             <span className="text-xs text-grey">{source}</span>
                           </div>

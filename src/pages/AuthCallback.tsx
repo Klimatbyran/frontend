@@ -1,4 +1,4 @@
-import { useEffect, useRef,} from "react";
+import { useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/contexts/ToastContext";
@@ -10,30 +10,33 @@ export const AuthCallback = () => {
   const location = useLocation();
   const { authenticate, token } = useAuth();
   const { showToast } = useToast();
-  const called = useRef(false)
+  const called = useRef(false);
 
   useEffect(() => {
-    if (called.current) return // prevent rerender caused by StrictMode
-    
-    called.current = true
+    if (called.current) return; // prevent rerender caused by StrictMode
+
+    called.current = true;
     const params = new URLSearchParams(location.search);
-    const code = params.get('code')
-    const error = params.get('error');
-    
-    authenticate(code)
+    const code = params.get("code");
+    const error = params.get("error");
+
+    authenticate(code);
 
     if (error) {
-      console.error('Authentication error:', error);
-      navigate('/', { state: { error: t("authCallbackpage.failed") } });
+      console.error("Authentication error:", error);
+      navigate("/", { state: { error: t("authCallbackpage.failed") } });
     }
   }, [location, navigate]);
 
   useEffect(() => {
     if (token) {
-      showToast(t('authCallbackPage.success.title'), t('authCallbackPage.success.description'))
-      navigate('/')
+      showToast(
+        t("authCallbackPage.success.title"),
+        t("authCallbackPage.success.description"),
+      );
+      navigate("/");
     }
-  }, [token])
-  
-  return <div>{t('blogDetailPage.loading')}</div>;
-}
+  }, [token]);
+
+  return <div>{t("blogDetailPage.loading")}</div>;
+};

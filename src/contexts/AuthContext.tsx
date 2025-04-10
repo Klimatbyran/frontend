@@ -7,7 +7,7 @@ export interface AuthContext {
   token: string;
   user: Token | null;
   login: () => void;
-  authenticate: (code: string) => Promise<boolean>
+  authenticate: (code: string) => Promise<boolean>;
   logout: () => void;
 }
 
@@ -19,17 +19,17 @@ export const useAuth = () => {
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [token, setToken] = useState(localStorage.getItem("token") || "");
-  const user: Token | null = token ? jwtDecode(token) : null
+  const user: Token | null = token ? jwtDecode(token) : null;
 
   const login = () => {
-    window.location.href = baseUrl + '/auth/github';
+    window.location.href = baseUrl + "/auth/github";
   };
 
   const authenticate = async (code: string) => {
     try {
       const response = await authenticateWithGithub(code);
       if (response.token) {
-        setToken(response.token)
+        setToken(response.token);
         localStorage.setItem("token", response.token);
       }
       return true;
@@ -51,7 +51,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         user,
         login,
         authenticate,
-        logout
+        logout,
       }}
     >
       {children}

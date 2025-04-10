@@ -15,10 +15,24 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { Pen } from "lucide-react";
-import { useSectorNames, SectorCode } from "@/hooks/companies/useCompanyFilters";
+import {
+  useSectorNames,
+  SectorCode,
+} from "@/hooks/companies/useCompanyFilters";
 import { useLanguage } from "@/components/LanguageProvider";
-import { localizeUnit } from "@/utils/localizeUnit";
+import {
+  formatEmissionsAbsolute,
+  formatEmployeeCount,
+  localizeUnit,
+} from "@/utils/localizeUnit";
 import { cn } from "@/lib/utils";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Info } from "lucide-react";
 
 interface CompanyOverviewProps {
   company: CompanyDetails;
@@ -42,7 +56,7 @@ export function CompanyOverview({
   const navigate = useNavigate();
   const sectorNames = useSectorNames();
   const { currentLanguage } = useLanguage();
-  
+
   const periodYear = new Date(selectedPeriod.endDate).getFullYear();
 
   // Get the translated sector name using the sector code
@@ -64,8 +78,15 @@ export function CompanyOverview({
       : null;
 
   const sortedPeriods = [...company.reportingPeriods].sort(
-    (a, b) => new Date(b.endDate).getTime() - new Date(a.endDate).getTime()
+    (a, b) => new Date(b.endDate).getTime() - new Date(a.endDate).getTime(),
   );
+
+  const formattedEmployeeCount = selectedPeriod.economy?.employees?.value
+    ? formatEmployeeCount(
+        selectedPeriod.economy.employees.value,
+        currentLanguage,
+      )
+    : t("companies.overview.notReported");
 
   return (
     <div className="bg-black-2 rounded-level-1 p-16">
@@ -164,26 +185,61 @@ export function CompanyOverview({
             {t("companies.overview.totalEmissions")} {periodYear}
           </Text>
           <div className="flex items-baseline gap-4">
-            <Text className={cn("text-3xl lg:text-6xl md:text-4xl sm:text-3xl font-light tracking-tighter leading-none", selectedPeriod.emissions?.calculatedTotalEmissions === 0
-      ? "text-grey"
-      : "text-orange-2"
-  )}>
-            {
+            <Text
+              className={cn(
+                "text-3xl lg:text-6xl md:text-4xl sm:text-3xl font-light tracking-tighter leading-none",
+                selectedPeriod.emissions?.calculatedTotalEmissions === 0
+                  ? "text-grey"
+                  : "text-orange-2",
+              )}
+            >
+              {!selectedPeriod.emissions ||
               selectedPeriod.emissions?.calculatedTotalEmissions === 0
-              ? t("companies.overview.noData")
-              : localizeUnit(selectedPeriod.emissions?.calculatedTotalEmissions, currentLanguage)
-            }
+                ? t("companies.overview.noData")
+                : formatEmissionsAbsolute(
+                    selectedPeriod.emissions.calculatedTotalEmissions,
+                    currentLanguage,
+                  )}
               <span className="text-lg lg:text-2xl md:text-lg sm:text-sm ml-2 text-grey">
-                {t(selectedPeriod.emissions?.calculatedTotalEmissions === 0 ? ' ' : "companies.overview.tonsCO2e")}
+                {t(
+                  selectedPeriod.emissions?.calculatedTotalEmissions === 0
+                    ? " "
+                    : "emissionsUnit",
+                )}
               </span>
             </Text>
           </div>
         </div>
 
         <div>
-          <Text className="mb-2 lg:text-lg md:text-base sm:text-sm">
-            {t("companies.overview.changeSinceLastYear")}
-          </Text>
+          <div className="flex items-center gap-2">
+            <Text className="mb-2 lg:text-lg md:text-base sm:text-sm">
+              {t("companies.overview.changeSinceLastYear")}
+            </Text>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <Info className="w-4 h-4 mb-2" />
+                </TooltipTrigger>
+                <TooltipContent className="max-w-80">
+                  {yearOverYearChange !== null ? (
+                    yearOverYearChange <= -80 || yearOverYearChange >= 80 ? (
+                      <>
+                        <p>{t("companies.card.emissionsChangeRateInfo")}</p>
+                        <p className="my-2">
+                          {t("companies.card.emissionsChangeRateInfoExtended")}
+                        </p>
+                      </>
+                    ) : (
+                      <p>{t("companies.card.emissionsChangeRateInfo")}</p>
+                    )
+                  ) : (
+                    <p>{t("companies.card.noData")}</p>
+                  )}
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
           <Text className="text-3xl lg:text-6xl md:text-4xl sm:text-3xl font-light tracking-tighter leading-none">
             {yearOverYearChange !== null ? (
               <span
@@ -211,9 +267,10 @@ export function CompanyOverview({
             </Text>
             <Text className="text-base md:text-base sm:text-sm">
               {selectedPeriod.economy?.turnover?.value
-                ? `${localizeUnit(selectedPeriod.economy.turnover.value / 1e9, currentLanguage)
-
-                } mdr ${selectedPeriod.economy.turnover.currency}`
+                ? `${localizeUnit(
+                    selectedPeriod.economy.turnover.value / 1e9,
+                    currentLanguage,
+                  )} mdr ${selectedPeriod.economy.turnover.currency}`
                 : t("companies.overview.notReported")}
             </Text>
           </div>
@@ -223,9 +280,7 @@ export function CompanyOverview({
               {t("companies.overview.employees")} ({periodYear})
             </Text>
             <Text className="text-base md:text-base sm:text-sm">
-              {selectedPeriod.economy?.employees?.value
-                ? localizeUnit(selectedPeriod.economy.employees.value, currentLanguage)
-                : t("companies.overview.notReported")}
+              {formattedEmployeeCount}
             </Text>
           </div>
 

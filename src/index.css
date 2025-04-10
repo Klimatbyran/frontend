@@ -1,43 +1,47 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,200;9..40,300;9..40,400;9..40,500;9..40,600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,200;9..40,300;9..40,400;9..40,500;9..40,600&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+  font-family:
+    "DM Sans",
+    system-ui,
+    -apple-system,
+    sans-serif;
   line-height: 1.5;
   font-weight: 400;
   background-color: black;
   color: white;
 
   /* Orange palette */
-  --orange-1: #FDE7CE;
-  --orange-2: #FDB768;
-  --orange-3: #F48F2A;
-  --orange-4: #B25F00;
-  --orange-5: #6B3700;
+  --orange-1: #fde7ce;
+  --orange-2: #fdb768;
+  --orange-3: #f48f2a;
+  --orange-4: #b25f00;
+  --orange-5: #6b3700;
 
   /* Blue palette */
-  --blue-1: #D4E7F7;
-  --blue-2: #99CFFF;
-  --blue-3: #59A0E1;
+  --blue-1: #d4e7f7;
+  --blue-2: #99cfff;
+  --blue-3: #59a0e1;
   --blue-4: #206288;
-  --blue-5: #13364E;
+  --blue-5: #13364e;
 
   /* Green palette */
-  --green-1: #F1FFCC;
-  --green-2: #D5FD63;
-  --green-3: #AAE506;
-  --green-4: #6C9105;
-  --green-5: #3D4B16;
+  --green-1: #f1ffcc;
+  --green-2: #d5fd63;
+  --green-3: #aae506;
+  --green-4: #6c9105;
+  --green-5: #3d4b16;
 
   /* Pink palette */
-  --pink-1: #FAE1E9;
-  --pink-2: #EEA0B7;
-  --pink-3: #F0759A;
-  --pink-4: #97455D;
-  --pink-5: #73263D;
+  --pink-1: #fae1e9;
+  --pink-2: #eea0b7;
+  --pink-3: #f0759a;
+  --pink-4: #97455d;
+  --pink-5: #73263d;
 }
 
 @layer base {
@@ -47,7 +51,12 @@
   body {
     @apply bg-black text-white;
   }
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-light tracking-tight;
   }
 }

@@ -61,7 +61,7 @@ export function Scope3Data({
   // Get available years from historical data
   const availableYears = historicalData
     ? [...new Set(historicalData.map((data) => data.year))].sort(
-        (a, b) => b - a
+        (a, b) => b - a,
       )
     : [];
 

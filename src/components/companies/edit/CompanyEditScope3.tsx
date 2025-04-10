@@ -14,13 +14,17 @@ export function CompanyEditScope3({ periods, onInputChange, formData }) {
   }
 
   const getCategoryValue = (index: number, categories) => {
-    const category = categories.find((category) => category.category - 1 === index);
-    return category !== undefined ? category.total : '';
+    const category = categories.find(
+      (category) => category.category - 1 === index,
+    );
+    return category !== undefined ? category.total : "";
   };
 
   const getCategoryVerified = (index: number, categories) => {
-    const category = categories.find((category) => category.category - 1 === index);
-    return category !== undefined ? (category.metadata?.verifiedBy) : false;
+    const category = categories.find(
+      (category) => category.category - 1 === index,
+    );
+    return category !== undefined ? category.metadata?.verifiedBy : false;
   };
 
   return (
