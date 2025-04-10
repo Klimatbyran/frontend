@@ -7,6 +7,7 @@ export function CompanyEditScope1({ periods, onInputChange, formData }) {
       headerName
       name="Scope 1"
       key={"scope-1"}
+    >
       {periods.map((period) =>
         <CompanyEditInputField
           name={`scope-1-${period.id}`}
