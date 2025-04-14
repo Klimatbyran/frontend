@@ -9,7 +9,14 @@ node_modules
 # test data
 src/data/*.json
 
+
 # Ignore files for PNPM, NPM and YARN
 pnpm-lock.yaml
 package-lock.json
 yarn.lock
+
+# Don't use prettier for these file types for now
+*.md
+*.yml
+*.yaml
+*.html

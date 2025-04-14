@@ -1,4 +1,12 @@
-import { ResponsiveContainer, ScatterChart, Scatter, XAxis, YAxis, ZAxis, Tooltip } from 'recharts';
+import {
+  ResponsiveContainer,
+  ScatterChart,
+  Scatter,
+  XAxis,
+  YAxis,
+  ZAxis,
+  Tooltip,
+} from "recharts";
 
 interface BubbleChartProps {
   data: Array<{
@@ -9,8 +17,8 @@ interface BubbleChartProps {
 }
 
 export function BubbleChart({ data }: BubbleChartProps) {
-  const maxValue = Math.max(...data.map(item => item.value));
-  
+  const maxValue = Math.max(...data.map((item) => item.value));
+
   const transformedData = data.map((item, index) => ({
     x: index * 2 + 2,
     y: item.value,
@@ -33,31 +41,16 @@ export function BubbleChart({ data }: BubbleChartProps) {
   };
 
   const getColor = (colorKey: string) => {
-    const [palette, shade] = colorKey.split('.');
+    const [palette, shade] = colorKey.split(".");
     return `var(--${palette}-${shade})`;
   };
 
   return (
     <ResponsiveContainer width="100%" height={400}>
       <ScatterChart margin={{ top: 40, right: 40, bottom: 40, left: 40 }}>
-        <XAxis 
-          type="number" 
-          dataKey="x" 
-          domain={[0, 10]} 
-          hide 
-        />
-        <YAxis 
-          type="number" 
-          dataKey="y" 
-          domain={[0, maxValue * 1.2]} 
-          hide 
-        />
-        <ZAxis 
-          type="number" 
-          dataKey="z" 
-          range={[60, 400]} 
-          scale="sqrt"
-        />
+        <XAxis type="number" dataKey="x" domain={[0, 10]} hide />
+        <YAxis type="number" dataKey="y" domain={[0, maxValue * 1.2]} hide />
+        <ZAxis type="number" dataKey="z" range={[60, 400]} scale="sqrt" />
         {transformedData.map((item, index) => (
           <Scatter
             key={index}
@@ -67,7 +60,7 @@ export function BubbleChart({ data }: BubbleChartProps) {
           >
             <text
               x={item.x * 50}
-              y={400 - (item.y * (300 / maxValue))}
+              y={400 - item.y * (300 / maxValue)}
               fill="#878787"
               fontSize={12}
               textAnchor="middle"

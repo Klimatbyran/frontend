@@ -73,7 +73,7 @@ export function NewsletterPopover({
 
   const handleFormSubmit = (
     event: React.SyntheticEvent<HTMLFormElement>,
-    subscribe: (data: any) => void
+    subscribe: (data: any) => void,
   ) => {
     event.preventDefault();
     setStatus("idle");
@@ -125,7 +125,7 @@ export function NewsletterPopover({
             } else if (mailchimpStatus === "error" && status !== "error") {
               setStatus("error");
               setErrorMessage(
-                (message as string) || t("newsletter.errorGeneric")
+                (message as string) || t("newsletter.errorGeneric"),
               );
             }
 

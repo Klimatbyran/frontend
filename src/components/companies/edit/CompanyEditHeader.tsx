@@ -2,16 +2,15 @@ import { Pen } from "lucide-react";
 import { Text } from "@/components/ui/text";
 import type { CompanyDetails } from "@/types/company";
 import Select from "react-select";
+import { useEffect } from "react";
 
 interface CompanyOverviewProps {
   company: CompanyDetails;
-  selectedYears: string[];
   onYearsSelect: (year: string[]) => void;
 }
 
 export function CompanyEditHeader({
   company,
-  selectedYears,
   onYearsSelect,
 }: CompanyOverviewProps) {
   const periods = [...company.reportingPeriods].map((period) => {
@@ -22,9 +21,13 @@ export function CompanyEditHeader({
   });
   periods.sort();
 
+  useEffect(() => {
+    onYearsSelect([periods[0].value])
+  }, []);
+
   const selected = (options, action) => {
-    onYearsSelect(options.map(option => option.value));
-  }
+    onYearsSelect(options.map((option) => option.value));
+  };
 
   return (
     <div className="flex items-start justify-between mb-12">
@@ -39,6 +42,7 @@ export function CompanyEditHeader({
           <Select
             options={periods}
             isMulti
+            defaultValue={periods[0]}
             onChange={selected}
             styles={{
               control: (baseStyles, state) => ({
@@ -51,19 +55,23 @@ export function CompanyEditHeader({
                 backgroundColor: "#2E2E2E",
                 border: "none",
               }),
-              option: (baseStyles, {isFocused}) => ({
+              option: (baseStyles, { isFocused }) => ({
                 ...baseStyles,
                 backgroundColor: isFocused ? "#3A3A3A" : "#2E2E2E",
               }),
               multiValueLabel: (baseStyles) => ({
                 ...baseStyles,
                 backgroundColor: "#878787",
-                color: "white"
+                color: "white",
+              }),
+              multiValue: (baseStyles) => ({
+                ...baseStyles,
+                backgroundColor: "none",
               }),
               multiValueRemove: (baseStyles) => ({
                 ...baseStyles,
-                backgroundColor: "#878787"
-              })
+                backgroundColor: "#878787",
+              }),
             }}
           ></Select>
         </div>

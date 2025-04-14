@@ -8,7 +8,7 @@ interface CompanyHistoryProps {
 export function CompanyHistory({ company }: CompanyHistoryProps) {
   return (
     <>
-      <EmissionsHistory reportingPeriods={company.reportingPeriods} />
+      <EmissionsHistory reportingPeriods={company.reportingPeriods} baseYear={company.baseYear} />
     </>
   );
 }

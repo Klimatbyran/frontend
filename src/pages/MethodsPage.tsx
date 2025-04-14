@@ -102,7 +102,7 @@ export function MethodsPage() {
                   <LinkButton
                     key={key}
                     title={t(
-                      `methodsPage.accordion.sources.links.${key}.title`
+                      `methodsPage.accordion.sources.links.${key}.title`,
                     )}
                     text={t(`methodsPage.accordion.sources.links.${key}.text`)}
                     link={t(`methodsPage.accordion.sources.links.${key}.link`)}

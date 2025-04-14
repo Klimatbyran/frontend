@@ -11,28 +11,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /**
-         * Redirect to GitHub login
-         * @description Redirects the user to GitHub OAuth page
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Default Response */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
+        get?: never;
         put?: never;
         /**
          * Auth User with Github Identity
@@ -49,67 +28,6 @@ export interface paths {
                 content: {
                     "application/json": {
                         code: string;
-                    };
-                };
-            };
-            responses: {
-                /** @description Default Response */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            token: string;
-                        };
-                    };
-                };
-                /** @description Default Response */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            code: string;
-                            message?: string;
-                            details?: unknown;
-                        };
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/auth/token": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Auth Client with API Secret
-         * @description Authenticates a client using a service secret
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": {
-                        client_id: string;
-                        client_secret: string;
                     };
                 };
             };
@@ -790,38 +708,38 @@ export interface paths {
                             totalApproximatedHistoricalEmission: number;
                             trendEmission: number;
                             historicalEmissionChangePercent: number;
-                            neededEmissionChangePercent: number;
-                            hitNetZero: string;
-                            budgetRunsOut: string;
+                            neededEmissionChangePercent: number | null;
+                            hitNetZero: string | null;
+                            budgetRunsOut: string | null;
                             electricCarChangePercent: number;
-                            climatePlanLink: string;
-                            climatePlanYear: "Saknar plan" | number;
-                            climatePlanComment: string;
+                            climatePlanLink: string | null;
+                            climatePlanYear: number | null;
+                            climatePlanComment: string | null;
                             bicycleMetrePerCapita: number;
                             totalConsumptionEmission: number;
                             electricVehiclePerChargePoints: number;
                             procurementScore: string;
                             procurementLink: string;
-                            emissions: {
+                            emissions: ({
                                 year: string;
                                 value: number;
-                            }[];
-                            emissionBudget: {
+                            } | null)[];
+                            emissionBudget: ({
                                 year: string;
                                 value: number;
-                            }[];
-                            approximatedHistoricalEmission: {
+                            } | null)[] | null;
+                            approximatedHistoricalEmission: ({
                                 year: string;
                                 value: number;
-                            }[];
-                            trend: {
+                            } | null)[];
+                            trend: ({
                                 year: string;
                                 value: number;
-                            }[];
-                            electricCarChangeYearly: {
+                            } | null)[];
+                            electricCarChangeYearly: ({
                                 year: string;
                                 value: number;
-                            }[];
+                            } | null)[];
                         }[];
                     };
                 };
@@ -870,38 +788,38 @@ export interface paths {
                             totalApproximatedHistoricalEmission: number;
                             trendEmission: number;
                             historicalEmissionChangePercent: number;
-                            neededEmissionChangePercent: number;
-                            hitNetZero: string;
-                            budgetRunsOut: string;
+                            neededEmissionChangePercent: number | null;
+                            hitNetZero: string | null;
+                            budgetRunsOut: string | null;
                             electricCarChangePercent: number;
-                            climatePlanLink: string;
-                            climatePlanYear: "Saknar plan" | number;
-                            climatePlanComment: string;
+                            climatePlanLink: string | null;
+                            climatePlanYear: number | null;
+                            climatePlanComment: string | null;
                             bicycleMetrePerCapita: number;
                             totalConsumptionEmission: number;
                             electricVehiclePerChargePoints: number;
                             procurementScore: string;
                             procurementLink: string;
-                            emissions: {
+                            emissions: ({
                                 year: string;
                                 value: number;
-                            }[];
-                            emissionBudget: {
+                            } | null)[];
+                            emissionBudget: ({
                                 year: string;
                                 value: number;
-                            }[];
-                            approximatedHistoricalEmission: {
+                            } | null)[] | null;
+                            approximatedHistoricalEmission: ({
                                 year: string;
                                 value: number;
-                            }[];
-                            trend: {
+                            } | null)[];
+                            trend: ({
                                 year: string;
                                 value: number;
-                            }[];
-                            electricCarChangeYearly: {
+                            } | null)[];
+                            electricCarChangeYearly: ({
                                 year: string;
                                 value: number;
-                            }[];
+                            } | null)[];
                         };
                     };
                 };
@@ -1112,7 +1030,6 @@ export interface paths {
                                      * @enum {string}
                                      */
                                     unit?: "tCO2e" | "tCO2";
-                                    verified?: boolean;
                                 };
                                 scope2?: {
                                     /** @description Market-based scope 2 emissions */
@@ -1126,7 +1043,6 @@ export interface paths {
                                      * @enum {string}
                                      */
                                     unit?: "tCO2e" | "tCO2";
-                                    verified?: boolean;
                                 };
                                 scope3?: {
                                     categories?: {
@@ -1137,7 +1053,6 @@ export interface paths {
                                          * @enum {string}
                                          */
                                         unit?: "tCO2e" | "tCO2";
-                                        verified?: boolean;
                                     }[];
                                     statedTotalEmissions?: {
                                         total: number;
@@ -1146,7 +1061,6 @@ export interface paths {
                                          * @enum {string}
                                          */
                                         unit?: "tCO2e" | "tCO2";
-                                        verified?: boolean;
                                     };
                                 };
                                 biogenic?: {
@@ -1156,7 +1070,6 @@ export interface paths {
                                      * @enum {string}
                                      */
                                     unit?: "tCO2e" | "tCO2";
-                                    verified?: boolean;
                                 };
                                 statedTotalEmissions?: {
                                     total: number;
@@ -1165,7 +1078,6 @@ export interface paths {
                                      * @enum {string}
                                      */
                                     unit?: "tCO2e" | "tCO2";
-                                    verified?: boolean;
                                 };
                                 scope1And2?: {
                                     total: number;
@@ -1174,19 +1086,16 @@ export interface paths {
                                      * @enum {string}
                                      */
                                     unit?: "tCO2e" | "tCO2";
-                                    verified?: boolean;
                                 };
                             };
                             economy?: {
                                 turnover?: {
                                     value?: number;
                                     currency?: string;
-                                    verified?: boolean;
                                 };
                                 employees?: {
                                     value?: number;
                                     unit?: string;
-                                    verified?: boolean;
                                 };
                             };
                         }[];

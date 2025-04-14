@@ -1,22 +1,27 @@
 import { useState } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Building2Icon, TreePineIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { RankedList } from "@/components/RankedList";
+import { RankedList, RankedListItem } from "@/components/RankedList";
 import { ContentBlock } from "@/components/ContentBlock";
 import { Typewriter } from "@/components/ui/typewriter";
-import { useCompanies } from "@/hooks/useCompanies";
+import { useCompanies } from "@/hooks/companies/useCompanies";
 import { useMunicipalities } from "@/hooks/useMunicipalities";
 import { useTranslation } from "react-i18next";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { useEffect } from "react";
+import { useLanguage } from "@/components/LanguageProvider";
+import {
+  formatEmissionsAbsolute,
+  formatPercentChange,
+} from "@/utils/localizeUnit";
 
 export function LandingPage() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [selectedTab, setSelectedTab] = useState("companies");
   const { companies } = useCompanies();
   const { getTopMunicipalities } = useMunicipalities();
-  const currentLanguage = i18n.language;
+  const { currentLanguage } = useLanguage();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -49,39 +54,43 @@ export function LandingPage() {
     t("landingPage.typewriter.municipality.climatePlans"),
   ];
 
-  // Format number according to current language
-  const formatNumber = (value: number) => {
-    return value.toLocaleString(currentLanguage === "sv" ? "sv-SE" : "en-US", {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    });
-  };
-
   // Get top 5 companies by total emissions
   const largestCompanyEmitters = companies
     .sort(
       (a, b) =>
         (b.reportingPeriods[0]?.emissions?.calculatedTotalEmissions || 0) -
-        (a.reportingPeriods[0]?.emissions?.calculatedTotalEmissions || 0)
+        (a.reportingPeriods[0]?.emissions?.calculatedTotalEmissions || 0),
     )
     .slice(0, 5)
     .map((company) => ({
-      id: company.wikidataId,
       name: company.name,
       value:
         company.reportingPeriods.at(0)?.emissions?.calculatedTotalEmissions ||
         0,
-      displayValue: formatNumber(
-        company.reportingPeriods.at(0)?.emissions?.calculatedTotalEmissions || 0
-      ),
+      link: `/companies/${company.wikidataId}`,
     }));
 
   // Get top 5 municipalities by emissions reduction
   const topMunicipalities = getTopMunicipalities(5).map((municipality) => ({
     name: municipality.name,
-    value: municipality.historicalEmissionChangePercent,
-    displayValue: municipality.historicalEmissionChangePercent.toFixed(1),
+    value: municipality.historicalEmissionChangePercent / 100,
+    link: `/municipalities/${municipality.name}`,
   }));
+
+  const renderCompanyEmission = (item: RankedListItem) => (
+    <>
+      <span className="text-base md:text-lg md:text-right text-pink-3">
+        {formatEmissionsAbsolute(item.value, currentLanguage)}
+      </span>
+      <span className="text-grey ml-2"> {t("emissionsUnit")}</span>
+    </>
+  );
+
+  const renderMunicipalityChangeRate = (item: RankedListItem) => (
+    <span className="text-base md:text-lg md:text-right text-green-3">
+      {formatPercentChange(item.value, currentLanguage)}
+    </span>
+  );
 
   // Get municipality data for comparison
   // const municipalityComparisonData = getMunicipalitiesForMap(10).map(
@@ -194,17 +203,18 @@ export function LandingPage() {
                 title={t("landingPage.bestMunicipalities")}
                 description={t("landingPage.municipalitiesDescription")}
                 items={topMunicipalities}
-                type="municipality"
-                textColor="text-green-3"
-                unit="%"
+                itemValueRenderer={renderMunicipalityChangeRate}
+                icon={{ component: TreePineIcon, bgColor: "bg-[#FDE7CE]" }}
+                rankColor="text-orange-2"
               />
+
               <RankedList
                 title={t("landingPage.largestEmittor")}
                 description={t("landingPage.companiesDescription")}
                 items={largestCompanyEmitters}
-                type="company"
-                textColor="text-pink-3"
-                unit="tCO₂e"
+                itemValueRenderer={renderCompanyEmission}
+                icon={{ component: Building2Icon, bgColor: "bg-[#D4E7F7]" }}
+                rankColor="text-blue-2"
               />
             </div>
           </div>

@@ -1,8 +1,8 @@
 import { CompanyEditRow } from "./CompanyEditRow";
 import { CompanyEditInputField, CompanyEmptyField } from "./CompanyEditField";
-import { useCategoryMetadata } from "@/hooks/useCategories";
+import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 
-export function CompanyEditScope3({ periods, onInputChange }) {
+export function CompanyEditScope3({ periods, onInputChange, formData }) {
   const {categoryMetadata} = useCategoryMetadata();
 
   if (
@@ -14,13 +14,17 @@ export function CompanyEditScope3({ periods, onInputChange }) {
   }
 
   const getCategoryValue = (index: number, categories) => {
-    const category = categories.find((category) => category.category - 1 === index);
-    return category !== undefined ? category.total : '';
+    const category = categories.find(
+      (category) => category.category - 1 === index,
+    );
+    return category !== undefined ? category.total : "";
   };
 
   const getCategoryVerified = (index: number, categories) => {
-    const category = categories.find((category) => category.category - 1 === index);
-    return category !== undefined ? (category.metadata?.verifiedBy) : false;
+    const category = categories.find(
+      (category) => category.category - 1 === index,
+    );
+    return category !== undefined ? category.metadata?.verifiedBy : false;
   };
 
   return (
@@ -30,26 +34,32 @@ export function CompanyEditScope3({ periods, onInputChange }) {
         headerName
         noHover
         name="Scope 3"
-        fields={periods.map((_period => CompanyEmptyField()))}
+        fields={periods.map((_period) => CompanyEmptyField())}
       ></CompanyEditRow>
 
-      {Object.values(categoryMetadata).map((category, index) => index !== 15 && (
+      {Object.values(categoryMetadata).map(
+        (category, index) =>
+          index !== 15 && (
             <CompanyEditRow
               key={"scope-3-" + index}
               name={category.name}
-              fields={periods.map((period) =>
-                CompanyEditInputField({
-                  type: "number",
-                  name: "scope-3-" + period.id + "-" + (index + 1),
-                  value: getCategoryValue(
-                    index,
-                    period.emissions.scope3?.categories
-                  ),
-                  verified: getCategoryVerified(index, period.emissions?.scope3?.categories),
-                  onInputChange
-                })
+            >
+              {periods.map((period) =>
+                <CompanyEditInputField
+                name={`scope-3-${period.id}-${(index + 1)}`}
+                type="number"
+                key={`scope-3-${period.id}-${(index + 1)}`}
+                displayAddition="verification"
+                verified={getCategoryVerified(index, period.emissions?.scope3?.categories)}
+                value={ getCategoryValue(
+                  index,
+                  period.emissions.scope3?.categories
+                )}
+                onInputChange={onInputChange}
+                formData={formData}
+              />
               )}
-            ></CompanyEditRow>
+            </CompanyEditRow>
           )
       )}
     </>

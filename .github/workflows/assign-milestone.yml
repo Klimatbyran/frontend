@@ -1,0 +1,57 @@
+name: Auto-Assign Milestone to New Issues
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  assign-milestone:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Assign milestone based on urgency
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issue = context.payload.issue;
+
+            if (issue.milestone) {
+              console.log(`✅ Issue already has a milestone: ${issue.milestone.title}`);
+              return;
+            }
+
+            // Default milestone
+            let targetMilestoneTitle = "New Requests to Review";
+
+            // Try to detect urgency level from the issue body
+            const body = issue.body.toLowerCase();
+
+            // Look for urgency field in markdown from form (GitHub stores issue form responses as plain text)
+            if (body.includes("### urgency") && body.includes("High")) {
+              targetMilestoneTitle = "Urgent Requests to Review";
+              console.log("⚠️ Urgency set to 'High' — assigning to Urgent milestone");
+            }
+
+            // Fetch open milestones
+            const { data: milestones } = await github.rest.issues.listMilestones({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: "open"
+            });
+
+            const milestone = milestones.find(m => m.title === targetMilestoneTitle);
+
+            if (!milestone) {
+              console.log(`❌ Milestone '${targetMilestoneTitle}' not found.`);
+              return;
+            }
+
+            // Assign the milestone to the issue
+            await github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number,
+              milestone: milestone.number
+            });
+
+            console.log(`🎯 Assigned issue #${issue.number} to milestone '${targetMilestoneTitle}'`);

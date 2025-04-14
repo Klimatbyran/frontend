@@ -34,7 +34,7 @@ export function Header() {
       <button
         onClick={() => changeLanguage("en")}
         className={cn(
-          currentLanguage === "en" && "bg-black-1 rounded-full px-1"
+          currentLanguage === "en" && "bg-black-1 rounded-full px-1",
         )}
       >
         🇬🇧
@@ -43,7 +43,7 @@ export function Header() {
       <button
         onClick={() => changeLanguage("sv")}
         className={cn(
-          currentLanguage === "sv" && "bg-black-1 rounded-full px-1"
+          currentLanguage === "sv" && "bg-black-1 rounded-full px-1",
         )}
       >
         🇸🇪
@@ -82,7 +82,7 @@ export function Header() {
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-black-2 h-10 lg:h-12">
+    <header className="fixed w-screen overflow-x-hidden overflow-y-hidden top-0 left-0 right-0 z-50 bg-black-2 h-10 lg:h-12">
       <div className="container mx-auto px-4 flex items-center justify-between pt-2 lg:pt-0">
         <Link to="/" className="flex items-center gap-2 text-base font-medium">
           Klimatkollen
@@ -107,7 +107,7 @@ export function Header() {
                       "flex items-center gap-2 px-3 py-3 h-full transition-all text-sm",
                       location.pathname.startsWith(item.path)
                         ? "bg-black-1 text-white"
-                        : "text-grey hover:text-white"
+                        : "text-grey hover:text-white",
                     )}
                   >
                     {item.icon}
@@ -140,13 +140,13 @@ export function Header() {
                     "flex items-center gap-2 px-3 py-3 h-full text-sm",
                     matchPath(item.path, location.pathname)
                       ? "bg-black-1 text-white"
-                      : "text-grey hover:text-white"
+                      : "text-grey hover:text-white",
                   )}
                 >
                   {item.icon}
                   <span>{item.label}</span>
                 </Link>
-              )
+              ),
             )}
             <div className="ml-4 h-full flex items-center">
               <LanguageButtons className={"hidden md:flex mx-4 "} />

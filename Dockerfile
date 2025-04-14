@@ -1,6 +1,10 @@
 # Build stage
 FROM node:20-slim AS build
 
+# Accept public build-time environment variable
+ARG VITE_MAILCHIMP_URL
+ENV VITE_MAILCHIMP_URL=$VITE_MAILCHIMP_URL
+
 # Set working directory
 WORKDIR /app
 

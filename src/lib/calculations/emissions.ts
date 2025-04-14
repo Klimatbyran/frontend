@@ -47,11 +47,11 @@ export interface TrendAnalysis {
  * This helps create smoother visualizations while clearly marking interpolated values
  */
 export function interpolateScope3Categories(
-  periods: EmissionPeriod[]
+  periods: EmissionPeriod[],
 ): EmissionPeriod[] {
   // Sort periods by date
   const sortedPeriods = [...periods].sort(
-    (a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+    (a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime(),
   );
 
   // Find all unique categories across all periods
@@ -75,7 +75,7 @@ export function interpolateScope3Categories(
     const prevPeriod = sortedPeriods[index - 1];
     const nextPeriod = sortedPeriods[index + 1];
     const currentCategories = new Set(
-      period.emissions.scope3.categories.map((c) => c.category)
+      period.emissions.scope3.categories.map((c) => c.category),
     );
     const interpolatedCategories = [...period.emissions.scope3.categories];
 
@@ -84,10 +84,10 @@ export function interpolateScope3Categories(
       if (currentCategories.has(category)) return;
 
       const prevValue = prevPeriod.emissions?.scope3?.categories?.find(
-        (c) => c.category === category
+        (c) => c.category === category,
       )?.total;
       const nextValue = nextPeriod.emissions?.scope3?.categories?.find(
-        (c) => c.category === category
+        (c) => c.category === category,
       )?.total;
 
       // Only interpolate if we have both previous and next values
@@ -135,18 +135,18 @@ export function analyzeTrend(
     guessBaseYear: true,
     compositeTrend: true,
     outlierDetection: true,
-  }
+  },
 ): TrendAnalysis {
   // Sort periods by date
   const sortedPeriods = [...periods].sort(
-    (a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+    (a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime(),
   );
 
   // Find first period with non-zero emissions if guessBaseYear is enabled
   const firstNonZeroPeriod = features.guessBaseYear
     ? sortedPeriods.find(
         (period) =>
-          period.emissions && period.emissions.calculatedTotalEmissions > 0
+          period.emissions && period.emissions.calculatedTotalEmissions > 0,
       )
     : sortedPeriods[0];
 
@@ -154,7 +154,7 @@ export function analyzeTrend(
   if (!firstNonZeroPeriod) {
     const startYear = new Date(sortedPeriods[0].startDate).getFullYear();
     const endYear = new Date(
-      sortedPeriods[sortedPeriods.length - 1].endDate
+      sortedPeriods[sortedPeriods.length - 1].endDate,
     ).getFullYear();
 
     return {
@@ -184,7 +184,8 @@ export function analyzeTrend(
   const firstNonZeroYear = new Date(firstNonZeroPeriod.startDate).getFullYear();
   const relevantPeriods = features.guessBaseYear
     ? sortedPeriods.filter(
-        (period) => new Date(period.startDate).getFullYear() >= firstNonZeroYear
+        (period) =>
+          new Date(period.startDate).getFullYear() >= firstNonZeroYear,
       )
     : sortedPeriods;
 
@@ -201,7 +202,7 @@ export function analyzeTrend(
       (period) =>
         (period.emissions?.scope1?.total || 0) +
           (period.emissions?.scope2?.calculatedTotalEmissions || 0) >
-        0
+        0,
     )
     .map((period) => ({
       year: new Date(period.startDate).getFullYear(),
@@ -212,20 +213,20 @@ export function analyzeTrend(
 
   // Check Scope 3 consistency
   const hasScope3 = relevantPeriods.some(
-    (p) => p.emissions?.scope3?.calculatedTotalEmissions
+    (p) => p.emissions?.scope3?.calculatedTotalEmissions,
   );
   const scope3Count = relevantPeriods.filter(
-    (p) => p.emissions?.scope3?.calculatedTotalEmissions
+    (p) => p.emissions?.scope3?.calculatedTotalEmissions,
   ).length;
   const scope3Coverage = scope3Count / relevantPeriods.length;
   const consistentScope3 = hasScope3 && scope3Coverage > 0.8;
 
   // Calculate standard deviation
   const totalStdDev = calculateStandardDeviation(
-    totalEmissions.map((e) => e.value)
+    totalEmissions.map((e) => e.value),
   );
   const scope12StdDev = calculateStandardDeviation(
-    scope12Emissions.map((e) => e.value)
+    scope12Emissions.map((e) => e.value),
   );
 
   // Calculate trend based on enabled features
@@ -312,7 +313,7 @@ function calculateStandardDeviation(values: number[]): number {
 export function projectEmissions(
   analysis: TrendAnalysis,
   startValue: number,
-  endYear: number = 2050
+  endYear: number = 2050,
 ): Array<{ year: number; trend: number; paris: number }> {
   const startYear = analysis.baseYear;
   const years = endYear - startYear + 1;
@@ -329,7 +330,7 @@ export function projectEmissions(
   const firstNonZeroValue = Math.max(
     analysis.trend.dataPoints.find((point) => point.value > 0)?.value ||
       startValue,
-    0.1 // Minimum value to prevent division by zero
+    0.1, // Minimum value to prevent division by zero
   );
 
   // Calculate initial annual change with bounds and safety checks
@@ -352,7 +353,7 @@ export function projectEmissions(
       // Limit initial change to reasonable bounds (-15% to +15% per year)
       initialAnnualChange = Math.max(
         Math.min(initialAnnualChange, 0.15),
-        -0.15
+        -0.15,
       );
     }
   }
@@ -386,14 +387,14 @@ export function projectEmissions(
     const dampedChange = initialAnnualChange * dampingFactor;
     const trend = Math.max(
       0,
-      firstNonZeroValue * Math.pow(1 + dampedChange, i)
+      firstNonZeroValue * Math.pow(1 + dampedChange, i),
     );
 
     // Calculate Paris agreement target using compound reduction
     // The Paris target remains constant as it's a policy goal
     const paris = Math.max(
       0,
-      firstNonZeroValue * Math.pow(1 - parisAnnualReduction, i)
+      firstNonZeroValue * Math.pow(1 - parisAnnualReduction, i),
     );
 
     return { year, trend, paris };
@@ -401,7 +402,7 @@ export function projectEmissions(
 }
 
 export function getDataQualityColor(
-  quality: "high" | "medium" | "low"
+  quality: "high" | "medium" | "low",
 ): string {
   switch (quality) {
     case "high":
