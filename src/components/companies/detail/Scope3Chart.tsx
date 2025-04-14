@@ -228,10 +228,12 @@ export function Scope3Chart({ categories, className }: Scope3ChartProps) {
                     className={`h-[12px] w-[5px] rounded-[100px] my-1 py-[5px] pl-3`}
                     style={{ backgroundColor: dataItem.color }}
                   ></div>
-                  <span className="font-bold pl-2">
+                  <div className="flex">
+                  <span className="font-bold pl-2 min-w-[55px]">
                     {dataItem.percentage.toFixed(1)}%
                   </span>
                   <span className="font-light pl-2"> {dataItem.name}</span>
+                  </div>
                 </li>
               );
             })}
