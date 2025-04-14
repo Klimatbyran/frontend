@@ -204,7 +204,7 @@ export function LandingPage() {
                 description={t("landingPage.municipalitiesDescription")}
                 items={topMunicipalities}
                 itemValueRenderer={renderMunicipalityChangeRate}
-                icon={{ component: TreePineIcon, bgColor: "#FDE7CE" }}
+                icon={{ component: TreePineIcon, bgColor: "bg-[#FDE7CE]" }}
                 rankColor="text-orange-2"
               />
 
@@ -213,7 +213,7 @@ export function LandingPage() {
                 description={t("landingPage.companiesDescription")}
                 items={largestCompanyEmitters}
                 itemValueRenderer={renderCompanyEmission}
-                icon={{ component: Building2Icon, bgColor: "#D4E7F7" }}
+                icon={{ component: Building2Icon, bgColor: "bg-[#D4E7F7]" }}
                 rankColor="text-blue-2"
               />
             </div>

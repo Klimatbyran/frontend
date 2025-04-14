@@ -39,7 +39,7 @@ export function RankedList({
         <div
           className={cn(
             "w-10 h-10 rounded-full flex items-center justify-center",
-            `bg-[${icon.bgColor}]`,
+            icon.bgColor,
           )}
         >
           <Icon className="w-10 h-5 text-black" />
