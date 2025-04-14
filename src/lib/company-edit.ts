@@ -27,6 +27,9 @@ export function mapCompanyEditFormToRequestBody(
         verified: formData.get("scope-1-" + period.id + "-checkbox") === "true",
       };
     }
+    if(formData.has("scope-2-mb-" + period.id) || formData.has("scope-2-lb-" + period.id) || formData.has("scope-2-unknown-" + period.id)) {
+      periodUpdate.emissions.scope2 = {};
+    }
 
     if (formData.has("scope-2-mb-" + period.id)) {
       periodUpdate.emissions.scope2.mb =
