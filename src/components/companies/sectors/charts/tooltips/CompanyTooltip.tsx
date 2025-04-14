@@ -15,7 +15,7 @@ const CompanyTooltip: React.FC<TooltipProps<number, string>> = ({
 
   // Extract company data
   const companyName =
-    name || data.name || t("companies.sectorGraphs.unknownCompany");
+    name || data.name || t("companiesPage.sectorGraphs.unknownCompany");
   const totalEmissions = value || 0;
 
   // Calculate percentage of sector total
@@ -29,7 +29,7 @@ const CompanyTooltip: React.FC<TooltipProps<number, string>> = ({
       <p className="text-sm font-medium mb-2">{companyName}</p>
       <div className="text-sm text-grey space-y-1">
         <div className="flex justify-between">
-          <span>{t("companies.sectorGraphs.totalEmissions")}: </span>
+          <span>{t("companiesPage.sectorGraphs.totalEmissions")}: </span>
           <span className="text-white font-medium">
             {formatEmissionsAbsolute(
               Math.round(totalEmissions),
@@ -39,7 +39,7 @@ const CompanyTooltip: React.FC<TooltipProps<number, string>> = ({
           </span>
         </div>
         <div className="flex justify-between">
-          <span>{t("companies.sectorGraphs.percentOfSector")}: </span>
+          <span>{t("companiesPage.sectorGraphs.ofSector")}: </span>
           <span className="text-white font-medium">{percentage}</span>
         </div>
       </div>

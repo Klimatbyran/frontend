@@ -78,8 +78,8 @@ const PieLegend: React.FC<PieLegendProps> = ({
             onClick={() => handleItemClick(entry)}
             title={
               selectedSector
-                ? t("companies.sectorGraphs.pieLegendCompany")
-                : t("companies.sectorGraphs.pieLegendSector")
+                ? t("companiesPage.sectorGraphs.pieLegendCompany")
+                : t("companiesPage.sectorGraphs.pieLegendSector")
             }
           >
             <div

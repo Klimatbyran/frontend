@@ -44,7 +44,7 @@ const DetailPopup: React.FC<DetailPopupProps> = ({
         <div className="space-y-4">
           <div>
             <h4 className="text-sm text-grey mb-2">
-              {t("companies.sectorGraphs.total")}
+              {t("companiesPage.sectorGraphs.total")}
             </h4>
             <p className="text-2xl font-light text-white">
               {total.toLocaleString()} {t("emissionsUnit")}
@@ -73,7 +73,7 @@ const DetailPopup: React.FC<DetailPopupProps> = ({
             <div className="space-y-1">
               <div className="flex justify-between items-center">
                 <span className="text-sm text-grey">
-                  {t("companies.sectorGraphs.scope2")}
+                  {t("companiesPage.sectorGraphs.scope2")}
                 </span>
                 <span className="text-sm text-white">
                   {formatEmissionsAbsolute(scope2, currentLanguage)}{" "}
@@ -91,7 +91,7 @@ const DetailPopup: React.FC<DetailPopupProps> = ({
             <div className="space-y-1">
               <div className="flex justify-between items-center">
                 <span className="text-sm text-grey">
-                  {t("companies.sectorGraphs.scope3")}
+                  {t("companiesPage.sectorGraphs.scope3")}
                 </span>
                 <span className="text-sm text-white">
                   {formatEmissionsAbsolute(scope3, currentLanguage)}{" "}

@@ -64,7 +64,7 @@ const CustomTooltip: React.FC<TooltipProps<number, string>> = ({
       <div className="pt-3 border-t border-black-1">
         <div className="flex justify-between text-sm">
           <span className="text-grey font-medium">
-            {t("companies.sectorGraphs.yearTotal")}
+            {t("companiesPage.sectorGraphs.yearTotal")}
           </span>
           <span className="font-medium">
             {formatEmissionsAbsolute(Math.round(yearTotal), currentLanguage)}{" "}
