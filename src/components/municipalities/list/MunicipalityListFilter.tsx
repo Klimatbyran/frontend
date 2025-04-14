@@ -40,7 +40,7 @@ export default function MunicipalityFilter({
     <div
       className={cn(
         isMobile ? "relative" : "sticky top-0 z-10",
-        "bg-black px-4 pt-12 md:pt-16 pb-4 shadow-md"
+        "bg-black px-4 pt-12 md:pt-16 pb-4 shadow-md",
       )}
     >
       {/* Extending background to header */}
@@ -110,8 +110,8 @@ export default function MunicipalityFilter({
               ? t("municipalitiesPage.sort.aToZ")
               : t("municipalitiesPage.sort.zToA")
             : sortDirection === "best"
-            ? t("municipalitiesPage.sort.bestFirst")
-            : t("municipalitiesPage.sort.worstFirst")}
+              ? t("municipalitiesPage.sort.bestFirst")
+              : t("municipalitiesPage.sort.worstFirst")}
         </button>
       </div>
     </div>

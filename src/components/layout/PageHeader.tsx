@@ -20,7 +20,7 @@ export function PageHeader({
       <div
         className={cn(
           "max-w-[1200px] mx-auto px-4 pt-6 pb-2 space-y-2",
-          className
+          className,
         )}
       >
         <h1 className="text-3xl font-light">{title}</h1>

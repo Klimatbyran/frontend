@@ -7,11 +7,7 @@ interface LinkButtonProps {
   link: string;
 }
 
-export function LinkButton({
-  title,
-  text,
-  link
-}: LinkButtonProps) {
+export function LinkButton({ title, text, link }: LinkButtonProps) {
   return (
     <a
       href={link}

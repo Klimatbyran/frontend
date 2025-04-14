@@ -1,12 +1,14 @@
-import { useCompanies } from '@/hooks/useCompanies';
-import { SectorComparison } from './SectorComparison';
-import type { CompanyDetails } from '@/types/company';
+import { useCompanies } from "@/hooks/companies/useCompanies";
+import { SectorComparison } from "./SectorComparison";
+import type { CompanyDetails } from "@/types/company";
 
 interface CompanySectorComparisonProps {
   company: CompanyDetails;
 }
 
-export function CompanySectorComparison({ company }: CompanySectorComparisonProps) {
+export function CompanySectorComparison({
+  company,
+}: CompanySectorComparisonProps) {
   const { getCompaniesBySector } = useCompanies();
   const sectorCode = company.industry?.industryGics?.sectorCode;
 
@@ -17,7 +19,7 @@ export function CompanySectorComparison({ company }: CompanySectorComparisonProp
   const sectorCompanies = getCompaniesBySector(sectorCode);
 
   return (
-    <SectorComparison 
+    <SectorComparison
       currentCompany={company}
       sectorCompanies={sectorCompanies}
     />

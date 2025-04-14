@@ -119,7 +119,7 @@ const Typewriter = ({
               (currentIndex < (texts[currentTextIndex] || "").length ||
                 isDeleting)
               ? "hidden"
-              : ""
+              : "",
           )}
           initial="initial"
           animate="animate"

@@ -1,0 +1,142 @@
+name: 📝 New Blog Post
+description: Submit a new blog post with metadata and content.
+title: "[Blog]: "
+labels: ["blog", "content"]
+assignees: []
+body:
+  - type: input
+    id: id
+    attributes:
+      label: Post ID
+      description: Unique identifier for the blog post (e.g., kebab-case or UUID).
+      placeholder: "my-awesome-post"
+    validations:
+      required: true
+
+  - type: input
+    id: title
+    attributes:
+      label: Title
+      description: The full title of the blog post.
+      placeholder: "Why Static Typing Is Awesome"
+    validations:
+      required: true
+
+  - type: textarea
+    id: excerpt
+    attributes:
+      label: Excerpt
+      description: A short summary or teaser for the post.
+      placeholder: "This post explores the benefits of static typing in modern web development..."
+    validations:
+      required: true
+
+  - type: input
+    id: date
+    attributes:
+      label: Date
+      description: The date of publication (YYYY-MM-DD).
+      placeholder: "2025-03-27"
+    validations:
+      required: true
+
+  - type: input
+    id: readTime
+    attributes:
+      label: Estimated Read Time
+      description: Rough estimate of how long it takes to read the post.
+      placeholder: "4 min"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      description: Choose the main category of the blog post.
+      options:
+        - Methodology
+        - Analysis
+        - Guide
+        - Report
+    validations:
+      required: true
+
+  - type: input
+    id: image
+    attributes:
+      label: Hero Image URL (optional)
+      description: Path or URL to the main image for the post.
+      placeholder: "/images/blog/my-image.jpg"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: language
+    attributes:
+      label: Language
+      description: What language is the post written in?
+      options:
+        - en
+        - sv
+    validations:
+      required: false
+
+  - type: input
+    id: link
+    attributes:
+      label: External Link (optional)
+      description: If the blog is hosted elsewhere, provide the full URL.
+      placeholder: "https://medium.com/@username/my-post"
+    validations:
+      required: false
+
+  - type: input
+    id: authorName
+    attributes:
+      label: Author Name
+      description: Name of the author to display.
+      placeholder: "Jane Doe"
+    validations:
+      required: true
+
+  - type: input
+    id: authorAvatar
+    attributes:
+      label: Author Avatar (optional)
+      description: Image of author, if not part of the team already. If not provided, a default avatar will be used.
+       placeholder: "jane.jpg"
+    validations:
+      required: false
+
+  - type: textarea
+    id: relatedPosts
+    attributes:
+      label: Related Post IDs (optional)
+      description: List related blog post IDs or blog titles (comma-separated).
+      placeholder: "post-id-1, post-id-2"
+    validations:
+      required: false
+
+  - type: textarea
+    id: blogImages
+    attributes:
+      label: Images to Include in the Content
+      description: List or describe any images (with filenames or URLs) that should appear *within* the blog content, and where they should be placed.
+      placeholder: |
+        - /images/posts/code-snippet-1.png after the first paragraph
+        - Chart.png under the "Performance Comparison" section
+    validations:
+      required: false
+
+  - type: textarea
+    id: content
+    attributes:
+      label: Blog Post Content (Markdown)
+      description: Write or paste the full content of the blog post here, in markdown format.
+      placeholder: |
+        ## Introduction
+
+        Here's where your blog content begins...
+    validations:
+      required: true

@@ -21,19 +21,14 @@ const gapMap = {
   large: "gap-8",
 };
 
-export function BlockGrid({ 
-  children, 
+export function BlockGrid({
+  children,
   className,
   columns = 2,
-  gap = "medium"
+  gap = "medium",
 }: BlockGridProps) {
   return (
-    <div className={cn(
-      "grid",
-      columnMap[columns],
-      gapMap[gap],
-      className
-    )}>
+    <div className={cn("grid", columnMap[columns], gapMap[gap], className)}>
       {children}
     </div>
   );

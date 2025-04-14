@@ -1,6 +1,6 @@
 import { CompanyEditRow } from "./CompanyEditRow";
 import { CompanyEditInputField, CompanyEmptyField } from "./CompanyEditField";
-import { useCategoryMetadata } from "@/hooks/useCategories";
+import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 
 export function CompanyEditScope3({ periods, onInputChange, formData }) {
   const {categoryMetadata} = useCategoryMetadata();
@@ -14,13 +14,17 @@ export function CompanyEditScope3({ periods, onInputChange, formData }) {
   }
 
   const getCategoryValue = (index: number, categories) => {
-    const category = categories.find((category) => category.category - 1 === index);
-    return category !== undefined ? category.total : '';
+    const category = categories.find(
+      (category) => category.category - 1 === index,
+    );
+    return category !== undefined ? category.total : "";
   };
 
   const getCategoryVerified = (index: number, categories) => {
-    const category = categories.find((category) => category.category - 1 === index);
-    return category !== undefined ? (category.metadata?.verifiedBy) : false;
+    const category = categories.find(
+      (category) => category.category - 1 === index,
+    );
+    return category !== undefined ? category.metadata?.verifiedBy : false;
   };
 
   return (
@@ -34,7 +38,9 @@ export function CompanyEditScope3({ periods, onInputChange, formData }) {
       {periods.map((period) => <CompanyEmptyField />)}
       </CompanyEditRow>
 
-      {Object.values(categoryMetadata).map((category, index) => index !== 15 && (
+      {Object.values(categoryMetadata).map(
+        (category, index) =>
+          index !== 15 && (
             <CompanyEditRow
               key={"scope-3-" + index}
               name={category.name}

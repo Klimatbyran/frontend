@@ -3,21 +3,21 @@ import type { paths } from "@/lib/api-types";
 export type Municipality = {
   name: string;
   region: string;
-  budget: number;
+  budget: number | null;
   totalApproximatedHistoricalEmission: number;
   trendEmission: number;
   historicalEmissionChangePercent: number;
-  neededEmissionChangePercent: number;
-  budgetRunsOut: Date | string;
-  climatePlanYear: number | string;
-  climatePlanComment: string;
-  climatePlanLink: string;
+  neededEmissionChangePercent: number | null;
+  budgetRunsOut: Date | null;
+  climatePlanYear: number | null;
+  climatePlanComment: string | null;
+  climatePlanLink: string | null;
   electricVehiclePerChargePoints: number;
   bicycleMetrePerCapita: number;
   procurementScore: string;
   procurementLink: string | null;
   totalConsumptionEmission: number;
-  hitNetZero: Date | string;
+  hitNetZero: Date | null;
   electricCarChangeYearly: { year: string; value: number }[];
   electricCarChangePercent: number;
   wikidataId?: string;
@@ -51,7 +51,7 @@ export type MetricsByYear = Record<
 
 // Helper function to get latest year's data
 export function getLatestYearData<T>(
-  data: Record<string, T> | undefined
+  data: Record<string, T> | undefined,
 ): T | undefined {
   if (!data || typeof data !== "object") return undefined;
 
@@ -65,7 +65,7 @@ export function getLatestYearData<T>(
 
 // Helper function to get all years from data
 export function getAvailableYears(
-  data: Record<string, unknown> | undefined
+  data: Record<string, unknown> | undefined,
 ): number[] {
   if (!data || typeof data !== "object") return [];
 
@@ -91,7 +91,7 @@ export function transformEmissionsData(municipality: Municipality) {
   const years = new Set<string>();
 
   municipality.emissions.forEach((d) => years.add(d.year));
-  municipality.emissionBudget.forEach((d) => years.add(d.year));
+  municipality.emissionBudget?.forEach((d) => years.add(d.year));
   municipality.approximatedHistoricalEmission.forEach((d) => years.add(d.year));
   municipality.trend.forEach((d) => years.add(d.year));
 
@@ -99,13 +99,13 @@ export function transformEmissionsData(municipality: Municipality) {
     .sort()
     .map((year) => {
       const historical = municipality.emissions.find(
-        (d) => d.year === year
+        (d) => d.year === year,
       )?.value;
-      const budget = municipality.emissionBudget.find(
-        (d) => d.year === year
+      const budget = municipality.emissionBudget?.find(
+        (d) => d.year === year,
       )?.value;
       const approximated = municipality.approximatedHistoricalEmission.find(
-        (d) => d.year === year
+        (d) => d.year === year,
       )?.value;
       const trend = municipality.trend.find((d) => d.year === year)?.value;
 

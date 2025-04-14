@@ -46,7 +46,7 @@ export function Footer() {
   const navigate = useNavigate();
 
   return (
-    <footer className="bg-black-2 py-4 md:py-8">
+    <footer className="relative z-20 bg-black-2 py-4 md:py-8">
       <div className="container mx-auto px-4 space-y-4 md:space-y-8 flex flex-col items-center text-center">
         {/* Contact Section */}
         <div className="space-y-2 md:space-y-4">

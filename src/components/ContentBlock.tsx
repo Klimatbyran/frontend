@@ -12,7 +12,7 @@ export function ContentBlock({ title, content, className }: ContentBlockProps) {
     <div
       className={cn(
         "bg-black-2 rounded-[24px] p-8 md:rounded-[48px] md:p-16",
-        className
+        className,
       )}
     >
       <div className="space-y-4 md:space-y-8">

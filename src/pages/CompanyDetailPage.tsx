@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { useCompanyDetails } from "@/hooks/useCompanyDetails";
+import { useCompanyDetails } from "@/hooks/companies/useCompanyDetails";
 import { CompanyOverview } from "@/components/companies/detail/CompanyOverview";
 import { CompanyHistory } from "@/components/companies/detail/CompanyHistory";
 import { Text } from "@/components/ui/text";
@@ -53,18 +53,18 @@ export function CompanyDetailPage() {
   }
 
   const sortedPeriods = [...company.reportingPeriods].sort(
-    (a, b) => new Date(b.endDate).getTime() - new Date(a.endDate).getTime()
+    (a, b) => new Date(b.endDate).getTime() - new Date(a.endDate).getTime(),
   );
 
   const selectedPeriod =
     selectedYear === "latest"
       ? sortedPeriods[0]
       : sortedPeriods.find(
-          (p) => new Date(p.endDate).getFullYear().toString() === selectedYear
+          (p) => new Date(p.endDate).getFullYear().toString() === selectedYear,
         ) || sortedPeriods[0];
 
   const selectedIndex = sortedPeriods.findIndex(
-    (p) => p.endDate === selectedPeriod.endDate
+    (p) => p.endDate === selectedPeriod.endDate,
   );
   const previousPeriod =
     selectedIndex < sortedPeriods.length - 1
@@ -92,10 +92,10 @@ export function CompanyDetailPage() {
 
   // Prepare SEO data
   const canonicalUrl = `https://klimatkollen.se/foretag/${createSlug(
-    company.name
+    company.name,
   )}-${id}`;
   const pageTitle = `${company.name} - ${t(
-    "companyDetailPage.metaTitle"
+    "companyDetailPage.metaTitle",
   )} - Klimatkollen`;
   const pageDescription = t("companyDetailPage.metaDescription", {
     company: company.name,
@@ -181,7 +181,7 @@ export function CompanyDetailPage() {
             .filter(
               (period) =>
                 period.emissions?.scope3?.categories &&
-                period.emissions.scope3.categories.length > 0
+                period.emissions.scope3.categories.length > 0,
             )
             .map((period) => ({
               year: new Date(period.endDate).getFullYear(),

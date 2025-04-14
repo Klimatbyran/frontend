@@ -16,7 +16,7 @@ export function CompanyEditScope2({ periods, onInputChange, formData }) {
       {periods.map((period) => <CompanyEmptyField />)}
       </CompanyEditRow>
       <CompanyEditRow
-      key={"scope-2-mb"}
+        key={"scope-2-mb"}
         name={t("companyEditPage.rowName.marketBased")}
       >
         {periods.map((period) =>

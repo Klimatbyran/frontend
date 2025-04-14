@@ -4,10 +4,10 @@ import { Text } from "@/components/ui/text";
 import { Button } from "@/components/ui/button";
 import { X, RotateCcw } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useCategoryMetadata } from "@/hooks/useCategories";
+import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
-import { localizeUnit } from "@/utils/localizeUnit";
+import { formatEmissionsAbsolute, localizeUnit } from "@/utils/localizeUnit";
 
 interface Scope3ChartProps {
   categories: Array<{
@@ -55,7 +55,7 @@ export function Scope3Chart({ categories, className }: Scope3ChartProps) {
   const { currentLanguage } = useLanguage();
 
   const filteredCategories = categories.filter(
-    (cat) => !excludedCategories.includes(cat.category)
+    (cat) => !excludedCategories.includes(cat.category),
   );
   const total = filteredCategories.reduce((sum, cat) => sum + cat.total, 0);
 
@@ -91,8 +91,13 @@ export function Scope3Chart({ categories, className }: Scope3ChartProps) {
             {t("companies.scope3Chart.category", { number: data.category })}
           </Text>
           <Text variant="h4">{data.name}</Text>
-          <Text>{localizeUnit(Math.round(data.value), currentLanguage)} ton CO₂e</Text>
-          <Text className="text-grey">({localizeUnit(data.percentage, currentLanguage)}%)</Text>
+          <Text>
+            {formatEmissionsAbsolute(Math.round(data.value), currentLanguage)}{" "}
+            {t("emissionsUnit")}
+          </Text>
+          <Text className="text-grey">
+            ({localizeUnit(data.percentage, currentLanguage)}%)
+          </Text>
           <Text variant="small" className="text-blue-2 mt-2">
             {t("companies.scope3Chart.clickToFilter")}
           </Text>
@@ -169,7 +174,7 @@ export function Scope3Chart({ categories, className }: Scope3ChartProps) {
                   className={cn(
                     "flex items-center gap-2 px-3 py-1 rounded-full text-sm",
                     colors.bg,
-                    colors.text
+                    colors.text,
                   )}
                 >
                   <span>{getCategoryName(catId)}</span>
@@ -180,7 +185,7 @@ export function Scope3Chart({ categories, className }: Scope3ChartProps) {
                     }}
                     className={cn(
                       "p-0.5 rounded-full transition-colors",
-                      `hover:${colors.bg}`
+                      `hover:${colors.bg}`,
                     )}
                   >
                     <X className="w-3 h-3" />

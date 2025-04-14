@@ -1,9 +1,11 @@
-import { useQuery } from '@tanstack/react-query';
-import { getMunicipalities } from '@/lib/api';
-import type { paths } from '@/lib/api-types';
+import { useQuery } from "@tanstack/react-query";
+import { getMunicipalities } from "@/lib/api";
+import type { paths } from "@/lib/api-types";
 
 // Get municipality type from API types
-type Municipality = NonNullable<paths['/municipalities/']['get']['responses'][200]['content']['application/json']>[0];
+type Municipality = NonNullable<
+  paths["/municipalities/"]["get"]["responses"][200]["content"]["application/json"]
+>[0];
 
 interface UseMunicipalitiesReturn {
   municipalities: Municipality[];
@@ -19,13 +21,17 @@ interface UseMunicipalitiesReturn {
   filterMunicipalities: (params: {
     region?: string;
     searchQuery?: string;
-    sortBy?: 'emissions' | 'reduction' | 'name';
+    sortBy?: "emissions" | "reduction" | "name";
   }) => Municipality[];
 }
 
 export function useMunicipalities(): UseMunicipalitiesReturn {
-  const { data: municipalities = [], isLoading, error } = useQuery({
-    queryKey: ['municipalities'],
+  const {
+    data: municipalities = [],
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["municipalities"],
     queryFn: getMunicipalities,
     select: (data) => {
       // Transform data if needed
@@ -36,9 +42,10 @@ export function useMunicipalities(): UseMunicipalitiesReturn {
   // Get top municipalities by emissions reduction
   const getTopMunicipalities = (count: number = 5) => {
     return [...municipalities]
-      .sort((a, b) => 
-        // Sort by historical emission change percent (negative is better)
-        a.historicalEmissionChangePercent - b.historicalEmissionChangePercent
+      .sort(
+        (a, b) =>
+          // Sort by historical emission change percent (negative is better)
+          a.historicalEmissionChangePercent - b.historicalEmissionChangePercent,
       )
       .slice(0, count);
   };
@@ -46,27 +53,27 @@ export function useMunicipalities(): UseMunicipalitiesReturn {
   // Get municipalities data formatted for map
   const getMunicipalitiesForMap = (count: number = 10) => {
     return municipalities
-      .filter(m => m.bicycleMetrePerCapita != null)
+      .filter((m) => m.bicycleMetrePerCapita != null)
       .sort((a, b) => b.bicycleMetrePerCapita - a.bicycleMetrePerCapita)
       .slice(0, count)
-      .map(municipality => ({
+      .map((municipality) => ({
         id: municipality.id,
         name: municipality.name,
         value: municipality.bicycleMetrePerCapita,
-        path: 'M100,200 L120,220 L110,240 Z', // TODO: Replace with real SVG paths
+        path: "M100,200 L120,220 L110,240 Z", // TODO: Replace with real SVG paths
       }));
   };
 
   // Filter and sort municipalities
   const filterMunicipalities = ({
-    region = 'all',
-    searchQuery = '',
-    sortBy = 'emissions'
+    region = "all",
+    searchQuery = "",
+    sortBy = "emissions",
   }) => {
     return municipalities
-      .filter(municipality => {
+      .filter((municipality) => {
         // Filter by region
-        if (region !== 'all' && municipality.region !== region) {
+        if (region !== "all" && municipality.region !== region) {
           return false;
         }
 
@@ -80,11 +87,14 @@ export function useMunicipalities(): UseMunicipalitiesReturn {
       })
       .sort((a, b) => {
         switch (sortBy) {
-          case 'emissions':
+          case "emissions":
             return b.trendEmission - a.trendEmission;
-          case 'reduction':
-            return a.historicalEmissionChangePercent - b.historicalEmissionChangePercent;
-          case 'name':
+          case "reduction":
+            return (
+              a.historicalEmissionChangePercent -
+              b.historicalEmissionChangePercent
+            );
+          case "name":
             return a.name.localeCompare(b.name);
           default:
             return 0;
@@ -92,9 +102,9 @@ export function useMunicipalities(): UseMunicipalitiesReturn {
       });
   };
 
-  return { 
+  return {
     municipalities,
-    loading: isLoading, 
+    loading: isLoading,
     error,
     getTopMunicipalities,
     getMunicipalitiesForMap,

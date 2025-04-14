@@ -1,0 +1,58 @@
+name: ✏️ Copy Update
+description: Request updates to text, labels, or other content in the app or documentation.
+title: "[Copy]: "
+labels: ["copy", "content"]
+assignees: ["kaylawoodbury"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a copy change! Please fill in the following details so we can make the change quickly and clearly.
+
+  - type: textarea
+    id: location
+    attributes:
+      label: Where is this text?
+      description: Provide the file path, page/component name, screenshot, or link to where the text appears.
+      placeholder: e.g. src/components/Header.tsx or https://myapp.com/signup
+    validations:
+      required: true
+
+  - type: textarea
+    id: current
+    attributes:
+      label: Current Text
+      description: Paste the current copy as it appears.
+      placeholder: e.g. "Start your free trial now!"
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed
+    attributes:
+      label: Proposed Change
+      description: What should the new copy say?
+      placeholder: e.g. "Get started for free — no credit card needed."
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context or Reason (Optional)
+      description: Why is this change being made? (e.g. tone, clarity, marketing goals, legal)
+      placeholder: e.g. Aligning with updated brand guidelines.
+    validations:
+      required: false
+
+  - type: dropdown
+    id: urgency
+    attributes:
+      label: Urgency
+      description: How urgent is this copy change?
+      options:
+        - Low (nice to have)
+        - Medium (should be updated soon)
+        - High (blocking release or critical for users)
+    validations:
+      required: true

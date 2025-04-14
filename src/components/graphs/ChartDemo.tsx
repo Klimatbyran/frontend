@@ -1,9 +1,14 @@
-import { useEffect, useState } from 'react';
-import { DonutChart } from './DonutChart';
-import { BubbleChart } from './BubbleChart';
-import { BarChart } from './BarChart';
-import { StatCard } from './StatCard';
-import { getEmissionsBySector, getCO2Level, getSeaLevel, getArcticIce } from '@/lib/api';
+import { useEffect, useState } from "react";
+import { DonutChart } from "./DonutChart";
+import { BubbleChart } from "./BubbleChart";
+import { BarChart } from "./BarChart";
+import { StatCard } from "./StatCard";
+import {
+  getEmissionsBySector,
+  getCO2Level,
+  getSeaLevel,
+  getArcticIce,
+} from "@/lib/api";
 
 interface EmissionData {
   value: number;
@@ -33,20 +38,18 @@ export function ChartDemo() {
         setSeaLevel(seaData);
         setArcticIce(iceData);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     }
 
     fetchData();
   }, []);
 
-  const donutData = emissions
-    .slice(0, 3)
-    .map((item, index) => ({
-      label: item.sector,
-      value: item.value,
-      color: `orange.${index + 2}`,
-    }));
+  const donutData = emissions.slice(0, 3).map((item, index) => ({
+    label: item.sector,
+    value: item.value,
+    color: `orange.${index + 2}`,
+  }));
 
   const bubbleData = emissions.map((item, index) => ({
     label: item.sector,
@@ -54,13 +57,11 @@ export function ChartDemo() {
     color: `blue.${index + 1}`,
   }));
 
-  const barData = emissions
-    .slice(0, 4)
-    .map(item => ({
-      label: item.sector,
-      value: item.value,
-      color: 'pink.3',
-    }));
+  const barData = emissions.slice(0, 4).map((item) => ({
+    label: item.sector,
+    value: item.value,
+    color: "pink.3",
+  }));
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -87,9 +88,9 @@ export function ChartDemo() {
 
       <StatCard
         title="Koldioxid"
-        value={co2Level?.value.toFixed(1) || '415.7'}
+        value={co2Level?.value.toFixed(1) || "415.7"}
         unit="ppm"
-        subtext={`UPPMÄTT ${new Date(co2Level?.date || '').toLocaleDateString('sv-SE')}`}
+        subtext={`UPPMÄTT ${new Date(co2Level?.date || "").toLocaleDateString("sv-SE")}`}
         color="orange"
       />
 
