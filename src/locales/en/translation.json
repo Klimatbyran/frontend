@@ -716,7 +716,6 @@
         }
       },
       "insights": {
-        "title": "Insights",
         "noData": {
           "municipality": "No municipality data available",
           "metric": "No data available for {{metric}}"

@@ -76,6 +76,7 @@ export function MunicipalitiesRankedPage() {
           }}
         />
       </div>
+
       <DataSelector
         selectedDataPoint={selectedDataPoint}
         onDataPointChange={setSelectedDataPoint}

@@ -70,7 +70,7 @@ function InsightsPanel({
   return (
     <div className="bg-white/5 backdrop-blur-sm rounded-level-2 p-8 h-full min-w-screen-lg flex flex-col min-h-0">
       <h2 className="text-white text-2xl font-bold mb-6">
-        {t("municipalities.list.insights.title")} - {selectedDataPoint.label}
+        {selectedDataPoint.label}
       </h2>
 
       <div className="flex-1 overflow-y-auto min-h-0 pr-2">

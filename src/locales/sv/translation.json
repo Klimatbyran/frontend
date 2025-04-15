@@ -723,7 +723,6 @@
         }
       },
       "insights": {
-        "title": "Insikter",
         "noData": {
           "municipality": "Ingen kommundata tillgänglig",
           "metric": "Ingen data tillgänglig för {{metric}}"
