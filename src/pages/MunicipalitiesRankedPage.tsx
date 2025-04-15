@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Map, List } from "lucide-react";
 
 import { useMunicipalities } from "@/hooks/useMunicipalities";
 import { useTranslation } from "react-i18next";
@@ -11,6 +10,7 @@ import MunicipalityRankedList from "@/components/municipalities/rankedList/Munic
 import InsightsPanel from "@/components/municipalities/rankedList/MunicipalityInsightsPanel";
 import SwedenMap from "@/components/municipalities/map/SwedenMap";
 import municipalityGeoJson from "@/data/municipalityGeo.json";
+import ViewToggleButton from "@/components/municipalities/rankedList/ViewToggleButton";
 
 export function MunicipalitiesRankedPage() {
   const { t } = useTranslation();
@@ -29,7 +29,7 @@ export function MunicipalitiesRankedPage() {
     return (
       <div className="animate-pulse space-y-16">
         <div className="h-12 w-1/3 bg-black-1 rounded" />
-        <div className="grid grid-cols-1 lg:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {[...Array(6)].map((_, i) => (
             <div key={i} className="h-96 bg-black-1 rounded-level-2" />
           ))}
@@ -53,30 +53,14 @@ export function MunicipalitiesRankedPage() {
 
   return (
     <div className="space-y-8">
-      <PageHeader
-        title={t("municipalitiesRankedPage.title")}
-        description={t("municipalitiesRankedPage.description")}
-        className="-ml-4"
-      />
-
-      <div className="flex items-center justify-between mb-6">
-        <button
-          onClick={() => setShowMap(!showMap)}
-          className="flex items-center gap-2 px-4 py-2 bg-black/40 text-white rounded-xl hover:bg-black/60 transition-colors"
-        >
-          {showMap ? (
-            <>
-              <List className="w-5 h-5" />
-              <span>{t("municipalities.list.viewToggle.showList")}</span>
-            </>
-          ) : (
-            <>
-              <Map className="w-5 h-5" />
-              <span>{t("municipalities.list.viewToggle.showMap")}</span>
-            </>
-          )}
-        </button>
+      <div className="flex items-center justify-between">
+        <PageHeader
+          title={t("municipalitiesRankedPage.title")}
+          description={t("municipalitiesRankedPage.description")}
+        />
+        <ViewToggleButton showMap={showMap} setShowMap={setShowMap} />
       </div>
+      <div className="flex items-center justify-between mb-6"></div>
       <DataSelector
         selectedDataPoint={selectedDataPoint}
         onDataPointChange={setSelectedDataPoint}
