@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Map, List } from "lucide-react";
 
 import { useMunicipalities } from "@/hooks/useMunicipalities";
 import { useTranslation } from "react-i18next";
@@ -10,7 +11,7 @@ import MunicipalityRankedList from "@/components/municipalities/rankedList/Munic
 import InsightsPanel from "@/components/municipalities/rankedList/MunicipalityInsightsPanel";
 import SwedenMap from "@/components/municipalities/map/SwedenMap";
 import municipalityGeoJson from "@/data/municipalityGeo.json";
-import ViewToggleButton from "@/components/municipalities/rankedList/ViewToggleButton";
+import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 
 export function MunicipalitiesRankedPage() {
   const { t } = useTranslation();
@@ -58,7 +59,20 @@ export function MunicipalitiesRankedPage() {
           title={t("municipalitiesRankedPage.title")}
           description={t("municipalitiesRankedPage.description")}
         />
-        <ViewToggleButton showMap={showMap} setShowMap={setShowMap} />
+        <ViewModeToggle
+          viewMode={showMap ? "map" : "list"}
+          modes={["map", "list"]}
+          onChange={(mode) => setShowMap(mode === "map")}
+          titles={{
+            map: t("municipalities.list.viewToggle.showMap"),
+            list: t("municipalities.list.viewToggle.showList"),
+          }}
+          showTitles={true}
+          icons={{
+            map: <Map className="w-4 h-4" />,
+            list: <List className="w-4 h-4" />,
+          }}
+        />
       </div>
       <div className="flex items-center justify-between mb-6"></div>
       <DataSelector
