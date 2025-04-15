@@ -136,6 +136,10 @@
     "relatedArticles": "Relaterade artiklar"
   },
   "companiesPage": {
+    "viewModes": {
+      "graphs": "Grafer",
+      "list": "Lista"
+    },
     "filter": "Filter",
     "sortBy": "Sortera efter",
     "searchInFilter": "Sök i filter...",

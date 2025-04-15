@@ -136,6 +136,10 @@
     "relatedArticles": "Related Articles"
   },
   "companiesPage": {
+    "viewModes": {
+      "graphs": "Graphs",
+      "list": "List"
+    },
     "filter": "Filter",
     "sortBy": "Sort By",
     "searchInFilter": "Search filters",
