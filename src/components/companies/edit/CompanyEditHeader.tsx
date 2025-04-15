@@ -68,10 +68,6 @@ export function CompanyEditHeader({
                 ...baseStyles,
                 backgroundColor: "none",
               }),
-              multiValue: (baseStyles) => ({
-                ...baseStyles,
-                backgroundColor: "none",
-              }),
               multiValueRemove: (baseStyles) => ({
                 ...baseStyles,
                 backgroundColor: "#878787",
