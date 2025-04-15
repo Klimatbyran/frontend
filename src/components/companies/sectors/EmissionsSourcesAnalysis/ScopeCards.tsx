@@ -34,7 +34,7 @@ const ScopeCards: React.FC<ScopeCardsProps> = ({
           value={scopeData.scope1.total}
           companies={scopeData.scope1.companies}
           color="bg-orange-3"
-          percent={(scopeData.scope1.total / totalEmissions) * 100}
+          percent={scopeData.scope1.total / totalEmissions}
           description={t("companiesPage.sectorGraphs.scope1Description")}
           onClick={() => setSelectedScope("scope1")}
         />
@@ -44,7 +44,7 @@ const ScopeCards: React.FC<ScopeCardsProps> = ({
           value={scopeData.scope2.total}
           companies={scopeData.scope2.companies}
           color="bg-pink-3"
-          percent={(scopeData.scope2.total / totalEmissions) * 100}
+          percent={scopeData.scope2.total / totalEmissions}
           description={t("companiesPage.sectorGraphs.scope2Description")}
           onClick={() => setSelectedScope("scope2")}
         />
@@ -54,7 +54,7 @@ const ScopeCards: React.FC<ScopeCardsProps> = ({
           value={scopeData.scope3.upstream.total}
           companies={scopeData.scope3.upstream.companies}
           color="bg-blue-3"
-          percent={(scopeData.scope3.upstream.total / totalEmissions) * 100}
+          percent={scopeData.scope3.upstream.total / totalEmissions}
           description={t(
             "companiesPage.sectorGraphs.scope3UpstreamDescription",
           )}
@@ -66,7 +66,7 @@ const ScopeCards: React.FC<ScopeCardsProps> = ({
           value={scopeData.scope3.downstream.total}
           companies={scopeData.scope3.downstream.companies}
           color="bg-green-3"
-          percent={(scopeData.scope3.downstream.total / totalEmissions) * 100}
+          percent={scopeData.scope3.downstream.total / totalEmissions}
           description={t(
             "companiesPage.sectorGraphs.scope3DownstreamDescription",
           )}

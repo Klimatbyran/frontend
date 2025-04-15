@@ -7,6 +7,8 @@ import {
   sectorColors,
   useSectorNames,
 } from "@/hooks/companies/useCompanyFilters";
+import { formatEmissionsAbsolute, formatPercent } from "@/utils/localizeUnit";
+import { useLanguage } from "@/components/LanguageProvider";
 
 interface ScopeModalProps {
   scope: "scope1" | "scope2" | "scope3_upstream" | "scope3_downstream";
@@ -93,6 +95,7 @@ const ScopeModal: React.FC<ScopeModalProps> = ({
     return company?.wikidataId;
   };
   const { t } = useTranslation();
+  const { currentLanguage } = useLanguage();
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm flex items-center justify-center z-50">
@@ -127,7 +130,10 @@ const ScopeModal: React.FC<ScopeModalProps> = ({
                         {sector.sectorName}
                       </h4>
                       <p className="text-sm text-grey">
-                        {((sector.total / sectorData.total) * 100).toFixed(1)}%
+                        {formatPercent(
+                          sector.total / sectorData.total,
+                          currentLanguage,
+                        )}{" "}
                         {t("companiesPage.sectorGraphs.ofTotal")}{" "}
                         {title.toLowerCase()}
                       </p>
@@ -137,7 +143,8 @@ const ScopeModal: React.FC<ScopeModalProps> = ({
                         className="text-xl font-light"
                         style={{ color: sectorColor }}
                       >
-                        {sector.total.toLocaleString()} {t("emissionsUnit")}
+                        {formatEmissionsAbsolute(sector.total, currentLanguage)}{" "}
+                        {t("emissionsUnit")}
                       </div>
                       <div className="text-sm text-grey">
                         {sector.companies.length}{" "}
@@ -165,17 +172,18 @@ const ScopeModal: React.FC<ScopeModalProps> = ({
                                 className="text-sm"
                                 style={{ color: sectorColor }}
                               >
-                                {company.emissions.toLocaleString()}{" "}
+                                {formatEmissionsAbsolute(
+                                  company.emissions,
+                                  currentLanguage,
+                                )}{" "}
                                 {t("emissionsUnit")}
                               </div>
                               <div className="text-xs text-grey">
-                                {(
-                                  (company.emissions / sector.total) *
-                                  100
-                                ).toFixed(1)}
-                                {t(
-                                  "companiesPage.sectorGraphs.percentOfSector",
-                                )}
+                                {formatPercent(
+                                  company.emissions / sector.total,
+                                  currentLanguage,
+                                )}{" "}
+                                {t("companiesPage.sectorGraphs.ofSector")}
                               </div>
                             </div>
                           </div>
@@ -193,14 +201,17 @@ const ScopeModal: React.FC<ScopeModalProps> = ({
                               className="text-sm"
                               style={{ color: sectorColor }}
                             >
-                              {company.emissions.toLocaleString()}{" "}
+                              {formatEmissionsAbsolute(
+                                company.emissions,
+                                currentLanguage,
+                              )}{" "}
                               {t("emissionsUnit")}
                             </div>
                             <div className="text-xs text-grey">
-                              {(
-                                (company.emissions / sector.total) *
-                                100
-                              ).toFixed(1)}
+                              {formatPercent(
+                                company.emissions / sector.total,
+                                currentLanguage,
+                              )}{" "}
                               {t("companiesPage.sectorGraphs.percentOfSector")}
                             </div>
                           </div>

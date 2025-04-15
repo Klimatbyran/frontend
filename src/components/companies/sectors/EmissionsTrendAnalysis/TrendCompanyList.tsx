@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { RankedCompany } from "@/types/company";
 
-interface CompanyListProps {
+interface TrendCompanyListProps {
   category: "decreasing" | "increasing" | "noComparable";
   data: Array<
     | {
@@ -16,7 +16,7 @@ interface CompanyListProps {
   >;
 }
 
-const CompanyList: React.FC<CompanyListProps> = ({ category, data }) => {
+const TrendCompanyList: React.FC<TrendCompanyListProps> = ({ category, data }) => {
   const { t } = useTranslation();
 
   if (!data || data.length === 0) {
@@ -100,4 +100,4 @@ const CompanyList: React.FC<CompanyListProps> = ({ category, data }) => {
   );
 };
 
-export default CompanyList;
+export default TrendCompanyList;

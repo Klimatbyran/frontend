@@ -9,10 +9,9 @@ export function localizeUnit(
   }
 
   if (unit instanceof Date) {
-    return new Intl.DateTimeFormat(
-      currentLanguage === "sv" ? "sv-SE" : "en-US",
-      { dateStyle: "short" },
-    ).format(unit);
+    return new Intl.DateTimeFormat(currentLanguage, {
+      dateStyle: "short",
+    }).format(unit);
   }
 }
 
@@ -26,10 +25,7 @@ const localizeNumber = (
   currentLanguage: SupportedLanguage,
   options: Intl.NumberFormatOptions = defaultNumberFormatOptions,
 ) => {
-  return new Intl.NumberFormat(
-    currentLanguage === "sv" ? "sv-SE" : "en-US",
-    options,
-  ).format(nr);
+  return new Intl.NumberFormat(currentLanguage, options).format(nr);
 };
 
 export function formatEmployeeCount(
@@ -44,4 +40,27 @@ export function formatEmissionsAbsolute(
   currentLanguage: SupportedLanguage,
 ) {
   return localizeNumber(count, currentLanguage, { maximumFractionDigits: 0 });
+}
+
+export function formatPercentChange(
+  value: number,
+  currentLanguage: SupportedLanguage,
+) {
+  return new Intl.NumberFormat(currentLanguage, {
+    style: "percent",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 1,
+    signDisplay: "exceptZero",
+  }).format(value);
+}
+
+export function formatPercent(
+  value: number,
+  currentLanguage: SupportedLanguage,
+) {
+  return new Intl.NumberFormat(currentLanguage, {
+    style: "percent",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 1,
+  }).format(value);
 }

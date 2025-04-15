@@ -158,3 +158,20 @@
 .prose li {
   @apply text-lg;
 }
+
+input[type='number'] {
+  text-align: right; /* Align numbers to the right */
+  padding-right: 10px; /* Add some padding as needed */
+}
+
+/* Remove spinner controls (only for WebKit browsers like Chrome, Edge) */
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* For Firefox (hides the increment/decrement arrows in number inputs) */
+input[type='number'] {
+  -moz-appearance: textfield;
+}

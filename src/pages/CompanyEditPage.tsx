@@ -74,9 +74,15 @@ export function CompanyEditPage() {
       </div>
     );
   }
-
-  const handleInputChange = async (name, value) => {
-    setFormData(formData.set(name, value));
+  
+  const handleInputChange = async (name: string, value: string, originalValue) => {
+    const updateFormData = new Map(formData);
+    if(value != originalValue) {
+      updateFormData.set(name, value);;    
+    } else {
+      updateFormData.delete(name);
+    }
+    setFormData(updateFormData);
   };
 
   const handleSubmit = async (event: React.FormEvent<SubmitEvent>) => {
@@ -113,40 +119,34 @@ export function CompanyEditPage() {
     }
   };
 
+  const resetPeriod = (year: number) => {
+    const updatedFormData = new Map(formData);
+    for(const key of formData.keys()) {
+      if(key.includes(year.toString())) {
+        updatedFormData.delete(key);
+      }
+    }
+    setFormData(updatedFormData);
+  }
+
   return (
     <div className="space-y-16 max-w-[1400px] mx-auto">
       <div className="bg-black-2 rounded-level-1 p-16">
-        <CompanyEditHeader
-          company={company}
-          selectedYears={selectedYears}
-          onYearsSelect={setSelectedYears}
-        />
-        {selectedPeriods !== null && selectedPeriods.length > 0 && (
-          <form onSubmit={handleSubmit} ref={formRef}>
-            <CompanyEditPeriod
-              periods={selectedPeriods}
-              onInputChange={handleInputChange}
-            ></CompanyEditPeriod>
-            <CompanyEditScope1
-              periods={selectedPeriods}
-              onInputChange={handleInputChange}
-            ></CompanyEditScope1>
-            <CompanyEditScope2
-              periods={selectedPeriods}
-              onInputChange={handleInputChange}
-            ></CompanyEditScope2>
-            <CompanyEditScope3
-              periods={selectedPeriods}
-              onInputChange={handleInputChange}
-            ></CompanyEditScope3>
-            <button
-              type="submit"
-              className="inline-flex float-right mt-2 items-center justify-center text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white disabled:pointer-events-none hover:opacity-80 active:ring-1 active:ring-white disabled:opacity-50 h-10 bg-blue-5 text-white rounded-lg hover:bg-blue-6 transition px-4 py-1 font-medium"
-            >
-              {t("companyEditPage.save")}
-            </button>
-          </form>
-        )}
+      <CompanyEditHeader 
+        company={company}
+        onYearsSelect={setSelectedYears}
+      />
+      {selectedPeriods !== null && selectedPeriods.length > 0 && (
+        <form onSubmit={handleSubmit} ref={formRef}>
+        <CompanyEditPeriod periods={selectedPeriods} onInputChange={handleInputChange} formData={formData} resetPeriod={resetPeriod}></CompanyEditPeriod>
+        <CompanyEditScope1 periods={selectedPeriods} onInputChange={handleInputChange} formData={formData}></CompanyEditScope1>
+        <CompanyEditScope2 periods={selectedPeriods} onInputChange={handleInputChange} formData={formData}></CompanyEditScope2>
+        <CompanyEditScope3 periods={selectedPeriods} onInputChange={handleInputChange} formData={formData}></CompanyEditScope3>
+        <button type="submit" className='inline-flex float-right mt-2 items-center justify-center text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white disabled:pointer-events-none hover:opacity-80 active:ring-1 active:ring-white disabled:opacity-50 h-10 bg-blue-5 text-white rounded-lg hover:bg-blue-6 transition px-4 py-1 font-medium'>
+          {t("companyEditPage.save")}
+        </button>
+        </form>
+      )}
       </div>
     </div>
   );

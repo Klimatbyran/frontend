@@ -2,8 +2,8 @@ import { CompanyEditRow } from "./CompanyEditRow";
 import { CompanyEditInputField, CompanyEmptyField } from "./CompanyEditField";
 import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 
-export function CompanyEditScope3({ periods, onInputChange }) {
-  const { categoryMetadata } = useCategoryMetadata();
+export function CompanyEditScope3({ periods, onInputChange, formData }) {
+  const {categoryMetadata} = useCategoryMetadata();
 
   if (
     periods.length <= 0 ||
@@ -43,23 +43,24 @@ export function CompanyEditScope3({ periods, onInputChange }) {
             <CompanyEditRow
               key={"scope-3-" + index}
               name={category.name}
-              fields={periods.map((period) =>
-                CompanyEditInputField({
-                  type: "number",
-                  name: "scope-3-" + period.id + "-" + (index + 1),
-                  value: getCategoryValue(
-                    index,
-                    period.emissions.scope3?.categories,
-                  ),
-                  verified: getCategoryVerified(
-                    index,
-                    period.emissions?.scope3?.categories,
-                  ),
-                  onInputChange,
-                }),
+            >
+              {periods.map((period) =>
+                <CompanyEditInputField
+                name={`scope-3-${period.id}-${(index + 1)}`}
+                type="number"
+                key={`scope-3-${period.id}-${(index + 1)}`}
+                displayAddition="verification"
+                verified={getCategoryVerified(index, period.emissions?.scope3?.categories)}
+                value={ getCategoryValue(
+                  index,
+                  period.emissions.scope3?.categories
+                )}
+                onInputChange={onInputChange}
+                formData={formData}
+              />
               )}
-            ></CompanyEditRow>
-          ),
+            </CompanyEditRow>
+          )
       )}
     </>
   );

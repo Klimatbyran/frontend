@@ -1,16 +1,11 @@
 export interface CompanyEditRowProps {
   name: string;
-  fields: JSX.Element[];
   noHover?: boolean;
   headerName?: boolean;
+  children: React.ReactNode
 }
 
-export function CompanyEditRow({
-  fields,
-  name,
-  noHover,
-  headerName,
-}: CompanyEditRowProps) {
+export function CompanyEditRow({name, noHover, headerName, children}: CompanyEditRowProps) {
   return (
     <div
       key={"row-" + name}
@@ -24,7 +19,7 @@ export function CompanyEditRow({
         {name}
       </h2>
       <div key={"fields-" + name} className="flex">
-        {fields.map((field) => field)}
+        {children}
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import { useLanguage } from "@/components/LanguageProvider";
-import { formatEmissionsAbsolute } from "@/utils/localizeUnit";
+import { formatEmissionsAbsolute, formatPercent } from "@/utils/localizeUnit";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { TooltipProps } from "recharts";
@@ -14,7 +14,10 @@ const PieChartTooltip: React.FC<TooltipProps<number, string>> = ({
   if (!active || !payload || !payload.length) return null;
 
   const { name, value, payload: data } = payload[0];
-  const percentage = value ? ((value / data.total) * 100).toFixed(1) : "0.0";
+  const percentage = formatPercent(
+    value ? value / data.total : 0,
+    currentLanguage,
+  );
 
   return (
     <div className="bg-black-2 border border-black-1 rounded-lg shadow-xl p-4 text-white">
@@ -24,7 +27,9 @@ const PieChartTooltip: React.FC<TooltipProps<number, string>> = ({
           {formatEmissionsAbsolute(Math.round(value || 0), currentLanguage)}{" "}
           {t("emissionsUnit")}
         </div>
-        <div>{percentage}% of total</div>
+        <div>
+          {percentage} {t("companiesPage.sectorGraphs.ofTotal")}
+        </div>
       </div>
     </div>
   );

@@ -2,8 +2,8 @@ import { CompanyEditRow } from "./CompanyEditRow";
 import { CompanyEditInputField, CompanyEmptyField } from "./CompanyEditField";
 import { useTranslation } from "react-i18next";
 
-export function CompanyEditScope2({ periods, onInputChange }) {
-  const { t } = useTranslation();
+export function CompanyEditScope2({ periods, onInputChange, formData }) {
+  const { t } = useTranslation()
 
   return (
     <>
@@ -17,42 +17,52 @@ export function CompanyEditScope2({ periods, onInputChange }) {
       <CompanyEditRow
         key={"scope-2-mb"}
         name={t("companyEditPage.rowName.marketBased")}
-        fields={periods.map((period) =>
-          CompanyEditInputField({
-            type: "number",
-            name: "scope-2-mb-" + period.id,
-            value: period.emissions?.scope2?.mb ?? "",
-            verified: period.emissions?.scope2?.metadata?.verifiedBy,
-            onInputChange,
-          }),
+      >
+        {periods.map((period) =>
+          <CompanyEditInputField
+          name={`scope-2-mb-${period.id}`}
+          type="number"
+          key={`scope-2-mb-${period.id}`}
+          displayAddition="topBracket"
+          value={period.emissions?.scope2?.mb ?? ''}
+          onInputChange={onInputChange}
+          formData={formData}
+        />
         )}
-      ></CompanyEditRow>
+      </CompanyEditRow>
       <CompanyEditRow
         key={"scope-2-lb"}
         name={t("companyEditPage.rowName.locationBased")}
-        fields={periods.map((period) =>
-          CompanyEditInputField({
-            type: "number",
-            name: "scope-2-lb-" + period.id,
-            value: period.emissions?.scope2?.lb ?? "",
-            verified: period.emissions?.scope2?.metadata?.verifiedBy,
-            onInputChange,
-          }),
+      >
+        {periods.map((period) =>
+          <CompanyEditInputField
+          name={`scope-2-lb-${period.id}`}
+          type="number"
+          key={`scope-2-lb-${period.id}`}
+          displayAddition="verification"
+          verified={period.emissions?.scope2?.metadata?.verifiedBy}
+          value={period.emissions?.scope2?.lb ?? ''}
+          onInputChange={onInputChange}
+          formData={formData}
+        />
         )}
-      ></CompanyEditRow>
+      </CompanyEditRow>
       <CompanyEditRow
         key={"scope-2-unknown"}
         name={t("companyEditPage.rowName.unknown")}
-        fields={periods.map((period) =>
-          CompanyEditInputField({
-            type: "number",
-            name: "scope-2-unknown-" + period.id,
-            value: period.emissions?.scope2?.unknown ?? "",
-            verified: period.emissions?.scope2?.metadata?.verifiedBy,
-            onInputChange,
-          }),
+      >
+        {periods.map((period) =>
+          <CompanyEditInputField
+          name={`scope-2-unknown-${period.id}`}
+          type="number"
+          key={`scope-2-unknown-${period.id}`}
+          displayAddition="bottomBracket"
+          value={period.emissions?.scope2?.unknown ?? ''}
+          onInputChange={onInputChange}
+          formData={formData}
+        />
         )}
-      ></CompanyEditRow>
+      </CompanyEditRow>
     </>
   );
 }
