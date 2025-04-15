@@ -5,6 +5,8 @@
   "header": {
     "companies": "Companies",
     "municipalities": "Municipalities",
+    "municipalitiesRanked": "Ranked",
+    "municipalitiesCompare": "Comapre",
     "about": "About Us",
     "insights": "Insights",
     "methodology": "Sources and Method",
@@ -323,7 +325,7 @@
       }
     }
   },
-  "municipalitiesPage": {
+  "municipalitiesComparePage": {
     "errorTitle": "Failed to retrieve municipality information",
     "errorDescription": "Please try again later",
     "title": "Municipality Reports",

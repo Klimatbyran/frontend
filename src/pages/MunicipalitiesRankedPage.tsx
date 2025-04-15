@@ -2,11 +2,8 @@ import { useState } from "react";
 import { Map, List } from "lucide-react";
 
 import { useMunicipalities } from "@/hooks/useMunicipalities";
-import { MunicipalityList } from "@/components/municipalities/list/MunicipalityList";
 import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { useScreenSize } from "@/hooks/useScreenSize";
-import MunicipalityFilter from "@/components/municipalities/list/MunicipalityListFilter";
 import DataSelector, {
   dataPoints,
 } from "@/components/municipalities/rankedList/MunicipalityDataSelector";
@@ -15,16 +12,9 @@ import InsightsPanel from "@/components/municipalities/rankedList/MunicipalityIn
 import SwedenMap from "@/components/municipalities/map/SwedenMap";
 import municipalityGeoJson from "@/data/municipalityGeo.json";
 
-type SortOption = "meets_paris" | "name";
-
-export function MunicipalitiesPage() {
+export function MunicipalitiesRankedPage() {
   const { t } = useTranslation();
   const { municipalities, loading, error } = useMunicipalities();
-  const [selectedRegion, setSelectedRegion] = useState<string>("all");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [sortBy, setSortBy] = useState<SortOption>("meets_paris");
-  const [sortDirection, setSortDirection] = useState<"best" | "worst">("best");
-  const isMobile = useScreenSize();
 
   const [geoData] = useState<typeof municipalityGeoJson>(municipalityGeoJson);
   const [selectedDataPoint, setSelectedDataPoint] = useState(dataPoints[0]);
@@ -52,9 +42,11 @@ export function MunicipalitiesPage() {
     return (
       <div className="text-center py-24">
         <h3 className="text-red-500 mb-4 text-xl">
-          {t("municipalitiesPage.errorTitle")}
+          {t("municipalitiesComparePage.errorTitle")}
         </h3>
-        <p className="text-grey">{t("municipalitiesPage.errorDescription")}</p>
+        <p className="text-grey">
+          {t("municipalitiesComparePage.errorDescription")}
+        </p>
       </div>
     );
   }
@@ -62,30 +54,10 @@ export function MunicipalitiesPage() {
   return (
     <div className="space-y-8">
       <PageHeader
-        title={t("municipalitiesPage.title")}
-        description={t("municipalitiesPage.description")}
+        title={t("municipalitiesComparePage.title")}
+        description={t("municipalitiesComparePage.description")}
         className="-ml-4"
       />
-
-      {/* <MunicipalityFilter
-        selectedRegion={selectedRegion}
-        setSelectedRegion={setSelectedRegion}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        sortBy={sortBy}
-        setSortBy={setSortBy}
-        sortDirection={sortDirection}
-        setSortDirection={setSortDirection}
-        isMobile={isMobile}
-      />
-
-      <MunicipalityList
-        municipalities={municipalities}
-        selectedRegion={selectedRegion}
-        searchQuery={searchQuery}
-        sortBy={sortBy}
-        sortDirection={sortDirection}
-      /> */}
 
       <div className="flex items-center justify-between mb-6">
         <button

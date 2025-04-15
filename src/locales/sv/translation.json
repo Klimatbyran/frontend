@@ -5,6 +5,8 @@
   "header": {
     "companies": "Företag",
     "municipalities": "Kommuner",
+    "municipalitiesRanked": "Rankings",
+    "municipalitiesCompare": "Jämför",
     "about": "Om oss",
     "insights": "Insikter",
     "methodology": "Källor och metod",
@@ -331,7 +333,7 @@
       }
     }
   },
-  "municipalitiesPage": {
+  "municipalitiesComparePage": {
     "errorTitle": "Det gick inte att hämta kommuninformation",
     "errorDescription": "Försök igen senare",
     "title": "Kommunrapporter",
