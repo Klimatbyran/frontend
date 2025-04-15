@@ -325,6 +325,12 @@
       }
     }
   },
+  "municipalitiesRankedPage": {
+    "errorTitle": "Failed to retrieve municipality information",
+    "errorDescription": "Please try again later",
+    "title": "Municipality Rankings",
+    "description": "Overview of emissions and transition in municipalities"
+  },
   "municipalitiesComparePage": {
     "errorTitle": "Failed to retrieve municipality information",
     "errorDescription": "Please try again later",

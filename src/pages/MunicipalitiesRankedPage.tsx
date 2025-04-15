@@ -54,8 +54,8 @@ export function MunicipalitiesRankedPage() {
   return (
     <div className="space-y-8">
       <PageHeader
-        title={t("municipalitiesComparePage.title")}
-        description={t("municipalitiesComparePage.description")}
+        title={t("municipalitiesRankedPage.title")}
+        description={t("municipalitiesRankedPage.description")}
         className="-ml-4"
       />
 

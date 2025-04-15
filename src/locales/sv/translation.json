@@ -333,6 +333,12 @@
       }
     }
   },
+  "municipalitiesRankedPage": {
+    "errorTitle": "Det gick inte att hämta kommuninformation",
+    "errorDescription": "Försök igen senare",
+    "title": "Kommunrankings",
+    "description": "Översikt över klimatpåverkan och omställning i kommunerna"
+  },
   "municipalitiesComparePage": {
     "errorTitle": "Det gick inte att hämta kommuninformation",
     "errorDescription": "Försök igen senare",
