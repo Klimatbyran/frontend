@@ -7,7 +7,6 @@ interface ViewModeToggleProps<T extends string> {
   viewMode: T;
   modes: readonly T[];
   onChange: (mode: T) => void;
-  className?: string;
   icons?: Record<T, React.ReactNode>;
   titles?: Record<T, string>;
   showTitles?: boolean;
@@ -17,7 +16,6 @@ export function ViewModeToggle<T extends string>({
   viewMode,
   modes,
   onChange,
-  className,
   icons,
   titles,
   showTitles = false,
@@ -30,9 +28,7 @@ export function ViewModeToggle<T extends string>({
   } as Record<string, React.ReactNode>;
 
   return (
-    <div
-      className={cn("flex bg-black-1 rounded-md overflow-hidden", className)}
-    >
+    <div className={cn("flex bg-black-1 rounded-md overflow-hidden")}>
       {modes.map((mode) => (
         <Button
           key={mode}
