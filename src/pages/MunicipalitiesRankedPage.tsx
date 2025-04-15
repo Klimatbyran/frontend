@@ -4,9 +4,8 @@ import { Map, List } from "lucide-react";
 import { useMunicipalities } from "@/hooks/useMunicipalities";
 import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/layout/PageHeader";
-import DataSelector, {
-  dataPoints,
-} from "@/components/municipalities/rankedList/MunicipalityDataSelector";
+import DataSelector from "@/components/municipalities/rankedList/MunicipalityDataSelector";
+import { dataPoints } from "@/components/municipalities/rankedList/dataPoints";
 import MunicipalityRankedList from "@/components/municipalities/rankedList/MunicipalityRankedList";
 import InsightsPanel from "@/components/municipalities/rankedList/MunicipalityInsightsPanel";
 import SwedenMap from "@/components/municipalities/map/SwedenMap";
@@ -81,9 +80,10 @@ export function MunicipalitiesRankedPage() {
         selectedDataPoint={selectedDataPoint}
         onDataPointChange={setSelectedDataPoint}
       />
+
       <div className="grid grid-cols-1 lg:grid-cols-[2fr,1fr] gap-6">
         {showMap ? (
-          <div className="h-[65vh] lg:h-auto">
+          <div className="relative h-[65vh] lg:h-auto">
             <SwedenMap
               geoData={geoData}
               municipalityData={municipalities}
