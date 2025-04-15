@@ -30,7 +30,7 @@ export function MunicipalitiesRankedPage() {
     return (
       <div className="animate-pulse space-y-16">
         <div className="h-12 w-1/3 bg-black-1 rounded" />
-        <div className="grid grid-cols-1 lg:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {[...Array(6)].map((_, i) => (
             <div key={i} className="h-96 bg-black-1 rounded-level-2" />
           ))}
@@ -53,7 +53,7 @@ export function MunicipalitiesRankedPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4 md:space-y-8">
       <PageHeader
         title={t("municipalitiesRankedPage.title")}
         description={t("municipalitiesRankedPage.description")}
@@ -81,29 +81,29 @@ export function MunicipalitiesRankedPage() {
         selectedDataPoint={selectedDataPoint}
         onDataPointChange={setSelectedDataPoint}
       />
-      <div className="flex-1 flex flex-col lg:grid lg:grid-cols-[2fr,1fr] gap-6 min-h-0">
-        <div className="relative h-[60vh] lg:h-auto min-h-0">
-          {showMap ? (
+      <div className="grid grid-cols-1 lg:grid-cols-[2fr,1fr] gap-6">
+        {showMap ? (
+          <div className="h-[65vh] lg:h-auto">
             <SwedenMap
               geoData={geoData}
               municipalityData={municipalities}
               selectedDataPoint={selectedDataPoint}
               onMunicipalityClick={handleMunicipalityClick}
             />
-          ) : (
-            <MunicipalityRankedList
-              municipalityData={municipalities}
-              selectedDataPoint={selectedDataPoint}
-              onMunicipalityClick={handleMunicipalityClick}
-            />
-          )}
-        </div>
-        <div className="min-h-0 flex-1 lg:flex-none">
-          <InsightsPanel
+          </div>
+        ) : (
+          <MunicipalityRankedList
             municipalityData={municipalities}
             selectedDataPoint={selectedDataPoint}
+            onMunicipalityClick={handleMunicipalityClick}
           />
-        </div>
+        )}
+      </div>
+      <div>
+        <InsightsPanel
+          municipalityData={municipalities}
+          selectedDataPoint={selectedDataPoint}
+        />
       </div>
     </div>
   );

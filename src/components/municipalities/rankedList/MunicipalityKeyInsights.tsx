@@ -19,7 +19,7 @@ export default function InsightStatistics({
   selectedDataPoint,
 }: InsightStatisticsProps) {
   return (
-    <div className="bg-white/10 rounded-level-2 p-8">
+    <div className="bg-white/10 rounded-level-2 p-4 md:p-8">
       <h3 className="text-white text-lg font-semibold">
         {t("municipalities.list.insights.keyStatistics.title")}
       </h3>

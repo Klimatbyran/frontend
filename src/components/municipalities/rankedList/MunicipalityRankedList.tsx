@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Search, ChevronLeft, ChevronRight } from "lucide-react";
 import { t } from "i18next";
 import { Municipality } from "@/types/municipality";
+import { isMobile } from "react-device-detect";
 
 interface DataPoint {
   label: string;
@@ -24,7 +25,7 @@ function MunicipalityRankedList({
 }: RankedListProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 7;
+  const itemsPerPage = isMobile ? 7 : 15;
 
   const sortedData = [...municipalityData].sort((a, b) => {
     const aValue = a[selectedDataPoint.key] as number;
