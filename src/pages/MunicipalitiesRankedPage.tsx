@@ -98,8 +98,6 @@ export function MunicipalitiesRankedPage() {
             onMunicipalityClick={handleMunicipalityClick}
           />
         )}
-      </div>
-      <div>
         <InsightsPanel
           municipalityData={municipalities}
           selectedDataPoint={selectedDataPoint}
