@@ -10,16 +10,18 @@ import InsightsPanel from "@/components/municipalities/rankedList/MunicipalityIn
 import SwedenMap from "@/components/municipalities/map/SwedenMap";
 import municipalityGeoJson from "@/data/municipalityGeo.json";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
-import { useDataPoints } from "@/hooks/useMunicipalityKPIs";
+import { useMunicipalityKPIs } from "@/hooks/useMunicipalityKPIs";
 import { FeatureCollection } from "geojson";
 
 export function MunicipalitiesRankedPage() {
   const { t } = useTranslation();
   const { municipalities, loading, error } = useMunicipalities();
-  const dataPoints = useDataPoints();
+  const municipalityKPIs = useMunicipalityKPIs();
 
   const [geoData] = useState<typeof municipalityGeoJson>(municipalityGeoJson);
-  const [selectedDataPoint, setSelectedDataPoint] = useState(dataPoints[0]);
+  const [selectedDataPoint, setSelectedDataPoint] = useState(
+    municipalityKPIs[0],
+  );
   const [showMap, setShowMap] = useState(true);
 
   const handleMunicipalityClick = (name: string) => {

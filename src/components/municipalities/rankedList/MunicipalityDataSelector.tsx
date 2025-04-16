@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { BarChart3, ChevronDown } from "lucide-react";
 import { t } from "i18next";
-import { useDataPoints } from "../../../hooks/useMunicipalityKPIs";
+import { useMunicipalityKPIs } from "../../../hooks/useMunicipalityKPIs";
 import { KPIValue } from "@/types/municipality";
 
 interface DataSelectorProps {
@@ -15,7 +15,7 @@ const DataSelector = ({
 }: DataSelectorProps) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const dataPoints = useDataPoints();
+  const municipalityKPIs = useMunicipalityKPIs();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -46,7 +46,9 @@ const DataSelector = ({
             className="w-full flex items-center justify-between p-3 rounded-xl bg-black-1 text-white transition-colors"
           >
             <span className="text-left font-medium">
-              {selectedDataPoint.label}
+              {t(
+                `municipalities.list.dataSelector.dataPoints.${selectedDataPoint.key}.label`,
+              )}
             </span>
             <ChevronDown
               className={`w-5 h-5 text-white transition-transform ${isOpen ? "rotate-180" : ""}`}
@@ -55,7 +57,7 @@ const DataSelector = ({
 
           {isOpen && (
             <div className="absolute z-50 w-full mt-2 bg-black-1 rounded-2xl shadow-lg overflow-hidden backdrop-blur-sm">
-              {dataPoints.map((dataPoint) => (
+              {municipalityKPIs.map((dataPoint) => (
                 <button
                   key={dataPoint.key}
                   onClick={() => {
