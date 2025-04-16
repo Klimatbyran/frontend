@@ -30,10 +30,15 @@ function MunicipalityRankedList({
     const aValue = a[selectedKPI.key] as number;
     const bValue = b[selectedKPI.key] as number;
 
-    // Handle null values in sorting
-    if (aValue === null && bValue === null) return 0;
-    if (aValue === null) return 1; // Null values go to the end
-    if (bValue === null) return -1;
+    if (aValue === null && bValue === null) {
+      return 0;
+    }
+    if (aValue === null) {
+      return 1;
+    }
+    if (bValue === null) {
+      return -1;
+    }
 
     return selectedKPI.higherIsBetter ? bValue - aValue : aValue - bValue;
   });
