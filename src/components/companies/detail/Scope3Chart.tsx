@@ -222,17 +222,20 @@ export function Scope3Chart({ categories, className }: Scope3ChartProps) {
         <div className="max-h-[200px] overflow-y-scroll">
           <ul>
             {chartData.map((dataItem) => {
+              console.log(dataItem);
               return (
-                <li key={dataItem.name} className="flex py-1">
+                <li key={dataItem.name} className="flex py-1 text-sm"
+                onClick={() => handleCategoryClick(dataItem.category)}
+                >
                   <div
                     className={`h-[12px] w-[5px] rounded-[100px] my-1 py-[5px] pl-3`}
                     style={{ backgroundColor: dataItem.color }}
                   ></div>
                   <div className="flex">
-                  <span className="font-bold pl-2 min-w-[55px]">
-                    {dataItem.percentage.toFixed(1)}%
-                  </span>
-                  <span className="font-light pl-2"> {dataItem.name}</span>
+                    <span className="font-bold pl-2 min-w-[55px]">
+                      {dataItem.percentage.toFixed(1)}%
+                    </span>
+                    <span className="font-light pl-2"> {dataItem.name}</span>
                   </div>
                 </li>
               );
