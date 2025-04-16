@@ -708,7 +708,8 @@
           "label": "Nödvändig utsläppsminskning",
           "description": "Nödvändig minskning av utsläpp för att nå klimatmålen",
           "detailedDescription": "Den utsläppsminskning som krävs för att nå Parisavtalet. Ju lägre desto bättre",
-          "source": "<0>Nationella emissionsdatabasen</0>, <1>Uppsala universitet</1>"
+          "source": "<0>Nationella emissionsdatabasen</0>, <1>Uppsala universitet</1>",
+          "nullValues": "kan inte nå Parisavtalet"
         },
         "electricCarChangePercent": {
           "label": "Tillväxt av elbilar",
@@ -726,7 +727,8 @@
           "label": "Elbilar per laddpunkt",
           "description": "Antal elbilar per laddningspunkt",
           "detailedDescription": "Antal elbilar per laddningspunkt per kommun år 2024. Ju fler desto bättre, god infrastruktur gynnar ökad elbilskonsumtion",
-          "source": "<0>Power Circle</0>"
+          "source": "<0>Power Circle</0>",
+          "nullValues": "inga laddpunkter"
         },
         "bicycleMetrePerCapita": {
           "label": "Cykelinfrastruktur",

@@ -140,5 +140,6 @@ export interface KPIValue {
   sourceUrls: string[];
   description: string;
   detailedDescription: string;
+  nullValues?: string;
   higherIsBetter: boolean;
 }

@@ -36,6 +36,9 @@ export const useMunicipalityKPIs = (): KPIValue[] => {
       detailedDescription: t(
         "municipalities.list.kpis.neededEmissionChangePercent.detailedDescription",
       ),
+      nullValues: t(
+        "municipalities.list.kpis.neededEmissionChangePercent.nullValues",
+      ),
       higherIsBetter: false,
     },
     {
@@ -49,6 +52,9 @@ export const useMunicipalityKPIs = (): KPIValue[] => {
       ),
       detailedDescription: t(
         "municipalities.list.kpis.electricCarChangePercent.detailedDescription",
+      ),
+      nullValues: t(
+        "municipalities.list.kpis.electricCarChangePercent.nullValues",
       ),
       higherIsBetter: true,
     },
@@ -77,6 +83,9 @@ export const useMunicipalityKPIs = (): KPIValue[] => {
       ),
       detailedDescription: t(
         "municipalities.list.kpis.electricVehiclePerChargePoints.detailedDescription",
+      ),
+      nullValues: t(
+        "municipalities.list.kpis.electricVehiclePerChargePoints.nullValues",
       ),
       higherIsBetter: false,
     },
