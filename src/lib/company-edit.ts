@@ -27,6 +27,9 @@ export function mapCompanyEditFormToRequestBody(
         verified: formData.get("scope-1-" + period.id + "-checkbox") === "true",
       };
     }
+    if(formData.has("scope-2-mb-" + period.id) || formData.has("scope-2-lb-" + period.id) || formData.has("scope-2-unknown-" + period.id)) {
+      periodUpdate.emissions.scope2 = {};
+    }
 
     if (formData.has("scope-2-mb-" + period.id)) {
       periodUpdate.emissions.scope2.mb =
@@ -69,8 +72,21 @@ export function mapCompanyEditFormToRequestBody(
       }
     }
     periodsUpdate.push(periodUpdate);
-  }
-  return {
-    reportingPeriods: periodsUpdate,
-  };
+}
+    const metadata: {
+        comment?: string,
+        source?: string
+    } = {};
+
+    if(formData.get('comment')) {
+        metadata.comment = formData.get('comment');
+    }
+
+    if(formData.get('source')) {
+        metadata.source = formData.get('source');
+    }
+    return {
+        reportingPeriods: periodsUpdate,
+        metadata
+    };
 }

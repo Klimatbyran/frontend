@@ -103,6 +103,12 @@ export function CompanyEditPage() {
           setFormData(formData.set(input.name, input.value));
         }
       }
+      for(const textarea of formRef.current.querySelectorAll("textarea")) {
+        if (textarea.value === textarea.defaultValue) continue
+
+        setFormData(formData.set(textarea.name, textarea.value));
+      }
+
     }
     if (id !== undefined) {
       await updateReportingPeriods(
@@ -142,7 +148,12 @@ export function CompanyEditPage() {
         <CompanyEditScope1 periods={selectedPeriods} onInputChange={handleInputChange} formData={formData}></CompanyEditScope1>
         <CompanyEditScope2 periods={selectedPeriods} onInputChange={handleInputChange} formData={formData}></CompanyEditScope2>
         <CompanyEditScope3 periods={selectedPeriods} onInputChange={handleInputChange} formData={formData}></CompanyEditScope3>
-        <button type="submit" className='inline-flex float-right mt-2 items-center justify-center text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white disabled:pointer-events-none hover:opacity-80 active:ring-1 active:ring-white disabled:opacity-50 h-10 bg-blue-5 text-white rounded-lg hover:bg-blue-6 transition px-4 py-1 font-medium'>
+        <div className='w-full ps-4 pe-2 mt-6'>
+        <textarea className='ms-2 w-full p-2 border-gray-300 rounded text-black bg-white' rows={4} placeholder='Comment' name='comment'></textarea>
+        <input type='text' className='ms-2 mt-2 w-full p-2 rounded text-black bg-white' name='source' placeholder='Source URL'></input>
+        </div>
+        
+        <button type="submit" className='inline-flex float-right mt-3 items-center justify-center text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white disabled:pointer-events-none hover:opacity-80 active:ring-1 active:ring-white disabled:opacity-50 h-10 bg-blue-5 text-white rounded-lg hover:bg-blue-6 transition px-4 py-1 font-medium'>
           {t("companyEditPage.save")}
         </button>
         </form>
