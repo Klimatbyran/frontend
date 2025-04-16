@@ -94,7 +94,7 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
             municipalities={topMunicipalities}
             dataPointKey={selectedKPI.key}
             unit={selectedKPI.unit}
-            textColor="text-green-3"
+            textColor="text-blue-3"
           />
 
           <InsightsList

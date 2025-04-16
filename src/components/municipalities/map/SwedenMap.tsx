@@ -45,12 +45,10 @@ function SwedenMap({
     zoom: 0.8,
   });
 
-  // Calculate min and max values for the color scale
   const values = municipalityData.map((m) => m[selectedKPI.key] as number);
   const minValue = Math.min(...values);
   const maxValue = Math.max(...values);
 
-  // Sort municipalities by the selected metric for ranking
   const sortedMunicipalities = [...municipalityData].sort((a, b) => {
     const aValue = a[selectedKPI.key] as number;
     const bValue = b[selectedKPI.key] as number;
@@ -101,22 +99,66 @@ function SwedenMap({
 
   const getColorByValue = (value: number | null): string => {
     if (value === null) {
-      return "#1a1a1a";
+      return "var(--pink-5)";
     }
 
     const normalizedValue = (value - minValue) / (maxValue - minValue);
-
-    // Adjust color value based on whether higher or lower is better
     const colorValue = selectedKPI.higherIsBetter
       ? normalizedValue
       : 1 - normalizedValue;
 
-    const hue = colorValue * 120; // Green (120) to Red (0)
-    return `hsl(${hue}, 70%, ${20 + colorValue * 30}%)`; // Darker colors
+    // Use CSS variables directly
+    const startColor = "var(--pink-4)";
+    const gradientMidLow = "var(--pink-3)";
+    const gradientMidHigh = "var(--blue-3)";
+    const endColor = "var(--blue-4)";
+
+    // Calculate mean and standard deviation
+    const mean = values.reduce((sum, val) => sum + val, 0) / values.length;
+    const stdDev = Math.sqrt(
+      values.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) /
+        values.length,
+    );
+
+    // Calculate z-score (number of standard deviations from mean)
+    const zScore = (value - mean) / stdDev;
+
+    // Determine which segment of the gradient to use based on z-score
+    if (selectedKPI.higherIsBetter) {
+      if (zScore <= -1) {
+        // Below -1 std dev: interpolate between startColor and gradientMidLow
+        const t = Math.max(0, (zScore + 2) / 1);
+        return `color-mix(in srgb, ${startColor} ${(1 - t) * 100}%, ${gradientMidLow} ${t * 100}%)`;
+      } else if (zScore <= 0) {
+        // Between -1 and 0 std dev: interpolate between gradientMidLow and gradientMidHigh
+        const t = Math.max(0, zScore + 1);
+        return `color-mix(in srgb, ${gradientMidLow} ${(1 - t) * 100}%, ${gradientMidHigh} ${t * 100}%)`;
+      } else if (zScore <= 1) {
+        // Between 0 and 1 std dev: interpolate between gradientMidHigh and endColor
+        const t = Math.max(0, zScore);
+        return `color-mix(in srgb, ${gradientMidHigh} ${(1 - t) * 100}%, ${endColor} ${t * 100}%)`;
+      } else {
+        // Above 1 std dev: endColor
+        return endColor;
+      }
+    } else {
+      // For metrics where lower is better, reverse the logic
+      if (zScore >= 1) {
+        const t = Math.max(0, (2 - zScore) / 1);
+        return `color-mix(in srgb, ${startColor} ${(1 - t) * 100}%, ${gradientMidLow} ${t * 100}%)`;
+      } else if (zScore >= 0) {
+        const t = Math.max(0, 1 - zScore);
+        return `color-mix(in srgb, ${gradientMidLow} ${(1 - t) * 100}%, ${gradientMidHigh} ${t * 100}%)`;
+      } else if (zScore >= -1) {
+        const t = Math.max(0, -zScore);
+        return `color-mix(in srgb, ${gradientMidHigh} ${(1 - t) * 100}%, ${endColor} ${t * 100}%)`;
+      } else {
+        return endColor;
+      }
+    }
   };
 
   const renderGradientLegend = () => {
-    // Always show worse values on the left and better values on the right
     const leftValue = selectedKPI.higherIsBetter ? minValue : maxValue;
     const rightValue = selectedKPI.higherIsBetter ? maxValue : minValue;
 
@@ -184,20 +226,26 @@ function SwedenMap({
                     style={{
                       default: {
                         fill: getColorByValue(value),
-                        stroke: "#333",
+                        stroke: "var(--black-1)",
                         strokeWidth: 0.2,
                         outline: "none",
                         cursor: "pointer",
                       },
                       hover: {
-                        fill: value === null ? "#333" : getColorByValue(value),
-                        stroke: "#666",
+                        fill:
+                          value === null
+                            ? "var(--pink-4)"
+                            : getColorByValue(value),
+                        stroke: "var(--grey)",
                         strokeWidth: 0.4,
                         outline: "none",
                       },
                       pressed: {
-                        fill: value === null ? "#333" : getColorByValue(value),
-                        stroke: "#666",
+                        fill:
+                          value === null
+                            ? "var(--black-1)"
+                            : getColorByValue(value),
+                        stroke: "var(--grey)",
                         strokeWidth: 0.4,
                         outline: "none",
                       },

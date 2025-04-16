@@ -13,7 +13,7 @@ import {
 } from "recharts";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "../LanguageProvider";
-import { formatEmissionsAbsolute, localizeUnit } from "@/utils/localizeUnit";
+import { formatEmissionsAbsolute } from "@/utils/localizeUnit";
 
 interface DataPoint {
   year: number;
