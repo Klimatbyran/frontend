@@ -5,12 +5,12 @@ import { useMunicipalityKPIs } from "../../../hooks/useMunicipalityKPIs";
 import { KPIValue } from "@/types/municipality";
 
 interface DataSelectorProps {
-  selectedDataPoint: KPIValue;
+  selectedKPI: KPIValue;
   onDataPointChange: (dataPoint: KPIValue) => void;
 }
 
 const DataSelector = ({
-  selectedDataPoint,
+  selectedKPI,
   onDataPointChange,
 }: DataSelectorProps) => {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -47,7 +47,7 @@ const DataSelector = ({
           >
             <span className="text-left font-medium">
               {t(
-                `municipalities.list.dataSelector.dataPoints.${selectedDataPoint.key}.label`,
+                `municipalities.list.dataSelector.dataPoints.${selectedKPI.key}.label`,
               )}
             </span>
             <ChevronDown
@@ -66,7 +66,7 @@ const DataSelector = ({
                   }}
                   className={`w-full text-left px-4 py-3 text-sm transition-colors
                     ${
-                      selectedDataPoint.key === dataPoint.key
+                      selectedKPI.key === dataPoint.key
                         ? "bg-gray-700/80 text-blue-300"
                         : "text-white hover:bg-gray-700/80"
                     }

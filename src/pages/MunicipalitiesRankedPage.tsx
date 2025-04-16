@@ -19,9 +19,7 @@ export function MunicipalitiesRankedPage() {
   const municipalityKPIs = useMunicipalityKPIs();
 
   const [geoData] = useState<typeof municipalityGeoJson>(municipalityGeoJson);
-  const [selectedDataPoint, setSelectedDataPoint] = useState(
-    municipalityKPIs[0],
-  );
+  const [selectedKPI, setSelectedKPI] = useState(municipalityKPIs[0]);
   const [showMap, setShowMap] = useState(true);
 
   const handleMunicipalityClick = (name: string) => {
@@ -81,8 +79,8 @@ export function MunicipalitiesRankedPage() {
       </div>
 
       <DataSelector
-        selectedDataPoint={selectedDataPoint}
-        onDataPointChange={setSelectedDataPoint}
+        selectedKPI={selectedKPI}
+        onDataPointChange={setSelectedKPI}
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-[1fr,1fr] gap-6">
@@ -91,20 +89,20 @@ export function MunicipalitiesRankedPage() {
             <SwedenMap
               geoData={geoData as FeatureCollection}
               municipalityData={municipalities}
-              selectedDataPoint={selectedDataPoint}
+              selectedKPI={selectedKPI}
               onMunicipalityClick={handleMunicipalityClick}
             />
           </div>
         ) : (
           <MunicipalityRankedList
             municipalityData={municipalities}
-            selectedDataPoint={selectedDataPoint}
+            selectedKPI={selectedKPI}
             onMunicipalityClick={handleMunicipalityClick}
           />
         )}
         <InsightsPanel
           municipalityData={municipalities}
-          selectedDataPoint={selectedDataPoint}
+          selectedKPI={selectedKPI}
         />
       </div>
     </div>

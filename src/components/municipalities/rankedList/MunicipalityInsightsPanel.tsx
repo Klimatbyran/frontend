@@ -4,13 +4,10 @@ import InsightsList from "./MunicipalityInsightsList";
 
 interface InsightsPanelProps {
   municipalityData: Municipality[];
-  selectedDataPoint: KPIValue;
+  selectedKPI: KPIValue;
 }
 
-function InsightsPanel({
-  municipalityData,
-  selectedDataPoint,
-}: InsightsPanelProps) {
+function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
   if (!municipalityData?.length) {
     return (
       <div className="bg-white/5 backdrop-blur-sm rounded-level-2 p-8 h-full flex items-center justify-center">
@@ -23,8 +20,8 @@ function InsightsPanel({
 
   const validData = municipalityData.filter(
     (m) =>
-      typeof m[selectedDataPoint.key] === "number" &&
-      !isNaN(m[selectedDataPoint.key] as number),
+      typeof m[selectedKPI.key] === "number" &&
+      !isNaN(m[selectedKPI.key] as number),
   );
 
   if (!validData.length) {
@@ -32,7 +29,7 @@ function InsightsPanel({
       <div className="bg-white/5 backdrop-blur-sm rounded-level-2 p-8 h-full flex items-center justify-center">
         <p className="text-white text-lg">
           {t("municipalities.list.insights.noData.metric", {
-            metric: selectedDataPoint.label,
+            metric: selectedKPI.label,
           })}
         </p>
       </div>
@@ -40,17 +37,15 @@ function InsightsPanel({
   }
 
   const sortedData = [...validData].sort((a, b) =>
-    selectedDataPoint.higherIsBetter
-      ? (b[selectedDataPoint.key] as number) -
-        (a[selectedDataPoint.key] as number)
-      : (a[selectedDataPoint.key] as number) -
-        (b[selectedDataPoint.key] as number),
+    selectedKPI.higherIsBetter
+      ? (b[selectedKPI.key] as number) - (a[selectedKPI.key] as number)
+      : (a[selectedKPI.key] as number) - (b[selectedKPI.key] as number),
   );
 
   const topMunicipalities = sortedData.slice(0, 5);
   const bottomMunicipalities = sortedData.slice(-5).reverse();
 
-  const values = validData.map((m) => m[selectedDataPoint.key] as number);
+  const values = validData.map((m) => m[selectedKPI.key] as number);
   const average = values.reduce((sum, val) => sum + val, 0) / values.length;
 
   const aboveAverageCount = values.filter((val) => val > average).length;
@@ -61,13 +56,13 @@ function InsightsPanel({
       <div className="flex-1 overflow-y-auto min-h-0 pr-2">
         <div className="space-y-6">
           <div className="space-y-2">
-            <p className="text-bold">{selectedDataPoint.detailedDescription}</p>
+            <p className="text-bold">{selectedKPI.detailedDescription}</p>
             <p>
               <span className="text-gray-400">
                 {t("municipalities.list.insights.keyStatistics.average")}
               </span>{" "}
               <span className="text-white">
-                {average.toFixed(1) + selectedDataPoint.unit}
+                {average.toFixed(1) + selectedKPI.unit}
               </span>
             </p>
             <p>
@@ -88,21 +83,21 @@ function InsightsPanel({
 
           <InsightsList
             title={t(
-              selectedDataPoint.higherIsBetter
+              selectedKPI.higherIsBetter
                 ? "municipalities.list.insights.topPerformers.titleTop"
                 : "municipalities.list.insights.topPerformers.titleBest",
             )}
             municipalities={topMunicipalities}
-            dataPointKey={selectedDataPoint.key}
-            unit={selectedDataPoint.unit}
+            dataPointKey={selectedKPI.key}
+            unit={selectedKPI.unit}
             textColor="text-green-3"
           />
 
           <InsightsList
             title={t("municipalities.list.insights.improvement.title")}
             municipalities={bottomMunicipalities}
-            dataPointKey={selectedDataPoint.key}
-            unit={selectedDataPoint.unit}
+            dataPointKey={selectedKPI.key}
+            unit={selectedKPI.unit}
             textColor="text-pink-3"
           />
         </div>

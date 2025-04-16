@@ -11,7 +11,7 @@ import { MapGradientLegend } from "./MapLegendGradient";
 import { MapTooltip } from "./MapTooltip";
 import { FeatureCollection } from "geojson";
 
-interface MunicipalityMetric {
+interface MunicipalityKPI {
   label: string;
   key: keyof Municipality;
   unit: string;
@@ -22,14 +22,14 @@ interface MunicipalityMetric {
 interface SwedenMapProps {
   geoData: FeatureCollection;
   municipalityData: Municipality[];
-  selectedDataPoint: MunicipalityMetric;
+  selectedKPI: MunicipalityKPI;
   onMunicipalityClick: (name: string) => void;
 }
 
 function SwedenMap({
   geoData,
   municipalityData,
-  selectedDataPoint,
+  selectedKPI,
   onMunicipalityClick,
 }: SwedenMapProps) {
   const [hoveredMunicipality, setHoveredMunicipality] = React.useState<
@@ -46,17 +46,15 @@ function SwedenMap({
   });
 
   // Calculate min and max values for the color scale
-  const values = municipalityData.map(
-    (m) => m[selectedDataPoint.key] as number,
-  );
+  const values = municipalityData.map((m) => m[selectedKPI.key] as number);
   const minValue = Math.min(...values);
   const maxValue = Math.max(...values);
 
   // Sort municipalities by the selected metric for ranking
   const sortedMunicipalities = [...municipalityData].sort((a, b) => {
-    const aValue = a[selectedDataPoint.key] as number;
-    const bValue = b[selectedDataPoint.key] as number;
-    return selectedDataPoint.higherIsBetter ? bValue - aValue : aValue - bValue;
+    const aValue = a[selectedKPI.key] as number;
+    const bValue = b[selectedKPI.key] as number;
+    return selectedKPI.higherIsBetter ? bValue - aValue : aValue - bValue;
   });
 
   const handleZoomIn = () => {
@@ -94,7 +92,7 @@ function SwedenMap({
       return { value: null, rank: null };
     }
 
-    const value = municipality[selectedDataPoint.key] as number;
+    const value = municipality[selectedKPI.key] as number;
     const rank =
       sortedMunicipalities.findIndex((m) => m.name === municipality.name) + 1;
 
@@ -109,7 +107,7 @@ function SwedenMap({
     const normalizedValue = (value - minValue) / (maxValue - minValue);
 
     // Adjust color value based on whether higher or lower is better
-    const colorValue = selectedDataPoint.higherIsBetter
+    const colorValue = selectedKPI.higherIsBetter
       ? normalizedValue
       : 1 - normalizedValue;
 
@@ -119,15 +117,15 @@ function SwedenMap({
 
   const renderGradientLegend = () => {
     // Always show worse values on the left and better values on the right
-    const leftValue = selectedDataPoint.higherIsBetter ? minValue : maxValue;
-    const rightValue = selectedDataPoint.higherIsBetter ? maxValue : minValue;
+    const leftValue = selectedKPI.higherIsBetter ? minValue : maxValue;
+    const rightValue = selectedKPI.higherIsBetter ? maxValue : minValue;
 
     return (
       <MapGradientLegend
-        label={selectedDataPoint.label}
+        label={selectedKPI.label}
         leftValue={leftValue}
         rightValue={rightValue}
-        unit={selectedDataPoint.unit}
+        unit={selectedKPI.unit}
         getColor={getColorByValue}
       />
     );
@@ -218,8 +216,8 @@ function SwedenMap({
           name={hoveredMunicipality}
           value={hoveredValue}
           rank={hoveredRank}
-          label={selectedDataPoint.label}
-          unit={selectedDataPoint.unit}
+          label={selectedKPI.label}
+          unit={selectedKPI.unit}
           total={municipalityData.length}
         />
       )}

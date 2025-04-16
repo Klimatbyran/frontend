@@ -13,13 +13,13 @@ interface DataPoint {
 
 interface RankedListProps {
   municipalityData: Municipality[];
-  selectedDataPoint: DataPoint;
+  selectedKPI: DataPoint;
   onMunicipalityClick: (name: string) => void;
 }
 
 function MunicipalityRankedList({
   municipalityData,
-  selectedDataPoint,
+  selectedKPI,
   onMunicipalityClick,
 }: RankedListProps) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -27,9 +27,9 @@ function MunicipalityRankedList({
   const itemsPerPage = 10;
 
   const sortedData = [...municipalityData].sort((a, b) => {
-    const aValue = a[selectedDataPoint.key] as number;
-    const bValue = b[selectedDataPoint.key] as number;
-    return selectedDataPoint.higherIsBetter ? bValue - aValue : aValue - bValue;
+    const aValue = a[selectedKPI.key] as number;
+    const bValue = b[selectedKPI.key] as number;
+    return selectedKPI.higherIsBetter ? bValue - aValue : aValue - bValue;
   });
 
   const filteredData = sortedData.filter((municipality) =>
@@ -83,8 +83,8 @@ function MunicipalityRankedList({
                 <span className="text-white/90">{municipality.name}</span>
               </div>
               <span className="text-[#C6F6D5] font-medium">
-                {(municipality[selectedDataPoint.key] as number).toFixed(1)}
-                {selectedDataPoint.unit}
+                {(municipality[selectedKPI.key] as number).toFixed(1)}
+                {selectedKPI.unit}
               </span>
             </button>
           ))}
