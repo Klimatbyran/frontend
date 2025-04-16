@@ -103,22 +103,19 @@ function SwedenMap({
     }
 
     // Use CSS variables directly
-    const startColor = "var(--pink-3)";
+    const startColor = "var(--pink-5)";
     const gradientMidLow = "var(--pink-4)";
-    const gradientMidHigh = "var(--blue-4)";
+    const gradientMidHigh = "var(--pink-3)";
     const endColor = "var(--blue-3)";
 
-    // Calculate mean and standard deviation
     const mean = values.reduce((sum, val) => sum + val, 0) / values.length;
     const stdDev = Math.sqrt(
       values.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) /
         values.length,
     );
 
-    // Calculate z-score (number of standard deviations from mean)
     const zScore = (value - mean) / stdDev;
 
-    // Determine which segment of the gradient to use based on z-score
     if (selectedKPI.higherIsBetter) {
       if (zScore <= -1) {
         // Below -1 std dev: interpolate between startColor (pink-4) and gradientMidLow (pink-3)
@@ -136,20 +133,17 @@ function SwedenMap({
         // Above 1 std dev: endColor
         return endColor;
       }
+    } else if (zScore >= 1) {
+      const t = Math.max(0, (2 - zScore) / 1);
+      return `color-mix(in srgb, ${startColor} ${(1 - t) * 100}%, ${gradientMidLow} ${t * 100}%)`;
+    } else if (zScore >= 0) {
+      const t = Math.max(0, 1 - zScore);
+      return `color-mix(in srgb, ${gradientMidLow} ${(1 - t) * 100}%, ${gradientMidHigh} ${t * 100}%)`;
+    } else if (zScore >= -1) {
+      const t = Math.max(0, -zScore);
+      return `color-mix(in srgb, ${gradientMidHigh} ${(1 - t) * 100}%, ${endColor} ${t * 100}%)`;
     } else {
-      // For metrics where lower is better, reverse the logic
-      if (zScore >= 1) {
-        const t = Math.max(0, (2 - zScore) / 1);
-        return `color-mix(in srgb, ${startColor} ${(1 - t) * 100}%, ${gradientMidLow} ${t * 100}%)`;
-      } else if (zScore >= 0) {
-        const t = Math.max(0, 1 - zScore);
-        return `color-mix(in srgb, ${gradientMidLow} ${(1 - t) * 100}%, ${gradientMidHigh} ${t * 100}%)`;
-      } else if (zScore >= -1) {
-        const t = Math.max(0, -zScore);
-        return `color-mix(in srgb, ${gradientMidHigh} ${(1 - t) * 100}%, ${endColor} ${t * 100}%)`;
-      } else {
-        return endColor;
-      }
+      return endColor;
     }
   };
 

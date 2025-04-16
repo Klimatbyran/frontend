@@ -29,6 +29,12 @@ function MunicipalityRankedList({
   const sortedData = [...municipalityData].sort((a, b) => {
     const aValue = a[selectedKPI.key] as number;
     const bValue = b[selectedKPI.key] as number;
+
+    // Handle null values in sorting
+    if (aValue === null && bValue === null) return 0;
+    if (aValue === null) return 1; // Null values go to the end
+    if (bValue === null) return -1;
+
     return selectedKPI.higherIsBetter ? bValue - aValue : aValue - bValue;
   });
 
@@ -83,8 +89,9 @@ function MunicipalityRankedList({
                 <span className="text-white/90">{municipality.name}</span>
               </div>
               <span className="text-orange-2 font-medium">
-                {(municipality[selectedKPI.key] as number).toFixed(1)}
-                {selectedKPI.unit}
+                {municipality[selectedKPI.key] !== null
+                  ? `${(municipality[selectedKPI.key] as number).toFixed(1)}${selectedKPI.unit}`
+                  : "-"}
               </span>
             </button>
           ))}
