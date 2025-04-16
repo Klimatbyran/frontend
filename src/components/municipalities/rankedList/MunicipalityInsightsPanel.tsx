@@ -1,6 +1,7 @@
 import { t } from "i18next";
 import { KPIValue, Municipality } from "@/types/municipality";
 import InsightsList from "./MunicipalityInsightsList";
+import { Trans } from "react-i18next";
 
 interface InsightsPanelProps {
   municipalityData: Municipality[];
@@ -82,31 +83,23 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
             </p>
             <p className="text-gray-400 text-xs italic">
               {t("municipalities.list.source")}{" "}
-              {t(`municipalities.list.kpis.${selectedKPI.key}.sourceUrl`)
-                .split(",")
-                .map((url, index) => {
-                  const sources = t(
-                    `municipalities.list.kpis.${selectedKPI.key}.source`,
-                  ).split(",");
-                  return (
-                    <>
-                      <a
-                        key={url}
-                        href={url.trim()}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="underline hover:text-gray-300"
-                      >
-                        {sources[index].trim()}
-                      </a>
-                      {index <
-                        t(
-                          `municipalities.list.kpis.${selectedKPI.key}.sourceUrl`,
-                        ).split(",").length -
-                          1 && ", "}
-                    </>
-                  );
-                })}
+              <Trans
+                i18nKey={`municipalities.list.kpis.${selectedKPI.key}.source`}
+                components={selectedKPI.sourceUrls.map((url, index) => (
+                  <a
+                    key={url}
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline hover:text-gray-300"
+                    title={t(
+                      `municipalities.list.kpis.${selectedKPI.key}.source`,
+                    )
+                      .split(",")
+                      [index]?.trim()}
+                  />
+                ))}
+              />
             </p>
           </div>
 

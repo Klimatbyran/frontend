@@ -27,7 +27,8 @@ export const useMunicipalityKPIs = (): KPIValue[] => {
       unit: "%",
       source: "municipalities.list.neededEmissionChangePercent.source",
       sourceUrls: [
-        "https://nationellaemissionsdatabasen.smhi.se/,http://www.cemus.uu.se/wp-content/uploads/2023/12/Paris-compliant-carbon-budgets-for-Swedens-counties-.pdf",
+        "https://nationellaemissionsdatabasen.smhi.se/",
+        "http://www.cemus.uu.se/wp-content/uploads/2023/12/Paris-compliant-carbon-budgets-for-Swedens-counties-.pdf",
       ],
       description: t(
         "municipalities.list.kpis.neededEmissionChangePercent.description",
@@ -42,7 +43,7 @@ export const useMunicipalityKPIs = (): KPIValue[] => {
       key: "electricCarChangePercent",
       unit: "%",
       source: "municipalities.list.electricCarChangePercent.source",
-      sourceUrls: ["https://trafikanalys.se/"],
+      sourceUrls: ["https://www.trafa.se/vagtrafik/fordon/"],
       description: t(
         "municipalities.list.kpis.electricCarChangePercent.description",
       ),
@@ -56,7 +57,7 @@ export const useMunicipalityKPIs = (): KPIValue[] => {
       key: "totalConsumptionEmission",
       unit: "t",
       source: "municipalities.list.totalConsumptionEmission.source",
-      sourceUrls: ["https://stockholmenvironmentinstitute.se/"],
+      sourceUrls: ["https://www.sei.org/tools/konsumtionskompassen/"],
       description: t(
         "municipalities.list.kpis.totalConsumptionEmission.description",
       ),
@@ -84,7 +85,10 @@ export const useMunicipalityKPIs = (): KPIValue[] => {
       key: "bicycleMetrePerCapita",
       unit: "m",
       source: "municipalities.list.bicycleMetrePerCapita.source",
-      sourceUrls: ["https://nvdb.se/"],
+      sourceUrls: [
+        "https://nvdbpakarta.trafikverket.se/map",
+        "https://www.scb.se/hitta-statistik/statistik-efter-amne/befolkning-och-levnadsforhallanden/befolkningens-sammansattning-och-utveckling/befolkningsstatistik/",
+      ],
       description: t(
         "municipalities.list.kpis.bicycleMetrePerCapita.description",
       ),
