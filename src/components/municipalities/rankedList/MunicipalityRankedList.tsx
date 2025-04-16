@@ -82,7 +82,7 @@ function MunicipalityRankedList({
                 </span>
                 <span className="text-white/90">{municipality.name}</span>
               </div>
-              <span className="text-[#C6F6D5] font-medium">
+              <span className="text-orange-2 font-medium">
                 {(municipality[selectedKPI.key] as number).toFixed(1)}
                 {selectedKPI.unit}
               </span>

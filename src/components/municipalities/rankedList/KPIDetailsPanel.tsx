@@ -37,7 +37,11 @@ export default function KPIDetailsPanel({
             {aboveAverageCount}{" "}
           </span>
           {t("municipalities.list.insights.keyStatistics.distributionAbove")}{" "}
-          <span className="text-pink-3 font-medium">{belowAverageCount} </span>
+          <span
+            className={`font-medium ${selectedKPI.higherIsBetter ? "text-pink-3" : "text-blue-3"}`}
+          >
+            {belowAverageCount}{" "}
+          </span>
           {t("municipalities.list.insights.keyStatistics.distributionBelow")}
         </p>
         {nullValues > 0 && (
