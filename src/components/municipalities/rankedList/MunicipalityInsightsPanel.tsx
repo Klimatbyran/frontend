@@ -56,6 +56,11 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
       <div className="flex-1 overflow-y-auto min-h-0 pr-2">
         <div className="space-y-6">
           <div className="space-y-2">
+            <h2 className="text-2xl font-bold">
+              {t(
+                `municipalities.list.dataSelector.dataPoints.${selectedKPI.key}.label`,
+              )}
+            </h2>
             <p className="text-bold">
               {t(
                 `municipalities.list.dataSelector.dataPoints.${selectedKPI.key}.detailedDescription`,
@@ -65,18 +70,18 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
               <span className="text-gray-400">
                 {t("municipalities.list.insights.keyStatistics.average")}
               </span>{" "}
-              <span className="text-white">
+              <span className="text-orange-2">
                 {average.toFixed(1) + selectedKPI.unit}
               </span>
             </p>
             <p>
-              {aboveAverageCount}{" "}
+              <span className="text-orange-2">{aboveAverageCount} </span>
               <span className="text-gray-400">
                 {t(
                   "municipalities.list.insights.keyStatistics.distributionAbove",
                 )}
               </span>{" "}
-              {belowAverageCount}{" "}
+              <span className="text-pink-3">{belowAverageCount} </span>
               <span className="text-gray-400">
                 {t(
                   "municipalities.list.insights.keyStatistics.distributionBelow",

@@ -102,16 +102,11 @@ function SwedenMap({
       return "var(--pink-5)";
     }
 
-    const normalizedValue = (value - minValue) / (maxValue - minValue);
-    const colorValue = selectedKPI.higherIsBetter
-      ? normalizedValue
-      : 1 - normalizedValue;
-
     // Use CSS variables directly
-    const startColor = "var(--pink-4)";
-    const gradientMidLow = "var(--pink-3)";
-    const gradientMidHigh = "var(--blue-3)";
-    const endColor = "var(--blue-4)";
+    const startColor = "var(--pink-3)";
+    const gradientMidLow = "var(--pink-4)";
+    const gradientMidHigh = "var(--blue-4)";
+    const endColor = "var(--blue-3)";
 
     // Calculate mean and standard deviation
     const mean = values.reduce((sum, val) => sum + val, 0) / values.length;
@@ -126,15 +121,15 @@ function SwedenMap({
     // Determine which segment of the gradient to use based on z-score
     if (selectedKPI.higherIsBetter) {
       if (zScore <= -1) {
-        // Below -1 std dev: interpolate between startColor and gradientMidLow
+        // Below -1 std dev: interpolate between startColor (pink-4) and gradientMidLow (pink-3)
         const t = Math.max(0, (zScore + 2) / 1);
         return `color-mix(in srgb, ${startColor} ${(1 - t) * 100}%, ${gradientMidLow} ${t * 100}%)`;
       } else if (zScore <= 0) {
-        // Between -1 and 0 std dev: interpolate between gradientMidLow and gradientMidHigh
+        // Between -1 and 0 std dev: interpolate between gradientMidLow (pink-3) and gradientMidHigh (blue-4)
         const t = Math.max(0, zScore + 1);
         return `color-mix(in srgb, ${gradientMidLow} ${(1 - t) * 100}%, ${gradientMidHigh} ${t * 100}%)`;
       } else if (zScore <= 1) {
-        // Between 0 and 1 std dev: interpolate between gradientMidHigh and endColor
+        // Between 0 and 1 std dev: interpolate between gradientMidHigh (blue-4) and endColor (blue-3)
         const t = Math.max(0, zScore);
         return `color-mix(in srgb, ${gradientMidHigh} ${(1 - t) * 100}%, ${endColor} ${t * 100}%)`;
       } else {
