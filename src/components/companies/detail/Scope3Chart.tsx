@@ -233,7 +233,12 @@ export function Scope3Chart({ categories, className }: Scope3ChartProps) {
                   ></div>
                   <div className="flex">
                     <span className="font-bold pl-2 min-w-[55px]">
-                      {dataItem.percentage.toFixed(1)}%
+                      {
+                        dataItem.percentage < 0.01 ? 
+                        '< 0.01%'
+                        : `${dataItem.percentage.toFixed(2)}%`
+
+                      }
                     </span>
                     <span className="font-light pl-2"> {dataItem.name}</span>
                   </div>
