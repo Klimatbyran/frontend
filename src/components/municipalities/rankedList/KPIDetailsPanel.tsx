@@ -18,7 +18,7 @@ export default function KPIDetailsPanel({
   nullValues,
 }: KPIDetailsPanelProps) {
   return (
-    <div className="p-6 space-y-4 bg-white/5 rounded-lg shadow-lg">
+    <div className="p-6 space-y-4 bg-white/5 rounded-2xl shadow-lg">
       <h2 className="text-2xl font-semibold tracking-tight mb-4">
         {t(`municipalities.list.kpis.${selectedKPI.key}.label`)}
       </h2>
