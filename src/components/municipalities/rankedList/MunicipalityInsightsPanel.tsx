@@ -57,36 +57,56 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
         <div className="space-y-6">
           <div className="space-y-2">
             <h2 className="text-2xl font-bold">
-              {t(
-                `municipalities.list.dataSelector.dataPoints.${selectedKPI.key}.label`,
-              )}
+              {t(`municipalities.list.kpis.${selectedKPI.key}.label`)}
             </h2>
             <p className="text-bold">
               {t(
-                `municipalities.list.dataSelector.dataPoints.${selectedKPI.key}.detailedDescription`,
+                `municipalities.list.kpis.${selectedKPI.key}.detailedDescription`,
               )}
             </p>
             <p>
-              <span className="text-gray-400">
-                {t("municipalities.list.insights.keyStatistics.average")}
-              </span>{" "}
+              {t("municipalities.list.insights.keyStatistics.average")}{" "}
               <span className="text-orange-2">
                 {average.toFixed(1) + selectedKPI.unit}
               </span>
             </p>
             <p>
               <span className="text-orange-2">{aboveAverageCount} </span>
-              <span className="text-gray-400">
-                {t(
-                  "municipalities.list.insights.keyStatistics.distributionAbove",
-                )}
-              </span>{" "}
+              {t(
+                "municipalities.list.insights.keyStatistics.distributionAbove",
+              )}{" "}
               <span className="text-pink-3">{belowAverageCount} </span>
-              <span className="text-gray-400">
-                {t(
-                  "municipalities.list.insights.keyStatistics.distributionBelow",
-                )}
-              </span>{" "}
+              {t(
+                "municipalities.list.insights.keyStatistics.distributionBelow",
+              )}
+            </p>
+            <p className="text-gray-400 text-xs italic">
+              {t("municipalities.list.source")}{" "}
+              {t(`municipalities.list.kpis.${selectedKPI.key}.sourceUrl`)
+                .split(",")
+                .map((url, index) => {
+                  const sources = t(
+                    `municipalities.list.kpis.${selectedKPI.key}.source`,
+                  ).split(",");
+                  return (
+                    <>
+                      <a
+                        key={url}
+                        href={url.trim()}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline hover:text-gray-300"
+                      >
+                        {sources[index].trim()}
+                      </a>
+                      {index <
+                        t(
+                          `municipalities.list.kpis.${selectedKPI.key}.sourceUrl`,
+                        ).split(",").length -
+                          1 && ", "}
+                    </>
+                  );
+                })}
             </p>
           </div>
 

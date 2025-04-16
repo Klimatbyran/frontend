@@ -136,6 +136,8 @@ export interface KPIValue {
   label: string;
   key: keyof Municipality;
   unit: string;
+  source: string;
+  sourceUrls: string[];
   description: string;
   detailedDescription: string;
   higherIsBetter: boolean;

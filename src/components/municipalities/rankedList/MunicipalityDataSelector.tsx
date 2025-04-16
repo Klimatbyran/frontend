@@ -6,7 +6,7 @@ import { KPIValue } from "@/types/municipality";
 
 interface DataSelectorProps {
   selectedKPI: KPIValue;
-  onDataPointChange: (dataPoint: KPIValue) => void;
+  onDataPointChange: (kpiValue: KPIValue) => void;
 }
 
 const DataSelector = ({
@@ -46,9 +46,7 @@ const DataSelector = ({
             className="w-full flex items-center justify-between p-3 rounded-xl bg-black-1 text-white transition-colors"
           >
             <span className="text-left font-medium">
-              {t(
-                `municipalities.list.dataSelector.dataPoints.${selectedKPI.key}.label`,
-              )}
+              {t(`municipalities.list.kpis.${selectedKPI.key}.label`)}
             </span>
             <ChevronDown
               className={`w-5 h-5 text-white transition-transform ${isOpen ? "rotate-180" : ""}`}
@@ -57,25 +55,25 @@ const DataSelector = ({
 
           {isOpen && (
             <div className="absolute z-50 w-full mt-2 bg-black-1 rounded-2xl shadow-lg overflow-hidden backdrop-blur-sm">
-              {municipalityKPIs.map((dataPoint) => (
+              {municipalityKPIs.map((kpiValue) => (
                 <button
-                  key={dataPoint.key}
+                  key={kpiValue.key}
                   onClick={() => {
-                    onDataPointChange(dataPoint);
+                    onDataPointChange(kpiValue);
                     setIsOpen(false);
                   }}
                   className={`w-full text-left px-4 py-3 text-sm transition-colors
                     ${
-                      selectedKPI.key === dataPoint.key
+                      selectedKPI.key === kpiValue.key
                         ? "bg-gray-700/80 text-blue-300"
                         : "text-white hover:bg-gray-700/80"
                     }
                   `}
                 >
-                  <span className="font-medium">{dataPoint.label}</span>
-                  {dataPoint.description && (
+                  <span className="font-medium">{kpiValue.label}</span>
+                  {kpiValue.description && (
                     <p className="text-xs text-white/50 mt-1">
-                      {t(dataPoint.description)}
+                      {t(kpiValue.description)}
                     </p>
                   )}
                 </button>

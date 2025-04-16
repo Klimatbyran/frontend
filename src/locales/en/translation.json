@@ -682,43 +682,50 @@
       "year": "Year"
     },
     "list": {
+      "source": "Source:",
       "dataSelector": {
         "label": "Select Data Point",
         "tooltips": {
           "higherBetter": "Higher values are better",
           "lowerBetter": "Lower values are better"
+        }
+      },
+      "kpis": {
+        "historicalEmissionChangePercent": {
+          "label": "Historical Emission Change",
+          "description": "Historical change in emissions",
+          "detailedDescription": "Average annual change in carbon dioxide emissions in Swedish municipalities since the Paris Agreement in 2015",
+          "source": "National Emissions Database"
         },
-        "dataPoints": {
-          "historicalEmissionChangePercent": {
-            "label": "Historical Emission Change",
-            "description": "Historical change in emissions",
-            "detailedDescription": "Average annual change in carbon dioxide emissions in Swedish municipalities since the Paris Agreement in 2015"
-          },
-          "neededEmissionChangePercent": {
-            "label": "Required Emission Change",
-            "description": "Required change in emissions to meet climate goals",
-            "detailedDescription": "The emission reduction required to meet the Paris Agreement. Lower values are better"
-          },
-          "electricCarChangePercent": {
-            "label": "Electric Car Growth",
-            "description": "Change in electric car adoption",
-            "detailedDescription": "The growth rate in municipalities for the share of newly registered rechargeable cars 2015-2022, stated in percentage points per year"
-          },
-          "totalConsumptionEmission": {
-            "label": "Total Consumption Emission",
-            "description": "Total emissions from consumption",
-            "detailedDescription": "Household consumption emissions (CO₂e) in tonnes per inhabitant and municipality in 2019. By 2050, emissions should be at most 1 tonne per person per year to be in line with the Paris Agreement"
-          },
-          "electricVehiclePerChargePoints": {
-            "label": "EVs per Charge Point",
-            "description": "Number of electric vehicles per charging point",
-            "detailedDescription": "Number of electric vehicles per charging point per municipality in 2024. Higher numbers are better, as good infrastructure promotes increased electric vehicle adoption"
-          },
-          "bicycleMetrePerCapita": {
-            "label": "Bicycle Infrastructure",
-            "description": "Bicycle path meters per capita",
-            "detailedDescription": "Number of meters of bicycle paths per inhabitant per municipality in 2023. Longer is better, as good infrastructure promotes increased cycling"
-          }
+        "neededEmissionChangePercent": {
+          "label": "Required Emission Change",
+          "description": "Required change in emissions to meet climate goals",
+          "detailedDescription": "The emission reduction required to meet the Paris Agreement. Lower values are better",
+          "source": "National Emissions Database,Uppsala University"
+        },
+        "electricCarChangePercent": {
+          "label": "Electric Car Growth",
+          "description": "Change in electric car adoption",
+          "detailedDescription": "The growth rate in municipalities for the share of newly registered rechargeable cars 2015-2022, stated in percentage points per year",
+          "source": "Transport Analysis"
+        },
+        "totalConsumptionEmission": {
+          "label": "Total Consumption Emission",
+          "description": "Total emissions from consumption",
+          "detailedDescription": "Household consumption emissions (CO₂e) in tonnes per inhabitant and municipality in 2019. By 2050, emissions should be at most 1 tonne per person per year to be in line with the Paris Agreement",
+          "source": "Stockholm Environment Institute"
+        },
+        "electricVehiclePerChargePoints": {
+          "label": "EVs per Charge Point",
+          "description": "Number of electric vehicles per charging point",
+          "detailedDescription": "Number of electric vehicles per charging point per municipality in 2024. Higher numbers are better, as good infrastructure promotes increased electric vehicle adoption",
+          "source": "Power Circle"
+        },
+        "bicycleMetrePerCapita": {
+          "label": "Bicycle Infrastructure",
+          "description": "Bicycle path meters per capita",
+          "detailedDescription": "Number of meters of bicycle paths per inhabitant per municipality in 2023. Longer is better, as good infrastructure promotes increased cycling",
+          "source": "National Road Database/Swedish Transport Administration"
         }
       },
       "insights": {

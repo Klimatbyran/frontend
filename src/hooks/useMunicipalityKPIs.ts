@@ -7,85 +7,89 @@ export const useMunicipalityKPIs = (): KPIValue[] => {
   const KPIs: KPIValue[] = [
     {
       label: t(
-        "municipalities.list.dataSelector.dataPoints.historicalEmissionChangePercent.label",
+        "municipalities.list.kpis.historicalEmissionChangePercent.label",
       ),
       key: "historicalEmissionChangePercent",
       unit: "%",
+      source: "municipalities.list.historicalEmissionChangePercent.source",
+      sourceUrls: ["https://nationellaemissionsdatabasen.smhi.se/"],
       description: t(
-        "municipalities.list.dataSelector.dataPoints.historicalEmissionChangePercent.description",
+        "municipalities.list.kpis.historicalEmissionChangePercent.description",
       ),
       detailedDescription: t(
-        "municipalities.list.dataSelector.dataPoints.historicalEmissionChangePercent.detailedDescription",
+        "municipalities.list.kpis.historicalEmissionChangePercent.detailedDescription",
       ),
       higherIsBetter: false,
     },
     {
-      label: t(
-        "municipalities.list.dataSelector.dataPoints.neededEmissionChangePercent.label",
-      ),
+      label: t("municipalities.list.kpis.neededEmissionChangePercent.label"),
       key: "neededEmissionChangePercent",
       unit: "%",
+      source: "municipalities.list.neededEmissionChangePercent.source",
+      sourceUrls: [
+        "https://nationellaemissionsdatabasen.smhi.se/,http://www.cemus.uu.se/wp-content/uploads/2023/12/Paris-compliant-carbon-budgets-for-Swedens-counties-.pdf",
+      ],
       description: t(
-        "municipalities.list.dataSelector.dataPoints.neededEmissionChangePercent.description",
+        "municipalities.list.kpis.neededEmissionChangePercent.description",
       ),
       detailedDescription: t(
-        "municipalities.list.dataSelector.dataPoints.neededEmissionChangePercent.detailedDescription",
+        "municipalities.list.kpis.neededEmissionChangePercent.detailedDescription",
       ),
       higherIsBetter: false,
     },
     {
-      label: t(
-        "municipalities.list.dataSelector.dataPoints.electricCarChangePercent.label",
-      ),
+      label: t("municipalities.list.kpis.electricCarChangePercent.label"),
       key: "electricCarChangePercent",
       unit: "%",
+      source: "municipalities.list.electricCarChangePercent.source",
+      sourceUrls: ["https://trafikanalys.se/"],
       description: t(
-        "municipalities.list.dataSelector.dataPoints.electricCarChangePercent.description",
+        "municipalities.list.kpis.electricCarChangePercent.description",
       ),
       detailedDescription: t(
-        "municipalities.list.dataSelector.dataPoints.electricCarChangePercent.detailedDescription",
+        "municipalities.list.kpis.electricCarChangePercent.detailedDescription",
       ),
       higherIsBetter: true,
     },
     {
-      label: t(
-        "municipalities.list.dataSelector.dataPoints.totalConsumptionEmission.label",
-      ),
+      label: t("municipalities.list.kpis.totalConsumptionEmission.label"),
       key: "totalConsumptionEmission",
       unit: "t",
+      source: "municipalities.list.totalConsumptionEmission.source",
+      sourceUrls: ["https://stockholmenvironmentinstitute.se/"],
       description: t(
-        "municipalities.list.dataSelector.dataPoints.totalConsumptionEmission.description",
+        "municipalities.list.kpis.totalConsumptionEmission.description",
       ),
       detailedDescription: t(
-        "municipalities.list.dataSelector.dataPoints.totalConsumptionEmission.detailedDescription",
+        "municipalities.list.kpis.totalConsumptionEmission.detailedDescription",
       ),
       higherIsBetter: false,
     },
     {
-      label: t(
-        "municipalities.list.dataSelector.dataPoints.electricVehiclePerChargePoints.label",
-      ),
+      label: t("municipalities.list.kpis.electricVehiclePerChargePoints.label"),
       key: "electricVehiclePerChargePoints",
       unit: "",
+      source: "municipalities.list.electricVehiclePerChargePoints.source",
+      sourceUrls: ["https://powercircles.se/"],
       description: t(
-        "municipalities.list.dataSelector.dataPoints.electricVehiclePerChargePoints.description",
+        "municipalities.list.kpis.electricVehiclePerChargePoints.description",
       ),
       detailedDescription: t(
-        "municipalities.list.dataSelector.dataPoints.electricVehiclePerChargePoints.detailedDescription",
+        "municipalities.list.kpis.electricVehiclePerChargePoints.detailedDescription",
       ),
       higherIsBetter: false,
     },
     {
-      label: t(
-        "municipalities.list.dataSelector.dataPoints.bicycleMetrePerCapita.label",
-      ),
+      label: t("municipalities.list.kpis.bicycleMetrePerCapita.label"),
       key: "bicycleMetrePerCapita",
       unit: "m",
+      source: "municipalities.list.bicycleMetrePerCapita.source",
+      sourceUrls: ["https://nvdb.se/"],
       description: t(
-        "municipalities.list.dataSelector.dataPoints.bicycleMetrePerCapita.description",
+        "municipalities.list.kpis.bicycleMetrePerCapita.description",
       ),
       detailedDescription: t(
-        "municipalities.list.dataSelector.dataPoints.bicycleMetrePerCapita.detailedDescription",
+        "municipalities.list.kpis.bicycleMetrePerCapita.detailedDescription",
       ),
       higherIsBetter: true,
     },
