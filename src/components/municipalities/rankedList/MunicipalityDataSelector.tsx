@@ -1,11 +1,12 @@
 import React, { useEffect, useRef } from "react";
 import { BarChart3, ChevronDown } from "lucide-react";
 import { t } from "i18next";
-import { DataPoint, dataPoints } from "./dataPoints";
+import { useDataPoints } from "../../../hooks/useMunicipalityKPIs";
+import { KPIValue } from "@/types/municipality";
 
 interface DataSelectorProps {
-  selectedDataPoint: DataPoint;
-  onDataPointChange: (dataPoint: DataPoint) => void;
+  selectedDataPoint: KPIValue;
+  onDataPointChange: (dataPoint: KPIValue) => void;
 }
 
 const DataSelector = ({
@@ -14,6 +15,7 @@ const DataSelector = ({
 }: DataSelectorProps) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const dataPoints = useDataPoints();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

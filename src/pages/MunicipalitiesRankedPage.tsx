@@ -5,16 +5,18 @@ import { useMunicipalities } from "@/hooks/useMunicipalities";
 import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/layout/PageHeader";
 import DataSelector from "@/components/municipalities/rankedList/MunicipalityDataSelector";
-import { dataPoints } from "@/components/municipalities/rankedList/dataPoints";
 import MunicipalityRankedList from "@/components/municipalities/rankedList/MunicipalityRankedList";
 import InsightsPanel from "@/components/municipalities/rankedList/MunicipalityInsightsPanel";
 import SwedenMap from "@/components/municipalities/map/SwedenMap";
 import municipalityGeoJson from "@/data/municipalityGeo.json";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
+import { useDataPoints } from "@/hooks/useMunicipalityKPIs";
+import { FeatureCollection } from "geojson";
 
 export function MunicipalitiesRankedPage() {
   const { t } = useTranslation();
   const { municipalities, loading, error } = useMunicipalities();
+  const dataPoints = useDataPoints();
 
   const [geoData] = useState<typeof municipalityGeoJson>(municipalityGeoJson);
   const [selectedDataPoint, setSelectedDataPoint] = useState(dataPoints[0]);
@@ -81,11 +83,11 @@ export function MunicipalitiesRankedPage() {
         onDataPointChange={setSelectedDataPoint}
       />
 
-      <div className="grid grid-cols-1 lg:grid-cols-[2fr,1fr] gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr,1fr] gap-6">
         {showMap ? (
           <div className="relative h-[65vh] lg:h-auto">
             <SwedenMap
-              geoData={geoData}
+              geoData={geoData as FeatureCollection}
               municipalityData={municipalities}
               selectedDataPoint={selectedDataPoint}
               onMunicipalityClick={handleMunicipalityClick}

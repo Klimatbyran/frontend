@@ -1,16 +1,8 @@
+import { KPIValue } from "@/types/municipality";
 import { t } from "i18next";
-import { Municipality } from "@/types/municipality";
 import { useMemo } from "react";
 
-export interface DataPoint {
-  label: string;
-  key: keyof Municipality;
-  unit: string;
-  description?: string;
-  higherIsBetter: boolean;
-}
-
-export function useDataPoints(): DataPoint[] {
+export const useDataPoints = (): KPIValue[] => {
   return useMemo(
     () => [
       {
@@ -100,4 +92,4 @@ export function useDataPoints(): DataPoint[] {
     ],
     [],
   );
-}
+};

@@ -698,27 +698,33 @@
         "dataPoints": {
           "historicalEmissionChange": {
             "label": "Historisk utsläppsförändring",
-            "description": "Historisk förändring av utsläpp"
+            "description": "Historisk förändring av utsläpp",
+            "detailedDescription": "Genomsnittlig årlig förändring av koldioxidutsläppen i Sveriges kommuner sedan Parisavtalet 2015."
           },
           "requiredEmissionChange": {
             "label": "Nödvändig utsläppsminskning",
-            "description": "Nödvändig minskning av utsläpp för att nå klimatmålen"
+            "description": "Nödvändig minskning av utsläpp för att nå klimatmålen",
+            "detailedDescription": "Den utsläppsminskning som krävs för att nå Parisavtalet. Ju lägre desto bättre."
           },
           "electricCarGrowth": {
             "label": "Tillväxt av elbilar",
-            "description": "Förändring i andel elbilar"
+            "description": "Förändring i andel elbilar",
+            "detailedDescription": "Ökningstakten i kommunerna för andel nyregistrerade laddbara bilar 2015–2022, angivet i procentenheter per år."
           },
           "totalConsumptionEmission": {
             "label": "Totala konsumtionsutsläpp",
-            "description": "Totala utsläpp från konsumtion"
+            "description": "Totala utsläpp från konsumtion",
+            "detailedDescription": "Hushållens konsumtionsutsläpp (CO₂e) i ton per invånare och kommun år 2019. År 2050 ska utsläppen vara högst 1 ton per person och år för att ligga i linje med Parisavtalet."
           },
           "evsPerChargePoint": {
             "label": "Elbilar per laddpunkt",
-            "description": "Antal elbilar per laddningspunkt"
+            "description": "Antal elbilar per laddningspunkt",
+            "detailedDescription": "Antal elbilar per laddningspunkt per kommun år 2024. Ju fler desto bättre, god infrastruktur gynnar ökad elbilskonsumtion."
           },
           "bicycleInfrastructure": {
             "label": "Cykelinfrastruktur",
-            "description": "Meter cykelväg per invånare"
+            "description": "Meter cykelväg per invånare",
+            "detailedDescription": "Antal meter cykelväg per invånare per kommun år 2023. Ju längre desto bättre, god infrastruktur gynnar ökad cykling."
           }
         }
       },
@@ -728,18 +734,9 @@
           "metric": "Ingen data tillgänglig för {{metric}}"
         },
         "keyStatistics": {
-          "title": "Nyckelstatistik",
-          "average": "Genomsnittligt {{metric}}",
-          "range": {
-            "label": "Spann",
-            "description": "Skillnad mellan högsta och lägsta värde",
-            "fromTo": "Från {{min}} till {{max}}"
-          },
-          "distribution": {
-            "label": "Fördelning",
-            "aboveAverage": "{{count}} kommuner över genomsnittet",
-            "belowAverage": "{{count}} kommuner under genomsnittet"
-          }
+          "average": "Genomsnitt:",
+          "distributionAbove": "kommuner över genomsnittet,",
+          "distributionBelow": "stycken under"
         },
         "topPerformers": {
           "titleBest": "Bästa kommuner",

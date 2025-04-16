@@ -1,19 +1,10 @@
 import { t } from "i18next";
-import { Municipality } from "@/types/municipality";
+import { KPIValue, Municipality } from "@/types/municipality";
 import InsightsList from "./MunicipalityInsightsList";
-import InsightStatistics from "./MunicipalityKeyInsights";
-
-export interface DataPoint {
-  label: string;
-  key: keyof Municipality;
-  unit: string;
-  description?: string;
-  higherIsBetter: boolean;
-}
 
 interface InsightsPanelProps {
   municipalityData: Municipality[];
-  selectedDataPoint: DataPoint;
+  selectedDataPoint: KPIValue;
 }
 
 function InsightsPanel({
@@ -61,28 +52,39 @@ function InsightsPanel({
 
   const values = validData.map((m) => m[selectedDataPoint.key] as number);
   const average = values.reduce((sum, val) => sum + val, 0) / values.length;
-  const minValue = Math.min(...values);
-  const maxValue = Math.max(...values);
 
   const aboveAverageCount = values.filter((val) => val > average).length;
   const belowAverageCount = values.filter((val) => val < average).length;
 
   return (
     <div className="bg-white/5 backdrop-blur-sm rounded-level-2 p-4 md:p-8 h-full min-w-screen-lg flex flex-col min-h-0">
-      <h2 className="text-white text-2xl font-bold mb-6">
-        {selectedDataPoint.label}
-      </h2>
-
       <div className="flex-1 overflow-y-auto min-h-0 pr-2">
         <div className="space-y-6">
-          <InsightStatistics
-            average={average}
-            minValue={minValue}
-            maxValue={maxValue}
-            aboveAverageCount={aboveAverageCount}
-            belowAverageCount={belowAverageCount}
-            selectedDataPoint={selectedDataPoint}
-          />
+          <div className="space-y-2">
+            <p className="text-bold">{selectedDataPoint.detailedDescription}</p>
+            <p>
+              <span className="text-gray-400">
+                {t("municipalities.list.insights.keyStatistics.average")}
+              </span>{" "}
+              <span className="text-white">
+                {average.toFixed(1) + selectedDataPoint.unit}
+              </span>
+            </p>
+            <p>
+              {aboveAverageCount}{" "}
+              <span className="text-gray-400">
+                {t(
+                  "municipalities.list.insights.keyStatistics.distributionAbove",
+                )}
+              </span>{" "}
+              {belowAverageCount}{" "}
+              <span className="text-gray-400">
+                {t(
+                  "municipalities.list.insights.keyStatistics.distributionBelow",
+                )}
+              </span>{" "}
+            </p>
+          </div>
 
           <InsightsList
             title={t(

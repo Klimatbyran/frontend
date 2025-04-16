@@ -9,7 +9,9 @@ import { Municipality } from "@/types/municipality";
 import { MapZoomControls } from "./MapZoomControls";
 import { MapGradientLegend } from "./MapLegendGradient";
 import { MapTooltip } from "./MapTooltip";
-interface DataPoint {
+import { FeatureCollection } from "geojson";
+
+interface MunicipalityMetric {
   label: string;
   key: keyof Municipality;
   unit: string;
@@ -18,9 +20,9 @@ interface DataPoint {
 }
 
 interface SwedenMapProps {
-  geoData: any;
+  geoData: FeatureCollection;
   municipalityData: Municipality[];
-  selectedDataPoint: DataPoint;
+  selectedDataPoint: MunicipalityMetric;
   onMunicipalityClick: (name: string) => void;
 }
 
@@ -40,7 +42,7 @@ function SwedenMap({
     zoom: number;
   }>({
     coordinates: [17, 63],
-    zoom: 1,
+    zoom: 0.8,
   });
 
   // Calculate min and max values for the color scale
@@ -58,12 +60,16 @@ function SwedenMap({
   });
 
   const handleZoomIn = () => {
-    if (position.zoom >= 4) return;
+    if (position.zoom >= 4) {
+      return;
+    }
     setPosition((pos) => ({ ...pos, zoom: pos.zoom * 1.5 }));
   };
 
   const handleZoomOut = () => {
-    if (position.zoom <= 0.5) return;
+    if (position.zoom <= 0.5) {
+      return;
+    }
     setPosition((pos) => ({ ...pos, zoom: pos.zoom / 1.5 }));
   };
 
@@ -84,7 +90,9 @@ function SwedenMap({
     const municipality = municipalityData.find(
       (m) => m.name.toLowerCase() === name.toLowerCase(),
     );
-    if (!municipality) return { value: null, rank: null };
+    if (!municipality) {
+      return { value: null, rank: null };
+    }
 
     const value = municipality[selectedDataPoint.key] as number;
     const rank =
@@ -94,7 +102,9 @@ function SwedenMap({
   };
 
   const getColorByValue = (value: number | null): string => {
-    if (value === null) return "#1a1a1a";
+    if (value === null) {
+      return "#1a1a1a";
+    }
 
     const normalizedValue = (value - minValue) / (maxValue - minValue);
 
@@ -103,7 +113,6 @@ function SwedenMap({
       ? normalizedValue
       : 1 - normalizedValue;
 
-    // Use a more subtle color palette
     const hue = colorValue * 120; // Green (120) to Red (0)
     return `hsl(${hue}, 70%, ${20 + colorValue * 30}%)`; // Darker colors
   };

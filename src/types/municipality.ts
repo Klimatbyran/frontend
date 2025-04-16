@@ -131,3 +131,12 @@ export type DataPoint = {
   trend: number | undefined;
   gap: number | undefined;
 };
+
+export interface KPIValue {
+  label: string;
+  key: keyof Municipality;
+  unit: string;
+  description: string;
+  detailedDescription: string;
+  higherIsBetter: boolean;
+}
