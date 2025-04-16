@@ -56,7 +56,11 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
       <div className="flex-1 overflow-y-auto min-h-0 pr-2">
         <div className="space-y-6">
           <div className="space-y-2">
-            <p className="text-bold">{selectedKPI.detailedDescription}</p>
+            <p className="text-bold">
+              {t(
+                `municipalities.list.dataSelector.dataPoints.${selectedKPI.key}.detailedDescription`,
+              )}
+            </p>
             <p>
               <span className="text-gray-400">
                 {t("municipalities.list.insights.keyStatistics.average")}
