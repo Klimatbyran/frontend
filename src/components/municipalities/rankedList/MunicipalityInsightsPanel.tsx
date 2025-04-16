@@ -57,10 +57,10 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
       <div className="flex-1 overflow-y-auto min-h-0 pr-2">
         <div className="space-y-6">
           <div className="space-y-2">
-            <h2 className="text-2xl font-bold">
+            <h2 className="text-2xl">
               {t(`municipalities.list.kpis.${selectedKPI.key}.label`)}
             </h2>
-            <p className="text-bold">
+            <p>
               {t(
                 `municipalities.list.kpis.${selectedKPI.key}.detailedDescription`,
               )}
