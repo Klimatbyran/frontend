@@ -728,7 +728,7 @@
           "description": "Antal elbilar per laddningspunkt",
           "detailedDescription": "Antal elbilar per laddningspunkt per kommun år 2024. Ju fler desto bättre, god infrastruktur gynnar ökad elbilskonsumtion",
           "source": "<0>Power Circle</0>",
-          "nullValues": "inga laddpunkter"
+          "nullValues": "saknar laddpunkter"
         },
         "bicycleMetrePerCapita": {
           "label": "Cykelinfrastruktur",

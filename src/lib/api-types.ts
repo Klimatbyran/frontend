@@ -978,7 +978,7 @@ export interface paths {
                             climatePlanComment: string | null;
                             bicycleMetrePerCapita: number;
                             totalConsumptionEmission: number;
-                            electricVehiclePerChargePoints: number;
+                            electricVehiclePerChargePoints: number | null;
                             procurementScore: string;
                             procurementLink: string;
                             emissions: ({
@@ -1058,7 +1058,7 @@ export interface paths {
                             climatePlanComment: string | null;
                             bicycleMetrePerCapita: number;
                             totalConsumptionEmission: number;
-                            electricVehiclePerChargePoints: number;
+                            electricVehiclePerChargePoints: number | null;
                             procurementScore: string;
                             procurementLink: string;
                             emissions: ({
@@ -1108,6 +1108,45 @@ export interface paths {
                             message?: string;
                             details?: unknown;
                         };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/reporting-period/years": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get list of reporting periods
+         * @description Retrieve a list of all existing reporting periods identified by it's end date year
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": string[];
                     };
                 };
             };
