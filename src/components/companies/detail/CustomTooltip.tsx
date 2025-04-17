@@ -2,6 +2,7 @@ import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useTranslation } from "react-i18next";
 import { formatEmissionsAbsolute, localizeUnit } from "@/utils/localizeUnit";
 import { useLanguage } from "@/components/LanguageProvider";
+import { useScreenSize } from "@/hooks/useScreenSize";
 
 interface CustomTooltipProps {
   active?: boolean;
@@ -18,7 +19,8 @@ export const CustomTooltip = ({
 }: CustomTooltipProps) => {
   const { t } = useTranslation();
   const { getCategoryName } = useCategoryMetadata();
-  const { currentLanguage} = useLanguage();
+  const { currentLanguage } = useLanguage();
+  const { isMobile } = useScreenSize();
 
   if (active && payload && payload.length) {
     if (payload.length === 3) {
@@ -36,12 +38,17 @@ export const CustomTooltip = ({
       };
       payload = [companyTotal, ...payload];
     }
-    
+
     const isBaseYear = companyBaseYear === payload[0].payload.year;
-    
+
     return (
-      <div className="bg-black-1 px-4 py-3 rounded-level-2 max-w-[525px] ">
-        <div className="text-sm font-medium mb-2">{label}{isBaseYear ? '*' : ''}</div>
+      <div
+        className={`${isMobile ? "max-w-[280px]" : "max-w-[400px]"} bg-black-1 px-4 py-3 rounded-level-2 `}
+      >
+        <div className="text-sm font-medium mb-2">
+          {label}
+          {isBaseYear ? "*" : ""}
+        </div>
         {payload.map((entry: any) => {
           if (entry.dataKey === "gap") return null;
 
@@ -74,17 +81,12 @@ export const CustomTooltip = ({
               <span style={{ color: entry.color }}>{displayValue}</span>
             </div>
           );
-          
         })}
-            {
-                isBaseYear
-                ? 
-                  <span className="text-grey mr-2 text-sm">
-                    <br></br>
-                    *{t('companies.emissionsHistory.baseYearInfo')}
-                  </span>
-                : null                
-              }
+        {isBaseYear ? (
+          <span className="text-grey mr-2 text-sm">
+            <br></br>*{t("companies.emissionsHistory.baseYearInfo")}
+          </span>
+        ) : null}
       </div>
     );
   }
