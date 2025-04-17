@@ -35,6 +35,7 @@ import { useTranslation } from "react-i18next";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { cn } from "@/lib/utils";
 import SectorGraphs from "@/components/companies/sectors/SectorGraphs";
+import { useNavigate, useLocation } from "react-router-dom";
 
 type FilterBadge = {
   type: "filter" | "sort";
@@ -237,6 +238,8 @@ export function CompaniesPage() {
   const sectorNames = useSectorNames();
   const [viewMode, setViewMode] = useState<"graphs" | "list">("list");
   const [isDevEnvironment, setIsDevEnvironment] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const {
     searchQuery,

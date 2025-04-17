@@ -52,7 +52,6 @@ const PieLegend: React.FC<PieLegendProps> = ({
       }`}
     >
       {payload.map((entry, index) => {
-        console.log("Entry in map:", entry);
         const percentage = formatPercent(
           entry.payload.value / entry.payload.total,
           currentLanguage,
