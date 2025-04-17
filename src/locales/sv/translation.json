@@ -399,7 +399,7 @@
     "sustainableTransport": "Hållbar transport",
     "electricCarChange": "Ökning av andel elbilar",
     "electricCarsPerChargePoint": "Elbilar per laddpunkt",
-    "noChargePoints": "Inga laddpunkter",
+    "noChargePoints": "Saknar laddpunkter",
     "bicycleMetrePerCapita": "Cykelvägsmeter per invånare"
   },
   "sector": {

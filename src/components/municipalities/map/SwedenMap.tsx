@@ -11,6 +11,13 @@ import { MapGradientLegend } from "./MapLegendGradient";
 import { MapTooltip } from "./MapTooltip";
 import { FeatureCollection } from "geojson";
 
+export const MUNICIPALITY_MAP_COLORS = {
+  start: "var(--pink-5)",
+  gradientMidLow: "var(--pink-4)",
+  gradientMidHigh: "var(--pink-3)",
+  end: "var(--blue-3)",
+} as const;
+
 interface MunicipalityKPI {
   label: string;
   key: keyof Municipality;
@@ -102,11 +109,10 @@ function SwedenMap({
       return "var(--pink-5)";
     }
 
-    // Use CSS variables directly
-    const startColor = "var(--pink-5)";
-    const gradientMidLow = "var(--pink-4)";
-    const gradientMidHigh = "var(--pink-3)";
-    const endColor = "var(--blue-3)";
+    const startColor = MUNICIPALITY_MAP_COLORS.start;
+    const gradientMidLow = MUNICIPALITY_MAP_COLORS.gradientMidLow;
+    const gradientMidHigh = MUNICIPALITY_MAP_COLORS.gradientMidHigh;
+    const endColor = MUNICIPALITY_MAP_COLORS.end;
 
     const mean = values.reduce((sum, val) => sum + val, 0) / values.length;
     const stdDev = Math.sqrt(
