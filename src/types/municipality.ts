@@ -12,7 +12,7 @@ export type Municipality = {
   climatePlanYear: number | null;
   climatePlanComment: string | null;
   climatePlanLink: string | null;
-  electricVehiclePerChargePoints: number;
+  electricVehiclePerChargePoints: number | null;
   bicycleMetrePerCapita: number;
   procurementScore: string;
   procurementLink: string | null;
