@@ -112,7 +112,7 @@ export function Scope3Chart({ categories, className }: Scope3ChartProps) {
   };
 
   const RADIAN = Math.PI / 180;
-  const renderCustomizedLabel = ({
+  /*  const renderCustomizedLabel = ({
     cx,
     cy,
     midAngle,
@@ -156,7 +156,7 @@ export function Scope3Chart({ categories, className }: Scope3ChartProps) {
       </text>
     );
   };
-
+ */
   return (
     <div
       className={cn("bg-black-2 rounded-level-1 p-4 md:p-8 lg:p-8", className)}
@@ -217,8 +217,36 @@ export function Scope3Chart({ categories, className }: Scope3ChartProps) {
 
       <div
         ref={containerRef}
-        className="h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px]"
+        className=" h-[500px] h-[500px] flex flex-col-reverse gap-2"
       >
+        <div className="max-h-[200px] overflow-y-scroll">
+          <ul>
+            {chartData.map((dataItem) => {
+              console.log(dataItem);
+              return (
+                <li key={dataItem.name} className="flex py-1 text-sm"
+                onClick={() => handleCategoryClick(dataItem.category)}
+                >
+                  <div
+                    className={`h-[12px] w-[5px] rounded-[100px] my-1 py-[5px] pl-3`}
+                    style={{ backgroundColor: dataItem.color }}
+                  ></div>
+                  <div className="flex">
+                    <span className="font-bold pl-2 min-w-[55px]">
+                      {
+                        dataItem.percentage < 0.01 ? 
+                        '< 0.01%'
+                        : `${dataItem.percentage.toFixed(2)}%`
+
+                      }
+                    </span>
+                    <span className="font-light pl-2"> {dataItem.name}</span>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
@@ -231,8 +259,8 @@ export function Scope3Chart({ categories, className }: Scope3ChartProps) {
               paddingAngle={2}
               dataKey="value"
               nameKey="name"
-              label={size.showLabels ? renderCustomizedLabel : undefined}
-              labelLine={false}
+              /*               label={size.showLabels ? renderCustomizedLabel : undefined}
+               */ labelLine={false}
               onClick={(entry) => handleCategoryClick(entry.category)}
               className="cursor-pointer"
             >
