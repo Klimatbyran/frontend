@@ -5,7 +5,9 @@
   "header": {
     "companies": "Companies",
     "municipalities": "Municipalities",
-    "about": "About Us",
+    "about": "About",
+    "aboutUs": "About Us",
+    "products": "Products",
     "insights": "Insights",
     "methodology": "Sources and Method",
     "newsletter": "Newsletter",
@@ -115,6 +117,88 @@
       "utslappsberakningTitle": "Emission Calculation",
       "utslappsberakningText": "A projection of how emissions would increase or decrease under each party's policies."
     }
+  },
+  "productsPage": {
+    "title": "Access Climate Impact Data",
+    "description": "Get access to Klimatkollen's climate database, featuring corporate emissions data, sustainability reports, and municipal environmental metrics through our API.",
+    "viewDocumentation": "View API Documentation →",
+    "apiAccess": {
+      "title": "Direct API Access",
+      "description": "Real-time access to our climate database through our documented REST API with comprehensive endpoints.",
+      "realtime": "Real-time data access",
+      "documentation": "Full API documentation",
+      "secure": "Secure API endpoints",
+      "support": "Priority support",
+      "contactPricing": "Contact for Pricing",
+      "viewDocs": "View API Documentation"
+    },
+    "freeAccess": {
+      "title": "Free Database Access",
+      "description": "Access our comprehensive climate database through bi-yearly data dumps, perfect for research and analysis.",
+      "export": "Database export every 6 months",
+      "data": "Corporate and municipality climate data",
+      "license": "Free to use for both commerical and non-commercial purposes",
+      "requestAccess": "Get Data"
+    },
+    "dataOverview": {
+      "title": "Available Data  ",
+      "corporate": {
+        "title": "Corporate Emissions Data",
+        "description": "Access to detailed emissions data from Swedish companies, including scope 1, 2, and 3 emissions, as well as supply chain data."
+      },
+      "reports": {
+        "title": "Sustainability Reports",
+        "description": "Access to sustainability reports from Swedish companies, including annual reports and sustainability reports."
+      },
+      "municipality": {
+        "title": "Municipality Climate Data",
+        "description": "Access to climate data from Swedish municipalities, including emissions data, climate plans, and climate actions."
+      }
+    },
+    "requestAccess": {
+      "title": "Request Access",
+      "description": "Request access to the Klimatkollen API to get real-time access to our climate database through our documented REST API with comprehensive endpoints.",
+      "emailLabel": "Email",
+      "reasonLabel": "Reason for access",
+      "submit": "Request Access",
+      "cancel": "Cancel",
+      "successMessage": "Access request sent successfully",
+      "errorMessage": "Failed to send access request",
+      "reasonWork": "Work",
+      "reasonHobby": "Hobby",
+      "reasonCuriosity": "Curiosity"
+    }
+  },
+  "downloadsPage": {
+    "title": "Download Database",
+    "description": "Access our climate database. Download emissions data for companies or municipalities in your preferred format.",
+    "csvFormat": "CSV Format",
+    "csvDescription": "Download the database as a CSV file, ideal for use in Python, R, Excel, or Google Sheets. All fields are comma-separated.",
+    "excelFormat": "Excel Format",
+    "excelDescription": "Download the database in Excel (XLSX) format, perfect for analysis in Microsoft Excel or Google Sheets. All fields are preserved in spreadsheet structure.",
+    "jsonFormat": "JSON Format",
+    "jsonDescription": "Download the database in JSON format, ideal for developers and data analysis in tools like Python or R. Structured for easy parsing and programmatic access.",
+    "selectType": "Select Data Type",
+    "companies": "Companies",
+    "municipalities": "Municipalities",
+    "selectYear": "Select Year",
+    "allYears": "All Years",
+    "download": "Download",
+    "downloadError": "Failed to download file. Please try again.",
+    "downloadInformation": "Download Information",
+    "dataStructure": "Data Structure",
+    "dataStructureDescription": "All download formats share the same database structure, with consistent field names and data types. For details about individual fields, refer to our API documentation.",
+    "fileSizeAndFormat": "File Size and Format",
+    "fileSizeAndFormatDescription": {
+      "csv": "CSV: UTF-8 encoded with comma-separated values. This is the smallest format and loads quickly in most spreadsheet tools. Ideal for general analysis and widely compatible with Excel, Google Sheets, Python, and R.",
+      "excel": "Excel: XLSX format with multiple sheets. Slightly larger than CSV due to built-in formatting. Best for users who want a clean, structured spreadsheet view right away in Excel or Google Sheets.",
+      "json": "JSON: UTF-8 encoded structured data. Tends to be the largest file due to detailed key-value formatting. Best for developers or analysts working with code, APIs, or automation in tools like Python or JavaScript."
+    },
+    "usageLicense": "Usage License",
+    "usageLicenseDescription": "The downloaded data is licensed under the Creative Commons Attribution 4.0 International License (CC BY 4.0). You are free to use, modify, and share the data for both commercial and non-commercial purposes, as long as you credit Klimatkollen and include a link to the license.",
+    "loading": "Loading...",
+    "downloadCompanies": "Download Company Data",
+    "downloadMunicipalities": "Download Municipality Data"
   },
   "insightsPage": {
     "title": "Articles",
@@ -790,5 +874,9 @@
       "2026: Large-cap listed SMEs and other companies",
       "Gradual expansion to cover more businesses"
     ]
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error"
   }
 }
