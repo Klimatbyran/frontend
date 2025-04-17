@@ -688,6 +688,11 @@
       "total": "Totalt",
       "year": "År"
     },
+    "map": {
+      "legend": {
+        "null": "Saknar data"
+      }
+    },
     "list": {
       "source": "Källa:",
       "dataSelector": {

@@ -681,6 +681,11 @@
       "total": "Total",
       "year": "Year"
     },
+    "map": {
+      "legend": {
+        "null": "No data"
+      }
+    },
     "list": {
       "source": "Source:",
       "dataSelector": {

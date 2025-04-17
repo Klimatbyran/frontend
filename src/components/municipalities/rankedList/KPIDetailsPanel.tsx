@@ -51,7 +51,7 @@ export default function KPIDetailsPanel({
           </p>
         )}
       </div>
-      <p className="text-gray-400 text-sm border-gray-700/50">
+      <p className="text-gray-400 text-sm border-gray-700/50 italic">
         {t("municipalities.list.source")}{" "}
         <Trans
           i18nKey={`municipalities.list.kpis.${selectedKPI.key}.source`}

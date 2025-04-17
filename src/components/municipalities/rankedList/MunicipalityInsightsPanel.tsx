@@ -56,37 +56,35 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
   ).length;
 
   return (
-    <div className="bg-white/5 backdrop-blur-sm rounded-level-2 p-4 md:p-8 h-full min-w-screen-lg flex flex-col min-h-0">
-      <div className="flex-1 overflow-y-auto min-h-0 pr-2">
-        <div className="space-y-6">
-          <KPIDetailsPanel
-            selectedKPI={selectedKPI}
-            average={average}
-            aboveAverageCount={aboveAverageCount}
-            belowAverageCount={belowAverageCount}
-            nullValues={nullValues}
-          />
+    <div className="flex-1 overflow-y-auto min-h-0 pr-2">
+      <div className="space-y-6">
+        <KPIDetailsPanel
+          selectedKPI={selectedKPI}
+          average={average}
+          aboveAverageCount={aboveAverageCount}
+          belowAverageCount={belowAverageCount}
+          nullValues={nullValues}
+        />
 
-          <InsightsList
-            title={t(
-              selectedKPI.higherIsBetter
-                ? "municipalities.list.insights.topPerformers.titleTop"
-                : "municipalities.list.insights.topPerformers.titleBest",
-            )}
-            municipalities={topMunicipalities}
-            dataPointKey={selectedKPI.key}
-            unit={selectedKPI.unit}
-            textColor="text-blue-3"
-          />
+        <InsightsList
+          title={t(
+            selectedKPI.higherIsBetter
+              ? "municipalities.list.insights.topPerformers.titleTop"
+              : "municipalities.list.insights.topPerformers.titleBest",
+          )}
+          municipalities={topMunicipalities}
+          dataPointKey={selectedKPI.key}
+          unit={selectedKPI.unit}
+          textColor="text-blue-3"
+        />
 
-          <InsightsList
-            title={t("municipalities.list.insights.improvement.title")}
-            municipalities={bottomMunicipalities}
-            dataPointKey={selectedKPI.key}
-            unit={selectedKPI.unit}
-            textColor="text-pink-3"
-          />
-        </div>
+        <InsightsList
+          title={t("municipalities.list.insights.improvement.title")}
+          municipalities={bottomMunicipalities}
+          dataPointKey={selectedKPI.key}
+          unit={selectedKPI.unit}
+          textColor="text-pink-3"
+        />
       </div>
     </div>
   );
