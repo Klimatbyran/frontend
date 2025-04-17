@@ -5,6 +5,8 @@
   "header": {
     "companies": "Företag",
     "municipalities": "Kommuner",
+    "municipalitiesRanked": "Rankings",
+    "municipalitiesCompare": "Jämför",
     "about": "Om oss",
     "insights": "Insikter",
     "methodology": "Källor och metod",
@@ -335,7 +337,13 @@
       }
     }
   },
-  "municipalitiesPage": {
+  "municipalitiesRankedPage": {
+    "errorTitle": "Det gick inte att hämta kommuninformation",
+    "errorDescription": "Försök igen senare",
+    "title": "Kommunrankings",
+    "description": "Översikt över klimatpåverkan och omställning i kommunerna"
+  },
+  "municipalitiesComparePage": {
     "errorTitle": "Det gick inte att hämta kommuninformation",
     "errorDescription": "Försök igen senare",
     "title": "Kommunrapporter",
@@ -395,7 +403,7 @@
     "sustainableTransport": "Hållbar transport",
     "electricCarChange": "Ökning av andel elbilar",
     "electricCarsPerChargePoint": "Elbilar per laddpunkt",
-    "noChargePoints": "Inga laddpunkter",
+    "noChargePoints": "Saknar laddpunkter",
     "bicycleMetrePerCapita": "Cykelvägsmeter per invånare"
   },
   "sector": {
@@ -683,6 +691,89 @@
       "paris": "Parisavtalet",
       "total": "Totalt",
       "year": "År"
+    },
+    "map": {
+      "legend": {
+        "null": "Saknar data"
+      }
+    },
+    "list": {
+      "source": "Källa:",
+      "dataSelector": {
+        "label": "Välj datapunkt",
+        "tooltips": {
+          "higherBetter": "Högre värden är bättre",
+          "lowerBetter": "Lägre värden är bättre"
+        }
+      },
+      "kpis": {
+        "historicalEmissionChangePercent": {
+          "label": "Historisk utsläppsförändring",
+          "description": "Historisk förändring av utsläpp",
+          "detailedDescription": "Genomsnittlig årlig förändring av koldioxidutsläppen i Sveriges kommuner sedan Parisavtalet 2015",
+          "source": "<0>Nationella emissionsdatabasen</0>"
+        },
+        "neededEmissionChangePercent": {
+          "label": "Nödvändig utsläppsminskning",
+          "description": "Nödvändig minskning av utsläpp för att nå klimatmålen",
+          "detailedDescription": "Den utsläppsminskning som krävs för att nå Parisavtalet. Ju lägre desto bättre",
+          "source": "<0>Nationella emissionsdatabasen</0>, <1>Uppsala universitet</1>",
+          "nullValues": "kan inte nå Parisavtalet"
+        },
+        "electricCarChangePercent": {
+          "label": "Tillväxt av elbilar",
+          "description": "Förändring i andel elbilar",
+          "detailedDescription": "Ökningstakten i kommunerna för andel nyregistrerade laddbara bilar 2015–2022, angivet i procentenheter per år",
+          "source": "<0>Trafikanalys</0>"
+        },
+        "totalConsumptionEmission": {
+          "label": "Totala konsumtionsutsläpp",
+          "description": "Totala utsläpp från konsumtion",
+          "detailedDescription": "Hushållens konsumtionsutsläpp (CO₂e) i ton per invånare och kommun år 2019. År 2050 ska utsläppen vara högst 1 ton per person och år för att ligga i linje med Parisavtalet",
+          "source": "<0>Stockholm Environment Institute</0>"
+        },
+        "electricVehiclePerChargePoints": {
+          "label": "Elbilar per laddpunkt",
+          "description": "Antal elbilar per laddningspunkt",
+          "detailedDescription": "Antal elbilar per laddningspunkt per kommun år 2024. Ju fler desto bättre, god infrastruktur gynnar ökad elbilskonsumtion",
+          "source": "<0>Power Circle</0>",
+          "nullValues": "saknar laddpunkter"
+        },
+        "bicycleMetrePerCapita": {
+          "label": "Cykelinfrastruktur",
+          "description": "Meter cykelväg per invånare",
+          "detailedDescription": "Antal meter cykelväg per invånare per kommun år 2023. Ju längre desto bättre, god infrastruktur gynnar ökad cykling",
+          "source": "<0>Nationella Vägdatabasen</0>, <1>Trafikverket</1>"
+        }
+      },
+      "insights": {
+        "noData": {
+          "municipality": "Ingen kommundata tillgänglig",
+          "metric": "Ingen data tillgänglig för {{metric}}"
+        },
+        "keyStatistics": {
+          "average": "Genomsnitt:",
+          "distributionAbove": "kommuner över genomsnittet,",
+          "distributionBelow": "stycken under"
+        },
+        "topPerformers": {
+          "titleBest": "Bästa kommuner",
+          "titleTop": "Toppresterande kommuner"
+        },
+        "improvement": {
+          "title": "Sämsta kommuner"
+        }
+      },
+      "viewToggle": {
+        "showList": "Visa lista",
+        "showMap": "Visa karta"
+      },
+      "rankedList": {
+        "search": {
+          "placeholder": "Sök kommuner..."
+        },
+        "rank": "Placering: {{rank}} av {{total}}"
+      }
     }
   },
   "errorPage": {

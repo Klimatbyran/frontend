@@ -68,6 +68,16 @@ export function Header() {
       label: t("header.municipalities"),
       icon: <BarChart3 className="w-4 h-4" aria-hidden="true" />,
       path: `${currentLanguage}/municipalities`,
+      sublinks: [
+        {
+          label: t("header.municipalitiesRanked"),
+          path: `${currentLanguage}/municipalities`,
+        },
+        {
+          label: t("header.municipalitiesCompare"),
+          path: `${currentLanguage}/municipalities/compare`,
+        },
+      ],
     },
     { path: `${currentLanguage}/about`, label: t("header.about") },
     { path: `${currentLanguage}/methodology`, label: t("header.methodology") },

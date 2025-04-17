@@ -8,17 +8,17 @@ export type Municipality = {
   trendEmission: number;
   historicalEmissionChangePercent: number;
   neededEmissionChangePercent: number | null;
-  budgetRunsOut: Date | null;
+  budgetRunsOut: string | null;
   climatePlanYear: number | null;
   climatePlanComment: string | null;
   climatePlanLink: string | null;
-  electricVehiclePerChargePoints: number;
+  electricVehiclePerChargePoints: number | null;
   bicycleMetrePerCapita: number;
   procurementScore: string;
   procurementLink: string | null;
   totalConsumptionEmission: number;
-  hitNetZero: Date | null;
-  electricCarChangeYearly: { year: string; value: number }[];
+  hitNetZero: string | null;
+  electricCarChangeYearly: ({ year: string; value: number } | null)[];
   electricCarChangePercent: number;
   wikidataId?: string;
   description?: string | null;
@@ -81,33 +81,35 @@ export type EmissionDataPoint = {
 };
 
 export type EmissionsData = {
-  emissions: EmissionDataPoint[];
-  emissionBudget: EmissionDataPoint[];
-  approximatedHistoricalEmission: EmissionDataPoint[];
-  trend: EmissionDataPoint[];
+  emissions: (EmissionDataPoint | null)[];
+  emissionBudget?: (EmissionDataPoint | null)[] | null;
+  approximatedHistoricalEmission: (EmissionDataPoint | null)[];
+  trend: (EmissionDataPoint | null)[];
 };
 
 export function transformEmissionsData(municipality: Municipality) {
   const years = new Set<string>();
 
-  municipality.emissions.forEach((d) => years.add(d.year));
-  municipality.emissionBudget?.forEach((d) => years.add(d.year));
-  municipality.approximatedHistoricalEmission.forEach((d) => years.add(d.year));
-  municipality.trend.forEach((d) => years.add(d.year));
+  municipality.emissions.forEach((d) => d?.year && years.add(d.year));
+  municipality.emissionBudget?.forEach((d) => d?.year && years.add(d.year));
+  municipality.approximatedHistoricalEmission.forEach(
+    (d) => d?.year && years.add(d.year),
+  );
+  municipality.trend.forEach((d) => d?.year && years.add(d.year));
 
   return Array.from(years)
     .sort()
     .map((year) => {
       const historical = municipality.emissions.find(
-        (d) => d.year === year,
+        (d) => d?.year === year,
       )?.value;
       const budget = municipality.emissionBudget?.find(
-        (d) => d.year === year,
+        (d) => d?.year === year,
       )?.value;
       const approximated = municipality.approximatedHistoricalEmission.find(
-        (d) => d.year === year,
+        (d) => d?.year === year,
       )?.value;
-      const trend = municipality.trend.find((d) => d.year === year)?.value;
+      const trend = municipality.trend.find((d) => d?.year === year)?.value;
 
       const gap = trend && budget ? trend - budget : undefined;
 
@@ -129,3 +131,15 @@ export type DataPoint = {
   trend: number | undefined;
   gap: number | undefined;
 };
+
+export interface KPIValue {
+  label: string;
+  key: keyof Municipality;
+  unit: string;
+  source: string;
+  sourceUrls: string[];
+  description: string;
+  detailedDescription: string;
+  nullValues?: string;
+  higherIsBetter: boolean;
+}

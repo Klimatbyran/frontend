@@ -1,4 +1,4 @@
-import { Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { useEffect } from "react";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { useLanguage } from "./components/LanguageProvider";
@@ -14,7 +14,8 @@ import { InsightsPage } from "./pages/InsightsPage";
 import { LandingPage } from "./pages/LandingPage";
 import { LearnMorePage } from "./pages/LearnMorePage";
 import { MethodsPage } from "./pages/MethodsPage";
-import { MunicipalitiesPage } from "./pages/MunicipalitiesPage";
+import { MunicipalitiesRankedPage } from "./pages/MunicipalitiesRankedPage";
+import { MunicipalitiesComparePage } from "./pages/MunicipalitiesComparePage";
 import { MunicipalityDetailPage } from "./pages/MunicipalityDetailPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { ReportsPage } from "./pages/ReportsPage";
@@ -67,7 +68,11 @@ export function AppRoutes() {
       {/* Municipalities routes */}
       <Route
         path={`${basePath}/municipalities`}
-        element={<MunicipalitiesPage />}
+        element={<MunicipalitiesRankedPage />}
+      />
+      <Route
+        path={`${basePath}/municipalities/compare`}
+        element={<MunicipalitiesComparePage />}
       />
       <Route
         path={`${basePath}/municipalities/:id`}
