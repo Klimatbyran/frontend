@@ -15,6 +15,12 @@
   background-color: black;
   color: white;
 
+  /* Grey palette */
+  --grey: #878787;
+  --black-1: #2e2e2e;
+  --black-2: #121212;
+  --black-3: #000000;
+
   /* Orange palette */
   --orange-1: #fde7ce;
   --orange-2: #fdb768;

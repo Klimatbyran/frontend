@@ -10,13 +10,7 @@ import { MapZoomControls } from "./MapZoomControls";
 import { MapGradientLegend } from "./MapLegendGradient";
 import { MapTooltip } from "./MapTooltip";
 import { FeatureCollection } from "geojson";
-
-export const MUNICIPALITY_MAP_COLORS = {
-  start: "var(--pink-5)",
-  gradientMidLow: "var(--pink-4)",
-  gradientMidHigh: "var(--pink-3)",
-  end: "var(--blue-3)",
-} as const;
+import { MUNICIPALITY_MAP_COLORS } from "./constants";
 
 interface MunicipalityKPI {
   label: string;
@@ -106,7 +100,7 @@ function SwedenMap({
 
   const getColorByValue = (value: number | null): string => {
     if (value === null) {
-      return "var(--pink-5)";
+      return MUNICIPALITY_MAP_COLORS.null;
     }
 
     const startColor = MUNICIPALITY_MAP_COLORS.start;
@@ -124,15 +118,15 @@ function SwedenMap({
 
     if (selectedKPI.higherIsBetter) {
       if (zScore <= -1) {
-        // Below -1 std dev: interpolate between startColor (pink-4) and gradientMidLow (pink-3)
+        // Below -1 std dev: interpolate between startColor and gradientMidLow
         const t = Math.max(0, (zScore + 2) / 1);
         return `color-mix(in srgb, ${startColor} ${(1 - t) * 100}%, ${gradientMidLow} ${t * 100}%)`;
       } else if (zScore <= 0) {
-        // Between -1 and 0 std dev: interpolate between gradientMidLow (pink-3) and gradientMidHigh (blue-4)
+        // Between -1 and 0 std dev: interpolate between gradientMidLow and gradientMidHigh
         const t = Math.max(0, zScore + 1);
         return `color-mix(in srgb, ${gradientMidLow} ${(1 - t) * 100}%, ${gradientMidHigh} ${t * 100}%)`;
       } else if (zScore <= 1) {
-        // Between 0 and 1 std dev: interpolate between gradientMidHigh (blue-4) and endColor (blue-3)
+        // Between 0 and 1 std dev: interpolate between gradientMidHigh and endColor
         const t = Math.max(0, zScore);
         return `color-mix(in srgb, ${gradientMidHigh} ${(1 - t) * 100}%, ${endColor} ${t * 100}%)`;
       } else {
@@ -227,10 +221,7 @@ function SwedenMap({
                         cursor: "pointer",
                       },
                       hover: {
-                        fill:
-                          value === null
-                            ? "var(--pink-4)"
-                            : getColorByValue(value),
+                        fill: `color-mix(in srgb, ${getColorByValue(value)} 85%, white 20%)`,
                         stroke: "var(--grey)",
                         strokeWidth: 0.4,
                         outline: "none",

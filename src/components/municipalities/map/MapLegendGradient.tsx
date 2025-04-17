@@ -1,4 +1,4 @@
-import { MUNICIPALITY_MAP_COLORS } from "./SwedenMap";
+import { MUNICIPALITY_MAP_COLORS } from "./constants";
 
 export function MapGradientLegend({
   label,
