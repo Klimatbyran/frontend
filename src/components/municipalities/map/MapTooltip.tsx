@@ -21,7 +21,7 @@ export function MapTooltip({
       <div className="space-y-1 mt-2">
         <p className="text-white/70">
           {label}:{" "}
-          <span className="text-[#C6F6D5]">
+          <span className="text-orange-2">
             {value?.toFixed(1)}
             {unit}
           </span>
