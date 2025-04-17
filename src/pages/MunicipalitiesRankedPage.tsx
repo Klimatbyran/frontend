@@ -61,7 +61,7 @@ export function MunicipalitiesRankedPage() {
         className="-ml-4"
       />
 
-      <div className="flex">
+      <div className="flex lg:hidden">
         <ViewModeToggle
           viewMode={showMap ? "map" : "list"}
           modes={["map", "list"]}
@@ -83,9 +83,9 @@ export function MunicipalitiesRankedPage() {
         onDataPointChange={setSelectedKPI}
       />
 
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr,1fr] gap-6">
+      <div className="lg:hidden space-y-6">
         {showMap ? (
-          <div className="relative h-[65vh] lg:h-auto">
+          <div className="relative h-[65vh]">
             <SwedenMap
               geoData={geoData as FeatureCollection}
               municipalityData={municipalities}
@@ -100,6 +100,28 @@ export function MunicipalitiesRankedPage() {
             onMunicipalityClick={handleMunicipalityClick}
           />
         )}
+        <InsightsPanel
+          municipalityData={municipalities}
+          selectedKPI={selectedKPI}
+        />
+      </div>
+
+      <div className="hidden lg:grid grid-cols-1 gap-6">
+        <div className="grid grid-cols-2 gap-6">
+          <div className="relative h-full">
+            <SwedenMap
+              geoData={geoData as FeatureCollection}
+              municipalityData={municipalities}
+              selectedKPI={selectedKPI}
+              onMunicipalityClick={handleMunicipalityClick}
+            />
+          </div>
+          <MunicipalityRankedList
+            municipalityData={municipalities}
+            selectedKPI={selectedKPI}
+            onMunicipalityClick={handleMunicipalityClick}
+          />
+        </div>
         <InsightsPanel
           municipalityData={municipalities}
           selectedKPI={selectedKPI}

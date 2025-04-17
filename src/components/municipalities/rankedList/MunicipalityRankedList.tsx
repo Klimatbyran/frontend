@@ -25,7 +25,7 @@ function MunicipalityRankedList({
 }: RankedListProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = isMobile ? 10 : 14;
+  const itemsPerPage = 10;
 
   const sortedData = [...municipalityData].sort((a, b) => {
     const aValue = a[selectedKPI.key] as number;

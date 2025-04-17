@@ -11,6 +11,7 @@ import { MapGradientLegend } from "./MapLegendGradient";
 import { MapTooltip } from "./MapTooltip";
 import { FeatureCollection } from "geojson";
 import { MUNICIPALITY_MAP_COLORS } from "./constants";
+import { isMobile } from "react-device-detect";
 
 interface MunicipalityKPI {
   label: string;
@@ -38,13 +39,27 @@ function SwedenMap({
   >(null);
   const [hoveredValue, setHoveredValue] = React.useState<number | null>(null);
   const [hoveredRank, setHoveredRank] = React.useState<number | null>(null);
+  const getInitialZoom = () => (isMobile ? 1 : 0.7);
+
   const [position, setPosition] = React.useState<{
     coordinates: [number, number];
     zoom: number;
   }>({
-    coordinates: [17, 63],
-    zoom: 0.8,
+    coordinates: [17, 62],
+    zoom: getInitialZoom(),
   });
+
+  React.useEffect(() => {
+    const handleResize = () => {
+      setPosition((prev) => ({
+        ...prev,
+        zoom: getInitialZoom(),
+      }));
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const values = municipalityData.map((m) => m[selectedKPI.key] as number);
   const minValue = Math.min(...values);

@@ -13,7 +13,7 @@ export function MapGradientLegend({
 }) {
   return (
     <div className="absolute bottom-2 right-2 left-2 md:bottom-4 md:right-4 md:left-auto bg-black/40 backdrop-blur-sm p-2 md:p-4 rounded-2xl">
-      <div className="flex flex-col w-full md:w-auto">
+      <div className="flex flex-col w-1/2 md:w-auto">
         <div className="flex flex-col md:flex-row items-start md:items-center mb-1 space-y-2 md:space-y-0">
           <div className="flex items-center w-full md:w-auto">
             <span className="text-white/50 text-xs mr-2">
