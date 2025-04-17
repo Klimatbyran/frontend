@@ -43,7 +43,7 @@ export const CustomTooltip = ({
 
     return (
       <div
-        className={`${isMobile ? "w-[280px]" : "w-[400px]"} bg-black-1 px-4 py-3 rounded-level-2 `}
+        className={`${isMobile ? "max-w-[280px]" : "max-w-[400px]"} bg-black-1 px-4 py-3 rounded-level-2 `}
       >
         <div className="text-sm font-medium mb-2">
           {label}
