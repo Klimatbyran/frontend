@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useCompanyDetails } from "@/hooks/companies/useCompanyDetails";
 import { CompanyOverview } from "@/components/companies/detail/CompanyOverview";
@@ -8,6 +8,8 @@ import { useTranslation } from "react-i18next";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { createSlug } from "@/lib/utils";
 import { CompanyScope3 } from "@/components/companies/detail/CompanyScope3";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
 
 export function CompanyDetailPage() {
   const { t } = useTranslation();
@@ -16,6 +18,7 @@ export function CompanyDetailPage() {
   // It's either directly from /companies/:id or extracted from /foretag/:slug-:id
   const { company, loading, error } = useCompanyDetails(id!);
   const [selectedYear, setSelectedYear] = useState<string>("latest");
+  const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -166,6 +169,15 @@ export function CompanyDetailPage() {
       </PageSEO>
 
       <div className="space-y-16 max-w-[1400px] mx-auto">
+        <Button
+          variant="ghost"
+          size="sm"
+          className="gap-2"
+          onClick={() => navigate(-1)}
+        >
+          <ArrowLeft className="w-4 h-4" />
+          {t("companyDetailPage.back")}
+        </Button>
         <CompanyOverview
           company={company}
           selectedPeriod={selectedPeriod}
