@@ -168,7 +168,7 @@ export function CompanyDetailPage() {
         )}
       </PageSEO>
 
-      <div className="space-y-16 max-w-[1400px] mx-auto">
+      <div className="space-y-4 max-w-[1400px] mx-auto">
         <Button
           variant="ghost"
           size="sm"
