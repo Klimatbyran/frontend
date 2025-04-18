@@ -172,7 +172,7 @@ export function CompanyDetailPage() {
         <Button
           variant="ghost"
           size="sm"
-          className="gap-2"
+          className="gap-2 px-4"
           onClick={() => navigate(-1)}
         >
           <ArrowLeft className="w-4 h-4" />
