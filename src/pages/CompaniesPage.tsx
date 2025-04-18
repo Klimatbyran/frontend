@@ -35,6 +35,7 @@ import { useTranslation } from "react-i18next";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { cn } from "@/lib/utils";
 import SectorGraphs from "@/components/companies/sectors/SectorGraphs";
+import { useNavigate, useLocation } from "react-router-dom";
 
 type FilterBadge = {
   type: "filter" | "sort";
@@ -235,8 +236,11 @@ export function CompaniesPage() {
   const [filterOpen, setFilterOpen] = useState(false);
   const sortOptions = useSortOptions();
   const sectorNames = useSectorNames();
-  const [viewMode, setViewMode] = useState<"graphs" | "list">("list");
   const [isDevEnvironment, setIsDevEnvironment] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const params = new URLSearchParams(location.search);
+  const view = params.get("view");
 
   const {
     searchQuery,
@@ -254,12 +258,20 @@ export function CompaniesPage() {
     const isDev = hostname.includes("stage.") || hostname.includes("localhost");
 
     setIsDevEnvironment(isDev);
-
-    // If in dev environment, we can default to graphs view
-    if (isDev) {
-      setViewMode("graphs");
-    }
   }, []);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const view = params.get("view");
+
+    if (!view || (view !== "graphs" && view !== "list")) {
+      navigate({ search: "view=graphs" });
+    }
+  }, [location.search]);
+
+  const setQueryParam = (URLparam: string) => {
+    navigate({ search: `view=${URLparam}` });
+  };
 
   const activeFilters: FilterBadge[] = [
     ...sectors.map((sec) => ({
@@ -270,7 +282,7 @@ export function CompaniesPage() {
           : sectorNames[sec as SectorCode] || sec,
       onRemove: () => setSectors((prev) => prev.filter((s) => s !== sec)),
     })),
-    ...(viewMode === "list"
+    ...(view === "list"
       ? [
           {
             type: "sort" as const,
@@ -329,11 +341,9 @@ export function CompaniesPage() {
                 size="sm"
                 className={cn(
                   "h-8 px-3 rounded-none",
-                  viewMode === "graphs"
-                    ? "bg-blue-5/30 text-blue-2"
-                    : "text-grey",
+                  view === "graphs" ? "bg-blue-5/30 text-blue-2" : "text-grey",
                 )}
-                onClick={() => setViewMode("graphs")}
+                onClick={() => setQueryParam("graphs")}
                 title={t("companiesPage.viewModes.graphs")}
               >
                 <BarChart className="w-4 h-4" />
@@ -343,11 +353,9 @@ export function CompaniesPage() {
                 size="sm"
                 className={cn(
                   "h-8 px-3 rounded-none",
-                  viewMode === "list"
-                    ? "bg-blue-5/30 text-blue-2"
-                    : "text-grey",
+                  view === "list" ? "bg-blue-5/30 text-blue-2" : "text-grey",
                 )}
-                onClick={() => setViewMode("list")}
+                onClick={() => setQueryParam("list")}
                 title={t("companiesPage.viewModes.list")}
               >
                 <List className="w-4 h-4" />
@@ -356,7 +364,7 @@ export function CompaniesPage() {
           )}
 
           {/* Search Input - Always show in production, only in list view for dev */}
-          {(!isDevEnvironment || viewMode === "list") && (
+          {(!isDevEnvironment || view === "list") && (
             <Input
               type="text"
               placeholder={t("companiesPage.searchPlaceholder")}
@@ -374,7 +382,7 @@ export function CompaniesPage() {
             setSectors={setSectors}
             sortBy={sortBy}
             setSortBy={setSortBy}
-            viewMode={isDevEnvironment ? viewMode : "list"}
+            viewMode={isDevEnvironment ? view : "list"}
           />
 
           {/* Badges */}
@@ -400,7 +408,7 @@ export function CompaniesPage() {
             {t("companiesPage.tryDifferentCriteria")}
           </p>
         </div>
-      ) : isDevEnvironment && viewMode === "graphs" ? (
+      ) : isDevEnvironment && view === "graphs" ? (
         <SectorGraphs
           companies={companies}
           selectedSectors={
