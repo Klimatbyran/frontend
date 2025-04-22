@@ -724,7 +724,7 @@
         "electricVehiclePerChargePoints": {
           "label": "EVs per Charge Point",
           "description": "Number of electric vehicles per charging point",
-          "detailedDescription": "Number of electric vehicles per charging point per municipality in 2024. Higher numbers are better, as good infrastructure promotes increased electric vehicle adoption",
+          "detailedDescription": "Number of electric vehicles per public charging point, per municipality in 2024. Lower numbers are better, as good infrastructure promotes increased electric vehicle adoption",
           "source": "<0>Power Circle</0>",
           "nullValues": "no charging points"
         },

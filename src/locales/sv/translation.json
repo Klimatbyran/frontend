@@ -731,7 +731,7 @@
         "electricVehiclePerChargePoints": {
           "label": "Elbilar per laddpunkt",
           "description": "Antal elbilar per laddningspunkt",
-          "detailedDescription": "Antal elbilar per laddningspunkt per kommun år 2024. Ju fler desto bättre, god infrastruktur gynnar ökad elbilskonsumtion",
+          "detailedDescription": "Antal elbilar per publik laddningspunkt per kommun år 2024. Ju färre bilar per laddningspunkt desto bättre, god infrastruktur gynnar ökad elbilskonsumtion",
           "source": "<0>Power Circle</0>",
           "nullValues": "saknar laddpunkter"
         },
