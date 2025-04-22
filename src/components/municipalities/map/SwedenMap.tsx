@@ -12,6 +12,7 @@ import { MapTooltip } from "./MapTooltip";
 import { FeatureCollection } from "geojson";
 import { MUNICIPALITY_MAP_COLORS } from "./constants";
 import { isMobile } from "react-device-detect";
+import { t } from "i18next";
 
 interface MunicipalityKPI {
   label: string;
@@ -267,6 +268,9 @@ function SwedenMap({
           label={selectedKPI.label}
           unit={selectedKPI.unit}
           total={municipalityData.length}
+          nullValue={t(
+            `municipalities.list.kpis.${selectedKPI.key}.nullValues`,
+          )}
         />
       )}
 

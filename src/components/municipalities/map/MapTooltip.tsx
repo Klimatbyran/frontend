@@ -7,6 +7,7 @@ export function MapTooltip({
   label,
   unit,
   total,
+  nullValue,
 }: {
   name: string;
   value: number | null;
@@ -14,6 +15,7 @@ export function MapTooltip({
   label: string;
   unit: string;
   total: number;
+  nullValue?: string;
 }) {
   return (
     <div className="absolute top-4 left-4 bg-black/40 backdrop-blur-sm p-4 rounded-2xl">
@@ -22,8 +24,7 @@ export function MapTooltip({
         <p className="text-white/70">
           {label}:{" "}
           <span className="text-orange-2">
-            {value?.toFixed(1)}
-            {unit}
+            {value !== null ? `${value.toFixed(1)}${unit}` : nullValue}
           </span>
         </p>
         <p className="text-white/50 text-sm">
