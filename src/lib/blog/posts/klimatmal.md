@@ -8,7 +8,7 @@ Bakom projektet står forskarnätverket Researchers’ Desk, Världsnaturfonden 
 
 Analysen visar att två partiers klimatmål, Miljöpartiets och Vänsterpartiets, är nära Parisavtalets 1,5-gradersmål. Ytterligare två partier, Centerpartiet och Liberalerna, går längre än Sveriges klimatmål, men når inte lika långt. Kristdemokraterna, Moderaterna, Socialdemokraterna och Sverigedemokraterna har mål i linje med det svenska klimatmålet, men är längre ifrån Parisavtalets 1,5-gradersmål.
 
-![Diagram gällande partiernas utsläppsmål jämfört med Sveriges koldioxidbudget.](/public/images/blogImages/image1-31.webp)
+![Diagram gällande partiernas utsläppsmål jämfört med Sveriges koldioxidbudget.](/images/blogImages/image1-31.webp)
 
 För att vara i linje med Parisavtalets 1,5-gradersmål bör Sverige maximalt släppa ut cirka 170 miljoner ton koldioxid. Det utgör Sveriges andel av den globala utsläppsbudgeten för Parisavtalets 1,5-gradersmål, med hänsyn tagen till avtalets rättviseaspekt, där rika och tidigt industrialiserade länder ska gå före.
 
@@ -28,4 +28,4 @@ Miljöpartiets klimatmål är ”en koldioxidbudget på 180 miljoner ton CO₂�
 
 Inkluderar man partiernas mål för kompletterande åtgärder, där kolinlagring i skog och mark och även bio-CCS (lagring av koldioxid från biobränsle) ingår, så sticker fortfarande Miljöpartiet och Vänsterpartiet ut som mest långtgående, men även Liberalerna utmärker sig, med omfattande mål för bio-CCS.
 
-PM med analysen av partiernas klimatmål i sin helhet finns [här](https://www.klimatkollen.se/path/to/analysis-document.pdf) och en fördjupning om skog och mark finns [här](https://www.klimatkollen.se/path/to/forest-and-land-report.pdf).
+PM med analysen av partiernas klimatmål i sin helhet finns [här](/documents/Carbon_budgets-Analysis_final.pdf) och en fördjupning om skog och mark finns [här](/documents/Klimatkollen_LULUCF_final.pdf).

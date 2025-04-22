@@ -79,8 +79,21 @@ export function Header() {
         },
       ],
     },
-    { path: `${currentLanguage}/about`, label: t("header.about") },
-    { path: `${currentLanguage}/methodology`, label: t("header.methodology") },
+    {
+      label: t("header.products"),
+      path: `${currentLanguage}/products`,
+    },
+    {
+      label: t("header.about"),
+      path: `${currentLanguage}/about`,
+      sublinks: [
+        { label: t("header.aboutUs"), path: `${currentLanguage}/about` },
+        {
+          label: t("header.methodology"),
+          path: `${currentLanguage}/methodology`,
+        },
+      ],
+    },
     {
       path: `${currentLanguage}/articles`,
       label: t("header.insights"),

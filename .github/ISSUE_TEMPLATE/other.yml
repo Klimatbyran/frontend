@@ -1,7 +1,7 @@
 name: 🗒 Other
 description: Basic Template for other issues
 title: "[Other]: "
-labels: ["triage"]
+labels: ["enhancement"]
 body:
   - type: textarea
     id: details

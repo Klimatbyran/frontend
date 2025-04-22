@@ -1,7 +1,7 @@
 name: 🔁 Change Request
 description: Request a change or improvement to an existing feature or workflow.
 title: "[Change Request]: "
-labels: ["change-request"]
+labels: ["enhancement"]
 assignees: []
 body:
   - type: textarea

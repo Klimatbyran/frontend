@@ -1,8 +1,8 @@
 name: 📝 New Blog Post
 description: Submit a new blog post with metadata and content.
 title: "[Blog]: "
-labels: ["blog", "content"]
-assignees: []
+labels: ["blog", "enhancement"]
+assignees: ["kaylawoodbury"]
 body:
   - type: input
     id: id

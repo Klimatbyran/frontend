@@ -1,7 +1,7 @@
 name: ✏️ Copy Update
 description: Request updates to text, labels, or other content in the app or documentation.
 title: "[Copy]: "
-labels: ["copy", "content"]
+labels: ["copy edit"]
 assignees: ["kaylawoodbury"]
 body:
   - type: markdown

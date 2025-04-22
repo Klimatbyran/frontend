@@ -58,12 +58,10 @@ export function CompanyEditInputField({
       {displayAddition === "verification" && <IconCheckbox key={name + "-checkbox"} defaultChecked={verified} checked={currentVerified} name={name + "-checkbox"} onCheckedChange={handleCheckboxChange}/>}
       {displayAddition === "topBracket" && topBracket}
       {displayAddition === "bottomBracket" && bottomBracket}
-
     </div>
   );
 }
 export function CompanyYearHeaderField({ text, reset, id }: { text: string, reset: (year: number) => undefined, id: number}) { 
-
   const handleClick = () => {
     reset(id);
   }

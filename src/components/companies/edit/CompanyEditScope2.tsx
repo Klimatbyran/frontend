@@ -12,8 +12,9 @@ export function CompanyEditScope2({ periods, onInputChange, formData }) {
         headerName
         noHover
         name="Scope 2"
-        fields={periods.map((period) => CompanyEmptyField())}
-      ></CompanyEditRow>
+      >
+      {periods.map((period) => <CompanyEmptyField />)}
+      </CompanyEditRow>
       <CompanyEditRow
         key={"scope-2-mb"}
         name={t("companyEditPage.rowName.marketBased")}

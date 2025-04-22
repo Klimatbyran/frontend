@@ -34,8 +34,9 @@ export function CompanyEditScope3({ periods, onInputChange, formData }) {
         headerName
         noHover
         name="Scope 3"
-        fields={periods.map((_period) => CompanyEmptyField())}
-      ></CompanyEditRow>
+      >
+      {periods.map((period) => <CompanyEmptyField />)}
+      </CompanyEditRow>
 
       {Object.values(categoryMetadata).map(
         (category, index) =>
