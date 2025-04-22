@@ -168,7 +168,6 @@ function SwedenMap({
 
     return (
       <MapGradientLegend
-        label={selectedKPI.label}
         leftValue={leftValue}
         rightValue={rightValue}
         unit={selectedKPI.unit}
