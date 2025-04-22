@@ -122,7 +122,7 @@ export function MunicipalityDetailPage() {
           {t("municipalityDetailPage.seoText.transportText", {
             municipality: municipality.name,
             bikeMeters: municipality.bicycleMetrePerCapita.toFixed(1),
-            evGrowth: (municipality.electricCarChangePercent * 100).toFixed(1),
+            evGrowth: municipality.electricCarChangePercent.toFixed(1),
           })}
         </p>
       </PageSEO>
