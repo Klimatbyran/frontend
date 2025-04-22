@@ -3,7 +3,7 @@ import { socialLinks, partners } from "../../lib/constants/footer";
 import { Text } from "@/components/ui/text";
 import { Trans, useTranslation } from "react-i18next";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function SocialLinks() {
   return (
@@ -83,9 +83,13 @@ export function Footer() {
           <a href="/privacy" className="hover:text-white transition-colors">
             {t("footer.privacyTerms")}
           </a>
-          <a href="/license" className="hover:text-white transition-colors">
+          <Link
+            to="/license"
+            reloadDocument
+            className="hover:text-white transition-colors"
+          >
             {t("footer.internationalLicense")}
-          </a>
+          </Link>
           <a
             href="https://creativecommons.org/licenses/by-sa/4.0/"
             className="hover:text-white transition-colors"

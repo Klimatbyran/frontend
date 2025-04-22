@@ -7,25 +7,25 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { useTranslation } from "react-i18next";
+import { useScreenSize } from "@/hooks/useScreenSize";
 
 interface DataViewSelectorProps {
-  isMobile: boolean;
   dataView: "overview" | "scopes" | "categories";
   setDataView: (value: "overview" | "scopes" | "categories") => void;
   hasScope3Categories: boolean;
 }
 
 export function DataViewSelector({
-  isMobile,
   dataView,
   setDataView,
   hasScope3Categories,
 }: DataViewSelectorProps) {
   const { t } = useTranslation();
+  const screenSize = useScreenSize();
 
   return (
     <div className="w-full max-w-xs">
-      {!isMobile ? (
+      {!screenSize.isMobile ? (
         <Tabs
           value={dataView}
           onValueChange={(value) => setDataView(value as any)}

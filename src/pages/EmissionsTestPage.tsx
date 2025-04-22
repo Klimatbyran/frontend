@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useCompanies } from "@/hooks/companies/useCompanies";
-import { EmissionsHistory } from "@/components/companies/detail/EmissionsHistory";
+import { EmissionsChart } from "@/components/companies/detail/emissions-chart/EmissionsChart";
 import { Text } from "@/components/ui/text";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
@@ -175,7 +175,7 @@ export function EmissionsTestPage() {
       {company ? (
         <div className="space-y-4">
           <Text variant="large">{company.name}</Text>
-          <EmissionsHistory
+          <EmissionsChart
             reportingPeriods={company.reportingPeriods}
             className="bg-transparent p-0"
             features={{
