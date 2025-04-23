@@ -328,6 +328,8 @@
     }
   },
   "companyDetailPage": {
+    "metaTitle": "Company Climate Data",
+    "metaDescription": "Overview of climate impact and sustainability efforts",
     "errorTitle": "Unable to retrieve company information",
     "errorDescription": "Please try again later",
     "notFoundTitle": "Company not found",
@@ -459,6 +461,8 @@
     }
   },
   "municipalityDetailPage": {
+    "metaTitle": "Municipality Climate Data",
+    "metaDescription": "Overview of emissions and transition",
     "loading": "Loading...",
     "error": "Error loading data",
     "noData": "No data available",
