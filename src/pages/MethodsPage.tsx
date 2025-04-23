@@ -34,7 +34,7 @@ export function MethodsPage() {
         canonicalUrl={canonicalUrl}
         structuredData={structuredData}
       />
-      <div className="max-w-[1200px] mx-auto space-y-20">
+      <div className="max-w-[1200px] mx-auto">
         <PageHeader
           title={t("methodsPage.header.title")}
           description={t("methodsPage.header.description")}

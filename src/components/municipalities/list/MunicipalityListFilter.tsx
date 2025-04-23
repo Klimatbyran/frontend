@@ -8,7 +8,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { regions } from "@/lib/constants/regions";
-import { cn } from "@/lib/utils";
 import { t } from "i18next";
 
 type SortOption = "meets_paris" | "name";
@@ -22,7 +21,6 @@ interface MunicipalityFilterProps {
   setSortBy: (sort: SortOption) => void;
   sortDirection: "best" | "worst";
   setSortDirection: (direction: "best" | "worst") => void;
-  isMobile: boolean;
 }
 
 export default function MunicipalityFilter({
@@ -34,15 +32,9 @@ export default function MunicipalityFilter({
   setSortBy,
   sortDirection,
   setSortDirection,
-  isMobile,
 }: MunicipalityFilterProps) {
   return (
-    <div
-      className={cn(
-        isMobile ? "relative" : "sticky top-0 z-10",
-        "bg-black px-4 pt-12 md:pt-16 pb-4 shadow-md",
-      )}
-    >
+    <div className="relative md:sticky md:top-0 md:z-10 bg-black px-4 pt-12 md:pt-16 pb-4 shadow-md">
       {/* Extending background to header */}
       <div className="absolute inset-0 w-full bg-black -z-10" />
 

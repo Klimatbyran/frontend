@@ -4,7 +4,6 @@ import { useMunicipalities } from "@/hooks/useMunicipalities";
 import { MunicipalityList } from "@/components/municipalities/list/MunicipalityList";
 import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { useScreenSize } from "@/hooks/useScreenSize";
 import MunicipalityFilter from "@/components/municipalities/list/MunicipalityListFilter";
 
 type SortOption = "meets_paris" | "name";
@@ -16,13 +15,12 @@ export function MunicipalitiesComparePage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<SortOption>("meets_paris");
   const [sortDirection, setSortDirection] = useState<"best" | "worst">("best");
-  const isMobile = useScreenSize();
 
   if (loading) {
     return (
       <div className="animate-pulse space-y-16">
         <div className="h-12 w-1/3 bg-black-1 rounded" />
-        <div className="grid grid-cols-1 lg:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {[...Array(6)].map((_, i) => (
             <div key={i} className="h-96 bg-black-1 rounded-level-2" />
           ))}
@@ -45,7 +43,7 @@ export function MunicipalitiesComparePage() {
   }
 
   return (
-    <div className="space-y-8">
+    <>
       <PageHeader
         title={t("municipalitiesComparePage.title")}
         description={t("municipalitiesComparePage.description")}
@@ -61,7 +59,6 @@ export function MunicipalitiesComparePage() {
         setSortBy={setSortBy}
         sortDirection={sortDirection}
         setSortDirection={setSortDirection}
-        isMobile={isMobile}
       />
 
       <MunicipalityList
@@ -71,6 +68,6 @@ export function MunicipalitiesComparePage() {
         sortBy={sortBy}
         sortDirection={sortDirection}
       />
-    </div>
+    </>
   );
 }
