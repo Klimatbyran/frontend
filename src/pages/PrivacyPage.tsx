@@ -19,7 +19,7 @@ export function PrivacyPage() {
         <p>{t("privacyPage.seoText")}</p>
       </PageSEO>
 
-      <div className="max-w-[1200px] mx-auto space-y-8">
+      <div className="max-w-[1200px] mx-auto">
         <PageHeader
           title={t("privacyPage.title")}
           description={t("privacyPage.lastUpdated", { date: "2024-04-19" })}
