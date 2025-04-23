@@ -329,7 +329,7 @@
     "errorTitle": "Det gick inte att hämta företagsinformation",
     "errorDescription": "Försök igen senare",
     "notFoundTitle": "Företaget kunde inte hittas",
-    "notFoundDescription": "Kontrollera att företags-ID:t är korrekt",
+    "notFoundDescription": "Kontrollera att företags-ID:t är korrekt"
   },
   "methodsPage": {
     "header": {

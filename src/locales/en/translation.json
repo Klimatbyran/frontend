@@ -331,7 +331,7 @@
     "errorTitle": "Unable to retrieve company information",
     "errorDescription": "Please try again later",
     "notFoundTitle": "Company not found",
-    "notFoundDescription": "Check if the company ID is correct",
+    "notFoundDescription": "Check if the company ID is correct"
   },
   "methodsPage": {
     "header": {
