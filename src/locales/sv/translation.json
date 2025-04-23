@@ -326,7 +326,7 @@
     }
   },
   "companyDetailPage": {
-    "metaTitle": "Företagens klimatdata",
+    "metaTitle": "Data om utsläpp och omställning",
     "metaDescription": "Översikt över klimatpåverkan och hållbarhetsarbete",
     "errorTitle": "Det gick inte att hämta företagsinformation",
     "errorDescription": "Försök igen senare",
@@ -469,8 +469,8 @@
     }
   },
   "municipalityDetailPage": {
-    "metaTitle": "Kommunens klimatdata",
-    "metaDescription": "Klimatdata inklusive utsläpp och klimatplan",
+    "metaTitle": "Data om utsläpp och omställning",
+    "metaDescription": "Översikt över klimatpåverkan och hållbarhetsarbete",
     "loading": "Laddar...",
     "error": "Fel vid inläsning av data",
     "noData": "Ingen data tillgänglig",
