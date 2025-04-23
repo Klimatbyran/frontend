@@ -15,13 +15,12 @@ export function PageHeader({
   className,
 }: PageHeaderProps) {
   return (
-    <div>
-      <div className="absolute inset-0 w-screen bg-black left-0 right-0 -z-10 h-full" />
-      <div className={cn("max-w-[1200px] mx-auto p-4 space-y-2", className)}>
-        <h1 className="text-3xl font-light">{title}</h1>
+    <>
+      <div className={cn("max-w-[1200px] mx-auto p-4 mb-4 md:mb-8", className)}>
+        <h1 className="text-3xl font-light mb-2">{title}</h1>
         {description && <p className="text-sm text-grey">{description}</p>}
-        {children && <div className="flex flex-wrap gap-3">{children}</div>}
+        {children && <div className="flex flex-wrap gap-2">{children}</div>}
       </div>
-    </div>
+    </>
   );
 }

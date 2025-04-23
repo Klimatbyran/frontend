@@ -142,13 +142,13 @@ function ProductsPage() {
         structuredData={structuredData}
       />
 
-      <div className="max-w-[1200px] mx-auto space-y-20">
+      <div className="max-w-[1200px] mx-auto">
         <PageHeader
           title={t("productsPage.title")}
           description={t("productsPage.description")}
         />
 
-        <div className="mx-auto max-w-7xl px-6 lg:px-8 mt-16">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-0 lg:grid-cols-2">
             {/* Premium Version */}
             <ProductCard
