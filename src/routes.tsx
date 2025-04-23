@@ -1,4 +1,4 @@
-import { Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { useEffect } from "react";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { useLanguage } from "./components/LanguageProvider";
@@ -9,16 +9,20 @@ import { BlogDetailPage } from "./pages/BlogDetailPage";
 import { CompanyEditPage } from "./pages/CompanyEditPage";
 import { CompanyDetailPage } from "./pages/CompanyDetailPage";
 import { CompaniesPage } from "./pages/CompaniesPage";
+import DownloadsPage from "./pages/DownloadsPage";
 import { ErrorPage } from "./pages/ErrorPage";
 import { InsightsPage } from "./pages/InsightsPage";
 import { LandingPage } from "./pages/LandingPage";
-import { LearnMorePage } from "./pages/LearnMorePage";
+import { LearnMoreOverview } from "./pages/LearnMoreOverview";
+import { LearnMoreArticle } from "./pages/LearnMoreArticle";
 import { MethodsPage } from "./pages/MethodsPage";
-import { MunicipalitiesPage } from "./pages/MunicipalitiesPage";
+import { MunicipalitiesRankedPage } from "./pages/MunicipalitiesRankedPage";
+import { MunicipalitiesComparePage } from "./pages/MunicipalitiesComparePage";
 import { MunicipalityDetailPage } from "./pages/MunicipalityDetailPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { ReportsPage } from "./pages/ReportsPage";
 import { PrivacyPage } from "./pages/PrivacyPage";
+import ProductsPage from "./pages/ProductsPage";
 import { UnauthorizedErrorPage } from "./pages/error/UnauthorizedErrorPage";
 
 export function AppRoutes() {
@@ -51,12 +55,10 @@ export function AppRoutes() {
         path={`${basePath}/companies/:id/:slug`}
         element={<CompanyDetailPage />}
       />
-
       <Route
         path={`${basePath}/foretag/:slug-:id`}
         element={<CompanyDetailPage />}
       />
-
       <Route element={<ProtectedRoute />}>
         <Route
           path={`${basePath}/companies/:id/edit`}
@@ -67,7 +69,11 @@ export function AppRoutes() {
       {/* Municipalities routes */}
       <Route
         path={`${basePath}/municipalities`}
-        element={<MunicipalitiesPage />}
+        element={<MunicipalitiesRankedPage />}
+      />
+      <Route
+        path={`${basePath}/municipalities/compare`}
+        element={<MunicipalitiesComparePage />}
       />
       <Route
         path={`${basePath}/municipalities/:id`}
@@ -80,8 +86,17 @@ export function AppRoutes() {
       <Route path={`${basePath}/articles`} element={<InsightsPage />} />
       <Route path={`${basePath}/reports`} element={<ReportsPage />} />
       <Route path={`${basePath}/insights/:id`} element={<BlogDetailPage />} />
-      <Route path={`${basePath}/learn-more`} element={<LearnMorePage />} />
+      <Route path={`${basePath}/learn-more`} element={<LearnMoreOverview />} />
+      <Route
+        path={`${basePath}/learn-more/:id`}
+        element={<LearnMoreArticle />}
+      />
       <Route path={`${basePath}/privacy`} element={<PrivacyPage />} />
+      <Route path={`${basePath}/products`} element={<ProductsPage />} />
+      <Route
+        path={`${basePath}/products/database-download-2025`}
+        element={<DownloadsPage />}
+      />
 
       {/* Error pages */}
       <Route path={`${basePath}/error/:code`} element={<ErrorPage />} />

@@ -5,14 +5,19 @@
   "header": {
     "companies": "Företag",
     "municipalities": "Kommuner",
-    "about": "Om oss",
+    "municipalitiesRanked": "Rankings",
+    "municipalitiesCompare": "Jämför",
+    "about": "Om",
+    "aboutUs": "Om oss",
+    "products": "Produkter",
     "insights": "Insikter",
     "methodology": "Källor och metod",
     "newsletter": "Nyhetsbrev",
     "openMenu": "Öppna meny",
     "closeMenu": "Stäng meny",
     "articles": "Artiklar",
-    "reports": "Rapporter"
+    "reports": "Rapporter",
+    "learnMore": "Läs mer"
   },
   "footer": {
     "login": "Logga in",
@@ -116,10 +121,101 @@
       "utslappsberakningText": "Beräkning av hur utsläppen skulle minska eller öka med partiernas politik"
     }
   },
+  "productsPage": {
+    "title": "Få tillgång till klimatdata",
+    "description": "Få tillgång till Klimatkollens klimatdatabas, innehållande företagens utsläpp, hållbarhetsrapporter och kommunens klimatdata via vårt API.",
+    "viewDocumentation": "Visa API-dokumentation →",
+    "apiAccess": {
+      "title": "Direkt API-åtkomst",
+      "description": "Direktåtkomst i realtid till vår klimatdatabas via vårt dokumenterade REST API och endpoints.",
+      "realtime": "Realtidsdataåtkomst",
+      "documentation": "Fullständig API-dokumentation",
+      "secure": "Säkra API-endpoints",
+      "support": "Prioriterat stöd",
+      "contactPricing": "Kontakta för priser",
+      "viewDocs": "Visa API-dokumentation"
+    },
+    "freeAccess": {
+      "title": "Gratis databasåtkomst",
+      "description": "Få tillgång till vår kompletta klimatdatabas genom bi-årliga datadumpningar, perfekt för forskning och analys.",
+      "export": "Databasexport var 6:e månad",
+      "data": "Företag och kommuners klimatdata",
+      "license": "Gratis att använda för både kommersiellt och icke-kommersiellt bruk",
+      "requestAccess": "Hämta data"
+    },
+    "dataOverview": {
+      "title": "Tillgänglig data",
+      "corporate": {
+        "title": "Företagens klimatdata",
+        "description": "Tillgång till detaljerad utsläppdata från svenska företag, inklusive scope 1, 2 och 3 utsläpp, samt värdekedjauppgifter."
+      },
+      "reports": {
+        "title": "Hållbarhetsrapporter",
+        "description": "Tillgång till hållbarhetsrapporter från svenska företag, inklusive årsredovisningar och hållbarhetsrapporter."
+      },
+      "municipality": {
+        "title": "Kommunens klimatdata",
+        "description": "Tillgång till klimatdata från svenska kommuner, inklusive emissionsdata, klimatplaner och klimatåtgärder."
+      }
+    },
+    "requestAccess": {
+      "title": "Begär åtkomst",
+      "description": "Begär åtkomst till Klimatkollens API för att få realtidsåtkomst till vår klimatdatabas via vår dokumenterade REST API och endpoints.",
+      "emailLabel": "E-post",
+      "reasonLabel": "Anledning till datatillgång",
+      "submit": "Begär åtkomst",
+      "cancel": "Avbryt",
+      "successMessage": "Begäran skickades",
+      "errorMessage": "Kunde inte skicka begäran",
+      "reasonWork": "Arbete",
+      "reasonHobby": "Hobby",
+      "reasonCuriosity": "Nyfikenhet",
+      "errorGeneric": "Ett fel uppstod. Vänligen försök igen senare."
+    }
+  },
+  "downloadsPage": {
+    "title": "Ladda ner databasen",
+    "description": "Få tillgång till vår klimatdatabas. Ladda ner utsläppsdata för företag eller kommuner i det format du föredrar.",
+    "csvFormat": "CSV-format",
+    "csvDescription": "Ladda ner databasen som en CSV-fil, perfekt för användning i Python, R, Excel eller Google Kalkylark. Alla fält är kommaseparerade.",
+    "excelFormat": "Excel-format",
+    "excelDescription": "Ladda ner databasen i Excel-format (XLSX), perfekt för analys i Microsoft Excel eller Google Kalkylark. Alla fält behåller sin kalkylbladsstruktur.",
+    "jsonFormat": "JSON-format",
+    "jsonDescription": "Ladda ner databasen i JSON-format, perfekt för utvecklare och dataanalys i verktyg som Python eller R. Strukturerad för enkel tolkning och programmatisk åtkomst.",
+    "selectType": "Välj datatyp",
+    "companies": "Företag",
+    "municipalities": "Kommuner",
+    "selectYear": "Välj år",
+    "allYears": "Alla år",
+    "download": "Ladda ner",
+    "downloadError": "Kunde inte ladda ner filen. Vänligen försök igen.",
+    "downloadInformation": "Nedladdningsinformation",
+    "dataStructure": "Datastruktur",
+    "dataStructureDescription": "Alla nedladdningsformat innehåller samma databasstruktur med konsekventa fältnamn och datatyper. Varje format inkluderar en datadictionary som förklarar fält och deras betydelse.",
+    "fileSizeAndFormat": "Filstorlek och format",
+    "fileSizeAndFormatDescription": {
+      "csv": "CSV: UTF-8-kodad med kommaseparerade värden. Det här är det minsta formatet och öppnas snabbt i de flesta kalkylprogram. Perfekt för generell analys och kompatibelt med Excel, Google Kalkylark, Python och R.",
+      "excel": "Excel: XLSX-format med flera kalkylblad. Något större än CSV på grund av inbyggd formatering. Bäst för användare som vill ha ett färdigstrukturerat kalkylblad direkt i Excel eller Google Kalkylark.",
+      "json": "JSON: UTF-8-kodad strukturerad data. Brukar vara det största formatet eftersom det innehåller detaljerad nyckel-värde-struktur. Bäst lämpat för utvecklare eller analytiker som arbetar med kod, API:er eller automatisering i till exempel Python eller JavaScript."
+    },
+    "usageLicense": "Användningslicens",
+    "usageLicenseDescription": "Den nedladdade datan är licensierad under Creative Commons Erkännande 4.0 Internationell (CC BY 4.0). Du får använda, ändra och dela datan för både kommersiella och icke-kommersiella syften, så länge du anger Klimatkollen som källa och länkar till licensen.",
+    "loading": "Laddar...",
+    "downloadCompanies": "Ladda ner företagsdata",
+    "downloadMunicipalities": "Ladda ner kommundata"
+  },
   "insightsPage": {
     "title": "Artiklar",
     "description": "Artiklar och uppdateringar om Klimatkollen och klimatomställningen.",
     "readMore": "Läs mer"
+  },
+  "learnMoreOverview": {
+    "title": "Lär dig mer",
+    "description": "Hitta sidor nedan för att lära dig mer om klimatåtgärder och klimatdata.",
+    "reporting": {
+      "title": "Förstå klimatrapportering",
+      "excerpt": "Lär dig om betydelsen av klimatrapportering, dess påverkan på företag och samhällen, och hur det driver klimatåtgärder."
+    }
   },
   "reportsPage": {
     "title": "Rapporter",
@@ -336,7 +432,13 @@
       }
     }
   },
-  "municipalitiesPage": {
+  "municipalitiesRankedPage": {
+    "errorTitle": "Det gick inte att hämta kommuninformation",
+    "errorDescription": "Försök igen senare",
+    "title": "Kommunrankings",
+    "description": "Översikt över klimatpåverkan och omställning i kommunerna"
+  },
+  "municipalitiesComparePage": {
     "errorTitle": "Det gick inte att hämta kommuninformation",
     "errorDescription": "Försök igen senare",
     "title": "Kommunrapporter",
@@ -396,7 +498,7 @@
     "sustainableTransport": "Hållbar transport",
     "electricCarChange": "Ökning av andel elbilar",
     "electricCarsPerChargePoint": "Elbilar per laddpunkt",
-    "noChargePoints": "Inga laddpunkter",
+    "noChargePoints": "Saknar laddpunkter",
     "bicycleMetrePerCapita": "Cykelvägsmeter per invånare"
   },
   "sector": {
@@ -684,6 +786,89 @@
       "paris": "Parisavtalet",
       "total": "Totalt",
       "year": "År"
+    },
+    "map": {
+      "legend": {
+        "null": "Saknar data"
+      }
+    },
+    "list": {
+      "source": "Källa:",
+      "dataSelector": {
+        "label": "Välj datapunkt",
+        "tooltips": {
+          "higherBetter": "Högre värden är bättre",
+          "lowerBetter": "Lägre värden är bättre"
+        }
+      },
+      "kpis": {
+        "historicalEmissionChangePercent": {
+          "label": "Historisk utsläppsförändring",
+          "description": "Historisk förändring av utsläpp",
+          "detailedDescription": "Genomsnittlig årlig förändring av koldioxidutsläppen i Sveriges kommuner sedan Parisavtalet 2015",
+          "source": "<0>Nationella emissionsdatabasen</0>"
+        },
+        "neededEmissionChangePercent": {
+          "label": "Nödvändig utsläppsminskning",
+          "description": "Nödvändig minskning av utsläpp för att nå klimatmålen",
+          "detailedDescription": "Den utsläppsminskning som krävs för att nå Parisavtalet. Ju lägre desto bättre",
+          "source": "<0>Nationella emissionsdatabasen</0>, <1>Uppsala universitet</1>",
+          "nullValues": "kan inte nå Parisavtalet"
+        },
+        "electricCarChangePercent": {
+          "label": "Tillväxt av elbilar",
+          "description": "Förändring i andel elbilar",
+          "detailedDescription": "Ökningstakten i kommunerna för andel nyregistrerade laddbara bilar 2015–2022, angivet i procentenheter per år",
+          "source": "<0>Trafikanalys</0>"
+        },
+        "totalConsumptionEmission": {
+          "label": "Totala konsumtionsutsläpp",
+          "description": "Totala utsläpp från konsumtion",
+          "detailedDescription": "Hushållens konsumtionsutsläpp (CO₂e) i ton per invånare och kommun år 2019. År 2050 ska utsläppen vara högst 1 ton per person och år för att ligga i linje med Parisavtalet",
+          "source": "<0>Stockholm Environment Institute</0>"
+        },
+        "electricVehiclePerChargePoints": {
+          "label": "Elbilar per laddpunkt",
+          "description": "Antal elbilar per laddningspunkt",
+          "detailedDescription": "Antal elbilar per publik laddningspunkt per kommun år 2024. Ju färre bilar per laddningspunkt desto bättre, god infrastruktur gynnar ökad elbilskonsumtion",
+          "source": "<0>Power Circle</0>",
+          "nullValues": "saknar laddpunkter"
+        },
+        "bicycleMetrePerCapita": {
+          "label": "Cykelinfrastruktur",
+          "description": "Meter cykelväg per invånare",
+          "detailedDescription": "Antal meter cykelväg per invånare per kommun år 2023. Ju längre desto bättre, god infrastruktur gynnar ökad cykling",
+          "source": "<0>Nationella Vägdatabasen</0>, <1>Trafikverket</1>"
+        }
+      },
+      "insights": {
+        "noData": {
+          "municipality": "Ingen kommundata tillgänglig",
+          "metric": "Ingen data tillgänglig för {{metric}}"
+        },
+        "keyStatistics": {
+          "average": "Genomsnitt:",
+          "distributionAbove": "kommuner över genomsnittet,",
+          "distributionBelow": "stycken under"
+        },
+        "topPerformers": {
+          "titleBest": "Bästa kommuner",
+          "titleTop": "Toppresterande kommuner"
+        },
+        "improvement": {
+          "title": "Sämsta kommuner"
+        }
+      },
+      "viewToggle": {
+        "showList": "Visa lista",
+        "showMap": "Visa karta"
+      },
+      "rankedList": {
+        "search": {
+          "placeholder": "Sök kommuner..."
+        },
+        "rank": "Placering: {{rank}} av {{total}}"
+      }
     }
   },
   "errorPage": {

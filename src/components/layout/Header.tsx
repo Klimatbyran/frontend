@@ -68,15 +68,39 @@ export function Header() {
       label: t("header.municipalities"),
       icon: <BarChart3 className="w-4 h-4" aria-hidden="true" />,
       path: `${currentLanguage}/municipalities`,
+      sublinks: [
+        {
+          label: t("header.municipalitiesRanked"),
+          path: `${currentLanguage}/municipalities`,
+        },
+        {
+          label: t("header.municipalitiesCompare"),
+          path: `${currentLanguage}/municipalities/compare`,
+        },
+      ],
     },
-    { path: `${currentLanguage}/about`, label: t("header.about") },
-    { path: `${currentLanguage}/methodology`, label: t("header.methodology") },
+    {
+      label: t("header.products"),
+      path: `${currentLanguage}/products`,
+    },
+    {
+      label: t("header.about"),
+      path: `${currentLanguage}/about`,
+      sublinks: [
+        { label: t("header.aboutUs"), path: `${currentLanguage}/about` },
+        {
+          label: t("header.methodology"),
+          path: `${currentLanguage}/methodology`,
+        },
+      ],
+    },
     {
       path: `${currentLanguage}/articles`,
       label: t("header.insights"),
       sublinks: [
         { label: t("header.articles"), path: `${currentLanguage}/articles` },
         { label: t("header.reports"), path: `${currentLanguage}/reports` },
+        { label: t("header.learnMore"), path: `${currentLanguage}/learn-more` },
       ],
     },
   ];

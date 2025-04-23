@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useCompanies } from "@/hooks/companies/useCompanies";
-import { EmissionsHistory } from "@/components/companies/detail/EmissionsHistory";
+import { EmissionsHistory } from "@/components/companies/detail/history/EmissionsHistory";
 import { Text } from "@/components/ui/text";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";

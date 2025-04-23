@@ -52,7 +52,9 @@ export default function MunicipalityFilter({
           <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-grey w-4 h-4" />
           <Input
             type="text"
-            placeholder={t("municipalitiesPage.filter.searchPlaceholder")}
+            placeholder={t(
+              "municipalitiesComparePage.filter.searchPlaceholder",
+            )}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-8 py-1 h-10 bg-black-1 border-none text-sm w-full"
@@ -63,12 +65,12 @@ export default function MunicipalityFilter({
         <Select value={selectedRegion} onValueChange={setSelectedRegion}>
           <SelectTrigger className="w-full md:w-[250px] h-10 bg-black-1">
             <SelectValue
-              placeholder={t("municipalitiesPage.filter.selectRegion")}
+              placeholder={t("municipalitiesComparePage.filter.selectRegion")}
             />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">
-              {t("municipalitiesPage.filter.allRegions")}
+              {t("municipalitiesComparePage.filter.allRegions")}
             </SelectItem>
             {Object.keys(regions).map((region) => (
               <SelectItem key={region} value={region}>
@@ -85,15 +87,15 @@ export default function MunicipalityFilter({
         >
           <SelectTrigger className="w-full md:w-[250px] h-10 bg-black-1">
             <SelectValue
-              placeholder={t("municipalitiesPage.sort.placeholder")}
+              placeholder={t("municipalitiesComparePage.sort.placeholder")}
             />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="meets_paris">
-              {t("municipalitiesPage.sort.meetsParis")}
+              {t("municipalitiesComparePage.sort.meetsParis")}
             </SelectItem>
             <SelectItem value="name">
-              {t("municipalitiesPage.sort.name")}
+              {t("municipalitiesComparePage.sort.name")}
             </SelectItem>
           </SelectContent>
         </Select>
@@ -107,11 +109,11 @@ export default function MunicipalityFilter({
         >
           {sortBy === "name"
             ? sortDirection === "best"
-              ? t("municipalitiesPage.sort.aToZ")
-              : t("municipalitiesPage.sort.zToA")
+              ? t("municipalitiesComparePage.sort.aToZ")
+              : t("municipalitiesComparePage.sort.zToA")
             : sortDirection === "best"
-              ? t("municipalitiesPage.sort.bestFirst")
-              : t("municipalitiesPage.sort.worstFirst")}
+              ? t("municipalitiesComparePage.sort.bestFirst")
+              : t("municipalitiesComparePage.sort.worstFirst")}
         </button>
       </div>
     </div>

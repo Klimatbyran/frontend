@@ -15,32 +15,26 @@ const timeout = typeof window === "undefined" ? 10000 : undefined;
 
 const { GET, POST } = createClient<paths>({
   baseUrl,
-  fetch: (url, init) => {
-    // Add timeout for Node.js environment
+  fetch: (request: Request) => {
     if (typeof window === "undefined" && timeout) {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), timeout);
-
-      return fetch(url, {
-        ...init,
+      return fetch(request.url, {
+        ...request,
         signal: controller.signal,
       }).finally(() => clearTimeout(timeoutId));
     }
-
-    return fetch(url, init);
+    return fetch(request);
   },
 });
 
 // Auth API
 export async function authenticateWithGithub(code: string) {
   const { data, error } = await client.POST("/auth/github", {
-    body: {
-      code,
-    },
+    body: { code } as any,
   });
 
   if (error) throw error;
-
   return data;
 }
 
@@ -103,4 +97,43 @@ export async function updateReportingPeriods(wikidataId: string, body) {
   );
   if (error) throw error;
   return data;
+}
+
+export async function downloadCompanies(
+  format: "csv" | "json" | "xlsx",
+  year?: string
+) {
+  const response = await fetch(
+    `${baseUrl}/companies/export/?type=${format}${year ? `&year=${year}` : ""}`
+  );
+  if (!response.ok) throw new Error("Failed to download");
+  return response.blob();
+}
+
+export async function downloadMunicipalities(format: "csv" | "json" | "xlsx") {
+  const response = await fetch(
+    `${baseUrl}/municipalities/export/?type=${
+      format === "xlsx" ? "csv" : format
+    }`
+  );
+  if (!response.ok) throw new Error("Failed to download");
+  return response.text();
+}
+
+let reportingYearsCache: string[] | null = null;
+
+export async function getReportingYears(): Promise<string[]> {
+  if (reportingYearsCache) {
+    return reportingYearsCache;
+  }
+
+  try {
+    const { data, error } = await GET("/reporting-period/years", {});
+    if (error) throw error;
+    reportingYearsCache = data || [];
+    return reportingYearsCache;
+  } catch (error) {
+    console.error("Error fetching reporting years:", error);
+    return [];
+  }
 }
