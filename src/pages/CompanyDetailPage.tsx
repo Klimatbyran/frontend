@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useCompanyDetails } from "@/hooks/companies/useCompanyDetails";
 import { CompanyOverview } from "@/components/companies/detail/CompanyOverview";
