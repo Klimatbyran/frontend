@@ -54,7 +54,7 @@ export function MunicipalitiesRankedPage() {
   }
 
   return (
-    <div className="space-y-4 md:space-y-8">
+    <>
       <PageHeader
         title={t("municipalitiesRankedPage.title")}
         description={t("municipalitiesRankedPage.description")}
@@ -127,6 +127,6 @@ export function MunicipalitiesRankedPage() {
           selectedKPI={selectedKPI}
         />
       </div>
-    </div>
+    </>
   );
 }
