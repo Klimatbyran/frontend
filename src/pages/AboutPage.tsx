@@ -48,8 +48,8 @@ export function AboutPage() {
         />
         <Accordion type="single" collapsible className="space-y-6">
           {/* Main Content */}
-          <div className="bg-black-2 rounded-level-1 p-8 sm:p-4">
-            <div className="flex flex-col md:flex-row items-start justify-between mb-12">
+          <div className="bg-black-2 rounded-level-1 p-4 md:p-8">
+            <div className="flex flex-col md:flex-row items-start justify-between">
               <div className="space-y-4 w-full">
                 {/* Header */}
                 <div className="flex flex-wrap items-center gap-4">
@@ -61,7 +61,7 @@ export function AboutPage() {
                   </Text>
                 </div>
 
-                <div className="flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-6">
+                <div className="flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-4">
                   <img
                     className="w-48 md:w-64 lg:w-80 max-h-48 object-contain flex-shrink-0"
                     src={"./images/social-picture.png"}
