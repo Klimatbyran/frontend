@@ -26,7 +26,7 @@ function DownloadsPage() {
 
   const handleSelectionChange = (
     type: "companies" | "municipalities",
-    year: string | null
+    year: string | null,
   ) => {
     setSelectedType(type);
     setSelectedYear(year || "");
@@ -54,7 +54,7 @@ function DownloadsPage() {
   ];
 
   return (
-    <div className="max-w-[1200px] mx-auto space-y-20">
+    <div className="max-w-[1200px] mx-auto">
       <PageHeader
         title={t("downloadsPage.title")}
         description={t("downloadsPage.description")}

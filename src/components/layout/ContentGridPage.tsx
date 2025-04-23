@@ -1,7 +1,6 @@
 import { PageHeader } from "@/components/layout/PageHeader";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { useEffect } from "react";
-import { useTranslation } from "react-i18next";
 
 interface ContentItem {
   id: string;
@@ -31,8 +30,6 @@ export function ContentGridPage({
   renderCard,
   structuredData,
 }: ContentGridPageProps) {
-  const { t } = useTranslation();
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
