@@ -1,4 +1,4 @@
-import { BarChart3, ChevronDown, Menu, X, Mail } from "lucide-react";
+import { BarChart3, ChevronDown, Menu, X, Mail, Globe } from "lucide-react";
 import { Link, useLocation, matchPath } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useState, useCallback, useEffect } from "react";
@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/menubar";
 import { NewsletterPopover } from "../NewsletterPopover";
 import { useLanguage } from "../LanguageProvider";
+import { LanguageMenu } from "../ui/LanguageMenu";
 
 export function Header() {
   const { t } = useTranslation();
@@ -30,25 +31,36 @@ export function Header() {
   }, [location]);
 
   const LanguageButtons = ({ className }: { className?: string }) => (
-    <div className={cn("flex items-center gap-2", className)}>
-      <button
-        onClick={() => changeLanguage("en")}
-        className={cn(
-          currentLanguage === "en" && "bg-black-1 rounded-full px-1",
-        )}
-      >
-        🇬🇧
-      </button>
-      <span className="text-grey">|</span>
-      <button
-        onClick={() => changeLanguage("sv")}
-        className={cn(
-          currentLanguage === "sv" && "bg-black-1 rounded-full px-1",
-        )}
-      >
-        🇸🇪
-      </button>
-    </div>
+    <>
+      <MenubarMenu key={'langauge-switch-english'}>
+        <MenubarTrigger
+          className={cn(
+            "flex items-center px-3 py-3 h-full transition-all text-sm text-grey me-1 max-lg:me-1",
+            className
+          )}
+        >
+          <Globe className="w-4 h-4 me-1" />
+          <span>{currentLanguage}</span>
+          <ChevronDown className="w-4 h-4" />
+        </MenubarTrigger>
+        <MenubarContent>
+            <MenubarItem key={'language-switch-english'}>
+              <button
+                onClick={() => changeLanguage("en")}
+              >
+                English
+              </button>
+            </MenubarItem>
+            <MenubarItem key={'language-switch-swedish'}>
+              <button
+                onClick={() => changeLanguage("sv")}
+              >
+                Swedish
+              </button>
+            </MenubarItem>
+        </MenubarContent>
+      </MenubarMenu>
+    </>
   );
 
   interface NavLink {
@@ -108,17 +120,23 @@ export function Header() {
   return (
     <header className="fixed w-screen overflow-x-hidden overflow-y-hidden top-0 left-0 right-0 z-50 bg-black-2 h-10 lg:h-12">
       <div className="container mx-auto px-4 flex items-center justify-between pt-2 lg:pt-0">
-        <Link to="/" className="flex items-center gap-2 text-base font-medium">
+        <Link to="/" className="flex px-3 py-3 items-center gap-2 text-base font-medium max-lg:p-0">
           Klimatkollen
         </Link>
-
+        <div className="lg:hidden flex">
+        {menuOpen &&
+        <Menubar className="border-none bg-transparent p-0">                
+          <LanguageButtons className="text-white"/>
+        </Menubar>
+        }
         <button
-          className="lg:hidden text-white"
+          className="text-white"
           onClick={toggleMenu}
           aria-label={menuOpen ? "Close menu" : "Open menu"}
         >
           {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
+        </button>        
+        </div>
 
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center gap-6 ml-auto">
@@ -172,8 +190,8 @@ export function Header() {
                 </Link>
               ),
             )}
-            <div className="ml-4 h-full flex items-center">
-              <LanguageButtons className={"hidden md:flex mx-4 "} />
+            <LanguageButtons className="hover:text-white h-full"/>
+            <div className="ml-4 h-full flex items-center">              
               <NewsletterPopover
                 isOpen={isSignUpOpen}
                 onOpenChange={setIsSignUpOpen}
@@ -187,7 +205,6 @@ export function Header() {
         {menuOpen && (
           <div className="fixed inset-0 w-full h-full z-100 flex p-8 mt-10 bg-black-2">
             <div className="flex flex-col gap-6 text-lg">
-              <LanguageButtons />
               {NAV_LINKS.map((link) => (
                 <div key={link.path} className="flex flex-col">
                   <Link
@@ -213,7 +230,7 @@ export function Header() {
                     </div>
                   )}
                 </div>
-              ))}
+              ))}              
               {/* Newsletter button in mobile menu */}
               <button
                 onClick={() => {
