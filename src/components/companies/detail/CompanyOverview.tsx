@@ -34,6 +34,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Info } from "lucide-react";
+import { useHelpSystem } from "@/help-system/HelpSystem";
 
 interface CompanyOverviewProps {
   company: CompanyDetails;
@@ -57,6 +58,8 @@ export function CompanyOverview({
   const navigate = useNavigate();
   const sectorNames = useSectorNames();
   const { currentLanguage } = useLanguage();
+
+  const { openHelp } = useHelpSystem();
 
   const periodYear = new Date(selectedPeriod.endDate).getFullYear();
 
@@ -96,6 +99,16 @@ export function CompanyOverview({
           <div className="flex items-center gap-4">
             <Text className=" text-4xl lg:text-6xl">{company.name}</Text>
             <div className="flex flex-col h-full justify-around">
+              <Button
+                variant="outline"
+                size="sm"
+                className="gap-2 mt-2"
+                onClick={() =>
+                  openHelp("Company Overview Help", ["tco2e", "sector"])
+                }
+              >
+                Help
+              </Button>
               {token && (
                 <Button
                   variant="outline"

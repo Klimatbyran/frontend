@@ -1,10 +1,13 @@
 import { ToastProvider } from "./contexts/ToastContext";
+import { HelpSystemProvider } from "./help-system/HelpSystem";
 import { AppRoutes } from "./routes";
 
 function App() {
   return (
     <ToastProvider>
-      <AppRoutes />
+      <HelpSystemProvider>
+        <AppRoutes />
+      </HelpSystemProvider>
     </ToastProvider>
   );
 }
