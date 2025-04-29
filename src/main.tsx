@@ -11,6 +11,7 @@ import App from "./App";
 // Import pages and components
 import { Layout } from "./components/layout/Layout";
 import { LanguageProvider } from "./components/LanguageProvider";
+import { HelpSystemProvider } from "./help-system/HelpSystem";
 
 // Create router with all routes
 const router = createBrowserRouter([
@@ -19,9 +20,11 @@ const router = createBrowserRouter([
     element: (
       <AuthProvider>
         <LanguageProvider>
-          <Layout>
-            <App />
-          </Layout>
+          <HelpSystemProvider>
+            <Layout>
+              <App />
+            </Layout>
+          </HelpSystemProvider>
         </LanguageProvider>
       </AuthProvider>
     ),

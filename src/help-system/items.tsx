@@ -1,4 +1,6 @@
 import { useTranslation } from "react-i18next";
+import Markdown from "react-markdown";
+import remarkBreaks from "remark-breaks";
 
 const SectorHelp = () => (
   <p>
@@ -44,6 +46,25 @@ const createTextHelpItem = (textKey: string) => () => {
   return <p>{t(textKey)}</p>;
 };
 
+const createMarkdownHelpItem = (textKey: string) => () => {
+  const { t } = useTranslation();
+
+  return (
+    <Markdown
+      remarkPlugins={[remarkBreaks]}
+      components={{
+        ol: ({ node, children, ...props }) => (
+          <ol {...props} className="list-decimal list-inside mt-4">
+            {children}
+          </ol>
+        ),
+      }}
+    >
+      {t(textKey)}
+    </Markdown>
+  );
+};
+
 type HelpItemWithId<K> = {
   id: K;
   title: string;
@@ -81,7 +102,15 @@ export const helpItems = defineHelpItems({
   scopes: {
     id: "scopes",
     title: "Scopes",
-    component: ScopesHelp,
+    component: createMarkdownHelpItem(
+      `
+GHG-protokollet, i EU-direktivet Corporate Sustainability Reporting Directive, är den etablerade standarden för rapportering av växthusgasutsläpp.
+    
+Dessa utsläpp delas upp i tre scope:
+1. **Scope 1** – direkta utsläpp från den egna verksamheten
+2. **Scope 2** – indirekta utsläpp från inköpt energi
+3. **Scope 3** – alla utsläpp i värdekedjan, som i sin tur delas upp i 15 kategorier`,
+    ),
   },
 });
 
