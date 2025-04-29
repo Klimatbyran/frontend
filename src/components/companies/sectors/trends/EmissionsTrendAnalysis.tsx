@@ -18,12 +18,16 @@ const EmissionsTrendAnalysis: React.FC<EmissionsTrendAnalysisProps> = ({
     "decreasing" | "increasing" | "noComparable" | null
   >(null);
   const trends = useTrendAnalysis(companies, selectedSectors);
-  const isMobile = useScreenSize();
+  const screenSize = useScreenSize();
   const { t } = useTranslation();
 
   return (
     <div className="mt-12 space-y-6">
-      <div className={`flex ${isMobile ? "flex-col" : "items-center"} gap-2`}>
+      <div
+        className={`flex ${
+          screenSize.isMobile ? "flex-col" : "items-center"
+        } gap-2`}
+      >
         <h2 className="text-xl font-light text-white">
           {t("companiesPage.sectorGraphs.emissionsTrendAnalysis")}
         </h2>

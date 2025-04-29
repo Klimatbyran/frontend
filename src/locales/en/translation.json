@@ -6,7 +6,7 @@
     "companies": "Companies",
     "municipalities": "Municipalities",
     "municipalitiesRanked": "Ranked",
-    "municipalitiesCompare": "Comapre",
+    "municipalitiesCompare": "Compare",
     "about": "About",
     "aboutUs": "About Us",
     "products": "Products",
@@ -50,15 +50,15 @@
     },
     "typewriter": {
       "company": {
-        "reduceEmissions": "reducing emissions",
-        "scope3Emissions": "scope 3 emissions",
-        "meetParisAgreement": "meeting the Paris Agreement"
+        "reduceEmissions": "reducing emissions?",
+        "scope3Emissions": "scope 3 emissions?",
+        "meetParisAgreement": "meeting the Paris Agreement?"
       },
       "municipality": {
-        "reduceEmissions": "reducing emissions",
-        "meetParisAgreement": "meeting the Paris Agreement",
-        "climateActions": "the climate action",
-        "climatePlans": "the climate plans"
+        "reduceEmissions": "reducing emissions?",
+        "meetParisAgreement": "meeting the Paris Agreement?",
+        "climateActions": "the climate action?",
+        "climatePlans": "the climate plans?"
       }
     },
     "title": "How is it going with",
@@ -107,7 +107,8 @@
       "paragraph3": "Much of our work relies on voluntary efforts, and we welcome new partners and financial support to help us scale up!",
       "donate": "Would you like to support our work?",
       "donateDescription": "Every donation helps us expand and share more data.",
-      "bankgiro": "Bankgiro: 5793-3178"
+      "bankgiro": "Bankgiro: 5793-3178",
+      "swish": "Swish: 123 384 67 48"
     },
     "previousProjectsSection": {
       "title": "Previous Projects",
@@ -328,6 +329,8 @@
     }
   },
   "companyDetailPage": {
+    "metaTitle": "Data on emissions and transition",
+    "metaDescription": "Overview of emissions and transition",
     "errorTitle": "Unable to retrieve company information",
     "errorDescription": "Please try again later",
     "notFoundTitle": "Company not found",
@@ -336,11 +339,15 @@
   "methodsPage": {
     "header": {
       "title": "Sources and Method",
-      "description": "Our starting point is the Paris Agreement's 1.5°C target, and all our data sources are publicly available. Click on the headings to learn more."
+      "description": "Our starting point is the Paris Agreement's 1.5°C target, and all our data sources are publicly available. Click on the dropdown to learn more."
+    },
+    "dataSelector": {
+      "label": "Select what you want to learn about"
     },
     "accordion": {
       "parisAgreement": {
         "title": "Klimatkollen and the Paris Agreement",
+        "description": "Learn about how Klimatkollen aligns with the Paris Agreement's climate goals",
         "paragraph1": "The Paris Agreement is a legally binding international treaty between the world's nations, aimed at limiting global warming to well below 2°C, with a target of 1.5°C.",
         "paragraph2": "To meet this target, global greenhouse gas emissions must be halved by 2030 (compared to 1990 levels) and reduced to near-zero by 2050. However, emissions are <0>still increasing</0> worldwide.",
         "paragraph3": "Under the Paris Agreement, wealthier nations must take greater responsibility, as their historically high emissions mean they have already used a significant share of the remaining carbon budget needed to limit global warming. Sweden is among these countries and should lead the way in reducing emissions while also supporting more vulnerable nations in their transition.",
@@ -350,7 +357,8 @@
         }
       },
       "sources": {
-        "title": "About Our Sources",
+        "title": "Our Sources",
+        "description": "Explore the publicly available sources and verified data used by Klimatkollen",
         "paragraph1": "Klimatkollen is based on publicly available sources and verified data. We provide all sources so you can easily review and explore them further. If you notice any errors, please email us at hej@klimatkollen.se so we can make corrections.",
         "paragraph2": "Company data is sourced from their own annual reports and sustainability reports.",
         "links": {
@@ -397,12 +405,77 @@
         }
       },
       "calculations": {
-        "title": "About Our Calculations",
+        "title": "Our Calculations",
+        "description": "Understand how we calculate and analyze climate data",
         "paragraph1": "The emissions data for municipalities is based on SMHI's national emissions database for the years 1990–2022. For 2022–2024, emissions have been approximated based on historical trends to provide data up to the present day.",
         "paragraph2": "<0>Here</0> you can read an example of how we calculate key figures for municipal emissions (link in Swedish)."
       },
+      "companyDataCollection": {
+        "title": "Company Data",
+        "description": "Learn about how we collect and process company emissions data",
+        "paragraph1": "Klimatkollen collects data on greenhouse gas emissions that companies report in their sustainability reports (and combined annual and sustainability reports).",
+        "paragraph2": "We publish an overview of the latest reported emissions here.",
+        "link1": "Klimatkollens Company Data",
+        "paragraph3": "The emissions data is divided into company-specific emissions (scope 1 & scope 2) and emissions from the value chain (scope 3), reported in tonnes of CO2e.",
+        "paragraph4": "On each company's page on Klimatkollen, you can find more detailed information about the emissions; breakdown by scope and category in scope 3, as well as any biogenic emissions.",
+        "paragraph5": "Klimatkollen uses the same structure as the GHG Protocol and follows its guidelines.",
+        "link2": "GHG Protocol",
+        "companiesIncluded": {
+          "title": "Companies included",
+          "paragraph1": "Currently, Klimatkollen's database includes companies on the OMX Large Cap and Mid Cap lists of the Stockholm Stock Exchange. In addition, the 24 largest state-owned companies, the five largest economic associations, and unlisted companies IKEA and ICA Group are included.",
+          "paragraph2": "A total of 290 companies. The number of companies will be expanded.",
+          "paragraph3": "The companies are categorized by industry according to the Global Industry Classification Standard (GICS).",
+          "paragraph4": "Information about the number of employees and revenue is obtained from the latest sustainability reports, or combined annual and sustainability reports, and in some cases from other sources.",
+          "paragraph5": "The description of the company's activities is AI-generated.",
+          "link1": "Global Industry Classification Standard (GICS)",
+          "link2": "Klimatkollens company data"
+        },
+        "dataPresented": {
+          "title": "Data presented",
+          "paragraph1": "We present the companies' own greenhouse gas emissions as they are reported by the companies themselves.",
+          "paragraph2": "In some cases, the figures from Klimatkollen may be more up-to-date than in the companies' reports, as we sometimes contact the companies about errors or inconsistencies we have discovered, which in some cases has resulted in the companies providing us with corrected data.",
+          "paragraph3": "Klimatkollen does not take responsibility for the completeness or accuracy of the companies' reports.",
+          "paragraph4": "The emissions are rounded to the nearest whole number. This means that companies that report emissions more accurately than whole numbers will have a minor difference compared to their own reporting. When companies also round in their own reporting, there may be a difference of one ton or more between Klimatkollen and the companies' own summaries."
+        },
+        "fiscalYear": {
+          "title": "Fiscal year",
+          "paragraph1": "Some companies use a fiscal year. In these cases, the emissions are presented for the later of the two calendar years in the period, i.e. for companies that report 2022/2023, the data is presented for 2023."
+        },
+        "scope2": {
+          "title": "Scope 2 emissions",
+          "paragraph1": "Scope 2 emissions are primarily calculated using the market-based method, which takes into account whether companies purchase renewable electricity. If such data is missing, we use data from the location-based method instead."
+        },
+        "scope3": {
+          "title": "Scope 3 emissions",
+          "paragraph1": "When a total value is missing for scope 3, we sum the figures for the disclosed scope 3 categories.",
+          "paragraph2": "When companies report emissions per category in line with the GHG Protocol, the data is presented directly on the company's page. For companies that use other breakdowns, Klimatkollen makes a judgment about the match with the GHG Protocol. Companies that, for example, combine several categories into \"other\", or report upstream and downstream transport as a single category, do not have their scope 3 emissions broken down per category.",
+          "paragraph3": "For property companies, Klimatkollen follows the matching as specified in the guide Reporting of Emissions in Scope 3 for Property Owners.",
+          "link": "Reporting of Emissions in Scope 3 for Property Owners"
+        },
+        "financedEmissions": {
+          "title": "Financed emissions (scope 3, category 15: Investments)",
+          "paragraph1": "Financed emissions are often reported with a delay since they can take longer to calculate. To provide a representative picture of a company's impact, in these cases the latest reported emissions are included."
+        },
+        "biogenicEmissions": {
+          "title": "Biogenic emissions",
+          "paragraph1": "Biogenic emissions are reported separately from scope 1, 2 and 3, in accordance with the GHG Protocol's instructions."
+        },
+        "goals": {
+          "title": "Goals and Initiatives",
+          "paragraph1": "AI-tool Garbo identifies and extracts goals and initiatives for emission reductions that companies describe in their reporting. This data is not manually verified."
+        },
+        "historicEmissions": {
+          "title": "Historical emissions data",
+          "paragraph1": "Emissions data from previous years has been collected from the latest report, to the extent it is presented there. Where there are gaps in the reported emissions data, for example if there is missing information about emissions for years between the base year and the most recently reported year, Klimatkollen has sought to collect this by searching for older sustainability reports. The latest published information is always prioritized, so if a company has updated its calculations retroactively, but not published the adjustment, older data may be displayed."
+        },
+        "emissionOffsets": {
+          "title": "Avoided emissions or climate compensation",
+          "paragraph1": "These are not included, in line with what the GHG Protocol states."
+        }
+      },
       "co2Budgets": {
-        "title": "About Carbon Budgets",
+        "title": "Carbon Budgets",
+        "description": "Understand how carbon budgets are calculated and allocated",
         "paragraph1": "A carbon budget represents the amount of carbon dioxide that can be emitted before atmospheric CO₂ levels rise high enough to exceed the Paris Agreement's 1.5°C target.",
         "paragraph2": "According to a <0>calculation</0> by researchers at Uppsala University and the Tyndall Centre in the UK, as of 2024, approximately 340 gigatonnes of CO₂ remain globally for a 50% chance of keeping temperature rise below 1.5°C. At the current rate of emissions, this global budget will be depleted in about eight years.",
         "paragraph3": "Using this global budget, the researchers have also estimated Sweden's national carbon budget for a fair climate transition.",
@@ -414,6 +487,7 @@
       },
       "emissionTypes": {
         "title": "Different Types of Emissions",
+        "description": "Learn about the various types of emissions and how they are measured",
         "paragraph1": "Klimatkollen is an independent fact-based platform that follows established standards for emissions reporting. The climate data we present reflects the boundaries and assumptions used in carbon budget calculations. For example, carbon budgets cannot be directly linked to all greenhouse gas emissions, as other gases like methane, nitrous oxide, and water vapour are also included in overall climate impact assessments.",
         "paragraph2": "Emissions from cement production are excluded from the IPCC's global carbon budget and, as a result, are also omitted from Sweden's carbon budget and emissions data. This specifically affects the municipalities of Gotland, Skövde, and Mörbylånga, where cement production is currently or has previously taken place.",
         "paragraph3": "Sweden also has a significant climate impact from goods imported from other countries, leading to emissions abroad. These consumption-based emissions are not included in the carbon budget.",
@@ -459,6 +533,8 @@
     }
   },
   "municipalityDetailPage": {
+    "metaTitle": "Data on emissions and transition",
+    "metaDescription": "Overview of emissions and transition",
     "loading": "Loading...",
     "error": "Error loading data",
     "noData": "No data available",
@@ -658,7 +734,8 @@
       "turnover": "Turnover",
       "employees": "Employees",
       "companyReport": "Sustainability Report",
-      "missingReport": "Missing Report"
+      "missingReport": "Missing Report",
+      "reportYear": "Report from {{year}}"
     },
     "dataView": {
       "overview": "Overview",
@@ -840,8 +917,8 @@
         },
         "keyStatistics": {
           "average": "Average:",
-          "distributionAbove": "municipalities above average,",
-          "distributionBelow": "are below"
+          "distributionAbove": "municipalities above average",
+          "distributionBelow": "municipalities below average"
         },
         "topPerformers": {
           "titleBest": "Best Performing Municipalities",

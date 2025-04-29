@@ -35,7 +35,7 @@ const TrendCard: React.FC<TrendCardProps> = ({
     >
       <div
         className={`
-        bg-black-2 border border-black-1 rounded-lg p-6
+        bg-black-2 rounded-lg p-6
         transition-all duration-300 ease-in-out
         ${isSelected ? "h-full overflow-hidden" : "flex flex-col items-center"}
       `}

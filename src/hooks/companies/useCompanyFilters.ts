@@ -220,7 +220,6 @@ export const getCompanyColors = (index: number) => {
 };
 
 export const useCompanyFilters = (companies: RankedCompany[]) => {
-  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
   const [sectors, setSectors] = useState<CompanySector[]>([]);
   const [sortBy, setSortBy] = useState<SortOption>("total_emissions");
@@ -238,13 +237,39 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
             sectors.includes(company.industry.industryGics.sectorCode));
 
         // Filter by search query
+        const searchTerms = searchQuery
+          .split(",")
+          .map((term) => term.trim().toLowerCase())
+          .filter((term) => term.length > 0);
+
         const matchesSearch =
-          !searchQuery ||
-          company.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          (company.industry?.industryGics?.sectorCode &&
-            SECTOR_NAMES[company.industry.industryGics.sectorCode as SectorCode]
-              ?.toLowerCase()
-              .includes(searchQuery.toLowerCase()));
+          searchTerms.length === 0 ||
+          searchTerms.some((term) => {
+            const companyName = company.name.toLowerCase();
+            const sectorName = company.industry?.industryGics?.sectorCode
+              ? SECTOR_NAMES[
+                  company.industry.industryGics.sectorCode as SectorCode
+                ]?.toLowerCase()
+              : "";
+
+            // For terms longer than 3 characters, use word boundaries
+            if (term.length > 3) {
+              const companyNamePattern = new RegExp(`\\b${term}\\b`, "i");
+              const sectorNamePattern = new RegExp(`\\b${term}\\b`, "i");
+              return (
+                companyNamePattern.test(companyName) ||
+                sectorNamePattern.test(sectorName)
+              );
+            }
+
+            // For shorter terms, use substring matching but require it to be at the start of a word
+            const companyNamePattern = new RegExp(`\\b${term}`, "i");
+            const sectorNamePattern = new RegExp(`\\b${term}`, "i");
+            return (
+              companyNamePattern.test(companyName) ||
+              sectorNamePattern.test(sectorName)
+            );
+          });
 
         return matchesSector && matchesSearch;
       })

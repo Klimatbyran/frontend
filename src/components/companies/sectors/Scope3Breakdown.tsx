@@ -72,7 +72,7 @@ const CategoryCard = ({
   category: { id: number; name: string; icon: React.ElementType };
   type: CategoryType;
 }) => {
-  const isMobile = useScreenSize();
+  const { isMobile } = useScreenSize();
   const Icon = category.icon;
   const colorClass = type === "upstream" ? "text-blue-3" : "text-green-3";
 
@@ -109,7 +109,7 @@ const Scope3Breakdown: React.FC<Scope3BreakdownProps> = ({
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
 
-  const isMobile = useScreenSize();
+  const { isMobile } = useScreenSize();
   const {
     getCategoryIcon,
     getCategoryName,

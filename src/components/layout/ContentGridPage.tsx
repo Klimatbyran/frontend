@@ -20,6 +20,7 @@ interface ContentGridPageProps {
   items: ContentItem[];
   renderCard: (item: ContentItem) => React.ReactNode;
   structuredData?: any;
+  featuredPost?: React.ReactNode;
 }
 
 export function ContentGridPage({
@@ -29,6 +30,7 @@ export function ContentGridPage({
   items,
   renderCard,
   structuredData,
+  featuredPost,
 }: ContentGridPageProps) {
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -46,6 +48,9 @@ export function ContentGridPage({
       />
       <div className="w-full max-w-[1200px] mx-auto space-y-8">
         <PageHeader title={title} description={description} />
+        {featuredPost && (
+          <div className="max-w-[1150px] mx-auto">{featuredPost}</div>
+        )}
         <div className="max-w-[1150px] mx-auto space-y-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {items.map((item) => renderCard(item))}

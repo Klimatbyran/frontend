@@ -51,7 +51,7 @@ export function EmissionsBreakdown({
     upstreamCategories,
     downstreamCategories,
   } = useCategoryMetadata();
-  const isMobile = useScreenSize();
+  const { isMobile } = useScreenSize();
   const { currentLanguage } = useLanguage();
 
   if (!emissions) return null;

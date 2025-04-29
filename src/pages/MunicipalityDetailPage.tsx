@@ -112,9 +112,7 @@ export function MunicipalityDetailPage() {
         <p>
           {t("municipalityDetailPage.seoText.consumptionText", {
             municipality: municipality.name,
-            consumption: (municipality.totalConsumptionEmission / 1000).toFixed(
-              1,
-            ),
+            consumption: municipality.totalConsumptionEmission.toFixed(1),
           })}
         </p>
         <h2>{t("municipalityDetailPage.seoText.transportHeading")}</h2>
@@ -221,7 +219,7 @@ export function MunicipalityDetailPage() {
             {
               title: t("municipalityDetailPage.consumptionEmissionsPerCapita"),
               value: localizeUnit(
-                municipality.totalConsumptionEmission / 1000,
+                municipality.totalConsumptionEmission,
                 currentLanguage,
               ),
               valueClassName: "text-orange-2",

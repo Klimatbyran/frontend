@@ -20,7 +20,7 @@ import { SectionHeader } from "@/components/learnMore/SectionHeader";
 
 export function LearnMoreReporting() {
   const { t } = useTranslation();
-  const isMobile = useScreenSize();
+  const { isMobile } = useScreenSize();
 
   // Define lists of items for reuse
   const challengeItems = [

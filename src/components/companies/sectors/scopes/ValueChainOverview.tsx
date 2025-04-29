@@ -64,7 +64,7 @@ const ValueChainOverview: React.FC = () => {
 
   if (isMobile) {
     return (
-      <div className="bg-black-2 border border-black-1 rounded-lg p-4">
+      <div className="bg-black-2 rounded-lg p-4">
         <h3 className="text-base font-light text-white mb-3">
           {t("companiesPage.sectorGraphs.valueChainOverview")}
         </h3>
@@ -136,7 +136,7 @@ const ValueChainOverview: React.FC = () => {
 
   if (isTablet) {
     return (
-      <div className="bg-black-2 border border-black-1 rounded-lg p-6">
+      <div className="bg-black-2 rounded-lg p-6">
         <h3 className="text-lg font-light text-white mb-4">
           {t("companiesPage.sectorGraphs.valueChainOverview")}
         </h3>
@@ -189,7 +189,7 @@ const ValueChainOverview: React.FC = () => {
   }
 
   return (
-    <div className="bg-black-2 border border-black-1 rounded-lg p-6">
+    <div className="bg-black-2 rounded-lg p-6">
       <h3 className="text-lg font-light text-white mb-4">
         {t("companiesPage.sectorGraphs.valueChainOverview")}
       </h3>

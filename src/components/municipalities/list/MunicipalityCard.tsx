@@ -11,6 +11,7 @@ import {
   localizeUnit,
 } from "@/utils/localizeUnit";
 import { useLanguage } from "@/components/LanguageProvider";
+import { LinkCard } from "@/components/ui/link-card";
 
 interface MunicipalityCardProps {
   municipality: Municipality;
@@ -35,9 +36,7 @@ export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
       )
     : t("municipalities.card.noData");
 
-  const noClimatePlan =
-    municipality.climatePlanLink === "Saknar plan" ||
-    municipality.climatePlanLink === undefined;
+  const noClimatePlan = !municipality.climatePlanLink;
 
   return (
     <Link
@@ -112,44 +111,23 @@ export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
           textColor={meetsParis ? "text-green-3" : "text-pink-3"}
         />
       </div>
-      <a
-        href={
+      <LinkCard
+        link={
           municipality.climatePlanLink &&
           municipality.climatePlanLink !== "Saknar plan"
             ? municipality.climatePlanLink
             : undefined
         }
-        target="_blank"
-        rel="noopener noreferrer"
-        className="block bg-black-1 rounded-level-2 p-6 hover:bg-black-1/80 transition-colors"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="flex items-center justify-between">
-          <div>
-            <Text
-              variant="h6"
-              className="flex items-center gap-2 text-white mb-2"
-            >
-              <FileText className="w-6 h-6 text-white" />
-              <span>{t("municipalities.card.climatePlan")}</span>
-            </Text>
-            <Text
-              variant="body"
-              className={cn(noClimatePlan ? "text-pink-3" : "text-green-3")}
-            >
-              {noClimatePlan
-                ? t("municipalities.card.noPlan")
-                : t("municipalities.card.adopted", {
-                    year: municipality.climatePlanYear,
-                  })}
-            </Text>
-          </div>
-          {municipality.climatePlanLink &&
-            municipality.climatePlanLink !== "Saknar plan" && (
-              <ArrowUpRight className="w-6 h-6" />
-            )}
-        </div>
-      </a>
+        title={t("municipalities.card.climatePlan")}
+        description={
+          noClimatePlan
+            ? t("municipalities.card.noPlan")
+            : t("municipalities.card.adopted", {
+                year: municipality.climatePlanYear,
+              })
+        }
+        descriptionColor={noClimatePlan ? "text-pink-3" : "text-green-3"}
+      />
     </Link>
   );
 }

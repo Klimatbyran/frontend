@@ -1,13 +1,5 @@
 import { Link } from "react-router-dom";
-import {
-  Building2,
-  TrendingDown,
-  Users,
-  Wallet,
-  ArrowUpRight,
-  Info,
-  FileText,
-} from "lucide-react";
+import { Building2, TrendingDown, Users, Wallet, Info } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -30,6 +22,7 @@ import {
   localizeUnit,
   formatPercentChange,
 } from "@/utils/localizeUnit";
+import { LinkCard } from "@/components/ui/link-card";
 
 type CompanyCardProps = Pick<
   RankedCompany,
@@ -49,7 +42,7 @@ export function CompanyCard({
   industry,
   reportingPeriods,
 }: CompanyCardProps) {
-  const isMobile = useScreenSize();
+  const { isMobile } = useScreenSize();
 
   const { t } = useTranslation();
   const { getCategoryColor } = useCategoryMetadata();
@@ -81,6 +74,10 @@ export function CompanyCard({
     (max, current) => (current.total > (max?.total || 0) ? current : max),
     scope3Categories[0],
   );
+  const noSustainabilityReport =
+    latestPeriod?.reportURL === null ||
+    latestPeriod?.reportURL === "Saknar report" ||
+    latestPeriod?.reportURL === undefined;
 
   // Get the color for the largest category
   const categoryColor = largestCategory
@@ -262,33 +259,21 @@ export function CompanyCard({
             </div>
           )}
         </div>
-        {/* Climate Plan */}
-        {latestPeriod?.reportURL && (
-          <a
-            href={latestPeriod.reportURL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block bg-black-1 rounded-level-2 p-4 hover:bg-black-1/80 transition-colors"
-          >
-            <div className="flex items-center justify-between">
-              <div>
-                <Text
-                  variant="h6"
-                  className="flex items-center gap-2 text-white mb-2"
-                >
-                  <FileText className="w-6 h-6 text-white" />
-                  <span>{t("companies.card.companyReport")}</span>
-                </Text>
-                <Text variant="body" className=" text-grey">
-                  {latestPeriod.reportURL === "Saknar report"
-                    ? t("companies.card.missingReport")
-                    : ``}
-                </Text>
-              </div>
-              <ArrowUpRight className="w-6 h-6" />
-            </div>
-          </a>
-        )}
+        {/* Sustainability Report */}
+        <LinkCard
+          link={latestPeriod.reportURL ? latestPeriod.reportURL : undefined}
+          title={t("companies.card.companyReport")}
+          description={
+            noSustainabilityReport
+              ? t("companies.card.missingReport")
+              : t("companies.card.reportYear", {
+                  year: new Date(latestPeriod.endDate).getFullYear(),
+                })
+          }
+          descriptionColor={
+            noSustainabilityReport ? "text-pink-3" : "text-green-3"
+          }
+        />
       </Link>
     </div>
   );

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from "recharts";
 import { Text } from "@/components/ui/text";
 import { Button } from "@/components/ui/button";
@@ -7,10 +7,10 @@ import { cn } from "@/lib/utils";
 import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
+import { useResponsiveChartSize } from "@/hooks/useResponsiveChartSize";
 import {
   formatEmissionsAbsolute,
   formatPercent,
-  localizeUnit,
 } from "@/utils/localizeUnit";
 
 interface Scope3ChartProps {
@@ -22,39 +22,11 @@ interface Scope3ChartProps {
   className?: string;
 }
 
-function useResponsiveSize() {
-  const [size, setSize] = useState({
-    innerRadius: 100,
-    outerRadius: 200,
-    showLabels: true,
-  });
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleResize = () => {
-      const width = containerRef.current?.clientWidth || window.innerWidth;
-      if (width < 640) {
-        setSize({ innerRadius: 50, outerRadius: 100, showLabels: false });
-      } else if (width < 768) {
-        setSize({ innerRadius: 75, outerRadius: 150, showLabels: true });
-      } else {
-        setSize({ innerRadius: 100, outerRadius: 200, showLabels: true });
-      }
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  return { size, containerRef };
-}
-
 export function Scope3Chart({ categories, className }: Scope3ChartProps) {
   const [excludedCategories, setExcludedCategories] = useState<number[]>([]);
   const { getCategoryName, getCategoryColor, getCategoryFilterColors } =
     useCategoryMetadata();
-  const { size, containerRef } = useResponsiveSize();
+  const { size, containerRef } = useResponsiveChartSize(true);
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
 

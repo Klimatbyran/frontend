@@ -128,10 +128,12 @@ export const useChartData = (
         0,
       );
 
-      return companyData.map((item) => ({
-        ...item,
-        total: sectorTotal,
-      }));
+      return companyData
+        .map((item) => ({
+          ...item,
+          total: sectorTotal,
+        }))
+        .sort((a, b) => b.value / b.total - a.value / a.total);
     }
 
     const yearData = chartData.find((d) => d.year === selectedYear);
@@ -160,7 +162,9 @@ export const useChartData = (
       (sum, sector) => sum + sector.value,
       0,
     );
-    return sectorTotals.map((sector) => ({ ...sector, total: totalEmissions }));
+    return sectorTotals
+      .map((sector) => ({ ...sector, total: totalEmissions }))
+      .sort((a, b) => b.value / b.total - a.value / a.total);
   }, [
     chartData,
     selectedYear,

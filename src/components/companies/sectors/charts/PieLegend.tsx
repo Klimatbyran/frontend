@@ -7,6 +7,12 @@ import {
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { formatEmissionsAbsolute, formatPercent } from "@/utils/localizeUnit";
 import { useLanguage } from "@/components/LanguageProvider";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface PieLegendProps {
   payload: any[];
@@ -19,7 +25,7 @@ const PieLegend: React.FC<PieLegendProps> = ({
   selectedSector,
   handlePieClick,
 }) => {
-  const isMobile = useScreenSize();
+  const screenSize = useScreenSize();
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
 
@@ -32,78 +38,90 @@ const PieLegend: React.FC<PieLegendProps> = ({
   const handleItemClick = (entry: any) => {
     if (selectedSector) {
       // If we're viewing companies within a sector, navigate to company detail page
-      if (entry.wikidataId) {
-        navigateToCompany(entry.wikidataId);
-      } else if (entry.payload && entry.payload.wikidataId) {
-        navigateToCompany(entry.payload.wikidataId);
-      } else {
-        console.log("No wikidataId found in entry:", entry);
+      const wikidataId = entry.wikidataId || entry.payload?.wikidataId;
+      if (wikidataId) {
+        navigateToCompany(wikidataId);
       }
     } else {
       // If we're viewing sectors, handle the sector selection
-      handlePieClick(entry);
+      const sectorCode = entry.sectorCode || entry.payload?.sectorCode;
+      if (sectorCode) {
+        handlePieClick({ payload: { sectorCode } });
+      }
     }
   };
 
   return (
-    <div
-      className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 max-h-[200px] overflow-y-auto pr-2 ${
-        isMobile ? "mt-4" : "mt-8"
-      }`}
-    >
-      {payload.map((entry, index) => {
-        const percentage = formatPercent(
-          entry.payload.value / entry.payload.total,
-          currentLanguage,
-        );
+    <TooltipProvider>
+      <div
+        className={`grid ${
+          screenSize.isMobile
+            ? "grid-cols-1"
+            : screenSize.isTablet
+              ? "grid-cols-1"
+              : "grid-cols-2"
+        } gap-2 max-h-[${screenSize.isMobile ? "200" : "500"}px] overflow-y-auto w-full pr-2 ${
+          screenSize.isMobile ? "mt-2" : "mt-4"
+        }`}
+      >
+        {payload.map((entry, index) => {
+          const value = entry.payload?.value || entry.value;
+          const total = entry.payload?.total || entry.total;
+          const percentage =
+            value / total < 0.001
+              ? "<0.1%"
+              : formatPercent(value / total, currentLanguage);
 
-        let color;
-        if (selectedSector) {
-          color = getCompanyColors(index).base;
-        } else if (entry.payload && entry.payload.sectorCode) {
-          // Use the sectorCode from payload
-          const sectorCode = entry.payload.sectorCode;
-          color = sectorColors[sectorCode as keyof typeof sectorColors]?.base;
-        } else {
-          color = "#888888";
-        }
+          let color;
+          if (selectedSector) {
+            color = getCompanyColors(index).base;
+          } else if (entry.payload?.sectorCode || entry.sectorCode) {
+            const sectorCode = entry.payload?.sectorCode || entry.sectorCode;
+            color = sectorColors[sectorCode as keyof typeof sectorColors]?.base;
+          } else {
+            color = "#888888";
+          }
 
-        return (
-          <div
-            key={`legend-${index}`}
-            className={`flex items-center gap-2 p-2 rounded bg-black-2 hover:bg-black-1 transition-colors cursor-pointer ${
-              selectedSector ? "hover:ring-1 hover:ring-black-1" : ""
-            }`}
-            onClick={() => handleItemClick(entry)}
-            title={
-              selectedSector
-                ? t("companiesPage.sectorGraphs.pieLegendCompany")
-                : t("companiesPage.sectorGraphs.pieLegendSector")
-            }
-          >
-            <div
-              className="w-3 h-3 rounded flex-shrink-0"
-              style={{ backgroundColor: color }}
-            />
-            <div className="min-w-0 flex-1">
-              <div className="text-sm text-white truncate">
-                {entry.name || entry.value}
-              </div>
-              <div className="text-xs text-grey flex justify-between">
-                <span>
-                  {formatEmissionsAbsolute(
-                    Math.round(entry.payload.value),
-                    currentLanguage,
-                  )}{" "}
-                  {t("emissionsUnit")}
-                </span>
-                <span>{percentage}</span>
-              </div>
-            </div>
-          </div>
-        );
-      })}
-    </div>
+          return (
+            <Tooltip key={`legend-${index}`}>
+              <TooltipTrigger asChild>
+                <div
+                  className={`flex items-center gap-2 p-2 rounded bg-black-2 hover:bg-black-1 transition-colors cursor-pointer ${
+                    selectedSector ? "hover:ring-1 hover:ring-black-1" : ""
+                  }`}
+                  onClick={() => handleItemClick(entry)}
+                >
+                  <div
+                    className="w-3 h-3 rounded flex-shrink-0"
+                    style={{ backgroundColor: color }}
+                  />
+                  <div className="min-w-0 flex-1">
+                    <div className="text-sm text-white truncate">
+                      {entry.name || entry.value}
+                    </div>
+                    <div className="text-xs text-grey flex justify-between">
+                      <span>
+                        {formatEmissionsAbsolute(
+                          Math.round(value),
+                          currentLanguage,
+                        )}{" "}
+                        {t("emissionsUnit")}
+                      </span>
+                      <span>{percentage}</span>
+                    </div>
+                  </div>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent className="bg-black-1 text-white">
+                {selectedSector
+                  ? t("companiesPage.sectorGraphs.pieLegendCompany")
+                  : t("companiesPage.sectorGraphs.pieLegendSector")}
+              </TooltipContent>
+            </Tooltip>
+          );
+        })}
+      </div>
+    </TooltipProvider>
   );
 };
 

@@ -58,5 +58,15 @@ export const useScopeData = (
     [scopeData],
   );
 
-  return { scopeData, totalEmissions };
+  const years = useMemo(() => {
+    const yearSet = new Set<string>();
+    companies.forEach((company) => {
+      company.reportingPeriods.forEach((period) => {
+        yearSet.add(period.startDate.substring(0, 4));
+      });
+    });
+    return Array.from(yearSet).sort();
+  }, [companies]);
+
+  return { scopeData, totalEmissions, years };
 };

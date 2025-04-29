@@ -4,7 +4,9 @@ import {
   CompanySector,
   useSectorNames,
 } from "@/hooks/companies/useCompanyFilters";
-import SectorEmissionsChart from "@/components/companies/sectors/SectorEmissionsChart";
+import SectorEmissionsChart from "@/components/companies/sectors/charts/SectorEmissionsChart";
+import EmissionsSourcesAnalysis from "./scopes/EmissionsSourcesAnlaysis";
+import EmissionsTrendAnalysis from "./trends/EmissionsTrendAnalysis";
 
 interface SectorGraphsProps {
   companies: RankedCompany[];
@@ -31,6 +33,16 @@ const SectorGraphs: React.FC<SectorGraphsProps> = ({
           }
         />
       </div>
+
+      <EmissionsTrendAnalysis
+        companies={companies}
+        selectedSectors={selectedSectors}
+      />
+
+      <EmissionsSourcesAnalysis
+        companies={companies}
+        selectedSectors={selectedSectors}
+      />
     </div>
   );
 };

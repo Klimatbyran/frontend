@@ -51,7 +51,7 @@ export function CompanyOverview({
   selectedYear,
 }: CompanyOverviewProps) {
   const { t } = useTranslation();
-  const isMobile = useScreenSize();
+  const { isMobile } = useScreenSize();
   const [showMore, setShowMore] = useState(false);
   const { token } = useAuth();
   const navigate = useNavigate();

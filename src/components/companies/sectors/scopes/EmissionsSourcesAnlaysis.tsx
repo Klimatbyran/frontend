@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { RankedCompany } from "@/hooks/companies/useCompanies";
 import { useScopeData } from "@/hooks/companies/useScopeData";
@@ -6,6 +6,8 @@ import { useScreenSize } from "@/hooks/useScreenSize";
 import ScopeCards from "./ScopeCards";
 import ValueChainOverview from "./ValueChainOverview";
 import KeyInsights from "./KeyInsights";
+import EmissionsTotalDisplay from "../charts/EmissionsTotalDisplay";
+import { useSectorNames } from "@/hooks/companies/useCompanyFilters";
 
 interface EmissionsSourcesAnalysisProps {
   companies: RankedCompany[];
@@ -16,26 +18,39 @@ interface EmissionsSourcesAnalysisProps {
 const EmissionsSourcesAnalysis: React.FC<EmissionsSourcesAnalysisProps> = ({
   companies,
   selectedSectors,
-  selectedYear = "2023",
+  selectedYear: initialYear = "2023",
 }) => {
-  const { scopeData, totalEmissions } = useScopeData(
-    companies,
-    selectedSectors,
-    selectedYear,
-  );
-  const isMobile = useScreenSize();
   const { t } = useTranslation();
+  const screenSize = useScreenSize();
+  const sectorNames = useSectorNames();
 
+  const [selectedYear, setSelectedYear] = useState<string>("2023");
+
+  // If no sectors are selected, use all sectors except "all"
+  const effectiveSectors =
+    selectedSectors.length > 0
+      ? selectedSectors
+      : Object.keys(sectorNames).filter((key) => key !== "all");
+
+  const { scopeData, totalEmissions, years } = useScopeData(
+    companies,
+    effectiveSectors,
+    selectedYear,
+  )
+
+  // Generate years array from 2020 to current year
   return (
     <div className="mt-12 space-y-6">
       <div
         className={`${
-          isMobile ? "flex flex-col gap-1" : "flex items-center justify-between"
+          screenSize.isMobile
+            ? "flex flex-col gap-1"
+            : "flex items-center justify-between"
         }`}
       >
         <div
           className={`${
-            isMobile ? "flex flex-col gap-1" : "flex items-center gap-2"
+            screenSize.isMobile ? "flex flex-col gap-1" : "flex items-center gap-2"
           }`}
         >
           <h2 className="text-xl font-light text-white">
@@ -45,21 +60,20 @@ const EmissionsSourcesAnalysis: React.FC<EmissionsSourcesAnalysisProps> = ({
             {t("companiesPage.sectorGraphs.ghgProtocolScopes")}
           </span>
         </div>
-        <div className={`${isMobile ? "mt-2" : ""} text-right`}>
-          <div className="text-sm text-grey">
-            {t("companiesPage.sectorGraphs.totalEmissions")}
-          </div>
-          <div className="text-2xl font-light text-white">
-            {totalEmissions.toLocaleString()} tCO₂e
-          </div>
-        </div>
+        <EmissionsTotalDisplay
+          totalEmissions={totalEmissions}
+          selectedYear={selectedYear}
+          years={years}
+          onYearChange={setSelectedYear}
+          isSectorView={effectiveSectors.length > 0}
+        />
       </div>
 
       <ScopeCards
         scopeData={scopeData}
         totalEmissions={totalEmissions}
         companies={companies}
-        selectedSectors={selectedSectors}
+        selectedSectors={effectiveSectors}
         selectedYear={selectedYear}
       />
 

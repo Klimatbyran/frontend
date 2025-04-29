@@ -57,7 +57,7 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
 
   return (
     <div className="flex-1 overflow-y-auto min-h-0 pr-2">
-      <div className="space-y-6">
+      <div className="space-y-6 md:space-y-0 md:grid md:grid-cols-3 md:gap-6">
         <KPIDetailsPanel
           selectedKPI={selectedKPI}
           average={average}
@@ -73,6 +73,7 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
               : "municipalities.list.insights.topPerformers.titleBest",
           )}
           municipalities={topMunicipalities}
+          totalCount={municipalityData.length}
           dataPointKey={selectedKPI.key}
           unit={selectedKPI.unit}
           textColor="text-blue-3"
@@ -81,6 +82,8 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
         <InsightsList
           title={t("municipalities.list.insights.improvement.title")}
           municipalities={bottomMunicipalities}
+          totalCount={municipalityData.length}
+          isBottomRanking={true}
           dataPointKey={selectedKPI.key}
           unit={selectedKPI.unit}
           textColor="text-pink-3"

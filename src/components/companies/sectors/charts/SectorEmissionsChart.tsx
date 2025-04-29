@@ -8,26 +8,20 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
 } from "recharts";
 import {
   sectorColors,
-  getCompanyColors,
   useSectorNames,
 } from "@/hooks/companies/useCompanyFilters";
 import { RankedCompany } from "@/hooks/companies/useCompanies";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { useChartData } from "@/hooks/companies/useChartData";
-import CustomTooltip from "./charts/tooltips/CustomTooltip";
-import PieChartTooltip from "./charts/tooltips/PieChartTooltip";
-import CompanyTooltip from "./charts/tooltips/CompanyTooltip";
-import ChartHeader from "./charts/ChartHeader";
-import PieLegend from "./charts/PieLegend";
-import EmissionsTrendAnalysis from "./EmissionsTrendAnalysis/EmissionsTrendAnalysis";
-import EmissionsSourcesAnalysis from "./EmissionsSourcesAnalysis/EmissionsSourcesAnlaysis";
+import CustomTooltip from "./tooltips/CustomTooltip";
+import ChartHeader from "./ChartHeader";
 import { useTranslation } from "react-i18next";
+import MobilePieChartView from "./MobilePieChartView";
+import DesktopPieChartView from "./DesktopPieChartView";
+import { useResponsiveChartSize } from "@/hooks/useResponsiveChartSize";
 
 interface EmissionsChartProps {
   companies: RankedCompany[];
@@ -73,7 +67,8 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
   const [chartType, setChartType] = useState<ChartType>("pie");
   const [selectedYear, setSelectedYear] = useState<string>("2023");
   const [selectedSector, setSelectedSector] = useState<string | null>(null);
-  const isMobile = useScreenSize();
+  const screenSize = useScreenSize();
+  const { size } = useResponsiveChartSize();
 
   const { chartData, pieChartData, totalEmissions, years } = useChartData(
     companies,
@@ -113,8 +108,6 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
     }
   };
 
-  const pieChartHeight = isMobile ? 500 : 650;
-
   return (
     <div className="w-full space-y-6">
       <ChartHeader
@@ -129,52 +122,32 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
         selectedSectors={selectedSectors}
       />
 
-      <div
-        className={`h-[${pieChartHeight}px] mt-8`}
-        style={{ height: pieChartHeight }}
-      >
+      <div>
         <ResponsiveContainer width="100%" height="100%">
           {chartType === "pie" ? (
-            <PieChart>
-              <Pie
-                data={pieChartData}
-                dataKey="value"
-                nameKey="name"
-                cx="50%"
-                cy={isMobile ? "35%" : "40%"}
-                outerRadius={isMobile ? 100 : 160}
-                onMouseEnter={handlePieMouseEnter}
-              >
-                {pieChartData.map((entry, index) => (
-                  <Cell
-                    key={entry.name}
-                    fill={
-                      selectedSector
-                        ? getCompanyColors(index).base
-                        : "sectorCode" in entry
-                          ? sectorColors[
-                              entry.sectorCode as keyof typeof sectorColors
-                            ]?.base || "#888888"
-                          : "#888888"
-                    }
-                  />
-                ))}
-              </Pie>
-              <Tooltip
-                content={
-                  selectedSector ? <CompanyTooltip /> : <PieChartTooltip />
-                }
+            screenSize.isMobile ? (
+              <MobilePieChartView
+                pieChartData={pieChartData}
+                selectedSector={selectedSector}
+                size={{
+                  innerRadius: size.innerRadius,
+                  outerRadius: size.outerRadius,
+                }}
+                handlePieMouseEnter={handlePieMouseEnter}
+                handlePieClick={handlePieClick}
               />
-              <Legend
-                content={
-                  <PieLegend
-                    payload={pieChartData}
-                    selectedSector={selectedSector}
-                    handlePieClick={handlePieClick}
-                  />
-                }
+            ) : (
+              <DesktopPieChartView
+                pieChartData={pieChartData}
+                selectedSector={selectedSector}
+                size={{
+                  innerRadius: size.innerRadius,
+                  outerRadius: size.outerRadius,
+                }}
+                handlePieMouseEnter={handlePieMouseEnter}
+                handlePieClick={handlePieClick}
               />
-            </PieChart>
+            )
           ) : (
             <BarChart
               data={chartData}
@@ -234,17 +207,6 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
           )}
         </ResponsiveContainer>
       </div>
-
-      <EmissionsTrendAnalysis
-        companies={companies}
-        selectedSectors={selectedSectors}
-      />
-
-      <EmissionsSourcesAnalysis
-        companies={companies}
-        selectedSectors={selectedSectors}
-        selectedYear={selectedYear}
-      />
     </div>
   );
 };
