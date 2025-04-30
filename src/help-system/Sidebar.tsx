@@ -1,21 +1,25 @@
 import { Input } from "@/components/ui/input";
 import { GemIcon, PanelRightCloseIcon } from "lucide-react";
-import { HelpItem } from "./items";
-import { ChangeEvent, useState } from "react";
+import { helpItems } from "./items";
+import { ChangeEvent, useMemo, useState } from "react";
 
 type SidebarProps = {
-  title: string;
-  items: HelpItem[];
+  initialFilter: string;
   onClose: () => void;
 };
 
-export const Sidebar = ({ title, items, onClose }: SidebarProps) => {
-  const [filter, setFilter] = useState("");
+export const Sidebar = ({ initialFilter, onClose }: SidebarProps) => {
+  const [filter, setFilter] = useState(initialFilter);
 
-  const filterLC = filter.toLowerCase();
-  const filteredItems = items
-    .filter((i) => i.title.toLowerCase().includes(filterLC))
-    .sort((a, b) => a.title.toLowerCase().localeCompare(b.title.toLowerCase()));
+  const filteredItems = useMemo(() => {
+    const filterLC = filter.toLowerCase();
+
+    return Object.values(helpItems)
+      .filter((i) => i.title.toLowerCase().includes(filterLC))
+      .sort((a, b) =>
+        a.title.toLowerCase().localeCompare(b.title.toLowerCase()),
+      );
+  }, [filter]);
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFilter(e.target.value);
@@ -25,7 +29,7 @@ export const Sidebar = ({ title, items, onClose }: SidebarProps) => {
     <>
       <div className="flex align-center">
         <GemIcon className="w-8 h-8 mr-2" />
-        <h2 className="text-2xl">{title}</h2>
+        <h2 className="text-2xl">Data Guide</h2>
         <button
           onClick={onClose}
           className="ml-auto focus-visible:ring-1 focus-visible:ring-white disabled:pointer-events-none bg-gray-700 hover:bg-gray-600 active:ring-1 active:ring-white disabled:opacity-50 p-2 rounded-md"

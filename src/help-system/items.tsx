@@ -3,16 +3,18 @@ import Markdown from "react-markdown";
 import remarkBreaks from "remark-breaks";
 
 const SectorHelp = () => (
-  <p>
-    We have diveded companies into different sectors to make it easier to
-    compare companies against each other. The available sectors are:
+  <>
+    <p>
+      We have diveded companies into different sectors to make it easier to
+      compare companies against each other. The available sectors are:
+    </p>
     <ul className="list-disc list-inside">
       <li>Industri</li>
       <li>Energi</li>
       <li>Sällanköpsvaror</li>
       <li>...</li>
     </ul>
-  </p>
+  </>
 );
 
 const ScopesHelp = () => (

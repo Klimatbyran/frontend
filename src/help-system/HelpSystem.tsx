@@ -1,11 +1,10 @@
-import { createContext, useContext, useState } from "react";
-import { HelpItem, HelpItemId, helpItems } from "./items";
+import { createContext, useCallback, useContext, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Sidebar } from "./Sidebar";
 import { Button } from "@/components/ui/button";
 
 export interface HelpSystemContext {
-  openHelp: (title: string, items: HelpItemId[]) => void;
+  openHelp: (filter: string) => void;
 }
 
 const HelpSystemContext = createContext<HelpSystemContext>({
@@ -26,24 +25,21 @@ export const HelpSystemProvider = ({
   children: React.ReactNode;
 }) => {
   const [open, setOpen] = useState(false);
-  const [selectedItems, setSelectedItems] = useState<HelpItem[]>([]);
-  const [title, setTitle] = useState("");
+  const [initialFilter, setInitialFilter] = useState("");
 
-  const showHelp = (title: string, showIds: HelpItemId[]) => {
-    setTitle(title);
+  // Used to force new sidebar content when openHelp is called
+  const [forceSidebarUpdateId, setForceSidebarUpdateId] = useState("");
 
-    setSelectedItems(
-      showIds.length > 0
-        ? showIds.map((sId) => helpItems[sId]).filter((s) => s !== undefined)
-        : Object.values(helpItems),
-    );
+  const openHelp = useCallback((filter: string) => {
+    setInitialFilter(filter);
     setOpen(true);
-  };
+    setForceSidebarUpdateId(Math.floor(Math.random() * 100000).toString());
+  }, []);
 
-  console.log("Rerender", selectedItems);
+  console.log("Rerender:", forceSidebarUpdateId);
 
   return (
-    <HelpSystemContext.Provider value={{ openHelp: showHelp }}>
+    <HelpSystemContext.Provider value={{ openHelp }}>
       <div
         className={cn("transition-all duration-300", open ? "mr-[300px]" : "")}
       >
@@ -51,8 +47,11 @@ export const HelpSystemProvider = ({
       </div>
       <Button
         size="sm"
-        className="fixed top-1/2 transform -rotate-90 origin-bottom-right right-0 bg-gray-800 rounded-none"
-        onClick={() => showHelp("Data Guide", [])}
+        className={cn(
+          "fixed top-1/2 transform -rotate-90 origin-bottom-right right-0 bg-gray-800 rounded-none transition-all duration-300",
+          open ? "mr-[300px]" : "",
+        )}
+        onClick={() => setOpen(!open)}
       >
         Data Guide
       </Button>
@@ -64,9 +63,9 @@ export const HelpSystemProvider = ({
           )}
         >
           <Sidebar
-            items={selectedItems}
+            key={forceSidebarUpdateId}
+            initialFilter={initialFilter}
             onClose={() => setOpen(!open)}
-            title={title}
           />
         </div>
       </div>
