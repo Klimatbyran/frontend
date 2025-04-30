@@ -149,6 +149,11 @@ export function AboutPage() {
                 <Text variant="body" className="text-blue-2 mt-2">
                   {t("aboutPage.financingSection.bankgiro")}
                 </Text>
+
+                <Text variant="body" className="text-blue-2 mt-2">
+                  Swish:
+                  {t("aboutPage.financingSection.swish")}
+                </Text>
               </div>
             </div>
           </AccordionGroup>
