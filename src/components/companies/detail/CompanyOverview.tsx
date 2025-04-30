@@ -1,4 +1,4 @@
-import { Building2, ArrowUpRight, BadgeInfoIcon } from "lucide-react";
+import { Building2, ArrowUpRight, BadgeInfoIcon, GemIcon } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -109,10 +109,11 @@ export function CompanyOverview({
               <Text className=" text-4xl lg:text-6xl">{company.name}</Text>
               <div className="flex flex-col h-full justify-around">
                 <button
-                  className="gap-2 mt-2 bg-blue-400"
+                  className="bg-gray-700 rounded-md py-2 px-4"
                   onClick={() => openHelp("Data Guide", ["tco2e", "sector"])}
                 >
-                  <InfoCircledIcon />
+                  <GemIcon className="w-6 h-6" />
+                  DG
                 </button>
                 {token && (
                   <Button
