@@ -17,31 +17,6 @@ const SectorHelp = () => (
   </>
 );
 
-const ScopesHelp = () => (
-  <>
-    <p>
-      GHG-protokollet, i EU-direktivet Corporate Sustainability Reporting
-      Directive, är den etablerade standarden för rapportering av
-      växthusgasutsläpp.
-    </p>
-    <p className="mt-2">
-      Dessa utsläpp delas upp i tre scope:
-      <ol className="list-inside">
-        <li>
-          1️⃣ <b>Scope 1</b> – direkta utsläpp från den egna verksamheten
-        </li>
-        <li>
-          2️⃣ <b>Scope 2</b> – indirekta utsläpp från inköpt energi
-        </li>
-        <li>
-          3️⃣ <b>Scope 3</b> – alla utsläpp i värdekedjan, som i sin tur delas
-          upp i 15 kategorier
-        </li>
-      </ol>
-    </p>
-  </>
-);
-
 const createTextHelpItem = (textKey: string) => () => {
   const { t } = useTranslation();
 
