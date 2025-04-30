@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Map, List } from "lucide-react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { useMunicipalities } from "@/hooks/useMunicipalities";
 import { useTranslation } from "react-i18next";
@@ -17,14 +18,49 @@ export function MunicipalitiesRankedPage() {
   const { t } = useTranslation();
   const { municipalities, loading, error } = useMunicipalities();
   const municipalityKPIs = useMunicipalityKPIs();
+  const [geoData] = useState(municipalityGeoJson);
 
-  const [geoData] = useState<typeof municipalityGeoJson>(municipalityGeoJson);
-  const [selectedKPI, setSelectedKPI] = useState(municipalityKPIs[0]);
-  const [showMap, setShowMap] = useState(true);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const getKPIFromURL = useCallback(() => {
+    const params = new URLSearchParams(location.search);
+    const kpiLabel = params.get("kpi");
+    return (
+      municipalityKPIs.find((kpi) => kpi.label === kpiLabel) ||
+      municipalityKPIs[0]
+    );
+  }, [location.search, municipalityKPIs]);
+
+  const setKPIInURL = (kpiId: string) => {
+    const params = new URLSearchParams(location.search);
+    params.set("kpi", kpiId);
+    navigate({ search: params.toString() }, { replace: true });
+  };
+
+  const getViewModeFromURL = () => {
+    const params = new URLSearchParams(location.search);
+    return params.get("view") === "list" ? "list" : "map";
+  };
+  const setViewModeInURL = (mode: "map" | "list") => {
+    const params = new URLSearchParams(location.search);
+    params.set("view", mode);
+    navigate({ search: params.toString() }, { replace: true });
+  };
+
+  const [selectedKPI, setSelectedKPI] = useState(getKPIFromURL());
+  const viewMode = getViewModeFromURL();
+
+  useEffect(() => {
+    const kpiFromUrl = getKPIFromURL();
+    if (kpiFromUrl.label !== selectedKPI.label) {
+      setSelectedKPI(kpiFromUrl);
+    }
+  }, [getKPIFromURL, selectedKPI.label]);
 
   const handleMunicipalityClick = (name: string) => {
     const formattedName = name.toLowerCase();
-    window.location.href = `/municipalities/${formattedName}`;
+    window.location.href = `/municipalities/${formattedName}?view=${viewMode}`;
   };
 
   if (loading) {
@@ -53,6 +89,24 @@ export function MunicipalitiesRankedPage() {
     );
   }
 
+  const renderMapOrList = (isMobile: boolean) =>
+    viewMode === "map" ? (
+      <div className={isMobile ? "relative h-[65vh]" : "relative h-full"}>
+        <SwedenMap
+          geoData={geoData as FeatureCollection}
+          municipalityData={municipalities}
+          selectedKPI={selectedKPI}
+          onMunicipalityClick={handleMunicipalityClick}
+        />
+      </div>
+    ) : (
+      <MunicipalityRankedList
+        municipalityData={municipalities}
+        selectedKPI={selectedKPI}
+        onMunicipalityClick={handleMunicipalityClick}
+      />
+    );
+
   return (
     <>
       <PageHeader
@@ -61,11 +115,11 @@ export function MunicipalitiesRankedPage() {
         className="-ml-4"
       />
 
-      <div className="flex lg:hidden">
+      <div className="flex mb-4 lg:hidden">
         <ViewModeToggle
-          viewMode={showMap ? "map" : "list"}
+          viewMode={viewMode}
           modes={["map", "list"]}
-          onChange={(mode) => setShowMap(mode === "map")}
+          onChange={(mode) => setViewModeInURL(mode)}
           titles={{
             map: t("municipalities.list.viewToggle.showMap"),
             list: t("municipalities.list.viewToggle.showList"),
@@ -80,47 +134,32 @@ export function MunicipalitiesRankedPage() {
 
       <DataSelector
         selectedKPI={selectedKPI}
-        onDataPointChange={setSelectedKPI}
+        onDataPointChange={(kpi) => {
+          setSelectedKPI(kpi);
+          setKPIInURL(kpi.label);
+        }}
       />
 
+      {/* Mobile */}
       <div className="lg:hidden space-y-6">
-        {showMap ? (
-          <div className="relative h-[65vh]">
-            <SwedenMap
-              geoData={geoData as FeatureCollection}
-              municipalityData={municipalities}
-              selectedKPI={selectedKPI}
-              onMunicipalityClick={handleMunicipalityClick}
-            />
-          </div>
-        ) : (
-          <MunicipalityRankedList
-            municipalityData={municipalities}
-            selectedKPI={selectedKPI}
-            onMunicipalityClick={handleMunicipalityClick}
-          />
-        )}
+        {renderMapOrList(true)}
         <InsightsPanel
           municipalityData={municipalities}
           selectedKPI={selectedKPI}
         />
       </div>
 
+      {/* Desktop */}
       <div className="hidden lg:grid grid-cols-1 gap-6">
         <div className="grid grid-cols-2 gap-6">
-          <div className="relative h-full">
-            <SwedenMap
-              geoData={geoData as FeatureCollection}
+          {renderMapOrList(false)}
+          {viewMode === "map" ? (
+            <MunicipalityRankedList
               municipalityData={municipalities}
               selectedKPI={selectedKPI}
               onMunicipalityClick={handleMunicipalityClick}
             />
-          </div>
-          <MunicipalityRankedList
-            municipalityData={municipalities}
-            selectedKPI={selectedKPI}
-            onMunicipalityClick={handleMunicipalityClick}
-          />
+          ) : null}
         </div>
         <InsightsPanel
           municipalityData={municipalities}
