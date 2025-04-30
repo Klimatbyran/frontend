@@ -3,23 +3,23 @@ import { cn } from "@/lib/utils";
 import { Sidebar } from "./Sidebar";
 import { Button } from "@/components/ui/button";
 
-export interface HelpSystemContext {
+export interface DataGuideContext {
   openHelp: (filter: string) => void;
 }
 
-const HelpSystemContext = createContext<HelpSystemContext>({
+const DataGuideContext = createContext<DataGuideContext>({
   openHelp: () => {},
 });
 
-export const useHelpSystem = () => {
-  const context = useContext(HelpSystemContext);
+export const useDataGuide = () => {
+  const context = useContext(DataGuideContext);
   if (!context) {
-    throw new Error("useHelpSystem must be used within a HelpSystemProvider");
+    throw new Error("useDataGuide must be used within a DataGuideProvider");
   }
   return context;
 };
 
-export const HelpSystemProvider = ({
+export const DataGuideProvider = ({
   children,
 }: {
   children: React.ReactNode;
@@ -39,7 +39,7 @@ export const HelpSystemProvider = ({
   console.log("Rerender:", forceSidebarUpdateId);
 
   return (
-    <HelpSystemContext.Provider value={{ openHelp }}>
+    <DataGuideContext.Provider value={{ openHelp }}>
       <div
         className={cn("transition-all duration-300", open ? "mr-[300px]" : "")}
       >
@@ -69,6 +69,6 @@ export const HelpSystemProvider = ({
           />
         </div>
       </div>
-    </HelpSystemContext.Provider>
+    </DataGuideContext.Provider>
   );
 };
