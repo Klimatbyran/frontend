@@ -151,7 +151,6 @@ export function AboutPage() {
                 </Text>
 
                 <Text variant="body" className="text-blue-2 mt-2">
-                  Swish:
                   {t("aboutPage.financingSection.swish")}
                 </Text>
               </div>
