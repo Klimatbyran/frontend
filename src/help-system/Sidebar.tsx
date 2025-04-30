@@ -1,5 +1,5 @@
 import { Input } from "@/components/ui/input";
-import { GemIcon, PanelRightCloseIcon } from "lucide-react";
+import { CircleXIcon, GemIcon, PanelRightCloseIcon } from "lucide-react";
 import { helpItems } from "./items";
 import { ChangeEvent, useMemo, useState } from "react";
 
@@ -37,13 +37,24 @@ export const Sidebar = ({ initialFilter, onClose }: SidebarProps) => {
           <PanelRightCloseIcon />
         </button>
       </div>
-      <Input
-        type="text"
-        disabled={false}
-        className="border-white"
-        value={filter}
-        onChange={handleOnChange}
-      />
+      <div className="relative inline-block">
+        <Input
+          type="text"
+          disabled={false}
+          className="border-white pr-2"
+          value={filter}
+          onChange={handleOnChange}
+        />
+        {filter !== "" && (
+          <button
+            type="button"
+            onClick={() => setFilter("")}
+            className="absolute top-1/2 transform -translate-y-1/2 right-2 cursor-pointer"
+          >
+            <CircleXIcon className="text-gray-400 h-5 w-5" />
+          </button>
+        )}
+      </div>
       <div className="overflow-y-auto">
         {filteredItems.map(({ id, title: itemTitle, component: C }) => (
           <section key={id}>
