@@ -11,8 +11,6 @@ import {
 } from "@/components/ui/select";
 import { Text } from "@/components/ui/text";
 import { useTranslation } from "react-i18next";
-import { Button } from "@/components/ui/button";
-import { useHelpSystem } from "@/help-system/HelpSystem";
 
 interface Scope3DataProps {
   emissions: {
@@ -55,7 +53,6 @@ export function Scope3Data({
 }: Scope3DataProps) {
   const { t } = useTranslation();
   const [selectedYear, setSelectedYear] = useState<string>("latest");
-  const { openHelp } = useHelpSystem();
 
   if (!emissions?.scope3?.categories?.length) {
     return null;
@@ -94,16 +91,8 @@ export function Scope3Data({
 
   return (
     <div className={className}>
-      <div className="flex items-center mb-8">
+      <div className="flex items-center justify-between mb-8">
         <Text variant="h3">{t("companies.scope3Data.categories")}</Text>
-        <Button
-          variant="outline"
-          size="sm"
-          className="gap-2 mt-2 ml-4"
-          onClick={() => openHelp("Scopes Help", ["scopes"])}
-        >
-          What is Scope 3?
-        </Button>
       </div>
       <Tabs defaultValue="chart" className="space-y-2">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">

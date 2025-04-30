@@ -2,6 +2,7 @@ import { createContext, useContext, useState } from "react";
 import { HelpItem, HelpItemId, helpItems } from "./items";
 import { cn } from "@/lib/utils";
 import { Sidebar } from "./Sidebar";
+import { Button } from "@/components/ui/button";
 
 export interface HelpSystemContext {
   openHelp: (title: string, items: HelpItemId[]) => void;
@@ -48,6 +49,13 @@ export const HelpSystemProvider = ({
       >
         {children}
       </div>
+      <Button
+        size="sm"
+        className="fixed top-1/2 transform -rotate-90 origin-bottom-right right-0 bg-gray-800 rounded-none"
+        onClick={() => showHelp("Data Guide", [])}
+      >
+        Data Guide
+      </Button>
       <div className={cn("relative", open ? "w-[300px]" : "")}>
         <div
           className={cn(
