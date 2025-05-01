@@ -2,13 +2,19 @@ import { Input } from "@/components/ui/input";
 import { CircleXIcon, GemIcon, PanelRightCloseIcon } from "lucide-react";
 import { helpItems } from "./items";
 import { ChangeEvent, useMemo, useState } from "react";
+import { cn } from "@/lib/utils";
 
 type SidebarProps = {
   initialFilter: string;
   onClose: () => void;
+  className?: string;
 };
 
-export const Sidebar = ({ initialFilter, onClose }: SidebarProps) => {
+export const Sidebar = ({
+  initialFilter,
+  className,
+  onClose,
+}: SidebarProps) => {
   const [filter, setFilter] = useState(initialFilter);
 
   const filteredItems = useMemo(() => {
@@ -26,7 +32,7 @@ export const Sidebar = ({ initialFilter, onClose }: SidebarProps) => {
   };
 
   return (
-    <>
+    <div className={cn(className, "overflow-y-auto overscroll-contain")}>
       <div className="flex align-center">
         <GemIcon className="w-8 h-8 mr-2" />
         <h2 className="text-2xl">Data Guide</h2>
@@ -40,8 +46,8 @@ export const Sidebar = ({ initialFilter, onClose }: SidebarProps) => {
       <div className="relative inline-block">
         <Input
           type="text"
-          disabled={false}
           className="border-white pr-2"
+          aria-label="Filter Data Guide"
           value={filter}
           onChange={handleOnChange}
         />
@@ -63,6 +69,6 @@ export const Sidebar = ({ initialFilter, onClose }: SidebarProps) => {
           </section>
         ))}
       </div>
-    </>
+    </div>
   );
 };
