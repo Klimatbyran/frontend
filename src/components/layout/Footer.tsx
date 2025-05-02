@@ -4,6 +4,7 @@ import { Text } from "@/components/ui/text";
 import { Trans, useTranslation } from "react-i18next";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { useNavigate } from "react-router-dom";
+import { Marquee } from "@/components/magicui/marquee.tsx";
 
 function SocialLinks() {
   return (
@@ -30,13 +31,19 @@ function SocialLinks() {
 
 function PartnerLogos() {
   return (
-    <div className="flex flex-wrap justify-center items-center gap-4 px-2 md:px-6">
+    <Marquee reverse={false} pauseOnHover={false} className="[--duration:60s]">
       {partners.map(({ href, src, alt }) => (
-        <a key={alt} href={href} target="_blank" rel="noreferrer">
+        <a
+          key={alt}
+          href={href}
+          target="_blank"
+          rel="noreferrer"
+          className="flex items-center"
+        >
           <img className="w-28 max-h-12 object-contain" src={src} alt={alt} />
         </a>
       ))}
-    </div>
+    </Marquee>
   );
 }
 
@@ -71,11 +78,13 @@ export function Footer() {
         </div>
 
         {/* Partners Section */}
-        <div className="space-y-2">
+        <div className="space-y-2 relative">
           <Text variant="h6" className="text-blue-3">
             {t("footer.supporters")}
           </Text>
+          <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-[var(--black-2)] to-transparent pointer-events-none z-10" />
           <PartnerLogos />
+          <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[var(--black-2)] to-transparent pointer-events-none z-10" />
         </div>
 
         {/* Footer Links */}
