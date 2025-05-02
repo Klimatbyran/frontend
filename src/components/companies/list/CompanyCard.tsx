@@ -84,8 +84,6 @@ export function CompanyCard({
     ? getCategoryColor(largestCategory.category)
     : "var(--blue-2)";
 
-  console.log(formattedEmployeeCount);
-
   return (
     <div className="relative rounded-level-2">
       <Link
