@@ -151,7 +151,9 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
               )
             ) : (
               <div className="flex justify-center items-center h-full">
-                <p className="text-grey">{t("noDataAvailable")}</p>
+                <p className="text-grey">
+                  {t("companiesPage.sectorGraphs.noDataAvailablePieChart")}
+                </p>
               </div>
             )
           ) : (

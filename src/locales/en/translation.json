@@ -2,7 +2,6 @@
   "yes": "Yes",
   "no": "No",
   "emissionsUnit": "tCO₂e",
-  "noDataAvailable": "No data available",
   "header": {
     "companies": "Companies",
     "municipalities": "Municipalities",
@@ -275,6 +274,7 @@
       "back": "Back",
       "sectorTotal": "Sector Total Emissions",
       "total": "Total Emissions",
+      "noDataAvailablePieChart": "No data available for this year",
       "pieLegendCompany": "View company details",
       "pieLegendSector": "View sector details",
       "unknownCompany": "Unknown Company",

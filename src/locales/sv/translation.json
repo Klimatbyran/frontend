@@ -2,7 +2,6 @@
   "yes": "Ja",
   "no": "Nej",
   "emissionsUnit": "tCO₂e",
-  "noDataAvailable": "Inga data tillgänglig",
   "header": {
     "companies": "Företag",
     "municipalities": "Kommuner",
@@ -275,6 +274,7 @@
       "back": "Tillbaka",
       "sectorTotal": "Totala utsläpp i sektorn",
       "total": "Totala utsläpp",
+      "noDataAvailablePieChart": "Det finns inga data för detta år",
       "yearTotal": "Årlig total",
       "unknownCompany": "Okänt företag",
       "pieLegendCompany": "Visa företagsdetaljer",
