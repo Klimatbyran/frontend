@@ -8,10 +8,8 @@ import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useResponsiveChartSize } from "@/hooks/useResponsiveChartSize";
-import {
-  formatEmissionsAbsolute,
-  formatPercent,
-} from "@/utils/localizeUnit";
+import { formatEmissionsAbsolute, formatPercent } from "@/utils/localizeUnit";
+import CloseButton from "@/components/ui/closeButton";
 
 interface Scope3ChartProps {
   categories: Array<{
@@ -24,6 +22,7 @@ interface Scope3ChartProps {
 
 export function Scope3Chart({ categories, className }: Scope3ChartProps) {
   const [excludedCategories, setExcludedCategories] = useState<number[]>([]);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const { getCategoryName, getCategoryColor, getCategoryFilterColors } =
     useCategoryMetadata();
   const { size, containerRef } = useResponsiveChartSize(true);
@@ -63,9 +62,12 @@ export function Scope3Chart({ categories, className }: Scope3ChartProps) {
       const data = payload[0].payload;
       return (
         <div className="bg-black-1 px-4 py-3 rounded-level-2">
-          <Text variant="small" className="text-grey">
-            {t("companies.scope3Chart.category", { number: data.category })}
-          </Text>
+          <div className="flex justify-between items-center relative z-30">
+            <Text variant="small" className="text-grey">
+              {t("companies.scope3Chart.category", { number: data.category })}
+            </Text>
+            <CloseButton setToggleState={setIsOpen} ariaLabel='Close tooltip' />
+          </div>
           <Text variant="h4">{data.name}</Text>
           <Text>
             {formatEmissionsAbsolute(Math.round(data.value), currentLanguage)}{" "}
@@ -205,7 +207,10 @@ export function Scope3Chart({ categories, className }: Scope3ChartProps) {
               nameKey="name"
               label={size.showLabels ? renderCustomizedLabel : undefined}
               labelLine={false}
-              onClick={(entry) => handleCategoryClick(entry.category)}
+              onClick={(entry) => {
+                handleCategoryClick(entry.category);
+                setIsOpen(true);
+              }}
               className="cursor-pointer"
             >
               {chartData.map((entry) => (
@@ -216,7 +221,7 @@ export function Scope3Chart({ categories, className }: Scope3ChartProps) {
                 />
               ))}
             </Pie>
-            <Tooltip content={<CustomTooltip />} />
+            {isOpen && <Tooltip content={<CustomTooltip />} />}
           </PieChart>
         </ResponsiveContainer>
       </div>
