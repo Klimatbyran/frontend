@@ -2,6 +2,7 @@
   "yes": "Ja",
   "no": "Nej",
   "emissionsUnit": "tCO₂e",
+  "noDataAvailable": "Inga data tillgänglig",
   "header": {
     "companies": "Företag",
     "municipalities": "Kommuner",

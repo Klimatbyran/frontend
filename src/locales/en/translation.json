@@ -2,6 +2,7 @@
   "yes": "Yes",
   "no": "No",
   "emissionsUnit": "tCO₂e",
+  "noDataAvailable": "No data available",
   "header": {
     "companies": "Companies",
     "municipalities": "Municipalities",
