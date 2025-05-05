@@ -15,8 +15,8 @@ const CloseButton = ({ setToggleState, ariaLabel }: any): JSX.Element => {
         style={{ pointerEvents: "auto" }}
       >
         <path
-          fill="#f7f7f7"
-          stroke="#f7f7f7"
+          fill="#6f6f6f"
+          stroke="#6f6f6f"
           opacity={0.8}
           d="M400 145.49L366.51 112L256 222.51L145.49 112L112 145.49L222.51 256L112 366.51L145.49 400L256 289.49L366.51 400L400 366.51L289.49 256z"
         ></path>
