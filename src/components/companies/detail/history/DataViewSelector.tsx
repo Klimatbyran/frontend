@@ -24,7 +24,7 @@ export function DataViewSelector({
   const screenSize = useScreenSize();
 
   return (
-    <div className="w-full max-w-xs">
+    <>
       {!screenSize.isMobile ? (
         <Tabs
           value={dataView}
@@ -63,6 +63,6 @@ export function DataViewSelector({
           </SelectContent>
         </Select>
       )}
-    </div>
+    </>
   );
 }
