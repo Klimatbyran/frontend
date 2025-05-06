@@ -82,7 +82,7 @@ export const helpItems = defineHelpItems({
     component: createMarkdownHelpItem(
       `
 GHG-protokollet, i EU-direktivet Corporate Sustainability Reporting Directive, är den etablerade standarden för rapportering av växthusgasutsläpp.
-    
+
 Dessa utsläpp delas upp i tre scope:
 1. **Scope 1** – direkta utsläpp från den egna verksamheten
 2. **Scope 2** – indirekta utsläpp från inköpt energi
@@ -93,3 +93,10 @@ Dessa utsläpp delas upp i tre scope:
 
 export type HelpItemId = keyof typeof helpItems;
 export type HelpItem = HelpItemWithId<HelpItemId>;
+
+export type ItemRefCount = Record<HelpItemId, number>;
+
+export const itemsToShow = (itemRefCount: ItemRefCount) =>
+  Object.entries(itemRefCount)
+    .filter(([_id, refCount]) => refCount > 0)
+    .map(([id, _refCount]) => id as HelpItemId);

@@ -3,18 +3,21 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 import { cn } from "@/lib/utils";
 import { Sidebar } from "./Sidebar";
-import { Button } from "@/components/ui/button";
+import { HelpItemId, ItemRefCount, itemsToShow } from "./items";
 
 export interface DataGuideContext {
-  openHelp: (filter: string) => void;
+  pushGuideItems: (items: HelpItemId[]) => void;
+  popGuideItems: (items: HelpItemId[]) => void;
 }
 
 const DataGuideContext = createContext<DataGuideContext>({
-  openHelp: () => {},
+  pushGuideItems: () => {},
+  popGuideItems: () => {},
 });
 
 export const useDataGuide = () => {
@@ -31,33 +34,48 @@ export const DataGuideProvider = ({
   children: React.ReactNode;
 }) => {
   const [open, setOpen] = useState(false);
-  const [initialFilter, setInitialFilter] = useState("");
-  const [layout, setLayout] = useState(false);
+  const [itemRefCount, setItemRefCount] = useState({} as ItemRefCount);
 
-  // Used to force new sidebar content when openHelp is called
-  const [forceSidebarUpdateId, setForceSidebarUpdateId] = useState("");
+  const showItems = useMemo(() => itemsToShow(itemRefCount), [itemRefCount]);
+  const anyItems = showItems.length > 0;
 
-  const updateOpen = (o: boolean) => {
-    setOpen(o);
-    setLayout(true);
-    console.log("Setting open:", o);
+  // This provides a way for
+  const pushGuideItems = useCallback(
+    (items: HelpItemId[]) => {
+      setItemRefCount((oldRefCount) =>
+        items.reduce(
+          (acc, id) => ({
+            ...acc,
+            [id]: (acc[id] || 0) + 1,
+          }),
+          oldRefCount,
+        ),
+      );
+    },
+    [setItemRefCount],
+  );
+
+  const popGuideItems = useCallback(
+    (items: HelpItemId[]) => {
+      setItemRefCount((oldRefCount) =>
+        items.reduce(
+          (acc, id) => ({
+            ...acc,
+            [id]: Math.max(0, (acc[id] || 1) - 1),
+          }),
+          oldRefCount,
+        ),
+      );
+    },
+    [setItemRefCount],
+  );
+
+  const toggleOpen = () => {
+    setOpen(!open);
   };
-
-  const openHelp = useCallback((filter: string) => {
-    setInitialFilter(filter);
-    updateOpen(true);
-    setForceSidebarUpdateId(Math.floor(Math.random() * 100000).toString());
-  }, []);
-
-  const transitionEnd = () => {
-    setLayout(false);
-    console.log("Done setting open:", open);
-  };
-
-  console.log("Rerender:", forceSidebarUpdateId);
 
   return (
-    <DataGuideContext.Provider value={{ openHelp }}>
+    <DataGuideContext.Provider value={{ pushGuideItems, popGuideItems }}>
       <div
         className={cn(
           "transition-all duration-300",
@@ -66,30 +84,29 @@ export const DataGuideProvider = ({
       >
         {children}
       </div>
-      <Button
-        size="sm"
-        className={cn(
-          "fixed top-1/2 transform -rotate-90 origin-bottom-right right-0 bg-gray-800 rounded-none transition-all duration-300",
-          open ? "mr-[300px]" : "",
-        )}
-        onClick={() => updateOpen(!open)}
-      >
-        Data Guide
-      </Button>
-      <div
-        className={cn(
-          "p-4 bg-gray-800 w-[300px] fixed top-[50px] right-0 h-screen flex flex-col gap-4 transition-all duration-300",
-          open ? "" : "translate-x-full",
-        )}
-        onTransitionEnd={transitionEnd}
-      >
-        <Sidebar
-          key={forceSidebarUpdateId}
-          initialFilter={initialFilter}
-          onClose={() => updateOpen(!open)}
-          className={cn(!open && !layout && "hidden")}
-        />
-      </div>
+      {anyItems && (
+        <Sidebar toggleOpen={toggleOpen} open={open} items={showItems} />
+      )}
     </DataGuideContext.Provider>
   );
+};
+
+/**
+ * The main way for components to indicate which help items are relevant when the component is used.
+ *
+ * @param items The help items relevant to the component using this hook
+ */
+export const useGuideItems = (items: HelpItemId[]) => {
+  const { popGuideItems, pushGuideItems } = useDataGuide();
+
+  // Only use the initial values and ignore any changes to it
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const setupItems = useMemo(() => items, []);
+
+  useEffect(() => {
+    pushGuideItems(setupItems);
+    return () => {
+      popGuideItems(setupItems);
+    };
+  }, [setupItems, pushGuideItems, popGuideItems]);
 };
