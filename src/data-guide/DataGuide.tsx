@@ -1,20 +1,14 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, useCallback, useContext, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Sidebar } from "./Sidebar";
 import { Button } from "@/components/ui/button";
 
 export interface DataGuideContext {
-  openHelp: (filter: string) => void;
+  openDataGuide: (filter: string) => void;
 }
 
 const DataGuideContext = createContext<DataGuideContext>({
-  openHelp: () => {},
+  openDataGuide: () => {},
 });
 
 export const useDataGuide = () => {
@@ -34,30 +28,22 @@ export const DataGuideProvider = ({
   const [initialFilter, setInitialFilter] = useState("");
   const [layout, setLayout] = useState(false);
 
-  // Used to force new sidebar content when openHelp is called
-  const [forceSidebarUpdateId, setForceSidebarUpdateId] = useState("");
-
   const updateOpen = (o: boolean) => {
     setOpen(o);
     setLayout(true);
-    console.log("Setting open:", o);
   };
 
-  const openHelp = useCallback((filter: string) => {
+  const openDataGuide = useCallback((filter: string) => {
     setInitialFilter(filter);
     updateOpen(true);
-    setForceSidebarUpdateId(Math.floor(Math.random() * 100000).toString());
   }, []);
 
   const transitionEnd = () => {
     setLayout(false);
-    console.log("Done setting open:", open);
   };
 
-  console.log("Rerender:", forceSidebarUpdateId);
-
   return (
-    <DataGuideContext.Provider value={{ openHelp }}>
+    <DataGuideContext.Provider value={{ openDataGuide: openDataGuide }}>
       <div
         className={cn(
           "transition-all duration-300",
@@ -84,7 +70,6 @@ export const DataGuideProvider = ({
         onTransitionEnd={transitionEnd}
       >
         <Sidebar
-          key={forceSidebarUpdateId}
           initialFilter={initialFilter}
           onClose={() => updateOpen(!open)}
           className={cn(!open && !layout && "hidden")}
