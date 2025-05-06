@@ -26,11 +26,11 @@ export const DataGuideProvider = ({
 }) => {
   const [open, setOpen] = useState(false);
   const [initialFilter, setInitialFilter] = useState("");
-  const [layout, setLayout] = useState(false);
+  const [inTransition, setInTransition] = useState(false);
 
   const updateOpen = (o: boolean) => {
     setOpen(o);
-    setLayout(true);
+    setInTransition(true);
   };
 
   const openDataGuide = useCallback((filter: string) => {
@@ -39,7 +39,7 @@ export const DataGuideProvider = ({
   }, []);
 
   const transitionEnd = () => {
-    setLayout(false);
+    setInTransition(false);
   };
 
   return (
@@ -72,7 +72,7 @@ export const DataGuideProvider = ({
         <Sidebar
           initialFilter={initialFilter}
           onClose={() => updateOpen(!open)}
-          className={cn(!open && !layout && "hidden")}
+          className={cn(!open && !inTransition && "hidden")}
         />
       </div>
     </DataGuideContext.Provider>
