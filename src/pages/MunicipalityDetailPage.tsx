@@ -182,10 +182,7 @@ export function MunicipalityDetailPage() {
               {t("municipalityDetailPage.inTons")}
             </Text>
             {!municipality.neededEmissionChangePercent && (
-              <p className="my-4">
-                Kommunens koldioxidbudget är slut och det finns därför ingen
-                linje för Parisavtalet ovan.
-              </p>
+              <p className="my-4">{t("municipalityDetailPage.noParisPath")}</p>
             )}
           </div>
           <div className="mt-8 mr-8">

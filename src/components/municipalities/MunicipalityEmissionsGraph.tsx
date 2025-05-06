@@ -77,7 +77,7 @@ export const MunicipalityEmissionsGraph: FC<
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={projectedData}>
           <Legend
-            verticalAlign="top"
+            verticalAlign="bottom"
             align="right"
             height={36}
             iconType="line"
