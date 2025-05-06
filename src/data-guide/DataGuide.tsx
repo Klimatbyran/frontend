@@ -1,7 +1,6 @@
 import { createContext, useCallback, useContext, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Sidebar } from "./Sidebar";
-import { Button } from "@/components/ui/button";
 
 export interface DataGuideContext {
   openDataGuide: (filter: string) => void;
@@ -26,20 +25,19 @@ export const DataGuideProvider = ({
 }) => {
   const [open, setOpen] = useState(false);
   const [initialFilter, setInitialFilter] = useState("");
-  const [inTransition, setInTransition] = useState(false);
 
   const updateOpen = (o: boolean) => {
     setOpen(o);
-    setInTransition(true);
   };
 
+  // This provides a way for
   const openDataGuide = useCallback((filter: string) => {
     setInitialFilter(filter);
     updateOpen(true);
   }, []);
 
-  const transitionEnd = () => {
-    setInTransition(false);
+  const toggleOpen = () => {
+    setOpen(!open);
   };
 
   return (
@@ -52,29 +50,11 @@ export const DataGuideProvider = ({
       >
         {children}
       </div>
-      <Button
-        size="sm"
-        className={cn(
-          "fixed top-1/2 transform -rotate-90 origin-bottom-right right-0 bg-gray-800 rounded-none transition-all duration-300",
-          open ? "mr-[300px]" : "",
-        )}
-        onClick={() => updateOpen(!open)}
-      >
-        Data Guide
-      </Button>
-      <div
-        className={cn(
-          "p-4 bg-gray-800 w-[300px] fixed top-[50px] right-0 h-screen flex flex-col gap-4 transition-all duration-300",
-          open ? "" : "translate-x-full",
-        )}
-        onTransitionEnd={transitionEnd}
-      >
-        <Sidebar
-          initialFilter={initialFilter}
-          onClose={() => updateOpen(!open)}
-          className={cn(!open && !inTransition && "hidden")}
-        />
-      </div>
+      <Sidebar
+        initialFilter={initialFilter}
+        toggleOpen={toggleOpen}
+        open={open}
+      />
     </DataGuideContext.Provider>
   );
 };
