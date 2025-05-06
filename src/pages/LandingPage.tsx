@@ -15,17 +15,31 @@ import {
   formatEmissionsAbsolute,
   formatPercentChange,
 } from "@/utils/localizeUnit";
+import { Input } from "@/components/ui/input";
 
 export function LandingPage() {
   const { t } = useTranslation();
   const [selectedTab, setSelectedTab] = useState("companies");
   const { companies } = useCompanies();
+  const { municipalities } = useMunicipalities();
   const { getTopMunicipalities } = useMunicipalities();
   const { currentLanguage } = useLanguage();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResult, setSearchResult] = useState([]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  useEffect(() => {
+    setSearchResult(
+      companies.filter((company) => {
+        return company.name.toLowerCase().includes(searchQuery.toLowerCase());
+      }),
+    );
+  }, [searchQuery]);
+
+  console.log(searchQuery)
 
   // Prepare SEO data
   const canonicalUrl = "https://klimatkollen.se";
@@ -113,30 +127,6 @@ export function LandingPage() {
       />
       <div className="min-h-screen flex flex-col">
         <div className="flex-1 flex flex-col items-center justify-center text-center px-4 py-16 md:py-24">
-          <div className="mb-8 md:mb-12">
-            <Tabs
-              defaultValue="companies"
-              value={selectedTab}
-              onValueChange={setSelectedTab}
-              className="w-full max-w-xs md:max-w-md"
-            >
-              <TabsList className="grid w-full grid-cols-2 bg-black-1">
-                <TabsTrigger
-                  value="companies"
-                  className="data-[state=active]:bg-black-2"
-                >
-                  {t("landingPage.tabs.companies")}
-                </TabsTrigger>
-                <TabsTrigger
-                  value="municipalities"
-                  className="data-[state=active]:bg-black-2"
-                >
-                  {t("landingPage.tabs.municipalities")}
-                </TabsTrigger>
-              </TabsList>
-            </Tabs>
-          </div>
-
           <div className="max-w-lg md:max-w-4xl mx-auto space-y-4">
             <h1 className="text-4xl md:text-7xl font-light tracking-tight">
               {t("landingPage.title", {
@@ -160,19 +150,46 @@ export function LandingPage() {
             </div>
           </div>
 
-          <Button
-            className="mt-8 md:mt-12 rounded-full px-6 md:px-8 py-4 md:py-6 text-base md:text-lg bg-white text-black hover:bg-white/90"
-            asChild
-          >
-            <a
-              href={
-                selectedTab === "companies" ? "/companies" : "/municipalities"
-              }
-            >
-              {t("landingPage.seeResults")}
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </a>
-          </Button>
+          <div className="flex flex-col items-center mt-4 gap-4 ">
+            <label for="landingInput" className="text-xl mt-10">
+              Find a company or municipality
+            </label>
+            <div className="flex flex-col gap-2 w-[300px]">
+              <div className="flex flex-row gap-2">
+                <Input
+                  id="landingInput"
+                  type="text"
+                  placeholder="e.g Alfa Laval"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="bg-black-1 h-[40px] rounded-md px-4 text-base text-lg focus:outline-white font-medium focus:ring-1 focus:ring-blue-2 relative w-full text-center "
+                />
+                <Button
+                  className="rounded-full w-[36px] h-[36px] px-2 py-0 text-base md:text-md font-bold bg-white text-black hover:bg-white/90"
+                  asChild
+                >
+                  <a href={`/companies/${searchResult?.wikidataId}`}>
+                    <ArrowRight className="h-5 w-5" />
+                  </a>
+                </Button>
+              </div>
+              <div className={`${searchQuery === '' ? 'hidden' : 'flex-col'} max-h-[300px] min-w-[300px] max-w-[300px] mt-2 overflow-y-scroll relative bg-[#121212] rounded-xl`}>
+                {searchResult &&
+                  searchResult.map((company) => {
+                    return (
+                      <section className="flex flex-col  p-2 justify-center">
+                        <a
+                          href={`/companies/${company?.wikidataId}`}
+                          className="text-left text-lg font-md mt-4 max-w-[300px]"
+                        >
+                          {company?.name}
+                        </a>
+                      </section>
+                    );
+                  })}
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* FIXME reintroduce at a later stage
@@ -193,7 +210,7 @@ export function LandingPage() {
         </div>
       )} */}
 
-        <div className="py-8 md:py-24">
+        <div className="py-48 md:py-24">
           <div className="container mx-auto">
             <h2 className="text-4xl md:text-5xl font-light text-center mb-8 md:mb-16">
               {t("landingPage.bestPerformers")}
