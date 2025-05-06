@@ -555,6 +555,7 @@
     },
     "totalEmissions": "Total emissions {{year}}",
     "budgetRunsOut": "Carbon budget expected to run out by",
+    "budgetRanOut": "Carbon budget ran out",
     "budgetKept": "Carbon budget expected to",
     "budgetHolds": "Stay within limits",
     "hitNetZero": "Predicted to hit net zero",

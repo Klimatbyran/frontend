@@ -556,6 +556,7 @@
     },
     "totalEmissions": "Totala utsläpp {{year}}",
     "budgetRunsOut": "Koldioxidbudgeten tar slut",
+    "budgetRanOut": "Koldioxidbudgeten tog slut",
     "budgetKept": "Koldioxidbudgeten tar slut",
     "budgetHolds": "Håller budget",
     "hitNetZero": "Når nettonoll",

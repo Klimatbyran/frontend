@@ -141,8 +141,10 @@ export function MunicipalityDetailPage() {
             <MunicipalityStatCard
               title={
                 !municipality.budgetRunsOut
-                  ? t("municipalityDetailPage.budgetRunsOut")
-                  : t("municipalityDetailPage.budgetKept")
+                  ? t("municipalityDetailPage.budgetKept")
+                  : new Date(municipality.budgetRunsOut) > new Date()
+                    ? t("municipalityDetailPage.budgetRunsOut")
+                    : t("municipalityDetailPage.budgetRanOut")
               }
               value={
                 !municipality.budgetRunsOut
