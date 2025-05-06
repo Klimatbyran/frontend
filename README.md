@@ -10,6 +10,18 @@ Klimatkollen is an open-source, citizen-driven platform designed to visualize cl
 - **`src/components/`**: Houses reusable React components utilized throughout the application.
 - **`public/`**: Stores static assets such as images.
 
+## 🗄️ Deciding on backend to run development client against
+
+To run the local development client, you must run our API locally or connect to our production API. For information on setting up the API locally, see the [README](https://github.com/Klimatbyran/garbo) in our data pipeline repository.
+
+If you instead want to run the local development client against production,
+setup the local `.env` file for development by running the following command in
+the root directory of the frontend code.
+
+```
+cp .env.example .env.development
+```
+
 ## 🧞 Building and Running Locally
 
 To run the project locally, execute the following commands from the root of the project in your terminal:
@@ -17,11 +29,12 @@ To run the project locally, execute the following commands from the root of the 
 | Command           | Action                                        |
 | :---------------- | :-------------------------------------------- |
 | `npm install`     | Installs dependencies                         |
-| `npm run dev`     | Starts local dev server at `localhost:5173`   |
+| `npm run dev`     | Starts local dev server at `localhost:5173` or
+VITE_API_PROXY   |
+| `npm run dev-gen` | Starts local dev server at `localhost:5173` and generate api
+keys | 
 | `npm run build`   | Builds your production site to `./dist/`      |
 | `npm run preview` | Previews your build locally, before deploying |
-
-To see data in your local development server, you must run our API locally or connect to our production API. More information on how to do that can be found [here](https://github.com/Klimatbyran/garbo) in our data pipeline repository.
 
 ## 👩‍💻 Contributing
 

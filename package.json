@@ -4,7 +4,8 @@
   "version": "4.0.1-rc.10",
   "type": "module",
   "scripts": {
-    "dev": "npm run generate-api && vite",
+    "dev": "vite",
+    "dev-gen": "npm run generate-api && vite",
     "build": "tsc && vite build",
     "postbuild": "npm run generate-sitemap || echo 'Sitemap generation failed, but build completed'",
     "lint": "eslint .",
