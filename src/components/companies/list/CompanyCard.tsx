@@ -246,18 +246,19 @@ export function CompanyCard({
               </Text>
             </div>
           )}
-          {latestPeriod?.economy?.employees && (
-            <div>
-              <Text
-                variant="body"
-                className="flex items-center gap-2 text-grey mb-2 text-lg"
-              >
-                <Users className="w-4 h-4" />{" "}
-                <span>{t("companies.card.employees")}</span>
-              </Text>
+
+          <div>
+            <Text
+              variant="body"
+              className="flex items-center gap-2 text-grey mb-2 text-lg"
+            >
+              <Users className="w-4 h-4" />{" "}
+              <span>{t("companies.card.employees")}</span>
+            </Text>
+            {latestPeriod?.economy && (
               <Text variant="h6">{formattedEmployeeCount}</Text>
-            </div>
-          )}
+            )}
+          </div>
         </div>
         {/* Sustainability Report */}
         <LinkCard

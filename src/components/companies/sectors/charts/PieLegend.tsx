@@ -60,7 +60,7 @@ const PieLegend: React.FC<PieLegendProps> = ({
             : screenSize.isTablet
               ? "grid-cols-1"
               : "grid-cols-2"
-        } gap-2 max-h-[${screenSize.isMobile ? "200" : "500"}px] overflow-y-auto w-full pr-2 ${
+        } gap-2 max-h-[${screenSize.isMobile ? "300" : "500"}px] overflow-y-auto w-full pr-2 ${
           screenSize.isMobile ? "mt-2" : "mt-4"
         }`}
       >

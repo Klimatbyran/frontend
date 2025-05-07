@@ -259,6 +259,8 @@
     "sorting": "Sorterar:",
     "filtering": "Filter:",
     "allSectors": "Alla sektorer",
+    "sectionTitle": "Företag",
+    "noCompaniesInSection": "Inga företag i denna kategori",
     "sectorGraphs": {
       "yearRange": "Basår: {{baseYear}} → Nu: {{currentYear}}",
       "noCompaniesInSector": "Inga företag i denna kategori",
@@ -272,6 +274,7 @@
       "back": "Tillbaka",
       "sectorTotal": "Totala utsläpp i sektorn",
       "total": "Totala utsläpp",
+      "noDataAvailablePieChart": "Det finns inga data för detta år",
       "yearTotal": "Årlig total",
       "unknownCompany": "Okänt företag",
       "pieLegendCompany": "Visa företagsdetaljer",
@@ -553,6 +556,7 @@
     },
     "totalEmissions": "Totala utsläpp {{year}}",
     "budgetRunsOut": "Koldioxidbudgeten tar slut",
+    "budgetRanOut": "Koldioxidbudgeten tog slut",
     "budgetKept": "Koldioxidbudgeten tar slut",
     "budgetHolds": "Håller budget",
     "hitNetZero": "Når nettonoll",
@@ -860,6 +864,7 @@
       "trend": "Trend",
       "parisAgreement": "Parisavtalet",
       "paris": "Parisavtalet",
+      "unit": "tons CO₂e",
       "total": "Totalt",
       "year": "År"
     },
@@ -883,13 +888,6 @@
           "description": "Historisk förändring av utsläpp",
           "detailedDescription": "Genomsnittlig årlig förändring av koldioxidutsläppen i Sveriges kommuner sedan Parisavtalet 2015",
           "source": "<0>Nationella emissionsdatabasen</0>"
-        },
-        "neededEmissionChangePercent": {
-          "label": "Nödvändig utsläppsminskning",
-          "description": "Nödvändig minskning av utsläpp för att nå klimatmålen",
-          "detailedDescription": "Den utsläppsminskning som krävs för att nå Parisavtalet. Ju lägre desto bättre",
-          "source": "<0>Nationella emissionsdatabasen</0>, <1>Uppsala universitet</1>",
-          "nullValues": "kan inte nå Parisavtalet"
         },
         "electricCarChangePercent": {
           "label": "Tillväxt av elbilar",
@@ -966,23 +964,29 @@
   },
   "companyEditPage": {
     "error": {
-      "couldNotFetch": "Det gick inte att hämta företagsinformation",
-      "tryAgainLater": "Försök igen senare",
-      "couldNotFind": "Företaget kunde ej hittas",
+      "couldNotFetch": "Kunde inte hämta företagsdata",
+      "tryAgainLater": "Vänligen försök igen senare",
+      "couldNotFind": "Företaget kunde inte hittas",
       "checkId": "Kontrollera att företags-ID:t är korrekt"
     },
     "rowName": {
       "reportingTimespan": "Rapporteringsperiod",
       "reportingStart": "Start",
       "reportingEnd": "Slut",
-      "marketBased": "Marknadsbaserat",
-      "locationBased": "Platsbaserat",
-      "unknown": "Okänt"
+      "marketBased": "Marknadsbaserad",
+      "locationBased": "Platsbaserad",
+      "unknown": "Okänd"
     },
     "save": "Spara",
     "success": {
-      "title": "Ändringar sparade!",
-      "description": "Rapporteringsperioden har nu uppdaterats"
+      "title": "Ändringarna har sparats!",
+      "description": "Ändringar i rapporteringsperioden har gjorts framgångsrikt"
+    },
+    "unsavedChanges": {
+      "title": "Osparade ändringar",
+      "description": "Du har osparade ändringar. Är du säker på att du vill lämna?",
+      "cancel": "Avbryt",
+      "discard": "Kasta ändringar"
     }
   },
   "authCallbackPage": {
@@ -1059,5 +1063,9 @@
       "2026: Börsnoterade SMF och andra företag",
       "Gradvis expansion för att täcka fler företag"
     ]
+  },
+  "common": {
+    "loading": "Laddar...",
+    "error": "Fel"
   }
 }

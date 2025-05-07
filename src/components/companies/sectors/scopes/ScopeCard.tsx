@@ -75,7 +75,7 @@ const ScopeCard: React.FC<ScopeCardProps> = ({
         <div className="h-2 bg-black-1 rounded-full overflow-hidden">
           <div
             className={`h-full transition-all duration-500 ease-out ${color}`}
-            style={{ width: `${percent}%` }}
+            style={{ width: `${percent * 100}%` }}
           />
         </div>
       </div>

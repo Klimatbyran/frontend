@@ -1,6 +1,8 @@
 import React from "react";
 import { ArrowUpRight, Factory, ArrowDownRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { formatPercent } from "@/utils/localizeUnit";
+import { useLanguage } from "@/components/LanguageProvider";
 
 interface KeyInsightsProps {
   scopeData: any;
@@ -22,6 +24,7 @@ const KeyInsights: React.FC<KeyInsightsProps> = ({
   totalEmissions,
 }) => {
   const { t } = useTranslation();
+  const { currentLanguage } = useLanguage();
 
   const insights: InsightItem[] = [
     {
@@ -72,7 +75,10 @@ const KeyInsights: React.FC<KeyInsightsProps> = ({
       <div className="space-y-4">
         {insights.map((insight, index) => {
           const Icon = insight.icon;
-          const percentage = ((insight.value / insight.total) * 100).toFixed(1);
+          const percentage = formatPercent(
+            insight.value / insight.total,
+            currentLanguage,
+          );
 
           return (
             <div key={index} className="flex items-start gap-3">

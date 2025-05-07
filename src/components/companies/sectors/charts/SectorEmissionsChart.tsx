@@ -125,28 +125,36 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
       <div>
         <ResponsiveContainer width="100%" height="100%">
           {chartType === "pie" ? (
-            screenSize.isMobile ? (
-              <MobilePieChartView
-                pieChartData={pieChartData}
-                selectedSector={selectedSector}
-                size={{
-                  innerRadius: size.innerRadius,
-                  outerRadius: size.outerRadius,
-                }}
-                handlePieMouseEnter={handlePieMouseEnter}
-                handlePieClick={handlePieClick}
-              />
+            totalEmissions > 0 ? (
+              screenSize.isMobile ? (
+                <MobilePieChartView
+                  pieChartData={pieChartData}
+                  selectedSector={selectedSector}
+                  size={{
+                    innerRadius: size.innerRadius,
+                    outerRadius: size.outerRadius,
+                  }}
+                  handlePieMouseEnter={handlePieMouseEnter}
+                  handlePieClick={handlePieClick}
+                />
+              ) : (
+                <DesktopPieChartView
+                  pieChartData={pieChartData}
+                  selectedSector={selectedSector}
+                  size={{
+                    innerRadius: size.innerRadius,
+                    outerRadius: size.outerRadius,
+                  }}
+                  handlePieMouseEnter={handlePieMouseEnter}
+                  handlePieClick={handlePieClick}
+                />
+              )
             ) : (
-              <DesktopPieChartView
-                pieChartData={pieChartData}
-                selectedSector={selectedSector}
-                size={{
-                  innerRadius: size.innerRadius,
-                  outerRadius: size.outerRadius,
-                }}
-                handlePieMouseEnter={handlePieMouseEnter}
-                handlePieClick={handlePieClick}
-              />
+              <div className="flex justify-center items-center h-full">
+                <p className="text-grey">
+                  {t("companiesPage.sectorGraphs.noDataAvailablePieChart")}
+                </p>
+              </div>
             )
           ) : (
             <BarChart

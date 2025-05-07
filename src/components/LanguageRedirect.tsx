@@ -5,6 +5,10 @@ export function LanguageRedirect() {
   const location = useLocation();
   const { currentLanguage } = useLanguage();
 
+  if (location.pathname === "/license") {
+    return null;
+  }
+
   // Check if the path already has a language prefix
   const hasLanguagePrefix = /^\/(en|sv)($|\/)/.test(location.pathname);
 

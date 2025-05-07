@@ -274,6 +274,7 @@
       "back": "Back",
       "sectorTotal": "Sector Total Emissions",
       "total": "Total Emissions",
+      "noDataAvailablePieChart": "No data available for this year",
       "pieLegendCompany": "View company details",
       "pieLegendSector": "View sector details",
       "unknownCompany": "Unknown Company",
@@ -364,31 +365,38 @@
         "links": {
           "smhi": {
             "title": "National Emissions Database",
-            "text": "Greenhouse gas emissions in municipalities"
+            "text": "Greenhouse gas emissions in municipalities",
+            "link": "https://nationellaemissionsdatabasen.smhi.se/"
           },
           "skr": {
             "title": "Swedish Association of Local Authorities and Regions",
-            "text": "Political leadership in municipalities"
+            "text": "Political leadership in municipalities",
+            "link": "https://skr.se/skr/demokratiledningstyrning/valmaktfordelning/valresultatstyren/styrekommunereftervalet2022.69547.html"
           },
           "wikidata": {
             "title": "Wikidata",
-            "text": "Municipal coats of arms and population numbers"
+            "text": "Municipal coats of arms and population numbers",
+            "link": "https://www.wikidata.org/wiki/Wikidata:Country_subdivision_task_force/Sweden/Municipalities"
           },
           "trafikanalys": {
             "title": "Traffic Analysis",
-            "text": "Percentage of electric vehicles"
+            "text": "Percentage of electric vehicles",
+            "link": "https://www.trafa.se/vagtrafik/fordon/"
           },
           "nvdb": {
             "title": "National Road Database",
-            "text": "Cycling paths per municipality"
+            "text": "Cycling paths per municipality",
+            "link": "https://nvdb2012.trafikverket.se/SeTransportnatverket"
           },
           "sei": {
             "title": "Stockholm Environment Institute",
-            "text": "Household consumption-based emissions"
+            "text": "Household consumption-based emissions",
+            "link": "https://www.sei.org/tools/konsumtionskompassen/"
           },
           "powerCircles": {
             "title": "Power Circles database ELIS",
-            "text": "Charging infrastructure data from the industry organization"
+            "text": "Charging infrastructure data from the industry organization",
+            "link": "https://powercircle.org/elbilsstatistik/"
           },
           "klimatplaner": {
             "title": "Climate Plans",
@@ -396,11 +404,13 @@
           },
           "upphandlingsmyndigheten": {
             "title": "Procurement Authority",
-            "text": "Information on climate requirements in municipal procurements"
+            "text": "Information on climate requirements in municipal procurements",
+            "link": "https://www.klimatkollen.se/data/procurements/NUE2022_DATA_2023-12-20.xlsx"
           },
           "greenpeace": {
             "title": "Greenpeace",
-            "text": "Mapping of climate requirements in public procurement"
+            "text": "Mapping of climate requirements in public procurement",
+            "link": "https://docs.google.com/spreadsheets/d/1EdHUa49HJZn0rXqM-6tChdim4TJzXnwA/edit#gid=1040317160"
           }
         }
       },
@@ -545,6 +555,7 @@
     },
     "totalEmissions": "Total emissions {{year}}",
     "budgetRunsOut": "Carbon budget expected to run out by",
+    "budgetRanOut": "Carbon budget ran out",
     "budgetKept": "Carbon budget expected to",
     "budgetHolds": "Stay within limits",
     "hitNetZero": "Predicted to hit net zero",
@@ -877,13 +888,6 @@
           "detailedDescription": "Average annual change in carbon dioxide emissions in Swedish municipalities since the Paris Agreement in 2015",
           "source": "<0>National Emissions Database</0>"
         },
-        "neededEmissionChangePercent": {
-          "label": "Required Emission Change",
-          "description": "Required change in emissions to meet climate goals",
-          "detailedDescription": "The emission reduction required to meet the Paris Agreement. Lower values are better",
-          "source": "<0>National Emissions Database</0>, <1>Uppsala University</1>",
-          "nullValues": "cannot reach Paris Agreement"
-        },
         "electricCarChangePercent": {
           "label": "Electric Car Growth",
           "description": "Change in electric car adoption",
@@ -976,6 +980,12 @@
     "success": {
       "title": "Changes have been saved!",
       "description": "Changes to the reporting period have been made successfully"
+    },
+    "unsavedChanges": {
+      "title": "Unsaved Changes",
+      "description": "You have unsaved changes. Are you sure you want to leave?",
+      "cancel": "Cancel",
+      "discard": "Discard Changes"
     }
   },
   "authCallbackPage": {

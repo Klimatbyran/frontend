@@ -141,8 +141,10 @@ export function MunicipalityDetailPage() {
             <MunicipalityStatCard
               title={
                 !municipality.budgetRunsOut
-                  ? t("municipalityDetailPage.budgetRunsOut")
-                  : t("municipalityDetailPage.budgetKept")
+                  ? t("municipalityDetailPage.budgetKept")
+                  : new Date(municipality.budgetRunsOut) > new Date()
+                    ? t("municipalityDetailPage.budgetRunsOut")
+                    : t("municipalityDetailPage.budgetRanOut")
               }
               value={
                 !municipality.budgetRunsOut
@@ -182,10 +184,7 @@ export function MunicipalityDetailPage() {
               {t("municipalityDetailPage.inTons")}
             </Text>
             {!municipality.neededEmissionChangePercent && (
-              <p className="my-4">
-                Kommunens koldioxidbudget är slut och det finns därför ingen
-                linje för Parisavtalet ovan.
-              </p>
+              <p className="my-4">{t("municipalityDetailPage.noParisPath")}</p>
             )}
           </div>
           <div className="mt-8 mr-8">
@@ -199,7 +198,7 @@ export function MunicipalityDetailPage() {
             {
               title: t("municipalityDetailPage.annualChangeSince2015"),
               value: `${formatPercentChange(
-                municipality.historicalEmissionChangePercent / 100,
+                municipality.historicalEmissionChangePercent,
                 currentLanguage,
               )}`,
               valueClassName: "text-orange-2",
@@ -208,7 +207,7 @@ export function MunicipalityDetailPage() {
               title: t("municipalityDetailPage.reductionToMeetParis"),
               value: municipality.neededEmissionChangePercent
                 ? `${formatPercentChange(
-                    -municipality.neededEmissionChangePercent / 100,
+                    -municipality.neededEmissionChangePercent,
                     currentLanguage,
                   )}`
                 : t("municipalityDetailPage.cannotReduceToParis"),
@@ -266,6 +265,7 @@ export function MunicipalityDetailPage() {
               value: `${formatPercent(
                 municipality.electricCarChangePercent,
                 currentLanguage,
+                true,
               )}`,
               valueClassName: "text-orange-2",
             },

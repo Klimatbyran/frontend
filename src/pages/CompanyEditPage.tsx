@@ -59,7 +59,7 @@ export function CompanyEditPage() {
         <Text variant="h3" className="text-red-500 mb-4">
           {t("companyEditPage.error.couldNotFetch")}
         </Text>
-        <Text variant="muted">{t("companyEditPage.error.tryAgainLater")}</Text>
+        <Text variant="body">{t("companyEditPage.error.tryAgainLater")}</Text>
       </div>
     );
   }
@@ -70,22 +70,26 @@ export function CompanyEditPage() {
         <Text variant="h3" className="text-red-500 mb-4">
           {t("companyEditPage.error.couldNotFind")}
         </Text>
-        <Text variant="muted">{t("companyEditPage.error.checkId")}</Text>
+        <Text variant="body">{t("companyEditPage.error.checkId")}</Text>
       </div>
     );
   }
-  
-  const handleInputChange = async (name: string, value: string, originalValue) => {
+
+  const handleInputChange = async (
+    name: string,
+    value: string,
+    originalValue: string,
+  ) => {
     const updateFormData = new Map(formData);
-    if(value != originalValue) {
-      updateFormData.set(name, value);;    
+    if (value != originalValue) {
+      updateFormData.set(name, value);
     } else {
       updateFormData.delete(name);
     }
     setFormData(updateFormData);
   };
 
-  const handleSubmit = async (event: React.FormEvent<SubmitEvent>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     setIsUpdating(true);
     event.preventDefault();
     if (formRef.current !== null) {
@@ -103,12 +107,11 @@ export function CompanyEditPage() {
           setFormData(formData.set(input.name, input.value));
         }
       }
-      for(const textarea of formRef.current.querySelectorAll("textarea")) {
-        if (textarea.value === textarea.defaultValue) continue
+      for (const textarea of formRef.current.querySelectorAll("textarea")) {
+        if (textarea.value === textarea.defaultValue) continue;
 
         setFormData(formData.set(textarea.name, textarea.value));
       }
-
     }
     if (id !== undefined) {
       await updateReportingPeriods(
@@ -117,6 +120,7 @@ export function CompanyEditPage() {
       );
       await refetch();
       setSelectedYears(selectedYears);
+      setFormData(new Map());
       setIsUpdating(false);
       showToast(
         t("companyEditPage.success.title"),
@@ -127,37 +131,68 @@ export function CompanyEditPage() {
 
   const resetPeriod = (year: number) => {
     const updatedFormData = new Map(formData);
-    for(const key of formData.keys()) {
-      if(key.includes(year.toString())) {
+    for (const key of formData.keys()) {
+      if (key.includes(year.toString())) {
         updatedFormData.delete(key);
       }
     }
     setFormData(updatedFormData);
-  }
+  };
 
   return (
     <div className="space-y-16 max-w-[1400px] mx-auto">
       <div className="bg-black-2 rounded-level-1 p-16">
-      <CompanyEditHeader 
-        company={company}
-        onYearsSelect={setSelectedYears}
-      />
-      {selectedPeriods !== null && selectedPeriods.length > 0 && (
-        <form onSubmit={handleSubmit} ref={formRef}>
-        <CompanyEditPeriod periods={selectedPeriods} onInputChange={handleInputChange} formData={formData} resetPeriod={resetPeriod}></CompanyEditPeriod>
-        <CompanyEditScope1 periods={selectedPeriods} onInputChange={handleInputChange} formData={formData}></CompanyEditScope1>
-        <CompanyEditScope2 periods={selectedPeriods} onInputChange={handleInputChange} formData={formData}></CompanyEditScope2>
-        <CompanyEditScope3 periods={selectedPeriods} onInputChange={handleInputChange} formData={formData}></CompanyEditScope3>
-        <div className='w-full ps-4 pe-2 mt-6'>
-        <textarea className='ms-2 w-full p-2 border-gray-300 rounded text-black bg-white' rows={4} placeholder='Comment' name='comment'></textarea>
-        <input type='text' className='ms-2 mt-2 w-full p-2 rounded text-black bg-white' name='source' placeholder='Source URL'></input>
-        </div>
-        
-        <button type="submit" className='inline-flex float-right mt-3 items-center justify-center text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white disabled:pointer-events-none hover:opacity-80 active:ring-1 active:ring-white disabled:opacity-50 h-10 bg-blue-5 text-white rounded-lg hover:bg-blue-6 transition px-4 py-1 font-medium'>
-          {t("companyEditPage.save")}
-        </button>
-        </form>
-      )}
+        <CompanyEditHeader
+          company={company}
+          onYearsSelect={setSelectedYears}
+          hasUnsavedChanges={formData.size > 0}
+        />
+        {selectedPeriods !== null && selectedPeriods.length > 0 && (
+          <form onSubmit={handleSubmit} ref={formRef}>
+            <CompanyEditPeriod
+              periods={selectedPeriods}
+              onInputChange={handleInputChange}
+              formData={formData}
+              resetPeriod={resetPeriod}
+            ></CompanyEditPeriod>
+            <CompanyEditScope1
+              periods={selectedPeriods}
+              onInputChange={handleInputChange}
+              formData={formData}
+            ></CompanyEditScope1>
+            <CompanyEditScope2
+              periods={selectedPeriods}
+              onInputChange={handleInputChange}
+              formData={formData}
+            ></CompanyEditScope2>
+            <CompanyEditScope3
+              periods={selectedPeriods}
+              onInputChange={handleInputChange}
+              formData={formData}
+            ></CompanyEditScope3>
+            <div className="w-full ps-4 pe-2 mt-6">
+              <textarea
+                className="ms-2 w-full p-2 border-gray-300 rounded text-black bg-white"
+                rows={4}
+                placeholder="Comment"
+                name="comment"
+              ></textarea>
+              <input
+                type="text"
+                className="ms-2 mt-2 w-full p-2 rounded text-black bg-white"
+                name="source"
+                placeholder="Source URL"
+              ></input>
+            </div>
+
+            <button
+              type="submit"
+              className="inline-flex float-right mt-3 items-center justify-center text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white disabled:pointer-events-none hover:opacity-80 active:ring-1 active:ring-white disabled:opacity-50 h-10 bg-blue-5 text-white rounded-lg hover:bg-blue-6 transition px-4 py-1 font-medium"
+            >
+              {t("companyEditPage.save")}
+            </button>
+          </form>
+        )}
       </div>
     </div>
   );
