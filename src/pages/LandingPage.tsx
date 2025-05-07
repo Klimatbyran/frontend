@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { ArrowRight, Building2Icon, TreePineIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RankedList, RankedListItem } from "@/components/RankedList";
 import { ContentBlock } from "@/components/ContentBlock";
 import { Typewriter } from "@/components/ui/typewriter";
@@ -16,13 +15,15 @@ import {
   formatPercentChange,
 } from "@/utils/localizeUnit";
 import { Input } from "@/components/ui/input";
+import { BaseCompany } from "@/types/company";
 
 export function LandingPage() {
   const { t } = useTranslation();
   const [selectedTab, setSelectedTab] = useState("companies");
   const { companies } = useCompanies();
   const { municipalities } = useMunicipalities();
-  const { getTopMunicipalities } = useMunicipalities();
+  /*   const savedMunicipalities = useRef(null)
+   */ const { getTopMunicipalities } = useMunicipalities();
   const { currentLanguage } = useLanguage();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResult, setSearchResult] = useState([]);
@@ -31,15 +32,17 @@ export function LandingPage() {
     window.scrollTo(0, 0);
   }, []);
 
+  useEffect(() => {});
+
   useEffect(() => {
     setSearchResult(
-      companies.filter((company) => {
+      companies?.filter((company: BaseCompany): BaseCompany => {
         return company.name.toLowerCase().includes(searchQuery.toLowerCase());
       }),
     );
   }, [searchQuery]);
 
-  console.log(searchQuery)
+  console.log(municipalities);
 
   // Prepare SEO data
   const canonicalUrl = "https://klimatkollen.se";
@@ -173,7 +176,9 @@ export function LandingPage() {
                   </a>
                 </Button>
               </div>
-              <div className={`${searchQuery === '' ? 'hidden' : 'flex-col'} max-h-[300px] min-w-[300px] max-w-[300px] mt-2 overflow-y-scroll relative bg-[#121212] rounded-xl`}>
+              <div
+                className={`${searchQuery === "" ? "hidden" : "flex-col"} max-h-[300px] min-w-[300px] max-w-[300px] mt-2 overflow-y-scroll relative bg-[#121212] rounded-xl`}
+              >
                 {searchResult &&
                   searchResult.map((company) => {
                     return (
