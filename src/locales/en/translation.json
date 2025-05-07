@@ -888,13 +888,6 @@
           "detailedDescription": "Average annual change in carbon dioxide emissions in Swedish municipalities since the Paris Agreement in 2015",
           "source": "<0>National Emissions Database</0>"
         },
-        "neededEmissionChangePercent": {
-          "label": "Required Emission Change",
-          "description": "Required change in emissions to meet climate goals",
-          "detailedDescription": "The emission reduction required to meet the Paris Agreement. Lower values are better",
-          "source": "<0>National Emissions Database</0>, <1>Uppsala University</1>",
-          "nullValues": "cannot reach Paris Agreement"
-        },
         "electricCarChangePercent": {
           "label": "Electric Car Growth",
           "description": "Change in electric car adoption",

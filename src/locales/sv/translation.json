@@ -889,13 +889,6 @@
           "detailedDescription": "Genomsnittlig årlig förändring av koldioxidutsläppen i Sveriges kommuner sedan Parisavtalet 2015",
           "source": "<0>Nationella emissionsdatabasen</0>"
         },
-        "neededEmissionChangePercent": {
-          "label": "Nödvändig utsläppsminskning",
-          "description": "Nödvändig minskning av utsläpp för att nå klimatmålen",
-          "detailedDescription": "Den utsläppsminskning som krävs för att nå Parisavtalet. Ju lägre desto bättre",
-          "source": "<0>Nationella emissionsdatabasen</0>, <1>Uppsala universitet</1>",
-          "nullValues": "kan inte nå Parisavtalet"
-        },
         "electricCarChangePercent": {
           "label": "Tillväxt av elbilar",
           "description": "Förändring i andel elbilar",
