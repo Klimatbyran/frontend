@@ -15,6 +15,7 @@ import {
   formatEmissionsAbsolute,
   formatPercentChange,
 } from "@/utils/localizeUnit";
+import { useScreenSize } from "@/hooks/useScreenSize";
 
 export function LandingPage() {
   const { t } = useTranslation();
@@ -22,6 +23,7 @@ export function LandingPage() {
   const { companies } = useCompanies();
   const { getTopMunicipalities } = useMunicipalities();
   const { currentLanguage } = useLanguage();
+  const { isMobile } = useScreenSize();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -111,68 +113,81 @@ export function LandingPage() {
         canonicalUrl={canonicalUrl}
         structuredData={structuredData}
       />
-      <div className="min-h-screen flex flex-col">
-        <div className="flex-1 flex flex-col items-center justify-center text-center px-4 py-16 md:py-24">
-          <div className="mb-8 md:mb-12">
-            <Tabs
-              defaultValue="companies"
-              value={selectedTab}
-              onValueChange={setSelectedTab}
-              className="w-full max-w-xs md:max-w-md"
-            >
-              <TabsList className="grid w-full grid-cols-2 bg-black-1">
-                <TabsTrigger
-                  value="companies"
-                  className="data-[state=active]:bg-black-2"
-                >
-                  {t("landingPage.tabs.companies")}
-                </TabsTrigger>
-                <TabsTrigger
-                  value="municipalities"
-                  className="data-[state=active]:bg-black-2"
-                >
-                  {t("landingPage.tabs.municipalities")}
-                </TabsTrigger>
-              </TabsList>
-            </Tabs>
-          </div>
-
-          <div className="max-w-lg md:max-w-4xl mx-auto space-y-4">
-            <h1 className="text-4xl md:text-7xl font-light tracking-tight">
-              {t("landingPage.title", {
-                tabName: t(`landingPage.tabName.${selectedTab}`),
-              })}
-            </h1>
-
-            <div className="h-[80px] md:h-[120px] flex items-center justify-center text-4xl md:text-7xl font-light">
-              <Typewriter
-                text={
-                  selectedTab === "companies"
-                    ? companyTypewriterTexts
-                    : municipalityTypewriterTexts
-                }
-                speed={70}
-                className="text-[#E2FF8D]"
-                waitTime={2000}
-                deleteSpeed={40}
-                cursorChar="_"
-              />
-            </div>
-          </div>
-
-          <Button
-            className="mt-8 md:mt-12 rounded-full px-6 md:px-8 py-4 md:py-6 text-base md:text-lg bg-white text-black hover:bg-white/90"
-            asChild
+      <div className="min-h-screen w-screen flex flex-col">
+        <div className="flex w-screen min-h-screen flex-col items-center justify-center text-center relative  ">
+          <video
+            className="w-screen h-screen z-1 object-cover opacity-75"
+            autoPlay
+            loop
+            muted
+            aria-label="Panning video of mountains"
           >
-            <a
-              href={
-                selectedTab === "companies" ? "/companies" : "/municipalities"
-              }
+            <source src="./videos/mountain-optimized.mp4" type="video/mp4" />
+          </video>
+          <div className="absolute">
+            {/* <div className="mb-8 md:mb-12">
+              <Tabs
+                defaultValue="companies"
+                value={selectedTab}
+                onValueChange={setSelectedTab}
+                className="w-full max-w-xs md:max-w-md"
+              >
+                <TabsList className="grid w-full grid-cols-2 bg-black-1">
+                  <TabsTrigger
+                    value="companies"
+                    className="data-[state=active]:bg-black-2"
+                  >
+                    {t("landingPage.tabs.companies")}
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="municipalities"
+                    className="data-[state=active]:bg-black-2"
+                  >
+                    {t("landingPage.tabs.municipalities")}
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
+            </div> */}
+
+            <div className="max-w-lg md:max-w-4xl mx-auto space-y-4">
+              <h1 className="text-4xl md:text-7xl font-light tracking-tight">
+                {t("landingPage.title", {
+                  tabName: t(`landingPage.tabName.${selectedTab}`),
+                })}
+              </h1>
+
+              <div className="h-[80px] md:h-[120px] flex items-center justify-center text-4xl md:text-7xl font-light">
+                <Typewriter
+                  text={
+                    selectedTab === "companies"
+                      ? companyTypewriterTexts
+                      : municipalityTypewriterTexts
+                  }
+                  speed={70}
+                  className="text-[#E2FF8D]"
+                  waitTime={2000}
+                  deleteSpeed={40}
+                  cursorChar="_"
+                />
+              </div>
+            </div>
+            <Button
+              className="mt-8 md:mt-12 rounded-full px-6 md:px-8 py-4 md:py-6 text-base md:text-lg bg-white text-black hover:bg-white/90"
+              asChild
             >
-              {t("landingPage.seeResults")}
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </a>
-          </Button>
+              <a
+                href={
+                  selectedTab === "companies" ? "/companies" : "/municipalities"
+                }
+              >
+                {t("landingPage.seeResults")}
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </a>
+            </Button>
+          </div>
+          <div
+            className={`${isMobile ? "h-[100px]" : "h-[200px]"} absolute  -bottom-2 w-full bg-gradient-to-b from-transparent to-black`}
+          ></div>
         </div>
 
         {/* FIXME reintroduce at a later stage
@@ -193,7 +208,7 @@ export function LandingPage() {
         </div>
       )} */}
 
-        <div className="py-8 md:py-24">
+        <div className="py-8 md:py-18">
           <div className="container mx-auto">
             <h2 className="text-4xl md:text-5xl font-light text-center mb-8 md:mb-16">
               {t("landingPage.bestPerformers")}
@@ -220,7 +235,7 @@ export function LandingPage() {
           </div>
         </div>
 
-        <div className="pb-8 md:pb-16">
+        <div className="mb-16 md:mt-12 md:mb-24">
           <div className="container mx-auto">
             <ContentBlock
               title={t("landingPage.aboutUsTitle")}
