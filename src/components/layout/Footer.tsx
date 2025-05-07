@@ -5,6 +5,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { useNavigate } from "react-router-dom";
 import { Marquee } from "@/components/magicui/marquee.tsx";
+import { useReducedMotion } from "framer-motion";
 
 function SocialLinks() {
   return (
@@ -29,9 +30,21 @@ function SocialLinks() {
   );
 }
 
-function PartnerLogos() {
+interface PartnerLogoProps {
+  prefersReducedMotion: boolean | null;
+}
+
+function PartnerLogos({ prefersReducedMotion }: PartnerLogoProps) {
+  const Wrapper = prefersReducedMotion ? "div" : Marquee;
+  const wrapperProps = prefersReducedMotion
+    ? {
+        className:
+          "flex flex-wrap justify-center items-center gap-4 px-2 md:px-6",
+      }
+    : { className: "[--duration:80s]", reverse: false, pauseOnHover: false };
+
   return (
-    <Marquee reverse={false} pauseOnHover={false} className="[--duration:80s]">
+    <Wrapper {...wrapperProps}>
       {partners.map(({ href, src, alt }) => (
         <a
           key={alt}
@@ -40,16 +53,17 @@ function PartnerLogos() {
           rel="noreferrer"
           className="flex items-center justify-center"
         >
-          <img className="w-28 h-12 p-0 object-contain" src={src} alt={alt} />
+          <img className="w-28 h-12 object-contain" src={src} alt={alt} />
         </a>
       ))}
-    </Marquee>
+    </Wrapper>
   );
 }
 
 export function Footer() {
   const { t } = useTranslation();
   const { login, logout, token, user } = useAuth();
+  const prefersReducedMotion = useReducedMotion();
   const navigate = useNavigate();
 
   return (
@@ -82,9 +96,13 @@ export function Footer() {
           <Text variant="h6" className="text-blue-3">
             {t("footer.supporters")}
           </Text>
-          <div className="absolute left-20 md:left-0 top-0 bottom-0 w-24 md:w-16 bg-gradient-to-r from-[var(--black-2)] to-transparent pointer-events-none z-10" />
-          <PartnerLogos />
-          <div className="absolute right-20 md:right-0 top-0 bottom-0 w-24 md:w-16 bg-gradient-to-l from-[var(--black-2)] to-transparent pointer-events-none z-10" />
+          {prefersReducedMotion || (
+            <div className="absolute left-20 md:left-0 top-0 bottom-0 w-24 md:w-16 bg-gradient-to-r from-[var(--black-2)] to-transparent pointer-events-none z-10" />
+          )}
+          <PartnerLogos prefersReducedMotion={prefersReducedMotion} />
+          {prefersReducedMotion || (
+            <div className="absolute right-20 md:right-0 top-0 bottom-0 w-24 md:w-16 bg-gradient-to-l from-[var(--black-2)] to-transparent pointer-events-none z-10" />
+          )}
         </div>
 
         {/* Footer Links */}
