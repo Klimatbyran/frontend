@@ -31,16 +31,16 @@ function SocialLinks() {
 
 function PartnerLogos() {
   return (
-    <Marquee reverse={false} pauseOnHover={false} className="[--duration:60s]">
+    <Marquee reverse={false} pauseOnHover={false} className="[--duration:80s]">
       {partners.map(({ href, src, alt }) => (
         <a
           key={alt}
           href={href}
           target="_blank"
           rel="noreferrer"
-          className="flex items-center"
+          className="flex items-center justify-center"
         >
-          <img className="w-28 max-h-12 object-contain" src={src} alt={alt} />
+          <img className="w-28 h-12 p-0 object-contain" src={src} alt={alt} />
         </a>
       ))}
     </Marquee>
@@ -82,9 +82,9 @@ export function Footer() {
           <Text variant="h6" className="text-blue-3">
             {t("footer.supporters")}
           </Text>
-          <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-[var(--black-2)] to-transparent pointer-events-none z-10" />
+          <div className="absolute left-20 md:left-0 top-0 bottom-0 w-24 md:w-16 bg-gradient-to-r from-[var(--black-2)] to-transparent pointer-events-none z-10" />
           <PartnerLogos />
-          <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[var(--black-2)] to-transparent pointer-events-none z-10" />
+          <div className="absolute right-20 md:right-0 top-0 bottom-0 w-24 md:w-16 bg-gradient-to-l from-[var(--black-2)] to-transparent pointer-events-none z-10" />
         </div>
 
         {/* Footer Links */}
