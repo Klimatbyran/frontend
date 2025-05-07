@@ -46,19 +46,19 @@ export function RankedList({
         </div>
       </div>
 
-      <div className="grid gap-y-6 grid-cols-[auto_1fr_auto]">
+      <div className="grid gap-y-4 md:gap-y-6 grid-cols-[auto_1fr_auto]">
         <Text className="col-span-full text-md text-grey">{description}</Text>
         {items.map((item, index) => (
           <a
             key={item.link}
             href={item.link}
-            className="grid grid-cols-subgrid col-span-full items-center gap-4 hover:bg-black-1 transition-colors rounded-lg"
+            className="grid grid-cols-subgrid col-span-full items-center gap-2 md:gap-4 hover:bg-black-1 transition-colors rounded-lg"
           >
             <span className={cn("text-2xl md:text-5xl font-light", rankColor)}>
               {String(index + 1).padStart(2, "0")}
             </span>
             <span className="text-base md:text-lg">{item.name}</span>
-            <div className="flex items-center md:justify-end">
+            <div className="flex flex-wrap justify-end">
               {itemValueRenderer(item)}
             </div>
           </a>
