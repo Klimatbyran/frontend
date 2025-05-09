@@ -16,6 +16,7 @@ import {
 } from "@/utils/localizeUnit";
 import { Input } from "@/components/ui/input";
 import getCombinedData from "@/utils/getCombinedSearch";
+import { Text } from "@/components/ui/text";
 
 type SearchItem = {
   id: string;
@@ -27,13 +28,11 @@ export function LandingPage() {
   const { t } = useTranslation();
   const { companies } = useCompanies();
   const { municipalities } = useMunicipalities();
-  /*   const savedMunicipalities = useRef(null)
-   */ const { getTopMunicipalities } = useMunicipalities();
+  const { getTopMunicipalities } = useMunicipalities();
   const { currentLanguage } = useLanguage();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResult, setSearchResult] = useState<SearchItem[]>([]);
   const combinedData = getCombinedData(municipalities, companies);
-  console.log(combinedData);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -153,7 +152,7 @@ export function LandingPage() {
             </div>
           </div>
 
-          <div className="flex flex-col items-center mt-4 gap-4 ">
+          <div className="flex flex-col items-center mt-12 gap-4 ">
             <label for="landingInput" className="text-xl mt-10">
               Find a company or municipality
             </label>
@@ -165,7 +164,7 @@ export function LandingPage() {
                   placeholder="e.g Alfa Laval"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="bg-black-1 h-[40px] rounded-md px-4 text-base text-lg focus:outline-white font-medium focus:ring-1 focus:ring-blue-2 relative w-full text-center "
+                  className="bg-transparent border-solid border-white h-[40px] rounded-full px-4 text-base text-lg focus:outline-white font-medium focus:ring-1 focus:ring-blue-2 relative w-full text-center "
                 />
                 <Button
                   className="rounded-full w-[36px] h-[36px] px-2 py-0 text-base md:text-md font-bold bg-white text-black hover:bg-white/90"
@@ -177,7 +176,7 @@ export function LandingPage() {
                 </Button>
               </div>
               <div
-                className={`${searchQuery === "" ? "hidden" : "flex-col"} max-h-[300px] top-10 min-w-[300px] max-w-[300px] mt-2 overflow-y-scroll absolute bg-[#121212] rounded-xl`}
+                className={`${searchQuery === "" ? "hidden" : "flex-col"}  max-h-[290px] top-10 min-w-[300px] max-w-[300px] mt-2 overflow-y-scroll absolute bg-[#121212] rounded-xl`}
                 style={{
                   scrollbarWidth: "thin",
                   scrollbarColor: "#f1f1f1",
@@ -185,16 +184,18 @@ export function LandingPage() {
               >
                 {searchResult &&
                   searchResult.map((item) => {
-                    console.log(item);
                     return (
-                      <section className="flex flex-col p-2 justify-center">
-                        <a
-                          href={`${item.category === "companies" ? "/companies/" : "/municipalities/"}${item?.id}`}
-                          className="text-left text-lg font-md mt-4 max-w-[300px]"
-                        >
-                          {item?.name}
-                        </a>
-                      </section>
+                      <a
+                        href={`${item.category === "companies" ? "/companies/" : "/municipalities/"}${item?.id}`}
+                        className="text-left text-lg font-md max-w-[300px] p-3 flex justify-between hover:bg-black-1 transition-colors"
+                      >
+                        {item?.name}
+                        <Text className="opacity-60">
+                          {item.category === "companies"
+                            ? "Company"
+                            : "Municipality"}
+                        </Text>
+                      </a>
                     );
                   })}
               </div>
@@ -220,7 +221,7 @@ export function LandingPage() {
         </div>
       )} */}
 
-        <div className="py-8 md:py-24">
+        <div className="py-8 md:py-36">
           <div className="mx-2 sm:mx-8">
             <h2 className="text-4xl md:text-5xl font-light text-center mb-8 md:mb-16">
               {t("landingPage.bestPerformers")}

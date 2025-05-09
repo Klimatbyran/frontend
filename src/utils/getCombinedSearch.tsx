@@ -1,6 +1,7 @@
 import { Municipality } from "@/types/municipality";
 import { BaseCompany } from "@/types/company";
 
+//importera companies och municipalities
 type CombinedData = {
   name: string;
   id: string;
