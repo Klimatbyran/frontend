@@ -13,9 +13,9 @@ export const socialLinks = [
     title: "LinkedIn",
   },
   {
-    href: "https://twitter.com/klimatkollen",
-    icon: "./logos/social/twitter.svg",
-    title: "Twitter",
+    href: "https://bsky.app/profile/klimatkollen.bsky.social",
+    icon: "./logos/social/bluesky.svg",
+    title: "Bluesky",
   },
   {
     href: "https://discord.gg/N5P64QPQ6v",
