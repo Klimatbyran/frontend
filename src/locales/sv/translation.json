@@ -12,6 +12,7 @@
     "products": "Produkter",
     "insights": "Insikter",
     "methodology": "Källor och metod",
+    "support": "Stöd oss",
     "newsletter": "Nyhetsbrev",
     "openMenu": "Öppna meny",
     "closeMenu": "Stäng meny",
@@ -131,7 +132,6 @@
       "description": "Direktåtkomst i realtid till vår klimatdatabas via vårt dokumenterade REST API och endpoints.",
       "realtime": "Realtidsdataåtkomst",
       "documentation": "Fullständig API-dokumentation",
-      "secure": "Säkra API-endpoints",
       "support": "Prioriterat stöd",
       "contactPricing": "Kontakta för priser",
       "viewDocs": "Visa API-dokumentation"
@@ -171,7 +171,9 @@
       "reasonWork": "Arbete",
       "reasonHobby": "Hobby",
       "reasonCuriosity": "Nyfikenhet",
-      "errorGeneric": "Ett fel uppstod. Vänligen försök igen senare."
+      "errorGeneric": "Ett fel uppstod. Vänligen försök igen senare.",
+      "errorEmptyEmail": "Vänligen fyll i en giltig e-postadress.",
+      "errorInvalidEmail": "Vänligen fyll i en giltig e-postadress."
     }
   },
   "downloadsPage": {
@@ -345,47 +347,164 @@
     "dataSelector": {
       "label": "Välj vad du vill lära dig om"
     },
-    "accordion": {
+    "methodNotFound": "Metod hittades inte",
+    "categories": {
+      "general": "Allmän information",
+      "municipality": "Kommundata",
+      "company": "Företagsdata"
+    },
+    "general": {
       "parisAgreement": {
         "title": "Klimatkollen och Parisavtalet",
-        "description": "Lär dig om hur Klimatkollen anpassar sig till Parisavtalets klimatmål",
-        "paragraph1": "Parisavtalet är ett internationellt bindande avtal mellan världens länder om att vidta åtgärder för att begränsa den globala uppvärmningen till väl under 2 grader, med sikte på 1,5 grader.",
-        "paragraph2": "För att nå målet måste världens länder halvera växthusgasutsläppen till 2030 jämfört med 1990 och nå nära noll utsläpp senast 2050. I dag <0>ökar</0> fortfarande utsläppen globalt.",
-        "paragraph3": "Enligt Parisavtalet ska rika länder ta ett större ansvar, eftersom deras stora historiska utsläpp innebär att de redan använt mycket av det utsläppsutrymme som återstår för att hejda uppvärmningen. Bland dessa länder ingår Sverige, som både ska gå före med att minska utsläppen och även hjälpa andra mer sårbara länder att ställa om.",
+        "description": "Lär dig hur Klimatkollen stämmer överens med Parisavtalets klimatmål",
+        "paragraph1": "Parisavtalet är en bindande internationell överenskommelse mellan världens länder, som syftar till att begränsa den globala uppvärmningen till väl under 2°C, med ett mål på 1,5°C.",
+        "paragraph2": "För att nå detta mål måste de globala utsläppen av växthusgaser halveras till 2030 (jämfört med 1990 års nivåer) och minskas till nära noll till 2050. Utsläppen <0>ökar dock fortfarande</0> världen över.",
+        "paragraph3": "Enligt Parisavtalet måste rikare länder ta ett större ansvar, eftersom deras historiskt höga utsläpp innebär att de redan har använt en betydande del av den återstående koldioxidbudgeten. Sverige är ett av dessa länder och bör gå i täten för att minska utsläppen, samtidigt som man stöttar mer utsatta nationer i deras omställning.",
         "link": {
           "title": "Parisavtalet",
           "text": "Läs mer om Parisavtalet på Naturvårdsverkets webbplats."
         }
       },
+      "co2Budgets": {
+        "title": "Koldioxidbudgeter",
+        "description": "Förstå hur koldioxidbudgeter beräknas och fördelas",
+        "paragraph1": "En koldioxidbudget representerar den mängd koldioxid som kan släppas ut innan atmosfärens CO₂-nivåer blir så höga att Parisavtalets 1,5°C-mål överskrids.",
+        "paragraph2": "Enligt en <0>beräkning</0> av forskare vid Uppsala universitet och Tyndall Centre i Storbritannien återstår det globalt cirka 340 gigaton CO₂ för en 50% chans att hålla temperaturökningen under 1,5°C (2024). Med nuvarande utsläppstakt är denna globala budget förbrukad om cirka åtta år.",
+        "paragraph3": "Med denna globala budget har forskarna även uppskattat Sveriges nationella koldioxidbudget för en rättvis klimatomställning.",
+        "paragraph4": "Deras beräkningar visar att Sverige från januari 2024 har en nationell koldioxidtilldelning på 80 miljoner ton för att hålla sig på rätt spår mot 1,5°C-målet. För en 83% chans att hålla uppvärmningen under 2°C ökar budgeten till 285 miljoner ton. Som jämförelse var Sveriges totala växthusgasutsläpp 2022 45,2 miljoner ton.",
+        "paragraph5": "Med Sveriges nuvarande utsläppstakt är 1,5°C-budgeten förbrukad om 1,8 år, medan 2°C-budgeten räcker i 6,4 år. För att hålla sig inom 1,5°C-målet måste Sverige minska utsläppen med minst 35% per år från 2024. Om målet är 2°C krävs årliga minskningar på minst 13,5%.",
+        "paragraph6": "Klimatkollen har fördelat den nya nationella koldioxidbudgeten (80 miljoner ton, inklusive utsläpp från internationellt flyg och sjöfart) på Sveriges kommuner, med samma metod som användes för att dela upp den globala budgeten nationellt.",
+        "paragraph7": "Dessa lokala koldioxidbudgeter möjliggör jämförelser mellan faktiska utsläpp och de minskningar som krävs. Klimatkollen presenterar koldioxidbudgeter för kommuner både som numeriska värden och som utvecklingskurvor, vilket illustrerar den nödvändiga minskningen av utsläpp för att hålla sig i linje med Parisavtalet.",
+        "paragraph8": "Förutom Tyndall-modellen som används av Klimatkollen finns andra sätt att beräkna en nationell koldioxidbudget. Se till exempel Chalmers <0>här</0>."
+      },
+      "emissionTypes": {
+        "title": "Olika typer av utsläpp",
+        "description": "Lär dig om olika typer av utsläpp och hur de mäts",
+        "paragraph1": "Klimatkollen är en oberoende faktabaserad plattform som följer etablerade standarder för utsläppsrapportering. Klimatdata vi presenterar speglar de gränser och antaganden som används i koldioxidbudgetberäkningar. Till exempel kan koldioxidbudgetar inte direkt kopplas till alla växthusgasutsläpp, eftersom andra gaser som metan, lustgas och vattenånga också ingår i klimatpåverkan.",
+        "paragraph2": "Utsläpp från cementproduktion exkluderas från IPCC:s globala koldioxidbudget och är därför också utelämnade från Sveriges koldioxidbudget och utsläppsdata. Detta påverkar särskilt kommunerna Gotland, Skövde och Mörbylånga där cementproduktion förekommer eller har förekommit.",
+        "paragraph3": "Sverige har också en betydande klimatpåverkan från varor som importeras från andra länder, vilket leder till utsläpp utomlands. Dessa konsumtionsbaserade utsläpp ingår inte i koldioxidbudgeten.",
+        "paragraph4": "På samma sätt exkluderas utsläpp från skog och mark (så kallade biogena utsläpp) från koldioxidbudgeten.",
+        "paragraph5": "I verkligheten är klimatpåverkande utsläpp mycket högre än de territoriella fossila koldioxidutsläpp som vanligtvis rapporteras av myndigheter och media. Den data som visas på Klimatkollen speglar dessa territoriella utsläpp.",
+        "paragraph6": "Klimatkollen undersöker aktivt hur andra växthusgasutsläpp kan inkluderas på webbplatsen i framtiden, samtidigt som möjligheten att jämföra nuvarande utsläpp med koldioxidbudgetar behålls."
+      }
+    },
+    "company": {
+      "companyDataOverview": {
+        "title": "Företagsdata översikt",
+        "description": "Översikt över hur vi samlar in och presenterar företagens utsläppsdata",
+        "paragraph1": "Klimatkollen samlar in data om växthusgasutsläpp som företag rapporterar i sina hållbarhetsrapporter och kombinerade årsredovisningar.",
+        "paragraph2": "Utsläppsdata delas upp i företagsspecifika utsläpp (scope 1 & scope 2) och värdekedjeutsläpp (scope 3), rapporterat i ton CO2e.",
+        "paragraph3": "På varje företags sida på Klimatkollen hittar du mer detaljerad information om utsläppen; uppdelning per scope och kategori i scope 3 samt eventuella biogena utsläpp.",
+        "link1": {
+          "title": "Klimatkollens företagsdata",
+          "text": "Se vår senaste företagsutsläppsdata här"
+        },
+        "link2": {
+          "title": "GHG-protokollet",
+          "text": "Klimatkollen använder samma struktur som GHG-protokollet och följer dess riktlinjer."
+        },
+        "companiesIncluded": {
+          "title": "Inkluderade företag",
+          "paragraph1": "Vår databas omfattar företag på OMX Large Cap och Mid Cap på Stockholmsbörsen, de 24 största statliga företagen, de fem största ekonomiska föreningarna samt de olistade företagen IKEA och ICA Gruppen.",
+          "paragraph2": "Företagen kategoriseras efter bransch enligt Global Industry Classification Standard (GICS), totalt följs 290 företag.",
+          "link": {
+            "title": "GICS",
+            "text": "Läs mer om Global Industry Classification Standard (GICS)"
+          }
+        },
+        "paragraph4": "Information om antal anställda och omsättning hämtas från de senaste hållbarhetsrapporterna eller kombinerade års- och hållbarhetsrapporter, och i vissa fall från andra källor."
+      },
+      "companyDataCollection": {
+        "title": "Datainsamlingsprocess",
+        "description": "Lär dig mer om vår metod för att samla in och verifiera företagsdata",
+        "paragraph1": "Vi presenterar företagens växthusgasutsläpp som de rapporterar dem, med data uppdelad i företagsspecifika utsläpp (scope 1 & 2) och värdekedjeutsläpp (scope 3).",
+        "paragraph2": "I vissa fall kan våra siffror vara mer uppdaterade än företagens rapporter tack vare direktkontakt med företagen om datakorrigeringar.",
+        "paragraph3": "Vi strävar efter att vara så noggranna som möjligt, men Klimatkollen tar inte ansvar för företagens rapporters fullständighet eller korrekthet.",
+        "paragraph4": "Utsläppen avrundas till närmaste heltal, vilket kan ge små avvikelser från företagens rapporter.",
+        "paragraph5": "Beskrivningen av företagets verksamhet är AI-genererad.",
+        "dataPresented": {
+          "title": "Datapresentation",
+          "paragraph1": "Utsläppsdata presenteras som rapporterat av företagen, med tydlig kategorisering av olika utsläppsscope."
+        },
+        "fiscalYear": {
+          "title": "Räkenskapsår",
+          "paragraph1": "Vissa företag använder brutet räkenskapsår. I dessa fall presenteras utsläppen för det senare av de två kalenderåren i perioden, dvs. för företag som rapporterar 2022/2023 visas data för 2023."
+        }
+      },
+      "historicalData": {
+        "title": "Historisk data och mål",
+        "description": "Spårning av företagens utsläppshistorik och klimatåtaganden",
+        "historicEmissions": {
+          "title": "Historiska utsläpp",
+          "paragraph1": "Utsläppsdata från tidigare år har samlats in från den senaste rapporten, i den mån den presenteras där. Där det finns luckor i rapporterade utsläppsdata, till exempel om det saknas information om utsläpp för år mellan basåret och det senast rapporterade året, har Klimatkollen försökt samla in detta genom att söka efter äldre hållbarhetsrapporter. Den senast publicerade informationen prioriteras alltid, så om ett företag har uppdaterat sina beräkningar retroaktivt men inte publicerat justeringen kan äldre data visas."
+        },
+        "goals": {
+          "title": "Klimatmål",
+          "paragraph1": "AI-verktyget Garbo identifierar och extraherar mål och initiativ för utsläppsminskningar som företag beskriver i sin rapportering. Dessa data är inte manuellt verifierade."
+        }
+      },
+      "emissionCategories": {
+        "title": "Utsläpps och utsläppskategorier",
+        "description": "Förstå olika typer av utsläpp och hur de kategoriseras",
+        "paragraph1": "Företag rapporterar sina utsläpp enligt GHG-protokollets tre scope:",
+        "scope2": {
+          "title": "Scope 2: Indirekta energiutsläpp",
+          "paragraph1": "Scope 2-utsläpp beräknas primärt med marknadsbaserad metod, där det tas hänsyn till om företagen köper förnybar el. Om sådan data saknas används platsbaserad metod istället."
+        },
+        "scope3": {
+          "title": "Scope 3: Värdekedjeutsläpp",
+          "paragraph1": "Värdekedjeutsläpp rapporteras enligt GHG-protokollets kategorier när det är tillgängligt.",
+          "paragraph2": "När ett totalvärde saknas för scope 3 summerar vi siffrorna för de redovisade scope 3-kategorierna.",
+          "paragraph3": "När företag rapporterar utsläpp per kategori enligt GHG-protokollet presenteras data direkt på företagets sida. För företag som använder andra uppdelningar gör Klimatkollen en bedömning av överensstämmelsen med GHG-protokollet. Företag som till exempel slår ihop flera kategorier till 'övrigt' eller rapporterar uppströms och nedströms transporter som en kategori får inte scope 3-utsläppen uppdelade per kategori.",
+          "link": {
+            "title": "Rapportering av utsläpp i Scope 3 för fastighetsägare",
+            "text": "För fastighetsägare följer Klimatkollen matchningen enligt vägledningen Rapportering av utsläpp i Scope 3 för fastighetsägare."
+          }
+        },
+        "financedEmissions": {
+          "title": "Finansierade utsläpp: Scope 3 kategori 15: Investeringar",
+          "paragraph1": "Finansierade utsläpp rapporteras ofta med fördröjning eftersom de kan ta längre tid att beräkna. För att ge en representativ bild av företagets påverkan inkluderas i dessa fall de senast rapporterade utsläppen."
+        },
+        "biogenicEmissions": {
+          "title": "Biogena utsläpp",
+          "paragraph1": "Biogena utsläpp rapporteras separat från scope 1, 2 och 3, i enlighet med GHG-protokollets anvisningar."
+        },
+        "emissionOffsets": {
+          "title": "Koldioxidkompensationer",
+          "paragraph1": "Dessa inkluderas inte, i linje med vad GHG-protokollet anger."
+        }
+      }
+    },
+    "municipality": {
       "sources": {
         "title": "Våra källor",
         "description": "Utforska de offentligt tillgängliga källorna och verifierade data som används av Klimatkollen",
-        "paragraph1": "Klimatkollen baseras på offentliga källor och verifierad data. Vi anger alla källor så att du enkelt kan kolla upp och läsa mer. Om något blivit fel, mejla oss gärna på hej@klimatkollen.se så att vi kan ändra.",
-        "paragraph2": "Företagsdata hämtas från bolagens egna årsredovisningar och hållbarhetsrapporter.",
+        "paragraph1": "Klimatkollen bygger på offentligt tillgängliga källor och verifierad data. Vi tillhandahåller alla källor så att du enkelt kan granska och utforska dem vidare. Om du upptäcker några fel, mejla oss gärna på hej@klimatkollen.se så vi kan rätta till dem.",
+        "paragraph2": "Företagsdata hämtas från deras egna årsredovisningar och hållbarhetsrapporter.",
         "links": {
           "smhi": {
-            "title": "Nationella emissionsdatabasen",
-            "text": "Utsläpp av växthusgaser i kommunerna",
+            "title": "Nationell utsläppsdatabas",
+            "text": "Växthusgasutsläpp i kommunerna",
             "link": "https://nationellaemissionsdatabasen.smhi.se/"
           },
           "skr": {
             "title": "Sveriges Kommuner och Regioner",
-            "text": "Politiskt styre i kommunerna",
+            "text": "Politisk ledning i kommunerna",
             "link": "https://skr.se/skr/demokratiledningstyrning/valmaktfordelning/valresultatstyren/styrekommunereftervalet2022.69547.html"
           },
           "wikidata": {
             "title": "Wikidata",
-            "text": "Kommunvapen och invånarantal",
+            "text": "Kommunvapen och befolkningsantal",
             "link": "https://www.wikidata.org/wiki/Wikidata:Country_subdivision_task_force/Sweden/Municipalities"
           },
           "trafikanalys": {
             "title": "Trafikanalys",
-            "text": "Andel laddbara bilar",
+            "text": "Andel elbilar",
             "link": "https://www.trafa.se/vagtrafik/fordon/"
           },
           "nvdb": {
-            "title": "Nationella vägdatabas",
-            "text": "Cykelvägar meter per kommun",
+            "title": "Nationell vägdatabas",
+            "text": "Cykelvägar per kommun",
             "link": "https://nvdb2012.trafikverket.se/SeTransportnatverket"
           },
           "sei": {
@@ -395,22 +514,21 @@
           },
           "powerCircles": {
             "title": "Power Circles databas ELIS",
-            "text": "Uppgifter om laddinfrastrukturen kommer från branschorganisationen",
+            "text": "Laddinfrastrukturdata från branschorganisationen",
             "link": "https://powercircle.org/elbilsstatistik/"
           },
           "klimatplaner": {
             "title": "Klimatplaner",
-            "text": "Insamlade av Klimatklubbens och Naturskyddsföreningens medlemmar",
-            "link": "https://docs.google.com/spreadsheets/d/13CMqmfdd6QUD6agKFyVhwZUol4PKzvy253_EwtsFyvw/edit#gid=0"
+            "text": "Insamlade av medlemmar i Klimatklubben och Naturskyddsföreningen"
           },
           "upphandlingsmyndigheten": {
             "title": "Upphandlingsmyndigheten",
-            "text": "Information om klimatkrav vid kommunernas upphandlingar",
+            "text": "Information om klimatkrav i kommunala upphandlingar",
             "link": "https://www.klimatkollen.se/data/procurements/NUE2022_DATA_2023-12-20.xlsx"
           },
           "greenpeace": {
             "title": "Greenpeace",
-            "text": "Kartläggning av klimatkrav inom offentlig upphandling",
+            "text": "Kartläggning av klimatkrav i offentliga upphandlingar",
             "link": "https://docs.google.com/spreadsheets/d/1EdHUa49HJZn0rXqM-6tChdim4TJzXnwA/edit#gid=1040317160"
           }
         }
@@ -418,93 +536,124 @@
       "calculations": {
         "title": "Våra beräkningar",
         "description": "Förstå hur vi beräknar och analyserar klimatdata",
-        "paragraph1": "Utsläppsdata för kommunerna bygger på SMHI:s nationella emissionsdatabas för åren 1990-2022 och har för 2022–2024 approximerats utifrån historiska trender för att kunna visa data fram till idag.",
-        "paragraph2": "<0>Här</0> kan du läsa ett exempel på hur vi beräknar nyckeltal för kommuners utsläpp."
+        "paragraph1": "Kommunernas utsläppsdata baseras på SMHI:s nationella utsläppsdatabas för åren 1990–2022. För 2022–2024 har utsläppen uppskattats utifrån historiska trender för att tillhandahålla data fram till idag.",
+        "paragraph2": "<0>Här</0> kan du läsa ett exempel på hur vi beräknar nyckeltal för kommunala utsläpp (länk på svenska)."
+      }
+    }
+  },
+  "supportPage": {
+    "header": {
+      "title": "Stöd Klimatkollen",
+      "description": "Hjälp oss att fortsätta vårt arbete att spåra och främja klimatåtaganden i Sverige. Det finns flera sätt du kan stödja vårt arbete."
+    },
+    "donations": {
+      "title": "Direkta donationer",
+      "description": "Stöd vårt arbete genom ekonomiskt bidrag",
+      "details": [
+        "Bankgiro: 5793-3178",
+        "Swish: 123 384 67 48",
+        "IBAN: SE-XXX",
+        "Din donation bidrar till att upprätthålla vår infrastruktur och datainsamlingsarbete"
+      ],
+      "action": {
+        "text": "Gör en donation",
+        "link": "mailto:hej@klimatkollen.se"
       },
-      "companyDataCollection": {
-        "title": "Företagsdata",
-        "description": "Lär dig om hur vi samlar in och bearbetar företagens utsläppsdata",
-        "paragraph1": "Klimatkollen samlar in data om växthusgasutsläpp som företagen redovisar i sina hållbarhetsrapporter (och kombinerade års- och hållbarhetsrapporter).",
-        "paragraph2": "Vi publicerar en översikt över det senaste årets redovisade utsläpp här.",
-        "link1": "Klimatkollens företag data",
-        "paragraph3": "Utsläppsdatan är uppdelad i egna utsläpp (scope 1 & scope 2) och utsläpp från värdekedjan (scope 3), angivet i ton koldioxidekvivalenter (CO2e).",
-        "paragraph4": "På företagens respektive sida på Klimatkollen finns mer detaljerad information om utsläppen; fördelning per scope och per kategori i scope 3, samt eventuella biogena utsläpp.",
-        "paragraph5": "Klimatkollen använder samma struktur som GHG-protokollet och följer dess riktlinjer.",
-        "link2": "GHG-protokollet",
-        "companiesIncluded": {
-          "title": "Bolag vi inkluderar",
-          "paragraph1": "I nuläget omfattar Klimatkollens databas bolagen på Stockholmsbörsens OMX Large Cap- och Mid Cap-listor. Dessutom inkluderas de 24 största statliga bolagen, de fem största ekonomiska föreningarna samt de onoterade bolagen IKEA och ICA Gruppen.",
-          "paragraph2": "Totalt 290 bolag. Antalet bolag kommer att utökas.",
-          "paragraph3": "Bolagen är kategoriserade efter bransch enligt Global Industry Classification Standard (GICS).",
-          "paragraph4": "Uppgifter om antal anställda och omsättning hämtas från det senaste årets hållbarhetsrapporter, eller sammanslagna års- och hållbarhetsrapporter, samt i några fall från andra källor.",
-          "paragraph5": "Beskrivningen av bolagens verksamhet är AI-genererad.",
-          "link1": "Global Industry Classification Standard (GICS)",
-          "link2": "Klimatkollens företag data"
-        },
-        "dataPresented": {
-          "title": "Data vi presenteras",
-          "paragraph1": "Vi redovisar företagens egna växthusgasutsläpp som de presenteras av företagen själva.",
-          "paragraph2": "I vissa fall kan dock siffrorna hos Klimatkollen vara mer uppdaterade än i bolagens rapporter, då vi ibland kontaktat bolagen om felaktigheter eller otydligheter som vi har upptäckt, vilket i några fall lett till att bolagen försett oss med justerad data.",
-          "paragraph3": "Klimatkollen tar inte ansvar för fullständighet eller korrekthet i bolagens rapporter.",
-          "paragraph4": "I listvyn på startsidan avrundas utsläppen till närmaste heltal. Det innebär att företag som redovisar utsläpp mer exakt än heltal ton får en marginell skillnad gentemot sin egen rapportering. Då företag även avrundar i sin egen rapportering, kan det hända att det skiljer ett ton eller mer på Klimatkollen jämfört med företagets egna sammanställningar."
-        },
-        "fiscalYear": {
-          "title": "Brutet räkenskapsår",
-          "paragraph1": "Några företag tillämpar brutet redovisningsår. I dessa fall redovisas utsläppen på det senare av de två kalenderåren i perioden, det vill säga att för bolag som redovisar 2022/2023 är utsläppsdatan inlagd på 2023."
-        },
-        "scope2": {
-          "title": "Utsläpp i scope 2",
-          "paragraph1": "Utsläppen i scope 2 visas primärt enligt den marknadsbaserade beräkningsmetoden, som tar hänsyn till om företag köper förnybar elektricitet. Om sådan data saknas använder vi istället data från den platsbaserade beräkningsmetoden."
-        },
-        "scope3": {
-          "title": "Utsläpp i scope 3",
-          "paragraph1": "När ett totalt värde saknas för scope 3 summerar vi ihop siffrorna för de redovisade scope 3-kategorierna.",
-          "paragraph2": "När företagen redovisar utsläpp per kategori i linje med GHG-protokollet visas det rakt av på företagssidan. För bolag som använder andra uppdelningar gör Klimatkollen en bedömning av matchning mot GHG-protokollet. Företag som exempelvis slagit samman flera kategorier till \"övrigt\", eller redovisar uppströms och nedströms transporter som en post, får inte sina scope 3-utsläpp uppdelade per kategori.",
-          "paragraph3": "För fastighetsbolag följer Klimatkollen matchningen som anges i guiden Rapportering av utsläpp i Scope 3 för fastighetsägare.",
-          "link": "Rapportering av utsläpp i Scope 3 för fastighetsägare"
-        },
-        "financedEmissions": {
-          "title": "Finansierade utsläpp (scope 3, kategori 15: Investeringar)",
-          "paragraph1": "Finansierade utsläpp redovisas ofta med fördröjning eftersom de kan ta längre tid att beräkna. För att ge en så representativ bild som möjligt av företagens påverkan inkluderas i dessa fall de senast redovisade utsläppen."
-        },
-        "biogenicEmissions": {
-          "title": "Biogena utsläpp",
-          "paragraph1": "Biogena utsläpp redovisas separat från scope 1, 2 och 3, i enlighet med GHG-protokollets anvisning."
-        },
-        "goals": {
-          "title": "Mål och initiativ",
-          "paragraph1": "AI-verktyget Garbo identifierar och extraherar mål och initiativ för utsläppsminskningar som företagen beskriver i rapporteringen, samt återger dessa på företagets sida på Klimatkollen. Denna data är inte manuellt verifierad."
-        },
-        "historicEmissions": {
-          "title": "Historiska utsläppsdata",
-          "paragraph1": "Utsläppsdata från tidigare år har samlats in från det senaste årets rapport, i den utsträckning den presenteras där. Där det finns luckor i den redovisade utsläppsdatan, exempelvis om det saknas information om utsläpp för år mellan basår och senast rapporterade år, har Klimatkollen eftersträvat att samla in denna genom att söka upp äldre hållbarhetsrapporter. Den senaste publicerade informationen är alltid prioriterad, så om ett företag uppdaterat sina beräkningar visas de aktuella värdena. Principen är att visa upp all redovisad information, vilket innebär att om företag uppdaterat beräkningarna retroaktivt, men inte publicerat justeringen så kan föråldrad data visas upp."
-        },
-        "emissionOffsets": {
-          "title": "Undvikna utsläpp eller klimatkompensation",
-          "paragraph1": "Dessa beaktas inte, i linje med vad GHG-protokollet anger."
+      "email": {
+        "subject": "Donationsförfrågan - Klimatkollen",
+        "body": "Hej,\n\nJag vill göra en donation till Klimatkollen.\n\nSumma:\n\nVänligen hjälp oss att fortsätta vårt arbete med klimatdata.\n\nMed vänliga hälsningar,"
+      }
+    },
+    "openSource": {
+      "title": "Bidrag till öppen källkod",
+      "description": "Hjälp oss att utveckla Klimatkollen genom att bidra med kod",
+      "details": [
+        "Källkoden är öppen och tillgänglig på GitHub",
+        "Bidra till dataanalysverktyg",
+        "Hjälp till att förbättra användargränssnittet",
+        "Lägg till nya funktioner och funktionalitet"
+      ],
+      "action": {
+        "text": "Se på GitHub",
+        "link": "https://github.com/klimatkollen"
+      }
+    },
+    "volunteer": {
+      "title": "Bli volontär",
+      "description": "Gå med i vår gemenskap och bidra med dina färdigheter",
+      "details": [
+        "Hjälp till med att verifiera och analysera data",
+        "Hjälp till med översättningar och innehåll",
+        "Stöd gemenskapsengagemang",
+        "Delta i klimatmedvetna initiativ"
+      ],
+      "action": {
+        "text": "Gå med i vår Discord",
+        "link": "https://discord.gg/N5P64QPQ6v"
+      }
+    },
+    "partnerships": {
+      "title": "Partnerskap",
+      "description": "Samarbeta med oss för att expandera vår påverkan",
+      "details": [
+        "Partnerskap för datadelning",
+        "Forskningssamarbeten",
+        "Gemensamma klimatinitiativ",
+        "Kunskapsutbytesprogram"
+      ],
+      "action": {
+        "text": "Bli partner",
+        "link": "mailto:hej@klimatkollen.se"
+      },
+      "email": {
+        "subject": "Partnerskapsförfrågan - [Organisationsnamn]",
+        "body": "Hej,\n\nJag är intresserad av att bli partner med Klimatkollen.\n\nOrganisationsnamn:\nIntresseområde:\nFöreslaget samarbete:\n\nSer fram emot att diskutera potentiella partnerskapsmöjligheter.\n\nMed vänliga hälsningar,"
+      }
+    },
+    "organizationSupport": {
+      "title": "Stöd företag",
+      "description": "Stöd som organisation av alla storlekar",
+      "details": [
+        "Sponsormöjligheter med fast avgift",
+        "Partnerskap för dataverifiering",
+        "Teknologi- och resursdelning",
+        "Stöd klimatdatatransparens"
+      ],
+      "action": {
+        "text": "Stöd företag",
+        "link": "mailto:hej@klimatkollen.se"
+      },
+      "email": {
+        "subject": "Stöd företagsförfrågan - [Företagsnamn]",
+        "body": "Hej,\n\nJag är intresserad av att få veta mer om möjligheten till företagsstöd hos Klimatkollen.\n\nOrganisationsnamn:\n\nSer fram emot att diskutera ett samarbete.\n\nMed vänliga hälsningar,"
+      },
+      "readMore": {
+        "text": "Läs mer",
+        "content": {
+          "header": "Bli stödföretag – ta ställning för öppen klimatdata",
+          "intro": [
+            "Genom att publicera öppna klimatdata bidrar Klimatkollen till transparens och ett ökat stöd för Parisavtalet i politik och näringsliv. För om vi inte vet hur det går med utsläppen – och hur det borde gå – kommer vi inte kunna göra det som krävs för att minska dem i linje med Parisavtalet.",
+            "Klimatkollen är en data-driven ideell förening som bygger en rörelse kring öppna klimatdata.", 
+            "Vi samverkar med näringsliv, akademi och civilsamhälle för ökad slagkraft. För oss står AI, öppna data, bred kommunikation och medborgarengagemang i centrum.",
+            "Var en del av rörelsen för öppna klimatdata – bli stödföretag i dag!"
+          ],
+          "benefitsHeader": "Som stödföretag får du:",
+          "benefits": [
+            "Vår logotyp på er webbplats, visar ert engagemang för öppen klimatdata",
+            "Er logotyp på vår webbplats, syns bland andra företagsgivare",
+            "Notifiering när vi publicerar ny data om ditt företag",
+            "Automatisk uppdatering av er klimatdata till företagets Wikipedia-sida"
+          ],
+          "cost": "25 000 kronor / år (inkl moms)"
         }
-      },
-      "co2Budgets": {
-        "title": "Koldioxidbudgetar",
-        "description": "Förstå hur koldioxidbudgetar beräknas och fördelas",
-        "paragraph1": "En koldioxidbudget anger hur mycket koldioxid som kan släppas ut innan koldioxidhalten i atmosfären blir så hög att uppvärmningen överstiger Parisavtalets 1,5-gradersmål.",
-        "paragraph2": "Enligt en <0>beräkning</0> av forskare vid Uppsala universitet och Tyndall Centre i Storbritannien, återstår globalt cirka 340 gigaton koldioxid från och med år 2024 för 50 procents chans att hålla uppvärmningen under 1,5 grader. Med dagens utsläppstakt tar den globala budgeten slut om cirka åtta år.",
-        "paragraph3": "Utifrån den globala budgeten har forskarna även gjort en beräkning av hur en nationel koldioxidbudget för en rättvis klimatomställning skulle se ut för Sverige.",
-        "paragraph4": "Beräkningen visar att från och med januari 2024 återstår ett nationellt utsläppsutrymme på 80 miljoner ton för att ligga i linje med 1,5 grader. För 83 procents chans att inte överskrida 2 grader är budgeten 285 miljoner ton. Som jämförelse uppgick de totala växthusgasutsläppen för Sverige år 2022 till 45,2 miljoner ton.",
-        "paragraph5": "Med Sveriges nuvarande utsläppstakt återstår 1,8 år av 1,5-gradersbudgeten, 6,4 år för 2 grader. För att vara i linje med 1,5 grader skulle utsläppen i Sverige behöva minska med drygt 35 procent från och med 2024, eller 13,5 procent för 2 grader.",
-        "paragraph6": "Klimatkollen har fördelat ut den nya nationella koldioxidbudgeten (80 miljoner ton, som även inkluderar utrikes flyg och sjöfart) på landets kommuner med samma fördelningsnyckel som använts för att bryta ner den globala budgeten nationellt.",
-        "paragraph7": "De lokala koldioxidbudgetarna gör det möjligt att jämföra hur det går med utsläppen med hur det borde gå. På Klimatkollen visas koldioxidbudgetar för kommunerna både med siffror och som utvecklingskurva över hur utsläppen behöver minska för att vara i linje med Parisavtalet.",
-        "paragraph8": "Förutom den så kallade Tyndall-modellen som Klimatkollen använder finns även andra sätt att beräkna en nationell koldioxidbudget, se exempelvis Chalmers <0>här</0>."
-      },
-      "emissionTypes": {
-        "title": "Olika typer av utsläpp",
-        "description": "Lär dig om de olika typerna av utsläpp och hur de mäts",
-        "paragraph1": "Klimatkollen är en oberoende faktaplattform som följer allmän och vedertagen standard för hur utsläpp redovisas. Den klimatdata vi visar speglar de avgränsningar som följer av hur koldioxidbudgeten är beräknad. Exempelvis går det inte att rakt av koppla koldioxidbudgetar till utsläpp av alla växthusgaser, där även metan, lustgas, vattenånga med flera inkluderas.",
-        "paragraph2": "Utsläpp från cementproduktion är exkluderat i IPCC:s globala koldioxidbudget och därmed även i koldioxidbudgeten för Sverige och i utsläppsstatistiken för de tre kommunerna Gotland, Skövde och Mörbylånga, där cementproduktion sker idag eller skett tidigare under perioden.",
-        "paragraph3": "Sverige har även hög klimatbelastning från varor vi importerar från andra länder och orsakar därför utsläpp i andra delar av världen. Dessa konsumtionsbaserade utsläpp inkluderas inte i koldioxidbudgeten.",
-        "paragraph4": "Inte heller utsläpp från skog och mark (så kallade biogena utsläpp) inkluderas i koldioxidbudgeten.",
-        "paragraph5": "Egentligen är alltså de klimatpåverkande utsläppen mycket större än de territoriella fossila koldioxidutsläpp som vanligtvis rapporteras av myndigheter och i media och som idag visas på Klimatkollen.",
-        "paragraph6": "Klimatkollen undersöker nu hur även andra växthusgasutsläpp skulle kunna visas på webbplatsen framöver, samtidigt som möjligheten att jämföra dagens utsläpp med koldioxidbudgetar behålls."
+      }
+    },
+    "contact": {
+      "title": "Kontakta oss",
+      "description": "Har du frågor om stöd till Klimatkollen, eller vill hitta andra sätt att bidra? Vi skulle gärna höra från dig.",
+      "action": {
+        "text": "Skicka ett mejl",
+        "link": "mailto:hej@klimatkollen.se"
       }
     }
   },
@@ -556,6 +705,7 @@
     },
     "totalEmissions": "Totala utsläpp {{year}}",
     "budgetRunsOut": "Koldioxidbudgeten tar slut",
+    "budgetRanOut": "Koldioxidbudgeten tog slut",
     "budgetKept": "Koldioxidbudgeten tar slut",
     "budgetHolds": "Håller budget",
     "hitNetZero": "Når nettonoll",
@@ -887,13 +1037,6 @@
           "description": "Historisk förändring av utsläpp",
           "detailedDescription": "Genomsnittlig årlig förändring av koldioxidutsläppen i Sveriges kommuner sedan Parisavtalet 2015",
           "source": "<0>Nationella emissionsdatabasen</0>"
-        },
-        "neededEmissionChangePercent": {
-          "label": "Nödvändig utsläppsminskning",
-          "description": "Nödvändig minskning av utsläpp för att nå klimatmålen",
-          "detailedDescription": "Den utsläppsminskning som krävs för att nå Parisavtalet. Ju lägre desto bättre",
-          "source": "<0>Nationella emissionsdatabasen</0>, <1>Uppsala universitet</1>",
-          "nullValues": "kan inte nå Parisavtalet"
         },
         "electricCarChangePercent": {
           "label": "Tillväxt av elbilar",

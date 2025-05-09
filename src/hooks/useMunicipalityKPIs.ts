@@ -22,26 +22,6 @@ export const useMunicipalityKPIs = (): KPIValue[] => {
       higherIsBetter: false,
     },
     {
-      label: t("municipalities.list.kpis.neededEmissionChangePercent.label"),
-      key: "neededEmissionChangePercent",
-      unit: "%",
-      source: "municipalities.list.neededEmissionChangePercent.source",
-      sourceUrls: [
-        "https://nationellaemissionsdatabasen.smhi.se/",
-        "http://www.cemus.uu.se/wp-content/uploads/2023/12/Paris-compliant-carbon-budgets-for-Swedens-counties-.pdf",
-      ],
-      description: t(
-        "municipalities.list.kpis.neededEmissionChangePercent.description",
-      ),
-      detailedDescription: t(
-        "municipalities.list.kpis.neededEmissionChangePercent.detailedDescription",
-      ),
-      nullValues: t(
-        "municipalities.list.kpis.neededEmissionChangePercent.nullValues",
-      ),
-      higherIsBetter: false,
-    },
-    {
       label: t("municipalities.list.kpis.electricCarChangePercent.label"),
       key: "electricCarChangePercent",
       unit: "%",

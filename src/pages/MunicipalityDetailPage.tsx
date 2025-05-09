@@ -141,8 +141,10 @@ export function MunicipalityDetailPage() {
             <MunicipalityStatCard
               title={
                 !municipality.budgetRunsOut
-                  ? t("municipalityDetailPage.budgetRunsOut")
-                  : t("municipalityDetailPage.budgetKept")
+                  ? t("municipalityDetailPage.budgetKept")
+                  : new Date(municipality.budgetRunsOut) > new Date()
+                    ? t("municipalityDetailPage.budgetRunsOut")
+                    : t("municipalityDetailPage.budgetRanOut")
               }
               value={
                 !municipality.budgetRunsOut
@@ -182,10 +184,7 @@ export function MunicipalityDetailPage() {
               {t("municipalityDetailPage.inTons")}
             </Text>
             {!municipality.neededEmissionChangePercent && (
-              <p className="my-4">
-                Kommunens koldioxidbudget är slut och det finns därför ingen
-                linje för Parisavtalet ovan.
-              </p>
+              <p className="my-4">{t("municipalityDetailPage.noParisPath")}</p>
             )}
           </div>
           <div className="mt-8 mr-8">

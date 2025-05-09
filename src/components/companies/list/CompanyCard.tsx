@@ -12,7 +12,6 @@ import {
 } from "@/hooks/companies/useCompanyFilters";
 import type { RankedCompany } from "@/types/company";
 import { Text } from "@/components/ui/text";
-import { useScreenSize } from "@/hooks/useScreenSize";
 import { useTranslation } from "react-i18next";
 import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useLanguage } from "@/components/LanguageProvider";
@@ -42,8 +41,6 @@ export function CompanyCard({
   industry,
   reportingPeriods,
 }: CompanyCardProps) {
-  const { isMobile } = useScreenSize();
-
   const { t } = useTranslation();
   const { getCategoryColor } = useCategoryMetadata();
   const sectorNames = useSectorNames();
@@ -85,7 +82,7 @@ export function CompanyCard({
     : "var(--blue-2)";
 
   return (
-    <div className="relative rounded-level-2">
+    <div className="relative rounded-level-2 @container">
       <Link
         to={`/companies/${wikidataId}`}
         className="block bg-black-2 rounded-level-2 p-8 space-y-8 transition-all duration-300 hover:shadow-[0_0_10px_rgba(153,207,255,0.15)] hover:bg-[#1a1a1a]"
@@ -141,11 +138,7 @@ export function CompanyCard({
             <Building2 className="w-6 h-6" />
           </div>
         </div>
-        <div
-          className={
-            isMobile ? "flex flex-col gap-4" : "grid grid-cols-2 gap-4"
-          }
-        >
+        <div className="flex flex-col gap-4 @xl:grid grid-cols-2">
           <div className="space-y-2">
             <div className="flex items-center gap-2 text-grey mb-2 text-lg">
               <TrendingDown className="w-4 h-4" />

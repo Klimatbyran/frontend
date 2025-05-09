@@ -54,7 +54,7 @@ export function RankedList({
             href={item.link}
             className="grid grid-cols-subgrid col-span-full items-center gap-4 hover:bg-black-1 transition-colors rounded-lg"
           >
-            <span className={cn("text-2xl md:text-5xl font-light", rankColor)}>
+            <span className={cn("text-2xl sm:text-5xl font-light", rankColor)}>
               {String(index + 1).padStart(2, "0")}
             </span>
             <span className="text-base md:text-lg">{item.name}</span>

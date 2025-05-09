@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useCompanies } from "@/hooks/companies/useCompanies";
 import { CompanyCard } from "@/components/companies/list/CompanyCard";
-import { CompanyList } from "@/components/companies/list/CompanyList";
 import { Input } from "@/components/ui/input";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { useTranslation } from "react-i18next";
@@ -18,6 +17,7 @@ import {
   SectorCode,
   useSortOptions,
 } from "@/hooks/companies/useCompanyFilters";
+import { CardGrid } from "@/components/CardGrid";
 
 export function CompaniesPage() {
   const { t } = useTranslation();
@@ -168,23 +168,10 @@ export function CompaniesPage() {
               : Object.keys(sectorNames).filter((key) => key !== "all")
           }
         />
-      ) : sectors.length === 0 && !searchQuery ? (
-        <CompanyList
-          companies={filteredCompanies.map(({ ...rest }) => ({
-            ...rest,
-            metrics: {
-              emissionsReduction: 0,
-              displayReduction: "0%",
-            },
-            reportingPeriods: rest.reportingPeriods.map((period) => ({
-              ...period,
-              id: period.startDate,
-            })),
-          }))}
-        />
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {filteredCompanies.map((company) => (
+        <CardGrid
+          items={filteredCompanies}
+          itemContent={(company) => (
             <CompanyCard
               key={company.wikidataId}
               {...company}
@@ -193,8 +180,8 @@ export function CompaniesPage() {
                 displayReduction: "0%",
               }}
             />
-          ))}
-        </div>
+          )}
+        />
       )}
     </div>
   );
