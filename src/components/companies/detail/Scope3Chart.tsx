@@ -8,10 +8,8 @@ import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useResponsiveChartSize } from "@/hooks/useResponsiveChartSize";
-import {
-  formatEmissionsAbsolute,
-  formatPercent,
-} from "@/utils/localizeUnit";
+import { formatEmissionsAbsolute, formatPercent } from "@/utils/localizeUnit";
+import { useScreenSize } from "@/hooks/useScreenSize";
 
 interface Scope3ChartProps {
   categories: Array<{
@@ -24,11 +22,13 @@ interface Scope3ChartProps {
 
 export function Scope3Chart({ categories, className }: Scope3ChartProps) {
   const [excludedCategories, setExcludedCategories] = useState<number[]>([]);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const { getCategoryName, getCategoryColor, getCategoryFilterColors } =
     useCategoryMetadata();
   const { size, containerRef } = useResponsiveChartSize(true);
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
+  const { isMobile } = useScreenSize();
 
   const filteredCategories = categories.filter(
     (cat) => !excludedCategories.includes(cat.category),
@@ -63,9 +63,20 @@ export function Scope3Chart({ categories, className }: Scope3ChartProps) {
       const data = payload[0].payload;
       return (
         <div className="bg-black-1 px-4 py-3 rounded-level-2">
-          <Text variant="small" className="text-grey">
-            {t("companies.scope3Chart.category", { number: data.category })}
-          </Text>
+          <div className="flex justify-between items-center relative z-30">
+            <Text variant="small" className="text-grey">
+              {t("companies.scope3Chart.category", { number: data.category })}
+            </Text>
+            <button
+              className={`${isMobile ? "flex" : "hidden"}`}
+              style={{ pointerEvents: "auto" }}
+              onClick={() => {
+                setIsOpen(false);
+              }}
+            >
+              <X className="w-3 h-3" />
+            </button>
+          </div>
           <Text variant="h4">{data.name}</Text>
           <Text>
             {formatEmissionsAbsolute(Math.round(data.value), currentLanguage)}{" "}
@@ -205,7 +216,10 @@ export function Scope3Chart({ categories, className }: Scope3ChartProps) {
               nameKey="name"
               label={size.showLabels ? renderCustomizedLabel : undefined}
               labelLine={false}
-              onClick={(entry) => handleCategoryClick(entry.category)}
+              onClick={(entry) => {
+                handleCategoryClick(entry.category);
+                setIsOpen(true);
+              }}
               className="cursor-pointer"
             >
               {chartData.map((entry) => (
@@ -216,7 +230,11 @@ export function Scope3Chart({ categories, className }: Scope3ChartProps) {
                 />
               ))}
             </Pie>
-            <Tooltip content={<CustomTooltip />} />
+            {isMobile ? (
+              isOpen && <Tooltip content={<CustomTooltip />} />
+            ) : (
+              <Tooltip content={<CustomTooltip />} />
+            )}
           </PieChart>
         </ResponsiveContainer>
       </div>
