@@ -15,34 +15,37 @@ import {
   formatPercentChange,
 } from "@/utils/localizeUnit";
 import { Input } from "@/components/ui/input";
-import { BaseCompany } from "@/types/company";
+import getCombinedData from "@/utils/getCombinedSearch";
+
+type SearchItem = {
+  id: string;
+  name: string;
+  category: "companies" | "municipalities";
+};
 
 export function LandingPage() {
   const { t } = useTranslation();
-  const [selectedTab, setSelectedTab] = useState("companies");
   const { companies } = useCompanies();
   const { municipalities } = useMunicipalities();
   /*   const savedMunicipalities = useRef(null)
    */ const { getTopMunicipalities } = useMunicipalities();
   const { currentLanguage } = useLanguage();
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchResult, setSearchResult] = useState([]);
+  const [searchResult, setSearchResult] = useState<SearchItem[]>([]);
+  const combinedData = getCombinedData(municipalities, companies);
+  console.log(combinedData);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  useEffect(() => {});
-
   useEffect(() => {
     setSearchResult(
-      companies?.filter((company: BaseCompany): BaseCompany => {
-        return company.name.toLowerCase().includes(searchQuery.toLowerCase());
+      combinedData?.filter((item: SearchItem) => {
+        return item.name.toLowerCase().includes(searchQuery.toLowerCase());
       }),
     );
   }, [searchQuery]);
-
-  console.log(municipalities);
 
   // Prepare SEO data
   const canonicalUrl = "https://klimatkollen.se";
@@ -132,18 +135,15 @@ export function LandingPage() {
         <div className="flex-1 flex flex-col items-center justify-center text-center px-4 py-16 md:py-24">
           <div className="max-w-lg md:max-w-4xl mx-auto space-y-4">
             <h1 className="text-4xl md:text-7xl font-light tracking-tight">
-              {t("landingPage.title", {
+              {/*          {t("landingPage.title", {
                 tabName: t(`landingPage.tabName.${selectedTab}`),
-              })}
+              })} */}
+              Hur går det med
             </h1>
 
             <div className="h-[80px] md:h-[120px] flex items-center justify-center text-4xl md:text-7xl font-light">
               <Typewriter
-                text={
-                  selectedTab === "companies"
-                    ? companyTypewriterTexts
-                    : municipalityTypewriterTexts
-                }
+                text={companyTypewriterTexts}
                 speed={70}
                 className="text-[#E2FF8D]"
                 waitTime={2000}
@@ -157,7 +157,7 @@ export function LandingPage() {
             <label for="landingInput" className="text-xl mt-10">
               Find a company or municipality
             </label>
-            <div className="flex flex-col gap-2 w-[300px]">
+            <div className="flex flex-col gap-2 w-[300px] relative">
               <div className="flex flex-row gap-2">
                 <Input
                   id="landingInput"
@@ -171,23 +171,28 @@ export function LandingPage() {
                   className="rounded-full w-[36px] h-[36px] px-2 py-0 text-base md:text-md font-bold bg-white text-black hover:bg-white/90"
                   asChild
                 >
-                  <a href={`/companies/${searchResult?.wikidataId}`}>
+                  {/*                  <a href={`${searchResult.category === "companies" ? "/companies/" : "/municipalities/" }${searchResult?.id}`}>
                     <ArrowRight className="h-5 w-5" />
-                  </a>
+                  </a> */}
                 </Button>
               </div>
               <div
-                className={`${searchQuery === "" ? "hidden" : "flex-col"} max-h-[300px] min-w-[300px] max-w-[300px] mt-2 overflow-y-scroll relative bg-[#121212] rounded-xl`}
+                className={`${searchQuery === "" ? "hidden" : "flex-col"} max-h-[300px] top-10 min-w-[300px] max-w-[300px] mt-2 overflow-y-scroll absolute bg-[#121212] rounded-xl`}
+                style={{
+                  scrollbarWidth: "thin",
+                  scrollbarColor: "#f1f1f1",
+                }}
               >
                 {searchResult &&
-                  searchResult.map((company) => {
+                  searchResult.map((item) => {
+                    console.log(item);
                     return (
-                      <section className="flex flex-col  p-2 justify-center">
+                      <section className="flex flex-col p-2 justify-center">
                         <a
-                          href={`/companies/${company?.wikidataId}`}
+                          href={`${item.category === "companies" ? "/companies/" : "/municipalities/"}${item?.id}`}
                           className="text-left text-lg font-md mt-4 max-w-[300px]"
                         >
-                          {company?.name}
+                          {item?.name}
                         </a>
                       </section>
                     );
