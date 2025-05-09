@@ -3,6 +3,8 @@ import { useTranslation } from "react-i18next";
 import { formatEmissionsAbsolute, localizeUnit } from "@/utils/localizeUnit";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useScreenSize } from "@/hooks/useScreenSize";
+import { useVerificationStatus } from "@/hooks/useVerificationStatus";
+import { AiIcon } from "@/components/ui/ai-icon";
 
 interface CustomTooltipProps {
   active?: boolean;
@@ -21,6 +23,7 @@ export const CustomTooltip = ({
   const { getCategoryName } = useCategoryMetadata();
   const { currentLanguage } = useLanguage();
   const { isMobile } = useScreenSize();
+  const { isAIGenerated } = useVerificationStatus();
 
   if (active && payload && payload.length) {
     if (payload.length === 3) {
@@ -61,6 +64,12 @@ export const CustomTooltip = ({
           // Extract the original value from payload
           const originalValue = entry.payload?.originalValues?.[entry.dataKey];
 
+          // Check if data is AI-generated
+          const isDataAI =
+            entry.payload?.metadata &&
+            "metadata" in entry.payload &&
+            isAIGenerated(entry.payload);
+
           // Correctly display "No Data Available" if original value was null
           const displayValue =
             originalValue === null
@@ -79,6 +88,11 @@ export const CustomTooltip = ({
             >
               <span className="text-grey mr-2">{name}:</span>
               <span style={{ color: entry.color }}>{displayValue}</span>
+              {isDataAI && (
+                  <span className="ml-2">
+                    <AiIcon size="sm" />
+                  </span>
+                )}
             </div>
           );
         })}

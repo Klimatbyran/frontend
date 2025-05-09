@@ -947,7 +947,8 @@
       "notReported": "Ej rapporterat",
       "readAnnualReport": "Läs årsredovisning",
       "readMore": "Läs mer",
-      "readLess": "Läs mindre"
+      "readLess": "Läs mindre",
+      "aiGeneratedData": "Innehåller AI-extraherade värden. Klicka för att läsa mer."
     },
     "realEstateScope3History": {
       "title": "Historiska Scope 3-utsläpp per kategori",

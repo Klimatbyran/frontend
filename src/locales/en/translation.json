@@ -947,7 +947,8 @@
       "notReported": "Not Reported",
       "readAnnualReport": "Read Annual Report",
       "readMore": "Read More",
-      "readLess": "Read Less"
+      "readLess": "Read Less",
+      "aiGeneratedData": "Includes AI-extracted values. Click to read more."
     },
     "realEstateScope3History": {
       "title": "Historical Scope 3 Emissions per Category",

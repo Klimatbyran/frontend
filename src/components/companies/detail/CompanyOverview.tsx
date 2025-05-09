@@ -34,6 +34,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Info } from "lucide-react";
+import { useVerificationStatus } from "@/hooks/useVerificationStatus";
+import { AiIcon } from "@/components/ui/ai-icon";
 
 interface CompanyOverviewProps {
   company: CompanyDetails;
@@ -42,6 +44,41 @@ interface CompanyOverviewProps {
   onYearSelect: (year: string) => void;
   selectedYear: string;
 }
+
+// Add this function to check if any emissions data is AI-generated
+const isAnyEmissionsAIGenerated = (
+  period: ReportingPeriod,
+  isAIGenerated: <
+    T extends {
+      metadata?: {
+        verifiedBy?: { name: string } | null;
+        user?: { name?: string } | null;
+      };
+    },
+  >(
+    data: T | undefined | null,
+  ) => boolean,
+): boolean => {
+  if (!period || !period.emissions) return false;
+
+  // Check main emissions object only if it has metadata
+  if ("metadata" in period.emissions && isAIGenerated(period.emissions))
+    return true;
+
+  // Check individual scope emissions
+  if (isAIGenerated(period.emissions.scope1)) return true;
+  if (isAIGenerated(period.emissions.scope2)) return true;
+
+  // Check scope 3 categories if they exist
+  if (period.emissions.scope3?.categories) {
+    for (const category of period.emissions.scope3.categories) {
+      // Only check categories that have metadata
+      if ("metadata" in category && isAIGenerated(category)) return true;
+    }
+  }
+
+  return false;
+};
 
 export function CompanyOverview({
   company,
@@ -57,8 +94,21 @@ export function CompanyOverview({
   const navigate = useNavigate();
   const sectorNames = useSectorNames();
   const { currentLanguage } = useLanguage();
+  const { isAIGenerated } = useVerificationStatus();
 
   const periodYear = new Date(selectedPeriod.endDate).getFullYear();
+
+  // Check if any emissions data is AI-generated
+  const totalEmissionsAIGenerated = isAnyEmissionsAIGenerated(
+    selectedPeriod,
+    isAIGenerated,
+  );
+
+  // For year-over-year change, check both current and previous periods
+  const yearOverYearAIGenerated =
+    isAnyEmissionsAIGenerated(selectedPeriod, isAIGenerated) ||
+    (previousPeriod &&
+      isAnyEmissionsAIGenerated(previousPeriod, isAIGenerated));
 
   // Get the translated sector name using the sector code
   const sectorCode = company.industry?.industryGics?.sectorCode as
@@ -88,6 +138,15 @@ export function CompanyOverview({
         currentLanguage,
       )
     : t("companies.overview.notReported");
+  const turnoverAIGenerated =
+    selectedPeriod.economy?.turnover &&
+    "metadata" in selectedPeriod.economy.turnover &&
+    isAIGenerated(selectedPeriod.economy.turnover);
+
+  const employeesAIGenerated =
+    selectedPeriod.economy?.employees &&
+    "metadata" in selectedPeriod.economy.employees &&
+    isAIGenerated(selectedPeriod.economy.employees);
 
   return (
     <div className="bg-black-2 rounded-level-1 p-16">
@@ -186,29 +245,38 @@ export function CompanyOverview({
             {t("companies.overview.totalEmissions")} {periodYear}
           </Text>
           <div className="flex items-baseline gap-4">
-            <Text
-              className={cn(
-                "text-3xl lg:text-6xl md:text-4xl sm:text-3xl font-light tracking-tighter leading-none",
-                selectedPeriod.emissions?.calculatedTotalEmissions === 0
-                  ? "text-grey"
-                  : "text-orange-2",
-              )}
-            >
-              {!selectedPeriod.emissions ||
-              selectedPeriod.emissions?.calculatedTotalEmissions === 0
-                ? t("companies.overview.noData")
-                : formatEmissionsAbsolute(
-                    selectedPeriod.emissions.calculatedTotalEmissions,
-                    currentLanguage,
-                  )}
-              <span className="text-lg lg:text-2xl md:text-lg sm:text-sm ml-2 text-grey">
-                {t(
+            <div className="flex items-center">
+              <Text
+                className={cn(
+                  "text-3xl lg:text-6xl md:text-4xl sm:text-3xl font-light tracking-tighter leading-none",
                   selectedPeriod.emissions?.calculatedTotalEmissions === 0
-                    ? " "
-                    : "emissionsUnit",
+                    ? "text-grey"
+                    : "text-orange-2",
                 )}
-              </span>
-            </Text>
+              >
+                {!selectedPeriod.emissions ||
+                selectedPeriod.emissions?.calculatedTotalEmissions === 0
+                  ? t("companies.overview.noData")
+                  : formatEmissionsAbsolute(
+                      selectedPeriod.emissions.calculatedTotalEmissions,
+                      currentLanguage,
+                    )}
+                <span className="text-lg lg:text-2xl md:text-lg sm:text-sm ml-2 text-grey">
+                  {t(
+                    selectedPeriod.emissions?.calculatedTotalEmissions === 0
+                      ? " "
+                      : "emissionsUnit",
+                  )}
+                </span>
+              </Text>
+
+              {/* Add AI icon for AI-generated data */}
+              {totalEmissionsAIGenerated && (
+                <span className="ml-2">
+                  <AiIcon size="lg" />
+                </span>
+              )}
+            </div>
           </div>
         </div>
 
@@ -258,6 +326,11 @@ export function CompanyOverview({
                 {t("companies.overview.noData")}
               </span>
             )}
+            {yearOverYearChange !== null && yearOverYearAIGenerated && (
+              <span className="ml-2">
+                <AiIcon size="lg" />
+              </span>
+            )}
           </Text>
         </div>
       </div>
@@ -268,39 +341,51 @@ export function CompanyOverview({
             <Text className="mb-2 text-base md:text-base sm:text-sm">
               {t("companies.overview.turnover")} ({periodYear})
             </Text>
-            <Text className="text-base md:text-base sm:text-sm">
-              {selectedPeriod.economy?.turnover?.value
-                ? `${localizeUnit(
-                    selectedPeriod.economy.turnover.value / 1e9,
-                    currentLanguage,
-                  )} mdr ${selectedPeriod.economy.turnover.currency}`
-                : t("companies.overview.notReported")}
-            </Text>
-          </div>
-
-          <div>
-            <Text className="text-base md:text-base sm:text-sm mb-2">
-              {t("companies.overview.employees")} ({periodYear})
-            </Text>
-            <Text className="text-base md:text-base sm:text-sm">
-              {formattedEmployeeCount}
-            </Text>
-          </div>
-
-          {selectedPeriod?.reportURL && (
-            <div className="flex items-end">
-              <a
-                href={selectedPeriod.reportURL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-blue-2 hover:text-blue-1 transition-colors"
-              >
-                {t("companies.overview.readAnnualReport")}
-                <ArrowUpRight className="w-4 h-4 sm:w-3 sm:h-3" />
-              </a>
+            <div className="flex items-center">
+              <Text className="text-base md:text-base sm:text-sm">
+                {selectedPeriod.economy?.turnover?.value
+                  ? `${localizeUnit(
+                      selectedPeriod.economy.turnover.value / 1e9,
+                      currentLanguage,
+                    )} mdr ${selectedPeriod.economy.turnover.currency}`
+                  : t("companies.overview.notReported")}
+              </Text>
+              {turnoverAIGenerated && (
+                <span className="ml-2">
+                  <AiIcon size="sm" />
+                </span>
+              )}
             </div>
+          </div>
+        </div>
+
+        <div>
+          <Text className="text-base md:text-base sm:text-sm mb-2">
+            {t("companies.overview.employees")} ({periodYear})
+          </Text>
+          <Text className="text-base md:text-base sm:text-sm">
+            {formattedEmployeeCount}
+          </Text>
+          {employeesAIGenerated && (
+            <span className="ml-2">
+              <AiIcon size="sm" />
+            </span>
           )}
         </div>
+
+        {selectedPeriod?.reportURL && (
+          <div className="flex items-end">
+            <a
+              href={selectedPeriod.reportURL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-blue-2 hover:text-blue-1 transition-colors"
+            >
+              {t("companies.overview.readAnnualReport")}
+              <ArrowUpRight className="w-4 h-4 sm:w-3 sm:h-3" />
+            </a>
+          </div>
+        )}
       </div>
     </div>
   );
