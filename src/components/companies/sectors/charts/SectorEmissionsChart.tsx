@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import {
   BarChart,
   Bar,
@@ -8,20 +8,23 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  LegendProps,
 } from "recharts";
 import {
   sectorColors,
   useSectorNames,
+  getCompanyColors,
 } from "@/hooks/companies/useCompanyFilters";
 import { RankedCompany } from "@/hooks/companies/useCompanies";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { useChartData } from "@/hooks/companies/useChartData";
-import CustomTooltip from "./tooltips/CustomTooltip";
 import ChartHeader from "./ChartHeader";
 import { useTranslation } from "react-i18next";
-import MobilePieChartView from "./MobilePieChartView";
-import DesktopPieChartView from "./DesktopPieChartView";
+import PieChartView from "../../CompanyPieChartView";
 import { useResponsiveChartSize } from "@/hooks/useResponsiveChartSize";
+import { cn } from "@/lib/utils";
+import SectorPieLegend from "./SectorPieLegend";
+import CustomTooltip from "../../tooltips/CustomTooltip";
 
 interface EmissionsChartProps {
   companies: RankedCompany[];
@@ -29,6 +32,11 @@ interface EmissionsChartProps {
 }
 
 type ChartType = "stacked-total" | "pie";
+
+type BarClickData = {
+  activePayload?: { dataKey: string }[];
+  activeLabel?: string;
+};
 
 const formatYAxisTick = (value: number): string => {
   if (value >= 1_000_000_000) {
@@ -41,15 +49,16 @@ const formatYAxisTick = (value: number): string => {
   return value.toString();
 };
 
-const StackedTotalLegend = ({ payload }: { payload: any[] }) => {
+const StackedTotalLegend = ({
+  payload,
+}: {
+  payload: LegendProps["payload"];
+}) => {
   return (
     <div className="flex flex-wrap justify-center gap-4 mt-4">
-      {payload.map((entry, index) => (
+      {payload?.map((entry, index) => (
         <div key={index} className="flex items-center gap-2">
-          <div
-            className="w-3 h-3 rounded"
-            style={{ backgroundColor: entry.color }}
-          />
+          <div className={cn("w-3 h-3 rounded", `bg-[${entry.color}]`)} />
           <span className="text-sm text-grey">{entry.value}</span>
         </div>
       ))}
@@ -78,35 +87,41 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
     selectedYear,
   );
 
-  const [legendData, setLegendData] = useState<any[]>([]);
-
-  const handlePieMouseEnter = useCallback((data: any) => {
-    if (data && data.payload) {
-      setLegendData(data.payload);
+  const handleBarClick = (data: BarClickData) => {
+    if (chartType === "stacked-total") {
+      return;
     }
-  }, []);
-
-  const handleBarClick = (data: any) => {
-    if (chartType === "stacked-total") return;
-
-    if (!data || !data.activePayload || !data.activePayload[0]) return;
-
+    if (!data || !data.activePayload || !data.activePayload[0]) {
+      return;
+    }
     const [sector] = data.activePayload[0].dataKey.split("_scope");
     const sectorCode = Object.entries(sectorNames).find(
-      ([_, name]) => name === sector,
+      ([, name]) => name === sector,
     )?.[0];
 
     if (sectorCode) {
       setSelectedSector(sectorCode);
-      setSelectedYear(data.activeLabel);
+      setSelectedYear(data.activeLabel!);
     }
   };
 
   const handlePieClick = (data: any) => {
-    if (!selectedSector && data?.payload?.sectorCode) {
-      setSelectedSector(data.payload.sectorCode);
+    if (!selectedSector && data?.sectorCode) {
+      setSelectedSector(data.sectorCode);
+    } else if (selectedSector && data?.wikidataId) {
+      window.location.href = `/companies/${data.wikidataId}`;
     }
   };
+
+  const pieChartDataWithColor = pieChartData.map((entry, index) => ({
+    ...entry,
+    color: selectedSector
+      ? getCompanyColors(index).base
+      : "sectorCode" in entry
+        ? sectorColors[entry.sectorCode as keyof typeof sectorColors]?.base ||
+          "var(--grey)"
+        : "var(--grey)",
+  }));
 
   return (
     <div className="w-full space-y-6">
@@ -126,29 +141,26 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
         <ResponsiveContainer width="100%" height="100%">
           {chartType === "pie" ? (
             totalEmissions > 0 ? (
-              screenSize.isMobile ? (
-                <MobilePieChartView
-                  pieChartData={pieChartData}
-                  selectedSector={selectedSector}
-                  size={{
-                    innerRadius: size.innerRadius,
-                    outerRadius: size.outerRadius,
-                  }}
-                  handlePieMouseEnter={handlePieMouseEnter}
-                  handlePieClick={handlePieClick}
-                />
-              ) : (
-                <DesktopPieChartView
-                  pieChartData={pieChartData}
-                  selectedSector={selectedSector}
-                  size={{
-                    innerRadius: size.innerRadius,
-                    outerRadius: size.outerRadius,
-                  }}
-                  handlePieMouseEnter={handlePieMouseEnter}
-                  handlePieClick={handlePieClick}
-                />
-              )
+              <div className="flex flex-col gap-4 mt-8 md:flex-row md:gap-8">
+                <div className="md:w-2/3 md:h-full w-full">
+                  <PieChartView
+                    pieChartData={pieChartDataWithColor}
+                    size={size}
+                    customActionLabel={t(
+                      `companiesPage.sectorGraphs.${selectedSector ? "pieLegendCompany" : "pieLegendSector"}`,
+                    )}
+                    handlePieClick={handlePieClick}
+                    layout={screenSize.isMobile ? "mobile" : "desktop"}
+                  />
+                </div>
+                <div className={"w-full md:w-1/3 flex md:items-center"}>
+                  <SectorPieLegend
+                    payload={pieChartDataWithColor}
+                    selectedLabel={selectedSector}
+                    handlePieClick={handlePieClick}
+                  />
+                </div>
+              </div>
             ) : (
               <div className="flex justify-center items-center h-full">
                 <p className="text-grey">
@@ -166,12 +178,12 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
               barGap={0}
               barCategoryGap="30%"
             >
-              <CartesianGrid strokeDasharray="3 3" stroke="#2A2A2A" />
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--black-1)" />
               <XAxis
                 dataKey="year"
-                tick={{ fill: "#888888" }}
-                axisLine={{ stroke: "#2A2A2A" }}
-                tickLine={{ stroke: "#2A2A2A" }}
+                tick={{ fill: "var(--grey)" }}
+                axisLine={{ stroke: "var(--black-1)" }}
+                tickLine={{ stroke: "var(--black-1)" }}
                 padding={{ left: 10, right: 10 }}
               />
               <YAxis
@@ -179,13 +191,13 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
                   value: t("emissionsUnit"),
                   angle: -90,
                   position: "insideLeft",
-                  fill: "#888888",
+                  fill: "var(--grey)",
                   style: { textAnchor: "middle" },
                   offset: -15,
                 }}
-                tick={{ fill: "#888888" }}
-                axisLine={{ stroke: "#2A2A2A" }}
-                tickLine={{ stroke: "#2A2A2A" }}
+                tick={{ fill: "var(--grey)" }}
+                axisLine={{ stroke: "var(--black-1)" }}
+                tickLine={{ stroke: "var(--black-1)" }}
                 tickFormatter={formatYAxisTick}
                 width={60}
               />

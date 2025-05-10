@@ -964,8 +964,9 @@
       "category": "Kategori",
       "tonsCO2e": "ton CO₂e",
       "clickToFilter": "Klicka för att filtrera bort",
+      "clickToShow": "Klicka för att visa",
       "resetAll": "Återställ alla",
-      "showingCategories": "Visar {{shown}} av {{total}} kategorier. Filtrerade kategorier:"
+      "showingCategories": "Visar {{shown}} av {{total}} kategorier. Gömda kategorier:"
     },
     "scope3Data": {
       "categories": "Scope 3-kategorier",

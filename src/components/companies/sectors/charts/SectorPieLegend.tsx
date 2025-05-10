@@ -16,13 +16,13 @@ import {
 
 interface PieLegendProps {
   payload: any[];
-  selectedSector: string | null;
+  selectedLabel: string | null;
   handlePieClick: (data: any) => void;
 }
 
-const PieLegend: React.FC<PieLegendProps> = ({
+const SectorPieLegend: React.FC<PieLegendProps> = ({
   payload,
-  selectedSector,
+  selectedLabel,
   handlePieClick,
 }) => {
   const screenSize = useScreenSize();
@@ -33,10 +33,15 @@ const PieLegend: React.FC<PieLegendProps> = ({
     window.location.href = `/companies/${wikidataId}`;
   };
 
-  if (!payload) return null;
+  if (!payload) {
+    return null;
+  }
 
   const handleItemClick = (entry: any) => {
-    if (selectedSector) {
+    const isCompanyView =
+      payload?.[0]?.wikidataId || payload?.[0]?.payload?.wikidataId;
+
+    if (isCompanyView) {
       // If we're viewing companies within a sector, navigate to company detail page
       const wikidataId = entry.wikidataId || entry.payload?.wikidataId;
       if (wikidataId) {
@@ -46,7 +51,7 @@ const PieLegend: React.FC<PieLegendProps> = ({
       // If we're viewing sectors, handle the sector selection
       const sectorCode = entry.sectorCode || entry.payload?.sectorCode;
       if (sectorCode) {
-        handlePieClick({ payload: { sectorCode } });
+        handlePieClick({ sectorCode });
       }
     }
   };
@@ -73,13 +78,13 @@ const PieLegend: React.FC<PieLegendProps> = ({
               : formatPercent(value / total, currentLanguage);
 
           let color;
-          if (selectedSector) {
+          if (selectedLabel) {
             color = getCompanyColors(index).base;
           } else if (entry.payload?.sectorCode || entry.sectorCode) {
             const sectorCode = entry.payload?.sectorCode || entry.sectorCode;
             color = sectorColors[sectorCode as keyof typeof sectorColors]?.base;
           } else {
-            color = "#888888";
+            color = "var(--grey)";
           }
 
           return (
@@ -87,7 +92,7 @@ const PieLegend: React.FC<PieLegendProps> = ({
               <TooltipTrigger asChild>
                 <div
                   className={`flex items-center gap-2 p-2 rounded bg-black-2 hover:bg-black-1 transition-colors cursor-pointer ${
-                    selectedSector ? "hover:ring-1 hover:ring-black-1" : ""
+                    selectedLabel ? "hover:ring-1 hover:ring-black-1" : ""
                   }`}
                   onClick={() => handleItemClick(entry)}
                 >
@@ -113,7 +118,7 @@ const PieLegend: React.FC<PieLegendProps> = ({
                 </div>
               </TooltipTrigger>
               <TooltipContent className="bg-black-1 text-white">
-                {selectedSector
+                {selectedLabel
                   ? t("companiesPage.sectorGraphs.pieLegendCompany")
                   : t("companiesPage.sectorGraphs.pieLegendSector")}
               </TooltipContent>
@@ -125,4 +130,4 @@ const PieLegend: React.FC<PieLegendProps> = ({
   );
 };
 
-export default PieLegend;
+export default SectorPieLegend;

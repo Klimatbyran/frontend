@@ -7,11 +7,13 @@ const CompanyTooltip: React.FC<TooltipProps<number, string>> = ({
   active,
   payload,
 }) => {
-  if (!active || !payload || !payload.length) return null;
-
-  const { name, value, payload: data } = payload[0];
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
+
+  if (!active || !payload || !payload.length) {
+    return null;
+  }
+  const { name, value, payload: data } = payload[0];
 
   // Extract company data
   const companyName =
@@ -28,8 +30,8 @@ const CompanyTooltip: React.FC<TooltipProps<number, string>> = ({
     <div className="bg-black-2 border border-black-1 rounded-lg shadow-xl p-4 text-white">
       <p className="text-sm font-medium mb-2">{companyName}</p>
       <div className="text-sm text-grey space-y-1">
-        <div className="flex justify-between">
-          <span>{t("companiesPage.sectorGraphs.totalEmissions")}: </span>
+        <div className="flex justify-between gap-x-2">
+          <span>{t("companiesPage.sectorGraphs.totalEmissions")}:</span>
           <span className="text-white font-medium">
             {formatEmissionsAbsolute(
               Math.round(totalEmissions),
