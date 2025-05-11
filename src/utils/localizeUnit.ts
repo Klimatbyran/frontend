@@ -42,6 +42,16 @@ export function formatEmissionsAbsolute(
   return localizeNumber(count, currentLanguage, { maximumFractionDigits: 0 });
 }
 
+export function formatEmissionsAbsoluteCompact(
+  count: number,
+  currentLanguage: SupportedLanguage,
+) {
+  return localizeNumber(count, currentLanguage, {
+    notation: "compact",
+    maximumFractionDigits: 0,
+  });
+}
+
 export function formatPercentChange(
   value: number,
   currentLanguage: SupportedLanguage,
