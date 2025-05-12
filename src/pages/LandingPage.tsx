@@ -112,8 +112,8 @@ export function LandingPage() {
         canonicalUrl={canonicalUrl}
         structuredData={structuredData}
       />
-      <div className="min-h-screen flex flex-col">
-        <div className="flex-1 flex flex-col items-center justify-center text-center px-4 py-16 md:py-24">
+      <div className="flex flex-col">
+        <div className="flex-1 flex flex-col items-center text-center px-4 py-20 md:py-24">
           <div className="max-w-lg md:max-w-4xl mx-auto space-y-4">
             <h1 className="text-4xl md:text-7xl font-light tracking-tight">
               {/*          {t("landingPage.title", {
@@ -134,7 +134,7 @@ export function LandingPage() {
             </div>
           </div>
 
-          <div className="flex flex-col items-center mt-12 gap-4 ">
+          <div className="flex flex-col items-center mt-10 gap-4 ">
             <label for="landingInput" className="text-xl mt-6">
               Find a company or municipality
             </label>
@@ -161,7 +161,7 @@ export function LandingPage() {
         </div>
       )} */}
 
-      <div className="py-8 md:py-36">
+      <div className="py-24 md:py-36">
         <div className="mx-2 sm:mx-8">
           <h2 className="text-4xl md:text-5xl font-light text-center mb-8 md:mb-16">
             {t("landingPage.bestPerformers")}

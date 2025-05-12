@@ -21,8 +21,6 @@ const GlobalSearch = ({ combinedData }) => {
     );
   }, [searchQuery]);
 
-  console.log(searchQuery)
-
   return (
     <div className="flex flex-col gap-2 w-[300px] relative">
       <div className="flex gap-2">
@@ -48,6 +46,7 @@ const GlobalSearch = ({ combinedData }) => {
               <a
                 href={`${item.category === "companies" ? "/companies/" : "/municipalities/"}${item?.id}`}
                 className="text-left text-lg font-md max-w-[300px] p-3 flex justify-between hover:bg-black-1 transition-colors"
+                key={item?.id}
               >
                 {item?.name}
                 <Text className="opacity-60">

@@ -38,8 +38,6 @@ const useCombinedData = (): CombinedData[] => {
     }
   }, [municipalities, companies, isLoadingCompanies, isLoadingMunicipalities]);
 
-  console.log(combinedData);
-
   return combinedData;
 };
 
