@@ -1,6 +1,5 @@
 import { useRef, useState } from "react";
 import { ArrowRight, Building2Icon, TreePineIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { RankedList, RankedListItem } from "@/components/RankedList";
 import { ContentBlock } from "@/components/ContentBlock";
 import { Typewriter } from "@/components/ui/typewriter";
@@ -14,15 +13,8 @@ import {
   formatEmissionsAbsolute,
   formatPercentChange,
 } from "@/utils/localizeUnit";
-import { Input } from "@/components/ui/input";
-import getCombinedData from "@/utils/getCombinedSearch";
-import { Text } from "@/components/ui/text";
-
-type SearchItem = {
-  id: string;
-  name: string;
-  category: "companies" | "municipalities";
-};
+import useCombinedData from "@/hooks/useCombinedData";
+import GlobalSearch from "@/components/ui/globalsearch";
 
 export function LandingPage() {
   const { t } = useTranslation();
@@ -30,21 +22,11 @@ export function LandingPage() {
   const { municipalities } = useMunicipalities();
   const { getTopMunicipalities } = useMunicipalities();
   const { currentLanguage } = useLanguage();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [searchResult, setSearchResult] = useState<SearchItem[]>([]);
-  const combinedData = getCombinedData(municipalities, companies);
+  const combinedData = useCombinedData();
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-  useEffect(() => {
-    setSearchResult(
-      combinedData?.filter((item: SearchItem) => {
-        return item.name.toLowerCase().includes(searchQuery.toLowerCase());
-      }),
-    );
-  }, [searchQuery]);
 
   // Prepare SEO data
   const canonicalUrl = "https://klimatkollen.se";
@@ -153,57 +135,15 @@ export function LandingPage() {
           </div>
 
           <div className="flex flex-col items-center mt-12 gap-4 ">
-            <label for="landingInput" className="text-xl mt-10">
+            <label for="landingInput" className="text-xl mt-6">
               Find a company or municipality
             </label>
-            <div className="flex flex-col gap-2 w-[300px] relative">
-              <div className="flex flex-row gap-2">
-                <Input
-                  id="landingInput"
-                  type="text"
-                  placeholder="e.g Alfa Laval"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="bg-transparent border-solid border-white h-[40px] rounded-full px-4 text-base text-lg focus:outline-white font-medium focus:ring-1 focus:ring-blue-2 relative w-full text-center "
-                />
-                <Button
-                  className="rounded-full w-[36px] h-[36px] px-2 py-0 text-base md:text-md font-bold bg-white text-black hover:bg-white/90"
-                  asChild
-                >
-                  {/*                  <a href={`${searchResult.category === "companies" ? "/companies/" : "/municipalities/" }${searchResult?.id}`}>
-                    <ArrowRight className="h-5 w-5" />
-                  </a> */}
-                </Button>
-              </div>
-              <div
-                className={`${searchQuery === "" ? "hidden" : "flex-col"}  max-h-[290px] top-10 min-w-[300px] max-w-[300px] mt-2 overflow-y-scroll absolute bg-[#121212] rounded-xl`}
-                style={{
-                  scrollbarWidth: "thin",
-                  scrollbarColor: "#f1f1f1",
-                }}
-              >
-                {searchResult &&
-                  searchResult.map((item) => {
-                    return (
-                      <a
-                        href={`${item.category === "companies" ? "/companies/" : "/municipalities/"}${item?.id}`}
-                        className="text-left text-lg font-md max-w-[300px] p-3 flex justify-between hover:bg-black-1 transition-colors"
-                      >
-                        {item?.name}
-                        <Text className="opacity-60">
-                          {item.category === "companies"
-                            ? "Company"
-                            : "Municipality"}
-                        </Text>
-                      </a>
-                    );
-                  })}
-              </div>
-            </div>
+            <GlobalSearch combinedData={combinedData} />
           </div>
         </div>
+      </div>
 
-        {/* FIXME reintroduce at a later stage
+      {/* FIXME reintroduce at a later stage
       {selectedTab === "municipalities" && (
         <div className="py-16 md:py-24 bg-black-2">
           <div className="container mx-auto">
@@ -221,40 +161,39 @@ export function LandingPage() {
         </div>
       )} */}
 
-        <div className="py-8 md:py-36">
-          <div className="mx-2 sm:mx-8">
-            <h2 className="text-4xl md:text-5xl font-light text-center mb-8 md:mb-16">
-              {t("landingPage.bestPerformers")}
-            </h2>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <RankedList
-                title={t("landingPage.bestMunicipalities")}
-                description={t("landingPage.municipalitiesDescription")}
-                items={topMunicipalities}
-                itemValueRenderer={renderMunicipalityChangeRate}
-                icon={{ component: TreePineIcon, bgColor: "bg-[#FDE7CE]" }}
-                rankColor="text-orange-2"
-              />
+      <div className="py-8 md:py-36">
+        <div className="mx-2 sm:mx-8">
+          <h2 className="text-4xl md:text-5xl font-light text-center mb-8 md:mb-16">
+            {t("landingPage.bestPerformers")}
+          </h2>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <RankedList
+              title={t("landingPage.bestMunicipalities")}
+              description={t("landingPage.municipalitiesDescription")}
+              items={topMunicipalities}
+              itemValueRenderer={renderMunicipalityChangeRate}
+              icon={{ component: TreePineIcon, bgColor: "bg-[#FDE7CE]" }}
+              rankColor="text-orange-2"
+            />
 
-              <RankedList
-                title={t("landingPage.largestEmittor")}
-                description={t("landingPage.companiesDescription")}
-                items={largestCompanyEmitters}
-                itemValueRenderer={renderCompanyEmission}
-                icon={{ component: Building2Icon, bgColor: "bg-[#D4E7F7]" }}
-                rankColor="text-blue-2"
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="pb-8 md:pb-16">
-          <div className="container mx-auto">
-            <ContentBlock
-              title={t("landingPage.aboutUsTitle")}
-              content={t("landingPage.aboutUsContent")}
+            <RankedList
+              title={t("landingPage.largestEmittor")}
+              description={t("landingPage.companiesDescription")}
+              items={largestCompanyEmitters}
+              itemValueRenderer={renderCompanyEmission}
+              icon={{ component: Building2Icon, bgColor: "bg-[#D4E7F7]" }}
+              rankColor="text-blue-2"
             />
           </div>
+        </div>
+      </div>
+
+      <div className="pb-8 md:pb-16">
+        <div className="container mx-auto">
+          <ContentBlock
+            title={t("landingPage.aboutUsTitle")}
+            content={t("landingPage.aboutUsContent")}
+          />
         </div>
       </div>
     </>
