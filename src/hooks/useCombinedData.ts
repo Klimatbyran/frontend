@@ -12,13 +12,11 @@ const useCombinedData = (): CombinedData[] => {
   const { municipalities, loading: isLoadingMunicipalities } =
     useMunicipalities();
   const { companies, loading: isLoadingCompanies } = useCompanies();
-  const [combinedData, setCombinedData] = useState([]);
-  /*   const [simplifiedMunicipalities, setSimplifiedMunicipalities] = useState([]);
-  const [simplifiedCompanies, setSimplifiedCompanies] = useState([]); */
+  const [combinedData, setCombinedData] = useState<CombinedData[]>([]);
 
   useEffect(() => {
     if (!isLoadingMunicipalities && !isLoadingCompanies) {
-      const mappedMunicipalities = municipalities.map(
+      const mappedMunicipalities: CombinedData[] = municipalities?.map(
         (municipality): CombinedData => ({
           name: municipality.name,
           id: municipality.name,
@@ -26,13 +24,15 @@ const useCombinedData = (): CombinedData[] => {
         }),
       );
 
-      const mappedCompanies = companies.map((company): CombinedData => {
-        return {
-          name: company.name,
-          id: company.wikidataId,
-          category: "companies",
-        };
-      });
+      const mappedCompanies: CombinedData[] = companies?.map(
+        (company): CombinedData => {
+          return {
+            name: company.name,
+            id: company.wikidataId,
+            category: "companies",
+          };
+        },
+      );
 
       setCombinedData([...mappedMunicipalities, ...mappedCompanies]);
     }
