@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
-import { CombinedData } from "@/hooks/useCombinedData";
 import { SearchIcon } from "lucide-react";
+import { CombinedData } from "@/hooks/useCombinedData";
+
+interface GlobalSearchProps {
+  combinedData: CombinedData[];
+}
 
 type SearchItem = {
   id: string;
@@ -10,7 +14,7 @@ type SearchItem = {
   category: "companies" | "municipalities";
 };
 
-const GlobalSearch = ({ combinedData }: []) => {
+const GlobalSearch = ({ combinedData }: GlobalSearchProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResult, setSearchResult] = useState<SearchItem[]>([]);
 
@@ -31,9 +35,9 @@ const GlobalSearch = ({ combinedData }: []) => {
           placeholder="e.g Alfa Laval"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="bg-transparent relative border-solid border-white h-[40px] rounded-full px-4 text-base text-lg focus:outline-white font-medium focus:ring-1 focus:ring-blue-2 relative w-full text-center "
+          className="bg-black-1 placeholder:text-center relative h-10 rounded-md px-2 text-base text-lg focus:outline-white font-medium focus:text-left focus:ring-1 focus:ring-blue-2 relative w-full"
         />
-        <SearchIcon className="absolute left-0 translate-x-4 w-4 h-4 opacity-80" />
+        <SearchIcon className="absolute right-0 -translate-x-2 w-4 h-4 opacity-80" />
       </div>
       <div
         className={`${searchQuery === "" ? "hidden" : "flex-col"}  max-h-[290px] top-10 min-w-[300px] max-w-[300px] mt-2 overflow-y-scroll absolute bg-[#121212] rounded-xl`}

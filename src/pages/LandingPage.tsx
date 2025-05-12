@@ -1,5 +1,4 @@
-import { useRef, useState } from "react";
-import { ArrowRight, Building2Icon, TreePineIcon } from "lucide-react";
+import { Building2Icon, TreePineIcon } from "lucide-react";
 import { RankedList, RankedListItem } from "@/components/RankedList";
 import { ContentBlock } from "@/components/ContentBlock";
 import { Typewriter } from "@/components/ui/typewriter";
@@ -13,7 +12,7 @@ import {
   formatEmissionsAbsolute,
   formatPercentChange,
 } from "@/utils/localizeUnit";
-import useCombinedData from "@/hooks/useCombinedData";
+import useCombinedData, { CombinedData } from "@/hooks/useCombinedData";
 import GlobalSearch from "@/components/ui/globalsearch";
 
 export function LandingPage() {
@@ -22,7 +21,7 @@ export function LandingPage() {
   const { municipalities } = useMunicipalities();
   const { getTopMunicipalities } = useMunicipalities();
   const { currentLanguage } = useLanguage();
-  const combinedData = useCombinedData();
+  const combinedData: CombinedData[] = useCombinedData();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -134,7 +133,7 @@ export function LandingPage() {
             </div>
           </div>
 
-          <div className="flex flex-col items-center mt-10 gap-4 ">
+          <div className="flex flex-col items-center mt-8 gap-4 ">
             <label for="landingInput" className="text-xl mt-6">
               Find a company or municipality
             </label>
@@ -161,7 +160,7 @@ export function LandingPage() {
         </div>
       )} */}
 
-      <div className="py-24 md:py-36">
+      <div className="py-36 md:py-36">
         <div className="mx-2 sm:mx-8">
           <h2 className="text-4xl md:text-5xl font-light text-center mb-8 md:mb-16">
             {t("landingPage.bestPerformers")}
