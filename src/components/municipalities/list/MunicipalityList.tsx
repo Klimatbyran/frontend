@@ -1,3 +1,4 @@
+import { CardGrid } from "@/components/CardGrid";
 import { MunicipalityCard } from "./MunicipalityCard";
 import type { Municipality } from "@/types/municipality";
 
@@ -8,7 +9,6 @@ interface MunicipalityListProps {
   sortBy: "meets_paris" | "name";
   sortDirection: "best" | "worst";
 }
-
 export function MunicipalityList({
   municipalities,
   selectedRegion,
@@ -70,14 +70,17 @@ export function MunicipalityList({
 
   return (
     <div className="space-y-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {sortedMunicipalities.map((municipality) => (
-          <MunicipalityCard
-            key={municipality.name}
-            municipality={municipality}
-          />
-        ))}
-      </div>
+      <CardGrid
+        items={sortedMunicipalities}
+        itemContent={(municipality) => {
+          return (
+            <MunicipalityCard
+              key={municipality.name}
+              municipality={municipality}
+            />
+          );
+        }}
+      />
     </div>
   );
 }

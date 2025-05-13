@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { ArrowUpRight, FileText } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
@@ -30,10 +29,7 @@ export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
 
   const emissionsChangeExists = municipality.historicalEmissionChangePercent;
   const emissionsChange = emissionsChangeExists
-    ? formatPercentChange(
-        Math.ceil(emissionsChangeExists) / 100,
-        currentLanguage,
-      )
+    ? formatPercentChange(emissionsChangeExists, currentLanguage)
     : t("municipalities.card.noData");
 
   const noClimatePlan = !municipality.climatePlanLink;

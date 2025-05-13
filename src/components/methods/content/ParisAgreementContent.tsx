@@ -4,11 +4,11 @@ import { LinkButton } from "@/components/layout/LinkButton";
 export const ParisAgreementContent = () => {
   const { t } = useTranslation();
   return (
-    <div className="prose prose-invert w-[90%] max-w-5xl mx-auto space-y-4">
-      <p>{t("methodsPage.accordion.parisAgreement.paragraph1")}</p>
+    <div className="prose prose-invert mx-auto space-y-4">
+      <p>{t("methodsPage.general.parisAgreement.paragraph1")}</p>
       <p>
         <Trans
-          i18nKey="methodsPage.accordion.parisAgreement.paragraph2"
+          i18nKey="methodsPage.general.parisAgreement.paragraph2"
           components={[
             <a
               title="IEA"
@@ -20,12 +20,12 @@ export const ParisAgreementContent = () => {
           ]}
         />
       </p>
-      <p>{t("methodsPage.accordion.parisAgreement.paragraph3")}</p>
+      <p>{t("methodsPage.general.parisAgreement.paragraph3")}</p>
       <div className="flex justify-center">
         <div className="w-full max-w-4xl">
           <LinkButton
-            title={t("methodsPage.accordion.parisAgreement.link.title")}
-            text={t("methodsPage.accordion.parisAgreement.link.text")}
+            title={t("methodsPage.general.parisAgreement.link.title")}
+            text={t("methodsPage.general.parisAgreement.link.text")}
             link="https://www.naturvardsverket.se/parisavtalet"
           />
         </div>

@@ -73,21 +73,21 @@ export function LandingPage() {
   // Get top 5 municipalities by emissions reduction
   const topMunicipalities = getTopMunicipalities(5).map((municipality) => ({
     name: municipality.name,
-    value: municipality.historicalEmissionChangePercent / 100,
+    value: municipality.historicalEmissionChangePercent,
     link: `/municipalities/${municipality.name}`,
   }));
 
   const renderCompanyEmission = (item: RankedListItem) => (
-    <>
-      <span className="text-base md:text-lg md:text-right text-pink-3">
+    <div className="text-base sm:text-lg">
+      <span className="md:text-right text-pink-3">
         {formatEmissionsAbsolute(item.value, currentLanguage)}
       </span>
       <span className="text-grey ml-2"> {t("emissionsUnit")}</span>
-    </>
+    </div>
   );
 
   const renderMunicipalityChangeRate = (item: RankedListItem) => (
-    <span className="text-base md:text-lg md:text-right text-green-3">
+    <span className="text-base sm:text-lg md:text-right text-green-3">
       {formatPercentChange(item.value, currentLanguage)}
     </span>
   );
@@ -194,7 +194,7 @@ export function LandingPage() {
       )} */}
 
         <div className="py-8 md:py-24">
-          <div className="container mx-auto">
+          <div className="mx-2 sm:mx-8">
             <h2 className="text-4xl md:text-5xl font-light text-center mb-8 md:mb-16">
               {t("landingPage.bestPerformers")}
             </h2>

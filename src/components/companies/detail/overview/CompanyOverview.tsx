@@ -1,4 +1,4 @@
-import { Building2, ArrowUpRight } from "lucide-react";
+import { Building2 } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -9,8 +9,6 @@ import {
 import { Text } from "@/components/ui/text";
 import type { CompanyDetails, ReportingPeriod } from "@/types/company";
 import { useTranslation } from "react-i18next";
-import { useScreenSize } from "@/hooks/useScreenSize";
-import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
@@ -24,16 +22,11 @@ import {
   formatEmissionsAbsolute,
   formatEmployeeCount,
   formatPercentChange,
-  localizeUnit,
 } from "@/utils/localizeUnit";
 import { cn } from "@/lib/utils";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { Info } from "lucide-react";
+import { OverviewStatistics } from "./OverviewStatistics";
+import { CompanyOverviewTooltip } from "./CompanyOverviewTooltip";
+import { CompanyDescription } from "./CompanyDescription";
 
 interface CompanyOverviewProps {
   company: CompanyDetails;
@@ -51,8 +44,6 @@ export function CompanyOverview({
   selectedYear,
 }: CompanyOverviewProps) {
   const { t } = useTranslation();
-  const { isMobile } = useScreenSize();
-  const [showMore, setShowMore] = useState(false);
   const { token } = useAuth();
   const navigate = useNavigate();
   const sectorNames = useSectorNames();
@@ -90,11 +81,11 @@ export function CompanyOverview({
     : t("companies.overview.notReported");
 
   return (
-    <div className="bg-black-2 rounded-level-1 p-16">
-      <div className="flex items-start justify-between mb-12">
+    <div className="bg-black-2 rounded-level-1 p-8 md:p-16">
+      <div className="flex items-start justify-between mb-4 md:mb-12">
         <div className="space-y-4">
           <div className="flex items-center gap-4">
-            <Text className=" text-4xl lg:text-6xl">{company.name}</Text>
+            <Text className="text-4xl lg:text-6xl">{company.name}</Text>
             <div className="flex flex-col h-full justify-around">
               {token && (
                 <Button
@@ -111,45 +102,19 @@ export function CompanyOverview({
               )}
             </div>
           </div>
-          {isMobile ? (
-            <div>
-              <button
-                className="bg-black-1 text-white px-3 py-1 rounded-md mt-1 text-sm"
-                onClick={() => setShowMore(!showMore)}
-              >
-                {showMore
-                  ? t("companies.overview.readLess")
-                  : t("companies.overview.readMore")}
-              </button>
-              {showMore && (
-                <Text
-                  variant="body"
-                  className="text-lg md:text-base sm:text-sm max-w-3xl mt-2"
-                >
-                  {company.description}
-                </Text>
-              )}
-            </div>
-          ) : (
+          <CompanyDescription description={company.description} />
+          <div className="flex flex-row items-center gap-2 my-4">
             <Text
               variant="body"
-              className="text-lg md:text-base sm:text-sm max-w-3xl"
-            >
-              {company.description}
-            </Text>
-          )}
-          <div className="flex flex-col sm:flex-row sm:items-center gap-2 mt-4">
-            <Text
-              variant="body"
-              className="text-grey text-lg md:text-base sm:text-sm"
+              className="text-grey text-sm md:text-base lg:text-lg"
             >
               {t("companies.overview.sector")}:
             </Text>
-            <Text variant="body" className="text-lg md:text-base sm:text-sm">
+            <Text variant="body" className="text-sm md:text-base lg:text-lg">
               {sectorName}
             </Text>
           </div>
-          <div className="mt-4 w-full max-w-[180px]">
+          <div className="my-4 w-full max-w-[180px]">
             <Select value={selectedYear} onValueChange={onYearSelect}>
               <SelectTrigger className="w-full bg-black-1 text-white px-3 py-2 rounded-md">
                 <SelectValue placeholder={t("companies.overview.selectYear")} />
@@ -173,22 +138,19 @@ export function CompanyOverview({
           </div>
         </div>
         <div className="hidden md:flex w-16 h-16 rounded-full bg-blue-5/30 items-center justify-center">
-          <Building2 className="w-8 h-8 sm:w-6 sm:h-6 text-blue-2" />
+          <Building2 className="w-8 h-8 text-blue-2" />
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-16">
         <div>
-          <Text
-            variant="body"
-            className="mb-2 lg:text-lg md:text-base sm:text-sm"
-          >
+          <Text variant="body" className="mb-2 lg:text-lg md:text-base text-sm">
             {t("companies.overview.totalEmissions")} {periodYear}
           </Text>
           <div className="flex items-baseline gap-4">
             <Text
               className={cn(
-                "text-3xl lg:text-6xl md:text-4xl sm:text-3xl font-light tracking-tighter leading-none",
+                "text-3xl md:text-4xl lg:text-6xl font-light tracking-tighter leading-none",
                 selectedPeriod.emissions?.calculatedTotalEmissions === 0
                   ? "text-grey"
                   : "text-orange-2",
@@ -201,7 +163,7 @@ export function CompanyOverview({
                     selectedPeriod.emissions.calculatedTotalEmissions,
                     currentLanguage,
                   )}
-              <span className="text-lg lg:text-2xl md:text-lg sm:text-sm ml-2 text-grey">
+              <span className="text-sm md:text-lg lg:text-2xl ml-2 text-grey">
                 {t(
                   selectedPeriod.emissions?.calculatedTotalEmissions === 0
                     ? " "
@@ -217,31 +179,9 @@ export function CompanyOverview({
             <Text className="mb-2 lg:text-lg md:text-base sm:text-sm">
               {t("companies.overview.changeSinceLastYear")}
             </Text>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  <Info className="w-4 h-4 mb-2" />
-                </TooltipTrigger>
-                <TooltipContent className="max-w-80">
-                  {yearOverYearChange !== null ? (
-                    yearOverYearChange <= -80 || yearOverYearChange >= 80 ? (
-                      <>
-                        <p>{t("companies.card.emissionsChangeRateInfo")}</p>
-                        <p className="my-2">
-                          {t("companies.card.emissionsChangeRateInfoExtended")}
-                        </p>
-                      </>
-                    ) : (
-                      <p>{t("companies.card.emissionsChangeRateInfo")}</p>
-                    )
-                  ) : (
-                    <p>{t("companies.card.noData")}</p>
-                  )}
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <CompanyOverviewTooltip yearOverYearChange={yearOverYearChange} />
           </div>
-          <Text className="text-3xl lg:text-6xl md:text-4xl sm:text-3xl font-light tracking-tighter leading-none">
+          <Text className="text-3xl md:text-4xl lg:text-6xl font-light tracking-tighter leading-none">
             {yearOverYearChange !== null ? (
               <span
                 className={
@@ -262,46 +202,11 @@ export function CompanyOverview({
         </div>
       </div>
 
-      <div className="mt-12 bg-black-1 rounded-level-2 p-8 md:p-6 sm:p-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div>
-            <Text className="mb-2 text-base md:text-base sm:text-sm">
-              {t("companies.overview.turnover")} ({periodYear})
-            </Text>
-            <Text className="text-base md:text-base sm:text-sm">
-              {selectedPeriod.economy?.turnover?.value
-                ? `${localizeUnit(
-                    selectedPeriod.economy.turnover.value / 1e9,
-                    currentLanguage,
-                  )} mdr ${selectedPeriod.economy.turnover.currency}`
-                : t("companies.overview.notReported")}
-            </Text>
-          </div>
-
-          <div>
-            <Text className="text-base md:text-base sm:text-sm mb-2">
-              {t("companies.overview.employees")} ({periodYear})
-            </Text>
-            <Text className="text-base md:text-base sm:text-sm">
-              {formattedEmployeeCount}
-            </Text>
-          </div>
-
-          {selectedPeriod?.reportURL && (
-            <div className="flex items-end">
-              <a
-                href={selectedPeriod.reportURL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-blue-2 hover:text-blue-1 transition-colors"
-              >
-                {t("companies.overview.readAnnualReport")}
-                <ArrowUpRight className="w-4 h-4 sm:w-3 sm:h-3" />
-              </a>
-            </div>
-          )}
-        </div>
-      </div>
+      <OverviewStatistics
+        selectedPeriod={selectedPeriod}
+        currentLanguage={currentLanguage}
+        formattedEmployeeCount={formattedEmployeeCount}
+      />
     </div>
   );
 }

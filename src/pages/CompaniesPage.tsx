@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useCompanies } from "@/hooks/companies/useCompanies";
 import { CompanyCard } from "@/components/companies/list/CompanyCard";
-import { CompanyList } from "@/components/companies/list/CompanyList";
 import { Input } from "@/components/ui/input";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { useTranslation } from "react-i18next";
@@ -18,6 +17,7 @@ import {
   SectorCode,
   useSortOptions,
 } from "@/hooks/companies/useCompanyFilters";
+import { CardGrid } from "@/components/CardGrid";
 
 export function CompaniesPage() {
   const { t } = useTranslation();
@@ -94,7 +94,7 @@ export function CompaniesPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <>
       <PageHeader
         title={t("companiesPage.title")}
         description={t("companiesPage.description")}
@@ -104,13 +104,13 @@ export function CompaniesPage() {
       <div
         className={cn(
           screenSize.isMobile ? "relative" : "sticky top-0 z-10",
-          "bg-black px-4 pt-12 md:pt-16 pb-4 shadow-md",
+          "bg-black shadow-md",
         )}
       >
         <div className="absolute inset-0 w-full bg-black -z-10" />
 
         {/* Wrapper for View Toggle, Filters, Search, and Badges */}
-        <div className={cn("flex flex-wrap items-start gap-4", "items-center")}>
+        <div className={cn("flex flex-wrap items-center gap-2 mb-2 md:mb-4")}>
           {/* View Toggle */}
           <ViewToggle view={view} onViewChange={setQueryParam} />
 
@@ -121,7 +121,7 @@ export function CompaniesPage() {
               placeholder={t("companiesPage.searchPlaceholder")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="bg-black-1 rounded-md px-3 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-blue-2 relative w-full md:w-[350px]"
+              className="bg-black-1 rounded-md px-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-2 relative w-full md:w-[350px]"
             />
           )}
 
@@ -168,23 +168,10 @@ export function CompaniesPage() {
               : Object.keys(sectorNames).filter((key) => key !== "all")
           }
         />
-      ) : sectors.length === 0 && !searchQuery ? (
-        <CompanyList
-          companies={filteredCompanies.map(({ ...rest }) => ({
-            ...rest,
-            metrics: {
-              emissionsReduction: 0,
-              displayReduction: "0%",
-            },
-            reportingPeriods: rest.reportingPeriods.map((period) => ({
-              ...period,
-              id: period.startDate,
-            })),
-          }))}
-        />
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {filteredCompanies.map((company) => (
+        <CardGrid
+          items={filteredCompanies}
+          itemContent={(company) => (
             <CompanyCard
               key={company.wikidataId}
               {...company}
@@ -193,9 +180,9 @@ export function CompaniesPage() {
                 displayReduction: "0%",
               }}
             />
-          ))}
-        </div>
+          )}
+        />
       )}
-    </div>
+    </>
   );
 }
