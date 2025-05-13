@@ -92,6 +92,7 @@ export function Header() {
           label: t("header.methodology"),
           path: `${currentLanguage}/methodology`,
         },
+        {label: t("header.support"), path: `${currentLanguage}/support`},
       ],
     },
     {

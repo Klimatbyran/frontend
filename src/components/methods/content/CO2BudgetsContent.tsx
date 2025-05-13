@@ -3,11 +3,11 @@ import { Trans, useTranslation } from "react-i18next";
 export const CO2BudgetsContent = () => {
   const { t } = useTranslation();
   return (
-    <div className="prose prose-invert w-[90%] max-w-5xl mx-auto space-y-8">
-      <p>{t("methodsPage.accordion.co2Budgets.paragraph1")}</p>
+    <div className="prose prose-invert mx-auto space-y-8">
+      <p>{t("methodsPage.general.co2Budgets.paragraph1")}</p>
       <p>
         <Trans
-          i18nKey="methodsPage.accordion.co2Budgets.paragraph2"
+          i18nKey="methodsPage.general.co2Budgets.paragraph2"
           components={[
             <a
               title="Uppsala universitet"
@@ -19,14 +19,14 @@ export const CO2BudgetsContent = () => {
           ]}
         />
       </p>
-      <p>{t("methodsPage.accordion.co2Budgets.paragraph3")}</p>
-      <p>{t("methodsPage.accordion.co2Budgets.paragraph4")}</p>
-      <p>{t("methodsPage.accordion.co2Budgets.paragraph5")}</p>
-      <p>{t("methodsPage.accordion.co2Budgets.paragraph6")}</p>
-      <p>{t("methodsPage.accordion.co2Budgets.paragraph7")}</p>
+      <p>{t("methodsPage.general.co2Budgets.paragraph3")}</p>
+      <p>{t("methodsPage.general.co2Budgets.paragraph4")}</p>
+      <p>{t("methodsPage.general.co2Budgets.paragraph5")}</p>
+      <p>{t("methodsPage.general.co2Budgets.paragraph6")}</p>
+      <p>{t("methodsPage.general.co2Budgets.paragraph7")}</p>
       <p>
         <Trans
-          i18nKey="methodsPage.accordion.co2Budgets.paragraph8"
+          i18nKey="methodsPage.general.co2Budgets.paragraph8"
           components={[
             <a
               title="Chalmers"

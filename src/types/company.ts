@@ -118,6 +118,8 @@ export interface RankedCompany extends BaseCompany {
 // Scope 3 historical data type
 export interface Scope3HistoricalData {
   year: number;
+  total: number;
+  unit: string;
   categories: Array<{
     category: number;
     total: number;

@@ -10,7 +10,7 @@ import {
 import { CustomTooltip } from "../CustomTooltip";
 import { ChartData } from "@/types/emissions";
 import { t } from "i18next";
-import { formatEmissionsAbsolute } from "@/utils/localizeUnit";
+import { formatEmissionsAbsoluteCompact } from "@/utils/localizeUnit";
 
 interface EmissionsLineChartProps {
   data: ChartData[];
@@ -91,11 +91,11 @@ export default function EmissionsLineChart({
           tickLine={false}
           axisLine={true}
           tick={{ fontSize: 12 }}
-          width={80}
+          width={40}
           domain={[0, "auto"]}
           padding={{ top: 0, bottom: 0 }}
           tickFormatter={(value) =>
-            formatEmissionsAbsolute(value, currentLanguage)
+            formatEmissionsAbsoluteCompact(value, currentLanguage)
           }
         />
         <Tooltip
