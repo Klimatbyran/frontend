@@ -101,14 +101,14 @@ export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
           title={t("municipalities.card.emission", { year: lastYear })}
           tooltip={t("municipalities.card.emissionInfo", { year: lastYear })}
           value={lastYearEmissions}
-          textColor="text-orange-3"
+          textColor="text-orange-2"
           unit={t("emissionsUnit")}
         />
         <CardInfo
           title={t("municipalities.card.changeRate")}
           tooltip={t("municipalities.card.changeRateInfo")}
           value={emissionsChange}
-          textColor={meetsParis ? "text-green-3" : "text-pink-3"}
+          textColor="text-orange-2"
         />
       </div>
       <LinkCard
