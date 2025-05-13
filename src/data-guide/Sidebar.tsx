@@ -1,9 +1,10 @@
-import { Input } from "@/components/ui/input";
-import { CircleXIcon, XIcon } from "lucide-react";
-import { HelpItemId, helpItems } from "./items";
-import { ChangeEvent, useEffect, useMemo, useState } from "react";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
+import { CircleXIcon, XIcon } from "lucide-react";
+import { ChangeEvent, useEffect, useMemo, useState } from "react";
+import { HelpItemId, helpItems } from "./items";
+import { SidebarGuideItem } from "./SidebarGuideItem";
 
 type SidebarProps = {
   toggleOpen: () => void;
@@ -76,7 +77,7 @@ export const Sidebar = ({
             <h2 className="text-2xl">Data Guide</h2>
             <button
               onClick={toggleOpen}
-              className="ml-auto  focus-visible:ring-white disabled:pointer-events-none hover:bg-gray-700 active:ring-1 active:ring-white disabled:opacity-50 p-1 rounded-md mr-px mt-px"
+              className="ml-auto focus-visible:ring-white disabled:pointer-events-none hover:bg-blue-4 active:ring-1 active:ring-white disabled:opacity-50 p-1 rounded-md mr-px mt-px"
             >
               <XIcon />
             </button>
@@ -104,10 +105,9 @@ export const Sidebar = ({
           <div className="overflow-y-auto">
             {filteredItems.map(
               ({ id, title: itemTitle, component: ItemComponent }) => (
-                <section key={id}>
-                  <h2 className="text-xl mt-4 font-bold">{itemTitle}</h2>
-                  <ItemComponent key={id} />
-                </section>
+                <SidebarGuideItem key={id} title={itemTitle}>
+                  <ItemComponent />
+                </SidebarGuideItem>
               ),
             )}
           </div>

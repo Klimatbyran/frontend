@@ -1,4 +1,3 @@
-import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Markdown from "react-markdown";
 import remarkBreaks from "remark-breaks";
@@ -90,53 +89,14 @@ Dessa utsläpp delas upp i tre scope:
 3. **Scope 3** – alla utsläpp i värdekedjan, som i sin tur delas upp i 15 kategorier`,
     ),
   },
+  baseYear: {
+    id: "baseYear",
+    title: "Base year",
+    component: createTextHelpItem(
+      `The base year is a specific year used as a reference point to compare future emissions`,
+    ),
+  },
 });
 
 export type HelpItemId = keyof typeof helpItems;
 export type HelpItem = HelpItemWithId<HelpItemId>;
-
-export type ItemRefCount = Record<HelpItemId, number>;
-
-export const itemsToShow = (itemRefCount: ItemRefCount) =>
-  Object.entries(itemRefCount)
-    .filter(([_id, refCount]) => refCount > 0)
-    .map(([id, _refCount]) => id as HelpItemId);
-
-export const useTrackGuideItems = () => {
-  const [itemRefCount, setItemRefCount] = useState({} as ItemRefCount);
-
-  const items = useMemo(() => itemsToShow(itemRefCount), [itemRefCount]);
-
-  // This provides a way for
-  const pushItems = useCallback(
-    (items: HelpItemId[]) => {
-      setItemRefCount((oldRefCount) =>
-        items.reduce(
-          (acc, id) => ({
-            ...acc,
-            [id]: (acc[id] || 0) + 1,
-          }),
-          oldRefCount,
-        ),
-      );
-    },
-    [setItemRefCount],
-  );
-
-  const popItems = useCallback(
-    (items: HelpItemId[]) => {
-      setItemRefCount((oldRefCount) =>
-        items.reduce(
-          (acc, id) => ({
-            ...acc,
-            [id]: Math.max(0, (acc[id] || 1) - 1),
-          }),
-          oldRefCount,
-        ),
-      );
-    },
-    [setItemRefCount],
-  );
-
-  return { items, pushItems, popItems };
-};

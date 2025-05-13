@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { createSlug } from "@/lib/utils";
 import { CompanyScope3 } from "@/components/companies/detail/CompanyScope3";
-import { useDataGuide } from "@/data-guide/DataGuide";
+import { useDataGuide } from "@/data-guide/useDataGuide";
 
 export function CompanyDetailPage() {
   const { t } = useTranslation();
