@@ -2,21 +2,6 @@ import { useTranslation } from "react-i18next";
 import Markdown from "react-markdown";
 import remarkBreaks from "remark-breaks";
 
-const SectorHelp = () => (
-  <>
-    <p>
-      We have diveded companies into different sectors to make it easier to
-      compare companies against each other. The available sectors are:
-    </p>
-    <ul className="list-disc list-inside">
-      <li>Industri</li>
-      <li>Energi</li>
-      <li>Sällanköpsvaror</li>
-      <li>...</li>
-    </ul>
-  </>
-);
-
 const createTextHelpItem = (textKey: string) => () => {
   const { t } = useTranslation();
 
@@ -34,6 +19,11 @@ const createMarkdownHelpItem = (textKey: string) => () => {
           <ol {...props} className="list-decimal list-inside mt-4">
             {children}
           </ol>
+        ),
+        ul: ({ node, children, ...props }) => (
+          <ul {...props} className="list-disc list-inside mt-4">
+            {children}
+          </ul>
         ),
       }}
     >
@@ -71,10 +61,21 @@ export const helpItems = defineHelpItems({
     standardized measure that converts the impact of various greenhouse gases
     into the equivalent amount of CO2.`),
   },
-  sector: {
-    id: "sector",
+  companySector: {
+    id: "companySector",
     title: "Company Sectors",
-    component: SectorHelp,
+    component: createMarkdownHelpItem(
+      `
+We have diveded companies into different sectors to make it easier to compare companies against each other.
+
+The available sectors are:
+
+- Industrials
+- Energy
+- Consumer Discretionary
+- ...
+      `,
+    ),
   },
   scopes: {
     id: "scopes",
@@ -94,6 +95,20 @@ Dessa utsläpp delas upp i tre scope:
     title: "Base year",
     component: createTextHelpItem(
       `The base year is a specific year used as a reference point to compare future emissions`,
+    ),
+  },
+  changeRates: {
+    id: "changeRates",
+    title: "Change rate",
+    component: createTextHelpItem(
+      `The emission change rate compared to previous year`,
+    ),
+  },
+  companyTurnover: {
+    id: "companyTurnover",
+    title: "Turnover",
+    component: createTextHelpItem(
+      `The company turnover is their total revenue or sales. It is important not to confuse this with the profit.`,
     ),
   },
 });

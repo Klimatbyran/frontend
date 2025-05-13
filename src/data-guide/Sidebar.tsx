@@ -61,7 +61,7 @@ export const Sidebar = ({
       </Button>
       <div
         className={cn(
-          "p-4 bg-blue-5 w-[300px] fixed top-[50px] right-0 h-screen flex flex-col gap-4 transition-all duration-300",
+          "p-4 bg-black-2 w-[300px] fixed top-[50px] right-0 h-screen flex flex-col gap-4 transition-all duration-300 border-l border-blue-5/70",
           open ? "" : "translate-x-full",
         )}
         onTransitionEnd={transitionEnd}

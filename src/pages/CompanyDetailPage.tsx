@@ -18,7 +18,7 @@ export function CompanyDetailPage() {
   const { company, loading, error } = useCompanyDetails(id!);
   const [selectedYear, setSelectedYear] = useState<string>("latest");
 
-  useDataGuide(["sector", "tco2e"]);
+  useDataGuide(["changeRates", "companySector", "companyTurnover", "tco2e"]);
 
   useEffect(() => {
     window.scrollTo(0, 0);

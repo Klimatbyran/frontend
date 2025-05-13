@@ -12,6 +12,7 @@ export const DataGuideProvider = ({
   const { items, pushItems, popItems } = useTrackGuideItems();
 
   const showSidebar = items.length > 0;
+  const openAndShow = open && showSidebar;
 
   const toggleOpen = useCallback(() => {
     setOpen((isOpen) => !isOpen);
@@ -24,7 +25,7 @@ export const DataGuideProvider = ({
       <div
         className={cn(
           "transition-all duration-300",
-          open ? "mr-[calc(300px+1rem)]" : "mr-[1rem]",
+          openAndShow ? "mr-[calc(300px+1rem)]" : "mr-[1rem]",
         )}
       >
         {children}

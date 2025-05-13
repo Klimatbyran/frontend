@@ -15,13 +15,13 @@ export const SidebarGuideItem = ({
   title,
   children,
 }: SidebarGuideItemProps) => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   return (
     <Collapsible
       open={open}
       onOpenChange={setOpen}
-      className="mt-2 first:mt-4 bg-blue-4 rounded-md px-2"
+      className="mt-2 first:mt-4 bg-blue-5/50 rounded-md px-2"
     >
       <CollapsibleTrigger asChild>
         <button className="flex justify-between w-full mt-2 py-2 items-center">
