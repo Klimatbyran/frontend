@@ -219,6 +219,7 @@ input[type="number"] {
     }
   }
 }
+
 /* Fallback for browsers without container queries */
 @media (min-width: 0px) {
   .legend-list {
