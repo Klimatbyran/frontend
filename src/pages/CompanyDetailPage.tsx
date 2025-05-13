@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { createSlug } from "@/lib/utils";
 import { CompanyScope3 } from "@/components/companies/detail/CompanyScope3";
-import { useGuideItems } from "@/data-guide/DataGuide";
+import { useDataGuide } from "@/data-guide/DataGuide";
 
 export function CompanyDetailPage() {
   const { t } = useTranslation();
@@ -18,7 +18,7 @@ export function CompanyDetailPage() {
   const { company, loading, error } = useCompanyDetails(id!);
   const [selectedYear, setSelectedYear] = useState<string>("latest");
 
-  useGuideItems(["sector", "tco2e"]);
+  useDataGuide(["sector", "tco2e"]);
 
   useEffect(() => {
     window.scrollTo(0, 0);

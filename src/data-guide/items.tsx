@@ -1,3 +1,4 @@
+import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Markdown from "react-markdown";
 import remarkBreaks from "remark-breaks";
@@ -100,3 +101,42 @@ export const itemsToShow = (itemRefCount: ItemRefCount) =>
   Object.entries(itemRefCount)
     .filter(([_id, refCount]) => refCount > 0)
     .map(([id, _refCount]) => id as HelpItemId);
+
+export const useTrackGuideItems = () => {
+  const [itemRefCount, setItemRefCount] = useState({} as ItemRefCount);
+
+  const items = useMemo(() => itemsToShow(itemRefCount), [itemRefCount]);
+
+  // This provides a way for
+  const pushItems = useCallback(
+    (items: HelpItemId[]) => {
+      setItemRefCount((oldRefCount) =>
+        items.reduce(
+          (acc, id) => ({
+            ...acc,
+            [id]: (acc[id] || 0) + 1,
+          }),
+          oldRefCount,
+        ),
+      );
+    },
+    [setItemRefCount],
+  );
+
+  const popItems = useCallback(
+    (items: HelpItemId[]) => {
+      setItemRefCount((oldRefCount) =>
+        items.reduce(
+          (acc, id) => ({
+            ...acc,
+            [id]: Math.max(0, (acc[id] || 1) - 1),
+          }),
+          oldRefCount,
+        ),
+      );
+    },
+    [setItemRefCount],
+  );
+
+  return { items, pushItems, popItems };
+};
