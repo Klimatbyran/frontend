@@ -10,6 +10,7 @@ import { useLanguage } from "@/components/LanguageProvider";
 import { HiddenItemsBadges } from "../HiddenItemsBadges";
 import ChartHeader from "./ChartHeader";
 import EmissionsLineChart from "./EmissionsLineChart";
+import { useVerificationStatus } from "@/hooks/useVerificationStatus";
 
 export function EmissionsHistory({
   reportingPeriods,
@@ -26,6 +27,7 @@ export function EmissionsHistory({
   const { t } = useTranslation();
   const { getCategoryName, getCategoryColor } = useCategoryMetadata();
   const { currentLanguage } = useLanguage();
+  const { isAIGenerated } = useVerificationStatus();
 
   const hasScope3Categories = useMemo(
     () =>
@@ -55,8 +57,8 @@ export function EmissionsHistory({
 
   // Process data based on view
   const chartData = useMemo(
-    () => getChartData(processedPeriods),
-    [processedPeriods],
+    () => getChartData(processedPeriods, isAIGenerated),
+    [processedPeriods, isAIGenerated],
   );
 
   const handleClick = (data: {

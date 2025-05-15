@@ -24,6 +24,8 @@ import {
   formatPercentChange,
 } from "@/utils/localizeUnit";
 import { cn } from "@/lib/utils";
+import { useVerificationStatus } from "@/hooks/useVerificationStatus";
+import { AiIcon } from "@/components/ui/ai-icon";
 import { OverviewStatistics } from "./OverviewStatistics";
 import { CompanyOverviewTooltip } from "./CompanyOverviewTooltip";
 import { CompanyDescription } from "./CompanyDescription";
@@ -48,8 +50,17 @@ export function CompanyOverview({
   const navigate = useNavigate();
   const sectorNames = useSectorNames();
   const { currentLanguage } = useLanguage();
+  const { isAIGenerated, isEmissionsAIGenerated } = useVerificationStatus();
 
   const periodYear = new Date(selectedPeriod.endDate).getFullYear();
+
+  // Check if any emissions data is AI-generated
+  const totalEmissionsAIGenerated = isEmissionsAIGenerated(selectedPeriod);
+
+  // For year-over-year change, check both current and previous periods
+  const yearOverYearAIGenerated =
+    isEmissionsAIGenerated(selectedPeriod) ||
+    (previousPeriod && isEmissionsAIGenerated(previousPeriod));
 
   // Get the translated sector name using the sector code
   const sectorCode = company.industry?.industryGics?.sectorCode as
@@ -79,6 +90,17 @@ export function CompanyOverview({
         currentLanguage,
       )
     : t("companies.overview.notReported");
+  const turnoverAIGenerated = !!(
+    selectedPeriod.economy?.turnover &&
+    "metadata" in selectedPeriod.economy.turnover &&
+    isAIGenerated(selectedPeriod.economy.turnover)
+  );
+
+  const employeesAIGenerated = !!(
+    selectedPeriod.economy?.employees &&
+    "metadata" in selectedPeriod.economy.employees &&
+    isAIGenerated(selectedPeriod.economy.employees)
+  );
 
   return (
     <div className="bg-black-2 rounded-level-1 p-8 md:p-16">
@@ -163,7 +185,7 @@ export function CompanyOverview({
                     selectedPeriod.emissions.calculatedTotalEmissions,
                     currentLanguage,
                   )}
-              <span className="text-sm md:text-lg lg:text-2xl ml-2 text-grey">
+              <span className="text-lg lg:text-2xl md:text-lg sm:text-sm ml-2 text-grey">
                 {t(
                   selectedPeriod.emissions?.calculatedTotalEmissions === 0
                     ? " "
@@ -171,41 +193,51 @@ export function CompanyOverview({
                 )}
               </span>
             </Text>
-          </div>
-        </div>
-
-        <div>
-          <div className="flex items-center gap-2">
-            <Text className="mb-2 lg:text-lg md:text-base sm:text-sm">
-              {t("companies.overview.changeSinceLastYear")}
-            </Text>
-            <CompanyOverviewTooltip yearOverYearChange={yearOverYearChange} />
-          </div>
-          <Text className="text-3xl md:text-4xl lg:text-6xl font-light tracking-tighter leading-none">
-            {yearOverYearChange !== null ? (
-              <span
-                className={
-                  yearOverYearChange < 0 ? "text-orange-2" : "text-pink-3"
-                }
-              >
-                {formatPercentChange(
-                  Math.ceil(yearOverYearChange) / 100,
-                  currentLanguage,
-                )}
-              </span>
-            ) : (
-              <span className="text-grey">
-                {t("companies.overview.noData")}
+            {totalEmissionsAIGenerated && (
+              <span className="ml-2">
+                <AiIcon size="md" />
               </span>
             )}
-          </Text>
+          </div>
         </div>
+      </div>
+
+      <div>
+        <div className="flex items-center gap-2">
+          <Text className="mb-2 lg:text-lg md:text-base sm:text-sm">
+            {t("companies.overview.changeSinceLastYear")}
+          </Text>
+          <CompanyOverviewTooltip yearOverYearChange={yearOverYearChange} />
+        </div>
+        <Text className="text-3xl md:text-4xl lg:text-6xl font-light tracking-tighter leading-none">
+          {yearOverYearChange !== null ? (
+            <span
+              className={
+                yearOverYearChange < 0 ? "text-orange-2" : "text-pink-3"
+              }
+            >
+              {formatPercentChange(
+                Math.ceil(yearOverYearChange) / 100,
+                currentLanguage,
+              )}
+            </span>
+          ) : (
+            <span className="text-grey">{t("companies.overview.noData")}</span>
+          )}
+          {yearOverYearAIGenerated && (
+            <span className="ml-2">
+            <AiIcon size="md" />
+             </span>
+          )}
+        </Text>
       </div>
 
       <OverviewStatistics
         selectedPeriod={selectedPeriod}
         currentLanguage={currentLanguage}
         formattedEmployeeCount={formattedEmployeeCount}
+        turnoverAIGenerated={turnoverAIGenerated}
+        employeesAIGenerated={employeesAIGenerated}
       />
     </div>
   );

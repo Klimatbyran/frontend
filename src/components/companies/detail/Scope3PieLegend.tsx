@@ -8,6 +8,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useVerificationStatus } from "@/hooks/useVerificationStatus";
+import { AiIcon } from "@/components/ui/ai-icon";
 
 interface PieLegendProps {
   payload: Array<{
@@ -16,6 +18,7 @@ interface PieLegendProps {
     total: number;
     color: string;
     category: number;
+    // isAIGenerated: boolean;
   }>;
   filteredCategories?: Set<string>;
   onFilteredCategoriesChange?: (categories: Set<string>) => void;
@@ -32,6 +35,7 @@ const Scope3PieLegend: React.FC<PieLegendProps> = ({
   if (!payload) {
     return null;
   }
+  console.log("scope3PieLegend", payload);
 
   const handleLegendItemClick = (name: string) => {
     if (onFilteredCategoriesChange) {
@@ -50,6 +54,10 @@ const Scope3PieLegend: React.FC<PieLegendProps> = ({
     const bValue = b.value ?? 0;
     return bValue - aValue;
   });
+
+  const isAIGenerated = (payload: any) => {
+    return payload.isAIGenerated;
+  };
 
   return (
     <TooltipProvider>
@@ -88,6 +96,11 @@ const Scope3PieLegend: React.FC<PieLegendProps> = ({
                           currentLanguage,
                         )}{" "}
                         {t("emissionsUnit")}
+                        {isAIGenerated(entry) && (
+                          <span className="ml-2">
+                            <AiIcon size="sm" />
+                          </span>
+                        )}
                       </span>
                       <span>{percentage}</span>
                     </div>

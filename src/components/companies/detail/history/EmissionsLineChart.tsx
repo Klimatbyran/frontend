@@ -46,6 +46,7 @@ export default function EmissionsLineChart({
   getCategoryColor,
   currentLanguage,
 }: EmissionsLineChartProps) {
+  console.log(data);
   return (
     <ResponsiveContainer width="100%" height="100%" className="w-full">
       <LineChart
@@ -121,7 +122,7 @@ export default function EmissionsLineChart({
             {!hiddenScopes.includes("scope1") && (
               <Line
                 type="monotone"
-                dataKey="scope1"
+                dataKey="scope1.value"
                 stroke="var(--pink-3)"
                 strokeWidth={2}
                 dot={{
@@ -141,7 +142,7 @@ export default function EmissionsLineChart({
             {!hiddenScopes.includes("scope2") && (
               <Line
                 type="monotone"
-                dataKey="scope2"
+                dataKey="scope2.value"
                 stroke="var(--green-2)"
                 strokeWidth={2}
                 dot={{
@@ -161,7 +162,7 @@ export default function EmissionsLineChart({
             {!hiddenScopes.includes("scope3") && (
               <Line
                 type="monotone"
-                dataKey="scope3"
+                dataKey="scope3.value"
                 stroke="var(--blue-2)"
                 strokeWidth={2}
                 dot={{

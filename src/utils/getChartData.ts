@@ -1,7 +1,10 @@
 import { ChartData } from "@/types/emissions";
 import type { EmissionPeriod } from "@/lib/calculations/emissions";
 
-export function getChartData(processedPeriods: EmissionPeriod[]): ChartData[] {
+export function getChartData(
+  processedPeriods: EmissionPeriod[],
+  isAIGenerated: (data: any) => boolean,
+): ChartData[] {
   if (!processedPeriods || processedPeriods.length === 0) return [];
 
   const sortedPeriods = [...processedPeriods].sort(
@@ -26,7 +29,36 @@ export function getChartData(processedPeriods: EmissionPeriod[]): ChartData[] {
 
   const historicalData = sortedPeriods.map((period) => {
     const year = new Date(period.endDate).getFullYear();
-
+    const scope1 = period.emissions?.scope1;
+    const scope2 = period.emissions?.scope2;
+    const scope3 = period.emissions?.scope3;
+    const scope1Data = scope1
+      ? { value: scope1.total ?? 0, isAIGenerated: isAIGenerated(scope1) }
+      : undefined;
+    const scope2Data = scope2
+      ? {
+          value: scope2.calculatedTotalEmissions ?? 0,
+          isAIGenerated: isAIGenerated(scope2),
+        }
+      : undefined;
+    const scope3Data = scope3
+      ? {
+          value: scope3.calculatedTotalEmissions ?? 0,
+          isAIGenerated: isAIGenerated(scope3),
+        }
+      : undefined;
+    const scope3Categories =
+      scope3?.categories?.map((cat) => ({
+        category: cat.category,
+        value: cat.total ?? 0,
+        isAIGenerated: isAIGenerated(cat),
+      })) ?? [];
+    const isAnyAI = [
+      scope1Data?.isAIGenerated,
+      scope2Data?.isAIGenerated,
+      scope3Data?.isAIGenerated,
+      ...scope3Categories.map((cat) => cat.isAIGenerated),
+    ].some(Boolean);
     // Capture original values before overriding with 0 for graph continuity
     const categoryData = [...categoryKeys].reduce<
       Record<string, number | null>
@@ -34,31 +66,36 @@ export function getChartData(processedPeriods: EmissionPeriod[]): ChartData[] {
       const categoryEntry = period.emissions?.scope3?.categories?.find(
         (cat) => `cat${cat.category}` === key,
       );
-
       acc[key] = categoryEntry?.total ?? null; // Preserve null if data is missing
       return acc;
     }, {});
-
     return {
       year,
       total: period.emissions?.calculatedTotalEmissions ?? 0,
-      scope1: period.emissions?.scope1?.total ?? 0,
-      scope2: period.emissions?.scope2?.calculatedTotalEmissions ?? 0,
-      scope3: period.emissions?.scope3?.calculatedTotalEmissions ?? 0,
-      originalValues: { ...categoryData }, // Keep original null values
+      isAIGenerated: isAnyAI,
+      scope1: scope1Data,
+      scope2: scope2Data,
+      scope3: scope3Data,
+      scope3Categories,
+      originalValues: { ...categoryData },
       ...Object.fromEntries(
-        Object.entries(categoryData).map(([key, value]) => [key, value ?? 0]), // Graph continuity: replace null with 0
+        Object.entries(categoryData).map(([key, value]) => [key, value ?? 0]),
       ),
     };
   });
+
+  console.log("historicalData", historicalData);
+  console.log("processedPeriods", processedPeriods);
 
   // Add empty future years
   const futureData = futureYears.map((year) => ({
     year,
     total: undefined,
+    isAIGenerated: false,
     scope1: undefined,
     scope2: undefined,
     scope3: undefined,
+    scope3Categories: [],
     ...Object.fromEntries([...categoryKeys].map((key) => [key, undefined])),
     originalValues: Object.fromEntries(
       [...categoryKeys].map((key) => [key, null]),

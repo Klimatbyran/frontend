@@ -14,28 +14,56 @@ import PieChartView from "../CompanyPieChartView";
 import { useResponsiveChartSize } from "@/hooks/useResponsiveChartSize";
 import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import Scope3PieLegend from "./Scope3PieLegend";
+import { useVerificationStatus } from "@/hooks/useVerificationStatus";
 
 interface Scope3DataProps {
   emissions: {
-    scope1And2?: { total: number; unit: string } | null;
-    scope1?: { total: number; unit: string } | null;
+    scope1And2?: {
+      total: number;
+      unit: string;
+      metadata?: {
+        verifiedBy?: { name: string } | null;
+        user?: { name?: string } | null;
+      };
+    } | null;
+    scope1?: { total: number; unit: string, metadata?: {
+      verifiedBy?: { name: string } | null;
+      user?: { name?: string } | null;
+    };
+    } | null;
     scope2?: {
       mb?: number | null;
       lb?: number | null;
       unknown?: number | null;
       unit: string;
       calculatedTotalEmissions: number;
+      metadata?: {
+        verifiedBy?: { name: string } | null;
+        user?: { name?: string } | null;
+      };
     } | null;
     scope3?: {
       total: number;
       unit: string;
+      metadata?: {
+        verifiedBy?: { name: string } | null;
+        user?: { name?: string } | null;
+      };
       categories?: Array<{
         category: number;
         total: number;
         unit: string;
+        metadata?: {
+          verifiedBy?: { name: string } | null;
+          user?: { name?: string } | null;
+        };
       }>;
     } | null;
-    biogenicEmissions?: { total: number; unit: string } | null;
+    biogenicEmissions?: { total: number; unit: string, metadata?: {
+      verifiedBy?: { name: string } | null;
+      user?: { name?: string } | null;
+    };
+    } | null;
   } | null;
   className?: string;
   isRealEstate?: boolean;
@@ -43,10 +71,14 @@ interface Scope3DataProps {
     year: number;
     total: number;
     unit: string;
-    categories: Array<{
+    categories: Array<{ 
       category: number;
       total: number;
       unit: string;
+      metadata?: {
+        verifiedBy?: { name: string } | null;
+        user?: { name?: string } | null;
+      };
     }>;
   }>;
 }
@@ -63,6 +95,7 @@ export function Scope3Data({
   const [filteredCategories, setFilteredCategories] = useState<Set<string>>(
     new Set(),
   );
+  const { isAIGenerated } = useVerificationStatus();
 
   if (!emissions?.scope3?.categories?.length) {
     return null;
@@ -155,6 +188,7 @@ export function Scope3Data({
                   total: selectedScope3Total,
                   color: getCategoryColor(cat.category),
                   category: cat.category,
+                  isAIGenerated: isAIGenerated(cat),
                 }))}
                 filteredCategories={filteredCategories}
                 onFilteredCategoriesChange={setFilteredCategories}
