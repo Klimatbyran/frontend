@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { ArrowUpRight, FileText } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
@@ -22,7 +21,7 @@ export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
   const meetsParis = !municipality.budgetRunsOut && municipality.budget;
   const { currentLanguage } = useLanguage();
 
-  const lastYearEmission = municipality.approximatedHistoricalEmission.at(-1);
+  const lastYearEmission = municipality.emissions.at(-1);
   const lastYearEmissions = lastYearEmission
     ? formatEmissionsAbsolute(lastYearEmission.value, currentLanguage)
     : t("municipalities.card.noData");
@@ -30,10 +29,7 @@ export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
 
   const emissionsChangeExists = municipality.historicalEmissionChangePercent;
   const emissionsChange = emissionsChangeExists
-    ? formatPercentChange(
-        Math.ceil(emissionsChangeExists) / 100,
-        currentLanguage,
-      )
+    ? formatPercentChange(emissionsChangeExists, currentLanguage)
     : t("municipalities.card.noData");
 
   const noClimatePlan = !municipality.climatePlanLink;
@@ -101,14 +97,16 @@ export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
           title={t("municipalities.card.emission", { year: lastYear })}
           tooltip={t("municipalities.card.emissionInfo", { year: lastYear })}
           value={lastYearEmissions}
-          textColor="text-orange-3"
+          textColor="text-orange-2"
           unit={t("emissionsUnit")}
         />
         <CardInfo
           title={t("municipalities.card.changeRate")}
           tooltip={t("municipalities.card.changeRateInfo")}
           value={emissionsChange}
-          textColor={meetsParis ? "text-green-3" : "text-pink-3"}
+          textColor={cn(
+            emissionsChangeExists > 0 ? "text-pink-3" : "text-orange-2",
+          )}
         />
       </div>
       <LinkCard

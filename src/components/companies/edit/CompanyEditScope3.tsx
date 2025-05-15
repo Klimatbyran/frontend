@@ -43,7 +43,7 @@ export function CompanyEditScope3({ periods, onInputChange, formData }) {
           index !== 15 && (
             <CompanyEditRow
               key={"scope-3-" + index}
-              name={category.name}
+              name={`${index + 1}. ${category.name}`}
             >
               {periods.map((period) =>
                 <CompanyEditInputField

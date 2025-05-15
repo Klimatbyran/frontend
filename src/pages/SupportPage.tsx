@@ -59,6 +59,25 @@ export function SupportPage() {
               link: donateEmailLink,
             }}
           />
+          
+          <SupportMethod
+            icon={<Building className="w-6 h-6 text-orange-3" />}
+            title={t("supportPage.organizationSupport.title")}
+            description={t("supportPage.organizationSupport.description")}
+            details={t("supportPage.organizationSupport.details", {
+              returnObjects: true,
+            })}
+            action={{
+              text: t("supportPage.organizationSupport.action.text"),
+              link: organizationEmailLink,
+            }}
+            readMore={{
+              text: t("supportPage.organizationSupport.readMore.text"),
+              content: t("supportPage.organizationSupport.readMore.content", {
+                returnObjects: true,
+              }) as SupportReadMoreContent,
+            }}
+          />
 
           <SupportMethod
             icon={<Code className="w-6 h-6 text-green-3" />}
@@ -96,25 +115,6 @@ export function SupportPage() {
             action={{
               text: t("supportPage.partnerships.action.text"),
               link: partnerEmailLink,
-            }}
-          />
-
-          <SupportMethod
-            icon={<Building className="w-6 h-6 text-orange-3" />}
-            title={t("supportPage.organizationSupport.title")}
-            description={t("supportPage.organizationSupport.description")}
-            details={t("supportPage.organizationSupport.details", {
-              returnObjects: true,
-            })}
-            action={{
-              text: t("supportPage.organizationSupport.action.text"),
-              link: organizationEmailLink,
-            }}
-            readMore={{
-              text: t("supportPage.organizationSupport.readMore.text"),
-              content: t("supportPage.organizationSupport.readMore.content", {
-                returnObjects: true,
-              }) as SupportReadMoreContent,
             }}
           />
         </div>

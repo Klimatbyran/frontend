@@ -74,8 +74,8 @@ export function Header() {
           path: `${currentLanguage}/municipalities`,
         },
         {
-          label: t("header.municipalitiesCompare"),
-          path: `${currentLanguage}/municipalities/compare`,
+          label: t("header.municipalitiesExplore"),
+          path: `${currentLanguage}/municipalities/explore`,
         },
       ],
     },

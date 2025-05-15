@@ -4,6 +4,9 @@ import { Text } from "@/components/ui/text";
 import { Trans, useTranslation } from "react-i18next";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { useNavigate } from "react-router-dom";
+import { useReducedMotion } from "framer-motion";
+import { Marquee } from "../ui/marquee";
+import { useScreenSize } from "@/hooks/useScreenSize";
 
 function SocialLinks() {
   return (
@@ -28,26 +31,55 @@ function SocialLinks() {
   );
 }
 
-function PartnerLogos() {
+interface PartnerLogoProps {
+  prefersReducedMotion: boolean | null;
+  isMobile: boolean | null;
+}
+
+function PartnerLogos({ prefersReducedMotion, isMobile }: PartnerLogoProps) {
+  const Wrapper = prefersReducedMotion || isMobile ? "div" : Marquee;
+  let wrapperProps;
+
+  if (prefersReducedMotion || isMobile) {
+    wrapperProps = {
+      className:
+        "flex flex-wrap justify-center items-center gap-4 px-2 md:px-6",
+    };
+  } else {
+    wrapperProps = {
+      className: "[--duration:80s]",
+      reverse: false,
+      pauseOnHover: true,
+    };
+  }
+
   return (
-    <div className="flex flex-wrap justify-center items-center gap-4 px-2 md:px-6">
+    <Wrapper {...wrapperProps}>
       {partners.map(({ href, src, alt }) => (
-        <a key={alt} href={href} target="_blank" rel="noreferrer">
-          <img className="w-28 max-h-12 object-contain" src={src} alt={alt} />
+        <a
+          key={alt}
+          href={href}
+          target="_blank"
+          rel="noreferrer"
+          className="flex items-center justify-center"
+        >
+          <img className="w-28 h-12 object-contain" src={src} alt={alt} />
         </a>
       ))}
-    </div>
+    </Wrapper>
   );
 }
 
 export function Footer() {
   const { t } = useTranslation();
   const { login, logout, token, user } = useAuth();
+  const prefersReducedMotion = useReducedMotion();
   const navigate = useNavigate();
+  const { isMobile } = useScreenSize();
 
   return (
-    <footer className="relative z-20 bg-black-2 py-4 md:py-8">
-      <div className="container mx-auto px-4 space-y-4 md:space-y-8 flex flex-col items-center text-center">
+    <footer className="relative w-full z-20 bg-black-2 py-4 md:py-8">
+      <div className="container mx-auto px-4 space-y-4 md:space-y-8 flex flex-col w-screen items-center text-center">
         {/* Contact Section */}
         <div className="space-y-2 md:space-y-4">
           <Text variant="h6" className="text-grey md:text-base">
@@ -71,11 +103,20 @@ export function Footer() {
         </div>
 
         {/* Partners Section */}
-        <div className="space-y-2">
+        <div className="space-y-2 relative">
           <Text variant="h6" className="text-blue-3">
             {t("footer.supporters")}
           </Text>
-          <PartnerLogos />
+          {prefersReducedMotion || isMobile ? null : (
+            <div className="absolute left-20 md:left-0 top-0 bottom-0 w-24 md:w-16 bg-gradient-to-r from-[var(--black-2)] to-transparent pointer-events-none z-10" />
+          )}
+          <PartnerLogos
+            prefersReducedMotion={prefersReducedMotion}
+            isMobile={isMobile}
+          />
+          {prefersReducedMotion || isMobile ? null : (
+            <div className="absolute right-20 md:right-0 top-0 bottom-0 w-24 md:w-16 bg-gradient-to-l from-[var(--black-2)] to-transparent pointer-events-none z-10" />
+          )}
         </div>
 
         {/* Footer Links */}

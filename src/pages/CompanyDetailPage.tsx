@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useCompanyDetails } from "@/hooks/companies/useCompanyDetails";
-import { CompanyOverview } from "@/components/companies/detail/CompanyOverview";
+import { CompanyOverview } from "@/components/companies/detail/overview/CompanyOverview";
 import { CompanyHistory } from "@/components/companies/detail/CompanyHistory";
 import { Text } from "@/components/ui/text";
 import { useTranslation } from "react-i18next";
@@ -11,7 +11,7 @@ import { CompanyScope3 } from "@/components/companies/detail/CompanyScope3";
 
 export function CompanyDetailPage() {
   const { t } = useTranslation();
-  const { id, slug } = useParams<{ id: string; slug?: string }>();
+  const { id } = useParams<{ id: string; slug?: string }>();
   // The id parameter is always the Wikidata ID (Q-number)
   // It's either directly from /companies/:id or extracted from /foretag/:slug-:id
   const { company, loading, error } = useCompanyDetails(id!);
@@ -165,7 +165,7 @@ export function CompanyDetailPage() {
         )}
       </PageSEO>
 
-      <div className="space-y-16 max-w-[1400px] mx-auto">
+      <div className="space-y-8 md:space-y-16 max-w-[1400px] mx-auto">
         <CompanyOverview
           company={company}
           selectedPeriod={selectedPeriod}
@@ -185,6 +185,10 @@ export function CompanyDetailPage() {
             )
             .map((period) => ({
               year: new Date(period.endDate).getFullYear(),
+              total: period.emissions!.scope3!.calculatedTotalEmissions!,
+              unit:
+                period.emissions!.scope3!.statedTotalEmissions?.unit ||
+                t("emissionsUnit"),
               categories: period.emissions!.scope3!.categories!,
             }))
             .sort((a, b) => a.year - b.year)}

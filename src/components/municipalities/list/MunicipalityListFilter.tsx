@@ -34,11 +34,11 @@ export default function MunicipalityFilter({
   setSortDirection,
 }: MunicipalityFilterProps) {
   return (
-    <div className="relative md:sticky md:top-0 md:z-10 bg-black px-4 pt-12 md:pt-16 pb-4 shadow-md">
+    <div className="relative md:sticky md:top-0 md:z-10 bg-black shadow-md">
       {/* Extending background to header */}
       <div className="absolute inset-0 w-full bg-black -z-10" />
 
-      <div className="flex flex-col md:flex-row items-center gap-4 w-full flex-wrap">
+      <div className="flex flex-col md:flex-row items-center gap-2 mb-2 md:mb-4 w-full flex-wrap">
         {/* Search Input */}
         <div className="relative w-full md:w-[350px]">
           <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-grey w-4 h-4" />

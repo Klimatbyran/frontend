@@ -65,6 +65,12 @@
   h6 {
     @apply font-light tracking-tight;
   }
+  .theme {
+    --animate-marquee:
+    marquee var(--duration) infinite linear;
+    --animate-marquee-vertical:
+    marquee-vertical var(--duration) linear infinite;
+  }
 }
 
 @layer components {
@@ -165,20 +171,87 @@
   @apply text-lg;
 }
 
-input[type='number'] {
+input[type="number"] {
   text-align: right; /* Align numbers to the right */
   padding-right: 10px; /* Add some padding as needed */
 }
 
 /* Remove spinner controls (only for WebKit browsers like Chrome, Edge) */
-input[type='number']::-webkit-inner-spin-button,
-input[type='number']::-webkit-outer-spin-button {
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
 /* For Firefox (hides the increment/decrement arrows in number inputs) */
-input[type='number'] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@theme inline {
+  @keyframes marquee {
+  from {
+    transform:
+    translateX(0);
+    }
+  to {
+    transform:
+    translateX(calc(-100% - var(--gap)));
+    }
+  }
+  @keyframes marquee-vertical {
+  from {
+    transform:
+    translateY(0);
+    }
+  to {
+    transform:
+    translateY(calc(-100% - var(--gap)));
+    }
+  }
+}
+
+/* Fallback for browsers without container queries */
+@media (min-width: 0px) {
+  .legend-list {
+    grid-template-columns: 1fr;
+    max-height: 500px;
+    overflow-y: auto;
+  }
+}
+
+/* SectorPieLegend responsive grid and scroll with container queries */
+.legend-list {
+  display: grid;
+  gap: 0.5rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 0.5rem;
+  grid-template-columns: 1fr;
+  max-height: 400px;
+  margin-top: 0.5rem;
+  min-width: 0;
+  width: 100%;
+}
+
+@container (min-width: 400px) {
+  .legend-list {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    max-height: 600px;
+    margin-top: 1rem;
+  }
+}
+
+.container-type-inline-size {
+  container-type: inline-size;
+  /* width: 600px;  Remove any fixed width */
+}

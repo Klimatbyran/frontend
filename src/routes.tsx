@@ -73,7 +73,7 @@ export function AppRoutes() {
         element={<MunicipalitiesRankedPage />}
       />
       <Route
-        path={`${basePath}/municipalities/compare`}
+        path={`${basePath}/municipalities/explore`}
         element={<MunicipalitiesComparePage />}
       />
       <Route

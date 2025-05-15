@@ -14,7 +14,7 @@ export function CompanyEditScope1({ periods, onInputChange, formData }) {
           type="number"
           key={`scope-1-${period.id}`}
           displayAddition="verification"
-          value={period.emissions.scope1.total ?? ''}
+          value={period.emissions.scope1?.total ?? ''}
           verified={period.emissions?.scope1?.metadata?.verifiedBy}
           onInputChange={onInputChange}
           formData={formData}

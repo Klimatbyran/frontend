@@ -94,7 +94,7 @@ export function CompaniesPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <>
       <PageHeader
         title={t("companiesPage.title")}
         description={t("companiesPage.description")}
@@ -104,13 +104,13 @@ export function CompaniesPage() {
       <div
         className={cn(
           screenSize.isMobile ? "relative" : "sticky top-0 z-10",
-          "bg-black px-4 pt-12 md:pt-16 pb-4 shadow-md",
+          "bg-black shadow-md",
         )}
       >
         <div className="absolute inset-0 w-full bg-black -z-10" />
 
         {/* Wrapper for View Toggle, Filters, Search, and Badges */}
-        <div className={cn("flex flex-wrap items-start gap-4", "items-center")}>
+        <div className={cn("flex flex-wrap items-center gap-2 mb-2 md:mb-4")}>
           {/* View Toggle */}
           <ViewToggle view={view} onViewChange={setQueryParam} />
 
@@ -121,7 +121,7 @@ export function CompaniesPage() {
               placeholder={t("companiesPage.searchPlaceholder")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="bg-black-1 rounded-md px-3 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-blue-2 relative w-full md:w-[350px]"
+              className="bg-black-1 rounded-md px-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-2 relative w-full md:w-[350px]"
             />
           )}
 
@@ -183,6 +183,6 @@ export function CompaniesPage() {
           )}
         />
       )}
-    </div>
+    </>
   );
 }

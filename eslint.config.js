@@ -26,6 +26,21 @@ export default tseslint.config(
       // Suppress defaultProps deprecation warnings from Recharts
       "react/no-deprecated": "off",
       "react/default-props-match-prop-types": "off",
+
+      // Mimic Typescripts noUnusedLocals and noUnusedParameters behaviour
+      // https://typescript-eslint.io/rules/no-unused-vars/#what-benefits-does-this-rule-have-over-typescript
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          args: "all",
+          argsIgnorePattern: "^_",
+          caughtErrors: "all",
+          caughtErrorsIgnorePattern: "^_",
+          destructuredArrayIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          ignoreRestSiblings: true,
+        },
+      ],
     },
   },
 );

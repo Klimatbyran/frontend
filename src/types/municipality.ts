@@ -115,10 +115,11 @@ export function transformEmissionsData(municipality: Municipality) {
 
       return {
         year: parseInt(year, 10),
-        total: historical || approximated,
+        total: historical,
         paris: budget,
         trend,
         gap,
+        approximated: approximated,
       };
     })
     .filter((d) => d.year >= 1990 && d.year <= 2050);
@@ -130,6 +131,7 @@ export type DataPoint = {
   paris: number | undefined;
   trend: number | undefined;
   gap: number | undefined;
+  approximated: number | undefined;
 };
 
 export interface KPIValue {
