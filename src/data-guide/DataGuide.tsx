@@ -4,6 +4,7 @@ import { Sidebar } from "./Sidebar";
 import { DataGuideContext, useTrackGuideItems } from "./internal";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router-dom";
 
 export const DataGuideProvider = ({
   children,
@@ -11,10 +12,16 @@ export const DataGuideProvider = ({
   children: React.ReactNode;
 }) => {
   const { t } = useTranslation();
+  const location = useLocation();
+
+  const dataGuideEnabled = new URLSearchParams(location.search).has(
+    "enableDataGuide",
+  );
+
   const [open, setOpen] = useState(false);
   const { items, pushItems, popItems } = useTrackGuideItems();
 
-  const showSidebar = items.length > 0;
+  const showSidebar = dataGuideEnabled && items.length > 0;
   const openAndShow = open && showSidebar;
 
   const toggleOpen = useCallback(() => {
