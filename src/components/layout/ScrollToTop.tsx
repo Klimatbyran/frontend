@@ -29,7 +29,7 @@ export function ScrollToTop() {
       {isVisible && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-6 right-6 p-3 bg-black-1 hover:bg-black-2 text-white rounded-full shadow-lg transition-colors duration-200"
+          className="fixed bottom-6 right-6 p-3 bg-black-1 hover:bg-black-2 text-white rounded-full shadow-lg transition-colors duration-200 z-[35]"
           aria-label="Scroll to top"
         >
           <ChevronUp size={24} />
