@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback, createContext } from "react";
-import { HelpItemId } from "./items";
+import { HelpItemId } from "./guide-items";
 
 export type ItemRefCount = Record<HelpItemId, number>;
 

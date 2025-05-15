@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { CircleXIcon, PanelRightCloseIcon } from "lucide-react";
 import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { HelpItemId, helpItems } from "./items";
+import { dataGuideHelpItems, HelpItemId } from "./guide-items";
 import { SidebarGuideItem } from "./SidebarGuideItem";
 
 type SidebarProps = {
@@ -34,7 +34,7 @@ export const Sidebar = ({
   const filteredItems = useMemo(() => {
     const filterLC = filter.toLowerCase();
 
-    return Object.values(helpItems)
+    return Object.values(dataGuideHelpItems)
       .filter((i) => items.includes(i.id))
       .filter((i) => i.title.toLowerCase().includes(filterLC))
       .sort((a, b) =>
