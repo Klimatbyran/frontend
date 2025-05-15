@@ -40,6 +40,21 @@ export const DataGuideProvider = ({
       >
         {children}
       </div>
+      {showMobile && (
+        <>
+          <Button
+            size="sm"
+            className={cn(
+              "fixed bottom-0 left-1/2 -translate-x-1/2 bg-blue-5 rounded-none z-[30]",
+            )}
+            onClick={() => toggleOpen()}
+          >
+            {t("dataGuide.buttonTitle")}
+          </Button>
+
+          <Popup setOpen={setOpen} open={open} items={items} />
+        </>
+      )}
       {showSidebar && (
         <>
           <Button

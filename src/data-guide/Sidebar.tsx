@@ -1,26 +1,18 @@
-import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { CircleXIcon, PanelRightCloseIcon } from "lucide-react";
-import { ChangeEvent, useEffect, useMemo, useState } from "react";
+import { PanelRightCloseIcon } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { dataGuideHelpItems, HelpItemId } from "./guide-items";
-import { SidebarGuideItem } from "./SidebarGuideItem";
+import { DataGuideContent } from "./DataGuideContent";
+import { HelpItemId } from "./guide-items";
 
 type SidebarProps = {
   toggleOpen: () => void;
   open: boolean;
-  className?: string;
   items: HelpItemId[];
 };
 
-export const Sidebar = ({
-  className,
-  open,
-  toggleOpen,
-  items,
-}: SidebarProps) => {
+export const Sidebar = ({ open, toggleOpen, items }: SidebarProps) => {
   const { t } = useTranslation();
-  const [filter, setFilter] = useState("");
   const [inTransition, setInTransition] = useState(false);
 
   useEffect(() => {
@@ -31,23 +23,6 @@ export const Sidebar = ({
     setInTransition(false);
   };
 
-  const filteredItems = useMemo(() => {
-    const filterLC = filter.toLowerCase();
-
-    return Object.values(dataGuideHelpItems)
-      .filter((i) => items.includes(i.id))
-      .filter((i) => i.title.toLowerCase().includes(filterLC))
-      .sort((a, b) =>
-        a.title.toLowerCase().localeCompare(b.title.toLowerCase()),
-      );
-  }, [filter, items]);
-
-  const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setFilter(e.target.value);
-  };
-
-  const resetFilter = () => setFilter("");
-
   return (
     <div
       className={cn(
@@ -55,12 +30,11 @@ export const Sidebar = ({
         "fixed right-0 top-10 lg:top-12 h-[calc(100%-2.5rem)] lg:h-[calc(100%-3rem)]",
         "flex flex-col gap-4",
         "transition-all duration-300  z-[30]",
-        "overflow-y-auto overscroll-contain",
         open ? "" : "translate-x-full",
       )}
       onTransitionEnd={transitionEnd}
     >
-      <div className={cn(className, !open && !inTransition && "hidden")}>
+      <div className={cn("h-full", !open && !inTransition && "hidden")}>
         <div className="flex align-center">
           <h2 className="text-2xl">{t("dataGuide.title")}</h2>
           <button
@@ -70,35 +44,7 @@ export const Sidebar = ({
             <PanelRightCloseIcon />
           </button>
         </div>
-        <div className="relative mt-4">
-          <Input
-            type="text"
-            className="border-white pr-2"
-            name="filter"
-            aria-label="Filter Data Guide"
-            placeholder="Filter guide sections"
-            value={filter}
-            onChange={handleOnChange}
-          />
-          {filter !== "" && (
-            <button
-              type="button"
-              onClick={resetFilter}
-              className="absolute top-1/2 transform -translate-y-1/2 right-2 cursor-pointer"
-            >
-              <CircleXIcon className="text-gray-400 h-5 w-5" />
-            </button>
-          )}
-        </div>
-        <div className="overflow-y-auto">
-          {filteredItems.map(
-            ({ id, title: itemTitle, component: ItemComponent }) => (
-              <SidebarGuideItem key={id} title={itemTitle}>
-                <ItemComponent />
-              </SidebarGuideItem>
-            ),
-          )}
-        </div>
+        <DataGuideContent items={items} />
       </div>
     </div>
   );
