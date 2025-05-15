@@ -51,7 +51,7 @@ export const DataGuideProvider = ({
           size="sm"
           className={cn(
             "fixed top-1/2 transform -rotate-90 origin-bottom-right right-0 bg-blue-5 rounded-none transition-all duration-300 z-[30]",
-            open ? "mr-[300px]" : "",
+            open && showSidebar ? "mr-[300px]" : "",
           )}
           onClick={() => toggleOpen()}
         >
