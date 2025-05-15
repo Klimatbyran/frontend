@@ -29,7 +29,7 @@ export const DataGuideContent = ({ items }: DataGuideContentProps) => {
   const resetFilter = () => setFilter("");
 
   return (
-    <div className="h-full">
+    <div className={"min-h-0 flex flex-col"}>
       <div className="relative mt-4">
         <Input
           type="text"
@@ -50,7 +50,7 @@ export const DataGuideContent = ({ items }: DataGuideContentProps) => {
           </button>
         )}
       </div>
-      <div className="h-[calc(100%-5rem)] overflow-y-auto overscroll-contain">
+      <div className="overflow-y-auto overscroll-contain">
         {filteredItems.map(
           ({ id, title: itemTitle, component: ItemComponent }) => (
             <SidebarGuideItem key={id} title={itemTitle}>

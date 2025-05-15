@@ -1,10 +1,12 @@
+import { Button } from "@/components/ui/button";
+import { useScreenSize } from "@/hooks/useScreenSize";
 import { cn } from "@/lib/utils";
 import { useCallback, useState } from "react";
-import { Sidebar } from "./Sidebar";
-import { DataGuideContext, useTrackGuideItems } from "./internal";
-import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
+import { GuideSheet } from "./GuideSheet";
+import { GuideSidebar } from "./GuideSidebar";
+import { DataGuideContext, useTrackGuideItems } from "./internal";
 
 export const DataGuideProvider = ({
   children,
@@ -13,6 +15,7 @@ export const DataGuideProvider = ({
 }) => {
   const { t } = useTranslation();
   const location = useLocation();
+  const { isMobile } = useScreenSize();
 
   const dataGuideEnabled = new URLSearchParams(location.search).has(
     "enableDataGuide",
@@ -21,12 +24,15 @@ export const DataGuideProvider = ({
   const [open, setOpen] = useState(false);
   const { items, pushItems, popItems } = useTrackGuideItems();
 
-  const showSidebar = dataGuideEnabled && items.length > 0;
-  const openAndShow = open && showSidebar;
+  const showDataGuide = dataGuideEnabled && items.length > 0;
+  const openAndShow = open && showDataGuide;
 
   const toggleOpen = useCallback(() => {
     setOpen((isOpen) => !isOpen);
   }, [setOpen]);
+
+  const showMobile = showDataGuide && isMobile;
+  const showSidebar = showDataGuide && !isMobile;
 
   return (
     <DataGuideContext.Provider
@@ -35,40 +41,26 @@ export const DataGuideProvider = ({
       <div
         className={cn(
           "transition-all duration-300",
-          openAndShow ? "mr-[calc(300px+1rem)]" : "mr-[1rem]",
+          openAndShow && showSidebar ? "mr-[calc(300px+1rem)]" : "mr-[1rem]",
         )}
       >
         {children}
       </div>
-      {showMobile && (
-        <>
-          <Button
-            size="sm"
-            className={cn(
-              "fixed bottom-0 left-1/2 -translate-x-1/2 bg-blue-5 rounded-none z-[30]",
-            )}
-            onClick={() => toggleOpen()}
-          >
-            {t("dataGuide.buttonTitle")}
-          </Button>
-
-          <Popup setOpen={setOpen} open={open} items={items} />
-        </>
+      {showDataGuide && (
+        <Button
+          size="sm"
+          className={cn(
+            "fixed top-1/2 transform -rotate-90 origin-bottom-right right-0 bg-blue-5 rounded-none transition-all duration-300 z-[30]",
+            open ? "mr-[300px]" : "",
+          )}
+          onClick={() => toggleOpen()}
+        >
+          {t("dataGuide.buttonTitle")}
+        </Button>
       )}
+      {showMobile && <GuideSheet setOpen={setOpen} open={open} items={items} />}
       {showSidebar && (
-        <>
-          <Button
-            size="sm"
-            className={cn(
-              "fixed top-1/2 transform -rotate-90 origin-bottom-right right-0 bg-blue-5 rounded-none transition-all duration-300 z-[30]",
-              open ? "mr-[300px]" : "",
-            )}
-            onClick={() => toggleOpen()}
-          >
-            {t("dataGuide.buttonTitle")}
-          </Button>
-          <Sidebar toggleOpen={toggleOpen} open={open} items={items} />
-        </>
+        <GuideSidebar toggleOpen={toggleOpen} open={open} items={items} />
       )}
     </DataGuideContext.Provider>
   );

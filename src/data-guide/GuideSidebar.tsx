@@ -5,13 +5,17 @@ import { useTranslation } from "react-i18next";
 import { DataGuideContent } from "./DataGuideContent";
 import { HelpItemId } from "./guide-items";
 
-type SidebarProps = {
+type GuideSidebarProps = {
   toggleOpen: () => void;
   open: boolean;
   items: HelpItemId[];
 };
 
-export const Sidebar = ({ open, toggleOpen, items }: SidebarProps) => {
+export const GuideSidebar = ({
+  open,
+  toggleOpen,
+  items,
+}: GuideSidebarProps) => {
   const { t } = useTranslation();
   const [inTransition, setInTransition] = useState(false);
 
@@ -28,13 +32,18 @@ export const Sidebar = ({ open, toggleOpen, items }: SidebarProps) => {
       className={cn(
         "p-4 bg-black-2 w-[300px] border-l border-blue-5/70",
         "fixed right-0 top-10 lg:top-12 h-[calc(100%-2.5rem)] lg:h-[calc(100%-3rem)]",
-        "flex flex-col gap-4",
         "transition-all duration-300  z-[30]",
         open ? "" : "translate-x-full",
       )}
       onTransitionEnd={transitionEnd}
     >
-      <div className={cn("h-full", !open && !inTransition && "hidden")}>
+      <div
+        className={cn(
+          "h-full",
+          "flex flex-col min-h-0",
+          !open && !inTransition && "hidden",
+        )}
+      >
         <div className="flex align-center">
           <h2 className="text-2xl">{t("dataGuide.title")}</h2>
           <button
