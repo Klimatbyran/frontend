@@ -3,7 +3,7 @@ import {
   CollapsibleTrigger,
   CollapsibleContent,
 } from "@radix-ui/react-collapsible";
-import { Cross2Icon, RowSpacingIcon } from "@radix-ui/react-icons";
+import { ChevronDownIcon, ChevronUpIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 
 type SidebarGuideItemProps = {
@@ -25,7 +25,7 @@ export const SidebarGuideItem = ({
     >
       <CollapsibleTrigger asChild>
         <button className="flex justify-between w-full mt-2 py-2 items-center">
-          <span>{title}</span> {open ? <Cross2Icon /> : <RowSpacingIcon />}
+          <span>{title}</span> {open ? <ChevronUpIcon /> : <ChevronDownIcon />}
         </button>
       </CollapsibleTrigger>
       <CollapsibleContent>
