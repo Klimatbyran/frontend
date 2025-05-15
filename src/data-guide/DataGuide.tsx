@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 import { useCallback, useState } from "react";
 import { Sidebar } from "./Sidebar";
 import { DataGuideContext, useTrackGuideItems } from "./internal";
+import { Button } from "@/components/ui/button";
 
 export const DataGuideProvider = ({
   children,
@@ -31,7 +32,19 @@ export const DataGuideProvider = ({
         {children}
       </div>
       {showSidebar && (
-        <Sidebar toggleOpen={toggleOpen} open={open} items={items} />
+        <>
+          <Button
+            size="sm"
+            className={cn(
+              "fixed top-1/2 transform -rotate-90 origin-bottom-right right-0 bg-blue-5 rounded-none transition-all duration-300 z-[30]",
+              open ? "mr-[300px]" : "",
+            )}
+            onClick={() => toggleOpen()}
+          >
+            Data Guide
+          </Button>
+          <Sidebar toggleOpen={toggleOpen} open={open} items={items} />
+        </>
       )}
     </DataGuideContext.Provider>
   );
