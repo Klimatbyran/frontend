@@ -1,7 +1,8 @@
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { CircleXIcon, XIcon } from "lucide-react";
+import { CircleXIcon, PanelRightCloseIcon } from "lucide-react";
 import { ChangeEvent, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { HelpItemId, helpItems } from "./items";
 import { SidebarGuideItem } from "./SidebarGuideItem";
 
@@ -18,6 +19,7 @@ export const Sidebar = ({
   toggleOpen,
   items,
 }: SidebarProps) => {
+  const { t } = useTranslation();
   const [filter, setFilter] = useState("");
   const [inTransition, setInTransition] = useState(false);
 
@@ -63,12 +65,12 @@ export const Sidebar = ({
           )}
         >
           <div className="flex align-center">
-            <h2 className="text-2xl">Data Guide</h2>
+            <h2 className="text-2xl">{t("dataGuide.title")}</h2>
             <button
               onClick={toggleOpen}
-              className="ml-auto focus-visible:ring-white disabled:pointer-events-none hover:bg-blue-4 active:ring-1 active:ring-white disabled:opacity-50 p-1 rounded-md mr-px mt-px"
+              className="ml-auto focus-visible:ring-white disabled:pointer-events-none hover:bg-blue-5 active:ring-1 active:ring-white disabled:opacity-50 p-1 rounded-md mr-px mt-px"
             >
-              <XIcon />
+              <PanelRightCloseIcon />
             </button>
           </div>
           <div className="relative mt-4">

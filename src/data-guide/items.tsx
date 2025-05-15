@@ -27,7 +27,7 @@ const createMarkdownHelpItem = (textKey: string) => () => {
         ),
       }}
     >
-      {t(textKey)}
+      {t(textKey, { joinArrays: "\n" })}
     </Markdown>
   );
 };
@@ -51,65 +51,36 @@ function defineHelpItems<T extends { [K in keyof T]: HelpItemWithId<K> }>(
 /*
  * All available help items are defined here.
  */
-
 export const helpItems = defineHelpItems({
   tco2e: {
     id: "tco2e",
     title: "tCO2e",
-    component:
-      createTextHelpItem(`tCO2e stands for "tonnes of carbon dioxide equivalent". It's a
-    standardized measure that converts the impact of various greenhouse gases
-    into the equivalent amount of CO2.`),
+    component: createMarkdownHelpItem("dataGuide.items.tco2eMarkdown"),
   },
   companySector: {
     id: "companySector",
     title: "Company Sectors",
-    component: createMarkdownHelpItem(
-      `
-We have diveded companies into different sectors to make it easier to compare companies against each other.
-
-The available sectors are:
-
-- Industrials
-- Energy
-- Consumer Discretionary
-- ...
-      `,
-    ),
+    component: createMarkdownHelpItem("dataGuide.items.companySectorsMarkdown"),
   },
   scopes: {
     id: "scopes",
     title: "Scopes",
-    component: createMarkdownHelpItem(
-      `
-GHG-protokollet, i EU-direktivet Corporate Sustainability Reporting Directive, är den etablerade standarden för rapportering av växthusgasutsläpp.
-
-Dessa utsläpp delas upp i tre scope:
-1. **Scope 1** – direkta utsläpp från den egna verksamheten
-2. **Scope 2** – indirekta utsläpp från inköpt energi
-3. **Scope 3** – alla utsläpp i värdekedjan, som i sin tur delas upp i 15 kategorier`,
-    ),
+    component: createMarkdownHelpItem("dataGuide.items.scopesMarkdown"),
   },
   baseYear: {
     id: "baseYear",
     title: "Base year",
-    component: createTextHelpItem(
-      `The base year is a specific year used as a reference point to compare future emissions`,
-    ),
+    component: createTextHelpItem("dataGuide.items.baseYear"),
   },
-  changeRates: {
-    id: "changeRates",
+  changeRate: {
+    id: "changeRate",
     title: "Change rate",
-    component: createTextHelpItem(
-      `The emission change rate compared to previous year`,
-    ),
+    component: createTextHelpItem("dataGuide.items.changeRate"),
   },
   companyTurnover: {
     id: "companyTurnover",
     title: "Turnover",
-    component: createTextHelpItem(
-      `The company turnover is their total revenue or sales. It is important not to confuse this with the profit.`,
-    ),
+    component: createTextHelpItem("dataGuide.items.companyTurnover"),
   },
 });
 

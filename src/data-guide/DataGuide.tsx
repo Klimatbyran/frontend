@@ -3,12 +3,14 @@ import { useCallback, useState } from "react";
 import { Sidebar } from "./Sidebar";
 import { DataGuideContext, useTrackGuideItems } from "./internal";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "react-i18next";
 
 export const DataGuideProvider = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const { items, pushItems, popItems } = useTrackGuideItems();
 
@@ -41,7 +43,7 @@ export const DataGuideProvider = ({
             )}
             onClick={() => toggleOpen()}
           >
-            Data Guide
+            {t("dataGuide.buttonTitle")}
           </Button>
           <Sidebar toggleOpen={toggleOpen} open={open} items={items} />
         </>
