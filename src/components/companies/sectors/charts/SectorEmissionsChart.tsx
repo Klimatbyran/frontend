@@ -141,8 +141,8 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
         <ResponsiveContainer width="100%" height="100%">
           {chartType === "pie" ? (
             totalEmissions > 0 ? (
-              <div className="flex flex-col gap-4 mt-8 md:flex-row md:gap-8">
-                <div className="md:w-2/3 md:h-full w-full">
+              <div className="flex flex-col gap-4 mt-8 lg:flex-row lg:gap-8">
+                <div className="w-full lg:w-1/2 lg:h-full">
                   <PieChartView
                     pieChartData={pieChartDataWithColor}
                     size={size}
@@ -153,7 +153,7 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
                     layout={screenSize.isMobile ? "mobile" : "desktop"}
                   />
                 </div>
-                <div className={"w-full md:w-1/3 flex md:items-center"}>
+                <div className={"w-full h-full flex lg:w-1/2 lg:items-center"}>
                   <SectorPieLegend
                     payload={pieChartDataWithColor}
                     selectedLabel={selectedSector}

@@ -218,37 +218,6 @@ input[type="number"] {
   }
 }
 
-/* Fallback for browsers without container queries */
-@media (min-width: 0px) {
-  .legend-list {
-    grid-template-columns: 1fr;
-    max-height: 500px;
-    overflow-y: auto;
-  }
-}
-
-/* SectorPieLegend responsive grid and scroll with container queries */
-.legend-list {
-  display: grid;
-  gap: 0.5rem;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding-right: 0.5rem;
-  grid-template-columns: 1fr;
-  max-height: 400px;
-  margin-top: 0.5rem;
-  min-width: 0;
-  width: 100%;
-}
-
-@container (min-width: 400px) {
-  .legend-list {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    max-height: 600px;
-    margin-top: 1rem;
-  }
-}
-
 .container-type-inline-size {
   container-type: inline-size;
   /* width: 600px;  Remove any fixed width */
