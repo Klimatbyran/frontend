@@ -51,8 +51,8 @@
     },
     "typewriter": {
       "company": {
-        "reduceEmissions": "att minska utsläppen",
-        "scope3Emissions": "scope 3-utsläppen",
+        "reduceEmissions": "att minska utsläppen?",
+        "scope3Emissions": "scope 3-utsläppen?",
         "meetParisAgreement": "att klara Parisavtalet?"
       },
       "municipality": {

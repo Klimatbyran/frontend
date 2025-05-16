@@ -32,26 +32,20 @@ const GlobalSearch = ({ combinedData }: GlobalSearchProps) => {
       }
     };
 
-    window.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      window.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  useEffect(() => {
     const handleScroll = (e) => {
-      console.log(window.scrollY);
       if (window.scrollY > 500) {
         setIsDropdownOpen(false);
       }
     };
 
+    window.addEventListener("mousedown", handleClickOutside);
     window.addEventListener("scroll", handleScroll);
+
     return () => {
+      window.removeEventListener("mousedown", handleClickOutside);
       window.removeEventListener("scroll", handleScroll);
     };
-  });
+  }, []);
 
   useEffect(() => {
     setIsDropdownOpen(true);
