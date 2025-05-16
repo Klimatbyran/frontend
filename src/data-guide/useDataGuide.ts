@@ -1,6 +1,6 @@
 import { useContext, useMemo, useEffect } from "react";
-import { HelpItemId } from "./items";
 import { DataGuideContext } from "./internal";
+import { HelpItemId } from "./guide-items";
 
 /**
  * The main way for components to indicate which help items are relevant when the component is used.
