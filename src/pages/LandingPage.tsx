@@ -18,7 +18,6 @@ import GlobalSearch from "@/components/ui/globalsearch";
 export function LandingPage() {
   const { t } = useTranslation();
   const { companies } = useCompanies();
-  const { municipalities } = useMunicipalities();
   const { getTopMunicipalities } = useMunicipalities();
   const { currentLanguage } = useLanguage();
   const combinedData: CombinedData[] = useCombinedData();
@@ -41,13 +40,10 @@ export function LandingPage() {
     description: pageDescription,
   };
 
-  const companyTypewriterTexts = [
+  const TypeWriterTexts = [
     t("landingPage.typewriter.company.reduceEmissions"),
     t("landingPage.typewriter.company.scope3Emissions"),
     t("landingPage.typewriter.company.meetParisAgreement"),
-  ];
-
-  const municipalityTypewriterTexts = [
     t("landingPage.typewriter.municipality.reduceEmissions"),
     t("landingPage.typewriter.municipality.meetParisAgreement"),
     t("landingPage.typewriter.municipality.climateActions"),
@@ -112,18 +108,15 @@ export function LandingPage() {
         structuredData={structuredData}
       />
       <div className="flex flex-col">
-        <div className="flex-1 flex flex-col items-center text-center px-4 py-20 md:py-24">
+        <div className="flex-1 flex flex-col items-center text-center px-4 py-14 md:py-24">
           <div className="max-w-lg md:max-w-4xl mx-auto space-y-4">
             <h1 className="text-4xl md:text-7xl font-light tracking-tight">
-              {/*          {t("landingPage.title", {
-                tabName: t(`landingPage.tabName.${selectedTab}`),
-              })} */}
-              Hur går det med
+              {t("landingPage.title")}
             </h1>
 
             <div className="h-[80px] md:h-[120px] flex items-center justify-center text-4xl md:text-7xl font-light">
               <Typewriter
-                text={companyTypewriterTexts}
+                text={TypeWriterTexts}
                 speed={70}
                 className="text-[#E2FF8D]"
                 waitTime={2000}
@@ -134,9 +127,6 @@ export function LandingPage() {
           </div>
 
           <div className="flex flex-col items-center mt-8 gap-4 ">
-            <label for="landingInput" className="text-xl mt-6">
-              Find a company or municipality
-            </label>
             <GlobalSearch combinedData={combinedData} />
           </div>
         </div>
@@ -160,7 +150,7 @@ export function LandingPage() {
         </div>
       )} */}
 
-      <div className="py-36 md:py-36">
+      <div className="py-8 pt-36 md:py-36">
         <div className="mx-2 sm:mx-8">
           <h2 className="text-4xl md:text-5xl font-light text-center mb-8 md:mb-16">
             {t("landingPage.bestPerformers")}

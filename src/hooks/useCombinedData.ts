@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import { useCompanies } from "./companies/useCompanies";
 import { useMunicipalities } from "./useMunicipalities";
 
@@ -12,9 +12,8 @@ const useCombinedData = (): CombinedData[] => {
   const { municipalities, loading: isLoadingMunicipalities } =
     useMunicipalities();
   const { companies, loading: isLoadingCompanies } = useCompanies();
-  const [combinedData, setCombinedData] = useState<CombinedData[]>([]);
 
-  useEffect(() => {
+  const combinedData: CombinedData[] = useMemo(() => {
     if (!isLoadingMunicipalities && !isLoadingCompanies) {
       const mappedMunicipalities: CombinedData[] = municipalities?.map(
         (municipality): CombinedData => ({
@@ -34,9 +33,11 @@ const useCombinedData = (): CombinedData[] => {
         },
       );
 
-      setCombinedData([...mappedMunicipalities, ...mappedCompanies]);
+      return [...mappedMunicipalities, ...mappedCompanies];
+    } else {
+      return [];
     }
-  }, [municipalities, companies, isLoadingCompanies, isLoadingMunicipalities]);
+  }, [municipalities, companies, isLoadingMunicipalities, isLoadingCompanies]);
 
   return combinedData;
 };

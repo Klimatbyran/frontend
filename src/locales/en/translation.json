@@ -1219,5 +1219,10 @@
   "common": {
     "loading": "Loading...",
     "error": "Error"
+  },
+  "globalSearch": {
+    "title": "Find a company or municipality",
+    "searchCategoryCompany": "Company",
+    "searchCategoryMunicipality": "Municipality"
   }
 }

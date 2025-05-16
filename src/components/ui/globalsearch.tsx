@@ -3,6 +3,8 @@ import { Input } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
 import { SearchIcon } from "lucide-react";
 import { CombinedData } from "@/hooks/useCombinedData";
+import { useScreenSize } from "@/hooks/useScreenSize";
+import { useTranslation } from "react-i18next";
 
 interface GlobalSearchProps {
   combinedData: CombinedData[];
@@ -17,6 +19,8 @@ type SearchItem = {
 const GlobalSearch = ({ combinedData }: GlobalSearchProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResult, setSearchResult] = useState<SearchItem[]>([]);
+  const { t } = useTranslation();
+  const { isMobile } = useScreenSize();
 
   useEffect(() => {
     setSearchResult(
@@ -28,6 +32,9 @@ const GlobalSearch = ({ combinedData }: GlobalSearchProps) => {
 
   return (
     <div className="flex flex-col gap-2 w-[300px] relative">
+      <label htmlFor="landingInput" className="text-xl mt-6">
+        {t("globalSearch.title")}
+      </label>
       <div className="flex gap-2 items-center">
         <Input
           id="landingInput"
@@ -40,7 +47,7 @@ const GlobalSearch = ({ combinedData }: GlobalSearchProps) => {
         <SearchIcon className="absolute right-0 -translate-x-2 w-4 h-4 opacity-80" />
       </div>
       <div
-        className={`${searchQuery === "" ? "hidden" : "flex-col"}  max-h-[290px] top-10 min-w-[300px] max-w-[300px] mt-2 overflow-y-scroll absolute bg-[#121212] rounded-xl`}
+        className={`${searchQuery === "" ? "hidden" : "flex-col"} ${isMobile ? "max-h-[250px]" : "max-h-[300px]"}  w-[300px] top-28 overflow-y-scroll absolute bg-[#121212] rounded-xl`}
         style={{
           scrollbarWidth: "thin",
           scrollbarColor: "#f1f1f1",
@@ -56,13 +63,15 @@ const GlobalSearch = ({ combinedData }: GlobalSearchProps) => {
               >
                 {item?.name}
                 <Text className="opacity-60">
-                  {item.category === "companies" ? "Company" : "Municipality"}
+                  {item.category === "companies"
+                    ? `${t("globalSearch.searchCategoryCompany")}`
+                    : `${t("globalSearch.searchCategoryMunicipality")}`}
                 </Text>
               </a>
             );
           })
         ) : (
-          <Text className="opacity-60 text-center text-lg font-md h-14 max-w-[300px] p-3">
+          <Text className="opacity-60 text-center text-lg font-md h-14 max-w-[300px] overflow-visible p-3">
             No results found
           </Text>
         )}

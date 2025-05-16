@@ -1219,5 +1219,10 @@
   "common": {
     "loading": "Laddar...",
     "error": "Fel"
+  },
+  "globalSearch": {
+    "title": "Hitta ett företag eller kommun",
+    "searchCategoryCompany": "Företag",
+    "searchCategoryMunicipality": "Kommun"
   }
 }
