@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
 import { SearchIcon, X } from "lucide-react";
@@ -19,10 +19,42 @@ type SearchItem = {
 const GlobalSearch = ({ combinedData }: GlobalSearchProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResult, setSearchResult] = useState<SearchItem[]>([]);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { t } = useTranslation();
   const { isMobile } = useScreenSize();
+  const dropdownRef = useRef(null);
+  console.log(window.screenTop);
 
   useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (!dropdownRef.current?.contains(e.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    window.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      window.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = (e) => {
+      console.log(window.scrollY);
+      if (window.scrollY > 500) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  });
+
+  useEffect(() => {
+    setIsDropdownOpen(true);
     setSearchResult(
       combinedData?.filter((item: SearchItem) => {
         return item.name.toLowerCase().includes(searchQuery.toLowerCase());
@@ -54,7 +86,12 @@ const GlobalSearch = ({ combinedData }: GlobalSearchProps) => {
         )}
       </div>
       <div
-        className={`${searchQuery === "" ? "hidden" : "flex-col"} ${isMobile ? "max-h-[250px]" : "max-h-[300px]"}  w-[300px] top-28 overflow-y-scroll absolute bg-[#121212] rounded-xl`}
+        ref={dropdownRef}
+        className={`
+          ${searchQuery === "" ? "hidden" : "flex-col"} 
+          ${isMobile ? "max-h-[250px]" : "max-h-[300px]"}
+          ${!isDropdownOpen && "hidden"}
+          w-[300px] top-28 overflow-y-scroll absolute bg-[#121212] rounded-xl`}
         style={{
           scrollbarWidth: "thin",
           scrollbarColor: "#f1f1f1",
