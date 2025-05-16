@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
-import { SearchIcon } from "lucide-react";
+import { SearchIcon, X } from "lucide-react";
 import { CombinedData } from "@/hooks/useCombinedData";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { useTranslation } from "react-i18next";
@@ -44,7 +44,14 @@ const GlobalSearch = ({ combinedData }: GlobalSearchProps) => {
           onChange={(e) => setSearchQuery(e.target.value)}
           className="bg-black-1 placeholder:text-center relative h-10 rounded-md px-2 text-base text-lg focus:outline-white font-medium focus:text-left focus:ring-1 focus:ring-blue-2 relative w-full"
         />
-        <SearchIcon className="absolute right-0 -translate-x-2 w-4 h-4 opacity-80" />
+        {searchQuery ? (
+          <X
+            onClick={() => setSearchQuery("")}
+            className="absolute right-0 -translate-x-2 w-4 h-4 opacity-80 cursor-pointer"
+          />
+        ) : (
+          <SearchIcon className="absolute right-0 -translate-x-2 w-4 h-4 opacity-80" />
+        )}
       </div>
       <div
         className={`${searchQuery === "" ? "hidden" : "flex-col"} ${isMobile ? "max-h-[250px]" : "max-h-[300px]"}  w-[300px] top-28 overflow-y-scroll absolute bg-[#121212] rounded-xl`}
