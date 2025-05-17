@@ -51,8 +51,8 @@
     },
     "typewriter": {
       "company": {
-        "reduceEmissions": "att minska utsläppen",
-        "scope3Emissions": "scope 3-utsläppen",
+        "reduceEmissions": "att minska utsläppen?",
+        "scope3Emissions": "scope 3-utsläppen?",
         "meetParisAgreement": "att klara Parisavtalet?"
       },
       "municipality": {
@@ -1220,5 +1220,11 @@
   "common": {
     "loading": "Laddar...",
     "error": "Fel"
+  },
+  "globalSearch": {
+    "title": "Hitta ett företag eller kommun",
+    "searchCategoryCompany": "Företag",
+    "searchCategoryMunicipality": "Kommun",
+    "placeholder": "Exempel: Alfa Laval"
   }
 }

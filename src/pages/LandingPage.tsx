@@ -1,7 +1,4 @@
-import { useState } from "react";
-import { ArrowRight, Building2Icon, TreePineIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Building2Icon, TreePineIcon } from "lucide-react";
 import { RankedList, RankedListItem } from "@/components/RankedList";
 import { ContentBlock } from "@/components/ContentBlock";
 import { Typewriter } from "@/components/ui/typewriter";
@@ -15,13 +12,15 @@ import {
   formatEmissionsAbsolute,
   formatPercentChange,
 } from "@/utils/localizeUnit";
+import useCombinedData, { CombinedData } from "@/hooks/useCombinedData";
+import GlobalSearch from "@/components/ui/globalsearch";
 
 export function LandingPage() {
   const { t } = useTranslation();
-  const [selectedTab, setSelectedTab] = useState("companies");
   const { companies } = useCompanies();
   const { getTopMunicipalities } = useMunicipalities();
   const { currentLanguage } = useLanguage();
+  const combinedData: CombinedData[] = useCombinedData();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -41,13 +40,10 @@ export function LandingPage() {
     description: pageDescription,
   };
 
-  const companyTypewriterTexts = [
+  const TypeWriterTexts = [
     t("landingPage.typewriter.company.reduceEmissions"),
     t("landingPage.typewriter.company.scope3Emissions"),
     t("landingPage.typewriter.company.meetParisAgreement"),
-  ];
-
-  const municipalityTypewriterTexts = [
     t("landingPage.typewriter.municipality.reduceEmissions"),
     t("landingPage.typewriter.municipality.meetParisAgreement"),
     t("landingPage.typewriter.municipality.climateActions"),
@@ -111,46 +107,16 @@ export function LandingPage() {
         canonicalUrl={canonicalUrl}
         structuredData={structuredData}
       />
-      <div className="min-h-screen flex flex-col">
-        <div className="flex-1 flex flex-col items-center justify-center text-center px-4 py-16 md:py-24">
-          <div className="mb-8 md:mb-12">
-            <Tabs
-              defaultValue="companies"
-              value={selectedTab}
-              onValueChange={setSelectedTab}
-              className="w-full max-w-xs md:max-w-md"
-            >
-              <TabsList className="grid w-full grid-cols-2 bg-black-1">
-                <TabsTrigger
-                  value="companies"
-                  className="data-[state=active]:bg-black-2"
-                >
-                  {t("landingPage.tabs.companies")}
-                </TabsTrigger>
-                <TabsTrigger
-                  value="municipalities"
-                  className="data-[state=active]:bg-black-2"
-                >
-                  {t("landingPage.tabs.municipalities")}
-                </TabsTrigger>
-              </TabsList>
-            </Tabs>
-          </div>
-
+      <div className="flex flex-col">
+        <div className="flex-1 flex flex-col items-center text-center px-4 py-14 md:py-24">
           <div className="max-w-lg md:max-w-4xl mx-auto space-y-4">
             <h1 className="text-4xl md:text-7xl font-light tracking-tight">
-              {t("landingPage.title", {
-                tabName: t(`landingPage.tabName.${selectedTab}`),
-              })}
+              {t("landingPage.title")}
             </h1>
 
             <div className="h-[80px] md:h-[120px] flex items-center justify-center text-4xl md:text-7xl font-light">
               <Typewriter
-                text={
-                  selectedTab === "companies"
-                    ? companyTypewriterTexts
-                    : municipalityTypewriterTexts
-                }
+                text={TypeWriterTexts}
                 speed={70}
                 className="text-[#E2FF8D]"
                 waitTime={2000}
@@ -160,22 +126,13 @@ export function LandingPage() {
             </div>
           </div>
 
-          <Button
-            className="mt-8 md:mt-12 rounded-full px-6 md:px-8 py-4 md:py-6 text-base md:text-lg bg-white text-black hover:bg-white/90"
-            asChild
-          >
-            <a
-              href={
-                selectedTab === "companies" ? "/companies" : "/municipalities"
-              }
-            >
-              {t("landingPage.seeResults")}
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </a>
-          </Button>
+          <div className="flex flex-col items-center mt-8 gap-4 ">
+            <GlobalSearch combinedData={combinedData} />
+          </div>
         </div>
+      </div>
 
-        {/* FIXME reintroduce at a later stage
+      {/* FIXME reintroduce at a later stage
       {selectedTab === "municipalities" && (
         <div className="py-16 md:py-24 bg-black-2">
           <div className="container mx-auto">
@@ -193,40 +150,39 @@ export function LandingPage() {
         </div>
       )} */}
 
-        <div className="py-8 md:py-24">
-          <div className="mx-2 sm:mx-8">
-            <h2 className="text-4xl md:text-5xl font-light text-center mb-8 md:mb-16">
-              {t("landingPage.bestPerformers")}
-            </h2>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <RankedList
-                title={t("landingPage.bestMunicipalities")}
-                description={t("landingPage.municipalitiesDescription")}
-                items={topMunicipalities}
-                itemValueRenderer={renderMunicipalityChangeRate}
-                icon={{ component: TreePineIcon, bgColor: "bg-[#FDE7CE]" }}
-                rankColor="text-orange-2"
-              />
+      <div className="py-8 pt-36 md:py-36">
+        <div className="mx-2 sm:mx-8">
+          <h2 className="text-4xl md:text-5xl font-light text-center mb-8 md:mb-16">
+            {t("landingPage.bestPerformers")}
+          </h2>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <RankedList
+              title={t("landingPage.bestMunicipalities")}
+              description={t("landingPage.municipalitiesDescription")}
+              items={topMunicipalities}
+              itemValueRenderer={renderMunicipalityChangeRate}
+              icon={{ component: TreePineIcon, bgColor: "bg-[#FDE7CE]" }}
+              rankColor="text-orange-2"
+            />
 
-              <RankedList
-                title={t("landingPage.largestEmittor")}
-                description={t("landingPage.companiesDescription")}
-                items={largestCompanyEmitters}
-                itemValueRenderer={renderCompanyEmission}
-                icon={{ component: Building2Icon, bgColor: "bg-[#D4E7F7]" }}
-                rankColor="text-blue-2"
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="pb-8 md:pb-16">
-          <div className="container mx-auto">
-            <ContentBlock
-              title={t("landingPage.aboutUsTitle")}
-              content={t("landingPage.aboutUsContent")}
+            <RankedList
+              title={t("landingPage.largestEmittor")}
+              description={t("landingPage.companiesDescription")}
+              items={largestCompanyEmitters}
+              itemValueRenderer={renderCompanyEmission}
+              icon={{ component: Building2Icon, bgColor: "bg-[#D4E7F7]" }}
+              rankColor="text-blue-2"
             />
           </div>
+        </div>
+      </div>
+
+      <div className="pb-8 md:pb-16">
+        <div className="container mx-auto">
+          <ContentBlock
+            title={t("landingPage.aboutUsTitle")}
+            content={t("landingPage.aboutUsContent")}
+          />
         </div>
       </div>
     </>
