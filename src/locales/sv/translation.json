@@ -1223,6 +1223,7 @@
   "globalSearch": {
     "title": "Hitta ett företag eller kommun",
     "searchCategoryCompany": "Företag",
-    "searchCategoryMunicipality": "Kommun"
+    "searchCategoryMunicipality": "Kommun",
+    "placeholder": "Exempel: Alfa Laval"
   }
 }

@@ -67,7 +67,7 @@ const GlobalSearch = ({ combinedData }: GlobalSearchProps) => {
         <Input
           id="landingInput"
           type="text"
-          placeholder="e.g Alfa Laval"
+          placeholder={t("globalSearch.placeholder")}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="bg-black-1 placeholder:text-center relative h-10 rounded-md px-2 text-base text-lg focus:outline-white font-medium focus:text-left focus:ring-1 focus:ring-blue-2 relative w-full"

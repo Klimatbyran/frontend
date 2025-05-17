@@ -1223,6 +1223,7 @@
   "globalSearch": {
     "title": "Find a company or municipality",
     "searchCategoryCompany": "Company",
-    "searchCategoryMunicipality": "Municipality"
+    "searchCategoryMunicipality": "Municipality",
+    "placeholder": "Example: Alfa Laval"
   }
 }
