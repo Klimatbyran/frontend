@@ -22,17 +22,19 @@ const GlobalSearch = ({ combinedData }: GlobalSearchProps) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { t } = useTranslation();
   const { isMobile } = useScreenSize();
-  const dropdownRef = useRef(null);
-  console.log(window.screenTop);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (!dropdownRef.current?.contains(e.target)) {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        e.target instanceof Node &&
+        !dropdownRef.current?.contains(e.target)
+      ) {
         setIsDropdownOpen(false);
       }
     };
 
-    const handleScroll = (e) => {
+    const handleScroll = () => {
       if (window.scrollY > 500) {
         setIsDropdownOpen(false);
       }
