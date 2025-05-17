@@ -59,7 +59,7 @@ const GlobalSearch = ({ combinedData }: GlobalSearchProps) => {
   }, [searchQuery]);
 
   return (
-    <div className="flex flex-col gap-2 w-[300px] relative">
+    <div className="flex flex-col gap-4 w-[300px] relative">
       <label htmlFor="landingInput" className="text-xl mt-6">
         {t("globalSearch.title")}
       </label>
@@ -87,10 +87,10 @@ const GlobalSearch = ({ combinedData }: GlobalSearchProps) => {
           ${searchQuery === "" ? "hidden" : "flex-col"} 
           ${isMobile ? "max-h-[250px]" : "max-h-[300px]"}
           ${!isDropdownOpen && "hidden"}
-          w-[300px] top-28 overflow-y-scroll absolute bg-[#121212] rounded-xl`}
+          ${searchResult.length > 0 ? "overflow-y-scroll" : "overflow-y-hidden"}
+          w-[300px] top-28 absolute bg-black-2 rounded-xl`}
         style={{
           scrollbarWidth: "thin",
-          scrollbarColor: "#f1f1f1",
         }}
       >
         {searchResult.length > 0 ? (
@@ -98,11 +98,11 @@ const GlobalSearch = ({ combinedData }: GlobalSearchProps) => {
             return (
               <a
                 href={`${item.category === "companies" ? "/companies/" : "/municipalities/"}${item?.id}`}
-                className="text-left text-lg font-md max-w-[300px] p-3 flex justify-between hover:bg-black-1 transition-colors overflow-y-hidden"
+                className="text-left text-lg font-md max-w-[300px] p-3 flex justify-between hover:bg-black-1 transition-colors"
                 key={item?.id}
               >
                 {item?.name}
-                <Text className="opacity-60">
+                <Text className="text-grey">
                   {item.category === "companies"
                     ? `${t("globalSearch.searchCategoryCompany")}`
                     : `${t("globalSearch.searchCategoryMunicipality")}`}
@@ -111,7 +111,7 @@ const GlobalSearch = ({ combinedData }: GlobalSearchProps) => {
             );
           })
         ) : (
-          <Text className="opacity-60 text-center text-lg font-md h-14 max-w-[300px] overflow-visible p-3">
+          <Text className="text-grey text-center text-lg font-md h-14 max-w-[300px] overflow-visible p-3">
             No results found
           </Text>
         )}
