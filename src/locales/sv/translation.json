@@ -45,22 +45,12 @@
   },
   "landingPage": {
     "metaTitle": "Öppen klimatdata för medborgare",
-    "tabs": {
-      "companies": "Företag",
-      "municipalities": "Kommuner"
-    },
     "typewriter": {
-      "company": {
-        "reduceEmissions": "att minska utsläppen?",
-        "scope3Emissions": "scope 3-utsläppen?",
-        "meetParisAgreement": "att klara Parisavtalet?"
-      },
-      "municipality": {
-        "reduceEmissions": "att minska utsläppen?",
-        "meetParisAgreement": "att klara Parisavtalet?",
-        "climateActions": "klimatåtgärderna?",
-        "climatePlans": "klimatplanerna?"
-      }
+      "reduceEmissions": "att minska utsläppen?",
+      "scope3Emissions": "scope 3-utsläppen?",
+      "meetParisAgreement": "att klara Parisavtalet?",
+      "climateActions": "klimatåtgärderna?",
+      "climatePlans": "klimatplanerna?"
     },
     "title": "Hur går det med",
     "seeResults": "Se resultat",

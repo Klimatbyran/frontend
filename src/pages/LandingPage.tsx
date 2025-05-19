@@ -41,13 +41,11 @@ export function LandingPage() {
   };
 
   const TypeWriterTexts = [
-    t("landingPage.typewriter.company.reduceEmissions"),
-    t("landingPage.typewriter.company.scope3Emissions"),
-    t("landingPage.typewriter.company.meetParisAgreement"),
-    t("landingPage.typewriter.municipality.reduceEmissions"),
-    t("landingPage.typewriter.municipality.meetParisAgreement"),
-    t("landingPage.typewriter.municipality.climateActions"),
-    t("landingPage.typewriter.municipality.climatePlans"),
+    t("landingPage.typewriter.reduceEmissions"),
+    t("landingPage.typewriter.scope3Emissions"),
+    t("landingPage.typewriter.meetParisAgreement"),
+    t("landingPage.typewriter.climateActions"),
+    t("landingPage.typewriter.climatePlans"),
   ];
 
   // Get top 5 companies by total emissions
@@ -126,7 +124,7 @@ export function LandingPage() {
             </div>
           </div>
 
-          <div className="flex flex-col items-center mt-8 gap-4 ">
+          <div className="flex flex-col items-center mt-16 gap-4 ">
             <GlobalSearch combinedData={combinedData} />
           </div>
         </div>

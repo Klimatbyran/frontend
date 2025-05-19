@@ -45,22 +45,12 @@
   },
   "landingPage": {
     "metaTitle": "Open climate data for citizens",
-    "tabs": {
-      "companies": "Companies",
-      "municipalities": "Municipalities"
-    },
     "typewriter": {
-      "company": {
-        "reduceEmissions": "reducing emissions?",
-        "scope3Emissions": "scope 3 emissions?",
-        "meetParisAgreement": "meeting the Paris Agreement?"
-      },
-      "municipality": {
-        "reduceEmissions": "reducing emissions?",
-        "meetParisAgreement": "meeting the Paris Agreement?",
-        "climateActions": "the climate action?",
-        "climatePlans": "the climate plans?"
-      }
+      "scope3Emissions": "scope 3 emissions?",
+      "reduceEmissions": "reducing emissions?",
+      "meetParisAgreement": "meeting the Paris Agreement?",
+      "climateActions": "the climate action?",
+      "climatePlans": "the climate plans?"
     },
     "title": "How is it going with",
     "seeResults": "See results",

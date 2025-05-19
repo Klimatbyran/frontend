@@ -97,15 +97,15 @@ const GlobalSearch = ({ combinedData }: GlobalSearchProps) => {
           searchResult.map((item) => {
             return (
               <a
-                href={`${item.category === "companies" ? "/companies/" : "/municipalities/"}${item?.id}`}
+                href={`${item.category === "companies" ? "/companies/" : "/municipalities/"}${item.id}`}
                 className="text-left text-lg font-md max-w-[300px] p-3 flex justify-between hover:bg-black-1 transition-colors"
-                key={item?.id}
+                key={item.id}
               >
-                {item?.name}
+                {item.name}
                 <Text className="text-grey">
                   {item.category === "companies"
-                    ? `${t("globalSearch.searchCategoryCompany")}`
-                    : `${t("globalSearch.searchCategoryMunicipality")}`}
+                    ? t("globalSearch.searchCategoryCompany")
+                    : t("globalSearch.searchCategoryMunicipality")}
                 </Text>
               </a>
             );
