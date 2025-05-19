@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import type { CompanyDetails as Company, RankedCompany } from "@/types/company";
+import type { CompanyDetails as RankedCompany } from "@/types/company";
 
 export const SECTOR_NAMES = {
   "10": "Energi",
@@ -251,16 +251,6 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
                   company.industry.industryGics.sectorCode as SectorCode
                 ]?.toLowerCase()
               : "";
-
-            // For terms longer than 3 characters, use word boundaries
-            if (term.length > 3) {
-              const companyNamePattern = new RegExp(`\\b${term}\\b`, "i");
-              const sectorNamePattern = new RegExp(`\\b${term}\\b`, "i");
-              return (
-                companyNamePattern.test(companyName) ||
-                sectorNamePattern.test(sectorName)
-              );
-            }
 
             // For shorter terms, use substring matching but require it to be at the start of a word
             const companyNamePattern = new RegExp(`\\b${term}`, "i");
