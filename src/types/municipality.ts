@@ -22,6 +22,7 @@ export type Municipality = {
   electricCarChangePercent: number;
   wikidataId?: string;
   description?: string | null;
+  sectorEmissions?: SectorEmissions;
 } & EmissionsData;
 
 // Detailed municipality type from API
@@ -53,7 +54,9 @@ export type MetricsByYear = Record<
 export function getLatestYearData<T>(
   data: Record<string, T> | undefined,
 ): T | undefined {
-  if (!data || typeof data !== "object") return undefined;
+  if (!data || typeof data !== "object") {
+    return undefined;
+  }
 
   const years = Object.keys(data)
     .map(Number)
@@ -67,7 +70,9 @@ export function getLatestYearData<T>(
 export function getAvailableYears(
   data: Record<string, unknown> | undefined,
 ): number[] {
-  if (!data || typeof data !== "object") return [];
+  if (!data || typeof data !== "object") {
+    return [];
+  }
 
   return Object.keys(data)
     .map(Number)
@@ -145,3 +150,9 @@ export interface KPIValue {
   nullValues?: string;
   higherIsBetter: boolean;
 }
+
+export type SectorEmissions = {
+  [year: string]: {
+    [sector: string]: number;
+  };
+};

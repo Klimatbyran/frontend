@@ -17,6 +17,7 @@ import {
   formatEmissionsAbsolute,
   formatEmissionsAbsoluteCompact,
 } from "@/utils/localizeUnit";
+import { SectorEmissions } from "@/types/municipality";
 
 interface DataPoint {
   year: number;
@@ -29,6 +30,7 @@ interface DataPoint {
 
 interface MunicipalityEmissionsGraphProps {
   projectedData: DataPoint[];
+  sectorEmissions?: SectorEmissions;
 }
 
 export const MunicipalityEmissionsGraph: FC<

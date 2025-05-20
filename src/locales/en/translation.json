@@ -623,7 +623,7 @@
         "content": {
           "header": "Become a Supporting Company – Take a Stand for Open Climate Data",
           "intro": [
-            "By publishing open climate data, Klimatkollen contributes to transparency and increased support for the Paris Agreement in politics and business. Because if we don’t know how emissions are progressing – and how they should be progressing – we won’t be able to do what’s necessary to reduce them in line with the Paris Agreement.",
+            "By publishing open climate data, Klimatkollen contributes to transparency and increased support for the Paris Agreement in politics and business. Because if we don't know how emissions are progressing – and how they should be progressing – we won't be able to do what's necessary to reduce them in line with the Paris Agreement.",
             "Klimatkollen is a data-driven nonprofit building a movement around open climate data. We collaborate with businesses, academia, and civil society to increase impact. For us, AI, open data, broad communication, and civic engagement are key.",
             "Be part of the open climate data movement – become a supporting company today!"
           ],
@@ -632,8 +632,8 @@
             "Our logo on your website, showing your commitment to open climate data",
             "Your logo on our website, visible among other corporate supporters",
             "Notifications when we publish new data about your company",
-            "The opportunity to comment on your company’s climate data on our website",
-            "Automatic updating of your climate data to your company’s Wikipedia page"
+            "The opportunity to comment on your company's climate data on our website",
+            "Automatic updating of your climate data to your company's Wikipedia page"
           ],
           "cost": "SEK 25,000 / year (including VAT)"
         }
@@ -719,7 +719,25 @@
     "electricCarChange": "Increase in electric car share",
     "electricCarsPerChargePoint": "Electric cars per charging point",
     "noChargePoints": "No charging points",
-    "bicycleMetrePerCapita": "Bicycle path metres per capita"
+    "bicycleMetrePerCapita": "Bicycle path metres per capita",
+    "sectorEmissions": "Emission sources",
+    "sectorEmissionsYear": "Emissions by sector in {{year}}",
+    "filteredSectors": "Filtered Sectors",
+    "sectorChart": {
+      "clickToFilter": "Click to filter out",
+      "clickToShow": "Click to show"
+    },
+    "sectors": {
+      "industry": "Industry (energy + processes)",
+      "productUse": "Product use (incl. solvents)",
+      "internationalTransport": "International transport",
+      "agriculture": "Agriculture",
+      "electricityAndHeating": "Electricity and district heating",
+      "workingMachines": "Working machines",
+      "waste": "Waste (incl. sewage)",
+      "ownHeating": "Heating of residential and commercial buildings",
+      "transport": "Transport"
+    }
   },
   "sector": {
     "energy": "Energy",
