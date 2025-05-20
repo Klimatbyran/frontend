@@ -8,15 +8,19 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { AiIcon } from "@/components/ui/ai-icon";
+
+interface PieLegendEntry {
+  name: string;
+  value: number;
+  total: number;
+  color: string;
+  category: number;
+  isAIGenerated: boolean;
+}
 
 interface PieLegendProps {
-  payload: Array<{
-    name: string;
-    value: number;
-    total: number;
-    color: string;
-    category: number;
-  }>;
+  payload: PieLegendEntry[];
   filteredCategories?: Set<string>;
   onFilteredCategoriesChange?: (categories: Set<string>) => void;
 }
@@ -88,6 +92,11 @@ const Scope3PieLegend: React.FC<PieLegendProps> = ({
                           currentLanguage,
                         )}{" "}
                         {t("emissionsUnit")}
+                        {entry.isAIGenerated && (
+                          <span className="ml-2">
+                            <AiIcon size="sm" />
+                          </span>
+                        )}
                       </span>
                       <span>{percentage}</span>
                     </div>

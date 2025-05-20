@@ -18,7 +18,8 @@
     "closeMenu": "Stäng meny",
     "articles": "Artiklar",
     "reports": "Rapporter",
-    "learnMore": "Läs mer"
+    "learnMore": "Läs mer",
+    "press": "Press"
   },
   "footer": {
     "login": "Logga in",
@@ -955,7 +956,8 @@
       "notReported": "Ej rapporterat",
       "readAnnualReport": "Läs årsredovisning",
       "readMore": "Läs mer",
-      "readLess": "Läs mindre"
+      "readLess": "Läs mindre",
+      "aiGeneratedData": "Innehåller AI-extraherade värden. Klicka för att läsa mer."
     },
     "realEstateScope3History": {
       "title": "Historiska Scope 3-utsläpp per kategori",
@@ -1234,5 +1236,29 @@
     "searchCategoryCompany": "Företag",
     "searchCategoryMunicipality": "Kommun",
     "placeholder": "Exempel: Alfa Laval"
+  },
+  "dataGuide": {
+    "title": "Data Guide",
+    "buttonTitle": "Data Guide",
+    "items": {
+      "baseYear": "Basåret är ett specifikt år som används som en referenspunkt för att jämföra framtida utsläpp.",
+      "changeRate": "Förändringstakten i utsläpp jämfört med föregående år.",
+      "companySectors": [
+        "Vi har delat upp företag i olika sektorer för att göra det enklare att jämföra dem med varandra",
+        "Exempel på sektorer är:",
+        "- Industri",
+        "- Energi",
+        "- Konsumentprodukter",
+        "- ..."
+      ],
+      "companyTurnover": "Företagets omsättning är deras totala intäkter eller försäljning. Det är viktigt att inte förväxla detta med vinsten.",
+      "scopes": [
+        "Scope 1, 2 och 3-utsläpp kommer från Greenhouse Gas Protocol, en global standard för att mäta företags utsläpp:",
+        "1. **Scope 1** - Direkta utsläpp från källor som ägs eller kontrolleras av företaget (t.ex. förbränning av bränsle).",
+        "2. **Scope 2** - Indirekta utsläpp från köpt energi.",
+        "3. **Scope 3** - Andra indirekta utsläpp från värdekedjan, såsom leverantörer, produktanvändning och avfall."
+      ],
+      "tco2e": "tCO2e står för \"ton koldioxidekvivalenter\". Det är ett standardiserat mått som omvandlar påverkan från olika växthusgaser till motsvarande mängd koldioxid."
+    }
   }
 }

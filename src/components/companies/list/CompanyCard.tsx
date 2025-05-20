@@ -23,6 +23,8 @@ import {
 } from "@/utils/localizeUnit";
 import { LinkCard } from "@/components/ui/link-card";
 import { cn } from "@/lib/utils";
+import { AiIcon } from "@/components/ui/ai-icon";
+import { useVerificationStatus } from "@/hooks/useVerificationStatus";
 
 type CompanyCardProps = Pick<
   RankedCompany,
@@ -46,6 +48,7 @@ export function CompanyCard({
   const { getCategoryColor } = useCategoryMetadata();
   const sectorNames = useSectorNames();
   const { currentLanguage } = useLanguage();
+  const { isAIGenerated, isEmissionsAIGenerated } = useVerificationStatus();
 
   const latestPeriod = reportingPeriods[0];
   const previousPeriod = reportingPeriods[1];
@@ -81,6 +84,13 @@ export function CompanyCard({
   const categoryColor = largestCategory
     ? getCategoryColor(largestCategory.category)
     : "var(--blue-2)";
+
+  const totalEmissionsAIGenerated = isEmissionsAIGenerated(latestPeriod);
+  const turnoverAIGenerated = isAIGenerated(latestPeriod.economy?.turnover);
+  const employeesAIGenerated = isAIGenerated(latestPeriod.economy?.employees);
+  const yearOverYearAIGenerated =
+    isEmissionsAIGenerated(latestPeriod) ||
+    (previousPeriod && isEmissionsAIGenerated(previousPeriod));
 
   return (
     <div className="relative rounded-level-2 @container">
@@ -162,6 +172,11 @@ export function CompanyCard({
                   <span className="text-lg text-grey ml-1">
                     {t("emissionsUnit")}
                   </span>
+                  {totalEmissionsAIGenerated && (
+                    <span className="ml-2">
+                      <AiIcon size="sm" />
+                    </span>
+                  )}
                 </span>
               ) : (
                 <span className="text-grey">{t("companies.card.noData")}</span>
@@ -209,6 +224,11 @@ export function CompanyCard({
                     Math.ceil(emissionsChange) / 100,
                     currentLanguage,
                   )}
+                  {yearOverYearAIGenerated && (
+                    <span className="ml-2">
+                      <AiIcon size="sm" />
+                    </span>
+                  )}
                 </span>
               ) : (
                 <span className="text-grey">{t("companies.card.noData")}</span>
@@ -237,6 +257,11 @@ export function CompanyCard({
                 <span className="text-lg text-grey ml-1">
                   {latestPeriod.economy.turnover.currency}
                 </span>
+                {turnoverAIGenerated && (
+                  <span className="ml-2">
+                    <AiIcon size="sm" />
+                  </span>
+                )}
               </Text>
             </div>
           )}
@@ -250,7 +275,14 @@ export function CompanyCard({
               <span>{t("companies.card.employees")}</span>
             </Text>
             {latestPeriod?.economy && (
-              <Text variant="h6">{formattedEmployeeCount}</Text>
+              <Text variant="h6">
+                {formattedEmployeeCount}
+                {employeesAIGenerated && (
+                  <span className="ml-2">
+                    <AiIcon size="sm" />
+                  </span>
+                )}
+              </Text>
             )}
           </div>
         </div>

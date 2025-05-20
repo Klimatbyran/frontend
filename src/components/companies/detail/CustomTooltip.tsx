@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { formatEmissionsAbsolute, localizeUnit } from "@/utils/localizeUnit";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useScreenSize } from "@/hooks/useScreenSize";
+import { AiIcon } from "@/components/ui/ai-icon";
 
 interface CustomTooltipProps {
   active?: boolean;
@@ -61,6 +62,23 @@ export const CustomTooltip = ({
           // Extract the original value from payload
           const originalValue = entry.payload?.originalValues?.[entry.dataKey];
 
+          // Check if data is AI-generated
+          let isDataAI = false;
+          if (entry.dataKey === "scope1.value") {
+            isDataAI = entry.payload.scope1?.isAIGenerated;
+          } else if (entry.dataKey === "scope2.value") {
+            isDataAI = entry.payload.scope2?.isAIGenerated;
+          } else if (entry.dataKey === "scope3.value") {
+            isDataAI = entry.payload.scope3?.isAIGenerated;
+          } else if (entry.dataKey && entry.dataKey.startsWith("cat")) {
+            const catId = parseInt(entry.dataKey.replace("cat", ""));
+            isDataAI = entry.payload.scope3Categories?.find(
+              (c: any) => c.category === catId,
+            )?.isAIGenerated;
+          } else if (entry.dataKey === "total") {
+            isDataAI = entry.payload.isAIGenerated;
+          }
+
           // Correctly display "No Data Available" if original value was null
           const displayValue =
             originalValue === null
@@ -79,6 +97,11 @@ export const CustomTooltip = ({
             >
               <span className="text-grey mr-2">{name}:</span>
               <span style={{ color: entry.color }}>{displayValue}</span>
+              {isDataAI && (
+                <span className="ml-2">
+                  <AiIcon size="sm" />
+                </span>
+              )}
             </div>
           );
         })}

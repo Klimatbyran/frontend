@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { useState, useEffect } from "react";
+import { useState, useEffect, forwardRef } from "react";
 import { getMethodById } from "@/lib/methods/methodologyData";
 import { SourcesContent } from "./content/SourcesContent";
 import { CompanyDataOverviewContent } from "./content/CompanyDataOverview";
@@ -16,7 +16,10 @@ interface MethodologyContentProps {
   onNavigate: (methodId: string) => void;
 }
 
-export function MethodologyContent({ method }: MethodologyContentProps) {
+export const MethodologyContent = forwardRef<
+  HTMLDivElement,
+  MethodologyContentProps
+>(({ method, onNavigate }, ref) => {
   const { t } = useTranslation();
   const [isVisible, setIsVisible] = useState(true);
   const methodData = getMethodById(method);
@@ -70,9 +73,11 @@ export function MethodologyContent({ method }: MethodologyContentProps) {
 
   return (
     <div
+      ref={ref}
+      id="methodology-content"
       className={`transition-opacity duration-300 ${isVisible ? "opacity-100" : "opacity-0"}`}
     >
-      <div className="bg-black-2 rounded-level-1 p-16">
+      <div className="bg-black-2 rounded-level-2 p-4 pt-6 sm:p-8 md:p-16">
         <div className="border-b border-black-1 pb-6 mb-6">
           <h1 className="text-2xl font-bold text-white mb-2">
             {t(`methodsPage.${methodData.category}.${method}.title`)}
@@ -85,4 +90,4 @@ export function MethodologyContent({ method }: MethodologyContentProps) {
       </div>
     </div>
   );
-}
+});

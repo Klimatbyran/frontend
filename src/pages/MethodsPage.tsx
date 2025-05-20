@@ -1,17 +1,20 @@
 import { useTranslation } from "react-i18next";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { MethodologyNavigation } from "@/components/methods/MethodNavigation";
 import { MethodologyContent } from "@/components/methods/MethodContent";
 import { MethodologySearch } from "@/components/methods/MethodSearch";
 import { Search } from "lucide-react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { PageSEO } from "@/components/SEO/PageSEO";
+import { useScreenSize } from "@/hooks/useScreenSize";
 
 export function MethodsPage() {
   const { t } = useTranslation();
   const [selectedMethod, setSelectedMethod] = useState("parisAgreement");
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearch, setShowSearch] = useState(false);
+  const { isMobile } = useScreenSize();
+  const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -52,7 +55,7 @@ export function MethodsPage() {
           title={t("methodsPage.header.title")}
           description={t("methodsPage.header.description")}
         ></PageHeader>
-        {!showSearch && (
+        {!isMobile && !showSearch && (
           <button
             onClick={toggleSearch}
             className="p-2 rounded-full bg-black-1 hover:bg-black-2 transition-colors duration-200"
@@ -61,7 +64,7 @@ export function MethodsPage() {
             <Search size={20} className="text-white" />
           </button>
         )}
-        {showSearch && (
+        {!isMobile && showSearch && (
           <div className="mb-8 animate-fadeIn">
             <MethodologySearch
               searchQuery={searchQuery}
@@ -77,11 +80,13 @@ export function MethodsPage() {
               <MethodologyNavigation
                 selectedMethod={selectedMethod}
                 onMethodChange={setSelectedMethod}
+                contentRef={contentRef}
               />
             </div>
           </div>
           <main className="lg:w-3/4">
             <MethodologyContent
+              ref={contentRef}
               method={selectedMethod}
               onNavigate={setSelectedMethod}
             />
