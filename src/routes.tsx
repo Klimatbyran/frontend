@@ -32,11 +32,6 @@ export function AppRoutes() {
   // Define base path based on language
   const basePath = currentLanguage === "sv" ? "/sv" : "/en";
 
-  // Log for debugging
-  useEffect(() => {
-    console.log(`Current language: ${currentLanguage}, base path: ${basePath}`);
-  }, [currentLanguage, basePath]);
-
   return (
     <Routes>
       {/* Language redirect for non-prefixed routes */}

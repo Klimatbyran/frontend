@@ -18,7 +18,8 @@
     "closeMenu": "Close Menu",
     "articles": "Articles",
     "reports": "Reports",
-    "learnMore": "Learn More"
+    "learnMore": "Learn More",
+    "press": "Press"
   },
   "footer": {
     "login": "Login",
@@ -956,7 +957,8 @@
       "notReported": "Not Reported",
       "readAnnualReport": "Read Annual Report",
       "readMore": "Read More",
-      "readLess": "Read Less"
+      "readLess": "Read Less",
+      "aiGeneratedData": "Includes AI-extracted values. Click to read more."
     },
     "realEstateScope3History": {
       "title": "Historical Scope 3 Emissions per Category",
@@ -1235,5 +1237,29 @@
     "searchCategoryCompany": "Company",
     "searchCategoryMunicipality": "Municipality",
     "placeholder": "Example: Alfa Laval"
+  },
+  "dataGuide": {
+    "title": "Data Guide",
+    "buttonTitle": "Data Guide",
+    "items": {
+      "baseYear": "The base year is a specific year used as a reference point to compare future emissions",
+      "changeRate": "The emission change rate compared to previous year",
+      "companySectors": [
+        "We have diveded companies into different sectors to make it easier to compare companies against each other",
+        "Examples of sectors are:",
+        "- Industrials",
+        "- Energy",
+        "- Consumer Discretionary",
+        "- ..."
+      ],
+      "companyTurnover": "The company turnover is their total revenue or sales. It is important not to confuse this with the profit.",
+      "scopes": [
+        "Scope 1, 2, and 3 emissions come from the Greenhouse Gas Protocol, a global standard for measuring corporate emissions:",
+        "1. **Scope 1** - Direct emissions from company-owned or controlled sources (e.g., fuel combustion).",
+        "2. **Scope 2** - Indirect emissions from purchased energy consumption.",
+        "3. **Scope 3** - Other indirect emissions from the value chain, such as suppliers, product use, and waste."
+      ],
+      "tco2e": "tCO2e stands for \"tonnes of carbon dioxide equivalent\". It's a standardized measure that converts the impact of various greenhouse gases into the equivalent amount of CO2."
+    }
   }
 }

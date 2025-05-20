@@ -12,6 +12,8 @@ import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { useLanguage } from "@/components/LanguageProvider";
 import { localizeUnit } from "@/utils/localizeUnit";
+import { useVerificationStatus } from "@/hooks/useVerificationStatus";
+import { AiIcon } from "@/components/ui/ai-icon";
 
 interface EmissionsBreakdownProps {
   emissions: {
@@ -27,6 +29,10 @@ interface EmissionsBreakdownProps {
         category: number;
         total: number;
         unit: string;
+        metadata?: {
+          verifiedBy?: { name: string } | null;
+          user?: { name?: string } | null;
+        };
       }>;
     } | null;
     biogenicEmissions?: { total: number; unit: string } | null;
@@ -53,7 +59,7 @@ export function EmissionsBreakdown({
   } = useCategoryMetadata();
   const { isMobile } = useScreenSize();
   const { currentLanguage } = useLanguage();
-
+  const { isAIGenerated } = useVerificationStatus();
   if (!emissions) return null;
 
   const scopeData = [
@@ -191,6 +197,11 @@ export function EmissionsBreakdown({
                             <span className="text-sm text-grey ml-2">
                               {reportedCategory.unit}
                             </span>
+                            {isAIGenerated(reportedCategory) && (
+                              <span className="ml-2">
+                                <AiIcon size="sm" />
+                              </span>
+                            )}
                           </Text>
                         ) : (
                           <Text variant="body" className="text-grey">
@@ -249,6 +260,11 @@ export function EmissionsBreakdown({
                             <span className="text-sm text-grey ml-2">
                               {reportedCategory.unit}
                             </span>
+                            {isAIGenerated(reportedCategory) && (
+                              <span className="ml-2">
+                                <AiIcon size="sm" />
+                              </span>
+                            )}
                           </Text>
                         ) : (
                           <Text variant="body" className="text-grey">

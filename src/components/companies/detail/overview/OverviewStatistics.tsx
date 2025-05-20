@@ -1,3 +1,4 @@
+import { AiIcon } from "@/components/ui/ai-icon";
 import { Text } from "@/components/ui/text";
 import { ReportingPeriod } from "@/types/company";
 import { localizeUnit } from "@/utils/localizeUnit";
@@ -8,12 +9,16 @@ interface OverviewStatisticProps {
   selectedPeriod: ReportingPeriod;
   currentLanguage: "sv" | "en";
   formattedEmployeeCount: string;
+  turnoverAIGenerated: boolean;
+  employeesAIGenerated: boolean;
 }
 
 export function OverviewStatistics({
   selectedPeriod,
   currentLanguage,
   formattedEmployeeCount,
+  turnoverAIGenerated,
+  employeesAIGenerated,
 }: OverviewStatisticProps) {
   return (
     <div className="mt-8 md:mt-12 bg-black-1 rounded-level-2 p-6 md:p-8">
@@ -22,21 +27,27 @@ export function OverviewStatistics({
           <Text className="md:mb-2 font-bold">
             {t("companies.overview.turnover")}
           </Text>
-          <Text>
-            {selectedPeriod.economy?.turnover?.value
-              ? `${localizeUnit(
-                  selectedPeriod.economy.turnover.value / 1e9,
-                  currentLanguage,
-                )} mdr ${selectedPeriod.economy.turnover.currency}`
-              : t("companies.overview.notReported")}
-          </Text>
+          <span className="flex items-center gap-2">
+            <Text>
+              {selectedPeriod.economy?.turnover?.value
+                ? `${localizeUnit(
+                    selectedPeriod.economy.turnover.value / 1e9,
+                    currentLanguage,
+                  )} mdr ${selectedPeriod.economy.turnover.currency}`
+                : t("companies.overview.notReported")}
+            </Text>
+            {turnoverAIGenerated && <AiIcon size="md" />}
+          </span>
         </div>
 
         <div>
           <Text className="md:mb-2 font-bold">
             {t("companies.overview.employees")}
           </Text>
-          <Text>{formattedEmployeeCount}</Text>
+          <span className="flex items-center gap-2">
+            <Text>{formattedEmployeeCount}</Text>
+            {employeesAIGenerated && <AiIcon size="md" />}
+          </span>
         </div>
 
         {selectedPeriod?.reportURL && (
