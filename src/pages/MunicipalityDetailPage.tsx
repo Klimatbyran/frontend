@@ -20,13 +20,7 @@ import { useLanguage } from "@/components/LanguageProvider";
 import MunicipalitySectorPieChart from "@/components/municipalities/MunicipalitySectorPieChart";
 import MunicipalitySectorLegend from "@/components/municipalities/MunicipalitySectorLegend";
 import { useMunicipalitySectorEmissions } from "@/hooks/useMunicipalitySectorEmissions";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { YearSelector } from "@/components/layout/YearSelector";
 
 export function MunicipalityDetailPage() {
   const { t } = useTranslation();
@@ -239,20 +233,12 @@ export function MunicipalityDetailPage() {
                   {t("municipalityDetailPage.sectorEmissions")}
                 </Text>
 
-                <Select value={selectedYear} onValueChange={setSelectedYear}>
-                  <SelectTrigger className="w-full sm:w-[180px] bg-black-1">
-                    <SelectValue
-                      placeholder={t("municipalityDetailPage.selectYear")}
-                    />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {availableYears.map((year) => (
-                      <SelectItem key={year} value={year.toString()}>
-                        {year}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <YearSelector
+                  selectedYear={selectedYear}
+                  onYearChange={setSelectedYear}
+                  availableYears={availableYears}
+                  translateNamespace="municipalityDetailPage"
+                />
               </div>
 
               <Text className="text-grey">
