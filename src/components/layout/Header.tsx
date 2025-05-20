@@ -92,6 +92,10 @@ export function Header() {
           label: t("header.methodology"),
           path: `${currentLanguage}/methodology`,
         },
+        {
+          label: t("header.press"),
+          path: "https://www.mynewsdesk.com/se/klimatbyraan/latest_news",
+        },
         { label: t("header.support"), path: `${currentLanguage}/support` },
       ],
     },
@@ -142,17 +146,28 @@ export function Header() {
                   <MenubarContent>
                     {item.sublinks.map((sublink) => (
                       <MenubarItem key={sublink.path}>
-                        <Link
-                          to={sublink.path}
-                          className="flex justify-between w-full"
-                        >
-                          {sublink.label}
-                          {sublink.shortcut && (
-                            <MenubarShortcut>
-                              {sublink.shortcut}
-                            </MenubarShortcut>
-                          )}
-                        </Link>
+                        {sublink.path.startsWith("https://") ? (
+                          <a
+                            href={sublink.path}
+                            className="flex justify-between w-full"
+                            target="_blank"
+                            key={sublink.path}
+                          >
+                            {sublink.label}
+                          </a>
+                        ) : (
+                          <Link
+                            to={sublink.path}
+                            className="flex justify-between w-full"
+                          >
+                            {sublink.label}
+                            {sublink.shortcut && (
+                              <MenubarShortcut>
+                                {sublink.shortcut}
+                              </MenubarShortcut>
+                            )}
+                          </Link>
+                        )}
                       </MenubarItem>
                     ))}
                   </MenubarContent>
@@ -201,16 +216,28 @@ export function Header() {
                   </Link>
                   {link.sublinks && (
                     <div className="flex flex-col gap-2 pl-4 mt-2">
-                      {link.sublinks.map((sublink) => (
-                        <Link
-                          key={sublink.path}
-                          to={sublink.path}
-                          onClick={toggleMenu}
-                          className="flex items-center gap-2 text-sm text-gray-400"
-                        >
-                          {sublink.label}
-                        </Link>
-                      ))}
+                      {link.sublinks.map((sublink) =>
+                        sublink.path.startsWith("https://") ? (
+                          <a
+                            href={sublink.path}
+                            className="flex items-center gap-2 text-sm text-gray-400"
+                            target="_blank"
+                            key={sublink.path}
+                            onClick={toggleMenu}
+                          >
+                            {sublink.label}
+                          </a>
+                        ) : (
+                          <Link
+                            key={sublink.path}
+                            to={sublink.path}
+                            onClick={toggleMenu}
+                            className="flex items-center gap-2 text-sm text-gray-400"
+                          >
+                            {sublink.label}
+                          </Link>
+                        ),
+                      )}
                     </div>
                   )}
                 </div>
