@@ -99,10 +99,6 @@ export const SectorsChart: FC<SectorsChartProps> = ({
     setHiddenSectors(newHidden);
   };
 
-  const resetHiddenSectors = () => {
-    setHiddenSectors(new Set());
-  };
-
   return (
     <ResponsiveContainer width="100%" height="90%">
       <ComposedChart data={chartData}>
@@ -161,13 +157,14 @@ export const SectorsChart: FC<SectorsChartProps> = ({
             color: "#" + Math.floor(Math.random() * 16777215).toString(16),
           };
           const isHidden = hiddenSectors.has(sector);
+          const sectorColor = isHidden ? "var(--grey)" : sectorInfo.color;
 
           return (
             <Area
               key={sector}
               type="monotone"
               dataKey={sector}
-              stroke={sectorInfo.color}
+              stroke={sectorColor}
               fillOpacity={0}
               stackId="1"
               strokeWidth={isHidden ? 0 : 1}
@@ -175,26 +172,10 @@ export const SectorsChart: FC<SectorsChartProps> = ({
               connectNulls={true}
               onClick={() => handleAreaClick(sector)}
               style={{ cursor: "pointer", opacity: isHidden ? 0.4 : 1 }}
-              hide={false}
+              hide={isHidden}
             />
           );
         })}
-        {hiddenSectors.size > 0 && (
-          <text
-            x="50%"
-            y="10"
-            textAnchor="middle"
-            style={{
-              fontSize: "12px",
-              cursor: "pointer",
-              fill: "var(--grey)",
-              textDecoration: "underline",
-            }}
-            onClick={resetHiddenSectors}
-          >
-            Reset All Sectors
-          </text>
-        )}
       </ComposedChart>
     </ResponsiveContainer>
   );
