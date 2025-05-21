@@ -99,6 +99,10 @@ export const SectorsChart: FC<SectorsChartProps> = ({
     setHiddenSectors(newHidden);
   };
 
+  const resetHiddenSectors = () => {
+    setHiddenSectors(new Set());
+  };
+
   return (
     <ResponsiveContainer width="100%" height="90%">
       <ComposedChart data={chartData}>
@@ -112,7 +116,14 @@ export const SectorsChart: FC<SectorsChartProps> = ({
             const sectorInfo = getSectorInfo?.(value) || {
               translatedName: value,
             };
-            return sectorInfo.translatedName;
+            const isHidden = hiddenSectors.has(value);
+            return (
+              <span
+                style={{ color: isHidden ? "var(--grey)" : sectorInfo.color }}
+              >
+                {sectorInfo.translatedName}
+              </span>
+            );
           }}
           onClick={(data) => handleLegendClick(data as { dataKey: string })}
         />
@@ -145,29 +156,45 @@ export const SectorsChart: FC<SectorsChartProps> = ({
           domain={[0, "auto"]}
           padding={{ top: 0, bottom: 0 }}
         />
-        {allSectors
-          .filter((sector) => !hiddenSectors.has(sector))
-          .map((sector) => {
-            const sectorInfo = getSectorInfo?.(sector) || {
-              color: "#" + Math.floor(Math.random() * 16777215).toString(16),
-            };
+        {allSectors.map((sector) => {
+          const sectorInfo = getSectorInfo?.(sector) || {
+            color: "#" + Math.floor(Math.random() * 16777215).toString(16),
+          };
+          const isHidden = hiddenSectors.has(sector);
 
-            return (
-              <Area
-                key={sector}
-                type="monotone"
-                dataKey={sector}
-                stroke={sectorInfo.color}
-                fillOpacity={0}
-                stackId="1"
-                strokeWidth={1}
-                name={sector}
-                connectNulls={true}
-                onClick={() => handleAreaClick(sector)}
-                style={{ cursor: "pointer" }}
-              />
-            );
-          })}
+          return (
+            <Area
+              key={sector}
+              type="monotone"
+              dataKey={sector}
+              stroke={sectorInfo.color}
+              fillOpacity={0}
+              stackId="1"
+              strokeWidth={isHidden ? 0 : 1}
+              name={sector}
+              connectNulls={true}
+              onClick={() => handleAreaClick(sector)}
+              style={{ cursor: "pointer", opacity: isHidden ? 0.4 : 1 }}
+              hide={false}
+            />
+          );
+        })}
+        {hiddenSectors.size > 0 && (
+          <text
+            x="50%"
+            y="10"
+            textAnchor="middle"
+            style={{
+              fontSize: "12px",
+              cursor: "pointer",
+              fill: "var(--grey)",
+              textDecoration: "underline",
+            }}
+            onClick={resetHiddenSectors}
+          >
+            Reset All Sectors
+          </text>
+        )}
       </ComposedChart>
     </ResponsiveContainer>
   );
