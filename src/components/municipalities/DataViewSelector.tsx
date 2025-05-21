@@ -24,25 +24,11 @@ export const DataViewSelector: FC<DataViewSelectorProps> = ({
   hasSectorData,
 }) => {
   const { t } = useTranslation();
-  const screenSize = useScreenSize();
+  const { isMobile } = useScreenSize();
 
   return (
     <>
-      {!screenSize?.isMobile ? (
-        <Tabs
-          value={dataView}
-          onValueChange={(value) => setDataView(value as DataView)}
-        >
-          <TabsList className="bg-black-1">
-            <TabsTrigger value="overview">
-              {t("municipalityDetailPage.graph.overview")}
-            </TabsTrigger>
-            <TabsTrigger value="sectors" disabled={!hasSectorData}>
-              {t("municipalityDetailPage.graph.sectors")}
-            </TabsTrigger>
-          </TabsList>
-        </Tabs>
-      ) : (
+      {isMobile ? (
         <Select
           value={dataView}
           onValueChange={(value) => setDataView(value as DataView)}
@@ -59,6 +45,20 @@ export const DataViewSelector: FC<DataViewSelectorProps> = ({
             </SelectItem>
           </SelectContent>
         </Select>
+      ) : (
+        <Tabs
+          value={dataView}
+          onValueChange={(value) => setDataView(value as DataView)}
+        >
+          <TabsList className="bg-black-1">
+            <TabsTrigger value="overview">
+              {t("municipalityDetailPage.graph.overview")}
+            </TabsTrigger>
+            <TabsTrigger value="sectors" disabled={!hasSectorData}>
+              {t("municipalityDetailPage.graph.sectors")}
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
       )}
     </>
   );

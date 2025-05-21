@@ -1033,7 +1033,9 @@
       "unit": "tons CO₂e",
       "total": "Totalt",
       "year": "År",
-      "estimatedValue": "Utsläppsvärdet är uppskattat"
+      "estimatedValue": "Utsläppsvärdet är uppskattat",
+      "overview": "Översikt",
+      "sectors": "Utsläppskällor"
     },
     "map": {
       "legend": {

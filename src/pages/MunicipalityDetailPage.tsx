@@ -3,7 +3,6 @@ import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
 import { useMunicipalityDetails } from "@/hooks/useMunicipalityDetails";
 import { transformEmissionsData } from "@/types/municipality";
-import { MunicipalityEmissionsGraph } from "@/components/municipalities/MunicipalityEmissionsGraph";
 import { MunicipalitySection } from "@/components/municipalities/MunicipalitySection";
 import { MunicipalityStatCard } from "@/components/municipalities/MunicipalityStatCard";
 import { MunicipalityLinkCard } from "@/components/municipalities/MunicipalityLinkCard";
@@ -20,6 +19,7 @@ import { useLanguage } from "@/components/LanguageProvider";
 import MunicipalitySectorPieChart from "@/components/municipalities/MunicipalitySectorPieChart";
 import MunicipalitySectorLegend from "@/components/municipalities/MunicipalitySectorLegend";
 import { useMunicipalitySectorEmissions } from "@/hooks/useMunicipalitySectorEmissions";
+import { MunicipalityEmissions } from "@/components/municipalities/MunicipalityEmissions";
 
 export function MunicipalityDetailPage() {
   const { t } = useTranslation();
@@ -186,25 +186,11 @@ export function MunicipalityDetailPage() {
           </div>
         </div>
 
-        <div className={cn("bg-black-2 rounded-level-1 py-8 md:py-16")}>
-          <div className="px-8 md:px-16">
-            <Text className="text-2xl md:text-4xl">
-              {t("municipalityDetailPage.emissionsDevelopment")}
-            </Text>
-            <Text className="text-grey">
-              {t("municipalityDetailPage.inTons")}
-            </Text>
-            {!municipality.neededEmissionChangePercent && (
-              <p className="my-4">{t("municipalityDetailPage.noParisPath")}</p>
-            )}
-          </div>
-          <div className="mt-8 mr-8">
-            <MunicipalityEmissionsGraph
-              projectedData={emissionsData}
-              sectorEmissions={sectorEmissions || undefined}
-            />
-          </div>
-        </div>
+        <MunicipalityEmissions
+          municipality={municipality}
+          emissionsData={emissionsData}
+          sectorEmissions={sectorEmissions}
+        />
 
         {sectorEmissions?.sectors && sectorEmissions.sectors[2023] && (
           <div className={cn("bg-black-2 rounded-level-1 py-8 md:py-16")}>
