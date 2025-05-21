@@ -115,7 +115,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
           label={{
             value: currentYear,
             position: "top",
-            fill: "var(--orange-3)",
+            fill: "var(--orange-2)",
             fontSize: 12,
             fontWeight: "normal",
           }}
