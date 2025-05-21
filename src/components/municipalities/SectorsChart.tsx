@@ -22,6 +22,8 @@ interface SectorsChartProps {
   hiddenSectors?: Set<string>;
   setHiddenSectors?: (sectors: Set<string>) => void;
   trendData?: Array<{ year: number; value: number }>;
+  approximatedData?: Array<{ year: number; value: number }>;
+  parisData?: Array<{ year: number; value: number }>;
 }
 
 export const SectorsChart: FC<SectorsChartProps> = ({
@@ -29,18 +31,35 @@ export const SectorsChart: FC<SectorsChartProps> = ({
   hiddenSectors = new Set(),
   setHiddenSectors = () => {},
   trendData = [],
+  approximatedData = [],
+  parisData = [],
 }) => {
   const { currentLanguage } = useLanguage();
   const { getSectorInfo } = useMunicipalitySectors();
   const { t } = useTranslation();
+
+  const currentYear = new Date().getFullYear();
+  const CUTOFF_YEAR = 2024; // No sector data should be shown from this year onwards
 
   const sectorYears = sectorEmissions
     ? Object.keys(sectorEmissions.sectors).map(Number)
     : [];
 
   const trendYears = trendData.map((point) => point.year);
+  const approximatedYears = approximatedData.map((point) => point.year);
+  const parisYears = parisData.map((point) => point.year);
 
-  const allYears = [...new Set([...sectorYears, ...trendYears])].sort();
+  const allYears = [
+    ...new Set([
+      ...sectorYears,
+      ...trendYears,
+      ...approximatedYears,
+      ...parisYears,
+    ]),
+  ].sort();
+
+  const lastDataYear =
+    sectorYears.length > 0 ? Math.max(...sectorYears) : currentYear;
 
   const allSectors = sectorEmissions
     ? [
@@ -53,25 +72,51 @@ export const SectorsChart: FC<SectorsChartProps> = ({
     : [];
 
   const chartData = allYears.map((year) => {
-    const yearData = sectorEmissions?.sectors[year] || {};
-
     const dataPoint: Record<string, number | string> = { year };
 
-    allSectors.forEach((sector) => {
-      if (!hiddenSectors.has(sector)) {
-        dataPoint[sector] = (yearData as Record<string, number>)[sector] || 0;
-      }
-    });
+    // Only add sector data for years before CUTOFF_YEAR
+    if (year < CUTOFF_YEAR) {
+      const yearData = sectorEmissions?.sectors[year] || {};
+      allSectors.forEach((sector) => {
+        if (!hiddenSectors.has(sector)) {
+          dataPoint[sector] = (yearData as Record<string, number>)[sector] || 0;
+        }
+      });
+    }
 
+    // Always add trend, approximated and paris data for all years
     const trendPoint = trendData.find((point) => point.year === year);
     if (trendPoint) {
       dataPoint.trend = trendPoint.value;
     }
 
+    const approximatedPoint = approximatedData.find(
+      (point) => point.year === year,
+    );
+    if (approximatedPoint) {
+      dataPoint.approximated = approximatedPoint.value;
+    }
+
+    const parisPoint = parisData.find((point) => point.year === year);
+    if (parisPoint) {
+      dataPoint.paris = parisPoint.value;
+    }
+
     return dataPoint;
   });
 
-  const currentYear = new Date().getFullYear();
+  // Include years up to 2050 for ticks if there's trend/paris data going that far
+  const maxYear = Math.max(
+    lastDataYear,
+    ...trendYears,
+    ...approximatedYears,
+    ...parisYears,
+  );
+
+  const customTicks = [1990, 2015, 2020, currentYear, 2030, 2040, 2050]
+    .filter((year) => year <= maxYear)
+    .filter((year, i, arr) => arr.indexOf(year) === i)
+    .sort();
 
   return (
     <ResponsiveContainer width="100%" height="90%">
@@ -86,13 +131,24 @@ export const SectorsChart: FC<SectorsChartProps> = ({
             if (value === "trend") {
               return t("municipalities.graph.trend");
             }
+            if (value === "approximated") {
+              return t("municipalities.graph.estimated");
+            }
+            if (value === "paris") {
+              return t("municipalities.graph.paris");
+            }
             const sectorInfo = getSectorInfo
               ? getSectorInfo(value)
               : { translatedName: value };
             return sectorInfo.translatedName;
           }}
           onClick={(data) => {
-            if (data.dataKey === "trend") return;
+            if (
+              ["trend", "approximated", "paris"].includes(
+                data.dataKey as string,
+              )
+            )
+              return;
 
             const newHidden = new Set(hiddenSectors);
             if (newHidden.has(data.dataKey as string)) {
@@ -115,9 +171,9 @@ export const SectorsChart: FC<SectorsChartProps> = ({
           axisLine={false}
           tick={{ fontSize: 12 }}
           padding={{ left: 0, right: 0 }}
-          domain={[1990, 2050]}
+          domain={[1990, maxYear]}
           allowDuplicatedCategory={true}
-          ticks={[1990, 2015, 2020, currentYear, 2030, 2040, 2050]}
+          ticks={customTicks}
           tickFormatter={(year) => year}
         />
         <YAxis
@@ -157,12 +213,32 @@ export const SectorsChart: FC<SectorsChartProps> = ({
           })}
         <Line
           type="monotone"
+          dataKey="approximated"
+          stroke="white"
+          strokeWidth={2}
+          strokeDasharray="4 4"
+          dot={false}
+          name="approximated"
+          connectNulls={true}
+        />
+        <Line
+          type="monotone"
           dataKey="trend"
           stroke="var(--pink-3)"
           strokeWidth={2}
           strokeDasharray="4 4"
           dot={false}
           name="trend"
+          connectNulls={true}
+        />
+        <Line
+          type="monotone"
+          dataKey="paris"
+          stroke="var(--green-3)"
+          strokeWidth={2}
+          strokeDasharray="4 4"
+          dot={false}
+          name="paris"
           connectNulls={true}
         />
         <ReferenceLine
