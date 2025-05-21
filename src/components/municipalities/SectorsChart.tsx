@@ -28,12 +28,10 @@ export const SectorsChart: FC<SectorsChartProps> = ({
   const { currentLanguage } = useLanguage();
   const { getSectorInfo } = useMunicipalitySectors();
 
-  // Get all available years
   const years = sectorEmissions
     ? Object.keys(sectorEmissions.sectors).map(Number).sort()
     : [];
 
-  // Get all sector names
   const allSectors = sectorEmissions
     ? [
         ...new Set(
@@ -44,17 +42,14 @@ export const SectorsChart: FC<SectorsChartProps> = ({
       ]
     : [];
 
-  // Create chart data for all years and sectors
   const chartData = years.map((year) => {
     const yearData = sectorEmissions?.sectors[year] || {};
 
-    // Initialize the data point with the year
-    const dataPoint: Record<string, any> = { year };
+    const dataPoint: Record<string, number | string> = { year };
 
-    // Add all sectors' values for this year
     allSectors.forEach((sector) => {
       if (!hiddenSectors.has(sector)) {
-        dataPoint[sector] = yearData[sector] || 0;
+        dataPoint[sector] = (yearData as Record<string, number>)[sector] || 0;
       }
     });
 
