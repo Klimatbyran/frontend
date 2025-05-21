@@ -1,49 +1,58 @@
 import { FC } from "react";
 import {
   ResponsiveContainer,
-  LineChart,
   XAxis,
   YAxis,
-  Line,
+  Area,
   Legend,
   Tooltip,
   ReferenceLine,
+  Line,
+  ComposedChart,
 } from "recharts";
 import { useLanguage } from "@/components/LanguageProvider";
 import { formatEmissionsAbsoluteCompact } from "@/utils/localizeUnit";
 import { SectorEmissions } from "@/types/municipality";
 import { useMunicipalitySectors } from "@/hooks/useMunicipalitySectors";
 import { CustomTooltip } from "./CustomTooltip";
+import { useTranslation } from "react-i18next";
 
 interface SectorsChartProps {
   sectorEmissions: SectorEmissions | null;
   hiddenSectors?: Set<string>;
   setHiddenSectors?: (sectors: Set<string>) => void;
+  trendData?: Array<{ year: number; value: number }>;
 }
 
 export const SectorsChart: FC<SectorsChartProps> = ({
   sectorEmissions,
   hiddenSectors = new Set(),
   setHiddenSectors = () => {},
+  trendData = [],
 }) => {
   const { currentLanguage } = useLanguage();
   const { getSectorInfo } = useMunicipalitySectors();
+  const { t } = useTranslation();
 
-  const years = sectorEmissions
-    ? Object.keys(sectorEmissions.sectors).map(Number).sort()
+  const sectorYears = sectorEmissions
+    ? Object.keys(sectorEmissions.sectors).map(Number)
     : [];
+
+  const trendYears = trendData.map((point) => point.year);
+
+  const allYears = [...new Set([...sectorYears, ...trendYears])].sort();
 
   const allSectors = sectorEmissions
     ? [
         ...new Set(
-          years.flatMap((year) =>
+          sectorYears.flatMap((year) =>
             Object.keys(sectorEmissions.sectors[year] || {}),
           ),
         ),
       ]
     : [];
 
-  const chartData = years.map((year) => {
+  const chartData = allYears.map((year) => {
     const yearData = sectorEmissions?.sectors[year] || {};
 
     const dataPoint: Record<string, number | string> = { year };
@@ -54,6 +63,11 @@ export const SectorsChart: FC<SectorsChartProps> = ({
       }
     });
 
+    const trendPoint = trendData.find((point) => point.year === year);
+    if (trendPoint) {
+      dataPoint.trend = trendPoint.value;
+    }
+
     return dataPoint;
   });
 
@@ -61,7 +75,7 @@ export const SectorsChart: FC<SectorsChartProps> = ({
 
   return (
     <ResponsiveContainer width="100%" height="90%">
-      <LineChart data={chartData}>
+      <ComposedChart data={chartData}>
         <Legend
           verticalAlign="bottom"
           align="right"
@@ -69,12 +83,17 @@ export const SectorsChart: FC<SectorsChartProps> = ({
           iconType="line"
           wrapperStyle={{ fontSize: "12px", color: "var(--grey)" }}
           formatter={(value) => {
+            if (value === "trend") {
+              return t("municipalities.graph.trend");
+            }
             const sectorInfo = getSectorInfo
               ? getSectorInfo(value)
               : { translatedName: value };
             return sectorInfo.translatedName;
           }}
           onClick={(data) => {
+            if (data.dataKey === "trend") return;
+
             const newHidden = new Set(hiddenSectors);
             if (newHidden.has(data.dataKey as string)) {
               newHidden.delete(data.dataKey as string);
@@ -97,11 +116,9 @@ export const SectorsChart: FC<SectorsChartProps> = ({
           tick={{ fontSize: 12 }}
           padding={{ left: 0, right: 0 }}
           domain={[1990, 2050]}
-          allowDuplicatedCategory={false}
+          allowDuplicatedCategory={true}
           ticks={[1990, 2015, 2020, currentYear, 2030, 2040, 2050]}
           tickFormatter={(year) => year}
-          type="number"
-          scale="linear"
         />
         <YAxis
           stroke="var(--grey)"
@@ -125,18 +142,29 @@ export const SectorsChart: FC<SectorsChartProps> = ({
                     "#" + Math.floor(Math.random() * 16777215).toString(16),
                 };
             return (
-              <Line
+              <Area
                 key={sector}
                 type="monotone"
                 dataKey={sector}
                 stroke={sectorInfo.color}
-                strokeWidth={2}
-                dot={false}
+                fillOpacity={0}
+                stackId="1"
+                strokeWidth={1}
                 name={sector}
                 connectNulls={true}
               />
             );
           })}
+        <Line
+          type="monotone"
+          dataKey="trend"
+          stroke="var(--pink-3)"
+          strokeWidth={2}
+          strokeDasharray="4 4"
+          dot={false}
+          name="trend"
+          connectNulls={true}
+        />
         <ReferenceLine
           x={currentYear}
           stroke="var(--orange-3)"
@@ -149,7 +177,7 @@ export const SectorsChart: FC<SectorsChartProps> = ({
             fontWeight: "normal",
           }}
         />
-      </LineChart>
+      </ComposedChart>
     </ResponsiveContainer>
   );
 };

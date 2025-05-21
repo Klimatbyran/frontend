@@ -47,6 +47,9 @@ export const MunicipalityEmissionsGraph: FC<
           sectorEmissions={sectorEmissions || null}
           hiddenSectors={hiddenSectors}
           setHiddenSectors={setHiddenSectors}
+          trendData={projectedData
+            .filter((point) => point.trend !== undefined)
+            .map((point) => ({ year: point.year, value: point.trend! }))}
         />
       )}
     </div>
