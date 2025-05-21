@@ -28,24 +28,38 @@ export const SectorsChart: FC<SectorsChartProps> = ({
   const { currentLanguage } = useLanguage();
   const { getSectorInfo } = useMunicipalitySectors();
 
-  const latestYearWithSectorData = sectorEmissions
-    ? Math.max(...Object.keys(sectorEmissions.sectors).map(Number))
-    : null;
+  // Get all available years
+  const years = sectorEmissions
+    ? Object.keys(sectorEmissions.sectors).map(Number).sort()
+    : [];
 
-  const sectorData =
-    latestYearWithSectorData && sectorEmissions
-      ? sectorEmissions.sectors[latestYearWithSectorData]
-      : null;
+  // Get all sector names
+  const allSectors = sectorEmissions
+    ? [
+        ...new Set(
+          years.flatMap((year) =>
+            Object.keys(sectorEmissions.sectors[year] || {}),
+          ),
+        ),
+      ]
+    : [];
 
-  const chartData =
-    latestYearWithSectorData && sectorData
-      ? Object.entries(sectorData)
-          .filter(([sector]) => !hiddenSectors.has(sector))
-          .map(([sector, value]) => ({
-            year: latestYearWithSectorData,
-            [sector]: value,
-          }))
-      : [];
+  // Create chart data for all years and sectors
+  const chartData = years.map((year) => {
+    const yearData = sectorEmissions?.sectors[year] || {};
+
+    // Initialize the data point with the year
+    const dataPoint: Record<string, any> = { year };
+
+    // Add all sectors' values for this year
+    allSectors.forEach((sector) => {
+      if (!hiddenSectors.has(sector)) {
+        dataPoint[sector] = yearData[sector] || 0;
+      }
+    });
+
+    return dataPoint;
+  });
 
   return (
     <ResponsiveContainer width="100%" height="90%">
@@ -97,29 +111,28 @@ export const SectorsChart: FC<SectorsChartProps> = ({
           domain={[0, "auto"]}
           padding={{ top: 0, bottom: 0 }}
         />
-        {sectorData &&
-          Object.keys(sectorData)
-            .filter((sector) => !hiddenSectors.has(sector))
-            .map((sector) => {
-              const sectorInfo = getSectorInfo
-                ? getSectorInfo(sector)
-                : {
-                    color:
-                      "#" + Math.floor(Math.random() * 16777215).toString(16),
-                  };
-              return (
-                <Line
-                  key={sector}
-                  type="monotone"
-                  dataKey={sector}
-                  stroke={sectorInfo.color}
-                  strokeWidth={2}
-                  dot={{ r: 4, fill: sectorInfo.color }}
-                  activeDot={{ r: 6 }}
-                  name={sector}
-                />
-              );
-            })}
+        {allSectors
+          .filter((sector) => !hiddenSectors.has(sector))
+          .map((sector) => {
+            const sectorInfo = getSectorInfo
+              ? getSectorInfo(sector)
+              : {
+                  color:
+                    "#" + Math.floor(Math.random() * 16777215).toString(16),
+                };
+            return (
+              <Line
+                key={sector}
+                type="monotone"
+                dataKey={sector}
+                stroke={sectorInfo.color}
+                strokeWidth={2}
+                dot={false}
+                name={sector}
+                connectNulls={true}
+              />
+            );
+          })}
       </LineChart>
     </ResponsiveContainer>
   );
