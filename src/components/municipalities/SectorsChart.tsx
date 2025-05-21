@@ -105,7 +105,6 @@ export const SectorsChart: FC<SectorsChartProps> = ({
         <Legend
           verticalAlign="bottom"
           align="right"
-          height={36}
           iconType="line"
           wrapperStyle={{ fontSize: "12px", color: "var(--grey)" }}
           formatter={(value) => {
