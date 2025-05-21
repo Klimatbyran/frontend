@@ -52,10 +52,10 @@ export const DataViewSelector: FC<DataViewSelectorProps> = ({
         >
           <TabsList className="bg-black-1">
             <TabsTrigger value="overview">
-              {t("municipalityDetailPage.graph.overview")}
+              {t("municipalities.graph.overview")}
             </TabsTrigger>
             <TabsTrigger value="sectors" disabled={!hasSectorData}>
-              {t("municipalityDetailPage.graph.sectors")}
+              {t("municipalities.graph.sectors")}
             </TabsTrigger>
           </TabsList>
         </Tabs>
