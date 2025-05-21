@@ -41,7 +41,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
           align="right"
           height={36}
           iconType="line"
-          wrapperStyle={{ fontSize: "12px", color: "#878787" }}
+          wrapperStyle={{ fontSize: "12px", color: "var(--grey)" }}
         />
         <Tooltip
           content={
@@ -50,7 +50,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
         />
         <XAxis
           dataKey="year"
-          stroke="#878787"
+          stroke="var(--grey)"
           tickLine={false}
           axisLine={false}
           tick={{ fontSize: 12 }}
@@ -61,7 +61,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
           tickFormatter={(year) => year}
         />
         <YAxis
-          stroke="#878787"
+          stroke="var(--grey)"
           tickLine={false}
           axisLine={false}
           tick={{ fontSize: 12 }}

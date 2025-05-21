@@ -64,7 +64,7 @@ export const SectorsChart: FC<SectorsChartProps> = ({
           align="right"
           height={36}
           iconType="line"
-          wrapperStyle={{ fontSize: "12px", color: "#878787" }}
+          wrapperStyle={{ fontSize: "12px", color: "var(--grey)" }}
           formatter={(value) => {
             const sectorInfo = getSectorInfo
               ? getSectorInfo(value)
@@ -88,14 +88,14 @@ export const SectorsChart: FC<SectorsChartProps> = ({
         />
         <XAxis
           dataKey="year"
-          stroke="#878787"
+          stroke="var(--grey)"
           tickLine={false}
           axisLine={false}
           tick={{ fontSize: 12 }}
           padding={{ left: 0, right: 0 }}
         />
         <YAxis
-          stroke="#878787"
+          stroke="var(--grey)"
           tickLine={false}
           axisLine={false}
           tick={{ fontSize: 12 }}
