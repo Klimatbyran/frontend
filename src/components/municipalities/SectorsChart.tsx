@@ -115,7 +115,11 @@ export const SectorsChart: FC<SectorsChartProps> = ({
             const isHidden = hiddenSectors.has(value);
             return (
               <span
-                style={{ color: isHidden ? "var(--grey)" : sectorInfo.color }}
+                style={{
+                  color: isHidden ? "var(--grey)" : sectorInfo.color,
+                  textDecoration: isHidden ? "line-through" : "none",
+                  cursor: "pointer",
+                }}
               >
                 {sectorInfo.translatedName}
               </span>
