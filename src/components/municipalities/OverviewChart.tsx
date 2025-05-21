@@ -5,7 +5,6 @@ import {
   XAxis,
   YAxis,
   Line,
-  Area,
   Legend,
   Tooltip,
   ReferenceLine,
@@ -72,15 +71,6 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
           domain={[0, "auto"]}
           padding={{ top: 0, bottom: 0 }}
         />
-        <Area
-          type="monotone"
-          dataKey="gap"
-          fill="rgba(240, 117, 154, 0.1)"
-          stroke="none"
-          fillOpacity={0.3}
-          activeDot={false}
-          name={t("municipalities.graph.gap")}
-        />
         <Line
           type="monotone"
           dataKey="total"
@@ -103,7 +93,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
         <Line
           type="monotone"
           dataKey="trend"
-          stroke="#F0759A"
+          stroke="var(--pink-3)"
           strokeWidth={2}
           strokeDasharray="4 4"
           dot={false}
@@ -112,7 +102,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
         <Line
           type="monotone"
           dataKey="paris"
-          stroke="#E2FF8D"
+          stroke="var(--green-3)"
           strokeWidth={2}
           strokeDasharray="4 4"
           dot={false}
@@ -120,12 +110,12 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
         />
         <ReferenceLine
           x={currentYear}
-          stroke="#FDB768"
+          stroke="var(--orange-3)"
           strokeWidth={1}
           label={{
             value: currentYear,
             position: "top",
-            fill: "#FDB768",
+            fill: "var(--orange-3)",
             fontSize: 12,
             fontWeight: "normal",
           }}

@@ -7,6 +7,7 @@ import {
   Line,
   Legend,
   Tooltip,
+  ReferenceLine,
 } from "recharts";
 import { useLanguage } from "@/components/LanguageProvider";
 import { formatEmissionsAbsoluteCompact } from "@/utils/localizeUnit";
@@ -56,6 +57,8 @@ export const SectorsChart: FC<SectorsChartProps> = ({
     return dataPoint;
   });
 
+  const currentYear = new Date().getFullYear();
+
   return (
     <ResponsiveContainer width="100%" height="90%">
       <LineChart data={chartData}>
@@ -93,6 +96,12 @@ export const SectorsChart: FC<SectorsChartProps> = ({
           axisLine={false}
           tick={{ fontSize: 12 }}
           padding={{ left: 0, right: 0 }}
+          domain={[1990, 2050]}
+          allowDuplicatedCategory={false}
+          ticks={[1990, 2015, 2020, currentYear, 2030, 2040, 2050]}
+          tickFormatter={(year) => year}
+          type="number"
+          scale="linear"
         />
         <YAxis
           stroke="var(--grey)"
@@ -128,6 +137,18 @@ export const SectorsChart: FC<SectorsChartProps> = ({
               />
             );
           })}
+        <ReferenceLine
+          x={currentYear}
+          stroke="var(--orange-3)"
+          strokeWidth={1}
+          label={{
+            value: currentYear,
+            position: "top",
+            fill: "var(--orange-3)",
+            fontSize: 12,
+            fontWeight: "normal",
+          }}
+        />
       </LineChart>
     </ResponsiveContainer>
   );
