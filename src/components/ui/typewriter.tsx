@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { motion, Variants } from "framer-motion";
-
 import { cn } from "@/lib/utils";
 
 interface TypewriterProps {
@@ -19,6 +18,7 @@ interface TypewriterProps {
     animate: Variants["animate"];
   };
   cursorClassName?: string;
+  finalTextIndex?: number;
 }
 
 const Typewriter = ({
@@ -27,7 +27,8 @@ const Typewriter = ({
   initialDelay = 0,
   waitTime = 2000,
   deleteSpeed = 30,
-  loop = true,
+  loop = false,
+  finalTextIndex = 0,
   className,
   showCursor = true,
   hideCursorOnType = false,
@@ -50,6 +51,7 @@ const Typewriter = ({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
+  const [hasCompletedCycle, setHasCompletedCycle] = useState(false); 
 
   const texts = Array.isArray(text) ? text : [text];
 
@@ -63,6 +65,9 @@ const Typewriter = ({
         if (displayText === "") {
           setIsDeleting(false);
           if (currentTextIndex === texts.length - 1 && !loop) {
+            setCurrentTextIndex(finalTextIndex);
+            setCurrentIndex(0);
+            setHasCompletedCycle(true);
             return;
           }
           setCurrentTextIndex((prev) => (prev + 1) % texts.length);
@@ -80,6 +85,9 @@ const Typewriter = ({
             setCurrentIndex((prev) => prev + 1);
           }, speed);
         } else if (texts.length > 1) {
+          if (hasCompletedCycle && currentTextIndex === finalTextIndex) {
+            return;
+          }
           timeout = setTimeout(() => {
             setIsDeleting(true);
           }, waitTime);
@@ -105,6 +113,8 @@ const Typewriter = ({
     texts,
     currentTextIndex,
     loop,
+    finalTextIndex,
+    hasCompletedCycle,
   ]);
 
   return (
