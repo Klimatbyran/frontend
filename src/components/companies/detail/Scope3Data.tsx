@@ -37,7 +37,7 @@ interface Scope3DataProps {
     year: number;
     total: number;
     unit: string;
-    categories: Array<{ 
+    categories: Array<{
       category: number;
       total: number;
       unit: string;

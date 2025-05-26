@@ -41,7 +41,9 @@ export function CompanyEditScope3({
     const category = categories.find(
       (category) => category.category - 1 === index,
     );
-    return category !== undefined ? category.total : "";
+    if (!category || category.total === undefined || category.total === null)
+      return "";
+    return category.total;
   };
 
   const getCategoryVerified = (
@@ -85,7 +87,13 @@ export function CompanyEditScope3({
               !!period.emissions?.scope3?.statedTotalEmissions?.metadata
                 ?.verifiedBy
             }
-            value={period.emissions?.scope3?.statedTotalEmissions?.total ?? ""}
+            value={
+              period.emissions?.scope3?.statedTotalEmissions?.total ===
+                undefined ||
+              period.emissions?.scope3?.statedTotalEmissions?.total === null
+                ? ""
+                : period.emissions?.scope3?.statedTotalEmissions?.total
+            }
             onInputChange={onInputChange}
             formData={formData}
           />

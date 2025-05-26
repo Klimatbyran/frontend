@@ -199,7 +199,7 @@ export function CompanyOverview({
           <CompanyOverviewTooltip yearOverYearChange={yearOverYearChange} />
         </div>
         <Text className="text-3xl md:text-4xl lg:text-6xl font-light tracking-tighter leading-none">
-          {yearOverYearChange !== null ? (
+          {yearOverYearChange != null ? (
             <span
               className={
                 yearOverYearChange < 0 ? "text-orange-2" : "text-pink-3"

@@ -79,11 +79,11 @@ export const CustomTooltip = ({
             isDataAI = entry.payload.isAIGenerated;
           }
 
-          // Correctly display "No Data Available" if original value was null
+          // Correctly display "No Data Available" if original value was null or undefined
           const displayValue =
-            originalValue === null
+            originalValue == null && (entry.value == null || isNaN(entry.value))
               ? t("companies.tooltip.noDataAvailable")
-              : `${formatEmissionsAbsolute(Math.round(entry.value), currentLanguage)} ${t(
+              : `${formatEmissionsAbsolute(Math.round(entry.value ?? 0), currentLanguage)} ${t(
                   "companies.tooltip.tonsCO2e",
                 )}`;
 
