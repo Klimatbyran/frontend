@@ -59,7 +59,6 @@ export const reports = [
     category: "Report",
     author: {
       name: "Green DIA",
-      avatar: "/logos/partners/green-DIA.png",
     },
     pdfUrl: "/reports/Typology_of_Data_Quality_Problems_in_Corporate_Reporting.docx.pdf",
     coverImage: "/images/reportImages/typology-of-errors.png",
