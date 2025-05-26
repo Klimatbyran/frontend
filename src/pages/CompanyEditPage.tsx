@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import { useCompanyDetails } from "@/hooks/companies/useCompanyDetails";
 import { Text } from "@/components/ui/text";
 import { CompanyEditHeader } from "@/components/companies/edit/CompanyEditHeader";
@@ -12,6 +12,8 @@ import { mapCompanyEditFormToRequestBody } from "@/lib/company-edit";
 import { updateReportingPeriods } from "@/lib/api";
 import { useToast } from "@/contexts/ToastContext";
 import { useTranslation } from "react-i18next";
+import { AuthExpiredModal } from "@/components/companies/edit/AuthExpiredModal";
+import { useAuth } from "@/contexts/AuthContext";
 
 export function CompanyEditPage() {
   const { t } = useTranslation();
@@ -24,6 +26,8 @@ export function CompanyEditPage() {
   const formRef = useRef<HTMLFormElement | null>(null);
   const [isUpdating, setIsUpdating] = useState(false);
   const { showToast } = useToast();
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const { login } = useAuth();
 
   const selectedPeriods =
     company !== undefined
@@ -140,10 +144,14 @@ export function CompanyEditPage() {
           t("companyEditPage.success.description"),
         );
       } catch (error: any) {
-        showToast(
-          t("companyEditPage.error.couldNotSave"),
-          t("companyEditPage.error.tryAgainLater"),
-        );
+        if (error?.status === 401) {
+          setShowAuthModal(true);
+        } else {
+          showToast(
+            t("companyEditPage.error.couldNotSave"),
+            t("companyEditPage.error.tryAgainLater"),
+          );
+        }
       } finally {
         setIsUpdating(false);
       }
@@ -217,6 +225,13 @@ export function CompanyEditPage() {
           </form>
         )}
       </div>
+      {showAuthModal && (
+        <AuthExpiredModal
+          isOpen={showAuthModal}
+          onClose={() => setShowAuthModal(false)}
+          onLogin={login}
+        />
+      )}
     </div>
   );
 }
