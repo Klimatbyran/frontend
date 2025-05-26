@@ -211,43 +211,43 @@ describe("mapCompanyEditFormToRequestBody", () => {
     });
   });
 
-  it("should send undefined for scope1 total if cleared", () => {
+  it("should send null for scope1 total if cleared", () => {
     const formData = new Map([["scope-1-1", ""]]);
     const result = mapCompanyEditFormToRequestBody([basePeriod], formData);
     expect(result.reportingPeriods[0].emissions.scope1).toEqual({
-      total: undefined,
+      total: null,
       verified: false,
     });
   });
 
-  it("should send undefined for scope2 mb if cleared", () => {
+  it("should send null for scope2 mb if cleared", () => {
     const formData = new Map([["scope-2-mb-1", ""]]);
     const result = mapCompanyEditFormToRequestBody([basePeriod], formData);
-    expect(result.reportingPeriods[0].emissions.scope2.mb).toBeUndefined();
+    expect(result.reportingPeriods[0].emissions.scope2.mb).toBeNull();
   });
 
-  it("should send undefined for scope2 lb if cleared", () => {
+  it("should send null for scope2 lb if cleared", () => {
     const formData = new Map([["scope-2-lb-1", ""]]);
     const result = mapCompanyEditFormToRequestBody([basePeriod], formData);
-    expect(result.reportingPeriods[0].emissions.scope2.lb).toBeUndefined();
+    expect(result.reportingPeriods[0].emissions.scope2.lb).toBeNull();
   });
 
-  it("should send undefined for scope2 unknown if cleared", () => {
+  it("should send null for scope2 unknown if cleared", () => {
     const formData = new Map([["scope-2-unknown-1", ""]]);
     const result = mapCompanyEditFormToRequestBody([basePeriod], formData);
-    expect(result.reportingPeriods[0].emissions.scope2.unknown).toBeUndefined();
+    expect(result.reportingPeriods[0].emissions.scope2.unknown).toBeNull();
   });
 
-  it("should send undefined for scope3 category total if cleared", () => {
+  it("should send null for scope3 category total if cleared", () => {
     const formData = new Map([["scope-3-1-1", ""]]);
     const result = mapCompanyEditFormToRequestBody([basePeriod], formData);
     expect(result.reportingPeriods[0].emissions.scope3.categories[0]).toEqual({
       category: 1,
-      total: undefined,
+      total: null,
     });
   });
 
-  it("should send undefined for statedTotalEmissions total if cleared", () => {
+  it("should send null for statedTotalEmissions total if cleared", () => {
     const periodWithStatedTotal: ReportingPeriod = {
       ...basePeriod,
       emissions: {
@@ -269,19 +269,19 @@ describe("mapCompanyEditFormToRequestBody", () => {
     );
     expect(
       result.reportingPeriods[0].emissions.scope3.statedTotalEmissions.total,
-    ).toBeUndefined();
+    ).toBeNull();
   });
 
-  it("should send undefined for all scope2 fields if all are cleared", () => {
+  it("should send null for all scope2 fields if all are cleared", () => {
     const formData = new Map([
       ["scope-2-mb-1", ""],
       ["scope-2-lb-1", ""],
       ["scope-2-unknown-1", ""],
     ]);
     const result = mapCompanyEditFormToRequestBody([basePeriod], formData);
-    expect(result.reportingPeriods[0].emissions.scope2.mb).toBeUndefined();
-    expect(result.reportingPeriods[0].emissions.scope2.lb).toBeUndefined();
-    expect(result.reportingPeriods[0].emissions.scope2.unknown).toBeUndefined();
+    expect(result.reportingPeriods[0].emissions.scope2.mb).toBeNull();
+    expect(result.reportingPeriods[0].emissions.scope2.lb).toBeNull();
+    expect(result.reportingPeriods[0].emissions.scope2.unknown).toBeNull();
   });
 
   it("should not send anything for scope3 category if only verified is checked and original value is undefined", () => {
