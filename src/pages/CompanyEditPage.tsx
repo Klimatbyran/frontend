@@ -195,14 +195,14 @@ export function CompanyEditPage() {
             ></CompanyEditScope3>
             <div className="w-full ps-4 pe-2 mt-6">
               <textarea
-                className="ms-2 w-full p-2 border-gray-300 rounded text-black bg-white"
+                className="ms-2 w-full p-2 border-gray-300 rounded text-white bg-black-1"
                 rows={4}
                 placeholder="Comment"
                 name="comment"
               ></textarea>
               <input
                 type="text"
-                className="ms-2 mt-2 w-full p-2 rounded text-black bg-white"
+                className="ms-2 mt-2 w-full p-2 rounded text-white bg-black-1"
                 name="source"
                 placeholder="Source URL"
               ></input>
