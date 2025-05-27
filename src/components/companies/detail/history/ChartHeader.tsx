@@ -7,6 +7,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import useContainerQuery from "@/hooks/useContainerQuery";
 
 interface ChartHeaderProps {
   title: string;
@@ -25,30 +26,40 @@ export default function ChartHeader({
   setDataView,
   hasScope3Categories,
 }: ChartHeaderProps) {
+  const [containerRef, isWide] = useContainerQuery<HTMLDivElement>(
+    ({ width }) => {
+      // Matches container size @lg
+      return width >= 512;
+    },
+  );
+
   return (
-    <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 md:mb-12 gap-4 md:gap-0">
-      <div className="space-y-2">
-        <div className="flex items-center gap-2">
-          <Text variant="h3">{title}</Text>
-          <TooltipProvider>
-            <UITooltip>
-              <TooltipTrigger>
-                <Info className="w-4 h-4 text-grey" />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{tooltipContent}</p>
-              </TooltipContent>
-            </UITooltip>
-          </TooltipProvider>
+    <div className="@container" ref={containerRef}>
+      <div className="flex flex-col @lg:flex-row @lg:items-center @lg:justify-between mb-6 @lg:mb-12 gap-4 @lg:gap-0">
+        <div className="space-y-2">
+          <div className="flex items-center gap-2">
+            <Text variant="h3">{title}</Text>
+            <TooltipProvider>
+              <UITooltip>
+                <TooltipTrigger>
+                  <Info className="w-4 h-4 text-grey" />
+                </TooltipTrigger>
+                <TooltipContent className="max-w-96">
+                  <p>{tooltipContent}</p>
+                </TooltipContent>
+              </UITooltip>
+            </TooltipProvider>
+          </div>
+          <Text variant="body">{unit}</Text>
         </div>
-        <Text variant="body">{unit}</Text>
+        {/* Switch between Tabs and Dropdown based on screen size */}
+        <DataViewSelector
+          dataView={dataView}
+          setDataView={setDataView}
+          hasScope3Categories={hasScope3Categories}
+          layout={isWide ? "wide" : "narrow"}
+        />
       </div>
-      {/* Switch between Tabs and Dropdown based on screen size */}
-      <DataViewSelector
-        dataView={dataView}
-        setDataView={setDataView}
-        hasScope3Categories={hasScope3Categories}
-      />
     </div>
   );
 }

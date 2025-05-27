@@ -20,6 +20,7 @@ import MunicipalitySectorPieChart from "@/components/municipalities/Municipality
 import MunicipalitySectorLegend from "@/components/municipalities/MunicipalitySectorLegend";
 import { useMunicipalitySectorEmissions } from "@/hooks/useMunicipalitySectorEmissions";
 import { MunicipalityEmissions } from "@/components/municipalities/MunicipalityEmissions";
+import { YearSelector } from "@/components/layout/YearSelector";
 
 export function MunicipalityDetailPage() {
   const { t } = useTranslation();
@@ -32,6 +33,7 @@ export function MunicipalityDetailPage() {
   const [filteredSectors, setFilteredSectors] = useState<Set<string>>(
     new Set(),
   );
+  const [selectedYear, setSelectedYear] = useState<string>("2023");
 
   if (loading) return <Text>{t("municipalityDetailPage.loading")}</Text>;
   if (error) return <Text>{t("municipalityDetailPage.error")}</Text>;
@@ -53,6 +55,23 @@ export function MunicipalityDetailPage() {
   const lastYearEmissionsTon = lastYearEmissions
     ? formatEmissionsAbsolute(lastYearEmissions.value, currentLanguage)
     : "N/A";
+
+  // Get available years for the sector emissions
+  const availableYears = sectorEmissions?.sectors
+    ? Object.keys(sectorEmissions.sectors)
+        .map(Number)
+        .filter(
+          (year) =>
+            !isNaN(year) &&
+            Object.keys(sectorEmissions.sectors[year] || {}).length > 0,
+        )
+        .sort((a, b) => b - a)
+    : [];
+
+  // Use the first available year as default if selectedYear is not in availableYears
+  const currentYear = availableYears.includes(parseInt(selectedYear))
+    ? parseInt(selectedYear)
+    : availableYears[0] || 2023;
 
   // Prepare SEO data
   const canonicalUrl = `https://klimatkollen.se/municipalities/${id}`;
@@ -232,37 +251,48 @@ export function MunicipalityDetailPage() {
           </div>
         )}
 
-        {sectorEmissions?.sectors && sectorEmissions.sectors[2023] && (
+        {sectorEmissions?.sectors && availableYears.length > 0 && (
           <div className={cn("bg-black-2 rounded-level-1 py-8 md:py-16")}>
             <div className="px-8 md:px-16">
-              <Text className="text-2xl md:text-4xl">
-                {t("municipalityDetailPage.sectorEmissions")}
-              </Text>
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+                <Text className="text-2xl md:text-4xl">
+                  {t("municipalityDetailPage.sectorEmissions")}
+                </Text>
+
+                <YearSelector
+                  selectedYear={selectedYear}
+                  onYearChange={setSelectedYear}
+                  availableYears={availableYears}
+                  translateNamespace="municipalityDetailPage"
+                />
+              </div>
+
               <Text className="text-grey">
                 {t("municipalityDetailPage.sectorEmissionsYear", {
-                  year: 2023,
+                  year: currentYear,
                 })}
               </Text>
+
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
                 <MunicipalitySectorPieChart
                   sectorEmissions={sectorEmissions}
-                  year={2023}
+                  year={currentYear}
                   filteredSectors={filteredSectors}
                   onFilteredSectorsChange={setFilteredSectors}
                 />
-                {Object.keys(sectorEmissions.sectors[2023]).length > 0 && (
+                {Object.keys(sectorEmissions.sectors[currentYear] || {})
+                  .length > 0 && (
                   <MunicipalitySectorLegend
-                    data={Object.entries(sectorEmissions.sectors[2023]).map(
-                      ([sector, value]) => ({
-                        name: sector,
-                        value,
-                        color: "",
-                      }),
-                    )}
-                    total={Object.values(sectorEmissions.sectors[2023]).reduce(
-                      (sum, value) => sum + value,
-                      0,
-                    )}
+                    data={Object.entries(
+                      sectorEmissions.sectors[currentYear] || {},
+                    ).map(([sector, value]) => ({
+                      name: sector,
+                      value,
+                      color: "",
+                    }))}
+                    total={Object.values(
+                      sectorEmissions.sectors[currentYear] || {},
+                    ).reduce((sum, value) => sum + value, 0)}
                     filteredSectors={filteredSectors}
                     onFilteredSectorsChange={setFilteredSectors}
                   />

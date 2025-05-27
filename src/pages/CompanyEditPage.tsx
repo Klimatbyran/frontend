@@ -12,6 +12,8 @@ import { mapCompanyEditFormToRequestBody } from "@/lib/company-edit";
 import { updateReportingPeriods } from "@/lib/api";
 import { useToast } from "@/contexts/ToastContext";
 import { useTranslation } from "react-i18next";
+import { AuthExpiredModal } from "@/components/companies/edit/AuthExpiredModal";
+import { useAuth } from "@/contexts/AuthContext";
 
 export function CompanyEditPage() {
   const { t } = useTranslation();
@@ -24,6 +26,8 @@ export function CompanyEditPage() {
   const formRef = useRef<HTMLFormElement | null>(null);
   const [isUpdating, setIsUpdating] = useState(false);
   const { showToast } = useToast();
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const { login } = useAuth();
 
   const selectedPeriods =
     company !== undefined
@@ -53,7 +57,13 @@ export function CompanyEditPage() {
     );
   }
 
-  if (error) {
+  if (
+    error &&
+    !(
+      typeof (error as any).status === "number" &&
+      ((error as any).status === 401 || (error as any).status === 403)
+    )
+  ) {
     return (
       <div className="text-center py-24">
         <Text variant="h3" className="text-red-500 mb-4">
@@ -75,19 +85,26 @@ export function CompanyEditPage() {
     );
   }
 
-  const handleInputChange = async (
+  const handleInputChange = (
     name: string,
     value: string,
-    originalValue: string,
+    originalVerified?: boolean,
   ) => {
     const updateFormData = new Map(formData);
-    if (value != originalValue) {
-      updateFormData.set(name, value);
+    // Checkbox logic: only track if changed from false to true
+    if (name.endsWith("-checkbox") && originalVerified === false) {
+      if (value === "true") {
+        updateFormData.set(name, value);
+      } else {
+        updateFormData.delete(name);
+      }
     } else {
-      updateFormData.delete(name);
+      updateFormData.set(name, value);
     }
     setFormData(updateFormData);
   };
+
+  const onInputChange = handleInputChange;
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     setIsUpdating(true);
@@ -114,18 +131,32 @@ export function CompanyEditPage() {
       }
     }
     if (id !== undefined) {
-      await updateReportingPeriods(
-        id,
-        mapCompanyEditFormToRequestBody(selectedPeriods, formData),
-      );
-      await refetch();
-      setSelectedYears(selectedYears);
-      setFormData(new Map());
+      try {
+        await updateReportingPeriods(
+          id,
+          mapCompanyEditFormToRequestBody(selectedPeriods, formData),
+        );
+        await refetch();
+        setSelectedYears(selectedYears);
+        setFormData(new Map());
+        showToast(
+          t("companyEditPage.success.title"),
+          t("companyEditPage.success.description"),
+        );
+      } catch (error: any) {
+        if (error?.status === 401) {
+          setShowAuthModal(true);
+        } else {
+          showToast(
+            t("companyEditPage.error.couldNotSave"),
+            t("companyEditPage.error.tryAgainLater"),
+          );
+        }
+      } finally {
+        setIsUpdating(false);
+      }
+    } else {
       setIsUpdating(false);
-      showToast(
-        t("companyEditPage.success.title"),
-        t("companyEditPage.success.description"),
-      );
     }
   };
 
@@ -151,23 +182,23 @@ export function CompanyEditPage() {
           <form onSubmit={handleSubmit} ref={formRef}>
             <CompanyEditPeriod
               periods={selectedPeriods}
-              onInputChange={handleInputChange}
+              onInputChange={onInputChange}
               formData={formData}
               resetPeriod={resetPeriod}
             ></CompanyEditPeriod>
             <CompanyEditScope1
               periods={selectedPeriods}
-              onInputChange={handleInputChange}
+              onInputChange={onInputChange}
               formData={formData}
             ></CompanyEditScope1>
             <CompanyEditScope2
               periods={selectedPeriods}
-              onInputChange={handleInputChange}
+              onInputChange={onInputChange}
               formData={formData}
             ></CompanyEditScope2>
             <CompanyEditScope3
               periods={selectedPeriods}
-              onInputChange={handleInputChange}
+              onInputChange={onInputChange}
               formData={formData}
             ></CompanyEditScope3>
             <div className="w-full ps-4 pe-2 mt-6">
@@ -194,6 +225,13 @@ export function CompanyEditPage() {
           </form>
         )}
       </div>
+      {showAuthModal && (
+        <AuthExpiredModal
+          isOpen={showAuthModal}
+          onClose={() => setShowAuthModal(false)}
+          onLogin={login}
+        />
+      )}
     </div>
   );
 }

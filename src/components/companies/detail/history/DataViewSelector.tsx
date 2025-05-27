@@ -7,25 +7,25 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { useTranslation } from "react-i18next";
-import { useScreenSize } from "@/hooks/useScreenSize";
 
 interface DataViewSelectorProps {
   dataView: "overview" | "scopes" | "categories";
   setDataView: (value: "overview" | "scopes" | "categories") => void;
   hasScope3Categories: boolean;
+  layout?: "wide" | "narrow";
 }
 
 export function DataViewSelector({
   dataView,
   setDataView,
   hasScope3Categories,
+  layout = "wide",
 }: DataViewSelectorProps) {
   const { t } = useTranslation();
-  const screenSize = useScreenSize();
 
   return (
     <>
-      {!screenSize.isMobile ? (
+      {layout == "wide" ? (
         <Tabs
           value={dataView}
           onValueChange={(value) => setDataView(value as any)}

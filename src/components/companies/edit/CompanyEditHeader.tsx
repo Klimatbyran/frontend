@@ -110,9 +110,12 @@ export function CompanyEditHeader({
       {showConfirmModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-black-2 p-6 rounded-lg max-w-md w-full">
-            <Text variant="h3" className="mb-4">
+            <p
+              className="tracking-tight text-4xl font-light mb-4"
+              data-testid="unsaved-changes-title"
+            >
               {t("companyEditPage.unsavedChanges.title")}
-            </Text>
+            </p>
             <Text variant="body" className="mb-6">
               {t("companyEditPage.unsavedChanges.description")}
             </Text>

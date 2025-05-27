@@ -1,7 +1,16 @@
+import { useEffect } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 import { useTranslation } from "react-i18next";
 
 export function UnauthorizedErrorPage() {
   const { t } = useTranslation();
+  const { token, login } = useAuth();
+
+  useEffect(() => {
+    if (!token) {
+      login();
+    }
+  }, [token, login]);
 
   return (
     <div>

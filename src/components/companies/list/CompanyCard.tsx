@@ -56,7 +56,7 @@ export function CompanyCard({
   const currentEmissions = latestPeriod?.emissions?.calculatedTotalEmissions;
   const previousEmissions = previousPeriod?.emissions?.calculatedTotalEmissions;
   const emissionsChange =
-    previousEmissions && currentEmissions
+    previousEmissions != null && currentEmissions != null
       ? ((currentEmissions - previousEmissions) / previousEmissions) * 100
       : null;
 
@@ -72,7 +72,8 @@ export function CompanyCard({
   // Find the largest scope 3 category
   const scope3Categories = latestPeriod?.emissions?.scope3?.categories || [];
   const largestCategory = scope3Categories.reduce(
-    (max, current) => (current.total > (max?.total || 0) ? current : max),
+    (max, current) =>
+      (current?.total ?? -Infinity) > (max?.total ?? -Infinity) ? current : max,
     scope3Categories[0],
   );
   const noSustainabilityReport =
@@ -166,7 +167,7 @@ export function CompanyCard({
               </TooltipProvider>
             </div>
             <div className="text-3xl font-light">
-              {currentEmissions ? (
+              {currentEmissions != null ? (
                 <span className="text-orange-2">
                   {formatEmissionsAbsolute(currentEmissions, currentLanguage)}
                   <span className="text-lg text-grey ml-1">
@@ -193,7 +194,7 @@ export function CompanyCard({
                     <Info className="w-4 h-4" />
                   </TooltipTrigger>
                   <TooltipContent className="max-w-80">
-                    {emissionsChange !== null ? (
+                    {emissionsChange != null ? (
                       emissionsChange <= -80 || emissionsChange >= 80 ? (
                         <>
                           <p>{t("companies.card.emissionsChangeRateInfo")}</p>

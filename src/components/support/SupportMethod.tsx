@@ -45,8 +45,8 @@ export function SupportMethod({
             <p className="text-grey mb-4">{description}</p>
             <ul className="space-y-2 mb-4">
               {detailsArray.map((detail, index) => (
-                <li key={index} className="flex items-center gap-2 text-grey">
-                  <span className="w-1.5 h-1.5 bg-blue-3 rounded-full" />
+                <li key={index} className="flex items-baseline gap-2 text-grey">
+                  <span className="shrink-0 w-1.5 h-1.5 bg-blue-3 rounded-full -translate-y-1/2" />
                   {detail}
                 </li>
               ))}

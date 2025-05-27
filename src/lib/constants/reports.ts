@@ -48,4 +48,20 @@ export const reports = [
     coverImage: "/images/reportImages/2023_corportateclimatechecker2.png",
     language: "en",
   },
+  {
+    id: 3,
+    title: "Typology of Data Quality Problems in the Corporate Reporting of GHG Emissions",
+    slug: "typology-of-data-quality-problems-in-corporate-reporting-of-ghg-emissions",
+    date: "2025-05-26",
+    excerpt:
+      "A typology of data quality problems in corporate reporting of GHG emissions. A report by Green Data, Indicators, Algorithms (Green DIA), funded by the Bavarian Research Institute for Digital Transformation (bidt) and Klimatkollen.",
+    readTime: "15 min",
+    category: "Report",
+    author: {
+      name: "Green DIA",
+    },
+    pdfUrl: "/reports/Typology_of_Data_Quality_Problems_in_Corporate_Reporting.docx.pdf",
+    coverImage: "/images/reportImages/typology-of-errors.png",
+    language: "en",
+  },
 ];

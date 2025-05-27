@@ -34,10 +34,9 @@ const CompanyPieTooltip: React.FC<CompanyPieTooltipProps> = ({
   }
 
   const { name, value, payload: data } = payload[0];
-  const percentage = formatPercent(
-    value ? value / data.total : 0,
-    currentLanguage,
-  );
+  const safeValue = value != null ? value : 0;
+  const safeTotal = data.total != null ? data.total : 1;
+  const percentage = formatPercent(safeValue / safeTotal, currentLanguage);
 
   return (
     <div className="bg-black-2 border border-black-1 rounded-lg shadow-xl p-4 text-white">
@@ -55,10 +54,10 @@ const CompanyPieTooltip: React.FC<CompanyPieTooltipProps> = ({
       <p className="text-sm font-medium mb-1">{name}</p>
       <div className="text-sm text-grey">
         <div>
-          {formatEmissionsAbsolute(Math.round(value || 0), currentLanguage)}{" "}
+          {formatEmissionsAbsolute(Math.round(safeValue), currentLanguage)}{" "}
           {t("emissionsUnit")}
         </div>
-        {showPercentage && data.total && (
+        {showPercentage && safeTotal && (
           <div>
             {percentage}{" "}
             {percentageLabel || t("companiesPage.sectorGraphs.ofTotal")}

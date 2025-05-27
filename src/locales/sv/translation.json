@@ -130,7 +130,7 @@
     "freeAccess": {
       "title": "Gratis databasåtkomst",
       "description": "Få tillgång till vår kompletta klimatdatabas genom bi-årliga datadumpningar, perfekt för forskning och analys.",
-      "export": "Databasdumpas var Feb 1 & Aug 1 varje år",
+      "export": "Databas dumpas var Feb 1 & Aug 1 varje år",
       "data": "Företag och kommuners klimatdata",
       "license": "Gratis att använda för både kommersiellt och icke-kommersiellt bruk",
       "requestAccess": "Hämta data"
@@ -895,7 +895,8 @@
       "16": {
         "name": "Övrigt",
         "description": "Utsläpp som inte är kopplade till de 15 Scope 3-kategorierna."
-      }
+      },
+      "statedTotal": "Redovisad total"
     },
     "card": {
       "noData": "Ingen data",
@@ -1156,6 +1157,12 @@
       "description": "Du har osparade ändringar. Är du säker på att du vill lämna?",
       "cancel": "Avbryt",
       "discard": "Kasta ändringar"
+    },
+    "authExpired": {
+      "title": "Sessionen har gått ut",
+      "message": "Din session har gått ut. Logga in igen för att fortsätta redigera.",
+      "cancel": "Avbryt",
+      "login": "Logga in"
     }
   },
   "authCallbackPage": {
