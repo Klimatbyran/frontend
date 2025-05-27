@@ -69,12 +69,12 @@ export function CompanyEditHeader({
               defaultValue={periods[0]}
               onChange={selected}
               styles={{
-                control: (baseStyles, state) => ({
+                control: (baseStyles, _state) => ({
                   ...baseStyles,
                   backgroundColor: "#2E2E2E",
                   border: "none",
                 }),
-                menu: (baseStyles, state) => ({
+                menu: (baseStyles, _state) => ({
                   ...baseStyles,
                   backgroundColor: "#2E2E2E",
                   border: "none",
