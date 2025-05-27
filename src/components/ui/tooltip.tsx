@@ -4,7 +4,11 @@ import { cn } from "@/lib/utils";
 
 const TooltipProvider = TooltipPrimitive.Provider;
 
-const Tooltip = TooltipPrimitive.Root;
+const Tooltip = ({ children, ...props }: TooltipPrimitive.TooltipProps) => (
+  <div className="contain-layout inline-block">
+    <TooltipPrimitive.Root {...props}>{children}</TooltipPrimitive.Root>
+  </div>
+);
 
 const TooltipTrigger = TooltipPrimitive.Trigger;
 

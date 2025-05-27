@@ -53,9 +53,9 @@ const PieChartView: React.FC<PieChartViewProps> = ({
     }
   };
 
-  const filteredData = pieChartData.filter(
-    (entry) => !filteredCategories.has(entry.name),
-  );
+  const filteredData = pieChartData
+    .filter((entry) => entry.value != null)
+    .filter((entry) => !filteredCategories.has(entry.name));
 
   return (
     <ResponsiveContainer width="100%" height={outerRadius * 2.5}>

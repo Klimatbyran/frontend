@@ -892,7 +892,8 @@
       "16": {
         "name": "Other",
         "description": "Reported emissions not tied to one of the scope 3 categories."
-      }
+      },
+      "statedTotal": "Stated Total"
     },
     "card": {
       "noData": "No Data",
@@ -1151,6 +1152,12 @@
       "description": "You have unsaved changes. Are you sure you want to leave?",
       "cancel": "Cancel",
       "discard": "Discard Changes"
+    },
+    "authExpired": {
+      "title": "Session expired",
+      "message": "Your session has expired. Please log in again to continue editing.",
+      "cancel": "Cancel",
+      "login": "Log in"
     }
   },
   "authCallbackPage": {

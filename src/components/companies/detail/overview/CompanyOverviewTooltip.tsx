@@ -23,7 +23,7 @@ export function CompanyOverviewTooltip({
           <Info className="w-4 h-4 mb-2" />
         </TooltipTrigger>
         <TooltipContent className="max-w-80">
-          {yearOverYearChange !== null ? (
+          {yearOverYearChange != null ? (
             yearOverYearChange <= -80 || yearOverYearChange >= 80 ? (
               <>
                 <p>{t("companies.card.emissionsChangeRateInfo")}</p>
