@@ -71,30 +71,32 @@ export function CompanyEditHeader({
               styles={{
                 control: (baseStyles, _state) => ({
                   ...baseStyles,
-                  backgroundColor: "#2E2E2E",
+                  backgroundColor: "var(--black-2)",
                   border: "none",
                 }),
                 menu: (baseStyles, _state) => ({
                   ...baseStyles,
-                  backgroundColor: "#2E2E2E",
+                  backgroundColor: "var(--black-2)",
                   border: "none",
                 }),
                 option: (baseStyles, { isFocused }) => ({
                   ...baseStyles,
-                  backgroundColor: isFocused ? "#3A3A3A" : "#2E2E2E",
+                  backgroundColor: isFocused
+                    ? "var(--black-1)"
+                    : "var(--black-2)",
                 }),
                 multiValueLabel: (baseStyles) => ({
                   ...baseStyles,
-                  backgroundColor: "#878787",
+                  backgroundColor: "var(--grey)",
                   color: "white",
                 }),
                 multiValue: (baseStyles) => ({
                   ...baseStyles,
-                  backgroundColor: "none",
+                  backgroundColor: "var(--black-2)",
                 }),
                 multiValueRemove: (baseStyles) => ({
                   ...baseStyles,
-                  backgroundColor: "#878787",
+                  backgroundColor: "var(--grey)",
                 }),
               }}
             ></Select>
