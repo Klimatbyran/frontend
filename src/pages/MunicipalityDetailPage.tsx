@@ -211,46 +211,6 @@ export function MunicipalityDetailPage() {
           sectorEmissions={sectorEmissions}
         />
 
-        {sectorEmissions?.sectors && sectorEmissions.sectors[2023] && (
-          <div className={cn("bg-black-2 rounded-level-1 py-8 md:py-16")}>
-            <div className="px-8 md:px-16">
-              <Text className="text-2xl md:text-4xl">
-                {t("municipalityDetailPage.sectorEmissions")}
-              </Text>
-              <Text className="text-grey">
-                {t("municipalityDetailPage.sectorEmissionsYear", {
-                  year: 2023,
-                })}
-              </Text>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
-                <MunicipalitySectorPieChart
-                  sectorEmissions={sectorEmissions}
-                  year={2023}
-                  filteredSectors={filteredSectors}
-                  onFilteredSectorsChange={setFilteredSectors}
-                />
-                {Object.keys(sectorEmissions.sectors[2023]).length > 0 && (
-                  <MunicipalitySectorLegend
-                    data={Object.entries(sectorEmissions.sectors[2023]).map(
-                      ([sector, value]) => ({
-                        name: sector,
-                        value,
-                        color: "",
-                      }),
-                    )}
-                    total={Object.values(sectorEmissions.sectors[2023]).reduce(
-                      (sum, value) => sum + value,
-                      0,
-                    )}
-                    filteredSectors={filteredSectors}
-                    onFilteredSectorsChange={setFilteredSectors}
-                  />
-                )}
-              </div>
-            </div>
-          </div>
-        )}
-
         {sectorEmissions?.sectors && availableYears.length > 0 && (
           <div className={cn("bg-black-2 rounded-level-1 py-8 md:py-16")}>
             <div className="px-8 md:px-16">
