@@ -153,9 +153,9 @@ export function CompanyOverview({
         </div>
       </div>
 
-      <div className="flex flex-col mb-8 gap-8 md:flex-row md:gap-12 md:items-start md:mb-12">
+      <div className="flex flex-col mb-6 gap-4 md:flex-row md:gap-12 md:items-start md:mb-12">
         <div className="flex-1">
-          <Text variant="body" className="mb-2 lg:text-lg md:text-base text-sm">
+          <Text variant="body" className="mb-1 md:mb-2 lg:text-lg md:text-base text-sm">
             {t("companies.overview.totalEmissions")} {periodYear}
           </Text>
           <div className="flex items-baseline gap-4">
@@ -192,7 +192,7 @@ export function CompanyOverview({
 
         <div className="flex-1">
           <div className="flex items-center gap-2">
-            <Text className="mb-2 lg:text-lg md:text-base sm:text-sm">
+            <Text className="mb-1 md:mb-2 lg:text-lg md:text-base sm:text-sm">
               {t("companies.overview.changeSinceLastYear")}
             </Text>
             <CompanyOverviewTooltip yearOverYearChange={yearOverYearChange} />
@@ -227,7 +227,7 @@ export function CompanyOverview({
         formattedEmployeeCount={formattedEmployeeCount}
         turnoverAIGenerated={turnoverAIGenerated}
         employeesAIGenerated={employeesAIGenerated}
-        className="mt-4 md:mt-0"
+        className="mt-3 md:mt-0"
       />
     </div>
   );
