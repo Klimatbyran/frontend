@@ -3,7 +3,6 @@ import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
 import { useMunicipalityDetails } from "@/hooks/useMunicipalityDetails";
 import { transformEmissionsData } from "@/types/municipality";
-import { MunicipalityEmissionsGraph } from "@/components/municipalities/MunicipalityEmissionsGraph";
 import { MunicipalitySection } from "@/components/municipalities/MunicipalitySection";
 import { MunicipalityStatCard } from "@/components/municipalities/MunicipalityStatCard";
 import { MunicipalityLinkCard } from "@/components/municipalities/MunicipalityLinkCard";
@@ -20,6 +19,8 @@ import { useLanguage } from "@/components/LanguageProvider";
 import MunicipalitySectorPieChart from "@/components/municipalities/MunicipalitySectorPieChart";
 import MunicipalitySectorLegend from "@/components/municipalities/MunicipalitySectorLegend";
 import { useMunicipalitySectorEmissions } from "@/hooks/useMunicipalitySectorEmissions";
+import { MunicipalityEmissions } from "@/components/municipalities/MunicipalityEmissions";
+import { YearSelector } from "@/components/layout/YearSelector";
 
 export function MunicipalityDetailPage() {
   const { t } = useTranslation();
@@ -32,6 +33,7 @@ export function MunicipalityDetailPage() {
   const [filteredSectors, setFilteredSectors] = useState<Set<string>>(
     new Set(),
   );
+  const [selectedYear, setSelectedYear] = useState<string>("2023");
 
   if (loading) return <Text>{t("municipalityDetailPage.loading")}</Text>;
   if (error) return <Text>{t("municipalityDetailPage.error")}</Text>;
@@ -53,6 +55,23 @@ export function MunicipalityDetailPage() {
   const lastYearEmissionsTon = lastYearEmissions
     ? formatEmissionsAbsolute(lastYearEmissions.value, currentLanguage)
     : "N/A";
+
+  // Get available years for the sector emissions
+  const availableYears = sectorEmissions?.sectors
+    ? Object.keys(sectorEmissions.sectors)
+        .map(Number)
+        .filter(
+          (year) =>
+            !isNaN(year) &&
+            Object.keys(sectorEmissions.sectors[year] || {}).length > 0,
+        )
+        .sort((a, b) => b - a)
+    : [];
+
+  // Use the first available year as default if selectedYear is not in availableYears
+  const currentYear = availableYears.includes(parseInt(selectedYear))
+    ? parseInt(selectedYear)
+    : availableYears[0] || 2023;
 
   // Prepare SEO data
   const canonicalUrl = `https://klimatkollen.se/municipalities/${id}`;
@@ -186,25 +205,11 @@ export function MunicipalityDetailPage() {
           </div>
         </div>
 
-        <div className={cn("bg-black-2 rounded-level-1 py-8 md:py-16")}>
-          <div className="px-8 md:px-16">
-            <Text className="text-2xl md:text-4xl">
-              {t("municipalityDetailPage.emissionsDevelopment")}
-            </Text>
-            <Text className="text-grey">
-              {t("municipalityDetailPage.inTons")}
-            </Text>
-            {!municipality.neededEmissionChangePercent && (
-              <p className="my-4">{t("municipalityDetailPage.noParisPath")}</p>
-            )}
-          </div>
-          <div className="mt-8 mr-8">
-            <MunicipalityEmissionsGraph
-              projectedData={emissionsData}
-              sectorEmissions={sectorEmissions || undefined}
-            />
-          </div>
-        </div>
+        <MunicipalityEmissions
+          municipality={municipality}
+          emissionsData={emissionsData}
+          sectorEmissions={sectorEmissions}
+        />
 
         {sectorEmissions?.sectors && sectorEmissions.sectors[2023] && (
           <div className={cn("bg-black-2 rounded-level-1 py-8 md:py-16")}>
@@ -237,6 +242,57 @@ export function MunicipalityDetailPage() {
                       (sum, value) => sum + value,
                       0,
                     )}
+                    filteredSectors={filteredSectors}
+                    onFilteredSectorsChange={setFilteredSectors}
+                  />
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {sectorEmissions?.sectors && availableYears.length > 0 && (
+          <div className={cn("bg-black-2 rounded-level-1 py-8 md:py-16")}>
+            <div className="px-8 md:px-16">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+                <Text className="text-2xl md:text-4xl">
+                  {t("municipalityDetailPage.sectorEmissions")}
+                </Text>
+
+                <YearSelector
+                  selectedYear={selectedYear}
+                  onYearChange={setSelectedYear}
+                  availableYears={availableYears}
+                  translateNamespace="municipalityDetailPage"
+                />
+              </div>
+
+              <Text className="text-grey">
+                {t("municipalityDetailPage.sectorEmissionsYear", {
+                  year: currentYear,
+                })}
+              </Text>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
+                <MunicipalitySectorPieChart
+                  sectorEmissions={sectorEmissions}
+                  year={currentYear}
+                  filteredSectors={filteredSectors}
+                  onFilteredSectorsChange={setFilteredSectors}
+                />
+                {Object.keys(sectorEmissions.sectors[currentYear] || {})
+                  .length > 0 && (
+                  <MunicipalitySectorLegend
+                    data={Object.entries(
+                      sectorEmissions.sectors[currentYear] || {},
+                    ).map(([sector, value]) => ({
+                      name: sector,
+                      value,
+                      color: "",
+                    }))}
+                    total={Object.values(
+                      sectorEmissions.sectors[currentYear] || {},
+                    ).reduce((sum, value) => sum + value, 0)}
                     filteredSectors={filteredSectors}
                     onFilteredSectorsChange={setFilteredSectors}
                   />

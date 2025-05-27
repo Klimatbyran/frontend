@@ -49,11 +49,13 @@ const Scope3PieLegend: React.FC<PieLegendProps> = ({
     }
   };
 
-  const sortedPayload = [...payload].sort((a, b) => {
-    const aValue = a.value ?? 0;
-    const bValue = b.value ?? 0;
-    return bValue - aValue;
-  });
+  const sortedPayload = [...payload]
+    .filter((entry) => entry.value != null)
+    .sort((a, b) => {
+      const aValue = a.value ?? 0;
+      const bValue = b.value ?? 0;
+      return bValue - aValue;
+    });
 
   return (
     <TooltipProvider>

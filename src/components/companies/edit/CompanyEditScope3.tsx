@@ -10,7 +10,6 @@ interface CompanyEditScope3Props {
   formData: Map<string, string>;
 }
 
-// Add a type for category with optional metadata
 interface Scope3CategoryWithMetadata {
   category: number;
   total: number;
@@ -26,11 +25,7 @@ export function CompanyEditScope3({
   const { categoryMetadata } = useCategoryMetadata();
   const { t } = useTranslation();
 
-  if (
-    periods.length <= 0 ||
-    periods[0].emissions?.scope3 === undefined ||
-    periods[0].emissions?.scope3?.categories === undefined
-  ) {
+  if (periods.length <= 0) {
     return <></>;
   }
 
@@ -41,7 +36,9 @@ export function CompanyEditScope3({
     const category = categories.find(
       (category) => category.category - 1 === index,
     );
-    return category !== undefined ? category.total : "";
+    if (!category || category.total === undefined || category.total === null)
+      return "";
+    return category.total;
   };
 
   const getCategoryVerified = (
@@ -85,7 +82,13 @@ export function CompanyEditScope3({
               !!period.emissions?.scope3?.statedTotalEmissions?.metadata
                 ?.verifiedBy
             }
-            value={period.emissions?.scope3?.statedTotalEmissions?.total ?? ""}
+            value={
+              period.emissions?.scope3?.statedTotalEmissions?.total ===
+                undefined ||
+              period.emissions?.scope3?.statedTotalEmissions?.total === null
+                ? ""
+                : period.emissions?.scope3?.statedTotalEmissions?.total
+            }
             onInputChange={onInputChange}
             formData={formData}
           />

@@ -703,6 +703,10 @@
     "hitNetZero": "Når nettonoll",
     "never": "Aldrig",
     "emissionsDevelopment": "Utsläppsutveckling",
+    "graph": {
+      "overview": "Översikt",
+      "sectors": "Utsläppskällor"
+    },
     "noParisPath": "Kommunens koldioxidbudget är förbrukad, vilket innebär att ingen linje för Parisavtalet visas i grafen nedan",
     "inTons": "I ton CO₂",
     "futureEmissions": "Framtida utsläpp",
@@ -1030,7 +1034,9 @@
       "unit": "tons CO₂e",
       "total": "Totalt",
       "year": "År",
-      "estimatedValue": "Utsläppsvärdet är uppskattat"
+      "estimatedValue": "Utsläppsvärdet är uppskattat",
+      "overview": "Översikt",
+      "sectors": "Utsläppskällor"
     },
     "map": {
       "legend": {

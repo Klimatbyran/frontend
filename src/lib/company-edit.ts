@@ -23,7 +23,7 @@ export function mapCompanyEditFormToRequestBody(
       periodUpdate.endDate = period.endDate;
     }
     periodUpdate.emissions = {};
-    
+
     // --- Scope 1 logic ---
     const scope1ValueKey = "scope-1-" + period.id;
     const scope1CheckboxKey = scope1ValueKey + "-checkbox";
@@ -35,8 +35,9 @@ export function mapCompanyEditFormToRequestBody(
       : undefined;
 
     if (scope1ValueChanged) {
+      const val = formData.get(scope1ValueKey);
       periodUpdate.emissions.scope1 = {
-        total: parseInt(formData.get(scope1ValueKey) || "0") ?? 0,
+        total: val === "" ? null : parseInt(val!),
         verified: scope1NewVerified ?? false,
       };
     } else if (
@@ -49,7 +50,6 @@ export function mapCompanyEditFormToRequestBody(
         verified: scope1NewVerified,
       };
     }
-
 
     // --- Scope 2 logic ---
     if (
@@ -64,16 +64,17 @@ export function mapCompanyEditFormToRequestBody(
     }
 
     if (formData.has("scope-2-mb-" + period.id)) {
-      periodUpdate.emissions.scope2.mb =
-        parseInt(formData.get("scope-2-mb-" + period.id) || "0") ?? 0;
+      const val = formData.get("scope-2-mb-" + period.id);
+      periodUpdate.emissions.scope2.mb = val === "" ? null : parseInt(val!);
     }
     if (formData.has("scope-2-lb-" + period.id)) {
-      periodUpdate.emissions.scope2.lb =
-        parseInt(formData.get("scope-2-lb-" + period.id) || "0") ?? 0;
+      const val = formData.get("scope-2-lb-" + period.id);
+      periodUpdate.emissions.scope2.lb = val === "" ? null : parseInt(val!);
     }
     if (formData.has("scope-2-unknown-" + period.id)) {
+      const val = formData.get("scope-2-unknown-" + period.id);
       periodUpdate.emissions.scope2.unknown =
-        parseInt(formData.get("scope-2-unknown-" + period.id) || "0") ?? 0;
+        val === "" ? null : parseInt(val!);
     }
 
     if (
@@ -86,7 +87,6 @@ export function mapCompanyEditFormToRequestBody(
         formData.get("scope-2-lb-" + period.id + "-checkbox") === "true" ||
         formData.get("scope-2-mb-" + period.id + "-checkbox") === "true";
     }
-
 
     // --- Scope 3 logic ---
     const changedCategoryIds = new Set<string>();
@@ -134,7 +134,7 @@ export function mapCompanyEditFormToRequestBody(
         else if (valueChanged) {
           const obj: any = {
             category: parseInt(categoryId),
-            total: parseInt(newValue || "0"),
+            total: newValue === "" ? null : parseInt(newValue!),
           };
           if (verifiedChanged) obj.verified = newVerified;
           periodUpdate.emissions.scope3.categories.push(obj);
@@ -156,8 +156,9 @@ export function mapCompanyEditFormToRequestBody(
       if (periodUpdate.emissions.scope3 === undefined) {
         periodUpdate.emissions.scope3 = {};
       }
+      const val = formData.get(statedTotalValueKey);
       periodUpdate.emissions.scope3.statedTotalEmissions = {
-        total: parseInt(formData.get(statedTotalValueKey) || "0") ?? 0,
+        total: val === "" ? null : parseInt(val!),
         verified: statedTotalNewVerified ?? false,
       };
     } else if (

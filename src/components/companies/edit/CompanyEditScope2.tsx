@@ -33,7 +33,12 @@ export function CompanyEditScope2({
             type="number"
             key={`scope-2-mb-${period.id}`}
             displayAddition="topBracket"
-            value={period.emissions?.scope2?.mb ?? ""}
+            value={
+              period.emissions?.scope2?.mb === undefined ||
+              period.emissions?.scope2?.mb === null
+                ? ""
+                : period.emissions?.scope2?.mb
+            }
             onInputChange={onInputChange}
             formData={formData}
           />
@@ -51,7 +56,12 @@ export function CompanyEditScope2({
             displayAddition="verification"
             verified={!!period.emissions?.scope2?.metadata?.verifiedBy}
             originalVerified={!!period.emissions?.scope2?.metadata?.verifiedBy}
-            value={period.emissions?.scope2?.lb ?? ""}
+            value={
+              period.emissions?.scope2?.lb === undefined ||
+              period.emissions?.scope2?.lb === null
+                ? ""
+                : period.emissions?.scope2?.lb
+            }
             onInputChange={onInputChange}
             formData={formData}
           />
@@ -67,7 +77,12 @@ export function CompanyEditScope2({
             type="number"
             key={`scope-2-unknown-${period.id}`}
             displayAddition="bottomBracket"
-            value={period.emissions?.scope2?.unknown ?? ""}
+            value={
+              period.emissions?.scope2?.unknown === undefined ||
+              period.emissions?.scope2?.unknown === null
+                ? ""
+                : period.emissions?.scope2?.unknown
+            }
             onInputChange={onInputChange}
             formData={formData}
           />

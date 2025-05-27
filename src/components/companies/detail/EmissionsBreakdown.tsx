@@ -188,7 +188,7 @@ export function EmissionsBreakdown({
                             </Tooltip>
                           </TooltipProvider>
                         </div>
-                        {reportedCategory ? (
+                        {reportedCategory && reportedCategory.total != null ? (
                           <Text variant="body" className="text-blue-2">
                             {localizeUnit(
                               reportedCategory.total,
@@ -251,7 +251,7 @@ export function EmissionsBreakdown({
                             </Tooltip>
                           </TooltipProvider>
                         </div>
-                        {reportedCategory ? (
+                        {reportedCategory && reportedCategory.total != null ? (
                           <Text variant="body" className="text-blue-2">
                             {localizeUnit(
                               reportedCategory.total,

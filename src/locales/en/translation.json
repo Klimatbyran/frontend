@@ -1031,7 +1031,9 @@
       "unit": "tons CO₂e",
       "total": "Total",
       "year": "Year",
-      "estimatedValue": "Emissions value is estimated"
+      "estimatedValue": "Emissions value is estimated",
+      "overview": "Overview",
+      "sectors": "Emissions sources"
     },
     "map": {
       "legend": {

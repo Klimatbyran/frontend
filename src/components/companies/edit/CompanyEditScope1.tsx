@@ -21,7 +21,12 @@ export function CompanyEditScope1({
           type="number"
           key={`scope-1-${period.id}`}
           displayAddition="verification"
-          value={period.emissions?.scope1?.total ?? ""}
+          value={
+            period.emissions?.scope1?.total === undefined ||
+            period.emissions?.scope1?.total === null
+              ? ""
+              : period.emissions?.scope1?.total
+          }
           verified={!!period.emissions?.scope1?.metadata?.verifiedBy}
           originalVerified={!!period.emissions?.scope1?.metadata?.verifiedBy}
           onInputChange={onInputChange}

@@ -1,13 +1,7 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EmissionsBreakdown } from "./EmissionsBreakdown";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
 import { Text } from "@/components/ui/text";
 import { useTranslation } from "react-i18next";
 import PieChartView from "../CompanyPieChartView";
@@ -15,6 +9,7 @@ import { useResponsiveChartSize } from "@/hooks/useResponsiveChartSize";
 import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import Scope3PieLegend from "./Scope3PieLegend";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
+import { YearSelector } from "@/components/layout/YearSelector";
 
 interface Scope3DataProps {
   emissions: {
@@ -37,7 +32,7 @@ interface Scope3DataProps {
     year: number;
     total: number;
     unit: string;
-    categories: Array<{ 
+    categories: Array<{
       category: number;
       total: number;
       unit: string;
@@ -109,23 +104,13 @@ export function Scope3Data({
           </TabsList>
 
           {availableYears.length > 0 && (
-            <Select value={selectedYear} onValueChange={setSelectedYear}>
-              <SelectTrigger className="w-full sm:w-[180px] bg-black-1">
-                <SelectValue
-                  placeholder={t("companies.scope3Data.selectYear")}
-                />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="latest">
-                  {t("companies.scope3Data.latestYear")}
-                </SelectItem>
-                {availableYears.map((year) => (
-                  <SelectItem key={year} value={year.toString()}>
-                    {year}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <YearSelector
+              selectedYear={selectedYear}
+              onYearChange={setSelectedYear}
+              availableYears={availableYears}
+              translateNamespace="companies.scope3Data"
+              includeLatestOption={true}
+            />
           )}
         </div>
 

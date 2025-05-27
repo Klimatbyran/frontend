@@ -25,6 +25,7 @@ import { PrivacyPage } from "./pages/PrivacyPage";
 import ProductsPage from "./pages/ProductsPage";
 import { UnauthorizedErrorPage } from "./pages/error/UnauthorizedErrorPage";
 import { SupportPage } from "./pages/SupportPage";
+import { ValidationDashboard } from "./pages/ValidationDashboard";
 
 export function AppRoutes() {
   const { currentLanguage } = useLanguage();
@@ -61,7 +62,12 @@ export function AppRoutes() {
           element={<CompanyEditPage />}
         />
       </Route>
-
+      <Route element={<ProtectedRoute />}>
+        <Route
+          path={`${basePath}/validation-dashboard`}
+          element={<ValidationDashboard />}
+        />
+      </Route>
       {/* Municipalities routes */}
       <Route
         path={`${basePath}/municipalities`}

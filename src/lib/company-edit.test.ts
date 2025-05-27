@@ -210,4 +210,149 @@ describe("mapCompanyEditFormToRequestBody", () => {
       verified: true,
     });
   });
+
+  it("should send null for scope1 total if cleared", () => {
+    const formData = new Map([["scope-1-1", ""]]);
+    const result = mapCompanyEditFormToRequestBody([basePeriod], formData);
+    expect(result.reportingPeriods[0].emissions.scope1).toEqual({
+      total: null,
+      verified: false,
+    });
+  });
+
+  it("should send null for scope2 mb if cleared", () => {
+    const formData = new Map([["scope-2-mb-1", ""]]);
+    const result = mapCompanyEditFormToRequestBody([basePeriod], formData);
+    expect(result.reportingPeriods[0].emissions.scope2.mb).toBeNull();
+  });
+
+  it("should send null for scope2 lb if cleared", () => {
+    const formData = new Map([["scope-2-lb-1", ""]]);
+    const result = mapCompanyEditFormToRequestBody([basePeriod], formData);
+    expect(result.reportingPeriods[0].emissions.scope2.lb).toBeNull();
+  });
+
+  it("should send null for scope2 unknown if cleared", () => {
+    const formData = new Map([["scope-2-unknown-1", ""]]);
+    const result = mapCompanyEditFormToRequestBody([basePeriod], formData);
+    expect(result.reportingPeriods[0].emissions.scope2.unknown).toBeNull();
+  });
+
+  it("should send null for scope3 category total if cleared", () => {
+    const formData = new Map([["scope-3-1-1", ""]]);
+    const result = mapCompanyEditFormToRequestBody([basePeriod], formData);
+    expect(result.reportingPeriods[0].emissions.scope3.categories[0]).toEqual({
+      category: 1,
+      total: null,
+    });
+  });
+
+  it("should send null for statedTotalEmissions total if cleared", () => {
+    const periodWithStatedTotal: ReportingPeriod = {
+      ...basePeriod,
+      emissions: {
+        ...basePeriod.emissions!,
+        scope3: {
+          ...basePeriod.emissions!.scope3!,
+          statedTotalEmissions: {
+            total: 123,
+            unit: "tCO2e",
+            metadata: { verifiedBy: null },
+          },
+        },
+      },
+    };
+    const formData = new Map([["scope-3-statedTotalEmissions-1", ""]]);
+    const result = mapCompanyEditFormToRequestBody(
+      [periodWithStatedTotal],
+      formData,
+    );
+    expect(
+      result.reportingPeriods[0].emissions.scope3.statedTotalEmissions.total,
+    ).toBeNull();
+  });
+
+  it("should send null for all scope2 fields if all are cleared", () => {
+    const formData = new Map([
+      ["scope-2-mb-1", ""],
+      ["scope-2-lb-1", ""],
+      ["scope-2-unknown-1", ""],
+    ]);
+    const result = mapCompanyEditFormToRequestBody([basePeriod], formData);
+    expect(result.reportingPeriods[0].emissions.scope2.mb).toBeNull();
+    expect(result.reportingPeriods[0].emissions.scope2.lb).toBeNull();
+    expect(result.reportingPeriods[0].emissions.scope2.unknown).toBeNull();
+  });
+
+  it("should not send anything for scope3 category if only verified is checked and original value is undefined", () => {
+    const periodWithNullCat: ReportingPeriod = {
+      ...basePeriod,
+      emissions: {
+        ...basePeriod.emissions!,
+        scope3: {
+          ...basePeriod.emissions!.scope3!,
+          categories: [
+            ...basePeriod.emissions!.scope3!.categories!,
+            { category: 3, total: undefined as any, unit: "tCO2e" },
+          ],
+        },
+      },
+    };
+    const formData = new Map([["scope-3-1-3-checkbox", "true"]]);
+    const result = mapCompanyEditFormToRequestBody(
+      [periodWithNullCat],
+      formData,
+    );
+    expect(
+      (result.reportingPeriods[0].emissions.scope3.categories || []).find(
+        (c: any) => c.category === 3,
+      ),
+    ).toBeUndefined();
+  });
+
+  it("should send 0 for scope3 category if value is set to '0'", () => {
+    const formData = new Map([["scope-3-1-1", "0"]]);
+    const result = mapCompanyEditFormToRequestBody([basePeriod], formData);
+    expect(result.reportingPeriods[0].emissions.scope3.categories[0]).toEqual({
+      category: 1,
+      total: 0,
+    });
+  });
+
+  it("should send 0 for scope1 total if value is set to '0'", () => {
+    const formData = new Map([["scope-1-1", "0"]]);
+    const result = mapCompanyEditFormToRequestBody([basePeriod], formData);
+    expect(result.reportingPeriods[0].emissions.scope1.total).toBe(0);
+  });
+
+  it("should send 0 for statedTotalEmissions total if value is set to '0'", () => {
+    const periodWithStatedTotal: ReportingPeriod = {
+      ...basePeriod,
+      emissions: {
+        ...basePeriod.emissions!,
+        scope3: {
+          ...basePeriod.emissions!.scope3!,
+          statedTotalEmissions: {
+            total: 123,
+            unit: "tCO2e",
+            metadata: { verifiedBy: null },
+          },
+        },
+      },
+    };
+    const formData = new Map([["scope-3-statedTotalEmissions-1", "0"]]);
+    const result = mapCompanyEditFormToRequestBody(
+      [periodWithStatedTotal],
+      formData,
+    );
+    expect(
+      result.reportingPeriods[0].emissions.scope3.statedTotalEmissions.total,
+    ).toBe(0);
+  });
+
+  it("should send 0 for scope2 mb if value is set to '0'", () => {
+    const formData = new Map([["scope-2-mb-1", "0"]]);
+    const result = mapCompanyEditFormToRequestBody([basePeriod], formData);
+    expect(result.reportingPeriods[0].emissions.scope2.mb).toBe(0);
+  });
 });
