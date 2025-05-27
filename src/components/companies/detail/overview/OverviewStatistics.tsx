@@ -11,6 +11,7 @@ interface OverviewStatisticProps {
   formattedEmployeeCount: string;
   turnoverAIGenerated: boolean;
   employeesAIGenerated: boolean;
+  className?: string;
 }
 
 export function OverviewStatistics({
@@ -19,9 +20,10 @@ export function OverviewStatistics({
   formattedEmployeeCount,
   turnoverAIGenerated,
   employeesAIGenerated,
+  className,
 }: OverviewStatisticProps) {
   return (
-    <div className="@container">
+    <div className={className ? `@container ${className}` : "@container"}>
       <div className="mt-8 @md:mt-12 bg-black-1 rounded-level-2 p-6">
         <div className="grid grid-cols-1 @md:grid-cols-3 gap-4 @md:gap-8">
           <div>
