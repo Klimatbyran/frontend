@@ -7,7 +7,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Text } from "@/components/ui/text";
-import "@/components/company/CompanyDetails.css";
 import type { CompanyDetails, ReportingPeriod } from "@/types/company";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contexts/AuthContext";
@@ -154,8 +153,8 @@ export function CompanyOverview({
         </div>
       </div>
 
-      <div className="emissions-data-container">
-        <div>
+      <div className="flex flex-col mb-8 gap-8 md:flex-row md:gap-12 md:items-start md:mb-12">
+        <div className="flex-1">
           <Text variant="body" className="mb-2 lg:text-lg md:text-base text-sm">
             {t("companies.overview.totalEmissions")} {periodYear}
           </Text>
@@ -191,7 +190,7 @@ export function CompanyOverview({
           </div>
         </div>
 
-        <div>
+        <div className="flex-1">
           <div className="flex items-center gap-2">
             <Text className="mb-2 lg:text-lg md:text-base sm:text-sm">
               {t("companies.overview.changeSinceLastYear")}
