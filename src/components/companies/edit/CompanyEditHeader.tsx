@@ -36,7 +36,7 @@ export function CompanyEditHeader({
 
   const selected = (
     newValue: MultiValue<{ value: string; label: string }>,
-    actionMeta: ActionMeta<{ value: string; label: string }>,
+    _actionMeta: ActionMeta<{ value: string; label: string }>,
   ) => {
     onYearsSelect(newValue.map((option) => option.value));
   };
