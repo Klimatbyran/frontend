@@ -9,8 +9,8 @@ const ProtectedRoute = () => {
 
   const handleCancel = () => {
     // Remove '/edit' from the current path
-    const newPath = location.pathname.replace(/\/edit$/, "");
-    navigate(newPath, { replace: true });
+    // const newPath = location.pathname.replace(/\/edit$/, "");
+    // navigate(newPath, { replace: true });
   };
 
   if (!token) {
