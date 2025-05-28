@@ -16,6 +16,7 @@ interface SectorData {
   value: number;
   color: string;
   translatedName: string;
+  total?: number;
 }
 
 const MunicipalitySectorPieChart: React.FC<MunicipalitySectorPieChartProps> = ({
@@ -43,6 +44,13 @@ const MunicipalitySectorPieChart: React.FC<MunicipalitySectorPieChartProps> = ({
     .filter((item) => !filteredSectors.has(item.name))
     .sort((a, b) => (b.value as number) - (a.value as number));
 
+  const totalEmissions = pieData.reduce((sum, item) => sum + (item.value as number), 0);
+  const pieDataWithTotal = pieData.map(item => ({
+    ...item,
+    total: totalEmissions // Add total to each pie slice
+  }));
+
+
   const handleSectorClick = (data: SectorData) => {
     if (onFilteredSectorsChange) {
       const sectorName = data.name;
@@ -61,7 +69,7 @@ const MunicipalitySectorPieChart: React.FC<MunicipalitySectorPieChartProps> = ({
       <ResponsiveContainer width="100%" height={size.outerRadius * 2.5}>
         <PieChart>
           <Pie
-            data={pieData}
+            data={pieDataWithTotal}
             dataKey="value"
             nameKey="translatedName"
             cx="50%"
@@ -72,7 +80,7 @@ const MunicipalitySectorPieChart: React.FC<MunicipalitySectorPieChartProps> = ({
             paddingAngle={2}
             onClick={handleSectorClick}
           >
-            {pieData.map((entry) => (
+            {pieDataWithTotal.map((entry) => (
               <Cell
                 key={entry.name}
                 fill={entry.color}

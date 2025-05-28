@@ -1034,7 +1034,8 @@
       "year": "Year",
       "estimatedValue": "Emissions value is estimated",
       "overview": "Overview",
-      "sectors": "Emissions sources"
+      "sectors": "Emissions sources",
+      "ofTotal": "of total"
     },
     "map": {
       "legend": {
