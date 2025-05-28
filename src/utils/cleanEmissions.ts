@@ -17,6 +17,11 @@ export function cleanEmissions(
     cleaned.scope1And2 = null;
   }
 
+  // Normalize scope2
+  if (!cleaned.scope2 || cleaned.scope2.calculatedTotalEmissions == null) {
+    cleaned.scope2 = null;
+  }
+
   // Normalize biogenicEmissions
   if (!cleaned.biogenicEmissions || cleaned.biogenicEmissions.total == null) {
     cleaned.biogenicEmissions = null;

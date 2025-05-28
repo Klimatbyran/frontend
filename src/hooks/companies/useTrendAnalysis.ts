@@ -4,14 +4,10 @@ import { TrendingDown, TrendingUp, MinusCircle } from "lucide-react";
 import { TrendCardInfo } from "@/types/company";
 import { useTranslation } from "react-i18next";
 
-const getTotalEmissions = (emissions: any) => {
-  if (!emissions) return 0;
-  return (
-    (emissions.scope1?.total || 0) +
-    (emissions.scope2?.calculatedTotalEmissions || 0) +
-    (emissions.scope3?.calculatedTotalEmissions || 0)
-  );
-};
+const getTotalEmissions = (emissions: any) =>
+  (emissions?.scope1?.total || 0) +
+  (emissions?.scope2?.calculatedTotalEmissions || 0) +
+  (emissions?.scope3?.calculatedTotalEmissions || 0);
 
 export const useCategoryInfo = (): Record<string, TrendCardInfo> => {
   const { t } = useTranslation();
@@ -67,8 +63,14 @@ export const useTrendAnalysis = (
         return;
       }
 
+      // Use company's base year if available, otherwise fallback to first period's year
+      const baseYear =
+        company.baseYear?.year?.toString() ??
+        periods[0].startDate.substring(0, 4);
+      // Find the period matching the base year, or fallback to the first period
+      const baselinePeriod =
+        periods.find((p) => p.startDate.startsWith(baseYear)) || periods[0];
       const latestPeriod = periods[periods.length - 1];
-      const baselinePeriod = periods[0];
 
       const latestEmissions = getTotalEmissions(latestPeriod.emissions);
       const baselineEmissions = getTotalEmissions(baselinePeriod.emissions);
@@ -87,14 +89,14 @@ export const useTrendAnalysis = (
         trends.decreasing.push({
           company,
           changePercent,
-          baseYear: baselinePeriod.startDate.substring(0, 4),
+          baseYear: baseYear,
           currentYear: latestPeriod.startDate.substring(0, 4),
         });
       } else {
         trends.increasing.push({
           company,
           changePercent,
-          baseYear: baselinePeriod.startDate.substring(0, 4),
+          baseYear: baseYear,
           currentYear: latestPeriod.startDate.substring(0, 4),
         });
       }

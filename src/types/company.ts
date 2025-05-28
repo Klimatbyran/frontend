@@ -18,6 +18,7 @@ export interface BaseCompany {
     };
   } | null;
   reportingPeriods: ReportingPeriod[];
+  baseYear?: { id: string; year: number; metadata: any } | null;
 }
 
 // Base company type from API
