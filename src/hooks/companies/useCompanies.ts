@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { getCompanies } from "@/lib/api";
 import type { paths } from "@/lib/api-types";
+import { cleanEmissions } from "@/utils/cleanEmissions";
 
 // Get company type from API types
 type Company = NonNullable<
@@ -60,13 +61,7 @@ export function useCompanies() {
           reportingPeriods: company.reportingPeriods.map((period) => ({
             ...period,
             id: period.startDate,
-            emissions: period.emissions
-              ? {
-                  ...period.emissions,
-                  id: `${period.startDate}-emissions`,
-                  biogenicEmissions: null,
-                }
-              : null,
+            emissions: cleanEmissions(period.emissions),
           })),
           metrics: {
             emissionsReduction,
