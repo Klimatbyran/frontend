@@ -2,23 +2,28 @@ export interface CompanyEditRowProps {
   name: string;
   noHover?: boolean;
   headerName?: boolean;
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
-export function CompanyEditRow({name, noHover, headerName, children}: CompanyEditRowProps) {
+export function CompanyEditRow({
+  name,
+  noHover,
+  headerName,
+  children,
+}: CompanyEditRowProps) {
   return (
     <div
       key={"row-" + name}
-      className={`flex justify-between ps-4 rounded-s-lg items-center
-    ${noHover ? "" : "hover:bg-[#1F1F1F]"}`}
+      className={`flex ps-4 rounded-s-lg items-center min-w-max
+    ${noHover ? "" : "hover:bg-black-1/50"}`}
     >
       <h2
         key={"header-" + name}
-        className={headerName ? "text-lg font-bold" : "text-md ps-2"}
+        className={`${headerName ? "text-lg font-bold" : "text-md ps-2"} flex-shrink-0 w-60`}
       >
         {name}
       </h2>
-      <div key={"fields-" + name} className="flex">
+      <div key={"fields-" + name} className="flex flex-shrink-0">
         {children}
       </div>
     </div>
