@@ -183,7 +183,7 @@ export interface paths {
                                 emissions: {
                                     calculatedTotalEmissions: number;
                                     scope1: {
-                                        total: number;
+                                        total: number | null;
                                         unit: string;
                                         metadata: {
                                             verifiedBy: {
@@ -211,7 +211,7 @@ export interface paths {
                                             } | null;
                                         };
                                         statedTotalEmissions: {
-                                            total: number;
+                                            total: number | null;
                                             unit: string;
                                             metadata: {
                                                 verifiedBy: {
@@ -221,7 +221,7 @@ export interface paths {
                                         } | null;
                                         categories: {
                                             category: number;
-                                            total: number;
+                                            total: number | null;
                                             unit: string;
                                             metadata: {
                                                 verifiedBy: {
@@ -240,7 +240,7 @@ export interface paths {
                                         };
                                     } | null;
                                     statedTotalEmissions: {
-                                        total: number;
+                                        total: number | null;
                                         unit: string;
                                         metadata: {
                                             verifiedBy: {
@@ -414,7 +414,7 @@ export interface paths {
                                     id: string;
                                     scope1: {
                                         id: string;
-                                        total: number;
+                                        total: number | null;
                                         unit: string;
                                         metadata: {
                                             id: string;
@@ -454,7 +454,7 @@ export interface paths {
                                         categories: {
                                             id: string;
                                             category: number;
-                                            total: number;
+                                            total: number | null;
                                             unit: string;
                                             metadata: {
                                                 id: string;
@@ -469,9 +469,9 @@ export interface paths {
                                                 } | null;
                                             };
                                         }[];
-                                        statedTotalEmissions: {
+                                        statedTotalEmissions?: {
                                             id: string;
-                                            total: number;
+                                            total: number | null;
                                             unit: string;
                                             metadata: {
                                                 id: string;
@@ -519,7 +519,7 @@ export interface paths {
                                     } | null;
                                     biogenicEmissions: {
                                         id: string;
-                                        total: number;
+                                        total: number | null;
                                         unit: string;
                                         metadata: {
                                             id: string;
@@ -536,7 +536,7 @@ export interface paths {
                                     } | null;
                                     statedTotalEmissions: {
                                         id: string;
-                                        total: number;
+                                        total: number | null;
                                         unit: string;
                                         metadata: {
                                             id: string;
@@ -822,7 +822,7 @@ export interface paths {
                                 emissions: {
                                     calculatedTotalEmissions: number;
                                     scope1: {
-                                        total: number;
+                                        total: number | null;
                                         unit: string;
                                         metadata: {
                                             verifiedBy: {
@@ -850,7 +850,7 @@ export interface paths {
                                             } | null;
                                         };
                                         statedTotalEmissions: {
-                                            total: number;
+                                            total: number | null;
                                             unit: string;
                                             metadata: {
                                                 verifiedBy: {
@@ -860,7 +860,7 @@ export interface paths {
                                         } | null;
                                         categories: {
                                             category: number;
-                                            total: number;
+                                            total: number | null;
                                             unit: string;
                                             metadata: {
                                                 verifiedBy: {
@@ -879,7 +879,7 @@ export interface paths {
                                         };
                                     } | null;
                                     statedTotalEmissions: {
-                                        total: number;
+                                        total: number | null;
                                         unit: string;
                                         metadata: {
                                             verifiedBy: {
@@ -1525,7 +1525,7 @@ export interface paths {
                             reportURL?: string;
                             emissions?: {
                                 scope1?: {
-                                    total: number;
+                                    total?: number | null;
                                     /**
                                      * @default tCO2e
                                      * @enum {string}
@@ -1535,11 +1535,11 @@ export interface paths {
                                 };
                                 scope2?: {
                                     /** @description Market-based scope 2 emissions */
-                                    mb?: number;
+                                    mb?: number | null;
                                     /** @description Location-based scope 2 emissions */
-                                    lb?: number;
+                                    lb?: number | null;
                                     /** @description Unspecified Scope 2 emissions */
-                                    unknown?: number;
+                                    unknown?: number | null;
                                     /**
                                      * @default tCO2e
                                      * @enum {string}
@@ -1550,7 +1550,7 @@ export interface paths {
                                 scope3?: {
                                     categories?: {
                                         category: number;
-                                        total: number;
+                                        total?: number | null;
                                         /**
                                          * @default tCO2e
                                          * @enum {string}
@@ -1559,7 +1559,7 @@ export interface paths {
                                         verified?: boolean;
                                     }[];
                                     statedTotalEmissions?: {
-                                        total: number;
+                                        total?: number | null;
                                         /**
                                          * @default tCO2e
                                          * @enum {string}
@@ -1569,7 +1569,7 @@ export interface paths {
                                     };
                                 };
                                 biogenic?: {
-                                    total: number;
+                                    total?: number | null;
                                     /**
                                      * @default tCO2e
                                      * @enum {string}
@@ -1578,7 +1578,7 @@ export interface paths {
                                     verified?: boolean;
                                 };
                                 statedTotalEmissions?: {
-                                    total: number;
+                                    total?: number | null;
                                     /**
                                      * @default tCO2e
                                      * @enum {string}
@@ -1587,7 +1587,7 @@ export interface paths {
                                     verified?: boolean;
                                 };
                                 scope1And2?: {
-                                    total: number;
+                                    total?: number | null;
                                     /**
                                      * @default tCO2e
                                      * @enum {string}
@@ -3016,6 +3016,123 @@ export interface paths {
                             code: string;
                             message?: string;
                             details?: unknown;
+                        };
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/validation/claim": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get all validation claims
+         * @description Get a list of all claimed companies for manual validation
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            [key: string]: string;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/validation/claim/{wikidataId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Claim a company
+         * @description Used to claim that a company report is being worked on
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    wikidataId: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        steal: boolean;
+                    };
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            ok: boolean;
+                        };
+                    };
+                };
+            };
+        };
+        /**
+         * Delete a claim
+         * @description Used to release a claim
+         */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    wikidataId: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            ok: boolean;
                         };
                     };
                 };

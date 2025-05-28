@@ -59,5 +59,13 @@ export function cleanEmissions(
     }
   }
 
+  // Ensure all expected subfields are null if undefined
+  cleaned.scope1 = cleaned.scope1 ?? null;
+  cleaned.scope2 = cleaned.scope2 ?? null;
+  cleaned.scope3 = cleaned.scope3 ?? null;
+  cleaned.scope1And2 = cleaned.scope1And2 ?? null;
+  cleaned.biogenicEmissions = cleaned.biogenicEmissions ?? null;
+  cleaned.statedTotalEmissions = cleaned.statedTotalEmissions ?? null;
+
   return cleaned;
 }
