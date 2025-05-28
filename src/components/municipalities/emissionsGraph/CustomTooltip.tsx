@@ -49,7 +49,7 @@ export const CustomTooltip: FC<CustomTooltipProps> = ({
                   entry.value as number,
                   currentLanguage,
                 )}{" "}
-                {t("emissionsUnit")}
+                {t("emissionsUnitCO2")}
               </span>
             </div>
           );
@@ -88,7 +88,7 @@ export const CustomTooltip: FC<CustomTooltipProps> = ({
             </span>
             <span style={{ color: entry.color }}>
               {formatEmissionsAbsolute(entry.value as number, currentLanguage)}{" "}
-              {t("emissionsUnit")}
+              {t("emissionsUnitCO2")}
             </span>
           </div>
         );

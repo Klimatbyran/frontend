@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
-import { MunicipalityEmissionsGraph } from "./MunicipalityEmissionsGraph";
+import { MunicipalityEmissionsGraph } from "./emissionsGraph/MunicipalityEmissionsGraph";
 import { Municipality, DataPoint, SectorEmissions } from "@/types/municipality";
 import { DataViewSelector } from "./DataViewSelector";
 

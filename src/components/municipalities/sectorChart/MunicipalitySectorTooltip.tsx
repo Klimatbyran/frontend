@@ -48,7 +48,7 @@ export const MunicipalitySectorTooltip: React.FC<
       <p className="text-sm font-medium mb-1">{data.translatedName}</p>
       <div className="text-sm text-grey">
         {formatEmissionsAbsolute(data.value, currentLanguage)}{" "}
-        {t("emissionsUnit")}
+        {t("emissionsUnitCO2")}
       </div>
       <div className="text-xs italic text-blue-2 mt-2">
         {t(

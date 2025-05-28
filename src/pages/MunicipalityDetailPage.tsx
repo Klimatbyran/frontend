@@ -16,8 +16,8 @@ import {
   localizeUnit,
 } from "@/utils/localizeUnit";
 import { useLanguage } from "@/components/LanguageProvider";
-import MunicipalitySectorPieChart from "@/components/municipalities/MunicipalitySectorPieChart";
-import MunicipalitySectorLegend from "@/components/municipalities/MunicipalitySectorLegend";
+import MunicipalitySectorPieChart from "@/components/municipalities/sectorChart/MunicipalitySectorPieChart";
+import MunicipalitySectorLegend from "@/components/municipalities/sectorChart/MunicipalitySectorLegend";
 import { useMunicipalitySectorEmissions } from "@/hooks/useMunicipalitySectorEmissions";
 import { MunicipalityEmissions } from "@/components/municipalities/MunicipalityEmissions";
 import { YearSelector } from "@/components/layout/YearSelector";
@@ -163,7 +163,7 @@ export function MunicipalityDetailPage() {
                 year: lastYear,
               })}
               value={lastYearEmissionsTon}
-              unit={t("emissionsUnit")}
+              unit={t("emissionsUnitCO2")}
               valueClassName="text-orange-2"
               info={true}
               infoText={t("municipalityDetailPage.totalEmissionsTooltip")}
