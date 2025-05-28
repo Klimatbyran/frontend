@@ -32,7 +32,7 @@ export function CompanyEditHeader({
     if (periods.length > 0) {
       onYearsSelect([periods[0].value]);
     }
-  }, [onYearsSelect, periods]);
+  }, []);
 
   const selected = (
     newValue: MultiValue<{ value: string; label: string }>,
