@@ -180,27 +180,31 @@ export function CompanyEditPage() {
         />
         {selectedPeriods !== null && selectedPeriods.length > 0 && (
           <form onSubmit={handleSubmit} ref={formRef}>
-            <CompanyEditPeriod
-              periods={selectedPeriods}
-              onInputChange={onInputChange}
-              formData={formData}
-              resetPeriod={resetPeriod}
-            ></CompanyEditPeriod>
-            <CompanyEditScope1
-              periods={selectedPeriods}
-              onInputChange={onInputChange}
-              formData={formData}
-            ></CompanyEditScope1>
-            <CompanyEditScope2
-              periods={selectedPeriods}
-              onInputChange={onInputChange}
-              formData={formData}
-            ></CompanyEditScope2>
-            <CompanyEditScope3
-              periods={selectedPeriods}
-              onInputChange={onInputChange}
-              formData={formData}
-            ></CompanyEditScope3>
+            <div className="overflow-x-auto overflow-y-visible">
+              <div className="min-w-max">
+                <CompanyEditPeriod
+                  periods={selectedPeriods}
+                  onInputChange={onInputChange}
+                  formData={formData}
+                  resetPeriod={resetPeriod}
+                ></CompanyEditPeriod>
+                <CompanyEditScope1
+                  periods={selectedPeriods}
+                  onInputChange={onInputChange}
+                  formData={formData}
+                ></CompanyEditScope1>
+                <CompanyEditScope2
+                  periods={selectedPeriods}
+                  onInputChange={onInputChange}
+                  formData={formData}
+                ></CompanyEditScope2>
+                <CompanyEditScope3
+                  periods={selectedPeriods}
+                  onInputChange={onInputChange}
+                  formData={formData}
+                ></CompanyEditScope3>
+              </div>
+            </div>
             <div className="w-full ps-4 pe-2 mt-6">
               <textarea
                 className="ms-2 w-full p-2 border-gray-300 rounded text-white bg-black-1"
