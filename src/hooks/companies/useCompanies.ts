@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getCompanies } from "@/lib/api";
 import type { paths } from "@/lib/api-types";
 import { cleanEmissions } from "@/utils/cleanEmissions";
+import type { Emissions } from "@/types/company";
 
 // Get company type from API types
 type Company = NonNullable<
@@ -9,14 +10,12 @@ type Company = NonNullable<
 >[0];
 
 // Define the modified reporting period type with added IDs
-type ReportingPeriodWithIds = Company["reportingPeriods"][0] & {
+type ReportingPeriodWithIds = Omit<
+  Company["reportingPeriods"][0],
+  "emissions"
+> & {
   id: string;
-  emissions:
-    | (Company["reportingPeriods"][0]["emissions"] & {
-        id: string;
-        biogenicEmissions: null;
-      })
-    | null;
+  emissions: Emissions | null;
 };
 
 export interface RankedCompany extends Omit<Company, "reportingPeriods"> {

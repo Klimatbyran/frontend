@@ -31,7 +31,7 @@ export interface Emissions {
   calculatedTotalEmissions: number;
   biogenicEmissions?: { total: number; unit: string } | null;
   scope1?: {
-    total: number;
+    total: number | null;
     unit: string;
     metadata: {
       verifiedBy: { name: string } | null;
@@ -48,12 +48,12 @@ export interface Emissions {
     };
   } | null;
   scope3?: {
-    calculatedTotalEmissions: number;
+    calculatedTotalEmissions: number | null;
     metadata: {
       verifiedBy: { name: string } | null;
     };
     statedTotalEmissions: {
-      total: number;
+      total: number | null;
       unit: string;
       metadata: {
         verifiedBy: { name: string } | null;
@@ -61,16 +61,16 @@ export interface Emissions {
     } | null;
     categories?: Array<{
       category: number;
-      total: number;
+      total: number | null;
       unit: string;
     }>;
   } | null;
   scope1And2?: {
-    total: number;
+    total: number | null;
     unit: string;
   } | null;
   statedTotalEmissions?: {
-    total: number;
+    total: number | null;
     unit: string;
     metadata: {
       verifiedBy: { name: string } | null;

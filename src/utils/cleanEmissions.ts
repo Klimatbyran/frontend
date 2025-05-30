@@ -1,71 +1,65 @@
 import type { Emissions } from "@/types/company";
 
-export function cleanEmissions(
-  emissions: Emissions | null | undefined,
-): Emissions | null {
+// Helper to normalize subfields with a 'total' property
+function normalizeTotalField<T extends { total?: number | null }>(
+  field: T | null | undefined,
+): T | null {
+  if (!field || field.total == null) return null;
+  return { ...field, total: field.total as number };
+}
+
+export function cleanEmissions(emissions: any): Emissions | null {
   if (!emissions) return null;
 
-  const cleaned: Emissions = { ...emissions };
+  // Normalize all subfields up front
+  const scope1 = normalizeTotalField(emissions.scope1);
+  const scope1And2 = normalizeTotalField(emissions.scope1And2);
+  const biogenicEmissions = normalizeTotalField(emissions.biogenicEmissions);
+  const statedTotalEmissions = normalizeTotalField(
+    emissions.statedTotalEmissions,
+  );
 
-  // Normalize scope1
-  if (!cleaned.scope1 || cleaned.scope1.total == null) {
-    cleaned.scope1 = null;
-  }
-
-  // Normalize scope1And2
-  if (!cleaned.scope1And2 || cleaned.scope1And2.total == null) {
-    cleaned.scope1And2 = null;
-  }
-
-  // Normalize scope2
-  if (!cleaned.scope2 || cleaned.scope2.calculatedTotalEmissions == null) {
-    cleaned.scope2 = null;
-  }
-
-  // Normalize biogenicEmissions
-  if (!cleaned.biogenicEmissions || cleaned.biogenicEmissions.total == null) {
-    cleaned.biogenicEmissions = null;
-  }
-
-  // Normalize statedTotalEmissions at root
-  if (
-    !cleaned.statedTotalEmissions ||
-    cleaned.statedTotalEmissions.total == null
-  ) {
-    cleaned.statedTotalEmissions = null;
-  }
-
-  // Normalize scope3
-  if (!cleaned.scope3) {
-    cleaned.scope3 = null;
+  // Scope2: check calculatedTotalEmissions
+  let scope2 = emissions.scope2 ?? null;
+  if (!scope2 || scope2.calculatedTotalEmissions == null) {
+    scope2 = null;
   } else {
-    // Normalize scope3.statedTotalEmissions
-    if (
-      !cleaned.scope3.statedTotalEmissions ||
-      cleaned.scope3.statedTotalEmissions.total == null
-    ) {
-      cleaned.scope3.statedTotalEmissions = null;
-    }
-    // Normalize scope3.categories
-    if (cleaned.scope3.categories) {
-      cleaned.scope3.categories = cleaned.scope3.categories.filter(
-        (cat) => cat && cat.total != null,
-      );
-      if (cleaned.scope3.categories.length === 0) {
-        cleaned.scope3.categories = undefined;
-      }
-    } else {
-      cleaned.scope3.categories = undefined;
-    }
+    scope2 = {
+      ...scope2,
+      calculatedTotalEmissions: scope2.calculatedTotalEmissions as number,
+    };
   }
 
-  // Ensure all expected subfields are null if undefined
-  cleaned.scope1 = cleaned.scope1 ?? null;
-  cleaned.scope2 = cleaned.scope2 ?? null;
-  cleaned.scope3 = cleaned.scope3 ?? null;
-  cleaned.scope1And2 = cleaned.scope1And2 ?? null;
-  cleaned.biogenicEmissions = cleaned.biogenicEmissions ?? null;
-  cleaned.statedTotalEmissions = cleaned.statedTotalEmissions ?? null;
+  // Scope3: handle nested fields
+  let scope3 = emissions.scope3 ?? null;
+  if (!scope3) {
+    scope3 = null;
+  } else {
+    // statedTotalEmissions in scope3
+    let scope3Stated = normalizeTotalField(scope3.statedTotalEmissions);
+    // categories: filter and cast
+    let categories = Array.isArray(scope3.categories)
+      ? scope3.categories
+          .filter((cat: any) => cat && cat.total != null)
+          .map((cat: any) => ({ ...cat, total: cat.total as number }))
+      : undefined;
+    if (categories && categories.length === 0) categories = undefined;
 
-  return cleaned;
+    scope3 = {
+      ...scope3,
+      statedTotalEmissions: scope3Stated,
+      categories,
+    };
+  }
+
+  // Return the cleaned object, ensuring all fields are present and never undefined
+  return {
+    calculatedTotalEmissions: emissions.calculatedTotalEmissions ?? 0,
+    scope1,
+    scope2,
+    scope3,
+    scope1And2,
+    biogenicEmissions,
+    statedTotalEmissions,
+  };
 }

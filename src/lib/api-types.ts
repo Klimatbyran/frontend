@@ -283,6 +283,22 @@ export interface paths {
                                     } | null;
                                 };
                             } | null;
+                            baseYear: {
+                                id: string;
+                                year: number;
+                                metadata: {
+                                    id: string;
+                                    comment: string | null;
+                                    source: string | null;
+                                    updatedAt: string;
+                                    user: {
+                                        name: string;
+                                    };
+                                    verifiedBy: {
+                                        name: string;
+                                    } | null;
+                                };
+                            } | null;
                             tags: string[];
                         }[];
                     };
@@ -917,6 +933,22 @@ export interface paths {
                                     subIndustryCode: string;
                                 };
                                 metadata: {
+                                    verifiedBy: {
+                                        name: string;
+                                    } | null;
+                                };
+                            } | null;
+                            baseYear: {
+                                id: string;
+                                year: number;
+                                metadata: {
+                                    id: string;
+                                    comment: string | null;
+                                    source: string | null;
+                                    updatedAt: string;
+                                    user: {
+                                        name: string;
+                                    };
                                     verifiedBy: {
                                         name: string;
                                     } | null;
