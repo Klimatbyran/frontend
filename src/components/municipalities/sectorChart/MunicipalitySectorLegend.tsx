@@ -89,7 +89,7 @@ const MunicipalitySectorLegend: React.FC<LegendProps> = ({
                           Math.round(entry.value),
                           currentLanguage,
                         )}{" "}
-                        {t("emissionsUnit")}
+                        {t("emissionsUnitCO2")}
                       </span>
                       <span>{percentage}</span>
                     </div>
