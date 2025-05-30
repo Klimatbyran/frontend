@@ -13,7 +13,7 @@ client.use(authMiddleware);
 // Set a timeout for API requests during sitemap generation
 const timeout = typeof window === "undefined" ? 10000 : undefined;
 
-const { GET, POST } = createClient<paths>({
+const { GET } = createClient<paths>({
   baseUrl,
   fetch: (request: Request) => {
     if (typeof window === "undefined" && timeout) {
@@ -144,5 +144,53 @@ export async function getReportingYears(): Promise<string[]> {
   } catch (error) {
     console.error("Error fetching reporting years:", error);
     return [];
+  }
+}
+
+export async function getValidationClaims(): Promise<Record<string, string>> {
+  try {
+    const { data, error } = await client.GET("/validation/claim", {});
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.error("Error fetching validation claims:", error);
+    return {};
+  }
+}
+export async function createValidationClaim(wikidataId: string, steal = false) {
+  try {
+    const { data, error } = await client.POST(
+      "/validation/claim/{wikidataId}",
+      {
+        params: {
+          path: { wikidataId },
+        },
+        body: { steal }, // empty object
+      },
+    );
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.error("Error fetching validation claims:", error);
+    return {};
+  }
+}
+
+export async function deleteValidationClaim(wikidataId: string) {
+  try {
+    const { data, error } = await client.DELETE(
+      "/validation/claim/{wikidataId}",
+      {
+        params: {
+          path: { wikidataId },
+        },
+        body: JSON.stringify({}) as any,
+      },
+    );
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.error("Error fetching validation claims:", error);
+    return {};
   }
 }
