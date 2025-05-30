@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
-import { interpolateScope3Categories } from "@/lib/calculations/emissions";
+import { EmissionPeriod, interpolateScope3Categories } from "@/lib/calculations/emissions";
 import type { EmissionsHistoryProps, DataView } from "@/types/emissions";
 import { getChartData } from "../../../../utils/getChartData";
 import { useTranslation } from "react-i18next";
@@ -50,14 +50,19 @@ export function EmissionsHistory({
   const processedPeriods = useMemo(
     () =>
       features.interpolateScope3
-        ? interpolateScope3Categories(reportingPeriods)
+        ? interpolateScope3Categories(reportingPeriods as EmissionPeriod[])
         : reportingPeriods,
     [reportingPeriods, features.interpolateScope3],
   );
 
   // Process data based on view
   const chartData = useMemo(
-    () => getChartData(processedPeriods, isAIGenerated, isEmissionsAIGenerated),
+    () =>
+      getChartData(
+        processedPeriods as EmissionPeriod[],
+        isAIGenerated,
+        isEmissionsAIGenerated,
+      ),
     [processedPeriods, isAIGenerated, isEmissionsAIGenerated],
   );
 
