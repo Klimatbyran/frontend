@@ -37,7 +37,7 @@ export function mapCompanyEditFormToRequestBody(
     if (scope1ValueChanged) {
       const val = formData.get(scope1ValueKey);
       periodUpdate.emissions.scope1 = {
-        total: val === "" ? null : parseInt(val!),
+        total: val === "" ? null : parseFloat(val!),
         verified: scope1NewVerified ?? false,
       };
     } else if (
@@ -65,16 +65,16 @@ export function mapCompanyEditFormToRequestBody(
 
     if (formData.has("scope-2-mb-" + period.id)) {
       const val = formData.get("scope-2-mb-" + period.id);
-      periodUpdate.emissions.scope2.mb = val === "" ? null : parseInt(val!);
+      periodUpdate.emissions.scope2.mb = val === "" ? null : parseFloat(val!);
     }
     if (formData.has("scope-2-lb-" + period.id)) {
       const val = formData.get("scope-2-lb-" + period.id);
-      periodUpdate.emissions.scope2.lb = val === "" ? null : parseInt(val!);
+      periodUpdate.emissions.scope2.lb = val === "" ? null : parseFloat(val!);
     }
     if (formData.has("scope-2-unknown-" + period.id)) {
       const val = formData.get("scope-2-unknown-" + period.id);
       periodUpdate.emissions.scope2.unknown =
-        val === "" ? null : parseInt(val!);
+        val === "" ? null : parseFloat(val!);
     }
 
     if (
@@ -134,7 +134,7 @@ export function mapCompanyEditFormToRequestBody(
         else if (valueChanged) {
           const obj: any = {
             category: parseInt(categoryId),
-            total: newValue === "" ? null : parseInt(newValue!),
+            total: newValue === "" ? null : parseFloat(newValue!),
           };
           if (verifiedChanged) obj.verified = newVerified;
           periodUpdate.emissions.scope3.categories.push(obj);
@@ -158,7 +158,7 @@ export function mapCompanyEditFormToRequestBody(
       }
       const val = formData.get(statedTotalValueKey);
       periodUpdate.emissions.scope3.statedTotalEmissions = {
-        total: val === "" ? null : parseInt(val!),
+        total: val === "" ? null : parseFloat(val!),
         verified: statedTotalNewVerified ?? false,
       };
     } else if (
