@@ -26,82 +26,12 @@ export type CompanyDetails = NonNullable<
   paths["/companies/{wikidataId}"]["get"]["responses"][200]["content"]["application/json"]
 >;
 
-// Common emissions type used across components
-export interface Emissions {
-  calculatedTotalEmissions: number;
-  biogenicEmissions?: { total: number; unit: string } | null;
-  scope1?: {
-    total: number | null;
-    unit: string;
-    metadata: {
-      verifiedBy: { name: string } | null;
-    };
-  } | null;
-  scope2?: {
-    mb?: number | null;
-    lb?: number | null;
-    unknown?: number | null;
-    unit: string;
-    calculatedTotalEmissions: number;
-    metadata: {
-      verifiedBy: { name: string } | null;
-    };
-  } | null;
-  scope3?: {
-    calculatedTotalEmissions: number | null;
-    metadata: {
-      verifiedBy: { name: string } | null;
-    };
-    statedTotalEmissions: {
-      total: number | null;
-      unit: string;
-      metadata: {
-        verifiedBy: { name: string } | null;
-      };
-    } | null;
-    categories?: Array<{
-      category: number;
-      total: number | null;
-      unit: string;
-    }>;
-  } | null;
-  scope1And2?: {
-    total: number | null;
-    unit: string;
-  } | null;
-  statedTotalEmissions?: {
-    total: number | null;
-    unit: string;
-    metadata: {
-      verifiedBy: { name: string } | null;
-    };
-  } | null;
-}
+// Use backend types for edit flow
+export type ReportingPeriod = NonNullable<
+  paths["/companies/{wikidataId}"]["get"]["responses"][200]["content"]["application/json"]
+>["reportingPeriods"][number];
 
-// Common reporting period type
-export interface ReportingPeriod {
-  id: string;
-  startDate: string;
-  endDate: string;
-  reportURL: string | null;
-  emissions: Emissions | null;
-  economy: {
-    turnover: {
-      value: number | null;
-      currency: string | null;
-      metadata: {
-        verifiedBy: { name: string } | null;
-      };
-    } | null;
-    employees: {
-      value: number | null;
-      unit: string | null;
-      metadata: {
-        verifiedBy: { name: string } | null;
-      };
-    } | null;
-  } | null;
-}
+export type Emissions = NonNullable<ReportingPeriod["emissions"]>;
 
 // Extended company type with metrics and optional rankings
 export interface RankedCompany extends BaseCompany {

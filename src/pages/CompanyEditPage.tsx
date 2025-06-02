@@ -7,7 +7,7 @@ import { CompanyEditPeriod } from "@/components/companies/edit/CompanyEditPeriod
 import { CompanyEditScope1 } from "@/components/companies/edit/CompanyEditScope1";
 import { CompanyEditScope2 } from "@/components/companies/edit/CompanyEditScope2";
 import { CompanyEditScope3 } from "@/components/companies/edit/CompanyEditScope3";
-import { CompanyDetails } from "@/types/company";
+import { CompanyDetails, ReportingPeriod } from "@/types/company";
 import { mapCompanyEditFormToRequestBody } from "@/lib/company-edit";
 import { updateReportingPeriods } from "@/lib/api";
 import { useToast } from "@/contexts/ToastContext";
@@ -31,21 +31,18 @@ export function CompanyEditPage() {
 
   const selectedPeriods =
     company !== undefined
-      ? selectedYears.reduce(
-          (periods, year) => {
-            const period = [...company.reportingPeriods].find(
-              (reportingPeriod) =>
-                new Date(reportingPeriod.endDate).getFullYear().toString() ===
-                year,
-            );
-            if (period !== undefined) {
-              periods.push(period);
-            }
-            periods.sort((a, b) => (b.endDate > a.endDate ? -1 : 1));
-            return periods;
-          },
-          [] as CompanyDetails["reportingPeriods"],
-        )
+      ? selectedYears.reduce((periods, year) => {
+          const period = [...company.reportingPeriods].find(
+            (reportingPeriod) =>
+              new Date(reportingPeriod.endDate).getFullYear().toString() ===
+              year,
+          );
+          if (period !== undefined) {
+            periods.push(period);
+          }
+          periods.sort((a, b) => (b.endDate > a.endDate ? -1 : 1));
+          return periods;
+        }, [] as ReportingPeriod[])
       : [];
 
   if (loading || isUpdating) {
@@ -132,10 +129,11 @@ export function CompanyEditPage() {
     }
     if (id !== undefined) {
       try {
-        await updateReportingPeriods(
-          id,
-          mapCompanyEditFormToRequestBody(selectedPeriods, formData),
+        const { reportingPeriods, metadata } = mapCompanyEditFormToRequestBody(
+          selectedPeriods,
+          formData,
         );
+        await updateReportingPeriods(id, { reportingPeriods, metadata });
         await refetch();
         setSelectedYears(selectedYears);
         setFormData(new Map());

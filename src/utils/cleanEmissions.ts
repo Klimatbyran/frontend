@@ -54,6 +54,7 @@ export function cleanEmissions(emissions: any): Emissions | null {
 
   // Return the cleaned object, ensuring all fields are present and never undefined
   return {
+    id: emissions.id,
     calculatedTotalEmissions: emissions.calculatedTotalEmissions ?? 0,
     scope1,
     scope2,
