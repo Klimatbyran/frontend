@@ -5,10 +5,15 @@ import { CheckIcon } from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
 import { BadgeCheck } from "lucide-react";
 
+interface IconCheckboxProps
+  extends React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> {
+  badgeIconClass?: string;
+}
+
 const IconCheckbox = React.forwardRef<
   React.ElementRef<typeof CheckboxPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>
->(({ className, ...props }, ref) => (
+  IconCheckboxProps
+>(({ className, badgeIconClass = "", ...props }, ref) => (
   <CheckboxPrimitive.Root
     ref={ref}
     className={cn(
@@ -17,7 +22,7 @@ const IconCheckbox = React.forwardRef<
     )}
     {...props}
   >
-    <BadgeCheck></BadgeCheck>
+    <BadgeCheck className={badgeIconClass} />
     <CheckboxPrimitive.Indicator
       className={cn("flex items-center justify-center text-current")}
     >

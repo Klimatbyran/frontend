@@ -40,7 +40,27 @@ export function CompanyEditInputField({
     ? formData.get(name + "-checkbox") === "true"
     : verified;
 
-  const isDisabled = verified === true;
+  // Determine if the value has changed
+  const valueChanged = String(currentValue) !== String(value);
+
+  // Verification badge logic:
+  // - If previously verified and value changed, badge is selectable
+  // - If previously verified and value not changed, badge is not selectable
+  // - Otherwise, badge is selectable as before
+  let isDisabled = false;
+  if (originalVerified) {
+    isDisabled = !valueChanged;
+  }
+
+  // Determine badge color: muted green if previously verified and not changed, bright green if verified and changed
+  let badgeIconClass = "";
+  if (displayAddition === "verification") {
+    if (originalVerified && !valueChanged) {
+      badgeIconClass = "text-green-4"; // muted green
+    } else if (currentVerified) {
+      badgeIconClass = "text-green-3"; // bright green
+    }
+  }
 
   const topBracket = (
     <svg
@@ -88,6 +108,7 @@ export function CompanyEditInputField({
           name={name + "-checkbox"}
           onCheckedChange={handleCheckboxChange}
           disabled={isDisabled}
+          badgeIconClass={badgeIconClass}
         />
       )}
       {displayAddition === "topBracket" && topBracket}
