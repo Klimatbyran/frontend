@@ -1038,7 +1038,8 @@
       "year": "År",
       "estimatedValue": "Utsläppsvärdet är uppskattat",
       "overview": "Översikt",
-      "sectors": "Utsläppskällor"
+      "sectors": "Utsläppskällor",
+      "ofTotal": "av total"
     },
     "map": {
       "legend": {

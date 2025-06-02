@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { TooltipProps } from "recharts";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
-import { formatEmissionsAbsolute } from "@/utils/localizeUnit";
+import { formatEmissionsAbsolute, formatPercent } from "@/utils/localizeUnit";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { X } from "lucide-react";
 
@@ -30,6 +30,11 @@ export const MunicipalitySectorTooltip: React.FC<
   }
 
   const data = payload[0].payload;
+
+  const safeValue = data.value != null ? data.value : 0;
+  const safeTotal = data.total != null ? data.total : 1;
+  const percentage = formatPercent(safeValue / safeTotal, currentLanguage);
+  
   return (
     <div className="bg-black-2 border border-black-1 rounded-lg shadow-xl p-4 text-white">
       <div className="flex justify-end items-center relative z-30">
@@ -50,6 +55,11 @@ export const MunicipalitySectorTooltip: React.FC<
         {formatEmissionsAbsolute(data.value, currentLanguage)}{" "}
         {t("emissionsUnit")}
       </div>
+        {safeTotal && (
+          <div>
+            {percentage} {t("municipalities.graph.ofTotal")}
+          </div>
+        )}
       <div className="text-xs italic text-blue-2 mt-2">
         {t(
           `municipalityDetailPage.sectorChart.${
