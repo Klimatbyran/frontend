@@ -1,0 +1,87 @@
+name: CI (Tests, Type Check, Lint, Format, Audit)
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  checks:
+    name: Run tests, type check, lint, format, audit
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Cache node modules for faster installs
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      # Use Node.js 20
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Run Vitest with coverage
+      - name: Run tests with coverage
+        run: npm run test -- --run --coverage --reporter=github
+        continue-on-error: true
+
+      # Upload coverage report as artifact
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+        continue-on-error: true
+
+      # TypeScript type check
+      - name: TypeScript type check
+        run: npx tsc --noEmit
+        continue-on-error: true
+
+      # Build check (Vite)
+      - name: Build app
+        run: npm run build
+        continue-on-error: true
+
+      # Audit dependencies for vulnerabilities
+      - name: Audit dependencies
+        run: npm audit --audit-level=moderate || true
+        continue-on-error: true
+
+      # Install ESLint SARIF formatter
+      - name: Install ESLint SARIF formatter
+        run: npm install --no-save @microsoft/eslint-formatter-sarif
+
+      # Run ESLint and output SARIF
+      - name: Run ESLint
+        run: npm run lint . --ext .ts,.tsx,.js,.jsx -f @microsoft/eslint-formatter-sarif -o eslint-results.sarif || true
+        continue-on-error: true
+
+      # Upload ESLint SARIF results to GitHub
+      - name: Upload SARIF results to GitHub
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: eslint-results.sarif
+        continue-on-error: true
+
+      # Run Prettier
+      - name: Run Prettier
+        run: npx prettier --check .
+        continue-on-error: true
+
+      # Optionally: Add Prettier SARIF/annotation step here if desired in the future
+
+      # All steps use continue-on-error: true so nothing blocks merging, but all issues are visible in PR checks
