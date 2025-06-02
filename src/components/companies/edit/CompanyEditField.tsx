@@ -48,8 +48,12 @@ export function CompanyEditInputField({
   // - If previously verified and value not changed, badge is not selectable
   // - Otherwise, badge is selectable as before
   let isDisabled = false;
-  if (originalVerified) {
-    isDisabled = !valueChanged;
+  if (typeof originalVerified === "boolean") {
+    if (originalVerified) {
+      isDisabled = !valueChanged;
+    }
+  } else if (verified === true) {
+    isDisabled = true;
   }
 
   // Determine badge color: muted green if previously verified and not changed, bright green if verified and changed
