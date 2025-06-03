@@ -126,6 +126,11 @@ export const InternalDashboard = () => {
     return formatEmissionsAbsolute(ratio, currentLanguage);
   };
 
+  const getLatestYear = (company: RankedCompany) => {
+    const latestPeriod = company.reportingPeriods[0];
+    return latestPeriod ? new Date(latestPeriod.endDate).getFullYear().toString() : "N/A";
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
@@ -144,6 +149,9 @@ export const InternalDashboard = () => {
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                 Company Name
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                Latest Report Year
               </th>
               <th
                 className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-700 select-none"
@@ -234,6 +242,11 @@ export const InternalDashboard = () => {
                             ?.sectorCode as SectorCode,
                         )}
                       </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm font-medium text-gray-400">
+                      {getLatestYear(company)}
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
