@@ -12,7 +12,7 @@ import { methodologySections } from "@/lib/methods/methodologyData";
 
 export function MethodsPage() {
   const { t } = useTranslation();
-  const [selectedMethod, setSelectedMethod] = useState<String>();
+  const [selectedMethod, setSelectedMethod] = useState<String>("");
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearch, setShowSearch] = useState(false);
   const { isMobile } = useScreenSize();
@@ -25,11 +25,17 @@ export function MethodsPage() {
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
-
     if (searchParams) {
+      const allMethods = Object.values(methodologySections).flat();
       const view = searchParams.get("view");
+
       if (view === "companydata") {
-        setSelectedMethod(methodologySections.company[0].id);
+        const matchingMethod = allMethods.find(
+          (method) => method.id === "companyDataOverview",
+        );
+        if (matchingMethod) {
+          setSelectedMethod(matchingMethod.id);
+        }
       } else {
         setSelectedMethod("parisAgreement");
       }
