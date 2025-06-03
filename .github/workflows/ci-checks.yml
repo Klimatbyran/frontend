@@ -80,18 +80,40 @@ jobs:
         run: '[ -f eslint-results.sarif ] || echo "{\"version\":\"2.1.0\",\"runs\":[]}" > eslint-results.sarif'
         continue-on-error: true
 
-      # Upload ESLint SARIF results to GitHub (v3)
+      # Check if SARIF has results
+      - name: Check if SARIF has results
+        id: sarif_check
+        run: |
+          if grep -q '"results":\[\]' eslint-results.sarif; then
+            echo "empty_sarif=true" >> $GITHUB_OUTPUT
+          else
+            echo "empty_sarif=false" >> $GITHUB_OUTPUT
+          fi
+        continue-on-error: true
+
+      # Upload ESLint SARIF results to GitHub (v3) only if SARIF is not empty
       - name: Upload SARIF results to GitHub
+        if: steps.sarif_check.outputs.empty_sarif == 'false'
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: eslint-results.sarif
         continue-on-error: true
 
-      # Run Prettier
-      - name: Run Prettier
-        run: npx prettier --check .
+      # Run Prettier and save output
+      - name: Run Prettier and save output
+        id: prettier
+        run: |
+          npx prettier --check . > prettier-output.txt || true
         continue-on-error: true
 
-      # Optionally: Add Prettier SARIF/annotation step here if desired in the future
+      # Annotate Prettier errors in GitHub UI if any are found
+      - name: Annotate Prettier errors
+        if: always()
+        run: |
+          if grep -q '\[warn\]' prettier-output.txt; then
+            echo "::error title=Prettier formatting issues detected::Run 'npm run format' to fix code style issues. See details below:"
+            cat prettier-output.txt
+          fi
+        continue-on-error: true
 
       # All steps use continue-on-error: true so nothing blocks merging, but all issues are visible in PR checks
