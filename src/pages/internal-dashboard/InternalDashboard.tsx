@@ -5,6 +5,7 @@ import { SECTOR_NAMES, SectorCode } from "@/hooks/companies/useCompanyFilters";
 import {
   formatEmissionsAbsolute,
   formatPercentChange,
+  formatEmployeeCount,
 } from "@/utils/localizeUnit";
 import { calculateRateOfChange } from "@/lib/calculations/general";
 
@@ -18,10 +19,10 @@ export const InternalDashboard = () => {
   const { companies, loading, error } = useCompanies();
   const { currentLanguage } = useLanguage();
 
-  const [sortBy, setSortBy] = useState<"emissions" | "change">("emissions");
+  const [sortBy, setSortBy] = useState<"emissions" | "change" | "employees" | "emissionsPerEmployee">("emissions");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
 
-  const handleSort = (column: "emissions" | "change") => {
+  const handleSort = (column: "emissions" | "change" | "employees" | "emissionsPerEmployee") => {
     if (sortBy === column) {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     } else {
@@ -73,6 +74,18 @@ export const InternalDashboard = () => {
           comparison = aEmissions - bEmissions;
         } else if (sortBy === "change") {
           comparison = aChange - bChange;
+        } else if (sortBy === "employees") {
+          const aEmployees = a.reportingPeriods[0]?.economy?.employees?.value || 0;
+          const bEmployees = b.reportingPeriods[0]?.economy?.employees?.value || 0;
+          comparison = aEmployees - bEmployees;
+        } else if (sortBy === "emissionsPerEmployee") {
+          const aEmissions = a.reportingPeriods[0]?.emissions?.calculatedTotalEmissions || 0;
+          const aEmployees = a.reportingPeriods[0]?.economy?.employees?.value || 0;
+          const bEmissions = b.reportingPeriods[0]?.emissions?.calculatedTotalEmissions || 0;
+          const bEmployees = b.reportingPeriods[0]?.economy?.employees?.value || 0;
+          const aRatio = aEmployees > 0 ? aEmissions / aEmployees : 0;
+          const bRatio = bEmployees > 0 ? bEmissions / bEmployees : 0;
+          comparison = aRatio - bRatio;
         }
 
         return sortOrder === "asc" ? comparison : -comparison;
@@ -94,6 +107,23 @@ export const InternalDashboard = () => {
     const sectorName = sectorCode && SECTOR_NAMES[sectorCode];
 
     return sectorName || "Unknown Sector";
+  };
+
+  const getEmployeeCount = (company: RankedCompany) => {
+    const employeeCount = company.reportingPeriods[0]?.economy?.employees?.value;
+    return employeeCount ? formatEmployeeCount(employeeCount, currentLanguage) : "N/A";
+  };
+
+  const getEmissionsPerEmployee = (company: RankedCompany) => {
+    const emissions = company.reportingPeriods[0]?.emissions?.calculatedTotalEmissions;
+    const employees = company.reportingPeriods[0]?.economy?.employees?.value;
+    
+    if (!emissions || !employees || employees === 0) {
+      return "N/A";
+    }
+    
+    const ratio = emissions / employees;
+    return formatEmissionsAbsolute(ratio, currentLanguage);
   };
 
   return (
@@ -145,6 +175,36 @@ export const InternalDashboard = () => {
                   </span>
                 </div>
               </th>
+              <th
+                className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-700 select-none"
+                onClick={() => handleSort("employees")}
+              >
+                <div className="flex items-center space-x-1">
+                  <span>Employees</span>
+                  <span className="text-gray-400">
+                    {sortBy === "employees"
+                      ? sortOrder === "desc"
+                        ? "↓"
+                        : "↑"
+                      : "↕"}
+                  </span>
+                </div>
+              </th>
+              <th
+                className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-700 select-none"
+                onClick={() => handleSort("emissionsPerEmployee")}
+              >
+                <div className="flex items-center space-x-1">
+                  <span>Emissions per Employee (tCO2e)</span>
+                  <span className="text-gray-400">
+                    {sortBy === "emissionsPerEmployee"
+                      ? sortOrder === "desc"
+                        ? "↓"
+                        : "↑"
+                      : "↕"}
+                  </span>
+                </div>
+              </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-600">
@@ -187,6 +247,16 @@ export const InternalDashboard = () => {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className={`text-sm font-medium ${changeColor}`}>
                       {getChangeRate(company)}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm font-medium text-gray-400">
+                      {getEmployeeCount(company)}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm font-medium text-gray-400">
+                      {getEmissionsPerEmployee(company)}
                     </div>
                   </td>
                 </tr>
