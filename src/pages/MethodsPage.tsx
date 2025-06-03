@@ -7,18 +7,34 @@ import { Search } from "lucide-react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { useScreenSize } from "@/hooks/useScreenSize";
+import { useLocation } from "react-router-dom";
+import { methodologySections } from "@/lib/methods/methodologyData";
 
 export function MethodsPage() {
   const { t } = useTranslation();
-  const [selectedMethod, setSelectedMethod] = useState("parisAgreement");
+  const [selectedMethod, setSelectedMethod] = useState<String>();
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearch, setShowSearch] = useState(false);
   const { isMobile } = useScreenSize();
   const contentRef = useRef<HTMLDivElement>(null);
+  const location = useLocation();
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [selectedMethod]);
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+
+    if (searchParams) {
+      const view = searchParams.get("view");
+      if (view === "companydata") {
+        setSelectedMethod(methodologySections.company[0].id);
+      } else {
+        setSelectedMethod("parisAgreement");
+      }
+    }
+  }, [location]);
 
   // Prepare SEO data
   const canonicalUrl = "https://klimatkollen.se/methodology";

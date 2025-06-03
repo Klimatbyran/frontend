@@ -20,6 +20,8 @@ export const AiIcon = ({
   showTooltip = true,
 }: AiIconProps) => {
   const { t } = useTranslation();
+  const { i18n } = useTranslation();
+  const currentLang = i18n.language;
   const sizeClasses = {
     sm: "w-4 h-3 rounded",
     md: "w-5 h-4 rounded-md",
@@ -46,7 +48,10 @@ export const AiIcon = ({
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Link to="/methodology" className="inline-block">
+          <Link
+            to={`/${currentLang}/methodology?view=companydata`}
+            className="inline-block"
+          >
             {iconElement}
           </Link>
         </TooltipTrigger>
