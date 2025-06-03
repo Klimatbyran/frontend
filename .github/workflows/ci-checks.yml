@@ -69,7 +69,7 @@ jobs:
 
       # Run ESLint and output SARIF (fail step if lint errors)
       - name: Run ESLint
-        run: npm run lint . --ext .ts,.tsx,.js,.jsx -f @microsoft/eslint-formatter-sarif -o eslint-results.sarif
+        run: npm run lint -- --ext .ts,.tsx,.js,.jsx -f @microsoft/eslint-formatter-sarif -o eslint-results.sarif
 
       # Ensure eslint-results.sarif exists (avoid upload error)
       - name: Ensure eslint-results.sarif exists
