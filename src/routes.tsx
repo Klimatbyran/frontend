@@ -1,5 +1,4 @@
 import { Route, Routes } from "react-router-dom";
-import { useEffect } from "react";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { useLanguage } from "./components/LanguageProvider";
 import { LanguageRedirect } from "@/components/LanguageRedirect";
@@ -26,6 +25,7 @@ import ProductsPage from "./pages/ProductsPage";
 import { UnauthorizedErrorPage } from "./pages/error/UnauthorizedErrorPage";
 import { SupportPage } from "./pages/SupportPage";
 import { ValidationDashboard } from "./pages/ValidationDashboard";
+import { InternalDashboard } from "./pages/internal-dashboard/InternalDashboard";
 
 export function AppRoutes() {
   const { currentLanguage } = useLanguage();
@@ -66,6 +66,10 @@ export function AppRoutes() {
         <Route
           path={`${basePath}/validation-dashboard`}
           element={<ValidationDashboard />}
+        />
+        <Route
+          path={`${basePath}/internal-dashboard`}
+          element={<InternalDashboard />}
         />
       </Route>
       {/* Municipalities routes */}
