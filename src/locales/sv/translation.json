@@ -498,7 +498,7 @@
           "nvdb": {
             "title": "Nationell vägdatabas",
             "text": "Cykelvägar per kommun",
-            "link": "https://nvdb2012.trafikverket.se/SeTransportnatverket"
+            "link": "https://www.nvdb.se/sv"
           },
           "sei": {
             "title": "Stockholm Environment Institute",
@@ -992,7 +992,6 @@
       "data": "Data",
       "historicalDevelopment": "Historisk utveckling",
       "ofTotal": "av total"
-
     },
     "scopeReportingList": {
       "category": "Kategori"
