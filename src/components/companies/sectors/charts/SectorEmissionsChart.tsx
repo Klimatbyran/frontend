@@ -183,7 +183,7 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
             >
               <XAxis
                 dataKey="year"
-                tick={{ fill: "var(--grey)" }}
+                tick={{ fill: "var(--grey)", fontSize: 12 }}
                 axisLine={{ stroke: "var(--black-1)" }}
                 tickLine={{ stroke: "var(--black-1)" }}
                 padding={{ left: 10, right: 10 }}
