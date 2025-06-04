@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { methodologySections } from "@/lib/methods/methodologyData";
 import { useScreenSize } from "@/hooks/useScreenSize";
+import { useNavigate } from "react-router-dom";
 
 interface MethodologyNavigationProps {
   selectedMethod: string;
@@ -20,6 +21,7 @@ export function MethodologyNavigation({
     Object.keys(methodologySections),
   );
   const { isMobile } = useScreenSize();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isMobile) {
@@ -79,7 +81,10 @@ export function MethodologyNavigation({
                 {methods.map((method) => (
                   <li key={method.id}>
                     <button
-                      onClick={() => handleMethodChange(method.id)}
+                      onClick={() => {
+                        handleMethodChange(method.id);
+                        navigate(`?view=${category}`);
+                      }}
                       className={`w-full p-2 my-0.5 text-left text-sm rounded-lg transition-colors duration-200 ${
                         selectedMethod === method.id
                           ? "bg-black-1 text-blue-3 font-medium"

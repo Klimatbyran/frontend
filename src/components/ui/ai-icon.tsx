@@ -49,7 +49,7 @@ export const AiIcon = ({
       <Tooltip>
         <TooltipTrigger asChild>
           <Link
-            to={`/${currentLang}/methodology?view=companydata`}
+            to={`/${currentLang}/methodology?view=company`}
             className="inline-block"
           >
             {iconElement}

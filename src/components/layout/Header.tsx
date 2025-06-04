@@ -90,7 +90,7 @@ export function Header() {
         { label: t("header.aboutUs"), path: `${currentLanguage}/about` },
         {
           label: t("header.methodology"),
-          path: `${currentLanguage}/methodology`,
+          path: `${currentLanguage}/methodology?view=general`,
         },
         {
           label: t("header.press"),
