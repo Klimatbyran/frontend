@@ -195,6 +195,15 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
                 tickFormatter={formatYAxisTick}
                 width={30}
                 fontSize={12}
+                label={{
+                  value: "tCO₂e",
+                  position: "top",
+                  offset: 10,
+                  style: {
+                    textAnchor: "middle",
+                    fontSize: "12px",
+                  },
+                }}
               />
               <Tooltip content={<CustomTooltip />} />
               {selectedSectors.map((sectorCode) => {
