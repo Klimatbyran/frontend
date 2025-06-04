@@ -45,7 +45,6 @@ export function BarChart({ data }: BarChartProps) {
         <XAxis
           type="number"
           domain={[0, maxValue * 1.2]}
-          hide={true}
           scale="linear"
           padding={{ left: 0, right: 0 }}
           tickLine={false}
@@ -56,14 +55,14 @@ export function BarChart({ data }: BarChartProps) {
           dataKey="label"
           axisLine={false}
           tickLine={false}
-          tick={{ fill: "#878787", fontSize: 12 }}
+          tick={{ fill: "var(--grey)", fontSize: 12 }}
           width={100}
           scale="band"
           padding={{ top: 0, bottom: 0 }}
         />
         <Tooltip
           content={<CustomTooltip />}
-          cursor={{ fill: "rgba(255, 255, 255, 0.1)" }}
+          cursor={{ fill: "color-mix(in srgb, var(--grey) 10%, transparent)" }}
         />
         {data.map((item, index) => (
           <Bar
@@ -73,7 +72,7 @@ export function BarChart({ data }: BarChartProps) {
             radius={[4, 4, 4, 4]}
             label={{
               position: "right",
-              fill: "#878787",
+              fill: "var(--grey)",
               fontSize: 12,
               formatter: (value: number) => `${value}`,
             }}

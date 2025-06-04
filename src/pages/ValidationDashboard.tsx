@@ -52,12 +52,20 @@ const githubUrl = (company: RankedCompany, reportUrl?: string | null) => {
 };
 
 type IssueViewProps = {
-  issue?: GithubValidationIssue;
+  issues?: GithubValidationIssue[];
+  company: RankedCompany;
+  period?: ReportingPeriod;
   className?: string;
   error: boolean;
 };
 
-const IssueView = ({ issue, className, error }: IssueViewProps) => {
+const IssueView = ({
+  issues,
+  company,
+  period,
+  className,
+  error,
+}: IssueViewProps) => {
   if (error) {
     return (
       <a href={`${githubProjectUrl}/issues`} className="text-red-400">
@@ -65,32 +73,39 @@ const IssueView = ({ issue, className, error }: IssueViewProps) => {
       </a>
     );
   }
-  if (!issue) {
+
+  if (!issues || issues.length === 0) {
     return <span className="text-gray-400">No issues</span>;
   }
 
   return (
-    <span className={className}>
-      <a
-        href={issue.html_url}
-        target="_blank"
-        className={cn(
-          "mr-2",
-          issue.state == "open" ? "text-green-3" : "text-gray-500",
-        )}
-      >
-        {issue.state === "open" ? "Issue reported" : "Issue closed"}
-      </a>
-      {issue.state === "open" &&
-        issue.labels.map((label) => (
-          <span
-            style={{ backgroundColor: `#${label.color}` }}
-            className="rounded-sm text-xs font-bold uppercase mx-[2px] px-1"
+    <div className={cn("flex flex-col gap-1", className)}>
+      {issues.map((issue, _index) => (
+        <div key={issue.number} className="flex items-center">
+          <a
+            href={issue.html_url}
+            target="_blank"
+            className={cn(
+              "mr-2",
+              issue.state == "open" ? "text-green-3" : "text-gray-500",
+            )}
           >
-            {label.name}
-          </span>
-        ))}
-    </span>
+            {issues.length > 1 ? `#${issue.number} ` : ""}
+            {issue.state === "open" ? "Issue reported" : "Issue closed"}
+          </a>
+          {issue.state === "open" &&
+            issue.labels.map((label) => (
+              <span
+                key={label.name}
+                style={{ backgroundColor: `#${label.color}` }}
+                className="rounded-sm text-xs font-bold uppercase mx-[2px] px-1"
+              >
+                {label.name}
+              </span>
+            ))}
+        </div>
+      ))}
+    </div>
   );
 };
 
@@ -254,7 +269,9 @@ export const ValidationDashboard = () => {
               </a>
 
               <IssueView
-                issue={issues?.[company.wikidataId]}
+                issues={issues?.[company.wikidataId]}
+                company={company}
+                period={period as ReportingPeriod}
                 error={!!issuesError}
                 className=""
               />

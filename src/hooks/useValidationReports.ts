@@ -22,7 +22,7 @@ const repo = "validation-tracking";
 export const githubProjectUrl = `https://github.com/${owner}/${repo}`;
 
 const fetchAllGithubIssues = async (): Promise<
-  Record<string, GithubValidationIssue>
+  Record<string, GithubValidationIssue[]>
 > => {
   const perPage = 100;
   let page = 1;
@@ -46,26 +46,26 @@ const fetchAllGithubIssues = async (): Promise<
       throw new Error(`GitHub API error: ${res.status} ${res.statusText}`);
     }
 
-    const data: Issue[] = await res.json();
+    const data: GithubValidationIssue[] = await res.json();
     allIssues = allIssues.concat(data);
     hasMore = data.length === perPage;
     page++;
   }
 
-  // Turn allIssues into a Record based on the string in within [ID] in the title, ID is a string
-  const issues = allIssues.reduce(
+  return allIssues.reduce(
     (acc, issue) => {
       const idMatch = issue.title.match(/\[(.+)\]/);
       if (idMatch) {
-        acc[idMatch[1]] = issue;
+        const wikidataId = idMatch[1];
+        if (!acc[wikidataId]) {
+          acc[wikidataId] = [];
+        }
+        acc[wikidataId].push(issue);
       }
       return acc;
     },
-    {} as Record<string, GithubValidationIssue>,
+    {} as Record<string, GithubValidationIssue[]>,
   );
-
-  // Optionally filter out pull requests
-  return issues;
 };
 
 export const useValidationReports = () => {
