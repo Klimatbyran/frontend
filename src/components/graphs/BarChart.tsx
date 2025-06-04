@@ -45,7 +45,6 @@ export function BarChart({ data }: BarChartProps) {
         <XAxis
           type="number"
           domain={[0, maxValue * 1.2]}
-          hide={true}
           scale="linear"
           padding={{ left: 0, right: 0 }}
           tickLine={false}

@@ -181,7 +181,6 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
               barGap={0}
               barCategoryGap="30%"
             >
-              <CartesianGrid strokeDasharray="3 3" stroke="var(--black-1)" />
               <XAxis
                 dataKey="year"
                 tick={{ fill: "var(--grey)" }}
@@ -190,19 +189,12 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
                 padding={{ left: 10, right: 10 }}
               />
               <YAxis
-                label={{
-                  value: t("emissionsUnit"),
-                  angle: -90,
-                  position: "insideLeft",
-                  fill: "var(--grey)",
-                  style: { textAnchor: "middle" },
-                  offset: -15,
-                }}
                 tick={{ fill: "var(--grey)" }}
                 axisLine={{ stroke: "var(--black-1)" }}
                 tickLine={{ stroke: "var(--black-1)" }}
                 tickFormatter={formatYAxisTick}
                 width={30}
+                fontSize={12}
               />
               <Tooltip content={<CustomTooltip />} />
               {selectedSectors.map((sectorCode) => {
