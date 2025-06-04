@@ -202,7 +202,7 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
                 axisLine={{ stroke: "var(--black-1)" }}
                 tickLine={{ stroke: "var(--black-1)" }}
                 tickFormatter={formatYAxisTick}
-                width={60}
+                width={30}
               />
               <Tooltip content={<CustomTooltip />} />
               {selectedSectors.map((sectorCode) => {
