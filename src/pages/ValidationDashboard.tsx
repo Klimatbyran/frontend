@@ -53,18 +53,11 @@ const githubUrl = (company: RankedCompany, reportUrl?: string | null) => {
 
 type IssueViewProps = {
   issue?: GithubValidationIssue;
-  company: RankedCompany;
-  period?: ReportingPeriod;
   className?: string;
   error: boolean;
 };
-const IssueView = ({
-  issue,
-  company,
-  period,
-  className,
-  error,
-}: IssueViewProps) => {
+
+const IssueView = ({ issue, className, error }: IssueViewProps) => {
   if (error) {
     return (
       <a href={`${githubProjectUrl}/issues`} className="text-red-400">
@@ -73,15 +66,7 @@ const IssueView = ({
     );
   }
   if (!issue) {
-    return (
-      <a
-        target="_blank"
-        href={githubUrl(company, period?.reportURL)}
-        className="text-blue-2"
-      >
-        Report issue
-      </a>
-    );
+    return <span className="text-gray-400">No issues</span>;
   }
 
   return (
@@ -181,8 +166,8 @@ export const ValidationDashboard = () => {
         </Select>
       </div>
 
-      <div className="inline-grid grid-cols-[auto_auto_auto_auto_1fr] mb-6 gap-x-8 gap-y-2 border-b border-gray-400 pb-2">
-        <div className="col-span-5">
+      <div className="inline-grid grid-cols-[auto_auto_auto_auto_auto_1fr] mb-6 gap-x-8 gap-y-2 border-b border-gray-400 pb-2">
+        <div className="col-span-6">
           <p className="text-gray-400 mb-1">
             Verified: {allCompanies.length - unverifiedCompanies.length} of{" "}
             {allCompanies.length}
@@ -192,19 +177,20 @@ export const ValidationDashboard = () => {
           </p>
           <Progress value={progress * 100} className="mb-8" />
         </div>
-        <div className="grid grid-cols-subgrid col-span-5 text-gray-400 border-b border-gray-400 pb-1 mb-2">
+        <div className="grid grid-cols-subgrid col-span-6 text-gray-400 border-b border-gray-400 pb-1 mb-2">
           <span>Company name</span>
           <span>Report link</span>
           <span>In progress by</span>
           <span>Start/stop working</span>
-          <span className="">Issues</span>
+          <span>Report issue</span>
+          <span>Issues</span>
         </div>
 
         {unverifiedCompanies.length > 0 ? (
           unverifiedCompanies.map(({ company, period }) => (
             <div
               key={company.wikidataId}
-              className="grid grid-cols-subgrid col-span-5"
+              className="grid grid-cols-subgrid col-span-6"
             >
               <a target="_blank" href={`/companies/${company.wikidataId}/edit`}>
                 {company.name}
@@ -258,17 +244,24 @@ export const ValidationDashboard = () => {
                   </button>
                 )}
               </div>
+
+              <a
+                target="_blank"
+                href={githubUrl(company, period?.reportURL)}
+                className="text-blue-2 text-center"
+              >
+                Report issue
+              </a>
+
               <IssueView
                 issue={issues?.[company.wikidataId]}
-                company={company}
-                period={period as ReportingPeriod}
                 error={!!issuesError}
                 className=""
               />
             </div>
           ))
         ) : (
-          <span className="col-span-4 text-center text-2xl my-4">
+          <span className="col-span-6 text-center text-2xl my-4">
             All done! 🎉
           </span>
         )}
