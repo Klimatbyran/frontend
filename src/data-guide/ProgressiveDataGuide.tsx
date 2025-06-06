@@ -28,6 +28,30 @@ export function ProgressiveDataGuide({
   const title = titleKey ? t(titleKey) : t("dataGuide.buttonFallbackTitle");
 
   const handleItemToggle = (itemId: string, isOpen: boolean) => {
+    if (isOpen) {
+      // Check if the item trigger button will be visible after opening
+      setTimeout(() => {
+        const triggerButton = document.querySelector(
+          `[data-item-id="${itemId}"]`,
+        );
+        if (triggerButton) {
+          const rect = triggerButton.getBoundingClientRect();
+          const isVisible =
+            rect.top >= 60 && rect.top <= window.innerHeight * 0.8;
+
+          if (!isVisible) {
+            const rect = triggerButton.getBoundingClientRect();
+            const headerOffset = 80; // Adjust this value based on your header height
+            const targetPosition = window.pageYOffset + rect.top - headerOffset;
+
+            window.scrollTo({
+              top: targetPosition,
+              behavior: "smooth",
+            });
+          }
+        }
+      }, 200);
+    }
     setActiveItem(isOpen ? itemId : null);
   };
 
@@ -77,7 +101,10 @@ export function ProgressiveDataGuide({
                   onOpenChange={(isOpen) => handleItemToggle(itemId, isOpen)}
                 >
                   <CollapsibleTrigger asChild>
-                    <button className="flex justify-between w-full py-1.5 px-2 items-center text-sm hover:bg-black-1/70 rounded transition-colors text-blue-2/80">
+                    <button
+                      data-item-id={itemId}
+                      className="flex justify-between w-full py-1.5 px-2 items-center text-sm hover:bg-black-1/70 rounded transition-colors text-blue-2/80"
+                    >
                       <span className="text-left">{t(item.titleKey)}</span>
                       <ChevronDownIcon
                         className={cn(
