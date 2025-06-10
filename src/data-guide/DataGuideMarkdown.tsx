@@ -2,15 +2,20 @@ import Markdown from "react-markdown";
 import remarkBreaks from "remark-breaks";
 import { DataGuideItem } from "./items";
 import { useTranslation } from "react-i18next";
+import { cn } from "@/lib/utils";
 
 type DataGuideMarkdownProps = {
   item: DataGuideItem;
+  className?: string;
 };
-export const DataGuideMarkdown = ({ item }: DataGuideMarkdownProps) => {
+export const DataGuideMarkdown = ({
+  className,
+  item,
+}: DataGuideMarkdownProps) => {
   const { t } = useTranslation();
   return (
     <Markdown
-      className="max-w-[75ch] px-0 sm:px-4"
+      className={cn(className)}
       remarkPlugins={[remarkBreaks]}
       components={{
         ol: ({ node, children, ...props }) => (
@@ -31,13 +36,13 @@ export const DataGuideMarkdown = ({ item }: DataGuideMarkdownProps) => {
         p: ({ node, children, ...props }) => (
           <p
             {...props}
-            className="my-4 first:mt-0 last:mb-0 whitespace-pre-wrap leading-relaxed"
+            className="my-4 first:mt-0 md:first:mt-4 last:mb-0 whitespace-pre-wrap leading-relaxed"
           >
             {children}
           </p>
         ),
         a: ({ node, children, ...props }) => (
-          <a {...props} className="text-blue-2 font-bold">
+          <a {...props} className="text-blue-2">
             {children}
           </a>
         ),

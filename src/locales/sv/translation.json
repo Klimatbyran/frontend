@@ -1254,6 +1254,7 @@
   },
   "dataGuide": {
     "buttonFallbackTitle": "Lär dig mer om dessa mätvärden",
+    "selectItemPrompt": "Välj ett ämne du vill veta mer om",
     "items": {
       "totalEmissions": {
         "title": "Vad menas med totala utsläpp?",

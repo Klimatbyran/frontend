@@ -31,6 +31,8 @@ import { CompanyOverviewTooltip } from "./CompanyOverviewTooltip";
 import { CompanyDescription } from "./CompanyDescription";
 import { calculateRateOfChange } from "@/lib/calculations/general";
 import { ProgressiveDataGuide } from "@/data-guide/ProgressiveDataGuide";
+import { Section } from "@/data-guide/Section";
+import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 
 interface CompanyOverviewProps {
   company: CompanyDetails;
@@ -91,7 +93,15 @@ export function CompanyOverview({
     : t("companies.overview.notReported");
 
   return (
-    <div className="bg-black-2 rounded-level-1 p-8 md:p-16">
+    <SectionWithHelp
+      helpItems={[
+        "totalEmissions",
+        "co2units",
+        "companySectors",
+        "companyMissingData",
+        "yearOverYearChange",
+      ]}
+    >
       <div className="flex items-start justify-between mb-4 md:mb-12">
         <div className="space-y-4">
           <div className="flex items-center gap-4">
@@ -230,16 +240,6 @@ export function CompanyOverview({
         employeesAIGenerated={employeesAIGenerated}
         className="mt-3 md:mt-0"
       />
-
-      <ProgressiveDataGuide
-        items={[
-          "totalEmissions",
-          "co2units",
-          "companySectors",
-          "companyMissingData",
-          "yearOverYearChange",
-        ]}
-      />
-    </div>
+    </SectionWithHelp>
   );
 }

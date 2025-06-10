@@ -1,53 +1,59 @@
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { GraduationCap } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { DataGuideItemId, dataGuideHelpItems } from "./items";
+import { DataGuideItemId } from "./items";
 import {
   Collapsible,
   CollapsibleTrigger,
   CollapsibleContent,
 } from "@/components/ui/collapsible";
-import { DataGuideMarkdown } from "./DataGuideMarkdown";
+import { useScreenSize } from "@/hooks/useScreenSize";
+import {
+  NonEmptyArray,
+  ProgressiveDataGuideDesktop,
+} from "./ProgressiveDataGuideDesktop";
+import { ProgressiveDataGuideMobile } from "./ProgressiveDataGuideMobile";
+import { useState } from "react";
+import { dataGuideFeatureFlagEnabled } from "./feature-flag";
 
 interface ProgressiveDataGuideProps {
   titleKey?: string;
   items: DataGuideItemId[];
   className?: string;
+  style?: "button" | "sectionFooter";
 }
 
 export function ProgressiveDataGuide({
   titleKey,
   items,
   className,
+  style = "button",
 }: ProgressiveDataGuideProps) {
   const { t } = useTranslation();
-  const [activeItem, setActiveItem] = useState<string | null>(null);
+  const { isMobile, isTablet } = useScreenSize();
+  const isDesktop = !isMobile && !isTablet;
+  const [open, setOpen] = useState(false);
 
   const title = titleKey ? t(titleKey) : t("dataGuide.buttonFallbackTitle");
 
-  const handleItemToggle = (itemId: string, isOpen: boolean) => {
-    setActiveItem(isOpen ? itemId : null);
-  };
-
-  const dataGuideEnabled = ["localhost", "stage"].some((enabledHost) =>
-    window.location.hostname.includes(enabledHost),
-  );
-
-  if (!dataGuideEnabled) {
+  if (!dataGuideFeatureFlagEnabled() || items.length < 1) {
     return null;
   }
 
+  const nonEmptyItems = items as NonEmptyArray<DataGuideItemId>;
+
   return (
-    <div className={cn(className, "space-y-2 mt-8")}>
-      <Collapsible>
+    <div className={cn(className, "space-y-2")}>
+      <Collapsible open={open} onOpenChange={setOpen}>
         <CollapsibleTrigger asChild>
           <button
             className={cn(
               "flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-all duration-200 w-full",
-              "bg-blue-5/40 text-gray-300 hover:bg-blue-5/70",
-              "data-[state=open]:bg-blue-5/60 data-[state=open]:text-blue-1 data-[state=open]:hover:bg-blue-5/70",
+              "text-gray-300 hover:bg-black-1/60",
+              style === "button"
+                ? "data-[state=open]:hover:bg-black-1/60 bg-black-1/40 py-4 text-sm"
+                : "text-base",
             )}
           >
             <GraduationCap className="w-4 h-4 text-blue-1" />
@@ -55,7 +61,7 @@ export function ProgressiveDataGuide({
             <ChevronDownIcon
               className={cn(
                 "w-4 h-4 transition-transform ml-auto",
-                "data-[state=open]:rotate-180",
+                open && "rotate-180",
               )}
             />
           </button>
@@ -67,40 +73,11 @@ export function ProgressiveDataGuide({
             "data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down",
           )}
         >
-          <div className="bg-black-1/60 rounded-md p-3 space-y-1 mt-2">
-            {items.map((itemId) => {
-              const item = dataGuideHelpItems[itemId];
-              return (
-                <Collapsible
-                  key={itemId}
-                  open={activeItem === itemId}
-                  onOpenChange={(isOpen) => handleItemToggle(itemId, isOpen)}
-                >
-                  <CollapsibleTrigger asChild>
-                    <button className="flex justify-between w-full py-1.5 px-2 items-center text-sm hover:bg-black-1/70 rounded transition-colors text-blue-2/80">
-                      <span className="text-left">{t(item.titleKey)}</span>
-                      <ChevronDownIcon
-                        className={cn(
-                          "w-3 h-3 transition-transform",
-                          "data-[state=open]:rotate-180",
-                        )}
-                      />
-                    </button>
-                  </CollapsibleTrigger>
-                  <CollapsibleContent
-                    className={cn(
-                      "transition-all duration-200 ease-out overflow-hidden",
-                      "data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down",
-                    )}
-                  >
-                    <div className="px-2 py-2 text-sm text-gray-300 leading-relaxed border-b border-t border-black-1/80">
-                      <DataGuideMarkdown item={item} />
-                    </div>
-                  </CollapsibleContent>
-                </Collapsible>
-              );
-            })}
-          </div>
+          {isDesktop ? (
+            <ProgressiveDataGuideDesktop items={nonEmptyItems} />
+          ) : (
+            <ProgressiveDataGuideMobile items={items} />
+          )}
         </CollapsibleContent>
       </Collapsible>
     </div>
