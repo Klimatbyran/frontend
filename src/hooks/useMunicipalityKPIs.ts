@@ -57,7 +57,7 @@ export const useMunicipalityKPIs = (): KPIValue[] => {
       key: "electricVehiclePerChargePoints",
       unit: "",
       source: "municipalities.list.electricVehiclePerChargePoints.source",
-      sourceUrls: ["https://powercircles.se/"],
+      sourceUrls: ["https://powercircle.org/elbilsstatistik/"],
       description: t(
         "municipalities.list.kpis.electricVehiclePerChargePoints.description",
       ),

@@ -505,7 +505,7 @@
             "text": "Household consumption-based emissions",
             "link": "https://www.sei.org/tools/konsumtionskompassen/"
           },
-          "powerCircles": {
+          "powerCircle": {
             "title": "Power Circles database ELIS",
             "text": "Charging infrastructure data from the industry organisation",
             "link": "https://powercircle.org/elbilsstatistik/"
