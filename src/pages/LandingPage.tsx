@@ -12,7 +12,6 @@ import {
   formatEmissionsAbsolute,
   formatPercentChange,
 } from "@/utils/localizeUnit";
-import useCombinedData, { CombinedData } from "@/hooks/useCombinedData";
 import GlobalSearch from "@/components/ui/globalsearch";
 
 export function LandingPage() {
@@ -20,7 +19,6 @@ export function LandingPage() {
   const { companies } = useCompanies();
   const { getTopMunicipalities } = useMunicipalities();
   const { currentLanguage } = useLanguage();
-  const combinedData: CombinedData[] = useCombinedData();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -125,7 +123,7 @@ export function LandingPage() {
           </div>
 
           <div className="flex flex-col items-center mt-16 gap-4 ">
-            <GlobalSearch combinedData={combinedData} />
+            <GlobalSearch />
           </div>
         </div>
       </div>

@@ -8,38 +8,62 @@ export type CombinedData = {
   category: "companies" | "municipalities";
 };
 
-const useCombinedData = (): CombinedData[] => {
-  const { municipalities, loading: isLoadingMunicipalities } =
-    useMunicipalities();
-  const { companies, loading: isLoadingCompanies } = useCompanies();
+export const useCombinedData = () => {
+  const {
+    municipalities,
+    loading: isLoadingMunicipalities,
+    error: municipalitiesError,
+  } = useMunicipalities();
+  const {
+    companies,
+    loading: isLoadingCompanies,
+    error: companiesError,
+  } = useCompanies();
 
-  const combinedData: CombinedData[] = useMemo(() => {
-    if (!isLoadingMunicipalities && !isLoadingCompanies) {
-      const mappedMunicipalities: CombinedData[] = municipalities?.map(
-        (municipality): CombinedData => ({
-          name: municipality.name,
-          id: municipality.name,
-          category: "municipalities",
-        }),
-      );
+  const hasErrors = municipalitiesError || companiesError;
+  const isLoading = isLoadingCompanies || isLoadingMunicipalities;
 
-      const mappedCompanies: CombinedData[] = companies?.map(
-        (company): CombinedData => {
-          return {
-            name: company.name,
-            id: company.wikidataId,
-            category: "companies",
-          };
-        },
-      );
-
-      return [...mappedMunicipalities, ...mappedCompanies];
-    } else {
-      return [];
+  const combinedData = useMemo(() => {
+    if (hasErrors) {
+      return {
+        loading: false,
+        error: new Error("Error fetching municipalities or companies"),
+        data: [],
+      };
     }
-  }, [municipalities, companies, isLoadingMunicipalities, isLoadingCompanies]);
+
+    if (isLoading) {
+      return {
+        loading: true,
+        data: [],
+      };
+    }
+
+    const mappedMunicipalities: CombinedData[] = municipalities?.map(
+      (municipality): CombinedData => ({
+        name: municipality.name,
+        id: municipality.name,
+        category: "municipalities",
+      }),
+    );
+
+    const mappedCompanies: CombinedData[] = companies?.map(
+      (company): CombinedData => {
+        return {
+          name: company.name,
+          id: company.wikidataId,
+          category: "companies",
+        };
+      },
+    );
+
+    return {
+      loading: false,
+      data: [...mappedMunicipalities, ...mappedCompanies],
+    };
+  }, [municipalities, companies, isLoading, hasErrors]);
 
   return combinedData;
 };
 
-export default useCombinedData;
+export type CombinedDataResult = ReturnType<typeof useCombinedData>;
