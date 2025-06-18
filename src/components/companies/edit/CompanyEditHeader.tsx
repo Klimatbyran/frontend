@@ -60,7 +60,6 @@ export function CompanyEditHeader({
               <Pen className="w-8 h-8 text-orange-2" />
             </div>
           </div>
-          <NewCompanyDetails company={company} />
         </div>
         <div className="flex items-center gap-4">
           <div>
