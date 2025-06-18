@@ -11,6 +11,7 @@ interface CustomTooltipProps {
   payload?: any[];
   label?: string;
   companyBaseYear: number | undefined;
+  filterDuplicateValues?: boolean;
 }
 
 export const CustomTooltip = ({
@@ -18,6 +19,7 @@ export const CustomTooltip = ({
   payload,
   label,
   companyBaseYear,
+  filterDuplicateValues = false,
 }: CustomTooltipProps) => {
   const { t } = useTranslation();
   const { getCategoryName } = useCategoryMetadata();
@@ -43,6 +45,19 @@ export const CustomTooltip = ({
 
     const isBaseYear = companyBaseYear === payload[0].payload.year;
 
+    let filteredPayload = payload;
+    if (filterDuplicateValues) {
+      const seenValues = new Set();
+      filteredPayload = payload.filter((entry) => {
+        const valueKey = `${entry.value}_${entry.payload.year}`;
+        if (seenValues.has(valueKey)) {
+          return false;
+        }
+        seenValues.add(valueKey);
+        return true;
+      });
+    }
+
     return (
       <div
         className={cn(
@@ -60,11 +75,7 @@ export const CustomTooltip = ({
             {t("companies.tooltip.tonsCO2e")}
           </span>
         </div>
-        {payload.map((entry: any) => {
-          if (entry.dataKey === "gap") {
-            return null;
-          }
-
+        {filteredPayload.map((entry) => {
           let { name } = entry;
           if (entry.dataKey.startsWith("cat")) {
             const categoryId = parseInt(entry.dataKey.replace("cat", ""));
