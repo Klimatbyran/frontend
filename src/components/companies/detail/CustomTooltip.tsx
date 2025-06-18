@@ -24,36 +24,6 @@ export const CustomTooltip = ({
   const { isMobile } = useScreenSize();
 
   if (active && payload && payload.length) {
-    // Add deduplication logic before mapping
-    const filterDuplicatesByValue = (entries: any[]) => {
-      const valueGroups = new Map<number, any[]>();
-
-      // Group entries by their value
-      entries.forEach((entry) => {
-        if (entry.value != null && !isNaN(entry.value)) {
-          const roundedValue = Math.round(entry.value);
-          if (!valueGroups.has(roundedValue)) {
-            valueGroups.set(roundedValue, []);
-          }
-          valueGroups.get(roundedValue)!.push(entry);
-        }
-      });
-
-      const filteredEntries: any[] = [];
-
-      valueGroups.forEach((groupEntries) => {
-        if (groupEntries.length === 1) {
-          // No duplicates, include the entry
-          filteredEntries.push(groupEntries[0]);
-        } else {
-          // Keep the first entry when there are duplicates
-          filteredEntries.push(groupEntries[0]);
-        }
-      });
-
-      return filteredEntries;
-    };
-
     if (payload.length === 3) {
       const totalEmissions = payload[0]?.payload.total;
 
@@ -70,10 +40,7 @@ export const CustomTooltip = ({
       payload = [companyTotal, ...payload];
     }
 
-    // Apply deduplication filter
-    const filteredPayload = filterDuplicatesByValue(payload);
-
-    const isBaseYear = companyBaseYear === filteredPayload[0]?.payload.year;
+    const isBaseYear = companyBaseYear === payload[0].payload.year;
 
     return (
       <div
@@ -83,7 +50,7 @@ export const CustomTooltip = ({
           {label}
           {isBaseYear ? "*" : ""}
         </div>
-        {filteredPayload.map((entry: any) => {
+        {payload.map((entry: any) => {
           if (entry.dataKey === "gap") {
             return null;
           }
@@ -141,11 +108,11 @@ export const CustomTooltip = ({
             </div>
           );
         })}
-        {isBaseYear && (
+        {isBaseYear ? (
           <span className="text-grey mr-2 text-sm">
-            <br />*{t("companies.emissionsHistory.baseYearInfo")}
+            <br></br>*{t("companies.emissionsHistory.baseYearInfo")}
           </span>
-        )}
+        ) : null}
       </div>
     );
   }
