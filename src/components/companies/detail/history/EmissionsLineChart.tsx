@@ -1,5 +1,4 @@
 import {
-  Legend,
   Line,
   LineChart,
   ReferenceLine,
@@ -210,16 +209,6 @@ export default function EmissionsLineChart({
         <Tooltip
           content={<CustomTooltip companyBaseYear={companyBaseYear} />}
         />
-
-        {dataView === "overview" && (
-          <Legend
-            verticalAlign="bottom"
-            align="right"
-            height={36}
-            iconType="line"
-            wrapperStyle={{ fontSize: "12px" }}
-          />
-        )}
 
         {dataView === "overview" && (
           <>
