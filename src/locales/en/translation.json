@@ -924,7 +924,10 @@
       "totalEmissions": "Total Emissions",
       "baseYear": "Base year",
       "baseYearInfo": "The base year refers to a specific year chosen as a reference point against which future emissions are compared.",
-      "total": "Total"
+      "total": "Total",
+      "approximated": "Approximated",
+      "trend": "Trend",
+      "carbonLaw": "Paris Agreement"
     },
     "list": {
       "error": {
