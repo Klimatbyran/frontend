@@ -211,7 +211,7 @@ export default function EmissionsLineChart({
           content={<CustomTooltip companyBaseYear={companyBaseYear} />}
         />
 
-        {(dataView === "overview" || dataView === "scopes") && (
+        {dataView === "overview" && (
           <Legend
             verticalAlign="bottom"
             align="right"
