@@ -143,7 +143,12 @@ export default function EmissionsLineChart({
         />
 
         <Tooltip
-          content={<CustomTooltip companyBaseYear={companyBaseYear} />}
+          content={
+            <CustomTooltip
+              companyBaseYear={companyBaseYear}
+              filterDuplicateValues={dataView === "overview"}
+            />
+          }
         />
 
         {dataView === "overview" && (
