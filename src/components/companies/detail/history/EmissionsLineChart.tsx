@@ -152,17 +152,9 @@ export default function EmissionsLineChart({
     <ResponsiveContainer width="100%" height="100%" className="w-full">
       <LineChart
         data={data}
-        margin={{ top: 20, right: 20, left: 10, bottom: 10 }}
+        margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
         onClick={handleClick}
       >
-        <Legend
-          verticalAlign="bottom"
-          align="right"
-          height={36}
-          iconType="line"
-          wrapperStyle={{ fontSize: "12px" }}
-        />
-
         <ReferenceLine
           label={{
             value: t("companies.emissionsHistory.baseYear"),
@@ -218,6 +210,16 @@ export default function EmissionsLineChart({
         <Tooltip
           content={<CustomTooltip companyBaseYear={companyBaseYear} />}
         />
+
+        {(dataView === "overview" || dataView === "scopes") && (
+          <Legend
+            verticalAlign="bottom"
+            align="right"
+            height={36}
+            iconType="line"
+            wrapperStyle={{ fontSize: "12px" }}
+          />
+        )}
 
         {dataView === "overview" && (
           <>
