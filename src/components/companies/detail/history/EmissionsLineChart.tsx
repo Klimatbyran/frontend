@@ -59,7 +59,7 @@ const calculateLinearRegression = (data: { x: number; y: number }[]) => {
   return { slope, intercept };
 };
 
-const generateTrendData = (
+const generateApproximatedData = (
   data: ChartData[],
   regression: { slope: number; intercept: number },
 ) => {
@@ -70,34 +70,33 @@ const generateTrendData = (
     )
     .reduce((lastYear, d) => Math.max(lastYear, d.year), 0);
 
-  const trendStartYear = data[0].year;
+  const approximatedStartYear = data[0].year;
   const endYear = 2030;
   const currentYear = new Date().getFullYear();
 
-  const currentYearTrendValue =
+  const currentYearApproximatedValue =
     regression.slope * currentYear + regression.intercept;
 
   const allYears = Array.from(
-    { length: endYear - trendStartYear + 1 },
-    (_, i) => trendStartYear + i,
+    { length: endYear - approximatedStartYear + 1 },
+    (_, i) => approximatedStartYear + i,
   );
 
   const reductionRate = 0.1356;
 
   return allYears.map((year) => {
-    const shouldShowTrend = year >= lastReportedYear;
-    const trendValue = shouldShowTrend
+    const shouldShowApproximated = year >= lastReportedYear;
+    const approximatedValue = shouldShowApproximated
       ? regression.slope * year + regression.intercept
       : null;
 
     return {
       year,
-      approximated: year <= currentYear ? trendValue : null,
-      trend: year >= currentYear ? trendValue : null,
+      approximated: year <= currentYear ? approximatedValue : null,
       total: data.find((d) => d.year === year)?.total,
       carbonLaw:
         year >= currentYear
-          ? currentYearTrendValue *
+          ? currentYearApproximatedValue *
             Math.pow(1 - reductionRate, year - currentYear)
           : null,
     };
@@ -120,7 +119,7 @@ export default function EmissionsLineChart({
   const endYear = 2030;
   const currentYear = new Date().getFullYear();
 
-  const trendData = useMemo(() => {
+  const approximatedData = useMemo(() => {
     if (dataView !== "overview") {
       return null;
     }
@@ -144,7 +143,7 @@ export default function EmissionsLineChart({
       return null;
     }
 
-    return generateTrendData(data, regression);
+    return generateApproximatedData(data, regression);
   }, [data, dataView]);
 
   return (
@@ -173,7 +172,7 @@ export default function EmissionsLineChart({
           dataKey="year"
           stroke="var(--grey)"
           tickLine={false}
-          axisLine={true}
+          axisLine={false}
           type="number"
           domain={[data[0]?.year || 2000, endYear]}
           tick={({ x, y, payload }) => {
@@ -196,7 +195,7 @@ export default function EmissionsLineChart({
         <YAxis
           stroke="var(--grey)"
           tickLine={false}
-          axisLine={true}
+          axisLine={false}
           tick={{ fontSize: 12 }}
           width={60}
           domain={[0, "auto"]}
@@ -222,7 +221,7 @@ export default function EmissionsLineChart({
               connectNulls
               name={t("companies.emissionsHistory.totalEmissions")}
             />
-            {trendData && (
+            {approximatedData && (
               <>
                 <ReferenceLine
                   x={currentYear}
@@ -239,7 +238,7 @@ export default function EmissionsLineChart({
                 <Line
                   type="linear"
                   dataKey="approximated"
-                  data={trendData}
+                  data={approximatedData}
                   stroke="var(--grey)"
                   strokeWidth={1}
                   strokeDasharray="4 4"
@@ -248,20 +247,9 @@ export default function EmissionsLineChart({
                   name={t("companies.emissionsHistory.approximated")}
                 />
                 <Line
-                  type="linear"
-                  dataKey="trend"
-                  data={trendData}
-                  stroke="var(--pink-3)"
-                  strokeWidth={1}
-                  strokeDasharray="4 4"
-                  dot={false}
-                  activeDot={false}
-                  name={t("companies.emissionsHistory.trend")}
-                />
-                <Line
                   type="monotone"
                   dataKey="carbonLaw"
-                  data={trendData}
+                  data={approximatedData}
                   stroke="var(--green-3)"
                   strokeWidth={1}
                   strokeDasharray="4 4"
