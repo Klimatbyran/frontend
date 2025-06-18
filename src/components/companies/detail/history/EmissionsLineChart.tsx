@@ -82,7 +82,7 @@ const generateApproximatedData = (
     (_, i) => approximatedStartYear + i,
   );
 
-  const reductionRate = 0.1356;
+  const reductionRate = 0.1172;
 
   return allYears.map((year) => {
     const shouldShowApproximated = year >= lastReportedYear;

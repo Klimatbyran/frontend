@@ -1,6 +1,6 @@
 import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useTranslation } from "react-i18next";
-import { formatEmissionsAbsolute, localizeUnit } from "@/utils/localizeUnit";
+import { formatEmissionsAbsolute } from "@/utils/localizeUnit";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { AiIcon } from "@/components/ui/ai-icon";
@@ -51,9 +51,11 @@ export const CustomTooltip = ({
           {isBaseYear ? "*" : ""}
         </div>
         {payload.map((entry: any) => {
-          if (entry.dataKey === "gap") return null;
+          if (entry.dataKey === "gap") {
+            return null;
+          }
 
-          let name = entry.name;
+          let { name } = entry;
           if (entry.dataKey.startsWith("cat")) {
             const categoryId = parseInt(entry.dataKey.replace("cat", ""));
             name = getCategoryName(categoryId);
@@ -81,7 +83,8 @@ export const CustomTooltip = ({
 
           // Correctly display "No Data Available" if original value was null or undefined
           const displayValue =
-          originalValue == null && (entry.value == null || isNaN(entry.value) || entry.value == 0)
+            originalValue == null &&
+            (entry.value == null || isNaN(entry.value) || entry.value == 0)
               ? t("companies.tooltip.noDataAvailable")
               : `${formatEmissionsAbsolute(Math.round(entry.value ?? 0), currentLanguage)} ${t(
                   "companies.tooltip.tonsCO2e",
