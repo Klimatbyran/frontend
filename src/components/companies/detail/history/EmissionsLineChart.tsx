@@ -151,23 +151,24 @@ export default function EmissionsLineChart({
     <ResponsiveContainer width="100%" height="100%" className="w-full">
       <LineChart
         data={data}
-        margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
+        margin={{ top: 20, right: 0, left: 0, bottom: 0 }}
         onClick={handleClick}
       >
-        <ReferenceLine
-          label={{
-            value: t("companies.emissionsHistory.baseYear"),
-            position: "top",
-            fill: "white",
-            fontSize: 12,
-            fontWeight: "normal",
-          }}
-          x={companyBaseYear}
-          stroke="var(--grey)"
-          strokeDasharray="4 4"
-          isFront={false}
-          ifOverflow="extendDomain"
-        />
+        {companyBaseYear && (
+          <ReferenceLine
+            label={{
+              value: t("companies.emissionsHistory.baseYear"),
+              position: "top",
+              fill: "white",
+              fontSize: 12,
+              fontWeight: "normal",
+            }}
+            x={companyBaseYear}
+            stroke="var(--grey)"
+            strokeDasharray="4 4"
+            ifOverflow="extendDomain"
+          />
+        )}
 
         <XAxis
           dataKey="year"
