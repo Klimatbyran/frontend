@@ -132,7 +132,8 @@ export default function EmissionsLineChart({
       .map((d) => ({
         x: d.year,
         y: d.total,
-      }));
+      }))
+      .slice(-2);
 
     if (validPoints.length < 2) {
       return null;
