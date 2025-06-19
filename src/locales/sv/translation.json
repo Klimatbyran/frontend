@@ -968,13 +968,6 @@
       "readLess": "Läs mindre",
       "aiGeneratedData": "Innehåller AI-extraherade värden. Klicka för att läsa mer."
     },
-    "realEstateScope3History": {
-      "title": "Historiska Scope 3-utsläpp per kategori",
-      "tooltip": "Utveckling av Scope 3-utsläpp över tid per kategori",
-      "tonsCO2e": "ton CO₂e",
-      "keyTrendsTitle": "Viktiga trender för fastighetssektorn",
-      "keyTrendsDescription": "Scope 3-utsläpp i fastighetssektorn domineras ofta av kategorierna 'Inköpta varor & tjänster' (1), 'Kapitalvaror' (2) och 'Energirelaterade aktiviteter' (3). Dessa kategorier inkluderar byggmaterial, renoveringar och energianvändning i fastigheter."
-    },
     "sectionedCompanyList": {
       "otherCompanies": "Övriga företag",
       "companies": "företag"

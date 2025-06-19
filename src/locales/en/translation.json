@@ -965,13 +965,6 @@
       "readLess": "Read Less",
       "aiGeneratedData": "Includes AI-extracted values. Click to read more."
     },
-    "realEstateScope3History": {
-      "title": "Historical Scope 3 Emissions per Category",
-      "tooltip": "Development of Scope 3 emissions over time by category",
-      "tonsCO2e": "tons CO₂e",
-      "keyTrendsTitle": "Key Trends for the Real Estate Sector",
-      "keyTrendsDescription": "Scope 3 emissions in the real estate sector are often dominated by the categories 'Purchased Goods & Services' (1), 'Capital Goods' (2), and 'Energy-Related Activities' (3). These categories include construction materials, renovations, and energy use in buildings."
-    },
     "sectionedCompanyList": {
       "otherCompanies": "Other Companies",
       "companies": "companies"
