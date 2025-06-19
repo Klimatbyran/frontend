@@ -38,20 +38,24 @@ export function CompanyEditDetails({
   const [baseYearVerified, setBaseYearVerified] = useState(
     !!company.baseYear?.metadata?.verifiedBy,
   );
+
   const [comment, setComment] = useState<string>("");
   const [source, setSource] = useState<string>("");
+
   const {
     data: gicsOptions = [],
     isLoading: gicsLoading,
     isError: gicsIsError,
     error: gicsErrorObj,
   } = useGicsCodes();
+
   const gicsError = gicsIsError
     ? gicsErrorObj instanceof Error
       ? gicsErrorObj.message
       : "Failed to load industry options"
     : null;
   const [error, setError] = useState<string | null>(null);
+
   const {
     saveCompanyEditDetails,
     isPending: loading,
@@ -66,7 +70,6 @@ export function CompanyEditDetails({
         ? !!company.industry?.metadata?.verifiedBy
         : false,
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [subIndustryCode]);
 
   useEffect(() => {
@@ -75,7 +78,6 @@ export function CompanyEditDetails({
         ? !!company.baseYear?.metadata?.verifiedBy
         : false,
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [baseYear]);
 
   const [industryIsDisabled, industryBadgeIconClass] = validateValue({
