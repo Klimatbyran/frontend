@@ -17,7 +17,7 @@ import {
 import { Undo2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-export function CompanyDetails({
+export function CompanyEditDetails({
   company,
   onSave,
 }: {
