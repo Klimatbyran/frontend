@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react";
-import { updateCompanyIndustry, updateCompanyBaseYear } from "@/lib/api";
+import {
+  updateCompanyIndustry,
+  updateCompanyBaseYear,
+  getIndustryGics,
+} from "@/lib/api";
 import type { CompanyDetails as CompanyDetailsType } from "@/types/company";
 import { IconCheckbox } from "@/components/ui/icon-checkbox";
 import { Input } from "@/components/ui/input";
@@ -12,38 +16,6 @@ import {
 } from "@/components/ui/select";
 import { Undo2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
-
-// Placeholder GICS options (replace with API call when endpoint is ready)
-const GICS_OPTIONS = [
-  {
-    code: "10101010",
-    label: "Oil & Gas Drilling",
-    sector: "Energy",
-    group: "Energy",
-    industry: "Energy Equipment & Services",
-    description:
-      "Drilling contractors or owners of drilling rigs that contract their services to oil companies, and manufacturers of drilling equipment.",
-  },
-  {
-    code: "10101020",
-    label: "Oil & Gas Equipment & Services",
-    sector: "Energy",
-    group: "Energy",
-    industry: "Energy Equipment & Services",
-    description:
-      "Manufacturers of equipment, including drilling rigs and equipment, and providers of supplies and services to oil fields and offshore platforms.",
-  },
-  {
-    code: "10102010",
-    label: "Integrated Oil & Gas",
-    sector: "Energy",
-    group: "Energy",
-    industry: "Oil, Gas & Consumable Fuels",
-    description:
-      "Integrated oil companies engaged in the exploration & production of oil and gas, as well as refining, marketing, and transportation.",
-  },
-  // ...add more as needed
-];
 
 export function CompanyDetails({
   company,
@@ -69,6 +41,9 @@ export function CompanyDetails({
   const [error, setError] = useState<string | null>(null);
   const [comment, setComment] = useState("");
   const [source, setSource] = useState("");
+  const [gicsOptions, setGicsOptions] = useState<any[]>([]);
+  const [gicsLoading, setGicsLoading] = useState(true);
+  const [gicsError, setGicsError] = useState<string | null>(null);
 
   // Reset verified to false if value changes
   useEffect(() => {
@@ -89,6 +64,33 @@ export function CompanyDetails({
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [baseYear]);
+
+  useEffect(() => {
+    let mounted = true;
+    setGicsLoading(true);
+    getIndustryGics()
+      .then((data) => {
+        let options: any[] = [];
+        if (Array.isArray(data)) {
+          options = data;
+        } else if (data && typeof data === "object") {
+          options = Object.values(data);
+        }
+        if (mounted) {
+          setGicsOptions(options);
+          setGicsLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (mounted) {
+          setGicsError("Failed to load industry options");
+          setGicsLoading(false);
+        }
+      });
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   // --- Industry validation logic ---
   const industryOriginalVerified = !!company.industry?.metadata?.verifiedBy;
@@ -143,11 +145,9 @@ export function CompanyDetails({
     }
   };
 
-  const selectedGics = GICS_OPTIONS.find((opt) => opt.code === subIndustryCode);
-
-  // Try to match Input styles for select
-  const inputClassName =
-    "block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed";
+  const selectedGics = gicsOptions.find(
+    (opt) => String(opt.code) === String(subIndustryCode),
+  );
 
   return (
     <div style={{ margin: "1em 0" }}>
@@ -164,35 +164,44 @@ export function CompanyDetails({
             alignItems: "center",
           }}
         >
-          <Select
-            value={subIndustryCode}
-            onValueChange={(val) => setSubIndustryCode(String(val))}
-          >
-            <SelectTrigger
-              className={
-                "w-full bg-black-1 text-white border border-gray-300" +
-                (subIndustryCode !==
-                (company.industry?.industryGics?.subIndustryCode || "")
-                  ? " border-orange-600"
-                  : "")
-              }
+          {gicsLoading ? (
+            <div style={{ color: "#aaa", padding: "8px 0" }}>Loading…</div>
+          ) : gicsError ? (
+            <div style={{ color: "red", padding: "8px 0" }}>{gicsError}</div>
+          ) : (
+            <Select
+              value={subIndustryCode}
+              onValueChange={(val) => setSubIndustryCode(String(val))}
             >
-              <SelectValue
-                placeholder={
-                  company.industry?.industryGics
-                    ? `${company.industry.industryGics.en?.subIndustryName || company.industry.industryGics.subIndustryCode} (${company.industry.industryGics.subIndustryCode})`
-                    : "Select industry…"
+              <SelectTrigger
+                className={
+                  "w-full bg-black-1 text-white border border-gray-300" +
+                  (subIndustryCode !==
+                  (company.industry?.industryGics?.subIndustryCode || "")
+                    ? " border-orange-600"
+                    : "")
                 }
-              />
-            </SelectTrigger>
-            <SelectContent>
-              {GICS_OPTIONS.map((opt) => (
-                <SelectItem key={String(opt.code)} value={String(opt.code)}>
-                  {opt.label} ({opt.code})
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+              >
+                <SelectValue
+                  placeholder={
+                    company.industry?.industryGics
+                      ? `${company.industry.industryGics.en?.subIndustryName || company.industry.industryGics.subIndustryCode} (${company.industry.industryGics.subIndustryCode})`
+                      : "Select industry…"
+                  }
+                />
+              </SelectTrigger>
+              <SelectContent>
+                {gicsOptions.map((opt) => (
+                  <SelectItem key={String(opt.code)} value={String(opt.code)}>
+                    {opt.label ||
+                      opt.en?.subIndustryName ||
+                      opt.subIndustryName}{" "}
+                    ({opt.code})
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
           <button
             type="button"
             onClick={() =>
@@ -226,30 +235,30 @@ export function CompanyDetails({
               }
             />
           </button>
+          <IconCheckbox
+            checked={industryVerified}
+            disabled={industryIsDisabled}
+            badgeIconClass={industryBadgeIconClass}
+            style={{ marginLeft: 8 }}
+            onCheckedChange={(checked) => setIndustryVerified(checked === true)}
+          />
         </div>
-        <IconCheckbox
-          checked={industryVerified}
-          disabled={industryIsDisabled}
-          badgeIconClass={industryBadgeIconClass}
-          style={{ marginLeft: 8 }}
-          onCheckedChange={(checked) => setIndustryVerified(checked === true)}
-        />
+        {selectedGics && (
+          <div
+            style={{
+              fontSize: 12,
+              color: "#555",
+              marginTop: 4,
+              marginBottom: 32,
+            }}
+          >
+            <b>{selectedGics.sector}</b> &gt; <b>{selectedGics.group}</b> &gt;{" "}
+            <b>{selectedGics.industry}</b>
+            <br />
+            <i>{selectedGics.description}</i>
+          </div>
+        )}
       </div>
-      {selectedGics && (
-        <div
-          style={{
-            fontSize: 12,
-            color: "#555",
-            marginTop: 4,
-            marginBottom: 32,
-          }}
-        >
-          <b>{selectedGics.sector}</b> &gt; <b>{selectedGics.group}</b> &gt;{" "}
-          <b>{selectedGics.industry}</b>
-          <br />
-          <i>{selectedGics.description}</i>
-        </div>
-      )}
       <div style={{ marginBottom: 24, display: "flex", alignItems: "center" }}>
         <span style={{ minWidth: 140, marginRight: 16, fontWeight: 500 }}>
           Base Year
@@ -298,7 +307,6 @@ export function CompanyDetails({
           onCheckedChange={(checked) => setBaseYearVerified(checked === true)}
         />
       </div>
-      {/* Comment and Source fields styled to match CompanyEditPage */}
       <div className="w-full ps-4 pe-2 mt-10">
         <textarea
           className="ms-2 w-full p-2 border-gray-300 rounded text-white bg-black-1"

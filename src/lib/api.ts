@@ -247,3 +247,10 @@ export async function updateCompanyBaseYear(
   if (error) throw error;
   return data;
 }
+
+// GICS Industry API
+export async function getIndustryGics() {
+  const { data, error } = await client.GET("/industry-gics/", {});
+  if (error) throw error;
+  return data;
+}

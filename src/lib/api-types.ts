@@ -175,8 +175,14 @@ export interface paths {
                         "application/json": {
                             wikidataId: string;
                             name: string;
-                            description: string | null;
                             lei?: string | null;
+                            description?: string | null;
+                            descriptions?: {
+                                id: string;
+                                /** @enum {string} */
+                                language: "SV" | "EN";
+                                text: string;
+                            }[];
                             reportingPeriods: {
                                 startDate: string;
                                 endDate: string;
@@ -345,8 +351,14 @@ export interface paths {
                         "application/json": {
                             wikidataId: string;
                             name: string;
-                            description: string | null;
                             lei?: string | null;
+                            description?: string | null;
+                            descriptions?: {
+                                id: string;
+                                /** @enum {string} */
+                                language: "SV" | "EN";
+                                text: string;
+                            }[];
                             reportingPeriods: {
                                 id: string;
                                 startDate: string;
@@ -672,12 +684,21 @@ export interface paths {
                     "application/json": {
                         wikidataId: string;
                         name: string;
-                        description?: string;
+                        descriptions?: {
+                            id?: string;
+                            /** @enum {string} */
+                            language: "SV" | "EN";
+                            text: string;
+                        }[];
                         /** Format: uri */
                         url?: string;
                         internalComment?: string;
                         tags?: string[];
                         lei?: string;
+                        metadata?: {
+                            source?: string;
+                            comment?: string;
+                        };
                     };
                 };
             };
@@ -835,8 +856,14 @@ export interface paths {
                         "application/json": {
                             wikidataId: string;
                             name: string;
-                            description: string | null;
                             lei?: string | null;
+                            description?: string | null;
+                            descriptions?: {
+                                id: string;
+                                /** @enum {string} */
+                                language: "SV" | "EN";
+                                text: string;
+                            }[];
                             reportingPeriods: {
                                 startDate: string;
                                 endDate: string;
@@ -1363,100 +1390,6 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content?: never;
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/emissions-assessment/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": {
-                        wikidataId: string;
-                        years: string[];
-                    };
-                };
-            };
-            responses: {
-                /** @description Default Response */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            assessment: {
-                                isReasonable: boolean;
-                                confidence: number;
-                                issues: {
-                                    /** @enum {string} */
-                                    type: "MISSING_DATA" | "CALCULATION_ERROR" | "SCOPE_MISSING" | "UNIT_ERROR" | "OTHER" | "UNREASONABLE_REDUCTION";
-                                    description: string;
-                                    /** @enum {string} */
-                                    severity: "LOW" | "MEDIUM" | "HIGH";
-                                    suggestedAction?: string;
-                                    reportedNumber?: number;
-                                    correctNumber?: number;
-                                    yearComparison?: {
-                                        previousYear: string;
-                                        currentYear: string;
-                                        reduction: number;
-                                    };
-                                }[];
-                                reasoning: string;
-                                nextSteps: {
-                                    /** @enum {string} */
-                                    type: "VERIFY_CALCULATION" | "REQUEST_SCOPE3" | "CLARIFY_UNITS" | "OTHER";
-                                    description: string;
-                                    /** @enum {string} */
-                                    priority: "LOW" | "MEDIUM" | "HIGH";
-                                }[];
-                            };
-                        };
-                    };
-                };
-                /** @description Default Response */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            code: string;
-                            message: string;
-                        };
-                    };
-                };
-                /** @description Default Response */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            code: string;
-                            message: string;
-                        };
-                    };
                 };
             };
         };
@@ -3270,6 +3203,133 @@ export interface paths {
                 };
             };
         };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/emissions-assessment/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        wikidataId: string;
+                        years: string[];
+                    };
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            assessment: {
+                                isReasonable: boolean;
+                                confidence: number;
+                                issues: {
+                                    /** @enum {string} */
+                                    type: "MISSING_DATA" | "CALCULATION_ERROR" | "SCOPE_MISSING" | "UNIT_ERROR" | "OTHER" | "UNREASONABLE_REDUCTION";
+                                    description: string;
+                                    /** @enum {string} */
+                                    severity: "LOW" | "MEDIUM" | "HIGH";
+                                    suggestedAction?: string;
+                                    reportedNumber?: number;
+                                    correctNumber?: number;
+                                    yearComparison?: {
+                                        previousYear: string;
+                                        currentYear: string;
+                                        reduction: number;
+                                    };
+                                }[];
+                                reasoning: string;
+                                nextSteps: {
+                                    /** @enum {string} */
+                                    type: "VERIFY_CALCULATION" | "REQUEST_SCOPE3" | "CLARIFY_UNITS" | "OTHER";
+                                    description: string;
+                                    /** @enum {string} */
+                                    priority: "LOW" | "MEDIUM" | "HIGH";
+                                }[];
+                            };
+                        };
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Default Response */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            message: string;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/industry-gics/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
