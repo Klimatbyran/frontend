@@ -5,7 +5,6 @@ import Select, { MultiValue, ActionMeta } from "react-select";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { CompanyDetails as NewCompanyDetails } from "./CompanyEditDetails";
 
 interface CompanyOverviewProps {
   company: CompanyDetails;
