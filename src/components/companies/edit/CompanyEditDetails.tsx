@@ -62,7 +62,6 @@ export function CompanyEditDetails({
     error: mutationError,
   } = useCompanyEditDetailsSave();
 
-  // Reset to false if value changes
   useEffect(() => {
     setIndustryVerified(
       subIndustryCode ===
@@ -70,7 +69,11 @@ export function CompanyEditDetails({
         ? !!company.industry?.metadata?.verifiedBy
         : false,
     );
-  }, [subIndustryCode]);
+  }, [
+    subIndustryCode,
+    company.industry?.industryGics?.subIndustryCode,
+    company.industry?.metadata?.verifiedBy,
+  ]);
 
   useEffect(() => {
     setBaseYearVerified(
@@ -78,7 +81,11 @@ export function CompanyEditDetails({
         ? !!company.baseYear?.metadata?.verifiedBy
         : false,
     );
-  }, [baseYear]);
+  }, [
+    baseYear,
+    company.baseYear?.year,
+    company.baseYear?.metadata?.verifiedBy,
+  ]);
 
   const [industryIsDisabled, industryBadgeIconClass] = validateValue({
     value: subIndustryCode,
