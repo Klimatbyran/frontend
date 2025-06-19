@@ -80,3 +80,15 @@ export interface TrendCardInfo {
   color: string;
   textColor: string;
 }
+
+// GICS option type for dropdown and details, based on API response
+export type GicsOption = {
+  code: string;
+  label?: string;
+  en?: { subIndustryName?: string };
+  subIndustryName?: string;
+  sector?: string;
+  group?: string;
+  industry?: string;
+  description?: string;
+};

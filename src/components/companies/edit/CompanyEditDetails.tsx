@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
-import {
-  updateCompanyIndustry,
-  updateCompanyBaseYear,
-  getIndustryGics,
-} from "@/lib/api";
-import type { CompanyDetails as CompanyDetailsType } from "@/types/company";
+import { updateCompanyIndustry, updateCompanyBaseYear } from "@/lib/api";
+import type {
+  CompanyDetails as CompanyDetailsType,
+  GicsOption,
+} from "@/types/company";
 import { IconCheckbox } from "@/components/ui/icon-checkbox";
 import { Input } from "@/components/ui/input";
 import {
@@ -16,6 +15,7 @@ import {
 } from "@/components/ui/select";
 import { Undo2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useGicsCodes } from "@/hooks/companies/useGicsCodes";
 
 export function CompanyEditDetails({
   company,
@@ -39,13 +39,21 @@ export function CompanyEditDetails({
   );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [comment, setComment] = useState("");
-  const [source, setSource] = useState("");
-  const [gicsOptions, setGicsOptions] = useState<any[]>([]);
-  const [gicsLoading, setGicsLoading] = useState(true);
-  const [gicsError, setGicsError] = useState<string | null>(null);
+  const [comment, setComment] = useState<string>("");
+  const [source, setSource] = useState<string>("");
+  const {
+    data: gicsOptions = [],
+    isLoading: gicsLoading,
+    isError: gicsIsError,
+    error: gicsErrorObj,
+  } = useGicsCodes();
+  const gicsError = gicsIsError
+    ? gicsErrorObj instanceof Error
+      ? gicsErrorObj.message
+      : "Failed to load industry options"
+    : null;
 
-  // Reset verified to false if value changes
+  // Reset to false if value changes
   useEffect(() => {
     setIndustryVerified(
       subIndustryCode ===
@@ -64,33 +72,6 @@ export function CompanyEditDetails({
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [baseYear]);
-
-  useEffect(() => {
-    let mounted = true;
-    setGicsLoading(true);
-    getIndustryGics()
-      .then((data) => {
-        let options: any[] = [];
-        if (Array.isArray(data)) {
-          options = data;
-        } else if (data && typeof data === "object") {
-          options = Object.values(data);
-        }
-        if (mounted) {
-          setGicsOptions(options);
-          setGicsLoading(false);
-        }
-      })
-      .catch((err) => {
-        if (mounted) {
-          setGicsError("Failed to load industry options");
-          setGicsLoading(false);
-        }
-      });
-    return () => {
-      mounted = false;
-    };
-  }, []);
 
   // --- Industry validation logic ---
   const industryOriginalVerified = !!company.industry?.metadata?.verifiedBy;
@@ -137,7 +118,9 @@ export function CompanyEditDetails({
           Object.keys(metadata).length ? metadata : undefined,
         );
       }
-      if (onSave) onSave();
+      if (onSave) {
+        onSave();
+      }
     } catch (e: any) {
       setError(e.message || "Failed to update");
     } finally {
@@ -145,9 +128,9 @@ export function CompanyEditDetails({
     }
   };
 
-  const selectedGics = gicsOptions.find(
-    (opt) => String(opt.code) === String(subIndustryCode),
-  );
+  const selectedGics: GicsOption | undefined = (
+    gicsOptions as GicsOption[]
+  ).find((opt) => String(opt.code) === String(subIndustryCode));
 
   return (
     <div style={{ margin: "1em 0" }}>
@@ -191,7 +174,7 @@ export function CompanyEditDetails({
                 />
               </SelectTrigger>
               <SelectContent>
-                {gicsOptions.map((opt) => (
+                {(gicsOptions as GicsOption[]).map((opt) => (
                   <SelectItem key={String(opt.code)} value={String(opt.code)}>
                     {opt.label ||
                       opt.en?.subIndustryName ||

@@ -1,6 +1,5 @@
 import { Input } from "@/components/ui/input";
 import { IconCheckbox } from "@/components/ui/icon-checkbox";
-import { useEffect, useState } from "react";
 import { Undo2 } from "lucide-react";
 
 export interface CompanyEditInputFieldProps {

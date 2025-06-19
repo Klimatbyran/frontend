@@ -57,12 +57,12 @@ export function AppRoutes() {
         path={`${basePath}/foretag/:slug-:id`}
         element={<CompanyDetailPage />}
       />
-      <Route element={<ProtectedRoute />}>
+      {/* <Route element={<ProtectedRoute />}> */}
         <Route
           path={`${basePath}/companies/:id/edit`}
           element={<CompanyEditPage />}
         />
-      </Route>
+      {/* </Route> */}
       <Route element={<ProtectedRoute />}>
         <Route
           path={`${basePath}/validation-dashboard`}
