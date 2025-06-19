@@ -1,6 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { IconCheckbox } from "@/components/ui/icon-checkbox";
 import { Undo2 } from "lucide-react";
+import { validateValue } from "../../../utils/editorValidation";
 
 export interface CompanyEditInputFieldProps {
   type: "date" | "number" | "text";
@@ -39,30 +40,16 @@ export function CompanyEditInputField({
     ? formData.get(name + "-checkbox") === "true"
     : verified;
 
-  // Determine if the value has changed
-  const valueChanged = String(currentValue) !== String(value);
-
-  // Verification badge logic:
-  // - If previously verified and value changed, badge is selectable
-  // - If previously verified and value not changed, badge is not selectable
-  // - Otherwise, badge is selectable as before
+  // Use shared validation helper for badge and disabled state
   let isDisabled = false;
-  if (typeof originalVerified === "boolean") {
-    if (originalVerified) {
-      isDisabled = !valueChanged;
-    }
-  } else if (verified === true) {
-    isDisabled = true;
-  }
-
-  // Determine badge color: muted green if previously verified and not changed, bright green if verified and changed
   let badgeIconClass = "";
   if (displayAddition === "verification") {
-    if (originalVerified && !valueChanged) {
-      badgeIconClass = "text-green-4"; // muted green
-    } else if (currentVerified) {
-      badgeIconClass = "text-green-3"; // bright green
-    }
+    [isDisabled, badgeIconClass] = validateValue({
+      value: currentValue ?? "",
+      originalValue: value,
+      originalVerified: !!originalVerified,
+      verified: !!currentVerified,
+    });
   }
 
   const topBracket = (

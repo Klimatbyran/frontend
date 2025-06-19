@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { updateCompanyIndustry, updateCompanyBaseYear } from "@/lib/api";
+import { validateValue } from "../../../utils/editorValidation";
 import type {
   CompanyDetails as CompanyDetailsType,
   GicsOption,
@@ -16,6 +16,7 @@ import {
 import { Undo2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useGicsCodes } from "@/hooks/companies/useGicsCodes";
+import { useCompanyEditDetailsSave } from "@/hooks/companies/useCompanyEditDetailsSave";
 
 export function CompanyEditDetails({
   company,
@@ -37,8 +38,6 @@ export function CompanyEditDetails({
   const [baseYearVerified, setBaseYearVerified] = useState(
     !!company.baseYear?.metadata?.verifiedBy,
   );
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [comment, setComment] = useState<string>("");
   const [source, setSource] = useState<string>("");
   const {
@@ -52,6 +51,12 @@ export function CompanyEditDetails({
       ? gicsErrorObj.message
       : "Failed to load industry options"
     : null;
+  const [error, setError] = useState<string | null>(null);
+  const {
+    saveCompanyEditDetails,
+    isPending: loading,
+    error: mutationError,
+  } = useCompanyEditDetailsSave();
 
   // Reset to false if value changes
   useEffect(() => {
@@ -73,59 +78,34 @@ export function CompanyEditDetails({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [baseYear]);
 
-  // --- Industry validation logic ---
-  const industryOriginalVerified = !!company.industry?.metadata?.verifiedBy;
-  const industryValueChanged =
-    subIndustryCode !== (company.industry?.industryGics?.subIndustryCode || "");
-  let industryBadgeIconClass = "";
-  if (industryOriginalVerified && !industryValueChanged) {
-    industryBadgeIconClass = "text-green-4";
-  } else if (industryVerified && industryValueChanged) {
-    industryBadgeIconClass = "text-green-3";
-  }
-  const industryIsDisabled = industryOriginalVerified && !industryValueChanged;
+  const [industryIsDisabled, industryBadgeIconClass] = validateValue({
+    value: subIndustryCode,
+    originalValue: company.industry?.industryGics?.subIndustryCode || "",
+    originalVerified: !!company.industry?.metadata?.verifiedBy,
+    verified: industryVerified,
+  });
+  const [baseYearIsDisabled, baseYearBadgeIconClass] = validateValue({
+    value: String(baseYear),
+    originalValue: String(company.baseYear?.year || ""),
+    originalVerified: !!company.baseYear?.metadata?.verifiedBy,
+    verified: baseYearVerified,
+  });
 
-  // --- Base year validation logic ---
-  const baseYearOriginalVerified = !!company.baseYear?.metadata?.verifiedBy;
-  const baseYearValueChanged =
-    String(baseYear) !== String(company.baseYear?.year || "");
-  let baseYearBadgeIconClass = "";
-  if (baseYearOriginalVerified && !baseYearValueChanged) {
-    baseYearBadgeIconClass = "text-green-4";
-  } else if (baseYearVerified && baseYearValueChanged) {
-    baseYearBadgeIconClass = "text-green-3";
-  }
-  const baseYearIsDisabled = baseYearOriginalVerified && !baseYearValueChanged;
-
-  const handleSave = async () => {
-    setLoading(true);
+  const handleSave = () => {
     setError(null);
-    try {
-      const metadata: Record<string, string> = {};
-      if (comment) metadata.comment = comment;
-      if (source) metadata.source = source;
-      if (subIndustryCode) {
-        await updateCompanyIndustry(
-          company.wikidataId,
-          subIndustryCode,
-          Object.keys(metadata).length ? metadata : undefined,
-        );
-      }
-      if (baseYear) {
-        await updateCompanyBaseYear(
-          company.wikidataId,
-          Number(baseYear),
-          Object.keys(metadata).length ? metadata : undefined,
-        );
-      }
-      if (onSave) {
-        onSave();
-      }
-    } catch (e: any) {
-      setError(e.message || "Failed to update");
-    } finally {
-      setLoading(false);
-    }
+    saveCompanyEditDetails(
+      {
+        company,
+        subIndustryCode,
+        baseYear,
+        comment,
+        source,
+        onSave,
+      },
+      {
+        onError: (e) => setError(e.message || "Failed to update"),
+      },
+    );
   };
 
   const selectedGics: GicsOption | undefined = (
@@ -308,7 +288,9 @@ export function CompanyEditDetails({
           onChange={(e) => setSource(e.target.value)}
         />
       </div>
-      {error && <div style={{ color: "red" }}>{error}</div>}
+      {(error || mutationError) && (
+        <div style={{ color: "red" }}>{error || mutationError?.message}</div>
+      )}
       <button
         onClick={handleSave}
         disabled={loading}
