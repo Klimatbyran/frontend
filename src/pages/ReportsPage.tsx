@@ -8,16 +8,16 @@ export function ReportsPage() {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
 
-  // First, get all reports in the current language
-  const reportsInCurrentLanguage = reports.filter(
-    (report) => report.language === currentLanguage,
-  );
-
-  // If there are no reports in the current language, use Swedish reports
-  const languageFilteredReports =
-    reportsInCurrentLanguage.length > 0
-      ? reportsInCurrentLanguage
-      : reports.filter((report) => report.language === "sv");
+  // Only show reports if the report's language array includes the current language or 'all'
+  const languageFilteredReports = reports.filter((report) => {
+    if (!Array.isArray(report.language)) return false;
+    return (
+      report.language
+        .map((l) => l.toLowerCase())
+        .includes(currentLanguage.toLowerCase()) ||
+      report.language.map((l) => l.toLowerCase()).includes("all")
+    );
+  });
 
   const canonicalUrl = "https://klimatkollen.se/reports";
   const pageTitle = t("reportsPage.title");
@@ -40,7 +40,12 @@ export function ReportsPage() {
     },
   };
 
-  const items = languageFilteredReports.map((report) => ({
+  // Sort by most recent date first
+  const sortedReports = [...languageFilteredReports].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+  );
+
+  const items = sortedReports.map((report) => ({
     id: report.id.toString(),
     title: report.title,
     excerpt: report.excerpt,
