@@ -370,6 +370,17 @@
         "paragraph7": "Dessa lokala koldioxidbudgeter möjliggör jämförelser mellan faktiska utsläpp och de minskningar som krävs. Klimatkollen presenterar koldioxidbudgeter för kommuner både som numeriska värden och som utvecklingskurvor, vilket illustrerar den nödvändiga minskningen av utsläpp för att hålla sig i linje med Parisavtalet.",
         "paragraph8": "Förutom Tyndall-modellen som används av Klimatkollen finns andra sätt att beräkna en nationell koldioxidbudget. Se till exempel Chalmers <0>här</0>."
       },
+      "carbonLaw": {
+        "title": "Carbon Law",
+        "description": "Vi använder en reviderad version av ursprungliga Carbon Law för att visa en nödvändig utsläppsminskningsbana på varje företags eller kommuns historiska utsläppsgraf. Denna linje visar hur mycket företaget eller kommunen behöver minska sina utsläpp för att följa Parisavtalet.",
+        "paragraph1": "Carbon Law hjälper företag och myndigheter att ha ett mål för att minska sina koldioxidutsläpp; det är en tumregel som alla aktörer kan använda (världen, land, företag, kommun, individ, etc.). Ursprungliga Carbon Law sa att utsläppen behövde minska med 7% per år från 2020, alltså halveras varje decennium. Den bygger på Parisavtalets mål att begränsa den globala uppvärmningen till väl under 2°C, med ett mål på 1,5°C och de koldioxidbudgetar som IPCC identifierat.",
+        "paragraph2": "Vi använder en reviderad version av ursprungliga Carbon Law för att visa en nödvändig utsläppsminskningsbana på varje företags eller kommuns historiska utsläppsgraf. Denna linje visar hur mycket företaget eller kommunen behöver minska sina utsläpp för att följa Parisavtalet.",
+        "paragraph3": "En reviderad Carbon Law är nödvändig eftersom vi inte lyckats nå målen i den ursprungliga Carbon Law om att minska utsläppen med 7% per år från 2020. Med nuvarande koldioxidbudget krävs en brantare minskningsbana för att nå Parisavtalets mål. Den nya tumregeln är att utsläppen behöver minska med 12% per år från 2025.",
+        "link": {
+          "title": "Applying Carbon Law From 2025",
+          "text": "Läs mer om Applying Carbon Law From 2025 från Klimatkollens white paper."
+        }
+      },
       "emissionTypes": {
         "title": "Olika typer av utsläpp",
         "description": "Lär dig om olika typer av utsläpp och hur de mäts",
