@@ -28,6 +28,22 @@ export type BlogPostMeta = {
 
 export const blogMetadata: BlogPostMeta[] = [
   {
+    id: "carbon-law-from-2025",
+    title: "Q&A: Klimatkollen’s adjusted Carbon Law emissions reduction trajectory",
+    excerpt:
+      "Answering questions related to Klimatkollen’s white paper, Applying Carbon Law From 2025; the method used to visualise how corporate emissions compare to the Paris Agreement on Klimatkollen.se.",
+    date: "2025-06-23",
+    readTime: "7 min",
+    category: CategoryEnum.Methodology,
+    image: "/images/blogImages/2025_Carbon_Law.png",
+    language: LangEnum.EN,
+    author: {
+      name: "Frida Berry Eklund",
+      avatar: "/people/frida.jpg",
+    },
+    relatedPosts: ["metod", "utslappsberakning"],
+  },
+  {
     id: "hållbara-kolet",
     title: "Låt kolet stanna i jorden",
     excerpt:
@@ -125,5 +141,5 @@ export const blogMetadata: BlogPostMeta[] = [
       avatar: "/people/ola.jpg",
     },
     relatedPosts: ["klimatmal", "metod"],
-  },
+  }
 ];
