@@ -12,6 +12,6 @@ export const articleMetaData: ArticleMeta[] = [
     id: "reporting",
     titleKey: "learnMoreOverview.reporting.title",
     excerptKey: "learnMoreOverview.reporting.excerpt",
-    image: "/images/learnMoreImages/reporting.jpg",
+    image: "/images/learnMoreImages/reporting.png",
   },
 ];
