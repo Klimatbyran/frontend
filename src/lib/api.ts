@@ -220,12 +220,13 @@ export async function updateCompanyIndustry(
   wikidataId: string,
   subIndustryCode: string,
   metadata?: { source?: string; comment?: string },
+  verified?: boolean,
 ) {
   const { data, error } = await client.POST(
     "/companies/{wikidataId}/industry",
     {
       params: { path: { wikidataId } },
-      body: { industry: { subIndustryCode }, metadata },
+      body: { industry: { subIndustryCode }, metadata, verified },
     },
   );
   if (error) throw error;
@@ -236,12 +237,13 @@ export async function updateCompanyBaseYear(
   wikidataId: string,
   baseYear: number,
   metadata?: { source?: string; comment?: string },
+  verified?: boolean,
 ) {
   const { data, error } = await client.POST(
     "/companies/{wikidataId}/base-year",
     {
       params: { path: { wikidataId } },
-      body: { baseYear, metadata },
+      body: { baseYear, metadata, verified },
     },
   );
   if (error) throw error;

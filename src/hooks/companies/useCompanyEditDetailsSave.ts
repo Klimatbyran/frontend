@@ -8,6 +8,8 @@ interface SaveCompanyEditDetailsArgs {
   baseYear: string | number;
   comment: string;
   source: string;
+  industryVerified?: boolean;
+  baseYearVerified?: boolean;
   onSave?: () => void;
 }
 
@@ -17,26 +19,56 @@ async function saveCompanyEditDetails({
   baseYear,
   comment,
   source,
+  industryVerified,
+  baseYearVerified,
   onSave,
 }: SaveCompanyEditDetailsArgs): Promise<void> {
+  // Get original values
+  const originalSubIndustryCode = company.industry?.industryGics
+    ?.subIndustryCode
+    ? String(company.industry.industryGics.subIndustryCode)
+    : "";
+  const originalIndustryVerified = !!company.industry?.metadata?.verifiedBy;
+  const originalBaseYear = String(company.baseYear?.year || "");
+  const originalBaseYearVerified = !!company.baseYear?.metadata?.verifiedBy;
+
+  // Prepare metadata if populated
   const metadata: Record<string, string> = {};
   if (comment) metadata.comment = comment;
   if (source) metadata.source = source;
-  if (subIndustryCode) {
+  const hasMetadata = Object.keys(metadata).length > 0;
+
+  let didChange = false;
+
+  // Only update industry if code or verified changed
+  if (
+    subIndustryCode !== originalSubIndustryCode ||
+    industryVerified !== originalIndustryVerified
+  ) {
+    didChange = true;
     await updateCompanyIndustry(
       company.wikidataId,
       subIndustryCode,
-      Object.keys(metadata).length ? metadata : undefined,
+      hasMetadata ? metadata : undefined,
+      industryVerified,
     );
   }
-  if (baseYear) {
+
+  // Only update base year if year or verified changed
+  if (
+    String(baseYear) !== originalBaseYear ||
+    baseYearVerified !== originalBaseYearVerified
+  ) {
+    didChange = true;
     await updateCompanyBaseYear(
       company.wikidataId,
       Number(baseYear),
-      Object.keys(metadata).length ? metadata : undefined,
+      hasMetadata ? metadata : undefined,
+      baseYearVerified,
     );
   }
-  if (onSave) {
+
+  if (didChange && onSave) {
     onSave();
   }
 }

@@ -6,6 +6,18 @@ export function useGicsCodes() {
   return useQuery({
     queryKey: ["industry-gics"],
     queryFn: getIndustryGics,
-    select: (data): GicsOption[] => Object.values(data || {}),
+    select: (data): GicsOption[] =>
+      Object.entries(data || {}).map(([code, value]) => {
+        const v = value as any;
+        return {
+          code,
+          label: v.subIndustryName,
+          sector: v.sectorName,
+          group: v.groupName,
+          industry: v.industryName,
+          description: v.subIndustryDescription,
+          subIndustryName: v.subIndustryName,
+        };
+      }),
   });
 }
