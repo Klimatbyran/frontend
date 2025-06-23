@@ -65,20 +65,17 @@ company_years AS (
   FROM reporting_with_company rwc
   LEFT JOIN "Company" c ON rwc."companyId" = c."wikidataId"
 )
--- Option 1: One row per company per year with any data
--- SELECT
---   company_name,
---   year
--- FROM company_years
--- WHERE has_scope1 OR has_scope2 OR has_scope3_stated OR has_scope3_sum
--- ORDER BY company_name, year;
-
--- Option 2: One row per company, with an array of years
 SELECT
-  company_name,
-  ARRAY_AGG(year ORDER BY year) AS years_with_data
+  year,
+  COUNT(*) FILTER (WHERE has_scope1) AS num_scope1,
+  COUNT(*) FILTER (WHERE has_scope2) AS num_scope2,
+  COUNT(*) FILTER (WHERE has_scope3_stated) AS num_scope3_stated,
+  COUNT(*) FILTER (WHERE has_scope3_sum) AS num_scope3_sum,
+  COUNT(*) FILTER (
+    WHERE has_scope1
+      AND has_scope2
+      AND (has_scope3_stated OR has_scope3_sum)
+  ) AS num_scope1_2_3_any
 FROM company_years
-WHERE has_scope1 OR has_scope2 OR has_scope3_stated OR has_scope3_sum
-GROUP BY company_name
-HAVING NOT '2024' = ANY(ARRAY_AGG(year))
-ORDER BY company_name; 
+GROUP BY year
+ORDER BY year; 

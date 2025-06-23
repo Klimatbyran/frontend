@@ -58,6 +58,11 @@ company_years AS (
   SELECT
     c."name" AS company_name,
     rwc."year",
+    rwc.s1_total,
+    rwc.s2_mb,
+    rwc.s2_lb,
+    rwc.scope3_total,
+    rwc.scope3_categories_sum,
     (rwc.s1_total IS NOT NULL) AS has_scope1,
     (rwc.s2_mb IS NOT NULL OR rwc.s2_lb IS NOT NULL) AS has_scope2,
     (rwc.scope3_total IS NOT NULL) AS has_scope3_stated,
@@ -65,12 +70,30 @@ company_years AS (
   FROM reporting_with_company rwc
   LEFT JOIN "Company" c ON rwc."companyId" = c."wikidataId"
 )
+-- Option 1: One row per company per year with any data (nonzero only)
 SELECT
-  year,
-  COUNT(*) FILTER (WHERE has_scope1) AS num_scope1,
-  COUNT(*) FILTER (WHERE has_scope2) AS num_scope2,
-  COUNT(*) FILTER (WHERE has_scope3_stated) AS num_scope3_stated,
-  COUNT(*) FILTER (WHERE has_scope3_sum) AS num_scope3_sum
+  company_name,
+  year
 FROM company_years
-GROUP BY year
-ORDER BY year; 
+WHERE (
+  (has_scope1 OR has_scope2 OR has_scope3_stated OR has_scope3_sum)
+  AND year = '2024'
+  AND (
+    COALESCE(s1_total, 0) > 0
+    OR COALESCE(s2_mb, 0) > 0
+    OR COALESCE(s2_lb, 0) > 0
+    OR COALESCE(scope3_total, 0) > 0
+    OR COALESCE(scope3_categories_sum, 0) > 0
+  )
+)
+ORDER BY company_name, year;
+
+-- Option 2: One row per company, with an array of years
+-- SELECT
+--   company_name,
+--   ARRAY_AGG(year ORDER BY year) AS years_with_data
+-- FROM company_years
+-- WHERE has_scope1 OR has_scope2 OR has_scope3_stated OR has_scope3_sum
+-- GROUP BY company_name
+-- HAVING NOT '2024' = ANY(ARRAY_AGG(year))
+-- ORDER BY company_name; 
