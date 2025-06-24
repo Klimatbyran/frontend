@@ -22,7 +22,7 @@ const EmissionsSourcesAnalysis: React.FC<EmissionsSourcesAnalysisProps> = ({
   const screenSize = useScreenSize();
   const sectorNames = useSectorNames();
 
-  const [selectedYear, setSelectedYear] = useState<string>("2023");
+  const [selectedYear, setSelectedYear] = useState<string>("2024");
 
   // If no sectors are selected, use all sectors except "all"
   const effectiveSectors =

@@ -61,6 +61,17 @@ export function useCompanies() {
             ...period,
             id: period.startDate,
             emissions: cleanEmissions(period.emissions),
+            economy: period.economy
+              ? {
+                  ...period.economy,
+                  turnover: period.economy.turnover
+                    ? { ...period.economy.turnover }
+                    : null,
+                  employees: period.economy.employees
+                    ? { ...period.economy.employees }
+                    : null,
+                }
+              : null,
           })),
           metrics: {
             emissionsReduction,

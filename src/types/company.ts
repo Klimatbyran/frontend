@@ -5,7 +5,6 @@ import { DivideIcon as LucideIcon } from "lucide-react";
 export interface BaseCompany {
   wikidataId: string;
   name: string;
-  description: string | null;
   descriptions?: {
     id: string;
     language: "SV" | "EN";
@@ -31,15 +30,38 @@ export type CompanyDetails = NonNullable<
   paths["/companies/{wikidataId}"]["get"]["responses"][200]["content"]["application/json"]
 >;
 
-// Use backend types for edit flow
+// Canonical type matches backend
 export type ReportingPeriod = NonNullable<
   paths["/companies/{wikidataId}"]["get"]["responses"][200]["content"]["application/json"]
 >["reportingPeriods"][number];
 
+// Derived type for frontend, with optional id fields
+export type ReportingPeriodWithOptionalIds = Omit<
+  ReportingPeriod,
+  "economy"
+> & {
+  economy: {
+    id?: string;
+    turnover: {
+      id?: string;
+      value: number | null;
+      currency: string | null;
+      metadata: any;
+    } | null;
+    employees: {
+      id?: string;
+      value: number | null;
+      unit: string | null;
+      metadata: any;
+    } | null;
+  } | null;
+};
+
 export type Emissions = NonNullable<ReportingPeriod["emissions"]>;
 
 // Extended company type with metrics and optional rankings
-export interface RankedCompany extends BaseCompany {
+export interface RankedCompany extends Omit<BaseCompany, "reportingPeriods"> {
+  reportingPeriods: ReportingPeriodWithOptionalIds[];
   metrics: {
     emissionsReduction: number;
     displayReduction: string;

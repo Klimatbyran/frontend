@@ -76,7 +76,7 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
   const sectorNames = useSectorNames();
 
   const [chartType, setChartType] = useState<ChartType>("pie");
-  const [selectedYear, setSelectedYear] = useState<string>("2023");
+  const [selectedYear, setSelectedYear] = useState<string>("2024");
   const [selectedSector, setSelectedSector] = useState<string | null>(null);
   const screenSize = useScreenSize();
   const { size } = useResponsiveChartSize();
