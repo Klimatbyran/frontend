@@ -8,6 +8,8 @@ import { useTranslation } from "react-i18next";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { createSlug } from "@/lib/utils";
 import { CompanyScope3 } from "@/components/companies/detail/CompanyScope3";
+import { getCompanyDescription } from "@/utils/companyDescription";
+import { useLanguage } from "@/components/LanguageProvider";
 
 export function CompanyDetailPage() {
   const { t } = useTranslation();
@@ -16,6 +18,10 @@ export function CompanyDetailPage() {
   // It's either directly from /companies/:id or extracted from /foretag/:slug-:id
   const { company, loading, error } = useCompanyDetails(id!);
   const [selectedYear, setSelectedYear] = useState<string>("latest");
+  const { currentLanguage } = useLanguage();
+  const description = company
+    ? getCompanyDescription(company, currentLanguage)
+    : null;
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -106,7 +112,7 @@ export function CompanyDetailPage() {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: company.name,
-    description: company.description,
+    description: description,
     url: canonicalUrl,
     industry: industry,
   };
@@ -189,7 +195,15 @@ export function CompanyDetailPage() {
               unit:
                 period.emissions!.scope3!.statedTotalEmissions?.unit ||
                 t("emissionsUnit"),
-              categories: period.emissions!.scope3!.categories!,
+              categories: period
+                .emissions!.scope3!.categories!.filter(
+                  (cat) => cat.total !== null,
+                )
+                .map((cat) => ({
+                  category: cat.category,
+                  total: cat.total as number,
+                  unit: cat.unit,
+                })),
             }))
             .sort((a, b) => a.year - b.year)}
         />

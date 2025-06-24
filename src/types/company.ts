@@ -6,6 +6,11 @@ export interface BaseCompany {
   wikidataId: string;
   name: string;
   description: string | null;
+  descriptions?: {
+    id: string;
+    language: "SV" | "EN";
+    text: string;
+  }[];
   industry: {
     industryGics: {
       sectorCode: string;
