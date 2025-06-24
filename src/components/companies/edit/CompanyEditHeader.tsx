@@ -2,7 +2,7 @@ import { Pen, X } from "lucide-react";
 import { Text } from "@/components/ui/text";
 import type { CompanyDetails } from "@/types/company";
 import Select, { MultiValue, ActionMeta } from "react-select";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -27,12 +27,6 @@ export function CompanyEditHeader({
     };
   });
   periods.sort();
-
-  useEffect(() => {
-    if (periods.length > 0) {
-      onYearsSelect([periods[0].value]);
-    }
-  }, [onYearsSelect, periods]);
 
   const selected = (
     newValue: MultiValue<{ value: string; label: string }>,

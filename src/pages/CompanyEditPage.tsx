@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useCompanyDetails } from "@/hooks/companies/useCompanyDetails";
 import { Text } from "@/components/ui/text";
 import { CompanyEditHeader } from "@/components/companies/edit/CompanyEditHeader";
@@ -53,6 +53,21 @@ export function CompanyEditPage() {
           return periods;
         }, [] as ReportingPeriod[])
       : [];
+
+  // Set default selected year on first load or when company changes
+  useEffect(() => {
+    if (
+      company &&
+      company.reportingPeriods.length > 0 &&
+      selectedYears.length === 0
+    ) {
+      const latestYear = company.reportingPeriods
+        .map((p) => new Date(p.endDate).getFullYear())
+        .sort((a, b) => b - a)[0]
+        .toString();
+      setSelectedYears([latestYear]);
+    }
+  }, [company, selectedYears.length]);
 
   if (loading || isUpdating) {
     return (

@@ -104,10 +104,8 @@ export function CompanyEditScope3({
             const categories = (period.emissions?.scope3?.categories || [])
               .filter((cat) => cat.total !== null)
               .map((cat) => ({
-                category: cat.category,
+                ...cat,
                 total: cat.total as number,
-                unit: cat.unit,
-                metadata: cat.metadata,
               }));
             return (
               <CompanyEditInputField
