@@ -715,6 +715,10 @@
     "hitNetZero": "Predicted to hit net zero",
     "never": "Never",
     "emissionsDevelopment": "Emissions development",
+    "graph": {
+      "overview": "Overview",
+      "sectors": "Emission sources"
+    },
     "noParisPath": "The municipality's carbon budget has been exhausted, which means that no Paris Agreement line is shown in the graph below",
     "inTons": "In tons CO₂",
     "futureEmissions": "Future emissions",
@@ -1164,6 +1168,10 @@
     "success": {
       "title": "Changes have been saved!",
       "description": "Changes to the reporting period have been made successfully"
+    },
+    "successDetails": {
+      "title": "Changes have been saved!",
+      "description": "Changes to the base year and/or industry sector have been made successfully"
     },
     "unsavedChanges": {
       "title": "Unsaved Changes",

@@ -738,6 +738,7 @@
     "bicycleMetrePerCapita": "Cykelvägsmeter per invånare",
     "sectorEmissions": "Utsläppskällor",
     "sectorEmissionsYear": "Utsläpp per sektor år {{year}}",
+    "filteredSectors": "Filtrerade sektorer",
     "sectorChart": {
       "clickToFilter": "Klicka för att filtrera bort",
       "clickToShow": "Klicka för att visa"
@@ -1167,6 +1168,10 @@
     "success": {
       "title": "Ändringarna har sparats!",
       "description": "Ändringar i rapporteringsperioden har gjorts framgångsrikt"
+    },
+    "successDetails": {
+      "title": "Ändringarna har sparats!",
+      "description": "Ändringar i basår och/eller branschsektor har gjorts framgångsrikt"
     },
     "unsavedChanges": {
       "title": "Osparade ändringar",

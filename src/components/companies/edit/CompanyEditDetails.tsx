@@ -17,6 +17,7 @@ import { Undo2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useGicsCodes } from "@/hooks/companies/useGicsCodes";
 import { useCompanyEditDetailsSave } from "@/hooks/companies/useCompanyEditDetailsSave";
+import { useToast } from "@/contexts/ToastContext";
 
 export function CompanyEditDetails({
   company,
@@ -26,6 +27,7 @@ export function CompanyEditDetails({
   onSave?: () => void;
 }) {
   const { t } = useTranslation();
+  const { showToast } = useToast();
   const [subIndustryCode, setSubIndustryCode] = useState(
     company.industry?.industryGics?.subIndustryCode
       ? String(company.industry.industryGics.subIndustryCode)
@@ -114,10 +116,20 @@ export function CompanyEditDetails({
         onSave,
       },
       {
-        onError: (e) => setError(e.message || "Failed to update"),
+        onError: (e) => {
+          setError(e.message || "Failed to update");
+          showToast(
+            t("companyEditPage.error.couldNotSave"),
+            t("companyEditPage.error.tryAgainLater"),
+          );
+        },
         onSuccess: () => {
           setComment("");
           setSource("");
+          showToast(
+            t("companyEditPage.successDetails.title"),
+            t("companyEditPage.successDetails.description"),
+          );
         },
       },
     );
