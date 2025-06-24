@@ -189,7 +189,15 @@ export function CompanyDetailPage() {
               unit:
                 period.emissions!.scope3!.statedTotalEmissions?.unit ||
                 t("emissionsUnit"),
-              categories: period.emissions!.scope3!.categories!,
+              categories: period
+                .emissions!.scope3!.categories!.filter(
+                  (cat) => cat.total !== null,
+                )
+                .map((cat) => ({
+                  category: cat.category,
+                  total: cat.total as number,
+                  unit: cat.unit,
+                })),
             }))
             .sort((a, b) => a.year - b.year)}
         />

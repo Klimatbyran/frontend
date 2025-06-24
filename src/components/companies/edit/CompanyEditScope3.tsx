@@ -100,28 +100,32 @@ export function CompanyEditScope3({
           key={"scope-3-" + categoryId}
           name={`${categoryId}. ${categoryMetadata[categoryId]?.name || ""}`}
         >
-          {periods.map((period: ReportingPeriod) => (
-            <CompanyEditInputField
-              name={`scope-3-${period.id}-${categoryId}`}
-              type="number"
-              key={`scope-3-${period.id}-${categoryId}`}
-              displayAddition="verification"
-              verified={getCategoryVerified(
-                categoryId - 1,
-                period.emissions?.scope3?.categories,
-              )}
-              originalVerified={getCategoryVerified(
-                categoryId - 1,
-                period.emissions?.scope3?.categories,
-              )}
-              value={getCategoryValue(
-                categoryId - 1,
-                period.emissions?.scope3?.categories,
-              )}
-              onInputChange={onInputChange}
-              formData={formData}
-            />
-          ))}
+          {periods.map((period: ReportingPeriod) => {
+            const categories = (period.emissions?.scope3?.categories || [])
+              .filter((cat) => cat.total !== null)
+              .map((cat) => ({
+                category: cat.category,
+                total: cat.total as number,
+                unit: cat.unit,
+                metadata: cat.metadata,
+              }));
+            return (
+              <CompanyEditInputField
+                name={`scope-3-${period.id}-${categoryId}`}
+                type="number"
+                key={`scope-3-${period.id}-${categoryId}`}
+                displayAddition="verification"
+                verified={getCategoryVerified(categoryId - 1, categories)}
+                originalVerified={getCategoryVerified(
+                  categoryId - 1,
+                  categories,
+                )}
+                value={getCategoryValue(categoryId - 1, categories)}
+                onInputChange={onInputChange}
+                formData={formData}
+              />
+            );
+          })}
         </CompanyEditRow>
       ))}
     </>
