@@ -74,6 +74,14 @@ export function CompanyOverview({
       company.industry?.industryGics?.en?.sectorName ||
       t("companies.overview.unknownSector");
 
+  // Get the translated company description
+  const description =
+    company.descriptions?.find(
+      (d) =>
+        d.language.toLowerCase() === currentLanguage.toLowerCase() &&
+        d.text?.trim(),
+    )?.text || null;
+
   const yearOverYearChange = calculateRateOfChange(
     selectedPeriod?.emissions?.calculatedTotalEmissions,
     previousPeriod?.emissions?.calculatedTotalEmissions,
@@ -124,7 +132,7 @@ export function CompanyOverview({
               </div>
             )}
           </div>
-          <CompanyDescription description={company.description} />
+          <CompanyDescription description={description} />
           <div className="flex flex-row items-center gap-2 my-4">
             <Text
               variant="body"
