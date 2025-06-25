@@ -8,7 +8,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useMunicipalitySectors } from "@/hooks/useMunicipalitySectors";
+import { useMunicipalitySectors } from "@/hooks/municipalities/useMunicipalitySectors";
 
 interface LegendProps {
   data: Array<{

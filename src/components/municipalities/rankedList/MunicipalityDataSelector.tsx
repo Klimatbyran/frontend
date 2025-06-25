@@ -1,5 +1,5 @@
 import { t } from "i18next";
-import { useMunicipalityKPIs } from "../../../hooks/useMunicipalityKPIs";
+import { useMunicipalityKPIs } from "../../../hooks/municipalities/useMunicipalityKPIs";
 import { KPIValue } from "@/types/municipality";
 import { DataSelector } from "@/components/layout/DataSelector";
 import { BarChart3 } from "lucide-react";

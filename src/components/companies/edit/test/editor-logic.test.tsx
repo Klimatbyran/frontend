@@ -29,7 +29,23 @@ describe("Editor Logic Integration", () => {
     expect(onInputChange).toHaveBeenCalledWith("test", "123");
   });
 
-  it("CompanyEditInputField: disables checkbox if verified", () => {
+  it("CompanyEditInputField: disables checkbox if originalVerified and value unchanged", () => {
+    render(
+      <CompanyEditInputField
+        type="number"
+        value={0}
+        name="test"
+        displayAddition="verification"
+        verified={false}
+        originalVerified={true}
+        onInputChange={vi.fn()}
+        formData={new Map()}
+      />,
+    );
+    expect(screen.getByRole("checkbox")).toBeDisabled();
+  });
+
+  it("CompanyEditInputField: does not disable checkbox if only verified is true", () => {
     render(
       <CompanyEditInputField
         type="number"
@@ -37,11 +53,12 @@ describe("Editor Logic Integration", () => {
         name="test"
         displayAddition="verification"
         verified={true}
+        originalVerified={false}
         onInputChange={vi.fn()}
         formData={new Map()}
       />,
     );
-    expect(screen.getByRole("checkbox")).toBeDisabled();
+    expect(screen.getByRole("checkbox")).not.toBeDisabled();
   });
 
   it("CompanyEditInputField: calls onInputChange for checkbox", () => {

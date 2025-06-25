@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useCompanies } from "./companies/useCompanies";
-import { useMunicipalities } from "./useMunicipalities";
+import { useMunicipalities } from "./municipalities/useMunicipalities";
 
 export type CombinedData = {
   name: string;

@@ -3,7 +3,7 @@ import { RankedList, RankedListItem } from "@/components/RankedList";
 import { ContentBlock } from "@/components/ContentBlock";
 import { Typewriter } from "@/components/ui/typewriter";
 import { useCompanies } from "@/hooks/companies/useCompanies";
-import { useMunicipalities } from "@/hooks/useMunicipalities";
+import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
 import { useTranslation } from "react-i18next";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { useEffect } from "react";
