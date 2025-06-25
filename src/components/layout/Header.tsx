@@ -1,5 +1,5 @@
 import { BarChart3, ChevronDown, Menu, X, Mail } from "lucide-react";
-import { Link, useLocation, matchPath } from "react-router-dom";
+import { Link, useLocation, matchPath, PathParam } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useState, useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -14,6 +14,9 @@ import {
 import { NewsletterPopover } from "../NewsletterPopover";
 import { useLanguage } from "../LanguageProvider";
 import { HeaderSearchButton } from "../search/HeaderSearchButton";
+import { useCompanyDetails } from "@/hooks/companies/useCompanyDetails";
+import { useMunicipalityDetails } from "@/hooks/useMunicipalityDetails";
+import { useScreenSize } from "@/hooks/useScreenSize";
 
 export function Header() {
   const { t } = useTranslation();
@@ -22,6 +25,8 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const toggleMenu = useCallback(() => setMenuOpen((prev) => !prev), []);
+  const { isMobile } = useScreenSize();
+  const [displayViewedItemName, setDisplayViewedItemName] = useState(false);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -29,6 +34,37 @@ export function Header() {
       setIsSignUpOpen(true);
     }
   }, [location]);
+
+  useEffect(() => {
+    const onScroll = () => {
+      if (window.scrollY >= 200) {
+        setDisplayViewedItemName(true);
+      } else {
+        setDisplayViewedItemName(false);
+      }
+    };
+
+    window.addEventListener("scroll", onScroll);
+
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  //Gets the name of the actively viewed company or municipality
+  const paramSegments = location.pathname.split("/");
+  const viewedItemId = paramSegments.pop() ?? "";
+  const isCompanyPage = paramSegments.includes("companies");
+  const isMunicipalityPage = paramSegments.includes("municipalities");
+
+  const viewedCompany = useCompanyDetails(isCompanyPage ? viewedItemId : "");
+  const viewedMunicipality = useMunicipalityDetails(
+    isMunicipalityPage ? viewedItemId : "",
+  );
+
+  const viewedItemName = isCompanyPage
+    ? viewedCompany.company?.name
+    : isMunicipalityPage
+      ? viewedMunicipality.municipality?.name
+      : undefined;
 
   const LanguageButtons = ({ className }: { className?: string }) => (
     <div className={cn("flex items-center gap-2", className)}>
@@ -121,6 +157,9 @@ export function Header() {
           >
             Klimatkollen
           </Link>
+          {isMobile && displayViewedItemName && viewedItemName ? (
+            <span>{viewedItemName}</span>
+          ) : null}
           <button
             className="lg:hidden text-white"
             onClick={toggleMenu}
