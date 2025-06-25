@@ -50,7 +50,8 @@ export const reports = [
   },
   {
     id: 3,
-    title: "Typology of Data Quality Problems in the Corporate Reporting of GHG Emissions",
+    title:
+      "Typology of Data Quality Problems in the Corporate Reporting of GHG Emissions",
     slug: "typology-of-data-quality-problems-in-corporate-reporting-of-ghg-emissions",
     date: "2025-05-26",
     excerpt:
@@ -60,17 +61,18 @@ export const reports = [
     author: {
       name: "Green DIA",
     },
-    pdfUrl: "/reports/Typology_of_Data_Quality_Problems_in_Corporate_Reporting.docx.pdf",
+    pdfUrl:
+      "/reports/Typology_of_Data_Quality_Problems_in_Corporate_Reporting.docx.pdf",
     coverImage: "/images/reportImages/typology-of-errors.png",
     language: ["en", "all"],
   },
   {
     id: 4,
-    title: "Bolagsklimatkollen 2024",
+    title: "Bolagsklimatkollen 2025",
     slug: "bolags-klimatkollen-2024",
     date: "2025-06-23",
     excerpt:
-      "Klimatkollen 2024 is a report that analyzes the corporate reporting of GHG emissions by 234 Swedish companies. The report is a collaboration between 2050 and Klimatkollen.",
+      "Klimatkollen 2025 är en rapport som analyserar företagens rapportering av växthusgasutsläpp för år 2024 från 235 svenska företag. Rapporten är ett samarbete mellan 2050 och Klimatkollen.",
     readTime: "15 min",
     category: "Report",
     author: {
@@ -79,7 +81,7 @@ export const reports = [
     },
     pdfUrl: "/reports/2025-06-23_Bolagsklimatkollen.pdf",
     coverImage: "/images/reportImages/2024_bolagsklimatkollen.png",
-    language: ["en", "all"],
+    language: ["sv", "all"],
   },
   {
     id: 5,
@@ -87,7 +89,7 @@ export const reports = [
     slug: "applying-carbon-law-from-2025",
     date: "2025-06-19",
     excerpt:
-      "Summary of Klimatkollen’s investigations for adjustments to the Carbon Law target trajectory, based on 2024 emissions and updated carbon budgets.",
+      "Summary of Klimatkollen's investigations for adjustments to the Carbon Law target trajectory, based on 2024 emissions and updated carbon budgets.",
     readTime: "7 min",
     category: "Report",
     author: {
