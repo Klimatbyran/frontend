@@ -72,7 +72,7 @@ export const reports = [
     slug: "bolags-klimatkollen-2024",
     date: "2025-06-23",
     excerpt:
-      "Klimatkollen 2025 är en rapport som analyserar företagens rapportering av växthusgasutsläpp för år 2024 från 235 svenska företag. Rapporten är ett samarbete mellan 2050 och Klimatkollen.",
+      "Bolagsklimatkollen 2025 är en rapport som analyserar företagens rapportering av växthusgasutsläpp för år 2024 från 235 svenska företag. Rapporten är ett samarbete mellan 2050 och Klimatkollen.",
     readTime: "15 min",
     category: "Report",
     author: {
