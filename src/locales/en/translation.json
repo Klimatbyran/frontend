@@ -215,7 +215,8 @@
   "reportsPage": {
     "title": "Reports",
     "description": "In-depth analyses and reports on Sweden's climate transition.",
-    "readMore": "Read more"
+    "readMore": "Read more",
+    "openReport": "Open Report"
   },
   "blogDetailPage": {
     "loading": "Loading...",

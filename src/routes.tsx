@@ -26,6 +26,7 @@ import { UnauthorizedErrorPage } from "./pages/error/UnauthorizedErrorPage";
 import { SupportPage } from "./pages/SupportPage";
 import { ValidationDashboard } from "./pages/ValidationDashboard";
 import { InternalDashboard } from "./pages/internal-dashboard/InternalDashboard";
+import { ReportLandingPage } from "./pages/ReportLandingPage";
 
 export function AppRoutes() {
   const { currentLanguage } = useLanguage();
@@ -92,6 +93,10 @@ export function AppRoutes() {
       <Route path={`${basePath}/support`} element={<SupportPage />} />
       <Route path={`${basePath}/articles`} element={<InsightsPage />} />
       <Route path={`${basePath}/reports`} element={<ReportsPage />} />
+      <Route
+        path={`${basePath}/reports/:reportId`}
+        element={<ReportLandingPage />}
+      />
       <Route path={`${basePath}/insights/:id`} element={<BlogDetailPage />} />
       <Route path={`${basePath}/learn-more`} element={<LearnMoreOverview />} />
       <Route
