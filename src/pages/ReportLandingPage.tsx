@@ -2,9 +2,11 @@ import { useParams } from "react-router-dom";
 import { reports } from "@/lib/constants/reports";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { ArrowUpRight } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export function ReportLandingPage() {
   const { reportId } = useParams<{ reportId: string }>();
+  const { t } = useTranslation();
   // Find the report by matching the PDF filename (without extension)
   const report = reports.find((r) => {
     if (!r.pdfUrl) return false;
@@ -53,7 +55,7 @@ export function ReportLandingPage() {
                 className="group overflow-hidden hover:text-white inline-flex items-center gap-2 px-6 py-3 mt-4 text-blue-2 text-lg font-medium"
                 style={{ textDecoration: "none" }}
               >
-                Open Report
+                {t("reportsPage.openReport")}
                 <ArrowUpRight className="w-5 h-5" />
               </a>
             </div>
