@@ -39,6 +39,10 @@ interface EmissionsLineChartProps {
   currentLanguage: "sv" | "en";
 }
 
+function hasTotalEmissions(d: ChartData): d is ChartData & { total: number } {
+  return d.total !== undefined && d.total !== null;
+}
+
 export default function EmissionsLineChart({
   data,
   companyBaseYear,
@@ -58,11 +62,8 @@ export default function EmissionsLineChart({
   // Helper to get last two periods with emissions
   function getLastTwoEmissionsPoints(data: ChartData[]) {
     return data
-      .filter(
-        (d): d is ChartData & { total: number } =>
-          d.total !== undefined && d.total !== null,
-      )
-      .map((d) => ({ x: d.year, y: d.total }))
+      .filter(hasTotalEmissions)
+      .map((d) => ({ x: d.year, y: d.total as number }))
       .slice(-2);
   }
 
@@ -74,13 +75,8 @@ export default function EmissionsLineChart({
     const regressionPoints: { x: number; y: number }[] = (() => {
       if (companyBaseYear) {
         const baseYearPoints = data
-          .filter(
-            (d): d is ChartData & { total: number } =>
-              d.total !== undefined &&
-              d.total !== null &&
-              d.year >= companyBaseYear,
-          )
-          .map((d) => ({ x: d.year, y: d.total }));
+          .filter((d) => hasTotalEmissions(d) && d.year >= companyBaseYear)
+          .map((d) => ({ x: d.year, y: d.total as number }));
         // Fallback to last two reporting periods with emissions if not enough points at/after base year or no base year
         if (baseYearPoints.length < 2) {
           return getLastTwoEmissionsPoints(data);
