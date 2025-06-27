@@ -31,13 +31,12 @@ reports.forEach((report) => {
     <meta name="twitter:description" content="${report.excerpt}" />
     <meta name="twitter:image" content="${makeAbsoluteUrl(report.coverImage)}" />
     <link rel="canonical" href="${makeAbsoluteUrl(`/reports/${folderName}`)}" />
-    <link href="https://fonts.googleapis.com/css?family=DM+Sans:400,700&display=swap" rel="stylesheet">
     <style>
       body {
         background: #000;
         color: #59a0e1;
         margin: 0;
-        font-family: 'DM Sans', system-ui, sans-serif;
+        font-family: system-ui, sans-serif;
       }
       .loading-container {
         display: flex;
