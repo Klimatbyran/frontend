@@ -9,10 +9,11 @@
     "prebuild": "npm run build:dataguide",
     "build": "tsc && vite build",
     "build:dataguide": "node scripts/build-dataguide.js",
-    "postbuild": "npm run generate-sitemap || echo 'Sitemap generation failed, but build completed'",
+    "postbuild": "npm run generate-sitemap || echo 'Sitemap generation failed, but build completed' && tsx scripts/generate-report-html.ts",
     "lint": "eslint .",
     "test": "vitest",
     "preview": "vite preview",
+    "generate-report-html": "tsx scripts/generate-report-html.ts",
     "generate-api": "npx openapi-typescript https://stage.klimatkollen.se/api/openapi.json -o src/lib/api-types.ts",
     "generate-api-local": "npx openapi-typescript http://localhost:3000/api/openapi.json -o src/lib/api-types.ts",
     "generate-sitemap": "NODE_OPTIONS='--no-warnings' tsx scripts/generate-sitemap.ts || echo 'Sitemap generation failed, continuing build'"
