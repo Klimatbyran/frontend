@@ -39,6 +39,10 @@ interface EmissionsLineChartProps {
   currentLanguage: "sv" | "en";
 }
 
+function hasTotalEmissions(d: ChartData): d is ChartData & { total: number } {
+  return d.total !== undefined && d.total !== null;
+}
+
 export default function EmissionsLineChart({
   data,
   companyBaseYear,
@@ -55,33 +59,45 @@ export default function EmissionsLineChart({
   const endYear = 2030;
   const currentYear = new Date().getFullYear();
 
+  // Helper to get last two periods with emissions
+  function getLastTwoEmissionsPoints(data: ChartData[]) {
+    return data
+      .filter(hasTotalEmissions)
+      .map((d) => ({ x: d.year, y: d.total as number }))
+      .slice(-2);
+  }
+
   const approximatedData = useMemo(() => {
     if (dataView !== "overview") {
       return null;
     }
 
-    const validPoints = data
-      .filter(
-        (d): d is ChartData & { total: number } =>
-          d.total !== undefined && d.total !== null,
-      )
-      .map((d) => ({
-        x: d.year,
-        y: d.total,
-      }))
-      .slice(-2);
+    const regressionPoints: { x: number; y: number }[] = (() => {
+      if (companyBaseYear) {
+        const baseYearPoints = data
+          .filter((d) => hasTotalEmissions(d) && d.year >= companyBaseYear)
+          .map((d) => ({ x: d.year, y: d.total as number }));
+        // Fallback to last two reporting periods with emissions if not enough points at/after base year or no base year
+        if (baseYearPoints.length < 2) {
+          return getLastTwoEmissionsPoints(data);
+        }
+        return baseYearPoints;
+      } else {
+        return getLastTwoEmissionsPoints(data);
+      }
+    })();
 
-    if (validPoints.length < 2) {
+    if (regressionPoints.length < 2) {
       return null;
     }
 
-    const regression = calculateLinearRegression(validPoints);
+    const regression = calculateLinearRegression(regressionPoints);
     if (!regression) {
       return null;
     }
 
     return generateApproximatedData(data, regression);
-  }, [data, dataView]);
+  }, [data, dataView, companyBaseYear]);
 
   return (
     <ResponsiveContainer width="100%" height="100%" className="w-full">
