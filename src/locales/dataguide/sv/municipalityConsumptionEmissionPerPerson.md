@@ -9,4 +9,4 @@ Som jämförelse:
 
 Det är ett bra mått för att förstå hur vardagsliv och konsumtion påverkar utsläppen.
 
-Om du vill utforska detta mer kan du kolla in: [https://www.sei.org/tools/konsumtionskompassen/](https://www.sei.org/tools/konsumtionskompassen/) och and [https://konsumtionskompassen.se/](https://konsumtionskompassen.se/)
+Om du vill utforska detta mer kan du kolla in: [https://www.sei.org/tools/konsumtionskompassen/](https://www.sei.org/tools/konsumtionskompassen/) och [https://konsumtionskompassen.se/](https://konsumtionskompassen.se/)
