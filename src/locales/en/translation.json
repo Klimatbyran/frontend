@@ -514,8 +514,8 @@
           },
           "sei": {
             "title": "Stockholm Environment Institute",
-            "text": "Household consumption-based emissions",
-            "link": "https://www.sei.org/tools/konsumtionskompassen/"
+            "text": "Household consumption-based emissions. License: CC BY-NC-ND 4.0 for Konsumtionskompassen by Stockholm Environment Institute.",
+            "link": "https://konsumtionskompassen.se/"
           },
           "powerCircle": {
             "title": "Power Circles database ELIS",
@@ -1079,8 +1079,8 @@
         "totalConsumptionEmission": {
           "label": "Consumption",
           "description": "Total emissions from consumption",
-          "detailedDescription": "Household consumption emissions (CO₂e) in tonnes per inhabitant and municipality in 2023 (estimated data). By 2050, emissions should be at most 1 tonne per person per year to be in line with the Paris Agreement.",
-          "source": "<0>Stockholm Environment Institute</0>"
+          "detailedDescription": "Household consumption emissions (CO₂e) in tonnes per inhabitant and municipality in 2022. By 2050, emissions should be at most 1 tonne per person per year to be in line with the Paris Agreement.",
+          "source": "<0>Stockholm Environment Institute (2025), Konsumtionskompassen. Licensed under CC BY-NC-ND 4.0.</0>"
         },
         "electricVehiclePerChargePoints": {
           "label": "Charging Stations",

@@ -43,7 +43,7 @@ export const useMunicipalityKPIs = (): KPIValue[] => {
       key: "totalConsumptionEmission",
       unit: "t",
       source: "municipalities.list.totalConsumptionEmission.source",
-      sourceUrls: ["https://www.sei.org/tools/konsumtionskompassen/"],
+      sourceUrls: ["https://konsumtionskompassen.se/"],
       description: t(
         "municipalities.list.kpis.totalConsumptionEmission.description",
       ),

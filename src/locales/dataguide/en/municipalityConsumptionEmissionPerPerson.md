@@ -9,4 +9,4 @@ For comparison:
 
 It’s a useful way to understand how daily life and consumption affect emissions.
 
-If you want to explore this more, you can check out: [https://www.sei.org/tools/konsumtionskompassen/](https://www.sei.org/tools/konsumtionskompassen/)
+If you want to explore this more, you can check out: [https://www.sei.org/tools/konsumtionskompassen/](https://www.sei.org/tools/konsumtionskompassen/) and [https://konsumtionskompassen.se/](https://konsumtionskompassen.se/)
