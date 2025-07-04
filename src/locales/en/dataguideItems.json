@@ -99,7 +99,7 @@
   "municipalityConsumptionEmissionPerPerson": {
     "title": "What does consumption emissions per person mean?",
     "content": [
-      "This number shows the average emissions caused by consumption in the municipality — including food, travel, housing, and goods — divided per resident.\n\nFor comparison:\n\n- Global average: ~4.7 tons per person per year\n- Swedish average: ~8 tons per person per year\n\nIt’s a useful way to understand how daily life and consumption affect emissions.\n\nIf you want to explore this more, you can check out: [https://www.sei.org/tools/konsumtionskompassen/](https://www.sei.org/tools/konsumtionskompassen/)"
+      "This number shows the average emissions caused by consumption in the municipality — including food, travel, housing, and goods — divided per resident. The national average is 5.5 tonnes per person. Added to this is each citizen's share of emissions from public consumption and investment, another 3.7 tonnes per person.\n\nFor comparison:\n\n- Global average: ~4.7 tons per person per year\n- Swedish average: ~9 tons per person per year\n\nIt’s a useful way to understand how daily life and consumption affect emissions.\n\nIf you want to explore this more, you can check out: [https://www.sei.org/tools/konsumtionskompassen/](https://www.sei.org/tools/konsumtionskompassen/) and [https://konsumtionskompassen.se/](https://konsumtionskompassen.se/)"
     ]
   },
   "municipalityDeeperChanges": {
@@ -129,7 +129,7 @@
   "municipalityHowCarbonBudgetWasCalculated": {
     "title": "How the Carbon Budget Was Calculated",
     "content": [
-      "Each municipality’s budget is based on its share of Sweden’s historical emissions (2015–2021) and excludes sectors like cement where necessary.\n\nWe use a method aligned with international models (Tyndall Centre) to allocate the national 80 Mt CO₂ budget starting in 2024."
+      "Each municipality’s budget is based on its share of Sweden’s historical emissions (2015–2021) and excludes cement where necessary.\n\nWe use a method aligned with international models (Tyndall Centre) to allocate the national 80 Mt CO₂ budget starting in 2024."
     ]
   },
   "municipalityImportanceOfEmissionSources": {
@@ -141,13 +141,13 @@
   "municipalityLocalVsConsumption": {
     "title": "What’s the difference between local and consumption emissions?",
     "content": [
-      "There are two common ways to measure climate emissions for a municipality:\n\n1. **Local emissions (Territorial emissions)**\n\nThese are the emissions that physically happen within the municipality’s borders.\n\nThey include things like:\n\n- Cars driving on local roads\n- Heating homes and buildings\n- Factories or industries operating in the area\n- Agricultural activity (e.g. livestock or fertilizers)\n\n*Think of these as “what happens here”.*\n\nThis is the type of data usually reported to national and international climate systems, and it’s used to calculate carbon budgets.\n\n2. **Consumption-based emissions**\n\nThese include everything consumed by people who live in the municipality — no matter where in the world those emissions actually happened.\n\nThey include emissions from:\n\n- Imported food, clothing, and electronics\n- Flights taken by residents\n- Digital services or online shopping\n- Construction materials used in buildings\n\n*Think of these as “what we cause as consumers, no matter where it happens”.*\n\n**Why both matter:**\n\n- **Local emissions** help track what a municipality can control directly — like urban planning, heating systems, and public transit.\n- **Consumption emissions** reflect the full climate footprint of people’s lifestyles — even when the pollution happens far away.\n\nBy looking at both, we get a clearer and more honest picture of climate impact — and where action is needed."
+      "These are the fossil-based emissions of greenhouse gases that physically happen within the municipality’s borders.\n\n1. **Local emissions (Territorial emissions)**\n\nThese are the emissions that physically happen within the municipality’s borders.\n\nThey include things like:\n\n- Cars driving on local roads\n- Heating homes and buildings\n- Factories or industries operating in the area\n- Agricultural activity (e.g. livestock or fertilizers)\n\n*Think of these as “what happens here”.*\n\nThis is the type of data usually reported to national and international climate systems, and it’s used to calculate carbon budgets.\n\n2. **Consumption-based emissions**\n\nThese include emissions from everything consumed by people who live in the municipality — no matter where in the world those emissions actually happened.\n\nThey include emissions from:\n\n- Imported food, clothing, and electronics\n- Flights taken by residents\n- Digital services or online shopping\n- Construction materials used in buildings\n\n*Think of these as “what we cause as consumers, no matter where it happens”.*\n\n**Why both matter:**\n\n- **Local emissions** help track what a municipality can control directly — like urban planning, heating systems, and public transit.\n- **Consumption emissions** reflect the full climate footprint of people’s lifestyles — even when the pollution happens far away.\n\nBy looking at both, we get a clearer and more honest picture of climate impact — and where action is needed."
     ]
   },
   "municipalityPredicatedNetZeroDate": {
     "title": "Predicted Date for Net Zero Emissions",
     "content": [
-      "This is the year when the municipality’s emissions are expected to reach net zero — according to its current emissions trend.\n\n**Note:** this is not a policy target, but a mathematical projection.\n\nNet zero means the municipality’s emissions reach zero, without counting carbon offsets. It’s based on current trends — not on climate policies or future plans."
+      "This is the year when the municipality’s emissions are expected to reach net zero — according to its current emissions trend.\n\n**Note:** this is not a policy target, but a mathematical projection.\n\nNet zero means reaching an a point of minimal emissions that can be offset, with various carbon capture methods, to be effectively zero. It’s based on current trends — not on climate policies or future plans."
     ]
   },
   "municipalityProcurement": {
@@ -183,7 +183,7 @@
   "municipalityWhyDataDelay": {
     "title": "Why is the latest data a few years old?",
     "content": [
-      "Official emissions data in Sweden is usually 1.5-2 years delayed. It takes time to collect, verify, and publish emissions from many sectors. That’s why we estimate current emissions using recent trends."
+      "Official emissions data for municipalities in Sweden is usually 1,5-2 years delayed. It takes time to collect, verify, and publish emissions from many sectors. That’s why we estimate current emissions using recent trends."
     ]
   },
   "parisAgreementLine": {
@@ -207,7 +207,7 @@
   "scope3": {
     "title": "What is Scope 3",
     "content": [
-      "**Scope 3 – Other indirect emissions (supply chain and beyond)**\n\nScope 3 is the broadest category. It includes **all other emissions connected to the company**, both **before and after** its operations — even if the company doesn’t directly control them.\n\nScope 3 is split into two parts:\n\n**Upstream emissions** (before the product reaches the company):\n- Making and transporting raw materials\n- Emissions from suppliers\n- Business travel or employee commuting\n\n**Downstream emissions** (after the company sells the product):\n- How customers use the product\n- How the product is disposed of or recycled\n- Investments or services the company funds"
+      "**Scope 3 – Other indirect emissions (supply chain and beyond)**\n\nScope 3 is the broadest category. It includes **all other emissions connected to the company**, both **before and after** its operations — even if the company doesn’t directly control them.\n\nScope 3 is split into two parts:\n\n**Upstream emissions** (before the product reaches the company):\n- Making and transporting raw materials\n- Emissions from suppliers\n- Business travel or employee commuting\n\n**Downstream emissions** (after the company sells the product):\n- How customers use the product\n- How the product is disposed of or recycled\n- Investments or services the company funds\n\nScope 3 emissions are reported in 15 categories, 8 upstream and 7 downstream."
     ]
   },
   "scope3EmissionLevels": {
