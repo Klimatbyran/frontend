@@ -10,4 +10,4 @@ Här ingår sådant som:
 - Utsläpp från värmepannor i företagets byggnader
 - Eventuella tillverkningsprocesser som släpper ut växthusgaser
 
-Om företaget äger det, och det använder fossila bränsle eller orsakar utsläpp direkt på plats, då är det Scope 1.
+Det företaget äger, som drivs med fossilt bränsle eller orsakar utsläpp direkt på plats, det är Scope 1.

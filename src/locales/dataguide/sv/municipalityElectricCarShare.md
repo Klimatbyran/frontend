@@ -2,7 +2,7 @@
 
 Detta visar hur mycket andelen elbilar har ökat i kommunen (ofta jämfört med året innan).
 
-Det säger något både om invånarnas val och om infrastrukturen – t.ex. laddstationer och lokala incitament.
+Det säger något både om invånarnas val och om infrastrukturen – till exempel laddstationer och lokala incitament.
 
 Du kan hålla koll på:
 

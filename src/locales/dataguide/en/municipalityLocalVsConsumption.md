@@ -1,6 +1,6 @@
 # What’s the difference between local and consumption emissions?
 
-There are two common ways to measure climate emissions for a municipality:
+These are the fossil-based emissions of greenhouse gases that physically happen within the municipality’s borders.
 
 1. **Local emissions (Territorial emissions)**
 
@@ -19,7 +19,7 @@ This is the type of data usually reported to national and international climate 
 
 2. **Consumption-based emissions**
 
-These include everything consumed by people who live in the municipality — no matter where in the world those emissions actually happened.
+These include emissions from everything consumed by people who live in the municipality — no matter where in the world those emissions actually happened.
 
 They include emissions from:
 

@@ -1,20 +1,20 @@
 # Cykelbanor
 
-Detta tal visar hur många meter cykelväg som finns per invånare. Det ger en allmän uppfattning om hur mycket dedikerad cykelinfrastruktur en kommun tillhandahåller.
+Detta tal visar hur många meter cykelväg som finns per invånare. Det ger en allmän uppfattning om hur mycket cykelinfrastruktur en kommun tillhandahåller.
 
-Ett **högre tal** indikerar vanligtvis starkare stöd för säker, tillgänglig cykling — vilket kan minska utsläpp från bilresor, förbättra hälsan och minska trafikstockning.
+Ett **högre tal** indikerar vanligtvis starkare stöd för säker, tillgänglig cykling — vilket kan minska utsläpp från bilresor, förbättra hälsan och minska trafikstockningar.
 
 **Varför investera i cykelinfrastruktur?**
 
 - Minskar bilberoendet, särskilt för korta resor (under 5 km)
 - Minskar lokal luftförorening och trafikbuller
-- Förbättrar hälsoresultat genom att uppmuntra aktiv mobilitet
+- Förbättrar samhällshälsan genom att uppmuntra fysisk aktivitet
 - Erbjuder ett billigt, inkluderande transportalternativ för ungdomar och personer utan bil
 - Hjälper till att nå lokala utsläppsmål på ett kostnadseffektivt sätt
 
 Kommuner som investerar i säkra, sammanhängande cykelvägar kombinerar dem ofta med politik som cykelparkering vid kollektivtrafiknoder, reparationsstationer och vinterunderhåll av cykelbanor.
 
-**Varför kan en kommun ha mindre cykelinfrastruktur?**
+**Vad kan det bero på att en kommun har mindre cykelinfrastruktur?**
 
 Alla områden kommer inte att prioritera cykelbanor — och det är inte alltid ett tecken på försummelse.
 

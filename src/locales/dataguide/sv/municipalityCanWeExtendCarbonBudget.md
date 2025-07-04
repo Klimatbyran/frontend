@@ -4,7 +4,7 @@ Inte riktigt — koldioxidbudgeten bestäms av fysik, inte politik. Den återspe
 
 **Vad sägs om koldioxidavskiljning (CDR)?**
 
-CDR-metoder som biokol, direkt luftinfångning och förstärkt vittring skulle en dag kunna hjälpa till att avlägsna CO₂ från atmosfären — men de är ännu inte tillgängliga i den skala eller hastighet som behövs. De flesta är fortfarande dyra, energikrävande och inte allmänt utplacerade. Det betyder att vi inte kan förlita oss på CDR för att "köpa mer tid" — det kan hjälpa senare, men det kan inte ersätta snabba utsläppsminskningar idag.
+CDR-metoder som biokol, direkt luftinfångning och förstärkt mineralisering skulle en dag kunna hjälpa till att avlägsna CO₂ från atmosfären — men dessa tekniker är ännu inte tillgängliga i den skala eller möjliga att implementera i den hastighet som behövs. De flesta sådana tekniker är fortfarande dyra, energikrävande och inte allmänt utbredda. Det betyder att vi inte kan förlita oss på CDR för att "köpa mer tid" — det kan hjälpa senare, men det kan inte ersätta snabba utsläppsminskningar idag.
 
 **Det finns en annan risk:**
 

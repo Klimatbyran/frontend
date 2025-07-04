@@ -4,4 +4,4 @@ This is the year when the municipality’s emissions are expected to reach net z
 
 **Note:** this is not a policy target, but a mathematical projection.
 
-Net zero means the municipality’s emissions reach zero, without counting carbon offsets. It’s based on current trends — not on climate policies or future plans.
+Net zero means reaching an a point of minimal emissions that can be offset, with various carbon capture methods, to be effectively zero. It’s based on current trends — not on climate policies or future plans.

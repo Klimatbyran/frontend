@@ -2,4 +2,4 @@
 
 Scope 3 täcker alla indirekta utsläpp över ett företags värdekedja — från råvaror och leverantörsverksamhet till hur produkter används och kasseras. Dessa utsläpp varierar beroende på företagets storlek, affärsmodell, leverantörskedjans komplexitet och hur mycket av Scope 3 de faktiskt rapporterar.
 
-Vissa företag rapporterar endast några få kategorier, medan andra inkluderar en fullständig uppdelning — vilket kan göra jämförelser knepiga.
+Vissa företag rapporterar endast några få kategorier, medan andra rapporterar mer fullständigt — vilket kan göra jämförelser knepiga.

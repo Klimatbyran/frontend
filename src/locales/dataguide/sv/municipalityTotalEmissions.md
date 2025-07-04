@@ -1,5 +1,5 @@
 # Totala utsläpp
 
-Detta tal visar det senast tillgängliga året av officiellt rapporterade fossila CO₂-utsläpp för kommunen.
+Detta är det senaste året med tillgänglig officiell data om fossila CO₂-utsläpp i kommunen.
 
-Officiella data är vanligtvis försenade med 1,5–2 år. För en uppskattning av utsläpp under det aktuella året, se utsläppsutvecklingsgrafen nedan.
+Eftersom den officiella statistiken ofta ligger 1,5–2 år efter, kan du se uppskattningar för nuvarande utsläpp i utsläppsutvecklingsgrafen längre ner på sidan.

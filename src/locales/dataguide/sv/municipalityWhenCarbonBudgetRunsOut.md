@@ -10,6 +10,6 @@ Därför är det viktigt att minska utsläppen så snabbt som möjligt — innan
 
 Sveriges nationella koldioxidbudget delas upp mellan kommunerna baserat på deras tidigare utsläpp. Varje kommun får därmed ett visst klimatutrymme. Om en kommun överskrider sin budget ökar pressen på andra att minska snabbare – eller så överskrider vi budgeten nationellt.
 
-Lokalt klimatarbete är inte symboliskt – det är matematiskt på riktigt. Ju fler kommuner som håller sig inom sitt utrymme, desto större chans har Sverige – och världen – att hålla sig inom säkra klimatgränser.
+Lokalt klimatarbete är inte symboliskt – det är en matematisk realitet. Ju fler kommuner som håller sig inom sitt utrymme, desto större chans har Sverige – och världen – att hålla sig inom säkra klimatgränser.
 
 **Det handlar inte om perfektion, utan om riktning.** Att överskrida budgeten betyder inte att allt är förlorat, men det kräver snabbare och djupare förändringar för att minska riskerna framöver.

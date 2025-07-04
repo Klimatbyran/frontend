@@ -4,7 +4,7 @@ Scope 3-utsläpp täcker **alla indirekta växthusgasutsläpp som sker utanför 
 
 Eftersom Scope 3 inkluderar så många olika aktiviteter representerar det vanligtvis den **största andelen av ett företags totala klimatpåverkan**.
 
-Till skillnad från Scope 1 och 2-utsläpp, som mestadels är under ett företags direkta kontroll (t.ex. bränsle som används på plats eller el som köps), sker Scope 3-utsläpp **utanför företagets väggar**. Detta gör dem mer komplexa att mäta, eftersom:
+Till skillnad från Scope 1 och 2-utsläpp, som kontrolleras direkt av företaget (exempelvis bränsle som används i egna verksamheten eller el som köps in), sker Scope 3-utsläpp **utanför företagets väggar**. Detta gör dem mer komplexa att mäta, eftersom:
 
 - Företag förlitar sig ofta på **data från leverantörer, partners eller kunder**, som kanske inte alltid är tillgänglig eller korrekt
 - Utsläpp kan variera kraftigt beroende på **hur och var produkter tillverkas, används och kasseras**

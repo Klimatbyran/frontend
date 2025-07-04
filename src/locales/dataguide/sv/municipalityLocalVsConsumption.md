@@ -1,17 +1,17 @@
 # Vad är skillnaden mellan lokala utsläpp och konsumtionsutsläpp?
 
-Det finns två vanliga sätt att mäta klimatutsläpp för en kommun:
+Det finns två vanliga sätt att mäta klimatutsläpp i en kommun:
 
 1. **Lokala utsläpp (Territoriella utsläpp)**
 
-Detta är utsläpp som fysiskt sker inom kommunens gränser.
+Detta är utsläpp av fossila växthusgaser som fysiskt sker inom kommunens gränser.
 
 De inkluderar sådant som:
 
 - Bilar som kör på lokala vägar
 - Uppvärmning av hem och byggnader
-- Fabriker eller industrier som verkar i området
-- Jordbruksaktivitet (t.ex. boskap eller gödselmedel)
+- Fabriker och industrier i området
+- Jordbruksaktivitet (exempelvis boskap och konstgödsel)
 
 *Tänk på dessa som "vad som händer här".*
 
@@ -19,7 +19,7 @@ Detta är den typ av data som vanligtvis rapporteras till nationella och interna
 
 2. **Konsumtionsbaserade utsläpp**
 
-Dessa inkluderar allt som konsumeras av personer som bor i kommunen — oavsett var i världen dessa utsläpp faktiskt skedde.
+Dessa inkluderar utsläpp från allt som konsumeras av personer som bor i kommunen — oavsett var i världen dessa utsläpp faktiskt skett.
 
 De inkluderar utsläpp från:
 

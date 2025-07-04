@@ -4,7 +4,7 @@ En koldioxidbudget är mängden CO₂ en plats kan släppa ut samtidigt som den 
 
 **Sätt att engagera sig:**
 
-- **Klimatklivet** – en statligt stödd investeringsfond som hjälper kommuner, organisationer och företag att minska växthusgaser genom lokala projekt (t.ex. cykelinfrastruktur, biogas, värmeåtervinning). Medel fördelas alltid genom din regionala länsstyrelse. ([https://www.naturvardsverket.se/amnesomraden/klimatomstallningen/klimatklivet/](https://www.naturvardsverket.se/amnesomraden/klimatomstallningen/klimatklivet/))
+- **Klimatklivet** – en statligt stödd investeringsfond som hjälper kommuner, organisationer och företag att minska växthusgaser genom lokala projekt (till exempel cykelinfrastruktur, biogas, värmeåtervinning). Medel fördelas alltid genom din regionala länsstyrelse. ([https://www.naturvardsverket.se/amnesomraden/klimatomstallningen/klimatklivet/](https://www.naturvardsverket.se/amnesomraden/klimatomstallningen/klimatklivet/))
 - **Länsstyrelsens rådgivningstjänster** – varje län (Länsstyrelse) erbjuder stöd, webbinarier och vägledning för lokalt klimatarbete och för crowdfunding av regionala klimatprojekt. ([https://www.lansstyrelsen.se/blekinge.html](https://www.lansstyrelsen.se/blekinge.html))
 - **Lokala medborgarförslag** – många svenska kommuner tillåter invånare att föreslå miljöinitiativ (som utbyggd kollektivtrafik eller stadsodlingar) via kommunens webbplats eller fullmäktige. Kolla din kommuns "Demokrati" eller "Medborgarförslag"-sektion online.
 

@@ -2,7 +2,7 @@
 
 **Scope 3 – Andra indirekta utsläpp (i värdekedjan)**
 
-Scope 3 är den bredaste kategorin. Den inkluderar **alla andra utsläpp kopplade till företaget**, både **före och efter** dess verksamhet — även om företaget inte direkt kontrollerar dem.
+Scope 3 är den bredaste kategorin. Den inkluderar **alla andra utsläpp kopplade till företaget**, som orsakas både **före och efter** bolagets egna  verksamhet — även om företaget inte direkt kontrollerar dem.
 
 Scope 3 delas upp i två delar:
 

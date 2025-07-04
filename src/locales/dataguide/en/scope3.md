@@ -15,3 +15,5 @@ Scope 3 is split into two parts:
 - How customers use the product
 - How the product is disposed of or recycled
 - Investments or services the company funds
+
+Scope 3 emissions are reported in 15 categories, 8 upstream and 7 downstream.
