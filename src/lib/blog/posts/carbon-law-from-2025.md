@@ -4,6 +4,7 @@ id: "carbon-law-from-2025"
 
 # Q&A: Applying Carbon Law From 2025
 [Read the white paper](/reports/2025-06-19_ApplyingCarbonLawFrom2025.pdf)
+>>In collaboration with: Johan Falk, Owen Gaffney and the Exponential Roadmap Initiative
 
 ---
 
@@ -50,16 +51,17 @@ Based on remaining budgets from the Global Carbon Budget 2024:
 **Assumptions:**
 - Residual emissions of 5.5 GtCO₂ by 2050
 - 50% probability of staying under 1.5°C  
-- Based on the paper *All options, not silver bullets* (2023)
+- Based on the paper *All options, not silver bullets, needed to limit global warming to 1.5°C: a scenario appraisal* (2023)
 
 ---
 
 ## 4. Why recalculate the original Carbon Law?
 
-Klimatkollen’s mission is to increase public pressure on decision-makers and raise awareness through clear communication.
+Klimatkollen's mission is to increase public pressure on decision-makers and raise awareness through clear communication.
 
-> The original Carbon Law (halve every 10 years from 2020) is outdated because we’ve lost time.  
-> The new trajectory reflects this and provides a benchmark starting **2025**.
+Due to that fact that the world has not followed **The Carbon Law** (halve global emission every 10 years from 2020 - i.e. 7% reduction per year) we need to recalculate the required trajectory - the "rule of thumb". 
+
+The new proposed trajectory reflects this and provides a benchmark starting **2025**.
 
 ---
 
@@ -104,9 +106,9 @@ Klimatkollen uses:
 
 Klimatkollen provides visualisations to show how each company compares to the 12%/year pathway.
 
-- Companies can use this as a **common reference**, regardless of base year or sector.  
-- **Scope 3 emissions** (value chain) are particularly difficult to reduce.  
-- Some climate-positive companies may see emissions rise (e.g., renewables firms), but this may displace fossil emissions.
+- Companies can use this as a **common reference**, regardless of base year or sector. 
+- **Scope 3 emissions** (value chain) have been and are particularly challenging to reduce, but companies should be able to take advantage of the general movement in renewable energy and climate solutions moving forward.  
+- Some rapidly growing climate-solution companies may motivate raised emissions over a period of time (e.g. renewable energy firms), since their solutions will displace the fossil-based products. (Example: [Exoponential Roadmap Initiative](https://exponentialroadmap.org/climate-solutions-framework/))
 
 ---
 
