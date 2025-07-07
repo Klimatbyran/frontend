@@ -2,7 +2,7 @@ import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from "recharts";
 import { SectorEmissions } from "@/types/municipality";
 import { useResponsiveChartSize } from "@/hooks/useResponsiveChartSize";
 import { MunicipalitySectorTooltip } from "./MunicipalitySectorTooltip";
-import { useMunicipalitySectors } from "@/hooks/useMunicipalitySectors";
+import { useMunicipalitySectors } from "@/hooks/municipalities/useMunicipalitySectors";
 
 interface MunicipalitySectorPieChartProps {
   sectorEmissions: SectorEmissions;

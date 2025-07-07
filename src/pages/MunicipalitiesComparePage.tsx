@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { useMunicipalities } from "@/hooks/useMunicipalities";
+import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
 import { MunicipalityList } from "@/components/municipalities/list/MunicipalityList";
 import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/layout/PageHeader";

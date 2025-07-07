@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
-import { useMunicipalityDetails } from "@/hooks/useMunicipalityDetails";
+import { useMunicipalityDetails } from "@/hooks/municipalities/useMunicipalityDetails";
 import { transformEmissionsData } from "@/types/municipality";
 import { MunicipalitySection } from "@/components/municipalities/MunicipalitySection";
 import { MunicipalityStatCard } from "@/components/municipalities/MunicipalityStatCard";
@@ -18,7 +18,7 @@ import {
 import { useLanguage } from "@/components/LanguageProvider";
 import MunicipalitySectorPieChart from "@/components/municipalities/sectorChart/MunicipalitySectorPieChart";
 import MunicipalitySectorLegend from "@/components/municipalities/sectorChart/MunicipalitySectorLegend";
-import { useMunicipalitySectorEmissions } from "@/hooks/useMunicipalitySectorEmissions";
+import { useMunicipalitySectorEmissions } from "@/hooks/municipalities/useMunicipalitySectorEmissions";
 import { MunicipalityEmissions } from "@/components/municipalities/MunicipalityEmissions";
 import { YearSelector } from "@/components/layout/YearSelector";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";

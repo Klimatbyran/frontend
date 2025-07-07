@@ -11,7 +11,7 @@ import {
 import { useLanguage } from "@/components/LanguageProvider";
 import { formatEmissionsAbsoluteCompact } from "@/utils/localizeUnit";
 import { SectorEmissions } from "@/types/municipality";
-import { useMunicipalitySectors } from "@/hooks/useMunicipalitySectors";
+import { useMunicipalitySectors } from "@/hooks/municipalities/useMunicipalitySectors";
 import { CustomTooltip } from "./CustomTooltip";
 
 interface SectorsChartProps {

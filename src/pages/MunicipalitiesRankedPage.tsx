@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { Map, List } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import { useMunicipalities } from "@/hooks/useMunicipalities";
+import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
 import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/layout/PageHeader";
 import DataSelector from "@/components/municipalities/rankedList/MunicipalityDataSelector";
@@ -11,7 +11,7 @@ import InsightsPanel from "@/components/municipalities/rankedList/MunicipalityIn
 import SwedenMap from "@/components/municipalities/map/SwedenMap";
 import municipalityGeoJson from "@/data/municipalityGeo.json";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
-import { useMunicipalityKPIs } from "@/hooks/useMunicipalityKPIs";
+import { useMunicipalityKPIs } from "@/hooks/municipalities/useMunicipalityKPIs";
 import { FeatureCollection } from "geojson";
 
 export function MunicipalitiesRankedPage() {

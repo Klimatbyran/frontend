@@ -3,7 +3,7 @@ import { TooltipProps } from "recharts";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
 import { formatEmissionsAbsolute } from "@/utils/localizeUnit";
-import { useMunicipalitySectors } from "@/hooks/useMunicipalitySectors";
+import { useMunicipalitySectors } from "@/hooks/municipalities/useMunicipalitySectors";
 
 interface CustomTooltipProps extends TooltipProps<number, string> {
   dataView: "overview" | "sectors";
