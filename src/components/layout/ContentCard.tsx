@@ -1,9 +1,8 @@
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, CalendarDays, Clock, Globe2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Text } from "@/components/ui/text";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
-import { CalendarDays, Clock } from "lucide-react";
 
 interface ContentCardProps {
   item: {
@@ -15,6 +14,7 @@ interface ContentCardProps {
     date?: string;
     readTime?: string;
     link?: string;
+    language?: string;
   };
   basePath: string;
 }
@@ -36,7 +36,7 @@ export function ContentCard({ item, basePath }: ContentCardProps) {
         />
       </div>
       <div className="p-8 space-y-4">
-        {(item.category || item.date || item.readTime) && (
+        {(item.category || item.date || item.readTime || item.language) && (
           <div className="flex items-center gap-4">
             {item.category && (
               <span
@@ -58,6 +58,12 @@ export function ContentCard({ item, basePath }: ContentCardProps) {
               <div className="flex items-center gap-2 text-grey text-sm">
                 <Clock className="w-4 h-4" />
                 <span aria-label="Read Time">{item.readTime}</span>
+              </div>
+            )}
+            {item.language && (
+              <div className="flex items-center gap-2 text-grey text-sm">
+                <Globe2 className="w-4 h-4" />
+                <span aria-label="Language">{item.language}</span>
               </div>
             )}
           </div>

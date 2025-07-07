@@ -1,4 +1,4 @@
-import { CalendarDays, Clock } from "lucide-react";
+import { CalendarDays, Clock, Globe2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Text } from "@/components/ui/text";
 import { blogMetadata } from "../lib/blog/blogPostsList";
@@ -12,8 +12,21 @@ export function InsightsPage() {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
 
-  const featuredPost = isMobile ? undefined : blogMetadata[0];
-  const otherPosts = isMobile ? blogMetadata.slice(0) : blogMetadata.slice(1);
+  // Only show posts if the displayLanguages array includes the current language or 'all'
+  const languageFilteredPosts = blogMetadata.filter((post) => {
+    if (!Array.isArray(post.displayLanguages)) return false;
+    return (
+      post.displayLanguages
+        .map((l) => l.toLowerCase())
+        .includes(currentLanguage.toLowerCase()) ||
+      post.displayLanguages.map((l) => l.toLowerCase()).includes("all")
+    );
+  });
+
+  const featuredPost = isMobile ? undefined : languageFilteredPosts[0];
+  const otherPosts = isMobile
+    ? languageFilteredPosts.slice(0)
+    : languageFilteredPosts.slice(1);
 
   const canonicalUrl = "https://klimatkollen.se/insights/articles";
   const pageTitle = t("insightsPage.title");
@@ -35,6 +48,7 @@ export function InsightsPage() {
     category: post.category,
     date: post.date,
     readTime: post.readTime,
+    language: post.language,
   }));
 
   const featuredPostSection = featuredPost && (
@@ -68,6 +82,10 @@ export function InsightsPage() {
               <div className="flex items-center gap-2 text-grey text-sm">
                 <Clock className="w-4 h-4" />
                 <span aria-label="Read Time">{featuredPost.readTime}</span>
+              </div>
+              <div className="flex items-center gap-2 text-grey text-sm">
+                <Globe2 className="w-4 h-4" />
+                <span aria-label="Language">{featuredPost.language}</span>
               </div>
             </div>
             <Text

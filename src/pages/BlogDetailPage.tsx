@@ -9,9 +9,10 @@ import remarkBreaks from "remark-breaks";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import rehypeRaw from "rehype-raw";
-import { BlogPostMeta, blogMetadata } from "../lib/blog/blogPostsList";
+import { blogMetadata } from "../lib/blog/blogPostsList";
 import { useTranslation } from "react-i18next";
 import { useScreenSize } from "@/hooks/useScreenSize";
+import { ContentMeta } from "@/types/content";
 
 // Import Markdown files
 const markdownFiles = import.meta.glob("/src/lib/blog/posts/*.md", {
@@ -23,7 +24,7 @@ export function BlogDetailPage() {
   const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const [blogPost, setBlogPost] = useState<{
-    metadata: BlogPostMeta;
+    metadata: ContentMeta;
     content: string;
   } | null>(null);
   const [loading, setLoading] = useState(true);

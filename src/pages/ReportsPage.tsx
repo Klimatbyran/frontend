@@ -8,14 +8,14 @@ export function ReportsPage() {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
 
-  // Only show reports if the report's language array includes the current language or 'all'
+  // Only show reports if the report's displayLanguages array includes the current language or 'all'
   const languageFilteredReports = reports.filter((report) => {
-    if (!Array.isArray(report.language)) return false;
+    if (!Array.isArray(report.displayLanguages)) return false;
     return (
-      report.language
+      report.displayLanguages
         .map((l) => l.toLowerCase())
         .includes(currentLanguage.toLowerCase()) ||
-      report.language.map((l) => l.toLowerCase()).includes("all")
+      report.displayLanguages.map((l) => l.toLowerCase()).includes("all")
     );
   });
 
@@ -49,11 +49,12 @@ export function ReportsPage() {
     id: report.id.toString(),
     title: report.title,
     excerpt: report.excerpt,
-    image: report.coverImage,
+    image: report.image || "",
     category: report.category,
     date: report.date,
     readTime: report.readTime,
-    link: report.pdfUrl,
+    link: report.link || "",
+    language: report.language,
   }));
 
   return (

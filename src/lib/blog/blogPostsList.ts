@@ -1,42 +1,42 @@
+import { ContentMeta } from "@/types/content";
+
 export enum CategoryEnum {
   Methodology = "Metodik",
   Analysis = "Analys",
   Guide = "Guide",
 }
 
-export enum LangEnum {
-  SE = "Swedish",
-  EN = "English",
-}
-
-export type BlogPostMeta = {
-  id: string;
-  title: string;
-  excerpt: string;
-  date: string;
-  readTime: string;
-  category: CategoryEnum;
-  image?: string;
-  language?: LangEnum;
-  link?: string;
-  author?: {
-    name: string;
-    avatar: string;
-  };
-  relatedPosts?: string[];
-};
-
-export const blogMetadata: BlogPostMeta[] = [
+export const blogMetadata: ContentMeta[] = [
   {
     id: "carbon-law-from-2025",
-    title: "Q&A: Klimatkollen’s adjusted Carbon Law emissions reduction trajectory",
+    title:
+      "Q&A: Klimatkollen's adjusted Carbon Law emissions reduction trajectory",
     excerpt:
-      "Answering questions related to Klimatkollen’s white paper, Applying Carbon Law From 2025; the method used to visualise how corporate emissions compare to the Paris Agreement on Klimatkollen.se.",
+      "Answering questions related to Klimatkollen's white paper, Applying Carbon Law From 2025; the method used to visualise how corporate emissions compare to the Paris Agreement on Klimatkollen.se.",
     date: "2025-06-23",
     readTime: "7 min",
     category: CategoryEnum.Methodology,
     image: "/images/blogImages/2025_Carbon_Law.png",
-    language: LangEnum.EN,
+    displayLanguages: ["en"],
+    language: "English",
+    author: {
+      name: "Frida Berry Eklund",
+      avatar: "/people/frida.jpg",
+    },
+    relatedPosts: ["metod", "utslappsberakning"],
+  },
+  {
+    id: "sv-carbon-law-from-2025",
+    title:
+      "Frågor och svar: Klimatkollens justerade koldioxidlag emissionsminskningspåverkan",
+    excerpt:
+      "Svar på frågor om Klimatkollens vitbok, Tillämpa koldioxidlag från 2025; metoden som används för att visualisera hur företagens utsläpp jämförs med Parisavtalet på Klimatkollen.se.",
+    date: "2025-06-23",
+    readTime: "7 min",
+    category: CategoryEnum.Methodology,
+    image: "/images/blogImages/2025_Carbon_Law.png",
+    displayLanguages: ["sv"],
+    language: "Svenska",
     author: {
       name: "Frida Berry Eklund",
       avatar: "/people/frida.jpg",
@@ -52,7 +52,8 @@ export const blogMetadata: BlogPostMeta[] = [
     readTime: "5 min",
     category: CategoryEnum.Analysis,
     image: "/images/blogImages/matthias-heyde-co2-unsplash.jpg",
-    language: LangEnum.SE,
+    displayLanguages: ["sv"],
+    language: "Svenska",
     author: {
       name: "John Carlbäck, volontär och rådgivare",
       avatar: "/people/carlback_john.jpg",
@@ -70,7 +71,8 @@ export const blogMetadata: BlogPostMeta[] = [
     category: CategoryEnum.Methodology,
     image:
       "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=600&fit=crop",
-    language: LangEnum.SE,
+    displayLanguages: ["sv"],
+    language: "Svenska",
     author: {
       name: "Christian Landgren",
       avatar: "/people/christian.jpg",
@@ -87,6 +89,8 @@ export const blogMetadata: BlogPostMeta[] = [
     category: CategoryEnum.Analysis,
     image:
       "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=400&fit=crop",
+    displayLanguages: ["sv"],
+    language: "Svenska",
     author: {
       name: "Alexandra Palmquist",
       avatar: "/people/alex.jpg",
@@ -103,7 +107,8 @@ export const blogMetadata: BlogPostMeta[] = [
     category: CategoryEnum.Guide,
     image:
       "https://images.unsplash.com/photo-1464938050520-ef2270bb8ce8?w=800&h=400&fit=crop",
-    language: LangEnum.SE,
+    displayLanguages: ["sv"],
+    language: "Svenska",
     author: {
       name: "Alexandra Palmquist",
       avatar: "/people/alex.jpg",
@@ -119,7 +124,8 @@ export const blogMetadata: BlogPostMeta[] = [
     readTime: "5 min",
     category: CategoryEnum.Analysis,
     image: "/images/blogImages/image1-31.webp",
-    language: LangEnum.SE,
+    displayLanguages: ["sv"],
+    language: "Svenska",
     author: {
       name: "Ola Spännar",
       avatar: "/people/ola.jpg",
@@ -135,11 +141,12 @@ export const blogMetadata: BlogPostMeta[] = [
     readTime: "5 min",
     category: CategoryEnum.Analysis,
     image: "/images/blogImages/totala-utslapp-alla-partier.webp",
-    language: LangEnum.SE,
+    displayLanguages: ["sv"],
+    language: "Svenska",
     author: {
       name: "Ola Spännar",
       avatar: "/people/ola.jpg",
     },
     relatedPosts: ["klimatmal", "metod"],
-  }
+  },
 ];
