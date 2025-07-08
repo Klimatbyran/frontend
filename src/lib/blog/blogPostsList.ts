@@ -23,7 +23,7 @@ export const blogMetadata: ContentMeta[] = [
       name: "Frida Berry Eklund",
       avatar: "/people/frida.jpg",
     },
-    relatedPosts: ["metod", "utslappsberakning"],
+    relatedPosts: ["metod"],
   },
   {
     id: "sv-carbon-law-from-2025",
@@ -42,6 +42,42 @@ export const blogMetadata: ContentMeta[] = [
       avatar: "/people/frida.jpg",
     },
     relatedPosts: ["metod", "utslappsberakning"],
+  },
+  {
+    id: "sv-2024-report",
+    title:
+      "Klimatkollens 2024-rapport - Översikt",
+    excerpt:
+      "Vi granskar klimatrapporteringen från 235 storbolag för 2024 och visar varför utsläppsminskningarna går för långsamt – samt ger tre konkreta rekommendationer för mer transparent och effektiv klimatredovisning.",
+    date: "2025-07-07",
+    readTime: "2 min",
+    category: CategoryEnum.Analysis,
+    image: "/images/reports/2024_report_cover.png",
+    displayLanguages: ["sv"],
+    language: "Svenska",
+    author: {
+      name: "Ola Spännar",
+      avatar: "/people/ola.jpg",
+    },
+    relatedPosts: ["sv-carbon-law-from-2025", "utslappsberakning"],
+  },
+  {
+    id: "2024-report",
+    title:
+      "Klimatkollens 2024 Report Overview",
+    excerpt:
+      "We reviewed the corporate climate reporting from 235 large companies for 2024 and show why the emission reductions are too slow – and give three concrete recommendations for more transparent and effective climate reporting.",
+    date: "2025-07-07",
+    readTime: "2 min",
+    category: CategoryEnum.Analysis,
+    image: "/images/reports/2024_report_cover.png",
+    displayLanguages: ["en"],
+    language: "English",
+    author: {
+      name: "Ola Spännar",
+      avatar: "/people/ola.jpg",
+    },
+    relatedPosts: ["carbon-law-from-2025"],
   },
   {
     id: "hållbara-kolet",
@@ -71,7 +107,7 @@ export const blogMetadata: ContentMeta[] = [
     category: CategoryEnum.Methodology,
     image:
       "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=600&fit=crop",
-    displayLanguages: ["sv"],
+    displayLanguages: ["sv","all"],
     language: "Svenska",
     author: {
       name: "Christian Landgren",
@@ -89,7 +125,7 @@ export const blogMetadata: ContentMeta[] = [
     category: CategoryEnum.Analysis,
     image:
       "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=400&fit=crop",
-    displayLanguages: ["sv"],
+    displayLanguages: ["sv","all"],
     language: "Svenska",
     author: {
       name: "Alexandra Palmquist",

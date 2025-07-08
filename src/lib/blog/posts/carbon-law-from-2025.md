@@ -3,8 +3,7 @@ id: "carbon-law-from-2025"
 ---
 
 # Q&A: Applying Carbon Law From 2025
-[Read the white paper](/reports/2025-06-19_ApplyingCarbonLawFrom2025.pdf)
->>In collaboration with: Johan Falk, Owen Gaffney and the Exponential Roadmap Initiative
+[Read the white paper](/reports/2025-06-19_ApplyingCarbonLawFrom2025.pdf) - Created in collaboration with the Exponential Roadmap initiative, Johan Falk and Owen Gaffney.
 
 ---
 
