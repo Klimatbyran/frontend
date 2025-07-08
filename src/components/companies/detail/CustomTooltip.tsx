@@ -1,6 +1,6 @@
 import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useTranslation } from "react-i18next";
-import { formatEmissionsAbsolute } from "@/utils/localizeUnit";
+import { formatEmissionsAbsolute, formatPercent } from "@/utils/localizeUnit";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { AiIcon } from "@/components/ui/ai-icon";
@@ -12,6 +12,11 @@ interface CustomTooltipProps {
   label?: string;
   companyBaseYear: number | undefined;
   filterDuplicateValues?: boolean;
+  trendData?: {
+    slope: number;
+    baseYear: number;
+    lastReportedYear: number;
+  };
 }
 
 export const CustomTooltip = ({
@@ -20,6 +25,7 @@ export const CustomTooltip = ({
   label,
   companyBaseYear,
   filterDuplicateValues = false,
+  trendData,
 }: CustomTooltipProps) => {
   const { t } = useTranslation();
   const { getCategoryName } = useCategoryMetadata();
@@ -141,6 +147,25 @@ export const CustomTooltip = ({
             <br></br>* {t("companies.emissionsHistory.baseYearInfo")}
           </span>
         ) : null}
+
+        {/* Show trend information for approximated values */}
+        {trendData &&
+          payload?.some(
+            (entry) => entry.dataKey === "approximated" && entry.value != null,
+          ) && (
+            <span className="text-grey mr-2 text-xs col-span-2 mt-2">
+              <br></br>
+              {t("companies.emissionsHistory.trendInfo", {
+                percentage: formatPercent(
+                  Math.abs(trendData.slope),
+                  currentLanguage,
+                  true,
+                ),
+                baseYear: trendData.baseYear,
+                lastYear: trendData.lastReportedYear,
+              })}
+            </span>
+          )}
       </div>
     );
   }

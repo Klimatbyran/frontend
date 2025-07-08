@@ -28,6 +28,7 @@ export const calculateLinearRegression = (data: { x: number; y: number }[]) => {
 export const generateApproximatedData = (
   data: ChartData[],
   regression: { slope: number; intercept: number },
+  endYear: number = 2030,
 ) => {
   const lastReportedYear = data
     .filter(
@@ -37,7 +38,6 @@ export const generateApproximatedData = (
     .reduce((lastYear, d) => Math.max(lastYear, d.year), 0);
 
   const approximatedStartYear = data[0].year;
-  const endYear = 2030;
   const currentYear = new Date().getFullYear();
 
   const currentYearApproximatedValue =
@@ -52,19 +52,30 @@ export const generateApproximatedData = (
 
   return allYears.map((year) => {
     const shouldShowApproximated = year >= lastReportedYear;
-    const approximatedValue = shouldShowApproximated
-      ? regression.slope * year + regression.intercept
-      : null;
+
+    // Calculate trend line value
+    let approximatedValue = null;
+    if (shouldShowApproximated) {
+      const calculatedValue = regression.slope * year + regression.intercept;
+      // Only show trend line if it's above 0
+      approximatedValue = calculatedValue > 0 ? calculatedValue : null;
+    }
+
+    // Calculate Paris line value
+    let parisValue = null;
+    if (year >= currentYear) {
+      const calculatedValue =
+        currentYearApproximatedValue *
+        Math.pow(1 - reductionRate, year - currentYear);
+      // Only show Paris line if it's above 0
+      parisValue = calculatedValue > 0 ? calculatedValue : null;
+    }
 
     return {
       year,
-      approximated: year <= currentYear ? approximatedValue : null,
+      approximated: approximatedValue,
       total: data.find((d) => d.year === year)?.total,
-      carbonLaw:
-        year >= currentYear
-          ? currentYearApproximatedValue *
-            Math.pow(1 - reductionRate, year - currentYear)
-          : null,
+      carbonLaw: parisValue,
     };
   });
 };

@@ -943,7 +943,8 @@
       "total": "Total",
       "approximated": "Approximated",
       "trend": "Trend",
-      "carbonLaw": "Paris Agreement"
+      "carbonLaw": "Paris Agreement",
+      "trendInfo": "Approximated value is based on average change of {{percentage}} since {{baseYear}} for all reporting periods"
     },
     "list": {
       "error": {
