@@ -944,7 +944,8 @@
       "approximated": "Approximated",
       "trend": "Trend",
       "carbonLaw": "Paris Agreement",
-      "trendInfo": "Approximated value is based on average change of {{percentage}} since {{baseYear}} for all reporting periods"
+      "trendInfo": "Approximated value is based on average change of {{percentage}} since {{baseYear}} for all reporting periods",
+      "exploreStep0Description": "This section shows all emissions data before the selected base year. This data before the base year is considered incomplete or un-comparable. This is often due to companies developing their reporting process or years before they had enough/all the data."
     },
     "list": {
       "error": {
