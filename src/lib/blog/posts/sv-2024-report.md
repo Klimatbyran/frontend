@@ -1,8 +1,9 @@
-# Blogginlägg Bolagsklimatkollen 2025
+---
+id: "sv-2024-report"
+---
 
-> **Ny rapport: storbolagens klimatrapportering för 2024**  
+> **[Ny rapport: storbolagens klimatrapportering för 2024](/reports/2025-06-23_Bolagsklimatkollen.pdf)**  
 >  
-> I årets Bolagsklimatkollen analyserar vi 235 av Sveriges största bolag tillsammans med 2050 Consulting — och visar varför utsläppsminskningarna går för långsamt samt vad som behöver förbättras.
 
 ---
 

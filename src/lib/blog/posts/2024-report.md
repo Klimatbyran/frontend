@@ -1,12 +1,13 @@
-# Blog Post Bolagsklimatkollen 2025
+---
+id: "2024-report"
+---
 
-> **New report on large companies’ climate reporting for 2024**  
+> **[New report on large companies’ climate reporting for 2024](/reports/2025-06-23_Bolagsklimatkollen.pdf)**  
 >  
-> In this year’s Corporate Climate Checker, we analysed the climate reporting of 235 large companies in collaboration with 2050 Consulting — revealing why emission reductions remain too slow and how reporting can improve.
 
 ---
 
-## TL;DR
+## Overview
 
 - 235 large companies account for **1,780 Mt** of greenhouse gases in 2024  
 - Scope 1 and 2 emissions fell by **6%** and **14%**, but scope 3 rose by **18%**  

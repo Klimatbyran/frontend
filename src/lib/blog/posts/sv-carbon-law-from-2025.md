@@ -2,7 +2,6 @@
 id: "sv-carbon-law-from-2025"
 ---
 
-# Q&A: Tillämpa Carbon Law från 2025
 [Läs vitboken](/reports/2025-06-19_ApplyingCarbonLawFrom2025.pdf) - Skapad i samarbete med: Johan Falk, Owen Gaffney och Exponential Roadmap Initiative
 
 ---

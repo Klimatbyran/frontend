@@ -52,7 +52,7 @@ export const blogMetadata: ContentMeta[] = [
     date: "2025-07-07",
     readTime: "2 min",
     category: CategoryEnum.Analysis,
-    image: "/images/reports/2024_report_cover.png",
+    image: "/images/reportImages/2024_bolagsklimatkollen.png",
     displayLanguages: ["sv"],
     language: "Svenska",
     author: {
@@ -70,7 +70,7 @@ export const blogMetadata: ContentMeta[] = [
     date: "2025-07-07",
     readTime: "2 min",
     category: CategoryEnum.Analysis,
-    image: "/images/reports/2024_report_cover.png",
+    image: "/images/reportImages/2024_bolagsklimatkollen.png",
     displayLanguages: ["en"],
     language: "English",
     author: {
