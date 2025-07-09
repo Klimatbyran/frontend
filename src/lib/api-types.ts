@@ -187,6 +187,10 @@ export interface paths {
                                 startDate: string;
                                 endDate: string;
                                 reportURL: string | null;
+                                emissionsTrend?: {
+                                    absolute: number | null;
+                                    adjusted: number | null;
+                                };
                                 emissions: {
                                     calculatedTotalEmissions: number;
                                     scope1: {
@@ -544,6 +548,10 @@ export interface paths {
                                         };
                                     } | null;
                                 } | null;
+                                emissionsTrend?: {
+                                    absolute: number | null;
+                                    adjusted: number | null;
+                                };
                             }[];
                             industry: {
                                 id: string;
@@ -869,6 +877,10 @@ export interface paths {
                                 startDate: string;
                                 endDate: string;
                                 reportURL: string | null;
+                                emissionsTrend?: {
+                                    absolute: number | null;
+                                    adjusted: number | null;
+                                };
                                 emissions: {
                                     calculatedTotalEmissions: number;
                                     scope1: {
@@ -1394,39 +1406,6 @@ export interface paths {
                 };
             };
         };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/industry-gics/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Default Response */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        put?: never;
-        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -3337,6 +3316,39 @@ export interface paths {
                 };
             };
         };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/industry-gics/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
