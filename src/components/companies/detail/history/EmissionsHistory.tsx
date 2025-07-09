@@ -15,10 +15,10 @@ import ChartHeader from "./ChartHeader";
 import EmissionsLineChart from "./EmissionsLineChart";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
-import {
-  generateApproximatedData,
-  generateSophisticatedApproximatedData,
-} from "@/utils/companyEmissionsCalculations";
+// import {
+//   generateApproximatedData,
+//   generateSophisticatedApproximatedData,
+// } from "@/utils/companyEmissionsCalculations";
 import { exploreButtonFeatureFlagEnabled } from "@/utils/feature-flag";
 
 export function EmissionsHistory({
@@ -94,26 +94,24 @@ export function EmissionsHistory({
     );
   };
 
-  // Add state for hidden categories
   const [hiddenCategories, setHiddenCategories] = useState<number[]>([]);
 
   // Explore mode state
   const [exploreMode, setExploreMode] = useState(false);
 
   // Calculation method toggle state
-  // 'simple' | 'linear' | 'exponential'
   const [calculationMethod, setCalculationMethod] = useState<
-    "simple" | "linear" | "exponential"
+    "simple" | "linear" | "exponential" | "weighted"
   >("simple");
 
   // Feature flag for calculation method toggle
   const showCalculationToggle = exploreButtonFeatureFlagEnabled();
 
-  // Remove the extended trendOptions and revert to just the three main options
   const trendOptions = [
     { key: "simple", label: "Simple" },
     { key: "linear", label: "Sophisticated" },
     { key: "exponential", label: "Exponential" },
+    { key: "weighted", label: "Weighted Recent" },
   ];
 
   // Validate input data
@@ -222,6 +220,7 @@ export function EmissionsHistory({
                   {calculationMethod === "linear" &&
                     "Sophisticated (Linear) Method"}
                   {calculationMethod === "exponential" && "Exponential Method"}
+                  {calculationMethod === "weighted" && "Weighted Recent Method"}
                 </Text>
 
                 {calculationMethod === "simple" && (
@@ -295,6 +294,35 @@ export function EmissionsHistory({
                       <strong>Use case:</strong> Best for companies showing
                       accelerating or decelerating trends (curved patterns).
                       Captures non-linear growth or decline.
+                    </p>
+                  </div>
+                )}
+
+                {calculationMethod === "weighted" && (
+                  <div className="text-xs text-grey space-y-2">
+                    <p>
+                      <strong>How it works:</strong> Uses weighted linear
+                      regression that gives double weight to the last 2 data
+                      points when there are 4+ reporting years from the base
+                      year. Falls back to regular linear regression for fewer
+                      data points.
+                    </p>
+                    <p>
+                      <strong>Formula:</strong> Weighted linear regression where
+                      recent points (last 2) get weight 2, older points get
+                      weight 1. This emphasizes recent trends while still
+                      considering historical data.
+                    </p>
+                    <p>
+                      <strong>Projection:</strong> The weighted regression line
+                      is anchored at the last reported data point, ensuring
+                      continuity with actual data.
+                    </p>
+                    <p>
+                      <strong>Use case:</strong> Best for companies where recent
+                      data is more indicative of current trends. Useful when
+                      recent policy changes or business decisions may have
+                      altered the emissions trajectory.
                     </p>
                   </div>
                 )}

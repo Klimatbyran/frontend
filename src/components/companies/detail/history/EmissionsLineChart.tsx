@@ -15,6 +15,7 @@ import { formatEmissionsAbsoluteCompact } from "@/utils/localizeUnit";
 import { useMemo, useState } from "react";
 import {
   calculateLinearRegression,
+  calculateWeightedLinearRegression,
   generateApproximatedData,
   generateSophisticatedApproximatedData,
   fitExponentialRegression,
@@ -45,7 +46,7 @@ interface EmissionsLineChartProps {
   currentLanguage: "sv" | "en";
   exploreMode: boolean;
   setExploreMode: (val: boolean) => void;
-  calculationMethod?: "simple" | "linear" | "exponential";
+  calculationMethod?: "simple" | "linear" | "exponential" | "weighted";
 }
 
 function hasTotalEmissions(d: ChartData): d is ChartData & { total: number } {
@@ -139,6 +140,34 @@ export default function EmissionsLineChart({
         data,
         chartEndYear,
         "exponential",
+        companyBaseYear,
+      );
+    } else if (calculationMethod === "weighted") {
+      // Weighted method
+      const regressionPoints: { x: number; y: number }[] = (() => {
+        if (companyBaseYear) {
+          const baseYearPoints = data
+            .filter((d) => hasTotalEmissions(d) && d.year >= companyBaseYear)
+            .map((d) => ({ x: d.year, y: d.total as number }));
+          if (baseYearPoints.length < 2) {
+            return getLastTwoEmissionsPoints(data);
+          }
+          return baseYearPoints;
+        } else {
+          return getLastTwoEmissionsPoints(data);
+        }
+      })();
+      if (regressionPoints.length < 2) {
+        return null;
+      }
+      const regression = calculateWeightedLinearRegression(regressionPoints);
+      if (!regression) {
+        return null;
+      }
+      return generateApproximatedData(
+        data,
+        regression,
+        chartEndYear,
         companyBaseYear,
       );
     } else {
@@ -376,6 +405,25 @@ export default function EmissionsLineChart({
                               percentageChange =
                                 midValue > 0
                                   ? (annualChange / midValue) * 100
+                                  : 0;
+                            } else if (calculationMethod === "weighted") {
+                              // Weighted method: weighted linear regression
+                              const regression =
+                                calculateWeightedLinearRegression(
+                                  regressionPoints,
+                                );
+                              if (!regression) {
+                                return undefined;
+                              }
+
+                              const avgEmissions =
+                                regressionPoints.reduce(
+                                  (sum, point) => sum + point.y,
+                                  0,
+                                ) / regressionPoints.length;
+                              percentageChange =
+                                avgEmissions > 0
+                                  ? (regression.slope / avgEmissions) * 100
                                   : 0;
                             }
 

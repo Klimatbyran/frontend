@@ -25,6 +25,48 @@ export const calculateLinearRegression = (data: { x: number; y: number }[]) => {
   return { slope, intercept };
 };
 
+// Weighted linear regression that gives more weight to recent data points
+export const calculateWeightedLinearRegression = (
+  data: { x: number; y: number }[],
+) => {
+  const n = data.length;
+  if (n < 4) {
+    // If less than 4 points, fall back to regular linear regression
+    return calculateLinearRegression(data);
+  }
+
+  // Sort data by year to ensure proper ordering
+  const sortedData = [...data].sort((a, b) => a.x - b.x);
+
+  // Exponential decay weights: most recent gets 1, next gets decay, then decay^2, ...
+  const decay = 0.7;
+  const weights = sortedData.map((_, index) => Math.pow(decay, n - 1 - index));
+
+  let sumW = 0;
+  let sumWX = 0;
+  let sumWY = 0;
+  let sumWXY = 0;
+  let sumWXX = 0;
+
+  for (let i = 0; i < n; i++) {
+    const point = sortedData[i];
+    const weight = weights[i];
+
+    sumW += weight;
+    sumWX += weight * point.x;
+    sumWY += weight * point.y;
+    sumWXY += weight * point.x * point.y;
+    sumWXX += weight * point.x * point.x;
+  }
+
+  const slope =
+    (sumW * sumWXY - sumWX * sumWY) / (sumW * sumWXX - sumWX * sumWX);
+  const lastPoint = sortedData[sortedData.length - 1];
+  const intercept = lastPoint.y - slope * lastPoint.x;
+
+  return { slope, intercept };
+};
+
 // Helper to get regression points based on base year logic
 function getRegressionPoints(
   data: ChartData[],
@@ -409,7 +451,7 @@ export const generateSophisticatedApproximatedData = (
 // Simple calculation with base year support
 export const generateApproximatedData = (
   data: ChartData[],
-  _regression: { slope: number; intercept: number }, // unused now
+  regression?: { slope: number; intercept: number },
   endYear: number = 2030,
   baseYear?: number,
 ) => {
@@ -423,9 +465,18 @@ export const generateApproximatedData = (
       ? baseYear
       : validData[validData.length - 2].year;
   const points = validData.filter((d) => d.year >= baseYearValue);
-  // Calculate average annual change (slope)
+
+  // Use provided regression if available, otherwise fallback to average annual change
   let slope = 0;
-  if (points.length > 1) {
+  let intercept = 0;
+  if (
+    regression &&
+    typeof regression.slope === "number" &&
+    typeof regression.intercept === "number"
+  ) {
+    slope = regression.slope;
+    intercept = regression.intercept;
+  } else if (points.length > 1) {
     let totalChange = 0;
     let totalYears = 0;
     for (let i = 1; i < points.length; i++) {
@@ -433,7 +484,11 @@ export const generateApproximatedData = (
       totalYears += points[i].year - points[i - 1].year;
     }
     slope = totalYears !== 0 ? totalChange / totalYears : 0;
+    // Anchor at last point
+    intercept =
+      points[points.length - 1].total - slope * points[points.length - 1].year;
   }
+
   const lastYearWithData = points[points.length - 1].year;
   const lastValue = points[points.length - 1].total;
   const currentYear = new Date().getFullYear();
@@ -445,15 +500,14 @@ export const generateApproximatedData = (
   return allYears.map((year) => {
     let approximatedValue = null;
     if (year > lastYearWithData) {
-      approximatedValue = lastValue + slope * (year - lastYearWithData);
+      approximatedValue = slope * year + intercept;
       if (approximatedValue < 0) approximatedValue = 0;
     } else if (year === lastYearWithData) {
       approximatedValue = lastValue;
     }
     let parisValue = null;
     if (year >= currentYear) {
-      const currentYearValue =
-        lastValue + slope * (currentYear - lastYearWithData);
+      const currentYearValue = slope * currentYear + intercept;
       const calculatedValue =
         currentYearValue * Math.pow(1 - reductionRate, year - currentYear);
       parisValue = calculatedValue > 0 ? calculatedValue : null;
