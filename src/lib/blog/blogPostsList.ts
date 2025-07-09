@@ -17,7 +17,7 @@ export const blogMetadata: ContentMeta[] = [
     readTime: "2 min",
     category: CategoryEnum.Analysis,
     image: "/images/blogImages/only-radical-futures.jpg",
-    displayLanguages: ["en"],
+    displayLanguages: ["en", "all"],
     language: "English",
     author: {
       name: "Frida Berry Eklund",
