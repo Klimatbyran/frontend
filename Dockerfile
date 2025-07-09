@@ -14,8 +14,8 @@ COPY package*.json ./
 # Install dependencies
 RUN npm ci
 
-# Fix Rollup native dependency issue
-RUN npm rebuild @rollup/rollup-linux-x64-gnu
+# Fix Rollup native dependency issue - try multiple approaches
+RUN npm rebuild @rollup/rollup-linux-x64-gnu || npm install @rollup/rollup-linux-x64-gnu --force
 
 # Copy source files
 COPY . .

@@ -13,7 +13,7 @@ function makeAbsoluteUrl(relativePath: string) {
 }
 
 reports.forEach((report) => {
-  const folderName = path.basename(report.pdfUrl, ".pdf");
+  const folderName = path.basename(report.link, ".pdf");
   const html = `
 <!DOCTYPE html>
 <html lang="sv">
