@@ -20,6 +20,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { ExploreChart } from "./ExploreChart";
+import { exploreButtonFeatureFlagEnabled } from "@/utils/feature-flag";
 
 interface EmissionsLineChartProps {
   data: ChartData[];
@@ -40,6 +41,8 @@ interface EmissionsLineChartProps {
   getCategoryName: (id: number) => string;
   getCategoryColor: (id: number) => string;
   currentLanguage: "sv" | "en";
+  exploreMode: boolean;
+  setExploreMode: (val: boolean) => void;
 }
 
 function hasTotalEmissions(d: ChartData): d is ChartData & { total: number } {
@@ -58,6 +61,8 @@ export default function EmissionsLineChart({
   getCategoryName,
   getCategoryColor,
   currentLanguage,
+  exploreMode,
+  setExploreMode,
 }: EmissionsLineChartProps) {
   const currentYear = new Date().getFullYear();
   const shortEndYear = currentYear + 5;
@@ -104,7 +109,6 @@ export default function EmissionsLineChart({
   ];
   // Set initial step based on whether the first step exists
   const initialExploreStep = 0;
-  const [exploreMode, setExploreMode] = useState(false);
   const [exploreStep, setExploreStep] = useState(initialExploreStep);
 
   // Helper to get last two periods with emissions
@@ -626,8 +630,9 @@ export default function EmissionsLineChart({
       </div>
       {/* Chart view toggle buttons below the chart/legend */}
       {!exploreMode && (
-        <div className="flex flex-row justify-between items-center mt-2 px-4 w-full">
-          <div>
+        <div className="relative mt-2 px-4 w-full">
+          {/* Year toggle buttons positioned absolutely */}
+          <div className="absolute left-0 top-0">
             {chartEndYear === longEndYear && (
               <Button
                 variant="outline"
@@ -640,20 +645,7 @@ export default function EmissionsLineChart({
               </Button>
             )}
           </div>
-          <div className="flex flex-col items-center">
-            <Button
-              variant="default"
-              size="sm"
-              onClick={() => {
-                setExploreMode(true);
-                setExploreStep(initialExploreStep);
-              }}
-              className="bg-green-3 text-black font-semibold shadow-md hover:bg-green-2"
-            >
-              Explore the Data
-            </Button>
-          </div>
-          <div>
+          <div className="absolute right-0 top-0">
             {chartEndYear === shortEndYear && (
               <Button
                 variant="outline"
@@ -666,6 +658,22 @@ export default function EmissionsLineChart({
               </Button>
             )}
           </div>
+          {/* Explore button centered independently */}
+          {exploreButtonFeatureFlagEnabled() && (
+            <div className="flex justify-center items-center">
+              <Button
+                variant="default"
+                size="sm"
+                onClick={() => {
+                  setExploreMode(true);
+                  setExploreStep(initialExploreStep);
+                }}
+                className="bg-green-3 text-black font-semibold shadow-md hover:bg-green-2"
+              >
+                Explore the Data
+              </Button>
+            </div>
+          )}
         </div>
       )}
     </div>

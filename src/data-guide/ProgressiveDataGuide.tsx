@@ -15,7 +15,7 @@ import {
 } from "./ProgressiveDataGuideDesktop";
 import { ProgressiveDataGuideMobile } from "./ProgressiveDataGuideMobile";
 import { useState } from "react";
-import { dataGuideFeatureFlagEnabled } from "./feature-flag";
+import { dataGuideFeatureFlagEnabled } from "../utils/feature-flag";
 
 interface ProgressiveDataGuideProps {
   titleKey?: string;

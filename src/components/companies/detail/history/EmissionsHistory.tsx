@@ -91,6 +91,9 @@ export function EmissionsHistory({
   // Add state for hidden categories
   const [hiddenCategories, setHiddenCategories] = useState<number[]>([]);
 
+  // Explore mode state
+  const [exploreMode, setExploreMode] = useState(false);
+
   // Validate input data
   if (!reportingPeriods?.length) {
     return (
@@ -113,47 +116,72 @@ export function EmissionsHistory({
   };
 
   return (
-    <SectionWithHelp
-      helpItems={[
-        "scope1",
-        "scope2",
-        "scope3",
-        "parisAgreementLine",
-        "scope3EmissionLevels",
-        "companyMissingData",
-      ]}
-    >
-      <ChartHeader
-        title={t("companies.emissionsHistory.title")}
-        tooltipContent={t("companies.emissionsHistory.tooltip")}
-        unit={t("companies.emissionsHistory.unit")}
-        dataView={dataView}
-        setDataView={setDataView}
-        hasScope3Categories={hasScope3Categories}
-      />
-      <div className="h-[300px] md:h-[400px]">
-        <EmissionsLineChart
-          data={chartData}
-          companyBaseYear={companyBaseYear}
-          dataView={dataView}
-          hiddenScopes={hiddenScopes}
-          hiddenCategories={hiddenCategories}
-          handleClick={handleClick}
-          handleScopeToggle={handleScopeToggle}
-          handleCategoryToggle={handleCategoryToggle}
-          getCategoryName={getCategoryName}
-          getCategoryColor={getCategoryColor}
-          currentLanguage={currentLanguage}
-        />
-      </div>
-      <HiddenItemsBadges
-        hiddenScopes={hiddenScopes}
-        hiddenCategories={hiddenCategories}
-        onScopeToggle={handleScopeToggle}
-        onCategoryToggle={handleCategoryToggle}
-        getCategoryName={getCategoryName}
-        getCategoryColor={getCategoryColor}
-      />
-    </SectionWithHelp>
+    <div>
+      {!exploreMode && (
+        <SectionWithHelp
+          helpItems={[
+            "scope1",
+            "scope2",
+            "scope3",
+            "parisAgreementLine",
+            "scope3EmissionLevels",
+            "companyMissingData",
+          ]}
+        >
+          <ChartHeader
+            title={t("companies.emissionsHistory.title")}
+            tooltipContent={t("companies.emissionsHistory.tooltip")}
+            unit={t("companies.emissionsHistory.unit")}
+            dataView={dataView}
+            setDataView={setDataView}
+            hasScope3Categories={hasScope3Categories}
+          />
+          <div className="h-[300px] md:h-[400px]">
+            <EmissionsLineChart
+              data={chartData}
+              companyBaseYear={companyBaseYear}
+              dataView={dataView}
+              hiddenScopes={hiddenScopes}
+              hiddenCategories={hiddenCategories}
+              handleClick={handleClick}
+              handleScopeToggle={handleScopeToggle}
+              handleCategoryToggle={handleCategoryToggle}
+              getCategoryName={getCategoryName}
+              getCategoryColor={getCategoryColor}
+              currentLanguage={currentLanguage}
+              exploreMode={exploreMode}
+              setExploreMode={setExploreMode}
+            />
+          </div>
+          <HiddenItemsBadges
+            hiddenScopes={hiddenScopes}
+            hiddenCategories={hiddenCategories}
+            onScopeToggle={handleScopeToggle}
+            onCategoryToggle={handleCategoryToggle}
+            getCategoryName={getCategoryName}
+            getCategoryColor={getCategoryColor}
+          />
+        </SectionWithHelp>
+      )}
+      {exploreMode && (
+        <div className="w-full h-full flex-1">
+          <EmissionsLineChart
+            data={chartData}
+            companyBaseYear={companyBaseYear}
+            dataView={dataView}
+            hiddenScopes={hiddenScopes}
+            hiddenCategories={hiddenCategories}
+            handleClick={handleClick}
+            handleScopeToggle={handleScopeToggle}
+            handleCategoryToggle={handleCategoryToggle}
+            getCategoryName={getCategoryName}
+            getCategoryColor={getCategoryColor}
+            currentLanguage={currentLanguage}
+            exploreMode={exploreMode}
+            setExploreMode={setExploreMode}
+          />
+        </div>
+      )}
+    </div>
   );
 }
