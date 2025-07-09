@@ -8,6 +8,24 @@ export enum CategoryEnum {
 
 export const blogMetadata: ContentMeta[] = [
   {
+    id: "only-radical-futures-left",
+    title:
+      "Only Radical Futures Left",
+    excerpt:
+      "There Are Only Radical Futures Left – That’s Why We Need To Cut Emissions by 12 Percent Per Year",
+    date: "2025-07-09",
+    readTime: "2 min",
+    category: CategoryEnum.Analysis,
+    image: "/images/blogImages/only-radical-futures.jpg",
+    displayLanguages: ["en"],
+    language: "English",
+    author: {
+      name: "Frida Berry Eklund",
+      avatar: "/people/frida.jpg",
+    },
+    relatedPosts: ["carbon-law-from-2025", "2024-report"],
+  },
+  {
     id: "carbon-law-from-2025",
     title:
       "Q&A: Klimatkollen's adjusted Carbon Law emissions reduction trajectory",
