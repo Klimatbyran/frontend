@@ -164,6 +164,14 @@ export const CustomTooltip = ({
                 baseYear: trendData.baseYear,
                 lastYear: trendData.lastReportedYear,
               })}
+              <br />
+              <span
+                className={cn(
+                  trendData.slope >= 0 ? "text-pink-3" : "text-green-3",
+                )}
+              >
+                Trend: {trendData.slope >= 0 ? "↗ Increasing" : "↘ Decreasing"}
+              </span>
             </span>
           )}
       </div>
