@@ -17,6 +17,7 @@ import {
   calculateLinearRegression,
   generateApproximatedData,
   generateSophisticatedApproximatedData,
+  fitExponentialRegression,
 } from "@/utils/companyEmissionsCalculations";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -280,7 +281,7 @@ export default function EmissionsLineChart({
                     trendData={
                       approximatedData && dataView === "overview"
                         ? (() => {
-                            // Calculate the regression points
+                            // Calculate the regression points based on base year logic
                             const regressionPoints = companyBaseYear
                               ? data
                                   .filter(
@@ -294,27 +295,92 @@ export default function EmissionsLineChart({
                                   }))
                               : getLastTwoEmissionsPoints(data);
 
-                            const regression =
-                              calculateLinearRegression(regressionPoints);
-
-                            if (!regression) {
+                            if (regressionPoints.length < 2) {
                               return undefined;
                             }
 
-                            // Calculate percentage change from the slope
-                            // Get the average emissions value to calculate percentage change
-                            const avgEmissions =
-                              regressionPoints.reduce(
-                                (sum, point) => sum + point.y,
-                                0,
-                              ) / regressionPoints.length;
-                            const percentageChange =
-                              avgEmissions > 0
-                                ? (regression.slope / avgEmissions) * 100
-                                : 0;
+                            let percentageChange = 0;
+
+                            if (calculationMethod === "simple") {
+                              // Simple method: average annual change
+                              let totalChange = 0;
+                              let totalYears = 0;
+                              for (
+                                let i = 1;
+                                i < regressionPoints.length;
+                                i++
+                              ) {
+                                totalChange +=
+                                  regressionPoints[i].y -
+                                  regressionPoints[i - 1].y;
+                                totalYears +=
+                                  regressionPoints[i].x -
+                                  regressionPoints[i - 1].x;
+                              }
+                              const slope =
+                                totalYears !== 0 ? totalChange / totalYears : 0;
+
+                              // Calculate percentage change
+                              const avgEmissions =
+                                regressionPoints.reduce(
+                                  (sum, point) => sum + point.y,
+                                  0,
+                                ) / regressionPoints.length;
+                              percentageChange =
+                                avgEmissions > 0
+                                  ? (slope / avgEmissions) * 100
+                                  : 0;
+                            } else if (calculationMethod === "linear") {
+                              // Sophisticated method: linear regression
+                              const regression =
+                                calculateLinearRegression(regressionPoints);
+                              if (!regression) {
+                                return undefined;
+                              }
+
+                              const avgEmissions =
+                                regressionPoints.reduce(
+                                  (sum, point) => sum + point.y,
+                                  0,
+                                ) / regressionPoints.length;
+                              percentageChange =
+                                avgEmissions > 0
+                                  ? (regression.slope / avgEmissions) * 100
+                                  : 0;
+                            } else if (calculationMethod === "exponential") {
+                              // Exponential method: exponential fit
+                              const expFit =
+                                fitExponentialRegression(regressionPoints);
+                              if (!expFit) {
+                                return undefined;
+                              }
+
+                              // Calculate the average annual percentage change from exponential fit
+                              const avgEmissions =
+                                regressionPoints.reduce(
+                                  (sum, point) => sum + point.y,
+                                  0,
+                                ) / regressionPoints.length;
+
+                              // For exponential, calculate the percentage change at the midpoint
+                              const midYear =
+                                (regressionPoints[0].x +
+                                  regressionPoints[regressionPoints.length - 1]
+                                    .x) /
+                                2;
+                              const midValue =
+                                expFit.a * Math.exp(expFit.b * midYear);
+                              const nextYearValue =
+                                expFit.a * Math.exp(expFit.b * (midYear + 1));
+                              const annualChange = nextYearValue - midValue;
+                              percentageChange =
+                                midValue > 0
+                                  ? (annualChange / midValue) * 100
+                                  : 0;
+                            }
 
                             return {
-                              slope: percentageChange, // Now this is the percentage change
+                              slope: percentageChange,
                               baseYear:
                                 companyBaseYear || data[0]?.year || 2000,
                               lastReportedYear: data

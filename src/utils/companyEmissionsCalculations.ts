@@ -214,7 +214,7 @@ export const calculateFutureTrend = (
 };
 
 // Base year-aware exponential regression
-function fitExponentialRegression(data: { x: number; y: number }[]) {
+export function fitExponentialRegression(data: { x: number; y: number }[]) {
   const filtered = data.filter((d) => d.y > 0);
   if (filtered.length < 2) return null;
   const n = filtered.length;
