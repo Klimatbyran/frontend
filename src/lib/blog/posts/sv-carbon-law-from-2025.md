@@ -39,15 +39,15 @@ Med utgångspunkt i **Global Carbon Budget 2024** har Klimatkollen räknat om de
 
 Baserat på återstående koldioxidbudgetar från Global Carbon Budget 2024 gäller följande:
 
-**Uppvärmningsnivå 1.5°C**
+**Uppvärmningsnivå 1,5°C**
 - 50% Chans budget: 305 GtCO₂
 - Årlig minskningstakt: 11,72%
 
-**Uppvärmningsnivå 1.7°C**
+**Uppvärmningsnivå 1,7°C**
 - 50% Chans budget: 655 GtCO₂
 - Årlig minskningstakt: 7,38%
 
-**Uppvärmningsnivå 2.0°C**
+**Uppvärmningsnivå 2,0°C**
 - 50% Chans budget: 1,155 GtCO₂
 - Årlig minskningstakt: 7,38%
 
