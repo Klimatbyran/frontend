@@ -16,6 +16,7 @@ import { useMemo, useState } from "react";
 import {
   calculateLinearRegression,
   generateApproximatedData,
+  generateSophisticatedApproximatedData,
 } from "@/utils/companyEmissionsCalculations";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -43,6 +44,7 @@ interface EmissionsLineChartProps {
   currentLanguage: "sv" | "en";
   exploreMode: boolean;
   setExploreMode: (val: boolean) => void;
+  calculationMethod?: "simple" | "linear" | "exponential";
 }
 
 function hasTotalEmissions(d: ChartData): d is ChartData & { total: number } {
@@ -63,6 +65,7 @@ export default function EmissionsLineChart({
   currentLanguage,
   exploreMode,
   setExploreMode,
+  calculationMethod = "simple",
 }: EmissionsLineChartProps) {
   const currentYear = new Date().getFullYear();
   const shortEndYear = currentYear + 5;
@@ -123,33 +126,50 @@ export default function EmissionsLineChart({
     if (dataView !== "overview") {
       return null;
     }
-
-    const regressionPoints: { x: number; y: number }[] = (() => {
-      if (companyBaseYear) {
-        const baseYearPoints = data
-          .filter((d) => hasTotalEmissions(d) && d.year >= companyBaseYear)
-          .map((d) => ({ x: d.year, y: d.total as number }));
-        // Fallback to last two reporting periods with emissions if not enough points at/after base year or no base year
-        if (baseYearPoints.length < 2) {
+    if (calculationMethod === "linear") {
+      return generateSophisticatedApproximatedData(
+        data,
+        chartEndYear,
+        "linear",
+        companyBaseYear,
+      );
+    } else if (calculationMethod === "exponential") {
+      return generateSophisticatedApproximatedData(
+        data,
+        chartEndYear,
+        "exponential",
+        companyBaseYear,
+      );
+    } else {
+      // Simple (original) method
+      const regressionPoints: { x: number; y: number }[] = (() => {
+        if (companyBaseYear) {
+          const baseYearPoints = data
+            .filter((d) => hasTotalEmissions(d) && d.year >= companyBaseYear)
+            .map((d) => ({ x: d.year, y: d.total as number }));
+          if (baseYearPoints.length < 2) {
+            return getLastTwoEmissionsPoints(data);
+          }
+          return baseYearPoints;
+        } else {
           return getLastTwoEmissionsPoints(data);
         }
-        return baseYearPoints;
-      } else {
-        return getLastTwoEmissionsPoints(data);
+      })();
+      if (regressionPoints.length < 2) {
+        return null;
       }
-    })();
-
-    if (regressionPoints.length < 2) {
-      return null;
+      const regression = calculateLinearRegression(regressionPoints);
+      if (!regression) {
+        return null;
+      }
+      return generateApproximatedData(
+        data,
+        regression,
+        chartEndYear,
+        companyBaseYear,
+      );
     }
-
-    const regression = calculateLinearRegression(regressionPoints);
-    if (!regression) {
-      return null;
-    }
-
-    return generateApproximatedData(data, regression, chartEndYear);
-  }, [data, dataView, companyBaseYear, chartEndYear]);
+  }, [data, dataView, companyBaseYear, chartEndYear, calculationMethod]);
 
   // Generate ticks based on the current end year
   const generateTicks = () => {

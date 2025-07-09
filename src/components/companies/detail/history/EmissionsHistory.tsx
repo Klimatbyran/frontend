@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { Text } from "@/components/ui/text";
+import { Button } from "@/components/ui/button";
 import {
   EmissionPeriod,
   interpolateScope3Categories,
@@ -14,6 +15,11 @@ import ChartHeader from "./ChartHeader";
 import EmissionsLineChart from "./EmissionsLineChart";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
+import {
+  generateApproximatedData,
+  generateSophisticatedApproximatedData,
+} from "@/utils/companyEmissionsCalculations";
+import { exploreButtonFeatureFlagEnabled } from "@/utils/feature-flag";
 
 export function EmissionsHistory({
   reportingPeriods,
@@ -94,6 +100,22 @@ export function EmissionsHistory({
   // Explore mode state
   const [exploreMode, setExploreMode] = useState(false);
 
+  // Calculation method toggle state
+  // 'simple' | 'linear' | 'exponential'
+  const [calculationMethod, setCalculationMethod] = useState<
+    "simple" | "linear" | "exponential"
+  >("simple");
+
+  // Feature flag for calculation method toggle
+  const showCalculationToggle = exploreButtonFeatureFlagEnabled();
+
+  // Remove the extended trendOptions and revert to just the three main options
+  const trendOptions = [
+    { key: "simple", label: "Simple" },
+    { key: "linear", label: "Sophisticated" },
+    { key: "exponential", label: "Exponential" },
+  ];
+
   // Validate input data
   if (!reportingPeriods?.length) {
     return (
@@ -151,6 +173,7 @@ export function EmissionsHistory({
               currentLanguage={currentLanguage}
               exploreMode={exploreMode}
               setExploreMode={setExploreMode}
+              calculationMethod={calculationMethod}
             />
           </div>
           <HiddenItemsBadges
@@ -161,6 +184,31 @@ export function EmissionsHistory({
             getCategoryName={getCategoryName}
             getCategoryColor={getCategoryColor}
           />
+
+          {/* Calculation Method Toggle - only show if feature flag enabled */}
+          {showCalculationToggle && (
+            <div className="flex items-center justify-center gap-2 mt-4 flex-wrap">
+              <Text variant="body" className="text-sm text-grey">
+                Calculation Method:
+              </Text>
+              {trendOptions.map((opt) => (
+                <Button
+                  key={opt.key}
+                  variant={calculationMethod === opt.key ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setCalculationMethod(opt.key as any)}
+                  className={
+                    calculationMethod === opt.key
+                      ? "bg-blue-3 text-white border-blue-3"
+                      : ""
+                  }
+                  style={{ minWidth: 110, marginBottom: 4 }}
+                >
+                  {opt.label}
+                </Button>
+              ))}
+            </div>
+          )}
         </SectionWithHelp>
       )}
       {exploreMode && (
@@ -179,6 +227,7 @@ export function EmissionsHistory({
             currentLanguage={currentLanguage}
             exploreMode={exploreMode}
             setExploreMode={setExploreMode}
+            calculationMethod={calculationMethod}
           />
         </div>
       )}
