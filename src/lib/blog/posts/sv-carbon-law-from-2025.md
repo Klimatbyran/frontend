@@ -39,23 +39,17 @@ Med utgångspunkt i **Global Carbon Budget 2024** har Klimatkollen räknat om de
 
 Baserat på återstående koldioxidbudgetar från Global Carbon Budget 2024 gäller följande:
 
-| Uppvärmningsnivå (°C) | 50% Chans budget (GtCO₂) | Årlig minskningstakt  (%) |
-|--------------------|---------------------------|----------------------------|
-| 1.5                | 305                       | 11.72                      |
-| 1.7                | 655                       | 7.38                       |
-| 2.0                | 1,155                     | 7.38                       |
-
 **Uppvärmningsnivå 1.5°C**
 - 50% Chans budget: 305 GtCO₂
-- Årlig minskningstakt: 11.72%
+- Årlig minskningstakt: 11,72%
 
 **Uppvärmningsnivå 1.7°C**
 - 50% Chans budget: 655 GtCO₂
-- Årlig minskningstakt: 7.38%
+- Årlig minskningstakt: 7,38%
 
 **Uppvärmningsnivå 2.0°C**
 - 50% Chans budget: 1,155 GtCO₂
-- Årlig minskningstakt: 7.38%
+- Årlig minskningstakt: 7,38%
 
 
 **Antaganden:**
@@ -91,7 +85,7 @@ Det är kode röd för mänskligheten. Utsläppen ökar fortfarande, den globala
 
 Vi är i vårt livs lopp: att avkarbonisera våra ekonomier och skala upp lösningarna. Varje ton som släpps ut räknas. Och att stanna under 1,5°C global uppvärmning bör vara vår högsta prioritet – miljarder liv beror på våra handlingar idag.
 
-> **"Gå bortom 1,5°C uppvärmning, en plats som våra civilisationer aldrig har upplevt och som jorden inte har sett under de senaste 100 000 åren, så kommer vi inte bara att se stora mänskliga och ekonomiska skador, utan vi kommer sannolikt att korsa flera jordsystemets vipppunkter, vilket orsakar förstärkt uppvärmning med miljarder människor påverkade." – Johan Rockström**
+> **“Go beyond 1.5°C warming, a place our civilisations have never experienced and Earth has not seen in the last 100,000 years, and we will not only see major human and economic damage, but are likely to cross multiple Earth system tipping points, causing amplified warming with billions of people affected.” – Johan Rockström**
 
 ---
 
@@ -100,7 +94,7 @@ Vi är i vårt livs lopp: att avkarbonisera våra ekonomier och skala upp lösni
 En koldioxidbudget definierar hur mycket koldioxid vi kan släppa ut samtidigt som vi begränsar uppvärmningen till ett visst mål.
 
 **Faktorer som påverkar beräkningarna:**
-- Temperaturscenario (1.5, 1.7, 2°C)  
+- Temperaturscenario (1,5, 1,7, 2°C)  
 - Konfidensnivå (50%, 67%, 83%)  
 - Kolinlagringens och teknologiernas roll (CDR)
 - Återstående utsläpp beaktas

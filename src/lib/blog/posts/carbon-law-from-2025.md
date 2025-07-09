@@ -18,7 +18,7 @@ Inspired by Moore’s Law, it calls for exponential reductions in global CO₂ e
 **2.** Double carbon removal technologies and capacity every decade.  
 **3.** Reach net-zero emissions by around 2050.   
 
-As of 2025, we're **five years behind** this trajectory. Emissions are still rising, and the global carbon budget to stay below 1,5°C has shrunk. At current levels, it will run out in only six years. 
+As of 2025, we're **five years behind** this trajectory. Emissions are still rising, and the global carbon budget to stay below 1.5°C has shrunk. At current levels, it will run out in only six years. 
 
 **Klimatkollen’s response:**  
 Klimatkollen has calculated a new pace of emissions reductions needed to stay within the remaining budget, based on 2025 as a starting point. It aims to give states, organisations and companies a rule of thumb by which to measure science-aligned emission cuts. 
@@ -56,7 +56,7 @@ The data below shows carbon budgets for 50% chance of staying below 1.5, 1.7 and
 
 
 **Assumptions:**
-Our calculations assume residual emissions of 5.5 GtCO₂ in 2050 and are based on a 50% chance of not exceeding 1,5°C. *(Source: All options, not silver bullets, needed to limit global warming to 1.5 °C: a scenario appraisal, 2023)*
+Our calculations assume residual emissions of 5.5 GtCO₂ in 2050 and are based on a 50% chance of not exceeding 1.5°C. *(Source: All options, not silver bullets, needed to limit global warming to 1.5 °C: a scenario appraisal, 2023)*
 
 The annual 12% reduction pace does not take into account equity or individual entities' ability to transform their operations, but should be used as a rule of thumb to illustrate the pace needed globally to have a chance of limiting global warming to 1.5°C. 
 
