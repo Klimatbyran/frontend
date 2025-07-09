@@ -17,8 +17,26 @@ export const blogMetadata: ContentMeta[] = [
     readTime: "2 min",
     category: CategoryEnum.Analysis,
     image: "/images/blogImages/only-radical-futures.jpg",
-    displayLanguages: ["en", "all"],
+    displayLanguages: ["en"],
     language: "English",
+    author: {
+      name: "Frida Berry Eklund",
+      avatar: "/people/frida.jpg",
+    },
+    relatedPosts: ["carbon-law-from-2025", "2024-report"],
+  },
+  {
+    id: "sv-only-radical-futures-left",
+    title:
+      "Bara radikala framtidsutsikter kvar",
+    excerpt:
+      "Det finns bara radikala framtidsutsikter kvar – därför måste vi minska utsläppen med 12 procent per år",
+    date: "2025-07-09",
+    readTime: "2 min",
+    category: CategoryEnum.Analysis,
+    image: "/images/blogImages/only-radical-futures.jpg",
+    displayLanguages: ["sv"],
+    language: "Svenska",
     author: {
       name: "Frida Berry Eklund",
       avatar: "/people/frida.jpg",
