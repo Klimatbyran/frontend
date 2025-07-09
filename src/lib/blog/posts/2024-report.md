@@ -2,7 +2,7 @@
 id: "2024-report"
 ---
 
-> **[New report on large companies’ climate reporting for 2024](/reports/2025-06-23_Bolagsklimatkollen.pdf)**  
+> **[New report on large companies’ climate reporting for 2024 data](/reports/2025-06-23_Bolagsklimatkollen.pdf)**  
 >  
 
 ---

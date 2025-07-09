@@ -64,9 +64,9 @@ export const blogMetadata: ContentMeta[] = [
   {
     id: "sv-2024-report",
     title:
-      "Klimatkollens 2024-rapport - Översikt",
+      "Klimatkollens 2025-rapport - Översikt",
     excerpt:
-      "Vi granskar klimatrapporteringen från 235 storbolag för 2024 och visar varför utsläppsminskningarna går för långsamt – samt ger tre konkreta rekommendationer för mer transparent och effektiv klimatredovisning.",
+      "Vi granskar klimatrapporteringen från 235 storbolag för 2024 data och visar varför utsläppsminskningarna går för långsamt – samt ger tre konkreta rekommendationer för mer transparent och effektiv klimatredovisning.",
     date: "2025-07-07",
     readTime: "2 min",
     category: CategoryEnum.Analysis,
@@ -82,9 +82,9 @@ export const blogMetadata: ContentMeta[] = [
   {
     id: "2024-report",
     title:
-      "Klimatkollens 2024 Report Overview",
+      "Klimatkollens 2025 Report Overview",
     excerpt:
-      "We reviewed the corporate climate reporting from 235 large companies for 2024 and show why the emission reductions are too slow – and give three concrete recommendations for more transparent and effective climate reporting.",
+      "We reviewed the corporate climate reporting from 235 large companies for 2024 data and show why the emission reductions are too slow – and give three concrete recommendations for more transparent and effective climate reporting.",
     date: "2025-07-07",
     readTime: "2 min",
     category: CategoryEnum.Analysis,

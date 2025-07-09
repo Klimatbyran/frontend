@@ -2,7 +2,7 @@
 id: "sv-2024-report"
 ---
 
-> **[Ny rapport: storbolagens klimatrapportering för 2024](/reports/2025-06-23_Bolagsklimatkollen.pdf)**  
+> **[Ny rapport: storbolagens klimatrapportering för 2024 data](/reports/2025-06-23_Bolagsklimatkollen.pdf)**  
 >  
 
 ---
