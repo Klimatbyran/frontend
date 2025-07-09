@@ -45,11 +45,23 @@ Baserat på återstående koldioxidbudgetar från Global Carbon Budget 2024 gäl
 | 1.7                | 655                       | 7.38                       |
 | 2.0                | 1,155                     | 7.38                       |
 
+**Uppvärmningsnivå 1.5°C**
+- 50% Chans budget: 305 GtCO₂
+- Årlig minskningstakt: 11.72%
+
+**Uppvärmningsnivå 1.7°C**
+- 50% Chans budget: 655 GtCO₂
+- Årlig minskningstakt: 7.38%
+
+**Uppvärmningsnivå 2.0°C**
+- 50% Chans budget: 1,155 GtCO₂
+- Årlig minskningstakt: 7.38%
+
 
 **Antaganden:**
-- Återstående utsläpp på 5,5 GtCO₂ till 2050
-- 50% sannolikhet att hålla sig under 1,5°C 
-- Baserat på *All options, not silver bullets, needed to limit global warming to 1.5°C: a scenario appraisal* (2023)
+Våra beräkningar utgår från kvarstående utsläpp på 5,5 GtCO₂ år 2050 och baseras på 50% chans att inte överskrida 1,5°C. *(Källa: All options, not silver bullets, needed to limit global warming to 1.5 °C: a scenario appraisal, 2023)*
+
+Det årliga 12% minskningsparet tar inte hänsyn till rättvisa eller enskilda aktörers förmåga att omställa sin verksamhet, utan ska användas som tumregel för att illustrera det tempot som behövs globalt för att ha en chans att begränsa den globala uppvärmningen till 1,5°C.
 
 ---
 
@@ -57,9 +69,9 @@ Baserat på återstående koldioxidbudgetar från Global Carbon Budget 2024 gäl
 
 Klimatkollens uppdrag är att stärka allmänhetens kunskap och tryck på beslutsfattare genom tydlig kommunikation om utsläppen och vad som krävs för att klara Parisavtalet.
 
-Beräkningarna i den ursprungliga **Carbon Law** (halvering vart tionde år från 2020) gäller inte längre eftersom tiden gått och utsläppen inte minskat. 
+Den ursprungliga Carbon Law har varit enormt inflytelserik för att tillhandahålla denna måttstock: en halvering av utsläpp var tionde år, med start 2030. Men vi är nu fem år efter den ursprungliga Carbon Law, och koldioxidbudgeten tar slut.
 
-Den nya utsläppsbanan återspeglar detta och ger ett riktmärke från och med **2025**.
+Beräkningarna i den ursprungliga **Carbon Law** (halvering vart tionde år från 2020) gäller inte längre eftersom tiden gått och utsläppen inte minskat. Den nya utsläppsbanan återspeglar detta och ger ett riktmärke från och med **2025**.
 
 ---
 
@@ -75,11 +87,11 @@ Det finns inga rättsliga förpliktelser, men:
 
 ## 6. Varför 1,5°C, är det inte för sent?
 
-**”Om vi går bortom 1,5°C riskerar vi att passera irreversibla brytpunkter i de planetära systemen.” – Johan Rockström**
+Det är kode röd för mänskligheten. Utsläppen ökar fortfarande, den globala uppvärmningen accelererar, och den kvarstående koldioxidbudgeten för att hålla den globala uppvärmningen under 1,5°C – mänsklighetens säkra rymd – försvinner snabbt.
 
-- Den globala uppvärmningen accelererar. 
-- 1,5°C är **mänsklighetens säkra gräns**.  
-- Miljardtals liv är beroende av att uppvärmningen hålls under denna tröskel.
+Vi är i vårt livs lopp: att avkarbonisera våra ekonomier och skala upp lösningarna. Varje ton som släpps ut räknas. Och att stanna under 1,5°C global uppvärmning bör vara vår högsta prioritet – miljarder liv beror på våra handlingar idag.
+
+> **"Gå bortom 1,5°C uppvärmning, en plats som våra civilisationer aldrig har upplevt och som jorden inte har sett under de senaste 100 000 åren, så kommer vi inte bara att se stora mänskliga och ekonomiska skador, utan vi kommer sannolikt att korsa flera jordsystemets vipppunkter, vilket orsakar förstärkt uppvärmning med miljarder människor påverkade." – Johan Rockström**
 
 ---
 
@@ -114,17 +126,27 @@ Klimatkollen publicerar visualiseringar som visar hur varje företag presterar j
 
 Carbon Law-beräkningarna omfattar **endast koldioxid**, inte andra gaser som **metan**, som beter sig annorlunda i klimatsystemet.
 
-- Metan sprids snabbare, medan koldioxid stannar kvar i århundraden.
+- Metan sprids snabbare, medan koldioxid stannar kvar i århundraden, [läs mer](https://www.ipcc.ch/report/ar6/wg1/downloads/faqs/IPCC_AR6_WGI_FAQ_Chapter_05.pdf).
 - **Snabba minskningar** av alla växthusgaser är fortfarande nödvändiga.
 
 ---
 
 ## 📚 Källor och mer läsning
 
-- [Global Carbon Budget 2024](https://essd.copernicus.org/articles/17/965/2025/essd-17-965-2025.pdf)  
-- [Is the Earth losing resilience? – Johan Rockström](https://www.linkedin.com/pulse/earth-losing-resilience-does-matter-part-3-what-all-mean-rockstr%C3%B6m-rukge/)  
-- [1.5°C Business Playbook – Exponential Roadmap Initiative](https://exponentialroadmap.org/wp-content/uploads/2022/09/1.5C-business-playbook-v2.0.pdf)  
-- [All options needed to limit global warming – Warszawski et al. (2023)](https://iopscience.iop.org/article/10.1088/1748-9326/abfeec)  
-- [IPCC AR6 FAQ on GHGs](https://www.ipcc.ch/report/ar6/wg1/downloads/faqs/IPCC_AR6_WGI_FAQ_Chapter_05.pdf)  
+**[Global Carbon Budget 2024](https://essd.copernicus.org/articles/17/965/2025/essd-17-965-2025.pdf)** — A roadmap for rapid decarbonization, Johan Rockström, Owen Gaffney, Joeri Rogelj, Malte Meinshausen, Nebojsa Nakicenovic, Hans Joachim Schellnhuber (2017)
+
+**[Is the Earth losing resilience, and does it matter? Part 1: The risks we don’t know we’re taking](https://www.linkedin.com/pulse/earth-losing-resilience-does-matter-part-3-what-all-mean-rockstr%C3%B6m-rukge/)** — Johan Rockström, 28 March 2025
+
+**[Forest carbon budgets and Finnish climate policy: Explaining my position](https://www.linkedin.com/pulse/forest-carbon-budgets-finnish-climate-policy-my-johan-rockström-smize)** — Johan Rockström, 11 March 2025
+
+**[Understanding the carbon dioxide removal range in 1.5°C compatible and high overshoot pathways](https://iopscience.iop.org/article/10.1088/2515-7620/accdba)** — Ruben Prütz, Jessica Strefler, Joeri Rogelj and Sabine Fuss (2023)
+
+**[All options, not silver bullets, needed to limit global warming to 1.5 °C: a scenario appraisal](https://iopscience.iop.org/article/10.1088/1748-9326/abfeec)** — Lila Warszawski, Elmar Kriegler, Timothy M Lenton, Owen Gaffney, Daniela Jacob, Daniel Klingenfeld, Ryu Koide, María Máñez Costa, Dirk Messner, Nebojsa Nakicenovic (2023)
+
+**[Global Energy Review 2025](https://www.iea.org/reports/global-energy-review-2025/co2-emissions)** — IEA
+
+**[1.5°C Business Playbook](https://exponentialroadmap.org/wp-content/uploads/2022/09/1.5C-business-playbook-v2.0.pdf)** — The Exponential Roadmap Initiative
+
+**[A roadmap for rapid decarbonization](https://www.science.org/doi/10.1126/science.aah3443)** — Johan Rockström, Owen Gaffney, Joeri Rogelj, Malte Meinshausen, Nebojsa Nakicenovic, Hans Joachim Schellnhuber (2017)
 
 ---
