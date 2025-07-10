@@ -101,7 +101,12 @@ export function EmissionsHistory({
 
   // Calculation method toggle state
   const [calculationMethod, setCalculationMethod] = useState<
-    "simple" | "linear" | "exponential" | "weighted"
+    | "simple"
+    | "linear"
+    | "exponential"
+    | "weighted"
+    | "weightedExponential"
+    | "recentExponential"
   >("simple");
 
   // Feature flag for calculation method toggle
@@ -112,6 +117,8 @@ export function EmissionsHistory({
     { key: "linear", label: "Sophisticated" },
     { key: "exponential", label: "Exponential" },
     { key: "weighted", label: "Weighted Recent" },
+    { key: "weightedExponential", label: "Weighted Exponential" },
+    { key: "recentExponential", label: "Recent Exponential" },
   ];
 
   // Validate input data
@@ -221,6 +228,10 @@ export function EmissionsHistory({
                     "Sophisticated (Linear) Method"}
                   {calculationMethod === "exponential" && "Exponential Method"}
                   {calculationMethod === "weighted" && "Weighted Recent Method"}
+                  {calculationMethod === "weightedExponential" &&
+                    "Weighted Exponential Method"}
+                  {calculationMethod === "recentExponential" &&
+                    "Recent Exponential Method"}
                 </Text>
 
                 {calculationMethod === "simple" && (
@@ -323,6 +334,62 @@ export function EmissionsHistory({
                       data is more indicative of current trends. Useful when
                       recent policy changes or business decisions may have
                       altered the emissions trajectory.
+                    </p>
+                  </div>
+                )}
+
+                {calculationMethod === "weightedExponential" && (
+                  <div className="text-xs text-grey space-y-2">
+                    <p>
+                      <strong>How it works:</strong> Fits an exponential curve
+                      (y = a × e^(bx)) using weighted regression that gives
+                      exponential decay weights to data points. Recent data has
+                      more influence on the curve fit.
+                    </p>
+                    <p>
+                      <strong>Formula:</strong> Weighted exponential regression:
+                      y = a × e^(bx), where weights follow exponential decay
+                      (most recent = 1, next = 0.7, next = 0.49, etc.). This
+                      emphasizes recent trends while fitting an exponential
+                      curve.
+                    </p>
+                    <p>
+                      <strong>Projection:</strong> The weighted exponential
+                      curve is scaled to pass through the last reported data
+                      point, then projected forward using the exponential
+                      formula.
+                    </p>
+                    <p>
+                      <strong>Use case:</strong> Best for companies showing
+                      accelerating/decelerating trends where recent data is more
+                      reliable. Combines the benefits of exponential fitting
+                      with recent data emphasis.
+                    </p>
+                  </div>
+                )}
+
+                {calculationMethod === "recentExponential" && (
+                  <div className="text-xs text-grey space-y-2">
+                    <p>
+                      <strong>How it works:</strong> Fits an exponential curve
+                      (y = a × e^(bx)) to only the last 4 years of data,
+                      ignoring older historical data points.
+                    </p>
+                    <p>
+                      <strong>Formula:</strong> Exponential regression on recent
+                      data: y = a × e^(bx), calculated using only the last 4
+                      reporting years. This focuses entirely on recent trends.
+                    </p>
+                    <p>
+                      <strong>Projection:</strong> The exponential curve is
+                      scaled to pass through the last reported data point, then
+                      projected forward using the exponential formula.
+                    </p>
+                    <p>
+                      <strong>Use case:</strong> Best for companies where recent
+                      data is most relevant and older data may not reflect
+                      current business conditions or policy changes. Useful when
+                      there have been significant recent changes in operations.
                     </p>
                   </div>
                 )}

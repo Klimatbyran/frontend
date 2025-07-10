@@ -19,6 +19,8 @@ import {
   generateApproximatedData,
   generateSophisticatedApproximatedData,
   fitExponentialRegression,
+  calculateWeightedExponentialRegression,
+  calculateRecentExponentialRegression,
 } from "@/utils/companyEmissionsCalculations";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -46,7 +48,13 @@ interface EmissionsLineChartProps {
   currentLanguage: "sv" | "en";
   exploreMode: boolean;
   setExploreMode: (val: boolean) => void;
-  calculationMethod?: "simple" | "linear" | "exponential" | "weighted";
+  calculationMethod?:
+    | "simple"
+    | "linear"
+    | "exponential"
+    | "weighted"
+    | "weightedExponential"
+    | "recentExponential";
 }
 
 function hasTotalEmissions(d: ChartData): d is ChartData & { total: number } {
@@ -111,6 +119,11 @@ export default function EmissionsLineChart({
       description:
         "Red/green shading shows the difference between the trend and Paris lines, representing the tCO₂ gap.",
     },
+    {
+      label: "Total area analysis",
+      description:
+        "Shows the cumulative emissions difference over time. The total area between trend and Paris lines represents the overall impact from current year to 2050.",
+    },
   ];
   // Set initial step based on whether the first step exists
   const initialExploreStep = 0;
@@ -143,8 +156,8 @@ export default function EmissionsLineChart({
         companyBaseYear,
       );
     } else if (calculationMethod === "weighted") {
-      // Weighted method
-      const regressionPoints: { x: number; y: number }[] = (() => {
+      // Weighted method (linear regression, exponential weights)
+      const regressionPoints = (() => {
         if (companyBaseYear) {
           const baseYearPoints = data
             .filter((d) => hasTotalEmissions(d) && d.year >= companyBaseYear)
@@ -170,9 +183,126 @@ export default function EmissionsLineChart({
         chartEndYear,
         companyBaseYear,
       );
+    } else if (calculationMethod === "weightedExponential") {
+      // Weighted exponential regression
+      const regressionPoints = (() => {
+        if (companyBaseYear) {
+          const baseYearPoints = data
+            .filter((d) => hasTotalEmissions(d) && d.year >= companyBaseYear)
+            .map((d) => ({ x: d.year, y: d.total as number }));
+          if (baseYearPoints.length < 2) {
+            return getLastTwoEmissionsPoints(data);
+          }
+          return baseYearPoints;
+        } else {
+          return getLastTwoEmissionsPoints(data);
+        }
+      })();
+      if (regressionPoints.length < 2) {
+        return null;
+      }
+      const expFit = calculateWeightedExponentialRegression(
+        regressionPoints,
+        0.7,
+      );
+      if (!expFit) {
+        return null;
+      }
+      // Anchor at last data point
+      const lastYear = regressionPoints[regressionPoints.length - 1].x;
+      const lastValue = regressionPoints[regressionPoints.length - 1].y;
+      const fitValueAtLast = expFit.a * Math.exp(expFit.b * lastYear);
+      const scale =
+        lastValue && fitValueAtLast ? lastValue / fitValueAtLast : 1;
+      const allYears = Array.from(
+        { length: chartEndYear - data[0].year + 1 },
+        (_, i) => data[0].year + i,
+      );
+      const currentYear = new Date().getFullYear();
+      const reductionRate = 0.1172;
+      return allYears.map((year) => {
+        let approximatedValue = null;
+        if (year > lastYear) {
+          approximatedValue = scale * expFit.a * Math.exp(expFit.b * year);
+          if (approximatedValue < 0) approximatedValue = 0;
+        } else if (year === lastYear) {
+          approximatedValue = lastValue;
+        }
+        let parisValue = null;
+        if (year >= currentYear) {
+          const currentYearValue =
+            scale * expFit.a * Math.exp(expFit.b * currentYear);
+          const calculatedValue =
+            currentYearValue * Math.pow(1 - reductionRate, year - currentYear);
+          parisValue = calculatedValue > 0 ? calculatedValue : null;
+        }
+        return {
+          year,
+          approximated: approximatedValue,
+          total: data.find((d) => d.year === year)?.total,
+          carbonLaw: parisValue,
+        };
+      });
+    } else if (calculationMethod === "recentExponential") {
+      // Recent exponential regression (last 4 years)
+      const regressionPoints = (() => {
+        if (companyBaseYear) {
+          const baseYearPoints = data
+            .filter((d) => hasTotalEmissions(d) && d.year >= companyBaseYear)
+            .map((d) => ({ x: d.year, y: d.total as number }));
+          if (baseYearPoints.length < 2) {
+            return getLastTwoEmissionsPoints(data);
+          }
+          return baseYearPoints;
+        } else {
+          return getLastTwoEmissionsPoints(data);
+        }
+      })();
+      if (regressionPoints.length < 2) {
+        return null;
+      }
+      const expFit = calculateRecentExponentialRegression(regressionPoints, 4);
+      if (!expFit) {
+        return null;
+      }
+      // Anchor at last data point
+      const lastYear = regressionPoints[regressionPoints.length - 1].x;
+      const lastValue = regressionPoints[regressionPoints.length - 1].y;
+      const fitValueAtLast = expFit.a * Math.exp(expFit.b * lastYear);
+      const scale =
+        lastValue && fitValueAtLast ? lastValue / fitValueAtLast : 1;
+      const allYears = Array.from(
+        { length: chartEndYear - data[0].year + 1 },
+        (_, i) => data[0].year + i,
+      );
+      const currentYear = new Date().getFullYear();
+      const reductionRate = 0.1172;
+      return allYears.map((year) => {
+        let approximatedValue = null;
+        if (year > lastYear) {
+          approximatedValue = scale * expFit.a * Math.exp(expFit.b * year);
+          if (approximatedValue < 0) approximatedValue = 0;
+        } else if (year === lastYear) {
+          approximatedValue = lastValue;
+        }
+        let parisValue = null;
+        if (year >= currentYear) {
+          const currentYearValue =
+            scale * expFit.a * Math.exp(expFit.b * currentYear);
+          const calculatedValue =
+            currentYearValue * Math.pow(1 - reductionRate, year - currentYear);
+          parisValue = calculatedValue > 0 ? calculatedValue : null;
+        }
+        return {
+          year,
+          approximated: approximatedValue,
+          total: data.find((d) => d.year === year)?.total,
+          carbonLaw: parisValue,
+        };
+      });
     } else {
       // Simple (original) method
-      const regressionPoints: { x: number; y: number }[] = (() => {
+      const regressionPoints = (() => {
         if (companyBaseYear) {
           const baseYearPoints = data
             .filter((d) => hasTotalEmissions(d) && d.year >= companyBaseYear)
@@ -425,6 +555,35 @@ export default function EmissionsLineChart({
                                 avgEmissions > 0
                                   ? (regression.slope / avgEmissions) * 100
                                   : 0;
+                            } else if (
+                              calculationMethod === "weightedExponential"
+                            ) {
+                              // Weighted Exponential method: weighted exponential regression
+                              const regression =
+                                calculateWeightedExponentialRegression(
+                                  regressionPoints,
+                                  0.7,
+                                );
+                              if (!regression) {
+                                return undefined;
+                              }
+                              // For exponential y = a * exp(bx), percent change per year = (exp(b) - 1) * 100
+                              percentageChange =
+                                (Math.exp(regression.b) - 1) * 100;
+                            } else if (
+                              calculationMethod === "recentExponential"
+                            ) {
+                              // Recent Exponential method: recent exponential regression
+                              const regression =
+                                calculateRecentExponentialRegression(
+                                  regressionPoints,
+                                  4,
+                                );
+                              if (!regression) {
+                                return undefined;
+                              }
+                              percentageChange =
+                                (Math.exp(regression.b) - 1) * 100;
                             }
 
                             return {
@@ -699,7 +858,7 @@ export default function EmissionsLineChart({
             </LineChart>
           </ResponsiveContainer>
         ) : (
-          <div className="flex flex-col items-center justify-center h-full w-full bg-black-2 rounded-lg p-6">
+          <div className="flex flex-col w-full bg-black-2 rounded-lg p-6">
             {/* Placeholder for animated/segmented chart for each step */}
             <div className="mb-4 text-center">
               <div className="text-lg font-bold mb-2">
@@ -711,7 +870,7 @@ export default function EmissionsLineChart({
             </div>
 
             {/* Render the explore chart, only show step 0 if it exists */}
-            <div className="w-full h-[300px]">
+            <div className="w-full h-[350px] mb-8">
               <ExploreChart
                 data={data}
                 step={exploreStep + (hasDataBeforeBaseYear ? 0 : 1)}
@@ -724,7 +883,8 @@ export default function EmissionsLineChart({
               />
             </div>
 
-            <div className="flex flex-row gap-4 mt-4">
+            {/* Button controls - always below chart, never overlapping */}
+            <div className="flex flex-row gap-4 justify-center pt-12">
               <Button
                 variant="outline"
                 size="sm"

@@ -276,6 +276,64 @@ export function fitExponentialRegression(data: { x: number; y: number }[]) {
   return { a, b };
 }
 
+// Weighted exponential regression: fit y = a * exp(bx) with exponential decay weights
+export function calculateWeightedExponentialRegression(
+  data: { x: number; y: number }[],
+  decay: number = 0.7,
+) {
+  // Only use points with y > 0
+  const filtered = data.filter((d) => d.y > 0);
+  const n = filtered.length;
+  if (n < 2) return null;
+  // Most recent gets weight 1, next gets decay, then decay^2, ...
+  const weights = filtered.map((_, i) => Math.pow(decay, n - 1 - i));
+  let sumW = 0,
+    sumWX = 0,
+    sumWY = 0,
+    sumWXY = 0,
+    sumWXX = 0;
+  for (let i = 0; i < n; i++) {
+    const x = filtered[i].x;
+    const ly = Math.log(filtered[i].y);
+    const w = weights[i];
+    sumW += w;
+    sumWX += w * x;
+    sumWY += w * ly;
+    sumWXY += w * x * ly;
+    sumWXX += w * x * x;
+  }
+  const b = (sumW * sumWXY - sumWX * sumWY) / (sumW * sumWXX - sumWX * sumWX);
+  const a = Math.exp((sumWY - b * sumWX) / sumW);
+  return { a, b };
+}
+
+// Recent exponential regression: fit y = a * exp(bx) to last N years (unweighted)
+export function calculateRecentExponentialRegression(
+  data: { x: number; y: number }[],
+  recentN: number = 4,
+) {
+  // Only use points with y > 0
+  const filtered = data.filter((d) => d.y > 0);
+  if (filtered.length < 2) return null;
+  const recent = filtered.slice(-recentN);
+  const n = recent.length;
+  let sumX = 0,
+    sumY = 0,
+    sumXY = 0,
+    sumXX = 0;
+  for (let i = 0; i < n; i++) {
+    const x = recent[i].x;
+    const ly = Math.log(recent[i].y);
+    sumX += x;
+    sumY += ly;
+    sumXY += x * ly;
+    sumXX += x * x;
+  }
+  const b = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
+  const a = Math.exp((sumY - b * sumX) / n);
+  return { a, b };
+}
+
 export const generateExponentialApproximatedData = (
   data: ChartData[],
   endYear: number = 2050,

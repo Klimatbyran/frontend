@@ -334,6 +334,78 @@ export function ExploreChart({
       }
     }
   }
+
+  // Step 6: Area under curves calculation (current year to 2050)
+  let step6AreaData: {
+    year: number;
+    trend: number | undefined;
+    paris: number | undefined;
+    areaDiff: number | undefined;
+  }[] = [];
+  let step6TotalAreaDifference: number | null = null;
+  let step6AreaLabelText: string = "";
+  let step6AreaLabelColor: string = "#888888";
+
+  if (step === 6 && companyBaseYear) {
+    const currentYear = new Date().getFullYear();
+    const endYear = 2050;
+
+    // Get trend and Paris data from current year to 2050
+    const regressionPoints = data
+      .filter(
+        (d) =>
+          d.total !== undefined &&
+          d.total !== null &&
+          d.year >= companyBaseYear,
+      )
+      .map((d) => ({ x: d.year, y: d.total as number }));
+
+    if (regressionPoints.length >= 2) {
+      const regression = calculateLinearRegression(regressionPoints);
+      if (regression) {
+        const approximatedData = generateApproximatedData(
+          data,
+          regression,
+          endYear,
+        );
+
+        // Build step 6 data array from current year to 2050
+        step6AreaData = [];
+        let totalAreaDifference = 0;
+
+        for (let year = currentYear; year <= endYear; year++) {
+          const trendPoint = approximatedData.find((d) => d.year === year);
+          const trendValue = trendPoint?.approximated;
+          const parisValue = trendPoint?.carbonLaw;
+
+          if (
+            typeof trendValue === "number" &&
+            typeof parisValue === "number"
+          ) {
+            const areaDiff = trendValue - parisValue;
+            totalAreaDifference += areaDiff;
+
+            step6AreaData.push({
+              year,
+              trend: trendValue,
+              paris: parisValue,
+              areaDiff: areaDiff,
+            });
+          }
+        }
+
+        step6TotalAreaDifference = totalAreaDifference;
+
+        if (step6TotalAreaDifference < 0) {
+          step6AreaLabelColor = "#4ADE80"; // green
+          step6AreaLabelText = `${formatEmissionsAbsoluteCompact(Math.abs(step6TotalAreaDifference), currentLanguage)} t total emissions saved vs Paris target`;
+        } else {
+          step6AreaLabelColor = "#F59E42"; // orange
+          step6AreaLabelText = `${formatEmissionsAbsoluteCompact(Math.abs(step6TotalAreaDifference), currentLanguage)} t total emissions excess vs Paris target`;
+        }
+      }
+    }
+  }
   return (
     <>
       {step === 2 && trendExplanation && (
@@ -346,16 +418,36 @@ export function ExploreChart({
           {parisExplanation}
         </div>
       )}
+      {step === 5 && (
+        <div className="text-center text-sm text-gray-400 mb-4 max-w-2xl mx-auto">
+          The difference at 2050 is calculated as:{" "}
+          <strong>Trend line value - Paris target value</strong>. A negative
+          value (green area) means the company is projected to be under the
+          Paris target. A positive value (orange area) means the company is
+          projected to exceed the Paris target.
+        </div>
+      )}
+      {step === 6 && (
+        <div className="text-center text-sm text-gray-400 mb-4 max-w-2xl mx-auto">
+          The total area difference shows cumulative emissions over time. The
+          area between the trend line and Paris target line represents the total
+          emissions difference from current year to 2050. Green areas (below
+          Paris line) reduce the total, orange areas (above Paris line) increase
+          it.
+        </div>
+      )}
       <ResponsiveContainer width="100%" height="100%" className="w-full">
         <LineChart
           data={
-            step === 5 && step5AreaData.length > 0
-              ? step5AreaData
-              : step === 4 && companyBaseYear
-                ? step4GreyLine
-                : step === 2 && companyBaseYear
-                  ? step2Data
-                  : data
+            step === 6 && step6AreaData.length > 0
+              ? step6AreaData
+              : step === 5 && step5AreaData.length > 0
+                ? step5AreaData
+                : step === 4 && companyBaseYear
+                  ? step4GreyLine
+                  : step === 2 && companyBaseYear
+                    ? step2Data
+                    : data
           }
           margin={{ top: 20, right: 0, left: 0, bottom: 0 }}
         >
@@ -366,22 +458,25 @@ export function ExploreChart({
             axisLine={false}
             type="number"
             domain={
-              step === 5
+              step === 6
                 ? [new Date().getFullYear(), 2050]
-                : step === 4 && companyBaseYear
-                  ? [companyBaseYear, new Date().getFullYear() + 5]
-                  : step === 2 && companyBaseYear
-                    ? [
-                        companyBaseYear,
-                        data[data.length - 1]?.year || new Date().getFullYear(),
-                      ]
-                    : step === 3 && companyBaseYear
-                      ? [companyBaseYear, new Date().getFullYear() + 5]
-                      : [
-                          data[0]?.year || 2000,
+                : step === 5
+                  ? [new Date().getFullYear(), 2050]
+                  : step === 4 && companyBaseYear
+                    ? [companyBaseYear, new Date().getFullYear() + 5]
+                    : step === 2 && companyBaseYear
+                      ? [
+                          companyBaseYear,
                           data[data.length - 1]?.year ||
                             new Date().getFullYear(),
                         ]
+                      : step === 3 && companyBaseYear
+                        ? [companyBaseYear, new Date().getFullYear() + 5]
+                        : [
+                            data[0]?.year || 2000,
+                            data[data.length - 1]?.year ||
+                              new Date().getFullYear(),
+                          ]
             }
             tick={{ fontSize: 12, fill: "var(--grey)" }}
           />
@@ -597,7 +692,7 @@ export function ExploreChart({
                   type="monotone"
                   data={step4ParisSegment}
                   dataKey="carbonLaw"
-                  stroke="#4ADE80"
+                  stroke="var(--green-3)"
                   strokeWidth={2}
                   dot={false}
                   isAnimationActive={true}
@@ -655,13 +750,13 @@ export function ExploreChart({
                   />
                 </>
               )}
-              {/* Paris line: grey, no dots */}
+              {/* Paris line: green, no dots */}
               {step5ParisSegment.length > 0 && (
                 <Line
                   type="monotone"
                   data={step5ParisSegment}
                   dataKey="carbonLaw"
-                  stroke="#888888"
+                  stroke="var(--green-3)"
                   strokeWidth={2}
                   dot={false}
                   isAnimationActive={true}
@@ -693,6 +788,94 @@ export function ExploreChart({
                     value: step5LabelText,
                     position: "left",
                     fill: step5LabelColor,
+                    fontSize: 12,
+                    fontWeight: "bold",
+                  }}
+                />
+              )}
+            </>
+          )}
+          {/* Step 6: Show area under curves with total cumulative difference */}
+          {step === 6 && (
+            <>
+              {/* Vertical line for current year */}
+              <ReferenceLine
+                x={new Date().getFullYear()}
+                stroke="#888888"
+                strokeWidth={2}
+                label={{
+                  value: "Current Year",
+                  position: "top",
+                  fill: "#888888",
+                  fontSize: 12,
+                  fontWeight: "bold",
+                }}
+              />
+              {/* Shaded area between trend and Paris lines */}
+              {step6AreaData.length > 0 && (
+                <>
+                  <Area
+                    type="monotone"
+                    dataKey="paris"
+                    stroke="none"
+                    fill="none"
+                    stackId="area"
+                    isAnimationActive={true}
+                    animationDuration={1000}
+                    connectNulls
+                    yAxisId={0}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="trend"
+                    stroke="none"
+                    fill={
+                      step6TotalAreaDifference !== null &&
+                      step6TotalAreaDifference < 0
+                        ? "#4ADE80"
+                        : "#F59E42"
+                    }
+                    fillOpacity={0.3}
+                    stackId="area"
+                    isAnimationActive={true}
+                    animationDuration={1000}
+                    connectNulls
+                    yAxisId={0}
+                  />
+                </>
+              )}
+              {/* Paris line: green, no dots */}
+              <Line
+                type="monotone"
+                dataKey="paris"
+                stroke="var(--green-3)"
+                strokeWidth={2}
+                dot={false}
+                isAnimationActive={true}
+                animationDuration={1000}
+                connectNulls
+              />
+              {/* Trend line: orange, no dots */}
+              <Line
+                type="monotone"
+                dataKey="trend"
+                stroke="#F59E42"
+                strokeWidth={2}
+                dot={false}
+                isAnimationActive={true}
+                animationDuration={1000}
+                connectNulls
+              />
+              {/* Total area difference annotation */}
+              {step6TotalAreaDifference !== null && (
+                <ReferenceLine
+                  x={2050}
+                  stroke="#888888"
+                  strokeDasharray="3 3"
+                  label={{
+                    value: step6AreaLabelText,
+                    position: "left",
+                    fill: step6AreaLabelColor,
                     fontSize: 12,
                     fontWeight: "bold",
                   }}
