@@ -438,7 +438,9 @@ export default function EmissionsLineChart({
                     companyBaseYear={companyBaseYear}
                     filterDuplicateValues={dataView === "overview"}
                     trendData={
-                      approximatedData && dataView === "overview"
+                      exploreButtonFeatureFlagEnabled() &&
+                      approximatedData &&
+                      dataView === "overview"
                         ? (() => {
                             // Calculate the regression points based on base year logic
                             const regressionPoints = companyBaseYear
