@@ -64,9 +64,9 @@ export const blogMetadata: ContentMeta[] = [
   {
     id: "sv-carbon-law-from-2025",
     title:
-      "Frågor och svar: Klimatkollens justerade koldioxidlag emissionsminskningspåverkan",
+      "Q&A Klimatkollens justerade utsläppsbana för Carbon Law",
     excerpt:
-      "Svar på frågor om Klimatkollens vitbok, Tillämpa koldioxidlag från 2025; metoden som används för att visualisera hur företagens utsläpp jämförs med Parisavtalet på Klimatkollen.se.",
+      "Frågor och svar om Klimatkollens rapport Applying Carbon Law from 2025 och metoden vi använder för att visualisera företagens utsläpp jämfört med Parisavtalet.",
     date: "2025-06-23",
     readTime: "7 min",
     category: CategoryEnum.Methodology,

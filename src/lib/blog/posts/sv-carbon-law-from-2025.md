@@ -2,13 +2,13 @@
 id: "sv-carbon-law-from-2025"
 ---
 
-[Läs vitboken](/reports/2025-06-19_ApplyingCarbonLawFrom2025.pdf) - Skapad i samarbete med: Johan Falk, Owen Gaffney och Exponential Roadmap Initiative
+[Läs rapporten](/reports/2025-06-19_ApplyingCarbonLawFrom2025.pdf) - framtagen i samarbete med: Johan Falk, Owen Gaffney och Exponential Roadmap Initiative
 
 ---
 
 ## 1. Vad är Carbon Law?
  
-Den **Carbon Law** presenterades av Johan Rockström, Johan Falk och Owen Gaffney 2017, som ett vetenskapligt baserat ramverk som beskriver hur världen kan begränsa den globala uppvärmningen till väl under 2°C, med sikte på 1,5°C.
+**Carbon Law** presenterades av Johan Rockström, Johan Falk och Owen Gaffney 2017, som ett vetenskapligt baserat ramverk som beskriver hur världen kan begränsa den globala uppvärmningen till väl under 2°C, med sikte på 1,5°C.
 
 Inspirerad av Moores lag, som beskriver datorernas prestandautveckling, är Carbon Law en slags tumregel, som beskriver exponentiella minskningar av de globala koldioxidutsläppen och ger vägledning för regeringar, företag, kommuner och individer.
 
