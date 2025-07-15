@@ -12,7 +12,7 @@ import { CustomTooltip } from "../CustomTooltip";
 import { ChartData } from "@/types/emissions";
 import { t } from "i18next";
 import { formatEmissionsAbsoluteCompact } from "@/utils/localizeUnit";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import {
   calculateLinearRegression,
   calculateWeightedLinearRegression,
@@ -21,6 +21,7 @@ import {
   fitExponentialRegression,
   calculateWeightedExponentialRegression,
   calculateRecentExponentialRegression,
+  selectBestTrendLineMethod,
 } from "@/utils/companyEmissionsCalculations";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -55,6 +56,7 @@ interface EmissionsLineChartProps {
     | "weighted"
     | "weightedExponential"
     | "recentExponential";
+  setMethodExplanation?: (explanation: string | null) => void;
 }
 
 function hasTotalEmissions(d: ChartData): d is ChartData & { total: number } {
@@ -76,6 +78,7 @@ export default function EmissionsLineChart({
   exploreMode,
   setExploreMode,
   calculationMethod = "simple",
+  setMethodExplanation,
 }: EmissionsLineChartProps) {
   const currentYear = new Date().getFullYear();
   const shortEndYear = currentYear + 5;
@@ -341,11 +344,19 @@ export default function EmissionsLineChart({
     }
   };
 
-  // Trend line explanation for step 2
-  const trendExplanation = t("companies.emissionsHistory.trendInfo", {
-    percentage: /* insert percentage or leave blank for now */ "...",
-    baseYear: companyBaseYear || "",
-  });
+  // Instead, select the best method and explanation dynamically
+  const { method: selectedMethod, explanation: methodExplanation } =
+    selectBestTrendLineMethod(
+      data.map((d) => ({ year: d.year, total: d.total })),
+      companyBaseYear,
+    );
+
+  // Call setMethodExplanation when explanation changes
+  useEffect(() => {
+    if (setMethodExplanation) {
+      setMethodExplanation(methodExplanation || null);
+    }
+  }, [methodExplanation, setMethodExplanation]);
 
   // Calculate global min/max Y values for consistent Y-axis scaling
   const allYValues = [
@@ -462,7 +473,7 @@ export default function EmissionsLineChart({
 
                             let percentageChange = 0;
 
-                            if (calculationMethod === "simple") {
+                            if (selectedMethod === "simple") {
                               // Simple method: average annual change
                               let totalChange = 0;
                               let totalYears = 0;
@@ -491,7 +502,7 @@ export default function EmissionsLineChart({
                                 avgEmissions > 0
                                   ? (slope / avgEmissions) * 100
                                   : 0;
-                            } else if (calculationMethod === "linear") {
+                            } else if (selectedMethod === "linear") {
                               // Sophisticated method: linear regression
                               const regression =
                                 calculateLinearRegression(regressionPoints);
@@ -508,7 +519,7 @@ export default function EmissionsLineChart({
                                 avgEmissions > 0
                                   ? (regression.slope / avgEmissions) * 100
                                   : 0;
-                            } else if (calculationMethod === "exponential") {
+                            } else if (selectedMethod === "exponential") {
                               // Exponential method: exponential fit
                               const expFit =
                                 fitExponentialRegression(regressionPoints);
@@ -538,7 +549,7 @@ export default function EmissionsLineChart({
                                 midValue > 0
                                   ? (annualChange / midValue) * 100
                                   : 0;
-                            } else if (calculationMethod === "weighted") {
+                            } else if (selectedMethod === "weighted") {
                               // Weighted method: weighted linear regression
                               const regression =
                                 calculateWeightedLinearRegression(
@@ -558,7 +569,7 @@ export default function EmissionsLineChart({
                                   ? (regression.slope / avgEmissions) * 100
                                   : 0;
                             } else if (
-                              calculationMethod === "weightedExponential"
+                              selectedMethod === "weightedExponential"
                             ) {
                               // Weighted Exponential method: weighted exponential regression
                               const regression =
@@ -572,9 +583,7 @@ export default function EmissionsLineChart({
                               // For exponential y = a * exp(bx), percent change per year = (exp(b) - 1) * 100
                               percentageChange =
                                 (Math.exp(regression.b) - 1) * 100;
-                            } else if (
-                              calculationMethod === "recentExponential"
-                            ) {
+                            } else if (selectedMethod === "recentExponential") {
                               // Recent Exponential method: recent exponential regression
                               const regression =
                                 calculateRecentExponentialRegression(
@@ -879,7 +888,7 @@ export default function EmissionsLineChart({
                 companyBaseYear={companyBaseYear}
                 currentLanguage={currentLanguage}
                 trendExplanation={
-                  exploreStep === 2 ? trendExplanation : undefined
+                  exploreStep === 2 ? methodExplanation : undefined
                 }
                 yDomain={[yMin, yMax]}
               />

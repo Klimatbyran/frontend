@@ -578,3 +578,133 @@ export const generateApproximatedData = (
     };
   });
 };
+
+/**
+ * Selects the best trend line method for a company based on its emissions data.
+ * Returns { method, explanation }.
+ */
+export function selectBestTrendLineMethod(
+  data: { year: number; total: number | null | undefined }[],
+  baseYear?: number,
+): { method: string; explanation: string } {
+  // Filter to points since base year
+  const points = data
+    .filter(
+      (d) =>
+        d.total !== undefined &&
+        d.total !== null &&
+        (baseYear === undefined || d.year >= baseYear),
+    )
+    .map((d) => ({ x: d.year, y: d.total as number }));
+  const numPoints = points.length;
+  if (numPoints < 3) {
+    return {
+      method: "simple",
+      explanation: `Simple average slope is used because there are only ${numPoints} data points since the base year. More complex methods are unreliable with so little data.`,
+    };
+  }
+  // Check for missing years
+  const years = points.map((p) => p.x);
+  const missingYears =
+    years.length > 1
+      ? years[years.length - 1] - years[0] + 1 - years.length
+      : 0;
+  // Calculate variance and recent variance
+  const values = points.map((p) => p.y);
+  const mean = values.reduce((a, b) => a + b, 0) / values.length;
+  const variance =
+    values.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / values.length;
+  const stdDev = Math.sqrt(variance);
+  // Outlier detection (z-score > 2)
+  const hasOutliers = values.some(
+    (v) => Math.abs((v - mean) / (stdDev || 1)) > 2,
+  );
+  // Recent 4 years
+  const recentPoints = points.slice(-4);
+  const recentValues = recentPoints.map((p) => p.y);
+  const recentMean =
+    recentValues.reduce((a, b) => a + b, 0) / (recentValues.length || 1);
+  const recentVariance =
+    recentValues.reduce((a, b) => a + Math.pow(b - recentMean, 2), 0) /
+    (recentValues.length || 1);
+  const recentStdDev = Math.sqrt(recentVariance);
+  // Fit quality (R^2)
+  function r2Linear(points: { x: number; y: number }[]) {
+    if (points.length < 2) return 0;
+    const n = points.length;
+    const sumX = points.reduce((a, p) => a + p.x, 0);
+    const sumY = points.reduce((a, p) => a + p.y, 0);
+    const sumXY = points.reduce((a, p) => a + p.x * p.y, 0);
+    const sumX2 = points.reduce((a, p) => a + p.x * p.x, 0);
+    const sumY2 = points.reduce((a, p) => a + p.y * p.y, 0);
+    const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+    const intercept = (sumY - slope * sumX) / n;
+    const ssTot = points.reduce((a, p) => a + Math.pow(p.y - mean, 2), 0);
+    const ssRes = points.reduce(
+      (a, p) => a + Math.pow(p.y - (slope * p.x + intercept), 2),
+      0,
+    );
+    return ssTot === 0 ? 1 : 1 - ssRes / ssTot;
+  }
+  function r2Exponential(points: { x: number; y: number }[]) {
+    if (points.length < 2) return 0;
+    // Fit y = a * exp(bx) via log transform
+    const logPoints = points
+      .filter((p) => p.y > 0)
+      .map((p) => ({ x: p.x, y: Math.log(p.y) }));
+    if (logPoints.length < 2) return 0;
+    const n = logPoints.length;
+    const sumX = logPoints.reduce((a, p) => a + p.x, 0);
+    const sumY = logPoints.reduce((a, p) => a + p.y, 0);
+    const sumXY = logPoints.reduce((a, p) => a + p.x * p.y, 0);
+    const sumX2 = logPoints.reduce((a, p) => a + p.x * p.x, 0);
+    const meanY = sumY / n;
+    const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+    const intercept = (sumY - slope * sumX) / n;
+    const ssTot = logPoints.reduce((a, p) => a + Math.pow(p.y - meanY, 2), 0);
+    const ssRes = logPoints.reduce(
+      (a, p) => a + Math.pow(p.y - (slope * p.x + intercept), 2),
+      0,
+    );
+    return ssTot === 0 ? 1 : 1 - ssRes / ssTot;
+  }
+  const r2Lin = r2Linear(points);
+  const r2Exp = r2Exponential(points);
+  // Heuristic selection
+  if (missingYears > 2) {
+    return {
+      method: "linear",
+      explanation: `Linear regression is used because there are ${missingYears} missing years in the data, and linear regression is robust to missing data.`,
+    };
+  }
+  // Switch order: check recent stability before outliers
+  if (recentStdDev < 0.2 * (recentMean || 1) && recentPoints.length === 4) {
+    return {
+      method: "recentExponential",
+      explanation: `Recent exponential regression is used because the last 4 years are very stable (std dev < 10% of mean), indicating a consistent recent trend.`,
+    };
+  }
+  if (hasOutliers) {
+    return {
+      method: "weighted",
+      explanation: `Weighted regression is used because outliers were detected in the data (z-score > 2). This method downweights outliers for a more robust trend.`,
+    };
+  }
+  if (r2Exp - r2Lin > 0.05) {
+    return {
+      method: "exponential",
+      explanation: `Exponential regression is used because the exponential fit (R²=${r2Exp.toFixed(2)}) is significantly better than linear (R²=${r2Lin.toFixed(2)}). This suggests a non-linear trend.`,
+    };
+  }
+  if (variance > 0.2 * (mean || 1)) {
+    return {
+      method: "weighted",
+      explanation: `Weighted regression is used because the data has high variance (std dev > 20% of mean), making it more robust to fluctuations.`,
+    };
+  }
+  // Default
+  return {
+    method: "linear",
+    explanation: `Linear regression is used as the default because the data is sufficiently complete and does not show strong non-linear or outlier behavior.`,
+  };
+}
