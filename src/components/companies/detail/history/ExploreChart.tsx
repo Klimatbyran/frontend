@@ -92,7 +92,6 @@ export function ExploreChart({
             d.year <= currentYear &&
             d.approximated !== null,
         );
-        console.log("step2TrendSegment", step2TrendSegment);
       }
     }
   }
