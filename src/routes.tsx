@@ -28,6 +28,7 @@ import { ValidationDashboard } from "./pages/internal-pages/ValidationDashboard"
 import { InternalDashboard } from "./pages/internal-pages/InternalDashboard";
 import { ReportLandingPage } from "./pages/ReportLandingPage";
 import { RequestsDashboard } from "./pages/internal-pages/RequestsDashboard";
+import { TrendAnalysisDashboard } from "./pages/internal-pages/TrendAnalysisDashboard";
 
 export function AppRoutes() {
   const { currentLanguage } = useLanguage();
@@ -76,6 +77,10 @@ export function AppRoutes() {
         <Route
           path={`${basePath}/internal-pages/internal-dashboard`}
           element={<InternalDashboard />}
+        />
+        <Route
+          path={`${basePath}/internal-pages/trend-analysis-dashboard`}
+          element={<TrendAnalysisDashboard />}
         />
       </Route>
 

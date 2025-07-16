@@ -121,6 +121,10 @@ export function Header() {
     },
     { label: "Requests Dashboard", path: "/internal-pages/requests-dashboard" },
     { label: "Internal Dashboard", path: "/internal-pages/internal-dashboard" },
+    {
+      label: "Trend Analysis Dashboard",
+      path: "/internal-pages/trend-analysis-dashboard",
+    },
   ];
 
   return (
