@@ -1,4 +1,8 @@
 import { DataPoint } from "./types";
+import {
+  calculateMissingYears,
+  selectBestTrendLineMethod,
+} from "@/utils/companyEmissionsCalculations";
 
 /**
  * Calculate recent stability based on the last N years of data
@@ -315,3 +319,172 @@ export function analyzeTrendCharacteristics(
     statistics: calculateBasicStatistics(filteredData),
   };
 }
+
+export interface TrendAnalysis {
+  companyId: string;
+  companyName: string;
+  method: string;
+  explanation: string;
+  baseYear?: number;
+  dataPoints: number;
+  mean: number;
+  stdDev: number;
+  variance: number;
+  missingYears: number;
+  hasUnusualPoints: boolean;
+  unusualPointsDetails?: {
+    year: number;
+    fromYear: number;
+    toYear: number;
+    fromValue: number;
+    toValue: number;
+    change: number;
+    threshold: number;
+    direction: string;
+    reason: string;
+  }[];
+  recentStability: number;
+  r2Linear: number;
+  r2Exponential: number;
+  trendDirection: "increasing" | "decreasing" | "stable" | "insufficient_data";
+  trendSlope: number;
+  yearlyPercentageChange: number;
+  dataRange: { min: number; max: number; span: number };
+}
+
+export const createInsufficientDataAnalysis = (
+  company: any,
+  effectiveDataPoints: number,
+  checkBaseYear?: number,
+): TrendAnalysis => ({
+  companyId: company.wikidataId,
+  companyName: company.name,
+  method: "simple",
+  explanation: checkBaseYear
+    ? `Simple average slope is used because there are only ${effectiveDataPoints} data points since base year ${checkBaseYear}. More complex methods are unreliable with so little data.`
+    : `Simple average slope is used because there are only ${effectiveDataPoints} data points. More complex methods are unreliable with so little data.`,
+  baseYear: company.baseYear?.year,
+  dataPoints: effectiveDataPoints,
+  mean: 0,
+  stdDev: 0,
+  variance: 0,
+  missingYears: 0,
+  hasUnusualPoints: false,
+  unusualPointsDetails: undefined,
+  recentStability: 0,
+  r2Linear: 0,
+  r2Exponential: 0,
+  trendDirection: "insufficient_data" as const,
+  trendSlope: 0,
+  yearlyPercentageChange: 0,
+  dataRange: { min: 0, max: 0, span: 0 },
+});
+
+export const processCompanyData = (company: any): TrendAnalysis => {
+  const data = company.reportingPeriods
+    .filter(
+      (period: any) =>
+        period.emissions &&
+        period.emissions.calculatedTotalEmissions !== null &&
+        period.emissions.calculatedTotalEmissions !== undefined,
+    )
+    .map((period: any) => ({
+      year: new Date(period.endDate).getFullYear(),
+      total: period.emissions!.calculatedTotalEmissions!,
+    }))
+    .sort((a: any, b: any) => a.year - b.year);
+
+  const checkBaseYear = company.baseYear?.year;
+  const checkDataSinceBaseYear = checkBaseYear
+    ? data.filter((d: any) => d.year >= checkBaseYear)
+    : data;
+  const effectiveDataPoints = checkDataSinceBaseYear.length;
+
+  if (effectiveDataPoints < 2) {
+    return createInsufficientDataAnalysis(
+      company,
+      effectiveDataPoints,
+      checkBaseYear,
+    );
+  }
+
+  const baseYear = company.baseYear?.year;
+  const dataSinceBaseYear = baseYear
+    ? data.filter((d: any) => d.year >= baseYear)
+    : data;
+
+  const missingYears = calculateMissingYears(dataSinceBaseYear, baseYear);
+  const dataPoints = dataSinceBaseYear.map((d: any) => ({
+    year: d.year,
+    value: d.total,
+  }));
+
+  const analysis = analyzeTrendCharacteristics(dataPoints);
+  const unusualPointsResult = detectUnusualEmissionsPoints(dataPoints);
+  const { method, explanation } = selectBestTrendLineMethod(
+    data,
+    company.baseYear?.year,
+  );
+
+  const yearlyPercentageChange =
+    analysis.statistics.mean > 0
+      ? (analysis.trendSlope / analysis.statistics.mean) * 100
+      : 0;
+
+  return {
+    companyId: company.wikidataId,
+    companyName: company.name,
+    method,
+    explanation,
+    baseYear: company.baseYear?.year,
+    dataPoints: effectiveDataPoints,
+    mean: analysis.statistics.mean,
+    stdDev: analysis.statistics.stdDev,
+    variance: analysis.statistics.variance,
+    missingYears,
+    hasUnusualPoints: unusualPointsResult.hasUnusualPoints,
+    unusualPointsDetails: unusualPointsResult.details,
+    recentStability: analysis.recentStability,
+    r2Linear: analysis.r2Linear,
+    r2Exponential: analysis.r2Exponential,
+    trendDirection: analysis.trendDirection,
+    trendSlope: analysis.trendSlope,
+    yearlyPercentageChange,
+    dataRange: {
+      min: analysis.statistics.min,
+      max: analysis.statistics.max,
+      span: analysis.statistics.span,
+    },
+  };
+};
+
+export const calculateSummaryStats = (companies: TrendAnalysis[]) => {
+  const methodCounts = companies.reduce(
+    (acc, company) => {
+      acc[company.method] = (acc[company.method] || 0) + 1;
+      return acc;
+    },
+    {} as Record<string, number>,
+  );
+
+  const avgDataPoints =
+    companies.length > 0
+      ? companies.reduce((sum, company) => sum + company.dataPoints, 0) /
+        companies.length
+      : 0;
+
+  const avgMissingYears =
+    companies.length > 0
+      ? companies.reduce((sum, company) => sum + company.missingYears, 0) /
+        companies.length
+      : 0;
+
+  const outlierPercentage =
+    companies.length > 0
+      ? (companies.filter((c) => c.hasUnusualPoints).length /
+          companies.length) *
+        100
+      : 0;
+
+  return { methodCounts, avgDataPoints, avgMissingYears, outlierPercentage };
+};

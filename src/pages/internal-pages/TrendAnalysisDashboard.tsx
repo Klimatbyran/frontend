@@ -41,51 +41,303 @@ import {
   analyzeTrendCharacteristics,
   calculateTrendDirection,
   detectUnusualEmissionsPoints,
+  processCompanyData,
+  calculateSummaryStats,
+  type TrendAnalysis,
 } from "@/lib/calculations/trends/analysis";
 import {
   ChevronUp,
   ChevronDown,
   ChevronRight,
-  TrendingUp,
-  TrendingDown,
-  Minus,
   ExternalLink,
 } from "lucide-react";
+import { getMethodColor, getTrendIcon } from "@/utils/trend-utils";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { useLanguage } from "@/components/LanguageProvider";
 
-interface TrendAnalysis {
-  companyId: string;
-  companyName: string;
-  method: string;
-  explanation: string;
-  baseYear?: number;
-  dataPoints: number;
-  mean: number;
-  stdDev: number;
-  variance: number;
-  missingYears: number;
-  hasUnusualPoints: boolean;
-  unusualPointsDetails?: {
-    year: number;
-    fromYear: number;
-    toYear: number;
-    fromValue: number;
-    toValue: number;
-    change: number;
-    threshold: number;
-    direction: string;
-    reason: string;
-  }[];
-  recentStability: number;
-  r2Linear: number;
-  r2Exponential: number;
-  trendDirection: "increasing" | "decreasing" | "stable" | "insufficient_data";
-  trendSlope: number;
-  yearlyPercentageChange: number;
-  dataRange: { min: number; max: number; span: number };
-}
+// UI Components
+const SummaryCards = ({
+  totalCompanies,
+  avgDataPoints,
+  avgMissingYears,
+  outlierPercentage,
+}: {
+  totalCompanies: number;
+  avgDataPoints: number;
+  avgMissingYears: number;
+  outlierPercentage: number;
+}) => (
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+    <Card>
+      <CardHeader className="pb-2">
+        <CardTitle className="text-sm font-medium">Total Companies</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Text variant="h2">{totalCompanies}</Text>
+      </CardContent>
+    </Card>
+
+    <Card>
+      <CardHeader className="pb-2">
+        <CardTitle className="text-sm font-medium">Avg Data Points</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Text variant="h2">{avgDataPoints.toFixed(1)}</Text>
+      </CardContent>
+    </Card>
+
+    <Card>
+      <CardHeader className="pb-2">
+        <CardTitle className="text-sm font-medium">Avg Missing Years</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Text variant="h2">{avgMissingYears.toFixed(1)}</Text>
+      </CardContent>
+    </Card>
+
+    <Card>
+      <CardHeader className="pb-2">
+        <CardTitle className="text-sm font-medium">
+          With Unusual Points
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Text variant="h2">{outlierPercentage.toFixed(1)}%</Text>
+      </CardContent>
+    </Card>
+  </div>
+);
+
+// Table Components
+const SortableHeader = ({
+  column,
+  currentSort,
+  currentOrder,
+  onSort,
+  children,
+}: {
+  column: string;
+  currentSort: string;
+  currentOrder: "asc" | "desc";
+  onSort: (column: string) => void;
+  children: React.ReactNode;
+}) => (
+  <TableHead>
+    <Button
+      variant="ghost"
+      onClick={() => onSort(column)}
+      className="p-0 h-auto font-medium"
+    >
+      {children}
+      {currentSort === column &&
+        (currentOrder === "asc" ? (
+          <ChevronUp className="ml-1 w-4 h-4" />
+        ) : (
+          <ChevronDown className="ml-1 w-4 h-4" />
+        ))}
+    </Button>
+  </TableHead>
+);
+
+const CompaniesTable = ({
+  companies,
+  sortBy,
+  sortOrder,
+  onSort,
+  onCompanyClick,
+}: {
+  companies: TrendAnalysis[];
+  sortBy: string;
+  sortOrder: "asc" | "desc";
+  onSort: (column: string) => void;
+  onCompanyClick: (companyId: string) => void;
+}) => (
+  <Card>
+    <CardHeader>
+      <CardTitle>Company Trend Analysis</CardTitle>
+    </CardHeader>
+    <CardContent>
+      <div className="overflow-x-auto relative">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <SortableHeader
+                column="companyName"
+                currentSort={sortBy}
+                currentOrder={sortOrder}
+                onSort={onSort}
+              >
+                Company
+              </SortableHeader>
+              <SortableHeader
+                column="method"
+                currentSort={sortBy}
+                currentOrder={sortOrder}
+                onSort={onSort}
+              >
+                Method
+              </SortableHeader>
+              <TableHead>Base Year</TableHead>
+              <SortableHeader
+                column="dataPoints"
+                currentSort={sortBy}
+                currentOrder={sortOrder}
+                onSort={onSort}
+              >
+                Data Points
+              </SortableHeader>
+              <SortableHeader
+                column="missingYears"
+                currentSort={sortBy}
+                currentOrder={sortOrder}
+                onSort={onSort}
+              >
+                Missing Years
+              </SortableHeader>
+              <TableHead>Trend</TableHead>
+              <SortableHeader
+                column="yearlyPercentageChange"
+                currentSort={sortBy}
+                currentOrder={sortOrder}
+                onSort={onSort}
+              >
+                Yearly % Change
+              </SortableHeader>
+              <TableHead>R² Linear</TableHead>
+              <TableHead>R² Exp</TableHead>
+              <TableHead>Unusual Points</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {companies.map((company) => (
+              <TableRow key={company.companyId}>
+                <TableCell>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => onCompanyClick(company.companyId)}
+                      className="text-left hover:text-blue-400 hover:underline transition-colors duration-200 flex items-center gap-1"
+                    >
+                      <Text variant="body" className="font-medium">
+                        {company.companyName}
+                      </Text>
+                      <ExternalLink className="w-3 h-3 opacity-60" />
+                    </button>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <button className="inline-flex">
+                        <Badge
+                          className={`${getMethodColor(company.method)} text-white cursor-pointer hover:opacity-80 transition-opacity`}
+                        >
+                          {company.method}
+                        </Badge>
+                      </button>
+                    </PopoverTrigger>
+                    <PopoverContent
+                      className="w-80 max-h-48 overflow-y-auto bg-black-2 border border-grey/30 shadow-lg z-50"
+                      side="top"
+                      align="start"
+                    >
+                      <div className="space-y-2">
+                        <h4 className="font-medium text-white mb-2">
+                          Method Explanation
+                        </h4>
+                        <p className="text-sm leading-relaxed text-white">
+                          {company.explanation}
+                        </p>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
+                </TableCell>
+                <TableCell>
+                  {company.baseYear !== undefined && company.baseYear !== null
+                    ? company.baseYear.toString()
+                    : "N/A"}
+                </TableCell>
+                <TableCell>{company.dataPoints}</TableCell>
+                <TableCell>{company.missingYears}</TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-1">
+                    {getTrendIcon(company.trendDirection)}
+                    <Text variant="small">{company.trendDirection}</Text>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <span
+                    className={
+                      company.yearlyPercentageChange > 0
+                        ? "text-pink-3"
+                        : company.yearlyPercentageChange < 0
+                          ? "text-green-3"
+                          : "text-grey"
+                    }
+                  >
+                    {company.yearlyPercentageChange > 0 ? "+" : ""}
+                    {company.yearlyPercentageChange.toFixed(1)}%
+                  </span>
+                </TableCell>
+                <TableCell>{company.r2Linear.toFixed(3)}</TableCell>
+                <TableCell>{company.r2Exponential.toFixed(3)}</TableCell>
+                <TableCell>
+                  {company.hasUnusualPoints ? (
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <button className="inline-flex">
+                          <Badge
+                            variant="destructive"
+                            className="cursor-pointer hover:bg-pink-5 transition-colors"
+                          >
+                            Yes
+                          </Badge>
+                        </button>
+                      </PopoverTrigger>
+                      <PopoverContent
+                        className="w-80 max-h-48 overflow-y-auto bg-black-2 border border-grey/30 shadow-lg z-50"
+                        side="top"
+                        align="start"
+                      >
+                        <div className="space-y-2">
+                          <h4 className="font-medium text-white mb-2">
+                            Unusual Points Detected
+                          </h4>
+                          <div className="text-xs text-grey mb-3 pb-2 border-b border-grey/20">
+                            Threshold: 4x median year-over-year change
+                          </div>
+                          {company.unusualPointsDetails &&
+                          company.unusualPointsDetails.length > 0 ? (
+                            company.unusualPointsDetails.map(
+                              (detail, index) => (
+                                <div key={index} className="text-sm">
+                                  <div className="text-grey">
+                                    <strong>{detail.year}:</strong>{" "}
+                                    {detail.reason}
+                                  </div>
+                                </div>
+                              ),
+                            )
+                          ) : (
+                            <div className="text-sm text-grey">
+                              No details available
+                            </div>
+                          )}
+                        </div>
+                      </PopoverContent>
+                    </Popover>
+                  ) : (
+                    <Badge variant="secondary">No</Badge>
+                  )}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+    </CardContent>
+  </Card>
+);
 
 export function TrendAnalysisDashboard() {
   const { t } = useTranslation();
@@ -110,114 +362,7 @@ export function TrendAnalysisDashboard() {
   // Calculate trend analysis for all companies
   useEffect(() => {
     if (!companies) return;
-
-    const analyses: TrendAnalysis[] = companies.map((company) => {
-      const data = company.reportingPeriods
-        .filter(
-          (period) =>
-            period.emissions &&
-            period.emissions.calculatedTotalEmissions !== null &&
-            period.emissions.calculatedTotalEmissions !== undefined,
-        )
-        .map((period) => ({
-          year: new Date(period.endDate).getFullYear(),
-          total: period.emissions!.calculatedTotalEmissions!,
-        }))
-        .sort((a, b) => a.year - b.year);
-
-      // Count data points from base year onwards, or total if no base year
-      const checkBaseYear = company.baseYear?.year;
-      const checkDataSinceBaseYear = checkBaseYear
-        ? data.filter((d) => d.year >= checkBaseYear)
-        : data;
-      const effectiveDataPoints = checkDataSinceBaseYear.length;
-
-      if (effectiveDataPoints < 2) {
-        return {
-          companyId: company.wikidataId,
-          companyName: company.name,
-          method: "simple",
-          explanation: checkBaseYear
-            ? `Simple average slope is used because there are only ${effectiveDataPoints} data points since base year ${checkBaseYear}. More complex methods are unreliable with so little data.`
-            : `Simple average slope is used because there are only ${effectiveDataPoints} data points. More complex methods are unreliable with so little data.`,
-          baseYear: company.baseYear?.year,
-          dataPoints: effectiveDataPoints,
-          mean: 0,
-          stdDev: 0,
-          variance: 0,
-          missingYears: 0,
-          hasUnusualPoints: false,
-          unusualPointsDetails: undefined,
-          recentStability: 0,
-          r2Linear: 0,
-          r2Exponential: 0,
-          trendDirection: "insufficient_data" as const,
-          trendSlope: 0,
-          yearlyPercentageChange: 0,
-          dataRange: { min: 0, max: 0, span: 0 },
-        };
-      }
-
-      // Calculate missing years (base year aware and including zero emissions as missing)
-      const baseYear = company.baseYear?.year;
-      const dataSinceBaseYear = baseYear
-        ? data.filter((d) => d.year >= baseYear)
-        : data;
-
-      const missingYears = calculateMissingYears(dataSinceBaseYear, baseYear);
-
-      // Use comprehensive trend analysis utility with base-year filtered data
-      const dataPoints = dataSinceBaseYear.map((d) => ({
-        year: d.year,
-        value: d.total,
-      }));
-      const analysis = analyzeTrendCharacteristics(dataPoints);
-
-      // Get detailed unusual points information
-      const unusualPointsResult = detectUnusualEmissionsPoints(dataPoints);
-
-      // Data range
-      const dataRange = {
-        min: analysis.statistics.min,
-        max: analysis.statistics.max,
-        span: analysis.statistics.span,
-      };
-
-      // Get trend line method and explanation
-      const { method, explanation } = selectBestTrendLineMethod(
-        data,
-        company.baseYear?.year,
-      );
-
-      // Calculate yearly percentage change from trend slope
-      const yearlyPercentageChange =
-        analysis.statistics.mean > 0
-          ? (analysis.trendSlope / analysis.statistics.mean) * 100
-          : 0;
-
-      return {
-        companyId: company.wikidataId,
-        companyName: company.name,
-        method,
-        explanation,
-        baseYear: company.baseYear?.year,
-        dataPoints: effectiveDataPoints,
-        mean: analysis.statistics.mean,
-        stdDev: analysis.statistics.stdDev,
-        variance: analysis.statistics.variance,
-        missingYears,
-        hasUnusualPoints: unusualPointsResult.hasUnusualPoints,
-        unusualPointsDetails: unusualPointsResult.details,
-        recentStability: analysis.recentStability,
-        r2Linear: analysis.r2Linear,
-        r2Exponential: analysis.r2Exponential,
-        trendDirection: analysis.trendDirection,
-        trendSlope: analysis.trendSlope,
-        yearlyPercentageChange,
-        dataRange,
-      };
-    });
-
+    const analyses = companies.map(processCompanyData);
     setOriginalAnalyses(analyses);
   }, [companies]);
 
@@ -225,29 +370,28 @@ export function TrendAnalysisDashboard() {
   useEffect(() => {
     if (!originalAnalyses.length) return;
 
-    let filtered = originalAnalyses.filter((company) => {
-      const matchesSearch = company.companyName
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase());
-      const matchesMethod =
-        methodFilter === "all" || company.method === methodFilter;
-      return matchesSearch && matchesMethod;
-    });
+    const filtered = originalAnalyses
+      .filter((company) => {
+        const matchesSearch = company.companyName
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase());
+        const matchesMethod =
+          methodFilter === "all" || company.method === methodFilter;
+        return matchesSearch && matchesMethod;
+      })
+      .sort((a, b) => {
+        let aValue: any = a[sortBy as keyof TrendAnalysis];
+        let bValue: any = b[sortBy as keyof TrendAnalysis];
 
-    // Sort
-    filtered.sort((a, b) => {
-      let aValue: any = a[sortBy as keyof TrendAnalysis];
-      let bValue: any = b[sortBy as keyof TrendAnalysis];
+        if (typeof aValue === "string") {
+          aValue = aValue.toLowerCase();
+          bValue = bValue.toLowerCase();
+        }
 
-      if (typeof aValue === "string") {
-        aValue = aValue.toLowerCase();
-        bValue = bValue.toLowerCase();
-      }
-
-      if (aValue < bValue) return sortOrder === "asc" ? -1 : 1;
-      if (aValue > bValue) return sortOrder === "asc" ? 1 : -1;
-      return 0;
-    });
+        if (aValue < bValue) return sortOrder === "asc" ? -1 : 1;
+        if (aValue > bValue) return sortOrder === "asc" ? 1 : -1;
+        return 0;
+      });
 
     setFilteredCompanies(filtered);
   }, [originalAnalyses, searchTerm, methodFilter, sortBy, sortOrder]);
@@ -261,57 +405,8 @@ export function TrendAnalysisDashboard() {
     }
   };
 
-  const getMethodColor = (method: string) => {
-    switch (method) {
-      case "weightedLinear":
-        return "bg-blue-4 text-white";
-      case "linear":
-        return "bg-green-4 text-white";
-      case "exponential":
-        return "bg-pink-4 text-white";
-      case "weightedExponential":
-        return "bg-orange-4 text-white";
-      case "recentExponential":
-        return "bg-purple-4 text-white";
-      case "simple":
-        return "bg-grey text-white";
-      default:
-        return "bg-grey text-white";
-    }
-  };
-
-  const getTrendIcon = (direction: string) => {
-    switch (direction) {
-      case "increasing":
-        return <TrendingUp className="w-4 h-4 text-pink-3" />;
-      case "decreasing":
-        return <TrendingDown className="w-4 h-4 text-green-3" />;
-      case "stable":
-        return <Minus className="w-4 h-4 text-gray-500" />;
-      default:
-        return <Minus className="w-4 h-4 text-gray-500" />;
-    }
-  };
-
-  // Calculate summary statistics
-  const methodCounts = filteredCompanies.reduce(
-    (acc, company) => {
-      acc[company.method] = (acc[company.method] || 0) + 1;
-      return acc;
-    },
-    {} as Record<string, number>,
-  );
-
-  const avgDataPoints =
-    filteredCompanies.reduce((sum, company) => sum + company.dataPoints, 0) /
-    filteredCompanies.length;
-  const avgMissingYears =
-    filteredCompanies.reduce((sum, company) => sum + company.missingYears, 0) /
-    filteredCompanies.length;
-  const outlierPercentage =
-    (filteredCompanies.filter((c) => c.hasUnusualPoints).length /
-      filteredCompanies.length) *
-    100;
+  const { methodCounts, avgDataPoints, avgMissingYears, outlierPercentage } =
+    calculateSummaryStats(filteredCompanies);
 
   if (loading) {
     return (
@@ -345,52 +440,12 @@ export function TrendAnalysisDashboard() {
           description="Analysis of trend line method selection across all companies"
         />
 
-        {/* Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">
-                Total Companies
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Text variant="h2">{filteredCompanies.length}</Text>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">
-                Avg Data Points
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Text variant="h2">{avgDataPoints.toFixed(1)}</Text>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">
-                Avg Missing Years
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Text variant="h2">{avgMissingYears.toFixed(1)}</Text>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">
-                With Unusual Points
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Text variant="h2">{outlierPercentage.toFixed(1)}%</Text>
-            </CardContent>
-          </Card>
-        </div>
+        <SummaryCards
+          totalCompanies={filteredCompanies.length}
+          avgDataPoints={avgDataPoints}
+          avgMissingYears={avgMissingYears}
+          outlierPercentage={outlierPercentage}
+        />
 
         {/* Method Distribution */}
         <Card className="mb-8">
@@ -423,7 +478,7 @@ export function TrendAnalysisDashboard() {
               <CollapsibleTrigger asChild>
                 <Button
                   variant="ghost"
-                  className="w-full justify-between p-0 h-auto font-medium text-grey hover:text-white"
+                  className="w-full justify-between p-2 h-auto font-medium text-grey hover:text-white"
                 >
                   <span>Method Selection Logic</span>
                   <ChevronRight
@@ -497,229 +552,13 @@ export function TrendAnalysisDashboard() {
           </Select>
         </div>
 
-        {/* Companies Table */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Company Trend Analysis</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="overflow-x-auto relative">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>
-                      <Button
-                        variant="ghost"
-                        onClick={() => handleSort("companyName")}
-                        className="p-0 h-auto font-medium"
-                      >
-                        Company
-                        {sortBy === "companyName" &&
-                          (sortOrder === "asc" ? (
-                            <ChevronUp className="ml-1 w-4 h-4" />
-                          ) : (
-                            <ChevronDown className="ml-1 w-4 h-4" />
-                          ))}
-                      </Button>
-                    </TableHead>
-                    <TableHead>
-                      <Button
-                        variant="ghost"
-                        onClick={() => handleSort("method")}
-                        className="p-0 h-auto font-medium"
-                      >
-                        Method
-                        {sortBy === "method" &&
-                          (sortOrder === "asc" ? (
-                            <ChevronUp className="ml-1 w-4 h-4" />
-                          ) : (
-                            <ChevronDown className="ml-1 w-4 h-4" />
-                          ))}
-                      </Button>
-                    </TableHead>
-                    <TableHead>Base Year</TableHead>
-                    <TableHead>
-                      <Button
-                        variant="ghost"
-                        onClick={() => handleSort("dataPoints")}
-                        className="p-0 h-auto font-medium"
-                      >
-                        Data Points
-                        {sortBy === "dataPoints" &&
-                          (sortOrder === "asc" ? (
-                            <ChevronUp className="ml-1 w-4 h-4" />
-                          ) : (
-                            <ChevronDown className="ml-1 w-4 h-4" />
-                          ))}
-                      </Button>
-                    </TableHead>
-                    <TableHead>
-                      <Button
-                        variant="ghost"
-                        onClick={() => handleSort("missingYears")}
-                        className="p-0 h-auto font-medium"
-                      >
-                        Missing Years
-                        {sortBy === "missingYears" &&
-                          (sortOrder === "asc" ? (
-                            <ChevronUp className="ml-1 w-4 h-4" />
-                          ) : (
-                            <ChevronDown className="ml-1 w-4 h-4" />
-                          ))}
-                      </Button>
-                    </TableHead>
-                    <TableHead>Trend</TableHead>
-                    <TableHead>
-                      <Button
-                        variant="ghost"
-                        onClick={() => handleSort("yearlyPercentageChange")}
-                        className="p-0 h-auto font-medium"
-                      >
-                        Yearly % Change
-                        {sortBy === "yearlyPercentageChange" &&
-                          (sortOrder === "asc" ? (
-                            <ChevronUp className="ml-1 w-4 h-4" />
-                          ) : (
-                            <ChevronDown className="ml-1 w-4 h-4" />
-                          ))}
-                      </Button>
-                    </TableHead>
-                    <TableHead>R² Linear</TableHead>
-                    <TableHead>R² Exp</TableHead>
-                    <TableHead>Unusual Points</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredCompanies.map((company) => (
-                    <TableRow key={company.companyId}>
-                      <TableCell>
-                        <div className="flex items-center gap-2">
-                          <button
-                            onClick={() =>
-                              handleCompanyClick(company.companyId)
-                            }
-                            className="text-left hover:text-blue-400 hover:underline transition-colors duration-200 flex items-center gap-1"
-                          >
-                            <Text variant="body" className="font-medium">
-                              {company.companyName}
-                            </Text>
-                            <ExternalLink className="w-3 h-3 opacity-60" />
-                          </button>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <Popover>
-                          <PopoverTrigger asChild>
-                            <button className="inline-flex">
-                              <Badge
-                                className={`${getMethodColor(company.method)} text-white cursor-pointer hover:opacity-80 transition-opacity`}
-                              >
-                                {company.method}
-                              </Badge>
-                            </button>
-                          </PopoverTrigger>
-                          <PopoverContent
-                            className="w-80 max-h-48 overflow-y-auto bg-black-2 border border-grey/30 shadow-lg z-50"
-                            side="top"
-                            align="start"
-                          >
-                            <div className="space-y-2">
-                              <h4 className="font-medium text-white mb-2">
-                                Method Explanation
-                              </h4>
-                              <p className="text-sm leading-relaxed text-white">
-                                {company.explanation}
-                              </p>
-                            </div>
-                          </PopoverContent>
-                        </Popover>
-                      </TableCell>
-                      <TableCell>
-                        {company.baseYear !== undefined &&
-                        company.baseYear !== null
-                          ? company.baseYear.toString()
-                          : "N/A"}
-                      </TableCell>
-                      <TableCell>{company.dataPoints}</TableCell>
-                      <TableCell>{company.missingYears}</TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-1">
-                          {getTrendIcon(company.trendDirection)}
-                          <Text variant="small">{company.trendDirection}</Text>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <span
-                          className={
-                            company.yearlyPercentageChange > 0
-                              ? "text-pink-3"
-                              : company.yearlyPercentageChange < 0
-                                ? "text-green-3"
-                                : "text-grey"
-                          }
-                        >
-                          {company.yearlyPercentageChange > 0 ? "+" : ""}
-                          {company.yearlyPercentageChange.toFixed(1)}%
-                        </span>
-                      </TableCell>
-                      <TableCell>{company.r2Linear.toFixed(3)}</TableCell>
-                      <TableCell>{company.r2Exponential.toFixed(3)}</TableCell>
-                      <TableCell>
-                        {company.hasUnusualPoints ? (
-                          <Popover>
-                            <PopoverTrigger asChild>
-                              <button className="inline-flex">
-                                <Badge
-                                  variant="destructive"
-                                  className="cursor-pointer hover:bg-pink-5 transition-colors"
-                                >
-                                  Yes
-                                </Badge>
-                              </button>
-                            </PopoverTrigger>
-                            <PopoverContent
-                              className="w-80 max-h-48 overflow-y-auto bg-black-2 border border-grey/30 shadow-lg z-50"
-                              side="top"
-                              align="start"
-                            >
-                              <div className="space-y-2">
-                                <h4 className="font-medium text-white mb-2">
-                                  Unusual Points Detected
-                                </h4>
-                                <div className="text-xs text-grey mb-3 pb-2 border-b border-grey/20">
-                                  Threshold: 4x median year-over-year change
-                                </div>
-                                {company.unusualPointsDetails &&
-                                company.unusualPointsDetails.length > 0 ? (
-                                  company.unusualPointsDetails.map(
-                                    (detail, index) => (
-                                      <div key={index} className="text-sm">
-                                        <div className="text-grey">
-                                          <strong>{detail.year}:</strong>{" "}
-                                          {detail.reason}
-                                        </div>
-                                      </div>
-                                    ),
-                                  )
-                                ) : (
-                                  <div className="text-sm text-grey">
-                                    No details available
-                                  </div>
-                                )}
-                              </div>
-                            </PopoverContent>
-                          </Popover>
-                        ) : (
-                          <Badge variant="secondary">No</Badge>
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          </CardContent>
-        </Card>
+        <CompaniesTable
+          companies={filteredCompanies}
+          sortBy={sortBy}
+          sortOrder={sortOrder}
+          onSort={handleSort}
+          onCompanyClick={handleCompanyClick}
+        />
       </div>
     </>
   );
