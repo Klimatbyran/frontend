@@ -1,6 +1,5 @@
 import { useState, useMemo } from "react";
 import { Text } from "@/components/ui/text";
-import { Button } from "@/components/ui/button";
 import {
   EmissionPeriod,
   interpolateScope3Categories,
@@ -15,26 +14,18 @@ import ChartHeader from "./ChartHeader";
 import EmissionsLineChart from "./EmissionsLineChart";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
-// import {
-//   generateApproximatedData,
-//   generateSophisticatedApproximatedData,
-// } from "@/utils/companyEmissionsCalculations";
-import { exploreButtonFeatureFlagEnabled } from "@/utils/feature-flag";
 
-export function EmissionsHistory(
-  {
-    reportingPeriods,
-    onYearSelect,
-    baseYear,
-    features = {
-      interpolateScope3: true,
-      guessBaseYear: true,
-      compositeTrend: true,
-      outlierDetection: true,
-    },
-    // methodExplanation,
-  }: EmissionsHistoryProps /* & { methodExplanation?: string } */,
-) {
+export function EmissionsHistory({
+  reportingPeriods,
+  onYearSelect,
+  baseYear,
+  features = {
+    interpolateScope3: true,
+    guessBaseYear: true,
+    compositeTrend: true,
+    outlierDetection: true,
+  },
+}: EmissionsHistoryProps) {
   const { t } = useTranslation();
   const { getCategoryName, getCategoryColor } = useCategoryMetadata();
   const { currentLanguage } = useLanguage();
@@ -176,7 +167,6 @@ export function EmissionsHistory(
             getCategoryColor={getCategoryColor}
           />
 
-          {/* Accept methodExplanation as a prop and show it in the UI where the method description was */}
           {methodExplanation && (
             <div className="mt-4">
               <div className="bg-black-2 rounded-lg p-4 max-w-4xl mx-auto">

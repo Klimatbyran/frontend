@@ -53,7 +53,7 @@ interface EmissionsLineChartProps {
     | "simple"
     | "linear"
     | "exponential"
-    | "weighted"
+    | "weightedLinear"
     | "weightedExponential"
     | "recentExponential";
   setMethodExplanation?: (explanation: string | null) => void;
@@ -158,7 +158,7 @@ export default function EmissionsLineChart({
         "exponential",
         companyBaseYear,
       );
-    } else if (calculationMethod === "weighted") {
+    } else if (calculationMethod === "weightedLinear") {
       // Weighted method (linear regression, exponential weights)
       const regressionPoints = (() => {
         if (companyBaseYear) {
@@ -549,7 +549,7 @@ export default function EmissionsLineChart({
                                 midValue > 0
                                   ? (annualChange / midValue) * 100
                                   : 0;
-                            } else if (selectedMethod === "weighted") {
+                            } else if (selectedMethod === "weightedLinear") {
                               // Weighted method: weighted linear regression
                               const regression =
                                 calculateWeightedLinearRegression(
