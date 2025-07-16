@@ -14,14 +14,16 @@ import { t } from "i18next";
 import { formatEmissionsAbsoluteCompact } from "@/utils/localizeUnit";
 import { useMemo, useState, useEffect } from "react";
 import {
-  calculateLinearRegression,
   calculateWeightedLinearRegression,
-  generateApproximatedData,
-  generateSophisticatedApproximatedData,
   fitExponentialRegression,
   calculateWeightedExponentialRegression,
   calculateRecentExponentialRegression,
   selectBestTrendLineMethod,
+  calculateLinearRegression,
+} from "@/lib/calculations/trends/analysis";
+import {
+  generateApproximatedData,
+  generateSophisticatedApproximatedData,
 } from "@/utils/companyEmissionsCalculations";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -136,7 +138,7 @@ export default function EmissionsLineChart({
   function getLastTwoEmissionsPoints(data: ChartData[]) {
     return data
       .filter(hasTotalEmissions)
-      .map((d) => ({ x: d.year, y: d.total as number }))
+      .map((d) => ({ year: d.year, value: d.total as number }))
       .slice(-2);
   }
 
@@ -164,7 +166,7 @@ export default function EmissionsLineChart({
         if (companyBaseYear) {
           const baseYearPoints = data
             .filter((d) => hasTotalEmissions(d) && d.year >= companyBaseYear)
-            .map((d) => ({ x: d.year, y: d.total as number }));
+            .map((d) => ({ year: d.year, value: d.total as number }));
           if (baseYearPoints.length < 2) {
             return getLastTwoEmissionsPoints(data);
           }
@@ -192,7 +194,7 @@ export default function EmissionsLineChart({
         if (companyBaseYear) {
           const baseYearPoints = data
             .filter((d) => hasTotalEmissions(d) && d.year >= companyBaseYear)
-            .map((d) => ({ x: d.year, y: d.total as number }));
+            .map((d) => ({ year: d.year, value: d.total as number }));
           if (baseYearPoints.length < 2) {
             return getLastTwoEmissionsPoints(data);
           }
@@ -212,8 +214,8 @@ export default function EmissionsLineChart({
         return null;
       }
       // Anchor at last data point
-      const lastYear = regressionPoints[regressionPoints.length - 1].x;
-      const lastValue = regressionPoints[regressionPoints.length - 1].y;
+      const lastYear = regressionPoints[regressionPoints.length - 1].year;
+      const lastValue = regressionPoints[regressionPoints.length - 1].value;
       const fitValueAtLast = expFit.a * Math.exp(expFit.b * lastYear);
       const scale =
         lastValue && fitValueAtLast ? lastValue / fitValueAtLast : 1;
@@ -252,7 +254,7 @@ export default function EmissionsLineChart({
         if (companyBaseYear) {
           const baseYearPoints = data
             .filter((d) => hasTotalEmissions(d) && d.year >= companyBaseYear)
-            .map((d) => ({ x: d.year, y: d.total as number }));
+            .map((d) => ({ year: d.year, value: d.total as number }));
           if (baseYearPoints.length < 2) {
             return getLastTwoEmissionsPoints(data);
           }
@@ -269,8 +271,8 @@ export default function EmissionsLineChart({
         return null;
       }
       // Anchor at last data point
-      const lastYear = regressionPoints[regressionPoints.length - 1].x;
-      const lastValue = regressionPoints[regressionPoints.length - 1].y;
+      const lastYear = regressionPoints[regressionPoints.length - 1].year;
+      const lastValue = regressionPoints[regressionPoints.length - 1].value;
       const fitValueAtLast = expFit.a * Math.exp(expFit.b * lastYear);
       const scale =
         lastValue && fitValueAtLast ? lastValue / fitValueAtLast : 1;
@@ -309,7 +311,7 @@ export default function EmissionsLineChart({
         if (companyBaseYear) {
           const baseYearPoints = data
             .filter((d) => hasTotalEmissions(d) && d.year >= companyBaseYear)
-            .map((d) => ({ x: d.year, y: d.total as number }));
+            .map((d) => ({ year: d.year, value: d.total as number }));
           if (baseYearPoints.length < 2) {
             return getLastTwoEmissionsPoints(data);
           }
@@ -462,8 +464,8 @@ export default function EmissionsLineChart({
                                       d.year >= companyBaseYear,
                                   )
                                   .map((d) => ({
-                                    x: d.year,
-                                    y: d.total as number,
+                                    year: d.year,
+                                    value: d.total as number,
                                   }))
                               : getLastTwoEmissionsPoints(data);
 
@@ -483,11 +485,11 @@ export default function EmissionsLineChart({
                                 i++
                               ) {
                                 totalChange +=
-                                  regressionPoints[i].y -
-                                  regressionPoints[i - 1].y;
+                                  regressionPoints[i].value -
+                                  regressionPoints[i - 1].value;
                                 totalYears +=
-                                  regressionPoints[i].x -
-                                  regressionPoints[i - 1].x;
+                                  regressionPoints[i].year -
+                                  regressionPoints[i - 1].year;
                               }
                               const slope =
                                 totalYears !== 0 ? totalChange / totalYears : 0;
@@ -495,7 +497,7 @@ export default function EmissionsLineChart({
                               // Calculate percentage change
                               const avgEmissions =
                                 regressionPoints.reduce(
-                                  (sum, point) => sum + point.y,
+                                  (sum, point) => sum + point.value,
                                   0,
                                 ) / regressionPoints.length;
                               percentageChange =
@@ -512,7 +514,7 @@ export default function EmissionsLineChart({
 
                               const avgEmissions =
                                 regressionPoints.reduce(
-                                  (sum, point) => sum + point.y,
+                                  (sum, point) => sum + point.value,
                                   0,
                                 ) / regressionPoints.length;
                               percentageChange =
@@ -530,15 +532,15 @@ export default function EmissionsLineChart({
                               // Calculate the average annual percentage change from exponential fit
                               const avgEmissions =
                                 regressionPoints.reduce(
-                                  (sum, point) => sum + point.y,
+                                  (sum, point) => sum + point.value,
                                   0,
                                 ) / regressionPoints.length;
 
                               // For exponential, calculate the percentage change at the midpoint
                               const midYear =
-                                (regressionPoints[0].x +
+                                (regressionPoints[0].year +
                                   regressionPoints[regressionPoints.length - 1]
-                                    .x) /
+                                    .year) /
                                 2;
                               const midValue =
                                 expFit.a * Math.exp(expFit.b * midYear);
@@ -561,7 +563,7 @@ export default function EmissionsLineChart({
 
                               const avgEmissions =
                                 regressionPoints.reduce(
-                                  (sum, point) => sum + point.y,
+                                  (sum, point) => sum + point.value,
                                   0,
                                 ) / regressionPoints.length;
                               percentageChange =

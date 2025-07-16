@@ -147,7 +147,7 @@
   "municipalityPredicatedNetZeroDate": {
     "title": "Förutsagt datum för netto-noll utsläpp",
     "content": [
-      "Året då utsläppen i kommunen förväntas nå nettonoll — enligt dagens utsläppstrend.\n\nObservera att detta inte är ett politiskt mål, utan en matematisk prognos.\n\nNettonoll innebär att nå en nivå av minimala utsläpp som kan kompenseras, med olika metoder för koldioxidinfångning, så att de i praktiken blir noll. Det bygger på nuvarande trend, inte på klimatmål eller framtida planer."
+      "Året då utsläppen i kommunen förväntas nå nettonoll — enligt dagens utsläppstrend.\n\nObservera att detta inte är ett politiskt mål, utan en matematisk prognos.\n\nNettonoll innebär att en minska utsläppen till en nivå då endast minimala utsläpp återstår, som då kan kompenseras, med olika metoder för koldioxidinfångning, så att de i praktiken blir noll. Det bygger på nuvarande trend, inte på klimatmål eller framtida planer."
     ]
   },
   "municipalityProcurement": {
@@ -189,7 +189,7 @@
   "parisAgreementLine": {
     "title": "Vad betyder Parisavtalet-linjen i grafen?",
     "content": [
-      "Den gröna linjen visar en utsläppsbana i linje med Parisavtalets 1,5°C-mål. Den illustrerar den takt som de globala utsläppen behöver minska med för att hålla sig inom det återstående koldioxidbudgeten – motsvarande en årlig minskning med 12 % från och med år 2025. Denna justerade bana bygger på att de globala utsläppen inte nådde sin topp 2020, och att vi nu ligger fem år efter den ursprungliga Carbon Law-vägen. Klimatkollen använder denna uppdaterade Carbon Law som en tumregel för att visualisera hur långt företag och kommuner ligger från den utsläppsbana som faktiskt krävs.\n\nLäs mer om vår [metod](/sv/methodology), ta del av [rapporten](/reports/2025-06-19_ApplyingCarbonLawFrom2025.pdf) eller se [vanliga frågor](/sv/insights/carbon-law-from-2025)."
+      "Den gröna linjen visar en utsläppsbana i linje med Parisavtalets 1,5°C-mål. Den illustrerar den takt som de globala utsläppen behöver minska med för att hålla sig inom det återstående koldioxidbudgeten – 12 % per år från och med år 2025. Denna justerade bana bygger på att de globala utsläppen inte nådde sin topp 2020, och att vi nu ligger fem år efter den ursprungliga Carbon Law. Klimatkollen använder denna uppdaterade Carbon Law som en tumregel för att visualisera hur långt företag och kommuner ligger från den utsläppsbana som faktiskt krävs.\n\nLäs mer om vår [metod](/sv/methodology), ta del av [rapporten](/reports/2025-06-19_ApplyingCarbonLawFrom2025.pdf) eller se [vanliga frågor](/sv/insights/carbon-law-from-2025)."
     ]
   },
   "scope1": {

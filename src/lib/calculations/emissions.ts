@@ -1,4 +1,3 @@
-
 export interface EmissionPeriod {
   startDate: string;
   endDate: string;
@@ -19,7 +18,6 @@ export interface EmissionPeriod {
     } | null;
   } | null;
 }
-
 
 /**
  * Interpolate missing Scope 3 category data between periods
@@ -101,17 +99,6 @@ export function interpolateScope3Categories(
     };
   });
 }
-
-function calculateStandardDeviation(values: number[]): number {
-  if (values.length === 0) return 0;
-  const mean = values.reduce((a, b) => a + b) / values.length;
-  const squareDiffs = values.map((value) => Math.pow(value - mean, 2));
-  const avgSquareDiff =
-    squareDiffs.reduce((a, b) => a + b) / squareDiffs.length;
-  return Math.sqrt(avgSquareDiff);
-}
-
-
 
 export function getDataQualityColor(
   quality: "high" | "medium" | "low",
