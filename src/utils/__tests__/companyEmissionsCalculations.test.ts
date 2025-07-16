@@ -1,7 +1,7 @@
 import {
   calculateWeightedLinearRegression,
   calculateTrendSlope,
-} from "@/lib/calculations/trends/analysis";
+} from "@/lib/calculations/trends/regression";
 import { toDataPoints } from "../companyEmissionsCalculations";
 
 describe("calculateWeightedLinearRegression", () => {

@@ -4,7 +4,7 @@ import {
   calculateR2Exponential,
   calculateBasicStatistics,
   calculateStandardDeviation,
-} from "../analysis";
+} from "../statistics";
 
 describe("Statistics and R² Functions", () => {
   describe("calculateR2Linear", () => {

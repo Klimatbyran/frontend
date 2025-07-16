@@ -11,7 +11,7 @@ import {
 import { CustomTooltip } from "../CustomTooltip";
 import { ChartData } from "@/types/emissions";
 import { formatEmissionsAbsoluteCompact } from "@/utils/localizeUnit";
-import { calculateLinearRegression } from "@/lib/calculations/trends/analysis";
+import { calculateLinearRegression } from "@/lib/calculations/trends/regression";
 
 // Patch: redefine generateApproximatedData to return carbonLaw as number | undefined
 import * as companyEmissionsCalculations from "@/utils/companyEmissionsCalculations";

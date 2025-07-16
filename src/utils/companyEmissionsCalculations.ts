@@ -1,25 +1,9 @@
 import type { ChartData } from "@/types/emissions";
 import type { DataPoint } from "@/lib/calculations/trends/types";
 import {
-  calculateRecentStability,
-  detectUnusualEmissionsPoints,
-  calculateR2Linear,
-  calculateR2Exponential,
-  calculateBasicStatistics,
-  calculateTrendSlope,
-  calculateWeightedLinearRegression,
-  fitExponentialRegression,
-  calculateWeightedExponentialRegression,
-  calculateRecentExponentialRegression,
-  calculateMissingYears,
-  selectBestTrendLineMethod,
   calculateLinearRegression,
-} from "@/lib/calculations/trends/analysis";
-
-export {
-  selectBestTrendLineMethod,
-  calculateMissingYears,
-} from "@/lib/calculations/trends/analysis";
+  fitExponentialRegression,
+} from "@/lib/calculations/trends/regression";
 
 // Helper to convert ChartData[] to DataPoint[]
 export function toDataPoints(

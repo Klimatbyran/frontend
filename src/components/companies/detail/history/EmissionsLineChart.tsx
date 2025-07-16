@@ -18,9 +18,9 @@ import {
   fitExponentialRegression,
   calculateWeightedExponentialRegression,
   calculateRecentExponentialRegression,
-  selectBestTrendLineMethod,
   calculateLinearRegression,
-} from "@/lib/calculations/trends/analysis";
+} from "@/lib/calculations/trends/regression";
+import { selectBestTrendLineMethod } from "@/lib/calculations/trends/analysis";
 import {
   generateApproximatedData,
   generateSophisticatedApproximatedData,

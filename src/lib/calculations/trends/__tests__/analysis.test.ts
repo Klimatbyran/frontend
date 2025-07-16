@@ -1,12 +1,11 @@
+import { calculateRecentStability } from "../analysis";
+import { detectUnusualEmissionsPoints } from "../detection";
+import { calculateTrendSlope, calculateLinearRegression } from "../regression";
 import {
-  calculateTrendSlope,
   calculateR2Linear,
   calculateR2Exponential,
   calculateBasicStatistics,
-  detectUnusualEmissionsPoints,
-  calculateRecentStability,
-  calculateLinearRegression,
-} from "../analysis";
+} from "../statistics";
 
 describe("Trend Analysis Functions", () => {
   describe("calculateLinearRegression", () => {
