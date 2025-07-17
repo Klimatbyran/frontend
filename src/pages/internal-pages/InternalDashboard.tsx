@@ -6,8 +6,8 @@ import {
   formatEmissionsAbsolute,
   formatPercentChange,
   formatEmployeeCount,
-} from "@/utils/localizeUnit";
-import { calculateRateOfChange } from "@/lib/calculations/general";
+} from "@/utils/formatting/localization";
+import { calculateRateOfChange } from "@/utils/calculations/general";
 
 const companyChangeRate = (company: RankedCompany) =>
   calculateRateOfChange(

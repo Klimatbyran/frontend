@@ -8,7 +8,7 @@ import {
   formatEmissionsAbsolute,
   formatPercentChange,
   localizeUnit,
-} from "@/utils/localizeUnit";
+} from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
 import { LinkCard } from "@/components/ui/link-card";
 

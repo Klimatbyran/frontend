@@ -2,7 +2,7 @@ import React from "react";
 import { X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
-import { formatEmissionsAbsolute } from "@/utils/localizeUnit";
+import { formatEmissionsAbsolute } from "@/utils/formatting/localization";
 
 interface DetailPopupProps {
   year: string;

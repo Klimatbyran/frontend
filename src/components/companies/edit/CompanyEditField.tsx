@@ -1,7 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { IconCheckbox } from "@/components/ui/icon-checkbox";
 import { Undo2 } from "lucide-react";
-import { validateValue } from "../../../utils/editorValidation";
+import { validateValue } from "../../../utils/ui/validation";
 
 export interface CompanyEditInputFieldProps {
   type: "date" | "number" | "text";

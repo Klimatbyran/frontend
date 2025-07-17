@@ -11,7 +11,7 @@ import {
 } from "recharts";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
-import { formatEmissionsAbsoluteCompact } from "@/utils/localizeUnit";
+import { formatEmissionsAbsoluteCompact } from "@/utils/formatting/localization";
 import { CustomTooltip } from "./CustomTooltip";
 
 interface DataPoint {

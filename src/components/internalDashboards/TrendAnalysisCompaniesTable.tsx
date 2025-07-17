@@ -15,7 +15,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ExternalLink } from "lucide-react";
-import { getMethodColor, getTrendIcon } from "@/utils/trend-utils";
+import { getMethodColor, getTrendIcon } from "@/utils/ui/trends";
 import { SortableTableHeader } from "@/components/layout/SortableTableHeader";
 import type { TrendAnalysis } from "@/lib/calculations/trends/analysis";
 

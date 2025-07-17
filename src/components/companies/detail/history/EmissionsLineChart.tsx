@@ -11,7 +11,7 @@ import {
 import { CustomTooltip } from "../CustomTooltip";
 import { ChartData } from "@/types/emissions";
 import { t } from "i18next";
-import { formatEmissionsAbsoluteCompact } from "@/utils/localizeUnit";
+import { formatEmissionsAbsoluteCompact } from "@/utils/formatting/localization";
 import { useMemo, useState, useEffect } from "react";
 import {
   calculateWeightedLinearRegression,
@@ -24,11 +24,11 @@ import { selectBestTrendLineMethod } from "@/lib/calculations/trends/analysis";
 import {
   generateApproximatedData,
   generateSophisticatedApproximatedData,
-} from "@/utils/companyEmissionsCalculations";
+} from "@/utils/calculations/emissions/companyEmissionsCalculations";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { ExploreChart } from "./ExploreChart";
-import { exploreButtonFeatureFlagEnabled } from "@/utils/feature-flag";
+import { exploreButtonFeatureFlagEnabled } from "@/utils/ui/featureFlags";
 
 interface EmissionsLineChartProps {
   data: ChartData[];

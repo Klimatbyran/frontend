@@ -11,7 +11,7 @@ import { useLanguage } from "@/components/LanguageProvider";
 import {
   formatEmissionsAbsolute,
   formatPercentChange,
-} from "@/utils/localizeUnit";
+} from "@/utils/formatting/localization";
 import GlobalSearch from "@/components/ui/globalsearch";
 
 export function LandingPage() {

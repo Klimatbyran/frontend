@@ -7,18 +7,6 @@
  * - ChartData[]: For UI/charting functions (total is optional)
  * - { year: number; total: number | null | undefined }[]: For calculation utilities
  *
- * @example
- * ```typescript
- * const data = [
- *   { year: 2020, total: 100 },
- *   { year: 2021, total: 110 },
- *   { year: 2022, total: 120 }
- * ];
- *
- * // Basic usage
- * const trendCoefficients = calculateTrendCoefficients(data);
- * const approximatedData = generateSophisticatedApproximatedData(data);
- * ```
  */
 
 import { ChartData } from "@/types/emissions";
@@ -34,7 +22,7 @@ import {
   getValidData,
   getMinYear,
   calculateParisValue,
-} from "./emissionsCalculationsUtils";
+} from "./utils";
 import {
   validateInputData,
   validateYearParameters,
@@ -42,7 +30,7 @@ import {
   validateBaseYear,
   validateEndYear,
   withErrorHandling,
-} from "./validation";
+} from "@/utils/validation";
 
 // Type definitions for better type safety
 export interface TrendCoefficients {

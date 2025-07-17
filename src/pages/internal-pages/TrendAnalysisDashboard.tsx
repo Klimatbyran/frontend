@@ -24,7 +24,7 @@ import {
   type TrendAnalysis,
 } from "@/lib/calculations/trends/analysis";
 import { ChevronRight } from "lucide-react";
-import { getMethodColor, getTrendIcon } from "@/utils/trend-utils";
+import { getMethodColor, getTrendIcon } from "@/utils/ui/trends";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { useLanguage } from "@/components/LanguageProvider";

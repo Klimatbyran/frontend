@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { TooltipProps } from "recharts";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
-import { formatEmissionsAbsolute } from "@/utils/localizeUnit";
+import { formatEmissionsAbsolute } from "@/utils/formatting/localization";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { X } from "lucide-react";
 

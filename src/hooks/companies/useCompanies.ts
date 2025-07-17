@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { getCompanies } from "@/lib/api";
 import type { paths } from "@/lib/api-types";
-import { cleanEmissions } from "@/utils/cleanEmissions";
+import { cleanEmissions } from "@/utils/data/cleaning";
 import type { Emissions } from "@/types/company";
 
 // Get company type from API types

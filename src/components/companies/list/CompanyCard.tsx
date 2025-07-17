@@ -17,7 +17,7 @@ import {
   formatEmissionsAbsolute,
   localizeUnit,
   formatPercentChange,
-} from "@/utils/localizeUnit";
+} from "@/utils/formatting/localization";
 import { LinkCard } from "@/components/ui/link-card";
 import { cn } from "@/lib/utils";
 import { AiIcon } from "@/components/ui/ai-icon";

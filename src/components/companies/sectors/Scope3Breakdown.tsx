@@ -9,7 +9,7 @@ import {
 } from "@/hooks/companies/useCategories";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { useTranslation } from "react-i18next";
-import { formatEmissionsAbsolute } from "@/utils/localizeUnit";
+import { formatEmissionsAbsolute } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
 
 interface Scope3BreakdownProps {

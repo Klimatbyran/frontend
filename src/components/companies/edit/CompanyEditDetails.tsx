@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { validateValue } from "../../../utils/editorValidation";
+import { validateValue } from "../../../utils/ui/validation";
 import type {
   CompanyDetails as CompanyDetailsType,
   GicsOption,

@@ -21,17 +21,17 @@ import {
   formatEmissionsAbsolute,
   formatEmployeeCount,
   formatPercentChange,
-} from "@/utils/localizeUnit";
+} from "@/utils/formatting/localization";
 import { cn } from "@/lib/utils";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
 import { AiIcon } from "@/components/ui/ai-icon";
 import { OverviewStatistics } from "./OverviewStatistics";
 import { CompanyOverviewTooltip } from "./CompanyOverviewTooltip";
 import { CompanyDescription } from "./CompanyDescription";
-import { calculateRateOfChange } from "@/lib/calculations/general";
+import { calculateRateOfChange } from "@/utils/calculations/general";
 import { EmissionsAssessmentButton } from "../emissions-assessment/EmissionsAssessmentButton";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
-import { getCompanyDescription } from "@/utils/companyDescription";
+import { getCompanyDescription } from "@/utils/business/company";
 
 interface CompanyOverviewProps {
   company: CompanyDetails;

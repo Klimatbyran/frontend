@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getCompanyDetails } from "@/lib/api";
-import { cleanEmissions } from "@/utils/cleanEmissions";
+import { cleanEmissions } from "@/utils/data/cleaning";
 
 export function useCompanyDetails(id: string) {
   const {

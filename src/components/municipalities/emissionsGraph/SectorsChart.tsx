@@ -9,7 +9,7 @@ import {
   ComposedChart,
 } from "recharts";
 import { useLanguage } from "@/components/LanguageProvider";
-import { formatEmissionsAbsoluteCompact } from "@/utils/localizeUnit";
+import { formatEmissionsAbsoluteCompact } from "@/utils/formatting/localization";
 import { SectorEmissions } from "@/types/municipality";
 import { useMunicipalitySectors } from "@/hooks/municipalities/useMunicipalitySectors";
 import { CustomTooltip } from "./CustomTooltip";

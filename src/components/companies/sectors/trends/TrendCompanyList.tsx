@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { RankedCompany } from "@/types/company";
 import { useLanguage } from "@/components/LanguageProvider";
-import { getCompanyDescription } from "@/utils/companyDescription";
+import { getCompanyDescription } from "@/utils/business/company";
 
 interface TrendCompanyListProps {
   category: "decreasing" | "increasing" | "noComparable";

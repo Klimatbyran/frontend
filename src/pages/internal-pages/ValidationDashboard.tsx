@@ -18,7 +18,7 @@ import {
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
 import { cn } from "@/lib/utils";
 import { ReportingPeriod } from "@/types/company";
-import { formatPercent } from "@/utils/localizeUnit";
+import { formatPercent } from "@/utils/formatting/localization";
 
 const useGetUnverifiedCompaniesForYear = (year: number) => {
   const { companies } = useCompanies();

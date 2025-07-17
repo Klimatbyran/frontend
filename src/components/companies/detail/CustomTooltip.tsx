@@ -1,6 +1,9 @@
 import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useTranslation } from "react-i18next";
-import { formatEmissionsAbsolute, formatPercent } from "@/utils/localizeUnit";
+import {
+  formatEmissionsAbsolute,
+  formatPercent,
+} from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { AiIcon } from "@/components/ui/ai-icon";
@@ -170,7 +173,8 @@ export const CustomTooltip = ({
                   trendData.slope >= 0 ? "text-pink-3" : "text-green-3",
                 )}
               >
-                Trend: {trendData.slope >= 0 ? "↗ Increasing" : "↘ Decreasing"}
+                Trend:{" "}
+                {trendData.slope >= 0 ? "↗ Increasing" : "↘ Decreasing"}
               </span>
             </span>
           )}

@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { createSlug } from "@/lib/utils";
 import { CompanyScope3 } from "@/components/companies/detail/CompanyScope3";
-import { getCompanyDescription } from "@/utils/companyDescription";
+import { getCompanyDescription } from "@/utils/business/company";
 import { useLanguage } from "@/components/LanguageProvider";
 
 export function CompanyDetailPage() {

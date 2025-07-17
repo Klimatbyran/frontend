@@ -2,7 +2,7 @@ import React from "react";
 import { TooltipProps } from "recharts";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
-import { formatEmissionsAbsolute, formatPercent } from "@/utils/localizeUnit";
+import { formatEmissionsAbsolute, formatPercent } from "@/utils/formatting/localization";
 const CompanyTooltip: React.FC<TooltipProps<number, string>> = ({
   active,
   payload,

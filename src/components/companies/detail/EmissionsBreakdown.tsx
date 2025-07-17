@@ -11,7 +11,7 @@ import { useTranslation } from "react-i18next";
 import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { useLanguage } from "@/components/LanguageProvider";
-import { localizeUnit } from "@/utils/localizeUnit";
+import { localizeUnit } from "@/utils/formatting/localization";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
 import { AiIcon } from "@/components/ui/ai-icon";
 

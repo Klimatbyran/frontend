@@ -14,7 +14,7 @@ import {
   formatPercent,
   formatPercentChange,
   localizeUnit,
-} from "@/utils/localizeUnit";
+} from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
 import MunicipalitySectorPieChart from "@/components/municipalities/sectorChart/MunicipalitySectorPieChart";
 import MunicipalitySectorLegend from "@/components/municipalities/sectorChart/MunicipalitySectorLegend";

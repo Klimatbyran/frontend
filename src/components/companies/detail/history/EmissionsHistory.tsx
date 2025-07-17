@@ -5,7 +5,7 @@ import {
   interpolateScope3Categories,
 } from "@/lib/calculations/emissions";
 import type { EmissionsHistoryProps, DataView } from "@/types/emissions";
-import { getChartData } from "../../../../utils/getChartData";
+import { getChartData } from "../../../../utils/data/chartData";
 import { useTranslation } from "react-i18next";
 import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useLanguage } from "@/components/LanguageProvider";

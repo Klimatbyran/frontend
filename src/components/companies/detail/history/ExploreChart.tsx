@@ -10,11 +10,11 @@ import {
 } from "recharts";
 import { CustomTooltip } from "../CustomTooltip";
 import { ChartData } from "@/types/emissions";
-import { formatEmissionsAbsoluteCompact } from "@/utils/localizeUnit";
+import { formatEmissionsAbsoluteCompact } from "@/utils/formatting/localization";
 import { calculateLinearRegression } from "@/lib/calculations/trends/regression";
 
 // Patch: redefine generateApproximatedData to return carbonLaw as number | undefined
-import * as companyEmissionsCalculations from "@/utils/companyEmissionsCalculations";
+import * as companyEmissionsCalculations from "@/utils/calculations/emissions/companyEmissionsCalculations";
 const generateApproximatedData = (
   ...args: Parameters<
     typeof companyEmissionsCalculations.generateApproximatedData
@@ -24,6 +24,7 @@ const generateApproximatedData = (
   return result.map((d) => ({
     ...d,
     carbonLaw: d.carbonLaw === null ? undefined : d.carbonLaw,
+    approximated: d.approximated ?? null,
   }));
 };
 

@@ -6,7 +6,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import type { paths } from "@/lib/api-types";
-import { formatPercent } from "@/utils/localizeUnit";
+import { formatPercent } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
 
 type Assessment =
