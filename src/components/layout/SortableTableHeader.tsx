@@ -22,7 +22,7 @@ export function SortableTableHeader({
       <Button
         variant="ghost"
         onClick={() => onSort(column)}
-        className="p-0 h-auto font-medium"
+        className="p-1 h-auto font-medium"
       >
         {children}
         {currentSort === column &&
