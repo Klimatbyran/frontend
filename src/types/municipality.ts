@@ -27,7 +27,7 @@ export type Municipality = {
 
 // Detailed municipality type from API
 export type MunicipalityDetails = NonNullable<
-  paths["/municipalities/{id}"]["get"]["responses"][200]["content"]["application/json"]
+  paths["/municipalities/{name}"]["get"]["responses"][200]["content"]["application/json"]
 >;
 
 // Helper type for emissions data by year

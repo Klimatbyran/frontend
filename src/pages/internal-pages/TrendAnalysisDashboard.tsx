@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useTranslation } from "react-i18next";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Text } from "@/components/ui/text";
 import { Badge } from "@/components/ui/badge";
@@ -24,7 +23,7 @@ import {
   type TrendAnalysis,
 } from "@/lib/calculations/trends/analysis";
 import { ChevronRight } from "lucide-react";
-import { getMethodColor, getTrendIcon } from "@/utils/ui/trends";
+import { getMethodColor } from "@/utils/ui/trends";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { useLanguage } from "@/components/LanguageProvider";
@@ -32,7 +31,6 @@ import { TrendAnalysisSummaryCards } from "@/components/internalDashboards/Trend
 import { TrendAnalysisCompaniesTable } from "@/components/internalDashboards/TrendAnalysisCompaniesTable";
 
 export function TrendAnalysisDashboard() {
-  const { t } = useTranslation();
   const { companies, loading, error } = useCompanies();
   const { currentLanguage } = useLanguage();
   const [originalAnalyses, setOriginalAnalyses] = useState<TrendAnalysis[]>([]);

@@ -1,17 +1,8 @@
 import { FC } from "react";
 import { OverviewChart } from "./OverviewChart";
 import { SectorsChart } from "./SectorsChart";
-import { SectorEmissions } from "@/types/municipality";
+import { SectorEmissions, DataPoint } from "@/types/municipality";
 import { useTranslation } from "react-i18next";
-
-interface DataPoint {
-  year: number;
-  total?: number;
-  trend?: number;
-  paris?: number;
-  gap?: number;
-  approximated?: number;
-}
 
 type DataView = "overview" | "sectors";
 

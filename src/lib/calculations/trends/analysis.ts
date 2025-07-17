@@ -1,16 +1,5 @@
 /**
  * Trend Analysis Functions
- *
- * ✅ MIGRATION COMPLETE:
- * - Consolidated all mathematical functions (regression, statistics, R²) here
- * - Standardized data format to DataPoint[] ({ year, value })
- * - Removed duplicate functions across files
- * - Updated components to use canonical functions
- * - Migrated all legacy functions to use new regression format directly
- * - Removed intercept conversion logic
- * - Updated formulas from slope * year + intercept to slope * (year - minYear) + intercept
- *
- * Current state: All functions use the new standardized regression format
  */
 
 import { DataPoint } from "./types";

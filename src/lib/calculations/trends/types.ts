@@ -1,5 +1,10 @@
-// TODO: MIGRATION - This is the standardized data format for all trend/statistics functions
-// Legacy code may use { x, y } or { year, total } formats - these should be migrated
+/**
+ * Standardized data format for all trend/statistics functions
+ *
+ * This is the canonical format for statistical analysis functions.
+ * Legacy code may still use { x, y } or { year, total } formats in some places,
+ * but new code should use this standardized format.
+ */
 export interface DataPoint {
   year: number;
   value: number;
