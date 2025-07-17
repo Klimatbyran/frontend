@@ -1,0 +1,158 @@
+/**
+ * Common utility functions for emissions calculations
+ */
+
+/**
+ * Carbon Law reduction rate constant (11.72% annual reduction)
+ */
+export const CARBON_LAW_REDUCTION_RATE = 0.1172;
+
+/**
+ * Calculate cumulative emissions using trapezoidal integration
+ * @param data - Record of year to value mappings
+ * @returns Cumulative emissions value
+ */
+export function calculateTrapezoidalIntegration(
+  data: Record<number, number>,
+): number {
+  const years = Object.keys(data)
+    .map(Number)
+    .sort((a, b) => a - b);
+
+  if (years.length < 2) return 0;
+
+  let cumulativeEmissions = 0;
+
+  for (let i = 1; i < years.length; i++) {
+    const year1 = years[i - 1];
+    const year2 = years[i];
+    const value1 = data[year1];
+    const value2 = data[year2];
+
+    // Trapezoidal rule: area = (base * (height1 + height2)) / 2
+    cumulativeEmissions += ((year2 - year1) * (value1 + value2)) / 2;
+  }
+
+  return cumulativeEmissions;
+}
+
+/**
+ * Generate a range of years from start to end (inclusive)
+ * @param startYear - Starting year
+ * @param endYear - Ending year
+ * @returns Array of years
+ */
+export function generateYearRange(
+  startYear: number,
+  endYear: number,
+): number[] {
+  return Array.from(
+    { length: endYear - startYear + 1 },
+    (_, i) => startYear + i,
+  );
+}
+
+/**
+ * Get the current year
+ * @returns Current year as number
+ */
+export function getCurrentYear(): number {
+  return new Date().getFullYear();
+}
+
+/**
+ * Validate that data array has valid structure and contains years
+ * @param data - Array of data points
+ * @returns True if data is valid
+ */
+export function validateData<T extends { year: number }>(data: T[]): boolean {
+  return data.length > 0 && data[0]?.year !== undefined;
+}
+
+/**
+ * Filter data to only include points with valid total values.
+ * @returns Type-safe array where all elements have valid total values
+ */
+export function getValidData<T extends { total?: number | null | undefined }>(
+  data: T[],
+): (T & { total: number })[] {
+  if (!Array.isArray(data)) {
+    return [];
+  }
+
+  return data.filter(
+    (d): d is T & { total: number } =>
+      d.total !== undefined && d.total !== null && !isNaN(d.total),
+  );
+}
+
+/**
+ * Calculate the minimum year from regression points.
+ * When baseYear is provided, it's always the minimum year.
+ * Otherwise, uses the earlier of the last two data points.
+ * @throws {Error} When data array is empty or baseYear is invalid
+ */
+export function getMinYear(
+  data: { year: number; total: number }[],
+  baseYear?: number,
+): number {
+  if (!Array.isArray(data) || data.length === 0) {
+    throw new Error("getMinYear: Data array must be non-empty");
+  }
+
+  if (
+    baseYear !== undefined &&
+    (typeof baseYear !== "number" || isNaN(baseYear))
+  ) {
+    throw new Error("getMinYear: Base year must be a valid number");
+  }
+
+  if (baseYear) {
+    return baseYear;
+  }
+
+  const validData = getValidData(data);
+  const sorted = validData.sort((a, b) => a.year - b.year);
+  const lastTwoPoints = sorted.slice(-2);
+  return Math.min(...lastTwoPoints.map((p) => p.year));
+}
+
+/**
+ * Calculate Paris Agreement line value (Carbon Law) for a given year.
+ * Formula: currentValue * (1 - reductionRate)^(year - currentYear)
+ * @param year - Target year for calculation
+ * @param currentYear - Current year
+ * @param currentYearValue - Emissions value for current year
+ * @param reductionRate - Annual reduction rate (default: 0.1172 = 11.72%)
+ * @returns Calculated Paris Agreement value or null if year is in the past
+ */
+export function calculateParisValue(
+  year: number,
+  currentYear: number,
+  currentYearValue: number,
+  reductionRate: number = CARBON_LAW_REDUCTION_RATE,
+): number | null {
+  if (typeof year !== "number" || isNaN(year)) {
+    throw new Error("calculateParisValue: Year must be a valid number");
+  }
+
+  if (typeof currentYear !== "number" || isNaN(currentYear)) {
+    throw new Error("calculateParisValue: Current year must be a valid number");
+  }
+
+  if (typeof currentYearValue !== "number" || isNaN(currentYearValue)) {
+    throw new Error(
+      "calculateParisValue: Current year value must be a valid number",
+    );
+  }
+
+  if (currentYearValue <= 0) {
+    return null;
+  }
+
+  if (year < currentYear) return null;
+
+  const calculatedValue =
+    currentYearValue * Math.pow(1 - reductionRate, year - currentYear);
+  return calculatedValue > 0 ? calculatedValue : null;
+}
