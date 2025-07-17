@@ -20,8 +20,8 @@ import { useCompanies } from "@/hooks/companies/useCompanies";
 import {
   processCompanyData,
   calculateSummaryStats,
-  type TrendAnalysis,
 } from "@/lib/calculations/trends/analysis";
+import type { TrendAnalysis } from "@/lib/calculations/trends/types";
 import { ChevronRight } from "lucide-react";
 import { getMethodColor } from "@/utils/ui/trends";
 import { PageHeader } from "@/components/layout/PageHeader";

@@ -17,7 +17,8 @@ import {
 import { ExternalLink } from "lucide-react";
 import { getMethodColor, getTrendIcon } from "@/utils/ui/trends";
 import { SortableTableHeader } from "@/components/layout/SortableTableHeader";
-import type { TrendAnalysis } from "@/lib/calculations/trends/analysis";
+import type { TrendAnalysis } from "@/lib/calculations/trends/types";
+import { useTranslation } from "react-i18next";
 
 interface TrendAnalysisCompaniesTableProps {
   companies: TrendAnalysis[];
@@ -34,6 +35,8 @@ export function TrendAnalysisCompaniesTable({
   onSort,
   onCompanyClick,
 }: TrendAnalysisCompaniesTableProps) {
+  const { t } = useTranslation();
+
   return (
     <Card>
       <CardHeader>
@@ -128,7 +131,12 @@ export function TrendAnalysisCompaniesTable({
                             Method Explanation
                           </h4>
                           <p className="text-sm leading-relaxed text-white">
-                            {company.explanation}
+                            {company.explanationParams
+                              ? t(
+                                  company.explanation,
+                                  company.explanationParams,
+                                )
+                              : t(company.explanation)}
                           </p>
                         </div>
                       </PopoverContent>

@@ -2,7 +2,7 @@
  * Trend Analysis Functions
  */
 
-import { DataPoint } from "./types";
+import { DataPoint, TrendAnalysis } from "./types";
 import { calculateTrendSlope } from "./regression";
 import {
   calculateR2Linear,
@@ -129,38 +129,6 @@ export function analyzeTrendCharacteristics(
   };
 }
 
-export interface TrendAnalysis {
-  companyId: string;
-  companyName: string;
-  method: string;
-  explanation: string;
-  baseYear?: number;
-  dataPoints: number;
-  mean: number;
-  stdDev: number;
-  variance: number;
-  missingYears: number;
-  hasUnusualPoints: boolean;
-  unusualPointsDetails?: {
-    year: number;
-    fromYear: number;
-    toYear: number;
-    fromValue: number;
-    toValue: number;
-    change: number;
-    threshold: number;
-    direction: string;
-    reason: string;
-  }[];
-  recentStability: number;
-  r2Linear: number;
-  r2Exponential: number;
-  trendDirection: "increasing" | "decreasing" | "stable" | "insufficient_data";
-  trendSlope: number;
-  yearlyPercentageChange: number;
-  dataRange: { min: number; max: number; span: number };
-}
-
 export const createInsufficientDataAnalysis = (
   company: any,
   effectiveDataPoints: number,
@@ -170,8 +138,11 @@ export const createInsufficientDataAnalysis = (
   companyName: company.name,
   method: "simple",
   explanation: checkBaseYear
-    ? `Simple average slope is used because there are only ${effectiveDataPoints} data points since base year ${checkBaseYear}. More complex methods are unreliable with so little data.`
-    : `Simple average slope is used because there are only ${effectiveDataPoints} data points. More complex methods are unreliable with so little data.`,
+    ? "trendAnalysis.insufficientDataWithBaseYear"
+    : "trendAnalysis.insufficientData",
+  explanationParams: checkBaseYear
+    ? { dataPoints: effectiveDataPoints, baseYear: checkBaseYear }
+    : { dataPoints: effectiveDataPoints },
   baseYear: company.baseYear?.year,
   dataPoints: effectiveDataPoints,
   mean: 0,
@@ -230,7 +201,7 @@ export const processCompanyData = (company: any): TrendAnalysis => {
 
   const analysis = analyzeTrendCharacteristics(dataPoints);
   const unusualPointsResult = detectUnusualEmissionsPoints(dataPoints);
-  const { method, explanation } = selectBestTrendLineMethod(
+  const { method, explanation, explanationParams } = selectBestTrendLineMethod(
     data,
     company.baseYear?.year,
   );
@@ -245,6 +216,7 @@ export const processCompanyData = (company: any): TrendAnalysis => {
     companyName: company.name,
     method,
     explanation,
+    explanationParams,
     baseYear: company.baseYear?.year,
     dataPoints: effectiveDataPoints,
     mean: analysis.statistics.mean,
@@ -326,12 +298,16 @@ export function calculateMissingYears(
 
 /**
  * Selects the best trend line method for a company based on its emissions data.
- * Returns { method, explanation }.
+ * Returns { method, explanation, explanationParams }.
  */
 export function selectBestTrendLineMethod(
   data: { year: number; total: number | null | undefined }[],
   baseYear?: number,
-): { method: string; explanation: string } {
+): {
+  method: string;
+  explanation: string;
+  explanationParams?: Record<string, string | number>;
+} {
   // Filter to points since base year
   const points = getValidDataSinceBaseYear(data, baseYear).map((d) => ({
     year: d.year,
@@ -341,7 +317,8 @@ export function selectBestTrendLineMethod(
   if (numPoints < 3) {
     return {
       method: "simple",
-      explanation: `Simple average slope is used because there are only ${numPoints} data points since the base year. More complex methods are unreliable with so little data.`,
+      explanation: "trendAnalysis.simpleMethodInsufficientData",
+      explanationParams: { dataPoints: numPoints },
     };
   }
   // Check for missing years using the utility function
@@ -362,19 +339,20 @@ export function selectBestTrendLineMethod(
   if (missingYears > 2) {
     return {
       method: "anchored",
-      explanation: `Last-point anchored linear regression is used because there are ${missingYears} missing years in the data. This method provides a smooth projection from the last actual data point while being robust to missing data.`,
+      explanation: "trendAnalysis.anchoredMethodMissingYears",
+      explanationParams: { missingYears },
     };
   }
   if (recentStability < 0.1 && dataPoints.length >= 4) {
     return {
       method: "weightedLinear",
-      explanation: `Weighted linear regression is used because the last 4 years are very stable (std dev < 10% of mean). This method gives more weight to recent stable data, which can help reduce the impact of older data or unusual points.`,
+      explanation: "trendAnalysis.weightedLinearMethodStable",
     };
   }
   if (hasUnusualPoints) {
     return {
       method: "weightedLinear",
-      explanation: `Weighted linear regression is used because unusual year-over-year changes were detected (exceeding 4x the median change). This method gives more weight to recent data points, which can help reduce the impact of older unusual points.`,
+      explanation: "trendAnalysis.weightedLinearMethodUnusualPoints",
     };
   }
   if (r2Exp - r2Lin > 0.05) {
@@ -384,18 +362,20 @@ export function selectBestTrendLineMethod(
     ) {
       return {
         method: "weightedExponential",
-        explanation: `Weighted exponential regression is used because the exponential fit (R²=${r2Exp.toFixed(2)}) is significantly better than linear (R²=${r2Lin.toFixed(2)}), and the data has unusual points or high variance. This method gives more weight to recent data points while fitting an exponential trend.`,
+        explanation: "trendAnalysis.weightedExponentialMethodHighVariance",
+        explanationParams: { r2Exp: r2Exp.toFixed(2), r2Lin: r2Lin.toFixed(2) },
       };
     }
     return {
       method: "exponential",
-      explanation: `Exponential regression is used because the exponential fit (R²=${r2Exp.toFixed(2)}) is significantly better than linear (R²=${r2Lin.toFixed(2)}). This suggests a non-linear trend.`,
+      explanation: "trendAnalysis.exponentialMethodBetterFit",
+      explanationParams: { r2Exp: r2Exp.toFixed(2), r2Lin: r2Lin.toFixed(2) },
     };
   }
   if (statistics.variance > 0.2 * (statistics.mean || 1)) {
     return {
       method: "weightedLinear",
-      explanation: `Weighted linear regression is used because the data has high variance (std dev > 20% of mean). This method gives more weight to recent data points, which can help provide a more stable trend.`,
+      explanation: "trendAnalysis.weightedLinearMethodHighVariance",
     };
   }
   if (dataPoints.length >= 4) {
@@ -405,12 +385,16 @@ export function selectBestTrendLineMethod(
     if (recentR2Exp > 0.8 && recentR2Exp - recentR2Lin > 0.1) {
       return {
         method: "recentExponential",
-        explanation: `Recent exponential regression is used because the last 4 years show a strong exponential pattern (R²=${recentR2Exp.toFixed(2)}) that is significantly better than linear (R²=${recentR2Lin.toFixed(2)}). This focuses on the recent exponential trend.`,
+        explanation: "trendAnalysis.recentExponentialMethodStrongPattern",
+        explanationParams: {
+          r2Exp: recentR2Exp.toFixed(2),
+          r2Lin: recentR2Lin.toFixed(2),
+        },
       };
     }
   }
   return {
     method: "linear",
-    explanation: `Linear regression is used as the default because the data is sufficiently complete and does not show strong non-linear or outlier behavior.`,
+    explanation: "trendAnalysis.linearMethodDefault",
   };
 }

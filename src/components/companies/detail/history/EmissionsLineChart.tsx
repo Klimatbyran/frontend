@@ -12,7 +12,7 @@ import {
 } from "recharts";
 import { CustomTooltip } from "../CustomTooltip";
 import { ChartData } from "@/types/emissions";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import { formatEmissionsAbsoluteCompact } from "@/utils/formatting/localization";
 import { useMemo, useState, useEffect } from "react";
 import {
@@ -84,6 +84,7 @@ export default function EmissionsLineChart({
   calculationMethod = "simple",
   setMethodExplanation,
 }: EmissionsLineChartProps) {
+  const { t } = useTranslation();
   const currentYear = new Date().getFullYear();
   const shortEndYear = currentYear + 5;
   const longEndYear = 2050;
@@ -349,18 +350,24 @@ export default function EmissionsLineChart({
   };
 
   // Instead, select the best method and explanation dynamically
-  const { method: selectedMethod, explanation: methodExplanation } =
-    selectBestTrendLineMethod(
-      data.map((d) => ({ year: d.year, total: d.total })),
-      companyBaseYear,
-    );
+  const {
+    method: selectedMethod,
+    explanation: methodExplanationKey,
+    explanationParams,
+  } = selectBestTrendLineMethod(
+    data.map((d) => ({ year: d.year, total: d.total })),
+    companyBaseYear,
+  );
 
   // Call setMethodExplanation when explanation changes
   useEffect(() => {
     if (setMethodExplanation) {
-      setMethodExplanation(methodExplanation || null);
+      const translatedExplanation = explanationParams
+        ? t(methodExplanationKey, explanationParams)
+        : t(methodExplanationKey);
+      setMethodExplanation(translatedExplanation || null);
     }
-  }, [methodExplanation, setMethodExplanation]);
+  }, [methodExplanationKey, explanationParams, setMethodExplanation, t]);
 
   // Calculate global min/max Y values for consistent Y-axis scaling
   const allYValues = [
@@ -892,7 +899,11 @@ export default function EmissionsLineChart({
                 companyBaseYear={companyBaseYear}
                 currentLanguage={currentLanguage}
                 trendExplanation={
-                  exploreStep === 2 ? methodExplanation : undefined
+                  exploreStep === 2
+                    ? explanationParams
+                      ? t(methodExplanationKey, explanationParams)
+                      : t(methodExplanationKey)
+                    : undefined
                 }
                 yDomain={[yMin, yMax]}
               />
