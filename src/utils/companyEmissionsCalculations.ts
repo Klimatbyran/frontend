@@ -58,6 +58,42 @@ export const calculateTrendCoefficients = (
   return { slope: regression.slope, intercept };
 };
 
+// Last-point anchored trend coefficients calculation
+export const calculateAnchoredTrendCoefficients = (
+  data: { year: number; total: number | null | undefined }[],
+  baseYear?: number,
+) => {
+  const regressionPoints = getRegressionPoints(data, baseYear);
+  if (regressionPoints.length < 2) {
+    return null;
+  }
+
+  const regression = calculateLinearRegression(regressionPoints);
+  if (!regression) {
+    return null;
+  }
+
+  // Get the last actual data point
+  const validData = data.filter(
+    (d): d is { year: number; total: number } =>
+      d.total !== undefined && d.total !== null,
+  );
+  const lastYearWithData = Math.max(...validData.map((d) => d.year));
+  const lastActualValue = validData.find(
+    (d) => d.year === lastYearWithData,
+  )?.total;
+
+  if (lastActualValue === undefined) {
+    return null;
+  }
+
+  // Use the slope from regression but calculate intercept to pass through last point
+  const slope = regression.slope;
+  const intercept = lastActualValue - slope * lastYearWithData;
+
+  return { slope, intercept };
+};
+
 export const calculateApproximatedHistorical = (
   data: ChartData[],
   lastYearWithData: number,
@@ -68,7 +104,11 @@ export const calculateApproximatedHistorical = (
     .filter((d) => typeof d.total === "number" && d.total !== null)
     .map((d) => ({ year: d.year, total: d.total! }));
 
-  const trendCoefficients = calculateTrendCoefficients(filteredData, baseYear);
+  // Use anchored trend coefficients to avoid visual "humps"
+  const trendCoefficients = calculateAnchoredTrendCoefficients(
+    filteredData,
+    baseYear,
+  );
   if (!trendCoefficients) {
     return null;
   }
@@ -138,7 +178,11 @@ export const calculateFutureTrend = (
     .filter((d) => typeof d.total === "number" && d.total !== null)
     .map((d) => ({ year: d.year, total: d.total! }));
 
-  const trendCoefficients = calculateTrendCoefficients(filteredData, baseYear);
+  // Use anchored trend coefficients to avoid visual "humps"
+  const trendCoefficients = calculateAnchoredTrendCoefficients(
+    filteredData,
+    baseYear,
+  );
   if (!trendCoefficients) {
     return null;
   }

@@ -374,20 +374,20 @@ export function selectBestTrendLineMethod(
   // Heuristic selection
   if (missingYears > 2) {
     return {
-      method: "linear",
-      explanation: `Linear regression is used because there are ${missingYears} missing years in the data, and linear regression is robust to missing data.`,
+      method: "anchored",
+      explanation: `Last-point anchored linear regression is used because there are ${missingYears} missing years in the data. This method provides a smooth projection from the last actual data point while being robust to missing data.`,
     };
   }
   if (recentStability < 0.1 && dataPoints.length >= 4) {
     return {
       method: "weightedLinear",
-      explanation: `Weighted linear regression is used because the last 4 years are very stable (std dev < 10% of mean). This method gives more weight to recent stable data and reduces the impact of older data or unusual points.`,
+      explanation: `Weighted linear regression is used because the last 4 years are very stable (std dev < 10% of mean). This method gives more weight to recent stable data, which can help reduce the impact of older data or unusual points.`,
     };
   }
   if (hasUnusualPoints) {
     return {
       method: "weightedLinear",
-      explanation: `Weighted linear regression is used because unusual year-over-year changes were detected (exceeding 4x the median change). This method downweights unusual points for a more robust trend.`,
+      explanation: `Weighted linear regression is used because unusual year-over-year changes were detected (exceeding 4x the median change). This method gives more weight to recent data points, which can help reduce the impact of older unusual points.`,
     };
   }
   if (r2Exp - r2Lin > 0.05) {
@@ -397,7 +397,7 @@ export function selectBestTrendLineMethod(
     ) {
       return {
         method: "weightedExponential",
-        explanation: `Weighted exponential regression is used because the exponential fit (R²=${r2Exp.toFixed(2)}) is significantly better than linear (R²=${r2Lin.toFixed(2)}), and the data has unusual points or high variance. This method downweights unusual points while fitting an exponential trend.`,
+        explanation: `Weighted exponential regression is used because the exponential fit (R²=${r2Exp.toFixed(2)}) is significantly better than linear (R²=${r2Lin.toFixed(2)}), and the data has unusual points or high variance. This method gives more weight to recent data points while fitting an exponential trend.`,
       };
     }
     return {
@@ -408,7 +408,7 @@ export function selectBestTrendLineMethod(
   if (statistics.variance > 0.2 * (statistics.mean || 1)) {
     return {
       method: "weightedLinear",
-      explanation: `Weighted linear regression is used because the data has high variance (std dev > 20% of mean), making it more robust to fluctuations.`,
+      explanation: `Weighted linear regression is used because the data has high variance (std dev > 20% of mean). This method gives more weight to recent data points, which can help provide a more stable trend.`,
     };
   }
   if (dataPoints.length >= 4) {
