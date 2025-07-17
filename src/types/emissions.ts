@@ -1,5 +1,26 @@
 import type { ReportingPeriod } from "@/types/company";
 
+export interface EmissionPeriod {
+  startDate: string;
+  endDate: string;
+  emissions: {
+    calculatedTotalEmissions: number;
+    scope1?: { total: number; unit: string } | null;
+    scope2?: {
+      calculatedTotalEmissions: number;
+    } | null;
+    scope3?: {
+      calculatedTotalEmissions: number;
+      categories?: Array<{
+        category: number;
+        total: number;
+        unit: string;
+        isInterpolated?: boolean;
+      }>;
+    } | null;
+  } | null;
+}
+
 export interface ChartData {
   year: number;
   total?: number;

@@ -1,9 +1,7 @@
 import { useState, useMemo } from "react";
 import { Text } from "@/components/ui/text";
-import {
-  EmissionPeriod,
-  interpolateScope3Categories,
-} from "@/lib/calculations/emissions";
+import { EmissionPeriod } from "@/types/emissions";
+import { interpolateScope3Categories } from "@/utils/data/chartData";
 import type { EmissionsHistoryProps, DataView } from "@/types/emissions";
 import { getChartData } from "../../../../utils/data/chartData";
 import { useTranslation } from "react-i18next";
