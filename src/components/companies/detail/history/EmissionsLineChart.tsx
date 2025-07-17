@@ -1,3 +1,5 @@
+// TODO Clean and refactor this file, much to large atm
+
 import {
   Legend,
   Line,
