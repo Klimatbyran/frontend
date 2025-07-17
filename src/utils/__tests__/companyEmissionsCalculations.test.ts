@@ -2,7 +2,6 @@ import {
   calculateWeightedLinearRegression,
   calculateTrendSlope,
 } from "@/lib/calculations/trends/regression";
-import { toDataPoints } from "../companyEmissionsCalculations";
 
 describe("calculateWeightedLinearRegression", () => {
   it("should return null for less than 2 points", () => {
@@ -34,20 +33,5 @@ describe("calculateWeightedLinearRegression", () => {
     // Slope should be positive and less than if the outlier dominated
     expect(weighted!.slope).toBeGreaterThan(0);
     expect(weighted!.slope).toBeLessThan(100);
-  });
-});
-
-describe("toDataPoints", () => {
-  it("should filter out undefined totals and map to DataPoint[]", () => {
-    const testData: Array<{ year: number; total?: number }> = [
-      { year: 2020, total: 100 },
-      { year: 2021, total: undefined },
-      { year: 2022, total: 200 },
-    ];
-    const result = toDataPoints(testData as any);
-    expect(result).toEqual([
-      { year: 2020, value: 100 },
-      { year: 2022, value: 200 },
-    ]);
   });
 });

@@ -1,24 +1,16 @@
 /**
  * Trend Analysis Functions
  *
- * TODO: MIGRATION STATUS
- *
- * ✅ COMPLETED:
+ * ✅ MIGRATION COMPLETE:
  * - Consolidated all mathematical functions (regression, statistics, R²) here
  * - Standardized data format to DataPoint[] ({ year, value })
  * - Removed duplicate functions across files
  * - Updated components to use canonical functions
+ * - Migrated all legacy functions to use new regression format directly
+ * - Removed intercept conversion logic
+ * - Updated formulas from slope * year + intercept to slope * (year - minYear) + intercept
  *
- * 🔄 IN PROGRESS:
- * - Regression format compatibility layer
- *
- * 📋 FUTURE MIGRATION TASKS:
- * 1. Migrate all legacy functions in companyEmissionsCalculations.ts to use new regression format directly
- * 2. Remove intercept conversion logic (intercept = regression.intercept - slope * minYear)
- * 3. Update formulas from slope * year + intercept to slope * (year - minYear) + intercept
- * 4. Functions to migrate: calculateApproximatedHistorical, calculateFutureTrend, generateSophisticatedApproximatedData
- *
- * Current state: New canonical functions with backward compatibility layer
+ * Current state: All functions use the new standardized regression format
  */
 
 import { DataPoint } from "./types";
@@ -29,6 +21,21 @@ import {
   calculateBasicStatistics,
 } from "./statistics";
 import { detectUnusualEmissionsPoints } from "./detection";
+
+/**
+ * Filter data to only include points with valid total values since base year
+ */
+function getValidDataSinceBaseYear(
+  data: { year: number; total: number | null | undefined }[],
+  baseYear?: number,
+): { year: number; total: number }[] {
+  return data.filter(
+    (d): d is { year: number; total: number } =>
+      d.total !== undefined &&
+      d.total !== null &&
+      (baseYear === undefined || d.year >= baseYear),
+  );
+}
 
 /**
  * Calculate recent stability based on the last N years of data
@@ -313,12 +320,7 @@ export function calculateMissingYears(
   baseYear?: number,
 ): number {
   // Filter to valid data points since base year
-  const validData = data.filter(
-    (d) =>
-      d.total !== undefined &&
-      d.total !== null &&
-      (baseYear === undefined || d.year >= baseYear),
-  );
+  const validData = getValidDataSinceBaseYear(data, baseYear);
 
   if (validData.length < 2) return 0;
 
@@ -342,14 +344,10 @@ export function selectBestTrendLineMethod(
   baseYear?: number,
 ): { method: string; explanation: string } {
   // Filter to points since base year
-  const points = data
-    .filter(
-      (d) =>
-        d.total !== undefined &&
-        d.total !== null &&
-        (baseYear === undefined || d.year >= baseYear),
-    )
-    .map((d) => ({ year: d.year, value: d.total as number }));
+  const points = getValidDataSinceBaseYear(data, baseYear).map((d) => ({
+    year: d.year,
+    value: d.total,
+  }));
   const numPoints = points.length;
   if (numPoints < 3) {
     return {

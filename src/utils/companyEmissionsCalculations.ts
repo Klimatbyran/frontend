@@ -1,17 +1,66 @@
-import type { ChartData } from "@/types/emissions";
-import type { DataPoint } from "@/lib/calculations/trends/types";
+import { ChartData } from "@/types/emissions";
+import { DataPoint } from "@/lib/calculations/trends/types";
 import {
   calculateLinearRegression,
   fitExponentialRegression,
 } from "@/lib/calculations/trends/regression";
 
-// Helper to convert ChartData[] to DataPoint[]
-export function toDataPoints(
+const CARBON_LAW_REDUCTION_RATE = 0.1172;
+
+/**
+ * Calculate Paris Agreement line value (Carbon Law) for a given year
+ */
+function calculateParisValue(
+  year: number,
+  currentYear: number,
+  currentYearValue: number,
+  reductionRate: number = CARBON_LAW_REDUCTION_RATE,
+): number | null {
+  if (year < currentYear) return null;
+
+  const calculatedValue =
+    currentYearValue * Math.pow(1 - reductionRate, year - currentYear);
+  return calculatedValue > 0 ? calculatedValue : null;
+}
+
+/**
+ * Filter data to only include points with valid total values
+ */
+function getValidData<T extends { total: number | null | undefined }>(
+  data: T[],
+): T[] {
+  return data.filter((d) => d.total !== undefined && d.total !== null);
+}
+
+/**
+ * Filter data to only include points with valid total values (type-safe)
+ */
+function getValidDataTyped<T extends { total?: number | null | undefined }>(
+  data: T[],
+): (T & { total: number })[] {
+  return data.filter(
+    (d): d is T & { total: number } =>
+      d.total !== undefined && d.total !== null,
+  );
+}
+
+/**
+ * Calculate the minimum year from regression points
+ */
+function getMinYear(
   data: { year: number; total: number }[],
-): DataPoint[] {
-  return data
-    .filter((d) => d.total !== undefined && d.total !== null)
-    .map((d) => ({ year: d.year, value: d.total }));
+  baseYear?: number,
+): number {
+  if (baseYear) {
+    // When baseYear is provided, it's always the minimum year in regression points
+    return baseYear;
+  }
+
+  // When no baseYear, use the last two data points, so minYear is the earlier of those two
+  const validData = getValidData(data);
+  const sorted = validData.sort((a, b) => a.year - b.year);
+  const lastTwoPoints = sorted.slice(-2);
+  return Math.min(...lastTwoPoints.map((p) => p.year));
 }
 
 // Helper to get regression points based on base year logic
@@ -19,9 +68,7 @@ function getRegressionPoints(
   data: { year: number; total: number | null | undefined }[],
   baseYear?: number,
 ): DataPoint[] {
-  const validData = data.filter(
-    (d) => d.total !== undefined && d.total !== null,
-  );
+  const validData = getValidDataTyped(data);
   if (baseYear && baseYear !== Math.max(...validData.map((d) => d.year))) {
     // Use all data from base year onward
     return validData
@@ -49,13 +96,8 @@ export const calculateTrendCoefficients = (
     return null;
   }
 
-  // TODO: MIGRATION - The new regression function returns intercept at the first year in the data
-  // We need to convert it to intercept at year 0 for compatibility with existing code
-  // Future: Migrate all functions to use the new format directly and remove this conversion
-  const minYear = Math.min(...regressionPoints.map((p) => p.year));
-  const intercept = regression.intercept - regression.slope * minYear;
-
-  return { slope: regression.slope, intercept };
+  // Return the new format directly - no conversion needed
+  return { slope: regression.slope, intercept: regression.intercept };
 };
 
 // Last-point anchored trend coefficients calculation
@@ -74,10 +116,7 @@ export const calculateAnchoredTrendCoefficients = (
   }
 
   // Get the last actual data point
-  const validData = data.filter(
-    (d): d is { year: number; total: number } =>
-      d.total !== undefined && d.total !== null,
-  );
+  const validData = getValidDataTyped(data);
   const lastYearWithData = Math.max(...validData.map((d) => d.year));
   const lastActualValue = validData.find(
     (d) => d.year === lastYearWithData,
@@ -100,9 +139,7 @@ export const calculateApproximatedHistorical = (
   currentYear: number,
   baseYear?: number,
 ) => {
-  const filteredData = data
-    .filter((d) => typeof d.total === "number" && d.total !== null)
-    .map((d) => ({ year: d.year, total: d.total! }));
+  const filteredData = getValidDataTyped(data);
 
   // Use anchored trend coefficients to avoid visual "humps"
   const trendCoefficients = calculateAnchoredTrendCoefficients(
@@ -136,9 +173,11 @@ export const calculateApproximatedHistorical = (
       approximatedData[year] = lastDataPoint.total;
     } else {
       // Use the trend for subsequent years
+      const minYear = getMinYear(filteredData, baseYear);
       const approximatedValue = Math.max(
         0,
-        trendCoefficients.slope * year + trendCoefficients.intercept,
+        trendCoefficients.slope * (year - minYear) +
+          trendCoefficients.intercept,
       );
       approximatedData[year] = approximatedValue;
     }
@@ -174,9 +213,7 @@ export const calculateFutureTrend = (
   endYear: number = 2050,
   baseYear?: number,
 ) => {
-  const filteredData = data
-    .filter((d) => typeof d.total === "number" && d.total !== null)
-    .map((d) => ({ year: d.year, total: d.total! }));
+  const filteredData = getValidDataTyped(data);
 
   // Use anchored trend coefficients to avoid visual "humps"
   const trendCoefficients = calculateAnchoredTrendCoefficients(
@@ -220,10 +257,11 @@ export const calculateFutureTrend = (
   };
 
   // Project future values using trend coefficients
+  const minYear = getMinYear(filteredData, baseYear);
   for (const year of futureYears) {
     const trendValue = Math.max(
       0,
-      trendCoefficients.slope * year + trendCoefficients.intercept,
+      trendCoefficients.slope * (year - minYear) + trendCoefficients.intercept,
     );
     trendData[year] = trendValue;
   }
@@ -255,18 +293,13 @@ export const generateExponentialApproximatedData = (
   endYear: number = 2050,
   baseYear?: number,
 ) => {
-  const filteredData = data
-    .filter((d) => typeof d.total === "number" && d.total !== null)
-    .map((d) => ({ year: d.year, total: d.total! }));
+  const filteredData = getValidDataTyped(data);
 
   const regressionPoints = getRegressionPoints(filteredData, baseYear);
   if (regressionPoints.length < 2) return null;
 
   // Get the actual last year with data from the full dataset
-  const validData = data.filter(
-    (d): d is ChartData & { total: number } =>
-      d.total !== undefined && d.total !== null,
-  );
+  const validData = getValidDataTyped(data);
   const lastYearWithData = Math.max(...validData.map((d) => d.year));
   const lastActualValue = validData.find(
     (d) => d.year === lastYearWithData,
@@ -289,7 +322,6 @@ export const generateExponentialApproximatedData = (
     { length: endYear - firstYear + 1 },
     (_, i) => firstYear + i,
   );
-  const reductionRate = 0.1172;
 
   return allYears.map((year) => {
     const actualData = data.find((d) => d.year === year);
@@ -300,15 +332,13 @@ export const generateExponentialApproximatedData = (
       if (approximatedValue < 0) approximatedValue = 0;
     } else if (year === lastYearWithData) {
       approximatedValue = lastActualValue ?? null;
-    } // else: leave as null for years before lastYearWithData
+    }
 
     let parisValue = null;
     if (year >= currentYear) {
       const currentYearValue =
         scale * expFit.a * Math.exp(expFit.b * currentYear);
-      const calculatedValue =
-        currentYearValue * Math.pow(1 - reductionRate, year - currentYear);
-      parisValue = calculatedValue > 0 ? calculatedValue : null;
+      parisValue = calculateParisValue(year, currentYear, currentYearValue);
     }
 
     return {
@@ -335,9 +365,7 @@ export const generateSophisticatedApproximatedData = (
   mode: SophisticatedTrendMode = "linear",
   baseYear?: number,
 ) => {
-  const filteredData = data
-    .filter((d) => typeof d.total === "number" && d.total !== null)
-    .map((d) => ({ year: d.year, total: d.total! }));
+  const filteredData = getValidDataTyped(data);
 
   if (mode === "exponential") {
     return generateExponentialApproximatedData(data, endYear, baseYear);
@@ -386,8 +414,6 @@ export const generateSophisticatedApproximatedData = (
     (_, i) => firstYear + i,
   );
 
-  const reductionRate = 0.1172; // Carbon Law reduction rate
-
   return allYears.map((year) => {
     const actualData = data.find((d) => d.year === year);
 
@@ -410,11 +436,16 @@ export const generateSophisticatedApproximatedData = (
       const currentYearValue =
         approximatedHistorical?.approximatedData[currentYear] ||
         filteredData.find((d) => d.year === currentYear)?.total ||
-        trendCoefficients.slope * currentYear + trendCoefficients.intercept;
+        (() => {
+          // New format: slope * (year - minYear) + intercept
+          const minYear = getMinYear(filteredData, baseYear);
+          return (
+            trendCoefficients.slope * (currentYear - minYear) +
+            trendCoefficients.intercept
+          );
+        })();
 
-      const calculatedValue =
-        currentYearValue * Math.pow(1 - reductionRate, year - currentYear);
-      parisValue = calculatedValue > 0 ? calculatedValue : null;
+      parisValue = calculateParisValue(year, currentYear, currentYearValue);
     }
 
     return {
@@ -439,9 +470,7 @@ export const generateApproximatedData = (
   endYear: number = 2030,
   baseYear?: number,
 ) => {
-  const filteredData = data
-    .filter((d) => typeof d.total === "number" && d.total !== null)
-    .map((d) => ({ year: d.year, total: d.total! }));
+  const filteredData = getValidDataTyped(data);
 
   // If we have no valid data, return empty array
   if (filteredData.length === 0) return [];
@@ -454,15 +483,12 @@ export const generateApproximatedData = (
       { length: endYear - firstYear + 1 },
       (_, i) => firstYear + i,
     );
-    const reductionRate = 0.1172;
 
     return allYears.map((year) => {
       let parisValue = null;
       if (year >= currentYear) {
         const currentYearValue = filteredData[0].total;
-        const calculatedValue =
-          currentYearValue * Math.pow(1 - reductionRate, year - currentYear);
-        parisValue = calculatedValue > 0 ? calculatedValue : null;
+        parisValue = calculateParisValue(year, currentYear, currentYearValue);
       }
       return {
         year,
@@ -492,11 +518,7 @@ export const generateApproximatedData = (
     typeof regression.intercept === "number"
   ) {
     slope = regression.slope;
-    // TODO: MIGRATION - The new regression function returns intercept at the first year in the data
-    // We need to convert it to intercept at year 0 for the formula: slope * year + intercept
-    // Future: Migrate this function to use the new format: slope * (year - minYear) + intercept
-    const minYear = Math.min(...points.map((p) => p.year));
-    intercept = regression.intercept - slope * minYear;
+    intercept = regression.intercept;
   } else if (points.length > 1) {
     let totalChange = 0;
     let totalYears = 0;
@@ -529,21 +551,21 @@ export const generateApproximatedData = (
     { length: endYear - firstYear + 1 },
     (_, i) => firstYear + i,
   );
-  const reductionRate = 0.1172;
+
   return allYears.map((year) => {
     let approximatedValue = null;
     if (year > lastYearWithData) {
-      approximatedValue = slope * year + intercept;
+      const minYear = getMinYear(points, baseYear);
+      approximatedValue = slope * (year - minYear) + intercept;
       if (approximatedValue < 0) approximatedValue = 0;
     } else if (year === lastYearWithData) {
       approximatedValue = lastValue;
     }
     let parisValue = null;
     if (year >= currentYear) {
-      const currentYearValue = slope * currentYear + intercept;
-      const calculatedValue =
-        currentYearValue * Math.pow(1 - reductionRate, year - currentYear);
-      parisValue = calculatedValue > 0 ? calculatedValue : null;
+      const minYear = getMinYear(points, baseYear);
+      const currentYearValue = slope * (currentYear - minYear) + intercept;
+      parisValue = calculateParisValue(year, currentYear, currentYearValue);
     }
     return {
       year,

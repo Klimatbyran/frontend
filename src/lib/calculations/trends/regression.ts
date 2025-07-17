@@ -115,12 +115,11 @@ export function calculateRecentExponentialRegression(
 }
 
 /**
- * Simple linear regression for backward compatibility
+ * Simple linear regression
  * Returns slope and intercept for y = mx + b
  *
- * TODO: MIGRATION - This function uses year - minYear for x-values, so intercept is at the first year
- * Legacy functions expect intercept at year 0, so they convert: intercept = regression.intercept - slope * minYear
- * Future: Migrate all legacy functions to use this format directly
+ * This function uses year - minYear for x-values, so intercept is at the first year in the data.
+ * Formula: y = slope * (year - minYear) + intercept
  */
 export function calculateLinearRegression(
   data: DataPoint[],
