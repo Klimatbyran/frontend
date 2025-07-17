@@ -24,7 +24,7 @@ import { selectBestTrendLineMethod } from "@/lib/calculations/trends/analysis";
 import {
   generateApproximatedData,
   generateSophisticatedApproximatedData,
-} from "@/utils/calculations/emissions/companyEmissionsCalculations";
+} from "@/utils/calculations/emissions";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { ExploreChart } from "./ExploreChart";

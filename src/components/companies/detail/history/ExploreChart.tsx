@@ -14,7 +14,7 @@ import { formatEmissionsAbsoluteCompact } from "@/utils/formatting/localization"
 import { calculateLinearRegression } from "@/lib/calculations/trends/regression";
 
 // Patch: redefine generateApproximatedData to return carbonLaw as number | undefined
-import * as companyEmissionsCalculations from "@/utils/calculations/emissions/companyEmissionsCalculations";
+import * as companyEmissionsCalculations from "@/utils/calculations/emissions";
 const generateApproximatedData = (
   ...args: Parameters<
     typeof companyEmissionsCalculations.generateApproximatedData

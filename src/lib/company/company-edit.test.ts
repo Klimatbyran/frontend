@@ -1,4 +1,4 @@
-import { mapCompanyEditFormToRequestBody } from "./company-edit";
+import { mapCompanyEditFormToRequestBody } from "./company/company-edit";
 import type { ReportingPeriod } from "@/types/company";
 
 // --- Helpers and Factories ---

@@ -8,7 +8,7 @@ import { CompanyEditScope1 } from "@/components/companies/edit/CompanyEditScope1
 import { CompanyEditScope2 } from "@/components/companies/edit/CompanyEditScope2";
 import { CompanyEditScope3 } from "@/components/companies/edit/CompanyEditScope3";
 import { ReportingPeriod } from "@/types/company";
-import { mapCompanyEditFormToRequestBody } from "@/lib/company-edit";
+import { mapCompanyEditFormToRequestBody } from "@/lib/company/company-edit";
 import { updateReportingPeriods } from "@/lib/api";
 import { useToast } from "@/contexts/ToastContext";
 import { useTranslation } from "react-i18next";

@@ -10,7 +10,7 @@ import {
   generateApproximatedData,
   generateSophisticatedApproximatedData,
   generateExponentialApproximatedData,
-} from "../companyEmissionsCalculations";
+} from "../calculations/emissions";
 import { ChartData } from "@/types/emissions";
 
 describe("calculateWeightedLinearRegression", () => {
