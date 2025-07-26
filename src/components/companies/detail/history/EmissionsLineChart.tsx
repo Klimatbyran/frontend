@@ -81,6 +81,8 @@ export default function EmissionsLineChart({
   const shortEndYear = currentYear + 5;
   const longEndYear = 2050;
   const [chartEndYear, setChartEndYear] = useState(shortEndYear);
+  const isFirstYear = companyBaseYear === data[0]?.year;
+
   // --- New logic for dynamic explore steps ---
   const hasDataBeforeBaseYear =
     companyBaseYear && data.some((d) => d.year < companyBaseYear);
@@ -375,6 +377,7 @@ export default function EmissionsLineChart({
                   label={{
                     value: t("companies.emissionsHistory.baseYear"),
                     position: "top",
+                    dx: isFirstYear ? 15 : 0,
                     fill: "white",
                     fontSize: 12,
                     fontWeight: "normal",
