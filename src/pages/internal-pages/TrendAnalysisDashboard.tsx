@@ -17,10 +17,8 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { useCompanies } from "@/hooks/companies/useCompanies";
-import {
-  processCompanyData,
-  calculateSummaryStats,
-} from "@/lib/calculations/trends/analysis";
+import { processCompanyData } from "@/lib/calculations/trends/analysis";
+import { calculateSummaryStats } from "@/lib/calculations/trends/utils";
 import type { TrendAnalysis } from "@/lib/calculations/trends/types";
 import { ChevronRight } from "lucide-react";
 import { getMethodColor } from "@/utils/ui/trends";

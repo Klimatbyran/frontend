@@ -1,5 +1,6 @@
 import { DataPoint } from "./types";
 import { calculateTrendSlope } from "./regression";
+import { detectUnusualEmissionsPointsEnhanced } from "./outlier-detection";
 
 /**
  * Calculate R² for linear regression
@@ -113,4 +114,108 @@ export function calculateBasicStatistics(data: DataPoint[]): {
     max,
     span,
   };
-} 
+}
+
+/**
+ * Calculate recent stability based on the last N years of data
+ * Returns the coefficient of variation (std dev / mean) for recent data
+ */
+export function calculateRecentStability(
+  data: DataPoint[],
+  recentYears: number = 4,
+): number {
+  if (!data?.length || data.length < recentYears) {
+    return 0;
+  }
+
+  const recentPoints = data.slice(-recentYears);
+  const recentValues = recentPoints.map((p) => p.value);
+  const recentMean =
+    recentValues.reduce((a, b) => a + b, 0) / recentValues.length;
+  const recentVariance =
+    recentValues.reduce((a, b) => a + Math.pow(b - recentMean, 2), 0) /
+    recentValues.length;
+  const recentStdDev = Math.sqrt(recentVariance);
+
+  return recentStdDev / (recentMean || 1);
+}
+
+/**
+ * Determine trend direction based on slope and data characteristics
+ */
+export function calculateTrendDirection(
+  data: DataPoint[],
+  stabilityThreshold: number = 0.01,
+  minDataPoints: number = 2,
+): "increasing" | "decreasing" | "stable" {
+  if (!data?.length || data.length < minDataPoints) {
+    return "stable";
+  }
+
+  const values = data.map((p) => p.value);
+  const mean = values.reduce((a, b) => a + b, 0) / values.length;
+  const trendSlope = calculateTrendSlope(data);
+
+  if (Math.abs(trendSlope) < stabilityThreshold * mean) {
+    return "stable";
+  } else {
+    return trendSlope > 0 ? "increasing" : "decreasing";
+  }
+}
+
+/**
+ * Comprehensive trend analysis that combines all the above calculations
+ */
+export function analyzeTrendCharacteristics(
+  data: DataPoint[],
+  baseYear?: number,
+): {
+  recentStability: number;
+  hasOutliers: boolean;
+  r2Linear: number;
+  r2Exponential: number;
+  trendDirection: "increasing" | "decreasing" | "stable";
+  trendSlope: number;
+  statistics: {
+    mean: number;
+    variance: number;
+    stdDev: number;
+    min: number;
+    max: number;
+    span: number;
+  };
+} {
+  // Filter data to base year if provided, or use all data if no base year
+  const filteredData = baseYear ? data.filter((d) => d.year >= baseYear) : data;
+
+  if (!filteredData?.length || filteredData.length < 2) {
+    return {
+      recentStability: 0,
+      hasOutliers: false,
+      r2Linear: 0,
+      r2Exponential: 0,
+      trendDirection: "stable",
+      trendSlope: 0,
+      statistics: {
+        mean: 0,
+        variance: 0,
+        stdDev: 0,
+        min: 0,
+        max: 0,
+        span: 0,
+      },
+    };
+  }
+
+  const unusualPointsResult =
+    detectUnusualEmissionsPointsEnhanced(filteredData);
+  return {
+    recentStability: calculateRecentStability(filteredData),
+    hasOutliers: unusualPointsResult.hasUnusualPoints,
+    r2Linear: calculateR2Linear(filteredData),
+    r2Exponential: calculateR2Exponential(filteredData),
+    trendDirection: calculateTrendDirection(filteredData),
+    trendSlope: calculateTrendSlope(filteredData),
+    statistics: calculateBasicStatistics(filteredData),
+  };
+}

@@ -172,3 +172,71 @@ export function calculateTrendSlope(data: DataPoint[]): number {
 
   return (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
 }
+
+/**
+ * Calculates simple coefficients using the last two data points
+ * @param dataPoints Array of data points for analysis
+ * @returns Coefficients object or null if calculation fails
+ */
+export function calculateSimpleCoefficients(
+  dataPoints: DataPoint[],
+): { slope: number; intercept: number } | undefined {
+  if (dataPoints.length < 2) {
+    return undefined;
+  }
+
+  // Sort by year to ensure chronological order
+  const sortedData = [...dataPoints].sort((a, b) => a.year - b.year);
+
+  // Use the last two data points
+  const lastTwo = sortedData.slice(-2);
+  const [point1, point2] = lastTwo;
+
+  // Calculate slope between the last two points
+  const slope = (point2.value - point1.value) / (point2.year - point1.year);
+
+  // Calculate intercept using point1
+  const intercept = point1.value - slope * point1.year;
+
+  return { slope, intercept };
+}
+
+/**
+ * Calculates coefficients for the specified trend line method.
+ * @param dataPoints Array of data points for analysis
+ * @param method The selected trend line method
+ * @returns Coefficients object or null if calculation fails
+ */
+export function calculateCoefficientsForMethod(
+  dataPoints: DataPoint[],
+  method: string,
+): { slope: number; intercept: number } | { a: number; b: number } | undefined {
+  if (dataPoints.length < 2) {
+    return undefined;
+  }
+
+  switch (method) {
+    case "linear":
+      return calculateLinearRegression(dataPoints) || undefined;
+
+    case "weightedLinear":
+      return calculateWeightedLinearRegression(dataPoints) || undefined;
+
+    case "exponential":
+      return fitExponentialRegression(dataPoints) || undefined;
+
+    case "recentExponential":
+      if (dataPoints.length >= 4) {
+        const recentData = dataPoints.slice(-4);
+        return fitExponentialRegression(recentData) || undefined;
+      }
+      return fitExponentialRegression(dataPoints) || undefined;
+
+    case "simple":
+      // For simple method, use the last two points
+      return calculateSimpleCoefficients(dataPoints) || undefined;
+
+    default:
+      return calculateLinearRegression(dataPoints) || undefined;
+  }
+}

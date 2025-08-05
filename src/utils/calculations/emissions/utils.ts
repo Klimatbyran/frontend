@@ -8,35 +8,6 @@
 export const CARBON_LAW_REDUCTION_RATE = 0.1172;
 
 /**
- * Calculate cumulative emissions using trapezoidal integration
- * @param data - Record of year to value mappings
- * @returns Cumulative emissions value
- */
-export function calculateTrapezoidalIntegration(
-  data: Record<number, number>,
-): number {
-  const years = Object.keys(data)
-    .map(Number)
-    .sort((a, b) => a - b);
-
-  if (years.length < 2) return 0;
-
-  let cumulativeEmissions = 0;
-
-  for (let i = 1; i < years.length; i++) {
-    const year1 = years[i - 1];
-    const year2 = years[i];
-    const value1 = data[year1];
-    const value2 = data[year2];
-
-    // Trapezoidal rule: area = (base * (height1 + height2)) / 2
-    cumulativeEmissions += ((year2 - year1) * (value1 + value2)) / 2;
-  }
-
-  return cumulativeEmissions;
-}
-
-/**
  * Generate a range of years from start to end (inclusive)
  * @param startYear - Starting year
  * @param endYear - Ending year
