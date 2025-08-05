@@ -95,8 +95,13 @@ export function TrendAnalysisDashboard() {
     }
   };
 
-  const { methodCounts, avgDataPoints, avgMissingYears, outlierPercentage } =
-    calculateSummaryStats(filteredCompanies);
+  const {
+    methodCounts,
+    avgDataPoints,
+    avgCleanDataPoints,
+    avgMissingYears,
+    outlierPercentage,
+  } = calculateSummaryStats(filteredCompanies);
 
   if (loading) {
     return (
@@ -133,6 +138,7 @@ export function TrendAnalysisDashboard() {
         <TrendAnalysisSummaryCards
           totalCompanies={filteredCompanies.length}
           avgDataPoints={avgDataPoints}
+          avgCleanDataPoints={avgCleanDataPoints}
           avgMissingYears={avgMissingYears}
           outlierPercentage={outlierPercentage}
         />
@@ -181,8 +187,16 @@ export function TrendAnalysisDashboard() {
               <CollapsibleContent className="mt-4 space-y-2">
                 <div className="text-sm text-grey space-y-1">
                   <div>
-                    <strong>Missing years:</strong> Linear regression for
-                    robustness with missing data
+                    <strong>No data or insufficient data:</strong> No trendline
+                    shown when ≤1 data point available
+                  </div>
+                  <div>
+                    <strong>Insufficient data since base year:</strong> No
+                    trendline shown when ≤1 data point since base year
+                  </div>
+                  <div>
+                    <strong>Missing years:</strong> Weighted linear regression
+                    for robustness with missing data
                   </div>
                   <div>
                     <strong>Recent stability:</strong> Weighted linear when last
@@ -228,6 +242,7 @@ export function TrendAnalysisDashboard() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Methods</SelectItem>
+              <SelectItem value="none">No Trendline</SelectItem>
               <SelectItem value="weightedLinear">Weighted Linear</SelectItem>
               <SelectItem value="linear">Linear</SelectItem>
               <SelectItem value="exponential">Exponential</SelectItem>

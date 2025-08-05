@@ -4,6 +4,7 @@ import { Text } from "@/components/ui/text";
 interface TrendAnalysisSummaryCardsProps {
   totalCompanies: number;
   avgDataPoints: number;
+  avgCleanDataPoints: number;
   avgMissingYears: number;
   outlierPercentage: number;
 }
@@ -11,11 +12,12 @@ interface TrendAnalysisSummaryCardsProps {
 export function TrendAnalysisSummaryCards({
   totalCompanies,
   avgDataPoints,
+  avgCleanDataPoints,
   avgMissingYears,
   outlierPercentage,
 }: TrendAnalysisSummaryCardsProps) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
       <Card>
         <CardHeader className="pb-2">
           <CardTitle className="text-sm font-medium">Total Companies</CardTitle>
@@ -31,6 +33,15 @@ export function TrendAnalysisSummaryCards({
         </CardHeader>
         <CardContent>
           <Text variant="h2">{avgDataPoints.toFixed(1)}</Text>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader className="pb-2">
+          <CardTitle className="text-sm font-medium">Avg Clean Data</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Text variant="h2">{avgCleanDataPoints.toFixed(1)}</Text>
         </CardContent>
       </Card>
 

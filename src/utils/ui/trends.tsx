@@ -11,6 +11,7 @@ export const getMethodColor = (method: string) => {
     weightedExponential: "bg-orange-4 text-white",
     recentExponential: "bg-blue-2 text-black",
     simple: "bg-grey text-white",
+    none: "bg-gray-400 text-white",
   };
   return colorMap[method] || "bg-grey text-white";
 };

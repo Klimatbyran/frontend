@@ -156,3 +156,35 @@ export function calculateParisValue(
     currentYearValue * Math.pow(1 - reductionRate, year - currentYear);
   return calculatedValue > 0 ? calculatedValue : null;
 }
+
+/**
+ * Get regression points based on base year logic.
+ * When baseYear is provided and different from the latest year, uses all data from baseYear onward.
+ * Otherwise, uses the last two data points for regression.
+ *
+ * @param data - Array of data points with year and total values
+ * @param baseYear - Optional base year for trend calculations
+ * @returns Array of DataPoint objects for regression analysis
+ */
+export function getRegressionPoints(
+  data: { year: number; total: number | null | undefined }[],
+  baseYear?: number,
+): { year: number; value: number }[] {
+  if (!Array.isArray(data)) {
+    return [];
+  }
+
+  const validData = getValidData(data);
+  if (validData.length === 0) {
+    return [];
+  }
+
+  if (baseYear && baseYear !== Math.max(...validData.map((d) => d.year))) {
+    return validData
+      .filter((d) => d.year >= baseYear)
+      .map((d) => ({ year: d.year, value: d.total }));
+  } else {
+    const sorted = validData.sort((a, b) => a.year - b.year);
+    return sorted.slice(-2).map((d) => ({ year: d.year, value: d.total }));
+  }
+}

@@ -1281,16 +1281,15 @@
     "selectItemPrompt": "Select a topic you want to learn more about"
   },
   "trendAnalysis": {
-    "insufficientData": "Trendline Explanation: Simple average slope is used because there are only {{dataPoints}} data points. More complex methods are unreliable with so little data.",
-    "insufficientDataWithBaseYear": "Trendline Explanation: Simple average slope is used because there are only {{dataPoints}} data points since base year {{baseYear}}. More complex methods are unreliable with so little data.",
-    "simpleMethodInsufficientData": "Trendline Explanation: Simple average slope is used because there are only {{dataPoints}} data points since the base year. More complex methods are unreliable with so little data.",
-    "anchoredMethodMissingYears": "Trendline Explanation: Last-point anchored linear regression is used because there are {{missingYears}} missing years in the data. This method provides a smooth projection from the last actual data point while being robust to missing data.",
-    "weightedLinearMethodStable": "Trendline Explanation: Weighted linear regression is used because the last 4 years are very stable (std dev < 10% of mean). This method gives more weight to recent stable data, which can help reduce the impact of older data or unusual points.",
-    "weightedLinearMethodUnusualPoints": "Trendline Explanation: Weighted linear regression is used because unusual year-over-year changes were detected (exceeding 4x the median change). This method gives more weight to recent data points, which can help reduce the impact of older unusual points.",
-    "weightedExponentialMethodHighVariance": "Trendline Explanation: Weighted exponential regression is used because the exponential fit (R²={{r2Exp}}) is significantly better than linear (R²={{r2Lin}}), and the data has unusual points or high variance. This method gives more weight to recent data points while fitting an exponential trend.",
-    "exponentialMethodBetterFit": "Trendline Explanation: Exponential regression is used because the exponential fit (R²={{r2Exp}}) is significantly better than linear (R²={{r2Lin}}). This suggests a non-linear trend.",
-    "weightedLinearMethodHighVariance": "Trendline Explanation: Weighted linear regression is used because the data has high variance (std dev > 20% of mean). This method gives more weight to recent data points, which can help provide a more stable trend.",
-    "recentExponentialMethodStrongPattern": "Trendline Explanation: Recent exponential regression is used because the last 4 years show a strong exponential pattern (R²={{r2Exp}}) that is significantly better than linear (R²={{r2Lin}}). This focuses on the recent exponential trend.",
-    "linearMethodDefault": "Trendline Explanation: Linear regression is used as the default because the data is sufficiently complete and does not show strong non-linear or outlier behavior."
+    "insufficientData": "No trendline shown due to insufficient data ({{dataPoints}} points). Need at least 2 data points to build reliable trend.",
+    "insufficientDataWithBaseYear": "Simple trend calculation used due to limited data since {{baseYear}} ({{dataPoints}} points). More data needed for reliable trend analysis.",
+    "insufficientDataSinceBaseYear": "No trendline shown due to insufficient data since base year {{baseYear}} ({{dataPoints}} usable points). Need at least 2 data points since base year to build reliable trend.",
+    "simpleMethodInsufficientData": "Simple trend calculation used due to limited data since base year ({{dataPoints}} points). More data needed for reliable trend analysis.",
+    "simpleMethodPoorDataQuality": "Simple trend calculation used due to data quality issues ({{issues}}). Only {{cleanDataPoints}} reliable data points from {{originalDataPoints}} total. This trend may not be very reliable.",
+    "linearMethodMultipleIssues": "Linear trend used despite data quality issues ({{issues}}). Based on {{cleanDataPoints}} reliable data points from {{originalDataPoints}} total. Interpret with caution.",
+    "weightedLinearMethodStable": "Weighted linear trend used because recent years show stable emissions (variation < 10% of average). Emphasizes recent stable data for current trend representation.",
+    "exponentialMethodBetterFit": "Exponential trend used because it fits the data significantly better than linear trend. Suggests emissions are changing at accelerating or decelerating rate.",
+    "recentExponentialMethodStrongPattern": "Recent exponential trend used because last 4 years show strong exponential pattern that is significantly better than linear. Focuses on most recent trend pattern.",
+    "linearMethodDefault": "Linear trend used as default because data is sufficiently complete and shows consistent pattern without strong non-linear behavior or significant outliers."
   }
 }

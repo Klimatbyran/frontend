@@ -24,10 +24,7 @@ export type {
 } from "./types";
 
 // Export coefficient functions
-export {
-  calculateTrendCoefficients,
-  calculateAnchoredTrendCoefficients,
-} from "./coefficients";
+export { calculateTrendCoefficients } from "./coefficients";
 
 // Export historical functions
 export { calculateApproximatedHistorical } from "./historical";

@@ -6,13 +6,13 @@
  */
 
 import { ChartData } from "@/types/emissions";
-import { DataPoint } from "@/lib/calculations/trends/types";
 import { fitExponentialRegression } from "@/lib/calculations/trends/regression";
 import {
   getValidData,
   getCurrentYear,
   generateYearRange,
   calculateParisValue,
+  getRegressionPoints,
 } from "./utils";
 import {
   validateInputData,
@@ -99,34 +99,6 @@ function createExponentialDataPoint(
     scope3Categories: actualData?.scope3Categories,
     originalValues: actualData?.originalValues,
   };
-}
-
-/**
- * Get regression points based on base year logic.
- * When baseYear is provided and different from the latest year, uses all data from baseYear onward.
- * Otherwise, uses the last two data points for regression.
- */
-function getRegressionPoints(
-  data: { year: number; total: number | null | undefined }[],
-  baseYear?: number,
-): DataPoint[] {
-  if (!Array.isArray(data)) {
-    return [];
-  }
-
-  const validData = getValidData(data);
-  if (validData.length === 0) {
-    return [];
-  }
-
-  if (baseYear && baseYear !== Math.max(...validData.map((d) => d.year))) {
-    return validData
-      .filter((d) => d.year >= baseYear)
-      .map((d) => ({ year: d.year, value: d.total }));
-  } else {
-    const sorted = validData.sort((a, b) => a.year - b.year);
-    return sorted.slice(-2).map((d) => ({ year: d.year, value: d.total }));
-  }
 }
 
 /**

@@ -13,12 +13,11 @@ import {
   validateBaseYear,
   withErrorHandling,
 } from "@/utils/validation";
-import { calculateAnchoredTrendCoefficients } from "./coefficients";
-import type { ApproximatedHistoricalResult } from "./types";
+import type { ApproximatedHistoricalResult, TrendCoefficients } from "./types";
 
 /**
  * Generates approximated historical data based on the last reported year and a current year.
- * This function uses anchored trend coefficients to avoid visual "humps" in the data.
+ * This function uses provided trend coefficients for consistent trend calculations.
  * @returns ApproximatedHistoricalResult object or null if data is invalid
  * @throws {Error} When data is invalid or parameters are invalid
  */
@@ -26,6 +25,7 @@ export const calculateApproximatedHistorical = (
   data: ChartData[],
   lastYearWithData: number,
   currentYear: number,
+  trendCoefficients: TrendCoefficients,
   baseYear?: number,
 ): ApproximatedHistoricalResult | null => {
   return withErrorHandling(() => {
@@ -42,11 +42,7 @@ export const calculateApproximatedHistorical = (
       return null;
     }
 
-    // Calculate trend coefficients using anchored method
-    const trendCoefficients = calculateAnchoredTrendCoefficients(
-      filteredData,
-      baseYear,
-    );
+    // Use provided trend coefficients
     if (!trendCoefficients) {
       return null;
     }

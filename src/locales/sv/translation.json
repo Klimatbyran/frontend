@@ -1281,16 +1281,15 @@
     "selectItemPrompt": "Välj ett ämne du vill veta mer om"
   },
   "trendAnalysis": {
-    "insufficientData": "Trendlinjeförklaring: Enkel genomsnittlig lutning används eftersom det endast finns {{dataPoints}} datapunkter. Mer komplexa metoder är opålitliga med så lite data.",
-    "insufficientDataWithBaseYear": "Trendlinjeförklaring: Enkel genomsnittlig lutning används eftersom det endast finns {{dataPoints}} datapunkter sedan basår {{baseYear}}. Mer komplexa metoder är opålitliga med så lite data.",
-    "simpleMethodInsufficientData": "Trendlinjeförklaring: Enkel genomsnittlig lutning används eftersom det endast finns {{dataPoints}} datapunkter sedan basåret. Mer komplexa metoder är opålitliga med så lite data.",
-    "anchoredMethodMissingYears": "Trendlinjeförklaring: Linjär regression med ankare vid sista punkten används eftersom det finns {{missingYears}} saknade år i data. Denna metod ger en smidig projektion från den senaste faktiska datapunkten samtidigt som den är robust mot saknad data.",
-    "weightedLinearMethodStable": "Trendlinjeförklaring: Viktad linjär regression används eftersom de senaste 4 åren är mycket stabila (standardavvikelse < 10% av medelvärdet). Denna metod ger större vikt åt senaste stabila data, vilket kan hjälpa till att minska påverkan från äldre data eller ovanliga punkter.",
-    "weightedLinearMethodUnusualPoints": "Trendlinjeförklaring: Viktad linjär regression används eftersom ovanliga år-för-år-förändringar upptäcktes (överstiger 4x medianförändringen). Denna metod ger större vikt åt senaste datapunkter, vilket kan hjälpa till att minska påverkan från äldre ovanliga punkter.",
-    "weightedExponentialMethodHighVariance": "Trendlinjeförklaring: Viktad exponentiell regression används eftersom den exponentiella anpassningen (R²={{r2Exp}}) är betydligt bättre än linjär (R²={{r2Lin}}), och data har ovanliga punkter eller hög varians. Denna metod ger större vikt åt senaste datapunkter samtidigt som den anpassar en exponentiell trend.",
-    "exponentialMethodBetterFit": "Trendlinjeförklaring: Exponentiell regression används eftersom den exponentiella anpassningen (R²={{r2Exp}}) är betydligt bättre än linjär (R²={{r2Lin}}). Detta tyder på en icke-linjär trend.",
-    "weightedLinearMethodHighVariance": "Trendlinjeförklaring: Viktad linjär regression används eftersom data har hög varians (standardavvikelse > 20% av medelvärdet). Denna metod ger större vikt åt senaste datapunkter, vilket kan hjälpa till att ge en mer stabil trend.",
-    "recentExponentialMethodStrongPattern": "Trendlinjeförklaring: Senaste exponentiella regression används eftersom de senaste 4 åren visar ett starkt exponentiellt mönster (R²={{r2Exp}}) som är betydligt bättre än linjärt (R²={{r2Lin}}). Detta fokuserar på den senaste exponentiella trenden.",
-    "linearMethodDefault": "Trendlinjeförklaring: Linjär regression används som standard eftersom data är tillräckligt komplett och inte visar starkt icke-linjärt eller avvikande beteende."
+    "insufficientData": "Ingen trendlinje visas på grund av otillräcklig data ({{dataPoints}} punkter). Behöver minst 2 datapunkter för att bygga tillförlitlig trend.",
+    "insufficientDataWithBaseYear": "Enkel trendberäkning används på grund av begränsad data sedan {{baseYear}} ({{dataPoints}} punkter). Mer data behövs för tillförlitlig trendanalys.",
+    "insufficientDataSinceBaseYear": "Ingen trendlinje visas på grund av otillräcklig data sedan basåret {{baseYear}} ({{dataPoints}} användbara punkter). Behöver minst 2 datapunkter sedan basåret för att bygga tillförlitlig trend.",
+    "simpleMethodInsufficientData": "Enkel trendberäkning används på grund av begränsad data sedan basåret ({{dataPoints}} punkter). Mer data behövs för tillförlitlig trendanalys.",
+    "simpleMethodPoorDataQuality": "Enkel trendberäkning används på grund av datakvalitetsproblem ({{issues}}). Endast {{cleanDataPoints}} tillförlitliga datapunkter från {{originalDataPoints}} totalt. Denna trend kanske inte är särskilt tillförlitlig.",
+    "linearMethodMultipleIssues": "Linjär trend används trots datakvalitetsproblem ({{issues}}). Baserat på {{cleanDataPoints}} tillförlitliga datapunkter från {{originalDataPoints}} totalt. Tolka med försiktighet.",
+    "weightedLinearMethodStable": "Viktad linjär trend används eftersom senaste åren visar stabila utsläpp (variation < 10% av genomsnittet). Betonar senaste stabila data för nuvarande trendrepresentation.",
+    "exponentialMethodBetterFit": "Exponentiell trend används eftersom den passar data betydligt bättre än linjär trend. Tyder på att utsläppen förändras i accelererande eller decelererande takt.",
+    "recentExponentialMethodStrongPattern": "Senaste exponentiella trend används eftersom de senaste 4 åren visar starkt exponentiellt mönster som är betydligt bättre än linjärt. Fokuserar på senaste trendmönstret.",
+    "linearMethodDefault": "Linjär trend används som standard eftersom data är tillräckligt komplett och visar konsekvent mönster utan starkt icke-linjärt beteende eller betydande avvikare."
   }
 }

@@ -14,11 +14,11 @@ import {
   validateEndYear,
   withErrorHandling,
 } from "@/utils/validation";
-import { calculateAnchoredTrendCoefficients } from "./coefficients";
-import type { FutureTrendResult } from "./types";
+import type { FutureTrendResult, TrendCoefficients } from "./types";
 
 /**
  * Generates future trend data from current year to end year.
+ * This function uses provided trend coefficients for consistent trend calculations.
  * @returns FutureTrendResult object or null if data is invalid
  * @throws {Error} When data is invalid or parameters are invalid
  */
@@ -26,6 +26,7 @@ export const calculateFutureTrend = (
   data: ChartData[],
   lastYearWithData: number,
   currentYear: number,
+  trendCoefficients: TrendCoefficients,
   endYear: number = 2050,
   baseYear?: number,
 ): FutureTrendResult | null => {
@@ -44,11 +45,7 @@ export const calculateFutureTrend = (
       return null;
     }
 
-    // Calculate trend coefficients using anchored method
-    const trendCoefficients = calculateAnchoredTrendCoefficients(
-      data,
-      baseYear,
-    );
+    // Use provided trend coefficients
     if (!trendCoefficients) {
       return null;
     }

@@ -12,6 +12,7 @@ import ChartHeader from "./ChartHeader";
 import EmissionsLineChart from "./EmissionsLineChart";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
+import { selectBestTrendLineMethod } from "@/lib/calculations/trends/analysis";
 
 export function EmissionsHistory({
   reportingPeriods,
@@ -65,6 +66,19 @@ export function EmissionsHistory({
       ),
     [processedPeriods, isAIGenerated, isEmissionsAIGenerated],
   );
+
+  // Calculate trend analysis for unified coefficients
+  const trendAnalysis = useMemo(() => {
+    if (dataView !== "overview") return null;
+
+    const emissionsData = chartData
+      .filter((d) => d.total !== undefined && d.total !== null)
+      .map((d) => ({ year: d.year, total: d.total as number }));
+
+    if (emissionsData.length < 2) return null;
+
+    return selectBestTrendLineMethod(emissionsData, companyBaseYear);
+  }, [chartData, dataView, companyBaseYear]);
 
   const handleClick = (data: {
     activePayload?: Array<{ payload: { year: number; total: number } }>;
@@ -154,6 +168,7 @@ export function EmissionsHistory({
               exploreMode={exploreMode}
               setExploreMode={setExploreMode}
               setMethodExplanation={setMethodExplanation}
+              trendAnalysis={trendAnalysis}
             />
           </div>
           <HiddenItemsBadges
@@ -196,6 +211,7 @@ export function EmissionsHistory({
             exploreMode={exploreMode}
             setExploreMode={setExploreMode}
             setMethodExplanation={setMethodExplanation}
+            trendAnalysis={trendAnalysis}
           />
         </div>
       )}

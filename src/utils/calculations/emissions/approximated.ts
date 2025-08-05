@@ -174,6 +174,7 @@ export const generateSophisticatedApproximatedData = (
       data,
       lastYearWithData,
       currentYear,
+      trendCoefficients,
       baseYear,
     );
 
@@ -182,6 +183,7 @@ export const generateSophisticatedApproximatedData = (
       data,
       lastYearWithData,
       currentYear,
+      trendCoefficients,
       endYear,
       baseYear,
     );

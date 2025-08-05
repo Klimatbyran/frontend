@@ -52,7 +52,9 @@ export const calculateWeightedLinearRegression = (data: DataPoint[]) => {
  */
 export function fitExponentialRegression(data: DataPoint[]) {
   const filtered = data.filter((d) => d.value > 0);
-  if (filtered.length < 2) return null;
+  if (filtered.length < 2) {
+    return null;
+  }
   const n = filtered.length;
   let sumX = 0,
     sumY = 0,
@@ -67,7 +69,19 @@ export function fitExponentialRegression(data: DataPoint[]) {
   }
   const b = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
   const a = Math.exp((sumY - b * sumX) / n);
-  return { a, b };
+
+  // Check for invalid values
+  if (isNaN(a) || isNaN(b) || !isFinite(a) || !isFinite(b)) {
+    return null;
+  }
+
+  // If 'a' is very small, use a minimum value to prevent the exponential function from being essentially 0
+  let adjustedA = a;
+  if (Math.abs(a) < 1e-10) {
+    adjustedA = 0.1; // Use a minimum value to ensure the exponential function produces visible results
+  }
+
+  return { a: adjustedA, b };
 }
 
 /**
@@ -118,8 +132,8 @@ export function calculateRecentExponentialRegression(
  * Simple linear regression
  * Returns slope and intercept for y = mx + b
  *
- * This function uses year - minYear for x-values, so intercept is at the first year in the data.
- * Formula: y = slope * (year - minYear) + intercept
+ * Uses year - minYear for numerical stability, then converts back to actual year coefficients.
+ * Returns coefficients for the formula: y = slope * year + intercept
  */
 export function calculateLinearRegression(
   data: DataPoint[],
@@ -136,7 +150,10 @@ export function calculateLinearRegression(
   const sumX2 = points.reduce((a, p) => a + p.x * p.x, 0);
 
   const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
-  const intercept = (sumY - slope * sumX) / n;
+  const interceptOffset = (sumY - slope * sumX) / n;
+
+  // Convert back to actual year coefficients
+  const intercept = interceptOffset - slope * minYear;
 
   return { slope, intercept };
 }

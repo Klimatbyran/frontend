@@ -6,7 +6,37 @@ import {
 } from "@radix-ui/react-icons";
 
 import { cn } from "@/lib/utils";
-import { ButtonProps, buttonVariants } from "@/components/ui/button";
+import { ButtonProps } from "@/components/ui/button";
+
+// Define buttonVariants locally since it's not exported from button component
+const buttonVariants = (props: {
+  variant?: string;
+  size?: string | null;
+  className?: string;
+}) => {
+  const baseClasses =
+    "inline-flex items-center justify-center rounded-full text-sm font-light transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white disabled:pointer-events-none";
+
+  const variantClasses = {
+    outline:
+      "border border-white bg-transparent hover:opacity-80 active:ring-1 active:ring-white disabled:opacity-50",
+    ghost:
+      "bg-transparent hover:bg-white/10 active:ring-1 active:ring-white disabled:opacity-50",
+  };
+
+  const sizeClasses = {
+    default: "h-10 px-6 py-2",
+    icon: "h-10 w-10",
+  };
+
+  return cn(
+    baseClasses,
+    variantClasses[props.variant as keyof typeof variantClasses] ||
+      "bg-black-2 text-white hover:opacity-80 active:ring-1 active:ring-white disabled:opacity-50",
+    sizeClasses[(props.size || "default") as keyof typeof sizeClasses] || "h-10 px-6 py-2",
+    props.className,
+  );
+};
 
 const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
   <nav

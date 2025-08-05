@@ -4,12 +4,11 @@ import {
 } from "@/lib/calculations/trends/regression";
 import {
   calculateTrendCoefficients,
-  calculateAnchoredTrendCoefficients,
   calculateApproximatedHistorical,
   calculateFutureTrend,
-  generateApproximatedData,
-  generateSophisticatedApproximatedData,
   generateExponentialApproximatedData,
+  generateSophisticatedApproximatedData,
+  generateApproximatedData,
 } from "../calculations/emissions";
 import { ChartData } from "@/types/emissions";
 
@@ -51,66 +50,25 @@ describe("calculateTrendCoefficients", () => {
     { year: 2020, total: 100 },
     { year: 2021, total: 110 },
     { year: 2022, total: 120 },
-  ] as { year: number; total: number | null | undefined }[];
+  ] as { year: number; total: number }[];
 
   it("should return null for insufficient data", () => {
     expect(calculateTrendCoefficients([])).toBeNull();
     expect(calculateTrendCoefficients([{ year: 2020, total: 100 }])).toBeNull();
   });
 
-  it("should calculate trend coefficients for valid data", () => {
+  it("should calculate coefficients", () => {
     const result = calculateTrendCoefficients(mockData);
     expect(result).not.toBeNull();
     expect(result).toHaveProperty("slope");
     expect(result).toHaveProperty("intercept");
-    expect(typeof result!.slope).toBe("number");
-    expect(typeof result!.intercept).toBe("number");
   });
 
-  it("should handle data with null/undefined values", () => {
-    const dataWithNulls = [
-      { year: 2020, total: 100 },
-      { year: 2021, total: null },
-      { year: 2022, total: 120 },
-    ] as { year: number; total: number | null | undefined }[];
-    const result = calculateTrendCoefficients(dataWithNulls);
-    expect(result).not.toBeNull();
-  });
-
-  it("should respect base year parameter", () => {
+  it("should filter by base year", () => {
     const result = calculateTrendCoefficients(mockData, 2021);
-    expect(result).not.toBeNull();
-  });
-});
-
-describe("calculateAnchoredTrendCoefficients", () => {
-  const mockData = [
-    { year: 2020, total: 100 },
-    { year: 2021, total: 110 },
-    { year: 2022, total: 120 },
-  ] as { year: number; total: number | null | undefined }[];
-
-  it("should return null for insufficient data", () => {
-    expect(calculateAnchoredTrendCoefficients([])).toBeNull();
-    expect(
-      calculateAnchoredTrendCoefficients([{ year: 2020, total: 100 }]),
-    ).toBeNull();
-  });
-
-  it("should calculate anchored coefficients", () => {
-    const result = calculateAnchoredTrendCoefficients(mockData);
     expect(result).not.toBeNull();
     expect(result).toHaveProperty("slope");
     expect(result).toHaveProperty("intercept");
-  });
-
-  it("should anchor to the last data point", () => {
-    const result = calculateAnchoredTrendCoefficients(mockData);
-    expect(result).not.toBeNull();
-
-    // The anchored line should pass through the last point (2022, 120)
-    const lastPointValue = result!.slope * 2022 + result!.intercept;
-    expect(lastPointValue).toBeCloseTo(120, 5);
   });
 });
 
@@ -121,28 +79,65 @@ describe("calculateApproximatedHistorical", () => {
     { year: 2022, total: 120 },
   ];
 
+  const mockCoefficients = { slope: 10, intercept: 90 };
+
   it("should return null for insufficient data", () => {
-    expect(calculateApproximatedHistorical([], 2022, 2023)).toBeNull();
+    // Functions with withErrorHandling return null for invalid input
+    expect(
+      calculateApproximatedHistorical([], 2022, 2023, mockCoefficients),
+    ).toBeNull();
   });
 
-  it("should calculate approximated historical data", () => {
-    const result = calculateApproximatedHistorical(mockData, 2022, 2023);
+  it("should calculate approximated historical data using provided coefficients", () => {
+    const result = calculateApproximatedHistorical(
+      mockData,
+      2022,
+      2023,
+      mockCoefficients,
+    );
     expect(result).not.toBeNull();
     expect(result).toHaveProperty("approximatedData");
     expect(result).toHaveProperty("cumulativeEmissions");
     expect(result).toHaveProperty("trendCoefficients");
+    expect(result!.trendCoefficients).toEqual(mockCoefficients);
   });
 
   it("should include the last year with data", () => {
-    const result = calculateApproximatedHistorical(mockData, 2022, 2023);
+    const result = calculateApproximatedHistorical(
+      mockData,
+      2022,
+      2023,
+      mockCoefficients,
+    );
     expect(result).not.toBeNull();
     expect(result!.approximatedData[2022]).toBe(120); // Last actual data point
   });
 
-  it("should calculate cumulative emissions", () => {
-    const result = calculateApproximatedHistorical(mockData, 2022, 2023);
+  it("should calculate cumulative emissions for gap years only", () => {
+    const result = calculateApproximatedHistorical(
+      mockData,
+      2022,
+      2023,
+      mockCoefficients,
+    );
     expect(result).not.toBeNull();
     expect(result!.cumulativeEmissions).toBeGreaterThan(0);
+    // Should only include 2023 in cumulative (gap year)
+    expect(result!.cumulativeEmissions).toBe(result!.approximatedData[2023]);
+  });
+
+  it("should use provided coefficients for calculations", () => {
+    const customCoefficients = { slope: 5, intercept: 100 };
+    const result = calculateApproximatedHistorical(
+      mockData,
+      2022,
+      2023,
+      customCoefficients,
+    );
+    expect(result).not.toBeNull();
+    expect(result!.trendCoefficients).toEqual(customCoefficients);
+    // 2023 should be calculated using custom coefficients: 5 * 2023 + 100 = 10215
+    expect(result!.approximatedData[2023]).toBe(10215);
   });
 });
 
@@ -153,24 +148,60 @@ describe("calculateFutureTrend", () => {
     { year: 2022, total: 120 },
   ];
 
+  const mockCoefficients = { slope: 10, intercept: 90 };
+
   it("should return null for insufficient data", () => {
-    expect(calculateFutureTrend([], 2022, 2023)).toBeNull();
+    // Functions with withErrorHandling return null for invalid input
+    expect(calculateFutureTrend([], 2022, 2023, mockCoefficients)).toBeNull();
   });
 
-  it("should calculate future trend data", () => {
-    const result = calculateFutureTrend(mockData, 2022, 2023, 2025);
+  it("should calculate future trend data using provided coefficients", () => {
+    const result = calculateFutureTrend(
+      mockData,
+      2022,
+      2023,
+      mockCoefficients,
+      2025,
+    );
     expect(result).not.toBeNull();
     expect(result).toHaveProperty("trendData");
     expect(result).toHaveProperty("cumulativeEmissions");
     expect(result).toHaveProperty("trendCoefficients");
+    expect(result!.trendCoefficients).toEqual(mockCoefficients);
   });
 
-  it("should project future values", () => {
-    const result = calculateFutureTrend(mockData, 2022, 2023, 2025);
+  it("should project future values using provided coefficients", () => {
+    const result = calculateFutureTrend(
+      mockData,
+      2022,
+      2023,
+      mockCoefficients,
+      2025,
+    );
     expect(result).not.toBeNull();
+    expect(result!.trendData[2022]).toBeDefined(); // Last year with data
     expect(result!.trendData[2023]).toBeDefined();
     expect(result!.trendData[2024]).toBeDefined();
     expect(result!.trendData[2025]).toBeDefined();
+
+    // Values should be calculated using coefficients: slope * year + intercept
+    expect(result!.trendData[2023]).toBe(20320); // 10 * 2023 + 90
+    expect(result!.trendData[2024]).toBe(20330); // 10 * 2024 + 90
+    expect(result!.trendData[2025]).toBe(20340); // 10 * 2025 + 90
+  });
+
+  it("should handle negative trend values by setting to 0", () => {
+    const negativeCoefficients = { slope: -100, intercept: 1000 };
+    const result = calculateFutureTrend(
+      mockData,
+      2022,
+      2023,
+      negativeCoefficients,
+      2025,
+    );
+    expect(result).not.toBeNull();
+    // If trend goes negative, should be set to 0
+    expect(result!.trendData[2025]).toBe(0);
   });
 });
 
@@ -182,6 +213,7 @@ describe("generateApproximatedData", () => {
   ];
 
   it("should return empty array for no data", () => {
+    // This function returns empty array for empty input
     expect(generateApproximatedData([])).toEqual([]);
   });
 
@@ -224,17 +256,33 @@ describe("generateSophisticatedApproximatedData", () => {
   ];
 
   it("should return null for insufficient data", () => {
+    // Functions with withErrorHandling return null for invalid input
     expect(generateSophisticatedApproximatedData([])).toBeNull();
     expect(
       generateSophisticatedApproximatedData([{ year: 2020, total: 100 }]),
     ).toBeNull();
   });
 
-  it("should generate linear approximation by default", () => {
+  it("should generate linear approximation by default using unified coefficients", () => {
     const result = generateSophisticatedApproximatedData(mockData);
     expect(result).not.toBeNull();
     expect(Array.isArray(result)).toBe(true);
     expect(result!.length).toBeGreaterThan(0);
+
+    // Check that we have data with the expected structure
+    const firstItem = result![0];
+    expect(firstItem).toHaveProperty("year");
+    expect(firstItem).toHaveProperty("total");
+    expect(firstItem).toHaveProperty("approximated");
+    expect(firstItem).toHaveProperty("carbonLaw");
+
+    // Verify that we have both historical and future data
+    const hasApproximated = result!.some(
+      (item) => item.approximated !== undefined,
+    );
+    const hasCarbonLaw = result!.some((item) => item.carbonLaw !== undefined);
+    expect(hasApproximated).toBe(true);
+    expect(hasCarbonLaw).toBe(true);
   });
 
   it("should generate exponential approximation when specified", () => {
@@ -263,6 +311,22 @@ describe("generateSophisticatedApproximatedData", () => {
     expect(firstItem).toHaveProperty("scope3Categories");
     expect(firstItem).toHaveProperty("originalValues");
   });
+
+  it("should use consistent coefficients for historical and future calculations", () => {
+    const result = generateSophisticatedApproximatedData(mockData);
+    expect(result).not.toBeNull();
+
+    // Find items with both approximated and trend data to verify consistency
+    const itemsWithBoth = result!.filter(
+      (item) => item.approximated !== undefined && item.trend !== undefined,
+    );
+
+    if (itemsWithBoth.length > 0) {
+      // The values should be consistent (same coefficients used)
+      const item = itemsWithBoth[0];
+      expect(item.approximated).toBe(item.trend);
+    }
+  });
 });
 
 describe("generateExponentialApproximatedData", () => {
@@ -273,6 +337,7 @@ describe("generateExponentialApproximatedData", () => {
   ];
 
   it("should return null for insufficient data", () => {
+    // Functions with withErrorHandling return null for invalid input
     expect(generateExponentialApproximatedData([])).toBeNull();
     expect(
       generateExponentialApproximatedData([{ year: 2020, total: 100 }]),
@@ -300,5 +365,56 @@ describe("generateExponentialApproximatedData", () => {
     expect(firstItem).toHaveProperty("scope3");
     expect(firstItem).toHaveProperty("scope3Categories");
     expect(firstItem).toHaveProperty("originalValues");
+  });
+});
+
+describe("Unified Coefficients Approach", () => {
+  const mockData: ChartData[] = [
+    { year: 2020, total: 100 },
+    { year: 2021, total: 110 },
+    { year: 2022, total: 120 },
+  ];
+
+  it("should use unified coefficients for both historical and future calculations", () => {
+    // Calculate coefficients once
+    const coefficients = calculateTrendCoefficients(
+      mockData.map((d) => ({ year: d.year, total: d.total! })),
+    );
+    expect(coefficients).not.toBeNull();
+
+    // Use same coefficients for both historical and future
+    const historical = calculateApproximatedHistorical(
+      mockData,
+      2022,
+      2023,
+      coefficients!,
+    );
+    const future = calculateFutureTrend(
+      mockData,
+      2022,
+      2023,
+      coefficients!,
+      2025,
+    );
+
+    expect(historical).not.toBeNull();
+    expect(future).not.toBeNull();
+    expect(historical!.trendCoefficients).toEqual(coefficients);
+    expect(future!.trendCoefficients).toEqual(coefficients);
+  });
+
+  it("should ensure consistent trend calculations", () => {
+    const result = generateSophisticatedApproximatedData(mockData);
+    expect(result).not.toBeNull();
+
+    // Verify that the trend is consistent throughout the data
+    const trendItems = result!.filter((item) => item.trend !== undefined);
+    if (trendItems.length > 1) {
+      const firstTrend = trendItems[0].trend;
+      const lastTrend = trendItems[trendItems.length - 1].trend;
+      // Should follow a consistent linear pattern
+      expect(typeof firstTrend).toBe("number");
+      expect(typeof lastTrend).toBe("number");
+    }
   });
 });

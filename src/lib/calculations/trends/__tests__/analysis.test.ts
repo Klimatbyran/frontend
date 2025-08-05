@@ -1,5 +1,7 @@
-import { calculateRecentStability } from "../analysis";
-import { detectUnusualEmissionsPoints } from "../detection";
+import {
+  calculateRecentStability,
+  detectUnusualEmissionsPointsEnhanced,
+} from "../analysis";
 import { calculateTrendSlope, calculateLinearRegression } from "../regression";
 import {
   calculateR2Linear,
@@ -189,7 +191,7 @@ describe("Trend Analysis Functions", () => {
         { year: 2023, value: 110 },
       ];
 
-      const result = detectUnusualEmissionsPoints(data);
+      const result = detectUnusualEmissionsPointsEnhanced(data);
       expect(result.hasUnusualPoints).toBe(true);
       expect(result.details).toBeDefined();
       expect(result.details?.length).toBeGreaterThan(0);
@@ -203,7 +205,7 @@ describe("Trend Analysis Functions", () => {
         { year: 2023, value: 115 },
       ];
 
-      const result = detectUnusualEmissionsPoints(data);
+      const result = detectUnusualEmissionsPointsEnhanced(data);
       expect(result.hasUnusualPoints).toBe(false);
     });
 
@@ -213,7 +215,7 @@ describe("Trend Analysis Functions", () => {
         { year: 2021, value: 105 },
       ];
 
-      const result = detectUnusualEmissionsPoints(data);
+      const result = detectUnusualEmissionsPointsEnhanced(data);
       expect(result.hasUnusualPoints).toBe(false);
     });
   });
