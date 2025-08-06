@@ -17,8 +17,26 @@ export const blogMetadata: ContentMeta[] = [
     readTime: "2 min",
     category: CategoryEnum.Analysis,
     image: "/images/blogImages/only-radical-futures.jpg",
-    displayLanguages: ["en", "all"],
+    displayLanguages: ["en"],
     language: "English",
+    author: {
+      name: "Frida Berry Eklund",
+      avatar: "/people/frida.jpg",
+    },
+    relatedPosts: ["carbon-law-from-2025", "2024-report"],
+  },
+  {
+    id: "sv-only-radical-futures-left",
+    title:
+      "Bara radikala framtidsutsikter kvar",
+    excerpt:
+      "Det finns bara radikala framtidsutsikter kvar – därför måste vi minska utsläppen med 12 procent per år",
+    date: "2025-07-09",
+    readTime: "2 min",
+    category: CategoryEnum.Analysis,
+    image: "/images/blogImages/only-radical-futures.jpg",
+    displayLanguages: ["sv"],
+    language: "Svenska",
     author: {
       name: "Frida Berry Eklund",
       avatar: "/people/frida.jpg",
@@ -46,9 +64,9 @@ export const blogMetadata: ContentMeta[] = [
   {
     id: "sv-carbon-law-from-2025",
     title:
-      "Frågor och svar: Klimatkollens justerade koldioxidlag emissionsminskningspåverkan",
+      "Q&A Klimatkollens justerade utsläppsbana för Carbon Law",
     excerpt:
-      "Svar på frågor om Klimatkollens vitbok, Tillämpa koldioxidlag från 2025; metoden som används för att visualisera hur företagens utsläpp jämförs med Parisavtalet på Klimatkollen.se.",
+      "Frågor och svar om Klimatkollens rapport Applying Carbon Law from 2025 och metoden vi använder för att visualisera företagens utsläpp jämfört med Parisavtalet.",
     date: "2025-06-23",
     readTime: "7 min",
     category: CategoryEnum.Methodology,

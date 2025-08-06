@@ -472,12 +472,10 @@ export default function EmissionsLineChart({
 
                             let percentageChange = 0;
 
-                            // Handle the "none" method (no trendline shown)
                             if (trendAnalysis?.method === "none") {
                               return undefined;
                             }
 
-                            // Use the trendAnalysis coefficients instead of recalculating
                             if (trendAnalysis?.coefficients) {
                               if (
                                 "slope" in trendAnalysis.coefficients &&
@@ -568,21 +566,20 @@ export default function EmissionsLineChart({
                     connectNulls
                     name={t("companies.emissionsHistory.totalEmissions")}
                   />
-                  {/* Current year reference line - always shown */}
-                  <ReferenceLine
-                    x={currentYear}
-                    stroke="var(--orange-2)"
-                    strokeWidth={1}
-                    label={{
-                      value: currentYear,
-                      position: "top",
-                      fill: "var(--orange-2)",
-                      fontSize: 12,
-                      fontWeight: "normal",
-                    }}
-                  />
                   {approximatedData && (
                     <>
+                      <ReferenceLine
+                        x={currentYear}
+                        stroke="var(--orange-2)"
+                        strokeWidth={1}
+                        label={{
+                          value: currentYear,
+                          position: "top",
+                          fill: "var(--orange-2)",
+                          fontSize: 12,
+                          fontWeight: "normal",
+                        }}
+                      />
                       <Line
                         type="linear"
                         dataKey="approximated"
@@ -830,16 +827,7 @@ export default function EmissionsLineChart({
                 companyBaseYear={companyBaseYear}
                 currentLanguage={currentLanguage}
                 trendExplanation={
-                  exploreStep === 2
-                    ? trendAnalysis?.explanationParams
-                      ? t(
-                          trendAnalysis.explanation,
-                          trendAnalysis.explanationParams,
-                        )
-                      : trendAnalysis?.explanation
-                        ? t(trendAnalysis.explanation)
-                        : undefined
-                    : undefined
+                  exploreStep === 2 ? trendAnalysis?.explanation : undefined
                 }
                 yDomain={[yMin, yMax]}
               />
