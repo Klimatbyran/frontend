@@ -108,6 +108,7 @@ export function Header() {
       sublinks: [
         { label: t("header.reports"), path: `${currentLanguage}/reports` },
         { label: t("header.articles"), path: `${currentLanguage}/articles` },
+        { label: t("header.newsletterArchive"), path: `${currentLanguage}/newsletter-archive`},
         { label: t("header.learnMore"), path: `${currentLanguage}/learn-more` },
       ],
     },
