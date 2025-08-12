@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { FC, useState, useMemo } from "react";
 import { Text } from "@/components/ui/text";
 import { EmissionPeriod } from "@/types/emissions";
 import { interpolateScope3Categories } from "@/utils/data/chartData";
@@ -13,6 +13,7 @@ import EmissionsLineChart from "./EmissionsLineChart";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { selectBestTrendLineMethod } from "@/lib/calculations/trends/analysis";
+import { isMobile } from "react-device-detect";
 
 export function EmissionsHistory({
   reportingPeriods,
@@ -152,7 +153,9 @@ export function EmissionsHistory({
             setDataView={setDataView}
             hasScope3Categories={hasScope3Categories}
           />
-          <div className="h-[300px] md:h-[400px]">
+          <div
+            className={`${isMobile ? "h-[450px]" : "h-[300px] md:h-[400px]"}`}
+          >
             <EmissionsLineChart
               data={chartData}
               companyBaseYear={companyBaseYear}
@@ -180,8 +183,8 @@ export function EmissionsHistory({
             getCategoryColor={getCategoryColor}
           />
 
-          {/* Method Description */}
-          {methodExplanation && (
+          {/* Method Description - Hidden on mobile (mobile has popup version) */}
+          {methodExplanation && !isMobile && (
             <div className="bg-black-2 rounded-lg p-4 max-w-4xl mx-auto">
               <Text
                 variant="body"

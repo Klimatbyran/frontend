@@ -1,4 +1,5 @@
 import { Line } from "recharts";
+import { isMobile } from "react-device-detect";
 
 interface ScopeLineProps {
   scope: "scope1" | "scope2" | "scope3";
@@ -37,17 +38,25 @@ export function ScopeLine({ scope, isHidden, onToggle }: ScopeLineProps) {
       dataKey={config.dataKey}
       stroke={config.stroke}
       strokeWidth={2}
-      dot={{
-        r: 4,
-        fill: config.stroke,
-        cursor: "pointer",
-        onClick: () => onToggle(scope),
-      }}
-      activeDot={{
-        r: 6,
-        fill: config.stroke,
-        cursor: "pointer",
-      }}
+      dot={
+        isMobile
+          ? false
+          : {
+              r: 4,
+              fill: config.stroke,
+              cursor: "pointer",
+              onClick: () => onToggle(scope),
+            }
+      }
+      activeDot={
+        isMobile
+          ? false
+          : {
+              r: 6,
+              fill: config.stroke,
+              cursor: "pointer",
+            }
+      }
       name={config.name}
     />
   );

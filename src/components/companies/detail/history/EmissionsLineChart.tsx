@@ -20,6 +20,9 @@ import { CategoryLine } from "./CategoryLine";
 import { generateApproximatedData } from "@/lib/calculations/trends/approximatedData";
 import { calculateTrendPercentageChange } from "@/lib/calculations/trends/trendPercentages";
 import { exploreButtonFeatureFlagEnabled } from "@/utils/ui/featureFlags";
+import { isMobile } from "react-device-detect";
+import { ChevronDown, ChevronUp } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface EmissionsLineChartProps {
   data: ChartData[];
@@ -72,10 +75,11 @@ export default function EmissionsLineChart({
   trendAnalysis,
 }: EmissionsLineChartProps) {
   const { t } = useTranslation();
+  const [chartEndYear, setChartEndYear] = useState(2050);
+  const [shortEndYear, setShortEndYear] = useState(2030);
+  const [longEndYear, setLongEndYear] = useState(2050);
+  const [showTrendPopup, setShowTrendPopup] = useState(false);
   const currentYear = new Date().getFullYear();
-  const shortEndYear = currentYear + 5;
-  const longEndYear = 2050;
-  const [chartEndYear, setChartEndYear] = useState(shortEndYear);
   const isFirstYear = companyBaseYear === data[0]?.year;
 
   // Generate approximated data using the consolidated function
@@ -265,8 +269,16 @@ export default function EmissionsLineChart({
                     dataKey="total"
                     stroke="white"
                     strokeWidth={2}
-                    dot={{ r: 4, fill: "white", cursor: "pointer" }}
-                    activeDot={{ r: 6, fill: "white", cursor: "pointer" }}
+                    dot={
+                      isMobile
+                        ? false
+                        : { r: 4, fill: "white", cursor: "pointer" }
+                    }
+                    activeDot={
+                      isMobile
+                        ? false
+                        : { r: 6, fill: "white", cursor: "pointer" }
+                    }
                     connectNulls
                     name={t("companies.emissionsHistory.totalEmissions")}
                   />
@@ -390,6 +402,59 @@ export default function EmissionsLineChart({
         exploreMode={exploreMode}
         setExploreMode={setExploreMode}
       />
+
+      {/* Mobile trend explanation button and popup */}
+      {isMobile && !exploreMode && trendAnalysis?.explanation && (
+        <div className="mt-4">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowTrendPopup(true)}
+            className="w-full bg-black-2 border-black-1 text-white hover:bg-black-1"
+          >
+            <span className="text-sm">Trend Line Explanation</span>
+          </Button>
+
+          {/* Trend Explanation Popup Modal */}
+          {showTrendPopup && (
+            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+              <div className="bg-black-2 rounded-lg p-6 max-w-md w-full border border-grey">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-white">
+                    {t("companies.emissionsHistory.trend")}
+                  </h3>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowTrendPopup(false)}
+                    className="text-grey hover:text-white"
+                  >
+                    ✕
+                  </Button>
+                </div>
+
+                <div className="text-sm text-grey leading-relaxed mb-4">
+                  {trendAnalysis.explanationParams
+                    ? t(
+                        trendAnalysis.explanation,
+                        trendAnalysis.explanationParams,
+                      )
+                    : t(trendAnalysis.explanation)}
+                </div>
+
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowTrendPopup(false)}
+                  className="w-full bg-black-1 border-grey text-white hover:bg-black-2"
+                >
+                  Close
+                </Button>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

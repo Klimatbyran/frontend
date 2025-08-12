@@ -1,4 +1,5 @@
 import { Line } from "recharts";
+import { isMobile } from "react-device-detect";
 
 interface CategoryLineProps {
   categoryKey: string;
@@ -104,8 +105,8 @@ export function CategoryLine({
       stroke={categoryColor}
       strokeWidth={2}
       strokeDasharray={strokeDasharray}
-      dot={renderDot}
-      activeDot={renderActiveDot}
+      dot={isMobile ? false : renderDot}
+      activeDot={isMobile ? false : renderActiveDot}
       name={getCategoryName(categoryId)}
     />
   );
