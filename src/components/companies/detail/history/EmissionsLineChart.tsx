@@ -412,13 +412,13 @@ export default function EmissionsLineChart({
             onClick={() => setShowTrendPopup(true)}
             className="w-full bg-black-2 border-black-1 text-white hover:bg-black-1"
           >
-            <span className="text-sm">Trend Line Explanation</span>
+            <span className="text-sm">{t("companies.emissionsHistory.trend")}</span>
           </Button>
 
           {/* Trend Explanation Popup Modal */}
           {showTrendPopup && (
             <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-              <div className="bg-black-2 rounded-lg p-6 max-w-md w-full border border-grey">
+              <div className="bg-black-2 rounded-lg p-6 max-w-md w-full border">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold text-white">
                     {t("companies.emissionsHistory.trend")}
@@ -446,7 +446,7 @@ export default function EmissionsLineChart({
                   variant="outline"
                   size="sm"
                   onClick={() => setShowTrendPopup(false)}
-                  className="w-full bg-black-1 border-grey text-white hover:bg-black-2"
+                  className="w-full bg-black-1 border-black-1 text-white hover:bg-black-2"
                 >
                   Close
                 </Button>

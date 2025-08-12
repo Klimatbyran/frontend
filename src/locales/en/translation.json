@@ -1316,6 +1316,6 @@
     "weightedLinearMethodStable": "Weighted linear trend used because recent years show stable emissions (variation < 10% of average). Emphasizes recent stable data for current trend representation.",
     "exponentialMethodBetterFit": "Exponential trend used because it fits the data significantly better than linear trend. Suggests emissions are changing at accelerating or decelerating rate.",
     "recentExponentialMethodStrongPattern": "Recent exponential trend used because last 4 years show strong exponential pattern that is significantly better than linear. Focuses on most recent trend pattern.",
-    "linearMethodDefault": "Linear trend used as default because data is sufficiently complete and shows consistent pattern without strong non-linear behavior or significant outliers."
+    "linearMethodDefault": "Linear trend used as default because data is sufficiently complete or does not show strong non-linear behavior or significant outliers."
   }
 }
