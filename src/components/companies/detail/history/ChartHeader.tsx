@@ -28,7 +28,6 @@ export default function ChartHeader({
 }: ChartHeaderProps) {
   const [containerRef, isWide] = useContainerQuery<HTMLDivElement>(
     ({ width }) => {
-      // Matches container size @lg
       return width >= 512;
     },
   );

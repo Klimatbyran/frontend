@@ -21,7 +21,6 @@ import { generateApproximatedData } from "@/lib/calculations/trends/approximated
 import { calculateTrendPercentageChange } from "@/lib/calculations/trends/trendPercentages";
 import { exploreButtonFeatureFlagEnabled } from "@/utils/ui/featureFlags";
 import { isMobile } from "react-device-detect";
-import { ChevronDown, ChevronUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface EmissionsLineChartProps {
@@ -100,8 +99,8 @@ export default function EmissionsLineChart({
         undefined, // regression
         chartEndYear,
         companyBaseYear,
-        trendAnalysis.coefficients, // coefficients
-        trendAnalysis.cleanData, // cleanData
+        trendAnalysis.coefficients,
+        trendAnalysis.cleanData,
       );
     }
 

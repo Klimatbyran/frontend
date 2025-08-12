@@ -26,7 +26,6 @@ export function CategoryLine({
 
   const categoryColor = getCategoryColor(categoryId);
 
-  // Shared dot rendering logic
   const renderDot = (props: { cx?: number; cy?: number; payload?: any }) => {
     const { cx, cy, payload } = props;
 
@@ -60,7 +59,6 @@ export function CategoryLine({
     );
   };
 
-  // Shared active dot rendering logic
   const renderActiveDot = (props: {
     cx?: number;
     cy?: number;

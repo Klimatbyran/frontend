@@ -103,15 +103,12 @@ export function EmissionsHistory({
 
   const [hiddenCategories, setHiddenCategories] = useState<number[]>([]);
 
-  // Explore mode state
   const [exploreMode, setExploreMode] = useState(false);
 
-  // Add state for method explanation
   const [methodExplanation, setMethodExplanation] = useState<string | null>(
     null,
   );
 
-  // Validate input data
   if (!reportingPeriods?.length) {
     return (
       <div className="text-center py-12">

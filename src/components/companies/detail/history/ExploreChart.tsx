@@ -53,8 +53,7 @@ export function ExploreChart({
   const exploreData = useMemo(() => {
     if (!companyBaseYear) return null;
 
-    // For now, let's always calculate locally to ensure consistency
-    // TODO: Re-enable trendAnalysis prop once we fix the data structure issues
+    // TODO: Re-enable trendAnalysis prop once we fix the data structure issues, ideally we shouldnt need to calculate this here again
     const emissionsData = data
       .filter((d) => d.total !== undefined && d.total !== null)
       .map((d) => ({ year: d.year, total: d.total as number }));
@@ -76,7 +75,6 @@ export function ExploreChart({
     };
   }, [data, companyBaseYear]);
 
-  // Helper functions to reduce code duplication
   const getCommonYears = () => ({
     currentYear: new Date().getFullYear(),
     parisStartYear: 2025,
@@ -151,14 +149,13 @@ export function ExploreChart({
         approximated: trend,
         carbonLaw: paris,
         diff,
-        // For shading under lines, we'll use the actual values
         trendArea: trend,
         parisArea: paris,
       };
     });
   };
 
-  // Helper function to render step descriptions
+  // render step descriptions
   const renderStepDescription = (step: number) => {
     const descriptions = {
       2: trendExplanation && (
@@ -180,7 +177,7 @@ export function ExploreChart({
     return descriptions[step as keyof typeof descriptions] || null;
   };
 
-  // Helper functions to render common chart elements
+  // render common chart elements
   const renderCurrentYearReferenceLine = () => (
     <ReferenceLine
       x={getCommonYears().currentYear}
@@ -228,7 +225,7 @@ export function ExploreChart({
     return [data[0]?.year || 2000, data[data.length - 1]?.year || currentYear];
   };
 
-  // Helper function for common Line component props
+  // common Line component props
   const getCommonLineProps = (
     dataKey: string,
     stroke: string,
@@ -269,7 +266,7 @@ export function ExploreChart({
       allDataYears: data.map((d) => d.year).sort((a, b) => a - b),
     });
   }
-  //   // For step 2, calculate the extended trend segment from last reported year to current year + 5
+  // For step 2, calculate the extended trend segment from last reported year to current year + 5
   let step2TrendSegment: { year: number; approximated: number | undefined }[] =
     [];
   if (step === 2 && exploreData?.coefficients) {
@@ -446,7 +443,7 @@ export function ExploreChart({
     trendArea?: number;
     parisArea?: number;
   }[] = [];
-  let step4AreaColor: string = "var(--orange-5)"; // default orange
+  let step4AreaColor: string = "var(--orange-5)";
   let step4LabelText: string = "";
   let step4LabelColor: string = "var(--orange-3)";
   if (step === 4 && exploreData?.coefficients) {

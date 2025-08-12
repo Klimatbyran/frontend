@@ -37,18 +37,15 @@ export function ExploreMode({
   const { t, i18n } = useTranslation();
   const { isMobile } = useScreenSize();
 
-  // Ensure the translation hook uses the correct language
   React.useEffect(() => {
     if (currentLanguage !== currentLanguage) {
       i18n.changeLanguage(currentLanguage);
     }
   }, [currentLanguage, i18n]);
 
-  // --- New logic for dynamic explore steps ---
   const hasDataBeforeBaseYear =
     companyBaseYear && data.some((d) => d.year < companyBaseYear);
 
-  // Build steps dynamically
   const exploreSteps = [
     ...(hasDataBeforeBaseYear
       ? [
@@ -244,7 +241,7 @@ export function ExploreMode({
         </div>
       )}
 
-      {/* Button controls - always below chart, never overlapping */}
+      {/* Button controls - below chart */}
       <div
         className={`flex flex-row gap-4 justify-center ${isMobile ? "pt-6" : "pt-12"}`}
       >

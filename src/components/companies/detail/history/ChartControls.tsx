@@ -25,7 +25,6 @@ export function ChartControls({
 
   return (
     <div className="relative mt-2 px-4 w-full">
-      {/* Year toggle buttons positioned absolutely */}
       <div className="absolute left-0 top-0">
         {chartEndYear === longEndYear && (
           <Button
@@ -52,7 +51,6 @@ export function ChartControls({
           </Button>
         )}
       </div>
-      {/* Explore button centered independently */}
       {exploreButtonFeatureFlagEnabled() && (
         <div className="flex justify-center items-center">
           <Button
