@@ -1,10 +1,18 @@
 export { Page }
 
+import { LandingPage } from "../../src/pages/LandingPage"
+import { Layout } from "../../src/components/layout/Layout"
+import { ToastProvider } from "../../src/contexts/ToastContext"
+import { DataGuideProvider } from "../../src/data-guide/DataGuide"
+
 function Page() {
   return (
-    <div>
-      <h1>Klimatkollen - Svenska</h1>
-      <p>SSR fungerar nu utan window-beroenden!</p>
-    </div>
+    <ToastProvider>
+      <DataGuideProvider>
+        <Layout>
+          <LandingPage />
+        </Layout>
+      </DataGuideProvider>
+    </ToastProvider>
   )
 }
