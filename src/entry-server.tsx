@@ -7,6 +7,7 @@ import AuthProvider from "./contexts/AuthContext";
 import { LanguageProvider } from "./components/LanguageProvider";
 import { Layout } from "./components/layout/Layout";
 import App from "./App";
+import "./index.css";
 import "./i18n";
 
 export function render(url: string) {
