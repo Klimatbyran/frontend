@@ -52,3 +52,13 @@ export function useNavigate() {
   }
   return context.navigate
 }
+
+// Global override för React Router hooks - detta gör att alla befintliga komponenter
+// automatiskt använder Vike-versionerna
+if (typeof window !== 'undefined') {
+  // Override React Router hooks globalt
+  window.__VIKE_ROUTER_HOOKS__ = {
+    useLocation,
+    useNavigate
+  }
+}
