@@ -79,3 +79,47 @@ export const NavLink = ({ to, children, className, activeClassName, ...props }) 
     </a>
   )
 }
+
+// matchPath-funktion som mock
+export const matchPath = (pattern, pathname) => {
+  // Enkel implementering av matchPath
+  if (typeof pattern === 'string') {
+    return pathname === pattern ? { path: pattern, url: pathname, isExact: true, params: {} } : null
+  }
+  
+  if (pattern.path) {
+    const isExact = pathname === pattern.path
+    const isMatch = pattern.exact ? isExact : pathname.startsWith(pattern.path)
+    
+    if (isMatch) {
+      return {
+        path: pattern.path,
+        url: pathname,
+        isExact,
+        params: {}
+      }
+    }
+  }
+  
+  return null
+}
+
+// generatePath-funktion som mock
+export const generatePath = (path, params = {}) => {
+  let result = path
+  Object.keys(params).forEach(key => {
+    result = result.replace(`:${key}`, params[key])
+  })
+  return result
+}
+
+// createSearchParams-funktion som mock
+export const createSearchParams = (init) => {
+  return new URLSearchParams(init)
+}
+
+// Outlet-komponent som mock
+export const Outlet = ({ context }) => null
+
+// useOutletContext hook som mock
+export const useOutletContext = () => ({})
