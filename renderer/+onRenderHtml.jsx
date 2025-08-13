@@ -18,6 +18,7 @@ function SSRSafePage({ Page, pageProps }) {
     },
   })
 
+  // Rendera utan HelmetProvider för SSR - det hanteras på klientsidan
   return (
     <QueryClientProvider client={queryClient}>
       <Page {...pageProps} />
