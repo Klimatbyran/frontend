@@ -524,7 +524,8 @@
           },
           "klimatplaner": {
             "title": "Klimatplaner",
-            "text": "Insamlade av medlemmar i Klimatklubben och Naturskyddsföreningen"
+            "text": "Insamlade av medlemmar i Klimatklubben och Naturskyddsföreningen",
+            "link": "https://docs.google.com/spreadsheets/d/13CMqmfdd6QUD6agKFyVhwZUol4PKzvy253_EwtsFyvw/edit?fbclid=IwAR0v0cq0_xhFVlhhVn5fP-TNkOPVRXbOTKzTVWI_PMr_yU2rXOLjcN6jSps#gid=0"
           },
           "upphandlingsmyndigheten": {
             "title": "Upphandlingsmyndigheten",
