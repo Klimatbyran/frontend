@@ -6,7 +6,7 @@ import { escapeInject, dangerouslySkipEscape } from 'vike/server'
 async function onRenderHtml(pageContext) {
   const { Page, pageProps } = pageContext
   
-  // Render the page to HTML string
+  // Render the page to HTML string - utan providers för nu
   const pageHtml = ReactDOMServer.renderToString(<Page {...pageProps} />)
 
   // Return the full HTML document
@@ -16,6 +16,8 @@ async function onRenderHtml(pageContext) {
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Klimatkollen</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
       </head>
       <body>
         <div id="root">${dangerouslySkipEscape(pageHtml)}</div>
