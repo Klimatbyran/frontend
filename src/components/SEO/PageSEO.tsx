@@ -1,5 +1,5 @@
-import { Helmet } from "react-helmet-async";
-import { ReactNode } from "react";
+import { useConfig } from "vike-react/useConfig";
+import { ReactNode, useEffect } from "react";
 
 interface PageSEOProps {
   title: string;
@@ -12,7 +12,7 @@ interface PageSEOProps {
 }
 
 /**
- * Reusable SEO component for pages
+ * Reusable SEO component for pages using Vike head tags
  * Handles meta tags, structured data, and hidden SEO content
  */
 export function PageSEO({
@@ -24,24 +24,33 @@ export function PageSEO({
   structuredData,
   children,
 }: PageSEOProps) {
+  const config = useConfig();
+
+  useEffect(() => {
+    // Set head tags using Vike's useConfig
+    config({
+      title,
+      description,
+      Head: () => (
+        <>
+          <meta property="og:title" content={title} />
+          <meta property="og:description" content={description} />
+          <meta property="og:type" content={ogType} />
+          <meta property="og:url" content={canonicalUrl} />
+          {ogImage && <meta property="og:image" content={ogImage} />}
+          <link rel="canonical" href={canonicalUrl} />
+          {structuredData && (
+            <script type="application/ld+json">
+              {JSON.stringify(structuredData)}
+            </script>
+          )}
+        </>
+      ),
+    });
+  }, [title, description, canonicalUrl, ogType, ogImage, structuredData, config]);
+
   return (
     <>
-      <Helmet>
-        <title>{title}</title>
-        <meta name="description" content={description} />
-        <meta property="og:title" content={title} />
-        <meta property="og:description" content={description} />
-        <meta property="og:type" content={ogType} />
-        <meta property="og:url" content={canonicalUrl} />
-        {ogImage && <meta property="og:image" content={ogImage} />}
-        <link rel="canonical" href={canonicalUrl} />
-        {structuredData && (
-          <script type="application/ld+json">
-            {JSON.stringify(structuredData)}
-          </script>
-        )}
-      </Helmet>
-
       {/* Hidden SEO content for search engines */}
       {children && <div className="sr-only">{children}</div>}
     </>
