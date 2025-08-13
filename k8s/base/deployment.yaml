@@ -24,7 +24,7 @@ spec:
           image: ghcr.io/klimatbyran/frontend
           imagePullPolicy: Always
           ports:
-            - containerPort: 80
+            - containerPort: 5173
               name: http
           resources:
             requests:
@@ -36,13 +36,13 @@ spec:
           livenessProbe:
             httpGet:
               path: /
-              port: 80
+              port: 5173
             initialDelaySeconds: 10
             periodSeconds: 30
           readinessProbe:
             httpGet:
               path: /
-              port: 80
+              port: 5173
             initialDelaySeconds: 5
             periodSeconds: 10
           env:

@@ -24,16 +24,25 @@ COPY . .
 RUN npm run build
 
 # Production stage
-FROM nginx:alpine
+FROM node:20-slim
 
-# Copy built assets from build stage
-COPY --from=build /app/dist /usr/share/nginx/html
+# Set working directory
+WORKDIR /app
 
-# Copy custom nginx configuration
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Copy package files and install production dependencies
+COPY package*.json ./
+RUN npm ci --only=production
 
-# Expose port 80
-EXPOSE 80
+# Copy built assets and server files from build stage
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/server.js ./
+COPY --from=build /app/index.html ./
 
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Set production environment
+ENV NODE_ENV=production
+
+# Expose port 5173 (or whatever port your server uses)
+EXPOSE 5173
+
+# Start the Node.js server
+CMD ["node", "server.js"]
