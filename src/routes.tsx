@@ -36,6 +36,7 @@ export function AppRoutes() {
       <Route path="/" element={<LanguageRedirect />} />
       <Route path="/license" element={<LanguageRedirect />} />
       <Route path="/privacy" element={<LanguageRedirect />} />
+      <Route path="/insights/:id" element={<LanguageRedirect />} />
 
       {/* Swedish routes */}
       <Route path="/sv" element={<LandingPage />} />
