@@ -17,9 +17,7 @@ export default ({ mode }: ConfigEnv) => {
           ],
         },
       }),
-      vike({
-        prerender: false // Vi vill ha SSR, inte statisk pre-rendering
-      }),
+      vike(),
       markdown({ mode: ["html", "toc", "meta", "react"] as Mode[] }),
     ],
     resolve: {

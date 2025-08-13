@@ -6,7 +6,7 @@ import { escapeInject, dangerouslySkipEscape } from 'vike/server'
 async function onRenderHtml(pageContext) {
   const { Page, pageProps } = pageContext
   
-  // Render the page to HTML string - utan providers för nu
+  // Render bara sidan utan providers för att undvika SSR-problem
   const pageHtml = ReactDOMServer.renderToString(<Page {...pageProps} />)
 
   // Return the full HTML document
