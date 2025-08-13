@@ -37,6 +37,7 @@ RUN npm ci --only=production
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/server.js ./
 COPY --from=build /app/index.html ./
+COPY --from=build /app/public ./public
 
 # Set production environment
 ENV NODE_ENV=production

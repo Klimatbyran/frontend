@@ -21,6 +21,7 @@ async function createServer() {
   } else {
     // Serve static files in production
     app.use(express.static(path.resolve(__dirname, 'dist/client')))
+    app.use(express.static(path.resolve(__dirname, 'public')))
   }
 
   app.use('*catchAll', async (req, res, next) => {
