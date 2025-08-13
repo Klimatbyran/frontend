@@ -3,11 +3,19 @@ export { onRenderHtml }
 import ReactDOMServer from 'react-dom/server'
 import { escapeInject, dangerouslySkipEscape } from 'vike/server'
 
+// Skapa en SSR-säker version av sidan utan browser-beroenden
+function SSRSafePage({ Page, pageProps }) {
+  // Rendera bara sidan utan providers som kräver window
+  return <Page {...pageProps} />
+}
+
 async function onRenderHtml(pageContext) {
   const { Page, pageProps } = pageContext
   
-  // Render bara sidan utan providers för att undvika SSR-problem
-  const pageHtml = ReactDOMServer.renderToString(<Page {...pageProps} />)
+  // Render med SSR-säker wrapper
+  const pageHtml = ReactDOMServer.renderToString(
+    <SSRSafePage Page={Page} pageProps={pageProps} />
+  )
 
   // Return the full HTML document
   const documentHtml = escapeInject`<!DOCTYPE html>
