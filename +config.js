@@ -1,4 +1,9 @@
+import vikeReact from 'vike-react/config'
+
 export default {
+  // Extend vike-react config
+  extends: [vikeReact],
+  
   // We don't use pre-rendering
   prerender: false,
   
