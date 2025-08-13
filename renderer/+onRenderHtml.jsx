@@ -36,16 +36,10 @@ async function onRenderHtml(pageContext) {
     <SSRSafePage Page={Page} pageProps={pageProps} />
   )
 
-  // Return the full HTML document
+  // Return the full HTML document - Vike will inject head tags automatically
   const documentHtml = escapeInject`<!DOCTYPE html>
     <html lang="sv">
-      <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Klimatkollen</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      </head>
+      <head></head>
       <body>
         <div id="root">${dangerouslySkipEscape(pageHtml)}</div>
       </body>
