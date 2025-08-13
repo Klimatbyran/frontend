@@ -47,12 +47,29 @@ export default ({ mode }: ConfigEnv) => {
     build: {
       rollupOptions: {
         output: {
-          manualChunks: {
-            vendor: ['react', 'react-dom'],
-            router: ['react-router-dom'],
-            ui: ['@radix-ui/react-accordion', '@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu'],
-            charts: ['recharts'],
-            utils: ['date-fns', 'clsx', 'class-variance-authority'],
+          manualChunks: (id) => {
+            // Only apply manual chunks for client build, not SSR
+            if (process.env.npm_lifecycle_event === 'build:server') {
+              return undefined;
+            }
+            
+            if (id.includes('node_modules')) {
+              if (id.includes('react') || id.includes('react-dom')) {
+                return 'vendor';
+              }
+              if (id.includes('react-router')) {
+                return 'router';
+              }
+              if (id.includes('@radix-ui')) {
+                return 'ui';
+              }
+              if (id.includes('recharts')) {
+                return 'charts';
+              }
+              if (id.includes('date-fns') || id.includes('clsx') || id.includes('class-variance-authority')) {
+                return 'utils';
+              }
+            }
           },
         },
       },
