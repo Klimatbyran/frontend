@@ -24,8 +24,6 @@ export default ({ mode }: ConfigEnv) => {
       alias: {
         "@": new URL("./src", import.meta.url).pathname,
         "@lib": new URL("./src/lib", import.meta.url).pathname,
-        // Override React Router med Vike-kompatibla hooks
-        "react-router-dom": new URL("./renderer/ReactRouterMock.jsx", import.meta.url).pathname,
       },
     },
     server: {

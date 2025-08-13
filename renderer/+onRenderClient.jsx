@@ -4,7 +4,6 @@ import ReactDOM from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import AuthProvider from "../src/contexts/AuthContext"
 import { VikeLanguageProvider } from "./VikeLanguageProvider"
-import { VikeRouterProvider } from "./VikeRouterHooks"
 import { ToastProvider } from "../src/contexts/ToastContext"
 import { DataGuideProvider } from "../src/data-guide/DataGuide"
 import { Layout } from "../src/components/layout/Layout"
@@ -14,35 +13,8 @@ import { HelmetProvider } from "react-helmet-async"
 import "../src/index.css"
 import "../src/i18n"
 
-// Import the actual pages for client-side rendering
-import { LandingPage } from "../src/pages/LandingPage"
-import { CompaniesPage } from "../src/pages/CompaniesPage"
-import { AboutPage } from "../src/pages/AboutPage"
-import { MethodsPage } from "../src/pages/MethodsPage"
-
-// Map URL paths to actual components
-function getActualPage(pageContext) {
-  const url = pageContext.urlOriginal || '/'
-  
-  if (url === '/' || url === '/sv' || url === '/en') {
-    return LandingPage
-  } else if (url.includes('/companies')) {
-    return CompaniesPage
-  } else if (url.includes('/about')) {
-    return AboutPage
-  } else if (url.includes('/methodology')) {
-    return MethodsPage
-  }
-  
-  // Fallback to the SSR page
-  return pageContext.Page
-}
-
 async function onRenderClient(pageContext) {
   const { Page, pageProps } = pageContext
-  
-  // Get the actual page component for client-side
-  const ActualPage = getActualPage(pageContext)
   
   // Create QueryClient for client
   const queryClient = new QueryClient({
@@ -62,15 +34,13 @@ async function onRenderClient(pageContext) {
       <HelmetProvider>
         <AuthProvider>
           <VikeLanguageProvider pageContext={pageContext}>
-            <VikeRouterProvider pageContext={pageContext}>
-              <ToastProvider>
-                <DataGuideProvider>
-                  <Layout>
-                    <ActualPage {...pageProps} />
-                  </Layout>
-                </DataGuideProvider>
-              </ToastProvider>
-            </VikeRouterProvider>
+            <ToastProvider>
+              <DataGuideProvider>
+                <Layout>
+                  <Page {...pageProps} />
+                </Layout>
+              </DataGuideProvider>
+            </ToastProvider>
           </VikeLanguageProvider>
         </AuthProvider>
       </HelmetProvider>

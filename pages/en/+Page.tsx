@@ -1,10 +1,7 @@
 export { Page }
 
+import { LandingPage } from "../../src/pages/LandingPage"
+
 function Page() {
-  return (
-    <div>
-      <h1>Klimatkollen - English</h1>
-      <p>Loading...</p>
-    </div>
-  )
+  return <LandingPage />
 }
