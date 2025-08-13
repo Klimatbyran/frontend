@@ -13,6 +13,8 @@ import { blogMetadata } from "../lib/blog/blogPostsList";
 import { useTranslation } from "react-i18next";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { ContentMeta } from "@/types/content";
+import { PageSEO } from "@/components/PageSEO";
+import { useLanguage } from "@/components/LanguageProvider";
 
 // Import Markdown files
 const markdownFiles = import.meta.glob("/src/lib/blog/posts/*.md", {
@@ -22,6 +24,7 @@ const markdownFiles = import.meta.glob("/src/lib/blog/posts/*.md", {
 
 export function BlogDetailPage() {
   const { t } = useTranslation();
+  const { currentLanguage } = useLanguage();
   const { id } = useParams<{ id: string }>();
   const [blogPost, setBlogPost] = useState<{
     metadata: ContentMeta;
@@ -94,6 +97,38 @@ export function BlogDetailPage() {
   if (loading) return <div>{t("blogDetailPage.loading")}</div>;
   if (!blogPost) return <div>{t("blogDetailPage.postNotFound")}</div>;
 
+  // SEO data för blogginlägg
+  const canonicalUrl = `https://klimatkollen.se${currentLanguage === "sv" ? "" : "/en"}/insights/${id}`;
+  const pageTitle = `${blogPost.metadata.title} - Klimatkollen`;
+  const pageDescription = blogPost.metadata.excerpt;
+  const ogImage = blogPost.metadata.image;
+  
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": blogPost.metadata.title,
+    "description": pageDescription,
+    "image": ogImage.startsWith("http") ? ogImage : `https://klimatkollen.se${ogImage}`,
+    "datePublished": blogPost.metadata.date,
+    "dateModified": blogPost.metadata.date,
+    "author": {
+      "@type": "Person",
+      "name": blogPost.metadata.author?.name || "Klimatkollen"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Klimatkollen",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://klimatkollen.se/images/social-picture.png"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": canonicalUrl
+    }
+  };
+
   const relatedPosts = blogPost.metadata.relatedPosts
     ? blogPost.metadata.relatedPosts
         .map((relatedId) => blogMetadata.find((post) => post.id === relatedId))
@@ -101,11 +136,21 @@ export function BlogDetailPage() {
     : [];
 
   return (
-    <div
-      className={`max-w-[1200px] mx-auto ${
-        isMobile ? "space-y-8" : "space-y-16"
-      } px-4`}
-    >
+    <>
+      <PageSEO
+        title={pageTitle}
+        description={pageDescription}
+        canonicalUrl={canonicalUrl}
+        ogImage={ogImage}
+        ogType="article"
+        keywords={`klimat, ${blogPost.metadata.category}, ${blogPost.metadata.title}`}
+        structuredData={structuredData}
+      />
+      <div
+        className={`max-w-[1200px] mx-auto ${
+          isMobile ? "space-y-8" : "space-y-16"
+        } px-4`}
+      >
       {/* Navigation */}
       <div className="flex items-center justify-between">
         <Button variant="ghost" size="sm" className="gap-2" asChild>
@@ -262,6 +307,7 @@ export function BlogDetailPage() {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 }
