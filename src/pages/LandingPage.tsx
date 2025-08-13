@@ -5,7 +5,7 @@ import { Typewriter } from "@/components/ui/typewriter";
 import { useCompanies } from "@/hooks/companies/useCompanies";
 import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
 import { useTranslation } from "react-i18next";
-import { PageSEO } from "@/components/SEO/PageSEO";
+import { PageSEO } from "@/components/PageSEO";
 import { useEffect } from "react";
 import { useLanguage } from "@/components/LanguageProvider";
 import {
@@ -24,18 +24,27 @@ export function LandingPage() {
     window.scrollTo(0, 0);
   }, []);
 
-  // Prepare SEO data
-  const canonicalUrl = "https://klimatkollen.se";
+  // SEO data
+  const canonicalUrl = `https://klimatkollen.se${currentLanguage === "sv" ? "" : "/en"}`;
   const pageTitle = `Klimatkollen - ${t("landingPage.metaTitle")}`;
   const pageDescription = t("landingPage.metaDescription");
-
+  
   const structuredData = {
     "@context": "https://schema.org",
-    "@type": "Organization",
-    name: "Klimatkollen",
-    url: canonicalUrl,
-    logo: "https://klimatkollen.se/images/social-picture.png",
-    description: pageDescription,
+    "@type": "WebSite",
+    "name": "Klimatkollen",
+    "description": pageDescription,
+    "url": canonicalUrl,
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": `${canonicalUrl}/?q={search_term_string}`,
+      "query-input": "required name=search_term_string"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Klimatkollen",
+      "url": "https://klimatkollen.se"
+    }
   };
 
   const TypeWriterTexts = [
