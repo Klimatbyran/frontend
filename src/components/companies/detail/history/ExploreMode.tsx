@@ -243,7 +243,7 @@ export function ExploreMode({
 
       {/* Button controls - below chart */}
       <div
-        className={`flex flex-row gap-4 justify-center ${isMobile ? "pt-6" : "pt-12"}`}
+        className={`flex flex-row gap-4 justify-center relative z-50 ${isMobile ? "pt-6" : "pt-12"}`}
       >
         <Button
           variant="outline"
