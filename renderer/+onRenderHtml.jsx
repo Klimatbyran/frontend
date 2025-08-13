@@ -2,11 +2,27 @@ export { onRenderHtml }
 
 import ReactDOMServer from 'react-dom/server'
 import { escapeInject, dangerouslySkipEscape } from 'vike/server'
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 
-// Skapa en SSR-säker version av sidan utan browser-beroenden
+// Skapa en SSR-säker version av sidan med nödvändiga providers
 function SSRSafePage({ Page, pageProps }) {
-  // Rendera bara sidan utan providers som kräver window
-  return <Page {...pageProps} />
+  // Skapa en QueryClient för SSR
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 1000 * 60 * 2,
+        gcTime: 1000 * 60 * 5,
+        refetchOnWindowFocus: false,
+        retry: 0, // Ingen retry under SSR
+      },
+    },
+  })
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Page {...pageProps} />
+    </QueryClientProvider>
+  )
 }
 
 async function onRenderHtml(pageContext) {
