@@ -17,20 +17,29 @@ RUN npm ci
 # Copy source files
 COPY . .
 
-# Build the app (includes sitemap generation)
+# Build the app with Vike
 RUN npm run build
 
 # Production stage
-FROM nginx:alpine
+FROM node:20-slim
 
-# Copy built assets from build stage
-COPY --from=build /app/dist /usr/share/nginx/html
+WORKDIR /app
 
-# Copy custom nginx configuration
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Copy package files for production dependencies
+COPY package*.json ./
 
-# Expose port 80
-EXPOSE 80
+# Install only production dependencies
+RUN npm ci --only=production
 
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Copy built app and server files
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/server ./server
+
+# Expose port 3000
+EXPOSE 3000
+
+# Set production environment
+ENV NODE_ENV=production
+
+# Start the Node.js server
+CMD ["node", "server/index.js"]
