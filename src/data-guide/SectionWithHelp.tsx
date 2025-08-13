@@ -15,7 +15,7 @@ export const SectionWithHelp = ({
   const showDataGuide = dataGuideFeatureFlagEnabled() && helpItems.length > 0;
 
   return (
-    <div className="bg-black-2 rounded-level-1 py-4 md:py-8">
+    <div className="bg-black-2 rounded-level-1 py-8 md:py-16 px-4">
       <div className={cn("px-4 md:px-16", !showDataGuide && "md:mb-8")}>
         {children}
       </div>
