@@ -39,3 +39,43 @@ export const Navigate = ({ to, replace }) => {
   navigate(to)
   return null
 }
+
+// Link-komponent som mock
+export const Link = ({ to, children, className, ...props }) => {
+  return (
+    <a 
+      href={to} 
+      className={className}
+      onClick={(e) => {
+        e.preventDefault()
+        window.location.href = to
+      }}
+      {...props}
+    >
+      {children}
+    </a>
+  )
+}
+
+// NavLink-komponent som mock
+export const NavLink = ({ to, children, className, activeClassName, ...props }) => {
+  const location = vikeUseLocation()
+  const isActive = location.pathname === to
+  const finalClassName = isActive && activeClassName 
+    ? `${className} ${activeClassName}` 
+    : className
+
+  return (
+    <a 
+      href={to} 
+      className={finalClassName}
+      onClick={(e) => {
+        e.preventDefault()
+        window.location.href = to
+      }}
+      {...props}
+    >
+      {children}
+    </a>
+  )
+}
