@@ -23,7 +23,7 @@ async function createServer() {
     app.use(express.static(path.resolve(__dirname, 'dist/client')))
   }
 
-  app.use('*', async (req, res, next) => {
+  app.use('*catchAll', async (req, res, next) => {
     const url = req.originalUrl
 
     try {

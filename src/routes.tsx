@@ -132,7 +132,7 @@ export function AppRoutes() {
       <Route path="/auth/callback" element={<AuthCallback />} />
 
       {/* Catch-all for 404 */}
-      <Route path="*" element={<NotFoundPage />} />
+      <Route path="*catchAll" element={<NotFoundPage />} />
     </Routes>
   );
 }
