@@ -1,60 +1,92 @@
-import fs from "node:fs";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-import { createServer as createViteServer } from "vite";
+import fs from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+import express from 'express'
+import { createServer as createViteServer } from 'vite'
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const isProduction = process.env.NODE_ENV === "production";
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const isProduction = process.env.NODE_ENV === 'production'
 
 async function createServer() {
-  // Create Vite server in middleware mode
-  const vite = await createViteServer({
-    server: { middlewareMode: true },
-    appType: "custom",
-  });
+  const app = express()
 
-  // Use Node.js built-in HTTP server instead of Express
-  const { createServer: createHttpServer } = await import("node:http");
+  let vite
+  if (!isProduction) {
+    // Create Vite server in middleware mode
+    vite = await createViteServer({
+      server: { middlewareMode: true },
+      appType: 'custom'
+    })
+    app.use(vite.middlewares)
+  } else {
+    // Serve static files in production
+    app.use(express.static(path.resolve(__dirname, 'dist/client')))
+  }
 
-  const server = createHttpServer(async (req, res) => {
-    const url = req.url;
+  app.use('*', async (req, res, next) => {
+    const url = req.originalUrl
 
     try {
-      // Apply Vite's middleware manually
-      await new Promise((resolve, reject) => {
-        vite.middlewares(req, res, (err) => {
-          if (err) reject(err);
-          else resolve();
-        });
-      });
-    } catch (middlewareError) {
-      // If middleware doesn't handle it, serve our SSR content
-      try {
-        let template = fs.readFileSync(
-          path.resolve(__dirname, "index.html"),
-          "utf-8",
-        );
-
-        template = await vite.transformIndexHtml(url, template);
-
-        // For now, serve client-side only to avoid path-to-regexp issues
-        const html = template.replace(`<!--ssr-outlet-->`, "");
-
-        res.writeHead(200, { "Content-Type": "text/html" });
-        res.end(html);
-      } catch (e) {
-        vite.ssrFixStacktrace(e);
-        console.error(e);
-        res.writeHead(500, { "Content-Type": "text/plain" });
-        res.end("Internal Server Error");
+      let template
+      let render
+      
+      if (!isProduction) {
+        // Development: read index.html and transform it
+        template = fs.readFileSync(
+          path.resolve(__dirname, 'index.html'),
+          'utf-8',
+        )
+        template = await vite.transformIndexHtml(url, template)
+        
+        // Load the server entry
+        const module = await vite.ssrLoadModule('/src/entry-server.tsx')
+        render = module.render
+      } else {
+        // Production: use built files
+        template = fs.readFileSync(
+          path.resolve(__dirname, 'dist/client/index.html'),
+          'utf-8',
+        )
+        const module = await import('./dist/server/entry-server.js')
+        render = module.render
       }
-    }
-  });
 
-  const port = process.env.PORT || 5173;
-  server.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
-  });
+      // Render the app HTML
+      const { html: appHtml, helmetContext } = await render(url)
+
+      // Inject the app-rendered HTML into the template
+      const html = template.replace(`<!--ssr-outlet-->`, appHtml)
+
+      res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
+    } catch (e) {
+      if (!isProduction && vite) {
+        vite.ssrFixStacktrace(e)
+      }
+      console.error('SSR Error:', e)
+      
+      // Fallback to client-side rendering on error
+      let template
+      if (!isProduction) {
+        template = fs.readFileSync(
+          path.resolve(__dirname, 'index.html'),
+          'utf-8',
+        )
+        template = await vite.transformIndexHtml(url, template)
+      } else {
+        template = fs.readFileSync(
+          path.resolve(__dirname, 'dist/client/index.html'),
+          'utf-8',
+        )
+      }
+      const html = template.replace(`<!--ssr-outlet-->`, '')
+      res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
+    }
+  })
+
+  const port = process.env.PORT || 5173
+  app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`)
+  })
 }
 
-createServer();
+createServer()

@@ -45,7 +45,7 @@ export function AppRoutes() {
       <Route path="/sv/companies" element={<CompaniesPage />} />
       <Route path="/sv/companies/:id" element={<CompanyDetailPage />} />
       <Route path="/sv/companies/:id/:slug" element={<CompanyDetailPage />} />
-      <Route path="/sv/foretag/:slug-:id" element={<CompanyDetailPage />} />
+      <Route path="/sv/foretag/:slug/:id" element={<CompanyDetailPage />} />
 
       {/* Protected Routes - Swedish */}
       <Route element={<ProtectedRoute />}>
