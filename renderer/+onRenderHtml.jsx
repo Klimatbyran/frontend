@@ -4,7 +4,7 @@ import ReactDOMServer from 'react-dom/server'
 import { escapeInject, dangerouslySkipEscape } from 'vike/server'
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 
-// Skapa en SSR-säker version av sidan med nödvändiga providers
+// Skapa en minimal SSR-säker wrapper som bara renderar sidinnehållet
 function SSRSafePage({ Page, pageProps }) {
   // Skapa en QueryClient för SSR
   const queryClient = new QueryClient({
@@ -18,10 +18,12 @@ function SSRSafePage({ Page, pageProps }) {
     },
   })
 
-  // Rendera utan HelmetProvider för SSR - det hanteras på klientsidan
+  // Rendera bara sidinnehållet utan Layout eller andra providers som kan orsaka problem
   return (
     <QueryClientProvider client={queryClient}>
-      <Page {...pageProps} />
+      <div>
+        <Page {...pageProps} />
+      </div>
     </QueryClientProvider>
   )
 }
@@ -29,7 +31,7 @@ function SSRSafePage({ Page, pageProps }) {
 async function onRenderHtml(pageContext) {
   const { Page, pageProps } = pageContext
   
-  // Render med SSR-säker wrapper
+  // Render med minimal SSR-säker wrapper
   const pageHtml = ReactDOMServer.renderToString(
     <SSRSafePage Page={Page} pageProps={pageProps} />
   )
