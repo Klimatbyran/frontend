@@ -5,56 +5,78 @@ import { MethodologyContent } from "@/components/methods/MethodContent";
 import { MethodologySearch } from "@/components/methods/MethodSearch";
 import { Search } from "lucide-react";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { PageSEO } from "@/components/SEO/PageSEO";
+import { PageSEO } from "@/components/PageSEO";
 import { useScreenSize } from "@/hooks/useScreenSize";
-import { useLocation } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
+import { useLanguage } from "@/components/LanguageProvider";
+import { getMethodById } from "@/lib/methods/methodologyData";
 
 export function MethodsPage() {
   const { t } = useTranslation();
-  const [selectedMethod, setSelectedMethod] = useState<string>("");
+  const { currentLanguage } = useLanguage();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [selectedMethod, setSelectedMethod] = useState(
+    searchParams.get("method") || "parisAgreement"
+  );
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearch, setShowSearch] = useState(false);
   const { isMobile } = useScreenSize();
   const contentRef = useRef<HTMLDivElement>(null);
-  const location = useLocation();
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [selectedMethod]);
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    if (searchParams) {
-      const searchQuery = searchParams.get("view") || "";
-
-      const matchingMethod = matchMethodWithSearchQuery(searchQuery);
-      if (matchingMethod) {
-        setSelectedMethod(matchingMethod);
-      }
+    const method = searchParams.get("method");
+    if (method) {
+      setSelectedMethod(method);
     }
-  }, [location.search]);
+  }, [searchParams]);
 
-  const matchMethodWithSearchQuery = (searchQuery: string) => {
-    if (searchQuery === "company") {
-      return "companyDataOverview";
-    } else if (searchQuery === "municipality") {
-      return "sources";
-    } else {
-      return "parisAgreement";
-    }
+  const handleMethodChange = (method: string) => {
+    setSelectedMethod(method);
+    setSearchParams({ method });
   };
 
-  // Prepare SEO data
-  const canonicalUrl = "https://klimatkollen.se/methodology";
-  const pageTitle = `${t("methodsPage.header.title")} - Klimatkollen`;
-  const pageDescription = t("methodsPage.header.description");
-
+  // SEO data
+  const methodData = getMethodById(selectedMethod);
+  const canonicalUrl = `https://klimatkollen.se${currentLanguage === "sv" ? "" : "/en"}/methodology${selectedMethod ? `?method=${selectedMethod}` : ""}`;
+  const pageTitle = methodData 
+    ? `${t(`methodsPage.${methodData.category}.${selectedMethod}.title`)} - ${t("methodsPage.header.title")} - Klimatkollen`
+    : `${t("methodsPage.header.title")} - Klimatkollen`;
+  const pageDescription = methodData
+    ? t(`methodsPage.${methodData.category}.${selectedMethod}.description`)
+    : t("methodsPage.header.description");
+  
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    name: t("methodsPage.header.title"),
-    description: pageDescription,
-    url: canonicalUrl,
+    "name": pageTitle,
+    "description": pageDescription,
+    "url": canonicalUrl,
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "Klimatkollen",
+      "url": "https://klimatkollen.se"
+    },
+    "breadcrumb": {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Klimatkollen",
+          "item": "https://klimatkollen.se"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": t("methodsPage.header.title"),
+          "item": canonicalUrl
+        }
+      ]
+    }
   };
 
   const toggleSearch = () => {
@@ -72,6 +94,7 @@ export function MethodsPage() {
         title={pageTitle}
         description={pageDescription}
         canonicalUrl={canonicalUrl}
+        keywords={`klimat, metodologi, ${methodData ? t(`methodsPage.${methodData.category}.${selectedMethod}.title`) : ""}`}
         structuredData={structuredData}
       />
       <div className="max-w-[1200px] mx-auto px-4 md:px-6 text-white">
@@ -93,7 +116,7 @@ export function MethodsPage() {
             <MethodologySearch
               searchQuery={searchQuery}
               setSearchQuery={setSearchQuery}
-              onSelectMethod={setSelectedMethod}
+              onSelectMethod={handleMethodChange}
               onClose={() => setShowSearch(false)}
             />
           </div>
@@ -103,7 +126,7 @@ export function MethodsPage() {
             <div className="lg:sticky lg:top-24">
               <MethodologyNavigation
                 selectedMethod={selectedMethod}
-                onMethodChange={setSelectedMethod}
+                onMethodChange={handleMethodChange}
                 contentRef={contentRef}
               />
             </div>
