@@ -26,7 +26,7 @@ export function PageSEO({
   const locale = currentLanguage === "sv" ? "sv_SE" : "en_US";
   const baseUrl = "https://klimatkollen.se";
   
-  const fullCanonicalUrl = canonicalUrl || `${baseUrl}${currentLanguage === "sv" ? "" : "/en"}`;
+  const fullCanonicalUrl = canonicalUrl || window.location.href;
   const fullOgImage = ogImage.startsWith("http") ? ogImage : `${baseUrl}${ogImage}`;
 
   return (
@@ -59,9 +59,9 @@ export function PageSEO({
       <link rel="canonical" href={fullCanonicalUrl} />
       
       {/* Language Alternates */}
-      <link rel="alternate" hreflang="sv" href={`${baseUrl}${canonicalUrl?.replace("/en", "") || ""}`} />
-      <link rel="alternate" hreflang="en" href={`${baseUrl}/en${canonicalUrl?.replace("/en", "") || ""}`} />
-      <link rel="alternate" hreflang="x-default" href={`${baseUrl}${canonicalUrl?.replace("/en", "") || ""}`} />
+      <link rel="alternate" hreflang="sv" href={canonicalUrl ? `${baseUrl}${canonicalUrl.replace("/en", "")}` : `${baseUrl}${window.location.pathname.replace("/en", "")}`} />
+      <link rel="alternate" hreflang="en" href={canonicalUrl ? `${baseUrl}/en${canonicalUrl.replace("/en", "")}` : `${baseUrl}/en${window.location.pathname.replace("/en", "")}`} />
+      <link rel="alternate" hreflang="x-default" href={canonicalUrl ? `${baseUrl}${canonicalUrl.replace("/en", "")}` : `${baseUrl}${window.location.pathname.replace("/en", "")}`} />
       
       {/* Structured Data */}
       {structuredData && (
