@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useReducedMotion } from "framer-motion";
 import { Marquee } from "../ui/marquee";
 import { useScreenSize } from "@/hooks/useScreenSize";
+import { useState, useEffect } from "react";
 
 function SocialLinks() {
   return (
@@ -76,6 +77,11 @@ export function Footer() {
   const prefersReducedMotion = useReducedMotion();
   const navigate = useNavigate();
   const { isMobile } = useScreenSize();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   return (
     <footer className="relative w-full z-20 bg-black-2 py-4 md:py-8">
@@ -107,14 +113,14 @@ export function Footer() {
           <Text variant="h6" className="text-blue-3">
             {t("footer.supporters")}
           </Text>
-          {prefersReducedMotion || isMobile ? null : (
+          {prefersReducedMotion || (isClient && isMobile) ? null : (
             <div className="absolute left-20 md:left-0 top-0 bottom-0 w-24 md:w-16 bg-gradient-to-r from-[var(--black-2)] to-transparent pointer-events-none z-10" />
           )}
           <PartnerLogos
             prefersReducedMotion={prefersReducedMotion}
-            isMobile={isMobile}
+            isMobile={isClient ? isMobile : false}
           />
-          {prefersReducedMotion || isMobile ? null : (
+          {prefersReducedMotion || (isClient && isMobile) ? null : (
             <div className="absolute right-20 md:right-0 top-0 bottom-0 w-24 md:w-16 bg-gradient-to-l from-[var(--black-2)] to-transparent pointer-events-none z-10" />
           )}
         </div>
