@@ -4,9 +4,11 @@ import ReactDOM from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import AuthProvider from "../src/contexts/AuthContext"
 import { VikeLanguageProvider } from "./VikeLanguageProvider"
+import { VikeRouterProvider } from "./VikeRouterHooks"
 import { ToastProvider } from "../src/contexts/ToastContext"
 import { DataGuideProvider } from "../src/data-guide/DataGuide"
 import { Layout } from "../src/components/layout/Layout"
+import { HelmetProvider } from "react-helmet-async"
 
 // Import CSS
 import "../src/index.css"
@@ -57,17 +59,21 @@ async function onRenderClient(pageContext) {
   // Wrap page with all providers for client-side
   const pageWithProviders = (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <VikeLanguageProvider pageContext={pageContext}>
-          <ToastProvider>
-            <DataGuideProvider>
-              <Layout>
-                <ActualPage {...pageProps} />
-              </Layout>
-            </DataGuideProvider>
-          </ToastProvider>
-        </VikeLanguageProvider>
-      </AuthProvider>
+      <HelmetProvider>
+        <AuthProvider>
+          <VikeLanguageProvider pageContext={pageContext}>
+            <VikeRouterProvider pageContext={pageContext}>
+              <ToastProvider>
+                <DataGuideProvider>
+                  <Layout>
+                    <ActualPage {...pageProps} />
+                  </Layout>
+                </DataGuideProvider>
+              </ToastProvider>
+            </VikeRouterProvider>
+          </VikeLanguageProvider>
+        </AuthProvider>
+      </HelmetProvider>
     </QueryClientProvider>
   )
   
