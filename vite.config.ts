@@ -1,6 +1,7 @@
 import { defineConfig, loadEnv, ConfigEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import vike from "vike/plugin";
+import vikeReact from "vike-react/config";
 import { plugin as markdown } from "vite-plugin-markdown";
 import { Mode } from "vite-plugin-markdown";
 
@@ -17,7 +18,7 @@ export default ({ mode }: ConfigEnv) => {
           ],
         },
       }),
-      vike(),
+      vike(vikeReact),
       markdown({ mode: ["html", "toc", "meta", "react"] as Mode[] }),
     ],
     resolve: {
