@@ -33,7 +33,7 @@ export function ProgressiveDataGuideMobile({
   };
 
   return (
-    <div className="p-3 space-y-1 mt-2">
+    <div className="p-4 space-y-1 mt-2">
       {items.map((itemId) => {
         return (
           <Collapsible
