@@ -1,37 +1,48 @@
 import { Route, Routes } from "react-router-dom";
+import { Suspense, lazy } from "react";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { LanguageRedirect } from "@/components/LanguageRedirect";
-import { AboutPage } from "./pages/AboutPage";
-import { AuthCallback } from "./pages/AuthCallback";
-import { BlogDetailPage } from "./pages/BlogDetailPage";
-import { CompanyEditPage } from "./pages/CompanyEditPage";
-import { CompanyDetailPage } from "./pages/CompanyDetailPage";
-import { CompaniesPage } from "./pages/CompaniesPage";
-import DownloadsPage from "./pages/DownloadsPage";
-import { ErrorPage } from "./pages/ErrorPage";
-import { InsightsPage } from "./pages/InsightsPage";
 import { LandingPage } from "./pages/LandingPage";
-import { LearnMoreOverview } from "./pages/LearnMoreOverview";
-import { LearnMoreArticle } from "./pages/LearnMoreArticle";
-import { MethodsPage } from "./pages/MethodsPage";
-import { MunicipalitiesRankedPage } from "./pages/MunicipalitiesRankedPage";
-import { MunicipalitiesComparePage } from "./pages/MunicipalitiesComparePage";
-import { MunicipalityDetailPage } from "./pages/MunicipalityDetailPage";
-import { NotFoundPage } from "./pages/NotFoundPage";
-import { ReportsPage } from "./pages/ReportsPage";
-import { PrivacyPage } from "./pages/PrivacyPage";
-import ProductsPage from "./pages/ProductsPage";
-import { UnauthorizedErrorPage } from "./pages/error/UnauthorizedErrorPage";
-import { SupportPage } from "./pages/SupportPage";
-import { ValidationDashboard } from "./pages/internal-pages/ValidationDashboard";
-import { InternalDashboard } from "./pages/internal-pages/InternalDashboard";
-import { ReportLandingPage } from "./pages/ReportLandingPage";
-import { RequestsDashboard } from "./pages/internal-pages/RequestsDashboard";
-import { TrendAnalysisDashboard } from "./pages/internal-pages/TrendAnalysisDashboard";
+
+// Lazy load all pages except LandingPage for faster initial load
+const AboutPage = lazy(() => import("./pages/AboutPage").then(m => ({ default: m.AboutPage })));
+const AuthCallback = lazy(() => import("./pages/AuthCallback").then(m => ({ default: m.AuthCallback })));
+const BlogDetailPage = lazy(() => import("./pages/BlogDetailPage").then(m => ({ default: m.BlogDetailPage })));
+const CompanyEditPage = lazy(() => import("./pages/CompanyEditPage").then(m => ({ default: m.CompanyEditPage })));
+const CompanyDetailPage = lazy(() => import("./pages/CompanyDetailPage").then(m => ({ default: m.CompanyDetailPage })));
+const CompaniesPage = lazy(() => import("./pages/CompaniesPage").then(m => ({ default: m.CompaniesPage })));
+const DownloadsPage = lazy(() => import("./pages/DownloadsPage"));
+const ErrorPage = lazy(() => import("./pages/ErrorPage").then(m => ({ default: m.ErrorPage })));
+const InsightsPage = lazy(() => import("./pages/InsightsPage").then(m => ({ default: m.InsightsPage })));
+const LearnMoreOverview = lazy(() => import("./pages/LearnMoreOverview").then(m => ({ default: m.LearnMoreOverview })));
+const LearnMoreArticle = lazy(() => import("./pages/LearnMoreArticle").then(m => ({ default: m.LearnMoreArticle })));
+const MethodsPage = lazy(() => import("./pages/MethodsPage").then(m => ({ default: m.MethodsPage })));
+const MunicipalitiesRankedPage = lazy(() => import("./pages/MunicipalitiesRankedPage").then(m => ({ default: m.MunicipalitiesRankedPage })));
+const MunicipalitiesComparePage = lazy(() => import("./pages/MunicipalitiesComparePage").then(m => ({ default: m.MunicipalitiesComparePage })));
+const MunicipalityDetailPage = lazy(() => import("./pages/MunicipalityDetailPage").then(m => ({ default: m.MunicipalityDetailPage })));
+const NotFoundPage = lazy(() => import("./pages/NotFoundPage").then(m => ({ default: m.NotFoundPage })));
+const ReportsPage = lazy(() => import("./pages/ReportsPage").then(m => ({ default: m.ReportsPage })));
+const PrivacyPage = lazy(() => import("./pages/PrivacyPage").then(m => ({ default: m.PrivacyPage })));
+const ProductsPage = lazy(() => import("./pages/ProductsPage"));
+const UnauthorizedErrorPage = lazy(() => import("./pages/error/UnauthorizedErrorPage").then(m => ({ default: m.UnauthorizedErrorPage })));
+const SupportPage = lazy(() => import("./pages/SupportPage").then(m => ({ default: m.SupportPage })));
+const ValidationDashboard = lazy(() => import("./pages/internal-pages/ValidationDashboard").then(m => ({ default: m.ValidationDashboard })));
+const InternalDashboard = lazy(() => import("./pages/internal-pages/InternalDashboard").then(m => ({ default: m.InternalDashboard })));
+const ReportLandingPage = lazy(() => import("./pages/ReportLandingPage").then(m => ({ default: m.ReportLandingPage })));
+const RequestsDashboard = lazy(() => import("./pages/internal-pages/RequestsDashboard").then(m => ({ default: m.RequestsDashboard })));
+const TrendAnalysisDashboard = lazy(() => import("./pages/internal-pages/TrendAnalysisDashboard").then(m => ({ default: m.TrendAnalysisDashboard })));
+
+// Loading component
+const PageLoader = () => (
+  <div className="flex items-center justify-center min-h-[50vh]">
+    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-3"></div>
+  </div>
+);
 
 export function AppRoutes() {
   return (
-    <Routes>
+    <Suspense fallback={<PageLoader />}>
+      <Routes>
       {/* Language redirect for non-prefixed routes */}
       <Route path="/" element={<LanguageRedirect />} />
       <Route path="/license" element={<LanguageRedirect />} />
@@ -134,6 +145,7 @@ export function AppRoutes() {
 
       {/* Catch-all for 404 */}
       <Route path="*catchAll" element={<NotFoundPage />} />
-    </Routes>
+      </Routes>
+    </Suspense>
   );
 }
