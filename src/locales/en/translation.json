@@ -20,6 +20,7 @@
     "articles": "Articles",
     "reports": "Reports",
     "learnMore": "Learn More",
+    "newsletterArchive": "Newsletter Archive",
     "press": "Press"
   },
   "footer": {
@@ -1292,5 +1293,11 @@
     "exponentialMethodBetterFit": "Exponential trend used because it fits the data significantly better than linear trend. Suggests emissions are changing at accelerating or decelerating rate.",
     "recentExponentialMethodStrongPattern": "Recent exponential trend used because last 4 years show strong exponential pattern that is significantly better than linear. Focuses on most recent trend pattern.",
     "linearMethodDefault": "Linear trend used as default because data is sufficiently complete and shows consistent pattern without strong non-linear behavior or significant outliers."
+  },
+  "newsletterArchivePage": {
+    "title": "Newsletter archive",
+    "description": "Browse through all of the released newsletters",
+    "loading": "Loading...",
+    "error": "Error loading data"
   }
 }

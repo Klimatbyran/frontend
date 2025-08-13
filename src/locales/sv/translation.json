@@ -19,6 +19,7 @@
     "closeMenu": "Stäng meny",
     "articles": "Artiklar",
     "reports": "Rapporter",
+    "newsletterArchive": "Nyhetsbrevsarkiv",
     "learnMore": "Läs mer",
     "press": "Press"
   },
@@ -1292,5 +1293,11 @@
     "exponentialMethodBetterFit": "Exponentiell trend används eftersom den passar data betydligt bättre än linjär trend. Tyder på att utsläppen förändras i accelererande eller decelererande takt.",
     "recentExponentialMethodStrongPattern": "Senaste exponentiella trend används eftersom de senaste 4 åren visar starkt exponentiellt mönster som är betydligt bättre än linjärt. Fokuserar på senaste trendmönstret.",
     "linearMethodDefault": "Linjär trend används som standard eftersom data är tillräckligt komplett och visar konsekvent mönster utan starkt icke-linjärt beteende eller betydande avvikare."
+  },
+  "newsletterArchivePage": {
+    "title": "Nyhetsbrevsarkiv",
+    "description": "Titta igenom alla tidigare släppta nyhetsbrev",
+    "loading": "Laddar...",
+    "error": "Fel vid inläsning av data"
   }
 }

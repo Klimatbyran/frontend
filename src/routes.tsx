@@ -29,6 +29,8 @@ import { InternalDashboard } from "./pages/internal-pages/InternalDashboard";
 import { ReportLandingPage } from "./pages/ReportLandingPage";
 import { RequestsDashboard } from "./pages/internal-pages/RequestsDashboard";
 import { TrendAnalysisDashboard } from "./pages/internal-pages/TrendAnalysisDashboard";
+import { NewsLetterArchivePage } from "./pages/NewslettersPage";
+
 
 export function AppRoutes() {
   const { currentLanguage } = useLanguage();
@@ -112,6 +114,11 @@ export function AppRoutes() {
       />
       <Route path={`${basePath}/insights/:id`} element={<BlogDetailPage />} />
       <Route path={`${basePath}/learn-more`} element={<LearnMoreOverview />} />
+      <Route
+        path={`${basePath}/newsletter-archive`}
+        element={<NewsLetterArchivePage />}
+      />
+
       <Route
         path={`${basePath}/learn-more/:id`}
         element={<LearnMoreArticle />}
