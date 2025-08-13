@@ -25,7 +25,13 @@ export const useAuth = () => {
 };
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [token, setToken] = useState(localStorage.getItem("token") || "");
+  const [token, setToken] = useState(() => {
+    // Only access localStorage on the client side
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("token") || "";
+    }
+    return "";
+  });
   const user: Token | null = token ? jwtDecode(token) : null;
   const logoutTimeout = useRef<NodeJS.Timeout | null>(null);
 
@@ -66,11 +72,13 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, [token]);
 
   const login = () => {
-    localStorage.setItem(
-      "postLoginRedirect",
-      window.location.pathname + window.location.search,
-    );
-    window.location.href = baseUrl + "/auth/github";
+    if (typeof window !== "undefined") {
+      localStorage.setItem(
+        "postLoginRedirect",
+        window.location.pathname + window.location.search,
+      );
+      window.location.href = baseUrl + "/auth/github";
+    }
   };
 
   const authenticate = async (code: string) => {
@@ -78,7 +86,9 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const response = await authenticateWithGithub(code);
       if (response.token) {
         setToken(response.token);
-        localStorage.setItem("token", response.token);
+        if (typeof window !== "undefined") {
+          localStorage.setItem("token", response.token);
+        }
       }
       return true;
     } catch (error) {
@@ -89,7 +99,9 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const logout = () => {
     setToken("");
-    localStorage.removeItem("token");
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("token");
+    }
     if (logoutTimeout.current) {
       clearTimeout(logoutTimeout.current);
     }
