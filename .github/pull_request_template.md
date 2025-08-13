@@ -10,7 +10,7 @@
 ### 📋 Checklist
 
 - [ ] PR title starts with [#issue-number]; if no issue is applicable use: [fix], [feat], [prod], or [copy]
-- [ ] I've verified the change runs locally
+- [ ] I've verified the change runs locally both on mobile and desktop
 - [ ] I've set the labels, issue, and milestone for the PR
 - [ ] [OPTIONAL] I've created sub-tasks or follow-up issues as needed (check if NA)
 
