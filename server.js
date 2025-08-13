@@ -82,7 +82,7 @@ async function createServer() {
       if (!isProduction && vite) {
         vite.ssrFixStacktrace(e)
       }
-      console.error('SSR Error:', e)
+      console.error('SSR Error:', e.stack || e.message || e)
       
       // Fallback to client-side rendering on error
       let template
