@@ -17,13 +17,8 @@ export default ({ mode }: ConfigEnv) => {
           ],
         },
       }),
-      vike({
-        prerender: false
-      }),
+      vike(),
       markdown({ mode: ["html", "toc", "meta", "react"] as Mode[] }),
-    ],
-    extends: [
-      'vike-react/config'
     ],
     resolve: {
       alias: {
