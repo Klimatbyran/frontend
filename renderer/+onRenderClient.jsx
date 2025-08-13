@@ -3,7 +3,7 @@ export { onRenderClient }
 import ReactDOM from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import AuthProvider from "../src/contexts/AuthContext"
-import { LanguageProvider } from "../src/components/LanguageProvider"
+import { VikeLanguageProvider } from "./VikeLanguageProvider"
 
 // Import CSS
 import "../src/index.css"
@@ -24,13 +24,13 @@ async function onRenderClient(pageContext) {
     },
   })
 
-  // Wrap page with providers (utan HelmetProvider för nu)
+  // Wrap page with providers
   const pageWithProviders = (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <LanguageProvider>
+        <VikeLanguageProvider pageContext={pageContext}>
           <Page {...pageProps} />
-        </LanguageProvider>
+        </VikeLanguageProvider>
       </AuthProvider>
     </QueryClientProvider>
   )
