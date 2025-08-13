@@ -488,7 +488,7 @@
         "paragraph2": "Företagsdata hämtas från deras egna årsredovisningar och hållbarhetsrapporter.",
         "links": {
           "smhi": {
-            "title": "Nationell utsläppsdatabas",
+            "title": "Nationella emissionsdatabasen",
             "text": "Växthusgasutsläpp i kommunerna",
             "link": "https://nationellaemissionsdatabasen.smhi.se/"
           },
@@ -514,7 +514,7 @@
           },
           "sei": {
             "title": "Stockholm Environment Institute",
-            "text": "Hushållens konsumtionsbaserade utsläpp. Licens: CC BY-NC-ND 4.0 enligt Konsumtionskompassen. Stockholm Environment Institute.",
+            "text": "Hushållens konsumtionsbaserade utsläpp. Licens: CC BY-NC-ND 4.0 enligt Konsumtionskompassen",
             "link": "https://konsumtionskompassen.se/"
           },
           "powerCircle": {
