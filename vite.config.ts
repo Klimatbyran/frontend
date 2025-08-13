@@ -37,6 +37,12 @@ export default ({ mode }: ConfigEnv) => {
         },
       },
     },
+    ssr: {
+      noExternal: ['react-helmet-async']
+    },
+    optimizeDeps: {
+      include: ['react-helmet-async']
+    },
     base: "/",
   });
 };
