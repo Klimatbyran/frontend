@@ -1,5 +1,6 @@
 import { defineConfig, loadEnv, ConfigEnv } from "vite";
 import react from "@vitejs/plugin-react";
+import vike from "vike/plugin";
 import { plugin as markdown } from "vite-plugin-markdown";
 import { Mode } from "vite-plugin-markdown";
 
@@ -16,18 +17,21 @@ export default ({ mode }: ConfigEnv) => {
           ],
         },
       }),
+      vike({
+        prerender: false // Vi vill ha SSR, inte statisk pre-rendering
+      }),
       markdown({ mode: ["html", "toc", "meta", "react"] as Mode[] }),
     ],
     resolve: {
       alias: {
         "@": new URL("./src", import.meta.url).pathname,
-        "@lib": new URL("./src/lib", import.meta.url).pathname, // Fixes your import issue
+        "@lib": new URL("./src/lib", import.meta.url).pathname,
       },
     },
     server: {
       proxy: {
         "/api": {
-          target: env.VITE_API_PROXY ?? "http://localhost:3000/", // Default to local, override in CI/CD
+          target: env.VITE_API_PROXY ?? "http://localhost:3000/",
           changeOrigin: true,
           secure: false,
         },
