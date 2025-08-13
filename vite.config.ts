@@ -34,6 +34,9 @@ export default ({ mode }: ConfigEnv) => {
         },
       },
     },
+    ssr: {
+      noExternal: ["react-helmet-async", "react-router-dom"],
+    },
     base: "/",
     test: {
       environment: "jsdom",
