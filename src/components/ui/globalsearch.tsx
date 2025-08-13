@@ -18,6 +18,11 @@ const GlobalSearch = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { t } = useTranslation();
   const { isMobile } = useScreenSize();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const combinedData = useCombinedData();
 
@@ -85,7 +90,7 @@ const GlobalSearch = () => {
         ref={dropdownRef}
         className={`
           ${searchQuery === "" ? "hidden" : "flex-col"}
-          ${isMobile ? "max-h-[250px]" : "max-h-[300px]"}
+          ${isClient && isMobile ? "max-h-[250px]" : "max-h-[300px]"}
           ${!isDropdownOpen && "hidden"}
           ${searchResult.length > 0 ? "overflow-y-scroll" : "overflow-y-hidden"}
           w-[300px] top-28 absolute bg-black-2 rounded-xl`}
