@@ -5,7 +5,7 @@ import { MethodologyContent } from "@/components/methods/MethodContent";
 import { MethodologySearch } from "@/components/methods/MethodSearch";
 import { Search } from "lucide-react";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { PageSEO } from "@/components/SEO/PageSEO";
+import { useConfig } from "vike-react/useConfig";
 import { useScreenSize } from "@/hooks/useScreenSize";
 
 export function MethodsPage() {
@@ -15,23 +15,43 @@ export function MethodsPage() {
   const [showSearch, setShowSearch] = useState(false);
   const { isMobile } = useScreenSize();
   const contentRef = useRef<HTMLDivElement>(null);
+  const config = useConfig();
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [selectedMethod]);
 
-  // Prepare SEO data
-  const canonicalUrl = "https://klimatkollen.se/methodology";
-  const pageTitle = `${t("methodsPage.header.title")} - Klimatkollen`;
-  const pageDescription = t("methodsPage.header.description");
+  useEffect(() => {
+    const canonicalUrl = "https://klimatkollen.se/methodology";
+    const pageTitle = `${t("methodsPage.header.title")} - Klimatkollen`;
+    const pageDescription = t("methodsPage.header.description");
 
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    name: t("methodsPage.header.title"),
-    description: pageDescription,
-    url: canonicalUrl,
-  };
+    const structuredData = {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      name: t("methodsPage.header.title"),
+      description: pageDescription,
+      url: canonicalUrl,
+    };
+
+    config({
+      title: pageTitle,
+      description: pageDescription,
+      Head: () => (
+        <>
+          <meta property="og:title" content={pageTitle} />
+          <meta property="og:description" content={pageDescription} />
+          <meta property="og:type" content="website" />
+          <meta property="og:url" content={canonicalUrl} />
+          <meta property="og:image" content="/images/social-picture.png" />
+          <link rel="canonical" href={canonicalUrl} />
+          <script type="application/ld+json">
+            {JSON.stringify(structuredData)}
+          </script>
+        </>
+      ),
+    });
+  }, [t, config]);
 
   const toggleSearch = () => {
     setShowSearch(!showSearch);
@@ -44,12 +64,6 @@ export function MethodsPage() {
 
   return (
     <>
-      <PageSEO
-        title={pageTitle}
-        description={pageDescription}
-        canonicalUrl={canonicalUrl}
-        structuredData={structuredData}
-      />
       <div className="max-w-[1200px] mx-auto px-4 md:px-6 text-white">
         <PageHeader
           title={t("methodsPage.header.title")}

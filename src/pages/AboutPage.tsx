@@ -7,40 +7,52 @@ import { LinkButton } from "@/components/layout/LinkButton";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { useTranslation } from "react-i18next";
 import { MembersGrid } from "@/components/MembersGrid";
-import { PageSEO } from "@/components/SEO/PageSEO";
+import { useConfig } from "vike-react/useConfig";
 import { useEffect } from "react";
 
 export function AboutPage() {
   const { t } = useTranslation();
   const teamMembers = useTeamMembers();
   const boardMembers = useBoardMembers();
+  const config = useConfig();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+    
+    const canonicalUrl = "https://klimatkollen.se/about";
+    const pageTitle = `${t("aboutPage.header.title")} - Klimatkollen`;
+    const pageDescription = t("aboutPage.header.description");
 
-  // Prepare SEO data
-  const canonicalUrl = "https://klimatkollen.se/about";
-  const pageTitle = `${t("aboutPage.header.title")} - Klimatkollen`;
-  const pageDescription = t("aboutPage.header.description");
+    const structuredData = {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      name: "Klimatkollen",
+      url: "https://klimatkollen.se",
+      logo: "https://klimatkollen.se/images/social-picture.png",
+      description: pageDescription,
+    };
 
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: "Klimatkollen",
-    url: "https://klimatkollen.se",
-    logo: "https://klimatkollen.se/images/social-picture.png",
-    description: pageDescription,
-  };
+    config({
+      title: pageTitle,
+      description: pageDescription,
+      Head: () => (
+        <>
+          <meta property="og:title" content={pageTitle} />
+          <meta property="og:description" content={pageDescription} />
+          <meta property="og:type" content="website" />
+          <meta property="og:url" content={canonicalUrl} />
+          <meta property="og:image" content="/images/social-picture.png" />
+          <link rel="canonical" href={canonicalUrl} />
+          <script type="application/ld+json">
+            {JSON.stringify(structuredData)}
+          </script>
+        </>
+      ),
+    });
+  }, [t, config]);
 
   return (
     <>
-      <PageSEO
-        title={pageTitle}
-        description={pageDescription}
-        canonicalUrl={canonicalUrl}
-        structuredData={structuredData}
-      />
       <div className="max-w-[1200px] mx-auto">
         <PageHeader
           title={t("aboutPage.header.title")}

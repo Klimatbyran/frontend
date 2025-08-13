@@ -1,38 +1,53 @@
 import { useTranslation } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
-import { PageSEO } from "@/components/SEO/PageSEO";
+import { useConfig } from "vike-react/useConfig";
 import { Text } from "@/components/ui/text";
+import { useEffect } from "react";
 
 export function ErrorPage() {
   const { t } = useTranslation();
   const { code = "500" } = useParams<{ code?: string }>();
+  const config = useConfig();
 
   const errorCode = code || "500";
   const isServerError = errorCode.startsWith("5");
 
-  // Prepare SEO data
-  const canonicalUrl = `https://klimatkollen.se/error/${errorCode}`;
-  const pageTitle = `${errorCode} - ${t("errorPage.title")} - Klimatkollen`;
-  const pageDescription = t(
-    isServerError ? "errorPage.serverDescription" : "errorPage.description",
-  );
+  useEffect(() => {
+    const canonicalUrl = `https://klimatkollen.se/error/${errorCode}`;
+    const pageTitle = `${errorCode} - ${t("errorPage.title")} - Klimatkollen`;
+    const pageDescription = t(
+      isServerError ? "errorPage.serverDescription" : "errorPage.description",
+    );
 
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    name: t("errorPage.title"),
-    description: pageDescription,
-    url: canonicalUrl,
-  };
+    const structuredData = {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      name: t("errorPage.title"),
+      description: pageDescription,
+      url: canonicalUrl,
+    };
+
+    config({
+      title: pageTitle,
+      description: pageDescription,
+      Head: () => (
+        <>
+          <meta property="og:title" content={pageTitle} />
+          <meta property="og:description" content={pageDescription} />
+          <meta property="og:type" content="website" />
+          <meta property="og:url" content={canonicalUrl} />
+          <meta property="og:image" content="/images/social-picture.png" />
+          <link rel="canonical" href={canonicalUrl} />
+          <script type="application/ld+json">
+            {JSON.stringify(structuredData)}
+          </script>
+        </>
+      ),
+    });
+  }, [errorCode, isServerError, t, config]);
 
   return (
     <>
-      <PageSEO
-        title={pageTitle}
-        description={pageDescription}
-        canonicalUrl={canonicalUrl}
-        structuredData={structuredData}
-      />
       <div className="flex flex-col items-center justify-center min-h-[70vh] px-4 text-center">
         <Text variant="h1" className="text-6xl mb-4">
           {errorCode}

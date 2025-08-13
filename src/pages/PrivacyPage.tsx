@@ -3,21 +3,41 @@ import { Accordion } from "@/components/ui/accordion";
 import { AccordionGroup } from "../components/layout/AccordionGroup";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { useTranslation } from "react-i18next";
-import { PageSEO } from "@/components/SEO/PageSEO";
+import { useConfig } from "vike-react/useConfig";
+import { useEffect } from "react";
 
 export function PrivacyPage() {
   const { t } = useTranslation();
+  const config = useConfig();
+
+  useEffect(() => {
+    const canonicalUrl = "https://klimatkollen.se/privacy";
+    const pageTitle = t("privacyPage.seoTitle");
+    const pageDescription = t("privacyPage.seoDescription");
+
+    config({
+      title: pageTitle,
+      description: pageDescription,
+      Head: () => (
+        <>
+          <meta property="og:title" content={pageTitle} />
+          <meta property="og:description" content={pageDescription} />
+          <meta property="og:type" content="website" />
+          <meta property="og:url" content={canonicalUrl} />
+          <meta property="og:image" content="/images/social-picture.png" />
+          <link rel="canonical" href={canonicalUrl} />
+        </>
+      ),
+    });
+  }, [t, config]);
 
   return (
     <>
-      <PageSEO
-        title={t("privacyPage.seoTitle")}
-        description={t("privacyPage.seoDescription")}
-        canonicalUrl="https://klimatkollen.se/privacy"
-      >
+      {/* Hidden SEO content for search engines */}
+      <div className="sr-only">
         <h1>{t("privacyPage.seoHeading")}</h1>
         <p>{t("privacyPage.seoText")}</p>
-      </PageSEO>
+      </div>
 
       <div className="max-w-[1200px] mx-auto space-y-8">
         <PageHeader

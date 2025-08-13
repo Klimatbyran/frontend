@@ -5,7 +5,7 @@ import { blogMetadata } from "../lib/blog/blogPostsList";
 import { isMobile } from "react-device-detect";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { useTranslation } from "react-i18next";
-import { PageSEO } from "@/components/SEO/PageSEO";
+import { useConfig } from "vike-react/useConfig";
 import { useEffect } from "react";
 import { useLanguage } from "@/components/LanguageProvider";
 import { ContentGridPage } from "@/components/layout/ContentGridPage";

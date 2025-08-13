@@ -1,5 +1,5 @@
 import { PageHeader } from "@/components/layout/PageHeader";
-import { PageSEO } from "@/components/SEO/PageSEO";
+import { useConfig } from "vike-react/useConfig";
 import { useEffect } from "react";
 
 interface ContentItem {
@@ -32,20 +32,36 @@ export function ContentGridPage({
   structuredData,
   featuredPost,
 }: ContentGridPageProps) {
+  const config = useConfig();
+
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
-
-  const pageTitle = `${title} - Klimatkollen`;
+    
+    const pageTitle = `${title} - Klimatkollen`;
+    
+    config({
+      title: pageTitle,
+      description,
+      Head: () => (
+        <>
+          <meta property="og:title" content={pageTitle} />
+          <meta property="og:description" content={description} />
+          <meta property="og:type" content="website" />
+          <meta property="og:url" content={canonicalUrl} />
+          <meta property="og:image" content="/images/social-picture.png" />
+          <link rel="canonical" href={canonicalUrl} />
+          {structuredData && (
+            <script type="application/ld+json">
+              {JSON.stringify(structuredData)}
+            </script>
+          )}
+        </>
+      ),
+    });
+  }, [title, description, canonicalUrl, structuredData, config]);
 
   return (
     <>
-      <PageSEO
-        title={pageTitle}
-        description={description}
-        canonicalUrl={canonicalUrl}
-        structuredData={structuredData}
-      />
       <div className="w-full max-w-[1200px] mx-auto space-y-8">
         <PageHeader title={title} description={description} />
         {featuredPost && (

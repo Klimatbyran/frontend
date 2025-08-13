@@ -8,8 +8,8 @@ import { MunicipalitySection } from "@/components/municipalities/MunicipalitySec
 import { MunicipalityStatCard } from "@/components/municipalities/MunicipalityStatCard";
 import { MunicipalityLinkCard } from "@/components/municipalities/MunicipalityLinkCard";
 import { useTranslation } from "react-i18next";
-import { PageSEO } from "@/components/SEO/PageSEO";
-import { useState } from "react";
+import { useConfig } from "vike-react/useConfig";
+import { useState, useEffect } from "react";
 import {
   formatEmissionsAbsolute,
   formatPercent,
@@ -26,6 +26,7 @@ export function MunicipalityDetailPage() {
   const { id } = useParams<{ id: string }>();
   const { municipality, loading, error } = useMunicipalityDetails(id || "");
   const { currentLanguage } = useLanguage();
+  const config = useConfig();
 
   const { sectorEmissions, loading: _loadingSectors } =
     useMunicipalitySectorEmissions(id);
@@ -54,40 +55,55 @@ export function MunicipalityDetailPage() {
     ? formatEmissionsAbsolute(lastYearEmissions.value, currentLanguage)
     : "N/A";
 
-  // Prepare SEO data
-  const canonicalUrl = `https://klimatkollen.se/municipalities/${id}`;
-  const pageTitle = `${municipality.name} - ${t(
-    "municipalityDetailPage.metaTitle",
-  )} - Klimatkollen`;
-  const pageDescription = t("municipalityDetailPage.metaDescription", {
-    municipality: municipality.name,
-    emissions: lastYearEmissionsTon,
-    year: lastYear,
-  });
-
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "GovernmentOrganization",
-    name: `${municipality.name} kommun`,
-    description: pageDescription,
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: municipality.name,
-      addressRegion: municipality.region,
-      addressCountry: "SE",
-    },
-  };
-
   const evcp = municipality.electricVehiclePerChargePoints;
+
+  useEffect(() => {
+    const canonicalUrl = `https://klimatkollen.se/municipalities/${id}`;
+    const pageTitle = `${municipality.name} - ${t(
+      "municipalityDetailPage.metaTitle",
+    )} - Klimatkollen`;
+    const pageDescription = t("municipalityDetailPage.metaDescription", {
+      municipality: municipality.name,
+      emissions: lastYearEmissionsTon,
+      year: lastYear,
+    });
+
+    const structuredData = {
+      "@context": "https://schema.org",
+      "@type": "GovernmentOrganization",
+      name: `${municipality.name} kommun`,
+      description: pageDescription,
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: municipality.name,
+        addressRegion: municipality.region,
+        addressCountry: "SE",
+      },
+    };
+
+    config({
+      title: pageTitle,
+      description: pageDescription,
+      Head: () => (
+        <>
+          <meta property="og:title" content={pageTitle} />
+          <meta property="og:description" content={pageDescription} />
+          <meta property="og:type" content="website" />
+          <meta property="og:url" content={canonicalUrl} />
+          <meta property="og:image" content="/images/social-picture.png" />
+          <link rel="canonical" href={canonicalUrl} />
+          <script type="application/ld+json">
+            {JSON.stringify(structuredData)}
+          </script>
+        </>
+      ),
+    });
+  }, [municipality, lastYearEmissionsTon, lastYear, t, id, config]);
 
   return (
     <>
-      <PageSEO
-        title={pageTitle}
-        description={pageDescription}
-        canonicalUrl={canonicalUrl}
-        structuredData={structuredData}
-      >
+      {/* Hidden SEO content for search engines */}
+      <div className="sr-only">
         <h1>
           {municipality.name} - {t("municipalityDetailPage.parisAgreement")}
         </h1>
@@ -117,7 +133,7 @@ export function MunicipalityDetailPage() {
               t("municipalityDetailPage.budgetHolds"),
           })}
         </p>
-        <h2>{t("municipalityDetailPage.seoText.consumptionHeading")}</h2>{" "}
+        <h2>{t("municipalityDetailPage.seoText.consumptionHeading")}</h2>
         <p>
           {t("municipalityDetailPage.seoText.consumptionText", {
             municipality: municipality.name,
@@ -132,7 +148,7 @@ export function MunicipalityDetailPage() {
             evGrowth: municipality.electricCarChangePercent.toFixed(1),
           })}
         </p>
-      </PageSEO>
+      </div>
 
       <div className="space-y-16 max-w-[1400px] mx-auto">
         <div className="bg-black-2 rounded-level-1 p-8 md:p-16">

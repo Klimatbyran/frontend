@@ -12,7 +12,8 @@ import { useTranslation } from "react-i18next";
 import { ProductCard } from "@/components/products/ProductCard";
 import { useState } from "react";
 import { RequestAccessModal } from "@/components/products/RequestAccessModal";
-import { PageSEO } from "@/components/SEO/PageSEO";
+import { useConfig } from "vike-react/useConfig";
+import { useEffect } from "react";
 
 interface DataCategoryProps {
   icon: React.ReactNode;
@@ -51,6 +52,7 @@ const DataCategory = ({
 function ProductsPage() {
   const { t } = useTranslation();
   const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
+  const config = useConfig();
 
   const apiFeatures = [
     {
@@ -120,27 +122,40 @@ function ProductsPage() {
     </>
   );
 
-  // Prepare SEO data
-  const canonicalUrl = "https://klimatkollen.se/products";
-  const pageTitle = `${t("productsPage.title")} - Klimatkollen`;
-  const pageDescription = t("productsPage.description");
+  useEffect(() => {
+    const canonicalUrl = "https://klimatkollen.se/products";
+    const pageTitle = `${t("productsPage.title")} - Klimatkollen`;
+    const pageDescription = t("productsPage.description");
 
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    name: t("productsPage.title"),
-    description: pageDescription,
-    url: canonicalUrl,
-  };
+    const structuredData = {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      name: t("productsPage.title"),
+      description: pageDescription,
+      url: canonicalUrl,
+    };
+
+    config({
+      title: pageTitle,
+      description: pageDescription,
+      Head: () => (
+        <>
+          <meta property="og:title" content={pageTitle} />
+          <meta property="og:description" content={pageDescription} />
+          <meta property="og:type" content="website" />
+          <meta property="og:url" content={canonicalUrl} />
+          <meta property="og:image" content="/images/social-picture.png" />
+          <link rel="canonical" href={canonicalUrl} />
+          <script type="application/ld+json">
+            {JSON.stringify(structuredData)}
+          </script>
+        </>
+      ),
+    });
+  }, [t, config]);
 
   return (
     <>
-      <PageSEO
-        title={pageTitle}
-        description={pageDescription}
-        canonicalUrl={canonicalUrl}
-        structuredData={structuredData}
-      />
 
       <div className="max-w-[1200px] mx-auto">
         <PageHeader

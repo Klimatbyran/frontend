@@ -5,7 +5,7 @@ import { Typewriter } from "@/components/ui/typewriter";
 import { useCompanies } from "@/hooks/companies/useCompanies";
 import { useMunicipalities } from "@/hooks/useMunicipalities";
 import { useTranslation } from "react-i18next";
-import { PageSEO } from "@/components/SEO/PageSEO";
+import { useConfig } from "vike-react/useConfig";
 import { useEffect } from "react";
 import { useLanguage } from "@/components/LanguageProvider";
 import {
@@ -21,24 +21,42 @@ export function LandingPage() {
   const { getTopMunicipalities } = useMunicipalities();
   const { currentLanguage } = useLanguage();
   const combinedData: CombinedData[] = useCombinedData();
+  const config = useConfig();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+    
+    const canonicalUrl = "https://klimatkollen.se";
+    const pageTitle = `Klimatkollen - ${t("landingPage.metaTitle")}`;
+    const pageDescription = t("landingPage.metaDescription");
 
-  // Prepare SEO data
-  const canonicalUrl = "https://klimatkollen.se";
-  const pageTitle = `Klimatkollen - ${t("landingPage.metaTitle")}`;
-  const pageDescription = t("landingPage.metaDescription");
+    const structuredData = {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      name: "Klimatkollen",
+      url: canonicalUrl,
+      logo: "https://klimatkollen.se/images/social-picture.png",
+      description: pageDescription,
+    };
 
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: "Klimatkollen",
-    url: canonicalUrl,
-    logo: "https://klimatkollen.se/images/social-picture.png",
-    description: pageDescription,
-  };
+    config({
+      title: pageTitle,
+      description: pageDescription,
+      Head: () => (
+        <>
+          <meta property="og:title" content={pageTitle} />
+          <meta property="og:description" content={pageDescription} />
+          <meta property="og:type" content="website" />
+          <meta property="og:url" content={canonicalUrl} />
+          <meta property="og:image" content="/images/social-picture.png" />
+          <link rel="canonical" href={canonicalUrl} />
+          <script type="application/ld+json">
+            {JSON.stringify(structuredData)}
+          </script>
+        </>
+      ),
+    });
+  }, [t, config]);
 
   const TypeWriterTexts = [
     t("landingPage.typewriter.reduceEmissions"),
@@ -99,12 +117,6 @@ export function LandingPage() {
 
   return (
     <>
-      <PageSEO
-        title={pageTitle}
-        description={pageDescription}
-        canonicalUrl={canonicalUrl}
-        structuredData={structuredData}
-      />
       <div className="flex flex-col">
         <div className="flex-1 flex flex-col items-center text-center px-4 py-14 md:py-24">
           <div className="max-w-lg md:max-w-4xl mx-auto space-y-4">

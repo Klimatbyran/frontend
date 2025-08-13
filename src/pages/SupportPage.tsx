@@ -2,7 +2,8 @@ import { useTranslation } from "react-i18next";
 import { Heart, Code, Handshake, Building, Users } from "lucide-react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { SupportMethod } from "@/components/support/SupportMethod";
-import { PageSEO } from "@/components/SEO/PageSEO";
+import { useConfig } from "vike-react/useConfig";
+import { useEffect } from "react";
 
 type SupportReadMoreContent = {
   header: string;
@@ -14,19 +15,39 @@ type SupportReadMoreContent = {
 
 export function SupportPage() {
   const { t } = useTranslation();
+  const config = useConfig();
 
-  // Prepare SEO data
-  const canonicalUrl = "https://klimatkollen.se/support";
-  const pageTitle = `${t("supportPage.header.title")} - Klimatkollen`;
-  const pageDescription = t("supportPage.header.description");
+  useEffect(() => {
+    const canonicalUrl = "https://klimatkollen.se/support";
+    const pageTitle = `${t("supportPage.header.title")} - Klimatkollen`;
+    const pageDescription = t("supportPage.header.description");
 
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    name: t("supportPage.header.title"),
-    description: pageDescription,
-    url: canonicalUrl,
-  };
+    const structuredData = {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      name: t("supportPage.header.title"),
+      description: pageDescription,
+      url: canonicalUrl,
+    };
+
+    config({
+      title: pageTitle,
+      description: pageDescription,
+      Head: () => (
+        <>
+          <meta property="og:title" content={pageTitle} />
+          <meta property="og:description" content={pageDescription} />
+          <meta property="og:type" content="website" />
+          <meta property="og:url" content={canonicalUrl} />
+          <meta property="og:image" content="/images/social-picture.png" />
+          <link rel="canonical" href={canonicalUrl} />
+          <script type="application/ld+json">
+            {JSON.stringify(structuredData)}
+          </script>
+        </>
+      ),
+    });
+  }, [t, config]);
 
   const partnerEmailLink = `mailto:hej@klimatkollen.se?subject=${encodeURIComponent(t("supportPage.partnerships.email.subject"))}&body=${encodeURIComponent(t("supportPage.partnerships.email.body"))}`;
   const donateEmailLink = `mailto:hej@klimatkollen.se?subject=${encodeURIComponent(t("supportPage.donations.email.subject"))}&body=${encodeURIComponent(t("supportPage.donations.email.body"))}`;
@@ -34,12 +55,6 @@ export function SupportPage() {
 
   return (
     <>
-      <PageSEO
-        title={pageTitle}
-        description={pageDescription}
-        canonicalUrl={canonicalUrl}
-        structuredData={structuredData}
-      />
       <div className="max-w-[1200px] mx-auto px-4 md:px-6 text-white">
         <PageHeader
           title={t("supportPage.header.title")}

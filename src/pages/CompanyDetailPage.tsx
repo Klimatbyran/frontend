@@ -5,7 +5,7 @@ import { CompanyOverview } from "@/components/companies/detail/overview/CompanyO
 import { CompanyHistory } from "@/components/companies/detail/CompanyHistory";
 import { Text } from "@/components/ui/text";
 import { useTranslation } from "react-i18next";
-import { PageSEO } from "@/components/SEO/PageSEO";
+import { useConfig } from "vike-react/useConfig";
 import { createSlug } from "@/lib/utils";
 import { CompanyScope3 } from "@/components/companies/detail/CompanyScope3";
 import { useDataGuide } from "@/data-guide/useDataGuide";
@@ -17,6 +17,7 @@ export function CompanyDetailPage() {
   // It's either directly from /companies/:id or extracted from /foretag/:slug-:id
   const { company, loading, error } = useCompanyDetails(id!);
   const [selectedYear, setSelectedYear] = useState<string>("latest");
+  const config = useConfig();
 
   useDataGuide(["changeRates", "companySector", "companyTurnover", "tco2e"]);
 
@@ -114,14 +115,30 @@ export function CompanyDetailPage() {
     industry: industry,
   };
 
+  useEffect(() => {
+    config({
+      title: pageTitle,
+      description: pageDescription,
+      Head: () => (
+        <>
+          <meta property="og:title" content={pageTitle} />
+          <meta property="og:description" content={pageDescription} />
+          <meta property="og:type" content="website" />
+          <meta property="og:url" content={canonicalUrl} />
+          <meta property="og:image" content="/images/social-picture.png" />
+          <link rel="canonical" href={canonicalUrl} />
+          <script type="application/ld+json">
+            {JSON.stringify(structuredData)}
+          </script>
+        </>
+      ),
+    });
+  }, [pageTitle, pageDescription, canonicalUrl, structuredData, config]);
+
   return (
     <>
-      <PageSEO
-        title={pageTitle}
-        description={pageDescription}
-        canonicalUrl={canonicalUrl}
-        structuredData={structuredData}
-      >
+      {/* Hidden SEO content for search engines */}
+      <div className="sr-only">
         <h1>
           {company.name} - {t("companyDetailPage.seoText.climateData")}
         </h1>
@@ -166,7 +183,7 @@ export function CompanyDetailPage() {
             </p>
           </>
         )}
-      </PageSEO>
+      </div>
 
       <div className="space-y-8 md:space-y-16 max-w-[1400px] mx-auto">
         <CompanyOverview
