@@ -62,8 +62,11 @@ async function createServer() {
       if (!isProduction && vite) {
         vite.ssrFixStacktrace(e)
       }
-      console.error(e)
-      next(e)
+      console.error('SSR Error:', e)
+      
+      // Fallback to client-side rendering on error
+      const html = template.replace(`<!--ssr-outlet-->`, '')
+      res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
     }
   })
 

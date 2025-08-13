@@ -35,7 +35,13 @@ export default ({ mode }: ConfigEnv) => {
       },
     },
     ssr: {
-      noExternal: ["react-helmet-async", "react-router-dom"],
+      noExternal: [
+        "react-helmet-async", 
+        "react-router-dom", 
+        "react-router", 
+        "@remix-run/router",
+        "path-to-regexp"
+      ],
     },
     base: "/",
     test: {
