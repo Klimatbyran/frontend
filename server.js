@@ -54,8 +54,28 @@ async function createServer() {
       // Render the app HTML
       const { html: appHtml, helmetContext } = await render(url)
 
-      // Inject the app-rendered HTML into the template
-      const html = template.replace(`<!--ssr-outlet-->`, appHtml)
+      // Extract helmet data
+      const { helmet } = helmetContext
+      
+      // Inject helmet data and app HTML into template
+      let html = template
+      if (helmet) {
+        // Replace title
+        if (helmet.title) {
+          html = html.replace(/<title>.*?<\/title>/, helmet.title.toString())
+        }
+        // Inject meta tags before closing head
+        if (helmet.meta) {
+          html = html.replace('</head>', `${helmet.meta.toString()}</head>`)
+        }
+        // Inject link tags before closing head  
+        if (helmet.link) {
+          html = html.replace('</head>', `${helmet.link.toString()}</head>`)
+        }
+      }
+      
+      // Inject the app-rendered HTML
+      html = html.replace(`<!--ssr-outlet-->`, appHtml)
 
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
     } catch (e) {
