@@ -20,6 +20,7 @@
     "articles": "Articles",
     "reports": "Reports",
     "learnMore": "Learn More",
+    "newsletterArchive": "Newsletter Archive",
     "press": "Press"
   },
   "footer": {
@@ -513,8 +514,8 @@
             "link": "https://www.nvdb.se/sv"
           },
           "sei": {
-            "title": "Stockholm Environment Institute",
-            "text": "Household consumption-based emissions. License: CC BY-NC-ND 4.0 for Konsumtionskompassen by Stockholm Environment Institute.",
+            "title": "Stockholm Environment Institute (SEI)",
+            "text": "Household consumption-based emissions. Konsumtionskompassen, 2025. CC BY-NC-ND 4.0",
             "link": "https://konsumtionskompassen.se/"
           },
           "powerCircle": {
@@ -524,7 +525,8 @@
           },
           "klimatplaner": {
             "title": "Climate Plans",
-            "text": "Collected by members of Klimatklubben and the Swedish Society for Nature Conservation"
+            "text": "Collected by members of Klimatklubben and the Swedish Society for Nature Conservation",
+            "link": "https://docs.google.com/spreadsheets/d/13CMqmfdd6QUD6agKFyVhwZUol4PKzvy253_EwtsFyvw/edit?fbclid=IwAR0v0cq0_xhFVlhhVn5fP-TNkOPVRXbOTKzTVWI_PMr_yU2rXOLjcN6jSps#gid=0"
           },
           "upphandlingsmyndigheten": {
             "title": "Procurement Authority",
@@ -1115,7 +1117,7 @@
           "description": "Number of electric vehicles per charging point",
           "detailedDescription": "Number of electric vehicles per public charging point, per municipality in 2024. Lower numbers are better, as good infrastructure promotes increased electric vehicle adoption.",
           "source": "<0>Power Circle</0>",
-          "nullValues": "no charging points"
+          "nullValues": "No charging points"
         },
         "bicycleMetrePerCapita": {
           "label": "Bicycles",
@@ -1317,5 +1319,11 @@
     "exponentialMethodBetterFit": "Exponential trend used because it fits the data significantly better than linear trend. Suggests emissions are changing at accelerating or decelerating rate.",
     "recentExponentialMethodStrongPattern": "Recent exponential trend used because last 4 years show strong exponential pattern that is significantly better than linear. Focuses on most recent trend pattern.",
     "linearMethodDefault": "Linear trend used as default because data is sufficiently complete or does not show strong non-linear behavior or significant outliers."
+},
+  "newsletterArchivePage": {
+    "title": "Newsletter archive",
+    "description": "Browse through all of the released newsletters",
+    "loading": "Loading...",
+    "error": "Error loading data"
   }
 }

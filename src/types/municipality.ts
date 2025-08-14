@@ -130,6 +130,23 @@ export function transformEmissionsData(municipality: Municipality) {
     .filter((d) => d.year >= 1990 && d.year <= 2050);
 }
 
+export function getSortedMunicipalKPIValues(municipalities: Municipality[], kpi: KPIValue){
+  return [...municipalities].sort((a, b) => {
+    const aValue = a[kpi.key] ?? null;
+    const bValue = b[kpi.key] ?? null;
+
+    if(aValue === null && bValue === null){
+      return 0;
+    } else if(aValue === null){
+      return 1;
+    } else if(bValue === null){
+      return -1;
+    }
+
+    return kpi.higherIsBetter ? (bValue as number) - (aValue as number) : (aValue as number) - (bValue as number);
+  });
+}
+
 export type DataPoint = {
   year: number;
   total: number | undefined;

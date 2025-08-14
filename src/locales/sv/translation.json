@@ -19,6 +19,7 @@
     "closeMenu": "Stäng meny",
     "articles": "Artiklar",
     "reports": "Rapporter",
+    "newsletterArchive": "Nyhetsbrevsarkiv",
     "learnMore": "Läs mer",
     "press": "Press"
   },
@@ -488,7 +489,7 @@
         "paragraph2": "Företagsdata hämtas från deras egna årsredovisningar och hållbarhetsrapporter.",
         "links": {
           "smhi": {
-            "title": "Nationell utsläppsdatabas",
+            "title": "Nationella emissionsdatabasen",
             "text": "Växthusgasutsläpp i kommunerna",
             "link": "https://nationellaemissionsdatabasen.smhi.se/"
           },
@@ -513,8 +514,8 @@
             "link": "https://www.nvdb.se/sv"
           },
           "sei": {
-            "title": "Stockholm Environment Institute",
-            "text": "Hushållens konsumtionsbaserade utsläpp. Licens: CC BY-NC-ND 4.0 enligt Konsumtionskompassen. Stockholm Environment Institute.",
+            "title": "Stockholm Environment Institute (SEI)",
+            "text": "Hushållens konsumtionsbaserade utsläpp. Konsumtionskompassen, 2025. CC BY-NC-ND 4.0",
             "link": "https://konsumtionskompassen.se/"
           },
           "powerCircle": {
@@ -524,7 +525,8 @@
           },
           "klimatplaner": {
             "title": "Klimatplaner",
-            "text": "Insamlade av medlemmar i Klimatklubben och Naturskyddsföreningen"
+            "text": "Insamlade av medlemmar i Klimatklubben och Naturskyddsföreningen",
+            "link": "https://docs.google.com/spreadsheets/d/13CMqmfdd6QUD6agKFyVhwZUol4PKzvy253_EwtsFyvw/edit?fbclid=IwAR0v0cq0_xhFVlhhVn5fP-TNkOPVRXbOTKzTVWI_PMr_yU2rXOLjcN6jSps#gid=0"
           },
           "upphandlingsmyndigheten": {
             "title": "Upphandlingsmyndigheten",
@@ -1115,7 +1117,7 @@
           "description": "Antal elbilar per laddningspunkt",
           "detailedDescription": "Antal elbilar per publik laddningspunkt per kommun år 2024. Ju färre bilar per laddningspunkt desto bättre, god infrastruktur gynnar ökad elbilskonsumtion",
           "source": "<0>Power Circle</0>",
-          "nullValues": "saknar laddpunkter"
+          "nullValues": "Saknar laddpunkter"
         },
         "bicycleMetrePerCapita": {
           "label": "Cyklarna",
@@ -1317,5 +1319,11 @@
     "exponentialMethodBetterFit": "Exponentiell trend används eftersom den passar data betydligt bättre än linjär trend. Tyder på att utsläppen förändras i accelererande eller decelererande takt.",
     "recentExponentialMethodStrongPattern": "Senaste exponentiella trend används eftersom de senaste 4 åren visar starkt exponentiellt mönster som är betydligt bättre än linjärt. Fokuserar på senaste trendmönstret.",
     "linearMethodDefault": "Linjär trend används som standard eftersom data är tillräckligt komplett och visar konsekvent mönster utan starkt icke-linjärt beteende eller betydande avvikare."
+  },
+  "newsletterArchivePage": {
+    "title": "Nyhetsbrevsarkiv",
+    "description": "Titta igenom alla tidigare släppta nyhetsbrev",
+    "loading": "Laddar...",
+    "error": "Fel vid inläsning av data"
   }
 }

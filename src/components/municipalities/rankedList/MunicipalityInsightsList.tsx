@@ -9,6 +9,7 @@ interface InsightsListProps {
   textColor: string;
   totalCount: number;
   isBottomRanking?: boolean;
+  nullValues?: string;
 }
 
 function InsightsList({
@@ -19,6 +20,7 @@ function InsightsList({
   textColor,
   totalCount,
   isBottomRanking = false,
+  nullValues,
 }: InsightsListProps) {
   return (
     <div className="bg-white/10 rounded-level-2 p-4 md:p-6">
@@ -38,8 +40,7 @@ function InsightsList({
                 <span>{municipality.name}</span>
               </div>
               <span className={`${textColor} font-semibold`}>
-                {(municipality[dataPointKey] as number).toFixed(1)}
-                {unit}
+                {municipality[dataPointKey] != null ? (municipality[dataPointKey] as number).toFixed(1) + unit : nullValues }
               </span>
             </div>
           </Link>

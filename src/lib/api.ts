@@ -256,3 +256,16 @@ export async function getIndustryGics() {
   if (error) throw error;
   return data;
 }
+
+export const fetchNewsletters = async () => {
+  try {
+    const response = await fetch(`${baseUrl}/newsletters/`);
+
+    if (response.ok) {
+      const result = await response.json();
+      return result;
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};

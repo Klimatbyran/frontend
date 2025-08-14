@@ -174,7 +174,7 @@ export function LandingPage() {
       </div>
 
       <div className="pb-8 md:pb-16">
-        <div className="container mx-auto">
+        <div className="mx-2 sm:mx-8">
           <ContentBlock
             title={t("landingPage.aboutUsTitle")}
             content={t("landingPage.aboutUsContent")}
