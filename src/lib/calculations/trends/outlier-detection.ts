@@ -148,6 +148,69 @@ export function checkIfScope3Justified(
 }
 
 /**
+ * Detect phase changes in emissions data that indicate significant shifts in reporting or operations
+ * Returns information about detected phase changes for dashboard display
+ */
+export function detectPhaseChanges(
+  data: DataPoint[],
+  threshold: number = 0.6, // 60% change threshold
+): {
+  hasPhaseChanges: boolean;
+  phaseChanges?: Array<{
+    year: number;
+    fromValue: number;
+    toValue: number;
+    changePercentage: number;
+    reason: string;
+  }>;
+} {
+  if (!data?.length || data.length < 4) {
+    return { hasPhaseChanges: false };
+  }
+
+  const sortedData = [...data].sort((a, b) => a.year - b.year);
+  const phaseChanges: Array<{
+    year: number;
+    fromValue: number;
+    toValue: number;
+    changePercentage: number;
+    reason: string;
+  }> = [];
+
+  for (let i = 1; i < sortedData.length; i++) {
+    const current = sortedData[i];
+    const previous = sortedData[i - 1];
+
+    if (previous.value > 0) {
+      const changePercentage =
+        Math.abs(current.value - previous.value) / previous.value;
+
+      if (changePercentage > threshold) {
+        const direction =
+          current.value > previous.value ? "increase" : "decrease";
+        const reason =
+          changePercentage > 2 ? "major_phase_change" : "phase_change";
+
+        // Mark the PREVIOUS year as the phase change (the last year of the old phase)
+        // This way we filter out the old phase and keep the new stable phase
+        phaseChanges.push({
+          year: previous.year, // Changed from current.year to previous.year
+          fromValue: previous.value,
+          toValue: current.value,
+          changePercentage: changePercentage * 100, // Convert to percentage
+          reason: `${direction} of ${(changePercentage * 100).toFixed(1)}% from ${previous.year} to ${current.year} - marking ${previous.year} as end of old phase`,
+        });
+      }
+    }
+  }
+
+  return {
+    hasPhaseChanges: phaseChanges.length > 0,
+    phaseChanges: phaseChanges.length > 0 ? phaseChanges : undefined,
+  };
+}
+
+/**
  * Enhanced unusual points detection that considers both relative and absolute changes
  */
 export function detectUnusualEmissionsPointsEnhanced(
@@ -168,10 +231,20 @@ export function detectUnusualEmissionsPointsEnhanced(
     direction: string;
     reason: string;
   }[];
+  phaseChanges?: Array<{
+    year: number;
+    fromValue: number;
+    toValue: number;
+    changePercentage: number;
+    reason: string;
+  }>;
 } {
   if (!data?.length || data.length < 4) {
     return { hasUnusualPoints: false };
   }
+
+  // Detect phase changes first
+  const phaseChangeResult = detectPhaseChanges(data);
 
   // Sort by year to ensure chronological order
   const sortedData = [...data].sort((a, b) => a.year - b.year);
@@ -210,7 +283,10 @@ export function detectUnusualEmissionsPointsEnhanced(
   }
 
   if (yearOverYearChanges.length === 0) {
-    return { hasUnusualPoints: false };
+    return {
+      hasUnusualPoints: false,
+      phaseChanges: phaseChangeResult.phaseChanges,
+    };
   }
 
   // Calculate thresholds
@@ -252,5 +328,6 @@ export function detectUnusualEmissionsPointsEnhanced(
   return {
     hasUnusualPoints,
     details: hasUnusualPoints ? details : undefined,
+    phaseChanges: phaseChangeResult.phaseChanges,
   };
 }

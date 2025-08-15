@@ -947,7 +947,33 @@
       "trend": "Trend",
       "carbonLaw": "Paris Agreement",
       "trendInfo": "Approximated value is based on average change of {{percentage}} since {{baseYear}} for all reporting periods",
-      "exploreStep0Description": "This section shows all emissions data before the selected base year. This data before the base year is considered incomplete or un-comparable. This is often due to companies developing their reporting process or years before they had enough/all the data."
+      "exploreStep0Description": "This shows emissions data from before the company's base year. While historically interesting, this data is often unreliable for predicting future trends because companies were still developing their measurement methods and may have used different reporting standards.",
+      "exploreStep0Label": "Historical Data (Before Base Year)",
+      "exploreStep1Label": "Reliable Company Data",
+      "exploreStep1Description": "This shows the company's emissions from their base year to the most recent reporting period. This data is considered reliable and comparable because the company has established measurement methods and consistent reporting standards.",
+      "exploreStep2Label": "Future Trend Projection",
+      "exploreStep2Description": "This shows our best estimate of how the company's emissions might change in the future, based on their recent performance. We calculate this trend carefully, but it's important to note that predicting emissions is challenging - companies often have few data points and emissions can vary significantly from year to year.",
+      "exploreStep3Label": "Paris Agreement Target Path",
+      "exploreStep3Description": "This green line shows the emissions reduction path needed to meet the Paris Agreement goals. The target is to reduce emissions by about 11.7% each year, which means roughly halving emissions every 5-6 years. This is the global standard for climate action.",
+      "exploreStep4Label": "2050 Comparison",
+      "exploreStep4Description": "This step shows where the company's trend line and the Paris target path end up in 2050. While a company might only be slightly above or below target in 2050, the next step will show why the cumulative impact over many years is what really matters.",
+      "exploreStep5Label": "Cumulative Impact",
+      "exploreStep5Description": "This step reveals the true story: it's not just about where we end up in 2050, but about the total emissions over the entire journey. Think of it like a bank account - small differences in spending each month add up to big differences over years. The shaded areas show the total emissions 'debt' or 'savings' compared to the Paris target.",
+      "trendExplanationFallback": "This trend line shows our best estimate of future emissions based on the company's recent performance. We use statistical methods to calculate this, but predictions become less certain the further into the future we look.",
+      "exploreBackButton": "Back",
+      "exploreNextButton": "Next",
+      "exploreExitButton": "Exit",
+      "baseYearLabel": "Base Year",
+      "underParisTarget": "under Paris target",
+      "overParisTarget": "over Paris target",
+      "parisAlignedPathLabel": "Estimated Emissions For Paris Aligned Path",
+      "companyEmissionsLabel": "Estimated Company Emissions",
+      "budgetStatusLabel": "Budget Status",
+      "underBudget": "Under budget",
+      "overBudget": "Over budget",
+      "cumulativePeriod": "2025-2050 cumulative",
+      "totalEmissionsSaved": "total emissions saved vs Paris target",
+      "totalEmissionsExcess": "total emissions excess vs Paris target"
     },
     "list": {
       "error": {
@@ -1292,8 +1318,8 @@
     "weightedLinearMethodStable": "Weighted linear trend used because recent years show stable emissions (variation < 10% of average). Emphasizes recent stable data for current trend representation.",
     "exponentialMethodBetterFit": "Exponential trend used because it fits the data significantly better than linear trend. Suggests emissions are changing at accelerating or decelerating rate.",
     "recentExponentialMethodStrongPattern": "Recent exponential trend used because last 4 years show strong exponential pattern that is significantly better than linear. Focuses on most recent trend pattern.",
-    "linearMethodDefault": "Linear trend used as default because data is sufficiently complete and shows consistent pattern without strong non-linear behavior or significant outliers."
-  },
+    "linearMethodDefault": "Linear trend used as default because data is sufficiently complete or does not show strong non-linear behavior or significant outliers."
+},
   "newsletterArchivePage": {
     "title": "Newsletter archive",
     "description": "Read previous newsletters",

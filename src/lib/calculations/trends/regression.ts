@@ -22,6 +22,16 @@ export const calculateWeightedLinearRegression = (data: DataPoint[]) => {
   const decay = 0.7;
   const weights = sortedData.map((_, index) => Math.pow(decay, n - 1 - index));
 
+  // Debug logging
+  console.log("Weighted Linear Debug:", {
+    data: sortedData.map((d) => ({ year: d.year, value: d.value })),
+    weights: weights.map((w, i) => ({
+      year: sortedData[i].year,
+      weight: w.toFixed(4),
+    })),
+    decay,
+  });
+
   let sumW = 0;
   let sumWX = 0;
   let sumWY = 0;
@@ -43,6 +53,16 @@ export const calculateWeightedLinearRegression = (data: DataPoint[]) => {
     (sumW * sumWXY - sumWX * sumWY) / (sumW * sumWXX - sumWX * sumWX);
   const lastPoint = sortedData[sortedData.length - 1];
   const intercept = lastPoint.value - slope * lastPoint.year;
+
+  console.log("Weighted Linear Result:", {
+    slope,
+    intercept,
+    sumW,
+    sumWX,
+    sumWY,
+    sumWXY,
+    sumWXX,
+  });
 
   return { slope, intercept };
 };
