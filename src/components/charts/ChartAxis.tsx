@@ -1,103 +1,94 @@
+import React from "react";
 import { XAxis, YAxis } from "recharts";
+import { useLanguage } from "@/components/LanguageProvider";
 import { formatEmissionsAbsoluteCompact } from "@/utils/formatting/localization";
 
-interface BaseAxisProps {
-  stroke?: string;
-  tickLine?: boolean | { stroke: string };
-  axisLine?: boolean | { stroke: string };
-  tick?: any;
-  padding?: { top?: number; bottom?: number; left?: number; right?: number };
-}
+interface ChartAxisProps {
+  // X-Axis props
+  xAxisDataKey?: string;
+  xAxisDomain?: [number, number];
+  xAxisTicks?: number[];
+  xAxisPadding?: { left: number; right: number };
+  xAxisTickFormatter?: (value: any) => string;
 
-interface XAxisProps extends BaseAxisProps {
-  dataKey: string;
-  type?: "number" | "category";
-  domain?: [number, number] | [string, string];
-  ticks?: number[] | string[];
-  allowDuplicatedCategory?: boolean;
-  tickFormatter?: (value: any) => string;
-  customTickRenderer?: (props: {
-    x: number;
-    y: number;
-    payload: any;
-  }) => React.ReactNode;
-}
+  // Y-Axis props
+  yAxisTickFormatter?: (value: any) => string;
+  yAxisWidth?: number;
+  yAxisDomain?: [number, number];
+  yAxisPadding?: { top: number; bottom: number };
 
-interface YAxisProps extends BaseAxisProps {
-  width?: number;
-  domain?: [number, number] | [string, string];
-  tickFormatter?: (value: number) => string;
-  currentLanguage?: "sv" | "en";
+  // Common props
+  showGrid?: boolean;
+  className?: string;
 }
 
 /**
- * Shared XAxis component that provides consistent X-axis styling and behavior.
- * Supports custom tick rendering for special cases like base year highlighting.
+ * Enhanced chart axis component that provides consistent axis styling.
+ * Supports both emissions formatting and custom formatting.
  */
-export function ChartXAxis({
-  dataKey,
-  type = "number",
-  domain,
-  ticks,
-  allowDuplicatedCategory,
-  tickFormatter,
-  customTickRenderer,
-  stroke = "var(--grey)",
-  tickLine = false,
-  axisLine = false,
-  tick = { fontSize: 12 },
-  padding = { left: 0, right: 0 },
-}: XAxisProps) {
-  return (
-    <XAxis
-      dataKey={dataKey}
-      type={type}
-      domain={domain}
-      ticks={ticks}
-      allowDuplicatedCategory={allowDuplicatedCategory}
-      tickFormatter={tickFormatter}
-      stroke={stroke}
-      tickLine={tickLine}
-      axisLine={axisLine}
-      tick={customTickRenderer || tick}
-      padding={padding}
-    />
-  );
-}
+export const ChartAxis: React.FC<ChartAxisProps> = ({
+  // X-Axis
+  xAxisDataKey = "year",
+  xAxisDomain = [1990, 2050],
+  xAxisTicks,
+  xAxisPadding = { left: 0, right: 0 },
+  xAxisTickFormatter,
 
-/**
- * Shared YAxis component that provides consistent Y-axis styling and behavior.
- * Automatically handles emissions formatting when currentLanguage is provided.
- */
-export function ChartYAxis({
-  width = 60,
-  domain = [0, "auto"],
-  tickFormatter,
-  currentLanguage,
-  stroke = "var(--grey)",
-  tickLine = false,
-  axisLine = false,
-  tick = { fontSize: 12 },
-  padding = { top: 0, bottom: 0 },
-}: YAxisProps) {
-  // Use provided tickFormatter or default to emissions formatting
-  const finalTickFormatter =
-    tickFormatter ||
-    (currentLanguage
-      ? (value: number) =>
-          formatEmissionsAbsoluteCompact(value, currentLanguage)
-      : undefined);
+  // Y-Axis
+  yAxisTickFormatter,
+  yAxisWidth = 80,
+  yAxisDomain = [0, "auto"],
+  yAxisPadding = { top: 0, bottom: 0 },
+
+  // Common
+  showGrid = false,
+  className = "",
+}) => {
+  const { currentLanguage } = useLanguage();
+
+  // Default X-axis ticks if not provided
+  const defaultXTicks = xAxisTicks ?? [
+    1990,
+    2015,
+    2020,
+    new Date().getFullYear(),
+    2030,
+    2040,
+    2050,
+  ];
+
+  // Default Y-axis formatter for emissions if not provided
+  const defaultYFormatter =
+    yAxisTickFormatter ??
+    ((value: number) => formatEmissionsAbsoluteCompact(value, currentLanguage));
 
   return (
-    <YAxis
-      width={width}
-      domain={domain}
-      tickFormatter={finalTickFormatter}
-      stroke={stroke}
-      tickLine={tickLine}
-      axisLine={axisLine}
-      tick={tick}
-      padding={padding}
-    />
+    <>
+      <XAxis
+        dataKey={xAxisDataKey}
+        stroke="var(--grey)"
+        tickLine={false}
+        axisLine={false}
+        tick={{ fontSize: 12 }}
+        padding={xAxisPadding}
+        domain={xAxisDomain}
+        allowDuplicatedCategory={true}
+        ticks={defaultXTicks}
+        tickFormatter={
+          xAxisTickFormatter ?? ((year: number) => year.toString())
+        }
+      />
+
+      <YAxis
+        stroke="var(--grey)"
+        tickLine={false}
+        axisLine={false}
+        tick={{ fontSize: 12 }}
+        tickFormatter={defaultYFormatter}
+        width={yAxisWidth}
+        domain={yAxisDomain}
+        padding={yAxisPadding}
+      />
+    </>
   );
-}
+};
