@@ -19,7 +19,7 @@ import { useLanguage } from "@/components/LanguageProvider";
 import MunicipalitySectorPieChart from "@/components/municipalities/sectorChart/MunicipalitySectorPieChart";
 import MunicipalitySectorLegend from "@/components/municipalities/sectorChart/MunicipalitySectorLegend";
 import { useMunicipalitySectorEmissions } from "@/hooks/municipalities/useMunicipalitySectorEmissions";
-import { MunicipalityEmissions } from "@/components/municipalities/MunicipalityEmissions";
+import { MunicipalityEmissionsNew } from "@/components/municipalities/MunicipalityEmissions-New";
 import { YearSelector } from "@/components/layout/YearSelector";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 
@@ -169,8 +169,10 @@ export function MunicipalityDetailPage() {
             "municipalityCanWeExtendCarbonBudget",
           ]}
         >
-          <Text className="text-4xl md:text-8xl">{municipality.name}</Text>
-          <Text className="text-grey">{municipality.region}</Text>
+          <div className="p-4 md:p-6">
+            <Text className="text-4xl md:text-8xl">{municipality.name}</Text>
+            <Text className="text-grey">{municipality.region}</Text>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-16 mt-8">
             <MunicipalityStatCard
               title={t("municipalityDetailPage.totalEmissions", {
@@ -222,7 +224,7 @@ export function MunicipalityDetailPage() {
           </div>
         </SectionWithHelp>
 
-        <MunicipalityEmissions
+        <MunicipalityEmissionsNew
           municipality={municipality}
           emissionsData={emissionsData}
           sectorEmissions={sectorEmissions}
@@ -230,7 +232,7 @@ export function MunicipalityDetailPage() {
 
         {sectorEmissions?.sectors && availableYears.length > 0 && (
           <SectionWithHelp helpItems={["municipalityEmissionSources"]}>
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4 p-4 md:p-6">
               <Text className="text-2xl md:text-4xl">
                 {t("municipalityDetailPage.sectorEmissions")}
               </Text>
