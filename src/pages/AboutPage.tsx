@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next";
 import { MembersGrid } from "@/components/MembersGrid";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { useEffect } from "react";
+import KlimatkollenVideo from "@/components/ui/klimatkollenVideoPlayer";
 
 export function AboutPage() {
   const { t } = useTranslation();
@@ -78,6 +79,7 @@ export function AboutPage() {
                 <div className="prose prose-invert w-full max-w-5xl space-y-4">
                   <p>{t("aboutPage.mainContent.paragraph4")}</p>
                 </div>
+                <KlimatkollenVideo />
               </div>
             </div>
           </div>
