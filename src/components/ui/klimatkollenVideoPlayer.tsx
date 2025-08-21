@@ -3,7 +3,7 @@ import { useScreenSize } from "@/hooks/useScreenSize";
 const KlimatkollenVideo = () => {
   const { isMobile } = useScreenSize();
   return (
-    <div className={`${isMobile ? "h-[600px]" : "h-[800px]"} py-24 w-full`}>
+    <div className={`${isMobile ? "h-[450px]" : "h-[800px]"} py-12 w-full`}>
       <iframe
         width="100%"
         height="100%"
