@@ -217,7 +217,10 @@
     "title": "Rapporter",
     "description": "Fördjupande analyser och rapporter om klimatomställningen i Sverige.",
     "readMore": "Läs mer",
-    "openReport": "Öppna rapport"
+    "openReport": "Öppna rapport",
+    "reportCategories": {
+      "report": "Rapport"
+    }
   },
   "blogDetailPage": {
     "loading": "Laddar...",
@@ -1327,5 +1330,14 @@
     "description": "Läs tidigare nyhetsbrev",
     "loading": "Laddar...",
     "error": "Fel vid inläsning av data"
+  },
+  "insightCategories": {
+    "analysis": "Analys",
+    "guide": "Guide",
+    "methodology": "Metodik"
+  },
+  "language": {
+    "sv": "Svenska",
+    "en": "Engelska"
   }
 }

@@ -217,7 +217,10 @@
     "title": "Reports",
     "description": "In-depth analyses and reports on Sweden's climate transition.",
     "readMore": "Read more",
-    "openReport": "Open Report"
+    "openReport": "Open Report",
+    "reportCategories": {
+      "report": "Report"
+    }
   },
   "blogDetailPage": {
     "loading": "Loading...",
@@ -1328,5 +1331,14 @@
     "description": "Read previous newsletters",
     "loading": "Loading...",
     "error": "Error loading data"
+  },
+  "insightCategories": {
+    "analysis": "Analysis",
+    "guide": "Guide",
+    "methodology": "Methodology"
+  },
+  "language": {
+    "sv": "Swedish",
+    "en": "English"
   }
 }

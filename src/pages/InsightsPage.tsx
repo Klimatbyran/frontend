@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
 import { ContentGridPage } from "@/components/layout/ContentGridPage";
 import { ContentCard } from "@/components/layout/ContentCard";
+import { localizeUnit } from "@/utils/formatting/localization";
 
 export function InsightsPage() {
   const { t } = useTranslation();
@@ -45,7 +46,7 @@ export function InsightsPage() {
     title: post.title,
     excerpt: post.excerpt,
     image: post.image || "/images/default-blog-image.jpg",
-    category: post.category,
+    category: t("insightCategories." + post.category),
     date: post.date,
     readTime: post.readTime,
     language: post.language,
@@ -71,12 +72,12 @@ export function InsightsPage() {
                 aria-label="Category"
                 className="px-3 py-1 bg-blue-5/50 rounded-full text-blue-2 text-sm"
               >
-                {featuredPost.category}
+                {t("insightCategories." + featuredPost.category)}
               </span>
               <div className="flex items-center gap-2 text-grey text-sm">
                 <CalendarDays className="w-4 h-4" />
                 <span aria-label="Date Published">
-                  {new Date(featuredPost.date).toLocaleDateString("sv-SE")}
+                  {localizeUnit(new Date(featuredPost.date), currentLanguage)}
                 </span>
               </div>
               <div className="flex items-center gap-2 text-grey text-sm">
@@ -85,7 +86,7 @@ export function InsightsPage() {
               </div>
               <div className="flex items-center gap-2 text-grey text-sm">
                 <Globe2 className="w-4 h-4" />
-                <span aria-label="Language">{featuredPost.language}</span>
+                <span aria-label="Language">{t("language." + featuredPost.language)}</span>
               </div>
             </div>
             <Text

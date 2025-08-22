@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Text } from "@/components/ui/text";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
+import { localizeUnit } from "@/utils/formatting/localization";
 
 interface ContentCardProps {
   item: {
@@ -50,7 +51,7 @@ export function ContentCard({ item, basePath }: ContentCardProps) {
               <div className="flex items-center gap-2 text-grey text-sm">
                 <CalendarDays className="w-4 h-4" />
                 <span aria-label="Date Published">
-                  {new Date(item.date).toLocaleDateString("sv-SE")}
+                  {localizeUnit(new Date(item.date), currentLanguage)}
                 </span>
               </div>
             )}
@@ -63,7 +64,7 @@ export function ContentCard({ item, basePath }: ContentCardProps) {
             {item.language && (
               <div className="flex items-center gap-2 text-grey text-sm">
                 <Globe2 className="w-4 h-4" />
-                <span aria-label="Language">{item.language}</span>
+                <span aria-label="Language">{t("language." + item.language)}</span>
               </div>
             )}
           </div>
