@@ -20,8 +20,8 @@ export const reports: ContentMeta[] = [
   },
   {
     id: "2",
-    title: "Bolagsklimatkollen 2023",
-    slug: "bolags-klimatkollen-2023",
+    title: "Bolagsklimatkollen 2024",
+    slug: "bolags-klimatkollen-2024",
     date: "2024-06-01",
     excerpt: "En analys av 150 svenska storbolags klimatredovisning 2023",
     readTime: "15 min",
