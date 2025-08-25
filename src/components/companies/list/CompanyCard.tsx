@@ -27,7 +27,7 @@ type CompanyCardProps = Pick<
   RankedCompany,
   | "wikidataId"
   | "name"
-  | "description"
+  | "descriptions"
   | "industry"
   | "reportingPeriods"
   | "metrics"
@@ -37,7 +37,7 @@ type CompanyCardProps = Pick<
 export function CompanyCard({
   wikidataId,
   name,
-  description,
+  descriptions,
   reportingPeriods,
 }: CompanyCardProps) {
   const { t } = useTranslation();
@@ -48,6 +48,14 @@ export function CompanyCard({
 
   const latestPeriod = reportingPeriods[0];
   const previousPeriod = reportingPeriods[1];
+
+  const localizedDescription =
+    descriptions?.find(
+      (d) =>
+        d.language === (currentLanguage.toUpperCase() === "SV" ? "SV" : "EN"),
+    )?.text ??
+    descriptions?.[0]?.text ??
+    "";
 
   const currentEmissions =
     latestPeriod?.emissions?.calculatedTotalEmissions || null;
@@ -101,7 +109,7 @@ export function CompanyCard({
           <div className="space-y-2">
             <h2 className="text-3xl font-light">{name}</h2>
             <p className="text-grey text-sm line-clamp-2 min-h-[40px]">
-              {description}
+              {localizedDescription}
             </p>
           </div>
           <div
