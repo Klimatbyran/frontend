@@ -79,10 +79,16 @@ export function AboutPage() {
                 <div className="prose prose-invert w-full max-w-5xl space-y-4">
                   <p>{t("aboutPage.mainContent.paragraph4")}</p>
                 </div>
-                <KlimatkollenVideo />
               </div>
             </div>
           </div>
+
+          <AccordionGroup
+            title={"Klimatkollen - Mission Video "}
+            value="missionVideo"
+          >
+            <KlimatkollenVideo />
+          </AccordionGroup>
 
           {/* Team Section */}
           <AccordionGroup
