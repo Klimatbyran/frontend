@@ -7,6 +7,7 @@ import { NewsletterType } from "@/lib/newsletterArchive/newsletterData";
 import { useNewsletters } from "@/hooks/useNewsletters";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { Text } from "@/components/ui/text";
+import { NewsletterPopover } from "@/components/NewsletterPopover";
 
 export function NewsLetterArchivePage() {
   const { t } = useTranslation();
@@ -55,6 +56,9 @@ export function NewsLetterArchivePage() {
             setDisplayedNewsletter={setDisplayedNewsletter}
             displayedNewsLetter={displayedNewsletter}
           />
+          {isMobile && (
+            <NewsletterPopover buttonText={t("header.newsletter")} />
+          )}
 
           {displayedNewsletter && (
             <iframe

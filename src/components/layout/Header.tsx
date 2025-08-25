@@ -114,6 +114,10 @@ export function Header() {
           path: `${currentLanguage}/methodology?view=general`,
         },
         {
+          label: t("header.newsletterArchive"),
+          path: `${currentLanguage}/newsletter-archive`,
+        },
+        {
           label: t("header.press"),
           path: "https://www.mynewsdesk.com/se/klimatbyraan/latest_news",
         },
@@ -126,10 +130,6 @@ export function Header() {
       sublinks: [
         { label: t("header.reports"), path: `${currentLanguage}/reports` },
         { label: t("header.articles"), path: `${currentLanguage}/articles` },
-        {
-          label: t("header.newsletterArchive"),
-          path: `${currentLanguage}/newsletter-archive`,
-        },
         { label: t("header.learnMore"), path: `${currentLanguage}/learn-more` },
       ],
     },

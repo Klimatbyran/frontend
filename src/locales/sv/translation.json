@@ -14,7 +14,7 @@
     "insights": "Insikter",
     "methodology": "Källor och metod",
     "support": "Stöd oss",
-    "newsletter": "Nyhetsbrev",
+    "newsletter": "Prenumerera på nyhetsbrev",
     "openMenu": "Öppna meny",
     "closeMenu": "Stäng meny",
     "articles": "Artiklar",
@@ -1329,7 +1329,9 @@
     "title": "Nyhetsbrevsarkiv",
     "description": "Läs tidigare nyhetsbrev",
     "loading": "Laddar...",
-    "error": "Fel vid inläsning av data"
+    "error": "Fel vid inläsning av data",
+    "next": "Nästa",
+    "previous": "Föregående"
   },
   "insightCategories": {
     "analysis": "Analys",
