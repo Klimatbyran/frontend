@@ -209,6 +209,23 @@ export function BlogDetailPage() {
                 className="underline hover:text-white"
               />
             ),
+            table: ({ node, ...props }) => (
+              <div className="overflow-x-auto my-8">
+                <table {...props} className="w-full overflow-hidden" />
+              </div>
+            ),
+            thead: ({ node, ...props }) => (
+              <thead {...props} className="bg-blue-5/20" />
+            ),
+            th: ({ node, ...props }) => (
+              <th
+                {...props}
+                className="border border-blue-2/50 px-4 py-3 text-left font-semibold text-blue-2"
+              />
+            ),
+            td: ({ node, ...props }) => (
+              <td {...props} className="border border-slate-500/50 px-4 py-3" />
+            ),
           }}
         >
           {blogPost.content}
