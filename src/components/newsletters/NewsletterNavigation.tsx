@@ -11,6 +11,7 @@ import {
   PaginationPrevious,
 } from "../ui/pagination";
 import { Page } from "@/utils/itemPagination";
+import { useTranslation } from "react-i18next";
 
 interface NewsletterNavigationProps {
   newsletterList: Array<NewsletterType>;
@@ -24,6 +25,7 @@ export function NewsletterNavigation({
   setDisplayedNewsletter,
 }: NewsletterNavigationProps) {
   const { isMobile } = useScreenSize();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [paginatedContent, setPaginatedContent] = useState<Record<
@@ -82,10 +84,14 @@ export function NewsletterNavigation({
             {paginatedContent["page" + currentPage].hasPreviousPage && (
               <PaginationPrevious
                 onClick={() => setCurrentPage(currentPage - 1)}
-              />
+              >
+                {t("newsletterArchivePage.previous")}
+              </PaginationPrevious>
             )}
             {paginatedContent["page" + currentPage].hasNextPage && (
-              <PaginationNext onClick={() => setCurrentPage(currentPage + 1)} />
+              <PaginationNext onClick={() => setCurrentPage(currentPage + 1)}>
+                {t("newsletterArchivePage.next")}
+              </PaginationNext>
             )}
           </div>
         </Pagination>

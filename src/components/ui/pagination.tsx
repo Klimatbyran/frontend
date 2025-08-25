@@ -33,7 +33,8 @@ const buttonVariants = (props: {
     baseClasses,
     variantClasses[props.variant as keyof typeof variantClasses] ||
       "bg-black-2 text-white hover:opacity-80 active:ring-1 active:ring-white disabled:opacity-50",
-    sizeClasses[(props.size || "default") as keyof typeof sizeClasses] || "h-10 px-6 py-2",
+    sizeClasses[(props.size || "default") as keyof typeof sizeClasses] ||
+      "h-10 px-6 py-2",
     props.className,
   );
 };
@@ -52,11 +53,7 @@ const PaginationContent = React.forwardRef<
   HTMLUListElement,
   React.ComponentProps<"ul">
 >(({ className, ...props }, ref) => (
-  <ul
-    ref={ref}
-    className={cn("flex flex-row", className)}
-    {...props}
-  />
+  <ul ref={ref} className={cn("flex flex-row", className)} {...props} />
 ));
 PaginationContent.displayName = "PaginationContent";
 
@@ -95,6 +92,7 @@ PaginationLink.displayName = "PaginationLink";
 
 const PaginationPrevious = ({
   className,
+  children,
   ...props
 }: React.ComponentProps<typeof PaginationLink>) => (
   <PaginationLink
@@ -104,13 +102,14 @@ const PaginationPrevious = ({
     {...props}
   >
     <ChevronLeftIcon className="h-4 w-4" />
-    <span>Previous</span>
+    <span>{children}</span>
   </PaginationLink>
 );
 PaginationPrevious.displayName = "PaginationPrevious";
 
 const PaginationNext = ({
   className,
+  children,
   ...props
 }: React.ComponentProps<typeof PaginationLink>) => (
   <PaginationLink
@@ -119,7 +118,7 @@ const PaginationNext = ({
     className={cn("gap-1 pr-2.5 cursor-pointer", className)}
     {...props}
   >
-    <span>Next</span>
+    <span>{children}</span>
     <ChevronRightIcon className="h-4 w-4" />
   </PaginationLink>
 );
