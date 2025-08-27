@@ -49,7 +49,7 @@ export default ({ mode }: ConfigEnv) => {
         output: {
           manualChunks: (id) => {
             // Only apply manual chunks for client build, not SSR
-            if (process.env.npm_lifecycle_event === 'build:server') {
+            if (process.env.VITE_BUILD_TARGET === 'server') {
               return undefined;
             }
             
