@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useScreenSize } from "@/hooks/useScreenSize";
 import { NewsletterType } from "@/lib/newsletterArchive/newsletterData";
 import { useNavigate } from "react-router-dom";
 import itemPagination from "@/utils/itemPagination";
@@ -24,7 +23,6 @@ export function NewsletterNavigation({
   displayedNewsLetter,
   setDisplayedNewsletter,
 }: NewsletterNavigationProps) {
-  const { isMobile } = useScreenSize();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -48,10 +46,14 @@ export function NewsletterNavigation({
     <>
       {paginatedContent && (
         <Pagination
-          className={`${isMobile ? "h-[575px] p-2" : "h-[585px] p-2"} flex flex-col bg-black-2 rounded-md lg:max-w-[280px] justify-between`}
+          className={
+            "h-[525px] p-2 flex flex-col md:h-[585px] bg-black-2 rounded-md lg:max-w-[280px] justify-between"
+          }
         >
           <PaginationContent
-            className={`${isMobile ? "min-h-[300px]" : "h-3/4"} flex flex-col divide-y divide-black-1 items-baseline text-left`}
+            className={
+              "min-h-[300px] md: h-3/4 flex flex-col divide-y divide-black-1 items-baseline text-left"
+            }
           >
             {paginatedContent &&
               paginatedContent["page" + currentPage].items.map(
@@ -61,8 +63,8 @@ export function NewsletterNavigation({
                       key={index}
                       className={`
                       ${displayedNewsLetter?.long_archive_url === item.long_archive_url ? "bg-black-1" : null}
-                      ${isMobile ? "min-h-[90px] max-h-[100px]" : "max-h-[125px]"}
-                       flex flex-col h-full gap-[5px] w-full p-3 my-1 text-left items-start text-sm font-medium text-grey hover:bg-black-1 transition-colors cursor-pointer duration-200 rounded-lg`}
+                      "min-h-[90px] max-h-[100px]
+                       md:max-h-[125px] flex flex-col h-full gap-[5px] w-full p-3 my-1 text-left items-start text-sm font-medium text-grey hover:bg-black-1 transition-colors cursor-pointer duration-200 rounded-lg`}
                       onClick={() => {
                         setDisplayedNewsletter?.(item);
                         navigate(`?view=${item.id}`);
@@ -80,7 +82,7 @@ export function NewsletterNavigation({
                 },
               )}
           </PaginationContent>
-          <div className="flex justify-center mt-4">
+          <div className="flex justify-center mt-0 md:mt-8">
             {paginatedContent["page" + currentPage].hasPreviousPage && (
               <PaginationPrevious
                 onClick={() => setCurrentPage(currentPage - 1)}
