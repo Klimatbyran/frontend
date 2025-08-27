@@ -20,6 +20,7 @@
     "articles": "Articles",
     "reports": "Reports",
     "learnMore": "Learn More",
+    "newsletterArchive": "Newsletter Archive",
     "press": "Press"
   },
   "footer": {
@@ -216,7 +217,10 @@
     "title": "Reports",
     "description": "In-depth analyses and reports on Sweden's climate transition.",
     "readMore": "Read more",
-    "openReport": "Open Report"
+    "openReport": "Open Report",
+    "reportCategories": {
+      "report": "Report"
+    }
   },
   "blogDetailPage": {
     "loading": "Loading...",
@@ -513,8 +517,8 @@
             "link": "https://www.nvdb.se/sv"
           },
           "sei": {
-            "title": "Stockholm Environment Institute",
-            "text": "Household consumption-based emissions. License: CC BY-NC-ND 4.0 for Konsumtionskompassen by Stockholm Environment Institute.",
+            "title": "Stockholm Environment Institute (SEI)",
+            "text": "Household consumption-based emissions. Konsumtionskompassen, 2025. CC BY-NC-ND 4.0",
             "link": "https://konsumtionskompassen.se/"
           },
           "powerCircle": {
@@ -524,7 +528,8 @@
           },
           "klimatplaner": {
             "title": "Climate Plans",
-            "text": "Collected by members of Klimatklubben and the Swedish Society for Nature Conservation"
+            "text": "Collected by members of Klimatklubben and the Swedish Society for Nature Conservation",
+            "link": "https://docs.google.com/spreadsheets/d/13CMqmfdd6QUD6agKFyVhwZUol4PKzvy253_EwtsFyvw/edit?fbclid=IwAR0v0cq0_xhFVlhhVn5fP-TNkOPVRXbOTKzTVWI_PMr_yU2rXOLjcN6jSps#gid=0"
           },
           "upphandlingsmyndigheten": {
             "title": "Procurement Authority",
@@ -549,15 +554,16 @@
   "supportPage": {
     "header": {
       "title": "Support Klimatkollen",
-      "description": "Help us continue our mission of tracking and promoting climate action in Sweden. There are several ways you can support our work."
+      "description": "Help us continue collecting and sharing climate data so that more people can understand how the transition to a sustainable future is progressing. There are many ways you can support us."
     },
     "donations": {
-      "title": "Direct Donations",
-      "description": "Support our work through financial contributions",
+      "title": "Donate money",
+      "description": "Help us keep our work going with a financial contribution",
       "details": [
-        "Bankgiro: 5793-3178",
         "Swish: 123 384 67 48",
-        "Your donation helps maintain our infrastructure and data collection"
+        "Bankgiro: 5793-3178",
+        "IBAN: SE-96 8000 0832 7973 4619 5055",
+        "Your donation helps maintain our infrastructure and data collection efforts"
       ],
       "action": {
         "text": "Make a Donation",
@@ -565,17 +571,17 @@
       },
       "email": {
         "subject": "Donation Inquiry - Klimatkollen",
-        "body": "Hi,\n\nI would like to make a donation to Klimatkollen.\n\nAmount:\n\nLooking forward to helping with climate data transparency.\n\nBest regards,"
+        "body": "Hello,\n\nI would like to make a donation to Klimatkollen.\n\nAmount:\n\nThank you for helping us continue our work with climate data.\n\nBest regards,"
       }
     },
     "openSource": {
-      "title": "Open Source Contributions",
-      "description": "Help improve our platform through code contributions",
+      "title": "Contribute Code",
+      "description": "Are you a developer? You can help by contributing code",
       "details": [
-        "Our codebase is open source on GitHub",
-        "Contribute to data analysis tools",
-        "Help improve user interface and experience",
-        "Add new features and functionality"
+        "Our source code is open and available on GitHub",
+        "Contribute to our data analysis tools",
+        "Help improve the user interface",
+        "Add new features and enhancements"
       ],
       "action": {
         "text": "View on GitHub",
@@ -583,13 +589,13 @@
       }
     },
     "volunteer": {
-      "title": "Volunteer",
-      "description": "Join our community and contribute your skills",
+      "title": "Volunteer With Us",
+      "description": "Give your time and skills to make a difference",
       "details": [
-        "Help with data verification and analysis",
-        "Assist with translations and content",
-        "Support community engagement",
-        "Participate in climate awareness initiatives"
+        "Assist with research and data analysis",
+        "Create content and manage social media",
+        "Organize events and strengthen our network",
+        "Offer advice and guidance to help us grow"
       ],
       "action": {
         "text": "Join our Discord",
@@ -597,61 +603,62 @@
       }
     },
     "partnerships": {
-      "title": "Partnerships",
-      "description": "Collaborate with us to expand our impact",
+      "title": "Partner With Us",
+      "description": "Collaborate with Klimatkollen to promote transparency and accountability",
       "details": [
-        "Data sharing partnerships",
-        "Research collaborations",
-        "Joint climate initiatives",
-        "Knowledge exchange programs"
+        "Do you have climate data about municipalities or companies?",
+        "Can you help us expand Klimatkollen to other countries?",
+        "Are you conducting research in AI and climate?",
+        "Interested in exploring a joint project?"
       ],
       "action": {
         "text": "Become a Partner",
         "link": "mailto:hej@klimatkollen.se"
       },
       "email": {
-        "subject": "Partnership Inquiry - [Organisation Name]",
-        "body": "Hi,\n\nI am interested in partnering with Klimatkollen.\n\nOrganisation Name:\nArea of Interest:\nProposed Collaboration:\n\nLooking forward to discussing potential partnership opportunities.\n\nBest regards,"
+        "subject": "Partnership Inquiry - [Organization Name]",
+        "body": "Hello,\n\nI am interested in exploring a partnership with Klimatkollen.\n\nOrganization Name:\nArea of Interest:\nProposed Collaboration:\n\nLooking forward to discussing potential partnership opportunities.\n\nBest regards,"
       }
     },
     "organizationSupport": {
-      "title": "Support Companies",
-      "description": "Support as an organisation of any size",
+      "title": "Support as a Company",
+      "description": "Help us provide open climate data to the public",
       "details": [
-        "Fixed fee sponsorship opportunities",
-        "Data verification partnerships",
-        "Technology and resource sharing",
-        "Support climate data transparency"
+        "Display our logo on your website",
+        "Show your logo on our website",
+        "Join the movement for open climate data",
+        "25,000 SEK per year"
       ],
       "action": {
-        "text": "Support Companies",
+        "text": "Support Us",
         "link": "mailto:hej@klimatkollen.se"
       },
       "email": {
-        "subject": "Support Company Inquiry - [Company Name]",
-        "body": "Hi,\n\nI am interested in learning more about the company support opportunity with Klimatkollen.\n\nOrganisation Name:\n\nLooking forward to discussing a collaboration.\n\nBest regards,"
+        "subject": "Corporate Support Inquiry - [Company Name]",
+        "body": "Hello,\n\nI would like to learn more about corporate support opportunities with Klimatkollen.\n\nOrganization Name:\n\nLooking forward to discussing potential collaboration.\n\nBest regards,"
       },
       "readMore": {
-        "text": "Read more",
+        "text": "Learn More",
         "content": {
-          "header": "Become a Supporting Company – Take a Stand for Open Climate Data",
+          "header": "Become a Supporting Company – Stand Up for Open Climate Data",
           "intro": [
-            "By publishing open climate data, Klimatkollen contributes to transparency and increased support for the Paris Agreement in politics and business. Because if we don't know how emissions are progressing – and how they should be progressing – we won't be able to do what's necessary to reduce them in line with the Paris Agreement.",
-            "Klimatkollen is a data-driven nonprofit building a movement around open climate data. We collaborate with businesses, academia, and civil society to increase impact. For us, AI, open data, broad communication, and civic engagement are key.",
-            "Be part of the open climate data movement – become a supporting company today!"
+            "By publishing open climate data, Klimatkollen promotes transparency and strengthens support for the Paris Agreement in both politics and business. Without knowing how emissions are progressing – and how they should be – we cannot take the necessary actions to reduce them effectively.",
+            "Klimatkollen is a data-driven non-profit organization building a movement around open climate data.",
+            "We collaborate with businesses, academia, and civil society to maximize impact. AI, open data, broad communication, and citizen engagement are at the core of our approach.",
+            "Join the movement for open climate data – become a supporting company today!"
           ],
-          "benefitsHeader": "As a supporting company, you get:",
+          "benefitsHeader": "As a supporting company, you will receive:",
           "benefits": [
-            "Our logo on your website, showing your commitment to open climate data",
-            "Your logo on our website, visible among other corporate supporters",
-            "Notifications when we publish new data about your company",
-            "The opportunity to comment on your company's climate data on our website",
-            "Automatic updating of your climate data to your company's Wikipedia page"
+            "Your commitment highlighted with our logo on your website",
+            "Visibility among other corporate supporters on our website",
+            "Notifications when new data about your company is published",
+            "Automatic updates of your climate data to your company’s Wikipedia page"
           ],
-          "cost": "SEK 25,000 / year (including VAT)"
+          "cost": "25,000 SEK / year (including VAT)"
         }
       }
     },
+
     "contact": {
       "title": "Contact Us",
       "description": "Have questions about supporting Klimatkollen, or want to find other ways to volunteer? We'd love to hear from you.",
@@ -921,6 +928,7 @@
       "emissionsChangeRateInfo": "Change rate of emissions compared to the previous reporting period.",
       "emissionsChangeRateInfoExtended": "This value is so large due to inconsistencies in reported data between the last two reporting periods, thus this value is not representative of actual changes.",
       "turnover": "Turnover",
+      "turnoverAmount": "bn",
       "employees": "Employees",
       "companyReport": "Sustainability Report",
       "missingReport": "Missing Report",
@@ -945,7 +953,33 @@
       "trend": "Trend",
       "carbonLaw": "Paris Agreement",
       "trendInfo": "Approximated value is based on average change of {{percentage}} since {{baseYear}} for all reporting periods",
-      "exploreStep0Description": "This section shows all emissions data before the selected base year. This data before the base year is considered incomplete or un-comparable. This is often due to companies developing their reporting process or years before they had enough/all the data."
+      "exploreStep0Description": "This shows emissions data from before the company's base year. While historically interesting, this data is often unreliable for predicting future trends because companies were still developing their measurement methods and may have used different reporting standards.",
+      "exploreStep0Label": "Historical Data (Before Base Year)",
+      "exploreStep1Label": "Reliable Company Data",
+      "exploreStep1Description": "This shows the company's emissions from their base year to the most recent reporting period. This data is considered reliable and comparable because the company has established measurement methods and consistent reporting standards.",
+      "exploreStep2Label": "Future Trend Projection",
+      "exploreStep2Description": "This shows our best estimate of how the company's emissions might change in the future, based on their recent performance. We calculate this trend carefully, but it's important to note that predicting emissions is challenging - companies often have few data points and emissions can vary significantly from year to year.",
+      "exploreStep3Label": "Paris Agreement Target Path",
+      "exploreStep3Description": "This green line shows the emissions reduction path needed to meet the Paris Agreement goals. The target is to reduce emissions by about 11.7% each year, which means roughly halving emissions every 5-6 years. This is the global standard for climate action.",
+      "exploreStep4Label": "2050 Comparison",
+      "exploreStep4Description": "This step shows where the company's trend line and the Paris target path end up in 2050. While a company might only be slightly above or below target in 2050, the next step will show why the cumulative impact over many years is what really matters.",
+      "exploreStep5Label": "Cumulative Impact",
+      "exploreStep5Description": "This step reveals the true story: it's not just about where we end up in 2050, but about the total emissions over the entire journey. Think of it like a bank account - small differences in spending each month add up to big differences over years. The shaded areas show the total emissions 'debt' or 'savings' compared to the Paris target.",
+      "trendExplanationFallback": "This trend line shows our best estimate of future emissions based on the company's recent performance. We use statistical methods to calculate this, but predictions become less certain the further into the future we look.",
+      "exploreBackButton": "Back",
+      "exploreNextButton": "Next",
+      "exploreExitButton": "Exit",
+      "baseYearLabel": "Base Year",
+      "underParisTarget": "under Paris target",
+      "overParisTarget": "over Paris target",
+      "parisAlignedPathLabel": "Estimated Emissions For Paris Aligned Path",
+      "companyEmissionsLabel": "Estimated Company Emissions",
+      "budgetStatusLabel": "Budget Status",
+      "underBudget": "Under budget",
+      "overBudget": "Over budget",
+      "cumulativePeriod": "2025-2050 cumulative",
+      "totalEmissionsSaved": "total emissions saved vs Paris target",
+      "totalEmissionsExcess": "total emissions excess vs Paris target"
     },
     "list": {
       "error": {
@@ -1089,7 +1123,7 @@
           "description": "Number of electric vehicles per charging point",
           "detailedDescription": "Number of electric vehicles per public charging point, per municipality in 2024. Lower numbers are better, as good infrastructure promotes increased electric vehicle adoption.",
           "source": "<0>Power Circle</0>",
-          "nullValues": "no charging points"
+          "nullValues": "No charging points"
         },
         "bicycleMetrePerCapita": {
           "label": "Bicycles",
@@ -1290,6 +1324,21 @@
     "weightedLinearMethodStable": "Weighted linear trend used because recent years show stable emissions (variation < 10% of average). Emphasizes recent stable data for current trend representation.",
     "exponentialMethodBetterFit": "Exponential trend used because it fits the data significantly better than linear trend. Suggests emissions are changing at accelerating or decelerating rate.",
     "recentExponentialMethodStrongPattern": "Recent exponential trend used because last 4 years show strong exponential pattern that is significantly better than linear. Focuses on most recent trend pattern.",
-    "linearMethodDefault": "Linear trend used as default because data is sufficiently complete and shows consistent pattern without strong non-linear behavior or significant outliers."
+    "linearMethodDefault": "Linear trend used as default because data is sufficiently complete or does not show strong non-linear behavior or significant outliers."
+  },
+  "newsletterArchivePage": {
+    "title": "Newsletter archive",
+    "description": "Read previous newsletters",
+    "loading": "Loading...",
+    "error": "Error loading data"
+  },
+  "insightCategories": {
+    "analysis": "Analysis",
+    "guide": "Guide",
+    "methodology": "Methodology"
+  },
+  "language": {
+    "sv": "Swedish",
+    "en": "English"
   }
 }

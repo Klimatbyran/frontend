@@ -19,6 +19,7 @@
     "closeMenu": "Stäng meny",
     "articles": "Artiklar",
     "reports": "Rapporter",
+    "newsletterArchive": "Nyhetsbrevsarkiv",
     "learnMore": "Läs mer",
     "press": "Press"
   },
@@ -216,7 +217,10 @@
     "title": "Rapporter",
     "description": "Fördjupande analyser och rapporter om klimatomställningen i Sverige.",
     "readMore": "Läs mer",
-    "openReport": "Öppna rapport"
+    "openReport": "Öppna rapport",
+    "reportCategories": {
+      "report": "Rapport"
+    }
   },
   "blogDetailPage": {
     "loading": "Laddar...",
@@ -488,7 +492,7 @@
         "paragraph2": "Företagsdata hämtas från deras egna årsredovisningar och hållbarhetsrapporter.",
         "links": {
           "smhi": {
-            "title": "Nationell utsläppsdatabas",
+            "title": "Nationella emissionsdatabasen",
             "text": "Växthusgasutsläpp i kommunerna",
             "link": "https://nationellaemissionsdatabasen.smhi.se/"
           },
@@ -513,8 +517,8 @@
             "link": "https://www.nvdb.se/sv"
           },
           "sei": {
-            "title": "Stockholm Environment Institute",
-            "text": "Hushållens konsumtionsbaserade utsläpp. Licens: CC BY-NC-ND 4.0 enligt Konsumtionskompassen. Stockholm Environment Institute.",
+            "title": "Stockholm Environment Institute (SEI)",
+            "text": "Hushållens konsumtionsbaserade utsläpp. Konsumtionskompassen, 2025. CC BY-NC-ND 4.0",
             "link": "https://konsumtionskompassen.se/"
           },
           "powerCircle": {
@@ -524,7 +528,8 @@
           },
           "klimatplaner": {
             "title": "Klimatplaner",
-            "text": "Insamlade av medlemmar i Klimatklubben och Naturskyddsföreningen"
+            "text": "Insamlade av medlemmar i Klimatklubben och Naturskyddsföreningen",
+            "link": "https://docs.google.com/spreadsheets/d/13CMqmfdd6QUD6agKFyVhwZUol4PKzvy253_EwtsFyvw/edit?fbclid=IwAR0v0cq0_xhFVlhhVn5fP-TNkOPVRXbOTKzTVWI_PMr_yU2rXOLjcN6jSps#gid=0"
           },
           "upphandlingsmyndigheten": {
             "title": "Upphandlingsmyndigheten",
@@ -549,14 +554,15 @@
   "supportPage": {
     "header": {
       "title": "Stöd Klimatkollen",
-      "description": "Hjälp oss att fortsätta vårt arbete att spåra och främja klimatåtaganden i Sverige. Det finns flera sätt du kan stödja vårt arbete."
+      "description": "Hjälp oss att fortsätta vårt arbete med att samla in och sprida klimatdata, så att fler får koll på hur det går med klimatomställningen. Det finns flera sätt att stötta"
     },
     "donations": {
-      "title": "Direkta donationer",
-      "description": "Stöd vårt arbete genom ekonomiskt bidrag",
+      "title": "Skänk pengar",
+      "description": "Stöd vårt arbete med ett ekonomiskt bidrag",
       "details": [
-        "Bankgiro: 5793-3178",
         "Swish: 123 384 67 48",
+        "Bankgiro: 5793-3178",
+        "IBAN: SE-96 8000 0832 7973 4619 5055",
         "Din donation bidrar till att upprätthålla vår infrastruktur och datainsamlingsarbete"
       ],
       "action": {
@@ -569,13 +575,13 @@
       }
     },
     "openSource": {
-      "title": "Bidrag till öppen källkod",
-      "description": "Hjälp oss att utveckla Klimatkollen genom att bidra med kod",
+      "title": "Hjälp oss koda",
+      "description": "Om du är utvecklare kan du bidra med kod",
       "details": [
         "Källkoden är öppen och tillgänglig på GitHub",
-        "Bidra till dataanalysverktyg",
-        "Hjälp till att förbättra användargränssnittet",
-        "Lägg till nya funktioner och funktionalitet"
+        "Bidra till vårt verktyg för dataanalys",
+        "Hjälp oss förbättra användargränssnittet",
+        "Lägg till nya funktioner"
       ],
       "action": {
         "text": "Se på GitHub",
@@ -584,12 +590,12 @@
     },
     "volunteer": {
       "title": "Bli volontär",
-      "description": "Gå med i vår gemenskap och bidra med dina färdigheter",
+      "description": "Bidra med din tid och dina färdigheter",
       "details": [
-        "Hjälp till med att verifiera och analysera data",
-        "Hjälp till med översättningar och innehåll",
-        "Stöd gemenskapsengagemang",
-        "Delta i klimatmedvetna initiativ"
+        "Hjälp till med research och dataanalys",
+        "Skapa innehåll och spridning i sociala medier",
+        "Ordna evenemang och stärk vårt nätverk",
+        "Ge oss råd och tips för att växa"
       ],
       "action": {
         "text": "Gå med i vår Discord",
@@ -597,13 +603,13 @@
       }
     },
     "partnerships": {
-      "title": "Partnerskap",
-      "description": "Samarbeta med oss för att expandera vår påverkan",
+      "title": "Bli vår nya partner",
+      "description": "Samarbeta med oss för öppenhet och ansvarsutkrävande",
       "details": [
-        "Partnerskap för datadelning",
-        "Forskningssamarbeten",
-        "Gemensamma klimatinitiativ",
-        "Kunskapsutbytesprogram"
+        "Har ni klimatdata om kommuner eller företag?",
+        "Kan ni hjälpa oss att ta Klimatkollen till fler länder?",
+        "Bedriver ni forskning inom AI och klimat?",
+        "Borde vi göra projekt tillsammans?"
       ],
       "action": {
         "text": "Bli partner",
@@ -615,13 +621,13 @@
       }
     },
     "organizationSupport": {
-      "title": "Stöd företag",
-      "description": "Stöd som organisation av alla storlekar",
+      "title": "Bli Stödföretag",
+      "description": "Stötta vårt arbete med öppen klimatdata för allmänheten.",
       "details": [
-        "Sponsormöjligheter med fast avgift",
-        "Partnerskap för dataverifiering",
-        "Teknologi- och resursdelning",
-        "Stöd klimatdatatransparens"
+        "Vår logotyp på er webbplats",
+        "Er logotyp på vår webbplats",
+        "Bli del av rörelsen för öppen klimatdata",
+        "25 000 kronor per år"
       ],
       "action": {
         "text": "Stöd företag",
@@ -921,6 +927,7 @@
       "emissionsChangeRateInfo": "Förändringstakt för utsläpp jämfört med föregående rapporteringsperiod.",
       "emissionsChangeRateInfoExtended": "Det här värdet är ovanligt högt på grund av inkonsekvent rapportering mellan de två senaste perioderna, vilket gör att procentförändringen inte speglar den faktiska utvecklingen.",
       "turnover": "Omsättning",
+      "turnoverAmount": "mdr",
       "employees": "Anställda",
       "companyReport": "Hållbarhetsrapport",
       "missingReport": "Saknar report",
@@ -945,7 +952,33 @@
       "trend": "Trend",
       "carbonLaw": "Parisavtalet",
       "trendInfo": "Approximerat värde baseras på genomsnittlig förändring på {{percentage}} sedan {{baseYear}} för alla rapporteringsperioder",
-      "exploreStep0Description": "Detta avsnitt visar alla utsläppsdata före valt basår. Dessa data före basåret anses vara ofullständiga eller ej jämförbara. Detta beror ofta på att företag utvecklar sin rapporteringsprocess eller år innan de hade tillräcklig/all data."
+      "exploreStep0Description": "Detta visar utsläppsdata från före företagets basår. Medan det är historiskt intressant är dessa data ofta opålitliga för att förutsäga framtida trender eftersom företag fortfarande utvecklade sina mätmetoder och kan ha använt olika rapporteringsstandarder.",
+      "exploreStep0Label": "Historisk data (före basår)",
+      "exploreStep1Label": "Pålitlig företagsdata",
+      "exploreStep1Description": "Detta visar företagets utsläpp från deras basår till den senaste rapporteringsperioden. Denna data anses vara pålitlig och jämförbar eftersom företaget har etablerade mätmetoder och konsekventa rapporteringsstandarder.",
+      "exploreStep2Label": "Framtida trendprognos",
+      "exploreStep2Description": "Detta visar vår bästa uppskattning av hur företagets utsläpp kan förändras i framtiden, baserat på deras senaste prestation. Vi beräknar denna trend noggrant, men det är viktigt att notera att att förutsäga utsläpp är utmanande - företag har ofta få datapunkter och utsläpp kan variera betydligt från år till år.",
+      "exploreStep3Label": "Parisavtalets målsökväg",
+      "exploreStep3Description": "Denna gröna linje visar utsläppsminskningssökvägen som behövs för att uppnå Parisavtalets mål. Målet är att minska utsläppen med cirka 11,7% varje år, vilket betyder ungefär halvera utsläppen var 5-6:e år. Detta är den globala standarden för klimatåtgärder.",
+      "exploreStep4Label": "2050-jämförelse",
+      "exploreStep4Description": "Detta steg visar var företagets trendlinje och Paris-målsökvägen hamnar 2050. Medan ett företag bara kan vara något över eller under målet 2050 kommer nästa steg att visa varför den kumulativa effekten över många år är det som verkligen betyder något.",
+      "exploreStep5Label": "Kumulativ påverkan",
+      "exploreStep5Description": "Detta steg avslöjar den verkliga historien: det handlar inte bara om var vi hamnar 2050, utan om de totala utsläppen under hela resan. Tänk på det som ett bankkonto - små skillnader i utgifter varje månad lägger till stora skillnader över åren. De skuggade områdena visar de totala utsläppens 'skuld' eller 'besparingar' jämfört med Paris-målet.",
+      "trendExplanationFallback": "Denna trendlinje visar vår bästa uppskattning av framtida utsläpp baserat på företagets senaste prestation. Vi använder statistiska metoder för att beräkna detta, men förutsägelser blir mindre säkra ju längre in i framtiden vi tittar.",
+      "exploreBackButton": "Tillbaka",
+      "exploreNextButton": "Nästa",
+      "exploreExitButton": "Avsluta",
+      "baseYearLabel": "Basår",
+      "underParisTarget": "under Paris-målet",
+      "overParisTarget": "över Paris-målet",
+      "parisAlignedPathLabel": "Uppskattade utsläpp för Paris-anpassad sökväg",
+      "companyEmissionsLabel": "Uppskattade företagsutsläpp",
+      "budgetStatusLabel": "Budgetstatus",
+      "underBudget": "Under budget",
+      "overBudget": "Över budget",
+      "cumulativePeriod": "2025-2050 kumulativt",
+      "totalEmissionsSaved": "totala utsläpp sparade jämfört med Paris-målet",
+      "totalEmissionsExcess": "totala utsläpp i överskott jämfört med Paris-målet"
     },
     "list": {
       "error": {
@@ -1089,7 +1122,7 @@
           "description": "Antal elbilar per laddningspunkt",
           "detailedDescription": "Antal elbilar per publik laddningspunkt per kommun år 2024. Ju färre bilar per laddningspunkt desto bättre, god infrastruktur gynnar ökad elbilskonsumtion",
           "source": "<0>Power Circle</0>",
-          "nullValues": "saknar laddpunkter"
+          "nullValues": "Saknar laddpunkter"
         },
         "bicycleMetrePerCapita": {
           "label": "Cyklarna",
@@ -1277,7 +1310,7 @@
     }
   },
   "dataGuide": {
-    "buttonFallbackTitle": "Lär dig mer om dessa mätvärden",
+    "buttonFallbackTitle": "Förstå datan",
     "selectItemPrompt": "Välj ett ämne du vill veta mer om"
   },
   "trendAnalysis": {
@@ -1291,5 +1324,20 @@
     "exponentialMethodBetterFit": "Exponentiell trend används eftersom den passar data betydligt bättre än linjär trend. Tyder på att utsläppen förändras i accelererande eller decelererande takt.",
     "recentExponentialMethodStrongPattern": "Senaste exponentiella trend används eftersom de senaste 4 åren visar starkt exponentiellt mönster som är betydligt bättre än linjärt. Fokuserar på senaste trendmönstret.",
     "linearMethodDefault": "Linjär trend används som standard eftersom data är tillräckligt komplett och visar konsekvent mönster utan starkt icke-linjärt beteende eller betydande avvikare."
+  },
+  "newsletterArchivePage": {
+    "title": "Nyhetsbrevsarkiv",
+    "description": "Läs tidigare nyhetsbrev",
+    "loading": "Laddar...",
+    "error": "Fel vid inläsning av data"
+  },
+  "insightCategories": {
+    "analysis": "Analys",
+    "guide": "Guide",
+    "methodology": "Metodik"
+  },
+  "language": {
+    "sv": "Svenska",
+    "en": "Engelska"
   }
 }

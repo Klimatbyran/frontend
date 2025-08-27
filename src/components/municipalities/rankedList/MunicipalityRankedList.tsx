@@ -9,6 +9,7 @@ interface DataPoint {
   unit: string;
   description?: string;
   higherIsBetter: boolean;
+  nullValues?: string;
 }
 
 interface RankedListProps {
@@ -96,7 +97,7 @@ function MunicipalityRankedList({
               <span className="text-orange-2 font-medium">
                 {municipality[selectedKPI.key] !== null
                   ? `${(municipality[selectedKPI.key] as number).toFixed(1)}${selectedKPI.unit}`
-                  : "-"}
+                  : selectedKPI.nullValues}
               </span>
             </button>
           ))}

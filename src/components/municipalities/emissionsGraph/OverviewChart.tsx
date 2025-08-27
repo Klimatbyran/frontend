@@ -26,13 +26,17 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
 
   return (
     <ResponsiveContainer width="100%" height="90%">
-      <LineChart data={projectedData}>
+      <LineChart data={projectedData} margin={{ left: -50 }}>
         <Legend
           verticalAlign="bottom"
           align="right"
           height={36}
           iconType="line"
-          wrapperStyle={{ fontSize: "12px", color: "var(--grey)" }}
+          wrapperStyle={{
+            fontSize: "12px",
+            color: "var(--grey)",
+            paddingLeft: "50px",
+          }}
         />
         <Tooltip
           content={

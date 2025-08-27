@@ -1,5 +1,3 @@
-// TODO Clean and refactor this file, much to large atm
-
 import {
   Legend,
   Line,
@@ -15,16 +13,15 @@ import { ChartData } from "@/types/emissions";
 import { useTranslation } from "react-i18next";
 import { formatEmissionsAbsoluteCompact } from "@/utils/formatting/localization";
 import { useMemo, useState, useEffect } from "react";
-import {
-  calculateWeightedLinearRegression,
-  fitExponentialRegression,
-  calculateWeightedExponentialRegression,
-} from "@/lib/calculations/trends/regression";
-import { generateApproximatedData } from "@/utils/calculations/emissions";
-import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { ExploreChart } from "./ExploreChart";
+import { ExploreMode } from "./ExploreMode";
+import { ChartControls } from "./ChartControls";
+import { ScopeLine } from "./ScopeLine";
+import { CategoryLine } from "./CategoryLine";
+import { generateApproximatedData } from "@/lib/calculations/trends/approximatedData";
+import { calculateTrendPercentageChange } from "@/lib/calculations/trends/trendPercentages";
 import { exploreButtonFeatureFlagEnabled } from "@/utils/ui/featureFlags";
+import { isMobile } from "react-device-detect";
+import { Button } from "@/components/ui/button";
 
 interface EmissionsLineChartProps {
   data: ChartData[];
@@ -59,10 +56,6 @@ interface EmissionsLineChartProps {
   } | null;
 }
 
-function hasTotalEmissions(d: ChartData): d is ChartData & { total: number } {
-  return d.total !== undefined && d.total !== null;
-}
-
 export default function EmissionsLineChart({
   data,
   companyBaseYear,
@@ -81,231 +74,14 @@ export default function EmissionsLineChart({
   trendAnalysis,
 }: EmissionsLineChartProps) {
   const { t } = useTranslation();
+  const [chartEndYear, setChartEndYear] = useState(2050);
+  const [shortEndYear, setShortEndYear] = useState(2030);
+  const [longEndYear, setLongEndYear] = useState(2050);
+  const [showTrendPopup, setShowTrendPopup] = useState(false);
   const currentYear = new Date().getFullYear();
-  const shortEndYear = currentYear + 5;
-  const longEndYear = 2050;
-  const [chartEndYear, setChartEndYear] = useState(shortEndYear);
   const isFirstYear = companyBaseYear === data[0]?.year;
 
-  // --- New logic for dynamic explore steps ---
-  const hasDataBeforeBaseYear =
-    companyBaseYear && data.some((d) => d.year < companyBaseYear);
-  // Build steps dynamically
-  const exploreSteps = [
-    ...(hasDataBeforeBaseYear
-      ? [
-          {
-            label: "Data before the base year",
-            description: t(
-              "companies.emissionsHistory.exploreStep0Description",
-            ),
-          },
-        ]
-      : []),
-    {
-      label: "Base year to latest reporting period",
-      description:
-        "This section highlights the period from the base year to the latest reported data.",
-    },
-    {
-      label: "Approximated values",
-      description:
-        "Here we show the estimated values from the last reporting period to the current year.",
-    },
-    {
-      label: "Projection outwards",
-      description: "This step shows the future trend line projection.",
-    },
-    {
-      label: "Paris line",
-      description: "This step shows the Paris Agreement reduction path.",
-    },
-    {
-      label: "Difference shading",
-      description:
-        "Red/green shading shows the difference between the trend and Paris lines, representing the tCO₂ gap.",
-    },
-    {
-      label: "Total area analysis",
-      description:
-        "Shows the cumulative emissions difference over time. The total area between trend and Paris lines represents the overall impact from current year to 2050.",
-    },
-  ];
-  // Set initial step based on whether the first step exists
-  const initialExploreStep = 0;
-  const [exploreStep, setExploreStep] = useState(initialExploreStep);
-
-  // Helper to get last two periods with emissions
-  function getLastTwoEmissionsPoints(data: ChartData[]) {
-    return data
-      .filter(hasTotalEmissions)
-      .map((d) => ({ year: d.year, value: d.total as number }))
-      .slice(-2);
-  }
-
-  function generateApproximatedDataWithCoefficients(
-    data: ChartData[],
-    coefficients:
-      | { slope: number; intercept: number }
-      | { a: number; b: number },
-    method: string,
-    endYear: number,
-    baseYear?: number,
-    cleanData?: { year: number; value: number }[],
-  ): ChartData[] | null {
-    if (!data.length) return null;
-
-    const firstYear = data[0].year;
-    const allYears = Array.from(
-      { length: endYear - firstYear + 1 },
-      (_, i) => firstYear + i,
-    );
-
-    // Use clean data timeline if available, otherwise use original data
-    const timelineData =
-      cleanData ||
-      data
-        .filter((d) => hasTotalEmissions(d))
-        .map((d) => ({ year: d.year, value: d.total as number }));
-
-    // Use the actual last year with data from the original data, not the clean data
-    const lastYearWithData = Math.max(
-      ...data.filter((d) => hasTotalEmissions(d)).map((d) => d.year),
-    );
-    const currentYear = new Date().getFullYear();
-
-    return allYears.map((year) => {
-      const actualData = data.find((d) => d.year === year);
-
-      // Calculate approximated value based on method and coefficients
-      let approximatedValue: number | null = null;
-      if (year >= lastYearWithData) {
-        // Get the actual last data point value (not from clean data)
-        const lastDataValue =
-          data
-            .filter((d) => hasTotalEmissions(d))
-            .sort((a, b) => b.year - a.year)[0]?.total || 0;
-
-        if (year === lastYearWithData) {
-          // Use the actual last data point value
-          approximatedValue = lastDataValue;
-        } else {
-          // Apply the calculated slope/growth rate from the last actual data point
-          const yearsFromLast = year - lastYearWithData;
-
-          if ("slope" in coefficients && "intercept" in coefficients) {
-            // Linear coefficients - apply slope from last data point
-            approximatedValue = Math.max(
-              0,
-              lastDataValue + coefficients.slope * yearsFromLast,
-            );
-          } else if ("a" in coefficients && "b" in coefficients) {
-            // Exponential coefficients - apply growth rate from last data point
-            const growthFactor = Math.exp(coefficients.b * yearsFromLast);
-            const expValue = lastDataValue * growthFactor;
-            // Cap exponential values to prevent extreme values
-            const maxReasonableValue = 1000000; // 1 million tCO2e
-            const minReasonableValue = 0.1; // 0.1 tCO2e
-            approximatedValue = Math.max(
-              minReasonableValue,
-              Math.min(expValue, maxReasonableValue),
-            );
-          }
-        }
-      }
-
-      // Calculate Paris line value (Carbon Law)
-      let parisValue: number | null = null;
-      if (year >= 2025) {
-        // Use the trendline value at 2025 as the starting point for Paris Agreement line
-        let emissions2025: number;
-        const actual2025Data = data.find((d) => d.year === 2025)?.total;
-
-        if (actual2025Data !== undefined && actual2025Data !== null) {
-          // Use actual 2025 data if available
-          emissions2025 = actual2025Data;
-        } else {
-          // Use the trendline value at 2025 (same calculation as approximated value)
-          if (year === 2025) {
-            // For 2025, use the same logic as the approximated value
-            const lastDataValue =
-              data
-                .filter((d) => hasTotalEmissions(d))
-                .sort((a, b) => b.year - a.year)[0]?.total || 0;
-            const lastYearWithData = Math.max(
-              ...data.filter((d) => hasTotalEmissions(d)).map((d) => d.year),
-            );
-            const yearsFromLast = 2025 - lastYearWithData;
-
-            if ("slope" in coefficients && "intercept" in coefficients) {
-              emissions2025 = Math.max(
-                0,
-                lastDataValue + coefficients.slope * yearsFromLast,
-              );
-            } else if ("a" in coefficients && "b" in coefficients) {
-              const growthFactor = Math.exp(coefficients.b * yearsFromLast);
-              const expValue = lastDataValue * growthFactor;
-              const maxReasonableValue = 1000000; // 1 million tCO2e
-              const minReasonableValue = 0.1; // 0.1 tCO2e
-              emissions2025 = Math.max(
-                minReasonableValue,
-                Math.min(expValue, maxReasonableValue),
-              );
-            } else {
-              emissions2025 = lastDataValue;
-            }
-          } else {
-            // For years after 2025, calculate from the trendline
-            const lastDataValue =
-              data
-                .filter((d) => hasTotalEmissions(d))
-                .sort((a, b) => b.year - a.year)[0]?.total || 0;
-            const lastYearWithData = Math.max(
-              ...data.filter((d) => hasTotalEmissions(d)).map((d) => d.year),
-            );
-            const yearsFromLast = 2025 - lastYearWithData;
-
-            if ("slope" in coefficients && "intercept" in coefficients) {
-              emissions2025 = Math.max(
-                0,
-                lastDataValue + coefficients.slope * yearsFromLast,
-              );
-            } else if ("a" in coefficients && "b" in coefficients) {
-              const growthFactor = Math.exp(coefficients.b * yearsFromLast);
-              const expValue = lastDataValue * growthFactor;
-              const maxReasonableValue = 1000000; // 1 million tCO2e
-              const minReasonableValue = 0.1; // 0.1 tCO2e
-              emissions2025 = Math.max(
-                minReasonableValue,
-                Math.min(expValue, maxReasonableValue),
-              );
-            } else {
-              emissions2025 = lastDataValue;
-            }
-          }
-        }
-
-        const reductionRate = 0.1172; // 12% annual reduction
-        const calculatedValue =
-          emissions2025 * Math.pow(1 - reductionRate, year - 2025);
-        parisValue = calculatedValue > 0 ? calculatedValue : null;
-      }
-
-      return {
-        year,
-        total: actualData?.total,
-        approximated: approximatedValue,
-        carbonLaw: parisValue,
-        isAIGenerated: actualData?.isAIGenerated,
-        scope1: actualData?.scope1,
-        scope2: actualData?.scope2,
-        scope3: actualData?.scope3,
-        scope3Categories: actualData?.scope3Categories,
-        originalValues: actualData?.originalValues,
-      };
-    });
-  }
-
+  // Generate approximated data using the consolidated function
   const approximatedData = useMemo(() => {
     if (dataView !== "overview") {
       return null;
@@ -318,12 +94,12 @@ export default function EmissionsLineChart({
 
     // Use coefficients from trend analysis if available
     if (trendAnalysis?.coefficients) {
-      return generateApproximatedDataWithCoefficients(
+      return generateApproximatedData(
         data,
-        trendAnalysis.coefficients,
-        trendAnalysis.method,
+        undefined, // regression
         chartEndYear,
         companyBaseYear,
+        trendAnalysis.coefficients,
         trendAnalysis.cleanData,
       );
     }
@@ -453,102 +229,30 @@ export default function EmissionsLineChart({
                     trendData={
                       exploreButtonFeatureFlagEnabled() &&
                       approximatedData &&
-                      dataView === "overview"
+                      dataView === "overview" &&
+                      trendAnalysis?.coefficients &&
+                      trendAnalysis?.cleanData &&
+                      trendAnalysis.cleanData.length >= 2
                         ? (() => {
-                            // Calculate the regression points based on base year logic
-                            const regressionPoints = companyBaseYear
-                              ? data
-                                  .filter(
-                                    (d) =>
-                                      hasTotalEmissions(d) &&
-                                      d.year >= companyBaseYear,
-                                  )
-                                  .map((d) => ({
-                                    year: d.year,
-                                    value: d.total as number,
-                                  }))
-                              : getLastTwoEmissionsPoints(data);
-
-                            if (regressionPoints.length < 2) {
-                              return undefined;
-                            }
-
-                            let percentageChange = 0;
-
-                            if (trendAnalysis?.method === "none") {
-                              return undefined;
-                            }
-
-                            if (trendAnalysis?.coefficients) {
-                              if (
-                                "slope" in trendAnalysis.coefficients &&
-                                "intercept" in trendAnalysis.coefficients
-                              ) {
-                                // Linear coefficients
-                                const slope = trendAnalysis.coefficients.slope;
-                                const avgEmissions =
-                                  regressionPoints.reduce(
-                                    (sum, point) => sum + point.value,
-                                    0,
-                                  ) / regressionPoints.length;
-                                percentageChange =
-                                  avgEmissions > 0
-                                    ? (slope / avgEmissions) * 100
-                                    : 0;
-                              } else if (
-                                "a" in trendAnalysis.coefficients &&
-                                "b" in trendAnalysis.coefficients
-                              ) {
-                                // Exponential coefficients
-                                const b = trendAnalysis.coefficients.b;
-                                percentageChange = (Math.exp(b) - 1) * 100;
-                              }
-                            } else {
-                              // Fallback to old calculation if no coefficients available
-                              if (trendAnalysis?.method === "simple") {
-                                // Simple method: average annual change
-                                let totalChange = 0;
-                                let totalYears = 0;
-                                for (
-                                  let i = 1;
-                                  i < regressionPoints.length;
-                                  i++
-                                ) {
-                                  totalChange +=
-                                    regressionPoints[i].value -
-                                    regressionPoints[i - 1].value;
-                                  totalYears +=
-                                    regressionPoints[i].year -
-                                    regressionPoints[i - 1].year;
-                                }
-                                const slope =
-                                  totalYears !== 0
-                                    ? totalChange / totalYears
-                                    : 0;
-
-                                // Calculate percentage change
-                                const avgEmissions =
-                                  regressionPoints.reduce(
-                                    (sum, point) => sum + point.value,
-                                    0,
-                                  ) / regressionPoints.length;
-                                percentageChange =
-                                  avgEmissions > 0
-                                    ? (slope / avgEmissions) * 100
-                                    : 0;
-                              }
-                            }
+                            const cleanData = trendAnalysis.cleanData;
+                            const avgEmissions =
+                              cleanData.reduce(
+                                (sum, point) => sum + point.value,
+                                0,
+                              ) / cleanData.length;
+                            const percentageChange =
+                              calculateTrendPercentageChange(
+                                trendAnalysis.coefficients,
+                                avgEmissions,
+                              );
 
                             return {
                               slope: percentageChange,
                               baseYear:
                                 companyBaseYear || data[0]?.year || 2000,
-                              lastReportedYear: data
-                                .filter(hasTotalEmissions)
-                                .reduce(
-                                  (lastYear, d) => Math.max(lastYear, d.year),
-                                  0,
-                                ),
+                              lastReportedYear: Math.max(
+                                ...cleanData.map((d) => d.year),
+                              ),
                             };
                           })()
                         : undefined
@@ -564,8 +268,16 @@ export default function EmissionsLineChart({
                     dataKey="total"
                     stroke="white"
                     strokeWidth={2}
-                    dot={{ r: 4, fill: "white", cursor: "pointer" }}
-                    activeDot={{ r: 6, fill: "white", cursor: "pointer" }}
+                    dot={
+                      isMobile
+                        ? false
+                        : { r: 4, fill: "white", cursor: "pointer" }
+                    }
+                    activeDot={
+                      isMobile
+                        ? false
+                        : { r: 6, fill: "white", cursor: "pointer" }
+                    }
                     connectNulls
                     name={t("companies.emissionsHistory.totalEmissions")}
                   />
@@ -612,67 +324,21 @@ export default function EmissionsLineChart({
 
               {dataView === "scopes" && (
                 <>
-                  {!hiddenScopes.includes("scope1") && (
-                    <Line
-                      type="monotone"
-                      dataKey="scope1.value"
-                      stroke="var(--pink-3)"
-                      strokeWidth={2}
-                      dot={{
-                        r: 4,
-                        fill: "var(--pink-3)",
-                        cursor: "pointer",
-                        onClick: () => handleScopeToggle("scope1"),
-                      }}
-                      activeDot={{
-                        r: 6,
-                        fill: "var(--pink-3)",
-                        cursor: "pointer",
-                      }}
-                      name="Scope 1"
-                    />
-                  )}
-                  {!hiddenScopes.includes("scope2") && (
-                    <Line
-                      type="monotone"
-                      dataKey="scope2.value"
-                      stroke="var(--green-2)"
-                      strokeWidth={2}
-                      dot={{
-                        r: 4,
-                        fill: "var(--green-2)",
-                        cursor: "pointer",
-                        onClick: () => handleScopeToggle("scope2"),
-                      }}
-                      activeDot={{
-                        r: 6,
-                        fill: "var(--green-2)",
-                        cursor: "pointer",
-                      }}
-                      name="Scope 2"
-                    />
-                  )}
-                  {!hiddenScopes.includes("scope3") && (
-                    <Line
-                      type="monotone"
-                      dataKey="scope3.value"
-                      stroke="var(--blue-2)"
-                      strokeWidth={2}
-                      dot={{
-                        r: 4,
-                        fill: "var(--blue-2)",
-                        cursor: "pointer",
-                        onClick: () => handleScopeToggle("scope3"),
-                      }}
-                      activeDot={{
-                        r: 6,
-                        fill: "var(--blue-2)",
-                        cursor: "pointer",
-                        onClick: () => handleScopeToggle("scope3"),
-                      }}
-                      name="Scope 3"
-                    />
-                  )}
+                  <ScopeLine
+                    scope="scope1"
+                    isHidden={hiddenScopes.includes("scope1")}
+                    onToggle={handleScopeToggle}
+                  />
+                  <ScopeLine
+                    scope="scope2"
+                    isHidden={hiddenScopes.includes("scope2")}
+                    onToggle={handleScopeToggle}
+                  />
+                  <ScopeLine
+                    scope="scope3"
+                    isHidden={hiddenScopes.includes("scope3")}
+                    onToggle={handleScopeToggle}
+                  />
                 </>
               )}
 
@@ -701,224 +367,89 @@ export default function EmissionsLineChart({
                       : "0";
 
                     return (
-                      <Line
+                      <CategoryLine
                         key={categoryKey}
-                        type="monotone"
-                        dataKey={categoryKey}
-                        stroke={getCategoryColor(categoryId)}
-                        strokeWidth={2}
+                        categoryKey={categoryKey}
+                        categoryId={categoryId}
+                        isHidden={hiddenCategories.includes(categoryId)}
                         strokeDasharray={strokeDasharray}
-                        dot={(props) => {
-                          const { cx, cy, payload } = props;
-
-                          if (!payload) {
-                            return (
-                              <circle
-                                cx={cx}
-                                cy={cy}
-                                r={0}
-                                className="stroke-2 cursor-pointer"
-                              />
-                            );
-                          }
-
-                          const value = payload.originalValues?.[categoryKey];
-
-                          if (
-                            value === null ||
-                            value === undefined ||
-                            isNaN(value)
-                          ) {
-                            return (
-                              <circle
-                                cx={cx}
-                                cy={cy}
-                                r={0}
-                                className="stroke-2 cursor-pointer"
-                              />
-                            );
-                          }
-
-                          return (
-                            <circle
-                              cx={cx}
-                              cy={cy}
-                              r={4}
-                              className="stroke-2 cursor-pointer"
-                              style={{
-                                fill: getCategoryColor(categoryId),
-                                stroke: getCategoryColor(categoryId),
-                              }}
-                              cursor="pointer"
-                              onClick={() => handleCategoryToggle(categoryId)}
-                            />
-                          );
-                        }}
-                        activeDot={(props: {
-                          cx?: number;
-                          cy?: number;
-                          payload?: any;
-                        }) => {
-                          const { cx, cy, payload } = props;
-
-                          if (!payload) {
-                            return (
-                              <circle
-                                cx={cx}
-                                cy={cy}
-                                r={0}
-                                className="stroke-2 cursor-pointer"
-                              />
-                            );
-                          }
-
-                          const value = payload.originalValues?.[categoryKey];
-
-                          if (
-                            value === null ||
-                            value === undefined ||
-                            isNaN(value)
-                          ) {
-                            return (
-                              <circle
-                                cx={cx}
-                                cy={cy}
-                                r={0}
-                                className="stroke-2 cursor-pointer"
-                              />
-                            );
-                          }
-
-                          return (
-                            <circle
-                              cx={cx}
-                              cy={cy}
-                              r={6}
-                              className="stroke-2 cursor-pointer"
-                              style={{
-                                fill: getCategoryColor(categoryId),
-                                stroke: getCategoryColor(categoryId),
-                              }}
-                              cursor="pointer"
-                              onClick={() => handleCategoryToggle(categoryId)}
-                            />
-                          );
-                        }}
-                        name={getCategoryName(categoryId)}
+                        getCategoryColor={getCategoryColor}
+                        getCategoryName={getCategoryName}
+                        onToggle={handleCategoryToggle}
                       />
                     );
                   })}
             </LineChart>
           </ResponsiveContainer>
         ) : (
-          <div className="flex flex-col w-full bg-black-2 rounded-lg p-6">
-            {/* Placeholder for animated/segmented chart for each step */}
-            <div className="mb-4 text-center">
-              <div className="text-lg font-bold mb-2">
-                {exploreSteps[exploreStep].label}
-              </div>
-              <div className="text-grey text-base mb-4">
-                {exploreSteps[exploreStep].description}
-              </div>
-            </div>
-
-            {/* Render the explore chart, only show step 0 if it exists */}
-            <div className="w-full h-[350px] mb-8">
-              <ExploreChart
-                data={data}
-                step={exploreStep + (hasDataBeforeBaseYear ? 0 : 1)}
-                companyBaseYear={companyBaseYear}
-                currentLanguage={currentLanguage}
-                trendExplanation={
-                  exploreStep === 2 ? trendAnalysis?.explanation : undefined
-                }
-                yDomain={[yMin, yMax]}
-              />
-            </div>
-
-            {/* Button controls - always below chart, never overlapping */}
-            <div className="flex flex-row gap-4 justify-center pt-12">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setExploreStep((s) => Math.max(0, s - 1))}
-                disabled={exploreStep === 0}
-              >
-                <ChevronLeft className="h-4 w-4 mr-1" />
-                Back
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() =>
-                  setExploreStep((s) =>
-                    Math.min(exploreSteps.length - 1, s + 1),
-                  )
-                }
-                disabled={exploreStep === exploreSteps.length - 1}
-              >
-                Next
-                <ChevronRight className="h-4 w-4 ml-1" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => {
-                  setExploreMode(false);
-                  setExploreStep(initialExploreStep);
-                }}
-                className="ml-2"
-              >
-                Exit
-              </Button>
-            </div>
-          </div>
+          <ExploreMode
+            data={data}
+            companyBaseYear={companyBaseYear}
+            currentLanguage={currentLanguage}
+            trendAnalysis={trendAnalysis}
+            yDomain={[yMin, yMax]}
+            onExit={() => setExploreMode(false)}
+          />
         )}
       </div>
       {/* Chart view toggle buttons below the chart/legend */}
-      {!exploreMode && (
-        <div className="relative mt-2 px-4 w-full">
-          {/* Year toggle buttons positioned absolutely */}
-          <div className="absolute left-0 top-0">
-            {chartEndYear === longEndYear && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setChartEndYear(shortEndYear)}
-                className="bg-black-2 border-black-1 text-white hover:bg-black-1"
-              >
-                <ChevronLeft className="h-4 w-4 mr-1" />
-                {shortEndYear}
-              </Button>
-            )}
-          </div>
-          <div className="absolute right-0 top-0">
-            {chartEndYear === shortEndYear && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setChartEndYear(longEndYear)}
-                className="bg-black-2 border-black-1 text-white hover:bg-black-1"
-              >
-                {longEndYear}
-                <ChevronRight className="h-4 w-4 ml-1" />
-              </Button>
-            )}
-          </div>
-          {/* Explore button centered independently */}
-          {exploreButtonFeatureFlagEnabled() && (
-            <div className="flex justify-center items-center">
-              <Button
-                variant="default"
-                size="sm"
-                onClick={() => {
-                  setExploreMode(true);
-                  setExploreStep(initialExploreStep);
-                }}
-                className="bg-green-3 text-black font-semibold shadow-md hover:bg-green-2"
-              >
-                Explore the Data
-              </Button>
+      <ChartControls
+        chartEndYear={chartEndYear}
+        shortEndYear={shortEndYear}
+        longEndYear={longEndYear}
+        setChartEndYear={setChartEndYear}
+        exploreMode={exploreMode}
+        setExploreMode={setExploreMode}
+      />
+
+      {/* Mobile trend explanation button and popup */}
+      {isMobile && !exploreMode && trendAnalysis?.explanation && (
+        <div className="mt-4">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowTrendPopup(true)}
+            className="w-full bg-black-2 border-black-1 text-white hover:bg-black-1"
+          >
+            <span className="text-sm">{t("companies.emissionsHistory.trend")}</span>
+          </Button>
+
+          {/* Trend Explanation Popup Modal */}
+          {showTrendPopup && (
+            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+              <div className="bg-black-2 rounded-lg p-6 max-w-md w-full border">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-white">
+                    {t("companies.emissionsHistory.trend")}
+                  </h3>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowTrendPopup(false)}
+                    className="text-grey hover:text-white"
+                  >
+                    ✕
+                  </Button>
+                </div>
+
+                <div className="text-sm text-grey leading-relaxed mb-4">
+                  {trendAnalysis.explanationParams
+                    ? t(
+                        trendAnalysis.explanation,
+                        trendAnalysis.explanationParams,
+                      )
+                    : t(trendAnalysis.explanation)}
+                </div>
+
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowTrendPopup(false)}
+                  className="w-full bg-black-1 border-black-1 text-white hover:bg-black-2"
+                >
+                  Close
+                </Button>
+              </div>
             </div>
           )}
         </div>

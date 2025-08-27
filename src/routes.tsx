@@ -31,6 +31,7 @@ const InternalDashboard = lazy(() => import("./pages/internal-pages/InternalDash
 const ReportLandingPage = lazy(() => import("./pages/ReportLandingPage").then(m => ({ default: m.ReportLandingPage })));
 const RequestsDashboard = lazy(() => import("./pages/internal-pages/RequestsDashboard").then(m => ({ default: m.RequestsDashboard })));
 const TrendAnalysisDashboard = lazy(() => import("./pages/internal-pages/TrendAnalysisDashboard").then(m => ({ default: m.TrendAnalysisDashboard })));
+const NewsLetterArchivePage = lazy(() => import("./pages/NewslettersPage").then(m => ({ default: m.NewsLetterArchivePage })));
 
 // Loading component
 const PageLoader = () => (
@@ -43,108 +44,110 @@ export function AppRoutes() {
   return (
     <Suspense fallback={<PageLoader />}>
       <Routes>
-      {/* Language redirect for non-prefixed routes */}
-      <Route path="/" element={<LanguageRedirect />} />
-      <Route path="/license" element={<LanguageRedirect />} />
-      <Route path="/privacy" element={<LanguageRedirect />} />
-      <Route path="/insights/:id" element={<LanguageRedirect />} />
+        {/* Language redirect for non-prefixed routes */}
+        <Route path="/" element={<LanguageRedirect />} />
+        <Route path="/license" element={<LanguageRedirect />} />
+        <Route path="/privacy" element={<LanguageRedirect />} />
+        <Route path="/insights/:id" element={<LanguageRedirect />} />
 
-      {/* Swedish routes */}
-      <Route path="/sv" element={<LandingPage />} />
-      <Route path="/sv/" element={<LandingPage />} />
+        {/* Swedish routes */}
+        <Route path="/sv" element={<LandingPage />} />
+        <Route path="/sv/" element={<LandingPage />} />
 
-      {/* Companies routes - Swedish */}
-      <Route path="/sv/companies" element={<CompaniesPage />} />
-      <Route path="/sv/companies/:id" element={<CompanyDetailPage />} />
-      <Route path="/sv/companies/:id/:slug" element={<CompanyDetailPage />} />
-      <Route path="/sv/foretag/:slug/:id" element={<CompanyDetailPage />} />
+        {/* Companies routes - Swedish */}
+        <Route path="/sv/companies" element={<CompaniesPage />} />
+        <Route path="/sv/companies/:id" element={<CompanyDetailPage />} />
+        <Route path="/sv/companies/:id/:slug" element={<CompanyDetailPage />} />
+        <Route path="/sv/foretag/:slug/:id" element={<CompanyDetailPage />} />
 
-      {/* Protected Routes - Swedish */}
-      <Route element={<ProtectedRoute />}>
-        <Route path="/sv/companies/:id/edit" element={<CompanyEditPage />} />
-        <Route path="/sv/internal-pages/validation-dashboard" element={<ValidationDashboard />} />
-        <Route path="/sv/internal-pages/requests-dashboard" element={<RequestsDashboard />} />
-        <Route path="/sv/internal-pages/internal-dashboard" element={<InternalDashboard />} />
-        <Route path="/sv/internal-pages/trend-analysis-dashboard" element={<TrendAnalysisDashboard />} />
-      </Route>
+        {/* Protected Routes - Swedish */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/sv/companies/:id/edit" element={<CompanyEditPage />} />
+          <Route path="/sv/internal-pages/validation-dashboard" element={<ValidationDashboard />} />
+          <Route path="/sv/internal-pages/requests-dashboard" element={<RequestsDashboard />} />
+          <Route path="/sv/internal-pages/internal-dashboard" element={<InternalDashboard />} />
+          <Route path="/sv/internal-pages/trend-analysis-dashboard" element={<TrendAnalysisDashboard />} />
+        </Route>
 
-      {/* Municipalities routes - Swedish */}
-      <Route path="/sv/municipalities" element={<MunicipalitiesRankedPage />} />
-      <Route path="/sv/municipalities/explore" element={<MunicipalitiesComparePage />} />
-      <Route path="/sv/municipalities/:id" element={<MunicipalityDetailPage />} />
+        {/* Municipalities routes - Swedish */}
+        <Route path="/sv/municipalities" element={<MunicipalitiesRankedPage />} />
+        <Route path="/sv/municipalities/explore" element={<MunicipalitiesComparePage />} />
+        <Route path="/sv/municipalities/:id" element={<MunicipalityDetailPage />} />
 
-      {/* About Pages - Swedish */}
-      <Route path="/sv/about" element={<AboutPage />} />
-      <Route path="/sv/methodology" element={<MethodsPage />} />
-      <Route path="/sv/support" element={<SupportPage />} />
+        {/* About Pages - Swedish */}
+        <Route path="/sv/about" element={<AboutPage />} />
+        <Route path="/sv/methodology" element={<MethodsPage />} />
+        <Route path="/sv/support" element={<SupportPage />} />
 
-      {/* Insights Pages - Swedish */}
-      <Route path="/sv/articles" element={<InsightsPage />} />
-      <Route path="/sv/reports" element={<ReportsPage />} />
-      <Route path="/sv/reports/:reportId" element={<ReportLandingPage />} />
-      <Route path="/sv/insights/:id" element={<BlogDetailPage />} />
-      <Route path="/sv/learn-more" element={<LearnMoreOverview />} />
-      <Route path="/sv/learn-more/:id" element={<LearnMoreArticle />} />
+        {/* Insights Pages - Swedish */}
+        <Route path="/sv/articles" element={<InsightsPage />} />
+        <Route path="/sv/reports" element={<ReportsPage />} />
+        <Route path="/sv/reports/:reportId" element={<ReportLandingPage />} />
+        <Route path="/sv/insights/:id" element={<BlogDetailPage />} />
+        <Route path="/sv/learn-more" element={<LearnMoreOverview />} />
+        <Route path="/sv/learn-more/:id" element={<LearnMoreArticle />} />
+        <Route path="/sv/newsletter-archive" element={<NewsLetterArchivePage />} />
 
-      {/* Other Pages - Swedish */}
-      <Route path="/sv/privacy" element={<PrivacyPage />} />
-      <Route path="/sv/products" element={<ProductsPage />} />
-      <Route path="/sv/products/database-download-2025" element={<DownloadsPage />} />
+        {/* Other Pages - Swedish */}
+        <Route path="/sv/privacy" element={<PrivacyPage />} />
+        <Route path="/sv/products" element={<ProductsPage />} />
+        <Route path="/sv/products/database-download-2025" element={<DownloadsPage />} />
 
-      {/* Error pages - Swedish */}
-      <Route path="/sv/error/:code" element={<ErrorPage />} />
-      <Route path="/sv/403" element={<UnauthorizedErrorPage />} />
+        {/* Error pages - Swedish */}
+        <Route path="/sv/error/:code" element={<ErrorPage />} />
+        <Route path="/sv/403" element={<UnauthorizedErrorPage />} />
 
-      {/* English routes */}
-      <Route path="/en" element={<LandingPage />} />
-      <Route path="/en/" element={<LandingPage />} />
+        {/* English routes */}
+        <Route path="/en" element={<LandingPage />} />
+        <Route path="/en/" element={<LandingPage />} />
 
-      {/* Companies routes - English */}
-      <Route path="/en/companies" element={<CompaniesPage />} />
-      <Route path="/en/companies/:id" element={<CompanyDetailPage />} />
-      <Route path="/en/companies/:id/:slug" element={<CompanyDetailPage />} />
+        {/* Companies routes - English */}
+        <Route path="/en/companies" element={<CompaniesPage />} />
+        <Route path="/en/companies/:id" element={<CompanyDetailPage />} />
+        <Route path="/en/companies/:id/:slug" element={<CompanyDetailPage />} />
 
-      {/* Protected Routes - English */}
-      <Route element={<ProtectedRoute />}>
-        <Route path="/en/companies/:id/edit" element={<CompanyEditPage />} />
-        <Route path="/en/internal-pages/validation-dashboard" element={<ValidationDashboard />} />
-        <Route path="/en/internal-pages/requests-dashboard" element={<RequestsDashboard />} />
-        <Route path="/en/internal-pages/internal-dashboard" element={<InternalDashboard />} />
-        <Route path="/en/internal-pages/trend-analysis-dashboard" element={<TrendAnalysisDashboard />} />
-      </Route>
+        {/* Protected Routes - English */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/en/companies/:id/edit" element={<CompanyEditPage />} />
+          <Route path="/en/internal-pages/validation-dashboard" element={<ValidationDashboard />} />
+          <Route path="/en/internal-pages/requests-dashboard" element={<RequestsDashboard />} />
+          <Route path="/en/internal-pages/internal-dashboard" element={<InternalDashboard />} />
+          <Route path="/en/internal-pages/trend-analysis-dashboard" element={<TrendAnalysisDashboard />} />
+        </Route>
 
-      {/* Municipalities routes - English */}
-      <Route path="/en/municipalities" element={<MunicipalitiesRankedPage />} />
-      <Route path="/en/municipalities/explore" element={<MunicipalitiesComparePage />} />
-      <Route path="/en/municipalities/:id" element={<MunicipalityDetailPage />} />
+        {/* Municipalities routes - English */}
+        <Route path="/en/municipalities" element={<MunicipalitiesRankedPage />} />
+        <Route path="/en/municipalities/explore" element={<MunicipalitiesComparePage />} />
+        <Route path="/en/municipalities/:id" element={<MunicipalityDetailPage />} />
 
-      {/* About Pages - English */}
-      <Route path="/en/about" element={<AboutPage />} />
-      <Route path="/en/methodology" element={<MethodsPage />} />
-      <Route path="/en/support" element={<SupportPage />} />
+        {/* About Pages - English */}
+        <Route path="/en/about" element={<AboutPage />} />
+        <Route path="/en/methodology" element={<MethodsPage />} />
+        <Route path="/en/support" element={<SupportPage />} />
 
-      {/* Insights Pages - English */}
-      <Route path="/en/articles" element={<InsightsPage />} />
-      <Route path="/en/reports" element={<ReportsPage />} />
-      <Route path="/en/reports/:reportId" element={<ReportLandingPage />} />
-      <Route path="/en/insights/:id" element={<BlogDetailPage />} />
-      <Route path="/en/learn-more" element={<LearnMoreOverview />} />
-      <Route path="/en/learn-more/:id" element={<LearnMoreArticle />} />
+        {/* Insights Pages - English */}
+        <Route path="/en/articles" element={<InsightsPage />} />
+        <Route path="/en/reports" element={<ReportsPage />} />
+        <Route path="/en/reports/:reportId" element={<ReportLandingPage />} />
+        <Route path="/en/insights/:id" element={<BlogDetailPage />} />
+        <Route path="/en/learn-more" element={<LearnMoreOverview />} />
+        <Route path="/en/learn-more/:id" element={<LearnMoreArticle />} />
+        <Route path="/en/newsletter-archive" element={<NewsLetterArchivePage />} />
 
-      {/* Other Pages - English */}
-      <Route path="/en/privacy" element={<PrivacyPage />} />
-      <Route path="/en/products" element={<ProductsPage />} />
-      <Route path="/en/products/database-download-2025" element={<DownloadsPage />} />
+        {/* Other Pages - English */}
+        <Route path="/en/privacy" element={<PrivacyPage />} />
+        <Route path="/en/products" element={<ProductsPage />} />
+        <Route path="/en/products/database-download-2025" element={<DownloadsPage />} />
 
-      {/* Error pages - English */}
-      <Route path="/en/error/:code" element={<ErrorPage />} />
-      <Route path="/en/403" element={<UnauthorizedErrorPage />} />
+        {/* Error pages - English */}
+        <Route path="/en/error/:code" element={<ErrorPage />} />
+        <Route path="/en/403" element={<UnauthorizedErrorPage />} />
 
-      {/* Auth callback */}
-      <Route path="/auth/callback" element={<AuthCallback />} />
+        {/* Auth callback */}
+        <Route path="/auth/callback" element={<AuthCallback />} />
 
-      {/* Catch-all for 404 */}
-      <Route path="*catchAll" element={<NotFoundPage />} />
+        {/* Catch-all for 404 */}
+        <Route path="*catchAll" element={<NotFoundPage />} />
       </Routes>
     </Suspense>
   );

@@ -1,5 +1,5 @@
 import { t } from "i18next";
-import { KPIValue, Municipality } from "@/types/municipality";
+import { KPIValue, Municipality, getSortedMunicipalKPIValues } from "@/types/municipality";
 import InsightsList from "./MunicipalityInsightsList";
 import KPIDetailsPanel from "./KPIDetailsPanel";
 
@@ -37,11 +37,7 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
     );
   }
 
-  const sortedData = [...validData].sort((a, b) =>
-    selectedKPI.higherIsBetter
-      ? (b[selectedKPI.key] as number) - (a[selectedKPI.key] as number)
-      : (a[selectedKPI.key] as number) - (b[selectedKPI.key] as number),
-  );
+  const sortedData = getSortedMunicipalKPIValues(municipalityData, selectedKPI);
 
   const topMunicipalities = sortedData.slice(0, 5);
   const bottomMunicipalities = sortedData.slice(-5).reverse();
@@ -76,6 +72,7 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
           totalCount={municipalityData.length}
           dataPointKey={selectedKPI.key}
           unit={selectedKPI.unit}
+          nullValues={selectedKPI.nullValues}
           textColor="text-blue-3"
         />
 
@@ -86,6 +83,7 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
           isBottomRanking={true}
           dataPointKey={selectedKPI.key}
           unit={selectedKPI.unit}
+          nullValues={selectedKPI.nullValues}
           textColor="text-pink-3"
         />
       </div>

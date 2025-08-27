@@ -101,12 +101,12 @@ export const SectorsChart: FC<SectorsChartProps> = ({
 
   return (
     <ResponsiveContainer width="100%" height="90%">
-      <ComposedChart data={chartData}>
+      <ComposedChart data={chartData} margin={{ left: -50 }}>
         <Legend
           verticalAlign="bottom"
           align="right"
           iconType="line"
-          wrapperStyle={{ fontSize: "12px", color: "var(--grey)" }}
+          wrapperStyle={{ fontSize: "12px", color: "var(--grey)", paddingLeft: "50px" }}
           formatter={(value) => {
             const sectorInfo = getSectorInfo?.(value) || {
               translatedName: value,

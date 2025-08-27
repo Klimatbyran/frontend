@@ -14,6 +14,8 @@ import {
 import { NewsletterPopover } from "../NewsletterPopover";
 import { useLanguage } from "../LanguageProvider";
 import { HeaderSearchButton } from "../search/HeaderSearchButton";
+import { useScreenSize } from "@/hooks/useScreenSize";
+import useHeaderTitle from "@/hooks/useHeaderTitle";
 import { useAuth } from "@/contexts/AuthContext";
 
 export function Header() {
@@ -23,6 +25,8 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const toggleMenu = useCallback(() => setMenuOpen((prev) => !prev), []);
+  const { isMobile } = useScreenSize();
+  const { headerTitle, showTitle, setShowTitle } = useHeaderTitle();
   const { user } = useAuth();
 
   useEffect(() => {
@@ -31,6 +35,20 @@ export function Header() {
       setIsSignUpOpen(true);
     }
   }, [location]);
+
+  useEffect(() => {
+    const onScroll = () => {
+      if (window.scrollY >= 125) {
+        setShowTitle(true);
+      } else {
+        setShowTitle(false);
+      }
+    };
+
+    window.addEventListener("scroll", onScroll);
+
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [headerTitle, showTitle, setShowTitle]);
 
   const LanguageButtons = ({ className }: { className?: string }) => (
     <div className={cn("flex items-center gap-2", className)}>
@@ -108,6 +126,10 @@ export function Header() {
       sublinks: [
         { label: t("header.reports"), path: `${currentLanguage}/reports` },
         { label: t("header.articles"), path: `${currentLanguage}/articles` },
+        {
+          label: t("header.newsletterArchive"),
+          path: `${currentLanguage}/newsletter-archive`,
+        },
         { label: t("header.learnMore"), path: `${currentLanguage}/learn-more` },
       ],
     },
@@ -130,13 +152,19 @@ export function Header() {
   return (
     <>
       <header className="fixed w-screen overflow-x-hidden overflow-y-hidden top-0 left-0 right-0 z-50 bg-black-2 h-10 lg:h-12">
-        <div className="container mx-auto px-4 flex items-center justify-between pt-2 lg:pt-0">
+        <div className="container relative mx-auto px-4 flex items-center justify-between pt-2 lg:pt-0">
           <Link
             to="/"
             className="flex items-center gap-2 text-base font-medium"
           >
             Klimatkollen
           </Link>
+          {showTitle && (
+            <span className="absolute left-1/2 transform -translate-x-1/2">
+              {isMobile && headerTitle}
+            </span>
+          )}
+
           <button
             className="lg:hidden text-white"
             onClick={toggleMenu}
