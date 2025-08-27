@@ -65,14 +65,13 @@ const PieTooltip: React.FC<PieTooltipProps> = ({
         </div>
         {showPercentage && safeTotal && (
           <div>
-            {percentage}{" "}
-            {percentageLabel || t("companiesPage.sectorGraphs.ofTotal")}
+            {percentage} {percentageLabel || t("graphs.pieChart.ofTotal")}
           </div>
         )}
         <p className="text-xs italic text-blue-2 mt-2">
           {customActionLabel
             ? customActionLabel
-            : t("companies.scope3Chart.clickToFilter")}
+            : t("graphs.pieChart.clickToFilter")}
         </p>
       </div>
     </div>

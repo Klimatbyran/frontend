@@ -1336,6 +1336,12 @@
     "guide": "Guide",
     "methodology": "Metodik"
   },
+  "graphs": {
+    "pieChart": {
+      "clickToFilter": "Klicka för att filtrera",
+      "ofTotal": "av total"
+    }
+  },
   "language": {
     "sv": "Svenska",
     "en": "Engelska"
