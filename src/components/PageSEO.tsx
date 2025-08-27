@@ -59,9 +59,9 @@ export function PageSEO({
       <link rel="canonical" href={fullCanonicalUrl} />
       
       {/* Language Alternates */}
-      <link rel="alternate" hreflang="sv" href={canonicalUrl ? `${baseUrl}${canonicalUrl.replace("/en", "")}` : `${baseUrl}${window.location.pathname.replace("/en", "")}`} />
-      <link rel="alternate" hreflang="en" href={canonicalUrl ? `${baseUrl}/en${canonicalUrl.replace("/en", "")}` : `${baseUrl}/en${window.location.pathname.replace("/en", "")}`} />
-      <link rel="alternate" hreflang="x-default" href={canonicalUrl ? `${baseUrl}${canonicalUrl.replace("/en", "")}` : `${baseUrl}${window.location.pathname.replace("/en", "")}`} />
+      <link rel="alternate" hreflang="sv" href={canonicalUrl ? `${baseUrl}${canonicalUrl.replace("/en", "")}` : `${baseUrl}${clientPathname.replace("/en", "")}`} />
+      <link rel="alternate" hreflang="en" href={canonicalUrl ? `${baseUrl}/en${canonicalUrl.replace("/en", "")}` : `${baseUrl}/en${clientPathname.replace("/en", "")}`} />
+      <link rel="alternate" hreflang="x-default" href={canonicalUrl ? `${baseUrl}${canonicalUrl.replace("/en", "")}` : `${baseUrl}${clientPathname.replace("/en", "")}`} />
       
       {/* Structured Data */}
       {structuredData && (
