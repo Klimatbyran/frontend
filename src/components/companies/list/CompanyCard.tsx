@@ -27,7 +27,7 @@ type CompanyCardProps = Pick<
   RankedCompany,
   | "wikidataId"
   | "name"
-  | "description"
+  | "descriptions"
   | "industry"
   | "reportingPeriods"
   | "metrics"
@@ -37,7 +37,7 @@ type CompanyCardProps = Pick<
 export function CompanyCard({
   wikidataId,
   name,
-  description,
+  descriptions,
   reportingPeriods,
 }: CompanyCardProps) {
   const { t } = useTranslation();
@@ -90,6 +90,12 @@ export function CompanyCard({
     isEmissionsAIGenerated(latestPeriod) ||
     (previousPeriod && isEmissionsAIGenerated(previousPeriod));
 
+  // Get the description in the current language
+  const currentDescription =
+    descriptions?.find(
+      (desc) => desc.language === (currentLanguage === "sv" ? "SV" : "EN"),
+    )?.text || t("companies.card.noData");
+
   return (
     <div className="relative rounded-level-2 @container">
       <Link
@@ -135,7 +141,9 @@ export function CompanyCard({
               </TooltipProvider>
             </div>
           )} */}
-            <p className="text-grey text-sm line-clamp-2">{description}</p>
+            <p className="text-grey text-sm line-clamp-2">
+              {currentDescription}
+            </p>
           </div>
           <div
             className="w-12 h-12 rounded-full flex shrink-0 items-center justify-center"

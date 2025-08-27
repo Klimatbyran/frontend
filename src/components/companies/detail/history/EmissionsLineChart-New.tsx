@@ -2,11 +2,11 @@ import {
   Legend,
   LineChart,
   ReferenceLine,
-  ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
+import { ChartContainer } from "@/components/charts";
 import { CustomTooltip } from "../CustomTooltip";
 import { ChartData } from "@/types/emissions";
 import { useTranslation } from "react-i18next";
@@ -21,7 +21,7 @@ import { calculateTrendPercentageChange } from "@/lib/calculations/trends/trendP
 import { exploreButtonFeatureFlagEnabled } from "@/utils/ui/featureFlags";
 import { isMobile } from "react-device-detect";
 import { Button } from "@/components/ui/button";
-import { ChartLine, CommonLineStyles } from "@/components/charts";
+import { Line } from "recharts";
 
 interface EmissionsLineChartProps {
   data: ChartData[];
@@ -74,11 +74,11 @@ export default function EmissionsLineChartNew({
   trendAnalysis,
 }: EmissionsLineChartProps) {
   const { t } = useTranslation();
-  const [chartEndYear, setChartEndYear] = useState(2050);
-  const [shortEndYear, setShortEndYear] = useState(2030);
+  const currentYear = new Date().getFullYear();
+  const [chartEndYear, setChartEndYear] = useState(currentYear + 5);
+  const [shortEndYear, setShortEndYear] = useState(currentYear + 5);
   const [longEndYear, setLongEndYear] = useState(2050);
   const [showTrendPopup, setShowTrendPopup] = useState(false);
-  const currentYear = new Date().getFullYear();
   const isFirstYear = companyBaseYear === data[0]?.year;
 
   // Generate approximated data using the consolidated function
@@ -98,7 +98,7 @@ export default function EmissionsLineChartNew({
         data,
         undefined, // regression
         chartEndYear,
-        undefined, // baseYear
+        companyBaseYear, // baseYear
         trendAnalysis.coefficients, // coefficients
         trendAnalysis.cleanData, // cleanData
       );
@@ -111,6 +111,8 @@ export default function EmissionsLineChartNew({
         undefined, // regression - let the function calculate it
         chartEndYear,
         companyBaseYear, // baseYear
+        undefined, // coefficients
+        undefined, // cleanData
       );
     }
 
@@ -181,15 +183,15 @@ export default function EmissionsLineChartNew({
   }
 
   return (
-    <div className="w-full h-full">
-      <div className="h-full">
-        {!exploreMode ? (
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart
-              data={filteredData}
-              margin={{ left: 60, right: 20, top: 20, bottom: 40 }}
-              onClick={handleClick}
-            >
+    <div className="w-full h-full flex flex-col">
+      {/* Chart - fixed height to prevent shrinking */}
+      <div className="h-[350px] md:h-[400px] w-full">
+        <ChartContainer height="100%" width="100%">
+          <LineChart
+            data={filteredData}
+            margin={{ left: 60, right: 20, top: 20, bottom: 40 }}
+            onClick={handleClick}
+          >
               <XAxis
                 dataKey="year"
                 stroke="var(--grey)"
@@ -218,6 +220,7 @@ export default function EmissionsLineChartNew({
                 tickFormatter={(value) =>
                   formatEmissionsAbsoluteCompact(value, currentLanguage)
                 }
+                width={60}
                 domain={[yMin, yMax]}
                 padding={{ top: 0, bottom: 0 }}
               />
@@ -233,14 +236,22 @@ export default function EmissionsLineChartNew({
                 }
               />
 
+              <Legend
+                verticalAlign="bottom"
+                align="right"
+                height={36}
+                iconType="line"
+                wrapperStyle={{ fontSize: "12px", color: "var(--grey)" }}
+              />
+
               {dataView === "overview" && (
                 <>
-                  {/* Total emissions line - using ChartLine with CommonLineStyles */}
-                  <ChartLine
-                    {...CommonLineStyles.historical(
-                      "total",
-                      t("companies.emissionsHistory.totalEmissions"),
-                    )}
+                  {/* Total emissions line */}
+                  <Line
+                    type="monotone"
+                    dataKey="total"
+                    stroke="white"
+                    strokeWidth={2}
                     dot={
                       isMobile
                         ? false
@@ -251,6 +262,7 @@ export default function EmissionsLineChartNew({
                         ? false
                         : { r: 6, fill: "white", cursor: "pointer" }
                     }
+                    name={t("companies.emissionsHistory.totalEmissions")}
                   />
 
                   {approximatedData && (
@@ -268,27 +280,30 @@ export default function EmissionsLineChartNew({
                         }}
                       />
 
-                      {/* Approximated data line - using ChartLine with CommonLineStyles */}
-                      <ChartLine
-                        {...CommonLineStyles.approximated(
-                          "approximated",
-                          t("companies.emissionsHistory.approximated"),
-                        )}
-                        data={approximatedData}
+                      {/* Approximated data line */}
+                      <Line
                         type="linear"
+                        dataKey="approximated"
+                        stroke="var(--grey)"
+                        strokeWidth={1}
+                        strokeDasharray="4 4"
+                        data={approximatedData}
                         dot={false}
                         activeDot={false}
+                        name={t("companies.emissionsHistory.approximated")}
                       />
 
-                      {/* Carbon Law line - using ChartLine with CommonLineStyles */}
-                      <ChartLine
-                        {...CommonLineStyles.carbonLaw(
-                          "carbonLaw",
-                          t("companies.emissionsHistory.carbonLaw"),
-                        )}
+                      {/* Carbon Law line */}
+                      <Line
+                        type="monotone"
+                        dataKey="carbonLaw"
+                        stroke="var(--green-3)"
+                        strokeWidth={1}
+                        strokeDasharray="4 4"
                         data={approximatedData}
                         dot={false}
                         activeDot={false}
+                        name={t("companies.emissionsHistory.carbonLaw")}
                       />
                     </>
                   )}
@@ -353,7 +368,7 @@ export default function EmissionsLineChartNew({
                     );
                   })}
             </LineChart>
-          </ResponsiveContainer>
+          </ChartContainer>
         ) : (
           <ExploreMode
             data={data}

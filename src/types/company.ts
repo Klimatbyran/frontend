@@ -1,30 +1,6 @@
 import type { paths } from "@/lib/api-types";
 import { DivideIcon as LucideIcon } from "lucide-react";
 
-// Base company type from API with simplified industry structure
-export interface BaseCompany {
-  wikidataId: string;
-  name: string;
-  descriptions?: {
-    id: string;
-    language: "SV" | "EN";
-    text: string;
-  }[];
-  industry: {
-    industryGics: {
-      sectorCode: string;
-      groupCode: string;
-      industryCode: string;
-      subIndustryCode: string;
-    };
-    metadata: {
-      verifiedBy: { name: string } | null;
-    };
-  } | null;
-  reportingPeriods: ReportingPeriod[];
-  baseYear?: { id: string; year: number; metadata: any } | null;
-}
-
 // Base company type from API
 export type CompanyDetails = NonNullable<
   paths["/companies/{wikidataId}"]["get"]["responses"][200]["content"]["application/json"]
@@ -35,33 +11,19 @@ export type ReportingPeriod = NonNullable<
   paths["/companies/{wikidataId}"]["get"]["responses"][200]["content"]["application/json"]
 >["reportingPeriods"][number];
 
-// Derived type for frontend, with optional id fields
-export type ReportingPeriodWithOptionalIds = Omit<
-  ReportingPeriod,
-  "economy"
-> & {
-  economy: {
-    id?: string;
-    turnover: {
-      id?: string;
-      value: number | null;
-      currency: string | null;
-      metadata: any;
-    } | null;
-    employees: {
-      id?: string;
-      value: number | null;
-      unit: string | null;
-      metadata: any;
-    } | null;
-  } | null;
-};
+// Type for transformed reporting periods in useCompanies hook
+export interface TransformedReportingPeriod
+  extends Omit<ReportingPeriod, "id" | "emissions"> {
+  id: string; // Overridden to use startDate instead of original ID
+  emissions: Emissions | null; // Cleaned emissions data
+  // Economy field remains the same as ReportingPeriod (with required IDs)
+}
 
 export type Emissions = NonNullable<ReportingPeriod["emissions"]>;
 
 // Extended company type with metrics and optional rankings
 export interface RankedCompany extends Omit<BaseCompany, "reportingPeriods"> {
-  reportingPeriods: ReportingPeriodWithOptionalIds[];
+  reportingPeriods: TransformedReportingPeriod[];
   metrics: {
     emissionsReduction: number;
     displayReduction: string;
