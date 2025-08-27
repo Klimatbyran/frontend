@@ -51,14 +51,14 @@ export function NewsLetterArchivePage() {
         <div
           className={`${isMobile ? "flex flex-col" : "flex"} mt-6 relative md:flex-col lg:flex-row gap-8`}
         >
+          {isMobile && (
+            <NewsletterPopover buttonText={t("header.newsletter")} />
+          )}
           <NewsletterNavigation
             newsletterList={data}
             setDisplayedNewsletter={setDisplayedNewsletter}
             displayedNewsLetter={displayedNewsletter}
           />
-          {isMobile && (
-            <NewsletterPopover buttonText={t("header.newsletter")} />
-          )}
 
           {displayedNewsletter && (
             <iframe
