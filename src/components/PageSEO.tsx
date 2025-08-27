@@ -25,10 +25,19 @@ export function PageSEO({
   const { currentLanguage } = useLanguage();
   const locale = currentLanguage === "sv" ? "sv_SE" : "en_US";
   const baseUrl = "https://klimatkollen.se";
-  
-  const fullCanonicalUrl = canonicalUrl || window.location.href;
-  const fullOgImage = ogImage.startsWith("http") ? ogImage : `${baseUrl}${ogImage}`;
 
+  // Client-only location values
+  const [locationHref, setLocationHref] = useState("");
+  const [locationPathname, setLocationPathname] = useState("");
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setLocationHref(window.location.href);
+      setLocationPathname(window.location.pathname);
+    }
+  }, []);
+
+  const fullCanonicalUrl = canonicalUrl || locationHref || baseUrl;
+  const fullOgImage = ogImage.startsWith("http") ? ogImage : `${baseUrl}${ogImage}`;
   return (
     <Helmet>
       {/* Basic Meta Tags */}
