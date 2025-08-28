@@ -3,7 +3,7 @@ import {
   emissionsToTshirts,
   emissionsToGasTank,
   emissionsComparedToSweden,
-  emissionsToTrees,
+  emissionsToFlights,
 } from "@/utils/calculations/relatableNumbersCalc";
 import {
   formatEmissionsAbsolute,
@@ -14,14 +14,12 @@ import { ReportingPeriod } from "@/types/company";
 
 type RelatableNumbersProps = {
   selectedPeriod: ReportingPeriod;
-  selectedYear: string;
   currentLanguage: "sv" | "en";
 };
 
 const RelatableNumbers = ({
   selectedPeriod,
   currentLanguage,
-  selectedYear,
 }: RelatableNumbersProps) => {
   const { t } = useTranslation();
 
@@ -44,11 +42,11 @@ const RelatableNumbers = ({
     emissionsComparedToSweden(validTotalEmissions),
   );
 
-  const numberOfTreesAbsorbing = emissionsToTrees(validTotalEmissions);
-  const numberOfTreesAbsorbingFormatted = localizeUnit(
-    numberOfTreesAbsorbing,
+  const numberOfRoundTrips = emissionsToFlights(validTotalEmissions);
+  const numberOfRoundTripsFormatted = localizeUnit(
+    numberOfRoundTrips,
     currentLanguage,
-  )?.slice(0, 4);
+  )?.slice(0, 3);
 
   return (
     validTotalEmissions && (
@@ -124,7 +122,7 @@ const RelatableNumbers = ({
 
             <div className="flex items-center gap-4">
               <img
-                src="../icons/tree.svg"
+                src="../icons/plane.svg"
                 alt="T-shirt icon"
                 className="h-[50px] md:h-[70px]"
               />
@@ -133,10 +131,10 @@ const RelatableNumbers = ({
                 className="text-sm md:text-base lg:text-lg max-w-3xl mt-2"
               >
                 <span className="text-green-100">
-                  {numberOfTreesAbsorbingFormatted}{" "}
-                  {t("relatableNumbers.billion")}
+                  {numberOfRoundTripsFormatted}{" "}
+                  {t("relatableNumbers.million")}
                 </span>{" "}
-                {t("relatableNumbers.trees")}
+                {t("relatableNumbers.plane")}
               </Text>
             </div>
           </div>

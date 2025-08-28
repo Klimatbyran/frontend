@@ -37,16 +37,16 @@ export const emissionsComparedToSweden = (totalEmissions: number | null) => {
   return emissionsDifference;
 };
 
-export const emissionsToTrees = (totalEmissions: number | null) => {
-  //Average 15kg of tco2e absoption a year for a tree
-  const treeEmissionsAbsorption = 15;
+export const emissionsToFlights = (totalEmissions: number | null) => {
+  //Average 746kg tcoe2 for a Sweden-New York roundtrip
+  const roundTrip = 746;
 
   if (totalEmissions === null) {
     return 0;
   }
   const totalEmissionsKg = totalEmissions * 1000;
 
-  const numbersOfTreesAbsorbing = totalEmissionsKg / treeEmissionsAbsorption;
+  const numberOfRoundTrips = totalEmissionsKg / roundTrip;
 
-  return numbersOfTreesAbsorbing;
+  return numberOfRoundTrips;
 };

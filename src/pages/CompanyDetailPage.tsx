@@ -185,7 +185,6 @@ export function CompanyDetailPage() {
         <RelatableNumbers
           selectedPeriod={selectedPeriod}
           currentLanguage={currentLanguage}
-          selectedYear={selectedYear}
         />
 
         <CompanyHistory company={company} />
