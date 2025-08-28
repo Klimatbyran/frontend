@@ -5,7 +5,7 @@ import { CompanyOverview } from "@/components/companies/detail/overview/CompanyO
 import { CompanyHistory } from "@/components/companies/detail/CompanyHistory";
 import { Text } from "@/components/ui/text";
 import { useTranslation } from "react-i18next";
-import { PageSEO } from "@/components/SEO/PageSEO";
+import { PageSEO } from "@/components/PageSEO";
 import { createSlug } from "@/lib/utils";
 import { CompanyScope3 } from "@/components/companies/detail/CompanyScope3";
 import { getCompanyDescription } from "@/utils/business/company";
@@ -115,6 +115,94 @@ export function CompanyDetailPage() {
     description: description,
     url: canonicalUrl,
     industry: industry,
+    additionalProperty: [
+      {
+        "@type": "PropertyValue",
+        name: "Total Emissions",
+        value: `${formattedEmissions} ${t("emissionsUnit")}`,
+        unitText: t("emissionsUnit"),
+        valueReference: {
+          "@type": "QuantitativeValue",
+          value: totalEmissions || 0,
+          unitText: t("emissionsUnit"),
+        },
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Reporting Year",
+        value: latestYear.toString(),
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Industry Sector",
+        value: industry,
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Reporting Periods",
+        value: sortedPeriods.length,
+        unitText: "years",
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Latest Reporting Date",
+        value: latestPeriod
+          ? new Date(latestPeriod.endDate).toISOString().split("T")[0]
+          : "N/A",
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Scope 1 Emissions",
+        value: latestPeriod?.emissions?.scope1?.total
+          ? `${latestPeriod.emissions.scope1.total.toFixed(1)} ${t("emissionsUnit")}`
+          : "N/A",
+        unitText: t("emissionsUnit"),
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Scope 2 Emissions",
+        value: latestPeriod?.emissions?.scope2?.calculatedTotalEmissions
+          ? `${latestPeriod.emissions.scope2.calculatedTotalEmissions.toFixed(1)} ${t("emissionsUnit")}`
+          : "N/A",
+        unitText: t("emissionsUnit"),
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Scope 3 Emissions",
+        value: latestPeriod?.emissions?.scope3?.calculatedTotalEmissions
+          ? `${latestPeriod.emissions.scope3.calculatedTotalEmissions.toFixed(1)} ${t("emissionsUnit")}`
+          : "N/A",
+        unitText: t("emissionsUnit"),
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Data Coverage",
+        value: `${new Date(sortedPeriods[sortedPeriods.length - 1].endDate).getFullYear()} - ${new Date(sortedPeriods[0].endDate).getFullYear()}`,
+        description: "Years covered by emissions data",
+      },
+      ...(company.goals && company.goals.length > 0
+        ? [
+            {
+              "@type": "PropertyValue",
+              name: "Climate Goals",
+              value: company.goals.map((goal) => goal.description).join(", "),
+              description: `${company.goals.length} climate goals set by the company`,
+            },
+          ]
+        : []),
+      ...(company.initiatives && company.initiatives.length > 0
+        ? [
+            {
+              "@type": "PropertyValue",
+              name: "Climate Initiatives",
+              value: company.initiatives
+                .map((initiative) => initiative.title)
+                .join(", "),
+              description: `${company.initiatives.length} active climate initiatives`,
+            },
+          ]
+        : []),
+    ],
   };
 
   return (
@@ -124,52 +212,7 @@ export function CompanyDetailPage() {
         description={pageDescription}
         canonicalUrl={canonicalUrl}
         structuredData={structuredData}
-      >
-        <h1>
-          {company.name} - {t("companyDetailPage.seoText.climateData")}
-        </h1>
-        <p>
-          {t("companyDetailPage.seoText.intro", {
-            company: company.name,
-            industry: industry,
-          })}
-        </p>
-        <h2>{t("companyDetailPage.seoText.emissionsHeading")}</h2>
-        <p>
-          {t("companyDetailPage.seoText.emissionsText", {
-            company: company.name,
-            emissions: formattedEmissions,
-            year: latestYear,
-          })}
-        </p>
-        <h2>{t("companyDetailPage.seoText.industryHeading")}</h2>
-        <p>
-          {t("companyDetailPage.seoText.industryText", {
-            company: company.name,
-            industry: industry,
-          })}
-        </p>
-        {company.goals && company.goals.length > 0 && (
-          <>
-            <h2>{t("companyDetailPage.seoText.goalsHeading")}</h2>
-            <p>
-              {t("companyDetailPage.seoText.goalsText", {
-                company: company.name,
-              })}
-            </p>
-          </>
-        )}
-        {company.initiatives && company.initiatives.length > 0 && (
-          <>
-            <h2>{t("companyDetailPage.seoText.initiativesHeading")}</h2>
-            <p>
-              {t("companyDetailPage.seoText.initiativesText", {
-                company: company.name,
-              })}
-            </p>
-          </>
-        )}
-      </PageSEO>
+      />
 
       <div className="space-y-8 md:space-y-16 max-w-[1400px] mx-auto">
         <CompanyOverview

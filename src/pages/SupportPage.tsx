@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Heart, Code, Handshake, Building, Users } from "lucide-react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { SupportMethod } from "@/components/support/SupportMethod";
-import { PageSEO } from "@/components/SEO/PageSEO";
+import { PageSEO } from "@/components/PageSEO";
 
 type SupportReadMoreContent = {
   header: string;
@@ -26,6 +26,109 @@ export function SupportPage() {
     name: t("supportPage.header.title"),
     description: pageDescription,
     url: canonicalUrl,
+    mainEntity: {
+      "@type": "ItemList",
+      name: "Ways to Support Klimatkollen",
+      numberOfItems: 5,
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: t("supportPage.donations.title"),
+          description: t("supportPage.donations.description"),
+          url: "mailto:hej@klimatkollen.se",
+          additionalProperty: {
+            "@type": "PropertyValue",
+            name: "Support Type",
+            value: "Financial Donation",
+          },
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: t("supportPage.organizationSupport.title"),
+          description: t("supportPage.organizationSupport.description"),
+          url: "mailto:hej@klimatkollen.se",
+          additionalProperty: {
+            "@type": "PropertyValue",
+            name: "Support Type",
+            value: "Corporate Partnership",
+          },
+        },
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: t("supportPage.openSource.title"),
+          description: t("supportPage.openSource.description"),
+          url: t("supportPage.openSource.action.link"),
+          additionalProperty: {
+            "@type": "PropertyValue",
+            name: "Support Type",
+            value: "Code Contribution",
+          },
+        },
+        {
+          "@type": "ListItem",
+          position: 4,
+          name: t("supportPage.volunteer.title"),
+          description: t("supportPage.volunteer.description"),
+          url: t("supportPage.volunteer.action.link"),
+          additionalProperty: {
+            "@type": "PropertyValue",
+            name: "Support Type",
+            value: "Volunteer Time",
+          },
+        },
+        {
+          "@type": "ListItem",
+          position: 5,
+          name: t("supportPage.partnerships.title"),
+          description: t("supportPage.partnerships.description"),
+          url: "mailto:hej@klimatkollen.se",
+          additionalProperty: {
+            "@type": "PropertyValue",
+            name: "Support Type",
+            value: "Strategic Partnership",
+          },
+        },
+      ],
+    },
+    // Contact information
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: "Customer Service",
+      email: "hej@klimatkollen.se",
+      availableLanguage: ["en", "sv"],
+      description:
+        "Contact us for support, donations, partnerships, or volunteering",
+    },
+    // Organization context
+    publisher: {
+      "@type": "NonProfit",
+      name: "Klimatkollen",
+      description:
+        "Data-driven non-profit organization building a movement around open climate data",
+      url: "https://klimatkollen.se",
+      sameAs: [
+        "https://github.com/klimatbyran",
+        "https://discord.gg/N5P64QPQ6v",
+      ],
+    },
+    // Additional support information
+    additionalProperty: [
+      {
+        "@type": "PropertyValue",
+        name: "Donation Methods",
+        value: "Swish, Bankgiro, IBAN",
+        description: "Multiple payment options available for donations",
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Corporate Support Cost",
+        value: "25,000 SEK per year",
+        description: "Annual cost for companies to become supporting partners",
+      },
+    ],
   };
 
   const partnerEmailLink = `mailto:hej@klimatkollen.se?subject=${encodeURIComponent(t("supportPage.partnerships.email.subject"))}&body=${encodeURIComponent(t("supportPage.partnerships.email.body"))}`;

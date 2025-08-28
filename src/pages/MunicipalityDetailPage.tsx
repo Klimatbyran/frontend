@@ -7,7 +7,7 @@ import { MunicipalitySection } from "@/components/municipalities/MunicipalitySec
 import { MunicipalityStatCard } from "@/components/municipalities/MunicipalityStatCard";
 import { MunicipalityLinkCard } from "@/components/municipalities/MunicipalityLinkCard";
 import { useTranslation } from "react-i18next";
-import { PageSEO } from "@/components/SEO/PageSEO";
+import { PageSEO } from "@/components/PageSEO";
 import { useState } from "react";
 import {
   formatEmissionsAbsolute,
@@ -90,12 +90,111 @@ export function MunicipalityDetailPage() {
     "@type": "GovernmentOrganization",
     name: `${municipality.name} kommun`,
     description: pageDescription,
+    url: canonicalUrl,
     address: {
       "@type": "PostalAddress",
       addressLocality: municipality.name,
       addressRegion: municipality.region,
       addressCountry: "SE",
     },
+    additionalProperty: [
+      {
+        "@type": "PropertyValue",
+        name: "Total Emissions",
+        value: `${lastYearEmissionsTon} ${t("emissionsUnitCO2")}`,
+        unitText: t("emissionsUnitCO2"),
+        valueReference: {
+          "@type": "QuantitativeValue",
+          value: lastYearEmissions?.value || 0,
+          unitText: t("emissionsUnitCO2"),
+        },
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Emissions Year",
+        value: lastYear?.toString() || "N/A",
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Carbon Budget Status",
+        value: !municipality.budgetRunsOut
+          ? t("municipalityDetailPage.budgetHolds")
+          : new Date(municipality.budgetRunsOut) > new Date()
+            ? t("municipalityDetailPage.budgetRunsOut")
+            : t("municipalityDetailPage.budgetRanOut"),
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Budget Expiry Date",
+        value: municipality.budgetRunsOut
+          ? new Date(municipality.budgetRunsOut).toISOString().split("T")[0]
+          : "N/A",
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Net Zero Target",
+        value: municipality.hitNetZero
+          ? new Date(municipality.hitNetZero).toISOString().split("T")[0]
+          : t("municipalityDetailPage.never"),
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Climate Plan Status",
+        value: municipality.climatePlanYear
+          ? t("municipalityDetailPage.adopted", {
+              year: municipality.climatePlanYear,
+            })
+          : t("municipalityDetailPage.noClimatePlan"),
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Procurement Requirements",
+        value: requirementsInProcurement,
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Bicycle Infrastructure",
+        value: `${municipality.bicycleMetrePerCapita.toFixed(1)} ${t("municipalityDetailPage.bicycleMetrePerCapita")}`,
+        unitText: "meters per capita",
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Electric Vehicle Growth",
+        value: `${municipality.electricCarChangePercent.toFixed(1)}%`,
+        unitText: "percentage change",
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Consumption Emissions",
+        value: `${municipality.totalConsumptionEmission.toFixed(1)} ${t("emissionsUnitCO2")}`,
+        unitText: t("emissionsUnitCO2"),
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Emissions Reduction Target",
+        value: `${municipality.neededEmissionChangePercent?.toFixed(1)}% reduction needed`,
+        description: t("municipalityDetailPage.reductionToMeetParis", {
+          municipality: municipality.name,
+          reduction: municipality.neededEmissionChangePercent?.toFixed(1),
+        }),
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Sustainable Transport Infrastructure",
+        value: "Available",
+        description: t("municipalityDetailPage.sustainableTransport"),
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Climate Plan Status",
+        value: municipality.climatePlanYear
+          ? `Adopted in ${municipality.climatePlanYear}`
+          : "No climate plan adopted",
+        description: municipality.climatePlanYear
+          ? t("municipalityDetailPage.climatePlan")
+          : t("municipalityDetailPage.noClimatePlan"),
+      },
+    ],
   };
 
   const evcp = municipality.electricVehiclePerChargePoints;
@@ -107,52 +206,7 @@ export function MunicipalityDetailPage() {
         description={pageDescription}
         canonicalUrl={canonicalUrl}
         structuredData={structuredData}
-      >
-        <h1>
-          {municipality.name} - {t("municipalityDetailPage.parisAgreement")}
-        </h1>
-        <p>
-          {t("municipalityDetailPage.seoText.intro", {
-            municipality: municipality.name,
-            emissions: lastYearEmissionsTon,
-            year: lastYear,
-          })}
-        </p>
-        <h2>{t("municipalityDetailPage.seoText.emissionsHeading")}</h2>
-        <p>
-          {t("municipalityDetailPage.seoText.emissionsText", {
-            municipality: municipality.name,
-            reduction: municipality.neededEmissionChangePercent?.toFixed(1),
-            budget: municipality.budget
-              ? (municipality.budget / 1000).toFixed(1)
-              : null,
-          })}
-        </p>
-        <h2>{t("municipalityDetailPage.seoText.climateGoalsHeading")}</h2>
-        <p>
-          {t("municipalityDetailPage.seoText.climateGoalsText", {
-            municipality: municipality.name,
-            budgetRunsOut:
-              municipality.budgetRunsOut ||
-              t("municipalityDetailPage.budgetHolds"),
-          })}
-        </p>
-        <h2>{t("municipalityDetailPage.seoText.consumptionHeading")}</h2>{" "}
-        <p>
-          {t("municipalityDetailPage.seoText.consumptionText", {
-            municipality: municipality.name,
-            consumption: municipality.totalConsumptionEmission.toFixed(1),
-          })}
-        </p>
-        <h2>{t("municipalityDetailPage.seoText.transportHeading")}</h2>
-        <p>
-          {t("municipalityDetailPage.seoText.transportText", {
-            municipality: municipality.name,
-            bikeMeters: municipality.bicycleMetrePerCapita.toFixed(1),
-            evGrowth: municipality.electricCarChangePercent.toFixed(1),
-          })}
-        </p>
-      </PageSEO>
+      />
 
       <div className="space-y-16 max-w-[1400px] mx-auto">
         <SectionWithHelp

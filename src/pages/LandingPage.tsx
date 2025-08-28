@@ -24,37 +24,6 @@ export function LandingPage() {
     window.scrollTo(0, 0);
   }, []);
 
-  // SEO data
-  const canonicalUrl = `https://klimatkollen.se${currentLanguage === "sv" ? "" : "/en"}`;
-  const pageTitle = `Klimatkollen - ${t("landingPage.metaTitle")}`;
-  const pageDescription = t("landingPage.metaDescription");
-  
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "Klimatkollen",
-    "description": pageDescription,
-    "url": canonicalUrl,
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": `${canonicalUrl}/?q={search_term_string}`,
-      "query-input": "required name=search_term_string"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "Klimatkollen",
-      "url": "https://klimatkollen.se"
-    }
-  };
-
-  const TypeWriterTexts = [
-    t("landingPage.typewriter.reduceEmissions"),
-    t("landingPage.typewriter.scope3Emissions"),
-    t("landingPage.typewriter.meetParisAgreement"),
-    t("landingPage.typewriter.climateActions"),
-    t("landingPage.typewriter.climatePlans"),
-  ];
-
   // Get top 5 companies by total emissions
   const largestCompanyEmitters = companies
     .sort(
@@ -77,6 +46,79 @@ export function LandingPage() {
     value: municipality.historicalEmissionChangePercent,
     link: `/municipalities/${municipality.name}`,
   }));
+
+  // SEO data
+  const canonicalUrl = `https://klimatkollen.se${currentLanguage === "sv" ? "" : "/en"}`;
+  const pageTitle = `Klimatkollen - ${t("landingPage.metaTitle")}`;
+  const pageDescription = t("landingPage.metaDescription");
+
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Klimatkollen",
+    description: pageDescription,
+    url: canonicalUrl,
+    potentialAction: {
+      "@type": "SearchAction",
+      target: `${canonicalUrl}/?q={search_term_string}`,
+      "query-input": "required name=search_term_string",
+    },
+    mainEntity: {
+      "@type": "ItemList",
+      name: "Top Climate Performers",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Top Municipalities",
+          description: "Municipalities with best emissions reduction",
+          itemListElement: topMunicipalities.map((m, i) => ({
+            "@type": "ListItem",
+            position: i + 1,
+            name: m.name,
+            url: `https://klimatkollen.se${m.link}`,
+            additionalProperty: {
+              "@type": "PropertyValue",
+              name: "Emissions Reduction",
+              value: `${m.value.toFixed(1)}%`,
+              unitText: "percentage change",
+            },
+          })),
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Largest Company Emitters",
+          description: "Companies with highest emissions",
+          itemListElement: largestCompanyEmitters.map((c, i) => ({
+            "@type": "ListItem",
+            position: i + 1,
+            name: c.name,
+            url: `https://klimatkollen.se${c.link}`,
+            additionalProperty: {
+              "@type": "PropertyValue",
+              name: "Total Emissions",
+              value: formatEmissionsAbsolute(c.value, currentLanguage),
+              unitText: t("emissionsUnit"),
+            },
+          })),
+        },
+      ],
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Klimatkollen",
+      url: "https://klimatkollen.se",
+    },
+  };
+
+  const TypeWriterTexts = [
+    t("landingPage.typewriter.reduceEmissions"),
+    t("landingPage.typewriter.scope3Emissions"),
+    t("landingPage.typewriter.meetParisAgreement"),
+    t("landingPage.typewriter.climateActions"),
+    t("landingPage.typewriter.climatePlans"),
+  ];
 
   const renderCompanyEmission = (item: RankedListItem) => (
     <div className="text-base sm:text-lg">

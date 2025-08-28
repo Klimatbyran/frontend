@@ -3,7 +3,7 @@ import { Accordion } from "@/components/ui/accordion";
 import { AccordionGroup } from "../components/layout/AccordionGroup";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { useTranslation } from "react-i18next";
-import { PageSEO } from "@/components/SEO/PageSEO";
+import { PageSEO } from "@/components/PageSEO";
 
 export function PrivacyPage() {
   const { t } = useTranslation();
@@ -14,10 +14,7 @@ export function PrivacyPage() {
         title={t("privacyPage.seoTitle")}
         description={t("privacyPage.seoDescription")}
         canonicalUrl="https://klimatkollen.se/privacy"
-      >
-        <h1>{t("privacyPage.seoHeading")}</h1>
-        <p>{t("privacyPage.seoText")}</p>
-      </PageSEO>
+      />
 
       <div className="max-w-[1200px] mx-auto space-y-8">
         <PageHeader

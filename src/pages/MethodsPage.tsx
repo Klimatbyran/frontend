@@ -16,7 +16,7 @@ export function MethodsPage() {
   const { currentLanguage } = useLanguage();
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedMethod, setSelectedMethod] = useState(
-    searchParams.get("method") || "parisAgreement"
+    searchParams.get("method") || "parisAgreement",
   );
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearch, setShowSearch] = useState(false);
@@ -42,41 +42,76 @@ export function MethodsPage() {
   // SEO data
   const methodData = getMethodById(selectedMethod);
   const canonicalUrl = `https://klimatkollen.se${currentLanguage === "sv" ? "" : "/en"}/methodology${selectedMethod ? `?method=${selectedMethod}` : ""}`;
-  const pageTitle = methodData 
+  const pageTitle = methodData
     ? `${t(`methodsPage.${methodData.category}.${selectedMethod}.title`)} - ${t("methodsPage.header.title")} - Klimatkollen`
     : `${t("methodsPage.header.title")} - Klimatkollen`;
   const pageDescription = methodData
     ? t(`methodsPage.${methodData.category}.${selectedMethod}.description`)
     : t("methodsPage.header.description");
-  
+
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    "name": pageTitle,
-    "description": pageDescription,
-    "url": canonicalUrl,
-    "isPartOf": {
-      "@type": "WebSite",
-      "name": "Klimatkollen",
-      "url": "https://klimatkollen.se"
+    name: pageTitle,
+    description: pageDescription,
+    url: canonicalUrl,
+
+    mainEntity: {
+      "@type": "ResearchMethod",
+      name: methodData
+        ? t(`methodsPage.${methodData.category}.${selectedMethod}.title`)
+        : "Climate Methodology",
+      description: methodData
+        ? t(`methodsPage.${methodData.category}.${selectedMethod}.description`)
+        : "Scientific methods for climate data analysis",
+      methodologyType: "Data Analysis",
+      applicationCategory: "Climate Science",
+      researchField: "Environmental Science",
     },
-    "breadcrumb": {
+    additionalProperty: [
+      {
+        "@type": "PropertyValue",
+        name: "Data Source",
+        value: "Official Swedish emissions data",
+        description: "Government and company reporting",
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Validation Method",
+        value: "Multi-source verification",
+        description: "Cross-referenced data validation",
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Methodology Type",
+        value: methodData?.category || "Climate Analysis",
+        description: "Category of methodology being used",
+      },
+    ],
+
+    isPartOf: {
+      "@type": "WebSite",
+      name: "Klimatkollen",
+      url: "https://klimatkollen.se",
+    },
+
+    breadcrumb: {
       "@type": "BreadcrumbList",
-      "itemListElement": [
+      itemListElement: [
         {
           "@type": "ListItem",
-          "position": 1,
-          "name": "Klimatkollen",
-          "item": "https://klimatkollen.se"
+          position: 1,
+          name: "Klimatkollen",
+          item: "https://klimatkollen.se",
         },
         {
           "@type": "ListItem",
-          "position": 2,
-          "name": t("methodsPage.header.title"),
-          "item": canonicalUrl
-        }
-      ]
-    }
+          position: 2,
+          name: t("methodsPage.header.title"),
+          item: canonicalUrl,
+        },
+      ],
+    },
   };
 
   const toggleSearch = () => {

@@ -1,5 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { useLanguage } from "@/components/LanguageProvider";
+import { useEffect, useState } from "react";
 
 interface PageSEOProps {
   title: string;
@@ -68,9 +69,9 @@ export function PageSEO({
       <link rel="canonical" href={fullCanonicalUrl} />
       
       {/* Language Alternates */}
-      <link rel="alternate" hreflang="sv" href={canonicalUrl ? `${baseUrl}${canonicalUrl.replace("/en", "")}` : `${baseUrl}${clientPathname.replace("/en", "")}`} />
-      <link rel="alternate" hreflang="en" href={canonicalUrl ? `${baseUrl}/en${canonicalUrl.replace("/en", "")}` : `${baseUrl}/en${clientPathname.replace("/en", "")}`} />
-      <link rel="alternate" hreflang="x-default" href={canonicalUrl ? `${baseUrl}${canonicalUrl.replace("/en", "")}` : `${baseUrl}${clientPathname.replace("/en", "")}`} />
+      <link rel="alternate" hrefLang="sv" href={canonicalUrl ? `${baseUrl}${canonicalUrl.replace("/en", "")}` : `${baseUrl}${locationPathname.replace("/en", "")}`} />
+      <link rel="alternate" hrefLang="en" href={canonicalUrl ? `${baseUrl}/en${canonicalUrl.replace("/en", "")}` : `${baseUrl}/en${locationPathname.replace("/en", "")}`} />
+      <link rel="alternate" hrefLang="x-default" href={canonicalUrl ? `${baseUrl}${canonicalUrl.replace("/en", "")}` : `${baseUrl}${locationPathname.replace("/en", "")}`} />
       
       {/* Structured Data */}
       {structuredData && (
