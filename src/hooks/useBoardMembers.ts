@@ -23,18 +23,6 @@ export const useBoardMembers = () => {
       imageUrl: "/people/frida.jpg",
     },
     {
-      name: "Christian Landgren",
-      role: t("board.christian.role"),
-      description: t("board.christian.description"),
-      imageUrl: "/people/christian.jpg",
-    },
-    {
-      name: "Anna Loverus",
-      role: t("board.anna.role"),
-      description: t("board.anna.description"),
-      imageUrl: "/people/anna.jpg",
-    },
-    {
       name: "Maria Soxbo",
       role: t("board.maria.role"),
       description: t("board.maria.description"),
@@ -46,6 +34,12 @@ export const useBoardMembers = () => {
       description: t("board.carlJohan.description"),
       imageUrl: "/people/carl-johan.jpg",
     },
+    // {
+    //   name: "Madeleine van der Veen",
+    //   role: t("board.madeleine.role"),
+    //   description: t("board.madeleine.description"),
+    //   imageUrl: "/people/madeleine.jpg",
+    // },
   ];
 
   return boardMembers;

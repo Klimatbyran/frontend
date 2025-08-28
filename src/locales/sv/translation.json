@@ -820,14 +820,6 @@
       "role": "Vice styrelseordförande",
       "description": "Klimatspecialist och medgrundare till Klimatkollen. Initiativtagare till Our Kids' Climate och författare till boken \"Prata med barn om klimatet\" (Natur & Kultur). EU Climate Pact Ambassador och Climate Reality Leader."
     },
-    "christian": {
-      "role": "Styrelseledamot",
-      "description": "Digital entreprenör och en av Sveriges mest inflytelserika personer inom tech. VD och grundare av Iteam och Öppna skolplattformen."
-    },
-    "anna": {
-      "role": "Styrelseledamot",
-      "description": "Digital strateg och tidigare chef för sociala medier på Spotify och H&M. VD och grundare av Better Odds."
-    },
     "maria": {
       "role": "Styrelseledamot",
       "description": "Journalist, författare, föreläsare och grundare av Klimatklubben. Utsedd till en av Sveriges 101 hållbarhetsmäktigaste 2021."
@@ -835,6 +827,10 @@
     "carlJohan": {
       "role": "Styrelseledamot",
       "description": "Hållbarhetsstrateg på Diamant & Schulz, tidigare på Doings och Forsman & Bodenfors, författare till boken \"Hållbariseringen\", Årets marknadsföringsbok 2022."
+    },
+    "madeleine": {
+      "role": "Styrelseledamot",
+      "description": "Ansvarig för solparker inom Green Power Sweden, tidigare samhällspolitisk chef för WWF."
     }
   },
   "emissionsBreakdown": {
