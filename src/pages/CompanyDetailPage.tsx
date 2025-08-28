@@ -70,6 +70,8 @@ export function CompanyDetailPage() {
           (p) => new Date(p.endDate).getFullYear().toString() === selectedYear,
         ) || sortedPeriods[0];
 
+  console.log(selectedPeriod);
+
   const selectedIndex = sortedPeriods.findIndex(
     (p) => p.endDate === selectedPeriod.endDate,
   );

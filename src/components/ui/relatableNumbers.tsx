@@ -14,7 +14,7 @@ import { ReportingPeriod } from "@/types/company";
 
 type RelatableNumbersProps = {
   selectedPeriod: ReportingPeriod;
-  selectedYear: selectedPeriod;
+  selectedYear: string;
   currentLanguage: "sv" | "en";
 };
 
@@ -24,8 +24,6 @@ const RelatableNumbers = ({
   selectedYear,
 }: RelatableNumbersProps) => {
   const { t } = useTranslation();
-
-  console.log(selectedPeriod);
 
   const validTotalEmissions =
     selectedPeriod.emissions?.calculatedTotalEmissions || null;
@@ -119,7 +117,8 @@ const RelatableNumbers = ({
                 <span className="text-yellow-100">
                   {swedenEmissionDifference} {t("relatableNumbers.times")}
                 </span>{" "}
-                {t("relatableNumbers.power")} {selectedYear}
+                {t("relatableNumbers.power")}{" "}
+                {selectedPeriod.endDate.slice(0, 4)}.
               </Text>
             </div>
 
