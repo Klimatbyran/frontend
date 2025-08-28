@@ -821,14 +821,6 @@
       "role": "Vice Chairman of the Board",
       "description": "Climate specialist and co-founder of Klimatkollen. Initiator of Our Kids' Climate and author of the book 'Talking to Children about Climate Change' (Natur & Kultur). EU Climate Pact Ambassador and Climate Reality Leader."
     },
-    "christian": {
-      "role": "Board Member",
-      "description": "Digital entrepreneur and one of Sweden's most influential figures in tech. CEO and founder of Iteam and Open School Platform."
-    },
-    "anna": {
-      "role": "Board Member",
-      "description": "Digital strategist and former head of social media at Spotify and H&M. CEO and founder of Better Odds."
-    },
     "maria": {
       "role": "Board Member",
       "description": "Journalist, author, speaker, and founder of Klimatklubben. Named one of Sweden's 101 most influential sustainability figures in 2021."
@@ -836,6 +828,10 @@
     "carlJohan": {
       "role": "Board Member",
       "description": "Sustainability strategist at Diamant & Schulz, previously at Doings and Forsman & Bodenfors, author of the book 'Sustainability Transformation', awarded Marketing Book of the Year 2022."
+    },
+    "madeleine": {
+      "role": "Board Member",
+      "description": "Responsible for solar parks within Green Power Sweden, former head of social policy for WWF."
     }
   },
   "emissionsBreakdown": {
