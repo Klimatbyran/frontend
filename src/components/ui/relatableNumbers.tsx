@@ -10,18 +10,25 @@ import {
   localizeUnit,
 } from "@/utils/formatting/localization";
 import { useTranslation } from "react-i18next";
+import { ReportingPeriod } from "@/types/company";
 
 type RelatableNumbersProps = {
-  totalEmissions: number | null;
+  selectedPeriod: ReportingPeriod;
+  selectedYear: selectedPeriod;
   currentLanguage: "sv" | "en";
 };
 
 const RelatableNumbers = ({
-  totalEmissions,
+  selectedPeriod,
   currentLanguage,
+  selectedYear,
 }: RelatableNumbersProps) => {
   const { t } = useTranslation();
-  const validTotalEmissions = totalEmissions || null;
+
+  console.log(selectedPeriod);
+
+  const validTotalEmissions =
+    selectedPeriod.emissions?.calculatedTotalEmissions || null;
 
   const numberOfTshirtsProduced = emissionsToTshirts(validTotalEmissions);
   const tshirtsProducedFormatted = localizeUnit(
@@ -112,7 +119,7 @@ const RelatableNumbers = ({
                 <span className="text-yellow-100">
                   {swedenEmissionDifference} {t("relatableNumbers.times")}
                 </span>{" "}
-                {t("relatableNumbers.power")}
+                {t("relatableNumbers.power")} {selectedYear}
               </Text>
             </div>
 

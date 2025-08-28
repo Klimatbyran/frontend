@@ -181,8 +181,9 @@ export function CompanyDetailPage() {
           selectedYear={selectedYear}
         />
         <RelatableNumbers
-          totalEmissions={totalEmissions as number}
+          selectedPeriod={selectedPeriod}
           currentLanguage={currentLanguage}
+          selectedYear={selectedYear}
         />
 
         <CompanyHistory company={company} />
