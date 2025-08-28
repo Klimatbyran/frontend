@@ -10,6 +10,7 @@ import { createSlug } from "@/lib/utils";
 import { CompanyScope3 } from "@/components/companies/detail/CompanyScope3";
 import { getCompanyDescription } from "@/utils/business/company";
 import { useLanguage } from "@/components/LanguageProvider";
+import RelatableNumbers from "@/components/ui/relatableNumbers";
 
 export function CompanyDetailPage() {
   const { t } = useTranslation();
@@ -178,6 +179,10 @@ export function CompanyDetailPage() {
           previousPeriod={previousPeriod}
           onYearSelect={setSelectedYear}
           selectedYear={selectedYear}
+        />
+        <RelatableNumbers
+          totalEmissions={totalEmissions as number}
+          currentLanguage={currentLanguage}
         />
 
         <CompanyHistory company={company} />
