@@ -74,7 +74,6 @@ const RelatableNumbers = ({
                 variant="body"
                 className="text-sm md:text-base lg:text-lg max-w-3xl mt-2"
               >
-                Approximately{" "}
                 <span className="text-blue-2">
                   {tshirtsProducedFormatted} {t("companyDetailPage.billion")}
                 </span>{" "}
@@ -92,7 +91,6 @@ const RelatableNumbers = ({
                 variant="body"
                 className="text-sm md:text-base lg:text-lg max-w-3xl mt-2"
               >
-                Approximately{" "}
                 <span className="text-red-200">
                   {numbersOfGasTanksFormatted} {t("companyDetailPage.billion")}
                 </span>{" "}
@@ -111,7 +109,6 @@ const RelatableNumbers = ({
                 variant="body"
                 className="text-sm md:text-base lg:text-lg max-w-3xl mt-2"
               >
-                Approximately{" "}
                 <span className="text-yellow-100">
                   {swedenEmissionDifference} times
                 </span>{" "}
@@ -129,7 +126,6 @@ const RelatableNumbers = ({
                 variant="body"
                 className="text-sm md:text-base lg:text-lg max-w-3xl mt-2"
               >
-                Approximately{" "}
                 <span className="text-green-100">
                   {numberOfTreesAbsorbingFormatted}{" "}
                   {t("companyDetailPage.billion")}
