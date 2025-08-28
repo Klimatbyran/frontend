@@ -190,7 +190,7 @@ export function CompanyOverview({
                   currentLanguage,
                 )}
             <span className="text-lg lg:text-2xl md:text-lg sm:text-sm ml-2 text-grey">
-              {t(calculatedTotalEmissions ? " " : "emissionsUnit")}
+              {t(calculatedTotalEmissions ? "emissionsUnit" : " ")}
             </span>
             {totalEmissionsAIGenerated && (
               <span className="ml-2 absolute">
