@@ -24,3 +24,29 @@ export const emissionsToGasTank = (totalEmissions: number | null) => {
 
   return numberOfTanks;
 };
+
+export const emissionsComparedToSweden = (totalEmissions: number | null) => {
+  //Swedens total emissions 2023 tco2e
+  const swedenTotalEmissions = 44200000;
+
+  if (totalEmissions === null) {
+    return 0;
+  }
+  const emissionsDifference = totalEmissions / swedenTotalEmissions;
+
+  return emissionsDifference;
+};
+
+export const emissionsToTrees = (totalEmissions: number | null) => {
+  //Average 15kg of tco2e absoption a year for a tree
+  const treeEmissionsAbsorption = 15;
+
+  if (totalEmissions === null) {
+    return 0;
+  }
+  const totalEmissionsKg = totalEmissions * 1000;
+
+  const numbersOfTreesAbsorbing = totalEmissionsKg / treeEmissionsAbsorption;
+
+  return numbersOfTreesAbsorbing;
+};
