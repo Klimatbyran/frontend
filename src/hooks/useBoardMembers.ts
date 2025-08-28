@@ -34,12 +34,12 @@ export const useBoardMembers = () => {
       description: t("board.carlJohan.description"),
       imageUrl: "/people/carl-johan.jpg",
     },
-    // {
-    //   name: "Madeleine van der Veen",
-    //   role: t("board.madeleine.role"),
-    //   description: t("board.madeleine.description"),
-    //   imageUrl: "/people/madeleine.jpg",
-    // },
+    {
+      name: "Madeleine van der Veen",
+      role: t("board.madeleine.role"),
+      description: t("board.madeleine.description"),
+      imageUrl: "/people/madeleine.png",
+    },
   ];
 
   return boardMembers;
