@@ -1,5 +1,8 @@
 import { Text } from "@/components/ui/text";
-import { emissionsToTshirts } from "@/utils/calculations/relatableNumbersCalc";
+import {
+  emissionsToTshirts,
+  emissionsToGasTank,
+} from "@/utils/calculations/relatableNumbersCalc";
 import {
   formatEmissionsAbsolute,
   localizeUnit,
@@ -22,8 +25,13 @@ const RelatableNumbers = ({
   const tshirtsProducedFormatted = localizeUnit(
     numberOfTshirtsProduced,
     currentLanguage,
-  )?.slice(0, 5);
+  );
 
+  const numbersOfGasTanks = emissionsToGasTank(validTotalEmissions);
+  const numbersOfGasTanksFormatted = localizeUnit(
+    numbersOfGasTanks,
+    currentLanguage,
+  );
   return (
     validTotalEmissions && (
       <div className="bg-black-2 rounded-level-1 p-16">
@@ -52,17 +60,30 @@ const RelatableNumbers = ({
               variant="body"
               className="text-sm md:text-base lg:text-lg max-w-3xl mt-2"
             >
-              Approximately {tshirtsProducedFormatted} amount of T-shirts
-              produced.
+              Approximately{" "}
+              <span className="text-blue-2">
+                {tshirtsProducedFormatted} {t("companyDetailPage.billion")}
+              </span>{" "}
+              T-shirts produced.
             </Text>
           </div>
 
-          <div className="flex">
+          <div className="flex items-center gap-4">
             <img
               src="../icons/gas-tank.svg"
               alt="T-shirt icon"
               className="h-[50px] md:h-[70px]"
             />
+            <Text
+              variant="body"
+              className="text-sm md:text-base lg:text-lg max-w-3xl mt-2"
+            >
+              Approximately{" "}
+              <span className="text-red-200">
+                {numbersOfGasTanksFormatted} {t("companyDetailPage.billion")}
+              </span>{" "}
+              full tanks of gas.
+            </Text>
           </div>
         </div>
       </div>
