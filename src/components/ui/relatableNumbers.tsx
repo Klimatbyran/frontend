@@ -1,9 +1,13 @@
 import { Text } from "@/components/ui/text";
-import { formatEmissionsAbsolute } from "@/utils/formatting/localization";
+import { emissionsToTshirts } from "@/utils/calculations/relatableNumbersCalc";
+import {
+  formatEmissionsAbsolute,
+  localizeUnit,
+} from "@/utils/formatting/localization";
 import { useTranslation } from "react-i18next";
 
 type RelatableNumbersProps = {
-  totalEmissions: number;
+  totalEmissions: number | null;
   currentLanguage: "sv" | "en";
 };
 
@@ -13,6 +17,12 @@ const RelatableNumbers = ({
 }: RelatableNumbersProps) => {
   const { t } = useTranslation();
   const validTotalEmissions = totalEmissions || null;
+
+  const numberOfTshirtsProduced = emissionsToTshirts(validTotalEmissions);
+  const tshirtsProducedFormatted = localizeUnit(
+    numberOfTshirtsProduced,
+    currentLanguage,
+  )?.slice(0, 5);
 
   return (
     validTotalEmissions && (
@@ -31,6 +41,30 @@ const RelatableNumbers = ({
           </span>{" "}
           compares to the following:
         </Text>
+        <div className="mt-6 gap-4 flex flex-col">
+          <div className="flex items-center gap-4">
+            <img
+              src="../icons/t-shirt.svg"
+              alt="T-shirt icon"
+              className="h-[50px] md:h-[70px]"
+            />
+            <Text
+              variant="body"
+              className="text-sm md:text-base lg:text-lg max-w-3xl mt-2"
+            >
+              Approximately {tshirtsProducedFormatted} amount of T-shirts
+              produced.
+            </Text>
+          </div>
+
+          <div className="flex">
+            <img
+              src="../icons/gas-tank.svg"
+              alt="T-shirt icon"
+              className="h-[50px] md:h-[70px]"
+            />
+          </div>
+        </div>
       </div>
     )
   );
