@@ -30,7 +30,7 @@ const RelatableNumbers = ({
   const tshirtsProducedFormatted = localizeUnit(
     numberOfTshirtsProduced,
     currentLanguage,
-  )?.slice(0, 4);
+  );
 
   const numbersOfGasTanks = emissionsToGasTank(validTotalEmissions);
   const numbersOfGasTanksFormatted = localizeUnit(
@@ -131,8 +131,7 @@ const RelatableNumbers = ({
                 className="text-sm md:text-base lg:text-lg max-w-3xl mt-2"
               >
                 <span className="text-green-100">
-                  {numberOfRoundTripsFormatted}{" "}
-                  {t("relatableNumbers.million")}
+                  {numberOfRoundTripsFormatted} {t("relatableNumbers.million")}
                 </span>{" "}
                 {t("relatableNumbers.plane")}
               </Text>
