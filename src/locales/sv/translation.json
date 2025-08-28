@@ -334,8 +334,7 @@
     "errorTitle": "Det gick inte att hämta företagsinformation",
     "errorDescription": "Försök igen senare",
     "notFoundTitle": "Företaget kunde inte hittas",
-    "notFoundDescription": "Kontrollera att företags-ID:t är korrekt",
-    "billion": "miljarder"
+    "notFoundDescription": "Kontrollera att företags-ID:t är korrekt"
   },
   "methodsPage": {
     "header": {
@@ -1342,5 +1341,16 @@
   "language": {
     "sv": "Svenska",
     "en": "Engelska"
+  },
+  "relatableNumbers": {
+    "title": "Från ton till T-shirts: siffror du känner igen",
+    "descriptionPartOne": "Det nuvarande totala utsläppet av",
+    "descriptionPartTwo": "kan jämföras med följande:",
+    "billion": "miljarder",
+    "times": "gånger",
+    "t-shirts": "producerade t-shirts.",
+    "gas": "fulla tankar bensin.",
+    "power": "utsläppen i Sverige.",
+    "trees": "träd behövs för att kompensera för utsläppen."
   }
 }

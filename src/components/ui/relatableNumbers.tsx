@@ -48,19 +48,19 @@ const RelatableNumbers = ({
   return (
     validTotalEmissions && (
       <div className="bg-black-2 rounded-level-1 p-16">
-        <Text variant={"h3"}>From Tons to T-Shirts: Relatable Numbers</Text>
+        <Text variant={"h3"}>{t("relatableNumbers.title")}</Text>
         <Text
           variant="body"
           className="text-sm md:text-base lg:text-lg max-w-3xl mt-2"
         >
-          The current total emission of{" "}
+          {t("relatableNumbers.descriptionPartOne")}{" "}
           <span className="text-orange-2">
             {formatEmissionsAbsolute(validTotalEmissions, currentLanguage)}
           </span>
           <span className="text-sm md:text-base lg:text-lg ml-2 text-grey">
             {t(validTotalEmissions ? "emissionsUnit" : " ")}
           </span>{" "}
-          compares to the following:
+          {t("relatableNumbers.descriptionPartTwo")}
         </Text>
         <div className="justify-between flex flex-col md:flex-row md:gap-6">
           <div className="mt-6 gap-4 flex flex-col">
@@ -75,9 +75,9 @@ const RelatableNumbers = ({
                 className="text-sm md:text-base lg:text-lg max-w-3xl mt-2"
               >
                 <span className="text-blue-2">
-                  {tshirtsProducedFormatted} {t("companyDetailPage.billion")}
+                  {tshirtsProducedFormatted} {t("relatableNumbers.billion")}
                 </span>{" "}
-                T-shirts produced.
+                {t("relatableNumbers.t-shirts")}
               </Text>
             </div>
 
@@ -92,9 +92,9 @@ const RelatableNumbers = ({
                 className="text-sm md:text-base lg:text-lg max-w-3xl mt-2"
               >
                 <span className="text-red-200">
-                  {numbersOfGasTanksFormatted} {t("companyDetailPage.billion")}
+                  {numbersOfGasTanksFormatted} {t("relatableNumbers.billion")}
                 </span>{" "}
-                full tanks of gas.
+                {t("relatableNumbers.gas")}
               </Text>
             </div>
           </div>
@@ -110,9 +110,9 @@ const RelatableNumbers = ({
                 className="text-sm md:text-base lg:text-lg max-w-3xl mt-2"
               >
                 <span className="text-yellow-100">
-                  {swedenEmissionDifference} times
+                  {swedenEmissionDifference} {t("relatableNumbers.times")}
                 </span>{" "}
-                the total emissions of Sweden in 2023.
+                {t("relatableNumbers.power")}
               </Text>
             </div>
 
@@ -128,9 +128,9 @@ const RelatableNumbers = ({
               >
                 <span className="text-green-100">
                   {numberOfTreesAbsorbingFormatted}{" "}
-                  {t("companyDetailPage.billion")}
+                  {t("relatableNumbers.billion")}
                 </span>{" "}
-                trees needed to counteract the emissions.
+                {t("relatableNumbers.trees")}
               </Text>
             </div>
           </div>

@@ -1343,5 +1343,16 @@
   "language": {
     "sv": "Swedish",
     "en": "English"
+  },
+  "relatableNumbers": {
+    "title": "From Tons to T-Shirts: Relatable Numbers",
+    "descriptionPartOne": "The current total emission of",
+    "descriptionPartTwo": "compares to the following:",
+    "billion": "billion",
+    "times": "times",
+    "t-shirts": "t-shirts produced.",
+    "gas": "full tanks of gas.",
+    "power": "times the emissions in Sweden.",
+    "trees": "trees needed to counteract the emissions."
   }
 }
