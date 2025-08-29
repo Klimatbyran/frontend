@@ -52,12 +52,13 @@ export default function ChartHeader({
           <Text variant="body">{unit}</Text>
         </div>
         {/* Switch between Tabs and Dropdown based on screen size */}
-        <DataViewSelector
+        {/* FIXME: uncomment when scope and sector graphs are are fixed */}
+        {/* <DataViewSelector
           dataView={dataView}
           setDataView={setDataView}
           hasScope3Categories={hasScope3Categories}
           layout={isWide ? "wide" : "narrow"}
-        />
+        /> */}
       </div>
     </div>
   );
