@@ -17,6 +17,7 @@ import { HeaderSearchButton } from "../search/HeaderSearchButton";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import useHeaderTitle from "@/hooks/useHeaderTitle";
 import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export function Header() {
   const { t } = useTranslation();
@@ -28,6 +29,7 @@ export function Header() {
   const { isMobile } = useScreenSize();
   const { headerTitle, showTitle, setShowTitle } = useHeaderTitle();
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -182,6 +184,7 @@ export function Header() {
             <Menubar className="border-none bg-transparent h-full">
               {NAV_LINKS.map((item) =>
                 item.sublinks ? (
+                  // Item med dropdown
                   <MenubarMenu key={item.label}>
                     <MenubarTrigger
                       className={cn(
@@ -197,13 +200,13 @@ export function Header() {
                     </MenubarTrigger>
                     <MenubarContent>
                       {item.sublinks.map((sublink) => (
-                        <MenubarItem key={sublink.path}>
+                        <MenubarItem asChild key={sublink.path}>
                           {sublink.path.startsWith("https://") ? (
                             <a
                               href={sublink.path}
                               className="flex justify-between w-full"
                               target="_blank"
-                              key={sublink.path}
+                              rel="noopener noreferrer"
                             >
                               {sublink.label}
                             </a>
@@ -225,25 +228,29 @@ export function Header() {
                     </MenubarContent>
                   </MenubarMenu>
                 ) : (
-                  <MenubarMenu>
-                    <MenubarTrigger asChild>
-                      <Link
-                        key={item.path}
-                        to={item.path}
-                        className={cn(
-                          "flex items-center gap-2 px-3 py-3 h-full text-sm",
-                          matchPath(item.path, location.pathname)
-                            ? "bg-black-1 text-white"
-                            : "text-grey hover:text-white",
-                        )}
-                      >
-                        {item.icon}
-                        <span>{item.label}</span>
-                      </Link>
+                  // Toppnivå-länk utan dropdown
+                  <MenubarMenu key={item.path}>
+                    <MenubarTrigger
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          navigate(item.path); // React Router navigate
+                        }
+                      }}
+                      className={cn(
+                        "flex items-center gap-2 px-3 py-3 h-full text-sm cursor-pointer",
+                        matchPath(item.path, location.pathname)
+                          ? "bg-black-1 text-white"
+                          : "text-grey hover:text-white",
+                      )}
+                    >
+                      {item.icon}
+                      <span>{item.label}</span>
                     </MenubarTrigger>
                   </MenubarMenu>
                 ),
               )}
+
               {user && (
                 <MenubarMenu>
                   <MenubarTrigger className="flex items-center gap-2 px-3 py-3 h-full transition-all text-sm cursor-pointer text-grey hover:text-white">
@@ -252,7 +259,7 @@ export function Header() {
                   </MenubarTrigger>
                   <MenubarContent>
                     {INTERNAL_LINKS.map((link) => (
-                      <MenubarItem key={link.path}>
+                      <MenubarItem asChild key={link.path}>
                         <Link
                           to={link.path}
                           className="flex justify-between w-full"
@@ -264,9 +271,10 @@ export function Header() {
                   </MenubarContent>
                 </MenubarMenu>
               )}
+
               <div className="ml-4 h-full flex items-center">
                 <HeaderSearchButton className="mx-2" />
-                <LanguageButtons className={"hidden md:flex mx-4 "} />
+                <LanguageButtons className="hidden md:flex mx-4 " />
                 <NewsletterPopover
                   isOpen={isSignUpOpen}
                   onOpenChange={setIsSignUpOpen}
