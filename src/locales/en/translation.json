@@ -806,6 +806,14 @@
     "catharina": {
       "role": "Communicator",
       "description": "Communicator and filmmaker focusing on climate and sustainability, active in organisation Ett hållbart Lidingö, with a background as a management consultant."
+    },
+    "elin": {
+      "role": "Developer",
+      "description": "Placeholder"
+    },
+    "carl": {
+      "role": "Developer",
+        "description": "Frontend developer with a passion for sustainability and user-friendly digital solutions. Previously worked as an environmental consultant focused on interpreting regulations and calculating greenhouse gas emissions for companies."
     }
   },
   "board": {
