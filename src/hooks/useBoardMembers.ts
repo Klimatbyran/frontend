@@ -35,7 +35,7 @@ export const useBoardMembers = () => {
       imageUrl: "/people/carl-johan.jpg",
     },
     {
-      name: "Madeleine van der Veen",
+      name: "Madeleine van der Veer",
       role: t("board.madeleine.role"),
       description: t("board.madeleine.description"),
       imageUrl: "/people/madeleine.png",
