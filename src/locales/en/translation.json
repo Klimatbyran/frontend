@@ -14,7 +14,7 @@
     "insights": "Insights",
     "methodology": "Sources and Method",
     "support": "Support Us",
-    "newsletter": "Newsletter",
+    "newsletter": "Join Newsletter",
     "openMenu": "Open Menu",
     "closeMenu": "Close Menu",
     "articles": "Articles",
@@ -217,7 +217,10 @@
     "title": "Reports",
     "description": "In-depth analyses and reports on Sweden's climate transition.",
     "readMore": "Read more",
-    "openReport": "Open Report"
+    "openReport": "Open Report",
+    "reportCategories": {
+      "report": "Report"
+    }
   },
   "blogDetailPage": {
     "loading": "Loading...",
@@ -796,10 +799,6 @@
       "role": "Tech Advisor",
       "description": "Award-winning developer, digital entrepreneur, and one of Sweden's most influential figures in tech. Founder of the digital innovation agency Iteam and co-founder of Open School Platform. Speaker on AI and digital innovation, advisor to the government."
     },
-    "hugo": {
-      "role": "Developer",
-      "description": "Entrepreneurial climate enthusiast with a strong interest in how AI and technology can help solve future challenges."
-    },
     "kayla": {
       "role": "Developer",
       "description": "Frontend developer with a passion for sustainability and user-friendly digital solutions. Previously worked as an environmental consultant focused on interpreting regulations and calculating greenhouse gas emissions for companies."
@@ -818,14 +817,6 @@
       "role": "Vice Chairman of the Board",
       "description": "Climate specialist and co-founder of Klimatkollen. Initiator of Our Kids' Climate and author of the book 'Talking to Children about Climate Change' (Natur & Kultur). EU Climate Pact Ambassador and Climate Reality Leader."
     },
-    "christian": {
-      "role": "Board Member",
-      "description": "Digital entrepreneur and one of Sweden's most influential figures in tech. CEO and founder of Iteam and Open School Platform."
-    },
-    "anna": {
-      "role": "Board Member",
-      "description": "Digital strategist and former head of social media at Spotify and H&M. CEO and founder of Better Odds."
-    },
     "maria": {
       "role": "Board Member",
       "description": "Journalist, author, speaker, and founder of Klimatklubben. Named one of Sweden's 101 most influential sustainability figures in 2021."
@@ -833,6 +824,10 @@
     "carlJohan": {
       "role": "Board Member",
       "description": "Sustainability strategist at Diamant & Schulz, previously at Doings and Forsman & Bodenfors, author of the book 'Sustainability Transformation', awarded Marketing Book of the Year 2022."
+    },
+    "madeleine": {
+      "role": "Board Member",
+      "description": "Responsible for solar parks within Green Power Sweden, former head of social policy for WWF Sweden, board member of the Swedish Society for Nature Conservation and political expert at the Ministry of the Environment."
     }
   },
   "emissionsBreakdown": {
@@ -925,6 +920,7 @@
       "emissionsChangeRateInfo": "Change rate of emissions compared to the previous reporting period.",
       "emissionsChangeRateInfoExtended": "This value is so large due to inconsistencies in reported data between the last two reporting periods, thus this value is not representative of actual changes.",
       "turnover": "Turnover",
+      "turnoverAmount": "bn",
       "employees": "Employees",
       "companyReport": "Sustainability Report",
       "missingReport": "Missing Report",
@@ -1326,6 +1322,23 @@
     "title": "Newsletter archive",
     "description": "Read previous newsletters",
     "loading": "Loading...",
-    "error": "Error loading data"
+    "error": "Error loading data",
+    "next": "Next",
+    "previous": "Previous"
+  },
+  "insightCategories": {
+    "analysis": "Analysis",
+    "guide": "Guide",
+    "methodology": "Methodology"
+  },
+  "graphs": {
+    "pieChart": {
+      "clickToFilter": "Click to filter",
+      "ofTotal": "of total"
+    }
+  },
+  "language": {
+    "sv": "Swedish",
+    "en": "English"
   }
 }

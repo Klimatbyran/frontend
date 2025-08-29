@@ -50,7 +50,7 @@ export function ReportsPage() {
     title: report.title,
     excerpt: report.excerpt,
     image: report.image || "",
-    category: report.category,
+    category: t("reportsPage.reportCategories." + report.category),
     date: report.date,
     readTime: report.readTime,
     link: report.link || "",

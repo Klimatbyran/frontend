@@ -1,9 +1,9 @@
 import { ContentMeta } from "@/types/content";
 
 export enum CategoryEnum {
-  Methodology = "Metodik",
-  Analysis = "Analys",
-  Guide = "Guide",
+  Methodology = "methodology",
+  Analysis = "analysis",
+  Guide = "guide",
 }
 
 export const blogMetadata: ContentMeta[] = [
@@ -18,7 +18,7 @@ export const blogMetadata: ContentMeta[] = [
     category: CategoryEnum.Analysis,
     image: "/images/blogImages/only-radical-futures.jpg",
     displayLanguages: ["en"],
-    language: "English",
+    language: "en",
     author: {
       name: "Frida Berry Eklund",
       avatar: "/people/frida.jpg",
@@ -36,7 +36,7 @@ export const blogMetadata: ContentMeta[] = [
     category: CategoryEnum.Analysis,
     image: "/images/blogImages/only-radical-futures.jpg",
     displayLanguages: ["sv"],
-    language: "Svenska",
+    language: "sv",
     author: {
       name: "Frida Berry Eklund",
       avatar: "/people/frida.jpg",
@@ -54,7 +54,7 @@ export const blogMetadata: ContentMeta[] = [
     category: CategoryEnum.Methodology,
     image: "/images/blogImages/2025_Carbon_Law.png",
     displayLanguages: ["en"],
-    language: "English",
+    language: "en",
     author: {
       name: "Frida Berry Eklund",
       avatar: "/people/frida.jpg",
@@ -72,7 +72,7 @@ export const blogMetadata: ContentMeta[] = [
     category: CategoryEnum.Methodology,
     image: "/images/blogImages/2025_Carbon_Law.png",
     displayLanguages: ["sv"],
-    language: "Svenska",
+    language: "sv",
     author: {
       name: "Frida Berry Eklund",
       avatar: "/people/frida.jpg",
@@ -90,7 +90,7 @@ export const blogMetadata: ContentMeta[] = [
     category: CategoryEnum.Analysis,
     image: "/images/reportImages/2024_bolagsklimatkollen.png",
     displayLanguages: ["sv"],
-    language: "Svenska",
+    language: "sv",
     author: {
       name: "Ola Spännar",
       avatar: "/people/ola.jpg",
@@ -108,7 +108,7 @@ export const blogMetadata: ContentMeta[] = [
     category: CategoryEnum.Analysis,
     image: "/images/reportImages/2024_bolagsklimatkollen.png",
     displayLanguages: ["en"],
-    language: "English",
+    language: "en",
     author: {
       name: "Ola Spännar",
       avatar: "/people/ola.jpg",
@@ -125,7 +125,7 @@ export const blogMetadata: ContentMeta[] = [
     category: CategoryEnum.Analysis,
     image: "/images/blogImages/matthias-heyde-co2-unsplash.jpg",
     displayLanguages: ["sv"],
-    language: "Svenska",
+    language: "sv",
     author: {
       name: "John Carlbäck, volontär och rådgivare",
       avatar: "/people/carlback_john.jpg",
@@ -144,7 +144,7 @@ export const blogMetadata: ContentMeta[] = [
     image:
       "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=600&fit=crop",
     displayLanguages: ["sv","all"],
-    language: "Svenska",
+    language: "sv",
     author: {
       name: "Christian Landgren",
       avatar: "/people/christian.jpg",
@@ -162,7 +162,7 @@ export const blogMetadata: ContentMeta[] = [
     image:
       "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=400&fit=crop",
     displayLanguages: ["sv","all"],
-    language: "Svenska",
+    language: "sv",
     author: {
       name: "Alexandra Palmquist",
       avatar: "/people/alex.jpg",
@@ -180,7 +180,7 @@ export const blogMetadata: ContentMeta[] = [
     image:
       "https://images.unsplash.com/photo-1464938050520-ef2270bb8ce8?w=800&h=400&fit=crop",
     displayLanguages: ["sv"],
-    language: "Svenska",
+    language: "sv",
     author: {
       name: "Alexandra Palmquist",
       avatar: "/people/alex.jpg",
@@ -197,7 +197,7 @@ export const blogMetadata: ContentMeta[] = [
     category: CategoryEnum.Analysis,
     image: "/images/blogImages/image1-31.webp",
     displayLanguages: ["sv"],
-    language: "Svenska",
+    language: "sv",
     author: {
       name: "Ola Spännar",
       avatar: "/people/ola.jpg",
@@ -214,7 +214,7 @@ export const blogMetadata: ContentMeta[] = [
     category: CategoryEnum.Analysis,
     image: "/images/blogImages/totala-utslapp-alla-partier.webp",
     displayLanguages: ["sv"],
-    language: "Svenska",
+    language: "sv",
     author: {
       name: "Ola Spännar",
       avatar: "/people/ola.jpg",

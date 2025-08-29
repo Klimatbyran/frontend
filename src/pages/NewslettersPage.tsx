@@ -7,6 +7,7 @@ import { NewsletterType } from "@/lib/newsletterArchive/newsletterData";
 import { useNewsletters } from "@/hooks/useNewsletters";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { Text } from "@/components/ui/text";
+import { NewsletterPopover } from "@/components/NewsletterPopover";
 
 export function NewsLetterArchivePage() {
   const { t } = useTranslation();
@@ -50,6 +51,9 @@ export function NewsLetterArchivePage() {
         <div
           className={`${isMobile ? "flex flex-col" : "flex"} mt-6 relative md:flex-col lg:flex-row gap-8`}
         >
+          {isMobile && (
+            <NewsletterPopover buttonText={t("header.newsletter")} />
+          )}
           <NewsletterNavigation
             newsletterList={data}
             setDisplayedNewsletter={setDisplayedNewsletter}

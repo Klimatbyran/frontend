@@ -14,7 +14,7 @@
     "insights": "Insikter",
     "methodology": "Källor och metod",
     "support": "Stöd oss",
-    "newsletter": "Nyhetsbrev",
+    "newsletter": "Prenumerera på nyhetsbrev",
     "openMenu": "Öppna meny",
     "closeMenu": "Stäng meny",
     "articles": "Artiklar",
@@ -217,7 +217,10 @@
     "title": "Rapporter",
     "description": "Fördjupande analyser och rapporter om klimatomställningen i Sverige.",
     "readMore": "Läs mer",
-    "openReport": "Öppna rapport"
+    "openReport": "Öppna rapport",
+    "reportCategories": {
+      "report": "Rapport"
+    }
   },
   "blogDetailPage": {
     "loading": "Laddar...",
@@ -795,10 +798,6 @@
       "role": "Tech Advisor",
       "description": "Prisbelönt utvecklare, digital entreprenör och en av Sveriges mest inflytelserika personer inom tech. Grundare av digitala innovationsbyrån Iteam och medgrundare av Öppna skolplattformen. Talare inom AI och digital innovation och rådgivare till regeringen."
     },
-    "hugo": {
-      "role": "Utvecklare",
-      "description": "Entreprenöriell klimatentusiast med stort intresse för hur man kan lösa framtidens utmaningar med hjälp av AI och teknik."
-    },
     "kayla": {
       "role": "Utvecklare",
       "description": "Frontendutvecklare med passion för hållbarhet och användarvänliga digitala lösningar. Har tidigare arbetat som miljökonsult med fokus på att tolka regleringar och beräkna växthusgasutsläpp för företag."
@@ -817,14 +816,6 @@
       "role": "Vice styrelseordförande",
       "description": "Klimatspecialist och medgrundare till Klimatkollen. Initiativtagare till Our Kids' Climate och författare till boken \"Prata med barn om klimatet\" (Natur & Kultur). EU Climate Pact Ambassador och Climate Reality Leader."
     },
-    "christian": {
-      "role": "Styrelseledamot",
-      "description": "Digital entreprenör och en av Sveriges mest inflytelserika personer inom tech. VD och grundare av Iteam och Öppna skolplattformen."
-    },
-    "anna": {
-      "role": "Styrelseledamot",
-      "description": "Digital strateg och tidigare chef för sociala medier på Spotify och H&M. VD och grundare av Better Odds."
-    },
     "maria": {
       "role": "Styrelseledamot",
       "description": "Journalist, författare, föreläsare och grundare av Klimatklubben. Utsedd till en av Sveriges 101 hållbarhetsmäktigaste 2021."
@@ -832,6 +823,10 @@
     "carlJohan": {
       "role": "Styrelseledamot",
       "description": "Hållbarhetsstrateg på Diamant & Schulz, tidigare på Doings och Forsman & Bodenfors, författare till boken \"Hållbariseringen\", Årets marknadsföringsbok 2022."
+    },
+    "madeleine": {
+      "role": "Styrelseledamot",
+      "description": "Ansvarig för solparker inom Green Power Sweden, tidigare samhällspolitisk chef för WWF Sverige, styrelseledamot i Naturskyddsföreningen och politiskt sakkunnig på Miljödepartementet."
     }
   },
   "emissionsBreakdown": {
@@ -924,6 +919,7 @@
       "emissionsChangeRateInfo": "Förändringstakt för utsläpp jämfört med föregående rapporteringsperiod.",
       "emissionsChangeRateInfoExtended": "Det här värdet är ovanligt högt på grund av inkonsekvent rapportering mellan de två senaste perioderna, vilket gör att procentförändringen inte speglar den faktiska utvecklingen.",
       "turnover": "Omsättning",
+      "turnoverAmount": "mdr",
       "employees": "Anställda",
       "companyReport": "Hållbarhetsrapport",
       "missingReport": "Saknar report",
@@ -1325,6 +1321,23 @@
     "title": "Nyhetsbrevsarkiv",
     "description": "Läs tidigare nyhetsbrev",
     "loading": "Laddar...",
-    "error": "Fel vid inläsning av data"
+    "error": "Fel vid inläsning av data",
+    "next": "Nästa",
+    "previous": "Föregående"
+  },
+  "insightCategories": {
+    "analysis": "Analys",
+    "guide": "Guide",
+    "methodology": "Metodik"
+  },
+  "graphs": {
+    "pieChart": {
+      "clickToFilter": "Klicka för att filtrera",
+      "ofTotal": "av total"
+    }
+  },
+  "language": {
+    "sv": "Svenska",
+    "en": "Engelska"
   }
 }
