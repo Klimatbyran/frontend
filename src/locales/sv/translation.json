@@ -1041,7 +1041,10 @@
     },
     "tooltip": {
       "noDataAvailable": "Ingen data tillgänglig",
-      "tonsCO2e": "tCO₂e"
+      "tonsCO2e": "tCO₂e",
+      "trend": "Trend:",
+      "increasing": "↗ Ökar",
+      "decreasing": "↘ Minskar"
     }
   },
   "municipalities": {
