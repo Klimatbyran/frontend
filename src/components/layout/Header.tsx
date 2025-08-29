@@ -225,19 +225,23 @@ export function Header() {
                     </MenubarContent>
                   </MenubarMenu>
                 ) : (
-                  <Link
-                    key={item.path}
-                    to={item.path}
-                    className={cn(
-                      "flex items-center gap-2 px-3 py-3 h-full text-sm",
-                      matchPath(item.path, location.pathname)
-                        ? "bg-black-1 text-white"
-                        : "text-grey hover:text-white",
-                    )}
-                  >
-                    {item.icon}
-                    <span>{item.label}</span>
-                  </Link>
+                  <MenubarMenu>
+                    <MenubarTrigger asChild>
+                      <Link
+                        key={item.path}
+                        to={item.path}
+                        className={cn(
+                          "flex items-center gap-2 px-3 py-3 h-full text-sm",
+                          matchPath(item.path, location.pathname)
+                            ? "bg-black-1 text-white"
+                            : "text-grey hover:text-white",
+                        )}
+                      >
+                        {item.icon}
+                        <span>{item.label}</span>
+                      </Link>
+                    </MenubarTrigger>
+                  </MenubarMenu>
                 ),
               )}
               {user && (
