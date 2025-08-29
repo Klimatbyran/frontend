@@ -9,23 +9,23 @@ import {
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { X } from "lucide-react";
 
-interface CompanyPieTooltipProps extends TooltipProps<number, string> {
+interface PieTooltipProps extends TooltipProps<number, string> {
   customActionLabel?: string;
   showPercentage?: boolean;
   percentageLabel?: string;
 }
 
-const CompanyPieTooltip: React.FC<CompanyPieTooltipProps> = ({
+const PieTooltip: React.FC<PieTooltipProps> = ({
   active,
   payload,
   customActionLabel,
   showPercentage = true,
   percentageLabel,
 }) => {
+  const [closed, setClosed] = useState(false);
+  const { isMobile } = useScreenSize();
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
-  const { isMobile } = useScreenSize();
-  const [closed, setClosed] = useState(false);
 
   const name = payload?.[0]?.name;
   // Reset closed state when tooltip is re-activated or payload changes
@@ -47,14 +47,16 @@ const CompanyPieTooltip: React.FC<CompanyPieTooltipProps> = ({
       <div className="flex justify-end items-center relative z-30">
         {isMobile && (
           <button
-            className="flex"
-            style={{ pointerEvents: "auto" }}
+            type="button"
+            title="Close"
+            className="flex pointer-events-auto"
             onClick={() => setClosed(true)}
           >
             <X className="w-3 h-3" />
           </button>
         )}
       </div>
+
       <p className="text-sm font-medium mb-1">{name}</p>
       <div className="text-sm text-grey">
         <div>
@@ -63,18 +65,17 @@ const CompanyPieTooltip: React.FC<CompanyPieTooltipProps> = ({
         </div>
         {showPercentage && safeTotal && (
           <div>
-            {percentage}{" "}
-            {percentageLabel || t("companiesPage.sectorGraphs.ofTotal")}
+            {percentage} {percentageLabel || t("graphs.pieChart.ofTotal")}
           </div>
         )}
         <p className="text-xs italic text-blue-2 mt-2">
           {customActionLabel
             ? customActionLabel
-            : t("companies.scope3Chart.clickToFilter")}
+            : t("graphs.pieChart.clickToFilter")}
         </p>
       </div>
     </div>
   );
 };
 
-export default CompanyPieTooltip;
+export default PieTooltip;

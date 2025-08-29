@@ -1,6 +1,6 @@
 import React from "react";
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from "recharts";
-import CompanyPieTooltip from "./tooltips/CompanyPieTooltip";
+import PieTooltip from "../graphs/tooltips/PieTooltip";
 
 interface PieChartData {
   name: string;
@@ -58,11 +58,21 @@ const PieChartView: React.FC<PieChartViewProps> = ({
     .filter((entry) => entry.value != null)
     .filter((entry) => !filteredCategories.has(entry.name));
 
+  // Calculate total of filtered data and add it to each data point
+  const filteredTotal = filteredData.reduce(
+    (sum, entry) => sum + (entry.value || 0),
+    0,
+  );
+  const dataWithTotal = filteredData.map((entry) => ({
+    ...entry,
+    total: filteredTotal,
+  }));
+
   return (
     <ResponsiveContainer width="100%" height={outerRadius * 2.5}>
       <PieChart>
         <Pie
-          data={filteredData}
+          data={dataWithTotal}
           dataKey="value"
           nameKey="name"
           cx="50%"
@@ -73,7 +83,7 @@ const PieChartView: React.FC<PieChartViewProps> = ({
           cornerRadius={8}
           paddingAngle={2}
         >
-          {filteredData.map((entry) => (
+          {dataWithTotal.map((entry) => (
             <Cell
               key={entry.name}
               fill={entry.color}
@@ -84,8 +94,7 @@ const PieChartView: React.FC<PieChartViewProps> = ({
         </Pie>
         <Tooltip
           content={
-            <CompanyPieTooltip
-              showPercentage={true}
+            <PieTooltip
               percentageLabel={percentageLabel}
               customActionLabel={customActionLabel}
             />

@@ -1331,6 +1331,12 @@
     "guide": "Guide",
     "methodology": "Methodology"
   },
+  "graphs": {
+    "pieChart": {
+      "clickToFilter": "Click to filter",
+      "ofTotal": "of total"
+    }
+  },
   "language": {
     "sv": "Swedish",
     "en": "English"
