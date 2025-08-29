@@ -403,7 +403,8 @@ export default function EmissionsLineChart({
       />
 
       {/* Mobile trend explanation button and popup */}
-      {isMobile && !exploreMode && trendAnalysis?.explanation && (
+      {/* FIXME discuss how this should be reintroduced */}
+      {/* {isMobile && !exploreMode && trendAnalysis?.explanation && (
         <div className="mt-4">
           <Button
             variant="outline"
@@ -411,10 +412,11 @@ export default function EmissionsLineChart({
             onClick={() => setShowTrendPopup(true)}
             className="w-full bg-black-2 border-black-1 text-white hover:bg-black-1"
           >
-            <span className="text-sm">{t("companies.emissionsHistory.trend")}</span>
+            <span className="text-sm">
+              {t("companies.emissionsHistory.trend")}
+            </span>
           </Button>
 
-          {/* Trend Explanation Popup Modal */}
           {showTrendPopup && (
             <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
               <div className="bg-black-2 rounded-lg p-6 max-w-md w-full border">
@@ -453,7 +455,7 @@ export default function EmissionsLineChart({
             </div>
           )}
         </div>
-      )}
+      )} */}
     </div>
   );
 }
