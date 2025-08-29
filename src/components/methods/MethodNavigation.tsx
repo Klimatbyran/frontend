@@ -83,7 +83,6 @@ export function MethodologyNavigation({
                     <button
                       onClick={() => {
                         handleMethodChange(method.id);
-                        navigate(`?view=${category}`);
                       }}
                       className={`w-full p-2 my-0.5 text-left text-sm rounded-lg transition-colors duration-200 ${
                         selectedMethod === method.id

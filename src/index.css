@@ -4,6 +4,7 @@
 @import "@fontsource/dm-sans/500.css";
 @import "@fontsource/dm-sans/600.css";
 
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
