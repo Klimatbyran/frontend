@@ -52,8 +52,9 @@ export function generateApproximatedDataWithCoefficients(
     const actualData = data.find((d) => d.year === year);
 
     // Calculate approximated value based on method and coefficients
+    // Modified: approximated data only extends until current year
     let approximatedValue: number | null = null;
-    if (year >= lastYearWithData) {
+    if (year >= lastYearWithData && year <= currentYear) {
       // Get the actual last data point value
       const lastDataValue =
         data
@@ -88,18 +89,23 @@ export function generateApproximatedDataWithCoefficients(
       }
     }
 
-    // Calculate Paris line value (Carbon Law) - always starts at 2025
+    // Calculate Paris line value (Carbon Law) - Modified: starts at current year
     let parisValue: number | null = null;
-    if (year >= 2025) {
-      // Get the 2025 value - either from actual data or trendline
-      let emissions2025: number;
-      const actual2025Data = data.find((d) => d.year === 2025)?.total;
+    if (year >= currentYear) {
+      // Get the current year value - either from actual data or trendline
+      let emissionsCurrentYear: number;
+      const actualCurrentYearData = data.find(
+        (d) => d.year === currentYear,
+      )?.total;
 
-      if (actual2025Data !== undefined && actual2025Data !== null) {
-        // Use actual 2025 data if available
-        emissions2025 = actual2025Data;
+      if (
+        actualCurrentYearData !== undefined &&
+        actualCurrentYearData !== null
+      ) {
+        // Use actual current year data if available
+        emissionsCurrentYear = actualCurrentYearData;
       } else {
-        // Calculate 2025 value from trendline
+        // Calculate current year value from trendline
         const lastDataValue =
           data
             .filter((d) => hasTotalEmissions(d))
@@ -107,10 +113,10 @@ export function generateApproximatedDataWithCoefficients(
         const lastYearWithData = Math.max(
           ...data.filter((d) => hasTotalEmissions(d)).map((d) => d.year),
         );
-        const yearsFromLast = 2025 - lastYearWithData;
+        const yearsFromLast = currentYear - lastYearWithData;
 
         if ("slope" in coefficients && "intercept" in coefficients) {
-          emissions2025 = Math.max(
+          emissionsCurrentYear = Math.max(
             0,
             lastDataValue + coefficients.slope * yearsFromLast,
           );
@@ -119,18 +125,19 @@ export function generateApproximatedDataWithCoefficients(
           const expValue = lastDataValue * growthFactor;
           const maxReasonableValue = 1000000; // 1 million tCO2e
           const minReasonableValue = 0.1; // 0.1 tCO2e
-          emissions2025 = Math.max(
+          emissionsCurrentYear = Math.max(
             minReasonableValue,
             Math.min(expValue, maxReasonableValue),
           );
         } else {
-          emissions2025 = lastDataValue;
+          emissionsCurrentYear = lastDataValue;
         }
       }
 
-      // Apply Carbon Law reduction from 2025 onwards
+      // Apply Carbon Law reduction from current year onwards
       const calculatedValue =
-        emissions2025 * Math.pow(1 - CARBON_LAW_REDUCTION_RATE, year - 2025);
+        emissionsCurrentYear *
+        Math.pow(1 - CARBON_LAW_REDUCTION_RATE, year - currentYear);
       parisValue = calculatedValue > 0 ? calculatedValue : null;
     }
 
