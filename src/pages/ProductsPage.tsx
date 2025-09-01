@@ -12,7 +12,7 @@ import { useTranslation } from "react-i18next";
 import { ProductCard } from "@/components/products/ProductCard";
 import { useState } from "react";
 import { RequestAccessModal } from "@/components/products/RequestAccessModal";
-import { PageSEO } from "@/components/SEO/PageSEO";
+import { PageSEO } from "@/components/PageSEO";
 
 interface DataCategoryProps {
   icon: React.ReactNode;

@@ -7,7 +7,7 @@ import { LinkButton } from "@/components/layout/LinkButton";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { useTranslation } from "react-i18next";
 import { MembersGrid } from "@/components/MembersGrid";
-import { PageSEO } from "@/components/SEO/PageSEO";
+import { PageSEO } from "@/components/PageSEO";
 import { useEffect } from "react";
 
 export function AboutPage() {
@@ -31,6 +31,72 @@ export function AboutPage() {
     url: "https://klimatkollen.se",
     logo: "https://klimatkollen.se/images/social-picture.png",
     description: pageDescription,
+    foundingDate: "2020",
+
+    mission:
+      "Building transparency and accountability in climate action through open data",
+    purpose:
+      "Enable citizens, companies, and municipalities to track climate progress",
+
+    hasOfferCatalog: {
+      "@type": "ItemList",
+      name: "Core Activities",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Climate Data Analysis",
+          description:
+            "Analyze emissions data from Swedish companies and municipalities",
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Transparency Reporting",
+          description: "Provide open access to climate performance data",
+        },
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: "Climate Action Monitoring",
+          description: "Track progress toward Paris Agreement goals",
+        },
+      ],
+    },
+
+    additionalProperty: [
+      {
+        "@type": "PropertyValue",
+        name: "Climate Goal",
+        value: "Net-zero emissions by 2045",
+        description: "Sweden's climate neutrality target",
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Data Coverage",
+        value: "Swedish companies and municipalities",
+        description: "Geographic and organizational scope",
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Transparency Level",
+        value: "Open data platform",
+        description: "Public access to climate performance data",
+      },
+    ],
+
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: "Customer Service",
+      email: "hej@klimatkollen.se",
+      availableLanguage: ["en", "sv"],
+    },
+
+    sameAs: [
+      "https://twitter.com/klimatkollen",
+      "https://github.com/klimatbyran",
+      "https://discord.gg/N5P64QPQ6v",
+    ],
   };
 
   return (

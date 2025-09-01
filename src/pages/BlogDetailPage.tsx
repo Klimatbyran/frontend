@@ -13,6 +13,7 @@ import { blogMetadata } from "../lib/blog/blogPostsList";
 import { useTranslation } from "react-i18next";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { ContentMeta } from "@/types/content";
+import { PageSEO } from "@/components/PageSEO";
 import { localizeUnit } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
 
@@ -24,6 +25,7 @@ const markdownFiles = import.meta.glob("/src/lib/blog/posts/*.md", {
 
 export function BlogDetailPage() {
   const { t } = useTranslation();
+  const { currentLanguage } = useLanguage();
   const { id } = useParams<{ id: string }>();
   const [blogPost, setBlogPost] = useState<{
     metadata: ContentMeta;
@@ -33,7 +35,6 @@ export function BlogDetailPage() {
   const [copied, setCopied] = useState(false);
   const location = useLocation();
   const { isMobile } = useScreenSize();
-  const { currentLanguage } = useLanguage();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -97,6 +98,48 @@ export function BlogDetailPage() {
   if (loading) return <div>{t("blogDetailPage.loading")}</div>;
   if (!blogPost) return <div>{t("blogDetailPage.postNotFound")}</div>;
 
+  // SEO data för blogginlägg
+  const canonicalUrl = `https://klimatkollen.se${currentLanguage === "sv" ? "" : "/en"}/insights/${id}`;
+  const pageTitle = `${blogPost.metadata.title} - Klimatkollen`;
+  const pageDescription = blogPost.metadata.excerpt;
+  const ogImage = blogPost.metadata.image;
+
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: blogPost.metadata.title,
+    description: pageDescription,
+    image: ogImage?.startsWith("http")
+      ? ogImage
+      : `https://klimatkollen.se${ogImage || "/images/social-picture.png"}`,
+    datePublished: blogPost.metadata.date,
+    dateModified: blogPost.metadata.date,
+    articleSection: blogPost.metadata.category,
+    // Add related articles
+    isPartOf: {
+      "@type": "Blog",
+      name: "Klimatkollen Insights",
+      url: "https://klimatkollen.se/insights",
+    },
+    // Enhanced author details
+    author: {
+      "@type": "Person",
+      name: blogPost.metadata.author?.name || "Klimatkollen",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Klimatkollen",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://klimatkollen.se/images/social-picture.png",
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": canonicalUrl,
+    },
+  };
+
   const relatedPosts = blogPost.metadata.relatedPosts
     ? blogPost.metadata.relatedPosts
         .map((relatedId) => blogMetadata.find((post) => post.id === relatedId))
@@ -104,184 +147,203 @@ export function BlogDetailPage() {
     : [];
 
   return (
-    <div
-      className={`max-w-[1200px] mx-auto ${
-        isMobile ? "space-y-8" : "space-y-16"
-      } px-4`}
-    >
-      {/* Navigation */}
-      <div className="flex items-center justify-between">
-        <Button variant="ghost" size="sm" className="gap-2" asChild>
-          <a href="/articles">
-            <ArrowLeft className="w-4 h-4" />
-            {t("blogDetailPage.back")}
-          </a>
-        </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="gap-2"
-          onClick={handleShare}
-        >
-          {copied ? (
-            <Check className="w-4 h-4 text-green-500" />
-          ) : (
-            <Share2 className="w-4 h-4" />
-          )}
-          {copied ? t("blogDetailPage.linkCopied") : t("blogDetailPage.share")}
-        </Button>
-      </div>
-
-      {/* Hero Section */}
-      <div className={`space-y-${isMobile ? "4" : "8"}`}>
-        <div className="flex flex-wrap items-center gap-4">
-          <span className="px-3 py-1 bg-blue-5/50 rounded-full text-blue-2 text-sm">
-            {t("insightCategories." + blogPost.metadata.category)}
-          </span>
-          <div className="flex items-center gap-2 text-grey text-sm">
-            <CalendarDays className="w-4 h-4" />
-            <span>
-              {localizeUnit(new Date(blogPost.metadata.date), currentLanguage)}
-            </span>
-          </div>
-          <div className="flex items-center gap-2 text-grey text-sm">
-            <Clock className="w-4 h-4" />
-            <span>{blogPost.metadata.readTime}</span>
-          </div>
-        </div>
-
-        <Text
-          variant={isMobile ? "h1" : "display"}
-          className={isMobile ? "text-3xl" : ""}
-        >
-          {blogPost.metadata.title}
-        </Text>
-
-        <Text variant="body" className="text-grey max-w-3xl">
-          {blogPost.metadata.excerpt}
-        </Text>
-      </div>
-
-      {/* Featured Image */}
+    <>
+      <PageSEO
+        title={pageTitle}
+        description={pageDescription}
+        canonicalUrl={canonicalUrl}
+        ogImage={ogImage}
+        ogType="article"
+        keywords={`klimat, ${blogPost.metadata.category}, ${blogPost.metadata.title}`}
+        structuredData={structuredData}
+      />
       <div
-        className={`relative ${
-          isMobile ? "h-[250px]" : "h-[500px]"
-        } rounded-level-1 overflow-hidden`}
+        className={`max-w-[1200px] mx-auto ${
+          isMobile ? "space-y-8" : "space-y-16"
+        } px-4`}
       >
-        <img
-          src={blogPost.metadata.image}
-          alt={blogPost.metadata.title}
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-      </div>
-
-      {/* Author Section */}
-      {blogPost.metadata.author && (
-        <div className="flex items-center gap-4 p-8 bg-black-2 rounded-level-2">
-          <img
-            src={blogPost.metadata.author.avatar}
-            alt={blogPost.metadata.author.name}
-            className="w-16 h-16 rounded-full object-cover"
-          />
-          <div>
-            <Text variant="body">{blogPost.metadata.author.name}</Text>
-          </div>
-        </div>
-      )}
-
-      {/* Content */}
-      <div className="prose prose-invert max-w-none">
-        <ReactMarkdown
-          remarkPlugins={[remarkGfm, remarkBreaks, remarkMath]}
-          rehypePlugins={[rehypeRaw, rehypeKatex]}
-          components={{
-            img: ({ node, ...props }) => (
-              <img
-                {...props}
-                className="w-2/3 mx-auto shadow-lg !rounded-lg !overflow-hidden"
-              />
-            ),
-            a: ({ node, ...props }) => (
-              <a
-                {...props}
-                target="_blank" // Opens link in a new tab
-                rel="noopener noreferrer"
-                className="underline hover:text-white"
-              />
-            ),
-            table: ({ node, ...props }) => (
-              <div className="overflow-x-auto my-8">
-                <table {...props} className="w-full overflow-hidden" />
-              </div>
-            ),
-            thead: ({ node, ...props }) => (
-              <thead {...props} className="bg-blue-5/20" />
-            ),
-            th: ({ node, ...props }) => (
-              <th
-                {...props}
-                className="border border-blue-2/50 px-4 py-3 text-left font-semibold text-blue-2"
-              />
-            ),
-            td: ({ node, ...props }) => (
-              <td {...props} className="border border-slate-500/50 px-4 py-3" />
-            ),
-          }}
-        >
-          {blogPost.content}
-        </ReactMarkdown>
-      </div>
-
-      {/* Related Posts */}
-      {relatedPosts.length > 0 && (
-        <div className="space-y-8">
-          <Text variant="h3">{t("blogDetailPage.relatedArticles")}</Text>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {relatedPosts.map(
-              (post) =>
-                post && (
-                  <Link
-                    key={post.id}
-                    to={`/insights/${post.id}`}
-                    className="group bg-black-2 rounded-level-2 overflow-hidden transition-transform hover:scale-[1.02]"
-                  >
-                    <div className="relative h-48 overflow-hidden">
-                      <img
-                        src={post.image}
-                        alt={post.title}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                    </div>
-                    <div className="p-8 space-y-4">
-                      <div className="flex items-center gap-4">
-                        <span className="px-3 py-1 bg-blue-5/50 rounded-full text-blue-2 text-sm">
-                          {post.category}
-                        </span>
-                        <div className="flex items-center gap-2 text-grey text-sm">
-                          <CalendarDays className="w-4 h-4" />
-                          <span>
-                            {new Date(post.date).toLocaleDateString("sv-SE")}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2 text-grey text-sm">
-                          <Clock className="w-4 h-4" />
-                          <span>{post.readTime}</span>
-                        </div>
-                      </div>
-                      <Text
-                        variant="h4"
-                        className="group-hover:text-blue-2 transition-colors"
-                      >
-                        {post.title}
-                      </Text>
-                      <Text className="text-grey">{post.excerpt}</Text>
-                    </div>
-                  </Link>
-                ),
+        {/* Navigation */}
+        <div className="flex items-center justify-between">
+          <Button variant="ghost" size="sm" className="gap-2" asChild>
+            <a href="/articles">
+              <ArrowLeft className="w-4 h-4" />
+              {t("blogDetailPage.back")}
+            </a>
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="gap-2"
+            onClick={handleShare}
+          >
+            {copied ? (
+              <Check className="w-4 h-4 text-green-500" />
+            ) : (
+              <Share2 className="w-4 h-4" />
             )}
-          </div>
+            {copied
+              ? t("blogDetailPage.linkCopied")
+              : t("blogDetailPage.share")}
+          </Button>
         </div>
-      )}
-    </div>
+
+        {/* Hero Section */}
+        <div className={`space-y-${isMobile ? "4" : "8"}`}>
+          <div className="flex flex-wrap items-center gap-4">
+            <span className="px-3 py-1 bg-blue-5/50 rounded-full text-blue-2 text-sm">
+              {t("insightCategories." + blogPost.metadata.category)}
+            </span>
+            <div className="flex items-center gap-2 text-grey text-sm">
+              <CalendarDays className="w-4 h-4" />
+              <span>
+                {localizeUnit(
+                  new Date(blogPost.metadata.date),
+                  currentLanguage,
+                )}
+              </span>
+            </div>
+            <div className="flex items-center gap-2 text-grey text-sm">
+              <Clock className="w-4 h-4" />
+              <span>{blogPost.metadata.readTime}</span>
+            </div>
+          </div>
+
+          <Text
+            variant={isMobile ? "h1" : "display"}
+            className={isMobile ? "text-3xl" : ""}
+          >
+            {blogPost.metadata.title}
+          </Text>
+
+          <Text variant="body" className="text-grey max-w-3xl">
+            {blogPost.metadata.excerpt}
+          </Text>
+        </div>
+
+        {/* Featured Image */}
+        <div
+          className={`relative ${
+            isMobile ? "h-[250px]" : "h-[500px]"
+          } rounded-level-1 overflow-hidden`}
+        >
+          <img
+            src={blogPost.metadata.image}
+            alt={blogPost.metadata.title}
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        </div>
+
+        {/* Author Section */}
+        {blogPost.metadata.author && (
+          <div className="flex items-center gap-4 p-8 bg-black-2 rounded-level-2">
+            <img
+              src={blogPost.metadata.author.avatar}
+              alt={blogPost.metadata.author.name}
+              className="w-16 h-16 rounded-full object-cover"
+            />
+            <div>
+              <Text variant="body">{blogPost.metadata.author.name}</Text>
+            </div>
+          </div>
+        )}
+
+        {/* Content */}
+        <div className="prose prose-invert max-w-none">
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm, remarkBreaks, remarkMath]}
+            rehypePlugins={[rehypeRaw, rehypeKatex]}
+            components={{
+              img: ({ node, ...props }) => (
+                <img
+                  {...props}
+                  className="w-2/3 mx-auto shadow-lg !rounded-lg !overflow-hidden"
+                />
+              ),
+              a: ({ node, ...props }) => (
+                <a
+                  {...props}
+                  target="_blank" // Opens link in a new tab
+                  rel="noopener noreferrer"
+                  className="underline hover:text-white"
+                />
+              ),
+              table: ({ node, ...props }) => (
+                <div className="overflow-x-auto my-8">
+                  <table {...props} className="w-full overflow-hidden" />
+                </div>
+              ),
+              thead: ({ node, ...props }) => (
+                <thead {...props} className="bg-blue-5/20" />
+              ),
+              th: ({ node, ...props }) => (
+                <th
+                  {...props}
+                  className="border border-blue-2/50 px-4 py-3 text-left font-semibold text-blue-2"
+                />
+              ),
+              td: ({ node, ...props }) => (
+                <td
+                  {...props}
+                  className="border border-slate-500/50 px-4 py-3"
+                />
+              ),
+            }}
+          >
+            {blogPost.content}
+          </ReactMarkdown>
+        </div>
+
+        {/* Related Posts */}
+        {relatedPosts.length > 0 && (
+          <div className="space-y-8">
+            <Text variant="h3">{t("blogDetailPage.relatedArticles")}</Text>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {relatedPosts.map(
+                (post) =>
+                  post && (
+                    <Link
+                      key={post.id}
+                      to={`/insights/${post.id}`}
+                      className="group bg-black-2 rounded-level-2 overflow-hidden transition-transform hover:scale-[1.02]"
+                    >
+                      <div className="relative h-48 overflow-hidden">
+                        <img
+                          src={post.image}
+                          alt={post.title}
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+                      </div>
+                      <div className="p-8 space-y-4">
+                        <div className="flex items-center gap-4">
+                          <span className="px-3 py-1 bg-blue-5/50 rounded-full text-blue-2 text-sm">
+                            {post.category}
+                          </span>
+                          <div className="flex items-center gap-2 text-grey text-sm">
+                            <CalendarDays className="w-4 h-4" />
+                            <span>
+                              {new Date(post.date).toLocaleDateString("sv-SE")}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-2 text-grey text-sm">
+                            <Clock className="w-4 h-4" />
+                            <span>{post.readTime}</span>
+                          </div>
+                        </div>
+                        <Text
+                          variant="h4"
+                          className="group-hover:text-blue-2 transition-colors"
+                        >
+                          {post.title}
+                        </Text>
+                        <Text className="text-grey">{post.excerpt}</Text>
+                      </div>
+                    </Link>
+                  ),
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    </>
   );
 }

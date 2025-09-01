@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { reports } from "@/lib/constants/reports";
-import { PageSEO } from "@/components/SEO/PageSEO";
+import { PageSEO } from "@/components/PageSEO";
 import { ArrowUpRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 

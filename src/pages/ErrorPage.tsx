@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
-import { PageSEO } from "@/components/SEO/PageSEO";
+import { PageSEO } from "@/components/PageSEO";
 import { Text } from "@/components/ui/text";
 
 export function ErrorPage() {

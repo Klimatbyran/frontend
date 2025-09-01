@@ -18,9 +18,12 @@ import {
   useSortOptions,
 } from "@/hooks/companies/useCompanyFilters";
 import { CardGrid } from "@/components/CardGrid";
+import { PageSEO } from "@/components/PageSEO";
+import { useLanguage } from "@/components/LanguageProvider";
 
 export function CompaniesPage() {
   const { t } = useTranslation();
+  const { currentLanguage } = useLanguage();
   const screenSize = useScreenSize();
   const { companies, loading, error } = useCompanies();
   const [filterOpen, setFilterOpen] = useState(false);
@@ -33,6 +36,55 @@ export function CompaniesPage() {
   const [view, setView] = useState<"graphs" | "list">(
     viewParam === "graphs" || viewParam === "list" ? viewParam : "graphs",
   );
+
+  // SEO data
+  const canonicalUrl = `https://klimatkollen.se${currentLanguage === "sv" ? "" : "/en"}/companies`;
+  const pageTitle = `${t("companiesPage.title")} - Klimatkollen`;
+  const pageDescription = t("companiesPage.description");
+
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: pageTitle,
+    description: pageDescription,
+    url: canonicalUrl,
+    numberOfItems: companies.length,
+    mainEntity: {
+      "@type": "ItemList",
+      name: "Companies by Sector",
+      itemListElement: companies.map((company, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        url: `https://klimatkollen.se/companies/${company.wikidataId}`,
+        name: company.name,
+        additionalProperty: {
+          "@type": "PropertyValue",
+          name: "Industry Sector",
+          value: company.industry?.industryGics?.sectorCode || "Unknown",
+        },
+      })),
+    },
+    additionalProperty: [
+      {
+        "@type": "PropertyValue",
+        name: "Available Filters",
+        value: "Industry sector, emissions data, company size",
+        description: "Filter companies by various criteria",
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Sort Options",
+        value: "By emissions, by name, by sector",
+        description: "Multiple ways to sort company data",
+      },
+      {
+        "@type": "PropertyValue",
+        name: "View Modes",
+        value: "Graphs and List views",
+        description: "Visualize data in different formats",
+      },
+    ],
+  };
 
   const {
     searchQuery,
@@ -95,6 +147,12 @@ export function CompaniesPage() {
 
   return (
     <>
+      <PageSEO
+        title={pageTitle}
+        description={pageDescription}
+        canonicalUrl={canonicalUrl}
+        structuredData={structuredData}
+      />
       <PageHeader
         title={t("companiesPage.title")}
         description={t("companiesPage.description")}
@@ -161,7 +219,7 @@ export function CompaniesPage() {
         </div>
       ) : view === "graphs" ? (
         <SectorGraphs
-          companies={companies}
+          companies={companies as RankedCompany[]}
           selectedSectors={
             sectors.length > 0
               ? sectors

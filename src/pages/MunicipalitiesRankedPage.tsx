@@ -13,12 +13,20 @@ import municipalityGeoJson from "@/data/municipalityGeo.json";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import { useMunicipalityKPIs } from "@/hooks/municipalities/useMunicipalityKPIs";
 import { FeatureCollection } from "geojson";
+import { PageSEO } from "@/components/PageSEO";
+import { useLanguage } from "@/components/LanguageProvider";
 
 export function MunicipalitiesRankedPage() {
   const { t } = useTranslation();
+  const { currentLanguage } = useLanguage();
   const { municipalities, loading, error } = useMunicipalities();
   const municipalityKPIs = useMunicipalityKPIs();
   const [geoData] = useState(municipalityGeoJson);
+
+  // SEO data
+  const canonicalUrl = `https://klimatkollen.se${currentLanguage === "sv" ? "" : "/en"}/municipalities/ranked`;
+  const pageTitle = `${t("municipalitiesRankedPage.title")} - Klimatkollen`;
+  const pageDescription = t("municipalitiesRankedPage.description");
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -50,6 +58,44 @@ export function MunicipalitiesRankedPage() {
 
   const [selectedKPI, setSelectedKPI] = useState(getKPIFromURL());
   const viewMode = getViewModeFromURL();
+  const enhancedStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: pageTitle,
+    description: pageDescription,
+    url: canonicalUrl,
+    mainEntity: {
+      "@type": "ItemList",
+      name: "Municipalities by Performance",
+      numberOfItems: municipalities.length,
+      itemListElement: municipalities.map((municipality, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        url: `https://klimatkollen.se/municipalities/${municipality.name}`,
+        name: municipality.name,
+        additionalProperty: {
+          "@type": "PropertyValue",
+          name: "Emissions Change",
+          value: `${municipality.historicalEmissionChangePercent.toFixed(1)}%`,
+          unitText: "percentage change",
+        },
+      })),
+    },
+    additionalProperty: [
+      {
+        "@type": "PropertyValue",
+        name: "Available KPI Metrics",
+        value: selectedKPI.label,
+        description: "Performance metrics users can analyze",
+      },
+      {
+        "@type": "PropertyValue",
+        name: "View Options",
+        value: "Map and List views",
+        description: "Users can switch between map and list visualizations",
+      },
+    ],
+  };
 
   useEffect(() => {
     const kpiFromUrl = getKPIFromURL();
@@ -109,6 +155,12 @@ export function MunicipalitiesRankedPage() {
 
   return (
     <>
+      <PageSEO
+        title={pageTitle}
+        description={pageDescription}
+        canonicalUrl={canonicalUrl}
+        structuredData={enhancedStructuredData}
+      />
       <PageHeader
         title={t("municipalitiesRankedPage.title")}
         description={t("municipalitiesRankedPage.description")}
