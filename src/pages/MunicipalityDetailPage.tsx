@@ -177,7 +177,7 @@ export function MunicipalityDetailPage() {
                 year: lastYear,
               })}
               value={lastYearEmissionsTon}
-              unit={t("emissionsUnitCO2")}
+              unit={t("emissionsUnit")}
               valueClassName="text-orange-2"
               info={true}
               infoText={t("municipalityDetailPage.totalEmissionsTooltip")}
