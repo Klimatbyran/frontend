@@ -18,6 +18,7 @@ export const methodologySections: MethodologySectionType = {
     { id: "emissionTypes", category: "general" },
   ],
   municipality: [
+    { id: "municipalityDataOverview", category: "municipality" },
     { id: "sources", category: "municipality" },
     { id: "calculations", category: "municipality" },
   ],

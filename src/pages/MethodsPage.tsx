@@ -38,7 +38,7 @@ export function MethodsPage() {
     if (searchQuery === "company") {
       return "companyDataOverview";
     } else if (searchQuery === "municipality") {
-      return "sources";
+      return "municipalityDataOverview";
     } else {
       return "parisAgreement";
     }

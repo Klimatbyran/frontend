@@ -363,18 +363,6 @@
           "text": "Read more about the Paris Agreement on the Swedish Environmental Protection Agency's website."
         }
       },
-      "co2Budgets": {
-        "title": "Carbon Budgets",
-        "description": "Understand how carbon budgets are calculated and allocated",
-        "paragraph1": "A carbon budget represents the amount of carbon dioxide that can be emitted before atmospheric CO₂ levels rise high enough to exceed the Paris Agreement's 1.5°C target.",
-        "paragraph2": "According to a <0>calculation</0> by researchers at Uppsala University and the Tyndall Centre in the UK, as of 2024, approximately 340 gigatonnes of CO₂ remain globally for a 50% chance of keeping temperature rise below 1.5°C. At the current rate of emissions, this global budget will be depleted in about eight years.",
-        "paragraph3": "Using this global budget, the researchers have also estimated Sweden's national carbon budget for a fair climate transition.",
-        "paragraph4": "Their calculations show that, from January 2024, Sweden has a national carbon allowance of 80 million tonnes to stay on track for the 1.5°C target. For an 83% chance of keeping warming below 2°C, the budget increases to 285 million tonnes. By comparison, Sweden's total greenhouse gas emissions in 2022 were 45.2 million tonnes.",
-        "paragraph5": "At Sweden's current rate of emissions, the 1.5°C carbon budget will be used up in 1.8 years, while the 2°C budget will last 6.4 years. To stay within the 1.5°C target, Sweden must cut emissions by at least 35% per year starting in 2024. If aiming for the 2°C target, annual reductions of at least 13.5% are needed.",
-        "paragraph6": "Klimatkollen has allocated the new national carbon budget (80 million tonnes, including emissions from international aviation and shipping) to Sweden's municipalities, using the same method that was applied to break down the global budget nationally.",
-        "paragraph7": "These local carbon budgets enable comparisons between actual emissions and the reductions needed. Klimatkollen presents carbon budgets for municipalities both as numerical values and as development curves, illustrating the necessary decline in emissions to stay in line with the Paris Agreement.",
-        "paragraph8": "In addition to the Tyndall model used by Klimatkollen, there are other approaches to calculating a national carbon budget. For example, see Chalmers <0>here</0>."
-      },
       "carbonLaw": {
         "title": "Carbon Law",
         "description": "Understand how Klimatkollen applies Carbon Law to company and municipality data",
@@ -485,6 +473,14 @@
       }
     },
     "municipality": {
+      "municipalityDataOverview": {
+        "title": "Municipality Data Overview",
+        "description": "What data we collect and present about the municipalities",
+        "paragraph1": "Klimatkollen shows data on emissions in Sweden's municipalities, with SMHI's national emissions database as our primary source. To make our municipal and company data comparable, emissions of all greenhouse gases (CO₂e) are shown since August 2025, not just CO₂.",
+        "paragraph2": "We also show how emissions would need to decrease to meet the Paris Agreement. Previously, local carbon budgets were used, based on a national budget calculated by researchers at Uppsala University and the Tyndall Centre in the UK. Since August 2025, we have instead used the 'Paris Curve' based on <0>Carbon Law</0>.",
+        "paragraph3": "The forecast for future emissions is based on how emissions in each municipality have developed historically since the Paris Agreement 2015. The trend line is weighted using the statistical method Least absolute deviations (LDA), which gives less weight to individual extreme values and provides a more fair and realistic picture of future emissions.",
+        "paragraph4": "In addition to emissions data, key figures for how well municipalities are doing in their transition and emission reductions are also presented."
+      },
       "sources": {
         "title": "Our Sources",
         "description": "Explore the publicly available sources and verified data used by Klimatkollen",
