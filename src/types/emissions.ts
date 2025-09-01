@@ -19,6 +19,12 @@ export interface EmissionPeriod {
       }>;
     } | null;
   } | null;
+  economy?: {
+    turnover?: {
+      value: number;
+      unit: string;
+    } | null;
+  } | null;
 }
 
 export interface ChartData {
