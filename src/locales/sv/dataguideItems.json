@@ -7,9 +7,9 @@
     ]
   },
   "co2units": {
-    "title": "Vad är tCO₂ & tCO₂e?",
+    "title": "Vad är tCO₂e?",
     "content": [
-      "Alla utsläpp visas som ton CO₂ eller ton CO₂e vilket står för \"ton koldioxidekvivalenter\". Det är ett standardiserat mått som omvandlar påverkan av olika växthusgaser till motsvarande mängd CO₂."
+      "Alla utsläpp visas som ton CO₂e vilket står för \"ton koldioxidekvivalenter\". Det är ett standardiserat mått som omvandlar påverkan av olika växthusgaser till motsvarande mängd koldioxid (CO₂)."
     ]
   },
   "companiesHowToCompare": {
@@ -63,7 +63,7 @@
   "municipalityAnnualEmissionChangeSince2015": {
     "title": "Årlig utsläppsförändring sedan 2015",
     "content": [
-      "Detta visar den genomsnittliga förändringen av utsläppen i kommunenper år sedan 2015. Ett negativt tal (som -10,3 %) betyder att utsläppen minskar varje år – vilket är positivt.\n\nMen även en stor minskning kan vara för långsam för att hålla sig inom koldioxidbudgeten."
+      "Detta visar den genomsnittliga förändringen av utsläppen i kommunenper år sedan 2015. Ett negativt tal (som -10,3 %) betyder att utsläppen minskar varje år – vilket är positivt.\n\nMen även en stor minskning kan vara för långsam för att hålla sig inom Parisavtalets mål."
     ]
   },
   "municipalityBicyclePaths": {
