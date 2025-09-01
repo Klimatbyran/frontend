@@ -135,17 +135,40 @@ export default function EmissionsLineChart({
     }
   }, [trendAnalysis, setMethodExplanation, t]);
 
-  // Calculate global min/max Y values for consistent Y-axis scaling
-  const allYValues = [
+  // Calculate separate domains for emissions and turnover
+  const emissionsValues = [
     ...data.map((d) => d.total).filter((v) => v !== undefined && v !== null),
+    ...data
+      .map((d) => d.turnoverDividedByEmissions)
+      .filter((v) => v !== undefined && v !== null),
     ...(approximatedData
       ? approximatedData
           .map((d) => d.approximated)
           .filter((v) => v !== undefined && v !== null)
       : []),
   ];
-  const yMin = Math.min(...allYValues, 0);
-  const yMax = Math.max(...allYValues, 10);
+
+  const turnoverValues = data
+    .map((d) => d.turnoverRaw)
+    .filter((v) => v !== undefined && v !== null);
+
+  const emissionsYMin = Math.min(...emissionsValues, 0);
+  const emissionsYMax = Math.max(...emissionsValues, 10);
+
+  const turnoverYMin =
+    turnoverValues.length > 0 ? Math.min(...turnoverValues, 0) : 0;
+  const turnoverYMax =
+    turnoverValues.length > 0 ? Math.max(...turnoverValues, 100000) : 100000;
+
+  // Format turnover values for Y-axis
+  const formatTurnover = (value: number) => {
+    if (value >= 1000000) {
+      return `${(value / 1000000).toFixed(0)}M`;
+    } else if (value >= 1000) {
+      return `${(value / 1000).toFixed(0)}k`;
+    }
+    return value.toString();
+  };
 
   return (
     <div className="w-full h-full flex flex-col">
@@ -155,11 +178,12 @@ export default function EmissionsLineChart({
           <ResponsiveContainer width="100%" height="100%" className="w-full">
             <LineChart
               data={data}
-              margin={{ top: 20, right: 0, left: 0, bottom: 0 }}
+              margin={{ top: 20, right: 60, left: 0, bottom: 0 }}
               onClick={handleClick}
             >
               {companyBaseYear && (
                 <ReferenceLine
+                  yAxisId="emissions"
                   label={{
                     value: t("companies.emissionsHistory.baseYear"),
                     position: "top",
@@ -209,16 +233,43 @@ export default function EmissionsLineChart({
               />
 
               <YAxis
+                yAxisId="emissions"
                 stroke="var(--grey)"
                 tickLine={false}
                 axisLine={false}
                 tick={{ fontSize: 12 }}
                 width={60}
-                domain={[0, "auto"]} // Hard stop at 0, no emissions below 0
+                domain={[0, "auto"]}
                 padding={{ top: 0, bottom: 0 }}
                 tickFormatter={(value) =>
                   formatEmissionsAbsoluteCompact(value, currentLanguage)
                 }
+              />
+
+              <YAxis
+                yAxisId="turnover"
+                orientation="right"
+                stroke="var(--grey)"
+                tickLine={false}
+                axisLine={false}
+                tick={{ fontSize: 12 }}
+                width={60}
+                domain={[0, "auto"]}
+                padding={{ top: 0, bottom: 0 }}
+                tickFormatter={formatTurnover}
+              />
+
+              <YAxis
+                yAxisId="turnoverDividedByEmissions"
+                orientation="right"
+                stroke="var(--grey)"
+                tickLine={false}
+                axisLine={false}
+                tick={{ fontSize: 12 }}
+                width={60}
+                domain={[0, "auto"]}
+                padding={{ top: 0, bottom: 0 }}
+                tickFormatter={formatTurnover}
               />
 
               <Tooltip
@@ -264,6 +315,7 @@ export default function EmissionsLineChart({
               {dataView === "overview" && (
                 <>
                   <Line
+                    yAxisId="emissions"
                     type="monotone"
                     dataKey="total"
                     stroke="white"
@@ -281,9 +333,39 @@ export default function EmissionsLineChart({
                     connectNulls
                     name={t("companies.emissionsHistory.totalEmissions")}
                   />
+                  <Line
+                    yAxisId="turnoverDividedByEmissions"
+                    type="monotone"
+                    dataKey="turnoverDividedByEmissions"
+                    stroke="green"
+                    strokeWidth={2}
+                    dot={
+                      isMobile
+                        ? false
+                        : { r: 0, fill: "white", cursor: "pointer" }
+                    }
+                    activeDot={
+                      isMobile
+                        ? false
+                        : { r: 6, fill: "white", cursor: "pointer" }
+                    }
+                    connectNulls
+                    name={"Turnover divided by emissions"}
+                  />
+                  <Line
+                    yAxisId="turnover"
+                    type="monotone"
+                    dataKey="turnoverRaw"
+                    stroke="yellow"
+                    strokeWidth={2}
+                    dot={false}
+                    connectNulls
+                    name={"Turnover"}
+                  />
                   {approximatedData && (
                     <>
                       <ReferenceLine
+                        yAxisId="emissions"
                         x={currentYear}
                         stroke="var(--orange-2)"
                         strokeWidth={1}
@@ -298,6 +380,7 @@ export default function EmissionsLineChart({
                       <Line
                         type="linear"
                         dataKey="approximated"
+                        yAxisId="emissions"
                         data={approximatedData}
                         stroke="var(--grey)"
                         strokeWidth={1}
@@ -309,6 +392,7 @@ export default function EmissionsLineChart({
                       <Line
                         type="monotone"
                         dataKey="carbonLaw"
+                        yAxisId="emissions"
                         data={approximatedData}
                         stroke="var(--green-3)"
                         strokeWidth={1}
@@ -326,6 +410,7 @@ export default function EmissionsLineChart({
                 <>
                   {!hiddenScopes.includes("scope1") && (
                     <Line
+                      yAxisId="emissions"
                       type="monotone"
                       dataKey="scope1.value"
                       stroke="var(--pink-3)"
@@ -345,6 +430,7 @@ export default function EmissionsLineChart({
                   )}
                   {!hiddenScopes.includes("scope2") && (
                     <Line
+                      yAxisId="emissions"
                       type="monotone"
                       dataKey="scope2.value"
                       stroke="var(--green-2)"
@@ -364,6 +450,7 @@ export default function EmissionsLineChart({
                   )}
                   {!hiddenScopes.includes("scope3") && (
                     <Line
+                      yAxisId="emissions"
                       type="monotone"
                       dataKey="scope3.value"
                       stroke="var(--blue-2)"
@@ -432,6 +519,7 @@ export default function EmissionsLineChart({
                     return (
                       <Line
                         key={categoryKey}
+                        yAxisId="emissions"
                         type="monotone"
                         dataKey={categoryKey}
                         stroke={getCategoryColor(categoryId)}
@@ -498,7 +586,7 @@ export default function EmissionsLineChart({
             companyBaseYear={companyBaseYear}
             currentLanguage={currentLanguage}
             trendAnalysis={trendAnalysis}
-            yDomain={[yMin, yMax]}
+            yDomain={[emissionsYMin, emissionsYMax]}
             onExit={() => setExploreMode(false)}
           />
         )}

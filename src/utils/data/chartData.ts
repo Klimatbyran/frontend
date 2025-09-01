@@ -114,6 +114,7 @@ export function getChartData(
     const scope1 = period.emissions?.scope1;
     const scope2 = period.emissions?.scope2;
     const scope3 = period.emissions?.scope3;
+    const turnover = period.economy?.turnover;
     const scope1Data = scope1
       ? { value: scope1.total ?? 0, isAIGenerated: isAIGenerated(scope1) }
       : undefined;
@@ -157,6 +158,14 @@ export function getChartData(
       ...Object.fromEntries(
         Object.entries(categoryData).map(([key, value]) => [key, value ?? 0]),
       ),
+      turnover: turnover?.value ?? undefined,
+      turnoverDividedByEmissions:
+        turnover?.value &&
+        period.emissions?.calculatedTotalEmissions &&
+        period.emissions?.calculatedTotalEmissions !== 0
+          ? turnover.value / period.emissions?.calculatedTotalEmissions
+          : null,
+      turnoverRaw: turnover?.value ?? null,
     };
   });
 
