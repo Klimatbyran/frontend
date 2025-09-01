@@ -481,6 +481,20 @@
         "paragraph3": "The forecast for future emissions is based on how emissions in each municipality have developed historically since the Paris Agreement 2015. The trend line is weighted using the statistical method Least absolute deviations (LDA), which gives less weight to individual extreme values and provides a more fair and realistic picture of future emissions.",
         "paragraph4": "In addition to emissions data, key figures for how well municipalities are doing in their transition and emission reductions are also presented."
       },
+      "municipalityKPIs": {
+        "title": "Municipality KPIs",
+        "description": "What data we collect and present about the municipalities",
+        "paragraph1": "In addition to data on how well emissions are progressing compared to what is needed according to the Paris Agreement, we also show data on how well different transition measures are progressing in the municipalities.",
+        "paragraph2": "We have based our criteria on municipal responsibility, impact on emissions, breadth of areas, and access to stable data. Based on these criteria, we have so far presented data on the following key figures.",
+        "list": {
+          "evs": "Electric vehicles. The increase in the municipalities for the proportion of newly registered electric vehicles",
+          "consumption": "Consumption. The household's consumption emissions in tonnes per resident and municipality",
+          "chargers": "Chargers. The number of electric vehicles per public charging point per municipality",
+          "bicycles": "Bicycles. The number of metres of cycling paths per resident per municipality",
+          "plans": "Plans. Which municipalities have an ongoing climate action plan",
+          "procurements": "Procurements. Which municipalities have placed climate requirements in public procurement"
+        }
+      },
       "sources": {
         "title": "Our Sources",
         "description": "Explore the publicly available sources and verified data used by Klimatkollen",
@@ -538,12 +552,6 @@
             "link": "https://docs.google.com/spreadsheets/d/1EdHUa49HJZn0rXqM-6tChdim4TJzXnwA/edit#gid=1040317160"
           }
         }
-      },
-      "calculations": {
-        "title": "Our Calculations",
-        "description": "Understand how we calculate and analyse climate data",
-        "paragraph1": "The emissions data for municipalities is based on SMHI's national emissions database for the years 1990–2022. For 2022–2024, emissions have been approximated based on historical trends to provide data up to the present day.",
-        "paragraph2": "<0>Here</0> you can read an example of how we calculate key figures for municipal emissions (link in Swedish)."
       }
     }
   },

@@ -481,6 +481,20 @@
         "paragraph3": "Prognosen för framtida utsläpp baseras på hur utsläppen i respektive kommun har utvecklats historiskt sedan Parisavtalet 2015. Trendlinjen viktas enligt den statistiska metoden Least absolute deviations (LDA), som ger mindre vikt åt enskilda extremvärden och en mer rättvis och realistisk bild av de framtida utsläppen.",
         "paragraph4": "Utöver utsläppsdata visas även nyckeltal för hur det går i kommunerna med att ställa om och minska utsläppen."
       },
+      "municipalityKPIs": {
+        "title": "Nyckeltal omställning i kommunerna",
+        "description": "Här förklaras vilken data vi visar om klimatomställningen i kommunerna",
+        "paragraph1": "Utöver data om hur det går med utsläppen jämfört med hur det behöver gå enligt Parisavtalet, så visar vi även data om hur det går med olika delomställningar som behöver ske för att minska utsläppen i kommunerna.",
+        "paragraph2": "Vi har utgått ifrån kommunal rådighet, påverkan på utsläppen, bredd av områden och tillgång till stabil data. Utifrån dessa kriterier har vi hittills presenterat data om följande nyckeltal.",
+        "list": {
+          "evs": "Elbilarna. Ökningstakten i kommunerna för andelen nyregistrerade laddbara bilar",
+          "consumption": "Konsumtionen. Hushållens konsumtionsutsläpp i ton per invånare och kommun",
+          "chargers": "Laddarna. Antal elbilar per publik laddningspunkt per kommun",
+          "bicycles": "Cyklarna. Antal meter cykelväg per invånare per kommun",
+          "plans": "Planerna. Vilka kommuner har en gällande klimathandlingsplan",
+          "procurements": "Upphandlingarna. Vilka kommuner ställer klimatkrav vid offentliga upphandlingar"
+        }
+      },
       "sources": {
         "title": "Våra källor",
         "description": "Utforska de offentligt tillgängliga källorna och verifierade data som används av Klimatkollen",
@@ -538,12 +552,6 @@
             "link": "https://docs.google.com/spreadsheets/d/1EdHUa49HJZn0rXqM-6tChdim4TJzXnwA/edit#gid=1040317160"
           }
         }
-      },
-      "calculations": {
-        "title": "Våra beräkningar",
-        "description": "Förstå hur vi beräknar och analyserar klimatdata",
-        "paragraph1": "Kommunernas utsläppsdata baseras på SMHI:s nationella utsläppsdatabas för åren 1990–2022. För 2022–2024 har utsläppen uppskattats utifrån historiska trender för att tillhandahålla data fram till idag.",
-        "paragraph2": "<0>Här</0> kan du läsa ett exempel på hur vi beräknar nyckeltal för kommunala utsläpp (länk på svenska)."
       }
     }
   },

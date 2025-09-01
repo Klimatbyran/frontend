@@ -20,7 +20,7 @@ export const methodologySections: MethodologySectionType = {
   municipality: [
     { id: "municipalityDataOverview", category: "municipality" },
     { id: "sources", category: "municipality" },
-    { id: "calculations", category: "municipality" },
+    { id: "municipalityKPIs", category: "municipality" },
   ],
   company: [
     { id: "companyDataOverview", category: "company" },
