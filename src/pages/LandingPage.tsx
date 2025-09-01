@@ -159,7 +159,7 @@ export function LandingPage() {
               itemValueRenderer={renderMunicipalityChangeRate}
               icon={{ component: TreePineIcon, bgColor: "bg-[#FDE7CE]" }}
               rankColor="text-orange-2"
-              headingLink={`${currentLanguage}/municipalities/top-list`}
+              headingLink={`${currentLanguage}/municipalities`}
             />
 
             <RankedList

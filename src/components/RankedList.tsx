@@ -19,7 +19,7 @@ interface RankedListProps {
     bgColor: string;
   };
   rankColor: string;
-  headingLink: string;
+  headingLink?: string;
 }
 
 export function RankedList({
@@ -30,7 +30,7 @@ export function RankedList({
   itemValueRenderer,
   icon,
   rankColor,
-  headingLink = "",
+  headingLink,
 }: RankedListProps) {
   const Icon = icon.component;
 
@@ -38,7 +38,7 @@ export function RankedList({
     <div className={cn("bg-black-2 rounded-level-2 p-4 md:p-8", className)}>
       <div className="flex items-center justify-between mb-2 md:mb-4">
         <Text className="text-2xl md:text-4xl">
-          <a href={headingLink ?? null}>{title}</a>
+          <a href={headingLink}>{title}</a>
         </Text>
         <div
           className={cn(

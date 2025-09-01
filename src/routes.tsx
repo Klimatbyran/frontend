@@ -87,7 +87,7 @@ export function AppRoutes() {
 
       {/* Municipalities routes */}
       <Route
-        path={`${basePath}/municipalities/top-list`}
+        path={`${basePath}/municipalities`}
         element={<MunicipalitiesRankedPage />}
       />
       <Route
