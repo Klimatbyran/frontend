@@ -134,6 +134,7 @@ export function EmissionsHistory({
       {!exploreMode && (
         <SectionWithHelp
           helpItems={[
+            "baseYear",
             "scope1",
             "scope2",
             "scope3",
