@@ -31,7 +31,6 @@ import { RequestsDashboard } from "./pages/internal-pages/RequestsDashboard";
 import { TrendAnalysisDashboard } from "./pages/internal-pages/TrendAnalysisDashboard";
 import { NewsLetterArchivePage } from "./pages/NewslettersPage";
 
-
 export function AppRoutes() {
   const { currentLanguage } = useLanguage();
 
@@ -88,7 +87,7 @@ export function AppRoutes() {
 
       {/* Municipalities routes */}
       <Route
-        path={`${basePath}/municipalities`}
+        path={`${basePath}/municipalities/top-list`}
         element={<MunicipalitiesRankedPage />}
       />
       <Route
