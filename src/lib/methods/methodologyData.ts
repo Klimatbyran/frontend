@@ -14,7 +14,6 @@ export type MethodologySectionType = {
 export const methodologySections: MethodologySectionType = {
   general: [
     { id: "parisAgreement", category: "general" },
-    { id: "co2Budgets", category: "general" },
     { id: "carbonLaw", category: "general" },
     { id: "emissionTypes", category: "general" },
   ],

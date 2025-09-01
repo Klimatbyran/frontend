@@ -7,7 +7,6 @@ import { DataCollectionProcessContent } from "./content/DataCollectionProcess";
 import { EmissionsAndCategoriesContent } from "./content/EmissionsCategories";
 import { HistoricalDataContent } from "./content/HistoricalData";
 import { ParisAgreementContent } from "./content/ParisAgreementContent";
-import { CO2BudgetsContent } from "./content/CO2BudgetsContent";
 import { EmissionTypesContent } from "./content/EmissionTypesContent";
 import { CalculationsContent } from "./content/CalculationsContent";
 import { CarbonLawContent } from "./content/CarbonLaw";
@@ -47,9 +46,6 @@ export const MethodologyContent = forwardRef<
 
       case "parisAgreement":
         return <ParisAgreementContent />;
-
-      case "co2Budgets":
-        return <CO2BudgetsContent />;
 
       case "carbonLaw":
         return <CarbonLawContent />;
