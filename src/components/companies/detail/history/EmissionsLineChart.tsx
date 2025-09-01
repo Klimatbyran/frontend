@@ -350,7 +350,7 @@ export default function EmissionsLineChart({
                         : { r: 6, fill: "white", cursor: "pointer" }
                     }
                     connectNulls
-                    name={"Turnover divided by emissions"}
+                    name={"Emissions divided by turnover"}
                   />
                   <Line
                     yAxisId="turnover"

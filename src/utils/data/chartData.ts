@@ -163,7 +163,7 @@ export function getChartData(
         turnover?.value &&
         period.emissions?.calculatedTotalEmissions &&
         period.emissions?.calculatedTotalEmissions !== 0
-          ? turnover.value / period.emissions?.calculatedTotalEmissions
+          ? period.emissions?.calculatedTotalEmissions / turnover.value
           : null,
       turnoverRaw: turnover?.value ?? null,
     };
