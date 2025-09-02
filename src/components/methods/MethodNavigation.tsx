@@ -52,8 +52,6 @@ export function MethodologyNavigation({
         window.scrollTo({ top: scrollTo, behavior: "smooth" });
       }, 350);
     }
-
-    // navigate(`?view=${method}`);
   };
 
   return (
