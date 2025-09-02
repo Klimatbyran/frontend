@@ -41,6 +41,7 @@ export function MethodologyNavigation({
 
   // Scroll to MethodContent on mobile when a method is selected
   const handleMethodChange = (method: string) => {
+    navigate(`?view=${method}`);
     onMethodChange(method);
     if (isMobile && contentRef?.current) {
       setTimeout(() => {
@@ -64,6 +65,7 @@ export function MethodologyNavigation({
         {Object.entries(methodologySections).map(([category, methods]) => (
           <li key={category}>
             <button
+              type="button"
               onClick={() => toggleCategory(category)}
               className="flex justify-between items-center w-full p-3 my-1 text-left font-medium text-white hover:bg-black-1 transition-colors duration-200 rounded-lg"
               aria-expanded={expandedCategories.includes(category)}
@@ -83,7 +85,6 @@ export function MethodologyNavigation({
                     <button
                       onClick={() => {
                         handleMethodChange(method.id);
-                        navigate(`?view=${category}`);
                       }}
                       className={`w-full p-2 my-0.5 text-left text-sm rounded-lg transition-colors duration-200 ${
                         selectedMethod === method.id
