@@ -119,15 +119,6 @@ export function MunicipalityDetailPage() {
           })}
         </p>
         <h2>{t("municipalityDetailPage.seoText.emissionsHeading")}</h2>
-        <p>
-          {t("municipalityDetailPage.seoText.emissionsText", {
-            municipality: municipality.name,
-            reduction: municipality.neededEmissionChangePercent?.toFixed(1),
-            budget: municipality.budget
-              ? (municipality.budget / 1000).toFixed(1)
-              : null,
-          })}
-        </p>
         <h2>{t("municipalityDetailPage.seoText.climateGoalsHeading")}</h2>
         <p>
           {t("municipalityDetailPage.seoText.climateGoalsText", {
@@ -249,16 +240,6 @@ export function MunicipalityDetailPage() {
                   ? "text-pink-3"
                   : "text-orange-2",
               ),
-            },
-            {
-              title: t("municipalityDetailPage.reductionToMeetParis"),
-              value: municipality.neededEmissionChangePercent
-                ? `${formatPercentChange(
-                    -municipality.neededEmissionChangePercent,
-                    currentLanguage,
-                  )}`
-                : t("municipalityDetailPage.cannotReduceToParis"),
-              valueClassName: meetsParis ? "text-green-3" : "text-pink-3",
             },
             {
               title: t("municipalityDetailPage.consumptionEmissionsPerCapita"),

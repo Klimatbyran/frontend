@@ -725,7 +725,6 @@
       "overview": "Overview",
       "sectors": "Emission sources"
     },
-    "noParisPath": "The municipality's carbon budget has been exhausted, which means that no Paris Agreement line is shown in the graph below",
     "inTons": "In tons CO₂",
     "futureEmissions": "Future emissions",
     "annualChangeSince2015": "Annual emission change since 2015",

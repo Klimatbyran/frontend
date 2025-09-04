@@ -7,7 +7,6 @@ export type Municipality = {
   totalApproximatedHistoricalEmission: number;
   trendEmission: number;
   historicalEmissionChangePercent: number;
-  neededEmissionChangePercent: number | null;
   climatePlanYear: number | null;
   climatePlanComment: string | null;
   climatePlanLink: string | null;

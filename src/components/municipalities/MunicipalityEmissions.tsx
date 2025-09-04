@@ -44,9 +44,6 @@ export const MunicipalityEmissions: FC<MunicipalityEmissionsProps> = ({
           <Text className="text-grey mb-4">
             {t("municipalityDetailPage.inTons")}
           </Text>
-          {!municipality.neededEmissionChangePercent && (
-            <p className="mb-4">{t("municipalityDetailPage.noParisPath")}</p>
-          )}
         </div>
 
         <DataViewSelector
