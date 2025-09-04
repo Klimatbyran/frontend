@@ -715,10 +715,6 @@
     },
     "totalEmissions": "Totala utsläpp {{year}}",
     "totalEmissionsTooltip": "Detta är de senast rapporterade utsläppen. För beräknade uppskattningar för innevarande år, se grafen Utsläppsutveckling nedan.",
-    "budgetRanOut": "Koldioxidbudgeten tog slut",
-    "budgetKept": "Koldioxidbudgeten tar slut",
-    "budgetHolds": "Håller budget",
-    "never": "Aldrig",
     "emissionsDevelopment": "Utsläppsutveckling",
     "graph": {
       "overview": "Översikt",
