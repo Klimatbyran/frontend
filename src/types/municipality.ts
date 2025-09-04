@@ -17,7 +17,6 @@ export type Municipality = {
   procurementScore: string;
   procurementLink: string | null;
   totalConsumptionEmission: number;
-  hitNetZero: string | null;
   electricCarChangeYearly: ({ year: string; value: number } | null)[];
   electricCarChangePercent: number;
   wikidataId?: string;
@@ -130,20 +129,25 @@ export function transformEmissionsData(municipality: Municipality) {
     .filter((d) => d.year >= 1990 && d.year <= 2050);
 }
 
-export function getSortedMunicipalKPIValues(municipalities: Municipality[], kpi: KPIValue){
+export function getSortedMunicipalKPIValues(
+  municipalities: Municipality[],
+  kpi: KPIValue,
+) {
   return [...municipalities].sort((a, b) => {
     const aValue = a[kpi.key] ?? null;
     const bValue = b[kpi.key] ?? null;
 
-    if(aValue === null && bValue === null){
+    if (aValue === null && bValue === null) {
       return 0;
-    } else if(aValue === null){
+    } else if (aValue === null) {
       return 1;
-    } else if(bValue === null){
+    } else if (bValue === null) {
       return -1;
     }
 
-    return kpi.higherIsBetter ? (bValue as number) - (aValue as number) : (aValue as number) - (bValue as number);
+    return kpi.higherIsBetter
+      ? (bValue as number) - (aValue as number)
+      : (aValue as number) - (bValue as number);
   });
 }
 

@@ -719,7 +719,6 @@
     "budgetRanOut": "Koldioxidbudgeten tog slut",
     "budgetKept": "Koldioxidbudgeten tar slut",
     "budgetHolds": "Håller budget",
-    "hitNetZero": "Når nettonoll",
     "never": "Aldrig",
     "emissionsDevelopment": "Utsläppsutveckling",
     "graph": {
@@ -1052,7 +1051,6 @@
       "meetsParis": "Är {{name}} på väg att klara Parisavtalet?",
       "yes": "Ja",
       "no": "Nej",
-      "netZero": "Kommunen når nollutsläpp",
       "budgetRunsOut": "Koldioxidbudgeten tar slut",
       "emissionRanking": "UTSLÄPPSRANKING",
       "emission": "Utsläpp {{year}}",

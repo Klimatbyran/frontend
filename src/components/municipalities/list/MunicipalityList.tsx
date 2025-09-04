@@ -42,13 +42,6 @@ export function MunicipalityList({
       case "meets_paris": {
         const aMeetsParis = a.budgetRunsOut === "Håller budget";
         const bMeetsParis = b.budgetRunsOut === "Håller budget";
-        if (aMeetsParis && bMeetsParis) {
-          return (
-            directionMultiplier *
-            (new Date(a.hitNetZero).getTime() -
-              new Date(b.hitNetZero).getTime())
-          );
-        }
         if (aMeetsParis) {
           return -1 * directionMultiplier;
         }

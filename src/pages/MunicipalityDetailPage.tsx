@@ -201,23 +201,6 @@ export function MunicipalityDetailPage() {
                 !municipality.budgetRunsOut ? "text-green-3" : "text-pink-3"
               }
             />
-            <MunicipalityStatCard
-              title={t("municipalityDetailPage.hitNetZero")}
-              value={
-                municipality.hitNetZero
-                  ? localizeUnit(
-                      new Date(municipality.hitNetZero),
-                      currentLanguage,
-                    ) || t("municipalityDetailPage.never")
-                  : t("municipalityDetailPage.never")
-              }
-              valueClassName={cn(
-                !municipality.hitNetZero ||
-                  new Date(municipality.hitNetZero) > new Date("2050-01-01")
-                  ? "text-pink-3"
-                  : "text-green-3",
-              )}
-            />
           </div>
         </SectionWithHelp>
 

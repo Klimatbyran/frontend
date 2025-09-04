@@ -64,31 +64,6 @@ export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
           )}
         >
           {meetsParis ? t("yes") : t("no")}
-          {meetsParis ? (
-            <div className="flex items-center text-sm text-grey mt-2">
-              {t("municipalities.card.netZero")}
-              <Text variant="body" className="text-green-3 ml-1">
-                {municipality.hitNetZero
-                  ? localizeUnit(
-                      new Date(municipality.hitNetZero),
-                      currentLanguage,
-                    )
-                  : t("municipalityDetailPage.never")}
-              </Text>
-            </div>
-          ) : (
-            <div className="flex items-center text-sm text-grey mt-2">
-              {t("municipalities.card.budgetRunsOut")}
-              <Text variant="body" className="text-pink-3 ml-1">
-                {municipality.budgetRunsOut
-                  ? localizeUnit(
-                      new Date(municipality.budgetRunsOut),
-                      currentLanguage,
-                    )
-                  : t("municipalityDetailPage.budgetHolds")}
-              </Text>
-            </div>
-          )}
         </div>
       </div>
 
