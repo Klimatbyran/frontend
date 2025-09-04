@@ -163,6 +163,26 @@ export function MunicipalityDetailPage() {
               info={true}
               infoText={t("municipalityDetailPage.totalEmissionsTooltip")}
             />
+            <MunicipalityStatCard
+              title={t("municipalityDetailPage.annualChangeSince2015")}
+              value={formatPercentChange(
+                municipality.historicalEmissionChangePercent,
+                currentLanguage,
+              )}
+              valueClassName={cn(
+                municipality.historicalEmissionChangePercent > 0
+                  ? "text-pink-3"
+                  : "text-orange-2",
+              )}
+            />
+            <MunicipalityStatCard
+              title={t("municipalityDetailPage.consumptionEmissionsPerCapita")}
+              value={localizeUnit(
+                municipality.totalConsumptionEmission,
+                currentLanguage,
+              )}
+              valueClassName="text-orange-2"
+            />
           </div>
         </SectionWithHelp>
 

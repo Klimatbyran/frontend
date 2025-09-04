@@ -725,7 +725,6 @@
       "sectors": "Utsläppskällor"
     },
     "inTons": "I ton CO₂",
-    "futureEmissions": "Framtida utsläpp",
     "annualChangeSince2015": "Årlig utsläppsförändring sedan 2015",
     "reductionToMeetParis": "Utsläppsminskning för att klara Parisavtalet",
     "cannotReduceToParis": "Klarar ej Parisavtalet",

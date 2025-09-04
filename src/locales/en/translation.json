@@ -726,7 +726,6 @@
       "sectors": "Emission sources"
     },
     "inTons": "In tons CO₂",
-    "futureEmissions": "Future emissions",
     "annualChangeSince2015": "Annual emission change since 2015",
     "reductionToMeetParis": "Emission reduction to meet the Paris Agreement",
     "cannotReduceToParis": "Will not reach Paris Agreement",
