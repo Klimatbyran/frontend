@@ -720,7 +720,6 @@
     "budgetRanOut": "Carbon budget ran out",
     "budgetKept": "Carbon budget expected to",
     "budgetHolds": "Stay within limits",
-    "hitNetZero": "Predicted to hit net zero",
     "never": "Never",
     "emissionsDevelopment": "Emissions development",
     "graph": {
@@ -1053,7 +1052,6 @@
       "meetsParis": "Is {{name}} on track to meet the Paris Agreement?",
       "yes": "Yes",
       "no": "No",
-      "netZero": "The municipality reaches net zero emissions",
       "budgetRunsOut": "Carbon budget runs out",
       "emissionRanking": "EMISSION RANKING",
       "emission": "Emissions {{year}}",
