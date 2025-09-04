@@ -64,12 +64,6 @@ export function AboutPage() {
                 <KlimatkollenVideo />
 
                 <div className="flex flex-col md:flex-row space-y-8 md:space-y-0 md:space-x-4">
-                  <img
-                    className="w-48 md:w-64 md:my-2 lg:w-80 max-h-48 object-contain self-start flex-shrink-0 rounded-lg"
-                    src={"./images/social-picture.png"}
-                    alt={"klimatkollen-social-image"}
-                  />
-
                   <div className="prose prose-invert w-full max-w-5xl space-y-4">
                     <p>{t("aboutPage.mainContent.paragraph1")}</p>
                     <p>{t("aboutPage.mainContent.paragraph2")}</p>
