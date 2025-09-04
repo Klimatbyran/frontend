@@ -22,6 +22,7 @@ import { useMunicipalitySectorEmissions } from "@/hooks/municipalities/useMunici
 import { MunicipalityEmissions } from "@/components/municipalities/MunicipalityEmissions";
 import { YearSelector } from "@/components/layout/YearSelector";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
+import { CARBON_LAW_REDUCTION_RATE } from "@/utils/calculations/emissions/utils";
 
 export function MunicipalityDetailPage() {
   const { t } = useTranslation();
@@ -148,6 +149,9 @@ export function MunicipalityDetailPage() {
             "municipalityWhyDataDelay",
             "municipalityDeeperChanges",
             "municipalityCanWeExtendCarbonBudget",
+            "municipalityDeeperChanges",
+            "municipalityConsumptionEmissionPerPerson",
+            "municipalityLocalVsConsumption",
           ]}
         >
           <Text className="text-4xl md:text-8xl">{municipality.name}</Text>
@@ -170,9 +174,7 @@ export function MunicipalityDetailPage() {
                 currentLanguage,
               )}
               valueClassName={cn(
-                municipality.historicalEmissionChangePercent > 0
-                  ? "text-pink-3"
-                  : "text-orange-2",
+                CARBON_LAW_REDUCTION_RATE > 0 ? "text-pink-3" : "text-orange-2",
               )}
             />
             <MunicipalityStatCard
@@ -240,37 +242,6 @@ export function MunicipalityDetailPage() {
             </div>
           </SectionWithHelp>
         )}
-
-        <MunicipalitySection
-          title={t("municipalityDetailPage.futureEmissions")}
-          items={[
-            {
-              title: t("municipalityDetailPage.annualChangeSince2015"),
-              value: `${formatPercentChange(
-                municipality.historicalEmissionChangePercent,
-                currentLanguage,
-              )}`,
-              valueClassName: cn(
-                municipality.historicalEmissionChangePercent > 0
-                  ? "text-pink-3"
-                  : "text-orange-2",
-              ),
-            },
-            {
-              title: t("municipalityDetailPage.consumptionEmissionsPerCapita"),
-              value: localizeUnit(
-                municipality.totalConsumptionEmission,
-                currentLanguage,
-              ),
-              valueClassName: "text-orange-2",
-            },
-          ]}
-          helpItems={[
-            "municipalityDeeperChanges",
-            "municipalityConsumptionEmissionPerPerson",
-            "municipalityLocalVsConsumption",
-          ]}
-        />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <MunicipalityLinkCard
