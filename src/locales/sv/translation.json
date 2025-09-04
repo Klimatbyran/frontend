@@ -1006,7 +1006,8 @@
       "readAnnualReport": "Läs årsredovisning",
       "readMore": "Läs mer",
       "readLess": "Läs mindre",
-      "aiGeneratedData": "Innehåller AI-extraherade värden. Klicka för att läsa mer."
+      "aiGeneratedData": "Innehåller AI-extraherade värden. Klicka för att läsa mer.",
+      "billion": "mdr"
     },
     "sectionedCompanyList": {
       "otherCompanies": "Övriga företag",

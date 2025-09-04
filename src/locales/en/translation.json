@@ -1007,7 +1007,8 @@
       "readAnnualReport": "Read Annual Report",
       "readMore": "Read More",
       "readLess": "Read Less",
-      "aiGeneratedData": "Includes AI-extracted values. Click to read more."
+      "aiGeneratedData": "Includes AI-extracted values. Click to read more.",
+      "billion": "bn"
     },
     "sectionedCompanyList": {
       "otherCompanies": "Other Companies",
