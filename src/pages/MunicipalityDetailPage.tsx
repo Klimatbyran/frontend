@@ -247,7 +247,6 @@ export function MunicipalityDetailPage() {
           ]}
           helpItems={[
             "municipalityDeeperChanges",
-            "municipalityReductionNeededForParisAgreement",
             "municipalityConsumptionEmissionPerPerson",
             "municipalityLocalVsConsumption",
           ]}
