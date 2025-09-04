@@ -144,12 +144,6 @@
       "These are the fossil-based emissions of greenhouse gases that physically happen within the municipality’s borders.\n\n1. **Local emissions (Territorial emissions)**\n\nThese are the emissions that physically happen within the municipality’s borders.\n\nThey include things like:\n\n- Cars driving on local roads\n- Heating homes and buildings\n- Factories or industries operating in the area\n- Agricultural activity (e.g. livestock or fertilizers)\n\n*Think of these as “what happens here”.*\n\nThis is the type of data usually reported to national and international climate systems, and it’s used to calculate carbon budgets.\n\n2. **Consumption-based emissions**\n\nThese include emissions from everything consumed by people who live in the municipality — no matter where in the world those emissions actually happened.\n\nThey include emissions from:\n\n- Imported food, clothing, and electronics\n- Flights taken by residents\n- Digital services or online shopping\n- Construction materials used in buildings\n\n*Think of these as “what we cause as consumers, no matter where it happens”.*\n\n**Why both matter:**\n\n- **Local emissions** help track what a municipality can control directly — like urban planning, heating systems, and public transit.\n- **Consumption emissions** reflect the full climate footprint of people’s lifestyles — even when the pollution happens far away.\n\nBy looking at both, we get a clearer and more honest picture of climate impact — and where action is needed."
     ]
   },
-  "municipalityPredicatedNetZeroDate": {
-    "title": "Predicted Date for Net Zero Emissions",
-    "content": [
-      "This is the year when the municipality’s emissions are expected to reach net zero — according to its current emissions trend.\n\n**Note:** this is not a policy target, but a mathematical projection.\n\nNet zero means reducing emissions to a point of minimal emissions, that can be offset, with various carbon capture methods, to be effectively zero. It’s based on current trends — not on climate policies or future plans."
-    ]
-  },
   "municipalityProcurement": {
     "title": "What are climate requirements in procurements?",
     "content": [
