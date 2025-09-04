@@ -26,7 +26,6 @@ export type DataGuideItemId =
   | "municipalityReductionNeededForParisAgreement"
   | "municipalityTotalEmissions"
   | "municipalityWhatIsCarbonBudget"
-  | "municipalityWhenCarbonBudgetRunsOut"
   | "municipalityWhyDataDelay"
   | "parisAgreementLine"
   | "scope1"

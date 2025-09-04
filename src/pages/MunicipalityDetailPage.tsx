@@ -40,7 +40,7 @@ export function MunicipalityDetailPage() {
   if (error) return <Text>{t("municipalityDetailPage.error")}</Text>;
   if (!municipality) return <Text>{t("municipalityDetailPage.noData")}</Text>;
 
-  const meetsParis = !municipality.budgetRunsOut && municipality.budget;
+  const meetsParis = !municipality;
 
   const requirementsInProcurement =
     municipality.procurementScore === "2"
@@ -132,9 +132,6 @@ export function MunicipalityDetailPage() {
         <p>
           {t("municipalityDetailPage.seoText.climateGoalsText", {
             municipality: municipality.name,
-            budgetRunsOut:
-              municipality.budgetRunsOut ||
-              t("municipalityDetailPage.budgetHolds"),
           })}
         </p>
         <h2>{t("municipalityDetailPage.seoText.consumptionHeading")}</h2>{" "}
@@ -163,7 +160,6 @@ export function MunicipalityDetailPage() {
             "municipalityCarbonBudgetExpiryDate",
             "municipalityHowCarbonBudgetWasCalculated",
             "municipalityWhatIsCarbonBudget",
-            "municipalityWhenCarbonBudgetRunsOut",
             "municipalityDeeperChanges",
             "municipalityCanWeExtendCarbonBudget",
           ]}
@@ -180,26 +176,6 @@ export function MunicipalityDetailPage() {
               valueClassName="text-orange-2"
               info={true}
               infoText={t("municipalityDetailPage.totalEmissionsTooltip")}
-            />
-            <MunicipalityStatCard
-              title={
-                !municipality.budgetRunsOut
-                  ? t("municipalityDetailPage.budgetKept")
-                  : new Date(municipality.budgetRunsOut) > new Date()
-                    ? t("municipalityDetailPage.budgetRunsOut")
-                    : t("municipalityDetailPage.budgetRanOut")
-              }
-              value={
-                !municipality.budgetRunsOut
-                  ? t("municipalityDetailPage.budgetHolds")
-                  : localizeUnit(
-                      new Date(municipality.budgetRunsOut),
-                      currentLanguage,
-                    )
-              }
-              valueClassName={
-                !municipality.budgetRunsOut ? "text-green-3" : "text-pink-3"
-              }
             />
           </div>
         </SectionWithHelp>

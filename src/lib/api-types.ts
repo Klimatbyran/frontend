@@ -1084,7 +1084,6 @@ export interface paths {
               trendEmission: number;
               historicalEmissionChangePercent: number;
               neededEmissionChangePercent: number | null;
-              budgetRunsOut: string | null;
               electricCarChangePercent: number;
               climatePlanLink: string | null;
               climatePlanYear: number | null;
@@ -1165,7 +1164,6 @@ export interface paths {
               trendEmission: number;
               historicalEmissionChangePercent: number;
               neededEmissionChangePercent: number | null;
-              budgetRunsOut: string | null;
               electricCarChangePercent: number;
               climatePlanLink: string | null;
               climatePlanYear: number | null;

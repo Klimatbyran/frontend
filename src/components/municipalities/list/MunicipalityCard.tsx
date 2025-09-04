@@ -16,7 +16,7 @@ interface MunicipalityCardProps {
 
 export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
   const { t } = useTranslation();
-  const meetsParis = !municipality.budgetRunsOut && municipality.budget;
+  const meetsParis = false; // fixme!
   const { currentLanguage } = useLanguage();
 
   const lastYearEmission = municipality.emissions.at(-1);
