@@ -40,8 +40,6 @@ export function MunicipalityDetailPage() {
   if (error) return <Text>{t("municipalityDetailPage.error")}</Text>;
   if (!municipality) return <Text>{t("municipalityDetailPage.noData")}</Text>;
 
-  const meetsParis = !municipality;
-
   const requirementsInProcurement =
     municipality.procurementScore === "2"
       ? t("municipalityDetailPage.procurementScore.high")
@@ -148,9 +146,6 @@ export function MunicipalityDetailPage() {
             "municipalityTotalEmissions",
             "municipalityEmissionEstimatations",
             "municipalityWhyDataDelay",
-            "municipalityCarbonBudgetExpiryDate",
-            "municipalityHowCarbonBudgetWasCalculated",
-            "municipalityWhatIsCarbonBudget",
             "municipalityDeeperChanges",
             "municipalityCanWeExtendCarbonBudget",
           ]}
