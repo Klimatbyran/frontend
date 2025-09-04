@@ -20,6 +20,8 @@ export type Municipality = {
   wikidataId?: string;
   description?: string | null;
   sectorEmissions?: SectorEmissions;
+  politicalRule: string[];
+  politicalRuleKSO: string;
 } & EmissionsData;
 
 // Detailed municipality type from API

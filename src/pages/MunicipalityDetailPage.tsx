@@ -156,6 +156,18 @@ export function MunicipalityDetailPage() {
         >
           <Text className="text-4xl md:text-8xl">{municipality.name}</Text>
           <Text className="text-grey">{municipality.region}</Text>
+
+          <div className="flex flex-row items-center gap-2 my-4">
+            <Text
+              variant="body"
+              className="text-grey text-sm md:text-base lg:text-lg"
+            >
+              {t("companies.overview.sector")}: // fixme fortästt här!
+            </Text>
+            <Text variant="body" className="text-sm md:text-base lg:text-lg">
+              {municipality.politicalRule.join(", ")}
+            </Text>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-16 mt-8">
             <MunicipalityStatCard
               title={t("municipalityDetailPage.totalEmissions", {
