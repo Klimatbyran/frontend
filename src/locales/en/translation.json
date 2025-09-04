@@ -714,6 +714,7 @@
       "medium": "Maybe",
       "low": "No"
     },
+    "politicalRule": "Political rule",
     "totalEmissions": "Total emissions {{year}}",
     "totalEmissionsTooltip": "This is the latest reported emissions. For calculated estimates on the current year, please see the emissions development graph below.",
     "emissionsDevelopment": "Emissions development",

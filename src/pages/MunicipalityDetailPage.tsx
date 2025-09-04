@@ -162,7 +162,7 @@ export function MunicipalityDetailPage() {
               variant="body"
               className="text-grey text-sm md:text-base lg:text-lg"
             >
-              {t("companies.overview.sector")}: // fixme fortästt här!
+              {t("municipalityDetailPage.politicalRule")}:
             </Text>
             <Text variant="body" className="text-sm md:text-base lg:text-lg">
               {municipality.politicalRule.join(", ")}
