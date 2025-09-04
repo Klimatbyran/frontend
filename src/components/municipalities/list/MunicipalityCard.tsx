@@ -1,13 +1,11 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
 import type { Municipality } from "@/types/municipality";
 import { CardInfo } from "./MunicipalityCardInfo";
 import {
   formatEmissionsAbsolute,
   formatPercentChange,
-  localizeUnit,
 } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
 import { LinkCard } from "@/components/ui/link-card";
