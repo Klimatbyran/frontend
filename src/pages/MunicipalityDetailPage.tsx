@@ -42,9 +42,9 @@ export function MunicipalityDetailPage() {
   if (!municipality) return <Text>{t("municipalityDetailPage.noData")}</Text>;
 
   const requirementsInProcurement =
-    municipality.procurementScore === "2"
+    municipality.procurementScore == 2
       ? t("municipalityDetailPage.procurementScore.high")
-      : municipality.procurementScore === "1"
+      : municipality.procurementScore == 1
         ? t("municipalityDetailPage.procurementScore.medium")
         : t("municipalityDetailPage.procurementScore.low");
 
@@ -279,7 +279,7 @@ export function MunicipalityDetailPage() {
             description={requirementsInProcurement}
             link={municipality.procurementLink || undefined}
             descriptionClassName={
-              municipality.procurementScore === "2"
+              municipality.procurementScore === 2
                 ? "text-green-3"
                 : "text-pink-3"
             }

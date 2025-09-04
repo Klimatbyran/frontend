@@ -3,19 +3,18 @@ import type { paths } from "@/lib/api-types";
 export type Municipality = {
   name: string;
   region: string;
-  budget: number | null;
+  sumCarbonLawPath: number;
   totalApproximatedHistoricalEmission: number;
-  trendEmission: number;
+  trend: number;
   historicalEmissionChangePercent: number;
   climatePlanYear: number | null;
   climatePlanComment: string | null;
   climatePlanLink: string | null;
   electricVehiclePerChargePoints: number | null;
   bicycleMetrePerCapita: number;
-  procurementScore: string;
+  procurementScore: number;
   procurementLink: string | null;
   totalConsumptionEmission: number;
-  electricCarChangeYearly: ({ year: string; value: number } | null)[];
   electricCarChangePercent: number;
   wikidataId?: string;
   description?: string | null;
@@ -86,7 +85,6 @@ export type EmissionDataPoint = {
 
 export type EmissionsData = {
   emissions: (EmissionDataPoint | null)[];
-  emissionBudget?: (EmissionDataPoint | null)[] | null;
   approximatedHistoricalEmission: (EmissionDataPoint | null)[];
   trend: (EmissionDataPoint | null)[];
 };
@@ -95,7 +93,6 @@ export function transformEmissionsData(municipality: Municipality) {
   const years = new Set<string>();
 
   municipality.emissions.forEach((d) => d?.year && years.add(d.year));
-  municipality.emissionBudget?.forEach((d) => d?.year && years.add(d.year));
   municipality.approximatedHistoricalEmission.forEach(
     (d) => d?.year && years.add(d.year),
   );
@@ -107,22 +104,15 @@ export function transformEmissionsData(municipality: Municipality) {
       const historical = municipality.emissions.find(
         (d) => d?.year === year,
       )?.value;
-      const budget = municipality.emissionBudget?.find(
-        (d) => d?.year === year,
-      )?.value;
       const approximated = municipality.approximatedHistoricalEmission.find(
         (d) => d?.year === year,
       )?.value;
       const trend = municipality.trend.find((d) => d?.year === year)?.value;
 
-      const gap = trend && budget ? trend - budget : undefined;
-
       return {
         year: parseInt(year, 10),
         total: historical,
-        paris: budget,
         trend,
-        gap,
         approximated: approximated,
       };
     })
@@ -154,9 +144,7 @@ export function getSortedMunicipalKPIValues(
 export type DataPoint = {
   year: number;
   total: number | undefined;
-  paris: number | undefined;
   trend: number | undefined;
-  gap: number | undefined;
   approximated: number | undefined;
 };
 
