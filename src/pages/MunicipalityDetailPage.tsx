@@ -281,7 +281,9 @@ export function MunicipalityDetailPage() {
             descriptionClassName={
               municipality.procurementScore === 2
                 ? "text-green-3"
-                : "text-pink-3"
+                : municipality.procurementScore === 1
+                  ? "text-orange-2"
+                  : "text-pink-3"
             }
           />
         </div>
