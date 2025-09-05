@@ -16,7 +16,6 @@ interface MunicipalityCardProps {
 
 export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
   const { t } = useTranslation();
-  const meetsParis = false; // fixme!
   const { currentLanguage } = useLanguage();
 
   const lastYearEmission = municipality.emissions.at(-1);
