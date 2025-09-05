@@ -79,7 +79,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
         <Line
           type="monotone"
           dataKey="approximated"
-          stroke="white"
+          stroke="grey"
           strokeWidth={2}
           strokeDasharray="4 4"
           dot={false}
