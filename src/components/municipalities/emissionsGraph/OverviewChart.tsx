@@ -97,7 +97,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
         />
         <Line
           type="monotone"
-          dataKey="paris"
+          dataKey="carbonLaw"
           stroke="var(--green-3)"
           strokeWidth={2}
           strokeDasharray="4 4"

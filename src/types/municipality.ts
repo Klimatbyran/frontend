@@ -1,4 +1,8 @@
 import type { paths } from "@/lib/api-types";
+import {
+  calculateParisValue,
+  CARBON_LAW_REDUCTION_RATE,
+} from "@/utils/calculations/emissions/utils";
 
 export type Municipality = {
   name: string;
@@ -98,9 +102,22 @@ export function transformEmissionsData(municipality: Municipality) {
   );
   municipality.trend.forEach((d) => d?.year && years.add(d.year));
 
+  const currentYear = new Date().getFullYear();
+
+  const approximatedDataAtCurrentYear =
+    municipality.approximatedHistoricalEmission
+      .filter((d) => d && parseInt(d.year) <= currentYear)
+      .sort((a, b) => parseInt(b!.year) - parseInt(a!.year))[0];
+
+  const carbonLawBaseValue = approximatedDataAtCurrentYear?.value;
+  const carbonLawBaseYear = approximatedDataAtCurrentYear
+    ? parseInt(approximatedDataAtCurrentYear.year)
+    : currentYear;
+
   return Array.from(years)
     .sort()
     .map((year) => {
+      const yearNum = parseInt(year, 10);
       const historical = municipality.emissions.find(
         (d) => d?.year === year,
       )?.value;
@@ -109,11 +126,23 @@ export function transformEmissionsData(municipality: Municipality) {
       )?.value;
       const trend = municipality.trend.find((d) => d?.year === year)?.value;
 
+      let carbonLaw: number | undefined = undefined;
+      if (carbonLawBaseValue && yearNum >= currentYear) {
+        carbonLaw =
+          calculateParisValue(
+            yearNum,
+            carbonLawBaseYear,
+            carbonLawBaseValue,
+            CARBON_LAW_REDUCTION_RATE,
+          ) || undefined;
+      }
+
       return {
-        year: parseInt(year, 10),
+        year: yearNum,
         total: historical,
         trend,
         approximated: approximated,
+        carbonLaw,
       };
     })
     .filter((d) => d.year >= 1990 && d.year <= 2050);
@@ -146,6 +175,7 @@ export type DataPoint = {
   total: number | undefined;
   trend: number | undefined;
   approximated: number | undefined;
+  carbonLaw: number | undefined;
 };
 
 export interface KPIValue {
