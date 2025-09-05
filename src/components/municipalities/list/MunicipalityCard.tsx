@@ -51,20 +51,6 @@ export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
         </div> */}
       </div>
 
-      <div className="space-y-2">
-        <div className="text-sm text-grey">
-          {t("municipalities.card.meetsParis", { name: municipality.name })}
-        </div>
-        <div
-          className={cn(
-            "text-3xl font-light",
-            meetsParis ? "text-green-3" : "text-pink-3",
-          )}
-        >
-          {meetsParis ? t("yes") : t("no")}
-        </div>
-      </div>
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-black-1">
         <CardInfo
           title={t("municipalities.card.emission", { year: lastYear })}
