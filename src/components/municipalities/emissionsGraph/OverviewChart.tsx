@@ -102,7 +102,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
           strokeWidth={2}
           strokeDasharray="4 4"
           dot={false}
-          name={t("municipalities.graph.parisAgreement")}
+          name={t("municipalities.graph.carbonLaw")}
         />
         <ReferenceLine
           x={currentYear}
