@@ -72,8 +72,9 @@ export default function MunicipalityFilter({
           </SelectContent>
         </Select>
 
+        {/* fixme add sorting in follow up PR */}
         {/* Sorting Select */}
-        <Select
+        {/* <Select
           value={sortBy}
           onValueChange={(value) => setSortBy(value as SortOption)}
         >
@@ -83,17 +84,14 @@ export default function MunicipalityFilter({
             />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="meets_paris">
-              {t("municipalitiesComparePage.sort.meetsParis")}
-            </SelectItem>
             <SelectItem value="name">
               {t("municipalitiesComparePage.sort.name")}
             </SelectItem>
           </SelectContent>
-        </Select>
+        </Select> */}
 
         {/* Sort Direction Button */}
-        <button
+        {/* <button
           onClick={() =>
             setSortDirection(sortDirection === "best" ? "worst" : "best")
           }
@@ -106,7 +104,7 @@ export default function MunicipalityFilter({
             : sortDirection === "best"
               ? t("municipalitiesComparePage.sort.bestFirst")
               : t("municipalitiesComparePage.sort.worstFirst")}
-        </button>
+        </button> */}
       </div>
     </div>
   );
