@@ -1,6 +1,6 @@
 # Vad är en koldioxidbudget och varför spelar den roll lokalt?
 
-En koldioxidbudget är mängden CO₂ en plats kan släppa ut samtidigt som den gör sin del för att begränsa den globala uppvärmningen till 1,5 °C. Varje kommun bidrar till Sveriges totala utsläpp — och lokala val spelar verkligen roll. Det är ofta lättare att påverka beslut och vidta åtgärder på lokal nivå, oavsett om det är genom politik, infrastruktur eller samhällsinitiativ. Lokala klimatinsatser bygger upp till nationell förändring.
+En koldioxidbudget är mängden CO₂e en plats kan släppa ut samtidigt som den gör sin del för att begränsa den globala uppvärmningen till 1,5 °C. Varje kommun bidrar till Sveriges totala utsläpp — och lokala val spelar verkligen roll. Det är ofta lättare att påverka beslut och vidta åtgärder på lokal nivå, oavsett om det är genom politik, infrastruktur eller samhällsinitiativ. Lokala klimatinsatser bygger upp till nationell förändring.
 
 **Sätt att engagera sig:**
 

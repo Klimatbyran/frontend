@@ -1,6 +1,6 @@
 # What is a carbon budget and why does it matter locally?
 
-A carbon budget is the amount of CO₂ a place can emit while still doing its part to limit global warming to 1.5 °C. Each municipality contributes to Sweden’s total emissions — and local choices really matter. It’s often easier to influence decisions and take action at the local level, whether through policy, infrastructure, or community initiatives. Local climate efforts build up to national change.
+A carbon budget is the amount of CO₂e a place can emit while still doing its part to limit global warming to 1.5 °C. Each municipality contributes to Sweden’s total emissions — and local choices really matter. It’s often easier to influence decisions and take action at the local level, whether through policy, infrastructure, or community initiatives. Local climate efforts build up to national change.
 
 **Ways to Get Involved:**
 - Klimatklivet – a government-supported investment fund helping municipalities, organizations, and businesses reduce greenhouse gases through local projects (e.g. cycling infrastructure, biogas, heat recovery). Funds are always disbursed through your regional County Administrative Board. ([https://www.naturvardsverket.se/amnesomraden/klimatomstallningen/klimatklivet/](https://www.naturvardsverket.se/amnesomraden/klimatomstallningen/klimatklivet/))
