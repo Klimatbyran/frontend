@@ -1,13 +1,11 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
 import type { Municipality } from "@/types/municipality";
 import { CardInfo } from "./MunicipalityCardInfo";
 import {
   formatEmissionsAbsolute,
   formatPercentChange,
-  localizeUnit,
 } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
 import { LinkCard } from "@/components/ui/link-card";
@@ -18,7 +16,7 @@ interface MunicipalityCardProps {
 
 export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
   const { t } = useTranslation();
-  const meetsParis = !municipality.budgetRunsOut && municipality.budget;
+  const meetsParis = false; // fixme!
   const { currentLanguage } = useLanguage();
 
   const lastYearEmission = municipality.emissions.at(-1);
@@ -64,31 +62,6 @@ export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
           )}
         >
           {meetsParis ? t("yes") : t("no")}
-          {meetsParis ? (
-            <div className="flex items-center text-sm text-grey mt-2">
-              {t("municipalities.card.netZero")}
-              <Text variant="body" className="text-green-3 ml-1">
-                {municipality.hitNetZero
-                  ? localizeUnit(
-                      new Date(municipality.hitNetZero),
-                      currentLanguage,
-                    )
-                  : t("municipalityDetailPage.never")}
-              </Text>
-            </div>
-          ) : (
-            <div className="flex items-center text-sm text-grey mt-2">
-              {t("municipalities.card.budgetRunsOut")}
-              <Text variant="body" className="text-pink-3 ml-1">
-                {municipality.budgetRunsOut
-                  ? localizeUnit(
-                      new Date(municipality.budgetRunsOut),
-                      currentLanguage,
-                    )
-                  : t("municipalityDetailPage.budgetHolds")}
-              </Text>
-            </div>
-          )}
         </div>
       </div>
 
