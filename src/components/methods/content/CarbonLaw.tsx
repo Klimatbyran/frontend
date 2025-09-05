@@ -8,6 +8,7 @@ export const CarbonLawContent = () => {
       <p>{t("methodsPage.general.carbonLaw.paragraph1")}</p>
       <p>{t("methodsPage.general.carbonLaw.paragraph2")}</p>
       <p>{t("methodsPage.general.carbonLaw.paragraph3")}</p>
+      <p>{t("methodsPage.general.carbonLaw.paragraph4")}</p>
       <div className="flex justify-center">
         <div className="w-full max-w-4xl">
           <LinkButton
