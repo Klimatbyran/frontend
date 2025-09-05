@@ -149,7 +149,6 @@ export function MunicipalityDetailPage() {
             "municipalityWhyDataDelay",
             "municipalityDeeperChanges",
             "municipalityCanWeExtendCarbonBudget",
-            "municipalityDeeperChanges",
             "municipalityConsumptionEmissionPerPerson",
             "municipalityLocalVsConsumption",
           ]}

@@ -1,26 +1,21 @@
 import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Text } from "@/components/ui/text";
-import { cn } from "@/lib/utils";
 import { MunicipalityEmissionsGraph } from "./emissionsGraph/MunicipalityEmissionsGraph";
-import { Municipality, DataPoint, SectorEmissions } from "@/types/municipality";
+import { DataPoint, SectorEmissions } from "@/types/municipality";
 import { DataViewSelector } from "./DataViewSelector";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 
 type DataView = "overview" | "sectors";
 
 interface MunicipalityEmissionsProps {
-  municipality: Municipality;
   emissionsData: DataPoint[];
   sectorEmissions: SectorEmissions | null;
-  className?: string;
 }
 
 export const MunicipalityEmissions: FC<MunicipalityEmissionsProps> = ({
-  municipality,
   emissionsData,
   sectorEmissions,
-  className,
 }) => {
   const { t } = useTranslation();
   const [dataView, setDataView] = useState<DataView>("overview");
@@ -32,6 +27,10 @@ export const MunicipalityEmissions: FC<MunicipalityEmissionsProps> = ({
   return (
     <SectionWithHelp
       helpItems={[
+        "municipalityEmissionEstimatations",
+        "municipalityWhyDataDelay",
+        "municipalityDeeperChanges",
+        "municipalityCanWeExtendCarbonBudget",
         "parisAgreementLine",
         "municipalityImportanceOfEmissionSources",
       ]}
