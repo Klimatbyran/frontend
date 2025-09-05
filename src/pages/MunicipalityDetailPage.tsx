@@ -145,10 +145,6 @@ export function MunicipalityDetailPage() {
         <SectionWithHelp
           helpItems={[
             "municipalityTotalEmissions",
-            "municipalityEmissionEstimatations",
-            "municipalityWhyDataDelay",
-            "municipalityDeeperChanges",
-            "municipalityCanWeExtendCarbonBudget",
             "municipalityConsumptionEmissionPerPerson",
             "municipalityLocalVsConsumption",
           ]}
@@ -200,7 +196,6 @@ export function MunicipalityDetailPage() {
         </SectionWithHelp>
 
         <MunicipalityEmissions
-          municipality={municipality}
           emissionsData={emissionsData}
           sectorEmissions={sectorEmissions}
         />
