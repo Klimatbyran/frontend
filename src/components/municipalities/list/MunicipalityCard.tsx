@@ -9,6 +9,7 @@ import {
 } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
 import { LinkCard } from "@/components/ui/link-card";
+import { Leaf, TrendingDown } from "lucide-react";
 
 interface MunicipalityCardProps {
   municipality: Municipality;
@@ -16,7 +17,7 @@ interface MunicipalityCardProps {
 
 export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
   const { t } = useTranslation();
-  const meetsParis = false; // fixme!
+  const { meetsParis } = municipality;
   const { currentLanguage } = useLanguage();
 
   const lastYearEmission = municipality.emissions.at(-1);
@@ -37,22 +38,14 @@ export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
       to={`/municipalities/${municipality.name}`}
       className="block bg-black-2 rounded-level-2 p-8 space-y-8 transition-all duration-300 hover:shadow-[0_0_10px_rgba(153,207,255,0.15)] hover:bg-[#1a1a1a]"
     >
-      <div className="space-y-6">
-        <h2 className="text-3xl font-light">{municipality.name}</h2>
-
-        {/* <div className="space-y-2"> //fixme add as soon as we have time!
-        <h2 className="text-5xl font-light">{municipality.name}</h2>
-
-        {/* <div className="space-y-2"> //fixme add!
-          <div className="text-sm text-grey uppercase tracking-wide">
-            UTSLÄPPSRANKING
-          </div>
-          <div className="text-3xl font-light">{municipality.rank}</div>
-        </div> */}
-      </div>
-
       <div className="space-y-2">
-        <div className="text-sm text-grey">
+        <h2 className="text-3xl font-light">{municipality.name}</h2>
+        <p className="text-grey text-sm line-clamp-2 min-h-[40px]">
+          {municipality.region}
+        </p>
+
+        <div className="flex items-center gap-2 text-grey mb-2 text-lg">
+          <Leaf className="w-4 h-4" />
           {t("municipalities.card.meetsParis", { name: municipality.name })}
         </div>
         <div
