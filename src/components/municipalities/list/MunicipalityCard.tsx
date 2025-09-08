@@ -9,7 +9,6 @@ import {
 } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
 import { LinkCard } from "@/components/ui/link-card";
-import { Leaf, TrendingDown } from "lucide-react";
 
 interface MunicipalityCardProps {
   municipality: Municipality;
@@ -45,7 +44,6 @@ export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
         </p>
 
         <div className="flex items-center gap-2 text-grey mb-2 text-lg">
-          <Leaf className="w-4 h-4" />
           {t("municipalities.card.meetsParis", { name: municipality.name })}
         </div>
         <div
@@ -58,7 +56,7 @@ export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-black-1">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 pt-4 border-t border-black-1">
         <CardInfo
           title={t("municipalities.card.emission", { year: lastYear })}
           tooltip={t("municipalities.card.emissionInfo", { year: lastYear })}
