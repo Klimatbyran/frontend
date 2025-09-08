@@ -36,7 +36,7 @@ const RelatableNumbers = ({
   const numbersOfGasTanksFormatted = localizeUnit(
     numbersOfGasTanks,
     currentLanguage,
-  )?.slice(0, 4);
+  );
 
   const swedenEmissionDifference = Math.round(
     emissionsComparedToSweden(validTotalEmissions),
@@ -46,7 +46,7 @@ const RelatableNumbers = ({
   const numberOfRoundTripsFormatted = localizeUnit(
     numberOfRoundTrips,
     currentLanguage,
-  )?.slice(0, 3);
+  );
 
   return (
     validTotalEmissions && (
@@ -115,7 +115,7 @@ const RelatableNumbers = ({
                 <span className="text-yellow-100">
                   {swedenEmissionDifference} {t("relatableNumbers.times")}
                 </span>{" "}
-                {t("relatableNumbers.power")}{" "}
+                {t("relatableNumbers.power")}{"  "}
                 {selectedPeriod.endDate.slice(0, 4)}.
               </Text>
             </div>
