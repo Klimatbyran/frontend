@@ -487,7 +487,7 @@
         "paragraph2": "We have based our criteria on municipal responsibility, impact on emissions, breadth of areas, and access to stable data. So far, using these criteria, we have presented data on the following key figures:",
         "list": {
           "evs": "Electric vehicles. The increase in the municipalities for the proportion of newly registered electric vehicles",
-          "consumption": "Consumption. The household's consumption emissions in tonnes per resident and municipality",
+          "consumption": "Consumption - The household's consumption emissions in tonnes per resident and municipality",
           "chargers": "Chargers. The number of electric vehicles per public charging point per municipality",
           "bicycles": "Bicycles. The number of metres of cycling paths per resident per municipality",
           "plans": "Plans. Which municipalities have an ongoing climate action plan",
