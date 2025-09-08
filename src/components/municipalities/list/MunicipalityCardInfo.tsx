@@ -5,7 +5,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import { Info, TrendingDown } from "lucide-react";
+import { Info, TrendingUpDown } from "lucide-react";
 
 interface CardInfoProps {
   title: string;
@@ -25,7 +25,7 @@ export function CardInfo({
   return (
     <div className="space-y-2">
       <div className="flex items-center gap-2 text-grey mb-2 text-lg">
-        <TrendingDown className="w-4 h-4" />
+        <TrendingUpDown className="w-4 h-4" />
         <span>{title}</span>
         <TooltipProvider>
           <Tooltip>
