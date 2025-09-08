@@ -491,7 +491,7 @@
           "chargers": "Chargers - The number of electric vehicles per public charging point per municipality",
           "bicycles": "Bicycles - Metres of cycling paths per resident, per municipality",
           "plans": "Plans - Which municipalities have an ongoing climate action plan",
-          "procurements": "Procurements. Which municipalities have placed climate requirements in public procurement"
+          "procurements": "Procurements - Which municipalities have placed climate requirements in public procurement"
         }
       },
       "sources": {
