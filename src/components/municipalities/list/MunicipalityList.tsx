@@ -40,7 +40,10 @@ export function MunicipalityList({
     const directionMultiplier = sortDirection === "best" ? 1 : -1;
     switch (sortBy) {
       case "meets_paris": {
-        return directionMultiplier * (a ? 1 : 0); // fixme!
+        return (
+          directionMultiplier *
+          ((a.meetsParis ? 1 : 0) - (b.meetsParis ? 1 : 0))
+        );
       }
       case "name":
         return directionMultiplier * a.name.localeCompare(b.name);
