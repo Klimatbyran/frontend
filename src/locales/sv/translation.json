@@ -377,10 +377,11 @@
       },
       "carbonLaw": {
         "title": "Carbon Law",
-        "description": "Vi använder en reviderad version av ursprungliga Carbon Law för att visa en nödvändig utsläppsminskningsbana på varje företags eller kommuns historiska utsläppsgraf. Denna linje visar hur mycket företaget eller kommunen behöver minska sina utsläpp för att följa Parisavtalet.",
-        "paragraph1": "Carbon Law hjälper företag och myndigheter att ha ett mål för att minska sina koldioxidutsläpp; det är en tumregel som alla aktörer kan använda (världen, land, företag, kommun, individ, etc.). Ursprungliga Carbon Law sa att utsläppen behövde minska med 7% per år från 2020, alltså halveras varje decennium. Den bygger på Parisavtalets mål att begränsa den globala uppvärmningen till väl under 2°C, med ett mål på 1,5°C och de koldioxidbudgetar som IPCC identifierat.",
-        "paragraph2": "Vi använder en reviderad version av ursprungliga Carbon Law för att visa en nödvändig utsläppsminskningsbana på varje företags eller kommuns historiska utsläppsgraf. Denna linje visar hur mycket företaget eller kommunen behöver minska sina utsläpp för att följa Parisavtalet.",
-        "paragraph3": "En reviderad Carbon Law är nödvändig eftersom vi inte lyckats nå målen i den ursprungliga Carbon Law om att minska utsläppen med 7% per år från 2020. Med nuvarande koldioxidbudget krävs en brantare minskningsbana för att nå Parisavtalets mål. Den nya tumregeln är att utsläppen behöver minska med 12% per år från 2025.",
+        "description": " Läs om hur Klimatkollen använder Carbon Law för att visa hur utsläppen behöver minska för att nå Parisavtalet",
+        "paragraph1": "Carbon Law hjälper oss sätta mål för att minska utsläppen av växthusgaser. Det är en tumregel som alla kan använda (världen, länder, företag, kommuner, individer) och bygger på Parisavtalets mål att begränsa den globala uppvärmningen till väl under 2°C, med ett mål på 1,5°C och den koldioxidbudget som IPCC identifierat.",
+        "paragraph2": "Ursprungliga Carbon Law från 2017 sa att utsläppen behövde minska med 7% per år från 2020, alltså halveras varje decennium. Men så har det inte blivit, världen har inte lyckats minska utsläppen och koldioxidbudgeten har därför minskat ännu mer.",
+        "paragraph3": "Vi använder därför en reviderad version av ursprungliga Carbon Law. Med nuvarande koldioxidbudget krävs en brantare minskningsbana. Den nya tumregeln är att utsläppen behöver minska med 12% per år från 2025, vilket innebär en halvering av utsläppen vart femte år.",
+        "paragraph4": "Med hjälp av Carbon Law visar vi en nödvändig bana för utsläppsminskning på varje företags eller kommuns graf över utsläppen. ”Parislinjen” illustrerar hur mycket företaget eller kommunen behöver minska sina utsläpp för att följa Parisavtalet.",
         "link": {
           "title": "Applying Carbon Law From 2025",
           "text": "Läs mer om Applying Carbon Law From 2025 från Klimatkollens white paper."
