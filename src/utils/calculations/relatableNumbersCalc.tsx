@@ -5,7 +5,7 @@ export const emissionsToTshirts = (totalEmissions: number | null) => {
   if (totalEmissions === null) {
     return 0;
   }
-  const totalEmissionsKg = totalEmissions * 1000;
+  const totalEmissionsKg = totalEmissionsToKg(totalEmissions);
   const numberTshirtsProduced = totalEmissionsKg / averageTshirtEmission;
 
   return numberTshirtsProduced;
@@ -19,7 +19,7 @@ export const emissionsToGasTank = (totalEmissions: number | null) => {
   if (totalEmissions === null) {
     return 0;
   }
-  const totalEmissionsKg = totalEmissions * 1000;
+  const totalEmissionsKg = totalEmissionsToKg(totalEmissions);
   const numberOfTanks = totalEmissionsKg / emissionPerTank;
 
   return numberOfTanks;
@@ -44,9 +44,13 @@ export const emissionsToFlights = (totalEmissions: number | null) => {
   if (totalEmissions === null) {
     return 0;
   }
-  const totalEmissionsKg = totalEmissions * 1000;
+  const totalEmissionsKg = totalEmissionsToKg(totalEmissions);
 
   const numberOfRoundTrips = totalEmissionsKg / roundTrip;
 
   return numberOfRoundTrips;
+};
+
+const totalEmissionsToKg = (totalEmissionsTons: number) => {
+  return totalEmissionsTons * 1000;
 };
