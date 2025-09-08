@@ -186,7 +186,9 @@ export function MunicipalityDetailPage() {
                 currentLanguage,
               )}
               valueClassName={cn(
-                CARBON_LAW_REDUCTION_RATE > 0 ? "text-pink-3" : "text-orange-2",
+                municipality.historicalEmissionChangePercent > 0
+                  ? "text-pink-3"
+                  : "text-orange-2",
               )}
             />
             <MunicipalityStatCard
