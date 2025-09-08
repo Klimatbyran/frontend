@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next";
 import { MembersGrid } from "@/components/MembersGrid";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { useEffect } from "react";
+import KlimatkollenVideo from "@/components/ui/klimatkollenVideoPlayer";
 
 export function AboutPage() {
   const { t } = useTranslation();
@@ -60,22 +61,18 @@ export function AboutPage() {
                     {t("aboutPage.mainContent.title")}
                   </Text>
                 </div>
+                <KlimatkollenVideo />
 
-                <div className="flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-4">
-                  <img
-                    className="w-48 md:w-64 lg:w-80 max-h-48 object-contain flex-shrink-0"
-                    src={"./images/social-picture.png"}
-                    alt={"klimatkollen-social-image"}
-                  />
-
+                <div className="flex flex-col md:flex-row space-y-8 md:space-y-0 md:space-x-4">
                   <div className="prose prose-invert w-full max-w-5xl space-y-4">
                     <p>{t("aboutPage.mainContent.paragraph1")}</p>
                     <p>{t("aboutPage.mainContent.paragraph2")}</p>
-                    <p>{t("aboutPage.mainContent.paragraph3")}</p>
                   </div>
                 </div>
 
-                <div className="prose prose-invert w-full max-w-5xl space-y-4">
+                <div className="prose prose-invert w-full max-w-6xl space-y-4">
+                  <p>{t("aboutPage.mainContent.paragraph3")}</p>
+
                   <p>{t("aboutPage.mainContent.paragraph4")}</p>
                 </div>
               </div>

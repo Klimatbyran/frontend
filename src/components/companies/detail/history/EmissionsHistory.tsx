@@ -134,6 +134,7 @@ export function EmissionsHistory({
       {!exploreMode && (
         <SectionWithHelp
           helpItems={[
+            "baseYear",
             "scope1",
             "scope2",
             "scope3",
@@ -181,7 +182,8 @@ export function EmissionsHistory({
           />
 
           {/* Method Description - Hidden on mobile (mobile has popup version) */}
-          {methodExplanation && !isMobile && (
+          {/* FIXME: Uncomment when the Trend Analysis is ready */}
+          {/* {methodExplanation && !isMobile && (
             <div className="bg-black-2 rounded-lg p-4 max-w-4xl mx-auto">
               <Text
                 variant="body"
@@ -193,7 +195,7 @@ export function EmissionsHistory({
                 {methodExplanation}
               </Text>
             </div>
-          )}
+          )} */}
         </SectionWithHelp>
       )}
       {exploreMode && (

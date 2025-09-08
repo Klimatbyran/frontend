@@ -31,7 +31,6 @@ import { RequestsDashboard } from "./pages/internal-pages/RequestsDashboard";
 import { TrendAnalysisDashboard } from "./pages/internal-pages/TrendAnalysisDashboard";
 import { NewsLetterArchivePage } from "./pages/NewslettersPage";
 
-
 export function AppRoutes() {
   const { currentLanguage } = useLanguage();
 

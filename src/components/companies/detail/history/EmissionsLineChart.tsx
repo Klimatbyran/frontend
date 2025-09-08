@@ -234,7 +234,7 @@ export default function EmissionsLineChart({
                       trendAnalysis?.cleanData &&
                       trendAnalysis.cleanData.length >= 2
                         ? (() => {
-                            const cleanData = trendAnalysis.cleanData;
+                            const { cleanData } = trendAnalysis;
                             const avgEmissions =
                               cleanData.reduce(
                                 (sum, point) => sum + point.value,
@@ -271,7 +271,7 @@ export default function EmissionsLineChart({
                     dot={
                       isMobile
                         ? false
-                        : { r: 4, fill: "white", cursor: "pointer" }
+                        : { r: 0, fill: "white", cursor: "pointer" }
                     }
                     activeDot={
                       isMobile
@@ -324,6 +324,69 @@ export default function EmissionsLineChart({
 
               {dataView === "scopes" && (
                 <>
+                  {!hiddenScopes.includes("scope1") && (
+                    <Line
+                      type="monotone"
+                      dataKey="scope1.value"
+                      stroke="var(--pink-3)"
+                      strokeWidth={2}
+                      dot={{
+                        r: 0,
+                        cursor: "pointer",
+                        onClick: () => handleScopeToggle("scope1"),
+                      }}
+                      activeDot={{
+                        r: 6,
+                        fill: "var(--pink-3)",
+                        cursor: "pointer",
+                      }}
+                      name="Scope 1"
+                    />
+                  )}
+                  {!hiddenScopes.includes("scope2") && (
+                    <Line
+                      type="monotone"
+                      dataKey="scope2.value"
+                      stroke="var(--green-2)"
+                      strokeWidth={2}
+                      dot={{
+                        r: 0,
+                        cursor: "pointer",
+                        onClick: () => handleScopeToggle("scope2"),
+                      }}
+                      activeDot={{
+                        r: 6,
+                        fill: "var(--green-2)",
+                        cursor: "pointer",
+                      }}
+                      name="Scope 2"
+                    />
+                  )}
+                  {!hiddenScopes.includes("scope3") && (
+                    <Line
+                      type="monotone"
+                      dataKey="scope3.value"
+                      stroke="var(--blue-2)"
+                      strokeWidth={2}
+                      dot={{
+                        r: 0,
+                        cursor: "pointer",
+                        onClick: () => handleScopeToggle("scope3"),
+                      }}
+                      activeDot={{
+                        r: 6,
+                        fill: "var(--blue-2)",
+                        cursor: "pointer",
+                        onClick: () => handleScopeToggle("scope3"),
+                      }}
+                      name="Scope 3"
+                    />
+                  )}
+                </>
+              )}
+
+              {/* {dataView === "scopes" && (
+                <>
                   <ScopeLine
                     scope="scope1"
                     isHidden={hiddenScopes.includes("scope1")}
@@ -340,9 +403,57 @@ export default function EmissionsLineChart({
                     onToggle={handleScopeToggle}
                   />
                 </>
-              )}
+              )} */}
 
               {dataView === "categories" &&
+                Object.keys(data[0])
+                  .filter(
+                    (key) =>
+                      key.startsWith("cat") && !key.includes("Interpolated"),
+                  )
+                  .sort((a, b) => {
+                    const aCatId = parseInt(a.replace("cat", ""));
+                    const bCatId = parseInt(b.replace("cat", ""));
+                    return aCatId - bCatId;
+                  })
+                  .map((categoryKey) => {
+                    const categoryId = parseInt(categoryKey.replace("cat", ""));
+                    const isInterpolatedKey = `${categoryKey}Interpolated`;
+
+                    // Check if the category is hidden
+                    if (hiddenCategories.includes(categoryId)) {
+                      return null;
+                    }
+                    // Calculate strokeDasharray based on the first data point
+                    const strokeDasharray = data[0][isInterpolatedKey]
+                      ? "4 4"
+                      : "0";
+
+                    return (
+                      <Line
+                        key={categoryKey}
+                        type="monotone"
+                        dataKey={categoryKey}
+                        stroke={getCategoryColor(categoryId)}
+                        strokeWidth={2}
+                        strokeDasharray={strokeDasharray}
+                        dot={{
+                          r: 0,
+                          cursor: "pointer",
+                          onClick: () => handleCategoryToggle(categoryId),
+                        }}
+                        activeDot={{
+                          r: 6,
+                          fill: getCategoryColor(categoryId),
+                          cursor: "pointer",
+                          onClick: () => handleCategoryToggle(categoryId),
+                        }}
+                        name={getCategoryName(categoryId)}
+                      />
+                    );
+                  })}
+
+              {/* {dataView === "categories" &&
                 Object.keys(data[0])
                   .filter(
                     (key) =>
@@ -378,7 +489,7 @@ export default function EmissionsLineChart({
                         onToggle={handleCategoryToggle}
                       />
                     );
-                  })}
+                  })} */}
             </LineChart>
           </ResponsiveContainer>
         ) : (
@@ -403,7 +514,8 @@ export default function EmissionsLineChart({
       />
 
       {/* Mobile trend explanation button and popup */}
-      {isMobile && !exploreMode && trendAnalysis?.explanation && (
+      {/* FIXME discuss how this should be reintroduced */}
+      {/* {isMobile && !exploreMode && trendAnalysis?.explanation && (
         <div className="mt-4">
           <Button
             variant="outline"
@@ -411,10 +523,11 @@ export default function EmissionsLineChart({
             onClick={() => setShowTrendPopup(true)}
             className="w-full bg-black-2 border-black-1 text-white hover:bg-black-1"
           >
-            <span className="text-sm">{t("companies.emissionsHistory.trend")}</span>
+            <span className="text-sm">
+              {t("companies.emissionsHistory.trend")}
+            </span>
           </Button>
 
-          {/* Trend Explanation Popup Modal */}
           {showTrendPopup && (
             <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
               <div className="bg-black-2 rounded-lg p-6 max-w-md w-full border">
@@ -453,7 +566,7 @@ export default function EmissionsLineChart({
             </div>
           )}
         </div>
-      )}
+      )} */}
     </div>
   );
 }

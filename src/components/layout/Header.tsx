@@ -92,7 +92,7 @@ export function Header() {
       sublinks: [
         {
           label: t("header.municipalitiesRanked"),
-          path: `${currentLanguage}/municipalities`,
+          path: `${currentLanguage}/municipalities/`,
         },
         {
           label: t("header.municipalitiesExplore"),

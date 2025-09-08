@@ -800,10 +800,6 @@
       "role": "Tech Advisor",
       "description": "Award-winning developer, digital entrepreneur, and one of Sweden's most influential figures in tech. Founder of the digital innovation agency Iteam and co-founder of Open School Platform. Speaker on AI and digital innovation, advisor to the government."
     },
-    "hugo": {
-      "role": "Developer",
-      "description": "Entrepreneurial climate enthusiast with a strong interest in how AI and technology can help solve future challenges."
-    },
     "kayla": {
       "role": "Developer",
       "description": "Frontend developer with a passion for sustainability and user-friendly digital solutions. Previously worked as an environmental consultant focused on interpreting regulations and calculating greenhouse gas emissions for companies."
@@ -822,14 +818,6 @@
       "role": "Vice Chairman of the Board",
       "description": "Climate specialist and co-founder of Klimatkollen. Initiator of Our Kids' Climate and author of the book 'Talking to Children about Climate Change' (Natur & Kultur). EU Climate Pact Ambassador and Climate Reality Leader."
     },
-    "christian": {
-      "role": "Board Member",
-      "description": "Digital entrepreneur and one of Sweden's most influential figures in tech. CEO and founder of Iteam and Open School Platform."
-    },
-    "anna": {
-      "role": "Board Member",
-      "description": "Digital strategist and former head of social media at Spotify and H&M. CEO and founder of Better Odds."
-    },
     "maria": {
       "role": "Board Member",
       "description": "Journalist, author, speaker, and founder of Klimatklubben. Named one of Sweden's 101 most influential sustainability figures in 2021."
@@ -837,6 +825,10 @@
     "carlJohan": {
       "role": "Board Member",
       "description": "Sustainability strategist at Diamant & Schulz, previously at Doings and Forsman & Bodenfors, author of the book 'Sustainability Transformation', awarded Marketing Book of the Year 2022."
+    },
+    "madeleine": {
+      "role": "Board Member",
+      "description": "Responsible for solar parks within Green Power Sweden, former head of social policy for WWF Sweden, board member of the Swedish Society for Nature Conservation and political expert at the Ministry of the Environment."
     }
   },
   "emissionsBreakdown": {
@@ -1016,7 +1008,8 @@
       "readAnnualReport": "Read Annual Report",
       "readMore": "Read More",
       "readLess": "Read Less",
-      "aiGeneratedData": "Includes AI-extracted values. Click to read more."
+      "aiGeneratedData": "Includes AI-extracted values. Click to read more.",
+      "billion": "bn"
     },
     "sectionedCompanyList": {
       "otherCompanies": "Other Companies",
@@ -1051,7 +1044,10 @@
     },
     "tooltip": {
       "noDataAvailable": "No Data Available",
-      "tonsCO2e": "tCO₂e"
+      "tonsCO2e": "tCO₂e",
+      "trend": "Trend:",
+      "increasing": "↗ Increasing",
+      "decreasing": "↘ Decreasing"
     }
   },
   "municipalities": {
@@ -1339,6 +1335,12 @@
     "analysis": "Analysis",
     "guide": "Guide",
     "methodology": "Methodology"
+  },
+  "graphs": {
+    "pieChart": {
+      "clickToFilter": "Click to filter",
+      "ofTotal": "of total"
+    }
   },
   "language": {
     "sv": "Swedish",

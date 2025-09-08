@@ -24,7 +24,7 @@ export function ChartControls({
   }
 
   return (
-    <div className="relative mt-2 px-4 w-full">
+    <div className="relative mt-2 px-4 py-2 md:py-4 w-full">
       <div className="absolute left-0 top-0">
         {chartEndYear === longEndYear && (
           <Button
@@ -51,7 +51,8 @@ export function ChartControls({
           </Button>
         )}
       </div>
-      {exploreButtonFeatureFlagEnabled() && (
+      {/* FIXME uncomment when introducing explore mode */}
+      {/* {exploreButtonFeatureFlagEnabled() && (
         <div className="flex justify-center items-center">
           <Button
             variant="default"
@@ -64,7 +65,7 @@ export function ChartControls({
             Explore the Data
           </Button>
         </div>
-      )}
+      )} */}
     </div>
   );
 }
