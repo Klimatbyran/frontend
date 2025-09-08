@@ -476,7 +476,7 @@
         "title": "Municipality Data Overview",
         "description": "What data we collect and present about the municipalities",
         "paragraph1": "Klimatkollen shows emissions data on Sweden's municipalities, with SMHI's national emissions database as our primary source. To make our municipal and company data comparable, emissions of all greenhouse gases (CO₂e) are shown since August 2025, not just CO₂.",
-        "paragraph2": "We also show how emissions would need to decrease to meet the Paris Agreement. Previously, local carbon budgets were used, based on a national budget calculated by researchers at Uppsala University and the Tyndall Centre in the UK. Since August 2025, we have instead used the 'Paris Curve' based on <0>Carbon Law</0>.",
+        "paragraph2": "We also show how emissions would need to decrease to meet the Paris Agreement. Previously, this was based on local carbon budgets derived from a national budget calculated by researchers at Uppsala University and the Tyndall Centre in the UK. Since August 2025, we have switched to use the 'Paris Curve' based on an updated <0>Carbon Law</0>.",
         "paragraph3": "The forecast for future emissions is based on how emissions in each municipality have developed historically since the Paris Agreement 2015. The trend line is weighted using the statistical method Least absolute deviations (LDA), which gives less weight to individual extreme values and provides a more fair and realistic picture of future emissions.",
         "paragraph4": "In addition to emissions data, key figures for how well municipalities are doing in their transition and emission reductions are also presented."
       },
