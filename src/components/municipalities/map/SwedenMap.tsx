@@ -5,7 +5,7 @@ import {
   Geography,
   ZoomableGroup,
 } from "react-simple-maps";
-import { KPIValue, Municipality, getSortedMunicipalKPIValues } from "@/types/municipality";
+import { KPIValue, Municipality } from "@/types/municipality";
 import { MapZoomControls } from "./MapZoomControls";
 import { MapGradientLegend } from "./MapLegendGradient";
 import { MapTooltip } from "./MapTooltip";
@@ -13,6 +13,7 @@ import { FeatureCollection } from "geojson";
 import { MUNICIPALITY_MAP_COLORS } from "./constants";
 import { isMobile } from "react-device-detect";
 import { t } from "i18next";
+import { getSortedMunicipalKPIValues } from "@/utils/data/sorting";
 
 interface SwedenMapProps {
   geoData: FeatureCollection;
@@ -58,7 +59,10 @@ function SwedenMap({
   const minValue = Math.min(...values);
   const maxValue = Math.max(...values);
 
-  const sortedMunicipalities = getSortedMunicipalKPIValues(municipalityData, selectedKPI);
+  const sortedMunicipalities = getSortedMunicipalKPIValues(
+    municipalityData,
+    selectedKPI,
+  );
 
   const handleZoomIn = () => {
     if (position.zoom >= 4) {

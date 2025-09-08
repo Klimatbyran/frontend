@@ -1,7 +1,8 @@
 import { t } from "i18next";
-import { KPIValue, Municipality, getSortedMunicipalKPIValues } from "@/types/municipality";
+import { KPIValue, Municipality } from "@/types/municipality";
 import InsightsList from "./MunicipalityInsightsList";
 import KPIDetailsPanel from "./KPIDetailsPanel";
+import { getSortedMunicipalKPIValues } from "@/utils/data/sorting";
 
 interface InsightsPanelProps {
   municipalityData: Municipality[];
