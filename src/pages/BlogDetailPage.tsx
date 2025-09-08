@@ -9,27 +9,17 @@ import remarkBreaks from "remark-breaks";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import rehypeRaw from "rehype-raw";
-import { blogMetadata } from "../lib/blog/blogPostsList";
 import { useTranslation } from "react-i18next";
 import { useScreenSize } from "@/hooks/useScreenSize";
-import { ContentMeta } from "@/types/content";
 import { localizeUnit } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
-
-// Import Markdown files
-const markdownFiles = import.meta.glob("/src/lib/blog/posts/*.md", {
-  as: "raw",
-  eager: true,
-});
+import { useBlogPost, useBlogPosts } from "@/hooks/useBlogPosts";
 
 export function BlogDetailPage() {
   const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
-  const [blogPost, setBlogPost] = useState<{
-    metadata: ContentMeta;
-    content: string;
-  } | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { blogPost, loading, error } = useBlogPost(id!);
+  const blogPosts = useBlogPosts();
   const [copied, setCopied] = useState(false);
   const location = useLocation();
   const { isMobile } = useScreenSize();
@@ -38,37 +28,6 @@ export function BlogDetailPage() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
-
-  useEffect(() => {
-    if (!id) return;
-    const filePath = `/src/lib/blog/posts/${id}.md`;
-    const rawMarkdown = markdownFiles[filePath];
-
-    if (!rawMarkdown) {
-      console.error(`❌ Markdown file not found: ${filePath}`);
-      setBlogPost(null);
-      setLoading(false);
-      return;
-    }
-
-    const extractedMetadata = extractMetadata(rawMarkdown);
-    const metadata = blogMetadata.find((post) => post.id === id);
-
-    if (!metadata) {
-      console.error(`❌ Metadata not found for post: ${id}`);
-      setBlogPost(null);
-      setLoading(false);
-      return;
-    }
-
-    setBlogPost({ metadata, content: extractedMetadata });
-    setLoading(false);
-  }, [id]);
-
-  const extractMetadata = (rawMarkdown: string) => {
-    const frontmatterRegex = /^---\n([\s\S]*?)\n---\n/;
-    return rawMarkdown.replace(frontmatterRegex, "").trim();
-  };
 
   const handleShare = async () => {
     const shareUrl = window.location.href;
@@ -95,13 +54,14 @@ export function BlogDetailPage() {
   };
 
   if (loading) return <div>{t("blogDetailPage.loading")}</div>;
+  if (error) return <div>{t("blogDetailPage.postNotFound")}</div>;
   if (!blogPost) return <div>{t("blogDetailPage.postNotFound")}</div>;
 
   const relatedPosts = blogPost.metadata.relatedPosts
-    ? blogPost.metadata.relatedPosts
-        .map((relatedId) => blogMetadata.find((post) => post.id === relatedId))
-        .filter(Boolean)
-    : [];
+  ? blogPost.metadata.relatedPosts
+      .map((relatedId) => blogPosts.find((post) => post.id === relatedId))
+      .filter(Boolean)
+  : [];
 
   return (
     <div
