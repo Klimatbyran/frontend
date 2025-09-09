@@ -26,7 +26,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
 
   return (
     <ResponsiveContainer width="100%" height="90%">
-      <LineChart data={projectedData} margin={{ left: -50 }}>
+      <LineChart data={projectedData} margin={{ left: -30 }}>
         <Legend
           verticalAlign="bottom"
           align="right"
