@@ -39,6 +39,12 @@ export function MunicipalityList({
   const sortedMunicipalities = filteredMunicipalities.sort((a, b) => {
     const directionMultiplier = sortDirection === "best" ? 1 : -1;
     switch (sortBy) {
+      case "meets_paris": {
+        return (
+          directionMultiplier *
+          ((a.meetsParisGoal ? 1 : 0) - (b.meetsParisGoal ? 1 : 0))
+        );
+      }
       case "name":
         return directionMultiplier * a.name.localeCompare(b.name);
       default:
