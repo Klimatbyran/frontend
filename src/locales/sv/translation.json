@@ -80,6 +80,17 @@
       "paragraph3": "Vår vision är att beslutsfattare i politik och näringsliv ska påverkas av en välinformerad och växande opinion till att genomföra åtgärder som sänker utsläppen i linje med Parisavtalet.",
       "paragraph4": "Klimatkollen lanserades i mars 2022 och drivs av den ideella föreningen Klimatbyrån. Initiativtagare är Ola Spännar och Frida Berry Eklund. Vi började med lokal klimatdata för Sveriges kommuner. Från 2024 visas klimatdata även för företag."
     },
+    "ourApproachSection": {
+      "title": "Vårt angreppssätt",
+      "paragraph1": "Öppna data om växthusgasutsläppen ökar transparensen och ger oss möjlighet till ansvarsutkrävande.",
+      "paragraph2": "Med hjälp av klimatdata kan vi ställa beslutsfattare i politik och näringsliv till svars för sina löften om att minska utsläppen och klara Parisavtalet.",
+      "paragraph3": "Klimatkollen har utvecklat Garbo AI för datainhämtning och analys. På så sätt kan vi visa upp klimatdata för allt fler kommuner och bolag, både i Sverige och internationellt.",
+      "paragraph4": "Vi påstår inte att vi är felfria, det är mycket ny teknik och snårig data även för insatta. Men ju mer vi testar, utvecklar och lär oss, desto bättre blir Garbo AI – och därmed även vår data.",
+      "paragraph5": "Klimatkollen är ett komplement till det offentliga. En myndighet kan – och ska – bara publicera noggrant processad data. Det har många fördelar. Samtidigt kan det gå långsamt, att korrigera eventuella fel kan dröja.",
+      "paragraph6": "Vi vill vara snabbare. Wikipedia uppdateras dagligen av civilsamhället. Klimatkollen arbetar i samma anda.",
+      "paragraph7": "Därför är vi tacksamma för synpunkter och förslag från användare. Ser du något fel? Klicka på knappen 'Föreslå korrigering', så kollar vi upp och ändrar.",
+      "paragraph8": "Tillsammans hjälps vi åt att tillgängliggöra utsläppsdata för medborgare. Alla har rätt att få koll på hur det går med utsläppen och om de minskar i den takt som krävs."
+    },
     "teamSection": {
       "title": "Vårt team"
     },
