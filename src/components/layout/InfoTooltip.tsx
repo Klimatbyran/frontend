@@ -1,5 +1,5 @@
 import { Info, X } from "lucide-react";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import {
   Tooltip,
   TooltipContent,
@@ -24,7 +24,12 @@ export function InfoTooltip({
 }: InfoTooltipProps) {
   const [isOpen, setIsOpen] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
-  const buttonRef = useRef<HTMLButtonElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+
+  const handleOpen = useCallback(() => {
+    previousFocusRef.current = document.activeElement as HTMLElement;
+    setIsOpen(true);
+  }, []);
 
   // Focus management for modal
   useEffect(() => {
@@ -34,60 +39,67 @@ export function InfoTooltip({
     }
   }, [isOpen]);
 
-  // Handle escape key
   useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isOpen) {
-        setIsOpen(false);
-      }
-    };
+    if (!isMobile) return;
 
     if (isOpen) {
-      document.addEventListener("keydown", handleEscape);
-      return () => document.removeEventListener("keydown", handleEscape);
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = "unset";
+      };
     }
   }, [isOpen]);
 
-  const handleClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation(); // Prevent event from bubbling to parent link
-    setIsOpen(true);
-  };
-  
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" || e.key === " ") {
+  const handleMobileClick = useCallback(
+    (e: React.MouseEvent) => {
       e.preventDefault();
       e.stopPropagation();
-      setIsOpen(true);
-    }
-  };
+      handleOpen();
+    },
+    [handleOpen],
+  );
 
-  const handleClose = (e?: React.MouseEvent) => {
+  const handleMobileKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        e.stopPropagation();
+        handleOpen();
+      }
+    },
+    [handleOpen],
+  );
+
+  const handleClose = useCallback((e?: React.MouseEvent) => {
     if (e) {
       e.preventDefault();
       e.stopPropagation();
     }
     setIsOpen(false);
-  };
+
+    // Restore focus to previously focused element
+    if (previousFocusRef.current) {
+      previousFocusRef.current.focus();
+    }
+  }, []);
 
   // For mobile, use a full-screen modal popup
   if (isMobile) {
     return (
       <>
         <Button
-          ref={buttonRef}
           variant="ghost"
           size="sm"
           className="p-0 h-auto hover:bg-transparent focus:outline-none focus:ring-0"
-          onClick={handleClick}
-          onKeyDown={handleKeyDown}
+          onClick={handleMobileClick}
+          onKeyDown={handleMobileKeyDown}
           aria-label={ariaLabel}
           aria-expanded={isOpen}
           aria-haspopup="dialog"
         >
           <Info className={className} />
         </Button>
-  
+
         {isOpen && (
           <div
             className="fixed inset-0 z-50 flex items-center justify-center p-4"
@@ -100,12 +112,11 @@ export function InfoTooltip({
               onClick={handleClose}
               aria-hidden="true"
             />
-  
+
             <div
               ref={modalRef}
               className="relative bg-black-2 border border-black-1 rounded-lg p-6 max-w-md w-full max-h-[80vh] overflow-y-auto"
             >
-              {/* Close button */}
               <Button
                 variant="ghost"
                 size="sm"
@@ -115,8 +126,7 @@ export function InfoTooltip({
               >
                 <X className="w-5 h-5" />
               </Button>
-  
-              {/* Content */}
+
               <div id="tooltip-title" className="text-sm text-white pr-8">
                 {children}
               </div>
@@ -133,12 +143,9 @@ export function InfoTooltip({
       <Tooltip>
         <TooltipTrigger asChild>
           <Button
-            ref={buttonRef}
             variant="ghost"
             size="sm"
-            className="p-0 h-auto hover:bg-transparent"
-            onClick={handleClick}
-            onKeyDown={handleKeyDown}
+            className="p-0 h-auto hover:bg-transparent focus:outline-none focus:ring-0"
             aria-label={ariaLabel}
           >
             <Info className={className} />
