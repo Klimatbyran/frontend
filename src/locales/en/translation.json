@@ -80,6 +80,16 @@
       "paragraph3": "Our vision is for decision-makers in politics and business to be guided by an informed and engaged public, leading to actions that reduce emissions in line with the Paris Agreement.",
       "paragraph4": "Launched in March 2022, Klimatkollen is operated by the non-profit association Klimatbyrån. It was founded by Ola Spännar and Frida Berry Eklund. Initially focused on local climate data for Swedish municipalities, the platform expanded in 2024 to include corporate climate data."
     },
+    "ourApproachSection": {
+      "title": "Our Approach",
+      "paragraph1": "Open climate data increases transparency and accountability. With climate data on hand, we can hold decision-makers in politics and business accountable for their promises to reduce emissions and fulfil the Paris Agreement.",
+      "paragraph2": "Klimatkollen has developed Garbo AI for data collection and analysis. This enables us to present climate data for an increasing number of municipalities and companies, both in Sweden and internationally.",
+      "paragraph3": "We do not claim to be flawless, this is brand new technology and tricky data even for those reporting it. But the more we test, develop and learn, the better Garbo AI and our data will become.",
+      "paragraph4": "Klimatkollen complements the public sector. Authorities can – and should – only publish carefully processed data. This has many advantages. At the same time, the process can be slow, and correcting errors can take time.",
+      "paragraph5": "We want to be faster. Wikipedia is updated daily by civil society. Klimatkollen works in the same spirit.",
+      "paragraph6": "That is why we are grateful for feedback and suggestions. Do you see an error? Click on ‘Suggest correction’ and we'll check it out and change.",
+      "paragraph7": "Together, we make emissions data available to citizens. Everyone has the right to know how emissions are progressing and whether they are decreasing fast enough."
+    },
     "teamSection": {
       "title": "Our Team"
     },
@@ -1067,7 +1077,6 @@
       "estimated": "Calculated",
       "trend": "Trend",
       "carbonLaw": "Paris Agreement",
-      "unit": "tons CO₂",
       "unit": "tons CO₂e",
       "total": "Total",
       "year": "Year",
