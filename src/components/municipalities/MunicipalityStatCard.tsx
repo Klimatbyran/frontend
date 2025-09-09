@@ -25,7 +25,7 @@ export function MunicipalityStatCard({
         <Text className="text-lg md:text-xl">{title}</Text>
         {info && (
           <span className="text-grey">
-            <InfoTooltip>
+            <InfoTooltip ariaLabel="Additional information">
               <p>{infoText}</p>
             </InfoTooltip>
           </span>

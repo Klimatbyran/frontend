@@ -1,11 +1,4 @@
-import { Info } from "lucide-react";
 import { Text } from "@/components/ui/text";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 import { useCategoryMetadata } from "@/hooks/companies/useCategories";
@@ -14,6 +7,7 @@ import { useLanguage } from "@/components/LanguageProvider";
 import { localizeUnit } from "@/utils/formatting/localization";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
 import { AiIcon } from "@/components/ui/ai-icon";
+import { InfoTooltip } from "@/components/layout/InfoTooltip";
 
 interface EmissionsBreakdownProps {
   emissions: {
@@ -92,16 +86,9 @@ export function EmissionsBreakdown({
         <>
           <div className="flex items-center gap-2 mb-12">
             <Text variant="h3">{t("emissionsBreakdown.title", { year })}</Text>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  <Info className="w-4 h-4 text-grey" />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>{t("emissionsBreakdown.tooltip")}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <InfoTooltip ariaLabel="Information about emissions breakdown">
+              <p>{t("emissionsBreakdown.tooltip")}</p>
+            </InfoTooltip>
           </div>
 
           <div className="grid grid-cols-3 gap-8 mb-16">
@@ -177,16 +164,9 @@ export function EmissionsBreakdown({
                           <Text variant="body">
                             {categoryId}. {getCategoryName(categoryId)}
                           </Text>
-                          <TooltipProvider>
-                            <Tooltip>
-                              <TooltipTrigger>
-                                <Info className="w-4 h-4 text-grey" />
-                              </TooltipTrigger>
-                              <TooltipContent>
-                                <p>{getCategoryDescription(categoryId)}</p>
-                              </TooltipContent>
-                            </Tooltip>
-                          </TooltipProvider>
+                          <InfoTooltip ariaLabel="Information about this emissions category">
+                            <p>{getCategoryDescription(categoryId)}</p>
+                          </InfoTooltip>
                         </div>
                         {reportedCategory && reportedCategory.total != null ? (
                           <Text variant="body" className="text-blue-2">
@@ -240,16 +220,9 @@ export function EmissionsBreakdown({
                           <Text variant="body">
                             {categoryId}. {getCategoryName(categoryId)}
                           </Text>
-                          <TooltipProvider>
-                            <Tooltip>
-                              <TooltipTrigger>
-                                <Info className="w-4 h-4 text-grey" />
-                              </TooltipTrigger>
-                              <TooltipContent>
-                                <p>{getCategoryDescription(categoryId)}</p>
-                              </TooltipContent>
-                            </Tooltip>
-                          </TooltipProvider>
+                          <InfoTooltip ariaLabel="Information about this emissions category">
+                            <p>{getCategoryDescription(categoryId)}</p>
+                          </InfoTooltip>
                         </div>
                         {reportedCategory && reportedCategory.total != null ? (
                           <Text variant="body" className="text-blue-2">
@@ -287,16 +260,9 @@ export function EmissionsBreakdown({
             <Text variant="h4">
               {t("emissionsBreakdown.biogenicEmissions")}
             </Text>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  <Info className="w-4 h-4 text-grey" />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>{t("scope.biogenic")}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <InfoTooltip ariaLabel="Information about biogenic emissions">
+              <p>{t("scope.biogenic")}</p>
+            </InfoTooltip>
           </div>
           <Text variant="body" className="mt-2">
             {emissions.biogenicEmissions.total.toLocaleString()}
