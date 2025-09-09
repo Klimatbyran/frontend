@@ -728,12 +728,14 @@
       "overview": "Overview",
       "sectors": "Emission sources"
     },
+<<<<<<< 949
+    "inTons": "In tons CO₂",
+=======
     "inTons": "In tons CO₂e",
-    "futureEmissions": "Future emissions",
     "annualChangeSince2015": "Annual emission change since 2015",
     "reductionToMeetParis": "Emission reduction to meet the Paris Agreement",
     "cannotReduceToParis": "Will not reach Paris Agreement",
-    "consumptionEmissionsPerCapita": "Consumption emissions per capita in tons CO₂e",
+    "consumptionEmissionsPerCapita": "Consumption emissions per capita",
     "climatePlan": "Climate plan",
     "noPlan": "No plan",
     "noClimatePlan": "No climate plan",

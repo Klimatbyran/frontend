@@ -728,11 +728,10 @@
       "sectors": "Utsläppskällor"
     },
     "inTons": "I ton CO₂e",
-    "futureEmissions": "Framtida utsläpp",
     "annualChangeSince2015": "Årlig utsläppsförändring sedan 2015",
     "reductionToMeetParis": "Utsläppsminskning för att klara Parisavtalet",
     "cannotReduceToParis": "Klarar ej Parisavtalet",
-    "consumptionEmissionsPerCapita": "Konsumtionsutsläpp per invånare i ton CO₂e",
+    "consumptionEmissionsPerCapita": "Konsumtionsutsläpp per invånare",
     "climatePlan": "Klimatplan",
     "noPlan": "Saknar plan",
     "noClimatePlan": "Saknar klimatplan",
