@@ -169,7 +169,7 @@ export function MunicipalityDetailPage() {
               {municipality.politicalRule.join(", ")}
             </Text>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-16 mt-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-16 mt-8">
             <MunicipalityStatCard
               title={t("municipalityDetailPage.totalEmissions", {
                 year: lastYear,
@@ -191,7 +191,6 @@ export function MunicipalityDetailPage() {
                   ? "text-pink-3"
                   : "text-orange-2",
               )}
-              unit={t("emissionsUnit")}
             />
             <MunicipalityStatCard
               title={t("municipalityDetailPage.consumptionEmissionsPerCapita")}
