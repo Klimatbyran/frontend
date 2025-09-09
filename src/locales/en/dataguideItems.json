@@ -132,12 +132,6 @@
       "Public procurement is powerful. When municipalities require climate criteria (like fossil-free transport or recycled materials), it can shift whole markets.\n\nA “Yes” here means the municipality has integrated environmental criteria into purchasing — though how strong or binding they are can vary."
     ]
   },
-  "municipalityReductionNeededForParisAgreement": {
-    "title": "Emission reduction needed to meet the Paris Agreement",
-    "content": [
-      "This is the average yearly reduction your municipality would need to meet the 1.5 °C target — based on its remaining carbon budget.\n\nIf this number is larger (like -30%), it means very rapid emissions cuts are needed starting now.\n\nThe longer we wait, the steeper the drop must be."
-    ]
-  },
   "municipalityTotalEmissions": {
     "title": "Total Emissions",
     "content": [

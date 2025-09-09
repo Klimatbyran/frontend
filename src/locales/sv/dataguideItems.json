@@ -132,12 +132,6 @@
       "Offentlig upphandling är ett viktigt verktyg. När kommuner kräver klimatkrav (exempelvis fossilfria transporter eller återvunnet material) kan det påverka marknaden i stort.\n\nAtt det står “Ja” här betyder att kommunen har miljökrav i sin upphandling – men exakt hur ambitiösa de är kan variera."
     ]
   },
-  "municipalityReductionNeededForParisAgreement": {
-    "title": "Utsläppsminskning som behövs för att uppfylla Parisavtalet",
-    "content": [
-      "Detta är den genomsnittliga årliga minskning som kommunen behöver klara för att nå 1,5 °C-målet – baserat på den återstående koldioxidbudgeten.\n\nOm siffran är stor (t.ex. -30%) betyder det att utsläppen snabbt måste minska, och det direkt.\n\nJu längre vi väntar, desto brantare måste minskningen bli."
-    ]
-  },
   "municipalityTotalEmissions": {
     "title": "Totala utsläpp",
     "content": [
