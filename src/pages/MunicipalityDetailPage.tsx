@@ -190,6 +190,7 @@ export function MunicipalityDetailPage() {
                 municipality.historicalEmissionChangePercent > 0
                   ? "text-pink-3"
                   : "text-orange-2",
+              )}
               unit={t("emissionsUnit")}
             />
             <MunicipalityStatCard

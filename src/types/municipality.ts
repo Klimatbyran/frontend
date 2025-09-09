@@ -1,5 +1,8 @@
 import type { paths } from "@/lib/api-types";
 
+export { getLatestYearData, getAvailableYears } from "@/utils/data/yearUtils";
+export { transformEmissionsData } from "@/utils/data/municipalityTransforms";
+
 export type Municipality = {
   name: string;
   region: string;
@@ -48,36 +51,6 @@ export type MetricsByYear = Record<
   }
 >;
 
-// Helper function to get latest year's data
-export function getLatestYearData<T>(
-  data: Record<string, T> | undefined,
-): T | undefined {
-  if (!data || typeof data !== "object") {
-    return undefined;
-  }
-
-  const years = Object.keys(data)
-    .map(Number)
-    .filter((year) => !isNaN(year))
-    .sort((a, b) => b - a);
-
-  return years.length > 0 ? data[years[0].toString()] : undefined;
-}
-
-// Helper function to get all years from data
-export function getAvailableYears(
-  data: Record<string, unknown> | undefined,
-): number[] {
-  if (!data || typeof data !== "object") {
-    return [];
-  }
-
-  return Object.keys(data)
-    .map(Number)
-    .filter((year) => !isNaN(year))
-    .sort((a, b) => b - a);
-}
-
 export type EmissionDataPoint = {
   year: string;
   value: number;
@@ -89,63 +62,12 @@ export type EmissionsData = {
   trend: (EmissionDataPoint | null)[];
 };
 
-export function transformEmissionsData(municipality: Municipality) {
-  const years = new Set<string>();
-
-  municipality.emissions.forEach((d) => d?.year && years.add(d.year));
-  municipality.approximatedHistoricalEmission.forEach(
-    (d) => d?.year && years.add(d.year),
-  );
-  municipality.trend.forEach((d) => d?.year && years.add(d.year));
-
-  return Array.from(years)
-    .sort()
-    .map((year) => {
-      const historical = municipality.emissions.find(
-        (d) => d?.year === year,
-      )?.value;
-      const approximated = municipality.approximatedHistoricalEmission.find(
-        (d) => d?.year === year,
-      )?.value;
-      const trend = municipality.trend.find((d) => d?.year === year)?.value;
-
-      return {
-        year: parseInt(year, 10),
-        total: historical,
-        trend,
-        approximated: approximated,
-      };
-    })
-    .filter((d) => d.year >= 1990 && d.year <= 2050);
-}
-
-export function getSortedMunicipalKPIValues(
-  municipalities: Municipality[],
-  kpi: KPIValue,
-) {
-  return [...municipalities].sort((a, b) => {
-    const aValue = a[kpi.key] ?? null;
-    const bValue = b[kpi.key] ?? null;
-
-    if (aValue === null && bValue === null) {
-      return 0;
-    } else if (aValue === null) {
-      return 1;
-    } else if (bValue === null) {
-      return -1;
-    }
-
-    return kpi.higherIsBetter
-      ? (bValue as number) - (aValue as number)
-      : (aValue as number) - (bValue as number);
-  });
-}
-
 export type DataPoint = {
   year: number;
   total: number | undefined;
   trend: number | undefined;
   approximated: number | undefined;
+  carbonLaw: number | undefined;
 };
 
 export interface KPIValue {

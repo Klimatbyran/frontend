@@ -79,7 +79,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
         <Line
           type="monotone"
           dataKey="approximated"
-          stroke="white"
+          stroke="grey"
           strokeWidth={2}
           strokeDasharray="4 4"
           dot={false}
@@ -97,12 +97,12 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
         />
         <Line
           type="monotone"
-          dataKey="paris"
+          dataKey="carbonLaw"
           stroke="var(--green-3)"
           strokeWidth={2}
           strokeDasharray="4 4"
           dot={false}
-          name={t("municipalities.graph.parisAgreement")}
+          name={t("municipalities.graph.carbonLaw")}
         />
         <ReferenceLine
           x={currentYear}
