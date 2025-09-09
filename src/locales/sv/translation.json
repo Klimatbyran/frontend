@@ -698,6 +698,7 @@
     },
     "sort": {
       "placeholder": "Sortera efter",
+      "meetsParis": "Klarar Parisavtalet",
       "name": "Namn",
       "aToZ": "A-Ö",
       "zToA": "Ö-A",
@@ -1065,7 +1066,7 @@
       "approximated": "Uppskattat totalt",
       "estimated": "Uppskattat",
       "trend": "Trend",
-      "carbonLaw": "Parisavtalet"
+      "carbonLaw": "Parisavtalet",
       "unit": "ton CO₂e",
       "total": "Totalt",
       "year": "År",

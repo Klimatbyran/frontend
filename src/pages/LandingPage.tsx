@@ -84,17 +84,6 @@ export function LandingPage() {
     </span>
   );
 
-  // Get municipality data for comparison
-  // const municipalityComparisonData = getMunicipalitiesForMap(10).map(
-  //   (municipality) => ({
-  //     id: municipality.id,
-  //     name: municipality.name,
-  //     value: municipality.value,
-  //     rank: "1",
-  //     change: Math.random() > 0.5 ? 5.2 : -3.4, // Mock data - replace with real change values
-  //   })
-  // );
-
   return (
     <>
       <PageSEO

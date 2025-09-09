@@ -9,7 +9,7 @@
   "co2units": {
     "title": "Unit: tCO2e",
     "content": [
-      "All emissions are shown as tonnes CO2e which stands for \"tonnes of carbon dioxide equivalent\". It's a standardized measure that converts the impact of various greenhouse gases into the equivalent amount of carbon dioxide, CO2."
+      "All emissions are shown as tonnes CO2e which stands for \"tonnes of carbon dioxide equivalent\". It's a standardized measure that converts the impact of various greenhouse gases into the equivalent amount of CO2."
     ]
   },
   "companiesHowToCompare": {
@@ -54,22 +54,22 @@
       "**Turnover** refers to the total revenue or income a company generates from its business activities — in other words, how much money it brings in before costs are deducted.\n\nFor example, a company with a turnover of £500 million has earned that amount in sales over the course of a year.\n\nTurnover helps put a company’s **emissions into perspective**. By comparing emissions to turnover, we can see how much climate impact is generated **per unit of economic activity**.\n\nThis is often referred to as **emissions intensity**, and it can help answer questions like:\n\n- Is the company growing its business while reducing its emissions?\n- How efficient is the company in terms of emissions per £1 million earned?\n\nTwo companies might emit the same amount of greenhouse gases, but if one has five times the turnover, it may be operating more efficiently — or have more resources to invest in reductions.\n\nTurnover doesn’t explain everything, but it’s a useful indicator when comparing companies of different sizes or evaluating progress over time."
     ]
   },
+  "meaningOfNetZero": {
+    "title": "What does “net-zero” actually mean?",
+    "content": [
+      "Net-zero means a company aims to reduce its greenhouse gas emissions as much as possible, and then **balance out the remaining emissions** by removing an equivalent amount from the atmosphere — often through carbon removal, tree planting, or offsetting.\n\nThis concept is central to the **Paris Agreement**, which calls on countries (and companies) to reach net-zero emissions by mid-century in order to limit global warming to **1.5°C** above pre-industrial levels.\n\nTo be credible, net-zero plans should focus on **deep, long-term emission reductions** — not just relying on offsets.\n\nIn short: true net-zero means cutting emissions at the source first, then carefully addressing what’s left."
+    ]
+  },
   "municipalityAnnualEmissionChangeSince2015": {
     "title": "Annual emission change since 2015",
     "content": [
-      "This shows the average change in your municipality’s reported emissions per year since 2015. A negative number (like -10.3%) means emissions are going down each year — which is good.\n\nBut even a strong decrease may not be fast enough to stay within the local carbon budget."
+      "This shows the average change in your municipality’s reported emissions per year since 2015. A negative number (like -10.3%) means emissions are going down each year — which is good.\n\nBut even a strong decrease may not be fast enough to stay within the Paris goal."
     ]
   },
   "municipalityBicyclePaths": {
     "title": "Bicycle Paths",
     "content": [
       "This number shows how many metres of bike path exist for each resident. It gives a general sense of how much dedicated cycling infrastructure a municipality provides.\n\nA **higher number** usually indicates stronger support for safe, accessible cycling — which can reduce emissions from car trips, improve health, and cut traffic congestion.\n\n**Why invest in bike infrastructure?**\n\n- Reduces car dependence, especially for short trips (under 5 km)\n- Cuts local air pollution and traffic noise\n- Improves health outcomes by encouraging active mobility\n- Offers a low-cost, inclusive transport option for youth and people without cars\n- Helps meet local emissions targets in a cost-effective way\n\nMunicipalities that invest in safe, connected bike paths often pair them with policies like bike parking at transit hubs, repair stations, and winter plowing of bike lanes.\n\n**Why might a municipality have less cycling infrastructure?**\n\nNot every area will prioritise bike lanes — and that’s not always a sign of neglect.\n\nSome common reasons:\n\n- Rural geography: Homes and services are spread out, making biking impractical for daily use\n- Severe winters: Harsh climate or icy roads may limit year-round cycling\n- Budget priorities: Resources may be focused on public transport, road maintenance, or other pressing infrastructure\n- Existing road network: Legacy infrastructure may not easily support bike lane additions without major upgrades\n\nEven in rural areas, though, safe routes to schools and community centres can still make cycling safer and more appealing."
-    ]
-  },
-  "municipalityCanWeExtendCarbonBudget": {
-    "title": "Can we revise or extend the carbon budget?",
-    "content": [
-      "Not really — the carbon budget is set by physics, not politics. It reflects how much CO₂e the atmosphere can absorb before we exceed 1.5 °C of warming. Once the budget is used up, we can’t negotiate for more time — overshooting just increases the risks.\n\n**What about carbon dioxide removal (CDR)?**\n\nCDR methods like biochar, direct air capture, and enhanced weathering could one day help remove CO₂ and other greenhouse gases from the atmosphere — but they are not yet available at the scale or speed needed. Most are still expensive, energy-intensive, and not widely deployed. That means we cannot rely on CDR to “buy more time” — it may help later, but it cannot replace rapid emissions cuts today.\n\n**There’s another risk:**\n\nIf the climate warms too much, natural carbon sinks like forests and peatlands may stop absorbing carbon and instead begin releasing it — turning from buffers into sources. That would shrink the remaining global budget even further, making our task even harder.\nThis is why staying within the original budget matters so much. Acting now helps protect both the climate and the natural systems that support it."
     ]
   },
   "municipalityChargingPoints": {
@@ -136,12 +136,6 @@
     "title": "Total Emissions",
     "content": [
       "This number shows the latest available year of officially reported fossil CO₂e emissions for the municipality.\n\nOfficial data is typically 1.5–2 years delayed. For an estimate of emissions in the current year, see the emissions development graph below."
-    ]
-  },
-  "municipalityWhatIsCarbonBudget": {
-    "title": "What is a carbon budget and why does it matter locally?",
-    "content": [
-      "A carbon budget is the amount of greenhouse gases a place can emit while still doing its part to limit global warming to 1.5 °C. Each municipality contributes to Sweden’s total emissions — and local choices really matter. It’s often easier to influence decisions and take action at the local level, whether through policy, infrastructure, or community initiatives. Local climate efforts build up to national change.\n\n**Ways to Get Involved:**\n- Klimatklivet – a government-supported investment fund helping municipalities, organizations, and businesses reduce greenhouse gases through local projects (e.g. cycling infrastructure, biogas, heat recovery). Funds are always disbursed through your regional County Administrative Board. ([https://www.naturvardsverket.se/amnesomraden/klimatomstallningen/klimatklivet/](https://www.naturvardsverket.se/amnesomraden/klimatomstallningen/klimatklivet/))\n- County Administrative Board’s advisory services – each county (Länsstyrelse) offers support, webinars and guidance for local climate work and for crowdfunding regional climate projects. ([https://www.lansstyrelsen.se/blekinge.html](https://www.lansstyrelsen.se/blekinge.html))\n- Local citizen proposals (medborgarförslag) – many Swedish municipalities allow residents to propose environmental initiatives (like expanding public transport or urban gardens) via their municipal website or council. Check your municipality’s “Demokrati” or “Medborgarförslag” section online.\n\nActions like joining local climate groups, submitting citizen proposals, or encouraging municipal investments can make a real difference — and add up to change across Sweden."
     ]
   },
   "municipalityWhyDataDelay": {

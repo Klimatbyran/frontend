@@ -22,7 +22,6 @@ import { useMunicipalitySectorEmissions } from "@/hooks/municipalities/useMunici
 import { MunicipalityEmissions } from "@/components/municipalities/MunicipalityEmissions";
 import { YearSelector } from "@/components/layout/YearSelector";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
-import { CARBON_LAW_REDUCTION_RATE } from "@/utils/calculations/emissions/utils";
 
 export function MunicipalityDetailPage() {
   const { t } = useTranslation();
@@ -145,10 +144,8 @@ export function MunicipalityDetailPage() {
         <SectionWithHelp
           helpItems={[
             "municipalityTotalEmissions",
-            "municipalityEmissionEstimatations",
             "municipalityWhyDataDelay",
             "municipalityDeeperChanges",
-            "municipalityCanWeExtendCarbonBudget",
             "municipalityConsumptionEmissionPerPerson",
             "municipalityLocalVsConsumption",
           ]}
@@ -169,7 +166,7 @@ export function MunicipalityDetailPage() {
               {municipality.politicalRule.join(", ")}
             </Text>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-16 mt-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-16 mt-8">
             <MunicipalityStatCard
               title={t("municipalityDetailPage.totalEmissions", {
                 year: lastYear,
@@ -191,7 +188,6 @@ export function MunicipalityDetailPage() {
                   ? "text-pink-3"
                   : "text-orange-2",
               )}
-              unit={t("emissionsUnit")}
             />
             <MunicipalityStatCard
               title={t("municipalityDetailPage.consumptionEmissionsPerCapita")}
@@ -200,6 +196,7 @@ export function MunicipalityDetailPage() {
                 currentLanguage,
               )}
               valueClassName="text-orange-2"
+              unit={t("emissionsUnit")}
             />
           </div>
         </SectionWithHelp>

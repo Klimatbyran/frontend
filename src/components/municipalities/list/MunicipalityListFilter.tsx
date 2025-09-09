@@ -9,18 +9,20 @@ import {
 } from "@/components/ui/select";
 import { regions } from "@/lib/constants/regions";
 import { t } from "i18next";
-
-type SortOption = "meets_paris" | "name";
+import {
+  MunicipalitySortBy,
+  MunicipalitySortDirection,
+} from "@/types/municipality";
 
 interface MunicipalityFilterProps {
   selectedRegion: string;
   setSelectedRegion: (region: string) => void;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
-  sortBy: SortOption;
-  setSortBy: (sort: SortOption) => void;
-  sortDirection: "best" | "worst";
-  setSortDirection: (direction: "best" | "worst") => void;
+  sortBy: MunicipalitySortBy;
+  setSortBy: (sort: MunicipalitySortBy) => void;
+  sortDirection: MunicipalitySortDirection;
+  setSortDirection: (direction: MunicipalitySortDirection) => void;
 }
 
 export default function MunicipalityFilter({
@@ -72,11 +74,10 @@ export default function MunicipalityFilter({
           </SelectContent>
         </Select>
 
-        {/* fixme add sorting in follow up PR */}
         {/* Sorting Select */}
-        {/* <Select
+        <Select
           value={sortBy}
-          onValueChange={(value) => setSortBy(value as SortOption)}
+          onValueChange={(value) => setSortBy(value as MunicipalitySortBy)}
         >
           <SelectTrigger className="w-full md:w-[250px] h-10 bg-black-1">
             <SelectValue
@@ -84,14 +85,17 @@ export default function MunicipalityFilter({
             />
           </SelectTrigger>
           <SelectContent>
+            <SelectItem value="meets_paris">
+              {t("municipalitiesComparePage.sort.meetsParis")}
+            </SelectItem>
             <SelectItem value="name">
               {t("municipalitiesComparePage.sort.name")}
             </SelectItem>
           </SelectContent>
-        </Select> */}
+        </Select>
 
         {/* Sort Direction Button */}
-        {/* <button
+        <button
           onClick={() =>
             setSortDirection(sortDirection === "best" ? "worst" : "best")
           }
@@ -104,7 +108,7 @@ export default function MunicipalityFilter({
             : sortDirection === "best"
               ? t("municipalitiesComparePage.sort.bestFirst")
               : t("municipalitiesComparePage.sort.worstFirst")}
-        </button> */}
+        </button>
       </div>
     </div>
   );

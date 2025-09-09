@@ -29,8 +29,6 @@ export const MunicipalityEmissions: FC<MunicipalityEmissionsProps> = ({
       helpItems={[
         "municipalityEmissionEstimatations",
         "municipalityWhyDataDelay",
-        "municipalityDeeperChanges",
-        "municipalityCanWeExtendCarbonBudget",
         "parisAgreementLine",
         "municipalityImportanceOfEmissionSources",
       ]}

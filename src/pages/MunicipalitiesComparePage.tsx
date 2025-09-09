@@ -5,16 +5,19 @@ import { MunicipalityList } from "@/components/municipalities/list/MunicipalityL
 import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/layout/PageHeader";
 import MunicipalityFilter from "@/components/municipalities/list/MunicipalityListFilter";
-
-type SortOption = "meets_paris" | "name";
+import {
+  MunicipalitySortBy,
+  MunicipalitySortDirection,
+} from "@/types/municipality";
 
 export function MunicipalitiesComparePage() {
   const { t } = useTranslation();
   const { municipalities, loading, error } = useMunicipalities();
   const [selectedRegion, setSelectedRegion] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
-  const [sortBy, setSortBy] = useState<SortOption>("meets_paris");
-  const [sortDirection, setSortDirection] = useState<"best" | "worst">("best");
+  const [sortBy, setSortBy] = useState<MunicipalitySortBy>("meets_paris");
+  const [sortDirection, setSortDirection] =
+    useState<MunicipalitySortDirection>("best");
 
   if (loading) {
     return (

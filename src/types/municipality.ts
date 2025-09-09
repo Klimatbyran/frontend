@@ -87,3 +87,6 @@ export type SectorEmissions = {
     [sector: string]: number;
   };
 };
+
+export type MunicipalitySortBy = "meets_paris" | "name";
+export type MunicipalitySortDirection = "best" | "worst";
