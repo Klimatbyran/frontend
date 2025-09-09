@@ -1,6 +1,9 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { formatEmissionsAbsolute, formatPercent } from "@/utils/formatting/localization";
+import {
+  formatEmissionsAbsolute,
+  formatPercent,
+} from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
 import {
   Tooltip,
@@ -89,7 +92,7 @@ const MunicipalitySectorLegend: React.FC<LegendProps> = ({
                           Math.round(entry.value),
                           currentLanguage,
                         )}{" "}
-                        {t("emissionsUnitCO2")}
+                        {t("emissionsUnit")}
                       </span>
                       <span>{percentage}</span>
                     </div>

@@ -149,13 +149,14 @@ export function MunicipalityDetailPage() {
             "municipalityWhyDataDelay",
             "municipalityDeeperChanges",
             "municipalityCanWeExtendCarbonBudget",
-            "municipalityDeeperChanges",
             "municipalityConsumptionEmissionPerPerson",
             "municipalityLocalVsConsumption",
           ]}
         >
           <Text className="text-4xl md:text-8xl">{municipality.name}</Text>
-          <Text className="text-grey">{municipality.region}</Text>
+          <Text className="text-grey text-sm md:text-base lg:text-lg">
+            {municipality.region}
+          </Text>
 
           <div className="flex flex-row items-center gap-2 my-4">
             <Text
@@ -174,7 +175,7 @@ export function MunicipalityDetailPage() {
                 year: lastYear,
               })}
               value={lastYearEmissionsTon}
-              unit={t("emissionsUnitCO2")}
+              unit={t("emissionsUnit")}
               valueClassName="text-orange-2"
               info={true}
               infoText={t("municipalityDetailPage.totalEmissionsTooltip")}
@@ -189,7 +190,8 @@ export function MunicipalityDetailPage() {
                 municipality.historicalEmissionChangePercent > 0
                   ? "text-pink-3"
                   : "text-orange-2",
-              )}
+              unit={t("emissionsUnit")}
+              valueClassName="text-orange-2"
             />
             <MunicipalityStatCard
               title={t("municipalityDetailPage.consumptionEmissionsPerCapita")}
