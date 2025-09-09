@@ -1,13 +1,6 @@
 import { Text } from "@/components/ui/text";
-import { DataViewSelector } from "./DataViewSelector";
-import { Info } from "lucide-react";
-import {
-  Tooltip as UITooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import useContainerQuery from "@/hooks/useContainerQuery";
+import { InfoTooltip } from "@/components/layout/InfoTooltip";
 
 interface ChartHeaderProps {
   title: string;
@@ -38,16 +31,9 @@ export default function ChartHeader({
         <div className="space-y-2">
           <div className="flex items-center gap-2">
             <Text variant="h3">{title}</Text>
-            <TooltipProvider>
-              <UITooltip>
-                <TooltipTrigger>
-                  <Info className="w-4 h-4 text-grey" />
-                </TooltipTrigger>
-                <TooltipContent className="max-w-96">
-                  <p>{tooltipContent}</p>
-                </TooltipContent>
-              </UITooltip>
-            </TooltipProvider>
+            <InfoTooltip ariaLabel="Information about this chart">
+              <p>{tooltipContent}</p>
+            </InfoTooltip>
           </div>
           <Text variant="body">{unit}</Text>
         </div>

@@ -1,11 +1,6 @@
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { InfoTooltip } from "@/components/layout/InfoTooltip";
 import { cn } from "@/lib/utils";
-import { Info, TrendingUpDown } from "lucide-react";
+import { TrendingUpDown } from "lucide-react";
 
 interface CardInfoProps {
   title: string;
@@ -27,16 +22,9 @@ export function CardInfo({
       <div className="flex items-center gap-2 text-grey mb-2 text-lg">
         <TrendingUpDown className="w-4 h-4" />
         <span>{title}</span>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              <Info className="w-4 h-4" />
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>{tooltip}</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        <InfoTooltip ariaLabel="Additional information on total emissions">
+          <p>{tooltip}</p>
+        </InfoTooltip>
       </div>
       <div className="text-3xl font-light">
         <span className={cn(textColor)}>
