@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 import type { Municipality } from "@/types/municipality";
@@ -9,6 +8,7 @@ import {
 } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
 import { LinkCard } from "@/components/ui/link-card";
+import { LocalizedLink } from "@/components/LocalizedLink";
 
 interface MunicipalityCardProps {
   municipality: Municipality;
@@ -34,7 +34,7 @@ export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
   const noClimatePlan = !municipality.climatePlanLink;
 
   return (
-    <Link
+    <LocalizedLink
       to={`/municipalities/${municipality.name}`}
       className="block bg-black-2 rounded-level-2 p-8 space-y-8 transition-all duration-300 hover:shadow-[0_0_10px_rgba(153,207,255,0.15)] hover:bg-[#1a1a1a]"
     >
@@ -91,6 +91,6 @@ export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
         }
         descriptionColor={noClimatePlan ? "text-pink-3" : "text-green-3"}
       />
-    </Link>
+    </LocalizedLink>
   );
 }
