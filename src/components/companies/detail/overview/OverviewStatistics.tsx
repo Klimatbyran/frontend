@@ -36,7 +36,7 @@ export function OverviewStatistics({
                   ? `${localizeUnit(
                       selectedPeriod.economy.turnover.value / 1e9,
                       currentLanguage,
-                    )} mdr ${selectedPeriod.economy.turnover.currency}`
+                    )} ${t("companies.overview.billion")} ${selectedPeriod.economy.turnover.currency}`
                   : t("companies.overview.notReported")}
               </Text>
               {turnoverAIGenerated && <AiIcon size="md" />}
