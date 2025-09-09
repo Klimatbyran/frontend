@@ -7,10 +7,11 @@ import { DataCollectionProcessContent } from "./content/DataCollectionProcess";
 import { EmissionsAndCategoriesContent } from "./content/EmissionsCategories";
 import { HistoricalDataContent } from "./content/HistoricalData";
 import { ParisAgreementContent } from "./content/ParisAgreementContent";
-import { CO2BudgetsContent } from "./content/CO2BudgetsContent";
 import { EmissionTypesContent } from "./content/EmissionTypesContent";
 import { CalculationsContent } from "./content/CalculationsContent";
 import { CarbonLawContent } from "./content/CarbonLaw";
+import { MunicipalityDataOverviewContent } from "./content/MunicipalityDataOverview";
+import { MunicipalityKPIsContent } from "./content/MunicipalityKPIsContent";
 
 interface MethodologyContentProps {
   method: string;
@@ -48,14 +49,17 @@ export const MethodologyContent = forwardRef<
       case "parisAgreement":
         return <ParisAgreementContent />;
 
-      case "co2Budgets":
-        return <CO2BudgetsContent />;
-
       case "carbonLaw":
         return <CarbonLawContent />;
 
       case "emissionTypes":
         return <EmissionTypesContent />;
+
+      case "municipalityDataOverview":
+        return <MunicipalityDataOverviewContent />;
+
+      case "municipalityKPIs":
+        return <MunicipalityKPIsContent />;
 
       case "companyDataOverview":
         return <CompanyDataOverviewContent />;

@@ -2,7 +2,6 @@
   "yes": "Yes",
   "no": "No",
   "emissionsUnit": "tCO₂e",
-  "emissionsUnitCO2": "tCO₂",
   "header": {
     "companies": "Companies",
     "municipalities": "Municipalities",
@@ -363,18 +362,6 @@
           "text": "Read more about the Paris Agreement on the Swedish Environmental Protection Agency's website."
         }
       },
-      "co2Budgets": {
-        "title": "Carbon Budgets",
-        "description": "Understand how carbon budgets are calculated and allocated",
-        "paragraph1": "A carbon budget represents the amount of carbon dioxide that can be emitted before atmospheric CO₂ levels rise high enough to exceed the Paris Agreement's 1.5°C target.",
-        "paragraph2": "According to a <0>calculation</0> by researchers at Uppsala University and the Tyndall Centre in the UK, as of 2024, approximately 340 gigatonnes of CO₂ remain globally for a 50% chance of keeping temperature rise below 1.5°C. At the current rate of emissions, this global budget will be depleted in about eight years.",
-        "paragraph3": "Using this global budget, the researchers have also estimated Sweden's national carbon budget for a fair climate transition.",
-        "paragraph4": "Their calculations show that, from January 2024, Sweden has a national carbon allowance of 80 million tonnes to stay on track for the 1.5°C target. For an 83% chance of keeping warming below 2°C, the budget increases to 285 million tonnes. By comparison, Sweden's total greenhouse gas emissions in 2022 were 45.2 million tonnes.",
-        "paragraph5": "At Sweden's current rate of emissions, the 1.5°C carbon budget will be used up in 1.8 years, while the 2°C budget will last 6.4 years. To stay within the 1.5°C target, Sweden must cut emissions by at least 35% per year starting in 2024. If aiming for the 2°C target, annual reductions of at least 13.5% are needed.",
-        "paragraph6": "Klimatkollen has allocated the new national carbon budget (80 million tonnes, including emissions from international aviation and shipping) to Sweden's municipalities, using the same method that was applied to break down the global budget nationally.",
-        "paragraph7": "These local carbon budgets enable comparisons between actual emissions and the reductions needed. Klimatkollen presents carbon budgets for municipalities both as numerical values and as development curves, illustrating the necessary decline in emissions to stay in line with the Paris Agreement.",
-        "paragraph8": "In addition to the Tyndall model used by Klimatkollen, there are other approaches to calculating a national carbon budget. For example, see Chalmers <0>here</0>."
-      },
       "carbonLaw": {
         "title": "Carbon Law",
         "description": "Understand how Klimatkollen applies Carbon Law to company and municipality data",
@@ -485,6 +472,28 @@
       }
     },
     "municipality": {
+      "municipalityDataOverview": {
+        "title": "Municipality Data Overview",
+        "description": "What data we collect and present about the municipalities",
+        "paragraph1": "Klimatkollen shows emissions data on Sweden's municipalities, with SMHI's national emissions database as our primary source. To make our municipal and company data comparable, emissions of all greenhouse gases (CO₂e) are shown since August 2025, not just CO₂.",
+        "paragraph2": "We also show how emissions would need to decrease to meet the Paris Agreement. Previously, this was based on local carbon budgets derived from a national budget calculated by researchers at Uppsala University and the Tyndall Centre in the UK. Since August 2025, we have switched to use the 'Paris Curve' based on an updated <0>Carbon Law</0>.",
+        "paragraph3": "The forecast for future emissions is based on how emissions in each municipality have developed historically since the Paris Agreement in 2015. The trend line is weighted using the statistical method Least Absolute Deviations (LAD), which gives less weight to individual extreme values and provides a more fair and realistic picture of future emissions.",
+        "paragraph4": "Alongside emissions data, Klimatkollen presents key indicators of municipal performance in the energy transition and emissions reductions, such as growth with EVs and bicycle lanes."
+      },
+      "municipalityKPIs": {
+        "title": "Municipality KPIs",
+        "description": "What data we collect and present about the municipalities",
+        "paragraph1": "In addition to showing whether emissions are on track with the Paris Agreement, we also present data on the progress of different transition measures in the municipalities.",
+        "paragraph2": "We have based our criteria on municipal responsibility, impact on emissions, breadth of areas, and access to stable data. So far, using these criteria, we have presented data on the following key figures:",
+        "list": {
+          "evs": "Electric vehicles - The increase in the municipalities for the proportion of newly registered electric vehicles",
+          "consumption": "Consumption - The household's consumption emissions in tonnes per resident and municipality",
+          "chargers": "Chargers - The number of electric vehicles per public charging point per municipality",
+          "bicycles": "Bicycles - Metres of cycling paths per resident, per municipality",
+          "plans": "Plans - Which municipalities have an ongoing climate action plan",
+          "procurements": "Procurements - Which municipalities have placed climate requirements in public procurement"
+        }
+      },
       "sources": {
         "title": "Our Sources",
         "description": "Explore the publicly available sources and verified data used by Klimatkollen",
@@ -542,12 +551,6 @@
             "link": "https://docs.google.com/spreadsheets/d/1EdHUa49HJZn0rXqM-6tChdim4TJzXnwA/edit#gid=1040317160"
           }
         }
-      },
-      "calculations": {
-        "title": "Our Calculations",
-        "description": "Understand how we calculate and analyse climate data",
-        "paragraph1": "The emissions data for municipalities is based on SMHI's national emissions database for the years 1990–2022. For 2022–2024, emissions have been approximated based on historical trends to provide data up to the present day.",
-        "paragraph2": "<0>Here</0> you can read an example of how we calculate key figures for municipal emissions (link in Swedish)."
       }
     }
   },
@@ -728,7 +731,7 @@
       "sectors": "Emission sources"
     },
     "noParisPath": "The municipality's carbon budget has been exhausted, which means that no Paris Agreement line is shown in the graph below",
-    "inTons": "In tons CO₂",
+    "inTons": "In tons CO₂e",
     "futureEmissions": "Future emissions",
     "annualChangeSince2015": "Annual emission change since 2015",
     "reductionToMeetParis": "Emission reduction to meet the Paris Agreement",
@@ -1058,7 +1061,7 @@
       "budgetRunsOut": "Carbon budget runs out",
       "emissionRanking": "EMISSION RANKING",
       "emission": "Emissions {{year}}",
-      "emissionInfo": "The municipality's CO₂ emissions for the year {{year}}.",
+      "emissionInfo": "The municipality's CO₂e emissions for the year {{year}}.",
       "changeRate": "Change Rate",
       "changeRateInfo": "Change rate of emissions since the Paris Agreement was signed in 2015.",
       "climatePlan": "Climate Plan",
@@ -1074,7 +1077,7 @@
       "trend": "Trend",
       "parisAgreement": "Paris Agreement",
       "paris": "Paris Agreement",
-      "unit": "tons CO₂",
+      "unit": "tons CO₂e",
       "total": "Total",
       "year": "Year",
       "estimatedValue": "Emissions value is estimated",
@@ -1099,7 +1102,7 @@
         "historicalEmissionChangePercent": {
           "label": "Emissions",
           "description": "Historical change in emissions",
-          "detailedDescription": "Average annual change in carbon dioxide emissions in Swedish municipalities since the Paris Agreement in 2015.",
+          "detailedDescription": "Average annual change in greenhouse gas emissions in Swedish municipalities since the Paris Agreement in 2015.",
           "source": "<0>National Emissions Database</0>"
         },
         "electricCarChangePercent": {

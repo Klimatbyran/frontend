@@ -2,7 +2,6 @@
   "yes": "Ja",
   "no": "Nej",
   "emissionsUnit": "tCO₂e",
-  "emissionsUnitCO2": "tCO₂",
   "header": {
     "companies": "Företag",
     "municipalities": "Kommuner",
@@ -363,18 +362,6 @@
           "text": "Läs mer om Parisavtalet på Naturvårdsverkets webbplats."
         }
       },
-      "co2Budgets": {
-        "title": "Koldioxidbudgeter",
-        "description": "Förstå hur koldioxidbudgeter beräknas och fördelas",
-        "paragraph1": "En koldioxidbudget representerar den mängd koldioxid som kan släppas ut innan atmosfärens CO₂-nivåer blir så höga att Parisavtalets 1,5°C-mål överskrids.",
-        "paragraph2": "Enligt en <0>beräkning</0> av forskare vid Uppsala universitet och Tyndall Centre i Storbritannien återstår det globalt cirka 340 gigaton CO₂ för en 50% chans att hålla temperaturökningen under 1,5°C (2024). Med nuvarande utsläppstakt är denna globala budget förbrukad om cirka åtta år.",
-        "paragraph3": "Med denna globala budget har forskarna även uppskattat Sveriges nationella koldioxidbudget för en rättvis klimatomställning.",
-        "paragraph4": "Deras beräkningar visar att Sverige från januari 2024 har en nationell koldioxidtilldelning på 80 miljoner ton för att hålla sig på rätt spår mot 1,5°C-målet. För en 83% chans att hålla uppvärmningen under 2°C ökar budgeten till 285 miljoner ton. Som jämförelse var Sveriges totala växthusgasutsläpp 2022 45,2 miljoner ton.",
-        "paragraph5": "Med Sveriges nuvarande utsläppstakt är 1,5°C-budgeten förbrukad om 1,8 år, medan 2°C-budgeten räcker i 6,4 år. För att hålla sig inom 1,5°C-målet måste Sverige minska utsläppen med minst 35% per år från 2024. Om målet är 2°C krävs årliga minskningar på minst 13,5%.",
-        "paragraph6": "Klimatkollen har fördelat den nya nationella koldioxidbudgeten (80 miljoner ton, inklusive utsläpp från internationellt flyg och sjöfart) på Sveriges kommuner, med samma metod som användes för att dela upp den globala budgeten nationellt.",
-        "paragraph7": "Dessa lokala koldioxidbudgeter möjliggör jämförelser mellan faktiska utsläpp och de minskningar som krävs. Klimatkollen presenterar koldioxidbudgeter för kommuner både som numeriska värden och som utvecklingskurvor, vilket illustrerar den nödvändiga minskningen av utsläpp för att hålla sig i linje med Parisavtalet.",
-        "paragraph8": "Förutom Tyndall-modellen som används av Klimatkollen finns andra sätt att beräkna en nationell koldioxidbudget. Se till exempel Chalmers <0>här</0>."
-      },
       "carbonLaw": {
         "title": "Carbon Law",
         "description": " Läs om hur Klimatkollen använder Carbon Law för att visa hur utsläppen behöver minska för att nå Parisavtalet",
@@ -486,6 +473,28 @@
       }
     },
     "municipality": {
+      "municipalityDataOverview": {
+        "title": "Kommunsdata översikt",
+        "description": "Vilken data vi samlar in och presenterar om kommunerna",
+        "paragraph1": "Klimatkollen visar data om utsläpp i Sveriges kommuner, med SMHI:s Nationella emissionsdatabas som främsta källa. För att vår kommundata och företagsdata ska vara jämförbara visas sedan augusti 2025 utsläpp av alla växthusgaser (CO₂e) inte enbart koldioxid.",
+        "paragraph2": "Vi visar även hur utsläppen skulle behöva minska för att klara Parisavtalet. Tidigare användes lokala koldioxidbudgetar, baserade på en nationell budget framtagen av forskare vid Uppsala universitet och Tyndall Centre i Storbritannien. Sedan augusti 2025 baserar vi istället ”Pariskurvan” på <0>Carbon Law</0>.",
+        "paragraph3": "Prognosen för framtida utsläpp baseras på hur utsläppen i respektive kommun har utvecklats historiskt sedan Parisavtalet 2015. Trendlinjen viktas enligt den statistiska metoden Least absolute deviations (LDA), som ger mindre vikt åt enskilda extremvärden och en mer rättvis och realistisk bild av de framtida utsläppen.",
+        "paragraph4": "Utöver utsläppsdata visas även nyckeltal för hur det går i kommunerna med att ställa om och minska utsläppen."
+      },
+      "municipalityKPIs": {
+        "title": "Nyckeltal omställning i kommunerna",
+        "description": "Här förklaras vilken data vi visar om klimatomställningen i kommunerna",
+        "paragraph1": "Utöver data om hur det går med utsläppen jämfört med hur det behöver gå enligt Parisavtalet, så visar vi även data om hur det går med olika delomställningar som behöver ske för att minska utsläppen i kommunerna.",
+        "paragraph2": "Vi har utgått ifrån kommunal rådighet, påverkan på utsläppen, bredd av områden och tillgång till stabil data. Utifrån dessa kriterier har vi hittills presenterat data om följande nyckeltal.",
+        "list": {
+          "evs": "Elbilarna. Ökningstakten i kommunerna för andelen nyregistrerade laddbara bilar",
+          "consumption": "Konsumtionen. Hushållens konsumtionsutsläpp i ton per invånare och kommun",
+          "chargers": "Laddarna. Antal elbilar per publik laddningspunkt per kommun",
+          "bicycles": "Cyklarna. Antal meter cykelväg per invånare per kommun",
+          "plans": "Planerna. Vilka kommuner har en gällande klimathandlingsplan",
+          "procurements": "Upphandlingarna. Vilka kommuner ställer klimatkrav vid offentliga upphandlingar"
+        }
+      },
       "sources": {
         "title": "Våra källor",
         "description": "Utforska de offentligt tillgängliga källorna och verifierade data som används av Klimatkollen",
@@ -543,12 +552,6 @@
             "link": "https://docs.google.com/spreadsheets/d/1EdHUa49HJZn0rXqM-6tChdim4TJzXnwA/edit#gid=1040317160"
           }
         }
-      },
-      "calculations": {
-        "title": "Våra beräkningar",
-        "description": "Förstå hur vi beräknar och analyserar klimatdata",
-        "paragraph1": "Kommunernas utsläppsdata baseras på SMHI:s nationella utsläppsdatabas för åren 1990–2022. För 2022–2024 har utsläppen uppskattats utifrån historiska trender för att tillhandahålla data fram till idag.",
-        "paragraph2": "<0>Här</0> kan du läsa ett exempel på hur vi beräknar nyckeltal för kommunala utsläpp (länk på svenska)."
       }
     }
   },
@@ -728,7 +731,7 @@
       "sectors": "Utsläppskällor"
     },
     "noParisPath": "Kommunens koldioxidbudget är förbrukad, vilket innebär att ingen linje för Parisavtalet visas i grafen nedan",
-    "inTons": "I ton CO₂",
+    "inTons": "I ton CO₂e",
     "futureEmissions": "Framtida utsläpp",
     "annualChangeSince2015": "Årlig utsläppsförändring sedan 2015",
     "reductionToMeetParis": "Utsläppsminskning för att klara Parisavtalet",
@@ -1058,7 +1061,7 @@
       "budgetRunsOut": "Koldioxidbudgeten tar slut",
       "emissionRanking": "UTSLÄPPSRANKING",
       "emission": "Utsläpp {{year}}",
-      "emissionInfo": "Kommunens utsläpp av CO₂ för år {{year}}.",
+      "emissionInfo": "Kommunens utsläpp av CO₂e för år {{year}}.",
       "changeRate": "Förändringstakt",
       "changeRateInfo": "Förändringstakt för utsläppen sedan Parisavtalet tecknades 2015.",
       "climatePlan": "Klimatplan",
@@ -1074,7 +1077,7 @@
       "trend": "Trend",
       "parisAgreement": "Parisavtalet",
       "paris": "Parisavtalet",
-      "unit": "tons CO₂",
+      "unit": "ton CO₂e",
       "total": "Totalt",
       "year": "År",
       "estimatedValue": "Utsläppsvärdet är uppskattat",
@@ -1099,7 +1102,7 @@
         "historicalEmissionChangePercent": {
           "label": "Utsläppen",
           "description": "Historisk förändring av utsläpp",
-          "detailedDescription": "Genomsnittlig årlig förändring av koldioxidutsläppen i Sveriges kommuner sedan Parisavtalet 2015",
+          "detailedDescription": "Genomsnittlig årlig förändring av växthusgasutsläppen i Sveriges kommuner sedan Parisavtalet 2015",
           "source": "<0>Nationella emissionsdatabasen</0>"
         },
         "electricCarChangePercent": {
