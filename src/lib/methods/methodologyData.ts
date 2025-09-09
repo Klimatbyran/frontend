@@ -14,13 +14,13 @@ export type MethodologySectionType = {
 export const methodologySections: MethodologySectionType = {
   general: [
     { id: "parisAgreement", category: "general" },
-    { id: "co2Budgets", category: "general" },
     { id: "carbonLaw", category: "general" },
     { id: "emissionTypes", category: "general" },
   ],
   municipality: [
+    { id: "municipalityDataOverview", category: "municipality" },
     { id: "sources", category: "municipality" },
-    { id: "calculations", category: "municipality" },
+    { id: "municipalityKPIs", category: "municipality" },
   ],
   company: [
     { id: "companyDataOverview", category: "company" },
