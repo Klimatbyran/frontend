@@ -1,13 +1,17 @@
 import { CardGrid } from "@/components/CardGrid";
 import { MunicipalityCard } from "./MunicipalityCard";
-import type { Municipality } from "@/types/municipality";
+import type {
+  Municipality,
+  MunicipalitySortBy,
+  MunicipalitySortDirection,
+} from "@/types/municipality";
 
 interface MunicipalityListProps {
   municipalities: Municipality[];
   selectedRegion: string;
   searchQuery: string;
-  sortBy: "meets_paris" | "name";
-  sortDirection: "best" | "worst";
+  sortBy: MunicipalitySortBy;
+  sortDirection: MunicipalitySortDirection;
 }
 export function MunicipalityList({
   municipalities,
