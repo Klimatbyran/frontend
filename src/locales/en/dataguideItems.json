@@ -7,9 +7,9 @@
     ]
   },
   "co2units": {
-    "title": "Units: tCO2 & tCO2e",
+    "title": "Unit: tCO2e",
     "content": [
-      "All emissions are shown as tonnes CO2 or tonnes CO2e which stands for \"tonnes of carbon dioxide equivalent\". It's a standardized measure that converts the impact of various greenhouse gases into the equivalent amount of CO2."
+      "All emissions are shown as tonnes CO2e which stands for \"tonnes of carbon dioxide equivalent\". It's a standardized measure that converts the impact of various greenhouse gases into the equivalent amount of carbon dioxide, CO2."
     ]
   },
   "companiesHowToCompare": {
@@ -69,7 +69,7 @@
   "municipalityCanWeExtendCarbonBudget": {
     "title": "Can we revise or extend the carbon budget?",
     "content": [
-      "Not really — the carbon budget is set by physics, not politics. It reflects how much CO₂ the atmosphere can absorb before we exceed 1.5 °C of warming. Once the budget is used up, we can’t negotiate for more time — overshooting just increases the risks.\n\n**What about carbon dioxide removal (CDR)?**\n\nCDR methods like biochar, direct air capture, and enhanced weathering could one day help remove CO₂ from the atmosphere — but they are not yet available at the scale or speed needed. Most are still expensive, energy-intensive, and not widely deployed. That means we cannot rely on CDR to “buy more time” — it may help later, but it cannot replace rapid emissions cuts today.\n\n**There’s another risk:**\n\nIf the climate warms too much, natural carbon sinks like forests and peatlands may stop absorbing carbon and instead begin releasing it — turning from buffers into sources. That would shrink the remaining global budget even further, making our task even harder.\nThis is why staying within the original budget matters so much. Acting now helps protect both the climate and the natural systems that support it."
+      "Not really — the carbon budget is set by physics, not politics. It reflects how much CO₂e the atmosphere can absorb before we exceed 1.5 °C of warming. Once the budget is used up, we can’t negotiate for more time — overshooting just increases the risks.\n\n**What about carbon dioxide removal (CDR)?**\n\nCDR methods like biochar, direct air capture, and enhanced weathering could one day help remove CO₂ and other greenhouse gases from the atmosphere — but they are not yet available at the scale or speed needed. Most are still expensive, energy-intensive, and not widely deployed. That means we cannot rely on CDR to “buy more time” — it may help later, but it cannot replace rapid emissions cuts today.\n\n**There’s another risk:**\n\nIf the climate warms too much, natural carbon sinks like forests and peatlands may stop absorbing carbon and instead begin releasing it — turning from buffers into sources. That would shrink the remaining global budget even further, making our task even harder.\nThis is why staying within the original budget matters so much. Acting now helps protect both the climate and the natural systems that support it."
     ]
   },
   "municipalityChargingPoints": {
@@ -135,13 +135,13 @@
   "municipalityTotalEmissions": {
     "title": "Total Emissions",
     "content": [
-      "This number shows the latest available year of officially reported fossil CO₂ emissions for the municipality.\n\nOfficial data is typically 1.5–2 years delayed. For an estimate of emissions in the current year, see the emissions development graph below."
+      "This number shows the latest available year of officially reported fossil CO₂e emissions for the municipality.\n\nOfficial data is typically 1.5–2 years delayed. For an estimate of emissions in the current year, see the emissions development graph below."
     ]
   },
   "municipalityWhatIsCarbonBudget": {
     "title": "What is a carbon budget and why does it matter locally?",
     "content": [
-      "A carbon budget is the amount of CO₂ a place can emit while still doing its part to limit global warming to 1.5 °C. Each municipality contributes to Sweden’s total emissions — and local choices really matter. It’s often easier to influence decisions and take action at the local level, whether through policy, infrastructure, or community initiatives. Local climate efforts build up to national change.\n\n**Ways to Get Involved:**\n- Klimatklivet – a government-supported investment fund helping municipalities, organizations, and businesses reduce greenhouse gases through local projects (e.g. cycling infrastructure, biogas, heat recovery). Funds are always disbursed through your regional County Administrative Board. ([https://www.naturvardsverket.se/amnesomraden/klimatomstallningen/klimatklivet/](https://www.naturvardsverket.se/amnesomraden/klimatomstallningen/klimatklivet/))\n- County Administrative Board’s advisory services – each county (Länsstyrelse) offers support, webinars and guidance for local climate work and for crowdfunding regional climate projects. ([https://www.lansstyrelsen.se/blekinge.html](https://www.lansstyrelsen.se/blekinge.html))\n- Local citizen proposals (medborgarförslag) – many Swedish municipalities allow residents to propose environmental initiatives (like expanding public transport or urban gardens) via their municipal website or council. Check your municipality’s “Demokrati” or “Medborgarförslag” section online.\n\nActions like joining local climate groups, submitting citizen proposals, or encouraging municipal investments can make a real difference — and add up to change across Sweden."
+      "A carbon budget is the amount of greenhouse gases a place can emit while still doing its part to limit global warming to 1.5 °C. Each municipality contributes to Sweden’s total emissions — and local choices really matter. It’s often easier to influence decisions and take action at the local level, whether through policy, infrastructure, or community initiatives. Local climate efforts build up to national change.\n\n**Ways to Get Involved:**\n- Klimatklivet – a government-supported investment fund helping municipalities, organizations, and businesses reduce greenhouse gases through local projects (e.g. cycling infrastructure, biogas, heat recovery). Funds are always disbursed through your regional County Administrative Board. ([https://www.naturvardsverket.se/amnesomraden/klimatomstallningen/klimatklivet/](https://www.naturvardsverket.se/amnesomraden/klimatomstallningen/klimatklivet/))\n- County Administrative Board’s advisory services – each county (Länsstyrelse) offers support, webinars and guidance for local climate work and for crowdfunding regional climate projects. ([https://www.lansstyrelsen.se/blekinge.html](https://www.lansstyrelsen.se/blekinge.html))\n- Local citizen proposals (medborgarförslag) – many Swedish municipalities allow residents to propose environmental initiatives (like expanding public transport or urban gardens) via their municipal website or council. Check your municipality’s “Demokrati” or “Medborgarförslag” section online.\n\nActions like joining local climate groups, submitting citizen proposals, or encouraging municipal investments can make a real difference — and add up to change across Sweden."
     ]
   },
   "municipalityWhyDataDelay": {
