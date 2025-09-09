@@ -8,6 +8,7 @@ export type DataGuideItemId =
   | "companyRealChange"
   | "companySectors"
   | "companyTurnover"
+  | "meaningOfNetZero"
   | "municipalityAnnualEmissionChangeSince2015"
   | "municipalityBicyclePaths"
   | "municipalityCanWeExtendCarbonBudget"

@@ -16,7 +16,6 @@ interface MunicipalityCardProps {
 
 export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
   const { t } = useTranslation();
-  const meetsParis = false; // fixme!
   const { currentLanguage } = useLanguage();
 
   const lastYearEmission = municipality.emissions.at(-1);
@@ -50,28 +49,13 @@ export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
           <div className="text-3xl font-light">{municipality.rank}</div>
         </div> */}
       </div>
-
-      <div className="space-y-2">
-        <div className="text-sm text-grey">
-          {t("municipalities.card.meetsParis", { name: municipality.name })}
-        </div>
-        <div
-          className={cn(
-            "text-3xl font-light",
-            meetsParis ? "text-green-3" : "text-pink-3",
-          )}
-        >
-          {meetsParis ? t("yes") : t("no")}
-        </div>
-      </div>
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-black-1">
         <CardInfo
           title={t("municipalities.card.emission", { year: lastYear })}
           tooltip={t("municipalities.card.emissionInfo", { year: lastYear })}
           value={lastYearEmissions}
           textColor="text-orange-2"
-          unit={t("emissionsUnitCO2")}
+          unit={t("emissionsUnit")}
         />
         <CardInfo
           title={t("municipalities.card.changeRate")}

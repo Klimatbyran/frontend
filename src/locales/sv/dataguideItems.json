@@ -7,9 +7,9 @@
     ]
   },
   "co2units": {
-    "title": "Vad är tCO₂ & tCO₂e?",
+    "title": "Vad är tCO₂e?",
     "content": [
-      "Alla utsläpp visas som ton CO₂ eller ton CO₂e vilket står för \"ton koldioxidekvivalenter\". Det är ett standardiserat mått som omvandlar påverkan av olika växthusgaser till motsvarande mängd CO₂."
+      "Alla utsläpp visas som ton CO₂e vilket står för \"ton koldioxidekvivalenter\". Det är ett standardiserat mått som omvandlar påverkan av olika växthusgaser till motsvarande mängd koldioxid (CO₂)."
     ]
   },
   "companiesHowToCompare": {
@@ -57,7 +57,7 @@
   "municipalityAnnualEmissionChangeSince2015": {
     "title": "Årlig utsläppsförändring sedan 2015",
     "content": [
-      "Detta visar den genomsnittliga förändringen av utsläppen i kommunenper år sedan 2015. Ett negativt tal (som -10,3 %) betyder att utsläppen minskar varje år – vilket är positivt.\n\nMen även en stor minskning kan vara för långsam för att hålla sig inom koldioxidbudgeten."
+      "Detta visar den genomsnittliga förändringen av utsläppen i kommunenper år sedan 2015. Ett negativt tal (som -10,3 %) betyder att utsläppen minskar varje år – vilket är positivt.\n\nMen även en stor minskning kan vara för långsam för att hålla sig inom Parisavtalets mål."
     ]
   },
   "municipalityBicyclePaths": {
@@ -135,13 +135,13 @@
   "municipalityTotalEmissions": {
     "title": "Totala utsläpp",
     "content": [
-      "Detta är det senaste året med tillgänglig officiell data om fossila CO₂-utsläpp i kommunen.\n\nEftersom den officiella statistiken ofta ligger 1,5–2 år efter, kan du se uppskattningar för nuvarande utsläpp i utsläppsutvecklingsgrafen längre ner på sidan."
+      "Detta är det senaste året med tillgänglig officiell data om fossila CO₂e-utsläpp i kommunen.\n\nEftersom den officiella statistiken ofta ligger 1,5–2 år efter, kan du se uppskattningar för nuvarande utsläpp i utsläppsutvecklingsgrafen längre ner på sidan."
     ]
   },
   "municipalityWhatIsCarbonBudget": {
     "title": "Vad är en koldioxidbudget och varför spelar den roll lokalt?",
     "content": [
-      "En koldioxidbudget är mängden CO₂ en plats kan släppa ut samtidigt som den gör sin del för att begränsa den globala uppvärmningen till 1,5 °C. Varje kommun bidrar till Sveriges totala utsläpp — och lokala val spelar verkligen roll. Det är ofta lättare att påverka beslut och vidta åtgärder på lokal nivå, oavsett om det är genom politik, infrastruktur eller samhällsinitiativ. Lokala klimatinsatser bygger upp till nationell förändring.\n\n**Sätt att engagera sig:**\n\n- **Klimatklivet** – en statligt stödd investeringsfond som hjälper kommuner, organisationer och företag att minska växthusgaser genom lokala projekt (till exempel cykelinfrastruktur, biogas, värmeåtervinning). Medel fördelas alltid genom din regionala länsstyrelse. ([https://www.naturvardsverket.se/amnesomraden/klimatomstallningen/klimatklivet/](https://www.naturvardsverket.se/amnesomraden/klimatomstallningen/klimatklivet/))\n- **Länsstyrelsens rådgivningstjänster** – varje län (Länsstyrelse) erbjuder stöd, webbinarier och vägledning för lokalt klimatarbete och för crowdfunding av regionala klimatprojekt. ([https://www.lansstyrelsen.se/blekinge.html](https://www.lansstyrelsen.se/blekinge.html))\n- **Lokala medborgarförslag** – många svenska kommuner tillåter invånare att föreslå miljöinitiativ (som utbyggd kollektivtrafik eller stadsodlingar) via kommunens webbplats eller fullmäktige. Kolla din kommuns \"Demokrati\" eller \"Medborgarförslag\"-sektion online.\n\nÅtgärder som att gå med i lokala klimatgrupper, lämna medborgarförslag eller uppmuntra kommunala investeringar kan göra verklig skillnad — och lägga ihop sig till förändring över hela Sverige."
+      "En koldioxidbudget är mängden CO₂e en plats kan släppa ut samtidigt som den gör sin del för att begränsa den globala uppvärmningen till 1,5 °C. Varje kommun bidrar till Sveriges totala utsläpp — och lokala val spelar verkligen roll. Det är ofta lättare att påverka beslut och vidta åtgärder på lokal nivå, oavsett om det är genom politik, infrastruktur eller samhällsinitiativ. Lokala klimatinsatser bygger upp till nationell förändring.\n\n**Sätt att engagera sig:**\n\n- **Klimatklivet** – en statligt stödd investeringsfond som hjälper kommuner, organisationer och företag att minska växthusgaser genom lokala projekt (till exempel cykelinfrastruktur, biogas, värmeåtervinning). Medel fördelas alltid genom din regionala länsstyrelse. ([https://www.naturvardsverket.se/amnesomraden/klimatomstallningen/klimatklivet/](https://www.naturvardsverket.se/amnesomraden/klimatomstallningen/klimatklivet/))\n- **Länsstyrelsens rådgivningstjänster** – varje län (Länsstyrelse) erbjuder stöd, webbinarier och vägledning för lokalt klimatarbete och för crowdfunding av regionala klimatprojekt. ([https://www.lansstyrelsen.se/blekinge.html](https://www.lansstyrelsen.se/blekinge.html))\n- **Lokala medborgarförslag** – många svenska kommuner tillåter invånare att föreslå miljöinitiativ (som utbyggd kollektivtrafik eller stadsodlingar) via kommunens webbplats eller fullmäktige. Kolla din kommuns \"Demokrati\" eller \"Medborgarförslag\"-sektion online.\n\nÅtgärder som att gå med i lokala klimatgrupper, lämna medborgarförslag eller uppmuntra kommunala investeringar kan göra verklig skillnad — och lägga ihop sig till förändring över hela Sverige."
     ]
   },
   "municipalityWhyDataDelay": {
