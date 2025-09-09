@@ -163,7 +163,7 @@ export function MunicipalityDetailPage() {
               variant="body"
               className="text-grey text-sm md:text-base lg:text-lg"
             >
-              {t("companies.overview.sector")}:
+              {t("municipalityDetailPage.politicalRule")}:
             </Text>
             <Text variant="body" className="text-sm md:text-base lg:text-lg">
               {municipality.politicalRule.join(", ")}
@@ -187,8 +187,11 @@ export function MunicipalityDetailPage() {
                 currentLanguage,
               )}
               valueClassName={cn(
-                CARBON_LAW_REDUCTION_RATE > 0 ? "text-pink-3" : "text-orange-2",
-              )}
+                municipality.historicalEmissionChangePercent > 0
+                  ? "text-pink-3"
+                  : "text-orange-2",
+              unit={t("emissionsUnit")}
+              valueClassName="text-orange-2"
             />
             <MunicipalityStatCard
               title={t("municipalityDetailPage.consumptionEmissionsPerCapita")}
@@ -196,7 +199,6 @@ export function MunicipalityDetailPage() {
                 municipality.totalConsumptionEmission,
                 currentLanguage,
               )}
-              unit={t("emissionsUnit")}
               valueClassName="text-orange-2"
             />
           </div>

@@ -717,20 +717,14 @@
       "medium": "Maybe",
       "low": "No"
     },
+    "politicalRule": "Political rule",
     "totalEmissions": "Total emissions {{year}}",
     "totalEmissionsTooltip": "This is the latest reported emissions. For calculated estimates on the current year, please see the emissions development graph below.",
-    "budgetRanOut": "Carbon budget ran out",
-    "budgetKept": "Carbon budget expected to",
-    "budgetHolds": "Stay within limits",
-    "never": "Never",
     "emissionsDevelopment": "Emissions development",
     "graph": {
       "overview": "Overview",
       "sectors": "Emission sources"
     },
-<<<<<<< 949
-    "inTons": "In tons CO₂",
-=======
     "inTons": "In tons CO₂e",
     "annualChangeSince2015": "Annual emission change since 2015",
     "reductionToMeetParis": "Emission reduction to meet the Paris Agreement",
