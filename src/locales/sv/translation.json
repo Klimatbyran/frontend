@@ -698,6 +698,7 @@
     },
     "sort": {
       "placeholder": "Sortera efter",
+      "meetsParis": "Klarar Parisavtalet",
       "name": "Namn",
       "aToZ": "A-Ö",
       "zToA": "Ö-A",
