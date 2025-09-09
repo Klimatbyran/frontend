@@ -200,6 +200,7 @@ export function MunicipalityDetailPage() {
                 currentLanguage,
               )}
               valueClassName="text-orange-2"
+              unit={t("emissionsUnit")}
             />
           </div>
         </SectionWithHelp>
