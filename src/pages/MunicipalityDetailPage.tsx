@@ -42,9 +42,9 @@ export function MunicipalityDetailPage() {
   if (!municipality) return <Text>{t("municipalityDetailPage.noData")}</Text>;
 
   const requirementsInProcurement =
-    municipality.procurementScore === "2"
+    municipality.procurementScore == 2
       ? t("municipalityDetailPage.procurementScore.high")
-      : municipality.procurementScore === "1"
+      : municipality.procurementScore == 1
         ? t("municipalityDetailPage.procurementScore.medium")
         : t("municipalityDetailPage.procurementScore.low");
 
@@ -191,7 +191,6 @@ export function MunicipalityDetailPage() {
                   ? "text-pink-3"
                   : "text-orange-2",
               unit={t("emissionsUnit")}
-              valueClassName="text-orange-2"
             />
             <MunicipalityStatCard
               title={t("municipalityDetailPage.consumptionEmissionsPerCapita")}
@@ -205,7 +204,6 @@ export function MunicipalityDetailPage() {
         </SectionWithHelp>
 
         <MunicipalityEmissions
-          municipality={municipality}
           emissionsData={emissionsData}
           sectorEmissions={sectorEmissions}
         />
@@ -283,9 +281,11 @@ export function MunicipalityDetailPage() {
             description={requirementsInProcurement}
             link={municipality.procurementLink || undefined}
             descriptionClassName={
-              municipality.procurementScore === "2"
+              municipality.procurementScore === 2
                 ? "text-green-3"
-                : "text-pink-3"
+                : municipality.procurementScore === 1
+                  ? "text-orange-2"
+                  : "text-pink-3"
             }
           />
         </div>
