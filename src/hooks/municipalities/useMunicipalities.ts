@@ -12,12 +12,6 @@ interface UseMunicipalitiesReturn {
   loading: boolean;
   error: unknown;
   getTopMunicipalities: (count?: number) => Municipality[];
-  getMunicipalitiesForMap: (count?: number) => Array<{
-    id: string;
-    name: string;
-    value: number;
-    path: string;
-  }>;
   filterMunicipalities: (params: {
     region?: string;
     searchQuery?: string;
@@ -48,20 +42,6 @@ export function useMunicipalities(): UseMunicipalitiesReturn {
           a.historicalEmissionChangePercent - b.historicalEmissionChangePercent,
       )
       .slice(0, count);
-  };
-
-  // Get municipalities data formatted for map
-  const getMunicipalitiesForMap = (count: number = 10) => {
-    return municipalities
-      .filter((m) => m.bicycleMetrePerCapita != null)
-      .sort((a, b) => b.bicycleMetrePerCapita - a.bicycleMetrePerCapita)
-      .slice(0, count)
-      .map((municipality) => ({
-        id: municipality.id,
-        name: municipality.name,
-        value: municipality.bicycleMetrePerCapita,
-        path: "M100,200 L120,220 L110,240 Z", // TODO: Replace with real SVG paths
-      }));
   };
 
   // Filter and sort municipalities
@@ -107,7 +87,6 @@ export function useMunicipalities(): UseMunicipalitiesReturn {
     loading: isLoading,
     error,
     getTopMunicipalities,
-    getMunicipalitiesForMap,
     filterMunicipalities,
   };
 }
