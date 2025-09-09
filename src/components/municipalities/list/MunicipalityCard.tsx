@@ -56,7 +56,7 @@ export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
           tooltip={t("municipalities.card.emissionInfo", { year: lastYear })}
           value={lastYearEmissions}
           textColor="text-orange-2"
-          unit={t("emissionsUnitCO2")}
+          unit={t("emissionsUnit")}
         />
         <CardInfo
           title={t("municipalities.card.changeRate")}
