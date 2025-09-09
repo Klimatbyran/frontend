@@ -40,8 +40,6 @@ export function MunicipalityDetailPage() {
   if (error) return <Text>{t("municipalityDetailPage.error")}</Text>;
   if (!municipality) return <Text>{t("municipalityDetailPage.noData")}</Text>;
 
-  const meetsParis = !municipality.budgetRunsOut && municipality.budget;
-
   const requirementsInProcurement =
     municipality.procurementScore === "2"
       ? t("municipalityDetailPage.procurementScore.high")
@@ -119,22 +117,10 @@ export function MunicipalityDetailPage() {
           })}
         </p>
         <h2>{t("municipalityDetailPage.seoText.emissionsHeading")}</h2>
-        <p>
-          {t("municipalityDetailPage.seoText.emissionsText", {
-            municipality: municipality.name,
-            reduction: municipality.neededEmissionChangePercent?.toFixed(1),
-            budget: municipality.budget
-              ? (municipality.budget / 1000).toFixed(1)
-              : null,
-          })}
-        </p>
         <h2>{t("municipalityDetailPage.seoText.climateGoalsHeading")}</h2>
         <p>
           {t("municipalityDetailPage.seoText.climateGoalsText", {
             municipality: municipality.name,
-            budgetRunsOut:
-              municipality.budgetRunsOut ||
-              t("municipalityDetailPage.budgetHolds"),
           })}
         </p>
         <h2>{t("municipalityDetailPage.seoText.consumptionHeading")}</h2>{" "}
@@ -160,11 +146,6 @@ export function MunicipalityDetailPage() {
             "municipalityTotalEmissions",
             "municipalityEmissionEstimatations",
             "municipalityWhyDataDelay",
-            "municipalityCarbonBudgetExpiryDate",
-            "municipalityHowCarbonBudgetWasCalculated",
-            "municipalityWhatIsCarbonBudget",
-            "municipalityPredicatedNetZeroDate",
-            "municipalityWhenCarbonBudgetRunsOut",
             "municipalityDeeperChanges",
             "municipalityCanWeExtendCarbonBudget",
           ]}
@@ -181,43 +162,6 @@ export function MunicipalityDetailPage() {
               valueClassName="text-orange-2"
               info={true}
               infoText={t("municipalityDetailPage.totalEmissionsTooltip")}
-            />
-            <MunicipalityStatCard
-              title={
-                !municipality.budgetRunsOut
-                  ? t("municipalityDetailPage.budgetKept")
-                  : new Date(municipality.budgetRunsOut) > new Date()
-                    ? t("municipalityDetailPage.budgetRunsOut")
-                    : t("municipalityDetailPage.budgetRanOut")
-              }
-              value={
-                !municipality.budgetRunsOut
-                  ? t("municipalityDetailPage.budgetHolds")
-                  : localizeUnit(
-                      new Date(municipality.budgetRunsOut),
-                      currentLanguage,
-                    )
-              }
-              valueClassName={
-                !municipality.budgetRunsOut ? "text-green-3" : "text-pink-3"
-              }
-            />
-            <MunicipalityStatCard
-              title={t("municipalityDetailPage.hitNetZero")}
-              value={
-                municipality.hitNetZero
-                  ? localizeUnit(
-                      new Date(municipality.hitNetZero),
-                      currentLanguage,
-                    ) || t("municipalityDetailPage.never")
-                  : t("municipalityDetailPage.never")
-              }
-              valueClassName={cn(
-                !municipality.hitNetZero ||
-                  new Date(municipality.hitNetZero) > new Date("2050-01-01")
-                  ? "text-pink-3"
-                  : "text-green-3",
-              )}
             />
           </div>
         </SectionWithHelp>
@@ -293,16 +237,6 @@ export function MunicipalityDetailPage() {
               ),
             },
             {
-              title: t("municipalityDetailPage.reductionToMeetParis"),
-              value: municipality.neededEmissionChangePercent
-                ? `${formatPercentChange(
-                    -municipality.neededEmissionChangePercent,
-                    currentLanguage,
-                  )}`
-                : t("municipalityDetailPage.cannotReduceToParis"),
-              valueClassName: meetsParis ? "text-green-3" : "text-pink-3",
-            },
-            {
               title: t("municipalityDetailPage.consumptionEmissionsPerCapita"),
               value: localizeUnit(
                 municipality.totalConsumptionEmission,
@@ -313,7 +247,6 @@ export function MunicipalityDetailPage() {
           ]}
           helpItems={[
             "municipalityDeeperChanges",
-            "municipalityReductionNeededForParisAgreement",
             "municipalityConsumptionEmissionPerPerson",
             "municipalityLocalVsConsumption",
           ]}
