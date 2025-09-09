@@ -22,7 +22,6 @@ import { useMunicipalitySectorEmissions } from "@/hooks/municipalities/useMunici
 import { MunicipalityEmissions } from "@/components/municipalities/MunicipalityEmissions";
 import { YearSelector } from "@/components/layout/YearSelector";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
-import { CARBON_LAW_REDUCTION_RATE } from "@/utils/calculations/emissions/utils";
 
 export function MunicipalityDetailPage() {
   const { t } = useTranslation();
