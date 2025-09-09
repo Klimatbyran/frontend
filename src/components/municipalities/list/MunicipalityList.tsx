@@ -42,7 +42,7 @@ export function MunicipalityList({
       case "meets_paris": {
         return (
           directionMultiplier *
-          ((a.meetsParis ? 1 : 0) - (b.meetsParis ? 1 : 0))
+          ((a.meetsParisGoal ? 1 : 0) - (b.meetsParisGoal ? 1 : 0))
         );
       }
       case "name":

@@ -16,7 +16,7 @@ interface MunicipalityCardProps {
 
 export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
   const { t } = useTranslation();
-  const { meetsParis } = municipality;
+  const { meetsParisGoal } = municipality;
   const { currentLanguage } = useLanguage();
 
   const lastYearEmission = municipality.emissions.at(-1);
@@ -49,10 +49,10 @@ export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
         <div
           className={cn(
             "text-3xl font-light",
-            meetsParis ? "text-green-3" : "text-pink-3",
+            meetsParisGoal ? "text-green-3" : "text-pink-3",
           )}
         >
-          {meetsParis ? t("yes") : t("no")}
+          {meetsParisGoal ? t("yes") : t("no")}
         </div>
       </div>
 
