@@ -79,6 +79,22 @@ export function AboutPage() {
             </div>
           </div>
 
+          {/* Our Approach Section */}
+          <AccordionGroup
+            title={t("aboutPage.ourApproachSection.title")}
+            value="financingSection"
+          >
+            <div className="prose prose-invert w-[90%] max-w-5xl mx-auto space-y-4">
+              <p>{t("aboutPage.ourApproachSection.paragraph1")}</p>
+              <p>{t("aboutPage.ourApproachSection.paragraph2")}</p>
+              <p>{t("aboutPage.ourApproachSection.paragraph3")}</p>
+              <p>{t("aboutPage.ourApproachSection.paragraph4")}</p>
+              <p>{t("aboutPage.ourApproachSection.paragraph5")}</p>
+              <p>{t("aboutPage.ourApproachSection.paragraph6")}</p>
+              <p>{t("aboutPage.ourApproachSection.paragraph7")}</p>
+            </div>
+          </AccordionGroup>
+
           {/* Team Section */}
           <AccordionGroup
             title={t("aboutPage.teamSection.title")}
