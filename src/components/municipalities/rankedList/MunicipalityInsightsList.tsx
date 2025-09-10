@@ -1,5 +1,5 @@
+import { LocalizedLink } from "@/components/LocalizedLink";
 import { Municipality } from "@/types/municipality";
-import { Link } from "react-router-dom";
 
 interface InsightsListProps {
   title: string;
@@ -29,7 +29,7 @@ function InsightsList({
         const position = isBottomRanking ? totalCount - index : index + 1;
 
         return (
-          <Link
+          <LocalizedLink
             key={municipality.name}
             to={`/municipalities/${municipality.name}`}
             className="block transition-colors hover:bg-white/5 rounded-lg"
@@ -40,10 +40,12 @@ function InsightsList({
                 <span>{municipality.name}</span>
               </div>
               <span className={`${textColor} font-semibold`}>
-                {municipality[dataPointKey] != null ? (municipality[dataPointKey] as number).toFixed(1) + unit : nullValues }
+                {municipality[dataPointKey] != null
+                  ? (municipality[dataPointKey] as number).toFixed(1) + unit
+                  : nullValues}
               </span>
             </div>
-          </Link>
+          </LocalizedLink>
         );
       })}
     </div>

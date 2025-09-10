@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
 import { AiIcon } from "@/components/ui/ai-icon";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
 import { InfoTooltip } from "@/components/layout/InfoTooltip";
+import { LocalizedLink } from "@/components/LocalizedLink";
 
 type CompanyCardProps = Pick<
   RankedCompany,
@@ -96,7 +97,7 @@ export function CompanyCard({
 
   return (
     <div className="relative rounded-level-2 @container">
-      <Link
+      <LocalizedLink
         to={`/companies/${wikidataId}`}
         className="block bg-black-2 rounded-level-2 p-8 space-y-8 transition-all duration-300 hover:shadow-[0_0_10px_rgba(153,207,255,0.15)] hover:bg-[#1a1a1a]"
       >
@@ -260,7 +261,7 @@ export function CompanyCard({
             noSustainabilityReport ? "text-pink-3" : "text-green-3"
           }
         />
-      </Link>
+      </LocalizedLink>
     </div>
   );
 }
