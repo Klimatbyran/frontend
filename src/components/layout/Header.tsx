@@ -284,14 +284,14 @@ export function Header() {
                 <LanguageButtons />
                 {NAV_LINKS.map((link) => (
                   <div key={link.path} className="flex flex-col">
-                    <Link
+                    <LocalizedLink
                       to={link.path}
                       onClick={toggleMenu}
                       className="flex items-center gap-2 cursor-pointer"
                     >
                       {link.icon}
                       {link.label}
-                    </Link>
+                    </LocalizedLink>
                     {link.sublinks && (
                       <div className="flex flex-col gap-2 pl-4 mt-2">
                         {link.sublinks.map((sublink) =>
@@ -306,14 +306,14 @@ export function Header() {
                               {sublink.label}
                             </a>
                           ) : (
-                            <Link
+                            <LocalizedLink
                               key={sublink.path}
                               to={sublink.path}
                               onClick={toggleMenu}
                               className="flex items-center gap-2 text-sm text-gray-400"
                             >
                               {sublink.label}
-                            </Link>
+                            </LocalizedLink>
                           ),
                         )}
                       </div>
