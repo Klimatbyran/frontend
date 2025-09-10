@@ -5,7 +5,7 @@ import { useBoardMembers } from "@/hooks/useBoardMembers";
 import { AccordionGroup } from "../components/layout/AccordionGroup";
 import { LinkButton } from "@/components/layout/LinkButton";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { MembersGrid } from "@/components/MembersGrid";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { useEffect } from "react";
@@ -90,7 +90,18 @@ export function AboutPage() {
               <p>{t("aboutPage.ourApproachSection.paragraph3")}</p>
               <p>{t("aboutPage.ourApproachSection.paragraph4")}</p>
               <p>{t("aboutPage.ourApproachSection.paragraph5")}</p>
-              <p>{t("aboutPage.ourApproachSection.paragraph6")}</p>
+              <p>
+                <Trans
+                  i18nKey="aboutPage.ourApproachSection.paragraph6"
+                  components={[
+                    <a
+                      title="Email us"
+                      href="mailto:hej@klimatkollen.se"
+                      className="underline hover:text-white"
+                    />,
+                  ]}
+                />
+              </p>
               <p>{t("aboutPage.ourApproachSection.paragraph7")}</p>
             </div>
           </AccordionGroup>
