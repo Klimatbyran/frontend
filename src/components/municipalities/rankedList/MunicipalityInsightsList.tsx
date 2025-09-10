@@ -1,5 +1,10 @@
 import { LocalizedLink } from "@/components/LocalizedLink";
-import { Municipality } from "@/types/municipality";
+import type { paths } from "@/lib/api-types";
+
+// Use the Municipality type from the API
+type Municipality = NonNullable<
+  paths["/municipalities/"]["get"]["responses"][200]["content"]["application/json"]
+>[0];
 
 interface InsightsListProps {
   title: string;

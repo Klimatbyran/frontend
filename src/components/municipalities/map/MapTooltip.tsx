@@ -10,7 +10,7 @@ export function MapTooltip({
   nullValue,
 }: {
   name: string;
-  value: number | null;
+  value: number | boolean | null;
   rank: number | null;
   label: string;
   unit: string;
@@ -24,7 +24,13 @@ export function MapTooltip({
         <p className="text-white/70">
           {label}:{" "}
           <span className="text-orange-2">
-            {value !== null ? `${value.toFixed(1)}${unit}` : nullValue}
+            {value !== null
+              ? typeof value === "boolean"
+                ? value
+                  ? "Yes"
+                  : "No"
+                : `${(value as number).toFixed(1)}${unit}`
+              : nullValue}
           </span>
         </p>
         <p className="text-white/50 text-sm">
