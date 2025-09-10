@@ -1111,6 +1111,12 @@
           "detailedDescription": "Average annual change in greenhouse gas emissions in Swedish municipalities since the Paris Agreement in 2015.",
           "source": "<0>National Emissions Database</0>"
         },
+        "procurementScore": {
+          "label": "Procurement Score",
+          "description": "Procurement score",
+          "detailedDescription": "Procurement score",
+          "source": "<0>Konsumtionskompassen</0>"
+        },
         "electricCarChangePercent": {
           "label": "Electric Cars",
           "description": "Change in electric car adoption",

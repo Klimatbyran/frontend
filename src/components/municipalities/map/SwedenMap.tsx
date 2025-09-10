@@ -257,7 +257,6 @@ function SwedenMap({
           name={hoveredMunicipality}
           value={hoveredValue}
           rank={hoveredRank}
-          label={selectedKPI.label}
           unit={selectedKPI.unit}
           total={municipalityData.length}
           nullValue={t(

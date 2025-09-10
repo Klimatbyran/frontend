@@ -36,7 +36,7 @@ export function MapLegend({
                 <div
                   className="w-5 h-5 rounded-sm mr-1"
                   style={{
-                    backgroundColor: MUNICIPALITY_MAP_COLORS.start,
+                    backgroundColor: MUNICIPALITY_MAP_COLORS.gradientMidLow,
                   }}
                 />
                 <span className="text-white/50 text-xs">

@@ -4,7 +4,6 @@ export function MapTooltip({
   name,
   value,
   rank,
-  label,
   unit,
   total,
   nullValue,
@@ -12,7 +11,6 @@ export function MapTooltip({
   name: string;
   value: number | boolean | null;
   rank: number | null;
-  label: string;
   unit: string;
   total: number;
   nullValue?: string;
@@ -22,7 +20,6 @@ export function MapTooltip({
       <p className="text-white font-medium text-xl">{name}</p>
       <div className="space-y-1 mt-2">
         <p className="text-white/70">
-          {label}:{" "}
           <span className="text-orange-2">
             {value !== null
               ? typeof value === "boolean"

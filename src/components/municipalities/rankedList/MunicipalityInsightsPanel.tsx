@@ -1,14 +1,8 @@
 import { t } from "i18next";
-import { KPIValue } from "@/types/municipality";
+import { KPIValue, Municipality } from "@/types/municipality";
 import InsightsList from "./MunicipalityInsightsList";
 import KPIDetailsPanel from "./KPIDetailsPanel";
 import { getSortedMunicipalKPIValues } from "@/utils/data/sorting";
-import type { paths } from "@/lib/api-types";
-
-// Use the Municipality type from the API
-type Municipality = NonNullable<
-  paths["/municipalities/"]["get"]["responses"][200]["content"]["application/json"]
->[0];
 
 interface InsightsPanelProps {
   municipalityData: Municipality[];

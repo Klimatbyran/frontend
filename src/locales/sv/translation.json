@@ -1111,6 +1111,12 @@
           "detailedDescription": "Genomsnittlig årlig förändring av växthusgasutsläppen i Sveriges kommuner sedan Parisavtalet 2015",
           "source": "<0>Nationella emissionsdatabasen</0>"
         },
+        "procurementScore": {
+          "label": "Upphandlingspoäng",
+          "description": "Upphandlingspoäng",
+          "detailedDescription": "Upphandlingspoäng",
+          "source": "<0>Konsumtionskompassen</0>"
+        },
         "electricCarChangePercent": {
           "label": "Elbilarna",
           "description": "Förändring i andel elbilar",
