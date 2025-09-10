@@ -80,6 +80,8 @@ export interface KPIValue {
   detailedDescription: string;
   nullValues?: string;
   higherIsBetter: boolean;
+  isBinary?: boolean;
+  binaryLabels?: { true: string; false: string };
 }
 
 export type SectorEmissions = {

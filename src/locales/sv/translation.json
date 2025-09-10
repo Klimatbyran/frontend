@@ -1100,7 +1100,7 @@
       },
       "kpis": {
         "meetsParisGoal": {
-          "label": "Är kommunen på väg att klara Parisavtalet?",
+          "label": "Parisavtalet",
           "description": "Är kommunen på väg att klara Parisavtalet?",
           "detailedDescription": "Är kommunen på väg att klara Parisavtalet?",
           "source": "<0>Nationella emissionsdatabasen</0>"

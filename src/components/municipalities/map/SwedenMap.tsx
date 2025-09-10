@@ -7,7 +7,7 @@ import {
 } from "react-simple-maps";
 import { KPIValue, Municipality } from "@/types/municipality";
 import { MapZoomControls } from "./MapZoomControls";
-import { MapGradientLegend } from "./MapLegendGradient";
+import { MapLegend } from "./MapLegend";
 import { MapTooltip } from "./MapTooltip";
 import { FeatureCollection } from "geojson";
 import { MUNICIPALITY_MAP_COLORS } from "./constants";
@@ -160,11 +160,11 @@ function SwedenMap({
     const rightValue = selectedKPI.higherIsBetter ? maxValue : minValue;
 
     return (
-      <MapGradientLegend
+      <MapLegend
         leftValue={leftValue}
         rightValue={rightValue}
         unit={selectedKPI.unit}
-        getColor={getColorByValue}
+        isBinary={selectedKPI.isBinary}
       />
     );
   };

@@ -1100,7 +1100,7 @@
       },
       "kpis": {
         "meetsParisGoal": {
-          "label": "Is the municipality on track to meet the Paris Agreement?",
+          "label": "Paris Agreement",
           "description": "Is the municipality on track to meet the Paris Agreement?",
           "detailedDescription": "Is the municipality on track to meet the Paris Agreement?",
           "source": "<0>National Emissions Database</0>"
