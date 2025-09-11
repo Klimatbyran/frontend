@@ -1108,8 +1108,8 @@
             "true": "Klarar Parisavtalet",
             "false": "Klarar inte Parisavtalet"
           },
-          "belowString": "under genomsnittet",
-          "aboveString": "över genomsnittet"
+          "aboveString": "klarar målet",
+          "belowString": "klarar inte målet"
         },
         "historicalEmissionChangePercent": {
           "label": "Utsläppen",
@@ -1152,8 +1152,7 @@
           "average": "Genomsnitt:",
           "distributionAbove": "kommuner över genomsnittet",
           "distributionBelow": "kommuner under genomsnittet",
-          "distributionBooleanAbove": "kommuner {{aboveString}}'",
-          "distributionBooleanBelow": "kommuner {{belowString}}'"
+          "distributionBoolean": "kommuner "
         },
         "topPerformers": {
           "titleBest": "Topp fem kommuner",
