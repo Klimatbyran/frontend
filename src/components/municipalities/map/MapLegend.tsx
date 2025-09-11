@@ -72,7 +72,7 @@ export function MapLegend({
           )}
         </div>
         <div className="flex items-center mb-2 md:mb-0 md:ml-4">
-          <div className="w-3 h-3 rounded-full bg-gray-400 mr-1" />
+          <div className="w-3 h-3 rounded-full bg-gray-600 mr-1" />
           <span className="text-white/50 text-xs italic">
             {t("municipalities.map.legend.null")}
           </span>
