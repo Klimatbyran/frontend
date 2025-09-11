@@ -111,8 +111,12 @@ function SwedenMap({
       return MUNICIPALITY_MAP_COLORS.null;
     }
 
-    const { start, gradientMidLow, gradientMidHigh, end } =
+    const { gradientStart, gradientMidLow, gradientMidHigh, gradientEnd } =
       MUNICIPALITY_MAP_COLORS;
+
+    if (selectedKPI.isBoolean) {
+      return value === 1 || value === true ? gradientEnd : gradientMidLow;
+    }
 
     const mean = values.reduce((sum, val) => sum + val, 0) / values.length;
     const stdDev = Math.sqrt(
@@ -126,7 +130,7 @@ function SwedenMap({
       if (zScore <= -1) {
         // Below -1 std dev: interpolate between start and gradientMidLow
         const t = Math.max(0, (zScore + 2) / 1);
-        return `color-mix(in srgb, ${start} ${(1 - t) * 100}%, ${gradientMidLow} ${t * 100}%)`;
+        return `color-mix(in srgb, ${gradientStart} ${(1 - t) * 100}%, ${gradientMidLow} ${t * 100}%)`;
       } else if (zScore <= 0) {
         // Between -1 and 0 std dev: interpolate between gradientMidLow and gradientMidHigh
         const t = Math.max(0, zScore + 1);
@@ -134,22 +138,22 @@ function SwedenMap({
       } else if (zScore <= 1) {
         // Between 0 and 1 std dev: interpolate between gradientMidHigh and end
         const t = Math.max(0, zScore);
-        return `color-mix(in srgb, ${gradientMidHigh} ${(1 - t) * 100}%, ${end} ${t * 100}%)`;
+        return `color-mix(in srgb, ${gradientMidHigh} ${(1 - t) * 100}%, ${gradientEnd} ${t * 100}%)`;
       } else {
         // Above 1 std dev: end
-        return end;
+        return gradientEnd;
       }
     } else if (zScore >= 1) {
       const t = Math.max(0, (2 - zScore) / 1);
-      return `color-mix(in srgb, ${start} ${(1 - t) * 100}%, ${gradientMidLow} ${t * 100}%)`;
+      return `color-mix(in srgb, ${gradientStart} ${(1 - t) * 100}%, ${gradientMidLow} ${t * 100}%)`;
     } else if (zScore >= 0) {
       const t = Math.max(0, 1 - zScore);
       return `color-mix(in srgb, ${gradientMidLow} ${(1 - t) * 100}%, ${gradientMidHigh} ${t * 100}%)`;
     } else if (zScore >= -1) {
       const t = Math.max(0, -zScore);
-      return `color-mix(in srgb, ${gradientMidHigh} ${(1 - t) * 100}%, ${end} ${t * 100}%)`;
+      return `color-mix(in srgb, ${gradientMidHigh} ${(1 - t) * 100}%, ${gradientEnd} ${t * 100}%)`;
     } else {
-      return end;
+      return gradientEnd;
     }
   };
 

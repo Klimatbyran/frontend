@@ -24,7 +24,7 @@ export function MapLegend({
                 <div
                   className="w-5 h-5 rounded-sm mr-1"
                   style={{
-                    backgroundColor: MUNICIPALITY_MAP_COLORS.end,
+                    backgroundColor: MUNICIPALITY_MAP_COLORS.gradientEnd,
                   }}
                 />
                 <span className="text-gray-500 text-xs">
@@ -44,7 +44,6 @@ export function MapLegend({
               </div>
             </>
           ) : (
-            // Original gradient display for continuous values
             <>
               <span className="text-gray-500 text-xs mr-2">
                 {leftValue.toFixed(1)}
@@ -55,10 +54,10 @@ export function MapLegend({
                   className="absolute inset-0 rounded-full"
                   style={{
                     background: `linear-gradient(to right, 
-                      ${MUNICIPALITY_MAP_COLORS.start} 0%,
+                      ${MUNICIPALITY_MAP_COLORS.gradientStart} 0%,
                       ${MUNICIPALITY_MAP_COLORS.gradientMidLow} 33%,
                       ${MUNICIPALITY_MAP_COLORS.gradientMidHigh} 66%,
-                      ${MUNICIPALITY_MAP_COLORS.end} 100%
+                      ${MUNICIPALITY_MAP_COLORS.gradientEnd} 100%
                     )`,
                   }}
                 />
