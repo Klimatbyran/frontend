@@ -27,7 +27,7 @@ export function MapLegend({
                     backgroundColor: MUNICIPALITY_MAP_COLORS.end,
                   }}
                 />
-                <span className="text-white/50 text-xs">
+                <span className="text-gray-500 text-xs">
                   {binaryLabels.true}
                 </span>
               </div>
@@ -38,7 +38,7 @@ export function MapLegend({
                     backgroundColor: MUNICIPALITY_MAP_COLORS.gradientMidLow,
                   }}
                 />
-                <span className="text-white/50 text-xs">
+                <span className="text-gray-500 text-xs">
                   {binaryLabels.false}
                 </span>
               </div>
@@ -46,7 +46,7 @@ export function MapLegend({
           ) : (
             // Original gradient display for continuous values
             <>
-              <span className="text-white/50 text-xs mr-2">
+              <span className="text-gray-500 text-xs mr-2">
                 {leftValue.toFixed(1)}
                 {unit}
               </span>
@@ -63,7 +63,7 @@ export function MapLegend({
                   }}
                 />
               </div>
-              <span className="text-white/50 text-xs ml-2">
+              <span className="text-gray-500 text-xs ml-2">
                 {rightValue.toFixed(1)}
                 {unit}
               </span>
@@ -72,7 +72,7 @@ export function MapLegend({
         </div>
         <div className="flex items-center mb-2 md:mb-0 md:ml-4">
           <div className="w-3 h-3 rounded-full bg-gray-600 mr-1" />
-          <span className="text-white/50 text-xs italic">
+          <span className="text-gray-500 text-xs italic">
             {t("municipalities.map.legend.null")}
           </span>
         </div>
