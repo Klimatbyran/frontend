@@ -1146,7 +1146,7 @@
           "average": "Genomsnitt:",
           "distributionAbove": "kommuner över genomsnittet",
           "distributionBelow": "kommuner under genomsnittet",
-          "distributionBoolean": "kommuner i kategori '{{category}}'"
+          "distributionBoolean": "kommuner i '{{category}}'"
         },
         "topPerformers": {
           "titleBest": "Topp fem kommuner",

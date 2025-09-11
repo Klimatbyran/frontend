@@ -1146,7 +1146,7 @@
           "average": "Average:",
           "distributionAbove": "municipalities above average",
           "distributionBelow": "municipalities below average",
-          "distributionBoolean": "municipalities in category '{{category}}'"
+          "distributionBoolean": "municipalities in '{{category}}'"
         },
         "topPerformers": {
           "titleBest": "Top Five Municipalities",
