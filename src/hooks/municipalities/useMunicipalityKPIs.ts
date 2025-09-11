@@ -35,23 +35,23 @@ export const useMunicipalityKPIs = (): KPIValue[] => {
       ),
       higherIsBetter: false,
     },
-    // {
-    //   label: t("municipalities.list.kpis.electricCarChangePercent.label"),
-    //   key: "electricCarChangePercent",
-    //   unit: "%",
-    //   source: "municipalities.list.electricCarChangePercent.source",
-    //   sourceUrls: ["https://www.trafa.se/vagtrafik/fordon/"],
-    //   description: t(
-    //     "municipalities.list.kpis.electricCarChangePercent.description",
-    //   ),
-    //   detailedDescription: t(
-    //     "municipalities.list.kpis.electricCarChangePercent.detailedDescription",
-    //   ),
-    //   nullValues: t(
-    //     "municipalities.list.kpis.electricCarChangePercent.nullValues",
-    //   ),
-    //   higherIsBetter: true,
-    // },
+    {
+      label: t("municipalities.list.kpis.electricCarChangePercent.label"),
+      key: "electricCarChangePercent",
+      unit: "%",
+      source: "municipalities.list.electricCarChangePercent.source",
+      sourceUrls: ["https://www.trafa.se/vagtrafik/fordon/"],
+      description: t(
+        "municipalities.list.kpis.electricCarChangePercent.description",
+      ),
+      detailedDescription: t(
+        "municipalities.list.kpis.electricCarChangePercent.detailedDescription",
+      ),
+      nullValues: t(
+        "municipalities.list.kpis.electricCarChangePercent.nullValues",
+      ),
+      higherIsBetter: true,
+    },
     {
       label: t("municipalities.list.kpis.totalConsumptionEmission.label"),
       key: "totalConsumptionEmission",
@@ -83,23 +83,23 @@ export const useMunicipalityKPIs = (): KPIValue[] => {
       ),
       higherIsBetter: false,
     },
-    // {
-    //   label: t("municipalities.list.kpis.bicycleMetrePerCapita.label"),
-    //   key: "bicycleMetrePerCapita",
-    //   unit: "m",
-    //   source: "municipalities.list.bicycleMetrePerCapita.source",
-    //   sourceUrls: [
-    //     "https://nvdbpakarta.trafikverket.se/map",
-    //     "https://www.scb.se/hitta-statistik/statistik-efter-amne/befolkning-och-levnadsforhallanden/befolkningens-sammansattning-och-utveckling/befolkningsstatistik/",
-    //   ],
-    //   description: t(
-    //     "municipalities.list.kpis.bicycleMetrePerCapita.description",
-    //   ),
-    //   detailedDescription: t(
-    //     "municipalities.list.kpis.bicycleMetrePerCapita.detailedDescription",
-    //   ),
-    //   higherIsBetter: true,
-    // },
+    {
+      label: t("municipalities.list.kpis.bicycleMetrePerCapita.label"),
+      key: "bicycleMetrePerCapita",
+      unit: "m",
+      source: "municipalities.list.bicycleMetrePerCapita.source",
+      sourceUrls: [
+        "https://nvdbpakarta.trafikverket.se/map",
+        "https://www.scb.se/hitta-statistik/statistik-efter-amne/befolkning-och-levnadsforhallanden/befolkningens-sammansattning-och-utveckling/befolkningsstatistik/",
+      ],
+      description: t(
+        "municipalities.list.kpis.bicycleMetrePerCapita.description",
+      ),
+      detailedDescription: t(
+        "municipalities.list.kpis.bicycleMetrePerCapita.detailedDescription",
+      ),
+      higherIsBetter: true,
+    },
   ];
 
   return KPIs;
