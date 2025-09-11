@@ -7,7 +7,7 @@ import {
 } from "react-simple-maps";
 import { KPIValue, Municipality } from "@/types/municipality";
 import { MapZoomControls } from "./MapZoomControls";
-import { MapGradientLegend } from "./MapLegendGradient";
+import { MapLegend } from "./MapLegend";
 import { MapTooltip } from "./MapTooltip";
 import { FeatureCollection } from "geojson";
 import { MUNICIPALITY_MAP_COLORS } from "./constants";
@@ -111,10 +111,12 @@ function SwedenMap({
       return MUNICIPALITY_MAP_COLORS.null;
     }
 
-    const startColor = MUNICIPALITY_MAP_COLORS.start;
-    const gradientMidLow = MUNICIPALITY_MAP_COLORS.gradientMidLow;
-    const gradientMidHigh = MUNICIPALITY_MAP_COLORS.gradientMidHigh;
-    const endColor = MUNICIPALITY_MAP_COLORS.end;
+    const { gradientStart, gradientMidLow, gradientMidHigh, gradientEnd } =
+      MUNICIPALITY_MAP_COLORS;
+
+    if (selectedKPI.isBoolean) {
+      return value === 1 || value === true ? gradientEnd : gradientMidLow;
+    }
 
     const mean = values.reduce((sum, val) => sum + val, 0) / values.length;
     const stdDev = Math.sqrt(
@@ -126,32 +128,32 @@ function SwedenMap({
 
     if (selectedKPI.higherIsBetter) {
       if (zScore <= -1) {
-        // Below -1 std dev: interpolate between startColor and gradientMidLow
+        // Below -1 std dev: interpolate between start and gradientMidLow
         const t = Math.max(0, (zScore + 2) / 1);
-        return `color-mix(in srgb, ${startColor} ${(1 - t) * 100}%, ${gradientMidLow} ${t * 100}%)`;
+        return `color-mix(in srgb, ${gradientStart} ${(1 - t) * 100}%, ${gradientMidLow} ${t * 100}%)`;
       } else if (zScore <= 0) {
         // Between -1 and 0 std dev: interpolate between gradientMidLow and gradientMidHigh
         const t = Math.max(0, zScore + 1);
         return `color-mix(in srgb, ${gradientMidLow} ${(1 - t) * 100}%, ${gradientMidHigh} ${t * 100}%)`;
       } else if (zScore <= 1) {
-        // Between 0 and 1 std dev: interpolate between gradientMidHigh and endColor
+        // Between 0 and 1 std dev: interpolate between gradientMidHigh and end
         const t = Math.max(0, zScore);
-        return `color-mix(in srgb, ${gradientMidHigh} ${(1 - t) * 100}%, ${endColor} ${t * 100}%)`;
+        return `color-mix(in srgb, ${gradientMidHigh} ${(1 - t) * 100}%, ${gradientEnd} ${t * 100}%)`;
       } else {
-        // Above 1 std dev: endColor
-        return endColor;
+        // Above 1 std dev: end
+        return gradientEnd;
       }
     } else if (zScore >= 1) {
       const t = Math.max(0, (2 - zScore) / 1);
-      return `color-mix(in srgb, ${startColor} ${(1 - t) * 100}%, ${gradientMidLow} ${t * 100}%)`;
+      return `color-mix(in srgb, ${gradientStart} ${(1 - t) * 100}%, ${gradientMidLow} ${t * 100}%)`;
     } else if (zScore >= 0) {
       const t = Math.max(0, 1 - zScore);
       return `color-mix(in srgb, ${gradientMidLow} ${(1 - t) * 100}%, ${gradientMidHigh} ${t * 100}%)`;
     } else if (zScore >= -1) {
       const t = Math.max(0, -zScore);
-      return `color-mix(in srgb, ${gradientMidHigh} ${(1 - t) * 100}%, ${endColor} ${t * 100}%)`;
+      return `color-mix(in srgb, ${gradientMidHigh} ${(1 - t) * 100}%, ${gradientEnd} ${t * 100}%)`;
     } else {
-      return endColor;
+      return gradientEnd;
     }
   };
 
@@ -160,11 +162,11 @@ function SwedenMap({
     const rightValue = selectedKPI.higherIsBetter ? maxValue : minValue;
 
     return (
-      <MapGradientLegend
+      <MapLegend
         leftValue={leftValue}
         rightValue={rightValue}
         unit={selectedKPI.unit}
-        getColor={getColorByValue}
+        isBinary={selectedKPI.isBoolean}
       />
     );
   };
@@ -257,7 +259,6 @@ function SwedenMap({
           name={hoveredMunicipality}
           value={hoveredValue}
           rank={hoveredRank}
-          label={selectedKPI.label}
           unit={selectedKPI.unit}
           total={municipalityData.length}
           nullValue={t(

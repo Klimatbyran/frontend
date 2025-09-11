@@ -7,8 +7,6 @@ export type Municipality = {
   name: string;
   region: string;
   meetsParisGoal: boolean;
-  totalApproximatedHistoricalEmission: number;
-  trend: number;
   historicalEmissionChangePercent: number;
   climatePlanYear: number | null;
   climatePlanComment: string | null;
@@ -23,7 +21,6 @@ export type Municipality = {
   description?: string | null;
   sectorEmissions?: SectorEmissions;
   politicalRule: string[];
-  politicalRuleKSO: string;
 } & EmissionsData;
 
 // Detailed municipality type from API
@@ -80,6 +77,8 @@ export interface KPIValue {
   detailedDescription: string;
   nullValues?: string;
   higherIsBetter: boolean;
+  isBoolean?: boolean;
+  booleanLabels?: { true: string; false: string };
 }
 
 export type SectorEmissions = {

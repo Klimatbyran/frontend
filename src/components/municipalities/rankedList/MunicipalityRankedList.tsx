@@ -96,7 +96,9 @@ function MunicipalityRankedList({
               </div>
               <span className="text-orange-2 font-medium">
                 {municipality[selectedKPI.key] !== null
-                  ? `${(municipality[selectedKPI.key] as number).toFixed(1)}${selectedKPI.unit}`
+                  ? typeof municipality[selectedKPI.key] === "boolean"
+                    ? t(`${municipality[selectedKPI.key] ? "yes" : "no"}`)
+                    : `${(municipality[selectedKPI.key] as number).toFixed(1)}${selectedKPI.unit}`
                   : selectedKPI.nullValues}
               </span>
             </button>

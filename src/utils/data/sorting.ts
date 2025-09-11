@@ -16,6 +16,16 @@ export function getSortedMunicipalKPIValues(
       return -1;
     }
 
+    if (kpi.isBoolean) {
+      if (kpi.higherIsBetter) {
+        // true should come first if higherIsBetter is true
+        return (bValue === true ? 1 : 0) - (aValue === true ? 1 : 0);
+      } else {
+        // false should come first if higherIsBetter is false
+        return (aValue === true ? 1 : 0) - (bValue === true ? 1 : 0);
+      }
+    }
+
     return kpi.higherIsBetter
       ? (bValue as number) - (aValue as number)
       : (aValue as number) - (bValue as number);

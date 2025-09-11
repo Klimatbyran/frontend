@@ -6,6 +6,20 @@ export const useMunicipalityKPIs = (): KPIValue[] => {
 
   const KPIs: KPIValue[] = [
     {
+      label: t("municipalities.list.kpis.meetsParisGoal.label"),
+      key: "meetsParisGoal",
+      unit: "",
+      source: "municipalities.list.meetsParisGoal.source",
+      sourceUrls: ["https://nationellaemissionsdatabasen.smhi.se/"],
+      description: t("municipalities.list.kpis.meetsParisGoal.description"),
+      detailedDescription: t(
+        "municipalities.list.kpis.meetsParisGoal.detailedDescription",
+      ),
+      higherIsBetter: true,
+      isBoolean: true,
+      booleanLabels: { true: t("yes"), false: t("no") },
+    },
+    {
       label: t(
         "municipalities.list.kpis.historicalEmissionChangePercent.label",
       ),

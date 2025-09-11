@@ -1099,6 +1099,12 @@
         }
       },
       "kpis": {
+        "meetsParisGoal": {
+          "label": "Parisavtalet",
+          "description": "Är kommunen på väg att klara Parisavtalet?",
+          "detailedDescription": "Är kommunen på väg att klara Parisavtalet?",
+          "source": "<0>Nationella emissionsdatabasen</0>"
+        },
         "historicalEmissionChangePercent": {
           "label": "Utsläppen",
           "description": "Historisk förändring av utsläpp",
@@ -1139,7 +1145,8 @@
         "keyStatistics": {
           "average": "Genomsnitt:",
           "distributionAbove": "kommuner över genomsnittet",
-          "distributionBelow": "kommuner under genomsnittet"
+          "distributionBelow": "kommuner under genomsnittet",
+          "distributionBoolean": "kommuner i '{{category}}'"
         },
         "topPerformers": {
           "titleBest": "Topp fem kommuner",
