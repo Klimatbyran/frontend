@@ -16,8 +16,8 @@ export const useMunicipalityKPIs = (): KPIValue[] => {
         "municipalities.list.kpis.meetsParisGoal.detailedDescription",
       ),
       higherIsBetter: true,
-      isBinary: true,
-      binaryLabels: { true: t("yes"), false: t("no") },
+      isBoolean: true,
+      booleanLabels: { true: t("yes"), false: t("no") },
     },
     {
       label: t(

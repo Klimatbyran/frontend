@@ -55,7 +55,9 @@ export default function KPIDetailsPanel({
         {nullValues > 0 && (
           <p className="text-gray-400 text-sm italic">
             {nullValues}{" "}
-            {t(`municipalities.list.kpis.${selectedKPI.key}.nullValues`).toLowerCase()}
+            {t(
+              `municipalities.list.kpis.${selectedKPI.key}.nullValues`,
+            ).toLowerCase()}
           </p>
         )}
       </div>

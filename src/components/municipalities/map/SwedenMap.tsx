@@ -164,7 +164,7 @@ function SwedenMap({
         leftValue={leftValue}
         rightValue={rightValue}
         unit={selectedKPI.unit}
-        isBinary={selectedKPI.isBinary}
+        isBinary={selectedKPI.isBoolean}
       />
     );
   };

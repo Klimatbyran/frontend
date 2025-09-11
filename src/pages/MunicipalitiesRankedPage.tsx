@@ -140,7 +140,7 @@ export function MunicipalitiesRankedPage() {
         }}
       />
 
-      {/* Mobile */}
+      {/* Mobile Insights */}
       <div className="lg:hidden space-y-6">
         {renderMapOrList(true)}
         <InsightsPanel
@@ -149,7 +149,7 @@ export function MunicipalitiesRankedPage() {
         />
       </div>
 
-      {/* Desktop */}
+      {/* Desktop Insights */}
       <div className="hidden lg:grid grid-cols-1 gap-6">
         <div className="grid grid-cols-2 gap-6">
           {renderMapOrList(false)}
