@@ -1101,9 +1101,15 @@
       "kpis": {
         "meetsParisGoal": {
           "label": "Paris Agreement",
-          "description": "Is the municipality on track to meet the Paris Agreement?",
-          "detailedDescription": "Is the municipality on track to meet the Paris Agreement?",
-          "source": "<0>National Emissions Database</0>"
+          "description": "Municipalities on track to meet the Paris Agreement",
+          "detailedDescription": "Which municipalities are on track to meet the Paris Agreement's 1.5-degree goal?",
+          "source": "<0>National Emissions Database</0>",
+          "booleanLabels": {
+            "true": "Meets Paris Agreement",
+            "false": "Does not meet Paris Agreement"
+          },
+          "belowString": "below average",
+          "aboveString": "above average"
         },
         "historicalEmissionChangePercent": {
           "label": "Emissions",
@@ -1146,7 +1152,8 @@
           "average": "Average:",
           "distributionAbove": "municipalities above average",
           "distributionBelow": "municipalities below average",
-          "distributionBoolean": "municipalities in '{{category}}'"
+          "distributionBooleanAbove": "municipalities {{aboveString}}'",
+          "distributionBooleanBelow": "municipalities {{belowString}}'"
         },
         "topPerformers": {
           "titleBest": "Top Five Municipalities",

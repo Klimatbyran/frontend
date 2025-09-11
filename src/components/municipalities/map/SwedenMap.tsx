@@ -114,8 +114,8 @@ function SwedenMap({
     const { gradientStart, gradientMidLow, gradientMidHigh, gradientEnd } =
       MUNICIPALITY_MAP_COLORS;
 
-    if (selectedKPI.isBoolean) {
-      return value === 1 || value === true ? gradientEnd : gradientMidLow;
+    if (typeof value === "boolean") {
+      return value === true ? gradientEnd : gradientMidLow;
     }
 
     const mean = values.reduce((sum, val) => sum + val, 0) / values.length;
@@ -264,6 +264,7 @@ function SwedenMap({
           nullValue={t(
             `municipalities.list.kpis.${selectedKPI.key}.nullValues`,
           )}
+          selectedKPI={selectedKPI}
         />
       )}
 
