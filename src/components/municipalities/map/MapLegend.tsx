@@ -19,7 +19,6 @@ export function MapLegend({
       <div className="flex flex-col md:flex-row items-start md:items-center mb-1 space-y-2 md:space-y-0 w-full md:w-auto">
         <div className="flex items-center w-full md:w-auto">
           {isBinary ? (
-            // Binary legend display with two blocks
             <>
               <div className="flex items-center mr-4">
                 <div
