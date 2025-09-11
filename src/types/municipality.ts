@@ -7,8 +7,6 @@ export type Municipality = {
   name: string;
   region: string;
   meetsParisGoal: boolean;
-  totalApproximatedHistoricalEmission: number;
-  trend: number;
   historicalEmissionChangePercent: number;
   climatePlanYear: number | null;
   climatePlanComment: string | null;
@@ -23,7 +21,6 @@ export type Municipality = {
   description?: string | null;
   sectorEmissions?: SectorEmissions;
   politicalRule: string[];
-  politicalRuleKSO: string;
 } & EmissionsData;
 
 // Detailed municipality type from API
