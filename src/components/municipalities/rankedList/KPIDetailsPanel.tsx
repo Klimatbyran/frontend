@@ -26,7 +26,13 @@ export default function KPIDetailsPanel({
         <p className="flex items-center gap-2 text-lg">
           {t("municipalities.list.insights.keyStatistics.average")}{" "}
           <span className="text-orange-2 font-medium">
-            {average.toFixed(1) + selectedKPI.unit}
+            {selectedKPI.isBoolean
+              ? t(
+                  average >= 0.5
+                    ? selectedKPI.booleanLabels?.true || "yes"
+                    : selectedKPI.booleanLabels?.false || "no",
+                )
+              : average.toFixed(1) + selectedKPI.unit}
           </span>
         </p>
         {[
@@ -35,21 +41,41 @@ export default function KPIDetailsPanel({
             colorClass: selectedKPI.higherIsBetter
               ? "text-blue-3"
               : "text-pink-3",
-            translationKey:
-              "municipalities.list.insights.keyStatistics.distributionAbove",
+            translationKey: selectedKPI.isBoolean
+              ? "municipalities.list.insights.keyStatistics.distributionBoolean"
+              : "municipalities.list.insights.keyStatistics.distributionAbove",
           },
           {
             count: belowAverageCount,
             colorClass: selectedKPI.higherIsBetter
               ? "text-pink-3"
               : "text-blue-3",
-            translationKey:
-              "municipalities.list.insights.keyStatistics.distributionBelow",
+            translationKey: selectedKPI.isBoolean
+              ? "municipalities.list.insights.keyStatistics.distributionBoolean"
+              : "municipalities.list.insights.keyStatistics.distributionBelow",
           },
         ].map(({ count, colorClass, translationKey }) => (
           <p key={translationKey} className="mt-2">
             <span className={`font-medium ${colorClass}`}>{count} </span>
-            {t(translationKey)}
+            {t(
+              translationKey,
+              selectedKPI.isBoolean
+                ? {
+                    category:
+                      selectedKPI.booleanLabels?.[
+                        translationKey ===
+                          "municipalities.list.insights.keyStatistics.distributionBoolean" &&
+                        count === aboveAverageCount
+                          ? average <= 0.5
+                            ? "true"
+                            : "false"
+                          : average <= 0.5
+                            ? "false"
+                            : "true"
+                      ],
+                  }
+                : {},
+            )}
           </p>
         ))}
         {nullValues > 0 && (
