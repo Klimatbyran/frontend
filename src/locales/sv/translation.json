@@ -1105,8 +1105,8 @@
           "detailedDescription": "Vilka kommuner är på väg att klara Parisavtalets 1,5-gradersmål?",
           "source": "<0>Nationella emissionsdatabasen</0>",
           "booleanLabels": {
-            "true": "Klarar Parisavtalet",
-            "false": "Klarar inte Parisavtalet"
+            "true": "Klarar avtalet",
+            "false": "Klarar inte avtalet"
           },
           "aboveString": "klarar målet",
           "belowString": "klarar inte målet"

@@ -67,7 +67,9 @@ function MunicipalityRankedList({
   const municipalityValue = (municipality: Municipality) => {
     return municipality[selectedKPI.key] !== null
       ? typeof municipality[selectedKPI.key] === "boolean"
-        ? t(`${municipality[selectedKPI.key] ? "yes" : "no"}`)
+        ? municipality[selectedKPI.key]
+          ? t(`municipalities.list.kpis.${selectedKPI.key}.booleanLabels.true`)
+          : t(`municipalities.list.kpis.${selectedKPI.key}.booleanLabels.false`)
         : `${(municipality[selectedKPI.key] as number).toFixed(1)}${selectedKPI.unit}`
       : selectedKPI.nullValues;
   };
@@ -101,9 +103,11 @@ function MunicipalityRankedList({
                 <span className="text-white/30 text-sm w-8">
                   {startIndex + index + 1}
                 </span>
-                <span className="text-white/90">{municipality.name}</span>
+                <span className="text-white/90 text-sm md:text-base">
+                  {municipality.name}
+                </span>
               </div>
-              <span className="text-orange-2 font-medium">
+              <span className="text-orange-2 text-sm md:text-base font-medium text-right">
                 {municipalityValue(municipality)}
               </span>
             </button>
