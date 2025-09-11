@@ -1,7 +1,8 @@
-import React, { useState } from "react";
-import { Search, ChevronLeft, ChevronRight } from "lucide-react";
+import { useState } from "react";
+import { Search } from "lucide-react";
 import { t } from "i18next";
 import { Municipality } from "@/types/municipality";
+import MultiPagePagination from "@/components/ui/multi-page-pagination";
 
 interface DataPoint {
   label: string;
@@ -63,6 +64,14 @@ function MunicipalityRankedList({
     }
   };
 
+  const municipalityValue = (municipality: Municipality) => {
+    return municipality[selectedKPI.key] !== null
+      ? typeof municipality[selectedKPI.key] === "boolean"
+        ? t(`${municipality[selectedKPI.key] ? "yes" : "no"}`)
+        : `${(municipality[selectedKPI.key] as number).toFixed(1)}${selectedKPI.unit}`
+      : selectedKPI.nullValues;
+  };
+
   return (
     <div className="bg-black-2 rounded-2xl flex flex-col border border-white/10">
       <div className="p-4 border-b border-white/10">
@@ -95,64 +104,18 @@ function MunicipalityRankedList({
                 <span className="text-white/90">{municipality.name}</span>
               </div>
               <span className="text-orange-2 font-medium">
-                {municipality[selectedKPI.key] !== null
-                  ? typeof municipality[selectedKPI.key] === "boolean"
-                    ? t(`${municipality[selectedKPI.key] ? "yes" : "no"}`)
-                    : `${(municipality[selectedKPI.key] as number).toFixed(1)}${selectedKPI.unit}`
-                  : selectedKPI.nullValues}
+                {municipalityValue(municipality)}
               </span>
             </button>
           ))}
         </div>
       </div>
       {totalPages > 1 && (
-        <div className="p-4 border-t border-white/10 flex items-center justify-between">
-          <button
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-            aria-label="Previous page"
-            className="p-2 text-white/70 disabled:text-white/20 disabled:cursor-not-allowed hover:bg-black/40 rounded-xl transition-colors"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-          <div className="flex items-center gap-2">
-            {Array.from({ length: totalPages }, (_, i) => i + 1)
-              .filter((page) => {
-                const distance = Math.abs(page - currentPage);
-                return (
-                  distance === 0 ||
-                  distance === 1 ||
-                  page === 1 ||
-                  page === totalPages
-                );
-              })
-              .map((page, index, array) => (
-                <React.Fragment key={page}>
-                  {index > 0 && array[index - 1] !== page - 1 && (
-                    <span className="text-white/30">...</span>
-                  )}
-                  <button
-                    onClick={() => handlePageChange(page)}
-                    className={`w-8 h-8 rounded-xl text-sm transition-colors ${
-                      currentPage === page
-                        ? "bg-white/10 text-orange-2"
-                        : "text-white/70 hover:bg-black/40"
-                    }`}
-                  >
-                    {page}
-                  </button>
-                </React.Fragment>
-              ))}
-          </div>
-          <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-            aria-label="Next page"
-            className="p-2 text-white/70 disabled:text-white/20 disabled:cursor-not-allowed hover:bg-black/40 rounded-xl transition-colors"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </button>
-        </div>
+        <MultiPagePagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
       )}
     </div>
   );
