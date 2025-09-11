@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface PaginationProps {
@@ -12,9 +12,29 @@ const MultiPagePagination: React.FC<PaginationProps> = ({
   totalPages,
   onPageChange,
 }) => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkIsMobile();
+    window.addEventListener("resize", checkIsMobile);
+
+    return () => {
+      window.removeEventListener("resize", checkIsMobile);
+    };
+  }, []);
+
   const paginationButtons = Array.from({ length: totalPages }, (_, i) => i + 1)
     .filter((page) => {
       const distance = Math.abs(page - currentPage);
+      if (isMobile) {
+        // On mobile, only show first, current and last
+        return page === 1 || page === currentPage || page === totalPages;
+      }
+      // Desktop behavior - show current, adjacent, first and last
       return (
         distance === 0 || distance === 1 || page === 1 || page === totalPages
       );
