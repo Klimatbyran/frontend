@@ -9,7 +9,7 @@ export function MapTooltip({
   nullValue,
 }: {
   name: string;
-  value: number | boolean | null;
+  value: number | boolean | null | undefined;
   rank: number | null;
   unit: string;
   total: number;
@@ -21,7 +21,7 @@ export function MapTooltip({
       <div className="space-y-1 mt-2">
         <p className="text-white/70">
           <span className="text-orange-2">
-            {value !== null
+            {value !== null && value !== undefined
               ? typeof value === "boolean"
                 ? value
                   ? "Yes"
