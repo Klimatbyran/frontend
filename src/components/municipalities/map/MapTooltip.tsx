@@ -24,8 +24,8 @@ export function MapTooltip({
             {value !== null && value !== undefined
               ? typeof value === "boolean"
                 ? value
-                  ? "Yes"
-                  : "No"
+                  ? t("yes")
+                  : t("no")
                 : `${(value as number).toFixed(1)}${unit}`
               : nullValue}
           </span>
