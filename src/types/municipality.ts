@@ -79,6 +79,8 @@ export interface KPIValue {
   higherIsBetter: boolean;
   isBoolean?: boolean;
   booleanLabels?: { true: string; false: string };
+  belowString?: string;
+  aboveString?: string;
 }
 
 export type SectorEmissions = {
