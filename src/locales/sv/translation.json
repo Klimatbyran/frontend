@@ -1354,5 +1354,14 @@
   "language": {
     "sv": "Svenska",
     "en": "Engelska"
+  },
+  "relatableNumbers": {
+    "title": "Hur mycket är det?",
+    "descriptionPartOne": "Det nuvarande totala utsläppet av",
+    "descriptionPartTwo": "kan jämföras med följande:",
+    "timesPartOne": "gånger",
+    "timesPartTwo": "Sveriges totala utsläpp",
+    "forestFirePartOne": "Utsläpp från en skogsbrand motsvarande ",
+    "forestFirePartTwo": " Sveriges totala skogsareal."
   }
 }
