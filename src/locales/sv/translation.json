@@ -1356,15 +1356,12 @@
     "en": "Engelska"
   },
   "relatableNumbers": {
-    "title": "Från ton till T-shirts: siffror du känner igen",
+    "title": "Hur mycket är det?",
     "descriptionPartOne": "Det nuvarande totala utsläppet av",
     "descriptionPartTwo": "kan jämföras med följande:",
-    "billion": "miljarder",
-    "million": "miljoner",
-    "times": "gånger",
-    "t-shirts": "producerade t-shirts.",
-    "gas": "fulla tankar bensin.",
-    "power": "utsläppen i Sverige år ",
-    "plane": "tur- och returresor Stockholm – New York för en person."
+    "timesPartOne": "gånger",
+    "timesPartTwo": "Sveriges totala utsläpp",
+    "forestFirePartOne": "Utsläpp från en skogsbrand motsvarande ",
+    "forestFirePartTwo": " Sveriges totala skogsareal"
   }
 }

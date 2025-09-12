@@ -1357,15 +1357,12 @@
     "en": "English"
   },
   "relatableNumbers": {
-    "title": "From Tons to T-Shirts: Relatable Numbers",
+    "title": "How much is that?",
     "descriptionPartOne": "The current total emission of",
     "descriptionPartTwo": "compares to the following:",
-    "billion": "billion",
-    "million": "million",
-    "times": "times",
-    "t-shirts": "t-shirts produced.",
-    "gas": "full tanks of gas.",
-    "power": "the emissions in Sweden in",
-    "plane": "roundtrips Stockholm - New York for one person."
+    "timesPartOne": "times",
+    "timesPartTwo": "the total emissions of Sweden in",
+    "forestFirePartOne": "Emissions from a forest fire the size of ",
+    "forestFirePartTwo": " Swedens's total forest area"
   }
 }

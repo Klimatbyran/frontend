@@ -1,9 +1,7 @@
 import { Text } from "@/components/ui/text";
 import {
-  emissionsToTshirts,
-  emissionsToGasTank,
+  emissionsToForestFire,
   emissionsComparedToSweden,
-  emissionsToFlights,
 } from "@/utils/calculations/relatableNumbersCalc";
 import {
   formatEmissionsAbsolute,
@@ -26,27 +24,14 @@ const RelatableNumbers = ({
   const validTotalEmissions =
     selectedPeriod.emissions?.calculatedTotalEmissions || null;
 
-  const numberOfTshirtsProduced = emissionsToTshirts(validTotalEmissions);
-  const tshirtsProducedFormatted = localizeUnit(
-    numberOfTshirtsProduced,
-    currentLanguage,
-  );
-
-  const numbersOfGasTanks = emissionsToGasTank(validTotalEmissions);
-  const numbersOfGasTanksFormatted = localizeUnit(
-    numbersOfGasTanks,
-    currentLanguage,
-  );
+  const areaTreesBurnt = emissionsToForestFire(validTotalEmissions);
+  const areaTreesBurntFormatted = localizeUnit(areaTreesBurnt, currentLanguage);
 
   const swedenEmissionDifference = Math.round(
     emissionsComparedToSweden(validTotalEmissions),
   );
 
-  const numberOfRoundTrips = emissionsToFlights(validTotalEmissions);
-  const numberOfRoundTripsFormatted = localizeUnit(
-    numberOfRoundTrips,
-    currentLanguage,
-  );
+  console.log(areaTreesBurntFormatted);
 
   return (
     validTotalEmissions && (
@@ -69,35 +54,20 @@ const RelatableNumbers = ({
           <div className="mt-6 gap-4 flex flex-col">
             <div className="flex items-center gap-4">
               <img
-                src="../icons/t-shirt.svg"
-                alt="T-shirt icon"
+                src="../icons/fire-icon.svg"
+                alt="fire icon"
                 className="h-[50px] md:h-[70px]"
               />
               <Text
                 variant="body"
                 className="text-sm md:text-base lg:text-lg max-w-3xl mt-2"
               >
-                <span className="text-blue-2">
-                  {tshirtsProducedFormatted} {t("relatableNumbers.billion")}
-                </span>{" "}
-                {t("relatableNumbers.t-shirts")}
-              </Text>
-            </div>
-
-            <div className="flex items-center gap-4">
-              <img
-                src="../icons/gas-tank.svg"
-                alt="T-shirt icon"
-                className="h-[50px] md:h-[70px]"
-              />
-              <Text
-                variant="body"
-                className="text-sm md:text-base lg:text-lg max-w-3xl mt-2"
-              >
-                <span className="text-red-200">
-                  {numbersOfGasTanksFormatted} {t("relatableNumbers.billion")}
-                </span>{" "}
-                {t("relatableNumbers.gas")}
+                {" "}
+                {t("relatableNumbers.forestFirePartOne")}{" "}
+                <span className="text-red-300">
+                  {areaTreesBurntFormatted}%{" "}
+                </span>
+                {t("relatableNumbers.forestFirePartTwo")}
               </Text>
             </div>
           </div>
@@ -113,27 +83,12 @@ const RelatableNumbers = ({
                 className="text-sm md:text-base lg:text-lg max-w-3xl mt-2"
               >
                 <span className="text-yellow-100">
-                  {swedenEmissionDifference} {t("relatableNumbers.times")}
+                  {swedenEmissionDifference}{" "}
+                  {t("relatableNumbers.timesPartOne")}
                 </span>{" "}
-                {t("relatableNumbers.power")}{"  "}
+                {t("relatableNumbers.timesPartTwo")}
+                {"  "}
                 {selectedPeriod.endDate.slice(0, 4)}.
-              </Text>
-            </div>
-
-            <div className="flex items-center gap-4">
-              <img
-                src="../icons/plane.svg"
-                alt="T-shirt icon"
-                className="h-[50px] md:h-[70px]"
-              />
-              <Text
-                variant="body"
-                className="text-sm md:text-base lg:text-lg max-w-3xl mt-2"
-              >
-                <span className="text-green-100">
-                  {numberOfRoundTripsFormatted} {t("relatableNumbers.million")}
-                </span>{" "}
-                {t("relatableNumbers.plane")}
               </Text>
             </div>
           </div>

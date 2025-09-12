@@ -1,31 +1,4 @@
-export const emissionsToTshirts = (totalEmissions: number | null) => {
-  //Cradle-to-grave average value
-  const averageTshirtEmission = 6;
-
-  if (totalEmissions === null) {
-    return 0;
-  }
-  const totalEmissionsKg = totalEmissionsToKg(totalEmissions);
-  const numberTshirtsProduced = totalEmissionsKg / averageTshirtEmission;
-
-  return numberTshirtsProduced;
-};
-
-export const emissionsToGasTank = (totalEmissions: number | null) => {
-  const co2PerLiterGas = 2.35;
-  const averageTankLiters = 50;
-  const emissionPerTank = co2PerLiterGas * averageTankLiters;
-
-  if (totalEmissions === null) {
-    return 0;
-  }
-  const totalEmissionsKg = totalEmissionsToKg(totalEmissions);
-  const numberOfTanks = totalEmissionsKg / emissionPerTank;
-
-  return numberOfTanks;
-};
-
-export const emissionsComparedToSweden = (totalEmissions: number | null) => {
+export const emissionsComparedToSweden = (totalEmissions: number) => {
   //Swedens total emissions 2023 tco2e
   const swedenTotalEmissions = 44200000;
 
@@ -37,18 +10,17 @@ export const emissionsComparedToSweden = (totalEmissions: number | null) => {
   return emissionsDifference;
 };
 
-export const emissionsToFlights = (totalEmissions: number | null) => {
-  //Average 746kg tcoe2 for a Sweden-New York roundtrip
-  const roundTrip = 746;
+export const emissionsToForestFire = (totalEmissions: number) => {
+  //Total productive forest land
+  const totalForestedArea = 22500000;
+  const averageCarbonPerHectar = 50;
+  const carbonConversion = 44 / 12;
 
-  if (totalEmissions === null) {
-    return 0;
-  }
-  const totalEmissionsKg = totalEmissionsToKg(totalEmissions);
+  const tco2ePerHectar = averageCarbonPerHectar * carbonConversion;
+  const totalHectarBurnt = totalEmissions / tco2ePerHectar;
+  const percentForestBurnt = (totalHectarBurnt / totalForestedArea) * 100;
 
-  const numberOfRoundTrips = totalEmissionsKg / roundTrip;
-
-  return numberOfRoundTrips;
+  return percentForestBurnt;
 };
 
 const totalEmissionsToKg = (totalEmissionsTons: number) => {
