@@ -1,11 +1,5 @@
 import { Link } from "react-router-dom";
-import { Building2, TrendingDown, Users, Wallet, Info } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Building2, TrendingDown, Users, Wallet } from "lucide-react";
 // import { useSectorNames } from "@/hooks/companies/useCompanyFilters";
 import type { RankedCompany } from "@/types/company";
 import { Text } from "@/components/ui/text";
@@ -22,6 +16,8 @@ import { LinkCard } from "@/components/ui/link-card";
 import { cn } from "@/lib/utils";
 import { AiIcon } from "@/components/ui/ai-icon";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
+import { InfoTooltip } from "@/components/layout/InfoTooltip";
+import { LocalizedLink } from "@/components/LocalizedLink";
 
 type CompanyCardProps = Pick<
   RankedCompany,
@@ -101,7 +97,7 @@ export function CompanyCard({
 
   return (
     <div className="relative rounded-level-2 @container">
-      <Link
+      <LocalizedLink
         to={`/companies/${wikidataId}`}
         className="block bg-black-2 rounded-level-2 p-8 space-y-8 transition-all duration-300 hover:shadow-[0_0_10px_rgba(153,207,255,0.15)] hover:bg-[#1a1a1a]"
       >
@@ -127,16 +123,9 @@ export function CompanyCard({
             <div className="flex items-center gap-2 text-grey mb-2 text-lg">
               <TrendingDown className="w-4 h-4" />
               {t("companies.card.emissions")}
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <Info className="w-4 h-4" />
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{t("companies.card.totalEmissionsInfo")}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+              <InfoTooltip ariaLabel="Information about total emissions">
+                <p>{t("companies.card.totalEmissionsInfo")}</p>
+              </InfoTooltip>
             </div>
             <div className="text-3xl flex font-light h-[44px]">
               {currentEmissions != null ? (
@@ -160,31 +149,22 @@ export function CompanyCard({
             <div className="flex items-center gap-2 text-grey mb-2 text-lg">
               <TrendingDown className="w-4 h-4" />
               <span>{t("companies.card.emissionsChangeRate")}</span>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <Info className="w-4 h-4" />
-                  </TooltipTrigger>
-                  <TooltipContent className="max-w-80">
-                    {emissionsChange ? (
-                      emissionsChange <= -80 || emissionsChange >= 80 ? (
-                        <>
-                          <p>{t("companies.card.emissionsChangeRateInfo")}</p>
-                          <p className="my-2">
-                            {t(
-                              "companies.card.emissionsChangeRateInfoExtended",
-                            )}
-                          </p>
-                        </>
-                      ) : (
-                        <p>{t("companies.card.emissionsChangeRateInfo")}</p>
-                      )
-                    ) : (
-                      <p>{t("companies.card.noData")}</p>
-                    )}
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+              <InfoTooltip ariaLabel="Information about emissions change rate">
+                {emissionsChange ? (
+                  emissionsChange <= -80 || emissionsChange >= 80 ? (
+                    <>
+                      <p>{t("companies.card.emissionsChangeRateInfo")}</p>
+                      <p className="my-2">
+                        {t("companies.card.emissionsChangeRateInfoExtended")}
+                      </p>
+                    </>
+                  ) : (
+                    <p>{t("companies.card.emissionsChangeRateInfo")}</p>
+                  )
+                ) : (
+                  <p>{t("companies.card.noData")}</p>
+                )}
+              </InfoTooltip>
             </div>
             <div className="text-3xl font-light">
               {emissionsChange ? (
@@ -281,7 +261,7 @@ export function CompanyCard({
             noSustainabilityReport ? "text-pink-3" : "text-green-3"
           }
         />
-      </Link>
+      </LocalizedLink>
     </div>
   );
 }

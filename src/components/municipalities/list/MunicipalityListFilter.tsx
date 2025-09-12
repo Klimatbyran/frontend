@@ -9,18 +9,20 @@ import {
 } from "@/components/ui/select";
 import { regions } from "@/lib/constants/regions";
 import { t } from "i18next";
-
-type SortOption = "meets_paris" | "name";
+import {
+  MunicipalitySortBy,
+  MunicipalitySortDirection,
+} from "@/types/municipality";
 
 interface MunicipalityFilterProps {
   selectedRegion: string;
   setSelectedRegion: (region: string) => void;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
-  sortBy: SortOption;
-  setSortBy: (sort: SortOption) => void;
-  sortDirection: "best" | "worst";
-  setSortDirection: (direction: "best" | "worst") => void;
+  sortBy: MunicipalitySortBy;
+  setSortBy: (sort: MunicipalitySortBy) => void;
+  sortDirection: MunicipalitySortDirection;
+  setSortDirection: (direction: MunicipalitySortDirection) => void;
 }
 
 export default function MunicipalityFilter({
@@ -75,7 +77,7 @@ export default function MunicipalityFilter({
         {/* Sorting Select */}
         <Select
           value={sortBy}
-          onValueChange={(value) => setSortBy(value as SortOption)}
+          onValueChange={(value) => setSortBy(value as MunicipalitySortBy)}
         >
           <SelectTrigger className="w-full md:w-[250px] h-10 bg-black-1">
             <SelectValue

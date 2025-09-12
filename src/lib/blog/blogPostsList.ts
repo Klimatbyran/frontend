@@ -26,7 +26,7 @@ export const blogMetadata: ContentMeta[] = [
     relatedPosts: ["carbon-law-from-2025", "2024-report"],
   },
   {
-    id: "sv-only-radical-futures-left",
+    id: "only-radical-futures-left",
     title:
       "Bara radikala framtidsutsikter kvar",
     excerpt:
@@ -62,7 +62,7 @@ export const blogMetadata: ContentMeta[] = [
     relatedPosts: ["metod"],
   },
   {
-    id: "sv-carbon-law-from-2025",
+    id: "carbon-law-from-2025",
     title:
       "Q&A Klimatkollens justerade utsläppsbana för Carbon Law",
     excerpt:
@@ -80,7 +80,7 @@ export const blogMetadata: ContentMeta[] = [
     relatedPosts: ["metod", "utslappsberakning"],
   },
   {
-    id: "sv-2024-report",
+    id: "2024-report",
     title:
       "Klimatkollens 2025-rapport - Översikt",
     excerpt:
@@ -222,3 +222,14 @@ export const blogMetadata: ContentMeta[] = [
     relatedPosts: ["klimatmal", "metod"],
   },
 ];
+
+export const blogMetadataByLanguage = {
+  en: blogMetadata.filter(post => 
+    post.displayLanguages.includes('en') || 
+    post.displayLanguages.includes('all')
+  ),
+  sv: blogMetadata.filter(post => 
+    post.displayLanguages.includes('sv') || 
+    post.displayLanguages.includes('all')
+  )
+};

@@ -1,5 +1,5 @@
 ---
-id: "sv-carbon-law-from-2025"
+id: "carbon-law-from-2025"
 ---
 
 [Läs rapporten](/reports/2025-06-19_ApplyingCarbonLawFrom2025.pdf) - framtagen i samarbete med: Johan Falk, Owen Gaffney och Exponential Roadmap Initiative

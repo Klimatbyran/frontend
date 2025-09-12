@@ -1,6 +1,7 @@
 import { LucideProps } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Text } from "@/components/ui/text";
+import { LocalizedLink } from "./LocalizedLink";
 
 export interface RankedListItem {
   name: string;
@@ -53,9 +54,9 @@ export function RankedList({
       <div className="grid gap-y-6 grid-cols-[auto_1fr_auto]">
         <Text className="col-span-full text-md text-grey">{description}</Text>
         {items.map((item, index) => (
-          <a
+          <LocalizedLink
             key={item.link}
-            href={item.link}
+            to={item.link}
             className="grid grid-cols-subgrid col-span-full items-center gap-4 hover:bg-black-1 transition-colors rounded-lg"
           >
             <span className={cn("text-2xl sm:text-5xl font-light", rankColor)}>
@@ -65,7 +66,7 @@ export function RankedList({
             <div className="flex items-center md:justify-end">
               {itemValueRenderer(item)}
             </div>
-          </a>
+          </LocalizedLink>
         ))}
       </div>
     </div>
