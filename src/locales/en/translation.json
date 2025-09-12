@@ -1101,15 +1101,15 @@
       "kpis": {
         "meetsParisGoal": {
           "label": "Paris Agreement",
-          "description": "Municipalities on track to meet the Paris Agreement",
-          "detailedDescription": "Which municipalities are on track to meet the Paris Agreement's 1.5-degree goal?",
+          "description": "Emissions trend compared to the Paris Agreement",
+          "detailedDescription": "Which municipalities are on track to meet the Paris Agreement?",
           "source": "<0>National Emissions Database</0>",
           "booleanLabels": {
             "true": "Meets Paris Agreement",
-            "false": "Does not meet Paris Agreement"
+            "false": "Fails Paris Agreement"
           },
-          "aboveString": "meet the goal",
-          "belowString": "does not meet the goal"
+          "aboveString": "is on track to meet the Paris Agreement",
+          "belowString": "is on track to miss the Paris Agreement"
         },
         "historicalEmissionChangePercent": {
           "label": "Emissions",
