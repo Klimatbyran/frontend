@@ -1101,15 +1101,15 @@
       "kpis": {
         "meetsParisGoal": {
           "label": "Parisavtalet",
-          "description": "Kommuner på väg att klara Parisavtalet",
-          "detailedDescription": "Vilka kommuner är på väg att klara Parisavtalets 1,5-gradersmål?",
+          "description": "Utsläppstrend jämfört med Parisavtalet",
+          "detailedDescription": "Vilka kommuner är på väg att klara Parisavtalet?",
           "source": "<0>Nationella emissionsdatabasen</0>",
           "booleanLabels": {
-            "true": "Klarar avtalet",
-            "false": "Klarar inte avtalet"
+            "true": "Klarar Parisavtalet",
+            "false": "Missar Parisavtalet"
           },
-          "aboveString": "klarar målet",
-          "belowString": "klarar inte målet"
+          "aboveString": "är på väg att klara Parisavtalet",
+          "belowString": "är på väg att missa Parisavtalet"
         },
         "historicalEmissionChangePercent": {
           "label": "Utsläppen",

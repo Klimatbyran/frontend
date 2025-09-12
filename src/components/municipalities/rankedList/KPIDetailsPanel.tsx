@@ -17,19 +17,8 @@ export default function KPIDetailsPanel({
   belowAverageCount,
   nullValues,
 }: KPIDetailsPanelProps) {
-  const booleanLabelTrue = t(
-    `municipalities.list.kpis.${selectedKPI.key}.booleanLabels.true`,
-  );
-  const booleanLabelFalse = t(
-    `municipalities.list.kpis.${selectedKPI.key}.booleanLabels.false`,
-  );
-
-  const averageLabel = selectedKPI.isBoolean
-    ? (() => {
-        const text = t(average >= 0.5 ? booleanLabelTrue : booleanLabelFalse);
-        return text.charAt(0).toLowerCase() + text.slice(1);
-      })()
-    : average.toFixed(1) + selectedKPI.unit;
+  const averageLabel =
+    !selectedKPI.isBoolean && average.toFixed(1) + selectedKPI.unit;
 
   const distributionStats = [
     {
@@ -97,10 +86,12 @@ export default function KPIDetailsPanel({
         {t(`municipalities.list.kpis.${selectedKPI.key}.label`)}
       </h2>
       <div className="mt-4 p-4 bg-white/10 rounded-level-2 space-y-2">
-        <p className="flex items-center flex-wrap gap-2 text-lg">
-          {t("municipalities.list.insights.keyStatistics.average")}{" "}
-          <span className="text-orange-2 font-medium">{averageLabel}</span>
-        </p>
+        {!selectedKPI.isBoolean && (
+          <p className="flex items-center flex-wrap gap-2 text-lg">
+            {t("municipalities.list.insights.keyStatistics.average")}{" "}
+            <span className="text-orange-2 font-medium">{averageLabel}</span>
+          </p>
+        )}
         {distributionStatItems}
         {nullValues > 0 && (
           <p className="text-gray-400 text-sm italic">
