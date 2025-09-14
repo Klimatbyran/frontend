@@ -31,10 +31,8 @@ const RelatableNumbers = ({
     emissionsComparedToSweden(validTotalEmissions),
   );
 
-  console.log(areaTreesBurntFormatted);
-
   return (
-    validTotalEmissions && (
+    validTotalEmissions !== null && (
       <div className="bg-black-2 rounded-level-1 p-16">
         <Text variant={"h3"}>{t("relatableNumbers.title")}</Text>
         <Text
@@ -65,7 +63,10 @@ const RelatableNumbers = ({
                 {" "}
                 {t("relatableNumbers.forestFirePartOne")}{" "}
                 <span className="text-red-300">
-                  {areaTreesBurntFormatted}%{" "}
+                  {areaTreesBurntFormatted?.slice(
+                    0,
+                    areaTreesBurntFormatted.length - 2,
+                  )}{" "}
                 </span>
                 {t("relatableNumbers.forestFirePartTwo")}
               </Text>
