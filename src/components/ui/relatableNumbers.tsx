@@ -1,6 +1,7 @@
 import { Text } from "@/components/ui/text";
 import {
-  emissionsToForestFire,
+  calculateStockholmsBurnt,
+  calculateBurntFootballFields,
   emissionsComparedToSweden,
 } from "@/utils/calculations/relatableNumbersCalc";
 import {
@@ -22,10 +23,21 @@ const RelatableNumbers = ({
   const { t } = useTranslation();
 
   const validTotalEmissions =
-    selectedPeriod.emissions?.calculatedTotalEmissions || null;
+    selectedPeriod.emissions?.calculatedTotalEmissions;
 
-  const areaTreesBurnt = emissionsToForestFire(validTotalEmissions);
-  const areaTreesBurntFormatted = localizeUnit(areaTreesBurnt, currentLanguage);
+  if (!validTotalEmissions) return;
+
+  const stockholmsBurnt = calculateStockholmsBurnt(validTotalEmissions);
+  const stockholmsBurntFormatted =
+    stockholmsBurnt !== null
+      ? localizeUnit(stockholmsBurnt, currentLanguage)
+      : null;
+
+  const footballFieldsBurnt = calculateBurntFootballFields(validTotalEmissions);
+  const footballFieldsBurntFormatted = localizeUnit(
+    footballFieldsBurnt,
+    currentLanguage,
+  );
 
   const swedenEmissionDifference = Math.round(
     emissionsComparedToSweden(validTotalEmissions),
@@ -56,20 +68,30 @@ const RelatableNumbers = ({
                 alt="fire icon"
                 className="h-[50px] md:h-[70px]"
               />
-              <Text
-                variant="body"
-                className="text-sm md:text-base lg:text-lg max-w-3xl mt-2"
-              >
-                {" "}
-                {t("relatableNumbers.forestFirePartOne")}{" "}
-                <span className="text-red-300">
-                  {areaTreesBurntFormatted?.slice(
-                    0,
-                    areaTreesBurntFormatted.length - 2,
-                  )}{" "}
-                </span>
-                {t("relatableNumbers.forestFirePartTwo")}
-              </Text>
+              {stockholmsBurntFormatted ? (
+                <Text>
+                  {t("relatableNumbers.forestFireStockholm")}{" "}
+                  <span className="text-red-300">
+                    {stockholmsBurntFormatted.slice(
+                      0,
+                      stockholmsBurntFormatted.length - 2,
+                    )}{" "}
+                    {t("relatableNumbers.times")}
+                  </span>{" "}
+                  {t("relatableNumbers.forestFireStockholmExtension")}
+                </Text>
+              ) : (
+                <Text>
+                  {t("relatableNumbers.forestFireFootball")}
+                  <span className="text-red-300">
+                    {footballFieldsBurntFormatted?.slice(
+                      0,
+                      footballFieldsBurntFormatted.length - 2,
+                    )}
+                  </span>
+                  {t("relatableNumbers.forestFireFootballExtension")}
+                </Text>
+              )}
             </div>
           </div>
           <div className="mt-6 gap-4 flex flex-col">
@@ -84,8 +106,7 @@ const RelatableNumbers = ({
                 className="text-sm md:text-base lg:text-lg max-w-3xl mt-2"
               >
                 <span className="text-yellow-100">
-                  {swedenEmissionDifference}{" "}
-                  {t("relatableNumbers.timesPartOne")}
+                  {swedenEmissionDifference} {t("relatableNumbers.times")}
                 </span>{" "}
                 {t("relatableNumbers.timesPartTwo")}
                 {"  "}

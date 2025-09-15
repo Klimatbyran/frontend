@@ -1360,9 +1360,11 @@
     "title": "How much is that?",
     "descriptionPartOne": "The current total emission of",
     "descriptionPartTwo": "compares to the following:",
-    "timesPartOne": "times",
+    "times": "times",
     "timesPartTwo": "the total emissions of Sweden in",
-    "forestFirePartOne": "Emissions from a forest fire the size of ",
-    "forestFirePartTwo": " football fields."
+    "forestFireFootball": "Emissions from a forest fire the size of ",
+    "forestFireFootballExtension": " football fields.",
+    "forestFireStockholm": "Emissions from a forest fire",
+    "forestFireStockholmExtension": "the size of Stockholm."
   }
 }
