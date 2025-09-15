@@ -1,11 +1,10 @@
 import { FC, useMemo } from "react";
-import { ComposedChart, Area, Tooltip } from "recharts";
+import { ComposedChart, Area, Tooltip, ResponsiveContainer } from "recharts";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
 import { SectorEmissions } from "@/types/municipality";
 import { useMunicipalitySectors } from "@/hooks/municipalities/useMunicipalitySectors";
 import {
-  ChartContainer,
   DynamicLegendContainer,
   LegendItem,
   createSectorLegendItems,
@@ -13,6 +12,7 @@ import {
   getXAxisProps,
   getYAxisProps,
   getChartContainerProps,
+  getComposedChartProps,
   ChartWrapper,
   ChartArea,
   ChartFooter,
@@ -108,10 +108,14 @@ export const SectorsChartNew: FC<SectorsChartNewProps> = ({
   return (
     <ChartWrapper>
       <ChartArea>
-        <ChartContainer {...getChartContainerProps()}>
+        <ResponsiveContainer {...getChartContainerProps()}>
           <ComposedChart
-            data={chartData}
-            margin={{ left: 0, right: 0, top: 0, bottom: 0 }}
+            {...getComposedChartProps(chartData, undefined, {
+              left: 0,
+              right: 0,
+              top: 0,
+              bottom: 0,
+            })}
           >
             <XAxis
               {...getXAxisProps("year", [1990, MAX_YEAR], customTicks)}
@@ -159,7 +163,7 @@ export const SectorsChartNew: FC<SectorsChartNewProps> = ({
               );
             })}
           </ComposedChart>
-        </ChartContainer>
+        </ResponsiveContainer>
       </ChartArea>
 
       <ChartFooter>

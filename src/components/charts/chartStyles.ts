@@ -1,8 +1,14 @@
 /**
- * Shared chart styling constants and utilities
+ * Chart styling constants and utilities
+ * This file contains all chart-related styling and re-exports utility functions
  */
 
+import React from "react";
 import { formatEmissionsAbsoluteCompact } from "@/utils/formatting/localization";
+
+// ============================================================================
+// CORE CHART STYLES
+// ============================================================================
 
 // Common line styles
 export const LINE_STYLES = {
@@ -10,73 +16,44 @@ export const LINE_STYLES = {
   primary: {
     strokeWidth: 2,
     dot: false,
-    connectNulls: true,
+    activeDot: { r: 6, cursor: "pointer" },
   },
-
   // Secondary/estimated lines
   secondary: {
     strokeWidth: 2,
     strokeDasharray: "4 4",
     dot: false,
-    connectNulls: true,
+    activeDot: { r: 6, cursor: "pointer" },
   },
-
   // Trend lines
   trend: {
     strokeWidth: 2,
     strokeDasharray: "4 4",
     dot: false,
-  },
-
-  // Reference lines
-  reference: {
-    strokeWidth: 1,
-    strokeDasharray: "4 4",
-    dot: false,
+    activeDot: { r: 6, cursor: "pointer" },
   },
 } as const;
 
-// Common colors
+// Chart colors
 export const CHART_COLORS = {
-  // Main data lines
   primary: "white", // Historical/solid white
-  secondary: "white", // Estimated/dashed white
-
-  // Trend and reference lines
+  secondary: "var(--grey)", // Estimated/dashed grey
   trend: "var(--pink-3)", // Trend/dashed pink
-  paris: "var(--green-3)", // Paris/dashed green
-
-  // Company scope colors
-  scope1: "var(--pink-3)",
-  scope2: "var(--green-2)",
-  scope3: "var(--blue-2)",
-
-  // Utility colors
-  grey: "var(--grey)",
+  paris: "var(--green-2)", // Paris/dashed green
 } as const;
 
-// Common chart dimensions
+// Chart dimensions
 export const CHART_DIMENSIONS = {
   height: {
-    mobile: "450px",
-    desktop: "300px",
-    desktopLarge: "400px",
+    mobile: "300px",
+    desktop: "400px",
   },
-  width: "100%",
   margin: {
-    left: 60,
-    right: 20,
     top: 20,
-    bottom: 40,
+    right: 0,
+    left: 0,
+    bottom: 0,
   },
-} as const;
-
-// Common axis styles
-export const AXIS_STYLES = {
-  stroke: "var(--grey)",
-  tickLine: false,
-  axisLine: false,
-  fontSize: 12,
   padding: {
     left: 0,
     right: 0,
@@ -85,42 +62,11 @@ export const AXIS_STYLES = {
   },
 } as const;
 
-// Utility function to get responsive height
-export const getResponsiveHeight = (isMobile: boolean): string => {
-  return isMobile
-    ? CHART_DIMENSIONS.height.mobile
-    : CHART_DIMENSIONS.height.desktop;
-};
+// ============================================================================
+// LINE STYLING UTILITIES
+// ============================================================================
 
-// Utility function to get chart margin
-export const getChartMargin = () => CHART_DIMENSIONS.margin;
-
-// Utility function to get line style based on type
-export const getLineStyle = (type: keyof typeof LINE_STYLES) =>
-  LINE_STYLES[type];
-
-// Utility function to get color
-export const getChartColor = (color: keyof typeof CHART_COLORS) =>
-  CHART_COLORS[color];
-
-// Utility function to get line props with hover behavior (no dots except on hover)
-export const getLinePropsWithHover = (
-  type: keyof typeof LINE_STYLES,
-  color: string,
-  isMobile: boolean = false,
-  name?: string,
-) => {
-  const baseStyle = LINE_STYLES[type];
-  return {
-    ...baseStyle,
-    stroke: color,
-    name,
-    dot: false, // No dots by default
-    activeDot: isMobile ? false : { r: 6, fill: color, cursor: "pointer" }, // Show dot on hover
-  };
-};
-
-// Specific line type configurations for consistent styling
+// Line configuration for different types
 export const LINE_CONFIGS = {
   historical: {
     type: "primary" as const,
@@ -172,36 +118,114 @@ export const getConsistentLineProps = (
   };
 };
 
-// Shared axis styling utilities
+// Utility function to get line props with hover behavior (no dots except on hover)
+export const getLinePropsWithHover = (
+  type: keyof typeof LINE_STYLES,
+  color: string,
+  isMobile: boolean = false,
+  name?: string,
+) => {
+  const style = LINE_STYLES[type];
+  return {
+    ...style,
+    stroke: color,
+    name,
+    dot: false,
+    activeDot: isMobile ? false : { r: 6, fill: color, cursor: "pointer" },
+  };
+};
+
+// ============================================================================
+// AXIS STYLING UTILITIES
+// ============================================================================
+
+// X-axis styling utilities
 export const getXAxisProps = (
   dataKey: string,
   domain?: [number, number],
   ticks?: number[],
   customTick?: (props: any) => React.ReactElement,
-) => ({
-  dataKey,
-  stroke: "var(--grey)",
-  tickLine: false,
-  axisLine: false,
-  padding: { left: 0, right: 0 },
-  ...(domain && { domain }),
-  ...(ticks && { ticks }),
-  ...(customTick ? { tick: customTick } : { tick: { fontSize: 12 } }),
-});
+) => {
+  const baseProps: any = {
+    dataKey,
+    stroke: "var(--grey)",
+    tickLine: false,
+    axisLine: false,
+    padding: { left: 0, right: 0 },
+    tick:
+      customTick ||
+      (({ x, y, payload }: any): React.ReactElement => {
+        return React.createElement(
+          "text",
+          {
+            x: x - 15,
+            y: y + 10,
+            fontSize: 12,
+            fill: "var(--grey)",
+            fontWeight: "normal",
+          },
+          payload.value,
+        );
+      }),
+  };
 
-export const getYAxisProps = (currentLanguage: "sv" | "en") => ({
+  if (domain) {
+    baseProps.domain = domain;
+  }
+  if (ticks) {
+    baseProps.ticks = ticks;
+  }
+
+  return baseProps;
+};
+
+// Y-axis styling utilities
+export const getYAxisProps = (
+  currentLanguage: "sv" | "en",
+  domain: [number, "auto"] = [0, "auto"],
+) => ({
   stroke: "var(--grey)",
   tickLine: false,
   axisLine: false,
-  tick: { fontSize: 12 },
-  tickFormatter: (value: number) =>
-    formatEmissionsAbsoluteCompact(value, currentLanguage),
-  width: 40,
-  domain: [0, "auto"] as [number, "auto"],
+  tick: ({ x, y, payload }: any): React.ReactElement => {
+    return React.createElement(
+      "text",
+      {
+        x: x - 10,
+        y: y + 5,
+        fontSize: 12,
+        fill: "var(--grey)",
+      },
+      formatEmissionsAbsoluteCompact(payload.value, currentLanguage),
+    );
+  },
+  domain,
   padding: { top: 0, bottom: 0 },
 });
 
-// Shared reference line styling utilities
+// Custom tick renderer factory
+export const createCustomTickRenderer =
+  (baseYear?: number, isBaseYearBold: boolean = true) =>
+  ({ x, y, payload }: any) => {
+    const isBaseYear = payload.value === baseYear;
+    return React.createElement(
+      "text",
+      {
+        x: x - 15,
+        y: y + 10,
+        fontSize: 12,
+        fill: `${isBaseYear ? "white" : "var(--grey)"}`,
+        fontWeight: `${isBaseYear && isBaseYearBold ? "bold" : "normal"}`,
+      },
+      payload.value,
+    );
+  };
+
+// ============================================================================
+// REFERENCE LINE STYLING UTILITIES
+// ============================================================================
+
+// Base year reference line styling
 export const getBaseYearReferenceLineProps = (
   baseYear: number,
   isFirstYear: boolean,
@@ -221,6 +245,7 @@ export const getBaseYearReferenceLineProps = (
   ifOverflow: "extendDomain" as const,
 });
 
+// Current year reference line styling
 export const getCurrentYearReferenceLineProps = (
   currentYear: number,
   t: (key: string) => string,
@@ -237,6 +262,91 @@ export const getCurrentYearReferenceLineProps = (
   },
 });
 
+// Reference line configuration types
+export interface ReferenceLineConfig {
+  type: "baseYear" | "currentYear";
+  baseYear?: number;
+  currentYear?: number;
+  isFirstYear?: boolean;
+}
+
+// Unified reference line component factory
+export const createReferenceLine = (
+  type: "baseYear" | "currentYear",
+  props: {
+    baseYear?: number;
+    currentYear?: number;
+    isFirstYear?: boolean;
+    t: (key: string) => string;
+  },
+) => {
+  if (type === "baseYear" && props.baseYear) {
+    return getBaseYearReferenceLineProps(
+      props.baseYear,
+      props.isFirstYear || false,
+      props.t,
+    );
+  }
+
+  if (type === "currentYear" && props.currentYear) {
+    return getCurrentYearReferenceLineProps(props.currentYear, props.t);
+  }
+
+  return null;
+};
+
+// Utility to get all reference lines for a chart type
+export const getReferenceLinesForChart = (
+  chartType: "company" | "municipality",
+  config: {
+    baseYear?: number;
+    currentYear?: number;
+    isFirstYear?: boolean;
+    t: (key: string) => string;
+  },
+) => {
+  const lines: ReferenceLineConfig[] = [];
+
+  if (chartType === "company" && config.baseYear) {
+    lines.push({
+      type: "baseYear",
+      baseYear: config.baseYear,
+      isFirstYear: config.isFirstYear,
+    });
+  }
+
+  if (chartType === "municipality" && config.currentYear) {
+    lines.push({
+      type: "currentYear",
+      currentYear: config.currentYear,
+    });
+  }
+
+  return lines.map((line) => createReferenceLine(line.type, config));
+};
+
+// ============================================================================
+// CHART CONTAINER UTILITIES
+// ============================================================================
+
+// Utility function to get responsive height
+export const getResponsiveHeight = (isMobile: boolean): string => {
+  return isMobile
+    ? CHART_DIMENSIONS.height.mobile
+    : CHART_DIMENSIONS.height.desktop;
+};
+
+// Utility function to get chart margin
+export const getChartMargin = () => CHART_DIMENSIONS.margin;
+
+// Utility function to get line style based on type
+export const getLineStyle = (type: keyof typeof LINE_STYLES) =>
+  LINE_STYLES[type];
+
+// Utility function to get color
+export const getChartColor = (color: keyof typeof CHART_COLORS) =>
+  CHART_COLORS[color];
+
 // Shared chart container styling utilities
 export const getChartContainerProps = (
   height: string = "100%",
@@ -247,6 +357,7 @@ export const getChartContainerProps = (
   className: "w-full",
 });
 
+// Line chart props
 export const getLineChartProps = (
   data: any[],
   onClick?: (data: any) => void,
@@ -261,3 +372,41 @@ export const getLineChartProps = (
   margin,
   ...(onClick && { onClick }),
 });
+
+// Composed chart props
+export const getComposedChartProps = (
+  data: any[],
+  onClick?: (data: any) => void,
+  margin: { top: number; right: number; left: number; bottom: number } = {
+    top: 20,
+    right: 0,
+    left: 0,
+    bottom: 0,
+  },
+) => ({
+  data,
+  margin,
+  ...(onClick && { onClick }),
+});
+
+// Unified chart props factory
+export const getChartProps = (
+  chartType: "line" | "composed",
+  data: any[],
+  onClick?: (data: any) => void,
+  margin?: { top: number; right: number; left: number; bottom: number },
+) => {
+  if (chartType === "composed") {
+    return getComposedChartProps(data, onClick, margin);
+  }
+  return getLineChartProps(data, onClick, margin);
+};
+
+// ============================================================================
+// RE-EXPORT UTILITIES FROM MODULAR STRUCTURE
+// ============================================================================
+
+// Re-export from utils modules
+export * from "./utils/chartData";
+export * from "./utils/chartTicks";
+export * from "./utils/chartInteractions";

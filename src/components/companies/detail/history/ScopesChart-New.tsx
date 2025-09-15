@@ -24,6 +24,10 @@ import {
   ChartWrapper,
   ChartArea,
   ChartFooter,
+  generateChartTicks,
+  createChartClickHandler,
+  createCustomTickRenderer,
+  filterValidScopeData,
 } from "@/components/charts";
 import { SharedTooltip } from "@/components/charts/SharedTooltip";
 import { useLanguage } from "@/components/LanguageProvider";
@@ -82,32 +86,18 @@ export const ScopesChartNew: FC<ScopesChartNewProps> = ({
 
   // Filter data to only include points with valid scope values
   const filteredData = useMemo(() => {
-    return data.filter((d) => {
-      // Check if at least one scope has a valid value
-      return (
-        (d.scope1?.value !== undefined && d.scope1?.value !== null) ||
-        (d.scope2?.value !== undefined && d.scope2?.value !== null) ||
-        (d.scope3?.value !== undefined && d.scope3?.value !== null)
-      );
-    });
+    return filterValidScopeData(data);
   }, [data]);
 
-  // Generate ticks based on the current end year
-  const generateTicks = () => {
-    const baseTicks = [data[0]?.year || 2000, 2020, currentYear, 2025];
-    if (chartEndYear === shortEndYear) {
-      return [...baseTicks, shortEndYear];
-    } else {
-      return [...baseTicks, shortEndYear, 2030, 2040, 2050];
-    }
-  };
+  // Generate ticks using shared utility
+  const ticks = generateChartTicks(
+    data[0]?.year || 2000,
+    chartEndYear,
+    shortEndYear,
+    currentYear,
+  );
 
-  const handleClick = (data: any) => {
-    if (data && data.activePayload && data.activePayload[0]) {
-      const year = data.activePayload[0].payload.year;
-      onYearSelect(year);
-    }
-  };
+  const handleClick = createChartClickHandler(onYearSelect);
 
   // Create legend items using shared utility
   const legendItems = useMemo(() => {
@@ -143,21 +133,8 @@ export const ScopesChartNew: FC<ScopesChartNewProps> = ({
               {...getXAxisProps(
                 "year",
                 [data[0]?.year || 2000, chartEndYear],
-                generateTicks(),
-                ({ x, y, payload }) => {
-                  const isBaseYear = payload.value === companyBaseYear;
-                  return (
-                    <text
-                      x={x - 15}
-                      y={y + 10}
-                      fontSize={12}
-                      fill={`${isBaseYear ? "white" : "var(--grey)"}`}
-                      fontWeight={`${isBaseYear ? "bold" : "normal"}`}
-                    >
-                      {payload.value}
-                    </text>
-                  );
-                },
+                ticks,
+                createCustomTickRenderer(companyBaseYear),
               )}
               type="number"
             />

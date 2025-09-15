@@ -19,3 +19,29 @@ export type * from "./ChartTypes";
 // Styling utilities
 export * from "./chartStyles";
 export * from "./legendStyles";
+
+// Chart utilities - re-exported from chartStyles and utils
+export {
+  generateChartTicks,
+  createChartClickHandler,
+  createCustomTickRenderer,
+  filterValidTotalData,
+  filterValidScopeData,
+  filterValidCategoryData,
+  filterDataByYearRange,
+  createReferenceLine,
+  getReferenceLinesForChart,
+  getComposedChartProps,
+  getChartProps,
+} from "./chartStyles";
+
+// Reference line types
+export type { ReferenceLineConfig } from "./chartStyles";
+
+// State management hooks
+export {
+  useChartState,
+  useHiddenItems,
+  useDataView,
+  useChartStateManager,
+} from "./useChartState";

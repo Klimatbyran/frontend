@@ -1,9 +1,14 @@
 import { FC, useState, useMemo } from "react";
-import { LineChart, Line, ReferenceLine, Tooltip } from "recharts";
+import {
+  LineChart,
+  Line,
+  ReferenceLine,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 import { useTranslation } from "react-i18next";
 import { DataPoint } from "@/types/municipality";
 import {
-  ChartContainer,
   EnhancedLegend,
   ChartYearControls,
   LegendItem,
@@ -17,6 +22,7 @@ import {
   ChartWrapper,
   ChartArea,
   ChartFooter,
+  filterDataByYearRange,
 } from "@/components/charts";
 import { SharedTooltip } from "@/components/charts/SharedTooltip";
 import { XAxis, YAxis } from "recharts";
@@ -45,21 +51,14 @@ export const OverviewChartNew: FC<OverviewChartNewProps> = ({
 
   // Filter data based on chart end year
   const filteredData = useMemo(() => {
-    return projectedData.filter((point) => point.year <= chartEndYear);
+    return filterDataByYearRange(projectedData, chartEndYear);
   }, [projectedData, chartEndYear]);
 
   return (
     <ChartWrapper>
       <ChartArea>
-        <ChartContainer {...getChartContainerProps()}>
-          <LineChart
-            {...getLineChartProps(filteredData, undefined, {
-              left: 0,
-              right: 0,
-              top: 0,
-              bottom: 0,
-            })}
-          >
+        <ResponsiveContainer {...getChartContainerProps()}>
+          <LineChart {...getLineChartProps(filteredData)}>
             <XAxis
               {...getXAxisProps(
                 "year",
@@ -130,7 +129,7 @@ export const OverviewChartNew: FC<OverviewChartNewProps> = ({
               )}
             />
           </LineChart>
-        </ChartContainer>
+        </ResponsiveContainer>
       </ChartArea>
 
       <ChartFooter>

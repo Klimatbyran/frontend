@@ -23,6 +23,10 @@ import {
   ChartWrapper,
   ChartArea,
   ChartFooter,
+  generateChartTicks,
+  createChartClickHandler,
+  createCustomTickRenderer,
+  filterValidTotalData,
 } from "@/components/charts";
 import { SharedTooltip } from "@/components/charts/SharedTooltip";
 import { useLanguage } from "@/components/LanguageProvider";
@@ -61,7 +65,7 @@ export const OverviewChartNew: FC<OverviewChartNewProps> = ({
 
   // Filter data to only include points with valid total values
   const filteredData = useMemo(() => {
-    return data.filter((d) => d.total !== undefined && d.total !== null);
+    return filterValidTotalData(data);
   }, [data]);
 
   // Create legend items using shared utility
@@ -74,22 +78,15 @@ export const OverviewChartNew: FC<OverviewChartNewProps> = ({
     return createOverviewLegendItems(t, hiddenItems, false);
   }, [t, approximatedData]);
 
-  // Generate ticks based on the current end year
-  const generateTicks = () => {
-    const baseTicks = [data[0]?.year || 2000, 2020, currentYear, 2025];
-    if (chartEndYear === shortEndYear) {
-      return [...baseTicks, shortEndYear];
-    } else {
-      return [...baseTicks, shortEndYear, 2030, 2040, 2050];
-    }
-  };
+  // Generate ticks using shared utility
+  const ticks = generateChartTicks(
+    data[0]?.year || 2000,
+    chartEndYear,
+    shortEndYear,
+    currentYear,
+  );
 
-  const handleClick = (data: any) => {
-    if (data && data.activePayload && data.activePayload[0]) {
-      const year = data.activePayload[0].payload.year;
-      onYearSelect(year);
-    }
-  };
+  const handleClick = createChartClickHandler(onYearSelect);
 
   return (
     <ChartWrapper>
@@ -120,21 +117,8 @@ export const OverviewChartNew: FC<OverviewChartNewProps> = ({
               {...getXAxisProps(
                 "year",
                 [data[0]?.year || 2000, chartEndYear],
-                generateTicks(),
-                ({ x, y, payload }) => {
-                  const isBaseYear = payload.value === companyBaseYear;
-                  return (
-                    <text
-                      x={x - 15}
-                      y={y + 10}
-                      fontSize={12}
-                      fill={`${isBaseYear ? "white" : "var(--grey)"}`}
-                      fontWeight={`${isBaseYear ? "bold" : "normal"}`}
-                    >
-                      {payload.value}
-                    </text>
-                  );
-                },
+                ticks,
+                createCustomTickRenderer(companyBaseYear),
               )}
               type="number"
             />
