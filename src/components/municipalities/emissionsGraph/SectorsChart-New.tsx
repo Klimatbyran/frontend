@@ -1,15 +1,24 @@
-import { FC, useMemo, useState } from "react";
-import { ComposedChart, Area } from "recharts";
+import { FC, useMemo } from "react";
+import { ComposedChart, Area, Tooltip } from "recharts";
+import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
-import { formatEmissionsAbsoluteCompact } from "@/utils/formatting/localization";
 import { SectorEmissions } from "@/types/municipality";
 import { useMunicipalitySectors } from "@/hooks/municipalities/useMunicipalitySectors";
 import {
   ChartContainer,
-  ChartTooltip,
   DynamicLegendContainer,
   LegendItem,
+  createSectorLegendItems,
+  LEGEND_CONTAINER_CONFIGS,
+  getXAxisProps,
+  getYAxisProps,
+  getChartContainerProps,
+  ChartWrapper,
+  ChartArea,
+  ChartFooter,
 } from "@/components/charts";
+import { SharedTooltip } from "@/components/charts/SharedTooltip";
+import { MunicipalityReferenceLines } from "@/components/charts/ReferenceLines-New";
 import { XAxis, YAxis } from "recharts";
 
 interface SectorsChartNewProps {
@@ -23,6 +32,7 @@ export const SectorsChartNew: FC<SectorsChartNewProps> = ({
   hiddenSectors = new Set(),
   setHiddenSectors = () => {},
 }) => {
+  const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
   const { getSectorInfo } = useMunicipalitySectors();
 
@@ -72,21 +82,9 @@ export const SectorsChartNew: FC<SectorsChartNewProps> = ({
     return { chartData: data, allSectors: sectors, customTicks: ticks };
   }, [sectorEmissions, hiddenSectors, MAX_YEAR, CUTOFF_YEAR]);
 
-  // Create legend items for sectors
+  // Create legend items using shared utility
   const legendItems: LegendItem[] = useMemo(() => {
-    return allSectors.map((sector) => {
-      const sectorInfo = getSectorInfo?.(sector) || {
-        translatedName: sector,
-        color: "#" + Math.floor(Math.random() * 16777215).toString(16),
-      };
-
-      return {
-        name: sectorInfo.translatedName,
-        color: sectorInfo.color,
-        isClickable: true,
-        isHidden: hiddenSectors.has(sector),
-      };
-    });
+    return createSectorLegendItems(allSectors, hiddenSectors, getSectorInfo);
   }, [allSectors, hiddenSectors, getSectorInfo]);
 
   const handleLegendToggle = (itemName: string) => {
@@ -108,40 +106,33 @@ export const SectorsChartNew: FC<SectorsChartNewProps> = ({
   };
 
   return (
-    <div className="h-full flex flex-col">
-      {/* Chart - fixed height to prevent shrinking */}
-      <div className="h-[250px] md:h-[300px] w-full">
-        <ChartContainer height="100%" width="100%">
+    <ChartWrapper>
+      <ChartArea>
+        <ChartContainer {...getChartContainerProps()}>
           <ComposedChart
             data={chartData}
             margin={{ left: 0, right: 0, top: 0, bottom: 0 }}
           >
             <XAxis
-              dataKey="year"
-              stroke="var(--grey)"
-              tickLine={false}
-              axisLine={false}
-              tick={{ fontSize: 12 }}
-              padding={{ left: 0, right: 0 }}
-              domain={[1990, MAX_YEAR]}
+              {...getXAxisProps("year", [1990, MAX_YEAR], customTicks)}
               allowDuplicatedCategory={true}
-              ticks={customTicks}
               tickFormatter={(year) => year}
             />
-            <YAxis
-              stroke="var(--grey)"
-              tickLine={false}
-              axisLine={false}
-              tick={{ fontSize: 12 }}
-              tickFormatter={(value) =>
-                formatEmissionsAbsoluteCompact(value, currentLanguage)
+            <YAxis {...getYAxisProps(currentLanguage)} />
+
+            <Tooltip
+              content={
+                <SharedTooltip
+                  dataView="sectors"
+                  hiddenSectors={hiddenSectors}
+                  unit={t("emissionsUnitCO2")}
+                />
               }
-              width={40}
-              domain={[0, "auto"]}
-              padding={{ top: 0, bottom: 0 }}
+              wrapperStyle={{ outline: "none" }}
             />
 
-            <ChartTooltip />
+            {/* Current year reference line */}
+            <MunicipalityReferenceLines currentYear={MAX_YEAR} />
 
             {/* Sector areas */}
             {allSectors.map((sector) => {
@@ -169,19 +160,15 @@ export const SectorsChartNew: FC<SectorsChartNewProps> = ({
             })}
           </ComposedChart>
         </ChartContainer>
-      </div>
+      </ChartArea>
 
-      {/* Legend - scrollable if needed */}
-      <div className="mt-4 min-h-0">
+      <ChartFooter>
         <DynamicLegendContainer
           items={legendItems}
           onItemToggle={handleLegendToggle}
-          showMetadata={false}
-          allowClickToHide={true}
-          maxHeight="200px"
-          mobileMaxHeight="150px"
+          {...LEGEND_CONTAINER_CONFIGS.sectors}
         />
-      </div>
-    </div>
+      </ChartFooter>
+    </ChartWrapper>
   );
 };

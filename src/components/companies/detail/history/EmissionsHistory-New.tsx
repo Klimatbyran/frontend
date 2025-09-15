@@ -1,4 +1,4 @@
-import { FC, useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { Text } from "@/components/ui/text";
 import { EmissionPeriod } from "@/types/emissions";
 import { interpolateScope3Categories } from "@/utils/data/chartData";
@@ -8,11 +8,15 @@ import { useTranslation } from "react-i18next";
 import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useLanguage } from "@/components/LanguageProvider";
 import { HiddenItemsBadges } from "../HiddenItemsBadges";
-import ChartHeader from "./ChartHeader";
-import EmissionsLineChartNew from "./EmissionsLineChart-New";
+import { ChartHeader } from "@/components/charts";
+import { OverviewChartNew } from "./OverviewChart-New";
+import { ScopesChartNew } from "./ScopesChart-New";
+import { CategoriesChartNew } from "./CategoriesChart-New";
+import { ExploreMode } from "./explore-mode/ExploreMode";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { selectBestTrendLineMethod } from "@/lib/calculations/trends/analysis";
+import { generateApproximatedData } from "@/lib/calculations/trends/approximatedData";
 import { isMobile } from "react-device-detect";
 
 export function EmissionsHistoryNew({
@@ -81,12 +85,8 @@ export function EmissionsHistoryNew({
     return selectBestTrendLineMethod(emissionsData, companyBaseYear);
   }, [chartData, dataView, companyBaseYear]);
 
-  const handleClick = (data: {
-    activePayload?: Array<{ payload: { year: number; total: number } }>;
-  }) => {
-    if (data?.activePayload?.[0]?.payload?.total) {
-      onYearSelect?.(data.activePayload[0].payload.year.toString());
-    }
+  const handleYearSelect = (year: number) => {
+    onYearSelect?.(year.toString());
   };
 
   // Add state for hidden scopes
@@ -104,10 +104,65 @@ export function EmissionsHistoryNew({
   const [hiddenCategories, setHiddenCategories] = useState<number[]>([]);
 
   const [exploreMode, setExploreMode] = useState(false);
+  const [methodExplanation] = useState<string | null>(null);
 
-  const [methodExplanation, setMethodExplanation] = useState<string | null>(
-    null,
-  );
+  // Chart year controls state - default to current year + 5 (short view)
+  const currentYear = new Date().getFullYear();
+  const [chartEndYear, setChartEndYear] = useState(currentYear + 5);
+  const [shortEndYear] = useState(currentYear + 5);
+  const [longEndYear] = useState(2050);
+
+  // Generate approximated data for overview
+  const approximatedData = useMemo(() => {
+    if (dataView !== "overview") {
+      return null;
+    }
+
+    // Don't show trendline if method is "none"
+    if (trendAnalysis?.method === "none") {
+      return null;
+    }
+
+    // Use coefficients from trend analysis if available
+    if (trendAnalysis?.coefficients) {
+      return generateApproximatedData(
+        chartData,
+        undefined, // regression
+        chartEndYear,
+        companyBaseYear,
+        trendAnalysis.coefficients,
+        trendAnalysis.cleanData,
+      );
+    }
+
+    // Fallback to simple method if no coefficients available
+    return generateApproximatedData(
+      chartData,
+      { slope: 0, intercept: 0 },
+      chartEndYear,
+      companyBaseYear,
+    );
+  }, [chartData, dataView, chartEndYear, companyBaseYear, trendAnalysis]);
+
+  // Calculate yDomain for explore mode
+  const yDomain = useMemo((): [number, number] => {
+    const values = chartData
+      .filter((d) => d.total !== undefined && d.total !== null)
+      .map((d) => d.total as number);
+
+    if (values.length === 0) return [0, 1000];
+
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+    const padding = (max - min) * 0.1;
+
+    return [Math.max(0, min - padding), max + padding];
+  }, [chartData]);
+
+  // Explore mode handlers
+  const handleExitExploreMode = () => {
+    setExploreMode(false);
+  };
 
   if (!reportingPeriods?.length) {
     return (
@@ -147,29 +202,74 @@ export function EmissionsHistoryNew({
             tooltipContent={t("companies.emissionsHistory.tooltip")}
             unit={t("companies.emissionsHistory.unit")}
             dataView={dataView}
-            setDataView={setDataView}
-            hasScope3Categories={hasScope3Categories}
+            setDataView={(value) =>
+              setDataView(value as "overview" | "scopes" | "categories")
+            }
+            hasAdditionalData={hasScope3Categories}
+            dataViewType="company"
           />
           <div
-            className={`${isMobile ? "h-[450px]" : "h-[300px] md:h-[400px]"}`}
+            className={`${isMobile ? "h-[450px]" : "h-[350px] md:h-[450px]"}`}
           >
-            <EmissionsLineChartNew
-              data={chartData}
-              companyBaseYear={companyBaseYear}
-              dataView={dataView}
-              hiddenScopes={hiddenScopes}
-              hiddenCategories={hiddenCategories}
-              handleClick={handleClick}
-              handleScopeToggle={handleScopeToggle}
-              handleCategoryToggle={handleCategoryToggle}
-              getCategoryName={getCategoryName}
-              getCategoryColor={getCategoryColor}
-              currentLanguage={currentLanguage}
-              exploreMode={exploreMode}
-              setExploreMode={setExploreMode}
-              setMethodExplanation={setMethodExplanation}
-              trendAnalysis={trendAnalysis}
-            />
+            {!exploreMode ? (
+              <>
+                {dataView === "overview" && (
+                  <OverviewChartNew
+                    data={chartData}
+                    companyBaseYear={companyBaseYear}
+                    chartEndYear={chartEndYear}
+                    setChartEndYear={setChartEndYear}
+                    shortEndYear={shortEndYear}
+                    longEndYear={longEndYear}
+                    approximatedData={approximatedData}
+                    onYearSelect={handleYearSelect}
+                    exploreMode={exploreMode}
+                    setExploreMode={setExploreMode}
+                  />
+                )}
+                {dataView === "scopes" && (
+                  <ScopesChartNew
+                    data={chartData}
+                    companyBaseYear={companyBaseYear}
+                    chartEndYear={chartEndYear}
+                    setChartEndYear={setChartEndYear}
+                    shortEndYear={shortEndYear}
+                    longEndYear={longEndYear}
+                    hiddenScopes={hiddenScopes}
+                    handleScopeToggle={handleScopeToggle}
+                    onYearSelect={handleYearSelect}
+                    exploreMode={exploreMode}
+                    setExploreMode={setExploreMode}
+                  />
+                )}
+                {dataView === "categories" && (
+                  <CategoriesChartNew
+                    data={chartData}
+                    companyBaseYear={companyBaseYear}
+                    chartEndYear={chartEndYear}
+                    setChartEndYear={setChartEndYear}
+                    shortEndYear={shortEndYear}
+                    longEndYear={longEndYear}
+                    hiddenCategories={hiddenCategories}
+                    handleCategoryToggle={handleCategoryToggle}
+                    getCategoryName={getCategoryName}
+                    getCategoryColor={getCategoryColor}
+                    onYearSelect={handleYearSelect}
+                    exploreMode={exploreMode}
+                    setExploreMode={setExploreMode}
+                  />
+                )}
+              </>
+            ) : (
+              <ExploreMode
+                data={chartData}
+                companyBaseYear={companyBaseYear}
+                currentLanguage={currentLanguage}
+                trendAnalysis={trendAnalysis}
+                yDomain={yDomain}
+                onExit={handleExitExploreMode}
+              />
+            )}
           </div>
           <HiddenItemsBadges
             hiddenScopes={hiddenScopes}
@@ -196,28 +296,6 @@ export function EmissionsHistoryNew({
           )}
         </SectionWithHelp>
       )}
-      {exploreMode && (
-        <div className="w-full h-full flex-1">
-          <EmissionsLineChartNew
-            data={chartData}
-            companyBaseYear={companyBaseYear}
-            dataView={dataView}
-            hiddenScopes={hiddenScopes}
-            hiddenCategories={hiddenCategories}
-            handleClick={handleClick}
-            handleScopeToggle={handleScopeToggle}
-            handleCategoryToggle={handleCategoryToggle}
-            getCategoryName={getCategoryName}
-            getCategoryColor={getCategoryColor}
-            currentLanguage={currentLanguage}
-            exploreMode={exploreMode}
-            setExploreMode={setExploreMode}
-            setMethodExplanation={setMethodExplanation}
-            trendAnalysis={trendAnalysis}
-          />
-        </div>
-      )}
     </div>
   );
 }
-

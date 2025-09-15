@@ -56,7 +56,7 @@ export const MunicipalityEmissions: FC<MunicipalityEmissionsProps> = ({
         />
       </div>
 
-      <div className="mt-8 h-[400px] mr-4 md:mr-8">
+      <div className="mt-8 h-[450px] mr-4 md:mr-8">
         <MunicipalityEmissionsGraph
           projectedData={emissionsData}
           sectorEmissions={sectorEmissions || undefined}

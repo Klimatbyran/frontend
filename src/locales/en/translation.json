@@ -718,12 +718,13 @@
     "hitNetZero": "Predicted to hit net zero",
     "never": "Never",
     "emissionsDevelopment": "Emissions development",
+    "emissionsDevelopmentTooltip": "The municipality's carbon budget has been exhausted, which means that no Paris Agreement line is shown in the graph below",
     "graph": {
       "overview": "Overview",
       "sectors": "Emission sources"
     },
     "noParisPath": "The municipality's carbon budget has been exhausted, which means that no Paris Agreement line is shown in the graph below",
-    "inTons": "In tons CO₂",
+    "inTons": "Tons CO₂e per year",
     "futureEmissions": "Future emissions",
     "annualChangeSince2015": "Annual emission change since 2015",
     "reductionToMeetParis": "Emission reduction to meet the Paris Agreement",
@@ -946,6 +947,9 @@
       "approximated": "Approximated",
       "trend": "Trend",
       "carbonLaw": "Paris Agreement",
+      "scope1": "Scope 1 - Direct Emissions",
+      "scope2": "Scope 2 - Indirect Emissions",
+      "scope3": "Scope 3 - Attributed Supply Chain and Product Lifecycle Emissions",
       "trendInfo": "Approximated value is based on average change of {{percentage}} since {{baseYear}} for all reporting periods",
       "exploreStep0Description": "This shows emissions data from before the company's base year. While historically interesting, this data is often unreliable for predicting future trends because companies were still developing their measurement methods and may have used different reporting standards.",
       "exploreStep0Label": "Historical Data (Before Base Year)",
@@ -1308,6 +1312,9 @@
     "buttonFallbackTitle": "Learn more about these metrics",
     "selectItemPrompt": "Select a topic you want to learn more about"
   },
+  "chartLegend": {
+    "clickToFilterOut": "Click to filter out"
+  },
   "trendAnalysis": {
     "insufficientData": "No trendline shown due to insufficient data ({{dataPoints}} points). Need at least 2 data points to build reliable trend.",
     "insufficientDataWithBaseYear": "Simple trend calculation used due to limited data since {{baseYear}} ({{dataPoints}} points). More data needed for reliable trend analysis.",
@@ -1319,7 +1326,7 @@
     "exponentialMethodBetterFit": "Exponential trend used because it fits the data significantly better than linear trend. Suggests emissions are changing at accelerating or decelerating rate.",
     "recentExponentialMethodStrongPattern": "Recent exponential trend used because last 4 years show strong exponential pattern that is significantly better than linear. Focuses on most recent trend pattern.",
     "linearMethodDefault": "Linear trend used as default because data is sufficiently complete or does not show strong non-linear behavior or significant outliers."
-},
+  },
   "newsletterArchivePage": {
     "title": "Newsletter archive",
     "description": "Browse through all of the released newsletters",

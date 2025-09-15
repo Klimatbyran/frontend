@@ -1,17 +1,17 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 
-interface ChartAreaProps {
+interface ChartFooterProps {
   children: React.ReactNode;
   className?: string;
 }
 
-export const ChartArea: React.FC<ChartAreaProps> = ({
+export const ChartFooter: React.FC<ChartFooterProps> = ({
   children,
   className = "",
 }) => {
   return (
-    <div className={cn("relative w-full flex-1 min-h-[350px]", className)}>
+    <div className={cn("mt-2 mb-2 space-y-4 min-h-0", className)}>
       {children}
     </div>
   );

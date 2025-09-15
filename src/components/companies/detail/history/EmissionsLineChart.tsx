@@ -13,7 +13,7 @@ import { ChartData } from "@/types/emissions";
 import { useTranslation } from "react-i18next";
 import { formatEmissionsAbsoluteCompact } from "@/utils/formatting/localization";
 import { useMemo, useState, useEffect } from "react";
-import { ExploreMode } from "./ExploreMode";
+import { ExploreMode } from "./explore-mode/ExploreMode";
 import { ChartControls } from "./ChartControls";
 import { ScopeLine } from "./ScopeLine";
 import { CategoryLine } from "./CategoryLine";
@@ -75,11 +75,26 @@ export default function EmissionsLineChart({
 }: EmissionsLineChartProps) {
   const { t } = useTranslation();
   const [chartEndYear, setChartEndYear] = useState(2050);
-  const [shortEndYear, setShortEndYear] = useState(2030);
-  const [longEndYear, setLongEndYear] = useState(2050);
+  const [shortEndYear] = useState(2030);
+  const [longEndYear] = useState(2050);
   const [showTrendPopup, setShowTrendPopup] = useState(false);
   const currentYear = new Date().getFullYear();
   const isFirstYear = companyBaseYear === data[0]?.year;
+
+  // Debug: Log data structure
+  console.log("EmissionsLineChart Original Debug:", {
+    dataView,
+    dataLength: data.length,
+    firstDataPoint: data[0],
+    hasScope1: data[0]?.scope1,
+    hasScope2: data[0]?.scope2,
+    hasScope3: data[0]?.scope3,
+    categoryKeys: data[0]
+      ? Object.keys(data[0]).filter((k) => k.startsWith("cat"))
+      : [],
+    hiddenScopes,
+    hiddenCategories,
+  });
 
   // Generate approximated data using the consolidated function
   const approximatedData = useMemo(() => {
@@ -411,7 +426,9 @@ export default function EmissionsLineChart({
             onClick={() => setShowTrendPopup(true)}
             className="w-full bg-black-2 border-black-1 text-white hover:bg-black-1"
           >
-            <span className="text-sm">{t("companies.emissionsHistory.trend")}</span>
+            <span className="text-sm">
+              {t("companies.emissionsHistory.trend")}
+            </span>
           </Button>
 
           {/* Trend Explanation Popup Modal */}

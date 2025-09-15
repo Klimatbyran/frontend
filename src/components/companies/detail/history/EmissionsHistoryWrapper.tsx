@@ -12,7 +12,7 @@ export const EmissionsHistoryWrapper: FC<EmissionsHistoryWrapperProps> = ({
   className,
   ...props
 }) => {
-  const [showNewVersion, setShowNewVersion] = useState(false);
+  const [showNewVersion, setShowNewVersion] = useState(true);
 
   return (
     <div className={className}>
@@ -34,16 +34,6 @@ export const EmissionsHistoryWrapper: FC<EmissionsHistoryWrapperProps> = ({
       ) : (
         <EmissionsHistory {...props} />
       )}
-
-      {/* Version Info */}
-      <div className="text-center text-sm text-grey mt-4">
-        {showNewVersion ? (
-          <span>🆕 New version using shared components</span>
-        ) : (
-          <span>📊 Original version</span>
-        )}
-      </div>
     </div>
   );
 };
-

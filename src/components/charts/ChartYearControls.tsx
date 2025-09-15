@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { exploreButtonFeatureFlagEnabled } from "@/utils/ui/featureFlags";
 
 interface ChartYearControlsProps {
   chartEndYear: number;
@@ -8,6 +9,10 @@ interface ChartYearControlsProps {
   longEndYear?: number; // Optional override, defaults to 2050
   setChartEndYear: (year: number) => void;
   className?: string;
+
+  // Explore mode props (optional for backward compatibility)
+  exploreMode?: boolean;
+  setExploreMode?: (val: boolean) => void;
 }
 
 export const ChartYearControls: React.FC<ChartYearControlsProps> = ({
@@ -16,17 +21,24 @@ export const ChartYearControls: React.FC<ChartYearControlsProps> = ({
   longEndYear,
   setChartEndYear,
   className = "",
+  exploreMode = false,
+  setExploreMode,
 }) => {
   // Calculate default years if not provided
   const currentYear = new Date().getFullYear();
   const defaultShortYear = shortEndYear ?? currentYear + 5;
   const defaultLongYear = longEndYear ?? 2050;
 
+  // Hide controls when in explore mode
+  if (exploreMode) {
+    return null;
+  }
+
   // Determine which button to show based on current state
   const showShortButton = chartEndYear === defaultLongYear;
   const showLongButton = chartEndYear === defaultShortYear;
 
-  if (!showShortButton && !showLongButton) {
+  if (!showShortButton && !showLongButton && !setExploreMode) {
     return null;
   }
 
@@ -58,6 +70,22 @@ export const ChartYearControls: React.FC<ChartYearControlsProps> = ({
           </Button>
         )}
       </div>
+
+      {/* Explore mode button */}
+      {setExploreMode && exploreButtonFeatureFlagEnabled() && (
+        <div className="flex justify-center items-center">
+          <Button
+            variant="default"
+            size="sm"
+            onClick={() => {
+              setExploreMode(true);
+            }}
+            className="bg-green-3 text-black font-semibold shadow-md hover:bg-green-2"
+          >
+            Explore the Data
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

@@ -8,7 +8,7 @@ import {
   Area,
   ComposedChart,
 } from "recharts";
-import { CustomTooltip } from "../CustomTooltip";
+import { CustomTooltip } from "../../CustomTooltip";
 import { ChartData } from "@/types/emissions";
 import { formatEmissionsAbsoluteCompact } from "@/utils/formatting/localization";
 import { generateApproximatedData } from "@/lib/calculations/trends/approximatedData";

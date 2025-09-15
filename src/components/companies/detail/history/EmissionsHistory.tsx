@@ -26,6 +26,7 @@ export function EmissionsHistory({
     outlierDetection: true,
   },
 }: EmissionsHistoryProps) {
+  console.log("📊 EmissionsHistory Original is rendering!");
   const { t } = useTranslation();
   const { getCategoryName, getCategoryColor } = useCategoryMetadata();
   const { currentLanguage } = useLanguage();
@@ -151,7 +152,7 @@ export function EmissionsHistory({
             hasScope3Categories={hasScope3Categories}
           />
           <div
-            className={`${isMobile ? "h-[450px]" : "h-[300px] md:h-[400px]"}`}
+            className={`${isMobile ? "h-[450px]" : "h-[350px] md:h-[450px]"}`}
           >
             <EmissionsLineChart
               data={chartData}

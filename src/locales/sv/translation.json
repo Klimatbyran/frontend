@@ -718,12 +718,13 @@
     "hitNetZero": "Når nettonoll",
     "never": "Aldrig",
     "emissionsDevelopment": "Utsläppsutveckling",
+    "emissionsDevelopmentTooltip": "Kommunens koldioxidbudget är förbrukad, vilket innebär att ingen linje för Parisavtalet visas i grafen nedan",
     "graph": {
       "overview": "Översikt",
       "sectors": "Utsläppskällor"
     },
     "noParisPath": "Kommunens koldioxidbudget är förbrukad, vilket innebär att ingen linje för Parisavtalet visas i grafen nedan",
-    "inTons": "I ton CO₂",
+    "inTons": "Ton CO₂e per år",
     "futureEmissions": "Framtida utsläpp",
     "annualChangeSince2015": "Årlig utsläppsförändring sedan 2015",
     "reductionToMeetParis": "Utsläppsminskning för att klara Parisavtalet",
@@ -946,6 +947,9 @@
       "approximated": "Approximerat",
       "trend": "Trend",
       "carbonLaw": "Parisavtalet",
+      "scope1": "Scope 1 - Direkta utsläpp",
+      "scope2": "Scope 2 - Indirekta utsläpp",
+      "scope3": "Scope 3 - Tillskrivna värdekedje- och produktlivscykelutsläpp",
       "trendInfo": "Approximerat värde baseras på genomsnittlig förändring på {{percentage}} sedan {{baseYear}} för alla rapporteringsperioder",
       "exploreStep0Description": "Detta visar utsläppsdata från före företagets basår. Medan det är historiskt intressant är dessa data ofta opålitliga för att förutsäga framtida trender eftersom företag fortfarande utvecklade sina mätmetoder och kan ha använt olika rapporteringsstandarder.",
       "exploreStep0Label": "Historisk data (före basår)",
@@ -1307,6 +1311,9 @@
   "dataGuide": {
     "buttonFallbackTitle": "Lär dig mer om dessa mätvärden",
     "selectItemPrompt": "Välj ett ämne du vill veta mer om"
+  },
+  "chartLegend": {
+    "clickToFilterOut": "Klicka för att filtrera bort"
   },
   "trendAnalysis": {
     "insufficientData": "Ingen trendlinje visas på grund av otillräcklig data ({{dataPoints}} punkter). Behöver minst 2 datapunkter för att bygga tillförlitlig trend.",
