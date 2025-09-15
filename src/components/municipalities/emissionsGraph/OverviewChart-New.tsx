@@ -8,6 +8,7 @@ import {
 } from "recharts";
 import { useTranslation } from "react-i18next";
 import { DataPoint } from "@/types/municipality";
+import { useScreenSize } from "@/hooks/useScreenSize";
 import {
   EnhancedLegend,
   ChartYearControls,
@@ -19,6 +20,7 @@ import {
   getCurrentYearReferenceLineProps,
   getChartContainerProps,
   getLineChartProps,
+  getResponsiveChartMargin,
   ChartWrapper,
   ChartArea,
   ChartFooter,
@@ -37,6 +39,7 @@ export const OverviewChartNew: FC<OverviewChartNewProps> = ({
 }) => {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
+  const { isMobile } = useScreenSize();
   const currentYear = new Date().getFullYear();
 
   // State for year range control - default to 2030 (current year + 5)
@@ -58,7 +61,13 @@ export const OverviewChartNew: FC<OverviewChartNewProps> = ({
     <ChartWrapper>
       <ChartArea>
         <ResponsiveContainer {...getChartContainerProps()}>
-          <LineChart {...getLineChartProps(filteredData)}>
+          <LineChart
+            {...getLineChartProps(
+              filteredData,
+              undefined,
+              getResponsiveChartMargin(isMobile),
+            )}
+          >
             <XAxis
               {...getXAxisProps(
                 "year",

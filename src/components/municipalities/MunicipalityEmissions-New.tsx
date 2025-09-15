@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { MunicipalityEmissionsGraph } from "./emissionsGraph/MunicipalityEmissionsGraph";
 import { MunicipalityEmissionsGraphNew } from "./emissionsGraph/MunicipalityEmissionsGraph-New";
 import { DataPoint, SectorEmissions } from "@/types/municipality";
-import { ChartHeader } from "@/components/charts";
+import { ChartHeader, getDynamicChartHeight } from "@/components/charts";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { Button } from "@/components/ui/button";
 
@@ -57,7 +57,10 @@ export const MunicipalityEmissionsNew: FC<MunicipalityEmissionsNewProps> = ({
       </div>
 
       {/* Chart Display */}
-      <div className="mt-8 h-[450px]">
+      <div
+        className="mt-8"
+        style={{ height: getDynamicChartHeight(dataView, false) }}
+      >
         {showNewVersion ? (
           <MunicipalityEmissionsGraphNew
             projectedData={emissionsData}

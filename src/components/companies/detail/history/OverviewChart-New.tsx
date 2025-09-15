@@ -20,6 +20,7 @@ import {
   getBaseYearReferenceLineProps,
   getChartContainerProps,
   getLineChartProps,
+  getResponsiveChartMargin,
   ChartWrapper,
   ChartArea,
   ChartFooter,
@@ -92,7 +93,13 @@ export const OverviewChartNew: FC<OverviewChartNewProps> = ({
     <ChartWrapper>
       <ChartArea>
         <ResponsiveContainer {...getChartContainerProps()}>
-          <LineChart {...getLineChartProps(filteredData, handleClick)}>
+          <LineChart
+            {...getLineChartProps(
+              filteredData,
+              handleClick,
+              getResponsiveChartMargin(isMobile),
+            )}
+          >
             {companyBaseYear && (
               <ReferenceLine
                 {...getBaseYearReferenceLineProps(

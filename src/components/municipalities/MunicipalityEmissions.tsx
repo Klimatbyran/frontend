@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { MunicipalityEmissionsGraph } from "./emissionsGraph/MunicipalityEmissionsGraph";
 import { Municipality, DataPoint, SectorEmissions } from "@/types/municipality";
 import { DataViewSelector } from "./DataViewSelector";
+import { getDynamicChartHeight } from "@/components/charts";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 
 type DataView = "overview" | "sectors";
@@ -56,7 +57,10 @@ export const MunicipalityEmissions: FC<MunicipalityEmissionsProps> = ({
         />
       </div>
 
-      <div className="mt-8 h-[450px] mr-4 md:mr-8">
+      <div
+        className="mt-8 mr-4 md:mr-8"
+        style={{ height: getDynamicChartHeight(dataView, false) }}
+      >
         <MunicipalityEmissionsGraph
           projectedData={emissionsData}
           sectorEmissions={sectorEmissions || undefined}

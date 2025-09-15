@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useLanguage } from "@/components/LanguageProvider";
 import { HiddenItemsBadges } from "../HiddenItemsBadges";
-import { ChartHeader } from "@/components/charts";
+import { ChartHeader, getDynamicChartHeight } from "@/components/charts";
 import { OverviewChartNew } from "./OverviewChart-New";
 import { ScopesChartNew } from "./ScopesChart-New";
 import { CategoriesChartNew } from "./CategoriesChart-New";
@@ -208,9 +208,7 @@ export function EmissionsHistoryNew({
             hasAdditionalData={hasScope3Categories}
             dataViewType="company"
           />
-          <div
-            className={`${isMobile ? "h-[450px]" : "h-[350px] md:h-[450px]"}`}
-          >
+          <div style={{ height: getDynamicChartHeight(dataView, isMobile) }}>
             {!exploreMode ? (
               <>
                 {dataView === "overview" && (

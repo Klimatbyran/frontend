@@ -9,6 +9,7 @@ import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useLanguage } from "@/components/LanguageProvider";
 import { HiddenItemsBadges } from "../HiddenItemsBadges";
 import ChartHeader from "./ChartHeader";
+import { getDynamicChartHeight } from "@/components/charts";
 import EmissionsLineChart from "./EmissionsLineChart";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
@@ -151,9 +152,7 @@ export function EmissionsHistory({
             setDataView={setDataView}
             hasScope3Categories={hasScope3Categories}
           />
-          <div
-            className={`${isMobile ? "h-[450px]" : "h-[350px] md:h-[450px]"}`}
-          >
+          <div style={{ height: getDynamicChartHeight(dataView, isMobile) }}>
             <EmissionsLineChart
               data={chartData}
               companyBaseYear={companyBaseYear}

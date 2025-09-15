@@ -33,6 +33,8 @@ export {
   getReferenceLinesForChart,
   getComposedChartProps,
   getChartProps,
+  getResponsiveChartMargin,
+  getDynamicChartHeight,
 } from "./chartStyles";
 
 // Reference line types

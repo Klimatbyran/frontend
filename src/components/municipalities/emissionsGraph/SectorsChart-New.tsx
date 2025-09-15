@@ -2,6 +2,7 @@ import { FC, useMemo } from "react";
 import { ComposedChart, Area, Tooltip, ResponsiveContainer } from "recharts";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
+import { useScreenSize } from "@/hooks/useScreenSize";
 import { SectorEmissions } from "@/types/municipality";
 import { useMunicipalitySectors } from "@/hooks/municipalities/useMunicipalitySectors";
 import {
@@ -13,6 +14,7 @@ import {
   getYAxisProps,
   getChartContainerProps,
   getComposedChartProps,
+  getResponsiveChartMargin,
   ChartWrapper,
   ChartArea,
   ChartFooter,
@@ -34,6 +36,7 @@ export const SectorsChartNew: FC<SectorsChartNewProps> = ({
 }) => {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
+  const { isMobile } = useScreenSize();
   const { getSectorInfo } = useMunicipalitySectors();
 
   const MAX_YEAR = new Date().getFullYear();
@@ -110,12 +113,11 @@ export const SectorsChartNew: FC<SectorsChartNewProps> = ({
       <ChartArea>
         <ResponsiveContainer {...getChartContainerProps()}>
           <ComposedChart
-            {...getComposedChartProps(chartData, undefined, {
-              left: 0,
-              right: 0,
-              top: 0,
-              bottom: 0,
-            })}
+            {...getComposedChartProps(
+              chartData,
+              undefined,
+              getResponsiveChartMargin(isMobile),
+            )}
           >
             <XAxis
               {...getXAxisProps("year", [1990, MAX_YEAR], customTicks)}

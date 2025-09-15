@@ -51,7 +51,7 @@ export const CHART_DIMENSIONS = {
   margin: {
     top: 20,
     right: 0,
-    left: 0,
+    left: -10, // Reduced left margin for better mobile space usage
     bottom: 0,
   },
   padding: {
@@ -336,8 +336,35 @@ export const getResponsiveHeight = (isMobile: boolean): string => {
     : CHART_DIMENSIONS.height.desktop;
 };
 
+// Utility function to get dynamic height based on data view and mobile state
+export const getDynamicChartHeight = (
+  dataView: string,
+  isMobile: boolean,
+): string => {
+  // Categories view needs more height due to many legend items
+  if (dataView === "categories") {
+    return isMobile ? "600px" : "550px";
+  }
+
+  // Sectors view needs slightly more height than overview/scopes
+  if (dataView === "sectors") {
+    return isMobile ? "550px" : "500px";
+  }
+
+  // Default heights for overview and scopes
+  return isMobile ? "500px" : "500px";
+};
+
 // Utility function to get chart margin
 export const getChartMargin = () => CHART_DIMENSIONS.margin;
+
+// Utility function to get responsive chart margin (better mobile space usage)
+export const getResponsiveChartMargin = (isMobile: boolean = false) => ({
+  top: 20,
+  right: 0,
+  left: isMobile ? -15 : -10, // More aggressive left margin on mobile
+  bottom: 0,
+});
 
 // Utility function to get line style based on type
 export const getLineStyle = (type: keyof typeof LINE_STYLES) =>
@@ -364,7 +391,7 @@ export const getLineChartProps = (
   margin: { top: number; right: number; left: number; bottom: number } = {
     top: 20,
     right: 0,
-    left: 0,
+    left: -10, // Reduced left margin for better mobile space usage
     bottom: 0,
   },
 ) => ({
@@ -380,7 +407,7 @@ export const getComposedChartProps = (
   margin: { top: number; right: number; left: number; bottom: number } = {
     top: 20,
     right: 0,
-    left: 0,
+    left: -10, // Reduced left margin for better mobile space usage
     bottom: 0,
   },
 ) => ({
@@ -409,4 +436,5 @@ export const getChartProps = (
 // Re-export from utils modules
 export * from "./utils/chartData";
 export * from "./utils/chartTicks";
+export * from "./utils/chartProps";
 export * from "./utils/chartInteractions";
