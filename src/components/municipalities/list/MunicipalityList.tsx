@@ -1,13 +1,17 @@
 import { CardGrid } from "@/components/CardGrid";
 import { MunicipalityCard } from "./MunicipalityCard";
-import type { Municipality } from "@/types/municipality";
+import type {
+  Municipality,
+  MunicipalitySortBy,
+  MunicipalitySortDirection,
+} from "@/types/municipality";
 
 interface MunicipalityListProps {
   municipalities: Municipality[];
   selectedRegion: string;
   searchQuery: string;
-  sortBy: "meets_paris" | "name";
-  sortDirection: "best" | "worst";
+  sortBy: MunicipalitySortBy;
+  sortDirection: MunicipalitySortDirection;
 }
 export function MunicipalityList({
   municipalities,
@@ -40,25 +44,9 @@ export function MunicipalityList({
     const directionMultiplier = sortDirection === "best" ? 1 : -1;
     switch (sortBy) {
       case "meets_paris": {
-        const aMeetsParis = a.budgetRunsOut === "Håller budget";
-        const bMeetsParis = b.budgetRunsOut === "Håller budget";
-        if (aMeetsParis && bMeetsParis) {
-          return (
-            directionMultiplier *
-            (new Date(a.hitNetZero).getTime() -
-              new Date(b.hitNetZero).getTime())
-          );
-        }
-        if (aMeetsParis) {
-          return -1 * directionMultiplier;
-        }
-        if (bMeetsParis) {
-          return 1 * directionMultiplier;
-        }
         return (
           directionMultiplier *
-          (new Date(b.budgetRunsOut).getTime() -
-            new Date(a.budgetRunsOut).getTime())
+          ((a.meetsParisGoal ? 1 : 0) - (b.meetsParisGoal ? 1 : 0))
         );
       }
       case "name":

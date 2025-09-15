@@ -30,7 +30,7 @@ export const CustomTooltip: FC<CustomTooltipProps> = ({
       <div className="bg-black-1 px-4 py-3 rounded-level-2 grid grid-cols-[1fr_auto] text-xs">
         <div className="mb-2 grid grid-cols-subgrid col-span-2 font-medium text-sm">
           <div className="ml-1">{label}</div>
-          <div className="flex justify-end mr-1">{t("emissionsUnitCO2")}</div>
+          <div className="flex justify-end mr-1">{t("emissionsUnit")}</div>
         </div>
         {payload.map((entry) => {
           if (hiddenSectors.has(entry.dataKey as string)) {
@@ -83,7 +83,7 @@ export const CustomTooltip: FC<CustomTooltipProps> = ({
     <div className="bg-black-1 px-4 py-3 text-xs rounded-level-2 grid grid-cols-[1fr_auto]">
       <div className="grid grid-cols-subgrid col-span-2 mb-2 font-medium text-sm">
         <div className="ml-1">{label}</div>
-        <div className="flex justify-end mr-1">{t("emissionsUnitCO2")}</div>
+        <div className="flex justify-end mr-1">{t("emissionsUnit")}</div>
       </div>
       {displayPayload.map((entry) => {
         if (entry.dataKey === "gap") {

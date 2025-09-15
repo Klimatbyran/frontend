@@ -357,6 +357,26 @@ export default function EmissionsLineChart({
                 </>
               )}
 
+              {/* {dataView === "scopes" && (
+                <>
+                  <ScopeLine
+                    scope="scope1"
+                    isHidden={hiddenScopes.includes("scope1")}
+                    onToggle={handleScopeToggle}
+                  />
+                  <ScopeLine
+                    scope="scope2"
+                    isHidden={hiddenScopes.includes("scope2")}
+                    onToggle={handleScopeToggle}
+                  />
+                  <ScopeLine
+                    scope="scope3"
+                    isHidden={hiddenScopes.includes("scope3")}
+                    onToggle={handleScopeToggle}
+                  />
+                </>
+              )} */}
+
               {dataView === "categories" &&
                 Object.keys(data[0])
                   .filter(
@@ -394,6 +414,44 @@ export default function EmissionsLineChart({
                       />
                     );
                   })}
+
+              {/* {dataView === "categories" &&
+                Object.keys(data[0])
+                  .filter(
+                    (key) =>
+                      key.startsWith("cat") && !key.includes("Interpolated"),
+                  )
+                  .sort((a, b) => {
+                    const aCatId = parseInt(a.replace("cat", ""));
+                    const bCatId = parseInt(b.replace("cat", ""));
+                    return aCatId - bCatId;
+                  })
+                  .map((categoryKey) => {
+                    const categoryId = parseInt(categoryKey.replace("cat", ""));
+                    const isInterpolatedKey = `${categoryKey}Interpolated`;
+
+                    // Check if the category is hidden
+                    if (hiddenCategories.includes(categoryId)) {
+                      return null;
+                    }
+                    // Calculate strokeDasharray based on the first data point
+                    const strokeDasharray = data[0][isInterpolatedKey]
+                      ? "4 4"
+                      : "0";
+
+                    return (
+                      <CategoryLine
+                        key={categoryKey}
+                        categoryKey={categoryKey}
+                        categoryId={categoryId}
+                        isHidden={hiddenCategories.includes(categoryId)}
+                        strokeDasharray={strokeDasharray}
+                        getCategoryColor={getCategoryColor}
+                        getCategoryName={getCategoryName}
+                        onToggle={handleCategoryToggle}
+                      />
+                    );
+                  })} */}
             </LineChart>
           </ResponsiveContainer>
         ) : (

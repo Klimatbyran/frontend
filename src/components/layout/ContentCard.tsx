@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Text } from "@/components/ui/text";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
+import { localizeUnit } from "@/utils/formatting/localization";
 
 interface ContentCardProps {
   item: {
@@ -37,7 +38,7 @@ export function ContentCard({ item, basePath }: ContentCardProps) {
       </div>
       <div className="p-8 space-y-4">
         {(item.category || item.date || item.readTime || item.language) && (
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
             {item.category && (
               <span
                 aria-label="Category"
@@ -47,23 +48,25 @@ export function ContentCard({ item, basePath }: ContentCardProps) {
               </span>
             )}
             {item.date && (
-              <div className="flex items-center gap-2 text-grey text-sm">
+              <div className="flex items-center gap-2 text-grey text-sm min-w-0 max-w-full">
                 <CalendarDays className="w-4 h-4" />
                 <span aria-label="Date Published">
-                  {new Date(item.date).toLocaleDateString("sv-SE")}
+                  {localizeUnit(new Date(item.date), currentLanguage)}
                 </span>
               </div>
             )}
             {item.readTime && (
-              <div className="flex items-center gap-2 text-grey text-sm">
+              <div className="flex items-center gap-2 text-grey text-sm min-w-0 max-w-full">
                 <Clock className="w-4 h-4" />
                 <span aria-label="Read Time">{item.readTime}</span>
               </div>
             )}
             {item.language && (
-              <div className="flex items-center gap-2 text-grey text-sm">
+              <div className="flex items-center gap-2 text-grey text-sm min-w-0 max-w-full">
                 <Globe2 className="w-4 h-4" />
-                <span aria-label="Language">{item.language}</span>
+                <span aria-label="Language" className="break-words max-w-full">
+                  {t("language." + item.language)}
+                </span>
               </div>
             )}
           </div>

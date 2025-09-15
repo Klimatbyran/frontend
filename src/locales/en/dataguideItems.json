@@ -3,13 +3,13 @@
   "baseYear": {
     "title": "What is a base year?",
     "content": [
-      "A **base year** is the year a company chooses as the starting point for tracking its\n\nclimate progress. All future emission reductions are usually measured **in\n\ncomparison to this year**.\n\nFor example, if a company set its base year as 2020 and aimed to cut emissions by\n\n50% by 2030, all reductions would be measured *relative to its 2020 emissions**.\n\n**Why it matters:** The base year provides a consistent reference point to measure\n\nlong-term progress. Without it, it’s hard to know whether a company is actually\n\nreducing emissions — or just fluctuating year to year.\n\n**Note:** Some companies update their base year if they change how they calculate\n\nemissions or if they undergo a major restructuring (like a merger or acquisition)."
+      "A **base year** is the year a company chooses as the starting point for tracking its climate progress. All future emission reductions are usually measured **in comparison to this year**.\n\nFor example, if a company set its base year as 2020 and aimed to cut emissions by 50% by 2030, all reductions would be measured *relative to its 2020 emissions**.\n\n**Why it matters:** The base year provides a consistent reference point to measure long-term progress. Without it, it’s hard to know whether a company is actually reducing emissions — or just fluctuating year to year.\n\n**Note:** Some companies update their base year if they change how they calculate emissions or if they undergo a major restructuring (like a merger or acquisition)."
     ]
   },
   "co2units": {
-    "title": "Units: tCO2 & tCO2e",
+    "title": "Unit: tCO2e",
     "content": [
-      "All emissions are shown as tonnes CO2 or tonnes CO2e which stands for \"tonnes of carbon dioxide equivalent\". It's a standardized measure that converts the impact of various greenhouse gases into the equivalent amount of CO2."
+      "All emissions are shown as tonnes CO2e which stands for \"tonnes of carbon dioxide equivalent\". It's a standardized measure that converts the impact of various greenhouse gases into the equivalent amount of CO2."
     ]
   },
   "companiesHowToCompare": {
@@ -63,25 +63,13 @@
   "municipalityAnnualEmissionChangeSince2015": {
     "title": "Annual emission change since 2015",
     "content": [
-      "This shows the average change in your municipality’s reported emissions per year since 2015. A negative number (like -10.3%) means emissions are going down each year — which is good.\n\nBut even a strong decrease may not be fast enough to stay within the local carbon budget."
+      "This shows the average change in your municipality’s reported emissions per year since 2015. A negative number (like -10.3%) means emissions are going down each year — which is good.\n\nBut even a strong decrease may not be fast enough to stay within the Paris goal."
     ]
   },
   "municipalityBicyclePaths": {
     "title": "Bicycle Paths",
     "content": [
       "This number shows how many metres of bike path exist for each resident. It gives a general sense of how much dedicated cycling infrastructure a municipality provides.\n\nA **higher number** usually indicates stronger support for safe, accessible cycling — which can reduce emissions from car trips, improve health, and cut traffic congestion.\n\n**Why invest in bike infrastructure?**\n\n- Reduces car dependence, especially for short trips (under 5 km)\n- Cuts local air pollution and traffic noise\n- Improves health outcomes by encouraging active mobility\n- Offers a low-cost, inclusive transport option for youth and people without cars\n- Helps meet local emissions targets in a cost-effective way\n\nMunicipalities that invest in safe, connected bike paths often pair them with policies like bike parking at transit hubs, repair stations, and winter plowing of bike lanes.\n\n**Why might a municipality have less cycling infrastructure?**\n\nNot every area will prioritise bike lanes — and that’s not always a sign of neglect.\n\nSome common reasons:\n\n- Rural geography: Homes and services are spread out, making biking impractical for daily use\n- Severe winters: Harsh climate or icy roads may limit year-round cycling\n- Budget priorities: Resources may be focused on public transport, road maintenance, or other pressing infrastructure\n- Existing road network: Legacy infrastructure may not easily support bike lane additions without major upgrades\n\nEven in rural areas, though, safe routes to schools and community centres can still make cycling safer and more appealing."
-    ]
-  },
-  "municipalityCanWeExtendCarbonBudget": {
-    "title": "Can we revise or extend the carbon budget?",
-    "content": [
-      "Not really — the carbon budget is set by physics, not politics. It reflects how much CO₂ the atmosphere can absorb before we exceed 1.5 °C of warming. Once the budget is used up, we can’t negotiate for more time — overshooting just increases the risks.\n\n**What about carbon dioxide removal (CDR)?**\n\nCDR methods like biochar, direct air capture, and enhanced weathering could one day help remove CO₂ from the atmosphere — but they are not yet available at the scale or speed needed. Most are still expensive, energy-intensive, and not widely deployed. That means we cannot rely on CDR to “buy more time” — it may help later, but it cannot replace rapid emissions cuts today.\n\n**There’s another risk:**\n\nIf the climate warms too much, natural carbon sinks like forests and peatlands may stop absorbing carbon and instead begin releasing it — turning from buffers into sources. That would shrink the remaining global budget even further, making our task even harder.\nThis is why staying within the original budget matters so much. Acting now helps protect both the climate and the natural systems that support it."
-    ]
-  },
-  "municipalityCarbonBudgetExpiryDate": {
-    "title": "Carbon Budget Expiry Date",
-    "content": [
-      "This is the projected date when the municipality’s share of Sweden’s remaining 1.5°C carbon budget is expected to run out — based on the current trend.\n\nThe carbon budget is calculated using official emissions data and filled in with estimates for recent years."
     ]
   },
   "municipalityChargingPoints": {
@@ -126,12 +114,6 @@
       "Your municipality’s emissions come from different everyday activities — heating homes, driving cars, using electricity, and even what we eat.\n\nHere’s what some of the categories mean for your daily life, and what to look out for:\n\n**Transport**\nOften the biggest local source — mostly from petrol/diesel cars and work vehicles.\n\nAs a resident:\n\n- Choose walking, biking, buses or carpools when you can\n- Consider an electric car — especially if your area offers public charging or free parking for EVs\n- Support bike lanes, bus routes, and traffic calming in your area\n- Push your municipality to electrify school buses and service vehicles\n\n**Heating & Energy Use in Buildings**\nIncludes home heating (like oil boilers or electric radiators), and electricity from fossil sources.\n\nAs a resident:\n\n- Check if your home is on fossil-free district heating\n- Ask your landlord or housing cooperative about switching to a heat pump\n- Use less energy (lower thermostat, LED lights, turn things off)\n- Encourage energy upgrades in local schools and public buildings\n\n**Industry & Construction**\nIn some municipalities, especially those with factories or cement plants, industry is a major source.\n\nAs a resident:\n\n- Support reuse and renovation instead of new construction when possible\n- Ask your municipality about fossil-free building standards for public projects\n- Pay attention to large infrastructure projects (roads, data centres, etc.) — are they climate-smart?\n\n**Product Use & Waste**\nIncludes certain chemicals, refrigerants, and products with high emissions when made or thrown away.\n\nAs a resident:\n\n- Recycle correctly and avoid buying things you don’t need\n- Use electronics and appliances longer instead of upgrading often\n- Look for “green” refrigerants in new appliances (like fridges and ACs)\n\n**Agriculture & Food**\nIn rural areas, agriculture is often a large source — mostly from livestock and fertilizer use.\n\nAs a resident:\n\n- Choose more plant-based meals when you can\n- Support local farms using climate-friendly practices\n- Ask your municipality to serve more climate-smart food in schools and elderly care\n\n**What to Watch for in Local Policy**\nEven if you don’t work in industry or build roads, your voice matters. Keep an eye on local decisions like:\n\n- New building projects: Are they fossil-free and energy-smart?\n- Public transport expansions or cuts\n- School food and municipal food policies\n- Public procurement: Are your tax krona funding climate-friendly choices?\n- Citizen proposals (“medborgarförslag”) or budget allocations — get involved!"
     ]
   },
-  "municipalityHowCarbonBudgetWasCalculated": {
-    "title": "How the Carbon Budget Was Calculated",
-    "content": [
-      "Each municipality’s budget is based on its share of Sweden’s historical emissions (2015–2021) and excludes cement where necessary.\n\nWe use a method aligned with international models (Tyndall Centre) to allocate the national 80 Mt CO₂ budget starting in 2024."
-    ]
-  },
   "municipalityImportanceOfEmissionSources": {
     "title": "Why is this breakdown of emissions sources important?",
     "content": [
@@ -144,40 +126,16 @@
       "These are the fossil-based emissions of greenhouse gases that physically happen within the municipality’s borders.\n\n1. **Local emissions (Territorial emissions)**\n\nThese are the emissions that physically happen within the municipality’s borders.\n\nThey include things like:\n\n- Cars driving on local roads\n- Heating homes and buildings\n- Factories or industries operating in the area\n- Agricultural activity (e.g. livestock or fertilizers)\n\n*Think of these as “what happens here”.*\n\nThis is the type of data usually reported to national and international climate systems, and it’s used to calculate carbon budgets.\n\n2. **Consumption-based emissions**\n\nThese include emissions from everything consumed by people who live in the municipality — no matter where in the world those emissions actually happened.\n\nThey include emissions from:\n\n- Imported food, clothing, and electronics\n- Flights taken by residents\n- Digital services or online shopping\n- Construction materials used in buildings\n\n*Think of these as “what we cause as consumers, no matter where it happens”.*\n\n**Why both matter:**\n\n- **Local emissions** help track what a municipality can control directly — like urban planning, heating systems, and public transit.\n- **Consumption emissions** reflect the full climate footprint of people’s lifestyles — even when the pollution happens far away.\n\nBy looking at both, we get a clearer and more honest picture of climate impact — and where action is needed."
     ]
   },
-  "municipalityPredicatedNetZeroDate": {
-    "title": "Predicted Date for Net Zero Emissions",
-    "content": [
-      "This is the year when the municipality’s emissions are expected to reach net zero — according to its current emissions trend.\n\n**Note:** this is not a policy target, but a mathematical projection.\n\nNet zero means reducing emissions to a point of minimal emissions, that can be offset, with various carbon capture methods, to be effectively zero. It’s based on current trends — not on climate policies or future plans."
-    ]
-  },
   "municipalityProcurement": {
     "title": "What are climate requirements in procurements?",
     "content": [
       "Public procurement is powerful. When municipalities require climate criteria (like fossil-free transport or recycled materials), it can shift whole markets.\n\nA “Yes” here means the municipality has integrated environmental criteria into purchasing — though how strong or binding they are can vary."
     ]
   },
-  "municipalityReductionNeededForParisAgreement": {
-    "title": "Emission reduction needed to meet the Paris Agreement",
-    "content": [
-      "This is the average yearly reduction your municipality would need to meet the 1.5 °C target — based on its remaining carbon budget.\n\nIf this number is larger (like -30%), it means very rapid emissions cuts are needed starting now.\n\nThe longer we wait, the steeper the drop must be."
-    ]
-  },
   "municipalityTotalEmissions": {
     "title": "Total Emissions",
     "content": [
-      "This number shows the latest available year of officially reported fossil CO₂ emissions for the municipality.\n\nOfficial data is typically 1.5–2 years delayed. For an estimate of emissions in the current year, see the emissions development graph below."
-    ]
-  },
-  "municipalityWhatIsCarbonBudget": {
-    "title": "What is a carbon budget and why does it matter locally?",
-    "content": [
-      "A carbon budget is the amount of CO₂ a place can emit while still doing its part to limit global warming to 1.5 °C. Each municipality contributes to Sweden’s total emissions — and local choices really matter. It’s often easier to influence decisions and take action at the local level, whether through policy, infrastructure, or community initiatives. Local climate efforts build up to national change.\n\n**Ways to Get Involved:**\n- Klimatklivet – a government-supported investment fund helping municipalities, organizations, and businesses reduce greenhouse gases through local projects (e.g. cycling infrastructure, biogas, heat recovery). Funds are always disbursed through your regional County Administrative Board. ([https://www.naturvardsverket.se/amnesomraden/klimatomstallningen/klimatklivet/](https://www.naturvardsverket.se/amnesomraden/klimatomstallningen/klimatklivet/))\n- County Administrative Board’s advisory services – each county (Länsstyrelse) offers support, webinars and guidance for local climate work and for crowdfunding regional climate projects. ([https://www.lansstyrelsen.se/blekinge.html](https://www.lansstyrelsen.se/blekinge.html))\n- Local citizen proposals (medborgarförslag) – many Swedish municipalities allow residents to propose environmental initiatives (like expanding public transport or urban gardens) via their municipal website or council. Check your municipality’s “Demokrati” or “Medborgarförslag” section online.\n\nActions like joining local climate groups, submitting citizen proposals, or encouraging municipal investments can make a real difference — and add up to change across Sweden."
-    ]
-  },
-  "municipalityWhenCarbonBudgetRunsOut": {
-    "title": "What happens after the carbon budget runs out?",
-    "content": [
-      "The carbon budget is a finite amount of emissions we can release if we want at least a 50% chance of limiting global warming to 1.5 °C. Once the budget runs out, any additional emissions make it increasingly likely that this temperature threshold will be exceeded.\n\nThere’s no “hard stop” or automatic consequence on the day the budget runs out — but every tonne emitted after that pushes us further from climate safety. The budget is like a climate speed limit: it’s technically possible to go over, but doing so increases the risks of heatwaves, biodiversity loss, water stress, and tipping points.\n\nThat’s why reducing emissions quickly — before the budget expires — is so important. Every year of delay increases the pace of cuts that will be needed later.\n\n**Why does the local budget matter?**\nSweden’s national carbon budget is divided across all municipalities based on their past emissions. That means each municipality has its own share of responsibility. If one area overshoots its budget, it puts more pressure on others to cut faster — or increases national overshoot.\n\nLocal action isn’t just symbolic — it’s mathematically real. The more each municipality stays within its share, the more likely Sweden (and the world) can stay within safe climate boundaries.\n\n**It’s not about perfection, but direction.** Going over the budget doesn’t mean it’s too late — but it does mean deeper, faster changes will be needed to stay within safer climate limits."
+      "This number shows the latest available year of officially reported fossil CO₂e emissions for the municipality.\n\nOfficial data is typically 1.5–2 years delayed. For an estimate of emissions in the current year, see the emissions development graph below."
     ]
   },
   "municipalityWhyDataDelay": {

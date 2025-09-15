@@ -1,5 +1,12 @@
 import { SupportedLanguage } from "@/lib/languageDetection";
 
+const LANG_LOCALE: Record<SupportedLanguage, "sv-SE" | "en-GB"> = {
+  sv: "sv-SE",
+  en: "en-GB",
+};
+
+const lookupLocale = (lang: SupportedLanguage) => LANG_LOCALE[lang] ?? "sv-SE";
+
 export function localizeUnit(
   unit: number | Date,
   currentLanguage: SupportedLanguage,
@@ -9,7 +16,7 @@ export function localizeUnit(
   }
 
   if (unit instanceof Date) {
-    return new Intl.DateTimeFormat(currentLanguage, {
+    return new Intl.DateTimeFormat(lookupLocale(currentLanguage), {
       dateStyle: "short",
     }).format(unit);
   }
@@ -25,7 +32,9 @@ const localizeNumber = (
   currentLanguage: SupportedLanguage,
   options: Intl.NumberFormatOptions = defaultNumberFormatOptions,
 ) => {
-  return new Intl.NumberFormat(currentLanguage, options).format(nr);
+  return new Intl.NumberFormat(lookupLocale(currentLanguage), options).format(
+    nr,
+  );
 };
 
 export function formatEmployeeCount(
@@ -57,7 +66,7 @@ export function formatPercentChange(
   currentLanguage: SupportedLanguage,
   isAlreadyPercentage: boolean = false,
 ) {
-  return new Intl.NumberFormat(currentLanguage, {
+  return new Intl.NumberFormat(lookupLocale(currentLanguage), {
     style: "percent",
     minimumFractionDigits: 0,
     maximumFractionDigits: 1,
@@ -70,7 +79,7 @@ export function formatPercent(
   currentLanguage: SupportedLanguage,
   isAlreadyPercentage: boolean = false,
 ) {
-  return new Intl.NumberFormat(currentLanguage, {
+  return new Intl.NumberFormat(lookupLocale(currentLanguage), {
     style: "percent",
     minimumFractionDigits: 0,
     maximumFractionDigits: 1,

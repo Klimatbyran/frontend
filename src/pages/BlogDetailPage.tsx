@@ -9,63 +9,25 @@ import remarkBreaks from "remark-breaks";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import rehypeRaw from "rehype-raw";
-import { blogMetadata } from "../lib/blog/blogPostsList";
 import { useTranslation } from "react-i18next";
 import { useScreenSize } from "@/hooks/useScreenSize";
-import { ContentMeta } from "@/types/content";
-
-// Import Markdown files
-const markdownFiles = import.meta.glob("/src/lib/blog/posts/*.md", {
-  as: "raw",
-  eager: true,
-});
+import { localizeUnit } from "@/utils/formatting/localization";
+import { useLanguage } from "@/components/LanguageProvider";
+import { useBlogPost, useBlogPosts } from "@/hooks/useBlogPosts";
 
 export function BlogDetailPage() {
   const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
-  const [blogPost, setBlogPost] = useState<{
-    metadata: ContentMeta;
-    content: string;
-  } | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { blogPost, loading, error } = useBlogPost(id!);
+  const blogPosts = useBlogPosts();
   const [copied, setCopied] = useState(false);
   const location = useLocation();
   const { isMobile } = useScreenSize();
+  const { currentLanguage } = useLanguage();
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
-
-  useEffect(() => {
-    if (!id) return;
-    const filePath = `/src/lib/blog/posts/${id}.md`;
-    const rawMarkdown = markdownFiles[filePath];
-
-    if (!rawMarkdown) {
-      console.error(`❌ Markdown file not found: ${filePath}`);
-      setBlogPost(null);
-      setLoading(false);
-      return;
-    }
-
-    const extractedMetadata = extractMetadata(rawMarkdown);
-    const metadata = blogMetadata.find((post) => post.id === id);
-
-    if (!metadata) {
-      console.error(`❌ Metadata not found for post: ${id}`);
-      setBlogPost(null);
-      setLoading(false);
-      return;
-    }
-
-    setBlogPost({ metadata, content: extractedMetadata });
-    setLoading(false);
-  }, [id]);
-
-  const extractMetadata = (rawMarkdown: string) => {
-    const frontmatterRegex = /^---\n([\s\S]*?)\n---\n/;
-    return rawMarkdown.replace(frontmatterRegex, "").trim();
-  };
 
   const handleShare = async () => {
     const shareUrl = window.location.href;
@@ -92,13 +54,14 @@ export function BlogDetailPage() {
   };
 
   if (loading) return <div>{t("blogDetailPage.loading")}</div>;
+  if (error) return <div>{t("blogDetailPage.postNotFound")}</div>;
   if (!blogPost) return <div>{t("blogDetailPage.postNotFound")}</div>;
 
   const relatedPosts = blogPost.metadata.relatedPosts
-    ? blogPost.metadata.relatedPosts
-        .map((relatedId) => blogMetadata.find((post) => post.id === relatedId))
-        .filter(Boolean)
-    : [];
+  ? blogPost.metadata.relatedPosts
+      .map((relatedId) => blogPosts.find((post) => post.id === relatedId))
+      .filter(Boolean)
+  : [];
 
   return (
     <div
@@ -133,12 +96,12 @@ export function BlogDetailPage() {
       <div className={`space-y-${isMobile ? "4" : "8"}`}>
         <div className="flex flex-wrap items-center gap-4">
           <span className="px-3 py-1 bg-blue-5/50 rounded-full text-blue-2 text-sm">
-            {blogPost.metadata.category}
+            {t("insightCategories." + blogPost.metadata.category)}
           </span>
           <div className="flex items-center gap-2 text-grey text-sm">
             <CalendarDays className="w-4 h-4" />
             <span>
-              {new Date(blogPost.metadata.date).toLocaleDateString("sv-SE")}
+              {localizeUnit(new Date(blogPost.metadata.date), currentLanguage)}
             </span>
           </div>
           <div className="flex items-center gap-2 text-grey text-sm">
@@ -205,6 +168,23 @@ export function BlogDetailPage() {
                 rel="noopener noreferrer"
                 className="underline hover:text-white"
               />
+            ),
+            table: ({ node, ...props }) => (
+              <div className="overflow-x-auto my-8">
+                <table {...props} className="w-full overflow-hidden" />
+              </div>
+            ),
+            thead: ({ node, ...props }) => (
+              <thead {...props} className="bg-blue-5/20" />
+            ),
+            th: ({ node, ...props }) => (
+              <th
+                {...props}
+                className="border border-blue-2/50 px-4 py-3 text-left font-semibold text-blue-2"
+              />
+            ),
+            td: ({ node, ...props }) => (
+              <td {...props} className="border border-slate-500/50 px-4 py-3" />
             ),
           }}
         >

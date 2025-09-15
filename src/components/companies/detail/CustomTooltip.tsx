@@ -173,8 +173,10 @@ export const CustomTooltip = ({
                   trendData.slope >= 0 ? "text-pink-3" : "text-green-3",
                 )}
               >
-                Trend:{" "}
-                {trendData.slope >= 0 ? "↗ Increasing" : "↘ Decreasing"}
+                {t("companies.tooltip.trend")}{" "}
+                {trendData.slope >= 0
+                  ? t("companies.tooltip.increasing")
+                  : t("companies.tooltip.decreasing")}
               </span>
             </span>
           )}

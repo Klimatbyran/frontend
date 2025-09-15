@@ -49,7 +49,7 @@ export function ProgressiveDataGuide({
         <CollapsibleTrigger asChild>
           <button
             className={cn(
-              "flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-all duration-200 w-full",
+              "flex items-center gap-2 rounded-md text-sm transition-all duration-200 w-full",
               "text-gray-300 hover:bg-black-1/60",
               style === "button"
                 ? "data-[state=open]:hover:bg-black-1/60 bg-black-1/40 py-4 text-sm"

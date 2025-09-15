@@ -1,11 +1,5 @@
 import { Link } from "react-router-dom";
-import { Building2, TrendingDown, Users, Wallet, Info } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Building2, TrendingDown, Users, Wallet } from "lucide-react";
 // import { useSectorNames } from "@/hooks/companies/useCompanyFilters";
 import type { RankedCompany } from "@/types/company";
 import { Text } from "@/components/ui/text";
@@ -22,6 +16,8 @@ import { LinkCard } from "@/components/ui/link-card";
 import { cn } from "@/lib/utils";
 import { AiIcon } from "@/components/ui/ai-icon";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
+import { InfoTooltip } from "@/components/layout/InfoTooltip";
+import { LocalizedLink } from "@/components/LocalizedLink";
 
 type CompanyCardProps = Pick<
   RankedCompany,
@@ -49,22 +45,31 @@ export function CompanyCard({
   const latestPeriod = reportingPeriods[0];
   const previousPeriod = reportingPeriods[1];
 
-  const currentEmissions = latestPeriod?.emissions?.calculatedTotalEmissions;
-  const previousEmissions = previousPeriod?.emissions?.calculatedTotalEmissions;
+  const localizedDescription =
+    descriptions?.find(
+      (d) =>
+        d.language === (currentLanguage.toUpperCase() === "SV" ? "SV" : "EN"),
+    )?.text ??
+    descriptions?.[0]?.text ??
+    "";
+
+  const currentEmissions =
+    latestPeriod?.emissions?.calculatedTotalEmissions || null;
+  const previousEmissions =
+    previousPeriod?.emissions?.calculatedTotalEmissions || null;
+
   const emissionsChange =
-    previousEmissions != null && currentEmissions != null
+    currentEmissions && previousEmissions
       ? ((currentEmissions - previousEmissions) / previousEmissions) * 100
       : null;
 
   const employeeCount = latestPeriod?.economy?.employees?.value;
-  const formattedEmployeeCount = employeeCount
-    ? formatEmployeeCount(employeeCount, currentLanguage)
-    : t("companies.card.noData");
+  const formattedEmployeeCount =
+    employeeCount !== null && employeeCount !== undefined
+      ? formatEmployeeCount(employeeCount, currentLanguage)
+      : null;
 
-  // Only used in commented out code
-  // const sectorName = industry?.industryGics?.sectorCode
-  //   ? sectorNames[industry.industryGics.sectorCode as SectorCode]
-  //   : t("companies.card.unknownSector");
+  const latestPeriodEconomyTurnover = latestPeriod?.economy?.turnover || null;
 
   // Find the largest scope 3 category
   const scope3Categories = latestPeriod?.emissions?.scope3?.categories || [];
@@ -98,51 +103,15 @@ export function CompanyCard({
 
   return (
     <div className="relative rounded-level-2 @container">
-      <Link
+      <LocalizedLink
         to={`/companies/${wikidataId}`}
         className="block bg-black-2 rounded-level-2 p-8 space-y-8 transition-all duration-300 hover:shadow-[0_0_10px_rgba(153,207,255,0.15)] hover:bg-[#1a1a1a]"
       >
         <div className="flex items-start justify-between rounded-level-2">
           <div className="space-y-2">
             <h2 className="text-3xl font-light">{name}</h2>
-            {/* {rankings && (
-            <div className="flex flex-wrap gap-4 text-sm text-grey">
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <span>#{rankings.overall} totalt</span>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Ranking bland alla företag</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <span>#{rankings.sector} inom {sectorName}</span>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Ranking inom {sectorName.toLowerCase()}-sektorn</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <span>#{rankings.category} i kategorin</span>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Ranking inom företag av liknande storlek</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </div>
-          )} */}
-            <p className="text-grey text-sm line-clamp-2">
-              {currentDescription}
+            <p className="text-grey text-sm line-clamp-2 min-h-[40px]">
+              {localizedDescription}
             </p>
           </div>
           <div
@@ -156,22 +125,15 @@ export function CompanyCard({
           </div>
         </div>
         <div className="flex flex-col gap-4 @xl:grid grid-cols-2">
-          <div className="space-y-2">
+          <div className="space-y-2 h-[80px]">
             <div className="flex items-center gap-2 text-grey mb-2 text-lg">
               <TrendingDown className="w-4 h-4" />
               {t("companies.card.emissions")}
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <Info className="w-4 h-4" />
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{t("companies.card.totalEmissionsInfo")}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+              <InfoTooltip ariaLabel="Information about total emissions">
+                <p>{t("companies.card.totalEmissionsInfo")}</p>
+              </InfoTooltip>
             </div>
-            <div className="text-3xl font-light">
+            <div className="text-3xl flex font-light h-[44px]">
               {currentEmissions != null ? (
                 <span className="text-orange-2">
                   {formatEmissionsAbsolute(currentEmissions, currentLanguage)}
@@ -179,8 +141,8 @@ export function CompanyCard({
                     {t("emissionsUnit")}
                   </span>
                   {totalEmissionsAIGenerated && (
-                    <span className="ml-2">
-                      <AiIcon size="sm" />
+                    <span className="ml-2 absolute">
+                      <AiIcon size="sm" className="absolute top-0" />
                     </span>
                   )}
                 </span>
@@ -189,38 +151,29 @@ export function CompanyCard({
               )}
             </div>
           </div>
-          <div className="space-y-2">
+          <div className="space-y-2 h-[80px]">
             <div className="flex items-center gap-2 text-grey mb-2 text-lg">
               <TrendingDown className="w-4 h-4" />
               <span>{t("companies.card.emissionsChangeRate")}</span>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <Info className="w-4 h-4" />
-                  </TooltipTrigger>
-                  <TooltipContent className="max-w-80">
-                    {emissionsChange != null ? (
-                      emissionsChange <= -80 || emissionsChange >= 80 ? (
-                        <>
-                          <p>{t("companies.card.emissionsChangeRateInfo")}</p>
-                          <p className="my-2">
-                            {t(
-                              "companies.card.emissionsChangeRateInfoExtended",
-                            )}
-                          </p>
-                        </>
-                      ) : (
-                        <p>{t("companies.card.emissionsChangeRateInfo")}</p>
-                      )
-                    ) : (
-                      <p>{t("companies.card.noData")}</p>
-                    )}
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+              <InfoTooltip ariaLabel="Information about emissions change rate">
+                {emissionsChange ? (
+                  emissionsChange <= -80 || emissionsChange >= 80 ? (
+                    <>
+                      <p>{t("companies.card.emissionsChangeRateInfo")}</p>
+                      <p className="my-2">
+                        {t("companies.card.emissionsChangeRateInfoExtended")}
+                      </p>
+                    </>
+                  ) : (
+                    <p>{t("companies.card.emissionsChangeRateInfo")}</p>
+                  )
+                ) : (
+                  <p>{t("companies.card.noData")}</p>
+                )}
+              </InfoTooltip>
             </div>
             <div className="text-3xl font-light">
-              {emissionsChange !== null ? (
+              {emissionsChange ? (
                 <span
                   className={cn(
                     emissionsChange < 0 ? "text-orange-2" : "text-pink-3",
@@ -228,8 +181,8 @@ export function CompanyCard({
                 >
                   {formatPercentChange(emissionsChange, currentLanguage)}
                   {yearOverYearAIGenerated && (
-                    <span className="ml-2">
-                      <AiIcon size="sm" />
+                    <span className="ml-2 absolute">
+                      <AiIcon size="sm" className="absolute top-0" />
                     </span>
                   )}
                 </span>
@@ -240,34 +193,39 @@ export function CompanyCard({
           </div>
         </div>
         <div className="grid grid-cols-2 gap-4 pt-4 border-t border-black-1">
-          {latestPeriod?.economy?.turnover && (
-            <div>
-              <Text
-                variant="body"
-                className="flex items-center gap-2 text-grey mb-2 text-lg"
-              >
-                <Wallet className="w-4 h-4" />
-                <span>{t("companies.card.turnover")}</span>
-              </Text>
+          <div>
+            <Text
+              variant="body"
+              className="flex items-center gap-2 text-grey mb-2 text-lg"
+            >
+              <Wallet className="w-4 h-4" />
+              <span>{t("companies.card.turnover")}</span>
+            </Text>
+
+            {latestPeriodEconomyTurnover?.value ? (
               <Text variant="h6">
-                {latestPeriod.economy.turnover.value
-                  ? localizeUnit(
-                      latestPeriod.economy.turnover.value / 1e9,
-                      currentLanguage,
-                    )
-                  : t("companies.card.noData")}{" "}
-                mdr
+                {localizeUnit(
+                  latestPeriodEconomyTurnover.value / 1e9,
+                  currentLanguage,
+                )}{" "}
                 <span className="text-lg text-grey ml-1">
-                  {latestPeriod.economy.turnover.currency}
+                  {t("companies.card.turnoverAmount")}
+                </span>
+                <span className="text-lg text-grey ml-1">
+                  {latestPeriodEconomyTurnover.currency}
                 </span>
                 {turnoverAIGenerated && (
-                  <span className="ml-2">
-                    <AiIcon size="sm" />
+                  <span className="ml-2 absolute">
+                    <AiIcon size="sm" className="absolute top-0" />
                   </span>
                 )}
               </Text>
-            </div>
-          )}
+            ) : (
+              <Text variant="h6" className="text-grey">
+                {t("companies.card.noData")}
+              </Text>
+            )}
+          </div>
 
           <div>
             <Text
@@ -277,14 +235,19 @@ export function CompanyCard({
               <Users className="w-4 h-4" />{" "}
               <span>{t("companies.card.employees")}</span>
             </Text>
-            {latestPeriod?.economy && (
+            {latestPeriod?.economy?.employees ? (
               <Text variant="h6">
                 {formattedEmployeeCount}
                 {employeesAIGenerated && (
-                  <span className="ml-2">
-                    <AiIcon size="sm" />
+                  <span className="ml-2 absolute">
+                    <AiIcon size="sm" className="absolute top-0" />
                   </span>
                 )}
+              </Text>
+            ) : (
+              <Text variant="h6" className="text-grey">
+                {" "}
+                {t("companies.card.noData")}
               </Text>
             )}
           </div>
@@ -304,7 +267,7 @@ export function CompanyCard({
             noSustainabilityReport ? "text-pink-3" : "text-green-3"
           }
         />
-      </Link>
+      </LocalizedLink>
     </div>
   );
 }

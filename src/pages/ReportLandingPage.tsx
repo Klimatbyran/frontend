@@ -9,19 +9,21 @@ export function ReportLandingPage() {
   const { t } = useTranslation();
   // Find the report by matching the PDF filename (without extension)
   const report = reports.find((r) => {
-    if (!r.pdfUrl) return false;
-    // Extract the filename without extension from the pdfUrl
-    const pdfFile = r.pdfUrl
+    if (!r.link) {
+      return false;
+    }
+    // Extract the filename without extension from the link
+    const pdfFile = r.link
       .split("/")
       .pop()
       ?.replace(/\.pdf$/, "");
     return pdfFile === reportId;
   });
 
-  const image = report?.coverImage || "/images/social-picture.png";
+  const image = report?.image || "/images/social-picture.png";
   const title = report?.title || "Klimatkollen Rapport";
   const description = report?.excerpt || "Läs rapporten från Klimatkollen.";
-  const pdfUrl = report?.pdfUrl || `/reports/${reportId}.pdf`;
+  const pdfUrl = report?.link || `/reports/${reportId}.pdf`;
   const canonicalUrl = `https://klimatkollen.se/reports/${reportId}`;
 
   return (
@@ -52,8 +54,7 @@ export function ReportLandingPage() {
                 href={pdfUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group overflow-hidden hover:text-white inline-flex items-center gap-2 px-6 py-3 mt-4 text-blue-2 text-lg font-medium"
-                style={{ textDecoration: "none" }}
+                className="group overflow-hidden hover:text-white inline-flex items-center gap-2 px-6 py-3 mt-4 text-blue-2 text-lg font-medium no-underline"
               >
                 {t("reportsPage.openReport")}
                 <ArrowUpRight className="w-5 h-5" />
