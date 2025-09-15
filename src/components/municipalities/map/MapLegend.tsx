@@ -1,24 +1,23 @@
 import { t } from "i18next";
 import { MUNICIPALITY_MAP_COLORS } from "./constants";
+import { KPIValue } from "@/types/municipality";
 
 export function MapLegend({
   unit,
   leftValue,
   rightValue,
-  isBinary = false,
-  binaryLabels = { true: "Yes", false: "No" },
+  selectedKPI,
 }: {
   unit: string;
   leftValue: number;
   rightValue: number;
-  isBinary?: boolean;
-  binaryLabels?: { true: string; false: string };
+  selectedKPI: KPIValue;
 }) {
   return (
     <div className="absolute bottom-2 right-2 left-2 md:bottom-4 md:right-4 md:left-auto bg-black/60 backdrop-blur-sm p-2 md:p-4 rounded-2xl">
       <div className="flex flex-col md:flex-row items-start md:items-center mb-1 space-y-2 md:space-y-0 w-full md:w-auto">
         <div className="flex items-center w-full md:w-auto">
-          {isBinary ? (
+          {selectedKPI.isBoolean ? (
             <>
               <div className="flex items-center mr-4">
                 <div
@@ -28,7 +27,9 @@ export function MapLegend({
                   }}
                 />
                 <span className="text-gray-500 text-xs">
-                  {binaryLabels.true}
+                  {t(
+                    `municipalities.list.kpis.${selectedKPI.key}.booleanLabels.true`,
+                  )}
                 </span>
               </div>
               <div className="flex items-center">
@@ -39,7 +40,9 @@ export function MapLegend({
                   }}
                 />
                 <span className="text-gray-500 text-xs">
-                  {binaryLabels.false}
+                  {t(
+                    `municipalities.list.kpis.${selectedKPI.key}.booleanLabels.false`,
+                  )}
                 </span>
               </div>
             </>
