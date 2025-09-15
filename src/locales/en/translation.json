@@ -1109,7 +1109,7 @@
             "false": "Fails Paris Agreement"
           },
           "aboveString": "are on track to meet the Paris Agreement",
-          "belowString": "is on track to miss the Paris Agreement"
+          "belowString": "are on track to miss the Paris Agreement"
         },
         "historicalEmissionChangePercent": {
           "label": "Emissions",
