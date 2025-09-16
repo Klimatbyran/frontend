@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { exploreButtonFeatureFlagEnabled } from "@/utils/ui/featureFlags";
+import { useScreenSize } from "@/hooks/useScreenSize";
 
 interface ChartYearControlsProps {
   chartEndYear: number;
@@ -24,6 +25,8 @@ export const ChartYearControls: React.FC<ChartYearControlsProps> = ({
   exploreMode = false,
   setExploreMode,
 }) => {
+  const { isMobile } = useScreenSize();
+
   // Calculate default years if not provided
   const currentYear = new Date().getFullYear();
   const defaultShortYear = shortEndYear ?? currentYear + 5;
@@ -42,6 +45,58 @@ export const ChartYearControls: React.FC<ChartYearControlsProps> = ({
     return null;
   }
 
+  // Mobile layout: stack vertically
+  if (isMobile) {
+    return (
+      <div className={`mt-2 px-2 w-full space-y-2 ${className}`}>
+        {/* Year controls */}
+        {(showShortButton || showLongButton) && (
+          <div className="flex justify-center gap-2">
+            {showShortButton && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setChartEndYear(defaultShortYear)}
+                className="bg-black-2 border-black-1 text-white hover:bg-black-1 text-xs px-3 py-1"
+              >
+                <ChevronLeft className="h-3 w-3 mr-1" />
+                {defaultShortYear}
+              </Button>
+            )}
+            {showLongButton && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setChartEndYear(defaultLongYear)}
+                className="bg-black-2 border-black-1 text-white hover:bg-black-1 text-xs px-3 py-1"
+              >
+                {defaultLongYear}
+                <ChevronRight className="h-3 w-3 ml-1" />
+              </Button>
+            )}
+          </div>
+        )}
+
+        {/* Explore mode button */}
+        {setExploreMode && exploreButtonFeatureFlagEnabled() && (
+          <div className="flex justify-center">
+            <Button
+              variant="default"
+              size="sm"
+              onClick={() => {
+                setExploreMode(true);
+              }}
+              className="bg-green-3 text-black font-semibold shadow-md hover:bg-green-2 text-xs px-4 py-1"
+            >
+              Explore the Data
+            </Button>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // Desktop layout: original absolute positioning
   return (
     <div className={`relative mt-2 px-4 w-full ${className}`}>
       <div className="absolute left-0 top-0">

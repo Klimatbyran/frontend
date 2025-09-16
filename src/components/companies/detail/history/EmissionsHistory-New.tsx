@@ -7,7 +7,6 @@ import { getChartData } from "../../../../utils/data/chartData";
 import { useTranslation } from "react-i18next";
 import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useLanguage } from "@/components/LanguageProvider";
-import { HiddenItemsBadges } from "../HiddenItemsBadges";
 import { ChartHeader, getDynamicChartHeight } from "@/components/charts";
 import { OverviewChartNew } from "./OverviewChart-New";
 import { ScopesChartNew } from "./ScopesChart-New";
@@ -269,14 +268,6 @@ export function EmissionsHistoryNew({
               />
             )}
           </div>
-          <HiddenItemsBadges
-            hiddenScopes={hiddenScopes}
-            hiddenCategories={hiddenCategories}
-            onScopeToggle={handleScopeToggle}
-            onCategoryToggle={handleCategoryToggle}
-            getCategoryName={getCategoryName}
-            getCategoryColor={getCategoryColor}
-          />
 
           {/* Method Description - Hidden on mobile (mobile has popup version) */}
           {methodExplanation && !isMobile && (

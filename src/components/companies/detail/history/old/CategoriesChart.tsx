@@ -14,7 +14,7 @@ import {
   DynamicLegendContainer,
   ChartYearControls,
   getConsistentLineProps,
-  createScopeLegendItems,
+  createCategoryLegendItems,
   LEGEND_CONTAINER_CONFIGS,
   getXAxisProps,
   getYAxisProps,
@@ -28,54 +28,40 @@ import {
   generateChartTicks,
   createChartClickHandler,
   createCustomTickRenderer,
-  filterValidScopeData,
+  filterValidCategoryData,
 } from "@/components/charts";
 import { SharedTooltip } from "@/components/charts/SharedTooltip";
 import { useLanguage } from "@/components/LanguageProvider";
 import { formatEmissionsAbsoluteCompact } from "@/utils/formatting/localization";
 import { isMobile } from "react-device-detect";
 
-interface ScopesChartNewProps {
+interface CategoriesChartNewProps {
   data: ChartData[];
   companyBaseYear?: number;
   chartEndYear: number;
   setChartEndYear: (year: number) => void;
   shortEndYear: number;
   longEndYear: number;
-  hiddenScopes: Array<"scope1" | "scope2" | "scope3">;
-  handleScopeToggle: (scope: "scope1" | "scope2" | "scope3") => void;
+  hiddenCategories: number[];
+  handleCategoryToggle: (categoryId: number) => void;
+  getCategoryName: (id: number) => string;
+  getCategoryColor: (id: number) => string;
   onYearSelect: (year: number) => void;
   exploreMode?: boolean;
   setExploreMode?: (val: boolean) => void;
 }
 
-const scopeConfig = {
-  scope1: {
-    dataKey: "scope1.value",
-    stroke: "var(--pink-3)",
-    name: "Scope 1",
-  },
-  scope2: {
-    dataKey: "scope2.value",
-    stroke: "var(--green-2)",
-    name: "Scope 2",
-  },
-  scope3: {
-    dataKey: "scope3.value",
-    stroke: "var(--blue-2)",
-    name: "Scope 3",
-  },
-} as const;
-
-export const ScopesChartNew: FC<ScopesChartNewProps> = ({
+export const CategoriesChartNew: FC<CategoriesChartNewProps> = ({
   data,
   companyBaseYear,
   chartEndYear,
   setChartEndYear,
   shortEndYear,
   longEndYear,
-  hiddenScopes,
-  handleScopeToggle,
+  hiddenCategories,
+  handleCategoryToggle,
+  getCategoryName,
+  getCategoryColor,
   onYearSelect,
   exploreMode = false,
   setExploreMode,
@@ -85,9 +71,9 @@ export const ScopesChartNew: FC<ScopesChartNewProps> = ({
   const currentYear = new Date().getFullYear();
   const isFirstYear = companyBaseYear === data[0]?.year;
 
-  // Filter data to only include points with valid scope values
+  // Filter data to only include points with valid category values
   const filteredData = useMemo(() => {
-    return filterValidScopeData(data);
+    return filterValidCategoryData(data);
   }, [data]);
 
   // Generate ticks using shared utility
@@ -100,10 +86,27 @@ export const ScopesChartNew: FC<ScopesChartNewProps> = ({
 
   const handleClick = createChartClickHandler(onYearSelect);
 
+  // Get category keys from filtered data
+  const categoryKeys = useMemo(() => {
+    if (!filteredData[0]) return [];
+    return Object.keys(filteredData[0])
+      .filter((key) => key.startsWith("cat") && !key.includes("Interpolated"))
+      .sort((a, b) => {
+        const aCatId = parseInt(a.replace("cat", ""));
+        const bCatId = parseInt(b.replace("cat", ""));
+        return aCatId - bCatId;
+      });
+  }, [filteredData]);
+
   // Create legend items using shared utility
   const legendItems = useMemo(() => {
-    return createScopeLegendItems(t, new Set(hiddenScopes));
-  }, [t, hiddenScopes]);
+    return createCategoryLegendItems(
+      categoryKeys,
+      new Set(hiddenCategories),
+      getCategoryName,
+      getCategoryColor,
+    );
+  }, [categoryKeys, hiddenCategories, getCategoryName, getCategoryColor]);
 
   return (
     <ChartWrapper>
@@ -158,43 +161,35 @@ export const ScopesChartNew: FC<ScopesChartNewProps> = ({
               )}
             />
 
-            {/* Scope lines */}
-            {!hiddenScopes.includes("scope1") && (
-              <Line
-                type="monotone"
-                dataKey="scope1.value"
-                {...getConsistentLineProps(
-                  "scope",
-                  isMobile,
-                  "Scope 1",
-                  "var(--pink-3)",
-                )}
-              />
-            )}
-            {!hiddenScopes.includes("scope2") && (
-              <Line
-                type="monotone"
-                dataKey="scope2.value"
-                {...getConsistentLineProps(
-                  "scope",
-                  isMobile,
-                  "Scope 2",
-                  "var(--green-2)",
-                )}
-              />
-            )}
-            {!hiddenScopes.includes("scope3") && (
-              <Line
-                type="monotone"
-                dataKey="scope3.value"
-                {...getConsistentLineProps(
-                  "scope",
-                  isMobile,
-                  "Scope 3",
-                  "var(--blue-2)",
-                )}
-              />
-            )}
+            {/* Category lines */}
+            {categoryKeys.map((categoryKey) => {
+              const categoryId = parseInt(categoryKey.replace("cat", ""));
+              const isInterpolatedKey = `${categoryKey}Interpolated`;
+              const isHidden = hiddenCategories.includes(categoryId);
+
+              if (isHidden) return null;
+
+              // Calculate strokeDasharray based on the first data point
+              const strokeDasharray = filteredData[0][isInterpolatedKey]
+                ? "4 4"
+                : "0";
+              const categoryColor = getCategoryColor(categoryId);
+
+              return (
+                <Line
+                  key={categoryKey}
+                  type="monotone"
+                  dataKey={categoryKey}
+                  {...getConsistentLineProps(
+                    "category",
+                    isMobile,
+                    getCategoryName(categoryId),
+                    categoryColor,
+                  )}
+                  strokeDasharray={strokeDasharray}
+                />
+              );
+            })}
           </LineChart>
         </ResponsiveContainer>
       </ChartArea>
@@ -203,15 +198,13 @@ export const ScopesChartNew: FC<ScopesChartNewProps> = ({
         <DynamicLegendContainer
           items={legendItems}
           onItemToggle={(itemName) => {
-            // Map translated names back to scope keys
-            const scopeMap: Record<string, "scope1" | "scope2" | "scope3"> = {
-              [t("companies.emissionsHistory.scope1")]: "scope1",
-              [t("companies.emissionsHistory.scope2")]: "scope2",
-              [t("companies.emissionsHistory.scope3")]: "scope3",
-            };
-            const scope = scopeMap[itemName];
-            if (scope) {
-              handleScopeToggle(scope);
+            const categoryKey = categoryKeys.find((key) => {
+              const categoryId = parseInt(key.replace("cat", ""));
+              return getCategoryName(categoryId) === itemName;
+            });
+            if (categoryKey) {
+              const categoryId = parseInt(categoryKey.replace("cat", ""));
+              handleCategoryToggle(categoryId);
             }
           }}
           {...LEGEND_CONTAINER_CONFIGS.interactive}

@@ -1,9 +1,9 @@
 import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Text } from "@/components/ui/text";
-import { MunicipalityEmissionsGraph } from "./emissionsGraph/MunicipalityEmissionsGraph";
+import { MunicipalityEmissionsGraph } from "./MunicipalityEmissionsGraph";
 import { DataPoint, SectorEmissions } from "@/types/municipality";
-import { DataViewSelector } from "./DataViewSelector";
+import { DataViewSelector } from "../DataViewSelector";
 import { getDynamicChartHeight } from "@/components/charts";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 

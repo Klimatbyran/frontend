@@ -203,13 +203,10 @@ export const ScopesChartNew: FC<ScopesChartNewProps> = ({
         <DynamicLegendContainer
           items={legendItems}
           onItemToggle={(itemName) => {
-            // Map translated names back to scope keys
-            const scopeMap: Record<string, "scope1" | "scope2" | "scope3"> = {
-              [t("companies.emissionsHistory.scope1")]: "scope1",
-              [t("companies.emissionsHistory.scope2")]: "scope2",
-              [t("companies.emissionsHistory.scope3")]: "scope3",
-            };
-            const scope = scopeMap[itemName];
+            const scope = Object.keys(scopeConfig).find(
+              (key) =>
+                scopeConfig[key as keyof typeof scopeConfig].name === itemName,
+            ) as "scope1" | "scope2" | "scope3";
             if (scope) {
               handleScopeToggle(scope);
             }

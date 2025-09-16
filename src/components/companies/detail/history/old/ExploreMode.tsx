@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import React, { useEffect, useMemo } from "react";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { generateApproximatedData } from "@/lib/calculations/trends/approximatedData";
-import { CumulativeSummaryBoxes } from "./CumulativeSummaryBoxes";
+import { CumulativeSummaryBoxes } from "../CumulativeSummaryBoxes";
 
 interface ExploreModeProps {
   data: ChartData[];

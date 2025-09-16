@@ -1,8 +1,8 @@
-import React, { ReactNode } from "react";
+import React, { ReactElement } from "react";
 import { ResponsiveContainer } from "recharts";
 
 interface ChartContainerProps {
-  children: ReactNode;
+  children: ReactElement;
   height?: string | number;
   width?: string | number;
   className?: string;
@@ -13,14 +13,14 @@ interface ChartContainerProps {
 
 /**
  * Enhanced chart container component that provides consistent ResponsiveContainer wrapper.
- * Offers more configuration options than the basic BaseChartContainer.
+ * Offers more configuration options
  */
 export const ChartContainer: React.FC<ChartContainerProps> = ({
   children,
   height = "100%",
   width = "100%",
   className = "",
-  aspect,
+
   minHeight,
   maxHeight,
 }) => {

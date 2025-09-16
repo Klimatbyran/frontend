@@ -8,15 +8,15 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { CustomTooltip } from "../CustomTooltip";
+import { CustomTooltip } from "../../CustomTooltip";
 import { ChartData } from "@/types/emissions";
 import { useTranslation } from "react-i18next";
 import { formatEmissionsAbsoluteCompact } from "@/utils/formatting/localization";
 import { useMemo, useState, useEffect } from "react";
-import { ExploreMode } from "./explore-mode/ExploreMode";
+import { ExploreMode } from "../explore-mode/ExploreMode";
 import { ChartControls } from "./ChartControls";
-import { ScopeLine } from "./ScopeLine";
-import { CategoryLine } from "./CategoryLine";
+import { ScopeLine } from "../ScopeLine";
+import { CategoryLine } from "../CategoryLine";
 import { generateApproximatedData } from "@/lib/calculations/trends/approximatedData";
 import { calculateTrendPercentageChange } from "@/lib/calculations/trends/trendPercentages";
 import { exploreButtonFeatureFlagEnabled } from "@/utils/ui/featureFlags";

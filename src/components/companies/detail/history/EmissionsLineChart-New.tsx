@@ -14,7 +14,7 @@ import { useTranslation } from "react-i18next";
 import { formatEmissionsAbsoluteCompact } from "@/utils/formatting/localization";
 import { useMemo, useState, useEffect } from "react";
 import { ExploreMode } from "./explore-mode/ExploreMode";
-import { ChartControls } from "./ChartControls";
+import { ChartControls } from "./old/ChartControls";
 import { ScopeLine } from "./ScopeLine";
 import { CategoryLine } from "./CategoryLine";
 import { generateApproximatedData } from "@/lib/calculations/trends/approximatedData";

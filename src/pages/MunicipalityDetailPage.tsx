@@ -201,7 +201,7 @@ export function MunicipalityDetailPage() {
           </div>
         </SectionWithHelp>
 
-        <MunicipalityEmissions
+        <MunicipalityEmissionsNew
           emissionsData={emissionsData}
           sectorEmissions={sectorEmissions}
         />

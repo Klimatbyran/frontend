@@ -1,12 +1,12 @@
 import { FC } from "react";
-import { OverviewChart } from "./OverviewChart";
-import { SectorsChart } from "./SectorsChart";
+import { OverviewChartNew } from "../emissionsGraph/OverviewChart-New";
+import { SectorsChartNew } from "../emissionsGraph/SectorsChart-New";
 import { SectorEmissions, DataPoint } from "@/types/municipality";
 import { useTranslation } from "react-i18next";
 
 type DataView = "overview" | "sectors";
 
-interface MunicipalityEmissionsGraphProps {
+interface MunicipalityEmissionsGraphNewProps {
   projectedData: DataPoint[];
   sectorEmissions?: SectorEmissions;
   dataView: DataView;
@@ -15,7 +15,7 @@ interface MunicipalityEmissionsGraphProps {
 }
 
 export const MunicipalityEmissionsGraph: FC<
-  MunicipalityEmissionsGraphProps
+  MunicipalityEmissionsGraphNewProps
 > = ({
   projectedData,
   sectorEmissions,
@@ -32,9 +32,9 @@ export const MunicipalityEmissionsGraph: FC<
   return (
     <div className="h-full">
       {dataView === "overview" ? (
-        <OverviewChart projectedData={projectedData} />
+        <OverviewChartNew projectedData={projectedData} />
       ) : (
-        <SectorsChart
+        <SectorsChartNew
           sectorEmissions={sectorEmissions || null}
           hiddenSectors={hiddenSectors}
           setHiddenSectors={setHiddenSectors}

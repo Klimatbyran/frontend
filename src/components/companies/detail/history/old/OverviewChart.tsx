@@ -11,11 +11,10 @@ import {
 import { useTranslation } from "react-i18next";
 import { ChartData } from "@/types/emissions";
 import {
-  DynamicLegendContainer,
   ChartYearControls,
   getConsistentLineProps,
-  createScopeLegendItems,
-  LEGEND_CONTAINER_CONFIGS,
+  EnhancedLegend,
+  createOverviewLegendItems,
   getXAxisProps,
   getYAxisProps,
   getBaseYearReferenceLineProps,
@@ -28,54 +27,34 @@ import {
   generateChartTicks,
   createChartClickHandler,
   createCustomTickRenderer,
-  filterValidScopeData,
+  filterValidTotalData,
 } from "@/components/charts";
 import { SharedTooltip } from "@/components/charts/SharedTooltip";
 import { useLanguage } from "@/components/LanguageProvider";
 import { formatEmissionsAbsoluteCompact } from "@/utils/formatting/localization";
 import { isMobile } from "react-device-detect";
 
-interface ScopesChartNewProps {
+interface OverviewChartNewProps {
   data: ChartData[];
   companyBaseYear?: number;
   chartEndYear: number;
   setChartEndYear: (year: number) => void;
   shortEndYear: number;
   longEndYear: number;
-  hiddenScopes: Array<"scope1" | "scope2" | "scope3">;
-  handleScopeToggle: (scope: "scope1" | "scope2" | "scope3") => void;
+  approximatedData?: ChartData[] | null;
   onYearSelect: (year: number) => void;
   exploreMode?: boolean;
   setExploreMode?: (val: boolean) => void;
 }
 
-const scopeConfig = {
-  scope1: {
-    dataKey: "scope1.value",
-    stroke: "var(--pink-3)",
-    name: "Scope 1",
-  },
-  scope2: {
-    dataKey: "scope2.value",
-    stroke: "var(--green-2)",
-    name: "Scope 2",
-  },
-  scope3: {
-    dataKey: "scope3.value",
-    stroke: "var(--blue-2)",
-    name: "Scope 3",
-  },
-} as const;
-
-export const ScopesChartNew: FC<ScopesChartNewProps> = ({
+export const OverviewChartNew: FC<OverviewChartNewProps> = ({
   data,
   companyBaseYear,
   chartEndYear,
   setChartEndYear,
   shortEndYear,
   longEndYear,
-  hiddenScopes,
-  handleScopeToggle,
+  approximatedData,
   onYearSelect,
   exploreMode = false,
   setExploreMode,
@@ -85,10 +64,20 @@ export const ScopesChartNew: FC<ScopesChartNewProps> = ({
   const currentYear = new Date().getFullYear();
   const isFirstYear = companyBaseYear === data[0]?.year;
 
-  // Filter data to only include points with valid scope values
+  // Filter data to only include points with valid total values
   const filteredData = useMemo(() => {
-    return filterValidScopeData(data);
+    return filterValidTotalData(data);
   }, [data]);
+
+  // Create legend items using shared utility
+  const legendItems = useMemo(() => {
+    const hiddenItems = new Set<string>();
+    if (!approximatedData) {
+      hiddenItems.add("approximated");
+      hiddenItems.add("carbonLaw");
+    }
+    return createOverviewLegendItems(t, hiddenItems, false);
+  }, [t, approximatedData]);
 
   // Generate ticks using shared utility
   const ticks = generateChartTicks(
@@ -99,11 +88,6 @@ export const ScopesChartNew: FC<ScopesChartNewProps> = ({
   );
 
   const handleClick = createChartClickHandler(onYearSelect);
-
-  // Create legend items using shared utility
-  const legendItems = useMemo(() => {
-    return createScopeLegendItems(t, new Set(hiddenScopes));
-  }, [t, hiddenScopes]);
 
   return (
     <ChartWrapper>
@@ -158,64 +142,61 @@ export const ScopesChartNew: FC<ScopesChartNewProps> = ({
               )}
             />
 
-            {/* Scope lines */}
-            {!hiddenScopes.includes("scope1") && (
-              <Line
-                type="monotone"
-                dataKey="scope1.value"
-                {...getConsistentLineProps(
-                  "scope",
-                  isMobile,
-                  "Scope 1",
-                  "var(--pink-3)",
-                )}
-              />
-            )}
-            {!hiddenScopes.includes("scope2") && (
-              <Line
-                type="monotone"
-                dataKey="scope2.value"
-                {...getConsistentLineProps(
-                  "scope",
-                  isMobile,
-                  "Scope 2",
-                  "var(--green-2)",
-                )}
-              />
-            )}
-            {!hiddenScopes.includes("scope3") && (
-              <Line
-                type="monotone"
-                dataKey="scope3.value"
-                {...getConsistentLineProps(
-                  "scope",
-                  isMobile,
-                  "Scope 3",
-                  "var(--blue-2)",
-                )}
-              />
+            {/* Main total emissions line */}
+            <Line
+              type="monotone"
+              dataKey="total"
+              {...getConsistentLineProps(
+                "historical",
+                isMobile,
+                t("companies.emissionsHistory.totalEmissions"),
+              )}
+              connectNulls={false}
+            />
+
+            {/* Approximated data lines */}
+            {approximatedData && (
+              <>
+                <ReferenceLine
+                  x={currentYear}
+                  stroke="var(--orange-2)"
+                  strokeWidth={1}
+                  label={{
+                    value: currentYear,
+                    position: "top",
+                    fill: "var(--orange-2)",
+                    fontSize: 12,
+                    fontWeight: "normal",
+                  }}
+                />
+                <Line
+                  type="linear"
+                  dataKey="approximated"
+                  data={approximatedData}
+                  {...getConsistentLineProps(
+                    "estimated",
+                    isMobile,
+                    t("companies.emissionsHistory.approximated"),
+                  )}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="carbonLaw"
+                  data={approximatedData}
+                  {...getConsistentLineProps(
+                    "paris",
+                    isMobile,
+                    t("companies.emissionsHistory.carbonLaw"),
+                  )}
+                />
+              </>
             )}
           </LineChart>
         </ResponsiveContainer>
       </ChartArea>
 
       <ChartFooter>
-        <DynamicLegendContainer
-          items={legendItems}
-          onItemToggle={(itemName) => {
-            // Map translated names back to scope keys
-            const scopeMap: Record<string, "scope1" | "scope2" | "scope3"> = {
-              [t("companies.emissionsHistory.scope1")]: "scope1",
-              [t("companies.emissionsHistory.scope2")]: "scope2",
-              [t("companies.emissionsHistory.scope3")]: "scope3",
-            };
-            const scope = scopeMap[itemName];
-            if (scope) {
-              handleScopeToggle(scope);
-            }
-          }}
-          {...LEGEND_CONTAINER_CONFIGS.interactive}
-        />
+        <EnhancedLegend items={legendItems} />
         <ChartYearControls
           chartEndYear={chartEndYear}
           shortEndYear={shortEndYear}

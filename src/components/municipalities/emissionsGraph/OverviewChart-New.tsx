@@ -127,14 +127,14 @@ export const OverviewChartNew: FC<OverviewChartNewProps> = ({
               )}
             />
 
-            {/* Paris Agreement line */}
+            {/* Carbon Law line */}
             <Line
               type="monotone"
-              dataKey="paris"
+              dataKey="carbonLaw"
               {...getConsistentLineProps(
                 "paris",
                 false,
-                t("municipalities.graph.parisAgreement"),
+                t("municipalities.graph.carbonLaw"),
               )}
             />
           </LineChart>

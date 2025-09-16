@@ -47,7 +47,7 @@ export function CompanyCard({
 
   const localizedDescription =
     descriptions?.find(
-      (d) =>
+      (d: { language: "SV" | "EN"; text: string }) =>
         d.language === (currentLanguage.toUpperCase() === "SV" ? "SV" : "EN"),
     )?.text ??
     descriptions?.[0]?.text ??
@@ -94,12 +94,6 @@ export function CompanyCard({
   const yearOverYearAIGenerated =
     isEmissionsAIGenerated(latestPeriod) ||
     (previousPeriod && isEmissionsAIGenerated(previousPeriod));
-
-  // Get the description in the current language
-  const currentDescription =
-    descriptions?.find(
-      (desc) => desc.language === (currentLanguage === "sv" ? "SV" : "EN"),
-    )?.text || t("companies.card.noData");
 
   return (
     <div className="relative rounded-level-2 @container">
