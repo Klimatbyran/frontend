@@ -4,7 +4,6 @@ export interface ChartDataPoint {
   [key: string]: any;
 }
 
-// Legend item interface (re-exported from EnhancedChartLegend)
 export interface LegendItem {
   name: string;
   color: string;
@@ -19,7 +18,6 @@ export interface LegendItem {
   };
 }
 
-// Chart configuration types
 export interface ChartConfig {
   height?: string | number;
   width?: string | number;
@@ -29,7 +27,6 @@ export interface ChartConfig {
   showGrid?: boolean;
 }
 
-// Axis configuration types
 export interface AxisConfig {
   xAxis?: {
     dataKey?: string;
@@ -46,7 +43,6 @@ export interface AxisConfig {
   };
 }
 
-// Reference line configuration types
 export interface ReferenceLineConfig {
   x?: number;
   y?: number;

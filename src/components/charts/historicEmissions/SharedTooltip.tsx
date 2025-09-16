@@ -5,6 +5,7 @@ import { useLanguage } from "@/components/LanguageProvider";
 import { formatEmissionsAbsolute } from "@/utils/formatting/localization";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { cn } from "@/lib/utils";
+import { AiIcon } from "@/components/ui/ai-icon";
 
 interface SharedTooltipProps extends TooltipProps<number, string> {
   // Common props
@@ -30,7 +31,6 @@ interface SharedTooltipProps extends TooltipProps<number, string> {
 
   // AI data indicators
   showAIIndicators?: boolean;
-  getAIIndicator?: (entry: any) => boolean;
 }
 
 export const SharedTooltip: React.FC<SharedTooltipProps> = ({
@@ -46,8 +46,7 @@ export const SharedTooltip: React.FC<SharedTooltipProps> = ({
   hiddenSectors = new Set(),
   customFormatter,
   customNameFormatter,
-  showAIIndicators = false,
-  getAIIndicator,
+  showAIIndicators = true,
 }) => {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
@@ -148,14 +147,26 @@ export const SharedTooltip: React.FC<SharedTooltipProps> = ({
           return null;
         }
 
-        const name = formatName(entry.name || entry.dataKey, entry);
-        const value = formatValue(
-          entry.value as number,
-          entry.name || entry.dataKey,
+        const name = formatName(
+          String(entry.name || entry.dataKey || ""),
           entry,
         );
+        const value = formatValue(
+          entry.value as number,
+          String(entry.name || entry.dataKey || ""),
+          entry,
+        );
+        // Check if this data point is AI-generated
         const isDataAI =
-          showAIIndicators && getAIIndicator ? getAIIndicator(entry) : false;
+          showAIIndicators &&
+          (entry.payload?.isAIGenerated ||
+            entry.payload?.scope1?.isAIGenerated ||
+            entry.payload?.scope2?.isAIGenerated ||
+            entry.payload?.scope3?.isAIGenerated ||
+            entry.payload?.scope3Categories?.some(
+              (cat: any) => cat.isAIGenerated,
+            ) ||
+            false);
 
         return (
           <div
@@ -171,26 +182,23 @@ export const SharedTooltip: React.FC<SharedTooltipProps> = ({
               className="flex pl-2 gap-1 justify-end"
               style={{ color: entry.color }}
             >
+              {value}
               {isDataAI && (
-                <span>
-                  {/* AI Icon would go here if needed */}
-                  <span className="text-xs">🤖</span>
+                <span className="ml-2">
+                  <AiIcon size="sm" />
                 </span>
               )}
-              {value}
             </div>
           </div>
         );
       })}
 
-      {/* Base year info */}
       {isBaseYear && (
         <span className="text-grey mr-2 text-xs col-span-2">
           <br />* {t("companies.emissionsHistory.baseYearInfo")}
         </span>
       )}
 
-      {/* Trend information */}
       {trendData &&
         payload?.some(
           (entry) => entry.dataKey === "approximated" && entry.value != null,

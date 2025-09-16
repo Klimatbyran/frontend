@@ -2,12 +2,10 @@
  * Chart data filtering utilities
  */
 
-// Filter data to only include points with valid total values
 export const filterValidTotalData = (data: any[]) => {
   return data.filter((d) => d.total !== undefined && d.total !== null);
 };
 
-// Filter data to only include points with valid scope values
 export const filterValidScopeData = (data: any[]) => {
   return data.filter((d) => {
     return (
@@ -18,7 +16,6 @@ export const filterValidScopeData = (data: any[]) => {
   });
 };
 
-// Filter data to only include points with valid category values
 export const filterValidCategoryData = (data: any[]) => {
   return data.filter((d) => {
     return Object.keys(d).some((key) => {
@@ -35,7 +32,6 @@ export const filterValidCategoryData = (data: any[]) => {
   });
 };
 
-// Filter data by year range
 export const filterDataByYearRange = (data: any[], endYear: number) => {
   return data.filter((point) => point.year <= endYear);
 };

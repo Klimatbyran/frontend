@@ -1,5 +1,4 @@
 // Base chart components
-export { ChartContainer } from "./ChartContainer";
 export { ChartWrapper } from "./ChartWrapper";
 export { ChartArea } from "./ChartArea";
 export { ChartFooter } from "./ChartFooter";
@@ -7,7 +6,7 @@ export { ChartFooter } from "./ChartFooter";
 // Chart elements
 export { DynamicLegendContainer } from "./historicEmissions/DynamicLegendContainer";
 export { EnhancedLegend } from "./historicEmissions/EnhancedLegend";
-export { SharedTooltip } from "./SharedTooltip";
+export { SharedTooltip } from "./historicEmissions/SharedTooltip";
 
 // Chart controls
 export { ChartYearControls } from "./ChartYearControls";
@@ -38,6 +37,7 @@ export {
   getChartProps,
   getResponsiveChartMargin,
   getDynamicChartHeight,
+  getLegendContainerHeight,
 } from "./historicEmissions/chartStyles";
 
 // Reference line types

@@ -10,8 +10,6 @@ interface ChartYearControlsProps {
   longEndYear?: number; // Optional override, defaults to 2050
   setChartEndYear: (year: number) => void;
   className?: string;
-
-  // Explore mode props (optional for backward compatibility)
   exploreMode?: boolean;
   setExploreMode?: (val: boolean) => void;
 }
@@ -27,7 +25,6 @@ export const ChartYearControls: React.FC<ChartYearControlsProps> = ({
 }) => {
   const { isMobile } = useScreenSize();
 
-  // Calculate default years if not provided
   const currentYear = new Date().getFullYear();
   const defaultShortYear = shortEndYear ?? currentYear + 5;
   const defaultLongYear = longEndYear ?? 2050;
@@ -37,7 +34,6 @@ export const ChartYearControls: React.FC<ChartYearControlsProps> = ({
     return null;
   }
 
-  // Determine which button to show based on current state
   const showShortButton = chartEndYear === defaultLongYear;
   const showLongButton = chartEndYear === defaultShortYear;
 
@@ -49,7 +45,6 @@ export const ChartYearControls: React.FC<ChartYearControlsProps> = ({
   if (isMobile) {
     return (
       <div className={`mt-2 px-2 w-full space-y-2 ${className}`}>
-        {/* Year controls */}
         {(showShortButton || showLongButton) && (
           <div className="flex justify-center gap-2">
             {showShortButton && (
@@ -77,7 +72,6 @@ export const ChartYearControls: React.FC<ChartYearControlsProps> = ({
           </div>
         )}
 
-        {/* Explore mode button */}
         {setExploreMode && exploreButtonFeatureFlagEnabled() && (
           <div className="flex justify-center">
             <Button
@@ -126,7 +120,6 @@ export const ChartYearControls: React.FC<ChartYearControlsProps> = ({
         )}
       </div>
 
-      {/* Explore mode button */}
       {setExploreMode && exploreButtonFeatureFlagEnabled() && (
         <div className="flex justify-center items-center">
           <Button

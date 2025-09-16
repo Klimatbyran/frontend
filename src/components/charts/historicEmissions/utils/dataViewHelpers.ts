@@ -1,8 +1,5 @@
 import { ViewOption } from "../../DataViewSelector";
 
-/**
- * Helper function to generate company data view options
- */
 export const generateCompanyViewOptions = (
   hasCategories: boolean,
   t: (key: string) => string,
@@ -16,9 +13,6 @@ export const generateCompanyViewOptions = (
   },
 ];
 
-/**
- * Helper function to generate municipality data view options
- */
 export const generateMunicipalityViewOptions = (
   hasSectors: boolean,
   t: (key: string) => string,

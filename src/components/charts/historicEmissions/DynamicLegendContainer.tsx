@@ -17,7 +17,8 @@ interface DynamicLegendContainerProps {
   maxHeight?: string;
   mobileMaxHeight?: string;
   className?: string;
-  forceExpandable?: boolean; // New prop to force expandable behavior
+  forceExpandable?: boolean;
+  containerHeight?: string;
 }
 
 export const DynamicLegendContainer: React.FC<DynamicLegendContainerProps> = ({
@@ -32,101 +33,67 @@ export const DynamicLegendContainer: React.FC<DynamicLegendContainerProps> = ({
   const { t } = useTranslation();
 
   // Determine if we should show expandable behavior
-  const shouldShowExpandable = forceExpandable || items.length > 6; // Show if forced or more than 6 items
+  const shouldShowExpandable = forceExpandable || items.length > 6; 
 
   return (
     <TooltipProvider>
-      <div
-        ref={containerRef}
-        className={`transition-all duration-300 ${
-          shouldShowExpandable ? "h-[100px] md:h-[200px]" : "h-auto"
-        } ${className}`}
-      >
+      <div ref={containerRef} className={className}>
         <div
           data-legend-content
-          className={`relative transition-all duration-300 ${
+          className={`flex flex-wrap gap-2 ${
             shouldShowExpandable
-              ? "max-h-[100px] md:max-h-[200px] overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-grey/30 hover:scrollbar-thumb-grey/50 border border-grey/10 rounded-md"
-              : "max-h-none"
+              ? "max-h-[120px] md:max-h-[150px] overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-grey/30 hover:scrollbar-thumb-grey/50 border border-grey/10 rounded-md p-2"
+              : ""
           }`}
         >
-          <div className="flex flex-wrap gap-2 p-2">
-            {items.map((item, index) => (
-              <Tooltip key={index}>
-                <TooltipTrigger asChild>
+          {items.map((item, index) => (
+            <Tooltip key={index}>
+              <TooltipTrigger asChild>
+                <div
+                  className={`flex items-center gap-2 p-2 rounded bg-black-2 hover:bg-black-1 transition-colors ${
+                    allowClickToHide ? "cursor-pointer" : "cursor-default"
+                  } ${item.isHidden ? "opacity-50" : "opacity-100"}`}
+                  onClick={() => {
+                    if (allowClickToHide && onItemToggle) {
+                      onItemToggle(item.name);
+                    }
+                  }}
+                >
                   <div
-                    className={`flex items-center gap-2 p-2 rounded bg-black-2 hover:bg-black-1 transition-colors ${
-                      item.isClickable && allowClickToHide
-                        ? "cursor-pointer"
-                        : "cursor-default"
-                    } ${item.isHidden ? "opacity-50" : ""}`}
-                    onClick={() => {
-                      if (
-                        item.isClickable &&
-                        allowClickToHide &&
-                        onItemToggle
-                      ) {
-                        onItemToggle(item.name);
-                      }
+                    className="w-3 h-3 rounded-sm border border-grey/30"
+                    style={{
+                      backgroundColor: item.color,
+                      borderColor: item.color,
                     }}
-                  >
-                    <div
-                      className="w-3 h-3 rounded flex-shrink-0"
-                      style={{
-                        backgroundColor: item.isDashed
-                          ? "transparent"
-                          : item.color,
-                        border: item.isDashed
-                          ? `2px solid ${item.color}`
-                          : "none",
-                      }}
-                    />
-                    <div className="min-w-0 flex-1">
-                      <span className="text-sm text-white">{item.name}</span>
-                      {showMetadata && item.metadata && (
-                        <div className="text-xs text-gray-400">
-                          {item.metadata.value && (
-                            <span>{item.metadata.value.toLocaleString()}</span>
-                          )}
-                          {item.metadata.percentage && (
-                            <span>
-                              {" "}
-                              ({item.metadata.percentage.toFixed(1)}%)
-                            </span>
-                          )}
-                          {item.metadata.unit && (
-                            <span> {item.metadata.unit}</span>
-                          )}
-                          {item.metadata.isAIGenerated && (
-                            <span className="ml-1">🤖</span>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </TooltipTrigger>
-                {item.isClickable && allowClickToHide && (
-                  <TooltipContent>
-                    <p>{t("chartLegend.clickToFilterOut")}</p>
-                  </TooltipContent>
-                )}
-              </Tooltip>
-            ))}
-          </div>
-
-          {/* Scroll Indicator */}
-          {shouldShowExpandable && (
-            <div className="relative">
-              {/* More prominent scroll indicator */}
-              <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-black-2 via-black-2/90 to-transparent pointer-events-none" />
-              {/* Scroll hint */}
-              <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 text-xs text-grey/80 pointer-events-none flex items-center gap-1">
-                <ChevronDown className="w-3 h-3" />
-                {t("chartLegend.scrollToSeeMore")}
-              </div>
-            </div>
-          )}
+                  />
+                  <span className="text-sm text-grey">{item.name}</span>
+                  {showMetadata && item.metadata && (
+                    <span className="text-xs text-grey/70">
+                      {item.metadata.value
+                        ? `${item.metadata.value}${item.metadata.unit || ""}`
+                        : ""}
+                    </span>
+                  )}
+                </div>
+              </TooltipTrigger>
+              {allowClickToHide && (
+                <TooltipContent>
+                  <p>{t("chartLegend.clickToFilterOut")}</p>
+                </TooltipContent>
+              )}
+            </Tooltip>
+          ))}
         </div>
+
+        {/* Simple scroll hint */}
+        {shouldShowExpandable && (
+          <div className="text-center mt-2">
+            <div className="text-xs text-grey/70 flex items-center justify-center gap-1">
+              <ChevronDown className="w-3 h-3" />
+              {t("chartLegend.scrollToSeeMore")}
+            </div>
+          </div>
+        )}
       </div>
     </TooltipProvider>
   );

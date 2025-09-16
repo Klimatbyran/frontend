@@ -4,9 +4,7 @@
 
 import { LegendItem } from "../ChartTypes";
 
-// Common legend item configurations
 export const LEGEND_CONFIGS = {
-  // Overview chart legend items
   historical: {
     nameKey: "companies.emissionsHistory.totalEmissions", // Will be overridden for municipalities
     color: "white",
@@ -127,7 +125,7 @@ export const createOverviewLegendItems = (
   // Add Paris/carbon law line
   items.push({
     name: isMunicipality
-      ? t("municipalities.graph.parisAgreement")
+      ? t("municipalities.graph.carbonLaw")
       : t("companies.emissionsHistory.carbonLaw"),
     color: LEGEND_CONFIGS.paris.color,
     isClickable: LEGEND_CONFIGS.paris.isClickable,

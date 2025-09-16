@@ -1,16 +1,10 @@
 /**
  * Chart styling constants and utilities
- * This file contains all chart-related styling and re-exports utility functions
  */
 
 import React from "react";
 import { formatEmissionsAbsoluteCompact } from "@/utils/formatting/localization";
 
-// ============================================================================
-// CORE CHART STYLES
-// ============================================================================
-
-// Common line styles
 export const LINE_STYLES = {
   // Main data lines
   primary: {
@@ -51,7 +45,7 @@ export const CHART_DIMENSIONS = {
   margin: {
     top: 20,
     right: 0,
-    left: -10, // Reduced left margin for better mobile space usage
+    left: -10,
     bottom: 0,
   },
   padding: {
@@ -61,10 +55,6 @@ export const CHART_DIMENSIONS = {
     bottom: 0,
   },
 } as const;
-
-// ============================================================================
-// LINE STYLING UTILITIES
-// ============================================================================
 
 // Line configuration for different types
 export const LINE_CONFIGS = {
@@ -134,10 +124,6 @@ export const getLinePropsWithHover = (
     activeDot: isMobile ? false : { r: 6, fill: color, cursor: "pointer" },
   };
 };
-
-// ============================================================================
-// AXIS STYLING UTILITIES
-// ============================================================================
 
 // X-axis styling utilities
 export const getXAxisProps = (
@@ -324,10 +310,6 @@ export const getReferenceLinesForChart = (
   return lines.map((line) => createReferenceLine(line.type, config));
 };
 
-// ============================================================================
-// CHART CONTAINER UTILITIES
-// ============================================================================
-
 // Utility function to get responsive height
 export const getResponsiveHeight = (isMobile: boolean): string => {
   return isMobile
@@ -337,21 +319,30 @@ export const getResponsiveHeight = (isMobile: boolean): string => {
 
 // Utility function to get dynamic height based on data view and mobile state
 export const getDynamicChartHeight = (
+  _dataView: string,
+  isMobile: boolean,
+): string => {
+  // All charts use the same height - legend space is handled separately
+  return isMobile ? "500px" : "500px";
+};
+
+// Utility function to get legend container height based on data view
+export const getLegendContainerHeight = (
   dataView: string,
   isMobile: boolean,
 ): string => {
   // Categories view needs more height due to many legend items
   if (dataView === "categories") {
-    return isMobile ? "600px" : "550px";
+    return isMobile ? "180px" : "150px";
   }
 
   // Sectors view needs slightly more height than overview/scopes
   if (dataView === "sectors") {
-    return isMobile ? "550px" : "500px";
+    return isMobile ? "140px" : "120px";
   }
 
   // Default heights for overview and scopes
-  return isMobile ? "500px" : "500px";
+  return isMobile ? "120px" : "100px";
 };
 
 // Utility function to get chart margin
@@ -390,7 +381,7 @@ export const getLineChartProps = (
   margin: { top: number; right: number; left: number; bottom: number } = {
     top: 20,
     right: 0,
-    left: -10, // Reduced left margin for better mobile space usage
+    left: -10,
     bottom: 0,
   },
 ) => ({
@@ -406,7 +397,7 @@ export const getComposedChartProps = (
   margin: { top: number; right: number; left: number; bottom: number } = {
     top: 20,
     right: 0,
-    left: -10, // Reduced left margin for better mobile space usage
+    left: -10,
     bottom: 0,
   },
 ) => ({
@@ -427,10 +418,6 @@ export const getChartProps = (
   }
   return getLineChartProps(data, onClick, margin);
 };
-
-// ============================================================================
-// RE-EXPORT UTILITIES FROM MODULAR STRUCTURE
-// ============================================================================
 
 // Re-export from utils modules
 export * from "./utils/chartData";
