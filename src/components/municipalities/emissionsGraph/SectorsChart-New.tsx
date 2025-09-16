@@ -1,5 +1,11 @@
 import { FC, useMemo } from "react";
-import { ComposedChart, Area, Tooltip, ResponsiveContainer } from "recharts";
+import {
+  ComposedChart,
+  Area,
+  Tooltip,
+  ResponsiveContainer,
+  ReferenceLine,
+} from "recharts";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useScreenSize } from "@/hooks/useScreenSize";
@@ -20,7 +26,7 @@ import {
   ChartFooter,
 } from "@/components/charts";
 import { SharedTooltip } from "@/components/charts/SharedTooltip";
-import { MunicipalityReferenceLines } from "@/components/charts/ReferenceLines-New";
+import { getCurrentYearReferenceLineProps } from "@/components/charts";
 import { XAxis, YAxis } from "recharts";
 
 interface SectorsChartNewProps {
@@ -138,7 +144,7 @@ export const SectorsChartNew: FC<SectorsChartNewProps> = ({
             />
 
             {/* Current year reference line */}
-            <MunicipalityReferenceLines currentYear={MAX_YEAR} />
+            <ReferenceLine {...getCurrentYearReferenceLineProps(MAX_YEAR, t)} />
 
             {/* Sector areas */}
             {allSectors.map((sector) => {

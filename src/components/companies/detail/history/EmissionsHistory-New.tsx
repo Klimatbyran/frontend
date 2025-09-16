@@ -7,7 +7,13 @@ import { getChartData } from "../../../../utils/data/chartData";
 import { useTranslation } from "react-i18next";
 import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useLanguage } from "@/components/LanguageProvider";
-import { ChartHeader, getDynamicChartHeight } from "@/components/charts";
+import {
+  ChartHeader,
+  getDynamicChartHeight,
+  useDataView,
+  useTimeSeriesChartState,
+  useHiddenItems,
+} from "@/components/charts";
 import { OverviewChartNew } from "./OverviewChart-New";
 import { ScopesChartNew } from "./ScopesChart-New";
 import { CategoriesChartNew } from "./CategoriesChart-New";
@@ -42,12 +48,22 @@ export function EmissionsHistoryNew({
     [reportingPeriods],
   );
 
-  const [dataView, setDataView] = useState<DataView>(() => {
-    if (!hasScope3Categories && "categories" === "categories") {
-      return "overview";
-    }
-    return "overview";
-  });
+  const { dataView, setDataView } = useDataView<DataView>(
+    "overview",
+    hasScope3Categories
+      ? ["overview", "scopes", "categories"]
+      : ["overview", "scopes"],
+  );
+
+  const { chartEndYear, setChartEndYear, shortEndYear, longEndYear } =
+    useTimeSeriesChartState();
+
+  const { hiddenItems: hiddenScopes, toggleItem: toggleScope } = useHiddenItems<
+    "scope1" | "scope2" | "scope3"
+  >([]);
+
+  const { hiddenItems: hiddenCategories, toggleItem: toggleCategory } =
+    useHiddenItems<number>([]);
 
   const companyBaseYear = baseYear?.year;
 
@@ -88,28 +104,16 @@ export function EmissionsHistoryNew({
     onYearSelect?.(year.toString());
   };
 
-  // Add state for hidden scopes
-  const [hiddenScopes, setHiddenScopes] = useState<
-    Array<"scope1" | "scope2" | "scope3">
-  >([]);
-
-  // Add toggle handler
+  // Toggle handlers using the new hooks
   const handleScopeToggle = (scope: "scope1" | "scope2" | "scope3") => {
-    setHiddenScopes((prev) =>
-      prev.includes(scope) ? prev.filter((s) => s !== scope) : [...prev, scope],
-    );
+    toggleScope(scope);
   };
 
-  const [hiddenCategories, setHiddenCategories] = useState<number[]>([]);
+  const handleCategoryToggle = (categoryId: number) => {
+    toggleCategory(categoryId);
+  };
 
   const [exploreMode, setExploreMode] = useState(false);
-  const [methodExplanation] = useState<string | null>(null);
-
-  // Chart year controls state - default to current year + 5 (short view)
-  const currentYear = new Date().getFullYear();
-  const [chartEndYear, setChartEndYear] = useState(currentYear + 5);
-  const [shortEndYear] = useState(currentYear + 5);
-  const [longEndYear] = useState(2050);
 
   // Generate approximated data for overview
   const approximatedData = useMemo(() => {
@@ -173,16 +177,6 @@ export function EmissionsHistoryNew({
     );
   }
 
-  const handleCategoryToggle = (categoryId: number) => {
-    setHiddenCategories((prev) => {
-      if (prev.includes(categoryId)) {
-        return prev.filter((id) => id !== categoryId);
-      } else {
-        return [...prev, categoryId];
-      }
-    });
-  };
-
   return (
     <div>
       {!exploreMode && (
@@ -232,7 +226,7 @@ export function EmissionsHistoryNew({
                     setChartEndYear={setChartEndYear}
                     shortEndYear={shortEndYear}
                     longEndYear={longEndYear}
-                    hiddenScopes={hiddenScopes}
+                    hiddenScopes={Array.from(hiddenScopes)}
                     handleScopeToggle={handleScopeToggle}
                     onYearSelect={handleYearSelect}
                     exploreMode={exploreMode}
@@ -247,7 +241,7 @@ export function EmissionsHistoryNew({
                     setChartEndYear={setChartEndYear}
                     shortEndYear={shortEndYear}
                     longEndYear={longEndYear}
-                    hiddenCategories={hiddenCategories}
+                    hiddenCategories={Array.from(hiddenCategories)}
                     handleCategoryToggle={handleCategoryToggle}
                     getCategoryName={getCategoryName}
                     getCategoryColor={getCategoryColor}
@@ -268,21 +262,6 @@ export function EmissionsHistoryNew({
               />
             )}
           </div>
-
-          {/* Method Description - Hidden on mobile (mobile has popup version) */}
-          {methodExplanation && !isMobile && (
-            <div className="bg-black-2 rounded-lg p-4 max-w-4xl mx-auto">
-              <Text
-                variant="body"
-                className="text-sm text-grey mb-2 font-medium"
-              >
-                {t("companies.emissionsHistory.trend")}
-              </Text>
-              <Text variant="body" className="text-xs text-grey">
-                {methodExplanation}
-              </Text>
-            </div>
-          )}
         </SectionWithHelp>
       )}
     </div>

@@ -1,39 +1,9 @@
 import { useState, useMemo } from "react";
 
-// Common chart state management hook
-export const useChartState = (initialConfig?: {
-  chartEndYear?: number;
-  shortEndYear?: number;
-  longEndYear?: number;
-  currentYear?: number;
-}) => {
-  const currentYear = initialConfig?.currentYear || new Date().getFullYear();
-  const defaultShortEndYear = initialConfig?.shortEndYear || currentYear + 5;
-  const defaultLongEndYear = initialConfig?.longEndYear || 2050;
-  const defaultChartEndYear =
-    initialConfig?.chartEndYear || defaultShortEndYear;
-
-  const [chartEndYear, setChartEndYear] = useState(defaultChartEndYear);
-  const [shortEndYear] = useState(defaultShortEndYear);
-  const [longEndYear] = useState(defaultLongEndYear);
-
-  // Computed values
-  const isShortView = useMemo(
-    () => chartEndYear === shortEndYear,
-    [chartEndYear, shortEndYear],
-  );
-
-  return {
-    chartEndYear,
-    setChartEndYear,
-    shortEndYear,
-    longEndYear,
-    currentYear,
-    isShortView,
-  };
-};
-
-// Hook for managing hidden items (scopes, categories, sectors)
+/**
+ * Generic hook for managing hidden/filtered items in charts
+ * Can be used for any chart type with filterable items
+ */
 export const useHiddenItems = <T extends string | number>(
   initialHidden: T[] = [],
 ) => {
@@ -59,6 +29,18 @@ export const useHiddenItems = <T extends string | number>(
 
   const setHidden = (items: T[]) => setHiddenItems(new Set(items));
 
+  const addHidden = (item: T) => {
+    setHiddenItems((prev) => new Set([...prev, item]));
+  };
+
+  const removeHidden = (item: T) => {
+    setHiddenItems((prev) => {
+      const newSet = new Set(prev);
+      newSet.delete(item);
+      return newSet;
+    });
+  };
+
   return {
     hiddenItems,
     setHiddenItems,
@@ -66,10 +48,15 @@ export const useHiddenItems = <T extends string | number>(
     isHidden,
     clearAll,
     setHidden,
+    addHidden,
+    removeHidden,
   };
 };
 
-// Hook for managing data view state
+/**
+ * Generic hook for managing data view state in multi-view charts
+ * Can be used for any chart with multiple view modes
+ */
 export const useDataView = <T extends string>(
   initialView: T,
   availableViews: T[],
@@ -82,15 +69,63 @@ export const useDataView = <T extends string>(
     }
   };
 
+  const isAvailableView = (view: T) => availableViews.includes(view);
+
   return {
     dataView,
     setDataView: setDataViewSafe,
     availableViews,
+    isAvailableView,
   };
 };
 
-// Combined hook for complete chart state management
-export const useChartStateManager = <T extends string | number>(config?: {
+/**
+ * Specialized hook for time-series charts with year range controls
+ * Used for historic emissions charts and other temporal data
+ */
+export const useTimeSeriesChartState = (initialConfig?: {
+  chartEndYear?: number;
+  shortEndYear?: number;
+  longEndYear?: number;
+  currentYear?: number;
+}) => {
+  const currentYear = initialConfig?.currentYear || new Date().getFullYear();
+  const defaultShortEndYear = initialConfig?.shortEndYear || currentYear + 5;
+  const defaultLongEndYear = initialConfig?.longEndYear || 2050;
+  const defaultChartEndYear =
+    initialConfig?.chartEndYear || defaultShortEndYear;
+
+  const [chartEndYear, setChartEndYear] = useState(defaultChartEndYear);
+  const [shortEndYear] = useState(defaultShortEndYear);
+  const [longEndYear] = useState(defaultLongEndYear);
+
+  // Computed values
+  const isShortView = useMemo(
+    () => chartEndYear === shortEndYear,
+    [chartEndYear, shortEndYear],
+  );
+
+  const isLongView = useMemo(
+    () => chartEndYear === longEndYear,
+    [chartEndYear, longEndYear],
+  );
+
+  return {
+    chartEndYear,
+    setChartEndYear,
+    shortEndYear,
+    longEndYear,
+    currentYear,
+    isShortView,
+    isLongView,
+  };
+};
+
+/**
+ * Specialized hook for emissions charts combining time-series and data view state
+ * Used specifically for company and municipality emissions charts
+ */
+export const useEmissionsChartState = <T extends string | number>(config?: {
   chartEndYear?: number;
   shortEndYear?: number;
   longEndYear?: number;
@@ -99,15 +134,22 @@ export const useChartStateManager = <T extends string | number>(config?: {
   availableDataViews?: string[];
   initialHiddenItems?: T[];
 }) => {
-  const chartState = useChartState(config);
+  const timeSeriesState = useTimeSeriesChartState({
+    chartEndYear: config?.chartEndYear,
+    shortEndYear: config?.shortEndYear,
+    longEndYear: config?.longEndYear,
+    currentYear: config?.currentYear,
+  });
+
   const hiddenItems = useHiddenItems(config?.initialHiddenItems);
+
   const dataView = useDataView(
-    config?.initialDataView || "overview",
+    (config?.initialDataView || "overview") as any,
     config?.availableDataViews || ["overview"],
   );
 
   return {
-    ...chartState,
+    ...timeSeriesState,
     ...hiddenItems,
     ...dataView,
   };

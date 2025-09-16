@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { LegendItem } from "./ChartTypes";
+import { LegendItem } from "../ChartTypes";
 import {
   Tooltip,
   TooltipContent,

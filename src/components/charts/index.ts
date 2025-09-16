@@ -5,8 +5,8 @@ export { ChartArea } from "./ChartArea";
 export { ChartFooter } from "./ChartFooter";
 
 // Chart elements
-export { DynamicLegendContainer } from "./DynamicLegendContainer";
-export { EnhancedLegend } from "./EnhancedLegend";
+export { DynamicLegendContainer } from "./historicEmissions/DynamicLegendContainer";
+export { EnhancedLegend } from "./historicEmissions/EnhancedLegend";
 
 // Chart controls
 export { ChartYearControls } from "./ChartYearControls";
@@ -17,8 +17,8 @@ export { DataViewSelector } from "./DataViewSelector";
 export type * from "./ChartTypes";
 
 // Styling utilities
-export * from "./chartStyles";
-export * from "./legendStyles";
+export * from "./historicEmissions/chartStyles";
+export * from "./historicEmissions/legendStyles";
 
 // Chart utilities - re-exported from chartStyles and utils
 export {
@@ -35,15 +35,15 @@ export {
   getChartProps,
   getResponsiveChartMargin,
   getDynamicChartHeight,
-} from "./chartStyles";
+} from "./historicEmissions/chartStyles";
 
 // Reference line types
-export type { ReferenceLineConfig } from "./chartStyles";
+export type { ReferenceLineConfig } from "./historicEmissions/chartStyles";
 
 // State management hooks
 export {
-  useChartState,
   useHiddenItems,
   useDataView,
-  useChartStateManager,
+  useTimeSeriesChartState,
+  useEmissionsChartState,
 } from "./useChartState";

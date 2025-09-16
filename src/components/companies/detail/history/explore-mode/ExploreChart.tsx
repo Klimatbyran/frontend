@@ -17,6 +17,7 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { isMobile } from "react-device-detect";
 import { CumulativeSummaryBoxes } from "./CumulativeSummaryBoxes";
+import { getBaseYearReferenceLineProps } from "@/components/charts";
 
 interface ExploreChartProps {
   data: ChartData[];
@@ -198,18 +199,7 @@ export function ExploreChart({
   const renderBaseYearReferenceLine = () =>
     companyBaseYear && (
       <ReferenceLine
-        label={{
-          value: t("companies.emissionsHistory.baseYearLabel"),
-          position: "top",
-          dx: 25,
-          fill: "white",
-          fontSize: 12,
-          fontWeight: "normal",
-        }}
-        x={companyBaseYear}
-        stroke="var(--grey)"
-        strokeDasharray="4 4"
-        ifOverflow="extendDomain"
+        {...getBaseYearReferenceLineProps(companyBaseYear, true, t)}
       />
     );
 

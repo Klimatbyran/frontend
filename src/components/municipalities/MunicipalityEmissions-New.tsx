@@ -1,8 +1,13 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { MunicipalityEmissionsGraphNew } from "./emissionsGraph/MunicipalityEmissionsGraph-New";
 import { DataPoint, SectorEmissions } from "@/types/municipality";
-import { ChartHeader, getDynamicChartHeight } from "@/components/charts";
+import {
+  ChartHeader,
+  getDynamicChartHeight,
+  useDataView,
+  useHiddenItems,
+} from "@/components/charts";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 
 type DataView = "overview" | "sectors";
@@ -18,8 +23,13 @@ export const MunicipalityEmissionsNew: FC<MunicipalityEmissionsNewProps> = ({
   sectorEmissions,
 }) => {
   const { t } = useTranslation();
-  const [dataView, setDataView] = useState<DataView>("overview");
-  const [hiddenSectors, setHiddenSectors] = useState<Set<string>>(new Set());
+
+  const { dataView, setDataView } = useDataView<DataView>("overview", [
+    "overview",
+    "sectors",
+  ]);
+  const { hiddenItems: hiddenSectors, setHiddenItems: setHiddenSectors } =
+    useHiddenItems<string>([]);
 
   const hasSectorData =
     !!sectorEmissions && Object.keys(sectorEmissions).length > 0;

@@ -20,6 +20,7 @@ import MunicipalitySectorPieChart from "@/components/municipalities/sectorChart/
 import MunicipalitySectorLegend from "@/components/municipalities/sectorChart/MunicipalitySectorLegend";
 import { useMunicipalitySectorEmissions } from "@/hooks/municipalities/useMunicipalitySectorEmissions";
 import { MunicipalityEmissionsNew } from "@/components/municipalities/MunicipalityEmissions-New";
+import { useHiddenItems } from "@/components/charts";
 import { YearSelector } from "@/components/layout/YearSelector";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 
@@ -31,9 +32,10 @@ export function MunicipalityDetailPage() {
 
   const { sectorEmissions, loading: _loadingSectors } =
     useMunicipalitySectorEmissions(id);
-  const [filteredSectors, setFilteredSectors] = useState<Set<string>>(
-    new Set(),
-  );
+
+  const { hiddenItems: filteredSectors, setHiddenItems: setFilteredSectors } =
+    useHiddenItems<string>([]);
+
   const [selectedYear, setSelectedYear] = useState<string>("2023");
 
   if (loading) return <Text>{t("municipalityDetailPage.loading")}</Text>;
@@ -55,7 +57,6 @@ export function MunicipalityDetailPage() {
     ? formatEmissionsAbsolute(lastYearEmissions.value, currentLanguage)
     : "N/A";
 
-  // Get available years for the sector emissions
   const availableYears = sectorEmissions?.sectors
     ? Object.keys(sectorEmissions.sectors)
         .map(Number)
