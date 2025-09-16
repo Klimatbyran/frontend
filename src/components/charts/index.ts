@@ -7,11 +7,14 @@ export { ChartFooter } from "./ChartFooter";
 // Chart elements
 export { DynamicLegendContainer } from "./historicEmissions/DynamicLegendContainer";
 export { EnhancedLegend } from "./historicEmissions/EnhancedLegend";
+export { SharedTooltip } from "./SharedTooltip";
 
 // Chart controls
 export { ChartYearControls } from "./ChartYearControls";
-export { ChartHeader } from "./ChartHeader";
 export { DataViewSelector } from "./DataViewSelector";
+
+// Data view helpers
+export * from "./historicEmissions/utils/dataViewHelpers";
 
 // Types
 export type * from "./ChartTypes";

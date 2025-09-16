@@ -25,8 +25,8 @@ import {
   ChartArea,
   ChartFooter,
   filterDataByYearRange,
+  SharedTooltip,
 } from "@/components/charts";
-import { SharedTooltip } from "@/components/charts/SharedTooltip";
 import { XAxis, YAxis } from "recharts";
 import { useLanguage } from "@/components/LanguageProvider";
 

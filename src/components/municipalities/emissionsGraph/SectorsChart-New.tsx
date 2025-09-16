@@ -24,9 +24,9 @@ import {
   ChartWrapper,
   ChartArea,
   ChartFooter,
+  getCurrentYearReferenceLineProps,
+  SharedTooltip,
 } from "@/components/charts";
-import { SharedTooltip } from "@/components/charts/SharedTooltip";
-import { getCurrentYearReferenceLineProps } from "@/components/charts";
 import { XAxis, YAxis } from "recharts";
 
 interface SectorsChartNewProps {

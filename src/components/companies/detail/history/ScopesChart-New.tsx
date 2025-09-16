@@ -29,8 +29,8 @@ import {
   createChartClickHandler,
   createCustomTickRenderer,
   filterValidScopeData,
+  SharedTooltip,
 } from "@/components/charts";
-import { SharedTooltip } from "@/components/charts/SharedTooltip";
 import { useLanguage } from "@/components/LanguageProvider";
 import { isMobile } from "react-device-detect";
 

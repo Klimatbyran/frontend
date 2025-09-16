@@ -3,11 +3,13 @@ import { useTranslation } from "react-i18next";
 import { MunicipalityEmissionsGraphNew } from "./emissionsGraph/MunicipalityEmissionsGraph-New";
 import { DataPoint, SectorEmissions } from "@/types/municipality";
 import {
-  ChartHeader,
   getDynamicChartHeight,
   useDataView,
   useHiddenItems,
+  generateMunicipalityViewOptions,
+  getMunicipalityDataViewPlaceholder,
 } from "@/components/charts";
+import { CardHeader } from "@/components/layout/CardHeader";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 
 type DataView = "overview" | "sectors";
@@ -41,14 +43,14 @@ export const MunicipalityEmissionsNew: FC<MunicipalityEmissionsNewProps> = ({
         "municipalityImportanceOfEmissionSources",
       ]}
     >
-      <ChartHeader
+      <CardHeader
         title={t("municipalityDetailPage.emissionsDevelopment")}
         tooltipContent={t("municipalityDetailPage.emissionsDevelopmentTooltip")}
         unit={t("municipalityDetailPage.inTons")}
         dataView={dataView}
         setDataView={(value) => setDataView(value as "overview" | "sectors")}
-        hasAdditionalData={hasSectorData}
-        dataViewType="municipality"
+        dataViewOptions={generateMunicipalityViewOptions(hasSectorData, t)}
+        dataViewPlaceholder={getMunicipalityDataViewPlaceholder(t)}
       />
       <div
         className="mt-8"

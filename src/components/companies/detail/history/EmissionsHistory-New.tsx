@@ -8,12 +8,14 @@ import { useTranslation } from "react-i18next";
 import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useLanguage } from "@/components/LanguageProvider";
 import {
-  ChartHeader,
   getDynamicChartHeight,
   useDataView,
   useTimeSeriesChartState,
   useHiddenItems,
+  generateCompanyViewOptions,
+  getCompanyDataViewPlaceholder,
 } from "@/components/charts";
+import { CardHeader } from "@/components/layout/CardHeader";
 import { OverviewChartNew } from "./OverviewChart-New";
 import { ScopesChartNew } from "./ScopesChart-New";
 import { CategoriesChartNew } from "./CategoriesChart-New";
@@ -190,7 +192,7 @@ export function EmissionsHistoryNew({
             "companyMissingData",
           ]}
         >
-          <ChartHeader
+          <CardHeader
             title={t("companies.emissionsHistory.title")}
             tooltipContent={t("companies.emissionsHistory.tooltip")}
             unit={t("companies.emissionsHistory.unit")}
@@ -198,8 +200,8 @@ export function EmissionsHistoryNew({
             setDataView={(value) =>
               setDataView(value as "overview" | "scopes" | "categories")
             }
-            hasAdditionalData={hasScope3Categories}
-            dataViewType="company"
+            dataViewOptions={generateCompanyViewOptions(hasScope3Categories, t)}
+            dataViewPlaceholder={getCompanyDataViewPlaceholder(t)}
           />
           <div style={{ height: getDynamicChartHeight(dataView, isMobile) }}>
             {!exploreMode ? (
