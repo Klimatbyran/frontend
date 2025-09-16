@@ -1331,7 +1331,8 @@
     "selectItemPrompt": "Välj ett ämne du vill veta mer om"
   },
   "chartLegend": {
-    "clickToFilterOut": "Klicka för att filtrera bort"
+    "clickToFilterOut": "Klicka för att filtrera bort",
+    "scrollToSeeMore": "Scrolla för att se mer"
   },
   "trendAnalysis": {
     "insufficientData": "Ingen trendlinje visas på grund av otillräcklig data ({{dataPoints}} punkter). Behöver minst 2 datapunkter för att bygga tillförlitlig trend.",

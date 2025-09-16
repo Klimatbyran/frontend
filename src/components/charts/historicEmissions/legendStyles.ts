@@ -2,7 +2,7 @@
  * Shared legend styling utilities and constants
  */
 
-import { LegendItem } from "./types";
+import { LegendItem } from "../ChartTypes";
 
 // Common legend item configurations
 export const LEGEND_CONFIGS = {
@@ -66,18 +66,21 @@ export const LEGEND_CONTAINER_CONFIGS = {
     allowClickToHide: false,
     maxHeight: "200px",
     mobileMaxHeight: "150px",
+    forceExpandable: false,
   },
   interactive: {
     showMetadata: false,
     allowClickToHide: true,
     maxHeight: "200px",
     mobileMaxHeight: "150px",
+    forceExpandable: true, 
   },
   sectors: {
     showMetadata: false,
     allowClickToHide: true,
     maxHeight: "200px",
     mobileMaxHeight: "150px",
+    forceExpandable: true, 
   },
 } as const;
 

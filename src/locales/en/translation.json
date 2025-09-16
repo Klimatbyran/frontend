@@ -1331,7 +1331,8 @@
     "selectItemPrompt": "Select a topic you want to learn more about"
   },
   "chartLegend": {
-    "clickToFilterOut": "Click to filter out"
+    "clickToFilterOut": "Click to filter out",
+    "scrollToSeeMore": "Scroll to see more"
   },
   "trendAnalysis": {
     "insufficientData": "No trendline shown due to insufficient data ({{dataPoints}} points). Need at least 2 data points to build reliable trend.",

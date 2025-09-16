@@ -16,8 +16,8 @@ import {
   getCompanyDataViewPlaceholder,
 } from "@/components/charts";
 import { CardHeader } from "@/components/layout/CardHeader";
-import { OverviewChartNew } from "./OverviewChart-New";
-import { ScopesChartNew } from "./ScopesChart-New";
+import { OverviewChart } from "./OverviewChart";
+import { ScopesChart } from "./ScopesChart";
 import { CategoriesChartNew } from "./CategoriesChart-New";
 import { ExploreMode } from "./explore-mode/ExploreMode";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
@@ -26,7 +26,7 @@ import { selectBestTrendLineMethod } from "@/lib/calculations/trends/analysis";
 import { generateApproximatedData } from "@/lib/calculations/trends/approximatedData";
 import { isMobile } from "react-device-detect";
 
-export function EmissionsHistoryNew({
+export function EmissionsHistory({
   reportingPeriods,
   onYearSelect,
   baseYear,
@@ -207,7 +207,7 @@ export function EmissionsHistoryNew({
             {!exploreMode ? (
               <>
                 {dataView === "overview" && (
-                  <OverviewChartNew
+                  <OverviewChart
                     data={chartData}
                     companyBaseYear={companyBaseYear}
                     chartEndYear={chartEndYear}
@@ -221,7 +221,7 @@ export function EmissionsHistoryNew({
                   />
                 )}
                 {dataView === "scopes" && (
-                  <ScopesChartNew
+                  <ScopesChart
                     data={chartData}
                     companyBaseYear={companyBaseYear}
                     chartEndYear={chartEndYear}

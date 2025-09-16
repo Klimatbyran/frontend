@@ -12,7 +12,6 @@ import { useTranslation } from "react-i18next";
 import { ChartData } from "@/types/emissions";
 import {
   DynamicLegendContainer,
-  ChartYearControls,
   getConsistentLineProps,
   createScopeLegendItems,
   LEGEND_CONTAINER_CONFIGS,
@@ -34,7 +33,7 @@ import {
 import { useLanguage } from "@/components/LanguageProvider";
 import { isMobile } from "react-device-detect";
 
-interface ScopesChartNewProps {
+interface ScopesChartProps {
   data: ChartData[];
   companyBaseYear?: number;
   chartEndYear: number;
@@ -48,18 +47,14 @@ interface ScopesChartNewProps {
   setExploreMode?: (val: boolean) => void;
 }
 
-export const ScopesChartNew: FC<ScopesChartNewProps> = ({
+export const ScopesChart: FC<ScopesChartProps> = ({
   data,
   companyBaseYear,
   chartEndYear,
-  setChartEndYear,
   shortEndYear,
-  longEndYear,
   hiddenScopes,
   handleScopeToggle,
   onYearSelect,
-  exploreMode = false,
-  setExploreMode,
 }) => {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
@@ -186,14 +181,6 @@ export const ScopesChartNew: FC<ScopesChartNewProps> = ({
             }
           }}
           {...LEGEND_CONTAINER_CONFIGS.interactive}
-        />
-        <ChartYearControls
-          chartEndYear={chartEndYear}
-          shortEndYear={shortEndYear}
-          longEndYear={longEndYear}
-          setChartEndYear={setChartEndYear}
-          exploreMode={exploreMode}
-          setExploreMode={setExploreMode}
         />
       </ChartFooter>
     </ChartWrapper>

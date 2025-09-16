@@ -33,7 +33,7 @@ import {
 import { useLanguage } from "@/components/LanguageProvider";
 import { isMobile } from "react-device-detect";
 
-interface OverviewChartNewProps {
+interface OverviewChartProps {
   data: ChartData[];
   companyBaseYear?: number;
   chartEndYear: number;
@@ -46,7 +46,7 @@ interface OverviewChartNewProps {
   setExploreMode?: (val: boolean) => void;
 }
 
-export const OverviewChartNew: FC<OverviewChartNewProps> = ({
+export const OverviewChart: FC<OverviewChartProps> = ({
   data,
   companyBaseYear,
   chartEndYear,

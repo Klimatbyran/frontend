@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef } from "react";
 import { LegendItem } from "../ChartTypes";
 import {
   Tooltip,
@@ -7,6 +7,7 @@ import {
   TooltipProvider,
 } from "@/components/ui/tooltip";
 import { useTranslation } from "react-i18next";
+import { ChevronDown } from "lucide-react";
 
 interface DynamicLegendContainerProps {
   items: LegendItem[];
@@ -16,6 +17,7 @@ interface DynamicLegendContainerProps {
   maxHeight?: string;
   mobileMaxHeight?: string;
   className?: string;
+  forceExpandable?: boolean; // New prop to force expandable behavior
 }
 
 export const DynamicLegendContainer: React.FC<DynamicLegendContainerProps> = ({
@@ -23,59 +25,32 @@ export const DynamicLegendContainer: React.FC<DynamicLegendContainerProps> = ({
   onItemToggle,
   showMetadata = false,
   allowClickToHide = true,
-  maxHeight = "200px",
-  mobileMaxHeight = "100px",
   className = "",
+  forceExpandable = false,
 }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [needsScroll, setNeedsScroll] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
 
-  // Check if content needs scrolling
-  useEffect(() => {
-    if (containerRef.current && !isExpanded) {
-      const container = containerRef.current;
-      const content = container.querySelector(
-        "[data-legend-content]",
-      ) as HTMLElement;
-
-      if (content) {
-        const isScrollable = content.scrollHeight > content.clientHeight;
-        setNeedsScroll(isScrollable);
-      }
-    }
-  }, [items, isExpanded]);
-
-  // Reset state when items change
-  useEffect(() => {
-    setIsExpanded(false);
-    setNeedsScroll(false);
-  }, [items]);
+  // Determine if we should show expandable behavior
+  const shouldShowExpandable = forceExpandable || items.length > 6; // Show if forced or more than 6 items
 
   return (
     <TooltipProvider>
       <div
         ref={containerRef}
         className={`transition-all duration-300 ${
-          isExpanded
-            ? "h-auto"
-            : needsScroll
-              ? `h-[${mobileMaxHeight}] md:h-[${maxHeight}]`
-              : "h-auto"
+          shouldShowExpandable ? "h-[100px] md:h-[200px]" : "h-auto"
         } ${className}`}
       >
         <div
           data-legend-content
-          className={`transition-all duration-300 ${
-            isExpanded
-              ? "max-h-none"
-              : needsScroll
-                ? `max-h-[${mobileMaxHeight}] md:max-h-[${maxHeight}] overflow-y-auto`
-                : "max-h-none"
+          className={`relative transition-all duration-300 ${
+            shouldShowExpandable
+              ? "max-h-[100px] md:max-h-[200px] overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-grey/30 hover:scrollbar-thumb-grey/50 border border-grey/10 rounded-md"
+              : "max-h-none"
           }`}
         >
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 p-2">
             {items.map((item, index) => (
               <Tooltip key={index}>
                 <TooltipTrigger asChild>
@@ -138,6 +113,19 @@ export const DynamicLegendContainer: React.FC<DynamicLegendContainerProps> = ({
               </Tooltip>
             ))}
           </div>
+
+          {/* Scroll Indicator */}
+          {shouldShowExpandable && (
+            <div className="relative">
+              {/* More prominent scroll indicator */}
+              <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-black-2 via-black-2/90 to-transparent pointer-events-none" />
+              {/* Scroll hint */}
+              <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 text-xs text-grey/80 pointer-events-none flex items-center gap-1">
+                <ChevronDown className="w-3 h-3" />
+                {t("chartLegend.scrollToSeeMore")}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </TooltipProvider>

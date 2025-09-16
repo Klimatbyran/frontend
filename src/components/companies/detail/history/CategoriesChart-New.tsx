@@ -12,7 +12,6 @@ import { useTranslation } from "react-i18next";
 import { ChartData } from "@/types/emissions";
 import {
   DynamicLegendContainer,
-  ChartYearControls,
   getConsistentLineProps,
   createCategoryLegendItems,
   LEGEND_CONTAINER_CONFIGS,
@@ -54,16 +53,12 @@ export const CategoriesChartNew: FC<CategoriesChartNewProps> = ({
   data,
   companyBaseYear,
   chartEndYear,
-  setChartEndYear,
   shortEndYear,
-  longEndYear,
   hiddenCategories,
   handleCategoryToggle,
   getCategoryName,
   getCategoryColor,
   onYearSelect,
-  exploreMode = false,
-  setExploreMode,
 }) => {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
@@ -197,14 +192,6 @@ export const CategoriesChartNew: FC<CategoriesChartNewProps> = ({
             }
           }}
           {...LEGEND_CONTAINER_CONFIGS.interactive}
-        />
-        <ChartYearControls
-          chartEndYear={chartEndYear}
-          shortEndYear={shortEndYear}
-          longEndYear={longEndYear}
-          setChartEndYear={setChartEndYear}
-          exploreMode={exploreMode}
-          setExploreMode={setExploreMode}
         />
       </ChartFooter>
     </ChartWrapper>
