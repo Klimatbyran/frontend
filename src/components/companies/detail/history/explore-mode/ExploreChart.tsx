@@ -8,7 +8,7 @@ import {
   Area,
   ComposedChart,
 } from "recharts";
-import { CustomTooltip } from "../../CustomTooltip";
+import { SharedTooltip } from "@/components/charts";
 import { ChartData } from "@/types/emissions";
 import { formatEmissionsAbsoluteCompact } from "@/utils/formatting/localization";
 import { generateApproximatedData } from "@/lib/calculations/trends/approximatedData";
@@ -588,7 +588,12 @@ export function ExploreChart({
               }
             />
             <Tooltip
-              content={<CustomTooltip companyBaseYear={companyBaseYear} />}
+              content={
+                <SharedTooltip
+                  companyBaseYear={companyBaseYear}
+                  unit={t("companies.tooltip.tonsCO2e")}
+                />
+              }
             />
 
             {/* Step 0: Show data before base year highlighted, line stops at base year */}
