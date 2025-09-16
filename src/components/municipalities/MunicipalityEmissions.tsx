@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { MunicipalityEmissionsGraphNew } from "./emissionsGraph/MunicipalityEmissionsGraph-New";
+import { MunicipalityEmissionsGraph } from "./emissionsGraph/MunicipalityEmissionsGraph";
 import { DataPoint, SectorEmissions } from "@/types/municipality";
 import {
   getDynamicChartHeight,
@@ -14,13 +14,13 @@ import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 
 type DataView = "overview" | "sectors";
 
-interface MunicipalityEmissionsNewProps {
+interface MunicipalityEmissionsProps {
   emissionsData: DataPoint[];
   sectorEmissions: SectorEmissions | null;
   className?: string;
 }
 
-export const MunicipalityEmissionsNew: FC<MunicipalityEmissionsNewProps> = ({
+export const MunicipalityEmissions: FC<MunicipalityEmissionsProps> = ({
   emissionsData,
   sectorEmissions,
 }) => {
@@ -56,7 +56,7 @@ export const MunicipalityEmissionsNew: FC<MunicipalityEmissionsNewProps> = ({
         className="mt-8"
         style={{ height: getDynamicChartHeight(dataView, false) }}
       >
-        <MunicipalityEmissionsGraphNew
+        <MunicipalityEmissionsGraph
           projectedData={emissionsData}
           sectorEmissions={sectorEmissions || undefined}
           dataView={dataView}

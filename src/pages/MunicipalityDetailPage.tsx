@@ -19,7 +19,7 @@ import { useLanguage } from "@/components/LanguageProvider";
 import MunicipalitySectorPieChart from "@/components/municipalities/sectorChart/MunicipalitySectorPieChart";
 import MunicipalitySectorLegend from "@/components/municipalities/sectorChart/MunicipalitySectorLegend";
 import { useMunicipalitySectorEmissions } from "@/hooks/municipalities/useMunicipalitySectorEmissions";
-import { MunicipalityEmissionsNew } from "@/components/municipalities/MunicipalityEmissions-New";
+import { MunicipalityEmissionsNew } from "@/components/municipalities/MunicipalityEmissions";
 import { useHiddenItems } from "@/components/charts";
 import { YearSelector } from "@/components/layout/YearSelector";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";

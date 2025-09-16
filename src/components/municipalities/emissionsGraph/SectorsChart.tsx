@@ -29,13 +29,13 @@ import {
 } from "@/components/charts";
 import { XAxis, YAxis } from "recharts";
 
-interface SectorsChartNewProps {
+interface SectorsChartProps {
   sectorEmissions: SectorEmissions | null;
   hiddenSectors?: Set<string>;
   setHiddenSectors?: (sectors: Set<string>) => void;
 }
 
-export const SectorsChartNew: FC<SectorsChartNewProps> = ({
+export const SectorsChart: FC<SectorsChartProps> = ({
   sectorEmissions,
   hiddenSectors = new Set(),
   setHiddenSectors = () => {},

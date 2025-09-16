@@ -30,11 +30,11 @@ import {
 import { XAxis, YAxis } from "recharts";
 import { useLanguage } from "@/components/LanguageProvider";
 
-interface OverviewChartNewProps {
+interface OverviewChartProps {
   projectedData: DataPoint[];
 }
 
-export const OverviewChartNew: FC<OverviewChartNewProps> = ({
+export const OverviewChart: FC<OverviewChartProps> = ({
   projectedData,
 }) => {
   const { t } = useTranslation();

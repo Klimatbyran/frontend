@@ -33,7 +33,7 @@ import {
 import { useLanguage } from "@/components/LanguageProvider";
 import { isMobile } from "react-device-detect";
 
-interface CategoriesChartNewProps {
+interface CategoriesChartProps {
   data: ChartData[];
   companyBaseYear?: number;
   chartEndYear: number;
@@ -49,7 +49,7 @@ interface CategoriesChartNewProps {
   setExploreMode?: (val: boolean) => void;
 }
 
-export const CategoriesChartNew: FC<CategoriesChartNewProps> = ({
+export const CategoriesChart: FC<CategoriesChartProps> = ({
   data,
   companyBaseYear,
   chartEndYear,

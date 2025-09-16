@@ -18,7 +18,7 @@ import {
 import { CardHeader } from "@/components/layout/CardHeader";
 import { OverviewChart } from "./OverviewChart";
 import { ScopesChart } from "./ScopesChart";
-import { CategoriesChartNew } from "./CategoriesChart-New";
+import { CategoriesChart } from "./CategoriesChart";
 import { ExploreMode } from "./explore-mode/ExploreMode";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
@@ -236,7 +236,7 @@ export function EmissionsHistory({
                   />
                 )}
                 {dataView === "categories" && (
-                  <CategoriesChartNew
+                  <CategoriesChart
                     data={chartData}
                     companyBaseYear={companyBaseYear}
                     chartEndYear={chartEndYear}
