@@ -192,6 +192,7 @@ export function ExploreChart({
         fill: "white",
         fontSize: 12,
         fontWeight: "bold",
+        textAnchor: "end",
       }}
     />
   );

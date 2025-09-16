@@ -195,6 +195,7 @@ export const getYAxisProps = (
         y: y + 5,
         fontSize: 12,
         fill: "var(--grey)",
+        textAnchor: "end",
       },
       formatEmissionsAbsoluteCompact(payload.value, currentLanguage),
     );
@@ -221,10 +222,6 @@ export const createCustomTickRenderer =
     );
   };
 
-// ============================================================================
-// REFERENCE LINE STYLING UTILITIES
-// ============================================================================
-
 // Base year reference line styling
 export const getBaseYearReferenceLineProps = (
   baseYear: number,
@@ -241,6 +238,7 @@ export const getBaseYearReferenceLineProps = (
     fill: "white",
     fontSize: 12,
     fontWeight: "normal" as const,
+    textAnchor: "end" as const,
   },
   ifOverflow: "extendDomain" as const,
 });
@@ -259,6 +257,7 @@ export const getCurrentYearReferenceLineProps = (
     fill: "white",
     fontSize: 12,
     fontWeight: "normal" as const,
+    textAnchor: "end" as const,
   },
 });
 

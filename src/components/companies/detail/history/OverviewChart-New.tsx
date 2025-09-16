@@ -31,7 +31,6 @@ import {
 } from "@/components/charts";
 import { SharedTooltip } from "@/components/charts/SharedTooltip";
 import { useLanguage } from "@/components/LanguageProvider";
-import { formatEmissionsAbsoluteCompact } from "@/utils/formatting/localization";
 import { isMobile } from "react-device-detect";
 
 interface OverviewChartNewProps {
@@ -130,17 +129,7 @@ export const OverviewChartNew: FC<OverviewChartNewProps> = ({
               type="number"
             />
 
-            <YAxis
-              {...getYAxisProps(currentLanguage)}
-              tick={({ x, y, payload }) => (
-                <text x={x - 10} y={y + 5} fontSize={12} fill="var(--grey)">
-                  {formatEmissionsAbsoluteCompact(
-                    payload.value,
-                    currentLanguage,
-                  )}
-                </text>
-              )}
-            />
+            <YAxis {...getYAxisProps(currentLanguage)} />
 
             {/* Main total emissions line */}
             <Line
