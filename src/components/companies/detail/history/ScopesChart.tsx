@@ -50,7 +50,6 @@ interface ScopesChartProps {
 export const ScopesChart: FC<ScopesChartProps> = ({
   data,
   companyBaseYear,
-  chartEndYear,
   shortEndYear,
   hiddenScopes,
   handleScopeToggle,
@@ -65,10 +64,12 @@ export const ScopesChart: FC<ScopesChartProps> = ({
     return filterValidScopeData(data);
   }, [data]);
 
+  const lastDataYear =
+    filteredData[filteredData.length - 1]?.year || shortEndYear;
   const ticks = generateChartTicks(
     filteredData[0]?.year || 2000,
-    shortEndYear,
-    shortEndYear,
+    lastDataYear,
+    lastDataYear,
     currentYear,
   );
 
@@ -112,7 +113,7 @@ export const ScopesChart: FC<ScopesChartProps> = ({
             <XAxis
               {...getXAxisProps(
                 "year",
-                [filteredData[0]?.year || 2000, shortEndYear],
+                [filteredData[0]?.year || 2000, lastDataYear],
                 ticks,
                 createCustomTickRenderer(companyBaseYear),
               )}
