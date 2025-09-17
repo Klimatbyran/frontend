@@ -23,8 +23,11 @@ export function useMunicipalities(): UseMunicipalitiesReturn {
     queryKey: ["municipalities"],
     queryFn: getMunicipalities,
     select: (data) => {
-      // Transform data if needed
-      return data;
+      // Transform data to calculate totalTrend as totalTrend/totalCarbonLaw
+      return data.map((municipality) => ({
+        ...municipality,
+        meetsParisGoal: municipality.totalTrend / municipality.totalCarbonLaw,
+      }));
     },
   });
 
