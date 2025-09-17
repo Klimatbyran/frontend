@@ -126,6 +126,7 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
         isMobile ? "max-w-[280px]" : "max-w-[400px]",
         "bg-black-1 px-4 py-3 rounded-level-2",
         "grid grid-cols-[1fr_auto] text-xs",
+        "z-[60] relative",
       )}
     >
       {/* Header */}

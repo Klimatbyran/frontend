@@ -34,9 +34,7 @@ interface OverviewChartProps {
   projectedData: DataPoint[];
 }
 
-export const OverviewChart: FC<OverviewChartProps> = ({
-  projectedData,
-}) => {
+export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
   const { isMobile } = useScreenSize();
@@ -78,12 +76,9 @@ export const OverviewChart: FC<OverviewChartProps> = ({
 
             <Tooltip
               content={
-                <ChartTooltip
-                  dataView="overview"
-                  unit={t("emissionsUnit")}
-                />
+                <ChartTooltip dataView="overview" unit={t("emissionsUnit")} />
               }
-              wrapperStyle={{ outline: "none" }}
+              wrapperStyle={{ outline: "none", zIndex: 60 }}
             />
 
             {/* Current year reference line */}

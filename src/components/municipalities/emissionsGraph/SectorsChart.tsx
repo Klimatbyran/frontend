@@ -149,7 +149,7 @@ export const SectorsChart: FC<SectorsChartProps> = ({
                   unit={t("emissionsUnit")}
                 />
               }
-              wrapperStyle={{ outline: "none" }}
+              wrapperStyle={{ outline: "none", zIndex: 60 }}
             />
 
             <ReferenceLine {...getCurrentYearReferenceLineProps(MAX_YEAR, t)} />

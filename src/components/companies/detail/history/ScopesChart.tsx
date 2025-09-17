@@ -107,7 +107,7 @@ export const ScopesChart: FC<ScopesChartProps> = ({
                   unit={t("companies.tooltip.tonsCO2e")}
                 />
               }
-              wrapperStyle={{ outline: "none" }}
+              wrapperStyle={{ outline: "none", zIndex: 60 }}
             />
 
             <XAxis

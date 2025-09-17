@@ -11,7 +11,9 @@ export const ChartWrapper: React.FC<ChartWrapperProps> = ({
   className = "",
 }) => {
   return (
-    <div className={cn("w-full h-full flex flex-col", className)}>
+    <div
+      className={cn("w-full h-full flex flex-col overflow-visible", className)}
+    >
       {children}
     </div>
   );
