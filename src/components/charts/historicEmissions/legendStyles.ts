@@ -14,7 +14,7 @@ export const LEGEND_CONFIGS = {
   },
   estimated: {
     nameKey: "companies.emissionsHistory.approximated", // Will be overridden for municipalities
-    color: "white",
+    color: "var(--grey)",
     isClickable: false,
     isHidden: false,
     isDashed: true,

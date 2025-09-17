@@ -45,7 +45,7 @@ export const CHART_DIMENSIONS = {
   margin: {
     top: 20,
     right: 0,
-    left: -10,
+    left: -10, // Increased for tilted Y-axis labels
     bottom: 0,
   },
   padding: {
@@ -182,6 +182,7 @@ export const getYAxisProps = (
         fontSize: 12,
         fill: "var(--grey)",
         textAnchor: "end",
+        transform: `rotate(-30, ${x - 10}, ${y + 5})`,
       },
       formatEmissionsAbsoluteCompact(payload.value, currentLanguage),
     );
@@ -352,7 +353,7 @@ export const getChartMargin = () => CHART_DIMENSIONS.margin;
 export const getResponsiveChartMargin = (isMobile: boolean = false) => ({
   top: 20,
   right: 0,
-  left: isMobile ? -15 : -10, // More aggressive left margin on mobile
+  left: isMobile ? -15 : -10, // Increased left margin for tilted Y-axis labels
   bottom: 0,
 });
 

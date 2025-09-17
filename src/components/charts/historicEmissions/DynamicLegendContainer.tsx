@@ -39,7 +39,7 @@ export const DynamicLegendContainer: React.FC<DynamicLegendContainerProps> = ({
 
   return (
     <TooltipProvider>
-      <div ref={containerRef} className={className}>
+      <div ref={containerRef} className={`${className} -ml-2 md:ml-0`}>
         <div
           data-legend-content
           className={`flex flex-wrap gap-0.5 md:gap-2 ${
