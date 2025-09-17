@@ -108,7 +108,8 @@ export function CompanyCard({
               {localizedDescription}
             </p>
           </div>
-          <div
+          {/* TODO: add company logo to replace the below commented out code */}
+          {/* <div
             className="w-12 h-12 rounded-full flex shrink-0 items-center justify-center"
             style={{
               backgroundColor: `color-mix(in srgb, ${categoryColor} 30%, transparent)`,
@@ -116,7 +117,7 @@ export function CompanyCard({
             }}
           >
             <Building2 className="w-6 h-6" />
-          </div>
+          </div> */}
         </div>
         <div className="flex flex-col gap-4 @xl:grid grid-cols-2">
           <div className="space-y-2 h-[80px]">

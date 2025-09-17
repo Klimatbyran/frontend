@@ -21,8 +21,14 @@ export interface TransformedReportingPeriod
 
 export type Emissions = NonNullable<ReportingPeriod["emissions"]>;
 
+// Company type from the list endpoint (/companies/)
+export type CompanyListItem = NonNullable<
+  paths["/companies/"]["get"]["responses"][200]["content"]["application/json"][number]
+>;
+
 // Extended company type with metrics and optional rankings
-export interface RankedCompany extends Omit<BaseCompany, "reportingPeriods"> {
+export interface RankedCompany
+  extends Omit<CompanyListItem, "reportingPeriods"> {
   reportingPeriods: TransformedReportingPeriod[];
   metrics: {
     emissionsReduction: number;
