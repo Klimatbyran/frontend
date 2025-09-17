@@ -42,17 +42,14 @@ export const OverviewChart: FC<OverviewChartProps> = ({
   const { isMobile } = useScreenSize();
   const currentYear = new Date().getFullYear();
 
-  // State for year range control - default to 2030 (current year + 5)
   const [chartEndYear, setChartEndYear] = useState(
     new Date().getFullYear() + 5,
   );
 
-  // Create legend items using shared utility
   const legendItems: LegendItem[] = useMemo(() => {
     return createOverviewLegendItems(t, new Set(), true);
   }, [t]);
 
-  // Filter data based on chart end year
   const filteredData = useMemo(() => {
     return filterDataByYearRange(projectedData, chartEndYear);
   }, [projectedData, chartEndYear]);

@@ -65,12 +65,10 @@ export const CategoriesChart: FC<CategoriesChartProps> = ({
   const currentYear = new Date().getFullYear();
   const isFirstYear = companyBaseYear === data[0]?.year;
 
-  // Filter data to only include points with valid category values
   const filteredData = useMemo(() => {
     return filterValidCategoryData(data);
   }, [data]);
 
-  // Generate ticks using shared utility
   const ticks = generateChartTicks(
     data[0]?.year || 2000,
     chartEndYear,
@@ -80,7 +78,6 @@ export const CategoriesChart: FC<CategoriesChartProps> = ({
 
   const handleClick = createChartClickHandler(onYearSelect);
 
-  // Get category keys from filtered data
   const categoryKeys = useMemo(() => {
     if (!filteredData[0]) return [];
     return Object.keys(filteredData[0])

@@ -63,12 +63,10 @@ export const OverviewChart: FC<OverviewChartProps> = ({
   const currentYear = new Date().getFullYear();
   const isFirstYear = companyBaseYear === data[0]?.year;
 
-  // Filter data to only include points with valid total values
   const filteredData = useMemo(() => {
     return filterValidTotalData(data);
   }, [data]);
 
-  // Create legend items using shared utility
   const legendItems = useMemo(() => {
     const hiddenItems = new Set<string>();
     if (!approximatedData) {
@@ -78,7 +76,6 @@ export const OverviewChart: FC<OverviewChartProps> = ({
     return createOverviewLegendItems(t, hiddenItems, false);
   }, [t, approximatedData]);
 
-  // Generate ticks using shared utility
   const ticks = generateChartTicks(
     data[0]?.year || 2000,
     chartEndYear,

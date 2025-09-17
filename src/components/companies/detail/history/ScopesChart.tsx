@@ -61,12 +61,10 @@ export const ScopesChart: FC<ScopesChartProps> = ({
   const currentYear = new Date().getFullYear();
   const isFirstYear = companyBaseYear === data[0]?.year;
 
-  // Filter data to only include points with valid scope values
   const filteredData = useMemo(() => {
     return filterValidScopeData(data);
   }, [data]);
 
-  // Generate ticks using shared utility
   const ticks = generateChartTicks(
     data[0]?.year || 2000,
     chartEndYear,
@@ -76,7 +74,6 @@ export const ScopesChart: FC<ScopesChartProps> = ({
 
   const handleClick = createChartClickHandler(onYearSelect);
 
-  // Create legend items using shared utility
   const legendItems = useMemo(() => {
     return createScopeLegendItems(t, new Set(hiddenScopes));
   }, [t, hiddenScopes]);
@@ -124,7 +121,6 @@ export const ScopesChart: FC<ScopesChartProps> = ({
 
             <YAxis {...getYAxisProps(currentLanguage)} />
 
-            {/* Scope lines */}
             {!hiddenScopes.includes("scope1") && (
               <Line
                 type="monotone"
