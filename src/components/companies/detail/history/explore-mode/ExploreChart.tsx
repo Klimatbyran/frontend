@@ -17,7 +17,12 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { isMobile } from "react-device-detect";
 import { CumulativeSummaryBoxes } from "./CumulativeSummaryBoxes";
-import { getBaseYearReferenceLineProps } from "@/components/charts";
+import {
+  getBaseYearReferenceLineProps,
+  getCurrentYearReferenceLineProps,
+  getXAxisProps,
+  getYAxisProps,
+} from "@/components/charts";
 
 interface ExploreChartProps {
   data: ChartData[];
@@ -181,19 +186,7 @@ export function ExploreChart({
   // render common chart elements
   const renderCurrentYearReferenceLine = () => (
     <ReferenceLine
-      x={getCommonYears().currentYear}
-      stroke="var(--grey)"
-      strokeDasharray="4 4"
-      ifOverflow="extendDomain"
-      label={{
-        value: `${getCommonYears().currentYear}`,
-        position: "top",
-        dx: 15,
-        fill: "white",
-        fontSize: 12,
-        fontWeight: "bold",
-        textAnchor: "end",
-      }}
+      {...getCurrentYearReferenceLineProps(getCommonYears().currentYear, t)}
     />
   );
 
@@ -568,20 +561,16 @@ export function ExploreChart({
             }}
           >
             <XAxis
-              dataKey="year"
-              stroke="var(--grey)"
-              tickLine={false}
-              axisLine={false}
+              {...getXAxisProps(
+                "year",
+                getXAxisDomain() as [number, number],
+                undefined,
+                undefined,
+              )}
               type="number"
-              domain={getXAxisDomain()}
-              tick={{ fontSize: isMobile ? 10 : 12, fill: "var(--grey)" }}
             />
             <YAxis
-              stroke="var(--grey)"
-              tickLine={false}
-              axisLine={false}
-              tick={{ fontSize: isMobile ? 10 : 12 }}
-              width={isMobile ? 40 : 60}
+              {...getYAxisProps(currentLanguage)}
               domain={yDomain}
               tickFormatter={(value) =>
                 formatEmissionsAbsoluteCompact(value, currentLanguage)

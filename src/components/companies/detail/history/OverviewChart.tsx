@@ -18,6 +18,7 @@ import {
   getXAxisProps,
   getYAxisProps,
   getBaseYearReferenceLineProps,
+  getCurrentYearReferenceLineProps,
   getChartContainerProps,
   getLineChartProps,
   getResponsiveChartMargin,
@@ -145,16 +146,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({
             {approximatedData && (
               <>
                 <ReferenceLine
-                  x={currentYear}
-                  stroke="var(--orange-2)"
-                  strokeWidth={1}
-                  label={{
-                    value: currentYear,
-                    position: "top",
-                    fill: "var(--orange-2)",
-                    fontSize: 12,
-                    fontWeight: "normal",
-                  }}
+                  {...getCurrentYearReferenceLineProps(currentYear, t)}
                 />
                 <Line
                   type="linear"

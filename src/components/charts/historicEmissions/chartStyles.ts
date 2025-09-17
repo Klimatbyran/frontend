@@ -238,9 +238,9 @@ export const getCurrentYearReferenceLineProps = (
   stroke: "var(--orange-3)",
   strokeWidth: 1,
   label: {
-    value: t("municipalities.graph.currentYear"),
+    value: currentYear,
     position: "top" as const,
-    fill: "white",
+    fill: "var(--orange-3)",
     fontSize: 12,
     fontWeight: "normal" as const,
     textAnchor: "end" as const,
