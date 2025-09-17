@@ -43,7 +43,7 @@ export default function KPIDetailsPanel({
 
   const distributionStatItems = distributionStats.map(
     ({ count, colorClass, translationKey }) => (
-      <p key={translationKey} className="mt-2">
+      <p key={translationKey}>
         <span className={`font-medium ${colorClass}`}>{count} </span>
         {t(
           translationKey,
