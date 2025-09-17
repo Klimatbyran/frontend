@@ -25,7 +25,7 @@ import {
   ChartArea,
   ChartFooter,
   getCurrentYearReferenceLineProps,
-  SharedTooltip,
+  ChartTooltip,
 } from "@/components/charts";
 import { XAxis, YAxis } from "recharts";
 
@@ -134,7 +134,7 @@ export const SectorsChart: FC<SectorsChartProps> = ({
 
             <Tooltip
               content={
-                <SharedTooltip
+                <ChartTooltip
                   dataView="sectors"
                   hiddenSectors={hiddenSectors}
                   unit={t("emissionsUnit")}

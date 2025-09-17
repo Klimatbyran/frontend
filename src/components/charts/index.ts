@@ -6,7 +6,7 @@ export { ChartFooter } from "./ChartFooter";
 // Chart elements
 export { DynamicLegendContainer } from "./historicEmissions/DynamicLegendContainer";
 export { EnhancedLegend } from "./historicEmissions/EnhancedLegend";
-export { SharedTooltip } from "./historicEmissions/SharedTooltip";
+export { ChartTooltip } from "./historicEmissions/ChartTooltip";
 
 // Chart controls
 export { ChartYearControls } from "./ChartYearControls";

@@ -8,7 +8,7 @@ import {
   Area,
   ComposedChart,
 } from "recharts";
-import { SharedTooltip } from "@/components/charts";
+import { ChartTooltip } from "@/components/charts";
 import { ChartData } from "@/types/emissions";
 import { formatEmissionsAbsoluteCompact } from "@/utils/formatting/localization";
 import { generateApproximatedData } from "@/lib/calculations/trends/approximatedData";
@@ -578,7 +578,7 @@ export function ExploreChart({
             />
             <Tooltip
               content={
-                <SharedTooltip
+                <ChartTooltip
                   companyBaseYear={companyBaseYear}
                   unit={t("companies.tooltip.tonsCO2e")}
                 />

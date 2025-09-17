@@ -7,7 +7,7 @@ import { useScreenSize } from "@/hooks/useScreenSize";
 import { cn } from "@/lib/utils";
 import { AiIcon } from "@/components/ui/ai-icon";
 
-interface SharedTooltipProps extends TooltipProps<number, string> {
+interface ChartTooltipProps extends TooltipProps<number, string> {
   // Common props
   unit?: string;
   showUnit?: boolean;
@@ -33,7 +33,7 @@ interface SharedTooltipProps extends TooltipProps<number, string> {
   showAIIndicators?: boolean;
 }
 
-export const SharedTooltip: React.FC<SharedTooltipProps> = ({
+export const ChartTooltip: React.FC<ChartTooltipProps> = ({
   active,
   payload,
   label,

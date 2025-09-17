@@ -25,7 +25,7 @@ import {
   ChartArea,
   ChartFooter,
   filterDataByYearRange,
-  SharedTooltip,
+  ChartTooltip,
 } from "@/components/charts";
 import { XAxis, YAxis } from "recharts";
 import { useLanguage } from "@/components/LanguageProvider";
@@ -78,7 +78,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({
 
             <Tooltip
               content={
-                <SharedTooltip
+                <ChartTooltip
                   dataView="overview"
                   unit={t("emissionsUnit")}
                 />

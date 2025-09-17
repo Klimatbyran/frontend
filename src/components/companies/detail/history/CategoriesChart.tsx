@@ -28,7 +28,7 @@ import {
   createChartClickHandler,
   createCustomTickRenderer,
   filterValidCategoryData,
-  SharedTooltip,
+  ChartTooltip,
 } from "@/components/charts";
 import { useLanguage } from "@/components/LanguageProvider";
 import { isMobile } from "react-device-detect";
@@ -52,7 +52,6 @@ interface CategoriesChartProps {
 export const CategoriesChart: FC<CategoriesChartProps> = ({
   data,
   companyBaseYear,
-  chartEndYear,
   shortEndYear,
   hiddenCategories,
   handleCategoryToggle,
@@ -124,7 +123,7 @@ export const CategoriesChart: FC<CategoriesChartProps> = ({
 
             <Tooltip
               content={
-                <SharedTooltip
+                <ChartTooltip
                   companyBaseYear={companyBaseYear}
                   unit={t("companies.tooltip.tonsCO2e")}
                 />

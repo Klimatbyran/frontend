@@ -29,7 +29,7 @@ import {
   createChartClickHandler,
   createCustomTickRenderer,
   filterValidTotalData,
-  SharedTooltip,
+  ChartTooltip,
 } from "@/components/charts";
 import { useLanguage } from "@/components/LanguageProvider";
 import { isMobile } from "react-device-detect";
@@ -110,7 +110,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({
 
             <Tooltip
               content={
-                <SharedTooltip
+                <ChartTooltip
                   companyBaseYear={companyBaseYear}
                   unit={t("companies.tooltip.tonsCO2e")}
                 />
