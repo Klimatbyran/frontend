@@ -98,12 +98,12 @@ export const getYAxisProps = (
     return React.createElement(
       "text",
       {
-        x: x - 10,
+        x: x - 5, // Moved further left
         y: y + 5,
         fontSize: 12,
         fill: "var(--grey)",
         textAnchor: "end",
-        transform: `rotate(-30, ${x - 10}, ${y + 5})`,
+        transform: `rotate(-30, ${x - 5}, ${y + 5})`, // Updated transform origin
       },
       formatEmissionsAbsoluteCompact(payload.value, currentLanguage),
     );
@@ -274,7 +274,7 @@ export const getChartMargin = () => CHART_DIMENSIONS.margin;
 export const getResponsiveChartMargin = (isMobile: boolean = false) => ({
   top: 20,
   right: 0,
-  left: isMobile ? -15 : -10, // Increased left margin for tilted Y-axis labels
+  left: isMobile ? -10 : -5, // Increased left margin for tilted Y-axis labels
   bottom: 0,
 });
 

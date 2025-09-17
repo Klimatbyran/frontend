@@ -42,7 +42,7 @@ export const CHART_DIMENSIONS = {
   margin: {
     top: 20,
     right: 0,
-    left: -10, // Increased for tilted Y-axis labels
+    left: -5, // Increased for tilted Y-axis labels
     bottom: 0,
   },
   padding: {
