@@ -12,7 +12,6 @@ export const MUNICIPALITY_SECTOR_TRANSLATION_KEYS = {
   Transporter: "transport",
 } as const;
 
-// Color mapping for each sector
 const SECTOR_COLORS = {
   industry: "var(--orange-2)",
   productUse: "var(--orange-4)",
