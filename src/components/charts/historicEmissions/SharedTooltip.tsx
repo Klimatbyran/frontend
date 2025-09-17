@@ -136,7 +136,7 @@ export const SharedTooltip: React.FC<SharedTooltipProps> = ({
         </span>
         {showUnit && (
           <span className="flex justify-end mr-1">
-            {unit || t("emissionsUnitCO2")}
+            {unit || t("emissionsUnit")}
           </span>
         )}
       </div>
