@@ -1,10 +1,7 @@
-import { Link } from "react-router-dom";
-import { Building2, TrendingDown, Users, Wallet } from "lucide-react";
-// import { useSectorNames } from "@/hooks/companies/useCompanyFilters";
+import { TrendingDown, Users, Wallet } from "lucide-react";
 import type { RankedCompany } from "@/types/company";
 import { Text } from "@/components/ui/text";
 import { useTranslation } from "react-i18next";
-import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useLanguage } from "@/components/LanguageProvider";
 import {
   formatEmployeeCount,
@@ -37,8 +34,6 @@ export function CompanyCard({
   reportingPeriods,
 }: CompanyCardProps) {
   const { t } = useTranslation();
-  const { getCategoryColor } = useCategoryMetadata();
-  // const sectorNames = useSectorNames();
   const { currentLanguage } = useLanguage();
   const { isAIGenerated, isEmissionsAIGenerated } = useVerificationStatus();
 
@@ -71,22 +66,10 @@ export function CompanyCard({
 
   const latestPeriodEconomyTurnover = latestPeriod?.economy?.turnover || null;
 
-  // Find the largest scope 3 category
-  const scope3Categories = latestPeriod?.emissions?.scope3?.categories || [];
-  const largestCategory = scope3Categories.reduce(
-    (max, current) =>
-      (current?.total ?? -Infinity) > (max?.total ?? -Infinity) ? current : max,
-    scope3Categories[0],
-  );
   const noSustainabilityReport =
     latestPeriod?.reportURL === null ||
     latestPeriod?.reportURL === "Saknar report" ||
     latestPeriod?.reportURL === undefined;
-
-  // Get the color for the largest category
-  const categoryColor = largestCategory
-    ? getCategoryColor(largestCategory.category)
-    : "var(--blue-2)";
 
   const totalEmissionsAIGenerated = isEmissionsAIGenerated(latestPeriod);
   const turnoverAIGenerated = isAIGenerated(latestPeriod.economy?.turnover);
@@ -108,16 +91,7 @@ export function CompanyCard({
               {localizedDescription}
             </p>
           </div>
-          {/* TODO: add company logo to replace the below commented out code */}
-          {/* <div
-            className="w-12 h-12 rounded-full flex shrink-0 items-center justify-center"
-            style={{
-              backgroundColor: `color-mix(in srgb, ${categoryColor} 30%, transparent)`,
-              color: categoryColor,
-            }}
-          >
-            <Building2 className="w-6 h-6" />
-          </div> */}
+          {/* TODO: add company logo to top right hand corner of card */}
         </div>
         <div className="flex flex-col gap-4 @xl:grid grid-cols-2">
           <div className="space-y-2 h-[80px]">
