@@ -45,8 +45,8 @@ export const SectorsChart: FC<SectorsChartProps> = ({
   const { isMobile } = useScreenSize();
   const { getSectorInfo } = useMunicipalitySectors();
 
-  const MAX_YEAR = new Date().getFullYear();
-  const CUTOFF_YEAR = MAX_YEAR - 1;
+  const MAX_YEAR = new Date().getFullYear() + 5;
+  const CUTOFF_YEAR = new Date().getFullYear() - 1;
 
   const { chartData, allSectors, customTicks } = useMemo(() => {
     const sectorYears = sectorEmissions
@@ -83,7 +83,7 @@ export const SectorsChart: FC<SectorsChartProps> = ({
       return dataPoint;
     });
 
-    const ticks = [1990, 2015, 2020, MAX_YEAR]
+    const ticks = [1990, 2015, 2020, new Date().getFullYear(), MAX_YEAR]
       .filter((year) => year <= MAX_YEAR)
       .filter((year, i, arr) => arr.indexOf(year) === i)
       .sort();

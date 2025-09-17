@@ -70,8 +70,8 @@ export const CategoriesChart: FC<CategoriesChartProps> = ({
   }, [data]);
 
   const ticks = generateChartTicks(
-    data[0]?.year || 2000,
-    chartEndYear,
+    filteredData[0]?.year || 2000,
+    shortEndYear,
     shortEndYear,
     currentYear,
   );
@@ -133,7 +133,7 @@ export const CategoriesChart: FC<CategoriesChartProps> = ({
             <XAxis
               {...getXAxisProps(
                 "year",
-                [data[0]?.year || 2000, chartEndYear],
+                [filteredData[0]?.year || 2000, shortEndYear],
                 ticks,
                 createCustomTickRenderer(companyBaseYear),
               )}

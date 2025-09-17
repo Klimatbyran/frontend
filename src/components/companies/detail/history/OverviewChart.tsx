@@ -61,11 +61,12 @@ export const OverviewChart: FC<OverviewChartProps> = ({
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
   const currentYear = new Date().getFullYear();
-  const isFirstYear = companyBaseYear === data[0]?.year;
 
   const filteredData = useMemo(() => {
     return filterValidTotalData(data);
   }, [data]);
+
+  const isFirstYear = companyBaseYear === filteredData[0]?.year;
 
   const legendItems = useMemo(() => {
     const hiddenItems = new Set<string>();
@@ -77,7 +78,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({
   }, [t, approximatedData]);
 
   const ticks = generateChartTicks(
-    data[0]?.year || 2000,
+    filteredData[0]?.year || 2000,
     chartEndYear,
     shortEndYear,
     currentYear,
@@ -119,7 +120,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({
             <XAxis
               {...getXAxisProps(
                 "year",
-                [data[0]?.year || 2000, chartEndYear],
+                [filteredData[0]?.year || 2000, chartEndYear],
                 ticks,
                 createCustomTickRenderer(companyBaseYear),
               )}

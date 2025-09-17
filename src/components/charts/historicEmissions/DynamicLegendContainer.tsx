@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/tooltip";
 import { useTranslation } from "react-i18next";
 import { ChevronDown } from "lucide-react";
+import { useScreenSize } from "@/hooks/useScreenSize";
 
 interface DynamicLegendContainerProps {
   items: LegendItem[];
@@ -31,9 +32,10 @@ export const DynamicLegendContainer: React.FC<DynamicLegendContainerProps> = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
+  const { isMobile } = useScreenSize();
 
   // Determine if we should show expandable behavior
-  const shouldShowExpandable = forceExpandable || items.length > 6; 
+  const shouldShowExpandable = forceExpandable || items.length > 6;
 
   return (
     <TooltipProvider>
@@ -85,8 +87,8 @@ export const DynamicLegendContainer: React.FC<DynamicLegendContainerProps> = ({
           ))}
         </div>
 
-        {/* Simple scroll hint */}
-        {shouldShowExpandable && (
+        {/* Simple scroll hint - only show on mobile */}
+        {shouldShowExpandable && isMobile && (
           <div className="text-center mt-2">
             <div className="text-xs text-grey/70 flex items-center justify-center gap-1">
               <ChevronDown className="w-3 h-3" />
