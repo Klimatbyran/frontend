@@ -49,33 +49,36 @@ export const SectorsChart: FC<SectorsChartProps> = ({
   const CUTOFF_YEAR = new Date().getFullYear() - 1;
 
   const { chartData, allSectors, customTicks } = useMemo(() => {
-    const sectorYears = sectorEmissions
-      ? Object.keys(sectorEmissions.sectors).map(Number)
-      : [];
+    if (!sectorEmissions) {
+      return { chartData: [], allSectors: [], customTicks: [] };
+    }
 
+    const sectorYears = Object.keys(sectorEmissions.sectors).map(Number);
     const allYears = [...new Set(sectorYears)]
       .sort()
       .filter((year) => year <= MAX_YEAR);
 
-    const sectors = sectorEmissions
-      ? [
-          ...new Set(
-            sectorYears.flatMap((year) =>
-              Object.keys(sectorEmissions.sectors[year] || {}),
-            ),
-          ),
-        ]
-      : [];
+    // Get all unique sectors from all years
+    const allUniqueSectors = [
+      ...new Set(
+        sectorYears.flatMap((year) =>
+          Object.keys(sectorEmissions.sectors[year] || {}),
+        ),
+      ),
+    ];
 
+    // Process data and filter sectors in one pass
     const data = allYears.map((year) => {
       const dataPoint: Record<string, number | string> = { year };
+      const yearData = sectorEmissions.sectors[year] || {};
 
       if (year < CUTOFF_YEAR) {
-        const yearData = sectorEmissions?.sectors[year] || {};
-        sectors.forEach((sector) => {
+        allUniqueSectors.forEach((sector) => {
           if (!hiddenSectors.has(sector)) {
-            dataPoint[sector] =
-              (yearData as Record<string, number>)[sector] || 0;
+            const value = (yearData as Record<string, number>)[sector];
+            if (value && value > 0) {
+              dataPoint[sector] = value;
+            }
           }
         });
       }
@@ -83,22 +86,28 @@ export const SectorsChart: FC<SectorsChartProps> = ({
       return dataPoint;
     });
 
+    // Get sectors that have non-zero data in the original data (for legend)
+    const sectorsWithData = allUniqueSectors.filter((sector) => {
+      return sectorYears.some((year) => {
+        const yearData = sectorEmissions.sectors[year] || {};
+        return (yearData as Record<string, number>)[sector] > 0;
+      });
+    });
+
     const ticks = [1990, 2015, 2020, new Date().getFullYear(), MAX_YEAR]
       .filter((year) => year <= MAX_YEAR)
       .filter((year, i, arr) => arr.indexOf(year) === i)
       .sort();
 
-    return { chartData: data, allSectors: sectors, customTicks: ticks };
+    return { chartData: data, allSectors: sectorsWithData, customTicks: ticks };
   }, [sectorEmissions, hiddenSectors, MAX_YEAR, CUTOFF_YEAR]);
 
-  // Create legend items using shared utility
   const legendItems: LegendItem[] = useMemo(() => {
     return createSectorLegendItems(allSectors, hiddenSectors, getSectorInfo);
   }, [allSectors, hiddenSectors, getSectorInfo]);
 
   const handleLegendToggle = (itemName: string) => {
-    // Find the sector key that matches the translated name
-    const sectorKey = allSectors.find((sector) => {
+    const sectorKey = allSectors.find((sector: string) => {
       const sectorInfo = getSectorInfo?.(sector);
       return sectorInfo?.translatedName === itemName;
     });
@@ -143,13 +152,13 @@ export const SectorsChart: FC<SectorsChartProps> = ({
               wrapperStyle={{ outline: "none" }}
             />
 
-            {/* Current year reference line */}
             <ReferenceLine {...getCurrentYearReferenceLineProps(MAX_YEAR, t)} />
 
             {/* Sector areas */}
-            {allSectors.map((sector) => {
+            {allSectors.map((sector: string) => {
               const sectorInfo = getSectorInfo?.(sector) || {
                 color: "#" + Math.floor(Math.random() * 16777215).toString(16),
+                translatedName: sector,
               };
               const isHidden = hiddenSectors.has(sector);
               const sectorColor = isHidden ? "var(--grey)" : sectorInfo.color;
@@ -163,7 +172,7 @@ export const SectorsChart: FC<SectorsChartProps> = ({
                   fillOpacity={0}
                   stackId="1"
                   strokeWidth={isHidden ? 0 : 2}
-                  name={sector}
+                  name={sectorInfo.translatedName}
                   connectNulls={true}
                   style={{ cursor: "pointer", opacity: isHidden ? 0.4 : 1 }}
                   hide={isHidden}
