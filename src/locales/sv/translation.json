@@ -758,14 +758,14 @@
       "clickToShow": "Klicka för att visa"
     },
     "sectors": {
-      "industry": "Industri (energi + processer)",
-      "productUse": "Produktanvändning (inkl. lösningsmedel)",
+      "industry": "Industri",
+      "productUse": "Produktanvändning",
       "internationalTransport": "Utrikes transporter",
       "agriculture": "Jordbruk",
       "electricityAndHeating": "El och fjärrvärme",
       "workingMachines": "Arbetsmaskiner",
-      "waste": "Avfall (inkl.avlopp)",
-      "ownHeating": "Egen uppvärmning av bostäder och lokaler",
+      "waste": "Avfall",
+      "ownHeating": "Uppvärmning av byggnader",
       "transport": "Transporter"
     }
   },

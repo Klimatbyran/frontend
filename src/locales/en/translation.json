@@ -758,14 +758,14 @@
       "clickToShow": "Click to show"
     },
     "sectors": {
-      "industry": "Industry (energy + processes)",
-      "productUse": "Product use (incl. solvents)",
+      "industry": "Industry",
+      "productUse": "Product use",
       "internationalTransport": "International transport",
       "agriculture": "Agriculture",
-      "electricityAndHeating": "Electricity and district heating",
+      "electricityAndHeating": "Electricity and heating",
       "workingMachines": "Working machines",
-      "waste": "Waste (incl. sewage)",
-      "ownHeating": "Heating of residential and commercial buildings",
+      "waste": "Waste",
+      "ownHeating": "Heating of buildings",
       "transport": "Transport"
     }
   },
