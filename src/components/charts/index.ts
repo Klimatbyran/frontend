@@ -16,11 +16,13 @@ export { DataViewSelector } from "./DataViewSelector";
 export * from "./historicEmissions/utils/dataViewHelpers";
 
 // Types
-export type * from "./ChartTypes";
+export type * from "../../types/charts";
 
 // Styling utilities
-export * from "./historicEmissions/chartStyles";
-export * from "./historicEmissions/legendStyles";
+export * from "./historicEmissions/styles/chartStyles";
+export * from "./historicEmissions/styles/legendStyles";
+export * from "./historicEmissions/utils/legendUtils";
+export * from "./historicEmissions/utils/chartUtils";
 
 // Chart utilities - re-exported from chartStyles and utils
 export {
@@ -38,10 +40,10 @@ export {
   getResponsiveChartMargin,
   getDynamicChartHeight,
   getLegendContainerHeight,
-} from "./historicEmissions/chartStyles";
+} from "./historicEmissions/styles/chartStyles";
 
 // Reference line types
-export type { ReferenceLineConfig } from "./historicEmissions/chartStyles";
+export type { ReferenceLineConfig } from "./historicEmissions/styles/chartStyles";
 
 // State management hooks
 export {
@@ -49,4 +51,4 @@ export {
   useDataView,
   useTimeSeriesChartState,
   useEmissionsChartState,
-} from "./useChartState";
+} from "../../hooks/useChartState";

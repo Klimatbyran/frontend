@@ -1,5 +1,5 @@
 import React from "react";
-import { LegendItem } from "../ChartTypes";
+import { LegendItem } from "../../../types/charts";
 
 interface EnhancedLegendProps {
   items: LegendItem[];
