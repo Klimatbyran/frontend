@@ -80,7 +80,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({
               content={
                 <SharedTooltip
                   dataView="overview"
-                  unit={t("emissionsUnitCO2")}
+                  unit={t("emissionsUnit")}
                 />
               }
               wrapperStyle={{ outline: "none" }}

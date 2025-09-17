@@ -137,7 +137,7 @@ export const SectorsChart: FC<SectorsChartProps> = ({
                 <SharedTooltip
                   dataView="sectors"
                   hiddenSectors={hiddenSectors}
-                  unit={t("emissionsUnitCO2")}
+                  unit={t("emissionsUnit")}
                 />
               }
               wrapperStyle={{ outline: "none" }}
