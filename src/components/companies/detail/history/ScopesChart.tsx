@@ -65,7 +65,8 @@ export const ScopesChart: FC<ScopesChartProps> = ({
   }, [data]);
 
   const lastDataYear =
-    filteredData[filteredData.length - 1]?.year || shortEndYear;
+    filteredData.filter((item) => item.total !== undefined).slice(-1)[0]
+      ?.year || shortEndYear;
   const ticks = generateChartTicks(
     filteredData[0]?.year || 2000,
     lastDataYear,

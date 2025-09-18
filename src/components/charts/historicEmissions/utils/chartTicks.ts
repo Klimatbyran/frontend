@@ -9,7 +9,15 @@ export const generateChartTicks = (
   shortEndYear: number,
   currentYear: number = new Date().getFullYear(),
 ) => {
-  const baseTicks = [dataStartYear, 2020, currentYear, 2025];
+  // Only include currentYear if it's within the data range
+  const baseTicks = [dataStartYear, 2020];
+  if (currentYear <= chartEndYear) {
+    baseTicks.push(currentYear);
+  }
+  if (2025 <= chartEndYear) {
+    baseTicks.push(2025);
+  }
+
   if (chartEndYear === shortEndYear) {
     return [...baseTicks, shortEndYear];
   } else {
