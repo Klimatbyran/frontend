@@ -56,7 +56,11 @@ export const CardHeader = <T extends string = string>({
 
   // Determine if we should show the data view selector
   const showDataViewSelector =
-    dataView && setDataView && dataViewOptions && dataViewOptions.length > 0;
+    (dataView &&
+      setDataView &&
+      dataViewOptions &&
+      dataViewOptions.length > 0) ||
+    customDataViewSelector;
   const effectiveLayout =
     layout === "narrow"
       ? "narrow"
@@ -88,7 +92,11 @@ export const CardHeader = <T extends string = string>({
               </InfoTooltip>
             )}
           </div>
-          {unit && <Text variant="body">{unit}</Text>}
+          {unit && (
+            <Text variant="body" className="text-grey">
+              {unit}
+            </Text>
+          )}
           {description && (
             <Text variant="body" className="text-grey">
               {description}
@@ -101,8 +109,8 @@ export const CardHeader = <T extends string = string>({
           <div>
             {customDataViewSelector || (
               <DataViewSelector
-                dataView={dataView}
-                setDataView={setDataView}
+                dataView={dataView!}
+                setDataView={setDataView!}
                 availableViews={dataViewOptions!}
                 placeholder={dataViewPlaceholder}
                 layout={effectiveLayout === "page" ? "wide" : effectiveLayout}

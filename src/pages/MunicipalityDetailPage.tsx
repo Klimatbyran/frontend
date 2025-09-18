@@ -9,6 +9,7 @@ import { MunicipalityLinkCard } from "@/components/municipalities/MunicipalityLi
 import { useTranslation } from "react-i18next";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { useState } from "react";
+import { CardHeader } from "@/components/layout/CardHeader";
 import {
   formatEmissionsAbsolute,
   formatPercent,
@@ -69,9 +70,10 @@ export function MunicipalityDetailPage() {
     : [];
 
   // Use the first available year as default if selectedYear is not in availableYears
-  const currentYear = availableYears.includes(parseInt(selectedYear))
-    ? parseInt(selectedYear)
-    : availableYears[0] || 2023;
+  const currentYear =
+    availableYears.length > 0 && availableYears.includes(parseInt(selectedYear))
+      ? parseInt(selectedYear)
+      : availableYears[0] || 2023;
 
   // Prepare SEO data
   const canonicalUrl = `https://klimatkollen.se/municipalities/${id}`;
@@ -209,24 +211,21 @@ export function MunicipalityDetailPage() {
 
         {sectorEmissions?.sectors && availableYears.length > 0 && (
           <SectionWithHelp helpItems={["municipalityEmissionSources"]}>
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4 p-4 md:p-6">
-              <Text className="text-2xl md:text-4xl">
-                {t("municipalityDetailPage.sectorEmissions")}
-              </Text>
-
-              <YearSelector
-                selectedYear={selectedYear}
-                onYearChange={setSelectedYear}
-                availableYears={availableYears}
-                translateNamespace="municipalityDetailPage"
-              />
-            </div>
-
-            <Text className="text-grey">
-              {t("municipalityDetailPage.sectorEmissionsYear", {
+            <CardHeader
+              title={t("municipalityDetailPage.sectorEmissions")}
+              description={t("municipalityDetailPage.sectorEmissionsYear", {
                 year: currentYear,
               })}
-            </Text>
+              customDataViewSelector={
+                <YearSelector
+                  selectedYear={selectedYear}
+                  onYearChange={setSelectedYear}
+                  availableYears={availableYears}
+                  translateNamespace="municipalityDetailPage"
+                />
+              }
+              className="p-4 md:p-6"
+            />
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
               <MunicipalitySectorPieChart
