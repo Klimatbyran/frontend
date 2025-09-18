@@ -43,13 +43,13 @@ export const DynamicLegendContainer: React.FC<DynamicLegendContainerProps> = ({
           // Mobile: Use scrolling container
           <div
             data-legend-content
-            className="flex flex-wrap gap-0.5 max-h-[130px] overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-grey/30 hover:scrollbar-thumb-grey/50 border rounded-md px-3 py-2"
+            className="flex flex-wrap gap-0.5 max-h-[130px] overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-grey/30 hover:scrollbar-thumb-grey/50 border rounded-md px-2.5 py-1.5"
           >
             {items.map((item, index) => (
               <Tooltip key={index}>
                 <TooltipTrigger asChild>
                   <div
-                    className={`flex items-center gap-1 px-3 py-2 rounded bg-black-2 hover:bg-black-1 transition-colors ${
+                    className={`flex items-center gap-1 px-2.5 py-1.5 rounded bg-black-2 hover:bg-black-1 transition-colors ${
                       allowClickToHide ? "cursor-pointer" : "cursor-default"
                     } ${item.isHidden ? "opacity-50" : "opacity-100"}`}
                     onClick={() => {
@@ -92,7 +92,7 @@ export const DynamicLegendContainer: React.FC<DynamicLegendContainerProps> = ({
           // Desktop: Use normal flex layout without overflow clipping
           <div
             data-legend-content
-            className={`flex flex-wrap gap-2 ${
+            className={`flex flex-wrap gap-1.5 ${
               shouldShowExpandable && !isMobile
                 ? "max-h-[150px] border rounded-md px-3 py-2"
                 : ""
@@ -105,7 +105,7 @@ export const DynamicLegendContainer: React.FC<DynamicLegendContainerProps> = ({
               <Tooltip key={index}>
                 <TooltipTrigger asChild>
                   <div
-                    className={`flex items-center gap-1 md:gap-2 px-3 py-2 md:p-2 rounded bg-black-2 hover:bg-black-1 transition-colors ${
+                    className={`flex items-center gap-1 px-2.5 py-1.5 md:px-2 md:py-1.5 rounded bg-black-2 hover:bg-black-1 transition-colors ${
                       allowClickToHide ? "cursor-pointer" : "cursor-default"
                     } ${item.isHidden ? "opacity-50" : "opacity-100"}`}
                     onClick={() => {
