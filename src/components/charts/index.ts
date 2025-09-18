@@ -12,8 +12,8 @@ export { ChartTooltip } from "./historicEmissions/ChartTooltip";
 export { ChartYearControls } from "./ChartYearControls";
 export { DataViewSelector } from "./DataViewSelector";
 
-// Data view helpers
-export * from "./historicEmissions/utils/dataViewHelpers";
+// Data view hooks
+export * from "../../hooks/charts/useDataViewOptions";
 
 // Types
 export type * from "../../types/charts";
@@ -51,4 +51,4 @@ export {
   useDataView,
   useTimeSeriesChartState,
   useEmissionsChartState,
-} from "../../hooks/useChartState";
+} from "../../hooks/charts/useChartState";

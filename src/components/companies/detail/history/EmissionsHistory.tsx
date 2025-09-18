@@ -12,8 +12,7 @@ import {
   useDataView,
   useTimeSeriesChartState,
   useHiddenItems,
-  generateCompanyViewOptions,
-  getCompanyDataViewPlaceholder,
+  useCompanyViewOptions,
 } from "@/components/charts";
 import { CardHeader } from "@/components/layout/CardHeader";
 import { OverviewChart } from "./OverviewChart";
@@ -56,6 +55,8 @@ export function EmissionsHistory({
       ? ["overview", "scopes", "categories"]
       : ["overview", "scopes"],
   );
+
+  const dataViewOptions = useCompanyViewOptions(hasScope3Categories);
 
   const { chartEndYear, setChartEndYear, shortEndYear, longEndYear } =
     useTimeSeriesChartState();
@@ -200,8 +201,8 @@ export function EmissionsHistory({
             setDataView={(value) =>
               setDataView(value as "overview" | "scopes" | "categories")
             }
-            dataViewOptions={generateCompanyViewOptions(hasScope3Categories, t)}
-            dataViewPlaceholder={getCompanyDataViewPlaceholder(t)}
+            dataViewOptions={dataViewOptions}
+            dataViewPlaceholder={t("companies.dataView.selectView")}
           />
           <div style={{ height: getDynamicChartHeight(dataView, isMobile) }}>
             {!exploreMode ? (

@@ -6,8 +6,7 @@ import {
   getDynamicChartHeight,
   useDataView,
   useHiddenItems,
-  generateMunicipalityViewOptions,
-  getMunicipalityDataViewPlaceholder,
+  useMunicipalityViewOptions,
 } from "@/components/charts";
 import { CardHeader } from "@/components/layout/CardHeader";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
@@ -36,6 +35,8 @@ export const MunicipalityEmissions: FC<MunicipalityEmissionsProps> = ({
   const hasSectorData =
     !!sectorEmissions && Object.keys(sectorEmissions).length > 0;
 
+  const dataViewOptions = useMunicipalityViewOptions(hasSectorData);
+
   return (
     <SectionWithHelp
       helpItems={[
@@ -48,8 +49,8 @@ export const MunicipalityEmissions: FC<MunicipalityEmissionsProps> = ({
         unit={t("municipalityDetailPage.inTons")}
         dataView={dataView}
         setDataView={(value) => setDataView(value as "overview" | "sectors")}
-        dataViewOptions={generateMunicipalityViewOptions(hasSectorData, t)}
-        dataViewPlaceholder={getMunicipalityDataViewPlaceholder(t)}
+        dataViewOptions={dataViewOptions}
+        dataViewPlaceholder={t("municipalities.graph.selectView")}
       />
       <div
         className="mt-8"
