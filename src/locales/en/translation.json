@@ -343,7 +343,8 @@
     "errorTitle": "Unable to retrieve company information",
     "errorDescription": "Please try again later",
     "notFoundTitle": "Company not found",
-    "notFoundDescription": "Check if the company ID is correct"
+    "notFoundDescription": "Check if the company ID is correct",
+    "billion": "billion"
   },
   "methodsPage": {
     "header": {
@@ -1360,5 +1361,16 @@
   "language": {
     "sv": "Swedish",
     "en": "English"
+  },
+  "relatableNumbers": {
+    "title": "How much is that?",
+    "descriptionPartOne": "The current total emission of",
+    "descriptionPartTwo": "compares to the following:",
+    "times": "times",
+    "timesPartTwo": "the total emissions of Sweden in",
+    "forestFireFootball": "Emissions from a forest fire the size of ",
+    "forestFireFootballExtension": " football fields.",
+    "forestFireStockholm": "Emissions from a forest fire",
+    "forestFireStockholmExtension": "the size of Stockholm."
   }
 }

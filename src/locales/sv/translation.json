@@ -1360,5 +1360,16 @@
   "language": {
     "sv": "Svenska",
     "en": "Engelska"
+  },
+  "relatableNumbers": {
+    "title": "Hur mycket är det?",
+    "descriptionPartOne": "Det nuvarande totala utsläppet av",
+    "descriptionPartTwo": "kan jämföras med följande:",
+    "times": "gånger",
+    "timesPartTwo": "Sveriges totala utsläpp",
+    "forestFireFootball": "Utsläpp från en skogsbrand stor som ",
+    "forestFireFootballExtension": " fotbollsplaner.",
+    "forestFireStockholm": "Utsläpp från en skogsbrand",
+    "forestFireStockholmExtension": "stor som Stockholm."
   }
 }
