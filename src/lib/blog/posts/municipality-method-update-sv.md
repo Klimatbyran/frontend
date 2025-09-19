@@ -5,7 +5,7 @@ id: "municipality-method-update"
 **Klimatkollen ändrar metod för utsläppsdata om landets kommuner. Tidigare användes koldioxidbudgetar. Nu byter Klimatkollen beräkningsunderlag till den globala tumregeln, “Carbon Law” om 12 procents minskning per år för att begränsa uppvärmningen till 1.5 grader. Carbon Law presenterades 2017 av Johan Rockström, Owen Gaffney och Johan Falk, som en vetenskapligt baserad väg till att uppnå Parisavtalet. Beräkningarna uppdaterades av Klimatkollen i juni 2025**.  
 
 
-*"Vår nya beräkning av hur snabbt utsläppen behöver minska för att ligga i linje med Parisavtalet och 1,5 grader, ger oss en tumregel som kan appliceras på kommuner, företag och organisationer. Det viktiga för klimatet är hur snabbt utsläppen minskar i närtid. En generell tumregel om 12 procent minskning per år gör det lättare för medborgare att veta vad som krävs och att utkräva ansvar av beslutsfattare,* säger Frida Berry Eklund, medgrundare av Klimatkollen. 
+*"Vår nya beräkning av hur snabbt utsläppen behöver minska för att ligga i linje med Parisavtalet och 1,5 grader, ger oss en tumregel som kan appliceras på kommuner, företag och organisationer. Det viktiga för klimatet är hur snabbt utsläppen minskar i närtid. En generell tumregel om 12 procent minskning per år gör det lättare för medborgare att veta vad som krävs och att utkräva ansvar av beslutsfattare",* säger Frida Berry Eklund, medgrundare av Klimatkollen. 
 
 Klimatkollen gör tre metodändringar:
 

@@ -4,7 +4,7 @@ id: "municipality-method-update"
                        
 **Klimatkollen is changing its method for calculating emissions data for Sweden's municipalities. Previously, so called carbon budgets were used. Klimatkollen is now switching to the global rule of thumb, ‘Carbon Law’, which stipulates a 12 per cent reduction per year in order to limit global warming to 1.5 degrees. Carbon Law was presented in 2017 by Johan Rockström, Owen Gaffney and Johan Falk as a scientifically based path to achieving the Paris Agreement. The calculations were updated by Klimatkollen in June 2025.**  
 
-*"Our new calculation of how quickly emissions need to be reduced in order to be in line with the Paris Agreement and 1.5 degrees gives us a rule of thumb that can be applied to municipalities, companies and organisations. The important thing for the climate is how quickly emissions are reduced in the near future. A general rule of thumb of a 12 per cent reduction per year makes it easier for citizens to know what is required and to hold decision-makers accountable*, says Frida Berry Eklund, co-founder of Klimatkollen. 
+*"Our new calculation of how quickly emissions need to be reduced in order to be in line with the Paris Agreement and 1.5 degrees gives us a rule of thumb that can be applied to municipalities, companies and organisations. The important thing for the climate is how quickly emissions are reduced in the near future. A general rule of thumb of a 12 per cent reduction per year makes it easier for citizens to know what is required and to hold decision-makers accountable"*, says Frida Berry Eklund, co-founder of Klimatkollen. 
 
 Klimatkollen is making three methodological changes:
 
