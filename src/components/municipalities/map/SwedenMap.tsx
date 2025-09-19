@@ -251,6 +251,14 @@ function SwedenMap({
     return {};
   };
 
+  React.useEffect(() => {
+    if (hoveredMunicipality) {
+      const { value, rank } = getMunicipalityData(hoveredMunicipality);
+      setHoveredValue(value);
+      setHoveredRank(rank);
+    }
+  }, [selectedKPI, hoveredMunicipality, getMunicipalityData]);
+
   return (
     <div className="relative flex-1 h-full max-w-screen-lg">
       <MapContainer
