@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { MapContainer, GeoJSON, useMap } from "react-leaflet";
 import { KPIValue, Municipality } from "@/types/municipality";
 import { MapZoomControls } from "./MapZoomControls";
@@ -32,7 +32,7 @@ function MapController({
 }) {
   const map = useMap();
 
-  React.useEffect(() => {
+  useEffect(() => {
     const updatePosition = () => {
       const center = map.getCenter();
       setPosition({
@@ -60,11 +60,11 @@ function SwedenMap({
   const [hoveredMunicipality, setHoveredMunicipality] = React.useState<
     string | null
   >(null);
-  const [hoveredValue, setHoveredValue] = React.useState<number | null>(null);
-  const [hoveredRank, setHoveredRank] = React.useState<number | null>(null);
+  const [hoveredValue, setHoveredValue] = useState<number | null>(null);
+  const [hoveredRank, setHoveredRank] = useState<number | null>(null);
   const getInitialZoom = () => (isMobile ? 4 : 5);
 
-  const [position, setPosition] = React.useState<{
+  const [position, setPosition] = useState<{
     center: [number, number];
     zoom: number;
   }>({
@@ -72,9 +72,9 @@ function SwedenMap({
     zoom: getInitialZoom(),
   });
 
-  const mapRef = React.useRef<L.Map | null>(null);
+  const mapRef = useRef<L.Map | null>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const handleResize = () => {
       setPosition((prev) => ({
         ...prev,
@@ -113,7 +113,7 @@ function SwedenMap({
     }
   };
 
-  const getMunicipalityData = React.useCallback(
+  const getMunicipalityData = useCallback(
     (name: string): { value: number | null; rank: number | null } => {
       const municipality = municipalityData.find(
         (m) => m.name.toLowerCase() === name.toLowerCase(),
@@ -260,7 +260,7 @@ function SwedenMap({
     return {};
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (hoveredMunicipality) {
       const { value, rank } = getMunicipalityData(hoveredMunicipality);
       setHoveredValue(value);
