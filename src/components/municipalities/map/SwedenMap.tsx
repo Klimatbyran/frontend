@@ -186,12 +186,17 @@ function SwedenMap({
     const leftValue = selectedKPI.higherIsBetter ? minValue : maxValue;
     const rightValue = selectedKPI.higherIsBetter ? maxValue : minValue;
 
+    const hasNullValues = municipalityData.some(
+      (m) => m[selectedKPI.key] === null,
+    );
+
     return (
       <MapLegend
         leftValue={leftValue}
         rightValue={rightValue}
         unit={selectedKPI.unit}
         selectedKPI={selectedKPI}
+        hasNullValues={hasNullValues}
       />
     );
   };
@@ -275,6 +280,7 @@ function SwedenMap({
           zIndex: 0,
         }}
         zoomControl={false}
+        attributionControl={false}
         ref={mapRef}
         className="rounded-xl"
       >
