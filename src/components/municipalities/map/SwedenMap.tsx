@@ -1,25 +1,54 @@
 import React from "react";
-import {
-  ComposableMap,
-  Geographies,
-  Geography,
-  ZoomableGroup,
-} from "react-simple-maps";
+import { MapContainer, TileLayer, GeoJSON, useMap } from "react-leaflet";
 import { KPIValue, Municipality } from "@/types/municipality";
 import { MapZoomControls } from "./MapZoomControls";
 import { MapLegend } from "./MapLegend";
 import { MapTooltip } from "./MapTooltip";
-import { FeatureCollection } from "geojson";
+import {
+  FeatureCollection,
+  Feature,
+  Geometry,
+  GeoJsonProperties,
+} from "geojson";
 import { MUNICIPALITY_MAP_COLORS } from "./constants";
 import { isMobile } from "react-device-detect";
 import { t } from "i18next";
 import { getSortedMunicipalKPIValues } from "@/utils/data/sorting";
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
 
 interface SwedenMapProps {
   geoData: FeatureCollection;
   municipalityData: Municipality[];
   selectedKPI: KPIValue;
   onMunicipalityClick: (name: string) => void;
+}
+
+// Helper component to manage map state
+function MapController({
+  setPosition,
+}: {
+  setPosition: (pos: { center: [number, number]; zoom: number }) => void;
+}) {
+  const map = useMap();
+
+  React.useEffect(() => {
+    const updatePosition = () => {
+      const center = map.getCenter();
+      setPosition({
+        center: [center.lat, center.lng],
+        zoom: map.getZoom(),
+      });
+    };
+
+    map.on("moveend", updatePosition);
+
+    return () => {
+      map.off("moveend", updatePosition);
+    };
+  }, [map, setPosition]);
+
+  return null;
 }
 
 function SwedenMap({
@@ -33,15 +62,18 @@ function SwedenMap({
   >(null);
   const [hoveredValue, setHoveredValue] = React.useState<number | null>(null);
   const [hoveredRank, setHoveredRank] = React.useState<number | null>(null);
-  const getInitialZoom = () => (isMobile ? 1 : 0.7);
+  const getInitialZoom = () => (isMobile ? 4 : 5);
 
   const [position, setPosition] = React.useState<{
-    coordinates: [number, number];
+    center: [number, number];
     zoom: number;
   }>({
-    coordinates: [17, 62],
+    center: [63, 17],
     zoom: getInitialZoom(),
   });
+
+  // Reference to the map instance
+  const mapRef = React.useRef<L.Map | null>(null);
 
   React.useEffect(() => {
     const handleResize = () => {
@@ -65,28 +97,21 @@ function SwedenMap({
   );
 
   const handleZoomIn = () => {
-    if (position.zoom >= 4) {
-      return;
+    if (mapRef.current) {
+      mapRef.current.zoomIn();
     }
-    setPosition((pos) => ({ ...pos, zoom: pos.zoom * 1.5 }));
   };
 
   const handleZoomOut = () => {
-    if (position.zoom <= 0.5) {
-      return;
+    if (mapRef.current) {
+      mapRef.current.zoomOut();
     }
-    setPosition((pos) => ({ ...pos, zoom: pos.zoom / 1.5 }));
   };
 
   const handleReset = () => {
-    setPosition({ coordinates: [17, 63], zoom: 1 });
-  };
-
-  const handleMoveEnd = (position: {
-    coordinates: [number, number];
-    zoom: number;
-  }) => {
-    setPosition(position);
+    if (mapRef.current) {
+      mapRef.current.setView([63, 17], getInitialZoom());
+    }
   };
 
   const getMunicipalityData = (
@@ -181,78 +206,70 @@ function SwedenMap({
     />
   );
 
+  // Update onEachFeature function to use correct type
+  const onEachFeature = (
+    feature: Feature<Geometry, GeoJsonProperties> | undefined,
+    layer: L.Layer,
+  ) => {
+    if (feature?.properties?.name) {
+      const municipalityName = feature.properties.name;
+      const { value, rank } = getMunicipalityData(municipalityName);
+
+      (layer as L.Path).on({
+        mouseover: () => {
+          setHoveredMunicipality(municipalityName);
+          setHoveredValue(value);
+          setHoveredRank(rank);
+
+          (layer as L.Path).setStyle({
+            fillOpacity: 0.9,
+            weight: 2,
+          });
+        },
+        mouseout: () => {
+          setHoveredMunicipality(null);
+          setHoveredValue(null);
+          setHoveredRank(null);
+
+          (layer as L.Path).setStyle({
+            fillOpacity: 0.7,
+            weight: 1,
+          });
+        },
+        click: () => {
+          onMunicipalityClick(municipalityName);
+        },
+      });
+    }
+  };
+
+  const style = (feature: Feature<Geometry, GeoJsonProperties> | undefined) => {
+    if (feature?.properties?.name) {
+      const { value } = getMunicipalityData(feature.properties.name);
+      return {
+        fillColor: getColorByValue(value),
+        weight: 1,
+        opacity: 0.75,
+        color: "var(--black-2)",
+        fillOpacity: 1,
+      };
+    }
+    return {};
+  };
+
   return (
     <div className="relative flex-1 h-full max-w-screen-lg">
-      <ComposableMap
-        projection="geoMercator"
-        projectionConfig={{
-          scale: 1800,
-        }}
-        style={{
-          width: "100%",
-          height: "100%",
-        }}
+      <MapContainer
+        center={position.center}
+        zoom={position.zoom}
+        style={{ height: "100%", width: "100%" }}
+        zoomControl={false}
+        ref={mapRef}
+        className="rounded-xl"
       >
-        <ZoomableGroup
-          zoom={position.zoom}
-          center={position.coordinates}
-          onMoveEnd={handleMoveEnd}
-          maxZoom={4}
-          minZoom={0.5}
-        >
-          <Geographies geography={geoData}>
-            {({ geographies }) =>
-              geographies.map((geo) => {
-                const { value, rank } = getMunicipalityData(
-                  geo.properties.name,
-                );
-                return (
-                  <Geography
-                    key={geo.rsmKey}
-                    geography={geo}
-                    onMouseEnter={() => {
-                      setHoveredMunicipality(geo.properties.name);
-                      setHoveredValue(value);
-                      setHoveredRank(rank);
-                    }}
-                    onMouseLeave={() => {
-                      setHoveredMunicipality(null);
-                      setHoveredValue(null);
-                      setHoveredRank(null);
-                    }}
-                    onClick={() => onMunicipalityClick(geo.properties.name)}
-                    style={{
-                      default: {
-                        fill: getColorByValue(value),
-                        stroke: "var(--black-1)",
-                        strokeWidth: 0.2,
-                        outline: "none",
-                        cursor: "pointer",
-                      },
-                      hover: {
-                        fill: `color-mix(in srgb, ${getColorByValue(value)} 85%, white 20%)`,
-                        stroke: "var(--grey)",
-                        strokeWidth: 0.4,
-                        outline: "none",
-                      },
-                      pressed: {
-                        fill:
-                          value === null
-                            ? "var(--black-1)"
-                            : getColorByValue(value),
-                        stroke: "var(--grey)",
-                        strokeWidth: 0.4,
-                        outline: "none",
-                      },
-                    }}
-                    tabIndex={-1}
-                  />
-                );
-              })
-            }
-          </Geographies>
-        </ZoomableGroup>
-      </ComposableMap>
+        <GeoJSON data={geoData} style={style} onEachFeature={onEachFeature} />
+        <MapController setPosition={setPosition} />
+      </MapContainer>
 
       {hoveredMunicipality && (
         <MapTooltip
