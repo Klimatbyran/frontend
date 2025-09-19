@@ -84,7 +84,9 @@ function MapOfSweden({
   colors = MUNICIPALITY_MAP_COLORS,
 }: SwedenMapProps) {
   const [hoveredRegion, setHoveredRegion] = React.useState<string | null>(null);
-  const [hoveredValue, setHoveredValue] = useState<number | null>(null);
+  const [hoveredValue, setHoveredValue] = useState<number | boolean | null>(
+    null,
+  );
   const [hoveredRank, setHoveredRank] = useState<number | null>(null);
 
   const getInitialZoom = useCallback(
