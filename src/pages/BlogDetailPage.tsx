@@ -58,10 +58,10 @@ export function BlogDetailPage() {
   if (!blogPost) return <div>{t("blogDetailPage.postNotFound")}</div>;
 
   const relatedPosts = blogPost.metadata.relatedPosts
-  ? blogPost.metadata.relatedPosts
-      .map((relatedId) => blogPosts.find((post) => post.id === relatedId))
-      .filter(Boolean)
-  : [];
+    ? blogPost.metadata.relatedPosts
+        .map((relatedId) => blogPosts.find((post) => post.id === relatedId))
+        .filter(Boolean)
+    : [];
 
   return (
     <div
@@ -72,10 +72,10 @@ export function BlogDetailPage() {
       {/* Navigation */}
       <div className="flex items-center justify-between">
         <Button variant="ghost" size="sm" className="gap-2" asChild>
-          <a href="/articles">
+          <Link to="/articles">
             <ArrowLeft className="w-4 h-4" />
             {t("blogDetailPage.back")}
-          </a>
+          </Link>
         </Button>
         <Button
           variant="ghost"

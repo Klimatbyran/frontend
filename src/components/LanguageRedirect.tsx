@@ -14,7 +14,7 @@ export function LanguageRedirect() {
 
   // If it doesn't have a prefix, add the current language prefix
   if (!hasLanguagePrefix) {
-    const targetPath = `/${currentLanguage}${location.pathname}`;
+    const targetPath = `/${currentLanguage}${location.pathname}${location.search}`;
     return <Navigate to={targetPath} replace />;
   }
 

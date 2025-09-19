@@ -8,6 +8,42 @@ export enum CategoryEnum {
 
 export const blogMetadata: ContentMeta[] = [
   {
+    id: "municipality-method-update",
+    title:
+      "Carbon Law – ny metod för att jämföra kommunernas klimatutsläpp ",
+    excerpt:
+      "Klimatkollen ändrar metod för utsläppsdata om landets kommuner.",
+    date: "2025-09-02",
+    readTime: "2 min",
+    category: CategoryEnum.Methodology,
+    image: "/images/blogImages/only-radical-futures.jpg",
+    displayLanguages: ["sv"],
+    language: "sv",
+    author: {
+      name: "Frida Berry Eklund",
+      avatar: "/people/frida.jpg",
+    },
+    relatedPosts: ["carbon-law-from-2025", "only-radical-futures-left"],
+  },
+  {
+    id: "municipality-method-update",
+    title:
+      "Carbon Law – a new method for comparing municipalities' climate emissions",
+    excerpt:
+      "Klimatkollen is changing its method for calculating emissions data for Sweden's municipalities.",
+    date: "2025-09-02",
+    readTime: "2 min",
+    category: CategoryEnum.Methodology,
+    image: "/images/blogImages/only-radical-futures.jpg",
+    displayLanguages: ["en"],
+    language: "en",
+    author: {
+      name: "Frida Berry Eklund",
+      avatar: "/people/frida.jpg",
+    },
+    relatedPosts: ["carbon-law-from-2025", "only-radical-futures-left"],
+  },
+  {
     id: "only-radical-futures-left",
     title:
       "Only Radical Futures Left",
