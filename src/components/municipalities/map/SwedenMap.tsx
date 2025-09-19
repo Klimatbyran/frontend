@@ -72,7 +72,6 @@ function SwedenMap({
     zoom: getInitialZoom(),
   });
 
-  // Reference to the map instance
   const mapRef = React.useRef<L.Map | null>(null);
 
   React.useEffect(() => {
@@ -114,22 +113,23 @@ function SwedenMap({
     }
   };
 
-  const getMunicipalityData = (
-    name: string,
-  ): { value: number | null; rank: number | null } => {
-    const municipality = municipalityData.find(
-      (m) => m.name.toLowerCase() === name.toLowerCase(),
-    );
-    if (!municipality) {
-      return { value: null, rank: null };
-    }
+  const getMunicipalityData = React.useCallback(
+    (name: string): { value: number | null; rank: number | null } => {
+      const municipality = municipalityData.find(
+        (m) => m.name.toLowerCase() === name.toLowerCase(),
+      );
+      if (!municipality) {
+        return { value: null, rank: null };
+      }
 
-    const value = municipality[selectedKPI.key] as number;
-    const rank =
-      sortedMunicipalities.findIndex((m) => m.name === municipality.name) + 1;
+      const value = municipality[selectedKPI.key] as number;
+      const rank =
+        sortedMunicipalities.findIndex((m) => m.name === municipality.name) + 1;
 
-    return { value, rank };
-  };
+      return { value, rank };
+    },
+    [municipalityData, selectedKPI.key, sortedMunicipalities],
+  );
 
   const getColorByValue = (value: number | null): string => {
     if (value === null) {
