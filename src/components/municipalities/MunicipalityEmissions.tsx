@@ -1,9 +1,14 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { Text } from "@/components/ui/text";
 import { MunicipalityEmissionsGraph } from "./emissionsGraph/MunicipalityEmissionsGraph";
 import { DataPoint, SectorEmissions } from "@/types/municipality";
-import { DataViewSelector } from "./DataViewSelector";
+import {
+  getDynamicChartHeight,
+  useDataView,
+  useHiddenItems,
+  useMunicipalityViewOptions,
+} from "@/components/charts";
+import { CardHeader } from "@/components/layout/CardHeader";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 
 type DataView = "overview" | "sectors";
@@ -11,6 +16,7 @@ type DataView = "overview" | "sectors";
 interface MunicipalityEmissionsProps {
   emissionsData: DataPoint[];
   sectorEmissions: SectorEmissions | null;
+  className?: string;
 }
 
 export const MunicipalityEmissions: FC<MunicipalityEmissionsProps> = ({
@@ -18,39 +24,38 @@ export const MunicipalityEmissions: FC<MunicipalityEmissionsProps> = ({
   sectorEmissions,
 }) => {
   const { t } = useTranslation();
-  const [dataView, setDataView] = useState<DataView>("overview");
-  const [hiddenSectors, setHiddenSectors] = useState<Set<string>>(new Set());
+
+  const { dataView, setDataView } = useDataView<DataView>("overview", [
+    "overview",
+    "sectors",
+  ]);
+  const { hiddenItems: hiddenSectors, setHiddenItems: setHiddenSectors } =
+    useHiddenItems<string>([]);
 
   const hasSectorData =
     !!sectorEmissions && Object.keys(sectorEmissions).length > 0;
 
+  const dataViewOptions = useMunicipalityViewOptions(hasSectorData);
+
   return (
     <SectionWithHelp
       helpItems={[
-        "municipalityEmissionEstimatations",
-        "municipalityWhyDataDelay",
         "parisAgreementLine",
         "municipalityImportanceOfEmissionSources",
       ]}
     >
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
-        <div>
-          <Text className="text-2xl md:text-4xl">
-            {t("municipalityDetailPage.emissionsDevelopment")}
-          </Text>
-          <Text className="text-grey mb-4">
-            {t("municipalityDetailPage.inTons")}
-          </Text>
-        </div>
-
-        <DataViewSelector
-          dataView={dataView}
-          setDataView={setDataView}
-          hasSectorData={hasSectorData}
-        />
-      </div>
-
-      <div className="mt-8 h-[400px]">
+      <CardHeader
+        title={t("municipalityDetailPage.emissionsDevelopment")}
+        unit={t("municipalityDetailPage.inTons")}
+        dataView={dataView}
+        setDataView={(value) => setDataView(value as "overview" | "sectors")}
+        dataViewOptions={dataViewOptions}
+        dataViewPlaceholder={t("municipalities.graph.selectView")}
+      />
+      <div
+        className="mt-8"
+        style={{ height: getDynamicChartHeight(dataView, false) }}
+      >
         <MunicipalityEmissionsGraph
           projectedData={emissionsData}
           sectorEmissions={sectorEmissions || undefined}

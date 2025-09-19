@@ -7,6 +7,7 @@ import { useLanguage } from "@/components/LanguageProvider";
 import { localizeUnit } from "@/utils/formatting/localization";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
 import { AiIcon } from "@/components/ui/ai-icon";
+import { CardHeader } from "@/components/layout/CardHeader";
 import { InfoTooltip } from "@/components/layout/InfoTooltip";
 
 interface EmissionsBreakdownProps {
@@ -84,12 +85,11 @@ export function EmissionsBreakdown({
     <div className={cn("bg-black-2 rounded-level-1", className)}>
       {!showOnlyScope3 && (
         <>
-          <div className="flex items-center gap-2 mb-12">
-            <Text variant="h3">{t("emissionsBreakdown.title", { year })}</Text>
-            <InfoTooltip ariaLabel="Information about emissions breakdown">
-              <p>{t("emissionsBreakdown.tooltip")}</p>
-            </InfoTooltip>
-          </div>
+          <CardHeader
+            title={t("emissionsBreakdown.title", { year })}
+            tooltipContent={t("emissionsBreakdown.tooltip")}
+            className="mb-12"
+          />
 
           <div className="grid grid-cols-3 gap-8 mb-16">
             {scopeData.map((scope) => (

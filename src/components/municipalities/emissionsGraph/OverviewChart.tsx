@@ -1,19 +1,34 @@
-import { FC } from "react";
+import { FC, useState, useMemo } from "react";
 import {
-  ResponsiveContainer,
   LineChart,
-  XAxis,
-  YAxis,
   Line,
-  Legend,
-  Tooltip,
   ReferenceLine,
+  Tooltip,
+  ResponsiveContainer,
 } from "recharts";
 import { useTranslation } from "react-i18next";
-import { useLanguage } from "@/components/LanguageProvider";
-import { formatEmissionsAbsoluteCompact } from "@/utils/formatting/localization";
-import { CustomTooltip } from "./CustomTooltip";
 import { DataPoint } from "@/types/municipality";
+import { useScreenSize } from "@/hooks/useScreenSize";
+import {
+  EnhancedLegend,
+  ChartYearControls,
+  LegendItem,
+  getConsistentLineProps,
+  createOverviewLegendItems,
+  getXAxisProps,
+  getYAxisProps,
+  getCurrentYearReferenceLineProps,
+  getChartContainerProps,
+  getLineChartProps,
+  getResponsiveChartMargin,
+  ChartWrapper,
+  ChartArea,
+  ChartFooter,
+  filterDataByYearRange,
+  ChartTooltip,
+} from "@/components/charts";
+import { XAxis, YAxis } from "recharts";
+import { useLanguage } from "@/components/LanguageProvider";
 
 interface OverviewChartProps {
   projectedData: DataPoint[];
@@ -21,102 +36,110 @@ interface OverviewChartProps {
 
 export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
   const { t } = useTranslation();
-  const currentYear = new Date().getFullYear();
   const { currentLanguage } = useLanguage();
+  const { isMobile } = useScreenSize();
+  const currentYear = new Date().getFullYear();
+
+  const [chartEndYear, setChartEndYear] = useState(
+    new Date().getFullYear() + 5,
+  );
+
+  const legendItems: LegendItem[] = useMemo(() => {
+    return createOverviewLegendItems(t, new Set(), true);
+  }, [t]);
+
+  const filteredData = useMemo(() => {
+    return filterDataByYearRange(projectedData, chartEndYear);
+  }, [projectedData, chartEndYear]);
 
   return (
-    <ResponsiveContainer width="100%" height="90%">
-      <LineChart data={projectedData} margin={{ left: -30 }}>
-        <Legend
-          verticalAlign="bottom"
-          align="right"
-          height={36}
-          iconType="line"
-          wrapperStyle={{
-            fontSize: "12px",
-            color: "var(--grey)",
-            paddingLeft: "50px",
-          }}
+    <ChartWrapper>
+      <ChartArea>
+        <ResponsiveContainer {...getChartContainerProps()}>
+          <LineChart
+            {...getLineChartProps(
+              filteredData,
+              undefined,
+              getResponsiveChartMargin(isMobile),
+            )}
+          >
+            <XAxis
+              {...getXAxisProps(
+                "year",
+                [1990, 2050],
+                [1990, 2015, 2020, currentYear, 2030, 2040, 2050],
+              )}
+              allowDuplicatedCategory={true}
+              tickFormatter={(year) => year}
+            />
+            <YAxis {...getYAxisProps(currentLanguage)} />
+
+            <Tooltip
+              content={
+                <ChartTooltip dataView="overview" unit={t("emissionsUnit")} />
+              }
+              wrapperStyle={{ outline: "none", zIndex: 60 }}
+            />
+
+            {/* Current year reference line */}
+            <ReferenceLine
+              {...getCurrentYearReferenceLineProps(currentYear, t)}
+            />
+
+            {/* Historical line */}
+            <Line
+              type="monotone"
+              dataKey="total"
+              {...getConsistentLineProps(
+                "historical",
+                false,
+                t("municipalities.graph.historical"),
+              )}
+            />
+
+            {/* Estimated line */}
+            <Line
+              type="monotone"
+              dataKey="approximated"
+              {...getConsistentLineProps(
+                "estimated",
+                false,
+                t("municipalities.graph.estimated"),
+              )}
+            />
+
+            {/* Trend line */}
+            <Line
+              type="monotone"
+              dataKey="trend"
+              {...getConsistentLineProps(
+                "trend",
+                false,
+                t("municipalities.graph.trend"),
+              )}
+            />
+
+            {/* Carbon Law line */}
+            <Line
+              type="monotone"
+              dataKey="carbonLaw"
+              {...getConsistentLineProps(
+                "paris",
+                false,
+                t("municipalities.graph.carbonLaw"),
+              )}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </ChartArea>
+
+      <ChartFooter>
+        <EnhancedLegend items={legendItems} />
+        <ChartYearControls
+          chartEndYear={chartEndYear}
+          setChartEndYear={setChartEndYear}
         />
-        <Tooltip
-          content={
-            <CustomTooltip dataView="overview" hiddenSectors={new Set()} />
-          }
-        />
-        <XAxis
-          dataKey="year"
-          stroke="var(--grey)"
-          tickLine={false}
-          axisLine={false}
-          tick={{ fontSize: 12 }}
-          padding={{ left: 0, right: 0 }}
-          domain={[1990, 2050]}
-          allowDuplicatedCategory={true}
-          ticks={[1990, 2015, 2020, currentYear, 2030, 2040, 2050]}
-          tickFormatter={(year) => year}
-        />
-        <YAxis
-          stroke="var(--grey)"
-          tickLine={false}
-          axisLine={false}
-          tick={{ fontSize: 12 }}
-          tickFormatter={(value) =>
-            formatEmissionsAbsoluteCompact(value, currentLanguage)
-          }
-          width={80}
-          domain={[0, "auto"]}
-          padding={{ top: 0, bottom: 0 }}
-        />
-        <Line
-          type="monotone"
-          dataKey="total"
-          stroke="white"
-          strokeWidth={2}
-          dot={false}
-          connectNulls
-          name={t("municipalities.graph.historical")}
-        />
-        <Line
-          type="monotone"
-          dataKey="approximated"
-          stroke="grey"
-          strokeWidth={2}
-          strokeDasharray="4 4"
-          dot={false}
-          connectNulls
-          name={t("municipalities.graph.estimated")}
-        />
-        <Line
-          type="monotone"
-          dataKey="trend"
-          stroke="var(--pink-3)"
-          strokeWidth={2}
-          strokeDasharray="4 4"
-          dot={false}
-          name={t("municipalities.graph.trend")}
-        />
-        <Line
-          type="monotone"
-          dataKey="carbonLaw"
-          stroke="var(--green-3)"
-          strokeWidth={2}
-          strokeDasharray="4 4"
-          dot={false}
-          name={t("municipalities.graph.carbonLaw")}
-        />
-        <ReferenceLine
-          x={currentYear}
-          stroke="var(--orange-3)"
-          strokeWidth={1}
-          label={{
-            value: currentYear,
-            position: "top",
-            fill: "var(--orange-2)",
-            fontSize: 12,
-            fontWeight: "normal",
-          }}
-        />
-      </LineChart>
-    </ResponsiveContainer>
+      </ChartFooter>
+    </ChartWrapper>
   );
 };
