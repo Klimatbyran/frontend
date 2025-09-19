@@ -8,7 +8,7 @@ import {
   Area,
   ComposedChart,
 } from "recharts";
-import { CustomTooltip } from "../CustomTooltip";
+import { ChartTooltip } from "@/components/charts";
 import { ChartData } from "@/types/emissions";
 import { formatEmissionsAbsoluteCompact } from "@/utils/formatting/localization";
 import { generateApproximatedData } from "@/lib/calculations/trends/approximatedData";
@@ -17,6 +17,12 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { isMobile } from "react-device-detect";
 import { CumulativeSummaryBoxes } from "./CumulativeSummaryBoxes";
+import {
+  getBaseYearReferenceLineProps,
+  getCurrentYearReferenceLineProps,
+  getXAxisProps,
+  getYAxisProps,
+} from "@/components/charts";
 
 interface ExploreChartProps {
   data: ChartData[];
@@ -180,36 +186,14 @@ export function ExploreChart({
   // render common chart elements
   const renderCurrentYearReferenceLine = () => (
     <ReferenceLine
-      x={getCommonYears().currentYear}
-      stroke="var(--grey)"
-      strokeDasharray="4 4"
-      ifOverflow="extendDomain"
-      label={{
-        value: `${getCommonYears().currentYear}`,
-        position: "top",
-        dx: 15,
-        fill: "white",
-        fontSize: 12,
-        fontWeight: "bold",
-      }}
+      {...getCurrentYearReferenceLineProps(getCommonYears().currentYear, t)}
     />
   );
 
   const renderBaseYearReferenceLine = () =>
     companyBaseYear && (
       <ReferenceLine
-        label={{
-          value: t("companies.emissionsHistory.baseYearLabel"),
-          position: "top",
-          dx: 25,
-          fill: "white",
-          fontSize: 12,
-          fontWeight: "normal",
-        }}
-        x={companyBaseYear}
-        stroke="var(--grey)"
-        strokeDasharray="4 4"
-        ifOverflow="extendDomain"
+        {...getBaseYearReferenceLineProps(companyBaseYear, true, t)}
       />
     );
 
@@ -577,27 +561,28 @@ export function ExploreChart({
             }}
           >
             <XAxis
-              dataKey="year"
-              stroke="var(--grey)"
-              tickLine={false}
-              axisLine={false}
+              {...getXAxisProps(
+                "year",
+                getXAxisDomain() as [number, number],
+                undefined,
+                undefined,
+              )}
               type="number"
-              domain={getXAxisDomain()}
-              tick={{ fontSize: isMobile ? 10 : 12, fill: "var(--grey)" }}
             />
             <YAxis
-              stroke="var(--grey)"
-              tickLine={false}
-              axisLine={false}
-              tick={{ fontSize: isMobile ? 10 : 12 }}
-              width={isMobile ? 40 : 60}
+              {...getYAxisProps(currentLanguage)}
               domain={yDomain}
               tickFormatter={(value) =>
                 formatEmissionsAbsoluteCompact(value, currentLanguage)
               }
             />
             <Tooltip
-              content={<CustomTooltip companyBaseYear={companyBaseYear} />}
+              content={
+                <ChartTooltip
+                  companyBaseYear={companyBaseYear}
+                  unit={t("companies.tooltip.tonsCO2e")}
+                />
+              }
             />
 
             {/* Step 0: Show data before base year highlighted, line stops at base year */}

@@ -17,6 +17,7 @@ import {
   SectorCode,
   useSortOptions,
 } from "@/hooks/companies/useCompanyFilters";
+import type { RankedCompany } from "@/types/company";
 import { CardGrid } from "@/components/CardGrid";
 
 export function CompaniesPage() {
@@ -169,7 +170,7 @@ export function CompaniesPage() {
           }
         />
       ) : (
-        <CardGrid
+        <CardGrid<RankedCompany>
           items={filteredCompanies}
           itemContent={(company) => (
             <CompanyCard

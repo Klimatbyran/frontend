@@ -730,8 +730,8 @@
     "politicalRule": "Här styr",
     "totalEmissions": "Totala utsläpp {{year}}",
     "totalEmissionsTooltip": "Detta är de senast rapporterade utsläppen. För beräknade uppskattningar för innevarande år, se grafen Utsläppsutveckling nedan.",
-    "emissionsDevelopment": "Utsläppsutveckling",
-    "graph": {
+"emissionsDevelopment": "Utsläppsutveckling",
+"graph": {
       "overview": "Översikt",
       "sectors": "Utsläppskällor"
     },
@@ -942,7 +942,7 @@
       "noReportingPeriods": "Inga rapporteringsperioder tillgängliga",
       "title": "Historiska utsläpp",
       "tooltip": "Historiska utsläpp och trend mot 2030. Klicka på en punkt för att ta bort linjen från grafen. Hovra över punkten för att se värdena för rapporteringsperioden.",
-      "unit": "Ton CO₂e per år",
+      "unit": "I tons CO₂e",
       "totalEmissions": "Totala utsläpp",
       "baseYear": "Basår",
       "baseYearInfo": "Basår syftar på ett specifikt år som väljs som referenspunkt för att jämföra framtida utsläpp mot.",
@@ -950,6 +950,9 @@
       "approximated": "Approximerat",
       "trend": "Trend",
       "carbonLaw": "Parisavtalet",
+      "scope1": "Scope 1 - Direkta utsläpp",
+      "scope2": "Scope 2 - Indirekta utsläpp",
+      "scope3": "Scope 3 - Tillskrivna värdekedje- och produktlivscykelutsläpp",
       "trendInfo": "Approximerat värde baseras på genomsnittlig förändring på {{percentage}} sedan {{baseYear}} för alla rapporteringsperioder",
       "exploreStep0Description": "Detta visar utsläppsdata från före företagets basår. Medan det är historiskt intressant är dessa data ofta opålitliga för att förutsäga framtida trender eftersom företag fortfarande utvecklade sina mätmetoder och kan ha använt olika rapporteringsstandarder.",
       "exploreStep0Label": "Historisk data (före basår)",
@@ -1325,6 +1328,10 @@
   "dataGuide": {
     "buttonFallbackTitle": "Förstå datan",
     "selectItemPrompt": "Välj ett ämne du vill veta mer om"
+  },
+  "chartLegend": {
+    "clickToFilterOut": "Klicka för att filtrera bort",
+    "scrollToSeeMore": "Scrolla för att se mer"
   },
   "trendAnalysis": {
     "insufficientData": "Ingen trendlinje visas på grund av otillräcklig data ({{dataPoints}} punkter). Behöver minst 2 datapunkter för att bygga tillförlitlig trend.",
