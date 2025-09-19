@@ -13,38 +13,30 @@ export function MapLegend({
   rightValue: number;
   selectedKPI: KPIValue;
 }) {
+  const booleanItem = (color: string, label: string) => (
+    <div className="flex items-center mr-4">
+      <div
+        className="w-3 h-3 rounded-sm mr-1"
+        style={{
+          backgroundColor: color,
+        }}
+      />
+      <span className="text-gray-500 text-xs">
+        {t(
+          `municipalities.list.kpis.${selectedKPI.key}.booleanLabels.${label}`,
+        )}
+      </span>
+    </div>
+  );
+
   return (
     <div className="absolute bottom-2 right-2 left-2 md:bottom-4 md:right-4 md:left-auto bg-black/60 backdrop-blur-sm p-2 md:p-4 rounded-2xl">
       <div className="flex flex-col md:flex-row items-start md:items-center mb-1 space-y-2 md:space-y-0 w-full md:w-auto">
         <div className="flex items-center w-full md:w-auto">
           {selectedKPI.isBoolean ? (
             <>
-              <div className="flex items-center mr-4">
-                <div
-                  className="w-5 h-5 rounded-sm mr-1"
-                  style={{
-                    backgroundColor: MUNICIPALITY_MAP_COLORS.gradientEnd,
-                  }}
-                />
-                <span className="text-gray-500 text-xs">
-                  {t(
-                    `municipalities.list.kpis.${selectedKPI.key}.booleanLabels.true`,
-                  )}
-                </span>
-              </div>
-              <div className="flex items-center">
-                <div
-                  className="w-5 h-5 rounded-sm mr-1"
-                  style={{
-                    backgroundColor: MUNICIPALITY_MAP_COLORS.gradientMidLow,
-                  }}
-                />
-                <span className="text-gray-500 text-xs">
-                  {t(
-                    `municipalities.list.kpis.${selectedKPI.key}.booleanLabels.false`,
-                  )}
-                </span>
-              </div>
+              {booleanItem(MUNICIPALITY_MAP_COLORS.gradientEnd, "true")}
+              {booleanItem(MUNICIPALITY_MAP_COLORS.gradientMidLow, "false")}
             </>
           ) : (
             <>
