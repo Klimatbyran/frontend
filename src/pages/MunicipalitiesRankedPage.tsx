@@ -8,7 +8,7 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import DataSelector from "@/components/municipalities/rankedList/MunicipalityDataSelector";
 import MunicipalityRankedList from "@/components/municipalities/rankedList/MunicipalityRankedList";
 import InsightsPanel from "@/components/municipalities/rankedList/MunicipalityInsightsPanel";
-import SwedenMap from "@/components/municipalities/map/SwedenMap";
+import MapOfSweden from "@/components/municipalities/map/SwedenMap";
 import municipalityGeoJson from "@/data/municipalityGeo.json";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import { useMunicipalityKPIs } from "@/hooks/municipalities/useMunicipalityKPIs";
@@ -92,11 +92,11 @@ export function MunicipalitiesRankedPage() {
   const renderMapOrList = (isMobile: boolean) =>
     viewMode === "map" ? (
       <div className={isMobile ? "relative h-[65vh]" : "relative h-full"}>
-        <SwedenMap
+        <MapOfSweden
           geoData={geoData as FeatureCollection}
-          municipalityData={municipalities}
-          selectedKPI={selectedKPI}
-          onMunicipalityClick={handleMunicipalityClick}
+          data={municipalities.map((m) => ({ ...m, id: m.name }))}
+          selectedAttribute={selectedKPI}
+          onRegionClick={handleMunicipalityClick}
         />
       </div>
     ) : (
