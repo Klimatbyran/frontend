@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { MapContainer, GeoJSON, useMap } from "react-leaflet";
-import { KPIValue, Municipality } from "@/types/municipality";
 import { MapZoomControls } from "./MapZoomControls";
 import { MapLegend } from "./MapLegend";
 import { MapTooltip } from "./MapTooltip";
@@ -13,18 +12,41 @@ import {
 import { MUNICIPALITY_MAP_COLORS } from "./constants";
 import { isMobile } from "react-device-detect";
 import { t } from "i18next";
-import { getSortedMunicipalKPIValues } from "@/utils/data/sorting";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import { KPIValue } from "@/types/municipality";
+
+export interface DataAttribute {
+  key: string;
+  label: string;
+  unit?: string;
+  higherIsBetter?: boolean;
+  format?: (value: number | string | boolean | null) => string;
+}
+
+export interface DataItem {
+  id: string;
+  name: string;
+  [key: string]: string | number | boolean | null | undefined | Array<unknown>;
+}
 
 interface SwedenMapProps {
   geoData: FeatureCollection;
-  municipalityData: Municipality[];
-  selectedKPI: KPIValue;
-  onMunicipalityClick: (name: string) => void;
+  data: DataItem[];
+  selectedAttribute: DataAttribute;
+  onRegionClick: (id: string) => void;
+  defaultCenter?: [number, number];
+  defaultZoom?: number;
+  propertyNameField?: string;
+  colors?: {
+    null: string;
+    gradientStart: string;
+    gradientMidLow: string;
+    gradientMidHigh: string;
+    gradientEnd: string;
+  };
 }
 
-// Helper component to manage map state
 function MapController({
   setPosition,
 }: {
@@ -51,24 +73,30 @@ function MapController({
   return null;
 }
 
-function SwedenMap({
+function MapOfSweden({
   geoData,
-  municipalityData,
-  selectedKPI,
-  onMunicipalityClick,
+  data,
+  selectedAttribute,
+  onRegionClick,
+  defaultCenter = [63, 17],
+  defaultZoom,
+  propertyNameField = "name",
+  colors = MUNICIPALITY_MAP_COLORS,
 }: SwedenMapProps) {
-  const [hoveredMunicipality, setHoveredMunicipality] = React.useState<
-    string | null
-  >(null);
+  const [hoveredRegion, setHoveredRegion] = React.useState<string | null>(null);
   const [hoveredValue, setHoveredValue] = useState<number | null>(null);
   const [hoveredRank, setHoveredRank] = useState<number | null>(null);
-  const getInitialZoom = () => (isMobile ? 4 : 5);
+
+  const getInitialZoom = useCallback(
+    () => defaultZoom || (isMobile ? 4 : 5),
+    [defaultZoom],
+  );
 
   const [position, setPosition] = useState<{
     center: [number, number];
     zoom: number;
   }>({
-    center: [63, 17],
+    center: defaultCenter,
     zoom: getInitialZoom(),
   });
 
@@ -84,16 +112,28 @@ function SwedenMap({
 
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [getInitialZoom]);
 
-  const values = municipalityData.map((m) => m[selectedKPI.key] as number);
+  const values = data
+    .map((item) => item[selectedAttribute.key])
+    .filter((val) => val !== null && val !== undefined)
+    .map(Number);
+
   const minValue = Math.min(...values);
   const maxValue = Math.max(...values);
 
-  const sortedMunicipalities = getSortedMunicipalKPIValues(
-    municipalityData,
-    selectedKPI,
-  );
+  // Sort data by selected attribute
+  const sortedData = [...data].sort((a, b) => {
+    const aVal = a[selectedAttribute.key];
+    const bVal = b[selectedAttribute.key];
+
+    if (aVal === null || aVal === undefined) return 1;
+    if (bVal === null || bVal === undefined) return -1;
+
+    return selectedAttribute.higherIsBetter
+      ? (Number(bVal) || 0) - (Number(aVal) || 0)
+      : (Number(aVal) || 0) - (Number(bVal) || 0);
+  });
 
   const handleZoomIn = () => {
     if (mapRef.current) {
@@ -109,35 +149,39 @@ function SwedenMap({
 
   const handleReset = () => {
     if (mapRef.current) {
-      mapRef.current.setView([63, 17], getInitialZoom());
+      mapRef.current.setView(defaultCenter, getInitialZoom());
     }
   };
 
-  const getMunicipalityData = useCallback(
-    (name: string): { value: number | null; rank: number | null } => {
-      const municipality = municipalityData.find(
-        (m) => m.name.toLowerCase() === name.toLowerCase(),
+  const getRegionData = useCallback(
+    (name: string): { value: number | boolean | null; rank: number | null } => {
+      const item = data.find(
+        (d) => d.name.toLowerCase() === name.toLowerCase(),
       );
-      if (!municipality) {
+
+      if (!item) {
         return { value: null, rank: null };
       }
 
-      const value = municipality[selectedKPI.key] as number;
-      const rank =
-        sortedMunicipalities.findIndex((m) => m.name === municipality.name) + 1;
+      let value: number | boolean | null = null;
+      const rawValue = item[selectedAttribute.key];
+      if (typeof rawValue === "number" || typeof rawValue === "boolean") {
+        value = rawValue;
+      }
+      const rank = sortedData.findIndex((d) => d.name === item.name) + 1;
 
       return { value, rank };
     },
-    [municipalityData, selectedKPI.key, sortedMunicipalities],
+    [data, selectedAttribute.key, sortedData],
   );
 
-  const getColorByValue = (value: number | null): string => {
-    if (value === null) {
-      return MUNICIPALITY_MAP_COLORS.null;
+  const getColorByValue = (value: number | boolean | null): string => {
+    if (value === null || value === undefined) {
+      return colors.null;
     }
 
     const { gradientStart, gradientMidLow, gradientMidHigh, gradientEnd } =
-      MUNICIPALITY_MAP_COLORS;
+      colors;
 
     if (typeof value === "boolean") {
       return value === true ? gradientEnd : gradientMidLow;
@@ -151,21 +195,17 @@ function SwedenMap({
 
     const zScore = (value - mean) / stdDev;
 
-    if (selectedKPI.higherIsBetter) {
+    if (selectedAttribute.higherIsBetter) {
       if (zScore <= -1) {
-        // Below -1 std dev: interpolate between start and gradientMidLow
         const t = Math.max(0, (zScore + 2) / 1);
         return `color-mix(in srgb, ${gradientStart} ${(1 - t) * 100}%, ${gradientMidLow} ${t * 100}%)`;
       } else if (zScore <= 0) {
-        // Between -1 and 0 std dev: interpolate between gradientMidLow and gradientMidHigh
         const t = Math.max(0, zScore + 1);
         return `color-mix(in srgb, ${gradientMidLow} ${(1 - t) * 100}%, ${gradientMidHigh} ${t * 100}%)`;
       } else if (zScore <= 1) {
-        // Between 0 and 1 std dev: interpolate between gradientMidHigh and end
         const t = Math.max(0, zScore);
         return `color-mix(in srgb, ${gradientMidHigh} ${(1 - t) * 100}%, ${gradientEnd} ${t * 100}%)`;
       } else {
-        // Above 1 std dev: end
         return gradientEnd;
       }
     } else if (zScore >= 1) {
@@ -183,19 +223,19 @@ function SwedenMap({
   };
 
   const renderGradientLegend = () => {
-    const leftValue = selectedKPI.higherIsBetter ? minValue : maxValue;
-    const rightValue = selectedKPI.higherIsBetter ? maxValue : minValue;
+    const leftValue = selectedAttribute.higherIsBetter ? minValue : maxValue;
+    const rightValue = selectedAttribute.higherIsBetter ? maxValue : minValue;
 
-    const hasNullValues = municipalityData.some(
-      (m) => m[selectedKPI.key] === null,
+    const hasNullValues = data.some(
+      (item) => item[selectedAttribute.key] === null,
     );
 
     return (
       <MapLegend
         leftValue={leftValue}
         rightValue={rightValue}
-        unit={selectedKPI.unit}
-        selectedKPI={selectedKPI}
+        unit={selectedAttribute.unit ?? ""}
+        selectedKPI={selectedAttribute as KPIValue}
         hasNullValues={hasNullValues}
       />
     );
@@ -211,40 +251,39 @@ function SwedenMap({
     />
   );
 
-  // Update onEachFeature function to use correct type
   const onEachFeature = (
     feature: Feature<Geometry, GeoJsonProperties> | undefined,
     layer: L.Layer,
   ) => {
-    if (feature?.properties?.name) {
-      const municipalityName = feature.properties.name;
-      const { value, rank } = getMunicipalityData(municipalityName);
+    if (feature?.properties?.[propertyNameField]) {
+      const regionName = feature.properties[propertyNameField];
+      const { value, rank } = getRegionData(regionName);
 
       (layer as L.Path).on({
         mouseover: () => {
-          setHoveredMunicipality(municipalityName);
+          setHoveredRegion(regionName);
           setHoveredValue(value);
           setHoveredRank(rank);
         },
         mouseout: () => {
-          setHoveredMunicipality(null);
+          setHoveredRegion(null);
           setHoveredValue(null);
           setHoveredRank(null);
         },
         click: () => {
-          onMunicipalityClick(municipalityName);
+          onRegionClick(regionName);
         },
       });
     }
   };
 
-  const getMunicipalityStyle = (
+  const getRegionStyle = (
     feature: Feature<Geometry, GeoJsonProperties> | undefined,
   ) => {
-    if (feature?.properties?.name) {
-      const municipalityName = feature.properties.name;
-      const { value } = getMunicipalityData(municipalityName);
-      const isHovered = hoveredMunicipality === municipalityName;
+    if (feature?.properties?.[propertyNameField]) {
+      const regionName = feature.properties[propertyNameField];
+      const { value } = getRegionData(regionName);
+      const isHovered = hoveredRegion === regionName;
       const color = getColorByValue(value);
 
       return {
@@ -261,12 +300,12 @@ function SwedenMap({
   };
 
   useEffect(() => {
-    if (hoveredMunicipality) {
-      const { value, rank } = getMunicipalityData(hoveredMunicipality);
+    if (hoveredRegion) {
+      const { value, rank } = getRegionData(hoveredRegion);
       setHoveredValue(value);
       setHoveredRank(rank);
     }
-  }, [selectedKPI, hoveredMunicipality, getMunicipalityData]);
+  }, [selectedAttribute, hoveredRegion, getRegionData]);
 
   return (
     <div className="relative flex-1 h-full max-w-screen-lg">
@@ -286,23 +325,27 @@ function SwedenMap({
       >
         <GeoJSON
           data={geoData}
-          style={getMunicipalityStyle}
+          style={getRegionStyle}
           onEachFeature={onEachFeature}
         />
         <MapController setPosition={setPosition} />
       </MapContainer>
 
-      {hoveredMunicipality && (
+      {hoveredRegion && (
         <MapTooltip
-          name={hoveredMunicipality}
+          name={hoveredRegion}
           value={hoveredValue}
           rank={hoveredRank}
-          unit={selectedKPI.unit}
-          total={municipalityData.length}
-          nullValue={t(
-            `municipalities.list.kpis.${selectedKPI.key}.nullValues`,
-          )}
-          selectedKPI={selectedKPI}
+          unit={selectedAttribute.unit ?? ""}
+          total={data.length}
+          nullValue={
+            selectedAttribute.key && t
+              ? t(
+                  `municipalities.list.kpis.${selectedAttribute.key}.nullValues`,
+                )
+              : "No data"
+          }
+          selectedKPI={selectedAttribute as KPIValue}
         />
       )}
 
@@ -312,4 +355,4 @@ function SwedenMap({
   );
 }
 
-export default SwedenMap;
+export default MapOfSweden;
