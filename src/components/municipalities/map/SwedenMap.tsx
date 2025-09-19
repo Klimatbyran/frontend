@@ -34,7 +34,7 @@ interface SwedenMapProps {
   geoData: FeatureCollection;
   data: DataItem[];
   selectedAttribute: DataAttribute;
-  onRegionClick: (id: string) => void;
+  onRegionClick?: (id: string) => void;
   defaultCenter?: [number, number];
   defaultZoom?: number;
   propertyNameField?: string;
@@ -273,7 +273,7 @@ function MapOfSweden({
           setHoveredRank(null);
         },
         click: () => {
-          onRegionClick(regionName);
+          if (onRegionClick) onRegionClick(regionName);
         },
       });
     }
