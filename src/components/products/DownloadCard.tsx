@@ -4,8 +4,6 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useToast } from "@/contexts/ToastContext";
 import { downloadCompanies, downloadMunicipalities } from "@/lib/api";
-import Papa from "papaparse";
-import * as XLSX from "xlsx";
 
 interface DownloadCardProps {
   icon: LucideIcon;
@@ -33,12 +31,10 @@ export function DownloadCard({
     try {
       setIsLoading(true);
 
-      // For XLSX, we'll request CSV and convert it
-      const actualFormat = format === "xlsx" ? "csv" : format;
       const response =
         selectedType === "companies"
-          ? await downloadCompanies(actualFormat, selectedYear || undefined)
-          : await downloadMunicipalities(actualFormat);
+          ? await downloadCompanies(format, selectedYear || undefined)
+          : await downloadMunicipalities(format);
 
       if (!(response instanceof Blob)) {
         throw new Error("Expected Blob response");
@@ -51,34 +47,8 @@ export function DownloadCard({
           type: "application/json",
         });
         downloadBlob(blob, format);
-      } else if (format === "xlsx") {
-        const text = await response.text();
-
-        // Parse CSV using PapaParse
-        const { data } = Papa.parse(text, {
-          header: true,
-          skipEmptyLines: true,
-          transformHeader: (header) => header.trim(),
-        });
-
-        // Convert to XLSX
-        const worksheet = XLSX.utils.json_to_sheet(data);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, "Data");
-
-        // Generate XLSX buffer
-        const excelBuffer = XLSX.write(workbook, {
-          bookType: "xlsx",
-          type: "array",
-        });
-
-        // Create blob and download
-        const blob = new Blob([excelBuffer], {
-          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        });
-        downloadBlob(blob, format);
       } else {
-        // For CSV, use the blob directly
+        // For CSV and XLSX, use the blob directly from the API
         downloadBlob(response, format);
       }
     } catch (error) {
