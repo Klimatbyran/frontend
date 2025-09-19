@@ -225,10 +225,6 @@ function SwedenMap({
           setHoveredMunicipality(null);
           setHoveredValue(null);
           setHoveredRank(null);
-
-          (layer as L.Path).setStyle({
-            fillOpacity: 0.7,
-          });
         },
         click: () => {
           onMunicipalityClick(municipalityName);
@@ -237,15 +233,23 @@ function SwedenMap({
     }
   };
 
-  const style = (feature: Feature<Geometry, GeoJsonProperties> | undefined) => {
+  const getMunicipalityStyle = (
+    feature: Feature<Geometry, GeoJsonProperties> | undefined,
+  ) => {
     if (feature?.properties?.name) {
-      const { value } = getMunicipalityData(feature.properties.name);
+      const municipalityName = feature.properties.name;
+      const { value } = getMunicipalityData(municipalityName);
+      const isHovered = hoveredMunicipality === municipalityName;
+      const color = getColorByValue(value);
+
       return {
-        fillColor: getColorByValue(value),
-        weight: 1,
-        opacity: 0.75,
+        fillColor: isHovered
+          ? `color-mix(in srgb, ${color} 70%, white 30%)`
+          : color,
+        weight: 0.75,
         color: "var(--black-1)",
         fillOpacity: 1,
+        cursor: "pointer",
       };
     }
     return {};
@@ -274,7 +278,11 @@ function SwedenMap({
         ref={mapRef}
         className="rounded-xl"
       >
-        <GeoJSON data={geoData} style={style} onEachFeature={onEachFeature} />
+        <GeoJSON
+          data={geoData}
+          style={getMunicipalityStyle}
+          onEachFeature={onEachFeature}
+        />
         <MapController setPosition={setPosition} />
       </MapContainer>
 
