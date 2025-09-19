@@ -18,19 +18,16 @@ export function MapTooltip({
   nullValue?: string;
   selectedKPI?: KPIValue;
 }) {
-  const booleanLabelTrue = t(
-    `municipalities.list.kpis.${selectedKPI?.key}.booleanLabels.true`,
-  );
-  const booleanLabelFalse = t(
-    `municipalities.list.kpis.${selectedKPI?.key}.booleanLabels.false`,
-  );
-
   const description =
     value !== null && value !== undefined
       ? typeof value === "boolean"
         ? value
-          ? booleanLabelTrue || t("yes")
-          : booleanLabelFalse || t("no")
+          ? t(
+              `municipalities.list.kpis.${selectedKPI?.key}.booleanLabels.true`,
+            ) || t("yes")
+          : t(
+              `municipalities.list.kpis.${selectedKPI?.key}.booleanLabels.false`,
+            ) || t("no")
         : `${(value as number).toFixed(1)}${unit}`
       : nullValue;
 

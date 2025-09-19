@@ -127,7 +127,7 @@ export async function downloadMunicipalities(
     params: {
       query: {
         type: format,
-      } as any, // Type assertion until API types are updated
+      }
     },
     parseAs: "blob",
   });
