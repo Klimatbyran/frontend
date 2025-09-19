@@ -1,5 +1,5 @@
 import React from "react";
-import { MapContainer, TileLayer, GeoJSON, useMap } from "react-leaflet";
+import { MapContainer, GeoJSON, useMap } from "react-leaflet";
 import { KPIValue, Municipality } from "@/types/municipality";
 import { MapZoomControls } from "./MapZoomControls";
 import { MapLegend } from "./MapLegend";
@@ -220,11 +220,6 @@ function SwedenMap({
           setHoveredMunicipality(municipalityName);
           setHoveredValue(value);
           setHoveredRank(rank);
-
-          (layer as L.Path).setStyle({
-            fillOpacity: 0.9,
-            weight: 2,
-          });
         },
         mouseout: () => {
           setHoveredMunicipality(null);
@@ -233,7 +228,6 @@ function SwedenMap({
 
           (layer as L.Path).setStyle({
             fillOpacity: 0.7,
-            weight: 1,
           });
         },
         click: () => {
@@ -250,7 +244,7 @@ function SwedenMap({
         fillColor: getColorByValue(value),
         weight: 1,
         opacity: 0.75,
-        color: "var(--black-2)",
+        color: "var(--black-1)",
         fillOpacity: 1,
       };
     }
@@ -262,7 +256,12 @@ function SwedenMap({
       <MapContainer
         center={position.center}
         zoom={position.zoom}
-        style={{ height: "100%", width: "100%" }}
+        style={{
+          height: "100%",
+          width: "100%",
+          backgroundColor: "var(--black-2)",
+          zIndex: 0,
+        }}
         zoomControl={false}
         ref={mapRef}
         className="rounded-xl"
