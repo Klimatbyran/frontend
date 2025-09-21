@@ -8,7 +8,7 @@ import { FeatureCollection } from "geojson";
 import { isMobile } from "react-device-detect";
 import { useRegionalData } from "@/hooks/useRegionalData";
 
-export function NationalOverviewPage() {
+export function RegionalRankedPage() {
   const { t } = useTranslation();
   const [geoData] = useState(regionGeoJson);
 
@@ -19,12 +19,16 @@ export function NationalOverviewPage() {
   return (
     <>
       <PageHeader
-        title={t("nationalOverviewPage.title")}
-        description={t("nationalOverviewPage.description")}
+        title={t("regionalRankedPage.title")}
+        description={t("regionalRankedPage.description")}
         className="-ml-4"
       />
       <div
-        className={isMobile ? "relative h-[65vh]" : "relative h-[700px] w-full"}
+        className={
+          isMobile
+            ? "relative h-[65vh]"
+            : "relative h-[700px] w-full flex justify-center"
+        }
       >
         <SwedenMap
           geoData={geoData as FeatureCollection}

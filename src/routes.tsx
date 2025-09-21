@@ -30,7 +30,7 @@ import { ReportLandingPage } from "./pages/ReportLandingPage";
 import { RequestsDashboard } from "./pages/internal-pages/RequestsDashboard";
 import { TrendAnalysisDashboard } from "./pages/internal-pages/TrendAnalysisDashboard";
 import { NewsLetterArchivePage } from "./pages/NewslettersPage";
-import { NationalOverviewPage } from "./pages/NationalOverviewPage";
+import { RegionalRankedPage } from "./pages/RegionalRankedPage";
 
 export function AppRoutes() {
   const { currentLanguage } = useLanguage();
@@ -84,7 +84,7 @@ export function AppRoutes() {
       </Route>
       <Route
         path={`${basePath}/national-overview`}
-        element={<NationalOverviewPage />}
+        element={<RegionalRankedPage />}
       />
       ß{/* Municipalities routes */}
       <Route
