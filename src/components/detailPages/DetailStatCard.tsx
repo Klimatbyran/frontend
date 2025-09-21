@@ -11,7 +11,7 @@ interface StatCardProps {
   infoText?: string;
 }
 
-export function MunicipalityStatCard({
+export function DetailStatCard({
   title,
   value,
   unit,

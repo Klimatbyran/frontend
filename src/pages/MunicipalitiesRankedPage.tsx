@@ -8,7 +8,7 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import DataSelector from "@/components/municipalities/rankedList/MunicipalityDataSelector";
 import RankedList from "@/components/RankedList";
 import InsightsPanel from "@/components/municipalities/rankedList/MunicipalityInsightsPanel";
-import MapOfSweden from "@/components/municipalities/map/SwedenMap";
+import MapOfSweden from "@/components/maps/SwedenMap";
 import municipalityGeoJson from "@/data/municipalityGeo.json";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import { useMunicipalityKPIs } from "@/hooks/municipalities/useMunicipalityKPIs";
@@ -141,9 +141,7 @@ export function MunicipalitiesRankedPage() {
         })}
         onItemClick={handleMunicipalityClick}
         searchKey="name"
-        searchPlaceholder={t(
-          "municipalities.list.rankedList.search.placeholder",
-        )}
+        searchPlaceholder={t("rankedList.search.placeholder")}
       />
     );
 
@@ -223,9 +221,7 @@ export function MunicipalitiesRankedPage() {
               })}
               onItemClick={handleMunicipalityClick}
               searchKey="name"
-              searchPlaceholder={t(
-                "municipalities.list.rankedList.search.placeholder",
-              )}
+              searchPlaceholder={t("rankedList.search.placeholder")}
             />
           ) : null}
         </div>

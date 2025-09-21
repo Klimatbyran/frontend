@@ -39,7 +39,7 @@ export function MapTooltip({
           <span className="text-orange-2">{description}</span>
         </p>
         <p className="text-white/50 text-sm">
-          {t("municipalities.list.rankedList.rank", {
+          {t("rankedList.rank", {
             rank: String(rank),
             total: String(total),
           })}

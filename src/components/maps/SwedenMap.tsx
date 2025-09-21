@@ -77,7 +77,7 @@ function MapOfSweden({
   geoData,
   data,
   selectedAttribute,
-  onRegionClick,
+  onRegionClick = () => {},
   defaultCenter = [63, 17],
   defaultZoom,
   propertyNameField = "name",

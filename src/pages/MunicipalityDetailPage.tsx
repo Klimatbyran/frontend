@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { useMunicipalityDetails } from "@/hooks/municipalities/useMunicipalityDetails";
 import { transformEmissionsData } from "@/types/municipality";
 import { MunicipalitySection } from "@/components/municipalities/MunicipalitySection";
-import { MunicipalityStatCard } from "@/components/municipalities/MunicipalityStatCard";
+import { DetailStatCard } from "@/components/detailPages/DetailStatCard";
 import { MunicipalityLinkCard } from "@/components/municipalities/MunicipalityLinkCard";
 import { useTranslation } from "react-i18next";
 import { PageSEO } from "@/components/SEO/PageSEO";
@@ -170,7 +170,7 @@ export function MunicipalityDetailPage() {
             </Text>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-16 mt-8">
-            <MunicipalityStatCard
+            <DetailStatCard
               title={t("municipalityDetailPage.totalEmissions", {
                 year: lastYear,
               })}
@@ -180,7 +180,7 @@ export function MunicipalityDetailPage() {
               info={true}
               infoText={t("municipalityDetailPage.totalEmissionsTooltip")}
             />
-            <MunicipalityStatCard
+            <DetailStatCard
               title={t("municipalityDetailPage.annualChangeSince2015")}
               value={formatPercentChange(
                 municipality.historicalEmissionChangePercent,
@@ -192,7 +192,7 @@ export function MunicipalityDetailPage() {
                   : "text-orange-2",
               )}
             />
-            <MunicipalityStatCard
+            <DetailStatCard
               title={t("municipalityDetailPage.consumptionEmissionsPerCapita")}
               value={localizeUnit(
                 municipality.totalConsumptionEmission,

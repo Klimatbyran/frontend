@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/layout/PageHeader";
-import SwedenMap, { DataItem } from "@/components/municipalities/map/SwedenMap";
+import SwedenMap, { DataItem } from "@/components/maps/SwedenMap";
 import regionGeoJson from "@/data/regionGeo.json";
 import { FeatureCollection } from "geojson";
 import { useRegionalData } from "@/hooks/useRegionalData";
@@ -56,15 +56,6 @@ export function RegionalRankedPage() {
     window.location.href = `/regions/${formattedName}?view=${viewMode}`;
   };
 
-  const handleRegionNameClick = (name: string) => {
-    const region = regions.find((r) => r.name === name);
-    // if (region) {
-    //   handleRegionalClick(region);
-    // } else {
-    //   window.location.href = `/regions/${name.toLowerCase()}?view=${viewMode}`;
-    // }
-  };
-
   const asDataPoint = (kpi: unknown): DataPoint<DataItem> =>
     kpi as DataPoint<DataItem>;
 
@@ -75,7 +66,6 @@ export function RegionalRankedPage() {
           geoData={geoData as FeatureCollection}
           data={regions}
           selectedAttribute={selectedKPI}
-          onRegionClick={handleRegionNameClick}
           defaultCenter={[63, 16]}
           defaultZoom={isMobile ? 4 : 5}
         />
@@ -98,10 +88,7 @@ export function RegionalRankedPage() {
         })}
         onItemClick={handleRegionalClick}
         searchKey="name"
-        searchPlaceholder={t(
-          "regions.list.rankedList.search.placeholder",
-          "Search regions...",
-        )}
+        searchPlaceholder={t("rankedList.search.placeholder")}
       />
     );
 
@@ -119,8 +106,8 @@ export function RegionalRankedPage() {
           modes={["map", "list"]}
           onChange={(mode) => setViewModeInURL(mode)}
           titles={{
-            map: t("regions.list.viewToggle.showMap", "Show Map"),
-            list: t("regions.list.viewToggle.showList", "Show List"),
+            map: t("viewModeToggle.map"),
+            list: t("viewModeToggle.list"),
           }}
           showTitles={true}
           icons={{
@@ -155,10 +142,7 @@ export function RegionalRankedPage() {
               })}
               onItemClick={handleRegionalClick}
               searchKey="name"
-              searchPlaceholder={t(
-                "regions.list.rankedList.search.placeholder",
-                "Search regions...",
-              )}
+              searchPlaceholder={t("rankedList.search.placeholder")}
             />
           ) : null}
         </div>
