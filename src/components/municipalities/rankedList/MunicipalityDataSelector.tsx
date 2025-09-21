@@ -1,9 +1,8 @@
 import { t } from "i18next";
 import { useMunicipalityKPIs } from "../../../hooks/municipalities/useMunicipalityKPIs";
-import { KPIValue } from "@/types/municipality";
 import { DataSelector } from "@/components/layout/DataSelector";
 import { BarChart3 } from "lucide-react";
-
+import { KPIValue } from "@/types/entity-rankings";
 interface MunicipalityDataSelectorProps {
   selectedKPI: KPIValue;
   onDataPointChange: (kpiValue: KPIValue) => void;

@@ -31,7 +31,6 @@ import { RequestsDashboard } from "./pages/internal-pages/RequestsDashboard";
 import { TrendAnalysisDashboard } from "./pages/internal-pages/TrendAnalysisDashboard";
 import { NewsLetterArchivePage } from "./pages/NewslettersPage";
 import { RegionalRankedPage } from "./pages/RegionalRankedPage";
-import { RegionalDetailPage } from "./pages/RegionalDetailPage";
 
 export function AppRoutes() {
   const { currentLanguage } = useLanguage();
@@ -86,10 +85,6 @@ export function AppRoutes() {
       <Route
         path={`${basePath}/regional-overview`}
         element={<RegionalRankedPage />}
-      />
-      <Route
-        path={`${basePath}/regions/:id`}
-        element={<RegionalDetailPage />}
       />
       {/* Municipalities routes */}
       <Route

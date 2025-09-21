@@ -1,5 +1,5 @@
 import { t } from "i18next";
-import { KPIValue } from "@/types/municipality";
+import { KPIValue } from "@/types/entity-rankings";
 
 export function MapTooltip({
   name,

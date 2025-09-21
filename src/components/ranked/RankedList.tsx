@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Search } from "lucide-react";
 import MultiPagePagination from "@/components/ui/multi-page-pagination";
-import { DataPoint } from "@/types/lists";
+import { DataPoint } from "@/types/entity-rankings";
 
 export interface RankedListProps<T extends Record<string, unknown>> {
   data: T[];
@@ -131,13 +131,20 @@ export function RankedList<T extends Record<string, unknown>>({
           />
         </div>
       </div>
-      <div className="flex-1 overflow-y-auto ranked-list-items">
+      <div className="flex-1 overflow-y-auto ranked-list-items min-h-[570px]">
         <div className="divide-y divide-white/10">
           {paginatedData.map((item, index) =>
             renderItem
               ? renderItem(item, index, startIndex)
               : defaultRenderItem(item, index, startIndex),
           )}
+          {/* Add empty placeholder rows to maintain height */}
+          {paginatedData.length < itemsPerPage &&
+            Array(itemsPerPage - paginatedData.length)
+              .fill(0)
+              .map((_, i) => (
+                <div key={`empty-${i}`} className="p-4 h-[50px]"></div>
+              ))}
         </div>
       </div>
       {totalPages > 1 && (

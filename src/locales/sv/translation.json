@@ -1,6 +1,7 @@
 {
   "yes": "Ja",
   "no": "Nej",
+  "noData": "Ingen data tillgänglig",
   "emissionsUnit": "tCO₂e",
   "header": {
     "companies": "Företag",
@@ -724,14 +725,6 @@
       "worstFirst": "Visa sämst först"
     }
   },
-  "regionalDetailPage": {
-    "metaTitle": "Data om utsläpp och omställning",
-    "metaDescription": "Översikt över klimatpåverkan och hållbarhetsarbete",
-    "loading": "Laddar...",
-    "error": "Fel vid inläsning av data",
-    "noData": "Ingen data tillgänglig",
-    "totalEmissions": "Totala utsläpp {{year}}"
-  },
   "municipalityDetailPage": {
     "metaTitle": "Data om utsläpp och omställning",
     "metaDescription": "Översikt över klimatpåverkan och hållbarhetsarbete",
@@ -1072,6 +1065,16 @@
       "trend": "Trend:",
       "increasing": "↗ Ökar",
       "decreasing": "↘ Minskar"
+    }
+  },
+  "regions": {
+    "kpis": {
+      "emissions": {
+        "label": "Totala utsläpp",
+        "description": "Länens totala utsläpp",
+        "detailedDescription": "De totala utsläppen av CO₂e för länet",
+        "source": "Nationella emissionsdatabasen"
+      }
     }
   },
   "municipalities": {

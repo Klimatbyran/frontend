@@ -1,35 +1,35 @@
 import { t } from "i18next";
-import { Municipality } from "@/types/municipality";
-import { KPIValue } from "@/types/entity-rankings";
-import InsightsList from "../../ranked/InsightsList";
-import KPIDetailsPanel from "../../ranked/KPIDetailsPanel";
 import { getSortedEntityKPIValues } from "@/utils/data/sorting";
+import KPIDetailsPanel from "../ranked/KPIDetailsPanel";
+import InsightsList from "../ranked/InsightsList";
+import { Region } from "@/types/region";
+import { KPIValue } from "@/types/entity-rankings";
 
 interface InsightsPanelProps {
-  municipalityData: Municipality[];
+  regionData: Region[];
   selectedKPI: KPIValue;
 }
 
-function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
-  if (!municipalityData?.length) {
+function RegionalInsightsPanel({
+  regionData,
+  selectedKPI,
+}: InsightsPanelProps) {
+  if (!regionData?.length) {
     return (
       <div className="bg-white/5 backdrop-blur-sm rounded-level-2 p-8 h-full flex items-center justify-center">
-        <p className="text-white text-lg">
-          {t("municipalities.list.insights.noData.municipality")}
-        </p>
+        <p className="text-white text-lg">{t("noData")}</p>
       </div>
     );
   }
 
-  const validData = municipalityData.filter((m) => {
-    const value = m[selectedKPI.key];
+  const validData = regionData.filter((m) => {
+    const value = m[selectedKPI.key as keyof Region];
 
     // Handle boolean values if KPI is binary
     if (selectedKPI.isBoolean) {
       return typeof value === "boolean";
     }
 
-    // Handle numeric values (existing logic)
     return typeof value === "number" && !isNaN(value as number);
   });
 
@@ -45,13 +45,13 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
     );
   }
 
-  const sortedData = getSortedEntityKPIValues(municipalityData, selectedKPI);
+  const sortedData = getSortedEntityKPIValues(regionData, selectedKPI);
 
   const topMunicipalities = sortedData.slice(0, 5);
   const bottomMunicipalities = sortedData.slice(-5).reverse();
 
   const values = validData.map((m) => {
-    const value = m[selectedKPI.key];
+    const value = m[selectedKPI.key as keyof Region];
     // Convert boolean to number for calculations if KPI is binary
     if (selectedKPI.isBoolean && typeof value === "boolean") {
       return value ? 1 : 0;
@@ -69,8 +69,10 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
     ? values.filter((val) => val === 0).length // Count of "false" values
     : values.filter((val) => val < average).length;
 
-  const nullValues = municipalityData.filter(
-    (m) => m[selectedKPI.key] === null || m[selectedKPI.key] === undefined,
+  const nullValues = regionData.filter(
+    (m) =>
+      m[selectedKPI.key as keyof Region] === null ||
+      m[selectedKPI.key as keyof Region] === undefined,
   ).length;
 
   // Adapt the data for the new KPIDetailsPanel interface
@@ -121,15 +123,15 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
 
         {!selectedKPI.isBoolean && (
           <>
-            <InsightsList<Municipality>
+            <InsightsList<Region>
               title={t(
                 selectedKPI.higherIsBetter
                   ? "municipalities.list.insights.topPerformers.titleTop"
                   : "municipalities.list.insights.topPerformers.titleBest",
               )}
               entities={topMunicipalities}
-              totalCount={municipalityData.length}
-              dataPointKey={selectedKPI.key as keyof Municipality}
+              totalCount={regionData.length}
+              dataPointKey={selectedKPI.key as keyof Region}
               unit={selectedKPI.unit}
               nullValues={selectedKPI.nullValues}
               textColor="text-blue-3"
@@ -139,9 +141,9 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
             <InsightsList
               title={t("municipalities.list.insights.improvement.title")}
               entities={bottomMunicipalities}
-              totalCount={municipalityData.length}
+              totalCount={regionData.length}
               isBottomRanking={true}
-              dataPointKey={selectedKPI.key as keyof Municipality}
+              dataPointKey={selectedKPI.key as keyof Region}
               unit={selectedKPI.unit}
               nullValues={selectedKPI.nullValues}
               textColor="text-pink-3"
@@ -155,4 +157,4 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
   );
 }
 
-export default InsightsPanel;
+export default RegionalInsightsPanel;

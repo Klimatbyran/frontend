@@ -1,31 +1,24 @@
-import type { Municipality, KPIValue } from "@/types/municipality";
+import { KPIValue } from "@/types/entity-rankings";
 
-export function getSortedMunicipalKPIValues(
-  municipalities: Municipality[],
-  kpi: KPIValue,
-): Municipality[] {
-  return [...municipalities].sort((a, b) => {
-    const aValue = a[kpi.key] ?? null;
-    const bValue = b[kpi.key] ?? null;
+export function getSortedEntityKPIValues<T>(data: T[], kpi: KPIValue): T[] {
+  return [...data].sort((a, b) => {
+    const aValue = a[kpi.key as keyof T];
+    const bValue = b[kpi.key as keyof T];
 
-    if (aValue === null && bValue === null) {
-      return 0;
-    } else if (aValue === null) {
-      return 1;
-    } else if (bValue === null) {
-      return -1;
-    }
+    // Handle null/undefined values
+    if (aValue === null || aValue === undefined) return 1;
+    if (bValue === null || bValue === undefined) return -1;
 
+    // Handle boolean values if KPI is binary
     if (kpi.isBoolean) {
-      if (kpi.higherIsBetter) {
-        // true should come first if higherIsBetter is true
-        return (bValue === true ? 1 : 0) - (aValue === true ? 1 : 0);
-      } else {
-        // false should come first if higherIsBetter is false
-        return (aValue === true ? 1 : 0) - (bValue === true ? 1 : 0);
-      }
+      const aBoolean = Boolean(aValue);
+      const bBoolean = Boolean(bValue);
+      return kpi.higherIsBetter
+        ? (bBoolean ? 1 : 0) - (aBoolean ? 1 : 0)
+        : (aBoolean ? 1 : 0) - (bBoolean ? 1 : 0);
     }
 
+    // Handle numeric values
     return kpi.higherIsBetter
       ? (bValue as number) - (aValue as number)
       : (aValue as number) - (bValue as number);

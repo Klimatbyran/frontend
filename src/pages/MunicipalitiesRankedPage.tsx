@@ -14,7 +14,7 @@ import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import { useMunicipalityKPIs } from "@/hooks/municipalities/useMunicipalityKPIs";
 import { FeatureCollection } from "geojson";
 import { Municipality } from "@/types/municipality";
-import { DataPoint } from "@/types/lists";
+import { DataPoint } from "@/types/entity-rankings";
 
 export function MunicipalitiesRankedPage() {
   const { t } = useTranslation();

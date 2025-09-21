@@ -7,15 +7,23 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import SwedenMap, { DataItem } from "@/components/maps/SwedenMap";
 import regionGeoJson from "@/data/regionGeo.json";
 import { FeatureCollection } from "geojson";
-import { useRegionalData } from "@/hooks/useRegionalData";
+import {
+  getRegionalKPIs,
+  useRegions,
+  useRegionTotalEmissions,
+} from "@/hooks/useRegions";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import RankedList from "@/components/ranked/RankedList";
-import { DataPoint } from "@/types/lists";
+import { DataPoint } from "@/types/entity-rankings";
+import RegionalInsightsPanel from "@/components/regions/RegionalInsightsPanel";
+import { Region } from "@/types/region";
+import { KPIValue } from "@/types/entity-rankings";
 
 export function RegionalRankedPage() {
   const { t } = useTranslation();
   const [geoData] = useState(regionGeoJson);
-  const regionalData = useRegionalData();
+  const { regions: regionNames } = useRegions();
+  const selectedKPI = getRegionalKPIs()[0];
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -32,18 +40,11 @@ export function RegionalRankedPage() {
   };
 
   const viewMode = getViewModeFromURL();
-  const selectedKPI = {
-    key: "emissions",
-    label: "Total Emissions",
-    unit: "ton",
-    description: "Total emissions for the region",
-    higherIsBetter: false,
-  };
 
-  const regions: DataItem[] = regionalData.getRegions().map((name) => {
-    const emissions = regionalData.getTotalEmissions(name);
+  const regions: DataItem[] = regionNames.map((name) => {
+    const { emissions: emissionsData } = useRegionTotalEmissions(name);
     const latestYear =
-      emissions.length > 0 ? emissions[emissions.length - 1] : null;
+      emissionsData.length > 0 ? emissionsData[emissionsData.length - 1] : null;
     return {
       name: name,
       id: name,
@@ -81,7 +82,7 @@ export function RegionalRankedPage() {
           higherIsBetter: selectedKPI.higherIsBetter,
           formatter: (value: unknown) => {
             if (value === null) {
-              return "N/A";
+              return t("noData");
             }
             return `${(value as number).toFixed(1)}${selectedKPI.unit}`;
           },
@@ -118,7 +119,13 @@ export function RegionalRankedPage() {
       </div>
 
       {/* Mobile View */}
-      <div className="lg:hidden space-y-6">{renderMapOrList(true)}</div>
+      <div className="lg:hidden space-y-6">
+        {renderMapOrList(true)}
+        <RegionalInsightsPanel
+          regionData={regions as unknown as Region[]}
+          selectedKPI={selectedKPI as unknown as KPIValue}
+        />
+      </div>
 
       {/* Desktop View */}
       <div className="hidden lg:grid grid-cols-1 gap-6">
@@ -146,6 +153,10 @@ export function RegionalRankedPage() {
             />
           ) : null}
         </div>
+        <RegionalInsightsPanel
+          regionData={regions as unknown as Region[]}
+          selectedKPI={selectedKPI as unknown as KPIValue}
+        />
       </div>
     </>
   );

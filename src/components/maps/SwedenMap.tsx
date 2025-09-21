@@ -14,8 +14,7 @@ import { isMobile } from "react-device-detect";
 import { t } from "i18next";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import { KPIValue } from "@/types/municipality";
-
+import { KPIValue } from "@/types/entity-rankings";
 export interface DataAttribute {
   key: string;
   label: string;

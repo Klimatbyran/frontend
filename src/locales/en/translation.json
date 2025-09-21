@@ -2,6 +2,7 @@
   "yes": "Yes",
   "no": "No",
   "emissionsUnit": "tCO₂e",
+  "noData": "No data available",
   "header": {
     "companies": "Companies",
     "municipalities": "Municipalities",
@@ -724,14 +725,6 @@
       "worstFirst": "Show worst first"
     }
   },
-  "regionalDetailPage": {
-    "metaTitle": "Data on emissions and transition",
-    "metaDescription": "Overview of emissions and transition",
-    "loading": "Loading...",
-    "error": "Error loading data",
-    "noData": "No data available",
-    "totalEmissions": "Total emissions {{year}}"
-  },
   "municipalityDetailPage": {
     "metaTitle": "Data on emissions and transition",
     "metaDescription": "Overview of emissions and transition",
@@ -1072,6 +1065,16 @@
       "trend": "Trend:",
       "increasing": "↗ Increasing",
       "decreasing": "↘ Decreasing"
+    }
+  },
+  "regions": {
+    "kpis": {
+      "emissions": {
+        "label": "Total Emissions",
+        "description": "Total emissions for the region",
+        "detailedDescription": "Total emissions of CO₂e for the region",
+        "source": "National Emissions Database"
+      }
     }
   },
   "municipalities": {
