@@ -6,13 +6,15 @@ import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
 import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/layout/PageHeader";
 import DataSelector from "@/components/municipalities/rankedList/MunicipalityDataSelector";
-import MunicipalityRankedList from "@/components/municipalities/rankedList/MunicipalityRankedList";
+import RankedList from "@/components/RankedList";
 import InsightsPanel from "@/components/municipalities/rankedList/MunicipalityInsightsPanel";
 import MapOfSweden from "@/components/municipalities/map/SwedenMap";
 import municipalityGeoJson from "@/data/municipalityGeo.json";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import { useMunicipalityKPIs } from "@/hooks/municipalities/useMunicipalityKPIs";
 import { FeatureCollection } from "geojson";
+import { Municipality } from "@/types/municipality";
+import { DataPoint } from "@/types/data-point";
 
 export function MunicipalitiesRankedPage() {
   const { t } = useTranslation();
@@ -58,9 +60,19 @@ export function MunicipalitiesRankedPage() {
     }
   }, [getKPIFromURL, selectedKPI.label]);
 
-  const handleMunicipalityClick = (name: string) => {
-    const formattedName = name.toLowerCase();
+  const handleMunicipalityClick = (municipality: Municipality) => {
+    const formattedName = municipality.name.toLowerCase();
     window.location.href = `/municipalities/${formattedName}?view=${viewMode}`;
+  };
+
+  // Create an adapter for MapOfSweden
+  const handleMunicipalityNameClick = (name: string) => {
+    const municipality = municipalities.find((m) => m.name === name);
+    if (municipality) {
+      handleMunicipalityClick(municipality);
+    } else {
+      window.location.href = `/municipalities/${name.toLowerCase()}?view=${viewMode}`;
+    }
   };
 
   if (loading) {
@@ -96,14 +108,37 @@ export function MunicipalitiesRankedPage() {
           geoData={geoData as FeatureCollection}
           data={municipalities.map((m) => ({ ...m, id: m.name }))}
           selectedAttribute={selectedKPI}
-          onRegionClick={handleMunicipalityClick}
+          onRegionClick={handleMunicipalityNameClick}
         />
       </div>
     ) : (
-      <MunicipalityRankedList
-        municipalityData={municipalities}
-        selectedKPI={selectedKPI}
-        onMunicipalityClick={handleMunicipalityClick}
+      <RankedList
+        data={municipalities}
+        selectedDataPoint={{
+          ...(selectedKPI as unknown as DataPoint<Municipality>),
+          formatter: (value) => {
+            if (value === null) {
+              return selectedKPI.nullValues || "N/A";
+            }
+
+            if (typeof value === "boolean") {
+              return value
+                ? t(
+                    `municipalities.list.kpis.${selectedKPI.key}.booleanLabels.true`,
+                  )
+                : t(
+                    `municipalities.list.kpis.${selectedKPI.key}.booleanLabels.false`,
+                  );
+            }
+
+            return `${(value as number).toFixed(1)}${selectedKPI.unit}`;
+          },
+        }}
+        onItemClick={handleMunicipalityClick}
+        searchKey="name"
+        searchPlaceholder={t(
+          "municipalities.list.rankedList.search.placeholder",
+        )}
       />
     );
 
@@ -154,10 +189,33 @@ export function MunicipalitiesRankedPage() {
         <div className="grid grid-cols-2 gap-6">
           {renderMapOrList(false)}
           {viewMode === "map" ? (
-            <MunicipalityRankedList
-              municipalityData={municipalities}
-              selectedKPI={selectedKPI}
-              onMunicipalityClick={handleMunicipalityClick}
+            <RankedList
+              data={municipalities}
+              selectedDataPoint={{
+                ...(selectedKPI as unknown as DataPoint<Municipality>),
+                formatter: (value) => {
+                  if (value === null) {
+                    return selectedKPI.nullValues || "N/A";
+                  }
+
+                  if (typeof value === "boolean") {
+                    return value
+                      ? t(
+                          `municipalities.list.kpis.${selectedKPI.key}.booleanLabels.true`,
+                        )
+                      : t(
+                          `municipalities.list.kpis.${selectedKPI.key}.booleanLabels.false`,
+                        );
+                  }
+
+                  return `${(value as number).toFixed(1)}${selectedKPI.unit}`;
+                },
+              }}
+              onItemClick={handleMunicipalityClick}
+              searchKey="name"
+              searchPlaceholder={t(
+                "municipalities.list.rankedList.search.placeholder",
+              )}
             />
           ) : null}
         </div>
