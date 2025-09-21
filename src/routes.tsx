@@ -83,7 +83,7 @@ export function AppRoutes() {
         />
       </Route>
       <Route
-        path={`${basePath}/national-overview`}
+        path={`${basePath}/regional-overview`}
         element={<RegionalRankedPage />}
       />
       ß{/* Municipalities routes */}

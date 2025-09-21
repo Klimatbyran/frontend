@@ -1,16 +1,7 @@
 import { useState } from "react";
 import { Search } from "lucide-react";
 import MultiPagePagination from "@/components/ui/multi-page-pagination";
-
-interface DataPoint<T> {
-  label: string;
-  key: keyof T;
-  unit?: string;
-  description?: string;
-  higherIsBetter: boolean;
-  nullValues?: string;
-  formatter?: (value: T[keyof T]) => string | React.ReactNode;
-}
+import { DataPoint } from "@/types/lists";
 
 export interface RankedListProps<T extends Record<string, unknown>> {
   data: T[];

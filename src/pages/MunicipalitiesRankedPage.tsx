@@ -14,7 +14,7 @@ import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import { useMunicipalityKPIs } from "@/hooks/municipalities/useMunicipalityKPIs";
 import { FeatureCollection } from "geojson";
 import { Municipality } from "@/types/municipality";
-import { DataPoint } from "@/types/data-point";
+import { DataPoint } from "@/types/lists";
 
 export function MunicipalitiesRankedPage() {
   const { t } = useTranslation();
@@ -114,9 +114,14 @@ export function MunicipalitiesRankedPage() {
     ) : (
       <RankedList
         data={municipalities}
-        selectedDataPoint={{
-          ...(selectedKPI as unknown as DataPoint<Municipality>),
-          formatter: (value) => {
+        selectedDataPoint={asDataPoint({
+          label: selectedKPI.label,
+          key: selectedKPI.key as keyof Municipality,
+          unit: selectedKPI.unit,
+          description: selectedKPI.description,
+          higherIsBetter: selectedKPI.higherIsBetter,
+          nullValues: selectedKPI.nullValues,
+          formatter: (value: unknown) => {
             if (value === null) {
               return selectedKPI.nullValues || "N/A";
             }
@@ -133,7 +138,7 @@ export function MunicipalitiesRankedPage() {
 
             return `${(value as number).toFixed(1)}${selectedKPI.unit}`;
           },
-        }}
+        })}
         onItemClick={handleMunicipalityClick}
         searchKey="name"
         searchPlaceholder={t(
@@ -191,9 +196,14 @@ export function MunicipalitiesRankedPage() {
           {viewMode === "map" ? (
             <RankedList
               data={municipalities}
-              selectedDataPoint={{
-                ...(selectedKPI as unknown as DataPoint<Municipality>),
-                formatter: (value) => {
+              selectedDataPoint={asDataPoint({
+                label: selectedKPI.label,
+                key: selectedKPI.key as unknown as keyof Municipality,
+                unit: selectedKPI.unit,
+                description: selectedKPI.description,
+                higherIsBetter: selectedKPI.higherIsBetter,
+                nullValues: selectedKPI.nullValues,
+                formatter: (value: unknown) => {
                   if (value === null) {
                     return selectedKPI.nullValues || "N/A";
                   }
@@ -210,7 +220,7 @@ export function MunicipalitiesRankedPage() {
 
                   return `${(value as number).toFixed(1)}${selectedKPI.unit}`;
                 },
-              }}
+              })}
               onItemClick={handleMunicipalityClick}
               searchKey="name"
               searchPlaceholder={t(
@@ -227,3 +237,6 @@ export function MunicipalitiesRankedPage() {
     </>
   );
 }
+
+const asDataPoint = (kpi: unknown): DataPoint<Municipality> =>
+  kpi as DataPoint<Municipality>;
