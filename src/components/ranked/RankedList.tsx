@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Search } from "lucide-react";
 import MultiPagePagination from "@/components/ui/multi-page-pagination";
 import { DataPoint } from "@/types/entity-rankings";
+import { t } from "i18next";
 
 export interface RankedListProps<T extends Record<string, unknown>> {
   data: T[];
@@ -21,8 +22,8 @@ export function RankedList<T extends Record<string, unknown>>({
   searchKey = "name" as keyof T,
   itemsPerPage = 10,
   renderItem,
-  className = "",
-  searchPlaceholder = "Search...",
+  className,
+  searchPlaceholder,
 }: RankedListProps<T>) {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -78,11 +79,11 @@ export function RankedList<T extends Record<string, unknown>>({
 
     // Default formatting logic
     if (value === null) {
-      return selectedDataPoint.nullValues || "N/A";
+      return selectedDataPoint.nullValues || t("noData");
     }
 
     if (typeof value === "boolean") {
-      return value ? "Yes" : "No";
+      return value ? t("yes") : t("no");
     }
 
     if (typeof value === "number") {

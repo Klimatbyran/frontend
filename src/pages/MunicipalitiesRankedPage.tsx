@@ -123,7 +123,7 @@ export function MunicipalitiesRankedPage() {
           nullValues: selectedKPI.nullValues,
           formatter: (value: unknown) => {
             if (value === null) {
-              return selectedKPI.nullValues || "N/A";
+              return selectedKPI.nullValues || t("noData");
             }
 
             if (typeof value === "boolean") {
@@ -203,7 +203,7 @@ export function MunicipalitiesRankedPage() {
                 nullValues: selectedKPI.nullValues,
                 formatter: (value: unknown) => {
                   if (value === null) {
-                    return selectedKPI.nullValues || "N/A";
+                    return selectedKPI.nullValues || t("noData");
                   }
 
                   if (typeof value === "boolean") {

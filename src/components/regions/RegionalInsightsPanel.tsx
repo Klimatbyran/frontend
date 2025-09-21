@@ -37,7 +37,7 @@ function RegionalInsightsPanel({
     return (
       <div className="bg-white/5 backdrop-blur-sm rounded-level-2 p-8 h-full flex items-center justify-center">
         <p className="text-white text-lg">
-          {t("municipalities.list.insights.noData.metric", {
+          {t("noData", {
             metric: selectedKPI.label,
           })}
         </p>
@@ -135,7 +135,7 @@ function RegionalInsightsPanel({
               unit={selectedKPI.unit}
               nullValues={selectedKPI.nullValues}
               textColor="text-blue-3"
-              entityType="municipalities"
+              entityType="regions"
               nameKey="name"
             />
             <InsightsList
@@ -147,7 +147,7 @@ function RegionalInsightsPanel({
               unit={selectedKPI.unit}
               nullValues={selectedKPI.nullValues}
               textColor="text-pink-3"
-              entityType="municipalities"
+              entityType="regions"
               nameKey="name"
             />
           </>

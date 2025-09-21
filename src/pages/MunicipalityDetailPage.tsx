@@ -56,7 +56,7 @@ export function MunicipalityDetailPage() {
   const lastYear = lastYearEmissions?.year;
   const lastYearEmissionsTon = lastYearEmissions
     ? formatEmissionsAbsolute(lastYearEmissions.value, currentLanguage)
-    : "N/A";
+    : t("noData");
 
   const availableYears = sectorEmissions?.sectors
     ? Object.keys(sectorEmissions.sectors)

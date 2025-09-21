@@ -32,24 +32,35 @@ function InsightsList<T>({
         const position = isBottomRanking ? totalCount - index : index + 1;
         const name = String(entity[nameKey]);
 
-        return (
+        const content = (
+          <div className="flex items-center justify-between p-2">
+            <div className="flex items-center gap-2">
+              <span className="text-orange-2">{position}</span>
+              <span>{name}</span>
+            </div>
+            <span className={`${textColor} font-semibold`}>
+              {entity[dataPointKey] != null
+                ? (entity[dataPointKey] as number).toFixed(1) + unit
+                : nullValues}
+            </span>
+          </div>
+        );
+
+        return entityType === "municipalities" ? (
           <LocalizedLink
             key={name}
             to={`/${entityType}/${name}`}
             className="block transition-colors hover:bg-white/5 rounded-lg"
           >
-            <div className="flex items-center justify-between p-2">
-              <div className="flex items-center gap-2">
-                <span className="text-orange-2">{position}</span>
-                <span>{name}</span>
-              </div>
-              <span className={`${textColor} font-semibold`}>
-                {entity[dataPointKey] != null
-                  ? (entity[dataPointKey] as number).toFixed(1) + unit
-                  : nullValues}
-              </span>
-            </div>
+            {content}
           </LocalizedLink>
+        ) : (
+          <div
+            key={name}
+            className="block transition-colors hover:bg-white/5 rounded-lg"
+          >
+            {content}
+          </div>
         );
       })}
     </div>
