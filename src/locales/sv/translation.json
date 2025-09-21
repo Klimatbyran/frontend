@@ -724,6 +724,14 @@
       "worstFirst": "Visa sämst först"
     }
   },
+  "regionalDetailPage": {
+    "metaTitle": "Data om utsläpp och omställning",
+    "metaDescription": "Översikt över klimatpåverkan och hållbarhetsarbete",
+    "loading": "Laddar...",
+    "error": "Fel vid inläsning av data",
+    "noData": "Ingen data tillgänglig",
+    "totalEmissions": "Totala utsläpp {{year}}"
+  },
   "municipalityDetailPage": {
     "metaTitle": "Data om utsläpp och omställning",
     "metaDescription": "Översikt över klimatpåverkan och hållbarhetsarbete",
@@ -1176,12 +1184,6 @@
       "viewToggle": {
         "showList": "Visa lista",
         "showMap": "Visa karta"
-      },
-      "rankedList": {
-        "search": {
-          "placeholder": "Sök kommuner..."
-        },
-        "rank": "Placering: {{rank}} av {{total}}"
       }
     }
   },
@@ -1336,6 +1338,16 @@
   "dataGuide": {
     "buttonFallbackTitle": "Förstå datan",
     "selectItemPrompt": "Välj ett ämne du vill veta mer om"
+  },
+  "viewModeToggle": {
+    "map": "Karta",
+    "list": "Lista"
+  },
+  "rankedList": {
+    "search": {
+      "placeholder": "Sök..."
+    },
+    "rank": "Placering: {{rank}} av {{total}}"
   },
   "chartLegend": {
     "clickToFilterOut": "Klicka för att filtrera bort",

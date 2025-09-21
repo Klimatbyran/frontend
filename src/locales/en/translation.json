@@ -724,6 +724,14 @@
       "worstFirst": "Show worst first"
     }
   },
+  "regionalDetailPage": {
+    "metaTitle": "Data on emissions and transition",
+    "metaDescription": "Overview of emissions and transition",
+    "loading": "Loading...",
+    "error": "Error loading data",
+    "noData": "No data available",
+    "totalEmissions": "Total emissions {{year}}"
+  },
   "municipalityDetailPage": {
     "metaTitle": "Data on emissions and transition",
     "metaDescription": "Overview of emissions and transition",
@@ -1176,12 +1184,6 @@
       "viewToggle": {
         "showList": "Show List",
         "showMap": "Show Map"
-      },
-      "rankedList": {
-        "search": {
-          "placeholder": "Search municipalities..."
-        },
-        "rank": "Rank: {{rank}} of {{total}}"
       }
     }
   },
@@ -1336,6 +1338,16 @@
   "dataGuide": {
     "buttonFallbackTitle": "Learn more about these metrics",
     "selectItemPrompt": "Select a topic you want to learn more about"
+  },
+  "viewModeToggle": {
+    "map": "Map",
+    "list": "List"
+  },
+  "rankedList": {
+    "search": {
+      "placeholder": "Search..."
+    },
+    "rank": "Rank: {{rank}} of {{total}}"
   },
   "chartLegend": {
     "clickToFilterOut": "Click to filter out",
