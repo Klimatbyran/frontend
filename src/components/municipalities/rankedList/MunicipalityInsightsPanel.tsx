@@ -1,6 +1,6 @@
 import { t } from "i18next";
 import { KPIValue, Municipality } from "@/types/municipality";
-import InsightsList from "./MunicipalityInsightsList";
+import InsightsList from "../../ranked/InsightsList";
 import KPIDetailsPanel from "../../ranked/KPIDetailsPanel";
 import { getSortedMunicipalKPIValues } from "@/utils/data/sorting";
 
@@ -120,28 +120,32 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
 
         {!selectedKPI.isBoolean && (
           <>
-            <InsightsList
+            <InsightsList<Municipality>
               title={t(
                 selectedKPI.higherIsBetter
                   ? "municipalities.list.insights.topPerformers.titleTop"
                   : "municipalities.list.insights.topPerformers.titleBest",
               )}
-              municipalities={topMunicipalities}
+              entities={topMunicipalities}
               totalCount={municipalityData.length}
-              dataPointKey={selectedKPI.key}
+              dataPointKey={selectedKPI.key as keyof Municipality}
               unit={selectedKPI.unit}
               nullValues={selectedKPI.nullValues}
               textColor="text-blue-3"
+              entityType="municipalities"
+              nameKey="name"
             />
             <InsightsList
               title={t("municipalities.list.insights.improvement.title")}
-              municipalities={bottomMunicipalities}
+              entities={bottomMunicipalities}
               totalCount={municipalityData.length}
               isBottomRanking={true}
-              dataPointKey={selectedKPI.key}
+              dataPointKey={selectedKPI.key as keyof Municipality}
               unit={selectedKPI.unit}
               nullValues={selectedKPI.nullValues}
               textColor="text-pink-3"
+              entityType="municipalities"
+              nameKey="name"
             />
           </>
         )}

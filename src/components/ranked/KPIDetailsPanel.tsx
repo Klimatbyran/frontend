@@ -1,4 +1,5 @@
 import { t } from "i18next";
+import { Fragment } from "react/jsx-runtime";
 
 interface DistributionStat {
   count: number;
@@ -37,10 +38,9 @@ export default function KPIDetailsPanel({
     <p className="text-gray-400 text-sm border-gray-700/50 italic">
       {t("municipalities.list.source")}{" "}
       {sourceLinks.map((link, index) => (
-        <>
+        <Fragment key={link.url}>
           {index > 0 && ", "}
           <a
-            key={link.url}
             href={link.url}
             target="_blank"
             rel="noopener noreferrer"
@@ -49,7 +49,7 @@ export default function KPIDetailsPanel({
           >
             {t(link.label)}
           </a>
-        </>
+        </Fragment>
       ))}
     </p>
   );

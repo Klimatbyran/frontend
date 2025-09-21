@@ -30,7 +30,7 @@ export const useMunicipalityKPIs = (): KPIValue[] => {
       ),
       key: "historicalEmissionChangePercent",
       unit: "%",
-      source: "municipalities.list.historicalEmissionChangePercent.source",
+      source: "municipalities.list.kpis.historicalEmissionChangePercent.source",
       sourceUrls: ["https://nationellaemissionsdatabasen.smhi.se/"],
       description: t(
         "municipalities.list.kpis.historicalEmissionChangePercent.description",
@@ -44,7 +44,7 @@ export const useMunicipalityKPIs = (): KPIValue[] => {
       label: t("municipalities.list.kpis.electricCarChangePercent.label"),
       key: "electricCarChangePercent",
       unit: "%",
-      source: "municipalities.list.electricCarChangePercent.source",
+      source: "municipalities.list.kpis.electricCarChangePercent.source",
       sourceUrls: ["https://www.trafa.se/vagtrafik/fordon/"],
       description: t(
         "municipalities.list.kpis.electricCarChangePercent.description",
@@ -61,7 +61,7 @@ export const useMunicipalityKPIs = (): KPIValue[] => {
       label: t("municipalities.list.kpis.totalConsumptionEmission.label"),
       key: "totalConsumptionEmission",
       unit: "t",
-      source: "municipalities.list.totalConsumptionEmission.source",
+      source: "municipalities.list.kpis.totalConsumptionEmission.source",
       sourceUrls: ["https://konsumtionskompassen.se/"],
       description: t(
         "municipalities.list.kpis.totalConsumptionEmission.description",
@@ -75,7 +75,7 @@ export const useMunicipalityKPIs = (): KPIValue[] => {
       label: t("municipalities.list.kpis.electricVehiclePerChargePoints.label"),
       key: "electricVehiclePerChargePoints",
       unit: "",
-      source: "municipalities.list.electricVehiclePerChargePoints.source",
+      source: "municipalities.list.kpis.electricVehiclePerChargePoints.source",
       sourceUrls: ["https://powercircle.org/elbilsstatistik/"],
       description: t(
         "municipalities.list.kpis.electricVehiclePerChargePoints.description",

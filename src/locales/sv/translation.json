@@ -1122,7 +1122,7 @@
           "label": "Parisavtalet",
           "description": "Utsläppstrend jämfört med Parisavtalet",
           "detailedDescription": "Vilka kommuner är på väg att klara Parisavtalet?",
-          "source": "<0>Nationella emissionsdatabasen</0>",
+          "source": "Nationella emissionsdatabasen",
           "booleanLabels": {
             "true": "Klarar Parisavtalet",
             "false": "Missar Parisavtalet"
@@ -1134,32 +1134,32 @@
           "label": "Utsläppen",
           "description": "Historisk förändring av utsläpp",
           "detailedDescription": "Genomsnittlig årlig förändring av växthusgasutsläppen i Sveriges kommuner sedan Parisavtalet 2015",
-          "source": "<0>Nationella emissionsdatabasen</0>"
+          "source": "Nationella emissionsdatabasen"
         },
         "electricCarChangePercent": {
           "label": "Elbilarna",
           "description": "Förändring i andel elbilar",
           "detailedDescription": "Ökningstakten i kommunerna för andel nyregistrerade laddbara bilar 2015–2024, angivet i procentenheter per år.",
-          "source": "<0>Trafikanalys</0>"
+          "source": "Trafikanalys"
         },
         "totalConsumptionEmission": {
           "label": "Konsumtionen",
           "description": "Totala utsläpp från konsumtion",
           "detailedDescription": "Hushållens konsumtionsutsläpp (CO₂e) i ton per invånare och kommun år 2022. År 2050 ska utsläppen vara högst 1 ton per person och år för att ligga i linje med Parisavtalet",
-          "source": "<0>Stockholm Environment Institute (2025), Konsumtionskompassen. Licens: CC BY-NC-ND 4.0.</0>"
+          "source": "Stockholm Environment Institute (2025), Konsumtionskompassen. Licens: CC BY-NC-ND 4.0."
         },
         "electricVehiclePerChargePoints": {
           "label": "Laddarna",
           "description": "Antal elbilar per laddningspunkt",
           "detailedDescription": "Antal elbilar per publik laddningspunkt per kommun år 2024. Ju färre bilar per laddningspunkt desto bättre, god infrastruktur gynnar ökad elbilskonsumtion",
-          "source": "<0>Power Circle</0>",
+          "source": "Power Circle",
           "nullValues": "Saknar laddpunkter"
         },
         "bicycleMetrePerCapita": {
           "label": "Cyklarna",
           "description": "Meter cykelväg per invånare",
           "detailedDescription": "Antal meter cykelväg per invånare per kommun år 2024. Ju längre desto bättre, god infrastruktur gynnar ökad cykling",
-          "source": "<0>Nationella Vägdatabasen</0>, <1>Trafikverket</1>"
+          "source": "Nationella Vägdatabasen, Trafikverket"
         }
       },
       "insights": {

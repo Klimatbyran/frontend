@@ -1122,7 +1122,7 @@
           "label": "Paris Agreement",
           "description": "Emissions trend compared to the Paris Agreement",
           "detailedDescription": "Which municipalities are on track to meet the Paris Agreement?",
-          "source": "<0>National Emissions Database</0>",
+          "source": "National Emissions Database",
           "booleanLabels": {
             "true": "Meets Paris Agreement",
             "false": "Fails Paris Agreement"
@@ -1134,32 +1134,32 @@
           "label": "Emissions",
           "description": "Historical change in emissions",
           "detailedDescription": "Average annual change in greenhouse gas emissions in Swedish municipalities since the Paris Agreement in 2015.",
-          "source": "<0>National Emissions Database</0>"
+          "source": "National Emissions Database"
         },
         "electricCarChangePercent": {
           "label": "Electric Cars",
           "description": "Change in electric car adoption",
           "detailedDescription": "The growth rate in municipalities for the share of newly registered rechargeable cars 2015-2024, stated in percentage points per year.",
-          "source": "<0>Transport Analysis</0>"
+          "source": "Transport Analysis"
         },
         "totalConsumptionEmission": {
           "label": "Consumption",
           "description": "Total emissions from consumption",
           "detailedDescription": "Household consumption emissions (CO₂e) in tonnes per inhabitant and municipality in 2022. By 2050, emissions should be at most 1 tonne per person per year to be in line with the Paris Agreement.",
-          "source": "<0>Stockholm Environment Institute (2025), Konsumtionskompassen. Licensed under CC BY-NC-ND 4.0.</0>"
+          "source": "Stockholm Environment Institute (2025), Konsumtionskompassen. Licensed under CC BY-NC-ND 4.0."
         },
         "electricVehiclePerChargePoints": {
           "label": "Charging Stations",
           "description": "Number of electric vehicles per charging point",
           "detailedDescription": "Number of electric vehicles per public charging point, per municipality in 2024. Lower numbers are better, as good infrastructure promotes increased electric vehicle adoption.",
-          "source": "<0>Power Circle</0>",
+          "source": "Power Circle",
           "nullValues": "No charging points"
         },
         "bicycleMetrePerCapita": {
           "label": "Bicycles",
           "description": "Bicycle path metres per capita",
           "detailedDescription": "Number of metres of bicycle paths per inhabitant per municipality in 2024. Longer is better, as good infrastructure promotes increased cycling.",
-          "source": "<0>National Road Database</0>, <1>Swedish Transport Administration</1>"
+          "source": "National Road Database, Swedish Transport Administration"
         }
       },
       "insights": {
