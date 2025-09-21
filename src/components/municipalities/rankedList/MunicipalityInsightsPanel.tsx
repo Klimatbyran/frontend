@@ -1,7 +1,7 @@
 import { t } from "i18next";
 import { KPIValue, Municipality } from "@/types/municipality";
 import InsightsList from "./MunicipalityInsightsList";
-import KPIDetailsPanel from "./KPIDetailsPanel";
+import KPIDetailsPanel from "../../ranked/KPIDetailsPanel";
 import { getSortedMunicipalKPIValues } from "@/utils/data/sorting";
 
 interface InsightsPanelProps {
@@ -67,9 +67,41 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
   const belowAverageCount = selectedKPI.isBoolean
     ? values.filter((val) => val === 0).length // Count of "false" values
     : values.filter((val) => val < average).length;
+
   const nullValues = municipalityData.filter(
     (m) => m[selectedKPI.key] === null || m[selectedKPI.key] === undefined,
   ).length;
+
+  // Adapt the data for the new KPIDetailsPanel interface
+  const distributionStats = [
+    {
+      count: aboveAverageCount,
+      colorClass: "text-blue-3",
+      label: selectedKPI.isBoolean
+        ? selectedKPI.booleanLabels?.true || t("yes")
+        : t("municipalities.list.insights.keyStatistics.distributionAbove"),
+    },
+    {
+      count: belowAverageCount,
+      colorClass: "text-pink-3",
+      label: selectedKPI.isBoolean
+        ? selectedKPI.booleanLabels?.false || t("no")
+        : t("municipalities.list.insights.keyStatistics.distributionBelow"),
+    },
+  ];
+
+  // Format the average value for display
+  const formattedAverage = !selectedKPI.isBoolean
+    ? `${average.toFixed(1)}${selectedKPI.unit || ""}`
+    : undefined;
+
+  const sourceLinks =
+    selectedKPI.sourceUrls?.map((url, i) => ({
+      url,
+      label: Array.isArray(selectedKPI.source)
+        ? selectedKPI.source[i] || ""
+        : selectedKPI.source || "",
+    })) || [];
 
   return (
     <div className="flex-1 overflow-y-auto min-h-0 pr-2">
@@ -77,11 +109,13 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
         className={`${!selectedKPI.isBoolean ? "space-y-6 md:space-y-0 md:grid md:grid-cols-3 md:gap-6" : ""} `}
       >
         <KPIDetailsPanel
-          selectedKPI={selectedKPI}
-          average={average}
-          aboveAverageCount={aboveAverageCount}
-          belowAverageCount={belowAverageCount}
-          nullValues={nullValues}
+          title={selectedKPI.label}
+          averageValue={formattedAverage}
+          averageLabel={t("municipalities.list.insights.keyStatistics.average")}
+          distributionStats={distributionStats}
+          missingDataCount={nullValues}
+          missingDataLabel={selectedKPI.nullValues}
+          sourceLinks={sourceLinks}
         />
 
         {!selectedKPI.isBoolean && (

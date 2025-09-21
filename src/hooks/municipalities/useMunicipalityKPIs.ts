@@ -9,7 +9,7 @@ export const useMunicipalityKPIs = (): KPIValue[] => {
       label: t("municipalities.list.kpis.meetsParisGoal.label"),
       key: "meetsParisGoal",
       unit: "",
-      source: "municipalities.list.meetsParisGoal.source",
+      source: "municipalities.list.kpis.meetsParisGoal.source",
       sourceUrls: ["https://nationellaemissionsdatabasen.smhi.se/"],
       description: t("municipalities.list.kpis.meetsParisGoal.description"),
       detailedDescription: t(
@@ -92,7 +92,7 @@ export const useMunicipalityKPIs = (): KPIValue[] => {
       label: t("municipalities.list.kpis.bicycleMetrePerCapita.label"),
       key: "bicycleMetrePerCapita",
       unit: "m",
-      source: "municipalities.list.bicycleMetrePerCapita.source",
+      source: "municipalities.list.kpis.bicycleMetrePerCapita.source",
       sourceUrls: [
         "https://nvdbpakarta.trafikverket.se/map",
         "https://www.scb.se/hitta-statistik/statistik-efter-amne/befolkning-och-levnadsforhallanden/befolkningens-sammansattning-och-utveckling/befolkningsstatistik/",

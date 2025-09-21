@@ -6,7 +6,7 @@ import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
 import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/layout/PageHeader";
 import DataSelector from "@/components/municipalities/rankedList/MunicipalityDataSelector";
-import RankedList from "@/components/RankedList";
+import RankedList from "@/components/ranked/RankedList";
 import InsightsPanel from "@/components/municipalities/rankedList/MunicipalityInsightsPanel";
 import MapOfSweden from "@/components/maps/SwedenMap";
 import municipalityGeoJson from "@/data/municipalityGeo.json";

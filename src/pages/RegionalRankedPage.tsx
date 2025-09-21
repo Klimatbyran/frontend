@@ -9,7 +9,7 @@ import regionGeoJson from "@/data/regionGeo.json";
 import { FeatureCollection } from "geojson";
 import { useRegionalData } from "@/hooks/useRegionalData";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
-import RankedList from "@/components/RankedList";
+import RankedList from "@/components/ranked/RankedList";
 import { DataPoint } from "@/types/lists";
 
 export function RegionalRankedPage() {
