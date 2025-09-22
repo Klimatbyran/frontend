@@ -820,6 +820,10 @@
     "carl": {
       "role": "Developer",
       "description": "I’m a frontend developer who loves nature, climbing, and creating tools that make climate data easier to understand. At Klimatkollen, I code, support our volunteers, and try to find the perfect GIFs for every occasion."
+    },
+    "mikael": {
+      "role": "Developer",
+      "description": ""
     }
   },
   "board": {

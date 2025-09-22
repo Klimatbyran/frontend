@@ -816,11 +816,15 @@
     "elin": {
       "role": "Utvecklare",
       "description": "AI- och backendutvecklare med fokus på att skapa tillförlitliga och produktionsklara AI-lösningar. Har en bakgrund både som konsult och inom forskning. Hjälper Klimatkollen i arbetet med att använda AI för att tillgängliggöra klimatdata."
-    },
-    "carl": {
-      "role": "Utvecklare",
-      "description": "Jag är en frontend-utvecklare som älskar naturen, klättring och att bygga verktyg som gör klimatdata lättare att förstå. På Klimatkollen kodar jag, stötta våra volontärer och försöka hitta den perfekta GIF:en för varje tillfälle."
-    }
+      },
+      "carl": {
+        "role": "Utvecklare",
+        "description": "Jag är en frontend-utvecklare som älskar naturen, klättring och att bygga verktyg som gör klimatdata lättare att förstå. På Klimatkollen kodar jag, stötta våra volontärer och försöka hitta den perfekta GIF:en för varje tillfälle."
+      },
+      "mikael": {
+        "role": "Utvecklare",
+        "description": ""
+      }
   },
   "board": {
     "ola": {
