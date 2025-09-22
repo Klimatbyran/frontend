@@ -14,6 +14,7 @@ import { useScreenSize } from "@/hooks/useScreenSize";
 import { localizeUnit } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useBlogPost, useBlogPosts } from "@/hooks/useBlogPosts";
+import { LocalizedLink } from "@/components/LocalizedLink";
 
 export function BlogDetailPage() {
   const { t } = useTranslation();
@@ -75,7 +76,7 @@ export function BlogDetailPage() {
           <LocalizedLink to="/articles">
             <ArrowLeft className="w-4 h-4" />
             {t("blogDetailPage.back")}
-          </Link>
+          </LocalizedLink>
         </Button>
         <Button
           variant="ghost"
