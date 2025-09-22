@@ -1,16 +1,8 @@
-import { BarChart3, ChevronDown, Menu, X, Mail } from "lucide-react";
-import { useLocation, matchPath } from "react-router-dom";
+import { BarChart3, Menu, X, Mail } from "lucide-react";
+import { useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useState, useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarShortcut,
-  MenubarTrigger,
-} from "@/components/ui/menubar";
 import { NewsletterPopover } from "../NewsletterPopover";
 import { useLanguage } from "../LanguageProvider";
 import { HeaderSearchButton } from "../search/HeaderSearchButton";
@@ -26,11 +18,17 @@ import {
   NavigationMenuTrigger,
 } from "../ui/navigation-menu";
 
+interface NavSubLink {
+  label: string;
+  path: string;
+  shortcut?: string;
+}
+
 interface NavLink {
   label: string;
   icon?: JSX.Element;
   path: string;
-  sublinks?: { label: string; path: string; shortcut?: string }[];
+  sublinks?: NavSubLink[];
 }
 
 const NAV_LINKS: NavLink[] = [
@@ -103,6 +101,36 @@ const INTERNAL_LINKS = [
   },
 ];
 
+const SubLinksMenu = ({ sublinks }: { sublinks: NavSubLink[] }) => {
+  const { t } = useTranslation();
+
+  return (
+    <ul>
+      {sublinks.map((sublink) => (
+        <li key={sublink.path} className="hover:bg-black-1 px-2 py-1.5 text-sm">
+          {sublink.path.startsWith("https://") ? (
+            <a
+              href={sublink.path}
+              className="flex justify-between w-full"
+              target="_blank"
+              key={sublink.path}
+            >
+              {t(sublink.label)}
+            </a>
+          ) : (
+            <LocalizedLink
+              to={sublink.path}
+              className="flex justify-between w-full"
+            >
+              {t(sublink.label)}
+            </LocalizedLink>
+          )}
+        </li>
+      ))}
+    </ul>
+  );
+};
+
 export function Header() {
   const { t } = useTranslation();
   const { currentLanguage, changeLanguage } = useLanguage();
@@ -112,6 +140,9 @@ export function Header() {
   const toggleMenu = useCallback(() => setMenuOpen((prev) => !prev), []);
   const { user } = useAuth();
   const { headerTitle, showTitle, setShowTitle } = useHeaderTitle();
+
+  // Radix menu for React doesn't have a way to turn this off, simulate it by a really long delay
+  const disableOpenOnHoverDelay = 999999;
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -157,7 +188,12 @@ export function Header() {
   );
 
   return (
-    <header className={cn("w-screen flex bg-black-2", "h-10 lg:h-12")}>
+    <header
+      className={cn(
+        "fixed top-0 left-0 w-screen flex items-center justify-between bg-black-2 p-4 z-50",
+        "h-10 lg:h-12",
+      )}
+    >
       <LocalizedLink
         to="/"
         className="flex items-center gap-2 text-base font-medium"
@@ -166,15 +202,20 @@ export function Header() {
       </LocalizedLink>
 
       {/* Desktop Navigation */}
-      <NavigationMenu className="hidden lg:flex items-center gap-6">
+      <NavigationMenu
+        className="hidden lg:flex items-center ml-auto"
+        delayDuration={disableOpenOnHoverDelay}
+      >
         <NavigationMenuList>
           {NAV_LINKS.map((item) =>
             item.sublinks ? (
               <NavigationMenuItem>
                 <NavigationMenuTrigger
                   className={cn(
-                    "flex gap-2",
-                    location.pathname.startsWith(item.path)
+                    "flex gap-2 p-3",
+                    location.pathname.startsWith(
+                      localizedPath(currentLanguage, item.path),
+                    )
                       ? "bg-black-1 text-white"
                       : "text-grey hover:text-white",
                   )}
@@ -182,22 +223,14 @@ export function Header() {
                   {item.icon}
                   {t(item.label)}
                 </NavigationMenuTrigger>
-                <NavigationMenuContent className="absolute contain-layout">
-                  <ul>
-                    {item.sublinks.map((subItem) => (
-                      <li key={subItem.path}>
-                        <LocalizedLink to={subItem.path}>
-                          {t(subItem.label)}
-                        </LocalizedLink>
-                      </li>
-                    ))}
-                  </ul>
+                <NavigationMenuContent className="min-w-56 w-full p-3 top-12 bg-black-2">
+                  <SubLinksMenu sublinks={item.sublinks} />
                 </NavigationMenuContent>
               </NavigationMenuItem>
             ) : (
               <NavigationMenuItem
                 className={cn(
-                  "p-3",
+                  "h-10 lg:h12 flex items-center",
                   location.pathname.startsWith(
                     localizedPath(currentLanguage, item.path),
                   )
@@ -206,109 +239,38 @@ export function Header() {
                 )}
               >
                 <NavigationMenuLink asChild>
-                  <LocalizedLink to={item.path}>{t(item.label)}</LocalizedLink>
+                  <LocalizedLink
+                    to={item.path}
+                    className="flex gap-2 p-3 items-center"
+                  >
+                    {item.icon}
+                    {t(item.label)}
+                  </LocalizedLink>
                 </NavigationMenuLink>
               </NavigationMenuItem>
             ),
           )}
-        </NavigationMenuList>
-      </NavigationMenu>
-
-      {/* Old */}
-
-      <nav className="hidden lg:flex items-center gap-6">
-        <Menubar className="border-none bg-transparent h-full">
-          {NAV_LINKS.map((item) =>
-            item.sublinks ? (
-              <MenubarMenu key={item.label}>
-                <MenubarTrigger
-                  className={cn(
-                    "flex items-center gap-2 px-3 py-3 h-full transition-all text-sm cursor-pointer",
-                    location.pathname.startsWith(item.path)
-                      ? "bg-black-1 text-white"
-                      : "text-grey hover:text-white",
-                  )}
-                >
-                  {item.icon}
-                  <span>{item.label}</span>
-                  <ChevronDown className="w-4 h-4" />
-                </MenubarTrigger>
-                <MenubarContent>
-                  {item.sublinks.map((sublink) => (
-                    <MenubarItem key={sublink.path}>
-                      {sublink.path.startsWith("https://") ? (
-                        <a
-                          href={sublink.path}
-                          className="flex justify-between w-full"
-                          target="_blank"
-                          key={sublink.path}
-                        >
-                          {sublink.label}
-                        </a>
-                      ) : (
-                        <LocalizedLink
-                          to={sublink.path}
-                          className="flex justify-between w-full"
-                        >
-                          {sublink.label}
-                          {sublink.shortcut && (
-                            <MenubarShortcut>
-                              {sublink.shortcut}
-                            </MenubarShortcut>
-                          )}
-                        </LocalizedLink>
-                      )}
-                    </MenubarItem>
-                  ))}
-                </MenubarContent>
-              </MenubarMenu>
-            ) : (
-              <LocalizedLink
-                key={item.path}
-                to={item.path}
-                className={cn(
-                  "flex items-center gap-2 px-3 py-3 h-full text-sm",
-                  matchPath(item.path, location.pathname)
-                    ? "bg-black-1 text-white"
-                    : "text-grey hover:text-white",
-                )}
-              >
-                {item.icon}
-                <span>{item.label}</span>
-              </LocalizedLink>
-            ),
-          )}
           {user && (
-            <MenubarMenu>
-              <MenubarTrigger className="flex items-center gap-2 px-3 py-3 h-full transition-all text-sm cursor-pointer text-grey hover:text-white">
+            <NavigationMenuItem>
+              <NavigationMenuTrigger className="flex items-center gap-2 px-3 py-3 h-full transition-all text-sm cursor-pointer text-grey hover:text-white">
                 <span>Internal</span>
-                <ChevronDown className="w-4 h-4" />
-              </MenubarTrigger>
-              <MenubarContent>
-                {INTERNAL_LINKS.map((link) => (
-                  <MenubarItem key={link.path}>
-                    <LocalizedLink
-                      to={link.path}
-                      className="flex justify-between w-full"
-                    >
-                      {link.label}
-                    </LocalizedLink>
-                  </MenubarItem>
-                ))}
-              </MenubarContent>
-            </MenubarMenu>
+              </NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <SubLinksMenu sublinks={INTERNAL_LINKS} />
+              </NavigationMenuContent>
+            </NavigationMenuItem>
           )}
-          <div className="ml-4 h-full flex items-center">
-            <HeaderSearchButton className="mx-2" />
-            <LanguageButtons className={"hidden md:flex mx-4 "} />
-            <NewsletterPopover
-              isOpen={isSignUpOpen}
-              onOpenChange={setIsSignUpOpen}
-              buttonText={t("header.newsletter")}
-            />
-          </div>
-        </Menubar>
-      </nav>
+        </NavigationMenuList>
+        <div className="ml-4 h-full flex items-center">
+          <HeaderSearchButton className="mx-2" />
+          <LanguageButtons className={"hidden md:flex mx-4 "} />
+          <NewsletterPopover
+            isOpen={isSignUpOpen}
+            onOpenChange={setIsSignUpOpen}
+            buttonText={t("header.newsletter")}
+          />
+        </div>
+      </NavigationMenu>
 
       {/* Mobile Fullscreen Menu */}
       {showTitle && (
@@ -340,7 +302,7 @@ export function Header() {
                   className="flex items-center gap-2 cursor-pointer"
                 >
                   {link.icon}
-                  {link.label}
+                  {t(link.label)}
                 </LocalizedLink>
                 {link.sublinks && (
                   <div className="flex flex-col gap-2 pl-4 mt-2">
@@ -353,7 +315,7 @@ export function Header() {
                           key={sublink.path}
                           onClick={toggleMenu}
                         >
-                          {sublink.label}
+                          {t(sublink.label)}
                         </a>
                       ) : (
                         <LocalizedLink
@@ -362,7 +324,7 @@ export function Header() {
                           onClick={toggleMenu}
                           className="flex items-center gap-2 text-sm text-gray-400"
                         >
-                          {sublink.label}
+                          {t(sublink.label)}
                         </LocalizedLink>
                       ),
                     )}
