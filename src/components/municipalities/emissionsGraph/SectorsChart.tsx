@@ -1,18 +1,33 @@
 import { FC, useMemo } from "react";
 import {
-  ResponsiveContainer,
-  XAxis,
-  YAxis,
-  Area,
-  Legend,
-  Tooltip,
   ComposedChart,
+  Area,
+  Tooltip,
+  ResponsiveContainer,
+  ReferenceLine,
 } from "recharts";
+import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
-import { formatEmissionsAbsoluteCompact } from "@/utils/formatting/localization";
+import { useScreenSize } from "@/hooks/useScreenSize";
 import { SectorEmissions } from "@/types/municipality";
 import { useMunicipalitySectors } from "@/hooks/municipalities/useMunicipalitySectors";
-import { CustomTooltip } from "./CustomTooltip";
+import {
+  DynamicLegendContainer,
+  LegendItem,
+  createSectorLegendItems,
+  LEGEND_CONTAINER_CONFIGS,
+  getXAxisProps,
+  getYAxisProps,
+  getChartContainerProps,
+  getComposedChartProps,
+  getResponsiveChartMargin,
+  ChartWrapper,
+  ChartArea,
+  ChartFooter,
+  getCurrentYearReferenceLineProps,
+  ChartTooltip,
+} from "@/components/charts";
+import { XAxis, YAxis } from "recharts";
 
 interface SectorsChartProps {
   sectorEmissions: SectorEmissions | null;
@@ -25,40 +40,45 @@ export const SectorsChart: FC<SectorsChartProps> = ({
   hiddenSectors = new Set(),
   setHiddenSectors = () => {},
 }) => {
+  const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
+  const { isMobile } = useScreenSize();
   const { getSectorInfo } = useMunicipalitySectors();
 
-  const MAX_YEAR = new Date().getFullYear();
-  const CUTOFF_YEAR = MAX_YEAR - 1;
+  const MAX_YEAR = new Date().getFullYear() + 5;
+  const CUTOFF_YEAR = new Date().getFullYear() - 1;
 
   const { chartData, allSectors, customTicks } = useMemo(() => {
-    const sectorYears = sectorEmissions
-      ? Object.keys(sectorEmissions.sectors).map(Number)
-      : [];
+    if (!sectorEmissions) {
+      return { chartData: [], allSectors: [], customTicks: [] };
+    }
 
+    const sectorYears = Object.keys(sectorEmissions.sectors).map(Number);
     const allYears = [...new Set(sectorYears)]
       .sort()
       .filter((year) => year <= MAX_YEAR);
 
-    const sectors = sectorEmissions
-      ? [
-          ...new Set(
-            sectorYears.flatMap((year) =>
-              Object.keys(sectorEmissions.sectors[year] || {}),
-            ),
-          ),
-        ]
-      : [];
+    // Get all unique sectors from all years
+    const allUniqueSectors = [
+      ...new Set(
+        sectorYears.flatMap((year) =>
+          Object.keys(sectorEmissions.sectors[year] || {}),
+        ),
+      ),
+    ];
 
+    // Process data and filter sectors in one pass
     const data = allYears.map((year) => {
       const dataPoint: Record<string, number | string> = { year };
+      const yearData = sectorEmissions.sectors[year] || {};
 
       if (year < CUTOFF_YEAR) {
-        const yearData = sectorEmissions?.sectors[year] || {};
-        sectors.forEach((sector) => {
+        allUniqueSectors.forEach((sector) => {
           if (!hiddenSectors.has(sector)) {
-            dataPoint[sector] =
-              (yearData as Record<string, number>)[sector] || 0;
+            const value = (yearData as Record<string, number>)[sector];
+            if (value && value > 0) {
+              dataPoint[sector] = value;
+            }
           }
         });
       }
@@ -66,120 +86,110 @@ export const SectorsChart: FC<SectorsChartProps> = ({
       return dataPoint;
     });
 
-    const ticks = [1990, 2015, 2020, MAX_YEAR]
+    // Get sectors that have non-zero data in the original data (for legend)
+    const sectorsWithData = allUniqueSectors.filter((sector) => {
+      return sectorYears.some((year) => {
+        const yearData = sectorEmissions.sectors[year] || {};
+        return (yearData as Record<string, number>)[sector] > 0;
+      });
+    });
+
+    const ticks = [1990, 2015, 2020, new Date().getFullYear(), MAX_YEAR]
       .filter((year) => year <= MAX_YEAR)
       .filter((year, i, arr) => arr.indexOf(year) === i)
       .sort();
 
-    return { chartData: data, allSectors: sectors, customTicks: ticks };
+    return { chartData: data, allSectors: sectorsWithData, customTicks: ticks };
   }, [sectorEmissions, hiddenSectors, MAX_YEAR, CUTOFF_YEAR]);
 
-  const handleLegendClick = (data: { dataKey: string | number }) => {
-    const newHidden = new Set(hiddenSectors);
-    const key = data.dataKey as string;
+  const legendItems: LegendItem[] = useMemo(() => {
+    return createSectorLegendItems(allSectors, hiddenSectors, getSectorInfo);
+  }, [allSectors, hiddenSectors, getSectorInfo]);
 
-    if (newHidden.has(key)) {
-      newHidden.delete(key);
-    } else {
-      newHidden.add(key);
+  const handleLegendToggle = (itemName: string) => {
+    const sectorKey = allSectors.find((sector: string) => {
+      const sectorInfo = getSectorInfo?.(sector);
+      return sectorInfo?.translatedName === itemName;
+    });
+
+    if (sectorKey && setHiddenSectors) {
+      const newHidden = new Set(hiddenSectors);
+      if (newHidden.has(sectorKey)) {
+        newHidden.delete(sectorKey);
+      } else {
+        newHidden.add(sectorKey);
+      }
+      setHiddenSectors(newHidden);
     }
-
-    setHiddenSectors(newHidden);
-  };
-
-  const handleAreaClick = (sector: string) => {
-    const newHidden = new Set(hiddenSectors);
-
-    if (newHidden.has(sector)) {
-      newHidden.delete(sector);
-    } else {
-      newHidden.add(sector);
-    }
-
-    setHiddenSectors(newHidden);
   };
 
   return (
-    <ResponsiveContainer width="100%" height="90%">
-      <ComposedChart data={chartData}>
-        <Legend
-          verticalAlign="bottom"
-          align="right"
-          iconType="line"
-          wrapperStyle={{ fontSize: "12px", color: "var(--grey)" }}
-          formatter={(value) => {
-            const sectorInfo = getSectorInfo?.(value) || {
-              translatedName: value,
-            };
-            const isHidden = hiddenSectors.has(value);
-            return (
-              <span
-                style={{
-                  color: isHidden ? "var(--grey)" : sectorInfo.color,
-                  textDecoration: isHidden ? "line-through" : "none",
-                  cursor: "pointer",
-                }}
-              >
-                {sectorInfo.translatedName}
-              </span>
-            );
-          }}
-          onClick={(data) => handleLegendClick(data as { dataKey: string })}
-        />
-        <Tooltip
-          content={
-            <CustomTooltip dataView="sectors" hiddenSectors={hiddenSectors} />
-          }
-        />
-        <XAxis
-          dataKey="year"
-          stroke="var(--grey)"
-          tickLine={false}
-          axisLine={false}
-          tick={{ fontSize: 12 }}
-          padding={{ left: 0, right: 0 }}
-          domain={[1990, MAX_YEAR]}
-          allowDuplicatedCategory={true}
-          ticks={customTicks}
-          tickFormatter={(year) => year}
-        />
-        <YAxis
-          stroke="var(--grey)"
-          tickLine={false}
-          axisLine={false}
-          tick={{ fontSize: 12 }}
-          tickFormatter={(value) =>
-            formatEmissionsAbsoluteCompact(value, currentLanguage)
-          }
-          width={80}
-          domain={[0, "auto"]}
-          padding={{ top: 0, bottom: 0 }}
-        />
-        {allSectors.map((sector) => {
-          const sectorInfo = getSectorInfo?.(sector) || {
-            color: "#" + Math.floor(Math.random() * 16777215).toString(16),
-          };
-          const isHidden = hiddenSectors.has(sector);
-          const sectorColor = isHidden ? "var(--grey)" : sectorInfo.color;
-
-          return (
-            <Area
-              key={sector}
-              type="monotone"
-              dataKey={sector}
-              stroke={sectorColor}
-              fillOpacity={0}
-              stackId="1"
-              strokeWidth={isHidden ? 0 : 1}
-              name={sector}
-              connectNulls={true}
-              onClick={() => handleAreaClick(sector)}
-              style={{ cursor: "pointer", opacity: isHidden ? 0.4 : 1 }}
-              hide={isHidden}
+    <ChartWrapper>
+      <ChartArea>
+        <ResponsiveContainer {...getChartContainerProps()}>
+          <ComposedChart
+            {...getComposedChartProps(
+              chartData,
+              undefined,
+              getResponsiveChartMargin(isMobile),
+            )}
+          >
+            <XAxis
+              {...getXAxisProps("year", [1990, MAX_YEAR], customTicks)}
+              allowDuplicatedCategory={true}
+              tickFormatter={(year) => year}
             />
-          );
-        })}
-      </ComposedChart>
-    </ResponsiveContainer>
+            <YAxis {...getYAxisProps(currentLanguage)} />
+
+            <Tooltip
+              content={
+                <ChartTooltip
+                  dataView="sectors"
+                  hiddenSectors={hiddenSectors}
+                  unit={t("emissionsUnit")}
+                />
+              }
+              wrapperStyle={{ outline: "none", zIndex: 60 }}
+            />
+
+            <ReferenceLine {...getCurrentYearReferenceLineProps(MAX_YEAR, t)} />
+
+            {/* Sector areas */}
+            {allSectors.map((sector: string) => {
+              const sectorInfo = getSectorInfo?.(sector) || {
+                color: "#" + Math.floor(Math.random() * 16777215).toString(16),
+                translatedName: sector,
+              };
+              const isHidden = hiddenSectors.has(sector);
+              const sectorColor = isHidden ? "var(--grey)" : sectorInfo.color;
+
+              return (
+                <Area
+                  key={sector}
+                  type="monotone"
+                  dataKey={sector}
+                  stroke={sectorColor}
+                  fillOpacity={0}
+                  stackId="1"
+                  strokeWidth={isHidden ? 0 : 2}
+                  name={sectorInfo.translatedName}
+                  connectNulls={true}
+                  style={{ cursor: "pointer", opacity: isHidden ? 0.4 : 1 }}
+                  hide={isHidden}
+                />
+              );
+            })}
+          </ComposedChart>
+        </ResponsiveContainer>
+      </ChartArea>
+
+      <ChartFooter>
+        <DynamicLegendContainer
+          items={legendItems}
+          onItemToggle={handleLegendToggle}
+          {...LEGEND_CONTAINER_CONFIGS.sectors}
+        />
+      </ChartFooter>
+    </ChartWrapper>
   );
 };

@@ -120,7 +120,6 @@ export const processCompanyData = (company: any): TrendAnalysis => {
     explanationParams: trendResult.explanationParams,
     coefficients: trendResult.coefficients,
     baseYear: company.baseYear?.year,
-    // New data metrics
     originalDataPoints: trendResult.originalDataPoints,
     cleanDataPoints: trendResult.cleanDataPoints,
     missingYearsCount: trendResult.missingYearsCount,
@@ -144,7 +143,6 @@ export const processCompanyData = (company: any): TrendAnalysis => {
     },
     issues: trendResult.issues,
     issueCount: trendResult.issueCount,
-    // Legacy fields (keeping only the ones still used)
     dataPoints: trendResult.cleanDataPoints,
     missingYears: trendResult.missingYearsCount,
     hasUnusualPoints: unusualPointsResult.hasUnusualPoints,
@@ -180,6 +178,13 @@ export function selectBestTrendLineMethod(
       value: number;
       details: string;
     }>;
+    phaseChanges: Array<{
+      year: number;
+      fromValue: number;
+      toValue: number;
+      changePercentage: number;
+      reason: string;
+    }>;
   };
   issues: string[];
   issueCount: number;
@@ -200,7 +205,12 @@ export function selectBestTrendLineMethod(
       explanationParams: { dataPoints: 0 },
       coefficients: undefined,
       cleanData: [],
-      excludedData: { missingYears: [], outliers: [], unusualPoints: [] },
+      excludedData: {
+        missingYears: [],
+        outliers: [],
+        unusualPoints: [],
+        phaseChanges: [],
+      },
       issues: ["limitedDataPoints"],
       issueCount: 1,
       originalDataPoints: 0,
@@ -242,14 +252,61 @@ export function selectBestTrendLineMethod(
     data, // Pass the original data for Scope 3 check
   );
 
-  // Step 5: Create clean dataset (exclude outliers and missing years, but keep unusual points that aren't outliers)
-  const cleanData = dataPoints.filter((point) => {
-    const isOutlier = validatedOutliers.some(
-      (outlier) => outlier.year === point.year,
+  // Step 5: Create clean dataset with phase-aware filtering
+  let cleanData: DataPoint[];
+
+  // Apply phase-aware filtering if we have enough data points
+  if (
+    dataPoints.length > 4 &&
+    unusualPointsResult.phaseChanges &&
+    unusualPointsResult.phaseChanges.length > 0
+  ) {
+    // Filter out phase change years to focus on the most recent stable phase
+    const phaseChangeYears = new Set(
+      unusualPointsResult.phaseChanges.map((pc) => pc.year),
     );
-    const isMissing = missingYearsList.includes(point.year);
-    return !isOutlier && !isMissing;
-  });
+
+    console.log("Phase-aware filtering applied:", {
+      totalDataPoints: dataPoints.length,
+      phaseChanges: unusualPointsResult.phaseChanges,
+      filteredOutYears: Array.from(phaseChangeYears),
+      remainingDataPoints: dataPoints.length - phaseChangeYears.size,
+      originalData: dataPoints.map((d) => ({ year: d.year, value: d.value })),
+    });
+
+    cleanData = dataPoints.filter((point) => {
+      const isOutlier = validatedOutliers.some(
+        (outlier) => outlier.year === point.year,
+      );
+      const isMissing = missingYearsList.includes(point.year);
+      const isPhaseChange = phaseChangeYears.has(point.year);
+
+      return !isOutlier && !isMissing && !isPhaseChange;
+    });
+
+    console.log("After phase-aware filtering:", {
+      cleanData: cleanData.map((d) => ({ year: d.year, value: d.value })),
+      removedPoints: dataPoints
+        .filter((point) => {
+          const isOutlier = validatedOutliers.some(
+            (outlier) => outlier.year === point.year,
+          );
+          const isMissing = missingYearsList.includes(point.year);
+          const isPhaseChange = phaseChangeYears.has(point.year);
+          return isOutlier || isMissing || isPhaseChange;
+        })
+        .map((d) => ({ year: d.year, value: d.value })),
+    });
+  } else {
+    // Use standard filtering (exclude outliers and missing years, but keep unusual points that aren't outliers)
+    cleanData = dataPoints.filter((point) => {
+      const isOutlier = validatedOutliers.some(
+        (outlier) => outlier.year === point.year,
+      );
+      const isMissing = missingYearsList.includes(point.year);
+      return !isOutlier && !isMissing;
+    });
+  }
 
   const cleanDataPoints = cleanData.length;
 
@@ -317,6 +374,7 @@ export function selectBestTrendLineMethod(
           missingYears: missingYearsList,
           outliers: validatedOutliers,
           unusualPoints,
+          phaseChanges: unusualPointsResult.phaseChanges || [],
         },
         issues: ["insufficientData"],
         issueCount: 1,
@@ -330,6 +388,16 @@ export function selectBestTrendLineMethod(
       // Poor data quality with <3 clean data points - use simple method
       const method = "simple";
       const coefficients = calculateSimpleCoefficients(cleanData);
+
+      console.log(
+        "Simple method selected - cleanData used for trend calculation:",
+        {
+          method,
+          cleanDataPoints,
+          cleanData: cleanData.map((d) => ({ year: d.year, value: d.value })),
+          coefficients,
+        },
+      );
 
       return {
         method,
@@ -345,6 +413,7 @@ export function selectBestTrendLineMethod(
           missingYears: missingYearsList,
           outliers: validatedOutliers,
           unusualPoints,
+          phaseChanges: unusualPointsResult.phaseChanges || [],
         },
         issues,
         issueCount,
@@ -373,6 +442,7 @@ export function selectBestTrendLineMethod(
           missingYears: missingYearsList,
           outliers: validatedOutliers,
           unusualPoints,
+          phaseChanges: unusualPointsResult.phaseChanges || [],
         },
         issues,
         issueCount,
@@ -429,6 +499,7 @@ export function selectBestTrendLineMethod(
               missingYears: missingYearsList,
               outliers: validatedOutliers,
               unusualPoints,
+              phaseChanges: unusualPointsResult.phaseChanges || [],
             },
             issues,
             issueCount,
@@ -470,6 +541,7 @@ export function selectBestTrendLineMethod(
             missingYears: missingYearsList,
             outliers: validatedOutliers,
             unusualPoints,
+            phaseChanges: unusualPointsResult.phaseChanges || [],
           },
           issues,
           issueCount,
@@ -485,8 +557,23 @@ export function selectBestTrendLineMethod(
 
   // 3. Recent stability (weighted linear when recent years are stable)
   if (recentStability < 0.1 && cleanData.length >= 4) {
+    console.log("Method Selection: Weighted Linear chosen because:", {
+      recentStability,
+      cleanDataLength: cleanData.length,
+      recentData: cleanData
+        .slice(-4)
+        .map((d) => ({ year: d.year, value: d.value })),
+      fullCleanData: cleanData.map((d) => ({ year: d.year, value: d.value })),
+    });
     const method = "weightedLinear";
     const coefficients = calculateCoefficientsForMethod(cleanData, method);
+
+    console.log("Weighted Linear coefficients calculated:", {
+      method,
+      coefficients,
+      dataUsed: cleanData.map((d) => ({ year: d.year, value: d.value })),
+    });
+
     return {
       method,
       explanation: "trendAnalysis.weightedLinearMethodStable",
@@ -496,6 +583,7 @@ export function selectBestTrendLineMethod(
         missingYears: missingYearsList,
         outliers: validatedOutliers,
         unusualPoints,
+        phaseChanges: unusualPointsResult.phaseChanges || [],
       },
       issues,
       issueCount,
@@ -519,6 +607,7 @@ export function selectBestTrendLineMethod(
       missingYears: missingYearsList,
       outliers: validatedOutliers,
       unusualPoints,
+      phaseChanges: unusualPointsResult.phaseChanges || [],
     },
     issues,
     issueCount,

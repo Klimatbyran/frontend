@@ -84,17 +84,6 @@ export function LandingPage() {
     </span>
   );
 
-  // Get municipality data for comparison
-  // const municipalityComparisonData = getMunicipalitiesForMap(10).map(
-  //   (municipality) => ({
-  //     id: municipality.id,
-  //     name: municipality.name,
-  //     value: municipality.value,
-  //     rank: "1",
-  //     change: Math.random() > 0.5 ? 5.2 : -3.4, // Mock data - replace with real change values
-  //   })
-  // );
-
   return (
     <>
       <PageSEO
@@ -128,24 +117,6 @@ export function LandingPage() {
         </div>
       </div>
 
-      {/* FIXME reintroduce at a later stage
-      {selectedTab === "municipalities" && (
-        <div className="py-16 md:py-24 bg-black-2">
-          <div className="container mx-auto">
-            <div className="max-w-lg md:max-w-[1200px] mx-auto">
-              <MunicipalityComparison
-                title="Hur går det med?"
-                description="Vi utför mätningar av den samlade längden av cykelvägar per invånare, inklusive alla väghållare (statliga, kommunala och enskilda). Den senaste tillgängliga datan är från år 2022."
-                nationalAverage={2.8}
-                euTarget={3.8}
-                unit="m"
-                municipalities={municipalityComparisonData}
-              />
-            </div>
-          </div>
-        </div>
-      )} */}
-
       <div className="py-8 pt-36 md:py-36">
         <div className="mx-2 sm:mx-8">
           <h2 className="text-4xl md:text-5xl font-light text-center mb-8 md:mb-16">
@@ -159,6 +130,7 @@ export function LandingPage() {
               itemValueRenderer={renderMunicipalityChangeRate}
               icon={{ component: TreePineIcon, bgColor: "bg-[#FDE7CE]" }}
               rankColor="text-orange-2"
+              headingLink={`${currentLanguage}/municipalities`}
             />
 
             <RankedList
@@ -168,6 +140,7 @@ export function LandingPage() {
               itemValueRenderer={renderCompanyEmission}
               icon={{ component: Building2Icon, bgColor: "bg-[#D4E7F7]" }}
               rankColor="text-blue-2"
+              headingLink={`${currentLanguage}/companies`}
             />
           </div>
         </div>

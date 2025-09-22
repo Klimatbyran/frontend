@@ -1,5 +1,5 @@
 import { BarChart3, ChevronDown, Menu, X, Mail } from "lucide-react";
-import { Link, useLocation, matchPath } from "react-router-dom";
+import { useLocation, matchPath } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useState, useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -14,7 +14,10 @@ import {
 import { NewsletterPopover } from "../NewsletterPopover";
 import { useLanguage } from "../LanguageProvider";
 import { HeaderSearchButton } from "../search/HeaderSearchButton";
+import { useScreenSize } from "@/hooks/useScreenSize";
+import useHeaderTitle from "@/hooks/useHeaderTitle";
 import { useAuth } from "@/contexts/AuthContext";
+import { LocalizedLink } from "../LocalizedLink";
 
 export function Header() {
   const { t } = useTranslation();
@@ -23,7 +26,9 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const toggleMenu = useCallback(() => setMenuOpen((prev) => !prev), []);
+  const { isMobile } = useScreenSize();
   const { user } = useAuth();
+  const { headerTitle, showTitle, setShowTitle } = useHeaderTitle();
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -31,6 +36,20 @@ export function Header() {
       setIsSignUpOpen(true);
     }
   }, [location]);
+
+  useEffect(() => {
+    const onScroll = () => {
+      if (window.scrollY >= 125) {
+        setShowTitle(true);
+      } else {
+        setShowTitle(false);
+      }
+    };
+
+    window.addEventListener("scroll", onScroll);
+
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [headerTitle, showTitle, setShowTitle]);
 
   const LanguageButtons = ({ className }: { className?: string }) => (
     <div className={cn("flex items-center gap-2", className)}>
@@ -65,51 +84,54 @@ export function Header() {
     {
       label: t("header.companies"),
       icon: <BarChart3 className="w-4 h-4" aria-hidden="true" />,
-      path: `${currentLanguage}/companies`,
+      path: `/companies`,
     },
     {
       label: t("header.municipalities"),
       icon: <BarChart3 className="w-4 h-4" aria-hidden="true" />,
-      path: `${currentLanguage}/municipalities`,
+      path: `/municipalities`,
       sublinks: [
         {
           label: t("header.municipalitiesRanked"),
-          path: `${currentLanguage}/municipalities`,
+          path: `/municipalities`,
         },
         {
           label: t("header.municipalitiesExplore"),
-          path: `${currentLanguage}/municipalities/explore`,
+          path: `/municipalities/explore`,
         },
       ],
     },
     {
       label: t("header.products"),
-      path: `${currentLanguage}/products`,
+      path: `/products`,
     },
     {
       label: t("header.about"),
-      path: `${currentLanguage}/about`,
+      path: `/about`,
       sublinks: [
-        { label: t("header.aboutUs"), path: `${currentLanguage}/about` },
+        { label: t("header.aboutUs"), path: `/about` },
         {
           label: t("header.methodology"),
-          path: `${currentLanguage}/methodology?view=general`,
+          path: `/methodology?view=general`,
+        },
+        {
+          label: t("header.newsletterArchive"),
+          path: `/newsletter-archive`,
         },
         {
           label: t("header.press"),
           path: "https://www.mynewsdesk.com/se/klimatbyraan/latest_news",
         },
-        { label: t("header.support"), path: `${currentLanguage}/support` },
+        { label: t("header.support"), path: `/support` },
       ],
     },
     {
-      path: `${currentLanguage}/articles`,
+      path: `/articles`,
       label: t("header.insights"),
       sublinks: [
-        { label: t("header.reports"), path: `${currentLanguage}/reports` },
-        { label: t("header.articles"), path: `${currentLanguage}/articles` },
-        { label: t("header.newsletterArchive"), path: `${currentLanguage}/newsletter-archive`},
-        { label: t("header.learnMore"), path: `${currentLanguage}/learn-more` },
+        { label: t("header.reports"), path: `/reports` },
+        { label: t("header.articles"), path: `/articles` },
+        { label: t("header.learnMore"), path: `/learn-more` },
       ],
     },
   ];
@@ -131,13 +153,19 @@ export function Header() {
   return (
     <>
       <header className="fixed w-screen overflow-x-hidden overflow-y-hidden top-0 left-0 right-0 z-50 bg-black-2 h-10 lg:h-12">
-        <div className="container mx-auto px-4 flex items-center justify-between pt-2 lg:pt-0">
-          <Link
+        <div className="container relative mx-auto px-4 flex items-center justify-between pt-2 lg:pt-0">
+          <LocalizedLink
             to="/"
             className="flex items-center gap-2 text-base font-medium"
           >
             Klimatkollen
-          </Link>
+          </LocalizedLink>
+          {showTitle && (
+            <span className="absolute left-1/2 transform -translate-x-1/2">
+              {isMobile && headerTitle}
+            </span>
+          )}
+
           <button
             className="lg:hidden text-white"
             onClick={toggleMenu}
@@ -181,7 +209,7 @@ export function Header() {
                               {sublink.label}
                             </a>
                           ) : (
-                            <Link
+                            <LocalizedLink
                               to={sublink.path}
                               className="flex justify-between w-full"
                             >
@@ -191,14 +219,14 @@ export function Header() {
                                   {sublink.shortcut}
                                 </MenubarShortcut>
                               )}
-                            </Link>
+                            </LocalizedLink>
                           )}
                         </MenubarItem>
                       ))}
                     </MenubarContent>
                   </MenubarMenu>
                 ) : (
-                  <Link
+                  <LocalizedLink
                     key={item.path}
                     to={item.path}
                     className={cn(
@@ -210,7 +238,7 @@ export function Header() {
                   >
                     {item.icon}
                     <span>{item.label}</span>
-                  </Link>
+                  </LocalizedLink>
                 ),
               )}
               {user && (
@@ -222,12 +250,12 @@ export function Header() {
                   <MenubarContent>
                     {INTERNAL_LINKS.map((link) => (
                       <MenubarItem key={link.path}>
-                        <Link
+                        <LocalizedLink
                           to={link.path}
                           className="flex justify-between w-full"
                         >
                           {link.label}
-                        </Link>
+                        </LocalizedLink>
                       </MenubarItem>
                     ))}
                   </MenubarContent>
@@ -256,14 +284,14 @@ export function Header() {
                 <LanguageButtons />
                 {NAV_LINKS.map((link) => (
                   <div key={link.path} className="flex flex-col">
-                    <Link
+                    <LocalizedLink
                       to={link.path}
                       onClick={toggleMenu}
                       className="flex items-center gap-2 cursor-pointer"
                     >
                       {link.icon}
                       {link.label}
-                    </Link>
+                    </LocalizedLink>
                     {link.sublinks && (
                       <div className="flex flex-col gap-2 pl-4 mt-2">
                         {link.sublinks.map((sublink) =>
@@ -278,14 +306,14 @@ export function Header() {
                               {sublink.label}
                             </a>
                           ) : (
-                            <Link
+                            <LocalizedLink
                               key={sublink.path}
                               to={sublink.path}
                               onClick={toggleMenu}
                               className="flex items-center gap-2 text-sm text-gray-400"
                             >
                               {sublink.label}
-                            </Link>
+                            </LocalizedLink>
                           ),
                         )}
                       </div>
