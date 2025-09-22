@@ -730,8 +730,8 @@
     "politicalRule": "Political rule",
     "totalEmissions": "Total emissions {{year}}",
     "totalEmissionsTooltip": "This is the latest reported emissions. For calculated estimates on the current year, please see the emissions development graph below.",
-"emissionsDevelopment": "Emissions development",
-"graph": {
+    "emissionsDevelopment": "Emissions development",
+    "graph": {
       "overview": "Overview",
       "sectors": "Emission sources"
     },
@@ -819,7 +819,7 @@
     },
     "carl": {
       "role": "Developer",
-        "description": "Frontend developer with a passion for sustainability and user-friendly digital solutions. Previously worked as an environmental consultant focused on interpreting regulations and calculating greenhouse gas emissions for companies."
+      "description": "I’m a frontend developer who loves nature, climbing, and creating tools that make climate data easier to understand. At Klimatkollen, I code, support our volunteers, and try to find the perfect GIFs for every occasion."
     }
   },
   "board": {
