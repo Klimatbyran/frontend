@@ -213,10 +213,11 @@ export function Header() {
                 <NavigationMenuTrigger
                   className={cn(
                     "flex gap-2 p-3",
+                    "data-[state=open]:bg-black-1 data-[state=closed]:bg-transparent",
                     location.pathname.startsWith(
                       localizedPath(currentLanguage, item.path),
                     )
-                      ? "bg-black-1 text-white"
+                      ? "text-white"
                       : "text-grey hover:text-white",
                   )}
                 >
@@ -234,7 +235,7 @@ export function Header() {
                   location.pathname.startsWith(
                     localizedPath(currentLanguage, item.path),
                   )
-                    ? "bg-black-1 text-white"
+                    ? "text-white"
                     : "text-grey hover:text-white",
                 )}
               >
