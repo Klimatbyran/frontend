@@ -73,7 +73,9 @@ const PieTooltip: React.FC<PieTooltipProps> = ({
         <p className="text-xs italic text-blue-2 mt-2">
           {customActionLabel
             ? customActionLabel
-            : t("graphs.pieChart.clickToFilter")}
+            : isMobile
+              ? t("graphs.pieChart.doubleClickToFilter")
+              : t("graphs.pieChart.clickToFilter")}
         </p>
       </div>
     </div>

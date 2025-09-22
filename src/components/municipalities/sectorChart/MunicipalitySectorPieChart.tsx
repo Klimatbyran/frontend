@@ -1,7 +1,9 @@
+import { useRef } from "react";
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from "recharts";
 import { SectorEmissions } from "@/types/municipality";
 import { useResponsiveChartSize } from "@/hooks/useResponsiveChartSize";
 import { useMunicipalitySectors } from "@/hooks/municipalities/useMunicipalitySectors";
+import { useScreenSize } from "@/hooks/useScreenSize";
 import PieTooltip from "@/components/graphs/tooltips/PieTooltip";
 
 interface MunicipalitySectorPieChartProps {
@@ -24,6 +26,8 @@ const MunicipalitySectorPieChart: React.FC<MunicipalitySectorPieChartProps> = ({
   filteredSectors = new Set(),
   onFilteredSectorsChange,
 }) => {
+  const { isMobile } = useScreenSize();
+  const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const { size } = useResponsiveChartSize();
   const { getSectorInfo } = useMunicipalitySectors();
 
@@ -44,15 +48,42 @@ const MunicipalitySectorPieChart: React.FC<MunicipalitySectorPieChartProps> = ({
     .sort((a, b) => (b.value as number) - (a.value as number));
 
   const handleSectorClick = (data: SectorData) => {
-    if (onFilteredSectorsChange) {
-      const sectorName = data.name;
-      const newFiltered = new Set(filteredSectors);
-      if (newFiltered.has(sectorName)) {
-        newFiltered.delete(sectorName);
+    if (isMobile) {
+      // On mobile, handle double-click for filtering
+      if (clickTimeoutRef.current) {
+        // This is a double-click
+        clearTimeout(clickTimeoutRef.current);
+        clickTimeoutRef.current = null;
+
+        // Execute the filtering action
+        if (onFilteredSectorsChange) {
+          const sectorName = data.name;
+          const newFiltered = new Set(filteredSectors);
+          if (newFiltered.has(sectorName)) {
+            newFiltered.delete(sectorName);
+          } else {
+            newFiltered.add(sectorName);
+          }
+          onFilteredSectorsChange(newFiltered);
+        }
       } else {
-        newFiltered.add(sectorName);
+        // This is a single-click, just show tooltip (no action)
+        clickTimeoutRef.current = setTimeout(() => {
+          clickTimeoutRef.current = null;
+        }, 300); // 300ms timeout for double-click detection
       }
-      onFilteredSectorsChange(newFiltered);
+    } else {
+      // On desktop, single-click for filtering (existing behavior)
+      if (onFilteredSectorsChange) {
+        const sectorName = data.name;
+        const newFiltered = new Set(filteredSectors);
+        if (newFiltered.has(sectorName)) {
+          newFiltered.delete(sectorName);
+        } else {
+          newFiltered.add(sectorName);
+        }
+        onFilteredSectorsChange(newFiltered);
+      }
     }
   };
 
