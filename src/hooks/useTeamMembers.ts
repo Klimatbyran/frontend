@@ -51,7 +51,7 @@ export const useTeamMembers = () => {
       name: "Elin Fritiofsson",
       role: t("team.elin.role"),
       description: t("team.elin.description"),
-      imageUrl: "/people/elin.jpeg",
+      imageUrl: "/people/elin.jpg",
     },
     {
       name: "Carl Wirén",
