@@ -29,6 +29,7 @@ import {
   createChartClickHandler,
   createCustomTickRenderer,
   filterValidTotalData,
+  mergeChartDataWithApproximated,
   ChartTooltip,
 } from "@/components/charts";
 import { useLanguage } from "@/components/LanguageProvider";
@@ -67,12 +68,18 @@ export const OverviewChart: FC<OverviewChartProps> = ({
     return filterValidTotalData(data);
   }, [data]);
 
+  // Merge data similar to municipality structure for tooltip compatibility
+  const chartData = useMemo(() => {
+    return mergeChartDataWithApproximated(filteredData, approximatedData);
+  }, [filteredData, approximatedData]);
+
   const isFirstYear = companyBaseYear === filteredData[0]?.year;
 
   const legendItems = useMemo(() => {
     const hiddenItems = new Set<string>();
     if (!approximatedData) {
       hiddenItems.add("approximated");
+      hiddenItems.add("trend");
       hiddenItems.add("carbonLaw");
     }
     return createOverviewLegendItems(t, hiddenItems, false);
@@ -93,7 +100,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({
         <ResponsiveContainer {...getChartContainerProps()}>
           <LineChart
             {...getLineChartProps(
-              filteredData,
+              chartData,
               handleClick,
               getResponsiveChartMargin(isMobile),
             )}
@@ -111,6 +118,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({
             <Tooltip
               content={
                 <ChartTooltip
+                  dataView="overview"
                   companyBaseYear={companyBaseYear}
                   unit={t("companies.tooltip.tonsCO2e")}
                 />
@@ -146,22 +154,30 @@ export const OverviewChart: FC<OverviewChartProps> = ({
             {approximatedData && (
               <>
                 <ReferenceLine
-                  {...getCurrentYearReferenceLineProps(currentYear, t)}
+                  {...getCurrentYearReferenceLineProps(currentYear)}
                 />
                 <Line
                   type="linear"
                   dataKey="approximated"
-                  data={approximatedData}
                   {...getConsistentLineProps(
                     "estimated",
                     isMobile,
                     t("companies.emissionsHistory.approximated"),
+                    "var(--grey)",
+                  )}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="trend"
+                  {...getConsistentLineProps(
+                    "trend",
+                    isMobile,
+                    t("companies.emissionsHistory.trend"),
                   )}
                 />
                 <Line
                   type="monotone"
                   dataKey="carbonLaw"
-                  data={approximatedData}
                   {...getConsistentLineProps(
                     "paris",
                     isMobile,

@@ -730,8 +730,8 @@
     "politicalRule": "Political rule",
     "totalEmissions": "Total emissions {{year}}",
     "totalEmissionsTooltip": "This is the latest reported emissions. For calculated estimates on the current year, please see the emissions development graph below.",
-"emissionsDevelopment": "Emissions development",
-"graph": {
+    "emissionsDevelopment": "Emissions development",
+    "graph": {
       "overview": "Overview",
       "sectors": "Emission sources"
     },
@@ -1361,6 +1361,7 @@
   "graphs": {
     "pieChart": {
       "clickToFilter": "Click to filter",
+      "doubleClickToFilter": "Double-click to filter",
       "ofTotal": "of total"
     }
   },

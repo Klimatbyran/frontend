@@ -730,8 +730,8 @@
     "politicalRule": "Här styr",
     "totalEmissions": "Totala utsläpp {{year}}",
     "totalEmissionsTooltip": "Detta är de senast rapporterade utsläppen. För beräknade uppskattningar för innevarande år, se grafen Utsläppsutveckling nedan.",
-"emissionsDevelopment": "Utsläppsutveckling",
-"graph": {
+    "emissionsDevelopment": "Utsläppsutveckling",
+    "graph": {
       "overview": "Översikt",
       "sectors": "Utsläppskällor"
     },
@@ -1361,6 +1361,7 @@
   "graphs": {
     "pieChart": {
       "clickToFilter": "Klicka för att filtrera",
+      "doubleClickToFilter": "Dubbelklicka för att filtrera",
       "ofTotal": "av total"
     }
   },

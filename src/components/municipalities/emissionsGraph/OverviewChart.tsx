@@ -82,9 +82,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
             />
 
             {/* Current year reference line */}
-            <ReferenceLine
-              {...getCurrentYearReferenceLineProps(currentYear, t)}
-            />
+            <ReferenceLine {...getCurrentYearReferenceLineProps(currentYear)} />
 
             {/* Historical line */}
             <Line
