@@ -154,7 +154,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({
             {approximatedData && (
               <>
                 <ReferenceLine
-                  {...getCurrentYearReferenceLineProps(currentYear, t)}
+                  {...getCurrentYearReferenceLineProps(currentYear)}
                 />
                 <Line
                   type="linear"

@@ -82,7 +82,7 @@ export const getXAxisProps = (
             fontWeight: "normal",
           },
           payload.value,
-        ) as any;
+        ) as unknown as React.ReactElement<SVGElement>;
       }),
   };
 
@@ -116,7 +116,7 @@ export const getYAxisProps = (
         transform: `rotate(-30, ${x - 5}, ${y + 5})`, // Updated transform origin
       },
       formatEmissionsAbsoluteCompact(payload.value, currentLanguage),
-    ) as any;
+    ) as unknown as React.ReactElement<SVGElement>;
   },
   domain,
   padding: { top: 0, bottom: 0 },
@@ -137,7 +137,7 @@ export const createCustomTickRenderer =
         fontWeight: isBaseYear && isBaseYearBold ? "bold" : "normal",
       },
       payload.value,
-    ) as any;
+    ) as unknown as React.ReactElement<SVGElement>;
   };
 
 // Base year reference line styling
@@ -162,10 +162,7 @@ export const getBaseYearReferenceLineProps = (
 });
 
 // Current year reference line styling
-export const getCurrentYearReferenceLineProps = (
-  currentYear: number,
-  t: (key: string) => string,
-) => ({
+export const getCurrentYearReferenceLineProps = (currentYear: number) => ({
   x: currentYear,
   stroke: "var(--orange-3)",
   strokeWidth: 1,
@@ -206,7 +203,7 @@ export const createReferenceLine = (
   }
 
   if (type === "currentYear" && props.currentYear) {
-    return getCurrentYearReferenceLineProps(props.currentYear, props.t);
+    return getCurrentYearReferenceLineProps(props.currentYear);
   }
 
   return null;

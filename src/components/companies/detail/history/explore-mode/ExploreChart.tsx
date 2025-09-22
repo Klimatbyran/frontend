@@ -186,7 +186,7 @@ export function ExploreChart({
   // render common chart elements
   const renderCurrentYearReferenceLine = () => (
     <ReferenceLine
-      {...getCurrentYearReferenceLineProps(getCommonYears().currentYear, t)}
+      {...getCurrentYearReferenceLineProps(getCommonYears().currentYear)}
     />
   );
 
