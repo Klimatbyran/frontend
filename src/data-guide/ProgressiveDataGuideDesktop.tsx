@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
-import { DataGuideItemId, dataGuideHelpItems } from "./items";
+import { DataGuideItemId } from "./items";
 import { DataGuideMarkdown } from "./DataGuideMarkdown";
 
 export type NonEmptyArray<T> = [T, ...T[]];
@@ -12,12 +12,10 @@ interface ProgressiveDataGuideDesktopProps {
 export function ProgressiveDataGuideDesktop({
   items,
 }: ProgressiveDataGuideDesktopProps) {
-  const { t } = useTranslation();
+  const { t } = useTranslation("dataguideItems");
   const [activeItemId, setActiveItemId] = useState<DataGuideItemId>(items[0]);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
-
-  const activeHelpItem = activeItemId && dataGuideHelpItems[activeItemId];
 
   const handleItemChange = (newItemId: DataGuideItemId) => {
     if (newItemId === activeItemId) return;
@@ -60,7 +58,6 @@ export function ProgressiveDataGuideDesktop({
       {/* Left column - Navigation */}
       <div className="space-y-1">
         {items.map((itemId) => {
-          const item = dataGuideHelpItems[itemId];
           return (
             <div
               className={cn(
@@ -78,7 +75,7 @@ export function ProgressiveDataGuideDesktop({
                     : "text-white/70",
                 )}
               >
-                <span>{t(item.titleKey)}</span>
+                <span>{t(`${itemId}.title`)}</span>
               </button>
             </div>
           );
@@ -101,9 +98,9 @@ export function ProgressiveDataGuideDesktop({
           }}
         >
           <h2 className="text-lg font-bold mb-4">
-            {t(activeHelpItem.titleKey)}
+            {t(`${activeItemId}.title`)}
           </h2>
-          <DataGuideMarkdown item={activeHelpItem} className="max-w-prose" />
+          <DataGuideMarkdown item={activeItemId} className="max-w-prose" />
         </div>
       </div>
     </div>

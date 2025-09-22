@@ -8,6 +8,7 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { useLocation } from "react-router-dom";
+import { getAllMethods } from "@/lib/methods/methodologyData";
 
 export function MethodsPage() {
   const { t } = useTranslation();
@@ -35,13 +36,24 @@ export function MethodsPage() {
   }, [location.search]);
 
   const matchMethodWithSearchQuery = (searchQuery: string) => {
+    const allMethods = getAllMethods();
+    const validMethodIds = allMethods.map((method) => method.id);
+
+    if (validMethodIds.includes(searchQuery)) {
+      return searchQuery;
+    }
+
+    // fallbacks for old category mappings (for backward compatibility)
     if (searchQuery === "company") {
       return "companyDataOverview";
     } else if (searchQuery === "municipality") {
-      return "sources";
+      return "municipalityDataOverview";
     } else {
       return "parisAgreement";
     }
+
+    // Default fallback
+    return "parisAgreement";
   };
 
   // Prepare SEO data

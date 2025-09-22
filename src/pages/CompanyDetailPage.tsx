@@ -2,13 +2,13 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useCompanyDetails } from "@/hooks/companies/useCompanyDetails";
 import { CompanyOverview } from "@/components/companies/detail/overview/CompanyOverview";
-import { CompanyHistory } from "@/components/companies/detail/CompanyHistory";
+import { EmissionsHistory } from "@/components/companies/detail/history/EmissionsHistory";
 import { Text } from "@/components/ui/text";
 import { useTranslation } from "react-i18next";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { createSlug } from "@/lib/utils";
 import { CompanyScope3 } from "@/components/companies/detail/CompanyScope3";
-import { getCompanyDescription } from "@/utils/companyDescription";
+import { getCompanyDescription } from "@/utils/business/company";
 import { useLanguage } from "@/components/LanguageProvider";
 
 export function CompanyDetailPage() {
@@ -180,7 +180,10 @@ export function CompanyDetailPage() {
           selectedYear={selectedYear}
         />
 
-        <CompanyHistory company={company} />
+        <EmissionsHistory
+          reportingPeriods={company.reportingPeriods}
+          baseYear={company.baseYear}
+        />
         <CompanyScope3
           emissions={selectedPeriod.emissions!}
           historicalData={sortedPeriods

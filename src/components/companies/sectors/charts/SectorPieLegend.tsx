@@ -4,7 +4,10 @@ import {
   sectorColors,
   getCompanyColors,
 } from "@/hooks/companies/useCompanyFilters";
-import { formatEmissionsAbsolute, formatPercent } from "@/utils/localizeUnit";
+import {
+  formatEmissionsAbsolute,
+  formatPercent,
+} from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
 import {
   Tooltip,

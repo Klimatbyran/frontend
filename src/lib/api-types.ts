@@ -187,6 +187,10 @@ export interface paths {
                                 startDate: string;
                                 endDate: string;
                                 reportURL: string | null;
+                                emissionsTrend?: {
+                                    absolute: number | null;
+                                    adjusted: number | null;
+                                };
                                 emissions: {
                                     calculatedTotalEmissions: number;
                                     scope1: {
@@ -544,6 +548,10 @@ export interface paths {
                                         };
                                     } | null;
                                 } | null;
+                                emissionsTrend?: {
+                                    absolute: number | null;
+                                    adjusted: number | null;
+                                };
                             }[];
                             industry: {
                                 id: string;
@@ -869,6 +877,10 @@ export interface paths {
                                 startDate: string;
                                 endDate: string;
                                 reportURL: string | null;
+                                emissionsTrend?: {
+                                    absolute: number | null;
+                                    adjusted: number | null;
+                                };
                                 emissions: {
                                     calculatedTotalEmissions: number;
                                     scope1: {
@@ -1063,13 +1075,8 @@ export interface paths {
                         "application/json": {
                             name: string;
                             region: string;
-                            budget: number;
-                            totalApproximatedHistoricalEmission: number;
-                            trendEmission: number;
+                            meetsParisGoal: boolean;
                             historicalEmissionChangePercent: number;
-                            neededEmissionChangePercent: number | null;
-                            hitNetZero: string | null;
-                            budgetRunsOut: string | null;
                             electricCarChangePercent: number;
                             climatePlanLink: string | null;
                             climatePlanYear: number | null;
@@ -1077,25 +1084,19 @@ export interface paths {
                             bicycleMetrePerCapita: number;
                             totalConsumptionEmission: number;
                             electricVehiclePerChargePoints: number | null;
-                            procurementScore: string;
-                            procurementLink: string;
+                            procurementScore: number;
+                            procurementLink: string | null;
+                            politicalRule: string[];
+                            politicalKSO: string;
                             emissions: ({
                                 year: string;
                                 value: number;
                             } | null)[];
-                            emissionBudget: ({
-                                year: string;
-                                value: number;
-                            } | null)[] | null;
                             approximatedHistoricalEmission: ({
                                 year: string;
                                 value: number;
                             } | null)[];
                             trend: ({
-                                year: string;
-                                value: number;
-                            } | null)[];
-                            electricCarChangeYearly: ({
                                 year: string;
                                 value: number;
                             } | null)[];
@@ -1143,13 +1144,8 @@ export interface paths {
                         "application/json": {
                             name: string;
                             region: string;
-                            budget: number;
-                            totalApproximatedHistoricalEmission: number;
-                            trendEmission: number;
+                            meetsParisGoal: boolean;
                             historicalEmissionChangePercent: number;
-                            neededEmissionChangePercent: number | null;
-                            hitNetZero: string | null;
-                            budgetRunsOut: string | null;
                             electricCarChangePercent: number;
                             climatePlanLink: string | null;
                             climatePlanYear: number | null;
@@ -1157,25 +1153,19 @@ export interface paths {
                             bicycleMetrePerCapita: number;
                             totalConsumptionEmission: number;
                             electricVehiclePerChargePoints: number | null;
-                            procurementScore: string;
-                            procurementLink: string;
+                            procurementScore: number;
+                            procurementLink: string | null;
+                            politicalRule: string[];
+                            politicalKSO: string;
                             emissions: ({
                                 year: string;
                                 value: number;
                             } | null)[];
-                            emissionBudget: ({
-                                year: string;
-                                value: number;
-                            } | null)[] | null;
                             approximatedHistoricalEmission: ({
                                 year: string;
                                 value: number;
                             } | null)[];
                             trend: ({
-                                year: string;
-                                value: number;
-                            } | null)[];
-                            electricCarChangeYearly: ({
                                 year: string;
                                 value: number;
                             } | null)[];
@@ -1400,13 +1390,60 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/industry-gics/": {
+    "/screenshots/screenshots": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
+        /**
+         * Get screenshots for a PDF URL
+         * @description Returns a list of screenshot URLs for a given PDF URL
+         */
+        get: {
+            parameters: {
+                query: {
+                    url: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            screenshots: string[];
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/newsletters/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get all newsletters
+         * @description Get a list of all previous newsletter campaigns
+         */
         get: {
             parameters: {
                 query?: never;
@@ -1421,7 +1458,20 @@ export interface paths {
                     headers: {
                         [name: string]: unknown;
                     };
-                    content?: never;
+                    content: {
+                        "application/json": {
+                            campaigns: {
+                                settings?: {
+                                    preview_text?: string | null;
+                                    subject_line?: string | null;
+                                    template_id?: number;
+                                };
+                                id: string;
+                                send_time: string;
+                                long_archive_url: string;
+                            }[];
+                        };
+                    };
                 };
             };
         };
@@ -3337,6 +3387,39 @@ export interface paths {
                 };
             };
         };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/industry-gics/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;

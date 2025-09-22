@@ -1,8 +1,8 @@
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from "recharts";
 import { SectorEmissions } from "@/types/municipality";
 import { useResponsiveChartSize } from "@/hooks/useResponsiveChartSize";
-import { MunicipalitySectorTooltip } from "./MunicipalitySectorTooltip";
 import { useMunicipalitySectors } from "@/hooks/municipalities/useMunicipalitySectors";
+import PieTooltip from "@/components/graphs/tooltips/PieTooltip";
 
 interface MunicipalitySectorPieChartProps {
   sectorEmissions: SectorEmissions;
@@ -81,11 +81,7 @@ const MunicipalitySectorPieChart: React.FC<MunicipalitySectorPieChartProps> = ({
               />
             ))}
           </Pie>
-          <Tooltip
-            content={
-              <MunicipalitySectorTooltip filteredSectors={filteredSectors} />
-            }
-          />
+          <Tooltip content={<PieTooltip />} />
         </PieChart>
       </ResponsiveContainer>
     </div>

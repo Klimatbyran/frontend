@@ -1,30 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { getCompanies } from "@/lib/api";
-import type { paths } from "@/lib/api-types";
-import { cleanEmissions } from "@/utils/cleanEmissions";
-import type { Emissions } from "@/types/company";
-
-// Get company type from API types
-type Company = NonNullable<
-  paths["/companies/"]["get"]["responses"][200]["content"]["application/json"]
->[0];
-
-// Define the modified reporting period type with added IDs
-type ReportingPeriodWithIds = Omit<
-  Company["reportingPeriods"][0],
-  "emissions"
-> & {
-  id: string;
-  emissions: Emissions | null;
-};
-
-export interface RankedCompany extends Omit<Company, "reportingPeriods"> {
-  reportingPeriods: ReportingPeriodWithIds[];
-  metrics: {
-    emissionsReduction: number;
-    displayReduction: string;
-  };
-}
+import { cleanEmissions } from "@/utils/data/cleaning";
+import type {
+  Emissions,
+  RankedCompany,
+  TransformedReportingPeriod,
+} from "@/types/company";
 
 function formatReductionValue(value: number): string {
   if (value > 200) return ">200";
@@ -57,22 +38,24 @@ export function useCompanies() {
 
         return {
           ...company,
-          reportingPeriods: company.reportingPeriods.map((period) => ({
-            ...period,
-            id: period.startDate,
-            emissions: cleanEmissions(period.emissions),
-            economy: period.economy
-              ? {
-                  ...period.economy,
-                  turnover: period.economy.turnover
-                    ? { ...period.economy.turnover }
-                    : null,
-                  employees: period.economy.employees
-                    ? { ...period.economy.employees }
-                    : null,
-                }
-              : null,
-          })),
+          reportingPeriods: company.reportingPeriods.map(
+            (period): TransformedReportingPeriod => ({
+              ...period,
+              id: period.startDate,
+              emissions: cleanEmissions(period.emissions),
+              economy: period.economy
+                ? {
+                    ...period.economy,
+                    turnover: period.economy.turnover
+                      ? { ...period.economy.turnover }
+                      : null,
+                    employees: period.economy.employees
+                      ? { ...period.economy.employees }
+                      : null,
+                  }
+                : null,
+            }),
+          ),
           metrics: {
             emissionsReduction,
             displayReduction: formatReductionValue(emissionsReduction),

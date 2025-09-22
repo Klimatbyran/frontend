@@ -21,17 +21,17 @@ import {
   formatEmissionsAbsolute,
   formatEmployeeCount,
   formatPercentChange,
-} from "@/utils/localizeUnit";
+} from "@/utils/formatting/localization";
 import { cn } from "@/lib/utils";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
 import { AiIcon } from "@/components/ui/ai-icon";
 import { OverviewStatistics } from "./OverviewStatistics";
 import { CompanyOverviewTooltip } from "./CompanyOverviewTooltip";
 import { CompanyDescription } from "./CompanyDescription";
-import { calculateRateOfChange } from "@/lib/calculations/general";
+import { calculateRateOfChange } from "@/utils/calculations/general";
 import { EmissionsAssessmentButton } from "../emissions-assessment/EmissionsAssessmentButton";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
-import { getCompanyDescription } from "@/utils/companyDescription";
+import { getCompanyDescription } from "@/utils/business/company";
 
 interface CompanyOverviewProps {
   company: CompanyDetails;
@@ -93,6 +93,9 @@ export function CompanyOverview({
         currentLanguage,
       )
     : t("companies.overview.notReported");
+
+  const calculatedTotalEmissions =
+    selectedPeriod.emissions?.calculatedTotalEmissions || null;
 
   return (
     <SectionWithHelp
@@ -173,36 +176,28 @@ export function CompanyOverview({
           >
             {t("companies.overview.totalEmissions")} {periodYear}
           </Text>
-          <div className="flex items-baseline gap-4">
-            <Text
-              className={cn(
-                "text-3xl md:text-4xl lg:text-6xl font-light tracking-tighter leading-none",
-                selectedPeriod.emissions?.calculatedTotalEmissions === 0
-                  ? "text-grey"
-                  : "text-orange-2",
-              )}
-            >
-              {!selectedPeriod.emissions ||
-              selectedPeriod.emissions?.calculatedTotalEmissions === 0
-                ? t("companies.overview.noData")
-                : formatEmissionsAbsolute(
-                    selectedPeriod.emissions.calculatedTotalEmissions,
-                    currentLanguage,
-                  )}
-              <span className="text-lg lg:text-2xl md:text-lg sm:text-sm ml-2 text-grey">
-                {t(
-                  selectedPeriod.emissions?.calculatedTotalEmissions === 0
-                    ? " "
-                    : "emissionsUnit",
+
+          <Text
+            className={cn(
+              "text-3xl md:text-4xl lg:text-6xl font-light tracking-tighter leading-none",
+              !calculatedTotalEmissions ? "text-grey" : "text-orange-2",
+            )}
+          >
+            {!calculatedTotalEmissions
+              ? t("companies.overview.noData")
+              : formatEmissionsAbsolute(
+                  calculatedTotalEmissions,
+                  currentLanguage,
                 )}
-              </span>
-            </Text>
+            <span className="text-lg lg:text-2xl md:text-lg sm:text-sm ml-2 text-grey">
+              {t(calculatedTotalEmissions ? "emissionsUnit" : " ")}
+            </span>
             {totalEmissionsAIGenerated && (
-              <span className="ml-2">
-                <AiIcon size="md" />
+              <span className="ml-2 absolute">
+                <AiIcon size="md" className="absolute top-0 " />
               </span>
             )}
-          </div>
+          </Text>
         </div>
 
         <div className="flex-1">
@@ -227,8 +222,8 @@ export function CompanyOverview({
               </span>
             )}
             {yearOverYearAIGenerated && (
-              <span className="ml-2">
-                <AiIcon size="md" />
+              <span className="ml-2 absolute">
+                <AiIcon size="md" className="absolute top-0" />
               </span>
             )}
           </Text>

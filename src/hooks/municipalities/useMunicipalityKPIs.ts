@@ -6,6 +6,25 @@ export const useMunicipalityKPIs = (): KPIValue[] => {
 
   const KPIs: KPIValue[] = [
     {
+      label: t("municipalities.list.kpis.meetsParisGoal.label"),
+      key: "meetsParisGoal",
+      unit: "",
+      source: "municipalities.list.meetsParisGoal.source",
+      sourceUrls: ["https://nationellaemissionsdatabasen.smhi.se/"],
+      description: t("municipalities.list.kpis.meetsParisGoal.description"),
+      detailedDescription: t(
+        "municipalities.list.kpis.meetsParisGoal.detailedDescription",
+      ),
+      higherIsBetter: true,
+      isBoolean: true,
+      booleanLabels: {
+        true: t("municipalities.list.kpis.meetsParisGoal.booleanLabels.true"),
+        false: t("municipalities.list.kpis.meetsParisGoal.booleanLabels.false"),
+      },
+      belowString: t("municipalities.list.kpis.meetsParisGoal.belowString"),
+      aboveString: t("municipalities.list.kpis.meetsParisGoal.aboveString"),
+    },
+    {
       label: t(
         "municipalities.list.kpis.historicalEmissionChangePercent.label",
       ),
@@ -43,7 +62,7 @@ export const useMunicipalityKPIs = (): KPIValue[] => {
       key: "totalConsumptionEmission",
       unit: "t",
       source: "municipalities.list.totalConsumptionEmission.source",
-      sourceUrls: ["https://www.sei.org/tools/konsumtionskompassen/"],
+      sourceUrls: ["https://konsumtionskompassen.se/"],
       description: t(
         "municipalities.list.kpis.totalConsumptionEmission.description",
       ),

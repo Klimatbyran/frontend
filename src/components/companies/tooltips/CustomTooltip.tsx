@@ -1,7 +1,7 @@
 import React from "react";
 import { TooltipProps } from "recharts";
 import { useTranslation } from "react-i18next";
-import { formatEmissionsAbsolute, formatPercent } from "@/utils/localizeUnit";
+import { formatEmissionsAbsolute, formatPercent } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
 const CustomTooltip: React.FC<TooltipProps<number, string>> = ({
   active,

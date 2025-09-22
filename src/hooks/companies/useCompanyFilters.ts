@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import type { CompanyDetails as RankedCompany } from "@/types/company";
+import type { RankedCompany } from "@/types/company";
 
 export const SECTOR_NAMES = {
   "10": "Energi",

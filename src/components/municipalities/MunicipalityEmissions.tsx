@@ -1,58 +1,61 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { Text } from "@/components/ui/text";
-import { cn } from "@/lib/utils";
 import { MunicipalityEmissionsGraph } from "./emissionsGraph/MunicipalityEmissionsGraph";
-import { Municipality, DataPoint, SectorEmissions } from "@/types/municipality";
-import { DataViewSelector } from "./DataViewSelector";
+import { DataPoint, SectorEmissions } from "@/types/municipality";
+import {
+  getDynamicChartHeight,
+  useDataView,
+  useHiddenItems,
+  useMunicipalityViewOptions,
+} from "@/components/charts";
+import { CardHeader } from "@/components/layout/CardHeader";
+import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 
 type DataView = "overview" | "sectors";
 
 interface MunicipalityEmissionsProps {
-  municipality: Municipality;
   emissionsData: DataPoint[];
   sectorEmissions: SectorEmissions | null;
   className?: string;
 }
 
 export const MunicipalityEmissions: FC<MunicipalityEmissionsProps> = ({
-  municipality,
   emissionsData,
   sectorEmissions,
-  className,
 }) => {
   const { t } = useTranslation();
-  const [dataView, setDataView] = useState<DataView>("overview");
-  const [hiddenSectors, setHiddenSectors] = useState<Set<string>>(new Set());
+
+  const { dataView, setDataView } = useDataView<DataView>("overview", [
+    "overview",
+    "sectors",
+  ]);
+  const { hiddenItems: hiddenSectors, setHiddenItems: setHiddenSectors } =
+    useHiddenItems<string>([]);
 
   const hasSectorData =
     !!sectorEmissions && Object.keys(sectorEmissions).length > 0;
 
+  const dataViewOptions = useMunicipalityViewOptions(hasSectorData);
+
   return (
-    <div className={cn("bg-black-2 rounded-level-1 pt-8 md:pt-16", className)}>
-      <div className="px-8 md:px-16">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
-          <div>
-            <Text className="text-2xl md:text-4xl">
-              {t("municipalityDetailPage.emissionsDevelopment")}
-            </Text>
-            <Text className="text-grey mb-4">
-              {t("municipalityDetailPage.inTons")}
-            </Text>
-            {!municipality.neededEmissionChangePercent && (
-              <p className="mb-4">{t("municipalityDetailPage.noParisPath")}</p>
-            )}
-          </div>
-
-          <DataViewSelector
-            dataView={dataView}
-            setDataView={setDataView}
-            hasSectorData={hasSectorData}
-          />
-        </div>
-      </div>
-
-      <div className="mt-8 h-[400px] mr-4 md:mr-8">
+    <SectionWithHelp
+      helpItems={[
+        "parisAgreementLine",
+        "municipalityImportanceOfEmissionSources",
+      ]}
+    >
+      <CardHeader
+        title={t("municipalityDetailPage.emissionsDevelopment")}
+        unit={t("municipalityDetailPage.inTons")}
+        dataView={dataView}
+        setDataView={(value) => setDataView(value as "overview" | "sectors")}
+        dataViewOptions={dataViewOptions}
+        dataViewPlaceholder={t("municipalities.graph.selectView")}
+      />
+      <div
+        className="mt-8"
+        style={{ height: getDynamicChartHeight(dataView, false) }}
+      >
         <MunicipalityEmissionsGraph
           projectedData={emissionsData}
           sectorEmissions={sectorEmissions || undefined}
@@ -61,6 +64,6 @@ export const MunicipalityEmissions: FC<MunicipalityEmissionsProps> = ({
           setHiddenSectors={setHiddenSectors}
         />
       </div>
-    </div>
+    </SectionWithHelp>
   );
 };

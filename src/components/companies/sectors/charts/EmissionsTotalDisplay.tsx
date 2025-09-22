@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useScreenSize } from "@/hooks/useScreenSize";
-import { formatEmissionsAbsolute } from "@/utils/localizeUnit";
+import { formatEmissionsAbsolute } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
 
 interface EmissionsTotalDisplayProps {

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
-import { DataGuideItemId, dataGuideHelpItems } from "./items";
+import { DataGuideItemId } from "./items";
 import {
   Collapsible,
   CollapsibleTrigger,
@@ -17,7 +17,7 @@ interface ProgressiveDataGuideMobileProps {
 export function ProgressiveDataGuideMobile({
   items,
 }: ProgressiveDataGuideMobileProps) {
-  const { t } = useTranslation();
+  const { t } = useTranslation("dataguideItems");
   const [openItems, setOpenItems] = useState<Set<DataGuideItemId>>(new Set());
 
   const handleItemToggle = (itemId: DataGuideItemId, isOpen: boolean) => {
@@ -33,9 +33,8 @@ export function ProgressiveDataGuideMobile({
   };
 
   return (
-    <div className="p-3 space-y-1 mt-2">
+    <div className="p-4 space-y-1 mt-2">
       {items.map((itemId) => {
-        const item = dataGuideHelpItems[itemId];
         return (
           <Collapsible
             key={itemId}
@@ -48,7 +47,7 @@ export function ProgressiveDataGuideMobile({
                   "flex justify-between w-full py-1.5 px-2 items-center text-sm hover:bg-black-1/70 rounded transition-colors text-white font-bold",
                 )}
               >
-                <span className="text-left">{t(item.titleKey)}</span>
+                <span className="text-left">{t(`${itemId}.title`)}</span>
                 <ChevronDownIcon
                   className={cn(
                     "w-3 h-3 transition-transform",
@@ -65,7 +64,7 @@ export function ProgressiveDataGuideMobile({
             >
               <div className="px-2 mb-2 pt-2 pb-4 text-sm font-light text-gray-300 leading-relaxed border-b border-black-1">
                 <DataGuideMarkdown
-                  item={item}
+                  item={itemId}
                   className="max-w-prose px-0 sm:px-4"
                 />
               </div>

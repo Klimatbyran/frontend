@@ -11,8 +11,14 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
+# Check for vulnerabilities
+RUN npm audit
+
 # Install dependencies
 RUN npm ci
+
+# Fix Rollup native dependency issue
+RUN npm rebuild @rollup/rollup-linux-x64-gnu
 
 # Copy source files
 COPY . .

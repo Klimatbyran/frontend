@@ -1,19 +1,21 @@
-import { CalendarDays, Clock } from "lucide-react";
+import { CalendarDays, Clock, Globe2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Text } from "@/components/ui/text";
-import { blogMetadata } from "../lib/blog/blogPostsList";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
+import { useBlogPosts } from "@/hooks/useBlogPosts";
 import { ContentGridPage } from "@/components/layout/ContentGridPage";
 import { ContentCard } from "@/components/layout/ContentCard";
+import { localizeUnit } from "@/utils/formatting/localization";
 
 export function InsightsPage() {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
+  const blogPosts = useBlogPosts()
 
-  const featuredPost = isMobile ? undefined : blogMetadata[0];
-  const otherPosts = isMobile ? blogMetadata.slice(0) : blogMetadata.slice(1);
+  const featuredPost = isMobile ? undefined : blogPosts[0];
+  const otherPosts = isMobile ? blogPosts.slice(0) : blogPosts.slice(1);
 
   const canonicalUrl = "https://klimatkollen.se/insights/articles";
   const pageTitle = t("insightsPage.title");
@@ -32,9 +34,10 @@ export function InsightsPage() {
     title: post.title,
     excerpt: post.excerpt,
     image: post.image || "/images/default-blog-image.jpg",
-    category: post.category,
+    category: t("insightCategories." + post.category),
     date: post.date,
     readTime: post.readTime,
+    language: post.language,
   }));
 
   const featuredPostSection = featuredPost && (
@@ -57,17 +60,21 @@ export function InsightsPage() {
                 aria-label="Category"
                 className="px-3 py-1 bg-blue-5/50 rounded-full text-blue-2 text-sm"
               >
-                {featuredPost.category}
+                {t("insightCategories." + featuredPost.category)}
               </span>
               <div className="flex items-center gap-2 text-grey text-sm">
                 <CalendarDays className="w-4 h-4" />
                 <span aria-label="Date Published">
-                  {new Date(featuredPost.date).toLocaleDateString("sv-SE")}
+                  {localizeUnit(new Date(featuredPost.date), currentLanguage)}
                 </span>
               </div>
               <div className="flex items-center gap-2 text-grey text-sm">
                 <Clock className="w-4 h-4" />
                 <span aria-label="Read Time">{featuredPost.readTime}</span>
+              </div>
+              <div className="flex items-center gap-2 text-grey text-sm">
+                <Globe2 className="w-4 h-4" />
+                <span aria-label="Language">{t("language." + featuredPost.language)}</span>
               </div>
             </div>
             <Text

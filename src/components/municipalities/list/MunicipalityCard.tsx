@@ -1,16 +1,14 @@
-import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
 import type { Municipality } from "@/types/municipality";
 import { CardInfo } from "./MunicipalityCardInfo";
 import {
   formatEmissionsAbsolute,
   formatPercentChange,
-  localizeUnit,
-} from "@/utils/localizeUnit";
+} from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
 import { LinkCard } from "@/components/ui/link-card";
+import { LocalizedLink } from "@/components/LocalizedLink";
 
 interface MunicipalityCardProps {
   municipality: Municipality;
@@ -18,7 +16,8 @@ interface MunicipalityCardProps {
 
 export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
   const { t } = useTranslation();
-  const meetsParis = !municipality.budgetRunsOut && municipality.budget;
+  const { meetsParisGoal } = municipality;
+        
   const { currentLanguage } = useLanguage();
 
   const lastYearEmission = municipality.emissions.at(-1);
@@ -35,70 +34,36 @@ export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
   const noClimatePlan = !municipality.climatePlanLink;
 
   return (
-    <Link
+    <LocalizedLink
       to={`/municipalities/${municipality.name}`}
       className="block bg-black-2 rounded-level-2 p-8 space-y-8 transition-all duration-300 hover:shadow-[0_0_10px_rgba(153,207,255,0.15)] hover:bg-[#1a1a1a]"
     >
-      <div className="space-y-6">
-        <h2 className="text-3xl font-light">{municipality.name}</h2>
-
-        {/* <div className="space-y-2"> //fixme add as soon as we have time!
-        <h2 className="text-5xl font-light">{municipality.name}</h2>
-
-        {/* <div className="space-y-2"> //fixme add!
-          <div className="text-sm text-grey uppercase tracking-wide">
-            UTSLÄPPSRANKING
-          </div>
-          <div className="text-3xl font-light">{municipality.rank}</div>
-        </div> */}
-      </div>
-
       <div className="space-y-2">
-        <div className="text-sm text-grey">
+        <h2 className="text-3xl font-light">{municipality.name}</h2>
+        <p className="text-grey text-sm line-clamp-2 min-h-[40px]">
+          {municipality.region}
+        </p>
+        
+        <div className="flex items-center gap-2 text-grey mb-2 text-lg">
           {t("municipalities.card.meetsParis", { name: municipality.name })}
         </div>
         <div
           className={cn(
             "text-3xl font-light",
-            meetsParis ? "text-green-3" : "text-pink-3",
+            meetsParisGoal ? "text-green-3" : "text-pink-3",
           )}
         >
-          {meetsParis ? t("yes") : t("no")}
-          {meetsParis ? (
-            <div className="flex items-center text-sm text-grey mt-2">
-              {t("municipalities.card.netZero")}
-              <Text variant="body" className="text-green-3 ml-1">
-                {municipality.hitNetZero
-                  ? localizeUnit(
-                      new Date(municipality.hitNetZero),
-                      currentLanguage,
-                    )
-                  : t("municipalityDetailPage.never")}
-              </Text>
-            </div>
-          ) : (
-            <div className="flex items-center text-sm text-grey mt-2">
-              {t("municipalities.card.budgetRunsOut")}
-              <Text variant="body" className="text-pink-3 ml-1">
-                {municipality.budgetRunsOut
-                  ? localizeUnit(
-                      new Date(municipality.budgetRunsOut),
-                      currentLanguage,
-                    )
-                  : t("municipalityDetailPage.budgetHolds")}
-              </Text>
-            </div>
-          )}
+          {meetsParisGoal ? t("yes") : t("no")}
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-black-1">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 pt-4 border-t border-black-1">
         <CardInfo
           title={t("municipalities.card.emission", { year: lastYear })}
           tooltip={t("municipalities.card.emissionInfo", { year: lastYear })}
           value={lastYearEmissions}
           textColor="text-orange-2"
-          unit={t("emissionsUnitCO2")}
+          unit={t("emissionsUnit")}
         />
         <CardInfo
           title={t("municipalities.card.changeRate")}
@@ -126,6 +91,6 @@ export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
         }
         descriptionColor={noClimatePlan ? "text-pink-3" : "text-green-3"}
       />
-    </Link>
+    </LocalizedLink>
   );
 }

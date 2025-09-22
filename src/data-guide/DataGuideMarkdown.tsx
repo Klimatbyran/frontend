@@ -1,19 +1,19 @@
 import Markdown from "react-markdown";
 import remarkBreaks from "remark-breaks";
-import { DataGuideItem } from "./items";
+import { DataGuideItemId } from "./items";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 import { ArrowUpRight } from "lucide-react";
 
 type DataGuideMarkdownProps = {
-  item: DataGuideItem;
+  item: DataGuideItemId;
   className?: string;
 };
 export const DataGuideMarkdown = ({
   className,
   item,
 }: DataGuideMarkdownProps) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("dataguideItems");
   return (
     <Markdown
       className={cn(className)}
@@ -54,7 +54,7 @@ export const DataGuideMarkdown = ({
         ),
       }}
     >
-      {t(item.contentKey, { joinArrays: " " })}
+      {t(`${item}.content`, { joinArrays: " " })}
     </Markdown>
   );
 };

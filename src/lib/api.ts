@@ -120,8 +120,15 @@ export async function downloadCompanies(
   return data;
 }
 
-export async function downloadMunicipalities() {
+export async function downloadMunicipalities(
+  format: "csv" | "json" | "xlsx" = "csv",
+) {
   const { data, error } = await client.GET("/municipalities/export", {
+    params: {
+      query: {
+        type: format,
+      }
+    },
     parseAs: "blob",
   });
 
@@ -256,3 +263,16 @@ export async function getIndustryGics() {
   if (error) throw error;
   return data;
 }
+
+export const fetchNewsletters = async () => {
+  try {
+    const response = await fetch(`${baseUrl}/newsletters/`);
+
+    if (response.ok) {
+      const result = await response.json();
+      return result;
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
