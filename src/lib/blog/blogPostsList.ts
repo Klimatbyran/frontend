@@ -10,7 +10,7 @@ export const blogMetadata: ContentMeta[] = [
   {
     id: "municipality-method-update",
     title:
-      "Carbon Law – ny metod för att jämföra kommunernas klimatutsläpp ",
+      "Carbon Law – ny metod för att jämföra kommunernas växthusgasutsläpp",
     excerpt:
       "Klimatkollen ändrar metod för utsläppsdata om landets kommuner.",
     date: "2025-09-02",

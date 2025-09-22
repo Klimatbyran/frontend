@@ -72,7 +72,7 @@ export function BlogDetailPage() {
       {/* Navigation */}
       <div className="flex items-center justify-between">
         <Button variant="ghost" size="sm" className="gap-2" asChild>
-          <Link to="/articles">
+          <LocalizedLink to="/articles">
             <ArrowLeft className="w-4 h-4" />
             {t("blogDetailPage.back")}
           </Link>
