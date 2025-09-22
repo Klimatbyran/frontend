@@ -69,7 +69,7 @@ const PieChartView: React.FC<PieChartViewProps> = ({
   }));
 
   return (
-    <ResponsiveContainer width="100%" height={outerRadius * 2.5}>
+    <ResponsiveContainer width="100%" height={Math.max(outerRadius * 2.5, 300)}>
       <PieChart>
         <Pie
           data={dataWithTotal}
@@ -82,6 +82,8 @@ const PieChartView: React.FC<PieChartViewProps> = ({
           onClick={handleCategoryClick}
           cornerRadius={8}
           paddingAngle={2}
+          animationBegin={0}
+          animationDuration={300}
         >
           {dataWithTotal.map((entry) => (
             <Cell
@@ -99,6 +101,8 @@ const PieChartView: React.FC<PieChartViewProps> = ({
               customActionLabel={customActionLabel}
             />
           }
+          animationDuration={0}
+          isAnimationActive={false}
         />
       </PieChart>
     </ResponsiveContainer>

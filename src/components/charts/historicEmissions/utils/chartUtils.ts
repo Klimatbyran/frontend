@@ -4,6 +4,13 @@
 
 import React from "react";
 import { formatEmissionsAbsoluteCompact } from "@/utils/formatting/localization";
+
+// Type for recharts tick function - compatible with recharts 3.x
+type TickProps = {
+  x: number;
+  y: number;
+  payload: { value: number };
+};
 import {
   LINE_CONFIGS,
   LINE_STYLES,
@@ -17,6 +24,7 @@ export const getConsistentLineProps = (
   isMobile: boolean = false,
   name?: string,
   customColor?: string,
+  showDots: boolean = false,
 ) => {
   const config = LINE_CONFIGS[lineType];
   const color = customColor || config.color;
@@ -24,7 +32,9 @@ export const getConsistentLineProps = (
     ...config.style,
     stroke: color,
     name,
-    dot: false,
+    dot: showDots
+      ? { fill: color, r: 4, strokeWidth: 0, fillOpacity: 0 }
+      : false,
     activeDot: isMobile ? false : { r: 6, fill: color, cursor: "pointer" },
   };
 };
@@ -61,7 +71,7 @@ export const getXAxisProps = (
     padding: { left: 0, right: 0 },
     tick:
       customTick ||
-      (({ x, y, payload }: any): React.ReactElement => {
+      (({ x, y, payload }: TickProps) => {
         return React.createElement(
           "text",
           {
@@ -72,7 +82,7 @@ export const getXAxisProps = (
             fontWeight: "normal",
           },
           payload.value,
-        );
+        ) as any;
       }),
   };
 
@@ -94,7 +104,7 @@ export const getYAxisProps = (
   stroke: "var(--grey)",
   tickLine: false,
   axisLine: false,
-  tick: ({ x, y, payload }: any): React.ReactElement => {
+  tick: ({ x, y, payload }: TickProps) => {
     return React.createElement(
       "text",
       {
@@ -106,7 +116,7 @@ export const getYAxisProps = (
         transform: `rotate(-30, ${x - 5}, ${y + 5})`, // Updated transform origin
       },
       formatEmissionsAbsoluteCompact(payload.value, currentLanguage),
-    );
+    ) as any;
   },
   domain,
   padding: { top: 0, bottom: 0 },
@@ -115,7 +125,7 @@ export const getYAxisProps = (
 // Custom tick renderer factory
 export const createCustomTickRenderer =
   (baseYear?: number, isBaseYearBold: boolean = true) =>
-  ({ x, y, payload }: any) => {
+  ({ x, y, payload }: TickProps) => {
     const isBaseYear = payload.value === baseYear;
     return React.createElement(
       "text",
@@ -123,11 +133,11 @@ export const createCustomTickRenderer =
         x: x - 15,
         y: y + 10,
         fontSize: 12,
-        fill: `${isBaseYear ? "white" : "var(--grey)"}`,
-        fontWeight: `${isBaseYear && isBaseYearBold ? "bold" : "normal"}`,
+        fill: isBaseYear ? "white" : "var(--grey)",
+        fontWeight: isBaseYear && isBaseYearBold ? "bold" : "normal",
       },
       payload.value,
-    );
+    ) as any;
   };
 
 // Base year reference line styling

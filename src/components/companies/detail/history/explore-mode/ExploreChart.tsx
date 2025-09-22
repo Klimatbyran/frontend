@@ -214,12 +214,15 @@ export function ExploreChart({
     dataKey: string,
     stroke: string,
     animated: boolean = true,
+    showDots: boolean = false,
   ) => ({
     type: "monotone" as const,
     dataKey,
     stroke,
     strokeWidth: 2,
-    dot: false,
+    dot: showDots
+      ? { fill: stroke, r: 4, strokeWidth: 0, fillOpacity: 0 }
+      : false,
     isAnimationActive: animated,
     animationDuration: 1000,
     connectNulls: true,
@@ -541,7 +544,7 @@ export function ExploreChart({
   return (
     <>
       {renderStepDescription(step)}
-      <div className="relative w-full h-full">
+      <div className="relative w-full h-[500px]">
         <ResponsiveContainer width="100%" height="100%" className="w-full">
           <ComposedChart
             data={
@@ -581,6 +584,20 @@ export function ExploreChart({
                 <ChartTooltip
                   companyBaseYear={companyBaseYear}
                   unit={t("companies.tooltip.tonsCO2e")}
+                  trendData={
+                    trendAnalysis?.coefficients
+                      ? {
+                          slope:
+                            "slope" in trendAnalysis.coefficients
+                              ? trendAnalysis.coefficients.slope
+                              : 0,
+                          baseYear: companyBaseYear || 0,
+                          lastReportedYear: Math.max(
+                            ...data.map((d) => d.year),
+                          ),
+                        }
+                      : undefined
+                  }
                 />
               }
             />
@@ -697,7 +714,7 @@ export function ExploreChart({
                     dataKey="approximated"
                     stroke="var(--orange-3)"
                     strokeWidth={2}
-                    dot={false}
+                    dot={{ fill: "var(--orange-3)", r: 0, strokeWidth: 0 }}
                     isAnimationActive={true}
                     animationDuration={1000}
                     connectNulls
@@ -726,6 +743,7 @@ export function ExploreChart({
                       "approximated",
                       "var(--orange-3)",
                       false,
+                      true,
                     )}
                     data={step3OrangeLine}
                   />
@@ -733,7 +751,12 @@ export function ExploreChart({
                 {/* Paris line: current year to projection end, green, no dots */}
                 {step3ParisSegment.length > 0 && (
                   <Line
-                    {...getCommonLineProps("carbonLaw", "var(--green-3)")}
+                    {...getCommonLineProps(
+                      "carbonLaw",
+                      "var(--green-3)",
+                      true,
+                      true,
+                    )}
                     data={step3ParisSegment}
                   />
                 )}
@@ -748,7 +771,12 @@ export function ExploreChart({
                 {/* Paris line: green, no dots */}
                 {step4ParisSegment.length > 0 && (
                   <Line
-                    {...getCommonLineProps("carbonLaw", "var(--green-4)")}
+                    {...getCommonLineProps(
+                      "carbonLaw",
+                      "var(--green-4)",
+                      true,
+                      true,
+                    )}
                     data={step4ParisSegment}
                   />
                 )}
@@ -756,7 +784,12 @@ export function ExploreChart({
                 {/* Trend line: orange, no dots */}
                 {step4TrendSegment.length > 0 && (
                   <Line
-                    {...getCommonLineProps("approximated", "var(--orange-4)")}
+                    {...getCommonLineProps(
+                      "approximated",
+                      "var(--orange-4)",
+                      true,
+                      true,
+                    )}
                     data={step4TrendSegment}
                   />
                 )}
@@ -809,10 +842,22 @@ export function ExploreChart({
                 )}
 
                 {/* Paris line: green, no dots */}
-                <Line {...getCommonLineProps("carbonLaw", "var(--green-4)")} />
+                <Line
+                  {...getCommonLineProps(
+                    "carbonLaw",
+                    "var(--green-4)",
+                    true,
+                    true,
+                  )}
+                />
                 {/* Trend line: orange, no dots */}
                 <Line
-                  {...getCommonLineProps("approximated", "var(--orange-4)")}
+                  {...getCommonLineProps(
+                    "approximated",
+                    "var(--orange-4)",
+                    true,
+                    true,
+                  )}
                 />
               </>
             )}

@@ -34,16 +34,16 @@ export const createOverviewLegendItems = (
     isDashed: LEGEND_CONFIGS.estimated.isDashed,
   });
 
-  // Add trend line (municipalities only)
-  if (isMunicipality) {
-    items.push({
-      name: t("municipalities.graph.trend"),
-      color: LEGEND_CONFIGS.trend.color,
-      isClickable: LEGEND_CONFIGS.trend.isClickable,
-      isHidden: hiddenItems.has("trend"),
-      isDashed: LEGEND_CONFIGS.trend.isDashed,
-    });
-  }
+  // Add trend line (both municipalities and companies now)
+  items.push({
+    name: isMunicipality
+      ? t("municipalities.graph.trend")
+      : t("companies.emissionsHistory.trend"),
+    color: LEGEND_CONFIGS.trend.color,
+    isClickable: LEGEND_CONFIGS.trend.isClickable,
+    isHidden: hiddenItems.has("trend"),
+    isDashed: LEGEND_CONFIGS.trend.isDashed,
+  });
 
   // Add Paris/carbon law line
   items.push({

@@ -71,6 +71,8 @@ const MunicipalitySectorPieChart: React.FC<MunicipalitySectorPieChartProps> = ({
             cornerRadius={8}
             paddingAngle={2}
             onClick={handleSectorClick}
+            animationBegin={0}
+            animationDuration={300}
           >
             {pieData.map((entry) => (
               <Cell
@@ -81,7 +83,11 @@ const MunicipalitySectorPieChart: React.FC<MunicipalitySectorPieChartProps> = ({
               />
             ))}
           </Pie>
-          <Tooltip content={<PieTooltip />} />
+          <Tooltip
+            content={<PieTooltip />}
+            animationDuration={0}
+            isAnimationActive={false}
+          />
         </PieChart>
       </ResponsiveContainer>
     </div>
