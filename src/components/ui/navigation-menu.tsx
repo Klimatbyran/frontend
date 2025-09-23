@@ -1,8 +1,6 @@
 import * as React from "react";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import * as NavigationMenuPrimitive from "@radix-ui/react-navigation-menu";
-import { cva } from "class-variance-authority";
-
 import { cn } from "@/lib/utils";
 
 const NavigationMenu = React.forwardRef<
@@ -12,7 +10,7 @@ const NavigationMenu = React.forwardRef<
   <NavigationMenuPrimitive.Root
     ref={ref}
     className={cn(
-      "relative z-10 flex max-w-max flex-1 items-center justify-center",
+      "z-10 flex max-w-max flex-1 items-center justify-center text-sm font-medium",
       className,
     )}
     {...props}
@@ -40,7 +38,7 @@ NavigationMenuList.displayName = NavigationMenuPrimitive.List.displayName;
 const NavigationMenuItem = NavigationMenuPrimitive.Item;
 
 const navigationMenuTriggerStyle = [
-  "group inline-flex h-10 lg:h12 w-max items-center justify-center px-4 py-2 text-sm font-medium transition-colors",
+  "flex items-center justify-center px-3 gap-2 text-sm font-medium transition-colors",
   "hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none",
   "disabled:pointer-events-none disabled:opacity-50 data-[state=open]:bg-accent",
 ];
@@ -56,7 +54,7 @@ const NavigationMenuTrigger = React.forwardRef<
   >
     {children}{" "}
     <ChevronDownIcon
-      className="relative top-[1px] ml-1 h-4 w-4 transition duration-300 group-data-[state=open]:rotate-180"
+      className="relative ml-1 h-4 w-4 transition duration-300 group-data-[state=open]:rotate-180"
       aria-hidden="true"
     />
   </NavigationMenuPrimitive.Trigger>
