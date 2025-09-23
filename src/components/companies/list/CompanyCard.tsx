@@ -37,8 +37,8 @@ export function CompanyCard({
   const { currentLanguage } = useLanguage();
   const { isAIGenerated, isEmissionsAIGenerated } = useVerificationStatus();
 
-  const latestPeriod = reportingPeriods[0];
-  const previousPeriod = reportingPeriods[1];
+  const latestPeriod = reportingPeriods?.[0];
+  const previousPeriod = reportingPeriods?.[1];
 
   const localizedDescription =
     descriptions?.find(
@@ -67,15 +67,22 @@ export function CompanyCard({
   const latestPeriodEconomyTurnover = latestPeriod?.economy?.turnover || null;
 
   const noSustainabilityReport =
+    !latestPeriod ||
     latestPeriod?.reportURL === null ||
     latestPeriod?.reportURL === "Saknar report" ||
     latestPeriod?.reportURL === undefined;
 
-  const totalEmissionsAIGenerated = isEmissionsAIGenerated(latestPeriod);
-  const turnoverAIGenerated = isAIGenerated(latestPeriod.economy?.turnover);
-  const employeesAIGenerated = isAIGenerated(latestPeriod.economy?.employees);
+  const totalEmissionsAIGenerated = latestPeriod
+    ? isEmissionsAIGenerated(latestPeriod)
+    : false;
+  const turnoverAIGenerated = latestPeriod?.economy?.turnover
+    ? isAIGenerated(latestPeriod.economy.turnover)
+    : false;
+  const employeesAIGenerated = latestPeriod?.economy?.employees
+    ? isAIGenerated(latestPeriod.economy.employees)
+    : false;
   const yearOverYearAIGenerated =
-    isEmissionsAIGenerated(latestPeriod) ||
+    (latestPeriod && isEmissionsAIGenerated(latestPeriod)) ||
     (previousPeriod && isEmissionsAIGenerated(previousPeriod));
 
   return (
@@ -223,13 +230,15 @@ export function CompanyCard({
         </div>
         {/* Sustainability Report */}
         <LinkCard
-          link={latestPeriod.reportURL ? latestPeriod.reportURL : undefined}
+          link={latestPeriod?.reportURL ? latestPeriod.reportURL : undefined}
           title={t("companies.card.companyReport")}
           description={
             noSustainabilityReport
               ? t("companies.card.missingReport")
               : t("companies.card.reportYear", {
-                  year: new Date(latestPeriod.endDate).getFullYear(),
+                  year: latestPeriod?.endDate
+                    ? new Date(latestPeriod.endDate).getFullYear()
+                    : new Date().getFullYear(),
                 })
           }
           descriptionColor={
