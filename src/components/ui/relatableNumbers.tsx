@@ -1,7 +1,6 @@
 import { Text } from "@/components/ui/text";
 import {
-  calculateStockholmsBurnt,
-  calculateBurntFootballFields,
+  calculateAreaBurnt,
   emissionsComparedToSweden,
 } from "@/utils/calculations/relatableNumbersCalc";
 import {
@@ -27,17 +26,14 @@ const RelatableNumbers = ({
 
   if (!validTotalEmissions) return;
 
-  const stockholmsBurnt = calculateStockholmsBurnt(validTotalEmissions);
-  const stockholmsBurntFormatted =
-    stockholmsBurnt !== null
-      ? localizeUnit(stockholmsBurnt, currentLanguage)
-      : null;
-
-  const footballFieldsBurnt = calculateBurntFootballFields(validTotalEmissions);
-  const footballFieldsBurntFormatted = localizeUnit(
-    footballFieldsBurnt,
-    currentLanguage,
-  );
+  const areaBurnt = calculateAreaBurnt(validTotalEmissions);
+  const areaBurntFormatted = {
+    area: areaBurnt?.area,
+    comparissonNumber:
+      areaBurnt !== null
+        ? localizeUnit(areaBurnt.comparissonNumber, currentLanguage)
+        : null,
+  };
 
   const swedenEmissionDifference = Math.round(
     emissionsComparedToSweden(validTotalEmissions),
@@ -68,28 +64,20 @@ const RelatableNumbers = ({
                 alt="fire icon"
                 className="h-[50px] md:h-[70px]"
               />
-              {stockholmsBurntFormatted ? (
+              {areaBurntFormatted && (
                 <Text>
-                  {t("relatableNumbers.forestFireStockholm")}{" "}
+                  {t("relatableNumbers.forestFire")}{" "}
                   <span className="text-red-300">
-                    {stockholmsBurntFormatted.slice(
-                      0,
-                      stockholmsBurntFormatted.length - 2,
-                    )}{" "}
-                    {t("relatableNumbers.times")}
-                  </span>{" "}
-                  {t("relatableNumbers.forestFireStockholmExtension")}
-                </Text>
-              ) : (
-                <Text>
-                  {t("relatableNumbers.forestFireFootball")}
-                  <span className="text-red-300">
-                    {footballFieldsBurntFormatted?.slice(
-                      0,
-                      footballFieldsBurntFormatted.length - 2,
+                    {Number(areaBurntFormatted.comparissonNumber) > 1 &&
+                      areaBurntFormatted.comparissonNumber?.slice(
+                        0,
+                        areaBurntFormatted.comparissonNumber.length - 2,
+                      )}{" "}
+                    {t(
+                      `relatableNumbers.${Number(areaBurntFormatted.comparissonNumber) > 1 ? "times" : "sizeOf"}`,
                     )}
-                  </span>
-                  {t("relatableNumbers.forestFireFootballExtension")}
+                  </span>{" "}
+                  {t(`relatableNumbers.forestFire${areaBurntFormatted.area}`)}
                 </Text>
               )}
             </div>

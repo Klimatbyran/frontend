@@ -1,12 +1,3 @@
-const averageCarbonPerHectar = 50;
-const carbonConversion = 44 / 12;
-
-//Avg sqm of a footballfield
-const footballFieldSqm = 7140;
-
-//Size of Stockholm
-const stockholmSqm = 188000000;
-
 export const emissionsComparedToSweden = (totalEmissions: number) => {
   //Swedens total emissions 2023 tco2e
   const swedenTotalEmissions = 44200000;
@@ -29,28 +20,72 @@ export const emissionsComparedToSweden = (totalEmissions: number) => {
   return emissionsDifference;
 };
 
-export const calculateStockholmsBurnt = (totalEmissions: number) => {
+export const calculateAreaBurnt = (totalEmissions: number) => {
+  const averageCarbonPerHectar = 50;
+  const carbonConversion = 44 / 12;
   const tco2ePerHectar = averageCarbonPerHectar * carbonConversion;
+
   const totalHectarBurnt = totalEmissions / tco2ePerHectar;
+
+  const areaBurnt =
+    calculateStockholmsBurnt(totalHectarBurnt) ||
+    calculateBurlovsBurnt(totalHectarBurnt) ||
+    calculateFootballFieldsBurnt(totalHectarBurnt) ||
+    calculateTennisCourtsBurnt(totalHectarBurnt);
+
+  return areaBurnt;
+};
+
+const calculateStockholmsBurnt = (totalHectarBurnt: number) => {
+  const stockholmSqm = 188000000;
 
   const stockholmsBurnt = Math.round((totalHectarBurnt * 10000) / stockholmSqm);
 
-  if (stockholmsBurnt < 2) {
+  if (stockholmsBurnt < 1) {
     return null;
   }
-  return stockholmsBurnt;
+  return { area: "Stockholm", comparissonNumber: stockholmsBurnt };
 };
 
-export const calculateBurntFootballFields = (totalEmissions: number) => {
-  if (totalEmissions === null) {
-    return 0;
+const calculateBurlovsBurnt = (totalHectarBurnt: number) => {
+  const burlovSqm = 19200000;
+
+  const burlovsBurnt = Math.round((totalHectarBurnt * 10000) / burlovSqm);
+
+  if (burlovsBurnt < 1) {
+    return null;
   }
-  const tco2ePerHectar = averageCarbonPerHectar * carbonConversion;
-  const totalHectarBurnt = totalEmissions / tco2ePerHectar;
+  return { area: "Burlov", comparissonNumber: burlovsBurnt };
+};
+
+const calculateFootballFieldsBurnt = (totalHectarBurnt: number) => {
+  const footballFieldSqm = 7140;
 
   const footballFieldsBurnt = Math.round(
     (totalHectarBurnt * 10000) / footballFieldSqm,
   );
+  if (footballFieldsBurnt < 1) {
+    return null;
+  }
 
-  return footballFieldsBurnt;
+  return {
+    area: footballFieldsBurnt > 1 ? "FootballField" : "FootballFields",
+    comparissonNumber: footballFieldsBurnt,
+  };
+};
+
+const calculateTennisCourtsBurnt = (totalHectarBurnt: number) => {
+  const tennisCourtSqm = 261;
+
+  const tennisCourtsBurnt = Math.round(
+    (totalHectarBurnt * 10000) / tennisCourtSqm,
+  );
+  if (tennisCourtsBurnt < 1) {
+    return null;
+  }
+
+  return {
+    area: tennisCourtsBurnt > 1 ? "TennisCourts" : "TennisCourt",
+    comparissonNumber: tennisCourtsBurnt,
+  };
 };
