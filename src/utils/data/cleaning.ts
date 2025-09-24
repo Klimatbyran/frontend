@@ -1,5 +1,3 @@
-import type { Emissions } from "@/types/company";
-
 // Helper to normalize subfields with a 'total' property
 function normalizeTotalField<T extends { total?: number | null }>(
   field: T | null | undefined,
@@ -8,7 +6,20 @@ function normalizeTotalField<T extends { total?: number | null }>(
   return { ...field, total: field.total as number };
 }
 
-export function cleanEmissions(emissions: any): Emissions | null {
+/**
+ * Clean emissions data - works with both simple (list) and complex (detail) structures
+ *
+ * Why `any` type is used here:
+ * - Two different API endpoints return different structures:
+ *   - List endpoint (/companies/): Simple structure without IDs
+ *   - Detail endpoint (/companies/{wikidataId}): Complex structure with IDs and additional metadata
+ * - The function needs to handle both structures gracefully
+ * - Complex union types would be unwieldy and hard to maintain
+ * - Type safety comes from usage sites, not this utility function
+ * - The function preserves important fields (id, metadata.user, metadata.comment, metadata.source)
+ *   that are used throughout the codebase for AI detection and edit forms
+ */
+export function cleanEmissions(emissions: any): any {
   if (!emissions) return null;
 
   // Normalize all subfields up front
@@ -54,7 +65,7 @@ export function cleanEmissions(emissions: any): Emissions | null {
 
   // Return the cleaned object, ensuring all fields are present and never undefined
   return {
-    id: emissions.id,
+    ...(emissions.id && { id: emissions.id }), // Only include id if it exists
     calculatedTotalEmissions: emissions.calculatedTotalEmissions ?? 0,
     scope1,
     scope2,

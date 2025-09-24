@@ -1,5 +1,6 @@
 import { forwardRef, ReactNode } from "react";
-import { VirtuosoGrid } from "react-virtuoso";
+import { VirtuosoGrid, Virtuoso } from "react-virtuoso";
+import { useScreenSize } from "@/hooks/useScreenSize";
 
 const gridComponents = {
   List: forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
@@ -22,6 +23,22 @@ type CardGridProps<T> = {
 };
 
 export function CardGrid<T>({ items, itemContent }: CardGridProps<T>) {
+  const { isMobile } = useScreenSize();
+
+  // On mobile, using different grid settings to prevent scrolling errors
+  if (isMobile) {
+    return (
+      <Virtuoso
+        data={items}
+        useWindowScroll={true}
+        style={{ height: "calc(100vh - 120px)" }}
+        itemContent={(_index, item) => (
+          <div className="mb-6">{itemContent(item)}</div>
+        )}
+      />
+    );
+  }
+
   return (
     <VirtuosoGrid
       totalCount={items.length}
