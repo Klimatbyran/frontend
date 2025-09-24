@@ -236,9 +236,7 @@ export function CompanyCard({
             noSustainabilityReport
               ? t("companies.card.missingReport")
               : t("companies.card.reportYear", {
-                  year: latestPeriod?.endDate
-                    ? new Date(latestPeriod.endDate).getFullYear()
-                    : new Date().getFullYear(),
+                  year: new Date(latestPeriod.endDate).getFullYear(),
                 })
           }
           descriptionColor={
