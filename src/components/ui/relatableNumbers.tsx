@@ -77,7 +77,7 @@ const RelatableNumbers = ({
                       `relatableNumbers.${Number(areaBurntFormatted.comparissonNumber) > 1 ? "times" : "sizeOf"}`,
                     )}
                   </span>{" "}
-                  {t(`relatableNumbers.forestFire${areaBurntFormatted.area}`)}
+                  {t(`${areaBurntFormatted.area}`)}
                 </Text>
               )}
             </div>
