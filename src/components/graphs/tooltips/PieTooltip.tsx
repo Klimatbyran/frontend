@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { TooltipProps } from "recharts";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
 import {
@@ -9,7 +8,10 @@ import {
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { X } from "lucide-react";
 
-interface PieTooltipProps extends TooltipProps<number, string> {
+interface PieTooltipProps {
+  active?: boolean;
+  payload?: any[];
+  label?: string;
   customActionLabel?: string;
   showPercentage?: boolean;
   percentageLabel?: string;
@@ -43,7 +45,7 @@ const PieTooltip: React.FC<PieTooltipProps> = ({
   const percentage = formatPercent(safeValue / safeTotal, currentLanguage);
 
   return (
-    <div className="bg-black-2 border border-black-1 rounded-lg shadow-xl p-4 text-white">
+    <div className="bg-black-2 border border-black-1 rounded-lg shadow-xl p-4 text-white pointer-events-none z-50 relative">
       <div className="flex justify-end items-center relative z-30">
         {isMobile && (
           <button
@@ -71,7 +73,9 @@ const PieTooltip: React.FC<PieTooltipProps> = ({
         <p className="text-xs italic text-blue-2 mt-2">
           {customActionLabel
             ? customActionLabel
-            : t("graphs.pieChart.clickToFilter")}
+            : isMobile
+              ? t("graphs.pieChart.doubleClickToFilter")
+              : t("graphs.pieChart.clickToFilter")}
         </p>
       </div>
     </div>
