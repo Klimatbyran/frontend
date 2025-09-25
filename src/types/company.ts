@@ -21,6 +21,11 @@ export type ReportingPeriod = ReportingPeriodFromDetail; // For detail pages
 
 export type Emissions = NonNullable<ReportingPeriod["emissions"]>;
 
+// Scope 3 category type extracted from API
+export type Scope3Category = NonNullable<
+  NonNullable<CompanyDetails["reportingPeriods"][0]["emissions"]>["scope3"]
+>["categories"][0];
+
 // Company type from the list endpoint (/companies/)
 export type CompanyListItem = NonNullable<
   paths["/companies/"]["get"]["responses"][200]["content"]["application/json"][number]

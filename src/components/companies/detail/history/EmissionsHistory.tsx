@@ -29,6 +29,7 @@ export function EmissionsHistory({
   reportingPeriods,
   onYearSelect,
   baseYear,
+  industry,
   features = {
     interpolateScope3: true,
     guessBaseYear: true,
@@ -40,6 +41,9 @@ export function EmissionsHistory({
   const { getCategoryName, getCategoryColor } = useCategoryMetadata();
   const { currentLanguage } = useLanguage();
   const { isAIGenerated, isEmissionsAIGenerated } = useVerificationStatus();
+
+  // Check if company is in Financials sector
+  const isFinancialsSector = industry?.industryGics?.sectorCode === "40";
 
   const hasScope3Categories = useMemo(
     () =>
@@ -191,6 +195,9 @@ export function EmissionsHistory({
             "parisAgreementLine",
             "scope3EmissionLevels",
             "companyMissingData",
+            ...(isFinancialsSector
+              ? (["financialsScope3Category15"] as const)
+              : []),
           ]}
         >
           <CardHeader

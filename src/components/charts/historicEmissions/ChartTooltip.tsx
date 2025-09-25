@@ -5,6 +5,7 @@ import { formatEmissionsAbsolute } from "@/utils/formatting/localization";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { cn } from "@/lib/utils";
 import { AiIcon } from "@/components/ui/ai-icon";
+import type { Scope3Category } from "@/types/company";
 
 interface ChartTooltipProps {
   active?: boolean;
@@ -177,7 +178,8 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
             entry.payload?.scope2?.isAIGenerated ||
             entry.payload?.scope3?.isAIGenerated ||
             entry.payload?.scope3Categories?.some(
-              (cat: any) => cat.isAIGenerated,
+              (cat: Scope3Category & { isAIGenerated?: boolean }) =>
+                cat.isAIGenerated,
             ) ||
             false);
 

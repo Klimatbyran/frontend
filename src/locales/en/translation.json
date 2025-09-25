@@ -1018,7 +1018,8 @@
       "readMore": "Read More",
       "readLess": "Read Less",
       "aiGeneratedData": "Includes AI-extracted values. Click to read more.",
-      "billion": "bn"
+      "billion": "bn",
+      "financialsTooltip": "Financed emissions are often reported with a delay, as they are often based on the previous year's data from the companies included in the investment. We show emissions data in scope 3 category 15 in the year it is publicly reported in the annual report, even if it is sometimes stated that the data in this category comes from a previous year."
     },
     "sectionedCompanyList": {
       "otherCompanies": "Other Companies",

@@ -1018,7 +1018,8 @@
       "readMore": "Läs mer",
       "readLess": "Läs mindre",
       "aiGeneratedData": "Innehåller AI-extraherade värden. Klicka för att läsa mer.",
-      "billion": "mdr"
+      "billion": "mdr",
+      "financialsTooltip": "Finansierade utsläpp rapporteras ofta med fördröjning, eftersom de ofta baseras på föregående års data från de bolag som ingår i investeringen. Vi visar utsläppsdata i scope 3 kategori 15 det år det rapporteras publikt i årsredovisningen, även om det ibland anges att datan i denna kategori är från ett tidigare år."
     },
     "sectionedCompanyList": {
       "otherCompanies": "Övriga företag",
