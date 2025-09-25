@@ -5,8 +5,9 @@
 > Instructions for rollback: 
 > 1. Remove `# {"$imagepolicy": "flux-system:frontend:tag"}` from the file `k8s/overlays/production/kustomization.yaml`
 > 2. Set the desired version manually in `k8s/overlays/production/kustomization.yaml`
+> 3. Merge changes to main
 
-> Notes: Only do this on the **production** file unless you intentionally want to revert staging as well. Typically you should only need to rollback on production. 
+> Notes: Only do this on the **production** k8 file unless you intentionally want to revert staging as well. Typically you should only need to rollback on production. 
 
 > When you are ready to resume normal prod release, simply add the `# {"$imagepolicy": "flux-system:frontend:tag"}` back to the file, and run npm version as usual
 
