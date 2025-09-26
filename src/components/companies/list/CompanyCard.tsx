@@ -15,6 +15,7 @@ import { AiIcon } from "@/components/ui/ai-icon";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
 import { InfoTooltip } from "@/components/layout/InfoTooltip";
 import { LocalizedLink } from "@/components/LocalizedLink";
+import { FinancialsTooltip } from "@/components/companies/detail/overview/FinancialsTooltip";
 
 type CompanyCardProps = Pick<
   RankedCompany,
@@ -31,11 +32,15 @@ export function CompanyCard({
   wikidataId,
   name,
   descriptions,
+  industry,
   reportingPeriods,
 }: CompanyCardProps) {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
   const { isAIGenerated, isEmissionsAIGenerated } = useVerificationStatus();
+
+  // Check if company is in Financials sector
+  const isFinancialsSector = industry?.industryGics?.sectorCode === "40";
 
   const latestPeriod = reportingPeriods?.[0];
   const previousPeriod = reportingPeriods?.[1];
@@ -105,9 +110,7 @@ export function CompanyCard({
             <div className="flex items-center gap-2 text-grey mb-2 text-lg">
               <TrendingDown className="w-4 h-4" />
               {t("companies.card.emissions")}
-              <InfoTooltip ariaLabel="Information about total emissions">
-                <p>{t("companies.card.totalEmissionsInfo")}</p>
-              </InfoTooltip>
+              {isFinancialsSector && <FinancialsTooltip />}
             </div>
             <div className="text-3xl flex font-light h-[44px]">
               {currentEmissions != null ? (

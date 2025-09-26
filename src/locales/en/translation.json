@@ -399,8 +399,9 @@
         "title": "Company Data Overview",
         "description": "Overview of how we collect and present company emissions data",
         "paragraph1": "Klimatkollen collects data on greenhouse gas emissions that companies report in their sustainability reports and combined annual reports.",
-        "paragraph2": "The emissions data is divided into company-specific emissions (scope 1 & scope 2) and emissions from the value chain (scope 3), reported in tonnes of CO2e.",
-        "paragraph3": "On each company's page on Klimatkollen, you can find more detailed information about the emissions; breakdown by scope and category in scope 3, as well as any biogenic emissions.",
+        "paragraph2": "Different companies may use different methods to calculate their emissions. Sometimes they also state that certain data refer to a year other than the year in which they are reported. Klimatkollen takes a citizen's perspective and therefore show the data that is publicly disclosed in the latest annual report. This is also a prerequisite for being able to compare companies more fairly. Read more about each company's calculation method in their report, which we link to from the companies' pages.",
+        "paragraph3": "The emissions data is divided into company-specific emissions (scope 1 & scope 2) and emissions from the value chain (scope 3), reported in tonnes of CO2e.",
+        "paragraph4": "On each company's page on Klimatkollen, you can find more detailed information about the emissions; breakdown by scope and category in scope 3, as well as any biogenic emissions.",
         "link1": {
           "title": "Klimatkollen's Company Data",
           "text": "View our latest company emissions data here"
@@ -418,7 +419,7 @@
             "text": "Read more about the Global Industry Classification Standard (GICS)"
           }
         },
-        "paragraph4": "Information about the number of employees and revenue is obtained from the latest sustainability reports, or combined annual and sustainability reports, and in some cases from other sources."
+        "paragraph5": "Information about the number of employees and revenue is obtained from the latest sustainability reports, or combined annual and sustainability reports, and in some cases from other sources."
       },
       "companyDataCollection": {
         "title": "Data Collection Process",
@@ -469,7 +470,7 @@
         },
         "financedEmissions": {
           "title": "Financed Emissions: Scope 3 Category 15: Investments",
-          "paragraph1": "Financed emissions are often reported with a delay since they can take longer to calculate. To provide a representative picture of a company's impact, in these cases the latest reported emissions are included."
+          "paragraph1": "Financed emissions are often reported with a delay, as they are often based on the previous year's data from the companies included in the investment. We show emissions data in scope 3 category 15 in the year it is publicly reported in the annual report, even if it is sometimes stated that the data in this category comes from a previous year."
         },
         "biogenicEmissions": {
           "title": "Biogenic Emissions",
@@ -921,7 +922,6 @@
       "noData": "No Data",
       "unknownSector": "Unknown Sector",
       "emissions": "Emissions",
-      "totalEmissionsInfo": "Total Emissions (Scope 1 & 2)",
       "emissionsChangeRate": "Change Rate",
       "emissionsChangeRateInfo": "Change rate of emissions compared to the previous reporting period.",
       "emissionsChangeRateInfoExtended": "This value is so large due to inconsistencies in reported data between the last two reporting periods, thus this value is not representative of actual changes.",
@@ -1017,7 +1017,8 @@
       "readMore": "Read More",
       "readLess": "Read Less",
       "aiGeneratedData": "Includes AI-extracted values. Click to read more.",
-      "billion": "bn"
+      "billion": "bn",
+      "financialsTooltip": "Financed emissions are often reported with a delay, as they are often based on the previous year's data from the companies included in the investment. We show emissions data in scope 3 category 15 in the year it is publicly reported in the annual report, even if it is sometimes stated that the data in this category comes from a previous year."
     },
     "sectionedCompanyList": {
       "otherCompanies": "Other Companies",

@@ -60,7 +60,7 @@ export function MunicipalitiesRankedPage() {
 
   const handleMunicipalityClick = (name: string) => {
     const formattedName = name.toLowerCase();
-    window.location.href = `/municipalities/${formattedName}?view=${viewMode}`;
+    navigate(`/municipalities/${formattedName}?view=${viewMode}`);
   };
 
   if (loading) {

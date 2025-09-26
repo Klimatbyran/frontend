@@ -400,8 +400,9 @@
         "title": "Företagsdata översikt",
         "description": "Översikt över hur vi samlar in och presenterar företagens utsläppsdata",
         "paragraph1": "Klimatkollen samlar in data om växthusgasutsläpp som företag rapporterar i sina hållbarhetsrapporter och kombinerade årsredovisningar.",
-        "paragraph2": "Utsläppsdata delas upp i företagsspecifika utsläpp (scope 1 & scope 2) och värdekedjeutsläpp (scope 3), rapporterat i ton CO2e.",
-        "paragraph3": "På varje företags sida på Klimatkollen hittar du mer detaljerad information om utsläppen; uppdelning per scope och kategori i scope 3 samt eventuella biogena utsläpp.",
+        "paragraph2": "Olika bolag kan ha olika metoder för att beräkna sina utsläpp. Ibland anges även att viss utsläppsdata avser ett annat år än året då det redovisas. Klimatkollen har ett medborgarperspektiv och utgår därför ifrån det som rapporteras publikt i den senaste årsredovisningen. Det är också en förutsättning för att kunna jämföra bolagen mer rättvist. Läs mer i om respektive bolags beräkningsmetod i deras rapport, som vi länkar till från företagens sidor.",
+        "paragraph3": "Utsläppsdata delas upp i företagsspecifika utsläpp (scope 1 & scope 2) och värdekedjeutsläpp (scope 3), rapporterat i ton CO2e.",
+        "paragraph4": "På varje företags sida på Klimatkollen hittar du mer detaljerad information om utsläppen; uppdelning per scope och kategori i scope 3 samt eventuella biogena utsläpp.",
         "link1": {
           "title": "Klimatkollens företagsdata",
           "text": "Se vår senaste företagsutsläppsdata här"
@@ -419,7 +420,7 @@
             "text": "Läs mer om Global Industry Classification Standard (GICS)"
           }
         },
-        "paragraph4": "Information om antal anställda och omsättning hämtas från de senaste hållbarhetsrapporterna eller kombinerade års- och hållbarhetsrapporter, och i vissa fall från andra källor."
+        "paragraph5": "Information om antal anställda och omsättning hämtas från de senaste hållbarhetsrapporterna eller kombinerade års- och hållbarhetsrapporter, och i vissa fall från andra källor."
       },
       "companyDataCollection": {
         "title": "Datainsamlingsprocess",
@@ -470,7 +471,7 @@
         },
         "financedEmissions": {
           "title": "Finansierade utsläpp: Scope 3 kategori 15: Investeringar",
-          "paragraph1": "Finansierade utsläpp rapporteras ofta med fördröjning eftersom de kan ta längre tid att beräkna. För att ge en representativ bild av företagets påverkan inkluderas i dessa fall de senast rapporterade utsläppen."
+          "paragraph1": "Finansierade utsläpp rapporteras ofta med fördröjning, eftersom de ofta baseras på föregående års data från de bolag som ingår i investeringen. Vi visar utsläppsdata i scope 3 kategori 15 det år det rapporteras publikt i årsredovisningen, även om det ibland anges att datan i denna kategori är från ett tidigare år."
         },
         "biogenicEmissions": {
           "title": "Biogena utsläpp",
@@ -921,7 +922,6 @@
       "noData": "Ingen data",
       "unknownSector": "Okänd sektor",
       "emissions": "Utsläpp",
-      "totalEmissionsInfo": "Totala utsläpp (Scope 1 & 2)",
       "emissionsChangeRate": "Förändringstakt",
       "emissionsChangeRateInfo": "Förändringstakt för utsläpp jämfört med föregående rapporteringsperiod.",
       "emissionsChangeRateInfoExtended": "Det här värdet är ovanligt högt på grund av inkonsekvent rapportering mellan de två senaste perioderna, vilket gör att procentförändringen inte speglar den faktiska utvecklingen.",
@@ -1017,7 +1017,8 @@
       "readMore": "Läs mer",
       "readLess": "Läs mindre",
       "aiGeneratedData": "Innehåller AI-extraherade värden. Klicka för att läsa mer.",
-      "billion": "mdr"
+      "billion": "mdr",
+      "financialsTooltip": "Finansierade utsläpp rapporteras ofta med fördröjning, eftersom de ofta baseras på föregående års data från de bolag som ingår i investeringen. Vi visar utsläppsdata i scope 3 kategori 15 det år det rapporteras publikt i årsredovisningen, även om det ibland anges att datan i denna kategori är från ett tidigare år."
     },
     "sectionedCompanyList": {
       "otherCompanies": "Övriga företag",
