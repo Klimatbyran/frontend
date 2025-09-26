@@ -1,5 +1,9 @@
 name: CI (Tests, Type Check, Lint, Format, Audit)
 
+permissions:
+  contents: read
+  security-events: write
+
 on:
   pull_request:
   push:
