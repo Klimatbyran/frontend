@@ -28,6 +28,7 @@ import { AiIcon } from "@/components/ui/ai-icon";
 import { OverviewStatistics } from "./OverviewStatistics";
 import { CompanyOverviewTooltip } from "./CompanyOverviewTooltip";
 import { CompanyDescription } from "./CompanyDescription";
+import { FinancialsTooltip } from "./FinancialsTooltip";
 import { calculateRateOfChange } from "@/utils/calculations/general";
 import { EmissionsAssessmentButton } from "../emissions-assessment/EmissionsAssessmentButton";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
@@ -170,12 +171,12 @@ export function CompanyOverview({
 
       <div className="flex flex-col mb-6 gap-4 md:flex-row md:gap-12 md:items-start md:mb-12">
         <div className="flex-1">
-          <Text
-            variant="body"
-            className="mb-1 md:mb-2 lg:text-lg md:text-base text-sm"
-          >
-            {t("companies.overview.totalEmissions")} {periodYear}
-          </Text>
+          <div className="flex items-center gap-2 mb-1 md:mb-2">
+            <Text variant="body" className="lg:text-lg md:text-base text-sm">
+              {t("companies.overview.totalEmissions")} {periodYear}
+            </Text>
+            {sectorCode === "40" && <FinancialsTooltip />}
+          </div>
 
           <Text
             className={cn(

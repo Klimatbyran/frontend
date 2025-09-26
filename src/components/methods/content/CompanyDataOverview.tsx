@@ -30,6 +30,7 @@ export const CompanyDataOverviewContent = () => {
       </div>
       <p>{t("methodsPage.company.companyDataOverview.paragraph2")}</p>
       <p>{t("methodsPage.company.companyDataOverview.paragraph3")}</p>
+      <p>{t("methodsPage.company.companyDataOverview.paragraph4")}</p>
       <div className="flex justify-center">
         <div className="w-full space-y-6">
           <LinkButton
@@ -69,7 +70,7 @@ export const CompanyDataOverviewContent = () => {
           </div>
         </div>
       </Section>
-      <p>{t("methodsPage.company.companyDataOverview.paragraph4")}</p>
+      <p>{t("methodsPage.company.companyDataOverview.paragraph5")}</p>
     </div>
   );
 };

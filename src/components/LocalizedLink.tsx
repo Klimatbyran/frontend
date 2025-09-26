@@ -1,5 +1,7 @@
-import { LinkProps, Link as RouterLink } from "react-router-dom";
+import { LinkProps, Link as RouterLink, To } from "react-router-dom";
 import { useLanguage } from "./LanguageProvider";
+
+export const localizedPath = (lang: string, path: To) => `/${lang}${path}`;
 
 export const LocalizedLink = ({
   lang,
@@ -8,7 +10,7 @@ export const LocalizedLink = ({
 }: { lang?: string } & LinkProps) => {
   const { currentLanguage } = useLanguage();
 
-  const localisedTo = `/${lang ?? currentLanguage}${to}`;
-
-  return <RouterLink to={localisedTo} {...props} />;
+  return (
+    <RouterLink to={localizedPath(lang ?? currentLanguage, to)} {...props} />
+  );
 };

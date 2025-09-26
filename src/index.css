@@ -226,3 +226,22 @@ input[type="number"] {
   container-type: inline-size;
   /* width: 600px;  Remove any fixed width */
 }
+
+/* Mobile viewport fixes */
+@supports (height: 100dvh) {
+  .min-h-screen {
+    min-height: 100dvh; /* Use dynamic viewport height on mobile */
+  }
+}
+
+/* Prevent mobile scroll bounce issues */
+@supports (-webkit-touch-callout: none) {
+  body {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: none;
+  }
+
+  html {
+    overscroll-behavior: none;
+  }
+}

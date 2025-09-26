@@ -6,20 +6,25 @@ export type CompanyDetails = NonNullable<
   paths["/companies/{wikidataId}"]["get"]["responses"][200]["content"]["application/json"]
 >;
 
-// Canonical type matches backend
-export type ReportingPeriod = NonNullable<
+// Type for reporting periods from the list endpoint (/companies/)
+export type ReportingPeriodFromList = NonNullable<
+  paths["/companies/"]["get"]["responses"][200]["content"]["application/json"][number]
+>["reportingPeriods"][number];
+
+// Type for reporting periods from the detail endpoint (/companies/{wikidataId})
+export type ReportingPeriodFromDetail = NonNullable<
   paths["/companies/{wikidataId}"]["get"]["responses"][200]["content"]["application/json"]
 >["reportingPeriods"][number];
 
-// Type for transformed reporting periods in useCompanies hook
-export interface TransformedReportingPeriod
-  extends Omit<ReportingPeriod, "id" | "emissions"> {
-  id: string; // Overridden to use startDate instead of original ID
-  emissions: Emissions | null; // Cleaned emissions data
-  // Economy field remains the same as ReportingPeriod (with required IDs)
-}
+// Simplified aliases for common usage
+export type ReportingPeriod = ReportingPeriodFromDetail; // For detail pages
 
 export type Emissions = NonNullable<ReportingPeriod["emissions"]>;
+
+// Scope 3 category type extracted from API
+export type Scope3Category = NonNullable<
+  NonNullable<CompanyDetails["reportingPeriods"][0]["emissions"]>["scope3"]
+>["categories"][0];
 
 // Company type from the list endpoint (/companies/)
 export type CompanyListItem = NonNullable<
@@ -29,7 +34,7 @@ export type CompanyListItem = NonNullable<
 // Extended company type with metrics and optional rankings
 export interface RankedCompany
   extends Omit<CompanyListItem, "reportingPeriods"> {
-  reportingPeriods: TransformedReportingPeriod[];
+  reportingPeriods: ReportingPeriodFromList[];
   metrics: {
     emissionsReduction: number;
     displayReduction: string;

@@ -1,11 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { getCompanies } from "@/lib/api";
 import { cleanEmissions } from "@/utils/data/cleaning";
-import type {
-  Emissions,
-  RankedCompany,
-  TransformedReportingPeriod,
-} from "@/types/company";
+import type { RankedCompany, ReportingPeriodFromList } from "@/types/company";
 
 function formatReductionValue(value: number): string {
   if (value > 200) return ">200";
@@ -24,8 +20,8 @@ export function useCompanies() {
     select: (data): RankedCompany[] => {
       return data.map((company) => {
         // Calculate emissions reduction
-        const latestPeriod = company.reportingPeriods[0];
-        const previousPeriod = company.reportingPeriods[1];
+        const latestPeriod = company.reportingPeriods?.[0];
+        const previousPeriod = company.reportingPeriods?.[1];
         const currentEmissions =
           latestPeriod?.emissions?.calculatedTotalEmissions;
         const previousEmissions =
@@ -38,22 +34,10 @@ export function useCompanies() {
 
         return {
           ...company,
-          reportingPeriods: company.reportingPeriods.map(
-            (period): TransformedReportingPeriod => ({
+          reportingPeriods: (company.reportingPeriods || []).map(
+            (period): ReportingPeriodFromList => ({
               ...period,
-              id: period.startDate,
               emissions: cleanEmissions(period.emissions),
-              economy: period.economy
-                ? {
-                    ...period.economy,
-                    turnover: period.economy.turnover
-                      ? { ...period.economy.turnover }
-                      : null,
-                    employees: period.economy.employees
-                      ? { ...period.economy.employees }
-                      : null,
-                  }
-                : null,
             }),
           ),
           metrics: {
