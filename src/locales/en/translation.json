@@ -922,7 +922,6 @@
       "noData": "No Data",
       "unknownSector": "Unknown Sector",
       "emissions": "Emissions",
-      "totalEmissionsInfo": "Total Emissions (Scope 1 & 2)",
       "emissionsChangeRate": "Change Rate",
       "emissionsChangeRateInfo": "Change rate of emissions compared to the previous reporting period.",
       "emissionsChangeRateInfoExtended": "This value is so large due to inconsistencies in reported data between the last two reporting periods, thus this value is not representative of actual changes.",

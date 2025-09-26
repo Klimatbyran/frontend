@@ -922,7 +922,6 @@
       "noData": "Ingen data",
       "unknownSector": "Okänd sektor",
       "emissions": "Utsläpp",
-      "totalEmissionsInfo": "Totala utsläpp (Scope 1 & 2)",
       "emissionsChangeRate": "Förändringstakt",
       "emissionsChangeRateInfo": "Förändringstakt för utsläpp jämfört med föregående rapporteringsperiod.",
       "emissionsChangeRateInfoExtended": "Det här värdet är ovanligt högt på grund av inkonsekvent rapportering mellan de två senaste perioderna, vilket gör att procentförändringen inte speglar den faktiska utvecklingen.",
