@@ -105,6 +105,25 @@ export const useMunicipalityKPIs = (): KPIValue[] => {
       ),
       higherIsBetter: true,
     },
+    {
+      label: t("municipalities.list.kpis.climatePlan.label"),
+      key: "climatePlan",
+      unit: "",
+      source: "municipalities.list.climatePlan.source",
+      sourceUrls: ["https://nationellaemissionsdatabasen.smhi.se/"],
+      description: t("municipalities.list.kpis.climatePlan.description"),
+      detailedDescription: t(
+        "municipalities.list.kpis.climatePlan.detailedDescription",
+      ),
+      higherIsBetter: true,
+      isBoolean: true,
+      booleanLabels: {
+        true: t("municipalities.list.kpis.climatePlan.booleanLabels.true"),
+        false: t("municipalities.list.kpis.climatePlan.booleanLabels.false"),
+      },
+      belowString: t("municipalities.list.kpis.climatePlan.belowString"),
+      aboveString: t("municipalities.list.kpis.climatePlan.aboveString"),
+    },
   ];
 
   return KPIs;
