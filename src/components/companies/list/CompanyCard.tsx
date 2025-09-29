@@ -1,10 +1,7 @@
-import { Link } from "react-router-dom";
-import { Building2, TrendingDown, Users, Wallet } from "lucide-react";
-// import { useSectorNames } from "@/hooks/companies/useCompanyFilters";
+import { TrendingDown, Users, Wallet } from "lucide-react";
 import type { RankedCompany } from "@/types/company";
 import { Text } from "@/components/ui/text";
 import { useTranslation } from "react-i18next";
-import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useLanguage } from "@/components/LanguageProvider";
 import {
   formatEmployeeCount,
@@ -18,6 +15,7 @@ import { AiIcon } from "@/components/ui/ai-icon";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
 import { InfoTooltip } from "@/components/layout/InfoTooltip";
 import { LocalizedLink } from "@/components/LocalizedLink";
+import { FinancialsTooltip } from "@/components/companies/detail/overview/FinancialsTooltip";
 
 type CompanyCardProps = Pick<
   RankedCompany,
@@ -34,20 +32,22 @@ export function CompanyCard({
   wikidataId,
   name,
   descriptions,
+  industry,
   reportingPeriods,
 }: CompanyCardProps) {
   const { t } = useTranslation();
-  const { getCategoryColor } = useCategoryMetadata();
-  // const sectorNames = useSectorNames();
   const { currentLanguage } = useLanguage();
   const { isAIGenerated, isEmissionsAIGenerated } = useVerificationStatus();
 
-  const latestPeriod = reportingPeriods[0];
-  const previousPeriod = reportingPeriods[1];
+  // Check if company is in Financials sector
+  const isFinancialsSector = industry?.industryGics?.sectorCode === "40";
+
+  const latestPeriod = reportingPeriods?.[0];
+  const previousPeriod = reportingPeriods?.[1];
 
   const localizedDescription =
     descriptions?.find(
-      (d) =>
+      (d: { language: "SV" | "EN"; text: string }) =>
         d.language === (currentLanguage.toUpperCase() === "SV" ? "SV" : "EN"),
     )?.text ??
     descriptions?.[0]?.text ??
@@ -71,28 +71,23 @@ export function CompanyCard({
 
   const latestPeriodEconomyTurnover = latestPeriod?.economy?.turnover || null;
 
-  // Find the largest scope 3 category
-  const scope3Categories = latestPeriod?.emissions?.scope3?.categories || [];
-  const largestCategory = scope3Categories.reduce(
-    (max, current) =>
-      (current?.total ?? -Infinity) > (max?.total ?? -Infinity) ? current : max,
-    scope3Categories[0],
-  );
   const noSustainabilityReport =
+    !latestPeriod ||
     latestPeriod?.reportURL === null ||
     latestPeriod?.reportURL === "Saknar report" ||
     latestPeriod?.reportURL === undefined;
 
-  // Get the color for the largest category
-  const categoryColor = largestCategory
-    ? getCategoryColor(largestCategory.category)
-    : "var(--blue-2)";
-
-  const totalEmissionsAIGenerated = isEmissionsAIGenerated(latestPeriod);
-  const turnoverAIGenerated = isAIGenerated(latestPeriod.economy?.turnover);
-  const employeesAIGenerated = isAIGenerated(latestPeriod.economy?.employees);
+  const totalEmissionsAIGenerated = latestPeriod
+    ? isEmissionsAIGenerated(latestPeriod)
+    : false;
+  const turnoverAIGenerated = latestPeriod?.economy?.turnover
+    ? isAIGenerated(latestPeriod.economy.turnover)
+    : false;
+  const employeesAIGenerated = latestPeriod?.economy?.employees
+    ? isAIGenerated(latestPeriod.economy.employees)
+    : false;
   const yearOverYearAIGenerated =
-    isEmissionsAIGenerated(latestPeriod) ||
+    (latestPeriod && isEmissionsAIGenerated(latestPeriod)) ||
     (previousPeriod && isEmissionsAIGenerated(previousPeriod));
 
   return (
@@ -108,24 +103,14 @@ export function CompanyCard({
               {localizedDescription}
             </p>
           </div>
-          <div
-            className="w-12 h-12 rounded-full flex shrink-0 items-center justify-center"
-            style={{
-              backgroundColor: `color-mix(in srgb, ${categoryColor} 30%, transparent)`,
-              color: categoryColor,
-            }}
-          >
-            <Building2 className="w-6 h-6" />
-          </div>
+          {/* TODO: add company logo to top right hand corner of card */}
         </div>
         <div className="flex flex-col gap-4 @xl:grid grid-cols-2">
           <div className="space-y-2 h-[80px]">
             <div className="flex items-center gap-2 text-grey mb-2 text-lg">
               <TrendingDown className="w-4 h-4" />
               {t("companies.card.emissions")}
-              <InfoTooltip ariaLabel="Information about total emissions">
-                <p>{t("companies.card.totalEmissionsInfo")}</p>
-              </InfoTooltip>
+              {isFinancialsSector && <FinancialsTooltip />}
             </div>
             <div className="text-3xl flex font-light h-[44px]">
               {currentEmissions != null ? (
@@ -248,7 +233,7 @@ export function CompanyCard({
         </div>
         {/* Sustainability Report */}
         <LinkCard
-          link={latestPeriod.reportURL ? latestPeriod.reportURL : undefined}
+          link={latestPeriod?.reportURL ? latestPeriod.reportURL : undefined}
           title={t("companies.card.companyReport")}
           description={
             noSustainabilityReport

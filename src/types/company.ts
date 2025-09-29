@@ -1,67 +1,40 @@
 import type { paths } from "@/lib/api-types";
 import { DivideIcon as LucideIcon } from "lucide-react";
 
-// Base company type from API with simplified industry structure
-export interface BaseCompany {
-  wikidataId: string;
-  name: string;
-  descriptions?: {
-    id: string;
-    language: "SV" | "EN";
-    text: string;
-  }[];
-  industry: {
-    industryGics: {
-      sectorCode: string;
-      groupCode: string;
-      industryCode: string;
-      subIndustryCode: string;
-    };
-    metadata: {
-      verifiedBy: { name: string } | null;
-    };
-  } | null;
-  reportingPeriods: ReportingPeriod[];
-  baseYear?: { id: string; year: number; metadata: any } | null;
-}
-
 // Base company type from API
 export type CompanyDetails = NonNullable<
   paths["/companies/{wikidataId}"]["get"]["responses"][200]["content"]["application/json"]
 >;
 
-// Canonical type matches backend
-export type ReportingPeriod = NonNullable<
+// Type for reporting periods from the list endpoint (/companies/)
+export type ReportingPeriodFromList = NonNullable<
+  paths["/companies/"]["get"]["responses"][200]["content"]["application/json"][number]
+>["reportingPeriods"][number];
+
+// Type for reporting periods from the detail endpoint (/companies/{wikidataId})
+export type ReportingPeriodFromDetail = NonNullable<
   paths["/companies/{wikidataId}"]["get"]["responses"][200]["content"]["application/json"]
 >["reportingPeriods"][number];
 
-// Derived type for frontend, with optional id fields
-export type ReportingPeriodWithOptionalIds = Omit<
-  ReportingPeriod,
-  "economy"
-> & {
-  economy: {
-    id?: string;
-    turnover: {
-      id?: string;
-      value: number | null;
-      currency: string | null;
-      metadata: any;
-    } | null;
-    employees: {
-      id?: string;
-      value: number | null;
-      unit: string | null;
-      metadata: any;
-    } | null;
-  } | null;
-};
+// Simplified aliases for common usage
+export type ReportingPeriod = ReportingPeriodFromDetail; // For detail pages
 
 export type Emissions = NonNullable<ReportingPeriod["emissions"]>;
 
+// Scope 3 category type extracted from API
+export type Scope3Category = NonNullable<
+  NonNullable<CompanyDetails["reportingPeriods"][0]["emissions"]>["scope3"]
+>["categories"][0];
+
+// Company type from the list endpoint (/companies/)
+export type CompanyListItem = NonNullable<
+  paths["/companies/"]["get"]["responses"][200]["content"]["application/json"][number]
+>;
+
 // Extended company type with metrics and optional rankings
-export interface RankedCompany extends Omit<BaseCompany, "reportingPeriods"> {
-  reportingPeriods: ReportingPeriodWithOptionalIds[];
+export interface RankedCompany
+  extends Omit<CompanyListItem, "reportingPeriods"> {
+  reportingPeriods: ReportingPeriodFromList[];
   metrics: {
     emissionsReduction: number;
     displayReduction: string;

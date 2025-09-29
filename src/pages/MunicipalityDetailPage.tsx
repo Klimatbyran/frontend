@@ -9,6 +9,7 @@ import { MunicipalityLinkCard } from "@/components/municipalities/MunicipalityLi
 import { useTranslation } from "react-i18next";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { useState } from "react";
+import { CardHeader } from "@/components/layout/CardHeader";
 import {
   formatEmissionsAbsolute,
   formatPercent,
@@ -20,6 +21,7 @@ import MunicipalitySectorPieChart from "@/components/municipalities/sectorChart/
 import MunicipalitySectorLegend from "@/components/municipalities/sectorChart/MunicipalitySectorLegend";
 import { useMunicipalitySectorEmissions } from "@/hooks/municipalities/useMunicipalitySectorEmissions";
 import { MunicipalityEmissions } from "@/components/municipalities/MunicipalityEmissions";
+import { useHiddenItems } from "@/components/charts";
 import { YearSelector } from "@/components/layout/YearSelector";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 
@@ -31,9 +33,10 @@ export function MunicipalityDetailPage() {
 
   const { sectorEmissions, loading: _loadingSectors } =
     useMunicipalitySectorEmissions(id);
-  const [filteredSectors, setFilteredSectors] = useState<Set<string>>(
-    new Set(),
-  );
+
+  const { hiddenItems: filteredSectors, setHiddenItems: setFilteredSectors } =
+    useHiddenItems<string>([]);
+
   const [selectedYear, setSelectedYear] = useState<string>("2023");
 
   if (loading) return <Text>{t("municipalityDetailPage.loading")}</Text>;
@@ -55,7 +58,6 @@ export function MunicipalityDetailPage() {
     ? formatEmissionsAbsolute(lastYearEmissions.value, currentLanguage)
     : "N/A";
 
-  // Get available years for the sector emissions
   const availableYears = sectorEmissions?.sectors
     ? Object.keys(sectorEmissions.sectors)
         .map(Number)
@@ -68,9 +70,10 @@ export function MunicipalityDetailPage() {
     : [];
 
   // Use the first available year as default if selectedYear is not in availableYears
-  const currentYear = availableYears.includes(parseInt(selectedYear))
-    ? parseInt(selectedYear)
-    : availableYears[0] || 2023;
+  const currentYear =
+    availableYears.length > 0 && availableYears.includes(parseInt(selectedYear))
+      ? parseInt(selectedYear)
+      : availableYears[0] || 2023;
 
   // Prepare SEO data
   const canonicalUrl = `https://klimatkollen.se/municipalities/${id}`;
@@ -208,24 +211,21 @@ export function MunicipalityDetailPage() {
 
         {sectorEmissions?.sectors && availableYears.length > 0 && (
           <SectionWithHelp helpItems={["municipalityEmissionSources"]}>
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
-              <Text className="text-2xl md:text-4xl">
-                {t("municipalityDetailPage.sectorEmissions")}
-              </Text>
-
-              <YearSelector
-                selectedYear={selectedYear}
-                onYearChange={setSelectedYear}
-                availableYears={availableYears}
-                translateNamespace="municipalityDetailPage"
-              />
-            </div>
-
-            <Text className="text-grey">
-              {t("municipalityDetailPage.sectorEmissionsYear", {
+            <CardHeader
+              title={t("municipalityDetailPage.sectorEmissions")}
+              description={t("municipalityDetailPage.sectorEmissionsYear", {
                 year: currentYear,
               })}
-            </Text>
+              customDataViewSelector={
+                <YearSelector
+                  selectedYear={selectedYear}
+                  onYearChange={setSelectedYear}
+                  availableYears={availableYears}
+                  translateNamespace="municipalityDetailPage"
+                />
+              }
+              className="p-4 md:p-6"
+            />
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
               <MunicipalitySectorPieChart

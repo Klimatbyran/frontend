@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useCompanyDetails } from "@/hooks/companies/useCompanyDetails";
 import { CompanyOverview } from "@/components/companies/detail/overview/CompanyOverview";
-import { CompanyHistory } from "@/components/companies/detail/CompanyHistory";
+import { EmissionsHistory } from "@/components/companies/detail/history/EmissionsHistory";
 import { Text } from "@/components/ui/text";
 import { useTranslation } from "react-i18next";
 import { PageSEO } from "@/components/SEO/PageSEO";
@@ -11,6 +11,7 @@ import { CompanyScope3 } from "@/components/companies/detail/CompanyScope3";
 import { getCompanyDescription } from "@/utils/business/company";
 import { useLanguage } from "@/components/LanguageProvider";
 import RelatableNumbers from "@/components/ui/relatableNumbers";
+import type { Scope3Category } from "@/types/company";
 
 export function CompanyDetailPage() {
   const { t } = useTranslation();
@@ -185,7 +186,11 @@ export function CompanyDetailPage() {
           currentLanguage={currentLanguage}
         />
 
-        <CompanyHistory company={company} />
+        <EmissionsHistory
+          reportingPeriods={company.reportingPeriods}
+          baseYear={company.baseYear}
+          industry={company.industry}
+        />
         <CompanyScope3
           emissions={selectedPeriod.emissions!}
           historicalData={sortedPeriods
@@ -202,9 +207,9 @@ export function CompanyDetailPage() {
                 t("emissionsUnit"),
               categories: period
                 .emissions!.scope3!.categories!.filter(
-                  (cat) => cat.total !== null,
+                  (cat: Scope3Category) => cat.total !== null,
                 )
-                .map((cat) => ({
+                .map((cat: Scope3Category) => ({
                   category: cat.category,
                   total: cat.total as number,
                   unit: cat.unit,
