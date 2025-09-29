@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   BarChart,
   Bar,
@@ -73,6 +74,7 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
   selectedSectors,
 }) => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const sectorNames = useSectorNames();
 
   const [chartType, setChartType] = useState<ChartType>("pie");
@@ -111,7 +113,7 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
     if (!selectedSector && data?.sectorCode) {
       setSelectedSector(data.sectorCode);
     } else if (selectedSector && data?.wikidataId) {
-      window.location.href = `/companies/${data.wikidataId}`;
+      navigate(`/companies/${data.wikidataId}`);
     }
   };
 

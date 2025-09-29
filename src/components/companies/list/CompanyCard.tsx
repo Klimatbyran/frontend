@@ -15,6 +15,7 @@ import { AiIcon } from "@/components/ui/ai-icon";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
 import { InfoTooltip } from "@/components/layout/InfoTooltip";
 import { LocalizedLink } from "@/components/LocalizedLink";
+import { FinancialsTooltip } from "@/components/companies/detail/overview/FinancialsTooltip";
 
 type CompanyCardProps = Pick<
   RankedCompany,
@@ -31,14 +32,18 @@ export function CompanyCard({
   wikidataId,
   name,
   descriptions,
+  industry,
   reportingPeriods,
 }: CompanyCardProps) {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
   const { isAIGenerated, isEmissionsAIGenerated } = useVerificationStatus();
 
-  const latestPeriod = reportingPeriods[0];
-  const previousPeriod = reportingPeriods[1];
+  // Check if company is in Financials sector
+  const isFinancialsSector = industry?.industryGics?.sectorCode === "40";
+
+  const latestPeriod = reportingPeriods?.[0];
+  const previousPeriod = reportingPeriods?.[1];
 
   const localizedDescription =
     descriptions?.find(
@@ -67,15 +72,22 @@ export function CompanyCard({
   const latestPeriodEconomyTurnover = latestPeriod?.economy?.turnover || null;
 
   const noSustainabilityReport =
+    !latestPeriod ||
     latestPeriod?.reportURL === null ||
     latestPeriod?.reportURL === "Saknar report" ||
     latestPeriod?.reportURL === undefined;
 
-  const totalEmissionsAIGenerated = isEmissionsAIGenerated(latestPeriod);
-  const turnoverAIGenerated = isAIGenerated(latestPeriod.economy?.turnover);
-  const employeesAIGenerated = isAIGenerated(latestPeriod.economy?.employees);
+  const totalEmissionsAIGenerated = latestPeriod
+    ? isEmissionsAIGenerated(latestPeriod)
+    : false;
+  const turnoverAIGenerated = latestPeriod?.economy?.turnover
+    ? isAIGenerated(latestPeriod.economy.turnover)
+    : false;
+  const employeesAIGenerated = latestPeriod?.economy?.employees
+    ? isAIGenerated(latestPeriod.economy.employees)
+    : false;
   const yearOverYearAIGenerated =
-    isEmissionsAIGenerated(latestPeriod) ||
+    (latestPeriod && isEmissionsAIGenerated(latestPeriod)) ||
     (previousPeriod && isEmissionsAIGenerated(previousPeriod));
 
   return (
@@ -98,9 +110,7 @@ export function CompanyCard({
             <div className="flex items-center gap-2 text-grey mb-2 text-lg">
               <TrendingDown className="w-4 h-4" />
               {t("companies.card.emissions")}
-              <InfoTooltip ariaLabel="Information about total emissions">
-                <p>{t("companies.card.totalEmissionsInfo")}</p>
-              </InfoTooltip>
+              {isFinancialsSector && <FinancialsTooltip />}
             </div>
             <div className="text-3xl flex font-light h-[44px]">
               {currentEmissions != null ? (
@@ -223,7 +233,7 @@ export function CompanyCard({
         </div>
         {/* Sustainability Report */}
         <LinkCard
-          link={latestPeriod.reportURL ? latestPeriod.reportURL : undefined}
+          link={latestPeriod?.reportURL ? latestPeriod.reportURL : undefined}
           title={t("companies.card.companyReport")}
           description={
             noSustainabilityReport

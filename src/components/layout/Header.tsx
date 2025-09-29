@@ -1,23 +1,135 @@
-import { BarChart3, ChevronDown, Menu, X, Mail } from "lucide-react";
-import { useLocation, matchPath } from "react-router-dom";
+import { BarChart3, Menu, X, Mail } from "lucide-react";
+import { useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useState, useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarShortcut,
-  MenubarTrigger,
-} from "@/components/ui/menubar";
 import { NewsletterPopover } from "../NewsletterPopover";
 import { useLanguage } from "../LanguageProvider";
 import { HeaderSearchButton } from "../search/HeaderSearchButton";
-import { useScreenSize } from "@/hooks/useScreenSize";
 import useHeaderTitle from "@/hooks/useHeaderTitle";
 import { useAuth } from "@/contexts/AuthContext";
-import { LocalizedLink } from "../LocalizedLink";
+import { LocalizedLink, localizedPath } from "../LocalizedLink";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "../ui/navigation-menu";
+
+interface NavSubLink {
+  label: string;
+  path: string;
+  shortcut?: string;
+}
+
+interface NavLink {
+  label: string;
+  icon?: JSX.Element;
+  path: string;
+  sublinks?: NavSubLink[];
+}
+
+const NAV_LINKS: NavLink[] = [
+  {
+    label: "header.companies",
+    icon: <BarChart3 className="w-4 h-4" aria-hidden="true" />,
+    path: `/companies`,
+  },
+  {
+    label: "header.municipalities",
+    icon: <BarChart3 className="w-4 h-4" aria-hidden="true" />,
+    path: `/municipalities`,
+    sublinks: [
+      {
+        label: "header.municipalitiesRanked",
+        path: `/municipalities`,
+      },
+      {
+        label: "header.municipalitiesExplore",
+        path: `/municipalities/explore`,
+      },
+    ],
+  },
+  {
+    label: "header.products",
+    path: `/products`,
+  },
+  {
+    label: "header.about",
+    path: `/about`,
+    sublinks: [
+      { label: "header.aboutUs", path: `/about` },
+      {
+        label: "header.methodology",
+        path: `/methodology?view=general`,
+      },
+      {
+        label: "header.newsletterArchive",
+        path: `/newsletter-archive`,
+      },
+      {
+        label: "header.press",
+        path: "https://www.mynewsdesk.com/se/klimatbyraan/latest_news",
+      },
+      { label: "header.support", path: `/support` },
+    ],
+  },
+  {
+    path: `/articles`,
+    label: "header.insights",
+    sublinks: [
+      { label: "header.reports", path: `/reports` },
+      { label: "header.articles", path: `/articles` },
+      { label: "header.learnMore", path: `/learn-more` },
+    ],
+  },
+];
+
+// Internal links for signed-in users
+const INTERNAL_LINKS = [
+  {
+    label: "Validation Dashboard",
+    path: "/internal-pages/validation-dashboard",
+  },
+  { label: "Requests Dashboard", path: "/internal-pages/requests-dashboard" },
+  { label: "Internal Dashboard", path: "/internal-pages/internal-dashboard" },
+  {
+    label: "Trend Analysis Dashboard",
+    path: "/internal-pages/trend-analysis-dashboard",
+  },
+];
+
+const SubLinksMenu = ({ sublinks }: { sublinks: NavSubLink[] }) => {
+  const { t } = useTranslation();
+
+  return (
+    <ul>
+      {sublinks.map((sublink) => (
+        <li key={sublink.path} className="hover:bg-black-1 px-2 py-1.5 text-sm">
+          {sublink.path.startsWith("https://") ? (
+            <a
+              href={sublink.path}
+              className="flex justify-between w-full"
+              target="_blank"
+              key={sublink.path}
+            >
+              {t(sublink.label)}
+            </a>
+          ) : (
+            <LocalizedLink
+              to={sublink.path}
+              className="flex justify-between w-full"
+            >
+              {t(sublink.label)}
+            </LocalizedLink>
+          )}
+        </li>
+      ))}
+    </ul>
+  );
+};
 
 export function Header() {
   const { t } = useTranslation();
@@ -26,9 +138,11 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const toggleMenu = useCallback(() => setMenuOpen((prev) => !prev), []);
-  const { isMobile } = useScreenSize();
   const { user } = useAuth();
   const { headerTitle, showTitle, setShowTitle } = useHeaderTitle();
+
+  // Radix menu for React doesn't have a way to turn this off, simulate it by a really long delay
+  const disableOpenOnHoverDelay = 999999;
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -73,269 +187,168 @@ export function Header() {
     </div>
   );
 
-  interface NavLink {
-    label: string;
-    icon?: JSX.Element;
-    path: string;
-    sublinks?: { label: string; path: string; shortcut?: string }[];
-  }
-
-  const NAV_LINKS: NavLink[] = [
-    {
-      label: t("header.companies"),
-      icon: <BarChart3 className="w-4 h-4" aria-hidden="true" />,
-      path: `/companies`,
-    },
-    {
-      label: t("header.municipalities"),
-      icon: <BarChart3 className="w-4 h-4" aria-hidden="true" />,
-      path: `/municipalities`,
-      sublinks: [
-        {
-          label: t("header.municipalitiesRanked"),
-          path: `/municipalities`,
-        },
-        {
-          label: t("header.municipalitiesExplore"),
-          path: `/municipalities/explore`,
-        },
-      ],
-    },
-    {
-      label: t("header.products"),
-      path: `/products`,
-    },
-    {
-      label: t("header.about"),
-      path: `/about`,
-      sublinks: [
-        { label: t("header.aboutUs"), path: `/about` },
-        {
-          label: t("header.methodology"),
-          path: `/methodology?view=general`,
-        },
-        {
-          label: t("header.newsletterArchive"),
-          path: `/newsletter-archive`,
-        },
-        {
-          label: t("header.press"),
-          path: "https://www.mynewsdesk.com/se/klimatbyraan/latest_news",
-        },
-        { label: t("header.support"), path: `/support` },
-      ],
-    },
-    {
-      path: `/articles`,
-      label: t("header.insights"),
-      sublinks: [
-        { label: t("header.reports"), path: `/reports` },
-        { label: t("header.articles"), path: `/articles` },
-        { label: t("header.learnMore"), path: `/learn-more` },
-      ],
-    },
-  ];
-
-  // Internal links for signed-in users
-  const INTERNAL_LINKS = [
-    {
-      label: "Validation Dashboard",
-      path: "/internal-pages/validation-dashboard",
-    },
-    { label: "Requests Dashboard", path: "/internal-pages/requests-dashboard" },
-    { label: "Internal Dashboard", path: "/internal-pages/internal-dashboard" },
-    {
-      label: "Trend Analysis Dashboard",
-      path: "/internal-pages/trend-analysis-dashboard",
-    },
-  ];
-
   return (
-    <>
-      <header className="fixed w-screen overflow-x-hidden overflow-y-hidden top-0 left-0 right-0 z-50 bg-black-2 h-10 lg:h-12">
-        <div className="container relative mx-auto px-4 flex items-center justify-between pt-2 lg:pt-0">
-          <LocalizedLink
-            to="/"
-            className="flex items-center gap-2 text-base font-medium"
-          >
-            Klimatkollen
-          </LocalizedLink>
-          {showTitle && (
-            <span className="absolute left-1/2 transform -translate-x-1/2">
-              {isMobile && headerTitle}
-            </span>
-          )}
+    <header
+      className={cn(
+        "fixed top-0 left-0 w-screen flex items-center justify-between bg-black-2 z-50",
+        "h-10 lg:h-12",
+      )}
+    >
+      <div className="container lg:mx-auto px-4 flex justify-between">
+        <LocalizedLink
+          to="/"
+          className="flex items-center gap-2 text-base font-medium"
+        >
+          Klimatkollen
+        </LocalizedLink>
 
-          <button
-            className="lg:hidden text-white"
-            onClick={toggleMenu}
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-          >
-            {menuOpen ? (
-              <X className="w-6 h-6" />
-            ) : (
-              <Menu className="w-6 h-6" />
-            )}
-          </button>
-
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-6">
-            <Menubar className="border-none bg-transparent h-full">
-              {NAV_LINKS.map((item) =>
-                item.sublinks ? (
-                  <MenubarMenu key={item.label}>
-                    <MenubarTrigger
-                      className={cn(
-                        "flex items-center gap-2 px-3 py-3 h-full transition-all text-sm cursor-pointer",
-                        location.pathname.startsWith(item.path)
-                          ? "bg-black-1 text-white"
-                          : "text-grey hover:text-white",
-                      )}
-                    >
-                      {item.icon}
-                      <span>{item.label}</span>
-                      <ChevronDown className="w-4 h-4" />
-                    </MenubarTrigger>
-                    <MenubarContent>
-                      {item.sublinks.map((sublink) => (
-                        <MenubarItem key={sublink.path}>
-                          {sublink.path.startsWith("https://") ? (
-                            <a
-                              href={sublink.path}
-                              className="flex justify-between w-full"
-                              target="_blank"
-                              key={sublink.path}
-                            >
-                              {sublink.label}
-                            </a>
-                          ) : (
-                            <LocalizedLink
-                              to={sublink.path}
-                              className="flex justify-between w-full"
-                            >
-                              {sublink.label}
-                              {sublink.shortcut && (
-                                <MenubarShortcut>
-                                  {sublink.shortcut}
-                                </MenubarShortcut>
-                              )}
-                            </LocalizedLink>
-                          )}
-                        </MenubarItem>
-                      ))}
-                    </MenubarContent>
-                  </MenubarMenu>
-                ) : (
-                  <LocalizedLink
-                    key={item.path}
-                    to={item.path}
+        {/* Desktop Navigation */}
+        <NavigationMenu
+          className="hidden lg:flex items-center ml-auto"
+          delayDuration={disableOpenOnHoverDelay}
+        >
+          <NavigationMenuList>
+            {NAV_LINKS.map((item) =>
+              item.sublinks ? (
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger
                     className={cn(
-                      "flex items-center gap-2 px-3 py-3 h-full text-sm",
-                      matchPath(item.path, location.pathname)
-                        ? "bg-black-1 text-white"
+                      "flex gap-2 p-3",
+                      "data-[state=open]:bg-black-1 data-[state=closed]:bg-transparent",
+                      location.pathname.startsWith(
+                        localizedPath(currentLanguage, item.path),
+                      )
+                        ? "text-white"
                         : "text-grey hover:text-white",
                     )}
                   >
                     {item.icon}
-                    <span>{item.label}</span>
-                  </LocalizedLink>
-                ),
-              )}
-              {user && (
-                <MenubarMenu>
-                  <MenubarTrigger className="flex items-center gap-2 px-3 py-3 h-full transition-all text-sm cursor-pointer text-grey hover:text-white">
-                    <span>Internal</span>
-                    <ChevronDown className="w-4 h-4" />
-                  </MenubarTrigger>
-                  <MenubarContent>
-                    {INTERNAL_LINKS.map((link) => (
-                      <MenubarItem key={link.path}>
-                        <LocalizedLink
-                          to={link.path}
-                          className="flex justify-between w-full"
-                        >
-                          {link.label}
-                        </LocalizedLink>
-                      </MenubarItem>
-                    ))}
-                  </MenubarContent>
-                </MenubarMenu>
-              )}
-              <div className="ml-4 h-full flex items-center">
-                <HeaderSearchButton className="mx-2" />
-                <LanguageButtons className={"hidden md:flex mx-4 "} />
-                <NewsletterPopover
-                  isOpen={isSignUpOpen}
-                  onOpenChange={setIsSignUpOpen}
-                  buttonText={t("header.newsletter")}
-                />
-              </div>
-            </Menubar>
-          </nav>
-
-          {/* Mobile Fullscreen Menu */}
-          {menuOpen && (
-            <div className="fixed inset-0 w-full h-full z-100 flex p-8 mt-10 bg-black-2">
-              <div className="flex flex-col gap-6 text-lg w-full">
-                <HeaderSearchButton
-                  className="w-full"
-                  onSearchResultClick={toggleMenu}
-                />
-                <LanguageButtons />
-                {NAV_LINKS.map((link) => (
-                  <div key={link.path} className="flex flex-col">
-                    <LocalizedLink
-                      to={link.path}
-                      onClick={toggleMenu}
-                      className="flex items-center gap-2 cursor-pointer"
-                    >
-                      {link.icon}
-                      {link.label}
-                    </LocalizedLink>
-                    {link.sublinks && (
-                      <div className="flex flex-col gap-2 pl-4 mt-2">
-                        {link.sublinks.map((sublink) =>
-                          sublink.path.startsWith("https://") ? (
-                            <a
-                              href={sublink.path}
-                              className="flex items-center gap-2 text-sm text-gray-400"
-                              target="_blank"
-                              key={sublink.path}
-                              onClick={toggleMenu}
-                            >
-                              {sublink.label}
-                            </a>
-                          ) : (
-                            <LocalizedLink
-                              key={sublink.path}
-                              to={sublink.path}
-                              onClick={toggleMenu}
-                              className="flex items-center gap-2 text-sm text-gray-400"
-                            >
-                              {sublink.label}
-                            </LocalizedLink>
-                          ),
-                        )}
-                      </div>
-                    )}
-                  </div>
-                ))}
-                {/* Newsletter button in mobile menu */}
-                <button
-                  onClick={() => {
-                    setMenuOpen(false); // Close the menu
-                    setIsSignUpOpen(true); // Open the newsletter popover
-                  }}
-                  className="flex items-center gap-2 text-blue-3"
+                    {t(item.label)}
+                  </NavigationMenuTrigger>
+                  <NavigationMenuContent className="min-w-56 w-full p-3 top-12 bg-black-2">
+                    <SubLinksMenu sublinks={item.sublinks} />
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+              ) : (
+                <NavigationMenuItem
+                  className={cn(
+                    "h-10 lg:h12 flex items-center",
+                    location.pathname.startsWith(
+                      localizedPath(currentLanguage, item.path),
+                    )
+                      ? "text-white"
+                      : "text-grey hover:text-white",
+                  )}
                 >
-                  <Mail className="w-4 h-4" />
-                  {t("header.newsletter")}
-                </button>
-              </div>
+                  <NavigationMenuLink asChild>
+                    <LocalizedLink
+                      to={item.path}
+                      className="flex gap-2 p-3 items-center"
+                    >
+                      {item.icon}
+                      {t(item.label)}
+                    </LocalizedLink>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+              ),
+            )}
+            {user && (
+              <NavigationMenuItem>
+                <NavigationMenuTrigger className="flex items-center gap-2 px-3 py-3 h-full transition-all text-sm cursor-pointer text-grey hover:text-white">
+                  <span>Internal</span>
+                </NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <SubLinksMenu sublinks={INTERNAL_LINKS} />
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+            )}
+          </NavigationMenuList>
+          <div className="ml-4 h-full flex items-center">
+            <HeaderSearchButton className="mx-2" />
+            <LanguageButtons className={"hidden md:flex mx-4 "} />
+            <NewsletterPopover
+              isOpen={isSignUpOpen}
+              onOpenChange={setIsSignUpOpen}
+              buttonText={t("header.newsletter")}
+            />
+          </div>
+        </NavigationMenu>
+
+        {/* Mobile Fullscreen Menu */}
+        {showTitle && (
+          <span className="absolute left-1/2 transform -translate-x-1/2 lg:hidden">
+            {headerTitle}
+          </span>
+        )}
+
+        <button
+          className="lg:hidden text-white"
+          onClick={toggleMenu}
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+        >
+          {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        </button>
+        {menuOpen && (
+          <div className="fixed inset-0 w-full h-full z-100 flex p-8 mt-10 bg-black-2">
+            <div className="flex flex-col gap-6 text-lg w-full">
+              <HeaderSearchButton
+                className="w-full"
+                onSearchResultClick={toggleMenu}
+              />
+              <LanguageButtons />
+              {NAV_LINKS.map((link) => (
+                <div key={link.path} className="flex flex-col">
+                  <LocalizedLink
+                    to={link.path}
+                    onClick={toggleMenu}
+                    className="flex items-center gap-2 cursor-pointer"
+                  >
+                    {link.icon}
+                    {t(link.label)}
+                  </LocalizedLink>
+                  {link.sublinks && (
+                    <div className="flex flex-col gap-2 pl-4 mt-2">
+                      {link.sublinks.map((sublink) =>
+                        sublink.path.startsWith("https://") ? (
+                          <a
+                            href={sublink.path}
+                            className="flex items-center gap-2 text-sm text-gray-400"
+                            target="_blank"
+                            key={sublink.path}
+                            onClick={toggleMenu}
+                          >
+                            {t(sublink.label)}
+                          </a>
+                        ) : (
+                          <LocalizedLink
+                            key={sublink.path}
+                            to={sublink.path}
+                            onClick={toggleMenu}
+                            className="flex items-center gap-2 text-sm text-gray-400"
+                          >
+                            {t(sublink.label)}
+                          </LocalizedLink>
+                        ),
+                      )}
+                    </div>
+                  )}
+                </div>
+              ))}
+              {/* Newsletter button in mobile menu */}
+              <button
+                onClick={() => {
+                  setMenuOpen(false); // Close the menu
+                  setIsSignUpOpen(true); // Open the newsletter popover
+                }}
+                className="flex items-center gap-2 text-blue-3"
+              >
+                <Mail className="w-4 h-4" />
+                {t("header.newsletter")}
+              </button>
             </div>
-          )}
-        </div>
-      </header>
-    </>
+          </div>
+        )}
+      </div>
+    </header>
   );
 }
