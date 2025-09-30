@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import nationalData from "@/data/national-data.json";
 
 export type NationalYearData = {
   year: number;
