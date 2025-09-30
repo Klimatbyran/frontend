@@ -1055,7 +1055,7 @@ export interface paths {
         };
         /**
          * Get all municipalities
-         * @description Retrieve a list of all municipalities with data about their emissions, carbon budget, climate plans, bike infrastructure, procurements, and much more.
+         * @description Retrieve a list of all municipalities with data about their emissions, carbon budget, climate plans, bike infrastructure, procurements, and much more. Returns 304 Not Modified if the resource has not changed since the last request (based on ETag).
          */
         get: {
             parameters: {
@@ -1075,7 +1075,8 @@ export interface paths {
                         "application/json": {
                             name: string;
                             region: string;
-                            meetsParisGoal: boolean;
+                            totalTrend: number;
+                            totalCarbonLaw: number;
                             historicalEmissionChangePercent: number;
                             electricCarChangePercent: number;
                             climatePlanLink: string | null;
@@ -1144,7 +1145,8 @@ export interface paths {
                         "application/json": {
                             name: string;
                             region: string;
-                            meetsParisGoal: boolean;
+                            totalTrend: number;
+                            totalCarbonLaw: number;
                             historicalEmissionChangePercent: number;
                             electricCarChangePercent: number;
                             climatePlanLink: string | null;

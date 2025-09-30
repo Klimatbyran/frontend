@@ -7,6 +7,8 @@ export type Municipality = {
   name: string;
   region: string;
   meetsParisGoal: boolean;
+  totalTrend: number;
+  totalCarbonLaw: number;
   historicalEmissionChangePercent: number;
   climatePlanYear: number | null;
   climatePlanComment: string | null;
