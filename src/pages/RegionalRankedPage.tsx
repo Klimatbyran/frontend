@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Map, List } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -7,11 +7,7 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import SwedenMap, { DataItem } from "@/components/maps/SwedenMap";
 import regionGeoJson from "@/data/regionGeo.json";
 import { FeatureCollection } from "geojson";
-import {
-  getRegionalKPIs,
-  useRegions,
-  useRegionTotalEmissions,
-} from "@/hooks/useRegions";
+import { getRegionalKPIs, useRegions } from "@/hooks/useRegions";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import RankedList from "@/components/ranked/RankedList";
 import { DataPoint } from "@/types/entity-rankings";
@@ -22,7 +18,7 @@ import { KPIValue } from "@/types/entity-rankings";
 export function RegionalRankedPage() {
   const { t } = useTranslation();
   const [geoData] = useState(regionGeoJson);
-  const { regions: regionNames } = useRegions();
+  const { regions: regionNames, regionsData } = useRegions();
   const selectedKPI = getRegionalKPIs()[0];
 
   const location = useLocation();
@@ -41,16 +37,34 @@ export function RegionalRankedPage() {
 
   const viewMode = getViewModeFromURL();
 
-  const regions: DataItem[] = regionNames.map((name) => {
-    const { emissions: emissionsData } = useRegionTotalEmissions(name);
-    const latestYear =
-      emissionsData.length > 0 ? emissionsData[emissionsData.length - 1] : null;
-    return {
-      name: name,
-      id: name,
-      emissions: latestYear?.emissions || 0,
-    };
-  });
+  // Calculate regions data without calling hooks in map
+  const regions: DataItem[] = useMemo(() => {
+    return regionNames.map((name) => {
+      const regionData = regionsData.find((r) => r.name === name);
+      if (!regionData || !regionData.emissions) {
+        return {
+          name: name,
+          id: name,
+          emissions: 0,
+        };
+      }
+
+      // Get the latest year's emissions
+      const years = Object.keys(regionData.emissions)
+        .filter((key) => !isNaN(Number(key)))
+        .map((year) => Number(year))
+        .sort((a, b) => a - b);
+
+      const latestYear = years[years.length - 1];
+      const latestYearData = regionData.emissions[latestYear?.toString()];
+
+      return {
+        name: name,
+        id: name,
+        emissions: latestYearData / 1000 || 0,
+      };
+    });
+  }, [regionNames, regionsData]);
 
   const asDataPoint = (kpi: unknown): DataPoint<DataItem> =>
     kpi as DataPoint<DataItem>;
