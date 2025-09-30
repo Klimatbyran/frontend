@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { ContentSection } from "@/components/shared/ContentSection/ContentSection";
+import { ContentSection } from "@/components/ContentSection";
 
 export const MunicipalityKPIsContent = () => {
   const { t } = useTranslation();

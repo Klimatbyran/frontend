@@ -1,10 +1,10 @@
 import { useTranslation } from "react-i18next";
-import { ContentSection } from "@/components/shared/ContentSection/ContentSection";
+import { ContentSection } from "@/components/ContentSection";
 
 export const DataCollectionProcessContent = () => {
   const { t } = useTranslation();
   return (
-    <div className="prose prose-invert mx-auto space-y-8">
+    <div className="mx-auto space-y-8 prose prose-invert">
       <ContentSection
         title={t(
           "methodsPage.company.companyDataCollection.dataPresented.title",
