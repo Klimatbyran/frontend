@@ -152,7 +152,7 @@ export const SectorsChart: FC<SectorsChartProps> = ({
               wrapperStyle={{ outline: "none", zIndex: 60 }}
             />
 
-            <ReferenceLine {...getCurrentYearReferenceLineProps(MAX_YEAR, t)} />
+            <ReferenceLine {...getCurrentYearReferenceLineProps(MAX_YEAR)} />
 
             {/* Sector areas */}
             {allSectors.map((sector: string) => {

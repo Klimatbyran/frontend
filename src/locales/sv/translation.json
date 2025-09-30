@@ -401,8 +401,9 @@
         "title": "Företagsdata översikt",
         "description": "Översikt över hur vi samlar in och presenterar företagens utsläppsdata",
         "paragraph1": "Klimatkollen samlar in data om växthusgasutsläpp som företag rapporterar i sina hållbarhetsrapporter och kombinerade årsredovisningar.",
-        "paragraph2": "Utsläppsdata delas upp i företagsspecifika utsläpp (scope 1 & scope 2) och värdekedjeutsläpp (scope 3), rapporterat i ton CO2e.",
-        "paragraph3": "På varje företags sida på Klimatkollen hittar du mer detaljerad information om utsläppen; uppdelning per scope och kategori i scope 3 samt eventuella biogena utsläpp.",
+        "paragraph2": "Olika bolag kan ha olika metoder för att beräkna sina utsläpp. Ibland anges även att viss utsläppsdata avser ett annat år än året då det redovisas. Klimatkollen har ett medborgarperspektiv och utgår därför ifrån det som rapporteras publikt i den senaste årsredovisningen. Det är också en förutsättning för att kunna jämföra bolagen mer rättvist. Läs mer i om respektive bolags beräkningsmetod i deras rapport, som vi länkar till från företagens sidor.",
+        "paragraph3": "Utsläppsdata delas upp i företagsspecifika utsläpp (scope 1 & scope 2) och värdekedjeutsläpp (scope 3), rapporterat i ton CO2e.",
+        "paragraph4": "På varje företags sida på Klimatkollen hittar du mer detaljerad information om utsläppen; uppdelning per scope och kategori i scope 3 samt eventuella biogena utsläpp.",
         "link1": {
           "title": "Klimatkollens företagsdata",
           "text": "Se vår senaste företagsutsläppsdata här"
@@ -420,7 +421,7 @@
             "text": "Läs mer om Global Industry Classification Standard (GICS)"
           }
         },
-        "paragraph4": "Information om antal anställda och omsättning hämtas från de senaste hållbarhetsrapporterna eller kombinerade års- och hållbarhetsrapporter, och i vissa fall från andra källor."
+        "paragraph5": "Information om antal anställda och omsättning hämtas från de senaste hållbarhetsrapporterna eller kombinerade års- och hållbarhetsrapporter, och i vissa fall från andra källor."
       },
       "companyDataCollection": {
         "title": "Datainsamlingsprocess",
@@ -471,7 +472,7 @@
         },
         "financedEmissions": {
           "title": "Finansierade utsläpp: Scope 3 kategori 15: Investeringar",
-          "paragraph1": "Finansierade utsläpp rapporteras ofta med fördröjning eftersom de kan ta längre tid att beräkna. För att ge en representativ bild av företagets påverkan inkluderas i dessa fall de senast rapporterade utsläppen."
+          "paragraph1": "Finansierade utsläpp rapporteras ofta med fördröjning, eftersom de ofta baseras på föregående års data från de bolag som ingår i investeringen. Vi visar utsläppsdata i scope 3 kategori 15 det år det rapporteras publikt i årsredovisningen, även om det ibland anges att datan i denna kategori är från ett tidigare år."
         },
         "biogenicEmissions": {
           "title": "Biogena utsläpp",
@@ -489,7 +490,7 @@
         "description": "Vilken data vi samlar in och presenterar om kommunerna",
         "paragraph1": "Klimatkollen visar data om utsläpp i Sveriges kommuner, med SMHI:s Nationella emissionsdatabas som främsta källa. För att vår kommundata och företagsdata ska vara jämförbara visas sedan augusti 2025 utsläpp av alla växthusgaser (CO₂e) inte enbart koldioxid.",
         "paragraph2": "Vi visar även hur utsläppen skulle behöva minska för att klara Parisavtalet. Tidigare användes lokala koldioxidbudgetar, baserade på en nationell budget framtagen av forskare vid Uppsala universitet och Tyndall Centre i Storbritannien. Sedan augusti 2025 baserar vi istället ”Pariskurvan” på <0>Carbon Law</0>.",
-        "paragraph3": "Prognosen för framtida utsläpp baseras på hur utsläppen i respektive kommun har utvecklats historiskt sedan Parisavtalet 2015. Trendlinjen viktas enligt den statistiska metoden Least absolute deviations (LDA), som ger mindre vikt åt enskilda extremvärden och en mer rättvis och realistisk bild av de framtida utsläppen.",
+        "paragraph3": "Prognosen för framtida utsläpp baseras på hur utsläppen i respektive kommun har utvecklats historiskt sedan Parisavtalet 2015. Trendlinjen viktas enligt den statistiska metoden least absolute deviations (LAD), som ger mindre vikt åt enskilda extremvärden och en mer rättvis och realistisk bild av de framtida utsläppen. Läs mer om våra utsläppsberäkningar <0>här</0>.",
         "paragraph4": "Utöver utsläppsdata visas även nyckeltal för hur det går i kommunerna med att ställa om och minska utsläppen."
       },
       "municipalityKPIs": {
@@ -821,7 +822,19 @@
     "catharina": {
       "role": "Kommunikatör",
       "description": "Kommunikatör och filmare med fokus på klimat och hållbarhet, är med och driver Ett hållbart Lidingö, har en bakgrund som managementkonsult."
-    }
+    },
+    "elin": {
+      "role": "Utvecklare",
+      "description": "AI- och backendutvecklare med fokus på att skapa tillförlitliga och produktionsklara AI-lösningar. Har en bakgrund både som konsult och inom forskning. Hjälper Klimatkollen i arbetet med att använda AI för att tillgängliggöra klimatdata."
+      },
+      "carl": {
+        "role": "Utvecklare",
+        "description": "Frontend-utvecklare som älskar naturen, klättring och att bygga verktyg som gör klimatdata lättare att förstå. Stöttar Klimatkollens volontärer, utvecklar webbsidan och försöker hitta den perfekta GIF:en för varje tillfälle."
+      },
+      "mikael": {
+        "role": "Utvecklare",
+        "description": "Öppen källkods-utvecklare med en lång passion för användargränssnitt och löpning. Har bakgrund i Linux/GNOME, iOS och webbutveckling. Bidrar huvudsakligen till webbgränssnitet för Klimatkollen."
+      }
   },
   "board": {
     "ola": {
@@ -930,7 +943,6 @@
       "noData": "Ingen data",
       "unknownSector": "Okänd sektor",
       "emissions": "Utsläpp",
-      "totalEmissionsInfo": "Totala utsläpp (Scope 1 & 2)",
       "emissionsChangeRate": "Förändringstakt",
       "emissionsChangeRateInfo": "Förändringstakt för utsläpp jämfört med föregående rapporteringsperiod.",
       "emissionsChangeRateInfoExtended": "Det här värdet är ovanligt högt på grund av inkonsekvent rapportering mellan de två senaste perioderna, vilket gör att procentförändringen inte speglar den faktiska utvecklingen.",
@@ -1026,7 +1038,8 @@
       "readMore": "Läs mer",
       "readLess": "Läs mindre",
       "aiGeneratedData": "Innehåller AI-extraherade värden. Klicka för att läsa mer.",
-      "billion": "mdr"
+      "billion": "mdr",
+      "financialsTooltip": "Finansierade utsläpp rapporteras ofta med fördröjning, eftersom de ofta baseras på föregående års data från de bolag som ingår i investeringen. Vi visar utsläppsdata i scope 3 kategori 15 det år det rapporteras publikt i årsredovisningen, även om det ibland anges att datan i denna kategori är från ett tidigare år."
     },
     "sectionedCompanyList": {
       "otherCompanies": "Övriga företag",
@@ -1384,6 +1397,7 @@
   "graphs": {
     "pieChart": {
       "clickToFilter": "Klicka för att filtrera",
+      "doubleClickToFilter": "Dubbelklicka för att filtrera",
       "ofTotal": "av total"
     }
   },

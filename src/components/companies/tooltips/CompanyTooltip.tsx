@@ -1,12 +1,18 @@
 import React from "react";
-import { TooltipProps } from "recharts";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
-import { formatEmissionsAbsolute, formatPercent } from "@/utils/formatting/localization";
-const CompanyTooltip: React.FC<TooltipProps<number, string>> = ({
-  active,
-  payload,
-}) => {
+import {
+  formatEmissionsAbsolute,
+  formatPercent,
+} from "@/utils/formatting/localization";
+
+interface CompanyTooltipProps {
+  active?: boolean;
+  payload?: any[];
+  label?: string;
+}
+
+const CompanyTooltip: React.FC<CompanyTooltipProps> = ({ active, payload }) => {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
 

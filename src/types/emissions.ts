@@ -49,6 +49,11 @@ export interface EmissionsHistoryProps {
   onYearSelect?: (year: string) => void;
   className?: string;
   features?: EmissionsFeatures;
+  industry?: {
+    industryGics?: {
+      sectorCode?: string;
+    };
+  } | null;
   baseYear?: {
     id: string;
     year: number;

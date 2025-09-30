@@ -400,8 +400,9 @@
         "title": "Company Data Overview",
         "description": "Overview of how we collect and present company emissions data",
         "paragraph1": "Klimatkollen collects data on greenhouse gas emissions that companies report in their sustainability reports and combined annual reports.",
-        "paragraph2": "The emissions data is divided into company-specific emissions (scope 1 & scope 2) and emissions from the value chain (scope 3), reported in tonnes of CO2e.",
-        "paragraph3": "On each company's page on Klimatkollen, you can find more detailed information about the emissions; breakdown by scope and category in scope 3, as well as any biogenic emissions.",
+        "paragraph2": "Different companies may use different methods to calculate their emissions. Sometimes they also state that certain data refer to a year other than the year in which they are reported. Klimatkollen takes a citizen's perspective and therefore show the data that is publicly disclosed in the latest annual report. This is also a prerequisite for being able to compare companies more fairly. Read more about each company's calculation method in their report, which we link to from the companies' pages.",
+        "paragraph3": "The emissions data is divided into company-specific emissions (scope 1 & scope 2) and emissions from the value chain (scope 3), reported in tonnes of CO2e.",
+        "paragraph4": "On each company's page on Klimatkollen, you can find more detailed information about the emissions; breakdown by scope and category in scope 3, as well as any biogenic emissions.",
         "link1": {
           "title": "Klimatkollen's Company Data",
           "text": "View our latest company emissions data here"
@@ -419,7 +420,7 @@
             "text": "Read more about the Global Industry Classification Standard (GICS)"
           }
         },
-        "paragraph4": "Information about the number of employees and revenue is obtained from the latest sustainability reports, or combined annual and sustainability reports, and in some cases from other sources."
+        "paragraph5": "Information about the number of employees and revenue is obtained from the latest sustainability reports, or combined annual and sustainability reports, and in some cases from other sources."
       },
       "companyDataCollection": {
         "title": "Data Collection Process",
@@ -470,7 +471,7 @@
         },
         "financedEmissions": {
           "title": "Financed Emissions: Scope 3 Category 15: Investments",
-          "paragraph1": "Financed emissions are often reported with a delay since they can take longer to calculate. To provide a representative picture of a company's impact, in these cases the latest reported emissions are included."
+          "paragraph1": "Financed emissions are often reported with a delay, as they are often based on the previous year's data from the companies included in the investment. We show emissions data in scope 3 category 15 in the year it is publicly reported in the annual report, even if it is sometimes stated that the data in this category comes from a previous year."
         },
         "biogenicEmissions": {
           "title": "Biogenic Emissions",
@@ -488,7 +489,7 @@
         "description": "What data we collect and present about the municipalities",
         "paragraph1": "Klimatkollen shows emissions data on Sweden's municipalities, with SMHI's national emissions database as our primary source. To make our municipal and company data comparable, emissions of all greenhouse gases (CO₂e) are shown since August 2025, not just CO₂.",
         "paragraph2": "We also show how emissions would need to decrease to meet the Paris Agreement. Previously, this was based on local carbon budgets derived from a national budget calculated by researchers at Uppsala University and the Tyndall Centre in the UK. Since August 2025, we have switched to use the 'Paris Curve' based on an updated <0>Carbon Law</0>.",
-        "paragraph3": "The forecast for future emissions is based on how emissions in each municipality have developed historically since the Paris Agreement in 2015. The trend line is weighted using the statistical method Least Absolute Deviations (LAD), which gives less weight to individual extreme values and provides a more fair and realistic picture of future emissions.",
+        "paragraph3": "The forecast for future emissions is based on how emissions in each municipality have developed historically since the Paris Agreement in 2015. The trend line is weighted using the statistical method Least Absolute Deviations (LAD), which gives less weight to individual extreme values and provides a more fair and realistic picture of future emissions. You can read more about our emissions calculations <0>here</0>.",
         "paragraph4": "Alongside emissions data, Klimatkollen presents key indicators of municipal performance in the energy transition and emissions reductions, such as growth with EVs and bicycle lanes."
       },
       "municipalityKPIs": {
@@ -821,6 +822,18 @@
     "catharina": {
       "role": "Communicator",
       "description": "Communicator and filmmaker focusing on climate and sustainability, active in organisation Ett hållbart Lidingö, with a background as a management consultant."
+    },
+    "elin": {
+      "role": "Developer",
+      "description": "AI and backend developer focused on creating reliable and production-ready AI solutions. Background in both consulting and research. Working with Klimatkollen to make climate data accessible through AI."
+    },
+    "carl": {
+      "role": "Developer",
+      "description": "Frontend developer who loves nature, climbing, and creating tools that make climate data easier to understand. Supports Klimatkollen's volunteers, develops the frontend, and tries to find the perfect GIFs for every occasion."
+    },
+    "mikael": {
+      "role": "Developer",
+      "description": "Open source developer with a long passion for user interfaces and running. Coming from a background of Linux/GNOME, iOS  and web development. Mainly contributing to the web frontend at Klimatkollen."
     }
   },
   "board": {
@@ -930,7 +943,6 @@
       "noData": "No Data",
       "unknownSector": "Unknown Sector",
       "emissions": "Emissions",
-      "totalEmissionsInfo": "Total Emissions (Scope 1 & 2)",
       "emissionsChangeRate": "Change Rate",
       "emissionsChangeRateInfo": "Change rate of emissions compared to the previous reporting period.",
       "emissionsChangeRateInfoExtended": "This value is so large due to inconsistencies in reported data between the last two reporting periods, thus this value is not representative of actual changes.",
@@ -1026,7 +1038,8 @@
       "readMore": "Read More",
       "readLess": "Read Less",
       "aiGeneratedData": "Includes AI-extracted values. Click to read more.",
-      "billion": "bn"
+      "billion": "bn",
+      "financialsTooltip": "Financed emissions are often reported with a delay, as they are often based on the previous year's data from the companies included in the investment. We show emissions data in scope 3 category 15 in the year it is publicly reported in the annual report, even if it is sometimes stated that the data in this category comes from a previous year."
     },
     "sectionedCompanyList": {
       "otherCompanies": "Other Companies",
@@ -1384,6 +1397,7 @@
   "graphs": {
     "pieChart": {
       "clickToFilter": "Click to filter",
+      "doubleClickToFilter": "Double-click to filter",
       "ofTotal": "of total"
     }
   },

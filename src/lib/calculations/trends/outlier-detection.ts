@@ -6,6 +6,7 @@
 
 import { DataPoint } from "./types";
 import { getMedian } from "./data-processing";
+import { Scope3Category } from "@/types/company";
 
 /**
  * Validate unusual points by checking if Scope 3 categories were added
@@ -133,10 +134,10 @@ export function checkIfScope3Justified(
 
   // Check if new categories were added
   const currentCategoryIds = currentScope3Categories.map(
-    (cat: any) => cat.category,
+    (cat: Scope3Category) => cat.category,
   );
   const previousCategoryIds = previousScope3Categories.map(
-    (cat: any) => cat.category,
+    (cat: Scope3Category) => cat.category,
   );
 
   const newCategories = currentCategoryIds.filter(

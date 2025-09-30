@@ -60,16 +60,16 @@ export function MunicipalitiesRankedPage() {
     }
   }, [getKPIFromURL, selectedKPI.label]);
 
-  const handleMunicipalityClick = (municipality: Municipality) => {
-    const formattedName = municipality.name.toLowerCase();
-    window.location.href = `/municipalities/${formattedName}?view=${viewMode}`;
+  const handleMunicipalityClick = (name: string) => {
+    const formattedName = name.toLowerCase();
+    navigate(`/municipalities/${formattedName}?view=${viewMode}`);
   };
 
   // Create an adapter for MapOfSweden
   const handleMunicipalityNameClick = (name: string) => {
     const municipality = municipalities.find((m) => m.name === name);
     if (municipality) {
-      handleMunicipalityClick(municipality);
+      handleMunicipalityClick(municipality.name);
     } else {
       window.location.href = `/municipalities/${name.toLowerCase()}?view=${viewMode}`;
     }

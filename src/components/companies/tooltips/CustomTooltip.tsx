@@ -1,9 +1,18 @@
 import React from "react";
-import { TooltipProps } from "recharts";
 import { useTranslation } from "react-i18next";
-import { formatEmissionsAbsolute, formatPercent } from "@/utils/formatting/localization";
+import {
+  formatEmissionsAbsolute,
+  formatPercent,
+} from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
-const CustomTooltip: React.FC<TooltipProps<number, string>> = ({
+
+interface CustomTooltipProps {
+  active?: boolean;
+  payload?: any[];
+  label?: string;
+}
+
+const CustomTooltip: React.FC<CustomTooltipProps> = ({
   active,
   payload,
   label,
@@ -20,12 +29,13 @@ const CustomTooltip: React.FC<TooltipProps<number, string>> = ({
 
   payload.forEach((item) => {
     if (!item.dataKey || typeof item.dataKey !== "string") return;
+    if (!item.value || item.value <= 0) return; // Skip undefined, null, or zero values
 
     const [sector] = item.dataKey.split("_scope");
     if (!sectorTotals[sector]) {
       sectorTotals[sector] = { total: 0, color: item.color || "#888888" };
     }
-    sectorTotals[sector].total += item.value || 0;
+    sectorTotals[sector].total += item.value;
   });
 
   const yearTotal = Object.values(sectorTotals).reduce(
@@ -34,7 +44,7 @@ const CustomTooltip: React.FC<TooltipProps<number, string>> = ({
   );
 
   return (
-    <div className="bg-black-2 border border-black-1 rounded-lg shadow-xl p-4 text-white min-w-[350px]">
+    <div className="bg-black-2 border border-black-1 rounded-lg shadow-xl p-4 text-white min-w-[350px] z-50 relative">
       <p className="text-lg font-medium mb-3 border-b border-black-1 pb-2">
         {label}
       </p>

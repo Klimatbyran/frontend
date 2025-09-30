@@ -10,6 +10,7 @@ import { createSlug } from "@/lib/utils";
 import { CompanyScope3 } from "@/components/companies/detail/CompanyScope3";
 import { getCompanyDescription } from "@/utils/business/company";
 import { useLanguage } from "@/components/LanguageProvider";
+import type { Scope3Category } from "@/types/company";
 
 export function CompanyDetailPage() {
   const { t } = useTranslation();
@@ -183,6 +184,7 @@ export function CompanyDetailPage() {
         <EmissionsHistory
           reportingPeriods={company.reportingPeriods}
           baseYear={company.baseYear}
+          industry={company.industry}
         />
         <CompanyScope3
           emissions={selectedPeriod.emissions!}
@@ -200,9 +202,9 @@ export function CompanyDetailPage() {
                 t("emissionsUnit"),
               categories: period
                 .emissions!.scope3!.categories!.filter(
-                  (cat) => cat.total !== null,
+                  (cat: Scope3Category) => cat.total !== null,
                 )
-                .map((cat) => ({
+                .map((cat: Scope3Category) => ({
                   category: cat.category,
                   total: cat.total as number,
                   unit: cat.unit,

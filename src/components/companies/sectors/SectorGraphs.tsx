@@ -1,5 +1,5 @@
 import React from "react";
-import { RankedCompany } from "@/hooks/companies/useCompanies";
+import { RankedCompany } from "@/types/company";
 import {
   CompanySector,
   useSectorNames,

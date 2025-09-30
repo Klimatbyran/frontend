@@ -1,13 +1,16 @@
 import React from "react";
-import { TooltipProps } from "recharts";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
 import { formatEmissionsAbsolute } from "@/utils/formatting/localization";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { cn } from "@/lib/utils";
 import { AiIcon } from "@/components/ui/ai-icon";
+import type { Scope3Category } from "@/types/company";
 
-interface ChartTooltipProps extends TooltipProps<number, string> {
+interface ChartTooltipProps {
+  active?: boolean;
+  payload?: any[];
+  label?: string;
   // Common props
   unit?: string;
   showUnit?: boolean;
@@ -62,9 +65,19 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
   // Filter payload based on context
   let filteredPayload = payload;
 
+  // First, filter out zero, undefined, or null values, but keep trend and Paris data
+  filteredPayload = payload.filter((entry) => {
+    // Keep trend and Paris data even if zero
+    if (entry.dataKey === "approximated" || entry.dataKey === "carbonLaw") {
+      return entry.value != null;
+    }
+    // For other data, only show if > 0
+    return entry.value != null && entry.value > 0;
+  });
+
   if (filterDuplicateValues) {
     const seenValues = new Set();
-    filteredPayload = payload.filter((entry) => {
+    filteredPayload = filteredPayload.filter((entry) => {
       const valueKey = `${entry.value}_${entry.payload.year}`;
       if (seenValues.has(valueKey)) {
         return false;
@@ -76,19 +89,19 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
 
   // For municipality sectors view, filter hidden sectors
   if (dataView === "sectors" && hiddenSectors.size > 0) {
-    filteredPayload = payload.filter(
+    filteredPayload = filteredPayload.filter(
       (entry) => !hiddenSectors.has(entry.dataKey as string),
     );
   }
 
   // For municipality overview, handle approximated data logic
   if (dataView === "overview") {
-    const hasActual = payload.some(
+    const hasActual = filteredPayload.some(
       (entry) => entry.dataKey === "total" && entry.value != null,
     );
 
     if (hasActual) {
-      filteredPayload = payload.filter(
+      filteredPayload = filteredPayload.filter(
         (entry) => entry.dataKey !== "approximated",
       );
     }
@@ -165,7 +178,8 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
             entry.payload?.scope2?.isAIGenerated ||
             entry.payload?.scope3?.isAIGenerated ||
             entry.payload?.scope3Categories?.some(
-              (cat: any) => cat.isAIGenerated,
+              (cat: Scope3Category & { isAIGenerated?: boolean }) =>
+                cat.isAIGenerated,
             ) ||
             false);
 
@@ -202,7 +216,10 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
 
       {trendData &&
         payload?.some(
-          (entry) => entry.dataKey === "approximated" && entry.value != null,
+          (entry) =>
+            entry.dataKey === "approximated" &&
+            entry.value != null &&
+            entry.value > 0,
         ) && (
           <span className="text-grey mr-2 text-xs col-span-2 mt-2">
             <br />
@@ -225,7 +242,10 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
       {/* Municipality approximated value info */}
       {dataView === "overview" &&
         filteredPayload.some(
-          (entry) => entry.dataKey === "approximated" && entry.value != null,
+          (entry) =>
+            entry.dataKey === "approximated" &&
+            entry.value != null &&
+            entry.value > 0,
         ) && (
           <div className="text-xs text-blue-2 mt-2">
             {t("municipalities.graph.estimatedValue")}

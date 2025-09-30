@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useRef } from "react";
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from "recharts";
 import PieTooltip from "../graphs/tooltips/PieTooltip";
+import { useScreenSize } from "@/hooks/useScreenSize";
 
 interface PieChartData {
   name: string;
@@ -33,24 +34,57 @@ const PieChartView: React.FC<PieChartViewProps> = ({
   onFilteredCategoriesChange,
   percentageLabel: percentageLabel,
 }) => {
+  const { isMobile } = useScreenSize();
+  const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const isDesktop = layout === "desktop";
   const innerRadius = isDesktop ? size.innerRadius * 1.2 : size.innerRadius;
   const outerRadius = isDesktop ? size.outerRadius * 1.2 : size.outerRadius;
 
   const handleCategoryClick = (data: PieChartData) => {
-    if (filterable && onFilteredCategoriesChange) {
-      const categoryName = data.name;
-      const newFiltered = new Set(filteredCategories);
-      if (newFiltered.has(categoryName)) {
-        newFiltered.delete(categoryName);
-      } else {
-        newFiltered.add(categoryName);
-      }
-      onFilteredCategoriesChange(newFiltered);
-    }
+    if (isMobile) {
+      // On mobile, handle double-click for filtering
+      if (clickTimeoutRef.current) {
+        // This is a double-click
+        clearTimeout(clickTimeoutRef.current);
+        clickTimeoutRef.current = null;
 
-    if (handlePieClick) {
-      handlePieClick(data);
+        // Execute the filtering action
+        if (filterable && onFilteredCategoriesChange) {
+          const categoryName = data.name;
+          const newFiltered = new Set(filteredCategories);
+          if (newFiltered.has(categoryName)) {
+            newFiltered.delete(categoryName);
+          } else {
+            newFiltered.add(categoryName);
+          }
+          onFilteredCategoriesChange(newFiltered);
+        }
+
+        if (handlePieClick) {
+          handlePieClick(data);
+        }
+      } else {
+        // This is a single-click, just show tooltip (no action)
+        clickTimeoutRef.current = setTimeout(() => {
+          clickTimeoutRef.current = null;
+        }, 300); // 300ms timeout for double-click detection
+      }
+    } else {
+      // On desktop, single-click for filtering (existing behavior)
+      if (filterable && onFilteredCategoriesChange) {
+        const categoryName = data.name;
+        const newFiltered = new Set(filteredCategories);
+        if (newFiltered.has(categoryName)) {
+          newFiltered.delete(categoryName);
+        } else {
+          newFiltered.add(categoryName);
+        }
+        onFilteredCategoriesChange(newFiltered);
+      }
+
+      if (handlePieClick) {
+        handlePieClick(data);
+      }
     }
   };
 
@@ -69,7 +103,7 @@ const PieChartView: React.FC<PieChartViewProps> = ({
   }));
 
   return (
-    <ResponsiveContainer width="100%" height={outerRadius * 2.5}>
+    <ResponsiveContainer width="100%" height={Math.max(outerRadius * 2.5, 300)}>
       <PieChart>
         <Pie
           data={dataWithTotal}
@@ -82,6 +116,8 @@ const PieChartView: React.FC<PieChartViewProps> = ({
           onClick={handleCategoryClick}
           cornerRadius={8}
           paddingAngle={2}
+          animationBegin={0}
+          animationDuration={300}
         >
           {dataWithTotal.map((entry) => (
             <Cell
@@ -99,6 +135,8 @@ const PieChartView: React.FC<PieChartViewProps> = ({
               customActionLabel={customActionLabel}
             />
           }
+          animationDuration={0}
+          isAnimationActive={false}
         />
       </PieChart>
     </ResponsiveContainer>
