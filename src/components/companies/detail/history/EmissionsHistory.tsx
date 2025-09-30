@@ -195,6 +195,7 @@ export function EmissionsHistory({
             "parisAgreementLine",
             "scope3EmissionLevels",
             "companyMissingData",
+            "historicalEmissions",
             ...(isFinancialsSector
               ? (["financialsScope3Category15"] as const)
               : []),
