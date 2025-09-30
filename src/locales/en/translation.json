@@ -952,8 +952,8 @@
     },
     "emissionsHistory": {
       "noReportingPeriods": "No reporting periods available",
-      "title": "Historical Emissions",
-      "tooltip": "Historical emissions; click on a point to remove the line from the graph. Hover over a point to see the values for the reporting period.",
+      "title": "Emissions development",
+      "tooltip": "Showing the development of reported emissions over time; click on a point to remove the line from the graph. Hover over a point to see the values for the reporting period.",
       "unit": "In tons CO₂e",
       "totalEmissions": "Total Emissions",
       "baseYear": "Base year",
