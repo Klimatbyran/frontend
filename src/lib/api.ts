@@ -120,8 +120,15 @@ export async function downloadCompanies(
   return data;
 }
 
-export async function downloadMunicipalities() {
+export async function downloadMunicipalities(
+  format: "csv" | "json" | "xlsx" = "csv",
+) {
   const { data, error } = await client.GET("/municipalities/export", {
+    params: {
+      query: {
+        type: format,
+      }
+    },
     parseAs: "blob",
   });
 

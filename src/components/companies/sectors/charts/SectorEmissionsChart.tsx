@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   BarChart,
   Bar,
@@ -7,14 +8,14 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-  LegendProps,
 } from "recharts";
+import type { LegendPayload } from "recharts";
 import {
   sectorColors,
   useSectorNames,
   getCompanyColors,
 } from "@/hooks/companies/useCompanyFilters";
-import { RankedCompany } from "@/hooks/companies/useCompanies";
+import { RankedCompany } from "@/types/company";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { useChartData } from "@/hooks/companies/useChartData";
 import ChartHeader from "./ChartHeader";
@@ -51,11 +52,11 @@ const formatYAxisTick = (value: number): string => {
 const StackedTotalLegend = ({
   payload,
 }: {
-  payload: LegendProps["payload"];
+  payload: readonly LegendPayload[];
 }) => {
   return (
-    <div className="flex flex-wrap justify-center gap-4 mt-4">
-      {payload?.map((entry, index) => (
+    <div className="flex flex-wrap justify-center gap-4 mt-4 relative z-10">
+      {payload?.map((entry: LegendPayload, index: number) => (
         <div key={index} className="flex items-center gap-2">
           <div
             className={cn("w-3 h-3 rounded")}
@@ -73,6 +74,7 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
   selectedSectors,
 }) => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const sectorNames = useSectorNames();
 
   const [chartType, setChartType] = useState<ChartType>("pie");
@@ -111,7 +113,7 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
     if (!selectedSector && data?.sectorCode) {
       setSelectedSector(data.sectorCode);
     } else if (selectedSector && data?.wikidataId) {
-      window.location.href = `/companies/${data.wikidataId}`;
+      navigate(`/companies/${data.wikidataId}`);
     }
   };
 
@@ -140,95 +142,102 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
       />
 
       <div>
-        <ResponsiveContainer width="100%" height="100%">
-          {chartType === "pie" ? (
-            totalEmissions > 0 ? (
-              <div className="flex flex-col gap-4 mt-8 lg:flex-row lg:gap-8">
-                <div className="w-full lg:w-1/2 lg:h-full">
-                  <PieChartView
-                    pieChartData={pieChartDataWithColor}
-                    size={size}
-                    customActionLabel={t(
-                      `companiesPage.sectorGraphs.${selectedSector ? "pieLegendCompany" : "pieLegendSector"}`,
-                    )}
-                    handlePieClick={handlePieClick}
-                    layout={screenSize.isMobile ? "mobile" : "desktop"}
-                  />
-                </div>
-                <div className={"w-full h-full flex lg:w-1/2 lg:items-center"}>
-                  <SectorPieLegend
-                    payload={pieChartDataWithColor}
-                    selectedLabel={selectedSector}
-                    handlePieClick={handlePieClick}
-                  />
-                </div>
+        {chartType === "pie" ? (
+          totalEmissions > 0 ? (
+            <div className="flex flex-col gap-4 mt-8 lg:flex-row lg:gap-8">
+              <div className="w-full lg:w-1/2 lg:h-full">
+                <PieChartView
+                  pieChartData={pieChartDataWithColor}
+                  size={size}
+                  customActionLabel={t(
+                    `companiesPage.sectorGraphs.${selectedSector ? "pieLegendCompany" : "pieLegendSector"}`,
+                  )}
+                  handlePieClick={handlePieClick}
+                  layout={screenSize.isMobile ? "mobile" : "desktop"}
+                />
               </div>
-            ) : (
-              <div className="flex justify-center items-center h-full">
-                <p className="text-grey">
-                  {t("companiesPage.sectorGraphs.noDataAvailablePieChart")}
-                </p>
+              <div className={"w-full h-full flex lg:w-1/2 lg:items-center"}>
+                <SectorPieLegend
+                  payload={pieChartDataWithColor}
+                  selectedLabel={selectedSector}
+                  handlePieClick={handlePieClick}
+                />
               </div>
-            )
+            </div>
           ) : (
-            <BarChart
-              data={chartData}
-              margin={{ top: 20, right: 15, left: 20, bottom: 5 }}
-              onClick={
-                chartType !== "stacked-total" ? handleBarClick : undefined
-              }
-              barGap={0}
-              barCategoryGap="30%"
-            >
-              <XAxis
-                dataKey="year"
-                tick={{ fill: "var(--grey)", fontSize: 12 }}
-                axisLine={{ stroke: "var(--black-1)" }}
-                tickLine={{ stroke: "var(--black-1)" }}
-                padding={{ left: 10, right: 10 }}
-              />
-              <YAxis
-                tick={{ fill: "var(--grey)" }}
-                axisLine={{ stroke: "var(--black-1)" }}
-                tickLine={{ stroke: "var(--black-1)" }}
-                tickFormatter={formatYAxisTick}
-                width={30}
-                fontSize={12}
-                label={{
-                  value: "tCO₂e",
-                  position: "top",
-                  offset: 10,
-                  style: {
-                    textAnchor: "middle",
-                    fontSize: "12px",
-                  },
-                }}
-              />
-              <Tooltip content={<CustomTooltip />} />
-              {selectedSectors.map((sectorCode) => {
-                const sectorName =
-                  sectorNames[sectorCode as keyof typeof sectorNames];
-                const colors =
-                  sectorColors[sectorCode as keyof typeof sectorColors];
-                return (
-                  <Bar
-                    key={sectorCode}
-                    dataKey={sectorName}
-                    stackId="total"
-                    fill={colors.base}
-                    name={sectorName}
-                    cursor="default"
-                  />
-                );
-              })}
-              <Legend
-                content={(props) => (
-                  <StackedTotalLegend payload={props.payload || []} />
-                )}
-              />
-            </BarChart>
-          )}
-        </ResponsiveContainer>
+            <div className="flex justify-center items-center h-64">
+              <p className="text-grey">
+                {t("companiesPage.sectorGraphs.noDataAvailablePieChart")}
+              </p>
+            </div>
+          )
+        ) : (
+          <div className="w-full h-[400px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={chartData}
+                margin={{ top: 20, right: 15, left: 20, bottom: 5 }}
+                onClick={
+                  chartType !== "stacked-total" ? handleBarClick : undefined
+                }
+                barGap={0}
+                barCategoryGap="30%"
+              >
+                <XAxis
+                  dataKey="year"
+                  tick={{ fill: "var(--grey)", fontSize: 12 }}
+                  axisLine={{ stroke: "var(--black-1)" }}
+                  tickLine={{ stroke: "var(--black-1)" }}
+                  padding={{ left: 10, right: 10 }}
+                />
+                <YAxis
+                  tick={{ fill: "var(--grey)" }}
+                  axisLine={{ stroke: "var(--black-1)" }}
+                  tickLine={{ stroke: "var(--black-1)" }}
+                  tickFormatter={formatYAxisTick}
+                  width={30}
+                  fontSize={12}
+                  label={{
+                    value: "tCO₂e",
+                    position: "top",
+                    offset: 10,
+                    style: {
+                      textAnchor: "middle",
+                      fontSize: "12px",
+                    },
+                  }}
+                />
+                <Tooltip
+                  content={<CustomTooltip />}
+                  wrapperStyle={{ zIndex: 1000 }}
+                  animationDuration={0}
+                  isAnimationActive={false}
+                />
+                {selectedSectors.map((sectorCode) => {
+                  const sectorName =
+                    sectorNames[sectorCode as keyof typeof sectorNames];
+                  const colors =
+                    sectorColors[sectorCode as keyof typeof sectorColors];
+                  return (
+                    <Bar
+                      key={sectorCode}
+                      dataKey={sectorName}
+                      stackId="total"
+                      fill={colors.base}
+                      name={sectorName}
+                      cursor="default"
+                    />
+                  );
+                })}
+                <Legend
+                  content={(props) => (
+                    <StackedTotalLegend payload={props.payload || []} />
+                  )}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        )}
       </div>
     </div>
   );
