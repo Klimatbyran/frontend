@@ -31,7 +31,9 @@ const { GET } = createClient<paths>({
 // Auth API
 export async function authenticateWithGithub(code: string) {
   const { data, error } = await client.POST("/auth/github", {
-    body: { code } as any,
+    body: {
+      code,
+    } as paths["/auth/github"]["post"]["requestBody"]["content"]["application/json"],
   });
 
   if (error) throw error;
@@ -120,15 +122,8 @@ export async function downloadCompanies(
   return data;
 }
 
-export async function downloadMunicipalities(
-  format: "csv" | "json" | "xlsx" = "csv",
-) {
-  const { data, error } = await client.GET("/municipalities/export", {
-    params: {
-      query: {
-        type: format,
-      }
-    },
+export async function downloadMunicipalities() {
+  const { data, error } = await GET("/municipalities/export", {
     parseAs: "blob",
   });
 
@@ -191,7 +186,6 @@ export async function deleteValidationClaim(wikidataId: string) {
         params: {
           path: { wikidataId },
         },
-        body: JSON.stringify({}) as any,
       },
     );
     if (error) throw error;
@@ -276,3 +270,25 @@ export const fetchNewsletters = async () => {
     console.log(err);
   }
 };
+
+export async function getRegions() {
+  try {
+    const { data, error } = await GET("/regions/", {});
+    if (error) throw error;
+    return data || [];
+  } catch (error) {
+    console.error("Error fetching regions:", error);
+    return [];
+  }
+}
+
+export async function getNationalData() {
+  try {
+    const { data, error } = await GET("/national-data/", {});
+    if (error) throw error;
+    return data || [];
+  } catch (error) {
+    console.error("Error fetching national data:", error);
+    return [];
+  }
+}

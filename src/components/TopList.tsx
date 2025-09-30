@@ -3,18 +3,18 @@ import { cn } from "@/lib/utils";
 import { Text } from "@/components/ui/text";
 import { LocalizedLink } from "./LocalizedLink";
 
-export interface RankedListItem {
+export interface TopListItem {
   name: string;
   value: number;
   link: string;
 }
 
-interface RankedListProps {
+interface TopListProps {
   title: string;
   description: string;
-  items: RankedListItem[];
+  items: TopListItem[];
   className?: string;
-  itemValueRenderer: (item: RankedListItem) => React.ReactElement;
+  itemValueRenderer: (item: TopListItem) => React.ReactElement;
   icon: {
     component: React.ComponentType<LucideProps>;
     bgColor: string;
@@ -23,7 +23,7 @@ interface RankedListProps {
   headingLink?: string;
 }
 
-export function RankedList({
+export function TopList({
   title,
   description,
   items,
@@ -32,7 +32,7 @@ export function RankedList({
   icon,
   rankColor,
   headingLink,
-}: RankedListProps) {
+}: TopListProps) {
   const Icon = icon.component;
 
   return (

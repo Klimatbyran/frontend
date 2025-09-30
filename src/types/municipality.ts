@@ -67,22 +67,6 @@ export type DataPoint = {
   carbonLaw: number | undefined;
 };
 
-export interface KPIValue {
-  label: string;
-  key: keyof Municipality;
-  unit: string;
-  source: string;
-  sourceUrls: string[];
-  description: string;
-  detailedDescription: string;
-  nullValues?: string;
-  higherIsBetter: boolean;
-  isBoolean?: boolean;
-  booleanLabels?: { true: string; false: string };
-  belowString?: string;
-  aboveString?: string;
-}
-
 export type SectorEmissions = {
   [year: string]: {
     [sector: string]: number;
