@@ -25,7 +25,7 @@ export function useMunicipalities(): UseMunicipalitiesReturn {
     select: (data) => {
       return data.map((municipality) => ({
         ...municipality,
-        meetsParisGoal: municipality.totalTrend / municipality.totalCarbonLaw,
+        meetsParisGoal: municipality.totalTrend <= municipality.totalCarbonLaw,
       }));
     },
   });
