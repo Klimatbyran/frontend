@@ -1,54 +1,50 @@
 import { useMemo } from "react";
-import regionalData from "@/data/regional-data.json";
+import { useQuery } from "@tanstack/react-query";
+import { getRegions } from "@/lib/api";
 import { KPIValue } from "@/types/entity-rankings";
 import { Region } from "@/types/region";
 import { t } from "i18next";
 
-export type RegionalYearData = {
-  year: number;
-  total_emissions: number;
-  sectors: Record<string, number>;
-  subsectors: Record<string, Record<string, number>>;
-};
-
-type RegionalDataType = {
-  [region: string]: {
-    [year: string]: RegionalYearData | undefined;
-  };
+// Updated types to match the new API structure
+export type RegionData = {
+  name: string;
+  emissions: Record<string, number>;
 };
 
 /**
  * Hook to get all available regions
  */
 export function useRegions() {
-  const data = useMemo(() => regionalData as unknown as RegionalDataType, []);
-
-  const regions = useMemo(() => {
-    return Object.keys(data);
-  }, [data]);
+  const {
+    data: regions = [],
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["regions"],
+    queryFn: getRegions,
+  });
 
   return {
-    regions,
-    loading: false,
-    error: null,
+    regions: (regions as RegionData[]).map((region) => region.name),
+    regionsData: regions as RegionData[],
+    loading: isLoading,
+    error,
   };
 }
 
 /**
  * Hook to get years available for a specific region
  */
-export function useRegionYears(region: string) {
-  const data = useMemo(() => regionalData as unknown as RegionalDataType, []);
-
+export function useRegionYears(region: string, regionsData: RegionData[]) {
   const years = useMemo(() => {
-    const regionData = data[region];
-    if (!regionData) return [];
+    const regionData = regionsData.find((r) => r.name === region);
+    if (!regionData || !regionData.emissions) return [];
 
-    return Object.keys(regionData)
+    return Object.keys(regionData.emissions)
       .filter((key) => !isNaN(Number(key)))
       .map((year) => Number(year))
       .sort((a, b) => a - b);
-  }, [data, region]);
+  }, [regionsData, region]);
 
   return {
     years,
@@ -60,22 +56,24 @@ export function useRegionYears(region: string) {
 /**
  * Hook to get total emissions for all years in a region
  */
-export function useRegionTotalEmissions(region: string) {
-  const data = useMemo(() => regionalData as unknown as RegionalDataType, []);
-  const { years } = useRegionYears(region);
+export function useRegionTotalEmissions(
+  region: string,
+  regionsData: RegionData[],
+) {
+  const { years } = useRegionYears(region, regionsData);
 
   const emissions = useMemo(() => {
-    const regionData = data[region];
-    if (!regionData) return [];
+    const regionData = regionsData.find((r) => r.name === region);
+    if (!regionData || !regionData.emissions) return [];
 
     return years.map((year) => {
-      const yearData = regionData[year.toString()] as RegionalYearData;
+      const yearEmissions = regionData.emissions[year.toString()];
       return {
         year,
-        emissions: yearData.total_emissions / 1000,
+        emissions: yearEmissions / 1000 || 0,
       };
     });
-  }, [data, region, years]);
+  }, [regionsData, region, years]);
 
   return {
     emissions,
@@ -86,27 +84,11 @@ export function useRegionTotalEmissions(region: string) {
 
 /**
  * Hook to get emissions for all sectors for a specific year and region
+ * Note: The new API structure doesn't include sector breakdown, so this returns null
  */
-export function useRegionSectorEmissions(region: string, year: number) {
-  const data = useMemo(() => regionalData as unknown as RegionalDataType, []);
-
-  const sectorEmissions = useMemo(() => {
-    const regionData = data[region];
-    if (!regionData) return null;
-
-    const yearData = regionData[year.toString()] as
-      | RegionalYearData
-      | undefined;
-    if (!yearData) return null;
-
-    return Object.entries(yearData.sectors).map(([sector, emissions]) => ({
-      sector,
-      emissions: emissions / 1000,
-    }));
-  }, [data, region, year]);
-
+export function useRegionSectorEmissions() {
   return {
-    sectorEmissions,
+    sectorEmissions: null,
     loading: false,
     error: null,
   };
@@ -114,33 +96,11 @@ export function useRegionSectorEmissions(region: string, year: number) {
 
 /**
  * Hook to get emissions for all subsectors within a specific sector, year, and region
+ * Note: The new API structure doesn't include subsector breakdown, so this returns null
  */
-export function useRegionSubsectorEmissions(
-  region: string,
-  year: number,
-  sector: string,
-) {
-  const data = useMemo(() => regionalData as unknown as RegionalDataType, []);
-
-  const subsectorEmissions = useMemo(() => {
-    const regionData = data[region];
-    if (!regionData) return null;
-
-    const yearData = regionData[year.toString()] as
-      | RegionalYearData
-      | undefined;
-    if (!yearData || !yearData.subsectors[sector]) return null;
-
-    return Object.entries(yearData.subsectors[sector]).map(
-      ([subsector, emissions]) => ({
-        subsector,
-        emissions: emissions / 1000,
-      }),
-    );
-  }, [data, region, year, sector]);
-
+export function useRegionSubsectorEmissions() {
   return {
-    subsectorEmissions,
+    subsectorEmissions: null,
     loading: false,
     error: null,
   };
@@ -148,37 +108,11 @@ export function useRegionSubsectorEmissions(
 
 /**
  * Hook to get emissions for all subsectors across all sectors for a specific year and region
+ * Note: The new API structure doesn't include subsector breakdown, so this returns null
  */
-export function useRegionAllSubsectorEmissions(region: string, year: number) {
-  const data = useMemo(() => regionalData as unknown as RegionalDataType, []);
-
-  const allSubsectorEmissions = useMemo(() => {
-    const regionData = data[region];
-    if (!regionData) return null;
-
-    const yearData = regionData[year.toString()] as
-      | RegionalYearData
-      | undefined;
-    if (!yearData) return null;
-
-    const result: { sector: string; subsector: string; emissions: number }[] =
-      [];
-
-    Object.entries(yearData.subsectors).forEach(([sector, subsectors]) => {
-      Object.entries(subsectors).forEach(([subsector, emissions]) => {
-        result.push({
-          sector,
-          subsector,
-          emissions: emissions / 1000,
-        });
-      });
-    });
-
-    return result;
-  }, [data, region, year]);
-
+export function useRegionAllSubsectorEmissions() {
   return {
-    allSubsectorEmissions,
+    allSubsectorEmissions: null,
     loading: false,
     error: null,
   };
