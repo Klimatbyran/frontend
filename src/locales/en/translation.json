@@ -683,10 +683,6 @@
       }
     }
   },
-  "nationalOverviewPage": {
-    "title": "National Overview",
-    "description": "Overview of emissions and transition in the national level"
-  },
   "regionalRankedPage": {
     "title": "Regional Overview",
     "description": "Overview of emissions and transition in the regional level"
