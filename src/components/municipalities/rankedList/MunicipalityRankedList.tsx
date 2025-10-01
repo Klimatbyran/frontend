@@ -3,6 +3,8 @@ import { Search } from "lucide-react";
 import { t } from "i18next";
 import { Municipality } from "@/types/municipality";
 import MultiPagePagination from "@/components/ui/multi-page-pagination";
+import { useLanguage } from "@/components/LanguageProvider";
+import { createSimpleStringComparator } from "@/utils/sorting";
 
 interface DataPoint {
   label: string;
@@ -28,11 +30,13 @@ function MunicipalityRankedList({
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+  const { currentLanguage } = useLanguage();
 
   const sortedData = [...municipalityData].sort((a, b) => {
     // For boolean KPIs, sort alphabetically by municipality name
     if (selectedKPI.isBoolean) {
-      return a.name.localeCompare(b.name);
+      const nameComparator = createSimpleStringComparator(currentLanguage);
+      return nameComparator(a.name, b.name);
     }
 
     // For numeric KPIs, sort by value
