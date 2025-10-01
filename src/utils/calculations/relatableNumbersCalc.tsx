@@ -1,75 +1,90 @@
-export const emissionsComparedToSweden = (totalEmissions: number) => {
-  //Swedens total emissions 2023 tco2e
-  const swedenTotalEmissions = 44200000;
+import { formatEmissionsAbsolute } from "../formatting/localization";
 
-  //Malmö total emissions 2023 tco2e
-  const malmöTotalEmissions = 685951;
+export const emissionsComparedToCitizen = (
+  emissionsChange: number,
+  currentLanguage: "sv" | "en",
+) => {
+  const citizenTotalEmission = 8; // tCO2e per person
 
-  if (totalEmissions === null) {
-    return 0;
-  }
+  if (emissionsChange === null) return null;
 
-  let emissionsDifference = totalEmissions / swedenTotalEmissions;
+  const comparissonNumber = Math.round(
+    Math.abs(emissionsChange / citizenTotalEmission),
+  );
 
-  if (emissionsDifference < 1.5) {
-    emissionsDifference = totalEmissions / malmöTotalEmissions;
-
-    return emissionsDifference;
-  }
-
-  return emissionsDifference;
+  return {
+    comparissonNumber: formatEmissionsAbsolute(
+      comparissonNumber,
+      currentLanguage,
+    ),
+    translationKey: "Citizens",
+    prefix: "prefixEmissions",
+  };
 };
 
-export const calculateAreaBurnt = (totalEmissions: number) => {
+export const calculateAreaBurnt = (
+  emissionsChange: number,
+  currentLanguage: "sv" | "en",
+) => {
   const averageCarbonPerHectar = 50;
   const carbonConversion = 44 / 12;
   const tco2ePerHectar = averageCarbonPerHectar * carbonConversion;
 
-  const totalHectarBurnt = totalEmissions / tco2ePerHectar;
+  const totalHectarBurnt = emissionsChange / tco2ePerHectar;
 
   const areaBurnt =
     calculateStockholmsBurnt(totalHectarBurnt) ||
-    calculateBurlovsBurnt(totalHectarBurnt) ||
+    calculateMonacosBurnt(totalHectarBurnt) ||
     calculateFootballFieldsBurnt(totalHectarBurnt) ||
     calculateTennisCourtsBurnt(totalHectarBurnt);
 
-  return areaBurnt;
+  return {
+    ...areaBurnt,
+    comparissonNumber: formatEmissionsAbsolute(
+      areaBurnt.comparissonNumber,
+      currentLanguage,
+    ),
+    prefix: "prefixFire",
+  };
 };
 
 const calculateStockholmsBurnt = (totalHectarBurnt: number) => {
   const stockholmSqm = 188000000;
 
-  const stockholmsBurnt = Math.round((totalHectarBurnt * 10000) / stockholmSqm);
+  const stockholmsBurnt = Math.abs((totalHectarBurnt * 10000) / stockholmSqm);
 
-  if (stockholmsBurnt < 1) {
+  if (stockholmsBurnt < 2) {
     return null;
   }
-  return { area: "Stockholm", comparissonNumber: stockholmsBurnt };
+  return {
+    translationKey: "Stockholm",
+    comparissonNumber: stockholmsBurnt,
+  };
 };
 
-const calculateBurlovsBurnt = (totalHectarBurnt: number) => {
-  const burlovSqm = 19200000;
+const calculateMonacosBurnt = (totalHectarBurnt: number) => {
+  const monacoSqm = 2020000;
 
-  const burlovsBurnt = Math.round((totalHectarBurnt * 10000) / burlovSqm);
+  const monacosBurnt = Math.abs((totalHectarBurnt * 10000) / monacoSqm);
 
-  if (burlovsBurnt < 1) {
+  if (monacosBurnt < 2) {
     return null;
   }
-  return { area: "Burlov", comparissonNumber: burlovsBurnt };
+  return { translationKey: "Monaco", comparissonNumber: monacosBurnt };
 };
 
 const calculateFootballFieldsBurnt = (totalHectarBurnt: number) => {
   const footballFieldSqm = 7140;
 
-  const footballFieldsBurnt = Math.round(
+  const footballFieldsBurnt = Math.abs(
     (totalHectarBurnt * 10000) / footballFieldSqm,
   );
-  if (footballFieldsBurnt < 1) {
+  if (footballFieldsBurnt < 2) {
     return null;
   }
 
   return {
-    area: footballFieldsBurnt > 1 ? "FootballField" : "FootballFields",
+    translationKey: "FootballFields",
     comparissonNumber: footballFieldsBurnt,
   };
 };
@@ -77,15 +92,15 @@ const calculateFootballFieldsBurnt = (totalHectarBurnt: number) => {
 const calculateTennisCourtsBurnt = (totalHectarBurnt: number) => {
   const tennisCourtSqm = 261;
 
-  const tennisCourtsBurnt = Math.round(
+  const tennisCourtsBurnt = Math.abs(
     (totalHectarBurnt * 10000) / tennisCourtSqm,
   );
-  if (tennisCourtsBurnt < 1) {
+  if (tennisCourtsBurnt < 2) {
     return null;
   }
 
   return {
-    area: tennisCourtsBurnt > 1 ? "TennisCourts" : "TennisCourt",
+    translationKey: "TennisCourts",
     comparissonNumber: tennisCourtsBurnt,
   };
 };

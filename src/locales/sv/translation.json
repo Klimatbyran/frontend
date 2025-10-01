@@ -817,15 +817,15 @@
     "elin": {
       "role": "Utvecklare",
       "description": "AI- och backendutvecklare med fokus på att skapa tillförlitliga och produktionsklara AI-lösningar. Har en bakgrund både som konsult och inom forskning. Hjälper Klimatkollen i arbetet med att använda AI för att tillgängliggöra klimatdata."
-      },
-      "carl": {
-        "role": "Utvecklare",
-        "description": "Frontend-utvecklare som älskar naturen, klättring och att bygga verktyg som gör klimatdata lättare att förstå. Stöttar Klimatkollens volontärer, utvecklar webbsidan och försöker hitta den perfekta GIF:en för varje tillfälle."
-      },
-      "mikael": {
-        "role": "Utvecklare",
-        "description": "Öppen källkods-utvecklare med en lång passion för användargränssnitt och löpning. Har bakgrund i Linux/GNOME, iOS och webbutveckling. Bidrar huvudsakligen till webbgränssnitet för Klimatkollen."
-      }
+    },
+    "carl": {
+      "role": "Utvecklare",
+      "description": "Frontend-utvecklare som älskar naturen, klättring och att bygga verktyg som gör klimatdata lättare att förstå. Stöttar Klimatkollens volontärer, utvecklar webbsidan och försöker hitta den perfekta GIF:en för varje tillfälle."
+    },
+    "mikael": {
+      "role": "Utvecklare",
+      "description": "Öppen källkods-utvecklare med en lång passion för användargränssnitt och löpning. Har bakgrund i Linux/GNOME, iOS och webbutveckling. Bidrar huvudsakligen till webbgränssnitet för Klimatkollen."
+    }
   },
   "board": {
     "ola": {
@@ -1384,13 +1384,31 @@
   },
   "relatableNumbers": {
     "title": "Hur mycket är det?",
-    "descriptionPartOne": "Det nuvarande totala utsläppet av",
-    "descriptionPartTwo": "kan jämföras med följande:",
-    "times": "gånger",
-    "timesPartTwo": "Sveriges totala utsläpp",
-    "forestFireFootball": "Utsläpp från en skogsbrand stor som ",
-    "forestFireFootballExtension": " fotbollsplaner.",
-    "forestFireStockholm": "Utsläpp från en skogsbrand",
-    "forestFireStockholmExtension": "stor som Stockholm."
+    "description": "Förändringen i utsläpp från förra året motsvarar följande:",
+    "prefixFire": "Utsläppen motsvarar en skogsbrand",
+    "prefixEmissions": "Utsläppen motsvarar {{count}} svenska invånares årsutsläpp.",
+    "patterns": {
+      "city": "{{prefix}} {{count}} gånger större än {{entity}}.",
+      "unit": "{{prefix}} stor som {{count}} {{entity}}.",
+      "citizens": "{{prefix}}"
+    },
+    "entities": {
+      "Stockholm": {
+        "name": "Stockholm",
+        "type": "city"
+      },
+      "Monaco": {
+        "name": "Monaco",
+        "type": "city"
+      },
+      "FootballFields": {
+        "name": "fotbollsplaner",
+        "type": "unit"
+      },
+      "TennisCourts": {
+        "name": "tennisbanor",
+        "type": "unit"
+      }
+    }
   }
 }

@@ -1385,17 +1385,30 @@
   },
   "relatableNumbers": {
     "title": "How much is that?",
-    "descriptionPartOne": "The current total emission of",
-    "descriptionPartTwo": "compares to the following:",
-    "times": "times the size of",
-    "sizeOf": "the size of",
-    "forestFire": "Emissions from a forest fire ",
-    "forestFireTennisCourts": " tennis courts.",
-    "forestFireTennisCourt": " tennis court.",
-    "forestFireFootballFields": " football fields.",
-    "forestFireFootballField": " a football field.",
-    "forestFireStockholm": "Stockholm.",
-    "forestFireBurlov": "Burlöv.",
-    "timesPartTwo": "the total emissions of Sweden in"
+    "description": "The change in emission from last year compares to the following:",
+    "prefixFire": "Emissions from a forest fire",
+    "prefixEmissions": "The emissions equal the annual emissions of {{count}} Swedes.",
+    "patterns": {
+      "city": "{{prefix}} {{count}} times the size of {{entity}}.",
+      "unit": "{{prefix}} the size of {{count}} {{entity}}."
+    },
+    "entities": {
+      "Stockholm": {
+        "name": "Stockholm",
+        "type": "city"
+      },
+      "Monaco": {
+        "name": "Monaco",
+        "type": "city"
+      },
+      "FootballFields": {
+        "name": "football fields",
+        "type": "unit"
+      },
+      "TennisCourts": {
+        "name": "tennis courts.",
+        "type": "unit"
+      }
+    }
   }
 }

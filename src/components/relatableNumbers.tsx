@@ -1,0 +1,96 @@
+import { Text } from "@/components/ui/text";
+import {
+  calculateAreaBurnt,
+  emissionsComparedToCitizen,
+} from "@/utils/calculations/relatableNumbersCalc";
+import { useTranslation } from "react-i18next";
+import { Flame, Lightbulb } from "lucide-react";
+
+type RelatableNumbersProps = {
+  emissionsChange: number;
+  currentLanguage: "sv" | "en";
+};
+
+type Item = {
+  comparissonNumber: string;
+  prefix: string;
+  translationKey?: string | undefined;
+};
+
+type Values = {
+  prefix: string;
+  count: string;
+  entity: string;
+  [key: string]: string;
+};
+
+const RelatableNumbers = ({
+  emissionsChange,
+  currentLanguage,
+}: RelatableNumbersProps) => {
+  const { t } = useTranslation();
+  const areaBurnt = calculateAreaBurnt(emissionsChange, currentLanguage);
+  const emissionNumberOfCitizens = emissionsComparedToCitizen(
+    emissionsChange,
+    currentLanguage,
+  );
+
+  const formatTranslationString = (pattern: string, values: Values) => {
+    let formatted = pattern;
+
+    for (const key in values) {
+      formatted = formatted.split(`{{${key}}}`).join(values[key]);
+    }
+
+    return formatted;
+  };
+
+  const formatRelatableNumber = (item: Item) => {
+    const type =
+      item.translationKey === "Citizens"
+        ? "citizens"
+        : t(`relatableNumbers.entities.${item.translationKey}.type`);
+    const pattern = t(`relatableNumbers.patterns.${type}`);
+
+    const values = {
+      prefix: t(`relatableNumbers.${item.prefix}`),
+      count: item.comparissonNumber,
+      entity: t(`relatableNumbers.entities.${item.translationKey}.name`),
+    };
+
+    return formatTranslationString(pattern, values);
+  };
+
+  const formattedFireString = areaBurnt ? formatRelatableNumber(areaBurnt) : "";
+
+  const formattedCitizenString = emissionNumberOfCitizens
+    ? formatRelatableNumber(emissionNumberOfCitizens)
+    : "";
+
+  return (
+    <div className="bg-black-2 rounded-level-1 px-4 py-8 md:py-16 md:px-8">
+      <Text variant={"h3"}>{t("relatableNumbers.title")}</Text>
+      <Text
+        variant="body"
+        className="text-sm md:text-base lg:text-lg max-w-3xl mt-2"
+      >
+        {t("relatableNumbers.description")}
+      </Text>
+      <div className="justify-between flex flex-col md:flex-row md:gap-6">
+        <div className="mt-6 gap-4 flex flex-col">
+          <div className="flex items-center gap-4">
+            <Flame stroke={"var(--pink-3)"} height={45} width={45} />
+            <Text>{formattedFireString}</Text>
+          </div>
+        </div>
+        <div className="mt-6 gap-4 flex flex-col">
+          <div className="flex items-center gap-4">
+            <Lightbulb stroke={"yellow"} height={45} width={45} />
+            <Text>{formattedCitizenString}</Text>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+export default RelatableNumbers;
