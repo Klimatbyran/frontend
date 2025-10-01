@@ -85,7 +85,7 @@ const RelatableNumbers = ({
         </div>
         <div className="mt-6 gap-4 flex flex-col">
           <div className="flex items-center gap-4">
-            <Lightbulb stroke={"yellow"} height={45} width={45} />
+            <Lightbulb stroke={"yellow"} height={35} width={35} />
             <Text>{formattedCitizenString}</Text>
           </div>
         </div>
