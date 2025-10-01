@@ -130,14 +130,10 @@ function MunicipalityRankedList({
               className="w-full p-4 hover:bg-black/40 transition-colors flex items-center justify-between group"
             >
               <div className="flex items-center gap-4">
-                {!selectedKPI.isBoolean && (
-                  <span className="text-white/30 text-sm w-8">
-                    {startIndex + index + 1}
-                  </span>
-                )}
-                <span
-                  className={`text-white/90 text-sm md:text-base ${selectedKPI.isBoolean ? "pl-8" : ""}`}
-                >
+               <span className="text-white/30 text-sm w-8">
+                 {!selectedKPI.isBoolean ? (startIndex + index + 1) : ""}
+               </span>
+               <span className="text-white/90 text-sm md:text-base">
                   {municipality.name}
                 </span>
               </div>
