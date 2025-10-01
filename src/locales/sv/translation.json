@@ -1160,7 +1160,7 @@
         },
         "climatePlan": {
           "label": "Klimatplanerna",
-          "description": "Har en pågående klimatplan",
+          "description": "Har en aktuell klimatplan",
           "detailedDescription": "Vilka kommuner har en pågående klimatplan?",
           "source": "<0>Kollektivt från medlemmar av Klimatklubben och Naturskyddsföreningen</0>",
           "booleanLabels": {
