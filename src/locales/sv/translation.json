@@ -1169,7 +1169,7 @@
           },
           "hasPlanSince": "Antog klimatplan {{year}}",
           "aboveString": "har en klimatplan",
-          "belowString": "saknar klimatplan"
+          "belowString": "saknar en klimatplan"
         }
       },
       "insights": {
