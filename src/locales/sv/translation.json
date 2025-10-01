@@ -1386,7 +1386,7 @@
     "title": "Hur mycket är det?",
     "description": "Förändringen i utsläpp från förra året motsvarar följande:",
     "prefixFire": "Utsläppen motsvarar en skogsbrand",
-    "prefixEmissions": "Utsläppen motsvarar {{count}} svenska invånares årsutsläpp.",
+    "prefixEmissions": "{{count}} svenska invånares årsutsläpp.",
     "patterns": {
       "city": "{{prefix}} {{count}} gånger större än {{entity}}.",
       "unit": "{{prefix}} stor som {{count}} {{entity}}.",

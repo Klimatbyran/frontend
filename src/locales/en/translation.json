@@ -1387,7 +1387,7 @@
     "title": "How much is that?",
     "description": "The change in emission from last year compares to the following:",
     "prefixFire": "Emissions from a forest fire",
-    "prefixEmissions": "The emissions equal the annual emissions of {{count}} Swedes.",
+    "prefixEmissions": "The annual emissions of {{count}} Swedes.",
     "patterns": {
       "city": "{{prefix}} {{count}} times the size of {{entity}}.",
       "unit": "{{prefix}} the size of {{count}} {{entity}}."
