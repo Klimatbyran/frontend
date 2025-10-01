@@ -817,15 +817,15 @@
     "elin": {
       "role": "Utvecklare",
       "description": "AI- och backendutvecklare med fokus på att skapa tillförlitliga och produktionsklara AI-lösningar. Har en bakgrund både som konsult och inom forskning. Hjälper Klimatkollen i arbetet med att använda AI för att tillgängliggöra klimatdata."
-      },
-      "carl": {
-        "role": "Utvecklare",
-        "description": "Frontend-utvecklare som älskar naturen, klättring och att bygga verktyg som gör klimatdata lättare att förstå. Stöttar Klimatkollens volontärer, utvecklar webbsidan och försöker hitta den perfekta GIF:en för varje tillfälle."
-      },
-      "mikael": {
-        "role": "Utvecklare",
-        "description": "Öppen källkods-utvecklare med en lång passion för användargränssnitt och löpning. Har bakgrund i Linux/GNOME, iOS och webbutveckling. Bidrar huvudsakligen till webbgränssnitet för Klimatkollen."
-      }
+    },
+    "carl": {
+      "role": "Utvecklare",
+      "description": "Frontend-utvecklare som älskar naturen, klättring och att bygga verktyg som gör klimatdata lättare att förstå. Stöttar Klimatkollens volontärer, utvecklar webbsidan och försöker hitta den perfekta GIF:en för varje tillfälle."
+    },
+    "mikael": {
+      "role": "Utvecklare",
+      "description": "Öppen källkods-utvecklare med en lång passion för användargränssnitt och löpning. Har bakgrund i Linux/GNOME, iOS och webbutveckling. Bidrar huvudsakligen till webbgränssnitet för Klimatkollen."
+    }
   },
   "board": {
     "ola": {
@@ -1157,6 +1157,19 @@
           "description": "Meter cykelväg per invånare",
           "detailedDescription": "Antal meter cykelväg per invånare per kommun år 2024. Ju längre desto bättre, god infrastruktur gynnar ökad cykling",
           "source": "<0>Nationella Vägdatabasen</0>, <1>Trafikverket</1>"
+        },
+        "climatePlan": {
+          "label": "Klimatplanerna",
+          "description": "Har en aktuell klimatplan",
+          "detailedDescription": "Vilka kommuner har en aktuell klimatplan?",
+          "source": "<0>Klimatkollens öppna sammanställning av klimatplaner med hjälp från medlemmar av Klimatklubben och Naturskyddsföreningen</0>",
+          "booleanLabels": {
+            "true": "Har klimatplan",
+            "false": "Saknar klimatplan"
+          },
+          "hasPlanSince": "Antog klimatplan {{year}}",
+          "aboveString": "har en klimatplan",
+          "belowString": "saknar en klimatplan"
         }
       },
       "insights": {
