@@ -1159,7 +1159,7 @@
           "source": "<0>Nationella Vägdatabasen</0>, <1>Trafikverket</1>"
         },
         "climatePlan": {
-          "label": "Klimatplan",
+          "label": "Klimatplanerna",
           "description": "Har en pågående klimatplan",
           "detailedDescription": "Vilka kommuner har en pågående klimatplan?",
           "source": "<0>Kollektivt från medlemmar av Klimatklubben och Naturskyddsföreningen</0>",
