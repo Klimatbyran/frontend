@@ -12,7 +12,7 @@ type RelatableNumbersProps = {
 };
 
 type Item = {
-  comparissonNumber: string;
+  comparisonNumber: string;
   prefix: string;
   translationKey?: string | undefined;
 };
@@ -54,7 +54,7 @@ const RelatableNumbers = ({
 
     const values = {
       prefix: t(`relatableNumbers.${item.prefix}`),
-      count: item.comparissonNumber,
+      count: item.comparisonNumber,
       entity: t(`relatableNumbers.entities.${item.translationKey}.name`),
     };
 

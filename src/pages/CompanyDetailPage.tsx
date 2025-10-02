@@ -122,7 +122,9 @@ export function CompanyDetailPage() {
   const prevEmissions = previousPeriod?.emissions?.calculatedTotalEmissions;
 
   const validEmissionsChange = prevEmissions
-    ? selectedPeriod?.emissions?.calculatedTotalEmissions - prevEmissions
+    ? Math.abs(
+        selectedPeriod?.emissions?.calculatedTotalEmissions - prevEmissions,
+      )
     : null;
 
   return (
@@ -187,7 +189,7 @@ export function CompanyDetailPage() {
           onYearSelect={setSelectedYear}
           selectedYear={selectedYear}
         />
-        {validEmissionsChange && (
+        {validEmissionsChange && validEmissionsChange > 100 && (
           <RelatableNumbers
             emissionsChange={validEmissionsChange}
             currentLanguage={currentLanguage}

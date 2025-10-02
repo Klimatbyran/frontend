@@ -8,18 +8,21 @@ export const emissionsComparedToCitizen = (
 
   if (emissionsChange === null) return null;
 
-  const comparissonNumber = Math.round(
+  const comparisonNumber = Math.round(
     Math.abs(emissionsChange / citizenTotalEmission),
   );
 
-  return {
-    comparissonNumber: formatEmissionsAbsolute(
-      comparissonNumber,
-      currentLanguage,
-    ),
-    translationKey: "Citizens",
-    prefix: "prefixEmissions",
-  };
+  if (comparisonNumber >= 2) {
+    return {
+      comparisonNumber: formatEmissionsAbsolute(
+        comparisonNumber,
+        currentLanguage,
+      ),
+      translationKey: "Citizens",
+      prefix: "prefixEmissions",
+    };
+  }
+  return null;
 };
 
 export const calculateAreaBurnt = (
@@ -32,75 +35,37 @@ export const calculateAreaBurnt = (
 
   const totalHectarBurnt = emissionsChange / tco2ePerHectar;
 
-  const areaBurnt =
-    calculateStockholmsBurnt(totalHectarBurnt) ||
-    calculateMonacosBurnt(totalHectarBurnt) ||
-    calculateFootballFieldsBurnt(totalHectarBurnt) ||
-    calculateTennisCourtsBurnt(totalHectarBurnt);
+  const areaBurnt = burnComparison(totalHectarBurnt);
 
-  return {
-    ...areaBurnt,
-    comparissonNumber: formatEmissionsAbsolute(
-      areaBurnt.comparissonNumber,
-      currentLanguage,
-    ),
-    prefix: "prefixFire",
-  };
+  if (areaBurnt) {
+    return {
+      ...areaBurnt,
+      comparisonNumber: formatEmissionsAbsolute(
+        areaBurnt.comparisonNumber,
+        currentLanguage,
+      ),
+      prefix: "prefixFire",
+    };
+  }
+  return null;
 };
 
-const calculateStockholmsBurnt = (totalHectarBurnt: number) => {
-  const stockholmSqm = 188000000;
+const burnComparison = (hectarBurnt: number) => {
+  const burnAreas = [
+    { translationKey: "Stockholm", sqm: 188000000 },
+    { translationKey: "Monaco", sqm: 2020000 },
+    { translationKey: "FootballFields", sqm: 7140 },
+    { translationKey: "TennisCourts", sqm: 261 },
+  ].sort((a, b) => b.sqm - a.sqm);
 
-  const stockholmsBurnt = Math.abs((totalHectarBurnt * 10000) / stockholmSqm);
+  for (const { translationKey, sqm } of burnAreas) {
+    const nrBurnt = Math.abs((hectarBurnt * 10000) / sqm);
 
-  if (stockholmsBurnt < 2) {
-    return null;
+    if (nrBurnt >= 2) {
+      return {
+        translationKey: translationKey,
+        comparisonNumber: nrBurnt,
+      };
+    }
   }
-  return {
-    translationKey: "Stockholm",
-    comparissonNumber: stockholmsBurnt,
-  };
-};
-
-const calculateMonacosBurnt = (totalHectarBurnt: number) => {
-  const monacoSqm = 2020000;
-
-  const monacosBurnt = Math.abs((totalHectarBurnt * 10000) / monacoSqm);
-
-  if (monacosBurnt < 2) {
-    return null;
-  }
-  return { translationKey: "Monaco", comparissonNumber: monacosBurnt };
-};
-
-const calculateFootballFieldsBurnt = (totalHectarBurnt: number) => {
-  const footballFieldSqm = 7140;
-
-  const footballFieldsBurnt = Math.abs(
-    (totalHectarBurnt * 10000) / footballFieldSqm,
-  );
-  if (footballFieldsBurnt < 2) {
-    return null;
-  }
-
-  return {
-    translationKey: "FootballFields",
-    comparissonNumber: footballFieldsBurnt,
-  };
-};
-
-const calculateTennisCourtsBurnt = (totalHectarBurnt: number) => {
-  const tennisCourtSqm = 261;
-
-  const tennisCourtsBurnt = Math.abs(
-    (totalHectarBurnt * 10000) / tennisCourtSqm,
-  );
-  if (tennisCourtsBurnt < 2) {
-    return null;
-  }
-
-  return {
-    translationKey: "TennisCourts",
-    comparissonNumber: tennisCourtsBurnt,
-  };
 };
