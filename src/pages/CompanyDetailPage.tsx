@@ -10,6 +10,7 @@ import { createSlug } from "@/lib/utils";
 import { CompanyScope3 } from "@/components/companies/detail/CompanyScope3";
 import { getCompanyDescription } from "@/utils/business/company";
 import { useLanguage } from "@/components/LanguageProvider";
+import RelatableNumbers from "@/components/relatableNumbers";
 import type { Scope3Category } from "@/types/company";
 
 export function CompanyDetailPage() {
@@ -118,6 +119,14 @@ export function CompanyDetailPage() {
     industry: industry,
   };
 
+  const prevEmissions = previousPeriod?.emissions?.calculatedTotalEmissions;
+
+  const validEmissionsChange = prevEmissions
+    ? Math.abs(
+        selectedPeriod?.emissions?.calculatedTotalEmissions - prevEmissions,
+      )
+    : null;
+
   return (
     <>
       <PageSEO
@@ -180,6 +189,12 @@ export function CompanyDetailPage() {
           onYearSelect={setSelectedYear}
           selectedYear={selectedYear}
         />
+        {validEmissionsChange && validEmissionsChange > 100 && (
+          <RelatableNumbers
+            emissionsChange={validEmissionsChange}
+            currentLanguage={currentLanguage}
+          />
+        )}
 
         <EmissionsHistory
           reportingPeriods={company.reportingPeriods}
