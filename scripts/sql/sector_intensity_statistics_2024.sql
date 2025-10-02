@@ -1,6 +1,8 @@
 -- Query to analyze revenue intensity per million SEK statistics by sector for 2024
 -- Calculates min, max, average, and median intensity for each sector
 -- Based on companies with non-null, non-zero SEK turnover
+-- Includes s2.unknown emissions in addition to s2.mb and s2.lb
+-- Excludes Investor company (Q1671804) due to incorrect turnover data
 
 WITH Scope3_pivot AS (
   SELECT
@@ -31,6 +33,7 @@ emissions_with_scopes AS (
     s1."total" AS s1_total,
     s2."mb" AS s2_mb,
     s2."lb" AS s2_lb,
+    s2."unknown" AS s2_unknown,
     (SELECT se."total" FROM "StatedTotalEmissions" se WHERE s3."id" = se."scope3Id") AS scope3_total,
     (
       COALESCE(sp.Scope3_cat_1,0) + COALESCE(sp.Scope3_cat_2,0) + COALESCE(sp.Scope3_cat_3,0) +
@@ -53,6 +56,7 @@ reporting_with_company AS (
     es.s1_total,
     es.s2_mb,
     es.s2_lb,
+    es.s2_unknown,
     es.scope3_total,
     es.scope3_categories_sum,
     t."value" AS revenue_value,
@@ -65,10 +69,12 @@ reporting_with_company AS (
 company_years AS (
   SELECT
     c."name" AS company_name,
+    c."wikidataId",
     rwc."year",
     rwc.s1_total,
     rwc.s2_mb,
     rwc.s2_lb,
+    rwc.s2_unknown,
     rwc.scope3_total,
     rwc.scope3_categories_sum,
     rwc.revenue_value,
@@ -88,11 +94,13 @@ pivoted AS (
     MAX(CASE WHEN year = '2024' THEN s1_total END) AS s1_2024,
     MAX(CASE WHEN year = '2024' THEN s2_mb END) AS s2_mb_2024,
     MAX(CASE WHEN year = '2024' THEN s2_lb END) AS s2_lb_2024,
+    MAX(CASE WHEN year = '2024' THEN s2_unknown END) AS s2_unknown_2024,
     MAX(CASE WHEN year = '2024' THEN scope3_total END) AS scope3_total_2024,
     MAX(CASE WHEN year = '2024' THEN scope3_categories_sum END) AS scope3_sum_2024,
     MAX(CASE WHEN year = '2024' THEN revenue_value END) AS revenue_2024,
     MAX(CASE WHEN year = '2024' THEN revenue_currency END) AS revenue_currency_2024
   FROM company_years
+  WHERE "wikidataId" != 'Q1671804'  -- Exclude Investor company
   GROUP BY company_name
 ),
 companies_with_intensity AS (
@@ -102,13 +110,13 @@ companies_with_intensity AS (
     industry_name,
     revenue_2024,
     revenue_currency_2024,
-    -- Calculate 2024 total emissions (stated)
-    (COALESCE(s1_2024,0) + COALESCE(NULLIF(s2_mb_2024,0), s2_lb_2024, 0) + COALESCE(scope3_total_2024,0)) AS total_2024_stated,
-    -- Calculate intensity per million SEK (stated)
+    -- Calculate 2024 total emissions (stated) - now including s2_unknown
+    (COALESCE(s1_2024,0) + COALESCE(NULLIF(s2_mb_2024,0), s2_lb_2024, 0) + COALESCE(s2_unknown_2024,0) + COALESCE(scope3_total_2024,0)) AS total_2024_stated,
+    -- Calculate intensity per million SEK (stated) - now including s2_unknown
     CASE 
       WHEN revenue_2024 IS NOT NULL AND revenue_2024 > 0 
       THEN ROUND(
-        ((COALESCE(s1_2024,0) + COALESCE(NULLIF(s2_mb_2024,0), s2_lb_2024, 0) + COALESCE(scope3_total_2024,0)) / (revenue_2024 / 1000000))::numeric, 
+        ((COALESCE(s1_2024,0) + COALESCE(NULLIF(s2_mb_2024,0), s2_lb_2024, 0) + COALESCE(s2_unknown_2024,0) + COALESCE(scope3_total_2024,0)) / (revenue_2024 / 1000000))::numeric, 
         6
       )
       ELSE NULL 
@@ -119,8 +127,8 @@ companies_with_intensity AS (
     revenue_2024 IS NOT NULL 
     AND revenue_2024 > 0
     AND revenue_currency_2024 = 'SEK'
-    -- Only include companies with non-null, non-zero stated emissions data
-    AND (COALESCE(s1_2024,0) + COALESCE(NULLIF(s2_mb_2024,0), s2_lb_2024, 0) + COALESCE(scope3_total_2024,0)) > 0
+    -- Only include companies with non-null, non-zero stated emissions data - now including s2_unknown
+    AND (COALESCE(s1_2024,0) + COALESCE(NULLIF(s2_mb_2024,0), s2_lb_2024, 0) + COALESCE(s2_unknown_2024,0) + COALESCE(scope3_total_2024,0)) > 0
 )
 SELECT
   sector_name,
