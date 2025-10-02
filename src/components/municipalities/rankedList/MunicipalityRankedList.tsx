@@ -3,6 +3,8 @@ import { Search } from "lucide-react";
 import { t } from "i18next";
 import { Municipality } from "@/types/municipality";
 import MultiPagePagination from "@/components/ui/multi-page-pagination";
+import { useLanguage } from "@/components/LanguageProvider";
+import { createSimpleStringComparator } from "@/utils/sorting";
 
 interface DataPoint {
   label: string;
@@ -11,6 +13,7 @@ interface DataPoint {
   description?: string;
   higherIsBetter: boolean;
   nullValues?: string;
+  isBoolean?: boolean;
 }
 
 interface RankedListProps {
@@ -27,8 +30,16 @@ function MunicipalityRankedList({
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+  const { currentLanguage } = useLanguage();
 
   const sortedData = [...municipalityData].sort((a, b) => {
+    // For boolean KPIs, sort alphabetically by municipality name
+    if (selectedKPI.isBoolean) {
+      const nameComparator = createSimpleStringComparator(currentLanguage);
+      return nameComparator(a.name, b.name);
+    }
+
+    // For numeric KPIs, sort by value
     const aValue = a[selectedKPI.key] as number;
     const bValue = b[selectedKPI.key] as number;
 
@@ -65,12 +76,31 @@ function MunicipalityRankedList({
   };
 
   const municipalityValue = (municipality: Municipality) => {
-    return municipality[selectedKPI.key] !== null
-      ? typeof municipality[selectedKPI.key] === "boolean"
-        ? municipality[selectedKPI.key]
-          ? t(`municipalities.list.kpis.${selectedKPI.key}.booleanLabels.true`)
-          : t(`municipalities.list.kpis.${selectedKPI.key}.booleanLabels.false`)
-        : `${(municipality[selectedKPI.key] as number).toFixed(1)}${selectedKPI.unit}`
+    // Handle boolean KPIs with special year display
+    if (selectedKPI.isBoolean) {
+      const value = municipality[selectedKPI.key] as boolean;
+
+      // Special case for climate plan with year information
+      if (
+        selectedKPI.key === "climatePlan" &&
+        value &&
+        municipality.climatePlanYear
+      ) {
+        return t("municipalities.list.kpis.climatePlan.hasPlanSince", {
+          year: municipality.climatePlanYear,
+        });
+      }
+
+      // Standard boolean display
+      return value
+        ? t(`municipalities.list.kpis.${selectedKPI.key}.booleanLabels.true`)
+        : t(`municipalities.list.kpis.${selectedKPI.key}.booleanLabels.false`);
+    }
+
+    // Handle numeric KPIs
+    const value = municipality[selectedKPI.key] as number;
+    return value !== null
+      ? `${value.toFixed(1)}${selectedKPI.unit}`
       : selectedKPI.nullValues;
   };
 
@@ -100,10 +130,10 @@ function MunicipalityRankedList({
               className="w-full p-4 hover:bg-black/40 transition-colors flex items-center justify-between group"
             >
               <div className="flex items-center gap-4">
-                <span className="text-white/30 text-sm w-8">
-                  {startIndex + index + 1}
-                </span>
-                <span className="text-white/90 text-sm md:text-base">
+               <span className="text-white/30 text-sm w-8">
+                 {!selectedKPI.isBoolean ? (startIndex + index + 1) : ""}
+               </span>
+               <span className="text-white/90 text-sm md:text-base">
                   {municipality.name}
                 </span>
               </div>
