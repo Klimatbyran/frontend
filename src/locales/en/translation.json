@@ -952,8 +952,8 @@
     },
     "emissionsHistory": {
       "noReportingPeriods": "No reporting periods available",
-      "title": "Historical Emissions",
-      "tooltip": "Historical emissions; click on a point to remove the line from the graph. Hover over a point to see the values for the reporting period.",
+      "title": "Emissions development",
+      "tooltip": "Showing the development of reported emissions over time; click on a point to remove the line from the graph. Hover over a point to see the values for the reporting period.",
       "unit": "In tons CO₂e",
       "totalEmissions": "Total Emissions",
       "baseYear": "Base year",
@@ -1157,6 +1157,19 @@
           "description": "Bicycle path metres per capita",
           "detailedDescription": "Number of metres of bicycle paths per inhabitant per municipality in 2024. Longer is better, as good infrastructure promotes increased cycling.",
           "source": "<0>National Road Database</0>, <1>Swedish Transport Administration</1>"
+        },
+        "climatePlan": {
+          "label": "Climate Plans",
+          "description": "Has an ongoing climate action plan",
+          "detailedDescription": "Which municipalities have a climate action plan?",
+          "source": "<0>Klimatkollen’s open compilation of climate plans, with help from members of Klimatklubben and the Swedish Society for Nature Conservation (Naturskyddsföreningen).</0>",
+          "booleanLabels": {
+            "true": "Has Climate Plan",
+            "false": "No Climate Plan"
+          },
+          "hasPlanSince": "Climate plan adopted {{year}}",
+          "aboveString": "have a climate plan",
+          "belowString": "do not have a climate plan"
         }
       },
       "insights": {
