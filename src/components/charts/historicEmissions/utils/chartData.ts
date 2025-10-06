@@ -73,15 +73,14 @@ export const mergeChartDataWithApproximated = (
       // This matches municipality behavior exactly
       const approximatedValue =
         year <= currentYear ? approxDataPoint?.approximated : undefined;
-      // todo reintroduce later?
-      // const trendValue =
-      //   year >= currentYear ? approxDataPoint?.approximated : undefined;
+      const trendValue =
+        year >= currentYear ? approxDataPoint?.approximated : undefined;
 
       return {
         year,
         total: mainDataPoint?.total,
         approximated: approximatedValue,
-        //trend: trendValue, // todo reintroduce later?
+        trend: trendValue,
         carbonLaw: approxDataPoint?.carbonLaw,
         // Preserve other properties from main data
         isAIGenerated: mainDataPoint?.isAIGenerated,
