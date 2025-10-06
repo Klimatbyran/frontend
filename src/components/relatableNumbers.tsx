@@ -45,7 +45,7 @@ const RelatableNumbers = ({
     return formatted;
   };
 
-  const formatRelatableNumber = (item: Item) => {
+  const formatRelatableNumber = (item: Item, iconColor: string) => {
     const type =
       item.translationKey === "Citizens"
         ? "citizens"
@@ -58,14 +58,28 @@ const RelatableNumbers = ({
       entity: t(`relatableNumbers.entities.${item.translationKey}.name`),
     };
 
-    return formatTranslationString(pattern, values);
+    const formattedString = formatTranslationString(pattern, values);
+
+    const parts = formattedString.split(item.comparisonNumber);
+
+    return (
+      <>
+        {parts[0]}
+        <span style={{ color: iconColor, fontWeight: "bold" }}>
+          {item.comparisonNumber}
+        </span>
+        {parts[1]}
+      </>
+    );
   };
 
-  const formattedFireString = areaBurnt ? formatRelatableNumber(areaBurnt) : "";
+  const formattedFireString = areaBurnt
+    ? formatRelatableNumber(areaBurnt, "var(--pink-3)")
+    : null;
 
   const formattedCitizenString = emissionNumberOfCitizens
-    ? formatRelatableNumber(emissionNumberOfCitizens)
-    : "";
+    ? formatRelatableNumber(emissionNumberOfCitizens, "yellow")
+    : null;
 
   return (
     <div className="bg-black-2 rounded-level-1 px-4 py-8 md:py-16 md:px-8">
