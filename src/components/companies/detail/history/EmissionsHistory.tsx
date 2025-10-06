@@ -138,7 +138,7 @@ export function EmissionsHistory({
       return generateApproximatedData(
         chartData,
         undefined, // regression
-        chartEndYear,
+        new Date().getFullYear(), // todo reintroduce later? chartEndYear,
         companyBaseYear,
         trendAnalysis.coefficients,
         trendAnalysis.cleanData,
