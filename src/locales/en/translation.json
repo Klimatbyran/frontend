@@ -1203,6 +1203,11 @@
       }
     }
   },
+  "charts": {
+    "tooltip": {
+      "noData": "No data"
+    }
+  },
   "errorPage": {
     "title": "Error",
     "description": "An error occurred while processing your request.",
