@@ -10,9 +10,11 @@ export const EnhancedLegend: React.FC<EnhancedLegendProps> = ({
   items,
   className = "",
 }) => {
+  const visibleItems = items.filter((item) => !item.isHidden);
+
   return (
     <div className={`flex flex-wrap gap-4 ${className}`}>
-      {items.map((item, index) => (
+      {visibleItems.map((item, index) => (
         <div key={index} className="flex items-center space-x-2">
           <div
             className="w-3 h-3 rounded flex-shrink-0"
