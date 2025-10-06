@@ -8,7 +8,7 @@ import { Flame, Lightbulb } from "lucide-react";
 
 type RelatableNumbersProps = {
   emissionsChange: number;
-  currentLanguage: "sv" | "en";
+  currentLanguage: SUPPORTED_LANGUAGES;
 };
 
 type Item = {
