@@ -5,10 +5,11 @@ import {
 } from "@/utils/calculations/relatableNumbersCalc";
 import { useTranslation } from "react-i18next";
 import { Flame, Lightbulb } from "lucide-react";
+import { SupportedLanguage } from "@/lib/languageDetection";
 
 type RelatableNumbersProps = {
   emissionsChange: number;
-  currentLanguage: SUPPORTED_LANGUAGES;
+  currentLanguage: SupportedLanguage;
 };
 
 type Item = {
