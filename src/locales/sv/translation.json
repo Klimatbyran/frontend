@@ -1406,19 +1406,19 @@
       "citizens": "{{prefix}}"
     },
     "entities": {
-      "Stockholm": {
+      "stockholm": {
         "name": "Stockholm",
         "type": "city"
       },
-      "Monaco": {
+      "monaco": {
         "name": "Monaco",
         "type": "city"
       },
-      "FootballFields": {
+      "footballFields": {
         "name": "fotbollsplaner",
         "type": "unit"
       },
-      "TennisCourts": {
+      "tennisCourts": {
         "name": "tennisbanor",
         "type": "unit"
       }

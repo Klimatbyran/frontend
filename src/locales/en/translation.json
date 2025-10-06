@@ -1406,19 +1406,19 @@
       "unit": "{{prefix}} the size of {{count}} {{entity}}."
     },
     "entities": {
-      "Stockholm": {
+      "stockholm": {
         "name": "Stockholm",
         "type": "city"
       },
-      "Monaco": {
+      "monaco": {
         "name": "Monaco",
         "type": "city"
       },
-      "FootballFields": {
+      "footballFields": {
         "name": "football fields",
         "type": "unit"
       },
-      "TennisCourts": {
+      "tennisCourts": {
         "name": "tennis courts.",
         "type": "unit"
       }

@@ -39,7 +39,7 @@ export const calculateAreaBurnt = (
 
   if (areaBurnt) {
     return {
-      ...areaBurnt,
+      translationKey: areaBurnt.translationKey,
       comparisonNumber: formatEmissionsAbsolute(
         areaBurnt.comparisonNumber,
         currentLanguage,
@@ -52,10 +52,10 @@ export const calculateAreaBurnt = (
 
 const burnComparison = (hectarBurnt: number) => {
   const burnAreas = [
-    { translationKey: "Stockholm", sqm: 188000000 },
-    { translationKey: "Monaco", sqm: 2020000 },
-    { translationKey: "FootballFields", sqm: 7140 },
-    { translationKey: "TennisCourts", sqm: 261 },
+    { translationKey: "stockholm", sqm: 188000000 },
+    { translationKey: "monaco", sqm: 2020000 },
+    { translationKey: "footballFields", sqm: 7140 },
+    { translationKey: "tennisCourts", sqm: 261 },
   ].sort((a, b) => b.sqm - a.sqm);
 
   for (const { translationKey, sqm } of burnAreas) {
