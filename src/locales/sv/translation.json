@@ -1394,5 +1394,34 @@
   "language": {
     "sv": "Svenska",
     "en": "Engelska"
+  },
+  "relatableNumbers": {
+    "title": "Hur mycket är det?",
+    "description": "Förändringen i utsläpp från förra året motsvarar följande:",
+    "prefixFire": "Utsläppen motsvarar en skogsbrand",
+    "prefixEmissions": "{{count}} svenska invånares årsutsläpp.",
+    "patterns": {
+      "city": "{{prefix}} {{count}} gånger större än {{entity}}.",
+      "unit": "{{prefix}} stor som {{count}} {{entity}}.",
+      "citizens": "{{prefix}}"
+    },
+    "entities": {
+      "stockholm": {
+        "name": "Stockholm",
+        "type": "city"
+      },
+      "monaco": {
+        "name": "Monaco",
+        "type": "city"
+      },
+      "footballFields": {
+        "name": "fotbollsplaner",
+        "type": "unit"
+      },
+      "tennisCourts": {
+        "name": "tennisbanor",
+        "type": "unit"
+      }
+    }
   }
 }

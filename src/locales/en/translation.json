@@ -343,7 +343,8 @@
     "errorTitle": "Unable to retrieve company information",
     "errorDescription": "Please try again later",
     "notFoundTitle": "Company not found",
-    "notFoundDescription": "Check if the company ID is correct"
+    "notFoundDescription": "Check if the company ID is correct",
+    "billion": "billion"
   },
   "methodsPage": {
     "header": {
@@ -1394,5 +1395,33 @@
   "language": {
     "sv": "Swedish",
     "en": "English"
+  },
+  "relatableNumbers": {
+    "title": "How much is that?",
+    "description": "The change in emission from last year compares to the following:",
+    "prefixFire": "Emissions from a forest fire",
+    "prefixEmissions": "The annual emissions of {{count}} Swedes.",
+    "patterns": {
+      "city": "{{prefix}} {{count}} times the size of {{entity}}.",
+      "unit": "{{prefix}} the size of {{count}} {{entity}}."
+    },
+    "entities": {
+      "stockholm": {
+        "name": "Stockholm",
+        "type": "city"
+      },
+      "monaco": {
+        "name": "Monaco",
+        "type": "city"
+      },
+      "footballFields": {
+        "name": "football fields",
+        "type": "unit"
+      },
+      "tennisCourts": {
+        "name": "tennis courts.",
+        "type": "unit"
+      }
+    }
   }
 }
