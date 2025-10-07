@@ -1203,6 +1203,11 @@
       }
     }
   },
+  "charts": {
+    "tooltip": {
+      "noData": "Ingen data"
+    }
+  },
   "errorPage": {
     "title": "Fel",
     "description": "Ett fel uppstod när din förfrågan behandlades.",
