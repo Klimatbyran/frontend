@@ -33,6 +33,16 @@
     "internationalLicense": "International license",
     "ccBySa": "CC BY-SA - Attribution-ShareAlike 4.0"
   },
+  "components": {
+    "error": {
+      "title": "Det gick inte att hämta informationen",
+      "description": "Försök igen senare"
+    },
+    "noData": {
+      "title": "Ingen data tillgänglig",
+      "description": "Kontrollera att länken är korrekt"
+    }
+  },
   "newsletter": {
     "subscribe": "Prenumerera på vårt nyhetsbrev",
     "emailPlaceholder": "Din e-postadress",
@@ -720,9 +730,6 @@
   "municipalityDetailPage": {
     "metaTitle": "Data om utsläpp och omställning",
     "metaDescription": "Översikt över klimatpåverkan och hållbarhetsarbete",
-    "loading": "Laddar...",
-    "error": "Fel vid inläsning av data",
-    "noData": "Ingen data tillgänglig",
     "procurementScore": {
       "high": "Ja",
       "medium": "Kanske",
