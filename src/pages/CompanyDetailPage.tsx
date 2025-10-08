@@ -12,6 +12,9 @@ import { getCompanyDescription } from "@/utils/business/company";
 import { useLanguage } from "@/components/LanguageProvider";
 import RelatableNumbers from "@/components/relatableNumbers";
 import type { Scope3Category } from "@/types/company";
+import { PageLoading } from "@/components/pageStates/Loading";
+import { PageError } from "@/components/pageStates/Error";
+import { PageNoData } from "@/components/pageStates/NoData";
 
 export function CompanyDetailPage() {
   const { t } = useTranslation();
@@ -30,33 +33,24 @@ export function CompanyDetailPage() {
   }, []);
 
   if (loading) {
-    return (
-      <div className="animate-pulse space-y-16">
-        <div className="h-12 w-1/3 bg-black-1 rounded" />
-        <div className="h-96 bg-black-1 rounded-level-1" />
-      </div>
-    );
+    return <PageLoading />;
   }
 
   if (error) {
     return (
-      <div className="text-center py-24">
-        <Text variant="h3" className="text-red-500 mb-4">
-          {t("companyDetailPage.errorTitle")}
-        </Text>
-        <Text variant="body">{t("companyDetailPage.errorDescription")}</Text>
-      </div>
+      <PageError
+        titleKey="companyDetailPage.errorTitle"
+        descriptionKey="companyDetailPage.errorDescription"
+      />
     );
   }
 
   if (!company || !company.reportingPeriods.length) {
     return (
-      <div className="text-center py-24">
-        <Text variant="h3" className="text-red-500 mb-4">
-          {t("companyDetailPage.notFoundTitle")}
-        </Text>
-        <Text variant="body">{t("companyDetailPage.notFoundDescription")}</Text>
-      </div>
+      <PageNoData
+        titleKey="companyDetailPage.notFoundTitle"
+        descriptionKey="companyDetailPage.notFoundDescription"
+      />
     );
   }
 

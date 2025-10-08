@@ -33,6 +33,16 @@
     "internationalLicense": "International Licence",
     "ccBySa": "CC BY-SA - Attribution-ShareAlike 4.0"
   },
+  "components": {
+    "error": {
+      "title": "Unable to retrieve information",
+      "description": "Please try again later"
+    },
+    "noData": {
+      "title": "No Data Available",
+      "description": "There is currently no data available for this page."
+    }
+  },
   "newsletter": {
     "subscribe": "Subscribe to our newsletter",
     "description": "Stay informed with our newsletter—get the latest updates on emissions delivered straight to your inbox.",
@@ -721,9 +731,6 @@
   "municipalityDetailPage": {
     "metaTitle": "Data on emissions and transition",
     "metaDescription": "Overview of emissions and transition",
-    "loading": "Loading...",
-    "error": "Error loading data",
-    "noData": "No data available",
     "procurementScore": {
       "high": "Yes",
       "medium": "Maybe",

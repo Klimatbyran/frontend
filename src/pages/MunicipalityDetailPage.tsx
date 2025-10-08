@@ -24,6 +24,9 @@ import { MunicipalityEmissions } from "@/components/municipalities/MunicipalityE
 import { useHiddenItems } from "@/components/charts";
 import { YearSelector } from "@/components/layout/YearSelector";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
+import { PageLoading } from "@/components/pageStates/Loading";
+import { PageError } from "@/components/pageStates/Error";
+import { PageNoData } from "@/components/pageStates/NoData";
 
 export function MunicipalityDetailPage() {
   const { t } = useTranslation();
@@ -39,9 +42,9 @@ export function MunicipalityDetailPage() {
 
   const [selectedYear, setSelectedYear] = useState<string>("2023");
 
-  if (loading) return <Text>{t("municipalityDetailPage.loading")}</Text>;
-  if (error) return <Text>{t("municipalityDetailPage.error")}</Text>;
-  if (!municipality) return <Text>{t("municipalityDetailPage.noData")}</Text>;
+  if (loading) return <PageLoading />;
+  if (error) return <PageError />;
+  if (!municipality) return <PageNoData />;
 
   const requirementsInProcurement =
     municipality.procurementScore == 2
