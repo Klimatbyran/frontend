@@ -35,7 +35,7 @@
   },
   "components": {
     "error": {
-      "title": "Unable to retrieve company information",
+      "title": "Unable to retrieve information",
       "description": "Please try again later"
     },
     "noData": {
