@@ -6,6 +6,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { Flame, Lightbulb } from "lucide-react";
 import { SupportedLanguage } from "@/lib/languageDetection";
+import { cn } from "@/lib/utils";
 
 type RelatableNumbersProps = {
   emissionsChange: number;
@@ -83,7 +84,14 @@ const RelatableNumbers = ({
     : null;
 
   return (
-    <div className="bg-black-2 rounded-level-1 px-4 py-8 md:py-16 md:px-8">
+    <div
+      className={cn(
+        "bg-black-2",
+        "rounded-level-3 md:rounded-level-1",
+        "px-4 md:px-8",
+        "py-4 md:py-8",
+      )}
+    >
       <Text variant={"h3"}>{t("relatableNumbers.title")}</Text>
       <Text
         variant="body"
