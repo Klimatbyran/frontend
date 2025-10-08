@@ -11,7 +11,6 @@ import { formatEmissionsAbsolute } from "@/utils/formatting/localization";
 
 type RelatableNumbersProps = {
   emissionsChange: number;
-  yearOverYearChange?: number;
   currentLanguage: SupportedLanguage;
 };
 
