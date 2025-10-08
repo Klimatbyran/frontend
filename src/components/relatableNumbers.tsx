@@ -3,13 +3,15 @@ import {
   calculateAreaBurnt,
   emissionsComparedToCitizen,
 } from "@/utils/calculations/relatableNumbersCalc";
-import { useTranslation } from "react-i18next";
+import { useTranslation, Trans } from "react-i18next";
 import { Flame, Lightbulb } from "lucide-react";
 import { SupportedLanguage } from "@/lib/languageDetection";
 import { cn } from "@/lib/utils";
+import { formatEmissionsAbsolute } from "@/utils/formatting/localization";
 
 type RelatableNumbersProps = {
   emissionsChange: number;
+  yearOverYearChange?: number;
   currentLanguage: SupportedLanguage;
 };
 
@@ -97,7 +99,13 @@ const RelatableNumbers = ({
         variant="body"
         className="text-sm md:text-base lg:text-lg max-w-3xl mt-2"
       >
-        {t("relatableNumbers.description")}
+        <Trans
+          i18nKey="relatableNumbers.description"
+          components={{ highlight: <span className="text-orange-2" /> }}
+          values={{
+            unit: formatEmissionsAbsolute(emissionsChange, currentLanguage),
+          }}
+        />
       </Text>
       <div className="justify-between flex flex-col md:flex-row md:gap-6">
         <div className="mt-6 gap-4 flex flex-col">
