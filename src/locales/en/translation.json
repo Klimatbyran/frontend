@@ -1410,7 +1410,7 @@
   },
   "relatableNumbers": {
     "title": "How much is that?",
-    "description": "The <highlight>{{unit}} tCO2e</highlight> change in emission from last year compares to the following:",
+    "description": "The <highlightNumber>{{number}}</highlightNumber> <highlightUnit>tCO2e</highlightUnit> change in emission from last year compares to the following:",
     "prefixFire": "Emissions from a forest fire",
     "prefixEmissions": "The annual emissions of {{count}} Swedes.",
     "patterns": {

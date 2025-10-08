@@ -101,9 +101,12 @@ const RelatableNumbers = ({
       >
         <Trans
           i18nKey="relatableNumbers.description"
-          components={{ highlight: <span className="text-orange-2" /> }}
+          components={{
+            highlightNumber: <span className="text-orange-2" />,
+            highlightUnit: <span className="text-grey" />,
+          }}
           values={{
-            unit: formatEmissionsAbsolute(emissionsChange, currentLanguage),
+            number: formatEmissionsAbsolute(emissionsChange, currentLanguage),
           }}
         />
       </Text>
