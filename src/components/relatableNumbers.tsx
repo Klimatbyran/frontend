@@ -10,7 +10,9 @@ import { cn } from "@/lib/utils";
 import { formatEmissionsAbsolute } from "@/utils/formatting/localization";
 
 type RelatableNumbersProps = {
+  companyName: string;
   emissionsChange: number;
+  emissionsChangeStatus: string;
   currentLanguage: SupportedLanguage;
 };
 
@@ -30,6 +32,8 @@ type Values = {
 const RelatableNumbers = ({
   emissionsChange,
   currentLanguage,
+  companyName,
+  emissionsChangeStatus,
 }: RelatableNumbersProps) => {
   const { t } = useTranslation();
   const areaBurnt = calculateAreaBurnt(emissionsChange, currentLanguage);
@@ -94,10 +98,7 @@ const RelatableNumbers = ({
       )}
     >
       <Text variant={"h3"}>{t("relatableNumbers.title")}</Text>
-      <Text
-        variant="body"
-        className="text-sm md:text-base lg:text-lg max-w-3xl mt-2"
-      >
+      <Text variant="body" className="text-sm md:text-base lg:text-lg mt-2">
         <Trans
           i18nKey="relatableNumbers.description"
           components={{
@@ -105,7 +106,14 @@ const RelatableNumbers = ({
             highlightUnit: <span className="text-grey" />,
           }}
           values={{
-            number: formatEmissionsAbsolute(emissionsChange, currentLanguage),
+            companyName: companyName,
+            emissionsChangeStatus: t(
+              `relatableNumbers.${emissionsChangeStatus}`,
+            ),
+            emissionsInTonnes: formatEmissionsAbsolute(
+              emissionsChange,
+              currentLanguage,
+            ),
           }}
         />
       </Text>

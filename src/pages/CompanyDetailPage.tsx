@@ -121,6 +121,11 @@ export function CompanyDetailPage() {
       )
     : null;
 
+  const emissionsChangeStatus =
+    selectedPeriod?.emissions?.calculatedTotalEmissions - prevEmissions > 0
+      ? "increased"
+      : "decreased";
+
   const yearOverYearChange = calculateRateOfChange(
     selectedPeriod?.emissions?.calculatedTotalEmissions,
     previousPeriod?.emissions?.calculatedTotalEmissions,
@@ -193,6 +198,8 @@ export function CompanyDetailPage() {
           <RelatableNumbers
             emissionsChange={validEmissionsChangeNumber}
             currentLanguage={currentLanguage}
+            companyName={company.name}
+            emissionsChangeStatus={emissionsChangeStatus}
           />
         )}
 

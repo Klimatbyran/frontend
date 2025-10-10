@@ -1409,9 +1409,11 @@
   },
   "relatableNumbers": {
     "title": "Hur mycket är det?",
-    "description": "Förändringen i utsläpp på <highlightNumber>{{number}}</highlightNumber> <highlightUnit>tCO2e</highlightUnit> från förra året motsvarar följande:",
+    "description": "{{companyName}} {{emissionsChangeStatus}} sina utsläpp med <highlightNumber>{{emissionsInTonnes}}</highlightNumber> <highlightUnit>tCO2e</highlightUnit> jämfört med föregående år. Detta kan jämföras med:",
     "prefixFire": "Utsläppen motsvarar en skogsbrand",
     "prefixEmissions": "{{count}} svenska invånares årsutsläpp.",
+    "increased": "ökade",
+    "decreased": "minskade",
     "patterns": {
       "city": "{{prefix}} {{count}} gånger större än {{entity}}.",
       "unit": "{{prefix}} stor som {{count}} {{entity}}.",
