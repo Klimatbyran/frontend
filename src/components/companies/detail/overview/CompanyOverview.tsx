@@ -29,7 +29,6 @@ import { OverviewStatistics } from "./OverviewStatistics";
 import { CompanyOverviewTooltip } from "./CompanyOverviewTooltip";
 import { CompanyDescription } from "./CompanyDescription";
 import { FinancialsTooltip } from "./FinancialsTooltip";
-import { calculateRateOfChange } from "@/utils/calculations/general";
 import { EmissionsAssessmentButton } from "../emissions-assessment/EmissionsAssessmentButton";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { getCompanyDescription } from "@/utils/business/company";
@@ -40,6 +39,7 @@ interface CompanyOverviewProps {
   previousPeriod?: ReportingPeriod;
   onYearSelect: (year: string) => void;
   selectedYear: string;
+  yearOverYearChange: number | null;
 }
 
 export function CompanyOverview({
@@ -48,6 +48,7 @@ export function CompanyOverview({
   previousPeriod,
   onYearSelect,
   selectedYear,
+  yearOverYearChange,
 }: CompanyOverviewProps) {
   const { t } = useTranslation();
   const { token } = useAuth();
@@ -78,11 +79,6 @@ export function CompanyOverview({
 
   // Get the translated company description
   const description = getCompanyDescription(company, currentLanguage);
-
-  const yearOverYearChange = calculateRateOfChange(
-    selectedPeriod?.emissions?.calculatedTotalEmissions,
-    previousPeriod?.emissions?.calculatedTotalEmissions,
-  );
 
   const sortedPeriods = [...company.reportingPeriods].sort(
     (a, b) => new Date(b.endDate).getTime() - new Date(a.endDate).getTime(),

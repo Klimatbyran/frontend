@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { useCompanyDetails } from "@/hooks/companies/useCompanyDetails";
 import { CompanyOverview } from "@/components/companies/detail/overview/CompanyOverview";
 import { EmissionsHistory } from "@/components/companies/detail/history/EmissionsHistory";
-import { Text } from "@/components/ui/text";
 import { useTranslation } from "react-i18next";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { createSlug } from "@/lib/utils";
@@ -15,6 +14,7 @@ import type { Scope3Category } from "@/types/company";
 import { PageLoading } from "@/components/pageStates/Loading";
 import { PageError } from "@/components/pageStates/Error";
 import { PageNoData } from "@/components/pageStates/NoData";
+import { calculateRateOfChange } from "@/utils/calculations/general";
 
 export function CompanyDetailPage() {
   const { t } = useTranslation();
@@ -115,11 +115,21 @@ export function CompanyDetailPage() {
 
   const prevEmissions = previousPeriod?.emissions?.calculatedTotalEmissions;
 
-  const validEmissionsChange = prevEmissions
+  const validEmissionsChangeNumber = prevEmissions
     ? Math.abs(
         selectedPeriod?.emissions?.calculatedTotalEmissions - prevEmissions,
       )
     : null;
+
+  const emissionsChangeStatus =
+    selectedPeriod?.emissions?.calculatedTotalEmissions - prevEmissions > 0
+      ? "increased"
+      : "decreased";
+
+  const yearOverYearChange = calculateRateOfChange(
+    selectedPeriod?.emissions?.calculatedTotalEmissions,
+    previousPeriod?.emissions?.calculatedTotalEmissions,
+  );
 
   return (
     <>
@@ -182,11 +192,14 @@ export function CompanyDetailPage() {
           previousPeriod={previousPeriod}
           onYearSelect={setSelectedYear}
           selectedYear={selectedYear}
+          yearOverYearChange={yearOverYearChange}
         />
-        {validEmissionsChange && validEmissionsChange > 100 && (
+        {validEmissionsChangeNumber && validEmissionsChangeNumber > 100 && (
           <RelatableNumbers
-            emissionsChange={validEmissionsChange}
+            emissionsChange={validEmissionsChangeNumber}
             currentLanguage={currentLanguage}
+            companyName={company.name}
+            emissionsChangeStatus={emissionsChangeStatus}
           />
         )}
 
