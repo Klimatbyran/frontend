@@ -103,7 +103,6 @@ const RelatableNumbers = ({
           i18nKey="relatableNumbers.description"
           components={{
             highlightNumber: <span className="text-orange-2" />,
-            highlightUnit: <span className="text-grey" />,
           }}
           values={{
             companyName: companyName,
