@@ -92,3 +92,10 @@ export type GicsOption = {
   industry?: string;
   description?: string;
 };
+
+// Props interface for company edit components
+export interface CompanyEditComponentProps {
+  periods: ReportingPeriod[];
+  onInputChange: (name: string, value: string) => void;
+  formData: Map<string, string>;
+}

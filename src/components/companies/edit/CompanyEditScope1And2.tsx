@@ -1,26 +1,25 @@
 import { CompanyEditRow } from "./CompanyEditRow";
 import { CompanyEditInputField } from "./CompanyEditField";
+import { getNumericValue } from "@/utils/ui/form";
+import { isVerified } from "@/utils/business/verification";
 import { useTranslation } from "react-i18next";
-import type { ReportingPeriod } from "@/types/company";
-
-interface CompanyEditScope1And2Props {
-  periods: ReportingPeriod[];
-  onInputChange: (name: string, value: string) => void;
-  formData: Map<string, string>;
-}
+import type {
+  CompanyEditComponentProps,
+  ReportingPeriod,
+} from "@/types/company";
 
 export function CompanyEditScope1And2({
   periods,
   onInputChange,
   formData,
-}: CompanyEditScope1And2Props) {
+}: CompanyEditComponentProps) {
   const { t } = useTranslation();
 
   return (
     <CompanyEditRow
       headerName
       name={t("companyEditPage.rowName.scope1And2Combined")}
-      key={"scope-1-and-2"}
+      key="scope-1-and-2"
     >
       {periods.map((period: ReportingPeriod) => (
         <CompanyEditInputField
@@ -28,16 +27,9 @@ export function CompanyEditScope1And2({
           type="number"
           key={`scope-1-and-2-${period.id}`}
           displayAddition="verification"
-          value={
-            period.emissions?.scope1And2?.total === undefined ||
-            period.emissions?.scope1And2?.total === null
-              ? ""
-              : period.emissions?.scope1And2?.total
-          }
-          verified={!!period.emissions?.scope1And2?.metadata?.verifiedBy}
-          originalVerified={
-            !!period.emissions?.scope1And2?.metadata?.verifiedBy
-          }
+          value={getNumericValue(period.emissions?.scope1And2?.total)}
+          verified={isVerified(period.emissions?.scope1And2?.metadata)}
+          originalVerified={isVerified(period.emissions?.scope1And2?.metadata)}
           onInputChange={onInputChange}
           formData={formData}
         />

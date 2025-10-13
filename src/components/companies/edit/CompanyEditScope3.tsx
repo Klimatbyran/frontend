@@ -1,14 +1,8 @@
 import { CompanyEditRow } from "./CompanyEditRow";
 import { CompanyEditInputField, CompanyEmptyField } from "./CompanyEditField";
 import { useCategoryMetadata } from "@/hooks/companies/useCategories";
-import type { ReportingPeriod } from "@/types/company";
 import { useTranslation } from "react-i18next";
-
-interface CompanyEditScope3Props {
-  periods: ReportingPeriod[];
-  onInputChange: (name: string, value: string) => void;
-  formData: Map<string, string>;
-}
+import type { CompanyEditComponentProps, ReportingPeriod } from "@/types/company";
 
 interface Scope3CategoryWithMetadata {
   category: number;
@@ -21,7 +15,7 @@ export function CompanyEditScope3({
   periods,
   onInputChange,
   formData,
-}: CompanyEditScope3Props) {
+}: CompanyEditComponentProps) {
   const { categoryMetadata } = useCategoryMetadata();
   const { t } = useTranslation();
 

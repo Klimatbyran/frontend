@@ -1,27 +1,26 @@
 import { CompanyEditRow } from "./CompanyEditRow";
 import { CompanyEditInputField } from "./CompanyEditField";
+import { getNumericValue, getStringValue } from "@/utils/ui/form";
+import { isVerified } from "@/utils/business/verification";
 import { useTranslation } from "react-i18next";
-import type { ReportingPeriod } from "@/types/company";
-
-interface CompanyEditEmployeesProps {
-  periods: ReportingPeriod[];
-  onInputChange: (name: string, value: string) => void;
-  formData: Map<string, string>;
-}
+import type {
+  CompanyEditComponentProps,
+  ReportingPeriod,
+} from "@/types/company";
 
 export function CompanyEditEmployees({
   periods,
   onInputChange,
   formData,
-}: CompanyEditEmployeesProps) {
+}: CompanyEditComponentProps) {
   const { t } = useTranslation();
 
   return (
     <>
       <CompanyEditRow
-        key={"employees-value"}
-        name={t("companyEditPage.rowName.employees")}
         headerName
+        name={t("companyEditPage.rowName.employees")}
+        key="employees-value"
       >
         {periods.map((period: ReportingPeriod) => (
           <CompanyEditInputField
@@ -29,37 +28,25 @@ export function CompanyEditEmployees({
             type="number"
             key={`employees-value-${period.id}`}
             displayAddition="verification"
-            value={
-              period.economy?.employees?.value === undefined ||
-              period.economy?.employees?.value === null
-                ? ""
-                : period.economy?.employees?.value
-            }
-            verified={!!period.economy?.employees?.metadata?.verifiedBy}
-            originalVerified={!!period.economy?.employees?.metadata?.verifiedBy}
+            value={getNumericValue(period.economy?.employees?.value)}
+            verified={isVerified(period.economy?.employees?.metadata)}
+            originalVerified={isVerified(period.economy?.employees?.metadata)}
             onInputChange={onInputChange}
             formData={formData}
           />
         ))}
       </CompanyEditRow>
       <CompanyEditRow
-        key={"employees-unit"}
         name={t("companyEditPage.rowName.unit")}
+        key="employees-unit"
       >
         {periods.map((period: ReportingPeriod) => (
           <CompanyEditInputField
             name={`employees-unit-${period.id}`}
             type="text"
             key={`employees-unit-${period.id}`}
-            displayAddition="verification"
-            value={
-              period.economy?.employees?.unit === undefined ||
-              period.economy?.employees?.unit === null
-                ? ""
-                : period.economy?.employees?.unit
-            }
-            verified={!!period.economy?.employees?.metadata?.verifiedBy}
-            originalVerified={!!period.economy?.employees?.metadata?.verifiedBy}
+            displayAddition="none"
+            value={getStringValue(period.economy?.employees?.unit)}
             onInputChange={onInputChange}
             formData={formData}
           />
