@@ -1244,9 +1244,21 @@
       "reportingTimespan": "Reporting Period",
       "reportingStart": "Start",
       "reportingEnd": "End",
+      "reportURL": "Report URL",
       "marketBased": "Market-based",
       "locationBased": "Location-based",
-      "unknown": "Unknown"
+      "unknown": "Unknown",
+      "turnover": "Turnover",
+      "currency": "Currency",
+      "employees": "Employees",
+      "unit": "Unit",
+      "statedTotalEmissions": "Stated Total Emissions",
+      "scope1And2Combined": "Scope 1 & 2 Combined"
+    },
+    "sections": {
+      "reportingPeriod": "Reporting Period",
+      "emissions": "Emissions",
+      "economy": "Economy"
     },
     "save": "Save",
     "success": {
