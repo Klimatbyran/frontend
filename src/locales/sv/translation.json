@@ -1243,9 +1243,21 @@
       "reportingTimespan": "Rapporteringsperiod",
       "reportingStart": "Start",
       "reportingEnd": "Slut",
+      "reportURL": "Rapport URL",
       "marketBased": "Marknadsbaserad",
       "locationBased": "Platsbaserad",
-      "unknown": "Okänd"
+      "unknown": "Okänd",
+      "turnover": "Omsättning",
+      "currency": "Valuta",
+      "employees": "Anställda",
+      "unit": "Enhet",
+      "statedTotalEmissions": "Angivna totala utsläpp",
+      "scope1And2Combined": "Omfattning 1 & 2 kombinerat"
+    },
+    "sections": {
+      "reportingPeriod": "Rapporteringsperiod",
+      "emissions": "Utsläpp",
+      "economy": "Ekonomi"
     },
     "save": "Spara",
     "success": {

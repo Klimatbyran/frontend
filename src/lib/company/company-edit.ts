@@ -22,6 +22,14 @@ export function mapCompanyEditFormToRequestBody(
     } else {
       periodUpdate.endDate = period.endDate;
     }
+
+    // --- Report URL logic ---
+    if (formData.has("report-url-" + period.id)) {
+      periodUpdate.reportURL = formData.get("report-url-" + period.id) || null;
+    } else {
+      periodUpdate.reportURL = period.reportURL;
+    }
+
     periodUpdate.emissions = {};
 
     // --- Scope 1 logic ---
@@ -175,9 +183,159 @@ export function mapCompanyEditFormToRequestBody(
       };
     }
 
-    // Only add emissions if not empty
-    if (Object.keys(periodUpdate.emissions).length > 0) {
-      periodsUpdate.push(periodUpdate);
+    // --- Stated Total Emissions logic (at emissions level) ---
+    const emissionsStatedTotalValueKey = `stated-total-${period.id}`;
+    const emissionsStatedTotalCheckboxKey =
+      emissionsStatedTotalValueKey + "-checkbox";
+    const originalEmissionsStatedTotal = period.emissions?.statedTotalEmissions;
+    const emissionsStatedTotalValueChanged = formData.has(
+      emissionsStatedTotalValueKey,
+    );
+    const emissionsStatedTotalVerifiedChanged = formData.has(
+      emissionsStatedTotalCheckboxKey,
+    );
+    const emissionsStatedTotalNewVerified = emissionsStatedTotalVerifiedChanged
+      ? formData.get(emissionsStatedTotalCheckboxKey) === "true"
+      : undefined;
+
+    if (emissionsStatedTotalValueChanged) {
+      const val = formData.get(emissionsStatedTotalValueKey);
+      periodUpdate.emissions.statedTotalEmissions = {
+        total: val === "" ? null : parseFloat(val!),
+        verified: emissionsStatedTotalNewVerified ?? false,
+      };
+    } else if (
+      emissionsStatedTotalVerifiedChanged &&
+      originalEmissionsStatedTotal &&
+      originalEmissionsStatedTotal.total !== null &&
+      originalEmissionsStatedTotal.total !== undefined
+    ) {
+      periodUpdate.emissions.statedTotalEmissions = {
+        verified: emissionsStatedTotalNewVerified,
+      };
+    }
+
+    // --- Scope 1 & 2 Combined logic ---
+    const scope1And2ValueKey = `scope-1-and-2-${period.id}`;
+    const scope1And2CheckboxKey = scope1And2ValueKey + "-checkbox";
+    const originalScope1And2 = period.emissions?.scope1And2;
+    const scope1And2ValueChanged = formData.has(scope1And2ValueKey);
+    const scope1And2VerifiedChanged = formData.has(scope1And2CheckboxKey);
+    const scope1And2NewVerified = scope1And2VerifiedChanged
+      ? formData.get(scope1And2CheckboxKey) === "true"
+      : undefined;
+
+    if (scope1And2ValueChanged) {
+      const val = formData.get(scope1And2ValueKey);
+      periodUpdate.emissions.scope1And2 = {
+        total: val === "" ? null : parseFloat(val!),
+        verified: scope1And2NewVerified ?? false,
+      };
+    } else if (
+      scope1And2VerifiedChanged &&
+      originalScope1And2 &&
+      originalScope1And2.total !== null &&
+      originalScope1And2.total !== undefined
+    ) {
+      periodUpdate.emissions.scope1And2 = {
+        verified: scope1And2NewVerified,
+      };
+    }
+
+    // --- Economy logic ---
+    periodUpdate.economy = {};
+
+    // --- Turnover logic ---
+    const turnoverValueKey = `turnover-value-${period.id}`;
+    const turnoverCurrencyKey = `turnover-currency-${period.id}`;
+    const turnoverCheckboxKey = turnoverValueKey + "-checkbox";
+    const originalTurnover = period.economy?.turnover;
+    const turnoverValueChanged = formData.has(turnoverValueKey);
+    const turnoverCurrencyChanged = formData.has(turnoverCurrencyKey);
+    const turnoverVerifiedChanged = formData.has(turnoverCheckboxKey);
+    const turnoverNewVerified = turnoverVerifiedChanged
+      ? formData.get(turnoverCheckboxKey) === "true"
+      : undefined;
+
+    if (turnoverValueChanged || turnoverCurrencyChanged) {
+      periodUpdate.economy.turnover = {
+        value: turnoverValueChanged
+          ? formData.get(turnoverValueKey) === ""
+            ? undefined
+            : parseFloat(formData.get(turnoverValueKey)!)
+          : originalTurnover?.value,
+        currency: turnoverCurrencyChanged
+          ? formData.get(turnoverCurrencyKey) === ""
+            ? undefined
+            : formData.get(turnoverCurrencyKey)
+          : originalTurnover?.currency,
+        verified: turnoverNewVerified ?? false,
+      };
+    } else if (turnoverVerifiedChanged && originalTurnover) {
+      periodUpdate.economy.turnover = {
+        verified: turnoverNewVerified,
+      };
+    }
+
+    // --- Employees logic ---
+    const employeesValueKey = `employees-value-${period.id}`;
+    const employeesUnitKey = `employees-unit-${period.id}`;
+    const employeesCheckboxKey = employeesValueKey + "-checkbox";
+    const originalEmployees = period.economy?.employees;
+    const employeesValueChanged = formData.has(employeesValueKey);
+    const employeesUnitChanged = formData.has(employeesUnitKey);
+    const employeesVerifiedChanged = formData.has(employeesCheckboxKey);
+    const employeesNewVerified = employeesVerifiedChanged
+      ? formData.get(employeesCheckboxKey) === "true"
+      : undefined;
+
+    if (employeesValueChanged || employeesUnitChanged) {
+      periodUpdate.economy.employees = {
+        value: employeesValueChanged
+          ? formData.get(employeesValueKey) === ""
+            ? undefined
+            : parseFloat(formData.get(employeesValueKey)!)
+          : originalEmployees?.value,
+        unit: employeesUnitChanged
+          ? formData.get(employeesUnitKey) === ""
+            ? undefined
+            : formData.get(employeesUnitKey)
+          : originalEmployees?.unit,
+        verified: employeesNewVerified ?? false,
+      };
+    } else if (employeesVerifiedChanged && originalEmployees) {
+      periodUpdate.economy.employees = {
+        verified: employeesNewVerified,
+      };
+    }
+
+    // Check if there are any changes to include
+    const hasEmissionsChanges = Object.keys(periodUpdate.emissions).length > 0;
+    const hasEconomyChanges =
+      Object.keys(periodUpdate.economy || {}).length > 0;
+    const hasPeriodChanges =
+      periodUpdate.startDate !== period.startDate ||
+      periodUpdate.endDate !== period.endDate ||
+      periodUpdate.reportURL !== period.reportURL;
+
+    if (hasEmissionsChanges || hasEconomyChanges || hasPeriodChanges) {
+      // Create the final update object
+      const finalUpdate: any = {
+        id: period.id,
+        startDate: periodUpdate.startDate,
+        endDate: periodUpdate.endDate,
+        reportURL: periodUpdate.reportURL,
+      };
+
+      if (hasEmissionsChanges) {
+        finalUpdate.emissions = periodUpdate.emissions;
+      }
+
+      if (hasEconomyChanges) {
+        finalUpdate.economy = periodUpdate.economy;
+      }
+
+      periodsUpdate.push(finalUpdate);
     }
   }
   const metadata: {
