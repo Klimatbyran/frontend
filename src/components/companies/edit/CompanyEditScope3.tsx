@@ -2,7 +2,11 @@ import { CompanyEditRow } from "./CompanyEditRow";
 import { CompanyEditInputField, CompanyEmptyField } from "./CompanyEditField";
 import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useTranslation } from "react-i18next";
-import type { CompanyEditComponentProps, ReportingPeriod } from "@/types/company";
+import { isVerified } from "@/utils/business/verification";
+import type {
+  CompanyEditComponentProps,
+  ReportingPeriod,
+} from "@/types/company";
 
 interface Scope3CategoryWithMetadata {
   category: number;
@@ -43,7 +47,7 @@ export function CompanyEditScope3({
       (category) => category.category - 1 === index,
     );
     // metadata may not exist, so coerce to boolean
-    return !!category?.metadata?.verifiedBy;
+    return isVerified(category?.metadata);
   };
 
   // Instead of a static list, use categoryMetadata for all 16 categories
