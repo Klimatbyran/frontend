@@ -1385,15 +1385,7 @@
   },
   "trendAnalysis": {
     "insufficientData": "Ingen trendlinje visas på grund av otillräcklig data ({{dataPoints}} punkter). Behöver minst 2 datapunkter för att bygga tillförlitlig trend.",
-    "insufficientDataWithBaseYear": "Enkel trendberäkning används på grund av begränsad data sedan {{baseYear}} ({{dataPoints}} punkter). Mer data behövs för tillförlitlig trendanalys.",
-    "insufficientDataSinceBaseYear": "Ingen trendlinje visas på grund av otillräcklig data sedan basåret {{baseYear}} ({{dataPoints}} användbara punkter). Behöver minst 2 datapunkter sedan basåret för att bygga tillförlitlig trend.",
-    "simpleMethodInsufficientData": "Enkel trendberäkning används på grund av begränsad data sedan basåret ({{dataPoints}} punkter). Mer data behövs för tillförlitlig trendanalys.",
-    "simpleMethodPoorDataQuality": "Enkel trendberäkning används på grund av datakvalitetsproblem ({{issues}}). Endast {{cleanDataPoints}} tillförlitliga datapunkter från {{originalDataPoints}} totalt. Denna trend kanske inte är särskilt tillförlitlig.",
-    "linearMethodMultipleIssues": "Linjär trend används trots datakvalitetsproblem ({{issues}}). Baserat på {{cleanDataPoints}} tillförlitliga datapunkter från {{originalDataPoints}} totalt. Tolka med försiktighet.",
-    "weightedLinearMethodStable": "Viktad linjär trend används eftersom senaste åren visar stabila utsläpp (variation < 10% av genomsnittet). Betonar senaste stabila data för nuvarande trendrepresentation.",
-    "exponentialMethodBetterFit": "Exponentiell trend används eftersom den passar data betydligt bättre än linjär trend. Tyder på att utsläppen förändras i accelererande eller decelererande takt.",
-    "recentExponentialMethodStrongPattern": "Senaste exponentiella trend används eftersom de senaste 4 åren visar starkt exponentiellt mönster som är betydligt bättre än linjärt. Fokuserar på senaste trendmönstret.",
-    "linearMethodDefault": "Linjär trend används som standard eftersom data är tillräckligt komplett och visar konsekvent mönster utan starkt icke-linjärt beteende eller betydande avvikare."
+    "insufficientDataSinceBaseYear": "Ingen trendlinje visas på grund av otillräcklig data sedan basåret {{baseYear}} ({{dataPoints}} användbara punkter). Behöver minst 2 datapunkter sedan basåret för att bygga tillförlitlig trend."
   },
   "newsletterArchivePage": {
     "title": "Nyhetsbrevsarkiv",

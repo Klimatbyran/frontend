@@ -5,7 +5,6 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
@@ -15,10 +14,9 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ExternalLink } from "lucide-react";
-import { getMethodColor, getTrendIcon } from "@/utils/ui/trends";
+import { getTrendIcon } from "@/utils/ui/trends";
 import { SortableTableHeader } from "@/components/layout/SortableTableHeader";
 import type { TrendAnalysis } from "@/lib/calculations/trends/types";
-import { useTranslation } from "react-i18next";
 
 interface TrendAnalysisCompaniesTableProps {
   companies: TrendAnalysis[];
@@ -35,8 +33,6 @@ export function TrendAnalysisCompaniesTable({
   onSort,
   onCompanyClick,
 }: TrendAnalysisCompaniesTableProps) {
-  const { t } = useTranslation();
-
   return (
     <Card>
       <CardHeader>
@@ -56,21 +52,20 @@ export function TrendAnalysisCompaniesTable({
                   Company
                 </SortableTableHeader>
                 <SortableTableHeader
-                  column="method"
+                  column="baseYear"
                   currentSort={sortBy}
                   currentOrder={sortOrder}
                   onSort={onSort}
                 >
-                  Method
+                  Base Year
                 </SortableTableHeader>
-                <TableHead>Base Year</TableHead>
                 <SortableTableHeader
-                  column="dataPoints"
+                  column="originalDataPoints"
                   currentSort={sortBy}
                   currentOrder={sortOrder}
                   onSort={onSort}
                 >
-                  Data Points
+                  Total Data Points
                 </SortableTableHeader>
                 <SortableTableHeader
                   column="cleanDataPoints"
@@ -78,31 +73,46 @@ export function TrendAnalysisCompaniesTable({
                   currentOrder={sortOrder}
                   onSort={onSort}
                 >
-                  Clean Data
+                  Data Since Base Year
                 </SortableTableHeader>
                 <SortableTableHeader
-                  column="missingYearsCount"
+                  column="scope3DataCount"
                   currentSort={sortBy}
                   currentOrder={sortOrder}
                   onSort={onSort}
                 >
-                  Missing Years
+                  Scope 3 Data Count
                 </SortableTableHeader>
-                <TableHead>Trend</TableHead>
+                <SortableTableHeader
+                  column="method"
+                  currentSort={sortBy}
+                  currentOrder={sortOrder}
+                  onSort={onSort}
+                >
+                  Trend
+                </SortableTableHeader>
                 <SortableTableHeader
                   column="yearlyPercentageChange"
                   currentSort={sortBy}
                   currentOrder={sortOrder}
                   onSort={onSort}
                 >
-                  Yearly % Change
+                  Slope / Yearly % Change
                 </SortableTableHeader>
-                <TableHead>Unusual Points</TableHead>
+                <SortableTableHeader
+                  column="unusualPointsCount"
+                  currentSort={sortBy}
+                  currentOrder={sortOrder}
+                  onSort={onSort}
+                >
+                  Unusual Points
+                </SortableTableHeader>
               </TableRow>
             </TableHeader>
             <TableBody>
               {companies.map((company) => (
                 <TableRow key={company.companyId}>
+                  {/* Company Name */}
                   <TableCell>
                     <div className="flex items-center gap-2">
                       <button
@@ -116,96 +126,30 @@ export function TrendAnalysisCompaniesTable({
                       </button>
                     </div>
                   </TableCell>
-                  <TableCell>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <button className="inline-flex">
-                          <Badge
-                            className={`${getMethodColor(company.method)} text-white cursor-pointer hover:opacity-80 transition-opacity`}
-                          >
-                            {company.method}
-                          </Badge>
-                        </button>
-                      </PopoverTrigger>
-                      <PopoverContent
-                        className="w-80 max-h-48 overflow-y-auto bg-black-2 border border-grey/30 shadow-lg z-50"
-                        side="top"
-                        align="start"
-                      >
-                        <div className="space-y-2">
-                          <h4 className="font-medium text-white mb-2">
-                            Method Explanation
-                          </h4>
-                          <p className="text-sm leading-relaxed text-white">
-                            {company.explanationParams
-                              ? t(
-                                  company.explanation,
-                                  company.explanationParams,
-                                )
-                              : t(company.explanation)}
-                          </p>
-                        </div>
-                      </PopoverContent>
-                    </Popover>
-                  </TableCell>
+
+                  {/* Base Year */}
                   <TableCell>
                     {company.baseYear !== undefined && company.baseYear !== null
                       ? company.baseYear.toString()
                       : "N/A"}
                   </TableCell>
-                  <TableCell>{company.dataPoints}</TableCell>
+
+                  {/* Total Data Points */}
+                  <TableCell>{company.originalDataPoints}</TableCell>
+
+                  {/* Data Since Base Year */}
                   <TableCell>{company.cleanDataPoints}</TableCell>
-                  <TableCell>
-                    {company.missingYearsCount > 0 ? (
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <button className="inline-flex">
-                            <Badge
-                              variant="outline"
-                              className="cursor-pointer hover:bg-grey/10 transition-colors"
-                            >
-                              {company.missingYearsCount}
-                            </Badge>
-                          </button>
-                        </PopoverTrigger>
-                        <PopoverContent
-                          className="w-80 max-h-48 overflow-y-auto bg-black-2 border border-grey/30 shadow-lg z-50"
-                          side="top"
-                          align="start"
-                        >
-                          <div className="space-y-2">
-                            <h4 className="font-medium text-white mb-2">
-                              Missing Years
-                            </h4>
-                            <div className="text-xs text-grey mb-3 pb-2 border-b border-grey/20">
-                              Years with no emissions data
-                            </div>
-                            {company.excludedData?.missingYears &&
-                            company.excludedData.missingYears.length > 0 ? (
-                              <div className="text-sm">
-                                <div className="text-grey">
-                                  <strong>Missing years:</strong>{" "}
-                                  {company.excludedData.missingYears.join(", ")}
-                                </div>
-                              </div>
-                            ) : (
-                              <div className="text-sm text-grey">
-                                No missing years details available
-                              </div>
-                            )}
-                          </div>
-                        </PopoverContent>
-                      </Popover>
-                    ) : (
-                      <Badge variant="secondary">0</Badge>
-                    )}
-                  </TableCell>
+
+                  {/* Scope 3 Data Count */}
+                  <TableCell>{(company as any).scope3DataCount || 0}</TableCell>
+
+                  {/* Trend */}
                   <TableCell>
                     <div className="flex items-center gap-1">
                       {company.method === "none" ? (
-                        <>
-                          <Text variant="small" className="text-grey">Insufficient Data</Text>
-                        </>
+                        <Text variant="small" className="text-grey">
+                          No Trend
+                        </Text>
                       ) : (
                         <>
                           {getTrendIcon(company.trendDirection)}
@@ -214,24 +158,38 @@ export function TrendAnalysisCompaniesTable({
                       )}
                     </div>
                   </TableCell>
+
+                  {/* Slope / Yearly % Change */}
                   <TableCell>
                     {company.method === "none" ? (
                       <span className="text-grey">N/A</span>
                     ) : (
-                      <span
-                        className={
-                          company.yearlyPercentageChange > 0
-                            ? "text-pink-3"
-                            : company.yearlyPercentageChange < 0
-                              ? "text-green-3"
-                              : "text-grey"
-                        }
-                      >
-                        {company.yearlyPercentageChange > 0 ? "+" : ""}
-                        {company.yearlyPercentageChange.toFixed(1)}%
-                      </span>
+                      <div className="space-y-1">
+                        <div className="text-xs text-grey">
+                          Slope:{" "}
+                          {company.coefficients
+                            ? "slope" in company.coefficients
+                              ? `${company.coefficients.slope.toFixed(2)} tCO₂e/year`
+                              : `${company.coefficients.a.toFixed(2)} tCO₂e/year`
+                            : "N/A"}
+                        </div>
+                        <div
+                          className={
+                            company.yearlyPercentageChange > 0
+                              ? "text-pink-3"
+                              : company.yearlyPercentageChange < 0
+                                ? "text-green-3"
+                                : "text-grey"
+                          }
+                        >
+                          {company.yearlyPercentageChange > 0 ? "+" : ""}
+                          {company.yearlyPercentageChange.toFixed(1)}%
+                        </div>
+                      </div>
                     )}
                   </TableCell>
+
+                  {/* Unusual Points */}
                   <TableCell>
                     {company.unusualPointsCount > 0 ? (
                       <Popover>
@@ -255,19 +213,26 @@ export function TrendAnalysisCompaniesTable({
                               Unusual Points Detected
                             </h4>
                             <div className="text-xs text-grey mb-3 pb-2 border-b border-grey/20">
-                              Threshold: 4x median year-over-year change + 50% absolute change
+                              Threshold: 4x median year-over-year change + 50%
+                              absolute change
                             </div>
                             {company.excludedData?.unusualPoints &&
                             company.excludedData.unusualPoints.length > 0 ? (
                               company.excludedData.unusualPoints.map(
                                 (point, index) => (
-                                  <div key={index} className="text-sm border-b border-grey/20 pb-2 last:border-b-0">
+                                  <div
+                                    key={index}
+                                    className="text-sm border-b border-grey/20 pb-2 last:border-b-0"
+                                  >
                                     <div className="font-medium text-white mb-1">
                                       Year {point.year}
                                     </div>
                                     <div className="text-grey text-xs space-y-1">
                                       <div className="bg-grey/10 p-2 rounded mb-2">
-                                        <span className="font-medium">Emissions:</span> {point.value.toLocaleString()} tCO₂e
+                                        <span className="font-medium">
+                                          Emissions:
+                                        </span>{" "}
+                                        {point.value.toLocaleString()} tCO₂e
                                       </div>
                                       <div className="text-pink-3 leading-relaxed">
                                         {point.details}

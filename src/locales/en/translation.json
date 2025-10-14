@@ -1386,15 +1386,7 @@
   },
   "trendAnalysis": {
     "insufficientData": "No trendline shown due to insufficient data ({{dataPoints}} points). Need at least 2 data points to build reliable trend.",
-    "insufficientDataWithBaseYear": "Simple trend calculation used due to limited data since {{baseYear}} ({{dataPoints}} points). More data needed for reliable trend analysis.",
-    "insufficientDataSinceBaseYear": "No trendline shown due to insufficient data since base year {{baseYear}} ({{dataPoints}} usable points). Need at least 2 data points since base year to build reliable trend.",
-    "simpleMethodInsufficientData": "Simple trend calculation used due to limited data since base year ({{dataPoints}} points). More data needed for reliable trend analysis.",
-    "simpleMethodPoorDataQuality": "Simple trend calculation used due to data quality issues ({{issues}}). Only {{cleanDataPoints}} reliable data points from {{originalDataPoints}} total. This trend may not be very reliable.",
-    "linearMethodMultipleIssues": "Linear trend used despite data quality issues ({{issues}}). Based on {{cleanDataPoints}} reliable data points from {{originalDataPoints}} total. Interpret with caution.",
-    "weightedLinearMethodStable": "Weighted linear trend used because recent years show stable emissions (variation < 10% of average). Emphasizes recent stable data for current trend representation.",
-    "exponentialMethodBetterFit": "Exponential trend used because it fits the data significantly better than linear trend. Suggests emissions are changing at accelerating or decelerating rate.",
-    "recentExponentialMethodStrongPattern": "Recent exponential trend used because last 4 years show strong exponential pattern that is significantly better than linear. Focuses on most recent trend pattern.",
-    "linearMethodDefault": "Linear trend used as default because data is sufficiently complete or does not show strong non-linear behavior or significant outliers."
+    "insufficientDataSinceBaseYear": "No trendline shown due to insufficient data since base year {{baseYear}} ({{dataPoints}} usable points). Need at least 2 data points since base year to build reliable trend."
   },
   "newsletterArchivePage": {
     "title": "Newsletter archive",
