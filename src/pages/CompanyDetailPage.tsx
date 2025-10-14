@@ -203,11 +203,7 @@ export function CompanyDetailPage() {
           />
         )}
 
-        <EmissionsHistory
-          reportingPeriods={company.reportingPeriods}
-          baseYear={company.baseYear}
-          industry={company.industry}
-        />
+        <EmissionsHistory company={company} />
         <CompanyScope3
           emissions={selectedPeriod.emissions!}
           historicalData={sortedPeriods

@@ -12,7 +12,6 @@ import { ChartTooltip } from "@/components/charts";
 import { ChartData } from "@/types/emissions";
 import { formatEmissionsAbsoluteCompact } from "@/utils/formatting/localization";
 import { generateApproximatedData } from "@/lib/calculations/trends/approximatedData";
-import { selectBestTrendLineMethod } from "@/lib/calculations/trends/analysis";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { isMobile } from "react-device-detect";
@@ -55,31 +54,26 @@ export function ExploreChart({
 }: ExploreChartProps) {
   const { t } = useTranslation();
 
-  // Calculate all common data once for reuse across all steps
+  // Use the passed trendAnalysis instead of calculating our own
   const exploreData = useMemo(() => {
-    if (!companyBaseYear) return null;
+    if (!companyBaseYear || !trendAnalysis) return null;
 
-    // TODO: Re-enable trendAnalysis prop once we fix the data structure issues, ideally we shouldnt need to calculate this here again
     const emissionsData = data
       .filter((d) => d.total !== undefined && d.total !== null)
       .map((d) => ({ year: d.year, total: d.total as number }));
 
     if (emissionsData.length < 2) return null;
 
-    const calculatedTrendAnalysis = selectBestTrendLineMethod(
-      emissionsData,
-      companyBaseYear,
-    );
     const lastReportedYear = Math.max(...emissionsData.map((d) => d.year));
 
     return {
-      trendAnalysis: calculatedTrendAnalysis,
-      cleanData: calculatedTrendAnalysis?.cleanData || [],
+      trendAnalysis: trendAnalysis,
+      cleanData: trendAnalysis?.cleanData || [],
       baseYear: companyBaseYear,
       lastReportedYear,
-      coefficients: calculatedTrendAnalysis?.coefficients,
+      coefficients: trendAnalysis?.coefficients,
     };
-  }, [data, companyBaseYear]);
+  }, [data, companyBaseYear, trendAnalysis]);
 
   const getCommonYears = () => ({
     currentYear: new Date().getFullYear(),

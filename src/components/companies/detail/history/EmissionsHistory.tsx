@@ -21,15 +21,13 @@ import { CategoriesChart } from "./CategoriesChart";
 import { ExploreMode } from "./explore-mode/ExploreMode";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
-import { selectBestTrendLineMethod } from "@/lib/calculations/trends/analysis";
+import { processCompanyDataWithApiSlope } from "@/lib/calculations/trends/analysis";
 import { generateApproximatedData } from "@/lib/calculations/trends/approximatedData";
 import { isMobile } from "react-device-detect";
 
 export function EmissionsHistory({
-  reportingPeriods,
+  company,
   onYearSelect,
-  baseYear,
-  industry,
   features = {
     interpolateScope3: true,
     guessBaseYear: true,
@@ -43,14 +41,15 @@ export function EmissionsHistory({
   const { isAIGenerated, isEmissionsAIGenerated } = useVerificationStatus();
 
   // Check if company is in Financials sector
-  const isFinancialsSector = industry?.industryGics?.sectorCode === "40";
+  const isFinancialsSector =
+    company.industry?.industryGics?.sectorCode === "40";
 
   const hasScope3Categories = useMemo(
     () =>
-      reportingPeriods.some(
+      company.reportingPeriods.some(
         (period) => period.emissions?.scope3?.categories?.length ?? false,
       ),
-    [reportingPeriods],
+    [company.reportingPeriods],
   );
 
   const { dataView, setDataView } = useDataView<DataView>(
@@ -72,15 +71,17 @@ export function EmissionsHistory({
   const { hiddenItems: hiddenCategories, toggleItem: toggleCategory } =
     useHiddenItems<number>([]);
 
-  const companyBaseYear = baseYear?.year;
+  const companyBaseYear = company.baseYear?.year;
 
   // Only interpolate if the feature is enabled
   const processedPeriods = useMemo(
     () =>
       features.interpolateScope3
-        ? interpolateScope3Categories(reportingPeriods as EmissionPeriod[])
-        : reportingPeriods,
-    [reportingPeriods, features.interpolateScope3],
+        ? interpolateScope3Categories(
+            company.reportingPeriods as EmissionPeriod[],
+          )
+        : company.reportingPeriods,
+    [company.reportingPeriods, features.interpolateScope3],
   );
 
   // Process data based on view
@@ -98,14 +99,14 @@ export function EmissionsHistory({
   const trendAnalysis = useMemo(() => {
     if (dataView !== "overview") return null;
 
-    const emissionsData = chartData
-      .filter((d) => d.total !== undefined && d.total !== null)
-      .map((d) => ({ year: d.year, total: d.total as number }));
+    // Use API slope if company data is available and has trendline slope
+    if (company) {
+      return processCompanyDataWithApiSlope(company);
+    }
 
-    if (emissionsData.length < 2) return null;
-
-    return selectBestTrendLineMethod(emissionsData, companyBaseYear);
-  }, [chartData, dataView, companyBaseYear]);
+    // No company data available, no trendline
+    return null;
+  }, [dataView, company]);
 
   const handleYearSelect = (year: number) => {
     onYearSelect?.(year.toString());
@@ -141,7 +142,6 @@ export function EmissionsHistory({
         chartEndYear,
         companyBaseYear,
         trendAnalysis.coefficients,
-        trendAnalysis.cleanData,
       );
     }
 
@@ -174,7 +174,7 @@ export function EmissionsHistory({
     setExploreMode(false);
   };
 
-  if (!reportingPeriods?.length) {
+  if (!company.reportingPeriods?.length) {
     return (
       <div className="text-center py-12">
         <Text variant="body">
