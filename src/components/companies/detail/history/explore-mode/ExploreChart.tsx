@@ -87,24 +87,9 @@ export function ExploreChart({
 
     const result = generateApproximatedData(
       data,
-      undefined, // regression
       endYear,
-      exploreData.baseYear,
       exploreData.coefficients,
-      exploreData.cleanData,
     );
-
-    console.log("generateApproximatedDataForStep Debug:", {
-      endYear,
-      baseYear: exploreData.baseYear,
-      coefficients: exploreData.coefficients,
-      cleanDataLength: exploreData.cleanData?.length,
-      resultYears: result?.map((d) => ({
-        year: d.year,
-        approximated: d.approximated,
-        carbonLaw: d.carbonLaw,
-      })),
-    });
 
     return result;
   };
@@ -424,9 +409,6 @@ export function ExploreChart({
     trendArea?: number;
     parisArea?: number;
   }[] = [];
-  let step4AreaColor: string = "var(--orange-5)";
-  let step4LabelText: string = "";
-  let step4LabelColor: string = "var(--orange-3)";
   if (step === 4 && exploreData?.coefficients) {
     const { parisStartYear, endYear2050 } = getCommonYears();
     step4Years = Array.from(
@@ -471,15 +453,6 @@ export function ExploreChart({
     const paris2050 = step4ParisSegment.find((d) => d.year === 2050)?.carbonLaw;
     if (typeof trend2050 === "number" && typeof paris2050 === "number") {
       step4Difference2050 = trend2050 - paris2050;
-      if (step4Difference2050 < 0) {
-        step4AreaColor = "var(--green-3)"; // green
-        step4LabelColor = "var(--green-3)";
-        step4LabelText = `${formatEmissionsAbsoluteCompact(Math.abs(step4Difference2050), currentLanguage)} t ${t("companies.emissionsHistory.underParisTarget")}`;
-      } else {
-        step4AreaColor = "var(--pink-5)"; // pink
-        step4LabelColor = "var(--pink-3)";
-        step4LabelText = `${formatEmissionsAbsoluteCompact(Math.abs(step4Difference2050), currentLanguage)} t ${t("companies.emissionsHistory.overParisTarget")}`;
-      }
     }
   }
 
@@ -490,9 +463,6 @@ export function ExploreChart({
     carbonLaw: number | undefined;
     areaDiff: number | undefined;
   }[] = [];
-  let step5TotalAreaDifference: number | null = null;
-  let step5AreaLabelText: string = "";
-  let step5AreaLabelColor: string = "var(--white)";
 
   if (step === 5 && exploreData?.coefficients) {
     const { parisStartYear, endYear2050 } = getCommonYears();
@@ -521,16 +491,6 @@ export function ExploreChart({
             areaDiff: areaDiff,
           });
         }
-      }
-
-      step5TotalAreaDifference = totalAreaDifference;
-
-      if (step5TotalAreaDifference < 0) {
-        step5AreaLabelColor = "var(--green-3)";
-        step5AreaLabelText = `${formatEmissionsAbsoluteCompact(Math.abs(step5TotalAreaDifference), currentLanguage)} t ${t("companies.emissionsHistory.totalEmissionsSaved")}`;
-      } else {
-        step5AreaLabelColor = "var(--pink-3)";
-        step5AreaLabelText = `${formatEmissionsAbsoluteCompact(Math.abs(step5TotalAreaDifference), currentLanguage)} t ${t("companies.emissionsHistory.totalEmissionsExcess")}`;
       }
     }
   }
@@ -795,9 +755,9 @@ export function ExploreChart({
                     stroke="var(--grey)"
                     strokeDasharray="3 3"
                     label={{
-                      value: step4LabelText,
+                      value: "",
                       position: "left",
-                      fill: step4LabelColor,
+                      fill: "var(--grey)",
                       fontSize: 12,
                       fontWeight: "bold",
                     }}

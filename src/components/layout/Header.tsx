@@ -26,7 +26,7 @@ interface NavSubLink {
 
 interface NavLink {
   label: string;
-  icon?: JSX.Element;
+  icon?: React.ReactElement;
   path: string;
   sublinks?: NavSubLink[];
 }
@@ -210,7 +210,7 @@ export function Header() {
           <NavigationMenuList>
             {NAV_LINKS.map((item) =>
               item.sublinks ? (
-                <NavigationMenuItem>
+                <NavigationMenuItem key={item.path}>
                   <NavigationMenuTrigger
                     className={cn(
                       "flex gap-2 p-3",
@@ -231,6 +231,7 @@ export function Header() {
                 </NavigationMenuItem>
               ) : (
                 <NavigationMenuItem
+                  key={item.path}
                   className={cn(
                     "h-10 lg:h12 flex items-center",
                     location.pathname.startsWith(

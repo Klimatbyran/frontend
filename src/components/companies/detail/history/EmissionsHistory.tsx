@@ -129,29 +129,17 @@ export function EmissionsHistory({
       return null;
     }
 
-    // Don't show trendline if method is "none"
-    if (trendAnalysis?.method === "none") {
-      return null;
-    }
-
-    // Use coefficients from trend analysis if available
+    // Only show future projections if we have a valid trend analysis with coefficients
     if (trendAnalysis?.coefficients) {
       return generateApproximatedData(
         chartData,
-        undefined, // regression
         chartEndYear,
-        companyBaseYear,
         trendAnalysis.coefficients,
       );
     }
 
-    // Fallback to simple method if no coefficients available
-    return generateApproximatedData(
-      chartData,
-      { slope: 0, intercept: 0 },
-      chartEndYear,
-      companyBaseYear,
-    );
+    // No trend analysis = no future projections
+    return null;
   }, [chartData, dataView, chartEndYear, companyBaseYear, trendAnalysis]);
 
   // Calculate yDomain for explore mode

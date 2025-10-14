@@ -129,61 +129,49 @@ export function TrendAnalysisDashboard() {
   // Calculate trend analysis for all companies using API slope
   useEffect(() => {
     if (!companies) return;
+
+    // Show ALL companies for internal analysis (with or without trends)
     const analyses = companies.map((company) => {
       const trendAnalysis = processCompanyDataWithApiSlope(company);
-      if (trendAnalysis) {
-        // Calculate scope 3 data count for companies with trends (since base year with valid scope 3 data)
-        const baseYear = company.baseYear?.year;
-        const scope3DataCount = baseYear
-          ? company.reportingPeriods?.filter(
-              (period) =>
-                period.emissions?.scope3?.categories &&
-                period.emissions.scope3.categories.length > 0 &&
-                new Date(period.endDate).getFullYear() >= baseYear,
-            ).length || 0
-          : company.reportingPeriods?.filter(
-              (period) =>
-                period.emissions?.scope3?.categories &&
-                period.emissions.scope3.categories.length > 0,
-            ).length || 0;
 
+      // Calculate scope 3 data count for all companies
+      const baseYear = company.baseYear?.year;
+      const scope3DataCount = baseYear
+        ? company.reportingPeriods?.filter(
+            (period) =>
+              period.emissions?.scope3?.categories &&
+              period.emissions.scope3.categories.length > 0 &&
+              new Date(period.endDate).getFullYear() >= baseYear,
+          ).length || 0
+        : company.reportingPeriods?.filter(
+            (period) =>
+              period.emissions?.scope3?.categories &&
+              period.emissions.scope3.categories.length > 0,
+          ).length || 0;
+
+      // Calculate data since base year for display
+      const data =
+        company.reportingPeriods?.filter(
+          (period) =>
+            period.emissions &&
+            period.emissions.calculatedTotalEmissions !== null &&
+            period.emissions.calculatedTotalEmissions !== undefined,
+        ) || [];
+      const dataSinceBaseYear = baseYear
+        ? data.filter(
+            (period) => new Date(period.endDate).getFullYear() >= baseYear,
+          )
+        : data;
+
+      if (trendAnalysis) {
+        // Company has valid trend analysis
         return {
           ...trendAnalysis,
           scope3DataCount,
           company,
         } as TrendAnalysis & { scope3DataCount: number; company: any };
       } else {
-        // Calculate scope 3 data count (since base year with valid scope 3 data)
-        const companyBaseYear = company.baseYear?.year;
-        const scope3DataCount = companyBaseYear
-          ? company.reportingPeriods?.filter(
-              (period) =>
-                period.emissions?.scope3?.categories &&
-                period.emissions.scope3.categories.length > 0 &&
-                new Date(period.endDate).getFullYear() >= companyBaseYear,
-            ).length || 0
-          : company.reportingPeriods?.filter(
-              (period) =>
-                period.emissions?.scope3?.categories &&
-                period.emissions.scope3.categories.length > 0,
-            ).length || 0;
-
-        // Calculate data since base year for display
-        const data =
-          company.reportingPeriods?.filter(
-            (period) =>
-              period.emissions &&
-              period.emissions.calculatedTotalEmissions !== null &&
-              period.emissions.calculatedTotalEmissions !== undefined,
-          ) || [];
-        const dataSinceBaseYear = companyBaseYear
-          ? data.filter(
-              (period) =>
-                new Date(period.endDate).getFullYear() >= companyBaseYear,
-            )
-          : data;
-
-        // Create a simplified placeholder for companies without trends
+        // Company has no trend analysis - show as "no trend" for internal analysis
         return {
           method: "none",
           explanation: "No trendline available",
@@ -197,6 +185,7 @@ export function TrendAnalysisDashboard() {
         } as TrendAnalysis & { scope3DataCount: number; company: any };
       }
     });
+
     setOriginalAnalyses(analyses);
   }, [companies]);
 
@@ -327,7 +316,7 @@ export function TrendAnalysisDashboard() {
       <div className="container mx-auto px-4 py-8">
         <PageHeader
           title="Trend Analysis Dashboard"
-          description="Analysis of trend line method selection across all companies"
+          description="Internal analysis of all companies - showing which have trend projections and which don't"
         />
 
         <TrendAnalysisSummaryCards
