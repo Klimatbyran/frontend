@@ -11,29 +11,32 @@ export interface DataPoint {
 }
 
 /**
- * Comprehensive trend analysis result for a company
- * Contains all calculated metrics and analysis results
+ * Trend analysis result for a company
+ * Contains essential metrics for trendline display and analysis
  */
 export interface TrendAnalysis {
-  companyId: string;
-  companyName: string;
+  // Core trend information
   method: string;
   explanation: string;
   explanationParams?: Record<string, string | number>;
   coefficients?:
     | { slope: number; intercept: number }
     | { a: number; b: number };
-  baseYear?: number;
 
-  // Data metrics
-  originalDataPoints: number;
+  // Display metrics
   cleanDataPoints: number;
-  missingYearsCount: number;
-  outliersCount: number;
-  unusualPointsCount: number;
+  trendDirection: "increasing" | "decreasing" | "stable";
+  yearlyPercentageChange: number;
 
-  // Excluded data for reference
-  excludedData: {
+  // Optional legacy fields for backward compatibility
+  companyId?: string;
+  companyName?: string;
+  baseYear?: number;
+  originalDataPoints?: number;
+  missingYearsCount?: number;
+  outliersCount?: number;
+  unusualPointsCount?: number;
+  excludedData?: {
     missingYears: number[];
     outliers: Array<{
       year: number;
@@ -53,14 +56,9 @@ export interface TrendAnalysis {
       details: string;
     }>;
   };
-
-  // Quality assessment
-  issues: string[];
-  issueCount: number;
-
-  dataPoints: number; // This will be cleanDataPoints
-  missingYears: number; // This will be missingYearsCount
-  hasUnusualPoints: boolean;
-  trendDirection: "increasing" | "decreasing" | "stable";
-  yearlyPercentageChange: number;
+  issues?: string[];
+  issueCount?: number;
+  dataPoints?: number;
+  missingYears?: number;
+  hasUnusualPoints?: boolean;
 }

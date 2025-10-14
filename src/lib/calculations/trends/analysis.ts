@@ -4,8 +4,6 @@
 
 import { TrendAnalysis } from "./types";
 import { calculateBasicStatistics } from "./statistics";
-import { createInsufficientDataAnalysis } from "./utils";
-import { detectUnusualEmissionsPointsEnhanced } from "./outlier-detection";
 
 /**
  * Creates trend analysis using API-provided trendline slope when available
@@ -36,20 +34,6 @@ export const processCompanyDataWithApiSlope = (
     }))
     .sort((a: any, b: any) => a.year - b.year);
 
-  const checkBaseYear = company.baseYear?.year;
-  const checkDataSinceBaseYear = checkBaseYear
-    ? data.filter((d: any) => d.year >= checkBaseYear)
-    : data;
-  const effectiveDataPoints = checkDataSinceBaseYear.length;
-
-  if (effectiveDataPoints < 2) {
-    return createInsufficientDataAnalysis(
-      company,
-      effectiveDataPoints,
-      checkBaseYear,
-    );
-  }
-
   const baseYear = company.baseYear?.year;
   const dataSinceBaseYear = baseYear
     ? data.filter((d: any) => d.year >= baseYear)
@@ -60,14 +44,10 @@ export const processCompanyDataWithApiSlope = (
     value: d.total,
   }));
 
-  // Total data points: all reporting periods with valid emissions data
-  const totalDataPoints = data.length;
-
   // Data since base year: valid emissions data from base year onwards
   const dataSinceBaseYearCount = dataSinceBaseYear.length;
 
   const statistics = calculateBasicStatistics(dataPoints);
-  const unusualPointsResult = detectUnusualEmissionsPointsEnhanced(dataPoints);
 
   // Use API-provided slope
   const apiSlope = company.futureEmissionsTrendSlope;
@@ -89,40 +69,12 @@ export const processCompanyDataWithApiSlope = (
         : "decreasing";
 
   return {
-    companyId: company.wikidataId,
-    companyName: company.name,
     method: "api-provided",
     explanation: "API-provided trendline",
     explanationParams: { slope: apiSlope.toFixed(4) },
     coefficients: { slope: apiSlope, intercept },
-    baseYear: company.baseYear?.year,
-    excludedData: {
-      missingYears: [],
-      outliers: [],
-      unusualPoints: (unusualPointsResult.details || []).map((point) => ({
-        year: point.year,
-        value: point.fromValue, // Use fromValue as the main value
-        fromYear: point.fromYear,
-        toYear: point.toYear,
-        fromValue: point.fromValue,
-        toValue: point.toValue,
-        relativeChange: point.relativeChange,
-        absoluteChange: point.absoluteChange,
-        direction: point.direction,
-        details: point.reason, // Map reason to details
-      })),
-    },
-    issues: [],
-    issueCount: 0,
-    originalDataPoints: totalDataPoints,
     cleanDataPoints: dataSinceBaseYearCount,
-    missingYearsCount: 0,
-    outliersCount: 0,
-    unusualPointsCount: unusualPointsResult.details?.length || 0,
     trendDirection: trendDirection,
     yearlyPercentageChange,
-    dataPoints: dataSinceBaseYearCount,
-    missingYears: 0,
-    hasUnusualPoints: unusualPointsResult.hasUnusualPoints,
   };
 };

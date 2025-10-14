@@ -13,10 +13,12 @@ import { TrendAnalysisCompaniesTable } from "@/components/internalDashboards/Tre
 export function TrendAnalysisDashboard() {
   const { companies, loading, error } = useCompanies();
   const { currentLanguage } = useLanguage();
-  const [originalAnalyses, setOriginalAnalyses] = useState<TrendAnalysis[]>([]);
-  const [filteredCompanies, setFilteredCompanies] = useState<TrendAnalysis[]>(
-    [],
-  );
+  const [originalAnalyses, setOriginalAnalyses] = useState<
+    (TrendAnalysis & { company: any; scope3DataCount: number })[]
+  >([]);
+  const [filteredCompanies, setFilteredCompanies] = useState<
+    (TrendAnalysis & { company: any; scope3DataCount: number })[]
+  >([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState<string>("companyName");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
@@ -148,7 +150,8 @@ export function TrendAnalysisDashboard() {
         return {
           ...trendAnalysis,
           scope3DataCount,
-        } as TrendAnalysis & { scope3DataCount: number };
+          company,
+        } as TrendAnalysis & { scope3DataCount: number; company: any };
       } else {
         // Calculate scope 3 data count (since base year with valid scope 3 data)
         const companyBaseYear = company.baseYear?.year;
@@ -165,54 +168,33 @@ export function TrendAnalysisDashboard() {
                 period.emissions.scope3.categories.length > 0,
             ).length || 0;
 
-        // Calculate total data points (valid emissions data)
-        const totalDataPoints =
+        // Calculate data since base year for display
+        const data =
           company.reportingPeriods?.filter(
             (period) =>
               period.emissions &&
               period.emissions.calculatedTotalEmissions !== null &&
               period.emissions.calculatedTotalEmissions !== undefined,
-          ).length || 0;
-
-        // Calculate data since base year
-        const dataSinceBaseYearCount = companyBaseYear
-          ? company.reportingPeriods?.filter(
+          ) || [];
+        const dataSinceBaseYear = companyBaseYear
+          ? data.filter(
               (period) =>
-                period.emissions &&
-                period.emissions.calculatedTotalEmissions !== null &&
-                period.emissions.calculatedTotalEmissions !== undefined &&
                 new Date(period.endDate).getFullYear() >= companyBaseYear,
-            ).length || 0
-          : totalDataPoints;
+            )
+          : data;
 
-        // Create a placeholder for companies without trends
+        // Create a simplified placeholder for companies without trends
         return {
-          companyId: company.wikidataId,
-          companyName: company.name,
           method: "none",
           explanation: "No trendline available",
           explanationParams: {},
           coefficients: undefined,
-          baseYear: company.baseYear?.year,
-          excludedData: {
-            missingYears: [],
-            outliers: [],
-            unusualPoints: [],
-          },
-          issues: [],
-          issueCount: 0,
-          originalDataPoints: totalDataPoints,
-          cleanDataPoints: dataSinceBaseYearCount,
-          missingYearsCount: 0,
-          outliersCount: 0,
-          unusualPointsCount: 0,
+          cleanDataPoints: dataSinceBaseYear.length,
           trendDirection: "stable" as const,
           yearlyPercentageChange: 0,
-          dataPoints: company.reportingPeriods?.length || 0,
-          missingYears: 0,
-          hasUnusualPoints: false,
           scope3DataCount,
-        } as TrendAnalysis & { scope3DataCount: number };
+          company,
+        } as TrendAnalysis & { scope3DataCount: number; company: any };
       }
     });
     setOriginalAnalyses(analyses);
@@ -223,8 +205,8 @@ export function TrendAnalysisDashboard() {
     if (!originalAnalyses.length) return;
 
     const filtered = originalAnalyses
-      .filter((company) => {
-        const matchesSearch = company.companyName
+      .filter((analysis) => {
+        const matchesSearch = analysis.company.name
           .toLowerCase()
           .includes(searchTerm.toLowerCase());
         return matchesSearch;
@@ -236,6 +218,11 @@ export function TrendAnalysisDashboard() {
         if (typeof aValue === "string") {
           aValue = aValue.toLowerCase();
           bValue = bValue.toLowerCase();
+        }
+
+        if (sortBy === "companyName") {
+          aValue = a.company.name.toLowerCase();
+          bValue = b.company.name.toLowerCase();
         }
 
         if (aValue < bValue) return sortOrder === "asc" ? -1 : 1;
@@ -255,39 +242,58 @@ export function TrendAnalysisDashboard() {
     }
   };
 
-  // Calculate new summary metrics
+  // Calculate new summary metrics directly from company data
   const avgDataPoints =
-    filteredCompanies.reduce(
-      (sum, company) => sum + company.originalDataPoints,
-      0,
-    ) / filteredCompanies.length || 0;
+    filteredCompanies.reduce((sum, analysis) => {
+      const totalDataPoints =
+        analysis.company.reportingPeriods?.filter(
+          (period: any) =>
+            period.emissions &&
+            period.emissions.calculatedTotalEmissions !== null &&
+            period.emissions.calculatedTotalEmissions !== undefined,
+        ).length || 0;
+      return sum + totalDataPoints;
+    }, 0) / filteredCompanies.length || 0;
+
   const avgCleanDataPoints =
-    filteredCompanies.reduce(
-      (sum, company) => sum + company.cleanDataPoints,
-      0,
-    ) / filteredCompanies.length || 0;
+    filteredCompanies.reduce((sum, analysis) => {
+      const baseYear = analysis.company.baseYear?.year;
+      const data =
+        analysis.company.reportingPeriods?.filter(
+          (period: any) =>
+            period.emissions &&
+            period.emissions.calculatedTotalEmissions !== null &&
+            period.emissions.calculatedTotalEmissions !== undefined,
+        ) || [];
+      const dataSinceBaseYear = baseYear
+        ? data.filter(
+            (period: any) => new Date(period.endDate).getFullYear() >= baseYear,
+          )
+        : data;
+      return sum + dataSinceBaseYear.length;
+    }, 0) / filteredCompanies.length || 0;
 
   // Count trend directions
   const decreasingTrendCount = filteredCompanies.filter(
-    (company) => company.trendDirection === "decreasing",
+    (analysis) => analysis.trendDirection === "decreasing",
   ).length;
   const increasingTrendCount = filteredCompanies.filter(
-    (company) => company.trendDirection === "increasing",
+    (analysis) => analysis.trendDirection === "increasing",
   ).length;
   const noTrendCount = filteredCompanies.filter(
-    (company) => company.method === "none",
+    (analysis) => analysis.method === "none",
   ).length;
 
   // Count companies with >11% decreasing emissions (meets Carbon Law)
   const meetsCarbonLawCount = filteredCompanies.filter(
-    (company) => company.yearlyPercentageChange < -11,
+    (analysis) => analysis.yearlyPercentageChange < -11,
   ).length;
 
   // Count companies that meet Paris Agreement (cumulative emissions 2025-2050)
-  const meetsParisCount = filteredCompanies.filter((company) => {
+  const meetsParisCount = filteredCompanies.filter((analysis) => {
     // Use the trend analysis that was already calculated in useEffect
-    const trendAnalysis = company.method !== "none" ? company : null;
-    const meetsParis = calculateMeetsParis(company, trendAnalysis);
+    const trendAnalysis = analysis.method !== "none" ? analysis : null;
+    const meetsParis = calculateMeetsParis(analysis.company, trendAnalysis);
 
     return meetsParis;
   }).length;
