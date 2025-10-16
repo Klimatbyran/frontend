@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { RankedCompany } from "@/types/company";
-import { useSectorNames } from "@/hooks/companies/useCompanyFilters";
+import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 
 export const useChartData = (
   companies: RankedCompany[],

@@ -3,6 +3,7 @@ import { Text } from "@/components/ui/text";
 import { Input } from "@/components/ui/input";
 import { useCompanies } from "@/hooks/companies/useCompanies";
 import { processCompanyDataWithApiSlope } from "@/lib/calculations/trends/analysis";
+import { calculateMeetsParis } from "@/lib/calculations/trends/meetsParis";
 import type { TrendAnalysis } from "@/lib/calculations/trends/types";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { PageSEO } from "@/components/SEO/PageSEO";
@@ -27,103 +28,6 @@ export function TrendAnalysisDashboard() {
     const basePath = currentLanguage === "sv" ? "/sv" : "/en";
     const url = `${window.location.origin}${basePath}/companies/${companyId}`;
     window.open(url, "_blank");
-  };
-
-  // Calculate if company meets Paris Agreement based on cumulative emissions 2025-2050
-  const calculateMeetsParis = (
-    company: any,
-    trendAnalysis: TrendAnalysis | null,
-  ): boolean => {
-    if (!trendAnalysis || !trendAnalysis.coefficients) return false;
-
-    // Get 2025 emissions (actual or estimated)
-    const emissions2025 = get2025Emissions(company, trendAnalysis);
-    if (!emissions2025) return false;
-
-    // Extract slope from coefficients (handle both formats)
-    const slope =
-      "slope" in trendAnalysis.coefficients
-        ? trendAnalysis.coefficients.slope
-        : trendAnalysis.coefficients.a;
-
-    // Calculate cumulative emissions for company trendline 2025-2050
-    const companyCumulativeEmissions = calculateCumulativeEmissions(
-      emissions2025,
-      slope,
-      2025,
-      2050,
-    );
-
-    // Calculate cumulative emissions for Carbon Law (11.72% yearly decrease) 2025-2050
-    const carbonLawCumulativeEmissions = calculateCarbonLawCumulativeEmissions(
-      emissions2025,
-      2025,
-      2050,
-    );
-
-    // Company meets Paris if their cumulative emissions <= Carbon Law cumulative emissions
-    return companyCumulativeEmissions <= carbonLawCumulativeEmissions;
-  };
-
-  // Get 2025 emissions (actual data or estimated from trendline)
-  const get2025Emissions = (
-    company: any,
-    trendAnalysis: TrendAnalysis | null,
-  ): number | null => {
-    if (!trendAnalysis || !trendAnalysis.coefficients) return null;
-
-    // Check if we have actual 2025 data
-    const actual2025Data = company.reportingPeriods?.find(
-      (period: any) => new Date(period.endDate).getFullYear() === 2025,
-    );
-
-    if (actual2025Data?.emissions?.calculatedTotalEmissions) {
-      return actual2025Data.emissions.calculatedTotalEmissions;
-    }
-
-    // Estimate 2025 emissions from trendline
-    const slope =
-      "slope" in trendAnalysis.coefficients
-        ? trendAnalysis.coefficients.slope
-        : trendAnalysis.coefficients.a;
-    const intercept =
-      "intercept" in trendAnalysis.coefficients
-        ? trendAnalysis.coefficients.intercept
-        : trendAnalysis.coefficients.b;
-    return slope * 2025 + intercept;
-  };
-
-  // Calculate cumulative emissions for a linear trendline from startYear to endYear
-  const calculateCumulativeEmissions = (
-    startEmissions: number,
-    slope: number,
-    startYear: number,
-    endYear: number,
-  ): number => {
-    let cumulative = 0;
-    for (let year = startYear; year <= endYear; year++) {
-      // Calculate emissions for this year using the trendline equation
-      // emissions = slope * year + intercept, where intercept = startEmissions - slope * startYear
-      const emissions = slope * year + (startEmissions - slope * startYear);
-      cumulative += Math.max(0, emissions); // Don't allow negative emissions
-    }
-    return cumulative;
-  };
-
-  // Calculate cumulative emissions for Carbon Law (11.72% yearly decrease)
-  const calculateCarbonLawCumulativeEmissions = (
-    startEmissions: number,
-    startYear: number,
-    endYear: number,
-  ): number => {
-    let cumulative = 0;
-    let currentEmissions = startEmissions;
-
-    for (let year = startYear; year <= endYear; year++) {
-      cumulative += currentEmissions;
-      currentEmissions *= 1 - 0.1172; // 11.72% yearly decrease
-    }
-    return cumulative;
   };
 
   // Calculate trend analysis for all companies using API slope

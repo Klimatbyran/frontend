@@ -1,10 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import {
-  sectorColors,
-  getCompanyColors,
-} from "@/hooks/companies/useCompanyFilters";
+import { sectorColors, getCompanyColors } from "@/lib/constants/companyColors";
 import {
   formatEmissionsAbsolute,
   formatPercent,
