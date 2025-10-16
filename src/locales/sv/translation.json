@@ -1,9 +1,13 @@
 {
   "yes": "Ja",
   "no": "Nej",
+  "unknown": "Okänt",
+  "all": "Alla",
   "emissionsUnit": "tCO₂e",
   "header": {
     "companies": "Företag",
+    "companiesSectors": "Utforska - Sektorer",
+    "companiesExplore": "Utforska - Företag",
     "municipalities": "Kommuner",
     "municipalitiesRanked": "Topplistor",
     "municipalitiesExplore": "Utforska",
@@ -256,6 +260,7 @@
       "list": "Lista"
     },
     "filter": "Filter",
+    "sort": "Sortera",
     "sortBy": "Sortera efter",
     "searchInFilter": "Sök i filter...",
     "noFiltersFound": "Inga filter hittades.",
@@ -263,8 +268,20 @@
       "emissionsChange": "Utsläppsförändring (%)",
       "totalEmissions": "Totala utsläpp",
       "scope3Coverage": "Scope 3-rapportering",
+      "meetsParis": "Uppfyller Parisavtalet",
       "nameAsc": "Företagsnamn A-Ö",
       "nameDesc": "Företagsnamn Ö-A"
+    },
+    "filteringOptions": {
+      "meetsParis": "Uppfyller Parisavtalet",
+      "meetsParisYes": "Ja",
+      "meetsParisNo": "Nej",
+      "meetsParisUnknown": "Okänt"
+    },
+    "sortDirection": {
+      "none": "Standard",
+      "asc": "Låg till hög",
+      "desc": "Hög till låg"
     },
     "sector": "Sektor",
     "errorTitle": "Det gick inte att hämta företagsinformation",
@@ -944,6 +961,7 @@
       "emissionsChangeRate": "Förändringstakt",
       "emissionsChangeRateInfo": "Förändringstakt för utsläpp jämfört med föregående rapporteringsperiod.",
       "emissionsChangeRateInfoExtended": "Det här värdet är ovanligt högt på grund av inkonsekvent rapportering mellan de två senaste perioderna, vilket gör att procentförändringen inte speglar den faktiska utvecklingen.",
+      "meetsParis": "Är {{name}} på väg att uppfylla Parisavtalet?",
       "turnover": "Omsättning",
       "turnoverAmount": "mdr",
       "employees": "Anställda",

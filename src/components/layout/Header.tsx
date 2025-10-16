@@ -36,6 +36,16 @@ const NAV_LINKS: NavLink[] = [
     label: "header.companies",
     icon: <BarChart3 className="w-4 h-4" aria-hidden="true" />,
     path: `/companies`,
+    sublinks: [
+      {
+        label: "header.companiesSectors",
+        path: `/companies/sectors`,
+      },
+      {
+        label: "header.companiesExplore",
+        path: `/companies`,
+      },
+    ],
   },
   {
     label: "header.municipalities",
