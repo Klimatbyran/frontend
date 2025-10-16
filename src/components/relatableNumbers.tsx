@@ -7,13 +7,14 @@ import { useTranslation, Trans } from "react-i18next";
 import { Flame, Lightbulb } from "lucide-react";
 import { SupportedLanguage } from "@/lib/languageDetection";
 import { cn } from "@/lib/utils";
-import { formatEmissionsAbsolute } from "@/utils/formatting/localization";
+import { formatEmissionsAbsolute, formatPercentChange } from "@/utils/formatting/localization";
 
 type RelatableNumbersProps = {
   companyName: string;
   emissionsChange: number;
   emissionsChangeStatus: string;
   currentLanguage: SupportedLanguage;
+  yearOverYearChange: number | null;
 };
 
 type Item = {
@@ -34,6 +35,7 @@ const RelatableNumbers = ({
   currentLanguage,
   companyName,
   emissionsChangeStatus,
+  yearOverYearChange,
 }: RelatableNumbersProps) => {
   const { t } = useTranslation();
   const areaBurnt = calculateAreaBurnt(emissionsChange, currentLanguage);
@@ -113,6 +115,8 @@ const RelatableNumbers = ({
               emissionsChange,
               currentLanguage,
             ),
+            yearOverYearChange: yearOverYearChange !== null ? formatPercentChange(yearOverYearChange, currentLanguage, true) : "",
+
           }}
         />
       </Text>
