@@ -151,14 +151,7 @@ export function CompaniesListPage() {
         </div>
       </div>
 
-      <CompanyList
-        companies={filteredCompanies}
-        searchQuery={searchQuery}
-        sectors={sectors}
-        meetsParisFilter={meetsParisFilter}
-        sortBy={sortBy}
-        sortDirection={sortDirection}
-      />
+      <CompanyList companies={filteredCompanies} />
     </>
   );
 }

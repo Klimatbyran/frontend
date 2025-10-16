@@ -21,7 +21,7 @@ import { CategoriesChart } from "./CategoriesChart";
 import { ExploreMode } from "./explore-mode/ExploreMode";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
-import { processCompanyDataWithApiSlope } from "@/lib/calculations/trends/analysis";
+import { calculateTrendline } from "@/lib/calculations/trends/analysis";
 import { generateApproximatedData } from "@/lib/calculations/trends/approximatedData";
 import { isMobile } from "react-device-detect";
 
@@ -101,7 +101,7 @@ export function EmissionsHistory({
 
     // Use API slope if company data is available and has trendline slope
     if (company) {
-      return processCompanyDataWithApiSlope(company);
+      return calculateTrendline(company);
     }
 
     // No company data available, no trendline

@@ -1,16 +1,13 @@
-/**
- * Trend Analysis Functions
- */
-
 import { TrendAnalysis } from "./types";
 import { calculateBasicStatistics } from "./statistics";
+import type { CompanyDetails, RankedCompany } from "@/types/company";
 
 /**
- * Creates trend analysis using API-provided trendline slope when available
+ * Calculates trendline analysis using API-provided slope when available
  * Returns null if API slope is not available (backend determined insufficient data)
  */
-export const processCompanyDataWithApiSlope = (
-  company: any,
+export const calculateTrendline = (
+  company: CompanyDetails | RankedCompany,
 ): TrendAnalysis | null => {
   // Early return if API doesn't provide slope (backend determined insufficient data)
   if (
@@ -23,23 +20,23 @@ export const processCompanyDataWithApiSlope = (
   // Build trend analysis using API-provided slope
   const data = company.reportingPeriods
     .filter(
-      (period: any) =>
+      (period) =>
         period.emissions &&
         period.emissions.calculatedTotalEmissions !== null &&
         period.emissions.calculatedTotalEmissions !== undefined,
     )
-    .map((period: any) => ({
+    .map((period) => ({
       year: new Date(period.endDate).getFullYear(),
       total: period.emissions!.calculatedTotalEmissions!,
     }))
-    .sort((a: any, b: any) => a.year - b.year);
+    .sort((a, b) => a.year - b.year);
 
   const baseYear = company.baseYear?.year;
   const dataSinceBaseYear = baseYear
-    ? data.filter((d: any) => d.year >= baseYear)
+    ? data.filter((d) => d.year >= baseYear)
     : data;
 
-  const dataPoints = dataSinceBaseYear.map((d: any) => ({
+  const dataPoints = dataSinceBaseYear.map((d) => ({
     year: d.year,
     value: d.total,
   }));

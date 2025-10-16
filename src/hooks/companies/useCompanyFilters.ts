@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import type { RankedCompany } from "@/types/company";
-import { processCompanyDataWithApiSlope } from "@/lib/calculations/trends/analysis";
+import { calculateTrendline } from "@/lib/calculations/trends/analysis";
 import { calculateMeetsParis } from "@/lib/calculations/trends/meetsParis";
 import { SECTOR_NAMES } from "@/lib/constants/sectors";
 import type { CompanySector } from "@/lib/constants/sectors";
@@ -55,7 +55,7 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
         const matchesMeetsParis = (() => {
           if (meetsParisFilter === "all") return true;
 
-          const trendAnalysis = processCompanyDataWithApiSlope(company);
+          const trendAnalysis = calculateTrendline(company);
           const meetsParis = trendAnalysis
             ? calculateMeetsParis(company, trendAnalysis)
             : null; // null = unknown
@@ -107,8 +107,8 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
               : bCategories - aCategories;
           }
           case "meets_paris": {
-            const aTrendAnalysis = processCompanyDataWithApiSlope(a);
-            const bTrendAnalysis = processCompanyDataWithApiSlope(b);
+            const aTrendAnalysis = calculateTrendline(a);
+            const bTrendAnalysis = calculateTrendline(b);
             const aMeetsParis = aTrendAnalysis
               ? calculateMeetsParis(a, aTrendAnalysis)
               : null; // null = unknown

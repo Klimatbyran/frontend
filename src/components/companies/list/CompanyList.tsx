@@ -8,28 +8,15 @@ import {
   formatEmissionsAbsolute,
   formatPercentChange,
 } from "@/utils/formatting/localization";
-import { processCompanyDataWithApiSlope } from "@/lib/calculations/trends/analysis";
+import { calculateTrendline } from "@/lib/calculations/trends/analysis";
 import { calculateMeetsParis } from "@/lib/calculations/trends/meetsParis";
 import type { RankedCompany } from "@/types/company";
-import type { SortOption } from "@/hooks/companies/useCompanySorting";
 
 interface CompanyListProps {
   companies: RankedCompany[];
-  searchQuery: string;
-  sectors: string[];
-  meetsParisFilter: "all" | "yes" | "no" | "unknown";
-  sortBy: SortOption;
-  sortDirection: "asc" | "desc";
 }
 
-export function CompanyList({
-  companies,
-  searchQuery,
-  sectors,
-  meetsParisFilter,
-  sortBy,
-  sortDirection,
-}: CompanyListProps) {
+export function CompanyList({ companies }: CompanyListProps) {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
   const { isEmissionsAIGenerated } = useVerificationStatus();
@@ -77,7 +64,7 @@ export function CompanyList({
         (previousPeriod && isEmissionsAIGenerated(previousPeriod));
 
       // Calculate trend analysis and meets Paris status
-      const trendAnalysis = processCompanyDataWithApiSlope(company);
+      const trendAnalysis = calculateTrendline(company);
       const meetsParis = trendAnalysis
         ? calculateMeetsParis(company, trendAnalysis)
         : null; // null = unknown

@@ -1,3 +1,4 @@
+// TODO: Update and fix explore mode after changes to trendline and chart views
 import {
   Line,
   XAxis,

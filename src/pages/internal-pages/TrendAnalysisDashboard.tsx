@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Text } from "@/components/ui/text";
 import { Input } from "@/components/ui/input";
 import { useCompanies } from "@/hooks/companies/useCompanies";
-import { processCompanyDataWithApiSlope } from "@/lib/calculations/trends/analysis";
+import { calculateTrendline } from "@/lib/calculations/trends/analysis";
 import { calculateMeetsParis } from "@/lib/calculations/trends/meetsParis";
 import type { TrendAnalysis } from "@/lib/calculations/trends/types";
 import { PageHeader } from "@/components/layout/PageHeader";
@@ -36,7 +36,7 @@ export function TrendAnalysisDashboard() {
 
     // Show ALL companies for internal analysis (with or without trends)
     const analyses = companies.map((company) => {
-      const trendAnalysis = processCompanyDataWithApiSlope(company);
+      const trendAnalysis = calculateTrendline(company);
 
       // Calculate scope 3 data count for all companies
       const baseYear = company.baseYear?.year;
