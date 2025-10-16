@@ -1,9 +1,7 @@
 import React from "react";
 import { RankedCompany } from "@/types/company";
-import {
-  CompanySector,
-  useSectorNames,
-} from "@/hooks/companies/useCompanyFilters";
+import type { CompanySector } from "@/lib/constants/sectors";
+import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 import SectorEmissionsChart from "@/components/companies/sectors/charts/SectorEmissionsChart";
 import EmissionsSourcesAnalysis from "./scopes/EmissionsSourcesAnlaysis";
 import EmissionsTrendAnalysis from "./trends/EmissionsTrendAnalysis";

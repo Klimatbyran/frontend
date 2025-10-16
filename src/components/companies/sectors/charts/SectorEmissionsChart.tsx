@@ -10,11 +10,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import type { LegendPayload } from "recharts";
-import {
-  sectorColors,
-  useSectorNames,
-  getCompanyColors,
-} from "@/hooks/companies/useCompanyFilters";
+import { sectorColors, getCompanyColors } from "@/lib/constants/companyColors";
+import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 import { RankedCompany } from "@/types/company";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { useChartData } from "@/hooks/companies/useChartData";

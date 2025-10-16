@@ -1,9 +1,13 @@
 {
   "yes": "Yes",
   "no": "No",
+  "unknown": "Unknown",
+  "all": "All",
   "emissionsUnit": "tCO₂e",
   "header": {
     "companies": "Companies",
+    "companiesSectors": "Explore - Sectors",
+    "companiesExplore": "Explore - Companies",
     "municipalities": "Municipalities",
     "municipalitiesRanked": "Top Lists",
     "municipalitiesExplore": "Explore",
@@ -256,6 +260,7 @@
       "list": "List"
     },
     "filter": "Filter",
+    "sort": "Sort",
     "sortBy": "Sort By",
     "searchInFilter": "Search filters",
     "noFiltersFound": "No matching filters found.",
@@ -263,8 +268,20 @@
       "emissionsChange": "Change in Emissions (%)",
       "totalEmissions": "Total Emissions",
       "scope3Coverage": "Scope 3 Coverage",
+      "meetsParis": "Meets Paris Agreement",
       "nameAsc": "Company Name A-Z",
       "nameDesc": "Company Name Z-A"
+    },
+    "filteringOptions": {
+      "meetsParis": "Meets Paris Agreement",
+      "meetsParisYes": "Yes",
+      "meetsParisNo": "No",
+      "meetsParisUnknown": "Unknown"
+    },
+    "sortDirection": {
+      "none": "Default",
+      "asc": "Low to High",
+      "desc": "High to Low"
     },
     "sector": "Sector",
     "errorTitle": "Failed to retrieve company information",
@@ -945,6 +962,7 @@
       "emissionsChangeRate": "Change Rate",
       "emissionsChangeRateInfo": "Change rate of emissions compared to the previous reporting period.",
       "emissionsChangeRateInfoExtended": "This value is so large due to inconsistencies in reported data between the last two reporting periods, thus this value is not representative of actual changes.",
+      "meetsParis": "Is {{name}} on track to meet the Paris Agreement?",
       "turnover": "Turnover",
       "turnoverAmount": "bn",
       "employees": "Employees",
@@ -1386,15 +1404,7 @@
   },
   "trendAnalysis": {
     "insufficientData": "No trendline shown due to insufficient data ({{dataPoints}} points). Need at least 2 data points to build reliable trend.",
-    "insufficientDataWithBaseYear": "Simple trend calculation used due to limited data since {{baseYear}} ({{dataPoints}} points). More data needed for reliable trend analysis.",
-    "insufficientDataSinceBaseYear": "No trendline shown due to insufficient data since base year {{baseYear}} ({{dataPoints}} usable points). Need at least 2 data points since base year to build reliable trend.",
-    "simpleMethodInsufficientData": "Simple trend calculation used due to limited data since base year ({{dataPoints}} points). More data needed for reliable trend analysis.",
-    "simpleMethodPoorDataQuality": "Simple trend calculation used due to data quality issues ({{issues}}). Only {{cleanDataPoints}} reliable data points from {{originalDataPoints}} total. This trend may not be very reliable.",
-    "linearMethodMultipleIssues": "Linear trend used despite data quality issues ({{issues}}). Based on {{cleanDataPoints}} reliable data points from {{originalDataPoints}} total. Interpret with caution.",
-    "weightedLinearMethodStable": "Weighted linear trend used because recent years show stable emissions (variation < 10% of average). Emphasizes recent stable data for current trend representation.",
-    "exponentialMethodBetterFit": "Exponential trend used because it fits the data significantly better than linear trend. Suggests emissions are changing at accelerating or decelerating rate.",
-    "recentExponentialMethodStrongPattern": "Recent exponential trend used because last 4 years show strong exponential pattern that is significantly better than linear. Focuses on most recent trend pattern.",
-    "linearMethodDefault": "Linear trend used as default because data is sufficiently complete or does not show strong non-linear behavior or significant outliers."
+    "insufficientDataSinceBaseYear": "No trendline shown due to insufficient data since base year {{baseYear}} ({{dataPoints}} usable points). Need at least 2 data points since base year to build reliable trend."
   },
   "newsletterArchivePage": {
     "title": "Newsletter archive",

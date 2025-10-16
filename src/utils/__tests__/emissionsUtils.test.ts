@@ -5,7 +5,7 @@ import {
   getValidData,
   getMinYear,
   calculateParisValue,
-} from "../calculations/emissions/utils";
+} from "../calculations/emissionsCalculations";
 
 describe("generateYearRange", () => {
   it("should generate range from start to end inclusive", () => {

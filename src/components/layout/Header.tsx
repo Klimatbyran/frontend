@@ -26,7 +26,7 @@ interface NavSubLink {
 
 interface NavLink {
   label: string;
-  icon?: JSX.Element;
+  icon?: React.ReactElement;
   path: string;
   sublinks?: NavSubLink[];
 }
@@ -36,6 +36,16 @@ const NAV_LINKS: NavLink[] = [
     label: "header.companies",
     icon: <BarChart3 className="w-4 h-4" aria-hidden="true" />,
     path: `/companies`,
+    sublinks: [
+      {
+        label: "header.companiesSectors",
+        path: `/companies/sectors`,
+      },
+      {
+        label: "header.companiesExplore",
+        path: `/companies`,
+      },
+    ],
   },
   {
     label: "header.municipalities",
@@ -210,7 +220,7 @@ export function Header() {
           <NavigationMenuList>
             {NAV_LINKS.map((item) =>
               item.sublinks ? (
-                <NavigationMenuItem>
+                <NavigationMenuItem key={item.path}>
                   <NavigationMenuTrigger
                     className={cn(
                       "flex gap-2 p-3",
@@ -231,6 +241,7 @@ export function Header() {
                 </NavigationMenuItem>
               ) : (
                 <NavigationMenuItem
+                  key={item.path}
                   className={cn(
                     "h-10 lg:h12 flex items-center",
                     location.pathname.startsWith(

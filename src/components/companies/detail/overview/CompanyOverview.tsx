@@ -12,10 +12,8 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import {
-  useSectorNames,
-  SectorCode,
-} from "@/hooks/companies/useCompanyFilters";
+import { useSectorNames } from "@/hooks/companies/useCompanySectors";
+import type { SectorCode } from "@/lib/constants/sectors";
 import { useLanguage } from "@/components/LanguageProvider";
 import {
   formatEmissionsAbsolute,
@@ -211,7 +209,11 @@ export function CompanyOverview({
                   yearOverYearChange < 0 ? "text-orange-2" : "text-pink-3"
                 }
               >
-                {formatPercentChange(yearOverYearChange, currentLanguage, true)}
+                {formatPercentChange(
+                  yearOverYearChange,
+                  currentLanguage,
+                  false,
+                )}
               </span>
             ) : (
               <span className="text-grey">

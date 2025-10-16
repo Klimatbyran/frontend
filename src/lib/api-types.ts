@@ -187,7 +187,7 @@ export interface paths {
                                 startDate: string;
                                 endDate: string;
                                 reportURL: string | null;
-                                emissionsTrend?: {
+                                emissionsChangeLastTwoYears?: {
                                     absolute: number | null;
                                     adjusted: number | null;
                                 };
@@ -281,6 +281,7 @@ export interface paths {
                                     } | null;
                                 } | null;
                             }[];
+                            futureEmissionsTrendSlope: number | null;
                             industry: {
                                 industryGics: {
                                     sectorCode: string;
@@ -548,11 +549,12 @@ export interface paths {
                                         };
                                     } | null;
                                 } | null;
-                                emissionsTrend?: {
+                                emissionsChangeLastTwoYears?: {
                                     absolute: number | null;
                                     adjusted: number | null;
                                 };
                             }[];
+                            futureEmissionsTrendSlope: number | null;
                             industry: {
                                 id: string;
                                 industryGics: {
@@ -877,7 +879,7 @@ export interface paths {
                                 startDate: string;
                                 endDate: string;
                                 reportURL: string | null;
-                                emissionsTrend?: {
+                                emissionsChangeLastTwoYears?: {
                                     absolute: number | null;
                                     adjusted: number | null;
                                 };
@@ -971,6 +973,7 @@ export interface paths {
                                     } | null;
                                 } | null;
                             }[];
+                            futureEmissionsTrendSlope: number | null;
                             industry: {
                                 industryGics: {
                                     sectorCode: string;
@@ -1055,7 +1058,7 @@ export interface paths {
         };
         /**
          * Get all municipalities
-         * @description Retrieve a list of all municipalities with data about their emissions, carbon budget, climate plans, bike infrastructure, procurements, and much more.
+         * @description Retrieve a list of all municipalities with data about their emissions, carbon budget, climate plans, bike infrastructure, procurements, and much more. Returns 304 Not Modified if the resource has not changed since the last request (based on ETag).
          */
         get: {
             parameters: {
