@@ -198,6 +198,8 @@ export function CompanyDetailPage() {
             currentLanguage={currentLanguage}
             companyName={company.name}
             emissionsChangeStatus={emissionsChangeStatus}
+            yearOverYearChange={yearOverYearChange}
+
           />
         )}
 
