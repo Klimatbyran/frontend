@@ -10,6 +10,7 @@ import {
   formatEmployeeCount,
 } from "@/utils/formatting/localization";
 import { calculateRateOfChange } from "@/utils/calculations/general";
+import { calculateEmissionsChange } from "@/utils/calculations/emissionsCalculations";
 
 const companyChangeRate = (company: RankedCompany) =>
   calculateRateOfChange(
@@ -105,9 +106,10 @@ export const InternalDashboard = () => {
     )
     .map(({ company }) => company);
   const getChangeRate = (company: RankedCompany) => {
-    const changeRate = calculateRateOfChange(
-      company.reportingPeriods[0]?.emissions?.calculatedTotalEmissions,
-      company.reportingPeriods[1]?.emissions?.calculatedTotalEmissions,
+    // Calculate emissions change from previous period
+    const changeRate = calculateEmissionsChange(
+      company.reportingPeriods[0],
+      company.reportingPeriods[1],
     );
 
     return changeRate

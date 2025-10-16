@@ -39,7 +39,6 @@ export interface EmissionsFeatures {
   interpolateScope3: boolean;
   guessBaseYear: boolean;
   compositeTrend: boolean;
-  outlierDetection: boolean;
 }
 
 import type { CompanyDetails } from "@/types/company";

@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import type { RankedCompany } from "@/types/company";
 import { calculateTrendline } from "@/lib/calculations/trends/analysis";
 import { calculateMeetsParis } from "@/lib/calculations/trends/meetsParis";
+import { calculateEmissionsChange } from "@/utils/calculations/emissionsCalculations";
 import { SECTOR_NAMES } from "@/lib/constants/sectors";
 import type { CompanySector } from "@/lib/constants/sectors";
 import type { SortOption } from "./useCompanySorting";
@@ -72,18 +73,18 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
         // Sort companies
         switch (sortBy) {
           case "emissions_reduction": {
+            // Calculate year-over-year emissions change for both companies
             const aChange =
-              ((a.reportingPeriods[0]?.emissions?.calculatedTotalEmissions ||
-                0) -
-                (a.reportingPeriods[1]?.emissions?.calculatedTotalEmissions ||
-                  0)) /
-              (a.reportingPeriods[1]?.emissions?.calculatedTotalEmissions || 1);
+              calculateEmissionsChange(
+                a.reportingPeriods[0],
+                a.reportingPeriods[1],
+              ) || 0;
             const bChange =
-              ((b.reportingPeriods[0]?.emissions?.calculatedTotalEmissions ||
-                0) -
-                (b.reportingPeriods[1]?.emissions?.calculatedTotalEmissions ||
-                  0)) /
-              (b.reportingPeriods[1]?.emissions?.calculatedTotalEmissions || 1);
+              calculateEmissionsChange(
+                b.reportingPeriods[0],
+                b.reportingPeriods[1],
+              ) || 0;
+
             return sortDirection === "asc"
               ? aChange - bChange
               : bChange - aChange;

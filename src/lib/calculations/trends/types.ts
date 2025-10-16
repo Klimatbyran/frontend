@@ -34,31 +34,4 @@ export interface TrendAnalysis {
   baseYear?: number;
   originalDataPoints?: number;
   missingYearsCount?: number;
-  outliersCount?: number;
-  unusualPointsCount?: number;
-  excludedData?: {
-    missingYears: number[];
-    outliers: Array<{
-      year: number;
-      value: number;
-      reason: "unusual_change" | "no_scope3_improvement";
-    }>;
-    unusualPoints: Array<{
-      year: number;
-      value: number;
-      fromYear: number;
-      toYear: number;
-      fromValue: number;
-      toValue: number;
-      relativeChange: number;
-      absoluteChange: number;
-      direction: string;
-      details: string;
-    }>;
-  };
-  issues?: string[];
-  issueCount?: number;
-  dataPoints?: number;
-  missingYears?: number;
-  hasUnusualPoints?: boolean;
 }

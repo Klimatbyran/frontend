@@ -93,14 +93,6 @@ export function TrendAnalysisCompaniesTable({
                 >
                   Slope / Yearly % Change
                 </SortableTableHeader>
-                <SortableTableHeader
-                  column="unusualPointsCount"
-                  currentSort={sortBy}
-                  currentOrder={sortOrder}
-                  onSort={onSort}
-                >
-                  Unusual Points
-                </SortableTableHeader>
               </TableRow>
             </TableHeader>
             <TableBody>

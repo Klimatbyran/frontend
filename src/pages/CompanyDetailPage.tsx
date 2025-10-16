@@ -14,7 +14,7 @@ import type { Scope3Category } from "@/types/company";
 import { PageLoading } from "@/components/pageStates/Loading";
 import { PageError } from "@/components/pageStates/Error";
 import { PageNoData } from "@/components/pageStates/NoData";
-import { calculateRateOfChange } from "@/utils/calculations/general";
+import { calculateEmissionsChange } from "@/utils/calculations/emissionsCalculations";
 
 export function CompanyDetailPage() {
   const { t } = useTranslation();
@@ -126,9 +126,10 @@ export function CompanyDetailPage() {
       ? "increased"
       : "decreased";
 
-  const yearOverYearChange = calculateRateOfChange(
-    selectedPeriod?.emissions?.calculatedTotalEmissions,
-    previousPeriod?.emissions?.calculatedTotalEmissions,
+  // Calculate emissions change from previous period
+  const yearOverYearChange = calculateEmissionsChange(
+    selectedPeriod,
+    previousPeriod,
   );
 
   return (

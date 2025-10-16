@@ -1,6 +1,13 @@
 import { TrendAnalysis } from "./types";
-import { calculateBasicStatistics } from "./statistics";
 import type { CompanyDetails, RankedCompany } from "@/types/company";
+
+/**
+ * Calculate mean value from array of numbers
+ */
+function calculateMean(values: number[]): number {
+  if (!values.length) return 0;
+  return values.reduce((a, b) => a + b, 0) / values.length;
+}
 
 /**
  * Calculates trendline analysis using API-provided slope when available
@@ -44,8 +51,6 @@ export const calculateTrendline = (
   // Data since base year: valid emissions data from base year onwards
   const dataSinceBaseYearCount = dataSinceBaseYear.length;
 
-  const statistics = calculateBasicStatistics(dataPoints);
-
   // Use API-provided slope
   const apiSlope = company.futureEmissionsTrendSlope;
 
@@ -54,8 +59,8 @@ export const calculateTrendline = (
   const intercept = lastDataPoint.value - apiSlope * lastDataPoint.year;
 
   // Calculate yearly percentage change using the API slope
-  const yearlyPercentageChange =
-    statistics.mean > 0 ? (apiSlope / statistics.mean) * 100 : 0;
+  const mean = calculateMean(dataPoints.map((d) => d.value));
+  const yearlyPercentageChange = mean > 0 ? (apiSlope / mean) * 100 : 0;
 
   // Determine trend direction based on API slope
   const trendDirection: "increasing" | "decreasing" | "stable" =
@@ -73,5 +78,7 @@ export const calculateTrendline = (
     cleanDataPoints: dataSinceBaseYearCount,
     trendDirection: trendDirection,
     yearlyPercentageChange,
+    // TODO: Remove method, explanation, and explanationParams when explore mode is updated
+    // These are only used in explore mode and can be cleaned up in future refactoring
   };
 };

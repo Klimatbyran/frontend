@@ -32,7 +32,6 @@ export function EmissionsHistory({
     interpolateScope3: true,
     guessBaseYear: true,
     compositeTrend: true,
-    outlierDetection: true,
   },
 }: EmissionsHistoryProps) {
   const { t } = useTranslation();

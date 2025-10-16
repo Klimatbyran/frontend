@@ -10,6 +10,7 @@ import {
 } from "@/utils/formatting/localization";
 import { calculateTrendline } from "@/lib/calculations/trends/analysis";
 import { calculateMeetsParis } from "@/lib/calculations/trends/meetsParis";
+import { calculateEmissionsChange } from "@/utils/calculations/emissionsCalculations";
 import type { RankedCompany } from "@/types/company";
 
 interface CompanyListProps {
@@ -43,12 +44,12 @@ export function CompanyList({ companies }: CompanyListProps) {
 
       const currentEmissions =
         latestPeriod?.emissions?.calculatedTotalEmissions || null;
-      const previousEmissions =
-        previousPeriod?.emissions?.calculatedTotalEmissions || null;
-      const emissionsChange =
-        currentEmissions && previousEmissions
-          ? ((currentEmissions - previousEmissions) / previousEmissions) * 100
-          : null;
+
+      // Calculate emissions change from previous period
+      const emissionsChange = calculateEmissionsChange(
+        latestPeriod,
+        previousPeriod,
+      );
 
       const noSustainabilityReport =
         !latestPeriod ||

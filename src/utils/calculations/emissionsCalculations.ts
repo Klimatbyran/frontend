@@ -3,6 +3,42 @@
  */
 
 /**
+ * Calculate year-over-year emissions change percentage
+ * Uses API-provided adjusted value if available, otherwise calculates manually
+ *
+ * @param latestPeriod - The most recent reporting period
+ * @param previousPeriod - The previous reporting period (optional, used for fallback calculation)
+ * @returns The percentage change as a number, or null if unable to calculate
+ */
+export function calculateEmissionsChange(
+  latestPeriod?: {
+    emissionsChangeLastTwoYears?: { adjusted: number | null } | null;
+    emissions?: { calculatedTotalEmissions?: number | null } | null;
+  },
+  previousPeriod?: {
+    emissions?: { calculatedTotalEmissions?: number | null } | null;
+  },
+): number | null {
+  // Use API-provided emissions change if available
+  if (
+    latestPeriod?.emissionsChangeLastTwoYears?.adjusted !== null &&
+    latestPeriod?.emissionsChangeLastTwoYears?.adjusted !== undefined
+  ) {
+    return latestPeriod.emissionsChangeLastTwoYears.adjusted;
+  }
+
+  // Fallback to manual calculation
+  const currentEmissions = latestPeriod?.emissions?.calculatedTotalEmissions;
+  const previousEmissions = previousPeriod?.emissions?.calculatedTotalEmissions;
+
+  if (currentEmissions && previousEmissions) {
+    return ((currentEmissions - previousEmissions) / previousEmissions) * 100;
+  }
+
+  return null;
+}
+
+/**
  * Carbon Law reduction rate constant (11.72% annual reduction)
  */
 export const CARBON_LAW_REDUCTION_RATE = 0.1172;
