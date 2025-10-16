@@ -209,7 +209,11 @@ export function CompanyOverview({
                   yearOverYearChange < 0 ? "text-orange-2" : "text-pink-3"
                 }
               >
-                {formatPercentChange(yearOverYearChange, currentLanguage, true)}
+                {formatPercentChange(
+                  yearOverYearChange,
+                  currentLanguage,
+                  false,
+                )}
               </span>
             ) : (
               <span className="text-grey">

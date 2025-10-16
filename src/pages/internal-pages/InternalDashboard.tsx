@@ -107,10 +107,7 @@ export const InternalDashboard = () => {
     .map(({ company }) => company);
   const getChangeRate = (company: RankedCompany) => {
     // Calculate emissions change from previous period
-    const changeRate = calculateEmissionsChange(
-      company.reportingPeriods[0],
-      company.reportingPeriods[1],
-    );
+    const changeRate = calculateEmissionsChange(company.reportingPeriods[0]);
 
     return changeRate
       ? formatPercentChange(changeRate, currentLanguage, true)

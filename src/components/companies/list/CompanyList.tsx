@@ -46,10 +46,7 @@ export function CompanyList({ companies }: CompanyListProps) {
         latestPeriod?.emissions?.calculatedTotalEmissions || null;
 
       // Calculate emissions change from previous period
-      const emissionsChange = calculateEmissionsChange(
-        latestPeriod,
-        previousPeriod,
-      );
+      const emissionsChange = calculateEmissionsChange(latestPeriod);
 
       const noSustainabilityReport =
         !latestPeriod ||

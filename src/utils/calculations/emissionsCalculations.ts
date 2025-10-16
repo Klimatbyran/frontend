@@ -3,39 +3,24 @@
  */
 
 /**
- * Calculate year-over-year emissions change percentage
- * Uses API-provided adjusted value if available, otherwise calculates manually
+ * Get year-over-year emissions change percentage from API
+ * Uses API-provided adjusted value (comparable data) if available,
+ * falls back to absolute value (all data) if adjusted is not present
  *
  * @param latestPeriod - The most recent reporting period
- * @param previousPeriod - The previous reporting period (optional, used for fallback calculation)
- * @returns The percentage change as a number, or null if unable to calculate
+ * @returns The percentage change as a number, or null if not available
  */
-export function calculateEmissionsChange(
-  latestPeriod?: {
-    emissionsChangeLastTwoYears?: { adjusted: number | null } | null;
-    emissions?: { calculatedTotalEmissions?: number | null } | null;
-  },
-  previousPeriod?: {
-    emissions?: { calculatedTotalEmissions?: number | null } | null;
-  },
-): number | null {
-  // Use API-provided emissions change if available
-  if (
-    latestPeriod?.emissionsChangeLastTwoYears?.adjusted !== null &&
-    latestPeriod?.emissionsChangeLastTwoYears?.adjusted !== undefined
-  ) {
-    return latestPeriod.emissionsChangeLastTwoYears.adjusted;
-  }
+export function calculateEmissionsChange(latestPeriod?: {
+  emissionsChangeLastTwoYears?: {
+    adjusted: number | null;
+    absolute: number | null;
+  } | null;
+}): number | null {
+  const adjusted = latestPeriod?.emissionsChangeLastTwoYears?.adjusted;
+  const absolute = latestPeriod?.emissionsChangeLastTwoYears?.absolute;
 
-  // Fallback to manual calculation
-  const currentEmissions = latestPeriod?.emissions?.calculatedTotalEmissions;
-  const previousEmissions = previousPeriod?.emissions?.calculatedTotalEmissions;
-
-  if (currentEmissions && previousEmissions) {
-    return ((currentEmissions - previousEmissions) / previousEmissions) * 100;
-  }
-
-  return null;
+  // Prefer adjusted (comparable data), fallback to absolute (all data)
+  return adjusted ?? absolute ?? null;
 }
 
 /**

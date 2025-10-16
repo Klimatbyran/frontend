@@ -75,15 +75,9 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
           case "emissions_reduction": {
             // Calculate year-over-year emissions change for both companies
             const aChange =
-              calculateEmissionsChange(
-                a.reportingPeriods[0],
-                a.reportingPeriods[1],
-              ) || 0;
+              calculateEmissionsChange(a.reportingPeriods[0]) || 0;
             const bChange =
-              calculateEmissionsChange(
-                b.reportingPeriods[0],
-                b.reportingPeriods[1],
-              ) || 0;
+              calculateEmissionsChange(b.reportingPeriods[0]) || 0;
 
             return sortDirection === "asc"
               ? aChange - bChange
