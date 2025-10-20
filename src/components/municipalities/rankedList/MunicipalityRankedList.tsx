@@ -99,9 +99,7 @@ function MunicipalityRankedList({
 
     // Handle numeric KPIs
     const value = municipality[selectedKPI.key] as number;
-    return value !== null
-      ? `${value.toFixed(1)}${selectedKPI.unit}`
-      : selectedKPI.nullValues;
+    return value !== null ? `${value.toFixed(1)}` : selectedKPI.nullValues;
   };
 
   return (
@@ -130,10 +128,10 @@ function MunicipalityRankedList({
               className="w-full p-4 hover:bg-black/40 transition-colors flex items-center justify-between group"
             >
               <div className="flex items-center gap-4">
-               <span className="text-white/30 text-sm w-8">
-                 {!selectedKPI.isBoolean ? (startIndex + index + 1) : ""}
-               </span>
-               <span className="text-white/90 text-sm md:text-base">
+                <span className="text-white/30 text-sm w-8">
+                  {!selectedKPI.isBoolean ? startIndex + index + 1 : ""}
+                </span>
+                <span className="text-white/90 text-sm md:text-base">
                   {municipality.name}
                 </span>
               </div>
