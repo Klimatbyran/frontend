@@ -156,7 +156,16 @@ export function MunicipalityDetailPage() {
             "municipalityLocalVsConsumption",
           ]}
         >
-          <Text className="text-4xl md:text-8xl">{municipality.name}</Text>
+          <div className="flex justify-between items-center">
+            <Text className="text-4xl md:text-8xl">{municipality.name}</Text>
+            {municipality.logoUrl && (
+              <img
+                src={municipality.logoUrl}
+                alt="logo"
+                className="h-[35px] md:h-[75px]"
+              />
+            )}
+          </div>
           <Text className="text-grey text-sm md:text-base lg:text-lg">
             {municipality.region}
           </Text>

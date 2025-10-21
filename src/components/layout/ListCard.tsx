@@ -10,6 +10,7 @@ interface ListCardProps {
   name: string;
   description: string;
   linkTo: string;
+  logoUrl?: string | null;
 
   // Meets Paris
   meetsParis: boolean | null; // true = Yes, false = No, null = Unknown
@@ -40,6 +41,7 @@ interface ListCardProps {
 export function ListCard({
   name,
   description,
+  logoUrl,
   linkTo,
   meetsParis,
   meetsParisTranslationKey,
@@ -58,7 +60,7 @@ export function ListCard({
   isFinancialsSector = false,
 }: ListCardProps) {
   const { t } = useTranslation();
-
+  console.log(logoUrl);
   return (
     <div className="relative rounded-level-2 @container">
       <LocalizedLink
@@ -67,7 +69,10 @@ export function ListCard({
       >
         {/* Header section */}
         <div className="space-y-2">
-          <h2 className="text-3xl font-light">{name}</h2>
+          <div className="flex justify-between items-center">
+            <h2 className="text-3xl font-light">{name}</h2>
+            {logoUrl && <img src={logoUrl} alt="logo" className="h-[35px]" />}
+          </div>
           <p className="text-grey text-sm line-clamp-2 min-h-[40px]">
             {description}
           </p>

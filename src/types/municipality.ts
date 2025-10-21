@@ -6,6 +6,7 @@ export { transformEmissionsData } from "@/utils/data/municipalityTransforms";
 export type Municipality = {
   name: string;
   region: string;
+  logoUrl: string;
   meetsParisGoal: boolean;
   historicalEmissionChangePercent: number;
   climatePlan: boolean;
