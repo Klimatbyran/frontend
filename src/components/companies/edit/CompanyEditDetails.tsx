@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { validateValue } from "../../../utils/ui/validation";
+import { isVerified } from "@/utils/business/verification";
 import type {
   CompanyDetails as CompanyDetailsType,
   GicsOption,
@@ -34,11 +35,11 @@ export function CompanyEditDetails({
       : "",
   );
   const [industryVerified, setIndustryVerified] = useState(
-    !!company.industry?.metadata?.verifiedBy,
+    isVerified(company.industry?.metadata),
   );
   const [baseYear, setBaseYear] = useState(company.baseYear?.year || "");
   const [baseYearVerified, setBaseYearVerified] = useState(
-    !!company.baseYear?.metadata?.verifiedBy,
+    isVerified(company.baseYear?.metadata),
   );
 
   const [comment, setComment] = useState<string>("");
@@ -68,7 +69,7 @@ export function CompanyEditDetails({
     setIndustryVerified(
       subIndustryCode ===
         (company.industry?.industryGics?.subIndustryCode || "")
-        ? !!company.industry?.metadata?.verifiedBy
+        ? isVerified(company.industry?.metadata)
         : false,
     );
   }, [
@@ -80,7 +81,7 @@ export function CompanyEditDetails({
   useEffect(() => {
     setBaseYearVerified(
       String(baseYear) === String(company.baseYear?.year || "")
-        ? !!company.baseYear?.metadata?.verifiedBy
+        ? isVerified(company.baseYear?.metadata)
         : false,
     );
   }, [
@@ -92,13 +93,13 @@ export function CompanyEditDetails({
   const [industryIsDisabled, industryBadgeIconClass] = validateValue({
     value: subIndustryCode,
     originalValue: company.industry?.industryGics?.subIndustryCode || "",
-    originalVerified: !!company.industry?.metadata?.verifiedBy,
+    originalVerified: isVerified(company.industry?.metadata),
     verified: industryVerified,
   });
   const [baseYearIsDisabled, baseYearBadgeIconClass] = validateValue({
     value: String(baseYear),
     originalValue: String(company.baseYear?.year || ""),
-    originalVerified: !!company.baseYear?.metadata?.verifiedBy,
+    originalVerified: isVerified(company.baseYear?.metadata),
     verified: baseYearVerified,
   });
 

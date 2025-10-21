@@ -1,9 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { getMunicipalities } from "@/lib/api";
 import type { paths } from "@/lib/api-types";
+import { Municipality } from "@/types/municipality";
 
 // Get municipality type from API types
-type Municipality = NonNullable<
+type ApiMunicipality = NonNullable<
   paths["/municipalities/"]["get"]["responses"][200]["content"]["application/json"]
 >[0];
 
@@ -19,13 +20,14 @@ export function useMunicipalities(): UseMunicipalitiesReturn {
     data: municipalities = [],
     isLoading,
     error,
-  } = useQuery({
+  } = useQuery<ApiMunicipality[], Error, Municipality[]>({
     queryKey: ["municipalities"],
     queryFn: getMunicipalities,
     select: (data) => {
-      return data.map((municipality) => ({
+      return data.map((municipality): Municipality => ({
         ...municipality,
         meetsParisGoal: municipality.totalTrend <= municipality.totalCarbonLaw,
+        climatePlan: municipality.climatePlanYear !== null,
       }));
     },
   });

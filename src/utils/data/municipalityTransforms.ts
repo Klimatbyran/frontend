@@ -1,7 +1,7 @@
 import {
   calculateParisValue,
   CARBON_LAW_REDUCTION_RATE,
-} from "@/utils/calculations/emissions/utils";
+} from "@/utils/calculations/emissionsCalculations";
 import type { Municipality, DataPoint } from "@/types/municipality";
 
 export function transformEmissionsData(

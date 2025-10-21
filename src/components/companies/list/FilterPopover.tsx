@@ -16,23 +16,16 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-  useSectors,
-  useSortOptions,
-} from "@/hooks/companies/useCompanyFilters";
-import type {
-  CompanySector,
-  SortOption,
-} from "@/hooks/companies/useCompanyFilters";
+import { useSectors } from "@/hooks/companies/useCompanySectors";
+import type { CompanySector } from "@/lib/constants/sectors";
 
 interface FilterPopoverProps {
   filterOpen: boolean;
   setFilterOpen: (open: boolean) => void;
   sectors: CompanySector[];
   setSectors: React.Dispatch<React.SetStateAction<CompanySector[]>>;
-  sortBy: SortOption;
-  setSortBy: (sort: SortOption) => void;
-  viewMode: "graphs" | "list";
+  meetsParisFilter: "all" | "yes" | "no" | "unknown";
+  setMeetsParisFilter: (filter: "all" | "yes" | "no" | "unknown") => void;
 }
 
 export function FilterPopover({
@@ -40,13 +33,11 @@ export function FilterPopover({
   setFilterOpen,
   sectors,
   setSectors,
-  sortBy,
-  setSortBy,
-  viewMode,
+  meetsParisFilter,
+  setMeetsParisFilter,
 }: FilterPopoverProps) {
   const { t } = useTranslation();
   const sectorOptions = useSectors();
-  const sortOptions = useSortOptions();
 
   return (
     <Popover open={filterOpen} onOpenChange={setFilterOpen}>
@@ -96,25 +87,41 @@ export function FilterPopover({
               ))}
             </CommandGroup>
 
-            {viewMode === "list" && (
-              <>
-                <CommandSeparator className="bg-black-1" />
-                <CommandGroup heading={t("companiesPage.sortBy")}>
-                  {sortOptions.map((option) => (
-                    <CommandItem
-                      key={option.value}
-                      onSelect={() => setSortBy(option.value)}
-                      className="flex items-center justify-between cursor-pointer"
-                    >
-                      <span>{option.label}</span>
-                      {sortBy === option.value && (
-                        <Check className="h-4 w-4 text-blue-2" />
-                      )}
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </>
-            )}
+            <CommandSeparator className="bg-black-1" />
+            <CommandGroup
+              heading={t("companiesPage.filteringOptions.meetsParis")}
+            >
+              {[
+                { value: "all", label: t("all") },
+                {
+                  value: "yes",
+                  label: t("companiesPage.filteringOptions.meetsParisYes"),
+                },
+                {
+                  value: "no",
+                  label: t("companiesPage.filteringOptions.meetsParisNo"),
+                },
+                {
+                  value: "unknown",
+                  label: t("companiesPage.filteringOptions.meetsParisUnknown"),
+                },
+              ].map((option) => (
+                <CommandItem
+                  key={option.value}
+                  onSelect={() =>
+                    setMeetsParisFilter(
+                      option.value as "all" | "yes" | "no" | "unknown",
+                    )
+                  }
+                  className="flex items-center justify-between cursor-pointer"
+                >
+                  <span>{option.label}</span>
+                  {meetsParisFilter === option.value && (
+                    <Check className="h-4 w-4 text-blue-2" />
+                  )}
+                </CommandItem>
+              ))}
+            </CommandGroup>
           </CommandList>
         </Command>
       </PopoverContent>

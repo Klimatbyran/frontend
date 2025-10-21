@@ -1,27 +1,10 @@
 import { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Text } from "@/components/ui/text";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
 import { useCompanies } from "@/hooks/companies/useCompanies";
-import { processCompanyData } from "@/lib/calculations/trends/analysis";
-import { calculateSummaryStats } from "@/lib/calculations/trends/utils";
+import { calculateTrendline } from "@/lib/calculations/trends/analysis";
+import { calculateMeetsParis } from "@/lib/calculations/trends/meetsParis";
 import type { TrendAnalysis } from "@/lib/calculations/trends/types";
-import { ChevronRight } from "lucide-react";
-import { getMethodColor } from "@/utils/ui/trends";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { useLanguage } from "@/components/LanguageProvider";
@@ -31,15 +14,15 @@ import { TrendAnalysisCompaniesTable } from "@/components/internalDashboards/Tre
 export function TrendAnalysisDashboard() {
   const { companies, loading, error } = useCompanies();
   const { currentLanguage } = useLanguage();
-  const [originalAnalyses, setOriginalAnalyses] = useState<TrendAnalysis[]>([]);
-  const [filteredCompanies, setFilteredCompanies] = useState<TrendAnalysis[]>(
-    [],
-  );
+  const [originalAnalyses, setOriginalAnalyses] = useState<
+    (TrendAnalysis & { company: any; scope3DataCount: number })[]
+  >([]);
+  const [filteredCompanies, setFilteredCompanies] = useState<
+    (TrendAnalysis & { company: any; scope3DataCount: number })[]
+  >([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [methodFilter, setMethodFilter] = useState<string>("all");
   const [sortBy, setSortBy] = useState<string>("companyName");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-  const [isMethodSummaryOpen, setIsMethodSummaryOpen] = useState(false);
 
   const handleCompanyClick = (companyId: string) => {
     const basePath = currentLanguage === "sv" ? "/sv" : "/en";
@@ -47,10 +30,66 @@ export function TrendAnalysisDashboard() {
     window.open(url, "_blank");
   };
 
-  // Calculate trend analysis for all companies
+  // Calculate trend analysis for all companies using API slope
   useEffect(() => {
     if (!companies) return;
-    const analyses = companies.map(processCompanyData);
+
+    // Show ALL companies for internal analysis (with or without trends)
+    const analyses = companies.map((company) => {
+      const trendAnalysis = calculateTrendline(company);
+
+      // Calculate scope 3 data count for all companies
+      const baseYear = company.baseYear?.year;
+      const scope3DataCount = baseYear
+        ? company.reportingPeriods?.filter(
+            (period) =>
+              period.emissions?.scope3?.categories &&
+              period.emissions.scope3.categories.length > 0 &&
+              new Date(period.endDate).getFullYear() >= baseYear,
+          ).length || 0
+        : company.reportingPeriods?.filter(
+            (period) =>
+              period.emissions?.scope3?.categories &&
+              period.emissions.scope3.categories.length > 0,
+          ).length || 0;
+
+      // Calculate data since base year for display
+      const data =
+        company.reportingPeriods?.filter(
+          (period) =>
+            period.emissions &&
+            period.emissions.calculatedTotalEmissions !== null &&
+            period.emissions.calculatedTotalEmissions !== undefined,
+        ) || [];
+      const dataSinceBaseYear = baseYear
+        ? data.filter(
+            (period) => new Date(period.endDate).getFullYear() >= baseYear,
+          )
+        : data;
+
+      if (trendAnalysis) {
+        // Company has valid trend analysis
+        return {
+          ...trendAnalysis,
+          scope3DataCount,
+          company,
+        } as TrendAnalysis & { scope3DataCount: number; company: any };
+      } else {
+        // Company has no trend analysis - show as "no trend" for internal analysis
+        return {
+          method: "none",
+          explanation: "No trendline available",
+          explanationParams: {},
+          coefficients: undefined,
+          cleanDataPoints: dataSinceBaseYear.length,
+          trendDirection: "stable" as const,
+          yearlyPercentageChange: 0,
+          scope3DataCount,
+          company,
+        } as TrendAnalysis & { scope3DataCount: number; company: any };
+      }
+    });
+
     setOriginalAnalyses(analyses);
   }, [companies]);
 
@@ -59,13 +98,11 @@ export function TrendAnalysisDashboard() {
     if (!originalAnalyses.length) return;
 
     const filtered = originalAnalyses
-      .filter((company) => {
-        const matchesSearch = company.companyName
+      .filter((analysis) => {
+        const matchesSearch = analysis.company.name
           .toLowerCase()
           .includes(searchTerm.toLowerCase());
-        const matchesMethod =
-          methodFilter === "all" || company.method === methodFilter;
-        return matchesSearch && matchesMethod;
+        return matchesSearch;
       })
       .sort((a, b) => {
         let aValue: any = a[sortBy as keyof TrendAnalysis];
@@ -76,13 +113,18 @@ export function TrendAnalysisDashboard() {
           bValue = bValue.toLowerCase();
         }
 
+        if (sortBy === "companyName") {
+          aValue = a.company.name.toLowerCase();
+          bValue = b.company.name.toLowerCase();
+        }
+
         if (aValue < bValue) return sortOrder === "asc" ? -1 : 1;
         if (aValue > bValue) return sortOrder === "asc" ? 1 : -1;
         return 0;
       });
 
     setFilteredCompanies(filtered);
-  }, [originalAnalyses, searchTerm, methodFilter, sortBy, sortOrder]);
+  }, [originalAnalyses, searchTerm, sortBy, sortOrder]);
 
   const handleSort = (column: string) => {
     if (sortBy === column) {
@@ -93,13 +135,61 @@ export function TrendAnalysisDashboard() {
     }
   };
 
-  const {
-    methodCounts,
-    avgDataPoints,
-    avgCleanDataPoints,
-    avgMissingYears,
-    outlierPercentage,
-  } = calculateSummaryStats(filteredCompanies);
+  // Calculate new summary metrics directly from company data
+  const avgDataPoints =
+    filteredCompanies.reduce((sum, analysis) => {
+      const totalDataPoints =
+        analysis.company.reportingPeriods?.filter(
+          (period: any) =>
+            period.emissions &&
+            period.emissions.calculatedTotalEmissions !== null &&
+            period.emissions.calculatedTotalEmissions !== undefined,
+        ).length || 0;
+      return sum + totalDataPoints;
+    }, 0) / filteredCompanies.length || 0;
+
+  const avgCleanDataPoints =
+    filteredCompanies.reduce((sum, analysis) => {
+      const baseYear = analysis.company.baseYear?.year;
+      const data =
+        analysis.company.reportingPeriods?.filter(
+          (period: any) =>
+            period.emissions &&
+            period.emissions.calculatedTotalEmissions !== null &&
+            period.emissions.calculatedTotalEmissions !== undefined,
+        ) || [];
+      const dataSinceBaseYear = baseYear
+        ? data.filter(
+            (period: any) => new Date(period.endDate).getFullYear() >= baseYear,
+          )
+        : data;
+      return sum + dataSinceBaseYear.length;
+    }, 0) / filteredCompanies.length || 0;
+
+  // Count trend directions
+  const decreasingTrendCount = filteredCompanies.filter(
+    (analysis) => analysis.trendDirection === "decreasing",
+  ).length;
+  const increasingTrendCount = filteredCompanies.filter(
+    (analysis) => analysis.trendDirection === "increasing",
+  ).length;
+  const noTrendCount = filteredCompanies.filter(
+    (analysis) => analysis.method === "none",
+  ).length;
+
+  // Count companies with >11% decreasing emissions (meets Carbon Law)
+  const meetsCarbonLawCount = filteredCompanies.filter(
+    (analysis) => analysis.yearlyPercentageChange < -11,
+  ).length;
+
+  // Count companies that meet Paris Agreement (cumulative emissions 2025-2050)
+  const meetsParisCount = filteredCompanies.filter((analysis) => {
+    // Use the trend analysis that was already calculated in useEffect
+    const trendAnalysis = analysis.method !== "none" ? analysis : null;
+    const meetsParis = calculateMeetsParis(analysis.company, trendAnalysis);
+
+    return meetsParis;
+  }).length;
 
   if (loading) {
     return (
@@ -130,101 +220,19 @@ export function TrendAnalysisDashboard() {
       <div className="container mx-auto px-4 py-8">
         <PageHeader
           title="Trend Analysis Dashboard"
-          description="Analysis of trend line method selection across all companies"
+          description="Internal analysis of all companies - showing which have trend projections and which don't"
         />
 
         <TrendAnalysisSummaryCards
           totalCompanies={filteredCompanies.length}
           avgDataPoints={avgDataPoints}
           avgCleanDataPoints={avgCleanDataPoints}
-          avgMissingYears={avgMissingYears}
-          outlierPercentage={outlierPercentage}
+          decreasingTrendCount={decreasingTrendCount}
+          increasingTrendCount={increasingTrendCount}
+          noTrendCount={noTrendCount}
+          meetsCarbonLawCount={meetsCarbonLawCount}
+          meetsParisCount={meetsParisCount}
         />
-
-        {/* Method Distribution */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>Method Distribution</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-              {Object.entries(methodCounts).map(([method, count]) => (
-                <div key={method} className="text-center">
-                  <Badge
-                    className={`${getMethodColor(method)} text-white mb-2`}
-                  >
-                    {method}
-                  </Badge>
-                  <Text variant="h3">{count}</Text>
-                  <Text variant="small" className="text-grey">
-                    {((count / filteredCompanies.length) * 100).toFixed(1)}%
-                  </Text>
-                </div>
-              ))}
-            </div>
-
-            {/* Method Selection Logic Summary */}
-            <Collapsible
-              open={isMethodSummaryOpen}
-              onOpenChange={setIsMethodSummaryOpen}
-              className="mt-6"
-            >
-              <CollapsibleTrigger asChild>
-                <Button
-                  variant="ghost"
-                  className="w-full justify-between p-2 h-auto font-medium text-grey hover:text-white"
-                >
-                  <span>Method Selection Logic</span>
-                  <ChevronRight
-                    className={`h-4 w-4 transition-transform ${
-                      isMethodSummaryOpen ? "rotate-90" : ""
-                    }`}
-                  />
-                </Button>
-              </CollapsibleTrigger>
-              <CollapsibleContent className="mt-4 space-y-2">
-                <div className="text-sm text-grey space-y-1">
-                  <div>
-                    <strong>No data or insufficient data:</strong> No trendline
-                    shown when ≤1 data point available
-                  </div>
-                  <div>
-                    <strong>Insufficient data since base year:</strong> No
-                    trendline shown when ≤1 data point since base year
-                  </div>
-                  <div>
-                    <strong>Missing years:</strong> Weighted linear regression
-                    for robustness with missing data
-                  </div>
-                  <div>
-                    <strong>Recent stability:</strong> Weighted linear when last
-                    4 years are very stable (&lt; 10% std dev)
-                  </div>
-                  <div>
-                    <strong>Unusual points:</strong> Weighted linear when
-                    year-over-year changes exceed 4x median
-                  </div>
-                  <div>
-                    <strong>Exponential fit:</strong> Exponential or weighted
-                    exponential when R² exponential &gt; R² linear by 0.05
-                  </div>
-                  <div>
-                    <strong>High variance:</strong> Weighted linear when std dev
-                    &gt; 20% of mean
-                  </div>
-                  <div>
-                    <strong>Recent exponential patterns:</strong> Recent
-                    exponential when last 4 years show strong exponential trend
-                  </div>
-                  <div>
-                    <strong>Default:</strong> Linear regression for well-behaved
-                    data
-                  </div>
-                </div>
-              </CollapsibleContent>
-            </Collapsible>
-          </CardContent>
-        </Card>
 
         {/* Filters */}
         <div className="flex flex-col md:flex-row gap-4 mb-6">
@@ -234,25 +242,6 @@ export function TrendAnalysisDashboard() {
             onChange={(e) => setSearchTerm(e.target.value)}
             className="md:w-64"
           />
-          <Select value={methodFilter} onValueChange={setMethodFilter}>
-            <SelectTrigger className="md:w-48">
-              <SelectValue placeholder="Filter by method" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Methods</SelectItem>
-              <SelectItem value="none">No Trendline</SelectItem>
-              <SelectItem value="weightedLinear">Weighted Linear</SelectItem>
-              <SelectItem value="linear">Linear</SelectItem>
-              <SelectItem value="exponential">Exponential</SelectItem>
-              <SelectItem value="weightedExponential">
-                Weighted Exponential
-              </SelectItem>
-              <SelectItem value="recentExponential">
-                Recent Exponential
-              </SelectItem>
-              <SelectItem value="simple">Simple</SelectItem>
-            </SelectContent>
-          </Select>
         </div>
 
         <TrendAnalysisCompaniesTable

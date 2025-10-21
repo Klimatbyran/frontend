@@ -115,6 +115,13 @@ export const OverviewChart: FC<OverviewChartProps> = ({
               />
             )}
 
+            {/* Current year reference line - only show if within chart domain */}
+            {currentYear <= chartEndYear && (
+              <ReferenceLine
+                {...getCurrentYearReferenceLineProps(currentYear)}
+              />
+            )}
+
             <Tooltip
               content={
                 <ChartTooltip
@@ -153,9 +160,6 @@ export const OverviewChart: FC<OverviewChartProps> = ({
             {/* Approximated data lines */}
             {approximatedData && (
               <>
-                <ReferenceLine
-                  {...getCurrentYearReferenceLineProps(currentYear)}
-                />
                 <Line
                   type="linear"
                   dataKey="approximated"

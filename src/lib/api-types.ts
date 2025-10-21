@@ -187,7 +187,7 @@ export interface paths {
                                 startDate: string;
                                 endDate: string;
                                 reportURL: string | null;
-                                emissionsTrend?: {
+                                emissionsChangeLastTwoYears?: {
                                     absolute: number | null;
                                     adjusted: number | null;
                                 };
@@ -281,6 +281,7 @@ export interface paths {
                                     } | null;
                                 } | null;
                             }[];
+                            futureEmissionsTrendSlope: number | null;
                             industry: {
                                 industryGics: {
                                     sectorCode: string;
@@ -548,11 +549,12 @@ export interface paths {
                                         };
                                     } | null;
                                 } | null;
-                                emissionsTrend?: {
+                                emissionsChangeLastTwoYears?: {
                                     absolute: number | null;
                                     adjusted: number | null;
                                 };
                             }[];
+                            futureEmissionsTrendSlope: number | null;
                             industry: {
                                 id: string;
                                 industryGics: {
@@ -877,7 +879,7 @@ export interface paths {
                                 startDate: string;
                                 endDate: string;
                                 reportURL: string | null;
-                                emissionsTrend?: {
+                                emissionsChangeLastTwoYears?: {
                                     absolute: number | null;
                                     adjusted: number | null;
                                 };
@@ -971,6 +973,7 @@ export interface paths {
                                     } | null;
                                 } | null;
                             }[];
+                            futureEmissionsTrendSlope: number | null;
                             industry: {
                                 industryGics: {
                                     sectorCode: string;

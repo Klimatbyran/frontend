@@ -103,11 +103,8 @@ export function ExploreMode({
 
     const approximatedData = generateApproximatedData(
       data,
-      undefined, // regression
       endYear2050,
-      companyBaseYear,
       trendAnalysis.coefficients,
-      trendAnalysis.cleanData,
     );
 
     if (!approximatedData) return [];

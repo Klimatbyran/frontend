@@ -1,9 +1,13 @@
 {
   "yes": "Yes",
   "no": "No",
+  "unknown": "Unknown",
+  "all": "All",
   "emissionsUnit": "tCO₂e",
   "header": {
     "companies": "Companies",
+    "companiesSectors": "Explore - Sectors",
+    "companiesExplore": "Explore - Companies",
     "municipalities": "Municipalities",
     "municipalitiesRanked": "Top Lists",
     "municipalitiesExplore": "Explore",
@@ -32,6 +36,16 @@
     "supporters": "Supporters and Partners",
     "internationalLicense": "International Licence",
     "ccBySa": "CC BY-SA - Attribution-ShareAlike 4.0"
+  },
+  "components": {
+    "error": {
+      "title": "Unable to retrieve information",
+      "description": "Please try again later"
+    },
+    "noData": {
+      "title": "No Data Available",
+      "description": "There is currently no data available for this page."
+    }
   },
   "newsletter": {
     "subscribe": "Subscribe to our newsletter",
@@ -246,6 +260,7 @@
       "list": "List"
     },
     "filter": "Filter",
+    "sort": "Sort",
     "sortBy": "Sort By",
     "searchInFilter": "Search filters",
     "noFiltersFound": "No matching filters found.",
@@ -253,8 +268,20 @@
       "emissionsChange": "Change in Emissions (%)",
       "totalEmissions": "Total Emissions",
       "scope3Coverage": "Scope 3 Coverage",
+      "meetsParis": "Meets Paris Agreement",
       "nameAsc": "Company Name A-Z",
       "nameDesc": "Company Name Z-A"
+    },
+    "filteringOptions": {
+      "meetsParis": "Meets Paris Agreement",
+      "meetsParisYes": "Yes",
+      "meetsParisNo": "No",
+      "meetsParisUnknown": "Unknown"
+    },
+    "sortDirection": {
+      "none": "Default",
+      "asc": "Low to High",
+      "desc": "High to Low"
     },
     "sector": "Sector",
     "errorTitle": "Failed to retrieve company information",
@@ -343,7 +370,8 @@
     "errorTitle": "Unable to retrieve company information",
     "errorDescription": "Please try again later",
     "notFoundTitle": "Company not found",
-    "notFoundDescription": "Check if the company ID is correct"
+    "notFoundDescription": "Check if the company ID is correct",
+    "billion": "billion"
   },
   "methodsPage": {
     "header": {
@@ -720,9 +748,6 @@
   "municipalityDetailPage": {
     "metaTitle": "Data on emissions and transition",
     "metaDescription": "Overview of emissions and transition",
-    "loading": "Loading...",
-    "error": "Error loading data",
-    "noData": "No data available",
     "procurementScore": {
       "high": "Yes",
       "medium": "Maybe",
@@ -937,6 +962,7 @@
       "emissionsChangeRate": "Change Rate",
       "emissionsChangeRateInfo": "Change rate of emissions compared to the previous reporting period.",
       "emissionsChangeRateInfoExtended": "This value is so large due to inconsistencies in reported data between the last two reporting periods, thus this value is not representative of actual changes.",
+      "meetsParis": "Is {{name}} on track to meet the Paris Agreement?",
       "turnover": "Turnover",
       "turnoverAmount": "bn",
       "employees": "Employees",
@@ -952,8 +978,8 @@
     },
     "emissionsHistory": {
       "noReportingPeriods": "No reporting periods available",
-      "title": "Historical Emissions",
-      "tooltip": "Historical emissions; click on a point to remove the line from the graph. Hover over a point to see the values for the reporting period.",
+      "title": "Emissions development",
+      "tooltip": "Showing the development of reported emissions over time; click on a point to remove the line from the graph. Hover over a point to see the values for the reporting period.",
       "unit": "In tons CO₂e",
       "totalEmissions": "Total Emissions",
       "baseYear": "Base year",
@@ -1157,6 +1183,19 @@
           "description": "Bicycle path metres per capita",
           "detailedDescription": "Number of metres of bicycle paths per inhabitant per municipality in 2024. Longer is better, as good infrastructure promotes increased cycling.",
           "source": "<0>National Road Database</0>, <1>Swedish Transport Administration</1>"
+        },
+        "climatePlan": {
+          "label": "Climate Plans",
+          "description": "Has an ongoing climate action plan",
+          "detailedDescription": "Which municipalities have a climate action plan?",
+          "source": "<0>Klimatkollen’s open compilation of climate plans, with help from members of Klimatklubben and the Swedish Society for Nature Conservation (Naturskyddsföreningen).</0>",
+          "booleanLabels": {
+            "true": "Has Climate Plan",
+            "false": "No Climate Plan"
+          },
+          "hasPlanSince": "Climate plan adopted {{year}}",
+          "aboveString": "have a climate plan",
+          "belowString": "do not have a climate plan"
         }
       },
       "insights": {
@@ -1190,6 +1229,11 @@
       }
     }
   },
+  "charts": {
+    "tooltip": {
+      "noData": "No data"
+    }
+  },
   "errorPage": {
     "title": "Error",
     "description": "An error occurred while processing your request.",
@@ -1218,9 +1262,21 @@
       "reportingTimespan": "Reporting Period",
       "reportingStart": "Start",
       "reportingEnd": "End",
+      "reportURL": "Report URL",
       "marketBased": "Market-based",
       "locationBased": "Location-based",
-      "unknown": "Unknown"
+      "unknown": "Unknown",
+      "turnover": "Turnover",
+      "currency": "Currency",
+      "employees": "Employees",
+      "unit": "Unit",
+      "statedTotalEmissions": "Stated Total Emissions",
+      "scope1And2Combined": "Scope 1 & 2 Combined"
+    },
+    "sections": {
+      "reportingPeriod": "Reporting Period",
+      "emissions": "Emissions",
+      "economy": "Economy"
     },
     "save": "Save",
     "success": {
@@ -1348,15 +1404,7 @@
   },
   "trendAnalysis": {
     "insufficientData": "No trendline shown due to insufficient data ({{dataPoints}} points). Need at least 2 data points to build reliable trend.",
-    "insufficientDataWithBaseYear": "Simple trend calculation used due to limited data since {{baseYear}} ({{dataPoints}} points). More data needed for reliable trend analysis.",
-    "insufficientDataSinceBaseYear": "No trendline shown due to insufficient data since base year {{baseYear}} ({{dataPoints}} usable points). Need at least 2 data points since base year to build reliable trend.",
-    "simpleMethodInsufficientData": "Simple trend calculation used due to limited data since base year ({{dataPoints}} points). More data needed for reliable trend analysis.",
-    "simpleMethodPoorDataQuality": "Simple trend calculation used due to data quality issues ({{issues}}). Only {{cleanDataPoints}} reliable data points from {{originalDataPoints}} total. This trend may not be very reliable.",
-    "linearMethodMultipleIssues": "Linear trend used despite data quality issues ({{issues}}). Based on {{cleanDataPoints}} reliable data points from {{originalDataPoints}} total. Interpret with caution.",
-    "weightedLinearMethodStable": "Weighted linear trend used because recent years show stable emissions (variation < 10% of average). Emphasizes recent stable data for current trend representation.",
-    "exponentialMethodBetterFit": "Exponential trend used because it fits the data significantly better than linear trend. Suggests emissions are changing at accelerating or decelerating rate.",
-    "recentExponentialMethodStrongPattern": "Recent exponential trend used because last 4 years show strong exponential pattern that is significantly better than linear. Focuses on most recent trend pattern.",
-    "linearMethodDefault": "Linear trend used as default because data is sufficiently complete or does not show strong non-linear behavior or significant outliers."
+    "insufficientDataSinceBaseYear": "No trendline shown due to insufficient data since base year {{baseYear}} ({{dataPoints}} usable points). Need at least 2 data points since base year to build reliable trend."
   },
   "newsletterArchivePage": {
     "title": "Newsletter archive",
@@ -1381,5 +1429,35 @@
   "language": {
     "sv": "Swedish",
     "en": "English"
+  },
+  "relatableNumbers": {
+    "title": "How much is that?",
+    "description": "{{companyName}} {{emissionsChangeStatus}} their emissions by <highlightNumber>{{emissionsInTonnes}}({{yearOverYearChange}})</highlightNumber> tCO2e from the previous year. This compares to:",
+    "prefixFire": "Emissions from a forest fire",
+    "prefixEmissions": "The annual emissions of {{count}} Swedes.",
+    "increased": "increased",
+    "decreased": "decreased",
+    "patterns": {
+      "city": "{{prefix}} {{count}} times the size of {{entity}}.",
+      "unit": "{{prefix}} the size of {{count}} {{entity}}."
+    },
+    "entities": {
+      "stockholm": {
+        "name": "Stockholm",
+        "type": "city"
+      },
+      "monaco": {
+        "name": "Monaco",
+        "type": "city"
+      },
+      "footballFields": {
+        "name": "football fields",
+        "type": "unit"
+      },
+      "tennisCourts": {
+        "name": "tennis courts.",
+        "type": "unit"
+      }
+    }
   }
 }
