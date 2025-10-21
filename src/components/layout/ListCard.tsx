@@ -60,7 +60,7 @@ export function ListCard({
   isFinancialsSector = false,
 }: ListCardProps) {
   const { t } = useTranslation();
-  console.log(logoUrl);
+
   return (
     <div className="relative rounded-level-2 @container">
       <LocalizedLink
