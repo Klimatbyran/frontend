@@ -87,6 +87,7 @@ export function MunicipalityList({
       return {
         name: municipality.name,
         description: municipality.region,
+        logoUrl: municipality.logoUrl,
         linkTo: `/municipalities/${municipality.name}`,
         meetsParis: meetsParisGoal,
         meetsParisTranslationKey: "municipalities.card.meetsParis",
