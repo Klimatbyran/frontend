@@ -24,13 +24,11 @@ export function useMunicipalities(): UseMunicipalitiesReturn {
     queryKey: ["municipalities"],
     queryFn: getMunicipalities,
     select: (data) => {
-      // Transform data to add computed field for climate plan
-      return data.map(
-        (municipality): Municipality => ({
-          ...municipality,
-          climatePlan: municipality.climatePlanYear !== null,
-        }),
-      );
+      return data.map((municipality): Municipality => ({
+        ...municipality,
+        meetsParisGoal: municipality.totalTrend <= municipality.totalCarbonLaw,
+        climatePlan: municipality.climatePlanYear !== null,
+      }));
     },
   });
 

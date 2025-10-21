@@ -1078,7 +1078,8 @@ export interface paths {
                         "application/json": {
                             name: string;
                             region: string;
-                            meetsParisGoal: boolean;
+                            totalTrend: number;
+                            totalCarbonLaw: number;
                             historicalEmissionChangePercent: number;
                             electricCarChangePercent: number;
                             climatePlanLink: string | null;
@@ -1147,7 +1148,8 @@ export interface paths {
                         "application/json": {
                             name: string;
                             region: string;
-                            meetsParisGoal: boolean;
+                            totalTrend: number;
+                            totalCarbonLaw: number;
                             historicalEmissionChangePercent: number;
                             electricCarChangePercent: number;
                             climatePlanLink: string | null;
