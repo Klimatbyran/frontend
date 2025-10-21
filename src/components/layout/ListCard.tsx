@@ -69,13 +69,15 @@ export function ListCard({
       >
         {/* Header section */}
         <div className="space-y-2">
-          <div className="flex justify-between items-center">
-            <h2 className="text-3xl font-light">{name}</h2>
-            {logoUrl && <img src={logoUrl} alt="logo" className="h-[35px]" />}
+          <div className="flex justify-between">
+            <div className="flex flex-col">
+              <h2 className="text-3xl font-light">{name}</h2>
+              <p className="text-grey text-sm line-clamp-2 min-h-[40px]">
+                {description}
+              </p>
+            </div>
+            {logoUrl && <img src={logoUrl} alt="logo" className="h-[50px]" />}
           </div>
-          <p className="text-grey text-sm line-clamp-2 min-h-[40px]">
-            {description}
-          </p>
 
           {/* Meets Paris section */}
           <div className="flex items-center gap-2 text-grey mb-2 text-lg">
