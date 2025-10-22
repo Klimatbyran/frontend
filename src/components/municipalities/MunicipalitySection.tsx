@@ -21,8 +21,8 @@ export function MunicipalitySection({
 }: MunicipalitySectionProps) {
   return (
     <SectionWithHelp helpItems={helpItems}>
-      <div className="p-4 md:p-6">
-        <Text className="text-2xl md:text-4xl">{title}</Text>
+      <div className="gap-8 md:gap-16">
+        <Text variant={"h3"}>{title}</Text>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16 mt-8">
         {items.map((item, index) => (

@@ -237,10 +237,10 @@ export function MunicipalityDetailPage() {
                   translateNamespace="municipalityDetailPage"
                 />
               }
-              className="p-4 md:p-6"
+              className="gap-8 md:gap-16"
             />
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16">
               <MunicipalitySectorPieChart
                 sectorEmissions={sectorEmissions}
                 year={currentYear}

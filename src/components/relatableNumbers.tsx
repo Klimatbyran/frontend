@@ -115,7 +115,7 @@ const RelatableNumbers = ({
               emissionsChange,
               currentLanguage,
             ),
-            yearOverYearChange: yearOverYearChange !== null ? formatPercentChange(yearOverYearChange, currentLanguage, true) : "",
+            yearOverYearChange: yearOverYearChange !== null ? formatPercentChange(yearOverYearChange, currentLanguage, false) : "",
 
           }}
         />
