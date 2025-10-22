@@ -118,15 +118,11 @@ function MunicipalityRankedList({
             className="w-full pl-10 pr-4 py-2 bg-black-3 text-white rounded-xl placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/20"
           />
         </div>
-        <div className="flex items-center pl-12 pt-4 -mb-2 w-full justify-between">
-          <span className="text-grey">
-            Name
-          </span>
-          <span className="text-orange-2">
-            %
-          </span>
-      </div>
+        <div className="text-grey flex items-center pl-12 pt-4 -mb-2 w-full justify-between">
+          <span>{t("municipalities.name")}</span>
+          <span>{selectedKPI.unit}</span>
         </div>
+      </div>
       <div className="flex-1 overflow-y-auto municipality-list">
         <div className="divide-y divide-white/10">
           {paginatedData.map((municipality, index) => (

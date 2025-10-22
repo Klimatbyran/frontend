@@ -3,7 +3,6 @@ import { useMunicipalityKPIs } from "../../../hooks/municipalities/useMunicipali
 import { KPIValue } from "@/types/municipality";
 import { DataSelector } from "@/components/layout/DataSelector";
 import { BarChart3 } from "lucide-react";
-import { Trans } from "react-i18next";
 
 interface MunicipalityDataSelectorProps {
   selectedKPI: KPIValue;
@@ -27,14 +26,9 @@ const MunicipalityDataSelector = ({
       getItemDescription={(kpi) =>
         kpi.description ? t(kpi.description) : undefined
       }
-      getItemDetailedDescription={(kpi) => (
-        <Trans
-          i18nKey={t(`municipalities.list.kpis.${kpi.key}.detailedDescription`)}
-          components={{
-            highlight: <span className="text-orange-2" />,
-          }}
-        />
-      )}
+      getItemDetailedDescription={(kpi) =>
+        t(`municipalities.list.kpis.${kpi.key}.detailedDescription`)
+      }
       icon={<BarChart3 className="w-4 h-4" />}
     />
   );
