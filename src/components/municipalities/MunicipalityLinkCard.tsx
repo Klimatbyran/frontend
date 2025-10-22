@@ -20,7 +20,7 @@ export function MunicipalityLinkCard({
       href={link || undefined}
       target="_blank"
       rel="noopener noreferrer"
-      className="group bg-black-2 rounded-level-2 p-8 hover:bg-black-1 transition-colors"
+      className="group bg-black-2 rounded-level-3 p-4 md:p-8 hover:bg-black-1 transition-colors"
     >
       <div className="flex items-center justify-between">
         <div className="space-y-2">
