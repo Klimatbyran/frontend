@@ -8,7 +8,7 @@ import { CardInfo } from "@/components/layout/CardInfo";
 interface ListCardProps {
   // Basic info
   name: string;
-  description: string;
+  description: string; // For municipalities: region, For companies: sector
   linkTo: string;
   logoUrl?: string | null;
 
@@ -80,7 +80,7 @@ export function ListCard({
           </div>
 
           {/* Meets Paris section */}
-          <div className="flex items-center gap-2 text-grey mb-2 text-lg">
+          <div className="flex items-center gap-2 text-grey mb-2 text-lg h-[40px]">
             {t(meetsParisTranslationKey, { name })}
           </div>
           <div

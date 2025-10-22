@@ -11,7 +11,9 @@ import {
 import { calculateTrendline } from "@/lib/calculations/trends/analysis";
 import { calculateMeetsParis } from "@/lib/calculations/trends/meetsParis";
 import { calculateEmissionsChange } from "@/utils/calculations/emissionsCalculations";
+import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 import type { RankedCompany } from "@/types/company";
+import type { SectorCode } from "@/lib/constants/sectors";
 
 interface CompanyListProps {
   companies: RankedCompany[];
@@ -21,26 +23,25 @@ export function CompanyList({ companies }: CompanyListProps) {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
   const { isEmissionsAIGenerated } = useVerificationStatus();
+  const sectorNames = useSectorNames();
 
   // Transform company data for ListCard components
   const transformedCompanies = useMemo(() => {
     if (!companies) return [];
 
     return companies.map((company) => {
-      const { wikidataId, name, descriptions, industry, reportingPeriods } =
-        company;
+      const { wikidataId, name, industry, reportingPeriods } = company;
       const isFinancialsSector = industry?.industryGics?.sectorCode === "40";
       const latestPeriod = reportingPeriods?.[0];
       const previousPeriod = reportingPeriods?.[1];
 
-      const localizedDescription =
-        descriptions?.find(
-          (d: { language: "SV" | "EN"; text: string }) =>
-            d.language ===
-            (currentLanguage.toUpperCase() === "SV" ? "SV" : "EN"),
-        )?.text ??
-        descriptions?.[0]?.text ??
-        "";
+      // Get sector name instead of description
+      const sectorCode = industry?.industryGics?.sectorCode as
+        | SectorCode
+        | undefined;
+      const sectorName = sectorCode
+        ? sectorNames[sectorCode]
+        : t("companies.overview.unknownSector");
 
       const currentEmissions =
         latestPeriod?.emissions?.calculatedTotalEmissions || null;
@@ -69,7 +70,7 @@ export function CompanyList({ companies }: CompanyListProps) {
 
       return {
         name,
-        description: localizedDescription,
+        description: sectorName,
         linkTo: `/companies/${wikidataId}`,
         meetsParis,
         meetsParisTranslationKey: "companies.card.meetsParis",
@@ -110,7 +111,7 @@ export function CompanyList({ companies }: CompanyListProps) {
         isFinancialsSector,
       };
     });
-  }, [companies, t, currentLanguage, isEmissionsAIGenerated]);
+  }, [companies, t, currentLanguage, isEmissionsAIGenerated, sectorNames]);
 
   if (companies.length === 0) {
     return (
