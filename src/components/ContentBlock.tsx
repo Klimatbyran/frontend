@@ -11,11 +11,11 @@ export function ContentBlock({ title, content, className }: ContentBlockProps) {
   return (
     <div
       className={cn(
-        "bg-black-2 rounded-[24px] p-8 md:rounded-[48px] md:p-16",
+        "bg-black-2 rounded-[24px] p-4 md:p-8 md:rounded-[48px] ",
         className,
       )}
     >
-      <div className="space-y-4 md:space-y-8">
+      <div className="space-y-4 md:space-y-6">
         <div className="flex items-center gap-2 md:gap-4">
           <div className="w-2 h-2 md:w-3 md:h-3 rounded-full bg-[#E2FF8D]" />
           <Text className="text-grey text-md md:text-2xl">{title}</Text>
