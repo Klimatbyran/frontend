@@ -77,9 +77,11 @@ export const OverviewChart: FC<OverviewChartProps> = ({
 
   const legendItems = useMemo(() => {
     const hiddenItems = new Set<string>();
+    // todo show trend at later stage
+    hiddenItems.add("trend");
+
     if (!approximatedData) {
       hiddenItems.add("approximated");
-      hiddenItems.add("trend");
       hiddenItems.add("carbonLaw");
     }
     return createOverviewLegendItems(t, hiddenItems, false);
@@ -170,7 +172,8 @@ export const OverviewChart: FC<OverviewChartProps> = ({
                     "var(--grey)",
                   )}
                 />
-                <Line
+                {/* todo show trend at later stage */}
+                {/* <Line
                   type="monotone"
                   dataKey="trend"
                   {...getConsistentLineProps(
@@ -178,7 +181,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({
                     isMobile,
                     t("companies.emissionsHistory.trend"),
                   )}
-                />
+                /> */}
                 <Line
                   type="monotone"
                   dataKey="carbonLaw"
