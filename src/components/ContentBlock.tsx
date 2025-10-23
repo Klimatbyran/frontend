@@ -11,7 +11,7 @@ export function ContentBlock({ title, content, className }: ContentBlockProps) {
   return (
     <div
       className={cn(
-        "bg-black-2 rounded-[24px] p-4 md:p-8 md:rounded-[48px] ",
+        "bg-black-2 rounded-level-2 p-4 md:p-8 ",
         className,
       )}
     >
