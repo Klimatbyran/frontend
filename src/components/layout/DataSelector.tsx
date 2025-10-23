@@ -9,7 +9,7 @@ interface DataSelectorProps<T> {
   getItemLabel: (item: T) => string;
   getItemKey: (item: T) => string;
   getItemDescription?: (item: T) => string | undefined;
-  getItemDetailedDescription?: (item: T) => string | undefined;
+  getItemDetailedDescription?: (item: T) => React.ReactNode | undefined;
   icon?: React.ReactNode;
 }
 
