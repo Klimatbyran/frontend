@@ -1,8 +1,8 @@
 // ToDo Add translations
 import React, { useMemo } from "react";
 import { ArrowUpRight, ArrowDownRight, AlertCircle } from "lucide-react";
-import { SECTOR_NAMES } from "@/hooks/companies/useCompanyFilters";
-import { RankedCompany } from "@/hooks/companies/useCompanies";
+import { SECTOR_NAMES } from "@/lib/constants/sectors";
+import { RankedCompany } from "@/types/company";
 import {
   useCategoryMetadata,
   CategoryType,

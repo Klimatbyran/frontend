@@ -1,5 +1,3 @@
-import type { ReportingPeriod } from "@/types/company";
-
 export interface EmissionPeriod {
   startDate: string;
   endDate: string;
@@ -41,31 +39,15 @@ export interface EmissionsFeatures {
   interpolateScope3: boolean;
   guessBaseYear: boolean;
   compositeTrend: boolean;
-  outlierDetection: boolean;
 }
 
+import type { CompanyDetails } from "@/types/company";
+
 export interface EmissionsHistoryProps {
-  reportingPeriods: ReportingPeriod[];
+  company: CompanyDetails;
   onYearSelect?: (year: string) => void;
   className?: string;
   features?: EmissionsFeatures;
-  industry?: {
-    industryGics?: {
-      sectorCode?: string;
-    };
-  } | null;
-  baseYear?: {
-    id: string;
-    year: number;
-    metadata: {
-      id: string;
-      comment: string | null;
-      source: string | null;
-      updatedAt: string;
-      user: { name: string };
-      verifiedBy: { name: string } | null;
-    };
-  } | null;
 }
 
 export type DataView = "overview" | "scopes" | "categories";

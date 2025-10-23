@@ -24,6 +24,9 @@ import { MunicipalityEmissions } from "@/components/municipalities/MunicipalityE
 import { useHiddenItems } from "@/components/charts";
 import { YearSelector } from "@/components/layout/YearSelector";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
+import { PageLoading } from "@/components/pageStates/Loading";
+import { PageError } from "@/components/pageStates/Error";
+import { PageNoData } from "@/components/pageStates/NoData";
 
 export function MunicipalityDetailPage() {
   const { t } = useTranslation();
@@ -39,9 +42,9 @@ export function MunicipalityDetailPage() {
 
   const [selectedYear, setSelectedYear] = useState<string>("2023");
 
-  if (loading) return <Text>{t("municipalityDetailPage.loading")}</Text>;
-  if (error) return <Text>{t("municipalityDetailPage.error")}</Text>;
-  if (!municipality) return <Text>{t("municipalityDetailPage.noData")}</Text>;
+  if (loading) return <PageLoading />;
+  if (error) return <PageError />;
+  if (!municipality) return <PageNoData />;
 
   const requirementsInProcurement =
     municipality.procurementScore == 2
@@ -153,11 +156,21 @@ export function MunicipalityDetailPage() {
             "municipalityLocalVsConsumption",
           ]}
         >
-          <Text className="text-4xl md:text-8xl">{municipality.name}</Text>
-          <Text className="text-grey text-sm md:text-base lg:text-lg">
-            {municipality.region}
-          </Text>
-
+          <div className="flex justify-between ">
+            <div className="flex flex-col">
+              <Text className="text-4xl md:text-8xl">{municipality.name}</Text>
+              <Text className="text-grey text-sm md:text-base lg:text-lg">
+                {municipality.region}
+              </Text>
+            </div>
+            {municipality.logoUrl && (
+              <img
+                src={municipality.logoUrl}
+                alt="logo"
+                className="h-[50px] md:h-[80px]"
+              />
+            )}
+          </div>
           <div className="flex flex-row items-center gap-2 my-4">
             <Text
               variant="body"
@@ -224,10 +237,10 @@ export function MunicipalityDetailPage() {
                   translateNamespace="municipalityDetailPage"
                 />
               }
-              className="p-4 md:p-6"
+              className="gap-8 md:gap-16"
             />
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16">
               <MunicipalitySectorPieChart
                 sectorEmissions={sectorEmissions}
                 year={currentYear}

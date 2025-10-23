@@ -7,7 +7,8 @@ import { AuthCallback } from "./pages/AuthCallback";
 import { BlogDetailPage } from "./pages/BlogDetailPage";
 import { CompanyEditPage } from "./pages/CompanyEditPage";
 import { CompanyDetailPage } from "./pages/CompanyDetailPage";
-import { CompaniesPage } from "./pages/CompaniesPage";
+import { CompaniesSectorsPage } from "./pages/CompaniesSectorsPage";
+import { CompaniesListPage } from "./pages/CompaniesListPage";
 import DownloadsPage from "./pages/DownloadsPage";
 import { ErrorPage } from "./pages/ErrorPage";
 import { InsightsPage } from "./pages/InsightsPage";
@@ -46,7 +47,11 @@ export function AppRoutes() {
       <Route path={`${basePath}`} element={<LandingPage />} />
       <Route path={`${basePath}/`} element={<LandingPage />} />
       {/* Companies routes */}
-      <Route path={`${basePath}/companies`} element={<CompaniesPage />} />
+      <Route path={`${basePath}/companies`} element={<CompaniesListPage />} />
+      <Route
+        path={`${basePath}/companies/sectors`}
+        element={<CompaniesSectorsPage />}
+      />
       <Route
         path={`${basePath}/companies/:id`}
         element={<CompanyDetailPage />}

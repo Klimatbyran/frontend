@@ -12,10 +12,8 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import {
-  useSectorNames,
-  SectorCode,
-} from "@/hooks/companies/useCompanyFilters";
+import { useSectorNames } from "@/hooks/companies/useCompanySectors";
+import type { SectorCode } from "@/lib/constants/sectors";
 import { useLanguage } from "@/components/LanguageProvider";
 import {
   formatEmissionsAbsolute,
@@ -29,7 +27,6 @@ import { OverviewStatistics } from "./OverviewStatistics";
 import { CompanyOverviewTooltip } from "./CompanyOverviewTooltip";
 import { CompanyDescription } from "./CompanyDescription";
 import { FinancialsTooltip } from "./FinancialsTooltip";
-import { calculateRateOfChange } from "@/utils/calculations/general";
 import { EmissionsAssessmentButton } from "../emissions-assessment/EmissionsAssessmentButton";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { getCompanyDescription } from "@/utils/business/company";
@@ -40,6 +37,7 @@ interface CompanyOverviewProps {
   previousPeriod?: ReportingPeriod;
   onYearSelect: (year: string) => void;
   selectedYear: string;
+  yearOverYearChange: number | null;
 }
 
 export function CompanyOverview({
@@ -48,6 +46,7 @@ export function CompanyOverview({
   previousPeriod,
   onYearSelect,
   selectedYear,
+  yearOverYearChange,
 }: CompanyOverviewProps) {
   const { t } = useTranslation();
   const { token } = useAuth();
@@ -78,11 +77,6 @@ export function CompanyOverview({
 
   // Get the translated company description
   const description = getCompanyDescription(company, currentLanguage);
-
-  const yearOverYearChange = calculateRateOfChange(
-    selectedPeriod?.emissions?.calculatedTotalEmissions,
-    previousPeriod?.emissions?.calculatedTotalEmissions,
-  );
 
   const sortedPeriods = [...company.reportingPeriods].sort(
     (a, b) => new Date(b.endDate).getTime() - new Date(a.endDate).getTime(),
@@ -215,7 +209,11 @@ export function CompanyOverview({
                   yearOverYearChange < 0 ? "text-orange-2" : "text-pink-3"
                 }
               >
-                {formatPercentChange(yearOverYearChange, currentLanguage, true)}
+                {formatPercentChange(
+                  yearOverYearChange,
+                  currentLanguage,
+                  false,
+                )}
               </span>
             ) : (
               <span className="text-grey">

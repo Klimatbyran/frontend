@@ -4,9 +4,13 @@ import { useCompanyDetails } from "@/hooks/companies/useCompanyDetails";
 import { Text } from "@/components/ui/text";
 import { CompanyEditHeader } from "@/components/companies/edit/CompanyEditHeader";
 import { CompanyEditPeriod } from "@/components/companies/edit/CompanyEditPeriod";
+import { CompanyEditStatedTotal } from "@/components/companies/edit/CompanyEditStatedTotal";
 import { CompanyEditScope1 } from "@/components/companies/edit/CompanyEditScope1";
+import { CompanyEditScope1And2 } from "@/components/companies/edit/CompanyEditScope1And2";
 import { CompanyEditScope2 } from "@/components/companies/edit/CompanyEditScope2";
 import { CompanyEditScope3 } from "@/components/companies/edit/CompanyEditScope3";
+import { CompanyEditTurnover } from "@/components/companies/edit/CompanyEditTurnover";
+import { CompanyEditEmployees } from "@/components/companies/edit/CompanyEditEmployees";
 import { ReportingPeriod } from "@/types/company";
 import { mapCompanyEditFormToRequestBody } from "@/lib/company/company-edit";
 import { updateReportingPeriods } from "@/lib/api";
@@ -200,27 +204,64 @@ export function CompanyEditPage() {
           <form onSubmit={handleSubmit} ref={formRef}>
             <div className="overflow-x-auto overflow-y-visible">
               <div className="min-w-max">
-                <CompanyEditPeriod
-                  periods={selectedPeriods}
-                  onInputChange={onInputChange}
-                  formData={formData}
-                  resetPeriod={resetPeriod}
-                ></CompanyEditPeriod>
-                <CompanyEditScope1
-                  periods={selectedPeriods}
-                  onInputChange={onInputChange}
-                  formData={formData}
-                ></CompanyEditScope1>
-                <CompanyEditScope2
-                  periods={selectedPeriods}
-                  onInputChange={onInputChange}
-                  formData={formData}
-                ></CompanyEditScope2>
-                <CompanyEditScope3
-                  periods={selectedPeriods}
-                  onInputChange={onInputChange}
-                  formData={formData}
-                ></CompanyEditScope3>
+                {/* Reporting Period Section */}
+                <div className="mb-8">
+                  <CompanyEditPeriod
+                    periods={selectedPeriods}
+                    onInputChange={onInputChange}
+                    formData={formData}
+                    resetPeriod={resetPeriod}
+                  />
+                </div>
+
+                {/* Emissions Section */}
+                <div className="mb-8">
+                  <h3 className="text-sm font-medium text-gray-400 mb-4 px-2 uppercase tracking-wide">
+                    {t("companyEditPage.sections.emissions")}
+                  </h3>
+                  <CompanyEditStatedTotal
+                    periods={selectedPeriods}
+                    onInputChange={onInputChange}
+                    formData={formData}
+                  />
+                  <CompanyEditScope1
+                    periods={selectedPeriods}
+                    onInputChange={onInputChange}
+                    formData={formData}
+                  />
+                  <CompanyEditScope1And2
+                    periods={selectedPeriods}
+                    onInputChange={onInputChange}
+                    formData={formData}
+                  />
+                  <CompanyEditScope2
+                    periods={selectedPeriods}
+                    onInputChange={onInputChange}
+                    formData={formData}
+                  />
+                  <CompanyEditScope3
+                    periods={selectedPeriods}
+                    onInputChange={onInputChange}
+                    formData={formData}
+                  />
+                </div>
+
+                {/* Economy Section */}
+                <div className="mb-8">
+                  <h3 className="text-sm font-medium text-gray-400 mb-4 px-2 uppercase tracking-wide">
+                    {t("companyEditPage.sections.economy")}
+                  </h3>
+                  <CompanyEditTurnover
+                    periods={selectedPeriods}
+                    onInputChange={onInputChange}
+                    formData={formData}
+                  />
+                  <CompanyEditEmployees
+                    periods={selectedPeriods}
+                    onInputChange={onInputChange}
+                    formData={formData}
+                  />
+                </div>
               </div>
             </div>
             <div className="w-full ps-4 pe-2 mt-6">

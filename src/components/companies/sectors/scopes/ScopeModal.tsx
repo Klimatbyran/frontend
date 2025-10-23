@@ -2,12 +2,13 @@ import React, { useMemo } from "react";
 import { X } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { RankedCompany } from "@/hooks/companies/useCompanies";
+import { RankedCompany } from "@/types/company";
+import { sectorColors } from "@/lib/constants/companyColors";
+import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 import {
-  sectorColors,
-  useSectorNames,
-} from "@/hooks/companies/useCompanyFilters";
-import { formatEmissionsAbsolute, formatPercent } from "@/utils/formatting/localization";
+  formatEmissionsAbsolute,
+  formatPercent,
+} from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
 
 interface ScopeModalProps {

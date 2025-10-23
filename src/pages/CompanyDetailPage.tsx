@@ -3,14 +3,18 @@ import { useState, useEffect } from "react";
 import { useCompanyDetails } from "@/hooks/companies/useCompanyDetails";
 import { CompanyOverview } from "@/components/companies/detail/overview/CompanyOverview";
 import { EmissionsHistory } from "@/components/companies/detail/history/EmissionsHistory";
-import { Text } from "@/components/ui/text";
 import { useTranslation } from "react-i18next";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { createSlug } from "@/lib/utils";
 import { CompanyScope3 } from "@/components/companies/detail/CompanyScope3";
 import { getCompanyDescription } from "@/utils/business/company";
 import { useLanguage } from "@/components/LanguageProvider";
+import RelatableNumbers from "@/components/relatableNumbers";
 import type { Scope3Category } from "@/types/company";
+import { PageLoading } from "@/components/pageStates/Loading";
+import { PageError } from "@/components/pageStates/Error";
+import { PageNoData } from "@/components/pageStates/NoData";
+import { calculateEmissionsChange } from "@/utils/calculations/emissionsCalculations";
 
 export function CompanyDetailPage() {
   const { t } = useTranslation();
@@ -29,33 +33,24 @@ export function CompanyDetailPage() {
   }, []);
 
   if (loading) {
-    return (
-      <div className="animate-pulse space-y-16">
-        <div className="h-12 w-1/3 bg-black-1 rounded" />
-        <div className="h-96 bg-black-1 rounded-level-1" />
-      </div>
-    );
+    return <PageLoading />;
   }
 
   if (error) {
     return (
-      <div className="text-center py-24">
-        <Text variant="h3" className="text-red-500 mb-4">
-          {t("companyDetailPage.errorTitle")}
-        </Text>
-        <Text variant="body">{t("companyDetailPage.errorDescription")}</Text>
-      </div>
+      <PageError
+        titleKey="companyDetailPage.errorTitle"
+        descriptionKey="companyDetailPage.errorDescription"
+      />
     );
   }
 
   if (!company || !company.reportingPeriods.length) {
     return (
-      <div className="text-center py-24">
-        <Text variant="h3" className="text-red-500 mb-4">
-          {t("companyDetailPage.notFoundTitle")}
-        </Text>
-        <Text variant="body">{t("companyDetailPage.notFoundDescription")}</Text>
-      </div>
+      <PageNoData
+        titleKey="companyDetailPage.notFoundTitle"
+        descriptionKey="companyDetailPage.notFoundDescription"
+      />
     );
   }
 
@@ -118,6 +113,22 @@ export function CompanyDetailPage() {
     industry: industry,
   };
 
+  const prevEmissions = previousPeriod?.emissions?.calculatedTotalEmissions;
+
+  const validEmissionsChangeNumber = prevEmissions
+    ? Math.abs(
+        selectedPeriod?.emissions?.calculatedTotalEmissions - prevEmissions,
+      )
+    : null;
+
+  const emissionsChangeStatus =
+    selectedPeriod?.emissions?.calculatedTotalEmissions - prevEmissions > 0
+      ? "increased"
+      : "decreased";
+
+  // Calculate emissions change from previous period
+  const yearOverYearChange = calculateEmissionsChange(selectedPeriod);
+
   return (
     <>
       <PageSEO
@@ -179,13 +190,20 @@ export function CompanyDetailPage() {
           previousPeriod={previousPeriod}
           onYearSelect={setSelectedYear}
           selectedYear={selectedYear}
+          yearOverYearChange={yearOverYearChange}
         />
+        {validEmissionsChangeNumber && validEmissionsChangeNumber > 100 && (
+          <RelatableNumbers
+            emissionsChange={validEmissionsChangeNumber}
+            currentLanguage={currentLanguage}
+            companyName={company.name}
+            emissionsChangeStatus={emissionsChangeStatus}
+            yearOverYearChange={yearOverYearChange}
 
-        <EmissionsHistory
-          reportingPeriods={company.reportingPeriods}
-          baseYear={company.baseYear}
-          industry={company.industry}
-        />
+          />
+        )}
+
+        <EmissionsHistory company={company} />
         <CompanyScope3
           emissions={selectedPeriod.emissions!}
           historicalData={sortedPeriods

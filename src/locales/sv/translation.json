@@ -2,9 +2,13 @@
   "yes": "Ja",
   "no": "Nej",
   "noData": "Ingen data tillgänglig",
+  "unknown": "Okänt",
+  "all": "Alla",
   "emissionsUnit": "tCO₂e",
   "header": {
     "companies": "Företag",
+    "companiesSectors": "Utforska - Sektorer",
+    "companiesExplore": "Utforska - Företag",
     "municipalities": "Kommuner",
     "municipalitiesRanked": "Topplistor",
     "municipalitiesExplore": "Utforska",
@@ -33,6 +37,16 @@
     "supporters": "Stöd och partners",
     "internationalLicense": "International license",
     "ccBySa": "CC BY-SA - Attribution-ShareAlike 4.0"
+  },
+  "components": {
+    "error": {
+      "title": "Det gick inte att hämta informationen",
+      "description": "Försök igen senare"
+    },
+    "noData": {
+      "title": "Ingen data tillgänglig",
+      "description": "Kontrollera att länken är korrekt"
+    }
   },
   "newsletter": {
     "subscribe": "Prenumerera på vårt nyhetsbrev",
@@ -247,6 +261,7 @@
       "list": "Lista"
     },
     "filter": "Filter",
+    "sort": "Sortera",
     "sortBy": "Sortera efter",
     "searchInFilter": "Sök i filter...",
     "noFiltersFound": "Inga filter hittades.",
@@ -254,8 +269,20 @@
       "emissionsChange": "Utsläppsförändring (%)",
       "totalEmissions": "Totala utsläpp",
       "scope3Coverage": "Scope 3-rapportering",
+      "meetsParis": "Uppfyller Parisavtalet",
       "nameAsc": "Företagsnamn A-Ö",
       "nameDesc": "Företagsnamn Ö-A"
+    },
+    "filteringOptions": {
+      "meetsParis": "Uppfyller Parisavtalet",
+      "meetsParisYes": "Ja",
+      "meetsParisNo": "Nej",
+      "meetsParisUnknown": "Okänt"
+    },
+    "sortDirection": {
+      "none": "Standard",
+      "asc": "Låg till hög",
+      "desc": "Hög till låg"
     },
     "sector": "Sektor",
     "errorTitle": "Det gick inte att hämta företagsinformation",
@@ -725,9 +752,6 @@
   "municipalityDetailPage": {
     "metaTitle": "Data om utsläpp och omställning",
     "metaDescription": "Översikt över klimatpåverkan och hållbarhetsarbete",
-    "loading": "Laddar...",
-    "error": "Fel vid inläsning av data",
-    "noData": "Ingen data tillgänglig",
     "procurementScore": {
       "high": "Ja",
       "medium": "Kanske",
@@ -942,6 +966,7 @@
       "emissionsChangeRate": "Förändringstakt",
       "emissionsChangeRateInfo": "Förändringstakt för utsläpp jämfört med föregående rapporteringsperiod.",
       "emissionsChangeRateInfoExtended": "Det här värdet är ovanligt högt på grund av inkonsekvent rapportering mellan de två senaste perioderna, vilket gör att procentförändringen inte speglar den faktiska utvecklingen.",
+      "meetsParis": "Är {{name}} på väg att uppfylla Parisavtalet?",
       "turnover": "Omsättning",
       "turnoverAmount": "mdr",
       "employees": "Anställda",
@@ -957,9 +982,9 @@
     },
     "emissionsHistory": {
       "noReportingPeriods": "Inga rapporteringsperioder tillgängliga",
-      "title": "Historiska utsläpp",
-      "tooltip": "Historiska utsläpp och trend mot 2030. Klicka på en punkt för att ta bort linjen från grafen. Hovra över punkten för att se värdena för rapporteringsperioden.",
-      "unit": "I tons CO₂e",
+      "title": "Utsläppsutveckling",
+      "tooltip": "Visar de rapporterade utsläppen över tid. Klicka på en punkt för att ta bort linjen från grafen. Hovra över punkten för att se värdena för rapporteringsperioden.",
+      "unit": "I ton CO₂e",
       "totalEmissions": "Totala utsläpp",
       "baseYear": "Basår",
       "baseYearInfo": "Basår syftar på ett specifikt år som väljs som referenspunkt för att jämföra framtida utsläpp mot.",
@@ -1171,7 +1196,20 @@
           "label": "Cyklarna",
           "description": "Meter cykelväg per invånare",
           "detailedDescription": "Antal meter cykelväg per invånare per kommun år 2024. Ju längre desto bättre, god infrastruktur gynnar ökad cykling",
-          "source": "Nationella Vägdatabasen, Trafikverket"
+          "source": "<0>Nationella Vägdatabasen</0>, <1>Trafikverket</1>"
+        },
+        "climatePlan": {
+          "label": "Klimatplanerna",
+          "description": "Har en aktuell klimatplan",
+          "detailedDescription": "Vilka kommuner har en aktuell klimatplan?",
+          "source": "<0>Klimatkollens öppna sammanställning av klimatplaner med hjälp från medlemmar av Klimatklubben och Naturskyddsföreningen</0>",
+          "booleanLabels": {
+            "true": "Har klimatplan",
+            "false": "Saknar klimatplan"
+          },
+          "hasPlanSince": "Antog klimatplan {{year}}",
+          "aboveString": "har en klimatplan",
+          "belowString": "saknar en klimatplan"
         }
       },
       "insights": {
@@ -1197,6 +1235,11 @@
         "showList": "Visa lista",
         "showMap": "Visa karta"
       }
+    }
+  },
+  "charts": {
+    "tooltip": {
+      "noData": "Ingen data"
     }
   },
   "errorPage": {
@@ -1227,9 +1270,21 @@
       "reportingTimespan": "Rapporteringsperiod",
       "reportingStart": "Start",
       "reportingEnd": "Slut",
+      "reportURL": "Rapport URL",
       "marketBased": "Marknadsbaserad",
       "locationBased": "Platsbaserad",
-      "unknown": "Okänd"
+      "unknown": "Okänd",
+      "turnover": "Omsättning",
+      "currency": "Valuta",
+      "employees": "Anställda",
+      "unit": "Enhet",
+      "statedTotalEmissions": "Angivna totala utsläpp",
+      "scope1And2Combined": "Omfattning 1 & 2 kombinerat"
+    },
+    "sections": {
+      "reportingPeriod": "Rapporteringsperiod",
+      "emissions": "Utsläpp",
+      "economy": "Ekonomi"
     },
     "save": "Spara",
     "success": {
@@ -1367,15 +1422,7 @@
   },
   "trendAnalysis": {
     "insufficientData": "Ingen trendlinje visas på grund av otillräcklig data ({{dataPoints}} punkter). Behöver minst 2 datapunkter för att bygga tillförlitlig trend.",
-    "insufficientDataWithBaseYear": "Enkel trendberäkning används på grund av begränsad data sedan {{baseYear}} ({{dataPoints}} punkter). Mer data behövs för tillförlitlig trendanalys.",
-    "insufficientDataSinceBaseYear": "Ingen trendlinje visas på grund av otillräcklig data sedan basåret {{baseYear}} ({{dataPoints}} användbara punkter). Behöver minst 2 datapunkter sedan basåret för att bygga tillförlitlig trend.",
-    "simpleMethodInsufficientData": "Enkel trendberäkning används på grund av begränsad data sedan basåret ({{dataPoints}} punkter). Mer data behövs för tillförlitlig trendanalys.",
-    "simpleMethodPoorDataQuality": "Enkel trendberäkning används på grund av datakvalitetsproblem ({{issues}}). Endast {{cleanDataPoints}} tillförlitliga datapunkter från {{originalDataPoints}} totalt. Denna trend kanske inte är särskilt tillförlitlig.",
-    "linearMethodMultipleIssues": "Linjär trend används trots datakvalitetsproblem ({{issues}}). Baserat på {{cleanDataPoints}} tillförlitliga datapunkter från {{originalDataPoints}} totalt. Tolka med försiktighet.",
-    "weightedLinearMethodStable": "Viktad linjär trend används eftersom senaste åren visar stabila utsläpp (variation < 10% av genomsnittet). Betonar senaste stabila data för nuvarande trendrepresentation.",
-    "exponentialMethodBetterFit": "Exponentiell trend används eftersom den passar data betydligt bättre än linjär trend. Tyder på att utsläppen förändras i accelererande eller decelererande takt.",
-    "recentExponentialMethodStrongPattern": "Senaste exponentiella trend används eftersom de senaste 4 åren visar starkt exponentiellt mönster som är betydligt bättre än linjärt. Fokuserar på senaste trendmönstret.",
-    "linearMethodDefault": "Linjär trend används som standard eftersom data är tillräckligt komplett och visar konsekvent mönster utan starkt icke-linjärt beteende eller betydande avvikare."
+    "insufficientDataSinceBaseYear": "Ingen trendlinje visas på grund av otillräcklig data sedan basåret {{baseYear}} ({{dataPoints}} användbara punkter). Behöver minst 2 datapunkter sedan basåret för att bygga tillförlitlig trend."
   },
   "newsletterArchivePage": {
     "title": "Nyhetsbrevsarkiv",
@@ -1400,5 +1447,36 @@
   "language": {
     "sv": "Svenska",
     "en": "Engelska"
+  },
+  "relatableNumbers": {
+    "title": "Hur mycket är det?",
+    "description": "{{companyName}} {{emissionsChangeStatus}} sina utsläpp med <highlightNumber>{{emissionsInTonnes}}({{yearOverYearChange}})</highlightNumber> tCO2e jämfört med föregående år. Detta kan jämföras med:",
+    "prefixFire": "Utsläppen motsvarar en skogsbrand",
+    "prefixEmissions": "{{count}} svenska invånares årsutsläpp.",
+    "increased": "ökade",
+    "decreased": "minskade",
+    "patterns": {
+      "city": "{{prefix}} {{count}} gånger större än {{entity}}.",
+      "unit": "{{prefix}} stor som {{count}} {{entity}}.",
+      "citizens": "{{prefix}}"
+    },
+    "entities": {
+      "stockholm": {
+        "name": "Stockholm",
+        "type": "city"
+      },
+      "monaco": {
+        "name": "Monaco",
+        "type": "city"
+      },
+      "footballFields": {
+        "name": "fotbollsplaner",
+        "type": "unit"
+      },
+      "tennisCourts": {
+        "name": "tennisbanor",
+        "type": "unit"
+      }
+    }
   }
 }

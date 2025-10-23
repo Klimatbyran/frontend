@@ -177,6 +177,10 @@
   @apply text-lg;
 }
 
+.rounded-level-3 {
+  border-radius: 15px;
+}
+
 input[type="number"] {
   text-align: right; /* Align numbers to the right */
   padding-right: 10px; /* Add some padding as needed */

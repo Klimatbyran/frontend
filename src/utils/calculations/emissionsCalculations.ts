@@ -3,6 +3,27 @@
  */
 
 /**
+ * Get year-over-year emissions change percentage from API
+ * Uses API-provided adjusted value (comparable data) if available,
+ * falls back to absolute value (all data) if adjusted is not present
+ *
+ * @param latestPeriod - The most recent reporting period
+ * @returns The percentage change as a number, or null if not available
+ */
+export function calculateEmissionsChange(latestPeriod?: {
+  emissionsChangeLastTwoYears?: {
+    adjusted: number | null;
+    absolute: number | null;
+  } | null;
+}): number | null {
+  const adjusted = latestPeriod?.emissionsChangeLastTwoYears?.adjusted;
+  const absolute = latestPeriod?.emissionsChangeLastTwoYears?.absolute;
+
+  // Prefer adjusted (comparable data), fallback to absolute (all data)
+  return adjusted ?? absolute ?? null;
+}
+
+/**
  * Carbon Law reduction rate constant (11.72% annual reduction)
  */
 export const CARBON_LAW_REDUCTION_RATE = 0.1172;

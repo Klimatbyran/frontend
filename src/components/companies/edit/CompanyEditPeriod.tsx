@@ -23,7 +23,7 @@ export function CompanyEditPeriod({
   return (
     <>
       <CompanyEditRow
-        name={t("companyEditPage.rowName.reportingTimespan")}
+        name={t("companyEditPage.sections.reportingPeriod")}
         key={"reporting-timespan"}
         headerName
         noHover
@@ -60,6 +60,21 @@ export function CompanyEditPeriod({
             type="date"
             value={period.endDate.substring(0, 10)}
             name={`end-date-${period.id}`}
+            displayAddition="none"
+            onInputChange={onInputChange}
+            formData={formData}
+          />
+        ))}
+      </CompanyEditRow>
+      <CompanyEditRow
+        name={t("companyEditPage.rowName.reportURL")}
+        key={"report-url"}
+      >
+        {periods.map((period: ReportingPeriod) => (
+          <CompanyEditInputField
+            type="text"
+            value={period.reportURL || ""}
+            name={`report-url-${period.id}`}
             displayAddition="none"
             onInputChange={onInputChange}
             formData={formData}

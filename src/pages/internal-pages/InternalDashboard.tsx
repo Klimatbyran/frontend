@@ -1,13 +1,16 @@
 import { useState } from "react";
 import { useLanguage } from "@/components/LanguageProvider";
-import { RankedCompany, useCompanies } from "@/hooks/companies/useCompanies";
-import { SECTOR_NAMES, SectorCode } from "@/hooks/companies/useCompanyFilters";
+import { useCompanies } from "@/hooks/companies/useCompanies";
+import type { RankedCompany } from "@/types/company";
+import { SECTOR_NAMES } from "@/lib/constants/sectors";
+import type { SectorCode } from "@/lib/constants/sectors";
 import {
   formatEmissionsAbsolute,
   formatPercentChange,
   formatEmployeeCount,
 } from "@/utils/formatting/localization";
 import { calculateRateOfChange } from "@/utils/calculations/general";
+import { calculateEmissionsChange } from "@/utils/calculations/emissionsCalculations";
 
 const companyChangeRate = (company: RankedCompany) =>
   calculateRateOfChange(
@@ -103,10 +106,8 @@ export const InternalDashboard = () => {
     )
     .map(({ company }) => company);
   const getChangeRate = (company: RankedCompany) => {
-    const changeRate = calculateRateOfChange(
-      company.reportingPeriods[0]?.emissions?.calculatedTotalEmissions,
-      company.reportingPeriods[1]?.emissions?.calculatedTotalEmissions,
-    );
+    // Calculate emissions change from previous period
+    const changeRate = calculateEmissionsChange(company.reportingPeriods[0]);
 
     return changeRate
       ? formatPercentChange(changeRate, currentLanguage, true)
