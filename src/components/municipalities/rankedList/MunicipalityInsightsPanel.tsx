@@ -4,6 +4,10 @@ import { KPIValue } from "@/types/entity-rankings";
 import InsightsList from "../../ranked/InsightsList";
 import KPIDetailsPanel from "../../ranked/KPIDetailsPanel";
 import { getSortedEntityKPIValues } from "@/utils/data/sorting";
+import {
+  calculateEntityStatistics,
+  createSourceLinks,
+} from "@/utils/insights/rankedListUtils";
 
 interface InsightsPanelProps {
   municipalityData: Municipality[];
@@ -21,19 +25,14 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
     );
   }
 
-  const validData = municipalityData.filter((m) => {
-    const value = m[selectedKPI.key];
+  // Calculate statistics using shared utility
+  const statistics = calculateEntityStatistics(
+    municipalityData,
+    selectedKPI,
+    (m) => m[selectedKPI.key],
+  );
 
-    // Handle boolean values if KPI is binary
-    if (selectedKPI.isBoolean) {
-      return typeof value === "boolean";
-    }
-
-    // Handle numeric values (existing logic)
-    return typeof value === "number" && !isNaN(value as number);
-  });
-
-  if (!validData.length) {
+  if (!statistics.validData.length) {
     return (
       <div className="bg-white/5 backdrop-blur-sm rounded-level-2 p-8 h-full flex items-center justify-center">
         <p className="text-white text-lg">
@@ -50,59 +49,7 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
   const topMunicipalities = sortedData.slice(0, 5);
   const bottomMunicipalities = sortedData.slice(-5).reverse();
 
-  const values = validData.map((m) => {
-    const value = m[selectedKPI.key];
-    // Convert boolean to number for calculations if KPI is binary
-    if (selectedKPI.isBoolean && typeof value === "boolean") {
-      return value ? 1 : 0;
-    }
-    return value as number;
-  });
-  const average = values.reduce((sum, val) => sum + val, 0) / values.length;
-
-  // For boolean KPIs, these counts have a different meaning
-  const aboveAverageCount = selectedKPI.isBoolean
-    ? values.filter((val) => val > 0).length // Count of "true" values
-    : values.filter((val) => val > average).length;
-
-  const belowAverageCount = selectedKPI.isBoolean
-    ? values.filter((val) => val === 0).length // Count of "false" values
-    : values.filter((val) => val < average).length;
-
-  const nullValues = municipalityData.filter(
-    (m) => m[selectedKPI.key] === null || m[selectedKPI.key] === undefined,
-  ).length;
-
-  // Adapt the data for the new KPIDetailsPanel interface
-  const distributionStats = [
-    {
-      count: aboveAverageCount,
-      colorClass: "text-blue-3",
-      label: selectedKPI.isBoolean
-        ? selectedKPI.booleanLabels?.true || t("yes")
-        : t("municipalities.list.insights.keyStatistics.distributionAbove"),
-    },
-    {
-      count: belowAverageCount,
-      colorClass: "text-pink-3",
-      label: selectedKPI.isBoolean
-        ? selectedKPI.booleanLabels?.false || t("no")
-        : t("municipalities.list.insights.keyStatistics.distributionBelow"),
-    },
-  ];
-
-  // Format the average value for display
-  const formattedAverage = !selectedKPI.isBoolean
-    ? `${average.toFixed(1)}${selectedKPI.unit || ""}`
-    : undefined;
-
-  const sourceLinks =
-    selectedKPI.sourceUrls?.map((url, i) => ({
-      url,
-      label: Array.isArray(selectedKPI.source)
-        ? selectedKPI.source[i] || ""
-        : selectedKPI.source || "",
-    })) || [];
+  const sourceLinks = createSourceLinks(selectedKPI);
 
   return (
     <div className="flex-1 overflow-y-auto min-h-0 pr-2">
@@ -111,10 +58,10 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
       >
         <KPIDetailsPanel
           title={selectedKPI.label}
-          averageValue={formattedAverage}
+          averageValue={statistics.formattedAverage}
           averageLabel={t("municipalities.list.insights.keyStatistics.average")}
-          distributionStats={distributionStats}
-          missingDataCount={nullValues}
+          distributionStats={statistics.distributionStats}
+          missingDataCount={statistics.nullCount}
           missingDataLabel={selectedKPI.nullValues}
           sourceLinks={sourceLinks}
         />
