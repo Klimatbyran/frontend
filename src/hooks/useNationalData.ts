@@ -1,4 +1,6 @@
 import { useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getNationalData } from "@/lib/api";
 
 export type NationalYearData = {
   year: number;
@@ -14,7 +16,13 @@ type NationalDataType = {
 
 interface UseNationalDataReturn {
   /** The entire national emissions dataset */
-  data: NationalDataType;
+  data: NationalDataType | null;
+
+  /** Loading state */
+  loading: boolean;
+
+  /** Error state */
+  error: unknown;
 
   /** Get an array of all available years in the dataset */
   getYears: () => number[];
@@ -40,10 +48,23 @@ interface UseNationalDataReturn {
 }
 
 export function useNationalData(): UseNationalDataReturn {
-  const data = useMemo(() => nationalData as unknown as NationalDataType, []);
+  const {
+    data: nationalData = null,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["national-data"],
+    queryFn: getNationalData,
+  });
+
+  const data = useMemo(
+    () => nationalData as NationalDataType | null,
+    [nationalData],
+  );
 
   // Get an array of all available years
   const getYears = (): number[] => {
+    if (!data) return [];
     return Object.keys(data)
       .filter((key) => !isNaN(Number(key)))
       .map((year) => Number(year))
@@ -52,6 +73,7 @@ export function useNationalData(): UseNationalDataReturn {
 
   // Get total emissions for all years
   const getTotalEmissions = (): { year: number; emissions: number }[] => {
+    if (!data) return [];
     const years = getYears();
     return years.map((year) => {
       const yearData = data[year.toString()] as NationalYearData;
@@ -66,6 +88,7 @@ export function useNationalData(): UseNationalDataReturn {
   const getSectorEmissions = (
     year: number,
   ): { sector: string; emissions: number }[] | null => {
+    if (!data) return null;
     const yearData = data[year.toString()] as NationalYearData | undefined;
 
     if (!yearData) return null;
@@ -81,6 +104,7 @@ export function useNationalData(): UseNationalDataReturn {
     year: number,
     sector: string,
   ): { subsector: string; emissions: number }[] | null => {
+    if (!data) return null;
     const yearData = data[year.toString()] as NationalYearData | undefined;
 
     if (!yearData || !yearData.subsectors[sector]) return null;
@@ -97,6 +121,7 @@ export function useNationalData(): UseNationalDataReturn {
   const getAllSubsectorEmissions = (
     year: number,
   ): { sector: string; subsector: string; emissions: number }[] | null => {
+    if (!data) return null;
     const yearData = data[year.toString()] as NationalYearData | undefined;
 
     if (!yearData) return null;
@@ -119,6 +144,8 @@ export function useNationalData(): UseNationalDataReturn {
 
   return {
     data,
+    loading: isLoading,
+    error,
     getYears,
     getTotalEmissions,
     getSectorEmissions,

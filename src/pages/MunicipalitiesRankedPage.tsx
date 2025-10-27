@@ -60,8 +60,8 @@ export function MunicipalitiesRankedPage() {
     }
   }, [getKPIFromURL, selectedKPI.label]);
 
-  const handleMunicipalityClick = (name: string) => {
-    const formattedName = name.toLowerCase();
+  const handleMunicipalityClick = (municipality: Municipality) => {
+    const formattedName = municipality.name.toLowerCase();
     navigate(`/municipalities/${formattedName}?view=${viewMode}`);
   };
 
@@ -69,7 +69,7 @@ export function MunicipalitiesRankedPage() {
   const handleMunicipalityNameClick = (name: string) => {
     const municipality = municipalities.find((m) => m.name === name);
     if (municipality) {
-      handleMunicipalityClick(municipality.name);
+      handleMunicipalityClick(municipality);
     } else {
       window.location.href = `/municipalities/${name.toLowerCase()}?view=${viewMode}`;
     }
@@ -106,7 +106,10 @@ export function MunicipalitiesRankedPage() {
       <div className={isMobile ? "relative h-[65vh]" : "relative h-full"}>
         <MapOfSweden
           geoData={geoData as FeatureCollection}
-          data={municipalities.map((m) => ({ ...m, id: m.name }))}
+          data={municipalities.map((m) => {
+            const { sectorEmissions, ...rest } = m;
+            return { ...rest, id: m.name };
+          })}
           selectedAttribute={selectedKPI}
           onRegionClick={handleMunicipalityNameClick}
         />
