@@ -153,7 +153,7 @@ export function RegionalRankedPage() {
                   if (value === null) {
                     return t("noData");
                   }
-                  return `${(value as number).toFixed(1)}${selectedKPI.unit}`;
+                  return `${(value as number).toFixed(1)}`;
                 },
               })}
               onItemClick={() => {}}
