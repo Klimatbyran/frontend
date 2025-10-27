@@ -34,7 +34,7 @@ export function DownloadCard({
       const response =
         selectedType === "companies"
           ? await downloadCompanies(format, selectedYear || undefined)
-          : await downloadMunicipalities();
+          : await downloadMunicipalities(format);
 
       if (!(response instanceof Blob)) {
         throw new Error("Expected Blob response");

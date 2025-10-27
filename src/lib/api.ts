@@ -122,8 +122,13 @@ export async function downloadCompanies(
   return data;
 }
 
-export async function downloadMunicipalities() {
-  const { data, error } = await GET("/municipalities/export", {
+export async function downloadMunicipalities(
+  format: "csv" | "json" | "xlsx" = "json",
+) {
+  const { data, error } = await client.GET("/municipalities/export", {
+    params: {
+      query: { type: format },
+    },
     parseAs: "blob",
   });
 
@@ -282,13 +287,14 @@ export async function getRegions() {
   }
 }
 
-export async function getNationalData() {
-  try {
-    const { data, error } = await GET("/national-data/", {});
-    if (error) throw error;
-    return data || [];
-  } catch (error) {
-    console.error("Error fetching national data:", error);
-    return [];
-  }
-}
+// TODO: Add national data to API, this is prep for next stages
+// export async function getNationalData() {
+//   try {
+//     const { data, error } = await GET("/national-data/", {});
+//     if (error) throw error;
+//     return data || [];
+//   } catch (error) {
+//     console.error("Error fetching national data:", error);
+//     return [];
+//   }
+// }
