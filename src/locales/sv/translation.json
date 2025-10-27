@@ -1113,6 +1113,7 @@
     }
   },
   "municipalities": {
+    "name": "Namn",
     "card": {
       "meetsParis": "Är {{name}} på väg att klara Parisavtalet?",
       "yes": "Ja",
@@ -1171,8 +1172,8 @@
         "historicalEmissionChangePercent": {
           "label": "Utsläppen",
           "description": "Historisk förändring av utsläpp",
-          "detailedDescription": "Genomsnittlig årlig förändring av växthusgasutsläppen i Sveriges kommuner sedan Parisavtalet 2015",
-          "source": "Nationella emissionsdatabasen"
+          "detailedDescription": "Genomsnittlig årlig procentuell förändring av växthusgasutsläppen i Sveriges kommuner sedan Parisavtalet år 2015.",
+          "source": "<0>Nationella emissionsdatabasen</0>"
         },
         "electricCarChangePercent": {
           "label": "Elbilarna",
