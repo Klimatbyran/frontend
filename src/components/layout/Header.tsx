@@ -23,6 +23,7 @@ interface NavSubLink {
   label: string;
   path: string;
   shortcut?: string;
+  onlyShowOnStaging?: boolean;
 }
 
 interface NavLink {
@@ -30,6 +31,7 @@ interface NavLink {
   icon?: React.ReactElement;
   path: string;
   sublinks?: NavSubLink[];
+  onlyShowOnStaging?: boolean;
 }
 
 const NAV_LINKS: NavLink[] = [
@@ -60,6 +62,7 @@ const NAV_LINKS: NavLink[] = [
       {
         label: "header.regionsRanked",
         path: `/regional-overview`,
+        onlyShowOnStaging: true,
       },
       {
         label: "header.municipalitiesExplore",
@@ -160,30 +163,27 @@ export function Header() {
   // Radix menu for React doesn't have a way to turn this off, simulate it by a really long delay
   const disableOpenOnHoverDelay = 999999;
 
-  // Filter sublinks based on feature flags
-  const getFilteredNavLinks = () => {
-    return NAV_LINKS.map((link) => {
-      if (link.path === `/municipalities` && link.sublinks) {
-        const filteredSublinks = link.sublinks.filter((sublink) => {
-          // Hide regional overview unless on staging
-          if (sublink.path === `/regional-overview`) {
-            return isStaging;
-          }
-          return true;
-        });
-        return { ...link, sublinks: filteredSublinks };
-      }
-      return link;
-    });
-  };
-
-  const filteredNavLinks = getFilteredNavLinks();
+  // Filter nav links and sublinks based on feature flags
+  const filteredNavLinks = NAV_LINKS.filter(
+    (link) => !link.onlyShowOnStaging || isStaging,
+  ).map((link) => {
+    if (link.sublinks) {
+      return {
+        ...link,
+        sublinks: link.sublinks.filter(
+          (sublink) => !sublink.onlyShowOnStaging || isStaging,
+        ),
+      };
+    }
+    return link;
+  });
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     if (searchParams.get("newsletter") === "open") {
       setIsSignUpOpen(true);
     }
+
   }, [location]);
 
   useEffect(() => {
