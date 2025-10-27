@@ -1157,7 +1157,7 @@
         "historicalEmissionChangePercent": {
           "label": "Emissions",
           "description": "Historical change in emissions",
-          "detailedDescription": "Average annual percentage change in greenhouse gas emissions in Swedish municipalities since the Paris Agreement in 2015. ",
+          "detailedDescription": "Average annual percentage change in greenhouse gas emissions in Swedish municipalities since the Paris Agreement in 2015.",
           "source": "<0>National Emissions Database</0>"
         },
         "electricCarChangePercent": {
