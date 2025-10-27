@@ -17,6 +17,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "../ui/navigation-menu";
+import { stagingFeatureFlagEnabled } from "@/utils/ui/featureFlags";
 
 interface NavSubLink {
   label: string;
@@ -55,6 +56,10 @@ const NAV_LINKS: NavLink[] = [
       {
         label: "header.municipalitiesRanked",
         path: `/municipalities`,
+      },
+      {
+        label: "header.regionsRanked",
+        path: `/regional-overview`,
       },
       {
         label: "header.municipalitiesExplore",
@@ -150,9 +155,29 @@ export function Header() {
   const toggleMenu = useCallback(() => setMenuOpen((prev) => !prev), []);
   const { user } = useAuth();
   const { headerTitle, showTitle, setShowTitle } = useHeaderTitle();
+  const isStaging = stagingFeatureFlagEnabled();
 
   // Radix menu for React doesn't have a way to turn this off, simulate it by a really long delay
   const disableOpenOnHoverDelay = 999999;
+
+  // Filter sublinks based on feature flags
+  const getFilteredNavLinks = () => {
+    return NAV_LINKS.map((link) => {
+      if (link.path === `/municipalities` && link.sublinks) {
+        const filteredSublinks = link.sublinks.filter((sublink) => {
+          // Hide regional overview unless on staging
+          if (sublink.path === `/regional-overview`) {
+            return isStaging;
+          }
+          return true;
+        });
+        return { ...link, sublinks: filteredSublinks };
+      }
+      return link;
+    });
+  };
+
+  const filteredNavLinks = getFilteredNavLinks();
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -218,7 +243,7 @@ export function Header() {
           delayDuration={disableOpenOnHoverDelay}
         >
           <NavigationMenuList>
-            {NAV_LINKS.map((item) =>
+            {filteredNavLinks.map((item) =>
               item.sublinks ? (
                 <NavigationMenuItem key={item.path}>
                   <NavigationMenuTrigger
@@ -307,7 +332,7 @@ export function Header() {
                 onSearchResultClick={toggleMenu}
               />
               <LanguageButtons />
-              {NAV_LINKS.map((link) => (
+              {filteredNavLinks.map((link) => (
                 <div key={link.path} className="flex flex-col">
                   <LocalizedLink
                     to={link.path}

@@ -187,7 +187,7 @@ export interface paths {
                                 startDate: string;
                                 endDate: string;
                                 reportURL: string | null;
-                                emissionsTrend?: {
+                                emissionsChangeLastTwoYears?: {
                                     absolute: number | null;
                                     adjusted: number | null;
                                 };
@@ -242,7 +242,7 @@ export interface paths {
                                         }[];
                                     } | null;
                                     scope1And2: {
-                                        total: number;
+                                        total: number | null;
                                         unit: string;
                                         metadata: {
                                             verifiedBy: {
@@ -281,6 +281,7 @@ export interface paths {
                                     } | null;
                                 } | null;
                             }[];
+                            futureEmissionsTrendSlope: number | null;
                             industry: {
                                 industryGics: {
                                     sectorCode: string;
@@ -460,7 +461,7 @@ export interface paths {
                                     } | null;
                                     scope1And2: {
                                         id: string;
-                                        total: number;
+                                        total: number | null;
                                         unit: string;
                                         metadata: {
                                             id: string;
@@ -548,11 +549,12 @@ export interface paths {
                                         };
                                     } | null;
                                 } | null;
-                                emissionsTrend?: {
+                                emissionsChangeLastTwoYears?: {
                                     absolute: number | null;
                                     adjusted: number | null;
                                 };
                             }[];
+                            futureEmissionsTrendSlope: number | null;
                             industry: {
                                 id: string;
                                 industryGics: {
@@ -877,7 +879,7 @@ export interface paths {
                                 startDate: string;
                                 endDate: string;
                                 reportURL: string | null;
-                                emissionsTrend?: {
+                                emissionsChangeLastTwoYears?: {
                                     absolute: number | null;
                                     adjusted: number | null;
                                 };
@@ -932,7 +934,7 @@ export interface paths {
                                         }[];
                                     } | null;
                                     scope1And2: {
-                                        total: number;
+                                        total: number | null;
                                         unit: string;
                                         metadata: {
                                             verifiedBy: {
@@ -971,6 +973,7 @@ export interface paths {
                                     } | null;
                                 } | null;
                             }[];
+                            futureEmissionsTrendSlope: number | null;
                             industry: {
                                 industryGics: {
                                     sectorCode: string;
@@ -1075,7 +1078,9 @@ export interface paths {
                         "application/json": {
                             name: string;
                             region: string;
-                            meetsParisGoal: boolean;
+                            logoUrl: string | null;
+                            totalTrend: number;
+                            totalCarbonLaw: number;
                             historicalEmissionChangePercent: number;
                             electricCarChangePercent: number;
                             climatePlanLink: string | null;
@@ -1144,7 +1149,9 @@ export interface paths {
                         "application/json": {
                             name: string;
                             region: string;
-                            meetsParisGoal: boolean;
+                            logoUrl: string | null;
+                            totalTrend: number;
+                            totalCarbonLaw: number;
                             historicalEmissionChangePercent: number;
                             electricCarChangePercent: number;
                             climatePlanLink: string | null;
