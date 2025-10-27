@@ -33,7 +33,7 @@ interface SwedenMapProps {
   geoData: FeatureCollection;
   data: DataItem[];
   selectedAttribute: DataAttribute;
-  onRegionClick?: (id: string) => void;
+  onAreaClick?: (id: string) => void;
   defaultCenter?: [number, number];
   defaultZoom?: number;
   propertyNameField?: string;
@@ -76,13 +76,13 @@ function MapOfSweden({
   geoData,
   data,
   selectedAttribute,
-  onRegionClick = () => {},
+  onAreaClick = () => {},
   defaultCenter = [63, 17],
   defaultZoom,
   propertyNameField = "name",
   colors = MUNICIPALITY_MAP_COLORS,
 }: SwedenMapProps) {
-  const [hoveredRegion, setHoveredRegion] = React.useState<string | null>(null);
+  const [hoveredArea, setHoveredArea] = React.useState<string | null>(null);
   const [hoveredValue, setHoveredValue] = useState<number | boolean | null>(
     null,
   );
@@ -154,7 +154,7 @@ function MapOfSweden({
     }
   };
 
-  const getRegionData = useCallback(
+  const getAreaData = useCallback(
     (name: string): { value: number | boolean | null; rank: number | null } => {
       const item = data.find(
         (d) => d.name.toLowerCase() === name.toLowerCase(),
@@ -257,34 +257,34 @@ function MapOfSweden({
     layer: L.Layer,
   ) => {
     if (feature?.properties?.[propertyNameField]) {
-      const regionName = feature.properties[propertyNameField];
-      const { value, rank } = getRegionData(regionName);
+      const areaName = feature.properties[propertyNameField];
+      const { value, rank } = getAreaData(areaName);
 
       (layer as L.Path).on({
         mouseover: () => {
-          setHoveredRegion(regionName);
+          setHoveredArea(areaName);
           setHoveredValue(value);
           setHoveredRank(rank);
         },
         mouseout: () => {
-          setHoveredRegion(null);
+          setHoveredArea(null);
           setHoveredValue(null);
           setHoveredRank(null);
         },
         click: () => {
-          if (onRegionClick) onRegionClick(regionName);
+          if (onAreaClick) onAreaClick(areaName);
         },
       });
     }
   };
 
-  const getRegionStyle = (
+  const getAreaStyle = (
     feature: Feature<Geometry, GeoJsonProperties> | undefined,
   ) => {
     if (feature?.properties?.[propertyNameField]) {
-      const regionName = feature.properties[propertyNameField];
-      const { value } = getRegionData(regionName);
-      const isHovered = hoveredRegion === regionName;
+      const areaName = feature.properties[propertyNameField];
+      const { value } = getAreaData(areaName);
+      const isHovered = hoveredArea === areaName;
       const color = getColorByValue(value);
 
       return {
@@ -301,12 +301,12 @@ function MapOfSweden({
   };
 
   useEffect(() => {
-    if (hoveredRegion) {
-      const { value, rank } = getRegionData(hoveredRegion);
+    if (hoveredArea) {
+      const { value, rank } = getAreaData(hoveredArea);
       setHoveredValue(value);
       setHoveredRank(rank);
     }
-  }, [selectedAttribute, hoveredRegion, getRegionData]);
+  }, [selectedAttribute, hoveredArea, getAreaData]);
 
   return (
     <div className="relative flex-1 h-full max-w-screen-lg">
@@ -326,15 +326,15 @@ function MapOfSweden({
       >
         <GeoJSON
           data={geoData}
-          style={getRegionStyle}
+          style={getAreaStyle}
           onEachFeature={onEachFeature}
         />
         <MapController setPosition={setPosition} />
       </MapContainer>
 
-      {hoveredRegion && (
+      {hoveredArea && (
         <MapTooltip
-          name={hoveredRegion}
+          name={hoveredArea}
           value={hoveredValue}
           rank={hoveredRank}
           unit={selectedAttribute.unit ?? ""}

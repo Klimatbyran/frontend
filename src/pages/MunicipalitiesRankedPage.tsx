@@ -111,7 +111,7 @@ export function MunicipalitiesRankedPage() {
             return { ...rest, id: m.name };
           })}
           selectedAttribute={selectedKPI}
-          onRegionClick={handleMunicipalityNameClick}
+          onAreaClick={handleMunicipalityNameClick}
         />
       </div>
     ) : (
