@@ -139,7 +139,7 @@ export function MunicipalitiesRankedPage() {
                   );
             }
 
-            return `${(value as number).toFixed(1)}${selectedKPI.unit}`;
+            return `${(value as number).toFixed(1)}`;
           },
         })}
         onItemClick={handleMunicipalityClick}
@@ -219,7 +219,7 @@ export function MunicipalitiesRankedPage() {
                         );
                   }
 
-                  return `${(value as number).toFixed(1)}${selectedKPI.unit}`;
+                  return `${(value as number).toFixed(1)}`;
                 },
               })}
               onItemClick={handleMunicipalityClick}

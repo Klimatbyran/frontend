@@ -87,7 +87,7 @@ export function RankedList<T extends Record<string, unknown>>({
     }
 
     if (typeof value === "number") {
-      return `${value.toFixed(1)}${selectedDataPoint.unit || ""}`;
+      return `${value.toFixed(1)}`;
     }
 
     return String(value);
@@ -131,6 +131,12 @@ export function RankedList<T extends Record<string, unknown>>({
             className="w-full pl-10 pr-4 py-2 bg-black-3 text-white rounded-xl placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/20"
           />
         </div>
+        {selectedDataPoint.unit && (
+          <div className="text-grey flex items-center pl-12 pt-4 -mb-2 w-full justify-between">
+            <span>{t("municipalities.name")}</span>
+            <span>{selectedDataPoint.unit}</span>
+          </div>
+        )}
       </div>
       <div className="flex-1 overflow-y-auto ranked-list-items min-h-[570px]">
         <div className="divide-y divide-white/10">
