@@ -59,8 +59,7 @@ export const useMunicipalityKPIs = (): KPIValue[] => {
       key: "climatePlan",
       unit: "",
       source: "municipalities.list.climatePlan.source",
-      sourceUrls: [
-      ],
+      sourceUrls: ["https://docs.google.com/spreadsheets/d/13CMqmfdd6QUD6agKFyVhwZUol4PKzvy253_EwtsFyvw/edit#gid=0"],
       description: t("municipalities.list.kpis.climatePlan.description"),
       detailedDescription: t(
         "municipalities.list.kpis.climatePlan.detailedDescription",
@@ -124,7 +123,7 @@ export const useMunicipalityKPIs = (): KPIValue[] => {
         "municipalities.list.kpis.bicycleMetrePerCapita.detailedDescription",
       ),
       higherIsBetter: true,
-    },
+    }
   ];
 
   return KPIs;
