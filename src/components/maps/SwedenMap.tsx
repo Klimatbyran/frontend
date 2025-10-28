@@ -15,7 +15,7 @@ import { t } from "i18next";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { KPIValue } from "@/types/entity-rankings";
-export interface DataAttribute {
+export interface DataKPI {
   key: string;
   label: string;
   unit?: string;
@@ -32,7 +32,7 @@ export interface DataItem {
 interface SwedenMapProps {
   geoData: FeatureCollection;
   data: DataItem[];
-  selectedAttribute: DataAttribute;
+  selectedKPI: DataKPI;
   onAreaClick?: (id: string) => void;
   defaultCenter?: [number, number];
   defaultZoom?: number;
@@ -75,7 +75,7 @@ function MapController({
 function MapOfSweden({
   geoData,
   data,
-  selectedAttribute,
+  selectedKPI,
   onAreaClick = () => {},
   defaultCenter = [63, 17],
   defaultZoom,
@@ -116,22 +116,22 @@ function MapOfSweden({
   }, [getInitialZoom]);
 
   const values = data
-    .map((item) => item[selectedAttribute.key])
+    .map((item) => item[selectedKPI.key])
     .filter((val) => val !== null && val !== undefined)
     .map(Number);
 
   const minValue = Math.min(...values);
   const maxValue = Math.max(...values);
 
-  // Sort data by selected attribute
+  // Sort data by selected KPI
   const sortedData = [...data].sort((a, b) => {
-    const aVal = a[selectedAttribute.key];
-    const bVal = b[selectedAttribute.key];
+    const aVal = a[selectedKPI.key];
+    const bVal = b[selectedKPI.key];
 
     if (aVal === null || aVal === undefined) return 1;
     if (bVal === null || bVal === undefined) return -1;
 
-    return selectedAttribute.higherIsBetter
+    return selectedKPI.higherIsBetter
       ? (Number(bVal) || 0) - (Number(aVal) || 0)
       : (Number(aVal) || 0) - (Number(bVal) || 0);
   });
@@ -165,7 +165,7 @@ function MapOfSweden({
       }
 
       let value: number | boolean | null = null;
-      const rawValue = item[selectedAttribute.key];
+      const rawValue = item[selectedKPI.key];
       if (typeof rawValue === "number" || typeof rawValue === "boolean") {
         value = rawValue;
       }
@@ -173,7 +173,7 @@ function MapOfSweden({
 
       return { value, rank };
     },
-    [data, selectedAttribute.key, sortedData],
+    [data, selectedKPI.key, sortedData],
   );
 
   const getColorByValue = (value: number | boolean | null): string => {
@@ -196,7 +196,7 @@ function MapOfSweden({
 
     const zScore = (value - mean) / stdDev;
 
-    if (selectedAttribute.higherIsBetter) {
+    if (selectedKPI.higherIsBetter) {
       if (zScore <= -1) {
         const t = Math.max(0, (zScore + 2) / 1);
         return `color-mix(in srgb, ${gradientStart} ${(1 - t) * 100}%, ${gradientMidLow} ${t * 100}%)`;
@@ -224,19 +224,17 @@ function MapOfSweden({
   };
 
   const renderGradientLegend = () => {
-    const leftValue = selectedAttribute.higherIsBetter ? minValue : maxValue;
-    const rightValue = selectedAttribute.higherIsBetter ? maxValue : minValue;
+    const leftValue = selectedKPI.higherIsBetter ? minValue : maxValue;
+    const rightValue = selectedKPI.higherIsBetter ? maxValue : minValue;
 
-    const hasNullValues = data.some(
-      (item) => item[selectedAttribute.key] === null,
-    );
+    const hasNullValues = data.some((item) => item[selectedKPI.key] === null);
 
     return (
       <MapLegend
         leftValue={leftValue}
         rightValue={rightValue}
-        unit={selectedAttribute.unit ?? ""}
-        selectedKPI={selectedAttribute as KPIValue}
+        unit={selectedKPI.unit ?? ""}
+        selectedKPI={selectedKPI as KPIValue}
         hasNullValues={hasNullValues}
       />
     );
@@ -306,7 +304,7 @@ function MapOfSweden({
       setHoveredValue(value);
       setHoveredRank(rank);
     }
-  }, [selectedAttribute, hoveredArea, getAreaData]);
+  }, [selectedKPI, hoveredArea, getAreaData]);
 
   return (
     <div className="relative flex-1 h-full max-w-screen-lg">
@@ -337,16 +335,14 @@ function MapOfSweden({
           name={hoveredArea}
           value={hoveredValue}
           rank={hoveredRank}
-          unit={selectedAttribute.unit ?? ""}
+          unit={selectedKPI.unit ?? ""}
           total={data.length}
           nullValue={
-            selectedAttribute.key && t
-              ? t(
-                  `municipalities.list.kpis.${selectedAttribute.key}.nullValues`,
-                )
+            selectedKPI.key && t
+              ? t(`municipalities.list.kpis.${selectedKPI.key}.nullValues`)
               : "No data"
           }
-          selectedKPI={selectedAttribute as KPIValue}
+          selectedKPI={selectedKPI as KPIValue}
         />
       )}
 
