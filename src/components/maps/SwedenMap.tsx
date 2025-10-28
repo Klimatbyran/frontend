@@ -15,6 +15,7 @@ import { t } from "i18next";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { KPIValue } from "@/types/entity-rankings";
+
 export interface DataKPI {
   key: string;
   label: string;
@@ -82,6 +83,15 @@ function MapOfSweden({
   propertyNameField = "name",
   colors = MUNICIPALITY_MAP_COLORS,
 }: SwedenMapProps) {
+  // Guard clause to handle undefined selectedKPI
+  if (!selectedKPI) {
+    return (
+      <div className="relative flex-1 h-full max-w-screen-lg flex items-center justify-center">
+        <div className="text-white/70">No KPI selected</div>
+      </div>
+    );
+  }
+
   const [hoveredArea, setHoveredArea] = React.useState<string | null>(null);
   const [hoveredValue, setHoveredValue] = useState<number | boolean | null>(
     null,

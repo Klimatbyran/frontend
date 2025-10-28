@@ -110,7 +110,7 @@ export function MunicipalitiesRankedPage() {
             const { sectorEmissions, ...rest } = m;
             return { ...rest, id: m.name };
           })}
-          selectedAttribute={selectedKPI}
+          selectedKPI={selectedKPI}
           onAreaClick={handleMunicipalityNameClick}
         />
       </div>

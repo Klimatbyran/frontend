@@ -115,7 +115,10 @@ export function RankedList<T extends Record<string, unknown>>({
     >
       <div className="flex items-center gap-4">
         <span className="text-white/30 text-sm w-8">
-          {/* Empty span to maintain indentation */}
+          {selectedDataPoint.isBoolean
+            ? /* Empty span to maintain indentation for boolean KPIs */
+              ""
+            : startIndex + index + 1}
         </span>
         <span className="text-white/90 text-sm md:text-base">
           {String(item[searchKey])}

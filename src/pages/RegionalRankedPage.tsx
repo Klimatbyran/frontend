@@ -75,7 +75,7 @@ export function RegionalRankedPage() {
         <SwedenMap
           geoData={geoData as FeatureCollection}
           data={regions}
-          selectedAttribute={selectedKPI}
+          selectedKPI={selectedKPI}
           defaultCenter={[63, 16]}
           defaultZoom={isMobile ? 4 : 5}
         />
