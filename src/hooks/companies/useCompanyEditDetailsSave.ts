@@ -1,5 +1,9 @@
 import { useMutation } from "@tanstack/react-query";
-import { updateCompanyIndustry, updateCompanyBaseYear } from "@/lib/api";
+import {
+  updateCompanyIndustry,
+  updateCompanyBaseYear,
+  updateCompanyMetadata,
+} from "@/lib/api";
 import { isVerified } from "@/utils/business/verification";
 import type { CompanyDetails } from "@/types/company";
 
@@ -7,6 +11,7 @@ interface SaveCompanyEditDetailsArgs {
   company: CompanyDetails;
   subIndustryCode: string;
   baseYear: string | number;
+  isDefunct: boolean;
   comment: string;
   source: string;
   industryVerified?: boolean;
@@ -18,6 +23,7 @@ async function saveCompanyEditDetails({
   company,
   subIndustryCode,
   baseYear,
+  isDefunct,
   comment,
   source,
   industryVerified,
@@ -32,6 +38,7 @@ async function saveCompanyEditDetails({
   const originalIndustryVerified = isVerified(company.industry?.metadata);
   const originalBaseYear = String(company.baseYear?.year || "");
   const originalBaseYearVerified = isVerified(company.baseYear?.metadata);
+  const originalIsDefunct = company.isDefunct || false;
 
   // Prepare metadata if populated
   const metadata: Record<string, string> = {};
@@ -67,6 +74,16 @@ async function saveCompanyEditDetails({
       hasMetadata ? metadata : undefined,
       baseYearVerified,
     );
+  }
+
+  if (isDefunct !== originalIsDefunct) {
+    didChange = true;
+    await updateCompanyMetadata(company.wikidataId, {
+      wikidataId: company.wikidataId,
+      name: company.name,
+      isDefunct,
+      metadata: hasMetadata ? metadata : undefined,
+    });
   }
 
   if (didChange && onSave) {

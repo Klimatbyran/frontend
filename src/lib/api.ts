@@ -127,7 +127,7 @@ export async function downloadMunicipalities(
     params: {
       query: {
         type: format,
-      }
+      },
     },
     parseAs: "blob",
   });
@@ -253,6 +253,24 @@ export async function updateCompanyBaseYear(
       body: { baseYear, metadata, verified },
     },
   );
+  if (error) throw error;
+  return data;
+}
+
+export async function updateCompanyMetadata(
+  wikidataId: string,
+  companyData: {
+    wikidataId: string;
+    name: string;
+    isDefunct?: boolean;
+    metadata?: { source?: string; comment?: string };
+    verified?: boolean;
+  },
+) {
+  const { data, error } = await client.POST("/companies/{wikidataId}", {
+    params: { path: { wikidataId } },
+    body: companyData,
+  });
   if (error) throw error;
   return data;
 }
