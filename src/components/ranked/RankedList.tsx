@@ -29,20 +29,28 @@ export function RankedList<T extends Record<string, unknown>>({
   const [currentPage, setCurrentPage] = useState(1);
 
   const sortedData = [...data].sort((a, b) => {
-    const aValue = a[selectedDataPoint.key] as number;
-    const bValue = b[selectedDataPoint.key] as number;
+    const aValue = a[selectedDataPoint.key];
+    const bValue = b[selectedDataPoint.key];
 
-    if (aValue === null && bValue === null) {
-      return 0;
-    }
-    if (aValue === null) {
-      return 1;
-    }
-    if (bValue === null) {
-      return -1;
+    // Handle null/undefined values
+    if (aValue === null || aValue === undefined) return 1;
+    if (bValue === null || bValue === undefined) return -1;
+
+    // For boolean KPIs, sort alphabetically by name
+    if (
+      selectedDataPoint.isBoolean &&
+      typeof aValue === "boolean" &&
+      typeof bValue === "boolean"
+    ) {
+      const aName = String(a[searchKey] || "");
+      const bName = String(b[searchKey] || "");
+      return aName.localeCompare(bName);
     }
 
-    return selectedDataPoint.higherIsBetter ? bValue - aValue : aValue - bValue;
+    // For non-boolean values, sort by the value
+    const aNum = aValue as number;
+    const bNum = bValue as number;
+    return selectedDataPoint.higherIsBetter ? bNum - aNum : aNum - bNum;
   });
 
   const filteredData = sortedData.filter((item) => {
@@ -83,6 +91,12 @@ export function RankedList<T extends Record<string, unknown>>({
     }
 
     if (typeof value === "boolean") {
+      // Use booleanLabels if available, otherwise fall back to generic labels
+      if (selectedDataPoint.booleanLabels) {
+        return value
+          ? selectedDataPoint.booleanLabels.true
+          : selectedDataPoint.booleanLabels.false;
+      }
       return value ? t("yes") : t("no");
     }
 
@@ -101,7 +115,7 @@ export function RankedList<T extends Record<string, unknown>>({
     >
       <div className="flex items-center gap-4">
         <span className="text-white/30 text-sm w-8">
-          {startIndex + index + 1}
+          {/* Empty span to maintain indentation */}
         </span>
         <span className="text-white/90 text-sm md:text-base">
           {String(item[searchKey])}

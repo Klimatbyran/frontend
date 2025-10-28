@@ -288,13 +288,13 @@ export async function getRegions() {
 }
 
 // TODO: Add national data to API, this is prep for next stages
-// export async function getNationalData() {
-//   try {
-//     const { data, error } = await GET("/national-data/", {});
-//     if (error) throw error;
-//     return data || [];
-//   } catch (error) {
-//     console.error("Error fetching national data:", error);
-//     return [];
-//   }
-// }
+export async function getNationalData() {
+  try {
+    // const { data, error } = await GET("/national-data/", {});
+    // if (error) throw error;
+    // return data || [];
+  } catch (error) {
+    console.error("Error fetching national data:", error);
+    return [];
+  }
+}

@@ -124,6 +124,8 @@ export function MunicipalitiesRankedPage() {
           description: selectedKPI.description,
           higherIsBetter: selectedKPI.higherIsBetter,
           nullValues: selectedKPI.nullValues,
+          isBoolean: selectedKPI.isBoolean,
+          booleanLabels: selectedKPI.booleanLabels,
           formatter: (value: unknown) => {
             if (value === null) {
               return selectedKPI.nullValues || t("noData");
@@ -204,6 +206,8 @@ export function MunicipalitiesRankedPage() {
                 description: selectedKPI.description,
                 higherIsBetter: selectedKPI.higherIsBetter,
                 nullValues: selectedKPI.nullValues,
+                isBoolean: selectedKPI.isBoolean,
+                booleanLabels: selectedKPI.booleanLabels,
                 formatter: (value: unknown) => {
                   if (value === null) {
                     return selectedKPI.nullValues || t("noData");

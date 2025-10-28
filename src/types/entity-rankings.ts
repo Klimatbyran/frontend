@@ -8,6 +8,8 @@ export interface DataPoint<T> {
   description?: string;
   higherIsBetter: boolean;
   nullValues?: string;
+  isBoolean?: boolean;
+  booleanLabels?: { true: string; false: string };
   formatter?: (value: T[keyof T]) => string | React.ReactNode;
 }
 
