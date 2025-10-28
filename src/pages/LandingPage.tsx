@@ -1,5 +1,5 @@
 import { Building2Icon, TreePineIcon } from "lucide-react";
-import { RankedList, RankedListItem } from "@/components/RankedList";
+import { TopList, TopListItem } from "@/components/TopList";
 import { ContentBlock } from "@/components/ContentBlock";
 import { Typewriter } from "@/components/ui/typewriter";
 import { useCompanies } from "@/hooks/companies/useCompanies";
@@ -69,7 +69,7 @@ export function LandingPage() {
     link: `/municipalities/${municipality.name}`,
   }));
 
-  const renderCompanyEmission = (item: RankedListItem) => (
+  const renderCompanyEmission = (item: TopListItem) => (
     <div className="text-base sm:text-lg">
       <span className="md:text-right text-pink-3">
         {formatEmissionsAbsolute(item.value, currentLanguage)}
@@ -78,7 +78,7 @@ export function LandingPage() {
     </div>
   );
 
-  const renderMunicipalityChangeRate = (item: RankedListItem) => (
+  const renderMunicipalityChangeRate = (item: TopListItem) => (
     <span className="text-base sm:text-lg md:text-right text-green-3">
       {formatPercentChange(item.value, currentLanguage)}
     </span>
@@ -123,7 +123,7 @@ export function LandingPage() {
             {t("landingPage.bestPerformers")}
           </h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <RankedList
+            <TopList
               title={t("landingPage.bestMunicipalities")}
               description={t("landingPage.municipalitiesDescription")}
               items={topMunicipalities}
@@ -133,7 +133,7 @@ export function LandingPage() {
               headingLink={`${currentLanguage}/municipalities`}
             />
 
-            <RankedList
+            <TopList
               title={t("landingPage.largestEmittor")}
               description={t("landingPage.companiesDescription")}
               items={largestCompanyEmitters}

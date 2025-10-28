@@ -6,13 +6,15 @@ import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
 import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/layout/PageHeader";
 import DataSelector from "@/components/municipalities/rankedList/MunicipalityDataSelector";
-import MunicipalityRankedList from "@/components/municipalities/rankedList/MunicipalityRankedList";
+import RankedList from "@/components/ranked/RankedList";
 import InsightsPanel from "@/components/municipalities/rankedList/MunicipalityInsightsPanel";
-import SwedenMap from "@/components/municipalities/map/SwedenMap";
+import MapOfSweden from "@/components/maps/SwedenMap";
 import municipalityGeoJson from "@/data/municipalityGeo.json";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import { useMunicipalityKPIs } from "@/hooks/municipalities/useMunicipalityKPIs";
 import { FeatureCollection } from "geojson";
+import { Municipality } from "@/types/municipality";
+import { DataPoint } from "@/types/entity-rankings";
 
 export function MunicipalitiesRankedPage() {
   const { t } = useTranslation();
@@ -58,9 +60,19 @@ export function MunicipalitiesRankedPage() {
     }
   }, [getKPIFromURL, selectedKPI.label]);
 
-  const handleMunicipalityClick = (name: string) => {
-    const formattedName = name.toLowerCase();
+  const handleMunicipalityClick = (municipality: Municipality) => {
+    const formattedName = municipality.name.toLowerCase();
     navigate(`/municipalities/${formattedName}?view=${viewMode}`);
+  };
+
+  // Create an adapter for MapOfSweden
+  const handleMunicipalityNameClick = (name: string) => {
+    const municipality = municipalities.find((m) => m.name === name);
+    if (municipality) {
+      handleMunicipalityClick(municipality);
+    } else {
+      window.location.href = `/municipalities/${name.toLowerCase()}?view=${viewMode}`;
+    }
   };
 
   if (loading) {
@@ -92,18 +104,49 @@ export function MunicipalitiesRankedPage() {
   const renderMapOrList = (isMobile: boolean) =>
     viewMode === "map" ? (
       <div className={isMobile ? "relative h-[65vh]" : "relative h-full"}>
-        <SwedenMap
+        <MapOfSweden
           geoData={geoData as FeatureCollection}
-          municipalityData={municipalities}
+          data={municipalities.map((m) => {
+            const { sectorEmissions, ...rest } = m;
+            return { ...rest, id: m.name };
+          })}
           selectedKPI={selectedKPI}
-          onMunicipalityClick={handleMunicipalityClick}
+          onAreaClick={handleMunicipalityNameClick}
         />
       </div>
     ) : (
-      <MunicipalityRankedList
-        municipalityData={municipalities}
-        selectedKPI={selectedKPI}
-        onMunicipalityClick={handleMunicipalityClick}
+      <RankedList
+        data={municipalities}
+        selectedDataPoint={asDataPoint({
+          label: selectedKPI.label,
+          key: selectedKPI.key as keyof Municipality,
+          unit: selectedKPI.unit,
+          description: selectedKPI.description,
+          higherIsBetter: selectedKPI.higherIsBetter,
+          nullValues: selectedKPI.nullValues,
+          isBoolean: selectedKPI.isBoolean,
+          booleanLabels: selectedKPI.booleanLabels,
+          formatter: (value: unknown) => {
+            if (value === null) {
+              return selectedKPI.nullValues || t("noData");
+            }
+
+            if (typeof value === "boolean") {
+              return value
+                ? t(
+                    `municipalities.list.kpis.${selectedKPI.key}.booleanLabels.true`,
+                  )
+                : t(
+                    `municipalities.list.kpis.${selectedKPI.key}.booleanLabels.false`,
+                  );
+            }
+
+            return `${(value as number).toFixed(1)}`;
+          },
+        })}
+        onItemClick={handleMunicipalityClick}
+        searchKey="name"
+        searchPlaceholder={t("rankedList.search.placeholder")}
       />
     );
 
@@ -154,10 +197,38 @@ export function MunicipalitiesRankedPage() {
         <div className="grid grid-cols-2 gap-6">
           {renderMapOrList(false)}
           {viewMode === "map" ? (
-            <MunicipalityRankedList
-              municipalityData={municipalities}
-              selectedKPI={selectedKPI}
-              onMunicipalityClick={handleMunicipalityClick}
+            <RankedList
+              data={municipalities}
+              selectedDataPoint={asDataPoint({
+                label: selectedKPI.label,
+                key: selectedKPI.key as unknown as keyof Municipality,
+                unit: selectedKPI.unit,
+                description: selectedKPI.description,
+                higherIsBetter: selectedKPI.higherIsBetter,
+                nullValues: selectedKPI.nullValues,
+                isBoolean: selectedKPI.isBoolean,
+                booleanLabels: selectedKPI.booleanLabels,
+                formatter: (value: unknown) => {
+                  if (value === null) {
+                    return selectedKPI.nullValues || t("noData");
+                  }
+
+                  if (typeof value === "boolean") {
+                    return value
+                      ? t(
+                          `municipalities.list.kpis.${selectedKPI.key}.booleanLabels.true`,
+                        )
+                      : t(
+                          `municipalities.list.kpis.${selectedKPI.key}.booleanLabels.false`,
+                        );
+                  }
+
+                  return `${(value as number).toFixed(1)}`;
+                },
+              })}
+              onItemClick={handleMunicipalityClick}
+              searchKey="name"
+              searchPlaceholder={t("rankedList.search.placeholder")}
             />
           ) : null}
         </div>
@@ -169,3 +240,6 @@ export function MunicipalitiesRankedPage() {
     </>
   );
 }
+
+const asDataPoint = (kpi: unknown): DataPoint<Municipality> =>
+  kpi as DataPoint<Municipality>;

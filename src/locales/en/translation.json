@@ -4,12 +4,14 @@
   "unknown": "Unknown",
   "all": "All",
   "emissionsUnit": "tCO₂e",
+  "noData": "No data available",
   "header": {
     "companies": "Companies",
     "companiesSectors": "Explore - Sectors",
     "companiesExplore": "Explore - Companies",
     "municipalities": "Municipalities",
     "municipalitiesRanked": "Top Lists",
+    "regionsRanked": "Regions",
     "municipalitiesExplore": "Explore",
     "about": "About",
     "aboutUs": "About Us",
@@ -710,6 +712,10 @@
       }
     }
   },
+  "regionalRankedPage": {
+    "title": "Regional Overview",
+    "description": "Overview of emissions and transition in the regional level"
+  },
   "municipalitiesRankedPage": {
     "errorTitle": "Failed to retrieve municipality information",
     "errorDescription": "Please try again later",
@@ -1097,6 +1103,16 @@
       "decreasing": "↘ Decreasing"
     }
   },
+  "regions": {
+    "kpis": {
+      "emissions": {
+        "label": "Total Emissions",
+        "description": "Total emissions for the region",
+        "detailedDescription": "Total emissions of CO₂e for the region",
+        "source": "National Emissions Database"
+      }
+    }
+  },
   "municipalities": {
     "name": "Name",
     "card": {
@@ -1146,7 +1162,7 @@
           "label": "Paris Agreement",
           "description": "Emissions trend compared to the Paris Agreement",
           "detailedDescription": "Which municipalities are on track to meet the Paris Agreement?",
-          "source": "<0>National Emissions Database</0>",
+          "source": "National Emissions Database",
           "booleanLabels": {
             "true": "Meets Paris Agreement",
             "false": "Fails Paris Agreement"
@@ -1164,19 +1180,19 @@
           "label": "Electric Cars",
           "description": "Change in electric car adoption",
           "detailedDescription": "The growth rate in municipalities for the share of newly registered rechargeable cars 2015-2024, stated in percentage points per year.",
-          "source": "<0>Transport Analysis</0>"
+          "source": "Transport Analysis"
         },
         "totalConsumptionEmission": {
           "label": "Consumption",
           "description": "Total emissions from consumption",
           "detailedDescription": "Household consumption emissions (CO₂e) in tonnes per inhabitant and municipality in 2022. By 2050, emissions should be at most 1 tonne per person per year to be in line with the Paris Agreement.",
-          "source": "<0>Stockholm Environment Institute (2025), Konsumtionskompassen. Licensed under CC BY-NC-ND 4.0.</0>"
+          "source": "Stockholm Environment Institute (2025), Konsumtionskompassen. Licensed under CC BY-NC-ND 4.0."
         },
         "electricVehiclePerChargePoints": {
           "label": "Charging Stations",
           "description": "Number of electric vehicles per charging point",
           "detailedDescription": "Number of electric vehicles per public charging point, per municipality in 2024. Lower numbers are better, as good infrastructure promotes increased electric vehicle adoption.",
-          "source": "<0>Power Circle</0>",
+          "source": "Power Circle",
           "nullValues": "No charging points"
         },
         "bicycleMetrePerCapita": {
@@ -1221,12 +1237,6 @@
       "viewToggle": {
         "showList": "Show List",
         "showMap": "Show Map"
-      },
-      "rankedList": {
-        "search": {
-          "placeholder": "Search municipalities..."
-        },
-        "rank": "Rank: {{rank}} of {{total}}"
       }
     }
   },
@@ -1398,6 +1408,16 @@
   "dataGuide": {
     "buttonFallbackTitle": "Learn more about these metrics",
     "selectItemPrompt": "Select a topic you want to learn more about"
+  },
+  "viewModeToggle": {
+    "map": "Map",
+    "list": "List"
+  },
+  "rankedList": {
+    "search": {
+      "placeholder": "Search..."
+    },
+    "rank": "Rank: {{rank}} of {{total}}"
   },
   "chartLegend": {
     "clickToFilterOut": "Click to filter out",

@@ -1,6 +1,7 @@
 {
   "yes": "Ja",
   "no": "Nej",
+  "noData": "Ingen data tillgänglig",
   "unknown": "Okänt",
   "all": "Alla",
   "emissionsUnit": "tCO₂e",
@@ -10,6 +11,7 @@
     "companiesExplore": "Utforska - Företag",
     "municipalities": "Kommuner",
     "municipalitiesRanked": "Topplistor",
+    "regionsRanked": "Län",
     "municipalitiesExplore": "Utforska",
     "about": "Om",
     "aboutUs": "Om oss",
@@ -709,6 +711,10 @@
       }
     }
   },
+  "regionalRankedPage": {
+    "title": "Länsöversikt",
+    "description": "Översikt över utsläpp och omställning på länsnivå"
+  },
   "municipalitiesRankedPage": {
     "errorTitle": "Det gick inte att hämta kommuninformation",
     "errorDescription": "Försök igen senare",
@@ -1096,6 +1102,16 @@
       "decreasing": "↘ Minskar"
     }
   },
+  "regions": {
+    "kpis": {
+      "emissions": {
+        "label": "Totala utsläpp",
+        "description": "Länens totala utsläpp",
+        "detailedDescription": "De totala utsläppen av CO₂e för länet",
+        "source": "Nationella emissionsdatabasen"
+      }
+    }
+  },
   "municipalities": {
     "name": "Namn",
     "card": {
@@ -1145,7 +1161,7 @@
           "label": "Parisavtalet",
           "description": "Utsläppstrend jämfört med Parisavtalet",
           "detailedDescription": "Vilka kommuner är på väg att klara Parisavtalet?",
-          "source": "<0>Nationella emissionsdatabasen</0>",
+          "source": "Nationella emissionsdatabasen",
           "booleanLabels": {
             "true": "Klarar Parisavtalet",
             "false": "Missar Parisavtalet"
@@ -1163,19 +1179,19 @@
           "label": "Elbilarna",
           "description": "Förändring i andel elbilar",
           "detailedDescription": "Ökningstakten i kommunerna för andel nyregistrerade laddbara bilar 2015–2024, angivet i procentenheter per år.",
-          "source": "<0>Trafikanalys</0>"
+          "source": "Trafikanalys"
         },
         "totalConsumptionEmission": {
           "label": "Konsumtionen",
           "description": "Totala utsläpp från konsumtion",
           "detailedDescription": "Hushållens konsumtionsutsläpp (CO₂e) i ton per invånare och kommun år 2022. År 2050 ska utsläppen vara högst 1 ton per person och år för att ligga i linje med Parisavtalet",
-          "source": "<0>Stockholm Environment Institute (2025), Konsumtionskompassen. Licens: CC BY-NC-ND 4.0.</0>"
+          "source": "Stockholm Environment Institute (2025), Konsumtionskompassen. Licens: CC BY-NC-ND 4.0."
         },
         "electricVehiclePerChargePoints": {
           "label": "Laddarna",
           "description": "Antal elbilar per laddningspunkt",
           "detailedDescription": "Antal elbilar per publik laddningspunkt per kommun år 2024. Ju färre bilar per laddningspunkt desto bättre, god infrastruktur gynnar ökad elbilskonsumtion",
-          "source": "<0>Power Circle</0>",
+          "source": "Power Circle",
           "nullValues": "Saknar laddpunkter"
         },
         "bicycleMetrePerCapita": {
@@ -1220,12 +1236,6 @@
       "viewToggle": {
         "showList": "Visa lista",
         "showMap": "Visa karta"
-      },
-      "rankedList": {
-        "search": {
-          "placeholder": "Sök kommuner..."
-        },
-        "rank": "Placering: {{rank}} av {{total}}"
       }
     }
   },
@@ -1397,6 +1407,16 @@
   "dataGuide": {
     "buttonFallbackTitle": "Förstå datan",
     "selectItemPrompt": "Välj ett ämne du vill veta mer om"
+  },
+  "viewModeToggle": {
+    "map": "Karta",
+    "list": "Lista"
+  },
+  "rankedList": {
+    "search": {
+      "placeholder": "Sök..."
+    },
+    "rank": "Placering: {{rank}} av {{total}}"
   },
   "chartLegend": {
     "clickToFilterOut": "Klicka för att filtrera bort",

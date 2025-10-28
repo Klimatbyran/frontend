@@ -1,5 +1,5 @@
-import { KPIValue } from "@/types/municipality";
 import { useTranslation } from "react-i18next";
+import { KPIValue } from "@/types/entity-rankings";
 
 export const useMunicipalityKPIs = (): KPIValue[] => {
   const { t } = useTranslation();
@@ -9,7 +9,7 @@ export const useMunicipalityKPIs = (): KPIValue[] => {
       label: t("municipalities.list.kpis.meetsParisGoal.label"),
       key: "meetsParisGoal",
       unit: "",
-      source: "municipalities.list.meetsParisGoal.source",
+      source: "municipalities.list.kpis.meetsParisGoal.source",
       sourceUrls: ["https://nationellaemissionsdatabasen.smhi.se/"],
       description: t("municipalities.list.kpis.meetsParisGoal.description"),
       detailedDescription: t(
@@ -30,7 +30,7 @@ export const useMunicipalityKPIs = (): KPIValue[] => {
       ),
       key: "historicalEmissionChangePercent",
       unit: "%",
-      source: "municipalities.list.historicalEmissionChangePercent.source",
+      source: "municipalities.list.kpis.historicalEmissionChangePercent.source",
       sourceUrls: ["https://nationellaemissionsdatabasen.smhi.se/"],
       description: t(
         "municipalities.list.kpis.historicalEmissionChangePercent.description",
@@ -59,8 +59,7 @@ export const useMunicipalityKPIs = (): KPIValue[] => {
       key: "climatePlan",
       unit: "",
       source: "municipalities.list.climatePlan.source",
-      sourceUrls: [
-      ],
+      sourceUrls: ["https://docs.google.com/spreadsheets/d/13CMqmfdd6QUD6agKFyVhwZUol4PKzvy253_EwtsFyvw/edit#gid=0"],
       description: t("municipalities.list.kpis.climatePlan.description"),
       detailedDescription: t(
         "municipalities.list.kpis.climatePlan.detailedDescription",
@@ -78,7 +77,7 @@ export const useMunicipalityKPIs = (): KPIValue[] => {
       label: t("municipalities.list.kpis.electricCarChangePercent.label"),
       key: "electricCarChangePercent",
       unit: "%",
-      source: "municipalities.list.electricCarChangePercent.source",
+      source: "municipalities.list.kpis.electricCarChangePercent.source",
       sourceUrls: ["https://www.trafa.se/vagtrafik/fordon/"],
       description: t(
         "municipalities.list.kpis.electricCarChangePercent.description",
@@ -95,7 +94,7 @@ export const useMunicipalityKPIs = (): KPIValue[] => {
       label: t("municipalities.list.kpis.electricVehiclePerChargePoints.label"),
       key: "electricVehiclePerChargePoints",
       unit: "",
-      source: "municipalities.list.electricVehiclePerChargePoints.source",
+      source: "municipalities.list.kpis.electricVehiclePerChargePoints.source",
       sourceUrls: ["https://powercircle.org/elbilsstatistik/"],
       description: t(
         "municipalities.list.kpis.electricVehiclePerChargePoints.description",
@@ -112,7 +111,7 @@ export const useMunicipalityKPIs = (): KPIValue[] => {
       label: t("municipalities.list.kpis.bicycleMetrePerCapita.label"),
       key: "bicycleMetrePerCapita",
       unit: "m",
-      source: "municipalities.list.bicycleMetrePerCapita.source",
+      source: "municipalities.list.kpis.bicycleMetrePerCapita.source",
       sourceUrls: [
         "https://nvdbpakarta.trafikverket.se/map",
         "https://www.scb.se/hitta-statistik/statistik-efter-amne/befolkning-och-levnadsforhallanden/befolkningens-sammansattning-och-utveckling/befolkningsstatistik/",
@@ -124,7 +123,7 @@ export const useMunicipalityKPIs = (): KPIValue[] => {
         "municipalities.list.kpis.bicycleMetrePerCapita.detailedDescription",
       ),
       higherIsBetter: true,
-    },
+    }
   ];
 
   return KPIs;
