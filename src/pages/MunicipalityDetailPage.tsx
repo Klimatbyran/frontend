@@ -104,6 +104,36 @@ export function MunicipalityDetailPage() {
 
   const evcp = municipality.electricVehiclePerChargePoints;
 
+  interface PoliticalRuleLabelProps {
+    src: string;
+    alt: string;
+    fallback: string;
+  }
+
+  // Will return either an image from src or a fallback string if image doesnt exist
+  const PoliticalRuleLabel = ({ src, alt, fallback }: PoliticalRuleLabelProps) => {
+  const [error, setError] = useState(false);
+
+  const onError = () => {
+    setError(true);
+  };
+
+  return error ? fallback : <img src={src} alt={alt} onError={onError} className="h-[20px] md:h-[25px] inline" />;
+};
+
+  // Gets all the poltical parties labels depending on availablity
+  const getPoliticalRuleLabels = (politicalParty: string) => {
+    const imgSrc = `/logos/politicalParties/${politicalParty}.png`;
+
+    return (
+        <PoliticalRuleLabel
+        src={imgSrc}
+        alt={politicalParty}
+        fallback={politicalParty}
+      />
+    );
+  }
+
   return (
     <>
       <PageSEO
@@ -179,7 +209,9 @@ export function MunicipalityDetailPage() {
               {t("municipalityDetailPage.politicalRule")}:
             </Text>
             <Text variant="body" className="text-sm md:text-base lg:text-lg">
-              {municipality.politicalRule.join(", ")}
+              {municipality.politicalRule.map((p, index) => {
+                return <span key={index}>{ index ? ", " : "" }{getPoliticalRuleLabels(p)}</span>;
+              })}
             </Text>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-16 mt-8">
