@@ -242,7 +242,7 @@ export interface paths {
                                         }[];
                                     } | null;
                                     scope1And2: {
-                                        total: number;
+                                        total: number | null;
                                         unit: string;
                                         metadata: {
                                             verifiedBy: {
@@ -312,6 +312,7 @@ export interface paths {
                                 };
                             } | null;
                             tags: string[];
+                            isDefunct?: boolean;
                         }[];
                     };
                 };
@@ -365,226 +366,112 @@ export interface paths {
                                 text: string;
                             }[];
                             reportingPeriods: {
-                                id: string;
                                 startDate: string;
                                 endDate: string;
                                 reportURL: string | null;
+                                emissionsChangeLastTwoYears?: {
+                                    absolute: number | null;
+                                    adjusted: number | null;
+                                };
                                 emissions: {
-                                    id: string;
+                                    calculatedTotalEmissions: number;
                                     scope1: {
-                                        id: string;
                                         total: number | null;
                                         unit: string;
                                         metadata: {
-                                            id: string;
-                                            comment: string | null;
-                                            source: string | null;
-                                            updatedAt: string;
-                                            user: {
-                                                name: string;
-                                            };
                                             verifiedBy: {
                                                 name: string;
                                             } | null;
                                         };
                                     } | null;
                                     scope2: {
-                                        id: string;
                                         mb: number | null;
                                         lb: number | null;
                                         unknown: number | null;
                                         unit: string;
+                                        calculatedTotalEmissions: number;
                                         metadata: {
-                                            id: string;
-                                            comment: string | null;
-                                            source: string | null;
-                                            updatedAt: string;
-                                            user: {
-                                                name: string;
-                                            };
                                             verifiedBy: {
                                                 name: string;
                                             } | null;
                                         };
-                                        calculatedTotalEmissions: number;
                                     } | null;
                                     scope3: {
-                                        id: string;
-                                        categories: {
-                                            id: string;
-                                            category: number;
+                                        calculatedTotalEmissions: number;
+                                        metadata: {
+                                            verifiedBy: {
+                                                name: string;
+                                            } | null;
+                                        };
+                                        statedTotalEmissions: {
                                             total: number | null;
                                             unit: string;
                                             metadata: {
-                                                id: string;
-                                                comment: string | null;
-                                                source: string | null;
-                                                updatedAt: string;
-                                                user: {
-                                                    name: string;
-                                                };
-                                                verifiedBy: {
-                                                    name: string;
-                                                } | null;
-                                            };
-                                        }[];
-                                        statedTotalEmissions?: {
-                                            id: string;
-                                            total: number | null;
-                                            unit: string;
-                                            metadata: {
-                                                id: string;
-                                                comment: string | null;
-                                                source: string | null;
-                                                updatedAt: string;
-                                                user: {
-                                                    name: string;
-                                                };
                                                 verifiedBy: {
                                                     name: string;
                                                 } | null;
                                             };
                                         } | null;
-                                        calculatedTotalEmissions: number;
-                                        metadata: {
-                                            id: string;
-                                            comment: string | null;
-                                            source: string | null;
-                                            updatedAt: string;
-                                            user: {
-                                                name: string;
+                                        categories: {
+                                            category: number;
+                                            total: number | null;
+                                            unit: string;
+                                            metadata: {
+                                                verifiedBy: {
+                                                    name: string;
+                                                } | null;
                                             };
-                                            verifiedBy: {
-                                                name: string;
-                                            } | null;
-                                        };
+                                        }[];
                                     } | null;
                                     scope1And2: {
-                                        id: string;
-                                        total: number;
-                                        unit: string;
-                                        metadata: {
-                                            id: string;
-                                            comment: string | null;
-                                            source: string | null;
-                                            updatedAt: string;
-                                            user: {
-                                                name: string;
-                                            };
-                                            verifiedBy: {
-                                                name: string;
-                                            } | null;
-                                        };
-                                    } | null;
-                                    biogenicEmissions: {
-                                        id: string;
                                         total: number | null;
                                         unit: string;
                                         metadata: {
-                                            id: string;
-                                            comment: string | null;
-                                            source: string | null;
-                                            updatedAt: string;
-                                            user: {
-                                                name: string;
-                                            };
                                             verifiedBy: {
                                                 name: string;
                                             } | null;
                                         };
                                     } | null;
                                     statedTotalEmissions: {
-                                        id: string;
                                         total: number | null;
                                         unit: string;
                                         metadata: {
-                                            id: string;
-                                            comment: string | null;
-                                            source: string | null;
-                                            updatedAt: string;
-                                            user: {
-                                                name: string;
-                                            };
                                             verifiedBy: {
                                                 name: string;
                                             } | null;
                                         };
                                     } | null;
-                                    calculatedTotalEmissions: number;
                                 } | null;
                                 economy: {
-                                    id: string;
-                                    turnover: {
-                                        id: string;
-                                        value: number | null;
-                                        currency: string | null;
-                                        metadata: {
-                                            id: string;
-                                            comment: string | null;
-                                            source: string | null;
-                                            updatedAt: string;
-                                            user: {
-                                                name: string;
-                                            };
-                                            verifiedBy: {
-                                                name: string;
-                                            } | null;
-                                        };
-                                    } | null;
                                     employees: {
-                                        id: string;
                                         value: number | null;
                                         unit: string | null;
                                         metadata: {
-                                            id: string;
-                                            comment: string | null;
-                                            source: string | null;
-                                            updatedAt: string;
-                                            user: {
+                                            verifiedBy: {
                                                 name: string;
-                                            };
+                                            } | null;
+                                        };
+                                    } | null;
+                                    turnover: {
+                                        value: number | null;
+                                        currency: string | null;
+                                        metadata: {
                                             verifiedBy: {
                                                 name: string;
                                             } | null;
                                         };
                                     } | null;
                                 } | null;
-                                emissionsChangeLastTwoYears?: {
-                                    absolute: number | null;
-                                    adjusted: number | null;
-                                };
                             }[];
                             futureEmissionsTrendSlope: number | null;
                             industry: {
-                                id: string;
                                 industryGics: {
                                     sectorCode: string;
                                     groupCode: string;
                                     industryCode: string;
                                     subIndustryCode: string;
-                                    sv: {
-                                        sectorName: string;
-                                        groupName: string;
-                                        industryName: string;
-                                        subIndustryName: string;
-                                        subIndustryDescription: string;
-                                    };
-                                    en: {
-                                        sectorName: string;
-                                        groupName: string;
-                                        industryName: string;
-                                        subIndustryName: string;
-                                        subIndustryDescription: string;
-                                    };
                                 };
                                 metadata: {
-                                    id: string;
-                                    comment: string | null;
-                                    source: string | null;
-                                    updatedAt: string;
-                                    user: {
-                                        name: string;
-                                    };
                                     verifiedBy: {
                                         name: string;
                                     } | null;
@@ -606,6 +493,8 @@ export interface paths {
                                     } | null;
                                 };
                             } | null;
+                            tags: string[];
+                            isDefunct?: boolean;
                             goals: {
                                 id: string;
                                 description: string;
@@ -705,6 +594,7 @@ export interface paths {
                         internalComment?: string;
                         tags?: string[];
                         lei?: string;
+                        isDefunct?: boolean;
                         metadata?: {
                             source?: string;
                             comment?: string;
@@ -934,7 +824,7 @@ export interface paths {
                                         }[];
                                     } | null;
                                     scope1And2: {
-                                        total: number;
+                                        total: number | null;
                                         unit: string;
                                         metadata: {
                                             verifiedBy: {
@@ -1004,6 +894,7 @@ export interface paths {
                                 };
                             } | null;
                             tags: string[];
+                            isDefunct?: boolean;
                         }[];
                     };
                 };
@@ -1078,6 +969,7 @@ export interface paths {
                         "application/json": {
                             name: string;
                             region: string;
+                            logoUrl: string | null;
                             totalTrend: number;
                             totalCarbonLaw: number;
                             historicalEmissionChangePercent: number;
@@ -1148,6 +1040,7 @@ export interface paths {
                         "application/json": {
                             name: string;
                             region: string;
+                            logoUrl: string | null;
                             totalTrend: number;
                             totalCarbonLaw: number;
                             historicalEmissionChangePercent: number;
@@ -1731,7 +1624,7 @@ export interface paths {
                                      */
                                     unit?: "tCO2e" | "tCO2";
                                     verified?: boolean;
-                                };
+                                } | null;
                                 statedTotalEmissions?: {
                                     total?: number | null;
                                     /**

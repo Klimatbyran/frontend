@@ -41,6 +41,7 @@ export function CompanyEditDetails({
   const [baseYearVerified, setBaseYearVerified] = useState(
     isVerified(company.baseYear?.metadata),
   );
+  const [isDefunct, setIsDefunct] = useState(company.isDefunct || false);
 
   const [comment, setComment] = useState<string>("");
   const [source, setSource] = useState<string>("");
@@ -110,6 +111,7 @@ export function CompanyEditDetails({
         company,
         subIndustryCode,
         baseYear,
+        isDefunct,
         comment,
         source,
         industryVerified,
@@ -276,6 +278,40 @@ export function CompanyEditDetails({
             setBaseYearVerified(checked === true);
           }}
         />
+      </div>
+      <div className="mb-6 flex items-center">
+        <span className="min-w-[140px] mr-4 font-medium">Company Status</span>
+        <label className="flex items-center cursor-pointer">
+          <input
+            type="checkbox"
+            checked={isDefunct}
+            onChange={(e) => setIsDefunct(e.target.checked)}
+            className="w-6 h-6 text-blue-5 bg-black-1 border-gray-300 rounded focus:ring-blue-5 focus:ring-2"
+          />
+          <span className="ml-2 text-white">
+            Mark as defunct {isDefunct && "(Company is no longer operating)"}
+          </span>
+        </label>
+        <button
+          type="button"
+          onClick={() => setIsDefunct(company.isDefunct || false)}
+          disabled={isDefunct === (company.isDefunct || false)}
+          className={
+            "ml-2 bg-none border-none p-0 " +
+            (isDefunct === (company.isDefunct || false)
+              ? "cursor-not-allowed"
+              : "cursor-pointer")
+          }
+          aria-label="Undo defunct status change"
+        >
+          <Undo2
+            className={
+              isDefunct === (company.isDefunct || false)
+                ? "text-grey"
+                : "text-white hover:text-orange-3"
+            }
+          />
+        </button>
       </div>
       <div className="w-full ps-4 pe-2 mt-10">
         <textarea
