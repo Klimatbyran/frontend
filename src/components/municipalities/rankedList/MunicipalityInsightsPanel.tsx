@@ -11,7 +11,7 @@ import {
 
 interface InsightsPanelProps {
   municipalityData: Municipality[];
-  selectedKPI: KPIValue;
+  selectedKPI: KPIValue<Municipality>;
 }
 
 function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {

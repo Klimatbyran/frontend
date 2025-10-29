@@ -118,7 +118,7 @@ export function useRegionAllSubsectorEmissions() {
   };
 }
 
-export function getRegionalKPIs(): KPIValue[] {
+export function getRegionalKPIs(): KPIValue<Region>[] {
   return [
     {
       label: t("regions.kpis.emissions.label"),

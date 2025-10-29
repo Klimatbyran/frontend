@@ -1,6 +1,9 @@
 import { KPIValue } from "@/types/entity-rankings";
 
-export function getSortedEntityKPIValues<T>(data: T[], kpi: KPIValue): T[] {
+export function getSortedEntityKPIValues<
+  T,
+  KPI extends KPIValue<T> = KPIValue<T>,
+>(data: T[], kpi: KPI): T[] {
   return [...data].sort((a, b) => {
     const aValue = a[kpi.key as keyof T];
     const bValue = b[kpi.key as keyof T];
