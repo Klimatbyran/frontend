@@ -52,16 +52,13 @@ function CompanyInsightsPanel({
   const sortedData = getSortedEntityKPIValues(companyData, selectedKPI);
 
   // Use statistics.validData which already filters out null/undefined values
-  // Sort the valid data to get worst performers at the end
   const sortedValidData = getSortedEntityKPIValues(
     statistics.validData,
     selectedKPI,
   );
 
   const topCompanies = sortedData.slice(0, 5);
-  // For "needs improvement", take the worst 5 from valid data only
-  // Worst values are always at the end of the sorted array (regardless of higherIsBetter)
-  // Reverse to show worst first in the list
+  // For "needs improvement", take the worst 5 from valid data only, excludes unknowns and nulls
   const bottomCompanies = sortedValidData.slice(-5).reverse();
 
   const sourceLinks = createSourceLinks(selectedKPI);
