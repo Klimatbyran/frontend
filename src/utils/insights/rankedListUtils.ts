@@ -33,9 +33,9 @@ export interface EntityStatistics<T> {
 /**
  * Filter valid data from entities based on KPI type
  */
-export function filterValidData<T>(
+export function filterValidData<T, KPI extends KPIValue<T> = KPIValue<T>>(
   entities: T[],
-  selectedKPI: KPIValue,
+  selectedKPI: KPI,
   getValue: (entity: T) => unknown,
 ): T[] {
   return entities.filter((entity) => {
@@ -54,9 +54,12 @@ export function filterValidData<T>(
 /**
  * Calculate statistics for entities based on KPI
  */
-export function calculateEntityStatistics<T>(
+export function calculateEntityStatistics<
+  T,
+  KPI extends KPIValue<T> = KPIValue<T>,
+>(
   entities: T[],
-  selectedKPI: KPIValue,
+  selectedKPI: KPI,
   getValue: (entity: T) => unknown,
 ): EntityStatistics<T> {
   const validData = filterValidData(entities, selectedKPI, getValue);
@@ -123,8 +126,9 @@ export function calculateEntityStatistics<T>(
 
 /**
  * Create source links from KPI
+ * Accepts any KPIValue regardless of entity type
  */
-export function createSourceLinks(selectedKPI: KPIValue) {
+export function createSourceLinks(selectedKPI: KPIValue<any>) {
   return (
     selectedKPI.sourceUrls?.map((url, i) => ({
       url,

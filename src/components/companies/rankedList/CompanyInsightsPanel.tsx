@@ -1,6 +1,8 @@
 import { t } from "i18next";
-import { Municipality } from "@/types/municipality";
-import { KPIValue } from "@/types/entity-rankings";
+import {
+  CompanyWithKPIs,
+  CompanyKPIValue,
+} from "@/hooks/companies/useCompanyKPIs";
 import InsightsList from "../../ranked/InsightsList";
 import KPIDetailsPanel from "../../ranked/KPIDetailsPanel";
 import { getSortedEntityKPIValues } from "@/utils/data/sorting";
@@ -10,16 +12,19 @@ import {
 } from "@/utils/insights/rankedListUtils";
 
 interface InsightsPanelProps {
-  municipalityData: Municipality[];
-  selectedKPI: KPIValue<Municipality>;
+  companyData: CompanyWithKPIs[];
+  selectedKPI: CompanyKPIValue;
 }
 
-function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
-  if (!municipalityData?.length) {
+function CompanyInsightsPanel({
+  companyData,
+  selectedKPI,
+}: InsightsPanelProps) {
+  if (!companyData?.length) {
     return (
       <div className="bg-white/5 backdrop-blur-sm rounded-level-2 p-8 h-full flex items-center justify-center">
         <p className="text-white text-lg">
-          {t("municipalities.list.insights.noData.municipality")}
+          {t("companies.list.insights.noData.company")}
         </p>
       </div>
     );
@@ -27,16 +32,16 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
 
   // Calculate statistics using shared utility
   const statistics = calculateEntityStatistics(
-    municipalityData,
+    companyData,
     selectedKPI,
-    (m) => m[selectedKPI.key],
+    (c) => c[selectedKPI.key],
   );
 
   if (!statistics.validData.length) {
     return (
       <div className="bg-white/5 backdrop-blur-sm rounded-level-2 p-8 h-full flex items-center justify-center">
         <p className="text-white text-lg">
-          {t("municipalities.list.insights.noData.metric", {
+          {t("companies.list.insights.noData.metric", {
             metric: selectedKPI.label,
           })}
         </p>
@@ -44,10 +49,17 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
     );
   }
 
-  const sortedData = getSortedEntityKPIValues(municipalityData, selectedKPI);
+  const sortedData = getSortedEntityKPIValues(companyData, selectedKPI);
 
-  const topMunicipalities = sortedData.slice(0, 5);
-  const bottomMunicipalities = sortedData.slice(-5).reverse();
+  // Use statistics.validData which already filters out null/undefined values
+  const sortedValidData = getSortedEntityKPIValues(
+    statistics.validData,
+    selectedKPI,
+  );
+
+  const topCompanies = sortedData.slice(0, 5);
+  // For "needs improvement", take the worst 5 from valid data only, excludes unknowns and nulls
+  const bottomCompanies = sortedValidData.slice(-5).reverse();
 
   const sourceLinks = createSourceLinks(selectedKPI);
 
@@ -59,7 +71,7 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
         <KPIDetailsPanel
           title={selectedKPI.label}
           averageValue={statistics.formattedAverage}
-          averageLabel={t("municipalities.list.insights.keyStatistics.average")}
+          averageLabel={t("companies.list.insights.keyStatistics.average")}
           distributionStats={statistics.distributionStats}
           missingDataCount={statistics.nullCount}
           missingDataLabel={selectedKPI.nullValues}
@@ -68,31 +80,31 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
 
         {!selectedKPI.isBoolean && (
           <>
-            <InsightsList<Municipality>
+            <InsightsList<CompanyWithKPIs>
               title={t(
                 selectedKPI.higherIsBetter
-                  ? "municipalities.list.insights.topPerformers.titleTop"
-                  : "municipalities.list.insights.topPerformers.titleBest",
+                  ? "companies.list.insights.topPerformers.titleTop"
+                  : "companies.list.insights.topPerformers.titleBest",
               )}
-              entities={topMunicipalities}
-              totalCount={municipalityData.length}
-              dataPointKey={selectedKPI.key as keyof Municipality}
+              entities={topCompanies}
+              totalCount={companyData.length}
+              dataPointKey={selectedKPI.key}
               unit={selectedKPI.unit}
               nullValues={selectedKPI.nullValues}
               textColor="text-blue-3"
-              entityType="municipalities"
+              entityType="companies"
               nameKey="name"
             />
             <InsightsList
-              title={t("municipalities.list.insights.improvement.title")}
-              entities={bottomMunicipalities}
-              totalCount={municipalityData.length}
+              title={t("companies.list.insights.improvement.title")}
+              entities={bottomCompanies}
+              totalCount={companyData.length}
               isBottomRanking={true}
-              dataPointKey={selectedKPI.key as keyof Municipality}
+              dataPointKey={selectedKPI.key}
               unit={selectedKPI.unit}
               nullValues={selectedKPI.nullValues}
               textColor="text-pink-3"
-              entityType="municipalities"
+              entityType="companies"
               nameKey="name"
             />
           </>
@@ -102,4 +114,4 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
   );
 }
 
-export default InsightsPanel;
+export default CompanyInsightsPanel;

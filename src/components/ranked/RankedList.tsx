@@ -120,7 +120,7 @@ export function RankedList<T extends Record<string, unknown>>({
               ""
             : startIndex + index + 1}
         </span>
-        <span className="text-white/90 text-sm md:text-base">
+        <span className="text-white/90 text-sm md:text-base text-left">
           {String(item[searchKey])}
         </span>
       </div>

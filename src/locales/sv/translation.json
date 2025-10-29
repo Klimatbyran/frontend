@@ -7,8 +7,9 @@
   "emissionsUnit": "tCO₂e",
   "header": {
     "companies": "Företag",
-    "companiesSectors": "Utforska - Sektorer",
-    "companiesExplore": "Utforska - Företag",
+    "companiesSectors": "Sektorer",
+    "companiesRanked": "Topplistor",
+    "companiesExplore": "Utforska företag",
     "municipalities": "Kommuner",
     "municipalitiesRanked": "Topplistor",
     "regionsRanked": "Län",
@@ -255,6 +256,13 @@
     "linkCopied": "Länk kopierad!",
     "shareText": "Kolla in det här blogginlägget!",
     "relatedArticles": "Relaterade artiklar"
+  },
+  "companiesRankedPage": {
+    "title": "Företagsranking",
+    "description": "Jämför företag baserat på viktiga klimatindikatorer",
+    "errorTitle": "Kunde inte hämta företagsinformation",
+    "errorDescription": "Försök igen senare",
+    "mapPlaceholder": "Kartvisualisering kommer snart"
   },
   "companiesPage": {
     "viewModes": {
@@ -1029,6 +1037,44 @@
       "error": {
         "fetchingCompanyInfo": "Det gick inte att hämta företagsinformation",
         "tryAgainLater": "Försök igen senare"
+      },
+      "dataSelector": {
+        "label": "Välj datapunkt"
+      },
+      "kpis": {
+        "meetsParis": {
+          "label": "Parisavtalet",
+          "description": "Utsläppstrend jämfört med Parisavtalet",
+          "detailedDescription": "Vilka företag är på väg att klara Parisavtalet?",
+          "source": "Klimatkollen Analys",
+          "nullValues": "Okänt",
+          "booleanLabels": {
+            "true": "Klarar Parisavtalet",
+            "false": "Missar Parisavtalet"
+          }
+        },
+        "emissionsChangeFromBaseYear": {
+          "label": "Utsläppsförändring",
+          "description": "Förändring i utsläpp från basår till senaste rapporteringsår",
+          "detailedDescription": "Procentuell förändring i totala utsläpp från företagets basår till senaste rapporteringsår. Lägre värden indikerar bättre prestation.",
+          "source": "Företagsrapporteringsdata"
+        }
+      },
+      "insights": {
+        "noData": {
+          "company": "Ingen företagsdata tillgänglig",
+          "metric": "Ingen data tillgänglig för {{metric}}"
+        },
+        "keyStatistics": {
+          "average": "Genomsnitt:"
+        },
+        "topPerformers": {
+          "titleTop": "Toppföretag",
+          "titleBest": "Bäst presterande företag"
+        },
+        "improvement": {
+          "title": "Företag som behöver förbättras"
+        }
       },
       "sort": {
         "placeholder": "Sortera efter",

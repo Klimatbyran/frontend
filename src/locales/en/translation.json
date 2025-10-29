@@ -7,8 +7,9 @@
   "noData": "No data available",
   "header": {
     "companies": "Companies",
-    "companiesSectors": "Explore - Sectors",
-    "companiesExplore": "Explore - Companies",
+    "companiesSectors": "Sectors",
+    "companiesRanked": "Top Lists",
+    "companiesExplore": "Explore Companies",
     "municipalities": "Municipalities",
     "municipalitiesRanked": "Top Lists",
     "regionsRanked": "Regions",
@@ -255,6 +256,13 @@
     "linkCopied": "Link copied!",
     "shareText": "Check out this blog post!",
     "relatedArticles": "Related Articles"
+  },
+  "companiesRankedPage": {
+    "title": "Company Rankings",
+    "description": "Compare companies based on key climate indicators",
+    "errorTitle": "Failed to retrieve company information",
+    "errorDescription": "Please try again later",
+    "mapPlaceholder": "Map visualization coming soon"
   },
   "companiesPage": {
     "viewModes": {
@@ -1030,6 +1038,44 @@
       "error": {
         "fetchingCompanyInfo": "Failed to fetch company information",
         "tryAgainLater": "Please try again later"
+      },
+      "dataSelector": {
+        "label": "Select Data Point"
+      },
+      "kpis": {
+        "meetsParis": {
+          "label": "Paris Agreement",
+          "description": "Emissions trend compared to the Paris Agreement",
+          "detailedDescription": "Which companies are on track to meet the Paris Agreement?",
+          "source": "Klimatkollen Analysis",
+          "nullValues": "Unknown",
+          "booleanLabels": {
+            "true": "Meets Paris Agreement",
+            "false": "Fails Paris Agreement"
+          }
+        },
+        "emissionsChangeFromBaseYear": {
+          "label": "Emissions Change",
+          "description": "Change in emissions from base year to latest reporting period",
+          "detailedDescription": "Percentage change in total emissions from the company's base year to their most recent reporting period. Lower values indicate better performance.",
+          "source": "Company Reporting Data"
+        }
+      },
+      "insights": {
+        "noData": {
+          "company": "No company data available",
+          "metric": "No data available for {{metric}}"
+        },
+        "keyStatistics": {
+          "average": "Average:"
+        },
+        "topPerformers": {
+          "titleTop": "Top Companies",
+          "titleBest": "Best Performing Companies"
+        },
+        "improvement": {
+          "title": "Companies Needing Improvement"
+        }
       },
       "sort": {
         "placeholder": "Sort by",

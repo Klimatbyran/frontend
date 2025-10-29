@@ -13,9 +13,13 @@ export interface DataPoint<T> {
   formatter?: (value: T[keyof T]) => string | React.ReactNode;
 }
 
-export interface KPIValue {
+/**
+ * Generic KPI value type that can be used for any entity type
+ * @template T - The entity type (Municipality, Region, CompanyWithKPIs, etc.)
+ */
+export interface KPIValue<T = Municipality | Region> {
   label: string;
-  key: keyof Municipality | keyof Region;
+  key: keyof T;
   unit: string;
   source: string;
   sourceUrls: string[];
