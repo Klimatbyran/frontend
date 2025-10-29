@@ -32,6 +32,7 @@ import { RequestsDashboard } from "./pages/internal-pages/RequestsDashboard";
 import { TrendAnalysisDashboard } from "./pages/internal-pages/TrendAnalysisDashboard";
 import { NewsLetterArchivePage } from "./pages/NewslettersPage";
 import { RegionalRankedPage } from "./pages/RegionalRankedPage";
+import { CompaniesRankedPage } from "./pages/CompaniesRankedPage";
 
 export function AppRoutes() {
   const { currentLanguage } = useLanguage();
@@ -51,6 +52,10 @@ export function AppRoutes() {
       <Route
         path={`${basePath}/companies/sectors`}
         element={<CompaniesSectorsPage />}
+      />
+      <Route
+        path={`${basePath}/companies/ranked`}
+        element={<CompaniesRankedPage />}
       />
       <Route
         path={`${basePath}/companies/:id`}

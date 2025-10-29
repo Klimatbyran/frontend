@@ -41,6 +41,11 @@ const NAV_LINKS: NavLink[] = [
     path: `/companies`,
     sublinks: [
       {
+        label: "header.companiesRanked",
+        path: `/companies/ranked`,
+        onlyShowOnStaging: true,
+      },
+      {
         label: "header.companiesSectors",
         path: `/companies/sectors`,
       },
@@ -183,7 +188,6 @@ export function Header() {
     if (searchParams.get("newsletter") === "open") {
       setIsSignUpOpen(true);
     }
-
   }, [location]);
 
   useEffect(() => {
