@@ -46,15 +46,34 @@ function InsightsList<T>({
           </div>
         );
 
-        return entityType === "municipalities" ? (
-          <LocalizedLink
-            key={name}
-            to={`/${entityType}/${name}`}
-            className="block transition-colors hover:bg-white/5 rounded-lg"
-          >
-            {content}
-          </LocalizedLink>
-        ) : (
+        if (entityType === "municipalities") {
+          return (
+            <LocalizedLink
+              key={name}
+              to={`/${entityType}/${name}`}
+              className="block transition-colors hover:bg-white/5 rounded-lg"
+            >
+              {content}
+            </LocalizedLink>
+          );
+        }
+
+        if (entityType === "companies") {
+          const companyId = (entity as { wikidataId?: string }).wikidataId;
+          if (companyId) {
+            return (
+              <LocalizedLink
+                key={name}
+                to={`/${entityType}/${companyId}`}
+                className="block transition-colors hover:bg-white/5 rounded-lg"
+              >
+                {content}
+              </LocalizedLink>
+            );
+          }
+        }
+
+        return (
           <div
             key={name}
             className="block transition-colors hover:bg-white/5 rounded-lg"
