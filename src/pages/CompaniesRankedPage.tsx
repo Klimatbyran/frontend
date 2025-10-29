@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useCompanies } from "@/hooks/companies/useCompanies";
 import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/layout/PageHeader";
-import CompanyDataSelector from "@/components/companies/rankedList/CompanyDataSelector";
+import { KPIDataSelector } from "@/components/ranked/KPIDataSelector";
 import RankedList from "@/components/ranked/RankedList";
 import CompanyInsightsPanel from "@/components/companies/rankedList/CompanyInsightsPanel";
 import {
@@ -124,12 +124,14 @@ export function CompaniesRankedPage() {
         className="-ml-4"
       />
 
-      <CompanyDataSelector
+      <KPIDataSelector
         selectedKPI={selectedKPI}
-        onDataPointChange={(kpi) => {
+        onKPIChange={(kpi) => {
           setSelectedKPI(kpi);
           setKPIInURL(String(kpi.key));
         }}
+        kpis={companyKPIs}
+        translationPrefix="companies.list"
       />
 
       {/* Mobile View */}

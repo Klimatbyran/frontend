@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
 import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/layout/PageHeader";
-import DataSelector from "@/components/municipalities/rankedList/MunicipalityDataSelector";
+import { KPIDataSelector } from "@/components/ranked/KPIDataSelector";
 import RankedList from "@/components/ranked/RankedList";
 import InsightsPanel from "@/components/municipalities/rankedList/MunicipalityInsightsPanel";
 import MapOfSweden from "@/components/maps/SwedenMap";
@@ -175,12 +175,14 @@ export function MunicipalitiesRankedPage() {
         />
       </div>
 
-      <DataSelector
+      <KPIDataSelector
         selectedKPI={selectedKPI}
-        onDataPointChange={(kpi) => {
+        onKPIChange={(kpi) => {
           setSelectedKPI(kpi);
           setKPIInURL(kpi.label);
         }}
+        kpis={municipalityKPIs}
+        translationPrefix="municipalities.list"
       />
 
       {/* Mobile Insights */}
