@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { KPIDataSelector } from "@/components/ranked/KPIDataSelector";
 import RankedList from "@/components/ranked/RankedList";
+import BooleanGroupedList from "@/components/ranked/BooleanGroupedList";
 import InsightsPanel from "@/components/municipalities/rankedList/MunicipalityInsightsPanel";
 import MapOfSweden from "@/components/maps/SwedenMap";
 import municipalityGeoJson from "@/data/municipalityGeo.json";
@@ -114,6 +115,23 @@ export function MunicipalitiesRankedPage() {
           onAreaClick={handleMunicipalityNameClick}
         />
       </div>
+    ) : selectedKPI.isBoolean ? (
+      <BooleanGroupedList
+        data={municipalities}
+        selectedDataPoint={asDataPoint({
+          label: selectedKPI.label,
+          key: selectedKPI.key as keyof Municipality,
+          unit: selectedKPI.unit,
+          description: selectedKPI.description,
+          higherIsBetter: selectedKPI.higherIsBetter,
+          nullValues: selectedKPI.nullValues,
+          isBoolean: selectedKPI.isBoolean,
+          booleanLabels: selectedKPI.booleanLabels,
+        })}
+        onItemClick={handleMunicipalityClick}
+        searchKey="name"
+        searchPlaceholder={t("rankedList.search.placeholder")}
+      />
     ) : (
       <RankedList
         data={municipalities}
@@ -199,39 +217,58 @@ export function MunicipalitiesRankedPage() {
         <div className="grid grid-cols-2 gap-6">
           {renderMapOrList(false)}
           {viewMode === "map" ? (
-            <RankedList
-              data={municipalities}
-              selectedDataPoint={asDataPoint({
-                label: selectedKPI.label,
-                key: selectedKPI.key as unknown as keyof Municipality,
-                unit: selectedKPI.unit,
-                description: selectedKPI.description,
-                higherIsBetter: selectedKPI.higherIsBetter,
-                nullValues: selectedKPI.nullValues,
-                isBoolean: selectedKPI.isBoolean,
-                booleanLabels: selectedKPI.booleanLabels,
-                formatter: (value: unknown) => {
-                  if (value === null) {
-                    return selectedKPI.nullValues || t("noData");
-                  }
+            selectedKPI.isBoolean ? (
+              <BooleanGroupedList
+                data={municipalities}
+                selectedDataPoint={asDataPoint({
+                  label: selectedKPI.label,
+                  key: selectedKPI.key as keyof Municipality,
+                  unit: selectedKPI.unit,
+                  description: selectedKPI.description,
+                  higherIsBetter: selectedKPI.higherIsBetter,
+                  nullValues: selectedKPI.nullValues,
+                  isBoolean: selectedKPI.isBoolean,
+                  booleanLabels: selectedKPI.booleanLabels,
+                })}
+                onItemClick={handleMunicipalityClick}
+                searchKey="name"
+                searchPlaceholder={t("rankedList.search.placeholder")}
+              />
+            ) : (
+              <RankedList
+                data={municipalities}
+                selectedDataPoint={asDataPoint({
+                  label: selectedKPI.label,
+                  key: selectedKPI.key as unknown as keyof Municipality,
+                  unit: selectedKPI.unit,
+                  description: selectedKPI.description,
+                  higherIsBetter: selectedKPI.higherIsBetter,
+                  nullValues: selectedKPI.nullValues,
+                  isBoolean: selectedKPI.isBoolean,
+                  booleanLabels: selectedKPI.booleanLabels,
+                  formatter: (value: unknown) => {
+                    if (value === null) {
+                      return selectedKPI.nullValues || t("noData");
+                    }
 
-                  if (typeof value === "boolean") {
-                    return value
-                      ? t(
-                          `municipalities.list.kpis.${selectedKPI.key}.booleanLabels.true`,
-                        )
-                      : t(
-                          `municipalities.list.kpis.${selectedKPI.key}.booleanLabels.false`,
-                        );
-                  }
+                    if (typeof value === "boolean") {
+                      return value
+                        ? t(
+                            `municipalities.list.kpis.${selectedKPI.key}.booleanLabels.true`,
+                          )
+                        : t(
+                            `municipalities.list.kpis.${selectedKPI.key}.booleanLabels.false`,
+                          );
+                    }
 
-                  return `${(value as number).toFixed(1)}`;
-                },
-              })}
-              onItemClick={handleMunicipalityClick}
-              searchKey="name"
-              searchPlaceholder={t("rankedList.search.placeholder")}
-            />
+                    return `${(value as number).toFixed(1)}`;
+                  },
+                })}
+                onItemClick={handleMunicipalityClick}
+                searchKey="name"
+                searchPlaceholder={t("rankedList.search.placeholder")}
+              />
+            )
           ) : null}
         </div>
         <InsightsPanel
