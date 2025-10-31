@@ -32,6 +32,7 @@ import { RequestsDashboard } from "./pages/internal-pages/RequestsDashboard";
 import { TrendAnalysisDashboard } from "./pages/internal-pages/TrendAnalysisDashboard";
 import { NewsLetterArchivePage } from "./pages/NewslettersPage";
 import { RegionalRankedPage } from "./pages/RegionalRankedPage";
+import { RegionalDetailPage } from "./pages/RegionalDetailPage";
 import { CompaniesRankedPage } from "./pages/CompaniesRankedPage";
 
 export function AppRoutes() {
@@ -96,7 +97,10 @@ export function AppRoutes() {
         path={`${basePath}/regional-overview`}
         element={<RegionalRankedPage />}
       />
-      {/* Municipalities routes */}
+      <Route
+        path={`${basePath}/regions/:id`}
+        element={<RegionalDetailPage />}
+      />
       <Route
         path={`${basePath}/municipalities`}
         element={<MunicipalitiesRankedPage />}

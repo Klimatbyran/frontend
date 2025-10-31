@@ -66,6 +66,11 @@ export function RegionalRankedPage() {
     });
   }, [regionNames, regionsData]);
 
+  const handleRegionClick = (region: DataItem) => {
+    const formattedName = region.name.toLowerCase();
+    navigate(`/regions/${formattedName}?view=${viewMode}`);
+  };
+
   const asDataPoint = (kpi: unknown): DataPoint<DataItem> =>
     kpi as DataPoint<DataItem>;
 
@@ -96,7 +101,7 @@ export function RegionalRankedPage() {
             return `${(value as number).toFixed(1)}`;
           },
         })}
-        onItemClick={() => {}}
+        onItemClick={handleRegionClick}
         searchKey="name"
         searchPlaceholder={t("rankedList.search.placeholder")}
       />
@@ -156,7 +161,7 @@ export function RegionalRankedPage() {
                   return `${(value as number).toFixed(1)}`;
                 },
               })}
-              onItemClick={() => {}}
+              onItemClick={handleRegionClick}
               searchKey="name"
               searchPlaceholder={t("rankedList.search.placeholder")}
             />
