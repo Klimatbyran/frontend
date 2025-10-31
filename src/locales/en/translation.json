@@ -724,6 +724,17 @@
     "title": "Regional Overview",
     "description": "Overview of emissions and transition in the regional level"
   },
+  "regionalDetailPage": {
+    "metaTitle": "Regional Climate Data",
+    "metaDescription": "Climate emissions data for {{region}}. Total emissions: {{emissions}} in {{year}}.",
+    "parisAgreement": "Climate Data",
+    "region": "Region",
+    "totalEmissions": "Total Emissions ({{year}})",
+    "totalEmissionsTooltip": "Total greenhouse gas emissions for the region",
+    "seoText": {
+      "intro": "{{region}} had total emissions of {{emissions}} in {{year}}."
+    }
+  },
   "municipalitiesRankedPage": {
     "errorTitle": "Failed to retrieve municipality information",
     "errorDescription": "Please try again later",

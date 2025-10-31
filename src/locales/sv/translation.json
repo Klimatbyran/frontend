@@ -723,6 +723,17 @@
     "title": "Länsöversikt",
     "description": "Översikt över utsläpp och omställning på länsnivå"
   },
+  "regionalDetailPage": {
+    "metaTitle": "Regionala klimatdata",
+    "metaDescription": "Klimatutsläppsdata för {{region}}. Totala utsläpp: {{emissions}} år {{year}}.",
+    "parisAgreement": "Klimatdata",
+    "region": "Län",
+    "totalEmissions": "Totala utsläpp ({{year}})",
+    "totalEmissionsTooltip": "Totala växthusgasutsläpp för länet",
+    "seoText": {
+      "intro": "{{region}} hade totala utsläpp på {{emissions}} år {{year}}."
+    }
+  },
   "municipalitiesRankedPage": {
     "errorTitle": "Det gick inte att hämta kommuninformation",
     "errorDescription": "Försök igen senare",
