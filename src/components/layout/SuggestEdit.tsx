@@ -50,7 +50,7 @@ export function SuggestEdit() {
                 </div>
                 <Form.Control asChild>
                   <textarea
-                    className="box-border block w-full min-h-[200px] p-3 appearance-none items-center justify-center rounded-lg bg-blackA2 text-[16px] leading-none text-gray-500 shadow-[0_0_0_1px] shadow-blackA6 outline-none selection:bg-blackA6 selection:text-black-2 hover:shadow-[black-2] focus:shadow-[0_0_0_2px_black-2]"
+                    className="box-border block w-full min-h-[200px] p-3 appearance-none items-center justify-center rounded-lg bg-blackA2 text-[16px] leading-none text-black-2 shadow-[0_0_0_1px] shadow-blackA6 outline-none selection:bg-blackA6 selection:text-black-2 hover:shadow-[black-2] focus:shadow-[0_0_0_2px_black-2]"
                     placeholder="Please tell us what and the where."
                     required
                   />
