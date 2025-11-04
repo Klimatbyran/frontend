@@ -262,7 +262,9 @@
     "description": "Compare companies based on key climate indicators",
     "errorTitle": "Failed to retrieve company information",
     "errorDescription": "Please try again later",
-    "mapPlaceholder": "Map visualization coming soon"
+    "mapPlaceholder": "Map visualization coming soon",
+    "filterByIndustry": "Filter by industry",
+    "clearFilters": "Clear all"
   },
   "companiesPage": {
     "viewModes": {
@@ -1055,10 +1057,17 @@
           }
         },
         "emissionsChangeFromBaseYear": {
-          "label": "Emissions Change",
+          "label": "Overall Emissions Change",
           "description": "Change in emissions from base year to latest reporting period",
           "detailedDescription": "Percentage change in total emissions from the company's base year to their most recent reporting period. Lower values indicate better performance.",
           "source": "Company Reporting Data"
+        },
+        "trendSlope": {
+          "label": "Emissions Trend (slope)",
+          "description": "Estimated yearly change from LAD trendline (negative is better)",
+          "detailedDescription": "Slope of the Least Absolute Deviations trendline fitted to reported emissions.",
+          "source": "Klimatkollen Analysis",
+          "nullValues": "Not enough data"
         }
       },
       "insights": {

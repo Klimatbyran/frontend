@@ -262,7 +262,9 @@
     "description": "Jämför företag baserat på viktiga klimatindikatorer",
     "errorTitle": "Kunde inte hämta företagsinformation",
     "errorDescription": "Försök igen senare",
-    "mapPlaceholder": "Kartvisualisering kommer snart"
+    "mapPlaceholder": "Kartvisualisering kommer snart",
+    "filterByIndustry": "Filtrera efter bransch",
+    "clearFilters": "Rensa alla"
   },
   "companiesPage": {
     "viewModes": {
@@ -1058,6 +1060,13 @@
           "description": "Förändring i utsläpp från basår till senaste rapporteringsår",
           "detailedDescription": "Procentuell förändring i totala utsläpp från företagets basår till senaste rapporteringsår. Lägre värden indikerar bättre prestation.",
           "source": "Företagsrapporteringsdata"
+        },
+        "trendSlope": {
+          "label": "Utsläppstrend (lutning)",
+          "description": "Beräknad årlig förändring från LAD-trendlinje (negativ är bättre)",
+          "detailedDescription": "Lutning av Least Absolute Deviations-trendlinjen anpassad till rapporterade utsläpp.",
+          "source": "Klimatkollen Analys",
+          "nullValues": "Otillräcklig data"
         }
       },
       "insights": {

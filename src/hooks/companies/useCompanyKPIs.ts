@@ -43,7 +43,10 @@ export const useCompanyKPIs = (): CompanyKPIValue[] => {
       nullValues: t("companies.list.kpis.meetsParis.nullValues"),
     },
     {
-      label: t("companies.list.kpis.emissionsChangeFromBaseYear.label"),
+      label: t(
+        "companies.list.kpis.emissionsChangeFromBaseYear.label",
+        "Overall Emissions Change",
+      ),
       key: "emissionsChangeFromBaseYear",
       unit: "%",
       source: "companies.list.kpis.emissionsChangeFromBaseYear.source",
@@ -55,6 +58,29 @@ export const useCompanyKPIs = (): CompanyKPIValue[] => {
         "companies.list.kpis.emissionsChangeFromBaseYear.detailedDescription",
       ),
       higherIsBetter: false,
+    },
+    {
+      label: t(
+        "companies.list.kpis.trendSlope.label",
+        "Emissions Trend (slope)",
+      ),
+      key: "trendSlope",
+      unit: "%/yr",
+      source: "companies.list.kpis.trendSlope.source",
+      sourceUrls: [],
+      description: t(
+        "companies.list.kpis.trendSlope.description",
+        "Estimated yearly change from LAD trendline (negative is better)",
+      ),
+      detailedDescription: t(
+        "companies.list.kpis.trendSlope.detailedDescription",
+        "Slope of the Least Absolute Deviations trendline fitted to reported emissions.",
+      ),
+      higherIsBetter: false,
+      nullValues: t(
+        "companies.list.kpis.trendSlope.nullValues",
+        "Not enough data",
+      ),
     },
   ];
 
@@ -73,9 +99,17 @@ export const enrichCompanyWithKPIs = (
   const emissionsChangeFromBaseYear =
     calculateEmissionsChangeFromBaseYear(company);
 
+  // Use API-derived yearly percentage change rather than raw slope (tCO2e/yr)
+  const trendSlope: number | null = trendAnalysis
+    ? typeof trendAnalysis.yearlyPercentageChange === "number"
+      ? trendAnalysis.yearlyPercentageChange
+      : null
+    : null;
+
   return {
     ...company,
     meetsParis,
     emissionsChangeFromBaseYear,
+    trendSlope,
   };
 };

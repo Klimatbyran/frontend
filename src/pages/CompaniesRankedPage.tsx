@@ -1,11 +1,15 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
+import { Map, List } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useCompanies } from "@/hooks/companies/useCompanies";
 import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { KPIDataSelector } from "@/components/ranked/KPIDataSelector";
+import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import RankedList from "@/components/ranked/RankedList";
 import CompanyInsightsPanel from "@/components/companies/rankedList/CompanyInsightsPanel";
+import { CompanyKPIVisualization } from "@/components/companies/rankedList/CompanyKPIVisualization";
+import { IndustryFilter } from "@/components/companies/rankedList/IndustryFilter";
 import {
   useCompanyKPIs,
   CompanyKPIValue,
@@ -13,6 +17,7 @@ import {
   enrichCompanyWithKPIs,
 } from "@/hooks/companies/useCompanyKPIs";
 import { DataPoint } from "@/types/entity-rankings";
+import type { RankedCompany } from "@/types/company";
 
 export function CompaniesRankedPage() {
   const { t } = useTranslation();
@@ -34,7 +39,37 @@ export function CompaniesRankedPage() {
     navigate({ search: params.toString() }, { replace: true });
   };
 
+  const getViewModeFromURL = () => {
+    const params = new URLSearchParams(location.search);
+    return params.get("view") === "list" ? "list" : "graph";
+  };
+
+  const setViewModeInURL = (mode: "graph" | "list") => {
+    const params = new URLSearchParams(location.search);
+    params.set("view", mode);
+    navigate({ search: params.toString() }, { replace: true });
+  };
+
+  const getSectorsFromURL = useCallback(() => {
+    const params = new URLSearchParams(location.search);
+    const sectorsParam = params.get("sectors");
+    return sectorsParam ? sectorsParam.split(",") : [];
+  }, [location.search]);
+
+  const setSectorsInURL = (sectors: string[]) => {
+    const params = new URLSearchParams(location.search);
+    if (sectors.length > 0) {
+      params.set("sectors", sectors.join(","));
+    } else {
+      params.delete("sectors");
+    }
+    navigate({ search: params.toString() }, { replace: true });
+  };
+
   const [selectedKPI, setSelectedKPI] = useState(getKPIFromURL());
+  const [selectedSectors, setSelectedSectors] =
+    useState<string[]>(getSectorsFromURL());
+  const viewMode = getViewModeFromURL();
 
   useEffect(() => {
     const kpiFromUrl = getKPIFromURL();
@@ -43,11 +78,34 @@ export function CompaniesRankedPage() {
     }
   }, [getKPIFromURL, selectedKPI.key]);
 
-  // Enrich companies with KPI values
+  useEffect(() => {
+    const sectorsFromUrl = getSectorsFromURL();
+    if (JSON.stringify(sectorsFromUrl) !== JSON.stringify(selectedSectors)) {
+      setSelectedSectors(sectorsFromUrl);
+    }
+  }, [getSectorsFromURL, selectedSectors]);
+
+  // Filter and enrich companies with KPI values
   const companiesWithKPIs: CompanyWithKPIs[] = useMemo(() => {
     if (!companies) return [];
-    return companies.map((company) => enrichCompanyWithKPIs(company));
-  }, [companies]);
+
+    let filtered = companies;
+
+    // Apply sector filter
+    if (selectedSectors.length > 0) {
+      filtered = companies.filter((company) => {
+        const sectorCode = (company as any).industry?.industryGics?.sectorCode;
+        return sectorCode && selectedSectors.includes(sectorCode);
+      });
+    }
+
+    return filtered.map((company) => enrichCompanyWithKPIs(company));
+  }, [companies, selectedSectors]);
+
+  const handleSectorsChange = (sectors: string[]) => {
+    setSelectedSectors(sectors);
+    setSectorsInURL(sectors);
+  };
 
   const handleCompanyClick = (company: CompanyWithKPIs) => {
     navigate(`/companies/${company.wikidataId}`);
@@ -105,16 +163,24 @@ export function CompaniesRankedPage() {
     },
   });
 
-  const renderMapOrList = (isMobile: boolean) => (
-    // Empty container for map - same size as municipality map
-    <div className={isMobile ? "relative h-[65vh]" : "relative h-full"}>
-      <div className="w-full h-full bg-black-2 rounded-level-2 flex items-center justify-center">
-        <p className="text-grey text-lg">
-          {t("companiesRankedPage.mapPlaceholder")}
-        </p>
+  const renderVisualizationOrList = (isMobile: boolean) =>
+    viewMode === "graph" ? (
+      <div className={isMobile ? "relative h-[65vh]" : "relative h-full"}>
+        <CompanyKPIVisualization
+          companies={companiesWithKPIs}
+          selectedKPI={selectedKPI}
+          onCompanyClick={handleCompanyClick}
+        />
       </div>
-    </div>
-  );
+    ) : (
+      <RankedList
+        data={companiesWithKPIs}
+        selectedDataPoint={asDataPoint(selectedKPI)}
+        onItemClick={handleCompanyClick}
+        searchKey="name"
+        searchPlaceholder={t("rankedList.search.placeholder")}
+      />
+    );
 
   return (
     <>
@@ -123,6 +189,23 @@ export function CompaniesRankedPage() {
         description={t("companiesRankedPage.description")}
         className="-ml-4"
       />
+
+      <div className="flex mb-4 lg:hidden">
+        <ViewModeToggle
+          viewMode={viewMode}
+          modes={["graph", "list"]}
+          onChange={(mode) => setViewModeInURL(mode)}
+          titles={{
+            graph: t("companiesRankedPage.viewToggle.showGraph", "Graph"),
+            list: t("companiesRankedPage.viewToggle.showList", "List"),
+          }}
+          showTitles={true}
+          icons={{
+            graph: <Map className="w-4 h-4" />,
+            list: <List className="w-4 h-4" />,
+          }}
+        />
+      </div>
 
       <KPIDataSelector
         selectedKPI={selectedKPI}
@@ -134,15 +217,15 @@ export function CompaniesRankedPage() {
         translationPrefix="companies.list"
       />
 
+      <IndustryFilter
+        companies={(companies || []) as RankedCompany[]}
+        selectedSectors={selectedSectors}
+        onSectorsChange={handleSectorsChange}
+      />
+
       {/* Mobile View */}
       <div className="lg:hidden space-y-6">
-        <RankedList
-          data={companiesWithKPIs}
-          selectedDataPoint={asDataPoint(selectedKPI)}
-          onItemClick={handleCompanyClick}
-          searchKey="name"
-          searchPlaceholder={t("rankedList.search.placeholder")}
-        />
+        {renderVisualizationOrList(true)}
         <CompanyInsightsPanel
           companyData={companiesWithKPIs}
           selectedKPI={selectedKPI}
@@ -152,14 +235,16 @@ export function CompaniesRankedPage() {
       {/* Desktop View */}
       <div className="hidden lg:grid grid-cols-1 gap-6">
         <div className="grid grid-cols-2 gap-6">
-          {renderMapOrList(false)}
-          <RankedList
-            data={companiesWithKPIs}
-            selectedDataPoint={asDataPoint(selectedKPI)}
-            onItemClick={handleCompanyClick}
-            searchKey="name"
-            searchPlaceholder={t("rankedList.search.placeholder")}
-          />
+          {renderVisualizationOrList(false)}
+          {viewMode === "graph" ? (
+            <RankedList
+              data={companiesWithKPIs}
+              selectedDataPoint={asDataPoint(selectedKPI)}
+              onItemClick={handleCompanyClick}
+              searchKey="name"
+              searchPlaceholder={t("rankedList.search.placeholder")}
+            />
+          ) : null}
         </div>
         <CompanyInsightsPanel
           companyData={companiesWithKPIs}
