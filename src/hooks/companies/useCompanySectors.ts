@@ -1,7 +1,6 @@
 import { useTranslation } from "react-i18next";
-import { SECTORS } from "@/lib/constants/sectors";
+import { SECTOR_ORDER } from "@/lib/constants/sectors";
 
-// Hook to get translated sector names
 export const useSectorNames = () => {
   const { t } = useTranslation();
 
@@ -20,17 +19,21 @@ export const useSectorNames = () => {
   };
 };
 
-// Hook to get sector options for dropdowns
+// Hook to get sector options for dropdowns (with translated labels)
 export const useSectors = () => {
   const { t } = useTranslation();
+  const sectorNames = useSectorNames();
 
   const allSectorsOption = {
     value: "all" as const,
     label: t("companiesPage.allSectors"),
   };
 
-  const filteredOptions = SECTORS.filter((sector) => sector.value !== "all");
+  // Build sectors array using translated names
+  const filteredOptions = SECTOR_ORDER.map((code) => ({
+    value: code,
+    label: sectorNames[code],
+  }));
 
-  // Return the array with the correct type
-  return [allSectorsOption, ...filteredOptions] as const;
+  return [allSectorsOption, ...filteredOptions];
 };
