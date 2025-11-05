@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { LinkButton } from "@/components/layout/LinkButton";
 import { Text } from "@/components/ui/text";
+import i18next from "i18next";
 
 interface SectionProps {
   title: string;
@@ -24,7 +25,7 @@ export const CompanyDataOverviewContent = () => {
           <LinkButton
             title={t("methodsPage.company.companyDataOverview.link1.title")}
             text={t("methodsPage.company.companyDataOverview.link1.text")}
-            link="/companies"
+            link={`${i18next.resolvedLanguage}/companies`}
           />
         </div>
       </div>
