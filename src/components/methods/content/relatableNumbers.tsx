@@ -41,6 +41,22 @@ export const RelatableNumbersContent = () => {
         <br></br>
         <p>{t("methodsPage.company.relatableNumbers.citizens.paragraph2")}</p>
       </Section>
+      <section className="flex flex-col text-sm italic gap-2">
+        <a
+          href={t("methodsPage.company.relatableNumbers.forestFire.source")}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          1. {t("methodsPage.company.relatableNumbers.forestFire.source")}
+        </a>
+        <a
+          href={t("methodsPage.company.relatableNumbers.citizens.source")}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          2. {t("methodsPage.company.relatableNumbers.citizens.source")}
+        </a>
+      </section>
     </div>
   );
 };
