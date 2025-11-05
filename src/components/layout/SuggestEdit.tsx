@@ -14,7 +14,7 @@ export function SuggestEdit() {
       <Popover.Root>
         <Popover.Trigger asChild>
           <button
-            className="fixed bottom-6 left-6 p-3 bg-black-1 hover:bg-black-2 text-white rounded-full shadow-lg transition-colors duration-200 z-[35]"
+            className="fixed bottom-6 left-6 p-3 bg-black-1 hover:bg-black-1 sm:hover:bg-black-2 text-white rounded-full shadow-lg transition-colors duration-200 z-[35]"
             aria-label="Suggest an edit"
           >
             <MessageSquareText />
