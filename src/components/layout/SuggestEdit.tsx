@@ -3,8 +3,12 @@ import { MessageSquareText } from "lucide-react";
 import * as Popover from "@radix-ui/react-popover";
 import * as Form from "@radix-ui/react-form";
 import { Title } from "@radix-ui/react-toast";
+import { useTranslation } from "react-i18next";
+
+
 
 export function SuggestEdit() {
+  const { t } = useTranslation();
 
   useEffect(() => {
   }, []);
@@ -35,30 +39,30 @@ export function SuggestEdit() {
                 e.preventDefault();
                 const formData = new FormData(e.currentTarget);
                 const questionValue = formData.get("question");
-                const emailSubject = "Suggestion for klimatkollen.se";
+                const emailSubject = `${t("landingPage.emailTitle")} klimatkollen.se`;
                 window.location.href = `mailto:hej@klimatkollen.se?subject=${emailSubject}&body=${questionValue}`;
             }}>
-              <Title className="text-[22px] mb-2">Report a correction</Title>
+              <Title className="text-[22px] mb-2">{t("landingPage.reportCorrection")}</Title>
               <Form.Field className="mb-2.5 grid" name="question">
                 <div className="flex items-baseline justify-between">
                   <Form.Message
                     className="text-[13px] text-white opacity-80"
                     match="valueMissing"
                   >
-                    Please enter a question
+                    {t("landingPage.questionMissing")}
                   </Form.Message>
                 </div>
                 <Form.Control asChild>
                   <textarea
                     className="box-border block w-full min-h-[200px] p-3 appearance-none items-center justify-center rounded-lg bg-blackA2 text-[16px] leading-none text-black-2 shadow-[0_0_0_1px] shadow-blackA6 outline-none selection:bg-blackA6 selection:text-black-2 hover:shadow-[black-2] focus:shadow-[0_0_0_2px_black-2]"
-                    placeholder="Please tell us what and the where."
+                    placeholder={t("landingPage.questionPlaceholder")}
                     required
                   />
                 </Form.Control>
               </Form.Field>
               <Form.Submit asChild>
                 <button className="w-full inline-flex items-center justify-center text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white disabled:pointer-events-none hover:opacity-80 active:ring-1 active:ring-white disabled:opacity-50 h-10 bg-blue-5 text-white rounded-lg hover:bg-blue-6 transition px-4 py-1 font-medium">
-                  Submit suggestion
+                  {t("landingPage.submitQuestion")}
                 </button>
               </Form.Submit>
             </Form.Root>

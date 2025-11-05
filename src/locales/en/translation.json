@@ -80,7 +80,12 @@
     "tabName": {
       "companies": "the companies",
       "municipalities": "the municipalities"
-    }
+    },
+    "reportCorrection": "Report a correction",
+    "questionPlaceholder": "Please tell us what and the where",
+    "questionMissing": "Please enter a question",
+    "submitQuestion": "Submit question",
+    "emailTitle": "Suggestion for"
   },
   "aboutPage": {
     "header": {
