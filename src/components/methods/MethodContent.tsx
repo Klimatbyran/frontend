@@ -12,6 +12,7 @@ import { CalculationsContent } from "./content/CalculationsContent";
 import { CarbonLawContent } from "./content/CarbonLaw";
 import { MunicipalityDataOverviewContent } from "./content/MunicipalityDataOverview";
 import { MunicipalityKPIsContent } from "./content/MunicipalityKPIsContent";
+import { RelatableNumbersContent } from "./content/relatableNumbers";
 
 interface MethodologyContentProps {
   method: string;
@@ -75,6 +76,9 @@ export const MethodologyContent = forwardRef<
 
       case "companyDataCollection":
         return <DataCollectionProcessContent />;
+
+      case "relatableNumbers":
+        return <RelatableNumbersContent />;
     }
   };
 

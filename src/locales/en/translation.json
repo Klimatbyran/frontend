@@ -518,6 +518,24 @@
           "title": "Emission Offsets",
           "paragraph1": "These are not included, in line with what the GHG Protocol states."
         }
+      },
+      "relatableNumbers": {
+        "title": "Relatable Numbers",
+        "description": "Learn more about how we put the numbers into context.",
+        "paragraph": "Emission numbers are often large and difficult to grasp, so we’ve put them into context by comparing them to more relatable units. Below you can see the calculations we’ve used to produce these numbers.",
+        "forestFire": {
+          "title": "Forest Fires",
+          "paragraph1": "To put the emissions change into a concrete context, we calculate how much land would need to burn to produce the same amount of emissions. We base this on the following data:",
+          "paragraph2": "Using this method, we can express it as something like: “This emission corresponds to X football fields burning.” In this way, otherwise abstract numbers become more concrete and relatable.",
+          "bullet1": "On average, each hectare of forest contains about 50 tons of carbon (C). (1)",
+          "bullet2": "Carbon is converted to carbon dioxide (CO₂) using the factor 44/12 (molecular weights), which means that one hectare corresponds to roughly 50 × (44/12) ≈ 183 tons of CO₂.",
+          "bullet3": "Based on the emissions change, we calculate how many hectares would be required to match that amount of CO₂. This area is then compared to familiar references such as football fields, tennis courts, or city areas, providing the user with an intuitive sense of scale."
+        },
+        "citizens": {
+          "title": "Citizens",
+          "paragraph1": "To make the emissions change easier to understand, we compare it to the average annual emissions per person. In our case, we assume that an average person accounts for approximately 7.6 tons of CO₂-equivalents (tCO₂e) per year. This is based on data from the Swedish Environmental Protection Agency, which states that “the average carbon footprint per person and year in Sweden is 7.6 tonnes (2).",
+          "paragraph2": "By dividing the emissions change by this per-person value, we obtain a number representing how many “people” it corresponds to — providing users with a simpler and more relatable way to grasp the scale of the change."
+        }
       }
     },
     "municipality": {
@@ -1499,6 +1517,7 @@
   },
   "relatableNumbers": {
     "title": "How much is that?",
+    "tooltip": "Learn more about how these numbers are calculated on the methods page.",
     "description": "{{companyName}} {{emissionsChangeStatus}} their emissions by <highlightNumber>{{emissionsInTonnes}} ({{yearOverYearChange}})</highlightNumber> tCO2e from the previous year. This compares to:",
     "prefixFire": "Emissions from a forest fire",
     "prefixEmissions": "The annual emissions of {{count}} Swedes.",
