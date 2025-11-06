@@ -522,7 +522,8 @@
       "relatableNumbers": {
         "title": "Relatable Numbers",
         "description": "Learn more about how we put the numbers into context.",
-        "paragraph": "Emission numbers are often large and difficult to grasp, so we’ve put them into context by comparing them to more relatable units. Below you can see the calculations we’ve used to produce these numbers.",
+        "paragraph1": "Emission numbers are often large and difficult to grasp, so we’ve translated changes in emissions over time into more relatable terms. This helps illustrate how much an increase or decrease in emissions really means in practice.",
+        "paragraph2": "Rather than comparing total emissions, we focus on the change in emissions — for example, how much a company or region’s emissions have gone up or down compared to the previous year. This approach highlights real-world progress or setbacks in reducing emissions.",
         "forestFire": {
           "title": "Forest Fires",
           "paragraph1": "To put the emissions change into a concrete context, we calculate how much land would need to burn to produce the same amount of emissions. We base this on the following data:",

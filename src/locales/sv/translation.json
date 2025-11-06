@@ -522,7 +522,8 @@
       "relatableNumbers": {
         "title": "Begripliga siffror",
         "description": "Läs mer om hur vi sätter siffrorna i ett mer begripligt sammanhang.",
-        "paragraph": "Utsläppssiffror är ofta stora och svåra att greppa, så vi har satt dem i ett sammanhang genom att jämföra dem med enheter som är lättare att relatera till. Nedan kan du se vilka beräkningar vi har använt för att ta fram siffrorna.",
+        "paragraph1": "Utsläppssiffror är ofta stora och svåra att greppa, så vi har översatt förändringar i utsläpp över tid till mer lättbegripliga termer. Det hjälper till att illustrera hur mycket en ökning eller minskning av utsläpp faktiskt betyder i praktiken.",
+        "paragraph2": "I stället för att jämföra de totala utsläppen fokuserar vi på förändringen i utsläpp — till exempel hur mycket ett företags eller en regions utsläpp har ökat eller minskat jämfört med föregående år. Det här tillvägagångssättet lyfter fram verkliga framsteg eller bakslag i arbetet med att minska utsläppen.",
         "forestFire": {
           "title": "Skogsbränder",
           "paragraph1": "För att sätta utsläpps­förändringen i ett konkret sammanhang räknar vi ut hur stor markyta som skulle behöva brinna för att generera motsvarande mängd utsläpp. Vi utgår från följande antaganden:",

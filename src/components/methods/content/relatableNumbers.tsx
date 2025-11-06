@@ -17,7 +17,8 @@ export const RelatableNumbersContent = () => {
   const { t } = useTranslation();
   return (
     <div className="prose prose-invert mx-auto space-y-8">
-      <p>{t("methodsPage.company.relatableNumbers.paragraph")}</p>
+      <p>{t("methodsPage.company.relatableNumbers.paragraph1")}</p>
+      <p>{t("methodsPage.company.relatableNumbers.paragraph2")}</p>
       <Section
         title={t("methodsPage.company.relatableNumbers.forestFire.title")}
       >
