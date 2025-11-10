@@ -13,7 +13,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useSectorNames } from "@/hooks/companies/useCompanySectors";
-import type { SectorCode } from "@/lib/constants/sectors";
+import { getCompanySectorName } from "@/utils/data/industryGrouping";
 import { useLanguage } from "@/components/LanguageProvider";
 import {
   formatEmissionsAbsolute,
@@ -66,14 +66,8 @@ export function CompanyOverview({
   const employeesAIGenerated = isAIGenerated(selectedPeriod.economy?.employees);
 
   // Get the translated sector name using the sector code
-  const sectorCode = company.industry?.industryGics?.sectorCode as
-    | SectorCode
-    | undefined;
-  const sectorName = sectorCode
-    ? sectorNames[sectorCode]
-    : company.industry?.industryGics?.sv?.sectorName ||
-      company.industry?.industryGics?.en?.sectorName ||
-      t("companies.overview.unknownSector");
+  const sectorCode = company.industry?.industryGics?.sectorCode;
+  const sectorName = getCompanySectorName(company, sectorNames);
 
   // Get the translated company description
   const description = getCompanyDescription(company, currentLanguage);

@@ -4,6 +4,7 @@ import {
 } from "@/hooks/companies/useCompanyKPIs";
 import { MeetsParisVisualization } from "./visualizations/MeetsParisVisualization";
 import { TrendSlopeVisualization } from "@/components/companies/rankedList/visualizations/TrendSlopeVisualization";
+import { EmissionsChangeVisualization } from "@/components/companies/rankedList/visualizations/EmissionsChangeVisualization";
 
 interface CompanyKPIVisualizationProps {
   companies: CompanyWithKPIs[];
@@ -37,13 +38,11 @@ export function CompanyKPIVisualization({
         />
       );
     case "emissionsChangeFromBaseYear":
-      // TODO: Implement visualization for emissions change KPI
       return (
-        <div className="bg-black-2 rounded-level-2 p-8 h-full flex items-center justify-center">
-          <p className="text-grey text-lg">
-            Visualization for emissions change coming soon
-          </p>
-        </div>
+        <EmissionsChangeVisualization
+          companies={companies}
+          onCompanyClick={onCompanyClick}
+        />
       );
     default:
       return (
