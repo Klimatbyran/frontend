@@ -68,7 +68,7 @@ export function formatPercentChange(
 ) {
   return new Intl.NumberFormat(lookupLocale(currentLanguage), {
     style: "percent",
-    minimumFractionDigits: 0,
+    minimumFractionDigits: 1,
     maximumFractionDigits: 1,
     signDisplay: "exceptZero",
   }).format(isAlreadyPercentage ? value : value / 100);
