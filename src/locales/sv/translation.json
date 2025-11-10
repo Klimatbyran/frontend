@@ -559,7 +559,7 @@
           "skr": {
             "title": "Sveriges Kommuner och Regioner",
             "text": "Politisk ledning i kommunerna",
-            "link": "https://skr.se/skr/demokratiledningstyrning/valmaktfordelning/valresultatstyren/styrekommunereftervalet2022.69547.html"
+            "link": "https://skr.se/kommunerochregioner/valochpolitiskastyrenikommunerochregioner.8381.html#h-Styreikommunereftervalet2022"
           },
           "wikidata": {
             "title": "Wikidata",
@@ -1507,7 +1507,7 @@
   },
   "relatableNumbers": {
     "title": "Hur mycket är det?",
-    "description": "{{companyName}} {{emissionsChangeStatus}} sina utsläpp med <highlightNumber>{{emissionsInTonnes}}({{yearOverYearChange}})</highlightNumber> tCO2e jämfört med föregående år. Detta kan jämföras med:",
+    "description": "{{companyName}} {{emissionsChangeStatus}} sina utsläpp med <highlightNumber>{{emissionsInTonnes}} ({{yearOverYearChange}})</highlightNumber> tCO2e jämfört med föregående år. Detta kan jämföras med:",
     "prefixFire": "Utsläppen motsvarar en skogsbrand",
     "prefixEmissions": "{{count}} svenska invånares årsutsläpp.",
     "increased": "ökade",

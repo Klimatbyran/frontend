@@ -76,7 +76,7 @@
     "bestPerformers": "Top Lists",
     "bestMunicipalities": "Sweden's best municipalities",
     "municipalitiesDescription": "By average annual reduction in emissions since the Paris Agreement (2015)",
-    "largestEmittor": "Company with the largest emissions",
+    "largestEmittor": "Companies with the largest emissions",
     "companiesDescription": "Emissions from the most recently reported year",
     "aboutUsTitle": "Who are we?",
     "aboutUsContent": "Klimatkollen is a citizen platform that provides climate data and builds support for reducing emissions in line with the Paris Agreement. We believe in the power of simple, engaging data visualisation to enhance knowledge and drive participation in the climate conversation.",
@@ -559,7 +559,7 @@
           "skr": {
             "title": "Swedish Association of Local Authorities and Regions",
             "text": "Political leadership in municipalities",
-            "link": "https://skr.se/skr/demokratiledningstyrning/valmaktfordelning/valresultatstyren/styrekommunereftervalet2022.69547.html"
+            "link": "https://skr.se/kommunerochregioner/valochpolitiskastyrenikommunerochregioner.8381.html#h-Styreikommunereftervalet2022"
           },
           "wikidata": {
             "title": "Wikidata",
@@ -1508,7 +1508,7 @@
   },
   "relatableNumbers": {
     "title": "How much is that?",
-    "description": "{{companyName}} {{emissionsChangeStatus}} their emissions by <highlightNumber>{{emissionsInTonnes}}({{yearOverYearChange}})</highlightNumber> tCO2e from the previous year. This compares to:",
+    "description": "{{companyName}} {{emissionsChangeStatus}} their emissions by <highlightNumber>{{emissionsInTonnes}} ({{yearOverYearChange}})</highlightNumber> tCO2e from the previous year. This compares to:",
     "prefixFire": "Emissions from a forest fire",
     "prefixEmissions": "The annual emissions of {{count}} Swedes.",
     "increased": "increased",
