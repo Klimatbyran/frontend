@@ -1063,8 +1063,8 @@
           "source": "Company Reporting Data"
         },
         "trendSlope": {
-          "label": "Emissions Trend (slope)",
-          "description": "Estimated yearly change from LAD trendline (negative is better)",
+          "label": "Emissions Trend",
+          "description": "Estimated yearly change from LAD trendline",
           "detailedDescription": "Slope of the Least Absolute Deviations trendline fitted to reported emissions.",
           "source": "Klimatkollen Analysis",
           "nullValues": "Not enough data"

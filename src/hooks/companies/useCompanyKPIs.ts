@@ -62,7 +62,7 @@ export const useCompanyKPIs = (): CompanyKPIValue[] => {
     {
       label: t(
         "companies.list.kpis.trendSlope.label",
-        "Emissions Trend (slope)",
+        "Emissions Trend",
       ),
       key: "trendSlope",
       unit: "%/yr",
@@ -70,7 +70,7 @@ export const useCompanyKPIs = (): CompanyKPIValue[] => {
       sourceUrls: [],
       description: t(
         "companies.list.kpis.trendSlope.description",
-        "Estimated yearly change from LAD trendline (negative is better)",
+        "Estimated yearly change from LAD trendline",
       ),
       detailedDescription: t(
         "companies.list.kpis.trendSlope.detailedDescription",

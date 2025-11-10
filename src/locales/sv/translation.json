@@ -1062,8 +1062,8 @@
           "source": "Företagsrapporteringsdata"
         },
         "trendSlope": {
-          "label": "Utsläppstrend (lutning)",
-          "description": "Beräknad årlig förändring från LAD-trendlinje (negativ är bättre)",
+          "label": "Utsläppstrend",
+          "description": "Beräknad årlig förändring från LAD-trendlinje",
           "detailedDescription": "Lutning av Least Absolute Deviations-trendlinjen anpassad till rapporterade utsläpp.",
           "source": "Klimatkollen Analys",
           "nullValues": "Otillräcklig data"

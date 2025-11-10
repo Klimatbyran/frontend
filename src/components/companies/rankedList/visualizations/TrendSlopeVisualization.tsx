@@ -96,7 +96,7 @@ export function TrendSlopeVisualization({
           onModeChange={setMode}
         />
         <div className="text-sm text-grey">
-          {t("companies.list.kpis.trendSlope.label", "Emissions Trend (slope)")}
+          {t("companies.list.kpis.trendSlope.label", "Emissions Trend")}
           {" · "}
           {t("companies.list.kpis.meetsParis.nullValues", "Unknown")}:{" "}
           {noTrend.length}
