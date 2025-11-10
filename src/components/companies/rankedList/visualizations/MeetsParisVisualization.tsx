@@ -7,7 +7,7 @@ import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 import {
   createFixedRangeGradient,
   createStatisticalGradient,
-} from "@/utils/visualizations/colorGradients";
+} from "@/utils/ui/colorGradients";
 import {
   groupCompaniesByIndustry,
   getCompanySectorName,
@@ -33,8 +33,8 @@ interface CompanyBudgetData {
 
 interface CompanyGroup {
   key: string;
-  rangeStart: number; 
-  rangeEnd: number; 
+  rangeStart: number;
+  rangeEnd: number;
   companies: CompanyBudgetData[];
   averagePercent: number; // average % for color
 }

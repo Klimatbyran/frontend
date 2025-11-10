@@ -4,7 +4,7 @@ import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 import {
   createSymmetricRangeGradient,
   createStatisticalGradient,
-} from "@/utils/visualizations/colorGradients";
+} from "@/utils/ui/colorGradients";
 import {
   groupCompaniesByIndustry,
   getCompanySectorName,

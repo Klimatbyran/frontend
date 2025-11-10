@@ -217,11 +217,13 @@ export function CompaniesRankedPage() {
         translationPrefix="companies.list"
       />
 
-      <IndustryFilter
-        companies={(companies || []) as RankedCompany[]}
-        selectedSectors={selectedSectors}
-        onSectorsChange={handleSectorsChange}
-      />
+      <div className="mb-4">
+        <IndustryFilter
+          companies={(companies || []) as RankedCompany[]}
+          selectedSectors={selectedSectors}
+          onSectorsChange={handleSectorsChange}
+        />
+      </div>
 
       {/* Mobile View */}
       <div className="lg:hidden space-y-6">
