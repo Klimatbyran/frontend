@@ -1,6 +1,6 @@
 import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
-import { InfoTooltip } from "../layout/InfoTooltip";
+import { InfoTooltip } from "./InfoTooltip";
 
 interface StatCardProps {
   title: string;

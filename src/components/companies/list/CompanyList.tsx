@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
-import { CardGrid } from "@/components/CardGrid";
+import { CardGrid } from "@/components/layout/CardGrid";
 import { ListCard } from "@/components/layout/ListCard";
 import {
   formatEmissionsAbsolute,

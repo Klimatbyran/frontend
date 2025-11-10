@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { useMunicipalityDetails } from "@/hooks/municipalities/useMunicipalityDetails";
 import { transformEmissionsData } from "@/types/municipality";
 import { MunicipalitySection } from "@/components/municipalities/MunicipalitySection";
-import { DetailStatCard } from "@/components/detailPages/DetailStatCard";
+import { DetailStatCard } from "@/components/layout/DetailStatCard";
 import { MunicipalityLinkCard } from "@/components/municipalities/MunicipalityLinkCard";
 import { useTranslation } from "react-i18next";
 import { PageSEO } from "@/components/SEO/PageSEO";
@@ -111,28 +111,41 @@ export function MunicipalityDetailPage() {
   }
 
   // Will return either an image from src or a fallback string if image doesnt exist
-  const PoliticalRuleLabel = ({ src, alt, fallback }: PoliticalRuleLabelProps) => {
-  const [error, setError] = useState(false);
+  const PoliticalRuleLabel = ({
+    src,
+    alt,
+    fallback,
+  }: PoliticalRuleLabelProps) => {
+    const [error, setError] = useState(false);
 
-  const onError = () => {
-    setError(true);
+    const onError = () => {
+      setError(true);
+    };
+
+    return error ? (
+      fallback
+    ) : (
+      <img
+        src={src}
+        alt={alt}
+        onError={onError}
+        className="h-[20px] md:h-[25px] inline"
+      />
+    );
   };
-
-  return error ? fallback : <img src={src} alt={alt} onError={onError} className="h-[20px] md:h-[25px] inline" />;
-};
 
   // Gets all the poltical parties labels depending on availablity
   const getPoliticalRuleLabels = (politicalParty: string) => {
     const imgSrc = `/logos/politicalParties/${politicalParty}.png`;
 
     return (
-        <PoliticalRuleLabel
+      <PoliticalRuleLabel
         src={imgSrc}
         alt={politicalParty}
         fallback={politicalParty}
       />
     );
-  }
+  };
 
   return (
     <>
@@ -210,7 +223,12 @@ export function MunicipalityDetailPage() {
             </Text>
             <Text variant="body" className="text-sm md:text-base lg:text-lg">
               {municipality.politicalRule.map((p, index) => {
-                return <span key={index}>{ index ? ", " : "" }{getPoliticalRuleLabels(p)}</span>;
+                return (
+                  <span key={index}>
+                    {index ? ", " : ""}
+                    {getPoliticalRuleLabels(p)}
+                  </span>
+                );
               })}
             </Text>
           </div>

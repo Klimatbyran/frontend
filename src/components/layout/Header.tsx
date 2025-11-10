@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useState, useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { NewsletterPopover } from "../NewsletterPopover";
+import { NewsletterPopover } from "../newsletters/NewsletterPopover";
 import { useLanguage } from "../LanguageProvider";
 import { HeaderSearchButton } from "../search/HeaderSearchButton";
 import useHeaderTitle from "@/hooks/useHeaderTitle";
