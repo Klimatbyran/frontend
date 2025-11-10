@@ -12,6 +12,7 @@ import {
 import { filterValidNumericData } from "@/utils/data/filtering";
 import { VisualizationModeSelector } from "./shared/VisualizationModeSelector";
 import { SunburstChart } from "./shared/SunburstChart";
+import { BeeswarmChart } from "./shared/BeeswarmChart";
 import { createSunburstTooltipFormatter } from "./shared/sunburstTooltips";
 import type { ColorFunction } from "@/types/visualizations";
 
@@ -183,63 +184,19 @@ export function EmissionsChangeVisualization({
       </div>
 
       <div className="relative flex-1 bg-black-2 rounded-level-2 p-4 overflow-auto">
-        <div className="relative w-full h-[500px] flex flex-col">
-          {/* X-axis labels */}
-          <div className="flex justify-between mb-2 text-xs text-grey px-1">
-            <span>{min.toFixed(1)}%</span>
-            <span className="font-medium">0%</span>
-            <span>{max.toFixed(1)}%</span>
-          </div>
-
-          {/* Main visualization area */}
-          <div className="relative flex-1 border-t border-b border-black-4">
-            {/* Zero line (vertical) - only show if 0 is within data range */}
-            {min <= 0 && max >= 0 && (
-              <div
-                className="absolute top-0 bottom-0 w-px bg-black-4 z-0"
-                style={{
-                  left:
-                    max === min ? "50%" : `${((0 - min) / (max - min)) * 100}%`,
-                }}
-              />
-            )}
-
-            {/* Dots */}
-            <div className="relative w-full h-full">
-              {withData.slice(0, 600).map((c, i) => {
-                const v = c.emissionsChangeFromBaseYear as number;
-                const xPercent =
-                  max === min ? 50 : ((v - min) / (max - min)) * 100;
-                // Better jitter: spread dots vertically around their X position
-                const hash = (i * 137.5) % 360;
-                const yJitter = Math.sin((hash * Math.PI) / 180) * 180;
-                const spread = Math.min(Math.abs(yJitter) / 10, 40);
-                const yOffset = yJitter > 0 ? spread : -spread;
-
-                return (
-                  <div
-                    key={c.wikidataId}
-                    className="absolute cursor-pointer transition-transform hover:scale-125 z-10"
-                    style={{
-                      left: `${xPercent}%`,
-                      top: "50%",
-                      transform: `translate(-50%, ${yOffset - 50}%)`,
-                    }}
-                    onClick={() => onCompanyClick?.(c)}
-                    title={`${c.name}: ${v.toFixed(1)}%`}
-                  >
-                    <div
-                      className="w-2 h-2 rounded-full"
-                      style={{
-                        backgroundColor: colorForValue(v),
-                      }}
-                    />
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
+        {mode === "beeswarm" && (
+          <BeeswarmChart
+            data={withData}
+            getValue={(c) => c.emissionsChangeFromBaseYear as number}
+            getCompanyName={(c) => c.name}
+            getCompanyId={(c) => c.wikidataId}
+            colorForValue={colorForValue}
+            min={min}
+            max={max}
+            unit="%"
+            onCompanyClick={onCompanyClick}
+          />
+        )}
       </div>
     </div>
   );

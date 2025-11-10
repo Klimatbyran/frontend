@@ -13,6 +13,7 @@ import {
 import { filterValidNumericData } from "@/utils/data/filtering";
 import { VisualizationModeSelector } from "./shared/VisualizationModeSelector";
 import { SunburstChart } from "./shared/SunburstChart";
+import { BeeswarmChart } from "./shared/BeeswarmChart";
 import { createSunburstTooltipFormatter } from "./shared/sunburstTooltips";
 import type { ColorFunction } from "@/types/visualizations";
 
@@ -104,69 +105,24 @@ export function TrendSlopeVisualization({
 
       <div className="relative flex-1 bg-black-2 rounded-level-2 p-4 overflow-auto">
         {mode === "beeswarm" && (
-          <div className="relative w-full h-[500px] flex flex-col">
-            {/* X-axis labels */}
-            <div className="flex justify-between mb-2 text-xs text-grey px-1">
-              <span>{min.toFixed(1)}%/yr</span>
-              <span className="font-medium">0%/yr</span>
-              <span>{max.toFixed(1)}%/yr</span>
-            </div>
-
-            {/* Main visualization area */}
-            <div className="relative flex-1 border-t border-b border-black-4">
-              {/* Zero line (vertical) - only show if 0 is within data range */}
-              {min <= 0 && max >= 0 && (
-                <div
-                  className="absolute top-0 bottom-0 w-px bg-black-4 z-0"
-                  style={{
-                    left:
-                      max === min
-                        ? "50%"
-                        : `${((0 - min) / (max - min)) * 100}%`,
-                  }}
-                />
-              )}
-
-              {/* Dots */}
-              <div className="relative w-full h-full">
-                {withTrend.slice(0, 600).map((c, i) => {
-                  const v = c.trendSlope as number;
-                  const xPercent =
-                    max === min ? 50 : ((v - min) / (max - min)) * 100;
-                  // Better jitter: spread dots vertically around their X position
-                  // Use a hash of the index for consistent positioning
-                  const hash = (i * 137.5) % 360;
-                  const yJitter = Math.sin((hash * Math.PI) / 180) * 180; // -180 to +180px from center
-                  const spread = Math.min(Math.abs(yJitter) / 10, 40); // Limit spread to 40px max
-                  const yOffset = yJitter > 0 ? spread : -spread;
-
-                  return (
-                    <div
-                      key={c.wikidataId}
-                      title={`${c.name}: ${v.toFixed(1)}%/yr`}
-                      onClick={() => onCompanyClick?.(c)}
-                      className="absolute rounded-full cursor-pointer hover:scale-150 transition-transform z-10"
-                      style={{
-                        left: `calc(${xPercent}% - 8px)`,
-                        top: `calc(50% + ${yOffset}px)`,
-                        width: "16px",
-                        height: "16px",
-                        background: colorForValue(v),
-                        border: "2px solid var(--black-4)",
-                        boxShadow: "0 2px 4px rgba(0,0,0,0.5)",
-                      }}
-                    />
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Legend */}
-            <div className="mt-2 text-xs text-grey text-center">
-              {withTrend.length} companies shown
-              {withTrend.length >= 600 && ` (showing first 600)`}
-            </div>
-          </div>
+          <BeeswarmChart
+            data={withTrend}
+            getValue={(c) => c.trendSlope as number}
+            getCompanyName={(c) => c.name}
+            getCompanyId={(c) => c.wikidataId}
+            colorForValue={colorForValue}
+            min={min}
+            max={max}
+            unit="/yr"
+            onCompanyClick={onCompanyClick}
+            xReferenceLines={[
+              {
+                value: -11.72,
+                label: "Carbon Law (-11.72%)",
+                color: "rgba(255, 255, 255, 0.5)",
+              },
+            ]}
+          />
         )}
 
         {mode === "sunburst" && (

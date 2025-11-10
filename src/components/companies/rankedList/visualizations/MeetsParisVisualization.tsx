@@ -33,8 +33,8 @@ interface CompanyBudgetData {
 
 interface CompanyGroup {
   key: string;
-  rangeStart: number; // inclusive, can be -Infinity
-  rangeEnd: number; // exclusive, can be +Infinity
+  rangeStart: number; 
+  rangeEnd: number; 
   companies: CompanyBudgetData[];
   averagePercent: number; // average % for color
 }
