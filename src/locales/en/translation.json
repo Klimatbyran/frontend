@@ -1157,6 +1157,48 @@
         "detailedDescription": "Total emissions of CO₂e for the region",
         "source": "National Emissions Database"
       }
+    },
+    "list": {
+      "dataSelector": {
+        "label": "Select Data Point",
+        "tooltips": {
+          "higherBetter": "Higher values are better",
+          "lowerBetter": "Lower values are better"
+        }
+      },
+      "sources": {
+        "nationalEmissionsDatabase": "National Emissions Database"
+      },
+      "kpis": {
+        "emissions": {
+          "label": "Total Emissions",
+          "description": "Latest reported greenhouse gas emissions",
+          "detailedDescription": "Latest reported territorial greenhouse gas emissions (CO₂e) for the region, converted to kilotonnes.",
+          "source": "regions.list.sources.nationalEmissionsDatabase"
+        },
+        "historicalEmissionChangePercent": {
+          "label": "Emission Trend",
+          "description": "Average annual change in emissions since 2015",
+          "detailedDescription": "Average annual percentage change in greenhouse gas emissions since the Paris Agreement baseline year (2015). Negative values indicate reductions.",
+          "source": "regions.list.sources.nationalEmissionsDatabase"
+        },
+        "meetsParis": {
+          "label": "Paris Agreement",
+          "description": "Is the region on track to meet the Paris Agreement?",
+          "detailedDescription": "Indicates whether the region's projected trend is aligned with the Paris Agreement carbon law pathway.",
+          "source": "regions.list.sources.nationalEmissionsDatabase",
+          "booleanLabels": {
+            "true": "On track",
+            "false": "Off track"
+          }
+        },
+        "emissionsGapToParis": {
+          "label": "Paris Gap",
+          "description": "Difference between projected emissions and Paris-aligned pathway",
+          "detailedDescription": "Cumulative gap (kilotonnes) between the region's projected emissions trend and the Paris-aligned carbon law pathway. Lower values are better.",
+          "source": "regions.list.sources.nationalEmissionsDatabase"
+        }
+      }
     }
   },
   "municipalities": {

@@ -1156,6 +1156,48 @@
         "detailedDescription": "De totala utsläppen av CO₂e för länet",
         "source": "Nationella emissionsdatabasen"
       }
+    },
+    "list": {
+      "dataSelector": {
+        "label": "Välj datapunkt",
+        "tooltips": {
+          "higherBetter": "Högre värden är bättre",
+          "lowerBetter": "Lägre värden är bättre"
+        }
+      },
+      "sources": {
+        "nationalEmissionsDatabase": "Nationella emissionsdatabasen"
+      },
+      "kpis": {
+        "emissions": {
+          "label": "Totala utsläpp",
+          "description": "Senast rapporterade växthusgasutsläpp",
+          "detailedDescription": "Senast rapporterade territoriella växthusgasutsläpp (CO₂e) för länet, omräknat till kiloton.",
+          "source": "regions.list.sources.nationalEmissionsDatabase"
+        },
+        "historicalEmissionChangePercent": {
+          "label": "Utsläppstrend",
+          "description": "Genomsnittlig årlig förändring sedan 2015",
+          "detailedDescription": "Genomsnittlig årlig procentuell förändring av växthusgasutsläppen sedan Parisavtalets basår 2015. Negativa värden innebär minskningar.",
+          "source": "regions.list.sources.nationalEmissionsDatabase"
+        },
+        "meetsParis": {
+          "label": "Parisavtalet",
+          "description": "Är länet på väg att klara Parisavtalet?",
+          "detailedDescription": "Visar om länets prognostiserade trend ligger i linje med Parisavtalets carbon law.",
+          "source": "regions.list.sources.nationalEmissionsDatabase",
+          "booleanLabels": {
+            "true": "På väg",
+            "false": "Inte på väg"
+          }
+        },
+        "emissionsGapToParis": {
+          "label": "Parisgapet",
+          "description": "Skillnad mellan prognos och Parisbanan",
+          "detailedDescription": "Ackumulerat gap (kiloton) mellan länets prognostiserade utsläpp och Parisavtalets carbon law. Lägre värden är bättre.",
+          "source": "regions.list.sources.nationalEmissionsDatabase"
+        }
+      }
     }
   },
   "municipalities": {

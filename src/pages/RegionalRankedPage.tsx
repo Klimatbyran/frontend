@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Map, List } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -7,22 +7,37 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import SwedenMap, { DataItem } from "@/components/maps/SwedenMap";
 import regionGeoJson from "@/data/regionGeo.json";
 import { FeatureCollection } from "geojson";
-import { getRegionalKPIs, useRegions } from "@/hooks/useRegions";
+import { useRegionalKPIs, useRegions } from "@/hooks/useRegions";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import RankedList from "@/components/ranked/RankedList";
 import { DataPoint } from "@/types/entity-rankings";
 import RegionalInsightsPanel from "@/components/regions/RegionalInsightsPanel";
 import { Region } from "@/types/region";
-import { KPIValue } from "@/types/entity-rankings";
+import { KPIDataSelector } from "@/components/ranked/KPIDataSelector";
 
 export function RegionalRankedPage() {
   const { t } = useTranslation();
+  const regionalKPIs = useRegionalKPIs();
   const [geoData] = useState(regionGeoJson);
   const { regions: regionNames, regionsData } = useRegions();
-  const selectedKPI = getRegionalKPIs()[0];
 
   const location = useLocation();
   const navigate = useNavigate();
+
+  const getKPIFromURL = useCallback(() => {
+    const params = new URLSearchParams(location.search);
+    const kpiKey = params.get("kpi");
+
+    return (
+      regionalKPIs.find((kpi) => String(kpi.key) === kpiKey) || regionalKPIs[0]
+    );
+  }, [location.search, regionalKPIs]);
+
+  const setKPIInURL = (kpiKey: string) => {
+    const params = new URLSearchParams(location.search);
+    params.set("kpi", kpiKey);
+    navigate({ search: params.toString() }, { replace: true });
+  };
 
   const getViewModeFromURL = () => {
     const params = new URLSearchParams(location.search);
@@ -35,36 +50,92 @@ export function RegionalRankedPage() {
     navigate({ search: params.toString() }, { replace: true });
   };
 
+  const [selectedKPI, setSelectedKPI] = useState(getKPIFromURL());
   const viewMode = getViewModeFromURL();
+
+  useEffect(() => {
+    const kpiFromUrl = getKPIFromURL();
+    if (kpiFromUrl && kpiFromUrl.key !== selectedKPI.key) {
+      setSelectedKPI(kpiFromUrl);
+    }
+  }, [getKPIFromURL, selectedKPI.key]);
 
   // Calculate regions data without calling hooks in map
   const regions: DataItem[] = useMemo(() => {
     return regionNames.map((name) => {
       const regionData = regionsData.find((r) => r.name === name);
+
       if (!regionData || !regionData.emissions) {
         return {
-          name: name,
+          name,
           id: name,
-          emissions: 0,
+          emissions: null,
+          historicalEmissionChangePercent: null,
+          meetsParis: null,
+          emissionsGapToParis: null,
         };
       }
 
-      // Get the latest year's emissions
       const years = Object.keys(regionData.emissions)
         .filter((key) => !isNaN(Number(key)))
         .map((year) => Number(year))
         .sort((a, b) => a - b);
 
       const latestYear = years[years.length - 1];
-      const latestYearData = regionData.emissions[latestYear?.toString()];
+      const latestYearData =
+        latestYear !== undefined
+          ? regionData.emissions[latestYear.toString()]
+          : null;
+
+      const totalTrend =
+        typeof regionData.totalTrend === "number"
+          ? regionData.totalTrend
+          : null;
+      const totalCarbonLaw =
+        typeof regionData.totalCarbonLaw === "number"
+          ? regionData.totalCarbonLaw
+          : null;
+
+      const emissionsGapToParis =
+        totalTrend !== null && totalCarbonLaw !== null
+          ? (totalTrend - totalCarbonLaw) / 1000
+          : null;
 
       return {
-        name: name,
+        name,
         id: name,
-        emissions: latestYearData / 1000 || 0,
+        emissions:
+          typeof latestYearData === "number" ? latestYearData / 1000 : null,
+        historicalEmissionChangePercent:
+          typeof regionData.historicalEmissionChangePercent === "number"
+            ? regionData.historicalEmissionChangePercent
+            : null,
+        meetsParis:
+          typeof regionData.meetsParis === "boolean"
+            ? regionData.meetsParis
+            : null,
+        emissionsGapToParis,
       };
     });
   }, [regionNames, regionsData]);
+
+  const regionsAsEntities = useMemo<Region[]>(() => {
+    return regions.map((region) => ({
+      id: String(region.id),
+      name: String(region.name),
+      emissions: typeof region.emissions === "number" ? region.emissions : null,
+      historicalEmissionChangePercent:
+        typeof region.historicalEmissionChangePercent === "number"
+          ? region.historicalEmissionChangePercent
+          : null,
+      meetsParis:
+        typeof region.meetsParis === "boolean" ? region.meetsParis : null,
+      emissionsGapToParis:
+        typeof region.emissionsGapToParis === "number"
+          ? region.emissionsGapToParis
+          : null,
+    }));
+  }, [regions]);
 
   const asDataPoint = (kpi: unknown): DataPoint<DataItem> =>
     kpi as DataPoint<DataItem>;
@@ -89,11 +160,31 @@ export function RegionalRankedPage() {
           unit: selectedKPI.unit,
           description: selectedKPI.description,
           higherIsBetter: selectedKPI.higherIsBetter,
+          nullValues: selectedKPI.nullValues,
+          isBoolean: selectedKPI.isBoolean,
+          booleanLabels: selectedKPI.booleanLabels,
           formatter: (value: unknown) => {
-            if (value === null) {
-              return t("noData");
+            if (value === null || value === undefined) {
+              return selectedKPI.nullValues
+                ? t(selectedKPI.nullValues)
+                : t("noData");
             }
-            return `${(value as number).toFixed(1)}`;
+
+            if (typeof value === "boolean") {
+              return value
+                ? t(
+                    `regions.list.kpis.${String(selectedKPI.key)}.booleanLabels.true`,
+                  )
+                : t(
+                    `regions.list.kpis.${String(selectedKPI.key)}.booleanLabels.false`,
+                  );
+            }
+
+            if (typeof value === "number") {
+              return value.toFixed(1);
+            }
+
+            return String(value);
           },
         })}
         onItemClick={() => {}}
@@ -108,6 +199,16 @@ export function RegionalRankedPage() {
         title={t("regionalRankedPage.title")}
         description={t("regionalRankedPage.description")}
         className="-ml-4"
+      />
+
+      <KPIDataSelector
+        selectedKPI={selectedKPI}
+        onKPIChange={(kpi) => {
+          setSelectedKPI(kpi);
+          setKPIInURL(String(kpi.key));
+        }}
+        kpis={regionalKPIs}
+        translationPrefix="regions.list"
       />
 
       <div className="flex mb-4 lg:hidden">
@@ -131,8 +232,8 @@ export function RegionalRankedPage() {
       <div className="lg:hidden space-y-6">
         {renderMapOrList(true)}
         <RegionalInsightsPanel
-          regionData={regions as unknown as Region[]}
-          selectedKPI={selectedKPI as unknown as KPIValue}
+          regionData={regionsAsEntities}
+          selectedKPI={selectedKPI}
         />
       </div>
 
@@ -149,11 +250,31 @@ export function RegionalRankedPage() {
                 unit: selectedKPI.unit,
                 description: selectedKPI.description,
                 higherIsBetter: selectedKPI.higherIsBetter,
+                nullValues: selectedKPI.nullValues,
+                isBoolean: selectedKPI.isBoolean,
+                booleanLabels: selectedKPI.booleanLabels,
                 formatter: (value: unknown) => {
-                  if (value === null) {
-                    return t("noData");
+                  if (value === null || value === undefined) {
+                    return selectedKPI.nullValues
+                      ? t(selectedKPI.nullValues)
+                      : t("noData");
                   }
-                  return `${(value as number).toFixed(1)}`;
+
+                  if (typeof value === "boolean") {
+                    return value
+                      ? t(
+                          `regions.list.kpis.${String(selectedKPI.key)}.booleanLabels.true`,
+                        )
+                      : t(
+                          `regions.list.kpis.${String(selectedKPI.key)}.booleanLabels.false`,
+                        );
+                  }
+
+                  if (typeof value === "number") {
+                    return value.toFixed(1);
+                  }
+
+                  return String(value);
                 },
               })}
               onItemClick={() => {}}
@@ -163,8 +284,8 @@ export function RegionalRankedPage() {
           ) : null}
         </div>
         <RegionalInsightsPanel
-          regionData={regions as unknown as Region[]}
-          selectedKPI={selectedKPI as unknown as KPIValue}
+          regionData={regionsAsEntities}
+          selectedKPI={selectedKPI}
         />
       </div>
     </>
