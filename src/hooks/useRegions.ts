@@ -24,9 +24,14 @@ export function useRegions() {
     queryFn: getRegions,
   });
 
+  const validRegions = (regions as RegionData[]).filter(
+    (region): region is RegionData =>
+      typeof region?.name === "string" && region.name.trim().length > 0,
+  );
+
   return {
-    regions: (regions as RegionData[]).map((region) => region.name),
-    regionsData: regions as RegionData[],
+    regions: validRegions.map((region) => region.name),
+    regionsData: validRegions,
     loading: isLoading,
     error,
   };
