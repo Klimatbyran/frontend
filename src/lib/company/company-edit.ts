@@ -41,7 +41,9 @@ export function mapCompanyEditFormToRequestBody(
     const scope1NewVerified = scope1VerifiedChanged
       ? formData.get(scope1CheckboxKey) === "true"
       : undefined;
-    const isVerified = originalScope1?.metadata.verifiedBy?.name ? true : false;
+    const isVerified = originalScope1?.metadata?.verifiedBy?.name
+      ? true
+      : false;
 
     if (scope1ValueChanged) {
       const val = formData.get(scope1ValueKey);
@@ -175,6 +177,7 @@ export function mapCompanyEditFormToRequestBody(
     const statedTotalNewVerified = statedTotalVerifiedChanged
       ? formData.get(statedTotalCheckboxKey) === "true"
       : undefined;
+
     if (statedTotalValueChanged) {
       if (periodUpdate.emissions.scope3 === undefined) {
         periodUpdate.emissions.scope3 = {};
@@ -344,12 +347,17 @@ export function mapCompanyEditFormToRequestBody(
 
     if (hasEmissionsChanges || hasEconomyChanges || hasPeriodChanges) {
       // Create the final update object
+      // startDate and endDate are required by the API, so always include them
       const finalUpdate: any = {
         id: period.id,
         startDate: periodUpdate.startDate,
         endDate: periodUpdate.endDate,
-        reportURL: periodUpdate.reportURL,
       };
+
+      // reportURL is optional, only include if it changed
+      if (periodUpdate.reportURL !== period.reportURL) {
+        finalUpdate.reportURL = periodUpdate.reportURL;
+      }
 
       if (hasEmissionsChanges) {
         finalUpdate.emissions = periodUpdate.emissions;
@@ -362,6 +370,7 @@ export function mapCompanyEditFormToRequestBody(
       periodsUpdate.push(finalUpdate);
     }
   }
+
   const metadata: {
     comment?: string;
     source?: string;
