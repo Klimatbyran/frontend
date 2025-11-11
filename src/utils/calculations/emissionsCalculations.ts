@@ -4,8 +4,8 @@
 
 /**
  * Get year-over-year emissions change percentage from API
- * Uses API-provided adjusted value (comparable data) if available,
- * falls back to absolute value (all data) if adjusted is not present
+ * Uses API-provided absolute value (all data) if available,
+ * falls back to adjusted value (comparable data) if absolute is not present
  *
  * @param latestPeriod - The most recent reporting period
  * @returns The percentage change as a number, or null if not available
@@ -19,8 +19,8 @@ export function calculateEmissionsChange(latestPeriod?: {
   const adjusted = latestPeriod?.emissionsChangeLastTwoYears?.adjusted;
   const absolute = latestPeriod?.emissionsChangeLastTwoYears?.absolute;
 
-  // Prefer adjusted (comparable data), fallback to absolute (all data)
-  return adjusted ?? absolute ?? null;
+  // Prefer absolute (all data), fallback to adjusted (comparable data)
+  return absolute ?? adjusted ?? null;
 }
 
 /**
@@ -287,6 +287,12 @@ export function calculateEmissionsChangeFromBaseYear(
   // Calculate percentage change
   const changePercent =
     ((latestEmissions - baselineEmissions) / baselineEmissions) * 100;
+
+  // Filter out extreme outliers (>200% in either direction) as likely data quality issues
+  // These often indicate missing base year data, scope changes, mergers, etc.
+  if (Math.abs(changePercent) > 200) {
+    return null;
+  }
 
   return changePercent;
 }
