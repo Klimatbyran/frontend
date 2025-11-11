@@ -30,9 +30,6 @@ export const RelatableNumbersContent = () => {
           <li>
             {t("methodsPage.company.relatableNumbers.forestFire.bullet2")}
           </li>
-          <li>
-            {t("methodsPage.company.relatableNumbers.forestFire.bullet3")}
-          </li>
         </ul>
         <p>{t("methodsPage.company.relatableNumbers.forestFire.paragraph2")}</p>
       </Section>
