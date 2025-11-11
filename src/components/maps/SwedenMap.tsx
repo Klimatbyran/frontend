@@ -97,6 +97,9 @@ function MapOfSweden({
     null,
   );
   const [hoveredRank, setHoveredRank] = useState<number | null>(null);
+  const [hoveredDisplayName, setHoveredDisplayName] = useState<string | null>(
+    null,
+  );
 
   const getInitialZoom = useCallback(
     () => defaultZoom || (isMobile ? 4 : 5),
@@ -130,8 +133,8 @@ function MapOfSweden({
     .filter((val) => val !== null && val !== undefined)
     .map(Number);
 
-  const minValue = Math.min(...values);
-  const maxValue = Math.max(...values);
+  const minValue = values.length ? Math.min(...values) : 0;
+  const maxValue = values.length ? Math.max(...values) : 0;
 
   // Sort data by selected KPI
   const sortedData = [...data].sort((a, b) => {
@@ -165,13 +168,19 @@ function MapOfSweden({
   };
 
   const getAreaData = useCallback(
-    (name: string): { value: number | boolean | null; rank: number | null } => {
+    (
+      name: string,
+    ): {
+      value: number | boolean | null;
+      rank: number | null;
+      displayName: string;
+    } => {
       const item = data.find(
         (d) => d.name.toLowerCase() === name.toLowerCase(),
       );
 
       if (!item) {
-        return { value: null, rank: null };
+        return { value: null, rank: null, displayName: name };
       }
 
       let value: number | boolean | null = null;
@@ -179,15 +188,25 @@ function MapOfSweden({
       if (typeof rawValue === "number" || typeof rawValue === "boolean") {
         value = rawValue;
       }
-      const rank = sortedData.findIndex((d) => d.name === item.name) + 1;
 
-      return { value, rank };
+      const rank = sortedData.findIndex((d) => d.name === item.name) + 1;
+      const displayName =
+        (typeof item.displayName === "string" && item.displayName.length > 0
+          ? (item.displayName as string)
+          : item.name) || name;
+
+      return { value, rank, displayName };
     },
     [data, selectedKPI.key, sortedData],
   );
 
   const getColorByValue = (value: number | boolean | null): string => {
-    if (value === null || value === undefined) {
+    if (
+      value === null ||
+      value === undefined ||
+      values.length === 0 ||
+      Number.isNaN(value)
+    ) {
       return colors.null;
     }
 
@@ -199,12 +218,13 @@ function MapOfSweden({
     }
 
     const mean = values.reduce((sum, val) => sum + val, 0) / values.length;
-    const stdDev = Math.sqrt(
+    const variance =
       values.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) /
-        values.length,
-    );
+      values.length;
+    const stdDev = Math.sqrt(variance);
+    const safeStdDev = stdDev === 0 ? 1 : stdDev;
 
-    const zScore = (value - mean) / stdDev;
+    const zScore = (value - mean) / safeStdDev;
 
     if (selectedKPI.higherIsBetter) {
       if (zScore <= -1) {
@@ -266,18 +286,16 @@ function MapOfSweden({
   ) => {
     if (feature?.properties?.[propertyNameField]) {
       const areaName = feature.properties[propertyNameField];
-      const { value, rank } = getAreaData(areaName);
 
       (layer as L.Path).on({
         mouseover: () => {
           setHoveredArea(areaName);
-          setHoveredValue(value);
-          setHoveredRank(rank);
         },
         mouseout: () => {
           setHoveredArea(null);
           setHoveredValue(null);
           setHoveredRank(null);
+          setHoveredDisplayName(null);
         },
         click: () => {
           if (onAreaClick) onAreaClick(areaName);
@@ -309,12 +327,18 @@ function MapOfSweden({
   };
 
   useEffect(() => {
-    if (hoveredArea) {
-      const { value, rank } = getAreaData(hoveredArea);
-      setHoveredValue(value);
-      setHoveredRank(rank);
+    if (!hoveredArea) {
+      setHoveredValue(null);
+      setHoveredRank(null);
+      setHoveredDisplayName(null);
+      return;
     }
-  }, [selectedKPI, hoveredArea, getAreaData]);
+
+    const { value, rank, displayName } = getAreaData(hoveredArea);
+    setHoveredValue(value);
+    setHoveredRank(rank);
+    setHoveredDisplayName(displayName);
+  }, [hoveredArea, getAreaData]);
 
   return (
     <div className="relative flex-1 h-full max-w-screen-lg">
@@ -342,7 +366,7 @@ function MapOfSweden({
 
       {hoveredArea && (
         <MapTooltip
-          name={hoveredArea}
+          name={hoveredDisplayName ?? hoveredArea}
           value={hoveredValue}
           rank={hoveredRank}
           unit={selectedKPI.unit ?? ""}

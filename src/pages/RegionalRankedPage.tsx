@@ -15,6 +15,24 @@ import RegionalInsightsPanel from "@/components/regions/RegionalInsightsPanel";
 import { Region } from "@/types/region";
 import { KPIDataSelector } from "@/components/ranked/KPIDataSelector";
 
+const toMapRegionName = (regionName: string): string => {
+  if (!regionName) {
+    return regionName;
+  }
+
+  if (regionName.toLowerCase().endsWith(" län")) {
+    const withoutLan = regionName.slice(0, -4);
+    return withoutLan.endsWith("s") ? withoutLan.slice(0, -1) : withoutLan;
+  }
+
+  return regionName;
+};
+
+type RegionListItem = DataItem & {
+  mapName: string;
+  displayName: string;
+};
+
 export function RegionalRankedPage() {
   const { t } = useTranslation();
   const regionalKPIs = useRegionalKPIs();
@@ -61,14 +79,17 @@ export function RegionalRankedPage() {
   }, [getKPIFromURL, selectedKPI.key]);
 
   // Calculate regions data without calling hooks in map
-  const regions: DataItem[] = useMemo(() => {
-    return regionNames.map((name) => {
-      const regionData = regionsData.find((r) => r.name === name);
+  const regionEntities: RegionListItem[] = useMemo(() => {
+    return regionNames.map((displayName) => {
+      const regionData = regionsData.find((r) => r.name === displayName);
+      const mapName = toMapRegionName(displayName);
 
       if (!regionData || !regionData.emissions) {
         return {
-          name,
-          id: name,
+          name: displayName,
+          id: displayName,
+          displayName,
+          mapName,
           emissions: null,
           historicalEmissionChangePercent: null,
           meetsParis: null,
@@ -102,8 +123,10 @@ export function RegionalRankedPage() {
           : null;
 
       return {
-        name,
-        id: name,
+        name: displayName,
+        id: displayName,
+        displayName,
+        mapName,
         emissions:
           typeof latestYearData === "number" ? latestYearData / 1000 : null,
         historicalEmissionChangePercent:
@@ -119,10 +142,19 @@ export function RegionalRankedPage() {
     });
   }, [regionNames, regionsData]);
 
+  const mapData: DataItem[] = useMemo(() => {
+    return regionEntities.map((region) => ({
+      ...region,
+      id: region.mapName,
+      name: region.mapName,
+      displayName: region.displayName,
+    }));
+  }, [regionEntities]);
+
   const regionsAsEntities = useMemo<Region[]>(() => {
-    return regions.map((region) => ({
+    return regionEntities.map((region) => ({
       id: String(region.id),
-      name: String(region.name),
+      name: region.displayName,
       emissions: typeof region.emissions === "number" ? region.emissions : null,
       historicalEmissionChangePercent:
         typeof region.historicalEmissionChangePercent === "number"
@@ -135,17 +167,17 @@ export function RegionalRankedPage() {
           ? region.emissionsGapToParis
           : null,
     }));
-  }, [regions]);
+  }, [regionEntities]);
 
-  const asDataPoint = (kpi: unknown): DataPoint<DataItem> =>
-    kpi as DataPoint<DataItem>;
+  const asDataPoint = (kpi: unknown): DataPoint<RegionListItem> =>
+    kpi as DataPoint<RegionListItem>;
 
   const renderMapOrList = (isMobile: boolean) =>
     viewMode === "map" ? (
       <div className={isMobile ? "relative h-[65vh]" : "relative h-full"}>
         <SwedenMap
           geoData={geoData as FeatureCollection}
-          data={regions}
+          data={mapData}
           selectedKPI={selectedKPI}
           defaultCenter={[63, 16]}
           defaultZoom={isMobile ? 4 : 5}
@@ -153,10 +185,10 @@ export function RegionalRankedPage() {
       </div>
     ) : (
       <RankedList
-        data={regions}
+        data={regionEntities}
         selectedDataPoint={asDataPoint({
           label: selectedKPI.label,
-          key: selectedKPI.key as keyof DataItem,
+          key: selectedKPI.key as keyof RegionListItem,
           unit: selectedKPI.unit,
           description: selectedKPI.description,
           higherIsBetter: selectedKPI.higherIsBetter,
@@ -188,7 +220,7 @@ export function RegionalRankedPage() {
           },
         })}
         onItemClick={() => {}}
-        searchKey="name"
+        searchKey="displayName"
         searchPlaceholder={t("rankedList.search.placeholder")}
       />
     );
@@ -243,10 +275,10 @@ export function RegionalRankedPage() {
           {renderMapOrList(false)}
           {viewMode === "map" ? (
             <RankedList
-              data={regions}
+              data={regionEntities}
               selectedDataPoint={asDataPoint({
                 label: selectedKPI.label,
-                key: selectedKPI.key as keyof DataItem,
+                key: selectedKPI.key as keyof RegionListItem,
                 unit: selectedKPI.unit,
                 description: selectedKPI.description,
                 higherIsBetter: selectedKPI.higherIsBetter,
@@ -278,7 +310,7 @@ export function RegionalRankedPage() {
                 },
               })}
               onItemClick={() => {}}
-              searchKey="name"
+              searchKey="displayName"
               searchPlaceholder={t("rankedList.search.placeholder")}
             />
           ) : null}
