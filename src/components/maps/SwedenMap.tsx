@@ -184,11 +184,8 @@ function MapOfSweden({
         return { value: null, rank: null };
       }
 
-      const normalizedTargetName = name?.toLowerCase();
       const item = data.find(
-        (d) =>
-          typeof d?.name === "string" &&
-          d.name.toLowerCase() === normalizedTargetName,
+        (d) => d.name.toLowerCase() === name.toLowerCase(),
       );
 
       if (!item) {
@@ -213,12 +210,7 @@ function MapOfSweden({
   );
 
   const getColorByValue = (value: number | boolean | null): string => {
-    if (
-      value === null ||
-      value === undefined ||
-      !selectedKPI ||
-      values.length === 0
-    ) {
+    if (value === null || value === undefined) {
       return colors.null;
     }
 
@@ -230,12 +222,12 @@ function MapOfSweden({
     }
 
     const mean = values.reduce((sum, val) => sum + val, 0) / values.length;
-    const variance =
+    const stdDev = Math.sqrt(
       values.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) /
-      values.length;
-    const stdDev = Math.sqrt(variance);
-    const safeStdDev = stdDev === 0 ? 1 : stdDev;
-    const zScore = (value - mean) / safeStdDev;
+        values.length,
+    );
+
+    const zScore = (value - mean) / stdDev;
 
     if (selectedKPI.higherIsBetter) {
       if (zScore <= -1) {
@@ -340,24 +332,12 @@ function MapOfSweden({
   };
 
   useEffect(() => {
-    if (!hoveredArea || !selectedKPI) {
-      setHoveredValue(null);
-      setHoveredRank(null);
-      return;
+    if (hoveredArea) {
+      const { value, rank } = getAreaData(hoveredArea);
+      setHoveredValue(value);
+      setHoveredRank(rank);
     }
-
-    const { value, rank } = getAreaData(hoveredArea);
-    setHoveredValue(value);
-    setHoveredRank(rank);
-  }, [hoveredArea, selectedKPI, getAreaData]);
-
-  if (!selectedKPI) {
-    return (
-      <div className="relative flex-1 h-full max-w-screen-lg flex items-center justify-center">
-        <div className="text-white/70">No KPI selected</div>
-      </div>
-    );
-  }
+  }, [selectedKPI, hoveredArea, getAreaData]);
 
   return (
     <div className="relative flex-1 h-full max-w-screen-lg">
