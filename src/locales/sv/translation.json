@@ -531,13 +531,13 @@
           "bullet1": "I genomsnitt innehåller varje hektar skogsmark omkring 50 ton kol (C). (1)",
           "bullet2": "Kol omvandlas till koldioxid (CO₂) genom faktorn 44/12 (molekylvikter), vilket innebär att en hektar motsvarar ungefär 50 × (44/12) ≈ 183 ton CO₂.",
           "bullet3": "Utifrån utsläpps­förändringen räknar vi ut hur många hektar som krävs för att motsvara den mängden CO₂. Därefter jämförs denna area med välkända referenser som fotbollsplaner, tennisbanor eller stads­ytor, för att ge användaren en intuitiv bild.",
-          "source": "https://climate.mit.edu/ask-mit/how-many-new-trees-would-we-need-offset-our-carbon-emissions?utm_source"
+          "source": "https://climate.mit.edu/ask-mit/how-many-new-trees-would-we-need-offset-our-carbon-emissions"
         },
         "citizens": {
           "title": "Invånare",
           "paragraph1": "För att göra utsläppsförändringen mer begriplig jämför vi den med genomsnittliga årliga utsläpp per person. I vårt fall använder vi antagandet att en genomsnittlig person står för ≈ 7.6 ton CO₂‑ekvivalenter (tCO₂e) per år. Detta baseras på uppgifter från Naturvårdsverket som anger att “the average carbon footprint per person and year in Sweden is eight tonnes(2)”.",
           "paragraph2": "Genom att dividera utsläpps­förändringen med denna personsnittskvot får vi ett tal som visar hur många “personer” den motsvarar – det blir ett enklare och mer relaterbart sätt för användaren att förstå omfattningen.",
-          "source": "https://www.naturvardsverket.se/en/topics/climate-transition/omraden/klimatet-och-konsumtionen/how-can-i-reduce-my-carbon-footprint/?utm_source=chatgpt.com"
+          "source": "https://www.naturvardsverket.se/en/topics/climate-transition/omraden/klimatet-och-konsumtionen/how-can-i-reduce-my-carbon-footprint/"
         }
       }
     },
