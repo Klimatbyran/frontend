@@ -338,6 +338,8 @@
       "scope2Description": "Indirect emissions from the production of purchased electricity, steam, heat, and cooling consumed by the organisation.",
       "scope3UpstreamDescription": "Indirect emissions from the supply chain",
       "scope3DownstreamDescription": "Indirect emissions from product use and end-of-life",
+      "scope3CategoryInfo": "These totals only include emissions from companies that report Scope 3 data by category. Companies reporting only a total Scope 3 value are excluded.",
+      "scope3CategoryInfoLabel": "Information about Scope 3 category reporting",
       "companies": "companies",
       "shareOfTotal": "Share of Total",
       "companiesReporting": "Companies Reporting",

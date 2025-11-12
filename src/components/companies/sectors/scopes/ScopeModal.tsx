@@ -44,6 +44,10 @@ const ScopeModal: React.FC<ScopeModalProps> = ({
           emissions: number;
         }> = [];
 
+        // Upstream categories: 1-8, Downstream categories: 9-15
+        const UPSTREAM_CATEGORIES = [1, 2, 3, 4, 5, 6, 7, 8];
+        const DOWNSTREAM_CATEGORIES = [9, 10, 11, 12, 13, 14, 15];
+
         sectorCompanies.forEach((company) => {
           const period = company.reportingPeriods.find((p) =>
             p.endDate.startsWith(selectedYear),
@@ -57,14 +61,24 @@ const ScopeModal: React.FC<ScopeModalProps> = ({
               emissions =
                 period.emissions.scope2?.calculatedTotalEmissions || 0;
             } else if (scope === "scope3_upstream" && period.emissions.scope3) {
-              emissions =
-                period.emissions.scope3.calculatedTotalEmissions * 0.6;
+              // Only use companies that have category-level data
+              const scope3Categories = period.emissions.scope3.categories;
+              if (scope3Categories && scope3Categories.length > 0) {
+                emissions = scope3Categories
+                  .filter((cat) => UPSTREAM_CATEGORIES.includes(cat.category))
+                  .reduce((sum, cat) => sum + (cat.total || 0), 0);
+              }
             } else if (
               scope === "scope3_downstream" &&
               period.emissions.scope3
             ) {
-              emissions =
-                period.emissions.scope3.calculatedTotalEmissions * 0.4;
+              // Only use companies that have category-level data
+              const scope3Categories = period.emissions.scope3.categories;
+              if (scope3Categories && scope3Categories.length > 0) {
+                emissions = scope3Categories
+                  .filter((cat) => DOWNSTREAM_CATEGORIES.includes(cat.category))
+                  .reduce((sum, cat) => sum + (cat.total || 0), 0);
+              }
             }
 
             if (emissions > 0) {

@@ -1,7 +1,11 @@
 import { useLanguage } from "@/components/LanguageProvider";
-import { formatEmissionsAbsolute, formatPercent } from "@/utils/formatting/localization";
+import {
+  formatEmissionsAbsolute,
+  formatPercent,
+} from "@/utils/formatting/localization";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { InfoTooltip } from "@/components/layout/InfoTooltip";
 
 interface ScopeCardProps {
   title: string;
@@ -12,6 +16,7 @@ interface ScopeCardProps {
   percent: number;
   description: string;
   onClick: () => void;
+  showCategoryInfo?: boolean;
 }
 
 const ScopeCard: React.FC<ScopeCardProps> = ({
@@ -23,6 +28,7 @@ const ScopeCard: React.FC<ScopeCardProps> = ({
   percent,
   description,
   onClick,
+  showCategoryInfo = false,
 }) => {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
@@ -37,6 +43,14 @@ const ScopeCard: React.FC<ScopeCardProps> = ({
           <Icon className="h-5 w-5 text-white" />
         </div>
         <h3 className="text-lg font-light text-white">{title}</h3>
+        {showCategoryInfo && (
+          <InfoTooltip
+            ariaLabel={t("companiesPage.sectorGraphs.scope3CategoryInfoLabel")}
+            className="w-4 h-4 text-grey"
+          >
+            <p>{t("companiesPage.sectorGraphs.scope3CategoryInfo")}</p>
+          </InfoTooltip>
+        )}
       </div>
 
       <p className="text-sm text-grey">{description}</p>

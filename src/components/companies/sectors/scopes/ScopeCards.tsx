@@ -59,6 +59,7 @@ const ScopeCards: React.FC<ScopeCardsProps> = ({
             "companiesPage.sectorGraphs.scope3UpstreamDescription",
           )}
           onClick={() => setSelectedScope("scope3_upstream")}
+          showCategoryInfo={true}
         />
         <ScopeCard
           title={t("companiesPage.sectorGraphs.scope3Downstream")}
@@ -71,6 +72,7 @@ const ScopeCards: React.FC<ScopeCardsProps> = ({
             "companiesPage.sectorGraphs.scope3DownstreamDescription",
           )}
           onClick={() => setSelectedScope("scope3_downstream")}
+          showCategoryInfo={true}
         />
       </div>
 

@@ -1,6 +1,10 @@
 import { useMemo } from "react";
 import { RankedCompany } from "@/types/company";
 
+// Upstream categories: 1-8, Downstream categories: 9-15
+const UPSTREAM_CATEGORIES = [1, 2, 3, 4, 5, 6, 7, 8];
+const DOWNSTREAM_CATEGORIES = [9, 10, 11, 12, 13, 14, 15];
+
 export const useScopeData = (
   companies: RankedCompany[],
   selectedSectors: string[],
@@ -39,13 +43,27 @@ export const useScopeData = (
           data.scope2.companies++;
         }
 
-        const scope3Value =
-          period.emissions.scope3?.calculatedTotalEmissions || 0;
-        if (scope3Value > 0) {
-          data.scope3.upstream.total += scope3Value * 0.6;
-          data.scope3.downstream.total += scope3Value * 0.4;
-          data.scope3.upstream.companies++;
-          data.scope3.downstream.companies++;
+        // For scope 3, only use companies that have category-level data
+        const scope3Categories = period.emissions.scope3?.categories;
+        if (scope3Categories && scope3Categories.length > 0) {
+          let upstreamTotal = 0;
+          let downstreamTotal = 0;
+
+          scope3Categories.forEach((category) => {
+            const categoryValue = category.total || 0;
+            if (UPSTREAM_CATEGORIES.includes(category.category)) {
+              upstreamTotal += categoryValue;
+            } else if (DOWNSTREAM_CATEGORIES.includes(category.category)) {
+              downstreamTotal += categoryValue;
+            }
+          });
+
+          if (upstreamTotal > 0 || downstreamTotal > 0) {
+            data.scope3.upstream.total += upstreamTotal;
+            data.scope3.downstream.total += downstreamTotal;
+            data.scope3.upstream.companies++;
+            data.scope3.downstream.companies++;
+          }
         }
       }
     });

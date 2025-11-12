@@ -338,6 +338,8 @@
       "scope2Description": "Indirekta utsläpp från produktion av köpt el, ånga, värme och kyla som konsumeras av organisationen.",
       "scope3UpstreamDescription": "Indirekta utsläpp från värdekedjan",
       "scope3DownstreamDescription": "Indirekta utsläpp från produktanvändning och slutavfall",
+      "scope3CategoryInfo": "Dessa totaler inkluderar endast utsläpp från företag som rapporterar Scope 3-data per kategori. Företag som endast rapporterar ett totalt Scope 3-värde är exkluderade.",
+      "scope3CategoryInfoLabel": "Information om Scope 3-kategorirapportering",
       "companies": "företag",
       "shareOfTotal": "Andel av total",
       "companiesReporting": "Företag som rapporterar",
