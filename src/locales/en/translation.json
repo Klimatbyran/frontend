@@ -1168,19 +1168,19 @@
       },
       "kpis": {
         "historicalEmissionChangePercent": {
-          "label": "Emission Trend",
-          "description": "Average annual change in emissions since 2015",
-          "detailedDescription": "Average annual percentage change in greenhouse gas emissions since the Paris Agreement baseline year (2015). Negative values indicate reductions.",
+          "label": "Emissions",
+          "description": "Historical change in emissions",
+          "detailedDescription": "Average annual percentage change in greenhouse gas emissions in Swedish regions since the Paris Agreement in 2015.",
           "source": "National Emissions Database"
         },
         "meetsParis": {
           "label": "Paris Agreement",
-          "description": "Is the region on track to meet the Paris Agreement?",
-          "detailedDescription": "Indicates whether the region's projected trend is aligned with the Paris Agreement carbon law pathway.",
+          "description": "Emissions trend compared to the Paris Agreement",
+          "detailedDescription": "Which regions are on track to meet the Paris Agreement?",
           "source": "National Emissions Database",
           "booleanLabels": {
-            "true": "On track",
-            "false": "Off track"
+            "true": "Meets Paris Agreement",
+            "false": "Fails Paris Agreement"
           }
         }
       }

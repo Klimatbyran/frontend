@@ -1167,19 +1167,19 @@
       },
       "kpis": {
         "historicalEmissionChangePercent": {
-          "label": "Utsläppstrend",
-          "description": "Genomsnittlig årlig förändring sedan 2015",
-          "detailedDescription": "Genomsnittlig årlig procentuell förändring av växthusgasutsläppen sedan Parisavtalets basår 2015. Negativa värden innebär minskningar.",
+          "label": "Utsläppen",
+          "description": "Historisk förändring av utsläpp",
+          "detailedDescription": "Genomsnittlig årlig procentuell förändring av växthusgasutsläppen i Sveriges län sedan Parisavtalet år 2015.",
           "source": "Nationella emissionsdatabasen"
         },
         "meetsParis": {
           "label": "Parisavtalet",
-          "description": "Är länet på väg att klara Parisavtalet?",
-          "detailedDescription": "Visar om länets prognostiserade trend ligger i linje med Parisavtalets carbon law.",
+          "description": "Utsläppstrend jämfört med Parisavtalet",
+          "detailedDescription": "Vilka län är på väg att klara Parisavtalet?",
           "source": "Nationella emissionsdatabasen",
           "booleanLabels": {
-            "true": "På väg",
-            "false": "Inte på väg"
+            "true": "Klarar Parisavtalet",
+            "false": "Missar Parisavtalet"
           }
         }
       }
