@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/layout/PageHeader";
-import SwedenMap, { DataItem } from "@/components/maps/SwedenMap";
+import MapOfSweden, { DataItem } from "@/components/maps/SwedenMap";
 import regionGeoJson from "@/data/regionGeo.json";
 import { FeatureCollection } from "geojson";
 import { useRegionalKPIs, useRegions } from "@/hooks/useRegions";
@@ -155,11 +155,10 @@ export function RegionalRankedPage() {
   const renderMapOrList = (isMobile: boolean) =>
     viewMode === "map" ? (
       <div className={isMobile ? "relative h-[65vh]" : "relative h-full"}>
-        <SwedenMap
+        <MapOfSweden
           geoData={geoData as FeatureCollection}
           data={mapData}
           selectedKPI={selectedKPI}
-          defaultCenter={[63, 16]}
           defaultZoom={isMobile ? 4 : 5}
         />
       </div>
@@ -184,12 +183,8 @@ export function RegionalRankedPage() {
 
             if (typeof value === "boolean") {
               return value
-                ? t(
-                    `regions.list.kpis.${String(selectedKPI.key)}.booleanLabels.true`,
-                  )
-                : t(
-                    `regions.list.kpis.${String(selectedKPI.key)}.booleanLabels.false`,
-                  );
+                ? t(`regions.list.kpis.${selectedKPI.key}.booleanLabels.true`)
+                : t(`regions.list.kpis.${selectedKPI.key}.booleanLabels.false`);
             }
 
             if (typeof value === "number") {
