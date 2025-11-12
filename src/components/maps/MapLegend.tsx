@@ -1,5 +1,5 @@
 import { t } from "i18next";
-import { MUNICIPALITY_MAP_COLORS } from "./constants";
+import { MAP_COLORS } from "./constants";
 import { KPIValue } from "@/types/entity-rankings";
 
 export function MapLegend({
@@ -37,8 +37,8 @@ export function MapLegend({
         <div className="flex items-center w-full md:w-auto gap-2">
           {selectedKPI.isBoolean ? (
             <>
-              {booleanItem(MUNICIPALITY_MAP_COLORS.gradientEnd, "true")}
-              {booleanItem(MUNICIPALITY_MAP_COLORS.gradientMidLow, "false")}
+              {booleanItem(MAP_COLORS.gradientEnd, "true")}
+              {booleanItem(MAP_COLORS.gradientMidLow, "false")}
             </>
           ) : (
             <>
@@ -51,10 +51,10 @@ export function MapLegend({
                   className="absolute inset-0 rounded-full"
                   style={{
                     background: `linear-gradient(to right, 
-                      ${MUNICIPALITY_MAP_COLORS.gradientStart} 0%,
-                      ${MUNICIPALITY_MAP_COLORS.gradientMidLow} 33%,
-                      ${MUNICIPALITY_MAP_COLORS.gradientMidHigh} 66%,
-                      ${MUNICIPALITY_MAP_COLORS.gradientEnd} 100%
+                      ${MAP_COLORS.gradientStart} 0%,
+                      ${MAP_COLORS.gradientMidLow} 33%,
+                      ${MAP_COLORS.gradientMidHigh} 66%,
+                      ${MAP_COLORS.gradientEnd} 100%
                     )`,
                   }}
                 />

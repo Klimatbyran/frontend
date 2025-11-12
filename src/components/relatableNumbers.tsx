@@ -6,8 +6,12 @@ import {
 import { useTranslation, Trans } from "react-i18next";
 import { Flame, Lightbulb } from "lucide-react";
 import { SupportedLanguage } from "@/lib/languageDetection";
-import { cn } from "@/lib/utils";
-import { formatEmissionsAbsolute, formatPercentChange } from "@/utils/formatting/localization";
+import {
+  formatEmissionsAbsolute,
+  formatPercentChange,
+} from "@/utils/formatting/localization";
+import { InfoTooltip } from "@/components/layout/InfoTooltip";
+import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 
 type RelatableNumbersProps = {
   companyName: string;
@@ -91,15 +95,13 @@ const RelatableNumbers = ({
     : null;
 
   return (
-    <div
-      className={cn(
-        "bg-black-2",
-        "rounded-level-3 md:rounded-level-1",
-        "px-4 md:px-8",
-        "py-4 md:py-8",
-      )}
+    <SectionWithHelp
+      helpItems={["relatableNumbers", "forestFires", "citizens"]}
     >
-      <Text variant={"h3"}>{t("relatableNumbers.title")}</Text>
+      <div className="flex items-center gap-2">
+        <Text variant={"h3"}>{t("relatableNumbers.title")}</Text>
+        <InfoTooltip>{t("relatableNumbers.tooltip")}</InfoTooltip>
+      </div>
       <Text variant="body" className="text-sm md:text-base lg:text-lg mt-2">
         <Trans
           i18nKey="relatableNumbers.description"
@@ -115,8 +117,14 @@ const RelatableNumbers = ({
               emissionsChange,
               currentLanguage,
             ),
-            yearOverYearChange: yearOverYearChange !== null ? formatPercentChange(yearOverYearChange, currentLanguage, false) : "",
-
+            yearOverYearChange:
+              yearOverYearChange !== null
+                ? formatPercentChange(
+                    yearOverYearChange,
+                    currentLanguage,
+                    false,
+                  )
+                : "",
           }}
         />
       </Text>
@@ -134,7 +142,7 @@ const RelatableNumbers = ({
           </div>
         </div>
       </div>
-    </div>
+    </SectionWithHelp>
   );
 };
 export default RelatableNumbers;

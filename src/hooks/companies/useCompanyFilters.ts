@@ -3,7 +3,8 @@ import type { RankedCompany } from "@/types/company";
 import { calculateTrendline } from "@/lib/calculations/trends/analysis";
 import { calculateMeetsParis } from "@/lib/calculations/trends/meetsParis";
 import { calculateEmissionsChange } from "@/utils/calculations/emissionsCalculations";
-import { SECTOR_NAMES } from "@/lib/constants/sectors";
+import { useSectorNames } from "@/hooks/companies/useCompanySectors";
+import { getCompanySectorName } from "@/utils/data/industryGrouping";
 import type { CompanySector } from "@/lib/constants/sectors";
 import type { SortOption } from "./useCompanySorting";
 
@@ -15,6 +16,7 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
   >("all");
   const [sortBy, setSortBy] = useState<SortOption>("total_emissions");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
+  const sectorNames = useSectorNames();
 
   const filteredCompanies = useMemo(() => {
     return companies
@@ -36,12 +38,10 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
           searchTerms.length === 0 ||
           searchTerms.some((term) => {
             const companyName = company.name.toLowerCase();
-            const sectorName = company.industry?.industryGics?.sectorCode
-              ? SECTOR_NAMES[
-                  company.industry.industryGics
-                    .sectorCode as keyof typeof SECTOR_NAMES
-                ]?.toLowerCase()
-              : "";
+            const sectorName = getCompanySectorName(
+              company,
+              sectorNames,
+            ).toLowerCase();
 
             // For shorter terms, use substring matching but require it to be at the start of a word
             const companyNamePattern = new RegExp(`\\b${term}`, "i");
@@ -136,6 +136,7 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
     meetsParisFilter,
     sortBy,
     sortDirection,
+    sectorNames,
   ]);
 
   return {

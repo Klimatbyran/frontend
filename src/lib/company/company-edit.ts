@@ -41,12 +41,15 @@ export function mapCompanyEditFormToRequestBody(
     const scope1NewVerified = scope1VerifiedChanged
       ? formData.get(scope1CheckboxKey) === "true"
       : undefined;
+    const isVerified = originalScope1?.metadata?.verifiedBy?.name
+      ? true
+      : false;
 
     if (scope1ValueChanged) {
       const val = formData.get(scope1ValueKey);
       periodUpdate.emissions.scope1 = {
         total: val === "" ? null : parseFloat(val!),
-        verified: scope1NewVerified ?? false,
+        verified: scope1NewVerified ?? isVerified,
       };
     } else if (
       scope1VerifiedChanged &&
@@ -60,40 +63,48 @@ export function mapCompanyEditFormToRequestBody(
     }
 
     // --- Scope 2 logic ---
-    if (
-      formData.has("scope-2-mb-" + period.id) ||
-      formData.has("scope-2-lb-" + period.id) ||
-      formData.has("scope-2-unknown-" + period.id) ||
+    const scope2MbChanged = formData.has("scope-2-mb-" + period.id);
+    const scope2LbChanged = formData.has("scope-2-lb-" + period.id);
+    const scope2UnknownChanged = formData.has("scope-2-unknown-" + period.id);
+    const scope2CheckboxChanged =
       formData.has("scope-2-unknown-" + period.id + "-checkbox") ||
       formData.has("scope-2-lb-" + period.id + "-checkbox") ||
-      formData.has("scope-2-mb-" + period.id + "-checkbox")
+      formData.has("scope-2-mb-" + period.id + "-checkbox");
+
+    if (
+      scope2MbChanged ||
+      scope2LbChanged ||
+      scope2UnknownChanged ||
+      scope2CheckboxChanged
     ) {
       periodUpdate.emissions.scope2 = {};
-    }
 
-    if (formData.has("scope-2-mb-" + period.id)) {
-      const val = formData.get("scope-2-mb-" + period.id);
-      periodUpdate.emissions.scope2.mb = val === "" ? null : parseFloat(val!);
-    }
-    if (formData.has("scope-2-lb-" + period.id)) {
-      const val = formData.get("scope-2-lb-" + period.id);
-      periodUpdate.emissions.scope2.lb = val === "" ? null : parseFloat(val!);
-    }
-    if (formData.has("scope-2-unknown-" + period.id)) {
-      const val = formData.get("scope-2-unknown-" + period.id);
-      periodUpdate.emissions.scope2.unknown =
-        val === "" ? null : parseFloat(val!);
-    }
+      if (scope2MbChanged) {
+        const val = formData.get("scope-2-mb-" + period.id);
+        periodUpdate.emissions.scope2.mb = val === "" ? null : parseFloat(val!);
+      }
+      if (scope2LbChanged) {
+        const val = formData.get("scope-2-lb-" + period.id);
+        periodUpdate.emissions.scope2.lb = val === "" ? null : parseFloat(val!);
+      }
+      if (scope2UnknownChanged) {
+        const val = formData.get("scope-2-unknown-" + period.id);
+        periodUpdate.emissions.scope2.unknown =
+          val === "" ? null : parseFloat(val!);
+      }
 
-    if (
-      formData.has("scope-2-unknown-" + period.id + "-checkbox") ||
-      formData.has("scope-2-lb-" + period.id + "-checkbox") ||
-      formData.has("scope-2-mb-" + period.id + "-checkbox")
-    ) {
-      periodUpdate.emissions.scope2.verified =
-        formData.get("scope-2-unknown-" + period.id + "-checkbox") === "true" ||
-        formData.get("scope-2-lb-" + period.id + "-checkbox") === "true" ||
-        formData.get("scope-2-mb-" + period.id + "-checkbox") === "true";
+      const originalScope2IsVerified =
+        !!period.emissions?.scope2?.metadata?.verifiedBy?.name;
+      if (scope2CheckboxChanged) {
+        periodUpdate.emissions.scope2.verified =
+          formData.get("scope-2-unknown-" + period.id + "-checkbox") ===
+            "true" ||
+          formData.get("scope-2-lb-" + period.id + "-checkbox") === "true" ||
+          formData.get("scope-2-mb-" + period.id + "-checkbox") === "true";
+      } else {
+        // Preserve previous verification if only values changed
+        periodUpdate.emissions.scope2.verified = originalScope2IsVerified;
+      }
     }
 
     // --- Scope 3 logic ---
@@ -126,6 +137,9 @@ export function mapCompanyEditFormToRequestBody(
           ? formData.get(checkboxKey) === "true"
           : undefined;
         const originalValue = originalCategory?.total;
+        const originalCategoryIsVerified =
+          !!originalCategory?.metadata?.verifiedBy?.name;
+
         // If original value is not null/undefined and only verified is changed
         if (
           originalValue !== null &&
@@ -135,6 +149,7 @@ export function mapCompanyEditFormToRequestBody(
         ) {
           periodUpdate.emissions.scope3.categories.push({
             category: parseInt(categoryId),
+            total: originalValue,
             verified: newVerified,
           });
         }
@@ -143,8 +158,10 @@ export function mapCompanyEditFormToRequestBody(
           const obj: any = {
             category: parseInt(categoryId),
             total: newValue === "" ? null : parseFloat(newValue!),
+            verified: verifiedChanged
+              ? newVerified
+              : originalCategoryIsVerified,
           };
-          if (verifiedChanged) obj.verified = newVerified;
           periodUpdate.emissions.scope3.categories.push(obj);
         }
         // If both value and verified are changed, the above covers it in one object
@@ -160,6 +177,7 @@ export function mapCompanyEditFormToRequestBody(
     const statedTotalNewVerified = statedTotalVerifiedChanged
       ? formData.get(statedTotalCheckboxKey) === "true"
       : undefined;
+
     if (statedTotalValueChanged) {
       if (periodUpdate.emissions.scope3 === undefined) {
         periodUpdate.emissions.scope3 = {};
@@ -167,7 +185,9 @@ export function mapCompanyEditFormToRequestBody(
       const val = formData.get(statedTotalValueKey);
       periodUpdate.emissions.scope3.statedTotalEmissions = {
         total: val === "" ? null : parseFloat(val!),
-        verified: statedTotalNewVerified ?? false,
+        verified:
+          statedTotalNewVerified ??
+          !!originalStatedTotal?.metadata?.verifiedBy?.name,
       };
     } else if (
       statedTotalVerifiedChanged &&
@@ -202,7 +222,9 @@ export function mapCompanyEditFormToRequestBody(
       const val = formData.get(emissionsStatedTotalValueKey);
       periodUpdate.emissions.statedTotalEmissions = {
         total: val === "" ? null : parseFloat(val!),
-        verified: emissionsStatedTotalNewVerified ?? false,
+        verified:
+          emissionsStatedTotalNewVerified ??
+          !!originalEmissionsStatedTotal?.metadata?.verifiedBy?.name,
       };
     } else if (
       emissionsStatedTotalVerifiedChanged &&
@@ -229,7 +251,9 @@ export function mapCompanyEditFormToRequestBody(
       const val = formData.get(scope1And2ValueKey);
       periodUpdate.emissions.scope1And2 = {
         total: val === "" ? null : parseFloat(val!),
-        verified: scope1And2NewVerified ?? false,
+        verified:
+          scope1And2NewVerified ??
+          !!originalScope1And2?.metadata?.verifiedBy?.name,
       };
     } else if (
       scope1And2VerifiedChanged &&
@@ -269,7 +293,8 @@ export function mapCompanyEditFormToRequestBody(
             ? undefined
             : formData.get(turnoverCurrencyKey)
           : originalTurnover?.currency,
-        verified: turnoverNewVerified ?? false,
+        verified:
+          turnoverNewVerified ?? !!originalTurnover?.metadata?.verifiedBy?.name,
       };
     } else if (turnoverVerifiedChanged && originalTurnover) {
       periodUpdate.economy.turnover = {
@@ -301,7 +326,9 @@ export function mapCompanyEditFormToRequestBody(
             ? undefined
             : formData.get(employeesUnitKey)
           : originalEmployees?.unit,
-        verified: employeesNewVerified ?? false,
+        verified:
+          employeesNewVerified ??
+          !!originalEmployees?.metadata?.verifiedBy?.name,
       };
     } else if (employeesVerifiedChanged && originalEmployees) {
       periodUpdate.economy.employees = {
@@ -320,12 +347,17 @@ export function mapCompanyEditFormToRequestBody(
 
     if (hasEmissionsChanges || hasEconomyChanges || hasPeriodChanges) {
       // Create the final update object
+      // startDate and endDate are required by the API, so always include them
       const finalUpdate: any = {
         id: period.id,
         startDate: periodUpdate.startDate,
         endDate: periodUpdate.endDate,
-        reportURL: periodUpdate.reportURL,
       };
+
+      // reportURL is optional, only include if it changed
+      if (periodUpdate.reportURL !== period.reportURL) {
+        finalUpdate.reportURL = periodUpdate.reportURL;
+      }
 
       if (hasEmissionsChanges) {
         finalUpdate.emissions = periodUpdate.emissions;
@@ -338,6 +370,7 @@ export function mapCompanyEditFormToRequestBody(
       periodsUpdate.push(finalUpdate);
     }
   }
+
   const metadata: {
     comment?: string;
     source?: string;

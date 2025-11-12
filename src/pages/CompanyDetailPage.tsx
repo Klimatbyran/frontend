@@ -9,6 +9,8 @@ import { createSlug } from "@/lib/utils";
 import { CompanyScope3 } from "@/components/companies/detail/CompanyScope3";
 import { getCompanyDescription } from "@/utils/business/company";
 import { useLanguage } from "@/components/LanguageProvider";
+import { useSectorNames } from "@/hooks/companies/useCompanySectors";
+import { getCompanySectorName } from "@/utils/data/industryGrouping";
 import RelatableNumbers from "@/components/relatableNumbers";
 import type { Scope3Category } from "@/types/company";
 import { PageLoading } from "@/components/pageStates/Loading";
@@ -24,6 +26,7 @@ export function CompanyDetailPage() {
   const { company, loading, error } = useCompanyDetails(id!);
   const [selectedYear, setSelectedYear] = useState<string>("latest");
   const { currentLanguage } = useLanguage();
+  const sectorNames = useSectorNames();
   const description = company
     ? getCompanyDescription(company, currentLanguage)
     : null;
@@ -88,9 +91,9 @@ export function CompanyDetailPage() {
     : "N/A";
 
   // Get industry for SEO content
-  const industry =
-    company.industry?.industryGics?.sv?.sectorName ||
-    t("companyDetailPage.unknownIndustry");
+  const industry = company
+    ? getCompanySectorName(company, sectorNames)
+    : t("companyDetailPage.unknownIndustry");
 
   // Prepare SEO data
   const canonicalUrl = `https://klimatkollen.se/foretag/${createSlug(
@@ -199,7 +202,6 @@ export function CompanyDetailPage() {
             companyName={company.name}
             emissionsChangeStatus={emissionsChangeStatus}
             yearOverYearChange={yearOverYearChange}
-
           />
         )}
 

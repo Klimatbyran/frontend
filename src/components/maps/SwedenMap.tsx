@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { MapContainer, GeoJSON, useMap } from "react-leaflet";
 import { MapZoomControls } from "./MapZoomControls";
 import { MapLegend } from "./MapLegend";
@@ -83,23 +89,11 @@ function MapOfSweden({
   propertyNameField = "name",
   colors = MAP_COLORS,
 }: SwedenMapProps) {
-  // Guard clause to handle undefined selectedKPI
-  if (!selectedKPI) {
-    return (
-      <div className="relative flex-1 h-full max-w-screen-lg flex items-center justify-center">
-        <div className="text-white/70">No KPI selected</div>
-      </div>
-    );
-  }
-
   const [hoveredArea, setHoveredArea] = React.useState<string | null>(null);
   const [hoveredValue, setHoveredValue] = useState<number | boolean | null>(
     null,
   );
   const [hoveredRank, setHoveredRank] = useState<number | null>(null);
-  const [hoveredDisplayName, setHoveredDisplayName] = useState<string | null>(
-    null,
-  );
 
   const getInitialZoom = useCallback(
     () => defaultZoom || (isMobile ? 4 : 5),
@@ -128,26 +122,43 @@ function MapOfSweden({
     return () => window.removeEventListener("resize", handleResize);
   }, [getInitialZoom]);
 
-  const values = data
-    .map((item) => item[selectedKPI.key])
-    .filter((val) => val !== null && val !== undefined)
-    .map(Number);
+  const values = useMemo(() => {
+    if (!selectedKPI) {
+      return [];
+    }
+
+    return data
+      .map((item) => item[selectedKPI.key])
+      .filter(
+        (val): val is number | string => val !== null && val !== undefined,
+      )
+      .map(Number)
+      .filter((val) => Number.isFinite(val));
+  }, [data, selectedKPI]);
 
   const minValue = values.length ? Math.min(...values) : 0;
   const maxValue = values.length ? Math.max(...values) : 0;
 
-  // Sort data by selected KPI
-  const sortedData = [...data].sort((a, b) => {
-    const aVal = a[selectedKPI.key];
-    const bVal = b[selectedKPI.key];
+  const sortedData = useMemo(() => {
+    if (!selectedKPI) {
+      return [];
+    }
 
-    if (aVal === null || aVal === undefined) return 1;
-    if (bVal === null || bVal === undefined) return -1;
+    return [...data].sort((a, b) => {
+      const aVal = a[selectedKPI.key];
+      const bVal = b[selectedKPI.key];
 
-    return selectedKPI.higherIsBetter
-      ? (Number(bVal) || 0) - (Number(aVal) || 0)
-      : (Number(aVal) || 0) - (Number(bVal) || 0);
-  });
+      if (aVal === null || aVal === undefined) return 1;
+      if (bVal === null || bVal === undefined) return -1;
+
+      const numericA = Number(aVal) || 0;
+      const numericB = Number(bVal) || 0;
+
+      return selectedKPI.higherIsBetter
+        ? numericB - numericA
+        : numericA - numericB;
+    });
+  }, [data, selectedKPI]);
 
   const handleZoomIn = () => {
     if (mapRef.current) {
@@ -168,36 +179,34 @@ function MapOfSweden({
   };
 
   const getAreaData = useCallback(
-    (
-      name: string,
-    ): {
-      value: number | boolean | null;
-      rank: number | null;
-      displayName: string;
-    } => {
+    (name: string): { value: number | boolean | null; rank: number | null } => {
+      if (!selectedKPI) {
+        return { value: null, rank: null };
+      }
+
       const item = data.find(
         (d) => d.name.toLowerCase() === name.toLowerCase(),
       );
 
       if (!item) {
-        return { value: null, rank: null, displayName: name };
+        return { value: null, rank: null };
       }
 
       let value: number | boolean | null = null;
       const rawValue = item[selectedKPI.key];
       if (typeof rawValue === "number" || typeof rawValue === "boolean") {
         value = rawValue;
+      } else if (rawValue !== null && rawValue !== undefined) {
+        const numericValue = Number(rawValue);
+        value = Number.isFinite(numericValue) ? numericValue : null;
       }
 
-      const rank = sortedData.findIndex((d) => d.name === item.name) + 1;
-      const displayName =
-        (typeof item.displayName === "string" && item.displayName.length > 0
-          ? (item.displayName as string)
-          : item.name) || name;
+      const rankIndex = sortedData.findIndex((d) => d.name === item.name);
+      const rank = rankIndex >= 0 ? rankIndex + 1 : null;
 
-      return { value, rank, displayName };
+      return { value, rank };
     },
-    [data, selectedKPI.key, sortedData],
+    [data, selectedKPI, sortedData],
   );
 
   const getColorByValue = (value: number | boolean | null): string => {
@@ -295,7 +304,6 @@ function MapOfSweden({
           setHoveredArea(null);
           setHoveredValue(null);
           setHoveredRank(null);
-          setHoveredDisplayName(null);
         },
         click: () => {
           if (onAreaClick) onAreaClick(areaName);
@@ -330,14 +338,12 @@ function MapOfSweden({
     if (!hoveredArea) {
       setHoveredValue(null);
       setHoveredRank(null);
-      setHoveredDisplayName(null);
       return;
     }
 
-    const { value, rank, displayName } = getAreaData(hoveredArea);
+    const { value, rank } = getAreaData(hoveredArea);
     setHoveredValue(value);
     setHoveredRank(rank);
-    setHoveredDisplayName(displayName);
   }, [hoveredArea, getAreaData]);
 
   return (
@@ -366,7 +372,7 @@ function MapOfSweden({
 
       {hoveredArea && (
         <MapTooltip
-          name={hoveredDisplayName ?? hoveredArea}
+          name={hoveredArea}
           value={hoveredValue}
           rank={hoveredRank}
           unit={selectedKPI.unit ?? ""}
