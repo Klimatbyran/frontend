@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Map, List } from "lucide-react";
-import { useLocation, useNavigate } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/layout/PageHeader";
@@ -9,6 +8,7 @@ import regionGeoJson from "@/data/regionGeo.json";
 import { FeatureCollection } from "geojson";
 import { useRegions } from "@/hooks/regions/useRegions";
 import { useRegionalKPIs } from "@/hooks/regions/useRegionKPIs";
+import { useRankedRegionsURLParams } from "@/hooks/regions/useRankedRegionsURLParams";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import RankedList from "@/components/ranked/RankedList";
 import { DataPoint } from "@/types/entity-rankings";
@@ -40,44 +40,13 @@ export function RegionalRankedPage() {
   const [geoData] = useState(regionGeoJson);
   const { regions: regionNames, regionsData } = useRegions();
 
-  const location = useLocation();
-  const navigate = useNavigate();
-
-  const getKPIFromURL = useCallback(() => {
-    const params = new URLSearchParams(location.search);
-    const kpiKey = params.get("kpi");
-
-    return (
-      regionalKPIs.find((kpi) => String(kpi.key) === kpiKey) || regionalKPIs[0]
-    );
-  }, [location.search, regionalKPIs]);
-
-  const setKPIInURL = (kpiKey: string) => {
-    const params = new URLSearchParams(location.search);
-    params.set("kpi", kpiKey);
-    navigate({ search: params.toString() }, { replace: true });
-  };
-
-  const getViewModeFromURL = () => {
-    const params = new URLSearchParams(location.search);
-    return params.get("view") === "list" ? "list" : "map";
-  };
-
-  const setViewModeInURL = (mode: "map" | "list") => {
-    const params = new URLSearchParams(location.search);
-    params.set("view", mode);
-    navigate({ search: params.toString() }, { replace: true });
-  };
-
-  const [selectedKPI, setSelectedKPI] = useState(getKPIFromURL());
-  const viewMode = getViewModeFromURL();
-
-  useEffect(() => {
-    const kpiFromUrl = getKPIFromURL();
-    if (kpiFromUrl && kpiFromUrl.key !== selectedKPI.key) {
-      setSelectedKPI(kpiFromUrl);
-    }
-  }, [getKPIFromURL, selectedKPI.key]);
+  const {
+    selectedKPI,
+    setSelectedKPI,
+    viewMode,
+    setKPIInURL,
+    setViewModeInURL,
+  } = useRankedRegionsURLParams(regionalKPIs);
 
   // Calculate regions data without calling hooks in map
   const regionEntities: RegionListItem[] = useMemo(() => {
