@@ -520,6 +520,25 @@
           "title": "Emission Offsets",
           "paragraph1": "These are not included, in line with what the GHG Protocol states."
         }
+      },
+      "relatableNumbers": {
+        "title": "Relatable Numbers",
+        "description": "Learn more about how we put the numbers into context.",
+        "paragraph1": "Emission numbers can be difficult to grasp, so we’ve translated changes in emissions over time into more relatable terms. This helps illustrate how much an increase or decrease in emissions really means.",
+        "paragraph2": "Rather than comparing total emissions, we focus on the change — for example, how much a company or region’s emissions have gone up or down compared to the previous year.",
+        "forestFire": {
+          "title": "Forest Fires",
+          "paragraph1": "We have calculated how large a wild fire would have to be to  produce the same amount of emissions. We base this on the following data:",
+          "paragraph2": "Based on the emissions change, we calculate how many hectares equals that amount of CO₂. This is then compared to familiar references such as football fields, tennis courts, or city areas. Using this method, we can express it as something like: “This amount of CO₂ corresponds to emissions from a wild fire as large as X football fields”.",
+          "bullet1": "On average, each hectare of forest contains about 50 tons of carbon (C). (1)",
+          "bullet2": "Carbon is converted to carbon dioxide (CO₂) using the factor 44/12 (molecular weights), which means that one hectare corresponds to roughly 50 × (44/12) ≈ 183 tons of CO₂.",
+          "source": "https://climate.mit.edu/ask-mit/how-many-new-trees-would-we-need-offset-our-carbon-emissions"
+        },
+        "citizens": {
+          "title": "Citizens",
+          "paragraph": "To make the emissions change easier to understand, we compare it to the average annual conspumtion based greenhouse gas emissions per person per year. In our case, we assume that an average person accounts for 9 tons of CO₂-equivalents (tCO₂e) per year. (2)",
+          "source": "https://konsumtionskompassen.se/"
+        }
       }
     },
     "municipality": {
@@ -1508,6 +1527,7 @@
   },
   "relatableNumbers": {
     "title": "How much is that?",
+    "tooltip": "Learn more about how these numbers are calculated on the methods page.",
     "description": "{{companyName}} {{emissionsChangeStatus}} their emissions by <highlightNumber>{{emissionsInTonnes}} ({{yearOverYearChange}})</highlightNumber> tCO2e from the previous year. This compares to:",
     "prefixFire": "Emissions from a forest fire",
     "prefixEmissions": "The annual emissions of {{count}} Swedes.",
