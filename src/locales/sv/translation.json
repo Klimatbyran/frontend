@@ -4,6 +4,13 @@
   "noData": "Ingen data tillgänglig",
   "unknown": "Okänt",
   "all": "Alla",
+  "expand": "Expandera",
+  "collapse": "Dölj",
+  "totalResults": "Totalt antal resultat",
+  "previous": "Föregående",
+  "next": "Nästa",
+  "page": "Sida",
+  "of": "av",
   "emissionsUnit": "tCO₂e",
   "header": {
     "companies": "Företag",

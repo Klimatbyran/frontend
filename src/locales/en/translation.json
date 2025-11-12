@@ -3,6 +3,13 @@
   "no": "No",
   "unknown": "Unknown",
   "all": "All",
+  "expand": "Expand",
+  "collapse": "Collapse",
+  "totalResults": "Total Results",
+  "previous": "Previous",
+  "next": "Next",
+  "page": "Page",
+  "of": "of",
   "emissionsUnit": "tCO₂e",
   "noData": "No data available",
   "header": {
