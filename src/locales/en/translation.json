@@ -1170,12 +1170,6 @@
         "nationalEmissionsDatabase": "National Emissions Database"
       },
       "kpis": {
-        "emissions": {
-          "label": "Total Emissions",
-          "description": "Latest reported greenhouse gas emissions",
-          "detailedDescription": "Latest reported territorial greenhouse gas emissions (CO₂e) for the region, converted to kilotonnes.",
-          "source": "regions.list.sources.nationalEmissionsDatabase"
-        },
         "historicalEmissionChangePercent": {
           "label": "Emission Trend",
           "description": "Average annual change in emissions since 2015",
@@ -1191,12 +1185,6 @@
             "true": "On track",
             "false": "Off track"
           }
-        },
-        "emissionsGapToParis": {
-          "label": "Paris Gap",
-          "description": "Difference between projected emissions and Paris-aligned pathway",
-          "detailedDescription": "Cumulative gap (kilotonnes) between the region's projected emissions trend and the Paris-aligned carbon law pathway. Lower values are better.",
-          "source": "regions.list.sources.nationalEmissionsDatabase"
         }
       }
     }

@@ -93,7 +93,6 @@ export function RegionalRankedPage() {
           emissions: null,
           historicalEmissionChangePercent: null,
           meetsParis: null,
-          emissionsGapToParis: null,
         };
       }
 
@@ -106,20 +105,6 @@ export function RegionalRankedPage() {
       const latestYearData =
         latestYear !== undefined
           ? regionData.emissions[latestYear.toString()]
-          : null;
-
-      const totalTrend =
-        typeof regionData.totalTrend === "number"
-          ? regionData.totalTrend
-          : null;
-      const totalCarbonLaw =
-        typeof regionData.totalCarbonLaw === "number"
-          ? regionData.totalCarbonLaw
-          : null;
-
-      const emissionsGapToParis =
-        totalTrend !== null && totalCarbonLaw !== null
-          ? (totalTrend - totalCarbonLaw) / 1000
           : null;
 
       return {
@@ -137,7 +122,6 @@ export function RegionalRankedPage() {
           typeof regionData.meetsParis === "boolean"
             ? regionData.meetsParis
             : null,
-        emissionsGapToParis,
       };
     });
   }, [regionNames, regionsData]);
@@ -162,10 +146,6 @@ export function RegionalRankedPage() {
           : null,
       meetsParis:
         typeof region.meetsParis === "boolean" ? region.meetsParis : null,
-      emissionsGapToParis:
-        typeof region.emissionsGapToParis === "number"
-          ? region.emissionsGapToParis
-          : null,
     }));
   }, [regionEntities]);
 

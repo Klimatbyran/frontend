@@ -4,5 +4,4 @@ export type Region = {
   emissions: number | null;
   historicalEmissionChangePercent: number | null;
   meetsParis: boolean | null;
-  emissionsGapToParis: number | null;
 };

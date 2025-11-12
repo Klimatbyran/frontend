@@ -177,16 +177,6 @@ export const useRegionalKPIs = (): KPIValue<Region>[] => {
 
   return [
     {
-      label: t("regions.list.kpis.emissions.label"),
-      key: "emissions",
-      unit: "kt",
-      description: t("regions.list.kpis.emissions.description"),
-      detailedDescription: t("regions.list.kpis.emissions.detailedDescription"),
-      higherIsBetter: false,
-      source: "regions.list.kpis.emissions.source",
-      sourceUrls: ["https://nationellaemissionsdatabasen.smhi.se/"],
-    },
-    {
       label: t("regions.list.kpis.historicalEmissionChangePercent.label"),
       key: "historicalEmissionChangePercent",
       unit: "%",
@@ -215,18 +205,6 @@ export const useRegionalKPIs = (): KPIValue<Region>[] => {
         false: t("regions.list.kpis.meetsParis.booleanLabels.false"),
       },
       source: "regions.list.kpis.meetsParis.source",
-      sourceUrls: ["https://nationellaemissionsdatabasen.smhi.se/"],
-    },
-    {
-      label: t("regions.list.kpis.emissionsGapToParis.label"),
-      key: "emissionsGapToParis",
-      unit: "kt",
-      description: t("regions.list.kpis.emissionsGapToParis.description"),
-      detailedDescription: t(
-        "regions.list.kpis.emissionsGapToParis.detailedDescription",
-      ),
-      higherIsBetter: false,
-      source: "regions.list.kpis.emissionsGapToParis.source",
       sourceUrls: ["https://nationellaemissionsdatabasen.smhi.se/"],
     },
   ];
