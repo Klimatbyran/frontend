@@ -1,5 +1,5 @@
 import { t } from "i18next";
-import { KPIValue, RankedEntityType } from "@/types/entity-rankings";
+import { KPIValue, MapEntityType } from "@/types/entity-rankings";
 
 export function MapTooltip({
   entityType,
@@ -11,7 +11,7 @@ export function MapTooltip({
   nullValue,
   selectedKPI,
 }: {
-  entityType: RankedEntityType;
+  entityType: MapEntityType;
   name: string;
   value: number | boolean | null | undefined;
   rank: number | null;

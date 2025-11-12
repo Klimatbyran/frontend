@@ -1,6 +1,6 @@
 import { t } from "i18next";
 import { MAP_COLORS } from "./constants";
-import { KPIValue, RankedEntityType } from "@/types/entity-rankings";
+import { KPIValue, MapEntityType } from "@/types/entity-rankings";
 
 export function MapLegend({
   entityType,
@@ -10,7 +10,7 @@ export function MapLegend({
   selectedKPI,
   hasNullValues,
 }: {
-  entityType: RankedEntityType;
+  entityType: MapEntityType;
   unit: string;
   leftValue: number;
   rightValue: number;

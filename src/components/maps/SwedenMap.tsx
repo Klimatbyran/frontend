@@ -20,7 +20,7 @@ import { isMobile } from "react-device-detect";
 import { t } from "i18next";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import { KPIValue, RankedEntityType } from "@/types/entity-rankings";
+import { KPIValue, MapEntityType } from "@/types/entity-rankings";
 
 export interface DataKPI {
   key: string;
@@ -37,7 +37,7 @@ export interface DataItem {
 }
 
 interface SwedenMapProps {
-  entityType: RankedEntityType;
+  entityType: MapEntityType;
   geoData: FeatureCollection;
   data: DataItem[];
   selectedKPI: DataKPI;

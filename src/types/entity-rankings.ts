@@ -33,4 +33,4 @@ export interface KPIValue<T = Municipality | Region> {
   aboveString?: string;
 }
 
-export type RankedEntityType = "municipalities" | "regions" | "companies";
+export type MapEntityType = "municipalities" | "regions";
