@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
+import StagingProtectedRoute from "./components/StagingProtectedRoute";
 import { useLanguage } from "./components/LanguageProvider";
 import { LanguageRedirect } from "@/components/LanguageRedirect";
 import { AboutPage } from "./pages/AboutPage";
@@ -53,10 +54,12 @@ export function AppRoutes() {
         path={`${basePath}/companies/sectors`}
         element={<CompaniesSectorsPage />}
       />
-      <Route
-        path={`${basePath}/companies/ranked`}
-        element={<CompaniesRankedPage />}
-      />
+      <Route element={<StagingProtectedRoute />}>
+        <Route
+          path={`${basePath}/companies/ranked`}
+          element={<CompaniesRankedPage />}
+        />
+      </Route>
       <Route
         path={`${basePath}/companies/:id`}
         element={<CompanyDetailPage />}
