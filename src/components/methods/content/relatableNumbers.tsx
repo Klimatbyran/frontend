@@ -35,9 +35,7 @@ export const RelatableNumbersContent = () => {
       </Section>
 
       <Section title={t("methodsPage.company.relatableNumbers.citizens.title")}>
-        <p>{t("methodsPage.company.relatableNumbers.citizens.paragraph1")}</p>
-        <br></br>
-        <p>{t("methodsPage.company.relatableNumbers.citizens.paragraph2")}</p>
+        <p>{t("methodsPage.company.relatableNumbers.citizens.paragraph")}</p>
       </Section>
       <section className="flex flex-col text-sm italic gap-2">
         <a

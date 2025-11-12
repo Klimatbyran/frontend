@@ -9,7 +9,7 @@
   "citizens": {
     "title": "Why relate to an individual?",
     "content": [
-      "To make the emissions change easier to understand, we compare it to the average annual emissions per person. In our case, we assume that an average person accounts for approximately 7.6 tons of CO₂-equivalents (tCO₂e) per year. This is based on data from the Swedish Environmental Protection Agency, which states that “the average carbon footprint per person and year in Sweden is 7.6 tonnes(2)“.\r\n\r\nBy dividing the emissions change by this per-person value, we obtain a number representing how many “people” it corresponds to — providing users with a simpler and more relatable way to grasp the scale of the change.\r\n\r\n[(1) https://www.naturvardsverket.se/en/topics/climate-transition/omraden/klimatet-och-konsumtionen/how-can-i-reduce-my-carbon-footprint/](https://www.naturvardsverket.se/en/topics/climate-transition/omraden/klimatet-och-konsumtionen/how-can-i-reduce-my-carbon-footprint/)"
+      "To make the emissions change easier to understand, we compare it to the average annual conspumtion based greenhouse gas emissions per person per year. In our case, we assume that an average person accounts for 9 tons of CO₂-equivalents (tCO₂e) per year. (1)\r\n\r\n[(1) https://konsumtionskompassen.se/](https://konsumtionskompassen.se/)"
     ]
   },
   "co2units": {
@@ -69,7 +69,7 @@
   "forestFires": {
     "title": "Why relate to forest fires?",
     "content": [
-      "To put the emissions change into a concrete context, we calculate how much land would need to burn to produce the same amount of emissions. We base this on the following data:\r\n\r\n- On average, each hectare of forest contains about 50 tons of carbon (C). (1)\r\n- Carbon is converted to carbon dioxide (CO₂) using the factor 44/12 (molecular weights), which means that one hectare corresponds to roughly 50 × (44/12) ≈ 183 tons of CO₂.\r\n\r\nBased on the emissions change, we calculate how many hectares would be required to match that amount of CO₂. This area is then compared to familiar references such as football fields, tennis courts, or city areas, providing the user with an intuitive sense of scale. Using this method, we can express it as something like: “This emission corresponds to X football fields burning.” In this way, otherwise abstract numbers become more concrete and relatable.\r\n\r\n[(1) https://climate.mit.edu/ask-mit/how-many-new-trees-would-we-need-offset-our-carbon-emissions](https://climate.mit.edu/ask-mit/how-many-new-trees-would-we-need-offset-our-carbon-emissions)"
+      "We have calculated how large wild fires would have to be to  produce the same amount of emissions. We base this on the following data:\r\n\r\n- On average, each hectare of forest contains about 50 tons of carbon (C). (1)\r\n- Carbon is converted to carbon dioxide (CO₂) using the factor 44/12 (molecular weights), which means that one hectare corresponds to roughly 50 × (44/12) ≈ 183 tons of CO₂.\r\n\r\nBased on the emissions change, we calculate how many hectares equals that amount of CO₂. This is then compared to familiar references such as football fields, tennis courts, or city areas. Using this method, we can express it as something like: “This emission corresponds to emissions from wild fires as large as X football fields”.\r\n\r\n[(1) https://climate.mit.edu/ask-mit/how-many-new-trees-would-we-need-offset-our-carbon-emissions](https://climate.mit.edu/ask-mit/how-many-new-trees-would-we-need-offset-our-carbon-emissions)"
     ]
   },
   "historicalEmissions": {
@@ -177,7 +177,7 @@
   "relatableNumbers": {
     "title": "Why relatable numbers?",
     "content": [
-      "Emission numbers are often large and difficult to grasp, so we’ve translated changes in emissions over time into more relatable terms. This helps illustrate how much an increase or decrease in emissions really means in practice.\r\n\r\nRather than comparing total emissions, we focus on the change in emissions — for example, how much a company or region’s emissions have gone up or down compared to the previous year. This approach highlights real-world progress or setbacks in reducing emissions."
+      "Emission numbers can be difficult to grasp, so we’ve translated changes in emissions over time into more relatable terms. This helps illustrate how much an increase or decrease in emissions really means.\r\n\r\nRather than comparing total emissions, we focus on the change — for example, how much a company or region’s emissions have gone up or down compared to the previous year."
     ]
   },
   "scope1": {
