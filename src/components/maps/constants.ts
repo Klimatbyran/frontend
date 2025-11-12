@@ -1,4 +1,4 @@
-export const MUNICIPALITY_MAP_COLORS = {
+export const MAP_COLORS = {
   null: "var(--grey)",
   gradientStart: "var(--pink-5)",
   gradientMidLow: "var(--pink-4)",
