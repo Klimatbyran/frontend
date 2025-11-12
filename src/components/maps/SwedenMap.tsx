@@ -9,7 +9,7 @@ import {
   Geometry,
   GeoJsonProperties,
 } from "geojson";
-import { MUNICIPALITY_MAP_COLORS } from "./constants";
+import { MAP_COLORS as MAP_COLORS } from "./constants";
 import { isMobile } from "react-device-detect";
 import { t } from "i18next";
 import "leaflet/dist/leaflet.css";
@@ -81,7 +81,7 @@ function MapOfSweden({
   defaultCenter = [63, 17],
   defaultZoom,
   propertyNameField = "name",
-  colors = MUNICIPALITY_MAP_COLORS,
+  colors = MAP_COLORS,
 }: SwedenMapProps) {
   // Guard clause to handle undefined selectedKPI
   if (!selectedKPI) {
