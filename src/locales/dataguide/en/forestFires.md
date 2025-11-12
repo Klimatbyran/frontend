@@ -1,6 +1,6 @@
 # Why relate to forest fires?
 
-We have calculated how large wild fires would have to be to  produce the same amount of emissions. We base this on the following data:
+We have calculated how large a wild fire would have to be to produce the same amount of emissions. We base this on the following data:
 
 - On average, each hectare of forest contains about 50 tons of carbon (C). (1)
 - Carbon is converted to carbon dioxide (CO₂) using the factor 44/12 (molecular weights), which means that one hectare corresponds to roughly 50 × (44/12) ≈ 183 tons of CO₂.
