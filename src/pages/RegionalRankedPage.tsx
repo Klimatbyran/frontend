@@ -152,6 +152,44 @@ export function RegionalRankedPage() {
   const asDataPoint = (kpi: unknown): DataPoint<RegionListItem> =>
     kpi as DataPoint<RegionListItem>;
 
+  const regionalRankedList = (
+    <RankedList
+      data={regionEntities}
+      selectedDataPoint={asDataPoint({
+        label: selectedKPI.label,
+        key: selectedKPI.key as keyof RegionListItem,
+        unit: selectedKPI.unit,
+        description: selectedKPI.description,
+        higherIsBetter: selectedKPI.higherIsBetter,
+        nullValues: selectedKPI.nullValues,
+        isBoolean: selectedKPI.isBoolean,
+        booleanLabels: selectedKPI.booleanLabels,
+        formatter: (value: unknown) => {
+          if (value === null || value === undefined) {
+            return selectedKPI.nullValues
+              ? t(selectedKPI.nullValues)
+              : t("noData");
+          }
+
+          if (typeof value === "boolean") {
+            return value
+              ? t(`regions.list.kpis.${selectedKPI.key}.booleanLabels.true`)
+              : t(`regions.list.kpis.${selectedKPI.key}.booleanLabels.false`);
+          }
+
+          if (typeof value === "number") {
+            return value.toFixed(1);
+          }
+
+          return String(value);
+        },
+      })}
+      onItemClick={() => {}}
+      searchKey="displayName"
+      searchPlaceholder={t("rankedList.search.placeholder")}
+    />
+  );
+
   const renderMapOrList = (isMobile: boolean) =>
     viewMode === "map" ? (
       <div className={isMobile ? "relative h-[65vh]" : "relative h-full"}>
@@ -159,45 +197,11 @@ export function RegionalRankedPage() {
           geoData={geoData as FeatureCollection}
           data={mapData}
           selectedKPI={selectedKPI}
-          defaultZoom={isMobile ? 4 : 5}
+          defaultCenter={[63.7, 17]}
         />
       </div>
     ) : (
-      <RankedList
-        data={regionEntities}
-        selectedDataPoint={asDataPoint({
-          label: selectedKPI.label,
-          key: selectedKPI.key as keyof RegionListItem,
-          unit: selectedKPI.unit,
-          description: selectedKPI.description,
-          higherIsBetter: selectedKPI.higherIsBetter,
-          nullValues: selectedKPI.nullValues,
-          isBoolean: selectedKPI.isBoolean,
-          booleanLabels: selectedKPI.booleanLabels,
-          formatter: (value: unknown) => {
-            if (value === null || value === undefined) {
-              return selectedKPI.nullValues
-                ? t(selectedKPI.nullValues)
-                : t("noData");
-            }
-
-            if (typeof value === "boolean") {
-              return value
-                ? t(`regions.list.kpis.${selectedKPI.key}.booleanLabels.true`)
-                : t(`regions.list.kpis.${selectedKPI.key}.booleanLabels.false`);
-            }
-
-            if (typeof value === "number") {
-              return value.toFixed(1);
-            }
-
-            return String(value);
-          },
-        })}
-        onItemClick={() => {}}
-        searchKey="displayName"
-        searchPlaceholder={t("rankedList.search.placeholder")}
-      />
+      regionalRankedList
     );
 
   return (
@@ -248,47 +252,7 @@ export function RegionalRankedPage() {
       <div className="hidden lg:grid grid-cols-1 gap-6">
         <div className="grid grid-cols-2 gap-6">
           {renderMapOrList(false)}
-          {viewMode === "map" ? (
-            <RankedList
-              data={regionEntities}
-              selectedDataPoint={asDataPoint({
-                label: selectedKPI.label,
-                key: selectedKPI.key as keyof RegionListItem,
-                unit: selectedKPI.unit,
-                description: selectedKPI.description,
-                higherIsBetter: selectedKPI.higherIsBetter,
-                nullValues: selectedKPI.nullValues,
-                isBoolean: selectedKPI.isBoolean,
-                booleanLabels: selectedKPI.booleanLabels,
-                formatter: (value: unknown) => {
-                  if (value === null || value === undefined) {
-                    return selectedKPI.nullValues
-                      ? t(selectedKPI.nullValues)
-                      : t("noData");
-                  }
-
-                  if (typeof value === "boolean") {
-                    return value
-                      ? t(
-                          `regions.list.kpis.${String(selectedKPI.key)}.booleanLabels.true`,
-                        )
-                      : t(
-                          `regions.list.kpis.${String(selectedKPI.key)}.booleanLabels.false`,
-                        );
-                  }
-
-                  if (typeof value === "number") {
-                    return value.toFixed(1);
-                  }
-
-                  return String(value);
-                },
-              })}
-              onItemClick={() => {}}
-              searchKey="displayName"
-              searchPlaceholder={t("rankedList.search.placeholder")}
-            />
-          ) : null}
+          {viewMode === "map" ? regionalRankedList : null}
         </div>
         <RegionalInsightsPanel
           regionData={regionsAsEntities}
