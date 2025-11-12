@@ -33,10 +33,25 @@ const ScopeCard: React.FC<ScopeCardProps> = ({
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
 
+  const handleCardClick = (e: React.MouseEvent) => {
+    // Don't open card modal if clicking on the info tooltip
+    const target = e.target as HTMLElement;
+    if (
+      target.closest('button[aria-haspopup="dialog"]') ||
+      target.closest('[role="dialog"]') ||
+      target
+        .closest("svg")
+        ?.parentElement?.closest('button[aria-haspopup="dialog"]')
+    ) {
+      return;
+    }
+    onClick();
+  };
+
   return (
     <div
       className="bg-black-2 rounded-lg p-6 space-y-4 cursor-pointer hover:scale-105 transition-transform duration-200"
-      onClick={onClick}
+      onClick={handleCardClick}
     >
       <div className="flex items-center gap-3 mb-2">
         <div className={`rounded-full p-2 ${color}`}>
