@@ -46,7 +46,7 @@ const ScopeModal: React.FC<ScopeModalProps> = ({
 
         sectorCompanies.forEach((company) => {
           const period = company.reportingPeriods.find((p) =>
-            p.startDate.startsWith(selectedYear),
+            p.endDate.startsWith(selectedYear),
           );
 
           if (period?.emissions) {
