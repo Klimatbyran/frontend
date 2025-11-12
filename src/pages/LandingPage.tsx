@@ -1,6 +1,6 @@
 import { Building2Icon, TreePineIcon } from "lucide-react";
 import { TopList, TopListItem } from "@/components/TopList";
-import { ContentBlock } from "@/components/ContentBlock";
+import { ContentBlock } from "@/components/layout/ContentBlock";
 import { Typewriter } from "@/components/ui/typewriter";
 import { useCompanies } from "@/hooks/companies/useCompanies";
 import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";

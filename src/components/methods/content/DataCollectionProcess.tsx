@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { ContentSection } from "@/components/ContentSection";
+import { ContentSection } from "@/components/layout/ContentSection";
 
 export const DataCollectionProcessContent = () => {
   const { t } = useTranslation();

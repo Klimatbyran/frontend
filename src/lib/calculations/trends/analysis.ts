@@ -2,14 +2,6 @@ import { TrendAnalysis } from "./types";
 import type { CompanyDetails, RankedCompany } from "@/types/company";
 
 /**
- * Calculate mean value from array of numbers
- */
-function calculateMean(values: number[]): number {
-  if (!values.length) return 0;
-  return values.reduce((a, b) => a + b, 0) / values.length;
-}
-
-/**
  * Calculates trendline analysis using API-provided slope when available
  * Returns null if API slope is not available (backend determined insufficient data)
  */
@@ -54,13 +46,28 @@ export const calculateTrendline = (
   // Use API-provided slope
   const apiSlope = company.futureEmissionsTrendSlope;
 
-  // Calculate intercept using the last data point
+  // Calculate intercept using the last data point (trendline passes through last point)
   const lastDataPoint = dataPoints[dataPoints.length - 1];
   const intercept = lastDataPoint.value - apiSlope * lastDataPoint.year;
 
   // Calculate yearly percentage change using the API slope
-  const mean = calculateMean(dataPoints.map((d) => d.value));
-  const yearlyPercentageChange = mean > 0 ? (apiSlope / mean) * 100 : 0;
+  // Use the last data point value as the reference (consistent with trendline anchor point)
+  // However, if the last value is very small (potential data quality issue), use mean instead
+  let yearlyPercentageChange = 0;
+  if (lastDataPoint.value > 0) {
+    const percentFromLast = (apiSlope / lastDataPoint.value) * 100;
+    // If percentage is extremely large (>±200%), likely a data quality issue
+    // Use mean as fallback for more stable percentage
+    if (Math.abs(percentFromLast) > 200) {
+      const mean =
+        dataPoints.reduce((sum, d) => sum + d.value, 0) / dataPoints.length;
+      const percentFromMean = mean > 0 ? (apiSlope / mean) * 100 : 0;
+      // Cap at ±200% even when using mean (extreme values suggest data quality issues)
+      yearlyPercentageChange = Math.max(-200, Math.min(200, percentFromMean));
+    } else {
+      yearlyPercentageChange = percentFromLast;
+    }
+  }
 
   // Determine trend direction based on API slope
   const trendDirection: "increasing" | "decreasing" | "stable" =
