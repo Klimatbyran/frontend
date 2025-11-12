@@ -1166,21 +1166,18 @@
           "lowerBetter": "Lower values are better"
         }
       },
-      "sources": {
-        "nationalEmissionsDatabase": "National Emissions Database"
-      },
       "kpis": {
         "historicalEmissionChangePercent": {
           "label": "Emission Trend",
           "description": "Average annual change in emissions since 2015",
           "detailedDescription": "Average annual percentage change in greenhouse gas emissions since the Paris Agreement baseline year (2015). Negative values indicate reductions.",
-          "source": "regions.list.sources.nationalEmissionsDatabase"
+          "source": "National Emissions Database"
         },
         "meetsParis": {
           "label": "Paris Agreement",
           "description": "Is the region on track to meet the Paris Agreement?",
           "detailedDescription": "Indicates whether the region's projected trend is aligned with the Paris Agreement carbon law pathway.",
-          "source": "regions.list.sources.nationalEmissionsDatabase",
+          "source": "National Emissions Database",
           "booleanLabels": {
             "true": "On track",
             "false": "Off track"

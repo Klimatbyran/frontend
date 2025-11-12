@@ -1165,21 +1165,18 @@
           "lowerBetter": "Lägre värden är bättre"
         }
       },
-      "sources": {
-        "nationalEmissionsDatabase": "Nationella emissionsdatabasen"
-      },
       "kpis": {
         "historicalEmissionChangePercent": {
           "label": "Utsläppstrend",
           "description": "Genomsnittlig årlig förändring sedan 2015",
           "detailedDescription": "Genomsnittlig årlig procentuell förändring av växthusgasutsläppen sedan Parisavtalets basår 2015. Negativa värden innebär minskningar.",
-          "source": "regions.list.sources.nationalEmissionsDatabase"
+          "source": "Nationella emissionsdatabasen"
         },
         "meetsParis": {
           "label": "Parisavtalet",
           "description": "Är länet på väg att klara Parisavtalet?",
           "detailedDescription": "Visar om länets prognostiserade trend ligger i linje med Parisavtalets carbon law.",
-          "source": "regions.list.sources.nationalEmissionsDatabase",
+          "source": "Nationella emissionsdatabasen",
           "booleanLabels": {
             "true": "På väg",
             "false": "Inte på väg"
