@@ -105,6 +105,7 @@ export function MunicipalitiesRankedPage() {
     viewMode === "map" ? (
       <div className={isMobile ? "relative h-[65vh]" : "relative h-full"}>
         <MapOfSweden
+          entityType="municipalities"
           geoData={geoData as FeatureCollection}
           data={municipalities.map((m) => {
             const { sectorEmissions, ...rest } = m;

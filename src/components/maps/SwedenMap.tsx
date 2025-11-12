@@ -37,6 +37,7 @@ export interface DataItem {
 }
 
 interface SwedenMapProps {
+  entityType: "municipalities" | "regions";
   geoData: FeatureCollection;
   data: DataItem[];
   selectedKPI: DataKPI;
@@ -80,6 +81,7 @@ function MapController({
 }
 
 function MapOfSweden({
+  entityType,
   geoData,
   data,
   selectedKPI,
@@ -270,6 +272,7 @@ function MapOfSweden({
 
     return (
       <MapLegend
+        entityType={entityType}
         leftValue={leftValue}
         rightValue={rightValue}
         unit={selectedKPI.unit ?? ""}
@@ -372,6 +375,7 @@ function MapOfSweden({
 
       {hoveredArea && (
         <MapTooltip
+          entityType={entityType}
           name={hoveredArea}
           value={hoveredValue}
           rank={hoveredRank}
@@ -379,7 +383,7 @@ function MapOfSweden({
           total={data.length}
           nullValue={
             selectedKPI.key && t
-              ? t(`municipalities.list.kpis.${selectedKPI.key}.nullValues`)
+              ? t(`${entityType}.list.kpis.${selectedKPI.key}.nullValues`)
               : "No data"
           }
           selectedKPI={selectedKPI as KPIValue}

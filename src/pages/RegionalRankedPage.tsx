@@ -194,6 +194,7 @@ export function RegionalRankedPage() {
     viewMode === "map" ? (
       <div className={isMobile ? "relative h-[65vh]" : "relative h-full"}>
         <MapOfSweden
+          entityType="regions"
           geoData={geoData as FeatureCollection}
           data={mapData}
           selectedKPI={selectedKPI}
