@@ -144,9 +144,6 @@ const normalizeRegion = (region: NullableApiRegion): RegionData | null => {
   };
 };
 
-/**
- * Hook to get all available regions
- */
 export function useRegions() {
   const {
     data: regions = [],
@@ -168,5 +165,3 @@ export function useRegions() {
     error,
   };
 }
-
-// Regional KPIs moved to useRegionKPIs.ts
