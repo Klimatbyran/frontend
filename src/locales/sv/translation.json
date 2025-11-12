@@ -520,6 +520,25 @@
           "title": "Koldioxidkompensationer",
           "paragraph1": "Dessa inkluderas inte, i linje med vad GHG-protokollet anger."
         }
+      },
+      "relatableNumbers": {
+        "title": "Jämförbara siffror",
+        "description": "Läs mer om hur vi sätter siffrorna i ett mer begripligt sammanhang.",
+        "paragraph1": "Utsläppssiffror är ofta svåra att greppa, så vi har översatt förändringar i utsläpp över tid till mer lättbegripliga termer, för att illustrera hur mycket en ökning eller minskning av utsläpp faktiskt betyder i praktiken.",
+        "paragraph2": "I stället för att jämföra de totala utsläppen fokuserar vi på förändringen — till exempel hur mycket ett företags eller en kommuns utsläpp har ökat eller minskat jämfört med föregående år. ",
+        "forestFire": {
+          "title": "Skogsbränder",
+          "paragraph1": "Vi har räknat ut hur stor skogsbrand som skulle krävas  för att generera motsvarande mängd utsläpp. Vi utgår från följande antaganden:",
+          "paragraph2": "Utifrån utsläpps­förändringen räknar vi ut hur många hektar som krävs för att motsvara den mängden CO₂. Därefter jämförs siffran med välkända ytstorlekar som fotbollsplaner, tennisbanor eller städer. Då kan vi säga till exempel: “Det här utsläppet motsvarar utsläppen från en skogsbrand stor som X fotbollsplaner“.",
+          "bullet1": "I genomsnitt innehåller varje hektar skogsmark omkring 50 ton kol (C). (1)",
+          "bullet2": "Kol omvandlas till koldioxid (CO₂) genom faktorn 44/12 (molekylvikter), vilket innebär att en hektar motsvarar ungefär 50 × (44/12) ≈ 183 ton CO₂.",
+          "source": "https://climate.mit.edu/ask-mit/how-many-new-trees-would-we-need-offset-our-carbon-emissions"
+        },
+        "citizens": {
+          "title": "Invånare",
+          "paragraph": "För att göra utsläppsförändringen mer begriplig jämför vi med de genomsnittliga årliga konsumtionsbaserade utsläppen per person och år. I vårt fall använder vi antagandet att en genomsnittlig person står för 9 ton CO₂‑ekvivalenter (tCO₂e) per år. (2)",
+          "source": "https://konsumtionskompassen.se/"
+        }
       }
     },
     "municipality": {
@@ -1507,6 +1526,7 @@
   },
   "relatableNumbers": {
     "title": "Hur mycket är det?",
+    "tooltip": "Läs mer om hur siffrorna beräknas på metodsidan.",
     "description": "{{companyName}} {{emissionsChangeStatus}} sina utsläpp med <highlightNumber>{{emissionsInTonnes}} ({{yearOverYearChange}})</highlightNumber> tCO2e jämfört med föregående år. Detta kan jämföras med:",
     "prefixFire": "Utsläppen motsvarar en skogsbrand",
     "prefixEmissions": "{{count}} svenska invånares årsutsläpp.",

@@ -27,6 +27,7 @@ export const methodologySections: MethodologySectionType = {
     { id: "companyDataCollection", category: "company" },
     { id: "emissionCategories", category: "company" },
     { id: "historicalData", category: "company" },
+    { id: "relatableNumbers", category: "company" },
   ],
 };
 
