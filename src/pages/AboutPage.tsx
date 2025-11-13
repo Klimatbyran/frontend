@@ -82,7 +82,7 @@ export function AboutPage() {
           {/* Our Approach Section */}
           <AccordionGroup
             title={t("aboutPage.ourApproachSection.title")}
-            value="financingSection"
+            value="ourApproachSection"
           >
             <div className="prose prose-invert w-[90%] max-w-5xl mx-auto space-y-4">
               <p>{t("aboutPage.ourApproachSection.paragraph1")}</p>
@@ -163,7 +163,7 @@ export function AboutPage() {
               <p>{t("aboutPage.financingSection.paragraph1")}</p>
               <p>{t("aboutPage.financingSection.paragraph2")}</p>
               <p>{t("aboutPage.financingSection.paragraph3")}</p>
-              <p>{t("aboutPage.financingSection.paragraph4")}</p> 
+              <p>{t("aboutPage.financingSection.paragraph4")}</p>
               <div className="bg-blue-5/30 rounded-level-2 p-6 mt-8 max-w-3xl">
                 <Text variant="body">
                   {t("aboutPage.financingSection.donate")}
