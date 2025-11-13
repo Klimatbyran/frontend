@@ -10,6 +10,10 @@ import {
   formatPercent,
 } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
+import {
+  UPSTREAM_CATEGORIES,
+  DOWNSTREAM_CATEGORIES,
+} from "@/hooks/companies/useCategories";
 
 interface ScopeModalProps {
   scope: "scope1" | "scope2" | "scope3_upstream" | "scope3_downstream";
@@ -44,10 +48,6 @@ const ScopeModal: React.FC<ScopeModalProps> = ({
           emissions: number;
         }> = [];
 
-        // Upstream categories: 1-8, Downstream categories: 9-15
-        const UPSTREAM_CATEGORIES = [1, 2, 3, 4, 5, 6, 7, 8];
-        const DOWNSTREAM_CATEGORIES = [9, 10, 11, 12, 13, 14, 15];
-
         sectorCompanies.forEach((company) => {
           const period = company.reportingPeriods.find((p) =>
             p.endDate.startsWith(selectedYear),
@@ -65,7 +65,9 @@ const ScopeModal: React.FC<ScopeModalProps> = ({
               const scope3Categories = period.emissions.scope3.categories;
               if (scope3Categories && scope3Categories.length > 0) {
                 emissions = scope3Categories
-                  .filter((cat) => UPSTREAM_CATEGORIES.includes(cat.category))
+                  .filter((cat) =>
+                    UPSTREAM_CATEGORIES.includes(cat.category as number),
+                  )
                   .reduce((sum, cat) => sum + (cat.total || 0), 0);
               }
             } else if (
@@ -76,7 +78,9 @@ const ScopeModal: React.FC<ScopeModalProps> = ({
               const scope3Categories = period.emissions.scope3.categories;
               if (scope3Categories && scope3Categories.length > 0) {
                 emissions = scope3Categories
-                  .filter((cat) => DOWNSTREAM_CATEGORIES.includes(cat.category))
+                  .filter((cat) =>
+                    DOWNSTREAM_CATEGORIES.includes(cat.category as number),
+                  )
                   .reduce((sum, cat) => sum + (cat.total || 0), 0);
               }
             }

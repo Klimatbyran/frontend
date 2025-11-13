@@ -1,9 +1,9 @@
 import { useMemo } from "react";
 import { RankedCompany } from "@/types/company";
-
-// Upstream categories: 1-8, Downstream categories: 9-15
-const UPSTREAM_CATEGORIES = [1, 2, 3, 4, 5, 6, 7, 8];
-const DOWNSTREAM_CATEGORIES = [9, 10, 11, 12, 13, 14, 15];
+import {
+  UPSTREAM_CATEGORIES,
+  DOWNSTREAM_CATEGORIES,
+} from "@/hooks/companies/useCategories";
 
 export const useScopeData = (
   companies: RankedCompany[],
@@ -51,9 +51,11 @@ export const useScopeData = (
 
           scope3Categories.forEach((category) => {
             const categoryValue = category.total || 0;
-            if (UPSTREAM_CATEGORIES.includes(category.category)) {
+            if (UPSTREAM_CATEGORIES.includes(category.category as number)) {
               upstreamTotal += categoryValue;
-            } else if (DOWNSTREAM_CATEGORIES.includes(category.category)) {
+            } else if (
+              DOWNSTREAM_CATEGORIES.includes(category.category as number)
+            ) {
               downstreamTotal += categoryValue;
             }
           });
