@@ -1,8 +1,8 @@
-// TODO: This is currently a direct copy of the live landing page, all landing page modifications can be made here
+// TODO: This is currently a slightly modified copy of the live landing page, all landing page modifications can be made here
 // without worry of impacting prod until we're ready
 import { Building2Icon, TreePineIcon } from "lucide-react";
 import { TopList, TopListItem } from "@/components/TopList";
-import { ContentBlock } from "@/components/layout/ContentBlock";
+
 import { Typewriter } from "@/components/ui/typewriter";
 import { useCompanies } from "@/hooks/companies/useCompanies";
 import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
@@ -14,7 +14,6 @@ import {
   formatEmissionsAbsolute,
   formatPercentChange,
 } from "@/utils/formatting/localization";
-import GlobalSearch from "@/components/ui/globalsearch";
 
 export function LandingPageNew() {
   const { t } = useTranslation();
@@ -112,10 +111,6 @@ export function LandingPageNew() {
               />
             </div>
           </div>
-
-          <div className="flex flex-col items-center mt-16 gap-4 ">
-            <GlobalSearch />
-          </div>
         </div>
       </div>
 
@@ -145,15 +140,6 @@ export function LandingPageNew() {
               headingLink={`${currentLanguage}/companies`}
             />
           </div>
-        </div>
-      </div>
-
-      <div className="pb-8 md:pb-16">
-        <div className="mx-2 sm:mx-8">
-          <ContentBlock
-            title={t("landingPage.aboutUsTitle")}
-            content={t("landingPage.aboutUsContent")}
-          />
         </div>
       </div>
     </>
