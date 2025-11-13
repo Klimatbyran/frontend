@@ -35,6 +35,7 @@ import { RequestsDashboard } from "./pages/internal-pages/RequestsDashboard";
 import { TrendAnalysisDashboard } from "./pages/internal-pages/TrendAnalysisDashboard";
 import { NewsLetterArchivePage } from "./pages/NewslettersPage";
 import { RegionalRankedPage } from "./pages/RegionalRankedPage";
+import { RegionalDetailPage } from "./pages/RegionalDetailPage";
 import { CompaniesRankedPage } from "./pages/CompaniesRankedPage";
 
 // Conditional landing page component that shows new version on localhost/staging
@@ -107,7 +108,10 @@ export function AppRoutes() {
         path={`${basePath}/regional-overview`}
         element={<RegionalRankedPage />}
       />
-      {/* Municipalities routes */}
+      <Route
+        path={`${basePath}/regions/:id`}
+        element={<RegionalDetailPage />}
+      />
       <Route
         path={`${basePath}/municipalities`}
         element={<MunicipalitiesRankedPage />}
