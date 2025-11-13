@@ -10,6 +10,10 @@ import {
   formatPercent,
 } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
+import {
+  UPSTREAM_CATEGORIES,
+  DOWNSTREAM_CATEGORIES,
+} from "@/lib/constants/categories";
 
 interface ScopeModalProps {
   scope: "scope1" | "scope2" | "scope3_upstream" | "scope3_downstream";
@@ -46,7 +50,7 @@ const ScopeModal: React.FC<ScopeModalProps> = ({
 
         sectorCompanies.forEach((company) => {
           const period = company.reportingPeriods.find((p) =>
-            p.startDate.startsWith(selectedYear),
+            p.endDate.startsWith(selectedYear),
           );
 
           if (period?.emissions) {
@@ -57,14 +61,28 @@ const ScopeModal: React.FC<ScopeModalProps> = ({
               emissions =
                 period.emissions.scope2?.calculatedTotalEmissions || 0;
             } else if (scope === "scope3_upstream" && period.emissions.scope3) {
-              emissions =
-                period.emissions.scope3.calculatedTotalEmissions * 0.6;
+              // Only use companies that have category-level data
+              const scope3Categories = period.emissions.scope3.categories;
+              if (scope3Categories && scope3Categories.length > 0) {
+                emissions = scope3Categories
+                  .filter((cat) =>
+                    UPSTREAM_CATEGORIES.includes(cat.category as number),
+                  )
+                  .reduce((sum, cat) => sum + (cat.total || 0), 0);
+              }
             } else if (
               scope === "scope3_downstream" &&
               period.emissions.scope3
             ) {
-              emissions =
-                period.emissions.scope3.calculatedTotalEmissions * 0.4;
+              // Only use companies that have category-level data
+              const scope3Categories = period.emissions.scope3.categories;
+              if (scope3Categories && scope3Categories.length > 0) {
+                emissions = scope3Categories
+                  .filter((cat) =>
+                    DOWNSTREAM_CATEGORIES.includes(cat.category as number),
+                  )
+                  .reduce((sum, cat) => sum + (cat.total || 0), 0);
+              }
             }
 
             if (emissions > 0) {
