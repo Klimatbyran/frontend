@@ -13,7 +13,7 @@ import { useLanguage } from "@/components/LanguageProvider";
 import {
   UPSTREAM_CATEGORIES,
   DOWNSTREAM_CATEGORIES,
-} from "@/hooks/companies/useCategories";
+} from "@/lib/constants/categories";
 
 interface ScopeModalProps {
   scope: "scope1" | "scope2" | "scope3_upstream" | "scope3_downstream";

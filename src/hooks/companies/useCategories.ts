@@ -16,12 +16,12 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import {
+  UPSTREAM_CATEGORIES,
+  DOWNSTREAM_CATEGORIES,
+} from "@/lib/constants/categories";
 
 export type CategoryType = "upstream" | "downstream";
-
-// Upstream categories: 1-8, Downstream categories: 9-15
-export const UPSTREAM_CATEGORIES: number[] = [1, 2, 3, 4, 5, 6, 7, 8];
-export const DOWNSTREAM_CATEGORIES: number[] = [9, 10, 11, 12, 13, 14, 15];
 
 export const useCategoryMetadata = () => {
   const { t } = useTranslation();

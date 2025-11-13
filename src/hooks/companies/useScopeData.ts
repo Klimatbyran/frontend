@@ -3,7 +3,16 @@ import { RankedCompany } from "@/types/company";
 import {
   UPSTREAM_CATEGORIES,
   DOWNSTREAM_CATEGORIES,
-} from "@/hooks/companies/useCategories";
+} from "@/lib/constants/categories";
+
+export type ScopeData = {
+  scope1: { total: number; companies: number };
+  scope2: { total: number; companies: number };
+  scope3: {
+    upstream: { total: number; companies: number };
+    downstream: { total: number; companies: number };
+  };
+};
 
 export const useScopeData = (
   companies: RankedCompany[],

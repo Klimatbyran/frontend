@@ -1,24 +1,3 @@
-export interface EmissionPeriod {
-  startDate: string;
-  endDate: string;
-  emissions: {
-    calculatedTotalEmissions: number;
-    scope1?: { total: number; unit: string } | null;
-    scope2?: {
-      calculatedTotalEmissions: number;
-    } | null;
-    scope3?: {
-      calculatedTotalEmissions: number;
-      categories?: Array<{
-        category: number;
-        total: number;
-        unit: string;
-        isInterpolated?: boolean;
-      }>;
-    } | null;
-  } | null;
-}
-
 export interface ChartData {
   year: number;
   total?: number;
@@ -35,19 +14,12 @@ export interface ChartData {
   [key: string]: any; // Allow any type for additional keys
 }
 
-export interface EmissionsFeatures {
-  interpolateScope3: boolean;
-  guessBaseYear: boolean;
-  compositeTrend: boolean;
-}
-
 import type { CompanyDetails } from "@/types/company";
 
 export interface EmissionsHistoryProps {
   company: CompanyDetails;
   onYearSelect?: (year: string) => void;
   className?: string;
-  features?: EmissionsFeatures;
 }
 
 export type DataView = "overview" | "scopes" | "categories";

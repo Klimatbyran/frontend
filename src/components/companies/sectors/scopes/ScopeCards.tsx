@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Factory, Building2, ArrowUpRight, ArrowDownRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { RankedCompany } from "@/hooks/companies/useCompanies";
+import { RankedCompany } from "@/types/company";
+import { ScopeData } from "@/hooks/companies/useScopeData";
 import ScopeCard from "./ScopeCard";
 import ScopeModal from "./ScopeModal";
 
 interface ScopeCardsProps {
-  scopeData: any;
+  scopeData: ScopeData;
   totalEmissions: number;
   companies: RankedCompany[];
   selectedSectors: string[];
