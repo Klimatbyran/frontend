@@ -163,6 +163,7 @@ export function AboutPage() {
               <p>{t("aboutPage.financingSection.paragraph1")}</p>
               <p>{t("aboutPage.financingSection.paragraph2")}</p>
               <p>{t("aboutPage.financingSection.paragraph3")}</p>
+              <p>{t("aboutPage.financingSection.paragraph4")}</p> 
               <div className="bg-blue-5/30 rounded-level-2 p-6 mt-8 max-w-3xl">
                 <Text variant="body">
                   {t("aboutPage.financingSection.donate")}

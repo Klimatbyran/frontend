@@ -122,9 +122,10 @@
     },
     "financingSection": {
       "title": "How We Are Funded",
-      "paragraph1": "In 2024 and 2025, Klimatkollen will receive financial support from Google.org as one of two Swedish recipients of the Google.org Impact Challenge: Tech for Social Good.",
-      "paragraph2": "In 2023, Klimatkollen was funded by Postkodstiftelsen. Our 2022 launch was made possible through support from WWF Sweden, ClimateView, We Don't Have Time, and Argand Partners.",
-      "paragraph3": "Much of our work relies on voluntary efforts, and we welcome new partners and financial support to help us scale up!",
+      "paragraph1": "From November 2025 to the end of 2026, Klimatkollen will receive financial support from Postkodstiftelsen for the project 'AI for local climate influence'.",
+      "paragraph2": "In 2024 and 2025, Klimatkollen received financial support from Google.org as one of two Swedish recipients of the Google.org Impact Challenge: Tech for Social Good. This funding has allowed us to expand our corporate emissions data collection and analysis efforts.",
+      "paragraph3": "In 2023, Klimatkollen was funded by Postkodstiftelsen. Our 2022 launch was made possible through support from WWF Sweden, ClimateView, We Don't Have Time, and Argand Partners.",
+      "paragraph4": "Much of our work relies on voluntary efforts, and we welcome new partners and financial support to help us scale up!",
       "donate": "Would you like to support our work?",
       "donateDescription": "Every donation helps us expand and share more data.",
       "bankgiro": "Bankgiro: 5793-3178",
