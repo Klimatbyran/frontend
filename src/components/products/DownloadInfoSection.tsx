@@ -1,8 +1,10 @@
+import type React from "react";
+
 interface DownloadInfoSectionProps {
   title: string;
   items: Array<{
     title: string;
-    description: string | JSX.Element;
+    description: string | React.ReactNode;
   }>;
 }
 

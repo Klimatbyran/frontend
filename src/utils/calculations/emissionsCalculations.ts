@@ -180,3 +180,113 @@ export function getRegressionPoints(
     return sorted.slice(-2).map((d) => ({ year: d.year, value: d.total }));
   }
 }
+
+/**
+ * Calculate emissions change from base year to latest reporting period
+ * Uses calculatedTotalEmissions from the API
+ *
+ * @param company - The company to calculate change for
+ * @param options - Optional configuration
+ * @param options.useLastPeriod - If true, uses the last period even if emissions are 0.
+ *                                If false (default), finds the last period with >0 emissions.
+ * @returns Percentage change as a number, or null if:
+ *   - No reporting periods
+ *   - No base year defined (no fallback to first period)
+ *   - Baseline emissions is 0 or null
+ *   - Latest period is the same year as base year (no change possible)
+ *   - If useLastPeriod is false: no period with >0 emissions found after base year
+ */
+export function calculateEmissionsChangeFromBaseYear(
+  company: {
+    baseYear?: { year?: number } | null;
+    reportingPeriods?: Array<{
+      startDate: string;
+      endDate: string;
+      emissions?: {
+        calculatedTotalEmissions?: number | null;
+      } | null;
+    }>;
+  },
+  options?: {
+    useLastPeriod?: boolean;
+  },
+): number | null {
+  if (!company.reportingPeriods || company.reportingPeriods.length === 0) {
+    return null;
+  }
+
+  // Constraint: require a base year
+  if (!company.baseYear?.year) {
+    return null;
+  }
+
+  const baseYear = company.baseYear.year.toString();
+
+  // Sort periods by start date (oldest first)
+  const periods = [...company.reportingPeriods].sort((a, b) =>
+    a.startDate.localeCompare(b.startDate),
+  );
+
+  if (periods.length < 1) {
+    return null;
+  }
+
+  // Find baseline period matching the base year (using endDate year)
+  const baselinePeriod = periods.find((p) => {
+    const periodYear = new Date(p.endDate).getFullYear().toString();
+    return periodYear === baseYear;
+  });
+
+  if (!baselinePeriod) {
+    return null;
+  }
+
+  const baselineEmissions =
+    baselinePeriod.emissions?.calculatedTotalEmissions ?? null;
+
+  // Baseline emissions must be valid and > 0
+  // Exclude companies where base year data is 0, null, or undefined
+  // Cannot calculate meaningful change from base year without valid baseline data
+  if (
+    baselineEmissions === null ||
+    baselineEmissions === undefined ||
+    baselineEmissions === 0
+  ) {
+    return null;
+  }
+
+  // Find latest period based on option
+  let latestPeriod: (typeof periods)[0] | null = null;
+
+  if (options?.useLastPeriod) {
+    // Use the last period in the array (even if 0)
+    latestPeriod = periods[periods.length - 1];
+  } else {
+    // Find latest period with >0 emissions (working backwards from latest)
+    for (let i = periods.length - 1; i >= 0; i--) {
+      const emissions = periods[i].emissions?.calculatedTotalEmissions ?? null;
+      if (emissions !== null && emissions > 0) {
+        latestPeriod = periods[i];
+        break;
+      }
+    }
+  }
+
+  if (!latestPeriod) {
+    return null;
+  }
+
+  // Check if latest period is the same year as base year (using endDate year)
+  const latestYear = new Date(latestPeriod.endDate).getFullYear().toString();
+  if (latestYear === baseYear) {
+    return null; // No change possible - same year
+  }
+
+  const latestEmissions = latestPeriod.emissions?.calculatedTotalEmissions ?? 0;
+
+  // Calculate percentage change
+  const changePercent =
+    ((latestEmissions - baselineEmissions) / baselineEmissions) * 100;
+
+  return changePercent;
+}

@@ -1,42 +1,43 @@
 import { t } from "i18next";
-import { Municipality } from "@/types/municipality";
-import { KPIValue } from "@/types/entity-rankings";
-import InsightsList from "../../ranked/InsightsList";
-import KPIDetailsPanel from "../../ranked/KPIDetailsPanel";
 import { getSortedEntityKPIValues } from "@/utils/data/sorting";
+import KPIDetailsPanel from "../ranked/KPIDetailsPanel";
+import InsightsList from "../ranked/InsightsList";
+import { Region } from "@/types/region";
+import { KPIValue } from "@/types/entity-rankings";
 import {
   calculateEntityStatistics,
   createSourceLinks,
 } from "@/utils/insights/rankedListUtils";
 
 interface InsightsPanelProps {
-  municipalityData: Municipality[];
-  selectedKPI: KPIValue<Municipality>;
+  regionData: Region[];
+  selectedKPI: KPIValue;
 }
 
-function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
-  if (!municipalityData?.length) {
+function RegionalInsightsPanel({
+  regionData,
+  selectedKPI,
+}: InsightsPanelProps) {
+  if (!regionData?.length) {
     return (
       <div className="bg-white/5 backdrop-blur-sm rounded-level-2 p-8 h-full flex items-center justify-center">
-        <p className="text-white text-lg">
-          {t("municipalities.list.insights.noData.municipality")}
-        </p>
+        <p className="text-white text-lg">{t("noData")}</p>
       </div>
     );
   }
 
   // Calculate statistics using shared utility
   const statistics = calculateEntityStatistics(
-    municipalityData,
+    regionData,
     selectedKPI,
-    (m) => m[selectedKPI.key],
+    (m) => m[selectedKPI.key as keyof Region],
   );
 
   if (!statistics.validData.length) {
     return (
       <div className="bg-white/5 backdrop-blur-sm rounded-level-2 p-8 h-full flex items-center justify-center">
         <p className="text-white text-lg">
-          {t("municipalities.list.insights.noData.metric", {
+          {t("noData", {
             metric: selectedKPI.label,
           })}
         </p>
@@ -44,7 +45,7 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
     );
   }
 
-  const sortedData = getSortedEntityKPIValues(municipalityData, selectedKPI);
+  const sortedData = getSortedEntityKPIValues(regionData, selectedKPI);
 
   const topMunicipalities = sortedData.slice(0, 5);
   const bottomMunicipalities = sortedData.slice(-5).reverse();
@@ -68,31 +69,31 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
 
         {!selectedKPI.isBoolean && (
           <>
-            <InsightsList<Municipality>
+            <InsightsList<Region>
               title={t(
                 selectedKPI.higherIsBetter
                   ? "municipalities.list.insights.topPerformers.titleTop"
                   : "municipalities.list.insights.topPerformers.titleBest",
               )}
               entities={topMunicipalities}
-              totalCount={municipalityData.length}
-              dataPointKey={selectedKPI.key as keyof Municipality}
+              totalCount={regionData.length}
+              dataPointKey={selectedKPI.key as keyof Region}
               unit={selectedKPI.unit}
               nullValues={selectedKPI.nullValues}
               textColor="text-blue-3"
-              entityType="municipalities"
+              entityType="regions"
               nameKey="name"
             />
             <InsightsList
               title={t("municipalities.list.insights.improvement.title")}
               entities={bottomMunicipalities}
-              totalCount={municipalityData.length}
+              totalCount={regionData.length}
               isBottomRanking={true}
-              dataPointKey={selectedKPI.key as keyof Municipality}
+              dataPointKey={selectedKPI.key as keyof Region}
               unit={selectedKPI.unit}
               nullValues={selectedKPI.nullValues}
               textColor="text-pink-3"
-              entityType="municipalities"
+              entityType="regions"
               nameKey="name"
             />
           </>
@@ -102,4 +103,4 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
   );
 }
 
-export default InsightsPanel;
+export default RegionalInsightsPanel;

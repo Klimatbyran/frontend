@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { exploreButtonFeatureFlagEnabled } from "@/utils/ui/featureFlags";
+import { stagingFeatureFlagEnabled } from "@/utils/ui/featureFlags";
 import { useScreenSize } from "@/hooks/useScreenSize";
 
 interface ChartYearControlsProps {
@@ -72,7 +72,7 @@ export const ChartYearControls: React.FC<ChartYearControlsProps> = ({
           </div>
         )}
 
-        {setExploreMode && exploreButtonFeatureFlagEnabled() && (
+        {setExploreMode && stagingFeatureFlagEnabled() && (
           <div className="flex justify-center">
             <Button
               variant="default"
@@ -120,7 +120,7 @@ export const ChartYearControls: React.FC<ChartYearControlsProps> = ({
         )}
       </div>
 
-      {setExploreMode && exploreButtonFeatureFlagEnabled() && (
+      {setExploreMode && stagingFeatureFlagEnabled() && (
         <div className="flex justify-center items-center">
           <Button
             variant="default"

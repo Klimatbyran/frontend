@@ -2,7 +2,7 @@ export const dataGuideFeatureFlagEnabled = () => {
   return true;
 };
 
-export const exploreButtonFeatureFlagEnabled = () => {
+export const stagingFeatureFlagEnabled = () => {
   // Check if we're running on localhost or stage
   if (
     typeof window !== "undefined" &&

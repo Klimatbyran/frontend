@@ -6,7 +6,7 @@ export { transformEmissionsData } from "@/utils/data/municipalityTransforms";
 export type Municipality = {
   name: string;
   region: string;
-  logoUrl: string | null
+  logoUrl: string | null;
   meetsParisGoal: boolean;
   totalTrend: number;
   totalCarbonLaw: number;
@@ -70,22 +70,6 @@ export type DataPoint = {
   approximated: number | undefined;
   carbonLaw: number | undefined;
 };
-
-export interface KPIValue {
-  label: string;
-  key: keyof Municipality;
-  unit: string;
-  source: string;
-  sourceUrls: string[];
-  description: string;
-  detailedDescription: string;
-  nullValues?: string;
-  higherIsBetter: boolean;
-  isBoolean?: boolean;
-  booleanLabels?: { true: string; false: string };
-  belowString?: string;
-  aboveString?: string;
-}
 
 export type SectorEmissions = {
   [year: string]: {

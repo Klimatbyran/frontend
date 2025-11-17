@@ -31,6 +31,8 @@ import { ReportLandingPage } from "./pages/ReportLandingPage";
 import { RequestsDashboard } from "./pages/internal-pages/RequestsDashboard";
 import { TrendAnalysisDashboard } from "./pages/internal-pages/TrendAnalysisDashboard";
 import { NewsLetterArchivePage } from "./pages/NewslettersPage";
+import { RegionalRankedPage } from "./pages/RegionalRankedPage";
+import { CompaniesRankedPage } from "./pages/CompaniesRankedPage";
 
 export function AppRoutes() {
   const { currentLanguage } = useLanguage();
@@ -42,16 +44,18 @@ export function AppRoutes() {
     <Routes>
       {/* Language redirect for non-prefixed routes */}
       <Route path="*" element={<LanguageRedirect />} />
-
       {/* Root path - matches both /sv and /en */}
       <Route path={`${basePath}`} element={<LandingPage />} />
       <Route path={`${basePath}/`} element={<LandingPage />} />
-
       {/* Companies routes */}
       <Route path={`${basePath}/companies`} element={<CompaniesListPage />} />
       <Route
         path={`${basePath}/companies/sectors`}
         element={<CompaniesSectorsPage />}
+      />
+      <Route
+        path={`${basePath}/companies/ranked`}
+        element={<CompaniesRankedPage />}
       />
       <Route
         path={`${basePath}/companies/:id`}
@@ -65,7 +69,6 @@ export function AppRoutes() {
         path={`${basePath}/foretag/:slug-:id`}
         element={<CompanyDetailPage />}
       />
-
       {/* Protected Routes*/}
       <Route element={<ProtectedRoute />}>
         <Route
@@ -89,7 +92,10 @@ export function AppRoutes() {
           element={<TrendAnalysisDashboard />}
         />
       </Route>
-
+      <Route
+        path={`${basePath}/regional-overview`}
+        element={<RegionalRankedPage />}
+      />
       {/* Municipalities routes */}
       <Route
         path={`${basePath}/municipalities`}
@@ -103,12 +109,10 @@ export function AppRoutes() {
         path={`${basePath}/municipalities/:id`}
         element={<MunicipalityDetailPage />}
       />
-
       {/* About Pages */}
       <Route path={`${basePath}/about`} element={<AboutPage />} />
       <Route path={`${basePath}/methodology`} element={<MethodsPage />} />
       <Route path={`${basePath}/support`} element={<SupportPage />} />
-
       {/* Insights Pages */}
       <Route path={`${basePath}/articles`} element={<InsightsPage />} />
       <Route path={`${basePath}/reports`} element={<ReportsPage />} />
@@ -122,12 +126,10 @@ export function AppRoutes() {
         path={`${basePath}/newsletter-archive`}
         element={<NewsLetterArchivePage />}
       />
-
       <Route
         path={`${basePath}/learn-more/:id`}
         element={<LearnMoreArticle />}
       />
-
       {/* Other Pages */}
       <Route path={`${basePath}/privacy`} element={<PrivacyPage />} />
       <Route path={`${basePath}/products`} element={<ProductsPage />} />
@@ -135,7 +137,6 @@ export function AppRoutes() {
         path={`${basePath}/products/database-download-2025`}
         element={<DownloadsPage />}
       />
-
       {/* Error pages */}
       <Route path={`${basePath}/error/:code`} element={<ErrorPage />} />
       {/* This catch-all should now only handle invalid routes */}

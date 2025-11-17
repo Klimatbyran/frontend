@@ -17,11 +17,13 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "../ui/navigation-menu";
+import { stagingFeatureFlagEnabled } from "@/utils/ui/featureFlags";
 
 interface NavSubLink {
   label: string;
   path: string;
   shortcut?: string;
+  onlyShowOnStaging?: boolean;
 }
 
 interface NavLink {
@@ -29,6 +31,7 @@ interface NavLink {
   icon?: React.ReactElement;
   path: string;
   sublinks?: NavSubLink[];
+  onlyShowOnStaging?: boolean;
 }
 
 const NAV_LINKS: NavLink[] = [
@@ -37,6 +40,11 @@ const NAV_LINKS: NavLink[] = [
     icon: <BarChart3 className="w-4 h-4" aria-hidden="true" />,
     path: `/companies`,
     sublinks: [
+      {
+        label: "header.companiesRanked",
+        path: `/companies/ranked`,
+        onlyShowOnStaging: true,
+      },
       {
         label: "header.companiesSectors",
         path: `/companies/sectors`,
@@ -55,6 +63,11 @@ const NAV_LINKS: NavLink[] = [
       {
         label: "header.municipalitiesRanked",
         path: `/municipalities`,
+      },
+      {
+        label: "header.regionsRanked",
+        path: `/regional-overview`,
+        onlyShowOnStaging: true,
       },
       {
         label: "header.municipalitiesExplore",
@@ -150,9 +163,25 @@ export function Header() {
   const toggleMenu = useCallback(() => setMenuOpen((prev) => !prev), []);
   const { user } = useAuth();
   const { headerTitle, showTitle, setShowTitle } = useHeaderTitle();
+  const isStaging = stagingFeatureFlagEnabled();
 
   // Radix menu for React doesn't have a way to turn this off, simulate it by a really long delay
   const disableOpenOnHoverDelay = 999999;
+
+  // Filter nav links and sublinks based on feature flags
+  const filteredNavLinks = NAV_LINKS.filter(
+    (link) => !link.onlyShowOnStaging || isStaging,
+  ).map((link) => {
+    if (link.sublinks) {
+      return {
+        ...link,
+        sublinks: link.sublinks.filter(
+          (sublink) => !sublink.onlyShowOnStaging || isStaging,
+        ),
+      };
+    }
+    return link;
+  });
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -218,7 +247,7 @@ export function Header() {
           delayDuration={disableOpenOnHoverDelay}
         >
           <NavigationMenuList>
-            {NAV_LINKS.map((item) =>
+            {filteredNavLinks.map((item) =>
               item.sublinks ? (
                 <NavigationMenuItem key={item.path}>
                   <NavigationMenuTrigger
@@ -307,7 +336,7 @@ export function Header() {
                 onSearchResultClick={toggleMenu}
               />
               <LanguageButtons />
-              {NAV_LINKS.map((link) => (
+              {filteredNavLinks.map((link) => (
                 <div key={link.path} className="flex flex-col">
                   <LocalizedLink
                     to={link.path}

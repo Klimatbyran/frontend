@@ -1,5 +1,6 @@
 import type { paths } from "@/lib/api-types";
 import { DivideIcon as LucideIcon } from "lucide-react";
+import type { KPIValue } from "./entity-rankings";
 
 // Base company type from API
 export type CompanyDetails = NonNullable<
@@ -99,3 +100,13 @@ export interface CompanyEditComponentProps {
   onInputChange: (name: string, value: string) => void;
   formData: Map<string, string>;
 }
+
+// Extended Company type with KPI values
+export interface CompanyWithKPIs extends RankedCompany {
+  meetsParis?: boolean | null;
+  emissionsChangeFromBaseYear?: number | null;
+  [key: string]: unknown;
+}
+
+// KPI value type for companies (aliased to generic KPIValue for type safety)
+export type CompanyKPIValue = KPIValue<CompanyWithKPIs>;
