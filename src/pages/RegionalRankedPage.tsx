@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Map, List } from "lucide-react";
 
 import { useTranslation } from "react-i18next";
@@ -6,19 +6,22 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import MapOfSweden from "@/components/maps/SwedenMap";
 import regionGeoJson from "@/data/regionGeo.json";
 import { FeatureCollection } from "geojson";
-import { useRegionalKPIs } from "@/hooks/regions/useRegionalKPIs";
+import { useRegionalKPIs } from "@/hooks/regions/useRegionKPIs";
 import { useRankedRegionsURLParams } from "@/hooks/regions/useRankedRegionsURLParams";
-import { useRegionDataTransformation } from "@/hooks/regions/useRegionDataTransformation";
+import { useRegions, RegionData } from "@/hooks/regions/useRegions";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import RegionalInsightsPanel from "@/components/regions/RegionalInsightsPanel";
 import { KPIDataSelector } from "@/components/ranked/KPIDataSelector";
 import { RegionalRankedList } from "@/components/regions/RegionalRankedList";
+import { Region, RegionListItem } from "@/types/region";
+import { DataItem } from "@/components/maps/SwedenMap";
+import { toMapRegionName } from "@/utils/regionUtils";
 
 export function RegionalRankedPage() {
   const { t } = useTranslation();
   const regionalKPIs = useRegionalKPIs();
   const [geoData] = useState(regionGeoJson);
-  const { regions: regionNames, regionsData } = useRegions();
+  const { regionsData } = useRegions();
 
   const {
     selectedKPI,
@@ -28,8 +31,44 @@ export function RegionalRankedPage() {
     setViewModeInURL,
   } = useRankedRegionsURLParams(regionalKPIs);
 
-  const { regionEntities, mapData, regionsAsEntities } =
-    useRegionDataTransformation(regionNames, regionsData);
+  // Transform regions data from regional KPIs endpoint into required formats
+  const regionEntities: RegionListItem[] = useMemo(() => {
+    return regionsData.map((regionData: RegionData) => {
+      const mapName = toMapRegionName(regionData.name);
+      return {
+        name: regionData.name,
+        id: regionData.name,
+        displayName: regionData.name,
+        mapName,
+        historicalEmissionChangePercent:
+          regionData.historicalEmissionChangePercent,
+        meetsParis: regionData.meetsParis,
+      };
+    });
+  }, [regionsData]);
+
+  const mapData: DataItem[] = useMemo(() => {
+    return regionEntities.map((region) => ({
+      ...region,
+      id: region.mapName,
+      name: region.mapName,
+      displayName: region.displayName,
+    }));
+  }, [regionEntities]);
+
+  const regionsAsEntities: Region[] = useMemo(() => {
+    return regionEntities.map((region) => ({
+      id: String(region.id),
+      name: region.displayName,
+      emissions: null,
+      historicalEmissionChangePercent:
+        typeof region.historicalEmissionChangePercent === "number"
+          ? region.historicalEmissionChangePercent
+          : null,
+      meetsParis:
+        typeof region.meetsParis === "boolean" ? region.meetsParis : null,
+    }));
+  }, [regionEntities]);
 
   const regionalRankedList = (
     <RegionalRankedList
