@@ -15,7 +15,7 @@ import {
   Geometry,
   GeoJsonProperties,
 } from "geojson";
-import { MAP_COLORS as MAP_COLORS } from "./constants";
+import { MAP_COLORS } from "./constants";
 import { calculateGeoBounds } from "./utils/geoBounds";
 import { isMobile } from "react-device-detect";
 import { t } from "i18next";
