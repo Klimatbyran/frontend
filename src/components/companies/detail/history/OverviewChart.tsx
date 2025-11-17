@@ -68,12 +68,17 @@ export const OverviewChart: FC<OverviewChartProps> = ({
     return filterValidTotalData(data);
   }, [data]);
 
+  const firstDataYear = filteredData[0]?.year || 2000;
+
   // Merge data similar to municipality structure for tooltip compatibility
   const chartData = useMemo(() => {
-    return mergeChartDataWithApproximated(filteredData, approximatedData);
-  }, [filteredData, approximatedData]);
-
-  const firstDataYear = filteredData[0]?.year || 2000;
+    const merged = mergeChartDataWithApproximated(
+      filteredData,
+      approximatedData,
+    );
+    // Filter to only include data from firstDataYear onwards to prevent empty space
+    return merged.filter((d) => d.year >= firstDataYear);
+  }, [filteredData, approximatedData, firstDataYear]);
 
   const isFirstYear = companyBaseYear === filteredData[0]?.year;
 
