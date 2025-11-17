@@ -4,8 +4,6 @@ import * as Form from "@radix-ui/react-form";
 import { Title } from "@radix-ui/react-toast";
 import { useTranslation } from "react-i18next";
 
-
-
 export function SuggestEdit() {
   const { t } = useTranslation();
 
