@@ -2,7 +2,6 @@
  * Chart data filtering utilities
  */
 
-// TODO: Review if we want to continue filtering out the nulls and undefined values, today this will filter them out but connect the lines, so it may not be easily visible from the graph which years are missing data, but this will be a more understandable visual of the data we do have.
 export const filterValidTotalData = (data: any[]) => {
   const cleaned = data.filter((d) => d.total !== undefined && d.total !== null);
 
