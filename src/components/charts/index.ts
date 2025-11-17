@@ -50,5 +50,4 @@ export {
   useHiddenItems,
   useDataView,
   useTimeSeriesChartState,
-  useEmissionsChartState,
 } from "../../hooks/charts/useChartState";
