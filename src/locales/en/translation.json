@@ -82,7 +82,7 @@
       "municipalities": "the municipalities"
     },
     "reportCorrection": "Report a data correction",
-    "questionPlaceholder": "Please tell us what and the where",
+    "questionPlaceholder": "Please tell us what data value needs to be modified and where on site",
     "questionMissing": "Please enter a question",
     "submitQuestion": "Submit question",
     "emailTitle": "Suggestion for"
