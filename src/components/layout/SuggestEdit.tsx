@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { MessageSquareText } from "lucide-react";
 import * as Popover from "@radix-ui/react-popover";
 import * as Form from "@radix-ui/react-form";
@@ -9,9 +8,6 @@ import { useTranslation } from "react-i18next";
 
 export function SuggestEdit() {
   const { t } = useTranslation();
-
-  useEffect(() => {
-  }, []);
 
   return (
     <>
