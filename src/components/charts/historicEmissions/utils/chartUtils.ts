@@ -101,7 +101,7 @@ export const getXAxisProps = (
 // Y-axis styling utilities
 export const getYAxisProps = (
   currentLanguage: "sv" | "en",
-  domain: [number, "auto"] = [0, "auto"],
+  domain: [number, number | "auto"] = [0, "auto"],
 ) => ({
   stroke: "var(--grey)",
   tickLine: false,
