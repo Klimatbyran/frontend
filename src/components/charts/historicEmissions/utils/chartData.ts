@@ -3,17 +3,16 @@
  */
 
 export const filterValidTotalData = (data: any[]) => {
-  // Step 1: drop entries without total values
+  // drop entries without total values
   const cleaned = data.filter((d) => d.total !== undefined && d.total !== null);
 
   if (cleaned.length === 0) {
     return cleaned;
   }
 
-  // Step 2: find first data point with a strictly positive total value
   const firstPositiveIndex = cleaned.findIndex((d) => Number(d.total) > 0);
 
-  // If we have a positive value, remove preceding zero-value points
+  // remove preceding zero-value points
   if (firstPositiveIndex > 0) {
     return cleaned.slice(firstPositiveIndex);
   }
