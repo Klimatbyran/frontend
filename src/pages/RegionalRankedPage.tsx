@@ -6,9 +6,12 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import MapOfSweden from "@/components/maps/SwedenMap";
 import regionGeoJson from "@/data/regionGeo.json";
 import { FeatureCollection } from "geojson";
-import { useRegionalKPIs } from "@/hooks/regions/useRegionKPIs";
 import { useRankedRegionsURLParams } from "@/hooks/regions/useRankedRegionsURLParams";
-import { useRegions, RegionData } from "@/hooks/regions/useRegions";
+import {
+  useRegions,
+  RegionData,
+  useRegionalKPIs,
+} from "@/hooks/regions/useRegionKPIs";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import RegionalInsightsPanel from "@/components/regions/RegionalInsightsPanel";
 import { KPIDataSelector } from "@/components/ranked/KPIDataSelector";

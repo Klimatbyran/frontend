@@ -278,7 +278,7 @@ export const fetchNewsletters = async () => {
 
 export async function getRegionalKPIs() {
   try {
-    const { data, error } = await GET("/regions/kpis/", {});
+    const { data, error } = await GET("/regions/kpis", {});
     if (error) throw error;
     return data || [];
   } catch (error) {
