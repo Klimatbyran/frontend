@@ -1,7 +1,5 @@
 import { useState, useMemo } from "react";
 import { Text } from "@/components/ui/text";
-import { EmissionPeriod } from "@/types/emissions";
-import { interpolateScope3Categories } from "@/utils/data/chartData";
 import type { EmissionsHistoryProps, DataView } from "@/types/emissions";
 import { getChartData } from "../../../../utils/data/chartData";
 import { useTranslation } from "react-i18next";
@@ -28,11 +26,6 @@ import { isMobile } from "react-device-detect";
 export function EmissionsHistory({
   company,
   onYearSelect,
-  features = {
-    interpolateScope3: true,
-    guessBaseYear: true,
-    compositeTrend: true,
-  },
 }: EmissionsHistoryProps) {
   const { t } = useTranslation();
   const { getCategoryName, getCategoryColor } = useCategoryMetadata();
@@ -72,25 +65,14 @@ export function EmissionsHistory({
 
   const companyBaseYear = company.baseYear?.year;
 
-  // Only interpolate if the feature is enabled
   const processedPeriods = useMemo(
-    () =>
-      features.interpolateScope3
-        ? interpolateScope3Categories(
-            company.reportingPeriods as EmissionPeriod[],
-          )
-        : company.reportingPeriods,
-    [company.reportingPeriods, features.interpolateScope3],
+    () => company.reportingPeriods,
+    [company.reportingPeriods],
   );
 
   // Process data based on view
   const chartData = useMemo(
-    () =>
-      getChartData(
-        processedPeriods as EmissionPeriod[],
-        isAIGenerated,
-        isEmissionsAIGenerated,
-      ),
+    () => getChartData(processedPeriods, isAIGenerated, isEmissionsAIGenerated),
     [processedPeriods, isAIGenerated, isEmissionsAIGenerated],
   );
 

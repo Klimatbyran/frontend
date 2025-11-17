@@ -101,6 +101,42 @@ export function MunicipalitiesRankedPage() {
     );
   }
 
+  const municipalityRankedList = (
+    <RankedList
+      data={municipalities}
+      selectedDataPoint={asDataPoint({
+        label: selectedKPI.label,
+        key: selectedKPI.key as unknown as keyof Municipality,
+        unit: selectedKPI.unit,
+        description: selectedKPI.description,
+        higherIsBetter: selectedKPI.higherIsBetter,
+        nullValues: selectedKPI.nullValues,
+        isBoolean: selectedKPI.isBoolean,
+        booleanLabels: selectedKPI.booleanLabels,
+        formatter: (value: unknown) => {
+          if (value === null) {
+            return selectedKPI.nullValues || t("noData");
+          }
+
+          if (typeof value === "boolean") {
+            return value
+              ? t(
+                  `municipalities.list.kpis.${selectedKPI.key}.booleanLabels.true`,
+                )
+              : t(
+                  `municipalities.list.kpis.${selectedKPI.key}.booleanLabels.false`,
+                );
+          }
+
+          return `${(value as number).toFixed(1)}`;
+        },
+      })}
+      onItemClick={handleMunicipalityClick}
+      searchKey="name"
+      searchPlaceholder={t("rankedList.search.placeholder")}
+    />
+  );
+
   const renderMapOrList = (isMobile: boolean) =>
     viewMode === "map" ? (
       <div className={isMobile ? "relative h-[65vh]" : "relative h-full"}>
@@ -116,39 +152,7 @@ export function MunicipalitiesRankedPage() {
         />
       </div>
     ) : (
-      <RankedList
-        data={municipalities}
-        selectedDataPoint={asDataPoint({
-          label: selectedKPI.label,
-          key: selectedKPI.key as keyof Municipality,
-          unit: selectedKPI.unit,
-          description: selectedKPI.description,
-          higherIsBetter: selectedKPI.higherIsBetter,
-          nullValues: selectedKPI.nullValues,
-          isBoolean: selectedKPI.isBoolean,
-          booleanLabels: selectedKPI.booleanLabels,
-          formatter: (value: unknown) => {
-            if (value === null) {
-              return selectedKPI.nullValues || t("noData");
-            }
-
-            if (typeof value === "boolean") {
-              return value
-                ? t(
-                    `municipalities.list.kpis.${selectedKPI.key}.booleanLabels.true`,
-                  )
-                : t(
-                    `municipalities.list.kpis.${selectedKPI.key}.booleanLabels.false`,
-                  );
-            }
-
-            return `${(value as number).toFixed(1)}`;
-          },
-        })}
-        onItemClick={handleMunicipalityClick}
-        searchKey="name"
-        searchPlaceholder={t("rankedList.search.placeholder")}
-      />
+      municipalityRankedList
     );
 
   return (
@@ -199,41 +203,7 @@ export function MunicipalitiesRankedPage() {
       <div className="hidden lg:grid grid-cols-1 gap-6">
         <div className="grid grid-cols-2 gap-6">
           {renderMapOrList(false)}
-          {viewMode === "map" ? (
-            <RankedList
-              data={municipalities}
-              selectedDataPoint={asDataPoint({
-                label: selectedKPI.label,
-                key: selectedKPI.key as unknown as keyof Municipality,
-                unit: selectedKPI.unit,
-                description: selectedKPI.description,
-                higherIsBetter: selectedKPI.higherIsBetter,
-                nullValues: selectedKPI.nullValues,
-                isBoolean: selectedKPI.isBoolean,
-                booleanLabels: selectedKPI.booleanLabels,
-                formatter: (value: unknown) => {
-                  if (value === null) {
-                    return selectedKPI.nullValues || t("noData");
-                  }
-
-                  if (typeof value === "boolean") {
-                    return value
-                      ? t(
-                          `municipalities.list.kpis.${selectedKPI.key}.booleanLabels.true`,
-                        )
-                      : t(
-                          `municipalities.list.kpis.${selectedKPI.key}.booleanLabels.false`,
-                        );
-                  }
-
-                  return `${(value as number).toFixed(1)}`;
-                },
-              })}
-              onItemClick={handleMunicipalityClick}
-              searchKey="name"
-              searchPlaceholder={t("rankedList.search.placeholder")}
-            />
-          ) : null}
+          {viewMode === "map" ? municipalityRankedList : null}
         </div>
         <InsightsPanel
           municipalityData={municipalities}

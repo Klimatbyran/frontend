@@ -16,6 +16,7 @@ import {
   GeoJsonProperties,
 } from "geojson";
 import { MAP_COLORS as MAP_COLORS } from "./constants";
+import { calculateGeoBounds } from "./utils/geoBounds";
 import { isMobile } from "react-device-detect";
 import { t } from "i18next";
 import "leaflet/dist/leaflet.css";
@@ -111,6 +112,16 @@ function MapOfSweden({
   });
 
   const mapRef = useRef<L.Map | null>(null);
+
+  // Zoom limits to prevent excessive zooming
+  const MIN_ZOOM = 3;
+  const MAX_ZOOM = 10;
+
+  // Calculate bounds from geoData to constrain map panning
+  const mapBounds = useMemo(
+    () => calculateGeoBounds(geoData, { padding: 0.05 }),
+    [geoData],
+  );
 
   useEffect(() => {
     const handleResize = () => {
@@ -282,15 +293,18 @@ function MapOfSweden({
     );
   };
 
-  const renderZoomControls = () => (
-    <MapZoomControls
-      onZoomIn={handleZoomIn}
-      onZoomOut={handleZoomOut}
-      onReset={handleReset}
-      canZoomIn={true}
-      canZoomOut={true}
-    />
-  );
+  const renderZoomControls = () => {
+    const currentZoom = position.zoom;
+    return (
+      <MapZoomControls
+        onZoomIn={handleZoomIn}
+        onZoomOut={handleZoomOut}
+        onReset={handleReset}
+        canZoomIn={currentZoom < MAX_ZOOM}
+        canZoomOut={currentZoom > MIN_ZOOM}
+      />
+    );
+  };
 
   const onEachFeature = (
     feature: Feature<Geometry, GeoJsonProperties> | undefined,
@@ -362,6 +376,9 @@ function MapOfSweden({
         }}
         zoomControl={false}
         attributionControl={false}
+        maxBounds={mapBounds}
+        minZoom={MIN_ZOOM}
+        maxZoom={MAX_ZOOM}
         ref={mapRef}
         className="rounded-xl"
       >
