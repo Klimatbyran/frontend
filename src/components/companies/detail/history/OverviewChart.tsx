@@ -73,6 +73,8 @@ export const OverviewChart: FC<OverviewChartProps> = ({
     return mergeChartDataWithApproximated(filteredData, approximatedData);
   }, [filteredData, approximatedData]);
 
+  const firstDataYear = filteredData[0]?.year || 2000;
+
   const isFirstYear = companyBaseYear === filteredData[0]?.year;
 
   const legendItems = useMemo(() => {
@@ -86,7 +88,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({
   }, [t, approximatedData]);
 
   const ticks = generateChartTicks(
-    filteredData[0]?.year || 2000,
+    firstDataYear,
     chartEndYear,
     shortEndYear,
     currentYear,
@@ -136,7 +138,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({
             <XAxis
               {...getXAxisProps(
                 "year",
-                [filteredData[0]?.year || 2000, chartEndYear],
+                [firstDataYear, chartEndYear],
                 ticks,
                 createCustomTickRenderer(companyBaseYear),
               )}
