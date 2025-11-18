@@ -166,27 +166,25 @@ export function CompanyOverview({
             {sectorCode === "40" && <FinancialsTooltip />}
           </div>
 
-          <Text
-            className={cn(
-              "text-3xl md:text-4xl lg:text-6xl font-light tracking-tighter leading-none",
-              !calculatedTotalEmissions ? "text-grey" : "text-orange-2",
-            )}
-          >
-            {!calculatedTotalEmissions
-              ? t("companies.overview.noData")
-              : formatEmissionsAbsolute(
-                  calculatedTotalEmissions,
-                  currentLanguage,
-                )}
-            <span className="text-lg lg:text-2xl md:text-lg sm:text-sm ml-2 text-grey">
-              {t(calculatedTotalEmissions ? "emissionsUnit" : " ")}
-            </span>
-            {totalEmissionsAIGenerated && (
-              <span className="ml-2 absolute">
-                <AiIcon size="md" className="absolute top-0 " />
+          <div className="flex items-start gap-2">
+            <Text
+              className={cn(
+                "text-3xl md:text-4xl lg:text-6xl font-light tracking-tighter leading-none",
+                !calculatedTotalEmissions ? "text-grey" : "text-orange-2",
+              )}
+            >
+              {!calculatedTotalEmissions
+                ? t("companies.overview.noData")
+                : formatEmissionsAbsolute(
+                    calculatedTotalEmissions,
+                    currentLanguage,
+                  )}
+              <span className="text-lg lg:text-2xl md:text-lg sm:text-sm ml-2 text-grey">
+                {t(calculatedTotalEmissions ? "emissionsUnit" : " ")}
               </span>
-            )}
-          </Text>
+            </Text>
+            {totalEmissionsAIGenerated && <AiIcon size="md" />}
+          </div>
         </div>
 
         <div className="flex-1">
@@ -196,30 +194,28 @@ export function CompanyOverview({
             </Text>
             <CompanyOverviewTooltip yearOverYearChange={yearOverYearChange} />
           </div>
-          <Text className="text-3xl md:text-4xl lg:text-6xl font-light tracking-tighter leading-none">
-            {yearOverYearChange !== null ? (
-              <span
-                className={
-                  yearOverYearChange < 0 ? "text-orange-2" : "text-pink-3"
-                }
-              >
-                {formatPercentChange(
-                  yearOverYearChange,
-                  currentLanguage,
-                  false,
-                )}
-              </span>
-            ) : (
-              <span className="text-grey">
-                {t("companies.overview.noData")}
-              </span>
-            )}
-            {yearOverYearAIGenerated && (
-              <span className="ml-2 absolute">
-                <AiIcon size="md" className="absolute top-0" />
-              </span>
-            )}
-          </Text>
+          <div className="flex items-start gap-2">
+            <Text className="text-3xl md:text-4xl lg:text-6xl font-light tracking-tighter leading-none">
+              {yearOverYearChange !== null ? (
+                <span
+                  className={
+                    yearOverYearChange < 0 ? "text-orange-2" : "text-pink-3"
+                  }
+                >
+                  {formatPercentChange(
+                    yearOverYearChange,
+                    currentLanguage,
+                    false,
+                  )}
+                </span>
+              ) : (
+                <span className="text-grey">
+                  {t("companies.overview.noData")}
+                </span>
+              )}
+            </Text>
+            {yearOverYearAIGenerated && <AiIcon size="md" />}
+          </div>
         </div>
       </div>
 

@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   Tooltip,
@@ -21,6 +21,7 @@ export const AiIcon = ({
 }: AiIconProps) => {
   const { t } = useTranslation();
   const { i18n } = useTranslation();
+  const navigate = useNavigate();
   const currentLang = i18n.language;
   const sizeClasses = {
     sm: "w-4 h-3 rounded",
@@ -44,19 +45,40 @@ export const AiIcon = ({
     return iconElement;
   }
 
+  const url = `/${currentLang}/methodology?view=company`;
+
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    navigate(url);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    // Make it keyboard accessible like a link
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      e.stopPropagation();
+      navigate(url);
+    }
+  };
+
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Link
-            to={`/${currentLang}/methodology?view=company`}
-            className="inline-block"
+          <button
+            type="button"
+            onClick={handleClick}
+            onKeyDown={handleKeyDown}
+            role="link"
+            className="inline-block cursor-pointer border-none bg-transparent p-0 hover:opacity-80 transition-opacity"
+            aria-label={t("companies.overview.aiGeneratedData")}
           >
             {iconElement}
-          </Link>
+          </button>
         </TooltipTrigger>
         <TooltipContent>
-          <p>{t("companies.overview.aiGeneratedData")}</p>
+          <span>{t("companies.overview.aiGeneratedData")}</span>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
