@@ -11,7 +11,7 @@ author:
   name: "Ola Spännar"
   avatar: "/people/ola.jpg"
 relatedPosts: 
-- "carbon-law-from-2025" 
+- "carbon-law-from-2025"
 - "only-radical-futures-left"
 ---
 

@@ -10,8 +10,8 @@ language: "sv"
 author:
   name: "Alexandra Palmquist"
   avatar: "/people/alex.jpg"
-relatedPosts: 
-- "metod" 
+relatedPosts:
+- "metod"
 - "ai-process-del-1"
 ---
 

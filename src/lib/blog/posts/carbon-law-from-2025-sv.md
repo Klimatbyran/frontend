@@ -10,8 +10,8 @@ language: "sv"
 author:
   name: "Frida Berry Eklund"
   avatar: "/people/frida.jpg"
-relatedPosts: 
-- "metod" 
+relatedPosts:
+- "metod"
 - "utslappsberakning"
 ---
 

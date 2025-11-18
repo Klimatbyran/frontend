@@ -11,7 +11,7 @@ author:
   name: "Frida Berry Eklund"
   avatar: "/people/frida.jpg"
 relatedPosts:
-- "carbon-law-from-2025" 
+- "carbon-law-from-2025"
 - "2024-report"
 ---
 

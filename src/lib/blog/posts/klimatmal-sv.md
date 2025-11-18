@@ -1,6 +1,6 @@
 ---
-id: 'klimatmal' 
-title: "Analys av riksdagspartiernas klimatmål – sex av åtta partier missar helt Parisavtalets 15-gradersmål"
+id: "klimatmal"
+title: "Analys av riksdagspartiernas klimatmål – sex av åtta partier missar helt Parisavtalets 1,5-gradersmål"
 excerpt: ""
 date: "2022-09-01"
 readTime: "5 min"
@@ -10,8 +10,8 @@ language: "sv"
 author:
   name: "Ola Spännar"
   avatar: "/people/ola.jpg"
-relatedPosts: 
-- "utslappsberakning" 
+relatedPosts:
+- "utslappsberakning"
 - "metod"
 ---
 

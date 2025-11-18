@@ -1,17 +1,17 @@
 ---
-id: 'utslappsberakning' 
+id: "utslappsberakning"
 title: "Utsläppsberäkning av riksdagspartiernas politik"
-excerpt: "Utsläppsberäkning av riksdagspartiernas politik gällande tolv centrala klimatåtgärder. Bakom uträkningarna står Klimatkollen Världsnaturfonden WWF ClimateView Naturskyddsföreningen och Våra barns klimat. Beräkningarna visade att den nya regeringens politik kan öka utsläppen med 25 miljoner ton redan under mandatperioden 2022–2026."
+excerpt: "Utsläppsberäkning av riksdagspartiernas politik gällande tolv centrala klimatåtgärder. Bakom uträkningarna står Klimatkollen, Världsnaturfonden WWF, ClimateView, Naturskyddsföreningen och Våra barns klimat. Beräkningarna visade att den nya regeringens politik kan öka utsläppen med 25 miljoner ton redan under mandatperioden 2022–2026."
 date: "2022-09-01"
 readTime: "5 min"
 category: "analysis"
 image: "/images/blogImages/totala-utslapp-alla-partier.webp"
 language: "sv"
-author: 
+author:
   name: "Ola Spännar"
   avatar: "/people/ola.jpg"
-relatedPosts: 
-- "klimatmal" 
+relatedPosts:
+- "klimatmal"
 - "metod"
 ---
 

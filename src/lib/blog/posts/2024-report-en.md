@@ -10,7 +10,7 @@ language: "en"
 author:
   name: "Ola Spännar"
   avatar: "/people/ola.jpg"
-relatedPosts: 
+relatedPosts:
 - "carbon-law-from-2025"
 ---
 

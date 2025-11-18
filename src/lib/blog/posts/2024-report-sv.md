@@ -10,7 +10,7 @@ language: "sv"
 author:
   name: "Ola Spännar"
   avatar: "/people/ola.jpg"
-relatedPosts: 
+relatedPosts:
 - "sv-carbon-law-from-2025"
 - "utslappsberakning"
 ---

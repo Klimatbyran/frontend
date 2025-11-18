@@ -10,8 +10,8 @@ language: "sv"
 author:
   name: "Christian Landgren"
   avatar: "/people/christian.jpg"
-relatedPosts: 
-- "welcome" 
+relatedPosts:
+- "welcome"
 - "metod"
 ---
 

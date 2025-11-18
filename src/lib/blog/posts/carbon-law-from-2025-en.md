@@ -1,7 +1,7 @@
 ---
 id: "carbon-law-from-2025"
 title: "Q&A: Klimatkollen's adjusted Carbon Law emissions reduction trajectory"
-excerpt: "Answering questions related to Klimatkollen's white paper Applying Carbon Law From 2025; the method used to visualise how corporate emissions compare to the Paris Agreement on Klimatkollen.se."
+excerpt: "Answering questions related to Klimatkollen's white paper, Applying Carbon Law From 2025; the method used to visualise how corporate emissions compare to the Paris Agreement on Klimatkollen.se."
 date: "2025-06-23"
 readTime: "7 min"
 category: "methodology"
@@ -10,7 +10,7 @@ language: "en"
 author:
   name: "Frida Berry Eklund"
   avatar: "/people/frida.jpg"
-relatedPosts: 
+relatedPosts:
 - "metod"
 ---
 

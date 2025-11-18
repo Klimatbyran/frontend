@@ -10,8 +10,8 @@ language: "sv"
 author:
   name: "Frida Berry Eklund"
   avatar: "/people/frida.jpg"
-relatedPosts: 
-- "carbon-law-from-2025" 
+relatedPosts:
+- "carbon-law-from-2025"
 - "2024-report"
 ---
 
