@@ -18,6 +18,7 @@ import {
   formatPercentChange,
 } from "@/utils/formatting/localization";
 import useThrottle from "@/hooks/useThrottle";
+import FunFacts from "@/components/funFacts";
 
 export function LandingPageNew() {
   const { t } = useTranslation();
@@ -183,6 +184,7 @@ export function LandingPageNew() {
             />
           </div>
         </div>
+        <FunFacts />
       </div>
     </>
   );
