@@ -1,5 +1,18 @@
 ---
 id: "carbon-law-from-2025"
+title: "Q&A Klimatkollens justerade utsläppsbana för Carbon Law"
+excerpt: "Frågor och svar om Klimatkollens rapport Applying Carbon Law from 2025 och metoden vi använder för att visualisera företagens utsläpp jämfört med Parisavtalet."
+date: "2025-06-23"
+readTime: "7 min"
+category: "methodology"
+image: "/images/blogImages/2025_Carbon_Law.png"
+language: "sv"
+author:
+  name: "Frida Berry Eklund"
+  avatar: "/people/frida.jpg"
+relatedPosts: 
+- "metod" 
+- "utslappsberakning"
 ---
 
 [Läs rapporten](/reports/2025-06-19_ApplyingCarbonLawFrom2025.pdf) - framtagen i samarbete med: Johan Falk, Owen Gaffney och Exponential Roadmap Initiative

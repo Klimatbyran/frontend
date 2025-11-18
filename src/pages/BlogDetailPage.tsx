@@ -20,7 +20,6 @@ export function BlogDetailPage() {
   const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const { blogPost, loading, error } = useBlogPost(id!);
-  const blogPosts = useBlogPosts();
   const [copied, setCopied] = useState(false);
   const location = useLocation();
   const { isMobile } = useScreenSize();
@@ -60,7 +59,7 @@ export function BlogDetailPage() {
 
   const relatedPosts = blogPost.metadata.relatedPosts
     ? blogPost.metadata.relatedPosts
-        .map((relatedId) => blogPosts.find((post) => post.id === relatedId))
+        .map((relatedId) => useBlogPost(relatedId).blogPost?.metadata ?? null)
         .filter(Boolean)
     : [];
 

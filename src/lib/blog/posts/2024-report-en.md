@@ -1,5 +1,17 @@
 ---
 id: "2024-report"
+title: "Klimatkollens 2025 Report Overview"
+excerpt: "We reviewed the corporate climate reporting from 235 large companies for 2024 data and show why the emission reductions are too slow – and give three concrete recommendations for more transparent and effective climate reporting."
+date: "2025-07-07"
+readTime: "2 min"
+category: "analysis"
+image: "/images/reportImages/2024_bolagsklimatkollen.png"
+language: "en"
+author:
+  name: "Ola Spännar"
+  avatar: "/people/ola.jpg"
+relatedPosts: 
+- "carbon-law-from-2025"
 ---
 
 > **[New report on large companies’ climate reporting for 2024 data](/reports/2025-06-23_Bolagsklimatkollen.pdf)**  

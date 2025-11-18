@@ -1,5 +1,18 @@
 ---
 id: "2024-report"
+title: "Klimatkollens 2025-rapport - Översikt"
+excerpt: "Vi granskar klimatrapporteringen från 235 storbolag för 2024 data och visar varför utsläppsminskningarna går för långsamt – samt ger tre konkreta rekommendationer för mer transparent och effektiv klimatredovisning."
+date: "2025-07-07"
+readTime: "2 min"
+category: "analysis"
+image: "/images/reportImages/2024_bolagsklimatkollen.png"
+language: "sv"
+author:
+  name: "Ola Spännar"
+  avatar: "/people/ola.jpg"
+relatedPosts: 
+- "sv-carbon-law-from-2025"
+- "utslappsberakning"
 ---
 
 > **[Ny rapport: storbolagens klimatrapportering för 2024 data](/reports/2025-06-23_Bolagsklimatkollen.pdf)**  
