@@ -1,4 +1,6 @@
-// TODO: Consider breaking this out into types, and hooks rather than combine here 
+// TODO: Consider breaking this out into types, and hooks rather than combine here
+// TOdO: Add translations once copy is decided on
+// TODO: adjust colouring and images in follow-up PRs
 import React from "react";
 import {
   Target,
