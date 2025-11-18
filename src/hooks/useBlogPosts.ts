@@ -34,11 +34,14 @@ function getBlogPost(metadata: { id: string, displayLanguages: string[]} | undef
 
   // Fallback to any of the other display languages
   if(!rawMarkdown){
-    for (const l in metadata.displayLanguages.includes("all") ? SUPPORTED_LANGUAGES : metadata.displayLanguages) {
+    for (const l of metadata.displayLanguages.includes("all") ? SUPPORTED_LANGUAGES : metadata.displayLanguages) {
       if (l !== currentLanguage) {
         filePath = `/src/lib/blog/posts/${metadata.id}-${l}.md`;
         rawMarkdown = markdownFiles[filePath];
-        if (rawMarkdown) break;
+
+        if (rawMarkdown){
+          break;
+        } 
       }
     }
   }
