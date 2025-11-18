@@ -18,8 +18,69 @@ interface Dimensions {
   sectionHeight: number;
 }
 
+// Constants
+const MIN_AVAILABLE_HEIGHT = 200;
+const CONTROLS_SPACING = 120;
+const SCROLL_PADDING = 100;
+const RESTART_SCROLL_DELAY = 500;
+const ANIMATION_DURATION = 0.5;
+
 const clamp = (value: number, min: number, max: number) =>
   Math.min(Math.max(value, min), max);
+
+// Reusable action button component
+function ActionButton({
+  onClick,
+  label,
+  children,
+}: {
+  onClick: () => void;
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <motion.button
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={onClick}
+      className="absolute top-4 right-4 inline-flex items-center justify-center rounded-full h-10 px-6 py-2 text-sm font-light bg-black-2 text-white hover:opacity-80 active:ring-1 active:ring-white transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white z-10"
+      aria-label={label}
+    >
+      {children}
+    </motion.button>
+  );
+}
+
+// Progress indicator component
+function ProgressIndicator({
+  steps,
+  currentIndex,
+  isActive,
+}: {
+  steps: ScrollStep[];
+  currentIndex: number;
+  isActive: boolean;
+}) {
+  if (!isActive || currentIndex >= steps.length) return null;
+
+  return (
+    <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
+      {steps.map((_, index) => (
+        <div
+          key={index}
+          className={`h-1 rounded-full transition-all duration-300 ${
+            index === currentIndex
+              ? "w-8 bg-white"
+              : index < currentIndex
+                ? "w-8 bg-white/60"
+                : "w-1 bg-white/30"
+          }`}
+        />
+      ))}
+    </div>
+  );
+}
 
 export function ScrollAnimationSection({
   steps,
@@ -41,12 +102,11 @@ export function ScrollAnimationSection({
   const [isComplete, setIsComplete] = useState(false);
 
   // Measure real header height
-  const getHeaderHeight = () => {
+  const getHeaderHeight = useCallback(() => {
     if (typeof window === "undefined") return 0;
     const header = document.querySelector("header");
-    if (!header) return 0;
-    return header.getBoundingClientRect().height;
-  };
+    return header?.getBoundingClientRect().height ?? 0;
+  }, []);
 
   // Step index based on 0–1 progress
   const calculateStepIndex = useCallback(
@@ -72,8 +132,8 @@ export function ScrollAnimationSection({
 
       // Space available for the fixed content (just under header + room for controls)
       const availableHeight = Math.max(
-        windowHeight - headerHeight - 120,
-        200, // safety minimum
+        windowHeight - headerHeight - CONTROLS_SPACING,
+        MIN_AVAILABLE_HEIGHT,
       );
 
       const sectionHeight = availableHeight * steps.length;
@@ -93,7 +153,7 @@ export function ScrollAnimationSection({
     return () => {
       window.removeEventListener("resize", updateHeight);
     };
-  }, [isSkipped, steps.length]);
+  }, [isSkipped, steps.length, getHeaderHeight]);
 
   // Main scroll logic – we pin the content with position: fixed instead of sticky
   useEffect(() => {
@@ -176,19 +236,19 @@ export function ScrollAnimationSection({
     dimensions,
   ]);
 
-  const handleSkip = () => {
+  const handleSkip = useCallback(() => {
     setIsSkipped(true);
     setIsActive(false);
     setIsComplete(false);
 
     if (containerRef.current && typeof window !== "undefined") {
       const rect = containerRef.current.getBoundingClientRect();
-      const scrollTo = window.scrollY + rect.height + 100; // some padding
+      const scrollTo = window.scrollY + rect.height + SCROLL_PADDING;
       window.scrollTo({ top: scrollTo, behavior: "smooth" });
     }
-  };
+  }, []);
 
-  const handleRestart = () => {
+  const handleRestart = useCallback(() => {
     setIsComplete(false);
     setIsActive(false);
     setCurrentStepIndex(0);
@@ -197,36 +257,36 @@ export function ScrollAnimationSection({
       const rect = containerRef.current.getBoundingClientRect();
       const containerTop = window.scrollY + rect.top;
       window.scrollTo({
-        top: Math.max(0, containerTop - 100),
+        top: Math.max(0, containerTop - SCROLL_PADDING),
         behavior: "smooth",
       });
 
       setTimeout(() => {
         window.dispatchEvent(new Event("scroll"));
-      }, 500);
+      }, RESTART_SCROLL_DELAY);
     }
-  };
+  }, []);
 
   if (isSkipped) return null;
 
   const { headerHeight, availableHeight, sectionHeight } = dimensions;
 
-  // When not active (before/after), we still render the content in-flow once at the top
-  const inactiveStyle: React.CSSProperties = {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    height: `${availableHeight}px`,
-  };
-
-  const activeStyle: React.CSSProperties = {
-    position: "fixed",
-    top: `${headerHeight}px`,
-    left: 0,
-    width: "100vw",
-    height: `${availableHeight}px`,
-  };
+  // Compute styles based on active state
+  const contentStyle: React.CSSProperties = isActive
+    ? {
+        position: "fixed",
+        top: `${headerHeight}px`,
+        left: 0,
+        width: "100vw",
+        height: `${availableHeight}px`,
+      }
+    : {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        height: `${availableHeight}px`,
+      };
 
   return (
     <div
@@ -244,7 +304,7 @@ export function ScrollAnimationSection({
     >
       <div
         className="w-full flex items-center justify-center overflow-hidden"
-        style={isActive ? activeStyle : inactiveStyle}
+        style={contentStyle}
       >
         <AnimatePresence mode="wait">
           <motion.div
@@ -252,58 +312,31 @@ export function ScrollAnimationSection({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: ANIMATION_DURATION }}
             className="w-full px-4 md:px-8 lg:px-16 max-w-7xl mx-auto"
           >
             {steps[currentStepIndex].content}
           </motion.div>
         </AnimatePresence>
 
-        {/* Skip button (while scrolling through steps) */}
+        {/* Action buttons */}
         {isActive && currentStepIndex < steps.length - 1 && (
-          <motion.button
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={handleSkip}
-            className="absolute top-4 right-4 inline-flex items-center justify-center rounded-full h-10 px-6 py-2 text-sm font-light bg-black-2 text-white hover:opacity-80 active:ring-1 active:ring-white transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white z-10"
-            aria-label="Skip animation"
-          >
+          <ActionButton onClick={handleSkip} label="Skip animation">
             Skip
-          </motion.button>
+          </ActionButton>
         )}
 
-        {/* Restart button - show when on last step */}
         {currentStepIndex === steps.length - 1 && (
-          <motion.button
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={handleRestart}
-            className="absolute top-4 right-4 inline-flex items-center justify-center rounded-full h-10 px-6 py-2 text-sm font-light bg-black-2 text-white hover:opacity-80 active:ring-1 active:ring-white transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white z-10"
-            aria-label="Restart animation"
-          >
+          <ActionButton onClick={handleRestart} label="Restart animation">
             Restart
-          </motion.button>
+          </ActionButton>
         )}
 
-        {/* Progress indicator - show when active and not on last step */}
-        {isActive && currentStepIndex < steps.length - 1 && (
-          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
-            {steps.map((_, index) => (
-              <div
-                key={index}
-                className={`h-1 rounded-full transition-all duration-300 ${
-                  index === currentStepIndex
-                    ? "w-8 bg-white"
-                    : index < currentStepIndex
-                      ? "w-8 bg-white/60"
-                      : "w-1 bg-white/30"
-                }`}
-              />
-            ))}
-          </div>
-        )}
+        <ProgressIndicator
+          steps={steps}
+          currentIndex={currentStepIndex}
+          isActive={isActive}
+        />
       </div>
     </div>
   );
