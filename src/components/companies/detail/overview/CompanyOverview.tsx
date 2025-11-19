@@ -94,6 +94,8 @@ export function CompanyOverview({
         "companySectors",
         "companyMissingData",
         "yearOverYearChange",
+        "onTrackForParis",
+        "historicVsParis",
       ]}
     >
       <div className="flex items-start justify-between mb-4 md:mb-12">

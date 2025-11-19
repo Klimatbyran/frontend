@@ -1,33 +1,48 @@
-# Varför den historiska procentförändringen inte motsvarar Parisbanan
+# Hur kan de vara ”i linje med Paris” om deras historiska % är lägre?
+Det kan verka märkligt att en historisk förändring som **–4 % per år** kan vara i linje med Paris när det ser så annorlunda ut jämfört med Parislinjens **–11,72 % per år**.  
+Förklaringen är enkel: dessa siffror beskriver **olika saker**.
 
-Det är vanligt att undra varför en kommun eller ett företag kan ha en historisk minskning på till exempel **–4 % per år**, medan Paris-banan kräver **–11,72 % per år**, och ändå bedöms som “i linje”. Dessa siffror mäter olika saker och kan inte jämföras direkt.
+## 1. En jordhög som en koldioxidbudget
+Föreställ dig att du har en **jordhög på 300 kg** som du måste flytta inom **3 timmar** innan regnet kommer.  
+Dessa 300 kg är din **koldioxidbudget**: en total mängd som måste hanteras under en bestämd tidsperiod.
 
-## Historisk % = Dåtidens beteende
-Den historiska takten visar hur utsläppen har förändrats **i procent** under tidigare år.  
-Det är ett exponentiellt mått (t.ex. –4 % per år 2015–2023) och beskriver dåtida utveckling — inte den framtida bana som krävs.
+## 2. Den procentbaserade planen (Carbon Law)
+En trädgårdsexpert ger dig en plan:
 
-## Trendlina (LAD) = Framtida ton, inte procent
-Vår trendmodell uppskattar framtida utsläpp i **ton per år**, inte i procent.  
-En fast minskning i ton blir en större procentuell minskning när utsläppen är låga, så trendlina kommer aldrig att se ut som en jämn –11,72 %-kurva.
+> ”Försök att ta bort **cirka 12 %** av det som återstår var tionde minut för att hinna klart i tid.”
 
-Det innebär att historisk % och trendlina-% är fundamentalt olika från Parisbanan.
+Detta är en **procentbaserad bana** — stora borttagningar i början, mindre senare.
 
-## Parisbana = Krävd framtida minskning
-Carbon Law beskriver hur utsläppen *bör* minska från 2025 och framåt för att vara förenlig med ett 1,5°C-mål. De –11,72 % per år gäller **framtiden**, inte historiken.
+Och det är **en möjlig väg** som både skulle rensa hela högen och hålla dig inom tidsgränsen.
 
-## Varför man ändå kan vara “i linje”
-Parisanpassning baseras på **totala utsläpp mellan 2025 och 2050**, inte på att följa en viss procentuell minskning varje år.  
-Även med en långsammare historisk takt kan den framtida trenden ändå ge **lägre totala utsläpp** än den Paris-anpassade budgeten. I så fall är aktören *i linje*.
+## 3. Din förväntade bana (trendlinjen)
+Från tidigare projekt vet du ungefär hur du brukar arbeta:
 
-## Enkel liknelse
-Att spara 10 % av inkomsten varje månad är idealet.  
-Men det viktigaste är **hur mycket du har sparat vid årets slut**. Även om sparandet varierar — vissa månader mindre, andra mer — kan du ändå nå målet.
+- du fyller en skottkärra med **cirka 10 kg jord var tionde minut**,  
+- och du kan hålla detta tempo jämnt.
 
-På samma sätt gäller att:  
-**Totala utsläpp spelar större roll än exakta procentsiffror år för år.**
+Detta är en **fast absolut minskning**, inte en procentuell. Det skapar en **rak trendlinje**, precis som LAD-trendlinjen i våra utsläppsberäkningar.
 
-## Varför långsamma minskningar idag leder till brantare minskningar senare
-Den Paris-anpassade utsläppsbudgeten är fast.  
-Om en aktör minskar utsläppen **långsamt i början**, krävs **betydligt brantare minskningar** senare för att hålla sig inom budgeten. Till slut kan det bli nästan omöjligt att hinna ikapp.
+I början är 10 kg av 300 kg bara **ungefär 3 %** — mycket lägre än expertens rekommenderade 12 %.  
+Men när högen krymper blir samma 10 kg **5 %, 8 %, 12 %, 20 %**, och så vidare.
 
-Det liknar att skjuta upp sparandet: om du inte sparar något under årets första månader måste du spara mycket mer varje återstående månad — eller riskera att inte nå målet alls.
+## 4. Det som verkligen avgör: den totala mängden
+Efter 3 timmar är det bara en sak som avgör om du lyckats:
+
+**Flyttade du alla ~300 kg?**
+
+Om dina jämna 10 kg var tionde minut räcker för att tömma hela högen i tid, så har du lyckats — även om dina tidiga procenttal var långt under 12 %.
+
+Detta speglar hur vi bedömer om en organisation är på väg att linjera med Paris:
+- Parislinjen ger en **referensbana i procent**,  
+- men det som räknas är om **de totala utsläppen 2025–2050** håller sig inom den fastställda **koldioxidbudgeten** och når nettonoll.
+
+En linjär trendlinje med stabila absoluta minskningar kan fortfarande hålla den totala mängden tillräckligt låg, även om den historiska procentförändringen ser liten ut.
+
+## 5. När det inte skulle fungera
+Detta fungerar bara om de **absoluta minskningarna är tillräckligt stora**.
+
+Om du bara tog bort **5 kg var tionde minut** i stället för 10 kg skulle du inte hinna tömma högen i tid —  
+på samma sätt som för små utsläppsminskningar inte räcker för att hålla sig inom en Parisanpassad koldioxidbudget.
+
+För en mer detaljerad förklaring, se [metodsidan](#).

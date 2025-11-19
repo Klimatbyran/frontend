@@ -1,67 +1,31 @@
-# How We Decide If a Company Is “On Track for Paris”
+# How We Calculate “On Track for Paris”
 
-To understand whether a company or municipality is aligned with the Paris Agreement, we look at their **total emissions from 2025 to 2050**. This total amount acts as an emissions **budget**. If they stay under this budget, they are considered *On Track* for Paris.
+“On Track for Paris” means an organisation’s **total projected emissions from 2025–2050** fit within a Paris-aligned carbon budget.
 
-We calculate this using two paths: one from the Paris-aligned Carbon Law, and one based on the organisation’s own emissions trend.
+We begin with a 2025 value for the organisation’s emissions. If the most recent measured year is earlier, we estimate 2025 using the historical trend.
 
-## The Paris-Aligned “Carbon Budget”
+This starting point is used for both:
+- the **Carbon Law pathway**, and  
+- the **trendline projection**
+so that both paths are directly comparable.
 
-The Carbon Law says emissions need to fall by **11.72% every year**. This creates a smooth exponential downward curve.
+### 1. Paris Path (Carbon Law)
+We calculate a Paris-aligned pathway using **–11.72% per year** (Carbon Law).  
+The *total* emissions allowed along this curve form a **carbon budget** for 2025–2050.
 
-When we add up all the emissions on this curve from 2025–2050, we get the organisation’s **Paris-aligned carbon budget** – the maximum amount of emissions they can “spend” over this period and still be compatible with a 1.5°C pathway.
+### 2. Trendline Projection
+We estimate future emissions with a **linear LAD trendline**, based on historical data. This gives a **steady change in tonnes per year** rather than a fixed percentage.  
+We extend this trendline from 2025 to 2050 and sum the **total projected emissions**.
 
-## The Organisation’s Trend Line
+### 3. Compare the Totals
+Paris alignment is determined by comparing the entity's:
 
-To project future emissions, we use a simple trend line (LAD) based on how emissions have changed in **tonnes per year** historically. This produces a straight-line forecast of future emissions in absolute terms, not a fixed % per year.
+- **Trendline total emissions (2025–2050)**  
+- **Total carbon budget (2025–2050)**
 
-We then add up the trendline values from 2025–2050 to get the **projected total emissions**.
+If the trendline total is **lower** than the budget, the organisation is marked as **On Track for Paris**.  
+If it is **higher**, it is **Not On Track**.
 
-## How We Determine “On Track”
+This method evaluates the **full emissions pathway**, not whether each year matches the –11.72% rate.
 
-We compare the two totals:
-
-- **If total projected emissions < Paris-aligned budget → the organisation is “On Track”.**
-- **If total projected emissions > Paris-aligned budget → the organisation is “Not On Track”.**
-
-This judgement is based on **total emissions over time**, not on whether the organisation matches the Carbon Law curve every single year.
-
-## Analogy: Saving 10% of your salary every month
-
-Imagine you earn 30,000 SEK each month and set yourself a goal:
-
-- “I want to save **10% every month**,”  
-- which would give you **36,000 SEK per year** if you follow it exactly.
-
-But in real life you might:
-
-- save only 5% some months,
-- save 20% in others,
-- and maybe skip saving in a difficult month.
-
-In the end, what matters most is:
-
-- **How much you have saved in total by the end of the year**, not whether every month was exactly 10%.
-
-If you end the year with **more than 36,000 SEK saved**, then *on average* your savings rate over the year has been at least as strong as 10% – even if it didn’t look like 10% each month.
-
-Our Paris calculation works in a similar way:
-
-- Carbon Law’s **11.72% per year** is like a “save 10% every month” rule.
-- The **Paris carbon budget** is like the “36,000 SEK by the end of the year” target.
-- The organisation’s **trendline emissions** are like what they actually save and spend in each month.
-
-If the **total emissions 2025–2050 are lower than the Paris carbon budget**, then in hindsight their *effective* average reduction over the period has been at least as strong as the Carbon Law pathway, even if the year-by-year % changes were uneven and did not look like a smooth 11.72% curve.
-
-## Simple Visual Summary
-      PARIS ALIGNED PATH (Carbon Law)
-      ↓ 11.72% per year
-      → Add up all emissions 2025–2050 = Allowed Total
-
-      COMPANY TREND LINE
-      ↓ Based on past data in tonnes/year
-      → Add up projected emissions 2025–2050 = Projected Total
-
-COMPARE:
-      Is Projected Total < Allowed Total?
-      ✔ YES → On Track
-      ✘ NO  → Not On Track
+For a deeper explanation, see the [Methods page](#).

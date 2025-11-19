@@ -1,33 +1,47 @@
-# Why Historic Percentage Change Does Not Match the Paris Path
+# How Can They Be “On Track for Paris” If Their Historic % Is Lower?
+It may seem strange that a historic change like **–4% per year** can be on track when it looks so different from the Paris Path of **–11.72% per year**.  
+The reason is simple: these numbers describe **different things**.
 
-It is common to wonder why a municipality or company might have a historic reduction rate of, for example, **–4% per year**, while the Paris-aligned Carbon Law requires **–11.72% per year**, and yet still be assessed as “On Track”. These numbers measure different things and cannot be compared directly.
+## 1. A Dirt Pile as a Carbon Budget
+Imagine you have a **300 kg pile of dirt** you must move within **3 hours** before the rain arrives.  
+That 300 kg is your **carbon budget**: a total amount that must be dealt with over a fixed time period.
 
-## Historic % Change = Past Behaviour
-The historic rate shows how emissions have changed **in percentage terms** in the past.  
-It is an exponential measure (e.g., –4% per year from 2015–2023) and tells us something about past performance — not about the future pathway.
+## 2. The Percentage-Based Plan (Carbon Law)
+A landscape expert gives you a plan:
 
-## Trend Line (LAD) = Future Tonnes, Not Percentages
-Our trend model predicts future emissions in **tonnes per year**, not percentages.  
-A fixed drop in tonnes becomes a larger percentage as emissions get smaller, so the trend line will never resemble a smooth –11.72% curve.
+> “Aim to remove **about 12%** of what remains every 10 minutes in order to clear the dirt in time.”
 
-This means the historic % and the trend line % are fundamentally different from the Paris % path.
+This is a **percentage-based pathway** — large removals at the beginning, smaller ones later.
 
-## Paris Path = Required Future % Change
-Carbon Law describes how emissions *should* fall from 2025 onward to stay compatible with a 1.5°C carbon budget. That –11.72% per year is a **future requirement**, not a measure of the past.
+And it is **one path** that would both clear all the dirt and stay within the 3-hour limit.  
 
-## Why an Organisation Can Still Be “On Track”
-Paris alignment is based on **total emissions between 2025 and 2050**, not on matching a specific yearly percentage.  
-Even with a slower historic % rate, the future trend may still result in **lower total cumulative emissions** than the Paris-aligned carbon budget allows. If the total stays below that budget, the organisation is considered *On Track*.
+## 3. Your Expected Path (Trendline)
+From past projects, you know your natural pace:
 
-## Quick Analogy
-Saving 10% of your income every month is the ideal plan.  
-But what matters most is **how much you saved by the end of the year**. Even with uneven saving patterns — some low months, some high months — you can still reach or exceed the yearly goal.
+- you fill a wheelbarrow with **about 10 kg of dirt every 10 minutes**,  
+- and you can keep this up steadily.
 
-Paris alignment works the same way:  
-**Total emissions matter more than matching the exact percentage every year.**
+This is a **fixed absolute reduction**, not a percentage. It forms a **straight-line trend**, just like the LAD trendline in our emissions calculations.
 
-## Why Slow Reductions Today Mean Steeper Cuts Later
-The Paris-aligned carbon budget is fixed.  
-If an organisation reduces emissions **more slowly in the early years**, meeting the same total budget later requires **much sharper reductions**. At some point, delaying reductions can make the required catch-up nearly impossible.
+At the beginning, 10 kg out of 300 kg is only **around 3%**—much lower than the expert’s recommended 12%. But as the pile shrinks, the same 10 kg becomes **5%, 8%, 12%, 20%**, and so on.
 
-This is the same as postponing savings: if you do not save in the first half of the year, the remaining months require much higher savings to reach the yearly goal — or the target becomes unrealistic.
+## 4. What Really Matters: The Total Removed
+After 3 hours, only one thing determines success:
+
+**Did you move all ~300 kg?**
+
+If your steady 10 kg every 10 minutes is enough to clear the entire pile in time, you succeeded—even though your early percentages were far below 12%.
+
+This mirrors how we judge if an organisation is on track to be Paris aligned:
+- the Paris Path gives a **reference percentage curve**,  
+- but what counts is whether **total emissions from 2025–2050** stay within the defined **carbon budget** and they reach net zero.
+
+A linear trendline with steady absolute reductions can still keep the total low enough, even if the historic percentage looks small.
+
+## 5. When It Would Fail
+This only works if the **absolute reductions are large enough**.
+
+If you were removing only **5 kg every 10 minutes** instead of 10 kg, you wouldn’t clear the pile in time —  
+just as too-small emission cuts would fail to stay within the Paris-aligned carbon budget.
+
+For a deeper explanation, see the [Methods page](#).

@@ -1,66 +1,31 @@
-# Hur vi avgör om ett företag eller en kommun är “i linje med Parisavtalet”
+# Hur vi beräknar ”På väg att nå Paris”
 
-För att bedöma om en aktör följer Parisavtalet tittar vi på deras **totala utsläpp mellan 2025 och 2050**. Denna mängd fungerar som en utsläpps-**budget**. Håller man sig under denna budget anses man vara *i linje med Parisavtalet*.
+”På väg att nå Paris” betyder att en organisations **sammanlagda prognostiserade utsläpp mellan 2025–2050** ryms inom en Parisanpassad koldioxidbudget.
 
-Vi beräknar detta genom att jämföra två olika utsläppsvägar: en Paris-anpassad bana och en trendbaserad prognos.
+Vi utgår från ett utsläppsvärde för år 2025. Om det senaste mätåret ligger tidigare, skattar vi 2025-värdet utifrån den historiska trenden.
 
-## Paris-anpassad “koldioxidbudget”
+Detta startvärde används både för:
+- **Carbon Law-kurvan**, och  
+- **trendlinjeprognosen**,  
+så att båda utvecklingsvägarna kan jämföras direkt.
 
-Enligt Carbon Law behöver utsläppen minska med **11,72 % varje år**. Detta skapar en jämn, exponentiellt nedåtgående kurva.
+### 1. Parislinjen (Carbon Law)
+Vi beräknar en Parisanpassad utvecklingsväg med **–11,72 % per år** enligt Carbon Law.  
+De *totala* utsläppen längs denna kurva utgör en **koldioxidbudget** för 2025–2050.
 
-När vi summerar alla utsläpp på denna kurva mellan 2025–2050 får vi aktörens **Paris-anpassade utsläppsbudget** – den maximala mängd utsläpp som kan “användas” under perioden och ändå vara förenlig med ett 1,5°C-mål.
+### 2. Trendlinjeprognos
+Vi uppskattar framtida utsläpp med en **linjär LAD-trendlinje**, baserad på historiska data. Den visar en **jämn förändring i ton per år** snarare än en fast procent.  
+Vi förlänger denna trendlinje från 2025 till 2050 och summerar de **totala prognostiserade utsläppen**.
 
-## Aktörens trendlina
+### 3. Jämför totalsiffrorna
+Parislinjen bedöms genom att jämföra organisationens:
 
-För att uppskatta framtida utsläpp använder vi en enkel trendlina (LAD) baserad på hur utsläppen historiskt har förändrats i **ton per år**. Detta ger en rak prognos av framtida utsläpp i absoluta tal, inte en fast procent per år.
+- **Trendlinjens totala utsläpp (2025–2050)**  
+- **Totala koldioxidbudget (2025–2050)**
 
-Vi summerar sedan trendlinans värden från 2025–2050 för att få aktörens **prognostiserade totala utsläpp**.
+Om trendlinjens total är **lägre** än budgeten markeras organisationen som **På väg att nå Paris**.  
+Om den är **högre** markeras den som **Inte på väg att nå Paris**.
 
-## Hur vi avgör “i linje”
+Metoden bedömer alltså **hela utsläppsbanan**, inte om varje enskilt år matchar –11,72 %.
 
-Vi jämför de två totalsummorna:
-
-- **Om prognostiserade utsläpp < Paris-budget → “I linje med Parisavtalet”.**
-- **Om prognostiserade utsläpp > Paris-budget → “Ej i linje”.**
-
-Bedömningen baseras på **totala utsläpp över tid**, inte på om aktören följer Carbon Law-kurvan exakt år för år.
-
-## Liknelse: Spara 10 % av lönen varje månad
-
-Tänk att du tjänar 30 000 kr i månaden och sätter upp ett mål:
-
-- “Jag ska spara **10 % varje månad**”,  
-- vilket skulle ge **36 000 kr per år** om du följer det exakt.
-
-Men i verkligheten kanske du:
-
-- bara sparar 5 % vissa månader,
-- sparar 20 % andra månader,
-- och någon månad sparar du ingenting.
-
-Till slut är det viktigaste:
-
-- **Hur mycket du har sparat totalt vid årets slut**, inte om varje månad landade exakt på 10 %.
-
-Om du vid årets slut har sparat **mer än 36 000 kr**, betyder det att din *genomsnittliga* sparnivå över året i praktiken har varit minst lika stark som 10 %, även om den inte såg ut som 10 % varje enskild månad.
-
-Vår Parisbedömning fungerar på ett liknande sätt:
-
-- Carbon Laws **11,72 % per år** är som regeln “spara 10 % varje månad”.
-- Den **Paris-anpassade utsläppsbudgeten** motsvarar målet “36 000 kr sparade vid årets slut”.
-- Aktörens **trendlina** motsvarar hur mycket de faktiskt “sparar” eller “använder” varje år.
-
-Om de **totala utsläppen 2025–2050 är lägre än Paris-budgeten** innebär det i efterhand att deras *effektiva* genomsnittliga minskning över perioden har varit minst lika stark som Parisbanan, även om procenttalen år för år var ojämna och inte följde en perfekt 11,72 %-kurva.
-
-## Enkel visuell översikt
- PARISBUDGET (Carbon Law)
- ↓ 11,72 % varje år
- → Summera utsläpp från 2025-2050 = Tillåten total
-
- TRENDLINA (aktör)
- ↓ Baserad på ton/år historiskt
- → Summera utsläpp från 2025-2050  = Prognostiserad total
-
-JÄMFÖR:
-Om Prognostiserad Total < Tillåten Total → ✔ I linje
-Om Prognostiserad Total > Tillåten Total → ✘ Ej i linje
+För en mer detaljerad förklaring, se [Metodsidan](#).
