@@ -12,7 +12,7 @@ import { CalculationsContent } from "./content/CalculationsContent";
 import { CarbonLawContent } from "./content/CarbonLaw";
 import { MunicipalityDataOverviewContent } from "./content/MunicipalityDataOverview";
 import { MunicipalityKPIsContent } from "./content/MunicipalityKPIsContent";
-import { RelatableNumbersContent } from "./content/RelatableNumbers";
+import { RelatableNumbersContent } from "@/components/methods/content/RelatableNumbers";
 import { ParisAlignmentMethodContent } from "./content/OnTrackForParisContent";
 import { TrendlineContent } from "./content/TrendLineMethodContent";
 import { InterpretingOnTrackContent } from "./content/InprepretingOnTrackContent";
