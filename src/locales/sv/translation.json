@@ -426,6 +426,68 @@
           "text": "Läs mer om Applying Carbon Law From 2025 från Klimatkollens white paper."
         }
       },
+      "trendline": {
+        "title": "Hur vi beräknar trendliniens utveckling",
+        "paragraph1": "Trendlina visar hur en organisations utsläpp förväntas utvecklas baserat på historiska data. Det är ingen prognos över planerade åtgärder, utan en statistisk fortsättning av tidigare beteende.",
+        "paragraph2": "Trendlina används till två saker:\n1. Att uppskatta saknade, nyare år (till exempel om de senaste rapporterade utsläppen är från 2022 men vi behöver värden för 2023–2025).\n2. Att ta fram en projektion av utsläppen 2025–2050 för att kunna bedöma Paris-linjens uppfyllelse.",
+        "whenCalculated": {
+          "title": "4.1 – När beräknar vi en trendlinje?",
+          "paragraph1": "En trendlinje beräknas bara när det finns tillräckligt mycket giltig historisk data för att ge en meningsfull projektion.",
+          "companies": {
+            "intro": "För företag beräknar vi en trendlina endast om:",
+            "point1": "det finns minst tre år med giltiga utsläppsdata efter filtrering utifrån basår,",
+            "point2": "vi kan identifiera en sammanhängande utsläppsserie (med prioritet på scope 3, annars scope 1 och 2), och",
+            "point3": "den kvarvarande datamängden efter filtrering är tillräckligt stor för att ge en robust trend."
+          },
+          "municipalities": {
+            "intro": "För kommuner:",
+            "point1": "använder vi utsläppsdata från och med 2015, i linje med perioden efter Parisavtalets tillkomst, och",
+            "point2": "centrerar vi regressionen kring det senast observerade året för att förbättra den numeriska stabiliteten."
+          },
+          "paragraph2": "Om en organisation inte uppfyller dessa krav beräknas ingen trendlinje, och vi kan då inte bedöma om den är i linje med Parisavtalet."
+        },
+        "whyLad": {
+          "title": "4.2 – Varför använder vi LAD (Least Absolute Deviations)?",
+          "paragraph1": "Vi använder LAD (Least Absolute Deviations), eller medianregression, för att göra trendlinjen mer robust och tillförlitlig.",
+          "point1": "LAD är mindre känslig för extremvärden än vanlig minsta kvadrat-regression.",
+          "point2": "Metoden hanterar verkliga variationer och hopp i klimatdata bättre.",
+          "point3": "Den fångar den långsiktiga riktningen istället för att reagera starkt på enskilda års avvikelser.",
+          "point4": "Den ger en jämn årlig förändring i ton per år, istället för att tvinga fram en fast procentuell förändring.",
+          "paragraph2": "Detta ligger i linje med vårt mål att fånga det underliggande beteendet i utsläppen, snarare än år-för-år-brus."
+        },
+        "howComputed": {
+          "title": "4.3 – Hur beräknas trendlinjen?",
+          "paragraph1": "Trendlinjen med LAD skapas genom att anpassa en rak linje till historiska utsläppsdata, där den absoluta avvikelsen mot varje år minimeras.",
+          "step1": "Vi identifierar användbara historiska utsläppsdata (filtrerade utifrån basår och scope-logik för företag, eller från 2015 och framåt för kommuner).",
+          "step2": "Vi centrerar åren kring det senast observerade året för att förbättra numerisk stabilitet och jämförbarhet.",
+          "step3": "Vi använder LAD/medianregression för att uppskatta lutningen (förändringen i ton per år).",
+          "step4": "Vi förankrar trendlinjen vid det senast rapporterade utsläppsvärdet så att modellen kopplas samman sömlöst med den senaste verkliga datapunkten.",
+          "step5": "Vi tillämpar ett nollgolv så att projicerade värden aldrig blir negativa.",
+          "paragraph2": "Slutresultatet är en lutning i ton per år (till exempel −1 540 ton per år) som anger den förväntade årliga förändringen.",
+          "paragraph3": "Vi använder sedan denna lutning för att skapa uppskattade värden fram till 2025 och för att projicera utsläppen vidare till 2050. När nya verkliga utsläppsdata blir tillgängliga för kommande år ersätter de de modellerade värdena, och den återstående framtida trenden räknas om utifrån den uppdaterade historiken."
+        },
+        "represents": {
+          "title": "4.4 – Vad representerar trendlinjen?",
+          "paragraph1": "Sammanfattningsvis representerar trendlinjen:",
+          "point1": "en linjär fortsättning av tidigare beteende,",
+          "point2": "en projektion av absolut årlig förändring (ton per år), inte en fast procentsats,",
+          "point3": "en uppskattning av hur framtida utsläpp kan se ut om inga större förändringar sker, och",
+          "point4": "en nödvändig komponent för att beräkna totala utsläpp 2025–2050 i Paris-bedömningen.",
+          "paragraph2": "Trendlinjen representerar inte:",
+          "notPoint1": "en prognos över specifika planerade klimatåtgärder,",
+          "notPoint2": "en garanti för att en organisation kommer att uppfylla regelverk eller mål, eller",
+          "notPoint3": "ett ställningstagande för att organisationens nuvarande bana är önskvärd.",
+          "paragraph3": "Trendlinjen svarar helt enkelt på frågan: ”Om organisationen fortsätter som hittills, hur ser den förväntade utsläppskurvan ut framåt?”"
+        },
+        "whyWorks": {
+          "title": "4.5 – Varför fungerar en linjär trendlinje för Paris-bedömning?",
+          "paragraph1": "Bedömningen av Paris-linjen baseras på de totala kumulativa utsläppen 2025–2050 – organisationens koldioxidbudget för en 1,5°C-bana med ungefär 50 % sannolikhet.",
+          "point1": "Den linjära trendlinjen gör det möjligt att uppskatta om den projicerade banan håller sig inom denna budget.",
+          "point2": "Om trendlinjen ligger inom budgeten kommer utsläppen nödvändigtvis att närma sig mycket låga nivåer långt före 2050.",
+          "point3": "Att använda samma metod för alla kommuner och företag möjliggör rättvisa och jämförbara bedömningar.",
+          "paragraph2": "Även om en linjär trendlinje inte följer den exponentiella formen hos Carbon Law-kurvan kan den ändå ge lägre kumulativa utsläpp än den Paris-anpassade budgeten. I sådana fall bedöms organisationen ligga på en Paris-linje givet sitt nuvarande trendmönster."
+        }
+      },
       "parisAlignment": {
         "title": "Parisanpassning",
         "description": "Lär dig hur vi beräknar om en kommun eller företag är på väg att nå Parisavtalet",

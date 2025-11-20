@@ -427,6 +427,68 @@
           "text": "Read more about the Applying Carbon Law From 2025 from Klimatkollen's white paper."
         }
       },
+      "trendline": {
+        "title": "How We Calculate the Trendline",
+        "paragraph1": "The trendline shows how an organisation’s emissions are expected to develop based on its historical data. It is not a forecast of planned climate action, but a statistical continuation of past behaviour.",
+        "paragraph2": "The trendline is used for two purposes:\n1. To estimate missing recent years (for example if the latest reported data is from 2022 and we need values for 2023–2025).\n2. To project emissions from 2025–2050 for Paris-alignment calculations.",
+        "whenCalculated": {
+          "title": "4.1 – When a Trendline Is Calculated",
+          "paragraph1": "A trendline is only generated when there is enough valid historical data to make a meaningful projection.",
+          "companies": {
+            "intro": "For companies, we calculate a trendline only if:",
+            "point1": "at least three valid years of emissions data exist after filtering by base year,",
+            "point2": "we can identify a consistent emissions series (prioritising scope 3, otherwise scope 1 and 2), and",
+            "point3": "the remaining data after filtering is sufficient to compute a robust trend."
+          },
+          "municipalities": {
+            "intro": "For municipalities:",
+            "point1": "we use emissions from 2015 onwards, aligning with the start of the Paris Agreement period, and",
+            "point2": "we centre the regression on the last observed year to improve numerical stability."
+          },
+          "paragraph2": "If an organisation does not meet these requirements, the trendline is not calculated and Paris alignment cannot be assessed."
+        },
+        "whyLad": {
+          "title": "4.2 – Why LAD (Least Absolute Deviations)?",
+          "paragraph1": "We use LAD (Least Absolute Deviations), or median regression, to make the trendline more robust and reliable.",
+          "point1": "LAD is less sensitive to extreme values than ordinary least squares.",
+          "point2": "It handles real-world volatility and jumps in climate data better.",
+          "point3": "It captures the long-term direction instead of reacting strongly to single-year spikes.",
+          "point4": "It produces a steady annual change in tonnes per year, rather than enforcing a fixed percentage.",
+          "paragraph2": "This aligns with our goal of capturing the underlying behaviour of emissions, rather than year-to-year noise."
+        },
+        "howComputed": {
+          "title": "4.3 – How the Trendline Is Computed",
+          "paragraph1": "The LAD trendline works by fitting a straight line through the historical emissions data, minimising the absolute difference to each year.",
+          "step1": "We identify usable historical emissions data (filtered by base year and scope logic for companies, or 2015 onwards for municipalities).",
+          "step2": "We centre the years around the last observed year to improve numerical stability and comparability.",
+          "step3": "We apply LAD/median regression to estimate the slope (change in tonnes per year).",
+          "step4": "We anchor the trendline to the last reported emissions value so the model connects smoothly to the latest real data.",
+          "step5": "We apply a zero floor so projected values never become negative.",
+          "paragraph2": "The final output is a slope in tonnes per year (for example −1,540 tonnes per year), indicating the expected annual change.",
+          "paragraph3": "We then use this slope to generate missing estimated years up to 2025 and to project emissions through to 2050. As new real data becomes available for future years, it replaces modelled values and the remaining future trend is recalculated from the updated historical record."
+        },
+        "represents": {
+          "title": "4.4 – What the Trendline Represents",
+          "paragraph1": "In summary, the trendline represents:",
+          "point1": "a linear continuation of past behaviour,",
+          "point2": "a projection of absolute annual change (tonnes per year), not a fixed percentage,",
+          "point3": "an estimate of what future emissions might look like if no major changes occur, and",
+          "point4": "a necessary component for calculating total emissions from 2025–2050 for Paris alignment.",
+          "paragraph2": "It does not represent:",
+          "notPoint1": "a forecast of specific planned climate measures,",
+          "notPoint2": "a prediction that an organisation will comply with regulations or goals, or",
+          "notPoint3": "an endorsement of the organisation’s current pathway.",
+          "paragraph3": "It simply answers the question: “If this organisation continues as it has so far, what does its expected emissions pathway look like?”"
+        },
+        "whyWorks": {
+          "title": "4.5 – Why a Linear Trendline Works for Paris Alignment",
+          "paragraph1": "Paris alignment is based on total cumulative emissions from 2025–2050 — the organisation’s carbon budget for a 1.5°C pathway with around 50% probability.",
+          "point1": "The linear trendline allows us to estimate whether the projected pathway stays within this carbon budget.",
+          "point2": "If the trendline stays within the budget, emissions will necessarily approach very low levels well before 2050.",
+          "point3": "Using the same method for all municipalities and companies enables fair, comparable assessments.",
+          "paragraph2": "Even though a linear trendline does not mirror the exponential shape of the Carbon Law curve, it can still result in cumulative emissions that are lower than the Paris-aligned budget. In those cases, the organisation is considered to be on a Paris-aligned trajectory given its current trend."
+        }
+      },
       "parisAlignment": {
         "title": "Paris Alignment",
         "description": "Learn about how we calculate if a municipality or company is on track to meet the Paris Agreement",

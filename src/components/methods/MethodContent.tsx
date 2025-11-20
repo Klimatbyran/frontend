@@ -14,6 +14,7 @@ import { MunicipalityDataOverviewContent } from "./content/MunicipalityDataOverv
 import { MunicipalityKPIsContent } from "./content/MunicipalityKPIsContent";
 import { RelatableNumbersContent } from "./content/RelatableNumbers";
 import { ParisAlignmentMethodContent } from "./content/OnTrackForParisContent";
+import { TrendlineContent } from "./content/TrendLineMethodContent";
 
 interface MethodologyContentProps {
   method: string;
@@ -50,36 +51,28 @@ export const MethodologyContent = forwardRef<
 
       case "parisAgreement":
         return <ParisAgreementContent />;
-
       case "carbonLaw":
         return <CarbonLawContent />;
+      case "trendline":
+        return <TrendlineContent />;
       case "parisAlignment":
         return <ParisAlignmentMethodContent />;
-
       case "emissionTypes":
         return <EmissionTypesContent />;
-
       case "municipalityDataOverview":
         return <MunicipalityDataOverviewContent />;
-
       case "municipalityKPIs":
         return <MunicipalityKPIsContent />;
-
       case "companyDataOverview":
         return <CompanyDataOverviewContent />;
-
       case "emissionCategories":
         return <EmissionsAndCategoriesContent />;
-
       case "historicalData":
         return <HistoricalDataContent />;
-
       case "calculations":
         return <CalculationsContent />;
-
       case "companyDataCollection":
         return <DataCollectionProcessContent />;
-
       case "relatableNumbers":
         return <RelatableNumbersContent />;
     }

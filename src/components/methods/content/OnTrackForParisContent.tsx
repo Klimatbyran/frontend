@@ -1,17 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { Text } from "@/components/ui/text";
-
-interface SectionProps {
-  title: string;
-  children: React.ReactNode;
-}
-
-const Section = ({ title, children }: SectionProps) => (
-  <div className="space-y-4">
-    <Text className="text-blue-2 font-bold text-2xl">{title}</Text>
-    {children}
-  </div>
-);
+import { MethodSection } from "@/components/layout/MethodSection";
 
 export const ParisAlignmentMethodContent = () => {
   const { t } = useTranslation();
@@ -23,7 +11,7 @@ export const ParisAlignmentMethodContent = () => {
       <p>{t("methodsPage.general.parisAlignment.intro.paragraph2")}</p>
 
       {/* 3.1 – Carbon budgets and Paris alignment */}
-      <Section
+      <MethodSection
         title={t(
           "methodsPage.general.parisAlignment.carbonBudget.title",
         )}
@@ -50,10 +38,10 @@ export const ParisAlignmentMethodContent = () => {
             )}
           </li>
         </ul>
-      </Section>
+      </MethodSection>
 
       {/* 3.2 – Anchor year and data used */}
-      <Section
+      <MethodSection
         title={t(
           "methodsPage.general.parisAlignment.anchorYear.title",
         )}
@@ -68,10 +56,10 @@ export const ParisAlignmentMethodContent = () => {
             "methodsPage.general.parisAlignment.anchorYear.paragraph2",
           )}
         </p>
-      </Section>
+      </MethodSection>
 
       {/* 3.3 – Paris Path (Carbon Law) */}
-      <Section
+      <MethodSection
         title={t(
           "methodsPage.general.parisAlignment.parisPath.title",
         )}
@@ -88,10 +76,10 @@ export const ParisAlignmentMethodContent = () => {
         </p>
         {/* Placeholder for a small visual: curve vs time */}
         {/* TODO: Add visual component showing a simple Paris Path curve (exponential decline) */}
-      </Section>
+      </MethodSection>
 
       {/* 3.4 – Trendline projection (LAD) */}
-      <Section
+      <MethodSection
         title={t(
           "methodsPage.general.parisAlignment.trendline.title",
         )}
@@ -112,10 +100,10 @@ export const ParisAlignmentMethodContent = () => {
           )}
         </p>
         {/* TODO: Add visual comparing a noisy historical series and a straight LAD trendline */}
-      </Section>
+      </MethodSection>
 
       {/* 3.5 – Comparing pathways & deciding “On Track” */}
-      <Section
+      <MethodSection
         title={t(
           "methodsPage.general.parisAlignment.comparison.title",
         )}
@@ -142,10 +130,10 @@ export const ParisAlignmentMethodContent = () => {
             "methodsPage.general.parisAlignment.comparison.paragraph2",
           )}
         </p>
-      </Section>
+      </MethodSection>
 
       {/* 3.6 – Limitations and interpretation */}
-      <Section
+      <MethodSection
         title={t(
           "methodsPage.general.parisAlignment.limitations.title",
         )}
@@ -161,7 +149,7 @@ export const ParisAlignmentMethodContent = () => {
           )}
         </p>
         {/* TODO: Optional small visual: two different trendlines with same budget outcome but different shapes */}
-      </Section>
+      </MethodSection>
     </div>
   );
 };
