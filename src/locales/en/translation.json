@@ -429,6 +429,7 @@
       },
       "trendline": {
         "title": "How We Calculate the Trendline",
+        "description": "Learn about how we calculate the trendline",
         "paragraph1": "The trendline shows how an organisation’s emissions are expected to develop based on its historical data. It is not a forecast of planned climate action, but a statistical continuation of past behaviour.",
         "paragraph2": "The trendline is used for two purposes:\n1. To estimate missing recent years (for example if the latest reported data is from 2022 and we need values for 2023–2025).\n2. To project emissions from 2025–2050 for Paris-alignment calculations.",
         "whenCalculated": {
@@ -594,11 +595,11 @@
           "paragraph2": "As more 2025+ real data becomes available, modelled trend years are gradually replaced by actual emissions, and the assessment becomes more tightly anchored in observed reality. For a detailed description of the underlying calculations, see Section 3: “How We Calculate ‘On Track for Paris’” and Section 4: “How We Calculate the Trendline”."
         },
         "historicVsParis": {
-          "title": "Historisk %-förändring, Parislinje och Parisbedömning",
-          "paragraph1": "Klimatkollen visar flera olika mått som är lätta att blanda ihop: den historiska procentuella förändringen, Parislinjen (Carbon Law) och markeringen ”På väg att klara Paris”. De hänger ihop, men beskriver olika delar av berättelsen.",
-          "paragraph2": "Den historiska procentuella förändringen beskriver hur snabbt utsläppen i genomsnitt har förändrats under en tidigare period (till exempel 2015–2023). Parislinjen beskriver en idealiserad exponentiell minskningstakt (–11,72 % per år) som, om den följs exakt, ger en Parisanpassad utsläppsbana. Markeringen ”På väg att klara Paris” fokuserar istället på de totala kumulativa utsläppen 2025–2050 jämfört med en Parisanpassad koldioxidbudget.",
-          "paragraph3": "Eftersom trendlina bygger på absoluta ton per år blir de underliggande procentuella förändringarna små när utsläppen är höga, och blir naturligt brantare när utsläppen minskar. Det innebär att en måttlig historisk procentuell förändring ändå kan vara förenlig med en framtida bana där de samlade utsläppen hålls inom den Parisanpassade budgeten.",
-          "paragraph4": "Med andra ord: en låg historisk procent betyder inte automatiskt att en aktör är ”ur kurs”, och en hög historisk procent betyder inte automatiskt att den är ”på kurs”. Det som i slutändan avgör Parisanpassningen är om hela den förväntade utsläppsbanan 2025–2050 ryms inom den tillgängliga koldioxidbudgeten. För en mer intuitiv förklaring hänvisar vi till analogierna i dataguiden som är länkade från utsläppsgrafen."
+          "title": "Historic % Change, Paris Path and Paris Alignment",
+          "paragraph1": "Klimatkollen shows several different metrics that are easy to confuse: the historic % change, the Paris Path (Carbon Law) and the “On Track for Paris” indicator. They are related, but they describe different parts of the story.",
+          "paragraph2": "The historic % change describes how fast emissions have changed on average during a past period (for example 2015–2023). The Paris Path describes an idealised exponential reduction rate (–11.72% per year) that would, if followed exactly, lead to a Paris-aligned emissions pathway. The “On Track for Paris” indicator instead focuses on the total cumulative emissions from 2025–2050 compared to a Paris-aligned carbon budget.",
+          "paragraph3": "Because the trendline is based on absolute tonnes per year, the implied % changes are small when emissions are high and naturally become steeper as emissions fall. This means that a modest historic % change can still be compatible with a future pathway where cumulative emissions stay within the Paris-aligned budget.",
+          "paragraph4": "In other words: a low historic % does not automatically mean “off track”, and a high historic % does not automatically mean “on track”. What ultimately matters for Paris alignment is whether the entire expected emissions pathway from 2025–2050 fits within the available carbon budget. For an intuitive explanation, see the data guide analogies linked from the emissions graph."
         }
       },
       "emissionTypes": {

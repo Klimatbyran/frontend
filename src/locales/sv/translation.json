@@ -428,6 +428,7 @@
       },
       "trendline": {
         "title": "Hur vi beräknar trendliniens utveckling",
+        "description": "Lär dig hur vi beräknar trendlinjens utveckling",
         "paragraph1": "Trendlina visar hur en organisations utsläpp förväntas utvecklas baserat på historiska data. Det är ingen prognos över planerade åtgärder, utan en statistisk fortsättning av tidigare beteende.",
         "paragraph2": "Trendlina används till två saker:\n1. Att uppskatta saknade, nyare år (till exempel om de senaste rapporterade utsläppen är från 2022 men vi behöver värden för 2023–2025).\n2. Att ta fram en projektion av utsläppen 2025–2050 för att kunna bedöma Paris-linjens uppfyllelse.",
         "whenCalculated": {
