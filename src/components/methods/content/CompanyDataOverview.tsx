@@ -1,19 +1,9 @@
 import { useTranslation } from "react-i18next";
 import { LinkButton } from "@/components/layout/LinkButton";
-import { Text } from "@/components/ui/text";
+import { MethodSection } from "@/components/layout/MethodSection";
 import i18next from "i18next";
 
-interface SectionProps {
-  title: string;
-  children: React.ReactNode;
-}
 
-const Section = ({ title, children }: SectionProps) => (
-  <div className="space-y-4">
-    <Text className="text-blue-2 font-bold text-2xl">{title}</Text>
-    {children}
-  </div>
-);
 
 export const CompanyDataOverviewContent = () => {
   const { t } = useTranslation();
@@ -42,7 +32,7 @@ export const CompanyDataOverviewContent = () => {
         </div>
       </div>
 
-      <Section
+      <MethodSection
         title={t(
           "methodsPage.company.companyDataOverview.companiesIncluded.title",
         )}
@@ -70,7 +60,7 @@ export const CompanyDataOverviewContent = () => {
             />
           </div>
         </div>
-      </Section>
+      </MethodSection>
       <p>{t("methodsPage.company.companyDataOverview.paragraph5")}</p>
     </div>
   );
