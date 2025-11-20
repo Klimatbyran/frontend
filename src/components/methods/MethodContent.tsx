@@ -15,6 +15,7 @@ import { MunicipalityKPIsContent } from "./content/MunicipalityKPIsContent";
 import { RelatableNumbersContent } from "./content/RelatableNumbers";
 import { ParisAlignmentMethodContent } from "./content/OnTrackForParisContent";
 import { TrendlineContent } from "./content/TrendLineMethodContent";
+import { InterpretingOnTrackContent } from "./content/InprepretingOnTrackContent";
 
 interface MethodologyContentProps {
   method: string;
@@ -57,6 +58,8 @@ export const MethodologyContent = forwardRef<
         return <TrendlineContent />;
       case "parisAlignment":
         return <ParisAlignmentMethodContent />;
+      case "interpretingOnTrack":
+        return <InterpretingOnTrackContent />;
       case "emissionTypes":
         return <EmissionTypesContent />;
       case "municipalityDataOverview":

@@ -17,6 +17,7 @@ export const methodologySections: MethodologySectionType = {
     { id: "carbonLaw", category: "general" },
     { id: "trendline", category: "general" },
     { id: "parisAlignment", category: "general" },
+    { id: "interpretingOnTrack", category: "general" },
     { id: "emissionTypes", category: "general" },
   ],
   municipality: [

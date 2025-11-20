@@ -536,6 +536,71 @@
           "paragraph2": "Our Paris alignment assessment focuses on the total emissions on the way towards net-zero, not on matching a specific percentage every year. It does not capture all aspects of fairness, responsibility or feasibility. It should therefore be interpreted as one important benchmark among several when evaluating whether an actor’s emissions pathway is compatible with the Paris Agreement."
         }
       },
+      "interpretingOnTrack": {
+        "title": "How to Interpret “On Track for Paris”",
+        "description": "Learn about how to interpret the “On Track for Paris” status",
+        "paragraph1": "The Paris status on Klimatkollen is designed to answer a narrow but important question:",
+        "question": "“If this organisation continues along its current path, will its total emissions from 2025–2050 fit within a Paris-aligned carbon budget and approach net zero in time?”",
+        "paragraph2": "It is not a full judgement of all climate work, but a specific indicator based on reported emissions.",
+        "statuses": {
+          "title": "What the Different Statuses Mean",
+          "onTrack": {
+            "title": "On Track for Paris",
+            "paragraph1": "The organisation’s projected emissions pathway (trendline plus all available reported emissions data):",
+            "point1": "stays within the Paris-aligned carbon budget for 2025–2050, and",
+            "point2": "brings emissions close to zero well before 2050 if the trend continues.",
+            "paragraph2": "This means that, mathematically, the current rate of absolute reductions is sufficient to stay within a 1.5°C-aligned budget (50% chance) — assuming no major reversal in trend."
+          },
+          "notOnTrack": {
+            "title": "Not On Track for Paris",
+            "paragraph1": "The organisation’s projected emissions:",
+            "point1": "exceed the Paris-aligned carbon budget for 2025–2050,",
+            "point2": "or do not fall fast enough to reasonably approach net zero in time.",
+            "paragraph2": "This does not mean the organisation is doing nothing, only that the current pace of reductions is too slow to be consistent with a Paris-aligned path."
+          },
+          "noAssessment": {
+            "title": "No Assessment",
+            "paragraph1": "We show “No Paris assessment” when:",
+            "point1": "there is not enough reliable historical data to calculate a trendline, or",
+            "point2": "the underlying data is too incomplete or inconsistent for a robust projection.",
+            "paragraph2": "In these cases, we prefer transparency over a potentially misleading label."
+          }
+        },
+        "scope": {
+          "title": "What This Indicator Does and Does Not Say",
+          "paragraph1": "The Paris status is a focused indicator. It tells you something important about the overall pathway, but it does not capture everything.",
+          "doesTitle": "The Paris status does:",
+          "does": {
+            "point1": "focus on cumulative emissions between 2025 and 2050,",
+            "point2": "use a consistent method across all municipalities and companies,",
+            "point3": "provide a simple, comparable signal of whether the current path fits within a 1.5°C-aligned budget."
+          },
+          "doesNotTitle": "The Paris status does not:",
+          "doesNot": {
+            "point1": "guarantee that the organisation will actually implement future measures,",
+            "point2": "assess all climate policies, investments, or adaptation work,",
+            "point3": "include consumption-based emissions or indirect effects beyond the chosen scope,",
+            "point4": "reflect every source of uncertainty in future projections."
+          },
+          "paragraph2": "In other words, it is a useful, comparable climate signal, but not the whole story."
+        },
+        "changes": {
+          "title": "Why the Status Can Change Over Time",
+          "paragraph1": "The Paris assessment can change when:",
+          "point1": "new historical emissions data is reported,",
+          "point2": "a stronger or weaker trend emerges in the updated data,",
+          "point3": "reporting scopes or base years change for companies,",
+          "point4": "methodological improvements are introduced.",
+          "paragraph2": "As more 2025+ real data becomes available, modelled trend years are gradually replaced by actual emissions, and the assessment becomes more tightly anchored in observed reality. For a detailed description of the underlying calculations, see Section 3: “How We Calculate ‘On Track for Paris’” and Section 4: “How We Calculate the Trendline”."
+        },
+        "historicVsParis": {
+          "title": "Historisk %-förändring, Parislinje och Parisbedömning",
+          "paragraph1": "Klimatkollen visar flera olika mått som är lätta att blanda ihop: den historiska procentuella förändringen, Parislinjen (Carbon Law) och markeringen ”På väg att klara Paris”. De hänger ihop, men beskriver olika delar av berättelsen.",
+          "paragraph2": "Den historiska procentuella förändringen beskriver hur snabbt utsläppen i genomsnitt har förändrats under en tidigare period (till exempel 2015–2023). Parislinjen beskriver en idealiserad exponentiell minskningstakt (–11,72 % per år) som, om den följs exakt, ger en Parisanpassad utsläppsbana. Markeringen ”På väg att klara Paris” fokuserar istället på de totala kumulativa utsläppen 2025–2050 jämfört med en Parisanpassad koldioxidbudget.",
+          "paragraph3": "Eftersom trendlina bygger på absoluta ton per år blir de underliggande procentuella förändringarna små när utsläppen är höga, och blir naturligt brantare när utsläppen minskar. Det innebär att en måttlig historisk procentuell förändring ändå kan vara förenlig med en framtida bana där de samlade utsläppen hålls inom den Parisanpassade budgeten.",
+          "paragraph4": "Med andra ord: en låg historisk procent betyder inte automatiskt att en aktör är ”ur kurs”, och en hög historisk procent betyder inte automatiskt att den är ”på kurs”. Det som i slutändan avgör Parisanpassningen är om hela den förväntade utsläppsbanan 2025–2050 ryms inom den tillgängliga koldioxidbudgeten. För en mer intuitiv förklaring hänvisar vi till analogierna i dataguiden som är länkade från utsläppsgrafen."
+        }
+      },
       "emissionTypes": {
         "title": "Different Types of Emissions",
         "description": "Learn about the various types of emissions and how they are measured",
