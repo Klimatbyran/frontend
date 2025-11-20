@@ -427,6 +427,53 @@
           "text": "Read more about the Applying Carbon Law From 2025 from Klimatkollen's white paper."
         }
       },
+      "parisAlignment": {
+        "title": "Paris Alignment",
+        "description": "Learn about how we calculate if a municipality or company is on track to meet the Paris Agreement",
+        "intro": {
+          "paragraph1": "“On Track for Paris Agreement” indicates that an organisation’s total projected emissions from 2025–2050 are compatible with a Paris-aligned carbon budget for around a 50% chance of limiting warming to 1.5°C.",
+          "paragraph2": "Rather than checking whether every year follows the exact –11.72% Paris Path, we evaluate the whole emissions pathway and ask: does this combination of past data and future trend stay within a fair carbon budget on the way towards net-zero around 2050?"
+        },
+        "carbonBudget": {
+          "title": "Carbon budgets and Paris alignment",
+          "paragraph1": "A carbon budget is the total amount of greenhouse gases that can be emitted over a given period while still keeping within a specific temperature target. In our case, we use Paris-aligned budgets that correspond to a 1.5°C pathway with roughly 50% probability.",
+          "paragraph2": "For each municipality or company, we construct a Paris-aligned carbon budget for the period 2025–2050. This budget is not a prediction of what will happen, but a benchmark that answers: how much can this actor emit on the way to net-zero if we want to stay within a 1.5°C pathway?",
+          "list1": {
+            "item1": "The budget is defined as the area under a Paris Path curve (Carbon Law) from 2025–2050.",
+            "item2": "The closer and earlier an actor brings its annual emissions towards (near) zero, the more likely it is to stay within this budget."
+          }
+        },
+        "anchorYear": {
+          "title": "Anchor year and which data we use",
+          "paragraph1": "We use 2025 as a common anchor year for comparing the Paris Path and the trendline projection. If the most recent measured emissions year is earlier than 2025, we estimate the 2025 value using the historical trend.",
+          "paragraph2": "When new emissions data beyond 2025 becomes available, we always prioritise the measured values. The trendline is then used only to fill in missing and future years up to 2050. Over time, the assessment of Paris alignment is therefore driven more by real-world data and less by projections."
+        },
+        "parisPath": {
+          "title": "Paris Path (Carbon Law)",
+          "paragraph1": "The Paris Path is based on the Carbon Law: an exponential reduction of emissions of about –11.72% per year. Starting from the 2025 anchor value, this creates a smooth, continuously declining pathway from 2025 to 2050.",
+          "paragraph2": "By integrating (summing) this Paris Path over 2025–2050, we obtain a Paris-aligned carbon budget for that actor. The Paris Path is therefore used as a reference trajectory that defines a budget, not as the only valid way to reduce emissions year by year."
+        },
+        "trendline": {
+          "title": "Trendline projection (LAD)",
+          "paragraph1": "To estimate how emissions may develop if current patterns continue, we use a linear trendline based on the Least Absolute Deviations (LAD) method. This trendline is calculated using the relevant historical data available for each actor.",
+          "paragraph2": "The LAD trendline represents a steady change in tonnes per year, not a fixed percentage change. In practice, this means the same absolute reduction can correspond to smaller percentages when emissions are high and larger percentages when emissions are low.",
+          "paragraph3": "For municipalities we typically use all available historical data that meet our quality criteria. For companies we may restrict the period (for example from a defined base year) so that the trendline reflects current operations rather than outdated business models. The details of how we calculate LAD are described in the trendline section of the methods page."
+        },
+        "comparison": {
+          "title": "Comparing pathways and deciding “On Track for Paris”",
+          "paragraph1": "Once we have both a Paris Path and a trendline projection anchored in 2025, we compare the total emissions from 2025–2050 along each pathway. In both cases we look at the cumulative emissions, i.e. the area under the curve over time.",
+          "list1": {
+            "item1": "The Paris-aligned carbon budget is the total emissions allowed along the Paris Path from 2025–2050.",
+            "item2": "The trendline total is the sum of measured emissions (for years where data exists) plus projected emissions from the trendline for missing and future years up to 2050."
+          },
+          "paragraph2": "If the trendline total is lower than the Paris-aligned carbon budget, we classify the actor as “On Track for Paris”. If the trendline total is higher than the budget, the actor is classified as “Not On Track”. Because the Paris budget is tight, a pathway that stays within it will almost always require emissions to approach very low levels or near-zero by 2050."
+        },
+        "limitations": {
+          "title": "Limitations and interpretation",
+          "paragraph1": "The trendline is not a forecast of planned measures, but a statistical extrapolation of recent behaviour. Real emissions may end up higher or lower depending on policy decisions, investments, technology changes and broader economic trends.",
+          "paragraph2": "Our Paris alignment assessment focuses on the total emissions on the way towards net-zero, not on matching a specific percentage every year. It does not capture all aspects of fairness, responsibility or feasibility. It should therefore be interpreted as one important benchmark among several when evaluating whether an actor’s emissions pathway is compatible with the Paris Agreement."
+        }
+      },
       "emissionTypes": {
         "title": "Different Types of Emissions",
         "description": "Learn about the various types of emissions and how they are measured",

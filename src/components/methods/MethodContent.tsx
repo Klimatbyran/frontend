@@ -12,7 +12,8 @@ import { CalculationsContent } from "./content/CalculationsContent";
 import { CarbonLawContent } from "./content/CarbonLaw";
 import { MunicipalityDataOverviewContent } from "./content/MunicipalityDataOverview";
 import { MunicipalityKPIsContent } from "./content/MunicipalityKPIsContent";
-import { RelatableNumbersContent } from "./content/relatableNumbers";
+import { RelatableNumbersContent } from "./content/RelatableNumbers";
+import { ParisAlignmentMethodContent } from "./content/OnTrackForParisContent";
 
 interface MethodologyContentProps {
   method: string;
@@ -52,6 +53,8 @@ export const MethodologyContent = forwardRef<
 
       case "carbonLaw":
         return <CarbonLawContent />;
+      case "parisAlignment":
+        return <ParisAlignmentMethodContent />;
 
       case "emissionTypes":
         return <EmissionTypesContent />;
