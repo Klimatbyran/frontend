@@ -15,13 +15,13 @@ import {
   Geometry,
   GeoJsonProperties,
 } from "geojson";
-import { MUNICIPALITY_MAP_COLORS } from "./constants";
+import { MAP_COLORS } from "./constants";
 import { calculateGeoBounds } from "./utils/geoBounds";
 import { isMobile } from "react-device-detect";
 import { t } from "i18next";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import { KPIValue } from "@/types/entity-rankings";
+import { KPIValue, MapEntityType } from "@/types/entity-rankings";
 
 export interface DataKPI {
   key: string;
@@ -38,6 +38,7 @@ export interface DataItem {
 }
 
 interface SwedenMapProps {
+  entityType: MapEntityType;
   geoData: FeatureCollection;
   data: DataItem[];
   selectedKPI: DataKPI;
@@ -81,6 +82,7 @@ function MapController({
 }
 
 function MapOfSweden({
+  entityType,
   geoData,
   data,
   selectedKPI,
@@ -88,7 +90,7 @@ function MapOfSweden({
   defaultCenter = [63, 17],
   defaultZoom,
   propertyNameField = "name",
-  colors = MUNICIPALITY_MAP_COLORS,
+  colors = MAP_COLORS,
 }: SwedenMapProps) {
   const [hoveredArea, setHoveredArea] = React.useState<string | null>(null);
   const [hoveredValue, setHoveredValue] = useState<number | boolean | null>(
@@ -221,7 +223,12 @@ function MapOfSweden({
   );
 
   const getColorByValue = (value: number | boolean | null): string => {
-    if (value === null || value === undefined) {
+    if (
+      value === null ||
+      value === undefined ||
+      values.length === 0 ||
+      Number.isNaN(value)
+    ) {
       return colors.null;
     }
 
@@ -233,12 +240,13 @@ function MapOfSweden({
     }
 
     const mean = values.reduce((sum, val) => sum + val, 0) / values.length;
-    const stdDev = Math.sqrt(
+    const variance =
       values.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) /
-        values.length,
-    );
+      values.length;
+    const stdDev = Math.sqrt(variance);
+    const safeStdDev = stdDev === 0 ? 1 : stdDev;
 
-    const zScore = (value - mean) / stdDev;
+    const zScore = (value - mean) / safeStdDev;
 
     if (selectedKPI.higherIsBetter) {
       if (zScore <= -1) {
@@ -275,6 +283,7 @@ function MapOfSweden({
 
     return (
       <MapLegend
+        entityType={entityType}
         leftValue={leftValue}
         rightValue={rightValue}
         unit={selectedKPI.unit ?? ""}
@@ -303,13 +312,10 @@ function MapOfSweden({
   ) => {
     if (feature?.properties?.[propertyNameField]) {
       const areaName = feature.properties[propertyNameField];
-      const { value, rank } = getAreaData(areaName);
 
       (layer as L.Path).on({
         mouseover: () => {
           setHoveredArea(areaName);
-          setHoveredValue(value);
-          setHoveredRank(rank);
         },
         mouseout: () => {
           setHoveredArea(null);
@@ -346,12 +352,16 @@ function MapOfSweden({
   };
 
   useEffect(() => {
-    if (hoveredArea) {
-      const { value, rank } = getAreaData(hoveredArea);
-      setHoveredValue(value);
-      setHoveredRank(rank);
+    if (!hoveredArea) {
+      setHoveredValue(null);
+      setHoveredRank(null);
+      return;
     }
-  }, [selectedKPI, hoveredArea, getAreaData]);
+
+    const { value, rank } = getAreaData(hoveredArea);
+    setHoveredValue(value);
+    setHoveredRank(rank);
+  }, [hoveredArea, getAreaData]);
 
   return (
     <div className="relative flex-1 h-full max-w-screen-lg">
@@ -382,6 +392,7 @@ function MapOfSweden({
 
       {hoveredArea && (
         <MapTooltip
+          entityType={entityType}
           name={hoveredArea}
           value={hoveredValue}
           rank={hoveredRank}
@@ -389,7 +400,7 @@ function MapOfSweden({
           total={data.length}
           nullValue={
             selectedKPI.key && t
-              ? t(`municipalities.list.kpis.${selectedKPI.key}.nullValues`)
+              ? t(`${entityType}.list.kpis.${selectedKPI.key}.nullValues`)
               : "No data"
           }
           selectedKPI={selectedKPI as KPIValue}
