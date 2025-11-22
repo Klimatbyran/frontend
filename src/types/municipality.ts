@@ -1,4 +1,5 @@
 import type { paths } from "@/lib/api-types";
+import { SectorEmissions } from "./entity-rankings";
 
 export { getLatestYearData, getAvailableYears } from "@/utils/data/yearUtils";
 export { transformEmissionsData } from "@/utils/data/municipalityTransforms";
@@ -69,12 +70,6 @@ export type DataPoint = {
   trend: number | undefined;
   approximated: number | undefined;
   carbonLaw: number | undefined;
-};
-
-export type SectorEmissions = {
-  [year: string]: {
-    [sector: string]: number;
-  };
 };
 
 export type MunicipalitySortBy = "meets_paris" | "name";

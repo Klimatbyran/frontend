@@ -11,8 +11,8 @@ import {
   localizeUnit,
 } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
-import MunicipalitySectorPieChart from "@/components/municipalities/sectorChart/MunicipalitySectorPieChart";
-import MunicipalitySectorLegend from "@/components/municipalities/sectorChart/MunicipalitySectorLegend";
+import SectorPieChart from "@/components/detail/sectorChart/SectorPieChart";
+import SectorPieLegend from "@/components/detail/sectorChart/SectorPieLegend";
 import { useMunicipalitySectorEmissions } from "@/hooks/municipalities/useMunicipalitySectorEmissions";
 import { MunicipalityEmissions } from "@/components/municipalities/MunicipalityEmissions";
 import { useHiddenItems } from "@/components/charts";
@@ -31,6 +31,7 @@ import { LinkCard } from "@/components/detail/LinkCard";
 import { DetailHeader } from "@/components/detail/DetailHeader";
 import { DetailSection } from "@/components/detail/DetailSection";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";
+import { useMunicipalitySectors } from "@/hooks/municipalities/useMunicipalitySectors";
 
 export function MunicipalityDetailPage() {
   const { t } = useTranslation();
@@ -41,6 +42,7 @@ export function MunicipalityDetailPage() {
   const { sectorEmissions, loading: _loadingSectors } =
     useMunicipalitySectorEmissions(id);
 
+  const { getSectorInfo } = useMunicipalitySectors();
   const { hiddenItems: filteredSectors, setHiddenItems: setFilteredSectors } =
     useHiddenItems<string>([]);
 
@@ -128,25 +130,33 @@ export function MunicipalityDetailPage() {
             />
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16">
-              <MunicipalitySectorPieChart
+              <SectorPieChart
                 sectorEmissions={sectorEmissions}
                 year={currentYear}
+                getSectorInfo={getSectorInfo}
                 filteredSectors={filteredSectors}
                 onFilteredSectorsChange={setFilteredSectors}
               />
               {Object.keys(sectorEmissions.sectors[currentYear] || {}).length >
                 0 && (
-                <MunicipalitySectorLegend
+                <SectorPieLegend
                   data={Object.entries(
-                    sectorEmissions.sectors[currentYear] || {},
+                    (sectorEmissions.sectors[currentYear] || {}) as Record<
+                      string,
+                      number
+                    >,
                   ).map(([sector, value]) => ({
                     name: sector,
                     value,
                     color: "",
                   }))}
                   total={Object.values(
-                    sectorEmissions.sectors[currentYear] || {},
+                    (sectorEmissions.sectors[currentYear] || {}) as Record<
+                      string,
+                      number
+                    >,
                   ).reduce((sum, value) => sum + value, 0)}
+                  getSectorInfo={getSectorInfo}
                   filteredSectors={filteredSectors}
                   onFilteredSectorsChange={setFilteredSectors}
                 />
