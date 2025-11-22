@@ -27,13 +27,13 @@ import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { PageLoading } from "@/components/pageStates/Loading";
 import { PageError } from "@/components/pageStates/Error";
 import { PageNoData } from "@/components/pageStates/NoData";
-import { getPoliticalRuleLabels } from "@/utils/detail/politicalRule.tsx";
 import {
   getAvailableYearsFromSectors,
   getCurrentYearFromAvailable,
 } from "@/utils/detail/sectorYearUtils";
 import { getProcurementRequirementsText } from "@/utils/detail/procurement";
 import { createMunicipalityStructuredData } from "@/utils/detail/seo";
+import { PoliticalRuleLabel } from "@/components/detail/PoliticalRuleLabel";
 
 export function MunicipalityDetailPage() {
   const { t } = useTranslation();
@@ -90,6 +90,17 @@ export function MunicipalityDetailPage() {
     municipality.region,
     pageDescription,
   );
+
+  const politicalRuleLabels = municipality.politicalRule.map((p, index) => (
+    <span key={index}>
+      {index ? ", " : ""}
+      <PoliticalRuleLabel
+        src={`/logos/politicalParties/${p}.png`}
+        alt={p}
+        fallback={p}
+      />
+    </span>
+  ));
 
   const evcp = municipality.electricVehiclePerChargePoints;
 
@@ -168,14 +179,7 @@ export function MunicipalityDetailPage() {
               {t("municipalityDetailPage.politicalRule")}:
             </Text>
             <Text variant="body" className="text-sm md:text-base lg:text-lg">
-              {municipality.politicalRule.map((p, index) => {
-                return (
-                  <span key={index}>
-                    {index ? ", " : ""}
-                    {getPoliticalRuleLabels(p)}
-                  </span>
-                );
-              })}
+              {politicalRuleLabels}
             </Text>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-16 mt-8">
