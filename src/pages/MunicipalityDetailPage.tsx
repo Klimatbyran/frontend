@@ -4,20 +4,16 @@ import { useMunicipalityDetailHeaderStats } from "@/hooks/municipalities/useMuni
 import { transformEmissionsData } from "@/types/municipality";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
-import { CardHeader } from "@/components/layout/CardHeader";
 import {
   formatEmissionsAbsolute,
   formatPercent,
   localizeUnit,
 } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
-import SectorPieChart from "@/components/detail/sectorChart/SectorPieChart";
-import SectorPieLegend from "@/components/detail/sectorChart/SectorPieLegend";
 import { useMunicipalitySectorEmissions } from "@/hooks/municipalities/useMunicipalitySectorEmissions";
 import { MunicipalityEmissions } from "@/components/municipalities/MunicipalityEmissions";
+import { MunicipalitySectorEmissions } from "@/components/municipalities/MunicipalitySectorEmissions";
 import { useHiddenItems } from "@/components/charts";
-import { YearSelector } from "@/components/layout/YearSelector";
-import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { PageLoading } from "@/components/pageStates/Loading";
 import { PageError } from "@/components/pageStates/Error";
 import { PageNoData } from "@/components/pageStates/NoData";
@@ -32,10 +28,7 @@ import { DetailHeader } from "@/components/detail/DetailHeader";
 import { DetailSection } from "@/components/detail/DetailSection";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";
 import { useMunicipalitySectors } from "@/hooks/municipalities/useMunicipalitySectors";
-import {
-  DetailLinkCardGrid,
-  DetailPieSectorGrid,
-} from "@/components/detail/sectorChart/DetailGrid";
+import { DetailLinkCardGrid } from "@/components/detail/sectorChart/DetailGrid";
 
 export function MunicipalityDetailPage() {
   const { t } = useTranslation();
@@ -93,6 +86,7 @@ export function MunicipalityDetailPage() {
         lastYearEmissionsTon={lastYearEmissionsTon}
         lastYear={lastYear}
       />
+
       <DetailWrapper>
         <DetailHeader
           name={municipality.name}
@@ -115,59 +109,16 @@ export function MunicipalityDetailPage() {
           sectorEmissions={sectorEmissions}
         />
 
-        {sectorEmissions?.sectors && availableYears.length > 0 && (
-          <SectionWithHelp helpItems={["municipalityEmissionSources"]}>
-            <CardHeader
-              title={t("municipalityDetailPage.sectorEmissions")}
-              description={t("municipalityDetailPage.sectorEmissionsYear", {
-                year: currentYear,
-              })}
-              customDataViewSelector={
-                <YearSelector
-                  selectedYear={selectedYear}
-                  onYearChange={setSelectedYear}
-                  availableYears={availableYears}
-                  translateNamespace="municipalityDetailPage"
-                />
-              }
-              className="gap-8 md:gap-16"
-            />
-
-            <DetailPieSectorGrid>
-              <SectorPieChart
-                sectorEmissions={sectorEmissions}
-                year={currentYear}
-                getSectorInfo={getSectorInfo}
-                filteredSectors={filteredSectors}
-                onFilteredSectorsChange={setFilteredSectors}
-              />
-              {Object.keys(sectorEmissions.sectors[currentYear] || {}).length >
-                0 && (
-                <SectorPieLegend
-                  data={Object.entries(
-                    (sectorEmissions.sectors[currentYear] || {}) as Record<
-                      string,
-                      number
-                    >,
-                  ).map(([sector, value]) => ({
-                    name: sector,
-                    value,
-                    color: "",
-                  }))}
-                  total={Object.values(
-                    (sectorEmissions.sectors[currentYear] || {}) as Record<
-                      string,
-                      number
-                    >,
-                  ).reduce((sum, value) => sum + value, 0)}
-                  getSectorInfo={getSectorInfo}
-                  filteredSectors={filteredSectors}
-                  onFilteredSectorsChange={setFilteredSectors}
-                />
-              )}
-            </DetailPieSectorGrid>
-          </SectionWithHelp>
-        )}
+        <MunicipalitySectorEmissions
+          sectorEmissions={sectorEmissions}
+          availableYears={availableYears}
+          selectedYear={selectedYear}
+          onYearChange={setSelectedYear}
+          currentYear={currentYear}
+          getSectorInfo={getSectorInfo}
+          filteredSectors={filteredSectors}
+          onFilteredSectorsChange={setFilteredSectors}
+        />
 
         <DetailLinkCardGrid>
           <LinkCard
