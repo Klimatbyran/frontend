@@ -53,7 +53,7 @@ export type MetricsByYear = Record<
 >;
 
 export type EmissionDataPoint = {
-  year: string;
+  year: number;
   value: number;
 };
 

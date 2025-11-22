@@ -7,7 +7,6 @@ import { MunicipalitySection } from "@/components/municipalities/MunicipalitySec
 import { OverviewStat } from "@/components/companies/detail/overview/OverviewStat";
 import { MunicipalityLinkCard } from "@/components/municipalities/MunicipalityLinkCard";
 import { useTranslation } from "react-i18next";
-import { PageSEO } from "@/components/SEO/PageSEO";
 import { useState } from "react";
 import { CardHeader } from "@/components/layout/CardHeader";
 import {
@@ -32,8 +31,8 @@ import {
   getCurrentYearFromAvailable,
 } from "@/utils/detail/sectorYearUtils";
 import { getProcurementRequirementsText } from "@/utils/municipality/procurement";
-import { createEntityStructuredData } from "@/utils/detail/seo";
 import { PoliticalRuleLabel } from "@/components/detail/PoliticalRuleLabel";
+import { MunicipalityDetailSEO } from "@/components/municipalities/detail/MunicipalityDetailSEO";
 
 export function MunicipalityDetailPage() {
   const { t } = useTranslation();
@@ -74,24 +73,6 @@ export function MunicipalityDetailPage() {
     2023,
   );
 
-  // Prepare SEO data
-  const canonicalUrl = `https://klimatkollen.se/municipalities/${id}`;
-  const pageTitle = `${municipality.name} - ${t(
-    "municipalityDetailPage.metaTitle",
-  )} - Klimatkollen`;
-  const pageDescription = t("municipalityDetailPage.metaDescription", {
-    municipality: municipality.name,
-    emissions: lastYearEmissionsTon,
-    year: lastYear,
-  });
-
-  const structuredData = createEntityStructuredData(
-    municipality.name,
-    "municipality",
-    municipality.region,
-    pageDescription,
-  );
-
   const politicalRuleLabels = municipality.politicalRule.map((p, index) => (
     <span key={index}>
       {index ? ", " : ""}
@@ -107,46 +88,12 @@ export function MunicipalityDetailPage() {
 
   return (
     <>
-      <PageSEO
-        title={pageTitle}
-        description={pageDescription}
-        canonicalUrl={canonicalUrl}
-        structuredData={structuredData}
-      >
-        <h1>
-          {municipality.name} - {t("municipalityDetailPage.parisAgreement")}
-        </h1>
-        <p>
-          {t("municipalityDetailPage.seoText.intro", {
-            municipality: municipality.name,
-            emissions: lastYearEmissionsTon,
-            year: lastYear,
-          })}
-        </p>
-        <h2>{t("municipalityDetailPage.seoText.emissionsHeading")}</h2>
-        <h2>{t("municipalityDetailPage.seoText.climateGoalsHeading")}</h2>
-        <p>
-          {t("municipalityDetailPage.seoText.climateGoalsText", {
-            municipality: municipality.name,
-          })}
-        </p>
-        <h2>{t("municipalityDetailPage.seoText.consumptionHeading")}</h2>{" "}
-        <p>
-          {t("municipalityDetailPage.seoText.consumptionText", {
-            municipality: municipality.name,
-            consumption: municipality.totalConsumptionEmission.toFixed(1),
-          })}
-        </p>
-        <h2>{t("municipalityDetailPage.seoText.transportHeading")}</h2>
-        <p>
-          {t("municipalityDetailPage.seoText.transportText", {
-            municipality: municipality.name,
-            bikeMeters: municipality.bicycleMetrePerCapita.toFixed(1),
-            evGrowth: municipality.electricCarChangePercent.toFixed(1),
-          })}
-        </p>
-      </PageSEO>
-
+      <MunicipalityDetailSEO
+        id={id || ""}
+        municipality={municipality}
+        lastYearEmissionsTon={lastYearEmissionsTon}
+        lastYear={lastYear}
+      />
       <div className="space-y-16 max-w-[1400px] mx-auto">
         <SectionWithHelp
           helpItems={[
