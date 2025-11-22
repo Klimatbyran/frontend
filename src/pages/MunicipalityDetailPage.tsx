@@ -12,7 +12,7 @@ import {
 import { useLanguage } from "@/components/LanguageProvider";
 import { useMunicipalitySectorEmissions } from "@/hooks/municipalities/useMunicipalitySectorEmissions";
 import { MunicipalityEmissions } from "@/components/municipalities/MunicipalityEmissions";
-import { SectorEmissionsPie } from "@/components/detail/sectorChart/SectorEmissions";
+import { SectorEmissionsChart } from "@/components/detail/sectorChart/SectorEmissions";
 import { useHiddenItems } from "@/components/charts";
 import { PageLoading } from "@/components/pageStates/Loading";
 import { PageError } from "@/components/pageStates/Error";
@@ -28,7 +28,7 @@ import { DetailHeader } from "@/components/detail/DetailHeader";
 import { DetailSection } from "@/components/detail/DetailSection";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";
 import { useMunicipalitySectors } from "@/hooks/municipalities/useMunicipalitySectors";
-import { DetailLinkCardGrid } from "@/components/detail/sectorChart/DetailGrid";
+import { DetailLinkCardGrid } from "@/components/detail/DetailGrid";
 
 export function MunicipalityDetailPage() {
   const { t } = useTranslation();
@@ -109,7 +109,7 @@ export function MunicipalityDetailPage() {
           sectorEmissions={sectorEmissions}
         />
 
-        <SectorEmissionsPie
+        <SectorEmissionsChart
           sectorEmissions={sectorEmissions}
           availableYears={availableYears}
           selectedYear={selectedYear}

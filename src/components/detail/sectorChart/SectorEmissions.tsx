@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { CardHeader } from "@/components/layout/CardHeader";
 import { YearSelector } from "@/components/layout/YearSelector";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
-import { DetailPieSectorGrid } from "@/components/detail/sectorChart/DetailGrid";
+import { DetailPieSectorGrid } from "@/components/detail/DetailGrid";
 import SectorPieChart from "@/components/detail/sectorChart/SectorPieChart";
 import SectorPieLegend from "@/components/detail/sectorChart/SectorPieLegend";
 import { SectorEmissions } from "@/types/entity-rankings";
@@ -24,7 +24,7 @@ interface SectorEmissionsProps {
   helpItems: DataGuideItemId[];
 }
 
-export function SectorEmissionsPie({
+export function SectorEmissionsChart({
   sectorEmissions,
   availableYears,
   selectedYear,
