@@ -27,11 +27,15 @@ import {
 } from "@/utils/detail/sectorYearUtils";
 import { getProcurementRequirementsText } from "@/utils/municipality/procurement";
 import { MunicipalityDetailSEO } from "@/components/municipalities/detail/MunicipalityDetailSEO";
-import { LinkCard } from "@/components/detail/LinkCard";
+import { LinkCard } from "@/components/detail/DetailLinkCard";
 import { DetailHeader } from "@/components/detail/DetailHeader";
 import { DetailSection } from "@/components/detail/DetailSection";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";
 import { useMunicipalitySectors } from "@/hooks/municipalities/useMunicipalitySectors";
+import {
+  DetailLinkCardGrid,
+  DetailPieSectorGrid,
+} from "@/components/detail/sectorChart/DetailGrid";
 
 export function MunicipalityDetailPage() {
   const { t } = useTranslation();
@@ -129,7 +133,7 @@ export function MunicipalityDetailPage() {
               className="gap-8 md:gap-16"
             />
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16">
+            <DetailPieSectorGrid>
               <SectorPieChart
                 sectorEmissions={sectorEmissions}
                 year={currentYear}
@@ -161,11 +165,11 @@ export function MunicipalityDetailPage() {
                   onFilteredSectorsChange={setFilteredSectors}
                 />
               )}
-            </div>
+            </DetailPieSectorGrid>
           </SectionWithHelp>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <DetailLinkCardGrid>
           <LinkCard
             title={t("municipalityDetailPage.climatePlan")}
             description={
@@ -196,7 +200,7 @@ export function MunicipalityDetailPage() {
                   : "text-pink-3"
             }
           />
-        </div>
+        </DetailLinkCardGrid>
 
         <DetailSection
           title={t("municipalityDetailPage.sustainableTransport")}
