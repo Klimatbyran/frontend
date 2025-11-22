@@ -15,7 +15,7 @@ export interface DetailStat {
   infoText?: string;
 }
 
-export interface EntityDetailHeaderProps {
+export interface DetailHeaderProps {
   name: string;
   subtitle?: string;
   logoUrl?: string | null;
@@ -26,7 +26,7 @@ export interface EntityDetailHeaderProps {
   politicalRuleLabelKey?: string;
 }
 
-export function EntityDetailHeader({
+export function DetailHeader({
   name,
   subtitle,
   logoUrl,
@@ -35,7 +35,7 @@ export function EntityDetailHeader({
   stats,
   translateNamespace,
   politicalRuleLabelKey = "politicalRule",
-}: EntityDetailHeaderProps) {
+}: DetailHeaderProps) {
   const { t } = useTranslation();
 
   const politicalRuleLabels = politicalRule?.map((p, index) => (

@@ -1,16 +1,13 @@
 import { useParams } from "react-router-dom";
-import { cn } from "@/lib/utils";
 import { useMunicipalityDetails } from "@/hooks/municipalities/useMunicipalityDetails";
+import { useMunicipalityDetailHeaderStats } from "@/hooks/municipalities/useMunicipalityDetails";
 import { transformEmissionsData } from "@/types/municipality";
-import { MunicipalitySection } from "@/components/municipalities/MunicipalitySection";
-import { MunicipalityLinkCard } from "@/components/municipalities/MunicipalityLinkCard";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { CardHeader } from "@/components/layout/CardHeader";
 import {
   formatEmissionsAbsolute,
   formatPercent,
-  formatPercentChange,
   localizeUnit,
 } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
@@ -29,8 +26,11 @@ import {
   getCurrentYearFromAvailable,
 } from "@/utils/detail/sectorYearUtils";
 import { getProcurementRequirementsText } from "@/utils/municipality/procurement";
-import { EntityDetailHeader } from "@/components/detail/EntityDetailHeader";
 import { MunicipalityDetailSEO } from "@/components/municipalities/detail/MunicipalityDetailSEO";
+import { LinkCard } from "@/components/detail/LinkCard";
+import { DetailHeader } from "@/components/detail/DetailHeader";
+import { DetailSection } from "@/components/detail/DetailSection";
+import { DetailWrapper } from "@/components/detail/DetailWrapper";
 
 export function MunicipalityDetailPage() {
   const { t } = useTranslation();
@@ -46,6 +46,18 @@ export function MunicipalityDetailPage() {
 
   const [selectedYear, setSelectedYear] = useState<string>("2023");
 
+  const lastYearEmissions = municipality?.emissions.at(-1);
+  const lastYear = lastYearEmissions?.year;
+  const lastYearEmissionsTon = lastYearEmissions
+    ? formatEmissionsAbsolute(lastYearEmissions.value, currentLanguage)
+    : t("noData");
+
+  const headerStats = useMunicipalityDetailHeaderStats(
+    municipality,
+    lastYear,
+    lastYearEmissionsTon,
+  );
+
   if (loading) return <PageLoading />;
   if (error) return <PageError />;
   if (!municipality) return <PageNoData />;
@@ -56,12 +68,6 @@ export function MunicipalityDetailPage() {
   );
 
   const emissionsData = transformEmissionsData(municipality);
-
-  const lastYearEmissions = municipality.emissions.at(-1);
-  const lastYear = lastYearEmissions?.year;
-  const lastYearEmissionsTon = lastYearEmissions
-    ? formatEmissionsAbsolute(lastYearEmissions.value, currentLanguage)
-    : t("noData");
 
   const availableYears = getAvailableYearsFromSectors(sectorEmissions);
 
@@ -81,8 +87,8 @@ export function MunicipalityDetailPage() {
         lastYearEmissionsTon={lastYearEmissionsTon}
         lastYear={lastYear}
       />
-      <div className="space-y-16 max-w-[1400px] mx-auto">
-        <EntityDetailHeader
+      <DetailWrapper>
+        <DetailHeader
           name={municipality.name}
           subtitle={municipality.region}
           logoUrl={municipality.logoUrl}
@@ -94,39 +100,7 @@ export function MunicipalityDetailPage() {
             "municipalityConsumptionEmissionPerPerson",
             "municipalityLocalVsConsumption",
           ]}
-          stats={[
-            {
-              label: t("municipalityDetailPage.totalEmissions", {
-                year: lastYear,
-              }),
-              value: lastYearEmissionsTon,
-              unit: t("emissionsUnit"),
-              valueClassName: "text-orange-2",
-              info: true,
-              infoText: t("municipalityDetailPage.totalEmissionsTooltip"),
-            },
-            {
-              label: t("municipalityDetailPage.annualChangeSince2015"),
-              value: formatPercentChange(
-                municipality.historicalEmissionChangePercent,
-                currentLanguage,
-              ),
-              valueClassName: cn(
-                municipality.historicalEmissionChangePercent > 0
-                  ? "text-pink-3"
-                  : "text-orange-2",
-              ),
-            },
-            {
-              label: t("municipalityDetailPage.consumptionEmissionsPerCapita"),
-              value: localizeUnit(
-                municipality.totalConsumptionEmission,
-                currentLanguage,
-              ),
-              valueClassName: "text-orange-2",
-              unit: t("emissionsUnit"),
-            },
-          ]}
+          stats={headerStats}
           translateNamespace="municipalityDetailPage"
         />
 
@@ -182,7 +156,7 @@ export function MunicipalityDetailPage() {
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <MunicipalityLinkCard
+          <LinkCard
             title={t("municipalityDetailPage.climatePlan")}
             description={
               municipality.climatePlanYear
@@ -200,7 +174,7 @@ export function MunicipalityDetailPage() {
               municipality.climatePlanYear ? "text-green-3" : "text-pink-3"
             }
           />
-          <MunicipalityLinkCard
+          <LinkCard
             title={t("municipalityDetailPage.procurementRequirements")}
             description={requirementsInProcurement}
             link={municipality.procurementLink || undefined}
@@ -214,7 +188,7 @@ export function MunicipalityDetailPage() {
           />
         </div>
 
-        <MunicipalitySection
+        <DetailSection
           title={t("municipalityDetailPage.sustainableTransport")}
           items={[
             {
@@ -251,7 +225,7 @@ export function MunicipalityDetailPage() {
             "municipalityBicyclePaths",
           ]}
         />
-      </div>
+      </DetailWrapper>
     </>
   );
 }

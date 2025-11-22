@@ -19,3 +19,6 @@ export function useMunicipalityDetails(id: string) {
     error,
   };
 }
+
+// Re-export the hook from the .tsx file
+export { useMunicipalityDetailHeaderStats } from "./useMunicipalityDetails.tsx";
