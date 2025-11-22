@@ -1,10 +1,8 @@
 import { useParams } from "react-router-dom";
-import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
 import { useMunicipalityDetails } from "@/hooks/municipalities/useMunicipalityDetails";
 import { transformEmissionsData } from "@/types/municipality";
 import { MunicipalitySection } from "@/components/municipalities/MunicipalitySection";
-import { OverviewStat } from "@/components/companies/detail/overview/OverviewStat";
 import { MunicipalityLinkCard } from "@/components/municipalities/MunicipalityLinkCard";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
@@ -31,7 +29,7 @@ import {
   getCurrentYearFromAvailable,
 } from "@/utils/detail/sectorYearUtils";
 import { getProcurementRequirementsText } from "@/utils/municipality/procurement";
-import { PoliticalRuleLabel } from "@/components/detail/PoliticalRuleLabel";
+import { EntityDetailHeader } from "@/components/detail/EntityDetailHeader";
 import { MunicipalityDetailSEO } from "@/components/municipalities/detail/MunicipalityDetailSEO";
 
 export function MunicipalityDetailPage() {
@@ -73,17 +71,6 @@ export function MunicipalityDetailPage() {
     2023,
   );
 
-  const politicalRuleLabels = municipality.politicalRule.map((p, index) => (
-    <span key={index}>
-      {index ? ", " : ""}
-      <PoliticalRuleLabel
-        src={`/logos/politicalParties/${p}.png`}
-        alt={p}
-        fallback={p}
-      />
-    </span>
-  ));
-
   const evcp = municipality.electricVehiclePerChargePoints;
 
   return (
@@ -95,7 +82,11 @@ export function MunicipalityDetailPage() {
         lastYear={lastYear}
       />
       <div className="space-y-16 max-w-[1400px] mx-auto">
-        <SectionWithHelp
+        <EntityDetailHeader
+          name={municipality.name}
+          subtitle={municipality.region}
+          logoUrl={municipality.logoUrl}
+          politicalRule={municipality.politicalRule}
           helpItems={[
             "municipalityTotalEmissions",
             "municipalityWhyDataDelay",
@@ -103,73 +94,41 @@ export function MunicipalityDetailPage() {
             "municipalityConsumptionEmissionPerPerson",
             "municipalityLocalVsConsumption",
           ]}
-        >
-          <div className="flex justify-between ">
-            <div className="flex flex-col">
-              <Text className="text-4xl md:text-8xl">{municipality.name}</Text>
-              <Text className="text-grey text-sm md:text-base lg:text-lg">
-                {municipality.region}
-              </Text>
-            </div>
-            {municipality.logoUrl && (
-              <img
-                src={municipality.logoUrl}
-                alt="logo"
-                className="h-[50px] md:h-[80px]"
-              />
-            )}
-          </div>
-          <div className="flex flex-row items-center gap-2 my-4">
-            <Text
-              variant="body"
-              className="text-grey text-sm md:text-base lg:text-lg"
-            >
-              {t("municipalityDetailPage.politicalRule")}:
-            </Text>
-            <Text variant="body" className="text-sm md:text-base lg:text-lg">
-              {politicalRuleLabels}
-            </Text>
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-16 mt-8">
-            <OverviewStat
-              variant="detail"
-              label={t("municipalityDetailPage.totalEmissions", {
+          stats={[
+            {
+              label: t("municipalityDetailPage.totalEmissions", {
                 year: lastYear,
-              })}
-              value={lastYearEmissionsTon}
-              unit={t("emissionsUnit")}
-              valueClassName="text-orange-2"
-              info={true}
-              infoText={t("municipalityDetailPage.totalEmissionsTooltip")}
-              useFlex1={false}
-            />
-            <OverviewStat
-              variant="detail"
-              label={t("municipalityDetailPage.annualChangeSince2015")}
-              value={formatPercentChange(
+              }),
+              value: lastYearEmissionsTon,
+              unit: t("emissionsUnit"),
+              valueClassName: "text-orange-2",
+              info: true,
+              infoText: t("municipalityDetailPage.totalEmissionsTooltip"),
+            },
+            {
+              label: t("municipalityDetailPage.annualChangeSince2015"),
+              value: formatPercentChange(
                 municipality.historicalEmissionChangePercent,
                 currentLanguage,
-              )}
-              valueClassName={cn(
+              ),
+              valueClassName: cn(
                 municipality.historicalEmissionChangePercent > 0
                   ? "text-pink-3"
                   : "text-orange-2",
-              )}
-              useFlex1={false}
-            />
-            <OverviewStat
-              variant="detail"
-              label={t("municipalityDetailPage.consumptionEmissionsPerCapita")}
-              value={localizeUnit(
+              ),
+            },
+            {
+              label: t("municipalityDetailPage.consumptionEmissionsPerCapita"),
+              value: localizeUnit(
                 municipality.totalConsumptionEmission,
                 currentLanguage,
-              )}
-              valueClassName="text-orange-2"
-              unit={t("emissionsUnit")}
-              useFlex1={false}
-            />
-          </div>
-        </SectionWithHelp>
+              ),
+              valueClassName: "text-orange-2",
+              unit: t("emissionsUnit"),
+            },
+          ]}
+          translateNamespace="municipalityDetailPage"
+        />
 
         <MunicipalityEmissions
           emissionsData={emissionsData}
