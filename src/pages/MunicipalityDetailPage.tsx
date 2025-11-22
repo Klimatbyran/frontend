@@ -27,6 +27,13 @@ import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { PageLoading } from "@/components/pageStates/Loading";
 import { PageError } from "@/components/pageStates/Error";
 import { PageNoData } from "@/components/pageStates/NoData";
+import { getPoliticalRuleLabels } from "@/utils/detail/politicalRule.tsx";
+import {
+  getAvailableYearsFromSectors,
+  getCurrentYearFromAvailable,
+} from "@/utils/detail/sectorYearUtils";
+import { getProcurementRequirementsText } from "@/utils/detail/procurement";
+import { createMunicipalityStructuredData } from "@/utils/detail/seo";
 
 export function MunicipalityDetailPage() {
   const { t } = useTranslation();
@@ -46,12 +53,10 @@ export function MunicipalityDetailPage() {
   if (error) return <PageError />;
   if (!municipality) return <PageNoData />;
 
-  const requirementsInProcurement =
-    municipality.procurementScore == 2
-      ? t("municipalityDetailPage.procurementScore.high")
-      : municipality.procurementScore == 1
-        ? t("municipalityDetailPage.procurementScore.medium")
-        : t("municipalityDetailPage.procurementScore.low");
+  const requirementsInProcurement = getProcurementRequirementsText(
+    municipality.procurementScore,
+    t,
+  );
 
   const emissionsData = transformEmissionsData(municipality);
 
@@ -61,22 +66,13 @@ export function MunicipalityDetailPage() {
     ? formatEmissionsAbsolute(lastYearEmissions.value, currentLanguage)
     : t("noData");
 
-  const availableYears = sectorEmissions?.sectors
-    ? Object.keys(sectorEmissions.sectors)
-        .map(Number)
-        .filter(
-          (year) =>
-            !isNaN(year) &&
-            Object.keys(sectorEmissions.sectors[year] || {}).length > 0,
-        )
-        .sort((a, b) => b - a)
-    : [];
+  const availableYears = getAvailableYearsFromSectors(sectorEmissions);
 
-  // Use the first available year as default if selectedYear is not in availableYears
-  const currentYear =
-    availableYears.length > 0 && availableYears.includes(parseInt(selectedYear))
-      ? parseInt(selectedYear)
-      : availableYears[0] || 2023;
+  const currentYear = getCurrentYearFromAvailable(
+    selectedYear,
+    availableYears,
+    2023,
+  );
 
   // Prepare SEO data
   const canonicalUrl = `https://klimatkollen.se/municipalities/${id}`;
@@ -89,63 +85,13 @@ export function MunicipalityDetailPage() {
     year: lastYear,
   });
 
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "GovernmentOrganization",
-    name: `${municipality.name} kommun`,
-    description: pageDescription,
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: municipality.name,
-      addressRegion: municipality.region,
-      addressCountry: "SE",
-    },
-  };
+  const structuredData = createMunicipalityStructuredData(
+    municipality.name,
+    municipality.region,
+    pageDescription,
+  );
 
   const evcp = municipality.electricVehiclePerChargePoints;
-
-  interface PoliticalRuleLabelProps {
-    src: string;
-    alt: string;
-    fallback: string;
-  }
-
-  // Will return either an image from src or a fallback string if image doesnt exist
-  const PoliticalRuleLabel = ({
-    src,
-    alt,
-    fallback,
-  }: PoliticalRuleLabelProps) => {
-    const [error, setError] = useState(false);
-
-    const onError = () => {
-      setError(true);
-    };
-
-    return error ? (
-      fallback
-    ) : (
-      <img
-        src={src}
-        alt={alt}
-        onError={onError}
-        className="h-[20px] md:h-[25px] inline"
-      />
-    );
-  };
-
-  // Gets all the poltical parties labels depending on availablity
-  const getPoliticalRuleLabels = (politicalParty: string) => {
-    const imgSrc = `/logos/politicalParties/${politicalParty}.png`;
-
-    return (
-      <PoliticalRuleLabel
-        src={imgSrc}
-        alt={politicalParty}
-        fallback={politicalParty}
-      />
-    );
-  };
 
   return (
     <>

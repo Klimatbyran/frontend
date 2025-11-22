@@ -1,6 +1,3 @@
-/**
- * Creates structured data for SEO based on municipality information.
- */
 export function createMunicipalityStructuredData(
   municipalityName: string,
   municipalityRegion: string,
