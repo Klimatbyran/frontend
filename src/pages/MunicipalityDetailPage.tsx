@@ -12,7 +12,7 @@ import {
 import { useLanguage } from "@/components/LanguageProvider";
 import { useMunicipalitySectorEmissions } from "@/hooks/municipalities/useMunicipalitySectorEmissions";
 import { MunicipalityEmissions } from "@/components/municipalities/MunicipalityEmissions";
-import { MunicipalitySectorEmissions } from "@/components/municipalities/MunicipalitySectorEmissions";
+import { SectorEmissionsPie } from "@/components/detail/sectorChart/SectorEmissions";
 import { useHiddenItems } from "@/components/charts";
 import { PageLoading } from "@/components/pageStates/Loading";
 import { PageError } from "@/components/pageStates/Error";
@@ -109,7 +109,7 @@ export function MunicipalityDetailPage() {
           sectorEmissions={sectorEmissions}
         />
 
-        <MunicipalitySectorEmissions
+        <SectorEmissionsPie
           sectorEmissions={sectorEmissions}
           availableYears={availableYears}
           selectedYear={selectedYear}
@@ -118,6 +118,8 @@ export function MunicipalityDetailPage() {
           getSectorInfo={getSectorInfo}
           filteredSectors={filteredSectors}
           onFilteredSectorsChange={setFilteredSectors}
+          translateNamespace="municipalityDetailPage"
+          helpItems={["municipalityEmissionSources"]}
         />
 
         <DetailLinkCardGrid>

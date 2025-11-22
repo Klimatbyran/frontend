@@ -6,8 +6,9 @@ import { DetailPieSectorGrid } from "@/components/detail/sectorChart/DetailGrid"
 import SectorPieChart from "@/components/detail/sectorChart/SectorPieChart";
 import SectorPieLegend from "@/components/detail/sectorChart/SectorPieLegend";
 import { SectorEmissions } from "@/types/entity-rankings";
+import { DataGuideItemId } from "@/data-guide/items";
 
-interface MunicipalitySectorEmissionsProps {
+interface SectorEmissionsProps {
   sectorEmissions: SectorEmissions | null;
   availableYears: number[];
   selectedYear: string;
@@ -20,9 +21,10 @@ interface MunicipalitySectorEmissionsProps {
   filteredSectors: Set<string>;
   onFilteredSectorsChange: (sectors: Set<string>) => void;
   translateNamespace?: string;
+  helpItems: DataGuideItemId[];
 }
 
-export function MunicipalitySectorEmissions({
+export function SectorEmissionsPie({
   sectorEmissions,
   availableYears,
   selectedYear,
@@ -31,8 +33,9 @@ export function MunicipalitySectorEmissions({
   getSectorInfo,
   filteredSectors,
   onFilteredSectorsChange,
-  translateNamespace = "municipalityDetailPage",
-}: MunicipalitySectorEmissionsProps) {
+  translateNamespace,
+  helpItems,
+}: SectorEmissionsProps) {
   const { t } = useTranslation();
 
   if (!sectorEmissions?.sectors || availableYears.length === 0) {
@@ -43,7 +46,7 @@ export function MunicipalitySectorEmissions({
   const hasData = Object.keys(yearData).length > 0;
 
   return (
-    <SectionWithHelp helpItems={["municipalityEmissionSources"]}>
+    <SectionWithHelp helpItems={helpItems}>
       <CardHeader
         title={t(`${translateNamespace}.sectorEmissions`)}
         description={t(`${translateNamespace}.sectorEmissionsYear`, {
