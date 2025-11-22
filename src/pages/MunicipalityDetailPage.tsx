@@ -31,8 +31,8 @@ import {
   getAvailableYearsFromSectors,
   getCurrentYearFromAvailable,
 } from "@/utils/detail/sectorYearUtils";
-import { getProcurementRequirementsText } from "@/utils/detail/procurement";
-import { createMunicipalityStructuredData } from "@/utils/detail/seo";
+import { getProcurementRequirementsText } from "@/utils/municipality/procurement";
+import { createEntityStructuredData } from "@/utils/detail/seo";
 import { PoliticalRuleLabel } from "@/components/detail/PoliticalRuleLabel";
 
 export function MunicipalityDetailPage() {
@@ -85,8 +85,9 @@ export function MunicipalityDetailPage() {
     year: lastYear,
   });
 
-  const structuredData = createMunicipalityStructuredData(
+  const structuredData = createEntityStructuredData(
     municipality.name,
+    "municipality",
     municipality.region,
     pageDescription,
   );

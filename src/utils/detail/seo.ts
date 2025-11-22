@@ -1,17 +1,18 @@
-export function createMunicipalityStructuredData(
-  municipalityName: string,
-  municipalityRegion: string,
+export function createEntityStructuredData(
+  name: string,
+  type: string,
+  region: string,
   pageDescription: string,
 ) {
   return {
     "@context": "https://schema.org",
     "@type": "GovernmentOrganization",
-    name: `${municipalityName} kommun`,
+    name: `${name} ${type}`,
     description: pageDescription,
     address: {
       "@type": "PostalAddress",
-      addressLocality: municipalityName,
-      addressRegion: municipalityRegion,
+      addressLocality: name,
+      addressRegion: region,
       addressCountry: "SE",
     },
   };
