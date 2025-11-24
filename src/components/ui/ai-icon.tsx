@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils";
-import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   Tooltip,
@@ -7,6 +6,10 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
+import { isMobile } from "react-device-detect";
+import { useMobileModal } from "@/hooks/useMobileModal";
+import { MobileModal } from "@/components/layout/MobileModal";
 
 interface AiIconProps {
   size?: "sm" | "md" | "lg";
@@ -20,14 +23,21 @@ export const AiIcon = ({
   showTooltip = true,
 }: AiIconProps) => {
   const { t } = useTranslation();
-  const { i18n } = useTranslation();
-  const navigate = useNavigate();
-  const currentLang = i18n.language;
+  const {
+    isOpen,
+    modalRef,
+    handleClose,
+    handleMobileClick,
+    handleMobileKeyDown,
+  } = useMobileModal();
+
   const sizeClasses = {
     sm: "w-4 h-3 rounded",
     md: "w-5 h-4 rounded-md",
     lg: "w-6 h-5 rounded-md",
   };
+
+  const tooltipText = t("companies.overview.aiGeneratedData");
 
   const iconElement = (
     <div
@@ -45,40 +55,46 @@ export const AiIcon = ({
     return iconElement;
   }
 
-  const url = `/${currentLang}/methodology?view=company`;
+  // For mobile, use a full-screen modal popup
+  if (isMobile) {
+    return (
+      <>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="p-0 h-auto hover:bg-transparent focus:outline-none focus:ring-0 inline-block"
+          onClick={handleMobileClick}
+          onKeyDown={handleMobileKeyDown}
+          aria-label={tooltipText}
+          aria-expanded={isOpen}
+          aria-haspopup="dialog"
+        >
+          {iconElement}
+        </Button>
 
-  const handleClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    navigate(url);
-  };
+        <MobileModal
+          isOpen={isOpen}
+          modalRef={modalRef}
+          onClose={handleClose}
+          titleId="ai-tooltip-title"
+        >
+          {tooltipText}
+        </MobileModal>
+      </>
+    );
+  }
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    // Make it keyboard accessible like a link
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      e.stopPropagation();
-      navigate(url);
-    }
-  };
-
+  // For desktop, use the normal tooltip
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <button
-            type="button"
-            onClick={handleClick}
-            onKeyDown={handleKeyDown}
-            role="link"
-            className="inline-block cursor-pointer border-none bg-transparent p-0 hover:opacity-80 transition-opacity"
-            aria-label={t("companies.overview.aiGeneratedData")}
-          >
+          <span className="inline-block" aria-label={tooltipText}>
             {iconElement}
-          </button>
+          </span>
         </TooltipTrigger>
         <TooltipContent>
-          <span>{t("companies.overview.aiGeneratedData")}</span>
+          <span>{tooltipText}</span>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
