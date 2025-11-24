@@ -1,23 +1,35 @@
-import { useState } from "react";
-
 import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
 import { MunicipalityList } from "@/components/municipalities/list/MunicipalityList";
 import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/layout/PageHeader";
 import MunicipalityFilter from "@/components/municipalities/list/MunicipalityListFilter";
 import {
+  isMunicipalitySortBy,
+  isMunicipalitySortDirection,
   MunicipalitySortBy,
   MunicipalitySortDirection,
 } from "@/types/municipality";
+import { useSearchParams } from "react-router-dom";
 
 export function MunicipalitiesComparePage() {
   const { t } = useTranslation();
   const { municipalities, loading, error } = useMunicipalities();
-  const [selectedRegion, setSelectedRegion] = useState<string>("all");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [sortBy, setSortBy] = useState<MunicipalitySortBy>("meets_paris");
-  const [sortDirection, setSortDirection] =
-    useState<MunicipalitySortDirection>("best");
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const selectedRegion = searchParams.get("selectedRegion") || "all";
+  const searchQuery = searchParams.get("searchQuery") || "";
+  const sortBy = isMunicipalitySortBy(searchParams.get("sortBy") ?? "") ? searchParams.get("sortBy") as MunicipalitySortBy : "meets_paris"; 
+  const sortDirection = isMunicipalitySortDirection(searchParams.get("sortDirection") ?? "") ? searchParams.get("sortDirection") as MunicipalitySortDirection : "best"; 
+
+  const setOrDeleteSearchParam = (value: string | null, param: string) => setSearchParams((searchParams) => {
+    value ? searchParams.set(param, value) : searchParams.delete(param);
+    return searchParams;
+  }, { replace: true });
+
+  const setSelectedRegion = (selectedRegion: string) => setOrDeleteSearchParam(selectedRegion, "selectedRegion");
+  const setSearchQuery = (searchQuery: string) => setOrDeleteSearchParam(searchQuery, "searchQuery");
+  const setSortBy = (sortBy: string) => setOrDeleteSearchParam(sortBy, "sortBy");
+  const setSortDirection = (sortDirection: string) => setOrDeleteSearchParam(sortDirection, "sortDirection");
 
   if (loading) {
     return (
