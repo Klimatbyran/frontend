@@ -42,7 +42,7 @@ You *might* get the full 3 hours… but maybe not. Finishing early is safer. But
 
 This mirrors climate reality:
 - We have a limited **carbon budget** we can “use” before we exceed 1.5°C.
-- we don’t know exactly when we’ll cross irreversible thresholds, but we have an estimated deadline.
+- We don’t know exactly when we’ll cross irreversible thresholds, but we have an estimated deadline.
 - Faster cuts reduce risk,
 - but staying under the budget is what Paris alignment ultimately requires.
 
@@ -56,9 +56,9 @@ This creates a **percentage-based pathway**:
 - smaller removals later (as the pile shrinks)
 
 This is exactly like **Carbon Law (–11.72% per year)**:
-- It’s not necessarily the perfect method  
-- But it tells you the **minimum consistent rate** needed to remain within the goal  
-- It assumes you will use **all** available time evenly
+- It’s not necessarily the perfect method.  
+- But it tells you the **minimum consistent rate** needed to remain within the goal.  
+- It assumes you will use **all** available time evenly.
 
 In other words:
 **Carbon Law gives one valid strategy that can be applied at any scale (individual, company, nation) — but it's not the only strategy.**
@@ -71,8 +71,8 @@ Now think about how you actually work.
 For some people, they would rather move more dirt at the beginning and have less later when they are tired.
 
 But from past gardening project, you know you naturally:
-	•	fill and move a wheelbarrow with 10 kg every 10 minutes,
-	•	consistently, without slowing down.
+- fill and move a wheelbarrow with 10 kg every 10 minutes,
+- consistently, without slowing down.
 
 This is your “natural”, observed behaviour — your trendline.
 
@@ -166,9 +166,9 @@ Let’s put the analogy aside for a moment.
 Here’s how it works in real data:
 1.	We collect the best available emissions data.
 	- Municipalities: fossil CO₂e from national databases
-	-	Companies: Scope 3 when possible, otherwise Scope 1 & 2
+	- Companies: Scope 3 when possible, otherwise Scope 1 & 2
 2.	We establish the 2025 starting point.
-	 - If real 2025+ data exists, we use it
+	- If real 2025+ data exists, we use it
 	- If not, we fill the gap with the trendline
 3.	We create two pathways from 2025:
 	- Carbon Law Pathway → generates the Paris carbon budget
@@ -184,7 +184,7 @@ The heart of Paris alignment is a budget comparison.
 There is one important caveat:
 **Small early reduction percents are only OK, if the absolute reductions are still large enough relative to your starting level.** 
 
-If your natural pace were moving only **5 kg of dirt every 10 minutes**, you wouldn’t finish the moving the necessary amount of dirt before the rainstorm hits.
+If your natural pace were moving only **5 kg of dirt every 10 minutes**, you wouldn’t finish moving the necessary amount of dirt before the rainstorm hits.
 
 Likewise:
 - if the trendline shows too little reduction,
@@ -200,14 +200,14 @@ Not as a moral judgment — just as a mathematical assessment.
 ## One Final Note  
 The Paris Agreement is fundamentally about the total carbon added on the way to net-zero.
 
-The Paris Algined metric:
+The Paris Aligned metric:
 - is **not** a complete picture of all climate work  
 - is **not** a prediction of future policy  
 - is **not** an evaluation of adaptation or investments  
 
-But it does answer the **most important question**:
+But it does answer an **important question**:
 
-### 🌍 **If we continue on our current path, are we staying within a 1.5°C-aligned future?**
+### 🌍 **If we continue on our current path, are we aiming for a 1.5°C-aligned future?**
 
 That’s what our “On Track for Paris” means.
 
