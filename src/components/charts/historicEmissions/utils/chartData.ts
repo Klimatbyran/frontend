@@ -3,7 +3,22 @@
  */
 
 export const filterValidTotalData = (data: any[]) => {
-  return data.filter((d) => d.total !== undefined && d.total !== null);
+  const cleaned = data.filter((d) => d.total !== undefined && d.total !== null);
+
+  if (cleaned.length === 0) {
+    return cleaned;
+  }
+
+  const firstPositiveIndex = cleaned.findIndex((d) => Number(d.total) > 0);
+
+  // remove preceding zero-value points
+  if (firstPositiveIndex > 0) {
+    return cleaned.slice(firstPositiveIndex);
+  }
+
+  // If there are no positive values (all zeros), or the first value is already > 0,
+  // keep the cleaned dataset as-is to avoid rendering an empty chart.
+  return cleaned;
 };
 
 export const filterValidScopeData = (data: any[]) => {

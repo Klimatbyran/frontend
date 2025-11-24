@@ -66,6 +66,7 @@ const EmissionsSourcesAnalysis: React.FC<EmissionsSourcesAnalysisProps> = ({
           years={years}
           onYearChange={setSelectedYear}
           isSectorView={effectiveSectors.length > 0}
+          hideTotal={true} // TODO: decide if we want to display the total again, and whether that should be complete total or excluding statedScope3 total
         />
       </div>
 

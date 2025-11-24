@@ -103,10 +103,8 @@ export function AppRoutes() {
           element={<TrendAnalysisDashboard />}
         />
       </Route>
-      <Route
-        path={`${basePath}/regional-overview`}
-        element={<RegionalRankedPage />}
-      />
+      {/* Regions routes */}
+      <Route path={`${basePath}/regions`} element={<RegionalRankedPage />} />
       {/* Municipalities routes */}
       <Route
         path={`${basePath}/municipalities`}

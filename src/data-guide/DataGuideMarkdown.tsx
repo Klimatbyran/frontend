@@ -19,6 +19,30 @@ export const DataGuideMarkdown = ({
       className={cn(className)}
       remarkPlugins={[remarkBreaks]}
       components={{
+        h1: ({ node, children, ...props }) => (
+          <h1
+            {...props}
+            className="text-xl font-semibold mt-6 mb-3"
+          >
+            {children}
+          </h1>
+        ),
+        h2: ({ node, children, ...props }) => (
+          <h2
+            {...props}
+            className="text-lg font-semibold mt-6 mb-2"
+          >
+            {children}
+          </h2>
+        ),
+        h3: ({ node, children, ...props }) => (
+          <h3
+            {...props}
+            className="text-base font-semibold mt-4 mb-2"
+          >
+            {children}
+          </h3>
+        ),
         ol: ({ node, children, ...props }) => (
           <ol {...props} className="list-decimal list-outside mt-2">
             {children}

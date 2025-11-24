@@ -1,5 +1,18 @@
 ---
-id: 'klimatmal' 
+id: "klimatmal"
+title: "Analys av riksdagspartiernas klimatmål – sex av åtta partier missar helt Parisavtalets 1,5-gradersmål"
+excerpt: ""
+date: "2022-09-01"
+readTime: "5 min"
+category: "analysis"
+image: "/images/blogImages/image1-31.webp"
+language: "sv"
+author:
+  name: "Ola Spännar"
+  avatar: "/people/ola.jpg"
+relatedPosts:
+- "utslappsberakning"
+- "metod"
 ---
 
 Inför valet 2022 genomförde Klimatkollen en granskning av riksdagspartiernas klimatpolitik. En analys av partiernas klimatmål jämfört med Parisavtalets 1,5-gradersmål utfördes, där hänsyn tagits till avtalets rättviseaspekt.

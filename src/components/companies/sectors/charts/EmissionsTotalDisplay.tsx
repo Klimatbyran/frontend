@@ -10,6 +10,7 @@ interface EmissionsTotalDisplayProps {
   years: string[];
   onYearChange: (year: string) => void;
   isSectorView?: boolean;
+  hideTotal?: boolean;
 }
 
 const EmissionsTotalDisplay: React.FC<EmissionsTotalDisplayProps> = ({
@@ -18,6 +19,7 @@ const EmissionsTotalDisplay: React.FC<EmissionsTotalDisplayProps> = ({
   years,
   onYearChange,
   isSectorView = false,
+  hideTotal = false,
 }) => {
   const { t } = useTranslation();
   const { isMobile, isTablet } = useScreenSize();
@@ -33,28 +35,30 @@ const EmissionsTotalDisplay: React.FC<EmissionsTotalDisplayProps> = ({
             : "flex items-center gap-4 ml-auto"
       }`}
     >
-      <div
-        className={
-          isMobile
-            ? "w-full"
-            : isTablet
-              ? "text-left"
-              : "flex items-center gap-4"
-        }
-      >
-        <div className="text-sm text-grey">
-          {isSectorView
-            ? t("companiesPage.sectorGraphs.sectorTotal")
-            : t("companiesPage.sectorGraphs.total")}
-          <span className="ml-2 text-xl font-light text-white">
-            {formatEmissionsAbsolute(
-              Math.round(totalEmissions),
-              currentLanguage,
-            )}{" "}
-            {t("emissionsUnit")}
-          </span>
+      {!hideTotal && (
+        <div
+          className={
+            isMobile
+              ? "w-full"
+              : isTablet
+                ? "text-left"
+                : "flex items-center gap-4"
+          }
+        >
+          <div className="text-sm text-grey">
+            {isSectorView
+              ? t("companiesPage.sectorGraphs.sectorTotal")
+              : t("companiesPage.sectorGraphs.total")}
+            <span className="ml-2 text-xl font-light text-white">
+              {formatEmissionsAbsolute(
+                Math.round(totalEmissions),
+                currentLanguage,
+              )}{" "}
+              {t("emissionsUnit")}
+            </span>
+          </div>
         </div>
-      </div>
+      )}
       <select
         value={selectedYear}
         onChange={(e) => onYearChange(e.target.value)}
