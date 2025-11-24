@@ -106,8 +106,8 @@ export default function MunicipalityFilter({
               ? t("municipalitiesComparePage.sort.aToZ")
               : t("municipalitiesComparePage.sort.zToA")
             : sortDirection === "best"
-              ? t("municipalitiesComparePage.sort.bestFirst")
-              : t("municipalitiesComparePage.sort.worstFirst")}
+              ? t("municipalitiesComparePage.sort.worstFirst")
+              : t("municipalitiesComparePage.sort.bestFirst")}
         </button>
       </div>
     </div>
