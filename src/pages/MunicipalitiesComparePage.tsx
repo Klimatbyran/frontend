@@ -19,7 +19,9 @@ export function MunicipalitiesComparePage() {
   const selectedRegion = searchParams.get("selectedRegion") || "all";
   const searchQuery = searchParams.get("searchQuery") || "";
   const sortBy = isMunicipalitySortBy(searchParams.get("sortBy") ?? "") ? searchParams.get("sortBy") as MunicipalitySortBy : "meets_paris"; 
-  const sortDirection = isMunicipalitySortDirection(searchParams.get("sortDirection") ?? "") ? searchParams.get("sortDirection") as MunicipalitySortDirection : "best"; 
+  const sortDirection = isMunicipalitySortDirection(searchParams.get("sortDirection") ?? "") 
+    ? searchParams.get("sortDirection") as MunicipalitySortDirection 
+    : sortBy == "meets_paris" ? "worst" : "best"; 
 
   const setOrDeleteSearchParam = (value: string | null, param: string) => setSearchParams((searchParams) => {
     value ? searchParams.set(param, value) : searchParams.delete(param);
