@@ -31,10 +31,10 @@ export const useSortOptions = () => {
   ] as const;
 };
 
-export type SortOption =
-  | "emissions_reduction"
-  | "total_emissions"
-  | "scope3_coverage"
-  | "meets_paris"
-  | "name_asc"
-  | "name_desc";
+
+const SORT_OPTIONS = ["emissions_reduction", "total_emissions", "scope3_coverage", "meets_paris", "name_asc", "name_desc"] as const;
+export type SortOption = (typeof SORT_OPTIONS)[number];
+
+export function isSortOption(value: string): value is SortOption {
+  return SORT_OPTIONS.includes(value as SortOption);
+}

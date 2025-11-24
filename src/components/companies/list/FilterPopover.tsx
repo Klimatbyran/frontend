@@ -1,4 +1,3 @@
-import React from "react";
 import { useTranslation } from "react-i18next";
 import { Filter, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -23,7 +22,7 @@ interface FilterPopoverProps {
   filterOpen: boolean;
   setFilterOpen: (open: boolean) => void;
   sectors: CompanySector[];
-  setSectors: React.Dispatch<React.SetStateAction<CompanySector[]>>;
+  setSectors: (sectors: CompanySector[]) => void;
   meetsParisFilter: "all" | "yes" | "no" | "unknown";
   setMeetsParisFilter: (filter: "all" | "yes" | "no" | "unknown") => void;
 }
