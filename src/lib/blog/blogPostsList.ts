@@ -1,5 +1,6 @@
 
 export const blogMetadata: { id: string, displayLanguages: string[]}[] = [
+  { id: "cop-2025", displayLanguages: ["sv", "en"] },
   { id: "how-we-present-data", displayLanguages: ["sv", "en"] },
   { id: "paris-aligned", displayLanguages: ["sv", "en"] },
   { id: "municipality-method-update", displayLanguages: ["sv", "en"] },
