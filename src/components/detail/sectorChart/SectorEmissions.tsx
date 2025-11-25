@@ -7,6 +7,7 @@ import SectorPieChart from "@/components/detail/sectorChart/SectorPieChart";
 import SectorPieLegend from "@/components/detail/sectorChart/SectorPieLegend";
 import { SectorEmissions } from "@/types/entity-rankings";
 import { DataGuideItemId } from "@/data-guide/items";
+import { SectorInfo } from "@/types/charts";
 
 interface SectorEmissionsProps {
   sectorEmissions: SectorEmissions | null;
@@ -14,10 +15,7 @@ interface SectorEmissionsProps {
   selectedYear: string;
   onYearChange: (year: string) => void;
   currentYear: number;
-  getSectorInfo: (name: string) => {
-    color: string;
-    translatedName: string;
-  };
+  getSectorInfo: (name: string) => SectorInfo;
   filteredSectors: Set<string>;
   onFilteredSectorsChange: (sectors: Set<string>) => void;
   translateNamespace?: string;

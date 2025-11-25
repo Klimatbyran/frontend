@@ -4,14 +4,12 @@ import { useResponsiveChartSize } from "@/hooks/useResponsiveChartSize";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import PieTooltip from "@/components/graphs/tooltips/PieTooltip";
 import { SectorEmissions } from "@/types/entity-rankings";
+import { SectorInfo } from "@/types/charts";
 
 interface SectorPieChartProps {
   sectorEmissions: SectorEmissions;
   year: number;
-  getSectorInfo: (name: string) => {
-    color: string;
-    translatedName: string;
-  };
+  getSectorInfo: (name: string) => SectorInfo;
   filteredSectors?: Set<string>;
   onFilteredSectorsChange?: (sectors: Set<string>) => void;
 }

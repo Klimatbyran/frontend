@@ -11,6 +11,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { SectorInfo } from "@/types/charts";
 
 interface LegendProps {
   data: Array<{
@@ -19,10 +20,7 @@ interface LegendProps {
     color: string;
   }>;
   total: number;
-  getSectorInfo: (name: string) => {
-    color: string;
-    translatedName: string;
-  };
+  getSectorInfo: (name: string) => SectorInfo;
   filteredSectors?: Set<string>;
   onFilteredSectorsChange?: (sectors: Set<string>) => void;
 }
