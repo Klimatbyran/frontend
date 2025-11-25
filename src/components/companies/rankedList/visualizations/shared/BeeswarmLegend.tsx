@@ -2,14 +2,21 @@ interface BeeswarmLegendProps {
   min: number;
   max: number;
   unit: string;
+  leftLabel?: string;
+  rightLabel?: string;
 }
 
-export function BeeswarmLegend({ min, max, unit }: BeeswarmLegendProps) {
+export function BeeswarmLegend({
+  min,
+  max,
+  unit,
+  leftLabel,
+  rightLabel,
+}: BeeswarmLegendProps) {
   return (
     <div className="flex items-center gap-2 text-xs text-grey">
       <span className="whitespace-nowrap">
-        {min.toFixed(1)}
-        {unit}
+        {leftLabel ?? `${min.toFixed(1)}${unit}`}
       </span>
       <div className="relative w-[160px] h-4">
         <div
@@ -26,8 +33,7 @@ export function BeeswarmLegend({ min, max, unit }: BeeswarmLegendProps) {
         />
       </div>
       <span className="whitespace-nowrap">
-        {max.toFixed(1)}
-        {unit}
+        {rightLabel ?? `${max.toFixed(1)}${unit}`}
       </span>
     </div>
   );

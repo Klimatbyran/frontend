@@ -3,7 +3,6 @@ import type { CompanyWithKPIs } from "@/types/company";
 import { createSymmetricRangeGradient } from "@/utils/ui/colorGradients";
 import { filterValidNumericData } from "@/utils/data/filtering";
 import { BeeswarmChart } from "./shared/BeeswarmChart";
-import { BeeswarmLegend } from "./shared/BeeswarmLegend";
 import type { ColorFunction } from "@/types/visualizations";
 
 interface EmissionsChangeVisualizationProps {
@@ -69,7 +68,6 @@ export function EmissionsChangeVisualization({
           max={max}
           unit="%"
           onCompanyClick={onCompanyClick}
-          legend={<BeeswarmLegend min={min} max={max} unit="%" />}
         />
       </div>
     </div>

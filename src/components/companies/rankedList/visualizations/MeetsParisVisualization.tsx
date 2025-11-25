@@ -5,7 +5,6 @@ import { calculateTrendline } from "@/lib/calculations/trends/analysis";
 import { calculateCarbonBudgetTonnes } from "@/utils/calculations/carbonBudget";
 import { createFixedRangeGradient } from "@/utils/ui/colorGradients";
 import { BeeswarmChart } from "./shared/BeeswarmChart";
-import { BeeswarmLegend } from "./shared/BeeswarmLegend";
 import type { ColorFunction } from "@/types/visualizations";
 
 // Determine the best unit for displaying values
@@ -234,13 +233,10 @@ export function MeetsParisVisualization({
               color: "rgba(255, 255, 255, 0.5)",
             },
           ]}
-          legend={
-            <BeeswarmLegend
-              min={legendMin}
-              max={legendMax}
-              unit={unitScale.unit}
-            />
-          }
+          legendMin={legendMin}
+          legendMax={legendMax}
+          leftLabel="Below budget"
+          rightLabel="Above budget"
         />
       </div>
 

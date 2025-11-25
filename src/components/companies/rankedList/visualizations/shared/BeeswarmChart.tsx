@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from "react";
 import type { ColorFunction } from "@/types/visualizations";
 import { BeeswarmTooltip } from "./BeeswarmTooltip";
+import { BeeswarmLegend } from "./BeeswarmLegend";
 
 interface BeeswarmChartProps<T> {
   data: T[];
@@ -10,14 +11,18 @@ interface BeeswarmChartProps<T> {
   colorForValue: ColorFunction;
   min: number;
   max: number;
-  unit: string; // e.g., "%/yr" or "%"
+  unit: string;
   onCompanyClick?: (item: T) => void;
-  maxDisplayCount?: number; // Max number of dots to display (default: 600)
+  maxDisplayCount?: number;
   formatTooltipValue?: (value: number, unit: string) => string; // Custom formatter for tooltip value
   xReferenceLines?: Array<{ value: number; label?: string; color?: string }>; // Vertical reference lines
   capThreshold?: number; // Optional cap threshold - values above this will be capped
   getRawValue?: (item: T) => number; // Optional function to get raw (uncapped) value for tooltip
-  legend?: React.ReactNode; // Optional legend component to render inside the chart
+  showLegend?: boolean;
+  legendMin?: number;
+  legendMax?: number;
+  leftLabel?: string; 
+  rightLabel?: string; 
 }
 
 export function BeeswarmChart<T>({
@@ -35,7 +40,11 @@ export function BeeswarmChart<T>({
   xReferenceLines,
   capThreshold,
   getRawValue,
-  legend,
+  showLegend = true,
+  legendMin,
+  legendMax,
+  leftLabel,
+  rightLabel,
 }: BeeswarmChartProps<T>) {
   const displayData = data.slice(0, maxDisplayCount);
   const [hoveredItem, setHoveredItem] = useState<{
@@ -206,12 +215,22 @@ export function BeeswarmChart<T>({
 
       {/* Legend and company count */}
       <div className="mt-8 flex items-center justify-between text-xs text-grey">
-        <div className={legend ? "" : "text-center w-full"}>
+        <div className={showLegend ? "" : "text-center w-full"}>
           {data.length} companies shown
           {data.length >= maxDisplayCount &&
             ` (showing first ${maxDisplayCount})`}
         </div>
-        {legend && <div className="flex items-center">{legend}</div>}
+        {showLegend && (
+          <div className="flex items-center">
+            <BeeswarmLegend
+              min={legendMin ?? min}
+              max={legendMax ?? max}
+              unit={unit}
+              leftLabel={leftLabel}
+              rightLabel={rightLabel}
+            />
+          </div>
+        )}
       </div>
 
       {/* Tooltip */}
