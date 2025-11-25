@@ -1,8 +1,6 @@
 import { useMemo } from "react";
 import type { CompanyWithKPIs } from "@/types/company";
-import {
-  createSymmetricRangeGradient,
-} from "@/utils/ui/colorGradients";
+import { createSymmetricRangeGradient } from "@/utils/ui/colorGradients";
 import { filterValidNumericData } from "@/utils/data/filtering";
 import { BeeswarmChart } from "./shared/BeeswarmChart";
 import type { ColorFunction } from "@/types/visualizations";
@@ -16,7 +14,6 @@ export function EmissionsChangeVisualization({
   companies,
   onCompanyClick,
 }: EmissionsChangeVisualizationProps) {
-
   const { valid: withData, invalid: noData } = useMemo(
     () =>
       filterValidNumericData(companies, (c) => c.emissionsChangeFromBaseYear),
