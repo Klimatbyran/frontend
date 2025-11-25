@@ -7,6 +7,26 @@ import { createFixedRangeGradient } from "@/utils/ui/colorGradients";
 import { BeeswarmChart } from "./shared/BeeswarmChart";
 import type { ColorFunction } from "@/types/visualizations";
 
+// Determine the best unit for displaying values
+type UnitScale = {
+  unit: string;
+  divisor: number;
+  label: string;
+};
+
+const getBestUnit = (maxAbsValue: number): UnitScale => {
+  const absValue = Math.abs(maxAbsValue);
+
+  if (absValue >= 1_000_000_000) {
+    return { unit: " Gt", divisor: 1_000_000_000, label: "Gt" };
+  } else if (absValue >= 1_000_000) {
+    return { unit: " Mt", divisor: 1_000_000, label: "Mt" };
+  } else if (absValue >= 1_000) {
+    return { unit: " kt", divisor: 1_000, label: "kt" };
+  }
+  return { unit: " t", divisor: 1, label: "t" };
+};
+
 interface MeetsParisVisualizationProps {
   companies: CompanyWithKPIs[];
   onCompanyClick?: (company: CompanyWithKPIs) => void;
@@ -43,28 +63,53 @@ export function MeetsParisVisualization({
       .filter((d): d is CompanyBudgetData => d !== null);
   }, [companies]);
 
-  // Calculate min/max for beeswarm chart
+  // Calculate min/max for beeswarm chart (in raw tonnes)
   const budgetValues = useMemo(
     () => companyBudgetData.map((d) => d.budgetTonnes),
     [companyBudgetData],
   );
 
-  const min = useMemo(
+  const minRaw = useMemo(
     () => (budgetValues.length ? Math.min(...budgetValues) : 0),
     [budgetValues],
   );
-  const max = useMemo(
+  const maxRaw = useMemo(
     () => (budgetValues.length ? Math.max(...budgetValues) : 0),
     [budgetValues],
   );
 
-  // Color function: range-based
+  // Determine best unit based on absolute max value
+  const unitScale = useMemo(() => {
+    const absMax = Math.max(Math.abs(minRaw), Math.abs(maxRaw));
+    return getBestUnit(absMax);
+  }, [minRaw, maxRaw]);
+
+  // Convert min/max to the selected unit for display
+  const min = useMemo(
+    () => minRaw / unitScale.divisor,
+    [minRaw, unitScale.divisor],
+  );
+  const max = useMemo(
+    () => maxRaw / unitScale.divisor,
+    [maxRaw, unitScale.divisor],
+  );
+
+  // Color function: range-based (uses raw values for color calculation)
   // Use symmetric range around 0, with reasonable bounds based on data
   const colorForTonnes: ColorFunction = useMemo(() => {
-    // Use a symmetric range centered at 0
-    const absMax = Math.max(Math.abs(min), Math.abs(max));
+    // Use a symmetric range centered at 0 (in raw tonnes)
+    const absMax = Math.max(Math.abs(minRaw), Math.abs(maxRaw));
     return (value: number) => createFixedRangeGradient(-absMax, absMax, value);
-  }, [min, max]);
+  }, [minRaw, maxRaw]);
+
+  // Format tooltip value with appropriate unit
+  // Note: value is already converted to the selected unit scale
+  const formatTooltipValue = useMemo(() => {
+    return (value: number, _unit: string) => {
+      const sign = value < 0 ? "-" : "+";
+      return `${sign}${Math.abs(value).toFixed(1)}${unitScale.unit}`;
+    };
+  }, [unitScale]);
 
   // Companies without budget data
   const noBudgetCompanies = useMemo(() => {
@@ -113,18 +158,19 @@ export function MeetsParisVisualization({
       <div className="relative flex-1 bg-black-2 rounded-level-2 p-4 overflow-auto">
         <BeeswarmChart
           data={companyBudgetData}
-          getValue={(d) => d.budgetTonnes}
+          getValue={(d) => d.budgetTonnes / unitScale.divisor}
           getCompanyName={(d) => d.company.name}
           getCompanyId={(d) => d.company.wikidataId}
-          colorForValue={colorForTonnes}
+          colorForValue={(value) => colorForTonnes(value * unitScale.divisor)}
           min={min}
           max={max}
-          unit=" t"
+          unit={unitScale.unit}
+          formatTooltipValue={formatTooltipValue}
           onCompanyClick={(d) => onCompanyClick?.(d.company)}
           xReferenceLines={[
             {
               value: 0,
-              label: "Budget threshold (0 t)",
+              label: `Budget threshold (0${unitScale.unit})`,
               color: "rgba(255, 255, 255, 0.5)",
             },
           ]}
