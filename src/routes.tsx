@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
+import StagingProtectedRoute from "./components/StagingProtectedRoute";
 import { useLanguage } from "./components/LanguageProvider";
 import { LanguageRedirect } from "@/components/LanguageRedirect";
 import { AboutPage } from "./pages/AboutPage";
@@ -13,7 +14,9 @@ import DownloadsPage from "./pages/DownloadsPage";
 import { ErrorPage } from "./pages/ErrorPage";
 import { InsightsPage } from "./pages/InsightsPage";
 import { LandingPage } from "./pages/LandingPage";
+import { LandingPageNew } from "./pages/LandingPageNew";
 import { LearnMoreOverview } from "./pages/LearnMoreOverview";
+import { stagingFeatureFlagEnabled } from "@/utils/ui/featureFlags";
 import { LearnMoreArticle } from "./pages/LearnMoreArticle";
 import { MethodsPage } from "./pages/MethodsPage";
 import { MunicipalitiesRankedPage } from "./pages/MunicipalitiesRankedPage";
@@ -34,6 +37,12 @@ import { NewsLetterArchivePage } from "./pages/NewslettersPage";
 import { RegionalRankedPage } from "./pages/RegionalRankedPage";
 import { CompaniesRankedPage } from "./pages/CompaniesRankedPage";
 
+// Conditional landing page component that shows new version on localhost/staging
+function ConditionalLandingPage() {
+  const isStaging = stagingFeatureFlagEnabled();
+  return isStaging ? <LandingPageNew /> : <LandingPage />;
+}
+
 export function AppRoutes() {
   const { currentLanguage } = useLanguage();
 
@@ -45,18 +54,20 @@ export function AppRoutes() {
       {/* Language redirect for non-prefixed routes */}
       <Route path="*" element={<LanguageRedirect />} />
       {/* Root path - matches both /sv and /en */}
-      <Route path={`${basePath}`} element={<LandingPage />} />
-      <Route path={`${basePath}/`} element={<LandingPage />} />
+      <Route path={`${basePath}`} element={<ConditionalLandingPage />} />
+      <Route path={`${basePath}/`} element={<ConditionalLandingPage />} />
       {/* Companies routes */}
       <Route path={`${basePath}/companies`} element={<CompaniesListPage />} />
       <Route
         path={`${basePath}/companies/sectors`}
         element={<CompaniesSectorsPage />}
       />
-      <Route
-        path={`${basePath}/companies/ranked`}
-        element={<CompaniesRankedPage />}
-      />
+      <Route element={<StagingProtectedRoute />}>
+        <Route
+          path={`${basePath}/companies/ranked`}
+          element={<CompaniesRankedPage />}
+        />
+      </Route>
       <Route
         path={`${basePath}/companies/:id`}
         element={<CompanyDetailPage />}
@@ -92,10 +103,8 @@ export function AppRoutes() {
           element={<TrendAnalysisDashboard />}
         />
       </Route>
-      <Route
-        path={`${basePath}/regional-overview`}
-        element={<RegionalRankedPage />}
-      />
+      {/* Regions routes */}
+      <Route path={`${basePath}/regions`} element={<RegionalRankedPage />} />
       {/* Municipalities routes */}
       <Route
         path={`${basePath}/municipalities`}

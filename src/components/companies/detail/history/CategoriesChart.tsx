@@ -147,15 +147,10 @@ export const CategoriesChart: FC<CategoriesChartProps> = ({
             {/* Category lines */}
             {categoryKeys.map((categoryKey) => {
               const categoryId = parseInt(categoryKey.replace("cat", ""));
-              const isInterpolatedKey = `${categoryKey}Interpolated`;
               const isHidden = hiddenCategories.includes(categoryId);
 
               if (isHidden) return null;
 
-              // Calculate strokeDasharray based on the first data point
-              const strokeDasharray = filteredData[0][isInterpolatedKey]
-                ? "4 4"
-                : "0";
               const categoryColor = getCategoryColor(categoryId);
 
               return (
@@ -169,7 +164,6 @@ export const CategoriesChart: FC<CategoriesChartProps> = ({
                     getCategoryName(categoryId),
                     categoryColor,
                   )}
-                  strokeDasharray={strokeDasharray}
                 />
               );
             })}

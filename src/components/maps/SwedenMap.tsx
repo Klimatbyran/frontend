@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { MapContainer, GeoJSON, useMap } from "react-leaflet";
 import { MapZoomControls } from "./MapZoomControls";
 import { MapLegend } from "./MapLegend";
@@ -10,6 +16,7 @@ import {
   GeoJsonProperties,
 } from "geojson";
 import { MUNICIPALITY_MAP_COLORS } from "./constants";
+import { calculateGeoBounds } from "./utils/geoBounds";
 import { isMobile } from "react-device-detect";
 import { t } from "i18next";
 import "leaflet/dist/leaflet.css";
@@ -83,15 +90,6 @@ function MapOfSweden({
   propertyNameField = "name",
   colors = MUNICIPALITY_MAP_COLORS,
 }: SwedenMapProps) {
-  // Guard clause to handle undefined selectedKPI
-  if (!selectedKPI) {
-    return (
-      <div className="relative flex-1 h-full max-w-screen-lg flex items-center justify-center">
-        <div className="text-white/70">No KPI selected</div>
-      </div>
-    );
-  }
-
   const [hoveredArea, setHoveredArea] = React.useState<string | null>(null);
   const [hoveredValue, setHoveredValue] = useState<number | boolean | null>(
     null,
@@ -113,6 +111,16 @@ function MapOfSweden({
 
   const mapRef = useRef<L.Map | null>(null);
 
+  // Zoom limits to prevent excessive zooming
+  const MIN_ZOOM = 3;
+  const MAX_ZOOM = 10;
+
+  // Calculate bounds from geoData to constrain map panning
+  const mapBounds = useMemo(
+    () => calculateGeoBounds(geoData, { padding: 0.05 }),
+    [geoData],
+  );
+
   useEffect(() => {
     const handleResize = () => {
       setPosition((prev) => ({
@@ -125,26 +133,43 @@ function MapOfSweden({
     return () => window.removeEventListener("resize", handleResize);
   }, [getInitialZoom]);
 
-  const values = data
-    .map((item) => item[selectedKPI.key])
-    .filter((val) => val !== null && val !== undefined)
-    .map(Number);
+  const values = useMemo(() => {
+    if (!selectedKPI) {
+      return [];
+    }
 
-  const minValue = Math.min(...values);
-  const maxValue = Math.max(...values);
+    return data
+      .map((item) => item[selectedKPI.key])
+      .filter(
+        (val): val is number | string => val !== null && val !== undefined,
+      )
+      .map(Number)
+      .filter((val) => Number.isFinite(val));
+  }, [data, selectedKPI]);
 
-  // Sort data by selected KPI
-  const sortedData = [...data].sort((a, b) => {
-    const aVal = a[selectedKPI.key];
-    const bVal = b[selectedKPI.key];
+  const minValue = values.length ? Math.min(...values) : 0;
+  const maxValue = values.length ? Math.max(...values) : 0;
 
-    if (aVal === null || aVal === undefined) return 1;
-    if (bVal === null || bVal === undefined) return -1;
+  const sortedData = useMemo(() => {
+    if (!selectedKPI) {
+      return [];
+    }
 
-    return selectedKPI.higherIsBetter
-      ? (Number(bVal) || 0) - (Number(aVal) || 0)
-      : (Number(aVal) || 0) - (Number(bVal) || 0);
-  });
+    return [...data].sort((a, b) => {
+      const aVal = a[selectedKPI.key];
+      const bVal = b[selectedKPI.key];
+
+      if (aVal === null || aVal === undefined) return 1;
+      if (bVal === null || bVal === undefined) return -1;
+
+      const numericA = Number(aVal) || 0;
+      const numericB = Number(bVal) || 0;
+
+      return selectedKPI.higherIsBetter
+        ? numericB - numericA
+        : numericA - numericB;
+    });
+  }, [data, selectedKPI]);
 
   const handleZoomIn = () => {
     if (mapRef.current) {
@@ -166,6 +191,10 @@ function MapOfSweden({
 
   const getAreaData = useCallback(
     (name: string): { value: number | boolean | null; rank: number | null } => {
+      if (!selectedKPI) {
+        return { value: null, rank: null };
+      }
+
       const item = data.find(
         (d) => d.name.toLowerCase() === name.toLowerCase(),
       );
@@ -178,12 +207,17 @@ function MapOfSweden({
       const rawValue = item[selectedKPI.key];
       if (typeof rawValue === "number" || typeof rawValue === "boolean") {
         value = rawValue;
+      } else if (rawValue !== null && rawValue !== undefined) {
+        const numericValue = Number(rawValue);
+        value = Number.isFinite(numericValue) ? numericValue : null;
       }
-      const rank = sortedData.findIndex((d) => d.name === item.name) + 1;
+
+      const rankIndex = sortedData.findIndex((d) => d.name === item.name);
+      const rank = rankIndex >= 0 ? rankIndex + 1 : null;
 
       return { value, rank };
     },
-    [data, selectedKPI.key, sortedData],
+    [data, selectedKPI, sortedData],
   );
 
   const getColorByValue = (value: number | boolean | null): string => {
@@ -250,15 +284,18 @@ function MapOfSweden({
     );
   };
 
-  const renderZoomControls = () => (
-    <MapZoomControls
-      onZoomIn={handleZoomIn}
-      onZoomOut={handleZoomOut}
-      onReset={handleReset}
-      canZoomIn={true}
-      canZoomOut={true}
-    />
-  );
+  const renderZoomControls = () => {
+    const currentZoom = position.zoom;
+    return (
+      <MapZoomControls
+        onZoomIn={handleZoomIn}
+        onZoomOut={handleZoomOut}
+        onReset={handleReset}
+        canZoomIn={currentZoom < MAX_ZOOM}
+        canZoomOut={currentZoom > MIN_ZOOM}
+      />
+    );
+  };
 
   const onEachFeature = (
     feature: Feature<Geometry, GeoJsonProperties> | undefined,
@@ -329,6 +366,9 @@ function MapOfSweden({
         }}
         zoomControl={false}
         attributionControl={false}
+        maxBounds={mapBounds}
+        minZoom={MIN_ZOOM}
+        maxZoom={MAX_ZOOM}
         ref={mapRef}
         className="rounded-xl"
       >

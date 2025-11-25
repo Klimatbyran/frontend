@@ -105,6 +105,7 @@ export interface CompanyEditComponentProps {
 export interface CompanyWithKPIs extends RankedCompany {
   meetsParis?: boolean | null;
   emissionsChangeFromBaseYear?: number | null;
+  trendSlope?: number | null;
   [key: string]: unknown;
 }
 

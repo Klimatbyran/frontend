@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
-import { CardGrid } from "@/components/CardGrid";
+import { CardGrid } from "@/components/layout/CardGrid";
 import { ListCard } from "@/components/layout/ListCard";
 import {
   formatEmissionsAbsolute,
@@ -12,8 +12,8 @@ import { calculateTrendline } from "@/lib/calculations/trends/analysis";
 import { calculateMeetsParis } from "@/lib/calculations/trends/meetsParis";
 import { calculateEmissionsChange } from "@/utils/calculations/emissionsCalculations";
 import { useSectorNames } from "@/hooks/companies/useCompanySectors";
+import { getCompanySectorName } from "@/utils/data/industryGrouping";
 import type { RankedCompany } from "@/types/company";
-import type { SectorCode } from "@/lib/constants/sectors";
 
 interface CompanyListProps {
   companies: RankedCompany[];
@@ -36,12 +36,7 @@ export function CompanyList({ companies }: CompanyListProps) {
       const previousPeriod = reportingPeriods?.[1];
 
       // Get sector name instead of description
-      const sectorCode = industry?.industryGics?.sectorCode as
-        | SectorCode
-        | undefined;
-      const sectorName = sectorCode
-        ? sectorNames[sectorCode]
-        : t("companies.overview.unknownSector");
+      const sectorName = getCompanySectorName(company, sectorNames);
 
       const currentEmissions =
         latestPeriod?.emissions?.calculatedTotalEmissions || null;

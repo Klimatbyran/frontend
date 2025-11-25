@@ -1,5 +1,18 @@
 ---
 id: "municipality-method-update"
+title: "Carbon Law – a new method for comparing municipalities' climate emissions"
+excerpt: "Klimatkollen is changing its method for calculating emissions data for Sweden's municipalities."
+date: "2025-09-02"
+readTime: "2 min"
+category: "methodology"
+image: "/images/blogImages/swedish-municipality-map.png"
+language: "en"
+author:
+  name: "Ola Spännar"
+  avatar: "/people/ola.jpg"
+relatedPosts:
+- "carbon-law-from-2025"
+- "only-radical-futures-left"
 ---
                        
 **Klimatkollen is changing its method for calculating emissions data for Sweden's municipalities. Previously, so called carbon budgets were used. Klimatkollen is now switching to the global rule of thumb, ‘Carbon Law’, which stipulates a 12 per cent reduction per year in order to limit global warming to 1.5 degrees. Carbon Law was presented in 2017 by Johan Rockström, Owen Gaffney and Johan Falk as a scientifically based path to achieving the Paris Agreement. The calculations were updated by Klimatkollen in June 2025.**  

@@ -1,5 +1,18 @@
 ---
 id: "ai-process-del-1"
+title: "Så kan AI hjälpa oss förstå företagens klimatdata. Del 1 – Översikt"
+excerpt: "Vi på Klimatkollen har spenderat ett år med att bygga en öppen databas över företags klimatpåverkan. Det här är första delen i en serie där jag berättar hur vi använder AI för att automatisera inhämtning och tolkning av klimatdata. Och vi behöver din hjälp!"
+date: "2025-01-20"
+readTime: "8 min"
+category: "methodology"
+image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=600&fit=crop"
+language: "sv"
+author:
+  name: "Christian Landgren"
+  avatar: "/people/christian.jpg"
+relatedPosts:
+- "welcome"
+- "metod"
 ---
 
 ## Vad är problemet med klimatdata?

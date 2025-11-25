@@ -1,5 +1,18 @@
 ---
 id: "only-radical-futures-left"
+title: "Bara radikala framtidsutsikter kvar"
+excerpt: "Det finns bara radikala framtidsutsikter kvar – därför måste vi minska utsläppen med 12 procent per år"
+date: "2025-07-09"
+readTime: "2 min"
+category: "analysis"
+image: "/images/blogImages/only-radical-futures.jpg"
+language: "sv"
+author:
+  name: "Frida Berry Eklund"
+  avatar: "/people/frida.jpg"
+relatedPosts:
+- "carbon-law-from-2025"
+- "2024-report"
 ---
 
 Från 2025 måste världen **halvera utsläppen vart femte år** om vi ens ska ha 50 procents chans att begränsa den globala uppvärmningen till 1,5°C – Parisavtalets mål. Det motsvarar utsläppsminskningar på 12 procent varje år. Och just nu är vi långt ifrån målet. De globala utsläppen ökar fortfarande, och den lilla återstående koldioxidbudgeten krymper med tre gigaton varje månad.

@@ -82,7 +82,13 @@ export const calculateMeetsParis = (
 
   // Get 2025 emissions (actual or estimated)
   const emissions2025 = get2025Emissions(company, trendAnalysis);
-  if (!emissions2025) return false;
+
+  // Handle null/undefined (can't calculate)
+  if (emissions2025 === null || emissions2025 === undefined) return false;
+
+  // If emissions are already 0 or negative in 2025, company definitely meets Paris
+  // (they have no emissions to exceed the carbon budget)
+  if (emissions2025 <= 0) return true;
 
   // Extract slope from coefficients (handle both formats)
   const slope =

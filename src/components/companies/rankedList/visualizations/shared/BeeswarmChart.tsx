@@ -1,0 +1,186 @@
+import React, { useState, useCallback } from "react";
+import type { ColorFunction } from "@/types/visualizations";
+import { BeeswarmTooltip } from "./BeeswarmTooltip";
+
+interface BeeswarmChartProps<T> {
+  data: T[];
+  getValue: (item: T) => number;
+  getCompanyName: (item: T) => string;
+  getCompanyId: (item: T) => string;
+  colorForValue: ColorFunction;
+  min: number;
+  max: number;
+  unit: string; // e.g., "%/yr" or "%"
+  onCompanyClick?: (item: T) => void;
+  maxDisplayCount?: number; // Max number of dots to display (default: 600)
+  formatTooltipValue?: (value: number, unit: string) => string; // Custom formatter for tooltip value
+  xReferenceLines?: Array<{ value: number; label?: string; color?: string }>; // Vertical reference lines
+}
+
+export function BeeswarmChart<T>({
+  data,
+  getValue,
+  getCompanyName,
+  getCompanyId,
+  colorForValue,
+  min,
+  max,
+  unit,
+  onCompanyClick,
+  maxDisplayCount = 600,
+  formatTooltipValue,
+  xReferenceLines,
+}: BeeswarmChartProps<T>) {
+  const displayData = data.slice(0, maxDisplayCount);
+  const [hoveredItem, setHoveredItem] = useState<{
+    item: T;
+    position: { x: number; y: number };
+  } | null>(null);
+
+  const handleMouseEnter = useCallback((e: React.MouseEvent, item: T) => {
+    setHoveredItem({
+      item,
+      position: { x: e.clientX, y: e.clientY },
+    });
+  }, []);
+
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent) => {
+      if (hoveredItem) {
+        setHoveredItem({
+          ...hoveredItem,
+          position: { x: e.clientX, y: e.clientY },
+        });
+      }
+    },
+    [hoveredItem],
+  );
+
+  const handleMouseLeave = useCallback(() => {
+    setHoveredItem(null);
+  }, []);
+
+  return (
+    <div className="relative w-full h-[500px] flex flex-col">
+      {/* X-axis labels */}
+      <div
+        className="relative mb-2 text-xs text-grey px-1"
+        style={{ height: "16px" }}
+      >
+        <span className="absolute left-0">
+          {min.toFixed(1)}
+          {unit}
+        </span>
+        {min <= 0 && max >= 0 && (
+          <span
+            className="absolute font-medium"
+            style={{
+              left: max === min ? "50%" : `${((0 - min) / (max - min)) * 100}%`,
+              transform: "translateX(-50%)",
+            }}
+          >
+            0{unit}
+          </span>
+        )}
+        <span className="absolute right-0">
+          {max.toFixed(1)}
+          {unit}
+        </span>
+      </div>
+
+      {/* Main visualization area */}
+      <div className="relative flex-1 border-t border-b border-black-4">
+        {/* Zero line (vertical) - only show if 0 is within data range */}
+        {min <= 0 && max >= 0 && (
+          <div
+            className="absolute top-0 bottom-0 w-px bg-black-4 z-0"
+            style={{
+              left: max === min ? "50%" : `${((0 - min) / (max - min)) * 100}%`,
+            }}
+          />
+        )}
+
+        {/* Reference lines (vertical) */}
+        {xReferenceLines?.map((line, idx) => {
+          if (line.value < min || line.value > max) return null;
+          const xPercent =
+            max === min ? 50 : ((line.value - min) / (max - min)) * 100;
+          return (
+            <div
+              key={idx}
+              className="absolute top-0 bottom-0 w-px z-0"
+              style={{
+                left: `${xPercent}%`,
+                backgroundColor: line.color || "rgba(255, 255, 255, 0.3)",
+                borderLeft: line.color
+                  ? `1px solid ${line.color}`
+                  : "1px dashed rgba(255, 255, 255, 0.3)",
+              }}
+            >
+              {line.label && (
+                <div
+                  className="absolute bottom-0 left-0 transform -translate-x-1/2 translate-y-full text-xs text-grey whitespace-nowrap"
+                  style={{ marginTop: "4px" }}
+                >
+                  {line.label}
+                </div>
+              )}
+            </div>
+          );
+        })}
+
+        {/* Dots */}
+        <div className="relative w-full h-full">
+          {displayData.map((item, i) => {
+            const v = getValue(item);
+            const xPercent = max === min ? 50 : ((v - min) / (max - min)) * 100;
+            // Better jitter: spread dots vertically around their X position
+            // Use a hash of the index for consistent positioning
+            const hash = (i * 137.5) % 360;
+            const yJitter = Math.sin((hash * Math.PI) / 180) * 180; // -180 to +180px from center
+            const spread = Math.min(Math.abs(yJitter) / 6, 80); // Limit spread to 80px max (increased from 40px)
+            const yOffset = yJitter > 0 ? spread : -spread;
+
+            return (
+              <div
+                key={getCompanyId(item)}
+                onClick={() => onCompanyClick?.(item)}
+                onMouseEnter={(e) => handleMouseEnter(e, item)}
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+                className="absolute rounded-full cursor-pointer hover:scale-150 transition-transform z-10"
+                style={{
+                  left: `calc(${xPercent}% - 8px)`,
+                  top: `calc(50% + ${yOffset}px)`,
+                  width: "16px",
+                  height: "16px",
+                  background: colorForValue(v),
+                  border: "2px solid var(--black-4)",
+                  boxShadow: "0 2px 4px rgba(0,0,0,0.5)",
+                }}
+              />
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Legend */}
+      <div className="mt-6 text-xs text-grey text-center">
+        {data.length} companies shown
+        {data.length >= maxDisplayCount &&
+          ` (showing first ${maxDisplayCount})`}
+      </div>
+
+      {/* Tooltip */}
+      {hoveredItem && (
+        <BeeswarmTooltip
+          companyName={getCompanyName(hoveredItem.item)}
+          value={getValue(hoveredItem.item)}
+          unit={unit}
+          position={hoveredItem.position}
+          formatValue={formatTooltipValue}
+        />
+      )}
+    </div>
+  );
+}

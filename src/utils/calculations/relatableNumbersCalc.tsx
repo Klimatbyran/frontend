@@ -4,7 +4,7 @@ export const emissionsComparedToCitizen = (
   emissionsChange: number,
   currentLanguage: "sv" | "en",
 ) => {
-  const citizenTotalEmission = 8; // tCO2e per person
+  const citizenTotalEmission = 9; // tCO2e per Swedish citizen according to https://konsumtionskompassen.se/
 
   if (emissionsChange === null) return null;
 
