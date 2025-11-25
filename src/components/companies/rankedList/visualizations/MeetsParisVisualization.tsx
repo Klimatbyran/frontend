@@ -3,22 +3,10 @@ import { useTranslation } from "react-i18next";
 import { CompanyWithKPIs } from "@/hooks/companies/useCompanyKPIs";
 import { calculateTrendline } from "@/lib/calculations/trends/analysis";
 import { calculateCarbonBudgetPercent } from "@/utils/calculations/carbonBudget";
-import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 import {
   createFixedRangeGradient,
-  createStatisticalGradient,
 } from "@/utils/ui/colorGradients";
-import {
-  groupCompaniesByIndustry,
-  getCompanySectorName,
-} from "@/utils/data/industryGrouping";
-import { VisualizationModeSelector } from "./shared/VisualizationModeSelector";
-import { SunburstChart } from "./shared/SunburstChart";
-import { createSunburstTooltipFormatter } from "./shared/sunburstTooltips";
 import type { ColorFunction } from "@/types/visualizations";
-
-type Mode = "histogram" | "sunburst";
-type ColorMode = "range" | "statistical";
 
 interface MeetsParisVisualizationProps {
   companies: CompanyWithKPIs[];
@@ -105,15 +93,12 @@ export function MeetsParisVisualization({
   onCompanyClick,
 }: MeetsParisVisualizationProps) {
   const { t } = useTranslation();
-  const [mode, setMode] = useState<Mode>("histogram");
-  const [colorMode, setColorMode] = useState<ColorMode>("range");
   const [hoveredGroup, setHoveredGroup] = useState<CompanyGroup | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalGroup, setModalGroup] = useState<CompanyGroup | null>(null);
   const [tooltipPos, setTooltipPos] = useState<{ x: number; y: number } | null>(
     null,
   );
-  const sectorNames = useSectorNames();
 
   // Calculate budget percentages for all companies, excluding unknowns (null)
   const companyBudgetData: CompanyBudgetData[] = useMemo(() => {
@@ -188,127 +173,15 @@ export function MeetsParisVisualization({
     return ticks;
   }, [groups]);
 
-  // Color function: range-based (default) or statistical
+  // Color function: range-based
   const budgetValues = useMemo(
     () => companyBudgetData.map((d) => d.budgetPercent),
     [companyBudgetData],
   );
 
   const colorForPercent: ColorFunction = useMemo(() => {
-    if (colorMode === "statistical") {
-      return (value: number) =>
-        createStatisticalGradient(budgetValues, value, false); // lower is better
-    }
     return (value: number) => createFixedRangeGradient(-100, 100, value);
-  }, [colorMode, budgetValues]);
-
-  // Group companies by industry for sunburst chart
-  const industries = useMemo(() => {
-    return groupCompaniesByIndustry(companyBudgetData, (d) =>
-      getCompanySectorName(d.company, sectorNames),
-    );
-  }, [companyBudgetData, sectorNames]);
-
-  const noBudgetCompanies = useMemo(() => {
-    return companies.filter((c) => {
-      const trendAnalysis = calculateTrendline(c);
-      const budgetPercent = calculateCarbonBudgetPercent(c, trendAnalysis);
-      return budgetPercent === null;
-    });
-  }, [companies]);
-
-  // Tooltip formatter for sunburst
-  const tooltipFormatter = useMemo(() => {
-    return createSunburstTooltipFormatter({
-      formatSectorValue: (value: number) => {
-        return `${value < 0 ? "Under" : "Over"} ${Math.abs(value).toFixed(1)}%`;
-      },
-      formatCompanyValue: (value: number) => {
-        return `${value < 0 ? "Under budget" : "Over budget"}: ${Math.abs(value).toFixed(1)}%`;
-      },
-      getCompanyName: (data: any) => {
-        const budgetData = data.item as CompanyBudgetData | undefined;
-        return data.companyName || budgetData?.company?.name || "";
-      },
-      getValue: (data: any) => {
-        return data.valueForColor ?? 0;
-      },
-    });
   }, []);
-
-  if (mode === "sunburst" && companyBudgetData.length === 0) {
-    return (
-      <div className="bg-black-2 rounded-level-2 p-8 h-full flex items-center justify-center">
-        <p className="text-grey text-lg">
-          {t("companies.list.insights.noData.metric", {
-            metric: t("companies.list.kpis.meetsParis.label"),
-          })}
-        </p>
-      </div>
-    );
-  }
-
-  if (mode === "sunburst") {
-    return (
-      <div className="bg-black-2 rounded-level-2 p-4 md:p-6 h-full flex flex-col relative">
-        <div className="flex items-center justify-between mb-4">
-          <VisualizationModeSelector
-            mode={mode}
-            modes={[
-              ["histogram", "Histogram"],
-              ["sunburst", "Sunburst"],
-            ]}
-            onModeChange={setMode}
-          />
-        </div>
-        <div className="mb-4 flex items-center justify-between">
-          <div className="flex gap-2">
-            <button
-              onClick={() => setColorMode("range")}
-              className={`px-3 py-1.5 text-xs rounded-level-1 border transition-colors ${
-                colorMode === "range"
-                  ? "bg-black-3 border-black-4 text-white"
-                  : "bg-black-2 border-black-3 text-grey hover:bg-black-2/80"
-              }`}
-            >
-              Range-based
-            </button>
-            <button
-              onClick={() => setColorMode("statistical")}
-              className={`px-3 py-1.5 text-xs rounded-level-1 border transition-colors ${
-                colorMode === "statistical"
-                  ? "bg-black-3 border-black-4 text-white"
-                  : "bg-black-2 border-black-3 text-grey hover:bg-black-2/80"
-              }`}
-            >
-              Statistical
-            </button>
-          </div>
-        </div>
-        <SunburstChart
-          industries={industries}
-          onCompanyClick={(budgetData) => onCompanyClick?.(budgetData.company)}
-          colorForValue={colorForPercent}
-          getValue={(d) => d.budgetPercent}
-          getCompanyName={(d) => d.company.name}
-          calculateAverage={(comps) =>
-            comps.length > 0
-              ? comps.reduce((sum, d) => sum + d.budgetPercent, 0) /
-                comps.length
-              : 0
-          }
-          tooltipFormatter={tooltipFormatter}
-          excludedCount={noBudgetCompanies.length}
-          excludedLabel="companies without budget data excluded"
-          description={{
-            title: "Inner ring: Industries | Outer ring: Companies",
-            subtitle:
-              "Color gradient: blue (under budget) → pink (over budget) based on budget deviation",
-          }}
-        />
-      </div>
-    );
-  }
 
   if (groups.length === 0) {
     return (
@@ -325,16 +198,6 @@ export function MeetsParisVisualization({
   // Render histogram (X = bins, Y = count)
   return (
     <div className="bg-black-2 rounded-level-2 p-4 md:p-6 h-full flex flex-col relative">
-      <div className="flex items-center justify-between mb-4">
-        <VisualizationModeSelector
-          mode={mode}
-          modes={[
-            ["histogram", "Histogram"],
-            ["sunburst", "Sunburst"],
-          ]}
-          onModeChange={setMode}
-        />
-      </div>
       <p className="text-grey text-sm mb-4">
         Percent over or under each company's carbon budget. We estimate future
         emissions with an LAD trendline and compare cumulative 2025–2050
