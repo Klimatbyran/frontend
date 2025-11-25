@@ -84,15 +84,62 @@ export function MeetsParisVisualization({
     return getBestUnit(absMax);
   }, [minRaw, maxRaw]);
 
+  // Calculate dynamic cap threshold based on data distribution
+  // Use 85th percentile of positive values, or median * 2, whichever is more reasonable
+  // More aggressive capping to push down extreme outliers
+  const capThresholdRaw = useMemo(() => {
+    if (budgetValues.length === 0) return 8 * unitScale.divisor;
+
+    // Get only positive values (over budget)
+    const positiveValues = budgetValues
+      .filter((v) => v > 0)
+      .sort((a, b) => a - b);
+
+    if (positiveValues.length === 0) {
+      // No positive values, use a default based on unit
+      return 8 * unitScale.divisor;
+    }
+
+    // Calculate 85th percentile (more aggressive than 95th)
+    const percentile85Index = Math.floor(positiveValues.length * 0.85);
+    const percentile85 =
+      positiveValues[percentile85Index] ||
+      positiveValues[positiveValues.length - 1];
+
+    // Calculate median
+    const medianIndex = Math.floor(positiveValues.length / 2);
+    const median = positiveValues[medianIndex] || 0;
+
+    // Use the larger of: 85th percentile, or median * 2 (more aggressive multiplier)
+    // This ensures we cap extreme outliers more aggressively
+    const dynamicCap = Math.max(percentile85, median * 2);
+
+    // Lower minimum cap of 3 in the selected unit (more aggressive)
+    const minCap = 3 * unitScale.divisor;
+
+    // Round up to a nice number in the selected unit for cleaner display
+    const capInUnit = dynamicCap / unitScale.divisor;
+    const roundedCap = Math.ceil(capInUnit / 1) * 1; // Round to nearest whole number
+
+    return Math.max(roundedCap * unitScale.divisor, minCap);
+  }, [budgetValues, unitScale.divisor]);
+
+  // Check if we need to apply capping (only if max exceeds threshold)
+  const needsCapping = useMemo(() => {
+    return maxRaw > capThresholdRaw;
+  }, [maxRaw, capThresholdRaw]);
+
   // Convert min/max to the selected unit for display
   const min = useMemo(
     () => minRaw / unitScale.divisor,
     [minRaw, unitScale.divisor],
   );
-  const max = useMemo(
-    () => maxRaw / unitScale.divisor,
-    [maxRaw, unitScale.divisor],
-  );
+  const max = useMemo(() => {
+    // Cap the max at the threshold for display if needed
+    const maxConverted = maxRaw / unitScale.divisor;
+    const capConverted = capThresholdRaw / unitScale.divisor;
+    return needsCapping ? capConverted : maxConverted;
+  }, [maxRaw, unitScale.divisor, capThresholdRaw, needsCapping]);
 
   // Color function: range-based (uses raw values for color calculation)
   // Use symmetric range around 0, with reasonable bounds based on data
@@ -158,7 +205,18 @@ export function MeetsParisVisualization({
       <div className="relative flex-1 bg-black-2 rounded-level-2 p-4 overflow-auto">
         <BeeswarmChart
           data={companyBudgetData}
-          getValue={(d) => d.budgetTonnes / unitScale.divisor}
+          getValue={(d) => {
+            const converted = d.budgetTonnes / unitScale.divisor;
+            // Cap positive values above threshold (only cap over-budget values)
+            if (
+              needsCapping &&
+              converted > capThresholdRaw / unitScale.divisor
+            ) {
+              return capThresholdRaw / unitScale.divisor;
+            }
+            return converted;
+          }}
+          getRawValue={(d) => d.budgetTonnes / unitScale.divisor}
           getCompanyName={(d) => d.company.name}
           getCompanyId={(d) => d.company.wikidataId}
           colorForValue={(value) => colorForTonnes(value * unitScale.divisor)}
@@ -166,6 +224,9 @@ export function MeetsParisVisualization({
           max={max}
           unit={unitScale.unit}
           formatTooltipValue={formatTooltipValue}
+          capThreshold={
+            needsCapping ? capThresholdRaw / unitScale.divisor : undefined
+          }
           onCompanyClick={(d) => onCompanyClick?.(d.company)}
           xReferenceLines={[
             {

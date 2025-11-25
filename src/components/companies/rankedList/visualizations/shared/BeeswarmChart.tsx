@@ -15,6 +15,8 @@ interface BeeswarmChartProps<T> {
   maxDisplayCount?: number; // Max number of dots to display (default: 600)
   formatTooltipValue?: (value: number, unit: string) => string; // Custom formatter for tooltip value
   xReferenceLines?: Array<{ value: number; label?: string; color?: string }>; // Vertical reference lines
+  capThreshold?: number; // Optional cap threshold - values above this will be capped
+  getRawValue?: (item: T) => number; // Optional function to get raw (uncapped) value for tooltip
 }
 
 export function BeeswarmChart<T>({
@@ -30,6 +32,8 @@ export function BeeswarmChart<T>({
   maxDisplayCount = 600,
   formatTooltipValue,
   xReferenceLines,
+  capThreshold,
+  getRawValue,
 }: BeeswarmChartProps<T>) {
   const displayData = data.slice(0, maxDisplayCount);
   const [hoveredItem, setHoveredItem] = useState<{
@@ -85,6 +89,9 @@ export function BeeswarmChart<T>({
         <span className="absolute right-0">
           {max.toFixed(1)}
           {unit}
+          {capThreshold !== undefined && max >= capThreshold && (
+            <span className="text-[10px] ml-1 opacity-70">(capped)</span>
+          )}
         </span>
       </div>
 
@@ -133,7 +140,13 @@ export function BeeswarmChart<T>({
         <div className="relative w-full h-full">
           {displayData.map((item, i) => {
             const v = getValue(item);
-            const xPercent = max === min ? 50 : ((v - min) / (max - min)) * 100;
+            const rawValue = getRawValue ? getRawValue(item) : v;
+            const isCapped = capThreshold !== undefined && rawValue > capThreshold;
+            
+            // Cap the value for positioning if it exceeds the threshold
+            const displayValue = isCapped ? capThreshold : v;
+            const xPercent = max === min ? 50 : ((displayValue - min) / (max - min)) * 100;
+            
             // Better jitter: spread dots vertically around their X position
             // Use a hash of the index for consistent positioning
             const hash = (i * 137.5) % 360;
@@ -148,17 +161,40 @@ export function BeeswarmChart<T>({
                 onMouseEnter={(e) => handleMouseEnter(e, item)}
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
-                className="absolute rounded-full cursor-pointer hover:scale-150 transition-transform z-10"
+                className="absolute cursor-pointer hover:scale-150 transition-transform z-10"
                 style={{
                   left: `calc(${xPercent}% - 8px)`,
                   top: `calc(50% + ${yOffset}px)`,
-                  width: "16px",
-                  height: "16px",
-                  background: colorForValue(v),
-                  border: "2px solid var(--black-4)",
-                  boxShadow: "0 2px 4px rgba(0,0,0,0.5)",
                 }}
-              />
+              >
+                {/* Main dot */}
+                <div
+                  className="absolute rounded-full"
+                  style={{
+                    width: "16px",
+                    height: "16px",
+                    background: colorForValue(rawValue),
+                    border: "2px solid var(--black-4)",
+                    boxShadow: "0 2px 4px rgba(0,0,0,0.5)",
+                  }}
+                />
+                {/* Capped indicator - triangle arrow on the right */}
+                {isCapped && (
+                  <div
+                    className="absolute"
+                    style={{
+                      left: "14px",
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      width: 0,
+                      height: 0,
+                      borderLeft: "6px solid rgba(255, 255, 255, 0.7)",
+                      borderTop: "4px solid transparent",
+                      borderBottom: "4px solid transparent",
+                    }}
+                  />
+                )}
+              </div>
             );
           })}
         </div>
@@ -179,6 +215,9 @@ export function BeeswarmChart<T>({
           unit={unit}
           position={hoveredItem.position}
           formatValue={formatTooltipValue}
+          rawValue={getRawValue ? getRawValue(hoveredItem.item) : undefined}
+          isCapped={capThreshold !== undefined && (getRawValue ? getRawValue(hoveredItem.item) : getValue(hoveredItem.item)) > capThreshold}
+          capThreshold={capThreshold}
         />
       )}
     </div>

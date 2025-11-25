@@ -6,6 +6,9 @@ interface BeeswarmTooltipProps {
   unit: string;
   position: { x: number; y: number } | null;
   formatValue?: (value: number, unit: string) => string;
+  rawValue?: number;
+  isCapped?: boolean;
+  capThreshold?: number;
 }
 
 export function BeeswarmTooltip({
@@ -14,6 +17,9 @@ export function BeeswarmTooltip({
   unit,
   position,
   formatValue,
+  rawValue,
+  isCapped,
+  capThreshold,
 }: BeeswarmTooltipProps) {
   const tooltipRef = useRef<HTMLDivElement>(null);
 
@@ -67,9 +73,20 @@ export function BeeswarmTooltip({
         {companyName}
       </div>
       <div>
-        {formatValue
-          ? formatValue(value, unit)
-          : `${value < 0 ? "Reduction" : "Increase"}: ${Math.abs(value).toFixed(1)}${unit}`}
+        {isCapped && rawValue !== undefined && capThreshold !== undefined ? (
+          <div>
+            <div>
+              Actual: {formatValue ? formatValue(rawValue, unit) : `${rawValue < 0 ? "-" : "+"}${Math.abs(rawValue).toFixed(1)}${unit}`}
+            </div>
+            <div style={{ fontSize: "11px", color: "rgba(255, 255, 255, 0.7)", marginTop: "2px" }}>
+              Capped at {formatValue ? formatValue(capThreshold, unit) : `${capThreshold.toFixed(1)}${unit}`} for chart visibility
+            </div>
+          </div>
+        ) : (
+          formatValue
+            ? formatValue(value, unit)
+            : `${value < 0 ? "Reduction" : "Increase"}: ${Math.abs(value).toFixed(1)}${unit}`
+        )}
       </div>
     </div>
   );
