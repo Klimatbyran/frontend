@@ -22,7 +22,14 @@ export function useMunicipalityDetails(id: string) {
   });
 
   return {
-    municipality: (municipality as Municipality) || null,
+    municipality: municipality
+      ? ({
+          ...municipality,
+          meetsParisGoal:
+            municipality.totalTrend <= municipality.totalCarbonLaw,
+          climatePlan: municipality.climatePlanYear !== null,
+        } as Municipality)
+      : null,
     loading: isLoading,
     error,
   };
