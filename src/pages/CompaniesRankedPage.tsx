@@ -63,38 +63,43 @@ export function CompaniesRankedPage() {
     return Array.from(sectors).sort();
   }, [companies]);
 
-  const getSectorsFromURL = useCallback(() => {
+  const getSectorFromURL = useCallback(() => {
     const params = new URLSearchParams(location.search);
-    const sectorsParam = params.get("sectors");
-    if (sectorsParam) {
-      return sectorsParam.split(",");
+    const sectorParam = params.get("sector");
+    if (sectorParam && availableSectors.includes(sectorParam)) {
+      return sectorParam;
     }
     // Default to first available sector if none selected
-    return availableSectors.length > 0 ? [availableSectors[0]] : [];
+    return availableSectors.length > 0 ? availableSectors[0] : null;
   }, [location.search, availableSectors]);
 
-  const setSectorsInURL = useCallback(
-    (sectors: string[]) => {
+  const setSectorInURL = useCallback(
+    (sector: string | null) => {
       const params = new URLSearchParams(location.search);
-      params.set("sectors", sectors.join(","));
+      if (sector) {
+        params.set("sector", sector);
+      } else {
+        params.delete("sector");
+      }
       navigate({ search: params.toString() }, { replace: true });
     },
     [location.search, navigate],
   );
 
   const [selectedKPI, setSelectedKPI] = useState(getKPIFromURL());
-  const [selectedSectors, setSelectedSectors] =
-    useState<string[]>(getSectorsFromURL());
+  const [selectedSector, setSelectedSector] = useState<string | null>(
+    getSectorFromURL(),
+  );
   const viewMode = getViewModeFromURL();
 
-  // Ensure at least one sector is selected on initial load
+  // Ensure a sector is selected on initial load
   useEffect(() => {
-    if (selectedSectors.length === 0 && availableSectors.length > 0) {
-      const firstSector = [availableSectors[0]];
-      setSelectedSectors(firstSector);
-      setSectorsInURL(firstSector);
+    if (!selectedSector && availableSectors.length > 0) {
+      const firstSector = availableSectors[0];
+      setSelectedSector(firstSector);
+      setSectorInURL(firstSector);
     }
-  }, [availableSectors, selectedSectors.length, setSectorsInURL]);
+  }, [availableSectors, selectedSector, setSectorInURL]);
 
   useEffect(() => {
     const kpiFromUrl = getKPIFromURL();
@@ -104,27 +109,27 @@ export function CompaniesRankedPage() {
   }, [getKPIFromURL, selectedKPI.key]);
 
   useEffect(() => {
-    const sectorsFromUrl = getSectorsFromURL();
-    if (JSON.stringify(sectorsFromUrl) !== JSON.stringify(selectedSectors)) {
-      setSelectedSectors(sectorsFromUrl);
+    const sectorFromUrl = getSectorFromURL();
+    if (sectorFromUrl !== selectedSector) {
+      setSelectedSector(sectorFromUrl);
     }
-  }, [getSectorsFromURL, selectedSectors]);
+  }, [getSectorFromURL, selectedSector]);
 
   // Filter and enrich companies with KPI values
   const companiesWithKPIs: CompanyWithKPIs[] = useMemo(() => {
-    if (!companies || selectedSectors.length === 0) return [];
+    if (!companies || !selectedSector) return [];
 
     const filtered = companies.filter((company) => {
       const sectorCode = (company as any).industry?.industryGics?.sectorCode;
-      return sectorCode && selectedSectors.includes(sectorCode);
+      return sectorCode === selectedSector;
     });
 
     return filtered.map((company) => enrichCompanyWithKPIs(company));
-  }, [companies, selectedSectors]);
+  }, [companies, selectedSector]);
 
-  const handleSectorsChange = (sectors: string[]) => {
-    setSelectedSectors(sectors);
-    setSectorsInURL(sectors);
+  const handleSectorChange = (sector: string) => {
+    setSelectedSector(sector);
+    setSectorInURL(sector);
   };
 
   const handleCompanyClick = (company: CompanyWithKPIs) => {
@@ -240,8 +245,8 @@ export function CompaniesRankedPage() {
       <div className="mb-4">
         <IndustryFilter
           companies={(companies || []) as RankedCompany[]}
-          selectedSectors={selectedSectors}
-          onSectorsChange={handleSectorsChange}
+          selectedSector={selectedSector}
+          onSectorChange={handleSectorChange}
         />
       </div>
 

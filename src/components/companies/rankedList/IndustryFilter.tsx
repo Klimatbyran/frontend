@@ -6,14 +6,14 @@ import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 
 interface IndustryFilterProps {
   companies: RankedCompany[];
-  selectedSectors: string[];
-  onSectorsChange: (sectors: string[]) => void;
+  selectedSector: string | null;
+  onSectorChange: (sector: string) => void;
 }
 
 export function IndustryFilter({
   companies,
-  selectedSectors,
-  onSectorsChange,
+  selectedSector,
+  onSectorChange,
 }: IndustryFilterProps) {
   const { t } = useTranslation();
   const sectorNames = useSectorNames();
@@ -30,17 +30,11 @@ export function IndustryFilter({
     return Array.from(sectors).sort();
   }, [companies]);
 
-  const toggleSector = (sectorCode: string) => {
-    if (selectedSectors.includes(sectorCode)) {
-      // Remove sector, but ensure at least one remains selected
-      if (selectedSectors.length > 1) {
-        const newSectors = selectedSectors.filter((s) => s !== sectorCode);
-        onSectorsChange(newSectors);
-      }
-      // If this is the last selected sector, don't allow removal
-    } else {
-      // Add sector
-      onSectorsChange([...selectedSectors, sectorCode]);
+  const handleSectorClick = (sectorCode: string) => {
+    // If clicking the same sector, do nothing (keep it selected)
+    // Otherwise, select the new sector
+    if (selectedSector !== sectorCode) {
+      onSectorChange(sectorCode);
     }
   };
 
@@ -54,7 +48,7 @@ export function IndustryFilter({
         {t("companiesRankedPage.selectIndustry", "Select industry")}:
       </span>
       {availableSectors.map((sectorCode) => {
-        const isSelected = selectedSectors.includes(sectorCode);
+        const isSelected = selectedSector === sectorCode;
         const sectorName =
           sectorNames[sectorCode as keyof typeof sectorNames] || sectorCode;
 
@@ -62,7 +56,7 @@ export function IndustryFilter({
           <button
             key={sectorCode}
             type="button"
-            onClick={() => toggleSector(sectorCode)}
+            onClick={() => handleSectorClick(sectorCode)}
             className={cn(
               "px-3 py-1.5 rounded-level-1 text-xs font-medium transition-all",
               "border",
