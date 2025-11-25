@@ -32,9 +32,12 @@ export function IndustryFilter({
 
   const toggleSector = (sectorCode: string) => {
     if (selectedSectors.includes(sectorCode)) {
-      // Remove sector
-      const newSectors = selectedSectors.filter((s) => s !== sectorCode);
-      onSectorsChange(newSectors.length > 0 ? newSectors : []);
+      // Remove sector, but ensure at least one remains selected
+      if (selectedSectors.length > 1) {
+        const newSectors = selectedSectors.filter((s) => s !== sectorCode);
+        onSectorsChange(newSectors);
+      }
+      // If this is the last selected sector, don't allow removal
     } else {
       // Add sector
       onSectorsChange([...selectedSectors, sectorCode]);
@@ -48,7 +51,7 @@ export function IndustryFilter({
   return (
     <div className="flex flex-wrap items-center gap-2">
       <span className="text-sm text-grey mr-1">
-        {t("companiesRankedPage.filterByIndustry", "Filter by industry")}:
+        {t("companiesRankedPage.selectIndustry", "Select industry")}:
       </span>
       {availableSectors.map((sectorCode) => {
         const isSelected = selectedSectors.includes(sectorCode);
@@ -72,15 +75,6 @@ export function IndustryFilter({
           </button>
         );
       })}
-      {selectedSectors.length > 0 && (
-        <button
-          type="button"
-          onClick={() => onSectorsChange([])}
-          className="px-3 py-1.5 rounded-level-1 text-xs font-medium text-grey hover:text-white border border-black-3 hover:border-black-4 bg-black-2 hover:bg-black-3 transition-all"
-        >
-          {t("companiesRankedPage.clearFilters", "Clear all")}
-        </button>
-      )}
     </div>
   );
 }
