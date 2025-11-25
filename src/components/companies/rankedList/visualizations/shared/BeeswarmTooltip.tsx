@@ -31,7 +31,6 @@ export function BeeswarmTooltip({
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
 
-    // Position tooltip near cursor, but keep it within viewport
     let left = position.x + 10;
     let top = position.y + 10;
 

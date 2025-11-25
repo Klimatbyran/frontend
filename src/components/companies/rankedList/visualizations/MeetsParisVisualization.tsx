@@ -152,15 +152,11 @@ export function MeetsParisVisualization({
   );
 
   // Color function: range-based (uses raw values for color calculation)
-  // Use symmetric range around 0, with reasonable bounds based on data
   const colorForTonnes: ColorFunction = useMemo(() => {
-    // Use a symmetric range centered at 0 (in raw tonnes)
     const absMax = Math.max(Math.abs(minRaw), Math.abs(maxRaw));
     return (value: number) => createFixedRangeGradient(-absMax, absMax, value);
   }, [minRaw, maxRaw]);
 
-  // Format tooltip value with appropriate unit
-  // Note: value is already converted to the selected unit scale
   const formatTooltipValue = useMemo(() => {
     return (value: number, _unit: string) => {
       const sign = value < 0 ? "-" : "+";
@@ -168,7 +164,6 @@ export function MeetsParisVisualization({
     };
   }, [unitScale]);
 
-  // Companies without budget data
   const noBudgetCompanies = useMemo(() => {
     return companies.filter((c) => {
       const trendAnalysis = calculateTrendline(c);

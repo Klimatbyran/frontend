@@ -3,6 +3,7 @@
  *
  * Range-based gradients: Fixed mapping based on value ranges
  * Statistical gradients: Adaptive mapping based on z-scores (mean/stdDev)
+ * TODO: review if we want to keep all of these or pick 1 method to use for the rankings gradients
  */
 
 /**
@@ -22,11 +23,11 @@ export function createSymmetricRangeGradient(
   // Determine the symmetric range around 0 for color mapping
   const absMax = Math.max(Math.abs(min), Math.abs(max));
   const capped = Math.max(-absMax, Math.min(absMax, value));
-  // Normalize: -absMax -> 0, 0 -> 0.5, +absMax -> 1
+
   const normalized = absMax > 0 ? (capped + absMax) / (2 * absMax) : 0.5;
 
   // Map to blue-to-pink gradient: blue-4 to pink-5
-  // At 0 (normalized 0.5), we want a purple mix (more blue than pink, but transitioning)
+  // At 0 (normalized 0.5), we want a purple mix
   if (normalized <= 0.4) {
     // Negative side: blue-4 to blue-3
     const t = normalized / 0.4;

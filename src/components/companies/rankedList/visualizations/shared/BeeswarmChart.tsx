@@ -21,8 +21,8 @@ interface BeeswarmChartProps<T> {
   showLegend?: boolean;
   legendMin?: number;
   legendMax?: number;
-  leftLabel?: string; 
-  rightLabel?: string; 
+  leftLabel?: string;
+  rightLabel?: string;
 }
 
 export function BeeswarmChart<T>({
@@ -155,16 +155,13 @@ export function BeeswarmChart<T>({
             const isCapped =
               capThreshold !== undefined && rawValue > capThreshold;
 
-            // Cap the value for positioning if it exceeds the threshold
             const displayValue = isCapped ? capThreshold : v;
             const xPercent =
               max === min ? 50 : ((displayValue - min) / (max - min)) * 100;
 
-            // Better jitter: spread dots vertically around their X position
-            // Use a hash of the index for consistent positioning
             const hash = (i * 137.5) % 360;
             const yJitter = Math.sin((hash * Math.PI) / 180) * 180; // -180 to +180px from center
-            const spread = Math.min(Math.abs(yJitter) / 6, 80); // Limit spread to 80px max (increased from 40px)
+            const spread = Math.min(Math.abs(yJitter) / 6, 80);
             const yOffset = yJitter > 0 ? spread : -spread;
 
             return (

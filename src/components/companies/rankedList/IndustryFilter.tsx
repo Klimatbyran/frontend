@@ -18,7 +18,6 @@ export function IndustryFilter({
   const { t } = useTranslation();
   const sectorNames = useSectorNames();
 
-  // Extract unique sectors from companies
   const availableSectors = useMemo(() => {
     const sectors = new Set<string>();
     companies.forEach((company) => {
@@ -31,8 +30,6 @@ export function IndustryFilter({
   }, [companies]);
 
   const handleSectorClick = (sectorCode: string) => {
-    // If clicking the same sector, do nothing (keep it selected)
-    // Otherwise, select the new sector
     if (selectedSector !== sectorCode) {
       onSectorChange(sectorCode);
     }

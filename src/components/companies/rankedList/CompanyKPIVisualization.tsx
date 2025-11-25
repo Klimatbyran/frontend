@@ -11,10 +11,6 @@ interface CompanyKPIVisualizationProps {
   onCompanyClick?: (company: CompanyWithKPIs) => void;
 }
 
-/**
- * Component that routes to the appropriate visualization based on the selected KPI
- * Each KPI can have its own custom visualization component
- */
 export function CompanyKPIVisualization({
   companies,
   selectedKPI,
