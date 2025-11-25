@@ -1,5 +1,4 @@
-import { Info, X } from "lucide-react";
-import { useState, useRef, useEffect, useCallback } from "react";
+import { Info } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -8,6 +7,8 @@ import {
 } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
 import { isMobile } from "react-device-detect";
+import { useMobileModal } from "../../hooks/useMobileModal";
+import { MobileModal } from "./MobileModal";
 
 interface InfoTooltipProps {
   children: React.ReactNode;
@@ -22,66 +23,13 @@ export function InfoTooltip({
   side = "top",
   ariaLabel = "Show more information",
 }: InfoTooltipProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const modalRef = useRef<HTMLDivElement>(null);
-  const previousFocusRef = useRef<HTMLElement | null>(null);
-
-  const handleOpen = useCallback(() => {
-    previousFocusRef.current = document.activeElement as HTMLElement;
-    setIsOpen(true);
-  }, []);
-
-  // Focus management for modal
-  useEffect(() => {
-    if (isOpen && modalRef.current) {
-      const closeButton = modalRef.current.querySelector("button");
-      closeButton?.focus();
-    }
-  }, [isOpen]);
-
-  useEffect(() => {
-    if (!isMobile) return;
-
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-      return () => {
-        document.body.style.overflow = "unset";
-      };
-    }
-  }, [isOpen]);
-
-  const handleMobileClick = useCallback(
-    (e: React.MouseEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      handleOpen();
-    },
-    [handleOpen],
-  );
-
-  const handleMobileKeyDown = useCallback(
-    (e: React.KeyboardEvent) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        e.stopPropagation();
-        handleOpen();
-      }
-    },
-    [handleOpen],
-  );
-
-  const handleClose = useCallback((e?: React.MouseEvent) => {
-    if (e) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-    setIsOpen(false);
-
-    // Restore focus to previously focused element
-    if (previousFocusRef.current) {
-      previousFocusRef.current.focus();
-    }
-  }, []);
+  const {
+    isOpen,
+    modalRef,
+    handleClose,
+    handleMobileClick,
+    handleMobileKeyDown,
+  } = useMobileModal();
 
   // For mobile, use a full-screen modal popup
   if (isMobile) {
@@ -100,39 +48,14 @@ export function InfoTooltip({
           <Info className={className} />
         </Button>
 
-        {isOpen && (
-          <div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="tooltip-title"
-          >
-            <div
-              className="absolute inset-0 bg-black/50"
-              onClick={handleClose}
-              aria-hidden="true"
-            />
-
-            <div
-              ref={modalRef}
-              className="relative bg-black-2 border border-black-1 rounded-lg p-6 max-w-md w-full max-h-[80vh] overflow-y-auto"
-            >
-              <Button
-                variant="ghost"
-                size="sm"
-                className="absolute top-4 right-4 p-1 h-auto text-grey hover:text-white focus:outline-none focus:ring-0"
-                onClick={handleClose}
-                aria-label="Close information"
-              >
-                <X className="w-5 h-5" />
-              </Button>
-
-              <div id="tooltip-title" className="text-sm text-white pr-8">
-                {children}
-              </div>
-            </div>
-          </div>
-        )}
+        <MobileModal
+          isOpen={isOpen}
+          modalRef={modalRef}
+          onClose={handleClose}
+          titleId="tooltip-title"
+        >
+          {children}
+        </MobileModal>
       </>
     );
   }

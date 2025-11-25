@@ -70,24 +70,22 @@ export function OverviewStat({
 
     // Overview variant: inline unit
     return (
-      <Text
-        className={cn(
-          "text-3xl md:text-4xl lg:text-6xl font-light tracking-tighter leading-none",
-          valueClassName,
-        )}
-      >
-        {value}
-        {unit && (
-          <span className="text-lg lg:text-2xl md:text-lg sm:text-sm ml-2 text-grey">
-            {unit}
-          </span>
-        )}
-        {showAiIcon && (
-          <span className="ml-2 absolute">
-            <AiIcon size="md" className="absolute top-0" />
-          </span>
-        )}
-      </Text>
+      <div className="flex items-start gap-2">
+        <Text
+          className={cn(
+            "text-3xl md:text-4xl lg:text-6xl font-light tracking-tighter leading-none",
+            valueClassName,
+          )}
+        >
+          {value}
+          {unit && (
+            <span className="text-lg lg:text-2xl md:text-lg sm:text-sm ml-2 text-grey">
+              {unit}
+            </span>
+          )}
+        </Text>
+        {showAiIcon && <AiIcon size="md" />}
+      </div>
     );
   };
 
