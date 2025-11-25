@@ -1,4 +1,5 @@
 import { useRef, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 interface BeeswarmTooltipProps {
   companyName: string;
@@ -21,6 +22,7 @@ export function BeeswarmTooltip({
   isCapped,
   capThreshold,
 }: BeeswarmTooltipProps) {
+  const { t } = useTranslation();
   const tooltipRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -75,7 +77,7 @@ export function BeeswarmTooltip({
         {isCapped && rawValue !== undefined && capThreshold !== undefined ? (
           <div>
             <div>
-              Actual:{" "}
+              {t("companiesRankedPage.visualizations.beeswarm.tooltip.actual")}{" "}
               {formatValue
                 ? formatValue(rawValue, unit)
                 : `${rawValue < 0 ? "-" : "+"}${Math.abs(rawValue).toFixed(1)}${unit}`}
@@ -87,17 +89,21 @@ export function BeeswarmTooltip({
                 marginTop: "2px",
               }}
             >
-              Capped at{" "}
+              {t(
+                "companiesRankedPage.visualizations.beeswarm.tooltip.cappedAt",
+              )}{" "}
               {formatValue
                 ? formatValue(capThreshold, unit)
                 : `${capThreshold.toFixed(1)}${unit}`}{" "}
-              for chart visibility
+              {t(
+                "companiesRankedPage.visualizations.beeswarm.tooltip.forChartVisibility",
+              )}
             </div>
           </div>
         ) : formatValue ? (
           formatValue(value, unit)
         ) : (
-          `${value < 0 ? "Reduction" : "Increase"}: ${Math.abs(value).toFixed(1)}${unit}`
+          `${value < 0 ? t("companiesRankedPage.visualizations.beeswarm.tooltip.reduction") : t("companiesRankedPage.visualizations.beeswarm.tooltip.increase")}: ${Math.abs(value).toFixed(1)}${unit}`
         )}
       </div>
     </div>

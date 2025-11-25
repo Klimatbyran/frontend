@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import type { CompanyWithKPIs } from "@/types/company";
 import { createSymmetricRangeGradient } from "@/utils/ui/colorGradients";
 import { filterValidNumericData } from "@/utils/data/filtering";
@@ -14,6 +15,7 @@ export function EmissionsChangeVisualization({
   companies,
   onCompanyClick,
 }: EmissionsChangeVisualizationProps) {
+  const { t } = useTranslation();
   const { valid: withData, invalid: noData } = useMemo(
     () =>
       filterValidNumericData(companies, (c) => c.emissionsChangeFromBaseYear),
@@ -42,7 +44,9 @@ export function EmissionsChangeVisualization({
   if (withData.length === 0) {
     return (
       <div className="bg-black-2 rounded-level-2 p-8 h-full flex items-center justify-center">
-        <p className="text-grey text-lg">No data available</p>
+        <p className="text-grey text-lg">
+          {t("companiesRankedPage.visualizations.noDataAvailable")}
+        </p>
       </div>
     );
   }
@@ -51,9 +55,10 @@ export function EmissionsChangeVisualization({
     <div className="w-full h-full flex flex-col gap-3">
       <div className="flex items-center justify-between">
         <div className="text-sm text-grey">
-          Emissions Change from Base Year
+          {t("companiesRankedPage.visualizations.emissionsChange.title")}
           {" · "}
-          Unknown: {noData.length}
+          {t("companiesRankedPage.visualizations.emissionsChange.unknown")}:{" "}
+          {noData.length}
         </div>
       </div>
 

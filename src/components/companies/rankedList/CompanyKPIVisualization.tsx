@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import {
   CompanyWithKPIs,
   CompanyKPIValue,
@@ -16,6 +17,8 @@ export function CompanyKPIVisualization({
   selectedKPI,
   onCompanyClick,
 }: CompanyKPIVisualizationProps) {
+  const { t } = useTranslation();
+
   // Route to specific visualization based on KPI key
   switch (selectedKPI.key) {
     case "meetsParis":
@@ -36,7 +39,7 @@ export function CompanyKPIVisualization({
       return (
         <div className="bg-black-2 rounded-level-2 p-8 h-full flex items-center justify-center">
           <p className="text-grey text-lg">
-            No visualization available for this KPI
+            {t("companiesRankedPage.visualizations.noVisualizationAvailable")}
           </p>
         </div>
       );

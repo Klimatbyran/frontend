@@ -270,7 +270,42 @@
     "errorDescription": "Please try again later",
     "mapPlaceholder": "Map visualization coming soon",
     "filterByIndustry": "Filter by industry",
-    "clearFilters": "Clear all"
+    "clearFilters": "Clear all",
+    "selectIndustry": "Select industry",
+    "viewToggle": {
+      "showGraph": "Graph",
+      "showList": "List"
+    },
+    "visualizations": {
+      "noVisualizationAvailable": "No visualization available for this KPI",
+      "noDataAvailable": "No data available",
+      "emissionsChange": {
+        "title": "Emissions Change from Base Year",
+        "unknown": "Unknown"
+      },
+      "meetsParis": {
+        "legend": {
+          "belowBudget": "Below budget",
+          "aboveBudget": "Above budget"
+        },
+        "budgetThreshold": "Budget threshold (0{{unit}})",
+        "description": "Tonnes over or under each company's carbon budget. We estimate future emissions with an LAD trendline and compare cumulative 2025–2050 emissions to a Carbon Law path (11.7% yearly reduction).",
+        "learnMore": "Learn more"
+      },
+      "beeswarm": {
+        "capped": "(capped)",
+        "companiesShown": "{{count}} companies shown",
+        "companiesShown_plural": "{{count}} companies shown",
+        "showingFirst": "(showing first {{count}})",
+        "tooltip": {
+          "actual": "Actual:",
+          "cappedAt": "Capped at",
+          "forChartVisibility": "for chart visibility",
+          "reduction": "Reduction",
+          "increase": "Increase"
+        }
+      }
+    }
   },
   "companiesPage": {
     "viewModes": {

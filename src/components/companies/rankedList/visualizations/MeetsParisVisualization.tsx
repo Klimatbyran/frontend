@@ -224,26 +224,33 @@ export function MeetsParisVisualization({
           xReferenceLines={[
             {
               value: 0,
-              label: `Budget threshold (0${unitScale.unit})`,
+              label: t(
+                "companiesRankedPage.visualizations.meetsParis.budgetThreshold",
+                {
+                  unit: unitScale.unit,
+                },
+              ),
               color: "rgba(255, 255, 255, 0.5)",
             },
           ]}
           legendMin={legendMin}
           legendMax={legendMax}
-          leftLabel="Below budget"
-          rightLabel="Above budget"
+          leftLabel={t(
+            "companiesRankedPage.visualizations.meetsParis.legend.belowBudget",
+          )}
+          rightLabel={t(
+            "companiesRankedPage.visualizations.meetsParis.legend.aboveBudget",
+          )}
         />
       </div>
 
       <p className="text-grey text-sm">
-        Tonnes over or under each company's carbon budget. We estimate future
-        emissions with an LAD trendline and compare cumulative 2025–2050
-        emissions to a Carbon Law path (11.7% yearly reduction).{" "}
+        {t("companiesRankedPage.visualizations.meetsParis.description")}{" "}
         <a
           href="/methodology?view=companyDataOverview"
           className="underline hover:text-white"
         >
-          Learn more
+          {t("companiesRankedPage.visualizations.meetsParis.learnMore")}
         </a>
       </p>
     </div>

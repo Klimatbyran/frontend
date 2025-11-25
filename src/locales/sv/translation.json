@@ -270,7 +270,42 @@
     "errorDescription": "Försök igen senare",
     "mapPlaceholder": "Kartvisualisering kommer snart",
     "filterByIndustry": "Filtrera efter bransch",
-    "clearFilters": "Rensa alla"
+    "clearFilters": "Rensa alla",
+    "selectIndustry": "Välj bransch",
+    "viewToggle": {
+      "showGraph": "Graf",
+      "showList": "Lista"
+    },
+    "visualizations": {
+      "noVisualizationAvailable": "Ingen visualisering tillgänglig för denna KPI",
+      "noDataAvailable": "Ingen data tillgänglig",
+      "emissionsChange": {
+        "title": "Emissionsförändring från basår",
+        "unknown": "Okänt"
+      },
+      "meetsParis": {
+        "legend": {
+          "belowBudget": "Under budget",
+          "aboveBudget": "Över budget"
+        },
+        "budgetThreshold": "Budgettröskel (0{{unit}})",
+        "description": "Tonn över eller under varje företags kolbudget. Vi uppskattar framtida utsläpp med en LAD-trendlinje och jämför kumulativa utsläpp 2025–2050 med en Carbon Law-väg (11,7% årlig minskning).",
+        "learnMore": "Läs mer"
+      },
+      "beeswarm": {
+        "capped": "(begränsad)",
+        "companiesShown": "{{count}} företag visas",
+        "companiesShown_plural": "{{count}} företag visas",
+        "showingFirst": "(visar första {{count}})",
+        "tooltip": {
+          "actual": "Faktiskt:",
+          "cappedAt": "Begränsad till",
+          "forChartVisibility": "för diagrammets synlighet",
+          "reduction": "Minskning",
+          "increase": "Ökning"
+        }
+      }
+    }
   },
   "companiesPage": {
     "viewModes": {

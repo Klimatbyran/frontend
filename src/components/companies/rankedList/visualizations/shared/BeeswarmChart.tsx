@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import type { ColorFunction } from "@/types/visualizations";
 import { BeeswarmTooltip } from "./BeeswarmTooltip";
 import { BeeswarmLegend } from "./BeeswarmLegend";
@@ -46,6 +47,7 @@ export function BeeswarmChart<T>({
   leftLabel,
   rightLabel,
 }: BeeswarmChartProps<T>) {
+  const { t } = useTranslation();
   const displayData = data.slice(0, maxDisplayCount);
   const [hoveredItem, setHoveredItem] = useState<{
     item: T;
@@ -101,7 +103,9 @@ export function BeeswarmChart<T>({
           {max.toFixed(1)}
           {unit}
           {capThreshold !== undefined && max >= capThreshold && (
-            <span className="text-[10px] ml-1 opacity-70">(capped)</span>
+            <span className="text-[10px] ml-1 opacity-70">
+              {t("companiesRankedPage.visualizations.beeswarm.capped")}
+            </span>
           )}
         </span>
       </div>
@@ -213,9 +217,13 @@ export function BeeswarmChart<T>({
       {/* Legend and company count */}
       <div className="mt-8 flex items-center justify-between text-xs text-grey">
         <div className={showLegend ? "" : "text-center w-full"}>
-          {data.length} companies shown
+          {t("companiesRankedPage.visualizations.beeswarm.companiesShown", {
+            count: data.length,
+          })}
           {data.length >= maxDisplayCount &&
-            ` (showing first ${maxDisplayCount})`}
+            ` ${t("companiesRankedPage.visualizations.beeswarm.showingFirst", {
+              count: maxDisplayCount,
+            })}`}
         </div>
         {showLegend && (
           <div className="flex items-center">
