@@ -3,7 +3,6 @@ import {
   CompanyKPIValue,
 } from "@/hooks/companies/useCompanyKPIs";
 import { MeetsParisVisualization } from "./visualizations/MeetsParisVisualization";
-import { TrendSlopeVisualization } from "@/components/companies/rankedList/visualizations/TrendSlopeVisualization";
 import { EmissionsChangeVisualization } from "@/components/companies/rankedList/visualizations/EmissionsChangeVisualization";
 
 interface CompanyKPIVisualizationProps {
@@ -26,13 +25,6 @@ export function CompanyKPIVisualization({
     case "meetsParis":
       return (
         <MeetsParisVisualization
-          companies={companies}
-          onCompanyClick={onCompanyClick}
-        />
-      );
-    case "trendSlope":
-      return (
-        <TrendSlopeVisualization
           companies={companies}
           onCompanyClick={onCompanyClick}
         />

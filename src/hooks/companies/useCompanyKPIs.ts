@@ -59,29 +59,6 @@ export const useCompanyKPIs = (): CompanyKPIValue[] => {
       ),
       higherIsBetter: false,
     },
-    {
-      label: t(
-        "companies.list.kpis.trendSlope.label",
-        "Emissions Trend",
-      ),
-      key: "trendSlope",
-      unit: "%/yr",
-      source: "companies.list.kpis.trendSlope.source",
-      sourceUrls: [],
-      description: t(
-        "companies.list.kpis.trendSlope.description",
-        "Estimated yearly change from LAD trendline",
-      ),
-      detailedDescription: t(
-        "companies.list.kpis.trendSlope.detailedDescription",
-        "Slope of the Least Absolute Deviations trendline fitted to reported emissions.",
-      ),
-      higherIsBetter: false,
-      nullValues: t(
-        "companies.list.kpis.trendSlope.nullValues",
-        "Not enough data",
-      ),
-    },
   ];
 
   return KPIs;
@@ -99,17 +76,9 @@ export const enrichCompanyWithKPIs = (
   const emissionsChangeFromBaseYear =
     calculateEmissionsChangeFromBaseYear(company);
 
-  // Use API-derived yearly percentage change rather than raw slope (tCO2e/yr)
-  const trendSlope: number | null = trendAnalysis
-    ? typeof trendAnalysis.yearlyPercentageChange === "number"
-      ? trendAnalysis.yearlyPercentageChange
-      : null
-    : null;
-
   return {
     ...company,
     meetsParis,
     emissionsChangeFromBaseYear,
-    trendSlope,
   };
 };
