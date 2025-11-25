@@ -17,6 +17,7 @@ interface BeeswarmChartProps<T> {
   xReferenceLines?: Array<{ value: number; label?: string; color?: string }>; // Vertical reference lines
   capThreshold?: number; // Optional cap threshold - values above this will be capped
   getRawValue?: (item: T) => number; // Optional function to get raw (uncapped) value for tooltip
+  legend?: React.ReactNode; // Optional legend component to render inside the chart
 }
 
 export function BeeswarmChart<T>({
@@ -34,6 +35,7 @@ export function BeeswarmChart<T>({
   xReferenceLines,
   capThreshold,
   getRawValue,
+  legend,
 }: BeeswarmChartProps<T>) {
   const displayData = data.slice(0, maxDisplayCount);
   const [hoveredItem, setHoveredItem] = useState<{
@@ -141,12 +143,14 @@ export function BeeswarmChart<T>({
           {displayData.map((item, i) => {
             const v = getValue(item);
             const rawValue = getRawValue ? getRawValue(item) : v;
-            const isCapped = capThreshold !== undefined && rawValue > capThreshold;
-            
+            const isCapped =
+              capThreshold !== undefined && rawValue > capThreshold;
+
             // Cap the value for positioning if it exceeds the threshold
             const displayValue = isCapped ? capThreshold : v;
-            const xPercent = max === min ? 50 : ((displayValue - min) / (max - min)) * 100;
-            
+            const xPercent =
+              max === min ? 50 : ((displayValue - min) / (max - min)) * 100;
+
             // Better jitter: spread dots vertically around their X position
             // Use a hash of the index for consistent positioning
             const hash = (i * 137.5) % 360;
@@ -200,11 +204,14 @@ export function BeeswarmChart<T>({
         </div>
       </div>
 
-      {/* Legend */}
-      <div className="mt-6 text-xs text-grey text-center">
-        {data.length} companies shown
-        {data.length >= maxDisplayCount &&
-          ` (showing first ${maxDisplayCount})`}
+      {/* Legend and company count */}
+      <div className="mt-8 flex items-center justify-between text-xs text-grey">
+        <div className={legend ? "" : "text-center w-full"}>
+          {data.length} companies shown
+          {data.length >= maxDisplayCount &&
+            ` (showing first ${maxDisplayCount})`}
+        </div>
+        {legend && <div className="flex items-center">{legend}</div>}
       </div>
 
       {/* Tooltip */}
@@ -216,7 +223,12 @@ export function BeeswarmChart<T>({
           position={hoveredItem.position}
           formatValue={formatTooltipValue}
           rawValue={getRawValue ? getRawValue(hoveredItem.item) : undefined}
-          isCapped={capThreshold !== undefined && (getRawValue ? getRawValue(hoveredItem.item) : getValue(hoveredItem.item)) > capThreshold}
+          isCapped={
+            capThreshold !== undefined &&
+            (getRawValue
+              ? getRawValue(hoveredItem.item)
+              : getValue(hoveredItem.item)) > capThreshold
+          }
           capThreshold={capThreshold}
         />
       )}

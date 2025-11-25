@@ -5,6 +5,7 @@ import { calculateTrendline } from "@/lib/calculations/trends/analysis";
 import { calculateCarbonBudgetTonnes } from "@/utils/calculations/carbonBudget";
 import { createFixedRangeGradient } from "@/utils/ui/colorGradients";
 import { BeeswarmChart } from "./shared/BeeswarmChart";
+import { BeeswarmLegend } from "./shared/BeeswarmLegend";
 import type { ColorFunction } from "@/types/visualizations";
 
 // Determine the best unit for displaying values
@@ -129,7 +130,7 @@ export function MeetsParisVisualization({
     return maxRaw > capThresholdRaw;
   }, [maxRaw, capThresholdRaw]);
 
-  // Convert min/max to the selected unit for display
+  // Convert min/max to the selected unit for display (capped for chart positioning)
   const min = useMemo(
     () => minRaw / unitScale.divisor,
     [minRaw, unitScale.divisor],
@@ -140,6 +141,16 @@ export function MeetsParisVisualization({
     const capConverted = capThresholdRaw / unitScale.divisor;
     return needsCapping ? capConverted : maxConverted;
   }, [maxRaw, unitScale.divisor, capThresholdRaw, needsCapping]);
+
+  // Raw min/max for legend (uncapped, showing actual data range)
+  const legendMin = useMemo(
+    () => minRaw / unitScale.divisor,
+    [minRaw, unitScale.divisor],
+  );
+  const legendMax = useMemo(
+    () => maxRaw / unitScale.divisor,
+    [maxRaw, unitScale.divisor],
+  );
 
   // Color function: range-based (uses raw values for color calculation)
   // Use symmetric range around 0, with reasonable bounds based on data
@@ -181,18 +192,6 @@ export function MeetsParisVisualization({
 
   return (
     <div className="w-full h-full flex flex-col gap-3">
-      <p className="text-grey text-sm">
-        Tonnes over or under each company's carbon budget. We estimate future
-        emissions with an LAD trendline and compare cumulative 2025–2050
-        emissions to a Carbon Law path (11.7% yearly reduction).{" "}
-        <a
-          href="/methodology?view=companyDataOverview"
-          className="underline hover:text-white"
-        >
-          Learn more
-        </a>
-      </p>
-
       <div className="flex items-center justify-between">
         <div className="text-sm text-grey">
           {t("companies.list.kpis.meetsParis.label")}
@@ -235,30 +234,27 @@ export function MeetsParisVisualization({
               color: "rgba(255, 255, 255, 0.5)",
             },
           ]}
+          legend={
+            <BeeswarmLegend
+              min={legendMin}
+              max={legendMax}
+              unit={unitScale.unit}
+            />
+          }
         />
       </div>
 
-      {/* Legend */}
-      <div className="mt-4 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-grey">
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-blue-3 rounded" />
-          <span>
-            {t(
-              "companies.list.visualizations.meetsParis.underBudget",
-              "Under Budget",
-            )}
-          </span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-pink-3 rounded" />
-          <span>
-            {t(
-              "companies.list.visualizations.meetsParis.overBudget",
-              "Over Budget",
-            )}
-          </span>
-        </div>
-      </div>
+      <p className="text-grey text-sm">
+        Tonnes over or under each company's carbon budget. We estimate future
+        emissions with an LAD trendline and compare cumulative 2025–2050
+        emissions to a Carbon Law path (11.7% yearly reduction).{" "}
+        <a
+          href="/methodology?view=companyDataOverview"
+          className="underline hover:text-white"
+        >
+          Learn more
+        </a>
+      </p>
     </div>
   );
 }
