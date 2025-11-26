@@ -6,7 +6,6 @@ import { useCompanies } from "@/hooks/companies/useCompanies";
 import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
 import { useTranslation } from "react-i18next";
 import { PageSEO } from "@/components/SEO/PageSEO";
-import { useEffect } from "react";
 import { useLanguage } from "@/components/LanguageProvider";
 import {
   formatEmissionsAbsolute,
@@ -19,10 +18,6 @@ export function LandingPage() {
   const { companies } = useCompanies();
   const { getTopMunicipalities } = useMunicipalities();
   const { currentLanguage } = useLanguage();
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   // Prepare SEO data
   const canonicalUrl = "https://klimatkollen.se";

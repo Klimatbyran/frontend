@@ -6,6 +6,7 @@ import { TopList, TopListItem } from "@/components/TopList";
 import { Typewriter } from "@/components/ui/typewriter";
 import { ScrollAnimationSection } from "@/components/layout/ScrollAnimationSection";
 import { getLandingPageScrollSteps } from "@/components/landing/LandingPageScrollSteps";
+import { LandingPageCTA } from "@/components/landing/LandingPageCTA";
 import { useCompanies } from "@/hooks/companies/useCompanies";
 import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
 import { useTranslation } from "react-i18next";
@@ -25,10 +26,6 @@ export function LandingPageNew() {
   const { currentLanguage } = useLanguage();
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [fadeChevron, setFadeChevron] = useState(false);
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   // Prepare SEO data
   const canonicalUrl = "https://klimatkollen.se";
@@ -155,6 +152,9 @@ export function LandingPageNew() {
           className="bg-black"
         />
       </section>
+
+      {/* CTA Section */}
+      <LandingPageCTA />
 
       <div className="py-8 pt-36 md:py-36">
         <div className="mx-2 sm:mx-8">
