@@ -101,7 +101,7 @@ export function BeeswarmChart<T>({
   }, [showLegend, legendMin, legendMax, min, max, colorForValue]);
 
   return (
-    <div className="relative w-full h-[500px] flex flex-col">
+    <div className="relative w-full h-full min-h-[400px] flex flex-col">
       {/* X-axis labels */}
       <div
         className="relative mb-2 text-xs text-grey px-1"
@@ -227,24 +227,42 @@ export function BeeswarmChart<T>({
       </div>
 
       {/* Legend and company count */}
-      <div className="mt-8 flex items-center justify-between text-xs text-grey">
-        <div className={showLegend ? "" : "text-center w-full"}>
-          {t("companiesRankedPage.visualizations.beeswarm.companiesShown", {
-            count: data.length,
-          })}
-          {data.length >= maxDisplayCount &&
-            ` ${t("companiesRankedPage.visualizations.beeswarm.showingFirst", {
-              count: maxDisplayCount,
-            })}`}
-        </div>
-        {showLegend && (
-          <div className="flex items-center">
-            <BeeswarmLegend
-              min={legendMin ?? min}
-              max={legendMax ?? max}
-              unit={unit}
-              gradientBackground={legendGradient}
-            />
+      <div className="mt-8 flex flex-col md:flex-row md:items-center md:justify-between gap-3 md:gap-0 text-xs text-grey">
+        {showLegend ? (
+          <>
+            <div className="flex items-center justify-center md:justify-end order-2 md:order-1">
+              <BeeswarmLegend
+                min={legendMin ?? min}
+                max={legendMax ?? max}
+                unit={unit}
+                gradientBackground={legendGradient}
+              />
+            </div>
+            <div className="text-center md:text-left order-1 md:order-2">
+              {t("companiesRankedPage.visualizations.beeswarm.companiesShown", {
+                count: data.length,
+              })}
+              {data.length >= maxDisplayCount &&
+                ` ${t(
+                  "companiesRankedPage.visualizations.beeswarm.showingFirst",
+                  {
+                    count: maxDisplayCount,
+                  },
+                )}`}
+            </div>
+          </>
+        ) : (
+          <div className="text-center w-full">
+            {t("companiesRankedPage.visualizations.beeswarm.companiesShown", {
+              count: data.length,
+            })}
+            {data.length >= maxDisplayCount &&
+              ` ${t(
+                "companiesRankedPage.visualizations.beeswarm.showingFirst",
+                {
+                  count: maxDisplayCount,
+                },
+              )}`}
           </div>
         )}
       </div>

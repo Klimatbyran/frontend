@@ -6,6 +6,7 @@ import { calculateCarbonBudgetTonnes } from "@/utils/calculations/carbonBudget";
 import { createFixedRangeGradient } from "@/utils/ui/colorGradients";
 import { getBestUnit } from "@/utils/data/unitScaling";
 import { calculateCapThreshold } from "@/utils/data/capping";
+import { useScreenSize } from "@/hooks/useScreenSize";
 import { BeeswarmChart } from "./shared/BeeswarmChart";
 import type { ColorFunction } from "@/types/visualizations";
 
@@ -25,6 +26,7 @@ export function MeetsParisVisualization({
   onCompanyClick,
 }: MeetsParisVisualizationProps) {
   const { t } = useTranslation();
+  const { isMobile } = useScreenSize();
 
   // Calculate budget data and basic statistics
   const { companyBudgetData, noBudgetCompanies, minRaw, maxRaw, budgetValues } =
@@ -127,16 +129,18 @@ export function MeetsParisVisualization({
 
   return (
     <div className="w-full h-full flex flex-col gap-3">
-      <div className="flex items-center justify-between">
-        <div className="text-sm text-grey">
-          {t("companies.list.kpis.meetsParis.label")}
-          {" · "}
-          {t("companies.list.kpis.meetsParis.nullValues", "Unknown")}:{" "}
-          {noBudgetCompanies.length}
+      {!isMobile && (
+        <div className="flex items-center justify-between">
+          <div className="text-sm text-grey">
+            {t("companies.list.kpis.meetsParis.label")}
+            {" · "}
+            {t("companies.list.kpis.meetsParis.nullValues", "Unknown")}:{" "}
+            {noBudgetCompanies.length}
+          </div>
         </div>
-      </div>
+      )}
 
-      <div className="relative flex-1 bg-black-2 rounded-level-2 p-4 overflow-auto">
+      <div className="relative flex-1 bg-black-2 rounded-level-2 p-4 overflow-hidden">
         <BeeswarmChart
           data={companyBudgetData}
           getValue={(d) => {
