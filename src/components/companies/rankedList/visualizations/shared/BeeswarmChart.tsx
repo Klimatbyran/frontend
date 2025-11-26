@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import type { ColorFunction } from "@/types/visualizations";
 import { BeeswarmTooltip } from "./BeeswarmTooltip";
@@ -76,6 +76,24 @@ export function BeeswarmChart<T>({
   const handleMouseLeave = useCallback(() => {
     setHoveredItem(null);
   }, []);
+
+  const legendGradient = useMemo(() => {
+    if (!showLegend) return undefined;
+    const start = legendMin ?? min;
+    const end = legendMax ?? max;
+    if (!Number.isFinite(start) || !Number.isFinite(end) || start === end) {
+      return undefined;
+    }
+
+    const steps = 5;
+    const stops = Array.from({ length: steps }, (_, idx) => {
+      const percent = (idx / (steps - 1)) * 100;
+      const value = start + ((end - start) * idx) / (steps - 1);
+      return `${colorForValue(value)} ${percent}%`;
+    });
+
+    return `linear-gradient(to right, ${stops.join(", ")})`;
+  }, [showLegend, legendMin, legendMax, min, max, colorForValue]);
 
   return (
     <div className="relative w-full h-[500px] flex flex-col">
@@ -233,6 +251,7 @@ export function BeeswarmChart<T>({
               unit={unit}
               leftLabel={leftLabel}
               rightLabel={rightLabel}
+              gradientBackground={legendGradient}
             />
           </div>
         )}

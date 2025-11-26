@@ -4,6 +4,7 @@ interface BeeswarmLegendProps {
   unit: string;
   leftLabel?: string;
   rightLabel?: string;
+  gradientBackground?: string;
 }
 
 export function BeeswarmLegend({
@@ -12,7 +13,16 @@ export function BeeswarmLegend({
   unit,
   leftLabel,
   rightLabel,
+  gradientBackground,
 }: BeeswarmLegendProps) {
+  const defaultGradient = `linear-gradient(to right, 
+    var(--blue-4) 0%,
+    var(--blue-3) 40%,
+    var(--pink-3) 50%,
+    var(--pink-4) 70%,
+    var(--pink-5) 100%
+  )`;
+
   return (
     <div className="flex items-center gap-2 text-xs text-grey">
       <span className="whitespace-nowrap">
@@ -22,13 +32,7 @@ export function BeeswarmLegend({
         <div
           className="absolute inset-0 rounded"
           style={{
-            background: `linear-gradient(to right, 
-              var(--blue-4) 0%,
-              var(--blue-3) 40%,
-              var(--pink-3) 50%,
-              var(--pink-4) 70%,
-              var(--pink-5) 100%
-            )`,
+            background: gradientBackground ?? defaultGradient,
           }}
         />
       </div>

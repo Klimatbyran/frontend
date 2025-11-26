@@ -6,6 +6,8 @@ import {
   calculateCarbonLawCumulativeEmissions,
 } from "@/lib/calculations/trends/meetsParis";
 
+const UNDER_BUDGET_SENTINEL = -1_000_000;
+
 /**
  * Calculate the tonnes above or below the carbon budget
  *
@@ -23,8 +25,7 @@ export const calculateCarbonBudgetTonnes = (
   if (emissions2025 === null || emissions2025 === undefined) return null;
 
   // If emissions are 0 or negative, company is definitely under budget
-  // Return a very negative value to represent "infinitely under budget"
-  if (emissions2025 <= 0) return -1000000;
+  if (emissions2025 <= 0) return UNDER_BUDGET_SENTINEL;
 
   // Extract slope from coefficients (handle both formats)
   const slope =

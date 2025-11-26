@@ -15,6 +15,40 @@
  * @param value - The value to get color for
  * @returns CSS color-mix string
  */
+const clamp01 = (value: number) => Math.min(1, Math.max(0, value));
+
+const buildBluePinkGradient = (normalized: number): string => {
+  if (normalized <= 0.4) {
+    // Negative side: blue-4 to blue-3
+    const t = normalized / 0.4;
+    return `color-mix(in srgb, var(--blue-4) ${(1 - t) * 100}%, var(--blue-3) ${t * 100}%)`;
+  }
+
+  if (normalized <= 0.5) {
+    // Transition zone: blue-3 to a purple mix (70% blue-3, 30% pink-3 at 0)
+    const t = (normalized - 0.4) / 0.1;
+    const bluePercent = 100 - t * 30;
+    return `color-mix(in srgb, var(--blue-3) ${bluePercent}%, var(--pink-3) ${100 - bluePercent}%)`;
+  }
+
+  if (normalized <= 0.65) {
+    // Just above zero: continue transition from purple mix to pink-3
+    const t = (normalized - 0.5) / 0.15;
+    const bluePercent = 70 * (1 - t);
+    return `color-mix(in srgb, var(--blue-3) ${bluePercent}%, var(--pink-3) ${100 - bluePercent}%)`;
+  }
+
+  if (normalized <= 0.8) {
+    // Positive side: pink-3 to pink-4
+    const t = (normalized - 0.65) / 0.15;
+    return `color-mix(in srgb, var(--pink-3) ${(1 - t) * 100}%, var(--pink-4) ${t * 100}%)`;
+  }
+
+  // Positive side: pink-4 to pink-5
+  const t = (normalized - 0.8) / 0.2;
+  return `color-mix(in srgb, var(--pink-4) ${(1 - t) * 100}%, var(--pink-5) ${t * 100}%)`;
+};
+
 export function createSymmetricRangeGradient(
   min: number,
   max: number,
@@ -28,33 +62,7 @@ export function createSymmetricRangeGradient(
 
   // Map to blue-to-pink gradient: blue-4 to pink-5
   // At 0 (normalized 0.5), we want a purple mix
-  if (normalized <= 0.4) {
-    // Negative side: blue-4 to blue-3
-    const t = normalized / 0.4;
-    return `color-mix(in srgb, var(--blue-4) ${(1 - t) * 100}%, var(--blue-3) ${t * 100}%)`;
-  } else if (normalized <= 0.5) {
-    // Transition zone: blue-3 to a purple mix (70% blue-3, 30% pink-3 at 0)
-    const t = (normalized - 0.4) / 0.1;
-    // At t=0 (normalized 0.4): 100% blue-3
-    // At t=1 (normalized 0.5): 70% blue-3, 30% pink-3
-    const bluePercent = 100 - t * 30;
-    return `color-mix(in srgb, var(--blue-3) ${bluePercent}%, var(--pink-3) ${100 - bluePercent}%)`;
-  } else if (normalized <= 0.65) {
-    // Just above zero: continue transition from purple mix to pink-3
-    const t = (normalized - 0.5) / 0.15;
-    // At t=0: 70% blue-3, 30% pink-3
-    // At t=1: 100% pink-3
-    const bluePercent = 70 * (1 - t);
-    return `color-mix(in srgb, var(--blue-3) ${bluePercent}%, var(--pink-3) ${100 - bluePercent}%)`;
-  } else if (normalized <= 0.8) {
-    // Positive side: pink-3 to pink-4
-    const t = (normalized - 0.65) / 0.15;
-    return `color-mix(in srgb, var(--pink-3) ${(1 - t) * 100}%, var(--pink-4) ${t * 100}%)`;
-  } else {
-    // Positive side: pink-4 to pink-5
-    const t = (normalized - 0.8) / 0.2;
-    return `color-mix(in srgb, var(--pink-4) ${(1 - t) * 100}%, var(--pink-5) ${t * 100}%)`;
-  }
+  return buildBluePinkGradient(clamp01(normalized));
 }
 
 /**
@@ -85,38 +93,14 @@ export function createFixedRangeGradient(
         : 0.5 + 0.5 * (capped / absMax); // 0 -> 0.5, +absMax -> 1
   } else {
     // Non-symmetric range, use standard normalization
-    normalized = (capped - rangeMin) / (rangeMax - rangeMin);
+    const rangeSpan = rangeMax - rangeMin;
+    normalized =
+      rangeSpan === 0 ? 0.5 : (capped - rangeMin) / (rangeMax - rangeMin);
   }
 
   // Map to blue-to-pink gradient: blue-4 to pink-5
-  // At 0 (normalized 0.5), we want a purple mix (more blue than pink, but transitioning)
-  if (normalized <= 0.4) {
-    // Negative side: blue-4 to blue-3
-    const t = normalized / 0.4;
-    return `color-mix(in srgb, var(--blue-4) ${(1 - t) * 100}%, var(--blue-3) ${t * 100}%)`;
-  } else if (normalized <= 0.5) {
-    // Transition zone: blue-3 to a purple mix (70% blue-3, 30% pink-3 at 0)
-    const t = (normalized - 0.4) / 0.1;
-    // At t=0 (normalized 0.4): 100% blue-3
-    // At t=1 (normalized 0.5): 70% blue-3, 30% pink-3
-    const bluePercent = 100 - t * 30;
-    return `color-mix(in srgb, var(--blue-3) ${bluePercent}%, var(--pink-3) ${100 - bluePercent}%)`;
-  } else if (normalized <= 0.65) {
-    // Just above zero: continue transition from purple mix to pink-3
-    const t = (normalized - 0.5) / 0.15;
-    // At t=0: 70% blue-3, 30% pink-3
-    // At t=1: 100% pink-3
-    const bluePercent = 70 * (1 - t);
-    return `color-mix(in srgb, var(--blue-3) ${bluePercent}%, var(--pink-3) ${100 - bluePercent}%)`;
-  } else if (normalized <= 0.8) {
-    // Positive side: pink-3 to pink-4
-    const t = (normalized - 0.65) / 0.15;
-    return `color-mix(in srgb, var(--pink-3) ${(1 - t) * 100}%, var(--pink-4) ${t * 100}%)`;
-  } else {
-    // Positive side: pink-4 to pink-5
-    const t = (normalized - 0.8) / 0.2;
-    return `color-mix(in srgb, var(--pink-4) ${(1 - t) * 100}%, var(--pink-5) ${t * 100}%)`;
-  }
+  // At 0 (normalized 0.5), we want a purple mix
+  return buildBluePinkGradient(clamp01(normalized));
 }
 
 /**

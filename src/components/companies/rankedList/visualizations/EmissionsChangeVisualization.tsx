@@ -1,10 +1,8 @@
-import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import type { CompanyWithKPIs } from "@/types/company";
 import { createSymmetricRangeGradient } from "@/utils/ui/colorGradients";
-import { filterValidNumericData } from "@/utils/data/filtering";
+import { useBeeswarmData } from "@/hooks/companies/useBeeswarmData";
 import { BeeswarmChart } from "./shared/BeeswarmChart";
-import type { ColorFunction } from "@/types/visualizations";
 
 interface EmissionsChangeVisualizationProps {
   companies: CompanyWithKPIs[];
@@ -16,30 +14,18 @@ export function EmissionsChangeVisualization({
   onCompanyClick,
 }: EmissionsChangeVisualizationProps) {
   const { t } = useTranslation();
-  const { valid: withData, invalid: noData } = useMemo(
-    () =>
-      filterValidNumericData(companies, (c) => c.emissionsChangeFromBaseYear),
-    [companies],
+  const {
+    valid: withData,
+    invalid: noData,
+    min,
+    max,
+    colorForValue,
+  } = useBeeswarmData(
+    companies,
+    (c) => c.emissionsChangeFromBaseYear ?? null,
+    (min, max) => (value: number) =>
+      createSymmetricRangeGradient(min, max, value),
   );
-
-  const values = useMemo(
-    () => withData.map((c) => c.emissionsChangeFromBaseYear as number),
-    [withData],
-  );
-
-  const min = useMemo(
-    () => (values.length ? Math.min(...values) : 0),
-    [values],
-  );
-  const max = useMemo(
-    () => (values.length ? Math.max(...values) : 0),
-    [values],
-  );
-
-  // Color function: range-based
-  const colorForValue: ColorFunction = useMemo(() => {
-    return (value: number) => createSymmetricRangeGradient(min, max, value);
-  }, [min, max]);
 
   if (withData.length === 0) {
     return (
@@ -57,8 +43,9 @@ export function EmissionsChangeVisualization({
         <div className="text-sm text-grey">
           {t("companiesRankedPage.visualizations.emissionsChange.title")}
           {" · "}
-          {t("companiesRankedPage.visualizations.emissionsChange.unknown")}:{" "}
-          {noData.length}
+          {t(
+            "companiesRankedPage.visualizations.emissionsChange.unknown",
+          )}: {noData.length}
         </div>
       </div>
 

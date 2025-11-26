@@ -4,28 +4,10 @@ import { CompanyWithKPIs } from "@/hooks/companies/useCompanyKPIs";
 import { calculateTrendline } from "@/lib/calculations/trends/analysis";
 import { calculateCarbonBudgetTonnes } from "@/utils/calculations/carbonBudget";
 import { createFixedRangeGradient } from "@/utils/ui/colorGradients";
+import { getBestUnit } from "@/utils/data/unitScaling";
+import { calculateCapThreshold } from "@/utils/data/capping";
 import { BeeswarmChart } from "./shared/BeeswarmChart";
 import type { ColorFunction } from "@/types/visualizations";
-
-// Determine the best unit for displaying values
-type UnitScale = {
-  unit: string;
-  divisor: number;
-  label: string;
-};
-
-const getBestUnit = (maxAbsValue: number): UnitScale => {
-  const absValue = Math.abs(maxAbsValue);
-
-  if (absValue >= 1_000_000_000) {
-    return { unit: " Gt", divisor: 1_000_000_000, label: "Gt" };
-  } else if (absValue >= 1_000_000) {
-    return { unit: " Mt", divisor: 1_000_000, label: "Mt" };
-  } else if (absValue >= 1_000) {
-    return { unit: " kt", divisor: 1_000, label: "kt" };
-  }
-  return { unit: " t", divisor: 1, label: "t" };
-};
 
 interface MeetsParisVisualizationProps {
   companies: CompanyWithKPIs[];
@@ -44,133 +26,92 @@ export function MeetsParisVisualization({
 }: MeetsParisVisualizationProps) {
   const { t } = useTranslation();
 
-  // Calculate budget tonnes for all companies, excluding unknowns (null)
-  const companyBudgetData: CompanyBudgetData[] = useMemo(() => {
-    return companies
-      .map((company) => {
+  // Calculate budget data and basic statistics
+  const { companyBudgetData, noBudgetCompanies, minRaw, maxRaw, budgetValues } =
+    useMemo(() => {
+      const withBudget: CompanyBudgetData[] = [];
+      const withoutBudget: CompanyWithKPIs[] = [];
+
+      companies.forEach((company) => {
         const trendAnalysis = calculateTrendline(company);
         const budgetTonnes = calculateCarbonBudgetTonnes(
           company,
           trendAnalysis,
         );
-        if (budgetTonnes === null) return null;
-        return {
+
+        if (budgetTonnes === null) {
+          withoutBudget.push(company);
+          return;
+        }
+
+        withBudget.push({
           company,
           budgetTonnes,
           meetsParis: company.meetsParis ?? null,
-        };
-      })
-      .filter((d): d is CompanyBudgetData => d !== null);
-  }, [companies]);
+        });
+      });
 
-  // Calculate min/max for beeswarm chart (in raw tonnes)
-  const budgetValues = useMemo(
-    () => companyBudgetData.map((d) => d.budgetTonnes),
-    [companyBudgetData],
-  );
+      const values = withBudget.map((d) => d.budgetTonnes);
+      const min = values.length ? Math.min(...values) : 0;
+      const max = values.length ? Math.max(...values) : 0;
 
-  const minRaw = useMemo(
-    () => (budgetValues.length ? Math.min(...budgetValues) : 0),
-    [budgetValues],
-  );
-  const maxRaw = useMemo(
-    () => (budgetValues.length ? Math.max(...budgetValues) : 0),
-    [budgetValues],
-  );
+      return {
+        companyBudgetData: withBudget,
+        noBudgetCompanies: withoutBudget,
+        budgetValues: values,
+        minRaw: min,
+        maxRaw: max,
+      };
+    }, [companies]);
 
-  // Determine best unit based on absolute max value
-  const unitScale = useMemo(() => {
+  // Calculate unit scaling, capping, and display values
+  const {
+    unitScale,
+    capThresholdRaw,
+    needsCapping,
+    min,
+    max,
+    legendMin,
+    legendMax,
+    colorForTonnes,
+    formatTooltipValue,
+  } = useMemo(() => {
     const absMax = Math.max(Math.abs(minRaw), Math.abs(maxRaw));
-    return getBestUnit(absMax);
-  }, [minRaw, maxRaw]);
+    const unitScale = getBestUnit(absMax);
+    const capThresholdRaw = calculateCapThreshold(
+      budgetValues,
+      3,
+      unitScale.divisor,
+    );
+    const needsCapping = maxRaw > capThresholdRaw;
 
-  // Calculate dynamic cap threshold based on data distribution
-  // Use 85th percentile of positive values, or median * 2, whichever is more reasonable
-  // More aggressive capping to push down extreme outliers
-  const capThresholdRaw = useMemo(() => {
-    if (budgetValues.length === 0) return 8 * unitScale.divisor;
-
-    // Get only positive values (over budget)
-    const positiveValues = budgetValues
-      .filter((v) => v > 0)
-      .sort((a, b) => a - b);
-
-    if (positiveValues.length === 0) {
-      // No positive values, use a default based on unit
-      return 8 * unitScale.divisor;
-    }
-
-    // Calculate 85th percentile (more aggressive than 95th)
-    const percentile85Index = Math.floor(positiveValues.length * 0.85);
-    const percentile85 =
-      positiveValues[percentile85Index] ||
-      positiveValues[positiveValues.length - 1];
-
-    // Calculate median
-    const medianIndex = Math.floor(positiveValues.length / 2);
-    const median = positiveValues[medianIndex] || 0;
-
-    // Use the larger of: 85th percentile, or median * 2 (more aggressive multiplier)
-    // This ensures we cap extreme outliers more aggressively
-    const dynamicCap = Math.max(percentile85, median * 2);
-
-    // Lower minimum cap of 3 in the selected unit (more aggressive)
-    const minCap = 3 * unitScale.divisor;
-
-    // Round up to a nice number in the selected unit for cleaner display
-    const capInUnit = dynamicCap / unitScale.divisor;
-    const roundedCap = Math.ceil(capInUnit / 1) * 1; // Round to nearest whole number
-
-    return Math.max(roundedCap * unitScale.divisor, minCap);
-  }, [budgetValues, unitScale.divisor]);
-
-  // Check if we need to apply capping (only if max exceeds threshold)
-  const needsCapping = useMemo(() => {
-    return maxRaw > capThresholdRaw;
-  }, [maxRaw, capThresholdRaw]);
-
-  // Convert min/max to the selected unit for display (capped for chart positioning)
-  const min = useMemo(
-    () => minRaw / unitScale.divisor,
-    [minRaw, unitScale.divisor],
-  );
-  const max = useMemo(() => {
-    // Cap the max at the threshold for display if needed
+    const min = minRaw / unitScale.divisor;
     const maxConverted = maxRaw / unitScale.divisor;
     const capConverted = capThresholdRaw / unitScale.divisor;
-    return needsCapping ? capConverted : maxConverted;
-  }, [maxRaw, unitScale.divisor, capThresholdRaw, needsCapping]);
+    const max = needsCapping ? capConverted : maxConverted;
+    const legendMin = minRaw / unitScale.divisor;
+    const legendMax = maxRaw / unitScale.divisor;
 
-  // Raw min/max for legend (uncapped, showing actual data range)
-  const legendMin = useMemo(
-    () => minRaw / unitScale.divisor,
-    [minRaw, unitScale.divisor],
-  );
-  const legendMax = useMemo(
-    () => maxRaw / unitScale.divisor,
-    [maxRaw, unitScale.divisor],
-  );
+    const colorForTonnes: ColorFunction = (value: number) =>
+      createFixedRangeGradient(-absMax, absMax, value);
 
-  // Color function: range-based (uses raw values for color calculation)
-  const colorForTonnes: ColorFunction = useMemo(() => {
-    const absMax = Math.max(Math.abs(minRaw), Math.abs(maxRaw));
-    return (value: number) => createFixedRangeGradient(-absMax, absMax, value);
-  }, [minRaw, maxRaw]);
-
-  const formatTooltipValue = useMemo(() => {
-    return (value: number, _unit: string) => {
+    const formatTooltipValue = (value: number, _unit: string) => {
       const sign = value < 0 ? "-" : "+";
       return `${sign}${Math.abs(value).toFixed(1)}${unitScale.unit}`;
     };
-  }, [unitScale]);
 
-  const noBudgetCompanies = useMemo(() => {
-    return companies.filter((c) => {
-      const trendAnalysis = calculateTrendline(c);
-      const budgetTonnes = calculateCarbonBudgetTonnes(c, trendAnalysis);
-      return budgetTonnes === null;
-    });
-  }, [companies]);
+    return {
+      unitScale,
+      capThresholdRaw,
+      needsCapping,
+      min,
+      max,
+      legendMin,
+      legendMax,
+      colorForTonnes,
+      formatTooltipValue,
+    };
+  }, [minRaw, maxRaw, budgetValues]);
 
   if (companyBudgetData.length === 0) {
     return (

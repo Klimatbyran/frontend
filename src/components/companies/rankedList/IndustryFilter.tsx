@@ -1,33 +1,20 @@
-import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
-import type { RankedCompany } from "@/types/company";
 import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 
 interface IndustryFilterProps {
-  companies: RankedCompany[];
+  availableSectors: string[];
   selectedSector: string | null;
   onSectorChange: (sector: string) => void;
 }
 
 export function IndustryFilter({
-  companies,
+  availableSectors,
   selectedSector,
   onSectorChange,
 }: IndustryFilterProps) {
   const { t } = useTranslation();
   const sectorNames = useSectorNames();
-
-  const availableSectors = useMemo(() => {
-    const sectors = new Set<string>();
-    companies.forEach((company) => {
-      const sectorCode = (company as any).industry?.industryGics?.sectorCode;
-      if (sectorCode) {
-        sectors.add(sectorCode);
-      }
-    });
-    return Array.from(sectors).sort();
-  }, [companies]);
 
   const handleSectorClick = (sectorCode: string) => {
     if (selectedSector !== sectorCode) {

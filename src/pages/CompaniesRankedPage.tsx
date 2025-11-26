@@ -17,7 +17,6 @@ import {
   enrichCompanyWithKPIs,
 } from "@/hooks/companies/useCompanyKPIs";
 import { DataPoint } from "@/types/entity-rankings";
-import type { RankedCompany } from "@/types/company";
 
 export function CompaniesRankedPage() {
   const { t } = useTranslation();
@@ -244,7 +243,7 @@ export function CompaniesRankedPage() {
 
       <div className="mb-4">
         <IndustryFilter
-          companies={(companies || []) as RankedCompany[]}
+          availableSectors={availableSectors}
           selectedSector={selectedSector}
           onSectorChange={handleSectorChange}
         />

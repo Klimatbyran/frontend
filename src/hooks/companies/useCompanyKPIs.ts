@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import {
   RankedCompany,
@@ -23,45 +24,45 @@ export function hasKPIValue(
 export const useCompanyKPIs = (): CompanyKPIValue[] => {
   const { t } = useTranslation();
 
-  const KPIs: CompanyKPIValue[] = [
-    {
-      label: t("companies.list.kpis.meetsParis.label"),
-      key: "meetsParis",
-      unit: "",
-      source: "companies.list.kpis.meetsParis.source",
-      sourceUrls: [],
-      description: t("companies.list.kpis.meetsParis.description"),
-      detailedDescription: t(
-        "companies.list.kpis.meetsParis.detailedDescription",
-      ),
-      higherIsBetter: true,
-      isBoolean: true,
-      booleanLabels: {
-        true: t("companies.list.kpis.meetsParis.booleanLabels.true"),
-        false: t("companies.list.kpis.meetsParis.booleanLabels.false"),
+  return useMemo<CompanyKPIValue[]>(() => {
+    return [
+      {
+        label: t("companies.list.kpis.meetsParis.label"),
+        key: "meetsParis",
+        unit: "",
+        source: "companies.list.kpis.meetsParis.source",
+        sourceUrls: [],
+        description: t("companies.list.kpis.meetsParis.description"),
+        detailedDescription: t(
+          "companies.list.kpis.meetsParis.detailedDescription",
+        ),
+        higherIsBetter: true,
+        isBoolean: true,
+        booleanLabels: {
+          true: t("companies.list.kpis.meetsParis.booleanLabels.true"),
+          false: t("companies.list.kpis.meetsParis.booleanLabels.false"),
+        },
+        nullValues: t("companies.list.kpis.meetsParis.nullValues"),
       },
-      nullValues: t("companies.list.kpis.meetsParis.nullValues"),
-    },
-    {
-      label: t(
-        "companies.list.kpis.emissionsChangeFromBaseYear.label",
-        "Overall Emissions Change",
-      ),
-      key: "emissionsChangeFromBaseYear",
-      unit: "%",
-      source: "companies.list.kpis.emissionsChangeFromBaseYear.source",
-      sourceUrls: [],
-      description: t(
-        "companies.list.kpis.emissionsChangeFromBaseYear.description",
-      ),
-      detailedDescription: t(
-        "companies.list.kpis.emissionsChangeFromBaseYear.detailedDescription",
-      ),
-      higherIsBetter: false,
-    },
-  ];
-
-  return KPIs;
+      {
+        label: t(
+          "companies.list.kpis.emissionsChangeFromBaseYear.label",
+          "Overall Emissions Change",
+        ),
+        key: "emissionsChangeFromBaseYear",
+        unit: "%",
+        source: "companies.list.kpis.emissionsChangeFromBaseYear.source",
+        sourceUrls: [],
+        description: t(
+          "companies.list.kpis.emissionsChangeFromBaseYear.description",
+        ),
+        detailedDescription: t(
+          "companies.list.kpis.emissionsChangeFromBaseYear.detailedDescription",
+        ),
+        higherIsBetter: false,
+      },
+    ];
+  }, [t]);
 };
 
 // Helper function to enrich company with KPI values
