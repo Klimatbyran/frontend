@@ -58,9 +58,9 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
     i18n.changeLanguage(lang);
     setCurrentLanguage(lang);
 
-    // Then handle URL navigation with window.location for a hard navigation
+    // Preserve search parameters when changing language
     const newPath = getLanguageUrl(location.pathname, lang);
-    navigate(newPath);
+    navigate({ pathname: newPath, search: location.search }, { replace: true });
   };
 
   // Get localized path for a given route
