@@ -1,4 +1,4 @@
-import { Zap, BarChart3, Building2 } from "lucide-react";
+import { BarChart3, Building2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { Button } from "@/components/ui/button";
@@ -10,9 +10,8 @@ export function LandingPageCTA() {
   return (
     <section className="flex flex-col h-screen items-center justify-center bg-black text-center px-4 py-16">
       <div className="flex flex-col items-center max-w-4xl mx-auto space-y-8">
-
         {/* Heading */}
-        <h2 className="text-4xl md:text-6xl font-light tracking-tight text-white">
+        <h2 className="text-4xl md:text-5xl font-light tracking-tight text-white">
           {t("landingPage.ctaSection.title")}
         </h2>
 
@@ -63,4 +62,3 @@ export function LandingPageCTA() {
     </section>
   );
 }
-
