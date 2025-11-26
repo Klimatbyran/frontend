@@ -22,8 +22,6 @@ interface BeeswarmChartProps<T> {
   showLegend?: boolean;
   legendMin?: number;
   legendMax?: number;
-  leftLabel?: string;
-  rightLabel?: string;
 }
 
 export function BeeswarmChart<T>({
@@ -44,8 +42,6 @@ export function BeeswarmChart<T>({
   showLegend = true,
   legendMin,
   legendMax,
-  leftLabel,
-  rightLabel,
 }: BeeswarmChartProps<T>) {
   const { t } = useTranslation();
   const displayData = data.slice(0, maxDisplayCount);
@@ -106,17 +102,6 @@ export function BeeswarmChart<T>({
           {min.toFixed(1)}
           {unit}
         </span>
-        {min <= 0 && max >= 0 && (
-          <span
-            className="absolute font-medium"
-            style={{
-              left: max === min ? "50%" : `${((0 - min) / (max - min)) * 100}%`,
-              transform: "translateX(-50%)",
-            }}
-          >
-            0{unit}
-          </span>
-        )}
         <span className="absolute right-0">
           {max.toFixed(1)}
           {unit}
@@ -159,7 +144,7 @@ export function BeeswarmChart<T>({
             >
               {line.label && (
                 <div
-                  className="absolute bottom-0 left-0 transform -translate-x-1/2 translate-y-full text-xs text-grey whitespace-nowrap"
+                  className="absolute bottom-0 left-0 translate-y-full text-xs text-grey whitespace-nowrap text-left"
                   style={{ marginTop: "4px" }}
                 >
                   {line.label}
@@ -249,8 +234,6 @@ export function BeeswarmChart<T>({
               min={legendMin ?? min}
               max={legendMax ?? max}
               unit={unit}
-              leftLabel={leftLabel}
-              rightLabel={rightLabel}
               gradientBackground={legendGradient}
             />
           </div>

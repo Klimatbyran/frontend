@@ -176,12 +176,6 @@ export function MeetsParisVisualization({
           ]}
           legendMin={legendMin}
           legendMax={legendMax}
-          leftLabel={t(
-            "companiesRankedPage.visualizations.meetsParis.legend.belowBudget",
-          )}
-          rightLabel={t(
-            "companiesRankedPage.visualizations.meetsParis.legend.aboveBudget",
-          )}
         />
       </div>
 

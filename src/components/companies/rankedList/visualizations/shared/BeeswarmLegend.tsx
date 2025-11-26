@@ -2,8 +2,6 @@ interface BeeswarmLegendProps {
   min: number;
   max: number;
   unit: string;
-  leftLabel?: string;
-  rightLabel?: string;
   gradientBackground?: string;
 }
 
@@ -11,8 +9,6 @@ export function BeeswarmLegend({
   min,
   max,
   unit,
-  leftLabel,
-  rightLabel,
   gradientBackground,
 }: BeeswarmLegendProps) {
   const defaultGradient = `linear-gradient(to right, 
@@ -26,7 +22,8 @@ export function BeeswarmLegend({
   return (
     <div className="flex items-center gap-2 text-xs text-grey">
       <span className="whitespace-nowrap">
-        {leftLabel ?? `${min.toFixed(1)}${unit}`}
+        {min.toFixed(1)}
+        {unit}
       </span>
       <div className="relative w-[160px] h-4">
         <div
@@ -37,7 +34,8 @@ export function BeeswarmLegend({
         />
       </div>
       <span className="whitespace-nowrap">
-        {rightLabel ?? `${max.toFixed(1)}${unit}`}
+        {max.toFixed(1)}
+        {unit}
       </span>
     </div>
   );
