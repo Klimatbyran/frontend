@@ -77,5 +77,16 @@ export type SectorEmissions = {
   };
 };
 
-export type MunicipalitySortBy = "meets_paris" | "name";
-export type MunicipalitySortDirection = "best" | "worst";
+const MUNICIPALITY_SORT_BY = ["meets_paris", "name"] as const
+export type MunicipalitySortBy = (typeof MUNICIPALITY_SORT_BY)[number];
+
+export function isMunicipalitySortBy(value: string): value is MunicipalitySortBy {
+  return MUNICIPALITY_SORT_BY.includes(value as MunicipalitySortBy);
+}
+
+const MUNICIPALITY_SORT_DIRECTION = ["best", "worst"] as const
+export type MunicipalitySortDirection = (typeof MUNICIPALITY_SORT_DIRECTION)[number];
+
+export function isMunicipalitySortDirection(value: string): value is MunicipalitySortDirection {
+  return MUNICIPALITY_SORT_DIRECTION.includes(value as MunicipalitySortDirection);
+}
