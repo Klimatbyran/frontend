@@ -22,6 +22,11 @@ interface BeeswarmChartProps<T> {
   showLegend?: boolean;
   legendMin?: number;
   legendMax?: number;
+  // Tooltip customization
+  getMeetsParis?: (item: T) => boolean | null;
+  getBudgetValue?: (item: T) => number;
+  getRank?: (item: T) => number | null;
+  totalCount?: number;
 }
 
 export function BeeswarmChart<T>({
@@ -42,6 +47,10 @@ export function BeeswarmChart<T>({
   showLegend = true,
   legendMin,
   legendMax,
+  getMeetsParis,
+  getBudgetValue,
+  getRank,
+  totalCount,
 }: BeeswarmChartProps<T>) {
   const { t } = useTranslation();
   const displayData = data.slice(0, maxDisplayCount);
@@ -256,6 +265,14 @@ export function BeeswarmChart<T>({
               : getValue(hoveredItem.item)) > capThreshold
           }
           capThreshold={capThreshold}
+          meetsParis={
+            getMeetsParis ? getMeetsParis(hoveredItem.item) : undefined
+          }
+          budgetValue={
+            getBudgetValue ? getBudgetValue(hoveredItem.item) : undefined
+          }
+          rank={getRank ? getRank(hoveredItem.item) : undefined}
+          total={totalCount}
         />
       )}
     </div>

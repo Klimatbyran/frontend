@@ -290,7 +290,12 @@
         },
         "budgetThreshold": "Budget threshold (0{{unit}})",
         "description": "Tonnes over or under each company's carbon budget. We estimate future emissions with an LAD trendline and compare cumulative 2025–2050 emissions to a Carbon Law path (11.7% yearly reduction).",
-        "learnMore": "Learn more"
+        "learnMore": "Learn more",
+        "tooltip": {
+          "underBudget": "under carbon budget",
+          "overBudget": "over carbon budget",
+          "onBudget": "on carbon budget"
+        }
       },
       "beeswarm": {
         "capped": "(capped)",

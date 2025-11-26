@@ -154,6 +154,8 @@ export function MeetsParisVisualization({
           getCompanyName={(d) => d.company.name}
           getCompanyId={(d) => d.company.wikidataId}
           colorForValue={(value) => colorForTonnes(value * unitScale.divisor)}
+          getMeetsParis={(d) => d.meetsParis}
+          getBudgetValue={(d) => d.budgetTonnes / unitScale.divisor}
           min={min}
           max={max}
           unit={unitScale.unit}

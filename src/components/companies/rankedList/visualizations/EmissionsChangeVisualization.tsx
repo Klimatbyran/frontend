@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import type { CompanyWithKPIs } from "@/types/company";
 import { createSymmetricRangeGradient } from "@/utils/ui/colorGradients";
@@ -26,6 +27,20 @@ export function EmissionsChangeVisualization({
     (min, max) => (value: number) =>
       createSymmetricRangeGradient(min, max, value),
   );
+
+  // Calculate ranks: lower is better (negative change is good)
+  const rankMap = useMemo(() => {
+    const sorted = [...withData].sort(
+      (a, b) =>
+        (a.emissionsChangeFromBaseYear ?? 0) -
+        (b.emissionsChangeFromBaseYear ?? 0),
+    );
+    const map = new Map<string, number>();
+    sorted.forEach((company, index) => {
+      map.set(company.wikidataId, index + 1);
+    });
+    return map;
+  }, [withData]);
 
   if (withData.length === 0) {
     return (
@@ -60,6 +75,8 @@ export function EmissionsChangeVisualization({
           max={max}
           unit="%"
           onCompanyClick={onCompanyClick}
+          getRank={(c) => rankMap.get(c.wikidataId) ?? null}
+          totalCount={withData.length}
         />
       </div>
     </div>

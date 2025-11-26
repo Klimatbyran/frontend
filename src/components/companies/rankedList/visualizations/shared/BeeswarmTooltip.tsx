@@ -10,6 +10,12 @@ interface BeeswarmTooltipProps {
   rawValue?: number;
   isCapped?: boolean;
   capThreshold?: number;
+  // For MeetsParis visualization
+  meetsParis?: boolean | null;
+  budgetValue?: number; // Raw budget value in tonnes
+  // For EmissionsChange visualization
+  rank?: number | null;
+  total?: number;
 }
 
 export function BeeswarmTooltip({
@@ -21,6 +27,10 @@ export function BeeswarmTooltip({
   rawValue,
   isCapped,
   capThreshold,
+  meetsParis,
+  budgetValue,
+  rank,
+  total,
 }: BeeswarmTooltipProps) {
   const { t } = useTranslation();
   const tooltipRef = useRef<HTMLDivElement>(null);
@@ -56,54 +66,84 @@ export function BeeswarmTooltip({
 
   if (!position) return null;
 
+  // MeetsParis mode: Show "Meets Paris" or "Fails Paris" + budget status
+  if (meetsParis !== undefined && budgetValue !== undefined) {
+    const meetsParisLabel =
+      meetsParis === true
+        ? t("companies.list.kpis.meetsParis.booleanLabels.true")
+        : meetsParis === false
+          ? t("companies.list.kpis.meetsParis.booleanLabels.false")
+          : t("companies.list.kpis.meetsParis.nullValues");
+
+    const budgetDisplay = formatValue
+      ? formatValue(budgetValue, unit)
+      : `${budgetValue < 0 ? "-" : "+"}${Math.abs(budgetValue).toFixed(1)}${unit}`;
+
+    const budgetStatus =
+      budgetValue < 0
+        ? t("companiesRankedPage.visualizations.meetsParis.tooltip.underBudget")
+        : budgetValue > 0
+          ? t(
+              "companiesRankedPage.visualizations.meetsParis.tooltip.overBudget",
+            )
+          : t("companiesRankedPage.visualizations.meetsParis.tooltip.onBudget");
+
+    return (
+      <div
+        ref={tooltipRef}
+        className="fixed z-50 pointer-events-none bg-black/40 backdrop-blur-sm p-4 rounded-2xl"
+      >
+        <p className="text-white font-medium text-xl">{companyName}</p>
+        <div className="space-y-1 mt-2">
+          <p className="text-white/70">
+            <span className="text-orange-2">{meetsParisLabel}</span>
+          </p>
+          <p className="text-white/50 text-sm">
+            {budgetDisplay} {budgetStatus}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // Default mode: Show value, optionally with rank
+  const displayValue =
+    isCapped && rawValue !== undefined && capThreshold !== undefined
+      ? formatValue
+        ? formatValue(rawValue, unit)
+        : `${rawValue < 0 ? "-" : "+"}${Math.abs(rawValue).toFixed(1)}${unit}`
+      : formatValue
+        ? formatValue(value, unit)
+        : `${value.toFixed(1)}${unit}`;
+
   return (
     <div
       ref={tooltipRef}
-      className="fixed z-50 pointer-events-none"
-      style={{
-        backgroundColor: "rgba(0, 0, 0, 0.9)",
-        border: "1px solid rgba(255, 255, 255, 0.2)",
-        borderRadius: "4px",
-        padding: "8px",
-        color: "#fff",
-        fontSize: "13px",
-        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.3)",
-      }}
+      className="fixed z-50 pointer-events-none bg-black/40 backdrop-blur-sm p-4 rounded-2xl"
     >
-      <div style={{ fontWeight: "bold", marginBottom: "4px" }}>
-        {companyName}
-      </div>
-      <div>
-        {isCapped && rawValue !== undefined && capThreshold !== undefined ? (
-          <div>
-            <div>
-              {t("companiesRankedPage.visualizations.beeswarm.tooltip.actual")}{" "}
-              {formatValue
-                ? formatValue(rawValue, unit)
-                : `${rawValue < 0 ? "-" : "+"}${Math.abs(rawValue).toFixed(1)}${unit}`}
-            </div>
-            <div
-              style={{
-                fontSize: "11px",
-                color: "rgba(255, 255, 255, 0.7)",
-                marginTop: "2px",
-              }}
-            >
-              {t(
-                "companiesRankedPage.visualizations.beeswarm.tooltip.cappedAt",
-              )}{" "}
-              {formatValue
-                ? formatValue(capThreshold, unit)
-                : `${capThreshold.toFixed(1)}${unit}`}{" "}
-              {t(
-                "companiesRankedPage.visualizations.beeswarm.tooltip.forChartVisibility",
-              )}
-            </div>
-          </div>
-        ) : formatValue ? (
-          formatValue(value, unit)
-        ) : (
-          `${value < 0 ? t("companiesRankedPage.visualizations.beeswarm.tooltip.reduction") : t("companiesRankedPage.visualizations.beeswarm.tooltip.increase")}: ${Math.abs(value).toFixed(1)}${unit}`
+      <p className="text-white font-medium text-xl">{companyName}</p>
+      <div className="space-y-1 mt-2">
+        <p className="text-white/70">
+          <span className="text-orange-2">{displayValue}</span>
+        </p>
+        {rank !== null && rank !== undefined && total !== undefined && (
+          <p className="text-white/50 text-sm">
+            {t("rankedList.rank", {
+              rank: String(rank),
+              total: String(total),
+            })}
+          </p>
+        )}
+        {isCapped && rawValue !== undefined && capThreshold !== undefined && (
+          <p className="text-white/50 text-sm">
+            {t("companiesRankedPage.visualizations.beeswarm.tooltip.cappedAt")}{" "}
+            {formatValue
+              ? formatValue(capThreshold, unit)
+              : `${capThreshold.toFixed(1)}${unit}`}{" "}
+            {t(
+              "companiesRankedPage.visualizations.beeswarm.tooltip.forChartVisibility",
+            )}
+          </p>
         )}
       </div>
     </div>
