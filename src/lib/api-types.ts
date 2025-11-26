@@ -176,6 +176,8 @@ export interface paths {
                             wikidataId: string;
                             name: string;
                             lei?: string | null;
+                            /** Format: uri */
+                            logoUrl?: string | null;
                             description?: string | null;
                             descriptions?: {
                                 id: string;
@@ -357,6 +359,8 @@ export interface paths {
                             wikidataId: string;
                             name: string;
                             lei?: string | null;
+                            /** Format: uri */
+                            logoUrl?: string | null;
                             description?: string | null;
                             descriptions?: {
                                 id: string;
@@ -702,6 +706,8 @@ export interface paths {
                         }[];
                         /** Format: uri */
                         url?: string;
+                        /** Format: uri */
+                        logoUrl?: string | null;
                         internalComment?: string;
                         tags?: string[];
                         lei?: string;
@@ -868,6 +874,8 @@ export interface paths {
                             wikidataId: string;
                             name: string;
                             lei?: string | null;
+                            /** Format: uri */
+                            logoUrl?: string | null;
                             description?: string | null;
                             descriptions?: {
                                 id: string;
@@ -1337,7 +1345,7 @@ export interface paths {
         };
         /**
          * Get all regions
-         * @description Retrieve a list of all regions with their historical emissions data broken down by sectors and subsectors over time. Returns 304 Not Modified if the resource has not changed since the last request (based on ETag).
+         * @description Retrieve a list of all regions with their historical emissions data, trends, Paris agreement compliance status, and municipalities. Returns 304 Not Modified if the resource has not changed since the last request (based on ETag).
          */
         get: {
             parameters: {
@@ -1355,10 +1363,67 @@ export interface paths {
                     };
                     content: {
                         "application/json": {
-                            name: string;
-                            emissions: {
-                                [key: string]: number;
-                            };
+                            region: string;
+                            emissions: ({
+                                year: string;
+                                value: number;
+                            } | null)[];
+                            totalTrend: number;
+                            totalCarbonLaw: number;
+                            approximatedHistoricalEmission: ({
+                                year: string;
+                                value: number;
+                            } | null)[];
+                            trend: ({
+                                year: string;
+                                value: number;
+                            } | null)[];
+                            historicalEmissionChangePercent: number;
+                            meetsParis: boolean;
+                            municipalities: string[];
+                        }[];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/regions/kpis": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get regional KPIs
+         * @description Retrieve key performance indicators for all regions, including Paris agreement compliance and historical emission change percentages.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            region: string;
+                            meetsParis: boolean;
+                            historicalEmissionChangePercent: number;
                         }[];
                     };
                 };
@@ -1381,7 +1446,7 @@ export interface paths {
         };
         /**
          * Get one region
-         * @description Retrieve a specific region with its historical emissions data broken down by sectors and subsectors over time.
+         * @description Retrieve a specific region with its historical emissions data, trends, Paris agreement compliance status, and municipalities.
          */
         get: {
             parameters: {
@@ -1401,81 +1466,24 @@ export interface paths {
                     };
                     content: {
                         "application/json": {
-                            name: string;
-                            emissions: {
-                                [key: string]: number;
-                            };
-                        };
-                    };
-                };
-                /** @description Default Response */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            code: string;
-                            message?: string;
-                            details?: unknown;
-                        };
-                    };
-                };
-                /** @description Default Response */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            code: string;
-                            message?: string;
-                            details?: unknown;
-                        };
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/regions/{name}/sector-emissions": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get regional sector emissions
-         * @description Retrieve sector emissions data for a specific region, broken down by different sectors and subsectors over time.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    name: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Default Response */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            sectors: {
-                                [key: string]: unknown;
-                            };
+                            region: string;
+                            emissions: ({
+                                year: string;
+                                value: number;
+                            } | null)[];
+                            totalTrend: number;
+                            totalCarbonLaw: number;
+                            approximatedHistoricalEmission: ({
+                                year: string;
+                                value: number;
+                            } | null)[];
+                            trend: ({
+                                year: string;
+                                value: number;
+                            } | null)[];
+                            historicalEmissionChangePercent: number;
+                            meetsParis: boolean;
+                            municipalities: string[];
                         };
                     };
                 };
@@ -1528,7 +1536,10 @@ export interface paths {
          */
         get: {
             parameters: {
-                query?: never;
+                query?: {
+                    type?: "csv" | "json" | "xlsx";
+                    year?: string;
+                };
                 header?: never;
                 path?: never;
                 cookie?: never;
