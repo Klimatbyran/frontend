@@ -11,7 +11,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useMunicipalitySectors } from "@/hooks/municipalities/useMunicipalitySectors";
+import { SectorInfo } from "@/types/charts";
 
 interface LegendProps {
   data: Array<{
@@ -20,19 +20,20 @@ interface LegendProps {
     color: string;
   }>;
   total: number;
+  getSectorInfo: (name: string) => SectorInfo;
   filteredSectors?: Set<string>;
   onFilteredSectorsChange?: (sectors: Set<string>) => void;
 }
 
-const MunicipalitySectorLegend: React.FC<LegendProps> = ({
+const SectorPieLegend: React.FC<LegendProps> = ({
   data,
   total,
+  getSectorInfo,
   filteredSectors = new Set(),
   onFilteredSectorsChange,
 }) => {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
-  const { getSectorInfo } = useMunicipalitySectors();
 
   const handleLegendItemClick = (name: string) => {
     if (onFilteredSectorsChange) {
@@ -115,4 +116,4 @@ const MunicipalitySectorLegend: React.FC<LegendProps> = ({
   );
 };
 
-export default MunicipalitySectorLegend;
+export default SectorPieLegend;

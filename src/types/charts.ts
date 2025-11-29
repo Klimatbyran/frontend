@@ -84,3 +84,9 @@ export interface ChartStyling {
     dotRadius?: number;
   };
 }
+
+// Sector emissions chart types
+export interface SectorInfo {
+  color: string;
+  translatedName: string;
+}

@@ -8,7 +8,8 @@ import { useLanguage } from "../LanguageProvider";
 import { HeaderSearchButton } from "../search/HeaderSearchButton";
 import useHeaderTitle from "@/hooks/useHeaderTitle";
 import { useAuth } from "@/contexts/AuthContext";
-import { LocalizedLink, localizedPath } from "../LocalizedLink";
+import { LocalizedLink } from "../LocalizedLink";
+import { localizedPath } from "@/utils/routing";
 import {
   NavigationMenu,
   NavigationMenuContent,
