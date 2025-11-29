@@ -1,5 +1,5 @@
 export function getProcurementRequirementsText(
-  procurementScore: number | undefined,
+  procurementScore: number,
   t: (key: string) => string,
 ): string {
   if (procurementScore === 2) {
