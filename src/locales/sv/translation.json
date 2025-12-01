@@ -88,7 +88,14 @@
     "questionPlaceholder": "Berätta vad och var ärendet gäller",
     "questionMissing": "Ange en kommentar",
     "submitQuestion": "Skicka",
-    "emailTitle": "Förslag till"
+    "emailTitle": "Förslag till",
+    "ctaSection": {
+      "title": "Redo att utforska datan?",
+      "description": "Börja din resa in i Sveriges klimatdata. Sök efter företag och kommuner, utforska rankinglistor och upptäck vem som leder kampen mot klimatförändringarna.",
+      "exploreClimateData": "Se kommunranking",
+      "viewCompanyRankings": "Utforska företagsdata",
+      "or": "Eller"
+    }
   },
   "aboutPage": {
     "header": {

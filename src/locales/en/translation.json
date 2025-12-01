@@ -88,7 +88,14 @@
     "questionPlaceholder": "Please tell us what data value needs to be modified and where on site",
     "questionMissing": "Please enter a comment",
     "submitQuestion": "Submit",
-    "emailTitle": "Suggestion for"
+    "emailTitle": "Suggestion for",
+    "ctaSection": {
+      "title": "Ready to Explore the Data?",
+      "description": "Start your journey into Sweden's climate data. Search for companies and municipalities, explore rankings, and discover who's leading the fight against climate change.",
+      "exploreClimateData": "View Municipality Rankings",
+      "viewCompanyRankings": "Explore Company Data",
+      "or": "Or"
+    }
   },
   "aboutPage": {
     "header": {
