@@ -5,7 +5,7 @@ import { calculateMeetsParis } from "@/lib/calculations/trends/meetsParis";
 import { calculateEmissionsChange } from "@/utils/calculations/emissionsCalculations";
 import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 import { getCompanySectorName } from "@/utils/data/industryGrouping";
-import { SECTORS } from "@/lib/constants/sectors";
+import { CompanySector, SECTORS } from "@/lib/constants/sectors";
 import { isSortOption, type SortOption } from "./useCompanySorting";
 import { useSearchParams } from "react-router-dom";
 
@@ -19,7 +19,7 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
   
   const searchQuery = searchParams.get("searchQuery") || "";
   const meetsParisFilter = isMeetsParisFilter(searchParams.get("meetsParisFilter") ?? "") ? searchParams.get("meetsParisFilter") as MeetsParisFilter : "all";
-  const sectors = searchParams.get("sectors")?.split(",").filter(s => SECTORS.some(sector => sector.value === s)) ?? [];
+  const sectors = (searchParams.get("sectors")?.split(",").filter(s => SECTORS.some(sector => sector.value === s)) ?? []) as CompanySector[];
   const sortBy = isSortOption(searchParams.get("sortBy") ?? "") ? searchParams.get("sortBy") as SortOption : "total_emissions";
   const sortDirection = (searchParams.get("sortDirection") == "asc" || searchParams.get("sortDirection") == "desc" ? searchParams.get("sortDirection") : "desc") as "asc" | "desc";
 
@@ -28,9 +28,9 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
     return searchParams;
   }, { replace: true });
 
-  const setSearchQuery = (searchQuery: string) => setOrDeleteSearchParam(searchQuery, "searchQuery");
+  const setSearchQuery = (searchQuery: string) => setOrDeleteSearchParam(searchQuery.trim() || null, "searchQuery");
   const setMeetsParisFilter = (meetsParisFilter: string) => setOrDeleteSearchParam(meetsParisFilter, "meetsParisFilter");
-  const setSectors = (sectors: string[]) => setOrDeleteSearchParam(sectors.length > 0 ? sectors.join(",") : null, "sectors");
+  const setSectors = (sectors: CompanySector[]) => setOrDeleteSearchParam(sectors.length > 0 ? sectors.join(",") : null, "sectors");
   const setSortBy = (sortBy: string) => setOrDeleteSearchParam(sortBy, "sortBy");
   const setSortDirection = (sortDirection: string) => setOrDeleteSearchParam(sortDirection, "sortDirection");
 

@@ -29,7 +29,7 @@ export function MunicipalitiesComparePage() {
   }, { replace: true });
 
   const setSelectedRegion = (selectedRegion: string) => setOrDeleteSearchParam(selectedRegion, "selectedRegion");
-  const setSearchQuery = (searchQuery: string) => setOrDeleteSearchParam(searchQuery, "searchQuery");
+  const setSearchQuery = (searchQuery: string) => setOrDeleteSearchParam(searchQuery.trim() || null, "searchQuery");
   const setSortBy = (sortBy: string) => setOrDeleteSearchParam(sortBy, "sortBy");
   const setSortDirection = (sortDirection: string) => setOrDeleteSearchParam(sortDirection, "sortDirection");
 
