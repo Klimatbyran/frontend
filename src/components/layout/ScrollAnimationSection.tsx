@@ -89,7 +89,6 @@ export function ScrollAnimationSection({
 }: ScrollAnimationSectionProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const animationFrameRef = useRef<number | null>(null);
-
   const [dimensions, setDimensions] = useState<Dimensions>({
     headerHeight: 0,
     availableHeight: 400,

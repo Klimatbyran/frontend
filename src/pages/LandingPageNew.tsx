@@ -1,6 +1,6 @@
 // TODO: This is currently a slightly modified copy of the live landing page, all landing page modifications can be made here
 // without worry of impacting prod until we're ready
-import { Building2Icon, TreePineIcon } from "lucide-react";
+import { Building2Icon, ChevronDown, TreePineIcon } from "lucide-react";
 import { TopList, TopListItem } from "@/components/TopList";
 
 import { Typewriter } from "@/components/ui/typewriter";
@@ -10,19 +10,22 @@ import { useCompanies } from "@/hooks/companies/useCompanies";
 import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
 import { useTranslation } from "react-i18next";
 import { PageSEO } from "@/components/SEO/PageSEO";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "@/components/LanguageProvider";
 import {
   formatEmissionsAbsolute,
   formatPercentChange,
 } from "@/utils/formatting/localization";
 import FunFacts from "@/components/funFacts";
+import useThrottle from "@/hooks/useThrottle";
 
 export function LandingPageNew() {
   const { t } = useTranslation();
   const { companies } = useCompanies();
   const { getTopMunicipalities } = useMunicipalities();
   const { currentLanguage } = useLanguage();
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [fadeChevron, setFadeChevron] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -88,6 +91,31 @@ export function LandingPageNew() {
     </span>
   );
 
+  const handleChevronClick = () => {
+    const element = containerRef.current;
+    if (element) {
+      window.scrollTo({ top: element.offsetTop, behavior: "smooth" });
+    }
+  };
+
+  const handleScroll = () => {
+    if (window.scrollY > 200) {
+      setFadeChevron(true);
+    } else {
+      setFadeChevron(false);
+    }
+  };
+
+  const throttledScroll = useThrottle(handleScroll, 100);
+
+  useEffect(() => {
+    window.addEventListener("scroll", throttledScroll);
+
+    return () => {
+      window.removeEventListener("scroll", throttledScroll);
+    };
+  }, [throttledScroll]);
+
   return (
     <>
       <PageSEO
@@ -96,8 +124,8 @@ export function LandingPageNew() {
         canonicalUrl={canonicalUrl}
         structuredData={structuredData}
       />
-      <div className="flex flex-col">
-        <div className="flex-1 flex flex-col items-center text-center px-4 py-14 md:py-24">
+      <div className="flex flex-col h-screen items-center">
+        <div className="flex-1 flex flex-col items-center text-center px-4 py-44 md:py-56">
           <div className="max-w-lg md:max-w-4xl mx-auto space-y-4">
             <h1 className="text-4xl md:text-7xl font-light tracking-tight">
               {t("landingPage.title")}
@@ -115,13 +143,19 @@ export function LandingPageNew() {
             </div>
           </div>
         </div>
+        <ChevronDown
+          onClick={() => handleChevronClick()}
+          className={`${fadeChevron ? "opacity-0 " : "opacity-50"} mb-32 cursor-pointer animate-bounce animati transition-opacity ease-in duration-750`}
+        />
       </div>
 
       {/* Scroll Animation Section */}
-      <ScrollAnimationSection
-        steps={getLandingPageScrollSteps()}
-        className="bg-black"
-      />
+      <section ref={containerRef}>
+        <ScrollAnimationSection
+          steps={getLandingPageScrollSteps()}
+          className="bg-black"
+        />
+      </section>
 
       <div className="py-8 pt-36 md:py-36">
         <div className="mx-2 sm:mx-8">

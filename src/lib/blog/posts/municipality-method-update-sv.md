@@ -1,5 +1,18 @@
 ---
 id: "municipality-method-update"
+title: "Carbon Law – ny metod för att jämföra kommunernas växthusgasutsläpp"
+excerpt: "Klimatkollen ändrar metod för utsläppsdata om landets kommuner."
+date: "2025-09-02"
+readTime: "2 min"
+category: "methodology"
+image: "/images/blogImages/swedish-municipality-map.png"
+language: "sv"
+author:
+  name: "Ola Spännar"
+  avatar: "/people/ola.jpg"
+relatedPosts: 
+- "carbon-law-from-2025"
+- "only-radical-futures-left"
 ---
 
 **Klimatkollen ändrar metod för utsläppsdata om landets kommuner. Tidigare användes koldioxidbudgetar. Nu byter Klimatkollen beräkningsunderlag till den globala tumregeln, “Carbon Law” om 12 procents minskning per år för att begränsa uppvärmningen till 1.5 grader. Carbon Law presenterades 2017 av Johan Rockström, Owen Gaffney och Johan Falk, som en vetenskapligt baserad väg till att uppnå Parisavtalet. Beräkningarna uppdaterades av Klimatkollen i juni 2025**.  

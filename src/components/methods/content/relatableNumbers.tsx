@@ -1,17 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { Text } from "@/components/ui/text";
-
-interface SectionProps {
-  title: string;
-  children: React.ReactNode;
-}
-
-const Section = ({ title, children }: SectionProps) => (
-  <div className="space-y-4">
-    <Text className="text-blue-2 font-bold text-2xl">{title}</Text>
-    {children}
-  </div>
-);
+import { MethodSection } from "@/components/layout/MethodSection";
 
 export const RelatableNumbersContent = () => {
   const { t } = useTranslation();
@@ -19,7 +7,7 @@ export const RelatableNumbersContent = () => {
     <div className="prose prose-invert mx-auto space-y-8">
       <p>{t("methodsPage.company.relatableNumbers.paragraph1")}</p>
       <p>{t("methodsPage.company.relatableNumbers.paragraph2")}</p>
-      <Section
+      <MethodSection
         title={t("methodsPage.company.relatableNumbers.forestFire.title")}
       >
         <p>{t("methodsPage.company.relatableNumbers.forestFire.paragraph1")}</p>
@@ -32,11 +20,13 @@ export const RelatableNumbersContent = () => {
           </li>
         </ul>
         <p>{t("methodsPage.company.relatableNumbers.forestFire.paragraph2")}</p>
-      </Section>
+      </MethodSection>
 
-      <Section title={t("methodsPage.company.relatableNumbers.citizens.title")}>
+      <MethodSection
+        title={t("methodsPage.company.relatableNumbers.citizens.title")}
+      >
         <p>{t("methodsPage.company.relatableNumbers.citizens.paragraph")}</p>
-      </Section>
+      </MethodSection>
       <section className="flex flex-col text-sm italic gap-2">
         <a
           href={t("methodsPage.company.relatableNumbers.forestFire.source")}
