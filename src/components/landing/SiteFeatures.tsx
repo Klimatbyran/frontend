@@ -1,5 +1,5 @@
 import { Building2, Landmark, TrendingUpDown } from "lucide-react";
-import { Text } from "./ui/text";
+import { Text } from "@/components/ui/text";
 
 const SiteFeatures = () => {
   return (

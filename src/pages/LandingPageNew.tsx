@@ -18,7 +18,8 @@ import {
   formatPercentChange,
 } from "@/utils/formatting/localization";
 import useThrottle from "@/hooks/useThrottle";
-import FunFacts from "@/components/funFacts";
+import SiteFeatures from "@/components/landing/SiteFeatures";
+import { DidYouKnow } from "@/components/landing/DidYouKnow";
 
 export function LandingPageNew() {
   const { t } = useTranslation();
@@ -154,9 +155,6 @@ export function LandingPageNew() {
         />
       </section>
 
-      {/* CTA Section */}
-      <LandingPageCTA />
-
       <div className="py-8 pt-36 md:py-36">
         <div className="mx-2 sm:mx-8">
           <h2 className="text-4xl md:text-5xl font-light text-center mb-8 md:mb-16">
@@ -184,7 +182,10 @@ export function LandingPageNew() {
             />
           </div>
         </div>
-        <FunFacts />
+        <DidYouKnow />
+        <SiteFeatures />
+        {/* CTA Section */}
+        <LandingPageCTA />
       </div>
     </>
   );
