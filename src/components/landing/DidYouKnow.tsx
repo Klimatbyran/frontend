@@ -20,9 +20,12 @@ import {
   formatPercentChange,
 } from "@/utils/formatting/localization";
 import { Text } from "@/components/ui/text";
+import { FlipCard } from "./FlipCard";
+import { useScreenSize } from "@/hooks/useScreenSize";
 
 interface StatCard {
   icon: LucideIcon;
+  teaser: string;
   headline: string;
   description: string;
   bgColor: string;
@@ -36,6 +39,7 @@ export function DidYouKnow() {
   const { companies } = useCompanies();
   const { municipalities } = useMunicipalities();
   const sectorNames = useSectorNames();
+  const { isMobile } = useScreenSize();
 
   const stats = useMemo(() => {
     if (!companies.length || !municipalities.length) {
@@ -49,23 +53,44 @@ export function DidYouKnow() {
     const companiesWithSignificantReduction = enrichedCompanies.filter(
       (company) => company.metrics.emissionsReduction > 20,
     );
+    const percentage = Math.round(
+      (companiesWithSignificantReduction.length / companies.length) * 100,
+    );
     const stat1: StatCard = {
       icon: Trophy,
-      headline: `${Math.round((companiesWithSignificantReduction.length / companies.length) * 100)}% of companies`,
-      description: `have reduced emissions by more than 20% since their base year, leading the way in climate action`,
+      teaser: "Leaders of the Pack",
+      headline: `${percentage}%`,
+      description: `${percentage}% of companies have reduced emissions by more than 20% since their base year, leading the way in climate action`,
       bgColor: "bg-green-4",
       iconBgColor: "bg-green-3",
       borderColor: "border-green-3",
     };
 
-    // Stat #2: Top-performing sector by average emissions reduction
+    // Stat #2: Top-performing sector by average year-over-year emissions reduction
+    // Filter out companies with 0 emissions in either period
+    // Note: emissionsReduction is calculated as (previous - current) / previous * 100
+    // So positive = reduction (good), negative = increase (bad)
+    // We want the most positive (best reduction), which is the highest value
     const sectorReductions = new Map<
       string,
       { total: number; count: number }
     >();
     enrichedCompanies.forEach((company) => {
       const sectorCode = company.industry?.industryGics?.sectorCode;
-      if (sectorCode && company.metrics.emissionsReduction !== undefined) {
+      const latestPeriod = company.reportingPeriods?.[0];
+      const previousPeriod = company.reportingPeriods?.[1];
+      const currentEmissions =
+        latestPeriod?.emissions?.calculatedTotalEmissions ?? 0;
+      const previousEmissions =
+        previousPeriod?.emissions?.calculatedTotalEmissions ?? 0;
+
+      // Only include companies with valid emissions in both periods (> 0)
+      if (
+        sectorCode &&
+        company.metrics.emissionsReduction !== undefined &&
+        currentEmissions > 0 &&
+        previousEmissions > 0
+      ) {
         const existing = sectorReductions.get(sectorCode) || {
           total: 0,
           count: 0,
@@ -78,26 +103,30 @@ export function DidYouKnow() {
     });
 
     let topSector = "";
-    let topSectorAvg = 0;
-    let topSectorCount = 0;
+    let topSectorAvg = -Infinity; // Start with -Infinity to find the highest (most positive) reduction
     sectorReductions.forEach((data, sectorCode) => {
       const avg = data.total / data.count;
+      // We want the highest average (most positive = best reduction)
       if (avg > topSectorAvg) {
         topSectorAvg = avg;
         topSector = sectorCode;
-        topSectorCount = data.count;
       }
     });
 
     // Get sector name (fallback to sector code if translation not available)
     const sectorName = topSector
-      ? sectorNames[topSector] || `sector ${topSector}`
+      ? sectorNames[topSector as keyof typeof sectorNames] ||
+        `sector ${topSector}`
       : "technology";
+
+    // Negate for display: emissionsReduction is positive for reductions, but we want to show as negative (standard convention)
+    const displayReduction = -topSectorAvg;
 
     const stat2: StatCard = {
       icon: Building2,
-      headline: `${topSectorCount} companies`,
-      description: `in the ${sectorName} sector show the highest average emissions reduction rates across all industries`,
+      teaser: sectorName,
+      headline: `${formatPercentChange(displayReduction, currentLanguage)}`,
+      description: `The ${sectorName} sector has the highest average emissions reduction rate at ${formatPercentChange(displayReduction, currentLanguage)}, showing strong recent progress in climate action`,
       bgColor: "bg-blue-4",
       iconBgColor: "bg-blue-3",
       borderColor: "border-blue-3",
@@ -109,8 +138,9 @@ export function DidYouKnow() {
     );
     const stat4: StatCard = {
       icon: Target,
-      headline: `${companiesMeetingParis.length} companies`,
-      description: `are on track to meet Paris Agreement goals, demonstrating alignment with 1.5°C pathways`,
+      teaser: "Paris Aligned",
+      headline: `${companiesMeetingParis.length}`,
+      description: `${companiesMeetingParis.length} companies are on track to meet Paris Agreement goals, demonstrating alignment with 1.5°C pathways`,
       bgColor: "bg-orange-4",
       iconBgColor: "bg-orange-3",
       borderColor: "border-orange-3",
@@ -130,10 +160,14 @@ export function DidYouKnow() {
         )
       );
     });
+    const scope3Percentage = Math.round(
+      (companiesWithScope3Categories.length / companies.length) * 100,
+    );
     const stat5: StatCard = {
       icon: Layers,
-      headline: `${Math.round((companiesWithScope3Categories.length / companies.length) * 100)}% of companies`,
-      description: `report comprehensive Scope 3 emissions by category, providing transparency into their value chain`,
+      teaser: "Transparent Reporting",
+      headline: `${scope3Percentage}%`,
+      description: `${scope3Percentage}% of companies report comprehensive Scope 3 emissions by category, providing transparency into their value chain`,
       bgColor: "bg-pink-4",
       iconBgColor: "bg-pink-3",
       borderColor: "border-pink-3",
@@ -145,8 +179,9 @@ export function DidYouKnow() {
     );
     const stat7: StatCard = {
       icon: MapPin,
-      headline: `${municipalitiesOnTrack.length} municipalities`,
-      description: `have achieved carbon neutrality or are on track to meet their 2030 climate targets`,
+      teaser: "On Track",
+      headline: `${municipalitiesOnTrack.length}`,
+      description: `${municipalitiesOnTrack.length} municipalities have achieved carbon neutrality or are on track to meet their 2030 climate targets`,
       bgColor: "bg-orange-4",
       iconBgColor: "bg-orange-3",
       borderColor: "border-orange-3",
@@ -176,10 +211,15 @@ export function DidYouKnow() {
           )
         : null;
 
+    const avgPerCapitaFormatted = formatEmissionsAbsolute(
+      avgPerCapita,
+      currentLanguage,
+    );
     const stat8: StatCard = {
       icon: Zap,
-      headline: `${formatEmissionsAbsolute(avgPerCapita, currentLanguage)}/capita`,
-      description: `is the average municipal emissions per resident, with ${lowestPerCapita?.name || "Stockholm"} leading at just ${lowestPerCapita ? formatEmissionsAbsolute(lowestPerCapita.totalConsumptionEmission, currentLanguage) : "1.3 tCO₂e"}/capita`,
+      teaser: "Per Capita",
+      headline: avgPerCapitaFormatted,
+      description: `${avgPerCapitaFormatted}/capita is the average municipal emissions per resident, with ${lowestPerCapita?.name || "Stockholm"} leading at just ${lowestPerCapita ? formatEmissionsAbsolute(lowestPerCapita.totalConsumptionEmission, currentLanguage) : "1.3 tCO₂e"}/capita`,
       bgColor: "bg-green-4",
       iconBgColor: "bg-green-3",
       borderColor: "border-green-3",
@@ -189,10 +229,14 @@ export function DidYouKnow() {
     const municipalitiesWithPlans = municipalities.filter(
       (m) => m.climatePlan === true,
     );
+    const plansPercentage = Math.round(
+      (municipalitiesWithPlans.length / municipalities.length) * 100,
+    );
     const stat9: StatCard = {
       icon: FileText,
-      headline: `${Math.round((municipalitiesWithPlans.length / municipalities.length) * 100)}% of municipalities`,
-      description: `have adopted climate plans, committing to structured emissions reduction strategies`,
+      teaser: "With Plans",
+      headline: `${plansPercentage}%`,
+      description: `${plansPercentage}% of municipalities have adopted climate plans, committing to structured emissions reduction strategies`,
       bgColor: "bg-blue-4",
       iconBgColor: "bg-blue-3",
       borderColor: "border-blue-3",
@@ -210,8 +254,9 @@ export function DidYouKnow() {
 
     const stat11: StatCard = {
       icon: Building2,
-      headline: `${totalEmissionsMt.toFixed(0)} million tonnes`,
-      description: `of CO₂e tracked across ${companies.length} companies and ${municipalities.length} municipalities in our database`,
+      teaser: "Total Tracked",
+      headline: `${totalEmissionsMt.toFixed(0)}M`,
+      description: `${totalEmissionsMt.toFixed(0)} million tonnes of CO₂e tracked across ${companies.length} companies and ${municipalities.length} municipalities in our database`,
       bgColor: "bg-pink-4",
       iconBgColor: "bg-pink-3",
       borderColor: "border-pink-3",
@@ -231,32 +276,23 @@ export function DidYouKnow() {
           Did You Know?
         </h2>
         <Text className="text-md text-grey text-center">
-          Fascinating insights from Sweden's climate data
+          Interesting insights from Sweden's climate data -{" "}
+          {isMobile ? "click to explore" : "hover to explore"}!
         </Text>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mx-2 sm:mx-8">
-        {stats.map((stat, index) => {
-          const Icon = stat.icon;
-          return (
-            <div
-              key={index}
-              className={`flex flex-col bg-black-2 rounded-level-2 p-4 md:p-6 min-h-[180px] md:min-h-[200px] border-2 ${stat.borderColor}`}
-            >
-              <div
-                className={`${stat.iconBgColor} w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center mb-3 md:mb-4 flex-shrink-0`}
-              >
-                <Icon className="h-5 w-5 md:h-6 md:w-6 text-black" />
-              </div>
-              <h3 className="text-xl md:text-2xl font-light tracking-tight mb-2 md:mb-3">
-                {stat.headline}
-              </h3>
-              <Text className="text-sm md:text-base text-grey leading-relaxed">
-                {stat.description}
-              </Text>
-            </div>
-          );
-        })}
+        {stats.map((stat, index) => (
+          <FlipCard
+            key={index}
+            icon={stat.icon}
+            teaser={stat.teaser}
+            headline={stat.headline}
+            description={stat.description}
+            iconBgColor={stat.iconBgColor}
+            borderColor={stat.borderColor}
+          />
+        ))}
       </div>
     </div>
   );

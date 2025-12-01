@@ -18,14 +18,14 @@ const CTA_BUTTONS: CTAButton[] = [
     icon: BarChart3,
     translationKey: "landingPage.ctaSection.exploreClimateData",
     variant: "default",
-    gradientClasses: "bg-gradient-to-r from-blue-2 to-blue-3",
+    gradientClasses: "bg-gradient-to-r from-orange-2 to-orange-3",
   },
   {
     to: "/companies",
     icon: Building2,
     translationKey: "landingPage.ctaSection.viewCompanyRankings",
     variant: "outline",
-    gradientClasses: "bg-gradient-to-r from-green-2 to-green-3",
+    gradientClasses: "bg-gradient-to-r from-blue-2 to-blue-3",
   },
 ];
 
