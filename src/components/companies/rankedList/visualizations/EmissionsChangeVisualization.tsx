@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import type { CompanyWithKPIs } from "@/types/company";
 import { createSymmetricRangeGradient } from "@/utils/ui/colorGradients";
 import { useBeeswarmData } from "@/hooks/companies/useBeeswarmData";
+import { useScreenSize } from "@/hooks/useScreenSize";
 import { BeeswarmChart } from "./shared/BeeswarmChart";
 
 interface EmissionsChangeVisualizationProps {
@@ -15,6 +16,7 @@ export function EmissionsChangeVisualization({
   onCompanyClick,
 }: EmissionsChangeVisualizationProps) {
   const { t } = useTranslation();
+  const { isMobile } = useScreenSize();
   const {
     valid: withData,
     invalid: noData,
@@ -54,17 +56,19 @@ export function EmissionsChangeVisualization({
 
   return (
     <div className="w-full h-full flex flex-col gap-3">
-      <div className="flex items-center justify-between">
-        <div className="text-sm text-grey">
-          {t("companiesRankedPage.visualizations.emissionsChange.title")}
-          {" · "}
-          {t(
-            "companiesRankedPage.visualizations.emissionsChange.unknown",
-          )}: {noData.length}
+      {!isMobile && (
+        <div className="flex items-center justify-between">
+          <div className="text-sm text-grey">
+            {t("companiesRankedPage.visualizations.emissionsChange.title")}
+            {" · "}
+            {t(
+              "companiesRankedPage.visualizations.emissionsChange.unknown",
+            )}: {noData.length}
+          </div>
         </div>
-      </div>
+      )}
 
-      <div className="relative flex-1 bg-black-2 rounded-level-2 p-4 overflow-auto">
+      <div className="relative flex-1 bg-black-2 rounded-level-2 p-4 overflow-hidden">
         <BeeswarmChart
           data={withData}
           getValue={(c) => c.emissionsChangeFromBaseYear as number}
