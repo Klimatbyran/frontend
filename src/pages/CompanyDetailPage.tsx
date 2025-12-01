@@ -126,7 +126,10 @@ export function CompanyDetailPage() {
       : "decreased";
 
   // Calculate emissions change from previous period
-  const yearOverYearChange = calculateEmissionsChange(selectedPeriod);
+  const yearOverYearChange = calculateEmissionsChange(
+    selectedPeriod,
+    previousPeriod,
+  );
 
   return (
     <>
