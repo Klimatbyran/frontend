@@ -75,6 +75,16 @@ export function createFixedRangeGradient(
 }
 
 /**
+ * Default color palette for statistical gradient visualizations
+ */
+export const DEFAULT_STATISTICAL_GRADIENT_COLORS = {
+  gradientStart: "var(--pink-5)",
+  gradientMidLow: "var(--pink-4)",
+  gradientMidHigh: "var(--pink-3)",
+  gradientEnd: "var(--blue-3)",
+} as const;
+
+/**
  * Create a statistical gradient color based on z-score normalization
  * Used for: municipality map, and optionally for company visualizations
  *
@@ -93,12 +103,7 @@ export function createStatisticalGradient(
     gradientMidLow: string;
     gradientMidHigh: string;
     gradientEnd: string;
-  } = {
-    gradientStart: "var(--pink-5)",
-    gradientMidLow: "var(--pink-4)",
-    gradientMidHigh: "var(--pink-3)",
-    gradientEnd: "var(--blue-3)",
-  },
+  } = DEFAULT_STATISTICAL_GRADIENT_COLORS,
 ): string {
   if (values.length === 0) {
     return colors.gradientMidHigh;

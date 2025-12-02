@@ -1,5 +1,5 @@
 import { t } from "i18next";
-import { MAP_COLORS } from "./constants";
+import { DEFAULT_STATISTICAL_GRADIENT_COLORS } from "@/utils/ui/colorGradients";
 import { KPIValue, MapEntityType } from "@/types/entity-rankings";
 
 export function MapLegend({
@@ -37,8 +37,14 @@ export function MapLegend({
         <div className="flex items-center w-full md:w-auto gap-2">
           {selectedKPI.isBoolean ? (
             <>
-              {booleanItem(MAP_COLORS.gradientEnd, "true")}
-              {booleanItem(MAP_COLORS.gradientMidLow, "false")}
+              {booleanItem(
+                DEFAULT_STATISTICAL_GRADIENT_COLORS.gradientEnd,
+                "true",
+              )}
+              {booleanItem(
+                DEFAULT_STATISTICAL_GRADIENT_COLORS.gradientMidLow,
+                "false",
+              )}
             </>
           ) : (
             <>
@@ -51,10 +57,10 @@ export function MapLegend({
                   className="absolute inset-0 rounded-full"
                   style={{
                     background: `linear-gradient(to right, 
-                        ${MAP_COLORS.gradientStart} 0%,
-                        ${MAP_COLORS.gradientMidLow} 33%,
-                        ${MAP_COLORS.gradientMidHigh} 66%,
-                        ${MAP_COLORS.gradientEnd} 100%
+                        ${DEFAULT_STATISTICAL_GRADIENT_COLORS.gradientStart} 0%,
+                        ${DEFAULT_STATISTICAL_GRADIENT_COLORS.gradientMidLow} 33%,
+                        ${DEFAULT_STATISTICAL_GRADIENT_COLORS.gradientMidHigh} 66%,
+                        ${DEFAULT_STATISTICAL_GRADIENT_COLORS.gradientEnd} 100%
                       )`,
                   }}
                 />

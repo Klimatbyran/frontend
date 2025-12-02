@@ -15,7 +15,7 @@ import {
   Geometry,
   GeoJsonProperties,
 } from "geojson";
-import { MAP_COLORS } from "./constants";
+import { createStatisticalGradient } from "@/utils/ui/colorGradients";
 import { calculateGeoBounds } from "./utils/geoBounds";
 import { isMobile } from "react-device-detect";
 import { t } from "i18next";
@@ -90,7 +90,13 @@ function MapOfSweden({
   defaultCenter = [63, 17],
   defaultZoom,
   propertyNameField = "name",
-  colors = MAP_COLORS,
+  colors = {
+    null: "var(--grey)",
+    gradientStart: "var(--pink-5)",
+    gradientMidLow: "var(--pink-4)",
+    gradientMidHigh: "var(--pink-3)",
+    gradientEnd: "var(--blue-3)",
+  },
 }: SwedenMapProps) {
   const [hoveredArea, setHoveredArea] = React.useState<string | null>(null);
   const [hoveredValue, setHoveredValue] = useState<number | boolean | null>(
@@ -232,47 +238,18 @@ function MapOfSweden({
       return colors.null;
     }
 
-    const { gradientStart, gradientMidLow, gradientMidHigh, gradientEnd } =
-      colors;
+    const { gradientMidLow, gradientEnd } = colors;
 
     if (typeof value === "boolean") {
       return value === true ? gradientEnd : gradientMidLow;
     }
 
-    const mean = values.reduce((sum, val) => sum + val, 0) / values.length;
-    const variance =
-      values.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) /
-      values.length;
-    const stdDev = Math.sqrt(variance);
-    const safeStdDev = stdDev === 0 ? 1 : stdDev;
-
-    const zScore = (value - mean) / safeStdDev;
-
-    if (selectedKPI.higherIsBetter) {
-      if (zScore <= -1) {
-        const t = Math.max(0, (zScore + 2) / 1);
-        return `color-mix(in srgb, ${gradientStart} ${(1 - t) * 100}%, ${gradientMidLow} ${t * 100}%)`;
-      } else if (zScore <= 0) {
-        const t = Math.max(0, zScore + 1);
-        return `color-mix(in srgb, ${gradientMidLow} ${(1 - t) * 100}%, ${gradientMidHigh} ${t * 100}%)`;
-      } else if (zScore <= 1) {
-        const t = Math.max(0, zScore);
-        return `color-mix(in srgb, ${gradientMidHigh} ${(1 - t) * 100}%, ${gradientEnd} ${t * 100}%)`;
-      } else {
-        return gradientEnd;
-      }
-    } else if (zScore >= 1) {
-      const t = Math.max(0, (2 - zScore) / 1);
-      return `color-mix(in srgb, ${gradientStart} ${(1 - t) * 100}%, ${gradientMidLow} ${t * 100}%)`;
-    } else if (zScore >= 0) {
-      const t = Math.max(0, 1 - zScore);
-      return `color-mix(in srgb, ${gradientMidLow} ${(1 - t) * 100}%, ${gradientMidHigh} ${t * 100}%)`;
-    } else if (zScore >= -1) {
-      const t = Math.max(0, -zScore);
-      return `color-mix(in srgb, ${gradientMidHigh} ${(1 - t) * 100}%, ${gradientEnd} ${t * 100}%)`;
-    } else {
-      return gradientEnd;
-    }
+    return createStatisticalGradient(
+      values,
+      value,
+      selectedKPI.higherIsBetter ?? false,
+      colors,
+    );
   };
 
   const renderGradientLegend = () => {
