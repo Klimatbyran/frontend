@@ -12,7 +12,7 @@ import { LandingSection } from "@/components/landing/LandingSection";
 import { LandingPageCTA } from "@/components/landing/LandingPageCTA";
 import { DidYouKnow } from "@/components/landing/DidYouKnow";
 import SiteFeatures from "@/components/landing/SiteFeatures";
-import { getLandingPageScrollSteps } from "@/components/landing/LandingPageScrollSteps";
+import { useLandingPageScrollStepsWithContent } from "@/components/landing/LandingPageScrollSteps";
 import {
   useLandingPageData,
   SCROLL_FADE_THRESHOLD,
@@ -48,6 +48,9 @@ export function LandingPageNew() {
 
   // Get landing page data from hook
   const { largestCompanyEmitters, topMunicipalities } = useLandingPageData();
+
+  // Get scroll animation steps
+  const scrollSteps = useLandingPageScrollStepsWithContent();
 
   // Render function for company emissions
   const renderCompanyEmission = useCallback(
@@ -141,10 +144,7 @@ export function LandingPageNew() {
 
       {/* Scroll Animation Section */}
       <section ref={containerRef}>
-        <ScrollAnimationSection
-          steps={getLandingPageScrollSteps()}
-          className="bg-black"
-        />
+        <ScrollAnimationSection steps={scrollSteps} className="bg-black" />
       </section>
 
       <SiteFeatures />
