@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { type LucideIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { Text } from "@/components/ui/text";
+import { useScreenSize } from "@/hooks/useScreenSize";
+import { cn } from "@/lib/utils";
 
 // Helper function to get muted background color from border color
 function getMutedBackgroundColor(borderColor: string): string {
@@ -20,7 +21,7 @@ function getMutedBackgroundColor(borderColor: string): string {
         "3": "rgba(244, 143, 42, 0.2)",
       },
       pink: {
-        "3": "rgba(240, 117, 154, 0.2)", 
+        "3": "rgba(240, 117, 154, 0.2)",
       },
     };
     return colorMap[colorName]?.[shade] || "rgba(0, 0, 0, 0.2)";
@@ -46,16 +47,7 @@ export function FlipCard({
   borderColor,
 }: FlipCardProps) {
   const [isFlipped, setIsFlipped] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+  const { isMobile } = useScreenSize();
 
   const handleInteraction = () => {
     if (isMobile) {
@@ -69,6 +61,15 @@ export function FlipCard({
       onMouseEnter={() => !isMobile && setIsFlipped(true)}
       onMouseLeave={() => !isMobile && setIsFlipped(false)}
       onClick={handleInteraction}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          handleInteraction();
+        }
+      }}
+      role="button"
+      tabIndex={0}
+      aria-label={isFlipped ? "Hide details" : "Show details"}
     >
       <div
         className={cn(

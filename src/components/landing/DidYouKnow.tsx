@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Trophy,
   Building2,
@@ -8,15 +9,15 @@ import {
   TrendingUp,
   type LucideIcon,
 } from "lucide-react";
+import { Text } from "@/components/ui/text";
+import { useLanguage } from "@/components/LanguageProvider";
+import { FlipCard } from "./FlipCard";
+import { LandingSection } from "./LandingSection";
 import { useCompanies } from "@/hooks/companies/useCompanies";
 import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
 import { enrichCompanyWithKPIs } from "@/hooks/companies/useCompanyKPIs";
-import { useTranslation } from "react-i18next";
-import { useLanguage } from "@/components/LanguageProvider";
-import { calculateEmissionsChangeFromBaseYear } from "@/utils/calculations/emissionsCalculations";
-import { Text } from "@/components/ui/text";
-import { FlipCard } from "./FlipCard";
 import { useScreenSize } from "@/hooks/useScreenSize";
+import { calculateEmissionsChangeFromBaseYear } from "@/utils/calculations/emissionsCalculations";
 
 interface StatCard {
   icon: LucideIcon;
@@ -207,35 +208,33 @@ export function DidYouKnow() {
   }
 
   return (
-    <section className="flex flex-col h-screen items-center justify-center bg-black text-center px-4 py-16">
-      <div className="flex flex-col w-full mt-16 md:mt-24 mb-16 md:mb-24">
-        <div className="mb-8 md:mb-12">
-          <h2 className="text-4xl md:text-5xl font-light text-center mb-2 md:mb-4">
-            {t("landingPage.didYouKnow.title")}
-          </h2>
-          <Text className="text-md text-grey text-center">
-            {t("landingPage.didYouKnow.subtitle", {
-              action: isMobile
-                ? t("landingPage.didYouKnow.actionMobile")
-                : t("landingPage.didYouKnow.actionDesktop"),
-            })}
-          </Text>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mx-2 sm:mx-8">
-          {stats.map((stat, index) => (
-            <FlipCard
-              key={index}
-              icon={stat.icon}
-              teaser={stat.teaser}
-              headline={stat.headline}
-              description={stat.description}
-              iconBgColor={stat.iconBgColor}
-              borderColor={stat.borderColor}
-            />
-          ))}
-        </div>
+    <LandingSection innerClassName="flex flex-col mt-16 md:mt-24 mb-16 md:mb-24">
+      <div className="mb-8 md:mb-12">
+        <h2 className="text-4xl md:text-5xl font-light text-center mb-2 md:mb-4">
+          {t("landingPage.didYouKnow.title")}
+        </h2>
+        <Text className="text-md text-grey text-center">
+          {t("landingPage.didYouKnow.subtitle", {
+            action: isMobile
+              ? t("landingPage.didYouKnow.actionMobile")
+              : t("landingPage.didYouKnow.actionDesktop"),
+          })}
+        </Text>
       </div>
-    </section>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mx-2 sm:mx-8">
+        {stats.map((stat, index) => (
+          <FlipCard
+            key={index}
+            icon={stat.icon}
+            teaser={stat.teaser}
+            headline={stat.headline}
+            description={stat.description}
+            iconBgColor={stat.iconBgColor}
+            borderColor={stat.borderColor}
+          />
+        ))}
+      </div>
+    </LandingSection>
   );
 }
