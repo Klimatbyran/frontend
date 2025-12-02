@@ -155,38 +155,36 @@ export function LandingPageNew() {
         />
       </section>
 
-      <div className="py-8 pt-36 md:py-36">
-        <div className="mx-2 sm:mx-8">
-          <h2 className="text-4xl md:text-5xl font-light text-center mb-8 md:mb-16">
-            {t("landingPage.bestPerformers")}
-          </h2>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <TopList
-              title={t("landingPage.bestMunicipalities")}
-              description={t("landingPage.municipalitiesDescription")}
-              items={topMunicipalities}
-              itemValueRenderer={renderMunicipalityChangeRate}
-              icon={{ component: TreePineIcon, bgColor: "bg-[#FDE7CE]" }}
-              rankColor="text-orange-2"
-              headingLink={`${currentLanguage}/municipalities`}
-            />
-
-            <TopList
-              title={t("landingPage.largestEmittor")}
-              description={t("landingPage.companiesDescription")}
-              items={largestCompanyEmitters}
-              itemValueRenderer={renderCompanyEmission}
-              icon={{ component: Building2Icon, bgColor: "bg-[#D4E7F7]" }}
-              rankColor="text-blue-2"
-              headingLink={`${currentLanguage}/companies`}
-            />
-          </div>
+      <SiteFeatures />
+      <section className="flex flex-col h-screen items-center justify-center bg-black text-center px-4 py-16">
+      <div className="mx-2 sm:mx-8">
+        <h2 className="text-4xl md:text-5xl font-light text-center mb-8 md:mb-16">
+          {t("landingPage.bestPerformers")}
+        </h2>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <TopList
+            title={t("landingPage.bestMunicipalities")}
+            description={t("landingPage.municipalitiesDescription")}
+            items={topMunicipalities}
+            itemValueRenderer={renderMunicipalityChangeRate}
+            icon={{ component: TreePineIcon, bgColor: "bg-[#FDE7CE]" }}
+            rankColor="text-orange-2"
+            headingLink={`${currentLanguage}/municipalities`}
+          />
+          <TopList
+            title={t("landingPage.largestEmittor")}
+            description={t("landingPage.companiesDescription")}
+            items={largestCompanyEmitters}
+            itemValueRenderer={renderCompanyEmission}
+            icon={{ component: Building2Icon, bgColor: "bg-[#D4E7F7]" }}
+            rankColor="text-blue-2"
+            headingLink={`${currentLanguage}/companies`}
+          />
         </div>
-        <DidYouKnow />
-        <SiteFeatures />
-        {/* CTA Section */}
-        <LandingPageCTA />
       </div>
+      </section>
+      <DidYouKnow />
+      <LandingPageCTA />
     </>
   );
 }

@@ -43,6 +43,7 @@ const features: Feature[] = [
 
 const SiteFeatures = () => {
   return (
+    <section className="flex flex-col h-screen items-center justify-center bg-black text-center px-4 py-16">
     <div className="flex flex-col w-full mt-32">
       <div className="mb-8 md:mb-16">
         <h2 className="text-4xl md:text-5xl font-light text-center mb-2 md:mb-4">
@@ -79,6 +80,7 @@ const SiteFeatures = () => {
         })}
       </div>
     </div>
+    </section>
   );
 };
 

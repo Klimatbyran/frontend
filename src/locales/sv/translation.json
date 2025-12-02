@@ -95,6 +95,36 @@
       "exploreClimateData": "Se kommunranking",
       "viewCompanyRankings": "Utforska företagsdata",
       "or": "Eller"
+    },
+    "didYouKnow": {
+      "title": "Visste du att?",
+      "subtitle": "Intressanta insikter från Sveriges klimatdata - {{action}}!",
+      "actionMobile": "klicka för att utforska",
+      "actionDesktop": "håll muspekaren för att utforska",
+      "stat1": {
+        "teaser": "Ledarna i klassen",
+        "description": "{{count}} av {{total}} företag har minskat sina utsläpp med mer än 20% sedan sitt basår"
+      },
+      "stat2": {
+        "teaser": "Ökade utsläpp",
+        "description": "{{count}} av {{total}} företag har ökat sina utsläpp sedan sitt basår"
+      },
+      "stat3": {
+        "teaser": "Paris-anpassade",
+        "description": "{{companyCount}} av {{companyTotal}} företag och {{municipalityCount}} av {{municipalityTotal}} kommuner är på väg att nå Parisavtalets mål"
+      },
+      "stat4": {
+        "teaser": "Transparent rapportering",
+        "description": "{{percentage}}% av de spårade företagen rapporterar Scope 3-utsläpp per kategori, vilket ger mer transparens i deras värdekedja"
+      },
+      "stat5": {
+        "teaser": "Med planer",
+        "description": "{{percentage}}% av kommunerna ({{count}} av {{total}}) har antagit klimatplaner"
+      },
+      "stat6": {
+        "teaser": "Spårade utsläpp",
+        "description": "{{total}} miljoner ton CO₂e spåras över {{companyCount}} företag och {{municipalityCount}} kommuner, med användning av det senaste rapporterade värdet för varje enhet"
+      }
     }
   },
   "aboutPage": {
