@@ -16,24 +16,24 @@ interface Feature {
 
 const features: Feature[] = [
   {
-    icon: Building2,
-    iconBgColor: "bg-[#5da4de]",
-    iconSize: "h-[20px] w-[20px] md:h-[60px] md:w-[60px] md:p-4",
-    title: "Company Rankings",
-    description:
-      "Compare emissions performance, reduction targets, and sustainability metrics across Swedish companies.",
-  },
-  {
     icon: Landmark,
-    iconBgColor: "bg-[#a7e340]",
+    iconBgColor: "bg-orange-3",
     iconSize: "h-[20px] w-[20px] md:h-[60px] md:w-[60px] md:p-4",
     title: "Municipality Rankings",
     description:
       "Track climate progress and emissions data from municipalities and local governments.",
   },
   {
+    icon: Building2,
+    iconBgColor: "bg-blue-3",
+    iconSize: "h-[20px] w-[20px] md:h-[60px] md:w-[60px] md:p-4",
+    title: "Company Rankings",
+    description:
+      "Compare emissions performance, reduction targets, and sustainability metrics across Swedish companies.",
+  },
+  {
     icon: TrendingUpDown,
-    iconBgColor: "bg-[#f28b3d]",
+    iconBgColor: "bg-green-3",
     iconSize: "h-[15px] w-[15px] md:h-[60px] md:w-[60px] md:p-4",
     title: "Progress Tracking",
     description:

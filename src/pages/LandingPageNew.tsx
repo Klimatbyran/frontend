@@ -17,7 +17,6 @@ import {
   formatEmissionsAbsolute,
   formatPercentChange,
 } from "@/utils/formatting/localization";
-import FunFacts from "@/components/funFacts";
 import useThrottle from "@/hooks/useThrottle";
 import SiteFeatures from "@/components/landing/SiteFeatures";
 import { DidYouKnow } from "@/components/landing/DidYouKnow";
