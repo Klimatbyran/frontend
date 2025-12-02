@@ -96,6 +96,24 @@
       "viewCompanyRankings": "Utforska företagsdata",
       "or": "Eller"
     },
+    "siteFeatures": {
+      "title": "Omfattande klimatspårning",
+      "description": "Övervaka utsläppsdata och klimatåtaganden i hela Sverige.",
+      "features": {
+        "municipalityRankings": {
+          "title": "Kommunranking",
+          "description": "Spåra klimatframsteg och utsläppsdata från kommuner och lokala myndigheter."
+        },
+        "companyRankings": {
+          "title": "Företagsranking",
+          "description": "Jämför utsläppsprestationer, minskningsmål och hållbarhetsmått för svenska företag."
+        },
+        "progressTracking": {
+          "title": "Framstegsspårning",
+          "description": "Övervaka år-till-år-förändringar och överensstämmelse med klimatmål och vetenskapsbaserade mål."
+        }
+      }
+    },
     "didYouKnow": {
       "title": "Visste du att?",
       "subtitle": "Intressanta insikter från Sveriges klimatdata - {{action}}!",

@@ -96,6 +96,24 @@
       "viewCompanyRankings": "Explore Company Data",
       "or": "Or"
     },
+    "siteFeatures": {
+      "title": "Comprehensive Climate Tracking",
+      "description": "Monitor emissions data and climate commitments across Sweden.",
+      "features": {
+        "municipalityRankings": {
+          "title": "Municipality Rankings",
+          "description": "Track climate progress and emissions data from municipalities and local governments."
+        },
+        "companyRankings": {
+          "title": "Company Rankings",
+          "description": "Compare emissions performance, reduction targets, and sustainability metrics across Swedish companies."
+        },
+        "progressTracking": {
+          "title": "Progress Tracking",
+          "description": "Monitor year-over-year changes and alignment with climate targets and science based goals."
+        }
+      }
+    },
     "didYouKnow": {
       "title": "Did You Know?",
       "subtitle": "Interesting insights from Sweden's climate data - {{action}}!",

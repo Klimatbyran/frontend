@@ -1,56 +1,60 @@
+import { useTranslation } from "react-i18next";
 import {
   Building2,
   Landmark,
   TrendingUpDown,
   type LucideIcon,
 } from "lucide-react";
+
 import { Text } from "@/components/ui/text";
+import { LandingSection } from "./LandingSection";
 
 interface Feature {
   icon: LucideIcon;
   iconBgColor: string;
   iconSize: string;
-  title: string;
-  description: string;
+  titleKey: string;
+  descriptionKey: string;
 }
 
-const features: Feature[] = [
-  {
-    icon: Landmark,
-    iconBgColor: "bg-orange-3",
-    iconSize: "h-[20px] w-[20px] md:h-[60px] md:w-[60px] md:p-4",
-    title: "Municipality Rankings",
-    description:
-      "Track climate progress and emissions data from municipalities and local governments.",
-  },
-  {
-    icon: Building2,
-    iconBgColor: "bg-blue-3",
-    iconSize: "h-[20px] w-[20px] md:h-[60px] md:w-[60px] md:p-4",
-    title: "Company Rankings",
-    description:
-      "Compare emissions performance, reduction targets, and sustainability metrics across Swedish companies.",
-  },
-  {
-    icon: TrendingUpDown,
-    iconBgColor: "bg-green-3",
-    iconSize: "h-[15px] w-[15px] md:h-[60px] md:w-[60px] md:p-4",
-    title: "Progress Tracking",
-    description:
-      "Monitor year-over-year changes and alignment with climate targets and science based goals.",
-  },
-];
-
 const SiteFeatures = () => {
+  const { t } = useTranslation();
+
+  const features: Feature[] = [
+    {
+      icon: Landmark,
+      iconBgColor: "bg-orange-3",
+      iconSize: "h-[20px] w-[20px] md:h-[60px] md:w-[60px] md:p-4",
+      titleKey: "landingPage.siteFeatures.features.municipalityRankings.title",
+      descriptionKey:
+        "landingPage.siteFeatures.features.municipalityRankings.description",
+    },
+    {
+      icon: Building2,
+      iconBgColor: "bg-blue-3",
+      iconSize: "h-[20px] w-[20px] md:h-[60px] md:w-[60px] md:p-4",
+      titleKey: "landingPage.siteFeatures.features.companyRankings.title",
+      descriptionKey:
+        "landingPage.siteFeatures.features.companyRankings.description",
+    },
+    {
+      icon: TrendingUpDown,
+      iconBgColor: "bg-green-3",
+      iconSize: "h-[15px] w-[15px] md:h-[60px] md:w-[60px] md:p-4",
+      titleKey: "landingPage.siteFeatures.features.progressTracking.title",
+      descriptionKey:
+        "landingPage.siteFeatures.features.progressTracking.description",
+    },
+  ];
+
   return (
-    <section className="flex flex-col h-screen items-center justify-center bg-black text-center px-4 py-16">
-    <div className="flex flex-col w-full mt-32">
+    <LandingSection innerClassName="flex flex-col mt-32">
       <div className="mb-8 md:mb-16">
         <h2 className="text-4xl md:text-5xl font-light text-center mb-2 md:mb-4">
-          Comprehensive Climate Tracking
+          {t("landingPage.siteFeatures.title")}
         </h2>
         <Text className="col-span-full text-md text-grey text-center">
-          Monitor emissions data and climate commitments across Sweden.
+          {t("landingPage.siteFeatures.description")}
         </Text>
       </div>
 
@@ -69,18 +73,17 @@ const SiteFeatures = () => {
               </span>
               <div className="flex flex-col items-center">
                 <h2 className="tracking-tight font-light text-2xl md:text-4xl text-center">
-                  {feature.title}
+                  {t(feature.titleKey)}
                 </h2>
                 <Text className="col-span-full text-md text-grey text-center">
-                  {feature.description}
+                  {t(feature.descriptionKey)}
                 </Text>
               </div>
             </div>
           );
         })}
       </div>
-    </div>
-    </section>
+    </LandingSection>
   );
 };
 
