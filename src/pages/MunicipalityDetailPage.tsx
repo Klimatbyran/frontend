@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { useMunicipalityDetails } from "@/hooks/municipalities/useMunicipalityDetails";
 import { transformEmissionsData } from "@/types/municipality";
 import { MunicipalitySection } from "@/components/municipalities/MunicipalitySection";
-import { DetailStatCard } from "@/components/layout/DetailStatCard";
+import { OverviewStat } from "@/components/companies/detail/overview/OverviewStat";
 import { MunicipalityLinkCard } from "@/components/municipalities/MunicipalityLinkCard";
 import { useTranslation } from "react-i18next";
 import { PageSEO } from "@/components/SEO/PageSEO";
@@ -233,8 +233,9 @@ export function MunicipalityDetailPage() {
             </Text>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-16 mt-8">
-            <DetailStatCard
-              title={t("municipalityDetailPage.totalEmissions", {
+            <OverviewStat
+              variant="detail"
+              label={t("municipalityDetailPage.totalEmissions", {
                 year: lastYear,
               })}
               value={lastYearEmissionsTon}
@@ -242,9 +243,11 @@ export function MunicipalityDetailPage() {
               valueClassName="text-orange-2"
               info={true}
               infoText={t("municipalityDetailPage.totalEmissionsTooltip")}
+              useFlex1={false}
             />
-            <DetailStatCard
-              title={t("municipalityDetailPage.annualChangeSince2015")}
+            <OverviewStat
+              variant="detail"
+              label={t("municipalityDetailPage.annualChangeSince2015")}
               value={formatPercentChange(
                 municipality.historicalEmissionChangePercent,
                 currentLanguage,
@@ -254,15 +257,18 @@ export function MunicipalityDetailPage() {
                   ? "text-pink-3"
                   : "text-orange-2",
               )}
+              useFlex1={false}
             />
-            <DetailStatCard
-              title={t("municipalityDetailPage.consumptionEmissionsPerCapita")}
+            <OverviewStat
+              variant="detail"
+              label={t("municipalityDetailPage.consumptionEmissionsPerCapita")}
               value={localizeUnit(
                 municipality.totalConsumptionEmission,
                 currentLanguage,
               )}
               valueClassName="text-orange-2"
               unit={t("emissionsUnit")}
+              useFlex1={false}
             />
           </div>
         </SectionWithHelp>

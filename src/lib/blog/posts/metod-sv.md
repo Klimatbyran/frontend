@@ -1,5 +1,18 @@
 ---
 id: "metod"
+title: "Varför är scope 3 så svårt att få grepp om?"
+excerpt: "Redovisning av utsläpp i värdekedjan, scope 3, är en av de svåraste, men även viktigaste delarna av hållbarhetsrapporteringen. Klimatkollens Alexandra Palmquist skriver om varför scope är så svårt att beräkna korrekt – och ger tre tips på hur arbetet kan förbättras hos bolagen."
+date: "2025-01-08"
+readTime: "5 min"
+category: "analysis"
+image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=400&fit=crop"
+language: "sv"
+author:
+  name: "Alexandra Palmquist"
+  avatar: "/people/alex.jpg"
+relatedPosts:
+- "welcome"
+- "ai-process-del-1"
 ---
 
 GHG-protokollet är den etablerade standarden för rapportering av växthusgasutsläpp. Ramverket är utformat för att kunna användas av alla företag och har en generell struktur där utsläppen delas upp i tre scope. Scope 1 avser direkta utsläpp från den egna verksamheten, scope 2 gäller indirekta utsläpp från inköpt energi och scope 3 täcker alla utsläpp som sker i värdekedjan, både uppströms och nedströms. Scope 3 delas upp i 15 kategorier. Upplägget kan verka enkelt, men tillämpningen av protokollet och noggrannheten med vilken det följs varierar kraftigt. Men varför är scope 3-rapporteringen så svår?

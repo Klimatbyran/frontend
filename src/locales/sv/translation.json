@@ -83,7 +83,12 @@
     "tabName": {
       "companies": "företagen",
       "municipalities": "kommunerna"
-    }
+    },
+    "reportCorrection": "Anmäl en korrigering",
+    "questionPlaceholder": "Berätta vad och var ärendet gäller",
+    "questionMissing": "Ange en kommentar",
+    "submitQuestion": "Skicka",
+    "emailTitle": "Förslag till"
   },
   "aboutPage": {
     "header": {
@@ -424,6 +429,181 @@
         "link": {
           "title": "Applying Carbon Law From 2025",
           "text": "Läs mer om Applying Carbon Law From 2025 från Klimatkollens white paper."
+        }
+      },
+      "trendline": {
+        "title": "Hur vi beräknar trendliniens utveckling",
+        "description": "Lär dig hur vi beräknar trendlinjens utveckling",
+        "paragraph1": "Trendlina visar hur en organisations utsläpp förväntas utvecklas baserat på historiska data. Det är ingen prognos över planerade åtgärder, utan en statistisk fortsättning av tidigare beteende.",
+        "paragraph2": "Trendlina används till två saker:\n1. Att uppskatta saknade, nyare år (till exempel om de senaste rapporterade utsläppen är från 2022 men vi behöver värden för 2023–2025).\n2. Att ta fram en projektion av utsläppen 2025–2050 för att kunna bedöma Paris-linjens uppfyllelse.",
+        "whenCalculated": {
+          "title": "När beräknar vi en trendlinje?",
+          "paragraph1": "En trendlinje beräknas bara när det finns tillräckligt mycket giltig historisk data för att ge en meningsfull projektion.",
+          "companies": {
+            "intro": "För företag beräknar vi en trendlina endast om:",
+            "point1": "det finns minst tre år med giltiga utsläppsdata efter filtrering utifrån basår,",
+            "point2": "vi kan identifiera en sammanhängande utsläppsserie (med prioritet på scope 3, annars scope 1 och 2), och",
+            "point3": "den kvarvarande datamängden efter filtrering är tillräckligt stor för att ge en robust trend."
+          },
+          "municipalities": {
+            "intro": "För kommuner:",
+            "point1": "använder vi utsläppsdata från och med 2015, i linje med perioden efter Parisavtalets tillkomst, och",
+            "point2": "centrerar vi regressionen kring det senast observerade året för att förbättra den numeriska stabiliteten."
+          },
+          "paragraph2": "Om en organisation inte uppfyller dessa krav beräknas ingen trendlinje, och vi kan då inte bedöma om den är i linje med Parisavtalet."
+        },
+        "whyLad": {
+          "title": "Varför använder vi LAD (Least Absolute Deviations)?",
+          "paragraph1": "Vi använder LAD (Least Absolute Deviations), eller medianregression, för att göra trendlinjen mer robust och tillförlitlig.",
+          "point1": "LAD är mindre känslig för extremvärden än vanlig minsta kvadrat-regression.",
+          "point2": "Metoden hanterar verkliga variationer och hopp i klimatdata bättre.",
+          "point3": "Den fångar den långsiktiga riktningen istället för att reagera starkt på enskilda års avvikelser.",
+          "point4": "Den ger en jämn årlig förändring i ton per år, istället för att tvinga fram en fast procentuell förändring.",
+          "paragraph2": "Detta ligger i linje med vårt mål att fånga det underliggande beteendet i utsläppen, snarare än år-för-år-brus."
+        },
+        "howComputed": {
+          "title": "Hur beräknas trendlinjen?",
+          "paragraph1": "Trendlinjen med LAD skapas genom att anpassa en rak linje till historiska utsläppsdata, där den absoluta avvikelsen mot varje år minimeras.",
+          "step1": "Vi identifierar användbara historiska utsläppsdata (filtrerade utifrån basår och scope-logik för företag, eller från 2015 och framåt för kommuner).",
+          "step2": "Vi centrerar åren kring det senast observerade året för att förbättra numerisk stabilitet och jämförbarhet.",
+          "step3": "Vi använder LAD/medianregression för att uppskatta lutningen (förändringen i ton per år).",
+          "step4": "Vi förankrar trendlinjen vid det senast rapporterade utsläppsvärdet så att modellen kopplas samman sömlöst med den senaste verkliga datapunkten.",
+          "step5": "Vi tillämpar ett nollgolv så att projicerade värden aldrig blir negativa.",
+          "paragraph2": "Slutresultatet är en lutning i ton per år (till exempel −1 540 ton per år) som anger den förväntade årliga förändringen.",
+          "paragraph3": "Vi använder sedan denna lutning för att skapa uppskattade värden fram till 2025 och för att projicera utsläppen vidare till 2050. När nya verkliga utsläppsdata blir tillgängliga för kommande år ersätter de de modellerade värdena, och den återstående framtida trenden räknas om utifrån den uppdaterade historiken."
+        },
+        "represents": {
+          "title": "Vad representerar trendlinjen?",
+          "paragraph1": "Sammanfattningsvis representerar trendlinjen:",
+          "point1": "en linjär fortsättning av tidigare beteende,",
+          "point2": "en projektion av absolut årlig förändring (ton per år), inte en fast procentsats,",
+          "point3": "en uppskattning av hur framtida utsläpp kan se ut om inga större förändringar sker, och",
+          "point4": "en nödvändig komponent för att beräkna totala utsläpp 2025–2050 i Paris-bedömningen.",
+          "paragraph2": "Trendlinjen representerar inte:",
+          "notPoint1": "en prognos över specifika planerade klimatåtgärder,",
+          "notPoint2": "en garanti för att en organisation kommer att uppfylla regelverk eller mål, eller",
+          "notPoint3": "ett ställningstagande för att organisationens nuvarande bana är önskvärd.",
+          "paragraph3": "Trendlinjen svarar helt enkelt på frågan: ”Om organisationen fortsätter som hittills, hur ser den förväntade utsläppskurvan ut framåt?”"
+        },
+        "whyWorks": {
+          "title": "Varför fungerar en linjär trendlinje för Paris-bedömning?",
+          "paragraph1": "Bedömningen av Paris-linjen baseras på de totala kumulativa utsläppen 2025–2050 – organisationens koldioxidbudget för en 1,5°C-bana med ungefär 50 % sannolikhet.",
+          "point1": "Den linjära trendlinjen gör det möjligt att uppskatta om den projicerade banan håller sig inom denna budget.",
+          "point2": "Om trendlinjen ligger inom budgeten kommer utsläppen nödvändigtvis att närma sig mycket låga nivåer långt före 2050.",
+          "point3": "Att använda samma metod för alla kommuner och företag möjliggör rättvisa och jämförbara bedömningar.",
+          "paragraph2": "Även om en linjär trendlinje inte följer den exponentiella formen hos Carbon Law-kurvan kan den ändå ge lägre kumulativa utsläpp än den Paris-anpassade budgeten. I sådana fall bedöms organisationen ligga på en Paris-linje givet sitt nuvarande trendmönster."
+        }
+      },
+      "parisAlignment": {
+        "title": "Parisanpassning",
+        "description": "Lär dig hur vi beräknar om en kommun eller företag är på väg att nå Parisavtalet",
+        "intro": {
+          "paragraph1": "“I linje med Paris” (On Track for Paris) betyder att en aktörs totala uppskattade utsläpp mellan 2025 och 2050 är förenliga med en Paris-anpassad koldioxidbudget för ungefär 50 procents sannolikhet att begränsa uppvärmningen till 1,5 °C.",
+          "paragraph2": "I stället för att kontrollera om varje enskilt år följer den exakta Parisbanan på –11,72 % per år, tittar vi på hela utsläppskurvan och ställer frågan: håller den här kombinationen av historiska utsläpp och framtida trend sig inom en rimlig koldioxidbudget på väg mot nettonoll runt 2050?"
+        },
+        "carbonBudget": {
+          "title": "Koldioxidbudgetar och Parisanpassning",
+          "paragraph1": "En koldioxidbudget är den totala mängd växthusgaser som kan släppas ut under en viss period och ändå hålla sig inom ett givet temperaturmål. I vårt fall använder vi Paris-anpassade budgetar som motsvarar en 1,5 °C-bana med ungefär 50 procents sannolikhet.",
+          "paragraph2": "För varje kommun eller företag konstruerar vi en Paris-anpassad koldioxidbudget för perioden 2025–2050. Denna budget är inte en prognos över vad som faktiskt kommer att hända, utan ett riktmärke som svarar på frågan: hur mycket kan aktören släppa ut på vägen mot nettonoll om vi vill hålla oss till en 1,5 °C-bana?",
+          "list1": {
+            "item1": "Budgeten definieras som arean under en Parisbana (Carbon Law) från 2025 till 2050.",
+            "item2": "Ju snabbare och ju närmare en aktör för sina årliga utsläpp mot (nära) noll, desto större chans har den att hålla sig inom denna budget."
+          }
+        },
+        "anchorYear": {
+          "title": "Referensår och vilka data vi använder",
+          "paragraph1": "Vi använder 2025 som ett gemensamt referensår för att jämföra Parisbanan och trendlinsprojektionen. Om det senaste uppmätta utsläppsåret ligger före 2025 uppskattar vi utsläppen 2025 med hjälp av den historiska utvecklingen.",
+          "paragraph2": "När nya utsläppsdata efter 2025 blir tillgängliga använder vi alltid de uppmätta värdena i första hand. Trendlinsmodellen används då endast för att fylla i saknade år och framtida år fram till 2050. Med tiden baseras bedömningen av Parisanpassning alltså mer på faktisk utveckling och mindre på projektioner."
+        },
+        "parisPath": {
+          "title": "Parisbanan (Carbon Law)",
+          "paragraph1": "Parisbanan baseras på Carbon Law: en exponentiell minskning av utsläppen med ungefär –11,72 % per år. Med start i referensåret 2025 ger detta en mjuk, kontinuerligt minskande utsläppskurva fram till 2050.",
+          "paragraph2": "Genom att integrera (summera) Parisbanan över perioden 2025–2050 får vi en Paris-anpassad koldioxidbudget för den aktuella aktören. Parisbanan används alltså som en referensbana som definierar en budget, inte som den enda tillåtna vägen för att minska utsläppen år för år."
+        },
+        "trendline": {
+          "title": "Trendlinsprojektion (LAD)",
+          "paragraph1": "För att uppskatta hur utsläppen kan utvecklas om nuvarande mönster fortsätter använder vi en linjär trendlina baserad på Least Absolute Deviations (LAD). Trendlina beräknas med hjälp av relevant historisk data för varje aktör.",
+          "paragraph2": "LAD-trendlinan beskriver en jämn förändring i ton per år, inte en fast procentuell minskning. I praktiken betyder det att samma absoluta minskning kan motsvara en liten procent när utsläppen är höga och en större procent när utsläppen är låga.",
+          "paragraph3": "För kommuner använder vi normalt all tillgänglig historisk data som uppfyller våra kvalitetskriterier. För företag kan vi begränsa perioden (till exempel från ett definierat basår) så att trendlina bättre speglar dagens verksamhet i stället för gamla affärsmodeller. Detaljer kring hur vi beräknar LAD beskrivs i avsnittet om trendlina på denna metodsida."
+        },
+        "comparison": {
+          "title": "Att jämföra banor och avgöra “I linje med Paris”",
+          "paragraph1": "När vi har både en Parisbana och en trendlinsprojektion förankrade i 2025 jämför vi de totala utsläppen mellan 2025 och 2050 längs respektive bana. I båda fallen tittar vi på de kumulativa utsläppen, det vill säga arean under kurvan över tid.",
+          "list1": {
+            "item1": "Den Paris-anpassade koldioxidbudgeten är de totala utsläpp som tillåts längs Parisbanan mellan 2025 och 2050.",
+            "item2": "Trendlinsens totalsumma är summan av de uppmätta utsläppen (för år där data finns) plus de beräknade utsläppen från trendlina för saknade och framtida år fram till 2050."
+          },
+          "paragraph2": "Om trendlinsens totala utsläpp är lägre än den Paris-anpassade koldioxidbudgeten klassar vi aktören som “I linje med Paris” (On Track for Paris). Om totalsumman är högre än budgeten klassas aktören som “Inte i linje med Paris”. Eftersom Parisbudgeten är snäv kräver en bana som håller sig inom den i praktiken att utsläppen närmar sig mycket låga nivåer eller nära noll till 2050."
+        },
+        "limitations": {
+          "title": "Begränsningar och tolkning",
+          "paragraph1": "Trendlina är inte en prognos över planerade åtgärder, utan en statistisk extrapolering av den senaste utvecklingen. De faktiska utsläppen kan bli både högre och lägre beroende på politiska beslut, investeringar, teknikutveckling och bredare ekonomiska trender.",
+          "paragraph2": "Vår bedömning av Parisanpassning fokuserar på de totala utsläppen på vägen mot nettonoll, inte på att träffa en specifik procentsats varje år. Den fångar inte alla aspekter av rättvisa, ansvar eller genomförbarhet. Den bör därför tolkas som ett viktigt riktmärke bland flera när man bedömer om en aktörs utsläppsbana är förenlig med Parisavtalet."
+        }
+      },
+      "interpretingOnTrack": {
+        "title": "Hur ska man tolka ”På väg mot Paris”?",
+        "description": "Lär dig hur du tolkar statusen ”På väg mot Paris”",
+        "paragraph1": "Parisstatusen på Klimatkollen är utformad för att svara på en smal men viktig fråga:",
+        "question": "”Om den här organisationen fortsätter ungefär som idag, kommer dess totala utsläpp 2025–2050 att rymmas inom en Parisanpassad koldioxidbudget och närma sig nettonoll i tid?”",
+        "paragraph2": "Det är inte en heltäckande bedömning av allt klimatarbete, utan en specifik indikator baserad på rapporterade utsläpp.",
+        "statuses": {
+          "title": "Vad de olika statusarna betyder",
+          "onTrack": {
+            "title": "På väg mot Paris",
+            "paragraph1": "Organisationens projicerade utsläppsbana (trendlinje plus all tillgänglig rapporterad utsläppsdata):",
+            "point1": "håller sig inom den Parisanpassade koldioxidbudgeten för 2025–2050, och",
+            "point2": "leder till att utsläppen närmar sig nära noll långt innan 2050 om trenden fortsätter.",
+            "paragraph2": "Detta innebär att den nuvarande takten i de absoluta utsläppsminskningarna, rent matematiskt, är tillräcklig för att hålla sig inom en 1,5°C-anpassad budget (50 % sannolikhet) — under förutsättning att trenden inte försvagas kraftigt."
+          },
+          "notOnTrack": {
+            "title": "Inte på väg mot Paris",
+            "paragraph1": "Organisationens projicerade utsläpp:",
+            "point1": "överstiger den Parisanpassade koldioxidbudgeten för 2025–2050,",
+            "point2": "eller minskar inte tillräckligt snabbt för att rimligen kunna nå nettonoll i tid.",
+            "paragraph2": "Det betyder inte att organisationen inte gör någonting, utan att den nuvarande takten i utsläppsminskningarna är för låg för att vara förenlig med en Parisanpassad bana."
+          },
+          "noAssessment": {
+            "title": "Ingen bedömning",
+            "paragraph1": "Vi visar ”Ingen Parisbedömning” när:",
+            "point1": "det inte finns tillräckligt tillförlitlig historisk data för att beräkna en trendlinje, eller",
+            "point2": "den underliggande datan är för ofullständig eller motsägelsefull för en robust prognos.",
+            "paragraph2": "I dessa fall väljer vi hellre transparens än en potentiellt missvisande etikett."
+          }
+        },
+        "scope": {
+          "title": "Vad indikatorn säger – och inte säger",
+          "paragraph1": "Parisstatusen är en avgränsad indikator. Den säger något viktigt om den övergripande utsläppsbanan, men fångar inte allt.",
+          "doesTitle": "Parisstatusen gör:",
+          "does": {
+            "point1": "fokuserar på de samlade utsläppen mellan 2025 och 2050,",
+            "point2": "använder en konsekvent metod för alla kommuner och företag,",
+            "point3": "ger en enkel och jämförbar signal om huruvida den nuvarande banan ryms inom en 1,5°C-anpassad budget."
+          },
+          "doesNotTitle": "Parisstatusen gör inte:",
+          "doesNot": {
+            "point1": "garanterar att organisationen faktiskt kommer att genomföra framtida åtgärder,",
+            "point2": "bedömer alla klimatpolicys, investeringar eller anpassningsåtgärder,",
+            "point3": "inkluderar konsumtionsbaserade utsläpp eller indirekta effekter utanför det valda scopet,",
+            "point4": "fångar alla osäkerheter i framtida prognoser."
+          },
+          "paragraph2": "Med andra ord: den är en användbar, jämförbar klimatsignal — men inte hela bilden."
+        },
+        "changes": {
+          "title": "Varför statusen kan ändras över tid",
+          "paragraph1": "Parisbedömningen kan ändras när:",
+          "point1": "nya historiska utsläppsdata rapporteras,",
+          "point2": "en starkare eller svagare trend framträder i den uppdaterade datan,",
+          "point3": "rapporteringsscope eller basår ändras för företag,",
+          "point4": "metodförbättringar införs.",
+          "paragraph2": "När mer faktisk data efter 2025 blir tillgänglig ersätts de modellerade trendåren stegvis av verkliga utsläpp, och bedömningen förankras allt mer i observerad verklighet. För en mer detaljerad beskrivning av beräkningarna, se avsnitt 3: ”How We Calculate ‘On Track for Paris’” och avsnitt 4: ”How We Calculate the Trendline”."
+        },
+        "historicVsParis": {
+          "title": "Historisk %-förändring, Parislinje och Parisbedömning",
+          "paragraph1": "Klimatkollen visar flera olika mått som är lätta att blanda ihop: den historiska procentuella förändringen, Parislinjen (Carbon Law) och markeringen ”På väg att klara Paris”. De hänger ihop, men beskriver olika delar av berättelsen.",
+          "paragraph2": "Den historiska procentuella förändringen beskriver hur snabbt utsläppen i genomsnitt har förändrats under en tidigare period (till exempel 2015–2023). Parislinjen beskriver en idealiserad exponentiell minskningstakt (–11,72 % per år) som, om den följs exakt, ger en Parisanpassad utsläppsbana. Markeringen ”På väg att klara Paris” fokuserar istället på de totala kumulativa utsläppen 2025–2050 jämfört med en Parisanpassad koldioxidbudget.",
+          "paragraph3": "Eftersom trendlina bygger på absoluta ton per år blir de underliggande procentuella förändringarna små när utsläppen är höga, och blir naturligt brantare när utsläppen minskar. Det innebär att en måttlig historisk procentuell förändring ändå kan vara förenlig med en framtida bana där de samlade utsläppen hålls inom den Parisanpassade budgeten.",
+          "paragraph4": "Med andra ord: en låg historisk procent betyder inte automatiskt att en aktör är ”ur kurs”, och en hög historisk procent betyder inte automatiskt att den är ”på kurs”. Det som i slutändan avgör Parisanpassningen är om hela den förväntade utsläppsbanan 2025–2050 ryms inom den tillgängliga koldioxidbudgeten. För en mer intuitiv förklaring hänvisar vi till analogierna i dataguiden som är länkade från utsläppsgrafen."
         }
       },
       "emissionTypes": {
@@ -1129,6 +1309,7 @@
       "totalEmissions": "Rapporterade utsläpp",
       "tonsCO2e": "ton CO₂e",
       "changeSinceLastYear": "Förändring sedan föregående år",
+      "onTrackToMeetParis": "På väg att klara Parisavtalet",
       "noData": "Ingen data",
       "turnover": "Omsättning",
       "employees": "Anställda",
@@ -1136,7 +1317,7 @@
       "readAnnualReport": "Läs årsredovisning",
       "readMore": "Läs mer",
       "readLess": "Läs mindre",
-      "aiGeneratedData": "Innehåller AI-extraherade värden. Klicka för att läsa mer.",
+      "aiGeneratedData": "Innehåller AI-extraherade värden. För att läsa mer, besök vår sida om Källor och metoder.",
       "billion": "mdr",
       "financialsTooltip": "Finansierade utsläpp rapporteras ofta med fördröjning, eftersom de ofta baseras på föregående års data från de bolag som ingår i investeringen. Vi visar utsläppsdata i scope 3 kategori 15 det år det rapporteras publikt i årsredovisningen, även om det ibland anges att datan i denna kategori är från ett tidigare år."
     },

@@ -162,6 +162,8 @@ export function EmissionsHistory({
             "scope2",
             "scope3",
             "parisAgreementLine",
+            // "howTrendLinesCalculated",
+            // "whatTrendLineRepresents",
             "scope3EmissionLevels",
             "companyMissingData",
             "historicalEmissions",
