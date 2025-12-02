@@ -2,9 +2,8 @@ import { Text } from "@/components/ui/text";
 import { OverviewStat } from "@/components/companies/detail/overview/OverviewStat";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { DataGuideItemId } from "@/data-guide/items";
-import { useTranslation } from "react-i18next";
-import { PoliticalRuleLabel } from "./PoliticalRuleLabel";
 import { ReactNode } from "react";
+import { PoliticalRuleSection } from "./PoliticalRuleSection";
 
 export interface DetailStat {
   label: string | ReactNode;
@@ -36,19 +35,6 @@ export function DetailHeader({
   translateNamespace,
   politicalRuleLabelKey = "politicalRule",
 }: DetailHeaderProps) {
-  const { t } = useTranslation();
-
-  const politicalRuleLabels = politicalRule?.map((p, index) => (
-    <span key={index}>
-      {index ? ", " : ""}
-      <PoliticalRuleLabel
-        src={`/logos/politicalParties/${p}.png`}
-        alt={p}
-        fallback={p}
-      />
-    </span>
-  ));
-
   return (
     <SectionWithHelp helpItems={helpItems}>
       <div className="flex justify-between">
@@ -65,17 +51,11 @@ export function DetailHeader({
         )}
       </div>
       {politicalRule && politicalRule.length > 0 && (
-        <div className="flex flex-row items-center gap-2 my-4">
-          <Text
-            variant="body"
-            className="text-grey text-sm md:text-base lg:text-lg"
-          >
-            {t(`${translateNamespace}.${politicalRuleLabelKey}`)}:
-          </Text>
-          <Text variant="body" className="text-sm md:text-base lg:text-lg">
-            {politicalRuleLabels}
-          </Text>
-        </div>
+        <PoliticalRuleSection
+          politicalRule={politicalRule}
+          translateNamespace={translateNamespace}
+          politicalRuleLabelKey={politicalRuleLabelKey}
+        />
       )}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-16 mt-8">
         {stats.map((stat, index) => (
