@@ -22,6 +22,7 @@ interface StatCard {
   bgColor: string;
   iconBgColor: string;
   borderColor: string;
+  backBgColor: string;
 }
 
 const REDUCTION_THRESHOLD = -20;
@@ -127,6 +128,7 @@ export function useDidYouKnowStats() {
         bgColor: "bg-green-4",
         iconBgColor: "bg-green-3",
         borderColor: "border-green-3",
+        backBgColor: "var(--green-3-muted)",
       },
       {
         icon: TrendingUp,
@@ -139,6 +141,7 @@ export function useDidYouKnowStats() {
         bgColor: "bg-pink-4",
         iconBgColor: "bg-pink-3",
         borderColor: "border-pink-3",
+        backBgColor: "var(--pink-3-muted)",
       },
       {
         icon: Target,
@@ -153,6 +156,7 @@ export function useDidYouKnowStats() {
         bgColor: "bg-orange-4",
         iconBgColor: "bg-orange-3",
         borderColor: "border-orange-3",
+        backBgColor: "var(--orange-3-muted)",
       },
       {
         icon: FileText,
@@ -166,6 +170,7 @@ export function useDidYouKnowStats() {
         bgColor: "bg-orange-4",
         iconBgColor: "bg-orange-3",
         borderColor: "border-orange-3",
+        backBgColor: "var(--orange-3-muted)",
       },
       {
         icon: Layers,
@@ -177,6 +182,7 @@ export function useDidYouKnowStats() {
         bgColor: "bg-blue-4",
         iconBgColor: "bg-blue-3",
         borderColor: "border-blue-3",
+        backBgColor: "var(--blue-3-muted)",
       },
       {
         icon: Building2,
@@ -190,6 +196,7 @@ export function useDidYouKnowStats() {
         bgColor: "bg-pink-4",
         iconBgColor: "bg-pink-3",
         borderColor: "border-pink-3",
+        backBgColor: "var(--pink-3-muted)",
       },
     ];
 

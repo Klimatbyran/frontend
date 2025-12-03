@@ -40,6 +40,7 @@ export function DidYouKnow() {
             description={stat.description}
             iconBgColor={stat.iconBgColor}
             borderColor={stat.borderColor}
+            backBgColor={stat.backBgColor}
           />
         ))}
       </div>

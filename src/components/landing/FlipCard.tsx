@@ -4,31 +4,6 @@ import { Text } from "@/components/ui/text";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { cn } from "@/lib/utils";
 
-// Helper function to get muted background color from border color
-function getMutedBackgroundColor(borderColor: string): string {
-  // Extract color name and shade from borderColor (e.g., "border-green-3" -> "green", "3")
-  const colorMatch = borderColor.match(/border-(green|blue|orange|pink)-(\d)/);
-  if (colorMatch) {
-    const [, colorName, shade] = colorMatch;
-    const colorMap: Record<string, Record<string, string>> = {
-      green: {
-        "3": "rgba(170, 229, 6, 0.2)", // green-3 with 10% opacity
-      },
-      blue: {
-        "3": "rgba(89, 160, 225, 0.2)",
-      },
-      orange: {
-        "3": "rgba(244, 143, 42, 0.2)",
-      },
-      pink: {
-        "3": "rgba(240, 117, 154, 0.2)",
-      },
-    };
-    return colorMap[colorName]?.[shade] || "rgba(0, 0, 0, 0.2)";
-  }
-  return "rgba(0, 0, 0, 0.1)";
-}
-
 interface FlipCardProps {
   icon: LucideIcon;
   teaser: string;
@@ -36,6 +11,7 @@ interface FlipCardProps {
   description: string;
   iconBgColor: string;
   borderColor: string;
+  backBgColor: string;
 }
 
 export function FlipCard({
@@ -45,6 +21,7 @@ export function FlipCard({
   description,
   iconBgColor,
   borderColor,
+  backBgColor,
 }: FlipCardProps) {
   const [isFlipped, setIsFlipped] = useState(false);
   const { isMobile } = useScreenSize();
@@ -128,7 +105,7 @@ export function FlipCard({
             backfaceVisibility: "hidden",
             WebkitBackfaceVisibility: "hidden",
             transform: "rotateY(180deg)",
-            backgroundColor: getMutedBackgroundColor(borderColor),
+            backgroundColor: backBgColor,
           }}
         >
           <div className="flex flex-col items-center justify-center h-full text-center">
