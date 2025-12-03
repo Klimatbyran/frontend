@@ -27,5 +27,3 @@ Om trendlinjens total är **lägre** än budgeten markeras organisationen som **
 Om den är **högre** markeras den som **Inte på väg att nå Paris**.
 
 Metoden bedömer alltså **hela utsläppsbanan**, inte om varje enskilt år matchar –11,72 %.
-
-För en mer detaljerad förklaring, se [Metodsidan](#).

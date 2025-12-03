@@ -44,5 +44,3 @@ Detta fungerar bara om de **absoluta minskningarna är tillräckligt stora**.
 
 Om du bara tog bort **5 kg var tionde minut** i stället för 10 kg skulle du inte hinna tömma högen i tid —  
 på samma sätt som för små utsläppsminskningar inte räcker för att hålla sig inom en Parisanpassad koldioxidbudget.
-
-För en mer detaljerad förklaring, se [metodsidan](#).

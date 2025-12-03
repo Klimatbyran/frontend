@@ -27,5 +27,3 @@ If the trendline total is **lower** than the budget, the organisation is marked 
 If it is **higher**, it is **Not On Track**.
 
 This method evaluates the **full emissions pathway**, not whether each year matches the –11.72% rate.
-
-For a deeper explanation, see the [Methods page](#).

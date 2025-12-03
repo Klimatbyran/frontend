@@ -43,5 +43,3 @@ This only works if the **absolute reductions are large enough**.
 
 If you were removing only **5 kg every 10 minutes** instead of 10 kg, you wouldn’t clear the pile in time —  
 just as too-small emission cuts would fail to stay within the Paris-aligned carbon budget.
-
-For a deeper explanation, see the [Methods page](#).
