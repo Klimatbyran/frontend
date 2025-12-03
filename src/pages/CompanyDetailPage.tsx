@@ -31,10 +31,6 @@ export function CompanyDetailPage() {
     ? getCompanyDescription(company, currentLanguage)
     : null;
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   if (loading) {
     return <PageLoading />;
   }
@@ -130,7 +126,10 @@ export function CompanyDetailPage() {
       : "decreased";
 
   // Calculate emissions change from previous period
-  const yearOverYearChange = calculateEmissionsChange(selectedPeriod);
+  const yearOverYearChange = calculateEmissionsChange(
+    selectedPeriod,
+    previousPeriod,
+  );
 
   return (
     <>

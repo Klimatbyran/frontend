@@ -5,22 +5,80 @@
 /**
  * Get year-over-year emissions change percentage from API
  * Uses API-provided absolute value (all data) if available,
- * falls back to adjusted value (comparable data) if absolute is not present
+ * falls back to adjusted value (comparable data) if absolute is not present,
+ * or calculates manually from cleaned emissions data if API value is not available
  *
  * @param latestPeriod - The most recent reporting period
+ * @param previousPeriod - The previous reporting period (optional, for manual calculation)
  * @returns The percentage change as a number, or null if not available
  */
-export function calculateEmissionsChange(latestPeriod?: {
-  emissionsChangeLastTwoYears?: {
-    adjusted: number | null;
-    absolute: number | null;
-  } | null;
-}): number | null {
+export function calculateEmissionsChange(
+  latestPeriod?: {
+    emissionsChangeLastTwoYears?: {
+      adjusted: number | null;
+      absolute: number | null;
+    } | null;
+    emissions?: {
+      calculatedTotalEmissions?: number | null;
+      scope1And2?: {
+        total?: number | null;
+      } | null;
+    } | null;
+  },
+  previousPeriod?: {
+    emissions?: {
+      calculatedTotalEmissions?: number | null;
+      scope1And2?: {
+        total?: number | null;
+      } | null;
+    } | null;
+  },
+): number | null {
   const adjusted = latestPeriod?.emissionsChangeLastTwoYears?.adjusted;
   const absolute = latestPeriod?.emissionsChangeLastTwoYears?.absolute;
 
   // Prefer absolute (all data), fallback to adjusted (comparable data)
-  return absolute ?? adjusted ?? null;
+  // Only use API values if they're not null, undefined, or 0 (0 means no data)
+  // TODO: Remove manual calculation fallback once garbo is updated to provide proper API values
+  if (absolute !== null && absolute !== undefined && absolute !== 0) {
+    return absolute;
+  }
+  if (adjusted !== null && adjusted !== undefined && adjusted !== 0) {
+    return adjusted;
+  }
+
+  // Temporary workaround: Manual calculation with scope1And2 fallback
+  // This should be removed once garbo is updated to provide proper emissionsChangeLastTwoYears values
+  // Helper to get emissions value with fallback to scope1And2 if calculatedTotalEmissions is null or 0
+  const getEmissionsValue = (period?: {
+    emissions?: {
+      calculatedTotalEmissions?: number | null;
+      scope1And2?: {
+        total?: number | null;
+      } | null;
+    } | null;
+  }): number | null => {
+    if (!period?.emissions) return null;
+    const calculated = period.emissions.calculatedTotalEmissions;
+    const scope1And2 = period.emissions.scope1And2?.total;
+
+    // If calculatedTotalEmissions is null or 0, fallback to scope1And2
+    if (calculated != null && calculated !== 0) {
+      return calculated;
+    }
+    return scope1And2 ?? null;
+  };
+
+  // Temporary workaround: Manually calculate from cleaned emissions data (with scope1And2 fallback)
+  // This fallback should be removed once garbo is updated to provide proper emissionsChangeLastTwoYears values
+  const current = getEmissionsValue(latestPeriod);
+  const previous = getEmissionsValue(previousPeriod);
+
+  if (current != null && previous != null && previous > 0) {
+    return ((current - previous) / previous) * 100;
+  }
+
+  return null;
 }
 
 /**

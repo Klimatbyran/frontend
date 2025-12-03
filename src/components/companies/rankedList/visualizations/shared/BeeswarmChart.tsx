@@ -1,6 +1,8 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import type { ColorFunction } from "@/types/visualizations";
 import { BeeswarmTooltip } from "./BeeswarmTooltip";
+import { BeeswarmLegend } from "./BeeswarmLegend";
 
 interface BeeswarmChartProps<T> {
   data: T[];
@@ -10,11 +12,21 @@ interface BeeswarmChartProps<T> {
   colorForValue: ColorFunction;
   min: number;
   max: number;
-  unit: string; // e.g., "%/yr" or "%"
+  unit: string;
   onCompanyClick?: (item: T) => void;
-  maxDisplayCount?: number; // Max number of dots to display (default: 600)
+  maxDisplayCount?: number;
   formatTooltipValue?: (value: number, unit: string) => string; // Custom formatter for tooltip value
   xReferenceLines?: Array<{ value: number; label?: string; color?: string }>; // Vertical reference lines
+  capThreshold?: number; // Optional cap threshold - values above this will be capped
+  getRawValue?: (item: T) => number; // Optional function to get raw (uncapped) value for tooltip
+  showLegend?: boolean;
+  legendMin?: number;
+  legendMax?: number;
+  // Tooltip customization
+  getMeetsParis?: (item: T) => boolean | null;
+  getBudgetValue?: (item: T) => number;
+  getRank?: (item: T) => number | null;
+  totalCount?: number;
 }
 
 export function BeeswarmChart<T>({
@@ -30,7 +42,17 @@ export function BeeswarmChart<T>({
   maxDisplayCount = 600,
   formatTooltipValue,
   xReferenceLines,
+  capThreshold,
+  getRawValue,
+  showLegend = true,
+  legendMin,
+  legendMax,
+  getMeetsParis,
+  getBudgetValue,
+  getRank,
+  totalCount,
 }: BeeswarmChartProps<T>) {
+  const { t } = useTranslation();
   const displayData = data.slice(0, maxDisplayCount);
   const [hoveredItem, setHoveredItem] = useState<{
     item: T;
@@ -60,8 +82,26 @@ export function BeeswarmChart<T>({
     setHoveredItem(null);
   }, []);
 
+  const legendGradient = useMemo(() => {
+    if (!showLegend) return undefined;
+    const start = legendMin ?? min;
+    const end = legendMax ?? max;
+    if (!Number.isFinite(start) || !Number.isFinite(end) || start === end) {
+      return undefined;
+    }
+
+    const steps = 5;
+    const stops = Array.from({ length: steps }, (_, idx) => {
+      const percent = (idx / (steps - 1)) * 100;
+      const value = start + ((end - start) * idx) / (steps - 1);
+      return `${colorForValue(value)} ${percent}%`;
+    });
+
+    return `linear-gradient(to right, ${stops.join(", ")})`;
+  }, [showLegend, legendMin, legendMax, min, max, colorForValue]);
+
   return (
-    <div className="relative w-full h-[500px] flex flex-col">
+    <div className="relative w-full h-full min-h-[400px] flex flex-col">
       {/* X-axis labels */}
       <div
         className="relative mb-2 text-xs text-grey px-1"
@@ -71,20 +111,14 @@ export function BeeswarmChart<T>({
           {min.toFixed(1)}
           {unit}
         </span>
-        {min <= 0 && max >= 0 && (
-          <span
-            className="absolute font-medium"
-            style={{
-              left: max === min ? "50%" : `${((0 - min) / (max - min)) * 100}%`,
-              transform: "translateX(-50%)",
-            }}
-          >
-            0{unit}
-          </span>
-        )}
         <span className="absolute right-0">
           {max.toFixed(1)}
           {unit}
+          {capThreshold !== undefined && max >= capThreshold && (
+            <span className="text-[10px] ml-1 opacity-70">
+              {t("companiesRankedPage.visualizations.beeswarm.capped")}
+            </span>
+          )}
         </span>
       </div>
 
@@ -119,7 +153,7 @@ export function BeeswarmChart<T>({
             >
               {line.label && (
                 <div
-                  className="absolute bottom-0 left-0 transform -translate-x-1/2 translate-y-full text-xs text-grey whitespace-nowrap"
+                  className="absolute bottom-0 left-0 translate-y-full text-xs text-grey whitespace-nowrap text-left"
                   style={{ marginTop: "4px" }}
                 >
                   {line.label}
@@ -133,12 +167,17 @@ export function BeeswarmChart<T>({
         <div className="relative w-full h-full">
           {displayData.map((item, i) => {
             const v = getValue(item);
-            const xPercent = max === min ? 50 : ((v - min) / (max - min)) * 100;
-            // Better jitter: spread dots vertically around their X position
-            // Use a hash of the index for consistent positioning
+            const rawValue = getRawValue ? getRawValue(item) : v;
+            const isCapped =
+              capThreshold !== undefined && rawValue > capThreshold;
+
+            const displayValue = isCapped ? capThreshold : v;
+            const xPercent =
+              max === min ? 50 : ((displayValue - min) / (max - min)) * 100;
+
             const hash = (i * 137.5) % 360;
             const yJitter = Math.sin((hash * Math.PI) / 180) * 180; // -180 to +180px from center
-            const spread = Math.min(Math.abs(yJitter) / 6, 80); // Limit spread to 80px max (increased from 40px)
+            const spread = Math.min(Math.abs(yJitter) / 6, 80);
             const yOffset = yJitter > 0 ? spread : -spread;
 
             return (
@@ -148,27 +187,84 @@ export function BeeswarmChart<T>({
                 onMouseEnter={(e) => handleMouseEnter(e, item)}
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
-                className="absolute rounded-full cursor-pointer hover:scale-150 transition-transform z-10"
+                className="absolute cursor-pointer hover:scale-150 transition-transform z-10"
                 style={{
                   left: `calc(${xPercent}% - 8px)`,
                   top: `calc(50% + ${yOffset}px)`,
-                  width: "16px",
-                  height: "16px",
-                  background: colorForValue(v),
-                  border: "2px solid var(--black-4)",
-                  boxShadow: "0 2px 4px rgba(0,0,0,0.5)",
                 }}
-              />
+              >
+                {/* Main dot */}
+                <div
+                  className="absolute rounded-full"
+                  style={{
+                    width: "16px",
+                    height: "16px",
+                    background: colorForValue(rawValue),
+                    border: "2px solid var(--black-4)",
+                    boxShadow: "0 2px 4px rgba(0,0,0,0.5)",
+                  }}
+                />
+                {/* Capped indicator - triangle arrow on the right */}
+                {isCapped && (
+                  <div
+                    className="absolute"
+                    style={{
+                      left: "14px",
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      width: 0,
+                      height: 0,
+                      borderLeft: "6px solid rgba(255, 255, 255, 0.7)",
+                      borderTop: "4px solid transparent",
+                      borderBottom: "4px solid transparent",
+                    }}
+                  />
+                )}
+              </div>
             );
           })}
         </div>
       </div>
 
-      {/* Legend */}
-      <div className="mt-6 text-xs text-grey text-center">
-        {data.length} companies shown
-        {data.length >= maxDisplayCount &&
-          ` (showing first ${maxDisplayCount})`}
+      {/* Legend and company count */}
+      <div className="mt-8 flex flex-col md:flex-row md:items-center md:justify-between gap-3 md:gap-0 text-xs text-grey">
+        {showLegend ? (
+          <>
+            <div className="flex items-center justify-center md:justify-end order-2 md:order-1">
+              <BeeswarmLegend
+                min={legendMin ?? min}
+                max={legendMax ?? max}
+                unit={unit}
+                gradientBackground={legendGradient}
+              />
+            </div>
+            <div className="text-center md:text-left order-1 md:order-2">
+              {t("companiesRankedPage.visualizations.beeswarm.companiesShown", {
+                count: data.length,
+              })}
+              {data.length >= maxDisplayCount &&
+                ` ${t(
+                  "companiesRankedPage.visualizations.beeswarm.showingFirst",
+                  {
+                    count: maxDisplayCount,
+                  },
+                )}`}
+            </div>
+          </>
+        ) : (
+          <div className="text-center w-full">
+            {t("companiesRankedPage.visualizations.beeswarm.companiesShown", {
+              count: data.length,
+            })}
+            {data.length >= maxDisplayCount &&
+              ` ${t(
+                "companiesRankedPage.visualizations.beeswarm.showingFirst",
+                {
+                  count: maxDisplayCount,
+                },
+              )}`}
+          </div>
+        )}
       </div>
 
       {/* Tooltip */}
@@ -179,6 +275,22 @@ export function BeeswarmChart<T>({
           unit={unit}
           position={hoveredItem.position}
           formatValue={formatTooltipValue}
+          rawValue={getRawValue ? getRawValue(hoveredItem.item) : undefined}
+          isCapped={
+            capThreshold !== undefined &&
+            (getRawValue
+              ? getRawValue(hoveredItem.item)
+              : getValue(hoveredItem.item)) > capThreshold
+          }
+          capThreshold={capThreshold}
+          meetsParis={
+            getMeetsParis ? getMeetsParis(hoveredItem.item) : undefined
+          }
+          budgetValue={
+            getBudgetValue ? getBudgetValue(hoveredItem.item) : undefined
+          }
+          rank={getRank ? getRank(hoveredItem.item) : undefined}
+          total={totalCount}
         />
       )}
     </div>
