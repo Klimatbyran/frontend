@@ -9,7 +9,7 @@ interface LinkCardProps {
   descriptionClassName?: string;
 }
 
-export function MunicipalityLinkCard({
+export function LinkCard({
   title,
   description,
   link,

@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { DataGuideItemId } from "@/data-guide/items";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 
-interface MunicipalitySectionProps {
+interface DetailSectionProps {
   title: string;
   items: Array<{
     title: string;
@@ -14,11 +14,7 @@ interface MunicipalitySectionProps {
   helpItems: DataGuideItemId[];
 }
 
-export function MunicipalitySection({
-  title,
-  items,
-  helpItems,
-}: MunicipalitySectionProps) {
+export function DetailSection({ title, items, helpItems }: DetailSectionProps) {
   return (
     <SectionWithHelp helpItems={helpItems}>
       <div className="gap-8 md:gap-16">

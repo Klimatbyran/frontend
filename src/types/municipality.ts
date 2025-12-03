@@ -1,4 +1,5 @@
 import type { paths } from "@/lib/api-types";
+import { SectorEmissionsByYear } from "./emissions";
 
 export { getLatestYearData, getAvailableYears } from "@/utils/data/yearUtils";
 export { transformEmissionsData } from "@/utils/data/municipalityTransforms";
@@ -23,7 +24,7 @@ export type Municipality = {
   electricCarChangePercent: number;
   wikidataId?: string;
   description?: string | null;
-  sectorEmissions?: SectorEmissions;
+  sectorEmissions?: SectorEmissionsByYear;
   politicalRule: string[];
 } & EmissionsData;
 
@@ -53,7 +54,7 @@ export type MetricsByYear = Record<
 >;
 
 export type EmissionDataPoint = {
-  year: string;
+  year: number;
   value: number;
 };
 
@@ -69,12 +70,6 @@ export type DataPoint = {
   trend: number | undefined;
   approximated: number | undefined;
   carbonLaw: number | undefined;
-};
-
-export type SectorEmissions = {
-  [year: string]: {
-    [sector: string]: number;
-  };
 };
 
 const MUNICIPALITY_SORT_BY = ["meets_paris", "name"] as const

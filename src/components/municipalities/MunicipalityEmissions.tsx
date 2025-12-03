@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { MunicipalityEmissionsGraph } from "./emissionsGraph/MunicipalityEmissionsGraph";
-import { DataPoint, SectorEmissions } from "@/types/municipality";
+import { DataPoint } from "@/types/municipality";
 import {
   getDynamicChartHeight,
   useDataView,
@@ -10,12 +10,13 @@ import {
 } from "@/components/charts";
 import { CardHeader } from "@/components/layout/CardHeader";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
+import { SectorEmissionsByYear } from "@/types/emissions";
 
 type DataView = "overview" | "sectors";
 
 interface MunicipalityEmissionsProps {
   emissionsData: DataPoint[];
-  sectorEmissions: SectorEmissions | null;
+  sectorEmissions: SectorEmissionsByYear | null;
   className?: string;
 }
 
