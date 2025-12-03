@@ -14,7 +14,8 @@ import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import { useMunicipalityKPIs } from "@/hooks/municipalities/useMunicipalityKPIs";
 import { FeatureCollection } from "geojson";
 import { Municipality } from "@/types/municipality";
-import { DataPoint } from "@/types/entity-rankings";
+import { DataPoint } from "@/types/rankings";
+import { createEntityClickHandler } from "@/utils/routing";
 
 export function MunicipalitiesRankedPage() {
   const { t } = useTranslation();
@@ -60,10 +61,11 @@ export function MunicipalitiesRankedPage() {
     }
   }, [getKPIFromURL, selectedKPI.label]);
 
-  const handleMunicipalityClick = (municipality: Municipality) => {
-    const formattedName = municipality.name.toLowerCase();
-    navigate(`/municipalities/${formattedName}?view=${viewMode}`);
-  };
+  const handleMunicipalityClick = createEntityClickHandler(
+    navigate,
+    "municipality",
+    viewMode,
+  );
 
   // Create an adapter for MapOfSweden
   const handleMunicipalityNameClick = (name: string) => {
@@ -71,7 +73,7 @@ export function MunicipalitiesRankedPage() {
     if (municipality) {
       handleMunicipalityClick(municipality);
     } else {
-      window.location.href = `/municipalities/${name.toLowerCase()}?view=${viewMode}`;
+      handleMunicipalityClick(name);
     }
   };
 
