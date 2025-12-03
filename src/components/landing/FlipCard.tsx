@@ -56,7 +56,7 @@ export function FlipCard({
     >
       <div
         className={cn(
-          "relative w-full h-full transition-transform duration-500 ease-in-out",
+          "relative w-full h-full transition-transform duration-700 ease-in-out",
           isFlipped && "[transform:rotateY(180deg)]",
         )}
         style={{

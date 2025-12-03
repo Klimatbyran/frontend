@@ -177,7 +177,7 @@ export function MeetsParisVisualization({
                   unit: unitScale.unit,
                 },
               ),
-              color: "rgba(255, 255, 255, 0.5)",
+              color: "var(--grey)",
             },
           ]}
           legendMin={legendMin}
