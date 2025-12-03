@@ -21,7 +21,7 @@ import { isMobile } from "react-device-detect";
 import { t } from "i18next";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import { KPIValue } from "@/types/entity-rankings";
+import { KPIValue } from "@/types/rankings";
 
 export interface DataKPI {
   key: string;

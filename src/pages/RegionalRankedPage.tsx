@@ -10,10 +10,11 @@ import { FeatureCollection } from "geojson";
 import { getRegionalKPIs, useRegions } from "@/hooks/useRegions";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import RankedList from "@/components/ranked/RankedList";
-import { DataPoint } from "@/types/entity-rankings";
+import { DataPoint } from "@/types/rankings";
 import RegionalInsightsPanel from "@/components/regions/RegionalInsightsPanel";
 import { Region } from "@/types/region";
-import { KPIValue } from "@/types/entity-rankings";
+import { KPIValue } from "@/types/rankings";
+import { createEntityClickHandler } from "@/utils/routing";
 
 export function RegionalRankedPage() {
   const { t } = useTranslation();
@@ -36,6 +37,8 @@ export function RegionalRankedPage() {
   };
 
   const viewMode = getViewModeFromURL();
+
+  const handleRegionClick = createEntityClickHandler(navigate, "region");
 
   // Calculate regions data without calling hooks in map
   const regions: DataItem[] = useMemo(() => {
@@ -78,6 +81,7 @@ export function RegionalRankedPage() {
           selectedKPI={selectedKPI}
           defaultCenter={[63, 16]}
           defaultZoom={isMobile ? 4 : 5}
+          onAreaClick={handleRegionClick}
         />
       </div>
     ) : (
@@ -96,7 +100,7 @@ export function RegionalRankedPage() {
             return `${(value as number).toFixed(1)}`;
           },
         })}
-        onItemClick={() => {}}
+        onItemClick={handleRegionClick}
         searchKey="name"
         searchPlaceholder={t("rankedList.search.placeholder")}
       />

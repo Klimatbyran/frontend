@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { KPIValue } from "@/types/entity-rankings";
+import { KPIValue } from "@/types/rankings";
 import type { Municipality } from "@/types/municipality";
 
 export const useMunicipalityKPIs = (): KPIValue<Municipality>[] => {

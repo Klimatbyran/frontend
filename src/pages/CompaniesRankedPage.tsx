@@ -16,7 +16,7 @@ import {
   CompanyWithKPIs,
   enrichCompanyWithKPIs,
 } from "@/hooks/companies/useCompanyKPIs";
-import { DataPoint } from "@/types/entity-rankings";
+import { DataPoint } from "@/types/rankings";
 
 export function CompaniesRankedPage() {
   const { t } = useTranslation();

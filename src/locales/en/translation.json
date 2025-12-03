@@ -976,6 +976,14 @@
     "title": "Regional Overview",
     "description": "Overview of emissions and transition in the regional level"
   },
+  "detailPage": {
+    "totalEmissions": "Total Emissions {{year}}",
+    "totalEmissionsTooltip": "This is the latest reported emissions.",
+    "emissionsDevelopment": "Emissions Development",
+    "inTons": "In tons CO₂e",
+    "annualChange": "Annual Change",
+    "changeSince2015": "Change Since 2015"
+  },
   "municipalitiesRankedPage": {
     "errorTitle": "Failed to retrieve municipality information",
     "errorDescription": "Please try again later",
@@ -1020,14 +1028,11 @@
       "low": "No"
     },
     "politicalRule": "Political rule",
-    "totalEmissions": "Total emissions {{year}}",
     "totalEmissionsTooltip": "This is the latest reported emissions. For calculated estimates on the current year, please see the emissions development graph below.",
-    "emissionsDevelopment": "Emissions development",
     "graph": {
       "overview": "Overview",
       "sectors": "Emission sources"
     },
-    "inTons": "In tons CO₂e",
     "annualChangeSince2015": "Annual emission change since 2015",
     "reductionToMeetParis": "Emission reduction to meet the Paris Agreement",
     "cannotReduceToParis": "Will not reach Paris Agreement",

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Search } from "lucide-react";
 import MultiPagePagination from "@/components/ui/multi-page-pagination";
-import { DataPoint } from "@/types/entity-rankings";
+import { DataPoint } from "@/types/rankings";
 import { t } from "i18next";
 
 export interface RankedListProps<T extends Record<string, unknown>> {

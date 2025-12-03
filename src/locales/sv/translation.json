@@ -974,6 +974,14 @@
     "title": "Länsöversikt",
     "description": "Översikt över utsläpp och omställning på länsnivå"
   },
+  "detailPage": {
+    "totalEmissions": "Totala utsläpp {{year}}",
+    "totalEmissionsTooltip": "Detta är de senast rapporterade utsläppen.",
+    "emissionsDevelopment": "Utsläppsutveckling",
+    "inTons": "I ton CO₂e",
+    "annualChange": "Årlig förändring",
+    "changeSince2015": "Förändring sedan 2015"
+  },
   "municipalitiesRankedPage": {
     "errorTitle": "Det gick inte att hämta kommuninformation",
     "errorDescription": "Försök igen senare",
@@ -1018,14 +1026,11 @@
       "low": "Nej"
     },
     "politicalRule": "Här styr",
-    "totalEmissions": "Totala utsläpp {{year}}",
     "totalEmissionsTooltip": "Detta är de senast rapporterade utsläppen. För beräknade uppskattningar för innevarande år, se grafen Utsläppsutveckling nedan.",
-    "emissionsDevelopment": "Utsläppsutveckling",
     "graph": {
       "overview": "Översikt",
       "sectors": "Utsläppskällor"
     },
-    "inTons": "I ton CO₂e",
     "annualChangeSince2015": "Årlig utsläppsförändring sedan 2015",
     "reductionToMeetParis": "Utsläppsminskning för att klara Parisavtalet",
     "cannotReduceToParis": "Klarar ej Parisavtalet",

@@ -1,6 +1,6 @@
 import { t } from "i18next";
 import { MUNICIPALITY_MAP_COLORS } from "./constants";
-import { KPIValue } from "@/types/entity-rankings";
+import { KPIValue } from "@/types/rankings";
 
 export function MapLegend({
   unit,
