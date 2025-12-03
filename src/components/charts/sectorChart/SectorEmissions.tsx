@@ -3,14 +3,14 @@ import { CardHeader } from "@/components/layout/CardHeader";
 import { YearSelector } from "@/components/layout/YearSelector";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { DetailPieSectorGrid } from "@/components/detail/DetailGrid";
-import SectorPieChart from "@/components/detail/sectorChart/SectorPieChart";
-import SectorPieLegend from "@/components/detail/sectorChart/SectorPieLegend";
-import { SectorEmissions } from "@/types/entity-rankings";
 import { DataGuideItemId } from "@/data-guide/items";
 import { SectorInfo } from "@/types/charts";
+import SectorPieLegend from "./SectorPieLegend";
+import SectorPieChart from "./SectorPieChart";
+import { SectorEmissionsByYear } from "@/types/emissions";
 
 interface SectorEmissionsProps {
-  sectorEmissions: SectorEmissions | null;
+  sectorEmissions: SectorEmissionsByYear | null;
   availableYears: number[];
   selectedYear: string;
   onYearChange: (year: string) => void;

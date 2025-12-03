@@ -12,7 +12,6 @@ import {
 import { useLanguage } from "@/components/LanguageProvider";
 import { useMunicipalitySectorEmissions } from "@/hooks/municipalities/useMunicipalitySectorEmissions";
 import { MunicipalityEmissions } from "@/components/municipalities/MunicipalityEmissions";
-import { SectorEmissionsChart } from "@/components/detail/sectorChart/SectorEmissions";
 import { useHiddenItems } from "@/components/charts";
 import { PageLoading } from "@/components/pageStates/Loading";
 import { PageError } from "@/components/pageStates/Error";
@@ -29,6 +28,7 @@ import { DetailSection } from "@/components/detail/DetailSection";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";
 import { useMunicipalitySectors } from "@/hooks/municipalities/useMunicipalitySectors";
 import { DetailLinkCardGrid } from "@/components/detail/DetailGrid";
+import { SectorEmissionsChart } from "@/components/charts/sectorChart/SectorEmissions";
 
 export function MunicipalityDetailPage() {
   const { t } = useTranslation();

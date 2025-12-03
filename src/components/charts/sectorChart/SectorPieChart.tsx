@@ -3,11 +3,11 @@ import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from "recharts";
 import { useResponsiveChartSize } from "@/hooks/useResponsiveChartSize";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import PieTooltip from "@/components/graphs/tooltips/PieTooltip";
-import { SectorEmissions } from "@/types/entity-rankings";
 import { SectorInfo } from "@/types/charts";
+import { SectorEmissionsByYear } from "@/types/emissions";
 
 interface SectorPieChartProps {
-  sectorEmissions: SectorEmissions;
+  sectorEmissions: SectorEmissionsByYear;
   year: number;
   getSectorInfo: (name: string) => SectorInfo;
   filteredSectors?: Set<string>;

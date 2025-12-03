@@ -32,9 +32,3 @@ export interface KPIValue<T = Municipality | Region> {
   belowString?: string;
   aboveString?: string;
 }
-
-export type SectorEmissions = {
-  [year: string]: {
-    [sector: string]: number;
-  };
-};

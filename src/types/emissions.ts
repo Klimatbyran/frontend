@@ -23,3 +23,9 @@ export interface EmissionsHistoryProps {
 }
 
 export type DataView = "overview" | "scopes" | "categories";
+
+export type SectorEmissionsByYear = {
+  [year: string]: {
+    [sector: string]: number;
+  };
+};

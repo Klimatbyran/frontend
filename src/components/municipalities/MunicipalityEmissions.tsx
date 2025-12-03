@@ -10,13 +10,13 @@ import {
 } from "@/components/charts";
 import { CardHeader } from "@/components/layout/CardHeader";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
-import { SectorEmissions } from "@/types/entity-rankings";
+import { SectorEmissionsByYear } from "@/types/emissions";
 
 type DataView = "overview" | "sectors";
 
 interface MunicipalityEmissionsProps {
   emissionsData: DataPoint[];
-  sectorEmissions: SectorEmissions | null;
+  sectorEmissions: SectorEmissionsByYear | null;
   className?: string;
 }
 

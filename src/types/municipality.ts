@@ -1,5 +1,5 @@
 import type { paths } from "@/lib/api-types";
-import { SectorEmissions } from "./entity-rankings";
+import { SectorEmissionsByYear } from "./emissions";
 
 export { getLatestYearData, getAvailableYears } from "@/utils/data/yearUtils";
 export { transformEmissionsData } from "@/utils/data/municipalityTransforms";
@@ -24,7 +24,7 @@ export type Municipality = {
   electricCarChangePercent: number;
   wikidataId?: string;
   description?: string | null;
-  sectorEmissions?: SectorEmissions;
+  sectorEmissions?: SectorEmissionsByYear;
   politicalRule: string[];
 } & EmissionsData;
 
