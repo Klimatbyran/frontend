@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { type LucideIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Text } from "@/components/ui/text";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { cn } from "@/lib/utils";
@@ -25,6 +26,7 @@ export function FlipCard({
 }: FlipCardProps) {
   const [isFlipped, setIsFlipped] = useState(false);
   const { isMobile } = useScreenSize();
+  const { t } = useTranslation();
 
   const handleInteraction = () => {
     if (isMobile) {
@@ -46,7 +48,11 @@ export function FlipCard({
       }}
       role="button"
       tabIndex={0}
-      aria-label={isFlipped ? "Hide details" : "Show details"}
+      aria-label={
+        isFlipped
+          ? t("landingPage.didYouKnow.ariaLabelHide")
+          : t("landingPage.didYouKnow.ariaLabelShow")
+      }
     >
       <div
         className={cn(
@@ -90,7 +96,9 @@ export function FlipCard({
           </div>
           <div className="flex justify-end">
             <Text className="text-xs md:text-sm text-grey opacity-70">
-              {isMobile ? "Tap to learn more →" : "Hover to learn more →"}
+              {isMobile
+                ? t("landingPage.didYouKnow.cardActionMobile")
+                : t("landingPage.didYouKnow.cardActionDesktop")}
             </Text>
           </div>
         </div>

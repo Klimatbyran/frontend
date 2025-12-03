@@ -151,6 +151,10 @@
       "subtitle": "Intressanta insikter från Sveriges klimatdata - {{action}}!",
       "actionMobile": "klicka för att utforska",
       "actionDesktop": "håll muspekaren för att utforska",
+      "cardActionMobile": "Tryck för att läsa mer →",
+      "cardActionDesktop": "Håll muspekaren för att läsa mer →",
+      "ariaLabelShow": "Visa detaljer",
+      "ariaLabelHide": "Dölj detaljer",
       "stat1": {
         "teaser": "Ledarna i klassen",
         "description": "{{count}} av {{total}} företag har minskat sina utsläpp med mer än 20% sedan sitt basår"

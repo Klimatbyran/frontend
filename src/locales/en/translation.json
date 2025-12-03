@@ -151,6 +151,10 @@
       "subtitle": "Interesting insights from Sweden's climate data - {{action}}!",
       "actionMobile": "click to explore",
       "actionDesktop": "hover to explore",
+      "cardActionMobile": "Tap to learn more →",
+      "cardActionDesktop": "Hover to learn more →",
+      "ariaLabelShow": "Show details",
+      "ariaLabelHide": "Hide details",
       "stat1": {
         "teaser": "Leaders of the Pack",
         "description": "{{count}} out of {{total}} companies have reduced emissions by more than 20% since their base reporting year"
