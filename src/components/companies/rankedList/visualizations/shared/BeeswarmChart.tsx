@@ -145,10 +145,10 @@ export function BeeswarmChart<T>({
               className="absolute top-0 bottom-0 w-px z-0"
               style={{
                 left: `${xPercent}%`,
-                backgroundColor: line.color || "rgba(255, 255, 255, 0.3)",
+                backgroundColor: line.color || "var(--grey)",
                 borderLeft: line.color
                   ? `1px solid ${line.color}`
-                  : "1px dashed rgba(255, 255, 255, 0.3)",
+                  : "1px dashed var(--grey)",
               }}
             >
               {line.label && (
@@ -201,7 +201,7 @@ export function BeeswarmChart<T>({
                     height: "16px",
                     background: colorForValue(rawValue),
                     border: "2px solid var(--black-4)",
-                    boxShadow: "0 2px 4px rgba(0,0,0,0.5)",
+                    boxShadow: "0 2px 4px var(--black-4)",
                   }}
                 />
                 {/* Capped indicator - triangle arrow on the right */}
@@ -214,7 +214,7 @@ export function BeeswarmChart<T>({
                       transform: "translateY(-50%)",
                       width: 0,
                       height: 0,
-                      borderLeft: "6px solid rgba(255, 255, 255, 0.7)",
+                      borderLeft: "6px solid var(--grey)",
                       borderTop: "4px solid transparent",
                       borderBottom: "4px solid transparent",
                     }}

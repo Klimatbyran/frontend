@@ -95,6 +95,90 @@
       "exploreClimateData": "View Municipality Rankings",
       "viewCompanyRankings": "Explore Company Data",
       "or": "Or"
+    },
+    "siteFeatures": {
+      "title": "Comprehensive Climate Tracking",
+      "description": "Monitor emissions data and climate commitments across Sweden.",
+      "features": {
+        "municipalityRankings": {
+          "title": "Municipality Rankings",
+          "description": "Track climate progress and emissions data from municipalities and local governments."
+        },
+        "companyRankings": {
+          "title": "Company Rankings",
+          "description": "Compare emissions performance, reduction targets, and sustainability metrics across Swedish companies."
+        },
+        "progressTracking": {
+          "title": "Progress Tracking",
+          "description": "Monitor year-over-year changes and alignment with climate targets and science based goals."
+        }
+      }
+    },
+    "scrollSteps": {
+      "mission": {
+        "badge": "Transparency for Climate Action",
+        "heading": "Our Mission",
+        "paragraph": "Klimatkollen exists to make climate data accessible to everyone. We believe that transparency drives accountability, and accountability drives real climate action. By putting emissions data in the hands of citizens, we empower communities to hold organizations accountable for their environmental commitments."
+      },
+      "transparency": {
+        "badge": "Sunlight is the Best Disinfectant",
+        "heading": "Why Data\nTransparency Matters",
+        "paragraph": "When emissions data is hidden behind corporate reports and paid databases, progress stagnates. Transparent, accessible climate data creates market pressure for better performance. Companies and municipalities that know their data is public work harder to improve their rankings and meet their climate commitments."
+      },
+      "methodology": {
+        "badge": "Science-Based Rankings",
+        "heading": "Our Methodology",
+        "paragraph": "We use emissions data from official reporting sources to create fair, comparable rankings. Our metrics focus on actual emissions reductions, not just promises or targets. Every ranking is based on real performance data, ensuring that climate leaders are recognized and climate laggards are held accountable."
+      },
+      "impact": {
+        "badge": "From Data to Action",
+        "heading": "Driving Real Impact",
+        "paragraph": "Our platform has already helped identify climate leaders and those falling behind across Sweden. By ranking organizations on their actual emissions performance, we create healthy competition that accelerates climate progress. The data doesn't lie—and neither should climate commitments."
+      },
+      "engagement": {
+        "badge": "Every Voice Counts",
+        "heading": "Citizen Action &\nEngagement",
+        "paragraph": "Climate action isn't just for governments and corporations—it starts with informed citizens. When you can see how your local municipality or favorite company performs on climate metrics, you can make better choices as a consumer, voter, and community member. Your engagement drives the demand for better climate performance."
+      },
+      "pathForward": {
+        "badge": "Building a Climate-Conscious Society",
+        "heading": "The Path Forward",
+        "paragraph": "Imagine a world where every organization's climate performance is as visible as their financial results. Where citizens can easily compare the environmental impact of their choices. Where transparency drives a race to the top in climate action. That's the future we're building, one data point at a time."
+      }
+    },
+    "didYouKnow": {
+      "title": "Did You Know?",
+      "subtitle": "Interesting insights from Sweden's climate data - {{action}}!",
+      "actionMobile": "click to explore",
+      "actionDesktop": "hover to explore",
+      "cardActionMobile": "Tap to learn more →",
+      "cardActionDesktop": "Hover to learn more →",
+      "ariaLabelShow": "Show details",
+      "ariaLabelHide": "Hide details",
+      "stat1": {
+        "teaser": "Leaders of the Pack",
+        "description": "{{count}} out of {{total}} companies have reduced emissions by more than 20% since their base reporting year"
+      },
+      "stat2": {
+        "teaser": "Increased Emissions",
+        "description": "{{count}} out of {{total}} companies have increased emissions since their base reporting year"
+      },
+      "stat3": {
+        "teaser": "Paris Aligned",
+        "description": "{{companyCount}} out of {{companyTotal}} companies and {{municipalityCount}} out of {{municipalityTotal}} municipalities are on track to meet Paris Agreement goals"
+      },
+      "stat4": {
+        "teaser": "Transparent Reporting",
+        "description": "{{percentage}}% of tracked companies report Scope 3 emissions by category, providing more transparency into their value chain"
+      },
+      "stat5": {
+        "teaser": "With Plans",
+        "description": "{{percentage}}% of municipalities ({{count}} out of {{total}}) have adopted climate plans"
+      },
+      "stat6": {
+        "teaser": "Tracked Emissions",
+        "description": "{{total}} million tonnes of CO₂e tracked across {{companyCount}} companies and {{municipalityCount}} municipalities, using the latest reported value for each entity"
+      }
     }
   },
   "aboutPage": {
