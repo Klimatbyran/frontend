@@ -980,7 +980,10 @@
     "emissionsDevelopment": "Utsläppsutveckling",
     "inTons": "I ton CO₂e",
     "annualChange": "Årlig förändring",
-    "changeSince2015": "Förändring sedan 2015"
+    "changeSince2015": "Förändring sedan 2015",
+    "graph": {
+      "historical": "Historiskt"
+    }
   },
   "municipalitiesRankedPage": {
     "errorTitle": "Det gick inte att hämta kommuninformation",
@@ -1440,7 +1443,6 @@
     "graph": {
       "noData": "Inga data tillgängliga",
       "gap": "Gap",
-      "historical": "Historiskt",
       "approximated": "Uppskattat totalt",
       "estimated": "Uppskattat",
       "trend": "Trend",

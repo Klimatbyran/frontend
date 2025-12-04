@@ -982,7 +982,10 @@
     "emissionsDevelopment": "Emissions Development",
     "inTons": "In tons CO₂e",
     "annualChange": "Annual Change",
-    "changeSince2015": "Change Since 2015"
+    "changeSince2015": "Change Since 2015",
+    "graph": {
+      "historical": "Historical"
+    }
   },
   "municipalitiesRankedPage": {
     "errorTitle": "Failed to retrieve municipality information",
@@ -1442,7 +1445,6 @@
     "graph": {
       "noData": "No data available",
       "gap": "Gap",
-      "historical": "Historical",
       "approximated": "Calculated Total",
       "estimated": "Calculated",
       "trend": "Trend",

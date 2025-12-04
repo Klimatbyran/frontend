@@ -50,7 +50,7 @@ export const RegionEmissions: FC<RegionEmissionsProps> = ({
   const legendItems: LegendItem[] = useMemo(() => {
     return [
       {
-        name: t("municipalities.graph.historical"),
+        name: t("detailPage.graph.historical"),
         color: "var(--orange-2)",
       },
     ];
@@ -110,7 +110,7 @@ export const RegionEmissions: FC<RegionEmissionsProps> = ({
                   {...getConsistentLineProps(
                     "historical",
                     false,
-                    t("municipalities.graph.historical"),
+                    t("detailPage.graph.historical"),
                   )}
                 />
               </LineChart>
