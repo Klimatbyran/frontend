@@ -276,13 +276,13 @@ export const fetchNewsletters = async () => {
   }
 };
 
-export async function getRegions() {
+export async function getRegionalKPIs() {
   try {
-    const { data, error } = await GET("/regions/", {});
+    const { data, error } = await GET("/regions/kpis", {});
     if (error) throw error;
     return data || [];
   } catch (error) {
-    console.error("Error fetching regions:", error);
+    console.error("Error fetching regional KPIs:", error);
     return [];
   }
 }
