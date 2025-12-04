@@ -50,10 +50,8 @@ export const RegionEmissions: FC<RegionEmissionsProps> = ({
   const legendItems: LegendItem[] = useMemo(() => {
     return [
       {
-        id: "historical",
-        label: t("municipalities.graph.historical"),
+        name: t("municipalities.graph.historical"),
         color: "var(--orange-2)",
-        type: "line",
       },
     ];
   }, [t]);
