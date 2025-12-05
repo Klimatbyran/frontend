@@ -408,11 +408,8 @@
       "graphs": "Graphs",
       "list": "List"
     },
-    "filter": "Filter",
     "sort": "Sort",
     "sortBy": "Sort By",
-    "searchInFilter": "Search filters",
-    "noFiltersFound": "No matching filters found.",
     "sortingOptions": {
       "emissionsChange": "Change in Emissions (%)",
       "totalEmissions": "Total Emissions",
@@ -1871,5 +1868,10 @@
         "type": "unit"
       }
     }
+  },
+  "filterPopover": {
+    "filter": "Filter",
+    "searchInFilter": "Search filters",
+    "noFiltersFound": "No matching filters found."
   }
 }

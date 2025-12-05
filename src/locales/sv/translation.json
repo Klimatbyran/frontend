@@ -408,11 +408,8 @@
       "graphs": "Grafer",
       "list": "Lista"
     },
-    "filter": "Filter",
     "sort": "Sortera",
     "sortBy": "Sortera efter",
-    "searchInFilter": "Sök i filter...",
-    "noFiltersFound": "Inga filter hittades.",
     "sortingOptions": {
       "emissionsChange": "Utsläppsförändring (%)",
       "totalEmissions": "Totala utsläpp",
@@ -1870,5 +1867,10 @@
         "type": "unit"
       }
     }
+  },
+  "filterPopover": {
+    "filter": "Filter",
+    "searchInFilter": "Sök i filter...",
+    "noFiltersFound": "Inga filter hittades."
   }
 }
