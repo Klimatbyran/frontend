@@ -15,6 +15,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { Fragment } from "react";
 
 export type FilterOption = { 
   value: string; 
@@ -66,7 +67,7 @@ export function FilterPopover({
           <CommandList className="max-h-[300px]">
             <CommandEmpty>{t("filterPopover.noFiltersFound")}</CommandEmpty>
             {groups.map((group, i) => (
-              <>
+              <Fragment key={i}>
                 <CommandGroup heading={group.heading}>
                   {group.options.map((option) => (
                     <CommandItem
@@ -86,7 +87,7 @@ export function FilterPopover({
                   <CommandSeparator className="bg-black-1" />
                 )}
 
-              </>
+              </Fragment>
             ))}
           </CommandList>
         </Command>

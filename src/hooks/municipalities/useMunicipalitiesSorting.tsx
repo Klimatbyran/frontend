@@ -25,7 +25,6 @@ export const useSortOptions = (): SortOption[] => {
     {
       value: "emissions",
       label: t("municipalitiesComparePage.sort.emissions"),
-
     },
     {
       value: "emissionsChangeRate",

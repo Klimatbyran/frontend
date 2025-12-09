@@ -79,12 +79,6 @@ export function MunicipalitiesComparePage() {
           },
         ]
       : []),
-    {
-      type: "sort" as const,
-      label: String(
-        sortOptions.find((s) => s.value === sortBy)?.label ?? sortBy,
-      ),
-    },
     ...(meetsParisFilter !== "all"
       ? [
           {
@@ -100,6 +94,12 @@ export function MunicipalitiesComparePage() {
           },
         ]
       : []),
+      {
+      type: "sort" as const,
+      label: String(
+        sortOptions.find((s) => s.value === sortBy)?.label ?? sortBy,
+      ),
+    },
   ];
 
   if (loading) {
