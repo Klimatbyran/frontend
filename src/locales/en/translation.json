@@ -1410,7 +1410,9 @@
           "metric": "No data available for {{metric}}"
         },
         "keyStatistics": {
-          "average": "Average:"
+          "average": "Average:",
+          "distributionAbove": "companies above average",
+          "distributionBelow": "companies below average"
         },
         "topPerformers": {
           "titleTop": "Top Companies",
