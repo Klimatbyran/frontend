@@ -4,17 +4,20 @@ import { useTranslation } from "react-i18next";
 import { Input } from "@/components/ui/input";
 import { PageHeader } from "@/components/layout/PageHeader";
 import {
+  isMeetsParisFilter,
   isMunicipalitySortBy,
+  MeetsParisFilter,
   MunicipalitySortBy,
 } from "@/types/municipality";
 import { useSearchParams } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { FilterGroup, FilterPopover } from "@/components/explore/FilterPopover";
-import { isSortDirection, SortDirection, SortOption, SortPopover } from "@/components/explore/SortPopover";
+import { isSortDirection, SortDirection, SortPopover } from "@/components/explore/SortPopover";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { useState } from "react";
 import { regions } from "@/lib/constants/regions";
 import { FilterBadges } from "@/components/companies/list/FilterBadges";
+import { useSortOptions } from "@/hooks/municipalities/useMunicipalitiesSorting";
 
 export function MunicipalitiesComparePage() {
   const { t } = useTranslation();
@@ -23,12 +26,15 @@ export function MunicipalitiesComparePage() {
   const [filterOpen, setFilterOpen] = useState(false);
   const [sortOpen, setSortOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
+  const sortOptions = useSortOptions();
 
   const selectedRegion = searchParams.get("selectedRegion") || "all";
+  const meetsParisFilter = isMeetsParisFilter(searchParams.get("meetsParisFilter") ?? "") ? searchParams.get("meetsParisFilter") as MeetsParisFilter : "all";
   const searchQuery = searchParams.get("searchQuery") || "";
   const sortBy = isMunicipalitySortBy(searchParams.get("sortBy") ?? "") ? searchParams.get("sortBy") as MunicipalitySortBy : "meets_paris"; 
   const sortDirection = isSortDirection(searchParams.get("sortDirection") ?? "") 
-    ? searchParams.get("sortDirection") as SortDirection : "asc"; 
+    ? searchParams.get("sortDirection") as SortDirection 
+    : sortOptions.find(s => s.value === sortBy)?.defaultDirection ?? "desc"; 
 
   const setOrDeleteSearchParam = (value: string | null, param: string) => setSearchParams((searchParams) => {
     value ? searchParams.set(param, value) : searchParams.delete(param);
@@ -36,6 +42,7 @@ export function MunicipalitiesComparePage() {
   }, { replace: true });
 
   const setSelectedRegion = (selectedRegion: string) => setOrDeleteSearchParam(selectedRegion, "selectedRegion");
+  const setMeetsParisFilter = (meetsParisFilter: string) => setOrDeleteSearchParam(meetsParisFilter, "meetsParisFilter");
   const setSearchQuery = (searchQuery: string) => setOrDeleteSearchParam(searchQuery.trim() || null, "searchQuery");
   const setSortBy = (sortBy: string) => setOrDeleteSearchParam(sortBy, "sortBy");
   const setSortDirection = (sortDirection: string) => setOrDeleteSearchParam(sortDirection, "sortDirection");
@@ -46,29 +53,19 @@ export function MunicipalitiesComparePage() {
       options: [{value: "all", label: t("municipalitiesComparePage.filter.allRegions")}, ...Object.keys(regions).map((r) => ({ value: r, label: r}))],
       selectedValues: [selectedRegion],
       onSelect: setSelectedRegion,
-      selectMultiple: true
-    }
-  ];
-
-  const sortOptions: SortOption[] = [
-    {
-      value: "meets_paris", 
-      label: t("municipalitiesComparePage.sort.meetsParis"),
-      directionLabels: {
-        asc: t("municipalitiesComparePage.sort.bestFirst"),
-        desc: t("municipalitiesComparePage.sort.worstFirst")
-      },
-      defaultDirection: "asc"
+      selectMultiple: false
     },
     {
-      value: "name", 
-      label: t("municipalitiesComparePage.sort.name"),
-      directionLabels: {
-        asc: t("municipalitiesComparePage.sort.aToZ"),
-        desc: t("municipalitiesComparePage.sort.zToA")
-      },
-      defaultDirection: "asc"
-    }
+        heading: t("companiesPage.filteringOptions.meetsParis"),
+        options: [
+          { value: "all", label: t("all") },
+          { value: "yes", label: t("companiesPage.filteringOptions.meetsParisYes") },
+          { value: "no", label: t("companiesPage.filteringOptions.meetsParisNo") },
+        ],
+        selectedValues: [meetsParisFilter],
+        onSelect: (value: string) => setMeetsParisFilter(value as MeetsParisFilter),
+        selectMultiple: false
+      }
   ];
 
   // Create active filters for badges
@@ -88,6 +85,21 @@ export function MunicipalitiesComparePage() {
         sortOptions.find((s) => s.value === sortBy)?.label ?? sortBy,
       ),
     },
+    ...(meetsParisFilter !== "all"
+      ? [
+          {
+            type: "filter" as const,
+            label: `${t("companiesPage.filteringOptions.meetsParis")}: ${
+              meetsParisFilter === "yes"
+                ? t("companiesPage.filteringOptions.meetsParisYes")
+                : meetsParisFilter === "no"
+                  ? t("companiesPage.filteringOptions.meetsParisNo")
+                  : t("companiesPage.filteringOptions.meetsParisUnknown")
+            }`,
+            onRemove: () => setMeetsParisFilter("all"),
+          },
+        ]
+      : []),
   ];
 
   if (loading) {
@@ -174,6 +186,7 @@ export function MunicipalitiesComparePage() {
       <MunicipalityList
         municipalities={municipalities}
         selectedRegion={selectedRegion}
+        meetsParisFilter={meetsParisFilter}
         searchQuery={searchQuery}
         sortBy={sortBy}
         sortDirection={sortDirection}

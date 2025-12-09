@@ -8,6 +8,7 @@ import {
 } from "@/utils/formatting/localization";
 import { useMemo } from "react";
 import type {
+  MeetsParisFilter,
   Municipality,
   MunicipalitySortBy,
 } from "@/types/municipality";
@@ -16,6 +17,7 @@ import { SortDirection } from "@/components/explore/SortPopover";
 interface MunicipalityListProps {
   municipalities: Municipality[];
   selectedRegion: string;
+  meetsParisFilter: MeetsParisFilter
   searchQuery: string;
   sortBy: MunicipalitySortBy;
   sortDirection: SortDirection;
@@ -23,6 +25,7 @@ interface MunicipalityListProps {
 export function MunicipalityList({
   municipalities,
   selectedRegion,
+  meetsParisFilter,
   searchQuery,
   sortBy,
   sortDirection,
@@ -31,6 +34,12 @@ export function MunicipalityList({
   const { currentLanguage } = useLanguage();
   const filteredMunicipalities = municipalities.filter((municipality) => {
     if (selectedRegion !== "all" && municipality.region !== selectedRegion) {
+      return false;
+    }
+
+    if ((meetsParisFilter === "yes" && municipality.meetsParisGoal !== true) ||
+      (meetsParisFilter === "no" && municipality.meetsParisGoal !== false)){
+        
       return false;
     }
 
@@ -55,7 +64,7 @@ export function MunicipalityList({
       case "meets_paris": {
         return (
           directionMultiplier *
-          ((b.meetsParisGoal ? 0 : 1) - (a.meetsParisGoal ? 0 : 1))
+          ((a.meetsParisGoal ? 0 : 1) - (b.meetsParisGoal ? 0 : 1))
         );
       }
       case "name":

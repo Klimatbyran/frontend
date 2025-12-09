@@ -78,3 +78,10 @@ export type MunicipalitySortBy = (typeof MUNICIPALITY_SORT_BY)[number];
 export function isMunicipalitySortBy(value: string): value is MunicipalitySortBy {
   return MUNICIPALITY_SORT_BY.includes(value as MunicipalitySortBy);
 }
+
+const MEETS_PARIS_OPTIONS = ["all", "yes", "no"] as const;
+export type MeetsParisFilter = typeof MEETS_PARIS_OPTIONS[number];
+
+export function isMeetsParisFilter(value: string): value is MeetsParisFilter {
+  return MEETS_PARIS_OPTIONS.includes(value as MeetsParisFilter);
+} 
