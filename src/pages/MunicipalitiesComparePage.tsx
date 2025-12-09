@@ -10,10 +10,11 @@ import {
 import { useSearchParams } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { FilterGroup, FilterPopover } from "@/components/explore/FilterPopover";
-import { isSortDirection, SortDirection, SortPopover } from "@/components/explore/SortPopover";
+import { isSortDirection, SortDirection, SortOption, SortPopover } from "@/components/explore/SortPopover";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { useState } from "react";
 import { regions } from "@/lib/constants/regions";
+import { FilterBadges } from "@/components/companies/list/FilterBadges";
 
 export function MunicipalitiesComparePage() {
   const { t } = useTranslation();
@@ -47,6 +48,46 @@ export function MunicipalitiesComparePage() {
       onSelect: setSelectedRegion,
       selectMultiple: true
     }
+  ];
+
+  const sortOptions: SortOption[] = [
+    {
+      value: "meets_paris", 
+      label: t("municipalitiesComparePage.sort.meetsParis"),
+      directionLabels: {
+        asc: t("municipalitiesComparePage.sort.bestFirst"),
+        desc: t("municipalitiesComparePage.sort.worstFirst")
+      },
+      defaultDirection: "asc"
+    },
+    {
+      value: "name", 
+      label: t("municipalitiesComparePage.sort.name"),
+      directionLabels: {
+        asc: t("municipalitiesComparePage.sort.aToZ"),
+        desc: t("municipalitiesComparePage.sort.zToA")
+      },
+      defaultDirection: "asc"
+    }
+  ];
+
+  // Create active filters for badges
+  const activeFilters = [
+    ...(selectedRegion !== "all"
+      ? [
+          {
+            type: "filter" as const,
+            label: selectedRegion,
+            onRemove: () => setSelectedRegion("all"),
+          },
+        ]
+      : []),
+    {
+      type: "sort" as const,
+      label: String(
+        sortOptions.find((s) => s.value === sortBy)?.label ?? sortBy,
+      ),
+    },
   ];
 
   if (loading) {
@@ -113,31 +154,19 @@ export function MunicipalitiesComparePage() {
           <SortPopover
             sortOpen={sortOpen}
             setSortOpen={setSortOpen}
-            sortOptions={[
-              {
-                value: "meets_paris", 
-                label: t("municipalitiesComparePage.sort.meetsParis"),
-                directionLabels: {
-                  asc: t("municipalitiesComparePage.sort.bestFirst"),
-                  desc: t("municipalitiesComparePage.sort.worstFirst")
-                },
-                defaultDirection: "asc"
-              },
-              {
-                value: "name", 
-                label: t("municipalitiesComparePage.sort.name"),
-                directionLabels: {
-                  asc: t("municipalitiesComparePage.sort.aToZ"),
-                  desc: t("municipalitiesComparePage.sort.zToA")
-                },
-                defaultDirection: "asc"
-              }
-            ]}
+            sortOptions={sortOptions}
             sortBy={sortBy}
             setSortBy={setSortBy}
             sortDirection={sortDirection}
             setSortDirection={setSortDirection}
           />
+
+          {/* Badges */}
+          {activeFilters.length > 0 && (
+            <div className={cn("flex flex-wrap gap-2", screenSize.isMobile ? "w-full" : "flex-1")}>
+              <FilterBadges filters={activeFilters} view="list" />
+            </div>
+          )}
 
         </div>
       </div>
