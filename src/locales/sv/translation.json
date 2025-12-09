@@ -408,8 +408,6 @@
       "graphs": "Grafer",
       "list": "Lista"
     },
-    "sort": "Sortera",
-    "sortBy": "Sortera efter",
     "sortingOptions": {
       "emissionsChange": "Utsläppsförändring (%)",
       "totalEmissions": "Totala utsläpp",
@@ -423,11 +421,6 @@
       "meetsParisYes": "Ja",
       "meetsParisNo": "Nej",
       "meetsParisUnknown": "Okänt"
-    },
-    "sortDirection": {
-      "none": "Standard",
-      "asc": "Låg till hög",
-      "desc": "Hög till låg"
     },
     "sector": "Sektor",
     "errorTitle": "Det gick inte att hämta företagsinformation",
@@ -1872,5 +1865,15 @@
     "filter": "Filter",
     "searchInFilter": "Sök i filter...",
     "noFiltersFound": "Inga filter hittades."
+  },
+  "sortPopover": {
+    "sort": "Sortera",
+    "sortBy": "Sortera efter",
+    "noResults": "Inga sortering alternativ tillgänliga",
+    "sortDirection": {
+      "none": "Standard",
+      "asc": "Låg till hög",
+      "desc": "Hög till låg"
+    }
   }
 }

@@ -7,7 +7,7 @@ import { useScreenSize } from "@/hooks/useScreenSize";
 import { cn } from "@/lib/utils";
 import { FilterBadges } from "@/components/companies/list/FilterBadges";
 import { FilterPopover } from "@/components/explore/FilterPopover";
-import { SortPopover } from "@/components/companies/list/SortPopover";
+import { SortPopover } from "@/components/explore/SortPopover";
 import { CompanyList } from "@/components/companies/list/CompanyList";
 import { useCompanyFilters } from "@/hooks/companies/useCompanyFilters";
 import { useSectorNames } from "@/hooks/companies/useCompanySectors";
@@ -129,6 +129,7 @@ export function CompaniesListPage() {
           <SortPopover
             sortOpen={sortOpen}
             setSortOpen={setSortOpen}
+            sortOptions={useSortOptions()}
             sortBy={sortBy}
             setSortBy={setSortBy}
             sortDirection={sortDirection}

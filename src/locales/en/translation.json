@@ -408,8 +408,6 @@
       "graphs": "Graphs",
       "list": "List"
     },
-    "sort": "Sort",
-    "sortBy": "Sort By",
     "sortingOptions": {
       "emissionsChange": "Change in Emissions (%)",
       "totalEmissions": "Total Emissions",
@@ -423,11 +421,6 @@
       "meetsParisYes": "Yes",
       "meetsParisNo": "No",
       "meetsParisUnknown": "Unknown"
-    },
-    "sortDirection": {
-      "none": "Default",
-      "asc": "Low to High",
-      "desc": "High to Low"
     },
     "sector": "Sector",
     "errorTitle": "Failed to retrieve company information",
@@ -1873,5 +1866,15 @@
     "filter": "Filter",
     "searchInFilter": "Search filters",
     "noFiltersFound": "No matching filters found."
+  },
+  "sortPopover": {
+    "sort": "Sort",
+    "sortBy": "Sort By",
+    "noResults": "No sorting options available",
+    "sortDirection": {
+      "none": "Default",
+      "asc": "Low to High",
+      "desc": "High to Low"
+    }
   }
 }

@@ -14,14 +14,18 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useSortOptions } from "@/hooks/companies/useCompanySorting";
-import type { SortOption } from "@/hooks/companies/useCompanySorting";
+
+export type SortOption = {
+  readonly value: string,
+  readonly label: string
+}
 
 interface SortPopoverProps {
   sortOpen: boolean;
   setSortOpen: (open: boolean) => void;
-  sortBy: SortOption;
-  setSortBy: (sort: SortOption) => void;
+  sortOptions: readonly SortOption[]
+  sortBy: string;
+  setSortBy: (sort: string) => void;
   sortDirection: "asc" | "desc";
   setSortDirection: (direction: "asc" | "desc") => void;
 }
@@ -29,13 +33,13 @@ interface SortPopoverProps {
 export function SortPopover({
   sortOpen,
   setSortOpen,
+  sortOptions,
   sortBy,
   setSortBy,
   sortDirection,
   setSortDirection,
 }: SortPopoverProps) {
   const { t } = useTranslation();
-  const sortOptions = useSortOptions();
 
   return (
     <Popover open={sortOpen} onOpenChange={setSortOpen}>
@@ -46,7 +50,7 @@ export function SortPopover({
           className="bg-black-1 border-black-1 text-grey hover:text-white hover:bg-black-1/80 hover:border-black-1 font-medium text-sm"
         >
           <ArrowUpDown className="mr-2 h-4 w-4" />
-          {t("companiesPage.sort")}
+          {t("sortPopover.sort")}
         </Button>
       </PopoverTrigger>
       <PopoverContent
@@ -55,8 +59,8 @@ export function SortPopover({
       >
         <Command className="bg-transparent">
           <CommandList className="max-h-[300px]">
-            <CommandEmpty>{t("companiesPage.noResults")}</CommandEmpty>
-            <CommandGroup heading={t("companiesPage.sortBy")}>
+            <CommandEmpty>{t("sortPopover.noResults")}</CommandEmpty>
+            <CommandGroup heading={t("sortPopover.sortBy")}>
               {sortOptions.map((option) => (
                 <CommandItem
                   key={option.value}
@@ -72,21 +76,21 @@ export function SortPopover({
             </CommandGroup>
 
             <CommandSeparator className="bg-black-1" />
-            <CommandGroup heading={t("companiesPage.sortDirection.asc")}>
+            <CommandGroup heading={t("sortPopover.sortDirection.asc")}>
               {[
                 {
                   value: "none",
-                  label: t("companiesPage.sortDirection.none"),
+                  label: t("sortPopover.sortDirection.none"),
                   icon: <ArrowUpDown className="h-4 w-4" />,
                 },
                 {
                   value: "asc",
-                  label: t("companiesPage.sortDirection.asc"),
+                  label: t("sortPopover.sortDirection.asc"),
                   icon: <ArrowUp className="h-4 w-4" />,
                 },
                 {
                   value: "desc",
-                  label: t("companiesPage.sortDirection.desc"),
+                  label: t("sortPopover.sortDirection.desc"),
                   icon: <ArrowDown className="h-4 w-4" />,
                 },
               ].map((option) => (
