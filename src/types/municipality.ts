@@ -72,7 +72,7 @@ export type DataPoint = {
   carbonLaw: number | undefined;
 };
 
-const MUNICIPALITY_SORT_BY = ["meets_paris", "name"] as const;
+const MUNICIPALITY_SORT_BY = ["meets_paris", "name", "emissions", "emissionsChangeRate", "consumptionEmissionsPerCapita"] as const;
 export type MunicipalitySortBy = (typeof MUNICIPALITY_SORT_BY)[number];
 
 export function isMunicipalitySortBy(value: string): value is MunicipalitySortBy {

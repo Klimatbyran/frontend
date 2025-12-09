@@ -69,6 +69,12 @@ export function MunicipalityList({
       }
       case "name":
         return directionMultiplier * a.name.localeCompare(b.name);
+      case "emissions":
+        return directionMultiplier * ((a.emissions?.at(-1)?.value ?? 0) - (b.emissions?.at(-1)?.value ?? 0));
+      case "emissionsChangeRate":
+        return directionMultiplier * (a.historicalEmissionChangePercent - b.historicalEmissionChangePercent);
+      case "consumptionEmissionsPerCapita":
+        return directionMultiplier * (a.totalConsumptionEmission - b.totalConsumptionEmission);
       default:
         return 0;
     }

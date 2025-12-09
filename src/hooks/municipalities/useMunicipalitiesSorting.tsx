@@ -11,8 +11,7 @@ export const useSortOptions = (): SortOption[] => {
       directionLabels: {
         asc: t("municipalitiesComparePage.sort.bestFirst"),
         desc: t("municipalitiesComparePage.sort.worstFirst")
-      },
-      defaultDirection: "desc"
+      }
     },
     {
       value: "name", 
@@ -22,6 +21,19 @@ export const useSortOptions = (): SortOption[] => {
         desc: t("municipalitiesComparePage.sort.zToA")
       },
       defaultDirection: "asc"
-    }
+    },
+    {
+      value: "emissions",
+      label: t("municipalitiesComparePage.sort.emissions"),
+
+    },
+    {
+      value: "emissionsChangeRate",
+      label: t("municipalitiesComparePage.sort.emissionsChangeRate"),
+    },
+    {
+      value: "consumptionEmissionsPerCapita", 
+      label: t("municipalitiesComparePage.sort.consumptionEmissionsPerCapita"),
+    },
   ];
 }
