@@ -11,8 +11,8 @@ import { regions } from "@/lib/constants/regions";
 import { t } from "i18next";
 import {
   MunicipalitySortBy,
-  MunicipalitySortDirection,
 } from "@/types/municipality";
+import { SortDirection } from "@/components/explore/SortPopover";
 
 interface MunicipalityFilterProps {
   selectedRegion: string;
@@ -21,8 +21,8 @@ interface MunicipalityFilterProps {
   setSearchQuery: (query: string) => void;
   sortBy: MunicipalitySortBy;
   setSortBy: (sort: MunicipalitySortBy) => void;
-  sortDirection: MunicipalitySortDirection;
-  setSortDirection: (direction: MunicipalitySortDirection) => void;
+  sortDirection: SortDirection;
+  setSortDirection: (direction: SortDirection) => void;
 }
 
 export default function MunicipalityFilter({
@@ -97,15 +97,15 @@ export default function MunicipalityFilter({
         {/* Sort Direction Button */}
         <button
           onClick={() =>
-            setSortDirection(sortDirection === "best" ? "worst" : "best")
+            setSortDirection(sortDirection === "desc" ? "asc" : "desc")
           }
           className="px-4 py-2 bg-gray-700 text-white text-sm rounded w-full md:w-[150px] h-10"
         >
           {sortBy === "name"
-            ? sortDirection === "best"
+            ? sortDirection === "desc"
               ? t("municipalitiesComparePage.sort.aToZ")
               : t("municipalitiesComparePage.sort.zToA")
-            : sortDirection === "best"
+            : sortDirection === "desc"
               ? t("municipalitiesComparePage.sort.worstFirst")
               : t("municipalitiesComparePage.sort.bestFirst")}
         </button>

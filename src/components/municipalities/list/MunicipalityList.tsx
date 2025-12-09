@@ -10,15 +10,15 @@ import { useMemo } from "react";
 import type {
   Municipality,
   MunicipalitySortBy,
-  MunicipalitySortDirection,
 } from "@/types/municipality";
+import { SortDirection } from "@/components/explore/SortPopover";
 
 interface MunicipalityListProps {
   municipalities: Municipality[];
   selectedRegion: string;
   searchQuery: string;
   sortBy: MunicipalitySortBy;
-  sortDirection: MunicipalitySortDirection;
+  sortDirection: SortDirection;
 }
 export function MunicipalityList({
   municipalities,
@@ -50,12 +50,12 @@ export function MunicipalityList({
   });
 
   const sortedMunicipalities = filteredMunicipalities.sort((a, b) => {
-    const directionMultiplier = sortDirection === "best" ? 1 : -1;
+    const directionMultiplier = sortDirection === "desc" ? -1 : 1;
     switch (sortBy) {
       case "meets_paris": {
         return (
           directionMultiplier *
-          ((a.meetsParisGoal ? 0 : 1) - (b.meetsParisGoal ? 0 : 1))
+          ((b.meetsParisGoal ? 0 : 1) - (a.meetsParisGoal ? 0 : 1))
         );
       }
       case "name":
