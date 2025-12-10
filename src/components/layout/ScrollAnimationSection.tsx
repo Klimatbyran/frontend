@@ -71,10 +71,10 @@ function ProgressIndicator({
           key={index}
           className={`h-1 rounded-full transition-all duration-300 ${
             index === currentIndex
-              ? "w-8 bg-white"
+              ? "w-8 bg-black-3 dark:bg-white"
               : index < currentIndex
-                ? "w-8 bg-white/60"
-                : "w-1 bg-white/30"
+                ? "w-8 bg-black-3/60 dark:bg-white/60"
+                : "w-1 bg-black-3/30 dark:bg-white/30"
           }`}
         />
       ))}
