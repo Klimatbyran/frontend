@@ -196,7 +196,7 @@ function MapOfSweden({
       }
 
       const item = data.find(
-        (d) => d.name.toLowerCase() === name.toLowerCase(),
+        (d) => d.name && d.name.toLowerCase() === name.toLowerCase(),
       );
 
       if (!item) {
@@ -212,7 +212,9 @@ function MapOfSweden({
         value = Number.isFinite(numericValue) ? numericValue : null;
       }
 
-      const rankIndex = sortedData.findIndex((d) => d.name === item.name);
+      const rankIndex = sortedData.findIndex(
+        (d) => d.name && item.name && d.name === item.name,
+      );
       const rank = rankIndex >= 0 ? rankIndex + 1 : null;
 
       return { value, rank };
