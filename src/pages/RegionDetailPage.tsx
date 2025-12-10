@@ -50,8 +50,11 @@ export function RegionDetailPage() {
       .filter((d) => d.year >= 1990 && d.year <= 2050);
   }, [region]);
 
-  // Get latest year and emissions
-  const lastYearEmissions = emissionsData[emissionsData.length - 1];
+  const lastYearEmissions = useMemo(() => {
+    return emissionsData
+      .filter((d) => d.total !== undefined)
+      .sort((a, b) => b.year - a.year)[0];
+  }, [emissionsData]);
   const lastYear = lastYearEmissions?.year;
 
   const headerStats = useRegionDetailHeaderStats(region, lastYear);

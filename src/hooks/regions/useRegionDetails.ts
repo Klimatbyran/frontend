@@ -1,6 +1,9 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { formatPercentChange } from "@/utils/formatting/localization";
+import {
+  formatEmissionsAbsolute,
+  formatPercentChange,
+} from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
 import { DetailStat } from "@/components/detail/DetailHeader";
 import { useQuery } from "@tanstack/react-query";
@@ -181,6 +184,19 @@ export function useRegionDetailHeaderStats(
         region.historicalEmissionChangePercent > 0
           ? "text-pink-3"
           : "text-orange-2",
+    },
+    {
+      label: t("detailPage.totalEmissions", {
+        year: lastYear,
+      }),
+      value: formatEmissionsAbsolute(
+        region.emissions[lastYear],
+        currentLanguage,
+      ),
+      unit: t("emissionsUnit"),
+      valueClassName: "text-orange-2",
+      info: true,
+      infoText: t("municipalityDetailPage.totalEmissionsTooltip"),
     },
   ];
 
