@@ -21,9 +21,16 @@ function SocialLinks() {
           title={title}
         >
           {typeof Icon === "string" ? (
-            <img src={Icon} alt={title} className="w-5 h-5 md:w-6 md:h-6" />
+            <img
+              src={Icon}
+              alt={title}
+              className="w-5 h-5 md:w-6 md:h-6 dark:brightness-100 brightness-0"
+            />
           ) : (
-            <Icon className="w-5 h-5 md:w-6 md:h-6" aria-label={title} />
+            <Icon
+              className="w-5 h-5 md:w-6 md:h-6 dark:text-white text-black-2"
+              aria-label={title}
+            />
           )}
         </a>
       ))}
@@ -63,7 +70,11 @@ function PartnerLogos({ prefersReducedMotion, isMobile }: PartnerLogoProps) {
           rel="noreferrer"
           className="flex items-center justify-center"
         >
-          <img className="w-28 h-12 object-contain" src={src} alt={alt} />
+          <img
+            className="w-28 h-12 object-contain dark:brightness-100 brightness-0"
+            src={src}
+            alt={alt}
+          />
         </a>
       ))}
     </Wrapper>
