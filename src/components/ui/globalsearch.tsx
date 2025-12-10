@@ -73,7 +73,7 @@ const GlobalSearch = () => {
           placeholder={t("globalSearch.placeholder")}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="dark:bg-black-1 bg-white border dark:border-transparent border-grey/20 placeholder:text-center relative h-10 rounded-md px-2 text-base text-lg dark:focus:outline-white focus:outline-black-3 font-medium focus:text-left focus:ring-1 dark:focus:ring-blue-2 focus:ring-blue-3 relative w-full dark:text-white text-black-3"
+          className="dark:bg-black-1 bg-grey/10 border dark:border-transparent border-grey/20 placeholder:text-center relative h-10 rounded-md px-2 text-base text-lg dark:focus:outline-white focus:outline-black-3 font-medium focus:text-left focus:ring-1 dark:focus:ring-blue-2 focus:ring-blue-3 relative w-full dark:text-white text-black-3"
         />
         {searchQuery ? (
           <X
