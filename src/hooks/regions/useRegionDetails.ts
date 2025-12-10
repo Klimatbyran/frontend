@@ -157,7 +157,7 @@ export function useRegionDetailHeaderStats(
 
   const stats: DetailStat[] = [
     {
-      label: t("municipalities.list.kpis.meetsParisGoal.label"),
+      label: t("detailPage.meetsParisGoal"),
       value:
         region.meetsParis === true
           ? t("yes")
@@ -172,9 +172,7 @@ export function useRegionDetailHeaderStats(
             : "text-grey",
     },
     {
-      label: t(
-        "municipalities.list.kpis.historicalEmissionChangePercent.label",
-      ),
+      label: t("detailPage.changeSince2015"),
       value: formatPercentChange(
         region.historicalEmissionChangePercent,
         currentLanguage,

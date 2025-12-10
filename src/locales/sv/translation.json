@@ -980,7 +980,8 @@
     "emissionsDevelopment": "Utsläppsutveckling",
     "inTons": "I ton CO₂e",
     "annualChange": "Årlig förändring",
-    "changeSince2015": "Förändring sedan 2015",
+    "meetsParisGoal": "Klarar Parisavtalet",
+    "changeSince2015": "Årlig utsläppsförändring sedan 2015",
     "graph": {
       "historical": "Historiskt"
     }

@@ -982,7 +982,8 @@
     "emissionsDevelopment": "Emissions Development",
     "inTons": "In tons CO₂e",
     "annualChange": "Annual Change",
-    "changeSince2015": "Change Since 2015",
+    "meetsParisGoal": "Meets the Paris Agreement",
+    "changeSince2015": "Annual emission change since 2015",
     "graph": {
       "historical": "Historical"
     }
