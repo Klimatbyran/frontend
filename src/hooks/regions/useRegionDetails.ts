@@ -16,6 +16,8 @@ export type RegionDetails = {
   approximatedHistoricalEmission: Record<string, number>;
   trend: Record<string, number>;
   carbonLaw: Record<string, number>;
+  meetsParis: boolean;
+  historicalEmissionChangePercent: number;
 };
 
 type ApiRegionResponse = {
@@ -23,6 +25,8 @@ type ApiRegionResponse = {
   emissions: ({ year: string; value: number } | null)[];
   trend: ({ year: string; value: number } | null)[];
   approximatedHistoricalEmission: ({ year: string; value: number } | null)[];
+  meetsParis: boolean;
+  historicalEmissionChangePercent: number;
   [key: string]: unknown;
 };
 
@@ -118,6 +122,8 @@ export function useRegionDetails(name: string) {
         approximatedHistoricalEmission: approximatedRecord,
         trend: trendRecord,
         carbonLaw: carbonLawRecord,
+        meetsParis: r.meetsParis ?? false,
+        historicalEmissionChangePercent: r.historicalEmissionChangePercent ?? 0,
       } as RegionDetails;
     });
   }, [regions]);
@@ -141,7 +147,6 @@ export function useRegionDetails(name: string) {
 export function useRegionDetailHeaderStats(
   region: RegionDetails | null,
   lastYear: number | undefined,
-  lastYearEmissionsTon: string,
 ) {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
@@ -150,66 +155,35 @@ export function useRegionDetailHeaderStats(
     return [];
   }
 
-  // Calculate year-over-year change
-  const currentYearEmissions = region.emissions[lastYear.toString()];
-  const previousYear = lastYear - 1;
-  const previousYearEmissions = region.emissions[previousYear.toString()];
-
-  let yearOverYearChange: number | null = null;
-  if (
-    currentYearEmissions !== undefined &&
-    previousYearEmissions !== undefined &&
-    previousYearEmissions !== 0
-  ) {
-    yearOverYearChange =
-      ((currentYearEmissions - previousYearEmissions) / previousYearEmissions) *
-      100;
-  }
-
-  // Calculate change since 2015 (baseline year)
-  const baselineYear = 2015;
-  const baselineEmissions = region.emissions[baselineYear.toString()];
-  let changeSince2015: number | null = null;
-  if (
-    currentYearEmissions !== undefined &&
-    baselineEmissions !== undefined &&
-    baselineEmissions !== 0
-  ) {
-    changeSince2015 =
-      ((currentYearEmissions - baselineEmissions) / baselineEmissions) * 100;
-  }
-
   const stats: DetailStat[] = [
     {
-      label: t("detailPage.totalEmissions", {
-        year: lastYear,
-      }),
-      value: lastYearEmissionsTon,
-      unit: t("emissionsUnit"),
-      valueClassName: "text-orange-2",
-      info: true,
-      infoText: t("detailPage.totalEmissionsTooltip"),
+      label: t("municipalities.list.kpis.meetsParisGoal.label"),
+      value:
+        region.meetsParis === true
+          ? t("yes")
+          : region.meetsParis === false
+            ? t("no")
+            : t("unknown"),
+      valueClassName:
+        region.meetsParis === true
+          ? "text-green-3"
+          : region.meetsParis === false
+            ? "text-pink-3"
+            : "text-grey",
     },
-    ...(yearOverYearChange !== null
-      ? [
-          {
-            label: t("detailPage.annualChange"),
-            value: formatPercentChange(yearOverYearChange, currentLanguage),
-            valueClassName:
-              yearOverYearChange > 0 ? "text-pink-3" : "text-orange-2",
-          } as DetailStat,
-        ]
-      : []),
-    ...(changeSince2015 !== null
-      ? [
-          {
-            label: t("detailPage.changeSince2015"),
-            value: formatPercentChange(changeSince2015, currentLanguage),
-            valueClassName:
-              changeSince2015 > 0 ? "text-pink-3" : "text-orange-2",
-          } as DetailStat,
-        ]
-      : []),
+    {
+      label: t(
+        "municipalities.list.kpis.historicalEmissionChangePercent.label",
+      ),
+      value: formatPercentChange(
+        region.historicalEmissionChangePercent,
+        currentLanguage,
+      ),
+      valueClassName:
+        region.historicalEmissionChangePercent > 0
+          ? "text-pink-3"
+          : "text-orange-2",
+    },
   ];
 
   return stats;
