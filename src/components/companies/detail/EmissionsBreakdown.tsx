@@ -82,7 +82,7 @@ export function EmissionsBreakdown({
   const scope3Categories = emissions.scope3?.categories || [];
 
   return (
-    <div className={cn("bg-black-2 rounded-level-1", className)}>
+    <div className={cn("bg-black-2 light:bg-white rounded-level-1", className)}>
       {!showOnlyScope3 && (
         <>
           <CardHeader
@@ -95,7 +95,7 @@ export function EmissionsBreakdown({
             {scopeData.map((scope) => (
               <div
                 key={scope.name}
-                className="bg-black-1 rounded-level-2 p-8 space-y-4"
+                className="bg-black-1 light:bg-grey/10 rounded-level-2 p-8 space-y-4"
               >
                 <div className="flex items-center gap-4">
                   <div className={cn("w-3 h-3 rounded-full", scope.color)} />
@@ -109,7 +109,7 @@ export function EmissionsBreakdown({
                   </span>
                 </Text>
 
-                <div className="h-2 bg-black-2 rounded-full overflow-hidden">
+                <div className="h-2 bg-black-2 light:bg-grey/20 rounded-full overflow-hidden">
                   <div
                     className={cn("h-full rounded-full", scope.color)}
                     style={{
@@ -154,9 +154,9 @@ export function EmissionsBreakdown({
                   return (
                     <div
                       key={categoryId}
-                      className="flex items-center gap-6 bg-black-1 rounded-level-2 p-6"
+                      className="flex items-center gap-6 bg-black-1 light:bg-grey/10 rounded-level-2 p-6"
                     >
-                      <div className="w-12 h-12 rounded-full bg-blue-5/30 flex items-center justify-center flex-shrink-0">
+                      <div className="w-12 h-12 rounded-full bg-blue-5/30 light:bg-blue-1 flex items-center justify-center flex-shrink-0">
                         <Icon className="w-6 h-6 text-blue-2" />
                       </div>
                       <div className="flex-1">
@@ -210,9 +210,9 @@ export function EmissionsBreakdown({
                   return (
                     <div
                       key={categoryId}
-                      className="flex items-center gap-6 bg-black-1 rounded-level-2 p-6"
+                      className="flex items-center gap-6 bg-black-1 light:bg-grey/10 rounded-level-2 p-6"
                     >
-                      <div className="w-12 h-12 rounded-full bg-blue-5/30 flex items-center justify-center flex-shrink-0">
+                      <div className="w-12 h-12 rounded-full bg-blue-5/30 light:bg-blue-1 flex items-center justify-center flex-shrink-0">
                         <Icon className="w-6 h-6 text-blue-2" />
                       </div>
                       <div className="flex-1">
@@ -255,7 +255,7 @@ export function EmissionsBreakdown({
       )}
 
       {emissions.biogenicEmissions && (
-        <div className="mt-8 p-6 bg-black-1 rounded-level-2">
+        <div className="mt-8 p-6 bg-black-1 light:bg-grey/10 rounded-level-2">
           <div className="flex items-center gap-2">
             <Text variant="h4">
               {t("emissionsBreakdown.biogenicEmissions")}

@@ -108,7 +108,9 @@ export function CompanyOverview({
       <div className="flex items-start justify-between mb-4 md:mb-12">
         <div className="space-y-4">
           <div className="flex items-center gap-4">
-            <Text className="text-4xl lg:text-6xl">{company.name}</Text>
+            <Text className="text-4xl lg:text-6xl text-white light:text-black-3">
+              {company.name}
+            </Text>
             {token && (
               <div className="flex flex-row gap-2 mt-2 md:mt-0 md:ml-4">
                 <Button
@@ -118,7 +120,7 @@ export function CompanyOverview({
                   onClick={() => navigate("edit")}
                 >
                   Edit
-                  <div className="w-5 h-5 rounded-full bg-orange-5/30 text-orange-2 text-xs flex items-center justify-center">
+                  <div className="w-5 h-5 rounded-full bg-orange-5/30 light:bg-orange-1 text-orange-2 text-xs flex items-center justify-center">
                     <Pen />
                   </div>
                 </Button>
@@ -143,10 +145,10 @@ export function CompanyOverview({
           </div>
           <div className="my-4 w-full max-w-[180px]">
             <Select value={selectedYear} onValueChange={onYearSelect}>
-              <SelectTrigger className="w-full bg-black-1 text-white px-3 py-2 rounded-md">
+              <SelectTrigger className="w-full bg-black-1 light:bg-grey/10 text-white light:text-black-3 px-3 py-2 rounded-md">
                 <SelectValue placeholder={t("companies.overview.selectYear")} />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-popover light:bg-white text-popover-foreground light:text-black-3">
                 <SelectItem value="latest">
                   {t("companies.overview.latestYear")}
                 </SelectItem>

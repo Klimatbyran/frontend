@@ -158,7 +158,7 @@ export function ExploreMode({
 
   return (
     <div
-      className={`flex flex-col w-full bg-black-2 rounded-lg ${isMobile ? "p-3" : "p-6"}`}
+      className={`flex flex-col w-full bg-black-2 light:bg-white rounded-lg ${isMobile ? "p-3" : "p-6"}`}
     >
       {/* Placeholder for animated/segmented chart for each step */}
       <div className="mb-4 text-center">
@@ -169,7 +169,7 @@ export function ExploreMode({
           {isMobile ? (
             <div>
               <button
-                className="bg-black-1 text-white px-3 py-1 rounded-md mt-1 text-sm"
+                className="bg-black-1 light:bg-grey/10 text-white light:text-black-3 px-3 py-1 rounded-md mt-1 text-sm"
                 onClick={() => toggleDescription(exploreStep)}
               >
                 {expandedDescriptions.has(exploreStep)
@@ -220,7 +220,7 @@ export function ExploreMode({
       {isMobile && exploreStep === 4 && (
         <div className="text-center">
           <button
-            className="bg-black-1 text-white px-3 py-1 rounded-md text-sm"
+            className="bg-black-1 light:bg-grey/10 text-white light:text-black-3 px-3 py-1 rounded-md text-sm"
             onClick={toggleCumulativeSummary}
           >
             {showCumulativeSummary

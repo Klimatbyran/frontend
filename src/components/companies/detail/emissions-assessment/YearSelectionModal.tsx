@@ -30,7 +30,7 @@ export function YearSelectionModal({
 }: YearSelectionModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-black-2 text-white">
+      <DialogContent className="bg-black-2 light:bg-white text-white light:text-black-3">
         <DialogHeader>
           <DialogTitle className="text-2xl font-light">
             Select Years for Assessment
@@ -53,8 +53,8 @@ export function YearSelectionModal({
                   variant="outline"
                   className={`w-full justify-start transition-colors ${
                     isSelected
-                      ? "bg-blue-5 text-white border-blue-5"
-                      : "text-white border-white"
+                      ? "bg-blue-5 light:bg-blue-4 text-white light:text-white border-blue-5"
+                      : "text-white light:text-black-3 border-white light:border-grey"
                   }`}
                   onClick={() => onYearSelection(year)}
                 >

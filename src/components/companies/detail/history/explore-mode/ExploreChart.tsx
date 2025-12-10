@@ -821,7 +821,7 @@ export function ExploreChart({
 
         {/* Information boxes for step 5 */}
         {step === 5 && step5AreaData.length > 0 && !isMobile && (
-          <div className="absolute bottom-0 left-0 right-0 z-10 bg-black-2/80 backdrop-blur-sm">
+          <div className="absolute bottom-0 left-0 right-0 z-10 bg-black-2/80 light:bg-white/80 backdrop-blur-sm">
             <div className="flex flex-col gap-3 p-4">
               <CumulativeSummaryBoxes
                 step5Data={step5AreaData}

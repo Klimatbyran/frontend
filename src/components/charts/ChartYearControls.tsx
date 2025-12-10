@@ -52,7 +52,7 @@ export const ChartYearControls: React.FC<ChartYearControlsProps> = ({
                 variant="outline"
                 size="sm"
                 onClick={() => setChartEndYear(defaultShortYear)}
-                className="bg-black-2 border-black-1 text-white hover:bg-black-1 text-xs px-3 py-1"
+                className="bg-black-2 light:bg-grey/10 border-black-1 light:border-grey text-white light:text-black-3 hover:bg-black-1 light:hover:bg-grey/20 text-xs px-3 py-1"
               >
                 <ChevronLeft className="h-3 w-3 mr-1" />
                 {defaultShortYear}
@@ -63,7 +63,7 @@ export const ChartYearControls: React.FC<ChartYearControlsProps> = ({
                 variant="outline"
                 size="sm"
                 onClick={() => setChartEndYear(defaultLongYear)}
-                className="bg-black-2 border-black-1 text-white hover:bg-black-1 text-xs px-3 py-1"
+                className="bg-black-2 light:bg-grey/10 border-black-1 light:border-grey text-white light:text-black-3 hover:bg-black-1 light:hover:bg-grey/20 text-xs px-3 py-1"
               >
                 {defaultLongYear}
                 <ChevronRight className="h-3 w-3 ml-1" />
@@ -99,7 +99,7 @@ export const ChartYearControls: React.FC<ChartYearControlsProps> = ({
             variant="outline"
             size="sm"
             onClick={() => setChartEndYear(defaultShortYear)}
-            className="bg-black-2 border-black-1 text-white hover:bg-black-1"
+            className="bg-black-2 light:bg-grey/10 border-black-1 light:border-grey text-white light:text-black-3 hover:bg-black-1 light:hover:bg-grey/20"
           >
             <ChevronLeft className="h-4 w-4 mr-1" />
             {defaultShortYear}
@@ -112,7 +112,7 @@ export const ChartYearControls: React.FC<ChartYearControlsProps> = ({
             variant="outline"
             size="sm"
             onClick={() => setChartEndYear(defaultLongYear)}
-            className="bg-black-2 border-black-1 text-white hover:bg-black-1"
+            className="bg-black-2 light:bg-grey/10 border-black-1 light:border-grey text-white light:text-black-3 hover:bg-black-1 light:hover:bg-grey/20"
           >
             {defaultLongYear}
             <ChevronRight className="h-4 w-4 ml-1" />
