@@ -79,7 +79,7 @@ export function BlogDetailPage() {
           onClick={handleShare}
         >
           {copied ? (
-            <Check className="w-4 h-4 text-green-500" />
+            <Check className="w-4 h-4 dark:text-green-500 text-green-4" />
           ) : (
             <Share2 className="w-4 h-4" />
           )}
@@ -88,9 +88,9 @@ export function BlogDetailPage() {
       </div>
 
       {/* Hero Section */}
-      <div className={`space-y-${isMobile ? "4" : "8"}`}>
+      <div className={isMobile ? "space-y-4" : "space-y-8"}>
         <div className="flex flex-wrap items-center gap-4">
-          <span className="px-3 py-1 bg-blue-5/50 rounded-full text-blue-2 text-sm">
+          <span className="px-3 py-1 dark:bg-blue-5/50 bg-blue-1/50 rounded-full text-blue-2 text-sm">
             {t("insightCategories." + blogPost.metadata.category)}
           </span>
           <div className="flex items-center gap-2 text-grey text-sm">
@@ -107,7 +107,7 @@ export function BlogDetailPage() {
 
         <Text
           variant={isMobile ? "h1" : "display"}
-          className={isMobile ? "text-3xl" : ""}
+          className={`${isMobile ? "text-3xl" : ""} dark:text-white text-black-3`}
         >
           {blogPost.metadata.title}
         </Text>
@@ -132,20 +132,22 @@ export function BlogDetailPage() {
 
       {/* Author Section */}
       {blogPost.metadata.author && (
-        <div className="flex items-center gap-4 p-8 bg-black-2 rounded-level-2">
+        <div className="flex items-center gap-4 p-8 dark:bg-black-2 bg-white rounded-level-2 border dark:border-transparent border-grey/20">
           <img
             src={blogPost.metadata.author.avatar}
             alt={blogPost.metadata.author.name}
             className="w-16 h-16 rounded-full object-cover"
           />
           <div>
-            <Text variant="body">{blogPost.metadata.author.name}</Text>
+            <Text variant="body" className="dark:text-white text-black-3">
+              {blogPost.metadata.author.name}
+            </Text>
           </div>
         </div>
       )}
 
       {/* Content */}
-      <div className="prose prose-invert max-w-none">
+      <div className="prose dark:prose-invert max-w-none">
         <ReactMarkdown
           remarkPlugins={[remarkGfm, remarkBreaks, remarkMath]}
           rehypePlugins={[rehypeRaw, rehypeKatex]}
@@ -161,7 +163,7 @@ export function BlogDetailPage() {
                 {...props}
                 target="_blank" // Opens link in a new tab
                 rel="noopener noreferrer"
-                className="underline hover:text-white"
+                className="underline dark:hover:text-white hover:text-black-3"
               />
             ),
             table: ({ node, ...props }) => (
@@ -170,16 +172,19 @@ export function BlogDetailPage() {
               </div>
             ),
             thead: ({ node, ...props }) => (
-              <thead {...props} className="bg-blue-5/20" />
+              <thead {...props} className="dark:bg-blue-5/20 bg-blue-1/30" />
             ),
             th: ({ node, ...props }) => (
               <th
                 {...props}
-                className="border border-blue-2/50 px-4 py-3 text-left font-semibold text-blue-2"
+                className="border dark:border-blue-2/50 border-blue-4/50 px-4 py-3 text-left font-semibold text-blue-2"
               />
             ),
             td: ({ node, ...props }) => (
-              <td {...props} className="border border-slate-500/50 px-4 py-3" />
+              <td
+                {...props}
+                className="border dark:border-slate-500/50 border-grey/30 px-4 py-3"
+              />
             ),
           }}
         >
@@ -190,7 +195,9 @@ export function BlogDetailPage() {
       {/* Related Posts */}
       {relatedPosts.length > 0 && (
         <div className="space-y-8">
-          <Text variant="h3">{t("blogDetailPage.relatedArticles")}</Text>
+          <Text variant="h3" className="dark:text-white text-black-3">
+            {t("blogDetailPage.relatedArticles")}
+          </Text>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {relatedPosts.map(
               (post) =>
@@ -198,7 +205,7 @@ export function BlogDetailPage() {
                   <Link
                     key={post.id}
                     to={`/insights/${post.id}`}
-                    className="group bg-black-2 rounded-level-2 overflow-hidden transition-transform hover:scale-[1.02]"
+                    className="group dark:bg-black-2 bg-white rounded-level-2 overflow-hidden transition-transform hover:scale-[1.02] border dark:border-transparent border-grey/20"
                   >
                     <div className="relative h-48 overflow-hidden">
                       <img
@@ -209,7 +216,7 @@ export function BlogDetailPage() {
                     </div>
                     <div className="p-8 space-y-4">
                       <div className="flex items-center gap-4">
-                        <span className="px-3 py-1 bg-blue-5/50 rounded-full text-blue-2 text-sm">
+                        <span className="px-3 py-1 dark:bg-blue-5/50 bg-blue-1/50 rounded-full text-blue-2 text-sm">
                           {post.category}
                         </span>
                         <div className="flex items-center gap-2 text-grey text-sm">
@@ -225,7 +232,7 @@ export function BlogDetailPage() {
                       </div>
                       <Text
                         variant="h4"
-                        className="group-hover:text-blue-2 transition-colors"
+                        className="dark:text-white text-black-3 group-hover:text-blue-2 transition-colors"
                       >
                         {post.title}
                       </Text>
