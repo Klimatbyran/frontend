@@ -33,7 +33,7 @@ const TrendCard: React.FC<TrendCardProps> = ({
     >
       <div
         className={`
-        bg-black-2 rounded-lg p-6
+        bg-black-2 light:bg-grey/10 rounded-lg p-6 border border-transparent light:border-grey/20
         transition-all duration-300 ease-in-out
         ${isSelected ? "h-full overflow-hidden" : "flex flex-col items-center"}
       `}
@@ -45,7 +45,9 @@ const TrendCard: React.FC<TrendCardProps> = ({
                 <div className={`rounded-full p-2 ${info.color}`}>
                   <Icon className={`h-5 w-5 ${info.textColor}`} />
                 </div>
-                <h3 className="text-xl font-light text-white">{info.title}</h3>
+                <h3 className="text-xl font-light text-white light:text-black-3">
+                  {info.title}
+                </h3>
                 <span className="text-sm text-grey">({data.length})</span>
               </div>
               <button
@@ -53,7 +55,7 @@ const TrendCard: React.FC<TrendCardProps> = ({
                   e.stopPropagation();
                   onClose();
                 }}
-                className="text-grey hover:text-white transition-colors"
+                className="text-grey hover:text-white light:hover:text-black-3 transition-colors"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -65,7 +67,7 @@ const TrendCard: React.FC<TrendCardProps> = ({
             <div className={`rounded-full p-3 ${info.color} mb-4`}>
               <Icon className={`h-6 w-6 ${info.textColor}`} />
             </div>
-            <h3 className="text-2xl font-light text-white mb-2">
+            <h3 className="text-2xl font-light text-white light:text-black-3 mb-2">
               {data.length}
             </h3>
             <p className="text-sm text-grey text-center">{info.title}</p>

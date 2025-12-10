@@ -49,7 +49,7 @@ const EmissionsTotalDisplay: React.FC<EmissionsTotalDisplayProps> = ({
             {isSectorView
               ? t("companiesPage.sectorGraphs.sectorTotal")
               : t("companiesPage.sectorGraphs.total")}
-            <span className="ml-2 text-xl font-light text-white">
+            <span className="ml-2 text-xl font-light text-white light:text-black-3">
               {formatEmissionsAbsolute(
                 Math.round(totalEmissions),
                 currentLanguage,
@@ -62,7 +62,7 @@ const EmissionsTotalDisplay: React.FC<EmissionsTotalDisplayProps> = ({
       <select
         value={selectedYear}
         onChange={(e) => onYearChange(e.target.value)}
-        className={`bg-black-2 border border-black-1 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-orange-3 transition-shadow ${
+        className={`bg-black-2 light:bg-grey/10 border border-black-1 light:border-grey/20 rounded-lg px-4 py-2 text-sm text-white light:text-black-3 focus:outline-none focus:ring-2 focus:ring-orange-3 transition-shadow ${
           isMobile ? "w-full" : ""
         }`}
       >

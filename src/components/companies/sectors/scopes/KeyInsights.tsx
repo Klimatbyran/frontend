@@ -69,8 +69,8 @@ const KeyInsights: React.FC<KeyInsightsProps> = ({
   ];
 
   return (
-    <div className="bg-black-1 border border-black-2 rounded-lg p-6">
-      <h3 className="text-lg font-light text-white mb-4">
+    <div className="bg-black-1 light:bg-grey/20 border border-black-2 light:border-grey/20 rounded-lg p-6">
+      <h3 className="text-lg font-light text-white light:text-black-3 mb-4">
         {t("companiesPage.sectorGraphs.keyInsights")}
       </h3>
       <div className="space-y-4">
@@ -87,7 +87,7 @@ const KeyInsights: React.FC<KeyInsightsProps> = ({
                 <Icon className={`h-4 w-4 ${insight.iconColor}`} />
               </div>
               <div>
-                <div className="text-sm font-medium text-white">
+                <div className="text-sm font-medium text-white light:text-black-3">
                   {insight.title}
                 </div>
                 <div className="text-sm text-grey">

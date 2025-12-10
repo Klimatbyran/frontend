@@ -50,14 +50,16 @@ const ScopeCard: React.FC<ScopeCardProps> = ({
 
   return (
     <div
-      className="bg-black-2 rounded-lg p-6 space-y-4 cursor-pointer hover:scale-105 transition-transform duration-200"
+      className="bg-black-2 light:bg-grey/10 rounded-lg p-6 space-y-4 cursor-pointer hover:scale-105 transition-transform duration-200 border border-transparent light:border-grey/20"
       onClick={handleCardClick}
     >
       <div className="flex items-center gap-3 mb-2">
         <div className={`rounded-full p-2 ${color}`}>
           <Icon className="h-5 w-5 text-white" />
         </div>
-        <h3 className="text-lg font-light text-white">{title}</h3>
+        <h3 className="text-lg font-light text-white light:text-black-3">
+          {title}
+        </h3>
         {showCategoryInfo && (
           <InfoTooltip
             ariaLabel={t("companiesPage.sectorGraphs.scope3CategoryInfoLabel")}
@@ -87,7 +89,7 @@ const ScopeCard: React.FC<ScopeCardProps> = ({
           <div className="text-sm text-grey">
             {t("companiesPage.sectorGraphs.companiesReporting")}
           </div>
-          <div className="text-sm text-white">
+          <div className="text-sm text-white light:text-black-3">
             {companies} {t("companiesPage.sectorGraphs.companies")}
           </div>
         </div>
@@ -101,7 +103,7 @@ const ScopeCard: React.FC<ScopeCardProps> = ({
           </div>
         </div>
 
-        <div className="h-2 bg-black-1 rounded-full overflow-hidden">
+        <div className="h-2 bg-black-1 light:bg-grey/20 rounded-full overflow-hidden">
           <div
             className={`h-full transition-all duration-500 ease-out ${color}`}
             style={{ width: `${percent * 100}%` }}
