@@ -122,14 +122,14 @@ export function Footer() {
             {t("footer.supporters")}
           </Text>
           {prefersReducedMotion || isMobile ? null : (
-            <div className="absolute left-20 md:left-0 top-0 bottom-0 w-24 md:w-16 bg-gradient-to-r from-[var(--black-2)] to-transparent pointer-events-none z-10" />
+            <div className="absolute left-20 md:left-0 top-0 bottom-0 w-24 md:w-16 bg-gradient-to-r  dark:from-[var(--black-2)] to-transparent pointer-events-none z-10" />
           )}
           <PartnerLogos
             prefersReducedMotion={prefersReducedMotion}
             isMobile={isMobile}
           />
           {prefersReducedMotion || isMobile ? null : (
-            <div className="absolute right-20 md:right-0 top-0 bottom-0 w-24 md:w-16 bg-gradient-to-l from-[var(--black-2)] to-transparent pointer-events-none z-10" />
+            <div className="absolute right-20 md:right-0 top-0 bottom-0 w-24 md:w-16 bg-gradient-to-l dark:from-[var(--black-2)] to-transparent pointer-events-none z-10" />
           )}
         </div>
 
