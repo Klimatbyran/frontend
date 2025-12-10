@@ -32,7 +32,7 @@ export function CompaniesSectorsPage() {
           type: "filter" as const,
           label: sectorNames[sector as keyof typeof sectorNames] || sector,
           onRemove: () =>
-            setSectors((prev) => prev.filter((s) => s !== sector)),
+            setSectors(sectors.filter((s) => s !== sector)),
         }))
       : []),
     ...(meetsParisFilter !== "all"
