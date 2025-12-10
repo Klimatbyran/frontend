@@ -82,17 +82,20 @@ export function Footer() {
       <div className="container mx-auto px-4 space-y-4 md:space-y-8 flex flex-col w-screen items-center text-center">
         {/* Contact Section */}
         <div className="space-y-2 md:space-y-4">
-          <Text variant="h6" className="text-grey md:text-base">
+          <Text
+            variant="h6"
+            className="dark:text-grey text-black-2 md:text-base"
+          >
             {t("footer.contactUs")}
           </Text>
           <SocialLinks />
-          <div className="text-sm md:text-base max-w-full md:max-w-2xl font-light text-grey">
+          <div className="text-sm md:text-base max-w-full md:max-w-2xl font-light dark:text-grey text-black-2">
             <Trans
               i18nKey="footer.description"
               components={[
                 <a
                   title="Klimatkollen's Github"
-                  className="underline dark:hover:text-white hover:text-black-3 transition-colors"
+                  className="underline dark:hover:text-white hover:text-black-3 dark:text-grey text-black-2 transition-colors"
                   href="https://github.com/Klimatbyran/"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -120,7 +123,7 @@ export function Footer() {
         </div>
 
         {/* Footer Links */}
-        <div className="flex flex-col md:flex-row gap-4 md:gap-8 text-grey items-center">
+        <div className="flex flex-col md:flex-row gap-4 md:gap-8 dark:text-grey text-black-2 items-center">
           <a
             href="/privacy"
             className="dark:hover:text-white hover:text-black-3 transition-colors"
@@ -161,7 +164,7 @@ export function Footer() {
             </a>
           )}
           {token && user && (
-            <div className="dark:hover:text-white hover:text-black-3 ms-auto flex items-center">
+            <div className="dark:hover:text-white hover:text-black-3 ms-auto flex items-center dark:text-grey text-black-2">
               <span>
                 {t("footer.welcome")}, {user?.name ?? ""}
               </span>
