@@ -32,7 +32,13 @@ import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import CardHeader from "../layout/CardHeader";
 
 interface RegionEmissionsProps {
-  emissionsData: Array<{ year: number; total: number }>;
+  emissionsData: Array<{
+    year: number;
+    total?: number;
+    approximated?: number;
+    trend?: number;
+    carbonLaw?: number;
+  }>;
 }
 
 export const RegionEmissions: FC<RegionEmissionsProps> = ({
@@ -48,13 +54,39 @@ export const RegionEmissions: FC<RegionEmissionsProps> = ({
   );
 
   const legendItems: LegendItem[] = useMemo(() => {
-    return [
+    const items: LegendItem[] = [
       {
         name: t("detailPage.graph.historical"),
         color: "var(--orange-2)",
       },
     ];
-  }, [t]);
+
+    // Add approximated if data exists
+    if (emissionsData.some((d) => d.approximated !== undefined)) {
+      items.push({
+        name: t("municipalities.graph.estimated"),
+        color: "var(--grey)",
+      });
+    }
+
+    // Add trend if data exists
+    if (emissionsData.some((d) => d.trend !== undefined)) {
+      items.push({
+        name: t("municipalities.graph.trend"),
+        color: "var(--pink-3)",
+      });
+    }
+
+    // Add Paris path if data exists
+    if (emissionsData.some((d) => d.carbonLaw !== undefined)) {
+      items.push({
+        name: t("municipalities.graph.carbonLaw"),
+        color: "var(--green-3)",
+      });
+    }
+
+    return items;
+  }, [t, emissionsData]);
 
   const filteredData = useMemo(() => {
     return filterDataByYearRange(emissionsData, chartEndYear);
@@ -113,6 +145,45 @@ export const RegionEmissions: FC<RegionEmissionsProps> = ({
                     t("detailPage.graph.historical"),
                   )}
                 />
+
+                {/* Estimated/Approximated line */}
+                {emissionsData.some((d) => d.approximated !== undefined) && (
+                  <Line
+                    type="monotone"
+                    dataKey="approximated"
+                    {...getConsistentLineProps(
+                      "estimated",
+                      false,
+                      t("municipalities.graph.estimated"),
+                    )}
+                  />
+                )}
+
+                {/* Trend line */}
+                {emissionsData.some((d) => d.trend !== undefined) && (
+                  <Line
+                    type="monotone"
+                    dataKey="trend"
+                    {...getConsistentLineProps(
+                      "trend",
+                      false,
+                      t("municipalities.graph.trend"),
+                    )}
+                  />
+                )}
+
+                {/* Paris path */}
+                {emissionsData.some((d) => d.carbonLaw !== undefined) && (
+                  <Line
+                    type="monotone"
+                    dataKey="carbonLaw"
+                    {...getConsistentLineProps(
+                      "paris",
+                      false,
+                      t("municipalities.graph.carbonLaw"),
+                    )}
+                  />
+                )}
               </LineChart>
             </ResponsiveContainer>
           </ChartArea>

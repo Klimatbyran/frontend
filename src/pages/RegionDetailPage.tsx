@@ -24,12 +24,33 @@ export function RegionDetailPage() {
   const emissionsData = useMemo(() => {
     if (!region || !region.emissions) return [];
 
-    return Object.entries(region.emissions)
-      .filter(([year]) => !isNaN(Number(year)))
-      .map(([year, value]) => ({
-        year: Number(year),
-        total: value / 1000, // Convert to tons
-      }))
+    // Collect all years from emissions, approximatedHistoricalEmission, trend, and carbonLaw
+    const years = new Set<string>();
+    Object.keys(region.emissions).forEach((year) => years.add(year));
+    Object.keys(region.approximatedHistoricalEmission || {}).forEach((year) =>
+      years.add(year),
+    );
+    Object.keys(region.trend || {}).forEach((year) => years.add(year));
+    Object.keys(region.carbonLaw || {}).forEach((year) => years.add(year));
+
+    return Array.from(years)
+      .filter((year) => !isNaN(Number(year)))
+      .map((year) => {
+        const yearNum = Number(year);
+        return {
+          year: yearNum,
+          total: region.emissions[year]
+            ? region.emissions[year] / 1000
+            : undefined, // Convert to tons
+          approximated: region.approximatedHistoricalEmission?.[year]
+            ? region.approximatedHistoricalEmission[year] / 1000
+            : undefined, // Convert to tons
+          trend: region.trend?.[year] ? region.trend[year] / 1000 : undefined, // Convert to tons
+          carbonLaw: region.carbonLaw?.[year]
+            ? region.carbonLaw[year] / 1000
+            : undefined, // Convert to tons
+        };
+      })
       .sort((a, b) => a.year - b.year)
       .filter((d) => d.year >= 1990 && d.year <= 2050);
   }, [region]);
@@ -37,9 +58,10 @@ export function RegionDetailPage() {
   // Get latest year and emissions
   const lastYearEmissions = emissionsData[emissionsData.length - 1];
   const lastYear = lastYearEmissions?.year;
-  const lastYearEmissionsTon = lastYearEmissions
-    ? formatEmissionsAbsolute(lastYearEmissions.total * 1000, currentLanguage)
-    : t("noData");
+  const lastYearEmissionsTon =
+    lastYearEmissions && lastYearEmissions.total !== undefined
+      ? formatEmissionsAbsolute(lastYearEmissions.total * 1000, currentLanguage)
+      : t("noData");
 
   const headerStats = useRegionDetailHeaderStats(
     region,
