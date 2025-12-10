@@ -4,17 +4,17 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center rounded-full text-sm font-light transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white disabled:pointer-events-none",
+  "inline-flex items-center justify-center rounded-full text-sm font-light transition-colors focus-visible:outline-none focus-visible:ring-1 dark:focus-visible:ring-white focus-visible:ring-black-3 disabled:pointer-events-none",
   {
     variants: {
       variant: {
         default:
-          "bg-black-2 text-white hover:opacity-80 active:ring-1 active:ring-white disabled:opacity-50",
+          "dark:bg-black-2 bg-grey/10 dark:text-white text-black-3 hover:opacity-80 active:ring-1 dark:active:ring-white active:ring-black-3 disabled:opacity-50",
         outline:
-          "border border-white bg-transparent hover:opacity-80 active:ring-1 active:ring-white disabled:opacity-50",
+          "border dark:border-white border-black-3 bg-transparent hover:opacity-80 active:ring-1 dark:active:ring-white active:ring-black-3 disabled:opacity-50",
         ghost:
-          "bg-transparent hover:bg-white/10 active:ring-1 active:ring-white disabled:opacity-50",
-        icon: "h-10 w-10 rounded-full bg-black-2 hover:opacity-80 active:ring-1 active:ring-white disabled:opacity-50",
+          "bg-transparent dark:hover:bg-white/10 hover:bg-black-3/10 active:ring-1 dark:active:ring-white active:ring-black-3 disabled:opacity-50",
+        icon: "h-10 w-10 rounded-full dark:bg-black-2 bg-grey/10 hover:opacity-80 active:ring-1 dark:active:ring-white active:ring-black-3 disabled:opacity-50",
       },
       size: {
         default: "h-10 px-6 py-2",

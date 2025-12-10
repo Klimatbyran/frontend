@@ -16,8 +16,6 @@
     sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  background-color: black;
-  color: white;
 
   /* Grey palette */
   --grey: #878787;
@@ -60,12 +58,25 @@
   --pink-3-muted: color-mix(in srgb, var(--pink-3) 20%, transparent);
 }
 
+:root.dark {
+  background-color: black;
+  color: white;
+}
+
+:root.light {
+  background-color: #f7f7f7;
+  color: #000000;
+}
+
 @layer base {
   * {
     @apply border-border;
   }
   body {
-    @apply bg-black text-white;
+    @apply bg-black dark:bg-black text-white dark:text-white;
+  }
+  html.light body {
+    @apply bg-white text-black-3;
   }
   h1,
   h2,
@@ -84,52 +95,52 @@
 @layer components {
   /* Command menu styling */
   .cmd-menu {
-    @apply bg-black-2 border-none text-white;
+    @apply bg-black-2 dark:bg-black-2 bg-white border-none text-white dark:text-white text-black-3;
   }
 
   .cmd-input {
-    @apply bg-black-1 border-none;
+    @apply bg-black-1 dark:bg-black-1 bg-grey/10 border-none;
   }
 
   .cmd-item {
-    @apply text-grey hover:bg-black-1 hover:text-white;
+    @apply text-grey dark:text-grey hover:bg-black-1 dark:hover:bg-black-1 hover:bg-grey/20 hover:text-white dark:hover:text-white hover:text-black-3;
   }
 
   /* Popover styling */
   .popover-content {
-    @apply bg-black-2 border-none;
+    @apply bg-black-2 dark:bg-black-2 bg-white border-none;
   }
 
   /* Select styling */
   .select-trigger {
-    @apply bg-black-1 border-none text-white;
+    @apply bg-black-1 dark:bg-black-1 bg-grey/10 border-none text-white dark:text-white text-black-3;
   }
 
   .select-content {
-    @apply bg-black-2 border-none;
+    @apply bg-black-2 dark:bg-black-2 bg-white border-none;
   }
 
   .select-item {
-    @apply text-grey hover:bg-black-1 hover:text-white;
+    @apply text-grey dark:text-grey hover:bg-black-1 dark:hover:bg-black-1 hover:bg-grey/20 hover:text-white dark:hover:text-white hover:text-black-3;
   }
 
   /* Dialog styling */
   .dialog-content {
-    @apply bg-black-2 border-none;
+    @apply bg-black-2 dark:bg-black-2 bg-white border-none;
   }
 
   /* Sheet styling */
   .sheet-content {
-    @apply bg-black-2 border-none;
+    @apply bg-black-2 dark:bg-black-2 bg-white border-none;
   }
 
   /* Dropdown menu styling */
   .dropdown-content {
-    @apply bg-black-2 border-none;
+    @apply bg-black-2 dark:bg-black-2 bg-white border-none;
   }
 
   .dropdown-item {
-    @apply text-grey hover:bg-black-1 hover:text-white;
+    @apply text-grey dark:text-grey hover:bg-black-1 dark:hover:bg-black-1 hover:bg-grey/20 hover:text-white dark:hover:text-white hover:text-black-3;
   }
 
   /* Menubar styling */
@@ -138,33 +149,33 @@
   }
 
   .menubar-content {
-    @apply bg-black-2 border-none rounded-level-2 p-2;
+    @apply bg-black-2 dark:bg-black-2 bg-white border-none rounded-level-2 p-2;
   }
 
   .menubar-item {
-    @apply text-grey hover:bg-black-1 hover:text-white rounded-level-2 cursor-pointer;
+    @apply text-grey dark:text-grey hover:bg-black-1 dark:hover:bg-black-1 hover:bg-grey/20 hover:text-white dark:hover:text-white hover:text-black-3 rounded-level-2 cursor-pointer;
   }
 
   .menubar-separator {
-    @apply bg-black-1;
+    @apply bg-black-1 dark:bg-black-1 bg-grey/20;
   }
 
   .menubar-shortcut {
-    @apply text-grey;
+    @apply text-grey dark:text-grey;
   }
 }
 
 /* Prose styling for blog content */
 .prose {
-  @apply text-grey;
+  @apply text-grey dark:text-grey;
 }
 
 .prose h2 {
-  @apply text-3xl font-light text-white mt-12 mb-6;
+  @apply text-3xl font-light text-white dark:text-white text-black-3 mt-12 mb-6;
 }
 
 .prose h3 {
-  @apply text-2xl font-light text-white mt-8 mb-4;
+  @apply text-2xl font-light text-white dark:text-white text-black-3 mt-8 mb-4;
 }
 
 .prose p {

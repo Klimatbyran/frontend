@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HelmetProvider } from "react-helmet-async";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import AuthProvider from "./contexts/AuthContext";
+import { ThemeProvider } from "./contexts/ThemeProvider";
 import "./index.css";
 import "./i18n";
 
@@ -17,13 +18,15 @@ const router = createBrowserRouter([
   {
     path: "*",
     element: (
-      <AuthProvider>
-        <LanguageProvider>
-          <Layout>
-            <App />
-          </Layout>
-        </LanguageProvider>
-      </AuthProvider>
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <AuthProvider>
+          <LanguageProvider>
+            <Layout>
+              <App />
+            </Layout>
+          </LanguageProvider>
+        </AuthProvider>
+      </ThemeProvider>
     ),
   },
 ]);

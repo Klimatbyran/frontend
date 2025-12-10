@@ -18,7 +18,7 @@ export function Layout({ children }: LayoutProps) {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen w-full overflow-x-hidden bg-black-3 flex flex-col">
+    <div className="min-h-screen w-full overflow-x-hidden bg-black-3 dark:bg-black-3 bg-white flex flex-col">
       <Header />
       <main className="flex-1 container mx-auto px-4 pt-24 pb-12 min-h-0">
         {children}
