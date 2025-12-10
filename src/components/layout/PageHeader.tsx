@@ -17,7 +17,9 @@ export function PageHeader({
   return (
     <>
       <div className={cn("max-w-[1200px] mx-auto p-4 mb-4 md:mb-8", className)}>
-        <h1 className="text-3xl font-light mb-2">{title}</h1>
+        <h1 className="text-3xl font-light mb-2 dark:text-white text-black-3">
+          {title}
+        </h1>
         {description && <p className="text-sm text-grey">{description}</p>}
         {children && <div className="flex flex-wrap gap-2">{children}</div>}
       </div>
