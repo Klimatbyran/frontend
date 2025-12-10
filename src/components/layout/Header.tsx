@@ -261,6 +261,7 @@ export function Header() {
                     className={cn(
                       "flex gap-2 p-3",
                       "dark:data-[state=open]:bg-black-1 data-[state=open]:bg-grey/10 data-[state=closed]:bg-transparent",
+                      "focus:!text-black-3 dark:focus:!text-white",
                       location.pathname.startsWith(
                         localizedPath(currentLanguage, item.path),
                       )
