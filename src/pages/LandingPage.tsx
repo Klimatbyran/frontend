@@ -98,7 +98,7 @@ export function LandingPage() {
               <Typewriter
                 text={TypeWriterTexts}
                 speed={70}
-                className="text-[#E2FF8D]"
+                className="text-orange-2 dark:text-[#E2FF8D]"
                 waitTime={2000}
                 deleteSpeed={40}
                 cursorChar="_"

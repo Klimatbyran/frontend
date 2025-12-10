@@ -38,7 +38,7 @@ export function TopList({
   return (
     <div
       className={cn(
-        "dark:bg-black-2 bg-white rounded-level-2 p-4 md:p-8 border dark:border-transparent border-grey/20",
+        "dark:bg-black-2 bg-grey/10 rounded-level-2 p-4 md:p-8 border dark:border-transparent border-grey/20",
         className,
       )}
     >
