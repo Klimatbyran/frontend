@@ -25,7 +25,7 @@ export function FilterBadges({ filters, view }: FilterBadgesProps) {
           <Badge
             key={index}
             variant="secondary"
-            className="bg-blue-5/30 text-blue-2 pl-2 pr-1 flex items-center gap-1"
+            className="dark:bg-blue-5/30 bg-blue-1 dark:text-blue-2 text-blue-5 pl-2 pr-1 flex items-center gap-1"
           >
             <span className="text-grey text-xs mr-1">
               {filter.type === "sort"
@@ -41,7 +41,7 @@ export function FilterBadges({ filters, view }: FilterBadgesProps) {
                   e.preventDefault();
                   filter.onRemove?.();
                 }}
-                className="hover:bg-blue-5/50 p-1 rounded-sm transition-colors"
+                className="dark:hover:bg-blue-5/50 hover:bg-blue-2/50 p-1 rounded-sm transition-colors"
               >
                 <X className="w-3 h-3" />
               </button>

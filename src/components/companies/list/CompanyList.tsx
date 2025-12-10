@@ -42,7 +42,10 @@ export function CompanyList({ companies }: CompanyListProps) {
         latestPeriod?.emissions?.calculatedTotalEmissions || null;
 
       // Calculate emissions change from previous period
-      const emissionsChange = calculateEmissionsChange(latestPeriod, previousPeriod);
+      const emissionsChange = calculateEmissionsChange(
+        latestPeriod,
+        previousPeriod,
+      );
 
       const noSustainabilityReport =
         !latestPeriod ||
@@ -102,7 +105,7 @@ export function CompanyList({ companies }: CompanyListProps) {
             }),
         linkCardDescriptionColor: noSustainabilityReport
           ? "text-pink-3"
-          : "text-green-3",
+          : "dark:text-green-3 text-green-4",
         isFinancialsSector,
       };
     });

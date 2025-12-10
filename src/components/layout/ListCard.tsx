@@ -65,14 +65,16 @@ export function ListCard({
     <div className="relative rounded-level-2 @container">
       <LocalizedLink
         to={linkTo}
-        className="block dark:bg-black-2 bg-white rounded-level-2 p-8 space-y-8 transition-all duration-300 hover:shadow-[0_0_10px_rgba(153,207,255,0.15)] dark:hover:bg-[#1a1a1a] hover:bg-grey/5 border dark:border-transparent border-grey/20"
+        className="block dark:bg-black-2 bg-grey/10 rounded-level-2 p-8 space-y-8 transition-all duration-300 hover:shadow-[0_0_10px_rgba(153,207,255,0.15)] dark:hover:bg-[#1a1a1a] hover:bg-grey/15 border dark:border-transparent border-grey/20"
       >
         {/* Header section */}
         <div className="space-y-2">
           <div className="flex justify-between">
             <div className="flex flex-col">
-              <h2 className="text-3xl font-light">{name}</h2>
-              <p className="text-grey text-sm line-clamp-2 min-h-[40px]">
+              <h2 className="text-3xl font-light dark:text-white text-black-3">
+                {name}
+              </h2>
+              <p className="dark:text-grey text-black-1 text-sm line-clamp-2 min-h-[40px]">
                 {description}
               </p>
             </div>
@@ -80,14 +82,14 @@ export function ListCard({
           </div>
 
           {/* Meets Paris section */}
-          <div className="flex items-center gap-2 text-grey mb-2 text-lg h-[40px]">
+          <div className="flex items-center gap-2 dark:text-grey text-black-1 mb-2 text-lg h-[40px]">
             {t(meetsParisTranslationKey, { name })}
           </div>
           <div
             className={cn(
               "text-3xl font-light",
               meetsParis === true
-                ? "text-green-3"
+                ? "dark:text-green-3 text-green-4"
                 : meetsParis === false
                   ? "text-pink-3"
                   : "text-grey",

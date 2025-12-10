@@ -43,14 +43,14 @@ export function SortPopover({
         <Button
           variant="outline"
           size="sm"
-          className="bg-black-1 border-black-1 text-grey hover:text-white hover:bg-black-1/80 hover:border-black-1 font-medium text-sm"
+          className="dark:bg-black-1 bg-grey/10 dark:border-black-1 border-grey/20 dark:text-grey text-black-3 dark:hover:text-white hover:text-black-3 dark:hover:bg-black-1/80 hover:bg-grey/20 dark:hover:border-black-1 hover:border-grey/30 font-medium text-sm"
         >
           <ArrowUpDown className="mr-2 h-4 w-4" />
           {t("companiesPage.sort")}
         </Button>
       </PopoverTrigger>
       <PopoverContent
-        className="w-[250px] p-0 bg-black-2 border-black-1"
+        className="w-[250px] p-0 dark:bg-black-2 bg-white dark:border-black-1 border-grey/20"
         align="end"
       >
         <Command className="bg-transparent">
@@ -61,7 +61,7 @@ export function SortPopover({
                 <CommandItem
                   key={option.value}
                   onSelect={() => setSortBy(option.value)}
-                  className="flex items-center justify-between cursor-pointer"
+                  className="flex items-center justify-between cursor-pointer dark:text-white text-black-3"
                 >
                   <span>{option.label}</span>
                   {sortBy === option.value && (
@@ -71,7 +71,7 @@ export function SortPopover({
               ))}
             </CommandGroup>
 
-            <CommandSeparator className="bg-black-1" />
+            <CommandSeparator className="dark:bg-black-1 bg-grey/20" />
             <CommandGroup heading={t("companiesPage.sortDirection.asc")}>
               {[
                 {
@@ -99,7 +99,7 @@ export function SortPopover({
                       setSortDirection(option.value as "asc" | "desc");
                     }
                   }}
-                  className="flex items-center justify-between cursor-pointer"
+                  className="flex items-center justify-between cursor-pointer dark:text-white text-black-3"
                 >
                   <div className="flex items-center gap-2">
                     {option.icon}

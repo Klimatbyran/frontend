@@ -29,7 +29,7 @@ export function CardInfo({
 
   return (
     <div className="space-y-2">
-      <div className="flex items-center gap-2 text-grey mb-2 text-lg">
+      <div className="flex items-center gap-2 dark:text-grey text-black-1 mb-2 text-lg">
         {icon}
         <span>{title}</span>
         {suffix}
@@ -43,7 +43,11 @@ export function CardInfo({
         {value ? (
           <span className={cn(textColor)}>
             {value}
-            {unit && <span className="text-lg text-grey ml-1">{unit}</span>}
+            {unit && (
+              <span className="text-lg dark:text-grey text-black-1 ml-1">
+                {unit}
+              </span>
+            )}
             {isAIGenerated && (
               <span className="ml-2 absolute">
                 <AiIcon size="sm" className="absolute top-0" />
@@ -51,7 +55,9 @@ export function CardInfo({
             )}
           </span>
         ) : (
-          <span className="text-grey">{t("companies.card.noData")}</span>
+          <span className="dark:text-grey text-black-1">
+            {t("companies.card.noData")}
+          </span>
         )}
       </div>
     </div>
