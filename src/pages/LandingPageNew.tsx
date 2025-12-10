@@ -119,7 +119,7 @@ export function LandingPageNew() {
               <Typewriter
                 text={typeWriterTexts}
                 speed={TYPEWRITER_SPEED}
-                className="text-[#E2FF8D]"
+                className="text-[#E2FF8D] light:text-[#B4CC70]"
                 waitTime={TYPEWRITER_WAIT_TIME}
                 deleteSpeed={TYPEWRITER_DELETE_SPEED}
                 cursorChar={TYPEWRITER_CURSOR_CHAR}
