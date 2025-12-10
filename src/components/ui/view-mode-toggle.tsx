@@ -30,7 +30,7 @@ export function ViewModeToggle<T extends string>({
   return (
     <div
       className={cn(
-        "flex dark:bg-black-1 bg-grey/10 rounded-md overflow-hidden",
+        "flex bg-black-1 light:bg-grey/10 rounded-md overflow-hidden",
       )}
     >
       {modes.map((mode) => (

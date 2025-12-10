@@ -66,7 +66,7 @@ export function FlipCard({
         {/* Front of card */}
         <div
           className={cn(
-            "absolute inset-0 dark:bg-black-2 bg-grey/5 rounded-level-2 p-4 md:p-6 border-2 flex flex-col",
+            "absolute inset-0 bg-black-2 light:bg-grey/5 rounded-level-2 p-4 md:p-6 border-2 flex flex-col",
             borderColor,
           )}
           style={{
@@ -118,10 +118,10 @@ export function FlipCard({
         >
           <div className="flex flex-col items-center justify-center h-full text-center">
             <Icon
-              className="h-8 w-8 md:h-12 md:w-12 dark:text-white text-black-3 mb-4 md:mb-6"
+              className="h-8 w-8 md:h-12 md:w-12 text-white light:text-black-3 mb-4 md:mb-6"
               strokeWidth={1.5}
             />
-            <Text className="text-sm md:text-base dark:text-white text-black-3 leading-relaxed max-w-md">
+            <Text className="text-sm md:text-base text-white light:text-black-3 leading-relaxed max-w-md">
               {description}
             </Text>
           </div>

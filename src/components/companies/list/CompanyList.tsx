@@ -105,7 +105,7 @@ export function CompanyList({ companies }: CompanyListProps) {
             }),
         linkCardDescriptionColor: noSustainabilityReport
           ? "text-pink-3"
-          : "dark:text-green-3 text-green-4",
+          : "text-green-3 light:text-green-4",
         isFinancialsSector,
       };
     });

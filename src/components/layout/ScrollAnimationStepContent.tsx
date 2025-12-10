@@ -43,10 +43,10 @@ export function ScrollAnimationStepContent({
             {badge.text}
           </span>
         </div>
-        <h2 className="text-2xl md:text-4xl lg:text-6xl xl:text-7xl font-light dark:text-white text-black-3 leading-tight">
+        <h2 className="text-2xl md:text-4xl lg:text-6xl xl:text-7xl font-light text-white light:text-black-3 leading-tight">
           {heading}
         </h2>
-        <p className="text-sm md:text-base lg:text-lg xl:text-xl dark:text-gray-300 text-black-3/70 leading-relaxed">
+        <p className="text-sm md:text-base lg:text-lg xl:text-xl text-gray-300 light:text-black-3/70 leading-relaxed">
           {paragraph}
         </p>
       </div>

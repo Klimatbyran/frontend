@@ -38,7 +38,7 @@ export function TopList({
   return (
     <div
       className={cn(
-        "dark:bg-black-2 bg-grey/10 rounded-level-2 p-4 md:p-8 border dark:border-transparent border-grey/20",
+        "bg-black-2 light:bg-grey/10 rounded-level-2 p-4 md:p-8 border border-transparent light:border-grey/20",
         className,
       )}
     >
@@ -62,7 +62,7 @@ export function TopList({
           <LocalizedLink
             key={item.link}
             to={item.link}
-            className="grid grid-cols-subgrid col-span-full items-center gap-4 dark:hover:bg-black-1 hover:bg-grey/10 transition-colors rounded-lg"
+            className="grid grid-cols-subgrid col-span-full items-center gap-4 hover:bg-black-1 light:hover:bg-grey/10 transition-colors rounded-lg"
           >
             <span className={cn("text-2xl sm:text-5xl font-light", rankColor)}>
               {String(index + 1).padStart(2, "0")}

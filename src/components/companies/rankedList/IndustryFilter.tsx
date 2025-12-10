@@ -51,7 +51,7 @@ export function IndustryFilter({
           value={selectedSector || undefined}
           onValueChange={(value) => onSectorChange(value)}
         >
-          <SelectTrigger className="w-full dark:bg-black-2 bg-white dark:border-black-3 border-grey/20 dark:text-white text-black-3">
+          <SelectTrigger className="w-full bg-black-2 light:bg-white border-black-3 light:border-grey/20 text-white light:text-black-3">
             <SelectValue
               placeholder={t(
                 "companiesRankedPage.selectIndustry",
@@ -61,7 +61,7 @@ export function IndustryFilter({
               {selectedSectorName}
             </SelectValue>
           </SelectTrigger>
-          <SelectContent className="dark:bg-black-1 bg-white dark:border-black-3 border-grey/20">
+          <SelectContent className="bg-black-1 light:bg-white border-black-3 light:border-grey/20">
             {availableSectors.map((sectorCode) => {
               const sectorName =
                 sectorNames[sectorCode as keyof typeof sectorNames] ||
@@ -70,7 +70,7 @@ export function IndustryFilter({
                 <SelectItem
                   key={sectorCode}
                   value={sectorCode}
-                  className="dark:text-white text-black-3 dark:focus:bg-black-2 focus:bg-grey/10"
+                  className="text-white light:text-black-3 focus:bg-black-2 light:focus:bg-grey/10"
                 >
                   {sectorName}
                 </SelectItem>
@@ -103,7 +103,7 @@ export function IndustryFilter({
               "border",
               isSelected
                 ? "bg-blue-5/30 border-blue-4 text-blue-2 hover:bg-blue-5/40"
-                : "dark:bg-black-2 bg-grey/10 dark:border-black-3 border-grey/20 text-grey dark:hover:bg-black-3 hover:bg-grey/20 dark:hover:border-black-4 hover:border-grey/30",
+                : "bg-black-2 light:bg-grey/10 border-black-3 light:border-grey/20 text-grey hover:bg-black-3 light:hover:bg-grey/20 hover:border-black-4 light:hover:border-grey/30",
             )}
           >
             {sectorName}

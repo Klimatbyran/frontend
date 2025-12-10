@@ -87,7 +87,7 @@ export function LandingPage() {
         canonicalUrl={canonicalUrl}
         structuredData={structuredData}
       />
-      <div className="flex flex-col bg-white dark:bg-black">
+      <div className="flex flex-col bg-black light:bg-white">
         <div className="flex-1 flex flex-col items-center text-center px-4 py-14 md:py-24">
           <div className="max-w-lg md:max-w-4xl mx-auto space-y-4">
             <h1 className="text-4xl md:text-7xl font-light tracking-tight">
@@ -98,7 +98,7 @@ export function LandingPage() {
               <Typewriter
                 text={TypeWriterTexts}
                 speed={70}
-                className="text-orange-2 dark:text-[#E2FF8D]"
+                className="text-orange-2 light:text-[#E2FF8D]"
                 waitTime={2000}
                 deleteSpeed={40}
                 cursorChar="_"

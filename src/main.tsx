@@ -18,7 +18,7 @@ const router = createBrowserRouter([
   {
     path: "*",
     element: (
-      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+      <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
         <AuthProvider>
           <LanguageProvider>
             <Layout>

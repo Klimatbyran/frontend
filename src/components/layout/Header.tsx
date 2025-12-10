@@ -134,7 +134,7 @@ const SubLinksMenu = ({ sublinks }: { sublinks: NavSubLink[] }) => {
       {sublinks.map((sublink) => (
         <li
           key={sublink.path}
-          className="hover:bg-black-1 dark:hover:bg-black-1 hover:bg-grey/10 px-2 py-1.5 text-sm dark:text-white text-black-3"
+          className="hover:bg-black-1 light:hover:bg-grey/10 px-2 py-1.5 text-sm text-white light:text-black-3"
         >
           {sublink.path.startsWith("https://") ? (
             <a
@@ -215,17 +215,17 @@ export function Header() {
         onClick={() => changeLanguage("en")}
         className={cn(
           currentLanguage === "en" &&
-            "bg-black-1 dark:bg-black-1 bg-grey/20 rounded-full px-1",
+            "bg-black-1 light:bg-grey/20 rounded-full px-1",
         )}
       >
         🇬🇧
       </button>
-      <span className="text-grey dark:text-grey">|</span>
+      <span className="text-grey">|</span>
       <button
         onClick={() => changeLanguage("sv")}
         className={cn(
           currentLanguage === "sv" &&
-            "bg-black-1 dark:bg-black-1 bg-grey/20 rounded-full px-1",
+            "bg-black-1 light:bg-grey/20 rounded-full px-1",
         )}
       >
         🇸🇪
@@ -236,14 +236,14 @@ export function Header() {
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 w-screen flex items-center justify-between dark:bg-black-2 bg-white border-b dark:border-black-1 border-grey/20 z-50",
+        "fixed top-0 left-0 w-screen flex items-center justify-between bg-black-2 light:bg-white border-b border-black-1 light:border-grey/20 z-50",
         "h-10 lg:h-12",
       )}
     >
       <div className="container lg:mx-auto px-4 flex justify-between">
         <LocalizedLink
           to="/"
-          className="flex items-center gap-2 text-base font-medium dark:text-white text-black-3"
+          className="flex items-center gap-2 text-base font-medium text-white light:text-black-3"
         >
           Klimatkollen
         </LocalizedLink>
@@ -260,19 +260,19 @@ export function Header() {
                   <NavigationMenuTrigger
                     className={cn(
                       "flex gap-2 p-3",
-                      "dark:data-[state=open]:bg-black-1 data-[state=open]:bg-grey/10 data-[state=closed]:bg-transparent",
-                      "focus:!text-black-3 dark:focus:!text-white",
+                      "data-[state=open]:bg-black-1 light:data-[state=open]:bg-grey/10 data-[state=closed]:bg-transparent",
+                      "light:focus:!text-black-3 focus:!text-white",
                       location.pathname.startsWith(
                         localizedPath(currentLanguage, item.path),
                       )
-                        ? "dark:text-white text-black-3"
-                        : "text-grey dark:hover:text-white hover:text-black-3",
+                        ? "text-white light:text-black-3"
+                        : "text-grey hover:text-white light:hover:text-black-3",
                     )}
                   >
                     {item.icon}
                     {t(item.label)}
                   </NavigationMenuTrigger>
-                  <NavigationMenuContent className="min-w-56 w-full p-3 top-12 dark:bg-black-2 bg-white">
+                  <NavigationMenuContent className="min-w-56 w-full p-3 top-12 bg-black-2 light:bg-white">
                     <SubLinksMenu sublinks={item.sublinks} />
                   </NavigationMenuContent>
                 </NavigationMenuItem>
@@ -284,8 +284,8 @@ export function Header() {
                     location.pathname.startsWith(
                       localizedPath(currentLanguage, item.path),
                     )
-                      ? "dark:text-white text-black-3"
-                      : "text-grey dark:hover:text-white hover:text-black-3",
+                      ? "text-white light:text-black-3"
+                      : "text-grey hover:text-white light:hover:text-black-3",
                   )}
                 >
                   <NavigationMenuLink asChild>
@@ -302,7 +302,7 @@ export function Header() {
             )}
             {user && (
               <NavigationMenuItem>
-                <NavigationMenuTrigger className="flex items-center gap-2 px-3 py-3 h-full transition-all text-sm cursor-pointer text-grey dark:hover:text-white hover:text-black-3">
+                <NavigationMenuTrigger className="flex items-center gap-2 px-3 py-3 h-full transition-all text-sm cursor-pointer text-grey hover:text-white light:hover:text-black-3">
                   <span>Internal</span>
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
@@ -331,14 +331,14 @@ export function Header() {
         )}
 
         <button
-          className="lg:hidden dark:text-white text-black-3"
+          className="lg:hidden text-white light:text-black-3"
           onClick={toggleMenu}
           aria-label={menuOpen ? "Close menu" : "Open menu"}
         >
           {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
         {menuOpen && (
-          <div className="fixed inset-0 w-full h-full z-100 flex p-8 mt-10 dark:bg-black-2 bg-white">
+          <div className="fixed inset-0 w-full h-full z-100 flex p-8 mt-10 bg-black-2 light:bg-white">
             <div className="flex flex-col gap-6 text-lg w-full">
               <HeaderSearchButton
                 className="w-full"
@@ -353,7 +353,7 @@ export function Header() {
                   <LocalizedLink
                     to={link.path}
                     onClick={toggleMenu}
-                    className="flex items-center gap-2 cursor-pointer dark:text-white text-black-3"
+                    className="flex items-center gap-2 cursor-pointer text-white light:text-black-3"
                   >
                     {link.icon}
                     {t(link.label)}
@@ -364,7 +364,7 @@ export function Header() {
                         sublink.path.startsWith("https://") ? (
                           <a
                             href={sublink.path}
-                            className="flex items-center gap-2 text-sm text-grey dark:text-grey"
+                            className="flex items-center gap-2 text-sm text-grey"
                             target="_blank"
                             key={sublink.path}
                             onClick={toggleMenu}
@@ -376,7 +376,7 @@ export function Header() {
                             key={sublink.path}
                             to={sublink.path}
                             onClick={toggleMenu}
-                            className="flex items-center gap-2 text-sm text-grey dark:text-grey"
+                            className="flex items-center gap-2 text-sm text-grey"
                           >
                             {t(sublink.label)}
                           </LocalizedLink>
@@ -392,7 +392,7 @@ export function Header() {
                   setMenuOpen(false); // Close the menu
                   setIsSignUpOpen(true); // Open the newsletter popover
                 }}
-                className="flex items-center gap-2 text-blue-3 dark:text-blue-3"
+                className="flex items-center gap-2 text-blue-3"
               >
                 <Mail className="w-4 h-4" />
                 {t("header.newsletter")}

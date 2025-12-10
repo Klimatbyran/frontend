@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  darkMode: ["class"],
+  darkMode: ["selector", ".light"],
   content: [
     "./pages/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
@@ -140,5 +140,8 @@ export default {
   plugins: [
     require("tailwindcss-animate"),
     require("@tailwindcss/container-queries"),
+    require("tailwindcss/plugin")(function ({ addVariant }) {
+      addVariant("light", "&:where(.light, .light *)");
+    }),
   ],
 };

@@ -74,7 +74,7 @@ export function CompaniesListPage() {
         {[...Array(4)].map((_, i) => (
           <div
             key={i}
-            className="h-64 dark:bg-black-2 bg-grey/10 rounded-level-2"
+            className="h-64 bg-black-2 light:bg-grey/10 rounded-level-2"
           />
         ))}
       </div>
@@ -104,10 +104,10 @@ export function CompaniesListPage() {
       <div
         className={cn(
           screenSize.isMobile ? "relative" : "sticky top-0 z-10",
-          "dark:bg-black bg-white",
+          "bg-black light:bg-white",
         )}
       >
-        <div className="absolute inset-0 w-full dark:bg-black bg-white -z-10" />
+        <div className="absolute inset-0 w-full bg-black light:bg-white -z-10" />
 
         {/* Wrapper for Filters, Search, and Badges */}
         <div className={cn("flex flex-wrap items-center gap-2 mb-2 md:mb-4")}>
@@ -117,7 +117,7 @@ export function CompaniesListPage() {
             placeholder={t("companiesPage.searchPlaceholder")}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="dark:bg-black-1 bg-grey/10 dark:text-white text-black-3 rounded-md px-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-2 relative w-full md:w-[350px]"
+            className="bg-black-1 light:bg-grey/10 text-white light:text-black-3 rounded-md px-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-2 relative w-full md:w-[350px]"
           />
 
           {/* Filter and Sort Buttons */}

@@ -29,7 +29,7 @@ export function CardInfo({
 
   return (
     <div className="space-y-2">
-      <div className="flex items-center gap-2 dark:text-grey text-black-1 mb-2 text-lg">
+      <div className="flex items-center gap-2 text-grey light:text-black-1 mb-2 text-lg">
         {icon}
         <span>{title}</span>
         {suffix}
@@ -44,7 +44,7 @@ export function CardInfo({
           <span className={cn(textColor)}>
             {value}
             {unit && (
-              <span className="text-lg dark:text-grey text-black-1 ml-1">
+              <span className="text-lg text-grey light:text-black-1 ml-1">
                 {unit}
               </span>
             )}
@@ -55,7 +55,7 @@ export function CardInfo({
             )}
           </span>
         ) : (
-          <span className="dark:text-grey text-black-1">
+          <span className="text-grey light:text-black-1">
             {t("companies.card.noData")}
           </span>
         )}

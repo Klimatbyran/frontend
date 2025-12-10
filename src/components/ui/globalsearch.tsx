@@ -62,7 +62,7 @@ const GlobalSearch = () => {
     <div className="flex flex-col gap-4 w-[300px] relative">
       <label
         htmlFor="landingInput"
-        className="text-xl mt-6 dark:text-white text-black-3"
+        className="text-xl mt-6 text-white light:text-black-3"
       >
         {t("globalSearch.title")}
       </label>
@@ -73,15 +73,15 @@ const GlobalSearch = () => {
           placeholder={t("globalSearch.placeholder")}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="dark:bg-black-1 bg-grey/10 border dark:border-transparent border-grey/20 placeholder:text-center relative h-10 rounded-md px-2 text-base text-lg dark:focus:outline-white focus:outline-black-3 font-medium focus:text-left focus:ring-1 dark:focus:ring-blue-2 focus:ring-blue-3 relative w-full dark:text-white text-black-3"
+          className="bg-black-1 light:bg-grey/10 border border-transparent light:border-grey/20 placeholder:text-center relative h-10 rounded-md px-2 text-base text-lg focus:outline-white light:focus:outline-black-3 font-medium focus:text-left focus:ring-1 focus:ring-blue-2 light:focus:ring-blue-3 relative w-full text-white light:text-black-3"
         />
         {searchQuery ? (
           <X
             onClick={() => setSearchQuery("")}
-            className="absolute right-0 -translate-x-2 w-4 h-4 opacity-80 cursor-pointer dark:text-white text-black-3"
+            className="absolute right-0 -translate-x-2 w-4 h-4 opacity-80 cursor-pointer text-white light:text-black-3"
           />
         ) : (
-          <SearchIcon className="absolute right-0 -translate-x-2 w-4 h-4 opacity-80 dark:text-white text-black-3" />
+          <SearchIcon className="absolute right-0 -translate-x-2 w-4 h-4 opacity-80 text-white light:text-black-3" />
         )}
       </div>
       <div
@@ -91,7 +91,7 @@ const GlobalSearch = () => {
           ${isMobile ? "max-h-[250px]" : "max-h-[300px]"}
           ${!isDropdownOpen && "hidden"}
           ${searchResult.length > 0 ? "overflow-y-scroll" : "overflow-y-hidden"}
-          w-[300px] top-28 absolute dark:bg-black-2 bg-white rounded-xl border dark:border-transparent border-grey/20 shadow-lg`}
+          w-[300px] top-28 absolute bg-black-2 light:bg-white rounded-xl border border-transparent light:border-grey/20 shadow-lg`}
         style={{
           scrollbarWidth: "thin",
         }}
@@ -101,7 +101,7 @@ const GlobalSearch = () => {
             return (
               <a
                 href={`${item.category === "companies" ? "/companies/" : "/municipalities/"}${item.id}`}
-                className="text-left text-lg font-md max-w-[300px] p-3 flex justify-between dark:hover:bg-black-1 hover:bg-grey/10 transition-colors dark:text-white text-black-3"
+                className="text-left text-lg font-md max-w-[300px] p-3 flex justify-between hover:bg-black-1 light:hover:bg-grey/10 transition-colors text-white light:text-black-3"
                 key={item.id}
               >
                 {item.name}
@@ -114,7 +114,7 @@ const GlobalSearch = () => {
             );
           })
         ) : (
-          <Text className="dark:text-grey text-black-2 text-center text-lg font-md h-14 max-w-[300px] overflow-visible p-3">
+          <Text className="text-grey light:text-black-2 text-center text-lg font-md h-14 max-w-[300px] overflow-visible p-3">
             No results found
           </Text>
         )}

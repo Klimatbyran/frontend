@@ -19,16 +19,16 @@ export const LinkCard = ({
       href={link}
       target="_blank"
       rel="noopener noreferrer"
-      className="block dark:bg-black-1 bg-grey/10 rounded-level-2 p-6 dark:hover:bg-black-1/80 hover:bg-grey/20 transition-colors"
+      className="block bg-black-1 light:bg-grey/10 rounded-level-2 p-6 hover:bg-black-1/80 light:hover:bg-grey/20 transition-colors"
       onClick={(e) => e.stopPropagation()}
     >
       <div className="flex items-center justify-between">
         <div>
           <Text
             variant="h6"
-            className="flex items-center gap-2 dark:text-white text-black-3 mb-2"
+            className="flex items-center gap-2 text-white light:text-black-3 mb-2"
           >
-            <FileText className="w-6 h-6 dark:text-white text-black-3" />
+            <FileText className="w-6 h-6 text-white light:text-black-3" />
             <span>{title}</span>
           </Text>
           <Text variant="body" className={descriptionColor}>
@@ -36,7 +36,7 @@ export const LinkCard = ({
           </Text>
         </div>
         {link && (
-          <ArrowUpRight className="w-6 h-6 dark:text-white text-black-3" />
+          <ArrowUpRight className="w-6 h-6 text-white light:text-black-3" />
         )}
       </div>
     </a>

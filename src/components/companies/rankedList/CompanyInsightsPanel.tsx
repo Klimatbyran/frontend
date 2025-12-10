@@ -22,8 +22,8 @@ function CompanyInsightsPanel({
 }: InsightsPanelProps) {
   if (!companyData?.length) {
     return (
-      <div className="dark:bg-white/5 bg-grey/10 backdrop-blur-sm rounded-level-2 p-8 h-full flex items-center justify-center">
-        <p className="dark:text-white text-black-3 text-lg">
+      <div className="bg-white/5 light:bg-grey/10 backdrop-blur-sm rounded-level-2 p-8 h-full flex items-center justify-center">
+        <p className="text-white light:text-black-3 text-lg">
           {t("companies.list.insights.noData.company")}
         </p>
       </div>
@@ -39,8 +39,8 @@ function CompanyInsightsPanel({
 
   if (!statistics.validData.length) {
     return (
-      <div className="dark:bg-white/5 bg-grey/10 backdrop-blur-sm rounded-level-2 p-8 h-full flex items-center justify-center">
-        <p className="dark:text-white text-black-3 text-lg">
+      <div className="bg-white/5 light:bg-grey/10 backdrop-blur-sm rounded-level-2 p-8 h-full flex items-center justify-center">
+        <p className="text-white light:text-black-3 text-lg">
           {t("companies.list.insights.noData.metric", {
             metric: selectedKPI.label,
           })}
@@ -64,7 +64,7 @@ function CompanyInsightsPanel({
   const sourceLinks = createSourceLinks(selectedKPI);
 
   return (
-    <div className="flex-1 overflow-y-auto min-h-0 pr-2 dark:bg-black-2 bg-grey/10 rounded-level-2 p-6">
+    <div className="flex-1 overflow-y-auto min-h-0 pr-2 bg-black-2 light:bg-grey/10 rounded-level-2 p-6">
       <div
         className={`${!selectedKPI.isBoolean ? "space-y-6 md:space-y-0 md:grid md:grid-cols-3 md:gap-6" : ""} `}
       >

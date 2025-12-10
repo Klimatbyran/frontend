@@ -26,8 +26,8 @@ function InsightsList<T>({
   nameKey,
 }: InsightsListProps<T>) {
   return (
-    <div className="dark:bg-white/10 bg-grey/20 rounded-level-2 p-4 md:p-6">
-      <h3 className="dark:text-white text-black-3 text-lg font-semibold mb-2">
+    <div className="bg-white/10 light:bg-grey/20 rounded-level-2 p-4 md:p-6">
+      <h3 className="text-white light:text-black-3 text-lg font-semibold mb-2">
         {title}
       </h3>
       {entities.map((entity, index) => {
@@ -38,7 +38,7 @@ function InsightsList<T>({
           <div className="flex items-center justify-between p-2">
             <div className="flex items-center gap-2">
               <span className="text-orange-2">{position}</span>
-              <span className="dark:text-white text-black-3">{name}</span>
+              <span className="text-white light:text-black-3">{name}</span>
             </div>
             <span className={`${textColor} font-semibold`}>
               {entity[dataPointKey] != null
@@ -53,7 +53,7 @@ function InsightsList<T>({
             <LocalizedLink
               key={name}
               to={`/${entityType}/${name}`}
-              className="block transition-colors dark:hover:bg-white/5 hover:bg-grey/30 rounded-lg"
+              className="block transition-colors hover:bg-white/5 light:hover:bg-grey/30 rounded-lg"
             >
               {content}
             </LocalizedLink>
@@ -67,7 +67,7 @@ function InsightsList<T>({
               <LocalizedLink
                 key={name}
                 to={`/${entityType}/${companyId}`}
-                className="block transition-colors dark:hover:bg-white/5 hover:bg-grey/30 rounded-lg"
+                className="block transition-colors hover:bg-white/5 light:hover:bg-grey/30 rounded-lg"
               >
                 {content}
               </LocalizedLink>
@@ -78,7 +78,7 @@ function InsightsList<T>({
         return (
           <div
             key={name}
-            className="block transition-colors dark:hover:bg-white/5 hover:bg-grey/30 rounded-lg"
+            className="block transition-colors hover:bg-white/5 light:hover:bg-grey/30 rounded-lg"
           >
             {content}
           </div>

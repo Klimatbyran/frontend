@@ -73,10 +73,10 @@
     @apply border-border;
   }
   body {
-    @apply bg-black dark:bg-black text-white dark:text-white;
+    @apply bg-black text-white;
   }
   html.light body {
-    @apply bg-white text-black-3;
+    @apply light:bg-white light:text-black-3;
   }
   h1,
   h2,
@@ -95,52 +95,52 @@
 @layer components {
   /* Command menu styling */
   .cmd-menu {
-    @apply bg-black-2 dark:bg-black-2 bg-white border-none text-white dark:text-white text-black-3;
+    @apply bg-black-2 light:bg-white border-none text-white light:text-black-3;
   }
 
   .cmd-input {
-    @apply bg-black-1 dark:bg-black-1 bg-grey/10 border-none;
+    @apply bg-black-1 light:bg-grey/10 border-none;
   }
 
   .cmd-item {
-    @apply text-grey dark:text-grey hover:bg-black-1 dark:hover:bg-black-1 hover:bg-grey/20 hover:text-white dark:hover:text-white hover:text-black-3;
+    @apply text-grey light:text-grey hover:bg-black-1 light:hover:bg-grey/20 hover:text-white light:hover:text-black-3;
   }
 
   /* Popover styling */
   .popover-content {
-    @apply bg-black-2 dark:bg-black-2 bg-white border-none;
+    @apply bg-black-2 light:bg-white border-none;
   }
 
   /* Select styling */
   .select-trigger {
-    @apply bg-black-1 dark:bg-black-1 bg-grey/10 border-none text-white dark:text-white text-black-3;
+    @apply bg-black-1 light:bg-grey/10 border-none text-white light:text-black-3;
   }
 
   .select-content {
-    @apply bg-black-2 dark:bg-black-2 bg-white border-none;
+    @apply bg-black-2 light:bg-white border-none;
   }
 
   .select-item {
-    @apply text-grey dark:text-grey hover:bg-black-1 dark:hover:bg-black-1 hover:bg-grey/20 hover:text-white dark:hover:text-white hover:text-black-3;
+    @apply text-grey light:text-grey hover:bg-black-1 light:hover:bg-grey/20 hover:text-white light:hover:text-black-3;
   }
 
   /* Dialog styling */
   .dialog-content {
-    @apply bg-black-2 dark:bg-black-2 bg-white border-none;
+    @apply bg-black-2 light:bg-white border-none;
   }
 
   /* Sheet styling */
   .sheet-content {
-    @apply bg-black-2 dark:bg-black-2 bg-white border-none;
+    @apply bg-black-2 light:bg-white border-none;
   }
 
   /* Dropdown menu styling */
   .dropdown-content {
-    @apply bg-black-2 dark:bg-black-2 bg-white border-none;
+    @apply bg-black-2 light:bg-white border-none;
   }
 
   .dropdown-item {
-    @apply text-grey dark:text-grey hover:bg-black-1 dark:hover:bg-black-1 hover:bg-grey/20 hover:text-white dark:hover:text-white hover:text-black-3;
+    @apply text-grey light:text-grey hover:bg-black-1 light:hover:bg-grey/20 hover:text-white light:hover:text-black-3;
   }
 
   /* Menubar styling */
@@ -149,33 +149,33 @@
   }
 
   .menubar-content {
-    @apply bg-black-2 dark:bg-black-2 bg-white border-none rounded-level-2 p-2;
+    @apply bg-black-2 light:bg-white border-none rounded-level-2 p-2;
   }
 
   .menubar-item {
-    @apply text-grey dark:text-grey hover:bg-black-1 dark:hover:bg-black-1 hover:bg-grey/20 hover:text-white dark:hover:text-white hover:text-black-3 rounded-level-2 cursor-pointer;
+    @apply text-grey light:text-grey hover:bg-black-1 light:hover:bg-grey/20 hover:text-white light:hover:text-black-3 rounded-level-2 cursor-pointer;
   }
 
   .menubar-separator {
-    @apply bg-black-1 dark:bg-black-1 bg-grey/20;
+    @apply bg-black-1 light:bg-grey/20;
   }
 
   .menubar-shortcut {
-    @apply text-grey dark:text-grey;
+    @apply text-grey light:text-grey;
   }
 }
 
 /* Prose styling for blog content */
 .prose {
-  @apply text-grey dark:text-grey;
+  @apply text-grey light:text-grey;
 }
 
 .prose h2 {
-  @apply text-3xl font-light text-white dark:text-white text-black-3 mt-12 mb-6;
+  @apply text-3xl font-light text-white light:text-black-3 mt-12 mb-6;
 }
 
 .prose h3 {
-  @apply text-2xl font-light text-white dark:text-white text-black-3 mt-8 mb-4;
+  @apply text-2xl font-light text-white light:text-black-3 mt-8 mb-4;
 }
 
 .prose p {

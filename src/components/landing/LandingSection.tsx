@@ -15,7 +15,7 @@ export function LandingSection({
   return (
     <section
       className={cn(
-        "flex flex-col min-h-screen items-center justify-center bg-white dark:bg-black text-center px-4 py-16",
+        "flex flex-col min-h-screen items-center justify-center bg-black light:bg-white text-center px-4 py-16",
         className,
       )}
     >

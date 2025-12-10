@@ -44,14 +44,14 @@ export function AboutPage() {
         />
         <Accordion type="single" collapsible className="space-y-6">
           {/* Main Content */}
-          <div className="dark:bg-black-2 bg-white rounded-level-1 p-4 md:p-8">
+          <div className="bg-black-2 light:bg-white rounded-level-1 p-4 md:p-8">
             <div className="flex flex-col md:flex-row items-start justify-between">
               <div className="space-y-4 w-full">
                 {/* Header */}
                 <div className="flex flex-wrap items-center gap-4">
                   <Text
                     variant="h3"
-                    className="text-4xl md:text-3xl sm:text-2xl dark:text-white text-black-3"
+                    className="text-4xl md:text-3xl sm:text-2xl text-white light:text-black-3"
                   >
                     {t("aboutPage.mainContent.title")}
                   </Text>
@@ -59,13 +59,13 @@ export function AboutPage() {
                 <KlimatkollenVideo />
 
                 <div className="flex flex-col md:flex-row space-y-8 md:space-y-0 md:space-x-4">
-                  <div className="prose dark:prose-invert w-full max-w-5xl space-y-4">
+                  <div className="prose prose-invert w-full max-w-5xl space-y-4">
                     <p>{t("aboutPage.mainContent.paragraph1")}</p>
                     <p>{t("aboutPage.mainContent.paragraph2")}</p>
                   </div>
                 </div>
 
-                <div className="prose dark:prose-invert w-full max-w-6xl space-y-4">
+                <div className="prose prose-invert w-full max-w-6xl space-y-4">
                   <p>{t("aboutPage.mainContent.paragraph3")}</p>
 
                   <p>{t("aboutPage.mainContent.paragraph4")}</p>
@@ -79,7 +79,7 @@ export function AboutPage() {
             title={t("aboutPage.ourApproachSection.title")}
             value="ourApproachSection"
           >
-            <div className="prose dark:prose-invert w-[90%] max-w-5xl mx-auto space-y-4">
+            <div className="prose prose-invert w-[90%] max-w-5xl mx-auto space-y-4">
               <p>{t("aboutPage.ourApproachSection.paragraph1")}</p>
               <p>{t("aboutPage.ourApproachSection.paragraph2")}</p>
               <p>{t("aboutPage.ourApproachSection.paragraph3")}</p>
@@ -92,7 +92,7 @@ export function AboutPage() {
                     <a
                       title="Email us"
                       href="mailto:hej@klimatkollen.se"
-                      className="underline dark:hover:text-white hover:text-black-3"
+                      className="underline hover:text-white light:hover:text-black-3"
                     />,
                   ]}
                 />
@@ -115,14 +115,14 @@ export function AboutPage() {
             value="boardSection"
           >
             <MembersGrid members={boardMembers} />
-            <div className="p-8 prose dark:prose-invert">
+            <div className="p-8 prose prose-invert">
               <p>
                 {t("aboutPage.boardSection.links.stadgar")}{" "}
                 <a
                   href="/documents/stadgar.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="underline dark:hover:text-white hover:text-black-3"
+                  className="underline hover:text-white light:hover:text-black-3"
                 >
                   {t("aboutPage.boardSection.links.stadgarLink")}
                 </a>
@@ -131,7 +131,7 @@ export function AboutPage() {
                   href="/documents/uppforandekod.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="underline dark:hover:text-white hover:text-black-3"
+                  className="underline hover:text-white light:hover:text-black-3"
                 >
                   {t("aboutPage.boardSection.links.uppforandekodLink")}
                 </a>{" "}
@@ -140,7 +140,7 @@ export function AboutPage() {
                   href="/documents/antikorruptionspolicy.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="underline dark:hover:text-white hover:text-black-3"
+                  className="underline hover:text-white light:hover:text-black-3"
                 >
                   {t("aboutPage.boardSection.links.antikorruptionspolicyLink")}
                 </a>{" "}
@@ -154,13 +154,13 @@ export function AboutPage() {
             title={t("aboutPage.financingSection.title")}
             value="financingSection"
           >
-            <div className="prose dark:prose-invert w-[90%] max-w-5xl mx-auto space-y-4">
+            <div className="prose prose-invert w-[90%] max-w-5xl mx-auto space-y-4">
               <p>{t("aboutPage.financingSection.paragraph1")}</p>
               <p>{t("aboutPage.financingSection.paragraph2")}</p>
               <p>{t("aboutPage.financingSection.paragraph3")}</p>
               <p>{t("aboutPage.financingSection.paragraph4")}</p>
-              <div className="dark:bg-blue-5/30 bg-blue-1/50 rounded-level-2 p-6 mt-8 max-w-3xl">
-                <Text variant="body" className="dark:text-white text-black-3">
+              <div className="bg-blue-5/30 light:bg-blue-1/50 rounded-level-2 p-6 mt-8 max-w-3xl">
+                <Text variant="body" className="text-white light:text-black-3">
                   {t("aboutPage.financingSection.donate")}
                 </Text>
                 <Text className="text-grey">
@@ -182,12 +182,12 @@ export function AboutPage() {
             title={t("aboutPage.previousProjectsSection.title")}
             value="previousProjects"
           >
-            <div className="prose dark:prose-invert w-[90%] max-w-5xl mx-auto space-y-8">
+            <div className="prose prose-invert w-[90%] max-w-5xl mx-auto space-y-8">
               <div className="space-y-4">
                 <Text className="text-blue-2 font-bold text-2xl">
                   {t("aboutPage.previousProjectsSection.kommunprojektetTitle")}
                 </Text>
-                <Text variant="body" className="dark:text-white text-black-3">
+                <Text variant="body" className="text-white light:text-black-3">
                   {t(
                     "aboutPage.previousProjectsSection.kommunprojektetDescription",
                   )}
@@ -198,7 +198,7 @@ export function AboutPage() {
                 <Text className="text-blue-2 font-bold text-2xl">
                   {t("aboutPage.previousProjectsSection.riksdagsvaletTitle")}
                 </Text>
-                <Text variant="body" className="dark:text-white text-black-3">
+                <Text variant="body" className="text-white light:text-black-3">
                   {t(
                     "aboutPage.previousProjectsSection.riksdagsvaletDescription",
                   )}
