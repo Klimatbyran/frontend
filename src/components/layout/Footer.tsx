@@ -78,7 +78,7 @@ export function Footer() {
   const { isMobile } = useScreenSize();
 
   return (
-    <footer className="relative w-full z-10 dark:bg-black-2 bg-white border-t dark:border-transparent border-grey/20 py-4 md:py-8">
+    <footer className="relative w-full z-10 dark:bg-black-2 bg-grey/10 border-t dark:border-transparent border-grey/20 py-4 md:py-8">
       <div className="container mx-auto px-4 space-y-4 md:space-y-8 flex flex-col w-screen items-center text-center">
         {/* Contact Section */}
         <div className="space-y-2 md:space-y-4">
