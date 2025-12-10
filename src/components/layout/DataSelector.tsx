@@ -78,7 +78,7 @@ export function DataSelector<T>({
                     onClick={() => handleItemSelect(item)}
                     className={`w-full text-left px-4 py-3 text-sm transition-colors ${
                       isSelected
-                        ? "bg-gray-700/80 light:bg-blue-5/20 text-blue-300 light:text-blue-2"
+                        ? "bg-gray-700/80 light:bg-blue-5/20 text-blue-300 light:text-blue-4"
                         : "text-white light:text-black-3 hover:bg-gray-700/80 light:hover:bg-grey/10"
                     }`}
                   >
