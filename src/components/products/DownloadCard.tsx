@@ -72,12 +72,14 @@ export function DownloadCard({
   };
 
   return (
-    <div className="block bg-black-2 rounded-level-2 p-8 space-y-8 transition-all duration-300 hover:shadow-[0_0_10px_rgba(153,207,255,0.15)] hover:bg-[#1a1a1a] flex flex-col h-full">
+    <div className="block dark:bg-black-2 bg-white rounded-level-2 p-8 space-y-8 transition-all duration-300 hover:shadow-[0_0_10px_rgba(153,207,255,0.15)] dark:hover:bg-[#1a1a1a] hover:bg-grey/5 flex flex-col h-full border dark:border-transparent border-grey/20">
       <div className="flex items-center gap-3 mb-6">
-        <div className="rounded-lg bg-black-2 p-3 border border-black-1">
-          <Icon className="h-6 w-6 text-white" />
+        <div className="rounded-lg dark:bg-black-2 bg-grey/10 p-3 border dark:border-black-1 border-grey/20">
+          <Icon className="h-6 w-6 dark:text-white text-black-3" />
         </div>
-        <h3 className="text-xl font-light text-white">{title}</h3>
+        <h3 className="text-xl font-light dark:text-white text-black-3">
+          {title}
+        </h3>
       </div>
       <p className="text-grey mb-8 min-h-[96px] md:min-h-[120px] flex-grow">
         {description}
@@ -85,7 +87,7 @@ export function DownloadCard({
       <button
         onClick={handleDownload}
         disabled={isLoading}
-        className="inline-flex items-center justify-center gap-2 rounded-md bg-black-2 px-6 py-3 text-base font-medium text-blue-2 shadow-lg hover:bg-black-1 w-full transition-all border border-black-1 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="inline-flex items-center justify-center gap-2 rounded-md dark:bg-black-2 bg-grey/10 px-6 py-3 text-base font-medium text-blue-2 shadow-lg dark:hover:bg-black-1 hover:bg-grey/20 w-full transition-all border dark:border-black-1 border-grey/20 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         <Download className="h-5 w-5" />
         {isLoading ? t("common.loading") : t(`downloadsPage.download`)}

@@ -65,7 +65,7 @@ export function ListCard({
     <div className="relative rounded-level-2 @container">
       <LocalizedLink
         to={linkTo}
-        className="block bg-black-2 rounded-level-2 p-8 space-y-8 transition-all duration-300 hover:shadow-[0_0_10px_rgba(153,207,255,0.15)] hover:bg-[#1a1a1a]"
+        className="block dark:bg-black-2 bg-white rounded-level-2 p-8 space-y-8 transition-all duration-300 hover:shadow-[0_0_10px_rgba(153,207,255,0.15)] dark:hover:bg-[#1a1a1a] hover:bg-grey/5 border dark:border-transparent border-grey/20"
       >
         {/* Header section */}
         <div className="space-y-2">
@@ -102,7 +102,7 @@ export function ListCard({
         </div>
 
         {/* Emissions and change rate section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 pt-4 border-t border-black-1">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 pt-4 border-t dark:border-black-1 border-grey/20">
           {/* Emissions */}
           <CardInfo
             title={

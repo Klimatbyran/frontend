@@ -36,7 +36,7 @@ export function LandingPageCTA() {
   return (
     <LandingSection innerClassName="flex flex-col items-center max-w-4xl mx-auto space-y-8">
       {/* Heading */}
-      <h2 className="text-4xl md:text-5xl font-light tracking-tight text-white">
+      <h2 className="text-4xl md:text-5xl font-light tracking-tight dark:text-white text-black-3">
         {t("landingPage.ctaSection.title")}
       </h2>
 

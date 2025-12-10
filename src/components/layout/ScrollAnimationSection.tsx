@@ -44,7 +44,7 @@ function ActionButton({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       onClick={onClick}
-      className="absolute top-4 right-4 inline-flex items-center justify-center rounded-full h-10 px-6 py-2 text-sm font-light bg-black-2 text-white hover:opacity-80 active:ring-1 active:ring-white transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white z-10"
+      className="absolute top-4 right-4 inline-flex items-center justify-center rounded-full h-10 px-6 py-2 text-sm font-light dark:bg-black-2 bg-grey/10 dark:text-white text-black-3 hover:opacity-80 active:ring-1 dark:active:ring-white active:ring-black-3 transition-colors focus-visible:outline-none focus-visible:ring-1 dark:focus-visible:ring-white focus-visible:ring-black-3 z-10"
       aria-label={label}
     >
       {children}

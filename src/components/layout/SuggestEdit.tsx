@@ -12,7 +12,7 @@ export function SuggestEdit() {
       <Popover.Root>
         <Popover.Trigger asChild>
           <button
-            className="fixed bottom-6 left-6 p-3 bg-black-1 hover:bg-black-1 sm:hover:bg-black-2 text-white rounded-full shadow-lg transition-colors duration-200 z-[35]"
+            className="fixed bottom-6 left-6 p-3 dark:bg-black-1 bg-grey/20 dark:hover:bg-black-1 sm:dark:hover:bg-black-2 hover:bg-grey/30 dark:text-white text-black-3 rounded-full shadow-lg transition-colors duration-200 z-[35]"
             aria-label="Suggest an edit"
           >
             <MessageSquareText />
@@ -20,16 +20,17 @@ export function SuggestEdit() {
         </Popover.Trigger>
         <Popover.Portal>
           <Popover.Content
-            className="ml-6 rounded-xl bg-black-1 p-4 shadow-[0_10px_38px_-10px_hsla(206,22%,7%,.35),0_10px_20px_-15px_hsla(206,22%,7%,.2)]
+            className="ml-6 rounded-xl dark:bg-black-1 bg-white p-4 shadow-[0_10px_38px_-10px_hsla(206,22%,7%,.35),0_10px_20px_-15px_hsla(206,22%,7%,.2)]
               will-change-[transform,opacity] focus:shadow-[0_10px_38px_-10px_hsla(206,22%,7%,.35),0_10px_20px_-15px_hsla(206,22%,7%,.2),0_0_0_2px_theme(colors.violet7)]
               data-[state=open]:data-[side=bottom]:animate-slideUpAndFade data-[state=open]:data-[side=left]:animate-slideRightAndFade
-              data-[state=open]:data-[side=right]:animate-slideLeftAndFade data-[state=open]:data-[side=top]:animate-slideDownAndFade z-[35]"
+              data-[state=open]:data-[side=right]:animate-slideLeftAndFade data-[state=open]:data-[side=top]:animate-slideDownAndFade z-[35] border dark:border-transparent border-grey/20"
             sideOffset={5}
           >
-
             {/* Suggestion form start */}
-            <Form.Root className="w-[260px]" onSubmit={(e) => {
-              // on submit question
+            <Form.Root
+              className="w-[260px]"
+              onSubmit={(e) => {
+                // on submit question
                 e.preventDefault();
                 const formData = new FormData(e.currentTarget);
                 const questionValue = formData.get("question");
@@ -37,12 +38,15 @@ export function SuggestEdit() {
                 const encodedSubject = encodeURIComponent(emailSubject);
                 const encodedBody = encodeURIComponent(questionValue);
                 window.location.href = `mailto:hej@klimatkollen.se?subject=${emailSubject}&body=${questionValue}`;
-            }}>
-              <Title className="text-[22px] mb-2">{t("landingPage.reportCorrection")}</Title>
+              }}
+            >
+              <Title className="text-[22px] mb-2">
+                {t("landingPage.reportCorrection")}
+              </Title>
               <Form.Field className="mb-2.5 grid" name="question">
                 <div className="flex items-baseline justify-between">
                   <Form.Message
-                    className="text-[13px] text-white opacity-80"
+                    className="text-[13px] dark:text-white text-black-3 opacity-80"
                     match="valueMissing"
                   >
                     {t("landingPage.questionMissing")}
@@ -50,7 +54,7 @@ export function SuggestEdit() {
                 </div>
                 <Form.Control asChild>
                   <textarea
-                    className="box-border block w-full min-h-[200px] p-3 appearance-none items-center justify-center rounded-lg bg-blackA2 text-[16px] leading-none text-black-2 shadow-[0_0_0_1px] shadow-blackA6 outline-none selection:bg-blackA6 selection:text-black-2 hover:shadow-[black-2] focus:shadow-[0_0_0_2px_black-2]"
+                    className="box-border block w-full min-h-[200px] p-3 appearance-none items-center justify-center rounded-lg dark:bg-blackA2 bg-grey/10 text-[16px] leading-none dark:text-black-2 text-black-3 shadow-[0_0_0_1px] dark:shadow-blackA6 shadow-grey/20 outline-none selection:bg-blackA6 selection:text-black-2 hover:shadow-[black-2] focus:shadow-[0_0_0_2px_black-2]"
                     placeholder={t("landingPage.questionPlaceholder")}
                     required
                   />

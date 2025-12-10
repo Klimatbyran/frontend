@@ -66,7 +66,7 @@ export function FlipCard({
         {/* Front of card */}
         <div
           className={cn(
-            "absolute inset-0 bg-black-2 rounded-level-2 p-4 md:p-6 border-2 flex flex-col",
+            "absolute inset-0 dark:bg-black-2 bg-grey/5 rounded-level-2 p-4 md:p-6 border-2 flex flex-col",
             borderColor,
           )}
           style={{

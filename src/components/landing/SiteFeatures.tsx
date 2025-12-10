@@ -64,7 +64,7 @@ const SiteFeatures = () => {
           return (
             <div
               key={index}
-              className="flex flex-col bg-black-2 rounded-level-2 h-48 md:min-h-64 p-4 items-center justify-center"
+              className="flex flex-col dark:bg-black-2 bg-grey/5 rounded-level-2 h-48 md:min-h-64 p-4 items-center justify-center border dark:border-transparent border-grey/10"
             >
               <span
                 className={`${feature.iconBgColor} w-10 h-10 md:w-16 md:h-16 rounded-full flex items-center justify-center mb-2 md:mb-4`}

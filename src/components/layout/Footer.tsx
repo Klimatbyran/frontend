@@ -17,7 +17,7 @@ function SocialLinks() {
           href={href}
           target="_blank"
           rel="noopener noreferrer"
-          className="p-2 md:p-3 bg-black-1 rounded-full hover:bg-black-1/80 transition-colors"
+          className="p-2 md:p-3 dark:bg-black-1 bg-grey/10 rounded-full dark:hover:bg-black-1/80 hover:bg-grey/20 transition-colors"
           title={title}
         >
           {typeof Icon === "string" ? (
@@ -78,7 +78,7 @@ export function Footer() {
   const { isMobile } = useScreenSize();
 
   return (
-    <footer className="relative w-full z-10 bg-black-2 py-4 md:py-8">
+    <footer className="relative w-full z-10 dark:bg-black-2 bg-white border-t dark:border-transparent border-grey/20 py-4 md:py-8">
       <div className="container mx-auto px-4 space-y-4 md:space-y-8 flex flex-col w-screen items-center text-center">
         {/* Contact Section */}
         <div className="space-y-2 md:space-y-4">
@@ -92,7 +92,7 @@ export function Footer() {
               components={[
                 <a
                   title="Klimatkollen's Github"
-                  className="underline hover:text-white transition-colors"
+                  className="underline dark:hover:text-white hover:text-black-3 transition-colors"
                   href="https://github.com/Klimatbyran/"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -121,15 +121,21 @@ export function Footer() {
 
         {/* Footer Links */}
         <div className="flex flex-col md:flex-row gap-4 md:gap-8 text-grey items-center">
-          <a href="/privacy" className="hover:text-white transition-colors">
+          <a
+            href="/privacy"
+            className="dark:hover:text-white hover:text-black-3 transition-colors"
+          >
             {t("footer.privacyTerms")}
           </a>
-          <a href="/license" className="hover:text-white transition-colors">
+          <a
+            href="/license"
+            className="dark:hover:text-white hover:text-black-3 transition-colors"
+          >
             {t("footer.internationalLicense")}
           </a>
           <a
             href="https://creativecommons.org/licenses/by-sa/4.0/"
-            className="hover:text-white transition-colors"
+            className="dark:hover:text-white hover:text-black-3 transition-colors"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -138,7 +144,7 @@ export function Footer() {
           {!token && (
             <a
               onClick={() => login()}
-              className="hover:text-white transition-colors cursor-pointer"
+              className="dark:hover:text-white hover:text-black-3 transition-colors cursor-pointer"
             >
               {t("footer.login")}
             </a>
@@ -149,13 +155,13 @@ export function Footer() {
                 logout();
                 navigate("/");
               }}
-              className="hover:text-white cursor-pointer transition-colors"
+              className="dark:hover:text-white hover:text-black-3 cursor-pointer transition-colors"
             >
               {t("footer.logout")}
             </a>
           )}
           {token && user && (
-            <div className="hover:text-white ms-auto flex items-center">
+            <div className="dark:hover:text-white hover:text-black-3 ms-auto flex items-center">
               <span>
                 {t("footer.welcome")}, {user?.name ?? ""}
               </span>
