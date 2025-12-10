@@ -102,7 +102,7 @@ export function IndustryFilter({
               "px-3 py-1.5 rounded-level-1 text-xs font-medium transition-all",
               "border",
               isSelected
-                ? "bg-blue-5/30 border-blue-4 text-blue-2 hover:bg-blue-5/40"
+                ? "bg-blue-5/30 border-blue-4 text-blue-4 hover:bg-blue-5/40"
                 : "bg-black-2 light:bg-grey/10 border-black-3 light:border-grey/20 text-grey hover:bg-black-3 light:hover:bg-grey/20 hover:border-black-4 light:hover:border-grey/30",
             )}
           >
