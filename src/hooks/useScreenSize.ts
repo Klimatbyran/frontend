@@ -9,12 +9,25 @@ interface ScreenSize {
 export function useScreenSize(): ScreenSize;
 export function useScreenSize(returnBoolean: true): boolean;
 export function useScreenSize(returnBoolean?: boolean): ScreenSize | boolean {
-  const [screenSize, setScreenSize] = useState<ScreenSize>({
-    isMobile: window.innerWidth < 768,
-    isTablet: window.innerWidth >= 768 && window.innerWidth < 1150,
+  const [screenSize, setScreenSize] = useState<ScreenSize>(() => {
+    // Check if window is available (SSR safety)
+    if (typeof window !== "undefined") {
+      return {
+        isMobile: window.innerWidth < 768,
+        isTablet: window.innerWidth >= 768 && window.innerWidth < 1150,
+      };
+    }
+    // Default values for SSR
+    return {
+      isMobile: true,
+      isTablet: false,
+    };
   });
 
   useEffect(() => {
+    // Check if window is available (SSR safety)
+    if (typeof window === "undefined") return;
+
     const handleResize = () => {
       setScreenSize({
         isMobile: window.innerWidth < 768,

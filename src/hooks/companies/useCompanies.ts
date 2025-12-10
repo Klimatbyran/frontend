@@ -1,30 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { getCompanies } from "@/lib/api";
-import type { paths } from "@/lib/api-types";
-import { cleanEmissions } from "@/utils/cleanEmissions";
-import type { Emissions } from "@/types/company";
-
-// Get company type from API types
-type Company = NonNullable<
-  paths["/companies/"]["get"]["responses"][200]["content"]["application/json"]
->[0];
-
-// Define the modified reporting period type with added IDs
-type ReportingPeriodWithIds = Omit<
-  Company["reportingPeriods"][0],
-  "emissions"
-> & {
-  id: string;
-  emissions: Emissions | null;
-};
-
-export interface RankedCompany extends Omit<Company, "reportingPeriods"> {
-  reportingPeriods: ReportingPeriodWithIds[];
-  metrics: {
-    emissionsReduction: number;
-    displayReduction: string;
-  };
-}
+import { cleanEmissions } from "@/utils/data/cleaning";
+import type { RankedCompany, ReportingPeriodFromList } from "@/types/company";
 
 function formatReductionValue(value: number): string {
   if (value > 200) return ">200";
@@ -43,8 +20,8 @@ export function useCompanies() {
     select: (data): RankedCompany[] => {
       return data.map((company) => {
         // Calculate emissions reduction
-        const latestPeriod = company.reportingPeriods[0];
-        const previousPeriod = company.reportingPeriods[1];
+        const latestPeriod = company.reportingPeriods?.[0];
+        const previousPeriod = company.reportingPeriods?.[1];
         const currentEmissions =
           latestPeriod?.emissions?.calculatedTotalEmissions;
         const previousEmissions =
@@ -57,11 +34,12 @@ export function useCompanies() {
 
         return {
           ...company,
-          reportingPeriods: company.reportingPeriods.map((period) => ({
-            ...period,
-            id: period.startDate,
-            emissions: cleanEmissions(period.emissions),
-          })),
+          reportingPeriods: (company.reportingPeriods || []).map(
+            (period): ReportingPeriodFromList => ({
+              ...period,
+              emissions: cleanEmissions(period.emissions),
+            }),
+          ),
           metrics: {
             emissionsReduction,
             displayReduction: formatReductionValue(emissionsReduction),

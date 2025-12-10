@@ -4,13 +4,15 @@ import { useScreenSize } from "@/hooks/useScreenSize";
 import { useState } from "react";
 
 interface CompanyDescriptionProps {
-  description: string | null;
+  description?: string | null;
 }
 
 export function CompanyDescription({ description }: CompanyDescriptionProps) {
   const { t } = useTranslation();
   const { isMobile } = useScreenSize();
   const [showMore, setShowMore] = useState(false);
+
+  if (!description) return null;
 
   if (isMobile) {
     return (

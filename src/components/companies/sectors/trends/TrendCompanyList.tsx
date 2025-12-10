@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { RankedCompany } from "@/types/company";
+import { useLanguage } from "@/components/LanguageProvider";
+import { getCompanyDescription } from "@/utils/business/company";
 
 interface TrendCompanyListProps {
   category: "decreasing" | "increasing" | "noComparable";
@@ -16,8 +18,12 @@ interface TrendCompanyListProps {
   >;
 }
 
-const TrendCompanyList: React.FC<TrendCompanyListProps> = ({ category, data }) => {
+const TrendCompanyList: React.FC<TrendCompanyListProps> = ({
+  category,
+  data,
+}) => {
   const { t } = useTranslation();
+  const { currentLanguage } = useLanguage();
 
   if (!data || data.length === 0) {
     return (
@@ -32,6 +38,7 @@ const TrendCompanyList: React.FC<TrendCompanyListProps> = ({ category, data }) =
       {category === "noComparable"
         ? data.map((item) => {
             const company = "company" in item ? item.company : item;
+            const description = getCompanyDescription(company, currentLanguage);
             return (
               <div
                 key={company.wikidataId}
@@ -44,8 +51,8 @@ const TrendCompanyList: React.FC<TrendCompanyListProps> = ({ category, data }) =
                     </div>
                   </Link>
                 </div>
-                {company.description && (
-                  <div className="text-grey">{company.description}</div>
+                {description && (
+                  <div className="text-grey text-xs mt-1">{description}</div>
                 )}
               </div>
             );
@@ -57,6 +64,7 @@ const TrendCompanyList: React.FC<TrendCompanyListProps> = ({ category, data }) =
               baseYear?: string;
               currentYear?: string;
             };
+            const description = getCompanyDescription(company, currentLanguage);
             return (
               <div
                 key={company.wikidataId}
@@ -90,8 +98,8 @@ const TrendCompanyList: React.FC<TrendCompanyListProps> = ({ category, data }) =
                     })}
                   </div>
                 )}
-                {company.description && (
-                  <div className="text-grey text-sm">{company.description}</div>
+                {description && (
+                  <div className="text-grey text-xs mt-1">{description}</div>
                 )}
               </div>
             );

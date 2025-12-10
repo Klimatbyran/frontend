@@ -1,7 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { Scope3Data } from "./Scope3Data";
 import type { Emissions, Scope3HistoricalData } from "@/types/company";
-import { useDataGuide } from "@/data-guide/useDataGuide";
 
 interface CompanyScope3Props {
   emissions: Emissions;
@@ -13,8 +12,6 @@ export function CompanyScope3({
   historicalData,
 }: CompanyScope3Props) {
   const { t } = useTranslation();
-
-  useDataGuide(["scopes"]);
 
   if (!emissions?.scope3?.categories?.length) {
     return null;

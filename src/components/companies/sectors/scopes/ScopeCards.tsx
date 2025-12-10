@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Factory, Building2, ArrowUpRight, ArrowDownRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { RankedCompany } from "@/hooks/companies/useCompanies";
+import { RankedCompany } from "@/types/company";
+import { ScopeData } from "@/hooks/companies/useScopeData";
 import ScopeCard from "./ScopeCard";
 import ScopeModal from "./ScopeModal";
 
 interface ScopeCardsProps {
-  scopeData: any;
+  scopeData: ScopeData;
   totalEmissions: number;
   companies: RankedCompany[];
   selectedSectors: string[];
@@ -59,6 +60,7 @@ const ScopeCards: React.FC<ScopeCardsProps> = ({
             "companiesPage.sectorGraphs.scope3UpstreamDescription",
           )}
           onClick={() => setSelectedScope("scope3_upstream")}
+          showCategoryInfo={true}
         />
         <ScopeCard
           title={t("companiesPage.sectorGraphs.scope3Downstream")}
@@ -71,6 +73,7 @@ const ScopeCards: React.FC<ScopeCardsProps> = ({
             "companiesPage.sectorGraphs.scope3DownstreamDescription",
           )}
           onClick={() => setSelectedScope("scope3_downstream")}
+          showCategoryInfo={true}
         />
       </div>
 

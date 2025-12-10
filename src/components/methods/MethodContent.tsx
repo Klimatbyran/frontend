@@ -7,19 +7,24 @@ import { DataCollectionProcessContent } from "./content/DataCollectionProcess";
 import { EmissionsAndCategoriesContent } from "./content/EmissionsCategories";
 import { HistoricalDataContent } from "./content/HistoricalData";
 import { ParisAgreementContent } from "./content/ParisAgreementContent";
-import { CO2BudgetsContent } from "./content/CO2BudgetsContent";
 import { EmissionTypesContent } from "./content/EmissionTypesContent";
 import { CalculationsContent } from "./content/CalculationsContent";
+import { CarbonLawContent } from "./content/CarbonLaw";
+import { MunicipalityDataOverviewContent } from "./content/MunicipalityDataOverview";
+import { MunicipalityKPIsContent } from "./content/MunicipalityKPIsContent";
+import { RelatableNumbersContent } from "@/components/methods/content/relatableNumbers";
+import { ParisAlignmentMethodContent } from "./content/OnTrackForParisContent";
+import { TrendlineContent } from "./content/TrendLineMethodContent";
+import { InterpretingOnTrackContent } from "./content/InprepretingOnTrackContent";
 
 interface MethodologyContentProps {
   method: string;
-  onNavigate: (methodId: string) => void;
 }
 
 export const MethodologyContent = forwardRef<
   HTMLDivElement,
   MethodologyContentProps
->(({ method, onNavigate }, ref) => {
+>(({ method }, ref) => {
   const { t } = useTranslation();
   const [isVisible, setIsVisible] = useState(true);
   const methodData = getMethodById(method);
@@ -47,27 +52,32 @@ export const MethodologyContent = forwardRef<
 
       case "parisAgreement":
         return <ParisAgreementContent />;
-
-      case "co2Budgets":
-        return <CO2BudgetsContent />;
-
+      case "carbonLaw":
+        return <CarbonLawContent />;
+      case "trendline":
+        return <TrendlineContent />;
+      case "parisAlignment":
+        return <ParisAlignmentMethodContent />;
+      case "interpretingOnTrack":
+        return <InterpretingOnTrackContent />;
       case "emissionTypes":
         return <EmissionTypesContent />;
-
+      case "municipalityDataOverview":
+        return <MunicipalityDataOverviewContent />;
+      case "municipalityKPIs":
+        return <MunicipalityKPIsContent />;
       case "companyDataOverview":
         return <CompanyDataOverviewContent />;
-
       case "emissionCategories":
         return <EmissionsAndCategoriesContent />;
-
       case "historicalData":
         return <HistoricalDataContent />;
-
       case "calculations":
         return <CalculationsContent />;
-
       case "companyDataCollection":
         return <DataCollectionProcessContent />;
+      case "relatableNumbers":
+        return <RelatableNumbersContent />;
     }
   };
 

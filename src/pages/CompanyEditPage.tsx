@@ -1,19 +1,32 @@
 import { useParams } from "react-router-dom";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useCompanyDetails } from "@/hooks/companies/useCompanyDetails";
 import { Text } from "@/components/ui/text";
 import { CompanyEditHeader } from "@/components/companies/edit/CompanyEditHeader";
 import { CompanyEditPeriod } from "@/components/companies/edit/CompanyEditPeriod";
+import { CompanyEditStatedTotal } from "@/components/companies/edit/CompanyEditStatedTotal";
 import { CompanyEditScope1 } from "@/components/companies/edit/CompanyEditScope1";
+import { CompanyEditScope1And2 } from "@/components/companies/edit/CompanyEditScope1And2";
 import { CompanyEditScope2 } from "@/components/companies/edit/CompanyEditScope2";
 import { CompanyEditScope3 } from "@/components/companies/edit/CompanyEditScope3";
-import { CompanyDetails, ReportingPeriod } from "@/types/company";
-import { mapCompanyEditFormToRequestBody } from "@/lib/company-edit";
+import { CompanyEditTurnover } from "@/components/companies/edit/CompanyEditTurnover";
+import { CompanyEditEmployees } from "@/components/companies/edit/CompanyEditEmployees";
+import { ReportingPeriod } from "@/types/company";
+import { mapCompanyEditFormToRequestBody } from "@/lib/company/company-edit";
 import { updateReportingPeriods } from "@/lib/api";
 import { useToast } from "@/contexts/ToastContext";
 import { useTranslation } from "react-i18next";
 import { AuthExpiredModal } from "@/components/companies/edit/AuthExpiredModal";
 import { useAuth } from "@/contexts/AuthContext";
+import { CompanyEditDetails } from "@/components/companies/edit/CompanyEditDetails";
+
+const isAuthError = (error: Error) => {
+  if ("status" in error && typeof error.status === "number") {
+    return [401, 403].includes(error.status);
+  }
+
+  return false;
+};
 
 export function CompanyEditPage() {
   const { t } = useTranslation();
@@ -45,6 +58,21 @@ export function CompanyEditPage() {
         }, [] as ReportingPeriod[])
       : [];
 
+  // Set default selected year on first load or when company changes
+  useEffect(() => {
+    if (
+      company &&
+      company.reportingPeriods.length > 0 &&
+      selectedYears.length === 0
+    ) {
+      const latestYear = company.reportingPeriods
+        .map((p) => new Date(p.endDate).getFullYear())
+        .sort((a, b) => b - a)[0]
+        .toString();
+      setSelectedYears([latestYear]);
+    }
+  }, [company, selectedYears.length]);
+
   if (loading || isUpdating) {
     return (
       <div className="animate-pulse space-y-16">
@@ -54,13 +82,7 @@ export function CompanyEditPage() {
     );
   }
 
-  if (
-    error &&
-    !(
-      typeof (error as any).status === "number" &&
-      ((error as any).status === 401 || (error as any).status === 403)
-    )
-  ) {
+  if (error && !isAuthError(error)) {
     return (
       <div className="text-center py-24">
         <Text variant="h3" className="text-red-500 mb-4">
@@ -176,31 +198,70 @@ export function CompanyEditPage() {
           onYearsSelect={setSelectedYears}
           hasUnsavedChanges={formData.size > 0}
         />
+        <CompanyEditDetails company={company} onSave={refetch} />
+        <div className="mb-20" />
         {selectedPeriods !== null && selectedPeriods.length > 0 && (
           <form onSubmit={handleSubmit} ref={formRef}>
             <div className="overflow-x-auto overflow-y-visible">
               <div className="min-w-max">
-                <CompanyEditPeriod
-                  periods={selectedPeriods}
-                  onInputChange={onInputChange}
-                  formData={formData}
-                  resetPeriod={resetPeriod}
-                ></CompanyEditPeriod>
-                <CompanyEditScope1
-                  periods={selectedPeriods}
-                  onInputChange={onInputChange}
-                  formData={formData}
-                ></CompanyEditScope1>
-                <CompanyEditScope2
-                  periods={selectedPeriods}
-                  onInputChange={onInputChange}
-                  formData={formData}
-                ></CompanyEditScope2>
-                <CompanyEditScope3
-                  periods={selectedPeriods}
-                  onInputChange={onInputChange}
-                  formData={formData}
-                ></CompanyEditScope3>
+                {/* Reporting Period Section */}
+                <div className="mb-8">
+                  <CompanyEditPeriod
+                    periods={selectedPeriods}
+                    onInputChange={onInputChange}
+                    formData={formData}
+                    resetPeriod={resetPeriod}
+                  />
+                </div>
+
+                {/* Emissions Section */}
+                <div className="mb-8">
+                  <h3 className="text-sm font-medium text-gray-400 mb-4 px-2 uppercase tracking-wide">
+                    {t("companyEditPage.sections.emissions")}
+                  </h3>
+                  <CompanyEditStatedTotal
+                    periods={selectedPeriods}
+                    onInputChange={onInputChange}
+                    formData={formData}
+                  />
+                  <CompanyEditScope1
+                    periods={selectedPeriods}
+                    onInputChange={onInputChange}
+                    formData={formData}
+                  />
+                  <CompanyEditScope1And2
+                    periods={selectedPeriods}
+                    onInputChange={onInputChange}
+                    formData={formData}
+                  />
+                  <CompanyEditScope2
+                    periods={selectedPeriods}
+                    onInputChange={onInputChange}
+                    formData={formData}
+                  />
+                  <CompanyEditScope3
+                    periods={selectedPeriods}
+                    onInputChange={onInputChange}
+                    formData={formData}
+                  />
+                </div>
+
+                {/* Economy Section */}
+                <div className="mb-8">
+                  <h3 className="text-sm font-medium text-gray-400 mb-4 px-2 uppercase tracking-wide">
+                    {t("companyEditPage.sections.economy")}
+                  </h3>
+                  <CompanyEditTurnover
+                    periods={selectedPeriods}
+                    onInputChange={onInputChange}
+                    formData={formData}
+                  />
+                  <CompanyEditEmployees
+                    periods={selectedPeriods}
+                    onInputChange={onInputChange}
+                    formData={formData}
+                  />
+                </div>
               </div>
             </div>
             <div className="w-full ps-4 pe-2 mt-6">

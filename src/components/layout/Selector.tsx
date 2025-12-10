@@ -38,4 +38,4 @@ export function Selector<T extends string>({
       </Select>
     </div>
   );
-} 
+}

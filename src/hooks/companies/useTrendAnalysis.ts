@@ -3,11 +3,7 @@ import { RankedCompany, TrendData } from "@/types/company";
 import { TrendingDown, TrendingUp, MinusCircle } from "lucide-react";
 import { TrendCardInfo } from "@/types/company";
 import { useTranslation } from "react-i18next";
-
-const getTotalEmissions = (emissions: any) =>
-  (emissions?.scope1?.total || 0) +
-  (emissions?.scope2?.calculatedTotalEmissions || 0) +
-  (emissions?.scope3?.calculatedTotalEmissions || 0);
+import { calculateEmissionsChangeFromBaseYear } from "@/utils/calculations/emissionsCalculations";
 
 export const useCategoryInfo = (): Record<string, TrendCardInfo> => {
   const { t } = useTranslation();
@@ -54,50 +50,53 @@ export const useTrendAnalysis = (
         return;
       }
 
-      const periods = company.reportingPeriods
-        .sort((a, b) => a.startDate.localeCompare(b.startDate))
-        .filter((period) => period.startDate.startsWith("202"));
+      // Calculate emissions change using the utility function
+      // Use useLastPeriod: true to match previous behavior (uses last period, not necessarily >0)
+      const changePercent = calculateEmissionsChangeFromBaseYear(company, {
+        useLastPeriod: true,
+      });
 
-      if (periods.length < 2) {
+      // If calculation returns null, it's not comparable
+      if (changePercent === null) {
         trends.noComparable.push(company);
         return;
       }
 
-      // Use company's base year if available, otherwise fallback to first period's year
-      const baseYear =
-        company.baseYear?.year?.toString() ??
-        periods[0].startDate.substring(0, 4);
-      // Find the period matching the base year, or fallback to the first period
-      const baselinePeriod =
-        periods.find((p) => p.startDate.startsWith(baseYear)) || periods[0];
-      const latestPeriod = periods[periods.length - 1];
-
-      const latestEmissions = getTotalEmissions(latestPeriod.emissions);
-      const baselineEmissions = getTotalEmissions(baselinePeriod.emissions);
-
-      if (baselineEmissions === 0) {
-        trends.noComparable.push(company);
-        return;
-      }
-
-      const changePercent =
-        ((latestEmissions - baselineEmissions) / baselineEmissions) * 100;
-
+      // Filter out changes > 60% as outliers (not comparable)
       if (Math.abs(changePercent) > 60) {
         trends.noComparable.push(company);
-      } else if (changePercent < 0) {
+        return;
+      }
+
+      // Get base year and latest period info for the trend data
+      const baseYear = company.baseYear?.year?.toString();
+      if (!baseYear) {
+        trends.noComparable.push(company);
+        return;
+      }
+
+      // Get latest period for currentYear (using endDate year)
+      const sortedPeriods = [...(company.reportingPeriods || [])].sort((a, b) =>
+        a.endDate.localeCompare(b.endDate),
+      );
+      const latestPeriod = sortedPeriods[sortedPeriods.length - 1];
+      const currentYear = latestPeriod
+        ? new Date(latestPeriod.endDate).getFullYear().toString()
+        : baseYear;
+
+      if (changePercent < 0) {
         trends.decreasing.push({
           company,
           changePercent,
           baseYear: baseYear,
-          currentYear: latestPeriod.startDate.substring(0, 4),
+          currentYear: currentYear,
         });
       } else {
         trends.increasing.push({
           company,
           changePercent,
           baseYear: baseYear,
-          currentYear: latestPeriod.startDate.substring(0, 4),
+          currentYear: currentYear,
         });
       }
     });

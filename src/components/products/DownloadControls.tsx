@@ -5,7 +5,7 @@ import { Selector } from "@/components/layout/Selector";
 interface DownloadControlsProps {
   onSelectionChange: (
     type: "companies" | "municipalities",
-    year: string | null
+    year: string | null,
   ) => void;
   years: string[];
 }
@@ -22,10 +22,16 @@ export function DownloadControls({
   const [selectedYear, setSelectedYear] = useState<string>(mostRecentYear);
 
   useEffect(() => {
-    onSelectionChange(selectedType, selectedYear === "all" ? null : selectedYear);
+    onSelectionChange(
+      selectedType,
+      selectedYear === "all" ? null : selectedYear,
+    );
   }, [selectedType, selectedYear, onSelectionChange]);
 
-  const typeOptions: { value: "companies" | "municipalities"; label: string }[] = [
+  const typeOptions: {
+    value: "companies" | "municipalities";
+    label: string;
+  }[] = [
     { value: "companies", label: t("downloadsPage.companies") },
     { value: "municipalities", label: t("downloadsPage.municipalities") },
   ];

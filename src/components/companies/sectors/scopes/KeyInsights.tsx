@@ -1,11 +1,12 @@
 import React from "react";
 import { ArrowUpRight, Factory, ArrowDownRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { formatPercent } from "@/utils/localizeUnit";
+import { formatPercent } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
+import { ScopeData } from "@/hooks/companies/useScopeData";
 
 interface KeyInsightsProps {
-  scopeData: any;
+  scopeData: ScopeData;
   totalEmissions: number;
 }
 

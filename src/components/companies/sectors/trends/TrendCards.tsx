@@ -20,9 +20,7 @@ const TrendCards: React.FC<TrendCardsProps> = ({
   const { isMobile } = useScreenSize();
   const categoryInfo = useCategoryInfo();
   return (
-    <div
-      className={`grid ${isMobile ? "grid-cols-1" : "grid-cols-3"} gap-6`}
-    >
+    <div className={`grid ${isMobile ? "grid-cols-1" : "grid-cols-3"} gap-6`}>
       {(Object.keys(trends) as Array<keyof TrendData>).map((category) => (
         <TrendCard
           key={category}

@@ -1,12 +1,18 @@
 {
   "yes": "Yes",
   "no": "No",
+  "unknown": "Unknown",
+  "all": "All",
   "emissionsUnit": "tCO₂e",
-  "emissionsUnitCO2": "tCO₂",
+  "noData": "No data available",
   "header": {
     "companies": "Companies",
+    "companiesSectors": "Sectors",
+    "companiesRanked": "Top Lists",
+    "companiesExplore": "Explore Companies",
     "municipalities": "Municipalities",
     "municipalitiesRanked": "Top Lists",
+    "regionsRanked": "Regions",
     "municipalitiesExplore": "Explore",
     "about": "About",
     "aboutUs": "About Us",
@@ -14,12 +20,13 @@
     "insights": "Insights",
     "methodology": "Sources and Method",
     "support": "Support Us",
-    "newsletter": "Newsletter",
+    "newsletter": "Join Newsletter",
     "openMenu": "Open Menu",
     "closeMenu": "Close Menu",
     "articles": "Articles",
     "reports": "Reports",
     "learnMore": "Learn More",
+    "newsletterArchive": "Newsletter Archive",
     "press": "Press"
   },
   "footer": {
@@ -32,6 +39,16 @@
     "supporters": "Supporters and Partners",
     "internationalLicense": "International Licence",
     "ccBySa": "CC BY-SA - Attribution-ShareAlike 4.0"
+  },
+  "components": {
+    "error": {
+      "title": "Unable to retrieve information",
+      "description": "Please try again later"
+    },
+    "noData": {
+      "title": "No Data Available",
+      "description": "There is currently no data available for this page."
+    }
   },
   "newsletter": {
     "subscribe": "Subscribe to our newsletter",
@@ -59,13 +76,109 @@
     "bestPerformers": "Top Lists",
     "bestMunicipalities": "Sweden's best municipalities",
     "municipalitiesDescription": "By average annual reduction in emissions since the Paris Agreement (2015)",
-    "largestEmittor": "Company with the largest emissions",
+    "largestEmittor": "Companies with the largest emissions",
     "companiesDescription": "Emissions from the most recently reported year",
     "aboutUsTitle": "Who are we?",
     "aboutUsContent": "Klimatkollen is a citizen platform that provides climate data and builds support for reducing emissions in line with the Paris Agreement. We believe in the power of simple, engaging data visualisation to enhance knowledge and drive participation in the climate conversation.",
     "tabName": {
       "companies": "the companies",
       "municipalities": "the municipalities"
+    },
+    "reportCorrection": "Report a data correction",
+    "questionPlaceholder": "Please tell us what data value needs to be modified and where on site",
+    "questionMissing": "Please enter a comment",
+    "submitQuestion": "Submit",
+    "emailTitle": "Suggestion for",
+    "ctaSection": {
+      "title": "Ready to Explore the Data?",
+      "description": "Start your journey into Sweden's climate data. Search for companies and municipalities, explore rankings, and discover who's leading the fight against climate change.",
+      "exploreClimateData": "View Municipality Rankings",
+      "viewCompanyRankings": "Explore Company Data",
+      "or": "Or"
+    },
+    "siteFeatures": {
+      "title": "Comprehensive Climate Tracking",
+      "description": "Monitor emissions data and climate commitments across Sweden.",
+      "features": {
+        "municipalityRankings": {
+          "title": "Municipality Rankings",
+          "description": "Track climate progress and emissions data from municipalities and local governments."
+        },
+        "companyRankings": {
+          "title": "Company Rankings",
+          "description": "Compare emissions performance, reduction targets, and sustainability metrics across Swedish companies."
+        },
+        "progressTracking": {
+          "title": "Progress Tracking",
+          "description": "Monitor year-over-year changes and alignment with climate targets and science based goals."
+        }
+      }
+    },
+    "scrollSteps": {
+      "mission": {
+        "badge": "Transparency for Climate Action",
+        "heading": "Our Mission",
+        "paragraph": "Klimatkollen exists to make climate data accessible to everyone. We believe that transparency drives accountability, and accountability drives real climate action. By putting emissions data in the hands of citizens, we empower communities to hold organizations accountable for their environmental commitments."
+      },
+      "transparency": {
+        "badge": "Sunlight is the Best Disinfectant",
+        "heading": "Why Data\nTransparency Matters",
+        "paragraph": "When emissions data is hidden behind corporate reports and paid databases, progress stagnates. Transparent, accessible climate data creates market pressure for better performance. Companies and municipalities that know their data is public work harder to improve their rankings and meet their climate commitments."
+      },
+      "methodology": {
+        "badge": "Science-Based Rankings",
+        "heading": "Our Methodology",
+        "paragraph": "We use emissions data from official reporting sources to create fair, comparable rankings. Our metrics focus on actual emissions reductions, not just promises or targets. Every ranking is based on real performance data, ensuring that climate leaders are recognized and climate laggards are held accountable."
+      },
+      "impact": {
+        "badge": "From Data to Action",
+        "heading": "Driving Real Impact",
+        "paragraph": "Our platform has already helped identify climate leaders and those falling behind across Sweden. By ranking organizations on their actual emissions performance, we create healthy competition that accelerates climate progress. The data doesn't lie—and neither should climate commitments."
+      },
+      "engagement": {
+        "badge": "Every Voice Counts",
+        "heading": "Citizen Action &\nEngagement",
+        "paragraph": "Climate action isn't just for governments and corporations—it starts with informed citizens. When you can see how your local municipality or favorite company performs on climate metrics, you can make better choices as a consumer, voter, and community member. Your engagement drives the demand for better climate performance."
+      },
+      "pathForward": {
+        "badge": "Building a Climate-Conscious Society",
+        "heading": "The Path Forward",
+        "paragraph": "Imagine a world where every organization's climate performance is as visible as their financial results. Where citizens can easily compare the environmental impact of their choices. Where transparency drives a race to the top in climate action. That's the future we're building, one data point at a time."
+      }
+    },
+    "didYouKnow": {
+      "title": "Did You Know?",
+      "subtitle": "Interesting insights from Sweden's climate data - {{action}}!",
+      "actionMobile": "click to explore",
+      "actionDesktop": "hover to explore",
+      "cardActionMobile": "Tap to learn more →",
+      "cardActionDesktop": "Hover to learn more →",
+      "ariaLabelShow": "Show details",
+      "ariaLabelHide": "Hide details",
+      "stat1": {
+        "teaser": "Leaders of the Pack",
+        "description": "{{count}} out of {{total}} companies have reduced emissions by more than 20% since their base reporting year"
+      },
+      "stat2": {
+        "teaser": "Increased Emissions",
+        "description": "{{count}} out of {{total}} companies have increased emissions since their base reporting year"
+      },
+      "stat3": {
+        "teaser": "Paris Aligned",
+        "description": "{{companyCount}} out of {{companyTotal}} companies and {{municipalityCount}} out of {{municipalityTotal}} municipalities are on track to meet Paris Agreement goals"
+      },
+      "stat4": {
+        "teaser": "Transparent Reporting",
+        "description": "{{percentage}}% of tracked companies report Scope 3 emissions by category, providing more transparency into their value chain"
+      },
+      "stat5": {
+        "teaser": "With Plans",
+        "description": "{{percentage}}% of municipalities ({{count}} out of {{total}}) have adopted climate plans"
+      },
+      "stat6": {
+        "teaser": "Tracked Emissions",
+        "description": "{{total}} million tonnes of CO₂e tracked across {{companyCount}} companies and {{municipalityCount}} municipalities, using the latest reported value for each entity"
+      }
     }
   },
   "aboutPage": {
@@ -79,6 +192,16 @@
       "paragraph2": "We provide a clear picture of how emissions are progressing compared to where they need to be. By making this information accessible, we empower the public, contribute to fact-based discussions, and strengthen support for climate action.",
       "paragraph3": "Our vision is for decision-makers in politics and business to be guided by an informed and engaged public, leading to actions that reduce emissions in line with the Paris Agreement.",
       "paragraph4": "Launched in March 2022, Klimatkollen is operated by the non-profit association Klimatbyrån. It was founded by Ola Spännar and Frida Berry Eklund. Initially focused on local climate data for Swedish municipalities, the platform expanded in 2024 to include corporate climate data."
+    },
+    "ourApproachSection": {
+      "title": "Our Approach",
+      "paragraph1": "Open climate data increases transparency and accountability. With climate data on hand, we can hold decision-makers in politics and business accountable for their promises to reduce emissions and fulfil the Paris Agreement.",
+      "paragraph2": "Klimatkollen has developed Garbo AI for data collection and analysis. This enables us to present climate data for an increasing number of municipalities and companies, both in Sweden and internationally.",
+      "paragraph3": "We do not claim to be flawless, this is brand new technology and tricky data even for those reporting it. But the more we test, develop and learn, the better Garbo AI and our data will become.",
+      "paragraph4": "Klimatkollen complements the public sector. Authorities can – and should – only publish carefully processed data. This has many advantages. At the same time, the process can be slow, and correcting errors can take time.",
+      "paragraph5": "We want to be faster. Wikipedia is updated daily by civil society. Klimatkollen works in the same spirit.",
+      "paragraph6": "That is why we are grateful for feedback and suggestions. Do you see an error? Email us at <0>hej@klimatkollen.se</0> and we'll check it out and change.",
+      "paragraph7": "Together, we make emissions data available to citizens. Everyone has the right to know how emissions are progressing and whether they are decreasing fast enough."
     },
     "teamSection": {
       "title": "Our Team"
@@ -95,9 +218,10 @@
     },
     "financingSection": {
       "title": "How We Are Funded",
-      "paragraph1": "In 2024 and 2025, Klimatkollen will receive financial support from Google.org as one of two Swedish recipients of the Google.org Impact Challenge: Tech for Social Good.",
-      "paragraph2": "In 2023, Klimatkollen was funded by Postkodstiftelsen. Our 2022 launch was made possible through support from WWF Sweden, ClimateView, We Don't Have Time, and Argand Partners.",
-      "paragraph3": "Much of our work relies on voluntary efforts, and we welcome new partners and financial support to help us scale up!",
+      "paragraph1": "From November 2025 to the end of 2026, Klimatkollen will receive financial support from Postkodstiftelsen for the project 'AI for local climate influence'.",
+      "paragraph2": "In 2024 and 2025, Klimatkollen received financial support from Google.org as one of two Swedish recipients of the Google.org Impact Challenge: Tech for Social Good. This funding has allowed us to expand our corporate emissions data collection and analysis efforts.",
+      "paragraph3": "In 2023, Klimatkollen was funded by Postkodstiftelsen. Our 2022 launch was made possible through support from WWF Sweden, ClimateView, We Don't Have Time, and Argand Partners.",
+      "paragraph4": "Much of our work relies on voluntary efforts, and we welcome new partners and financial support to help us scale up!",
       "donate": "Would you like to support our work?",
       "donateDescription": "Every donation helps us expand and share more data.",
       "bankgiro": "Bankgiro: 5793-3178",
@@ -215,7 +339,11 @@
   "reportsPage": {
     "title": "Reports",
     "description": "In-depth analyses and reports on Sweden's climate transition.",
-    "readMore": "Read more"
+    "readMore": "Read more",
+    "openReport": "Open Report",
+    "reportCategories": {
+      "report": "Report"
+    }
   },
   "blogDetailPage": {
     "loading": "Loading...",
@@ -226,12 +354,62 @@
     "shareText": "Check out this blog post!",
     "relatedArticles": "Related Articles"
   },
+  "companiesRankedPage": {
+    "title": "Company Rankings",
+    "description": "Compare companies based on key climate indicators",
+    "errorTitle": "Failed to retrieve company information",
+    "errorDescription": "Please try again later",
+    "mapPlaceholder": "Map visualization coming soon",
+    "filterByIndustry": "Filter by industry",
+    "clearFilters": "Clear all",
+    "selectIndustry": "Select industry",
+    "viewToggle": {
+      "showGraph": "Graph",
+      "showList": "List"
+    },
+    "visualizations": {
+      "noVisualizationAvailable": "No visualization available for this KPI",
+      "noDataAvailable": "No data available",
+      "emissionsChange": {
+        "title": "Emissions Change from Base Year",
+        "unknown": "Unknown"
+      },
+      "meetsParis": {
+        "legend": {
+          "belowBudget": "Below budget",
+          "aboveBudget": "Above budget"
+        },
+        "budgetThreshold": "Budget threshold (0{{unit}})",
+        "description": "Tonnes over or under each company's carbon budget. We estimate future emissions with an LAD trendline and compare cumulative 2025–2050 emissions to a Carbon Law path (11.7% yearly reduction).",
+        "learnMore": "Learn more",
+        "tooltip": {
+          "underBudget": "under carbon budget",
+          "overBudget": "over carbon budget",
+          "onBudget": "on carbon budget"
+        }
+      },
+      "beeswarm": {
+        "capped": "(capped)",
+        "companiesShown": "{{count}} companies shown",
+        "companiesShown_plural": "{{count}} companies shown",
+        "showingFirst": "(showing first {{count}})",
+        "tooltip": {
+          "actual": "Actual:",
+          "cappedAt": "Capped at",
+          "forChartVisibility": "for chart visibility",
+          "reduction": "Reduction",
+          "increase": "Increase"
+        }
+      }
+    }
+  },
   "companiesPage": {
     "viewModes": {
       "graphs": "Graphs",
       "list": "List"
     },
     "filter": "Filter",
+    "sort": "Sort",
     "sortBy": "Sort By",
     "searchInFilter": "Search filters",
     "noFiltersFound": "No matching filters found.",
@@ -239,8 +417,20 @@
       "emissionsChange": "Change in Emissions (%)",
       "totalEmissions": "Total Emissions",
       "scope3Coverage": "Scope 3 Coverage",
+      "meetsParis": "Meets Paris Agreement",
       "nameAsc": "Company Name A-Z",
       "nameDesc": "Company Name Z-A"
+    },
+    "filteringOptions": {
+      "meetsParis": "Meets Paris Agreement",
+      "meetsParisYes": "Yes",
+      "meetsParisNo": "No",
+      "meetsParisUnknown": "Unknown"
+    },
+    "sortDirection": {
+      "none": "Default",
+      "asc": "Low to High",
+      "desc": "High to Low"
     },
     "sector": "Sector",
     "errorTitle": "Failed to retrieve company information",
@@ -285,6 +475,8 @@
       "scope2Description": "Indirect emissions from the production of purchased electricity, steam, heat, and cooling consumed by the organisation.",
       "scope3UpstreamDescription": "Indirect emissions from the supply chain",
       "scope3DownstreamDescription": "Indirect emissions from product use and end-of-life",
+      "scope3CategoryInfo": "These totals only include emissions from companies that report Scope 3 data by category. Companies reporting only a total Scope 3 value are excluded.",
+      "scope3CategoryInfoLabel": "Information about Scope 3 category reporting",
       "companies": "companies",
       "shareOfTotal": "Share of Total",
       "companiesReporting": "Companies Reporting",
@@ -329,7 +521,8 @@
     "errorTitle": "Unable to retrieve company information",
     "errorDescription": "Please try again later",
     "notFoundTitle": "Company not found",
-    "notFoundDescription": "Check if the company ID is correct"
+    "notFoundDescription": "Check if the company ID is correct",
+    "billion": "billion"
   },
   "methodsPage": {
     "header": {
@@ -358,17 +551,192 @@
           "text": "Read more about the Paris Agreement on the Swedish Environmental Protection Agency's website."
         }
       },
-      "co2Budgets": {
-        "title": "Carbon Budgets",
-        "description": "Understand how carbon budgets are calculated and allocated",
-        "paragraph1": "A carbon budget represents the amount of carbon dioxide that can be emitted before atmospheric CO₂ levels rise high enough to exceed the Paris Agreement's 1.5°C target.",
-        "paragraph2": "According to a <0>calculation</0> by researchers at Uppsala University and the Tyndall Centre in the UK, as of 2024, approximately 340 gigatonnes of CO₂ remain globally for a 50% chance of keeping temperature rise below 1.5°C. At the current rate of emissions, this global budget will be depleted in about eight years.",
-        "paragraph3": "Using this global budget, the researchers have also estimated Sweden's national carbon budget for a fair climate transition.",
-        "paragraph4": "Their calculations show that, from January 2024, Sweden has a national carbon allowance of 80 million tonnes to stay on track for the 1.5°C target. For an 83% chance of keeping warming below 2°C, the budget increases to 285 million tonnes. By comparison, Sweden's total greenhouse gas emissions in 2022 were 45.2 million tonnes.",
-        "paragraph5": "At Sweden's current rate of emissions, the 1.5°C carbon budget will be used up in 1.8 years, while the 2°C budget will last 6.4 years. To stay within the 1.5°C target, Sweden must cut emissions by at least 35% per year starting in 2024. If aiming for the 2°C target, annual reductions of at least 13.5% are needed.",
-        "paragraph6": "Klimatkollen has allocated the new national carbon budget (80 million tonnes, including emissions from international aviation and shipping) to Sweden's municipalities, using the same method that was applied to break down the global budget nationally.",
-        "paragraph7": "These local carbon budgets enable comparisons between actual emissions and the reductions needed. Klimatkollen presents carbon budgets for municipalities both as numerical values and as development curves, illustrating the necessary decline in emissions to stay in line with the Paris Agreement.",
-        "paragraph8": "In addition to the Tyndall model used by Klimatkollen, there are other approaches to calculating a national carbon budget. For example, see Chalmers <0>here</0>."
+      "carbonLaw": {
+        "title": "Carbon Law",
+        "description": "Understand how Klimatkollen applies Carbon Law to company and municipality data",
+        "paragraph1": "Carbon Law helps companies and governments to have a target for reducing their carbon emissions; it's a rule of thumb all entities of any size can use (world, country, company, municipality, individual, etc.). The original carbon law stated that emissions needed to be reduced by 7% per year starting in 2020, in other words, halving emissions every decade. It is based on the Paris Agreement's goal of limiting global warming to well below 2°C, with a target of 1.5°C and the carbon budgets identified by the IPCC.",
+        "paragraph2": "We use a revised version of the original Carbon Law to display a needed trajectory line on each company's or municipality's historic data graphs. This line shows the required emissions reduction for the company or municipality to stay in line with the Paris Agreement.",
+        "paragraph3": "A revised Carbon Law is necessary due to failure to meet the original carbon law's targets to reduce emissions by 7% per year starting in 2020. Taking into account the carbon budget as it now stands, a steeper trajectory is needed to meet the Paris Agreement's goal. The new rule of thumb is that emissions need to be reduced by 12% per year starting in 2025.",
+        "paragraph4": "Using the Carbon Law, we show the required emissions-reduction pathway on each company’s or municipality’s emissions-development graph. This “Paris Line” illustrates how much they need to reduce their emissions to align with the Paris Agreement.",
+        "link": {
+          "title": "Applying Carbon Law From 2025",
+          "text": "Read more about the Applying Carbon Law From 2025 from Klimatkollen's white paper."
+        }
+      },
+      "trendline": {
+        "title": "How We Calculate the Trendline",
+        "description": "Learn about how we calculate the trendline",
+        "paragraph1": "The trendline shows how an organisation’s emissions are expected to develop based on its historical data. It is not a forecast of planned climate action, but a statistical continuation of past behaviour.",
+        "paragraph2": "The trendline is used for two purposes:\n1. To estimate missing recent years (for example if the latest reported data is from 2022 and we need values for 2023–2025).\n2. To project emissions from 2025–2050 for Paris-alignment calculations.",
+        "whenCalculated": {
+          "title": "When a Trendline Is Calculated",
+          "paragraph1": "A trendline is only generated when there is enough valid historical data to make a meaningful projection.",
+          "companies": {
+            "intro": "For companies, we calculate a trendline only if:",
+            "point1": "at least three valid years of emissions data exist after filtering by base year,",
+            "point2": "we can identify a consistent emissions series (prioritising scope 3, otherwise scope 1 and 2), and",
+            "point3": "the remaining data after filtering is sufficient to compute a robust trend."
+          },
+          "municipalities": {
+            "intro": "For municipalities:",
+            "point1": "we use emissions from 2015 onwards, aligning with the start of the Paris Agreement period, and",
+            "point2": "we centre the regression on the last observed year to improve numerical stability."
+          },
+          "paragraph2": "If an organisation does not meet these requirements, the trendline is not calculated and Paris alignment cannot be assessed."
+        },
+        "whyLad": {
+          "title": "Why LAD (Least Absolute Deviations)?",
+          "paragraph1": "We use LAD (Least Absolute Deviations), or median regression, to make the trendline more robust and reliable.",
+          "point1": "LAD is less sensitive to extreme values than ordinary least squares.",
+          "point2": "It handles real-world volatility and jumps in climate data better.",
+          "point3": "It captures the long-term direction instead of reacting strongly to single-year spikes.",
+          "point4": "It produces a steady annual change in tonnes per year, rather than enforcing a fixed percentage.",
+          "paragraph2": "This aligns with our goal of capturing the underlying behaviour of emissions, rather than year-to-year noise."
+        },
+        "howComputed": {
+          "title": "How the Trendline Is Computed",
+          "paragraph1": "The LAD trendline works by fitting a straight line through the historical emissions data, minimising the absolute difference to each year.",
+          "step1": "We identify usable historical emissions data (filtered by base year and scope logic for companies, or 2015 onwards for municipalities).",
+          "step2": "We centre the years around the last observed year to improve numerical stability and comparability.",
+          "step3": "We apply LAD/median regression to estimate the slope (change in tonnes per year).",
+          "step4": "We anchor the trendline to the last reported emissions value so the model connects smoothly to the latest real data.",
+          "step5": "We apply a zero floor so projected values never become negative.",
+          "paragraph2": "The final output is a slope in tonnes per year (for example −1,540 tonnes per year), indicating the expected annual change.",
+          "paragraph3": "We then use this slope to generate missing estimated years up to 2025 and to project emissions through to 2050. As new real data becomes available for future years, it replaces modelled values and the remaining future trend is recalculated from the updated historical record."
+        },
+        "represents": {
+          "title": "What the Trendline Represents",
+          "paragraph1": "In summary, the trendline represents:",
+          "point1": "a linear continuation of past behaviour,",
+          "point2": "a projection of absolute annual change (tonnes per year), not a fixed percentage,",
+          "point3": "an estimate of what future emissions might look like if no major changes occur, and",
+          "point4": "a necessary component for calculating total emissions from 2025–2050 for Paris alignment.",
+          "paragraph2": "It does not represent:",
+          "notPoint1": "a forecast of specific planned climate measures,",
+          "notPoint2": "a prediction that an organisation will comply with regulations or goals, or",
+          "notPoint3": "an endorsement of the organisation’s current pathway.",
+          "paragraph3": "It simply answers the question: “If this organisation continues as it has so far, what does its expected emissions pathway look like?”"
+        },
+        "whyWorks": {
+          "title": "Why a Linear Trendline Works for Paris Alignment",
+          "paragraph1": "Paris alignment is based on total cumulative emissions from 2025–2050 — the organisation’s carbon budget for a 1.5°C pathway with around 50% probability.",
+          "point1": "The linear trendline allows us to estimate whether the projected pathway stays within this carbon budget.",
+          "point2": "If the trendline stays within the budget, emissions will necessarily approach very low levels well before 2050.",
+          "point3": "Using the same method for all municipalities and companies enables fair, comparable assessments.",
+          "paragraph2": "Even though a linear trendline does not mirror the exponential shape of the Carbon Law curve, it can still result in cumulative emissions that are lower than the Paris-aligned budget. In those cases, the organisation is considered to be on a Paris-aligned trajectory given its current trend."
+        }
+      },
+      "parisAlignment": {
+        "title": "Paris Alignment",
+        "description": "Learn about how we calculate if a municipality or company is on track to meet the Paris Agreement",
+        "intro": {
+          "paragraph1": "“On Track for Paris Agreement” indicates that an organisation’s total projected emissions from 2025–2050 are compatible with a Paris-aligned carbon budget for around a 50% chance of limiting warming to 1.5°C.",
+          "paragraph2": "Rather than checking whether every year follows the exact –11.72% Paris Path, we evaluate the whole emissions pathway and ask: does this combination of past data and future trend stay within a fair carbon budget on the way towards net-zero around 2050?"
+        },
+        "carbonBudget": {
+          "title": "Carbon budgets and Paris alignment",
+          "paragraph1": "A carbon budget is the total amount of greenhouse gases that can be emitted over a given period while still keeping within a specific temperature target. In our case, we use Paris-aligned budgets that correspond to a 1.5°C pathway with roughly 50% probability.",
+          "paragraph2": "For each municipality or company, we construct a Paris-aligned carbon budget for the period 2025–2050. This budget is not a prediction of what will happen, but a benchmark that answers: how much can this actor emit on the way to net-zero if we want to stay within a 1.5°C pathway?",
+          "list1": {
+            "item1": "The budget is defined as the area under a Paris Path curve (Carbon Law) from 2025–2050.",
+            "item2": "The closer and earlier an actor brings its annual emissions towards (near) zero, the more likely it is to stay within this budget."
+          }
+        },
+        "anchorYear": {
+          "title": "Anchor year and which data we use",
+          "paragraph1": "We use 2025 as a common anchor year for comparing the Paris Path and the trendline projection. If the most recent measured emissions year is earlier than 2025, we estimate the 2025 value using the historical trend.",
+          "paragraph2": "When new emissions data beyond 2025 becomes available, we always prioritise the measured values. The trendline is then used only to fill in missing and future years up to 2050. Over time, the assessment of Paris alignment is therefore driven more by real-world data and less by projections."
+        },
+        "parisPath": {
+          "title": "Paris Path (Carbon Law)",
+          "paragraph1": "The Paris Path is based on the Carbon Law: an exponential reduction of emissions of about –11.72% per year. Starting from the 2025 anchor value, this creates a smooth, continuously declining pathway from 2025 to 2050.",
+          "paragraph2": "By integrating (summing) this Paris Path over 2025–2050, we obtain a Paris-aligned carbon budget for that actor. The Paris Path is therefore used as a reference trajectory that defines a budget, not as the only valid way to reduce emissions year by year."
+        },
+        "trendline": {
+          "title": "Trendline projection (LAD)",
+          "paragraph1": "To estimate how emissions may develop if current patterns continue, we use a linear trendline based on the Least Absolute Deviations (LAD) method. This trendline is calculated using the relevant historical data available for each actor.",
+          "paragraph2": "The LAD trendline represents a steady change in tonnes per year, not a fixed percentage change. In practice, this means the same absolute reduction can correspond to smaller percentages when emissions are high and larger percentages when emissions are low.",
+          "paragraph3": "For municipalities we typically use all available historical data that meet our quality criteria. For companies we may restrict the period (for example from a defined base year) so that the trendline reflects current operations rather than outdated business models. The details of how we calculate LAD are described in the trendline section of the methods page."
+        },
+        "comparison": {
+          "title": "Comparing pathways and deciding “On Track for Paris”",
+          "paragraph1": "Once we have both a Paris Path and a trendline projection anchored in 2025, we compare the total emissions from 2025–2050 along each pathway. In both cases we look at the cumulative emissions, i.e. the area under the curve over time.",
+          "list1": {
+            "item1": "The Paris-aligned carbon budget is the total emissions allowed along the Paris Path from 2025–2050.",
+            "item2": "The trendline total is the sum of measured emissions (for years where data exists) plus projected emissions from the trendline for missing and future years up to 2050."
+          },
+          "paragraph2": "If the trendline total is lower than the Paris-aligned carbon budget, we classify the actor as “On Track for Paris”. If the trendline total is higher than the budget, the actor is classified as “Not On Track”. Because the Paris budget is tight, a pathway that stays within it will almost always require emissions to approach very low levels or near-zero by 2050."
+        },
+        "limitations": {
+          "title": "Limitations and interpretation",
+          "paragraph1": "The trendline is not a forecast of planned measures, but a statistical extrapolation of recent behaviour. Real emissions may end up higher or lower depending on policy decisions, investments, technology changes and broader economic trends.",
+          "paragraph2": "Our Paris alignment assessment focuses on the total emissions on the way towards net-zero, not on matching a specific percentage every year. It does not capture all aspects of fairness, responsibility or feasibility. It should therefore be interpreted as one important benchmark among several when evaluating whether an actor’s emissions pathway is compatible with the Paris Agreement."
+        }
+      },
+      "interpretingOnTrack": {
+        "title": "How to Interpret “On Track for Paris”",
+        "description": "Learn about how to interpret the “On Track for Paris” status",
+        "paragraph1": "The Paris status on Klimatkollen is designed to answer a narrow but important question:",
+        "question": "“If this organisation continues along its current path, will its total emissions from 2025–2050 fit within a Paris-aligned carbon budget and approach net zero in time?”",
+        "paragraph2": "It is not a full judgement of all climate work, but a specific indicator based on reported emissions.",
+        "statuses": {
+          "title": "What the Different Statuses Mean",
+          "onTrack": {
+            "title": "On Track for Paris",
+            "paragraph1": "The organisation’s projected emissions pathway (trendline plus all available reported emissions data):",
+            "point1": "stays within the Paris-aligned carbon budget for 2025–2050, and",
+            "point2": "brings emissions close to zero well before 2050 if the trend continues.",
+            "paragraph2": "This means that, mathematically, the current rate of absolute reductions is sufficient to stay within a 1.5°C-aligned budget (50% chance) — assuming no major reversal in trend."
+          },
+          "notOnTrack": {
+            "title": "Not On Track for Paris",
+            "paragraph1": "The organisation’s projected emissions:",
+            "point1": "exceed the Paris-aligned carbon budget for 2025–2050,",
+            "point2": "or do not fall fast enough to reasonably approach net zero in time.",
+            "paragraph2": "This does not mean the organisation is doing nothing, only that the current pace of reductions is too slow to be consistent with a Paris-aligned path."
+          },
+          "noAssessment": {
+            "title": "No Assessment",
+            "paragraph1": "We show “No Paris assessment” when:",
+            "point1": "there is not enough reliable historical data to calculate a trendline, or",
+            "point2": "the underlying data is too incomplete or inconsistent for a robust projection.",
+            "paragraph2": "In these cases, we prefer transparency over a potentially misleading label."
+          }
+        },
+        "scope": {
+          "title": "What This Indicator Does and Does Not Say",
+          "paragraph1": "The Paris status is a focused indicator. It tells you something important about the overall pathway, but it does not capture everything.",
+          "doesTitle": "The Paris status does:",
+          "does": {
+            "point1": "focus on cumulative emissions between 2025 and 2050,",
+            "point2": "use a consistent method across all municipalities and companies,",
+            "point3": "provide a simple, comparable signal of whether the current path fits within a 1.5°C-aligned budget."
+          },
+          "doesNotTitle": "The Paris status does not:",
+          "doesNot": {
+            "point1": "guarantee that the organisation will actually implement future measures,",
+            "point2": "assess all climate policies, investments, or adaptation work,",
+            "point3": "include consumption-based emissions or indirect effects beyond the chosen scope,",
+            "point4": "reflect every source of uncertainty in future projections."
+          },
+          "paragraph2": "In other words, it is a useful, comparable climate signal, but not the whole story."
+        },
+        "changes": {
+          "title": "Why the Status Can Change Over Time",
+          "paragraph1": "The Paris assessment can change when:",
+          "point1": "new historical emissions data is reported,",
+          "point2": "a stronger or weaker trend emerges in the updated data,",
+          "point3": "reporting scopes or base years change for companies,",
+          "point4": "methodological improvements are introduced.",
+          "paragraph2": "As more 2025+ real data becomes available, modelled trend years are gradually replaced by actual emissions, and the assessment becomes more tightly anchored in observed reality. For a detailed description of the underlying calculations, see Section 3: “How We Calculate ‘On Track for Paris’” and Section 4: “How We Calculate the Trendline”."
+        },
+        "historicVsParis": {
+          "title": "Historic % Change, Paris Path and Paris Alignment",
+          "paragraph1": "Klimatkollen shows several different metrics that are easy to confuse: the historic % change, the Paris Path (Carbon Law) and the “On Track for Paris” indicator. They are related, but they describe different parts of the story.",
+          "paragraph2": "The historic % change describes how fast emissions have changed on average during a past period (for example 2015–2023). The Paris Path describes an idealised exponential reduction rate (–11.72% per year) that would, if followed exactly, lead to a Paris-aligned emissions pathway. The “On Track for Paris” indicator instead focuses on the total cumulative emissions from 2025–2050 compared to a Paris-aligned carbon budget.",
+          "paragraph3": "Because the trendline is based on absolute tonnes per year, the implied % changes are small when emissions are high and naturally become steeper as emissions fall. This means that a modest historic % change can still be compatible with a future pathway where cumulative emissions stay within the Paris-aligned budget.",
+          "paragraph4": "In other words: a low historic % does not automatically mean “off track”, and a high historic % does not automatically mean “on track”. What ultimately matters for Paris alignment is whether the entire expected emissions pathway from 2025–2050 fits within the available carbon budget. For an intuitive explanation, see the data guide analogies linked from the emissions graph."
+        }
       },
       "emissionTypes": {
         "title": "Different Types of Emissions",
@@ -386,8 +754,9 @@
         "title": "Company Data Overview",
         "description": "Overview of how we collect and present company emissions data",
         "paragraph1": "Klimatkollen collects data on greenhouse gas emissions that companies report in their sustainability reports and combined annual reports.",
-        "paragraph2": "The emissions data is divided into company-specific emissions (scope 1 & scope 2) and emissions from the value chain (scope 3), reported in tonnes of CO2e.",
-        "paragraph3": "On each company's page on Klimatkollen, you can find more detailed information about the emissions; breakdown by scope and category in scope 3, as well as any biogenic emissions.",
+        "paragraph2": "Different companies may use different methods to calculate their emissions. Sometimes they also state that certain data refer to a year other than the year in which they are reported. Klimatkollen takes a citizen's perspective and therefore show the data that is publicly disclosed in the latest annual report. This is also a prerequisite for being able to compare companies more fairly. Read more about each company's calculation method in their report, which we link to from the companies' pages.",
+        "paragraph3": "The emissions data is divided into company-specific emissions (scope 1 & scope 2) and emissions from the value chain (scope 3), reported in tonnes of CO2e.",
+        "paragraph4": "On each company's page on Klimatkollen, you can find more detailed information about the emissions; breakdown by scope and category in scope 3, as well as any biogenic emissions.",
         "link1": {
           "title": "Klimatkollen's Company Data",
           "text": "View our latest company emissions data here"
@@ -405,7 +774,7 @@
             "text": "Read more about the Global Industry Classification Standard (GICS)"
           }
         },
-        "paragraph4": "Information about the number of employees and revenue is obtained from the latest sustainability reports, or combined annual and sustainability reports, and in some cases from other sources."
+        "paragraph5": "Information about the number of employees and revenue is obtained from the latest sustainability reports, or combined annual and sustainability reports, and in some cases from other sources."
       },
       "companyDataCollection": {
         "title": "Data Collection Process",
@@ -456,7 +825,7 @@
         },
         "financedEmissions": {
           "title": "Financed Emissions: Scope 3 Category 15: Investments",
-          "paragraph1": "Financed emissions are often reported with a delay since they can take longer to calculate. To provide a representative picture of a company's impact, in these cases the latest reported emissions are included."
+          "paragraph1": "Financed emissions are often reported with a delay, as they are often based on the previous year's data from the companies included in the investment. We show emissions data in scope 3 category 15 in the year it is publicly reported in the annual report, even if it is sometimes stated that the data in this category comes from a previous year."
         },
         "biogenicEmissions": {
           "title": "Biogenic Emissions",
@@ -466,9 +835,50 @@
           "title": "Emission Offsets",
           "paragraph1": "These are not included, in line with what the GHG Protocol states."
         }
+      },
+      "relatableNumbers": {
+        "title": "Relatable Numbers",
+        "description": "Learn more about how we put the numbers into context.",
+        "paragraph1": "Emission numbers can be difficult to grasp, so we’ve translated changes in emissions over time into more relatable terms. This helps illustrate how much an increase or decrease in emissions really means.",
+        "paragraph2": "Rather than comparing total emissions, we focus on the change — for example, how much a company or region’s emissions have gone up or down compared to the previous year.",
+        "forestFire": {
+          "title": "Forest Fires",
+          "paragraph1": "We have calculated how large a wild fire would have to be to  produce the same amount of emissions. We base this on the following data:",
+          "paragraph2": "Based on the emissions change, we calculate how many hectares equals that amount of CO₂. This is then compared to familiar references such as football fields, tennis courts, or city areas. Using this method, we can express it as something like: “This amount of CO₂ corresponds to emissions from a wild fire as large as X football fields”.",
+          "bullet1": "On average, each hectare of forest contains about 50 tons of carbon (C). (1)",
+          "bullet2": "Carbon is converted to carbon dioxide (CO₂) using the factor 44/12 (molecular weights), which means that one hectare corresponds to roughly 50 × (44/12) ≈ 183 tons of CO₂.",
+          "source": "https://climate.mit.edu/ask-mit/how-many-new-trees-would-we-need-offset-our-carbon-emissions"
+        },
+        "citizens": {
+          "title": "Citizens",
+          "paragraph": "To make the emissions change easier to understand, we compare it to the average annual conspumtion based greenhouse gas emissions per person per year. In our case, we assume that an average person accounts for 9 tons of CO₂-equivalents (tCO₂e) per year. (2)",
+          "source": "https://konsumtionskompassen.se/"
+        }
       }
     },
     "municipality": {
+      "municipalityDataOverview": {
+        "title": "Municipality Data Overview",
+        "description": "What data we collect and present about the municipalities",
+        "paragraph1": "Klimatkollen shows emissions data on Sweden's municipalities, with SMHI's national emissions database as our primary source. To make our municipal and company data comparable, emissions of all greenhouse gases (CO₂e) are shown since August 2025, not just CO₂.",
+        "paragraph2": "We also show how emissions would need to decrease to meet the Paris Agreement. Previously, this was based on local carbon budgets derived from a national budget calculated by researchers at Uppsala University and the Tyndall Centre in the UK. Since August 2025, we have switched to use the 'Paris Curve' based on an updated <0>Carbon Law</0>.",
+        "paragraph3": "The forecast for future emissions is based on how emissions in each municipality have developed historically since the Paris Agreement in 2015. The trend line is weighted using the statistical method Least Absolute Deviations (LAD), which gives less weight to individual extreme values and provides a more fair and realistic picture of future emissions. You can read more about our emissions calculations <0>here</0>.",
+        "paragraph4": "Alongside emissions data, Klimatkollen presents key indicators of municipal performance in the energy transition and emissions reductions, such as growth with EVs and bicycle lanes."
+      },
+      "municipalityKPIs": {
+        "title": "Municipality KPIs",
+        "description": "What data we collect and present about the municipalities",
+        "paragraph1": "In addition to showing whether emissions are on track with the Paris Agreement, we also present data on the progress of different transition measures in the municipalities.",
+        "paragraph2": "We have based our criteria on municipal responsibility, impact on emissions, breadth of areas, and access to stable data. So far, using these criteria, we have presented data on the following key figures:",
+        "list": {
+          "evs": "Electric vehicles - The increase in the municipalities for the proportion of newly registered electric vehicles",
+          "consumption": "Consumption - The household's consumption emissions in tonnes per resident and municipality",
+          "chargers": "Chargers - The number of electric vehicles per public charging point per municipality",
+          "bicycles": "Bicycles - Metres of cycling paths per resident, per municipality",
+          "plans": "Plans - Which municipalities have an ongoing climate action plan",
+          "procurements": "Procurements - Which municipalities have placed climate requirements in public procurement"
+        }
+      },
       "sources": {
         "title": "Our Sources",
         "description": "Explore the publicly available sources and verified data used by Klimatkollen",
@@ -483,7 +893,7 @@
           "skr": {
             "title": "Swedish Association of Local Authorities and Regions",
             "text": "Political leadership in municipalities",
-            "link": "https://skr.se/skr/demokratiledningstyrning/valmaktfordelning/valresultatstyren/styrekommunereftervalet2022.69547.html"
+            "link": "https://skr.se/kommunerochregioner/valochpolitiskastyrenikommunerochregioner.8381.html#h-Styreikommunereftervalet2022"
           },
           "wikidata": {
             "title": "Wikidata",
@@ -501,18 +911,19 @@
             "link": "https://www.nvdb.se/sv"
           },
           "sei": {
-            "title": "Stockholm Environment Institute",
-            "text": "Household consumption-based emissions",
-            "link": "https://www.sei.org/tools/konsumtionskompassen/"
+            "title": "Stockholm Environment Institute (SEI)",
+            "text": "Household consumption-based emissions. Konsumtionskompassen, 2025. CC BY-NC-ND 4.0",
+            "link": "https://konsumtionskompassen.se/"
           },
-          "powerCircles": {
+          "powerCircle": {
             "title": "Power Circles database ELIS",
             "text": "Charging infrastructure data from the industry organisation",
             "link": "https://powercircle.org/elbilsstatistik/"
           },
           "klimatplaner": {
             "title": "Climate Plans",
-            "text": "Collected by members of Klimatklubben and the Swedish Society for Nature Conservation"
+            "text": "Collected by members of Klimatklubben and the Swedish Society for Nature Conservation",
+            "link": "https://docs.google.com/spreadsheets/d/13CMqmfdd6QUD6agKFyVhwZUol4PKzvy253_EwtsFyvw/edit?fbclid=IwAR0v0cq0_xhFVlhhVn5fP-TNkOPVRXbOTKzTVWI_PMr_yU2rXOLjcN6jSps#gid=0"
           },
           "upphandlingsmyndigheten": {
             "title": "Procurement Authority",
@@ -525,27 +936,22 @@
             "link": "https://docs.google.com/spreadsheets/d/1EdHUa49HJZn0rXqM-6tChdim4TJzXnwA/edit#gid=1040317160"
           }
         }
-      },
-      "calculations": {
-        "title": "Our Calculations",
-        "description": "Understand how we calculate and analyse climate data",
-        "paragraph1": "The emissions data for municipalities is based on SMHI's national emissions database for the years 1990–2022. For 2022–2024, emissions have been approximated based on historical trends to provide data up to the present day.",
-        "paragraph2": "<0>Here</0> you can read an example of how we calculate key figures for municipal emissions (link in Swedish)."
       }
     }
   },
   "supportPage": {
     "header": {
       "title": "Support Klimatkollen",
-      "description": "Help us continue our mission of tracking and promoting climate action in Sweden. There are several ways you can support our work."
+      "description": "Help us continue collecting and sharing climate data so that more people can understand how the transition to a sustainable future is progressing. There are many ways you can support us."
     },
     "donations": {
-      "title": "Direct Donations",
-      "description": "Support our work through financial contributions",
+      "title": "Donate money",
+      "description": "Help us keep our work going with a financial contribution",
       "details": [
-        "Bankgiro: 5793-3178",
         "Swish: 123 384 67 48",
-        "Your donation helps maintain our infrastructure and data collection"
+        "Bankgiro: 5793-3178",
+        "IBAN: SE-96 8000 0832 7973 4619 5055",
+        "Your donation helps maintain our infrastructure and data collection efforts"
       ],
       "action": {
         "text": "Make a Donation",
@@ -553,17 +959,17 @@
       },
       "email": {
         "subject": "Donation Inquiry - Klimatkollen",
-        "body": "Hi,\n\nI would like to make a donation to Klimatkollen.\n\nAmount:\n\nLooking forward to helping with climate data transparency.\n\nBest regards,"
+        "body": "Hello,\n\nI would like to make a donation to Klimatkollen.\n\nAmount:\n\nThank you for helping us continue our work with climate data.\n\nBest regards,"
       }
     },
     "openSource": {
-      "title": "Open Source Contributions",
-      "description": "Help improve our platform through code contributions",
+      "title": "Contribute Code",
+      "description": "Are you a developer? You can help by contributing code",
       "details": [
-        "Our codebase is open source on GitHub",
-        "Contribute to data analysis tools",
-        "Help improve user interface and experience",
-        "Add new features and functionality"
+        "Our source code is open and available on GitHub",
+        "Contribute to our data analysis tools",
+        "Help improve the user interface",
+        "Add new features and enhancements"
       ],
       "action": {
         "text": "View on GitHub",
@@ -571,13 +977,13 @@
       }
     },
     "volunteer": {
-      "title": "Volunteer",
-      "description": "Join our community and contribute your skills",
+      "title": "Volunteer With Us",
+      "description": "Give your time and skills to make a difference",
       "details": [
-        "Help with data verification and analysis",
-        "Assist with translations and content",
-        "Support community engagement",
-        "Participate in climate awareness initiatives"
+        "Assist with research and data analysis",
+        "Create content and manage social media",
+        "Organize events and strengthen our network",
+        "Offer advice and guidance to help us grow"
       ],
       "action": {
         "text": "Join our Discord",
@@ -585,61 +991,62 @@
       }
     },
     "partnerships": {
-      "title": "Partnerships",
-      "description": "Collaborate with us to expand our impact",
+      "title": "Partner With Us",
+      "description": "Collaborate with Klimatkollen to promote transparency and accountability",
       "details": [
-        "Data sharing partnerships",
-        "Research collaborations",
-        "Joint climate initiatives",
-        "Knowledge exchange programs"
+        "Do you have climate data about municipalities or companies?",
+        "Can you help us expand Klimatkollen to other countries?",
+        "Are you conducting research in AI and climate?",
+        "Interested in exploring a joint project?"
       ],
       "action": {
         "text": "Become a Partner",
         "link": "mailto:hej@klimatkollen.se"
       },
       "email": {
-        "subject": "Partnership Inquiry - [Organisation Name]",
-        "body": "Hi,\n\nI am interested in partnering with Klimatkollen.\n\nOrganisation Name:\nArea of Interest:\nProposed Collaboration:\n\nLooking forward to discussing potential partnership opportunities.\n\nBest regards,"
+        "subject": "Partnership Inquiry - [Organization Name]",
+        "body": "Hello,\n\nI am interested in exploring a partnership with Klimatkollen.\n\nOrganization Name:\nArea of Interest:\nProposed Collaboration:\n\nLooking forward to discussing potential partnership opportunities.\n\nBest regards,"
       }
     },
     "organizationSupport": {
-      "title": "Support Companies",
-      "description": "Support as an organisation of any size",
+      "title": "Support as a Company",
+      "description": "Help us provide open climate data to the public",
       "details": [
-        "Fixed fee sponsorship opportunities",
-        "Data verification partnerships",
-        "Technology and resource sharing",
-        "Support climate data transparency"
+        "Display our logo on your website",
+        "Show your logo on our website",
+        "Join the movement for open climate data",
+        "25,000 SEK per year"
       ],
       "action": {
-        "text": "Support Companies",
+        "text": "Support Us",
         "link": "mailto:hej@klimatkollen.se"
       },
       "email": {
-        "subject": "Support Company Inquiry - [Company Name]",
-        "body": "Hi,\n\nI am interested in learning more about the company support opportunity with Klimatkollen.\n\nOrganisation Name:\n\nLooking forward to discussing a collaboration.\n\nBest regards,"
+        "subject": "Corporate Support Inquiry - [Company Name]",
+        "body": "Hello,\n\nI would like to learn more about corporate support opportunities with Klimatkollen.\n\nOrganization Name:\n\nLooking forward to discussing potential collaboration.\n\nBest regards,"
       },
       "readMore": {
-        "text": "Read more",
+        "text": "Learn More",
         "content": {
-          "header": "Become a Supporting Company – Take a Stand for Open Climate Data",
+          "header": "Become a Supporting Company – Stand Up for Open Climate Data",
           "intro": [
-            "By publishing open climate data, Klimatkollen contributes to transparency and increased support for the Paris Agreement in politics and business. Because if we don't know how emissions are progressing – and how they should be progressing – we won't be able to do what's necessary to reduce them in line with the Paris Agreement.",
-            "Klimatkollen is a data-driven nonprofit building a movement around open climate data. We collaborate with businesses, academia, and civil society to increase impact. For us, AI, open data, broad communication, and civic engagement are key.",
-            "Be part of the open climate data movement – become a supporting company today!"
+            "By publishing open climate data, Klimatkollen promotes transparency and strengthens support for the Paris Agreement in both politics and business. Without knowing how emissions are progressing – and how they should be – we cannot take the necessary actions to reduce them effectively.",
+            "Klimatkollen is a data-driven non-profit organization building a movement around open climate data.",
+            "We collaborate with businesses, academia, and civil society to maximize impact. AI, open data, broad communication, and citizen engagement are at the core of our approach.",
+            "Join the movement for open climate data – become a supporting company today!"
           ],
-          "benefitsHeader": "As a supporting company, you get:",
+          "benefitsHeader": "As a supporting company, you will receive:",
           "benefits": [
-            "Our logo on your website, showing your commitment to open climate data",
-            "Your logo on our website, visible among other corporate supporters",
-            "Notifications when we publish new data about your company",
-            "The opportunity to comment on your company's climate data on our website",
-            "Automatic updating of your climate data to your company's Wikipedia page"
+            "Your commitment highlighted with our logo on your website",
+            "Visibility among other corporate supporters on our website",
+            "Notifications when new data about your company is published",
+            "Automatic updates of your climate data to your company’s Wikipedia page"
           ],
-          "cost": "SEK 25,000 / year (including VAT)"
+          "cost": "25,000 SEK / year (including VAT)"
         }
       }
     },
+
     "contact": {
       "title": "Contact Us",
       "description": "Have questions about supporting Klimatkollen, or want to find other ways to volunteer? We'd love to hear from you.",
@@ -648,6 +1055,10 @@
         "link": "mailto:hej@klimatkollen.se"
       }
     }
+  },
+  "regionalRankedPage": {
+    "title": "Regional Overview",
+    "description": "Overview of emissions and transition in the regional level"
   },
   "municipalitiesRankedPage": {
     "errorTitle": "Failed to retrieve municipality information",
@@ -687,30 +1098,24 @@
   "municipalityDetailPage": {
     "metaTitle": "Data on emissions and transition",
     "metaDescription": "Overview of emissions and transition",
-    "loading": "Loading...",
-    "error": "Error loading data",
-    "noData": "No data available",
     "procurementScore": {
       "high": "Yes",
       "medium": "Maybe",
       "low": "No"
     },
+    "politicalRule": "Political rule",
     "totalEmissions": "Total emissions {{year}}",
     "totalEmissionsTooltip": "This is the latest reported emissions. For calculated estimates on the current year, please see the emissions development graph below.",
-    "budgetRunsOut": "Carbon budget expected to run out by",
-    "budgetRanOut": "Carbon budget ran out",
-    "budgetKept": "Carbon budget expected to",
-    "budgetHolds": "Stay within limits",
-    "hitNetZero": "Predicted to hit net zero",
-    "never": "Never",
     "emissionsDevelopment": "Emissions development",
-    "noParisPath": "The municipality's carbon budget has been exhausted, which means that no Paris Agreement line is shown in the graph below",
-    "inTons": "In tons CO₂",
-    "futureEmissions": "Future emissions",
+    "graph": {
+      "overview": "Overview",
+      "sectors": "Emission sources"
+    },
+    "inTons": "In tons CO₂e",
     "annualChangeSince2015": "Annual emission change since 2015",
     "reductionToMeetParis": "Emission reduction to meet the Paris Agreement",
     "cannotReduceToParis": "Will not reach Paris Agreement",
-    "consumptionEmissionsPerCapita": "Consumption emissions per capita in tons CO₂e",
+    "consumptionEmissionsPerCapita": "Consumption emissions per capita",
     "climatePlan": "Climate plan",
     "noPlan": "No plan",
     "noClimatePlan": "No climate plan",
@@ -729,14 +1134,14 @@
       "clickToShow": "Click to show"
     },
     "sectors": {
-      "industry": "Industry (energy + processes)",
-      "productUse": "Product use (incl. solvents)",
+      "industry": "Industry",
+      "productUse": "Product use",
       "internationalTransport": "International transport",
       "agriculture": "Agriculture",
-      "electricityAndHeating": "Electricity and district heating",
+      "electricityAndHeating": "Electricity and heating",
       "workingMachines": "Working machines",
-      "waste": "Waste (incl. sewage)",
-      "ownHeating": "Heating of residential and commercial buildings",
+      "waste": "Waste",
+      "ownHeating": "Heating of buildings",
       "transport": "Transport"
     }
   },
@@ -776,10 +1181,6 @@
       "role": "Tech Advisor",
       "description": "Award-winning developer, digital entrepreneur, and one of Sweden's most influential figures in tech. Founder of the digital innovation agency Iteam and co-founder of Open School Platform. Speaker on AI and digital innovation, advisor to the government."
     },
-    "hugo": {
-      "role": "Developer",
-      "description": "Entrepreneurial climate enthusiast with a strong interest in how AI and technology can help solve future challenges."
-    },
     "kayla": {
       "role": "Developer",
       "description": "Frontend developer with a passion for sustainability and user-friendly digital solutions. Previously worked as an environmental consultant focused on interpreting regulations and calculating greenhouse gas emissions for companies."
@@ -787,6 +1188,18 @@
     "catharina": {
       "role": "Communicator",
       "description": "Communicator and filmmaker focusing on climate and sustainability, active in organisation Ett hållbart Lidingö, with a background as a management consultant."
+    },
+    "elin": {
+      "role": "Developer",
+      "description": "AI and backend developer focused on creating reliable and production-ready AI solutions. Background in both consulting and research. Working with Klimatkollen to make climate data accessible through AI."
+    },
+    "carl": {
+      "role": "Developer",
+      "description": "Frontend developer who loves nature, climbing, and creating tools that make climate data easier to understand. Supports Klimatkollen's volunteers, develops the frontend, and tries to find the perfect GIFs for every occasion."
+    },
+    "mikael": {
+      "role": "Developer",
+      "description": "Open source developer with a long passion for user interfaces and running. Coming from a background of Linux/GNOME, iOS  and web development. Mainly contributing to the web frontend at Klimatkollen."
     }
   },
   "board": {
@@ -798,14 +1211,6 @@
       "role": "Vice Chairman of the Board",
       "description": "Climate specialist and co-founder of Klimatkollen. Initiator of Our Kids' Climate and author of the book 'Talking to Children about Climate Change' (Natur & Kultur). EU Climate Pact Ambassador and Climate Reality Leader."
     },
-    "christian": {
-      "role": "Board Member",
-      "description": "Digital entrepreneur and one of Sweden's most influential figures in tech. CEO and founder of Iteam and Open School Platform."
-    },
-    "anna": {
-      "role": "Board Member",
-      "description": "Digital strategist and former head of social media at Spotify and H&M. CEO and founder of Better Odds."
-    },
     "maria": {
       "role": "Board Member",
       "description": "Journalist, author, speaker, and founder of Klimatklubben. Named one of Sweden's 101 most influential sustainability figures in 2021."
@@ -813,6 +1218,10 @@
     "carlJohan": {
       "role": "Board Member",
       "description": "Sustainability strategist at Diamant & Schulz, previously at Doings and Forsman & Bodenfors, author of the book 'Sustainability Transformation', awarded Marketing Book of the Year 2022."
+    },
+    "madeleine": {
+      "role": "Board Member",
+      "description": "Responsible for solar parks within Green Power Sweden, former head of social policy for WWF Sweden, board member of the Swedish Society for Nature Conservation and political expert at the Ministry of the Environment."
     }
   },
   "emissionsBreakdown": {
@@ -900,11 +1309,12 @@
       "noData": "No Data",
       "unknownSector": "Unknown Sector",
       "emissions": "Emissions",
-      "totalEmissionsInfo": "Total Emissions (Scope 1 & 2)",
       "emissionsChangeRate": "Change Rate",
       "emissionsChangeRateInfo": "Change rate of emissions compared to the previous reporting period.",
       "emissionsChangeRateInfoExtended": "This value is so large due to inconsistencies in reported data between the last two reporting periods, thus this value is not representative of actual changes.",
+      "meetsParis": "Is {{name}} on track to meet the Paris Agreement?",
       "turnover": "Turnover",
+      "turnoverAmount": "bn",
       "employees": "Employees",
       "companyReport": "Sustainability Report",
       "missingReport": "Missing Report",
@@ -918,18 +1328,97 @@
     },
     "emissionsHistory": {
       "noReportingPeriods": "No reporting periods available",
-      "title": "Historical Emissions",
-      "tooltip": "Historical emissions; click on a point to remove the line from the graph. Hover over a point to see the values for the reporting period.",
-      "unit": "Tons CO₂e per year",
+      "title": "Emissions development",
+      "tooltip": "Showing the development of reported emissions over time; click on a point to remove the line from the graph. Hover over a point to see the values for the reporting period.",
+      "unit": "In tons CO₂e",
       "totalEmissions": "Total Emissions",
       "baseYear": "Base year",
       "baseYearInfo": "The base year refers to a specific year chosen as a reference point against which future emissions are compared.",
-      "total": "Total"
+      "total": "Total",
+      "approximated": "Approximated",
+      "trend": "Trend",
+      "carbonLaw": "Paris Agreement",
+      "scope1": "Scope 1 - Direct Emissions",
+      "scope2": "Scope 2 - Indirect Emissions",
+      "scope3": "Scope 3 - Attributed Supply Chain and Product Lifecycle Emissions",
+      "trendInfo": "Approximated value is based on average change of {{percentage}} since {{baseYear}} for all reporting periods",
+      "exploreStep0Description": "This shows emissions data from before the company's base year. While historically interesting, this data is often unreliable for predicting future trends because companies were still developing their measurement methods and may have used different reporting standards.",
+      "exploreStep0Label": "Historical Data (Before Base Year)",
+      "exploreStep1Label": "Reliable Company Data",
+      "exploreStep1Description": "This shows the company's emissions from their base year to the most recent reporting period. This data is considered reliable and comparable because the company has established measurement methods and consistent reporting standards.",
+      "exploreStep2Label": "Future Trend Projection",
+      "exploreStep2Description": "This shows our best estimate of how the company's emissions might change in the future, based on their recent performance. We calculate this trend carefully, but it's important to note that predicting emissions is challenging - companies often have few data points and emissions can vary significantly from year to year.",
+      "exploreStep3Label": "Paris Agreement Target Path",
+      "exploreStep3Description": "This green line shows the emissions reduction path needed to meet the Paris Agreement goals. The target is to reduce emissions by about 11.7% each year, which means roughly halving emissions every 5-6 years. This is the global standard for climate action.",
+      "exploreStep4Label": "2050 Comparison",
+      "exploreStep4Description": "This step shows where the company's trend line and the Paris target path end up in 2050. While a company might only be slightly above or below target in 2050, the next step will show why the cumulative impact over many years is what really matters.",
+      "exploreStep5Label": "Cumulative Impact",
+      "exploreStep5Description": "This step reveals the true story: it's not just about where we end up in 2050, but about the total emissions over the entire journey. Think of it like a bank account - small differences in spending each month add up to big differences over years. The shaded areas show the total emissions 'debt' or 'savings' compared to the Paris target.",
+      "trendExplanationFallback": "This trend line shows our best estimate of future emissions based on the company's recent performance. We use statistical methods to calculate this, but predictions become less certain the further into the future we look.",
+      "exploreBackButton": "Back",
+      "exploreNextButton": "Next",
+      "exploreExitButton": "Exit",
+      "baseYearLabel": "Base Year",
+      "underParisTarget": "under Paris target",
+      "overParisTarget": "over Paris target",
+      "parisAlignedPathLabel": "Estimated Emissions For Paris Aligned Path",
+      "companyEmissionsLabel": "Estimated Company Emissions",
+      "budgetStatusLabel": "Budget Status",
+      "underBudget": "Under budget",
+      "overBudget": "Over budget",
+      "cumulativePeriod": "2025-2050 cumulative",
+      "totalEmissionsSaved": "total emissions saved vs Paris target",
+      "totalEmissionsExcess": "total emissions excess vs Paris target"
     },
     "list": {
       "error": {
         "fetchingCompanyInfo": "Failed to fetch company information",
         "tryAgainLater": "Please try again later"
+      },
+      "dataSelector": {
+        "label": "Select Data Point"
+      },
+      "kpis": {
+        "meetsParis": {
+          "label": "Paris Agreement",
+          "description": "Emissions trend compared to the Paris Agreement",
+          "detailedDescription": "Which companies are on track to meet the Paris Agreement?",
+          "source": "Klimatkollen Analysis",
+          "nullValues": "Unknown",
+          "booleanLabels": {
+            "true": "Meets Paris Agreement",
+            "false": "Fails Paris Agreement"
+          }
+        },
+        "emissionsChangeFromBaseYear": {
+          "label": "Overall Emissions Change",
+          "description": "Change in emissions from base year to latest reporting period",
+          "detailedDescription": "Percentage change in total emissions from the company's base year to their most recent reporting period. Lower values indicate better performance.",
+          "source": "Company Reporting Data"
+        },
+        "trendSlope": {
+          "label": "Emissions Trend",
+          "description": "Estimated yearly change from LAD trendline",
+          "detailedDescription": "Slope of the Least Absolute Deviations trendline fitted to reported emissions.",
+          "source": "Klimatkollen Analysis",
+          "nullValues": "Not enough data"
+        }
+      },
+      "insights": {
+        "noData": {
+          "company": "No company data available",
+          "metric": "No data available for {{metric}}"
+        },
+        "keyStatistics": {
+          "average": "Average:"
+        },
+        "topPerformers": {
+          "titleTop": "Top Companies",
+          "titleBest": "Best Performing Companies"
+        },
+        "improvement": {
+          "title": "Companies Needing Improvement"
+        }
       },
       "sort": {
         "placeholder": "Sort by",
@@ -950,9 +1439,10 @@
       "sector": "Sector",
       "selectYear": "Select Year",
       "latestYear": "Latest Year",
-      "totalEmissions": "Total Emissions",
+      "totalEmissions": "Reported Emissions",
       "tonsCO2e": "tons CO₂e",
-      "changeSinceLastYear": "Change Since Last Year",
+      "changeSinceLastYear": "Change Since Previous Year",
+      "onTrackToMeetParis": "On Track to Meet Paris Agreement",
       "noData": "No Data",
       "turnover": "Turnover",
       "employees": "Employees",
@@ -960,14 +1450,9 @@
       "readAnnualReport": "Read Annual Report",
       "readMore": "Read More",
       "readLess": "Read Less",
-      "aiGeneratedData": "Includes AI-extracted values. Click to read more."
-    },
-    "realEstateScope3History": {
-      "title": "Historical Scope 3 Emissions per Category",
-      "tooltip": "Development of Scope 3 emissions over time by category",
-      "tonsCO2e": "tons CO₂e",
-      "keyTrendsTitle": "Key Trends for the Real Estate Sector",
-      "keyTrendsDescription": "Scope 3 emissions in the real estate sector are often dominated by the categories 'Purchased Goods & Services' (1), 'Capital Goods' (2), and 'Energy-Related Activities' (3). These categories include construction materials, renovations, and energy use in buildings."
+      "aiGeneratedData": "Includes AI-extracted values. To read more, visit our Sources and Methods page.",
+      "billion": "bn",
+      "financialsTooltip": "Financed emissions are often reported with a delay, as they are often based on the previous year's data from the companies included in the investment. We show emissions data in scope 3 category 15 in the year it is publicly reported in the annual report, even if it is sometimes stated that the data in this category comes from a previous year."
     },
     "sectionedCompanyList": {
       "otherCompanies": "Other Companies",
@@ -1002,19 +1487,31 @@
     },
     "tooltip": {
       "noDataAvailable": "No Data Available",
-      "tonsCO2e": "tCO₂e"
+      "tonsCO2e": "tCO₂e",
+      "trend": "Trend:",
+      "increasing": "↗ Increasing",
+      "decreasing": "↘ Decreasing"
+    }
+  },
+  "regions": {
+    "kpis": {
+      "emissions": {
+        "label": "Total Emissions",
+        "description": "Total emissions for the region",
+        "detailedDescription": "Total emissions of CO₂e for the region",
+        "source": "National Emissions Database"
+      }
     }
   },
   "municipalities": {
+    "name": "Name",
     "card": {
       "meetsParis": "Is {{name}} on track to meet the Paris Agreement?",
       "yes": "Yes",
       "no": "No",
-      "netZero": "The municipality reaches net zero emissions",
-      "budgetRunsOut": "Carbon budget runs out",
       "emissionRanking": "EMISSION RANKING",
       "emission": "Emissions {{year}}",
-      "emissionInfo": "The municipality's CO₂ emissions for the year {{year}}.",
+      "emissionInfo": "The municipality's CO₂e emissions for the year {{year}}.",
       "changeRate": "Change Rate",
       "changeRateInfo": "Change rate of emissions since the Paris Agreement was signed in 2015.",
       "climatePlan": "Climate Plan",
@@ -1028,9 +1525,8 @@
       "approximated": "Calculated Total",
       "estimated": "Calculated",
       "trend": "Trend",
-      "parisAgreement": "Paris Agreement",
-      "paris": "Paris Agreement",
-      "unit": "tons CO₂",
+      "carbonLaw": "Paris Agreement",
+      "unit": "tons CO₂e",
       "total": "Total",
       "year": "Year",
       "estimatedValue": "Emissions value is estimated",
@@ -1052,36 +1548,61 @@
         }
       },
       "kpis": {
+        "meetsParisGoal": {
+          "label": "Paris Agreement",
+          "description": "Emissions trend compared to the Paris Agreement",
+          "detailedDescription": "Which municipalities are on track to meet the Paris Agreement?",
+          "source": "National Emissions Database",
+          "booleanLabels": {
+            "true": "Meets Paris Agreement",
+            "false": "Fails Paris Agreement"
+          },
+          "aboveString": "are on track to meet the Paris Agreement",
+          "belowString": "are on track to miss the Paris Agreement"
+        },
         "historicalEmissionChangePercent": {
           "label": "Emissions",
           "description": "Historical change in emissions",
-          "detailedDescription": "Average annual change in carbon dioxide emissions in Swedish municipalities since the Paris Agreement in 2015.",
+          "detailedDescription": "Average annual percentage change in greenhouse gas emissions in Swedish municipalities since the Paris Agreement in 2015.",
           "source": "<0>National Emissions Database</0>"
         },
         "electricCarChangePercent": {
           "label": "Electric Cars",
           "description": "Change in electric car adoption",
           "detailedDescription": "The growth rate in municipalities for the share of newly registered rechargeable cars 2015-2024, stated in percentage points per year.",
-          "source": "<0>Transport Analysis</0>"
+          "source": "Transport Analysis"
         },
         "totalConsumptionEmission": {
           "label": "Consumption",
           "description": "Total emissions from consumption",
-          "detailedDescription": "Household consumption emissions (CO₂e) in tonnes per inhabitant and municipality in 2023 (estimated data). By 2050, emissions should be at most 1 tonne per person per year to be in line with the Paris Agreement.",
-          "source": "<0>Stockholm Environment Institute</0>"
+          "detailedDescription": "Household consumption emissions (CO₂e) in tonnes per inhabitant and municipality in 2022. By 2050, emissions should be at most 1 tonne per person per year to be in line with the Paris Agreement.",
+          "source": "Stockholm Environment Institute (2025), Konsumtionskompassen. Licensed under CC BY-NC-ND 4.0."
         },
         "electricVehiclePerChargePoints": {
           "label": "Charging Stations",
           "description": "Number of electric vehicles per charging point",
           "detailedDescription": "Number of electric vehicles per public charging point, per municipality in 2024. Lower numbers are better, as good infrastructure promotes increased electric vehicle adoption.",
-          "source": "<0>Power Circle</0>",
-          "nullValues": "no charging points"
+          "source": "Power Circle",
+          "nullValues": "No charging points"
         },
         "bicycleMetrePerCapita": {
           "label": "Bicycles",
           "description": "Bicycle path metres per capita",
           "detailedDescription": "Number of metres of bicycle paths per inhabitant per municipality in 2024. Longer is better, as good infrastructure promotes increased cycling.",
           "source": "<0>National Road Database</0>, <1>Swedish Transport Administration</1>"
+        },
+        "climatePlan": {
+          "label": "Climate Plans",
+          "description": "Has an ongoing climate action plan",
+          "detailedDescription": "Which municipalities have a climate action plan?",
+          "source": "<0>Klimatkollen’s open compilation of climate plans, with help from members of Klimatklubben and the Swedish Society for Nature Conservation (Naturskyddsföreningen).</0>",
+          "booleanLabels": {
+            "true": "Has Climate Plan",
+            "false": "No Climate Plan"
+          },
+          "hasPlanSince": "Climate plan adopted {{year}}",
+          "aboveString": "have a climate plan",
+          "belowString": "do not have a climate plan"
         }
       },
       "insights": {
@@ -1092,7 +1613,8 @@
         "keyStatistics": {
           "average": "Average:",
           "distributionAbove": "municipalities above average",
-          "distributionBelow": "municipalities below average"
+          "distributionBelow": "municipalities below average",
+          "distributionBoolean": "municipalities "
         },
         "topPerformers": {
           "titleBest": "Top Five Municipalities",
@@ -1105,13 +1627,12 @@
       "viewToggle": {
         "showList": "Show List",
         "showMap": "Show Map"
-      },
-      "rankedList": {
-        "search": {
-          "placeholder": "Search municipalities..."
-        },
-        "rank": "Rank: {{rank}} of {{total}}"
       }
+    }
+  },
+  "charts": {
+    "tooltip": {
+      "noData": "No data"
     }
   },
   "errorPage": {
@@ -1142,14 +1663,30 @@
       "reportingTimespan": "Reporting Period",
       "reportingStart": "Start",
       "reportingEnd": "End",
+      "reportURL": "Report URL",
       "marketBased": "Market-based",
       "locationBased": "Location-based",
-      "unknown": "Unknown"
+      "unknown": "Unknown",
+      "turnover": "Turnover",
+      "currency": "Currency",
+      "employees": "Employees",
+      "unit": "Unit",
+      "statedTotalEmissions": "Stated Total Emissions",
+      "scope1And2Combined": "Scope 1 & 2 Combined"
+    },
+    "sections": {
+      "reportingPeriod": "Reporting Period",
+      "emissions": "Emissions",
+      "economy": "Economy"
     },
     "save": "Save",
     "success": {
       "title": "Changes have been saved!",
       "description": "Changes to the reporting period have been made successfully"
+    },
+    "successDetails": {
+      "title": "Changes have been saved!",
+      "description": "Changes to the base year and/or industry sector have been made successfully"
     },
     "unsavedChanges": {
       "title": "Unsaved Changes",
@@ -1247,30 +1784,92 @@
     "title": "Find a company or municipality",
     "searchCategoryCompany": "Company",
     "searchCategoryMunicipality": "Municipality",
-    "placeholder": "Example: Alfa Laval"
+    "searchCategoryPage": "Page",
+    "placeholder": "Example: Alfa Laval",
+    "headerButtonTitle": "Search",
+    "searchDialog": {
+      "title": "Search",
+      "description": "Search for companies or municipalities",
+      "emptyText": "Start typing to search",
+      "loadingText": "Fetching companies and municipalities...",
+      "shortcutTipText": "Trigger search by Ctrl+K / ⌘+K"
+    }
   },
   "dataGuide": {
-    "title": "Data Guide",
-    "buttonTitle": "Data Guide",
-    "items": {
-      "baseYear": "The base year is a specific year used as a reference point to compare future emissions",
-      "changeRate": "The emission change rate compared to previous year",
-      "companySectors": [
-        "We have diveded companies into different sectors to make it easier to compare companies against each other",
-        "Examples of sectors are:",
-        "- Industrials",
-        "- Energy",
-        "- Consumer Discretionary",
-        "- ..."
-      ],
-      "companyTurnover": "The company turnover is their total revenue or sales. It is important not to confuse this with the profit.",
-      "scopes": [
-        "Scope 1, 2, and 3 emissions come from the Greenhouse Gas Protocol, a global standard for measuring corporate emissions:",
-        "1. **Scope 1** - Direct emissions from company-owned or controlled sources (e.g., fuel combustion).",
-        "2. **Scope 2** - Indirect emissions from purchased energy consumption.",
-        "3. **Scope 3** - Other indirect emissions from the value chain, such as suppliers, product use, and waste."
-      ],
-      "tco2e": "tCO2e stands for \"tonnes of carbon dioxide equivalent\". It's a standardized measure that converts the impact of various greenhouse gases into the equivalent amount of CO2."
+    "buttonFallbackTitle": "Learn more about these metrics",
+    "selectItemPrompt": "Select a topic you want to learn more about"
+  },
+  "viewModeToggle": {
+    "map": "Map",
+    "list": "List"
+  },
+  "rankedList": {
+    "search": {
+      "placeholder": "Search..."
+    },
+    "rank": "Rank: {{rank}} of {{total}}"
+  },
+  "chartLegend": {
+    "clickToFilterOut": "Click to filter out",
+    "scrollToSeeMore": "Scroll to see more"
+  },
+  "trendAnalysis": {
+    "insufficientData": "No trendline shown due to insufficient data ({{dataPoints}} points). Need at least 2 data points to build reliable trend.",
+    "insufficientDataSinceBaseYear": "No trendline shown due to insufficient data since base year {{baseYear}} ({{dataPoints}} usable points). Need at least 2 data points since base year to build reliable trend."
+  },
+  "newsletterArchivePage": {
+    "title": "Newsletter archive",
+    "description": "Read previous newsletters",
+    "loading": "Loading...",
+    "error": "Error loading data",
+    "next": "Next",
+    "previous": "Previous"
+  },
+  "insightCategories": {
+    "analysis": "Analysis",
+    "guide": "Guide",
+    "methodology": "Methodology"
+  },
+  "graphs": {
+    "pieChart": {
+      "clickToFilter": "Click to filter",
+      "doubleClickToFilter": "Double-click to filter",
+      "ofTotal": "of total"
+    }
+  },
+  "language": {
+    "sv": "Swedish",
+    "en": "English"
+  },
+  "relatableNumbers": {
+    "title": "How much is that?",
+    "tooltip": "Learn more about how these numbers are calculated on the methods page.",
+    "description": "{{companyName}} {{emissionsChangeStatus}} their emissions by <highlightNumber>{{emissionsInTonnes}} ({{yearOverYearChange}})</highlightNumber> tCO2e from the previous year. This compares to:",
+    "prefixFire": "Emissions from a forest fire",
+    "prefixEmissions": "The annual emissions of {{count}} Swedes.",
+    "increased": "increased",
+    "decreased": "decreased",
+    "patterns": {
+      "city": "{{prefix}} {{count}} times the size of {{entity}}.",
+      "unit": "{{prefix}} the size of {{count}} {{entity}}."
+    },
+    "entities": {
+      "stockholm": {
+        "name": "Stockholm",
+        "type": "city"
+      },
+      "monaco": {
+        "name": "Monaco",
+        "type": "city"
+      },
+      "footballFields": {
+        "name": "football fields",
+        "type": "unit"
+      },
+      "tennisCourts": {
+        "name": "tennis courts.",
+        "type": "unit"
+      }
     }
   }
 }

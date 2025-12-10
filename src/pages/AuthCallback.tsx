@@ -12,9 +12,7 @@ export const AuthCallback = () => {
   const { authenticate, token } = useAuth();
   const { showToast } = useToast();
   const called = useRef(false);
-  const { currentLanguage } = useLanguage
-    ? useLanguage()
-    : { currentLanguage: "sv" };
+  const { currentLanguage } = useLanguage();
 
   useEffect(() => {
     if (called.current) return; // prevent rerender caused by StrictMode
@@ -31,7 +29,7 @@ export const AuthCallback = () => {
       console.error("Authentication error:", error);
       navigate("/", { state: { error: t("authCallbackPage.failed") } });
     }
-  }, [location, navigate]);
+  }, [location, navigate, authenticate, t]);
 
   useEffect(() => {
     if (token) {
@@ -53,7 +51,7 @@ export const AuthCallback = () => {
         navigate(currentLanguage === "en" ? "/en" : "/sv", { replace: true });
       }
     }
-  }, [token]);
+  }, [token, navigate, currentLanguage, showToast, t]);
 
   return <div>{t("blogDetailPage.loading")}</div>;
 };

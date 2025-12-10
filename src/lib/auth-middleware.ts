@@ -1,7 +1,7 @@
 import { Middleware } from "openapi-fetch";
 
 export const authMiddleware: Middleware = {
-  async onRequest(req, options) {
+  async onRequest(req, _options) {
     if (localStorage.getItem("token")) {
       req.headers.append(
         "authorization",
@@ -10,7 +10,7 @@ export const authMiddleware: Middleware = {
     }
     return req;
   },
-  async onResponse(res, options, req) {
+  async onResponse(res, _options, _req) {
     if (res.headers.has("x-auth-token")) {
       localStorage.setItem("token", res.headers.get("x-auth-token") || "");
     }

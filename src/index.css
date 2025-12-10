@@ -52,6 +52,12 @@
   --pink-3: #f0759a;
   --pink-4: #97455d;
   --pink-5: #73263d;
+
+  /* Muted background colors for flip cards (20% opacity) */
+  --green-3-muted: color-mix(in srgb, var(--green-3) 20%, transparent);
+  --blue-3-muted: color-mix(in srgb, var(--blue-3) 20%, transparent);
+  --orange-3-muted: color-mix(in srgb, var(--orange-3) 20%, transparent);
+  --pink-3-muted: color-mix(in srgb, var(--pink-3) 20%, transparent);
 }
 
 @layer base {
@@ -166,11 +172,19 @@
 }
 
 .prose ul {
-  @apply list-disc list-inside mb-6 space-y-2;
+  @apply list-disc list-outside mb-6 space-y-2 ml-6;
+}
+
+.prose ol {
+  @apply list-decimal list-outside mb-6 space-y-2 ml-6;
 }
 
 .prose li {
   @apply text-lg;
+}
+
+.rounded-level-3 {
+  border-radius: 15px;
 }
 
 input[type="number"] {
@@ -221,4 +235,23 @@ input[type="number"] {
 .container-type-inline-size {
   container-type: inline-size;
   /* width: 600px;  Remove any fixed width */
+}
+
+/* Mobile viewport fixes */
+@supports (height: 100dvh) {
+  .min-h-screen {
+    min-height: 100dvh; /* Use dynamic viewport height on mobile */
+  }
+}
+
+/* Prevent mobile scroll bounce issues */
+@supports (-webkit-touch-callout: none) {
+  body {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: none;
+  }
+
+  html {
+    overscroll-behavior: none;
+  }
 }

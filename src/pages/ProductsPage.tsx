@@ -162,7 +162,6 @@ function ProductsPage() {
               hoverBorderColor="border-green-5"
               textColor="text-green-5"
               iconBgColor="bg-green-2"
-              iconColor="text-green-5"
             />
 
             {/* Free Version */}
@@ -177,7 +176,6 @@ function ProductsPage() {
               hoverBorderColor="border-blue-5"
               textColor="text-blue-5"
               iconBgColor="bg-blue-2"
-              iconColor="text-blue-5"
             />
           </div>
 

@@ -1,7 +1,7 @@
 import { AiIcon } from "@/components/ui/ai-icon";
 import { Text } from "@/components/ui/text";
 import { ReportingPeriod } from "@/types/company";
-import { localizeUnit } from "@/utils/localizeUnit";
+import { localizeUnit } from "@/utils/formatting/localization";
 import { t } from "i18next";
 import { ArrowUpRight } from "lucide-react";
 
@@ -36,7 +36,7 @@ export function OverviewStatistics({
                   ? `${localizeUnit(
                       selectedPeriod.economy.turnover.value / 1e9,
                       currentLanguage,
-                    )} mdr ${selectedPeriod.economy.turnover.currency}`
+                    )} ${t("companies.overview.billion")} ${selectedPeriod.economy.turnover.currency}`
                   : t("companies.overview.notReported")}
               </Text>
               {turnoverAIGenerated && <AiIcon size="md" />}

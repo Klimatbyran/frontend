@@ -3,8 +3,6 @@ import { X } from "lucide-react";
 import { TrendCardInfo } from "@/types/company";
 import TrendCompanyList from "./TrendCompanyList";
 
-
-
 interface TrendCardProps {
   category: "decreasing" | "increasing" | "noComparable";
   data: any[];

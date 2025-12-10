@@ -27,7 +27,6 @@ export interface ProductCardProps {
   hoverBorderColor: string;
   textColor: string;
   iconBgColor: string;
-  iconColor: string;
 }
 
 export const ProductCard = ({
@@ -41,7 +40,6 @@ export const ProductCard = ({
   hoverBorderColor,
   textColor,
   iconBgColor,
-  iconColor,
 }: ProductCardProps) => (
   <div
     className={`${bgColor} p-8 shadow-lg hover:${hoverBorderColor} transition-colors rounded-2xl`}

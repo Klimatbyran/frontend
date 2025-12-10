@@ -31,7 +31,9 @@ const { GET } = createClient<paths>({
 // Auth API
 export async function authenticateWithGithub(code: string) {
   const { data, error } = await client.POST("/auth/github", {
-    body: { code } as any,
+    body: {
+      code,
+    } as paths["/auth/github"]["post"]["requestBody"]["content"]["application/json"],
   });
 
   if (error) throw error;
@@ -120,8 +122,13 @@ export async function downloadCompanies(
   return data;
 }
 
-export async function downloadMunicipalities() {
+export async function downloadMunicipalities(
+  format: "csv" | "json" | "xlsx" = "json",
+) {
   const { data, error } = await client.GET("/municipalities/export", {
+    params: {
+      query: { type: format },
+    },
     parseAs: "blob",
   });
 
@@ -184,7 +191,6 @@ export async function deleteValidationClaim(wikidataId: string) {
         params: {
           path: { wikidataId },
         },
-        body: JSON.stringify({}) as any,
       },
     );
     if (error) throw error;
@@ -192,5 +198,103 @@ export async function deleteValidationClaim(wikidataId: string) {
   } catch (error) {
     console.error("Error fetching validation claims:", error);
     return {};
+  }
+}
+
+export async function assessEmissions(
+  params: paths["/emissions-assessment/"]["post"]["requestBody"]["content"]["application/json"],
+) {
+  const { data, error } = await client.POST("/emissions-assessment/", {
+    body: params,
+  });
+
+  if (error) {
+    if (
+      error.message === "No reporting periods found for the specified years"
+    ) {
+      throw new Error(
+        "No reporting periods found for the selected years. Please choose different years.",
+      );
+    }
+    throw new Error(error.message || "Failed to assess emissions");
+  }
+
+  return data;
+}
+
+export async function updateCompanyIndustry(
+  wikidataId: string,
+  subIndustryCode: string,
+  metadata?: { source?: string; comment?: string },
+  verified?: boolean,
+) {
+  const { data, error } = await client.POST(
+    "/companies/{wikidataId}/industry",
+    {
+      params: { path: { wikidataId } },
+      body: { industry: { subIndustryCode }, metadata, verified },
+    },
+  );
+  if (error) throw error;
+  return data;
+}
+
+export async function updateCompanyBaseYear(
+  wikidataId: string,
+  baseYear: number,
+  metadata?: { source?: string; comment?: string },
+  verified?: boolean,
+) {
+  const { data, error } = await client.POST(
+    "/companies/{wikidataId}/base-year",
+    {
+      params: { path: { wikidataId } },
+      body: { baseYear, metadata, verified },
+    },
+  );
+  if (error) throw error;
+  return data;
+}
+
+// GICS Industry API
+export async function getIndustryGics() {
+  const { data, error } = await client.GET("/industry-gics/", {});
+  if (error) throw error;
+  return data;
+}
+
+export const fetchNewsletters = async () => {
+  try {
+    const response = await fetch(`${baseUrl}/newsletters/`);
+
+    if (response.ok) {
+      const result = await response.json();
+      return result;
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export async function getRegions() {
+  try {
+    const { data, error } = await GET("/regions/", {});
+    if (error) throw error;
+    return data || [];
+  } catch (error) {
+    console.error("Error fetching regions:", error);
+    return [];
+  }
+}
+
+// TODO: Add national data to API, this is prep for next stages
+export async function getNationalData() {
+  try {
+    // const { data, error } = await GET("/national-data/", {});
+    // if (error) throw error;
+    // return data || [];
+  } catch (error) {
+    console.error("Error fetching national data:", error);
+    return [];
   }
 }

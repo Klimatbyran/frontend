@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion, Variants } from "framer-motion";
 import { cn } from "@/lib/utils";
+import i18next from "i18next";
 
 interface TypewriterProps {
   text: string | string[];
@@ -51,9 +52,15 @@ const Typewriter = ({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
-  const [hasCompletedCycle, setHasCompletedCycle] = useState(false); 
+  const [hasCompletedCycle, setHasCompletedCycle] = useState(false);
 
-  const texts = Array.isArray(text) ? text : [text];
+  const texts = useMemo(() => (Array.isArray(text) ? text : [text]), [text]);
+
+  // Reset display text when language is changed
+  i18next.on('languageChanged', () => {
+    setDisplayText('');
+    setIsDeleting(true);
+  })
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
@@ -106,6 +113,7 @@ const Typewriter = ({
   }, [
     currentIndex,
     displayText,
+    initialDelay,
     isDeleting,
     speed,
     deleteSpeed,

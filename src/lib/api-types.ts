@@ -175,12 +175,22 @@ export interface paths {
                         "application/json": {
                             wikidataId: string;
                             name: string;
-                            description: string | null;
                             lei?: string | null;
+                            description?: string | null;
+                            descriptions?: {
+                                id: string;
+                                /** @enum {string} */
+                                language: "SV" | "EN";
+                                text: string;
+                            }[];
                             reportingPeriods: {
                                 startDate: string;
                                 endDate: string;
                                 reportURL: string | null;
+                                emissionsChangeLastTwoYears?: {
+                                    absolute: number | null;
+                                    adjusted: number | null;
+                                };
                                 emissions: {
                                     calculatedTotalEmissions: number;
                                     scope1: {
@@ -232,7 +242,7 @@ export interface paths {
                                         }[];
                                     } | null;
                                     scope1And2: {
-                                        total: number;
+                                        total: number | null;
                                         unit: string;
                                         metadata: {
                                             verifiedBy: {
@@ -271,6 +281,7 @@ export interface paths {
                                     } | null;
                                 } | null;
                             }[];
+                            futureEmissionsTrendSlope: number | null;
                             industry: {
                                 industryGics: {
                                     sectorCode: string;
@@ -345,8 +356,14 @@ export interface paths {
                         "application/json": {
                             wikidataId: string;
                             name: string;
-                            description: string | null;
                             lei?: string | null;
+                            description?: string | null;
+                            descriptions?: {
+                                id: string;
+                                /** @enum {string} */
+                                language: "SV" | "EN";
+                                text: string;
+                            }[];
                             reportingPeriods: {
                                 id: string;
                                 startDate: string;
@@ -444,7 +461,7 @@ export interface paths {
                                     } | null;
                                     scope1And2: {
                                         id: string;
-                                        total: number;
+                                        total: number | null;
                                         unit: string;
                                         metadata: {
                                             id: string;
@@ -532,7 +549,12 @@ export interface paths {
                                         };
                                     } | null;
                                 } | null;
+                                emissionsChangeLastTwoYears?: {
+                                    absolute: number | null;
+                                    adjusted: number | null;
+                                };
                             }[];
+                            futureEmissionsTrendSlope: number | null;
                             industry: {
                                 id: string;
                                 industryGics: {
@@ -672,12 +694,22 @@ export interface paths {
                     "application/json": {
                         wikidataId: string;
                         name: string;
-                        description?: string;
+                        descriptions?: {
+                            id?: string;
+                            /** @enum {string} */
+                            language: "SV" | "EN";
+                            text: string;
+                        }[];
                         /** Format: uri */
                         url?: string;
                         internalComment?: string;
                         tags?: string[];
                         lei?: string;
+                        metadata?: {
+                            source?: string;
+                            comment?: string;
+                        };
+                        verified?: boolean;
                     };
                 };
             };
@@ -835,12 +867,22 @@ export interface paths {
                         "application/json": {
                             wikidataId: string;
                             name: string;
-                            description: string | null;
                             lei?: string | null;
+                            description?: string | null;
+                            descriptions?: {
+                                id: string;
+                                /** @enum {string} */
+                                language: "SV" | "EN";
+                                text: string;
+                            }[];
                             reportingPeriods: {
                                 startDate: string;
                                 endDate: string;
                                 reportURL: string | null;
+                                emissionsChangeLastTwoYears?: {
+                                    absolute: number | null;
+                                    adjusted: number | null;
+                                };
                                 emissions: {
                                     calculatedTotalEmissions: number;
                                     scope1: {
@@ -892,7 +934,7 @@ export interface paths {
                                         }[];
                                     } | null;
                                     scope1And2: {
-                                        total: number;
+                                        total: number | null;
                                         unit: string;
                                         metadata: {
                                             verifiedBy: {
@@ -931,6 +973,7 @@ export interface paths {
                                     } | null;
                                 } | null;
                             }[];
+                            futureEmissionsTrendSlope: number | null;
                             industry: {
                                 industryGics: {
                                     sectorCode: string;
@@ -1015,7 +1058,7 @@ export interface paths {
         };
         /**
          * Get all municipalities
-         * @description Retrieve a list of all municipalities with data about their emissions, carbon budget, climate plans, bike infrastructure, procurements, and much more.
+         * @description Retrieve a list of all municipalities with data about their emissions, carbon budget, climate plans, bike infrastructure, procurements, and much more. Returns 304 Not Modified if the resource has not changed since the last request (based on ETag).
          */
         get: {
             parameters: {
@@ -1035,13 +1078,10 @@ export interface paths {
                         "application/json": {
                             name: string;
                             region: string;
-                            budget: number;
-                            totalApproximatedHistoricalEmission: number;
-                            trendEmission: number;
+                            logoUrl: string | null;
+                            totalTrend: number;
+                            totalCarbonLaw: number;
                             historicalEmissionChangePercent: number;
-                            neededEmissionChangePercent: number | null;
-                            hitNetZero: string | null;
-                            budgetRunsOut: string | null;
                             electricCarChangePercent: number;
                             climatePlanLink: string | null;
                             climatePlanYear: number | null;
@@ -1049,25 +1089,19 @@ export interface paths {
                             bicycleMetrePerCapita: number;
                             totalConsumptionEmission: number;
                             electricVehiclePerChargePoints: number | null;
-                            procurementScore: string;
-                            procurementLink: string;
+                            procurementScore: number;
+                            procurementLink: string | null;
+                            politicalRule: string[];
+                            politicalKSO: string;
                             emissions: ({
                                 year: string;
                                 value: number;
                             } | null)[];
-                            emissionBudget: ({
-                                year: string;
-                                value: number;
-                            } | null)[] | null;
                             approximatedHistoricalEmission: ({
                                 year: string;
                                 value: number;
                             } | null)[];
                             trend: ({
-                                year: string;
-                                value: number;
-                            } | null)[];
-                            electricCarChangeYearly: ({
                                 year: string;
                                 value: number;
                             } | null)[];
@@ -1115,13 +1149,10 @@ export interface paths {
                         "application/json": {
                             name: string;
                             region: string;
-                            budget: number;
-                            totalApproximatedHistoricalEmission: number;
-                            trendEmission: number;
+                            logoUrl: string | null;
+                            totalTrend: number;
+                            totalCarbonLaw: number;
                             historicalEmissionChangePercent: number;
-                            neededEmissionChangePercent: number | null;
-                            hitNetZero: string | null;
-                            budgetRunsOut: string | null;
                             electricCarChangePercent: number;
                             climatePlanLink: string | null;
                             climatePlanYear: number | null;
@@ -1129,25 +1160,19 @@ export interface paths {
                             bicycleMetrePerCapita: number;
                             totalConsumptionEmission: number;
                             electricVehiclePerChargePoints: number | null;
-                            procurementScore: string;
-                            procurementLink: string;
+                            procurementScore: number;
+                            procurementLink: string | null;
+                            politicalRule: string[];
+                            politicalKSO: string;
                             emissions: ({
                                 year: string;
                                 value: number;
                             } | null)[];
-                            emissionBudget: ({
-                                year: string;
-                                value: number;
-                            } | null)[] | null;
                             approximatedHistoricalEmission: ({
                                 year: string;
                                 value: number;
                             } | null)[];
                             trend: ({
-                                year: string;
-                                value: number;
-                            } | null)[];
-                            electricCarChangeYearly: ({
                                 year: string;
                                 value: number;
                             } | null)[];
@@ -1276,6 +1301,233 @@ export interface paths {
          */
         get: {
             parameters: {
+                query?: {
+                    type?: "csv" | "json" | "xlsx";
+                    year?: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/regions/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get all regions
+         * @description Retrieve a list of all regions with their historical emissions data broken down by sectors and subsectors over time. Returns 304 Not Modified if the resource has not changed since the last request (based on ETag).
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            name: string;
+                            emissions: {
+                                [key: string]: number;
+                            };
+                        }[];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/regions/{name}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get one region
+         * @description Retrieve a specific region with its historical emissions data broken down by sectors and subsectors over time.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    name: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            name: string;
+                            emissions: {
+                                [key: string]: number;
+                            };
+                        };
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            message?: string;
+                            details?: unknown;
+                        };
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            message?: string;
+                            details?: unknown;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/regions/{name}/sector-emissions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get regional sector emissions
+         * @description Retrieve sector emissions data for a specific region, broken down by different sectors and subsectors over time.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    name: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            sectors: {
+                                [key: string]: unknown;
+                            };
+                        };
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            message?: string;
+                            details?: unknown;
+                        };
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            message?: string;
+                            details?: unknown;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/regions/export": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Export all regions
+         * @description Export a list of all regions with their historical emissions data broken down by sectors and subsectors over time.
+         */
+        get: {
+            parameters: {
                 query?: never;
                 header?: never;
                 path?: never;
@@ -1372,6 +1624,99 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/screenshots/screenshots": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get screenshots for a PDF URL
+         * @description Returns a list of screenshot URLs for a given PDF URL
+         */
+        get: {
+            parameters: {
+                query: {
+                    url: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            screenshots: string[];
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/newsletters/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get all newsletters
+         * @description Get a list of all previous newsletter campaigns
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            campaigns: {
+                                settings?: {
+                                    preview_text?: string | null;
+                                    subject_line?: string | null;
+                                    template_id?: number;
+                                };
+                                id: string;
+                                send_time: string;
+                                long_archive_url: string;
+                            }[];
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/companies/{wikidataId}/industry": {
         parameters: {
             query?: never;
@@ -1404,6 +1749,7 @@ export interface paths {
                             source?: string;
                             comment?: string;
                         };
+                        verified?: boolean;
                     };
                 };
             };
@@ -1651,6 +1997,7 @@ export interface paths {
                             source?: string;
                             comment?: string;
                         };
+                        verified?: boolean;
                     };
                 };
             };
@@ -1748,6 +2095,7 @@ export interface paths {
                             source?: string;
                             comment?: string;
                         };
+                        verified?: boolean;
                     };
                 };
             };
@@ -1849,6 +2197,7 @@ export interface paths {
                             source?: string;
                             comment?: string;
                         };
+                        verified?: boolean;
                     };
                 };
             };
@@ -1937,6 +2286,7 @@ export interface paths {
                             source?: string;
                             comment?: string;
                         };
+                        verified?: boolean;
                     };
                 };
             };
@@ -2034,6 +2384,7 @@ export interface paths {
                             source?: string;
                             comment?: string;
                         };
+                        verified?: boolean;
                     };
                 };
             };
@@ -2135,6 +2486,7 @@ export interface paths {
                             source?: string;
                             comment?: string;
                         };
+                        verified?: boolean;
                     };
                 };
             };
@@ -3176,6 +3528,133 @@ export interface paths {
                 };
             };
         };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/emissions-assessment/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        wikidataId: string;
+                        years: string[];
+                    };
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            assessment: {
+                                isReasonable: boolean;
+                                confidence: number;
+                                issues: {
+                                    /** @enum {string} */
+                                    type: "MISSING_DATA" | "CALCULATION_ERROR" | "SCOPE_MISSING" | "UNIT_ERROR" | "OTHER" | "UNREASONABLE_REDUCTION";
+                                    description: string;
+                                    /** @enum {string} */
+                                    severity: "LOW" | "MEDIUM" | "HIGH";
+                                    suggestedAction?: string;
+                                    reportedNumber?: number;
+                                    correctNumber?: number;
+                                    yearComparison?: {
+                                        previousYear: string;
+                                        currentYear: string;
+                                        reduction: number;
+                                    };
+                                }[];
+                                reasoning: string;
+                                nextSteps: {
+                                    /** @enum {string} */
+                                    type: "VERIFY_CALCULATION" | "REQUEST_SCOPE3" | "CLARIFY_UNITS" | "OTHER";
+                                    description: string;
+                                    /** @enum {string} */
+                                    priority: "LOW" | "MEDIUM" | "HIGH";
+                                }[];
+                            };
+                        };
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Default Response */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            message: string;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/industry-gics/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;

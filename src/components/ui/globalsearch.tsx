@@ -2,13 +2,9 @@ import { useEffect, useState, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
 import { SearchIcon, X } from "lucide-react";
-import { CombinedData } from "@/hooks/useCombinedData";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { useTranslation } from "react-i18next";
-
-interface GlobalSearchProps {
-  combinedData: CombinedData[];
-}
+import { useCombinedData } from "@/hooks/useCombinedData";
 
 type SearchItem = {
   id: string;
@@ -16,13 +12,14 @@ type SearchItem = {
   category: "companies" | "municipalities";
 };
 
-const GlobalSearch = ({ combinedData }: GlobalSearchProps) => {
+const GlobalSearch = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResult, setSearchResult] = useState<SearchItem[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { t } = useTranslation();
   const { isMobile } = useScreenSize();
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const combinedData = useCombinedData();
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -51,12 +48,15 @@ const GlobalSearch = ({ combinedData }: GlobalSearchProps) => {
 
   useEffect(() => {
     setIsDropdownOpen(true);
-    setSearchResult(
-      combinedData?.filter((item: SearchItem) => {
-        return item.name.toLowerCase().includes(searchQuery.toLowerCase());
-      }),
-    );
-  }, [searchQuery]);
+    // TODO: Handle error and loading states
+    if (!combinedData.error && !combinedData.loading) {
+      setSearchResult(
+        combinedData.data.filter((item: SearchItem) => {
+          return item.name.toLowerCase().includes(searchQuery.toLowerCase());
+        }),
+      );
+    }
+  }, [searchQuery, combinedData]);
 
   return (
     <div className="flex flex-col gap-4 w-[300px] relative">
@@ -84,7 +84,7 @@ const GlobalSearch = ({ combinedData }: GlobalSearchProps) => {
       <div
         ref={dropdownRef}
         className={`
-          ${searchQuery === "" ? "hidden" : "flex-col"} 
+          ${searchQuery === "" ? "hidden" : "flex-col"}
           ${isMobile ? "max-h-[250px]" : "max-h-[300px]"}
           ${!isDropdownOpen && "hidden"}
           ${searchResult.length > 0 ? "overflow-y-scroll" : "overflow-y-hidden"}

@@ -59,7 +59,7 @@ export function SupportPage() {
               link: donateEmailLink,
             }}
           />
-          
+
           <SupportMethod
             icon={<Building className="w-6 h-6 text-orange-3" />}
             title={t("supportPage.organizationSupport.title")}

@@ -1,30 +1,28 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { RankedCompany } from "@/hooks/companies/useCompanies";
+import { RankedCompany } from "@/types/company";
 import { useScopeData } from "@/hooks/companies/useScopeData";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import ScopeCards from "./ScopeCards";
 import ValueChainOverview from "./ValueChainOverview";
 import KeyInsights from "./KeyInsights";
 import EmissionsTotalDisplay from "../charts/EmissionsTotalDisplay";
-import { useSectorNames } from "@/hooks/companies/useCompanyFilters";
+import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 
 interface EmissionsSourcesAnalysisProps {
   companies: RankedCompany[];
   selectedSectors: string[];
-  selectedYear?: string;
 }
 
 const EmissionsSourcesAnalysis: React.FC<EmissionsSourcesAnalysisProps> = ({
   companies,
   selectedSectors,
-  selectedYear: initialYear = "2023",
 }) => {
   const { t } = useTranslation();
   const screenSize = useScreenSize();
   const sectorNames = useSectorNames();
 
-  const [selectedYear, setSelectedYear] = useState<string>("2023");
+  const [selectedYear, setSelectedYear] = useState<string>("2024");
 
   // If no sectors are selected, use all sectors except "all"
   const effectiveSectors =
@@ -36,7 +34,7 @@ const EmissionsSourcesAnalysis: React.FC<EmissionsSourcesAnalysisProps> = ({
     companies,
     effectiveSectors,
     selectedYear,
-  )
+  );
 
   // Generate years array from 2020 to current year
   return (
@@ -50,7 +48,9 @@ const EmissionsSourcesAnalysis: React.FC<EmissionsSourcesAnalysisProps> = ({
       >
         <div
           className={`${
-            screenSize.isMobile ? "flex flex-col gap-1" : "flex items-center gap-2"
+            screenSize.isMobile
+              ? "flex flex-col gap-1"
+              : "flex items-center gap-2"
           }`}
         >
           <h2 className="text-xl font-light text-white">
@@ -66,6 +66,7 @@ const EmissionsSourcesAnalysis: React.FC<EmissionsSourcesAnalysisProps> = ({
           years={years}
           onYearChange={setSelectedYear}
           isSectorView={effectiveSectors.length > 0}
+          hideTotal={true} // TODO: decide if we want to display the total again, and whether that should be complete total or excluding statedScope3 total
         />
       </div>
 

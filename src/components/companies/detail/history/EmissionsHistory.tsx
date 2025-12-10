@@ -1,96 +1,149 @@
 import { useState, useMemo } from "react";
 import { Text } from "@/components/ui/text";
-import { cn } from "@/lib/utils";
-import { EmissionPeriod, interpolateScope3Categories } from "@/lib/calculations/emissions";
 import type { EmissionsHistoryProps, DataView } from "@/types/emissions";
-import { getChartData } from "../../../../utils/getChartData";
+import { getChartData } from "../../../../utils/data/chartData";
 import { useTranslation } from "react-i18next";
 import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useLanguage } from "@/components/LanguageProvider";
-import { HiddenItemsBadges } from "../HiddenItemsBadges";
-import ChartHeader from "./ChartHeader";
-import EmissionsLineChart from "./EmissionsLineChart";
+import {
+  getDynamicChartHeight,
+  useDataView,
+  useTimeSeriesChartState,
+  useHiddenItems,
+  useCompanyViewOptions,
+} from "@/components/charts";
+import { CardHeader } from "@/components/layout/CardHeader";
+import { OverviewChart } from "./OverviewChart";
+import { ScopesChart } from "./ScopesChart";
+import { CategoriesChart } from "./CategoriesChart";
+import { ExploreMode } from "./explore-mode/ExploreMode";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
+import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
+import { calculateTrendline } from "@/lib/calculations/trends/analysis";
+import { generateApproximatedData } from "@/lib/calculations/trends/approximatedData";
+import { isMobile } from "react-device-detect";
 
 export function EmissionsHistory({
-  reportingPeriods,
+  company,
   onYearSelect,
-  className,
-  baseYear,
-  features = {
-    interpolateScope3: true,
-    guessBaseYear: true,
-    compositeTrend: true,
-    outlierDetection: true,
-  },
 }: EmissionsHistoryProps) {
   const { t } = useTranslation();
   const { getCategoryName, getCategoryColor } = useCategoryMetadata();
   const { currentLanguage } = useLanguage();
   const { isAIGenerated, isEmissionsAIGenerated } = useVerificationStatus();
 
+  // Check if company is in Financials sector
+  const isFinancialsSector =
+    company.industry?.industryGics?.sectorCode === "40";
+
   const hasScope3Categories = useMemo(
     () =>
-      reportingPeriods.some(
+      company.reportingPeriods.some(
         (period) => period.emissions?.scope3?.categories?.length ?? false,
       ),
-    [reportingPeriods],
+    [company.reportingPeriods],
   );
 
-  const [dataView, setDataView] = useState<DataView>(() => {
-    if (!hasScope3Categories && "categories" === "categories") {
-      return "overview";
-    }
-    return "overview";
-  });
+  const { dataView, setDataView } = useDataView<DataView>(
+    "overview",
+    hasScope3Categories
+      ? ["overview", "scopes", "categories"]
+      : ["overview", "scopes"],
+  );
 
-  const companyBaseYear = baseYear?.year;
+  const dataViewOptions = useCompanyViewOptions(hasScope3Categories);
 
-  // Only interpolate if the feature is enabled
+  const { chartEndYear, setChartEndYear, shortEndYear, longEndYear } =
+    useTimeSeriesChartState();
+
+  const { hiddenItems: hiddenScopes, toggleItem: toggleScope } = useHiddenItems<
+    "scope1" | "scope2" | "scope3"
+  >([]);
+
+  const { hiddenItems: hiddenCategories, toggleItem: toggleCategory } =
+    useHiddenItems<number>([]);
+
+  const companyBaseYear = company.baseYear?.year;
+
   const processedPeriods = useMemo(
-    () =>
-      features.interpolateScope3
-        ? interpolateScope3Categories(reportingPeriods as EmissionPeriod[])
-        : reportingPeriods,
-    [reportingPeriods, features.interpolateScope3],
+    () => company.reportingPeriods,
+    [company.reportingPeriods],
   );
 
   // Process data based on view
   const chartData = useMemo(
-    () =>
-      getChartData(
-        processedPeriods as EmissionPeriod[],
-        isAIGenerated,
-        isEmissionsAIGenerated,
-      ),
+    () => getChartData(processedPeriods, isAIGenerated, isEmissionsAIGenerated),
     [processedPeriods, isAIGenerated, isEmissionsAIGenerated],
   );
 
-  const handleClick = (data: {
-    activePayload?: Array<{ payload: { year: number; total: number } }>;
-  }) => {
-    if (data?.activePayload?.[0]?.payload?.total) {
-      onYearSelect?.(data.activePayload[0].payload.year.toString());
+  // Calculate trend analysis for unified coefficients
+  const trendAnalysis = useMemo(() => {
+    if (dataView !== "overview") return null;
+
+    // Use API slope if company data is available and has trendline slope
+    if (company) {
+      return calculateTrendline(company);
     }
+
+    // No company data available, no trendline
+    return null;
+  }, [dataView, company]);
+
+  const handleYearSelect = (year: number) => {
+    onYearSelect?.(year.toString());
   };
 
-  // Add state for hidden scopes
-  const [hiddenScopes, setHiddenScopes] = useState<
-    Array<"scope1" | "scope2" | "scope3">
-  >([]);
-
-  // Add toggle handler
+  // Toggle handlers using the new hooks
   const handleScopeToggle = (scope: "scope1" | "scope2" | "scope3") => {
-    setHiddenScopes((prev) =>
-      prev.includes(scope) ? prev.filter((s) => s !== scope) : [...prev, scope],
-    );
+    toggleScope(scope);
   };
 
-  // Add state for hidden categories
-  const [hiddenCategories, setHiddenCategories] = useState<number[]>([]);
+  const handleCategoryToggle = (categoryId: number) => {
+    toggleCategory(categoryId);
+  };
 
-  // Validate input data
-  if (!reportingPeriods?.length) {
+  const [exploreMode, setExploreMode] = useState(false);
+
+  // Generate approximated data for overview
+  const approximatedData = useMemo(() => {
+    if (dataView !== "overview") {
+      return null;
+    }
+
+    // Only show future projections if we have a valid trend analysis with coefficients
+    if (trendAnalysis?.coefficients) {
+      return generateApproximatedData(
+        chartData,
+        chartEndYear,
+        trendAnalysis.coefficients,
+      );
+    }
+
+    // No trend analysis = no future projections
+    return null;
+  }, [chartData, dataView, chartEndYear, companyBaseYear, trendAnalysis]);
+
+  // Calculate yDomain for explore mode
+  const yDomain = useMemo((): [number, number] => {
+    const values = chartData
+      .filter((d) => d.total !== undefined && d.total !== null)
+      .map((d) => d.total as number);
+
+    if (values.length === 0) return [0, 1000];
+
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+    const padding = (max - min) * 0.1;
+
+    return [Math.max(0, min - padding), max + padding];
+  }, [chartData]);
+
+  // Explore mode handlers
+  const handleExitExploreMode = () => {
+    setExploreMode(false);
+  };
+
+  if (!company.reportingPeriods?.length) {
     return (
       <div className="text-center py-12">
         <Text variant="body">
@@ -100,51 +153,99 @@ export function EmissionsHistory({
     );
   }
 
-  const handleCategoryToggle = (categoryId: number) => {
-    setHiddenCategories((prev) => {
-      if (prev.includes(categoryId)) {
-        return prev.filter((id) => id !== categoryId);
-      } else {
-        return [...prev, categoryId];
-      }
-    });
-  };
-
   return (
-    <div
-      className={cn("bg-black-2 rounded-level-1 px-4 md:px-16 py-8", className)}
-    >
-      <ChartHeader
-        title={t("companies.emissionsHistory.title")}
-        tooltipContent={t("companies.emissionsHistory.tooltip")}
-        unit={t("companies.emissionsHistory.unit")}
-        dataView={dataView}
-        setDataView={setDataView}
-        hasScope3Categories={hasScope3Categories}
-      />
-      <div className="h-[300px] md:h-[400px]">
-        <EmissionsLineChart
-          data={chartData}
-          companyBaseYear={companyBaseYear}
-          dataView={dataView}
-          hiddenScopes={hiddenScopes}
-          hiddenCategories={hiddenCategories}
-          handleClick={handleClick}
-          handleScopeToggle={handleScopeToggle}
-          handleCategoryToggle={handleCategoryToggle}
-          getCategoryName={getCategoryName}
-          getCategoryColor={getCategoryColor}
-          currentLanguage={currentLanguage}
-        />
-      </div>
-      <HiddenItemsBadges
-        hiddenScopes={hiddenScopes}
-        hiddenCategories={hiddenCategories}
-        onScopeToggle={handleScopeToggle}
-        onCategoryToggle={handleCategoryToggle}
-        getCategoryName={getCategoryName}
-        getCategoryColor={getCategoryColor}
-      />
+    <div>
+      {!exploreMode && (
+        <SectionWithHelp
+          helpItems={[
+            "scope1",
+            "scope2",
+            "scope3",
+            "parisAgreementLine",
+            // "howTrendLinesCalculated",
+            // "whatTrendLineRepresents",
+            "scope3EmissionLevels",
+            "companyMissingData",
+            "historicalEmissions",
+            ...(isFinancialsSector
+              ? (["financialsScope3Category15"] as const)
+              : []),
+          ]}
+        >
+          <CardHeader
+            title={t("companies.emissionsHistory.title")}
+            tooltipContent={t("companies.emissionsHistory.tooltip")}
+            unit={t("companies.emissionsHistory.unit")}
+            dataView={dataView}
+            setDataView={(value) =>
+              setDataView(value as "overview" | "scopes" | "categories")
+            }
+            dataViewOptions={dataViewOptions}
+            dataViewPlaceholder={t("companies.dataView.selectView")}
+          />
+          <div style={{ height: getDynamicChartHeight(dataView, isMobile) }}>
+            {!exploreMode ? (
+              <>
+                {dataView === "overview" && (
+                  <OverviewChart
+                    data={chartData}
+                    companyBaseYear={companyBaseYear}
+                    chartEndYear={chartEndYear}
+                    setChartEndYear={setChartEndYear}
+                    shortEndYear={shortEndYear}
+                    longEndYear={longEndYear}
+                    approximatedData={approximatedData}
+                    onYearSelect={handleYearSelect}
+                    exploreMode={exploreMode}
+                    setExploreMode={setExploreMode}
+                  />
+                )}
+                {dataView === "scopes" && (
+                  <ScopesChart
+                    data={chartData}
+                    companyBaseYear={companyBaseYear}
+                    chartEndYear={chartEndYear}
+                    setChartEndYear={setChartEndYear}
+                    shortEndYear={shortEndYear}
+                    longEndYear={longEndYear}
+                    hiddenScopes={Array.from(hiddenScopes)}
+                    handleScopeToggle={handleScopeToggle}
+                    onYearSelect={handleYearSelect}
+                    exploreMode={exploreMode}
+                    setExploreMode={setExploreMode}
+                  />
+                )}
+                {dataView === "categories" && (
+                  <CategoriesChart
+                    data={chartData}
+                    companyBaseYear={companyBaseYear}
+                    chartEndYear={chartEndYear}
+                    setChartEndYear={setChartEndYear}
+                    shortEndYear={shortEndYear}
+                    longEndYear={longEndYear}
+                    hiddenCategories={Array.from(hiddenCategories)}
+                    handleCategoryToggle={handleCategoryToggle}
+                    getCategoryName={getCategoryName}
+                    getCategoryColor={getCategoryColor}
+                    onYearSelect={handleYearSelect}
+                    exploreMode={exploreMode}
+                    setExploreMode={setExploreMode}
+                  />
+                )}
+              </>
+            ) : (
+              <ExploreMode
+                data={chartData}
+                companyBaseYear={companyBaseYear}
+                currentLanguage={currentLanguage}
+                trendAnalysis={trendAnalysis}
+                yDomain={yDomain}
+                onExit={handleExitExploreMode}
+              />
+            )}
+          </div>
+        </SectionWithHelp>
+      )}
     </div>
   );
 }

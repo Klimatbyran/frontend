@@ -16,7 +16,7 @@ export const SourcesContent = () => {
             "trafikanalys",
             "nvdb",
             "sei",
-            "powerCircles",
+            "powerCircle",
             "klimatplaner",
             "upphandlingsmyndigheten",
             "greenpeace",

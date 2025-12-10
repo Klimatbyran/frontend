@@ -153,11 +153,7 @@ describe("Editor Logic Integration", () => {
     const onClose = vi.fn();
     const onLogin = vi.fn();
     render(
-      <AuthExpiredModal
-        isOpen={true}
-        onClose={onClose}
-        onLogin={onLogin}
-      />,
+      <AuthExpiredModal isOpen={true} onClose={onClose} onLogin={onLogin} />,
     );
     fireEvent.click(screen.getByText(/cancel/i));
     fireEvent.click(screen.getByText(/login/i));
@@ -244,11 +240,7 @@ describe("Editor Logic Integration", () => {
 
   it("AuthExpiredModal: shows correct message when open", () => {
     render(
-      <AuthExpiredModal
-        isOpen={true}
-        onClose={vi.fn()}
-        onLogin={vi.fn()}
-      />,
+      <AuthExpiredModal isOpen={true} onClose={vi.fn()} onLogin={vi.fn()} />,
     );
     expect(screen.getByText(/login/i)).toBeInTheDocument();
     // Use getAllByText to avoid multiple match error
@@ -258,11 +250,7 @@ describe("Editor Logic Integration", () => {
   // Simulate the logic for indicating the user is logged out (auth modal open)
   it("Indicates user is logged out by showing auth modal", () => {
     render(
-      <AuthExpiredModal
-        isOpen={true}
-        onClose={vi.fn()}
-        onLogin={vi.fn()}
-      />,
+      <AuthExpiredModal isOpen={true} onClose={vi.fn()} onLogin={vi.fn()} />,
     );
     expect(screen.getByText(/login/i)).toBeInTheDocument();
     expect(screen.getAllByText(/auth/i).length).toBeGreaterThan(0);

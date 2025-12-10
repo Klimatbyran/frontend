@@ -1,33 +1,36 @@
 import type { paths } from "@/lib/api-types";
+import { SectorEmissionsByYear } from "./emissions";
+
+export { getLatestYearData, getAvailableYears } from "@/utils/data/yearUtils";
+export { transformEmissionsData } from "@/utils/data/municipalityTransforms";
 
 export type Municipality = {
   name: string;
   region: string;
-  budget: number | null;
-  totalApproximatedHistoricalEmission: number;
-  trendEmission: number;
+  logoUrl: string | null;
+  meetsParisGoal: boolean;
+  totalTrend: number;
+  totalCarbonLaw: number;
   historicalEmissionChangePercent: number;
-  neededEmissionChangePercent: number | null;
-  budgetRunsOut: string | null;
+  climatePlan: boolean;
   climatePlanYear: number | null;
   climatePlanComment: string | null;
   climatePlanLink: string | null;
   electricVehiclePerChargePoints: number | null;
   bicycleMetrePerCapita: number;
-  procurementScore: string;
+  procurementScore: number;
   procurementLink: string | null;
   totalConsumptionEmission: number;
-  hitNetZero: string | null;
-  electricCarChangeYearly: ({ year: string; value: number } | null)[];
   electricCarChangePercent: number;
   wikidataId?: string;
   description?: string | null;
-  sectorEmissions?: SectorEmissions;
+  sectorEmissions?: SectorEmissionsByYear;
+  politicalRule: string[];
 } & EmissionsData;
 
 // Detailed municipality type from API
 export type MunicipalityDetails = NonNullable<
-  paths["/municipalities/{id}"]["get"]["responses"][200]["content"]["application/json"]
+  paths["/municipalities/{name}"]["get"]["responses"][200]["content"]["application/json"]
 >;
 
 // Helper type for emissions data by year
@@ -50,109 +53,35 @@ export type MetricsByYear = Record<
   }
 >;
 
-// Helper function to get latest year's data
-export function getLatestYearData<T>(
-  data: Record<string, T> | undefined,
-): T | undefined {
-  if (!data || typeof data !== "object") {
-    return undefined;
-  }
-
-  const years = Object.keys(data)
-    .map(Number)
-    .filter((year) => !isNaN(year))
-    .sort((a, b) => b - a);
-
-  return years.length > 0 ? data[years[0].toString()] : undefined;
-}
-
-// Helper function to get all years from data
-export function getAvailableYears(
-  data: Record<string, unknown> | undefined,
-): number[] {
-  if (!data || typeof data !== "object") {
-    return [];
-  }
-
-  return Object.keys(data)
-    .map(Number)
-    .filter((year) => !isNaN(year))
-    .sort((a, b) => b - a);
-}
-
 export type EmissionDataPoint = {
-  year: string;
+  year: number;
   value: number;
 };
 
 export type EmissionsData = {
   emissions: (EmissionDataPoint | null)[];
-  emissionBudget?: (EmissionDataPoint | null)[] | null;
   approximatedHistoricalEmission: (EmissionDataPoint | null)[];
   trend: (EmissionDataPoint | null)[];
 };
 
-export function transformEmissionsData(municipality: Municipality) {
-  const years = new Set<string>();
-
-  municipality.emissions.forEach((d) => d?.year && years.add(d.year));
-  municipality.emissionBudget?.forEach((d) => d?.year && years.add(d.year));
-  municipality.approximatedHistoricalEmission.forEach(
-    (d) => d?.year && years.add(d.year),
-  );
-  municipality.trend.forEach((d) => d?.year && years.add(d.year));
-
-  return Array.from(years)
-    .sort()
-    .map((year) => {
-      const historical = municipality.emissions.find(
-        (d) => d?.year === year,
-      )?.value;
-      const budget = municipality.emissionBudget?.find(
-        (d) => d?.year === year,
-      )?.value;
-      const approximated = municipality.approximatedHistoricalEmission.find(
-        (d) => d?.year === year,
-      )?.value;
-      const trend = municipality.trend.find((d) => d?.year === year)?.value;
-
-      const gap = trend && budget ? trend - budget : undefined;
-
-      return {
-        year: parseInt(year, 10),
-        total: historical,
-        paris: budget,
-        trend,
-        gap,
-        approximated: approximated,
-      };
-    })
-    .filter((d) => d.year >= 1990 && d.year <= 2050);
-}
-
 export type DataPoint = {
   year: number;
   total: number | undefined;
-  paris: number | undefined;
   trend: number | undefined;
-  gap: number | undefined;
   approximated: number | undefined;
+  carbonLaw: number | undefined;
 };
 
-export interface KPIValue {
-  label: string;
-  key: keyof Municipality;
-  unit: string;
-  source: string;
-  sourceUrls: string[];
-  description: string;
-  detailedDescription: string;
-  nullValues?: string;
-  higherIsBetter: boolean;
+const MUNICIPALITY_SORT_BY = ["meets_paris", "name"] as const
+export type MunicipalitySortBy = (typeof MUNICIPALITY_SORT_BY)[number];
+
+export function isMunicipalitySortBy(value: string): value is MunicipalitySortBy {
+  return MUNICIPALITY_SORT_BY.includes(value as MunicipalitySortBy);
 }
 
-export type SectorEmissions = {
-  [year: string]: {
-    [sector: string]: number;
-  };
-};
+const MUNICIPALITY_SORT_DIRECTION = ["best", "worst"] as const
+export type MunicipalitySortDirection = (typeof MUNICIPALITY_SORT_DIRECTION)[number];
+
+export function isMunicipalitySortDirection(value: string): value is MunicipalitySortDirection {
+  return MUNICIPALITY_SORT_DIRECTION.includes(value as MunicipalitySortDirection);
+}

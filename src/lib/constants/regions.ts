@@ -341,8 +341,9 @@ export const allMunicipalities = Object.values(regions).flat();
 export function getRegionForMunicipality(
   municipality: string,
 ): Region | undefined {
-  return Object.entries(regions).find(([_, municipalities]) =>
-    municipalities.includes(municipality),
+  return Object.entries(regions).find(
+    ([_, municipalities]: [string, readonly string[]]) =>
+      municipalities.includes(municipality),
   )?.[0] as Region | undefined;
 }
 

@@ -1,15 +1,15 @@
 // ToDo Add translations
 import React, { useMemo } from "react";
 import { ArrowUpRight, ArrowDownRight, AlertCircle } from "lucide-react";
-import { SECTOR_NAMES } from "@/hooks/companies/useCompanyFilters";
-import { RankedCompany } from "@/hooks/companies/useCompanies";
+import { SECTOR_NAMES } from "@/lib/constants/sectors";
+import { RankedCompany } from "@/types/company";
 import {
   useCategoryMetadata,
   CategoryType,
 } from "@/hooks/companies/useCategories";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { useTranslation } from "react-i18next";
-import { formatEmissionsAbsolute } from "@/utils/localizeUnit";
+import { formatEmissionsAbsolute } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
 
 interface Scope3BreakdownProps {
@@ -146,7 +146,7 @@ const Scope3Breakdown: React.FC<Scope3BreakdownProps> = ({
 
         const totalScope3 = sectorCompanies.reduce((total, company) => {
           const period = company.reportingPeriods.find((p) =>
-            p.startDate.startsWith(selectedYear),
+            p.endDate.startsWith(selectedYear),
           );
           return (
             total + (period?.emissions?.scope3?.calculatedTotalEmissions || 0)
@@ -156,7 +156,7 @@ const Scope3Breakdown: React.FC<Scope3BreakdownProps> = ({
         const reportedCategories = new Set<string>();
         sectorCompanies.forEach((company) => {
           const period = company.reportingPeriods.find((p) =>
-            p.startDate.startsWith(selectedYear),
+            p.endDate.startsWith(selectedYear),
           );
           if (period?.emissions?.scope3?.categories) {
             period.emissions.scope3.categories.forEach((cat) => {
@@ -191,7 +191,13 @@ const Scope3Breakdown: React.FC<Scope3BreakdownProps> = ({
         };
       })
       .sort((a, b) => b.totalScope3 - a.totalScope3);
-  }, [companies, selectedSectors, selectedYear]);
+  }, [
+    downstreamCategories,
+    companies,
+    selectedSectors,
+    selectedYear,
+    upstreamCategories,
+  ]);
 
   // Update the getCategoryIdByName function to use the allCategories map
   const getCategoryIdByName = (name: string) => {

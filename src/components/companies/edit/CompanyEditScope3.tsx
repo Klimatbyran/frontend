@@ -1,14 +1,12 @@
 import { CompanyEditRow } from "./CompanyEditRow";
 import { CompanyEditInputField, CompanyEmptyField } from "./CompanyEditField";
 import { useCategoryMetadata } from "@/hooks/companies/useCategories";
-import type { ReportingPeriod } from "@/types/company";
 import { useTranslation } from "react-i18next";
-
-interface CompanyEditScope3Props {
-  periods: ReportingPeriod[];
-  onInputChange: (name: string, value: string) => void;
-  formData: Map<string, string>;
-}
+import { isVerified } from "@/utils/business/verification";
+import type {
+  CompanyEditComponentProps,
+  ReportingPeriod,
+} from "@/types/company";
 
 interface Scope3CategoryWithMetadata {
   category: number;
@@ -21,7 +19,7 @@ export function CompanyEditScope3({
   periods,
   onInputChange,
   formData,
-}: CompanyEditScope3Props) {
+}: CompanyEditComponentProps) {
   const { categoryMetadata } = useCategoryMetadata();
   const { t } = useTranslation();
 
@@ -49,7 +47,7 @@ export function CompanyEditScope3({
       (category) => category.category - 1 === index,
     );
     // metadata may not exist, so coerce to boolean
-    return !!category?.metadata?.verifiedBy;
+    return isVerified(category?.metadata);
   };
 
   // Instead of a static list, use categoryMetadata for all 16 categories
@@ -100,28 +98,30 @@ export function CompanyEditScope3({
           key={"scope-3-" + categoryId}
           name={`${categoryId}. ${categoryMetadata[categoryId]?.name || ""}`}
         >
-          {periods.map((period: ReportingPeriod) => (
-            <CompanyEditInputField
-              name={`scope-3-${period.id}-${categoryId}`}
-              type="number"
-              key={`scope-3-${period.id}-${categoryId}`}
-              displayAddition="verification"
-              verified={getCategoryVerified(
-                categoryId - 1,
-                period.emissions?.scope3?.categories,
-              )}
-              originalVerified={getCategoryVerified(
-                categoryId - 1,
-                period.emissions?.scope3?.categories,
-              )}
-              value={getCategoryValue(
-                categoryId - 1,
-                period.emissions?.scope3?.categories,
-              )}
-              onInputChange={onInputChange}
-              formData={formData}
-            />
-          ))}
+          {periods.map((period: ReportingPeriod) => {
+            const categories = (period.emissions?.scope3?.categories || [])
+              .filter((cat) => cat.total !== null)
+              .map((cat) => ({
+                ...cat,
+                total: cat.total as number,
+              }));
+            return (
+              <CompanyEditInputField
+                name={`scope-3-${period.id}-${categoryId}`}
+                type="number"
+                key={`scope-3-${period.id}-${categoryId}`}
+                displayAddition="verification"
+                verified={getCategoryVerified(categoryId - 1, categories)}
+                originalVerified={getCategoryVerified(
+                  categoryId - 1,
+                  categories,
+                )}
+                value={getCategoryValue(categoryId - 1, categories)}
+                onInputChange={onInputChange}
+                formData={formData}
+              />
+            );
+          })}
         </CompanyEditRow>
       ))}
     </>

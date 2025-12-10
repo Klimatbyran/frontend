@@ -1,43 +1,19 @@
 import { useTranslation } from "react-i18next";
 import { LinkButton } from "@/components/layout/LinkButton";
-import { Text } from "@/components/ui/text";
-
-interface SectionProps {
-  title: string;
-  children: React.ReactNode;
-}
-
-const Section = ({ title, children }: SectionProps) => (
-  <div className="space-y-4">
-    <Text className="text-blue-2 font-bold text-2xl">{title}</Text>
-    {children}
-  </div>
-);
+import { MethodSection } from "@/components/layout/MethodSection";
 
 export const EmissionsAndCategoriesContent = () => {
   const { t } = useTranslation();
   return (
     <div className="prose prose-invert mx-auto space-y-8">
-      <Section
-        title={t("methodsPage.company.emissionCategories.scope2.title")}
-      >
-        <p>
-          {t("methodsPage.company.emissionCategories.scope2.paragraph1")}
-        </p>
-      </Section>
+      <MethodSection title={t("methodsPage.company.emissionCategories.scope2.title")}>
+        <p>{t("methodsPage.company.emissionCategories.scope2.paragraph1")}</p>
+      </MethodSection>
 
-      <Section
-        title={t("methodsPage.company.emissionCategories.scope3.title")}
-      >
-        <p>
-          {t("methodsPage.company.emissionCategories.scope3.paragraph1")}
-        </p>
-        <p>
-          {t("methodsPage.company.emissionCategories.scope3.paragraph2")}
-        </p>
-        <p>
-          {t("methodsPage.company.emissionCategories.scope3.paragraph3")}
-        </p>
+      <MethodSection title={t("methodsPage.company.emissionCategories.scope3.title")}>
+        <p>{t("methodsPage.company.emissionCategories.scope3.paragraph1")}</p>
+        <p>{t("methodsPage.company.emissionCategories.scope3.paragraph2")}</p>
+        <p>{t("methodsPage.company.emissionCategories.scope3.paragraph3")}</p>
         <div className="flex justify-center">
           <div className="w-full space-y-6">
             <LinkButton
@@ -51,9 +27,9 @@ export const EmissionsAndCategoriesContent = () => {
             />
           </div>
         </div>
-      </Section>
+      </MethodSection>
 
-      <Section
+      <MethodSection
         title={t(
           "methodsPage.company.emissionCategories.financedEmissions.title",
         )}
@@ -63,9 +39,9 @@ export const EmissionsAndCategoriesContent = () => {
             "methodsPage.company.emissionCategories.financedEmissions.paragraph1",
           )}
         </p>
-      </Section>
+      </MethodSection>
 
-      <Section
+      <MethodSection
         title={t(
           "methodsPage.company.emissionCategories.biogenicEmissions.title",
         )}
@@ -75,8 +51,8 @@ export const EmissionsAndCategoriesContent = () => {
             "methodsPage.company.emissionCategories.biogenicEmissions.paragraph1",
           )}
         </p>
-      </Section>
-      <Section
+      </MethodSection>
+      <MethodSection
         title={t(
           "methodsPage.company.emissionCategories.emissionOffsets.title",
         )}
@@ -86,7 +62,7 @@ export const EmissionsAndCategoriesContent = () => {
             "methodsPage.company.emissionCategories.emissionOffsets.paragraph1",
           )}
         </p>
-      </Section>
+      </MethodSection>
     </div>
   );
 };

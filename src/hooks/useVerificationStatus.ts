@@ -8,7 +8,7 @@
  * @param data - Any object with metadata containing verifiedBy and user properties
  * @returns boolean - true if data is AI-generated, false if manually verified
  */
-import type { ReportingPeriod } from "@/types/company";
+import type { ReportingPeriod, ReportingPeriodFromList } from "@/types/company";
 
 export function useVerificationStatus() {
   /**
@@ -42,7 +42,9 @@ export function useVerificationStatus() {
   /**
    * Check if any emissions data in a ReportingPeriod is AI-generated
    */
-  function isEmissionsAIGenerated(period: ReportingPeriod): boolean {
+  function isEmissionsAIGenerated(
+    period: ReportingPeriod | ReportingPeriodFromList,
+  ): boolean {
     if (!period || !period.emissions) return false;
 
     // Check main emissions object
@@ -57,8 +59,10 @@ export function useVerificationStatus() {
     if (isAIGenerated(period.emissions.scope2)) return true;
 
     if (period.emissions.scope3?.statedTotalEmissions) {
-      if ("metadata" in period.emissions.scope3.statedTotalEmissions &&
-        isAIGenerated(period.emissions.scope3.statedTotalEmissions as any))
+      if (
+        "metadata" in period.emissions.scope3.statedTotalEmissions &&
+        isAIGenerated(period.emissions.scope3.statedTotalEmissions as any)
+      )
         return true;
     }
 

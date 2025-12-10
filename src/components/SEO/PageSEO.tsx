@@ -7,7 +7,7 @@ interface PageSEOProps {
   canonicalUrl: string;
   ogType?: string;
   ogImage?: string;
-  structuredData?: Record<string, any>;
+  structuredData?: Record<string, unknown>;
   children?: ReactNode;
 }
 

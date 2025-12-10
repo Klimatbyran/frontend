@@ -35,6 +35,9 @@ VITE_API_PROXY   |
 keys | 
 | `npm run build`   | Builds your production site to `./dist/`      |
 | `npm run preview` | Previews your build locally, before deploying |
+|| `npm run build:dataguide` | Builds the data guide from markdown files in `src/locales/dataguide/` - run this when making changes to data guide content |
+
+**Note:** When making changes to the data guide content (markdown files in `src/locales/dataguide/`), you need to run `npm run build:dataguide` to generate the updated JSON files. This step is automatically included when running `npm run build` for production builds.
 
 ## 👩‍💻 Contributing
 

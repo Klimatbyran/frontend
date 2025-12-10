@@ -8,10 +8,11 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { useLocation } from "react-router-dom";
+import { getAllMethods } from "@/lib/methods/methodologyData";
 
 export function MethodsPage() {
   const { t } = useTranslation();
-  const [selectedMethod, setSelectedMethod] = useState<String>("");
+  const [selectedMethod, setSelectedMethod] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearch, setShowSearch] = useState(false);
   const { isMobile } = useScreenSize();
@@ -28,18 +29,31 @@ export function MethodsPage() {
       const searchQuery = searchParams.get("view") || "";
 
       const matchingMethod = matchMethodWithSearchQuery(searchQuery);
-      matchingMethod && setSelectedMethod(matchingMethod);
+      if (matchingMethod) {
+        setSelectedMethod(matchingMethod);
+      }
     }
-  }, []);
+  }, [location.search]);
 
   const matchMethodWithSearchQuery = (searchQuery: string) => {
+    const allMethods = getAllMethods();
+    const validMethodIds = allMethods.map((method) => method.id);
+
+    if (validMethodIds.includes(searchQuery)) {
+      return searchQuery;
+    }
+
+    // fallbacks for old category mappings (for backward compatibility)
     if (searchQuery === "company") {
       return "companyDataOverview";
     } else if (searchQuery === "municipality") {
-      return "sources";
+      return "municipalityDataOverview";
     } else {
       return "parisAgreement";
     }
+
+    // Default fallback
+    return "parisAgreement";
   };
 
   // Prepare SEO data
@@ -107,11 +121,7 @@ export function MethodsPage() {
             </div>
           </div>
           <main className="lg:w-3/4">
-            <MethodologyContent
-              ref={contentRef}
-              method={selectedMethod}
-              onNavigate={setSelectedMethod}
-            />
+            <MethodologyContent ref={contentRef} method={selectedMethod} />
           </main>
         </div>
       </div>

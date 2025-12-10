@@ -2,13 +2,21 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useCompanyDetails } from "@/hooks/companies/useCompanyDetails";
 import { CompanyOverview } from "@/components/companies/detail/overview/CompanyOverview";
-import { CompanyHistory } from "@/components/companies/detail/CompanyHistory";
-import { Text } from "@/components/ui/text";
+import { EmissionsHistory } from "@/components/companies/detail/history/EmissionsHistory";
 import { useTranslation } from "react-i18next";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { createSlug } from "@/lib/utils";
 import { CompanyScope3 } from "@/components/companies/detail/CompanyScope3";
-import { useDataGuide } from "@/data-guide/useDataGuide";
+import { getCompanyDescription } from "@/utils/business/company";
+import { useLanguage } from "@/components/LanguageProvider";
+import { useSectorNames } from "@/hooks/companies/useCompanySectors";
+import { getCompanySectorName } from "@/utils/data/industryGrouping";
+import RelatableNumbers from "@/components/relatableNumbers";
+import type { Scope3Category } from "@/types/company";
+import { PageLoading } from "@/components/pageStates/Loading";
+import { PageError } from "@/components/pageStates/Error";
+import { PageNoData } from "@/components/pageStates/NoData";
+import { calculateEmissionsChange } from "@/utils/calculations/emissionsCalculations";
 
 export function CompanyDetailPage() {
   const { t } = useTranslation();
@@ -17,41 +25,31 @@ export function CompanyDetailPage() {
   // It's either directly from /companies/:id or extracted from /foretag/:slug-:id
   const { company, loading, error } = useCompanyDetails(id!);
   const [selectedYear, setSelectedYear] = useState<string>("latest");
-
-  useDataGuide(["changeRates", "companySector", "companyTurnover", "tco2e"]);
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  const { currentLanguage } = useLanguage();
+  const sectorNames = useSectorNames();
+  const description = company
+    ? getCompanyDescription(company, currentLanguage)
+    : null;
 
   if (loading) {
-    return (
-      <div className="animate-pulse space-y-16">
-        <div className="h-12 w-1/3 bg-black-1 rounded" />
-        <div className="h-96 bg-black-1 rounded-level-1" />
-      </div>
-    );
+    return <PageLoading />;
   }
 
   if (error) {
     return (
-      <div className="text-center py-24">
-        <Text variant="h3" className="text-red-500 mb-4">
-          {t("companyDetailPage.errorTitle")}
-        </Text>
-        <Text variant="body">{t("companyDetailPage.errorDescription")}</Text>
-      </div>
+      <PageError
+        titleKey="companyDetailPage.errorTitle"
+        descriptionKey="companyDetailPage.errorDescription"
+      />
     );
   }
 
   if (!company || !company.reportingPeriods.length) {
     return (
-      <div className="text-center py-24">
-        <Text variant="h3" className="text-red-500 mb-4">
-          {t("companyDetailPage.notFoundTitle")}
-        </Text>
-        <Text variant="body">{t("companyDetailPage.notFoundDescription")}</Text>
-      </div>
+      <PageNoData
+        titleKey="companyDetailPage.notFoundTitle"
+        descriptionKey="companyDetailPage.notFoundDescription"
+      />
     );
   }
 
@@ -89,9 +87,9 @@ export function CompanyDetailPage() {
     : "N/A";
 
   // Get industry for SEO content
-  const industry =
-    company.industry?.industryGics?.sv?.sectorName ||
-    t("companyDetailPage.unknownIndustry");
+  const industry = company
+    ? getCompanySectorName(company, sectorNames)
+    : t("companyDetailPage.unknownIndustry");
 
   // Prepare SEO data
   const canonicalUrl = `https://klimatkollen.se/foretag/${createSlug(
@@ -109,10 +107,29 @@ export function CompanyDetailPage() {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: company.name,
-    description: company.description,
+    description: description,
     url: canonicalUrl,
     industry: industry,
   };
+
+  const prevEmissions = previousPeriod?.emissions?.calculatedTotalEmissions;
+
+  const validEmissionsChangeNumber = prevEmissions
+    ? Math.abs(
+        selectedPeriod?.emissions?.calculatedTotalEmissions - prevEmissions,
+      )
+    : null;
+
+  const emissionsChangeStatus =
+    selectedPeriod?.emissions?.calculatedTotalEmissions - prevEmissions > 0
+      ? "increased"
+      : "decreased";
+
+  // Calculate emissions change from previous period
+  const yearOverYearChange = calculateEmissionsChange(
+    selectedPeriod,
+    previousPeriod,
+  );
 
   return (
     <>
@@ -175,9 +192,19 @@ export function CompanyDetailPage() {
           previousPeriod={previousPeriod}
           onYearSelect={setSelectedYear}
           selectedYear={selectedYear}
+          yearOverYearChange={yearOverYearChange}
         />
+        {validEmissionsChangeNumber && validEmissionsChangeNumber > 100 && (
+          <RelatableNumbers
+            emissionsChange={validEmissionsChangeNumber}
+            currentLanguage={currentLanguage}
+            companyName={company.name}
+            emissionsChangeStatus={emissionsChangeStatus}
+            yearOverYearChange={yearOverYearChange}
+          />
+        )}
 
-        <CompanyHistory company={company} />
+        <EmissionsHistory company={company} />
         <CompanyScope3
           emissions={selectedPeriod.emissions!}
           historicalData={sortedPeriods
@@ -192,12 +219,18 @@ export function CompanyDetailPage() {
               unit:
                 period.emissions!.scope3!.statedTotalEmissions?.unit ||
                 t("emissionsUnit"),
-              categories: period.emissions!.scope3!.categories!,
+              categories: period
+                .emissions!.scope3!.categories!.filter(
+                  (cat: Scope3Category) => cat.total !== null,
+                )
+                .map((cat: Scope3Category) => ({
+                  category: cat.category,
+                  total: cat.total as number,
+                  unit: cat.unit,
+                })),
             }))
             .sort((a, b) => a.year - b.year)}
         />
-
-        {/* <CompanySectorComparison company={company} /> */}
       </div>
     </>
   );

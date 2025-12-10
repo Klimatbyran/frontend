@@ -1,18 +1,16 @@
 import { Building2Icon, TreePineIcon } from "lucide-react";
-import { RankedList, RankedListItem } from "@/components/RankedList";
-import { ContentBlock } from "@/components/ContentBlock";
+import { TopList, TopListItem } from "@/components/TopList";
+import { ContentBlock } from "@/components/layout/ContentBlock";
 import { Typewriter } from "@/components/ui/typewriter";
 import { useCompanies } from "@/hooks/companies/useCompanies";
-import { useMunicipalities } from "@/hooks/useMunicipalities";
+import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
 import { useTranslation } from "react-i18next";
 import { PageSEO } from "@/components/SEO/PageSEO";
-import { useEffect } from "react";
 import { useLanguage } from "@/components/LanguageProvider";
 import {
   formatEmissionsAbsolute,
   formatPercentChange,
-} from "@/utils/localizeUnit";
-import useCombinedData, { CombinedData } from "@/hooks/useCombinedData";
+} from "@/utils/formatting/localization";
 import GlobalSearch from "@/components/ui/globalsearch";
 
 export function LandingPage() {
@@ -20,11 +18,6 @@ export function LandingPage() {
   const { companies } = useCompanies();
   const { getTopMunicipalities } = useMunicipalities();
   const { currentLanguage } = useLanguage();
-  const combinedData: CombinedData[] = useCombinedData();
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   // Prepare SEO data
   const canonicalUrl = "https://klimatkollen.se";
@@ -71,7 +64,7 @@ export function LandingPage() {
     link: `/municipalities/${municipality.name}`,
   }));
 
-  const renderCompanyEmission = (item: RankedListItem) => (
+  const renderCompanyEmission = (item: TopListItem) => (
     <div className="text-base sm:text-lg">
       <span className="md:text-right text-pink-3">
         {formatEmissionsAbsolute(item.value, currentLanguage)}
@@ -80,22 +73,11 @@ export function LandingPage() {
     </div>
   );
 
-  const renderMunicipalityChangeRate = (item: RankedListItem) => (
+  const renderMunicipalityChangeRate = (item: TopListItem) => (
     <span className="text-base sm:text-lg md:text-right text-green-3">
       {formatPercentChange(item.value, currentLanguage)}
     </span>
   );
-
-  // Get municipality data for comparison
-  // const municipalityComparisonData = getMunicipalitiesForMap(10).map(
-  //   (municipality) => ({
-  //     id: municipality.id,
-  //     name: municipality.name,
-  //     value: municipality.value,
-  //     rank: "1",
-  //     change: Math.random() > 0.5 ? 5.2 : -3.4, // Mock data - replace with real change values
-  //   })
-  // );
 
   return (
     <>
@@ -125,28 +107,10 @@ export function LandingPage() {
           </div>
 
           <div className="flex flex-col items-center mt-16 gap-4 ">
-            <GlobalSearch combinedData={combinedData} />
+            <GlobalSearch />
           </div>
         </div>
       </div>
-
-      {/* FIXME reintroduce at a later stage
-      {selectedTab === "municipalities" && (
-        <div className="py-16 md:py-24 bg-black-2">
-          <div className="container mx-auto">
-            <div className="max-w-lg md:max-w-[1200px] mx-auto">
-              <MunicipalityComparison
-                title="Hur går det med?"
-                description="Vi utför mätningar av den samlade längden av cykelvägar per invånare, inklusive alla väghållare (statliga, kommunala och enskilda). Den senaste tillgängliga datan är från år 2022."
-                nationalAverage={2.8}
-                euTarget={3.8}
-                unit="m"
-                municipalities={municipalityComparisonData}
-              />
-            </div>
-          </div>
-        </div>
-      )} */}
 
       <div className="py-8 pt-36 md:py-36">
         <div className="mx-2 sm:mx-8">
@@ -154,29 +118,31 @@ export function LandingPage() {
             {t("landingPage.bestPerformers")}
           </h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <RankedList
+            <TopList
               title={t("landingPage.bestMunicipalities")}
               description={t("landingPage.municipalitiesDescription")}
               items={topMunicipalities}
               itemValueRenderer={renderMunicipalityChangeRate}
               icon={{ component: TreePineIcon, bgColor: "bg-[#FDE7CE]" }}
               rankColor="text-orange-2"
+              headingLink={`${currentLanguage}/municipalities`}
             />
 
-            <RankedList
+            <TopList
               title={t("landingPage.largestEmittor")}
               description={t("landingPage.companiesDescription")}
               items={largestCompanyEmitters}
               itemValueRenderer={renderCompanyEmission}
               icon={{ component: Building2Icon, bgColor: "bg-[#D4E7F7]" }}
               rankColor="text-blue-2"
+              headingLink={`${currentLanguage}/companies`}
             />
           </div>
         </div>
       </div>
 
       <div className="pb-8 md:pb-16">
-        <div className="container mx-auto">
+        <div className="mx-2 sm:mx-8">
           <ContentBlock
             title={t("landingPage.aboutUsTitle")}
             content={t("landingPage.aboutUsContent")}

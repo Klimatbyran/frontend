@@ -1,40 +1,41 @@
 import type { paths } from "@/lib/api-types";
 import { DivideIcon as LucideIcon } from "lucide-react";
-
-// Base company type from API with simplified industry structure
-export interface BaseCompany {
-  wikidataId: string;
-  name: string;
-  description: string | null;
-  industry: {
-    industryGics: {
-      sectorCode: string;
-      groupCode: string;
-      industryCode: string;
-      subIndustryCode: string;
-    };
-    metadata: {
-      verifiedBy: { name: string } | null;
-    };
-  } | null;
-  reportingPeriods: ReportingPeriod[];
-  baseYear?: { id: string; year: number; metadata: any } | null;
-}
+import type { KPIValue } from "./entity-rankings";
 
 // Base company type from API
 export type CompanyDetails = NonNullable<
   paths["/companies/{wikidataId}"]["get"]["responses"][200]["content"]["application/json"]
 >;
 
-// Use backend types for edit flow
-export type ReportingPeriod = NonNullable<
+// Type for reporting periods from the list endpoint (/companies/)
+export type ReportingPeriodFromList = NonNullable<
+  paths["/companies/"]["get"]["responses"][200]["content"]["application/json"][number]
+>["reportingPeriods"][number];
+
+// Type for reporting periods from the detail endpoint (/companies/{wikidataId})
+export type ReportingPeriodFromDetail = NonNullable<
   paths["/companies/{wikidataId}"]["get"]["responses"][200]["content"]["application/json"]
 >["reportingPeriods"][number];
 
+// Simplified aliases for common usage
+export type ReportingPeriod = ReportingPeriodFromDetail; // For detail pages
+
 export type Emissions = NonNullable<ReportingPeriod["emissions"]>;
 
+// Scope 3 category type extracted from API
+export type Scope3Category = NonNullable<
+  NonNullable<CompanyDetails["reportingPeriods"][0]["emissions"]>["scope3"]
+>["categories"][0];
+
+// Company type from the list endpoint (/companies/)
+export type CompanyListItem = NonNullable<
+  paths["/companies/"]["get"]["responses"][200]["content"]["application/json"][number]
+>;
+
 // Extended company type with metrics and optional rankings
-export interface RankedCompany extends BaseCompany {
+export interface RankedCompany
+  extends Omit<CompanyListItem, "reportingPeriods"> {
+  reportingPeriods: ReportingPeriodFromList[];
   metrics: {
     emissionsReduction: number;
     displayReduction: string;
@@ -80,3 +81,32 @@ export interface TrendCardInfo {
   color: string;
   textColor: string;
 }
+
+// GICS option type for dropdown and details, based on API response
+export type GicsOption = {
+  code: string;
+  label?: string;
+  en?: { subIndustryName?: string };
+  subIndustryName?: string;
+  sector?: string;
+  group?: string;
+  industry?: string;
+  description?: string;
+};
+
+// Props interface for company edit components
+export interface CompanyEditComponentProps {
+  periods: ReportingPeriod[];
+  onInputChange: (name: string, value: string) => void;
+  formData: Map<string, string>;
+}
+
+// Extended Company type with KPI values
+export interface CompanyWithKPIs extends RankedCompany {
+  meetsParis?: boolean | null;
+  emissionsChangeFromBaseYear?: number | null;
+  [key: string]: unknown;
+}
+
+// KPI value type for companies (aliased to generic KPIValue for type safety)
+export type CompanyKPIValue = KPIValue<CompanyWithKPIs>;

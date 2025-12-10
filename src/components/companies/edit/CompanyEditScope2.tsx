@@ -1,19 +1,18 @@
 import { CompanyEditRow } from "./CompanyEditRow";
 import { CompanyEditInputField, CompanyEmptyField } from "./CompanyEditField";
+import { getNumericValue } from "@/utils/ui/form";
+import { isVerified } from "@/utils/business/verification";
 import { useTranslation } from "react-i18next";
-import type { ReportingPeriod } from "@/types/company";
-
-interface CompanyEditScope2Props {
-  periods: ReportingPeriod[];
-  onInputChange: (name: string, value: string) => void;
-  formData: Map<string, string>;
-}
+import type {
+  CompanyEditComponentProps,
+  ReportingPeriod,
+} from "@/types/company";
 
 export function CompanyEditScope2({
   periods,
   onInputChange,
   formData,
-}: CompanyEditScope2Props) {
+}: CompanyEditComponentProps) {
   const { t } = useTranslation();
 
   return (
@@ -33,12 +32,7 @@ export function CompanyEditScope2({
             type="number"
             key={`scope-2-mb-${period.id}`}
             displayAddition="topBracket"
-            value={
-              period.emissions?.scope2?.mb === undefined ||
-              period.emissions?.scope2?.mb === null
-                ? ""
-                : period.emissions?.scope2?.mb
-            }
+            value={getNumericValue(period.emissions?.scope2?.mb)}
             onInputChange={onInputChange}
             formData={formData}
           />
@@ -54,14 +48,9 @@ export function CompanyEditScope2({
             type="number"
             key={`scope-2-lb-${period.id}`}
             displayAddition="verification"
-            verified={!!period.emissions?.scope2?.metadata?.verifiedBy}
-            originalVerified={!!period.emissions?.scope2?.metadata?.verifiedBy}
-            value={
-              period.emissions?.scope2?.lb === undefined ||
-              period.emissions?.scope2?.lb === null
-                ? ""
-                : period.emissions?.scope2?.lb
-            }
+            verified={isVerified(period.emissions?.scope2?.metadata)}
+            originalVerified={isVerified(period.emissions?.scope2?.metadata)}
+            value={getNumericValue(period.emissions?.scope2?.lb)}
             onInputChange={onInputChange}
             formData={formData}
           />
@@ -77,12 +66,7 @@ export function CompanyEditScope2({
             type="number"
             key={`scope-2-unknown-${period.id}`}
             displayAddition="bottomBracket"
-            value={
-              period.emissions?.scope2?.unknown === undefined ||
-              period.emissions?.scope2?.unknown === null
-                ? ""
-                : period.emissions?.scope2?.unknown
-            }
+            value={getNumericValue(period.emissions?.scope2?.unknown)}
             onInputChange={onInputChange}
             formData={formData}
           />

@@ -9,7 +9,6 @@ import {
   Scale,
   Target,
   History,
-  ArrowRight,
 } from "lucide-react";
 import ParticleAnimation from "../components/learnMore/ParticleAnimation";
 import { useTranslation } from "react-i18next";

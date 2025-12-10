@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { RankedCompany } from "@/types/company";
-import { useSectorNames } from "@/hooks/companies/useCompanyFilters";
+import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 
 export const useChartData = (
   companies: RankedCompany[],
@@ -15,7 +15,7 @@ export const useChartData = (
     const years = new Set<string>();
     companies.forEach((company) => {
       company.reportingPeriods.forEach((period) => {
-        years.add(period.startDate.substring(0, 4));
+        years.add(period.endDate.substring(0, 4));
       });
     });
 
@@ -33,7 +33,7 @@ export const useChartData = (
             companies.forEach((company) => {
               if (company.industry?.industryGics.sectorCode === sectorCode) {
                 const periodForYear = company.reportingPeriods.find((period) =>
-                  period.startDate.startsWith(year),
+                  period.endDate.startsWith(year),
                 );
 
                 if (periodForYear?.emissions) {
@@ -61,7 +61,7 @@ export const useChartData = (
             companies.forEach((company) => {
               if (company.industry?.industryGics.sectorCode === sectorCode) {
                 const periodForYear = company.reportingPeriods.find((period) =>
-                  period.startDate.startsWith(year),
+                  period.endDate.startsWith(year),
                 );
 
                 if (periodForYear?.emissions) {
@@ -84,14 +84,7 @@ export const useChartData = (
 
         return yearData;
       });
-  }, [
-    companies,
-    selectedSectors,
-    selectedSector,
-    chartType,
-    selectedYear,
-    sectorNames,
-  ]);
+  }, [companies, selectedSectors, chartType, sectorNames]);
 
   const pieChartData = useMemo(() => {
     if (selectedSector) {
@@ -103,7 +96,7 @@ export const useChartData = (
       const companyData = sectorCompanies
         .map((company) => {
           const periodForYear = company.reportingPeriods.find((period) =>
-            period.startDate.startsWith(selectedYear),
+            period.endDate.startsWith(selectedYear),
           );
 
           const scope1 = periodForYear?.emissions?.scope1?.total || 0;

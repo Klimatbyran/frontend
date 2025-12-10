@@ -10,6 +10,7 @@ import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import Scope3PieLegend from "./Scope3PieLegend";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
 import { YearSelector } from "@/components/layout/YearSelector";
+import { ProgressiveDataGuide } from "@/data-guide/ProgressiveDataGuide";
 
 interface Scope3DataProps {
   emissions: {
@@ -161,6 +162,10 @@ export function Scope3Data({
           />
         </TabsContent>
       </Tabs>
+
+      <ProgressiveDataGuide
+        items={["scope3", "scope3Variations", "scope3EmissionLevels"]}
+      />
     </div>
   );
 }

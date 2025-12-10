@@ -1,11 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getCompanyDetails } from "@/lib/api";
-import type { paths } from "@/lib/api-types";
-import { cleanEmissions } from "@/utils/cleanEmissions";
-
-type CompanyDetails = NonNullable<
-  paths["/companies/{wikidataId}"]["get"]["responses"][200]["content"]["application/json"]
->;
+import { cleanEmissions } from "@/utils/data/cleaning";
 
 export function useCompanyDetails(id: string) {
   const {
