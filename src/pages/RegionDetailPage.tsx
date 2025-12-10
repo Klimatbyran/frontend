@@ -3,9 +3,6 @@ import {
   useRegionDetails,
   useRegionDetailHeaderStats,
 } from "@/hooks/regions/useRegionDetails";
-import { useTranslation } from "react-i18next";
-import { formatEmissionsAbsolute } from "@/utils/formatting/localization";
-import { useLanguage } from "@/components/LanguageProvider";
 import { RegionEmissions } from "@/components/regions/RegionEmissions";
 import { PageLoading } from "@/components/pageStates/Loading";
 import { PageError } from "@/components/pageStates/Error";
@@ -15,10 +12,8 @@ import { DetailWrapper } from "@/components/detail/DetailWrapper";
 import { useMemo } from "react";
 
 export function RegionDetailPage() {
-  const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const { region, loading, error } = useRegionDetails(id || "");
-  const { currentLanguage } = useLanguage();
 
   // Transform emissions data for chart
   const emissionsData = useMemo(() => {
@@ -58,16 +53,8 @@ export function RegionDetailPage() {
   // Get latest year and emissions
   const lastYearEmissions = emissionsData[emissionsData.length - 1];
   const lastYear = lastYearEmissions?.year;
-  const lastYearEmissionsTon =
-    lastYearEmissions && lastYearEmissions.total !== undefined
-      ? formatEmissionsAbsolute(lastYearEmissions.total * 1000, currentLanguage)
-      : t("noData");
 
-  const headerStats = useRegionDetailHeaderStats(
-    region,
-    lastYear,
-    lastYearEmissionsTon,
-  );
+  const headerStats = useRegionDetailHeaderStats(region, lastYear);
 
   if (loading) return <PageLoading />;
   if (error) return <PageError />;
