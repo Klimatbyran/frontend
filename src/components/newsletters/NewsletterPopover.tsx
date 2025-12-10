@@ -100,7 +100,7 @@ export function NewsletterPopover({
   return (
     <Popover open={open} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>
-        <Button className="bg-blue-5 text-white rounded-lg hover:bg-blue-6 transition px-4 py-1 font-medium">
+        <Button className="!bg-blue-5 !text-white rounded-lg hover:!bg-blue-6 transition px-4 py-1 font-medium">
           {buttonText}
         </Button>
       </PopoverTrigger>
@@ -148,7 +148,7 @@ export function NewsletterPopover({
                     disabled={status === "success"}
                   />
                   <Button
-                    className="bg-blue-5 text-white w-full"
+                    className="!bg-blue-5 !text-white w-full"
                     type="submit"
                     disabled={status === "success"}
                   >
