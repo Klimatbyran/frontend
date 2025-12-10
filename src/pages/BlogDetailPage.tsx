@@ -132,7 +132,7 @@ export function BlogDetailPage() {
 
       {/* Author Section */}
       {blogPost.metadata.author && (
-        <div className="flex items-center gap-4 p-8 dark:bg-black-2 bg-white rounded-level-2 border dark:border-transparent border-grey/20">
+        <div className="flex items-center gap-4 p-8 dark:bg-black-2 bg-grey/10 rounded-level-2 border dark:border-transparent border-grey/20">
           <img
             src={blogPost.metadata.author.avatar}
             alt={blogPost.metadata.author.name}
@@ -205,7 +205,7 @@ export function BlogDetailPage() {
                   <Link
                     key={post.id}
                     to={`/insights/${post.id}`}
-                    className="group dark:bg-black-2 bg-white rounded-level-2 overflow-hidden transition-transform hover:scale-[1.02] border dark:border-transparent border-grey/20"
+                    className="group dark:bg-black-2 bg-grey/10 rounded-level-2 overflow-hidden transition-transform hover:scale-[1.02] border dark:border-transparent border-grey/20"
                   >
                     <div className="relative h-48 overflow-hidden">
                       <img
