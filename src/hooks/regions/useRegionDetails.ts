@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { formatPercentChange } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
@@ -11,6 +12,20 @@ export type RegionDetails = {
   emissions: Record<string, number>;
 };
 
+type ApiRegionResponse = {
+  region: string;
+  emissions: ({ year: string; value: number } | null)[];
+  [key: string]: unknown;
+};
+
+function normalizeRegionName(name: string): string {
+  return name
+    .trim()
+    .toLowerCase()
+    .replace(/\s*s?\s*län$/i, "")
+    .replace(/[^a-z0-9]/g, "");
+}
+
 export function useRegionDetails(name: string) {
   const {
     data: regions = [],
@@ -21,11 +36,32 @@ export function useRegionDetails(name: string) {
     queryFn: getRegions,
   });
 
-  // Case-insensitive lookup - decode URL-encoded names and compare case-insensitively
-  const normalizedName = decodeURIComponent(name);
-  const region = (regions as RegionData[]).find(
-    (r) => r.name.toLowerCase() === normalizedName.toLowerCase(),
-  );
+  // Transform API response to RegionData format
+  const transformedRegions = useMemo(() => {
+    return (regions as ApiRegionResponse[]).map((r) => {
+      const emissionsRecord: Record<string, number> = {};
+      if (r.emissions) {
+        r.emissions.forEach((emission) => {
+          if (emission && emission.year && emission.value !== null) {
+            emissionsRecord[emission.year] = emission.value;
+          }
+        });
+      }
+      return {
+        name: r.region,
+        emissions: emissionsRecord,
+      } as RegionData;
+    });
+  }, [regions]);
+
+  const normalizedSearchName = normalizeRegionName(decodeURIComponent(name));
+
+  // Find region using normalized comparison
+  const region = transformedRegions.find((r) => {
+    if (!r.name) return false;
+    const normalizedRegionName = normalizeRegionName(r.name);
+    return normalizedRegionName === normalizedSearchName;
+  });
 
   return {
     region: region
