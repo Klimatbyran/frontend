@@ -132,7 +132,7 @@ export function RankedList<T extends Record<string, unknown>>({
 
   return (
     <div
-      className={`dark:bg-black-2 bg-white rounded-2xl flex flex-col border dark:border-white/10 border-grey/20 ${className}`}
+      className={`dark:bg-black-2 bg-grey/10 rounded-2xl flex flex-col border dark:border-white/10 border-grey/20 ${className}`}
     >
       <div className="p-4 border-b dark:border-white/10 border-grey/20">
         <div className="relative">
