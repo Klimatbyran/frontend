@@ -118,10 +118,10 @@ export function FlipCard({
         >
           <div className="flex flex-col items-center justify-center h-full text-center">
             <Icon
-              className="h-8 w-8 md:h-12 md:w-12 text-white mb-4 md:mb-6"
+              className="h-8 w-8 md:h-12 md:w-12 dark:text-white text-black-3 mb-4 md:mb-6"
               strokeWidth={1.5}
             />
-            <Text className="text-sm md:text-base text-white leading-relaxed max-w-md">
+            <Text className="text-sm md:text-base dark:text-white text-black-3 leading-relaxed max-w-md">
               {description}
             </Text>
           </div>
