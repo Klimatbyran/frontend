@@ -1,4 +1,6 @@
 import { useMemo } from "react";
+import { useNavigate } from "react-router-dom";
+import { Download } from "lucide-react";
 import { Text } from "@/components/ui/text";
 import { useCompanies } from "@/hooks/companies/useCompanies";
 import { calculateTrendline } from "@/lib/calculations/trends/analysis";
@@ -11,9 +13,12 @@ import {
 } from "@/lib/calculations/trends/meetsParis";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { PageSEO } from "@/components/SEO/PageSEO";
+import { useLanguage } from "@/components/LanguageProvider";
 
 export function ParisAlignedStatisticsPage() {
   const { companies, loading, error } = useCompanies();
+  const navigate = useNavigate();
+  const { currentLanguage } = useLanguage();
 
   const statistics = useMemo(() => {
     if (!companies || companies.length === 0) {
@@ -29,6 +34,22 @@ export function ParisAlignedStatisticsPage() {
     let totalCarbonBudget = 0;
     let totalProjectedEmissions = 0;
     let totalTonnesDiffFromBudget = 0;
+
+    // Count companies with scope 3 categories data by meets Paris status
+    let totalCompaniesMeetsParisYesWithScope3 = 0;
+    let totalCompaniesMeetsParisNoWithScope3 = 0;
+    let totalCompaniesMeetsParisUnknownWithScope3 = 0;
+
+    // Collect data for companies marked as "Yes"
+    const yesCompanies: Array<{
+      name: string;
+      wikidataId: string;
+      emissions2025: number;
+      carbonBudget: number;
+      projectedEmissions: number;
+      diffFromBudget: number;
+      hasScope3Categories: boolean;
+    }> = [];
 
     companies.forEach((company) => {
       // Check if company has any non-null emissions data (any year)
@@ -55,28 +76,58 @@ export function ParisAlignedStatisticsPage() {
         totalCompaniesWithSlopeData++;
       }
 
+      // Get 2025 emissions first to check if company should be excluded
+      // get2025Emissions checks for actual 2025 data first, then estimates from trendline if not available
+      // The trendline is built using the slope from the API, which is calculated from historical data
+      const emissions2025 = trendAnalysis
+        ? get2025Emissions(company, trendAnalysis)
+        : null;
+
+      // Check if company has scope 3 categories data (any year)
+      const hasScope3Categories = company.reportingPeriods?.some(
+        (period) =>
+          period.emissions?.scope3?.categories &&
+          period.emissions.scope3.categories.length > 0,
+      );
+
       // Calculate meets Paris status
-      const meetsParis = trendAnalysis
-        ? calculateMeetsParis(company, trendAnalysis)
-        : null; // null = unknown
+      // Exclude companies with 0 or negative emissions at 2025 - mark them as Unknown
+      let meetsParis: boolean | null = null;
+      if (
+        trendAnalysis &&
+        emissions2025 !== null &&
+        emissions2025 !== undefined
+      ) {
+        if (emissions2025 <= 0) {
+          // Company has 0 or negative emissions at 2025 - mark as Unknown
+          meetsParis = null;
+        } else {
+          // Calculate normally for companies with positive emissions
+          meetsParis = calculateMeetsParis(company, trendAnalysis);
+        }
+      }
 
       if (meetsParis === true) {
         totalCompaniesMeetsParisYes++;
+        if (hasScope3Categories) {
+          totalCompaniesMeetsParisYesWithScope3++;
+        }
       } else if (meetsParis === false) {
         totalCompaniesMeetsParisNo++;
+        if (hasScope3Categories) {
+          totalCompaniesMeetsParisNoWithScope3++;
+        }
       } else {
         // meetsParis === null (unknown)
         totalCompaniesMeetsParisUnknown++;
+        if (hasScope3Categories) {
+          totalCompaniesMeetsParisUnknownWithScope3++;
+        }
       }
 
       // Only calculate budget/emissions for companies where we can determine Yes/No (not Unknown)
       if (meetsParis !== null && trendAnalysis) {
         totalCompaniesCalculableMeetsParis++;
-
-        // Get 2025 emissions
-        // get2025Emissions checks for actual 2025 data first, then estimates from trendline if not available
-        // The trendline is built using the slope from the API, which is calculated from historical data
-        const emissions2025 = get2025Emissions(company, trendAnalysis);
 
         if (
           emissions2025 !== null &&
@@ -112,6 +163,21 @@ export function ParisAlignedStatisticsPage() {
             trendAnalysis,
           );
 
+          // Collect data for companies marked as "Yes"
+          if (meetsParis === true) {
+            const diffFromBudget =
+              companyCumulativeEmissions - carbonLawCumulativeEmissions;
+            yesCompanies.push({
+              name: company.name,
+              wikidataId: company.wikidataId,
+              emissions2025,
+              carbonBudget: carbonLawCumulativeEmissions,
+              projectedEmissions: companyCumulativeEmissions,
+              diffFromBudget,
+              hasScope3Categories,
+            });
+          }
+
           // Add to totals
           totalCarbonBudget += carbonLawCumulativeEmissions;
           totalProjectedEmissions += companyCumulativeEmissions;
@@ -142,6 +208,10 @@ export function ParisAlignedStatisticsPage() {
       totalCarbonBudget,
       totalProjectedEmissions,
       totalTonnesDiffFromBudget,
+      totalCompaniesMeetsParisYesWithScope3,
+      totalCompaniesMeetsParisNoWithScope3,
+      totalCompaniesMeetsParisUnknownWithScope3,
+      yesCompanies: yesCompanies.sort((a, b) => a.name.localeCompare(b.name)),
     };
   }, [companies]);
 
@@ -190,6 +260,48 @@ export function ParisAlignedStatisticsPage() {
     }).format(num);
   };
 
+  // Export table data to CSV
+  const exportToCSV = () => {
+    if (!statistics || statistics.yesCompanies.length === 0) return;
+
+    // CSV header
+    const headers = [
+      "Company Name",
+      "Est. 2025 Emissions (tonnes CO₂)",
+      "Carbon Budget 2025-2050 (tonnes CO₂)",
+      "Projected Emissions 2025-2050 (tonnes CO₂)",
+      "Diff from Budget (tonnes CO₂)",
+      "Has Scope 3 Categories",
+    ];
+
+    // CSV rows
+    const rows = statistics.yesCompanies.map((company) => [
+      company.name,
+      company.emissions2025.toFixed(2),
+      company.carbonBudget.toFixed(2),
+      company.projectedEmissions.toFixed(2),
+      company.diffFromBudget.toFixed(2),
+      company.hasScope3Categories ? "Yes" : "No",
+    ]);
+
+    // Combine headers and rows
+    const csvContent = [
+      headers.join(","),
+      ...rows.map((row) => row.map((cell) => `"${cell}"`).join(",")),
+    ].join("\n");
+
+    // Create blob and download
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `paris-aligned-companies-${new Date().toISOString().split("T")[0]}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(link);
+  };
+
   return (
     <>
       <PageSEO
@@ -233,6 +345,12 @@ export function ParisAlignedStatisticsPage() {
                 <Text variant="small" className="text-gray-400 mt-1">
                   Companies that are on track to meet Paris Agreement targets
                 </Text>
+                <Text variant="small" className="text-gray-500 mt-2">
+                  With Scope 3 Categories:{" "}
+                  {formatNumber(
+                    statistics.totalCompaniesMeetsParisYesWithScope3,
+                  )}
+                </Text>
               </div>
 
               <div className="border border-gray-700 rounded-lg p-4">
@@ -270,6 +388,12 @@ export function ParisAlignedStatisticsPage() {
                   Companies that are not on track to meet Paris Agreement
                   targets
                 </Text>
+                <Text variant="small" className="text-gray-500 mt-2">
+                  With Scope 3 Categories:{" "}
+                  {formatNumber(
+                    statistics.totalCompaniesMeetsParisNoWithScope3,
+                  )}
+                </Text>
               </div>
 
               <div className="border border-gray-700 rounded-lg p-4">
@@ -281,6 +405,12 @@ export function ParisAlignedStatisticsPage() {
                 </Text>
                 <Text variant="small" className="text-gray-400 mt-1">
                   Companies where we cannot determine Paris alignment status
+                </Text>
+                <Text variant="small" className="text-gray-500 mt-2">
+                  With Scope 3 Categories:{" "}
+                  {formatNumber(
+                    statistics.totalCompaniesMeetsParisUnknownWithScope3,
+                  )}
                 </Text>
               </div>
             </div>
@@ -359,6 +489,11 @@ export function ParisAlignedStatisticsPage() {
                 totals
               </li>
               <li>
+                Companies with 0 or negative emissions at 2025 are marked as
+                "Unknown" rather than "Yes" or "No", as we cannot meaningfully
+                assess their Paris alignment when they have no emissions
+              </li>
+              <li>
                 Carbon budget uses the Carbon Law reduction rate (11.72% annual
                 decrease)
               </li>
@@ -368,6 +503,91 @@ export function ParisAlignedStatisticsPage() {
               </li>
             </ul>
           </div>
+
+          {/* Table of companies marked as "Yes" */}
+          {statistics.yesCompanies.length > 0 && (
+            <div className="bg-black rounded-lg shadow p-6">
+              <div className="flex items-center justify-between mb-4">
+                <Text variant="h2" className="text-white">
+                  Companies Marked as "Yes" (Meets Paris)
+                </Text>
+                <button
+                  onClick={exportToCSV}
+                  className="flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-colors border border-gray-700"
+                  title="Export to CSV"
+                >
+                  <Download className="h-4 w-4" />
+                  <span className="text-sm">Export CSV</span>
+                </button>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full border-collapse">
+                  <thead>
+                    <tr className="border-b border-gray-700">
+                      <th className="text-left py-3 px-4 text-gray-300 font-semibold">
+                        Company Name
+                      </th>
+                      <th className="text-right py-3 px-4 text-gray-300 font-semibold">
+                        Est. 2025 Emissions
+                      </th>
+                      <th className="text-right py-3 px-4 text-gray-300 font-semibold">
+                        Carbon Budget (2025-2050)
+                      </th>
+                      <th className="text-right py-3 px-4 text-gray-300 font-semibold">
+                        Projected Emissions (2025-2050)
+                      </th>
+                      <th className="text-right py-3 px-4 text-gray-300 font-semibold">
+                        Diff from Budget
+                      </th>
+                      <th className="text-center py-3 px-4 text-gray-300 font-semibold">
+                        Has Scope 3 Categories
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {statistics.yesCompanies.map((company, index) => {
+                      const basePath = currentLanguage === "sv" ? "/sv" : "/en";
+                      const companyUrl = `${basePath}/companies/${company.wikidataId}`;
+
+                      return (
+                        <tr
+                          key={index}
+                          className="border-b border-gray-800 hover:bg-gray-900 cursor-pointer transition-colors"
+                          onClick={() => navigate(companyUrl)}
+                        >
+                          <td className="py-3 px-4 text-white">
+                            {company.name}
+                          </td>
+                          <td className="py-3 px-4 text-right text-white">
+                            {formatTonnes(company.emissions2025)} tonnes CO₂
+                          </td>
+                          <td className="py-3 px-4 text-right text-white">
+                            {formatTonnes(company.carbonBudget)} tonnes CO₂
+                          </td>
+                          <td className="py-3 px-4 text-right text-white">
+                            {formatTonnes(company.projectedEmissions)} tonnes
+                            CO₂
+                          </td>
+                          <td
+                            className={`py-3 px-4 text-right font-semibold ${
+                              company.diffFromBudget >= 0
+                                ? "text-red-400"
+                                : "text-green-400"
+                            }`}
+                          >
+                            {formatTonnes(company.diffFromBudget)} tonnes CO₂
+                          </td>
+                          <td className="py-3 px-4 text-center text-white">
+                            {company.hasScope3Categories ? "Yes" : "No"}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </>
