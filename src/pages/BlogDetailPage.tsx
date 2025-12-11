@@ -13,7 +13,8 @@ import { useTranslation } from "react-i18next";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { localizeUnit } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
-import { useBlogPost } from "@/hooks/useBlogPosts";
+import { useBlogPost, getBlogPost } from "@/hooks/useBlogPosts";
+import { blogMetadataByLanguage } from "@/lib/blog/blogPostsList";
 import { LocalizedLink } from "@/components/LocalizedLink";
 
 export function BlogDetailPage() {
@@ -54,7 +55,14 @@ export function BlogDetailPage() {
 
   const relatedPosts = blogPost.metadata.relatedPosts
     ? blogPost.metadata.relatedPosts
-        .map((relatedId) => useBlogPost(relatedId).blogPost?.metadata ?? null)
+        .map((relatedId) => {
+          const metadata = blogMetadataByLanguage[currentLanguage].find(
+            (m) => m.id === relatedId,
+          );
+          return (
+            getBlogPost(metadata, currentLanguage).blogPost?.metadata ?? null
+          );
+        })
         .filter(Boolean)
     : [];
 
