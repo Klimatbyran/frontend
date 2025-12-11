@@ -128,7 +128,8 @@
       "methodology": {
         "badge": "Vetenskapsbaserade rankingar",
         "heading": "Vår metodik",
-        "paragraph": "Vi använder utsläppsdata från officiella rapporteringskällor för att skapa rättvisa, jämförbara rankingar. Våra mätvärden fokuserar på faktiska utsläppsminskningar, inte bara löften eller mål. Varje ranking baseras på verkliga prestationsdata, vilket säkerställer att klimatledare erkänns och klimatfördröjare hålls ansvariga."
+        "paragraph": "Vi använder utsläppsdata från officiella rapporteringskällor för att skapa rättvisa, jämförbara rankingar. Våra mätvärden fokuserar på faktiska utsläppsminskningar, inte bara löften eller mål. Varje ranking baseras på verkliga prestationsdata, vilket säkerställer att klimatledare erkänns och klimatfördröjare hålls ansvariga.",
+        "linkText": "Läs mer om vår metodik"
       },
       "impact": {
         "badge": "Från data till handling",
@@ -1408,7 +1409,9 @@
           "metric": "Ingen data tillgänglig för {{metric}}"
         },
         "keyStatistics": {
-          "average": "Genomsnitt:"
+          "average": "Genomsnitt:",
+          "distributionAbove": "företag över genomsnittet",
+          "distributionBelow": "företag under genomsnittet"
         },
         "topPerformers": {
           "titleTop": "Toppföretag",
