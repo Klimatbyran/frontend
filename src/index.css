@@ -19,7 +19,7 @@
   background-color: black;
   color: white;
 
-  /* Grey palette */
+  /* Grey palette - Dark mode (default) */
   --grey: #878787;
   --black-1: #2e2e2e;
   --black-2: #121212;
@@ -58,6 +58,22 @@
   --blue-3-muted: color-mix(in srgb, var(--blue-3) 20%, transparent);
   --orange-3-muted: color-mix(in srgb, var(--orange-3) 20%, transparent);
   --pink-3-muted: color-mix(in srgb, var(--pink-3) 20%, transparent);
+}
+
+:root.dark {
+  background-color: black;
+  color: #ffffff;
+}
+
+:root.light {
+  background-color: #f7f7f7;
+  color: #000000;
+
+  /* Light mode - Override base colors */
+  --black-1: rgba(135, 135, 135, 0.1); /* grey/10 equivalent */
+  --black-2: #ffffff;
+  --black-3: #000000;
+  --grey: #2e2e2e;
 }
 
 @layer base {

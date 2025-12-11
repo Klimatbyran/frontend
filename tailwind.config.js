@@ -67,12 +67,12 @@ export default {
           DEFAULT: "rgb(18, 18, 18)",
           foreground: "rgb(255, 255, 255)",
         },
-        // Base colors
+        // Base colors - using CSS variables for theme switching
         white: "#F7F7F7",
-        grey: "#878787",
-        "black-1": "#2E2E2E",
-        "black-2": "#121212",
-        "black-3": "#000000",
+        grey: "var(--grey)",
+        "black-1": "var(--black-1)",
+        "black-2": "var(--black-2)",
+        "black-3": "var(--black-3)",
 
         // Orange palette
         orange: {

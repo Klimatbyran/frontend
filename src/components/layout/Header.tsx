@@ -19,6 +19,7 @@ import {
   NavigationMenuTrigger,
 } from "../ui/navigation-menu";
 import { stagingFeatureFlagEnabled } from "@/utils/ui/featureFlags";
+import { ThemeToggle } from "../ui/theme-toggle";
 
 interface NavSubLink {
   label: string;
@@ -306,6 +307,7 @@ export function Header() {
           </NavigationMenuList>
           <div className="ml-4 h-full flex items-center">
             <HeaderSearchButton className="mx-2" />
+            <ThemeToggle className="hidden md:flex mx-2" />
             <LanguageButtons className={"hidden md:flex mx-4 "} />
             <NewsletterPopover
               isOpen={isSignUpOpen}
@@ -336,7 +338,10 @@ export function Header() {
                 className="w-full"
                 onSearchResultClick={toggleMenu}
               />
-              <LanguageButtons />
+              <div className="flex items-center gap-4">
+                <ThemeToggle />
+                <LanguageButtons />
+              </div>
               {filteredNavLinks.map((link) => (
                 <div key={link.path} className="flex flex-col">
                   <LocalizedLink
