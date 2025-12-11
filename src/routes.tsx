@@ -105,8 +105,13 @@ export function AppRoutes() {
         />
       </Route>
       {/* Regions routes */}
-      <Route path={`${basePath}/regions`} element={<RegionalRankedPage />} />
-      <Route path={`${basePath}/regions/:id`} element={<RegionDetailPage />} />
+      <Route element={<StagingProtectedRoute />}>
+        <Route path={`${basePath}/regions`} element={<RegionalRankedPage />} />
+        <Route
+          path={`${basePath}/regions/:id`}
+          element={<RegionDetailPage />}
+        />
+      </Route>
       {/* Municipalities routes */}
       <Route
         path={`${basePath}/municipalities`}
