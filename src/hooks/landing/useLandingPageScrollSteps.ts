@@ -26,6 +26,10 @@ export interface ScrollStepData {
     gradientTo: string;
   };
   imagePosition?: "left" | "right";
+  link?: {
+    path: string;
+    label: string;
+  };
 }
 
 export function useLandingPageScrollSteps(): ScrollStepData[] {
@@ -85,6 +89,10 @@ export function useLandingPageScrollSteps(): ScrollStepData[] {
         gradientTo: "to-green-3",
       },
       imagePosition: "right",
+      link: {
+        path: "/methodology",
+        label: "landingPage.scrollSteps.methodology.linkText",
+      },
     },
     {
       id: "impact",

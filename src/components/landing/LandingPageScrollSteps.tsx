@@ -36,6 +36,7 @@ export function useLandingPageScrollStepsWithContent(): ScrollStep[] {
         paragraph={step.paragraph}
         image={step.image}
         imagePosition={step.imagePosition}
+        link={step.link}
       />
     ),
   }));

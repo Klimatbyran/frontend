@@ -1,5 +1,7 @@
-import { ReactNode } from "react";
 import { LucideIcon } from "lucide-react";
+import { ReactNode } from "react";
+import { useTranslation } from "react-i18next";
+import { LocalizedLink } from "../LocalizedLink";
 
 interface ScrollAnimationStepContentProps {
   badge: {
@@ -17,6 +19,10 @@ interface ScrollAnimationStepContentProps {
     gradientTo: string;
   };
   imagePosition?: "left" | "right";
+  link?: {
+    path: string;
+    label: string;
+  };
 }
 
 export function ScrollAnimationStepContent({
@@ -25,7 +31,9 @@ export function ScrollAnimationStepContent({
   paragraph,
   image,
   imagePosition = "right",
+  link,
 }: ScrollAnimationStepContentProps) {
+  const { t } = useTranslation();
   const BadgeIcon = badge.icon;
   const ImageIcon = image.icon;
 
@@ -49,6 +57,14 @@ export function ScrollAnimationStepContent({
         <p className="text-sm md:text-base lg:text-lg xl:text-xl text-gray-300 leading-relaxed">
           {paragraph}
         </p>
+        {link && (
+          <LocalizedLink
+            className="block underline underline-offset-2"
+            to={link.path}
+          >
+            {t(link.label)}
+          </LocalizedLink>
+        )}
       </div>
       <div className={`flex items-center justify-center ${imageOrder}`}>
         <div

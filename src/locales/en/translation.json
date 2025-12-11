@@ -128,7 +128,8 @@
       "methodology": {
         "badge": "Science-Based Rankings",
         "heading": "Our Methodology",
-        "paragraph": "We use emissions data from official reporting sources to create fair, comparable rankings. Our metrics focus on actual emissions reductions, not just promises or targets. Every ranking is based on real performance data, ensuring that climate leaders are recognized and climate laggards are held accountable."
+        "paragraph": "We use emissions data from official reporting sources to create fair, comparable rankings. Our metrics focus on actual emissions reductions, not just promises or targets. Every ranking is based on real performance data, ensuring that climate leaders are recognized and climate laggards are held accountable.",
+        "linkText": "Read more about our methodology"
       },
       "impact": {
         "badge": "From Data to Action",
@@ -1410,7 +1411,9 @@
           "metric": "No data available for {{metric}}"
         },
         "keyStatistics": {
-          "average": "Average:"
+          "average": "Average:",
+          "distributionAbove": "companies above average",
+          "distributionBelow": "companies below average"
         },
         "topPerformers": {
           "titleTop": "Top Companies",

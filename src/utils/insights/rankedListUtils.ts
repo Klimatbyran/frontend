@@ -61,6 +61,7 @@ export function calculateEntityStatistics<
   entities: T[],
   selectedKPI: KPI,
   getValue: (entity: T) => unknown,
+  entityType: "municipalities" | "companies" = "municipalities",
 ): EntityStatistics<T> {
   const validData = filterValidData(entities, selectedKPI, getValue);
 
@@ -90,6 +91,9 @@ export function calculateEntityStatistics<
     return value === null || value === undefined;
   }).length;
 
+  const aboveAverageLabel = `${entityType}.list.insights.keyStatistics.distributionAbove`;
+  const belowAverageLabel = `${entityType}.list.insights.keyStatistics.distributionBelow`;
+
   // Create distribution stats
   const distributionStats = [
     {
@@ -97,14 +101,14 @@ export function calculateEntityStatistics<
       colorClass: "text-blue-3",
       label: selectedKPI.isBoolean
         ? selectedKPI.booleanLabels?.true || t("yes")
-        : t("municipalities.list.insights.keyStatistics.distributionAbove"),
+        : t(aboveAverageLabel),
     },
     {
       count: belowAverageCount,
       colorClass: "text-pink-3",
       label: selectedKPI.isBoolean
         ? selectedKPI.booleanLabels?.false || t("no")
-        : t("municipalities.list.insights.keyStatistics.distributionBelow"),
+        : t(belowAverageLabel),
     },
   ];
 
