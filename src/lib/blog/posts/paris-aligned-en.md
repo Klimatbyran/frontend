@@ -17,7 +17,7 @@ relatedPosts:
 
 If you’ve ever visited Klimatkollen and seen the label **“On Track to Meet the Paris Agreement”**, you may have wondered:
 
-**How can an organisation be Paris-aligned if its historic emissions change rate is small, e.g. less than -5% per year? Isn’t the Carbon Law ~12% per year?**
+**How can an organisation be Paris-aligned if its historic emissions change rate is small, e.g. less than -5% per year? Isn’t the Carbon Law -12% per year?**
 
 …you’re not alone. This is a common question — and it makes perfect sense to be confused by this.
 
@@ -50,7 +50,7 @@ This creates a **percentage-based pathway**:
 - big removals early (when the pile is large)  
 - smaller removals later (as the pile shrinks)
 
-This is exactly like **Carbon Law (rule of thumb of ~12% emission cuts per year)**:
+This is exactly like **Carbon Law (rule of thumb of -12% emission cuts per year)**:
 - It’s not necessarily the perfect method.  
 - But it tells you the **minimum consistent rate** needed to remain within the goal.  
 - It assumes you will use **all** available time evenly.
