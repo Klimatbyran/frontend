@@ -63,10 +63,9 @@ In other words:
 ### 3. Your Real-World Pace: The Trendline  
 Now think about how you actually work.
 
-For some people, they would rather move more dirt at the beginning and have less later when they are tired. But from a past gardening project, you know you naturally:
-fill and move a wheelbarrow with 10 kg every 10 minutes consistently, without slowing down.
+For some people, they would rather move more dirt at the beginning and have less later when they are tired. But from a past gardening project, you know a comfortable pace for you is to fill and move a wheelbarrow with 10 kg every 10 minutes consistently, without slowing down.
 
-This is your “natural”, observed behaviour — your trendline.
+This is your observed behaviour — your trendline.
 
 At the start:
 - 10 kg out of 300 kg is only **-3%**  
