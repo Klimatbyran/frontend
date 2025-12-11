@@ -58,6 +58,7 @@ export const RegionEmissions: FC<RegionEmissionsProps> = ({
       {
         name: t("detailPage.graph.historical"),
         color: "white",
+        isDashed: false,
       },
     ];
 
@@ -65,6 +66,7 @@ export const RegionEmissions: FC<RegionEmissionsProps> = ({
       items.push({
         name: t("detailPage.graph.estimated"),
         color: "var(--grey)",
+        isDashed: true,
       });
     }
 
@@ -72,6 +74,7 @@ export const RegionEmissions: FC<RegionEmissionsProps> = ({
       items.push({
         name: t("detailPage.graph.trend"),
         color: "var(--pink-3)",
+        isDashed: true,
       });
     }
 
@@ -79,6 +82,7 @@ export const RegionEmissions: FC<RegionEmissionsProps> = ({
       items.push({
         name: t("detailPage.graph.carbonLaw"),
         color: "var(--green-3)",
+        isDashed: true,
       });
     }
 
