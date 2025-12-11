@@ -57,7 +57,7 @@ export const RegionEmissions: FC<RegionEmissionsProps> = ({
     const items: LegendItem[] = [
       {
         name: t("detailPage.graph.historical"),
-        color: "var(--orange-2)",
+        color: "white",
       },
     ];
 
