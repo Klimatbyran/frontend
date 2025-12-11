@@ -1409,7 +1409,9 @@
           "metric": "Ingen data tillgänglig för {{metric}}"
         },
         "keyStatistics": {
-          "average": "Genomsnitt:"
+          "average": "Genomsnitt:",
+          "distributionAbove": "företag över genomsnittet",
+          "distributionBelow": "företag under genomsnittet"
         },
         "topPerformers": {
           "titleTop": "Toppföretag",
