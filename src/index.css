@@ -78,6 +78,34 @@
   --black-2: #ffffff;
   --black-3: #000000;
   --grey: #2e2e2e;
+
+  /* Orange palette - Light mode (darker for contrast) */
+  --orange-1: #b25f00; /* Darker for visibility on light bg */
+  --orange-2: #f48f2a; /* Medium-dark */
+  --orange-3: #b25f00; /* Darker */
+  --orange-4: #6b3700; /* Very dark */
+  --orange-5: #3d1f00; /* Darkest */
+
+  /* Blue palette - Light mode (darker for contrast) */
+  --blue-1: #206288; /* Darker for visibility on light bg */
+  --blue-2: #59a0e1; /* Medium-dark */
+  --blue-3: #206288; /* Darker */
+  --blue-4: #13364e; /* Very dark */
+  --blue-5: #0a1f2e; /* Darkest */
+
+  /* Green palette - Light mode (darker for contrast) */
+  --green-1: #6c9105; /* Darker for visibility on light bg */
+  --green-2: #aae506; /* Medium-dark */ 
+  --green-3: #6c9105; /* Darker */
+  --green-4: #3d4b16; /* Very dark */
+  --green-5: #232a0d; /* Darkest */
+
+  /* Pink palette - Light mode (darker for contrast) */
+  --pink-1: #97455d; /* Darker for visibility on light bg */
+  --pink-2: #f0759a; /* Medium-dark */
+  --pink-3: #97455d; /* Darker */
+  --pink-4: #73263d; /* Very dark */
+  --pink-5: #4d1928; /* Darkest */
 }
 
 @layer base {
