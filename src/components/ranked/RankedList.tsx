@@ -10,7 +10,12 @@ export interface RankedListProps<T extends Record<string, unknown>> {
   onItemClick?: (item: T) => void;
   searchKey?: keyof T;
   itemsPerPage?: number;
-  renderItem?: (item: T, index: number, startIndex: number) => React.ReactNode;
+  renderItem?: (
+    item: T,
+    index: number,
+    startIndex: number,
+    originalRank: number,
+  ) => React.ReactNode;
   className?: string;
   searchPlaceholder?: string;
 }
@@ -62,6 +67,11 @@ export function RankedList<T extends Record<string, unknown>>({
     );
   });
 
+  const originalRankMap = new Map<T, number>();
+  sortedData.forEach((item, index) => {
+    originalRankMap.set(item, index + 1);
+  });
+
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedData = filteredData.slice(
@@ -107,28 +117,35 @@ export function RankedList<T extends Record<string, unknown>>({
     return String(value);
   };
 
-  const defaultRenderItem = (item: T, index: number, startIndex: number) => (
-    <button
-      key={String(index)}
-      onClick={() => onItemClick?.(item)}
-      className="w-full p-4 hover:bg-black/40 transition-colors flex items-center justify-between group"
-    >
-      <div className="flex items-center gap-4">
-        <span className="text-white/30 text-sm w-8">
-          {selectedDataPoint.isBoolean
-            ? /* Empty span to maintain indentation for boolean KPIs */
-              ""
-            : startIndex + index + 1}
+  const getOriginalRank = (item: T): number => {
+    return originalRankMap.get(item) || 0;
+  };
+
+  const defaultRenderItem = (item: T, index: number) => {
+    const originalRank = getOriginalRank(item);
+    return (
+      <button
+        key={String(index)}
+        onClick={() => onItemClick?.(item)}
+        className="w-full p-4 hover:bg-black/40 transition-colors flex items-center justify-between group"
+      >
+        <div className="flex items-center gap-4">
+          <span className="text-white/30 text-sm w-8">
+            {selectedDataPoint.isBoolean
+              ? /* Empty span to maintain indentation for boolean KPIs */
+                ""
+              : originalRank}
+          </span>
+          <span className="text-white/90 text-sm md:text-base text-left">
+            {String(item[searchKey])}
+          </span>
+        </div>
+        <span className="text-orange-2 text-sm md:text-base font-medium text-right">
+          {formatValue(item)}
         </span>
-        <span className="text-white/90 text-sm md:text-base text-left">
-          {String(item[searchKey])}
-        </span>
-      </div>
-      <span className="text-orange-2 text-sm md:text-base font-medium text-right">
-        {formatValue(item)}
-      </span>
-    </button>
-  );
+      </button>
+    );
+  };
 
   return (
     <div
@@ -157,11 +174,12 @@ export function RankedList<T extends Record<string, unknown>>({
       </div>
       <div className="flex-1 overflow-y-auto ranked-list-items min-h-[570px]">
         <div className="divide-y divide-white/10">
-          {paginatedData.map((item, index) =>
-            renderItem
-              ? renderItem(item, index, startIndex)
-              : defaultRenderItem(item, index, startIndex),
-          )}
+          {paginatedData.map((item, index) => {
+            const originalRank = getOriginalRank(item);
+            return renderItem
+              ? renderItem(item, index, startIndex, originalRank)
+              : defaultRenderItem(item, index, startIndex);
+          })}
           {/* Add empty placeholder rows to maintain height */}
           {paginatedData.length < itemsPerPage &&
             Array(itemsPerPage - paginatedData.length)
