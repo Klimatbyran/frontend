@@ -313,7 +313,8 @@ export function Header() {
           </NavigationMenuList>
           <div className="ml-4 h-full flex items-center">
             <HeaderSearchButton className="mx-2" />
-            <ThemeToggle className="hidden md:flex mx-2" />
+            {/* SHOW MODE TOGGLE */}
+            {/* <ThemeToggle className="hidden md:flex mx-2" /> */}
             <LanguageButtons className={"hidden md:flex mx-4 "} />
             <NewsletterPopover
               isOpen={isSignUpOpen}
