@@ -53,7 +53,7 @@ const EmissionsSourcesAnalysis: React.FC<EmissionsSourcesAnalysisProps> = ({
               : "flex items-center gap-2"
           }`}
         >
-          <h2 className="text-xl font-light text-white">
+          <h2 className="text-xl font-light text-white light:text-black-3">
             {t("companiesPage.sectorGraphs.emissionsSourcesAnalysis")}
           </h2>
           <span className="text-sm text-grey">

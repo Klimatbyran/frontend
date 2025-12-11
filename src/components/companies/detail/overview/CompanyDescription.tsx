@@ -18,7 +18,7 @@ export function CompanyDescription({ description }: CompanyDescriptionProps) {
     return (
       <div>
         <button
-          className="bg-black-1 text-white px-3 py-1 rounded-md mt-1 text-sm"
+          className="bg-black-1 light:bg-grey/10 text-white light:text-black-3 px-3 py-1 rounded-md mt-1 text-sm"
           onClick={() => setShowMore(!showMore)}
         >
           {showMore

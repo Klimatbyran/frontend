@@ -165,7 +165,7 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
         className={cn(
           `${entry.dataKey === "total" ? "my-2 font-medium" : "my-0"}`,
           "grid grid-cols-subgrid col-span-2 w-full",
-          "even:bg-black-1 odd:bg-black-2/20 py-0.5",
+          "even:bg-black-1 light:even:bg-grey/10 odd:bg-black-2/20 light:odd:bg-grey/5 py-0.5",
         )}
       >
         <div className="text-grey mr-2">{name}</div>
@@ -188,7 +188,7 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
     <div
       className={cn(
         isMobile ? "max-w-[280px]" : "max-w-[400px]",
-        "bg-black-1 px-4 py-3 rounded-level-2",
+        "bg-black-1 light:bg-grey/10 px-4 py-3 rounded-level-2",
         "grid grid-cols-[1fr_auto] text-xs",
         "z-[60] relative",
       )}

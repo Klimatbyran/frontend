@@ -28,7 +28,7 @@ const EmissionsTrendAnalysis: React.FC<EmissionsTrendAnalysisProps> = ({
           screenSize.isMobile ? "flex-col" : "items-center"
         } gap-2`}
       >
-        <h2 className="text-xl font-light text-white">
+        <h2 className="text-xl font-light text-white light:text-black-3">
           {t("companiesPage.sectorGraphs.emissionsTrendAnalysis")}
         </h2>
         <span className="text-sm text-grey">

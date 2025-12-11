@@ -21,7 +21,9 @@ export const EnhancedLegend: React.FC<EnhancedLegendProps> = ({
               border: item.isDashed ? `2px solid ${item.color}` : "none",
             }}
           />
-          <span className="text-sm text-white">{item.name}</span>
+          <span className="text-sm text-white light:text-black-3">
+            {item.name}
+          </span>
         </div>
       ))}
     </div>

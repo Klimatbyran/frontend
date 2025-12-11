@@ -117,13 +117,15 @@ const ScopeModal: React.FC<ScopeModalProps> = ({
   const { currentLanguage } = useLanguage();
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-black-2 border border-black-1 rounded-xl shadow-xl w-full max-w-4xl mx-4 max-h-[90vh] flex flex-col">
-        <div className="flex justify-between items-center p-6 border-b border-black-1">
-          <h3 className="text-xl font-light text-white">{title}</h3>
+    <div className="fixed inset-0 bg-black bg-opacity-80 light:bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+      <div className="bg-black-2 light:bg-white border border-black-1 light:border-grey/20 rounded-xl shadow-xl w-full max-w-4xl mx-4 max-h-[90vh] flex flex-col">
+        <div className="flex justify-between items-center p-6 border-b border-black-1 light:border-grey/20">
+          <h3 className="text-xl font-light text-white light:text-black-3">
+            {title}
+          </h3>
           <button
             onClick={onClose}
-            className="text-grey hover:text-white focus:outline-none transition-colors"
+            className="text-grey hover:text-white light:hover:text-black-3 focus:outline-none transition-colors"
           >
             <X className="h-5 w-5" />
           </button>
@@ -138,7 +140,7 @@ const ScopeModal: React.FC<ScopeModalProps> = ({
               return (
                 <div
                   key={sector.sectorCode}
-                  className="bg-black-3 rounded-lg p-6"
+                  className="bg-black-3 light:bg-grey/10 rounded-lg p-6 border border-transparent light:border-grey/20"
                 >
                   <div className="flex items-center justify-between mb-4">
                     <div>
@@ -182,8 +184,8 @@ const ScopeModal: React.FC<ScopeModalProps> = ({
                           to={`/companies/${wikidataId}`}
                           className="block"
                         >
-                          <div className="bg-black-2 rounded-lg p-4 flex items-center justify-between group hover:bg-opacity-60 transition-colors cursor-pointer">
-                            <div className="text-sm font-medium text-white hover:scale-105 transition-transform">
+                          <div className="bg-black-2 light:bg-grey/10 rounded-lg p-4 flex items-center justify-between group hover:bg-opacity-60 light:hover:bg-grey/20 transition-colors cursor-pointer border border-transparent light:border-grey/20">
+                            <div className="text-sm font-medium text-white light:text-black-3 hover:scale-105 transition-transform">
                               {company.name}
                             </div>
                             <div className="text-right">
@@ -210,9 +212,9 @@ const ScopeModal: React.FC<ScopeModalProps> = ({
                       ) : (
                         <div
                           key={company.name}
-                          className="bg-black-2 rounded-lg p-4 flex items-center justify-between"
+                          className="bg-black-2 light:bg-grey/10 rounded-lg p-4 flex items-center justify-between border border-transparent light:border-grey/20"
                         >
-                          <div className="text-sm font-medium text-white">
+                          <div className="text-sm font-medium text-white light:text-black-3">
                             {company.name}
                           </div>
                           <div className="text-right">

@@ -44,14 +44,14 @@ export function AboutPage() {
         />
         <Accordion type="single" collapsible className="space-y-6">
           {/* Main Content */}
-          <div className="bg-black-2 rounded-level-1 p-4 md:p-8">
+          <div className="bg-black-2 light:bg-white rounded-level-1 p-4 md:p-8">
             <div className="flex flex-col md:flex-row items-start justify-between">
               <div className="space-y-4 w-full">
                 {/* Header */}
                 <div className="flex flex-wrap items-center gap-4">
                   <Text
                     variant="h3"
-                    className="text-4xl md:text-3xl sm:text-2xl"
+                    className="text-4xl md:text-3xl sm:text-2xl text-white light:text-black-3"
                   >
                     {t("aboutPage.mainContent.title")}
                   </Text>
@@ -92,7 +92,7 @@ export function AboutPage() {
                     <a
                       title="Email us"
                       href="mailto:hej@klimatkollen.se"
-                      className="underline hover:text-white"
+                      className="underline hover:text-white light:hover:text-black-3"
                     />,
                   ]}
                 />
@@ -122,7 +122,7 @@ export function AboutPage() {
                   href="/documents/stadgar.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="underline hover:text-white"
+                  className="underline hover:text-white light:hover:text-black-3"
                 >
                   {t("aboutPage.boardSection.links.stadgarLink")}
                 </a>
@@ -131,7 +131,7 @@ export function AboutPage() {
                   href="/documents/uppforandekod.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="underline hover:text-white"
+                  className="underline hover:text-white light:hover:text-black-3"
                 >
                   {t("aboutPage.boardSection.links.uppforandekodLink")}
                 </a>{" "}
@@ -140,7 +140,7 @@ export function AboutPage() {
                   href="/documents/antikorruptionspolicy.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="underline hover:text-white"
+                  className="underline hover:text-white light:hover:text-black-3"
                 >
                   {t("aboutPage.boardSection.links.antikorruptionspolicyLink")}
                 </a>{" "}
@@ -159,8 +159,8 @@ export function AboutPage() {
               <p>{t("aboutPage.financingSection.paragraph2")}</p>
               <p>{t("aboutPage.financingSection.paragraph3")}</p>
               <p>{t("aboutPage.financingSection.paragraph4")}</p>
-              <div className="bg-blue-5/30 rounded-level-2 p-6 mt-8 max-w-3xl">
-                <Text variant="body">
+              <div className="bg-blue-5/30 light:bg-blue-1/50 rounded-level-2 p-6 mt-8 max-w-3xl">
+                <Text variant="body" className="text-white light:text-black-3">
                   {t("aboutPage.financingSection.donate")}
                 </Text>
                 <Text className="text-grey">
@@ -187,7 +187,7 @@ export function AboutPage() {
                 <Text className="text-blue-2 font-bold text-2xl">
                   {t("aboutPage.previousProjectsSection.kommunprojektetTitle")}
                 </Text>
-                <Text variant="body">
+                <Text variant="body" className="text-white light:text-black-3">
                   {t(
                     "aboutPage.previousProjectsSection.kommunprojektetDescription",
                   )}
@@ -198,7 +198,7 @@ export function AboutPage() {
                 <Text className="text-blue-2 font-bold text-2xl">
                   {t("aboutPage.previousProjectsSection.riksdagsvaletTitle")}
                 </Text>
-                <Text variant="body">
+                <Text variant="body" className="text-white light:text-black-3">
                   {t(
                     "aboutPage.previousProjectsSection.riksdagsvaletDescription",
                   )}

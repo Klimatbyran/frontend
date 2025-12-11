@@ -1,6 +1,9 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { formatEmissionsAbsolute, formatPercent } from "@/utils/formatting/localization";
+import {
+  formatEmissionsAbsolute,
+  formatPercent,
+} from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
 import {
   Tooltip,
@@ -74,7 +77,7 @@ const Scope3PieLegend: React.FC<PieLegendProps> = ({
             <Tooltip key={`legend-${index}`}>
               <TooltipTrigger asChild>
                 <div
-                  className={`flex items-center gap-2 p-2 rounded-md hover:bg-black-1 transition-colors cursor-pointer ${
+                  className={`flex items-center gap-2 p-2 rounded-md hover:bg-black-1 light:hover:bg-grey/20 transition-colors cursor-pointer ${
                     isFiltered ? "opacity-50" : ""
                   }`}
                   onClick={() => handleLegendItemClick(entry.name)}
@@ -84,7 +87,7 @@ const Scope3PieLegend: React.FC<PieLegendProps> = ({
                     style={{ backgroundColor: color }}
                   />
                   <div className="min-w-0 flex-1">
-                    <div className="text-sm text-white">
+                    <div className="text-sm text-white light:text-black-3">
                       {entry.name || entry.value}
                     </div>
                     <div className="text-xs text-grey flex justify-between">
@@ -106,7 +109,7 @@ const Scope3PieLegend: React.FC<PieLegendProps> = ({
                 </div>
               </TooltipTrigger>
 
-              <TooltipContent className="bg-black-1 text-white">
+              <TooltipContent className="bg-black-1 light:bg-grey/10 text-white light:text-black-3">
                 {t(
                   `companies.scope3Chart.${isFiltered ? "clickToShow" : "clickToFilter"}`,
                 )}

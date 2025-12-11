@@ -17,13 +17,20 @@ function SocialLinks() {
           href={href}
           target="_blank"
           rel="noopener noreferrer"
-          className="p-2 md:p-3 bg-black-1 rounded-full hover:bg-black-1/80 transition-colors"
+          className="p-2 md:p-3 bg-black-1 light:bg-grey/10 rounded-full hover:bg-black-1/80 light:hover:bg-grey/20 transition-colors"
           title={title}
         >
           {typeof Icon === "string" ? (
-            <img src={Icon} alt={title} className="w-5 h-5 md:w-6 md:h-6" />
+            <img
+              src={Icon}
+              alt={title}
+              className="w-5 h-5 md:w-6 md:h-6 brightness-100 light:brightness-0"
+            />
           ) : (
-            <Icon className="w-5 h-5 md:w-6 md:h-6" aria-label={title} />
+            <Icon
+              className="w-5 h-5 md:w-6 md:h-6 text-white light:text-black-2"
+              aria-label={title}
+            />
           )}
         </a>
       ))}
@@ -63,7 +70,11 @@ function PartnerLogos({ prefersReducedMotion, isMobile }: PartnerLogoProps) {
           rel="noreferrer"
           className="flex items-center justify-center"
         >
-          <img className="w-28 h-12 object-contain" src={src} alt={alt} />
+          <img
+            className="w-28 h-12 object-contain brightness-100 light:brightness-0"
+            src={src}
+            alt={alt}
+          />
         </a>
       ))}
     </Wrapper>
@@ -78,21 +89,24 @@ export function Footer() {
   const { isMobile } = useScreenSize();
 
   return (
-    <footer className="relative w-full z-10 bg-black-2 py-4 md:py-8">
+    <footer className="relative w-full z-10 bg-black-2 light:bg-grey/10 border-t border-transparent light:border-grey/20 py-4 md:py-8">
       <div className="container mx-auto px-4 space-y-4 md:space-y-8 flex flex-col w-screen items-center text-center">
         {/* Contact Section */}
         <div className="space-y-2 md:space-y-4">
-          <Text variant="h6" className="text-grey md:text-base">
+          <Text
+            variant="h6"
+            className="text-grey light:text-black-2 md:text-base"
+          >
             {t("footer.contactUs")}
           </Text>
           <SocialLinks />
-          <div className="text-sm md:text-base max-w-full md:max-w-2xl font-light text-grey">
+          <div className="text-sm md:text-base max-w-full md:max-w-2xl font-light text-grey light:text-black-2">
             <Trans
               i18nKey="footer.description"
               components={[
                 <a
                   title="Klimatkollen's Github"
-                  className="underline hover:text-white transition-colors"
+                  className="underline hover:text-white light:hover:text-black-3 text-grey light:text-black-2 transition-colors"
                   href="https://github.com/Klimatbyran/"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -108,28 +122,34 @@ export function Footer() {
             {t("footer.supporters")}
           </Text>
           {prefersReducedMotion || isMobile ? null : (
-            <div className="absolute left-20 md:left-0 top-0 bottom-0 w-24 md:w-16 bg-gradient-to-r from-[var(--black-2)] to-transparent pointer-events-none z-10" />
+            <div className="absolute left-20 md:left-0 top-0 bottom-0 w-24 md:w-16 bg-gradient-to-r from-[var(--black-2)] light:from-transparent to-transparent pointer-events-none z-10" />
           )}
           <PartnerLogos
             prefersReducedMotion={prefersReducedMotion}
             isMobile={isMobile}
           />
           {prefersReducedMotion || isMobile ? null : (
-            <div className="absolute right-20 md:right-0 top-0 bottom-0 w-24 md:w-16 bg-gradient-to-l from-[var(--black-2)] to-transparent pointer-events-none z-10" />
+            <div className="absolute right-20 md:right-0 top-0 bottom-0 w-24 md:w-16 bg-gradient-to-l from-[var(--black-2)] light:from-transparent to-transparent pointer-events-none z-10" />
           )}
         </div>
 
         {/* Footer Links */}
-        <div className="flex flex-col md:flex-row gap-4 md:gap-8 text-grey items-center">
-          <a href="/privacy" className="hover:text-white transition-colors">
+        <div className="flex flex-col md:flex-row gap-4 md:gap-8 text-grey light:text-black-2 items-center">
+          <a
+            href="/privacy"
+            className="hover:text-white light:hover:text-black-3 transition-colors"
+          >
             {t("footer.privacyTerms")}
           </a>
-          <a href="/license" className="hover:text-white transition-colors">
+          <a
+            href="/license"
+            className="hover:text-white light:hover:text-black-3 transition-colors"
+          >
             {t("footer.internationalLicense")}
           </a>
           <a
             href="https://creativecommons.org/licenses/by-sa/4.0/"
-            className="hover:text-white transition-colors"
+            className="hover:text-white light:hover:text-black-3 transition-colors"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -138,7 +158,7 @@ export function Footer() {
           {!token && (
             <a
               onClick={() => login()}
-              className="hover:text-white transition-colors cursor-pointer"
+              className="hover:text-white light:hover:text-black-3 transition-colors cursor-pointer"
             >
               {t("footer.login")}
             </a>
@@ -149,13 +169,13 @@ export function Footer() {
                 logout();
                 navigate("/");
               }}
-              className="hover:text-white cursor-pointer transition-colors"
+              className="hover:text-white light:hover:text-black-3 cursor-pointer transition-colors"
             >
               {t("footer.logout")}
             </a>
           )}
           {token && user && (
-            <div className="hover:text-white ms-auto flex items-center">
+            <div className="hover:text-white light:hover:text-black-3 ms-auto flex items-center text-grey light:text-black-2">
               <span>
                 {t("footer.welcome")}, {user?.name ?? ""}
               </span>

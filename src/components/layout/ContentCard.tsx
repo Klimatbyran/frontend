@@ -94,7 +94,7 @@ export function ContentCard({ item, basePath }: ContentCardProps) {
         href={link}
         target="_blank"
         rel="noopener noreferrer"
-        className="group bg-black-2 rounded-level-2 overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(153,207,255,0.15)] hover:bg-[#1a1a1a]"
+        className="group bg-black-2 light:bg-white rounded-level-2 overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(153,207,255,0.15)] hover:bg-[#1a1a1a] light:hover:bg-grey/5 border border-transparent light:border-grey/20"
       >
         {cardContent}
       </a>

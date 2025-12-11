@@ -64,8 +64,8 @@ const ValueChainOverview: React.FC = () => {
 
   if (isMobile) {
     return (
-      <div className="bg-black-2 rounded-lg p-4">
-        <h3 className="text-base font-light text-white mb-3">
+      <div className="bg-black-2 light:bg-grey/10 rounded-lg p-4 border border-transparent light:border-grey/20">
+        <h3 className="text-base font-light text-white light:text-black-3 mb-3">
           {t("companiesPage.sectorGraphs.valueChainOverview")}
         </h3>
 
@@ -79,15 +79,19 @@ const ValueChainOverview: React.FC = () => {
                 <button
                   onClick={() => setSelectedStage(isSelected ? null : index)}
                   className={`w-full flex items-center justify-between p-3 rounded-lg transition-colors ${
-                    isSelected ? "bg-black-1" : "bg-black-1/50 hover:bg-black-1"
+                    isSelected
+                      ? "bg-black-1 light:bg-grey/20"
+                      : "bg-black-1/50 light:bg-grey/10 hover:bg-black-1 light:hover:bg-grey/20"
                   }`}
                 >
                   <div className="flex items-center gap-3">
-                    <div className={`rounded-full p-2 bg-black-2`}>
+                    <div
+                      className={`rounded-full p-2 bg-black-2 light:bg-grey/20`}
+                    >
                       <Icon className={`h-4 w-4 ${stage.color}`} />
                     </div>
                     <div className="text-left">
-                      <div className="text-sm font-medium text-white">
+                      <div className="text-sm font-medium text-white light:text-black-3">
                         {stage.title}
                       </div>
                       <div className="text-xs text-grey">
@@ -107,7 +111,7 @@ const ValueChainOverview: React.FC = () => {
                     {stage.details.map((detail, i) => (
                       <div
                         key={i}
-                        className="text-xs text-grey flex items-center gap-2 p-2 bg-black-2 rounded"
+                        className="text-xs text-grey flex items-center gap-2 p-2 bg-black-2 light:bg-grey/20 rounded"
                       >
                         <div
                           className={`w-1 h-1 rounded-full ${stage.color.replace(
@@ -136,8 +140,8 @@ const ValueChainOverview: React.FC = () => {
 
   if (isTablet) {
     return (
-      <div className="bg-black-2 rounded-lg p-6">
-        <h3 className="text-lg font-light text-white mb-4">
+      <div className="bg-black-2 light:bg-grey/10 rounded-lg p-6 border border-transparent light:border-grey/20">
+        <h3 className="text-lg font-light text-white light:text-black-3 mb-4">
           {t("companiesPage.sectorGraphs.valueChainOverview")}
         </h3>
         <div className="flex flex-col space-y-4">
@@ -147,13 +151,15 @@ const ValueChainOverview: React.FC = () => {
 
             return (
               <div key={index} className="relative">
-                <div className="bg-black-1 rounded-lg p-4">
+                <div className="bg-black-1 light:bg-grey/20 rounded-lg p-4 border border-transparent light:border-grey/20">
                   <div className="flex items-center gap-3 mb-3">
-                    <div className={`rounded-full p-2 bg-black-2 shrink-0`}>
+                    <div
+                      className={`rounded-full p-2 bg-black-2 light:bg-grey/20 shrink-0`}
+                    >
                       <Icon className={`h-5 w-5 ${stage.color}`} />
                     </div>
                     <div>
-                      <div className="text-sm font-medium text-white">
+                      <div className="text-sm font-medium text-white light:text-black-3">
                         {stage.title}
                       </div>
                       <div className="text-xs text-grey">
@@ -189,8 +195,8 @@ const ValueChainOverview: React.FC = () => {
   }
 
   return (
-    <div className="bg-black-2 rounded-lg p-6">
-      <h3 className="text-lg font-light text-white mb-4">
+    <div className="bg-black-2 light:bg-grey/10 rounded-lg p-6 border border-transparent light:border-grey/20">
+      <h3 className="text-lg font-light text-white light:text-black-3 mb-4">
         {t("companiesPage.sectorGraphs.valueChainOverview")}
       </h3>
       <div className="grid grid-cols-3 gap-4">
@@ -200,13 +206,15 @@ const ValueChainOverview: React.FC = () => {
 
           return (
             <div key={index} className="relative">
-              <div className="bg-black-1 rounded-lg p-4 h-full">
+              <div className="bg-black-1 light:bg-grey/20 rounded-lg p-4 h-full border border-transparent light:border-grey/20">
                 <div className="flex items-center gap-2 mb-3">
-                  <div className={`rounded-full p-2 bg-black-2 shrink-0`}>
+                  <div
+                    className={`rounded-full p-2 bg-black-2 light:bg-grey/20 shrink-0`}
+                  >
                     <Icon className={`h-5 w-5 ${stage.color}`} />
                   </div>
                   <div>
-                    <div className="text-sm font-medium text-white">
+                    <div className="text-sm font-medium text-white light:text-black-3">
                       {stage.title}
                     </div>
                     <div className="text-xs text-grey">{stage.description}</div>

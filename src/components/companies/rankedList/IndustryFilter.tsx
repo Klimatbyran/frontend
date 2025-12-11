@@ -51,7 +51,7 @@ export function IndustryFilter({
           value={selectedSector || undefined}
           onValueChange={(value) => onSectorChange(value)}
         >
-          <SelectTrigger className="w-full bg-black-2 border-black-3 text-white">
+          <SelectTrigger className="w-full bg-black-2 light:bg-white border-black-3 light:border-grey/20 text-white light:text-black-3">
             <SelectValue
               placeholder={t(
                 "companiesRankedPage.selectIndustry",
@@ -61,7 +61,7 @@ export function IndustryFilter({
               {selectedSectorName}
             </SelectValue>
           </SelectTrigger>
-          <SelectContent className="bg-black-1 border-black-3">
+          <SelectContent className="bg-black-1 light:bg-white border-black-3 light:border-grey/20">
             {availableSectors.map((sectorCode) => {
               const sectorName =
                 sectorNames[sectorCode as keyof typeof sectorNames] ||
@@ -70,7 +70,7 @@ export function IndustryFilter({
                 <SelectItem
                   key={sectorCode}
                   value={sectorCode}
-                  className="text-white focus:bg-black-2"
+                  className="text-white light:text-black-3 focus:bg-black-2 light:focus:bg-grey/10"
                 >
                   {sectorName}
                 </SelectItem>
@@ -102,8 +102,8 @@ export function IndustryFilter({
               "px-3 py-1.5 rounded-level-1 text-xs font-medium transition-all",
               "border",
               isSelected
-                ? "bg-blue-5/30 border-blue-4 text-blue-2 hover:bg-blue-5/40"
-                : "bg-black-2 border-black-3 text-grey hover:bg-black-3 hover:border-black-4",
+                ? "bg-blue-5/30 border-blue-4 text-blue-4 hover:bg-blue-5/40"
+                : "bg-black-2 light:bg-grey/10 border-black-3 light:border-grey/20 text-grey hover:bg-black-3 light:hover:bg-grey/20 hover:border-black-4 light:hover:border-grey/30",
             )}
           >
             {sectorName}

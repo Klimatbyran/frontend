@@ -35,7 +35,7 @@ export function CumulativeSummaryBoxes({
         <div className="text-green-3 text-xs font-medium mb-1">
           {t("companies.emissionsHistory.parisAlignedPathLabel")}
         </div>
-        <div className="text-white text-sm font-bold">
+        <div className="text-white light:text-black-3 text-sm font-bold">
           {formatEmissionsAbsoluteCompact(
             step5Data.reduce((sum, d) => sum + (d.carbonLaw || 0), 0),
             currentLanguage,
@@ -52,7 +52,7 @@ export function CumulativeSummaryBoxes({
         <div className="text-orange-3 text-xs font-medium mb-1">
           {t("companies.emissionsHistory.companyEmissionsLabel")}
         </div>
-        <div className="text-white text-sm font-bold">
+        <div className="text-white light:text-black-3 text-sm font-bold">
           {formatEmissionsAbsoluteCompact(
             step5Data.reduce((sum, d) => sum + (d.approximated || 0), 0),
             currentLanguage,
@@ -77,7 +77,7 @@ export function CumulativeSummaryBoxes({
         >
           {t("companies.emissionsHistory.budgetStatusLabel")}
         </div>
-        <div className="text-white text-sm font-bold">
+        <div className="text-white light:text-black-3 text-sm font-bold">
           {totalAreaDifference < 0 ? "-" : "+"}
           {formatEmissionsAbsoluteCompact(
             Math.abs(totalAreaDifference),

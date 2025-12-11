@@ -31,8 +31,7 @@ export function CompaniesSectorsPage() {
       ? sectors.map((sector) => ({
           type: "filter" as const,
           label: sectorNames[sector as keyof typeof sectorNames] || sector,
-          onRemove: () =>
-            setSectors(sectors.filter((s) => s !== sector)),
+          onRemove: () => setSectors(sectors.filter((s) => s !== sector)),
         }))
       : []),
     ...(meetsParisFilter !== "all"
@@ -56,7 +55,10 @@ export function CompaniesSectorsPage() {
     return (
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-pulse">
         {[...Array(4)].map((_, i) => (
-          <div key={i} className="h-64 bg-black-2 rounded-level-2" />
+          <div
+            key={i}
+            className="h-64 bg-black-2 light:bg-grey/10 rounded-level-2"
+          />
         ))}
       </div>
     );
@@ -85,10 +87,10 @@ export function CompaniesSectorsPage() {
       <div
         className={cn(
           screenSize.isMobile ? "relative" : "sticky top-0 z-10",
-          "bg-black shadow-md",
+          "bg-black light:bg-white",
         )}
       >
-        <div className="absolute inset-0 w-full bg-black -z-10" />
+        <div className="absolute inset-0 w-full bg-black light:bg-white -z-10" />
 
         {/* Wrapper for Filters and Badges */}
         <div className={cn("flex flex-wrap items-center gap-2 mb-2 md:mb-4")}>

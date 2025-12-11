@@ -49,7 +49,7 @@ export const DynamicLegendContainer: React.FC<DynamicLegendContainerProps> = ({
               <Tooltip key={index}>
                 <TooltipTrigger asChild>
                   <div
-                    className={`flex items-center gap-1 px-2.5 py-1.5 rounded bg-black-2 hover:bg-black-1 transition-colors ${
+                    className={`flex items-center gap-1 px-2.5 py-1.5 rounded bg-black-2 light:bg-grey/10 hover:bg-black-1 light:hover:bg-grey/20 transition-colors ${
                       allowClickToHide ? "cursor-pointer" : "cursor-default"
                     } ${item.isHidden ? "opacity-50" : "opacity-100"}`}
                     onClick={() => {
@@ -65,7 +65,9 @@ export const DynamicLegendContainer: React.FC<DynamicLegendContainerProps> = ({
                         borderColor: item.color,
                       }}
                     />
-                    <span className="text-xs text-white">{item.name}</span>
+                    <span className="text-xs text-white light:text-black-3">
+                      {item.name}
+                    </span>
                     {showMetadata && item.metadata && (
                       <span className="text-xs text-grey/70">
                         {item.metadata.value
@@ -105,7 +107,7 @@ export const DynamicLegendContainer: React.FC<DynamicLegendContainerProps> = ({
               <Tooltip key={index}>
                 <TooltipTrigger asChild>
                   <div
-                    className={`flex items-center gap-1 px-2.5 py-1.5 md:px-2 md:py-1.5 rounded bg-black-2 hover:bg-black-1 transition-colors ${
+                    className={`flex items-center gap-1 px-2.5 py-1.5 md:px-2 md:py-1.5 rounded bg-black-2 light:bg-grey/10 hover:bg-black-1 light:hover:bg-grey/20 transition-colors ${
                       allowClickToHide ? "cursor-pointer" : "cursor-default"
                     } ${item.isHidden ? "opacity-50" : "opacity-100"}`}
                     onClick={() => {
@@ -121,7 +123,7 @@ export const DynamicLegendContainer: React.FC<DynamicLegendContainerProps> = ({
                         borderColor: item.color,
                       }}
                     />
-                    <span className="text-xs md:text-sm text-white">
+                    <span className="text-xs md:text-sm text-white light:text-black-3">
                       {item.name}
                     </span>
                     {showMetadata && item.metadata && (

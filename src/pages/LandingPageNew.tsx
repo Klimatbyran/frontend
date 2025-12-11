@@ -108,7 +108,7 @@ export function LandingPageNew() {
         canonicalUrl={canonicalUrl}
         structuredData={structuredData}
       />
-      <div className="flex flex-col h-screen items-center">
+      <div className="flex flex-col h-screen items-center bg-black light:bg-white">
         <div className="flex-1 flex flex-col items-center text-center px-4 py-44 md:py-56">
           <div className="max-w-lg md:max-w-4xl mx-auto space-y-4">
             <h1 className="text-4xl md:text-7xl font-light tracking-tight">
@@ -119,7 +119,7 @@ export function LandingPageNew() {
               <Typewriter
                 text={typeWriterTexts}
                 speed={TYPEWRITER_SPEED}
-                className="text-[#E2FF8D]"
+                className="text-[#E2FF8D] light:text-[#B4CC70]"
                 waitTime={TYPEWRITER_WAIT_TIME}
                 deleteSpeed={TYPEWRITER_DELETE_SPEED}
                 cursorChar={TYPEWRITER_CURSOR_CHAR}
@@ -144,7 +144,10 @@ export function LandingPageNew() {
 
       {/* Scroll Animation Section */}
       <section ref={containerRef}>
-        <ScrollAnimationSection steps={scrollSteps} className="bg-black" />
+        <ScrollAnimationSection
+          steps={scrollSteps}
+          className="bg-black light:bg-white"
+        />
       </section>
 
       <SiteFeatures />

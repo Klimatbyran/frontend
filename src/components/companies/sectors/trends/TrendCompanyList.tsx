@@ -42,11 +42,11 @@ const TrendCompanyList: React.FC<TrendCompanyListProps> = ({
             return (
               <div
                 key={company.wikidataId}
-                className="bg-black-1 rounded-lg px-4 py-3 text-sm"
+                className="bg-black-1 light:bg-grey/20 rounded-lg px-4 py-3 text-sm border border-transparent light:border-grey/20"
               >
                 <div className="flex justify-between items-start mb-2">
                   <Link to={`/companies/${company.wikidataId}`}>
-                    <div className="font-medium text-white hover:scale-105">
+                    <div className="font-medium text-white light:text-black-3 hover:scale-105">
                       {company.name}
                     </div>
                   </Link>
@@ -68,12 +68,12 @@ const TrendCompanyList: React.FC<TrendCompanyListProps> = ({
             return (
               <div
                 key={company.wikidataId}
-                className="bg-black-1 rounded-lg px-4 py-3 text-sm"
+                className="bg-black-1 light:bg-grey/20 rounded-lg px-4 py-3 text-sm border border-transparent light:border-grey/20"
               >
                 {" "}
                 <Link to={`/companies/${company.wikidataId}`}>
                   <div className="flex justify-between items-start mb-2">
-                    <div className="font-medium text-white hover:scale-105">
+                    <div className="font-medium text-white light:text-black-3 hover:scale-105">
                       {company.name}
                     </div>
 

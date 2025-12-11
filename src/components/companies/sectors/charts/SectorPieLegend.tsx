@@ -76,7 +76,7 @@ const SectorPieLegend: React.FC<PieLegendProps> = ({
             <Tooltip key={`legend-${index}`}>
               <TooltipTrigger asChild>
                 <div
-                  className={`flex items-center gap-2 p-2 rounded bg-black-2 hover:bg-black-1 transition-colors cursor-pointer ${
+                  className={`flex items-center gap-2 p-2 rounded bg-black-2 light:bg-grey/10 hover:bg-black-1 light:hover:bg-grey/20 transition-colors cursor-pointer border border-transparent light:border-grey/20 ${
                     selectedLabel ? "hover:ring-1 hover:ring-black-1" : ""
                   }`}
                   onClick={() => handleItemClick(entry)}
@@ -86,7 +86,7 @@ const SectorPieLegend: React.FC<PieLegendProps> = ({
                     style={{ backgroundColor: color }}
                   />
                   <div className="min-w-0 flex-1">
-                    <div className="text-sm text-white truncate">
+                    <div className="text-sm text-white light:text-black-3 truncate">
                       {entry.name || entry.value}
                     </div>
                     <div className="text-xs text-grey flex justify-between">
@@ -102,7 +102,7 @@ const SectorPieLegend: React.FC<PieLegendProps> = ({
                   </div>
                 </div>
               </TooltipTrigger>
-              <TooltipContent className="bg-black-1 text-white">
+              <TooltipContent className="bg-black-1 light:bg-grey/20 text-white light:text-black-3">
                 {selectedLabel
                   ? t("companiesPage.sectorGraphs.pieLegendCompany")
                   : t("companiesPage.sectorGraphs.pieLegendSector")}

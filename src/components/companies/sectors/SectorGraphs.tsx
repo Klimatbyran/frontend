@@ -20,8 +20,8 @@ const SectorGraphs: React.FC<SectorGraphsProps> = ({
   const sectorNames = useSectorNames();
 
   return (
-    <div className="bg-black">
-      <div className="bg-black-2 rounded-lg border p-6">
+    <div className="bg-black light:bg-white">
+      <div className="bg-black-2 light:bg-grey/10 rounded-lg border border-transparent light:border-grey/20 p-6">
         <SectorEmissionsChart
           companies={companies}
           selectedSectors={

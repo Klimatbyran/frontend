@@ -44,20 +44,20 @@ export function FilterPopover({
         <Button
           variant="outline"
           size="sm"
-          className="bg-black-1 border-black-1 text-grey hover:text-white hover:bg-black-1/80 hover:border-black-1 font-medium text-sm"
+          className="bg-black-1 light:bg-grey/10 border-black-1 light:border-grey/20 text-grey light:text-black-3 hover:text-white light:hover:text-black-3 hover:bg-black-1/80 light:hover:bg-grey/20 hover:border-black-1 light:hover:border-grey/30 font-medium text-sm"
         >
           <Filter className="mr-2 h-4 w-4" />
           {t("companiesPage.filter")}
         </Button>
       </PopoverTrigger>
       <PopoverContent
-        className="w-[300px] p-0 bg-black-2 border-black-1"
+        className="w-[300px] p-0 bg-black-2 light:bg-white border-black-1 light:border-grey/20"
         align="end"
       >
         <Command className="bg-transparent">
           <CommandInput
             placeholder={t("companiesPage.searchInFilter")}
-            className="border-b border-black-1"
+            className="border-b border-black-1 light:border-grey/20"
           />
           <CommandList className="max-h-[300px]">
             <CommandEmpty>{t("companiesPage.noResults")}</CommandEmpty>
@@ -76,7 +76,7 @@ export function FilterPopover({
                       setSectors([...sectors, sector.value]);
                     }
                   }}
-                  className="flex items-center justify-between cursor-pointer"
+                  className="flex items-center justify-between cursor-pointer text-white light:text-black-3"
                 >
                   <span>{sector.label}</span>
                   {sectors.includes(sector.value) && (
@@ -86,7 +86,7 @@ export function FilterPopover({
               ))}
             </CommandGroup>
 
-            <CommandSeparator className="bg-black-1" />
+            <CommandSeparator className="bg-black-1 light:bg-grey/20" />
             <CommandGroup
               heading={t("companiesPage.filteringOptions.meetsParis")}
             >
@@ -112,7 +112,7 @@ export function FilterPopover({
                       option.value as "all" | "yes" | "no" | "unknown",
                     )
                   }
-                  className="flex items-center justify-between cursor-pointer"
+                  className="flex items-center justify-between cursor-pointer text-white light:text-black-3"
                 >
                   <span>{option.label}</span>
                   {meetsParisFilter === option.value && (

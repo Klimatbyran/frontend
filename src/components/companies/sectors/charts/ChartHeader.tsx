@@ -46,7 +46,7 @@ const ChartHeader: React.FC<ChartHeaderProps> = ({
           {selectedSector && (
             <button
               onClick={onSectorClear}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg text-grey hover:text-white focus:outline-none transition-colors"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg text-grey hover:text-white light:hover:text-black-3 focus:outline-none transition-colors"
             >
               <ArrowLeft className="h-4 w-4" />
               <span className="text-sm font-medium">
@@ -63,8 +63,8 @@ const ChartHeader: React.FC<ChartHeaderProps> = ({
               onClick={() => onChartTypeChange("pie")}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg focus:outline-none transition-colors ${
                 chartType === "pie"
-                  ? "bg-black-1 text-white"
-                  : "text-grey hover:text-white"
+                  ? "bg-black-1 light:bg-grey/20 text-white light:text-black-3"
+                  : "text-grey hover:text-white light:hover:text-black-3"
               }`}
             >
               <PieChart className="h-4 w-4" />
@@ -76,8 +76,8 @@ const ChartHeader: React.FC<ChartHeaderProps> = ({
               onClick={() => onChartTypeChange("stacked-total")}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg focus:outline-none transition-colors ${
                 chartType === "stacked-total"
-                  ? "bg-black-1 text-white"
-                  : "text-grey hover:text-white"
+                  ? "bg-black-1 light:bg-grey/20 text-white light:text-black-3"
+                  : "text-grey hover:text-white light:hover:text-black-3"
               }`}
             >
               <BarChart3 className="h-4 w-4" />

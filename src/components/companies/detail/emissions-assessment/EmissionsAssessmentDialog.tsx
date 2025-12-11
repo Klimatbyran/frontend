@@ -27,7 +27,7 @@ export function EmissionsAssessmentDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl bg-black-2 text-white max-h-[90vh] overflow-hidden flex flex-col">
+      <DialogContent className="max-w-3xl bg-black-2 light:bg-white text-white light:text-black-3 max-h-[90vh] overflow-hidden flex flex-col">
         <DialogHeader>
           <DialogTitle className="text-2xl font-light">
             Emissions Assessment
@@ -57,7 +57,10 @@ export function EmissionsAssessmentDialog({
                 <Text className="text-lg font-medium mb-2">Issues Found</Text>
                 <div className="space-y-4">
                   {assessment.issues.map((issue, index) => (
-                    <div key={index} className="bg-black-1 p-4 rounded-lg">
+                    <div
+                      key={index}
+                      className="bg-black-1 light:bg-grey/10 p-4 rounded-lg"
+                    >
                       <div className="flex items-center gap-2 mb-2">
                         <div
                           className={`w-2 h-2 rounded-full ${

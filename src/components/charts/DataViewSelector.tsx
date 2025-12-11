@@ -55,7 +55,7 @@ export const DataViewSelector = <T extends string>({
           value={dataView}
           onValueChange={(value) => setDataView(value as T)}
         >
-          <TabsList className="bg-black-1">
+          <TabsList className="bg-black-1 light:bg-grey/10">
             {availableViews.map((view) => (
               <TabsTrigger
                 key={view.value}
@@ -72,10 +72,10 @@ export const DataViewSelector = <T extends string>({
           value={dataView}
           onValueChange={(value) => setDataView(value as T)}
         >
-          <SelectTrigger className="w-full bg-black-1 text-white border border-gray-600 px-3 py-2 rounded-md">
+          <SelectTrigger className="w-full bg-black-1 light:bg-grey/10 text-white light:text-black-3 border border-gray-600 light:border-grey px-3 py-2 rounded-md">
             <SelectValue placeholder={placeholder} />
           </SelectTrigger>
-          <SelectContent className="bg-black-1 text-white">
+          <SelectContent className="bg-black-1 light:bg-grey/10 text-white light:text-black-3">
             {availableViews.map((view) => (
               <SelectItem
                 key={view.value}
