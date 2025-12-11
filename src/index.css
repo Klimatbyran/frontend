@@ -19,6 +19,9 @@
   background-color: black;
   color: white;
 
+  /* Theme-aware white color - changes to black in light mode */
+  --color-white: #ffffff;
+
   /* Grey palette - Dark mode (default) */
   --grey: #878787;
   --black-1: #2e2e2e;
@@ -70,6 +73,7 @@
   color: #000000;
 
   /* Light mode - Override base colors */
+  --color-white: #000000; /* White becomes black in light mode */
   --black-1: rgba(135, 135, 135, 0.1); /* grey/10 equivalent */
   --black-2: #ffffff;
   --black-3: #000000;

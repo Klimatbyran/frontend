@@ -68,7 +68,7 @@ export default {
           foreground: "rgb(255, 255, 255)",
         },
         // Base colors - using CSS variables for theme switching
-        white: "#F7F7F7",
+        white: "var(--color-white)",
         grey: "var(--grey)",
         "black-1": "var(--black-1)",
         "black-2": "var(--black-2)",
