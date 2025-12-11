@@ -983,7 +983,11 @@
     "meetsParisGoal": "Klarar Parisavtalet",
     "changeSince2015": "Årlig utsläppsförändring sedan 2015",
     "graph": {
-      "historical": "Historiskt"
+      "historical": "Historiskt",
+      "estimated": "Uppskattat",
+      "trend": "Trend",
+      "carbonLaw": "Parisavtalet",
+      "noData": "Inga data tillgängliga"
     }
   },
   "municipalitiesRankedPage": {

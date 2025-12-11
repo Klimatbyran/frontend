@@ -985,7 +985,11 @@
     "meetsParisGoal": "Meets the Paris Agreement",
     "changeSince2015": "Annual emission change since 2015",
     "graph": {
-      "historical": "Historical"
+      "historical": "Historical",
+      "estimated": "Estimated",
+      "trend": "Trend",
+      "carbonLaw": "Paris Agreement",
+      "noData": "No data available"
     }
   },
   "municipalitiesRankedPage": {

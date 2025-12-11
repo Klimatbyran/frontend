@@ -61,26 +61,23 @@ export const RegionEmissions: FC<RegionEmissionsProps> = ({
       },
     ];
 
-    // Add approximated if data exists
     if (emissionsData.some((d) => d.approximated !== undefined)) {
       items.push({
-        name: t("municipalities.graph.estimated"),
+        name: t("detailPage.graph.estimated"),
         color: "var(--grey)",
       });
     }
 
-    // Add trend if data exists
     if (emissionsData.some((d) => d.trend !== undefined)) {
       items.push({
-        name: t("municipalities.graph.trend"),
+        name: t("detailPage.graph.trend"),
         color: "var(--pink-3)",
       });
     }
 
-    // Add Paris path if data exists
     if (emissionsData.some((d) => d.carbonLaw !== undefined)) {
       items.push({
-        name: t("municipalities.graph.carbonLaw"),
+        name: t("detailPage.graph.carbonLaw"),
         color: "var(--green-3)",
       });
     }
@@ -154,7 +151,7 @@ export const RegionEmissions: FC<RegionEmissionsProps> = ({
                     {...getConsistentLineProps(
                       "estimated",
                       false,
-                      t("municipalities.graph.estimated"),
+                      t("detailPage.graph.estimated"),
                     )}
                   />
                 )}
@@ -167,7 +164,7 @@ export const RegionEmissions: FC<RegionEmissionsProps> = ({
                     {...getConsistentLineProps(
                       "trend",
                       false,
-                      t("municipalities.graph.trend"),
+                      t("detailPage.graph.trend"),
                     )}
                   />
                 )}
@@ -180,7 +177,7 @@ export const RegionEmissions: FC<RegionEmissionsProps> = ({
                     {...getConsistentLineProps(
                       "paris",
                       false,
-                      t("municipalities.graph.carbonLaw"),
+                      t("detailPage.graph.carbonLaw"),
                     )}
                   />
                 )}
