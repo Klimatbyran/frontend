@@ -3,11 +3,13 @@ import type { RankedCompany } from "@/types/company";
 import { calculateTrendline } from "@/lib/calculations/trends/analysis";
 import { calculateMeetsParis } from "@/lib/calculations/trends/meetsParis";
 import { calculateEmissionsChange } from "@/utils/calculations/emissionsCalculations";
-import { useSectorNames } from "@/hooks/companies/useCompanySectors";
+import { useSectorNames, useSectors } from "@/hooks/companies/useCompanySectors";
 import { getCompanySectorName } from "@/utils/data/industryGrouping";
 import { CompanySector, SECTORS } from "@/lib/constants/sectors";
 import { isSortOption, type SortOption } from "./useCompanySorting";
 import { useSearchParams } from "react-router-dom";
+import { FilterGroup } from "@/components/explore/FilterPopover";
+import { useTranslation } from "react-i18next";
 
 const MEETS_PARIS_OPTIONS = ["all", "yes", "no", "unknown"] as const;
 type MeetsParisFilter = typeof MEETS_PARIS_OPTIONS[number];
@@ -35,6 +37,7 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
   const setSortDirection = (sortDirection: string) => setOrDeleteSearchParam(sortDirection, "sortDirection");
 
   const sectorNames = useSectorNames();
+  const { t } = useTranslation();
 
   const filteredCompanies = useMemo(() => {
     return companies
@@ -157,6 +160,38 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
     sectorNames,
   ]);
 
+  const filterGroups: FilterGroup[] = [
+      {
+        heading: t("companiesPage.sector"),
+        options: useSectors().map((s) => ({ value: s.value, label: s.label})),
+        selectedValues: sectors,
+        onSelect: (value: string) => {
+          if (value === "all") {
+            setSectors(["all"]);
+          } else if (sectors.includes("all")) {
+            setSectors([value]);
+          } else if (sectors.includes(value)) {
+            setSectors(sectors.filter((s) => s !== value));
+          } else {
+            setSectors([...sectors, value]);
+          }
+        },
+        selectMultiple: true
+      },
+      {
+        heading: t("companiesPage.filteringOptions.meetsParis"),
+        options: [
+          { value: "all", label: t("all") },
+          { value: "yes", label: t("companiesPage.filteringOptions.meetsParisYes") },
+          { value: "no", label: t("companiesPage.filteringOptions.meetsParisNo") },
+          { value: "unknown", label: t("companiesPage.filteringOptions.meetsParisUnknown") },
+        ],
+        selectedValues: [meetsParisFilter],
+        onSelect: (value: string) => setMeetsParisFilter(value as MeetsParisFilter),
+        selectMultiple: false
+      }
+    ];
+
   return {
     searchQuery,
     setSearchQuery,
@@ -169,5 +204,7 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
     sortDirection,
     setSortDirection,
     filteredCompanies,
+    filterGroups
   };
 };
+
