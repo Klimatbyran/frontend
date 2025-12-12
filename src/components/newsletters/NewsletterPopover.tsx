@@ -116,7 +116,9 @@ export function NewsletterPopover({
         </button>
 
         {/* Newsletter Content */}
-        <h2 className="text-2xl mb-4">{t("newsletter.subscribe")}</h2>
+        <h2 className="text-2xl text-white mb-4">
+          {t("newsletter.subscribe")}
+        </h2>
         <p className="text-grey mb-6">{t("newsletter.description")}</p>
 
         <MailchimpSubscribe
