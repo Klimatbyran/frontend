@@ -74,40 +74,40 @@ export default {
         "black-2": "var(--black-2)",
         "black-3": "var(--black-3)",
 
-        // Orange palette
+        // Orange palette - using CSS variables for theme switching
         orange: {
-          1: "#FDE7CE",
-          2: "#FDB768",
-          3: "#F48F2A",
-          4: "#B25F00",
-          5: "#6B3700",
+          1: "var(--orange-1)",
+          2: "var(--orange-2)",
+          3: "var(--orange-3)",
+          4: "var(--orange-4)",
+          5: "var(--orange-5)",
         },
 
-        // Blue palette
+        // Blue palette - using CSS variables for theme switching
         blue: {
-          1: "#D4E7F7",
-          2: "#99CFFF",
-          3: "#59A0E1",
-          4: "#206288",
-          5: "#13364E",
+          1: "var(--blue-1)",
+          2: "var(--blue-2)",
+          3: "var(--blue-3)",
+          4: "var(--blue-4)",
+          5: "var(--blue-5)",
         },
 
-        // Green palette
+        // Green palette - using CSS variables for theme switching
         green: {
-          1: "#F1FFCC",
-          2: "#D5FD63",
-          3: "#AAE506",
-          4: "#6C9105",
-          5: "#3D4B16",
+          1: "var(--green-1)",
+          2: "var(--green-2)",
+          3: "var(--green-3)",
+          4: "var(--green-4)",
+          5: "var(--green-5)",
         },
 
-        // Pink palette
+        // Pink palette - using CSS variables for theme switching
         pink: {
-          1: "#FAE1E9",
-          2: "#EEA0B7",
-          3: "#F0759A",
-          4: "#97455D",
-          5: "#73263D",
+          1: "var(--pink-1)",
+          2: "var(--pink-2)",
+          3: "var(--pink-3)",
+          4: "var(--pink-4)",
+          5: "var(--pink-5)",
         },
       },
       letterSpacing: {
