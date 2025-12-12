@@ -1,6 +1,6 @@
 import { t } from "i18next";
 import { Municipality } from "@/types/municipality";
-import { KPIValue } from "@/types/entity-rankings";
+import { KPIValue } from "@/types/rankings";
 import InsightsList from "../../ranked/InsightsList";
 import KPIDetailsPanel from "../../ranked/KPIDetailsPanel";
 import { getSortedEntityKPIValues } from "@/utils/data/sorting";
