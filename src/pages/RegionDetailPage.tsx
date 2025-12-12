@@ -85,12 +85,12 @@ export function RegionDetailPage() {
           translateNamespace="detailPage"
         />
 
+        <RegionEmissions emissionsData={emissionsData} />
+
         <MunicipalityListBox
           municipalities={regionMunicipalities}
           translateNamespace="regions.detailPage"
         />
-
-        <RegionEmissions emissionsData={emissionsData} />
       </DetailWrapper>
     </>
   );
