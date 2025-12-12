@@ -19,7 +19,10 @@
   background-color: black;
   color: white;
 
-  /* Grey palette */
+  /* Theme-aware white color - changes to black in light mode */
+  --color-white: #ffffff;
+
+  /* Grey palette - Dark mode (default) */
   --grey: #878787;
   --black-1: #2e2e2e;
   --black-2: #121212;
@@ -58,6 +61,53 @@
   --blue-3-muted: color-mix(in srgb, var(--blue-3) 20%, transparent);
   --orange-3-muted: color-mix(in srgb, var(--orange-3) 20%, transparent);
   --pink-3-muted: color-mix(in srgb, var(--pink-3) 20%, transparent);
+}
+
+:root.dark {
+  background-color: black;
+  color: #ffffff;
+}
+
+:root.light {
+  background-color: #f7f7f7;
+  color: #000000;
+
+  /* Light mode - Override base colors */
+  --color-white: #000000; /* White becomes black in light mode */
+  --color-black: #ffffff;
+
+  --black-1: #ffffff;
+  --black-2: #fafafa;
+  --black-3: #ededed;
+  --grey: #2e2e2e;
+
+  /* Orange palette - Light mode (darker for contrast) */
+  --orange-1: #b25f00; /* Darker for visibility on light bg */
+  --orange-2: #f48f2a; /* Medium-dark */
+  --orange-3: #b25f00; /* Darker */
+  --orange-4: #6b3700; /* Very dark */
+  --orange-5: #3d1f00; /* Darkest */
+
+  /* Blue palette - Light mode (darker for contrast) */
+  --blue-1: #13364e; 
+  --blue-2: #206288; 
+  --blue-3: #59a0e1; 
+  --blue-4: #99cfff; 
+  --blue-5: #d4e7f7;
+
+  /* Green palette - Light mode (darker for contrast) */
+  --green-1: #6c9105; /* Darker for visibility on light bg */
+  --green-2: #aae506; /* Medium-dark */ 
+  --green-3: #6c9105; /* Darker */
+  --green-4: #3d4b16; /* Very dark */
+  --green-5: #232a0d; /* Darkest */
+
+  /* Pink palette - Light mode (darker for contrast) */
+  --pink-1: #97455d; /* Darker for visibility on light bg */
+  --pink-2: #f0759a; /* Medium-dark */
+  --pink-3: #97455d; /* Darker */
+  --pink-4: #73263d; /* Very dark */
+  --pink-5: #4d1928; /* Darkest */
 }
 
 @layer base {
