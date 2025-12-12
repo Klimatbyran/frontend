@@ -132,7 +132,10 @@ const SubLinksMenu = ({ sublinks }: { sublinks: NavSubLink[] }) => {
   return (
     <ul>
       {sublinks.map((sublink) => (
-        <li key={sublink.path} className="hover:bg-black-1 px-2 py-1.5 text-sm">
+        <li
+          key={sublink.path}
+          className="hover:bg-black-1 px-2 py-1.5 text-sm text-white"
+        >
           {sublink.path.startsWith("https://") ? (
             <a
               href={sublink.path}

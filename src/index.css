@@ -74,6 +74,8 @@
 
   /* Light mode - Override base colors */
   --color-white: #000000; /* White becomes black in light mode */
+  --color-black: #ffffff;
+
   --black-1: #ffffff;
   --black-2: #fafafa;
   --black-3: #ededed;

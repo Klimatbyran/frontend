@@ -145,7 +145,7 @@ export function NewsletterPopover({
                     placeholder={t("newsletter.emailPlaceholder")}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full p-2 mb-4 border border-gray-300 rounded text-black bg-white"
+                    className="w-full p-2 mb-4 border border-gray-300 rounded text-black-3 bg-white"
                     required
                     disabled={status === "success"}
                   />
