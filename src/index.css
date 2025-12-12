@@ -61,126 +61,10 @@
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-black text-white;
-  }
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply font-light tracking-tight;
-  }
   .theme {
     --animate-marquee: marquee var(--duration) infinite linear;
     --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
   }
-}
-
-@layer components {
-  /* Command menu styling */
-  .cmd-menu {
-    @apply bg-black-2 border-none text-white;
-  }
-
-  .cmd-input {
-    @apply bg-black-1 border-none;
-  }
-
-  .cmd-item {
-    @apply text-grey hover:bg-black-1 hover:text-white;
-  }
-
-  /* Popover styling */
-  .popover-content {
-    @apply bg-black-2 border-none;
-  }
-
-  /* Select styling */
-  .select-trigger {
-    @apply bg-black-1 border-none text-white;
-  }
-
-  .select-content {
-    @apply bg-black-2 border-none;
-  }
-
-  .select-item {
-    @apply text-grey hover:bg-black-1 hover:text-white;
-  }
-
-  /* Dialog styling */
-  .dialog-content {
-    @apply bg-black-2 border-none;
-  }
-
-  /* Sheet styling */
-  .sheet-content {
-    @apply bg-black-2 border-none;
-  }
-
-  /* Dropdown menu styling */
-  .dropdown-content {
-    @apply bg-black-2 border-none;
-  }
-
-  .dropdown-item {
-    @apply text-grey hover:bg-black-1 hover:text-white;
-  }
-
-  /* Menubar styling */
-  .menubar {
-    @apply bg-transparent border-none;
-  }
-
-  .menubar-content {
-    @apply bg-black-2 border-none rounded-level-2 p-2;
-  }
-
-  .menubar-item {
-    @apply text-grey hover:bg-black-1 hover:text-white rounded-level-2 cursor-pointer;
-  }
-
-  .menubar-separator {
-    @apply bg-black-1;
-  }
-
-  .menubar-shortcut {
-    @apply text-grey;
-  }
-}
-
-/* Prose styling for blog content */
-.prose {
-  @apply text-grey;
-}
-
-.prose h2 {
-  @apply text-3xl font-light text-white mt-12 mb-6;
-}
-
-.prose h3 {
-  @apply text-2xl font-light text-white mt-8 mb-4;
-}
-
-.prose p {
-  @apply mb-4 text-lg leading-relaxed;
-}
-
-.prose ul {
-  @apply list-disc list-outside mb-6 space-y-2 ml-6;
-}
-
-.prose ol {
-  @apply list-decimal list-outside mb-6 space-y-2 ml-6;
-}
-
-.prose li {
-  @apply text-lg;
 }
 
 .rounded-level-3 {
@@ -202,15 +86,7 @@ input[type="number"]::-webkit-outer-spin-button {
 /* For Firefox (hides the increment/decrement arrows in number inputs) */
 input[type="number"] {
   -moz-appearance: textfield;
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
+  appearance: textfield;
 }
 
 @theme inline {
