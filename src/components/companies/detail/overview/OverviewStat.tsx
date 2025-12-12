@@ -63,7 +63,9 @@ export function OverviewStat({
           <Text className={cn("text-4xl md:text-6xl", valueClassName)}>
             {value}
           </Text>
-          <Text className="text-md md:text-2xl text-grey">{unit}</Text>
+          {unit && (
+            <Text className="text-md md:text-2xl text-grey">{unit}</Text>
+          )}
         </div>
       );
     }
