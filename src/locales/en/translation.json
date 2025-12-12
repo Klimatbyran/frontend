@@ -1577,7 +1577,7 @@
         },
         "totalConsumptionEmission": {
           "label": "Consumption",
-          "description": "Total emissions from consumption",
+          "description": "Consumption emissions per capita",
           "detailedDescription": "Household consumption emissions (CO₂e) in tonnes per inhabitant and municipality in 2022. By 2050, emissions should be at most 1 tonne per person per year to be in line with the Paris Agreement.",
           "source": "Stockholm Environment Institute (2025), Konsumtionskompassen. Licensed under CC BY-NC-ND 4.0."
         },
