@@ -1421,6 +1421,9 @@
     }
   },
   "regions": {
+    "detailPage": {
+      "municipalities": "Kommuner"
+    },
     "kpis": {
       "emissions": {
         "label": "Totala utsläpp",
