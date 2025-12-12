@@ -26,8 +26,8 @@ export function MunicipalityListBox({
       <Text variant="h3" className="mb-4 md:mb-6">
         {t(`${translateNamespace}.municipalities`)}
       </Text>
-      <div className="flex flex-wrap gap-2">
-        {municipalities.map((municipality, index) => (
+      <div className="flex flex-wrap -2">
+        {municipalities.map((municipality) => (
           <span key={municipality}>
             <LocalizedLink
               to={`/municipalities/${municipality}`}
