@@ -86,9 +86,7 @@ export function MunicipalitiesComparePage() {
             label: `${t("companiesPage.filteringOptions.meetsParis")}: ${
               meetsParisFilter === "yes"
                 ? t("companiesPage.filteringOptions.meetsParisYes")
-                : meetsParisFilter === "no"
-                  ? t("companiesPage.filteringOptions.meetsParisNo")
-                  : t("companiesPage.filteringOptions.meetsParisUnknown")
+                : t("companiesPage.filteringOptions.meetsParisNo")
             }`,
             onRemove: () => setMeetsParisFilter("all"),
           },

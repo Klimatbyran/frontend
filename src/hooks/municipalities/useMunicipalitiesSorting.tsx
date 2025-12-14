@@ -30,9 +30,5 @@ export const useSortOptions = (): SortOption[] => {
       value: "emissionsChangeRate",
       label: t("municipalitiesComparePage.sort.emissionsChangeRate"),
     },
-    {
-      value: "consumptionEmissionsPerCapita", 
-      label: t("municipalitiesComparePage.sort.consumptionEmissionsPerCapita"),
-    },
   ];
 }
