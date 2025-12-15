@@ -113,9 +113,9 @@ export function calculateEntityStatistics<
   ];
 
   // Format the average value for display
-  const formattedAverage = !selectedKPI.isBoolean
-    ? `${average.toFixed(1)}${selectedKPI.unit || ""}`
-    : undefined;
+  const formattedAverage = selectedKPI.isBoolean
+    ? undefined
+    : `${average.toFixed(1)}${selectedKPI.unit || ""}`;
 
   return {
     validData,
