@@ -129,7 +129,7 @@ export function CompaniesListPage() {
           <SortPopover
             sortOpen={sortOpen}
             setSortOpen={setSortOpen}
-            sortOptions={useSortOptions()}
+            sortOptions={sortOptions}
             sortBy={sortBy}
             setSortBy={setSortBy}
             sortDirection={sortDirection}
