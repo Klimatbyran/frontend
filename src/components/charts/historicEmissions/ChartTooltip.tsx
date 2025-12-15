@@ -7,9 +7,24 @@ import { cn } from "@/lib/utils";
 import { AiIcon } from "@/components/ui/ai-icon";
 import type { Scope3Category } from "@/types/company";
 
+interface PayloadEntry {
+  dataKey?: string;
+  value?: number | null;
+  name?: string;
+  color?: string;
+  payload?: {
+    year?: number;
+    isAIGenerated?: boolean;
+    scope1?: { isAIGenerated?: boolean };
+    scope2?: { isAIGenerated?: boolean };
+    scope3?: { isAIGenerated?: boolean };
+    scope3Categories?: Array<Scope3Category & { isAIGenerated?: boolean }>;
+  };
+}
+
 interface ChartTooltipProps {
   active?: boolean;
-  payload?: any[];
+  payload?: PayloadEntry[];
   label?: string;
   // Common props
   unit?: string;
@@ -29,8 +44,12 @@ interface ChartTooltipProps {
   hiddenSectors?: Set<string>;
 
   // Custom formatting
-  customFormatter?: (value: number, name: string, entry: any) => string;
-  customNameFormatter?: (name: string, entry: any) => string;
+  customFormatter?: (
+    value: number,
+    name: string,
+    entry: PayloadEntry,
+  ) => string;
+  customNameFormatter?: (name: string, entry: PayloadEntry) => string;
 
   // AI data indicators
   showAIIndicators?: boolean;
@@ -78,9 +97,9 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
   });
 
   if (filterDuplicateValues) {
-    const seenValues = new Set();
+    const seenValues = new Set<string>();
     filteredPayload = filteredPayload.filter((entry) => {
-      const valueKey = `${entry.value}_${entry.payload.year}`;
+      const valueKey = `${entry.value}_${entry.payload?.year ?? ""}`;
       if (seenValues.has(valueKey)) {
         return false;
       }
@@ -123,7 +142,7 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
   const defaultFormatter = (value: number) =>
     formatEmissionsAbsolute(Math.round(value ?? 0), currentLanguage);
 
-  const defaultNameFormatter = (name: string, entry: any) => {
+  const defaultNameFormatter = (name: string, entry: PayloadEntry) => {
     // Handle company category names
     if (entry.dataKey?.startsWith("cat")) {
       const categoryId = parseInt(entry.dataKey.replace("cat", ""));
