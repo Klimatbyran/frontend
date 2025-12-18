@@ -409,11 +409,6 @@
       "graphs": "Grafer",
       "list": "Lista"
     },
-    "filter": "Filter",
-    "sort": "Sortera",
-    "sortBy": "Sortera efter",
-    "searchInFilter": "Sök i filter...",
-    "noFiltersFound": "Inga filter hittades.",
     "sortingOptions": {
       "emissionsChange": "Utsläppsförändring (%)",
       "totalEmissions": "Totala utsläpp",
@@ -427,11 +422,6 @@
       "meetsParisYes": "Ja",
       "meetsParisNo": "Nej",
       "meetsParisUnknown": "Okänt"
-    },
-    "sortDirection": {
-      "none": "Standard",
-      "asc": "Låg till hög",
-      "desc": "Hög till låg"
     },
     "sector": "Sektor",
     "errorTitle": "Det gick inte att hämta företagsinformation",
@@ -1088,6 +1078,8 @@
       "placeholder": "Sortera efter",
       "meetsParis": "Klarar Parisavtalet",
       "name": "Namn",
+      "emissions": "Totala utsläpp",
+      "emissionsChangeRate": "Utsläppsförändring (%)",
       "aToZ": "A-Ö",
       "zToA": "Ö-A",
       "bestFirst": "Visa bäst först",
@@ -1872,6 +1864,21 @@
         "name": "tennisbanor",
         "type": "unit"
       }
+    }
+  },
+  "filterPopover": {
+    "filter": "Filter",
+    "searchInFilter": "Sök i filter...",
+    "noFiltersFound": "Inga filter hittades."
+  },
+  "sortPopover": {
+    "sort": "Sortera",
+    "sortBy": "Sortera efter",
+    "noResults": "Inga sortering alternativ tillgänliga",
+    "sortDirection": {
+      "none": "Standard",
+      "asc": "Låg till hög",
+      "desc": "Hög till låg"
     }
   }
 }

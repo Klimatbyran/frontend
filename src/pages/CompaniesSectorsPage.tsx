@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { cn } from "@/lib/utils";
 import SectorGraphs from "@/components/companies/sectors/SectorGraphs";
-import { FilterPopover } from "@/components/companies/list/FilterPopover";
+import { FilterPopover } from "@/components/explore/FilterPopover";
 import { FilterBadges } from "@/components/companies/list/FilterBadges";
 import { useCompanyFilters } from "@/hooks/companies/useCompanyFilters";
 import { useSectorNames } from "@/hooks/companies/useCompanySectors";
@@ -23,6 +23,7 @@ export function CompaniesSectorsPage() {
     meetsParisFilter,
     setMeetsParisFilter,
     filteredCompanies,
+    filterGroups
   } = useCompanyFilters(companies);
 
   // Create active filters for badges
@@ -96,10 +97,7 @@ export function CompaniesSectorsPage() {
           <FilterPopover
             filterOpen={filterOpen}
             setFilterOpen={setFilterOpen}
-            sectors={sectors}
-            setSectors={setSectors}
-            meetsParisFilter={meetsParisFilter}
-            setMeetsParisFilter={setMeetsParisFilter}
+            groups={filterGroups}
           />
 
           {/* Badges */}

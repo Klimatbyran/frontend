@@ -409,11 +409,6 @@
       "graphs": "Graphs",
       "list": "List"
     },
-    "filter": "Filter",
-    "sort": "Sort",
-    "sortBy": "Sort By",
-    "searchInFilter": "Search filters",
-    "noFiltersFound": "No matching filters found.",
     "sortingOptions": {
       "emissionsChange": "Change in Emissions (%)",
       "totalEmissions": "Total Emissions",
@@ -427,11 +422,6 @@
       "meetsParisYes": "Yes",
       "meetsParisNo": "No",
       "meetsParisUnknown": "Unknown"
-    },
-    "sortDirection": {
-      "none": "Default",
-      "asc": "Low to High",
-      "desc": "High to Low"
     },
     "sector": "Sector",
     "errorTitle": "Failed to retrieve company information",
@@ -1090,6 +1080,8 @@
       "placeholder": "Sort by",
       "meetsParis": "Meets the Paris Agreement",
       "name": "Name",
+      "emissions": "Total Emissions",
+      "emissionsChangeRate": "Change in Emissions (%)",
       "aToZ": "A-Z",
       "zToA": "Z-A",
       "bestFirst": "Show best first",
@@ -1873,6 +1865,21 @@
         "name": "tennis courts.",
         "type": "unit"
       }
+    }
+  },
+  "filterPopover": {
+    "filter": "Filter",
+    "searchInFilter": "Search filters",
+    "noFiltersFound": "No matching filters found."
+  },
+  "sortPopover": {
+    "sort": "Sort",
+    "sortBy": "Sort By",
+    "noResults": "No sorting options available",
+    "sortDirection": {
+      "none": "Default",
+      "asc": "Low to High",
+      "desc": "High to Low"
     }
   }
 }
