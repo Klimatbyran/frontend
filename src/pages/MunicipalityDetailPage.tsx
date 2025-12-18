@@ -95,7 +95,7 @@ export function MunicipalityDetailPage() {
           politicalRule={municipality.politicalRule}
           helpItems={[
             "municipalityTotalEmissions",
-            "municipalityWhyDataDelay",
+            "detailWhyDataDelay",
             "municipalityDeeperChanges",
             "municipalityConsumptionEmissionPerPerson",
             "municipalityLocalVsConsumption",

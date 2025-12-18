@@ -26,7 +26,7 @@ export const MunicipalityEmissionsGraph: FC<
   const { t } = useTranslation();
 
   if (!projectedData || projectedData.length === 0) {
-    return <div>{t("municipalities.graph.noData")}</div>;
+    return <div>{t("detailPage.graph.noData")}</div>;
   }
 
   return (

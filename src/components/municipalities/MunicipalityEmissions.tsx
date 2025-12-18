@@ -46,8 +46,8 @@ export const MunicipalityEmissions: FC<MunicipalityEmissionsProps> = ({
       ]}
     >
       <CardHeader
-        title={t("municipalityDetailPage.emissionsDevelopment")}
-        unit={t("municipalityDetailPage.inTons")}
+        title={t("detailPage.emissionsDevelopment")}
+        unit={t("detailPage.inTons")}
         dataView={dataView}
         setDataView={(value) => setDataView(value as "overview" | "sectors")}
         dataViewOptions={dataViewOptions}
