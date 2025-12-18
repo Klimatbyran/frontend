@@ -11,7 +11,7 @@ import { DetailHeader } from "@/components/detail/DetailHeader";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";
 import { useMemo } from "react";
 import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
-import { MunicipalityListBox } from "@/components/detail/MunicipalityListBox";
+import { MunicipalityListBox } from "@/components/regions/MunicipalityListBox";
 
 export function RegionDetailPage() {
   const { id } = useParams<{ id: string }>();
