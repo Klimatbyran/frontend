@@ -14,28 +14,45 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useSortOptions } from "@/hooks/companies/useCompanySorting";
-import type { SortOption } from "@/hooks/companies/useCompanySorting";
+
+const SORT_DIRECTION = ["none", "asc", "desc"] as const;
+export type SortDirection = (typeof SORT_DIRECTION)[number];
+
+export function isSortDirection(value: string): value is SortDirection {
+  return SORT_DIRECTION.includes(value as SortDirection);
+}
+
+export type SortOption = {
+  readonly value: string,
+  readonly label: string,
+  readonly directionLabels?: {
+    asc?: string,
+    desc?: string
+  },
+  readonly defaultDirection?: SortDirection
+}
 
 interface SortPopoverProps {
   sortOpen: boolean;
   setSortOpen: (open: boolean) => void;
-  sortBy: SortOption;
-  setSortBy: (sort: SortOption) => void;
-  sortDirection: "asc" | "desc";
-  setSortDirection: (direction: "asc" | "desc") => void;
+  sortOptions: readonly SortOption[]
+  sortBy: string;
+  setSortBy: (sort: string) => void;
+  sortDirection: SortDirection;
+  setSortDirection: (direction: SortDirection) => void;
 }
 
 export function SortPopover({
   sortOpen,
   setSortOpen,
+  sortOptions,
   sortBy,
   setSortBy,
   sortDirection,
   setSortDirection,
 }: SortPopoverProps) {
   const { t } = useTranslation();
-  const sortOptions = useSortOptions();
+  const selectedSortOption = sortOptions.find(s => s.value == sortBy);
 
   return (
     <Popover open={sortOpen} onOpenChange={setSortOpen}>
@@ -46,7 +63,7 @@ export function SortPopover({
           className="bg-black-1 border-black-1 text-grey hover:text-white hover:bg-black-1/80 hover:border-black-1 font-medium text-sm"
         >
           <ArrowUpDown className="mr-2 h-4 w-4" />
-          {t("companiesPage.sort")}
+          {t("sortPopover.sort")}
         </Button>
       </PopoverTrigger>
       <PopoverContent
@@ -55,8 +72,8 @@ export function SortPopover({
       >
         <Command className="bg-transparent">
           <CommandList className="max-h-[300px]">
-            <CommandEmpty>{t("companiesPage.noResults")}</CommandEmpty>
-            <CommandGroup heading={t("companiesPage.sortBy")}>
+            <CommandEmpty>{t("sortPopover.noResults")}</CommandEmpty>
+            <CommandGroup heading={t("sortPopover.sortBy")}>
               {sortOptions.map((option) => (
                 <CommandItem
                   key={option.value}
@@ -72,21 +89,21 @@ export function SortPopover({
             </CommandGroup>
 
             <CommandSeparator className="bg-black-1" />
-            <CommandGroup heading={t("companiesPage.sortDirection.asc")}>
+            <CommandGroup heading={t("sortPopover.sortDirection.asc")}>
               {[
                 {
                   value: "none",
-                  label: t("companiesPage.sortDirection.none"),
+                  label: t("sortPopover.sortDirection.none"),
                   icon: <ArrowUpDown className="h-4 w-4" />,
                 },
                 {
                   value: "asc",
-                  label: t("companiesPage.sortDirection.asc"),
+                  label: selectedSortOption?.directionLabels?.asc ?? t("sortPopover.sortDirection.asc"),
                   icon: <ArrowUp className="h-4 w-4" />,
                 },
                 {
                   value: "desc",
-                  label: t("companiesPage.sortDirection.desc"),
+                  label: selectedSortOption?.directionLabels?.desc ?? t("sortPopover.sortDirection.desc"),
                   icon: <ArrowDown className="h-4 w-4" />,
                 },
               ].map((option) => (
@@ -94,9 +111,9 @@ export function SortPopover({
                   key={option.value}
                   onSelect={() => {
                     if (option.value === "none") {
-                      setSortDirection("desc"); // Reset to default
+                      setSortDirection(selectedSortOption?.defaultDirection ?? "desc"); // Reset to default
                     } else {
-                      setSortDirection(option.value as "asc" | "desc");
+                      setSortDirection(option.value as SortDirection);
                     }
                   }}
                   className="flex items-center justify-between cursor-pointer"
@@ -105,7 +122,7 @@ export function SortPopover({
                     {option.icon}
                     <span>{option.label}</span>
                   </div>
-                  {(option.value === "none" && sortDirection === "desc") ||
+                  {(option.value === "none" && sortDirection === (selectedSortOption?.defaultDirection ?? "desc")) ||
                   (option.value !== "none" &&
                     option.value === sortDirection) ? (
                     <Check className="h-4 w-4 text-blue-2" />

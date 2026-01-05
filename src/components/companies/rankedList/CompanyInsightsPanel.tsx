@@ -35,9 +35,12 @@ function CompanyInsightsPanel({
     companyData,
     selectedKPI,
     (c) => c[selectedKPI.key],
+    "companies",
   );
 
-  if (!statistics.validData.length) {
+  const minNrOfCompaniesToShowDetails = 10;
+
+  if (statistics.validData.length < minNrOfCompaniesToShowDetails) {
     return (
       <div className="bg-white/5 backdrop-blur-sm rounded-level-2 p-8 h-full flex items-center justify-center">
         <p className="text-white text-lg">
@@ -49,15 +52,13 @@ function CompanyInsightsPanel({
     );
   }
 
-  const sortedData = getSortedEntityKPIValues(companyData, selectedKPI);
-
   // Use statistics.validData which already filters out null/undefined values
   const sortedValidData = getSortedEntityKPIValues(
     statistics.validData,
     selectedKPI,
   );
 
-  const topCompanies = sortedData.slice(0, 5);
+  const topCompanies = sortedValidData.slice(0, 5);
   // For "needs improvement", take the worst 5 from valid data only, excludes unknowns and nulls
   const bottomCompanies = sortedValidData.slice(-5).reverse();
 
@@ -80,7 +81,7 @@ function CompanyInsightsPanel({
 
         {!selectedKPI.isBoolean && (
           <>
-            <InsightsList<CompanyWithKPIs>
+            <InsightsList
               title={t(
                 selectedKPI.higherIsBetter
                   ? "companies.list.insights.topPerformers.titleTop"

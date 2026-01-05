@@ -95,6 +95,91 @@
       "exploreClimateData": "Se kommunranking",
       "viewCompanyRankings": "Utforska företagsdata",
       "or": "Eller"
+    },
+    "siteFeatures": {
+      "title": "Omfattande klimatspårning",
+      "description": "Övervaka utsläppsdata och klimatåtaganden i hela Sverige.",
+      "features": {
+        "municipalityRankings": {
+          "title": "Kommunranking",
+          "description": "Spåra klimatframsteg och utsläppsdata från kommuner och lokala myndigheter."
+        },
+        "companyRankings": {
+          "title": "Företagsranking",
+          "description": "Jämför utsläppsprestationer, minskningsmål och hållbarhetsmått för svenska företag."
+        },
+        "progressTracking": {
+          "title": "Framstegsspårning",
+          "description": "Övervaka år-till-år-förändringar och överensstämmelse med klimatmål och vetenskapsbaserade mål."
+        }
+      }
+    },
+    "scrollSteps": {
+      "mission": {
+        "badge": "Transparens för klimatåtgärder",
+        "heading": "Vårt uppdrag",
+        "paragraph": "Klimatkollen finns för att göra klimatdata tillgänglig för alla. Vi tror att transparens driver ansvar, och ansvar driver verklig klimatåtgärd. Genom att sätta utsläppsdata i medborgarnas händer ger vi samhällen möjlighet att hålla organisationer ansvariga för sina miljöåtaganden."
+      },
+      "transparency": {
+        "badge": "Ljuset är det bästa desinfektionsmedlet",
+        "heading": "Varför datatransparens\när viktigt",
+        "paragraph": "När utsläppsdata döljs bakom företagsrapporter och betalda databaser stagnerar framstegen. Transparent, tillgänglig klimatdata skapar marknadstryck för bättre prestanda. Företag och kommuner som vet att deras data är offentlig arbetar hårdare för att förbättra sina rankingar och uppfylla sina klimatåtaganden."
+      },
+      "methodology": {
+        "badge": "Vetenskapsbaserade rankingar",
+        "heading": "Vår metodik",
+        "paragraph": "Vi använder utsläppsdata från officiella rapporteringskällor för att skapa rättvisa, jämförbara rankingar. Våra mätvärden fokuserar på faktiska utsläppsminskningar, inte bara löften eller mål. Varje ranking baseras på verkliga prestationsdata, vilket säkerställer att klimatledare erkänns och klimatfördröjare hålls ansvariga.",
+        "linkText": "Läs mer om vår metodik"
+      },
+      "impact": {
+        "badge": "Från data till handling",
+        "heading": "Driva verklig påverkan",
+        "paragraph": "Vår plattform har redan hjälpt till att identifiera klimatledare och de som halkar efter i hela Sverige. Genom att ranka organisationer på deras faktiska utsläppsprestationer skapar vi hälsosam konkurrens som påskyndar klimatframsteg. Datan ljuger inte—och det borde inte klimatåtaganden heller."
+      },
+      "engagement": {
+        "badge": "Varje röst räknas",
+        "heading": "Medborgaråtgärder &\nengagemang",
+        "paragraph": "Klimatåtgärder är inte bara för regeringar och företag—det börjar med informerade medborgare. När du kan se hur din lokala kommun eller favoritföretag presterar på klimatmätvärden kan du fatta bättre beslut som konsument, väljare och samhällsmedlem. Ditt engagemang driver efterfrågan på bättre klimatprestanda."
+      },
+      "pathForward": {
+        "badge": "Bygga ett klimatmedvetet samhälle",
+        "heading": "Vägen framåt",
+        "paragraph": "Föreställ dig en värld där varje organisations klimatprestanda är lika synlig som deras finansiella resultat. Där medborgare enkelt kan jämföra miljöpåverkan av sina val. Där transparens driver en tävling mot toppen i klimatåtgärder. Det är framtiden vi bygger, en datapunkt i taget."
+      }
+    },
+    "didYouKnow": {
+      "title": "Visste du att?",
+      "subtitle": "Intressanta insikter från Sveriges klimatdata - {{action}}!",
+      "actionMobile": "klicka för att utforska",
+      "actionDesktop": "håll muspekaren för att utforska",
+      "cardActionMobile": "Tryck för att läsa mer →",
+      "cardActionDesktop": "Håll muspekaren för att läsa mer →",
+      "ariaLabelShow": "Visa detaljer",
+      "ariaLabelHide": "Dölj detaljer",
+      "stat1": {
+        "teaser": "Ledarna i klassen",
+        "description": "{{count}} av {{total}} företag har minskat sina utsläpp med mer än 20% sedan sitt basår"
+      },
+      "stat2": {
+        "teaser": "Ökade utsläpp",
+        "description": "{{count}} av {{total}} företag har ökat sina utsläpp sedan sitt basår"
+      },
+      "stat3": {
+        "teaser": "Paris-anpassade",
+        "description": "{{companyCount}} av {{companyTotal}} företag och {{municipalityCount}} av {{municipalityTotal}} kommuner är på väg att nå Parisavtalets mål"
+      },
+      "stat4": {
+        "teaser": "Transparent rapportering",
+        "description": "{{percentage}}% av de spårade företagen rapporterar Scope 3-utsläpp per kategori, vilket ger mer transparens i deras värdekedja"
+      },
+      "stat5": {
+        "teaser": "Med planer",
+        "description": "{{percentage}}% av kommunerna ({{count}} av {{total}}) har antagit klimatplaner"
+      },
+      "stat6": {
+        "teaser": "Spårade utsläpp",
+        "description": "{{total}} miljoner ton CO₂e spåras över {{companyCount}} företag och {{municipalityCount}} kommuner, med användning av det senaste rapporterade värdet för varje enhet"
+      }
     }
   },
   "aboutPage": {
@@ -324,11 +409,6 @@
       "graphs": "Grafer",
       "list": "Lista"
     },
-    "filter": "Filter",
-    "sort": "Sortera",
-    "sortBy": "Sortera efter",
-    "searchInFilter": "Sök i filter...",
-    "noFiltersFound": "Inga filter hittades.",
     "sortingOptions": {
       "emissionsChange": "Utsläppsförändring (%)",
       "totalEmissions": "Totala utsläpp",
@@ -342,11 +422,6 @@
       "meetsParisYes": "Ja",
       "meetsParisNo": "Nej",
       "meetsParisUnknown": "Okänt"
-    },
-    "sortDirection": {
-      "none": "Standard",
-      "asc": "Låg till hög",
-      "desc": "Hög till låg"
     },
     "sector": "Sektor",
     "errorTitle": "Det gick inte att hämta företagsinformation",
@@ -1019,6 +1094,8 @@
       "placeholder": "Sortera efter",
       "meetsParis": "Klarar Parisavtalet",
       "name": "Namn",
+      "emissions": "Totala utsläpp",
+      "emissionsChangeRate": "Utsläppsförändring (%)",
       "aToZ": "A-Ö",
       "zToA": "Ö-A",
       "bestFirst": "Visa bäst först",
@@ -1337,7 +1414,9 @@
           "metric": "Ingen data tillgänglig för {{metric}}"
         },
         "keyStatistics": {
-          "average": "Genomsnitt:"
+          "average": "Genomsnitt:",
+          "distributionAbove": "företag över genomsnittet",
+          "distributionBelow": "företag under genomsnittet"
         },
         "topPerformers": {
           "titleTop": "Toppföretag",
@@ -1500,7 +1579,7 @@
         },
         "totalConsumptionEmission": {
           "label": "Konsumtionen",
-          "description": "Totala utsläpp från konsumtion",
+          "description": "Konsumtionsutsläpp per invånare",
           "detailedDescription": "Hushållens konsumtionsutsläpp (CO₂e) i ton per invånare och kommun år 2022. År 2050 ska utsläppen vara högst 1 ton per person och år för att ligga i linje med Parisavtalet",
           "source": "Stockholm Environment Institute (2025), Konsumtionskompassen. Licens: CC BY-NC-ND 4.0."
         },
@@ -1797,6 +1876,21 @@
         "name": "tennisbanor",
         "type": "unit"
       }
+    }
+  },
+  "filterPopover": {
+    "filter": "Filter",
+    "searchInFilter": "Sök i filter...",
+    "noFiltersFound": "Inga filter hittades."
+  },
+  "sortPopover": {
+    "sort": "Sortera",
+    "sortBy": "Sortera efter",
+    "noResults": "Inga sortering alternativ tillgänliga",
+    "sortDirection": {
+      "none": "Standard",
+      "asc": "Låg till hög",
+      "desc": "Hög till låg"
     }
   }
 }
