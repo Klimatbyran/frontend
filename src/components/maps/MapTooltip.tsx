@@ -1,5 +1,5 @@
 import { t } from "i18next";
-import { KPIValue, MapEntityType } from "@/types/entity-rankings";
+import { KPIValue, MapEntityType } from "@/types/rankings";
 
 export function MapTooltip({
   entityType,

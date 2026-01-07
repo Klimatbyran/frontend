@@ -3,7 +3,7 @@ import { Map, List } from "lucide-react";
 
 import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/layout/PageHeader";
-import MapOfSweden from "@/components/maps/SwedenMap";
+import MapOfSweden, { DataItem } from "@/components/maps/SwedenMap";
 import regionGeoJson from "@/data/regionGeo.json";
 import { FeatureCollection } from "geojson";
 import { useRankedRegionsURLParams } from "@/hooks/regions/useRankedRegionsURLParams";
@@ -14,11 +14,10 @@ import {
 } from "@/hooks/regions/useRegionKPIs";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import RegionalInsightsPanel from "@/components/regions/RegionalInsightsPanel";
-import { KPIDataSelector } from "@/components/ranked/KPIDataSelector";
-import { RegionalRankedList } from "@/components/regions/RegionalRankedList";
 import { Region, RegionListItem } from "@/types/region";
-import { DataItem } from "@/components/maps/SwedenMap";
 import { toMapRegionName } from "@/utils/regionUtils";
+import { RegionalRankedList } from "@/components/regions/RegionalRankedList";
+import { KPIDataSelector } from "@/components/ranked/KPIDataSelector";
 
 export function RegionalRankedPage() {
   const { t } = useTranslation();

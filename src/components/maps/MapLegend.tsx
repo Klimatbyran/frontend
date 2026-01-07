@@ -1,6 +1,6 @@
 import { t } from "i18next";
 import { DEFAULT_STATISTICAL_GRADIENT_COLORS } from "@/utils/ui/colorGradients";
-import { KPIValue, MapEntityType } from "@/types/entity-rankings";
+import { KPIValue, MapEntityType } from "@/types/rankings";
 
 export function MapLegend({
   entityType,

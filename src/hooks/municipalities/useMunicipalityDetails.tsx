@@ -46,7 +46,7 @@ export function useMunicipalityDetailHeaderStats(
   const stats: DetailStat[] = municipality
     ? [
         {
-          label: t("municipalityDetailPage.totalEmissions", {
+          label: t("detailPage.totalEmissions", {
             year: lastYear,
           }),
           value: lastYearEmissionsTon,
