@@ -30,13 +30,41 @@ interface NavSubLink {
 interface NavLink {
   label: string;
   icon?: React.ReactElement;
-  path: string;
+  path?: string;
   sublinks?: NavSubLink[];
   onlyShowOnStaging?: boolean;
 }
 
 const NAV_LINKS: NavLink[] = [
   {
+    label: "header.data",
+    icon: <BarChart3 className="w-4 h-4" aria-hidden="true" />,
+    sublinks: [
+      {
+        label: "header.companies",
+        path: `/companies`,
+        onlyShowOnStaging: true,
+      },
+      {
+        label: "header.municipalities",
+        path: `/municipalities`,
+      },
+      {
+        label: "header.regionsRanked",
+        path: `/regions`,
+        onlyShowOnStaging: true,
+      },
+      {
+        label: "header.companiesSectors",
+        path: `/companies/sectors`,
+      },
+      {
+        label: "header.municipalitiesExplore",
+        path: `/municipalities/explore`,
+      },
+    ],
+  },
+  /* {
     label: "header.companies",
     icon: <BarChart3 className="w-4 h-4" aria-hidden="true" />,
     path: `/companies`,
@@ -75,7 +103,7 @@ const NAV_LINKS: NavLink[] = [
         path: `/municipalities/explore`,
       },
     ],
-  },
+  }, */
   {
     label: "header.products",
     path: `/products`,
