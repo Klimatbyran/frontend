@@ -276,6 +276,27 @@ export const fetchNewsletters = async () => {
   }
 };
 
+// Regions API
+export async function getRegions() {
+  try {
+    const { data, error } = await GET("/regions/", {});
+    if (error) throw error;
+    return data || [];
+  } catch (error) {
+    console.error("Error fetching regions:", error);
+    // Return empty array to avoid undefined errors
+    return [];
+  }
+}
+
+export async function getRegionDetails(name: string) {
+  const { data, error } = await GET("/regions/{name}", {
+    params: { path: { name } },
+  });
+  if (error) throw error;
+  return data;
+}
+
 export async function getRegionalKPIs() {
   try {
     const { data, error } = await GET("/regions/kpis", {});
