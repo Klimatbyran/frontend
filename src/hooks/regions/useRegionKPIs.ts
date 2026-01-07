@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
-import { getRegionalKPIs } from "@/lib/api";
+import { getRegionsKPIs } from "@/lib/api";
 import { KPIValue } from "@/types/entity-rankings";
 import { Region } from "@/types/region";
 
@@ -31,7 +31,7 @@ export function useRegions() {
     error,
   } = useQuery({
     queryKey: ["regions-kpis"],
-    queryFn: getRegionalKPIs,
+    queryFn: getRegionsKPIs,
   });
 
   const normalizedRegions = (regionsKPI as ApiRegionKPI[]).map((region) =>

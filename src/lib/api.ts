@@ -297,7 +297,7 @@ export async function getRegionDetails(name: string) {
   return data;
 }
 
-export async function getRegionalKPIs() {
+export async function getRegionsKPIs() {
   try {
     const { data, error } = await GET("/regions/kpis", {});
     if (error) throw error;
