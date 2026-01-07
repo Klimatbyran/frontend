@@ -1,111 +1,96 @@
 // TODO: This is currently a slightly modified copy of the live landing page, all landing page modifications can be made here
 // without worry of impacting prod until we're ready
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Building2Icon, ChevronDown, TreePineIcon } from "lucide-react";
+import { PageSEO } from "@/components/SEO/PageSEO";
 import { TopList, TopListItem } from "@/components/TopList";
-
 import { Typewriter } from "@/components/ui/typewriter";
 import { ScrollAnimationSection } from "@/components/layout/ScrollAnimationSection";
-import { getLandingPageScrollSteps } from "@/components/landing/LandingPageScrollSteps";
-import { useCompanies } from "@/hooks/companies/useCompanies";
-import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
-import { useTranslation } from "react-i18next";
-import { PageSEO } from "@/components/SEO/PageSEO";
-import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "@/components/LanguageProvider";
+import { LandingSection } from "@/components/landing/LandingSection";
+import { LandingPageCTA } from "@/components/landing/LandingPageCTA";
+import { DidYouKnow } from "@/components/landing/DidYouKnow";
+import SiteFeatures from "@/components/landing/SiteFeatures";
+import { useLandingPageScrollStepsWithContent } from "@/components/landing/LandingPageScrollSteps";
+import {
+  useLandingPageData,
+  SCROLL_FADE_THRESHOLD,
+} from "@/hooks/landing/useLandingPageData";
+import { useLandingPageSEO } from "@/hooks/landing/useLandingPageSEO";
+import useThrottle from "@/hooks/useThrottle";
 import {
   formatEmissionsAbsolute,
   formatPercentChange,
 } from "@/utils/formatting/localization";
-import useThrottle from "@/hooks/useThrottle";
+import {
+  TYPEWRITER_SPEED,
+  TYPEWRITER_WAIT_TIME,
+  TYPEWRITER_DELETE_SPEED,
+  TYPEWRITER_CURSOR_CHAR,
+  SCROLL_THROTTLE_DELAY,
+} from "@/lib/constants/landingPage";
 
 export function LandingPageNew() {
   const { t } = useTranslation();
-  const { companies } = useCompanies();
-  const { getTopMunicipalities } = useMunicipalities();
   const { currentLanguage } = useLanguage();
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [fadeChevron, setFadeChevron] = useState(false);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  // Get SEO data from hook
+  const {
+    canonicalUrl,
+    pageTitle,
+    pageDescription,
+    structuredData,
+    typeWriterTexts,
+  } = useLandingPageSEO();
 
-  // Prepare SEO data
-  const canonicalUrl = "https://klimatkollen.se";
-  const pageTitle = `Klimatkollen - ${t("landingPage.metaTitle")}`;
-  const pageDescription = t("landingPage.metaDescription");
+  // Get landing page data from hook
+  const { largestCompanyEmitters, topMunicipalities } = useLandingPageData();
 
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: "Klimatkollen",
-    url: canonicalUrl,
-    logo: "https://klimatkollen.se/images/social-picture.png",
-    description: pageDescription,
-  };
+  // Get scroll animation steps
+  const scrollSteps = useLandingPageScrollStepsWithContent();
 
-  const TypeWriterTexts = [
-    t("landingPage.typewriter.reduceEmissions"),
-    t("landingPage.typewriter.scope3Emissions"),
-    t("landingPage.typewriter.meetParisAgreement"),
-    t("landingPage.typewriter.climateActions"),
-    t("landingPage.typewriter.climatePlans"),
-  ];
+  // Render function for company emissions
+  const renderCompanyEmission = useCallback(
+    (item: TopListItem) => (
+      <div className="text-base sm:text-lg">
+        <span className="md:text-right text-pink-3">
+          {formatEmissionsAbsolute(item.value, currentLanguage)}
+        </span>
+        <span className="text-grey ml-2"> {t("emissionsUnit")}</span>
+      </div>
+    ),
+    [currentLanguage, t],
+  );
 
-  // Get top 5 companies by total emissions
-  const largestCompanyEmitters = companies
-    .sort(
-      (a, b) =>
-        (b.reportingPeriods[0]?.emissions?.calculatedTotalEmissions || 0) -
-        (a.reportingPeriods[0]?.emissions?.calculatedTotalEmissions || 0),
-    )
-    .slice(0, 5)
-    .map((company) => ({
-      name: company.name,
-      value:
-        company.reportingPeriods.at(0)?.emissions?.calculatedTotalEmissions ||
-        0,
-      link: `/companies/${company.wikidataId}`,
-    }));
-
-  // Get top 5 municipalities by emissions reduction
-  const topMunicipalities = getTopMunicipalities(5).map((municipality) => ({
-    name: municipality.name,
-    value: municipality.historicalEmissionChangePercent,
-    link: `/municipalities/${municipality.name}`,
-  }));
-
-  const renderCompanyEmission = (item: TopListItem) => (
-    <div className="text-base sm:text-lg">
-      <span className="md:text-right text-pink-3">
-        {formatEmissionsAbsolute(item.value, currentLanguage)}
+  // Render function for municipality change rate
+  const renderMunicipalityChangeRate = useCallback(
+    (item: TopListItem) => (
+      <span className="text-base sm:text-lg md:text-right text-green-3">
+        {formatPercentChange(item.value, currentLanguage)}
       </span>
-      <span className="text-grey ml-2"> {t("emissionsUnit")}</span>
-    </div>
+    ),
+    [currentLanguage],
   );
 
-  const renderMunicipalityChangeRate = (item: TopListItem) => (
-    <span className="text-base sm:text-lg md:text-right text-green-3">
-      {formatPercentChange(item.value, currentLanguage)}
-    </span>
-  );
-
-  const handleChevronClick = () => {
+  const handleChevronClick = useCallback(() => {
     const element = containerRef.current;
     if (element) {
       window.scrollTo({ top: element.offsetTop, behavior: "smooth" });
     }
-  };
+  }, []);
 
-  const handleScroll = () => {
-    if (window.scrollY > 200) {
+  const handleScroll = useCallback(() => {
+    if (window.scrollY > SCROLL_FADE_THRESHOLD) {
       setFadeChevron(true);
     } else {
       setFadeChevron(false);
     }
-  };
+  }, [SCROLL_FADE_THRESHOLD]);
 
-  const throttledScroll = useThrottle(handleScroll, 100);
+  const throttledScroll = useThrottle(handleScroll, SCROLL_THROTTLE_DELAY);
 
   useEffect(() => {
     window.addEventListener("scroll", throttledScroll);
@@ -132,58 +117,64 @@ export function LandingPageNew() {
 
             <div className="h-[80px] md:h-[120px] flex items-center justify-center text-4xl md:text-7xl font-light">
               <Typewriter
-                text={TypeWriterTexts}
-                speed={70}
+                text={typeWriterTexts}
+                speed={TYPEWRITER_SPEED}
                 className="text-[#E2FF8D]"
-                waitTime={2000}
-                deleteSpeed={40}
-                cursorChar="_"
+                waitTime={TYPEWRITER_WAIT_TIME}
+                deleteSpeed={TYPEWRITER_DELETE_SPEED}
+                cursorChar={TYPEWRITER_CURSOR_CHAR}
               />
             </div>
           </div>
         </div>
         <ChevronDown
-          onClick={() => handleChevronClick()}
+          onClick={handleChevronClick}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              handleChevronClick();
+            }
+          }}
+          role="button"
+          tabIndex={0}
+          aria-label={t("landingPage.scrollToContent", "Scroll to content")}
           className={`${fadeChevron ? "opacity-0 " : "opacity-50"} mb-32 cursor-pointer animate-bounce animati transition-opacity ease-in duration-750`}
         />
       </div>
 
       {/* Scroll Animation Section */}
       <section ref={containerRef}>
-        <ScrollAnimationSection
-          steps={getLandingPageScrollSteps()}
-          className="bg-black"
-        />
+        <ScrollAnimationSection steps={scrollSteps} className="bg-black" />
       </section>
 
-      <div className="py-8 pt-36 md:py-36">
-        <div className="mx-2 sm:mx-8">
-          <h2 className="text-4xl md:text-5xl font-light text-center mb-8 md:mb-16">
-            {t("landingPage.bestPerformers")}
-          </h2>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <TopList
-              title={t("landingPage.bestMunicipalities")}
-              description={t("landingPage.municipalitiesDescription")}
-              items={topMunicipalities}
-              itemValueRenderer={renderMunicipalityChangeRate}
-              icon={{ component: TreePineIcon, bgColor: "bg-[#FDE7CE]" }}
-              rankColor="text-orange-2"
-              headingLink={`${currentLanguage}/municipalities`}
-            />
-
-            <TopList
-              title={t("landingPage.largestEmittor")}
-              description={t("landingPage.companiesDescription")}
-              items={largestCompanyEmitters}
-              itemValueRenderer={renderCompanyEmission}
-              icon={{ component: Building2Icon, bgColor: "bg-[#D4E7F7]" }}
-              rankColor="text-blue-2"
-              headingLink={`${currentLanguage}/companies`}
-            />
-          </div>
+      <SiteFeatures />
+      <LandingSection innerClassName="mx-2 sm:mx-8">
+        <h2 className="text-4xl md:text-5xl font-light text-center mb-8 md:mb-16">
+          {t("landingPage.bestPerformers")}
+        </h2>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <TopList
+            title={t("landingPage.bestMunicipalities")}
+            description={t("landingPage.municipalitiesDescription")}
+            items={topMunicipalities}
+            itemValueRenderer={renderMunicipalityChangeRate}
+            icon={{ component: TreePineIcon, bgColor: "bg-[#FDE7CE]" }}
+            rankColor="text-orange-2"
+            headingLink={`${currentLanguage}/municipalities`}
+          />
+          <TopList
+            title={t("landingPage.largestEmittor")}
+            description={t("landingPage.companiesDescription")}
+            items={largestCompanyEmitters}
+            itemValueRenderer={renderCompanyEmission}
+            icon={{ component: Building2Icon, bgColor: "bg-[#D4E7F7]" }}
+            rankColor="text-blue-2"
+            headingLink={`${currentLanguage}/companies`}
+          />
         </div>
-      </div>
+      </LandingSection>
+      <DidYouKnow />
+      <LandingPageCTA />
     </>
   );
 }

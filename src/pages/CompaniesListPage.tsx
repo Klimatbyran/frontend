@@ -6,8 +6,8 @@ import { useTranslation } from "react-i18next";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { cn } from "@/lib/utils";
 import { FilterBadges } from "@/components/companies/list/FilterBadges";
-import { FilterPopover } from "@/components/companies/list/FilterPopover";
-import { SortPopover } from "@/components/companies/list/SortPopover";
+import { FilterPopover } from "@/components/explore/FilterPopover";
+import { SortPopover } from "@/components/explore/SortPopover";
 import { CompanyList } from "@/components/companies/list/CompanyList";
 import { useCompanyFilters } from "@/hooks/companies/useCompanyFilters";
 import { useSectorNames } from "@/hooks/companies/useCompanySectors";
@@ -34,6 +34,7 @@ export function CompaniesListPage() {
     sortDirection,
     setSortDirection,
     filteredCompanies,
+    filterGroups
   } = useCompanyFilters(companies);
 
   // Create active filters for badges
@@ -43,7 +44,7 @@ export function CompaniesListPage() {
           type: "filter" as const,
           label: sectorNames[sector as keyof typeof sectorNames] || sector,
           onRemove: () =>
-            setSectors((prev) => prev.filter((s) => s !== sector)),
+            setSectors(sectors.filter((s) => s !== sector)),
         }))
       : []),
     ...(meetsParisFilter !== "all"
@@ -122,15 +123,13 @@ export function CompaniesListPage() {
           <FilterPopover
             filterOpen={filterOpen}
             setFilterOpen={setFilterOpen}
-            sectors={sectors}
-            setSectors={setSectors}
-            meetsParisFilter={meetsParisFilter}
-            setMeetsParisFilter={setMeetsParisFilter}
+            groups={filterGroups}
           />
 
           <SortPopover
             sortOpen={sortOpen}
             setSortOpen={setSortOpen}
+            sortOptions={sortOptions}
             sortBy={sortBy}
             setSortBy={setSortBy}
             sortDirection={sortDirection}

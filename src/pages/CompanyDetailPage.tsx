@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useCompanyDetails } from "@/hooks/companies/useCompanyDetails";
 import { CompanyOverview } from "@/components/companies/detail/overview/CompanyOverview";
 import { EmissionsHistory } from "@/components/companies/detail/history/EmissionsHistory";
@@ -30,10 +30,6 @@ export function CompanyDetailPage() {
   const description = company
     ? getCompanyDescription(company, currentLanguage)
     : null;
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   if (loading) {
     return <PageLoading />;
@@ -130,7 +126,10 @@ export function CompanyDetailPage() {
       : "decreased";
 
   // Calculate emissions change from previous period
-  const yearOverYearChange = calculateEmissionsChange(selectedPeriod);
+  const yearOverYearChange = calculateEmissionsChange(
+    selectedPeriod,
+    previousPeriod,
+  );
 
   return (
     <>

@@ -68,10 +68,17 @@ export function cleanEmissions(emissions: any): any {
     };
   }
 
+  // Temporary workaround: fallback to scope1And2 if calculatedTotalEmissions is null or 0
+  const calculatedTotalEmissions =
+    emissions.calculatedTotalEmissions &&
+    emissions.calculatedTotalEmissions !== 0
+      ? emissions.calculatedTotalEmissions
+      : (scope1And2?.total ?? 0);
+
   // Return the cleaned object, ensuring all fields are present and never undefined
   return {
     ...(emissions.id && { id: emissions.id }), // Only include id if it exists
-    calculatedTotalEmissions: emissions.calculatedTotalEmissions ?? 0,
+    calculatedTotalEmissions,
     scope1,
     scope2,
     scope3,

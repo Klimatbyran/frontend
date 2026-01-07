@@ -1,14 +1,15 @@
 import { useRef } from "react";
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from "recharts";
-import { SectorEmissions } from "@/types/municipality";
 import { useResponsiveChartSize } from "@/hooks/useResponsiveChartSize";
-import { useMunicipalitySectors } from "@/hooks/municipalities/useMunicipalitySectors";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import PieTooltip from "@/components/graphs/tooltips/PieTooltip";
+import { SectorInfo } from "@/types/charts";
+import { SectorEmissionsByYear } from "@/types/emissions";
 
-interface MunicipalitySectorPieChartProps {
-  sectorEmissions: SectorEmissions;
+interface SectorPieChartProps {
+  sectorEmissions: SectorEmissionsByYear;
   year: number;
+  getSectorInfo: (name: string) => SectorInfo;
   filteredSectors?: Set<string>;
   onFilteredSectorsChange?: (sectors: Set<string>) => void;
 }
@@ -20,16 +21,16 @@ interface SectorData {
   translatedName: string;
 }
 
-const MunicipalitySectorPieChart: React.FC<MunicipalitySectorPieChartProps> = ({
+const SectorPieChart: React.FC<SectorPieChartProps> = ({
   sectorEmissions,
   year,
+  getSectorInfo,
   filteredSectors = new Set(),
   onFilteredSectorsChange,
 }) => {
   const { isMobile } = useScreenSize();
   const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const { size } = useResponsiveChartSize();
-  const { getSectorInfo } = useMunicipalitySectors();
 
   const yearData = sectorEmissions.sectors[year] || {};
 
@@ -72,18 +73,15 @@ const MunicipalitySectorPieChart: React.FC<MunicipalitySectorPieChartProps> = ({
           clickTimeoutRef.current = null;
         }, 300); // 300ms timeout for double-click detection
       }
-    } else {
-      // On desktop, single-click for filtering (existing behavior)
-      if (onFilteredSectorsChange) {
-        const sectorName = data.name;
-        const newFiltered = new Set(filteredSectors);
-        if (newFiltered.has(sectorName)) {
-          newFiltered.delete(sectorName);
-        } else {
-          newFiltered.add(sectorName);
-        }
-        onFilteredSectorsChange(newFiltered);
+    } else if (onFilteredSectorsChange) {
+      const sectorName = data.name;
+      const newFiltered = new Set(filteredSectors);
+      if (newFiltered.has(sectorName)) {
+        newFiltered.delete(sectorName);
+      } else {
+        newFiltered.add(sectorName);
       }
+      onFilteredSectorsChange(newFiltered);
     }
   };
 
@@ -125,4 +123,4 @@ const MunicipalitySectorPieChart: React.FC<MunicipalitySectorPieChartProps> = ({
   );
 };
 
-export default MunicipalitySectorPieChart;
+export default SectorPieChart;

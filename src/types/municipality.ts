@@ -1,4 +1,5 @@
 import type { paths } from "@/lib/api-types";
+import { SectorEmissionsByYear } from "./emissions";
 
 export { getLatestYearData, getAvailableYears } from "@/utils/data/yearUtils";
 export { transformEmissionsData } from "@/utils/data/municipalityTransforms";
@@ -23,7 +24,7 @@ export type Municipality = {
   electricCarChangePercent: number;
   wikidataId?: string;
   description?: string | null;
-  sectorEmissions?: SectorEmissions;
+  sectorEmissions?: SectorEmissionsByYear;
   politicalRule: string[];
 } & EmissionsData;
 
@@ -53,7 +54,7 @@ export type MetricsByYear = Record<
 >;
 
 export type EmissionDataPoint = {
-  year: string;
+  year: number;
   value: number;
 };
 
@@ -71,11 +72,16 @@ export type DataPoint = {
   carbonLaw: number | undefined;
 };
 
-export type SectorEmissions = {
-  [year: string]: {
-    [sector: string]: number;
-  };
-};
+const MUNICIPALITY_SORT_BY = ["meets_paris", "name", "emissions", "emissionsChangeRate"] as const;
+export type MunicipalitySortBy = (typeof MUNICIPALITY_SORT_BY)[number];
 
-export type MunicipalitySortBy = "meets_paris" | "name";
-export type MunicipalitySortDirection = "best" | "worst";
+export function isMunicipalitySortBy(value: string): value is MunicipalitySortBy {
+  return MUNICIPALITY_SORT_BY.includes(value as MunicipalitySortBy);
+}
+
+const MEETS_PARIS_OPTIONS = ["all", "yes", "no"] as const;
+export type MeetsParisFilter = typeof MEETS_PARIS_OPTIONS[number];
+
+export function isMeetsParisFilter(value: string): value is MeetsParisFilter {
+  return MEETS_PARIS_OPTIONS.includes(value as MeetsParisFilter);
+} 

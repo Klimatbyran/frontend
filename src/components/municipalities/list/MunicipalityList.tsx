@@ -8,21 +8,24 @@ import {
 } from "@/utils/formatting/localization";
 import { useMemo } from "react";
 import type {
+  MeetsParisFilter,
   Municipality,
   MunicipalitySortBy,
-  MunicipalitySortDirection,
 } from "@/types/municipality";
+import { SortDirection } from "@/components/explore/SortPopover";
 
 interface MunicipalityListProps {
   municipalities: Municipality[];
   selectedRegion: string;
+  meetsParisFilter: MeetsParisFilter
   searchQuery: string;
   sortBy: MunicipalitySortBy;
-  sortDirection: MunicipalitySortDirection;
+  sortDirection: SortDirection;
 }
 export function MunicipalityList({
   municipalities,
   selectedRegion,
+  meetsParisFilter,
   searchQuery,
   sortBy,
   sortDirection,
@@ -31,6 +34,12 @@ export function MunicipalityList({
   const { currentLanguage } = useLanguage();
   const filteredMunicipalities = municipalities.filter((municipality) => {
     if (selectedRegion !== "all" && municipality.region !== selectedRegion) {
+      return false;
+    }
+
+    if ((meetsParisFilter === "yes" && municipality.meetsParisGoal !== true) ||
+      (meetsParisFilter === "no" && municipality.meetsParisGoal !== false)){
+        
       return false;
     }
 
@@ -50,16 +59,20 @@ export function MunicipalityList({
   });
 
   const sortedMunicipalities = filteredMunicipalities.sort((a, b) => {
-    const directionMultiplier = sortDirection === "best" ? 1 : -1;
+    const directionMultiplier = sortDirection === "desc" ? -1 : 1;
     switch (sortBy) {
       case "meets_paris": {
         return (
           directionMultiplier *
-          ((a.meetsParisGoal ? 1 : 0) - (b.meetsParisGoal ? 1 : 0))
+          ((a.meetsParisGoal ? 0 : 1) - (b.meetsParisGoal ? 0 : 1))
         );
       }
       case "name":
         return directionMultiplier * a.name.localeCompare(b.name);
+      case "emissions":
+        return directionMultiplier * ((a.emissions?.at(-1)?.value ?? 0) - (b.emissions?.at(-1)?.value ?? 0));
+      case "emissionsChangeRate":
+        return directionMultiplier * (a.historicalEmissionChangePercent - b.historicalEmissionChangePercent);
       default:
         return 0;
     }
