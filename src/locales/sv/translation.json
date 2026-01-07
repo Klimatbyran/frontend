@@ -1507,6 +1507,33 @@
         "detailedDescription": "De totala utsläppen av CO₂e för länet",
         "source": "Nationella emissionsdatabasen"
       }
+    },
+    "list": {
+      "dataSelector": {
+        "label": "Välj datapunkt",
+        "tooltips": {
+          "higherBetter": "Högre värden är bättre",
+          "lowerBetter": "Lägre värden är bättre"
+        }
+      },
+      "kpis": {
+        "historicalEmissionChangePercent": {
+          "label": "Utsläppen",
+          "description": "Historisk förändring av utsläpp",
+          "detailedDescription": "Genomsnittlig årlig procentuell förändring av växthusgasutsläppen i Sveriges län sedan Parisavtalet år 2015.",
+          "source": "Nationella emissionsdatabasen"
+        },
+        "meetsParis": {
+          "label": "Parisavtalet",
+          "description": "Utsläppstrend jämfört med Parisavtalet",
+          "detailedDescription": "Vilka län är på väg att klara Parisavtalet?",
+          "source": "Nationella emissionsdatabasen",
+          "booleanLabels": {
+            "true": "Klarar Parisavtalet",
+            "false": "Missar Parisavtalet"
+          }
+        }
+      }
     }
   },
   "municipalities": {
