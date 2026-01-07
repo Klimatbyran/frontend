@@ -72,16 +72,16 @@ export type DataPoint = {
   carbonLaw: number | undefined;
 };
 
-const MUNICIPALITY_SORT_BY = ["meets_paris", "name"] as const
+const MUNICIPALITY_SORT_BY = ["meets_paris", "name", "emissions", "emissionsChangeRate"] as const;
 export type MunicipalitySortBy = (typeof MUNICIPALITY_SORT_BY)[number];
 
 export function isMunicipalitySortBy(value: string): value is MunicipalitySortBy {
   return MUNICIPALITY_SORT_BY.includes(value as MunicipalitySortBy);
 }
 
-const MUNICIPALITY_SORT_DIRECTION = ["best", "worst"] as const
-export type MunicipalitySortDirection = (typeof MUNICIPALITY_SORT_DIRECTION)[number];
+const MEETS_PARIS_OPTIONS = ["all", "yes", "no"] as const;
+export type MeetsParisFilter = typeof MEETS_PARIS_OPTIONS[number];
 
-export function isMunicipalitySortDirection(value: string): value is MunicipalitySortDirection {
-  return MUNICIPALITY_SORT_DIRECTION.includes(value as MunicipalitySortDirection);
-}
+export function isMeetsParisFilter(value: string): value is MeetsParisFilter {
+  return MEETS_PARIS_OPTIONS.includes(value as MeetsParisFilter);
+} 

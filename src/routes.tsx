@@ -33,6 +33,7 @@ import { InternalDashboard } from "./pages/internal-pages/InternalDashboard";
 import { ReportLandingPage } from "./pages/ReportLandingPage";
 import { RequestsDashboard } from "./pages/internal-pages/RequestsDashboard";
 import { TrendAnalysisDashboard } from "./pages/internal-pages/TrendAnalysisDashboard";
+import { ParisAlignedStatisticsPage } from "./pages/internal-pages/ParisAlignedStatisticsPage";
 import { NewsLetterArchivePage } from "./pages/NewslettersPage";
 import { RegionalRankedPage } from "./pages/RegionalRankedPage";
 import { RegionDetailPage } from "./pages/RegionDetailPage";
@@ -102,6 +103,10 @@ export function AppRoutes() {
         <Route
           path={`${basePath}/internal-pages/trend-analysis-dashboard`}
           element={<TrendAnalysisDashboard />}
+        />
+        <Route
+          path={`${basePath}/internal-pages/paris-aligned-statistics`}
+          element={<ParisAlignedStatisticsPage />}
         />
       </Route>
       {/* Regions routes */}

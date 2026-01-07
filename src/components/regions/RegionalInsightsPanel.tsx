@@ -11,7 +11,7 @@ import {
 
 interface InsightsPanelProps {
   regionData: Region[];
-  selectedKPI: KPIValue;
+  selectedKPI: KPIValue<Region>;
 }
 
 function RegionalInsightsPanel({

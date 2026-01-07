@@ -1,5 +1,6 @@
 import { Municipality } from "./municipality";
 import { Region } from "./region";
+import { CompanyWithKPIs } from "./company";
 
 export interface DataPoint<T> {
   label: string;
@@ -32,3 +33,6 @@ export interface KPIValue<T = Municipality | Region> {
   belowString?: string;
   aboveString?: string;
 }
+
+export type MapEntityType = "municipalities" | "regions";
+export type EntityWithKPIs = Municipality | Region | CompanyWithKPIs;

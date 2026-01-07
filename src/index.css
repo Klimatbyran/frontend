@@ -52,6 +52,12 @@
   --pink-3: #f0759a;
   --pink-4: #97455d;
   --pink-5: #73263d;
+
+  /* Muted background colors for flip cards (20% opacity) */
+  --green-3-muted: color-mix(in srgb, var(--green-3) 20%, transparent);
+  --blue-3-muted: color-mix(in srgb, var(--blue-3) 20%, transparent);
+  --orange-3-muted: color-mix(in srgb, var(--orange-3) 20%, transparent);
+  --pink-3-muted: color-mix(in srgb, var(--pink-3) 20%, transparent);
 }
 
 @layer base {
@@ -196,6 +202,7 @@ input[type="number"]::-webkit-outer-spin-button {
 /* For Firefox (hides the increment/decrement arrows in number inputs) */
 input[type="number"] {
   -moz-appearance: textfield;
+  appearance: textfield;
 }
 
 @layer base {

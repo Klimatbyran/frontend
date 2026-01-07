@@ -1,176 +1,42 @@
-// TODO: Consider breaking this out into types, and hooks rather than combine here
-// TOdO: Add translations once copy is decided on
-// TODO: adjust colouring and images in follow-up PRs
 import React from "react";
 import {
-  Target,
-  Eye,
-  BarChart3,
-  TrendingUp,
-  Users,
-  Compass,
-  LucideIcon,
-} from "lucide-react";
-import { ScrollAnimationStepContent } from "./ScrollAnimationStepContent";
+  useLandingPageScrollSteps,
+  ScrollStepData,
+} from "@/hooks/landing/useLandingPageScrollSteps";
+import { ScrollAnimationStepContent } from "@/components/layout/ScrollAnimationStepContent";
 
-interface ScrollStepData {
+interface ScrollStep {
   id: string;
-  badge: {
-    text: string;
-    icon: LucideIcon;
-    gradientFrom: string;
-    gradientTo: string;
-    borderColor: string;
-  };
-  heading: string | React.ReactNode;
-  paragraph: string;
-  image: {
-    icon: LucideIcon;
-    gradientFrom: string;
-    gradientTo: string;
-  };
-  imagePosition?: "left" | "right";
+  content: React.ReactNode;
 }
 
-const stepData: ScrollStepData[] = [
-  {
-    id: "mission",
-    badge: {
-      text: "Transparency for Climate Action",
-      icon: Target,
-      gradientFrom: "from-blue-3",
-      gradientTo: "to-blue-4",
-      borderColor: "border-blue-3/30",
-    },
-    heading: "Our Mission",
-    paragraph:
-      "Klimatkollen exists to make climate data accessible to everyone. We believe that transparency drives accountability, and accountability drives real climate action. By putting emissions data in the hands of citizens, we empower communities to hold organizations accountable for their environmental commitments.",
-    image: {
-      icon: Target,
-      gradientFrom: "from-blue-2",
-      gradientTo: "to-blue-4",
-    },
-    imagePosition: "right",
-  },
-  {
-    id: "transparency",
-    badge: {
-      text: "Sunlight is the Best Disinfectant",
-      icon: Eye,
-      gradientFrom: "from-green-3",
-      gradientTo: "to-green-4",
-      borderColor: "border-green-3/30",
-    },
-    heading: (
+function formatHeading(heading: string): React.ReactNode {
+  if (heading.includes("\n")) {
+    const parts = heading.split("\n");
+    return (
       <>
-        Why Data
+        {parts[0]}
         <br />
-        Transparency Matters
+        {parts[1]}
       </>
-    ),
-    paragraph:
-      "When emissions data is hidden behind corporate reports and government databases, progress stagnates. Transparent, accessible climate data creates market pressure for better performance. Companies and municipalities that know their data is public work harder to improve their rankings and meet their climate commitments.",
-    image: {
-      icon: Eye,
-      gradientFrom: "from-green-2",
-      gradientTo: "to-green-4",
-    },
-    imagePosition: "left",
-  },
-  {
-    id: "methodology",
-    badge: {
-      text: "Science-Based Rankings",
-      icon: BarChart3,
-      gradientFrom: "from-blue-3",
-      gradientTo: "to-green-3",
-      borderColor: "border-blue-3/30",
-    },
-    heading: "Our Methodology",
-    paragraph:
-      "We use verified emissions data from official reporting sources to create fair, comparable rankings. Our metrics focus on actual emissions reductions, not just promises or targets. Every ranking is based on real performance data, ensuring that climate leaders are recognized and climate laggards are held accountable.",
-    image: {
-      icon: BarChart3,
-      gradientFrom: "from-blue-3",
-      gradientTo: "to-green-3",
-    },
-    imagePosition: "right",
-  },
-  {
-    id: "impact",
-    badge: {
-      text: "From Data to Action",
-      icon: TrendingUp,
-      gradientFrom: "from-pink-3",
-      gradientTo: "to-pink-4",
-      borderColor: "border-pink-3/30",
-    },
-    heading: "Driving Real Impact",
-    paragraph:
-      "Our platform has already helped identify climate leaders and laggards across Sweden. By ranking organizations on their actual emissions performance, we create healthy competition that accelerates climate progress. The data doesn't lie—and neither should climate commitments.",
-    image: {
-      icon: TrendingUp,
-      gradientFrom: "from-pink-2",
-      gradientTo: "to-pink-4",
-    },
-    imagePosition: "left",
-  },
-  {
-    id: "engagement",
-    badge: {
-      text: "Every Voice Counts",
-      icon: Users,
-      gradientFrom: "from-orange-3",
-      gradientTo: "to-orange-5",
-      borderColor: "border-orange-3/30",
-    },
-    heading: (
-      <>
-        Citizen Action &
-        <br />
-        Engagement
-      </>
-    ),
-    paragraph:
-      "Climate action isn't just for governments and corporations—it starts with informed citizens. When you can see how your local municipality or favorite company performs on climate metrics, you can make better choices as a consumer, voter, and community member. Your engagement drives the demand for better climate performance.",
-    image: {
-      icon: Users,
-      gradientFrom: "from-orange-3",
-      gradientTo: "to-orange-5",
-    },
-    imagePosition: "right",
-  },
-  {
-    id: "path-forward",
-    badge: {
-      text: "Building a Climate-Conscious Society",
-      icon: Compass,
-      gradientFrom: "from-green-4",
-      gradientTo: "to-blue-4",
-      borderColor: "border-green-4/30",
-    },
-    heading: "The Path Forward",
-    paragraph:
-      "Imagine a world where every organization's climate performance is as visible as their financial results. Where citizens can easily compare the environmental impact of their choices. Where transparency drives a race to the top in climate action. That's the future we're building, one data point at a time.",
-    image: {
-      icon: Compass,
-      gradientFrom: "from-green-4",
-      gradientTo: "to-blue-4",
-    },
-    imagePosition: "left",
-  },
-];
+    );
+  }
+  return heading;
+}
 
-export function getLandingPageScrollSteps() {
-  return stepData.map((step) => ({
+export function useLandingPageScrollStepsWithContent(): ScrollStep[] {
+  const stepData = useLandingPageScrollSteps();
+
+  return stepData.map((step: ScrollStepData) => ({
     id: step.id,
     content: (
       <ScrollAnimationStepContent
         badge={step.badge}
-        heading={step.heading}
+        heading={formatHeading(step.heading)}
         paragraph={step.paragraph}
         image={step.image}
         imagePosition={step.imagePosition}
+        link={step.link}
       />
     ),
   }));
