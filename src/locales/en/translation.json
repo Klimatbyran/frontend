@@ -1502,6 +1502,9 @@
     }
   },
   "regions": {
+    "detailPage": {
+      "municipalities": "Municipalities"
+    },
     "kpis": {
       "emissions": {
         "label": "Total Emissions",

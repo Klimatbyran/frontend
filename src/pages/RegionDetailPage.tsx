@@ -10,10 +10,13 @@ import { PageNoData } from "@/components/pageStates/NoData";
 import { DetailHeader } from "@/components/detail/DetailHeader";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";
 import { useMemo } from "react";
+import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
+import { MunicipalityListBox } from "@/components/regions/MunicipalityListBox";
 
 export function RegionDetailPage() {
   const { id } = useParams<{ id: string }>();
   const { region, loading, error } = useRegionDetails(id || "");
+  const { municipalities } = useMunicipalities();
 
   // Transform emissions data for chart
   const emissionsData = useMemo(() => {
@@ -59,6 +62,15 @@ export function RegionDetailPage() {
 
   const headerStats = useRegionDetailHeaderStats(region, lastYear);
 
+  // Filter municipalities that belong to this region
+  const regionMunicipalities = useMemo(() => {
+    if (!region || !municipalities) return [];
+    return municipalities
+      .filter((m) => m.region === region.name)
+      .map((m) => m.name)
+      .sort();
+  }, [region, municipalities]);
+
   if (loading) return <PageLoading />;
   if (error) return <PageError />;
   if (!region) return <PageNoData />;
@@ -74,6 +86,11 @@ export function RegionDetailPage() {
         />
 
         <RegionEmissions emissionsData={emissionsData} />
+
+        <MunicipalityListBox
+          municipalities={regionMunicipalities}
+          translateNamespace="regions.detailPage"
+        />
       </DetailWrapper>
     </>
   );
