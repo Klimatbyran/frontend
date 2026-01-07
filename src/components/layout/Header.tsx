@@ -66,7 +66,7 @@ const NAV_LINKS: NavLink[] = [
       },
       {
         label: "header.regionsRanked",
-        path: `/regional-overview`,
+        path: `/regions`,
         onlyShowOnStaging: true,
       },
       {
