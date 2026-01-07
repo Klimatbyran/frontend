@@ -34,4 +34,5 @@ export interface KPIValue<T = Municipality | Region> {
   aboveString?: string;
 }
 
+export type MapEntityType = "municipalities" | "regions";
 export type EntityWithKPIs = Municipality | Region | CompanyWithKPIs;

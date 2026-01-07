@@ -1,7 +1,8 @@
 import { t } from "i18next";
-import { KPIValue } from "@/types/entity-rankings";
+import { KPIValue, MapEntityType } from "@/types/entity-rankings";
 
 export function MapTooltip({
+  entityType,
   name,
   value,
   rank,
@@ -10,6 +11,7 @@ export function MapTooltip({
   nullValue,
   selectedKPI,
 }: {
+  entityType: MapEntityType;
   name: string;
   value: number | boolean | null | undefined;
   rank: number | null;
@@ -23,10 +25,10 @@ export function MapTooltip({
       ? typeof value === "boolean"
         ? value
           ? t(
-              `municipalities.list.kpis.${selectedKPI?.key}.booleanLabels.true`,
+              `${entityType}.list.kpis.${selectedKPI?.key}.booleanLabels.true`,
             ) || t("yes")
           : t(
-              `municipalities.list.kpis.${selectedKPI?.key}.booleanLabels.false`,
+              `${entityType}.list.kpis.${selectedKPI?.key}.booleanLabels.false`,
             ) || t("no")
         : `${(value as number).toFixed(1)}${unit}`
       : nullValue;
