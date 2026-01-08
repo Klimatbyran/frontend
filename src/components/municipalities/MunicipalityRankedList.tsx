@@ -24,8 +24,8 @@ export function MunicipalityRankedList({
 
     if (typeof value === "boolean") {
       return value
-        ? t(`municipality.list.kpis.${selectedKPI.key}.booleanLabels.true`)
-        : t(`municipality.list.kpis.${selectedKPI.key}.booleanLabels.false`);
+        ? t(`municipalities.list.kpis.${selectedKPI.key}.booleanLabels.true`)
+        : t(`municipalities.list.kpis.${selectedKPI.key}.booleanLabels.false`);
     }
 
     if (typeof value === "number") {
