@@ -14,10 +14,11 @@ import {
 } from "@/hooks/regions/useRegionKPIs";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import RegionalInsightsPanel from "@/components/regions/RegionalInsightsPanel";
-import { Region, RegionListItem } from "@/types/region";
+import { Region } from "@/types/region";
 import { toMapRegionName } from "@/utils/regionUtils";
 import { RegionalRankedList } from "@/components/regions/RegionalRankedList";
 import { KPIDataSelector } from "@/components/ranked/KPIDataSelector";
+import { RankedListItem } from "@/types/rankings";
 
 export function RegionalRankedPage() {
   const { t } = useTranslation();
@@ -34,7 +35,7 @@ export function RegionalRankedPage() {
   } = useRankedRegionsURLParams(regionalKPIs);
 
   // Transform regions data from regional KPIs endpoint into required formats
-  const regionEntities: RegionListItem[] = useMemo(() => {
+  const regionEntities: RankedListItem[] = useMemo(() => {
     return regionsData.map((regionData: RegionData) => {
       const mapName = toMapRegionName(regionData.name);
       return {
