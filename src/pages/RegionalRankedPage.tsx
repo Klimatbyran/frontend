@@ -45,7 +45,7 @@ export function RegionalRankedPage() {
 
   // Create an adapter for MapOfSweden
   const handleRegionAreaClick = (name: string) => {
-    const Region = regionsData.find((m) => m.name === name);
+    const region = regionsData.find((m) => m.name === name);
     if (Region) {
       handleRegionClick(Region);
     } else {
