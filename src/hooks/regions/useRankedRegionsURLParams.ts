@@ -1,6 +1,6 @@
 import { useCallback, useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { KPIValue } from "@/types/entity-rankings";
+import { KPIValue } from "@/types/rankings";
 import { Region } from "@/types/region";
 
 export function useRankedRegionsURLParams(regionalKPIs: KPIValue<Region>[]) {

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { getRegionsKPIs } from "@/lib/api";
-import { KPIValue } from "@/types/entity-rankings";
+import { KPIValue } from "@/types/rankings";
 import { Region } from "@/types/region";
 
 type ApiRegionKPI = {
