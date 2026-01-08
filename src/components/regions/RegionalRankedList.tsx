@@ -1,14 +1,19 @@
 import { useTranslation } from "react-i18next";
 import RankedList from "@/components/ranked/RankedList";
-import { DataPoint, KPIValue } from "@/types/entity-rankings";
+import { DataPoint, KPIValue } from "@/types/rankings";
 import { Region, RegionListItem } from "@/types/region";
 
 interface RegionalRankedListProps {
   regionEntities: RegionListItem[];
   selectedKPI: KPIValue<Region>;
+  onItemClick?: (item: RegionListItem) => void;
 }
 
-export function RegionalRankedList({ regionEntities, selectedKPI }: RegionalRankedListProps) {
+export function RegionalRankedList({
+  regionEntities,
+  selectedKPI,
+  onItemClick,
+}: RegionalRankedListProps) {
   const { t } = useTranslation();
 
   const asDataPoint = (kpi: unknown): DataPoint<RegionListItem> =>
@@ -46,7 +51,7 @@ export function RegionalRankedList({ regionEntities, selectedKPI }: RegionalRank
           return String(value);
         },
       })}
-      onItemClick={() => {}}
+      onItemClick={onItemClick}
       searchKey="displayName"
       searchPlaceholder={t("rankedList.search.placeholder")}
     />
