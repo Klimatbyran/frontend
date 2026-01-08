@@ -14,10 +14,11 @@ import {
 } from "@/hooks/regions/useRegionKPIs";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import RegionalInsightsPanel from "@/components/regions/RegionalInsightsPanel";
-import { Region, RankedListItem } from "@/types/region";
+import { Region } from "@/types/region";
 import { toMapRegionName } from "@/utils/regionUtils";
 import { RegionalRankedList } from "@/components/regions/RegionalRankedList";
 import { KPIDataSelector } from "@/components/ranked/KPIDataSelector";
+import { RankedListItem } from "@/types/rankings";
 
 export function RegionalRankedPage() {
   const { t } = useTranslation();
