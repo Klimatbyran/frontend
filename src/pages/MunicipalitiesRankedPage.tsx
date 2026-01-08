@@ -68,7 +68,7 @@ export function MunicipalitiesRankedPage() {
   );
 
   // Create an adapter for MapOfSweden
-  const handleMunicipalityNameClick = (name: string) => {
+  const handleMunicipalityAreaClick = (name: string) => {
     const municipality = municipalities.find((m) => m.name === name);
     if (municipality) {
       handleMunicipalityClick(municipality);
@@ -150,7 +150,7 @@ export function MunicipalitiesRankedPage() {
             return { ...rest, id: m.name };
           })}
           selectedKPI={selectedKPI}
-          onAreaClick={handleMunicipalityNameClick}
+          onAreaClick={handleMunicipalityAreaClick}
         />
       </div>
     ) : (

@@ -18,12 +18,16 @@ import { Region, RegionListItem } from "@/types/region";
 import { toMapRegionName } from "@/utils/regionUtils";
 import { RegionalRankedList } from "@/components/regions/RegionalRankedList";
 import { KPIDataSelector } from "@/components/ranked/KPIDataSelector";
+import { useNavigate } from "react-router-dom";
+import { createEntityClickHandler } from "@/utils/routing";
 
 export function RegionalRankedPage() {
   const { t } = useTranslation();
   const regionalKPIs = useRegionalKPIs();
   const [geoData] = useState(regionGeoJson);
   const { regionsData } = useRegions();
+
+  const navigate = useNavigate();
 
   const {
     selectedKPI,
@@ -32,6 +36,22 @@ export function RegionalRankedPage() {
     setKPIInURL,
     setViewModeInURL,
   } = useRankedRegionsURLParams(regionalKPIs);
+
+  const handleRegionClick = createEntityClickHandler(
+    navigate,
+    "region",
+    viewMode,
+  );
+
+  // Create an adapter for MapOfSweden
+  const handleRegionAreaClick = (name: string) => {
+    const Region = regionsData.find((m) => m.name === name);
+    if (Region) {
+      handleRegionClick(Region);
+    } else {
+      handleRegionClick(name);
+    }
+  };
 
   // Transform regions data from regional KPIs endpoint into required formats
   const regionEntities: RegionListItem[] = useMemo(() => {
@@ -87,6 +107,7 @@ export function RegionalRankedPage() {
           geoData={geoData as FeatureCollection}
           data={mapData}
           selectedKPI={selectedKPI}
+          onAreaClick={handleRegionAreaClick}
           defaultCenter={[63.7, 17]}
         />
       </div>
