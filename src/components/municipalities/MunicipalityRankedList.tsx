@@ -1,10 +1,10 @@
 import { useTranslation } from "react-i18next";
 import RankedList from "@/components/ranked/RankedList";
-import { DataPoint, KPIValue } from "@/types/rankings";
-import { Municipality, MunicipalityListItem } from "@/types/municipality";
+import { DataPoint, KPIValue, RankedListItem } from "@/types/rankings";
+import { Municipality } from "@/types/municipality";
 
 interface MunicipalityRankedListProps {
-  municipalityEntities: MunicipalityListItem[];
+  municipalityEntities: RankedListItem[];
   selectedKPI: KPIValue<Municipality>;
 }
 
@@ -14,8 +14,8 @@ export function MunicipalityRankedList({
 }: MunicipalityRankedListProps) {
   const { t } = useTranslation();
 
-  const asDataPoint = (kpi: unknown): DataPoint<MunicipalityListItem> =>
-    kpi as DataPoint<MunicipalityListItem>;
+  const asDataPoint = (kpi: unknown): DataPoint<RankedListItem> =>
+    kpi as DataPoint<RankedListItem>;
 
   const formatValue = (value: unknown) => {
     if (value === null || value === undefined) {
@@ -40,7 +40,7 @@ export function MunicipalityRankedList({
       data={municipalityEntities}
       selectedDataPoint={asDataPoint({
         label: selectedKPI.label,
-        key: selectedKPI.key as keyof MunicipalityListItem,
+        key: selectedKPI.key as keyof RankedListItem,
         unit: selectedKPI.unit,
         description: selectedKPI.description,
         higherIsBetter: selectedKPI.higherIsBetter,
