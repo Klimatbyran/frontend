@@ -19,6 +19,7 @@ import {
   NavigationMenuTrigger,
 } from "../ui/navigation-menu";
 import { stagingFeatureFlagEnabled } from "@/utils/ui/featureFlags";
+import { ThemeToggle } from "../ui/theme-toggle";
 
 interface NavSubLink {
   label: string;
@@ -131,7 +132,10 @@ const SubLinksMenu = ({ sublinks }: { sublinks: NavSubLink[] }) => {
   return (
     <ul>
       {sublinks.map((sublink) => (
-        <li key={sublink.path} className="hover:bg-black-1 px-2 py-1.5 text-sm">
+        <li
+          key={sublink.path}
+          className="hover:bg-black-1 px-2 py-1.5 text-sm text-white"
+        >
           {sublink.path.startsWith("https://") ? (
             <a
               href={sublink.path}
@@ -237,7 +241,7 @@ export function Header() {
       <div className="container lg:mx-auto px-4 flex justify-between">
         <LocalizedLink
           to="/"
-          className="flex items-center gap-2 text-base font-medium"
+          className="flex items-center gap-2 text-base font-medium text-white light:text-black-3"
         >
           Klimatkollen
         </LocalizedLink>
@@ -306,6 +310,7 @@ export function Header() {
           </NavigationMenuList>
           <div className="ml-4 h-full flex items-center">
             <HeaderSearchButton className="mx-2" />
+            <ThemeToggle className="hidden md:flex mx-2" />
             <LanguageButtons className={"hidden md:flex mx-4 "} />
             <NewsletterPopover
               isOpen={isSignUpOpen}
@@ -336,7 +341,10 @@ export function Header() {
                 className="w-full"
                 onSearchResultClick={toggleMenu}
               />
-              <LanguageButtons />
+              <div className="flex items-center gap-4">
+                <ThemeToggle />
+                <LanguageButtons />
+              </div>
               {filteredNavLinks.map((link) => (
                 <div key={link.path} className="flex flex-col">
                   <LocalizedLink

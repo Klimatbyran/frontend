@@ -100,7 +100,7 @@ export function NewsletterPopover({
   return (
     <Popover open={open} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>
-        <Button className="bg-blue-5 text-white rounded-lg hover:bg-blue-6 transition px-4 py-1 font-medium">
+        <Button className="bg-blue-5 rounded-lg hover:bg-blue-6 transition px-4 py-1 font-medium">
           {buttonText}
         </Button>
       </PopoverTrigger>
@@ -116,7 +116,9 @@ export function NewsletterPopover({
         </button>
 
         {/* Newsletter Content */}
-        <h2 className="text-2xl mb-4">{t("newsletter.subscribe")}</h2>
+        <h2 className="text-2xl text-white mb-4">
+          {t("newsletter.subscribe")}
+        </h2>
         <p className="text-grey mb-6">{t("newsletter.description")}</p>
 
         <MailchimpSubscribe
@@ -143,7 +145,7 @@ export function NewsletterPopover({
                     placeholder={t("newsletter.emailPlaceholder")}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full p-2 mb-4 border border-gray-300 rounded text-black bg-white"
+                    className="w-full p-2 mb-4 border border-gray-300 rounded text-black-3 bg-white"
                     required
                     disabled={status === "success"}
                   />
