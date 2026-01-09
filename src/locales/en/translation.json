@@ -1051,6 +1051,22 @@
     "title": "Regional Overview",
     "description": "Overview of emissions and transition in the regional level"
   },
+  "detailPage": {
+    "totalEmissions": "Total Emissions {{year}}",
+    "totalEmissionsTooltip": "This is the latest reported emissions.",
+    "emissionsDevelopment": "Emissions Development",
+    "inTons": "In tons CO₂e",
+    "annualChange": "Annual Change",
+    "meetsParisGoal": "Meets the Paris Agreement",
+    "changeSince2015": "Annual emission change since 2015",
+    "graph": {
+      "historical": "Historical",
+      "estimated": "Estimated",
+      "trend": "Trend",
+      "carbonLaw": "Paris Agreement",
+      "noData": "No data available"
+    }
+  },
   "municipalitiesRankedPage": {
     "errorTitle": "Failed to retrieve municipality information",
     "errorDescription": "Please try again later",
@@ -1097,14 +1113,11 @@
       "low": "No"
     },
     "politicalRule": "Political rule",
-    "totalEmissions": "Total emissions {{year}}",
     "totalEmissionsTooltip": "This is the latest reported emissions. For calculated estimates on the current year, please see the emissions development graph below.",
-    "emissionsDevelopment": "Emissions development",
     "graph": {
       "overview": "Overview",
       "sectors": "Emission sources"
     },
-    "inTons": "In tons CO₂e",
     "annualChangeSince2015": "Annual emission change since 2015",
     "reductionToMeetParis": "Emission reduction to meet the Paris Agreement",
     "cannotReduceToParis": "Will not reach Paris Agreement",
@@ -1489,12 +1502,42 @@
     }
   },
   "regions": {
+    "detailPage": {
+      "municipalities": "Municipalities"
+    },
     "kpis": {
       "emissions": {
         "label": "Total Emissions",
         "description": "Total emissions for the region",
         "detailedDescription": "Total emissions of CO₂e for the region",
         "source": "National Emissions Database"
+      }
+    },
+    "list": {
+      "dataSelector": {
+        "label": "Select Data Point",
+        "tooltips": {
+          "higherBetter": "Higher values are better",
+          "lowerBetter": "Lower values are better"
+        }
+      },
+      "kpis": {
+        "historicalEmissionChangePercent": {
+          "label": "Emissions",
+          "description": "Historical change in emissions",
+          "detailedDescription": "Average annual percentage change in greenhouse gas emissions in Swedish regions since the Paris Agreement in 2015.",
+          "source": "National Emissions Database"
+        },
+        "meetsParis": {
+          "label": "Paris Agreement",
+          "description": "Emissions trend compared to the Paris Agreement",
+          "detailedDescription": "Which regions are on track to meet the Paris Agreement?",
+          "source": "National Emissions Database",
+          "booleanLabels": {
+            "true": "Meets Paris Agreement",
+            "false": "Fails Paris Agreement"
+          }
+        }
       }
     }
   },
@@ -1516,7 +1559,6 @@
     "graph": {
       "noData": "No data available",
       "gap": "Gap",
-      "historical": "Historical",
       "approximated": "Calculated Total",
       "estimated": "Calculated",
       "trend": "Trend",

@@ -1,14 +1,16 @@
 import { t } from "i18next";
-import { MUNICIPALITY_MAP_COLORS } from "./constants";
-import { KPIValue } from "@/types/entity-rankings";
+import { DEFAULT_STATISTICAL_GRADIENT_COLORS } from "@/utils/ui/colorGradients";
+import { KPIValue, MapEntityType } from "@/types/rankings";
 
 export function MapLegend({
+  entityType,
   unit,
   leftValue,
   rightValue,
   selectedKPI,
   hasNullValues,
 }: {
+  entityType: MapEntityType;
   unit: string;
   leftValue: number;
   rightValue: number;
@@ -24,9 +26,7 @@ export function MapLegend({
         }}
       />
       <span className="text-gray-500 text-xs">
-        {t(
-          `municipalities.list.kpis.${selectedKPI.key}.booleanLabels.${label}`,
-        )}
+        {t(`${entityType}.list.kpis.${selectedKPI.key}.booleanLabels.${label}`)}
       </span>
     </div>
   );
@@ -37,8 +37,14 @@ export function MapLegend({
         <div className="flex items-center w-full md:w-auto gap-2">
           {selectedKPI.isBoolean ? (
             <>
-              {booleanItem(MUNICIPALITY_MAP_COLORS.gradientEnd, "true")}
-              {booleanItem(MUNICIPALITY_MAP_COLORS.gradientMidLow, "false")}
+              {booleanItem(
+                DEFAULT_STATISTICAL_GRADIENT_COLORS.gradientEnd,
+                "true",
+              )}
+              {booleanItem(
+                DEFAULT_STATISTICAL_GRADIENT_COLORS.gradientMidLow,
+                "false",
+              )}
             </>
           ) : (
             <>
@@ -51,11 +57,11 @@ export function MapLegend({
                   className="absolute inset-0 rounded-full"
                   style={{
                     background: `linear-gradient(to right, 
-                      ${MUNICIPALITY_MAP_COLORS.gradientStart} 0%,
-                      ${MUNICIPALITY_MAP_COLORS.gradientMidLow} 33%,
-                      ${MUNICIPALITY_MAP_COLORS.gradientMidHigh} 66%,
-                      ${MUNICIPALITY_MAP_COLORS.gradientEnd} 100%
-                    )`,
+                        ${DEFAULT_STATISTICAL_GRADIENT_COLORS.gradientStart} 0%,
+                        ${DEFAULT_STATISTICAL_GRADIENT_COLORS.gradientMidLow} 33%,
+                        ${DEFAULT_STATISTICAL_GRADIENT_COLORS.gradientMidHigh} 66%,
+                        ${DEFAULT_STATISTICAL_GRADIENT_COLORS.gradientEnd} 100%
+                      )`,
                   }}
                 />
               </div>
@@ -70,7 +76,7 @@ export function MapLegend({
           <div className="flex items-center mb-2 md:mb-0 md:ml-6">
             <div className="w-3 h-3 rounded-full bg-gray-600 mr-1" />
             <span className="text-gray-500 text-xs italic">
-              {t("municipalities.map.legend.null")}
+              {t(`${entityType}.map.legend.null`)}
             </span>
           </div>
         )}

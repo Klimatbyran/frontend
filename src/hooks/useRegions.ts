@@ -1,14 +1,41 @@
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getRegions } from "@/lib/api";
-import { KPIValue } from "@/types/entity-rankings";
+import { KPIValue } from "@/types/rankings";
 import { Region } from "@/types/region";
 import { t } from "i18next";
+
+// API response type
+type ApiRegion = {
+  region: string;
+  emissions: ({ year: string; value: number } | null)[];
+  totalTrend: number;
+  totalCarbonLaw: number;
+  approximatedHistoricalEmission: ({ year: string; value: number } | null)[];
+  trend: ({ year: string; value: number } | null)[];
+  historicalEmissionChangePercent: number;
+  meetsParis: boolean;
+  municipalities: string[];
+};
 
 // Updated types to match the new API structure
 export type RegionData = {
   name: string;
   emissions: Record<string, number>;
+};
+
+const normalizeRegion = (apiRegion: ApiRegion): RegionData => {
+  const emissionsRecord: Record<string, number> = {};
+  apiRegion.emissions.forEach((emission) => {
+    if (emission) {
+      emissionsRecord[emission.year] = emission.value;
+    }
+  });
+
+  return {
+    name: apiRegion.region,
+    emissions: emissionsRecord,
+  };
 };
 
 /**
@@ -24,9 +51,13 @@ export function useRegions() {
     queryFn: getRegions,
   });
 
+  const normalizedRegions = useMemo(() => {
+    return (regions as ApiRegion[]).map(normalizeRegion);
+  }, [regions]);
+
   return {
-    regions: (regions as RegionData[]).map((region) => region.name),
-    regionsData: regions as RegionData[],
+    regions: normalizedRegions.map((region) => region.name),
+    regionsData: normalizedRegions,
     loading: isLoading,
     error,
   };
@@ -118,7 +149,7 @@ export function useRegionAllSubsectorEmissions() {
   };
 }
 
-export function getRegionalKPIs(): KPIValue<Region>[] {
+export function getRegionKPIs(): KPIValue<Region>[] {
   return [
     {
       label: t("regions.kpis.emissions.label"),

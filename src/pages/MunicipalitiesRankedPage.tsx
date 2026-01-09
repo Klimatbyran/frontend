@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { Map, List } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -6,15 +6,15 @@ import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
 import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { KPIDataSelector } from "@/components/ranked/KPIDataSelector";
-import RankedList from "@/components/ranked/RankedList";
 import InsightsPanel from "@/components/municipalities/rankedList/MunicipalityInsightsPanel";
 import MapOfSweden from "@/components/maps/SwedenMap";
 import municipalityGeoJson from "@/data/municipalityGeo.json";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import { useMunicipalityKPIs } from "@/hooks/municipalities/useMunicipalityKPIs";
 import { FeatureCollection } from "geojson";
-import { Municipality } from "@/types/municipality";
-import { DataPoint } from "@/types/entity-rankings";
+import { RankedListItem } from "@/types/rankings";
+import { createEntityClickHandler } from "@/utils/routing";
+import { MunicipalityRankedList } from "@/components/municipalities/MunicipalityRankedList";
 
 export function MunicipalitiesRankedPage() {
   const { t } = useTranslation();
@@ -60,10 +60,11 @@ export function MunicipalitiesRankedPage() {
     }
   }, [getKPIFromURL, selectedKPI.label]);
 
-  const handleMunicipalityClick = (municipality: Municipality) => {
-    const formattedName = municipality.name.toLowerCase();
-    navigate(`/municipalities/${formattedName}?view=${viewMode}`);
-  };
+  const handleMunicipalityClick = createEntityClickHandler(
+    navigate,
+    "municipality",
+    viewMode,
+  );
 
   // Create an adapter for MapOfSweden
   const handleMunicipalityNameClick = (name: string) => {
@@ -71,9 +72,22 @@ export function MunicipalitiesRankedPage() {
     if (municipality) {
       handleMunicipalityClick(municipality);
     } else {
-      window.location.href = `/municipalities/${name.toLowerCase()}?view=${viewMode}`;
+      handleMunicipalityClick(name);
     }
   };
+
+  // Transform municipalities to RankedListItem format
+  const municipalityEntities: RankedListItem[] = useMemo(() => {
+    return municipalities.map((municipality) => {
+      const { sectorEmissions, ...rest } = municipality;
+      return {
+        ...rest,
+        id: municipality.name,
+        displayName: municipality.name,
+        mapName: municipality.name,
+      };
+    });
+  }, [municipalities]);
 
   if (loading) {
     return (
@@ -102,38 +116,9 @@ export function MunicipalitiesRankedPage() {
   }
 
   const municipalityRankedList = (
-    <RankedList
-      data={municipalities}
-      selectedDataPoint={asDataPoint({
-        label: selectedKPI.label,
-        key: selectedKPI.key as unknown as keyof Municipality,
-        unit: selectedKPI.unit,
-        description: selectedKPI.description,
-        higherIsBetter: selectedKPI.higherIsBetter,
-        nullValues: selectedKPI.nullValues,
-        isBoolean: selectedKPI.isBoolean,
-        booleanLabels: selectedKPI.booleanLabels,
-        formatter: (value: unknown) => {
-          if (value === null) {
-            return selectedKPI.nullValues || t("noData");
-          }
-
-          if (typeof value === "boolean") {
-            return value
-              ? t(
-                  `municipalities.list.kpis.${selectedKPI.key}.booleanLabels.true`,
-                )
-              : t(
-                  `municipalities.list.kpis.${selectedKPI.key}.booleanLabels.false`,
-                );
-          }
-
-          return `${(value as number).toFixed(1)}`;
-        },
-      })}
-      onItemClick={handleMunicipalityClick}
-      searchKey="name"
-      searchPlaceholder={t("rankedList.search.placeholder")}
+    <MunicipalityRankedList
+      municipalityEntities={municipalityEntities}
+      selectedKPI={selectedKPI}
     />
   );
 
@@ -141,6 +126,7 @@ export function MunicipalitiesRankedPage() {
     viewMode === "map" ? (
       <div className={isMobile ? "relative h-[65vh]" : "relative h-full"}>
         <MapOfSweden
+          entityType="municipalities"
           geoData={geoData as FeatureCollection}
           data={municipalities.map((m) => {
             const { sectorEmissions, ...rest } = m;
@@ -212,6 +198,3 @@ export function MunicipalitiesRankedPage() {
     </>
   );
 }
-
-const asDataPoint = (kpi: unknown): DataPoint<Municipality> =>
-  kpi as DataPoint<Municipality>;

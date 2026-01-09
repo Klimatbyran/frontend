@@ -13,7 +13,7 @@
 // 3. Single import location makes it easy to find and maintain all insights logic
 // 4. Avoids over-complicating the codebase with excessive file splitting
 
-import { EntityWithKPIs, KPIValue } from "@/types/entity-rankings";
+import { EntityWithKPIs, KPIValue } from "@/types/rankings";
 import { t } from "i18next";
 
 export interface EntityStatistics<T> {

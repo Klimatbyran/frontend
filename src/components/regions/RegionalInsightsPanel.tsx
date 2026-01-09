@@ -3,7 +3,7 @@ import { getSortedEntityKPIValues } from "@/utils/data/sorting";
 import KPIDetailsPanel from "../ranked/KPIDetailsPanel";
 import InsightsList from "../ranked/InsightsList";
 import { Region } from "@/types/region";
-import { KPIValue } from "@/types/entity-rankings";
+import { KPIValue } from "@/types/rankings";
 import {
   calculateEntityStatistics,
   createSourceLinks,
@@ -11,7 +11,7 @@ import {
 
 interface InsightsPanelProps {
   regionData: Region[];
-  selectedKPI: KPIValue;
+  selectedKPI: KPIValue<Region>;
 }
 
 function RegionalInsightsPanel({
