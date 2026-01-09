@@ -1,5 +1,5 @@
 import { BarChart3, Menu, X, Mail } from "lucide-react";
-import { useLocation } from "react-router-dom";
+import { To, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useState, useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -284,7 +284,7 @@ export function Header() {
                       "flex gap-2 p-3",
                       "data-[state=open]:bg-black-1 data-[state=closed]:bg-transparent",
                       location.pathname.startsWith(
-                        localizedPath(currentLanguage, item.path),
+                        localizedPath(currentLanguage, item.path as To),
                       )
                         ? "text-white"
                         : "text-grey hover:text-white",
@@ -303,7 +303,7 @@ export function Header() {
                   className={cn(
                     "h-10 lg:h12 flex items-center",
                     location.pathname.startsWith(
-                      localizedPath(currentLanguage, item.path),
+                      localizedPath(currentLanguage, item.path as To),
                     )
                       ? "text-white"
                       : "text-grey hover:text-white",
@@ -311,7 +311,7 @@ export function Header() {
                 >
                   <NavigationMenuLink asChild>
                     <LocalizedLink
-                      to={item.path}
+                      to={item.path as To}
                       className="flex gap-2 p-3 items-center"
                     >
                       {item.icon}
@@ -368,7 +368,7 @@ export function Header() {
               {filteredNavLinks.map((link) => (
                 <div key={link.path} className="flex flex-col">
                   <LocalizedLink
-                    to={link.path}
+                    to={link.path as To}
                     onClick={toggleMenu}
                     className="flex items-center gap-2 cursor-pointer"
                   >

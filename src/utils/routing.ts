@@ -1,6 +1,8 @@
 import { To } from "react-router-dom";
 
-export const localizedPath = (lang: string, path: To) => `/${lang}${path}`;
+export const localizedPath = (lang: string, path: To) => {
+  return `/${lang}${path}`;
+};
 
 /**
  * Creates a navigation path for a region or municipality entity
