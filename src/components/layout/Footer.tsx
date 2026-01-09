@@ -124,17 +124,15 @@ export function Footer() {
           <a href="/privacy" className="hover:text-white transition-colors">
             {t("footer.privacyTerms")}
           </a>
-          <a href="/license" className="hover:text-white transition-colors">
-            {t("footer.internationalLicense")}
-          </a>
           <a
             href="https://creativecommons.org/licenses/by-sa/4.0/"
-            className="hover:text-white transition-colors"
             target="_blank"
             rel="noopener noreferrer"
+            className="hover:text-white transition-colors"
           >
-            {t("footer.ccBySa")}
+            {t("footer.internationalLicense")} {`(${t("footer.ccBySa")})`}
           </a>
+
           {!token && (
             <a
               onClick={() => login()}
