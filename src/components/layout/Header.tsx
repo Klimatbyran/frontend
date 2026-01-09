@@ -233,6 +233,16 @@ export function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, [headerTitle, showTitle, setShowTitle]);
 
+  useEffect(() => {
+    if(menuOpen){
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+
+    return () => document.body.classList.remove("overflow-hidden");
+  }, [menuOpen]);
+
   const LanguageButtons = ({ className }: { className?: string }) => (
     <div className={cn("flex items-center gap-2", className)}>
       <button
