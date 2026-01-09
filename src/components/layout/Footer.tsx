@@ -129,6 +129,7 @@ export function Footer() {
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-white transition-colors"
+            aria-label="Creative Commons Attribution-ShareAlike 4.0 International License"
           >
             {t("footer.internationalLicense")} {`(${t("footer.ccBySa")})`}
           </a>
