@@ -46,7 +46,7 @@ function InsightsList<T>({
           </div>
         );
 
-        if (entityType === "municipalities") {
+        if (entityType === "municipalities" || entityType === "regions") {
           return (
             <LocalizedLink
               key={name}
