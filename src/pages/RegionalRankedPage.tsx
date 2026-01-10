@@ -47,7 +47,7 @@ export function RegionalRankedPage() {
   const handleRegionAreaClick = (name: string) => {
     const region = regionsData.find((m) => m.name === name);
     if (region) {
-      handleRegionClick(Region);
+      handleRegionClick(region);
     } else {
       handleRegionClick(name);
     }
