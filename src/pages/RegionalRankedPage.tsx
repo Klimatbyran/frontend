@@ -155,7 +155,7 @@ export function RegionalRankedPage() {
       <div className="lg:hidden space-y-6">
         {renderMapOrList(true)}
         <RegionalInsightsPanel
-          regionData={regionsAsEntities}
+          regionsData={regionsAsEntities}
           selectedKPI={selectedKPI}
         />
       </div>
@@ -167,7 +167,7 @@ export function RegionalRankedPage() {
           {viewMode === "map" ? regionalRankedList : null}
         </div>
         <RegionalInsightsPanel
-          regionData={regionsAsEntities}
+          regionsData={regionsAsEntities}
           selectedKPI={selectedKPI}
         />
       </div>
