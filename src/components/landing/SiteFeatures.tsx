@@ -5,7 +5,6 @@ import {
   TrendingUpDown,
   type LucideIcon,
 } from "lucide-react";
-
 import { Text } from "@/components/ui/text";
 import { LandingSection } from "./LandingSection";
 

@@ -1,14 +1,14 @@
+import { Trans, useTranslation } from "react-i18next";
 import { Text } from "@/components/ui/text";
 import { Accordion } from "@/components/ui/accordion";
 import { useTeamMembers } from "@/hooks/useTeamMembers";
 import { useBoardMembers } from "@/hooks/useBoardMembers";
-import { AccordionGroup } from "../components/layout/AccordionGroup";
 import { LinkButton } from "@/components/layout/LinkButton";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { Trans, useTranslation } from "react-i18next";
 import { MembersGrid } from "@/components/MembersGrid";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import KlimatkollenVideo from "@/components/ui/klimatkollenVideoPlayer";
+import { AccordionGroup } from "../components/layout/AccordionGroup";
 
 export function AboutPage() {
   const { t } = useTranslation();

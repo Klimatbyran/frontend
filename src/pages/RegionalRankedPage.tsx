@@ -1,11 +1,11 @@
 import { useState, useMemo } from "react";
 import { Map, List } from "lucide-react";
-
 import { useTranslation } from "react-i18next";
+import { FeatureCollection } from "geojson";
+import { useNavigate } from "react-router-dom";
 import { PageHeader } from "@/components/layout/PageHeader";
 import MapOfSweden, { DataItem } from "@/components/maps/SwedenMap";
 import regionGeoJson from "@/data/regionGeo.json";
-import { FeatureCollection } from "geojson";
 import { useRankedRegionsURLParams } from "@/hooks/regions/useRankedRegionsURLParams";
 import {
   useRegions,
@@ -18,7 +18,6 @@ import { Region } from "@/types/region";
 import { toMapRegionName } from "@/utils/regionUtils";
 import { RegionalRankedList } from "@/components/regions/RegionalRankedList";
 import { KPIDataSelector } from "@/components/ranked/KPIDataSelector";
-import { useNavigate } from "react-router-dom";
 import { createEntityClickHandler } from "@/utils/routing";
 import { RankedListItem } from "@/types/rankings";
 
@@ -144,7 +143,7 @@ export function RegionalRankedPage() {
             map: t("viewModeToggle.map"),
             list: t("viewModeToggle.list"),
           }}
-          showTitles={true}
+          showTitles
           icons={{
             map: <Map className="w-4 h-4" />,
             list: <List className="w-4 h-4" />,

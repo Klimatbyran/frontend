@@ -1,13 +1,13 @@
 import React, { useRef } from "react";
-import { LegendItem } from "../../../types/charts";
+import { useTranslation } from "react-i18next";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
   TooltipProvider,
 } from "@/components/ui/tooltip";
-import { useTranslation } from "react-i18next";
 import { useScreenSize } from "@/hooks/useScreenSize";
+import { LegendItem } from "../../../types/charts";
 
 interface DynamicLegendContainerProps {
   items: LegendItem[];
@@ -79,7 +79,7 @@ export const DynamicLegendContainer: React.FC<DynamicLegendContainerProps> = ({
                   <TooltipContent
                     className="z-[70]"
                     side="top"
-                    avoidCollisions={true}
+                    avoidCollisions
                     collisionPadding={8}
                   >
                     <p>{t("chartLegend.clickToFilterOut")}</p>
@@ -137,7 +137,7 @@ export const DynamicLegendContainer: React.FC<DynamicLegendContainerProps> = ({
                   <TooltipContent
                     className="z-[70]"
                     side="top"
-                    avoidCollisions={true}
+                    avoidCollisions
                     collisionPadding={8}
                   >
                     <p>{t("chartLegend.clickToFilterOut")}</p>

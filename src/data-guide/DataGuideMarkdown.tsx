@@ -1,9 +1,10 @@
 import Markdown from "react-markdown";
 import remarkBreaks from "remark-breaks";
-import { DataGuideItemId } from "./items";
 import { useTranslation } from "react-i18next";
-import { cn } from "@/lib/utils";
 import { ArrowUpRight } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { DataGuideItemId } from "./items";
+
 
 type DataGuideMarkdownProps = {
   item: DataGuideItemId;

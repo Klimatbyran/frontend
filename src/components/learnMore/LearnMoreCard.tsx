@@ -1,9 +1,10 @@
 import { ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { Text } from "@/components/ui/text";
 import { useTranslation } from "react-i18next";
+import { Text } from "@/components/ui/text";
 import { useLanguage } from "@/components/LanguageProvider";
 import { articleMetaData } from "../../lib/learn-more/articleList";
+
 
 export function LearnMoreCard({
   article,

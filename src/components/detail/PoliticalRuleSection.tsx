@@ -1,6 +1,6 @@
+import { useTranslation } from "react-i18next";
 import { Text } from "@/components/ui/text";
 import { PoliticalRuleLabel } from "./PoliticalRuleLabel";
-import { useTranslation } from "react-i18next";
 
 export interface PoliticalRuleSectionProps {
   politicalRule: string[];

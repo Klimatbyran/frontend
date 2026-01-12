@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { X } from "lucide-react";
 import { useLanguage } from "@/components/LanguageProvider";
 import {
   formatEmissionsAbsolute,
   formatPercent,
 } from "@/utils/formatting/localization";
 import { useScreenSize } from "@/hooks/useScreenSize";
-import { X } from "lucide-react";
 
 interface PieTooltipProps {
   active?: boolean;

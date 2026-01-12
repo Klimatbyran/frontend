@@ -1,6 +1,6 @@
+import { useEffect } from "react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { PageSEO } from "@/components/SEO/PageSEO";
-import { useEffect } from "react";
 
 interface ContentItem {
   id: string;

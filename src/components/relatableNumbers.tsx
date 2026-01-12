@@ -1,10 +1,10 @@
+import { useTranslation, Trans } from "react-i18next";
+import { Flame, Lightbulb } from "lucide-react";
 import { Text } from "@/components/ui/text";
 import {
   calculateAreaBurnt,
   emissionsComparedToCitizen,
 } from "@/utils/calculations/relatableNumbersCalc";
-import { useTranslation, Trans } from "react-i18next";
-import { Flame, Lightbulb } from "lucide-react";
 import { SupportedLanguage } from "@/lib/languageDetection";
 import {
   formatEmissionsAbsolute,

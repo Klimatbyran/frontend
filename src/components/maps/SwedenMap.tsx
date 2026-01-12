@@ -6,22 +6,25 @@ import React, {
   useState,
 } from "react";
 import { MapContainer, GeoJSON, useMap } from "react-leaflet";
-import { MapZoomControls } from "./MapZoomControls";
-import { MapLegend } from "./MapLegend";
-import { MapTooltip } from "./MapTooltip";
 import {
   FeatureCollection,
   Feature,
   Geometry,
   GeoJsonProperties,
 } from "geojson";
-import { createStatisticalGradient } from "@/utils/ui/colorGradients";
-import { calculateGeoBounds } from "./utils/geoBounds";
 import { isMobile } from "react-device-detect";
 import { t } from "i18next";
-import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import { createStatisticalGradient } from "@/utils/ui/colorGradients";
 import { KPIValue, MapEntityType } from "@/types/rankings";
+import { MapZoomControls } from "./MapZoomControls";
+import { MapLegend } from "./MapLegend";
+import { MapTooltip } from "./MapTooltip";
+import { calculateGeoBounds } from "./utils/geoBounds";
+
+
+import "leaflet/dist/leaflet.css";
+
 
 export interface DataKPI {
   key: string;

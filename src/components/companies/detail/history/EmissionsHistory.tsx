@@ -1,8 +1,8 @@
 import { useState, useMemo } from "react";
+import { useTranslation } from "react-i18next";
+import { isMobile } from "react-device-detect";
 import { Text } from "@/components/ui/text";
 import type { EmissionsHistoryProps, DataView } from "@/types/emissions";
-import { getChartData } from "../../../../utils/data/chartData";
-import { useTranslation } from "react-i18next";
 import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useLanguage } from "@/components/LanguageProvider";
 import {
@@ -13,15 +13,16 @@ import {
   useCompanyViewOptions,
 } from "@/components/charts";
 import { CardHeader } from "@/components/layout/CardHeader";
-import { OverviewChart } from "./OverviewChart";
-import { ScopesChart } from "./ScopesChart";
-import { CategoriesChart } from "./CategoriesChart";
-import { ExploreMode } from "./explore-mode/ExploreMode";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { calculateTrendline } from "@/lib/calculations/trends/analysis";
 import { generateApproximatedData } from "@/lib/calculations/trends/approximatedData";
-import { isMobile } from "react-device-detect";
+import { getChartData } from "../../../../utils/data/chartData";
+import { ExploreMode } from "./explore-mode/ExploreMode";
+import { CategoriesChart } from "./CategoriesChart";
+import { ScopesChart } from "./ScopesChart";
+import { OverviewChart } from "./OverviewChart";
+
 
 export function EmissionsHistory({
   company,

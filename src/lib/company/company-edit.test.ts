@@ -1,5 +1,5 @@
-import { mapCompanyEditFormToRequestBody } from "./company-edit";
 import type { ReportingPeriod } from "@/types/company";
+import { mapCompanyEditFormToRequestBody } from "./company-edit";
 
 // --- Helpers and Factories ---
 const baseMeta = {

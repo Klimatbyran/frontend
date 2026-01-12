@@ -1,9 +1,9 @@
+import { useTranslation } from "react-i18next";
 import { Text } from "@/components/ui/text";
 import { Accordion } from "@/components/ui/accordion";
-import { AccordionGroup } from "../components/layout/AccordionGroup";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { useTranslation } from "react-i18next";
 import { PageSEO } from "@/components/SEO/PageSEO";
+import { AccordionGroup } from "../components/layout/AccordionGroup";
 
 export function PrivacyPage() {
   const { t } = useTranslation();

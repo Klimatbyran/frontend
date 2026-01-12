@@ -1,7 +1,8 @@
 import { DataGuideItemId } from "@/data-guide/items";
-import { ProgressiveDataGuide } from "./ProgressiveDataGuide";
 import { cn } from "@/lib/utils";
 import { dataGuideFeatureFlagEnabled } from "../utils/ui/featureFlags";
+import { ProgressiveDataGuide } from "./ProgressiveDataGuide";
+
 
 type SectionWithHelpProps = {
   children: React.ReactNode;

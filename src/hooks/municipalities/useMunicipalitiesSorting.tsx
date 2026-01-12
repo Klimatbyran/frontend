@@ -1,5 +1,5 @@
-import { SortOption } from "@/components/explore/SortPopover";
 import { useTranslation } from "react-i18next";
+import { SortOption } from "@/components/explore/SortPopover";
 
 export const useSortOptions = (): SortOption[] => {
     const { t } = useTranslation();

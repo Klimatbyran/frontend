@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { Filter, Check } from "lucide-react";
+import { Fragment } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -15,7 +16,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Fragment } from "react";
 
 export type FilterOption = { 
   value: string; 

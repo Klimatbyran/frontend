@@ -1,6 +1,6 @@
+import { useTranslation } from "react-i18next";
 import { Text } from "@/components/ui/text";
 import { LocalizedLink } from "@/components/LocalizedLink";
-import { useTranslation } from "react-i18next";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { DataGuideItemId } from "@/data-guide/items";
 

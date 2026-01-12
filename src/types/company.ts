@@ -1,5 +1,5 @@
-import type { paths } from "@/lib/api-types";
 import { DivideIcon as LucideIcon } from "lucide-react";
+import type { paths } from "@/lib/api-types";
 import type { KPIValue } from "./rankings";
 
 // Base company type from API

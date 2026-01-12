@@ -1,6 +1,7 @@
 // ToDo Add translations
 import React, { useMemo } from "react";
 import { ArrowUpRight, ArrowDownRight, AlertCircle } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { SECTOR_NAMES } from "@/lib/constants/sectors";
 import { RankedCompany } from "@/types/company";
 import {
@@ -8,7 +9,6 @@ import {
   CategoryType,
 } from "@/hooks/companies/useCategories";
 import { useScreenSize } from "@/hooks/useScreenSize";
-import { useTranslation } from "react-i18next";
 import { formatEmissionsAbsolute } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
 

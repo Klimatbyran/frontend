@@ -5,9 +5,9 @@ import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { DetailPieSectorGrid } from "@/components/detail/DetailGrid";
 import { DataGuideItemId } from "@/data-guide/items";
 import { SectorInfo } from "@/types/charts";
-import SectorPieLegend from "./SectorPieLegend";
-import SectorPieChart from "./SectorPieChart";
 import { SectorEmissionsByYear } from "@/types/emissions";
+import SectorPieChart from "./SectorPieChart";
+import SectorPieLegend from "./SectorPieLegend";
 
 interface SectorEmissionsProps {
   sectorEmissions: SectorEmissionsByYear | null;

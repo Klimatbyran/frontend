@@ -1,5 +1,3 @@
-import { authenticateWithGithub, baseUrl } from "@/lib/api";
-import { Token } from "@/types/token";
 import { jwtDecode } from "jwt-decode";
 import React, {
   useContext,
@@ -8,6 +6,8 @@ import React, {
   useEffect,
   useRef,
 } from "react";
+import { authenticateWithGithub, baseUrl } from "@/lib/api";
+import { Token } from "@/types/token";
 
 export interface AuthContext {
   token: string;

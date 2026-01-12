@@ -1,6 +1,8 @@
+import { useTranslation } from "react-i18next";
+import { useSearchParams } from "react-router-dom";
+import { useState } from "react";
 import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
 import { MunicipalityList } from "@/components/municipalities/list/MunicipalityList";
-import { useTranslation } from "react-i18next";
 import { Input } from "@/components/ui/input";
 import { PageHeader } from "@/components/layout/PageHeader";
 import {
@@ -9,12 +11,10 @@ import {
   MeetsParisFilter,
   MunicipalitySortBy,
 } from "@/types/municipality";
-import { useSearchParams } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { FilterGroup, FilterPopover } from "@/components/explore/FilterPopover";
 import { isSortDirection, SortDirection, SortPopover } from "@/components/explore/SortPopover";
 import { useScreenSize } from "@/hooks/useScreenSize";
-import { useState } from "react";
 import { regions } from "@/lib/constants/regions";
 import { FilterBadges } from "@/components/companies/list/FilterBadges";
 import { useSortOptions } from "@/hooks/municipalities/useMunicipalitiesSorting";

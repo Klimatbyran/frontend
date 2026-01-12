@@ -3,8 +3,8 @@ import {
   CompanyWithKPIs,
   CompanyKPIValue,
 } from "@/hooks/companies/useCompanyKPIs";
-import { MeetsParisVisualization } from "./visualizations/MeetsParisVisualization";
 import { EmissionsChangeVisualization } from "@/components/companies/rankedList/visualizations/EmissionsChangeVisualization";
+import { MeetsParisVisualization } from "./visualizations/MeetsParisVisualization";
 
 interface CompanyKPIVisualizationProps {
   companies: CompanyWithKPIs[];

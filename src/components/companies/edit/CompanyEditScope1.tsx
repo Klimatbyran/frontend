@@ -1,11 +1,11 @@
-import { CompanyEditRow } from "./CompanyEditRow";
-import { CompanyEditInputField } from "./CompanyEditField";
 import { getNumericValue } from "@/utils/ui/form";
 import { isVerified } from "@/utils/business/verification";
 import type {
   CompanyEditComponentProps,
   ReportingPeriod,
 } from "@/types/company";
+import { CompanyEditInputField } from "./CompanyEditField";
+import { CompanyEditRow } from "./CompanyEditRow";
 
 export function CompanyEditScope1({
   periods,

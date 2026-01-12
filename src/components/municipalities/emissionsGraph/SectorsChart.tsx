@@ -7,6 +7,7 @@ import {
   ReferenceLine,
 } from "recharts";
 import { useTranslation } from "react-i18next";
+import { XAxis, YAxis } from "recharts";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { SectorEmissions } from "@/types/municipality";
@@ -27,7 +28,6 @@ import {
   getCurrentYearReferenceLineProps,
   ChartTooltip,
 } from "@/components/charts";
-import { XAxis, YAxis } from "recharts";
 
 interface SectorsChartProps {
   sectorEmissions: SectorEmissions | null;
@@ -137,7 +137,7 @@ export const SectorsChart: FC<SectorsChartProps> = ({
           >
             <XAxis
               {...getXAxisProps("year", [1990, MAX_YEAR], customTicks)}
-              allowDuplicatedCategory={true}
+              allowDuplicatedCategory
               tickFormatter={(year) => year}
             />
             <YAxis {...getYAxisProps(currentLanguage)} />
@@ -173,7 +173,7 @@ export const SectorsChart: FC<SectorsChartProps> = ({
                   fillOpacity={0}
                   strokeWidth={isHidden ? 0 : 2}
                   name={sectorInfo.translatedName}
-                  connectNulls={true}
+                  connectNulls
                   style={{ cursor: "pointer", opacity: isHidden ? 0.4 : 1 }}
                   hide={isHidden}
                 />

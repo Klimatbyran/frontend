@@ -1,12 +1,12 @@
 import { Info } from "lucide-react";
+import { isMobile } from "react-device-detect";
+import { Button } from "@/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Button } from "@/components/ui/button";
-import { isMobile } from "react-device-detect";
 import { useMobileModal } from "../../hooks/useMobileModal";
 import { MobileModal } from "./MobileModal";
 

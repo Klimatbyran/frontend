@@ -1,4 +1,6 @@
 import { useMemo } from "react";
+import { useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import type { RankedCompany } from "@/types/company";
 import { calculateTrendline } from "@/lib/calculations/trends/analysis";
 import { calculateMeetsParis } from "@/lib/calculations/trends/meetsParis";
@@ -6,10 +8,9 @@ import { calculateEmissionsChange } from "@/utils/calculations/emissionsCalculat
 import { useSectorNames, useSectors } from "@/hooks/companies/useCompanySectors";
 import { getCompanySectorName } from "@/utils/data/industryGrouping";
 import { CompanySector, SECTORS } from "@/lib/constants/sectors";
-import { isSortOption, type SortOption } from "./useCompanySorting";
-import { useSearchParams } from "react-router-dom";
 import { FilterGroup } from "@/components/explore/FilterPopover";
-import { useTranslation } from "react-i18next";
+import { isSortOption, type SortOption } from "./useCompanySorting";
+
 
 const MEETS_PARIS_OPTIONS = ["all", "yes", "no", "unknown"] as const;
 type MeetsParisFilter = typeof MEETS_PARIS_OPTIONS[number];

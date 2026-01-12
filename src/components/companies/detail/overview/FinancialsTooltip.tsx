@@ -1,5 +1,5 @@
-import { InfoTooltip } from "@/components/layout/InfoTooltip";
 import { useTranslation } from "react-i18next";
+import { InfoTooltip } from "@/components/layout/InfoTooltip";
 
 // Created as a separate component in case we want to add it to more locations
 interface FinancialsTooltipProps {

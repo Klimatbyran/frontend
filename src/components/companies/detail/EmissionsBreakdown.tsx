@@ -1,6 +1,6 @@
+import { useTranslation } from "react-i18next";
 import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
-import { useTranslation } from "react-i18next";
 import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { useLanguage } from "@/components/LanguageProvider";

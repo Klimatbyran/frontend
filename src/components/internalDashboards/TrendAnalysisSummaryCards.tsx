@@ -1,5 +1,3 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Text } from "@/components/ui/text";
 import {
   TrendingDown,
   TrendingUp,
@@ -9,6 +7,8 @@ import {
   Target,
   CheckCircle,
 } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Text } from "@/components/ui/text";
 
 interface TrendAnalysisSummaryCardsProps {
   totalCompanies: number;

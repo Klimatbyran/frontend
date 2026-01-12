@@ -7,6 +7,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { useTranslation } from "react-i18next";
+import { XAxis, YAxis } from "recharts";
 import { DataPoint } from "@/types/municipality";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import {
@@ -27,7 +28,6 @@ import {
   filterDataByYearRange,
   ChartTooltip,
 } from "@/components/charts";
-import { XAxis, YAxis } from "recharts";
 import { useLanguage } from "@/components/LanguageProvider";
 
 interface OverviewChartProps {
@@ -69,7 +69,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
                 [1990, 2050],
                 [1990, 2015, 2020, currentYear, 2030, 2040, 2050],
               )}
-              allowDuplicatedCategory={true}
+              allowDuplicatedCategory
               tickFormatter={(year) => year}
             />
             <YAxis {...getYAxisProps(currentLanguage)} />

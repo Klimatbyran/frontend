@@ -1,8 +1,9 @@
+import { TrendingDown } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { InfoTooltip } from "@/components/layout/InfoTooltip";
 import { cn } from "@/lib/utils";
-import { TrendingDown } from "lucide-react";
 import { AiIcon } from "@/components/ui/ai-icon";
-import { useTranslation } from "react-i18next";
+
 
 interface CardInfoProps {
   title: string;

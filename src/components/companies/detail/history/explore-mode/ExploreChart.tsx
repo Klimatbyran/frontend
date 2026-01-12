@@ -9,20 +9,20 @@ import {
   Area,
   ComposedChart,
 } from "recharts";
+import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
+import { isMobile } from "react-device-detect";
 import { ChartTooltip } from "@/components/charts";
 import { ChartData } from "@/types/emissions";
 import { formatEmissionsAbsoluteCompact } from "@/utils/formatting/localization";
 import { generateApproximatedData } from "@/lib/calculations/trends/approximatedData";
-import { useMemo } from "react";
-import { useTranslation } from "react-i18next";
-import { isMobile } from "react-device-detect";
-import { CumulativeSummaryBoxes } from "./CumulativeSummaryBoxes";
 import {
   getBaseYearReferenceLineProps,
   getCurrentYearReferenceLineProps,
   getXAxisProps,
   getYAxisProps,
 } from "@/components/charts";
+import { CumulativeSummaryBoxes } from "./CumulativeSummaryBoxes";
 
 interface ExploreChartProps {
   data: ChartData[];
@@ -584,7 +584,7 @@ export function ExploreChart({
                           );
                         }
                   }
-                  isAnimationActive={true}
+                  isAnimationActive
                   animationDuration={1000}
                   connectNulls
                 />
@@ -642,7 +642,7 @@ export function ExploreChart({
                             );
                           }
                     }
-                    isAnimationActive={true}
+                    isAnimationActive
                     animationDuration={1000}
                     connectNulls
                   />
@@ -670,7 +670,7 @@ export function ExploreChart({
                     stroke="var(--orange-3)"
                     strokeWidth={2}
                     dot={{ fill: "var(--orange-3)", r: 0, strokeWidth: 0 }}
-                    isAnimationActive={true}
+                    isAnimationActive
                     animationDuration={1000}
                     connectNulls
                   />

@@ -1,5 +1,5 @@
-import { Text } from "@/components/ui/text";
 import { useTranslation } from "react-i18next";
+import { Text } from "@/components/ui/text";
 
 type ErrorProps = {
   titleKey?: string;

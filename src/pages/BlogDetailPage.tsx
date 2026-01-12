@@ -1,8 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { useState } from "react";
 import { CalendarDays, Clock, ArrowLeft, Share2, Check } from "lucide-react";
-import { Text } from "@/components/ui/text";
-import { Button } from "@/components/ui/button";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
@@ -10,6 +8,8 @@ import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import rehypeRaw from "rehype-raw";
 import { useTranslation } from "react-i18next";
+import { Button } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { localizeUnit } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";

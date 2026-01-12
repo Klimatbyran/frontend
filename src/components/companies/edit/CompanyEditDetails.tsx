@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { validateValue } from "../../../utils/ui/validation";
+import { Undo2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { isVerified } from "@/utils/business/verification";
 import type {
   CompanyDetails as CompanyDetailsType,
@@ -14,11 +15,10 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { Undo2 } from "lucide-react";
-import { useTranslation } from "react-i18next";
 import { useGicsCodes } from "@/hooks/companies/useGicsCodes";
 import { useCompanyEditDetailsSave } from "@/hooks/companies/useCompanyEditDetailsSave";
 import { useToast } from "@/contexts/ToastContext";
+import { validateValue } from "../../../utils/ui/validation";
 
 export function CompanyEditDetails({
   company,
