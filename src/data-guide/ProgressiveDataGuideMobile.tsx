@@ -10,7 +10,6 @@ import {
 import { DataGuideItemId } from "./items";
 import { DataGuideMarkdown } from "./DataGuideMarkdown";
 
-
 interface ProgressiveDataGuideMobileProps {
   items: DataGuideItemId[];
 }

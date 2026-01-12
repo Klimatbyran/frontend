@@ -12,7 +12,6 @@ import {
   PaginationPrevious,
 } from "../ui/pagination";
 
-
 interface NewsletterNavigationProps {
   newsletterList: Array<NewsletterType>;
   setDisplayedNewsletter: (newsletter: NewsletterType) => void;

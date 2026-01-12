@@ -206,7 +206,7 @@ export function Header() {
   }, [headerTitle, showTitle, setShowTitle]);
 
   useEffect(() => {
-    if(menuOpen){
+    if (menuOpen) {
       document.body.classList.add("overflow-hidden");
     } else {
       document.body.classList.remove("overflow-hidden");

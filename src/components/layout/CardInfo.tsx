@@ -4,7 +4,6 @@ import { InfoTooltip } from "@/components/layout/InfoTooltip";
 import { cn } from "@/lib/utils";
 import { AiIcon } from "@/components/ui/ai-icon";
 
-
 interface CardInfoProps {
   title: string;
   tooltip?: string;

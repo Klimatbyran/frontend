@@ -9,7 +9,6 @@ import { generateApproximatedData } from "@/lib/calculations/trends/approximated
 import { CumulativeSummaryBoxes } from "./CumulativeSummaryBoxes";
 import { ExploreChart } from "./ExploreChart";
 
-
 interface ExploreModeProps {
   data: ChartData[];
   companyBaseYear?: number;

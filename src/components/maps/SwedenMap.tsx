@@ -22,9 +22,7 @@ import { MapLegend } from "./MapLegend";
 import { MapTooltip } from "./MapTooltip";
 import { calculateGeoBounds } from "./utils/geoBounds";
 
-
 import "leaflet/dist/leaflet.css";
-
 
 export interface DataKPI {
   key: string;

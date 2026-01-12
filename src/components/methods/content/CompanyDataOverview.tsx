@@ -3,8 +3,6 @@ import i18next from "i18next";
 import { LinkButton } from "@/components/layout/LinkButton";
 import { MethodSection } from "@/components/layout/MethodSection";
 
-
-
 export const CompanyDataOverviewContent = () => {
   const { t } = useTranslation();
   return (

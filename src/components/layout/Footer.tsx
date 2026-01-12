@@ -140,7 +140,7 @@ export function Footer() {
             className="hover:text-white transition-colors"
             aria-label="Creative Commons Attribution-ShareAlike 4.0 International License"
           >
-           { t("footer.ccBySa")}
+            {t("footer.ccBySa")}
           </a>
 
           {!token && (

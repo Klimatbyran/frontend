@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Text } from "@/components/ui/text";
 import { useScreenSize } from "@/hooks/useScreenSize";
 
-
 interface CompanyDescriptionProps {
   description?: string | null;
 }

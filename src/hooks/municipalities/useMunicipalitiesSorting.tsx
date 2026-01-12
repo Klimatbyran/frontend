@@ -2,25 +2,25 @@ import { useTranslation } from "react-i18next";
 import { SortOption } from "@/components/explore/SortPopover";
 
 export const useSortOptions = (): SortOption[] => {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
 
-    return [
+  return [
     {
-      value: "meets_paris", 
+      value: "meets_paris",
       label: t("municipalitiesComparePage.sort.meetsParis"),
       directionLabels: {
         asc: t("municipalitiesComparePage.sort.bestFirst"),
-        desc: t("municipalitiesComparePage.sort.worstFirst")
-      }
+        desc: t("municipalitiesComparePage.sort.worstFirst"),
+      },
     },
     {
-      value: "name", 
+      value: "name",
       label: t("municipalitiesComparePage.sort.name"),
       directionLabels: {
         asc: t("municipalitiesComparePage.sort.aToZ"),
-        desc: t("municipalitiesComparePage.sort.zToA")
+        desc: t("municipalitiesComparePage.sort.zToA"),
       },
-      defaultDirection: "asc"
+      defaultDirection: "asc",
     },
     {
       value: "emissions",
@@ -31,4 +31,4 @@ export const useSortOptions = (): SortOption[] => {
       label: t("municipalitiesComparePage.sort.emissionsChangeRate"),
     },
   ];
-}
+};

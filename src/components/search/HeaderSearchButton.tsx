@@ -6,7 +6,6 @@ import { CombinedData } from "@/hooks/useCombinedData";
 import { cn } from "@/lib/utils";
 import { SearchDialog } from "./SearchDialog";
 
-
 type HeaderSearchButtonProps = {
   className?: string;
   onSearchResultClick?: () => void;

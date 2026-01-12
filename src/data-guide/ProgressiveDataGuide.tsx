@@ -17,9 +17,6 @@ import {
 } from "./ProgressiveDataGuideDesktop";
 import { ProgressiveDataGuideMobile } from "./ProgressiveDataGuideMobile";
 
-
-
-
 interface ProgressiveDataGuideProps {
   titleKey?: string;
   items: DataGuideItemId[];

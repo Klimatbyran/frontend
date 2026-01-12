@@ -17,10 +17,10 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-export type FilterOption = { 
-  value: string; 
-  label: string; 
-}
+export type FilterOption = {
+  value: string;
+  label: string;
+};
 
 export type FilterGroup = {
   heading: string;
@@ -28,7 +28,7 @@ export type FilterGroup = {
   selectedValues: string[];
   onSelect: (value: string) => void;
   selectMultiple: boolean;
-}
+};
 
 interface FilterPopoverProps {
   filterOpen: boolean;
@@ -71,22 +71,21 @@ export function FilterPopover({
                 <CommandGroup heading={group.heading}>
                   {group.options.map((option) => (
                     <CommandItem
-                    key={option.value}
-                    onSelect={() => group.onSelect(option.value)}
-                    className="flex items-center justify-between cursor-pointer"
-                  >
-                    <span>{option.label}</span>
-                    {group.selectedValues.includes(option.value) && (
-                      <Check className="h-4 w-4 text-blue-2" />
-                    )}
-                  </CommandItem>
+                      key={option.value}
+                      onSelect={() => group.onSelect(option.value)}
+                      className="flex items-center justify-between cursor-pointer"
+                    >
+                      <span>{option.label}</span>
+                      {group.selectedValues.includes(option.value) && (
+                        <Check className="h-4 w-4 text-blue-2" />
+                      )}
+                    </CommandItem>
                   ))}
                 </CommandGroup>
 
                 {i < groups.length - 1 && (
                   <CommandSeparator className="bg-black-1" />
                 )}
-
               </Fragment>
             ))}
           </CommandList>

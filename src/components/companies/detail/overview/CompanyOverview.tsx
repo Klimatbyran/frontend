@@ -32,7 +32,6 @@ import { CompanyDescription } from "./CompanyDescription";
 import { CompanyOverviewTooltip } from "./CompanyOverviewTooltip";
 import { OverviewStatistics } from "./OverviewStatistics";
 
-
 interface CompanyOverviewProps {
   company: CompanyDetails;
   selectedPeriod: ReportingPeriod;

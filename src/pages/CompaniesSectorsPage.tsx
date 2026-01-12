@@ -23,7 +23,7 @@ export function CompaniesSectorsPage() {
     meetsParisFilter,
     setMeetsParisFilter,
     filteredCompanies,
-    filterGroups
+    filterGroups,
   } = useCompanyFilters(companies);
 
   // Create active filters for badges
@@ -32,8 +32,7 @@ export function CompaniesSectorsPage() {
       ? sectors.map((sector) => ({
           type: "filter" as const,
           label: sectorNames[sector as keyof typeof sectorNames] || sector,
-          onRemove: () =>
-            setSectors(sectors.filter((s) => s !== sector)),
+          onRemove: () => setSectors(sectors.filter((s) => s !== sector)),
         }))
       : []),
     ...(meetsParisFilter !== "all"

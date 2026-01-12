@@ -5,7 +5,6 @@ import { Text } from "@/components/ui/text";
 import { useLanguage } from "@/components/LanguageProvider";
 import { articleMetaData } from "../../lib/learn-more/articleList";
 
-
 export function LearnMoreCard({
   article,
 }: {

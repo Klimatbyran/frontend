@@ -57,10 +57,10 @@ const Typewriter = ({
   const texts = useMemo(() => (Array.isArray(text) ? text : [text]), [text]);
 
   // Reset display text when language is changed
-  i18next.on('languageChanged', () => {
-    setDisplayText('');
+  i18next.on("languageChanged", () => {
+    setDisplayText("");
     setIsDeleting(true);
-  })
+  });
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;

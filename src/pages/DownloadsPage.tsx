@@ -8,7 +8,6 @@ import { DownloadInfoSection } from "@/components/products/DownloadInfoSection";
 import { DownloadControls } from "@/components/products/DownloadControls";
 import { getReportingYears } from "@/lib/api";
 
-
 interface InfoItem {
   title: string;
   description: string | React.ReactNode;

@@ -23,7 +23,6 @@ import { CategoriesChart } from "./CategoriesChart";
 import { ScopesChart } from "./ScopesChart";
 import { OverviewChart } from "./OverviewChart";
 
-
 export function EmissionsHistory({
   company,
   onYearSelect,
