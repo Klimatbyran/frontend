@@ -107,8 +107,8 @@ export const ValidationDashboard = () => {
 
   const {
     companies: allCompanies,
-    loading: companiesLoading,
-    error: companiesError,
+    companiesLoading: companiesLoading,
+    companiesError: companiesError,
   } = useCompanies();
   const unverifiedCompanies = useGetUnverifiedCompaniesForYear(parseInt(year));
   const { currentLanguage } = useLanguage();

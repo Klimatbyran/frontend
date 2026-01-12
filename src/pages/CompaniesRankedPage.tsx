@@ -20,7 +20,7 @@ import { DataPoint } from "@/types/rankings";
 
 export function CompaniesRankedPage() {
   const { t } = useTranslation();
-  const { companies, loading, error } = useCompanies();
+  const { companies, companiesLoading, companiesError } = useCompanies();
   const companyKPIs = useCompanyKPIs();
 
   const location = useLocation();

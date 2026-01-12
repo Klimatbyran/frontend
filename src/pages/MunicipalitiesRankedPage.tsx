@@ -18,7 +18,7 @@ import { MunicipalityRankedList } from "@/components/municipalities/Municipality
 
 export function MunicipalitiesRankedPage() {
   const { t } = useTranslation();
-  const { municipalities, loading, error } = useMunicipalities();
+  const { municipalities, municipalitiesLoading, municipalitiesError } = useMunicipalities();
   const municipalityKPIs = useMunicipalityKPIs();
   const [geoData] = useState(municipalityGeoJson);
 
@@ -89,7 +89,7 @@ export function MunicipalitiesRankedPage() {
     });
   }, [municipalities]);
 
-  if (loading) {
+  if (municipalitiesLoading) {
     return (
       <div className="animate-pulse space-y-16">
         <div className="h-12 w-1/3 bg-black-1 rounded" />
@@ -102,7 +102,7 @@ export function MunicipalitiesRankedPage() {
     );
   }
 
-  if (error) {
+  if (municipalitiesError) {
     return (
       <div className="text-center py-24">
         <h3 className="text-red-500 mb-4 text-xl">

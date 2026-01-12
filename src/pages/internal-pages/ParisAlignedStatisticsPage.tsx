@@ -16,7 +16,7 @@ import { PageSEO } from "@/components/SEO/PageSEO";
 import { useLanguage } from "@/components/LanguageProvider";
 
 export function ParisAlignedStatisticsPage() {
-  const { companies, loading, error } = useCompanies();
+  const { companies, companiesLoading, companiesError } = useCompanies();
   const navigate = useNavigate();
   const { currentLanguage } = useLanguage();
 
@@ -215,7 +215,7 @@ export function ParisAlignedStatisticsPage() {
     };
   }, [companies]);
 
-  if (loading) {
+  if (companiesLoading) {
     return (
       <div className="container mx-auto px-4 py-8">
         <Text variant="h1" className="text-white">
@@ -225,11 +225,11 @@ export function ParisAlignedStatisticsPage() {
     );
   }
 
-  if (error) {
+  if (companiesError) {
     return (
       <div className="container mx-auto px-4 py-8">
         <Text variant="h1" className="text-red-400">
-          Error loading data: {error.toString()}
+          Error loading data: {companiesError.toString()}
         </Text>
       </div>
     );

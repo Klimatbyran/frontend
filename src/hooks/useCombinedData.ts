@@ -11,13 +11,13 @@ export type CombinedData = {
 export const useCombinedData = () => {
   const {
     municipalities,
-    loading: isLoadingMunicipalities,
-    error: municipalitiesError,
+    municipalitiesLoading: isLoadingMunicipalities,
+    municipalitiesError: municipalitiesError,
   } = useMunicipalities();
   const {
     companies,
-    loading: isLoadingCompanies,
-    error: companiesError,
+    companiesLoading: isLoadingCompanies,
+    companiesError: companiesError,
   } = useCompanies();
 
   const hasErrors = municipalitiesError || companiesError;

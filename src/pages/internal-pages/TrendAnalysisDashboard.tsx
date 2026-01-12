@@ -13,7 +13,7 @@ import { TrendAnalysisCompaniesTable } from "@/components/internalDashboards/Tre
 import type { RankedCompany, ReportingPeriodFromList } from "@/types/company";
 
 export function TrendAnalysisDashboard() {
-  const { companies, loading, error } = useCompanies();
+  const { companies, companiesLoading, companiesError } = useCompanies();
   const { currentLanguage } = useLanguage();
   const [originalAnalyses, setOriginalAnalyses] = useState<
     (TrendAnalysis & { company: RankedCompany; scope3DataCount: number })[]
@@ -203,7 +203,7 @@ export function TrendAnalysisDashboard() {
     return meetsParis;
   }).length;
 
-  if (loading) {
+  if (companiesLoading) {
     return (
       <div className="container mx-auto px-4 py-8">
         <Text variant="h1">Loading trend analysis...</Text>
@@ -211,11 +211,11 @@ export function TrendAnalysisDashboard() {
     );
   }
 
-  if (error) {
+  if (companiesError) {
     return (
       <div className="container mx-auto px-4 py-8">
         <Text variant="h1" className="text-red-500">
-          Error loading data: {error.toString()}
+          Error loading data: {companiesError.toString()}
         </Text>
       </div>
     );
