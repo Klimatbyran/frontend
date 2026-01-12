@@ -1,12 +1,12 @@
 import { useTranslation } from "react-i18next";
 import RankedList from "@/components/ranked/RankedList";
-import { DataPoint, KPIValue } from "@/types/rankings";
-import { Region, RegionListItem } from "@/types/region";
+import { DataPoint, KPIValue, RankedListItem } from "@/types/rankings";
+import { Region } from "@/types/region";
 
 interface RegionalRankedListProps {
-  regionEntities: RegionListItem[];
+  regionEntities: RankedListItem[];
   selectedKPI: KPIValue<Region>;
-  onItemClick?: (item: RegionListItem) => void;
+  onItemClick?: (item: RankedListItem) => void;
 }
 
 export function RegionalRankedList({
@@ -16,15 +16,15 @@ export function RegionalRankedList({
 }: RegionalRankedListProps) {
   const { t } = useTranslation();
 
-  const asDataPoint = (kpi: unknown): DataPoint<RegionListItem> =>
-    kpi as DataPoint<RegionListItem>;
+  const asDataPoint = (kpi: unknown): DataPoint<RankedListItem> =>
+    kpi as DataPoint<RankedListItem>;
 
   return (
     <RankedList
       data={regionEntities}
       selectedDataPoint={asDataPoint({
         label: selectedKPI.label,
-        key: selectedKPI.key as keyof RegionListItem,
+        key: selectedKPI.key as keyof RankedListItem,
         unit: selectedKPI.unit,
         description: selectedKPI.description,
         higherIsBetter: selectedKPI.higherIsBetter,

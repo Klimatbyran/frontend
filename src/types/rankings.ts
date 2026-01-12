@@ -1,6 +1,7 @@
 import { Municipality } from "./municipality";
 import { Region } from "./region";
 import { CompanyWithKPIs } from "./company";
+import { DataItem } from "@/components/maps/SwedenMap";
 
 export interface DataPoint<T> {
   label: string;
@@ -13,6 +14,11 @@ export interface DataPoint<T> {
   booleanLabels?: { true: string; false: string };
   formatter?: (value: T[keyof T]) => string | React.ReactNode;
 }
+
+export type RankedListItem = DataItem & {
+  mapName: string;
+  displayName: string;
+};
 
 /**
  * Generic KPI value type that can be used for any entity type
