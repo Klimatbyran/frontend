@@ -50,6 +50,7 @@ export default tseslint.config(
           ignoreRestSiblings: true,
         },
       ],
+      "@typescript-eslint/no-explicit-any": "warn",
       complexity: ["warn", 10],
       "max-lines": ["warn", 500],
       "max-lines-per-function": ["warn", 50],
