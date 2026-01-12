@@ -36,8 +36,10 @@ export function SuggestEdit() {
                 const questionValue = formData.get("question");
                 const emailSubject = `${t("landingPage.emailTitle")} klimatkollen.se`;
                 const encodedSubject = encodeURIComponent(emailSubject);
-                const encodedBody = encodeURIComponent(questionValue);
-                window.location.href = `mailto:hej@klimatkollen.se?subject=${emailSubject}&body=${questionValue}`;
+                const encodedBody = encodeURIComponent(
+                  questionValue?.toString() ?? "",
+                );
+                window.location.href = `mailto:hej@klimatkollen.se?subject=${encodedSubject}&body=${encodedBody}`;
               }}
             >
               <Title className="text-[22px] mb-2">
