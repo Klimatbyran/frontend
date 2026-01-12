@@ -6,11 +6,13 @@ import { Municipality } from "@/types/municipality";
 interface MunicipalityRankedListProps {
   municipalityEntities: RankedListItem[];
   selectedKPI: KPIValue<Municipality>;
+  onItemClick: (item: Municipality) => void;
 }
 
 export function MunicipalityRankedList({
   municipalityEntities,
   selectedKPI,
+  onItemClick,
 }: MunicipalityRankedListProps) {
   const { t } = useTranslation();
 
@@ -49,7 +51,7 @@ export function MunicipalityRankedList({
         booleanLabels: selectedKPI.booleanLabels,
         formatter: formatValue,
       })}
-      onItemClick={() => {}}
+      onItemClick={onItemClick}
       searchKey="displayName"
       searchPlaceholder={t("rankedList.search.placeholder")}
     />
