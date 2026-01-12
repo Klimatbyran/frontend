@@ -31,8 +31,14 @@ export const useSortOptions = () => {
   ] as const;
 };
 
-
-const SORT_OPTIONS = ["emissions_reduction", "total_emissions", "scope3_coverage", "meets_paris", "name_asc", "name_desc"] as const;
+const SORT_OPTIONS = [
+  "emissions_reduction",
+  "total_emissions",
+  "scope3_coverage",
+  "meets_paris",
+  "name_asc",
+  "name_desc",
+] as const;
 export type SortOption = (typeof SORT_OPTIONS)[number];
 
 export function isSortOption(value: string): value is SortOption {

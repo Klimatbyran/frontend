@@ -26,10 +26,11 @@ export function SuggestEdit() {
               data-[state=open]:data-[side=right]:animate-slideLeftAndFade data-[state=open]:data-[side=top]:animate-slideDownAndFade z-[35]"
             sideOffset={5}
           >
-
             {/* Suggestion form start */}
-            <Form.Root className="w-[260px]" onSubmit={(e) => {
-              // on submit question
+            <Form.Root
+              className="w-[260px]"
+              onSubmit={(e) => {
+                // on submit question
                 e.preventDefault();
                 const formData = new FormData(e.currentTarget);
                 const questionValue = formData.get("question");
@@ -37,8 +38,11 @@ export function SuggestEdit() {
                 const encodedSubject = encodeURIComponent(emailSubject);
                 const encodedBody = encodeURIComponent(questionValue);
                 window.location.href = `mailto:hej@klimatkollen.se?subject=${emailSubject}&body=${questionValue}`;
-            }}>
-              <Title className="text-[22px] mb-2">{t("landingPage.reportCorrection")}</Title>
+              }}
+            >
+              <Title className="text-[22px] mb-2">
+                {t("landingPage.reportCorrection")}
+              </Title>
               <Form.Field className="mb-2.5 grid" name="question">
                 <div className="flex items-baseline justify-between">
                   <Form.Message

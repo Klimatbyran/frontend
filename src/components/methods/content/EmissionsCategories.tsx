@@ -6,11 +6,15 @@ export const EmissionsAndCategoriesContent = () => {
   const { t } = useTranslation();
   return (
     <div className="prose prose-invert mx-auto space-y-8">
-      <MethodSection title={t("methodsPage.company.emissionCategories.scope2.title")}>
+      <MethodSection
+        title={t("methodsPage.company.emissionCategories.scope2.title")}
+      >
         <p>{t("methodsPage.company.emissionCategories.scope2.paragraph1")}</p>
       </MethodSection>
 
-      <MethodSection title={t("methodsPage.company.emissionCategories.scope3.title")}>
+      <MethodSection
+        title={t("methodsPage.company.emissionCategories.scope3.title")}
+      >
         <p>{t("methodsPage.company.emissionCategories.scope3.paragraph1")}</p>
         <p>{t("methodsPage.company.emissionCategories.scope3.paragraph2")}</p>
         <p>{t("methodsPage.company.emissionCategories.scope3.paragraph3")}</p>

@@ -12,7 +12,11 @@ import {
 import { useSearchParams } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { FilterGroup, FilterPopover } from "@/components/explore/FilterPopover";
-import { isSortDirection, SortDirection, SortPopover } from "@/components/explore/SortPopover";
+import {
+  isSortDirection,
+  SortDirection,
+  SortPopover,
+} from "@/components/explore/SortPopover";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { useState } from "react";
 import { regions } from "@/lib/constants/regions";
@@ -29,43 +33,71 @@ export function MunicipalitiesComparePage() {
   const sortOptions = useSortOptions();
 
   const selectedRegion = searchParams.get("selectedRegion") || "all";
-  const meetsParisFilter = isMeetsParisFilter(searchParams.get("meetsParisFilter") ?? "") ? searchParams.get("meetsParisFilter") as MeetsParisFilter : "all";
+  const meetsParisFilter = isMeetsParisFilter(
+    searchParams.get("meetsParisFilter") ?? "",
+  )
+    ? (searchParams.get("meetsParisFilter") as MeetsParisFilter)
+    : "all";
   const searchQuery = searchParams.get("searchQuery") || "";
-  const sortBy = isMunicipalitySortBy(searchParams.get("sortBy") ?? "") ? searchParams.get("sortBy") as MunicipalitySortBy : "meets_paris"; 
-  const sortDirection = isSortDirection(searchParams.get("sortDirection") ?? "") 
-    ? searchParams.get("sortDirection") as SortDirection 
-    : sortOptions.find(s => s.value === sortBy)?.defaultDirection ?? "desc"; 
+  const sortBy = isMunicipalitySortBy(searchParams.get("sortBy") ?? "")
+    ? (searchParams.get("sortBy") as MunicipalitySortBy)
+    : "meets_paris";
+  const sortDirection = isSortDirection(searchParams.get("sortDirection") ?? "")
+    ? (searchParams.get("sortDirection") as SortDirection)
+    : (sortOptions.find((s) => s.value === sortBy)?.defaultDirection ?? "desc");
 
-  const setOrDeleteSearchParam = (value: string | null, param: string) => setSearchParams((searchParams) => {
-    value ? searchParams.set(param, value) : searchParams.delete(param);
-    return searchParams;
-  }, { replace: true });
+  const setOrDeleteSearchParam = (value: string | null, param: string) =>
+    setSearchParams(
+      (searchParams) => {
+        value ? searchParams.set(param, value) : searchParams.delete(param);
+        return searchParams;
+      },
+      { replace: true },
+    );
 
-  const setSelectedRegion = (selectedRegion: string) => setOrDeleteSearchParam(selectedRegion, "selectedRegion");
-  const setMeetsParisFilter = (meetsParisFilter: string) => setOrDeleteSearchParam(meetsParisFilter, "meetsParisFilter");
-  const setSearchQuery = (searchQuery: string) => setOrDeleteSearchParam(searchQuery.trim() || null, "searchQuery");
-  const setSortBy = (sortBy: string) => setOrDeleteSearchParam(sortBy, "sortBy");
-  const setSortDirection = (sortDirection: string) => setOrDeleteSearchParam(sortDirection, "sortDirection");
+  const setSelectedRegion = (selectedRegion: string) =>
+    setOrDeleteSearchParam(selectedRegion, "selectedRegion");
+  const setMeetsParisFilter = (meetsParisFilter: string) =>
+    setOrDeleteSearchParam(meetsParisFilter, "meetsParisFilter");
+  const setSearchQuery = (searchQuery: string) =>
+    setOrDeleteSearchParam(searchQuery.trim() || null, "searchQuery");
+  const setSortBy = (sortBy: string) =>
+    setOrDeleteSearchParam(sortBy, "sortBy");
+  const setSortDirection = (sortDirection: string) =>
+    setOrDeleteSearchParam(sortDirection, "sortDirection");
 
   const filterGroups: FilterGroup[] = [
     {
       heading: t("municipalitiesComparePage.filter.selectRegion"),
-      options: [{value: "all", label: t("municipalitiesComparePage.filter.allRegions")}, ...Object.keys(regions).map((r) => ({ value: r, label: r}))],
+      options: [
+        {
+          value: "all",
+          label: t("municipalitiesComparePage.filter.allRegions"),
+        },
+        ...Object.keys(regions).map((r) => ({ value: r, label: r })),
+      ],
       selectedValues: [selectedRegion],
       onSelect: setSelectedRegion,
-      selectMultiple: false
+      selectMultiple: false,
     },
     {
-        heading: t("companiesPage.filteringOptions.meetsParis"),
-        options: [
-          { value: "all", label: t("all") },
-          { value: "yes", label: t("companiesPage.filteringOptions.meetsParisYes") },
-          { value: "no", label: t("companiesPage.filteringOptions.meetsParisNo") },
-        ],
-        selectedValues: [meetsParisFilter],
-        onSelect: (value: string) => setMeetsParisFilter(value as MeetsParisFilter),
-        selectMultiple: false
-      }
+      heading: t("companiesPage.filteringOptions.meetsParis"),
+      options: [
+        { value: "all", label: t("all") },
+        {
+          value: "yes",
+          label: t("companiesPage.filteringOptions.meetsParisYes"),
+        },
+        {
+          value: "no",
+          label: t("companiesPage.filteringOptions.meetsParisNo"),
+        },
+      ],
+      selectedValues: [meetsParisFilter],
+      onSelect: (value: string) =>
+        setMeetsParisFilter(value as MeetsParisFilter),
+      selectMultiple: false,
+    },
   ];
 
   // Create active filters for badges
@@ -92,7 +124,7 @@ export function MunicipalitiesComparePage() {
           },
         ]
       : []),
-      {
+    {
       type: "sort" as const,
       label: String(
         sortOptions.find((s) => s.value === sortBy)?.label ?? sortBy,
@@ -148,7 +180,9 @@ export function MunicipalitiesComparePage() {
           {/* Search Input */}
           <Input
             type="text"
-            placeholder={t("municipalitiesComparePage.filter.searchPlaceholder")}
+            placeholder={t(
+              "municipalitiesComparePage.filter.searchPlaceholder",
+            )}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="bg-black-1 rounded-md px-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-2 relative w-full md:w-[350px]"
@@ -173,11 +207,15 @@ export function MunicipalitiesComparePage() {
 
           {/* Badges */}
           {activeFilters.length > 0 && (
-            <div className={cn("flex flex-wrap gap-2", screenSize.isMobile ? "w-full" : "flex-1")}>
+            <div
+              className={cn(
+                "flex flex-wrap gap-2",
+                screenSize.isMobile ? "w-full" : "flex-1",
+              )}
+            >
               <FilterBadges filters={activeFilters} view="list" />
             </div>
           )}
-
         </div>
       </div>
 
