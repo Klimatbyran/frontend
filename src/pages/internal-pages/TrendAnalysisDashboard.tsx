@@ -10,15 +10,16 @@ import { PageSEO } from "@/components/SEO/PageSEO";
 import { useLanguage } from "@/components/LanguageProvider";
 import { TrendAnalysisSummaryCards } from "@/components/internalDashboards/TrendAnalysisSummaryCards";
 import { TrendAnalysisCompaniesTable } from "@/components/internalDashboards/TrendAnalysisCompaniesTable";
+import type { RankedCompany, ReportingPeriodFromList } from "@/types/company";
 
 export function TrendAnalysisDashboard() {
   const { companies, loading, error } = useCompanies();
   const { currentLanguage } = useLanguage();
   const [originalAnalyses, setOriginalAnalyses] = useState<
-    (TrendAnalysis & { company: any; scope3DataCount: number })[]
+    (TrendAnalysis & { company: RankedCompany; scope3DataCount: number })[]
   >([]);
   const [filteredCompanies, setFilteredCompanies] = useState<
-    (TrendAnalysis & { company: any; scope3DataCount: number })[]
+    (TrendAnalysis & { company: RankedCompany; scope3DataCount: number })[]
   >([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState<string>("companyName");
@@ -73,7 +74,10 @@ export function TrendAnalysisDashboard() {
           ...trendAnalysis,
           scope3DataCount,
           company,
-        } as TrendAnalysis & { scope3DataCount: number; company: any };
+        } as TrendAnalysis & {
+          scope3DataCount: number;
+          company: RankedCompany;
+        };
       } else {
         // Company has no trend analysis - show as "no trend" for internal analysis
         return {
@@ -86,7 +90,10 @@ export function TrendAnalysisDashboard() {
           yearlyPercentageChange: 0,
           scope3DataCount,
           company,
-        } as TrendAnalysis & { scope3DataCount: number; company: any };
+        } as TrendAnalysis & {
+          scope3DataCount: number;
+          company: RankedCompany;
+        };
       }
     });
 
@@ -105,12 +112,16 @@ export function TrendAnalysisDashboard() {
         return matchesSearch;
       })
       .sort((a, b) => {
-        let aValue: any = a[sortBy as keyof TrendAnalysis];
-        let bValue: any = b[sortBy as keyof TrendAnalysis];
+        let aValue: string | number = a[sortBy as keyof TrendAnalysis] as
+          | string
+          | number;
+        let bValue: string | number = b[sortBy as keyof TrendAnalysis] as
+          | string
+          | number;
 
         if (typeof aValue === "string") {
           aValue = aValue.toLowerCase();
-          bValue = bValue.toLowerCase();
+          bValue = (bValue as string).toLowerCase();
         }
 
         if (sortBy === "companyName") {
@@ -140,7 +151,7 @@ export function TrendAnalysisDashboard() {
     filteredCompanies.reduce((sum, analysis) => {
       const totalDataPoints =
         analysis.company.reportingPeriods?.filter(
-          (period: any) =>
+          (period: ReportingPeriodFromList) =>
             period.emissions &&
             period.emissions.calculatedTotalEmissions !== null &&
             period.emissions.calculatedTotalEmissions !== undefined,
@@ -153,14 +164,15 @@ export function TrendAnalysisDashboard() {
       const baseYear = analysis.company.baseYear?.year;
       const data =
         analysis.company.reportingPeriods?.filter(
-          (period: any) =>
+          (period: ReportingPeriodFromList) =>
             period.emissions &&
             period.emissions.calculatedTotalEmissions !== null &&
             period.emissions.calculatedTotalEmissions !== undefined,
         ) || [];
       const dataSinceBaseYear = baseYear
         ? data.filter(
-            (period: any) => new Date(period.endDate).getFullYear() >= baseYear,
+            (period: ReportingPeriodFromList) =>
+              new Date(period.endDate).getFullYear() >= baseYear,
           )
         : data;
       return sum + dataSinceBaseYear.length;
