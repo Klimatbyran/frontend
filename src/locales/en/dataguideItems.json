@@ -6,6 +6,12 @@
       "A **base year** is the year a company chooses as the starting point for tracking its climate progress. All future emission reductions are usually measured **in comparison to this year**.\n\nFor example, if a company set its base year as 2020 and aimed to cut emissions by 50% by 2030, all reductions would be measured *relative to its 2020 emissions**.\n\n**Why it matters:** The base year provides a consistent reference point to measure long-term progress. Without it, it’s hard to know whether a company is actually reducing emissions — or just fluctuating year to year.\n\n**Note:** Some companies update their base year if they change how they calculate emissions or if they undergo a major restructuring (like a merger or acquisition)."
     ]
   },
+  "citizens": {
+    "title": "Why relate to an individual?",
+    "content": [
+      "To make the emissions change easier to understand, we compare it to the average annual conspumtion based greenhouse gas emissions per person per year. In our case, we assume that an average person accounts for 9 tons of CO₂-equivalents (tCO₂e) per year. (1)\n\n[(1) https://konsumtionskompassen.se/](https://konsumtionskompassen.se/)"
+    ]
+  },
   "co2units": {
     "title": "Unit: tCO2e",
     "content": [
@@ -52,6 +58,42 @@
     "title": "What is turnover, and why does it matter for emissions?",
     "content": [
       "**Turnover** refers to the total revenue or income a company generates from its business activities — in other words, how much money it brings in before costs are deducted.\n\nFor example, a company with a turnover of £500 million has earned that amount in sales over the course of a year.\n\nTurnover helps put a company’s **emissions into perspective**. By comparing emissions to turnover, we can see how much climate impact is generated **per unit of economic activity**.\n\nThis is often referred to as **emissions intensity**, and it can help answer questions like:\n\n- Is the company growing its business while reducing its emissions?\n- How efficient is the company in terms of emissions per £1 million earned?\n\nTwo companies might emit the same amount of greenhouse gases, but if one has five times the turnover, it may be operating more efficiently — or have more resources to invest in reductions.\n\nTurnover doesn’t explain everything, but it’s a useful indicator when comparing companies of different sizes or evaluating progress over time."
+    ]
+  },
+  "detailWhyDataDelay": {
+    "title": "Why is the latest data a few years old?",
+    "content": [
+      "Official emissions data for municipalities in Sweden is usually 1,5-2 years delayed. It takes time to collect, verify, and publish emissions from many sectors. That’s why we estimate current emissions using recent trends."
+    ]
+  },
+  "financialsScope3Category15": {
+    "title": "Financed Emissions Reporting",
+    "content": [
+      "Financed emissions are often reported with a delay, as they are often based on the previous year's data from the companies included in the investment. We show emissions data in scope 3 category 15 in the year it is publicly reported in the annual report, even if it is sometimes stated that the data in this category comes from a previous year.\n\nThis means that when you see scope 3 category 15 emissions for a financial company, the actual emissions may have occurred in an earlier year than what's shown in the reporting year. This is common practice in the financial sector due to the time it takes to collect and verify emissions data from portfolio companies."
+    ]
+  },
+  "forestFires": {
+    "title": "Why relate to forest fires?",
+    "content": [
+      "We have calculated how large a wild fire would have to be to produce the same amount of emissions. We base this on the following data:\n\n- On average, each hectare of forest contains about 50 tons of carbon (C). (1)\n- Carbon is converted to carbon dioxide (CO₂) using the factor 44/12 (molecular weights), which means that one hectare corresponds to roughly 50 × (44/12) ≈ 183 tons of CO₂.\n\nBased on the emissions change, we calculate how many hectares equals that amount of CO₂. This is then compared to familiar references such as football fields, tennis courts, or city areas. Using this method, we can express it as something like: “This amount of CO₂ corresponds to emissions from a wild fire as large as X football fields”.\n\n[(1) https://climate.mit.edu/ask-mit/how-many-new-trees-would-we-need-offset-our-carbon-emissions](https://climate.mit.edu/ask-mit/how-many-new-trees-would-we-need-offset-our-carbon-emissions)"
+    ]
+  },
+  "historicVsParis": {
+    "title": "How Can They Be “On Track for Paris” If Their Historic % Is Lower?",
+    "content": [
+      "It may seem strange that a historic change like **–4% per year** can be on track when it looks so different from the Paris Path of **–11.72% per year**.  \nThe reason is simple: these numbers describe **different things**.\n\n## 1. A Dirt Pile as a Carbon Budget\nImagine you have a **300 kg pile of dirt** you must move within **3 hours** before the rain arrives.  \nThat 300 kg is your **carbon budget**: a total amount that must be dealt with over a fixed time period.\n\n## 2. The Percentage-Based Plan (Carbon Law)\nA landscape expert gives you a plan:\n\n> “Aim to remove **about 12%** of what remains every 10 minutes in order to clear the dirt in time.”\n\nThis is a **percentage-based pathway** — large removals at the beginning, smaller ones later.\n\nAnd it is **one path** that would both clear all the dirt and stay within the 3-hour limit.  \n\n## 3. Your Expected Path (Trendline)\nFrom past projects, you know your natural pace:\n\n- you fill a wheelbarrow with **about 10 kg of dirt every 10 minutes**,  \n- and you can keep this up steadily.\n\nThis is a **fixed absolute reduction**, not a percentage. It forms a **straight-line trend**, just like the LAD trendline in our emissions calculations.\n\nAt the beginning, 10 kg out of 300 kg is only **around 3%**—much lower than the expert’s recommended 12%. But as the pile shrinks, the same 10 kg becomes **5%, 8%, 12%, 20%**, and so on.\n\n## 4. What Really Matters: The Total Removed\nAfter 3 hours, only one thing determines success:\n\n**Did you move all ~300 kg?**\n\nIf your steady 10 kg every 10 minutes is enough to clear the entire pile in time, you succeeded—even though your early percentages were far below 12%.\n\nThis mirrors how we judge if an organisation is on track to be Paris aligned:\n- the Paris Path gives a **reference percentage curve**,  \n- but what counts is whether **total emissions from 2025–2050** stay within the defined **carbon budget** and they reach net zero.\n\nA linear trendline with steady absolute reductions can still keep the total low enough, even if the historic percentage looks small.\n\n## 5. When It Would Fail\nThis only works if the **absolute reductions are large enough**.\n\nIf you were removing only **5 kg every 10 minutes** instead of 10 kg, you wouldn’t clear the pile in time —  \njust as too-small emission cuts would fail to stay within the Paris-aligned carbon budget."
+    ]
+  },
+  "historicalEmissions": {
+    "title": "Historical emmissions",
+    "content": [
+      "All emissions are based on the reported values that companies note in their yearly sustainability reports. These numbers may be adjusted in subsequent reports or change over time as previous methods are revised or values corrected."
+    ]
+  },
+  "howTrendLinesCalculated": {
+    "title": "How We Calculate the Trend Line",
+    "content": [
+      "The trend line shows how emissions are likely to change in the future if the organisation continues along the same pattern as it has in recent years. It is not a forecast of planned actions, but a simple statistical estimate based on historical data.\n\n## We use a method called Least Absolute Deviations (LAD)\n\nTo calculate the trend, we use a statistical technique called **Least Absolute Deviations (LAD)**.  \nThis method draws a straight line through the historical emissions values by finding the line that keeps the total distance to the data points as small as possible.\n\nUnlike a percentage-based trend, LAD produces a **linear change in tonnes per year**, not a percentage.\n\nLAD is chosen because it is:\n- **robust** against outliers,\n- **simple and transparent**, and  \n- produces a clear trend even when data fluctuates\n\n## Why it is linear\nBecause LAD fits a **straight line**, the model assumes that emissions change by the **same number of tonnes each year**.  \nFor example, it might show a decrease of –1,500 tonnes per year.\n\nThis also means that the **percentage change** will vary over time:\n- the same tonne reduction is a small % when emissions are high\n- and a large % when emissions are low\n\nThis is why the trend line does **not** represent a fixed annual percentage, but a consistent annual change in tonnes."
     ]
   },
   "meaningOfNetZero": {
@@ -138,16 +180,28 @@
       "This number shows the latest available year of officially reported fossil CO₂e emissions for the municipality.\n\nOfficial data is typically 1.5–2 years delayed. For an estimate of emissions in the current year, see the emissions development graph below."
     ]
   },
-  "municipalityWhyDataDelay": {
-    "title": "Why is the latest data a few years old?",
+  "onTrackForParis": {
+    "title": "How We Calculate “On Track for Paris”",
     "content": [
-      "Official emissions data for municipalities in Sweden is usually 1,5-2 years delayed. It takes time to collect, verify, and publish emissions from many sectors. That’s why we estimate current emissions using recent trends."
+      "“On Track for Paris” means an organisation’s **total projected emissions from 2025–2050** fit within a Paris-aligned carbon budget.\n\nWe begin with a 2025 value for the organisation’s emissions. If the most recent measured year is earlier, we estimate 2025 using the historical trend.\n\nThis starting point is used for both:\n- the **Carbon Law pathway**, and  \n- the **trendline projection**\nso that both paths are directly comparable.\n\n### 1. Paris Path (Carbon Law)\nWe calculate a Paris-aligned pathway using **–11.72% per year** (Carbon Law).  \nThe *total* emissions allowed along this curve form a **carbon budget** for 2025–2050.\n\n### 2. Trendline Projection\nWe estimate future emissions with a **linear LAD trendline**, based on historical data. This gives a **steady change in tonnes per year** rather than a fixed percentage.  \nWe extend this trendline from 2025 to 2050 and sum the **total projected emissions**.\n\n### 3. Compare the Totals\nParis alignment is determined by comparing the entity's:\n\n- **Trendline total emissions (2025–2050)**  \n- **Total carbon budget (2025–2050)**\n\nIf the trendline total is **lower** than the budget, the organisation is marked as **On Track for Paris**.  \nIf it is **higher**, it is **Not On Track**.\n\nThis method evaluates the **full emissions pathway**, not whether each year matches the –11.72% rate."
     ]
   },
   "parisAgreementLine": {
     "title": "What is the Paris Agreement line on the graph?",
     "content": [
-      "The green line represents the emissions trajectory aligned with the Paris Agreement’s 1.5°C target. It shows the pace at which emissions must fall globally in order to stay within the remaining carbon budget — a 12% annual reduction starting in 2025. This updated trajectory reflects the reality that global emissions didn’t peak in 2020, and that we are now five years behind the original Carbon Law pathway. Klimatkollen uses this revised Carbon Law rule of thumb to visualise how far companies and municipalities are from the needed emissions path.\n\nLearn more about our [method](/en/methodology) and read the full [white paper](/reports/2025-06-19_ApplyingCarbonLawFrom2025.pdf). Or see some [common questions](/en/insights/carbon-law-from-2025)."
+      "The green line represents the emissions trajectory aligned with the Paris Agreement’s 1.5°C target. It shows the pace at which emissions must fall globally in order to stay within the remaining carbon budget — a 12% annual reduction starting in 2025. This updated trajectory reflects the reality that global emissions didn’t peak in 2020, and that we are now five years behind the original Carbon Law pathway. Klimatkollen uses this revised Carbon Law rule of thumb to visualise how far companies, municipalities and regions are from the needed emissions path.\n\nLearn more about our [method](/en/methodology) and read the full [white paper](/reports/2025-06-19_ApplyingCarbonLawFrom2025.pdf). Or see some [common questions](/en/insights/carbon-law-from-2025)."
+    ]
+  },
+  "regionTotalEmissions": {
+    "title": "Total Emissions",
+    "content": [
+      "This number shows the latest available year of officially reported fossil CO₂e emissions for the region.\n\nOfficial data is typically 1.5–2 years delayed. For an estimate of emissions in the current year, see the emissions development graph below."
+    ]
+  },
+  "relatableNumbers": {
+    "title": "Why relatable numbers?",
+    "content": [
+      "Emission numbers can be difficult to grasp in isolation. To make them easier to understand, we convert changes over time into relatable, real-world equivalents. This helps show what an increase or decrease in emissions actually means in practice.\n\nRather than comparing total emissions, we focus on the change — for example, how much a company or region’s emissions have gone up or down compared to the previous year."
     ]
   },
   "scope1": {
@@ -184,6 +238,12 @@
     "title": "What our total emissions represent",
     "content": [
       "This figure represents the **total reported greenhouse gas (GHG)** emissions for the company in a given year. It includes emissions from **Scope 1, 2, and 3** — offering a broad view of the company’s climate impact across its operations and value chain.\n\n**Note:** Biogenic emissions (e.g. from plant-based materials) are **not included** in this total.\n\nCompanies report their emissions in three categories **— Scope 1, Scope 2, and Scope 3 —** to clarify **where emissions come from** and **how responsibility is assigned**."
+    ]
+  },
+  "whatTrendLineRepresents": {
+    "title": "What the Trend Line Represents and How We Use It",
+    "content": [
+      "The trend line shows how emissions might develop in the future if the recent pattern continues. It is not a forecast of planned actions, but a simple way to understand long-term direction.\n\n**What the trend line represents**\n\nThe trend line answers the question:\n\n> “If emissions continue changing as they have in recent years, what might future emissions look like?”\n\nIt smooths out year-to-year fluctuations and provides a clear view of whether emissions are generally rising, stable, or falling.\n\n**What the trend line does *not* represent**\n\n- It is **not** a prediction of future policy or investments.  \n- It is **not** a required pathway or target.  \n- It is **not** a % reduction model.  \n- It is **not** guaranteed to match the Paris Path.\n\nIt reflects only the **historical trend**.\n\n**How we use the trend line**\n\nWe use the trend line to:\n- show the direction and pace of change,\n- estimate future emissions year by year,  \n- calculate the **total projected emissions** from 2025–2050,  \n- and compare that total to the Paris-aligned carbon budget."
     ]
   },
   "yearOverYearChange": {

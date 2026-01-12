@@ -1,5 +1,18 @@
 ---
 id: "only-radical-futures-left"
+title: "Only Radical Futures Left"
+excerpt: "There Are Only Radical Futures Left – That’s Why We Need To Cut Emissions by 12 Percent Per Year"
+date: "2025-07-09"
+readTime: "2 min"
+category: "analysis"
+image: "/images/blogImages/only-radical-futures.jpg"
+language: "en"
+author:
+  name: "Frida Berry Eklund"
+  avatar: "/people/frida.jpg"
+relatedPosts:
+- "carbon-law-from-2025"
+- "2024-report"
 ---
 
 **Starting in 2025, the world must halve emissions every five years** if we want even a 50 percent chance of limiting global warming to 1.5°C – the central goal of the Paris Agreement. That equates to emission cuts of **12 percent** every year. And right now, we’re far off track. Global emissions are still rising, and the tiny remaining carbon budget is shrinking by 3 percent – every single month.

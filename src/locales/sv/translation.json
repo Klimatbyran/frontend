@@ -1,11 +1,18 @@
 {
   "yes": "Ja",
   "no": "Nej",
+  "noData": "Ingen data tillgänglig",
+  "unknown": "Okänt",
+  "all": "Alla",
   "emissionsUnit": "tCO₂e",
   "header": {
     "companies": "Företag",
+    "companiesSectors": "Sektorer",
+    "companiesRanked": "Topplistor",
+    "companiesExplore": "Utforska företag",
     "municipalities": "Kommuner",
     "municipalitiesRanked": "Topplistor",
+    "regionsRanked": "Län",
     "municipalitiesExplore": "Utforska",
     "about": "Om",
     "aboutUs": "Om oss",
@@ -32,6 +39,16 @@
     "supporters": "Stöd och partners",
     "internationalLicense": "International license",
     "ccBySa": "CC BY-SA - Attribution-ShareAlike 4.0"
+  },
+  "components": {
+    "error": {
+      "title": "Det gick inte att hämta informationen",
+      "description": "Försök igen senare"
+    },
+    "noData": {
+      "title": "Ingen data tillgänglig",
+      "description": "Kontrollera att länken är korrekt"
+    }
   },
   "newsletter": {
     "subscribe": "Prenumerera på vårt nyhetsbrev",
@@ -66,6 +83,103 @@
     "tabName": {
       "companies": "företagen",
       "municipalities": "kommunerna"
+    },
+    "reportCorrection": "Anmäl en korrigering",
+    "questionPlaceholder": "Berätta vad och var ärendet gäller",
+    "questionMissing": "Ange en kommentar",
+    "submitQuestion": "Skicka",
+    "emailTitle": "Förslag till",
+    "ctaSection": {
+      "title": "Redo att utforska datan?",
+      "description": "Börja din resa in i Sveriges klimatdata. Sök efter företag och kommuner, utforska rankinglistor och upptäck vem som leder kampen mot klimatförändringarna.",
+      "exploreClimateData": "Se kommunranking",
+      "viewCompanyRankings": "Utforska företagsdata",
+      "or": "Eller"
+    },
+    "siteFeatures": {
+      "title": "Omfattande klimatspårning",
+      "description": "Övervaka utsläppsdata och klimatåtaganden i hela Sverige.",
+      "features": {
+        "municipalityRankings": {
+          "title": "Kommunranking",
+          "description": "Spåra klimatframsteg och utsläppsdata från kommuner och lokala myndigheter."
+        },
+        "companyRankings": {
+          "title": "Företagsranking",
+          "description": "Jämför utsläppsprestationer, minskningsmål och hållbarhetsmått för svenska företag."
+        },
+        "progressTracking": {
+          "title": "Framstegsspårning",
+          "description": "Övervaka år-till-år-förändringar och överensstämmelse med klimatmål och vetenskapsbaserade mål."
+        }
+      }
+    },
+    "scrollSteps": {
+      "mission": {
+        "badge": "Transparens för klimatåtgärder",
+        "heading": "Vårt uppdrag",
+        "paragraph": "Klimatkollen finns för att göra klimatdata tillgänglig för alla. Vi tror att transparens driver ansvar, och ansvar driver verklig klimatåtgärd. Genom att sätta utsläppsdata i medborgarnas händer ger vi samhällen möjlighet att hålla organisationer ansvariga för sina miljöåtaganden."
+      },
+      "transparency": {
+        "badge": "Ljuset är det bästa desinfektionsmedlet",
+        "heading": "Varför datatransparens\när viktigt",
+        "paragraph": "När utsläppsdata döljs bakom företagsrapporter och betalda databaser stagnerar framstegen. Transparent, tillgänglig klimatdata skapar marknadstryck för bättre prestanda. Företag och kommuner som vet att deras data är offentlig arbetar hårdare för att förbättra sina rankingar och uppfylla sina klimatåtaganden."
+      },
+      "methodology": {
+        "badge": "Vetenskapsbaserade rankingar",
+        "heading": "Vår metodik",
+        "paragraph": "Vi använder utsläppsdata från officiella rapporteringskällor för att skapa rättvisa, jämförbara rankingar. Våra mätvärden fokuserar på faktiska utsläppsminskningar, inte bara löften eller mål. Varje ranking baseras på verkliga prestationsdata, vilket säkerställer att klimatledare erkänns och klimatfördröjare hålls ansvariga.",
+        "linkText": "Läs mer om vår metodik"
+      },
+      "impact": {
+        "badge": "Från data till handling",
+        "heading": "Driva verklig påverkan",
+        "paragraph": "Vår plattform har redan hjälpt till att identifiera klimatledare och de som halkar efter i hela Sverige. Genom att ranka organisationer på deras faktiska utsläppsprestationer skapar vi hälsosam konkurrens som påskyndar klimatframsteg. Datan ljuger inte—och det borde inte klimatåtaganden heller."
+      },
+      "engagement": {
+        "badge": "Varje röst räknas",
+        "heading": "Medborgaråtgärder &\nengagemang",
+        "paragraph": "Klimatåtgärder är inte bara för regeringar och företag—det börjar med informerade medborgare. När du kan se hur din lokala kommun eller favoritföretag presterar på klimatmätvärden kan du fatta bättre beslut som konsument, väljare och samhällsmedlem. Ditt engagemang driver efterfrågan på bättre klimatprestanda."
+      },
+      "pathForward": {
+        "badge": "Bygga ett klimatmedvetet samhälle",
+        "heading": "Vägen framåt",
+        "paragraph": "Föreställ dig en värld där varje organisations klimatprestanda är lika synlig som deras finansiella resultat. Där medborgare enkelt kan jämföra miljöpåverkan av sina val. Där transparens driver en tävling mot toppen i klimatåtgärder. Det är framtiden vi bygger, en datapunkt i taget."
+      }
+    },
+    "didYouKnow": {
+      "title": "Visste du att?",
+      "subtitle": "Intressanta insikter från Sveriges klimatdata - {{action}}!",
+      "actionMobile": "klicka för att utforska",
+      "actionDesktop": "håll muspekaren för att utforska",
+      "cardActionMobile": "Tryck för att läsa mer →",
+      "cardActionDesktop": "Håll muspekaren för att läsa mer →",
+      "ariaLabelShow": "Visa detaljer",
+      "ariaLabelHide": "Dölj detaljer",
+      "stat1": {
+        "teaser": "Ledarna i klassen",
+        "description": "{{count}} av {{total}} företag har minskat sina utsläpp med mer än 20% sedan sitt basår"
+      },
+      "stat2": {
+        "teaser": "Ökade utsläpp",
+        "description": "{{count}} av {{total}} företag har ökat sina utsläpp sedan sitt basår"
+      },
+      "stat3": {
+        "teaser": "Paris-anpassade",
+        "description": "{{companyCount}} av {{companyTotal}} företag och {{municipalityCount}} av {{municipalityTotal}} kommuner är på väg att nå Parisavtalets mål"
+      },
+      "stat4": {
+        "teaser": "Transparent rapportering",
+        "description": "{{percentage}}% av de spårade företagen rapporterar Scope 3-utsläpp per kategori, vilket ger mer transparens i deras värdekedja"
+      },
+      "stat5": {
+        "teaser": "Med planer",
+        "description": "{{percentage}}% av kommunerna ({{count}} av {{total}}) har antagit klimatplaner"
+      },
+      "stat6": {
+        "teaser": "Spårade utsläpp",
+        "description": "{{total}} miljoner ton CO₂e spåras över {{companyCount}} företag och {{municipalityCount}} kommuner, med användning av det senaste rapporterade värdet för varje enhet"
+      }
     }
   },
   "aboutPage": {
@@ -105,9 +219,10 @@
     },
     "financingSection": {
       "title": "Så finansieras vi",
-      "paragraph1": "Under 2024 och 2025 får Klimatkollen finansiell uppbackning av Google.org som en av två svenska mottagare av Google.org Impact Challenge: Tech for Social Good.",
-      "paragraph2": "Under 2023 drevs Klimatkollen med stöd från Postkodstiftelsen. Uppstarten 2022 finansierades av Världsnaturfonden WWF, ClimateView, We Don't Have Time och Argand Partners.",
-      "paragraph3": "Mycket av arbetet är ideellt, därför välkomnar vi fler samarbetspartners och ekonomiskt stöd för att kunna skala upp!",
+      "paragraph1": "Från november 2025 till slutet av 2026 får Klimatkollen stöd av Postkodstiftelsen för projektet 'AI för lokal klimatpåverkan'.",
+      "paragraph2": "Under 2024 och 2025 fick Klimatkollen stöd av Google.org som en av två svenska mottagare av Google.org Impact Challenge: Tech for Social Good. Detta stöd har möjliggjort för oss att utöka våra insamlings- och analysarbeten för företagens klimatdata.",
+      "paragraph3": "Under 2023 drevs Klimatkollen med stöd från Postkodstiftelsen. Uppstarten 2022 finansierades av Världsnaturfonden WWF, ClimateView, We Don't Have Time och Argand Partners.",
+      "paragraph4": "Mycket av arbetet är ideellt, därför välkomnar vi fler samarbetspartners och ekonomiskt stöd för att kunna skala upp!",
       "donate": "Skänk gärna en slant!",
       "donateDescription": "Varje krona ger oss muskler att visa upp mer data.",
       "bankgiro": "Bankgiro: 5793-3178",
@@ -240,21 +355,73 @@
     "shareText": "Kolla in det här blogginlägget!",
     "relatedArticles": "Relaterade artiklar"
   },
+  "companiesRankedPage": {
+    "title": "Företagsranking",
+    "description": "Jämför företag baserat på viktiga klimatindikatorer",
+    "errorTitle": "Kunde inte hämta företagsinformation",
+    "errorDescription": "Försök igen senare",
+    "mapPlaceholder": "Kartvisualisering kommer snart",
+    "filterByIndustry": "Filtrera efter bransch",
+    "clearFilters": "Rensa alla",
+    "selectIndustry": "Välj bransch",
+    "viewToggle": {
+      "showGraph": "Graf",
+      "showList": "Lista"
+    },
+    "visualizations": {
+      "noVisualizationAvailable": "Ingen visualisering tillgänglig för denna KPI",
+      "noDataAvailable": "Ingen data tillgänglig",
+      "emissionsChange": {
+        "title": "Emissionsförändring från basår",
+        "unknown": "Okänt"
+      },
+      "meetsParis": {
+        "legend": {
+          "belowBudget": "Under budget",
+          "aboveBudget": "Över budget"
+        },
+        "budgetThreshold": "Budgettröskel (0{{unit}})",
+        "description": "Tonn över eller under varje företags kolbudget. Vi uppskattar framtida utsläpp med en LAD-trendlinje och jämför kumulativa utsläpp 2025–2050 med en Carbon Law-väg (11,7% årlig minskning).",
+        "learnMore": "Läs mer",
+        "tooltip": {
+          "underBudget": "under kolbudget",
+          "overBudget": "över kolbudget",
+          "onBudget": "på kolbudget"
+        }
+      },
+      "beeswarm": {
+        "capped": "(begränsad)",
+        "companiesShown": "{{count}} företag visas",
+        "companiesShown_plural": "{{count}} företag visas",
+        "showingFirst": "(visar första {{count}})",
+        "tooltip": {
+          "actual": "Faktiskt:",
+          "cappedAt": "Begränsad till",
+          "forChartVisibility": "för diagrammets synlighet",
+          "reduction": "Minskning",
+          "increase": "Ökning"
+        }
+      }
+    }
+  },
   "companiesPage": {
     "viewModes": {
       "graphs": "Grafer",
       "list": "Lista"
     },
-    "filter": "Filter",
-    "sortBy": "Sortera efter",
-    "searchInFilter": "Sök i filter...",
-    "noFiltersFound": "Inga filter hittades.",
     "sortingOptions": {
       "emissionsChange": "Utsläppsförändring (%)",
       "totalEmissions": "Totala utsläpp",
       "scope3Coverage": "Scope 3-rapportering",
+      "meetsParis": "Uppfyller Parisavtalet",
       "nameAsc": "Företagsnamn A-Ö",
       "nameDesc": "Företagsnamn Ö-A"
+    },
+    "filteringOptions": {
+      "meetsParis": "Uppfyller Parisavtalet",
+      "meetsParisYes": "Ja",
+      "meetsParisNo": "Nej",
+      "meetsParisUnknown": "Okänt"
     },
     "sector": "Sektor",
     "errorTitle": "Det gick inte att hämta företagsinformation",
@@ -299,6 +466,8 @@
       "scope2Description": "Indirekta utsläpp från produktion av köpt el, ånga, värme och kyla som konsumeras av organisationen.",
       "scope3UpstreamDescription": "Indirekta utsläpp från värdekedjan",
       "scope3DownstreamDescription": "Indirekta utsläpp från produktanvändning och slutavfall",
+      "scope3CategoryInfo": "Dessa totaler inkluderar endast utsläpp från företag som rapporterar Scope 3-data per kategori. Företag som endast rapporterar ett totalt Scope 3-värde är exkluderade.",
+      "scope3CategoryInfoLabel": "Information om Scope 3-kategorirapportering",
       "companies": "företag",
       "shareOfTotal": "Andel av total",
       "companiesReporting": "Företag som rapporterar",
@@ -384,6 +553,181 @@
           "text": "Läs mer om Applying Carbon Law From 2025 från Klimatkollens white paper."
         }
       },
+      "trendline": {
+        "title": "Hur vi beräknar trendliniens utveckling",
+        "description": "Lär dig hur vi beräknar trendlinjens utveckling",
+        "paragraph1": "Trendlina visar hur en organisations utsläpp förväntas utvecklas baserat på historiska data. Det är ingen prognos över planerade åtgärder, utan en statistisk fortsättning av tidigare beteende.",
+        "paragraph2": "Trendlina används till två saker:\n1. Att uppskatta saknade, nyare år (till exempel om de senaste rapporterade utsläppen är från 2022 men vi behöver värden för 2023–2025).\n2. Att ta fram en projektion av utsläppen 2025–2050 för att kunna bedöma Paris-linjens uppfyllelse.",
+        "whenCalculated": {
+          "title": "När beräknar vi en trendlinje?",
+          "paragraph1": "En trendlinje beräknas bara när det finns tillräckligt mycket giltig historisk data för att ge en meningsfull projektion.",
+          "companies": {
+            "intro": "För företag beräknar vi en trendlina endast om:",
+            "point1": "det finns minst tre år med giltiga utsläppsdata efter filtrering utifrån basår,",
+            "point2": "vi kan identifiera en sammanhängande utsläppsserie (med prioritet på scope 3, annars scope 1 och 2), och",
+            "point3": "den kvarvarande datamängden efter filtrering är tillräckligt stor för att ge en robust trend."
+          },
+          "municipalities": {
+            "intro": "För kommuner:",
+            "point1": "använder vi utsläppsdata från och med 2015, i linje med perioden efter Parisavtalets tillkomst, och",
+            "point2": "centrerar vi regressionen kring det senast observerade året för att förbättra den numeriska stabiliteten."
+          },
+          "paragraph2": "Om en organisation inte uppfyller dessa krav beräknas ingen trendlinje, och vi kan då inte bedöma om den är i linje med Parisavtalet."
+        },
+        "whyLad": {
+          "title": "Varför använder vi LAD (Least Absolute Deviations)?",
+          "paragraph1": "Vi använder LAD (Least Absolute Deviations), eller medianregression, för att göra trendlinjen mer robust och tillförlitlig.",
+          "point1": "LAD är mindre känslig för extremvärden än vanlig minsta kvadrat-regression.",
+          "point2": "Metoden hanterar verkliga variationer och hopp i klimatdata bättre.",
+          "point3": "Den fångar den långsiktiga riktningen istället för att reagera starkt på enskilda års avvikelser.",
+          "point4": "Den ger en jämn årlig förändring i ton per år, istället för att tvinga fram en fast procentuell förändring.",
+          "paragraph2": "Detta ligger i linje med vårt mål att fånga det underliggande beteendet i utsläppen, snarare än år-för-år-brus."
+        },
+        "howComputed": {
+          "title": "Hur beräknas trendlinjen?",
+          "paragraph1": "Trendlinjen med LAD skapas genom att anpassa en rak linje till historiska utsläppsdata, där den absoluta avvikelsen mot varje år minimeras.",
+          "step1": "Vi identifierar användbara historiska utsläppsdata (filtrerade utifrån basår och scope-logik för företag, eller från 2015 och framåt för kommuner).",
+          "step2": "Vi centrerar åren kring det senast observerade året för att förbättra numerisk stabilitet och jämförbarhet.",
+          "step3": "Vi använder LAD/medianregression för att uppskatta lutningen (förändringen i ton per år).",
+          "step4": "Vi förankrar trendlinjen vid det senast rapporterade utsläppsvärdet så att modellen kopplas samman sömlöst med den senaste verkliga datapunkten.",
+          "step5": "Vi tillämpar ett nollgolv så att projicerade värden aldrig blir negativa.",
+          "paragraph2": "Slutresultatet är en lutning i ton per år (till exempel −1 540 ton per år) som anger den förväntade årliga förändringen.",
+          "paragraph3": "Vi använder sedan denna lutning för att skapa uppskattade värden fram till 2025 och för att projicera utsläppen vidare till 2050. När nya verkliga utsläppsdata blir tillgängliga för kommande år ersätter de de modellerade värdena, och den återstående framtida trenden räknas om utifrån den uppdaterade historiken."
+        },
+        "represents": {
+          "title": "Vad representerar trendlinjen?",
+          "paragraph1": "Sammanfattningsvis representerar trendlinjen:",
+          "point1": "en linjär fortsättning av tidigare beteende,",
+          "point2": "en projektion av absolut årlig förändring (ton per år), inte en fast procentsats,",
+          "point3": "en uppskattning av hur framtida utsläpp kan se ut om inga större förändringar sker, och",
+          "point4": "en nödvändig komponent för att beräkna totala utsläpp 2025–2050 i Paris-bedömningen.",
+          "paragraph2": "Trendlinjen representerar inte:",
+          "notPoint1": "en prognos över specifika planerade klimatåtgärder,",
+          "notPoint2": "en garanti för att en organisation kommer att uppfylla regelverk eller mål, eller",
+          "notPoint3": "ett ställningstagande för att organisationens nuvarande bana är önskvärd.",
+          "paragraph3": "Trendlinjen svarar helt enkelt på frågan: ”Om organisationen fortsätter som hittills, hur ser den förväntade utsläppskurvan ut framåt?”"
+        },
+        "whyWorks": {
+          "title": "Varför fungerar en linjär trendlinje för Paris-bedömning?",
+          "paragraph1": "Bedömningen av Paris-linjen baseras på de totala kumulativa utsläppen 2025–2050 – organisationens koldioxidbudget för en 1,5°C-bana med ungefär 50 % sannolikhet.",
+          "point1": "Den linjära trendlinjen gör det möjligt att uppskatta om den projicerade banan håller sig inom denna budget.",
+          "point2": "Om trendlinjen ligger inom budgeten kommer utsläppen nödvändigtvis att närma sig mycket låga nivåer långt före 2050.",
+          "point3": "Att använda samma metod för alla kommuner och företag möjliggör rättvisa och jämförbara bedömningar.",
+          "paragraph2": "Även om en linjär trendlinje inte följer den exponentiella formen hos Carbon Law-kurvan kan den ändå ge lägre kumulativa utsläpp än den Paris-anpassade budgeten. I sådana fall bedöms organisationen ligga på en Paris-linje givet sitt nuvarande trendmönster."
+        }
+      },
+      "parisAlignment": {
+        "title": "Parisanpassning",
+        "description": "Lär dig hur vi beräknar om en kommun eller företag är på väg att nå Parisavtalet",
+        "intro": {
+          "paragraph1": "“I linje med Paris” (On Track for Paris) betyder att en aktörs totala uppskattade utsläpp mellan 2025 och 2050 är förenliga med en Paris-anpassad koldioxidbudget för ungefär 50 procents sannolikhet att begränsa uppvärmningen till 1,5 °C.",
+          "paragraph2": "I stället för att kontrollera om varje enskilt år följer den exakta Parisbanan på –11,72 % per år, tittar vi på hela utsläppskurvan och ställer frågan: håller den här kombinationen av historiska utsläpp och framtida trend sig inom en rimlig koldioxidbudget på väg mot nettonoll runt 2050?"
+        },
+        "carbonBudget": {
+          "title": "Koldioxidbudgetar och Parisanpassning",
+          "paragraph1": "En koldioxidbudget är den totala mängd växthusgaser som kan släppas ut under en viss period och ändå hålla sig inom ett givet temperaturmål. I vårt fall använder vi Paris-anpassade budgetar som motsvarar en 1,5 °C-bana med ungefär 50 procents sannolikhet.",
+          "paragraph2": "För varje kommun eller företag konstruerar vi en Paris-anpassad koldioxidbudget för perioden 2025–2050. Denna budget är inte en prognos över vad som faktiskt kommer att hända, utan ett riktmärke som svarar på frågan: hur mycket kan aktören släppa ut på vägen mot nettonoll om vi vill hålla oss till en 1,5 °C-bana?",
+          "list1": {
+            "item1": "Budgeten definieras som arean under en Parisbana (Carbon Law) från 2025 till 2050.",
+            "item2": "Ju snabbare och ju närmare en aktör för sina årliga utsläpp mot (nära) noll, desto större chans har den att hålla sig inom denna budget."
+          }
+        },
+        "anchorYear": {
+          "title": "Referensår och vilka data vi använder",
+          "paragraph1": "Vi använder 2025 som ett gemensamt referensår för att jämföra Parisbanan och trendlinsprojektionen. Om det senaste uppmätta utsläppsåret ligger före 2025 uppskattar vi utsläppen 2025 med hjälp av den historiska utvecklingen.",
+          "paragraph2": "När nya utsläppsdata efter 2025 blir tillgängliga använder vi alltid de uppmätta värdena i första hand. Trendlinsmodellen används då endast för att fylla i saknade år och framtida år fram till 2050. Med tiden baseras bedömningen av Parisanpassning alltså mer på faktisk utveckling och mindre på projektioner."
+        },
+        "parisPath": {
+          "title": "Parisbanan (Carbon Law)",
+          "paragraph1": "Parisbanan baseras på Carbon Law: en exponentiell minskning av utsläppen med ungefär –11,72 % per år. Med start i referensåret 2025 ger detta en mjuk, kontinuerligt minskande utsläppskurva fram till 2050.",
+          "paragraph2": "Genom att integrera (summera) Parisbanan över perioden 2025–2050 får vi en Paris-anpassad koldioxidbudget för den aktuella aktören. Parisbanan används alltså som en referensbana som definierar en budget, inte som den enda tillåtna vägen för att minska utsläppen år för år."
+        },
+        "trendline": {
+          "title": "Trendlinsprojektion (LAD)",
+          "paragraph1": "För att uppskatta hur utsläppen kan utvecklas om nuvarande mönster fortsätter använder vi en linjär trendlina baserad på Least Absolute Deviations (LAD). Trendlina beräknas med hjälp av relevant historisk data för varje aktör.",
+          "paragraph2": "LAD-trendlinan beskriver en jämn förändring i ton per år, inte en fast procentuell minskning. I praktiken betyder det att samma absoluta minskning kan motsvara en liten procent när utsläppen är höga och en större procent när utsläppen är låga.",
+          "paragraph3": "För kommuner använder vi normalt all tillgänglig historisk data som uppfyller våra kvalitetskriterier. För företag kan vi begränsa perioden (till exempel från ett definierat basår) så att trendlina bättre speglar dagens verksamhet i stället för gamla affärsmodeller. Detaljer kring hur vi beräknar LAD beskrivs i avsnittet om trendlina på denna metodsida."
+        },
+        "comparison": {
+          "title": "Att jämföra banor och avgöra “I linje med Paris”",
+          "paragraph1": "När vi har både en Parisbana och en trendlinsprojektion förankrade i 2025 jämför vi de totala utsläppen mellan 2025 och 2050 längs respektive bana. I båda fallen tittar vi på de kumulativa utsläppen, det vill säga arean under kurvan över tid.",
+          "list1": {
+            "item1": "Den Paris-anpassade koldioxidbudgeten är de totala utsläpp som tillåts längs Parisbanan mellan 2025 och 2050.",
+            "item2": "Trendlinsens totalsumma är summan av de uppmätta utsläppen (för år där data finns) plus de beräknade utsläppen från trendlina för saknade och framtida år fram till 2050."
+          },
+          "paragraph2": "Om trendlinsens totala utsläpp är lägre än den Paris-anpassade koldioxidbudgeten klassar vi aktören som “I linje med Paris” (On Track for Paris). Om totalsumman är högre än budgeten klassas aktören som “Inte i linje med Paris”. Eftersom Parisbudgeten är snäv kräver en bana som håller sig inom den i praktiken att utsläppen närmar sig mycket låga nivåer eller nära noll till 2050."
+        },
+        "limitations": {
+          "title": "Begränsningar och tolkning",
+          "paragraph1": "Trendlina är inte en prognos över planerade åtgärder, utan en statistisk extrapolering av den senaste utvecklingen. De faktiska utsläppen kan bli både högre och lägre beroende på politiska beslut, investeringar, teknikutveckling och bredare ekonomiska trender.",
+          "paragraph2": "Vår bedömning av Parisanpassning fokuserar på de totala utsläppen på vägen mot nettonoll, inte på att träffa en specifik procentsats varje år. Den fångar inte alla aspekter av rättvisa, ansvar eller genomförbarhet. Den bör därför tolkas som ett viktigt riktmärke bland flera när man bedömer om en aktörs utsläppsbana är förenlig med Parisavtalet."
+        }
+      },
+      "interpretingOnTrack": {
+        "title": "Hur ska man tolka ”På väg mot Paris”?",
+        "description": "Lär dig hur du tolkar statusen ”På väg mot Paris”",
+        "paragraph1": "Parisstatusen på Klimatkollen är utformad för att svara på en smal men viktig fråga:",
+        "question": "”Om den här organisationen fortsätter ungefär som idag, kommer dess totala utsläpp 2025–2050 att rymmas inom en Parisanpassad koldioxidbudget och närma sig nettonoll i tid?”",
+        "paragraph2": "Det är inte en heltäckande bedömning av allt klimatarbete, utan en specifik indikator baserad på rapporterade utsläpp.",
+        "statuses": {
+          "title": "Vad de olika statusarna betyder",
+          "onTrack": {
+            "title": "På väg mot Paris",
+            "paragraph1": "Organisationens projicerade utsläppsbana (trendlinje plus all tillgänglig rapporterad utsläppsdata):",
+            "point1": "håller sig inom den Parisanpassade koldioxidbudgeten för 2025–2050, och",
+            "point2": "leder till att utsläppen närmar sig nära noll långt innan 2050 om trenden fortsätter.",
+            "paragraph2": "Detta innebär att den nuvarande takten i de absoluta utsläppsminskningarna, rent matematiskt, är tillräcklig för att hålla sig inom en 1,5°C-anpassad budget (50 % sannolikhet) — under förutsättning att trenden inte försvagas kraftigt."
+          },
+          "notOnTrack": {
+            "title": "Inte på väg mot Paris",
+            "paragraph1": "Organisationens projicerade utsläpp:",
+            "point1": "överstiger den Parisanpassade koldioxidbudgeten för 2025–2050,",
+            "point2": "eller minskar inte tillräckligt snabbt för att rimligen kunna nå nettonoll i tid.",
+            "paragraph2": "Det betyder inte att organisationen inte gör någonting, utan att den nuvarande takten i utsläppsminskningarna är för låg för att vara förenlig med en Parisanpassad bana."
+          },
+          "noAssessment": {
+            "title": "Ingen bedömning",
+            "paragraph1": "Vi visar ”Ingen Parisbedömning” när:",
+            "point1": "det inte finns tillräckligt tillförlitlig historisk data för att beräkna en trendlinje, eller",
+            "point2": "den underliggande datan är för ofullständig eller motsägelsefull för en robust prognos.",
+            "paragraph2": "I dessa fall väljer vi hellre transparens än en potentiellt missvisande etikett."
+          }
+        },
+        "scope": {
+          "title": "Vad indikatorn säger – och inte säger",
+          "paragraph1": "Parisstatusen är en avgränsad indikator. Den säger något viktigt om den övergripande utsläppsbanan, men fångar inte allt.",
+          "doesTitle": "Parisstatusen gör:",
+          "does": {
+            "point1": "fokuserar på de samlade utsläppen mellan 2025 och 2050,",
+            "point2": "använder en konsekvent metod för alla kommuner och företag,",
+            "point3": "ger en enkel och jämförbar signal om huruvida den nuvarande banan ryms inom en 1,5°C-anpassad budget."
+          },
+          "doesNotTitle": "Parisstatusen gör inte:",
+          "doesNot": {
+            "point1": "garanterar att organisationen faktiskt kommer att genomföra framtida åtgärder,",
+            "point2": "bedömer alla klimatpolicys, investeringar eller anpassningsåtgärder,",
+            "point3": "inkluderar konsumtionsbaserade utsläpp eller indirekta effekter utanför det valda scopet,",
+            "point4": "fångar alla osäkerheter i framtida prognoser."
+          },
+          "paragraph2": "Med andra ord: den är en användbar, jämförbar klimatsignal — men inte hela bilden."
+        },
+        "changes": {
+          "title": "Varför statusen kan ändras över tid",
+          "paragraph1": "Parisbedömningen kan ändras när:",
+          "point1": "nya historiska utsläppsdata rapporteras,",
+          "point2": "en starkare eller svagare trend framträder i den uppdaterade datan,",
+          "point3": "rapporteringsscope eller basår ändras för företag,",
+          "point4": "metodförbättringar införs.",
+          "paragraph2": "När mer faktisk data efter 2025 blir tillgänglig ersätts de modellerade trendåren stegvis av verkliga utsläpp, och bedömningen förankras allt mer i observerad verklighet. För en mer detaljerad beskrivning av beräkningarna, se avsnitt 3: ”How We Calculate ‘On Track for Paris’” och avsnitt 4: ”How We Calculate the Trendline”."
+        },
+        "historicVsParis": {
+          "title": "Historisk %-förändring, Parislinje och Parisbedömning",
+          "paragraph1": "Klimatkollen visar flera olika mått som är lätta att blanda ihop: den historiska procentuella förändringen, Parislinjen (Carbon Law) och markeringen ”På väg att klara Paris”. De hänger ihop, men beskriver olika delar av berättelsen.",
+          "paragraph2": "Den historiska procentuella förändringen beskriver hur snabbt utsläppen i genomsnitt har förändrats under en tidigare period (till exempel 2015–2023). Parislinjen beskriver en idealiserad exponentiell minskningstakt (–11,72 % per år) som, om den följs exakt, ger en Parisanpassad utsläppsbana. Markeringen ”På väg att klara Paris” fokuserar istället på de totala kumulativa utsläppen 2025–2050 jämfört med en Parisanpassad koldioxidbudget.",
+          "paragraph3": "Eftersom trendlina bygger på absoluta ton per år blir de underliggande procentuella förändringarna små när utsläppen är höga, och blir naturligt brantare när utsläppen minskar. Det innebär att en måttlig historisk procentuell förändring ändå kan vara förenlig med en framtida bana där de samlade utsläppen hålls inom den Parisanpassade budgeten.",
+          "paragraph4": "Med andra ord: en låg historisk procent betyder inte automatiskt att en aktör är ”ur kurs”, och en hög historisk procent betyder inte automatiskt att den är ”på kurs”. Det som i slutändan avgör Parisanpassningen är om hela den förväntade utsläppsbanan 2025–2050 ryms inom den tillgängliga koldioxidbudgeten. För en mer intuitiv förklaring hänvisar vi till analogierna i dataguiden som är länkade från utsläppsgrafen."
+        }
+      },
       "emissionTypes": {
         "title": "Olika typer av utsläpp",
         "description": "Lär dig om olika typer av utsläpp och hur de mäts",
@@ -400,8 +744,9 @@
         "title": "Företagsdata översikt",
         "description": "Översikt över hur vi samlar in och presenterar företagens utsläppsdata",
         "paragraph1": "Klimatkollen samlar in data om växthusgasutsläpp som företag rapporterar i sina hållbarhetsrapporter och kombinerade årsredovisningar.",
-        "paragraph2": "Utsläppsdata delas upp i företagsspecifika utsläpp (scope 1 & scope 2) och värdekedjeutsläpp (scope 3), rapporterat i ton CO2e.",
-        "paragraph3": "På varje företags sida på Klimatkollen hittar du mer detaljerad information om utsläppen; uppdelning per scope och kategori i scope 3 samt eventuella biogena utsläpp.",
+        "paragraph2": "Olika bolag kan ha olika metoder för att beräkna sina utsläpp. Ibland anges även att viss utsläppsdata avser ett annat år än året då det redovisas. Klimatkollen har ett medborgarperspektiv och utgår därför ifrån det som rapporteras publikt i den senaste årsredovisningen. Det är också en förutsättning för att kunna jämföra bolagen mer rättvist. Läs mer i om respektive bolags beräkningsmetod i deras rapport, som vi länkar till från företagens sidor.",
+        "paragraph3": "Utsläppsdata delas upp i företagsspecifika utsläpp (scope 1 & scope 2) och värdekedjeutsläpp (scope 3), rapporterat i ton CO2e.",
+        "paragraph4": "På varje företags sida på Klimatkollen hittar du mer detaljerad information om utsläppen; uppdelning per scope och kategori i scope 3 samt eventuella biogena utsläpp.",
         "link1": {
           "title": "Klimatkollens företagsdata",
           "text": "Se vår senaste företagsutsläppsdata här"
@@ -419,7 +764,7 @@
             "text": "Läs mer om Global Industry Classification Standard (GICS)"
           }
         },
-        "paragraph4": "Information om antal anställda och omsättning hämtas från de senaste hållbarhetsrapporterna eller kombinerade års- och hållbarhetsrapporter, och i vissa fall från andra källor."
+        "paragraph5": "Information om antal anställda och omsättning hämtas från de senaste hållbarhetsrapporterna eller kombinerade års- och hållbarhetsrapporter, och i vissa fall från andra källor."
       },
       "companyDataCollection": {
         "title": "Datainsamlingsprocess",
@@ -470,7 +815,7 @@
         },
         "financedEmissions": {
           "title": "Finansierade utsläpp: Scope 3 kategori 15: Investeringar",
-          "paragraph1": "Finansierade utsläpp rapporteras ofta med fördröjning eftersom de kan ta längre tid att beräkna. För att ge en representativ bild av företagets påverkan inkluderas i dessa fall de senast rapporterade utsläppen."
+          "paragraph1": "Finansierade utsläpp rapporteras ofta med fördröjning, eftersom de ofta baseras på föregående års data från de bolag som ingår i investeringen. Vi visar utsläppsdata i scope 3 kategori 15 det år det rapporteras publikt i årsredovisningen, även om det ibland anges att datan i denna kategori är från ett tidigare år."
         },
         "biogenicEmissions": {
           "title": "Biogena utsläpp",
@@ -479,6 +824,25 @@
         "emissionOffsets": {
           "title": "Koldioxidkompensationer",
           "paragraph1": "Dessa inkluderas inte, i linje med vad GHG-protokollet anger."
+        }
+      },
+      "relatableNumbers": {
+        "title": "Jämförbara siffror",
+        "description": "Läs mer om hur vi sätter siffrorna i ett mer begripligt sammanhang.",
+        "paragraph1": "Utsläppssiffror är ofta svåra att greppa, så vi har översatt förändringar i utsläpp över tid till mer lättbegripliga termer, för att illustrera hur mycket en ökning eller minskning av utsläpp faktiskt betyder i praktiken.",
+        "paragraph2": "I stället för att jämföra de totala utsläppen fokuserar vi på förändringen — till exempel hur mycket ett företags eller en kommuns utsläpp har ökat eller minskat jämfört med föregående år. ",
+        "forestFire": {
+          "title": "Skogsbränder",
+          "paragraph1": "Vi har räknat ut hur stor skogsbrand som skulle krävas  för att generera motsvarande mängd utsläpp. Vi utgår från följande antaganden:",
+          "paragraph2": "Utifrån utsläpps­förändringen räknar vi ut hur många hektar som krävs för att motsvara den mängden CO₂. Därefter jämförs siffran med välkända ytstorlekar som fotbollsplaner, tennisbanor eller städer. Då kan vi säga till exempel: “Det här utsläppet motsvarar utsläppen från en skogsbrand stor som X fotbollsplaner“.",
+          "bullet1": "I genomsnitt innehåller varje hektar skogsmark omkring 50 ton kol (C). (1)",
+          "bullet2": "Kol omvandlas till koldioxid (CO₂) genom faktorn 44/12 (molekylvikter), vilket innebär att en hektar motsvarar ungefär 50 × (44/12) ≈ 183 ton CO₂.",
+          "source": "https://climate.mit.edu/ask-mit/how-many-new-trees-would-we-need-offset-our-carbon-emissions"
+        },
+        "citizens": {
+          "title": "Invånare",
+          "paragraph": "För att göra utsläppsförändringen mer begriplig jämför vi med de genomsnittliga årliga konsumtionsbaserade utsläppen per person och år. I vårt fall använder vi antagandet att en genomsnittlig person står för 9 ton CO₂‑ekvivalenter (tCO₂e) per år. (2)",
+          "source": "https://konsumtionskompassen.se/"
         }
       }
     },
@@ -519,7 +883,7 @@
           "skr": {
             "title": "Sveriges Kommuner och Regioner",
             "text": "Politisk ledning i kommunerna",
-            "link": "https://skr.se/skr/demokratiledningstyrning/valmaktfordelning/valresultatstyren/styrekommunereftervalet2022.69547.html"
+            "link": "https://skr.se/kommunerochregioner/valochpolitiskastyrenikommunerochregioner.8381.html#h-Styreikommunereftervalet2022"
           },
           "wikidata": {
             "title": "Wikidata",
@@ -681,6 +1045,26 @@
       }
     }
   },
+  "regionalRankedPage": {
+    "title": "Länsöversikt",
+    "description": "Översikt över utsläpp och omställning på länsnivå"
+  },
+  "detailPage": {
+    "totalEmissions": "Totala utsläpp {{year}}",
+    "totalEmissionsTooltip": "Detta är de senast rapporterade utsläppen.",
+    "emissionsDevelopment": "Utsläppsutveckling",
+    "inTons": "I ton CO₂e",
+    "annualChange": "Årlig förändring",
+    "meetsParisGoal": "Klarar Parisavtalet",
+    "changeSince2015": "Årlig utsläppsförändring sedan 2015",
+    "graph": {
+      "historical": "Historiskt",
+      "estimated": "Uppskattat",
+      "trend": "Trend",
+      "carbonLaw": "Parisavtalet",
+      "noData": "Inga data tillgängliga"
+    }
+  },
   "municipalitiesRankedPage": {
     "errorTitle": "Det gick inte att hämta kommuninformation",
     "errorDescription": "Försök igen senare",
@@ -710,6 +1094,8 @@
       "placeholder": "Sortera efter",
       "meetsParis": "Klarar Parisavtalet",
       "name": "Namn",
+      "emissions": "Totala utsläpp",
+      "emissionsChangeRate": "Utsläppsförändring (%)",
       "aToZ": "A-Ö",
       "zToA": "Ö-A",
       "bestFirst": "Visa bäst först",
@@ -719,23 +1105,17 @@
   "municipalityDetailPage": {
     "metaTitle": "Data om utsläpp och omställning",
     "metaDescription": "Översikt över klimatpåverkan och hållbarhetsarbete",
-    "loading": "Laddar...",
-    "error": "Fel vid inläsning av data",
-    "noData": "Ingen data tillgänglig",
     "procurementScore": {
       "high": "Ja",
       "medium": "Kanske",
       "low": "Nej"
     },
     "politicalRule": "Här styr",
-    "totalEmissions": "Totala utsläpp {{year}}",
     "totalEmissionsTooltip": "Detta är de senast rapporterade utsläppen. För beräknade uppskattningar för innevarande år, se grafen Utsläppsutveckling nedan.",
-    "emissionsDevelopment": "Utsläppsutveckling",
     "graph": {
       "overview": "Översikt",
       "sectors": "Utsläppskällor"
     },
-    "inTons": "I ton CO₂e",
     "annualChangeSince2015": "Årlig utsläppsförändring sedan 2015",
     "reductionToMeetParis": "Utsläppsminskning för att klara Parisavtalet",
     "cannotReduceToParis": "Klarar ej Parisavtalet",
@@ -812,6 +1192,18 @@
     "catharina": {
       "role": "Kommunikatör",
       "description": "Kommunikatör och filmare med fokus på klimat och hållbarhet, är med och driver Ett hållbart Lidingö, har en bakgrund som managementkonsult."
+    },
+    "elin": {
+      "role": "Utvecklare",
+      "description": "AI- och backendutvecklare med fokus på att skapa tillförlitliga och produktionsklara AI-lösningar. Har en bakgrund både som konsult och inom forskning. Hjälper Klimatkollen i arbetet med att använda AI för att tillgängliggöra klimatdata."
+    },
+    "carl": {
+      "role": "Utvecklare",
+      "description": "Frontend-utvecklare som älskar naturen, klättring och att bygga verktyg som gör klimatdata lättare att förstå. Stöttar Klimatkollens volontärer, utvecklar webbsidan och försöker hitta den perfekta GIF:en för varje tillfälle."
+    },
+    "mikael": {
+      "role": "Utvecklare",
+      "description": "Öppen källkods-utvecklare med en lång passion för användargränssnitt och löpning. Har bakgrund i Linux/GNOME, iOS och webbutveckling. Bidrar huvudsakligen till webbgränssnitet för Klimatkollen."
     }
   },
   "board": {
@@ -921,10 +1313,10 @@
       "noData": "Ingen data",
       "unknownSector": "Okänd sektor",
       "emissions": "Utsläpp",
-      "totalEmissionsInfo": "Totala utsläpp (Scope 1 & 2)",
       "emissionsChangeRate": "Förändringstakt",
       "emissionsChangeRateInfo": "Förändringstakt för utsläpp jämfört med föregående rapporteringsperiod.",
       "emissionsChangeRateInfoExtended": "Det här värdet är ovanligt högt på grund av inkonsekvent rapportering mellan de två senaste perioderna, vilket gör att procentförändringen inte speglar den faktiska utvecklingen.",
+      "meetsParis": "Är {{name}} på väg att uppfylla Parisavtalet?",
       "turnover": "Omsättning",
       "turnoverAmount": "mdr",
       "employees": "Anställda",
@@ -940,9 +1332,9 @@
     },
     "emissionsHistory": {
       "noReportingPeriods": "Inga rapporteringsperioder tillgängliga",
-      "title": "Historiska utsläpp",
-      "tooltip": "Historiska utsläpp och trend mot 2030. Klicka på en punkt för att ta bort linjen från grafen. Hovra över punkten för att se värdena för rapporteringsperioden.",
-      "unit": "I tons CO₂e",
+      "title": "Utsläppsutveckling",
+      "tooltip": "Visar de rapporterade utsläppen över tid. Klicka på en punkt för att ta bort linjen från grafen. Hovra över punkten för att se värdena för rapporteringsperioden.",
+      "unit": "I ton CO₂e",
       "totalEmissions": "Totala utsläpp",
       "baseYear": "Basår",
       "baseYearInfo": "Basår syftar på ett specifikt år som väljs som referenspunkt för att jämföra framtida utsläpp mot.",
@@ -987,6 +1379,53 @@
         "fetchingCompanyInfo": "Det gick inte att hämta företagsinformation",
         "tryAgainLater": "Försök igen senare"
       },
+      "dataSelector": {
+        "label": "Välj datapunkt"
+      },
+      "kpis": {
+        "meetsParis": {
+          "label": "Parisavtalet",
+          "description": "Utsläppstrend jämfört med Parisavtalet",
+          "detailedDescription": "Vilka företag är på väg att klara Parisavtalet?",
+          "source": "Klimatkollen Analys",
+          "nullValues": "Okänt",
+          "booleanLabels": {
+            "true": "Klarar Parisavtalet",
+            "false": "Missar Parisavtalet"
+          }
+        },
+        "emissionsChangeFromBaseYear": {
+          "label": "Utsläppsförändring",
+          "description": "Förändring i utsläpp från basår till senaste rapporteringsår",
+          "detailedDescription": "Procentuell förändring i totala utsläpp från företagets basår till senaste rapporteringsår. Lägre värden indikerar bättre prestation.",
+          "source": "Företagsrapporteringsdata"
+        },
+        "trendSlope": {
+          "label": "Utsläppstrend",
+          "description": "Beräknad årlig förändring från LAD-trendlinje",
+          "detailedDescription": "Lutning av Least Absolute Deviations-trendlinjen anpassad till rapporterade utsläpp.",
+          "source": "Klimatkollen Analys",
+          "nullValues": "Otillräcklig data"
+        }
+      },
+      "insights": {
+        "noData": {
+          "company": "Ingen företagsdata tillgänglig",
+          "metric": "Ingen data tillgänglig för {{metric}}"
+        },
+        "keyStatistics": {
+          "average": "Genomsnitt:",
+          "distributionAbove": "företag över genomsnittet",
+          "distributionBelow": "företag under genomsnittet"
+        },
+        "topPerformers": {
+          "titleTop": "Toppföretag",
+          "titleBest": "Bäst presterande företag"
+        },
+        "improvement": {
+          "title": "Företag som behöver förbättras"
+        }
+      },
       "sort": {
         "placeholder": "Sortera efter",
         "emissions": "Utsläpp",
@@ -1009,6 +1448,7 @@
       "totalEmissions": "Rapporterade utsläpp",
       "tonsCO2e": "ton CO₂e",
       "changeSinceLastYear": "Förändring sedan föregående år",
+      "onTrackToMeetParis": "På väg att klara Parisavtalet",
       "noData": "Ingen data",
       "turnover": "Omsättning",
       "employees": "Anställda",
@@ -1016,8 +1456,9 @@
       "readAnnualReport": "Läs årsredovisning",
       "readMore": "Läs mer",
       "readLess": "Läs mindre",
-      "aiGeneratedData": "Innehåller AI-extraherade värden. Klicka för att läsa mer.",
-      "billion": "mdr"
+      "aiGeneratedData": "Innehåller AI-extraherade värden. För att läsa mer, besök vår sida om Källor och metoder.",
+      "billion": "mdr",
+      "financialsTooltip": "Finansierade utsläpp rapporteras ofta med fördröjning, eftersom de ofta baseras på föregående års data från de bolag som ingår i investeringen. Vi visar utsläppsdata i scope 3 kategori 15 det år det rapporteras publikt i årsredovisningen, även om det ibland anges att datan i denna kategori är från ett tidigare år."
     },
     "sectionedCompanyList": {
       "otherCompanies": "Övriga företag",
@@ -1058,7 +1499,48 @@
       "decreasing": "↘ Minskar"
     }
   },
+  "regions": {
+    "detailPage": {
+      "municipalities": "Kommuner"
+    },
+    "kpis": {
+      "emissions": {
+        "label": "Totala utsläpp",
+        "description": "Länens totala utsläpp",
+        "detailedDescription": "De totala utsläppen av CO₂e för länet",
+        "source": "Nationella emissionsdatabasen"
+      }
+    },
+    "list": {
+      "dataSelector": {
+        "label": "Välj datapunkt",
+        "tooltips": {
+          "higherBetter": "Högre värden är bättre",
+          "lowerBetter": "Lägre värden är bättre"
+        }
+      },
+      "kpis": {
+        "historicalEmissionChangePercent": {
+          "label": "Utsläppen",
+          "description": "Historisk förändring av utsläpp",
+          "detailedDescription": "Genomsnittlig årlig procentuell förändring av växthusgasutsläppen i Sveriges län sedan Parisavtalet år 2015.",
+          "source": "Nationella emissionsdatabasen"
+        },
+        "meetsParis": {
+          "label": "Parisavtalet",
+          "description": "Utsläppstrend jämfört med Parisavtalet",
+          "detailedDescription": "Vilka län är på väg att klara Parisavtalet?",
+          "source": "Nationella emissionsdatabasen",
+          "booleanLabels": {
+            "true": "Klarar Parisavtalet",
+            "false": "Missar Parisavtalet"
+          }
+        }
+      }
+    }
+  },
   "municipalities": {
+    "name": "Namn",
     "card": {
       "meetsParis": "Är {{name}} på väg att klara Parisavtalet?",
       "yes": "Ja",
@@ -1075,7 +1557,6 @@
     "graph": {
       "noData": "Inga data tillgängliga",
       "gap": "Gap",
-      "historical": "Historiskt",
       "approximated": "Uppskattat totalt",
       "estimated": "Uppskattat",
       "trend": "Trend",
@@ -1106,7 +1587,7 @@
           "label": "Parisavtalet",
           "description": "Utsläppstrend jämfört med Parisavtalet",
           "detailedDescription": "Vilka kommuner är på väg att klara Parisavtalet?",
-          "source": "<0>Nationella emissionsdatabasen</0>",
+          "source": "Nationella emissionsdatabasen",
           "booleanLabels": {
             "true": "Klarar Parisavtalet",
             "false": "Missar Parisavtalet"
@@ -1117,26 +1598,26 @@
         "historicalEmissionChangePercent": {
           "label": "Utsläppen",
           "description": "Historisk förändring av utsläpp",
-          "detailedDescription": "Genomsnittlig årlig förändring av växthusgasutsläppen i Sveriges kommuner sedan Parisavtalet 2015",
+          "detailedDescription": "Genomsnittlig årlig procentuell förändring av växthusgasutsläppen i Sveriges kommuner sedan Parisavtalet år 2015.",
           "source": "<0>Nationella emissionsdatabasen</0>"
         },
         "electricCarChangePercent": {
           "label": "Elbilarna",
           "description": "Förändring i andel elbilar",
           "detailedDescription": "Ökningstakten i kommunerna för andel nyregistrerade laddbara bilar 2015–2024, angivet i procentenheter per år.",
-          "source": "<0>Trafikanalys</0>"
+          "source": "Trafikanalys"
         },
         "totalConsumptionEmission": {
           "label": "Konsumtionen",
-          "description": "Totala utsläpp från konsumtion",
+          "description": "Konsumtionsutsläpp per invånare",
           "detailedDescription": "Hushållens konsumtionsutsläpp (CO₂e) i ton per invånare och kommun år 2022. År 2050 ska utsläppen vara högst 1 ton per person och år för att ligga i linje med Parisavtalet",
-          "source": "<0>Stockholm Environment Institute (2025), Konsumtionskompassen. Licens: CC BY-NC-ND 4.0.</0>"
+          "source": "Stockholm Environment Institute (2025), Konsumtionskompassen. Licens: CC BY-NC-ND 4.0."
         },
         "electricVehiclePerChargePoints": {
           "label": "Laddarna",
           "description": "Antal elbilar per laddningspunkt",
           "detailedDescription": "Antal elbilar per publik laddningspunkt per kommun år 2024. Ju färre bilar per laddningspunkt desto bättre, god infrastruktur gynnar ökad elbilskonsumtion",
-          "source": "<0>Power Circle</0>",
+          "source": "Power Circle",
           "nullValues": "Saknar laddpunkter"
         },
         "bicycleMetrePerCapita": {
@@ -1144,6 +1625,19 @@
           "description": "Meter cykelväg per invånare",
           "detailedDescription": "Antal meter cykelväg per invånare per kommun år 2024. Ju längre desto bättre, god infrastruktur gynnar ökad cykling",
           "source": "<0>Nationella Vägdatabasen</0>, <1>Trafikverket</1>"
+        },
+        "climatePlan": {
+          "label": "Klimatplanerna",
+          "description": "Har en aktuell klimatplan",
+          "detailedDescription": "Vilka kommuner har en aktuell klimatplan?",
+          "source": "<0>Klimatkollens öppna sammanställning av klimatplaner med hjälp från medlemmar av Klimatklubben och Naturskyddsföreningen</0>",
+          "booleanLabels": {
+            "true": "Har klimatplan",
+            "false": "Saknar klimatplan"
+          },
+          "hasPlanSince": "Antog klimatplan {{year}}",
+          "aboveString": "har en klimatplan",
+          "belowString": "saknar en klimatplan"
         }
       },
       "insights": {
@@ -1168,13 +1662,12 @@
       "viewToggle": {
         "showList": "Visa lista",
         "showMap": "Visa karta"
-      },
-      "rankedList": {
-        "search": {
-          "placeholder": "Sök kommuner..."
-        },
-        "rank": "Placering: {{rank}} av {{total}}"
       }
+    }
+  },
+  "charts": {
+    "tooltip": {
+      "noData": "Ingen data"
     }
   },
   "errorPage": {
@@ -1205,9 +1698,21 @@
       "reportingTimespan": "Rapporteringsperiod",
       "reportingStart": "Start",
       "reportingEnd": "Slut",
+      "reportURL": "Rapport URL",
       "marketBased": "Marknadsbaserad",
       "locationBased": "Platsbaserad",
-      "unknown": "Okänd"
+      "unknown": "Okänd",
+      "turnover": "Omsättning",
+      "currency": "Valuta",
+      "employees": "Anställda",
+      "unit": "Enhet",
+      "statedTotalEmissions": "Angivna totala utsläpp",
+      "scope1And2Combined": "Omfattning 1 & 2 kombinerat"
+    },
+    "sections": {
+      "reportingPeriod": "Rapporteringsperiod",
+      "emissions": "Utsläpp",
+      "economy": "Ekonomi"
     },
     "save": "Spara",
     "success": {
@@ -1329,21 +1834,23 @@
     "buttonFallbackTitle": "Förstå datan",
     "selectItemPrompt": "Välj ett ämne du vill veta mer om"
   },
+  "viewModeToggle": {
+    "map": "Karta",
+    "list": "Lista"
+  },
+  "rankedList": {
+    "search": {
+      "placeholder": "Sök..."
+    },
+    "rank": "Placering: {{rank}} av {{total}}"
+  },
   "chartLegend": {
     "clickToFilterOut": "Klicka för att filtrera bort",
     "scrollToSeeMore": "Scrolla för att se mer"
   },
   "trendAnalysis": {
     "insufficientData": "Ingen trendlinje visas på grund av otillräcklig data ({{dataPoints}} punkter). Behöver minst 2 datapunkter för att bygga tillförlitlig trend.",
-    "insufficientDataWithBaseYear": "Enkel trendberäkning används på grund av begränsad data sedan {{baseYear}} ({{dataPoints}} punkter). Mer data behövs för tillförlitlig trendanalys.",
-    "insufficientDataSinceBaseYear": "Ingen trendlinje visas på grund av otillräcklig data sedan basåret {{baseYear}} ({{dataPoints}} användbara punkter). Behöver minst 2 datapunkter sedan basåret för att bygga tillförlitlig trend.",
-    "simpleMethodInsufficientData": "Enkel trendberäkning används på grund av begränsad data sedan basåret ({{dataPoints}} punkter). Mer data behövs för tillförlitlig trendanalys.",
-    "simpleMethodPoorDataQuality": "Enkel trendberäkning används på grund av datakvalitetsproblem ({{issues}}). Endast {{cleanDataPoints}} tillförlitliga datapunkter från {{originalDataPoints}} totalt. Denna trend kanske inte är särskilt tillförlitlig.",
-    "linearMethodMultipleIssues": "Linjär trend används trots datakvalitetsproblem ({{issues}}). Baserat på {{cleanDataPoints}} tillförlitliga datapunkter från {{originalDataPoints}} totalt. Tolka med försiktighet.",
-    "weightedLinearMethodStable": "Viktad linjär trend används eftersom senaste åren visar stabila utsläpp (variation < 10% av genomsnittet). Betonar senaste stabila data för nuvarande trendrepresentation.",
-    "exponentialMethodBetterFit": "Exponentiell trend används eftersom den passar data betydligt bättre än linjär trend. Tyder på att utsläppen förändras i accelererande eller decelererande takt.",
-    "recentExponentialMethodStrongPattern": "Senaste exponentiella trend används eftersom de senaste 4 åren visar starkt exponentiellt mönster som är betydligt bättre än linjärt. Fokuserar på senaste trendmönstret.",
-    "linearMethodDefault": "Linjär trend används som standard eftersom data är tillräckligt komplett och visar konsekvent mönster utan starkt icke-linjärt beteende eller betydande avvikare."
+    "insufficientDataSinceBaseYear": "Ingen trendlinje visas på grund av otillräcklig data sedan basåret {{baseYear}} ({{dataPoints}} användbara punkter). Behöver minst 2 datapunkter sedan basåret för att bygga tillförlitlig trend."
   },
   "newsletterArchivePage": {
     "title": "Nyhetsbrevsarkiv",
@@ -1368,5 +1875,52 @@
   "language": {
     "sv": "Svenska",
     "en": "Engelska"
+  },
+  "relatableNumbers": {
+    "title": "Hur mycket är det?",
+    "tooltip": "Läs mer om hur siffrorna beräknas på metodsidan.",
+    "description": "{{companyName}} {{emissionsChangeStatus}} sina utsläpp med <highlightNumber>{{emissionsInTonnes}} ({{yearOverYearChange}})</highlightNumber> tCO2e jämfört med föregående år. Detta kan jämföras med:",
+    "prefixFire": "Utsläpp motsvarande en skogsbrand",
+    "prefixEmissions": "{{count}} svenska invånares årsutsläpp.",
+    "increased": "ökade",
+    "decreased": "minskade",
+    "patterns": {
+      "city": "{{prefix}} {{count}} gånger större än {{entity}}.",
+      "unit": "{{prefix}} stor som {{count}} {{entity}}.",
+      "citizens": "{{prefix}}"
+    },
+    "entities": {
+      "stockholm": {
+        "name": "Stockholm",
+        "type": "city"
+      },
+      "monaco": {
+        "name": "Monaco",
+        "type": "city"
+      },
+      "footballFields": {
+        "name": "fotbollsplaner",
+        "type": "unit"
+      },
+      "tennisCourts": {
+        "name": "tennisbanor",
+        "type": "unit"
+      }
+    }
+  },
+  "filterPopover": {
+    "filter": "Filter",
+    "searchInFilter": "Sök i filter...",
+    "noFiltersFound": "Inga filter hittades."
+  },
+  "sortPopover": {
+    "sort": "Sortera",
+    "sortBy": "Sortera efter",
+    "noResults": "Inga sortering alternativ tillgänliga",
+    "sortDirection": {
+      "none": "Standard",
+      "asc": "Låg till hög",
+      "desc": "Hög till låg"
+    }
   }
 }

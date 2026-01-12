@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
+import StagingProtectedRoute from "./components/StagingProtectedRoute";
 import { useLanguage } from "./components/LanguageProvider";
 import { LanguageRedirect } from "@/components/LanguageRedirect";
 import { AboutPage } from "./pages/AboutPage";
@@ -7,12 +8,15 @@ import { AuthCallback } from "./pages/AuthCallback";
 import { BlogDetailPage } from "./pages/BlogDetailPage";
 import { CompanyEditPage } from "./pages/CompanyEditPage";
 import { CompanyDetailPage } from "./pages/CompanyDetailPage";
-import { CompaniesPage } from "./pages/CompaniesPage";
+import { CompaniesSectorsPage } from "./pages/CompaniesSectorsPage";
+import { CompaniesListPage } from "./pages/CompaniesListPage";
 import DownloadsPage from "./pages/DownloadsPage";
 import { ErrorPage } from "./pages/ErrorPage";
 import { InsightsPage } from "./pages/InsightsPage";
 import { LandingPage } from "./pages/LandingPage";
+import { LandingPageNew } from "./pages/LandingPageNew";
 import { LearnMoreOverview } from "./pages/LearnMoreOverview";
+import { stagingFeatureFlagEnabled } from "@/utils/ui/featureFlags";
 import { LearnMoreArticle } from "./pages/LearnMoreArticle";
 import { MethodsPage } from "./pages/MethodsPage";
 import { MunicipalitiesRankedPage } from "./pages/MunicipalitiesRankedPage";
@@ -29,7 +33,17 @@ import { InternalDashboard } from "./pages/internal-pages/InternalDashboard";
 import { ReportLandingPage } from "./pages/ReportLandingPage";
 import { RequestsDashboard } from "./pages/internal-pages/RequestsDashboard";
 import { TrendAnalysisDashboard } from "./pages/internal-pages/TrendAnalysisDashboard";
+import { ParisAlignedStatisticsPage } from "./pages/internal-pages/ParisAlignedStatisticsPage";
 import { NewsLetterArchivePage } from "./pages/NewslettersPage";
+import { RegionalRankedPage } from "./pages/RegionalRankedPage";
+import { RegionDetailPage } from "./pages/RegionDetailPage";
+import { CompaniesRankedPage } from "./pages/CompaniesRankedPage";
+
+// Conditional landing page component that shows new version on localhost/staging
+function ConditionalLandingPage() {
+  const isStaging = stagingFeatureFlagEnabled();
+  return isStaging ? <LandingPageNew /> : <LandingPage />;
+}
 
 export function AppRoutes() {
   const { currentLanguage } = useLanguage();
@@ -41,13 +55,21 @@ export function AppRoutes() {
     <Routes>
       {/* Language redirect for non-prefixed routes */}
       <Route path="*" element={<LanguageRedirect />} />
-
       {/* Root path - matches both /sv and /en */}
-      <Route path={`${basePath}`} element={<LandingPage />} />
-      <Route path={`${basePath}/`} element={<LandingPage />} />
-
+      <Route path={`${basePath}`} element={<ConditionalLandingPage />} />
+      <Route path={`${basePath}/`} element={<ConditionalLandingPage />} />
       {/* Companies routes */}
-      <Route path={`${basePath}/companies`} element={<CompaniesPage />} />
+      <Route path={`${basePath}/companies`} element={<CompaniesListPage />} />
+      <Route
+        path={`${basePath}/companies/sectors`}
+        element={<CompaniesSectorsPage />}
+      />
+      <Route element={<StagingProtectedRoute />}>
+        <Route
+          path={`${basePath}/companies/ranked`}
+          element={<CompaniesRankedPage />}
+        />
+      </Route>
       <Route
         path={`${basePath}/companies/:id`}
         element={<CompanyDetailPage />}
@@ -60,7 +82,6 @@ export function AppRoutes() {
         path={`${basePath}/foretag/:slug-:id`}
         element={<CompanyDetailPage />}
       />
-
       {/* Protected Routes*/}
       <Route element={<ProtectedRoute />}>
         <Route
@@ -83,8 +104,19 @@ export function AppRoutes() {
           path={`${basePath}/internal-pages/trend-analysis-dashboard`}
           element={<TrendAnalysisDashboard />}
         />
+        <Route
+          path={`${basePath}/internal-pages/paris-aligned-statistics`}
+          element={<ParisAlignedStatisticsPage />}
+        />
       </Route>
-
+      {/* Regions routes */}
+      <Route element={<StagingProtectedRoute />}>
+        <Route path={`${basePath}/regions`} element={<RegionalRankedPage />} />
+        <Route
+          path={`${basePath}/regions/:id`}
+          element={<RegionDetailPage />}
+        />
+      </Route>
       {/* Municipalities routes */}
       <Route
         path={`${basePath}/municipalities`}
@@ -98,12 +130,10 @@ export function AppRoutes() {
         path={`${basePath}/municipalities/:id`}
         element={<MunicipalityDetailPage />}
       />
-
       {/* About Pages */}
       <Route path={`${basePath}/about`} element={<AboutPage />} />
       <Route path={`${basePath}/methodology`} element={<MethodsPage />} />
       <Route path={`${basePath}/support`} element={<SupportPage />} />
-
       {/* Insights Pages */}
       <Route path={`${basePath}/articles`} element={<InsightsPage />} />
       <Route path={`${basePath}/reports`} element={<ReportsPage />} />
@@ -117,12 +147,10 @@ export function AppRoutes() {
         path={`${basePath}/newsletter-archive`}
         element={<NewsLetterArchivePage />}
       />
-
       <Route
         path={`${basePath}/learn-more/:id`}
         element={<LearnMoreArticle />}
       />
-
       {/* Other Pages */}
       <Route path={`${basePath}/privacy`} element={<PrivacyPage />} />
       <Route path={`${basePath}/products`} element={<ProductsPage />} />
@@ -130,7 +158,6 @@ export function AppRoutes() {
         path={`${basePath}/products/database-download-2025`}
         element={<DownloadsPage />}
       />
-
       {/* Error pages */}
       <Route path={`${basePath}/error/:code`} element={<ErrorPage />} />
       {/* This catch-all should now only handle invalid routes */}

@@ -1,9 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import {
-  sectorColors,
-  getCompanyColors,
-} from "@/hooks/companies/useCompanyFilters";
+import { useNavigate } from "react-router-dom";
+import { sectorColors, getCompanyColors } from "@/lib/constants/companyColors";
 import {
   formatEmissionsAbsolute,
   formatPercent,
@@ -37,9 +35,10 @@ const SectorPieLegend: React.FC<PieLegendProps> = ({
 }) => {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
+  const navigate = useNavigate();
 
   const navigateToCompany = (wikidataId: string) => {
-    window.location.href = `/companies/${wikidataId}`;
+    navigate(`/companies/${wikidataId}`);
   };
 
   if (!payload) {

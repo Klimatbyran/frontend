@@ -120,37 +120,3 @@ export const useTimeSeriesChartState = (initialConfig?: {
     isLongView,
   };
 };
-
-/**
- * Specialized hook for emissions charts combining time-series and data view state
- * Used specifically for company and municipality emissions charts
- */
-export const useEmissionsChartState = <T extends string | number>(config?: {
-  chartEndYear?: number;
-  shortEndYear?: number;
-  longEndYear?: number;
-  currentYear?: number;
-  initialDataView?: string;
-  availableDataViews?: string[];
-  initialHiddenItems?: T[];
-}) => {
-  const timeSeriesState = useTimeSeriesChartState({
-    chartEndYear: config?.chartEndYear,
-    shortEndYear: config?.shortEndYear,
-    longEndYear: config?.longEndYear,
-    currentYear: config?.currentYear,
-  });
-
-  const hiddenItems = useHiddenItems(config?.initialHiddenItems);
-
-  const dataView = useDataView(
-    (config?.initialDataView || "overview") as any,
-    config?.availableDataViews || ["overview"],
-  );
-
-  return {
-    ...timeSeriesState,
-    ...hiddenItems,
-    ...dataView,
-  };
-};

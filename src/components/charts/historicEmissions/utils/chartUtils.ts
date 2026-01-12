@@ -10,6 +10,8 @@ type TickProps = {
   x: number;
   y: number;
   payload: { value: number };
+  index?: number;
+  visibleTicksCount?: number;
 };
 import {
   LINE_CONFIGS,
@@ -99,7 +101,7 @@ export const getXAxisProps = (
 // Y-axis styling utilities
 export const getYAxisProps = (
   currentLanguage: "sv" | "en",
-  domain: [number, "auto"] = [0, "auto"],
+  domain: [number, number | "auto"] = [0, "auto"],
 ) => ({
   stroke: "var(--grey)",
   tickLine: false,
@@ -125,16 +127,22 @@ export const getYAxisProps = (
 // Custom tick renderer factory
 export const createCustomTickRenderer =
   (baseYear?: number, isBaseYearBold: boolean = true) =>
-  ({ x, y, payload }: TickProps) => {
+  ({ x, y, payload, index, visibleTicksCount }: TickProps) => {
     const isBaseYear = payload.value === baseYear;
+    const isLastTick =
+      index !== undefined &&
+      visibleTicksCount !== undefined &&
+      index === visibleTicksCount - 1;
+
     return React.createElement(
       "text",
       {
-        x: x - 15,
+        x: isLastTick ? x - 10 : x - 5, // More space for last tick
         y: y + 10,
         fontSize: 12,
         fill: isBaseYear ? "white" : "var(--grey)",
         fontWeight: isBaseYear && isBaseYearBold ? "bold" : "normal",
+        textAnchor: isLastTick ? "end" : "start", // Right-align last tick
       },
       payload.value,
     ) as unknown as React.ReactElement<SVGElement>;

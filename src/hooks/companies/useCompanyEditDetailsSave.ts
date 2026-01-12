@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { updateCompanyIndustry, updateCompanyBaseYear } from "@/lib/api";
+import { isVerified } from "@/utils/business/verification";
 import type { CompanyDetails } from "@/types/company";
 
 interface SaveCompanyEditDetailsArgs {
@@ -28,9 +29,9 @@ async function saveCompanyEditDetails({
     ?.subIndustryCode
     ? String(company.industry.industryGics.subIndustryCode)
     : "";
-  const originalIndustryVerified = !!company.industry?.metadata?.verifiedBy;
+  const originalIndustryVerified = isVerified(company.industry?.metadata);
   const originalBaseYear = String(company.baseYear?.year || "");
-  const originalBaseYearVerified = !!company.baseYear?.metadata?.verifiedBy;
+  const originalBaseYearVerified = isVerified(company.baseYear?.metadata);
 
   // Prepare metadata if populated
   const metadata: Record<string, string> = {};

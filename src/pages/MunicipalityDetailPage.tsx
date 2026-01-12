@@ -1,29 +1,34 @@
 import { useParams } from "react-router-dom";
-import { Text } from "@/components/ui/text";
-import { cn } from "@/lib/utils";
 import { useMunicipalityDetails } from "@/hooks/municipalities/useMunicipalityDetails";
+import { useMunicipalityDetailHeaderStats } from "@/hooks/municipalities/useMunicipalityDetails";
 import { transformEmissionsData } from "@/types/municipality";
-import { MunicipalitySection } from "@/components/municipalities/MunicipalitySection";
-import { MunicipalityStatCard } from "@/components/municipalities/MunicipalityStatCard";
-import { MunicipalityLinkCard } from "@/components/municipalities/MunicipalityLinkCard";
 import { useTranslation } from "react-i18next";
-import { PageSEO } from "@/components/SEO/PageSEO";
 import { useState } from "react";
-import { CardHeader } from "@/components/layout/CardHeader";
 import {
   formatEmissionsAbsolute,
   formatPercent,
-  formatPercentChange,
   localizeUnit,
 } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
-import MunicipalitySectorPieChart from "@/components/municipalities/sectorChart/MunicipalitySectorPieChart";
-import MunicipalitySectorLegend from "@/components/municipalities/sectorChart/MunicipalitySectorLegend";
 import { useMunicipalitySectorEmissions } from "@/hooks/municipalities/useMunicipalitySectorEmissions";
 import { MunicipalityEmissions } from "@/components/municipalities/MunicipalityEmissions";
 import { useHiddenItems } from "@/components/charts";
-import { YearSelector } from "@/components/layout/YearSelector";
-import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
+import { PageLoading } from "@/components/pageStates/Loading";
+import { PageError } from "@/components/pageStates/Error";
+import { PageNoData } from "@/components/pageStates/NoData";
+import {
+  getAvailableYearsFromSectors,
+  getCurrentYearFromAvailable,
+} from "@/utils/detail/sectorYearUtils";
+import { getProcurementRequirementsText } from "@/utils/municipality/procurement";
+import { MunicipalityDetailSEO } from "@/components/municipalities/detail/MunicipalityDetailSEO";
+import { LinkCard } from "@/components/detail/DetailLinkCard";
+import { DetailHeader } from "@/components/detail/DetailHeader";
+import { DetailSection } from "@/components/detail/DetailSection";
+import { DetailWrapper } from "@/components/detail/DetailWrapper";
+import { useMunicipalitySectors } from "@/hooks/municipalities/useMunicipalitySectors";
+import { DetailLinkCardGrid } from "@/components/detail/DetailGrid";
+import { SectorEmissionsChart } from "@/components/charts/sectorChart/SectorEmissions";
 
 export function MunicipalityDetailPage() {
   const { t } = useTranslation();
@@ -34,229 +39,91 @@ export function MunicipalityDetailPage() {
   const { sectorEmissions, loading: _loadingSectors } =
     useMunicipalitySectorEmissions(id);
 
+  const { getSectorInfo } = useMunicipalitySectors();
   const { hiddenItems: filteredSectors, setHiddenItems: setFilteredSectors } =
     useHiddenItems<string>([]);
 
   const [selectedYear, setSelectedYear] = useState<string>("2023");
 
-  if (loading) return <Text>{t("municipalityDetailPage.loading")}</Text>;
-  if (error) return <Text>{t("municipalityDetailPage.error")}</Text>;
-  if (!municipality) return <Text>{t("municipalityDetailPage.noData")}</Text>;
-
-  const requirementsInProcurement =
-    municipality.procurementScore == 2
-      ? t("municipalityDetailPage.procurementScore.high")
-      : municipality.procurementScore == 1
-        ? t("municipalityDetailPage.procurementScore.medium")
-        : t("municipalityDetailPage.procurementScore.low");
-
-  const emissionsData = transformEmissionsData(municipality);
-
-  const lastYearEmissions = municipality.emissions.at(-1);
+  const lastYearEmissions = municipality?.emissions.at(-1);
   const lastYear = lastYearEmissions?.year;
   const lastYearEmissionsTon = lastYearEmissions
     ? formatEmissionsAbsolute(lastYearEmissions.value, currentLanguage)
-    : "N/A";
+    : t("noData");
 
-  const availableYears = sectorEmissions?.sectors
-    ? Object.keys(sectorEmissions.sectors)
-        .map(Number)
-        .filter(
-          (year) =>
-            !isNaN(year) &&
-            Object.keys(sectorEmissions.sectors[year] || {}).length > 0,
-        )
-        .sort((a, b) => b - a)
-    : [];
+  const headerStats = useMunicipalityDetailHeaderStats(
+    municipality,
+    lastYear,
+    lastYearEmissionsTon,
+  );
 
-  // Use the first available year as default if selectedYear is not in availableYears
-  const currentYear =
-    availableYears.length > 0 && availableYears.includes(parseInt(selectedYear))
-      ? parseInt(selectedYear)
-      : availableYears[0] || 2023;
+  if (loading) return <PageLoading />;
+  if (error) return <PageError />;
+  if (!municipality) return <PageNoData />;
 
-  // Prepare SEO data
-  const canonicalUrl = `https://klimatkollen.se/municipalities/${id}`;
-  const pageTitle = `${municipality.name} - ${t(
-    "municipalityDetailPage.metaTitle",
-  )} - Klimatkollen`;
-  const pageDescription = t("municipalityDetailPage.metaDescription", {
-    municipality: municipality.name,
-    emissions: lastYearEmissionsTon,
-    year: lastYear,
-  });
+  const requirementsInProcurement = getProcurementRequirementsText(
+    municipality.procurementScore,
+    t,
+  );
 
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "GovernmentOrganization",
-    name: `${municipality.name} kommun`,
-    description: pageDescription,
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: municipality.name,
-      addressRegion: municipality.region,
-      addressCountry: "SE",
-    },
-  };
+  const emissionsData = transformEmissionsData(municipality);
+
+  const availableYears = getAvailableYearsFromSectors(sectorEmissions);
+
+  const currentYear = getCurrentYearFromAvailable(
+    selectedYear,
+    availableYears,
+    2023,
+  );
 
   const evcp = municipality.electricVehiclePerChargePoints;
 
   return (
     <>
-      <PageSEO
-        title={pageTitle}
-        description={pageDescription}
-        canonicalUrl={canonicalUrl}
-        structuredData={structuredData}
-      >
-        <h1>
-          {municipality.name} - {t("municipalityDetailPage.parisAgreement")}
-        </h1>
-        <p>
-          {t("municipalityDetailPage.seoText.intro", {
-            municipality: municipality.name,
-            emissions: lastYearEmissionsTon,
-            year: lastYear,
-          })}
-        </p>
-        <h2>{t("municipalityDetailPage.seoText.emissionsHeading")}</h2>
-        <h2>{t("municipalityDetailPage.seoText.climateGoalsHeading")}</h2>
-        <p>
-          {t("municipalityDetailPage.seoText.climateGoalsText", {
-            municipality: municipality.name,
-          })}
-        </p>
-        <h2>{t("municipalityDetailPage.seoText.consumptionHeading")}</h2>{" "}
-        <p>
-          {t("municipalityDetailPage.seoText.consumptionText", {
-            municipality: municipality.name,
-            consumption: municipality.totalConsumptionEmission.toFixed(1),
-          })}
-        </p>
-        <h2>{t("municipalityDetailPage.seoText.transportHeading")}</h2>
-        <p>
-          {t("municipalityDetailPage.seoText.transportText", {
-            municipality: municipality.name,
-            bikeMeters: municipality.bicycleMetrePerCapita.toFixed(1),
-            evGrowth: municipality.electricCarChangePercent.toFixed(1),
-          })}
-        </p>
-      </PageSEO>
+      <MunicipalityDetailSEO
+        id={id || ""}
+        municipality={municipality}
+        lastYearEmissionsTon={lastYearEmissionsTon}
+        lastYear={lastYear}
+      />
 
-      <div className="space-y-16 max-w-[1400px] mx-auto">
-        <SectionWithHelp
+      <DetailWrapper>
+        <DetailHeader
+          name={municipality.name}
+          subtitle={municipality.region}
+          logoUrl={municipality.logoUrl}
+          politicalRule={municipality.politicalRule}
           helpItems={[
             "municipalityTotalEmissions",
-            "municipalityWhyDataDelay",
+            "detailWhyDataDelay",
             "municipalityDeeperChanges",
             "municipalityConsumptionEmissionPerPerson",
             "municipalityLocalVsConsumption",
           ]}
-        >
-          <Text className="text-4xl md:text-8xl">{municipality.name}</Text>
-          <Text className="text-grey text-sm md:text-base lg:text-lg">
-            {municipality.region}
-          </Text>
-
-          <div className="flex flex-row items-center gap-2 my-4">
-            <Text
-              variant="body"
-              className="text-grey text-sm md:text-base lg:text-lg"
-            >
-              {t("municipalityDetailPage.politicalRule")}:
-            </Text>
-            <Text variant="body" className="text-sm md:text-base lg:text-lg">
-              {municipality.politicalRule.join(", ")}
-            </Text>
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-16 mt-8">
-            <MunicipalityStatCard
-              title={t("municipalityDetailPage.totalEmissions", {
-                year: lastYear,
-              })}
-              value={lastYearEmissionsTon}
-              unit={t("emissionsUnit")}
-              valueClassName="text-orange-2"
-              info={true}
-              infoText={t("municipalityDetailPage.totalEmissionsTooltip")}
-            />
-            <MunicipalityStatCard
-              title={t("municipalityDetailPage.annualChangeSince2015")}
-              value={formatPercentChange(
-                municipality.historicalEmissionChangePercent,
-                currentLanguage,
-              )}
-              valueClassName={cn(
-                municipality.historicalEmissionChangePercent > 0
-                  ? "text-pink-3"
-                  : "text-orange-2",
-              )}
-            />
-            <MunicipalityStatCard
-              title={t("municipalityDetailPage.consumptionEmissionsPerCapita")}
-              value={localizeUnit(
-                municipality.totalConsumptionEmission,
-                currentLanguage,
-              )}
-              valueClassName="text-orange-2"
-              unit={t("emissionsUnit")}
-            />
-          </div>
-        </SectionWithHelp>
+          stats={headerStats}
+          translateNamespace="municipalityDetailPage"
+        />
 
         <MunicipalityEmissions
           emissionsData={emissionsData}
           sectorEmissions={sectorEmissions}
         />
 
-        {sectorEmissions?.sectors && availableYears.length > 0 && (
-          <SectionWithHelp helpItems={["municipalityEmissionSources"]}>
-            <CardHeader
-              title={t("municipalityDetailPage.sectorEmissions")}
-              description={t("municipalityDetailPage.sectorEmissionsYear", {
-                year: currentYear,
-              })}
-              customDataViewSelector={
-                <YearSelector
-                  selectedYear={selectedYear}
-                  onYearChange={setSelectedYear}
-                  availableYears={availableYears}
-                  translateNamespace="municipalityDetailPage"
-                />
-              }
-              className="p-4 md:p-6"
-            />
+        <SectorEmissionsChart
+          sectorEmissions={sectorEmissions}
+          availableYears={availableYears}
+          selectedYear={selectedYear}
+          onYearChange={setSelectedYear}
+          currentYear={currentYear}
+          getSectorInfo={getSectorInfo}
+          filteredSectors={filteredSectors}
+          onFilteredSectorsChange={setFilteredSectors}
+          translateNamespace="municipalityDetailPage"
+          helpItems={["municipalityEmissionSources"]}
+        />
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
-              <MunicipalitySectorPieChart
-                sectorEmissions={sectorEmissions}
-                year={currentYear}
-                filteredSectors={filteredSectors}
-                onFilteredSectorsChange={setFilteredSectors}
-              />
-              {Object.keys(sectorEmissions.sectors[currentYear] || {}).length >
-                0 && (
-                <MunicipalitySectorLegend
-                  data={Object.entries(
-                    sectorEmissions.sectors[currentYear] || {},
-                  ).map(([sector, value]) => ({
-                    name: sector,
-                    value,
-                    color: "",
-                  }))}
-                  total={Object.values(
-                    sectorEmissions.sectors[currentYear] || {},
-                  ).reduce((sum, value) => sum + value, 0)}
-                  filteredSectors={filteredSectors}
-                  onFilteredSectorsChange={setFilteredSectors}
-                />
-              )}
-            </div>
-          </SectionWithHelp>
-        )}
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <MunicipalityLinkCard
+        <DetailLinkCardGrid>
+          <LinkCard
             title={t("municipalityDetailPage.climatePlan")}
             description={
               municipality.climatePlanYear
@@ -274,7 +141,7 @@ export function MunicipalityDetailPage() {
               municipality.climatePlanYear ? "text-green-3" : "text-pink-3"
             }
           />
-          <MunicipalityLinkCard
+          <LinkCard
             title={t("municipalityDetailPage.procurementRequirements")}
             description={requirementsInProcurement}
             link={municipality.procurementLink || undefined}
@@ -286,9 +153,9 @@ export function MunicipalityDetailPage() {
                   : "text-pink-3"
             }
           />
-        </div>
+        </DetailLinkCardGrid>
 
-        <MunicipalitySection
+        <DetailSection
           title={t("municipalityDetailPage.sustainableTransport")}
           items={[
             {
@@ -325,7 +192,7 @@ export function MunicipalityDetailPage() {
             "municipalityBicyclePaths",
           ]}
         />
-      </div>
+      </DetailWrapper>
     </>
   );
 }

@@ -128,6 +128,7 @@ export const SectorsChart: FC<SectorsChartProps> = ({
       <ChartArea>
         <ResponsiveContainer {...getChartContainerProps()}>
           <ComposedChart
+            key={`sectors-${Array.from(hiddenSectors).sort().join("-")}`}
             {...getComposedChartProps(
               chartData,
               undefined,
@@ -170,7 +171,6 @@ export const SectorsChart: FC<SectorsChartProps> = ({
                   dataKey={sector}
                   stroke={sectorColor}
                   fillOpacity={0}
-                  stackId="1"
                   strokeWidth={isHidden ? 0 : 2}
                   name={sectorInfo.translatedName}
                   connectNulls={true}

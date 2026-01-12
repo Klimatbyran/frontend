@@ -3,12 +3,13 @@ import { useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useState, useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { NewsletterPopover } from "../NewsletterPopover";
+import { NewsletterPopover } from "../newsletters/NewsletterPopover";
 import { useLanguage } from "../LanguageProvider";
 import { HeaderSearchButton } from "../search/HeaderSearchButton";
 import useHeaderTitle from "@/hooks/useHeaderTitle";
 import { useAuth } from "@/contexts/AuthContext";
-import { LocalizedLink, localizedPath } from "../LocalizedLink";
+import { LocalizedLink } from "../LocalizedLink";
+import { localizedPath } from "@/utils/routing";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -17,18 +18,21 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "../ui/navigation-menu";
+import { stagingFeatureFlagEnabled } from "@/utils/ui/featureFlags";
 
 interface NavSubLink {
   label: string;
   path: string;
   shortcut?: string;
+  onlyShowOnStaging?: boolean;
 }
 
 interface NavLink {
   label: string;
-  icon?: JSX.Element;
+  icon?: React.ReactElement;
   path: string;
   sublinks?: NavSubLink[];
+  onlyShowOnStaging?: boolean;
 }
 
 const NAV_LINKS: NavLink[] = [
@@ -36,6 +40,21 @@ const NAV_LINKS: NavLink[] = [
     label: "header.companies",
     icon: <BarChart3 className="w-4 h-4" aria-hidden="true" />,
     path: `/companies`,
+    sublinks: [
+      {
+        label: "header.companiesRanked",
+        path: `/companies/ranked`,
+        onlyShowOnStaging: true,
+      },
+      {
+        label: "header.companiesSectors",
+        path: `/companies/sectors`,
+      },
+      {
+        label: "header.companiesExplore",
+        path: `/companies`,
+      },
+    ],
   },
   {
     label: "header.municipalities",
@@ -45,6 +64,11 @@ const NAV_LINKS: NavLink[] = [
       {
         label: "header.municipalitiesRanked",
         path: `/municipalities`,
+      },
+      {
+        label: "header.regionsRanked",
+        path: `/regions`,
+        onlyShowOnStaging: true,
       },
       {
         label: "header.municipalitiesExplore",
@@ -140,9 +164,25 @@ export function Header() {
   const toggleMenu = useCallback(() => setMenuOpen((prev) => !prev), []);
   const { user } = useAuth();
   const { headerTitle, showTitle, setShowTitle } = useHeaderTitle();
+  const isStaging = stagingFeatureFlagEnabled();
 
   // Radix menu for React doesn't have a way to turn this off, simulate it by a really long delay
   const disableOpenOnHoverDelay = 999999;
+
+  // Filter nav links and sublinks based on feature flags
+  const filteredNavLinks = NAV_LINKS.filter(
+    (link) => !link.onlyShowOnStaging || isStaging,
+  ).map((link) => {
+    if (link.sublinks) {
+      return {
+        ...link,
+        sublinks: link.sublinks.filter(
+          (sublink) => !sublink.onlyShowOnStaging || isStaging,
+        ),
+      };
+    }
+    return link;
+  });
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -164,6 +204,16 @@ export function Header() {
 
     return () => window.removeEventListener("scroll", onScroll);
   }, [headerTitle, showTitle, setShowTitle]);
+
+  useEffect(() => {
+    if(menuOpen){
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+
+    return () => document.body.classList.remove("overflow-hidden");
+  }, [menuOpen]);
 
   const LanguageButtons = ({ className }: { className?: string }) => (
     <div className={cn("flex items-center gap-2", className)}>
@@ -208,9 +258,9 @@ export function Header() {
           delayDuration={disableOpenOnHoverDelay}
         >
           <NavigationMenuList>
-            {NAV_LINKS.map((item) =>
+            {filteredNavLinks.map((item) =>
               item.sublinks ? (
-                <NavigationMenuItem>
+                <NavigationMenuItem key={item.path}>
                   <NavigationMenuTrigger
                     className={cn(
                       "flex gap-2 p-3",
@@ -231,6 +281,7 @@ export function Header() {
                 </NavigationMenuItem>
               ) : (
                 <NavigationMenuItem
+                  key={item.path}
                   className={cn(
                     "h-10 lg:h12 flex items-center",
                     location.pathname.startsWith(
@@ -289,62 +340,64 @@ export function Header() {
           {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
         {menuOpen && (
-          <div className="fixed inset-0 w-full h-full z-100 flex p-8 mt-10 bg-black-2">
-            <div className="flex flex-col gap-6 text-lg w-full">
-              <HeaderSearchButton
-                className="w-full"
-                onSearchResultClick={toggleMenu}
-              />
-              <LanguageButtons />
-              {NAV_LINKS.map((link) => (
-                <div key={link.path} className="flex flex-col">
-                  <LocalizedLink
-                    to={link.path}
-                    onClick={toggleMenu}
-                    className="flex items-center gap-2 cursor-pointer"
-                  >
-                    {link.icon}
-                    {t(link.label)}
-                  </LocalizedLink>
-                  {link.sublinks && (
-                    <div className="flex flex-col gap-2 pl-4 mt-2">
-                      {link.sublinks.map((sublink) =>
-                        sublink.path.startsWith("https://") ? (
-                          <a
-                            href={sublink.path}
-                            className="flex items-center gap-2 text-sm text-gray-400"
-                            target="_blank"
-                            key={sublink.path}
-                            onClick={toggleMenu}
-                          >
-                            {t(sublink.label)}
-                          </a>
-                        ) : (
-                          <LocalizedLink
-                            key={sublink.path}
-                            to={sublink.path}
-                            onClick={toggleMenu}
-                            className="flex items-center gap-2 text-sm text-gray-400"
-                          >
-                            {t(sublink.label)}
-                          </LocalizedLink>
-                        ),
-                      )}
-                    </div>
-                  )}
-                </div>
-              ))}
-              {/* Newsletter button in mobile menu */}
-              <button
-                onClick={() => {
-                  setMenuOpen(false); // Close the menu
-                  setIsSignUpOpen(true); // Open the newsletter popover
-                }}
-                className="flex items-center gap-2 text-blue-3"
-              >
-                <Mail className="w-4 h-4" />
-                {t("header.newsletter")}
-              </button>
+          <div className="overflow-y-auto fixed inset-0 top-10 w-full z-100 bg-black-2">
+            <div className="p-8">
+              <div className="flex flex-col gap-6 text-lg w-full">
+                <HeaderSearchButton
+                  className="w-full"
+                  onSearchResultClick={toggleMenu}
+                />
+                <LanguageButtons />
+                {filteredNavLinks.map((link) => (
+                  <div key={link.path} className="flex flex-col">
+                    <LocalizedLink
+                      to={link.path}
+                      onClick={toggleMenu}
+                      className="flex items-center gap-2 cursor-pointer"
+                    >
+                      {link.icon}
+                      {t(link.label)}
+                    </LocalizedLink>
+                    {link.sublinks && (
+                      <div className="flex flex-col gap-2 pl-4 mt-2">
+                        {link.sublinks.map((sublink) =>
+                          sublink.path.startsWith("https://") ? (
+                            <a
+                              href={sublink.path}
+                              className="flex items-center gap-2 text-sm text-gray-400"
+                              target="_blank"
+                              key={sublink.path}
+                              onClick={toggleMenu}
+                            >
+                              {t(sublink.label)}
+                            </a>
+                          ) : (
+                            <LocalizedLink
+                              key={sublink.path}
+                              to={sublink.path}
+                              onClick={toggleMenu}
+                              className="flex items-center gap-2 text-sm text-gray-400"
+                            >
+                              {t(sublink.label)}
+                            </LocalizedLink>
+                          ),
+                        )}
+                      </div>
+                    )}
+                  </div>
+                ))}
+                {/* Newsletter button in mobile menu */}
+                <button
+                  onClick={() => {
+                    setMenuOpen(false); // Close the menu
+                    setIsSignUpOpen(true); // Open the newsletter popover
+                  }}
+                  className="flex items-center gap-2 text-blue-3"
+                >
+                  <Mail className="w-4 h-4" />
+                  {t("header.newsletter")}
+                </button>
+              </div>
             </div>
           </div>
         )}

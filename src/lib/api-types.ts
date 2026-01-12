@@ -176,6 +176,8 @@ export interface paths {
                             wikidataId: string;
                             name: string;
                             lei?: string | null;
+                            /** Format: uri */
+                            logoUrl?: string | null;
                             description?: string | null;
                             descriptions?: {
                                 id: string;
@@ -187,12 +189,12 @@ export interface paths {
                                 startDate: string;
                                 endDate: string;
                                 reportURL: string | null;
-                                emissionsTrend?: {
+                                emissionsChangeLastTwoYears?: {
                                     absolute: number | null;
                                     adjusted: number | null;
                                 };
                                 emissions: {
-                                    calculatedTotalEmissions: number;
+                                    calculatedTotalEmissions: number | null;
                                     scope1: {
                                         total: number | null;
                                         unit: string;
@@ -207,7 +209,7 @@ export interface paths {
                                         lb: number | null;
                                         unknown: number | null;
                                         unit: string;
-                                        calculatedTotalEmissions: number;
+                                        calculatedTotalEmissions: number | null;
                                         metadata: {
                                             verifiedBy: {
                                                 name: string;
@@ -215,7 +217,7 @@ export interface paths {
                                         };
                                     } | null;
                                     scope3: {
-                                        calculatedTotalEmissions: number;
+                                        calculatedTotalEmissions: number | null;
                                         metadata: {
                                             verifiedBy: {
                                                 name: string;
@@ -233,7 +235,8 @@ export interface paths {
                                         categories: {
                                             category: number;
                                             total: number | null;
-                                            unit: string;
+                                            /** @enum {string|null} */
+                                            unit: "tCO2e" | "tCO2" | null;
                                             metadata: {
                                                 verifiedBy: {
                                                     name: string;
@@ -242,7 +245,7 @@ export interface paths {
                                         }[];
                                     } | null;
                                     scope1And2: {
-                                        total: number;
+                                        total: number | null;
                                         unit: string;
                                         metadata: {
                                             verifiedBy: {
@@ -281,6 +284,7 @@ export interface paths {
                                     } | null;
                                 } | null;
                             }[];
+                            futureEmissionsTrendSlope: number | null;
                             industry: {
                                 industryGics: {
                                     sectorCode: string;
@@ -356,6 +360,8 @@ export interface paths {
                             wikidataId: string;
                             name: string;
                             lei?: string | null;
+                            /** Format: uri */
+                            logoUrl?: string | null;
                             description?: string | null;
                             descriptions?: {
                                 id: string;
@@ -405,7 +411,7 @@ export interface paths {
                                                 name: string;
                                             } | null;
                                         };
-                                        calculatedTotalEmissions: number;
+                                        calculatedTotalEmissions: number | null;
                                     } | null;
                                     scope3: {
                                         id: string;
@@ -413,7 +419,8 @@ export interface paths {
                                             id: string;
                                             category: number;
                                             total: number | null;
-                                            unit: string;
+                                            /** @enum {string|null} */
+                                            unit: "tCO2e" | "tCO2" | null;
                                             metadata: {
                                                 id: string;
                                                 comment: string | null;
@@ -444,7 +451,7 @@ export interface paths {
                                                 } | null;
                                             };
                                         } | null;
-                                        calculatedTotalEmissions: number;
+                                        calculatedTotalEmissions: number | null;
                                         metadata: {
                                             id: string;
                                             comment: string | null;
@@ -460,7 +467,7 @@ export interface paths {
                                     } | null;
                                     scope1And2: {
                                         id: string;
-                                        total: number;
+                                        total: number | null;
                                         unit: string;
                                         metadata: {
                                             id: string;
@@ -509,7 +516,7 @@ export interface paths {
                                             } | null;
                                         };
                                     } | null;
-                                    calculatedTotalEmissions: number;
+                                    calculatedTotalEmissions: number | null;
                                 } | null;
                                 economy: {
                                     id: string;
@@ -548,11 +555,12 @@ export interface paths {
                                         };
                                     } | null;
                                 } | null;
-                                emissionsTrend?: {
+                                emissionsChangeLastTwoYears?: {
                                     absolute: number | null;
                                     adjusted: number | null;
                                 };
                             }[];
+                            futureEmissionsTrendSlope: number | null;
                             industry: {
                                 id: string;
                                 industryGics: {
@@ -700,6 +708,8 @@ export interface paths {
                         }[];
                         /** Format: uri */
                         url?: string;
+                        /** Format: uri */
+                        logoUrl?: string | null;
                         internalComment?: string;
                         tags?: string[];
                         lei?: string;
@@ -866,6 +876,8 @@ export interface paths {
                             wikidataId: string;
                             name: string;
                             lei?: string | null;
+                            /** Format: uri */
+                            logoUrl?: string | null;
                             description?: string | null;
                             descriptions?: {
                                 id: string;
@@ -877,12 +889,12 @@ export interface paths {
                                 startDate: string;
                                 endDate: string;
                                 reportURL: string | null;
-                                emissionsTrend?: {
+                                emissionsChangeLastTwoYears?: {
                                     absolute: number | null;
                                     adjusted: number | null;
                                 };
                                 emissions: {
-                                    calculatedTotalEmissions: number;
+                                    calculatedTotalEmissions: number | null;
                                     scope1: {
                                         total: number | null;
                                         unit: string;
@@ -897,7 +909,7 @@ export interface paths {
                                         lb: number | null;
                                         unknown: number | null;
                                         unit: string;
-                                        calculatedTotalEmissions: number;
+                                        calculatedTotalEmissions: number | null;
                                         metadata: {
                                             verifiedBy: {
                                                 name: string;
@@ -905,7 +917,7 @@ export interface paths {
                                         };
                                     } | null;
                                     scope3: {
-                                        calculatedTotalEmissions: number;
+                                        calculatedTotalEmissions: number | null;
                                         metadata: {
                                             verifiedBy: {
                                                 name: string;
@@ -923,7 +935,8 @@ export interface paths {
                                         categories: {
                                             category: number;
                                             total: number | null;
-                                            unit: string;
+                                            /** @enum {string|null} */
+                                            unit: "tCO2e" | "tCO2" | null;
                                             metadata: {
                                                 verifiedBy: {
                                                     name: string;
@@ -932,7 +945,7 @@ export interface paths {
                                         }[];
                                     } | null;
                                     scope1And2: {
-                                        total: number;
+                                        total: number | null;
                                         unit: string;
                                         metadata: {
                                             verifiedBy: {
@@ -971,6 +984,7 @@ export interface paths {
                                     } | null;
                                 } | null;
                             }[];
+                            futureEmissionsTrendSlope: number | null;
                             industry: {
                                 industryGics: {
                                     sectorCode: string;
@@ -1055,7 +1069,7 @@ export interface paths {
         };
         /**
          * Get all municipalities
-         * @description Retrieve a list of all municipalities with data about their emissions, carbon budget, climate plans, bike infrastructure, procurements, and much more.
+         * @description Retrieve a list of all municipalities with data about their emissions, carbon budget, climate plans, bike infrastructure, procurements, and much more. Returns 304 Not Modified if the resource has not changed since the last request (based on ETag).
          */
         get: {
             parameters: {
@@ -1075,7 +1089,9 @@ export interface paths {
                         "application/json": {
                             name: string;
                             region: string;
-                            meetsParisGoal: boolean;
+                            logoUrl: string | null;
+                            totalTrend: number;
+                            totalCarbonLaw: number;
                             historicalEmissionChangePercent: number;
                             electricCarChangePercent: number;
                             climatePlanLink: string | null;
@@ -1144,7 +1160,9 @@ export interface paths {
                         "application/json": {
                             name: string;
                             region: string;
-                            meetsParisGoal: boolean;
+                            logoUrl: string | null;
+                            totalTrend: number;
+                            totalCarbonLaw: number;
                             historicalEmissionChangePercent: number;
                             electricCarChangePercent: number;
                             climatePlanLink: string | null;
@@ -1294,7 +1312,237 @@ export interface paths {
          */
         get: {
             parameters: {
+                query?: {
+                    type?: "csv" | "json" | "xlsx";
+                    year?: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/regions/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get all regions
+         * @description Retrieve a list of all regions with their historical emissions data, trends, Paris agreement compliance status, and municipalities. Returns 304 Not Modified if the resource has not changed since the last request (based on ETag).
+         */
+        get: {
+            parameters: {
                 query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            region: string;
+                            emissions: ({
+                                year: string;
+                                value: number;
+                            } | null)[];
+                            totalTrend: number;
+                            totalCarbonLaw: number;
+                            approximatedHistoricalEmission: ({
+                                year: string;
+                                value: number;
+                            } | null)[];
+                            trend: ({
+                                year: string;
+                                value: number;
+                            } | null)[];
+                            historicalEmissionChangePercent: number;
+                            meetsParis: boolean;
+                            municipalities: string[];
+                        }[];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/regions/kpis": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get regional KPIs
+         * @description Retrieve key performance indicators for all regions, including Paris agreement compliance and historical emission change percentages.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            region: string;
+                            meetsParis: boolean;
+                            historicalEmissionChangePercent: number;
+                        }[];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/regions/{name}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get one region
+         * @description Retrieve a specific region with its historical emissions data, trends, Paris agreement compliance status, and municipalities.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    name: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            region: string;
+                            emissions: ({
+                                year: string;
+                                value: number;
+                            } | null)[];
+                            totalTrend: number;
+                            totalCarbonLaw: number;
+                            approximatedHistoricalEmission: ({
+                                year: string;
+                                value: number;
+                            } | null)[];
+                            trend: ({
+                                year: string;
+                                value: number;
+                            } | null)[];
+                            historicalEmissionChangePercent: number;
+                            meetsParis: boolean;
+                            municipalities: string[];
+                        };
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            message?: string;
+                            details?: unknown;
+                        };
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            message?: string;
+                            details?: unknown;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/regions/export": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Export all regions
+         * @description Export a list of all regions with their historical emissions data broken down by sectors and subsectors over time.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    type?: "csv" | "json" | "xlsx";
+                    year?: string;
+                };
                 header?: never;
                 path?: never;
                 cookie?: never;
@@ -1682,7 +1930,7 @@ export interface paths {
                                      */
                                     unit?: "tCO2e" | "tCO2";
                                     verified?: boolean;
-                                };
+                                } | null;
                                 scope2?: {
                                     /** @description Market-based scope 2 emissions */
                                     mb?: number | null;
@@ -1690,22 +1938,16 @@ export interface paths {
                                     lb?: number | null;
                                     /** @description Unspecified Scope 2 emissions */
                                     unknown?: number | null;
-                                    /**
-                                     * @default tCO2e
-                                     * @enum {string}
-                                     */
-                                    unit?: "tCO2e" | "tCO2";
+                                    /** @enum {string|null} */
+                                    unit?: "tCO2e" | "tCO2" | null;
                                     verified?: boolean;
                                 };
                                 scope3?: {
                                     categories?: {
                                         category: number;
                                         total?: number | null;
-                                        /**
-                                         * @default tCO2e
-                                         * @enum {string}
-                                         */
-                                        unit?: "tCO2e" | "tCO2";
+                                        /** @enum {string|null} */
+                                        unit: "tCO2e" | "tCO2" | null;
                                         verified?: boolean;
                                     }[];
                                     statedTotalEmissions?: {
@@ -1716,8 +1958,8 @@ export interface paths {
                                          */
                                         unit?: "tCO2e" | "tCO2";
                                         verified?: boolean;
-                                    };
-                                };
+                                    } | null;
+                                } | null;
                                 biogenic?: {
                                     total?: number | null;
                                     /**
@@ -1726,7 +1968,7 @@ export interface paths {
                                      */
                                     unit?: "tCO2e" | "tCO2";
                                     verified?: boolean;
-                                };
+                                } | null;
                                 statedTotalEmissions?: {
                                     total?: number | null;
                                     /**
@@ -1735,7 +1977,7 @@ export interface paths {
                                      */
                                     unit?: "tCO2e" | "tCO2";
                                     verified?: boolean;
-                                };
+                                } | null;
                                 scope1And2?: {
                                     total?: number | null;
                                     /**
@@ -1744,7 +1986,7 @@ export interface paths {
                                      */
                                     unit?: "tCO2e" | "tCO2";
                                     verified?: boolean;
-                                };
+                                } | null;
                             };
                             economy?: {
                                 turnover?: {
@@ -1759,6 +2001,7 @@ export interface paths {
                                 };
                             };
                         }[];
+                        replaceAllEmissions?: boolean;
                         metadata?: {
                             source?: string;
                             comment?: string;

@@ -1,18 +1,20 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { Map, List } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
 import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/layout/PageHeader";
-import DataSelector from "@/components/municipalities/rankedList/MunicipalityDataSelector";
-import MunicipalityRankedList from "@/components/municipalities/rankedList/MunicipalityRankedList";
+import { KPIDataSelector } from "@/components/ranked/KPIDataSelector";
 import InsightsPanel from "@/components/municipalities/rankedList/MunicipalityInsightsPanel";
-import SwedenMap from "@/components/municipalities/map/SwedenMap";
+import MapOfSweden from "@/components/maps/SwedenMap";
 import municipalityGeoJson from "@/data/municipalityGeo.json";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import { useMunicipalityKPIs } from "@/hooks/municipalities/useMunicipalityKPIs";
 import { FeatureCollection } from "geojson";
+import { RankedListItem } from "@/types/rankings";
+import { createEntityClickHandler } from "@/utils/routing";
+import { MunicipalityRankedList } from "@/components/municipalities/MunicipalityRankedList";
 
 export function MunicipalitiesRankedPage() {
   const { t } = useTranslation();
@@ -58,10 +60,34 @@ export function MunicipalitiesRankedPage() {
     }
   }, [getKPIFromURL, selectedKPI.label]);
 
-  const handleMunicipalityClick = (name: string) => {
-    const formattedName = name.toLowerCase();
-    window.location.href = `/municipalities/${formattedName}?view=${viewMode}`;
+  const handleMunicipalityClick = createEntityClickHandler(
+    navigate,
+    "municipality",
+    viewMode,
+  );
+
+  // Create an adapter for MapOfSweden
+  const handleMunicipalityAreaClick = (name: string) => {
+    const municipality = municipalities.find((m) => m.name === name);
+    if (municipality) {
+      handleMunicipalityClick(municipality);
+    } else {
+      handleMunicipalityClick(name);
+    }
   };
+
+  // Transform municipalities to RankedListItem format
+  const municipalityEntities: RankedListItem[] = useMemo(() => {
+    return municipalities.map((municipality) => {
+      const { sectorEmissions, ...rest } = municipality;
+      return {
+        ...rest,
+        id: municipality.name,
+        displayName: municipality.name,
+        mapName: municipality.name,
+      };
+    });
+  }, [municipalities]);
 
   if (loading) {
     return (
@@ -89,22 +115,29 @@ export function MunicipalitiesRankedPage() {
     );
   }
 
+  const municipalityRankedList = (
+    <MunicipalityRankedList
+      municipalityEntities={municipalityEntities}
+      selectedKPI={selectedKPI}
+    />
+  );
+
   const renderMapOrList = (isMobile: boolean) =>
     viewMode === "map" ? (
       <div className={isMobile ? "relative h-[65vh]" : "relative h-full"}>
-        <SwedenMap
+        <MapOfSweden
+          entityType="municipalities"
           geoData={geoData as FeatureCollection}
-          municipalityData={municipalities}
+          data={municipalities.map((m) => {
+            const { sectorEmissions, ...rest } = m;
+            return { ...rest, id: m.name };
+          })}
           selectedKPI={selectedKPI}
-          onMunicipalityClick={handleMunicipalityClick}
+          onAreaClick={handleMunicipalityAreaClick}
         />
       </div>
     ) : (
-      <MunicipalityRankedList
-        municipalityData={municipalities}
-        selectedKPI={selectedKPI}
-        onMunicipalityClick={handleMunicipalityClick}
-      />
+      municipalityRankedList
     );
 
   return (
@@ -132,12 +165,14 @@ export function MunicipalitiesRankedPage() {
         />
       </div>
 
-      <DataSelector
+      <KPIDataSelector
         selectedKPI={selectedKPI}
-        onDataPointChange={(kpi) => {
+        onKPIChange={(kpi) => {
           setSelectedKPI(kpi);
           setKPIInURL(kpi.label);
         }}
+        kpis={municipalityKPIs}
+        translationPrefix="municipalities.list"
       />
 
       {/* Mobile Insights */}
@@ -153,13 +188,7 @@ export function MunicipalitiesRankedPage() {
       <div className="hidden lg:grid grid-cols-1 gap-6">
         <div className="grid grid-cols-2 gap-6">
           {renderMapOrList(false)}
-          {viewMode === "map" ? (
-            <MunicipalityRankedList
-              municipalityData={municipalities}
-              selectedKPI={selectedKPI}
-              onMunicipalityClick={handleMunicipalityClick}
-            />
-          ) : null}
+          {viewMode === "map" ? municipalityRankedList : null}
         </div>
         <InsightsPanel
           municipalityData={municipalities}

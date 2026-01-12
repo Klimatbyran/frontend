@@ -1,5 +1,8 @@
+import { ContentMeta } from "@/types/content";
 import { useLanguage } from "@/components/LanguageProvider";
-import { blogMetadataByLanguage, blogMetadata } from "@/lib/blog/blogPostsList";
+import { blogMetadataByLanguage } from "@/lib/blog/blogPostsList";
+import { SUPPORTED_LANGUAGES } from "@/lib/languageDetection";
+import { load } from "js-yaml";
 
 const markdownFiles = import.meta.glob("/src/lib/blog/posts/*.md", {
   as: "raw",
@@ -8,45 +11,53 @@ const markdownFiles = import.meta.glob("/src/lib/blog/posts/*.md", {
 
 export function useBlogPosts() {
   const { currentLanguage } = useLanguage();
-  return blogMetadataByLanguage[currentLanguage] || [];
+  return (
+    blogMetadataByLanguage[currentLanguage]
+      .map((b) => getBlogPost(b, currentLanguage).blogPost?.metadata)
+      .filter((b) => b != null) || []
+  );
 }
 
 export function useBlogPost(id: string) {
   const { currentLanguage } = useLanguage();
-  const blogPosts = useBlogPosts();
+  const blogPostsMetadata = blogMetadataByLanguage[currentLanguage];
 
-  // First try to find a post with the current language
-  let metadata = blogPosts.find(
-    (post) => post.id === id && post.language === currentLanguage,
-  );
+  const metadata = blogPostsMetadata.find((m) => m.id === id);
 
-  // If not found, fall back to any post with the same id that should be displayed in current language
-  if (!metadata) {
-    metadata = blogMetadata.find(
-      (post) =>
-        post.id === id &&
-        (post.displayLanguages.includes(currentLanguage) ||
-          post.displayLanguages.includes("all")),
-    );
-  }
+  return getBlogPost(metadata, currentLanguage);
+}
 
+export function getBlogPost(
+  metadata: { id: string; displayLanguages: string[] } | undefined,
+  currentLanguage: string,
+) {
   if (!metadata) {
     return { blogPost: null, loading: false, error: "Post not found" };
   }
 
   // Try current language first
-  let filePath = `/src/lib/blog/posts/${id}-${currentLanguage}.md`;
+  let filePath = `/src/lib/blog/posts/${metadata.id}-${currentLanguage}.md`;
   let rawMarkdown = markdownFiles[filePath];
 
-  // Fallback to original language
+  // Fallback to any of the other display languages
   if (!rawMarkdown) {
-    filePath = `/src/lib/blog/posts/${id}-${metadata.language}.md`;
-    rawMarkdown = markdownFiles[filePath];
+    for (const l of metadata.displayLanguages.includes("all")
+      ? SUPPORTED_LANGUAGES
+      : metadata.displayLanguages) {
+      if (l !== currentLanguage) {
+        filePath = `/src/lib/blog/posts/${metadata.id}-${l}.md`;
+        rawMarkdown = markdownFiles[filePath];
+
+        if (rawMarkdown) {
+          break;
+        }
+      }
+    }
   }
 
   // Final fallback if no language indicated in filename
   if (!rawMarkdown) {
-    filePath = `/src/lib/blog/posts/${id}.md`;
+    filePath = `/src/lib/blog/posts/${metadata.id}.md`;
     rawMarkdown = markdownFiles[filePath];
   }
 
@@ -54,11 +65,22 @@ export function useBlogPost(id: string) {
     return { blogPost: null, loading: false, error: "Content not found" };
   }
 
-  const extractMetadata = (rawMarkdown: string) => {
-    const frontmatterRegex = /^---\n([\s\S]*?)\n---\n/;
-    return rawMarkdown.replace(frontmatterRegex, "").trim();
-  };
+  const frontmatterRegex = /^---\n([\s\S]*?)\n---\n/;
+  const frontmatter = rawMarkdown.match(frontmatterRegex);
 
-  const content = extractMetadata(rawMarkdown);
-  return { blogPost: { metadata, content }, loading: false, error: null };
+  if (!frontmatter) {
+    return { blogPost: null, loading: false, error: "No frontmatter found." };
+  }
+
+  const parsedMarkdown = load(frontmatter[1]) as ContentMeta;
+  parsedMarkdown.displayLanguages = metadata.displayLanguages;
+
+  return {
+    blogPost: {
+      metadata: parsedMarkdown,
+      content: rawMarkdown.replace(frontmatter[0], "").trim(),
+    },
+    loading: false,
+    error: null,
+  };
 }

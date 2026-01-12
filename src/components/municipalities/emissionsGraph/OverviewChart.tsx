@@ -91,7 +91,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
               {...getConsistentLineProps(
                 "historical",
                 false,
-                t("municipalities.graph.historical"),
+                t("detailPage.graph.historical"),
               )}
             />
 
@@ -102,7 +102,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
               {...getConsistentLineProps(
                 "estimated",
                 false,
-                t("municipalities.graph.estimated"),
+                t("detailPage.graph.estimated"),
               )}
             />
 
@@ -113,7 +113,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
               {...getConsistentLineProps(
                 "trend",
                 false,
-                t("municipalities.graph.trend"),
+                t("detailPage.graph.trend"),
               )}
             />
 
@@ -124,7 +124,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
               {...getConsistentLineProps(
                 "paris",
                 false,
-                t("municipalities.graph.carbonLaw"),
+                t("detailPage.graph.carbonLaw"),
               )}
             />
           </LineChart>

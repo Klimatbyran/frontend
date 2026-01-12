@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   BarChart,
   Bar,
@@ -9,11 +10,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import type { LegendPayload } from "recharts";
-import {
-  sectorColors,
-  useSectorNames,
-  getCompanyColors,
-} from "@/hooks/companies/useCompanyFilters";
+import { sectorColors, getCompanyColors } from "@/lib/constants/companyColors";
+import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 import { RankedCompany } from "@/types/company";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { useChartData } from "@/hooks/companies/useChartData";
@@ -24,6 +22,7 @@ import { useResponsiveChartSize } from "@/hooks/useResponsiveChartSize";
 import { cn } from "@/lib/utils";
 import SectorPieLegend from "./SectorPieLegend";
 import CustomTooltip from "../../tooltips/CustomTooltip";
+import { formatWithBestUnit } from "@/utils/data/unitScaling";
 
 interface EmissionsChartProps {
   companies: RankedCompany[];
@@ -38,14 +37,8 @@ type BarClickData = {
 };
 
 const formatYAxisTick = (value: number): string => {
-  if (value >= 1_000_000_000) {
-    return `${(value / 1_000_000_000).toFixed(1)}B`;
-  } else if (value >= 1_000_000) {
-    return `${(value / 1_000_000).toFixed(1)}M`;
-  } else if (value >= 1_000) {
-    return `${(value / 1_000).toFixed(1)}k`;
-  }
-  return value.toString();
+  // Use generic units (B/M/k) for chart axis formatting
+  return formatWithBestUnit(value, value, "generic", 1);
 };
 
 const StackedTotalLegend = ({
@@ -73,6 +66,7 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
   selectedSectors,
 }) => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const sectorNames = useSectorNames();
 
   const [chartType, setChartType] = useState<ChartType>("pie");
@@ -111,7 +105,7 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
     if (!selectedSector && data?.sectorCode) {
       setSelectedSector(data.sectorCode);
     } else if (selectedSector && data?.wikidataId) {
-      window.location.href = `/companies/${data.wikidataId}`;
+      navigate(`/companies/${data.wikidataId}`);
     }
   };
 

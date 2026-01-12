@@ -434,4 +434,93 @@ describe("mapCompanyEditFormToRequestBody", () => {
     expect(result.reportingPeriods.length).toBe(0);
     expect(result.metadata.comment).toBe("hello");
   });
+
+  describe("new fields", () => {
+    describe("statedTotalEmissions (at emissions level)", () => {
+      it("should include statedTotalEmissions if changed", () => {
+        const result = mapCompanyEditFormToRequestBody(
+          [basePeriod],
+          form([["stated-total-1", "555"]]),
+        );
+        expect(
+          result.reportingPeriods[0].emissions.statedTotalEmissions.total,
+        ).toBe(555);
+      });
+
+      it("should send null for statedTotalEmissions total if cleared", () => {
+        const periodWithStatedTotal = makeBasePeriod({
+          emissions: {
+            ...basePeriod.emissions!,
+            statedTotalEmissions: {
+              id: "st1",
+              total: 123,
+              unit: "tCO2e",
+              metadata: baseMeta,
+            },
+          },
+        });
+        const result = mapCompanyEditFormToRequestBody(
+          [periodWithStatedTotal],
+          form([["stated-total-1", ""]]),
+        );
+        expect(
+          result.reportingPeriods[0].emissions.statedTotalEmissions.total,
+        ).toBeNull();
+      });
+    });
+
+    describe("scope1And2", () => {
+      it("should include scope1And2 if changed", () => {
+        const result = mapCompanyEditFormToRequestBody(
+          [basePeriod],
+          form([["scope-1-and-2-1", "100"]]),
+        );
+        expect(result.reportingPeriods[0].emissions.scope1And2.total).toBe(100);
+      });
+    });
+
+    describe("reportURL", () => {
+      it("should include reportURL if changed", () => {
+        const result = mapCompanyEditFormToRequestBody(
+          [basePeriod],
+          form([["report-url-1", "https://example.com/report"]]),
+        );
+        expect(result.reportingPeriods[0].reportURL).toBe(
+          "https://example.com/report",
+        );
+      });
+    });
+
+    describe("turnover", () => {
+      it("should include turnover if changed", () => {
+        const result = mapCompanyEditFormToRequestBody(
+          [basePeriod],
+          form([
+            ["turnover-value-1", "1000000"],
+            ["turnover-currency-1", "SEK"],
+          ]),
+        );
+        expect(result.reportingPeriods[0].economy.turnover.value).toBe(1000000);
+        expect(result.reportingPeriods[0].economy.turnover.currency).toBe(
+          "SEK",
+        );
+      });
+    });
+
+    describe("employees", () => {
+      it("should include employees if changed", () => {
+        const result = mapCompanyEditFormToRequestBody(
+          [basePeriod],
+          form([
+            ["employees-value-1", "500"],
+            ["employees-unit-1", "people"],
+          ]),
+        );
+        expect(result.reportingPeriods[0].economy.employees.value).toBe(500);
+        expect(result.reportingPeriods[0].economy.employees.unit).toBe(
+          "people",
+        );
+      });
+    });
+  });
 });

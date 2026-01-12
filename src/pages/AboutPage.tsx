@@ -8,17 +8,12 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import { Trans, useTranslation } from "react-i18next";
 import { MembersGrid } from "@/components/MembersGrid";
 import { PageSEO } from "@/components/SEO/PageSEO";
-import { useEffect } from "react";
 import KlimatkollenVideo from "@/components/ui/klimatkollenVideoPlayer";
 
 export function AboutPage() {
   const { t } = useTranslation();
   const teamMembers = useTeamMembers();
   const boardMembers = useBoardMembers();
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   // Prepare SEO data
   const canonicalUrl = "https://klimatkollen.se/about";
@@ -82,7 +77,7 @@ export function AboutPage() {
           {/* Our Approach Section */}
           <AccordionGroup
             title={t("aboutPage.ourApproachSection.title")}
-            value="financingSection"
+            value="ourApproachSection"
           >
             <div className="prose prose-invert w-[90%] max-w-5xl mx-auto space-y-4">
               <p>{t("aboutPage.ourApproachSection.paragraph1")}</p>
@@ -163,6 +158,7 @@ export function AboutPage() {
               <p>{t("aboutPage.financingSection.paragraph1")}</p>
               <p>{t("aboutPage.financingSection.paragraph2")}</p>
               <p>{t("aboutPage.financingSection.paragraph3")}</p>
+              <p>{t("aboutPage.financingSection.paragraph4")}</p>
               <div className="bg-blue-5/30 rounded-level-2 p-6 mt-8 max-w-3xl">
                 <Text variant="body">
                   {t("aboutPage.financingSection.donate")}

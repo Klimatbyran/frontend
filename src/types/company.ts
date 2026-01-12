@@ -1,5 +1,6 @@
 import type { paths } from "@/lib/api-types";
 import { DivideIcon as LucideIcon } from "lucide-react";
+import type { KPIValue } from "./rankings";
 
 // Base company type from API
 export type CompanyDetails = NonNullable<
@@ -20,6 +21,11 @@ export type ReportingPeriodFromDetail = NonNullable<
 export type ReportingPeriod = ReportingPeriodFromDetail; // For detail pages
 
 export type Emissions = NonNullable<ReportingPeriod["emissions"]>;
+
+// Scope 3 category type extracted from API
+export type Scope3Category = NonNullable<
+  NonNullable<CompanyDetails["reportingPeriods"][0]["emissions"]>["scope3"]
+>["categories"][0];
 
 // Company type from the list endpoint (/companies/)
 export type CompanyListItem = NonNullable<
@@ -87,3 +93,20 @@ export type GicsOption = {
   industry?: string;
   description?: string;
 };
+
+// Props interface for company edit components
+export interface CompanyEditComponentProps {
+  periods: ReportingPeriod[];
+  onInputChange: (name: string, value: string) => void;
+  formData: Map<string, string>;
+}
+
+// Extended Company type with KPI values
+export interface CompanyWithKPIs extends RankedCompany {
+  meetsParis?: boolean | null;
+  emissionsChangeFromBaseYear?: number | null;
+  [key: string]: unknown;
+}
+
+// KPI value type for companies (aliased to generic KPIValue for type safety)
+export type CompanyKPIValue = KPIValue<CompanyWithKPIs>;

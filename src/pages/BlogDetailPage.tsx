@@ -1,5 +1,5 @@
-import { useParams, Link, useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
+import { useState } from "react";
 import { CalendarDays, Clock, ArrowLeft, Share2, Check } from "lucide-react";
 import { Text } from "@/components/ui/text";
 import { Button } from "@/components/ui/button";
@@ -13,22 +13,17 @@ import { useTranslation } from "react-i18next";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { localizeUnit } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
-import { useBlogPost, useBlogPosts } from "@/hooks/useBlogPosts";
+import { useBlogPost, getBlogPost } from "@/hooks/useBlogPosts";
+import { blogMetadataByLanguage } from "@/lib/blog/blogPostsList";
 import { LocalizedLink } from "@/components/LocalizedLink";
 
 export function BlogDetailPage() {
   const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const { blogPost, loading, error } = useBlogPost(id!);
-  const blogPosts = useBlogPosts();
   const [copied, setCopied] = useState(false);
-  const location = useLocation();
   const { isMobile } = useScreenSize();
   const { currentLanguage } = useLanguage();
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [location.pathname]);
 
   const handleShare = async () => {
     const shareUrl = window.location.href;
@@ -60,7 +55,14 @@ export function BlogDetailPage() {
 
   const relatedPosts = blogPost.metadata.relatedPosts
     ? blogPost.metadata.relatedPosts
-        .map((relatedId) => blogPosts.find((post) => post.id === relatedId))
+        .map((relatedId) => {
+          const metadata = blogMetadataByLanguage[currentLanguage].find(
+            (m) => m.id === relatedId,
+          );
+          return (
+            getBlogPost(metadata, currentLanguage).blogPost?.metadata ?? null
+          );
+        })
         .filter(Boolean)
     : [];
 

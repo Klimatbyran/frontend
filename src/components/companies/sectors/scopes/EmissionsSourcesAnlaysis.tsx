@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { RankedCompany } from "@/hooks/companies/useCompanies";
+import { RankedCompany } from "@/types/company";
 import { useScopeData } from "@/hooks/companies/useScopeData";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import ScopeCards from "./ScopeCards";
 import ValueChainOverview from "./ValueChainOverview";
 import KeyInsights from "./KeyInsights";
 import EmissionsTotalDisplay from "../charts/EmissionsTotalDisplay";
-import { useSectorNames } from "@/hooks/companies/useCompanyFilters";
+import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 
 interface EmissionsSourcesAnalysisProps {
   companies: RankedCompany[];
@@ -66,6 +66,7 @@ const EmissionsSourcesAnalysis: React.FC<EmissionsSourcesAnalysisProps> = ({
           years={years}
           onYearChange={setSelectedYear}
           isSectorView={effectiveSectors.length > 0}
+          hideTotal={true} // TODO: decide if we want to display the total again, and whether that should be complete total or excluding statedScope3 total
         />
       </div>
 

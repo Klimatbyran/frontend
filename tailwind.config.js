@@ -132,6 +132,9 @@ export default {
         "accordion-up": "accordion-up 0.2s ease-out",
         marquee: "marquee var(--duration, 20s) linear infinite",
       },
+      perspective: {
+        1000: "1000px",
+      },
     },
   },
   plugins: [

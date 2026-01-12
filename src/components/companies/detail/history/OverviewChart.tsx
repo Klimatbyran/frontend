@@ -68,10 +68,17 @@ export const OverviewChart: FC<OverviewChartProps> = ({
     return filterValidTotalData(data);
   }, [data]);
 
+  const firstDataYear = filteredData[0]?.year || 2000;
+
   // Merge data similar to municipality structure for tooltip compatibility
   const chartData = useMemo(() => {
-    return mergeChartDataWithApproximated(filteredData, approximatedData);
-  }, [filteredData, approximatedData]);
+    const merged = mergeChartDataWithApproximated(
+      filteredData,
+      approximatedData,
+    );
+    // Filter to only include data from firstDataYear onwards to prevent empty space
+    return merged.filter((d) => d.year >= firstDataYear);
+  }, [filteredData, approximatedData, firstDataYear]);
 
   const isFirstYear = companyBaseYear === filteredData[0]?.year;
 
@@ -86,7 +93,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({
   }, [t, approximatedData]);
 
   const ticks = generateChartTicks(
-    filteredData[0]?.year || 2000,
+    firstDataYear,
     chartEndYear,
     shortEndYear,
     currentYear,
@@ -115,6 +122,13 @@ export const OverviewChart: FC<OverviewChartProps> = ({
               />
             )}
 
+            {/* Current year reference line - only show if within chart domain */}
+            {currentYear <= chartEndYear && (
+              <ReferenceLine
+                {...getCurrentYearReferenceLineProps(currentYear)}
+              />
+            )}
+
             <Tooltip
               content={
                 <ChartTooltip
@@ -129,7 +143,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({
             <XAxis
               {...getXAxisProps(
                 "year",
-                [filteredData[0]?.year || 2000, chartEndYear],
+                [firstDataYear, chartEndYear],
                 ticks,
                 createCustomTickRenderer(companyBaseYear),
               )}
@@ -153,9 +167,6 @@ export const OverviewChart: FC<OverviewChartProps> = ({
             {/* Approximated data lines */}
             {approximatedData && (
               <>
-                <ReferenceLine
-                  {...getCurrentYearReferenceLineProps(currentYear)}
-                />
                 <Line
                   type="linear"
                   dataKey="approximated"

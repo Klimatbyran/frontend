@@ -1,3 +1,5 @@
+import type { Scope3Category } from "@/types/company";
+
 // Helper to normalize subfields with a 'total' property
 function normalizeTotalField<T extends { total?: number | null }>(
   field: T | null | undefined,
@@ -51,8 +53,11 @@ export function cleanEmissions(emissions: any): any {
     // categories: filter and cast
     let categories = Array.isArray(scope3.categories)
       ? scope3.categories
-          .filter((cat: any) => cat && cat.total != null)
-          .map((cat: any) => ({ ...cat, total: cat.total as number }))
+          .filter((cat: Scope3Category) => cat && cat.total != null)
+          .map((cat: Scope3Category) => ({
+            ...cat,
+            total: cat.total as number,
+          }))
       : undefined;
     if (categories && categories.length === 0) categories = undefined;
 
@@ -63,10 +68,17 @@ export function cleanEmissions(emissions: any): any {
     };
   }
 
+  // Temporary workaround: fallback to scope1And2 if calculatedTotalEmissions is null or 0
+  const calculatedTotalEmissions =
+    emissions.calculatedTotalEmissions &&
+    emissions.calculatedTotalEmissions !== 0
+      ? emissions.calculatedTotalEmissions
+      : (scope1And2?.total ?? 0);
+
   // Return the cleaned object, ensuring all fields are present and never undefined
   return {
     ...(emissions.id && { id: emissions.id }), // Only include id if it exists
-    calculatedTotalEmissions: emissions.calculatedTotalEmissions ?? 0,
+    calculatedTotalEmissions,
     scope1,
     scope2,
     scope3,

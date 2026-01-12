@@ -6,10 +6,11 @@ import { DownloadInfoSection } from "@/components/products/DownloadInfoSection";
 import { DownloadControls } from "@/components/products/DownloadControls";
 import { useState, useEffect } from "react";
 import { getReportingYears } from "@/lib/api";
+import type React from "react";
 
 interface InfoItem {
   title: string;
-  description: string | JSX.Element;
+  description: string | React.ReactNode;
 }
 
 function DownloadsPage() {

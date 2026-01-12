@@ -1,5 +1,4 @@
 import { ChartData } from "@/types/emissions";
-import { generateApproximatedData as legacyGenerateApproximatedData } from "@/utils/calculations/emissions";
 
 // Carbon Law reduction rate constant (11.72% annual reduction)
 const CARBON_LAW_REDUCTION_RATE = 0.1172;
@@ -31,8 +30,6 @@ export function generateApproximatedDataWithCoefficients(
   data: ChartData[],
   coefficients: { slope: number; intercept: number } | { a: number; b: number },
   endYear: number,
-  baseYear?: number,
-  cleanData?: { year: number; value: number }[],
 ): ChartData[] | null {
   if (!data.length) return null;
 
@@ -46,7 +43,6 @@ export function generateApproximatedDataWithCoefficients(
   const lastYearWithData = Math.max(
     ...data.filter((d) => hasTotalEmissions(d)).map((d) => d.year),
   );
-  const currentYear = new Date().getFullYear();
 
   return allYears.map((year) => {
     const actualData = data.find((d) => d.year === year);
@@ -163,28 +159,23 @@ export function generateApproximatedDataWithCoefficients(
  */
 export function generateApproximatedData(
   data: ChartData[],
-  regression?: { slope: number; intercept: number },
   endYear: number = 2030,
-  baseYear?: number,
   coefficients?:
     | { slope: number; intercept: number }
     | { a: number; b: number },
-  cleanData?: { year: number; value: number }[],
 ): ChartData[] {
-  // If we have advanced coefficients, use the new function
+  // If we have coefficients, use the new function
   if (coefficients) {
     const result = generateApproximatedDataWithCoefficients(
       data,
       coefficients,
       endYear,
-      baseYear,
-      cleanData,
     );
     return result || [];
   }
 
-  // Otherwise, fall back to the legacy function for simple regression
-  return legacyGenerateApproximatedData(data, regression, endYear, baseYear);
+  // No coefficients available - return empty array (no fallback needed)
+  return [];
 }
 
 // Export the helper function for use in other components

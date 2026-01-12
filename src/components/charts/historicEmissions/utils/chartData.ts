@@ -2,11 +2,28 @@
  * Chart data filtering utilities
  */
 
-export const filterValidTotalData = (data: any[]) => {
-  return data.filter((d) => d.total !== undefined && d.total !== null);
+import type { ChartData } from "@/types/emissions";
+
+export const filterValidTotalData = (data: ChartData[]) => {
+  const cleaned = data.filter((d) => d.total !== undefined && d.total !== null);
+
+  if (cleaned.length === 0) {
+    return cleaned;
+  }
+
+  const firstPositiveIndex = cleaned.findIndex((d) => Number(d.total) > 0);
+
+  // remove preceding zero-value points
+  if (firstPositiveIndex > 0) {
+    return cleaned.slice(firstPositiveIndex);
+  }
+
+  // If there are no positive values (all zeros), or the first value is already > 0,
+  // keep the cleaned dataset as-is to avoid rendering an empty chart.
+  return cleaned;
 };
 
-export const filterValidScopeData = (data: any[]) => {
+export const filterValidScopeData = (data: ChartData[]) => {
   return data.filter((d) => {
     return (
       (d.scope1?.value !== undefined && d.scope1?.value !== null) ||
@@ -16,7 +33,7 @@ export const filterValidScopeData = (data: any[]) => {
   });
 };
 
-export const filterValidCategoryData = (data: any[]) => {
+export const filterValidCategoryData = (data: ChartData[]) => {
   return data.filter((d) => {
     return Object.keys(d).some((key) => {
       if (key.startsWith("cat") && d[key]) {
@@ -32,7 +49,7 @@ export const filterValidCategoryData = (data: any[]) => {
   });
 };
 
-export const filterDataByYearRange = (data: any[], endYear: number) => {
+export const filterDataByYearRange = (data: ChartData[], endYear: number) => {
   return data.filter((point) => point.year <= endYear);
 };
 
@@ -44,8 +61,8 @@ export const filterDataByYearRange = (data: any[], endYear: number) => {
  * - trend: future years
  */
 export const mergeChartDataWithApproximated = (
-  mainData: any[],
-  approximatedData: any[] | null | undefined,
+  mainData: ChartData[],
+  approximatedData: ChartData[] | null | undefined,
 ) => {
   if (!approximatedData) return mainData;
 

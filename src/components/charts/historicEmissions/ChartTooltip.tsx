@@ -5,10 +5,26 @@ import { formatEmissionsAbsolute } from "@/utils/formatting/localization";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { cn } from "@/lib/utils";
 import { AiIcon } from "@/components/ui/ai-icon";
+import type { Scope3Category } from "@/types/company";
+
+interface PayloadEntry {
+  dataKey?: string;
+  value?: number | null;
+  name?: string;
+  color?: string;
+  payload?: {
+    year?: number;
+    isAIGenerated?: boolean;
+    scope1?: { isAIGenerated?: boolean };
+    scope2?: { isAIGenerated?: boolean };
+    scope3?: { isAIGenerated?: boolean };
+    scope3Categories?: Array<Scope3Category & { isAIGenerated?: boolean }>;
+  };
+}
 
 interface ChartTooltipProps {
   active?: boolean;
-  payload?: any[];
+  payload?: PayloadEntry[];
   label?: string;
   // Common props
   unit?: string;
@@ -28,8 +44,12 @@ interface ChartTooltipProps {
   hiddenSectors?: Set<string>;
 
   // Custom formatting
-  customFormatter?: (value: number, name: string, entry: any) => string;
-  customNameFormatter?: (name: string, entry: any) => string;
+  customFormatter?: (
+    value: number,
+    name: string,
+    entry: PayloadEntry,
+  ) => string;
+  customNameFormatter?: (name: string, entry: PayloadEntry) => string;
 
   // AI data indicators
   showAIIndicators?: boolean;
@@ -70,14 +90,16 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
     if (entry.dataKey === "approximated" || entry.dataKey === "carbonLaw") {
       return entry.value != null;
     }
-    // For other data, only show if > 0
+
+    showUnit = false;
+    // For other data, only show if not null and > 0
     return entry.value != null && entry.value > 0;
   });
 
   if (filterDuplicateValues) {
-    const seenValues = new Set();
+    const seenValues = new Set<string>();
     filteredPayload = filteredPayload.filter((entry) => {
-      const valueKey = `${entry.value}_${entry.payload.year}`;
+      const valueKey = `${entry.value}_${entry.payload?.year ?? ""}`;
       if (seenValues.has(valueKey)) {
         return false;
       }
@@ -120,7 +142,7 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
   const defaultFormatter = (value: number) =>
     formatEmissionsAbsolute(Math.round(value ?? 0), currentLanguage);
 
-  const defaultNameFormatter = (name: string, entry: any) => {
+  const defaultNameFormatter = (name: string, entry: PayloadEntry) => {
     // Handle company category names
     if (entry.dataKey?.startsWith("cat")) {
       const categoryId = parseInt(entry.dataKey.replace("cat", ""));
@@ -131,6 +153,55 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
 
   const formatValue = customFormatter || defaultFormatter;
   const formatName = customNameFormatter || defaultNameFormatter;
+
+  const dataRows = filteredPayload.map((entry) => {
+    if (entry.dataKey === "gap") {
+      return null;
+    }
+
+    const name = formatName(String(entry.name || entry.dataKey || ""), entry);
+    const value = formatValue(
+      entry.value as number,
+      String(entry.name || entry.dataKey || ""),
+      entry,
+    );
+    // Check if this data point is AI-generated
+    const isDataAI =
+      showAIIndicators &&
+      (entry.payload?.isAIGenerated ||
+        entry.payload?.scope1?.isAIGenerated ||
+        entry.payload?.scope2?.isAIGenerated ||
+        entry.payload?.scope3?.isAIGenerated ||
+        entry.payload?.scope3Categories?.some(
+          (cat: Scope3Category & { isAIGenerated?: boolean }) =>
+            cat.isAIGenerated,
+        ) ||
+        false);
+
+    return (
+      <div
+        key={entry.dataKey}
+        className={cn(
+          `${entry.dataKey === "total" ? "my-2 font-medium" : "my-0"}`,
+          "grid grid-cols-subgrid col-span-2 w-full",
+          "even:bg-black-1 odd:bg-black-2/20 py-0.5",
+        )}
+      >
+        <div className="text-grey mr-2">{name}</div>
+        <div
+          className="flex pl-2 gap-1 justify-end"
+          style={{ color: entry.color }}
+        >
+          {value}
+          {isDataAI && (
+            <span className="ml-2">
+              <AiIcon size="sm" />
+            </span>
+          )}
+        </div>
+      </div>
+    );
+  });
 
   return (
     <div
@@ -155,56 +226,12 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
       </div>
 
       {/* Data rows */}
-      {filteredPayload.map((entry) => {
-        if (entry.dataKey === "gap") {
-          return null;
-        }
-
-        const name = formatName(
-          String(entry.name || entry.dataKey || ""),
-          entry,
-        );
-        const value = formatValue(
-          entry.value as number,
-          String(entry.name || entry.dataKey || ""),
-          entry,
-        );
-        // Check if this data point is AI-generated
-        const isDataAI =
-          showAIIndicators &&
-          (entry.payload?.isAIGenerated ||
-            entry.payload?.scope1?.isAIGenerated ||
-            entry.payload?.scope2?.isAIGenerated ||
-            entry.payload?.scope3?.isAIGenerated ||
-            entry.payload?.scope3Categories?.some(
-              (cat: any) => cat.isAIGenerated,
-            ) ||
-            false);
-
-        return (
-          <div
-            key={entry.dataKey}
-            className={cn(
-              `${entry.dataKey === "total" ? "my-2 font-medium" : "my-0"}`,
-              "grid grid-cols-subgrid col-span-2 w-full",
-              "even:bg-black-1 odd:bg-black-2/20 px-1 py-0.5",
-            )}
-          >
-            <div className="text-grey mr-2">{name}</div>
-            <div
-              className="flex pl-2 gap-1 justify-end"
-              style={{ color: entry.color }}
-            >
-              {value}
-              {isDataAI && (
-                <span className="ml-2">
-                  <AiIcon size="sm" />
-                </span>
-              )}
-            </div>
-          </div>
-        );
-      })}
+      {dataRows.length === 0 && (
+        <div className="text-grey mr-2 text-xs col-span-2">
+          {t("charts.tooltip.noData")}
+        </div>
+      )}
+      {dataRows}
 
       {isBaseYear && (
         <span className="text-grey mr-2 text-xs col-span-2">

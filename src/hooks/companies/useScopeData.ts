@@ -1,5 +1,18 @@
 import { useMemo } from "react";
 import { RankedCompany } from "@/types/company";
+import {
+  UPSTREAM_CATEGORIES,
+  DOWNSTREAM_CATEGORIES,
+} from "@/lib/constants/categories";
+
+export type ScopeData = {
+  scope1: { total: number; companies: number };
+  scope2: { total: number; companies: number };
+  scope3: {
+    upstream: { total: number; companies: number };
+    downstream: { total: number; companies: number };
+  };
+};
 
 export const useScopeData = (
   companies: RankedCompany[],
@@ -22,26 +35,46 @@ export const useScopeData = (
 
     filteredCompanies.forEach((company) => {
       const period = company.reportingPeriods.find((p) =>
-        p.startDate.startsWith(selectedYear),
+        p.endDate.startsWith(selectedYear),
       );
 
       if (period?.emissions) {
-        if (period.emissions.scope1?.total) {
-          data.scope1.total += period.emissions.scope1.total;
+        const scope1Value = period.emissions.scope1?.total || 0;
+        if (scope1Value > 0) {
+          data.scope1.total += scope1Value;
           data.scope1.companies++;
         }
 
-        if (period.emissions.scope2?.calculatedTotalEmissions) {
-          data.scope2.total += period.emissions.scope2.calculatedTotalEmissions;
+        const scope2Value =
+          period.emissions.scope2?.calculatedTotalEmissions || 0;
+        if (scope2Value > 0) {
+          data.scope2.total += scope2Value;
           data.scope2.companies++;
         }
 
-        if (period.emissions.scope3?.calculatedTotalEmissions) {
-          const total = period.emissions.scope3.calculatedTotalEmissions;
-          data.scope3.upstream.total += total * 0.6;
-          data.scope3.downstream.total += total * 0.4;
-          data.scope3.upstream.companies++;
-          data.scope3.downstream.companies++;
+        // For scope 3, only use companies that have category-level data
+        const scope3Categories = period.emissions.scope3?.categories;
+        if (scope3Categories && scope3Categories.length > 0) {
+          let upstreamTotal = 0;
+          let downstreamTotal = 0;
+
+          scope3Categories.forEach((category) => {
+            const categoryValue = category.total || 0;
+            if (UPSTREAM_CATEGORIES.includes(category.category as number)) {
+              upstreamTotal += categoryValue;
+            } else if (
+              DOWNSTREAM_CATEGORIES.includes(category.category as number)
+            ) {
+              downstreamTotal += categoryValue;
+            }
+          });
+
+          if (upstreamTotal > 0 || downstreamTotal > 0) {
+            data.scope3.upstream.total += upstreamTotal;
+            data.scope3.downstream.total += downstreamTotal;
+            data.scope3.upstream.companies++;
+            data.scope3.downstream.companies++;
+          }
         }
       }
     });
@@ -62,7 +95,7 @@ export const useScopeData = (
     const yearSet = new Set<string>();
     companies.forEach((company) => {
       company.reportingPeriods.forEach((period) => {
-        yearSet.add(period.startDate.substring(0, 4));
+        yearSet.add(period.endDate.substring(0, 4));
       });
     });
     return Array.from(yearSet).sort();

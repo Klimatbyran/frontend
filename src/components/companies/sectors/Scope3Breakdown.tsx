@@ -1,8 +1,8 @@
 // ToDo Add translations
 import React, { useMemo } from "react";
 import { ArrowUpRight, ArrowDownRight, AlertCircle } from "lucide-react";
-import { SECTOR_NAMES } from "@/hooks/companies/useCompanyFilters";
-import { RankedCompany } from "@/hooks/companies/useCompanies";
+import { SECTOR_NAMES } from "@/lib/constants/sectors";
+import { RankedCompany } from "@/types/company";
 import {
   useCategoryMetadata,
   CategoryType,
@@ -146,7 +146,7 @@ const Scope3Breakdown: React.FC<Scope3BreakdownProps> = ({
 
         const totalScope3 = sectorCompanies.reduce((total, company) => {
           const period = company.reportingPeriods.find((p) =>
-            p.startDate.startsWith(selectedYear),
+            p.endDate.startsWith(selectedYear),
           );
           return (
             total + (period?.emissions?.scope3?.calculatedTotalEmissions || 0)
@@ -156,7 +156,7 @@ const Scope3Breakdown: React.FC<Scope3BreakdownProps> = ({
         const reportedCategories = new Set<string>();
         sectorCompanies.forEach((company) => {
           const period = company.reportingPeriods.find((p) =>
-            p.startDate.startsWith(selectedYear),
+            p.endDate.startsWith(selectedYear),
           );
           if (period?.emissions?.scope3?.categories) {
             period.emissions.scope3.categories.forEach((cat) => {
