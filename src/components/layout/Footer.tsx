@@ -124,17 +124,25 @@ export function Footer() {
           <a href="/privacy" className="hover:text-white transition-colors">
             {t("footer.privacyTerms")}
           </a>
-          <a href="/license" className="hover:text-white transition-colors">
+          <a
+            href="https://www.apache.org/licenses/LICENSE-2.0"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-white transition-colors"
+            aria-label="Apache License, Version 2.0"
+          >
             {t("footer.internationalLicense")}
           </a>
           <a
             href="https://creativecommons.org/licenses/by-sa/4.0/"
-            className="hover:text-white transition-colors"
             target="_blank"
             rel="noopener noreferrer"
+            className="hover:text-white transition-colors"
+            aria-label="Creative Commons Attribution-ShareAlike 4.0 International License"
           >
-            {t("footer.ccBySa")}
+           { t("footer.ccBySa")}
           </a>
+
           {!token && (
             <a
               onClick={() => login()}
