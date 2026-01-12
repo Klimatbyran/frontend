@@ -36,7 +36,6 @@ jobs:
 
       - name: Run tests with coverage
         run: npm run test -- --run --coverage
-        continue-on-error: true
 
       - name: Ensure coverage directory exists
         run: mkdir -p coverage
@@ -74,8 +73,7 @@ jobs:
         run: npm install
 
       - name: TypeScript type check
-        run: npx tsc --noEmit
-        continue-on-error: true
+        run: npx tsc --noEmit --pretty
 
   # Build job - verifies the app builds successfully
   build:
@@ -103,7 +101,6 @@ jobs:
 
       - name: Build app
         run: npm run build
-        continue-on-error: true
 
   # Lint job - runs ESLint and uploads SARIF results
   lint:
@@ -133,29 +130,35 @@ jobs:
         run: npm install --no-save @microsoft/eslint-formatter-sarif
 
       - name: Run ESLint
+        id: eslint
         run: npm run lint -- -f @microsoft/eslint-formatter-sarif -o eslint-results.sarif
         continue-on-error: true
 
       - name: Ensure eslint-results.sarif exists
+        if: always()
         run: '[ -f eslint-results.sarif ] || echo "{\"version\":\"2.1.0\",\"runs\":[]}" > eslint-results.sarif'
-        continue-on-error: true
 
       - name: Check if SARIF has results
         id: sarif_check
+        if: always()
         run: |
           if grep -q '"results":\[{' eslint-results.sarif; then
             echo "empty_sarif=false" >> $GITHUB_OUTPUT
           else
             echo "empty_sarif=true" >> $GITHUB_OUTPUT
           fi
-        continue-on-error: true
 
       - name: Upload SARIF results to GitHub
-        if: steps.sarif_check.outputs.empty_sarif == 'false'
+        if: always() && steps.sarif_check.outputs.empty_sarif == 'false'
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: eslint-results.sarif
-        continue-on-error: true
+
+      - name: Fail job if ESLint found issues
+        if: steps.eslint.outcome == 'failure'
+        run: |
+          echo "ESLint found issues - see SARIF results in Security tab"
+          exit 1
 
   # Format job - checks code formatting with Prettier
   format:
@@ -181,23 +184,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run Prettier and save output
-        id: prettier
-        run: |
-          npx prettier --check . > prettier-output.txt || true
-        continue-on-error: true
-
-      - name: Ensure prettier-output.txt exists
-        run: '[ -f prettier-output.txt ] || touch prettier-output.txt'
-
-      - name: Annotate Prettier errors
-        if: always()
-        run: |
-          if grep -q '\[warn\]' prettier-output.txt; then
-            echo "::error title=Prettier formatting issues detected::Run 'npm run format' to fix code style issues. See details below:"
-            cat prettier-output.txt
-          fi
-        continue-on-error: true
+      - name: Run Prettier check
+        run: npx prettier --check .
 
   # Audit job - checks for dependency vulnerabilities
   audit:
@@ -224,9 +212,10 @@ jobs:
         run: npm install
 
       - name: Audit dependencies
-        run: npm audit --audit-level=moderate || true
+        run: npm audit --audit-level=moderate
         continue-on-error: true
 
-  # Note: All jobs use continue-on-error: true on their main check steps
-  # This means they will show as failed in the UI for visibility, but will not block PRs
-  # if not required in branch protection settings.
+  # Note: Main check steps will fail if issues are found, showing a red X in the PR
+  # These checks are NOT required in branch protection, so they won't block merges
+  # but will clearly show when there are issues that need attention.
+  # Only the audit step uses continue-on-error since it's informational.
