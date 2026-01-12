@@ -77,6 +77,7 @@ export function RegionalRankedPage() {
     <RegionalRankedList
       regionEntities={regionEntities}
       selectedKPI={selectedKPI}
+      onItemClick={handleRegionClick}
     />
   );
 

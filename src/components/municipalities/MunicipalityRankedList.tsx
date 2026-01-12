@@ -37,22 +37,24 @@ export function MunicipalityRankedList({
     return String(value);
   };
 
+  const selectedDataPoint = asDataPoint({
+    label: selectedKPI.label,
+    key: selectedKPI.key as keyof RankedListItem,
+    unit: selectedKPI.unit,
+    description: selectedKPI.description,
+    higherIsBetter: selectedKPI.higherIsBetter,
+    nullValues: selectedKPI.nullValues,
+    isBoolean: selectedKPI.isBoolean,
+    booleanLabels: selectedKPI.booleanLabels,
+    formatter: formatValue,
+  });
+
   return (
     <RankedList
       data={municipalityEntities}
-      selectedDataPoint={asDataPoint({
-        label: selectedKPI.label,
-        key: selectedKPI.key as keyof RankedListItem,
-        unit: selectedKPI.unit,
-        description: selectedKPI.description,
-        higherIsBetter: selectedKPI.higherIsBetter,
-        nullValues: selectedKPI.nullValues,
-        isBoolean: selectedKPI.isBoolean,
-        booleanLabels: selectedKPI.booleanLabels,
-        formatter: formatValue,
-      })}
+      selectedDataPoint={selectedDataPoint}
       onItemClick={onItemClick}
-      searchKey="displayName"
+      searchKey="name"
       searchPlaceholder={t("rankedList.search.placeholder")}
     />
   );
