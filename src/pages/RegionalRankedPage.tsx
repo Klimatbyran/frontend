@@ -18,6 +18,8 @@ import { Region } from "@/types/region";
 import { toMapRegionName } from "@/utils/regionUtils";
 import { RegionalRankedList } from "@/components/regions/RegionalRankedList";
 import { KPIDataSelector } from "@/components/ranked/KPIDataSelector";
+import { useNavigate } from "react-router-dom";
+import { createEntityClickHandler } from "@/utils/routing";
 import { RankedListItem } from "@/types/rankings";
 
 export function RegionalRankedPage() {
@@ -26,6 +28,8 @@ export function RegionalRankedPage() {
   const [geoData] = useState(regionGeoJson);
   const { regionsData } = useRegions();
 
+  const navigate = useNavigate();
+
   const {
     selectedKPI,
     setSelectedKPI,
@@ -33,6 +37,22 @@ export function RegionalRankedPage() {
     setKPIInURL,
     setViewModeInURL,
   } = useRankedRegionsURLParams(regionalKPIs);
+
+  const handleRegionClick = createEntityClickHandler(
+    navigate,
+    "region",
+    viewMode,
+  );
+
+  // Create an adapter for MapOfSweden
+  const handleRegionAreaClick = (name: string) => {
+    const region = regionsData.find((m) => m.name === name);
+    if (region) {
+      handleRegionClick(region);
+    } else {
+      handleRegionClick(name);
+    }
+  };
 
   // Transform regions data from regional KPIs endpoint into required formats
   const regionEntities: RankedListItem[] = useMemo(() => {
@@ -89,6 +109,7 @@ export function RegionalRankedPage() {
           geoData={geoData as FeatureCollection}
           data={mapData}
           selectedKPI={selectedKPI}
+          onAreaClick={handleRegionAreaClick}
           defaultCenter={[63.7, 17]}
         />
       </div>
@@ -135,7 +156,7 @@ export function RegionalRankedPage() {
       <div className="lg:hidden space-y-6">
         {renderMapOrList(true)}
         <RegionalInsightsPanel
-          regionData={regionsAsEntities}
+          regionsData={regionsAsEntities}
           selectedKPI={selectedKPI}
         />
       </div>
@@ -147,7 +168,7 @@ export function RegionalRankedPage() {
           {viewMode === "map" ? regionalRankedList : null}
         </div>
         <RegionalInsightsPanel
-          regionData={regionsAsEntities}
+          regionsData={regionsAsEntities}
           selectedKPI={selectedKPI}
         />
       </div>

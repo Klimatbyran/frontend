@@ -6,7 +6,7 @@ import { Region } from "@/types/region";
 interface RegionalRankedListProps {
   regionEntities: RankedListItem[];
   selectedKPI: KPIValue<Region>;
-  onItemClick: (item: Region) => void;
+  onItemClick: (item: RankedListItem) => void;
 }
 
 export function RegionalRankedList({

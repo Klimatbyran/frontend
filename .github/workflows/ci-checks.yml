@@ -1,0 +1,225 @@
+name: CI (Tests, Type Check, Lint, Format, Audit)
+
+permissions:
+  contents: read
+  security-events: write
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  # Tests job - runs tests with coverage
+  tests:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests with coverage
+        run: npm run test -- --run --coverage
+
+      - name: Ensure coverage directory exists
+        run: mkdir -p coverage
+        continue-on-error: true
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+        continue-on-error: true
+
+  # Type check job - runs TypeScript type checking
+  type-check:
+    name: Type Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: TypeScript type check
+        run: npx tsc --noEmit --pretty
+
+  # Build job - verifies the app builds successfully
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build app
+        run: npm run build
+
+  # Lint job - runs ESLint and uploads SARIF results
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install ESLint SARIF formatter
+        run: npm install --no-save @microsoft/eslint-formatter-sarif
+
+      - name: Run ESLint (readable output)
+        id: eslint
+        run: npm run lint
+        continue-on-error: true
+
+      - name: Run ESLint (SARIF output for Security tab)
+        if: always()
+        run: npm run lint -- -f @microsoft/eslint-formatter-sarif -o eslint-results.sarif || true
+
+      - name: Ensure eslint-results.sarif exists
+        if: always()
+        run: '[ -f eslint-results.sarif ] || echo "{\"version\":\"2.1.0\",\"runs\":[]}" > eslint-results.sarif'
+
+      - name: Check if SARIF has results
+        id: sarif_check
+        if: always()
+        run: |
+          if grep -q '"results":\[{' eslint-results.sarif; then
+            echo "empty_sarif=false" >> $GITHUB_OUTPUT
+          else
+            echo "empty_sarif=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Upload SARIF results to GitHub
+        if: always() && steps.sarif_check.outputs.empty_sarif == 'false'
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: eslint-results.sarif
+
+      - name: Fail job if ESLint found issues
+        if: steps.eslint.outcome == 'failure'
+        run: |
+          echo "ESLint found issues - see details above and SARIF results in Security tab"
+          exit 1
+
+  # Format job - checks code formatting with Prettier
+  format:
+    name: Format
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Prettier check
+        run: npx prettier --check .
+
+  # Audit job - checks for dependency vulnerabilities
+  audit:
+    name: Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Audit dependencies
+        run: npm audit --audit-level=moderate
+        continue-on-error: true
+
+  # Note: Main check steps will fail if issues are found, showing a red X in the PR
+  # These checks are NOT required in branch protection, so they won't block merges
+  # but will clearly show when there are issues that need attention.
+  # Only the audit step uses continue-on-error since it's informational.

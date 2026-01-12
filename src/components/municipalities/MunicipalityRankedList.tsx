@@ -6,7 +6,7 @@ import { Municipality } from "@/types/municipality";
 interface MunicipalityRankedListProps {
   municipalityEntities: RankedListItem[];
   selectedKPI: KPIValue<Municipality>;
-  onItemClick: (item: Municipality) => void;
+  onItemClick: (item: RankedListItem) => void;
 }
 
 export function MunicipalityRankedList({
