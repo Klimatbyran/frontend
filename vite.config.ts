@@ -42,6 +42,20 @@ export default ({ mode }: ConfigEnv) => {
       alias: {
         "@": "/src",
       },
+      coverage: {
+        provider: "v8",
+        reporter: ["text", "json", "html"],
+        exclude: [
+          "node_modules/",
+          "dist/",
+          "coverage/",
+          "**/*.d.ts",
+          "**/*.config.*",
+          "**/setupTests.ts",
+          "**/*.test.*",
+          "**/*.spec.*",
+        ],
+      },
     },
   });
 };
