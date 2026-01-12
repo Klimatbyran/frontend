@@ -132,7 +132,9 @@ export function calculateEntityStatistics<
  * Create source links from KPI
  * Accepts any KPIValue regardless of entity type
  */
-export function createSourceLinks(selectedKPI: KPIValue<EntityWithKPIs>) {
+export function createSourceLinks<T = EntityWithKPIs>(
+  selectedKPI: KPIValue<T>,
+) {
   return (
     selectedKPI.sourceUrls?.map((url, i) => ({
       url,

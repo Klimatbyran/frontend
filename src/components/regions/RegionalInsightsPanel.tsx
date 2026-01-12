@@ -10,12 +10,12 @@ import {
 } from "@/utils/insights/rankedListUtils";
 
 interface InsightsPanelProps {
-  regionData: Region[];
+  regionsData: Region[];
   selectedKPI: KPIValue<Region>;
 }
 
 function RegionalInsightsPanel({
-  regionData,
+  regionsData: regionData,
   selectedKPI,
 }: InsightsPanelProps) {
   if (!regionData?.length) {

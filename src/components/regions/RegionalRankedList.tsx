@@ -6,11 +6,13 @@ import { Region } from "@/types/region";
 interface RegionalRankedListProps {
   regionEntities: RankedListItem[];
   selectedKPI: KPIValue<Region>;
+  onItemClick?: (item: RankedListItem) => void;
 }
 
 export function RegionalRankedList({
   regionEntities,
   selectedKPI,
+  onItemClick,
 }: RegionalRankedListProps) {
   const { t } = useTranslation();
 
@@ -49,7 +51,7 @@ export function RegionalRankedList({
           return String(value);
         },
       })}
-      onItemClick={() => {}}
+      onItemClick={onItemClick}
       searchKey="displayName"
       searchPlaceholder={t("rankedList.search.placeholder")}
     />
