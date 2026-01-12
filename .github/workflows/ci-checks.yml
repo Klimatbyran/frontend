@@ -129,10 +129,14 @@ jobs:
       - name: Install ESLint SARIF formatter
         run: npm install --no-save @microsoft/eslint-formatter-sarif
 
-      - name: Run ESLint
+      - name: Run ESLint (readable output)
         id: eslint
-        run: npm run lint -- -f @microsoft/eslint-formatter-sarif -o eslint-results.sarif
+        run: npm run lint
         continue-on-error: true
+
+      - name: Run ESLint (SARIF output for Security tab)
+        if: always()
+        run: npm run lint -- -f @microsoft/eslint-formatter-sarif -o eslint-results.sarif || true
 
       - name: Ensure eslint-results.sarif exists
         if: always()
@@ -157,7 +161,7 @@ jobs:
       - name: Fail job if ESLint found issues
         if: steps.eslint.outcome == 'failure'
         run: |
-          echo "ESLint found issues - see SARIF results in Security tab"
+          echo "ESLint found issues - see details above and SARIF results in Security tab"
           exit 1
 
   # Format job - checks code formatting with Prettier
