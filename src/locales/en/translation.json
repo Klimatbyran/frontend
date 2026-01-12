@@ -1841,6 +1841,7 @@
     "list": "List"
   },
   "rankedList": {
+    "name": "Name",
     "search": {
       "placeholder": "Search..."
     },

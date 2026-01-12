@@ -1839,6 +1839,7 @@
     "list": "Lista"
   },
   "rankedList": {
+    "name": "Namn",
     "search": {
       "placeholder": "Sök..."
     },
