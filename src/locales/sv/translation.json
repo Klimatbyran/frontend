@@ -1860,6 +1860,12 @@
     "next": "Nästa",
     "previous": "Föregående"
   },
+  "explorePage": {
+    "title": "Utforska data",
+    "description": "Utforska och jämför utsläppsdata och klimatmål för företag och kommuner.",
+    "municipalities": "Kommuner",
+    "companies": "Företag"
+  },
   "insightCategories": {
     "analysis": "Analys",
     "guide": "Guide",

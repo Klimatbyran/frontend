@@ -9,7 +9,6 @@ import { BlogDetailPage } from "./pages/BlogDetailPage";
 import { CompanyEditPage } from "./pages/CompanyEditPage";
 import { CompanyDetailPage } from "./pages/CompanyDetailPage";
 import { CompaniesSectorsPage } from "./pages/CompaniesSectorsPage";
-import { CompaniesListPage } from "./pages/CompaniesListPage";
 import DownloadsPage from "./pages/DownloadsPage";
 import { ErrorPage } from "./pages/ErrorPage";
 import { InsightsPage } from "./pages/InsightsPage";
@@ -20,7 +19,6 @@ import { stagingFeatureFlagEnabled } from "@/utils/ui/featureFlags";
 import { LearnMoreArticle } from "./pages/LearnMoreArticle";
 import { MethodsPage } from "./pages/MethodsPage";
 import { MunicipalitiesRankedPage } from "./pages/MunicipalitiesRankedPage";
-import { MunicipalitiesComparePage } from "./pages/MunicipalitiesComparePage";
 import { MunicipalityDetailPage } from "./pages/MunicipalityDetailPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { ReportsPage } from "./pages/ReportsPage";
@@ -38,6 +36,7 @@ import { NewsLetterArchivePage } from "./pages/NewslettersPage";
 import { RegionalRankedPage } from "./pages/RegionalRankedPage";
 import { RegionDetailPage } from "./pages/RegionDetailPage";
 import { CompaniesRankedPage } from "./pages/CompaniesRankedPage";
+import { ExplorePage } from "./pages/ExplorePage";
 
 // Conditional landing page component that shows new version on localhost/staging
 function ConditionalLandingPage() {
@@ -59,7 +58,7 @@ export function AppRoutes() {
       <Route path={`${basePath}`} element={<ConditionalLandingPage />} />
       <Route path={`${basePath}/`} element={<ConditionalLandingPage />} />
       {/* Companies routes */}
-      <Route path={`${basePath}/companies`} element={<CompaniesListPage />} />
+      <Route path={`${basePath}/explore`} element={<ExplorePage />} />
       <Route
         path={`${basePath}/companies/sectors`}
         element={<CompaniesSectorsPage />}
@@ -121,10 +120,6 @@ export function AppRoutes() {
       <Route
         path={`${basePath}/municipalities`}
         element={<MunicipalitiesRankedPage />}
-      />
-      <Route
-        path={`${basePath}/municipalities/explore`}
-        element={<MunicipalitiesComparePage />}
       />
       <Route
         path={`${basePath}/municipalities/:id`}

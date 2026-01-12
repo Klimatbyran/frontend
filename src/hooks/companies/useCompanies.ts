@@ -9,7 +9,14 @@ function formatReductionValue(value: number): string {
   return value.toFixed(1);
 }
 
-export function useCompanies() {
+interface ICompaniesReturn {
+  companies: RankedCompany[];
+  companiesLoading: boolean;
+  companiesError: any;
+  getCompaniesBySector: (sectorCode: string) => RankedCompany[];
+}
+
+export function useCompanies(): ICompaniesReturn {
   const {
     data: companies = [],
     isLoading,
@@ -61,8 +68,8 @@ export function useCompanies() {
 
   return {
     companies,
-    loading: isLoading,
-    error,
+    companiesLoading: isLoading,
+    companiesError: error,
     getCompaniesBySector,
   };
 }

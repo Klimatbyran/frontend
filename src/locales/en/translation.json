@@ -1862,6 +1862,12 @@
     "next": "Next",
     "previous": "Previous"
   },
+  "explorePage": {
+    "title": "Explore the data",
+    "description": "Explore and compare emissions data and climate targets for companies and municipalities.",
+    "municipalities": "Municipalities",
+    "companies": "Companies"
+  },
   "insightCategories": {
     "analysis": "Analysis",
     "guide": "Guide",
