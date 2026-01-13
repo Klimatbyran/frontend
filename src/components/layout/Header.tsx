@@ -295,7 +295,7 @@ export function Header() {
                       "flex gap-2 p-3",
                       "data-[state=open]:bg-black-1 data-[state=closed]:bg-transparent",
                       location.pathname.startsWith(
-                        localizedPath(currentLanguage, item.path as To),
+                        localizedPath(currentLanguage, item.path),
                       )
                         ? "text-white"
                         : "text-grey hover:text-white",
