@@ -36,7 +36,6 @@ export function MunicipalityDetailPage() {
   const { municipality, loading, error } = useMunicipalityDetails(id || "");
   const { currentLanguage } = useLanguage();
 
-
   const { sectorEmissions, loading: _loadingSectors } =
     useMunicipalitySectorEmissions(id);
 
