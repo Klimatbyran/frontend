@@ -329,62 +329,64 @@ export function Header() {
           {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
         {menuOpen && (
-          <div className="fixed inset-0 w-full h-full z-100 flex p-8 mt-10 bg-black-2">
-            <div className="flex flex-col gap-6 text-lg w-full">
-              <HeaderSearchButton
-                className="w-full"
-                onSearchResultClick={toggleMenu}
-              />
-              <LanguageButtons />
-              {filteredNavLinks.map((link) => (
-                <div key={link.path} className="flex flex-col">
-                  <LocalizedLink
-                    to={link.path}
-                    onClick={toggleMenu}
-                    className="flex items-center gap-2 cursor-pointer"
-                  >
-                    {link.icon}
-                    {t(link.label)}
-                  </LocalizedLink>
-                  {link.sublinks && (
-                    <div className="flex flex-col gap-2 pl-4 mt-2">
-                      {link.sublinks.map((sublink) =>
-                        sublink.path.startsWith("https://") ? (
-                          <a
-                            href={sublink.path}
-                            className="flex items-center gap-2 text-sm text-gray-400"
-                            target="_blank"
-                            key={sublink.path}
-                            onClick={toggleMenu}
-                          >
-                            {t(sublink.label)}
-                          </a>
-                        ) : (
-                          <LocalizedLink
-                            key={sublink.path}
-                            to={sublink.path}
-                            onClick={toggleMenu}
-                            className="flex items-center gap-2 text-sm text-gray-400"
-                          >
-                            {t(sublink.label)}
-                          </LocalizedLink>
-                        ),
-                      )}
-                    </div>
-                  )}
-                </div>
-              ))}
-              {/* Newsletter button in mobile menu */}
-              <button
-                onClick={() => {
-                  setMenuOpen(false); // Close the menu
-                  setIsSignUpOpen(true); // Open the newsletter popover
-                }}
-                className="flex items-center gap-2 text-blue-3"
-              >
-                <Mail className="w-4 h-4" />
-                {t("header.newsletter")}
-              </button>
+          <div className="overflow-y-auto fixed inset-0 top-10 w-full z-100 bg-black-2">
+            <div className="p-8">
+              <div className="flex flex-col gap-6 text-lg w-full">
+                <HeaderSearchButton
+                  className="w-full"
+                  onSearchResultClick={toggleMenu}
+                />
+                <LanguageButtons />
+                {filteredNavLinks.map((link) => (
+                  <div key={link.path} className="flex flex-col">
+                    <LocalizedLink
+                      to={link.path}
+                      onClick={toggleMenu}
+                      className="flex items-center gap-2 cursor-pointer"
+                    >
+                      {link.icon}
+                      {t(link.label)}
+                    </LocalizedLink>
+                    {link.sublinks && (
+                      <div className="flex flex-col gap-2 pl-4 mt-2">
+                        {link.sublinks.map((sublink) =>
+                          sublink.path.startsWith("https://") ? (
+                            <a
+                              href={sublink.path}
+                              className="flex items-center gap-2 text-sm text-gray-400"
+                              target="_blank"
+                              key={sublink.path}
+                              onClick={toggleMenu}
+                            >
+                              {t(sublink.label)}
+                            </a>
+                          ) : (
+                            <LocalizedLink
+                              key={sublink.path}
+                              to={sublink.path}
+                              onClick={toggleMenu}
+                              className="flex items-center gap-2 text-sm text-gray-400"
+                            >
+                              {t(sublink.label)}
+                            </LocalizedLink>
+                          ),
+                        )}
+                      </div>
+                    )}
+                  </div>
+                ))}
+                {/* Newsletter button in mobile menu */}
+                <button
+                  onClick={() => {
+                    setMenuOpen(false); // Close the menu
+                    setIsSignUpOpen(true); // Open the newsletter popover
+                  }}
+                  className="flex items-center gap-2 text-blue-3"
+                >
+                  <Mail className="w-4 h-4" />
+                  {t("header.newsletter")}
+                </button>
+              </div>
             </div>
           </div>
         )}
