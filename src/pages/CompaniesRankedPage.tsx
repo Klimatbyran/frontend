@@ -20,7 +20,7 @@ import { DataPoint } from "@/types/rankings";
 
 export function CompaniesRankedPage() {
   const { t } = useTranslation();
-  const { companies } = useCompanies();
+  const { companies, companiesLoading, companiesError } = useCompanies();
   const companyKPIs = useCompanyKPIs();
 
   const location = useLocation();
@@ -135,7 +135,7 @@ export function CompaniesRankedPage() {
     navigate(`/companies/${company.wikidataId}`);
   };
 
-  if (loading) {
+  if (companiesLoading) {
     return (
       <div className="animate-pulse space-y-16">
         <div className="h-12 w-1/3 bg-black-1 rounded" />
@@ -148,7 +148,7 @@ export function CompaniesRankedPage() {
     );
   }
 
-  if (error) {
+  if (companiesError) {
     return (
       <div className="text-center py-24">
         <h3 className="text-red-500 mb-4 text-xl">

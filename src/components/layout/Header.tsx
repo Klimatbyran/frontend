@@ -43,7 +43,7 @@ const NAV_LINKS: NavLink[] = [
     sublinks: [
       {
         label: "header.companies",
-        path: `/companies`,
+        path: `/companies/ranked`,
         onlyShowOnStaging: true,
       },
       {
