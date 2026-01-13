@@ -30,7 +30,7 @@ interface NavSubLink {
 interface NavLink {
   label: string;
   icon?: React.ReactElement;
-  path?: string;
+  path: string;
   sublinks?: NavSubLink[];
   onlyShowOnStaging?: boolean;
 }
