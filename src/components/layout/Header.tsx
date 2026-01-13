@@ -314,7 +314,7 @@ export function Header() {
                   className={cn(
                     "h-10 lg:h12 flex items-center",
                     location.pathname.startsWith(
-                      localizedPath(currentLanguage, item.path as To),
+                      localizedPath(currentLanguage, item.path),
                     )
                       ? "text-white"
                       : "text-grey hover:text-white",
