@@ -30,7 +30,7 @@ interface NavSubLink {
 interface NavLink {
   label: string;
   icon?: React.ReactElement;
-  path?: string;
+  path: string;
   sublinks?: NavSubLink[];
   onlyShowOnStaging?: boolean;
 }
@@ -39,6 +39,7 @@ const NAV_LINKS: NavLink[] = [
   {
     label: "header.data",
     icon: <BarChart3 className="w-4 h-4" aria-hidden="true" />,
+    path: `/municipalities`
     sublinks: [
       {
         label: "header.companies",
