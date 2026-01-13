@@ -1,5 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useMemo } from "react";
+import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { CardGrid } from "@/components/layout/CardGrid";
 import { ListCard } from "@/components/layout/ListCard";
 import { useLanguage } from "@/components/LanguageProvider";
@@ -18,8 +20,6 @@ import { useScreenSize } from "@/hooks/useScreenSize";
 import { Input } from "@/components/ui/input";
 import { FilterBadges } from "@/components/companies/list/FilterBadges";
 import { FilterPopover } from "@/components/explore/FilterPopover";
-import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
 import { useSortOptions } from "@/hooks/municipalities/useMunicipalitiesSorting";
 import type { Municipality } from "@/types/municipality";
 import { isSortDirection } from "@/components/explore/SortPopover";

@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
-import { useCompanies } from "@/hooks/companies/useCompanies";
-
-import { PageHeader } from "@/components/layout/PageHeader";
 import { useTranslation } from "react-i18next";
+import { useCompanies } from "@/hooks/companies/useCompanies";
+import { PageHeader } from "@/components/layout/PageHeader";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { cn } from "@/lib/utils";
 import { CompanyList } from "@/components/companies/list/CompanyList";
 import { MunicipalityList } from "@/components/municipalities/list/MunicipalityList";
-
 import { Toggle } from "@/components/ui/toggle";
 import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
 

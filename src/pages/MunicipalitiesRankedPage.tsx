@@ -17,7 +17,8 @@ import { MunicipalityRankedList } from "@/components/municipalities/Municipality
 
 export function MunicipalitiesRankedPage() {
   const { t } = useTranslation();
-  const { municipalities, municipalitiesLoading, municipalitiesError } = useMunicipalities();
+  const { municipalities, municipalitiesLoading, municipalitiesError } =
+    useMunicipalities();
   const municipalityKPIs = useMunicipalityKPIs();
   const [geoData] = useState(municipalityGeoJson);
 
