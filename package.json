@@ -16,6 +16,8 @@
     "generate-report-html": "tsx scripts/generate-report-html.ts",
     "generate-api": "npx openapi-typescript https://stage.klimatkollen.se/api/openapi.json -o src/lib/api-types.ts",
     "format": "npm run lint -- --fix; npx prettier --write \"src/**/*.{ts,tsx,json}\"",
+    "format-prettier": "npx prettier --write \"src/**/*.{ts,tsx,json}\"",
+    "format-lint": "npm run lint -- --fix",
     "generate-api-local": "npx openapi-typescript http://localhost:3000/hej/openapi.json -o src/lib/api-types.ts",
     "generate-sitemap": "NODE_OPTIONS='--no-warnings' tsx scripts/generate-sitemap.ts || echo 'Sitemap generation failed, continuing build'",
     "check-unused-components": "tsx scripts/check-unused-components.ts"
