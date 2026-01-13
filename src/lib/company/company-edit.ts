@@ -149,7 +149,6 @@ export function mapCompanyEditFormToRequestBody(
         ) {
           periodUpdate.emissions.scope3.categories.push({
             category: parseInt(categoryId),
-            total: originalValue,
             verified: newVerified,
           });
         }
@@ -158,10 +157,11 @@ export function mapCompanyEditFormToRequestBody(
           const obj: any = {
             category: parseInt(categoryId),
             total: newValue === "" ? null : parseFloat(newValue!),
-            verified: verifiedChanged
-              ? newVerified
-              : originalCategoryIsVerified,
           };
+          // Only include verified if it was explicitly changed
+          if (verifiedChanged) {
+            obj.verified = newVerified;
+          }
           periodUpdate.emissions.scope3.categories.push(obj);
         }
         // If both value and verified are changed, the above covers it in one object

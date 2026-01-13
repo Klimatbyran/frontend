@@ -1,5 +1,5 @@
-import { Text } from "@/components/ui/text";
 import { ArrowUpRight } from "lucide-react";
+import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
 
 interface LinkCardProps {

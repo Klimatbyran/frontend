@@ -1,15 +1,16 @@
 import { BarChart3, Menu, X, Mail } from "lucide-react";
 import { useLocation } from "react-router-dom";
-import { cn } from "@/lib/utils";
 import { useState, useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import useHeaderTitle from "@/hooks/useHeaderTitle";
+import { useAuth } from "@/contexts/AuthContext";
+import { localizedPath } from "@/utils/routing";
+import { cn } from "@/lib/utils";
+import { stagingFeatureFlagEnabled } from "@/utils/ui/featureFlags";
 import { NewsletterPopover } from "../newsletters/NewsletterPopover";
 import { useLanguage } from "../LanguageProvider";
 import { HeaderSearchButton } from "../search/HeaderSearchButton";
-import useHeaderTitle from "@/hooks/useHeaderTitle";
-import { useAuth } from "@/contexts/AuthContext";
 import { LocalizedLink } from "../LocalizedLink";
-import { localizedPath } from "@/utils/routing";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -18,7 +19,6 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "../ui/navigation-menu";
-import { stagingFeatureFlagEnabled } from "@/utils/ui/featureFlags";
 
 interface NavSubLink {
   label: string;
@@ -206,7 +206,7 @@ export function Header() {
   }, [headerTitle, showTitle, setShowTitle]);
 
   useEffect(() => {
-    if(menuOpen){
+    if (menuOpen) {
       document.body.classList.add("overflow-hidden");
     } else {
       document.body.classList.remove("overflow-hidden");

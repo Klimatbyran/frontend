@@ -1,8 +1,9 @@
 import { Route, Routes } from "react-router-dom";
+import { stagingFeatureFlagEnabled } from "@/utils/ui/featureFlags";
+import { LanguageRedirect } from "@/components/LanguageRedirect";
 import ProtectedRoute from "./components/ProtectedRoute";
 import StagingProtectedRoute from "./components/StagingProtectedRoute";
 import { useLanguage } from "./components/LanguageProvider";
-import { LanguageRedirect } from "@/components/LanguageRedirect";
 import { AboutPage } from "./pages/AboutPage";
 import { AuthCallback } from "./pages/AuthCallback";
 import { BlogDetailPage } from "./pages/BlogDetailPage";
@@ -15,7 +16,6 @@ import { InsightsPage } from "./pages/InsightsPage";
 import { LandingPage } from "./pages/LandingPage";
 import { LandingPageNew } from "./pages/LandingPageNew";
 import { LearnMoreOverview } from "./pages/LearnMoreOverview";
-import { stagingFeatureFlagEnabled } from "@/utils/ui/featureFlags";
 import { LearnMoreArticle } from "./pages/LearnMoreArticle";
 import { MethodsPage } from "./pages/MethodsPage";
 import { MunicipalitiesRankedPage } from "./pages/MunicipalitiesRankedPage";

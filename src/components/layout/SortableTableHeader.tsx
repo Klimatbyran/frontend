@@ -1,6 +1,6 @@
+import { ChevronUp, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TableHead } from "@/components/ui/table";
-import { ChevronUp, ChevronDown } from "lucide-react";
 
 interface SortableTableHeaderProps {
   column: string;

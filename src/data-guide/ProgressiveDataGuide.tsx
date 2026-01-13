@@ -1,21 +1,21 @@
 import { useTranslation } from "react-i18next";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { GraduationCap } from "lucide-react";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { DataGuideItemId } from "./items";
 import {
   Collapsible,
   CollapsibleTrigger,
   CollapsibleContent,
 } from "@/components/ui/collapsible";
 import { useScreenSize } from "@/hooks/useScreenSize";
+import { dataGuideFeatureFlagEnabled } from "../utils/ui/featureFlags";
+import { DataGuideItemId } from "./items";
 import {
   NonEmptyArray,
   ProgressiveDataGuideDesktop,
 } from "./ProgressiveDataGuideDesktop";
 import { ProgressiveDataGuideMobile } from "./ProgressiveDataGuideMobile";
-import { useState } from "react";
-import { dataGuideFeatureFlagEnabled } from "../utils/ui/featureFlags";
 
 interface ProgressiveDataGuideProps {
   titleKey?: string;

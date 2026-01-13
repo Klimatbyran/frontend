@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
-import { reports } from "@/lib/constants/reports";
-import { PageSEO } from "@/components/SEO/PageSEO";
 import { ArrowUpRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { reports } from "@/lib/constants/reports";
+import { PageSEO } from "@/components/SEO/PageSEO";
 
 export function ReportLandingPage() {
   const { reportId } = useParams<{ reportId: string }>();

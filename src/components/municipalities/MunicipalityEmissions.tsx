@@ -1,6 +1,5 @@
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { MunicipalityEmissionsGraph } from "./emissionsGraph/MunicipalityEmissionsGraph";
 import { DataPoint } from "@/types/municipality";
 import {
   getDynamicChartHeight,
@@ -11,6 +10,7 @@ import {
 import { CardHeader } from "@/components/layout/CardHeader";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { SectorEmissionsByYear } from "@/types/emissions";
+import { MunicipalityEmissionsGraph } from "./emissionsGraph/MunicipalityEmissionsGraph";
 
 type DataView = "overview" | "sectors";
 

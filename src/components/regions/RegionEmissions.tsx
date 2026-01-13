@@ -116,7 +116,7 @@ export const RegionEmissions: FC<RegionEmissionsProps> = ({
                     [1990, 2050],
                     [1990, 2015, 2020, currentYear, 2030, 2040, 2050],
                   )}
-                  allowDuplicatedCategory={true}
+                  allowDuplicatedCategory
                   tickFormatter={(year) => year}
                 />
                 <YAxis {...getYAxisProps(currentLanguage)} />

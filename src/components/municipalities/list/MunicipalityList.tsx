@@ -1,12 +1,12 @@
+import { useTranslation } from "react-i18next";
+import { useMemo } from "react";
 import { CardGrid } from "@/components/layout/CardGrid";
 import { ListCard } from "@/components/layout/ListCard";
-import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
 import {
   formatEmissionsAbsolute,
   formatPercentChange,
 } from "@/utils/formatting/localization";
-import { useMemo } from "react";
 import {
   isMeetsParisFilter,
   isMunicipalitySortBy,

@@ -1,5 +1,5 @@
-import { TrendAnalysis } from "./types";
 import type { CompanyDetails, RankedCompany } from "@/types/company";
+import { TrendAnalysis } from "./types";
 
 /**
  * Calculates trendline analysis using API-provided slope when available

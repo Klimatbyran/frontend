@@ -1,4 +1,5 @@
 import { useParams } from "react-router-dom";
+import { useMemo } from "react";
 import {
   useRegionDetails,
   useRegionDetailHeaderStats,
@@ -9,7 +10,6 @@ import { PageError } from "@/components/pageStates/Error";
 import { PageNoData } from "@/components/pageStates/NoData";
 import { DetailHeader } from "@/components/detail/DetailHeader";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";
-import { useMemo } from "react";
 import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
 import { MunicipalityListBox } from "@/components/regions/MunicipalityListBox";
 

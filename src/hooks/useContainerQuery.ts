@@ -90,7 +90,7 @@ function useContainerQuery<T extends HTMLElement>(
 
       try {
         observer.observe(ref.current);
-        
+
         // Initial check for ResizeObserver case
         if (typeof requestAnimationFrame !== "undefined") {
           requestAnimationFrame(initialCheck);

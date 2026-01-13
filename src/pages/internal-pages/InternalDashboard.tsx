@@ -14,8 +14,10 @@ import { calculateEmissionsChange } from "@/utils/calculations/emissionsCalculat
 
 const companyChangeRate = (company: RankedCompany) =>
   calculateRateOfChange(
-    company.reportingPeriods[0]?.emissions?.calculatedTotalEmissions,
-    company.reportingPeriods[1]?.emissions?.calculatedTotalEmissions,
+    company.reportingPeriods[0]?.emissions?.calculatedTotalEmissions ??
+      undefined,
+    company.reportingPeriods[1]?.emissions?.calculatedTotalEmissions ??
+      undefined,
   );
 
 export const InternalDashboard = () => {

@@ -1,7 +1,7 @@
 import { LinkProps, Link as RouterLink } from "react-router-dom";
 import { forwardRef } from "react";
-import { useLanguage } from "./LanguageProvider";
 import { localizedPath } from "@/utils/routing";
+import { useLanguage } from "./LanguageProvider";
 
 export const LocalizedLink = forwardRef<
   HTMLAnchorElement,

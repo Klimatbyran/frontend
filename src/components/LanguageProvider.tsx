@@ -7,12 +7,12 @@ import {
 } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { I18nextProvider } from "react-i18next";
 import {
   detectLanguageFromPath,
   getLanguageUrl,
   SupportedLanguage,
 } from "@/lib/languageDetection";
-import { I18nextProvider } from "react-i18next";
 
 // Create context for language
 interface LanguageContextType {

@@ -1,10 +1,10 @@
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useCallback } from "react";
 import {
   createValidationClaim,
   deleteValidationClaim,
   getValidationClaims,
 } from "@/lib/api";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useCallback } from "react";
 
 const cacheKey = "validationClaims";
 export function useValidationClaims() {

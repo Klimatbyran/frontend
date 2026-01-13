@@ -1,7 +1,7 @@
+import { DataItem } from "@/components/maps/SwedenMap";
 import { Municipality } from "./municipality";
 import { Region } from "./region";
 import { CompanyWithKPIs } from "./company";
-import { DataItem } from "@/components/maps/SwedenMap";
 
 export interface DataPoint<T> {
   label: string;

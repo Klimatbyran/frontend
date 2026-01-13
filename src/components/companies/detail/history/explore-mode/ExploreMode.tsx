@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { ExploreChart } from "./ExploreChart";
-import { ChartData } from "@/types/emissions";
 import { useTranslation } from "react-i18next";
 import React, { useEffect, useMemo } from "react";
+import { Button } from "@/components/ui/button";
+import { ChartData } from "@/types/emissions";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { generateApproximatedData } from "@/lib/calculations/trends/approximatedData";
 import { CumulativeSummaryBoxes } from "./CumulativeSummaryBoxes";
+import { ExploreChart } from "./ExploreChart";
 
 interface ExploreModeProps {
   data: ChartData[];

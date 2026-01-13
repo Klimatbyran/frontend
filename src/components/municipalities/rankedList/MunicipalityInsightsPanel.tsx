@@ -1,13 +1,13 @@
 import { t } from "i18next";
 import { Municipality } from "@/types/municipality";
 import { KPIValue } from "@/types/rankings";
-import InsightsList from "../../ranked/InsightsList";
-import KPIDetailsPanel from "../../ranked/KPIDetailsPanel";
 import { getSortedEntityKPIValues } from "@/utils/data/sorting";
 import {
   calculateEntityStatistics,
   createSourceLinks,
 } from "@/utils/insights/rankedListUtils";
+import KPIDetailsPanel from "../../ranked/KPIDetailsPanel";
+import InsightsList from "../../ranked/InsightsList";
 
 interface InsightsPanelProps {
   municipalityData: Municipality[];
@@ -87,7 +87,7 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
               title={t("municipalities.list.insights.improvement.title")}
               entities={bottomMunicipalities}
               totalCount={municipalityData.length}
-              isBottomRanking={true}
+              isBottomRanking
               dataPointKey={selectedKPI.key as keyof Municipality}
               unit={selectedKPI.unit}
               nullValues={selectedKPI.nullValues}

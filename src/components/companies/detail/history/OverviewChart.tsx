@@ -9,6 +9,7 @@ import {
   YAxis,
 } from "recharts";
 import { useTranslation } from "react-i18next";
+import { isMobile } from "react-device-detect";
 import { ChartData } from "@/types/emissions";
 import {
   ChartYearControls,
@@ -33,7 +34,6 @@ import {
   ChartTooltip,
 } from "@/components/charts";
 import { useLanguage } from "@/components/LanguageProvider";
-import { isMobile } from "react-device-detect";
 
 interface OverviewChartProps {
   data: ChartData[];

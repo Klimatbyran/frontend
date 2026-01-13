@@ -1,5 +1,5 @@
-import { useLabeledGithubIssues } from "@/hooks/useLabeledGithubIssues";
 import { useState } from "react";
+import { useLabeledGithubIssues } from "@/hooks/useLabeledGithubIssues";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 

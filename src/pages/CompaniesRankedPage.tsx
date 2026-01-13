@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { Map, List } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useCompanies } from "@/hooks/companies/useCompanies";
 import { useTranslation } from "react-i18next";
+import { useCompanies } from "@/hooks/companies/useCompanies";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { KPIDataSelector } from "@/components/ranked/KPIDataSelector";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
@@ -223,7 +223,7 @@ export function CompaniesRankedPage() {
             graph: t("companiesRankedPage.viewToggle.showGraph", "Graph"),
             list: t("companiesRankedPage.viewToggle.showList", "List"),
           }}
-          showTitles={true}
+          showTitles
           icons={{
             graph: <Map className="w-4 h-4" />,
             list: <List className="w-4 h-4" />,

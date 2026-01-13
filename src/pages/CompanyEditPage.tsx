@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import React, { useRef, useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { useCompanyDetails } from "@/hooks/companies/useCompanyDetails";
 import { Text } from "@/components/ui/text";
 import { CompanyEditHeader } from "@/components/companies/edit/CompanyEditHeader";
@@ -15,7 +16,6 @@ import { ReportingPeriod } from "@/types/company";
 import { mapCompanyEditFormToRequestBody } from "@/lib/company/company-edit";
 import { updateReportingPeriods } from "@/lib/api";
 import { useToast } from "@/contexts/ToastContext";
-import { useTranslation } from "react-i18next";
 import { AuthExpiredModal } from "@/components/companies/edit/AuthExpiredModal";
 import { useAuth } from "@/contexts/AuthContext";
 import { CompanyEditDetails } from "@/components/companies/edit/CompanyEditDetails";

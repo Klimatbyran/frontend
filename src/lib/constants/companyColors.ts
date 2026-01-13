@@ -80,7 +80,6 @@ export const sectorColors: SectorColors = {
   },
 };
 
-
 export const getCompanyColors = (index: number) => {
   const colors = Object.values(sectorColors);
   return colors[index % colors.length];

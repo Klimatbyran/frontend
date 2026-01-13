@@ -10,12 +10,12 @@ import {
   Target,
   History,
 } from "lucide-react";
-import ParticleAnimation from "../components/learnMore/ParticleAnimation";
 import { useTranslation } from "react-i18next";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { SectionCard } from "@/components/learnMore/SectionCard";
 import { FeatureCard } from "@/components/learnMore/FeatureCard";
 import { SectionHeader } from "@/components/learnMore/SectionHeader";
+import ParticleAnimation from "../components/learnMore/ParticleAnimation";
 
 export function LearnMoreReporting() {
   const { t } = useTranslation();

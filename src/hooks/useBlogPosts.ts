@@ -1,8 +1,8 @@
+import { load } from "js-yaml";
 import { ContentMeta } from "@/types/content";
 import { useLanguage } from "@/components/LanguageProvider";
 import { blogMetadataByLanguage } from "@/lib/blog/blogPostsList";
 import { SUPPORTED_LANGUAGES } from "@/lib/languageDetection";
-import { load } from "js-yaml";
 
 const markdownFiles = import.meta.glob("/src/lib/blog/posts/*.md", {
   as: "raw",

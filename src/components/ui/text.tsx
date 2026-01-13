@@ -1,5 +1,5 @@
-import { cn } from "@/lib/utils";
 import { VariantProps, cva } from "class-variance-authority";
+import { cn } from "@/lib/utils";
 
 const textVariants = cva("font-light tracking-tight", {
   variants: {

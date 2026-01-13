@@ -1,9 +1,9 @@
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { methodologySections } from "@/lib/methods/methodologyData";
 import { useScreenSize } from "@/hooks/useScreenSize";
-import { useNavigate } from "react-router-dom";
 
 interface MethodologyNavigationProps {
   selectedMethod: string;
