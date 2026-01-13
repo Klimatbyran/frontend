@@ -71,7 +71,7 @@ export function ExplorePage() {
         <div className="absolute inset-0 w-full bg-black -z-10" />
 
         {/* Wrapper for Filters, Search, and Badges */}
-        <div className={cn("flex flex-wrap items-center gap-2 mb-2 md:mb-4")}>
+        <div className={cn("flex flex-wrap items-center gap-2 mb-4")}>
           {/* Search Input */}
           <Toggle
             onClick={() => setMainFilter("companies")}
