@@ -13,7 +13,7 @@ import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 export function CompaniesSectorsPage() {
   const { t } = useTranslation();
   const screenSize = useScreenSize();
-  const { companies, companiesLoading, companiesError } = useCompanies();
+  const { companies } = useCompanies();
   const [filterOpen, setFilterOpen] = useState(false);
   const sectorNames = useSectorNames();
 
