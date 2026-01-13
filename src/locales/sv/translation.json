@@ -6,6 +6,7 @@
   "all": "Alla",
   "emissionsUnit": "tCO₂e",
   "header": {
+    "data": "Data",
     "companies": "Företag",
     "companiesSectors": "Sektorer",
     "companiesRanked": "Topplistor",

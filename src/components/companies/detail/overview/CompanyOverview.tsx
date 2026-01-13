@@ -154,7 +154,8 @@ export function CompanyOverview({
                   const year = new Date(period.endDate)
                     .getFullYear()
                     .toString();
-                  return (
+                  return period.emissions?.calculatedTotalEmissions === null ||
+                    period.emissions?.calculatedTotalEmissions === 0 ? null : (
                     <SelectItem key={year} value={year}>
                       {year}
                     </SelectItem>
