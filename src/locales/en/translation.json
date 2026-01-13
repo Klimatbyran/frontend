@@ -6,6 +6,7 @@
   "emissionsUnit": "tCO₂e",
   "noData": "No data available",
   "header": {
+    "data": "Data",
     "companies": "Companies",
     "companiesSectors": "Sectors",
     "companiesRanked": "Top Lists",

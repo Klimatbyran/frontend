@@ -64,49 +64,14 @@ const NAV_LINKS: NavLink[] = [
       },
     ],
   },
-  /* {
-    label: "header.companies",
-    icon: <BarChart3 className="w-4 h-4" aria-hidden="true" />,
-    path: `/companies`,
-    sublinks: [
-      {
-        label: "header.companiesRanked",
-        path: `/companies/ranked`,
-        onlyShowOnStaging: true,
-      },
-      {
-        label: "header.companiesSectors",
-        path: `/companies/sectors`,
-      },
-      {
-        label: "header.companiesExplore",
-        path: `/companies`,
-      },
-    ],
-  },
   {
-    label: "header.municipalities",
-    icon: <BarChart3 className="w-4 h-4" aria-hidden="true" />,
-    path: `/municipalities`,
+    path: `/articles`,
+    label: "header.insights",
     sublinks: [
-      {
-        label: "header.municipalitiesRanked",
-        path: `/municipalities`,
-      },
-      {
-        label: "header.regionsRanked",
-        path: `/regions`,
-        onlyShowOnStaging: true,
-      },
-      {
-        label: "header.municipalitiesExplore",
-        path: `/municipalities/explore`,
-      },
+      { label: "header.reports", path: `/reports` },
+      { label: "header.articles", path: `/articles` },
+      { label: "header.learnMore", path: `/learn-more` },
     ],
-  }, */
-  {
-    label: "header.products",
-    path: `/products`,
   },
   {
     label: "header.about",
@@ -129,13 +94,8 @@ const NAV_LINKS: NavLink[] = [
     ],
   },
   {
-    path: `/articles`,
-    label: "header.insights",
-    sublinks: [
-      { label: "header.reports", path: `/reports` },
-      { label: "header.articles", path: `/articles` },
-      { label: "header.learnMore", path: `/learn-more` },
-    ],
+    label: "header.products",
+    path: `/products`,
   },
 ];
 
@@ -294,7 +254,7 @@ export function Header() {
                       "flex gap-2 p-3",
                       "data-[state=open]:bg-black-1 data-[state=closed]:bg-transparent",
                       location.pathname.startsWith(
-                        localizedPath(currentLanguage, item.path as To),
+                        localizedPath(currentLanguage, item.path),
                       )
                         ? "text-white"
                         : "text-grey hover:text-white",
@@ -313,7 +273,7 @@ export function Header() {
                   className={cn(
                     "h-10 lg:h12 flex items-center",
                     location.pathname.startsWith(
-                      localizedPath(currentLanguage, item.path as To),
+                      localizedPath(currentLanguage, item.path),
                     )
                       ? "text-white"
                       : "text-grey hover:text-white",
@@ -321,7 +281,7 @@ export function Header() {
                 >
                   <NavigationMenuLink asChild>
                     <LocalizedLink
-                      to={item.path as To}
+                      to={item.path}
                       className="flex gap-2 p-3 items-center"
                     >
                       {item.icon}
