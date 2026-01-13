@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useCompanies } from "@/hooks/companies/useCompanies";
 import { PageHeader } from "@/components/layout/PageHeader";
@@ -46,10 +46,6 @@ export function ExplorePage() {
       </div>
     );
   }
-
-  /* console.log("Main filter:", mainFilter); */
-
-  console.log(mainFilter);
 
   return (
     <>

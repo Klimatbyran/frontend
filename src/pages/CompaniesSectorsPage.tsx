@@ -13,7 +13,7 @@ import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 export function CompaniesSectorsPage() {
   const { t } = useTranslation();
   const screenSize = useScreenSize();
-  const { companies } = useCompanies();
+  const { companies, companiesLoading, companiesError } = useCompanies();
   const [filterOpen, setFilterOpen] = useState(false);
   const sectorNames = useSectorNames();
 
@@ -52,7 +52,7 @@ export function CompaniesSectorsPage() {
       : []),
   ];
 
-  if (loading) {
+  if (companiesLoading) {
     return (
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-pulse">
         {[...Array(4)].map((_, i) => (
@@ -62,7 +62,7 @@ export function CompaniesSectorsPage() {
     );
   }
 
-  if (error) {
+  if (companiesError) {
     return (
       <div className="text-center py-12">
         <h2 className="text-2xl font-light text-red-500">
