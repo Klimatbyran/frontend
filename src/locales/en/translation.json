@@ -1113,6 +1113,7 @@
       "low": "No"
     },
     "politicalRule": "Political rule",
+    "politicalKSO": "Municipal Executive Chair",
     "totalEmissionsTooltip": "This is the latest reported emissions. For calculated estimates on the current year, please see the emissions development graph below.",
     "graph": {
       "overview": "Overview",

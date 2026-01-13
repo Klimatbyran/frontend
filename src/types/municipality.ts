@@ -26,6 +26,7 @@ export type Municipality = {
   description?: string | null;
   sectorEmissions?: SectorEmissionsByYear;
   politicalRule: string[];
+  politicalKSO: string;
 } & EmissionsData;
 
 // Detailed municipality type from API

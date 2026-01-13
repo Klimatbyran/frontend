@@ -19,6 +19,7 @@ export interface DetailHeaderProps {
   subtitle?: string;
   logoUrl?: string | null;
   politicalRule?: string[];
+  politicalKSO?: string;
   helpItems: DataGuideItemId[];
   stats: DetailStat[];
   translateNamespace: string;
@@ -30,6 +31,7 @@ export function DetailHeader({
   subtitle,
   logoUrl,
   politicalRule,
+  politicalKSO,
   helpItems,
   stats,
   translateNamespace,
@@ -55,6 +57,7 @@ export function DetailHeader({
           politicalRule={politicalRule}
           translateNamespace={translateNamespace}
           politicalRuleLabelKey={politicalRuleLabelKey}
+          politicalKSO={politicalKSO}
         />
       )}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-16 mt-8">

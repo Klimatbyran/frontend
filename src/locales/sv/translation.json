@@ -1110,7 +1110,8 @@
       "medium": "Kanske",
       "low": "Nej"
     },
-    "politicalRule": "Här styr",
+    "politicalRule": "Politiskt styre",
+    "politicalKSO": "Kommunstyrelsens ordförande",
     "totalEmissionsTooltip": "Detta är de senast rapporterade utsläppen. För beräknade uppskattningar för innevarande år, se grafen Utsläppsutveckling nedan.",
     "graph": {
       "overview": "Översikt",

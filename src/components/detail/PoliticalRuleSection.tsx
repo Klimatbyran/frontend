@@ -6,12 +6,14 @@ export interface PoliticalRuleSectionProps {
   politicalRule: string[];
   translateNamespace: string;
   politicalRuleLabelKey?: string;
+  politicalKSO?: string;
 }
 
 export function PoliticalRuleSection({
   politicalRule,
   translateNamespace,
   politicalRuleLabelKey = "politicalRule",
+  politicalKSO,
 }: PoliticalRuleSectionProps) {
   const { t } = useTranslation();
 
@@ -27,16 +29,33 @@ export function PoliticalRuleSection({
   ));
 
   return (
-    <div className="flex flex-row items-center gap-2 my-4">
-      <Text
-        variant="body"
-        className="text-grey text-sm md:text-base lg:text-lg"
-      >
-        {t(`${translateNamespace}.${politicalRuleLabelKey}`)}:
-      </Text>
-      <Text variant="body" className="text-sm md:text-base lg:text-lg">
-        {politicalRuleLabels}
-      </Text>
+    <div className="flex flex-col gap-2 my-4">
+      <div className="flex gap-2">
+        <Text
+          variant="body"
+          className="text-grey text-sm md:text-base lg:text-lg"
+        >
+          {t(`${translateNamespace}.${politicalRuleLabelKey}`)}:
+        </Text>
+        <Text variant="body" className="text-sm md:text-base lg:text-lg">
+          {politicalRuleLabels}
+        </Text>
+      </div>
+      {politicalKSO && (
+        <div className="flex gap-2">
+          <Text
+            variant="body"
+            className="text-grey text-sm md:text-base lg:text-lg"
+          >
+            {t(`${translateNamespace}.politicalKSO`)}:
+          </Text>
+          <PoliticalRuleLabel
+            src={`/logos/politicalParties/${politicalKSO}.png`}
+            alt={politicalKSO}
+            fallback={politicalKSO}
+          />
+        </div>
+      )}
     </div>
   );
 }
