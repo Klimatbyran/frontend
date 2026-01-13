@@ -339,7 +339,7 @@ export function Header() {
               {filteredNavLinks.map((link) => (
                 <div key={link.path} className="flex flex-col">
                   <LocalizedLink
-                    to={link.path as To}
+                    to={link.path}
                     onClick={toggleMenu}
                     className="flex items-center gap-2 cursor-pointer"
                   >
