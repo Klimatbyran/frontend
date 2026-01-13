@@ -1,4 +1,9 @@
 import { useEffect, useState } from "react";
+import { Command as CommandPrimitive } from "cmdk";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
+import { useTranslation } from "react-i18next";
+import { cn } from "@/lib/utils";
+import { CombinedData, useCombinedData } from "@/hooks/useCombinedData";
 import {
   Command,
   CommandEmpty,
@@ -6,7 +11,6 @@ import {
   CommandItem,
   CommandList,
 } from "../ui/command";
-import { Command as CommandPrimitive } from "cmdk";
 import {
   Dialog,
   DialogDescription,
@@ -14,10 +18,6 @@ import {
   DialogPortal,
   DialogTitle,
 } from "../ui/dialog";
-import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { cn } from "@/lib/utils";
-import { useTranslation } from "react-i18next";
-import { CombinedData, useCombinedData } from "@/hooks/useCombinedData";
 
 interface SearchDialogProps {
   open: boolean;

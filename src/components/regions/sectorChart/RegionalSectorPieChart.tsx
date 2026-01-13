@@ -1,6 +1,6 @@
+import { useTranslation } from "react-i18next";
 import { PieChart } from "@/components/charts/PieChart";
 import { useTheme } from "@/components/ThemeProvider";
-import { useTranslation } from "react-i18next";
 
 interface SectorData {
   sector: string;

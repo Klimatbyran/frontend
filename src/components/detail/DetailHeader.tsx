@@ -1,8 +1,8 @@
+import { ReactNode } from "react";
 import { Text } from "@/components/ui/text";
 import { OverviewStat } from "@/components/companies/detail/overview/OverviewStat";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { DataGuideItemId } from "@/data-guide/items";
-import { ReactNode } from "react";
 import { PoliticalRuleSection } from "./PoliticalRuleSection";
 
 export interface DetailStat {

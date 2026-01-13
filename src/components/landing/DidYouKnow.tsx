@@ -1,10 +1,9 @@
 import { useTranslation } from "react-i18next";
-
 import { Text } from "@/components/ui/text";
 import { useScreenSize } from "@/hooks/useScreenSize";
-import { FlipCard } from "./FlipCard";
-import { LandingSection } from "./LandingSection";
 import { useDidYouKnowStats } from "@/hooks/landing/useDidYouKnowStats";
+import { LandingSection } from "./LandingSection";
+import { FlipCard } from "./FlipCard";
 
 export function DidYouKnow() {
   const { t } = useTranslation();

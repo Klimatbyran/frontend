@@ -1,12 +1,12 @@
-import { CompanyEditRow } from "./CompanyEditRow";
-import { CompanyEditInputField } from "./CompanyEditField";
+import { useTranslation } from "react-i18next";
 import { getNumericValue, getStringValue } from "@/utils/ui/form";
 import { isVerified } from "@/utils/business/verification";
-import { useTranslation } from "react-i18next";
 import type {
   CompanyEditComponentProps,
   ReportingPeriod,
 } from "@/types/company";
+import { CompanyEditInputField } from "./CompanyEditField";
+import { CompanyEditRow } from "./CompanyEditRow";
 
 export function CompanyEditEmployees({
   periods,

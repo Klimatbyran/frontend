@@ -1,15 +1,15 @@
 // FIXME ADD TRANSLATIONS
 
 import { useState, useEffect, useRef, useCallback } from "react";
+import { X, CheckCircle, AlertCircle } from "lucide-react";
+import MailchimpSubscribe from "react-mailchimp-subscribe";
+import { useTranslation } from "react-i18next";
+import { Button } from "@/components/ui/button";
 import {
   Popover,
   PopoverTrigger,
   PopoverContent,
 } from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
-import { X, CheckCircle, AlertCircle } from "lucide-react";
-import MailchimpSubscribe from "react-mailchimp-subscribe";
-import { useTranslation } from "react-i18next";
 
 interface NewsletterPopoverProps {
   isOpen?: boolean;

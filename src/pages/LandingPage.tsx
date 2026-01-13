@@ -1,10 +1,10 @@
 import { Building2Icon, TreePineIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { TopList, TopListItem } from "@/components/TopList";
 import { ContentBlock } from "@/components/layout/ContentBlock";
 import { Typewriter } from "@/components/ui/typewriter";
 import { useCompanies } from "@/hooks/companies/useCompanies";
 import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
-import { useTranslation } from "react-i18next";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { useLanguage } from "@/components/LanguageProvider";
 import {

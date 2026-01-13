@@ -1,12 +1,12 @@
-import { useAuth } from "@/contexts/AuthContext";
-import { socialLinks, partners } from "../../lib/constants/footer";
-import { Text } from "@/components/ui/text";
 import { Trans, useTranslation } from "react-i18next";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { useNavigate } from "react-router-dom";
 import { useReducedMotion } from "framer-motion";
-import { Marquee } from "../ui/marquee";
+import { Text } from "@/components/ui/text";
+import { useAuth } from "@/contexts/AuthContext";
 import { useScreenSize } from "@/hooks/useScreenSize";
+import { Marquee } from "../ui/marquee";
+import { socialLinks, partners } from "../../lib/constants/footer";
 
 function SocialLinks() {
   return (
@@ -124,17 +124,25 @@ export function Footer() {
           <a href="/privacy" className="hover:text-white transition-colors">
             {t("footer.privacyTerms")}
           </a>
-          <a href="/license" className="hover:text-white transition-colors">
+          <a
+            href="https://www.apache.org/licenses/LICENSE-2.0"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-white transition-colors"
+            aria-label="Apache License, Version 2.0"
+          >
             {t("footer.internationalLicense")}
           </a>
           <a
             href="https://creativecommons.org/licenses/by-sa/4.0/"
-            className="hover:text-white transition-colors"
             target="_blank"
             rel="noopener noreferrer"
+            className="hover:text-white transition-colors"
+            aria-label="Creative Commons Attribution-ShareAlike 4.0 International License"
           >
             {t("footer.ccBySa")}
           </a>
+
           {!token && (
             <a
               onClick={() => login()}

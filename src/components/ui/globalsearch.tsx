@@ -1,9 +1,9 @@
 import { useEffect, useState, useRef } from "react";
+import { SearchIcon, X } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Input } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
-import { SearchIcon, X } from "lucide-react";
 import { useScreenSize } from "@/hooks/useScreenSize";
-import { useTranslation } from "react-i18next";
 import { useCombinedData } from "@/hooks/useCombinedData";
 
 type SearchItem = {

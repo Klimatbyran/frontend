@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { useQuery } from "@tanstack/react-query";
 import { cn } from "@/lib/utils";
 import {
   formatPercentChange,
@@ -6,7 +7,6 @@ import {
 } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
 import { DetailStat } from "@/components/detail/DetailHeader";
-import { useQuery } from "@tanstack/react-query";
 import { getMunicipalityDetails } from "@/lib/api";
 import { Municipality } from "@/types/municipality";
 

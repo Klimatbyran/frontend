@@ -1,6 +1,6 @@
-import { generateSitemap } from "../src/lib/sitemap-generator.js";
 import path from "path";
 import { fileURLToPath } from "url";
+import { generateSitemap } from "../src/lib/sitemap-generator.js";
 
 // Get the directory name in ESM
 const __filename = fileURLToPath(import.meta.url);

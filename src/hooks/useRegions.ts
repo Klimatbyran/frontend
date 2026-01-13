@@ -1,9 +1,9 @@
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { t } from "i18next";
 import { getRegions } from "@/lib/api";
 import { KPIValue } from "@/types/rankings";
 import { Region } from "@/types/region";
-import { t } from "i18next";
 
 // API response type
 type ApiRegion = {

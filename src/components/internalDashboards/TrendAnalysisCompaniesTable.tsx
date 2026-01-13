@@ -1,3 +1,4 @@
+import { ExternalLink } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Text } from "@/components/ui/text";
 import {
@@ -7,13 +8,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ExternalLink } from "lucide-react";
 import { getTrendIcon } from "@/utils/ui/trends";
 import { SortableTableHeader } from "@/components/layout/SortableTableHeader";
 import type { TrendAnalysis } from "@/lib/calculations/trends/types";
+import type { RankedCompany, ReportingPeriodFromList } from "@/types/company";
 
 interface TrendAnalysisCompaniesTableProps {
-  companies: (TrendAnalysis & { company: any; scope3DataCount: number })[];
+  companies: (TrendAnalysis & {
+    company: RankedCompany;
+    scope3DataCount: number;
+  })[];
   sortBy: string;
   sortOrder: "asc" | "desc";
   onSort: (column: string) => void;
@@ -126,7 +130,7 @@ export function TrendAnalysisCompaniesTable({
                   {/* Total Data Points */}
                   <TableCell>
                     {analysis.company.reportingPeriods?.filter(
-                      (period: any) =>
+                      (period: ReportingPeriodFromList) =>
                         period.emissions &&
                         period.emissions.calculatedTotalEmissions !== null &&
                         period.emissions.calculatedTotalEmissions !== undefined,

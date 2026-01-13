@@ -1,10 +1,10 @@
+import React from "react";
+import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
 import {
   formatEmissionsAbsolute,
   formatPercent,
 } from "@/utils/formatting/localization";
-import React from "react";
-import { useTranslation } from "react-i18next";
 import { InfoTooltip } from "@/components/layout/InfoTooltip";
 
 interface ScopeCardProps {

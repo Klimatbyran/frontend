@@ -1,4 +1,6 @@
 import { Pen } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import {
   Select,
   SelectContent,
@@ -8,10 +10,8 @@ import {
 } from "@/components/ui/select";
 import { Text } from "@/components/ui/text";
 import type { CompanyDetails, ReportingPeriod } from "@/types/company";
-import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
 import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 import { getCompanySectorName } from "@/utils/data/industryGrouping";
 import { useLanguage } from "@/components/LanguageProvider";
@@ -21,16 +21,16 @@ import {
   formatPercentChange,
 } from "@/utils/formatting/localization";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
-import { OverviewStatistics } from "./OverviewStatistics";
-import { CompanyOverviewTooltip } from "./CompanyOverviewTooltip";
-import { CompanyDescription } from "./CompanyDescription";
-import { FinancialsTooltip } from "./FinancialsTooltip";
-import { EmissionsAssessmentButton } from "../emissions-assessment/EmissionsAssessmentButton";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { getCompanyDescription } from "@/utils/business/company";
 import { calculateTrendline } from "@/lib/calculations/trends/analysis";
 import { calculateMeetsParis } from "@/lib/calculations/trends/meetsParis";
+import { EmissionsAssessmentButton } from "../emissions-assessment/EmissionsAssessmentButton";
 import { OverviewStat } from "./OverviewStat";
+import { FinancialsTooltip } from "./FinancialsTooltip";
+import { CompanyDescription } from "./CompanyDescription";
+import { CompanyOverviewTooltip } from "./CompanyOverviewTooltip";
+import { OverviewStatistics } from "./OverviewStatistics";
 
 interface CompanyOverviewProps {
   company: CompanyDetails;

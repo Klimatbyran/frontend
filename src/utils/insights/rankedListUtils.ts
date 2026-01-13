@@ -13,8 +13,8 @@
 // 3. Single import location makes it easy to find and maintain all insights logic
 // 4. Avoids over-complicating the codebase with excessive file splitting
 
-import { EntityWithKPIs, KPIValue } from "@/types/rankings";
 import { t } from "i18next";
+import { EntityWithKPIs, KPIValue } from "@/types/rankings";
 
 export interface EntityStatistics<T> {
   validData: T[];
@@ -132,7 +132,9 @@ export function calculateEntityStatistics<
  * Create source links from KPI
  * Accepts any KPIValue regardless of entity type
  */
-export function createSourceLinks(selectedKPI: KPIValue<EntityWithKPIs>) {
+export function createSourceLinks<T = EntityWithKPIs>(
+  selectedKPI: KPIValue<T>,
+) {
   return (
     selectedKPI.sourceUrls?.map((url, i) => ({
       url,

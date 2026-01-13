@@ -1,21 +1,21 @@
 import { t } from "i18next";
 import { getSortedEntityKPIValues } from "@/utils/data/sorting";
-import KPIDetailsPanel from "../ranked/KPIDetailsPanel";
-import InsightsList from "../ranked/InsightsList";
 import { Region } from "@/types/region";
 import { KPIValue } from "@/types/rankings";
 import {
   calculateEntityStatistics,
   createSourceLinks,
 } from "@/utils/insights/rankedListUtils";
+import InsightsList from "../ranked/InsightsList";
+import KPIDetailsPanel from "../ranked/KPIDetailsPanel";
 
 interface InsightsPanelProps {
-  regionData: Region[];
+  regionsData: Region[];
   selectedKPI: KPIValue<Region>;
 }
 
 function RegionalInsightsPanel({
-  regionData,
+  regionsData: regionData,
   selectedKPI,
 }: InsightsPanelProps) {
   if (!regionData?.length) {
@@ -88,7 +88,7 @@ function RegionalInsightsPanel({
               title={t("municipalities.list.insights.improvement.title")}
               entities={bottomMunicipalities}
               totalCount={regionData.length}
-              isBottomRanking={true}
+              isBottomRanking
               dataPointKey={selectedKPI.key as keyof Region}
               unit={selectedKPI.unit}
               nullValues={selectedKPI.nullValues}

@@ -1,9 +1,9 @@
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { useState } from "react";
 import { useMunicipalityDetails } from "@/hooks/municipalities/useMunicipalityDetails";
 import { useMunicipalityDetailHeaderStats } from "@/hooks/municipalities/useMunicipalityDetails";
 import { transformEmissionsData } from "@/types/municipality";
-import { useTranslation } from "react-i18next";
-import { useState } from "react";
 import {
   formatEmissionsAbsolute,
   formatPercent,

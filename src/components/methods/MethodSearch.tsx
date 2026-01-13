@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useEffect, useRef } from "react";
-import { searchMethods } from "@/lib/methods/methodologyData";
 import { X } from "lucide-react";
+import { searchMethods } from "@/lib/methods/methodologyData";
 import { Input } from "../ui/input";
 
 interface MethodologySearchProps {

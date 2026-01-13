@@ -7,8 +7,8 @@ import { createFixedRangeGradient } from "@/utils/ui/colorGradients";
 import { getBestUnit } from "@/utils/data/unitScaling";
 import { calculateCapThreshold } from "@/utils/data/capping";
 import { useScreenSize } from "@/hooks/useScreenSize";
-import { BeeswarmChart } from "./shared/BeeswarmChart";
 import type { ColorFunction } from "@/types/visualizations";
+import { BeeswarmChart } from "./shared/BeeswarmChart";
 
 interface MeetsParisVisualizationProps {
   companies: CompanyWithKPIs[];

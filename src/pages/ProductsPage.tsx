@@ -7,10 +7,10 @@ import {
   Building2,
   MapPin,
 } from "lucide-react";
-import { PageHeader } from "@/components/layout/PageHeader";
 import { useTranslation } from "react-i18next";
-import { ProductCard } from "@/components/products/ProductCard";
 import { useState } from "react";
+import { PageHeader } from "@/components/layout/PageHeader";
+import { ProductCard } from "@/components/products/ProductCard";
 import { RequestAccessModal } from "@/components/products/RequestAccessModal";
 import { PageSEO } from "@/components/SEO/PageSEO";
 
@@ -191,7 +191,7 @@ function ProductsPage() {
                 description={t(
                   "productsPage.dataOverview.corporate.description",
                 )}
-                isFirst={true}
+                isFirst
               />
               <DataCategory
                 icon={<FileText className="h-5 w-5 text-grey" />}
@@ -204,7 +204,7 @@ function ProductsPage() {
                 description={t(
                   "productsPage.dataOverview.municipality.description",
                 )}
-                isLast={true}
+                isLast
               />
             </div>
           </div>

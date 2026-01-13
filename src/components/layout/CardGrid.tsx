@@ -1,7 +1,7 @@
 import { forwardRef, ReactNode, useEffect, useRef } from "react";
 import { VirtuosoGrid, Virtuoso } from "react-virtuoso";
-import { useScreenSize } from "@/hooks/useScreenSize";
 import { useLocation } from "react-router-dom";
+import { useScreenSize } from "@/hooks/useScreenSize";
 
 const gridComponents = {
   List: forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
@@ -48,7 +48,7 @@ export function CardGrid<T>({ items, itemContent }: CardGridProps<T>) {
       <Virtuoso
         key={gridKey}
         data={items}
-        useWindowScroll={true}
+        useWindowScroll
         style={{ height: "calc(100vh - 120px)" }}
         itemContent={(_index, item) => (
           <div className="mb-6">{itemContent(item)}</div>

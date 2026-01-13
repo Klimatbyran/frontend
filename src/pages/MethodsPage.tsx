@@ -1,13 +1,13 @@
 import { useTranslation } from "react-i18next";
 import { useEffect, useState, useRef } from "react";
+import { Search } from "lucide-react";
+import { useLocation } from "react-router-dom";
 import { MethodologyNavigation } from "@/components/methods/MethodNavigation";
 import { MethodologyContent } from "@/components/methods/MethodContent";
 import { MethodologySearch } from "@/components/methods/MethodSearch";
-import { Search } from "lucide-react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { useScreenSize } from "@/hooks/useScreenSize";
-import { useLocation } from "react-router-dom";
 import { getAllMethods } from "@/lib/methods/methodologyData";
 
 export function MethodsPage() {

@@ -1,5 +1,6 @@
-import { cn } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
+import { isMobile } from "react-device-detect";
+import { cn } from "@/lib/utils";
 import {
   Tooltip,
   TooltipContent,
@@ -7,7 +8,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
-import { isMobile } from "react-device-detect";
 import { useMobileModal } from "@/hooks/useMobileModal";
 import { MobileModal } from "@/components/layout/MobileModal";
 

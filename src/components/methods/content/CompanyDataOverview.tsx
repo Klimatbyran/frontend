@@ -1,9 +1,7 @@
 import { useTranslation } from "react-i18next";
+import i18next from "i18next";
 import { LinkButton } from "@/components/layout/LinkButton";
 import { MethodSection } from "@/components/layout/MethodSection";
-import i18next from "i18next";
-
-
 
 export const CompanyDataOverviewContent = () => {
   const { t } = useTranslation();

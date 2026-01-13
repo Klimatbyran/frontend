@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { Map, List } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
-
-import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
 import { useTranslation } from "react-i18next";
+import { FeatureCollection } from "geojson";
+import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { KPIDataSelector } from "@/components/ranked/KPIDataSelector";
 import InsightsPanel from "@/components/municipalities/rankedList/MunicipalityInsightsPanel";
@@ -11,7 +11,6 @@ import MapOfSweden from "@/components/maps/SwedenMap";
 import municipalityGeoJson from "@/data/municipalityGeo.json";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import { useMunicipalityKPIs } from "@/hooks/municipalities/useMunicipalityKPIs";
-import { FeatureCollection } from "geojson";
 import { RankedListItem } from "@/types/rankings";
 import { createEntityClickHandler } from "@/utils/routing";
 import { MunicipalityRankedList } from "@/components/municipalities/MunicipalityRankedList";
@@ -67,7 +66,7 @@ export function MunicipalitiesRankedPage() {
   );
 
   // Create an adapter for MapOfSweden
-  const handleMunicipalityNameClick = (name: string) => {
+  const handleMunicipalityAreaClick = (name: string) => {
     const municipality = municipalities.find((m) => m.name === name);
     if (municipality) {
       handleMunicipalityClick(municipality);
@@ -133,7 +132,7 @@ export function MunicipalitiesRankedPage() {
             return { ...rest, id: m.name };
           })}
           selectedKPI={selectedKPI}
-          onAreaClick={handleMunicipalityNameClick}
+          onAreaClick={handleMunicipalityAreaClick}
         />
       </div>
     ) : (
@@ -157,7 +156,7 @@ export function MunicipalitiesRankedPage() {
             map: t("municipalities.list.viewToggle.showMap"),
             list: t("municipalities.list.viewToggle.showList"),
           }}
-          showTitles={true}
+          showTitles
           icons={{
             map: <Map className="w-4 h-4" />,
             list: <List className="w-4 h-4" />,
