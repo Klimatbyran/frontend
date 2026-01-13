@@ -18,8 +18,6 @@ export interface RankedListProps<T extends Record<string, unknown>> {
   ) => React.ReactNode;
   className?: string;
   searchPlaceholder?: string;
-  entityType?: "municipality" | "region";
-  viewMode?: string;
 }
 
 export function RankedList<T extends Record<string, unknown>>({
