@@ -3,13 +3,13 @@ import {
   CompanyWithKPIs,
   CompanyKPIValue,
 } from "@/hooks/companies/useCompanyKPIs";
-import InsightsList from "../../ranked/InsightsList";
-import KPIDetailsPanel from "../../ranked/KPIDetailsPanel";
 import { getSortedEntityKPIValues } from "@/utils/data/sorting";
 import {
   calculateEntityStatistics,
   createSourceLinks,
 } from "@/utils/insights/rankedListUtils";
+import KPIDetailsPanel from "../../ranked/KPIDetailsPanel";
+import InsightsList from "../../ranked/InsightsList";
 
 interface InsightsPanelProps {
   companyData: CompanyWithKPIs[];
@@ -100,7 +100,7 @@ function CompanyInsightsPanel({
               title={t("companies.list.insights.improvement.title")}
               entities={bottomCompanies}
               totalCount={companyData.length}
-              isBottomRanking={true}
+              isBottomRanking
               dataPointKey={selectedKPI.key}
               unit={selectedKPI.unit}
               nullValues={selectedKPI.nullValues}

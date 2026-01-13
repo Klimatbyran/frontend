@@ -1,7 +1,7 @@
+import { t } from "i18next";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { Municipality } from "@/types/municipality";
 import { createEntityStructuredData } from "@/utils/detail/seo";
-import { t } from "i18next";
 
 export function MunicipalityDetailSEO({
   id,

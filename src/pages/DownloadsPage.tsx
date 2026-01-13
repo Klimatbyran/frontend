@@ -1,12 +1,12 @@
 import { FileSpreadsheet, FileText } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useState, useEffect } from "react";
+import type React from "react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { DownloadCard } from "@/components/products/DownloadCard";
 import { DownloadInfoSection } from "@/components/products/DownloadInfoSection";
 import { DownloadControls } from "@/components/products/DownloadControls";
-import { useState, useEffect } from "react";
 import { getReportingYears } from "@/lib/api";
-import type React from "react";
 
 interface InfoItem {
   title: string;

@@ -1,9 +1,9 @@
 import Markdown from "react-markdown";
 import remarkBreaks from "remark-breaks";
-import { DataGuideItemId } from "./items";
 import { useTranslation } from "react-i18next";
-import { cn } from "@/lib/utils";
 import { ArrowUpRight } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { DataGuideItemId } from "./items";
 
 type DataGuideMarkdownProps = {
   item: DataGuideItemId;
@@ -20,26 +20,17 @@ export const DataGuideMarkdown = ({
       remarkPlugins={[remarkBreaks]}
       components={{
         h1: ({ node, children, ...props }) => (
-          <h1
-            {...props}
-            className="text-xl font-semibold mt-6 mb-3"
-          >
+          <h1 {...props} className="text-xl font-semibold mt-6 mb-3">
             {children}
           </h1>
         ),
         h2: ({ node, children, ...props }) => (
-          <h2
-            {...props}
-            className="text-lg font-semibold mt-6 mb-2"
-          >
+          <h2 {...props} className="text-lg font-semibold mt-6 mb-2">
             {children}
           </h2>
         ),
         h3: ({ node, children, ...props }) => (
-          <h3
-            {...props}
-            className="text-base font-semibold mt-4 mb-2"
-          >
+          <h3 {...props} className="text-base font-semibold mt-4 mb-2">
             {children}
           </h3>
         ),

@@ -1,8 +1,8 @@
 import { CalendarDays, Clock, Globe2 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { Text } from "@/components/ui/text";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
+import { Text } from "@/components/ui/text";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useBlogPosts } from "@/hooks/useBlogPosts";
 import { ContentGridPage } from "@/components/layout/ContentGridPage";
@@ -74,7 +74,9 @@ export function InsightsPage() {
               </div>
               <div className="flex items-center gap-2 text-grey text-sm">
                 <Globe2 className="w-4 h-4" />
-                <span aria-label="Language">{t("language." + featuredPost.language)}</span>
+                <span aria-label="Language">
+                  {t("language." + featuredPost.language)}
+                </span>
               </div>
             </div>
             <Text

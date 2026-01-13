@@ -1,16 +1,15 @@
 import { useState } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { EmissionsBreakdown } from "./EmissionsBreakdown";
-
-import { Text } from "@/components/ui/text";
 import { useTranslation } from "react-i18next";
-import PieChartView from "../CompanyPieChartView";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Text } from "@/components/ui/text";
 import { useResponsiveChartSize } from "@/hooks/useResponsiveChartSize";
 import { useCategoryMetadata } from "@/hooks/companies/useCategories";
-import Scope3PieLegend from "./Scope3PieLegend";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
 import { YearSelector } from "@/components/layout/YearSelector";
 import { ProgressiveDataGuide } from "@/data-guide/ProgressiveDataGuide";
+import PieChartView from "../CompanyPieChartView";
+import Scope3PieLegend from "./Scope3PieLegend";
+import { EmissionsBreakdown } from "./EmissionsBreakdown";
 
 interface Scope3DataProps {
   emissions: {
@@ -110,7 +109,7 @@ export function Scope3Data({
               onYearChange={setSelectedYear}
               availableYears={availableYears}
               translateNamespace="companies.scope3Data"
-              includeLatestOption={true}
+              includeLatestOption
             />
           )}
         </div>
@@ -127,7 +126,7 @@ export function Scope3Data({
                   total: selectedScope3Total,
                 }))}
                 size={size}
-                filterable={true}
+                filterable
                 filteredCategories={filteredCategories}
                 onFilteredCategoriesChange={setFilteredCategories}
                 percentageLabel={t("companies.scope3Data.ofTotal")}
@@ -158,7 +157,7 @@ export function Scope3Data({
             }}
             year={displayYear}
             className="bg-transparent p-0"
-            showOnlyScope3={true}
+            showOnlyScope3
           />
         </TabsContent>
       </Tabs>

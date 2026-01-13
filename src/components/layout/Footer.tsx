@@ -1,12 +1,12 @@
-import { useAuth } from "@/contexts/AuthContext";
-import { socialLinks, partners } from "../../lib/constants/footer";
-import { Text } from "@/components/ui/text";
 import { Trans, useTranslation } from "react-i18next";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { useNavigate } from "react-router-dom";
 import { useReducedMotion } from "framer-motion";
-import { Marquee } from "../ui/marquee";
+import { Text } from "@/components/ui/text";
+import { useAuth } from "@/contexts/AuthContext";
 import { useScreenSize } from "@/hooks/useScreenSize";
+import { Marquee } from "../ui/marquee";
+import { socialLinks, partners } from "../../lib/constants/footer";
 
 function SocialLinks() {
   return (
@@ -140,7 +140,7 @@ export function Footer() {
             className="hover:text-white transition-colors"
             aria-label="Creative Commons Attribution-ShareAlike 4.0 International License"
           >
-           { t("footer.ccBySa")}
+            {t("footer.ccBySa")}
           </a>
 
           {!token && (

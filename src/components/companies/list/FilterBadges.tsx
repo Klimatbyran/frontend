@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
-import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 interface FilterBadge {
   type: "filter" | "sort";

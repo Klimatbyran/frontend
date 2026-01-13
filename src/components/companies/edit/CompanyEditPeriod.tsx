@@ -1,10 +1,10 @@
+import { useTranslation } from "react-i18next";
+import type { ReportingPeriod } from "@/types/company";
 import { CompanyEditRow } from "./CompanyEditRow";
 import {
   CompanyEditInputField,
   CompanyYearHeaderField,
 } from "./CompanyEditField";
-import { useTranslation } from "react-i18next";
-import type { ReportingPeriod } from "@/types/company";
 
 interface CompanyEditPeriodProps {
   periods: ReportingPeriod[];

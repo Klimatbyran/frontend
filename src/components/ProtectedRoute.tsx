@@ -14,9 +14,7 @@ const ProtectedRoute = () => {
   };
 
   if (!token) {
-    return (
-      <AuthExpiredModal isOpen={true} onClose={handleCancel} onLogin={login} />
-    );
+    return <AuthExpiredModal isOpen onClose={handleCancel} onLogin={login} />;
   }
 
   return <Outlet />;

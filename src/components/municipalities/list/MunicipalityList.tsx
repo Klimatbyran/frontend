@@ -1,12 +1,12 @@
+import { useTranslation } from "react-i18next";
+import { useMemo } from "react";
 import { CardGrid } from "@/components/layout/CardGrid";
 import { ListCard } from "@/components/layout/ListCard";
-import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
 import {
   formatEmissionsAbsolute,
   formatPercentChange,
 } from "@/utils/formatting/localization";
-import { useMemo } from "react";
 import type {
   MeetsParisFilter,
   Municipality,
@@ -17,7 +17,7 @@ import { SortDirection } from "@/components/explore/SortPopover";
 interface MunicipalityListProps {
   municipalities: Municipality[];
   selectedRegion: string;
-  meetsParisFilter: MeetsParisFilter
+  meetsParisFilter: MeetsParisFilter;
   searchQuery: string;
   sortBy: MunicipalitySortBy;
   sortDirection: SortDirection;
@@ -37,9 +37,10 @@ export function MunicipalityList({
       return false;
     }
 
-    if ((meetsParisFilter === "yes" && municipality.meetsParisGoal !== true) ||
-      (meetsParisFilter === "no" && municipality.meetsParisGoal !== false)){
-        
+    if (
+      (meetsParisFilter === "yes" && municipality.meetsParisGoal !== true) ||
+      (meetsParisFilter === "no" && municipality.meetsParisGoal !== false)
+    ) {
       return false;
     }
 
@@ -70,9 +71,17 @@ export function MunicipalityList({
       case "name":
         return directionMultiplier * a.name.localeCompare(b.name);
       case "emissions":
-        return directionMultiplier * ((a.emissions?.at(-1)?.value ?? 0) - (b.emissions?.at(-1)?.value ?? 0));
+        return (
+          directionMultiplier *
+          ((a.emissions?.at(-1)?.value ?? 0) -
+            (b.emissions?.at(-1)?.value ?? 0))
+        );
       case "emissionsChangeRate":
-        return directionMultiplier * (a.historicalEmissionChangePercent - b.historicalEmissionChangePercent);
+        return (
+          directionMultiplier *
+          (a.historicalEmissionChangePercent -
+            b.historicalEmissionChangePercent)
+        );
       default:
         return 0;
     }

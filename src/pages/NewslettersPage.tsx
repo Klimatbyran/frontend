@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
-import { PageHeader } from "@/components/layout/PageHeader";
 import { useState, useEffect } from "react";
+import { PageHeader } from "@/components/layout/PageHeader";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { NewsletterNavigation } from "@/components/newsletters/NewsletterNavigation";
 import { NewsletterType } from "@/lib/newsletterArchive/newsletterData";

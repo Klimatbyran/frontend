@@ -1,10 +1,10 @@
 import { Pen, X } from "lucide-react";
-import { Text } from "@/components/ui/text";
-import type { CompanyDetails } from "@/types/company";
 import Select, { MultiValue, ActionMeta } from "react-select";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import type { CompanyDetails } from "@/types/company";
+import { Text } from "@/components/ui/text";
 
 interface CompanyOverviewProps {
   company: CompanyDetails;

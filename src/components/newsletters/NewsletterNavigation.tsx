@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
-import { NewsletterType } from "@/lib/newsletterArchive/newsletterData";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { NewsletterType } from "@/lib/newsletterArchive/newsletterData";
 import itemPagination from "@/utils/itemPagination";
+import { Page } from "@/utils/itemPagination";
 import {
   Pagination,
   PaginationContent,
@@ -9,8 +11,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "../ui/pagination";
-import { Page } from "@/utils/itemPagination";
-import { useTranslation } from "react-i18next";
 
 interface NewsletterNavigationProps {
   newsletterList: Array<NewsletterType>;

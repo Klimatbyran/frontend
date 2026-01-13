@@ -1,10 +1,10 @@
 import { SearchIcon } from "lucide-react";
-import { SearchDialog } from "./SearchDialog";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { CombinedData } from "@/hooks/useCombinedData";
 import { cn } from "@/lib/utils";
-import { useTranslation } from "react-i18next";
+import { SearchDialog } from "./SearchDialog";
 
 type HeaderSearchButtonProps = {
   className?: string;

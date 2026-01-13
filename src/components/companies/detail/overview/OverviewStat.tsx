@@ -1,7 +1,7 @@
+import { ReactNode } from "react";
 import { Text } from "@/components/ui/text";
 import { AiIcon } from "@/components/ui/ai-icon";
 import { cn } from "@/lib/utils";
-import { ReactNode } from "react";
 import { InfoTooltip } from "@/components/layout/InfoTooltip";
 
 interface OverviewStatProps {

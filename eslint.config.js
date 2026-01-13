@@ -21,6 +21,17 @@ export default tseslint.config(
       "react-refresh": reactRefresh,
       import: importPlugin,
     },
+    settings: {
+      "import/resolver": {
+        typescript: {
+          alwaysTryTypes: true,
+          project: "./tsconfig.app.json",
+        },
+        node: {
+          extensions: [".js", ".jsx", ".ts", ".tsx"],
+        },
+      },
+    },
     rules: {
       ...reactHooks.configs.recommended.rules,
       "react-refresh/only-export-components": [
@@ -60,8 +71,24 @@ export default tseslint.config(
       "no-magic-numbers": [
         "warn",
         {
-          ignore: [0, 1, -1],
+          ignore: [
+            0,
+            1,
+            -1,
+            2,
+            3,
+            4,
+            5,
+            10,
+            100,
+            200, // HTTP status codes (OK)
+            1000,
+            2025,
+            2050, // Common year references
+          ],
           ignoreArrayIndexes: true,
+          ignoreDefaultValues: true,
+          ignoreEnums: true,
           enforceConst: true,
           detectObjects: false,
         },
@@ -85,11 +112,42 @@ export default tseslint.config(
             "sibling",
             "index",
           ],
-          "newlines-between": "always",
+          "newlines-between": "never",
         },
       ],
       "import/no-unresolved": "error",
       "import/no-extraneous-dependencies": "warn",
+    },
+  },
+  // Disable magic numbers rule for utils files (they often contain intentional constants)
+  {
+    files: ["**/utils/**/*.{ts,tsx}", "**/lib/utils/**/*.{ts,tsx}"],
+    rules: {
+      "no-magic-numbers": "off",
+    },
+  },
+  // Disable magic numbers rule for API files (API responses often contain hard-coded values)
+  {
+    files: [
+      "**/api-types.ts",
+      "**/api.ts",
+      "**/api/**/*.{ts,tsx}",
+      "**/lib/api*.ts",
+    ],
+    rules: {
+      "no-magic-numbers": "off",
+    },
+  },
+  // Increase function line limit for component files (React components are often longer)
+  {
+    files: [
+      "**/components/**/*.{ts,tsx}",
+      "**/pages/**/*.{ts,tsx}",
+      "**/*Page.tsx",
+      "**/*Component.tsx",
+    ],
+    rules: {
+      "max-lines-per-function": ["warn", 100],
     },
   },
 );

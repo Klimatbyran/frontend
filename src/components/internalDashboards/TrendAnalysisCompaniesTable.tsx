@@ -1,3 +1,4 @@
+import { ExternalLink } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Text } from "@/components/ui/text";
 import {
@@ -7,7 +8,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ExternalLink } from "lucide-react";
 import { getTrendIcon } from "@/utils/ui/trends";
 import { SortableTableHeader } from "@/components/layout/SortableTableHeader";
 import type { TrendAnalysis } from "@/lib/calculations/trends/types";

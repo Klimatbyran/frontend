@@ -1,6 +1,6 @@
 import { t } from "i18next";
-import { DataSelector } from "@/components/layout/DataSelector";
 import { BarChart3 } from "lucide-react";
+import { DataSelector } from "@/components/layout/DataSelector";
 import { KPIValue } from "@/types/rankings";
 
 interface KPIDataSelectorProps<T> {

@@ -2,12 +2,12 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
-import { DataGuideItemId } from "./items";
 import {
   Collapsible,
   CollapsibleTrigger,
   CollapsibleContent,
 } from "@/components/ui/collapsible";
+import { DataGuideItemId } from "./items";
 import { DataGuideMarkdown } from "./DataGuideMarkdown";
 
 interface ProgressiveDataGuideMobileProps {

@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from "recharts";
-import PieTooltip from "../graphs/tooltips/PieTooltip";
 import { useScreenSize } from "@/hooks/useScreenSize";
+import PieTooltip from "../graphs/tooltips/PieTooltip";
 
 interface PieChartData {
   name: string;

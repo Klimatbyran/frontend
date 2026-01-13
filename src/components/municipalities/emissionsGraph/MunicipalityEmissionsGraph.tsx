@@ -1,8 +1,8 @@
 import { FC } from "react";
+import { useTranslation } from "react-i18next";
+import { SectorEmissions, DataPoint } from "@/types/municipality";
 import { OverviewChart } from "./OverviewChart";
 import { SectorsChart } from "./SectorsChart";
-import { SectorEmissions, DataPoint } from "@/types/municipality";
-import { useTranslation } from "react-i18next";
 
 type DataView = "overview" | "sectors";
 

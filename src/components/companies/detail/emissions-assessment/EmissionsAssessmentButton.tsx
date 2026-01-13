@@ -1,10 +1,10 @@
 import { AlertTriangle } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useEmissionsAssessment } from "@/hooks/companies/useEmissionsAssessment";
-import { YearSelectionModal } from "./YearSelectionModal";
-import { EmissionsAssessmentDialog } from "./EmissionsAssessmentDialog";
+import { Button } from "@/components/ui/button";
 import type { ReportingPeriod } from "@/types/company";
+import { EmissionsAssessmentDialog } from "./EmissionsAssessmentDialog";
+import { YearSelectionModal } from "./YearSelectionModal";
 
 interface EmissionsAssessmentButtonProps {
   wikidataId: string;

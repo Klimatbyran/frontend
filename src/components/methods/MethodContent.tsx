@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { useState, useEffect, forwardRef } from "react";
+import { RelatableNumbersContent } from "@/components/methods/content/relatableNumbers";
 import { getMethodById } from "@/lib/methods/methodologyData";
 import { SourcesContent } from "./content/SourcesContent";
 import { CompanyDataOverviewContent } from "./content/CompanyDataOverview";
@@ -12,7 +13,6 @@ import { CalculationsContent } from "./content/CalculationsContent";
 import { CarbonLawContent } from "./content/CarbonLaw";
 import { MunicipalityDataOverviewContent } from "./content/MunicipalityDataOverview";
 import { MunicipalityKPIsContent } from "./content/MunicipalityKPIsContent";
-import { RelatableNumbersContent } from "@/components/methods/content/relatableNumbers";
 import { ParisAlignmentMethodContent } from "./content/OnTrackForParisContent";
 import { TrendlineContent } from "./content/TrendLineMethodContent";
 import { InterpretingOnTrackContent } from "./content/InprepretingOnTrackContent";

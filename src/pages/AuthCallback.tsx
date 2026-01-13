@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/contexts/ToastContext";
-import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
 
 export const AuthCallback = () => {

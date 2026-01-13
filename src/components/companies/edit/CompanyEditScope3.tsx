@@ -1,12 +1,12 @@
-import { CompanyEditRow } from "./CompanyEditRow";
-import { CompanyEditInputField, CompanyEmptyField } from "./CompanyEditField";
-import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useTranslation } from "react-i18next";
+import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { isVerified } from "@/utils/business/verification";
 import type {
   CompanyEditComponentProps,
   ReportingPeriod,
 } from "@/types/company";
+import { CompanyEditInputField, CompanyEmptyField } from "./CompanyEditField";
+import { CompanyEditRow } from "./CompanyEditRow";
 
 interface Scope3CategoryWithMetadata {
   category: number;

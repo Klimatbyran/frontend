@@ -1,9 +1,9 @@
+import { t } from "i18next";
+import { ArrowUpRight } from "lucide-react";
 import { AiIcon } from "@/components/ui/ai-icon";
 import { Text } from "@/components/ui/text";
 import { ReportingPeriod } from "@/types/company";
 import { localizeUnit } from "@/utils/formatting/localization";
-import { t } from "i18next";
-import { ArrowUpRight } from "lucide-react";
 
 interface OverviewStatisticProps {
   selectedPeriod: ReportingPeriod;

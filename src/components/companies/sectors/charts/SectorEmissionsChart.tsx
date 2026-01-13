@@ -10,19 +10,19 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import type { LegendPayload } from "recharts";
+import { useTranslation } from "react-i18next";
 import { sectorColors, getCompanyColors } from "@/lib/constants/companyColors";
 import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 import { RankedCompany } from "@/types/company";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { useChartData } from "@/hooks/companies/useChartData";
-import ChartHeader from "./ChartHeader";
-import { useTranslation } from "react-i18next";
-import PieChartView from "../../CompanyPieChartView";
 import { useResponsiveChartSize } from "@/hooks/useResponsiveChartSize";
 import { cn } from "@/lib/utils";
-import SectorPieLegend from "./SectorPieLegend";
-import CustomTooltip from "../../tooltips/CustomTooltip";
 import { formatWithBestUnit } from "@/utils/data/unitScaling";
+import CustomTooltip from "../../tooltips/CustomTooltip";
+import PieChartView from "../../CompanyPieChartView";
+import SectorPieLegend from "./SectorPieLegend";
+import ChartHeader from "./ChartHeader";
 
 interface EmissionsChartProps {
   companies: RankedCompany[];
