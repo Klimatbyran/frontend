@@ -2,10 +2,10 @@ import { BarChart3, Menu, X, Mail } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { useState, useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { cn } from "@/lib/utils";
 import useHeaderTitle from "@/hooks/useHeaderTitle";
 import { useAuth } from "@/contexts/AuthContext";
 import { localizedPath } from "@/utils/routing";
-import { cn } from "@/lib/utils";
 import { stagingFeatureFlagEnabled } from "@/utils/ui/featureFlags";
 import { NewsletterPopover } from "../newsletters/NewsletterPopover";
 import { useLanguage } from "../LanguageProvider";
@@ -37,32 +37,17 @@ interface NavLink {
 
 const NAV_LINKS: NavLink[] = [
   {
-    label: "header.companies",
-    icon: <BarChart3 className="w-4 h-4" aria-hidden="true" />,
-    path: `/companies`,
-    sublinks: [
-      {
-        label: "header.companiesRanked",
-        path: `/companies/ranked`,
-        onlyShowOnStaging: true,
-      },
-      {
-        label: "header.companiesSectors",
-        path: `/companies/sectors`,
-      },
-      {
-        label: "header.companiesExplore",
-        path: `/companies`,
-      },
-    ],
-  },
-  {
-    label: "header.municipalities",
+    label: "header.data",
     icon: <BarChart3 className="w-4 h-4" aria-hidden="true" />,
     path: `/municipalities`,
     sublinks: [
       {
-        label: "header.municipalitiesRanked",
+        label: "header.companies",
+        path: `/companies`,
+        onlyShowOnStaging: true,
+      },
+      {
+        label: "header.municipalities",
         path: `/municipalities`,
       },
       {
@@ -71,14 +56,23 @@ const NAV_LINKS: NavLink[] = [
         onlyShowOnStaging: true,
       },
       {
+        label: "header.companiesSectors",
+        path: `/companies/sectors`,
+      },
+      {
         label: "header.municipalitiesExplore",
         path: `/municipalities/explore`,
       },
     ],
   },
   {
-    label: "header.products",
-    path: `/products`,
+    path: `/articles`,
+    label: "header.insights",
+    sublinks: [
+      { label: "header.reports", path: `/reports` },
+      { label: "header.articles", path: `/articles` },
+      { label: "header.learnMore", path: `/learn-more` },
+    ],
   },
   {
     label: "header.about",
@@ -101,13 +95,8 @@ const NAV_LINKS: NavLink[] = [
     ],
   },
   {
-    path: `/articles`,
-    label: "header.insights",
-    sublinks: [
-      { label: "header.reports", path: `/reports` },
-      { label: "header.articles", path: `/articles` },
-      { label: "header.learnMore", path: `/learn-more` },
-    ],
+    label: "header.products",
+    path: `/products`,
   },
 ];
 
