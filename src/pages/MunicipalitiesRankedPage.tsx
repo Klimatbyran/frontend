@@ -118,6 +118,7 @@ export function MunicipalitiesRankedPage() {
     <MunicipalityRankedList
       municipalityEntities={municipalityEntities}
       selectedKPI={selectedKPI}
+      onItemClick={handleMunicipalityClick}
     />
   );
 

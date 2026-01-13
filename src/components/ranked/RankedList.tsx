@@ -167,7 +167,7 @@ export function RankedList<T extends Record<string, unknown>>({
         </div>
         {selectedDataPoint.unit && (
           <div className="text-grey flex items-center pl-12 pt-4 -mb-2 w-full justify-between">
-            <span>{t("municipalities.name")}</span>
+            <span>{t("rankedList.name")}</span>
             <span>{selectedDataPoint.unit}</span>
           </div>
         )}
@@ -178,7 +178,7 @@ export function RankedList<T extends Record<string, unknown>>({
             const originalRank = getOriginalRank(item);
             return renderItem
               ? renderItem(item, index, startIndex, originalRank)
-              : defaultRenderItem(item, index, startIndex);
+              : defaultRenderItem(item, index);
           })}
           {/* Add empty placeholder rows to maintain height */}
           {paginatedData.length < itemsPerPage &&
