@@ -60,7 +60,9 @@ const ScopeCard: React.FC<ScopeCardProps> = ({
         <h3 className="text-lg font-light text-white">{title}</h3>
         {showCategoryInfo && (
           <InfoTooltip
-            ariaLabel={t("companyDetailPage.sectorGraphs.scope3CategoryInfoLabel")}
+            ariaLabel={t(
+              "companyDetailPage.sectorGraphs.scope3CategoryInfoLabel",
+            )}
             className="w-4 h-4 text-grey"
           >
             <p>{t("companyDetailPage.sectorGraphs.scope3CategoryInfo")}</p>

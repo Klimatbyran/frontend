@@ -231,7 +231,9 @@ const ScopeModal: React.FC<ScopeModalProps> = ({
                                 company.emissions / sector.total,
                                 currentLanguage,
                               )}{" "}
-                              {t("companyDetailPage.sectorGraphs.percentOfSector")}
+                              {t(
+                                "companyDetailPage.sectorGraphs.percentOfSector",
+                              )}
                             </div>
                           </div>
                         </div>
