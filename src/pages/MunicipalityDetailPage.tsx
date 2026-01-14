@@ -93,6 +93,7 @@ export function MunicipalityDetailPage() {
           subtitle={municipality.region}
           logoUrl={municipality.logoUrl}
           politicalRule={municipality.politicalRule}
+          politicalKSO={municipality.politicalKSO}
           helpItems={[
             "municipalityTotalEmissions",
             "detailWhyDataDelay",
