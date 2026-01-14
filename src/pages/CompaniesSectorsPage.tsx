@@ -39,12 +39,12 @@ export function CompaniesSectorsPage() {
       ? [
           {
             type: "filter" as const,
-            label: `${t("companiesPage.filteringOptions.meetsParis")}: ${
+            label: `${t("companiesSectorPage.filteringOptions.meetsParis")}: ${
               meetsParisFilter === "yes"
-                ? t("companiesPage.filteringOptions.meetsParisYes")
+                ? t("companiesSectorPage.filteringOptions.meetsParisYes")
                 : meetsParisFilter === "no"
-                  ? t("companiesPage.filteringOptions.meetsParisNo")
-                  : t("companiesPage.filteringOptions.meetsParisUnknown")
+                  ? t("companiesSectorPage.filteringOptions.meetsParisNo")
+                  : t("companiesSectorPage.filteringOptions.meetsParisUnknown")
             }`,
             onRemove: () => setMeetsParisFilter("all"),
           },
@@ -66,9 +66,11 @@ export function CompaniesSectorsPage() {
     return (
       <div className="text-center py-12">
         <h2 className="text-2xl font-light text-red-500">
-          {t("companiesPage.errorTitle")}
+          {t("companiesSectorPage.errorTitle")}
         </h2>
-        <p className="text-grey mt-2">{t("companiesPage.errorDescription")}</p>
+        <p className="text-grey mt-2">
+          {t("companiesSectorPage.errorDescription")}
+        </p>
       </div>
     );
   }
@@ -76,8 +78,8 @@ export function CompaniesSectorsPage() {
   return (
     <>
       <PageHeader
-        title={t("companiesPage.title")}
-        description={t("companiesPage.description")}
+        title={t("companiesSectorPage.title")}
+        description={t("companiesSectorPage.description")}
         className="-ml-4"
       />
 
@@ -116,10 +118,10 @@ export function CompaniesSectorsPage() {
       {filteredCompanies.length === 0 ? (
         <div className="text-center py-12">
           <h3 className="text-xl font-light text-grey">
-            {t("companiesPage.noCompaniesFound")}
+            {t("companiesSectorPage.noCompaniesFound")}
           </h3>
           <p className="text-grey mt-2">
-            {t("companiesPage.tryDifferentCriteria")}
+            {t("companiesSectorPage.tryDifferentCriteria")}
           </p>
         </div>
       ) : (

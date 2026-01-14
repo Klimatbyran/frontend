@@ -404,38 +404,13 @@
       }
     }
   },
-  "companiesPage": {
-    "viewModes": {
-      "graphs": "Grafer",
-      "list": "Lista"
-    },
-    "sortingOptions": {
-      "emissionsChange": "Utsläppsförändring (%)",
-      "totalEmissions": "Totala utsläpp",
-      "scope3Coverage": "Scope 3-rapportering",
-      "meetsParis": "Uppfyller Parisavtalet",
-      "nameAsc": "Företagsnamn A-Ö",
-      "nameDesc": "Företagsnamn Ö-A"
-    },
-    "filteringOptions": {
-      "meetsParis": "Uppfyller Parisavtalet",
-      "meetsParisYes": "Ja",
-      "meetsParisNo": "Nej",
-      "meetsParisUnknown": "Okänt"
-    },
-    "sector": "Sektor",
+  "companyDetailPage": {
+    "metaTitle": "Data om utsläpp och omställning",
+    "metaDescription": "Översikt över klimatpåverkan och hållbarhetsarbete",
     "errorTitle": "Det gick inte att hämta företagsinformation",
     "errorDescription": "Försök igen senare",
-    "title": "Företagens klimatdata",
-    "description": "Översikt över företagens klimatpåverkan och hållbarhetsarbete",
-    "searchPlaceholder": "Sök företag (separera med komma)",
-    "noCompaniesFound": "Inga företag hittades",
-    "tryDifferentCriteria": "Försök med andra sökkriterier",
-    "sorting": "Sorterar:",
-    "filtering": "Filter:",
-    "allSectors": "Alla sektorer",
-    "sectionTitle": "Företag",
-    "noCompaniesInSection": "Inga företag i denna kategori",
+    "notFoundTitle": "Företaget kunde inte hittas",
+    "notFoundDescription": "Kontrollera att företags-ID:t är korrekt",
     "sectorGraphs": {
       "yearRange": "Basår: {{baseYear}} → Nu: {{currentYear}}",
       "noCompaniesInSector": "Inga företag i denna kategori",
@@ -506,13 +481,19 @@
       "downstreamActivitiesDescription": "Nedströmsaktiviteter bidrar med "
     }
   },
-  "companyDetailPage": {
-    "metaTitle": "Data om utsläpp och omställning",
-    "metaDescription": "Översikt över klimatpåverkan och hållbarhetsarbete",
+  "companiesSectorPage": {
+    "title": "Företagens klimatdata",
+    "description": "Översikt över företagens klimatpåverkan och hållbarhetsarbete",
     "errorTitle": "Det gick inte att hämta företagsinformation",
     "errorDescription": "Försök igen senare",
-    "notFoundTitle": "Företaget kunde inte hittas",
-    "notFoundDescription": "Kontrollera att företags-ID:t är korrekt"
+    "noCompaniesFound": "Inga företag hittades",
+    "tryDifferentCriteria": "Försök med andra sökkriterier",
+    "filteringOptions": {
+      "meetsParis": "Uppfyller Parisavtalet",
+      "meetsParisYes": "Ja",
+      "meetsParisNo": "Nej",
+      "meetsParisUnknown": "Okänt"
+    }
   },
   "methodsPage": {
     "header": {
@@ -1070,37 +1051,6 @@
     "errorDescription": "Försök igen senare",
     "title": "Kommuntopplistor",
     "description": "Data om utsläpp och klimatomställning i kommunerna"
-  },
-  "municipalitiesComparePage": {
-    "errorTitle": "Det gick inte att hämta kommuninformation",
-    "errorDescription": "Försök igen senare",
-    "title": "Kommuners klimatdata",
-    "description": "Översikt över utsläpp och omställning i kommunerna",
-    "filter": {
-      "searchPlaceholder": "Sök kommun (flera: separera med komma)",
-      "selectRegion": "Välj län",
-      "allRegions": "Alla län",
-      "sortBy": "Sortera efter",
-      "sortOptions": {
-        "reduction": "Utsläppsminskning",
-        "emissions": "Totala utsläpp",
-        "climate_plan": "Klimatplan",
-        "bicycle": "Cykelvägar",
-        "charging": "Laddinfrastruktur",
-        "name": "Namn"
-      }
-    },
-    "sort": {
-      "placeholder": "Sortera efter",
-      "meetsParis": "Klarar Parisavtalet",
-      "name": "Namn",
-      "emissions": "Totala utsläpp",
-      "emissionsChangeRate": "Utsläppsförändring (%)",
-      "aToZ": "A-Ö",
-      "zToA": "Ö-A",
-      "bestFirst": "Visa bäst först",
-      "worstFirst": "Visa sämst först"
-    }
   },
   "municipalityDetailPage": {
     "metaTitle": "Data om utsläpp och omställning",
@@ -1863,8 +1813,70 @@
   "explorePage": {
     "title": "Utforska data",
     "description": "Utforska och jämför utsläppsdata och klimatmål för företag och kommuner.",
-    "municipalities": "Kommuner",
-    "companies": "Företag"
+    "municipalities": {
+      "muncipality": "Kommun",
+      "municipalities": "Kommuner",
+      "title": "Kommuners klimatdata",
+      "description": "Översikt över utsläpp och omställning i kommunerna",
+      "errorTitle": "Det gick inte att hämta kommuninformation",
+      "errorDescription": "Försök igen senare",
+      "filteringOptions": {
+        "searchPlaceholder": "Sök kommun (flera: separera med komma)",
+        "selectRegion": "Välj län",
+        "allRegions": "Alla län",
+        "sortBy": "Sortera efter",
+        "sortOptions": {
+          "reduction": "Utsläppsminskning",
+          "emissions": "Totala utsläpp",
+          "climate_plan": "Klimatplan",
+          "bicycle": "Cykelvägar",
+          "charging": "Laddinfrastruktur",
+          "name": "Namn"
+        }
+      },
+      "sortingOptions": {
+        "placeholder": "Sortera efter",
+        "meetsParis": "Klarar Parisavtalet",
+        "name": "Namn",
+        "emissions": "Totala utsläpp",
+        "emissionsChangeRate": "Utsläppsförändring (%)",
+        "aToZ": "A-Ö",
+        "zToA": "Ö-A",
+        "bestFirst": "Visa bäst först",
+        "worstFirst": "Visa sämst först"
+      }
+    },
+    "companies": {
+      "company": "Företag",
+      "companies": "Företag",
+      "title": "Företagens klimatdata",
+      "description": "Översikt över företagens klimatpåverkan och hållbarhetsarbete",
+      "errorTitle": "Det gick inte att hämta företagsinformation",
+      "errorDescription": "Försök igen senare",
+      "filteringOptions": {
+        "meetsParis": "Uppfyller Parisavtalet",
+        "meetsParisYes": "Ja",
+        "meetsParisNo": "Nej",
+        "meetsParisUnknown": "Okänt"
+      },
+      "sortingOptions": {
+        "emissionsChange": "Utsläppsförändring (%)",
+        "totalEmissions": "Totala utsläpp",
+        "scope3Coverage": "Scope 3-rapportering",
+        "meetsParis": "Uppfyller Parisavtalet",
+        "nameAsc": "Företagsnamn A-Ö",
+        "nameDesc": "Företagsnamn Ö-A"
+      },
+      "sector": "Sektor",
+      "searchPlaceholder": "Sök företag (separera med komma)",
+      "noCompaniesFound": "Inga företag hittades",
+      "tryDifferentCriteria": "Försök med andra sökkriterier",
+      "sorting": "Sorterar:",
+      "filtrering": "Filter:",
+      "allSectors": "Alla sektorer",
+      "sectionTitle": "Företag",
+      "noCompaniesInSection": "Inga företag i denna kategori"
+    }
   },
   "insightCategories": {
     "analysis": "Analys",

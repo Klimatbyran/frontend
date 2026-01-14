@@ -10,19 +10,19 @@ export const useCategoryInfo = (): Record<string, TrendCardInfo> => {
 
   return {
     decreasing: {
-      title: t("companiesPage.sectorGraphs.decreasing"),
+      title: t("companyDetailPage.sectorGraphs.decreasing"),
       icon: TrendingDown,
       color: "bg-green-5",
       textColor: "text-green-3",
     },
     increasing: {
-      title: t("companiesPage.sectorGraphs.increasing"),
+      title: t("companyDetailPage.sectorGraphs.increasing"),
       icon: TrendingUp,
       color: "bg-orange-5",
       textColor: "text-orange-3",
     },
     noComparable: {
-      title: t("companiesPage.sectorGraphs.noComparable"),
+      title: t("companyDetailPage.sectorGraphs.noComparable"),
       icon: MinusCircle,
       color: "bg-blue-5",
       textColor: "text-blue-3",

@@ -28,7 +28,7 @@ const TrendCompanyList: React.FC<TrendCompanyListProps> = ({
   if (!data || data.length === 0) {
     return (
       <div className="text-sm text-grey text-center py-4">
-        {t("companiesPage.sectorGraphs.noCompaniesInSector")}
+        {t("companyDetailPage.sectorGraphs.noCompaniesInSector")}
       </div>
     );
   }
@@ -92,7 +92,7 @@ const TrendCompanyList: React.FC<TrendCompanyListProps> = ({
                 </Link>
                 {baseYear && currentYear && (
                   <div className="text-grey text-xs mb-2">
-                    {t("companiesPage.sectorGraphs.yearRange", {
+                    {t("companyDetailPage.sectorGraphs.yearRange", {
                       baseYear,
                       currentYear,
                     })}

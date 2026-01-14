@@ -29,14 +29,14 @@ export function FilterBadges({ filters, view }: FilterBadgesProps) {
           >
             <span className="text-grey text-xs mr-1">
               {filter.type === "sort"
-                ? t("companiesPage.sorting")
-                : t("companiesPage.filtering")}
+                ? t("explorePage.companies.sorting")
+                : t("explorePage.companies.filtering")}
             </span>
             {filter.label}
             {filter.type === "filter" && filter.onRemove && (
               <button
                 type="button"
-                title={t("companiesPage.removeFilter")}
+                title={t("explorePage.companies.removeFilter")}
                 onClick={(e) => {
                   e.preventDefault();
                   filter.onRemove?.();

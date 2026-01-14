@@ -7,28 +7,28 @@ export const useSortOptions = (): SortOption[] => {
   return [
     {
       value: "meets_paris",
-      label: t("municipalitiesComparePage.sort.meetsParis"),
+      label: t("explorePage.municipalities.sortingOptions.meetsParis"),
       directionLabels: {
-        asc: t("municipalitiesComparePage.sort.bestFirst"),
-        desc: t("municipalitiesComparePage.sort.worstFirst"),
+        asc: t("explorePage.municipalities.sortingOptions.bestFirst"),
+        desc: t("explorePage.municipalities.sortingOptions.worstFirst"),
       },
     },
     {
       value: "name",
-      label: t("municipalitiesComparePage.sort.name"),
+      label: t("explorePage.municipalities.sortingOptions.name"),
       directionLabels: {
-        asc: t("municipalitiesComparePage.sort.aToZ"),
-        desc: t("municipalitiesComparePage.sort.zToA"),
+        asc: t("explorePage.municipalities.sortingOptions.aToZ"),
+        desc: t("explorePage.municipalities.sortingOptions.zToA"),
       },
       defaultDirection: "asc",
     },
     {
       value: "emissions",
-      label: t("municipalitiesComparePage.sort.emissions"),
+      label: t("explorePage.municipalities.sortingOptions.emissions"),
     },
     {
       value: "emissionsChangeRate",
-      label: t("municipalitiesComparePage.sort.emissionsChangeRate"),
+      label: t("explorePage.municipalities.sortingOptions.emissionsChangeRate"),
     },
   ];
 };

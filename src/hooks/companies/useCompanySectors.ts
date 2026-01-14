@@ -26,7 +26,7 @@ export const useSectors = () => {
 
   const allSectorsOption = {
     value: "all" as const,
-    label: t("companiesPage.allSectors"),
+    label: t("explorePage.companies.allSectors"),
   };
 
   // Build sectors array using translated names

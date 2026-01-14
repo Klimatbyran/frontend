@@ -25,39 +25,39 @@ const ValueChainOverview: React.FC = () => {
 
   const stages: StageDetails[] = [
     {
-      title: t("companiesPage.sectorGraphs.upstream"),
+      title: t("companyDetailPage.sectorGraphs.upstream"),
       icon: Truck,
       color: "text-blue-3",
-      description: t("companiesPage.sectorGraphs.upstreamDescription"),
+      description: t("companyDetailPage.sectorGraphs.upstreamDescription"),
       details: [
-        t("companiesPage.sectorGraphs.rawMaterialExtraction"),
-        t("companiesPage.sectorGraphs.transportationOfMaterials"),
-        t("companiesPage.sectorGraphs.supplierManufacturing"),
-        t("companiesPage.sectorGraphs.packagingProduction"),
+        t("companyDetailPage.sectorGraphs.rawMaterialExtraction"),
+        t("companyDetailPage.sectorGraphs.transportationOfMaterials"),
+        t("companyDetailPage.sectorGraphs.supplierManufacturing"),
+        t("companyDetailPage.sectorGraphs.packagingProduction"),
       ],
     },
     {
-      title: t("companiesPage.sectorGraphs.operations"),
+      title: t("companyDetailPage.sectorGraphs.operations"),
       icon: Factory,
       color: "text-orange-3",
-      description: t("companiesPage.sectorGraphs.operationsDescription"),
+      description: t("companyDetailPage.sectorGraphs.operationsDescription"),
       details: [
-        t("companiesPage.sectorGraphs.manufacturingProcesses"),
-        t("companiesPage.sectorGraphs.facilityOperations"),
-        t("companiesPage.sectorGraphs.companyVehicles"),
-        t("companiesPage.sectorGraphs.onSiteEnergyUse"),
+        t("companyDetailPage.sectorGraphs.manufacturingProcesses"),
+        t("companyDetailPage.sectorGraphs.facilityOperations"),
+        t("companyDetailPage.sectorGraphs.companyVehicles"),
+        t("companyDetailPage.sectorGraphs.onSiteEnergyUse"),
       ],
     },
     {
-      title: t("companiesPage.sectorGraphs.downstream"),
+      title: t("companyDetailPage.sectorGraphs.downstream"),
       icon: ShoppingBag,
       color: "text-green-3",
-      description: t("companiesPage.sectorGraphs.downstreamDescription"),
+      description: t("companyDetailPage.sectorGraphs.downstreamDescription"),
       details: [
-        t("companiesPage.sectorGraphs.productDistribution"),
-        t("companiesPage.sectorGraphs.consumerUsage"),
-        t("companiesPage.sectorGraphs.productDisposal"),
-        t("companiesPage.sectorGraphs.recyclingProcesses"),
+        t("companyDetailPage.sectorGraphs.productDistribution"),
+        t("companyDetailPage.sectorGraphs.consumerUsage"),
+        t("companyDetailPage.sectorGraphs.productDisposal"),
+        t("companyDetailPage.sectorGraphs.recyclingProcesses"),
       ],
     },
   ];
@@ -66,7 +66,7 @@ const ValueChainOverview: React.FC = () => {
     return (
       <div className="bg-black-2 rounded-lg p-4">
         <h3 className="text-base font-light text-white mb-3">
-          {t("companiesPage.sectorGraphs.valueChainOverview")}
+          {t("companyDetailPage.sectorGraphs.valueChainOverview")}
         </h3>
 
         <div className="space-y-2">
@@ -138,7 +138,7 @@ const ValueChainOverview: React.FC = () => {
     return (
       <div className="bg-black-2 rounded-lg p-6">
         <h3 className="text-lg font-light text-white mb-4">
-          {t("companiesPage.sectorGraphs.valueChainOverview")}
+          {t("companyDetailPage.sectorGraphs.valueChainOverview")}
         </h3>
         <div className="flex flex-col space-y-4">
           {stages.map((stage, index) => {
@@ -191,7 +191,7 @@ const ValueChainOverview: React.FC = () => {
   return (
     <div className="bg-black-2 rounded-lg p-6">
       <h3 className="text-lg font-light text-white mb-4">
-        {t("companiesPage.sectorGraphs.valueChainOverview")}
+        {t("companyDetailPage.sectorGraphs.valueChainOverview")}
       </h3>
       <div className="grid grid-cols-3 gap-4">
         {stages.map((stage, index) => {

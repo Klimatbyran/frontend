@@ -6,27 +6,27 @@ export const useSortOptions = () => {
   return [
     {
       value: "emissions_reduction",
-      label: t("companiesPage.sortingOptions.emissionsChange"),
+      label: t("explorePage.companies.sortingOptions.emissionsChange"),
     },
     {
       value: "total_emissions",
-      label: t("companiesPage.sortingOptions.totalEmissions"),
+      label: t("explorePage.companies.sortingOptions.totalEmissions"),
     },
     {
       value: "scope3_coverage",
-      label: t("companiesPage.sortingOptions.scope3Coverage"),
+      label: t("explorePage.companies.sortingOptions.scope3Coverage"),
     },
     {
       value: "meets_paris",
-      label: t("companiesPage.sortingOptions.meetsParis"),
+      label: t("explorePage.companies.sortingOptions.meetsParis"),
     },
     {
       value: "name_asc",
-      label: t("companiesPage.sortingOptions.nameAsc"),
+      label: t("explorePage.companies.sortingOptions.nameAsc"),
     },
     {
       value: "name_desc",
-      label: t("companiesPage.sortingOptions.nameDesc"),
+      label: t("explorePage.companies.sortingOptions.nameDesc"),
     },
   ] as const;
 };

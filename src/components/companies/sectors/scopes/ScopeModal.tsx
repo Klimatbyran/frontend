@@ -153,7 +153,7 @@ const ScopeModal: React.FC<ScopeModalProps> = ({
                           sector.total / sectorData.total,
                           currentLanguage,
                         )}{" "}
-                        {t("companiesPage.sectorGraphs.ofTotal")}{" "}
+                        {t("companyDetailPage.sectorGraphs.ofTotal")}{" "}
                         {title.toLowerCase()}
                       </p>
                     </div>
@@ -167,7 +167,7 @@ const ScopeModal: React.FC<ScopeModalProps> = ({
                       </div>
                       <div className="text-sm text-grey">
                         {sector.companies.length}{" "}
-                        {t("companiesPage.sectorGraphs.companies")}
+                        {t("companyDetailPage.sectorGraphs.companies")}
                       </div>
                     </div>
                   </div>
@@ -202,7 +202,7 @@ const ScopeModal: React.FC<ScopeModalProps> = ({
                                   company.emissions / sector.total,
                                   currentLanguage,
                                 )}{" "}
-                                {t("companiesPage.sectorGraphs.ofSector")}
+                                {t("companyDetailPage.sectorGraphs.ofSector")}
                               </div>
                             </div>
                           </div>
@@ -231,7 +231,7 @@ const ScopeModal: React.FC<ScopeModalProps> = ({
                                 company.emissions / sector.total,
                                 currentLanguage,
                               )}{" "}
-                              {t("companiesPage.sectorGraphs.percentOfSector")}
+                              {t("companyDetailPage.sectorGraphs.percentOfSector")}
                             </div>
                           </div>
                         </div>

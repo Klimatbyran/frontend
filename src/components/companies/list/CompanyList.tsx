@@ -142,10 +142,10 @@ export function CompanyList({ companies }: CompanyListProps) {
     return (
       <div className="text-center py-12">
         <h3 className="text-xl font-light text-grey">
-          {t("companiesPage.noCompaniesFound")}
+          {t("explorePage.companies.noCompaniesFound")}
         </h3>
         <p className="text-grey mt-2">
-          {t("companiesPage.tryDifferentCriteria")}
+          {t("explorePage.companies.tryDifferentCriteria")}
         </p>
       </div>
     );
@@ -164,12 +164,14 @@ export function CompanyList({ companies }: CompanyListProps) {
       ? [
           {
             type: "filter" as const,
-            label: `${t("companiesPage.filteringOptions.meetsParis")}: ${
+            label: `${t("explorePage.companies.filteringOptions.meetsParis")}: ${
               meetsParisFilter === "yes"
-                ? t("companiesPage.filteringOptions.meetsParisYes")
+                ? t("explorePage.companies.filteringOptions.meetsParisYes")
                 : meetsParisFilter === "no"
-                  ? t("companiesPage.filteringOptions.meetsParisNo")
-                  : t("companiesPage.filteringOptions.meetsParisUnknown")
+                  ? t("explorePage.companies.filteringOptions.meetsParisNo")
+                  : t(
+                      "explorePage.companies.filteringOptions.meetsParisUnknown",
+                    )
             }`,
             onRemove: () => setMeetsParisFilter("all"),
           },
@@ -199,7 +201,7 @@ export function CompanyList({ companies }: CompanyListProps) {
           {/* Search Input */}
           <Input
             type="text"
-            placeholder={t("companiesPage.searchPlaceholder")}
+            placeholder={t("explorePage.companies.searchPlaceholder")}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="bg-black-1 rounded-md px-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-2 relative w-full md:w-[350px]"

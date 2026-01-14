@@ -60,10 +60,10 @@ const ScopeCard: React.FC<ScopeCardProps> = ({
         <h3 className="text-lg font-light text-white">{title}</h3>
         {showCategoryInfo && (
           <InfoTooltip
-            ariaLabel={t("companiesPage.sectorGraphs.scope3CategoryInfoLabel")}
+            ariaLabel={t("companyDetailPage.sectorGraphs.scope3CategoryInfoLabel")}
             className="w-4 h-4 text-grey"
           >
-            <p>{t("companiesPage.sectorGraphs.scope3CategoryInfo")}</p>
+            <p>{t("companyDetailPage.sectorGraphs.scope3CategoryInfo")}</p>
           </InfoTooltip>
         )}
       </div>
@@ -73,7 +73,7 @@ const ScopeCard: React.FC<ScopeCardProps> = ({
       <div className="space-y-4">
         <div className="space-y-1">
           <div className="text-sm text-grey">
-            {t("companiesPage.sectorGraphs.totalEmissions")}
+            {t("companyDetailPage.sectorGraphs.totalEmissions")}
           </div>
           <div
             className={`text-xl font-light ${color.replace("bg-", "text-")}`}
@@ -85,16 +85,16 @@ const ScopeCard: React.FC<ScopeCardProps> = ({
 
         <div className="space-y-1">
           <div className="text-sm text-grey">
-            {t("companiesPage.sectorGraphs.companiesReporting")}
+            {t("companyDetailPage.sectorGraphs.companiesReporting")}
           </div>
           <div className="text-sm text-white">
-            {companies} {t("companiesPage.sectorGraphs.companies")}
+            {companies} {t("companyDetailPage.sectorGraphs.companies")}
           </div>
         </div>
 
         <div className="space-y-1">
           <div className="text-sm text-grey">
-            {t("companiesPage.sectorGraphs.shareOfTotal")}
+            {t("companyDetailPage.sectorGraphs.shareOfTotal")}
           </div>
           <div className={`text-sm ${color.replace("bg-", "text-")}`}>
             {formatPercent(percent, currentLanguage)}

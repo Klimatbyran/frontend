@@ -50,7 +50,7 @@ const ChartHeader: React.FC<ChartHeaderProps> = ({
             >
               <ArrowLeft className="h-4 w-4" />
               <span className="text-sm font-medium">
-                {t("companiesPage.sectorGraphs.back")}
+                {t("companyDetailPage.sectorGraphs.back")}
               </span>
             </button>
           )}
@@ -69,7 +69,7 @@ const ChartHeader: React.FC<ChartHeaderProps> = ({
             >
               <PieChart className="h-4 w-4" />
               <span className="text-sm font-medium">
-                {t("companiesPage.sectorGraphs.pie")}
+                {t("companyDetailPage.sectorGraphs.pie")}
               </span>
             </button>
             <button
@@ -82,7 +82,7 @@ const ChartHeader: React.FC<ChartHeaderProps> = ({
             >
               <BarChart3 className="h-4 w-4" />
               <span className="text-sm font-medium">
-                {t("companiesPage.sectorGraphs.stackedTotal")}
+                {t("companyDetailPage.sectorGraphs.stackedTotal")}
               </span>
             </button>
           </div>

@@ -104,8 +104,8 @@ const SectorPieLegend: React.FC<PieLegendProps> = ({
               </TooltipTrigger>
               <TooltipContent className="bg-black-1 text-white">
                 {selectedLabel
-                  ? t("companiesPage.sectorGraphs.pieLegendCompany")
-                  : t("companiesPage.sectorGraphs.pieLegendSector")}
+                  ? t("companyDetailPage.sectorGraphs.pieLegendCompany")
+                  : t("companyDetailPage.sectorGraphs.pieLegendSector")}
               </TooltipContent>
             </Tooltip>
           );

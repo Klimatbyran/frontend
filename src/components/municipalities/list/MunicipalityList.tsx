@@ -48,7 +48,7 @@ export function MunicipalityList({ municipalities }: MunicipalityListProps) {
   const searchQuery = searchParams.get("searchQuery") || "";
   const sortBy = isMunicipalitySortBy(searchParams.get("sortBy") ?? "")
     ? (searchParams.get("sortBy") as MunicipalitySortBy)
-    : "meets_paris";
+    : "emissions";
   const sortDirection = isSortDirection(searchParams.get("sortDirection") ?? "")
     ? (searchParams.get("sortDirection") as SortDirection)
     : (sortOptions.find((s) => s.value === sortBy)?.defaultDirection ?? "desc");
@@ -75,11 +75,11 @@ export function MunicipalityList({ municipalities }: MunicipalityListProps) {
 
   const filterGroups: FilterGroup[] = [
     {
-      heading: t("municipalitiesComparePage.filter.selectRegion"),
+      heading: t("explorePage.municipalities.filteringOptions.selectRegion"),
       options: [
         {
           value: "all",
-          label: t("municipalitiesComparePage.filter.allRegions"),
+          label: t("explorePage.municipalities.filteringOptions.allRegions"),
         },
         ...Object.keys(regions).map((r) => ({ value: r, label: r })),
       ],
@@ -88,16 +88,16 @@ export function MunicipalityList({ municipalities }: MunicipalityListProps) {
       selectMultiple: false,
     },
     {
-      heading: t("companiesPage.filteringOptions.meetsParis"),
+      heading: t("explorePage.municipalities.sortingOptions.meetsParis"),
       options: [
         { value: "all", label: t("all") },
         {
           value: "yes",
-          label: t("companiesPage.filteringOptions.meetsParisYes"),
+          label: t("yes"),
         },
         {
           value: "no",
-          label: t("companiesPage.filteringOptions.meetsParisNo"),
+          label: t("no"),
         },
       ],
       selectedValues: [meetsParisFilter],
@@ -122,10 +122,8 @@ export function MunicipalityList({ municipalities }: MunicipalityListProps) {
       ? [
           {
             type: "filter" as const,
-            label: `${t("companiesPage.filteringOptions.meetsParis")}: ${
-              meetsParisFilter === "yes"
-                ? t("companiesPage.filteringOptions.meetsParisYes")
-                : t("companiesPage.filteringOptions.meetsParisNo")
+            label: `${t("explorePage.municipalities.sortingOptions.meetsParis")}: ${
+              meetsParisFilter === "yes" ? t("yes") : t("no")
             }`,
             onRemove: () => setMeetsParisFilter("all"),
           },
@@ -262,7 +260,7 @@ export function MunicipalityList({ municipalities }: MunicipalityListProps) {
           <Input
             type="text"
             placeholder={t(
-              "municipalitiesComparePage.filter.searchPlaceholder",
+              "explorePage.municipalities.filteringOptions.searchPlaceholder",
             )}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}

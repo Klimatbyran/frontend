@@ -35,13 +35,13 @@ export function ExplorePage() {
       <div className="text-center py-12">
         <h2 className="text-2xl font-light text-red-500">
           {mainFilter === "companies"
-            ? t("companiesPage.errorTitle")
-            : t("municipalitiesComparePage.errorTitle")}
+            ? t("explorePage.companies.errorTitle")
+            : t("explorePage.municipalities.errorTitle")}
         </h2>
         <p className="text-grey mt-2">
           {mainFilter === "companies"
-            ? t("companiesPage.errorDescription")
-            : t("municipalitiesComparePage.errorDescription")}
+            ? t("explorePage.companies.errorDescription")
+            : t("explorePage.municipalities.errorDescription")}
         </p>
       </div>
     );
@@ -72,7 +72,7 @@ export function ExplorePage() {
             variant={"outlineWhite"}
             pressed={mainFilter === "companies"}
           >
-            {t("explorePage.companies")}
+            {t("explorePage.companies.companies")}
           </Toggle>
           <Toggle
             onClick={() => {
@@ -81,7 +81,7 @@ export function ExplorePage() {
             variant={"outlineWhite"}
             pressed={mainFilter === "municipalities"}
           >
-            {t("explorePage.municipalities")}
+            {t("explorePage.municipalities.municipalities")}
           </Toggle>
         </div>
       </div>

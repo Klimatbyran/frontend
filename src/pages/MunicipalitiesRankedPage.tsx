@@ -106,10 +106,10 @@ export function MunicipalitiesRankedPage() {
     return (
       <div className="text-center py-24">
         <h3 className="text-red-500 mb-4 text-xl">
-          {t("municipalitiesComparePage.errorTitle")}
+          {t("municipalitiesRankedPage.errorTitle")}
         </h3>
         <p className="text-grey">
-          {t("municipalitiesComparePage.errorDescription")}
+          {t("municipalitiesRankedPage.errorDescription")}
         </p>
       </div>
     );
