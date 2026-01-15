@@ -7,7 +7,7 @@ import type { Municipality, DataPoint } from "@/types/municipality";
 export function transformEmissionsData(
   municipality: Municipality,
 ): DataPoint[] {
-  const years = new Set<string>();
+  const years = new Set<number>();
 
   municipality.emissions.forEach((d) => d?.year && years.add(d.year));
   municipality.approximatedHistoricalEmission.forEach(
@@ -15,22 +15,31 @@ export function transformEmissionsData(
   );
   municipality.trend.forEach((d) => d?.year && years.add(d.year));
 
-  const currentYear = new Date().getFullYear();
+  const getYearsToNumber = (year: number) => {
+    return year && parseInt(String(year));
+  };
 
-  const approximatedDataAtCurrentYear =
-    municipality.approximatedHistoricalEmission
-      .filter((d) => d && parseInt(d.year) <= currentYear)
-      .sort((a, b) => parseInt(b!.year) - parseInt(a!.year))[0];
+  const actual2025 = municipality.emissions?.find(
+    (item) => item && getYearsToNumber(item.year) === 2025,
+  )?.value;
 
-  const carbonLawBaseValue = approximatedDataAtCurrentYear?.value;
-  const carbonLawBaseYear = approximatedDataAtCurrentYear
-    ? parseInt(approximatedDataAtCurrentYear.year)
-    : currentYear;
+  const approximated2025 = municipality.approximatedHistoricalEmission?.find(
+    (item) => item && getYearsToNumber(item.year) === 2025,
+  )?.value;
+
+  const carbonLawBaseValue =
+    actual2025 !== undefined && actual2025 !== null
+      ? actual2025
+      : approximated2025 !== undefined && approximated2025 !== null
+        ? approximated2025
+        : undefined;
+
+  const carbonLawBaseYear = 2025;
 
   return Array.from(years)
     .sort()
     .map((year) => {
-      const yearNum = parseInt(year, 10);
+      const yearNum = getYearsToNumber(year);
       const historical = municipality.emissions.find(
         (d) => d?.year === year,
       )?.value;
@@ -40,7 +49,7 @@ export function transformEmissionsData(
       const trend = municipality.trend.find((d) => d?.year === year)?.value;
 
       let carbonLaw: number | undefined = undefined;
-      if (carbonLawBaseValue && yearNum >= currentYear) {
+      if (carbonLawBaseValue !== undefined && yearNum >= 2025) {
         carbonLaw =
           calculateParisValue(
             yearNum,

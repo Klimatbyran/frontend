@@ -52,6 +52,15 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
     return filterDataByYearRange(projectedData, chartEndYear);
   }, [projectedData, chartEndYear]);
 
+/*   const modifiedData = filteredData.map((item) => {
+    if (item.year === 2025) {
+      item.carbonLaw = item.approximated;
+      return item;
+    } else return item;
+  });
+
+  console.log(modifiedData); */
+
   return (
     <ChartWrapper>
       <ChartArea>

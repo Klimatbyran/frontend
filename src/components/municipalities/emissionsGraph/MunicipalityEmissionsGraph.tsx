@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { SectorEmissions, DataPoint } from "@/types/municipality";
+import { DataPoint } from "@/types/municipality";
+import type { SectorEmissionsByYear } from "@/types/emissions";
 import { OverviewChart } from "./OverviewChart";
 import { SectorsChart } from "./SectorsChart";
 
@@ -8,7 +9,7 @@ type DataView = "overview" | "sectors";
 
 interface MunicipalityEmissionsGraphProps {
   projectedData: DataPoint[];
-  sectorEmissions?: SectorEmissions;
+  sectorEmissions?: SectorEmissionsByYear;
   dataView: DataView;
   hiddenSectors: Set<string>;
   setHiddenSectors: (sectors: Set<string>) => void;
