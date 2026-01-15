@@ -87,6 +87,8 @@ export function RegionDetailPage() {
       <DetailWrapper>
         <DetailHeader
           name={region.name}
+          politicalRule={region.politicalRule}
+          politicalKSO={region.politicalKSO}
           helpItems={["regionTotalEmissions", "detailWhyDataDelay"]}
           stats={headerStats}
           translateNamespace="detailPage"

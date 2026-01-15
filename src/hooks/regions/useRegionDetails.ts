@@ -15,6 +15,8 @@ import {
 
 export type RegionDetails = {
   name: string;
+  politicalRule: string[];
+  politicalKSO: string;
   emissions: Record<string, number>;
   approximatedHistoricalEmission: Record<string, number>;
   trend: Record<string, number>;
