@@ -103,7 +103,7 @@ const SectorPieLegend: React.FC<LegendProps> = ({
 
               <TooltipContent className="bg-black-1 text-white">
                 {t(
-                  `municipalityDetailPage.sectorChart.${
+                  `detailPage.sectorChart.${
                     isFiltered ? "clickToShow" : "clickToFilter"
                   }`,
                 )}

@@ -42,7 +42,7 @@ export function useSectors() {
 
     if (key) {
       return {
-        translatedName: t(`municipalityDetailPage.sectors.${key}`),
+        translatedName: t(`detailPage.sectors.${key}`),
         color: SECTOR_COLORS[key],
         originalName: sectorName,
       };
