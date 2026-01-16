@@ -8,6 +8,9 @@ export type SectorEmissionsResponse = {
   sectors: SectorEmissionsByYear;
 };
 
+// Type alias for components that expect { sectors: SectorEmissionsByYear }
+export type SectorEmissions = SectorEmissionsResponse;
+
 export function useSectorEmissions(
   entityType: EntityType,
   id: string | undefined,
@@ -26,10 +29,8 @@ export function useSectorEmissions(
   });
 
   return {
-    // Cast to SectorEmissionsByYear | null to match component prop type
-    // Even though the actual structure has a 'sectors' wrapper that the component uses
-    sectorEmissions:
-      (sectorEmissions as SectorEmissionsResponse | null) as SectorEmissionsByYear | null,
+    // Return the API response structure directly (with sectors wrapper)
+    sectorEmissions: sectorEmissions as SectorEmissionsResponse | null,
     loading: isLoading,
     error,
   };

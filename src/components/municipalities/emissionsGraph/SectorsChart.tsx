@@ -10,7 +10,7 @@ import { useTranslation } from "react-i18next";
 import { XAxis, YAxis } from "recharts";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useScreenSize } from "@/hooks/useScreenSize";
-import { SectorEmissions } from "@/types/municipality";
+import { SectorEmissions } from "@/hooks/territories/useSectorEmissions";
 import { useSectors } from "@/hooks/territories/useSectors";
 import {
   DynamicLegendContainer,

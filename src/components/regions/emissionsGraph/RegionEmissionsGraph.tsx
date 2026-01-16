@@ -1,13 +1,13 @@
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { DataPoint } from "@/types/municipality";
 import { SectorEmissions } from "@/hooks/territories/useSectorEmissions";
-import { OverviewChart } from "./OverviewChart";
-import { SectorsChart } from "./SectorsChart";
+import { OverviewChart } from "@/components/municipalities/emissionsGraph/OverviewChart";
+import { SectorsChart } from "@/components/municipalities/emissionsGraph/SectorsChart";
+import { DataPoint } from "@/types/municipality";
 
 type DataView = "overview" | "sectors";
 
-interface MunicipalityEmissionsGraphProps {
+interface RegionEmissionsGraphProps {
   projectedData: DataPoint[];
   sectorEmissions?: SectorEmissions;
   dataView: DataView;
@@ -15,9 +15,7 @@ interface MunicipalityEmissionsGraphProps {
   setHiddenSectors: (sectors: Set<string>) => void;
 }
 
-export const MunicipalityEmissionsGraph: FC<
-  MunicipalityEmissionsGraphProps
-> = ({
+export const RegionEmissionsGraph: FC<RegionEmissionsGraphProps> = ({
   projectedData,
   sectorEmissions,
   dataView,

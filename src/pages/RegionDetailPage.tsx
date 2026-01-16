@@ -60,6 +60,12 @@ export function RegionDetailPage() {
           carbonLaw: region.carbonLaw?.[year]
             ? region.carbonLaw[year] / 1000
             : undefined, // Convert to tons
+        } as {
+          year: number;
+          total?: number;
+          approximated?: number;
+          trend?: number;
+          carbonLaw?: number;
         };
       })
       .sort((a, b) => a.year - b.year)
@@ -105,7 +111,10 @@ export function RegionDetailPage() {
           translateNamespace="detailPage"
         />
 
-        <RegionEmissions emissionsData={emissionsData} />
+        <RegionEmissions
+          emissionsData={emissionsData}
+          sectorEmissions={sectorEmissions}
+        />
 
         <SectorEmissionsChart
           sectorEmissions={sectorEmissions}

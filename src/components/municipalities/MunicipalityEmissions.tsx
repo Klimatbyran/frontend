@@ -9,14 +9,14 @@ import {
 } from "@/components/charts";
 import { CardHeader } from "@/components/layout/CardHeader";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
-import { SectorEmissionsByYear } from "@/types/emissions";
 import { MunicipalityEmissionsGraph } from "./emissionsGraph/MunicipalityEmissionsGraph";
+import { SectorEmissions } from "@/hooks/territories/useSectorEmissions";
 
 type DataView = "overview" | "sectors";
 
 interface MunicipalityEmissionsProps {
   emissionsData: DataPoint[];
-  sectorEmissions: SectorEmissionsByYear | null;
+  sectorEmissions: SectorEmissions | null;
   className?: string;
 }
 
@@ -34,7 +34,8 @@ export const MunicipalityEmissions: FC<MunicipalityEmissionsProps> = ({
     useHiddenItems<string>([]);
 
   const hasSectorData =
-    !!sectorEmissions && Object.keys(sectorEmissions).length > 0;
+    !!sectorEmissions?.sectors &&
+    Object.keys(sectorEmissions.sectors).length > 0;
 
   const dataViewOptions = useMunicipalityViewOptions(hasSectorData);
 
