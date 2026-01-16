@@ -4,7 +4,7 @@ import { useResponsiveChartSize } from "@/hooks/useResponsiveChartSize";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import PieTooltip from "@/components/graphs/tooltips/PieTooltip";
 import { SectorInfo } from "@/types/charts";
-import { SectorEmissions } from "@/hooks/territories/useSectorEmissions";
+import { SectorEmissions } from "@/types/emissions";
 
 interface SectorPieChartProps {
   sectorEmissions: SectorEmissions;

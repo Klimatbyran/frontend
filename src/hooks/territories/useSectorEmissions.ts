@@ -1,15 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { SectorEmissionsByYear } from "@/types/emissions";
+import { SectorEmissionsResponse } from "@/types/emissions";
 
 export type EntityType = "municipalities" | "regions";
-
-// The API returns { sectors: { [year]: { [sector]: number } } }
-export type SectorEmissionsResponse = {
-  sectors: SectorEmissionsByYear;
-};
-
-// Type alias for components that expect { sectors: SectorEmissionsByYear }
-export type SectorEmissions = SectorEmissionsResponse;
 
 export function useSectorEmissions(
   entityType: EntityType,

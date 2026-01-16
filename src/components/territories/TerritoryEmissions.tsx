@@ -9,7 +9,7 @@ import {
 } from "@/components/charts";
 import { CardHeader } from "@/components/layout/CardHeader";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
-import { SectorEmissions } from "@/hooks/territories/useSectorEmissions";
+import { SectorEmissions } from "@/types/emissions";
 import { TerritoryEmissionsGraph } from "./emissionsGraph/TerritoryEmissionsGraph";
 
 type DataView = "overview" | "sectors";

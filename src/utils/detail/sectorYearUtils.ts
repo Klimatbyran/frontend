@@ -1,10 +1,4 @@
-export type SectorEmissionsResponse = {
-  sectors: {
-    [year: string]: {
-      [sector: string]: number;
-    };
-  };
-} | null;
+import { SectorEmissionsResponse } from "@/types/emissions";
 
 export function getAvailableYearsFromSectors(
   sectorEmissions:

@@ -5,7 +5,7 @@ import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { DetailPieSectorGrid } from "@/components/detail/DetailGrid";
 import { DataGuideItemId } from "@/data-guide/items";
 import { SectorInfo } from "@/types/charts";
-import { SectorEmissions } from "@/hooks/territories/useSectorEmissions";
+import { SectorEmissions } from "@/types/emissions";
 import SectorPieChart from "./SectorPieChart";
 import SectorPieLegend from "./SectorPieLegend";
 
