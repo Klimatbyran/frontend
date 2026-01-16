@@ -10,7 +10,7 @@ import {
   localizeUnit,
 } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
-import { useMunicipalitySectorEmissions } from "@/hooks/municipalities/useMunicipalitySectorEmissions";
+import { useSectorEmissions } from "@/hooks/territories/useSectorEmissions";
 import { MunicipalityEmissions } from "@/components/municipalities/MunicipalityEmissions";
 import { useHiddenItems } from "@/components/charts";
 import { PageLoading } from "@/components/pageStates/Loading";
@@ -26,7 +26,7 @@ import { LinkCard } from "@/components/detail/DetailLinkCard";
 import { DetailHeader } from "@/components/detail/DetailHeader";
 import { DetailSection } from "@/components/detail/DetailSection";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";
-import { useMunicipalitySectors } from "@/hooks/municipalities/useMunicipalitySectors";
+import { useSectors } from "@/hooks/territories/useSectors";
 import { DetailLinkCardGrid } from "@/components/detail/DetailGrid";
 import { SectorEmissionsChart } from "@/components/charts/sectorChart/SectorEmissions";
 
@@ -37,9 +37,9 @@ export function MunicipalityDetailPage() {
   const { currentLanguage } = useLanguage();
 
   const { sectorEmissions, loading: _loadingSectors } =
-    useMunicipalitySectorEmissions(id);
+    useSectorEmissions("municipalities", id);
 
-  const { getSectorInfo } = useMunicipalitySectors();
+  const { getSectorInfo } = useSectors();
   const { hiddenItems: filteredSectors, setHiddenItems: setFilteredSectors } =
     useHiddenItems<string>([]);
 

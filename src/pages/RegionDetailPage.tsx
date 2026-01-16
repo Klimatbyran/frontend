@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import {
   useRegionDetails,
   useRegionDetailHeaderStats,
@@ -12,11 +12,24 @@ import { DetailHeader } from "@/components/detail/DetailHeader";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";
 import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
 import { MunicipalityListBox } from "@/components/regions/MunicipalityListBox";
+import { useSectorEmissions } from "@/hooks/territories/useSectorEmissions";
+import { useSectors } from "@/hooks/territories/useSectors";
+import { useHiddenItems } from "@/components/charts";
+import {
+  getAvailableYearsFromSectors,
+  getCurrentYearFromAvailable,
+} from "@/utils/detail/sectorYearUtils";
+import { SectorEmissionsChart } from "@/components/charts/sectorChart/SectorEmissions";
 
 export function RegionDetailPage() {
   const { id } = useParams<{ id: string }>();
   const { region, loading, error } = useRegionDetails(id || "");
   const { municipalities } = useMunicipalities();
+  const { sectorEmissions } = useSectorEmissions("regions", id);
+  const { getSectorInfo } = useSectors();
+  const { hiddenItems: filteredSectors, setHiddenItems: setFilteredSectors } =
+    useHiddenItems<string>([]);
+  const [selectedYear, setSelectedYear] = useState<string>("2023");
 
   // Transform emissions data for chart
   const emissionsData = useMemo(() => {
@@ -62,6 +75,13 @@ export function RegionDetailPage() {
 
   const headerStats = useRegionDetailHeaderStats(region, lastYear);
 
+  const availableYears = getAvailableYearsFromSectors(sectorEmissions);
+  const currentYear = getCurrentYearFromAvailable(
+    selectedYear,
+    availableYears,
+    lastYear ?? 2023,
+  );
+
   // Filter municipalities that belong to this region
   const regionMunicipalities = useMemo(() => {
     if (!region || !municipalities) return [];
@@ -86,6 +106,19 @@ export function RegionDetailPage() {
         />
 
         <RegionEmissions emissionsData={emissionsData} />
+
+        <SectorEmissionsChart
+          sectorEmissions={sectorEmissions}
+          availableYears={availableYears}
+          selectedYear={selectedYear}
+          onYearChange={setSelectedYear}
+          currentYear={currentYear}
+          getSectorInfo={getSectorInfo}
+          filteredSectors={filteredSectors}
+          onFilteredSectorsChange={setFilteredSectors}
+          translateNamespace="regions.detailPage"
+          helpItems={["municipalityEmissionSources"]}
+        />
 
         <MunicipalityListBox
           municipalities={regionMunicipalities}

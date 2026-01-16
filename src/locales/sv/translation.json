@@ -1452,7 +1452,9 @@
   },
   "regions": {
     "detailPage": {
-      "municipalities": "Kommuner"
+      "municipalities": "Kommuner",
+      "sectorEmissions": "Utsläppskällor",
+      "sectorEmissionsYear": "Utsläpp per sektor år {{year}}"
     },
     "kpis": {
       "emissions": {
