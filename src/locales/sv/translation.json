@@ -1776,7 +1776,7 @@
     "searchDialog": {
       "title": "Sök",
       "description": "Sök efter företag eller kommuner",
-      "emptyText": "Börja skriv för att söka",
+      "emptyText": "Börja skriva för att söka efter företag eller kommuner",
       "loadingText": "Hämtar företag och kommuner...",
       "shortcutTipText": "Starta sök med Ctrl+K / ⌘+K"
     }
