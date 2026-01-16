@@ -21,7 +21,6 @@ interface PayloadEntry {
     scope3Categories?: Array<Scope3Category & { isAIGenerated?: boolean }>;
   };
 }
-
 interface ChartTooltipProps {
   active?: boolean;
   payload?: PayloadEntry[];
@@ -143,10 +142,15 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
     formatEmissionsAbsolute(Math.round(value ?? 0), currentLanguage);
 
   const defaultNameFormatter = (name: string, entry: PayloadEntry) => {
+    const dataKey = typeof entry.dataKey === "string" ? entry.dataKey : null;
+
     // Handle company category names
-    if (entry.dataKey?.startsWith("cat")) {
-      const categoryId = parseInt(entry.dataKey.replace("cat", ""));
+    if (dataKey?.startsWith("cat")) {
+      const categoryId = parseInt(dataKey.replace("cat", ""));
       return `${categoryId.toLocaleString()}. ${name}`;
+    }
+    if (dataKey === "turnover") {
+      return t("companies.overview.turnover");
     }
     return name;
   };
