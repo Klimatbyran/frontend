@@ -1503,6 +1503,8 @@
   },
   "regions": {
     "detailPage": {
+      "politicalRule": "Politiskt styre",
+      "politicalRSO": "Länsstyrelsens ordförande",
       "municipalities": "Kommuner"
     },
     "kpis": {
