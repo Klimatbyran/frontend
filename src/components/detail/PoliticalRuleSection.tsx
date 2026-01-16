@@ -7,6 +7,7 @@ export interface PoliticalRuleSectionProps {
   translateNamespace: string;
   politicalRuleLabelKey?: string;
   politicalKSO?: string;
+  politicalXSOLabelKey?: string;
 }
 
 export function PoliticalRuleSection({
@@ -14,6 +15,7 @@ export function PoliticalRuleSection({
   translateNamespace,
   politicalRuleLabelKey = "politicalRule",
   politicalKSO,
+  politicalXSOLabelKey,
 }: PoliticalRuleSectionProps) {
   const { t } = useTranslation();
 
@@ -47,7 +49,7 @@ export function PoliticalRuleSection({
             variant="body"
             className="text-grey text-sm md:text-base lg:text-lg"
           >
-            {t(`${translateNamespace}.politicalKSO`)}:
+            {t(`${translateNamespace}.${politicalXSOLabelKey}`)}:
           </Text>
           <PoliticalRuleLabel
             src={`/logos/politicalParties/${politicalKSO}.png`}
