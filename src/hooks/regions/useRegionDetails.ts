@@ -9,7 +9,7 @@ import { useLanguage } from "@/components/LanguageProvider";
 import { DetailStat } from "@/components/detail/DetailHeader";
 import { getRegions } from "@/lib/api";
 import {
-  calculateParisValue,c
+  calculateParisValue,
   CARBON_LAW_REDUCTION_RATE,
 } from "@/utils/calculations/emissionsCalculations";
 import type { SupportedLanguage } from "@/lib/languageDetection";
@@ -22,7 +22,6 @@ export type RegionDetails = {
   carbonLaw: Record<string, number>;
   meetsParis: boolean;
   historicalEmissionChangePercent: number;
-  logoUrl: string | null;
   municipalities: string[];
   politicalRule: string[];
   politicalKSO: string;
@@ -30,7 +29,6 @@ export type RegionDetails = {
 
 type ApiRegionResponse = {
   region: string;
-  logoUrl?: string | null;
   emissions: ({ year: string; value: number } | null)[];
   totalTrend: number;
   totalCarbonLaw: number;
@@ -108,7 +106,6 @@ function transformApiRegionToRegionDetails(
 ): RegionDetails {
   return {
     name: r.region,
-    logoUrl: r.logoUrl ?? null,
     politicalRule: r.politicalRule,
     politicalKSO: r.politicalRSO,
     municipalities: r.municipalities,
