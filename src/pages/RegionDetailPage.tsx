@@ -80,6 +80,7 @@ export function RegionDetailPage() {
       <DetailWrapper>
         <DetailHeader
           name={region.name}
+          logoUrl={region.logoUrl}
           helpItems={["regionTotalEmissions", "detailWhyDataDelay"]}
           stats={headerStats}
           translateNamespace="detailPage"
