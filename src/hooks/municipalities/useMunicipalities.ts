@@ -8,14 +8,14 @@ type ApiMunicipality = NonNullable<
   paths["/municipalities/"]["get"]["responses"][200]["content"]["application/json"]
 >[0];
 
-interface UseMunicipalitiesReturn {
+interface IMunicipalitiesReturn {
   municipalities: Municipality[];
-  loading: boolean;
-  error: unknown;
+  municipalitiesLoading: boolean;
+  municipalitiesError: any;
   getTopMunicipalities: (count?: number) => Municipality[];
 }
 
-export function useMunicipalities(): UseMunicipalitiesReturn {
+export function useMunicipalities(): IMunicipalitiesReturn {
   const {
     data: municipalities = [],
     isLoading,
@@ -48,8 +48,8 @@ export function useMunicipalities(): UseMunicipalitiesReturn {
 
   return {
     municipalities,
-    loading: isLoading,
-    error,
+    municipalitiesLoading: isLoading,
+    municipalitiesError: error,
     getTopMunicipalities,
   };
 }

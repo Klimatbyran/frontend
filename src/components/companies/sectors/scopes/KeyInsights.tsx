@@ -32,10 +32,10 @@ const KeyInsights: React.FC<KeyInsightsProps> = ({
       icon: ArrowUpRight,
       iconColor: "text-blue-3",
       bgColor: "bg-blue-5",
-      title: t("companiesPage.sectorGraphs.supplyChainImpact"),
+      title: t("companyDetailPage.sectorGraphs.supplyChainImpact"),
       description: (value) =>
-        `${t("companiesPage.sectorGraphs.scope3UpstreamDetails")}${value}${t(
-          "companiesPage.sectorGraphs.ofTotalEmissionsDescription",
+        `${t("companyDetailPage.sectorGraphs.scope3UpstreamDetails")}${value}${t(
+          "companyDetailPage.sectorGraphs.ofTotalEmissionsDescription",
         )}`,
       value: scopeData.scope3.upstream.total,
       total: totalEmissions,
@@ -44,12 +44,12 @@ const KeyInsights: React.FC<KeyInsightsProps> = ({
       icon: Factory,
       iconColor: "text-orange-3",
       bgColor: "bg-orange-5",
-      title: t("companiesPage.sectorGraphs.operationalFootprint"),
+      title: t("companyDetailPage.sectorGraphs.operationalFootprint"),
       description: (value) =>
         `${t(
-          "companiesPage.sectorGraphs.directEmissionsDescription",
+          "companyDetailPage.sectorGraphs.directEmissionsDescription",
         )}${value}${t(
-          "companiesPage.sectorGraphs.ofTotalFootprintDescription",
+          "companyDetailPage.sectorGraphs.ofTotalFootprintDescription",
         )}`,
       value: scopeData.scope1.total,
       total: totalEmissions,
@@ -58,11 +58,11 @@ const KeyInsights: React.FC<KeyInsightsProps> = ({
       icon: ArrowDownRight,
       iconColor: "text-green-3",
       bgColor: "bg-green-5",
-      title: t("companiesPage.sectorGraphs.productLifecycle"),
+      title: t("companyDetailPage.sectorGraphs.productLifecycle"),
       description: (value) =>
         `${t(
-          "companiesPage.sectorGraphs.downstreamActivitiesDescription",
-        )}${value}${t("companiesPage.sectorGraphs.toTotalEmissions")}`,
+          "companyDetailPage.sectorGraphs.downstreamActivitiesDescription",
+        )}${value}${t("companyDetailPage.sectorGraphs.toTotalEmissions")}`,
       value: scopeData.scope3.downstream.total,
       total: totalEmissions,
     },
@@ -71,7 +71,7 @@ const KeyInsights: React.FC<KeyInsightsProps> = ({
   return (
     <div className="bg-black-1 border border-black-2 rounded-lg p-6">
       <h3 className="text-lg font-light text-white mb-4">
-        {t("companiesPage.sectorGraphs.keyInsights")}
+        {t("companyDetailPage.sectorGraphs.keyInsights")}
       </h3>
       <div className="space-y-4">
         {insights.map((insight, index) => {

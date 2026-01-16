@@ -193,7 +193,7 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
 
   const filterGroups: FilterGroup[] = [
     {
-      heading: t("companiesPage.sector"),
+      heading: t("explorePage.companies.sector"),
       options: useSectors().map((s) => ({ value: s.value, label: s.label })),
       selectedValues: sectors,
       onSelect: (value: string) => {
@@ -210,20 +210,20 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
       selectMultiple: true,
     },
     {
-      heading: t("companiesPage.filteringOptions.meetsParis"),
+      heading: t("explorePage.companies.filteringOptions.meetsParis"),
       options: [
         { value: "all", label: t("all") },
         {
           value: "yes",
-          label: t("companiesPage.filteringOptions.meetsParisYes"),
+          label: t("explorePage.companies.filteringOptions.meetsParisYes"),
         },
         {
           value: "no",
-          label: t("companiesPage.filteringOptions.meetsParisNo"),
+          label: t("explorePage.companies.filteringOptions.meetsParisNo"),
         },
         {
           value: "unknown",
-          label: t("companiesPage.filteringOptions.meetsParisUnknown"),
+          label: t("explorePage.companies.filteringOptions.meetsParisUnknown"),
         },
       ],
       selectedValues: [meetsParisFilter],

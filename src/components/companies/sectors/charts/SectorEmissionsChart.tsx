@@ -142,7 +142,7 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
                   pieChartData={pieChartDataWithColor}
                   size={size}
                   customActionLabel={t(
-                    `companiesPage.sectorGraphs.${selectedSector ? "pieLegendCompany" : "pieLegendSector"}`,
+                    `companyDetailPage.sectorGraphs.${selectedSector ? "pieLegendCompany" : "pieLegendSector"}`,
                   )}
                   handlePieClick={handlePieClick}
                   layout={screenSize.isMobile ? "mobile" : "desktop"}
@@ -159,7 +159,7 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
           ) : (
             <div className="flex justify-center items-center h-64">
               <p className="text-grey">
-                {t("companiesPage.sectorGraphs.noDataAvailablePieChart")}
+                {t("companyDetailPage.sectorGraphs.noDataAvailablePieChart")}
               </p>
             </div>
           )

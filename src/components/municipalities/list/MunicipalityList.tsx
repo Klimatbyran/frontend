@@ -1,5 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useMemo } from "react";
+import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { CardGrid } from "@/components/layout/CardGrid";
 import { ListCard } from "@/components/layout/ListCard";
 import { useLanguage } from "@/components/LanguageProvider";
@@ -7,31 +9,134 @@ import {
   formatEmissionsAbsolute,
   formatPercentChange,
 } from "@/utils/formatting/localization";
-import type {
+import {
+  isMeetsParisFilter,
+  isMunicipalitySortBy,
   MeetsParisFilter,
-  Municipality,
   MunicipalitySortBy,
 } from "@/types/municipality";
-import { SortDirection } from "@/components/explore/SortPopover";
+import { SortDirection, SortPopover } from "@/components/explore/SortPopover";
+import { useScreenSize } from "@/hooks/useScreenSize";
+import { Input } from "@/components/ui/input";
+import { FilterBadges } from "@/components/companies/list/FilterBadges";
+import { FilterPopover } from "@/components/explore/FilterPopover";
+import { useSortOptions } from "@/hooks/municipalities/useMunicipalitiesSorting";
+import type { Municipality } from "@/types/municipality";
+import { isSortDirection } from "@/components/explore/SortPopover";
+import type { FilterGroup } from "@/components/explore/FilterPopover";
+import { regions } from "@/lib/constants/regions";
+import { cn } from "@/lib/utils";
 
 interface MunicipalityListProps {
   municipalities: Municipality[];
-  selectedRegion: string;
-  meetsParisFilter: MeetsParisFilter;
-  searchQuery: string;
-  sortBy: MunicipalitySortBy;
-  sortDirection: SortDirection;
 }
-export function MunicipalityList({
-  municipalities,
-  selectedRegion,
-  meetsParisFilter,
-  searchQuery,
-  sortBy,
-  sortDirection,
-}: MunicipalityListProps) {
+export function MunicipalityList({ municipalities }: MunicipalityListProps) {
+  const screenSize = useScreenSize();
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [sortOpen, setSortOpen] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const sortOptions = useSortOptions();
+
+  const selectedRegion = searchParams.get("selectedRegion") || "all";
+  const meetsParisFilter = isMeetsParisFilter(
+    searchParams.get("meetsParisFilter") ?? "",
+  )
+    ? (searchParams.get("meetsParisFilter") as MeetsParisFilter)
+    : "all";
+  const searchQuery = searchParams.get("searchQuery") || "";
+  const sortBy = isMunicipalitySortBy(searchParams.get("sortBy") ?? "")
+    ? (searchParams.get("sortBy") as MunicipalitySortBy)
+    : "emissions";
+  const sortDirection = isSortDirection(searchParams.get("sortDirection") ?? "")
+    ? (searchParams.get("sortDirection") as SortDirection)
+    : (sortOptions.find((s) => s.value === sortBy)?.defaultDirection ?? "desc");
+
+  const setOrDeleteSearchParam = (value: string | null, param: string) =>
+    setSearchParams(
+      (searchParams) => {
+        value ? searchParams.set(param, value) : searchParams.delete(param);
+        return searchParams;
+      },
+      { replace: true },
+    );
+
+  const setSelectedRegion = (selectedRegion: string) =>
+    setOrDeleteSearchParam(selectedRegion, "selectedRegion");
+  const setMeetsParisFilter = (meetsParisFilter: string) =>
+    setOrDeleteSearchParam(meetsParisFilter, "meetsParisFilter");
+  const setSearchQuery = (searchQuery: string) =>
+    setOrDeleteSearchParam(searchQuery.trim() || null, "searchQuery");
+  const setSortBy = (sortBy: string) =>
+    setOrDeleteSearchParam(sortBy, "sortBy");
+  const setSortDirection = (sortDirection: string) =>
+    setOrDeleteSearchParam(sortDirection, "sortDirection");
+
+  const filterGroups: FilterGroup[] = [
+    {
+      heading: t("explorePage.municipalities.filteringOptions.selectRegion"),
+      options: [
+        {
+          value: "all",
+          label: t("explorePage.municipalities.filteringOptions.allRegions"),
+        },
+        ...Object.keys(regions).map((r) => ({ value: r, label: r })),
+      ],
+      selectedValues: [selectedRegion],
+      onSelect: setSelectedRegion,
+      selectMultiple: false,
+    },
+    {
+      heading: t("explorePage.municipalities.sortingOptions.meetsParis"),
+      options: [
+        { value: "all", label: t("all") },
+        {
+          value: "yes",
+          label: t("yes"),
+        },
+        {
+          value: "no",
+          label: t("no"),
+        },
+      ],
+      selectedValues: [meetsParisFilter],
+      onSelect: (value: string) =>
+        setMeetsParisFilter(value as MeetsParisFilter),
+      selectMultiple: false,
+    },
+  ];
+
+  // Create active filters for badges
+  const activeFilters = [
+    ...(selectedRegion !== "all"
+      ? [
+          {
+            type: "filter" as const,
+            label: selectedRegion,
+            onRemove: () => setSelectedRegion("all"),
+          },
+        ]
+      : []),
+    ...(meetsParisFilter !== "all"
+      ? [
+          {
+            type: "filter" as const,
+            label: `${t("explorePage.municipalities.sortingOptions.meetsParis")}: ${
+              meetsParisFilter === "yes" ? t("yes") : t("no")
+            }`,
+            onRemove: () => setMeetsParisFilter("all"),
+          },
+        ]
+      : []),
+    {
+      type: "sort" as const,
+      label: String(
+        sortOptions.find((s) => s.value === sortBy)?.label ?? sortBy,
+      ),
+    },
+  ];
+
   const filteredMunicipalities = municipalities.filter((municipality) => {
     if (selectedRegion !== "all" && municipality.region !== selectedRegion) {
       return false;
@@ -139,13 +244,66 @@ export function MunicipalityList({
   }, [sortedMunicipalities, currentLanguage, t]);
 
   return (
-    <div className="space-y-8">
+    <>
+      {/* Filters & Sorting Section */}
+      <div
+        className={cn(
+          screenSize.isMobile ? "relative" : "sticky top-0 z-10",
+          "bg-black shadow-md",
+        )}
+      >
+        <div className="absolute inset-0 w-full bg-black -z-10" />
+
+        {/* Wrapper for Filters, Search, and Badges */}
+        <div className={cn("flex flex-wrap items-center gap-2 mb-2 md:mb-4")}>
+          {/* Search Input */}
+          <Input
+            type="text"
+            placeholder={t(
+              "explorePage.municipalities.filteringOptions.searchPlaceholder",
+            )}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="bg-black-1 rounded-md px-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-2 relative w-full md:w-[350px]"
+          />
+
+          {/* Filter and Sort Buttons */}
+          <FilterPopover
+            filterOpen={filterOpen}
+            setFilterOpen={setFilterOpen}
+            groups={filterGroups}
+          />
+
+          <SortPopover
+            sortOpen={sortOpen}
+            setSortOpen={setSortOpen}
+            sortOptions={sortOptions}
+            sortBy={sortBy}
+            setSortBy={setSortBy}
+            sortDirection={sortDirection}
+            setSortDirection={setSortDirection}
+          />
+
+          {/* Badges */}
+          {activeFilters.length > 0 && (
+            <div
+              className={cn(
+                "flex flex-wrap gap-2",
+                screenSize.isMobile ? "w-full" : "flex-1",
+              )}
+            >
+              <FilterBadges filters={activeFilters} view="list" />
+            </div>
+          )}
+        </div>
+      </div>
+
       <CardGrid
         items={transformedMunicipalities}
         itemContent={(transformedData) => (
           <ListCard key={transformedData.linkTo} {...transformedData} />
         )}
       />
-    </div>
+    </>
   );
 }

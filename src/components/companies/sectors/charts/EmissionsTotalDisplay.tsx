@@ -47,8 +47,8 @@ const EmissionsTotalDisplay: React.FC<EmissionsTotalDisplayProps> = ({
         >
           <div className="text-sm text-grey">
             {isSectorView
-              ? t("companiesPage.sectorGraphs.sectorTotal")
-              : t("companiesPage.sectorGraphs.total")}
+              ? t("companyDetailPage.sectorGraphs.sectorTotal")
+              : t("companyDetailPage.sectorGraphs.total")}
             <span className="ml-2 text-xl font-light text-white">
               {formatEmissionsAbsolute(
                 Math.round(totalEmissions),

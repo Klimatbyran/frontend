@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
@@ -14,6 +14,14 @@ import { calculateEmissionsChange } from "@/utils/calculations/emissionsCalculat
 import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 import { getCompanySectorName } from "@/utils/data/industryGrouping";
 import type { RankedCompany } from "@/types/company";
+import { useSortOptions } from "@/hooks/companies/useCompanySorting";
+import { useCompanyFilters } from "@/hooks/companies/useCompanyFilters";
+import { Input } from "@/components/ui/input";
+import { FilterBadges } from "@/components/companies/list/FilterBadges";
+import { FilterPopover } from "@/components/explore/FilterPopover";
+import { SortPopover } from "@/components/explore/SortPopover";
+import { useScreenSize } from "@/hooks/useScreenSize";
+import { cn } from "@/lib/utils";
 
 interface CompanyListProps {
   companies: RankedCompany[];
@@ -24,12 +32,31 @@ export function CompanyList({ companies }: CompanyListProps) {
   const { currentLanguage } = useLanguage();
   const { isEmissionsAIGenerated } = useVerificationStatus();
   const sectorNames = useSectorNames();
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [sortOpen, setSortOpen] = useState(false);
+  const sortOptions = useSortOptions();
+  const screenSize = useScreenSize();
+
+  const {
+    searchQuery,
+    setSearchQuery,
+    sectors,
+    setSectors,
+    meetsParisFilter,
+    setMeetsParisFilter,
+    sortBy,
+    setSortBy,
+    sortDirection,
+    setSortDirection,
+    filteredCompanies,
+    filterGroups,
+  } = useCompanyFilters(companies);
 
   // Transform company data for ListCard components
   const transformedCompanies = useMemo(() => {
     if (!companies) return [];
 
-    return companies.map((company) => {
+    return filteredCompanies.map((company) => {
       const { wikidataId, name, industry, reportingPeriods } = company;
       const isFinancialsSector = industry?.industryGics?.sectorCode === "40";
       const latestPeriod = reportingPeriods?.[0];
@@ -115,21 +142,107 @@ export function CompanyList({ companies }: CompanyListProps) {
     return (
       <div className="text-center py-12">
         <h3 className="text-xl font-light text-grey">
-          {t("companiesPage.noCompaniesFound")}
+          {t("explorePage.companies.noCompaniesFound")}
         </h3>
         <p className="text-grey mt-2">
-          {t("companiesPage.tryDifferentCriteria")}
+          {t("explorePage.companies.tryDifferentCriteria")}
         </p>
       </div>
     );
   }
 
+  // Create active filters for badges
+  const activeFilters = [
+    ...(sectors.length > 0 && !sectors.includes("all")
+      ? sectors.map((sector) => ({
+          type: "filter" as const,
+          label: sectorNames[sector as keyof typeof sectorNames] || sector,
+          onRemove: () => setSectors(sectors.filter((s) => s !== sector)),
+        }))
+      : []),
+    ...(meetsParisFilter !== "all"
+      ? [
+          {
+            type: "filter" as const,
+            label: `${t("explorePage.companies.filteringOptions.meetsParis")}: ${
+              meetsParisFilter === "yes"
+                ? t("explorePage.companies.filteringOptions.meetsParisYes")
+                : meetsParisFilter === "no"
+                  ? t("explorePage.companies.filteringOptions.meetsParisNo")
+                  : t(
+                      "explorePage.companies.filteringOptions.meetsParisUnknown",
+                    )
+            }`,
+            onRemove: () => setMeetsParisFilter("all"),
+          },
+        ]
+      : []),
+    {
+      type: "sort" as const,
+      label: String(
+        sortOptions.find((s) => s.value === sortBy)?.label ?? sortBy,
+      ),
+    },
+  ];
+
   return (
-    <CardGrid
-      items={transformedCompanies}
-      itemContent={(transformedData) => (
-        <ListCard key={transformedData.linkTo} {...transformedData} />
-      )}
-    />
+    <>
+      {/* Filters & Sorting Section */}
+      <div
+        className={cn(
+          screenSize.isMobile ? "relative" : "sticky top-0 z-10",
+          "bg-black shadow-md",
+        )}
+      >
+        <div className="absolute inset-0 w-full bg-black -z-10" />
+
+        {/* Wrapper for Filters, Search, and Badges */}
+        <div className={cn("flex flex-wrap items-center gap-2 mb-2 md:mb-4")}>
+          {/* Search Input */}
+          <Input
+            type="text"
+            placeholder={t("explorePage.companies.searchPlaceholder")}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="bg-black-1 rounded-md px-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-2 relative w-full md:w-[350px]"
+          />
+
+          {/* Filter and Sort Buttons */}
+          <FilterPopover
+            filterOpen={filterOpen}
+            setFilterOpen={setFilterOpen}
+            groups={filterGroups}
+          />
+
+          <SortPopover
+            sortOpen={sortOpen}
+            setSortOpen={setSortOpen}
+            sortOptions={sortOptions}
+            sortBy={sortBy}
+            setSortBy={setSortBy}
+            sortDirection={sortDirection}
+            setSortDirection={setSortDirection}
+          />
+
+          {/* Badges */}
+          {activeFilters.length > 0 && (
+            <div
+              className={cn(
+                "flex flex-wrap gap-2",
+                screenSize.isMobile ? "w-full" : "flex-1",
+              )}
+            >
+              <FilterBadges filters={activeFilters} view="list" />
+            </div>
+          )}
+        </div>
+      </div>
+      <CardGrid
+        items={transformedCompanies}
+        itemContent={(transformedData) => (
+          <ListCard key={transformedData.linkTo} {...transformedData} />
+        )}
+      />
+    </>
   );
 }

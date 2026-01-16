@@ -21,7 +21,7 @@ const companyChangeRate = (company: RankedCompany) =>
   );
 
 export const InternalDashboard = () => {
-  const { companies, loading, error } = useCompanies();
+  const { companies, companiesLoading, companiesError } = useCompanies();
   const { currentLanguage } = useLanguage();
 
   const [sortBy, setSortBy] = useState<
@@ -40,7 +40,7 @@ export const InternalDashboard = () => {
     }
   };
 
-  if (loading) {
+  if (companiesLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-lg">Loading companies...</div>
@@ -48,11 +48,11 @@ export const InternalDashboard = () => {
     );
   }
 
-  if (error) {
+  if (companiesError) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-lg text-red-600">
-          Error loading companies: {error.message}
+          Error loading companies: {companiesError.message}
         </div>
       </div>
     );

@@ -54,10 +54,10 @@ const EmissionsSourcesAnalysis: React.FC<EmissionsSourcesAnalysisProps> = ({
           }`}
         >
           <h2 className="text-xl font-light text-white">
-            {t("companiesPage.sectorGraphs.emissionsSourcesAnalysis")}
+            {t("companyDetailPage.sectorGraphs.emissionsSourcesAnalysis")}
           </h2>
           <span className="text-sm text-grey">
-            {t("companiesPage.sectorGraphs.ghgProtocolScopes")}
+            {t("companyDetailPage.sectorGraphs.ghgProtocolScopes")}
           </span>
         </div>
         <EmissionsTotalDisplay

@@ -29,10 +29,10 @@ const EmissionsTrendAnalysis: React.FC<EmissionsTrendAnalysisProps> = ({
         } gap-2`}
       >
         <h2 className="text-xl font-light text-white">
-          {t("companiesPage.sectorGraphs.emissionsTrendAnalysis")}
+          {t("companyDetailPage.sectorGraphs.emissionsTrendAnalysis")}
         </h2>
         <span className="text-sm text-grey">
-          {t("companiesPage.sectorGraphs.fromBaseYear")}
+          {t("companyDetailPage.sectorGraphs.fromBaseYear")}
         </span>
       </div>
 
