@@ -46,8 +46,8 @@ export function SectorEmissionsChart({
   return (
     <SectionWithHelp helpItems={helpItems}>
       <CardHeader
-        title={t(`${translateNamespace}.sectorEmissions`)}
-        description={t(`${translateNamespace}.sectorEmissionsYear`, {
+        title={t("detailPage.sectorEmissions")}
+        description={t("detailPage.sectorEmissionsYear", {
           year: currentYear,
         })}
         customDataViewSelector={

@@ -1038,6 +1038,8 @@
     "annualChange": "Årlig förändring",
     "meetsParisGoal": "Klarar Parisavtalet",
     "changeSince2015": "Årlig utsläppsförändring sedan 2015",
+    "sectorEmissions": "Utsläppskällor",
+    "sectorEmissionsYear": "Utsläpp per sektor år {{year}}",
     "graph": {
       "historical": "Historiskt",
       "estimated": "Uppskattat",
@@ -1081,8 +1083,6 @@
     "electricCarsPerChargePoint": "Elbilar per laddpunkt",
     "noChargePoints": "Saknar laddpunkter",
     "bicycleMetrePerCapita": "Cykelvägsmeter per invånare",
-    "sectorEmissions": "Utsläppskällor",
-    "sectorEmissionsYear": "Utsläpp per sektor år {{year}}",
     "filteredSectors": "Filtrerade sektorer",
     "sectorChart": {
       "clickToFilter": "Klicka för att filtrera bort",
@@ -1452,9 +1452,7 @@
   },
   "regions": {
     "detailPage": {
-      "municipalities": "Kommuner",
-      "sectorEmissions": "Utsläppskällor",
-      "sectorEmissionsYear": "Utsläpp per sektor år {{year}}"
+      "municipalities": "Kommuner"
     },
     "kpis": {
       "emissions": {
