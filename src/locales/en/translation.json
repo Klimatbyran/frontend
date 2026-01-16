@@ -1723,7 +1723,7 @@
     "searchDialog": {
       "title": "Search",
       "description": "Search for companies or municipalities",
-      "emptyText": "Start typing to search",
+      "emptyText": "Start typing to search for companies or municipalities",
       "loadingText": "Fetching companies and municipalities...",
       "shortcutTipText": "Trigger search by Ctrl+K / ⌘+K"
     }
