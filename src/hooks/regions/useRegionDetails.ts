@@ -15,6 +15,7 @@ import {
 
 export type RegionDetails = {
   name: string;
+  logoUrl: string | null;
   emissions: Record<string, number>;
   approximatedHistoricalEmission: Record<string, number>;
   trend: Record<string, number>;
@@ -25,6 +26,7 @@ export type RegionDetails = {
 
 type ApiRegionResponse = {
   region: string;
+  logoUrl?: string | null;
   emissions: ({ year: string; value: number } | null)[];
   trend: ({ year: string; value: number } | null)[];
   approximatedHistoricalEmission: ({ year: string; value: number } | null)[];
@@ -121,6 +123,7 @@ export function useRegionDetails(name: string) {
 
       return {
         name: r.region,
+        logoUrl: r.logoUrl ?? null,
         emissions: emissionsRecord,
         approximatedHistoricalEmission: approximatedRecord,
         trend: trendRecord,
