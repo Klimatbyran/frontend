@@ -29,3 +29,11 @@ export type SectorEmissionsByYear = {
     [sector: string]: number;
   };
 };
+
+// The API returns { sectors: { [year]: { [sector]: number } } }
+export type SectorEmissionsResponse = {
+  sectors: SectorEmissionsByYear;
+};
+
+// Type alias for components that expect { sectors: SectorEmissionsByYear }
+export type SectorEmissions = SectorEmissionsResponse;

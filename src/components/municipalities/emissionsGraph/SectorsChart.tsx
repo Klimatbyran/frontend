@@ -10,8 +10,8 @@ import { useTranslation } from "react-i18next";
 import { XAxis, YAxis } from "recharts";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useScreenSize } from "@/hooks/useScreenSize";
-import { SectorEmissions } from "@/types/municipality";
-import { useMunicipalitySectors } from "@/hooks/municipalities/useMunicipalitySectors";
+import { SectorEmissions } from "@/types/emissions";
+import { useSectors } from "@/hooks/territories/useSectors";
 import {
   DynamicLegendContainer,
   LegendItem,
@@ -43,7 +43,7 @@ export const SectorsChart: FC<SectorsChartProps> = ({
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
   const { isMobile } = useScreenSize();
-  const { getSectorInfo } = useMunicipalitySectors();
+  const { getSectorInfo } = useSectors();
 
   const MAX_YEAR = new Date().getFullYear() + 5;
   const CUTOFF_YEAR = new Date().getFullYear() - 1;

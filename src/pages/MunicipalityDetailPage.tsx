@@ -10,8 +10,8 @@ import {
   localizeUnit,
 } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
-import { useMunicipalitySectorEmissions } from "@/hooks/municipalities/useMunicipalitySectorEmissions";
-import { MunicipalityEmissions } from "@/components/municipalities/MunicipalityEmissions";
+import { useSectorEmissions } from "@/hooks/territories/useSectorEmissions";
+import { TerritoryEmissions } from "@/components/territories/TerritoryEmissions";
 import { useHiddenItems } from "@/components/charts";
 import { PageLoading } from "@/components/pageStates/Loading";
 import { PageError } from "@/components/pageStates/Error";
@@ -26,7 +26,7 @@ import { LinkCard } from "@/components/detail/DetailLinkCard";
 import { DetailHeader } from "@/components/detail/DetailHeader";
 import { DetailSection } from "@/components/detail/DetailSection";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";
-import { useMunicipalitySectors } from "@/hooks/municipalities/useMunicipalitySectors";
+import { useSectors } from "@/hooks/territories/useSectors";
 import { DetailLinkCardGrid } from "@/components/detail/DetailGrid";
 import { SectorEmissionsChart } from "@/components/charts/sectorChart/SectorEmissions";
 
@@ -36,10 +36,12 @@ export function MunicipalityDetailPage() {
   const { municipality, loading, error } = useMunicipalityDetails(id || "");
   const { currentLanguage } = useLanguage();
 
-  const { sectorEmissions, loading: _loadingSectors } =
-    useMunicipalitySectorEmissions(id);
+  const { sectorEmissions, loading: _loadingSectors } = useSectorEmissions(
+    "municipalities",
+    id,
+  );
 
-  const { getSectorInfo } = useMunicipalitySectors();
+  const { getSectorInfo } = useSectors();
   const { hiddenItems: filteredSectors, setHiddenItems: setFilteredSectors } =
     useHiddenItems<string>([]);
 
@@ -105,7 +107,7 @@ export function MunicipalityDetailPage() {
           translateNamespace="municipalityDetailPage"
         />
 
-        <MunicipalityEmissions
+        <TerritoryEmissions
           emissionsData={emissionsData}
           sectorEmissions={sectorEmissions}
         />

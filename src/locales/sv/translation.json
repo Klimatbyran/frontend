@@ -1038,6 +1038,24 @@
     "annualChange": "Årlig förändring",
     "meetsParisGoal": "Klarar Parisavtalet",
     "changeSince2015": "Årlig utsläppsförändring sedan 2015",
+    "sectorEmissions": "Utsläppskällor",
+    "sectorEmissionsYear": "Utsläpp per sektor år {{year}}",
+    "filteredSectors": "Filtrerade sektorer",
+    "sectorChart": {
+      "clickToFilter": "Klicka för att filtrera bort",
+      "clickToShow": "Klicka för att visa"
+    },
+    "sectors": {
+      "industry": "Industri",
+      "productUse": "Produktanvändning",
+      "internationalTransport": "Utrikes transporter",
+      "agriculture": "Jordbruk",
+      "electricityAndHeating": "El och fjärrvärme",
+      "workingMachines": "Arbetsmaskiner",
+      "waste": "Avfall",
+      "ownHeating": "Uppvärmning av byggnader",
+      "transport": "Transporter"
+    },
     "graph": {
       "historical": "Historiskt",
       "estimated": "Uppskattat",
@@ -1080,25 +1098,7 @@
     "electricCarChange": "Ökning av andel elbilar",
     "electricCarsPerChargePoint": "Elbilar per laddpunkt",
     "noChargePoints": "Saknar laddpunkter",
-    "bicycleMetrePerCapita": "Cykelvägsmeter per invånare",
-    "sectorEmissions": "Utsläppskällor",
-    "sectorEmissionsYear": "Utsläpp per sektor år {{year}}",
-    "filteredSectors": "Filtrerade sektorer",
-    "sectorChart": {
-      "clickToFilter": "Klicka för att filtrera bort",
-      "clickToShow": "Klicka för att visa"
-    },
-    "sectors": {
-      "industry": "Industri",
-      "productUse": "Produktanvändning",
-      "internationalTransport": "Utrikes transporter",
-      "agriculture": "Jordbruk",
-      "electricityAndHeating": "El och fjärrvärme",
-      "workingMachines": "Arbetsmaskiner",
-      "waste": "Avfall",
-      "ownHeating": "Uppvärmning av byggnader",
-      "transport": "Transporter"
-    }
+    "bicycleMetrePerCapita": "Cykelvägsmeter per invånare"
   },
   "sector": {
     "energy": "Energi",

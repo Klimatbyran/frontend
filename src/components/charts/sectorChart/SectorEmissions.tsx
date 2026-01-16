@@ -5,12 +5,12 @@ import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { DetailPieSectorGrid } from "@/components/detail/DetailGrid";
 import { DataGuideItemId } from "@/data-guide/items";
 import { SectorInfo } from "@/types/charts";
-import { SectorEmissionsByYear } from "@/types/emissions";
+import { SectorEmissions } from "@/types/emissions";
 import SectorPieChart from "./SectorPieChart";
 import SectorPieLegend from "./SectorPieLegend";
 
 interface SectorEmissionsProps {
-  sectorEmissions: SectorEmissionsByYear | null;
+  sectorEmissions: SectorEmissions | null;
   availableYears: number[];
   selectedYear: string;
   onYearChange: (year: string) => void;
@@ -46,8 +46,8 @@ export function SectorEmissionsChart({
   return (
     <SectionWithHelp helpItems={helpItems}>
       <CardHeader
-        title={t(`${translateNamespace}.sectorEmissions`)}
-        description={t(`${translateNamespace}.sectorEmissionsYear`, {
+        title={t("detailPage.sectorEmissions")}
+        description={t("detailPage.sectorEmissionsYear", {
           year: currentYear,
         })}
         customDataViewSelector={
