@@ -4,7 +4,7 @@ import {
   useRegionDetails,
   useRegionDetailHeaderStats,
 } from "@/hooks/regions/useRegionDetails";
-import { RegionEmissions } from "@/components/regions/RegionEmissions";
+import { TerritoryEmissions } from "@/components/territories/TerritoryEmissions";
 import { PageLoading } from "@/components/pageStates/Loading";
 import { PageError } from "@/components/pageStates/Error";
 import { PageNoData } from "@/components/pageStates/NoData";
@@ -20,6 +20,7 @@ import {
   getCurrentYearFromAvailable,
 } from "@/utils/detail/sectorYearUtils";
 import { SectorEmissionsChart } from "@/components/charts/sectorChart/SectorEmissions";
+import { DataPoint } from "@/types/municipality";
 
 export function RegionDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -60,13 +61,7 @@ export function RegionDetailPage() {
           carbonLaw: region.carbonLaw?.[year]
             ? region.carbonLaw[year] / 1000
             : undefined, // Convert to tons
-        } as {
-          year: number;
-          total?: number;
-          approximated?: number;
-          trend?: number;
-          carbonLaw?: number;
-        };
+        } as DataPoint;
       })
       .sort((a, b) => a.year - b.year)
       .filter((d) => d.year >= 1990 && d.year <= 2050);
@@ -111,7 +106,7 @@ export function RegionDetailPage() {
           translateNamespace="detailPage"
         />
 
-        <RegionEmissions
+        <TerritoryEmissions
           emissionsData={emissionsData}
           sectorEmissions={sectorEmissions}
         />

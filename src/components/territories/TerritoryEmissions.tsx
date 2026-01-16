@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
+import { DataPoint } from "@/types/municipality";
 import {
   getDynamicChartHeight,
   useDataView,
@@ -8,19 +9,18 @@ import {
 } from "@/components/charts";
 import { CardHeader } from "@/components/layout/CardHeader";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
-import { RegionEmissionsGraph } from "./emissionsGraph/RegionEmissionsGraph";
-import { DataPoint } from "@/types/municipality";
 import { SectorEmissions } from "@/hooks/territories/useSectorEmissions";
+import { TerritoryEmissionsGraph } from "./emissionsGraph/TerritoryEmissionsGraph";
 
 type DataView = "overview" | "sectors";
 
-interface RegionEmissionsProps {
+interface TerritoryEmissionsProps {
   emissionsData: DataPoint[];
   sectorEmissions: SectorEmissions | null;
   className?: string;
 }
 
-export const RegionEmissions: FC<RegionEmissionsProps> = ({
+export const TerritoryEmissions: FC<TerritoryEmissionsProps> = ({
   emissionsData,
   sectorEmissions,
 }) => {
@@ -58,7 +58,7 @@ export const RegionEmissions: FC<RegionEmissionsProps> = ({
         className="mt-8"
         style={{ height: getDynamicChartHeight(dataView, false) }}
       >
-        <RegionEmissionsGraph
+        <TerritoryEmissionsGraph
           projectedData={emissionsData}
           sectorEmissions={sectorEmissions || undefined}
           dataView={dataView}

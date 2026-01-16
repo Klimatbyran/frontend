@@ -11,7 +11,7 @@ import {
 } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useSectorEmissions } from "@/hooks/territories/useSectorEmissions";
-import { MunicipalityEmissions } from "@/components/municipalities/MunicipalityEmissions";
+import { TerritoryEmissions } from "@/components/territories/TerritoryEmissions";
 import { useHiddenItems } from "@/components/charts";
 import { PageLoading } from "@/components/pageStates/Loading";
 import { PageError } from "@/components/pageStates/Error";
@@ -36,8 +36,10 @@ export function MunicipalityDetailPage() {
   const { municipality, loading, error } = useMunicipalityDetails(id || "");
   const { currentLanguage } = useLanguage();
 
-  const { sectorEmissions, loading: _loadingSectors } =
-    useSectorEmissions("municipalities", id);
+  const { sectorEmissions, loading: _loadingSectors } = useSectorEmissions(
+    "municipalities",
+    id,
+  );
 
   const { getSectorInfo } = useSectors();
   const { hiddenItems: filteredSectors, setHiddenItems: setFilteredSectors } =
@@ -105,7 +107,7 @@ export function MunicipalityDetailPage() {
           translateNamespace="municipalityDetailPage"
         />
 
-        <MunicipalityEmissions
+        <TerritoryEmissions
           emissionsData={emissionsData}
           sectorEmissions={sectorEmissions}
         />
