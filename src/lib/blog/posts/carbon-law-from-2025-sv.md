@@ -21,17 +21,17 @@ relatedPosts:
 
 ## 1. Vad är Carbon Law?
  
-**Carbon Law** presenterades av Johan Rockström, Johan Falk och Owen Gaffney 2017, som ett vetenskapligt baserat ramverk som beskriver hur världen kan begränsa den globala uppvärmningen till väl under 2°C, med sikte på 1,5°C.
+**Carbon Law** presenterades av Johan Rockström, Johan Falk och Owen Gaffney 2017, som en vetenskapligt baserad tumregel för hur världen kan begränsa den globala uppvärmningen till väl under 2°C, med sikte på 1,5°C och därigenom klara Parisavtalet.
 
-Inspirerad av Moores lag, som beskriver datorernas prestandautveckling, är Carbon Law en slags tumregel, som beskriver exponentiella minskningar av de globala koldioxidutsläppen och ger vägledning för regeringar, företag, kommuner och individer.
+Carbon Law är inspirerad av Moores lag, som beskriver datorernas prestandautveckling, och ger vägledning för regeringar, företag, kommuner och individer.
 
 **Kärnan i Carbon Law:**
 
-**1.** Halvera de globala koldioxidutsläppen varje årtionde från 2020 och framåt.  
-**2.** Fördubbla teknik och kapacitet för kolinlagring varje årtionde. 
+**1.** Halvera de globala koldioxidutsläppen var tionde år från 2020 och framåt.  
+**2.** Fördubbla teknik och kapacitet för kolinlagring var tionde år. 
 **3.** Uppnå nettonollutsläpp omkring 2050.   
 
-2025 ligger vi **fem år** efter denna bana. De globala utsläppen ökar fortfarande och koldioxidbudgeten för att hålla oss under 1,5°C kan vara förbrukad på bara sex år.
+2025 ligger vi **fem år** efter. De globala utsläppen ökar fortfarande och koldioxidbudgeten för att hålla oss under 1,5°C kan vara förbrukad inom bara sex år.
 
 **Klimatkollens svar:**  
 Vi föreslår en ny reduktionsbana med start 2025 för att klara Parisavtalet.
@@ -48,12 +48,12 @@ Med utgångspunkt i **Global Carbon Budget 2024** har Klimatkollen räknat om de
 
 ---
 
-## 3. Vad är detaljerna i Klimatkollens beräkningar?
+## 3. Hur har Klimatkollen räknat?
 
 Baserat på återstående koldioxidbudgetar från Global Carbon Budget 2024 gäller följande:
 
 **Uppvärmningsnivå 1,5°C**
-- 50% Chans budget: 305 GtCO₂
+- Budget för 50% chans att klara 1,5 grader: 305 GtCO₂
 - Årlig minskningstakt: 11,72%
 
 **Uppvärmningsnivå 1,7°C**
@@ -68,7 +68,7 @@ Baserat på återstående koldioxidbudgetar från Global Carbon Budget 2024 gäl
 **Antaganden:**
 Våra beräkningar utgår från kvarstående utsläpp på 5,5 GtCO₂ år 2050 och baseras på 50% chans att inte överskrida 1,5°C. *(Källa: All options, not silver bullets, needed to limit global warming to 1.5 °C: a scenario appraisal, 2023)*
 
-Det årliga 12% minskningsparet tar inte hänsyn till rättvisa eller enskilda aktörers förmåga att omställa sin verksamhet, utan ska användas som tumregel för att illustrera det tempot som behövs globalt för att ha en chans att begränsa den globala uppvärmningen till 1,5°C.
+Minskningstakten 12% per år tar inte hänsyn till rättviseaspekter eller enskilda aktörers förmåga att ställa om, utan är en generell tumregel som beskriver takten som behövs för att ha en chans att begränsa den globala uppvärmningen till 1,5°C.
 
 ---
 
@@ -94,15 +94,15 @@ Det finns inga rättsliga förpliktelser, men:
 
 ## 6. Varför 1,5°C, är det inte för sent?
 
-Det är kode röd för mänskligheten. Utsläppen ökar fortfarande, den globala uppvärmningen accelererar, och den kvarstående koldioxidbudgeten för att hålla den globala uppvärmningen under 1,5°C – mänsklighetens säkra rymd – försvinner snabbt.
+Larmklockorna ringer för mänskligheten. Utsläppen ökar fortfarande, den globala uppvärmningen accelererar, och den kvarstående koldioxidbudgeten för att hålla den globala uppvärmningen under 1,5°C försvinner nu snabbt.
 
-Vi är i vårt livs lopp: att avkarbonisera våra ekonomier och skala upp lösningarna. Varje ton som släpps ut räknas. Och att stanna under 1,5°C global uppvärmning bör vara vår högsta prioritet – miljarder liv beror på våra handlingar idag.
+Det är vår tids stora uppgift: att ta våra ekonomier ur den fossila eran och skala upp lösningarna. Varje utsläppt ton räknas. Och att hålla uppvärmningen under 1,5 °C behöver vara högsta prioritet – miljarder människoliv hänger på på vad vi gör idag.
 
 > **“Go beyond 1.5°C warming, a place our civilisations have never experienced and Earth has not seen in the last 100,000 years, and we will not only see major human and economic damage, but are likely to cross multiple Earth system tipping points, causing amplified warming with billions of people affected.” – Johan Rockström**
 
 ---
 
-## 7.Vad är den globala koldioxidbudgeten?
+## 7. Vad är den globala koldioxidbudgeten?
 
 En koldioxidbudget definierar hur mycket koldioxid vi kan släppa ut samtidigt som vi begränsar uppvärmningen till ett visst mål.
 
@@ -123,9 +123,9 @@ Klimatkollens utgångspunkter:
 
 Klimatkollen publicerar visualiseringar som visar hur varje företag presterar jämfört med en utsläppsminskning på 12% per år.
 
-- Företagen kan använda detta som en **gemensam referens**, oavsett basår eller sektor. 
+- Företagen kan använda detta som en **gemensam referens**, oavsett basår eller bransch. 
 - **Scope 3-utsläpp** (värdekedjan) har varit och är särskilt utmanande att minska, men företag bör kunna dra nytta av den allmänna utvecklingen inom förnybar energi och klimatsmarta lösningar framöver.  
-- Vissa snabbt växande klimatlösningsföretag kan motivera ökade utsläpp under en period (t.ex. företag inom förnybar energi), eftersom deras lösningar kommer att ersätta fossilbaserade produkter. (Exempel: [Exoponential Roadmap Initiative](https://exponentialroadmap.org/climate-solutions-framework/))
+- Vissa snabbt växande klimatlösningsföretag kan motivera ökade utsläpp under en period (t.ex. företag inom förnybar energi), eftersom deras lösningar kommer att ersätta fossilbaserade produkter. (Exempel: [Exponential Roadmap Initiative](https://exponentialroadmap.org/climate-solutions-framework/))
 
 ---
 
