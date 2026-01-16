@@ -14,7 +14,7 @@ interface CardHeaderProps<T extends string = string> {
 
   // Optional fields with defaults
   tooltipContent?: string;
-  unit?: string;
+  unit?: string |React.ReactNode;
   description?: string;
 
   // Data view selector options (for charts)
@@ -92,11 +92,13 @@ export const CardHeader = <T extends string = string>({
               </InfoTooltip>
             )}
           </div>
-          {unit && (
+          {typeof unit === "string" ? (
             <Text variant="body" className="text-grey">
               {unit}
             </Text>
-          )}
+          ) : unit != null ? (
+            <div className="text-grey text-sm">{unit}</div>
+          ) : null}
           {description && (
             <Text variant="body" className="text-grey">
               {description}
