@@ -1399,6 +1399,8 @@
   },
   "regions": {
     "detailPage": {
+      "politicalRule": "Political rule",
+      "politicalRSO": "Regional Executive Chair",
       "municipalities": "Municipalities"
     },
     "kpis": {

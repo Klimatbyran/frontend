@@ -13,6 +13,9 @@ import { DetailWrapper } from "@/components/detail/DetailWrapper";
 import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
 import { MunicipalityListBox } from "@/components/regions/MunicipalityListBox";
 
+const EMISSIONS_DATA_START_YEAR = 1990;
+const EMISSIONS_DATA_END_YEAR = 2050;
+
 export function RegionDetailPage() {
   const { id } = useParams<{ id: string }>();
   const { region, loading, error } = useRegionDetails(id || "");
@@ -50,7 +53,11 @@ export function RegionDetailPage() {
         };
       })
       .sort((a, b) => a.year - b.year)
-      .filter((d) => d.year >= 1990 && d.year <= 2050);
+      .filter(
+        (d) =>
+          d.year >= EMISSIONS_DATA_START_YEAR &&
+          d.year <= EMISSIONS_DATA_END_YEAR,
+      );
   }, [region]);
 
   const lastYearEmissions = useMemo(() => {
@@ -80,9 +87,12 @@ export function RegionDetailPage() {
       <DetailWrapper>
         <DetailHeader
           name={region.name}
+          politicalRule={region.politicalRule}
+          politicalKSO={region.politicalKSO}
+          politicalXSOLabelKey="politicalRSO"
           helpItems={["regionTotalEmissions", "detailWhyDataDelay"]}
           stats={headerStats}
-          translateNamespace="detailPage"
+          translateNamespace="regions.detailPage"
         />
 
         <RegionEmissions emissionsData={emissionsData} />
