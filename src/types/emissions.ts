@@ -10,6 +10,7 @@ export interface ChartData {
     value: number;
     isAIGenerated?: boolean;
   }>;
+  turnover?: number;
   originalValues?: Record<string, number | null>; // Keeps track of original null values
   [key: string]: any; // Allow any type for additional keys
 }

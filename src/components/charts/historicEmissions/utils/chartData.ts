@@ -105,6 +105,7 @@ export const mergeChartDataWithApproximated = (
         scope2: mainDataPoint?.scope2,
         scope3: mainDataPoint?.scope3,
         scope3Categories: mainDataPoint?.scope3Categories,
+        turnover: mainDataPoint?.turnover,
         originalValues: mainDataPoint?.originalValues,
       };
     });
