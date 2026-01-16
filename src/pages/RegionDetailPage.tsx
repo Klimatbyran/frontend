@@ -89,9 +89,10 @@ export function RegionDetailPage() {
           name={region.name}
           politicalRule={region.politicalRule}
           politicalKSO={region.politicalKSO}
+          politicalXSOLabelKey="politicalRSO"
           helpItems={["regionTotalEmissions", "detailWhyDataDelay"]}
           stats={headerStats}
-          translateNamespace="detailPage"
+          translateNamespace="regions.detailPage"
         />
 
         <RegionEmissions emissionsData={emissionsData} />
