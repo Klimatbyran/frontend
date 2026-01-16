@@ -1419,7 +1419,6 @@ export interface paths {
                     content: {
                         "application/json": {
                             region: string;
-                            logoUrl?: string | null;
                             emissions: ({
                                 year: string;
                                 value: number;
@@ -1437,8 +1436,6 @@ export interface paths {
                             historicalEmissionChangePercent: number;
                             meetsParis: boolean;
                             municipalities: string[];
-                            politicalRule: string[];
-                            politicalRSO: string;
                         }[];
                     };
                 };
@@ -1525,7 +1522,6 @@ export interface paths {
                     content: {
                         "application/json": {
                             region: string;
-                            logoUrl?: string | null;
                             emissions: ({
                                 year: string;
                                 value: number;
@@ -1543,81 +1539,6 @@ export interface paths {
                             historicalEmissionChangePercent: number;
                             meetsParis: boolean;
                             municipalities: string[];
-                            politicalRule: string[];
-                            politicalRSO: string;
-                        };
-                    };
-                };
-                /** @description Default Response */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            code: string;
-                            message?: string;
-                            details?: unknown;
-                        };
-                    };
-                };
-                /** @description Default Response */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            code: string;
-                            message?: string;
-                            details?: unknown;
-                        };
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/regions/{name}/sector-emissions": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get regional sector emissions
-         * @description Retrieve sector emissions data for a specific region, broken down by different sectors over time.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    name: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Default Response */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            sectors: {
-                                [key: string]: {
-                                    [key: string]: number;
-                                };
-                            };
                         };
                     };
                 };
@@ -1686,135 +1607,6 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content?: never;
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/nation/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get national data
-         * @description Retrieve national (Sweden) data with historical emissions, trends, and Paris agreement compliance status. Returns 304 Not Modified if the resource has not changed since the last request (based on ETag).
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Default Response */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            country: string;
-                            logoUrl?: string | null;
-                            emissions: ({
-                                year: string;
-                                value: number;
-                            } | null)[];
-                            totalTrend: number;
-                            totalCarbonLaw: number;
-                            approximatedHistoricalEmission: ({
-                                year: string;
-                                value: number;
-                            } | null)[];
-                            trend: ({
-                                year: string;
-                                value: number;
-                            } | null)[];
-                            historicalEmissionChangePercent: number;
-                            meetsParis: boolean;
-                        };
-                    };
-                };
-                /** @description Default Response */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            code: string;
-                            message?: string;
-                            details?: unknown;
-                        };
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/nation/sector-emissions": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get national sector emissions
-         * @description Retrieve sector emissions data for Sweden, broken down by different sectors over time.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Default Response */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            sectors: {
-                                [key: string]: {
-                                    [key: string]: number;
-                                };
-                            };
-                        };
-                    };
-                };
-                /** @description Default Response */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            code: string;
-                            message?: string;
-                            details?: unknown;
-                        };
-                    };
                 };
             };
         };

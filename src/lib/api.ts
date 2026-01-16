@@ -290,22 +290,23 @@ export async function getRegions() {
 }
 
 export async function getRegionDetails(name: string) {
-  const { data, error } = await GET("/regions/{name}", {
-    params: { path: { name } },
-  });
-  if (error) throw error;
-  return data;
+  try {
+    const { data, error } = await GET("/regions/{name}", {
+      params: { path: { name } },
+    });
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error("Error fetching region details:", error);
+    throw error;
+  }
 }
 
 export async function getRegionsKPIs() {
-  try {
-    const { data, error } = await GET("/regions/kpis", {});
-    if (error) throw error;
-    return data || [];
-  } catch (error) {
-    console.error("Error fetching regional KPIs:", error);
-    return [];
-  }
+  const { data, error } = await GET("/regions/kpis", {});
+  if (error) throw error;
+  return data || [];
 }
 
 // TODO: Add national data to API, this is prep for next stages
