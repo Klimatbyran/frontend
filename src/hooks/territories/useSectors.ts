@@ -1,6 +1,5 @@
 import { useTranslation } from "react-i18next";
 
-// Shared sector translation keys for municipalities and regions
 export const SECTOR_TRANSLATION_KEYS = {
   "Industri (energi + processer)": "industry",
   "Produktanvändning (inkl. lösningsmedel)": "productUse",
