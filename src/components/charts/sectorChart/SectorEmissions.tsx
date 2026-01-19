@@ -18,7 +18,6 @@ interface SectorEmissionsProps {
   getSectorInfo: (name: string) => SectorInfo;
   filteredSectors: Set<string>;
   onFilteredSectorsChange: (sectors: Set<string>) => void;
-  translateNamespace?: string;
   helpItems: DataGuideItemId[];
 }
 
@@ -31,7 +30,6 @@ export function SectorEmissionsChart({
   getSectorInfo,
   filteredSectors,
   onFilteredSectorsChange,
-  translateNamespace,
   helpItems,
 }: SectorEmissionsProps) {
   const { t } = useTranslation();
@@ -55,7 +53,6 @@ export function SectorEmissionsChart({
             selectedYear={selectedYear}
             onYearChange={onYearChange}
             availableYears={availableYears}
-            translateNamespace={translateNamespace}
           />
         }
         className="gap-8 md:gap-16"

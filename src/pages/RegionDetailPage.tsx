@@ -120,7 +120,6 @@ export function RegionDetailPage() {
           getSectorInfo={getSectorInfo}
           filteredSectors={filteredSectors}
           onFilteredSectorsChange={setFilteredSectors}
-          translateNamespace="regions.detailPage"
           helpItems={["municipalityEmissionSources"]}
         />
 
