@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { DataPoint } from "@/types/municipality";
+import { DataPoint } from "@/types/emissions";
 import {
   getDynamicChartHeight,
   useDataView,

@@ -20,7 +20,7 @@ import {
   getCurrentYearFromAvailable,
 } from "@/utils/detail/sectorYearUtils";
 import { SectorEmissionsChart } from "@/components/charts/sectorChart/SectorEmissions";
-import { DataPoint } from "@/types/municipality";
+import { DataPoint } from "@/types/emissions";
 
 export function RegionDetailPage() {
   const { id } = useParams<{ id: string }>();

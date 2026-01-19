@@ -65,14 +65,6 @@ export type EmissionsData = {
   trend: (EmissionDataPoint | null)[];
 };
 
-export type DataPoint = {
-  year: number;
-  total: number | undefined;
-  trend: number | undefined;
-  approximated: number | undefined;
-  carbonLaw: number | undefined;
-};
-
 const MUNICIPALITY_SORT_BY = [
   "meets_paris",
   "name",

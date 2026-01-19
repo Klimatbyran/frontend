@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { DataPoint } from "@/types/municipality";
+import { DataPoint } from "@/types/emissions";
 import { SectorEmissions } from "@/types/emissions";
 import { OverviewChart } from "@/components/municipalities/emissionsGraph/OverviewChart";
 import { SectorsChart } from "@/components/municipalities/emissionsGraph/SectorsChart";
