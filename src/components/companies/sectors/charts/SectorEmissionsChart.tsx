@@ -79,7 +79,6 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
     companies,
     selectedSectors,
     selectedSector,
-    chartType,
     selectedYear,
   );
 
