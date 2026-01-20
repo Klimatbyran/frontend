@@ -6,24 +6,20 @@ import EmissionsTotalDisplay from "./EmissionsTotalDisplay";
 
 interface ChartHeaderProps {
   selectedSector: string | null;
-  chartType: "stacked-total" | "pie";
   totalEmissions: number;
   selectedYear: string;
   years: string[];
   onSectorClear: () => void;
-  onChartTypeChange: (type: "stacked-total" | "pie") => void;
   onYearChange: (year: string) => void;
   selectedSectors: string[];
 }
 
 const ChartHeader: React.FC<ChartHeaderProps> = ({
   selectedSector,
-  chartType,
   totalEmissions,
   selectedYear,
   years,
   onSectorClear,
-  onChartTypeChange,
   onYearChange,
 }) => {
   const { isMobile, isTablet } = useScreenSize();
@@ -59,44 +55,16 @@ const ChartHeader: React.FC<ChartHeaderProps> = ({
               isMobile || isTablet ? "flex-wrap" : ""
             } items-center gap-2`}
           >
-            <button
-              onClick={() => onChartTypeChange("pie")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg focus:outline-none transition-colors ${
-                chartType === "pie"
-                  ? "bg-black-1 text-white"
-                  : "text-grey hover:text-white"
-              }`}
-            >
-              <PieChart className="h-4 w-4" />
-              <span className="text-sm font-medium">
-                {t("companyDetailPage.sectorGraphs.pie")}
-              </span>
-            </button>
-            <button
-              onClick={() => onChartTypeChange("stacked-total")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg focus:outline-none transition-colors ${
-                chartType === "stacked-total"
-                  ? "bg-black-1 text-white"
-                  : "text-grey hover:text-white"
-              }`}
-            >
-              <BarChart3 className="h-4 w-4" />
-              <span className="text-sm font-medium">
-                {t("companyDetailPage.sectorGraphs.stackedTotal")}
-              </span>
-            </button>
           </div>
         </div>
 
-        {chartType === "pie" && (
           <EmissionsTotalDisplay
             totalEmissions={totalEmissions}
             selectedYear={selectedYear}
             years={years}
             onYearChange={onYearChange}
             isSectorView={!!selectedSector}
-          />
-        )}
+        />
       </div>
     </div>
   );

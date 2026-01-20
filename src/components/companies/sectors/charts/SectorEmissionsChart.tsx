@@ -15,8 +15,6 @@ interface EmissionsChartProps {
   selectedSectors: string[];
 }
 
-type ChartType = "pie";
-
 interface PieChartClickData {
   name?: string;
   value?: number;
@@ -34,7 +32,6 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const [chartType, setChartType] = useState<ChartType>("pie");
   const [selectedYear, setSelectedYear] = useState<string>("2024");
   const [selectedSector, setSelectedSector] = useState<string | null>(null);
   const screenSize = useScreenSize();
@@ -46,12 +43,6 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
     selectedSector,
     selectedYear,
   );
-
-  const handleChartTypeChange = (type: "pie" | "stacked-total") => {
-    if (type === "pie") {
-      setChartType(type);
-    }
-  };
 
   const handlePieClick = (data: PieChartClickData) => {
     if (!selectedSector && data?.sectorCode) {
@@ -75,12 +66,10 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
     <div className="w-full space-y-6">
       <ChartHeader
         selectedSector={selectedSector}
-        chartType={chartType}
         totalEmissions={totalEmissions}
         selectedYear={selectedYear}
         years={years}
         onSectorClear={() => setSelectedSector(null)}
-        onChartTypeChange={handleChartTypeChange}
         onYearChange={setSelectedYear}
         selectedSectors={selectedSectors}
       />
