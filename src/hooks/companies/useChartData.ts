@@ -6,7 +6,7 @@ export const useChartData = (
   companies: RankedCompany[],
   selectedSectors: string[],
   selectedSector: string | null,
-  chartType: "stacked-total" | "pie",
+  chartType: "pie",
   selectedYear: string,
 ) => {
   const sectorNames = useSectorNames();
@@ -24,67 +24,40 @@ export const useChartData = (
       .map((year) => {
         const yearData: { [key: string]: any } = { year };
 
-        if (chartType === "stacked-total") {
-          selectedSectors.forEach((sectorCode) => {
-            const sectorName =
-              sectorNames[sectorCode as keyof typeof sectorNames];
-            let totalEmissions = 0;
+        // For pie chart, we need scope data for each sector
+        selectedSectors.forEach((sectorCode) => {
+          const sectorName =
+            sectorNames[sectorCode as keyof typeof sectorNames];
+          let scope1 = 0;
+          let scope2 = 0;
+          let scope3 = 0;
 
-            companies.forEach((company) => {
-              if (company.industry?.industryGics.sectorCode === sectorCode) {
-                const periodForYear = company.reportingPeriods.find((period) =>
-                  period.endDate.startsWith(year),
-                );
+          companies.forEach((company) => {
+            if (company.industry?.industryGics.sectorCode === sectorCode) {
+              const periodForYear = company.reportingPeriods.find((period) =>
+                period.endDate.startsWith(year),
+              );
 
-                if (periodForYear?.emissions) {
-                  totalEmissions +=
-                    (periodForYear.emissions.scope1?.total || 0) +
-                    (periodForYear.emissions.scope2?.calculatedTotalEmissions ||
-                      0) +
-                    (periodForYear.emissions.scope3?.calculatedTotalEmissions ||
-                      0);
-                }
+              if (periodForYear?.emissions) {
+                scope1 += periodForYear.emissions.scope1?.total || 0;
+                scope2 +=
+                  periodForYear.emissions.scope2?.calculatedTotalEmissions ||
+                  0;
+                scope3 +=
+                  periodForYear.emissions.scope3?.calculatedTotalEmissions ||
+                  0;
               }
-            });
-
-            yearData[sectorName] = totalEmissions;
+            }
           });
-        } else {
-          // For pie chart, we still need scope data for each sector
-          selectedSectors.forEach((sectorCode) => {
-            const sectorName =
-              sectorNames[sectorCode as keyof typeof sectorNames];
-            let scope1 = 0;
-            let scope2 = 0;
-            let scope3 = 0;
 
-            companies.forEach((company) => {
-              if (company.industry?.industryGics.sectorCode === sectorCode) {
-                const periodForYear = company.reportingPeriods.find((period) =>
-                  period.endDate.startsWith(year),
-                );
-
-                if (periodForYear?.emissions) {
-                  scope1 += periodForYear.emissions.scope1?.total || 0;
-                  scope2 +=
-                    periodForYear.emissions.scope2?.calculatedTotalEmissions ||
-                    0;
-                  scope3 +=
-                    periodForYear.emissions.scope3?.calculatedTotalEmissions ||
-                    0;
-                }
-              }
-            });
-
-            yearData[`${sectorName}_scope1`] = scope1;
-            yearData[`${sectorName}_scope2`] = scope2;
-            yearData[`${sectorName}_scope3`] = scope3;
-          });
-        }
+          yearData[`${sectorName}_scope1`] = scope1;
+          yearData[`${sectorName}_scope2`] = scope2;
+          yearData[`${sectorName}_scope3`] = scope3;
+        });
 
         return yearData;
       });
-  }, [companies, selectedSectors, chartType, sectorNames]);
+  }, [companies, selectedSectors, sectorNames]);
 
   const pieChartData = useMemo(() => {
     if (selectedSector) {
