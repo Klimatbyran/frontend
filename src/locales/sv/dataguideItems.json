@@ -21,7 +21,7 @@
   "companiesHowToCompare": {
     "title": "Hur kan jag använda denna information för att jämföra företag rättvist?",
     "content": [
-      "Börja med att jämföra företag **inom samma bransch**, eftersom olika sektorer har mycket olika utsläppsprofiler.\n\nTitta även på **utsläpp per miljon kronor i intäkter** (utsläppsintensitet), vilket hjälper till att justera för företagsstorlek.\n\nSlutligen, överväg hur **fullständig deras rapportering** är — ett företag som rapporterar alla scopes, även om siffrorna är höga, visar ofta mer transparens än företag som rapporterar väldigt lite."
+      "Börja med att jämföra företag **inom samma bransch**, eftersom olika branscher har mycket olika utsläppsprofiler.\n\nTitta även på **utsläpp per miljon kronor i intäkter** (utsläppsintensitet), vilket hjälper till att justera för företagsstorlek.\n\nSlutligen, överväg hur **fullständig deras rapportering** är — ett företag som rapporterar alla scopes, även om siffrorna är höga, visar ofta mer transparens än företag som rapporterar väldigt lite."
     ]
   },
   "companyCitizenAction": {
@@ -45,13 +45,13 @@
   "companyRealChange": {
     "title": "Hur kan jag avgöra om ett företag gör verkliga klimatframsteg?",
     "content": [
-      "Leta efter:\n\n- Tydliga utsläppsminskningar över flera år (särskilt inom Scope 3)\n- Ett konsekvent och offentliggjort **basår**\n- Sektorspecifika mål som överensstämmer med 1,5-gradersmålet\n- Transparent och konsekvent rapportering i alla tre scope\n\nMinskningar som följer en tydlig trend — inte bara enstaka fall — och fullständig Scope 3-rapportering är tydliga tecken på seriösa klimatåtgärder."
+      "Leta efter:\n\n- Tydliga utsläppsminskningar över flera år (särskilt inom Scope 3)\n- Ett konsekvent och offentliggjort **basår**\n- Branschspecifika mål som överensstämmer med 1,5-gradersmålet\n- Transparent och konsekvent rapportering i alla tre scope\n\nMinskningar som följer en tydlig trend — inte bara enstaka fall — och fullständig Scope 3-rapportering är tydliga tecken på seriösa klimatåtgärder."
     ]
   },
   "companySectors": {
-    "title": "Vad menas med företagens sektor?",
+    "title": "Vad menas med företagens bransch?",
     "content": [
-      "Företagen grupperas i branscher eller sektorer baserat på vad de gör, med hjälp av **Global Industry Classification Standard (GICS)**. Detta system hjälper till att organisera företag i tydliga kategorier — som energi, finans, konsumentvaror eller teknik — vilket gör det lättare att jämföra företag med liknande verksamhet.\n\n[Lär dig mer om GICS-systemet här](https://www.msci.com/our-solutions/indexes/gics)\n\n**Varför det är viktigt:** Olika branscher har mycket olika utsläppsprofiler och utmaningar.\n\nTill exempel:\n\n- Ett **energiföretag** har höga direkta utsläpp på grund av energiproduktion\n- Ett **teknikföretag** kan ha låga direkta utsläpp men klimatpåverkan i leverantörskedjan (Scope 3)\n\nAtt jämföra företag inom **samma sektor** gör det möjligt att dra relevanta slutsatser om klimatpåverkan och framsteg."
+      "Företagen grupperas i branscher eller branscher baserat på vad de gör, med hjälp av **Global Industry Classification Standard (GICS)**. Detta system hjälper till att organisera företag i tydliga kategorier — som energi, finans, konsumentvaror eller teknik — vilket gör det lättare att jämföra företag med liknande verksamhet.\n\n[Lär dig mer om GICS-systemet här](https://www.msci.com/our-solutions/indexes/gics)\n\n**Varför det är viktigt:** Olika branscher har mycket olika utsläppsprofiler och utmaningar.\n\nTill exempel:\n\n- Ett **energiföretag** har höga direkta utsläpp på grund av energiproduktion\n- Ett **teknikföretag** kan ha låga direkta utsläpp men klimatpåverkan i leverantörskedjan (Scope 3)\n\nAtt jämföra företag inom **samma bransch** gör det möjligt att dra relevanta slutsatser om klimatpåverkan och framsteg."
     ]
   },
   "companyTurnover": {
@@ -69,7 +69,7 @@
   "financialsScope3Category15": {
     "title": "Finansierade utsläpp rapportering",
     "content": [
-      "Finansierade utsläpp rapporteras ofta med fördröjning, eftersom de ofta baseras på föregående års data från de bolag som ingår i investeringen. Vi visar utsläppsdata i scope 3 kategori 15 det år det rapporteras publikt i årsredovisningen, även om det ibland anges att datan i denna kategori är från ett tidigare år.\n\nDetta innebär att när du ser scope 3 kategori 15 utsläpp för ett finansbolag, kan de faktiska utsläppen ha inträffat ett tidigare år än vad som visas i rapporteringsåret. Detta är vanlig praxis i finanssektorn på grund av den tid det tar att samla in och verifiera utsläppsdata från portföljbolag."
+      "Finansierade utsläpp rapporteras ofta med fördröjning, eftersom de ofta baseras på föregående års data från de bolag som ingår i investeringen. Vi visar utsläppsdata i scope 3 kategori 15 det år det rapporteras publikt i årsredovisningen, även om det ibland anges att datan i denna kategori är från ett tidigare år.\n\nDetta innebär att när du ser scope 3 kategori 15 utsläpp för ett finansbolag, kan de faktiska utsläppen ha inträffat ett tidigare år än vad som visas i rapporteringsåret. Detta är vanlig praxis i finansbranschen på grund av den tid det tar att samla in och verifiera utsläppsdata från portföljbolag."
     ]
   },
   "forestFires": {
