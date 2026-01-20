@@ -26,7 +26,7 @@ const ChartHeader: React.FC<ChartHeaderProps> = ({
   const { t } = useTranslation();
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col">
       <div
         className={`flex ${
           isMobile || isTablet
@@ -42,7 +42,7 @@ const ChartHeader: React.FC<ChartHeaderProps> = ({
           {selectedSector && (
             <button
               onClick={onSectorClear}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg text-grey hover:text-white focus:outline-none transition-colors"
+              className="flex items-center gap-2 rounded-lg text-grey hover:text-white focus:outline-none transition-colors"
             >
               <ArrowLeft className="h-4 w-4" />
               <span className="text-sm font-medium">

@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import PieChartView from "../../CompanyPieChartView";
+import SectorPieLegend from "./SectorPieLegend";
+import ChartHeader from "./ChartHeader";
 import { sectorColors, getCompanyColors } from "@/lib/constants/companyColors";
 import { RankedCompany } from "@/types/company";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { useChartData } from "@/hooks/companies/useChartData";
 import { useResponsiveChartSize } from "@/hooks/useResponsiveChartSize";
-import PieChartView from "../../CompanyPieChartView";
-import SectorPieLegend from "./SectorPieLegend";
-import ChartHeader from "./ChartHeader";
 
 interface EmissionsChartProps {
   companies: RankedCompany[];
