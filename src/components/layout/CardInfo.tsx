@@ -28,8 +28,8 @@ export function CardInfo({
   const { t } = useTranslation();
 
   return (
-    <div className="space-y-2">
-      <div className="flex items-center gap-2 text-grey mb-2 text-lg">
+    <div>
+      <div className="flex items-center gap-2 text-grey mt-2 text-lg">
         {icon}
         <span>{title}</span>
         {suffix}
@@ -39,7 +39,7 @@ export function CardInfo({
           </InfoTooltip>
         )}
       </div>
-      <div className="text-3xl font-light">
+      <div className="text-xl font-light">
         {value ? (
           <span className={cn(textColor)}>
             {value}

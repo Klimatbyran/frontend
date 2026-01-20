@@ -1219,10 +1219,14 @@
       "turnoverAmount": "bn",
       "employees": "Employees",
       "companyReport": "Sustainability Report",
-      "latestReport": "Latest Report",
+      "latestReport": "Reports Emissions?",
       "missingReport": "Missing Report",
-      "abscentReport": "Abscent",
-      "reportYear": "Report from {{year}}"
+      "reportYear": "Report from {{year}}",
+      "largestEmissionSource": "Largest emission source",
+      "scope1": "Scope 1",
+      "scope2": "Scope 2",
+      "yes": "Yes",
+      "no": "No"
     },
     "dataView": {
       "overview": "Overview",

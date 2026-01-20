@@ -93,6 +93,66 @@ export function CompanyList({ companies }: CompanyListProps) {
         ? calculateMeetsParis(company, trendAnalysis)
         : null; // null = unknown
 
+      //Get largest emittor (Scope or category if Scope 3)
+      const scope1 = { scope1: latestPeriod?.emissions?.scope1?.total };
+      const scope2 = {
+        scope2: latestPeriod?.emissions?.scope2?.calculatedTotalEmissions,
+      };
+      const scope3 = {
+        scope3: latestPeriod?.emissions?.scope3?.calculatedTotalEmissions,
+      };
+
+      const largestScope3Emission = (
+        latestPeriod?.emissions?.scope3?.categories ?? []
+      ).reduce(
+        (acc, current) => {
+          const value = current.total ?? 0; // alltid number
+          const category = current.category;
+
+          return value > acc.value ? { category, value } : acc;
+        },
+        { category: null as number | null, value: 0 },
+      );
+
+      const largestEmittorScope = [scope1, scope2, scope3].reduce(
+        (acc, current) => {
+          const value = Object.values(current)[0] ?? 0;
+          const name = Object.keys(current)[0];
+
+          return value > acc.value ? { name, value } : acc;
+        },
+        { name: null as string | null, value: 0 },
+      );
+      let largestEmission:
+        | {
+            key: string | number;
+            value: number;
+            type: "scope1" | "scope2" | "scope3";
+          }
+        | undefined;
+
+      if (largestEmittorScope.name === "scope3") {
+        largestEmission = {
+          key: largestScope3Emission.category ?? 0,
+          value: largestScope3Emission.value,
+          type: "scope3",
+        };
+      } else if (largestEmittorScope.name === "scope2") {
+        largestEmission = {
+          key: "scope2",
+          value: largestEmittorScope.value,
+          type: "scope2",
+        };
+      } else if (largestEmittorScope.name === "scope1") {
+        largestEmission = {
+          key: "scope1",
+          value: largestEmittorScope.value,
+          type: "scope1",
+        };
+      } else {
+        largestEmission = undefined;
+      }
+
       return {
         name,
         description: sectorName,
@@ -121,17 +181,19 @@ export function CompanyList({ companies }: CompanyListProps) {
           emissionsChange && (emissionsChange <= -80 || emissionsChange >= 80)
             ? `${t("companies.card.emissionsChangeRateInfo")}\n\n${t("companies.card.emissionsChangeRateInfoExtended")}`
             : t("companies.card.emissionsChangeRateInfo"),
-        latestReport: t("companies.card.companyReport"),
-        latestReportYear: noSustainabilityReport
-          ? t("companies.card.abscentReport")
-          : latestPeriod?.endDate
-            ? new Date(latestPeriod.endDate).getFullYear().toString()
-            : null,
-
-        latestReportYearColor: noSustainabilityReport
-          ? "text-pink-3"
-          : "text-green-3",
+        latestReportTranslationKey: "companies.card.latestReport",
+        latestReportContainEmissions: noSustainabilityReport
+          ? t("companies.card.missingReport")
+          : currentEmissions !== null,
+        latestReportYearColor:
+          noSustainabilityReport || currentEmissions === null
+            ? "text-pink-3"
+            : "text-green-3",
         isFinancialsSector,
+        largestEmission: largestEmission,
+        largestEmissionTranslationKey: largestEmission
+          ? t("companies.card.largestEmissionSource")
+          : t("companies.card.unknown"),
       };
     });
   }, [companies, t, currentLanguage, isEmissionsAIGenerated, sectorNames]);

@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { FinancialsTooltip } from "@/components/companies/detail/overview/FinancialsTooltip";
 import { CardInfo } from "@/components/layout/CardInfo";
+import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 
 interface ListCardProps {
   // Basic info
@@ -28,8 +29,19 @@ interface ListCardProps {
   changeRateTooltip?: string;
 
   // Latest report
-  latestReportYear?: string | null;
-  latestReportYearColor: string;
+  latestReportContainEmissions?: boolean | string;
+  latestReportTranslationKey: string;
+  latestReportYearColor?: string;
+
+  //Biggest emission category
+  largestEmission:
+    | {
+        key: string | number;
+        value: number | null;
+        type: "scope1" | "scope2" | "scope3";
+      }
+    | undefined;
+  largestEmissionTranslationKey: string;
 
   // Optional features
   isFinancialsSector?: boolean;
@@ -50,22 +62,31 @@ export function ListCard({
   changeRateIsAIGenerated,
   changeRateColor,
   changeRateTooltip,
-  latestReportYear,
-  latestReportYearColor,
+  latestReportTranslationKey,
+  latestReportContainEmissions,
   isFinancialsSector = false,
+  largestEmission,
+  largestEmissionTranslationKey,
 }: ListCardProps) {
   const { t } = useTranslation();
+  const category = useCategoryMetadata();
+  console.log(largestEmission);
 
+  let categoryName;
 
-  console.log(latestReportYear)
+  if (largestEmission?.type === "scope3" && largestEmission.key !== null) {
+    categoryName = category.getCategoryName(largestEmission?.key as number);
+  }
+
+  console.log(categoryName);
   return (
     <div className="relative rounded-level-2 @container">
       <LocalizedLink
         to={linkTo}
-        className="block bg-black-2 rounded-level-2 p-8 space-y-8 transition-all duration-300 hover:shadow-[0_0_10px_rgba(153,207,255,0.15)] hover:bg-[#1a1a1a]"
+        className="block bg-black-2 rounded-level-2 p-8 space-y-4 transition-all duration-300 hover:shadow-[0_0_10px_rgba(153,207,255,0.15)] hover:bg-[#1a1a1a]"
       >
         {/* Header section */}
-        <div className="space-y-2">
+        <div>
           <div className="flex justify-between">
             <div className="flex flex-col">
               <h2 className="text-3xl font-light">{name}</h2>
@@ -77,12 +98,12 @@ export function ListCard({
           </div>
 
           {/* Meets Paris section */}
-          <div className="flex items-center gap-2 text-grey mb-2 text-lg h-[40px]">
+          <div className="flex items-center gap-2 text-grey text-lg ">
             {t(meetsParisTranslationKey, { name })}
           </div>
           <div
             className={cn(
-              "text-3xl font-light",
+              "text-xl font-light border-b border-black-1 pb-6",
               meetsParis === true
                 ? "text-green-3"
                 : meetsParis === false
@@ -96,24 +117,48 @@ export function ListCard({
                 ? t("no")
                 : t("unknown")}
           </div>
+
+          {/* Sustainability report / Climate plan section */}
+          <div className="flex gap-32 mt-2">
+            <div>
+              <div className="flex gap-2 text-grey mt-2 text-lg">
+                {t(latestReportTranslationKey)}
+              </div>
+              <div
+                className={cn(
+                  "text-lg font-light",
+                  latestReportContainEmissions === true
+                    ? "text-green-3"
+                    : latestReportContainEmissions === false
+                      ? "text-pink-3"
+                      : "text-grey",
+                )}
+              >
+                {latestReportContainEmissions === true
+                  ? t("yes")
+                  : latestReportContainEmissions === false
+                    ? t("no")
+                    : t("unknown")}
+              </div>
+            </div>
+            {/* Emissions */}
+            <CardInfo
+              title={
+                emissionsYear
+                  ? `${t("companies.card.emissions")} ${emissionsYear}`
+                  : t("companies.card.emissions")
+              }
+              value={emissionsValue}
+              textColor="text-orange-2"
+              unit={emissionsUnit}
+              isAIGenerated={emissionsIsAIGenerated}
+              suffix={isFinancialsSector ? <FinancialsTooltip /> : undefined}
+            />
+          </div>
         </div>
 
-        {/* Emissions and change rate section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 pt-4 border-t border-black-1">
-          {/* Emissions */}
-          <CardInfo
-            title={
-              emissionsYear
-                ? `${t("companies.card.emissions")} ${emissionsYear}`
-                : t("companies.card.emissions")
-            }
-            value={emissionsValue}
-            textColor="text-orange-2"
-            unit={emissionsUnit}
-            isAIGenerated={emissionsIsAIGenerated}
-            suffix={isFinancialsSector ? <FinancialsTooltip /> : undefined}
-          />
-
+        {/* Emissions and largest emissions section */}
+        <div className="flex gap-32 mt-2">
           {/* Change Rate */}
           <CardInfo
             title={t("companies.card.emissionsChangeRate")}
@@ -122,14 +167,19 @@ export function ListCard({
             isAIGenerated={changeRateIsAIGenerated}
             tooltip={changeRateTooltip}
           />
+          <div>
+            <div className="flex gap-2 text-grey mt-2 text-lg">
+              {t(largestEmissionTranslationKey)}
+            </div>
+            <div className={cn("text-lg font-light", "text-white")}>
+              {categoryName
+                ? categoryName
+                : largestEmission?.key !== null
+                  ? largestEmission?.key
+                  : t("unknown")}
+            </div>
+          </div>
         </div>
-
-        {/* Have climateplan or report */}
-        <CardInfo
-          title={t("companies.card.latestReport")}
-          value={latestReportYear}
-          textColor={latestReportYearColor}
-        />
       </LocalizedLink>
     </div>
   );
