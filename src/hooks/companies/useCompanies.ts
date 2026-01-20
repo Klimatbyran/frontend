@@ -24,6 +24,7 @@ export function useCompanies(): ICompaniesReturn {
   } = useQuery({
     queryKey: ["companies"],
     queryFn: getCompanies,
+    staleTime: 1800000,
     select: (data): RankedCompany[] => {
       return data.map((company) => {
         // Calculate emissions reduction

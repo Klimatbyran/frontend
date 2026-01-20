@@ -23,6 +23,7 @@ export function useMunicipalities(): IMunicipalitiesReturn {
   } = useQuery<ApiMunicipality[], Error, Municipality[]>({
     queryKey: ["municipalities"],
     queryFn: getMunicipalities,
+    staleTime: 1800000,
     select: (data) => {
       return data.map(
         (municipality): Municipality => ({
