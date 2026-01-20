@@ -34,36 +34,24 @@ const ChartHeader: React.FC<ChartHeaderProps> = ({
             : "justify-between items-center"
         }`}
       >
-        <div
-          className={`flex ${
-            isMobile || isTablet ? "flex-wrap" : ""
-          } items-center gap-2`}
-        >
-          {selectedSector && (
-            <button
-              onClick={onSectorClear}
-              className="flex items-center gap-2 rounded-lg text-grey hover:text-white focus:outline-none transition-colors"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              <span className="text-sm font-medium">
-                {t("companyDetailPage.sectorGraphs.back")}
-              </span>
-            </button>
-          )}
-          <div
-            className={`flex ${
-              isMobile || isTablet ? "flex-wrap" : ""
-            } items-center gap-2`}
+        {selectedSector && (
+          <button
+            onClick={onSectorClear}
+            className="flex items-center gap-2 rounded-lg text-grey hover:text-white focus:outline-none transition-colors self-start"
           >
-          </div>
-        </div>
+            <ArrowLeft className="h-4 w-4" />
+            <span className="text-sm font-medium">
+              {t("companyDetailPage.sectorGraphs.back")}
+            </span>
+          </button>
+        )}
 
-          <EmissionsTotalDisplay
-            totalEmissions={totalEmissions}
-            selectedYear={selectedYear}
-            years={years}
-            onYearChange={onYearChange}
-            isSectorView={!!selectedSector}
+        <EmissionsTotalDisplay
+          totalEmissions={totalEmissions}
+          selectedYear={selectedYear}
+          years={years}
+          onYearChange={onYearChange}
+          isSectorView={!!selectedSector}
         />
       </div>
     </div>
