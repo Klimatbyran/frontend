@@ -17,6 +17,15 @@ interface EmissionsChartProps {
 
 type ChartType = "pie";
 
+interface PieClickData {
+  name: string;
+  value: number;
+  color?: string;
+  sectorCode?: string;
+  wikidataId?: string;
+  total?: number;
+}
+
 const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
   companies,
   selectedSectors,
@@ -43,7 +52,7 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
     }
   };
 
-  const handlePieClick = (data: any) => {
+  const handlePieClick = (data: PieClickData) => {
     if (!selectedSector && data?.sectorCode) {
       setSelectedSector(data.sectorCode);
     } else if (selectedSector && data?.wikidataId) {
