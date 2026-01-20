@@ -1,6 +1,5 @@
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
-import { LinkCard } from "@/components/ui/link-card";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { FinancialsTooltip } from "@/components/companies/detail/overview/FinancialsTooltip";
 import { CardInfo } from "@/components/layout/CardInfo";
@@ -28,11 +27,9 @@ interface ListCardProps {
   changeRateColor?: string;
   changeRateTooltip?: string;
 
-  // Bottom link card
-  linkCardLink?: string;
-  linkCardTitle: string;
-  linkCardDescription: string;
-  linkCardDescriptionColor: string;
+  // Latest report
+  latestReportYear?: string | null;
+  latestReportYearColor: string;
 
   // Optional features
   isFinancialsSector?: boolean;
@@ -53,14 +50,14 @@ export function ListCard({
   changeRateIsAIGenerated,
   changeRateColor,
   changeRateTooltip,
-  linkCardLink,
-  linkCardTitle,
-  linkCardDescription,
-  linkCardDescriptionColor,
+  latestReportYear,
+  latestReportYearColor,
   isFinancialsSector = false,
 }: ListCardProps) {
   const { t } = useTranslation();
 
+
+  console.log(latestReportYear)
   return (
     <div className="relative rounded-level-2 @container">
       <LocalizedLink
@@ -127,12 +124,11 @@ export function ListCard({
           />
         </div>
 
-        {/* Bottom link card */}
-        <LinkCard
-          link={linkCardLink}
-          title={linkCardTitle}
-          description={linkCardDescription}
-          descriptionColor={linkCardDescriptionColor}
+        {/* Have climateplan or report */}
+        <CardInfo
+          title={t("companies.card.latestReport")}
+          value={latestReportYear}
+          textColor={latestReportYearColor}
         />
       </LocalizedLink>
     </div>

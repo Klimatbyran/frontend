@@ -121,16 +121,14 @@ export function CompanyList({ companies }: CompanyListProps) {
           emissionsChange && (emissionsChange <= -80 || emissionsChange >= 80)
             ? `${t("companies.card.emissionsChangeRateInfo")}\n\n${t("companies.card.emissionsChangeRateInfoExtended")}`
             : t("companies.card.emissionsChangeRateInfo"),
-        linkCardLink: latestPeriod?.reportURL
-          ? latestPeriod.reportURL
-          : undefined,
-        linkCardTitle: t("companies.card.companyReport"),
-        linkCardDescription: noSustainabilityReport
-          ? t("companies.card.missingReport")
-          : t("companies.card.reportYear", {
-              year: new Date(latestPeriod.endDate).getFullYear(),
-            }),
-        linkCardDescriptionColor: noSustainabilityReport
+        latestReport: t("companies.card.companyReport"),
+        latestReportYear: noSustainabilityReport
+          ? t("companies.card.abscentReport")
+          : latestPeriod?.endDate
+            ? new Date(latestPeriod.endDate).getFullYear().toString()
+            : null,
+
+        latestReportYearColor: noSustainabilityReport
           ? "text-pink-3"
           : "text-green-3",
         isFinancialsSector,

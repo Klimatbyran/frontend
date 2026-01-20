@@ -7,7 +7,7 @@ import { AiIcon } from "@/components/ui/ai-icon";
 interface CardInfoProps {
   title: string;
   tooltip?: string;
-  value: string | null;
+  value: string | undefined | null;
   textColor?: string;
   unit?: string;
   isAIGenerated?: boolean;

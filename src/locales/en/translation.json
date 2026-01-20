@@ -1219,7 +1219,9 @@
       "turnoverAmount": "bn",
       "employees": "Employees",
       "companyReport": "Sustainability Report",
+      "latestReport": "Latest Report",
       "missingReport": "Missing Report",
+      "abscentReport": "Abscent",
       "reportYear": "Report from {{year}}"
     },
     "dataView": {
