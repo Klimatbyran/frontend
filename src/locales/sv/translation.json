@@ -1815,6 +1815,8 @@
   "explorePage": {
     "title": "Utforska data",
     "description": "Utforska och jämför utsläppsdata och klimatmål för företag och kommuner.",
+    "filter": "Filter:",
+    "sorting": "Sorterar:",
     "municipalities": {
       "muncipality": "Kommun",
       "municipalities": "Kommuner",
