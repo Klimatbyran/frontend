@@ -1,18 +1,35 @@
 import { useState } from "react";
+import { useParams, useLocation } from "react-router-dom";
 import { useCompanyDetails } from "./companies/useCompanyDetails";
 import { useMunicipalityDetails } from "./municipalities/useMunicipalityDetails";
+const NON_ID_ROUTES = new Set([
+  "sectors",
+  "ranked",
+  "explore",
+  "edit",
+  "articles",
+  "reports",
+  "about",
+  "methodology",
+  "support",
+]);
 
 const useHeaderTitle = () => {
   const [showTitle, setShowTitle] = useState(false);
+  const location = useLocation();
+  const params = useParams<{ id?: string }>();
 
-  const paramSegments = location.pathname.split("/");
-  const viewedItemId = paramSegments.pop() ?? "";
-  const isCompanyPage = paramSegments.includes("companies");
-  const isMunicipalityPage = paramSegments.includes("municipalities");
+  const id = params.id;
+  const isDetailsPage = !!id && !NON_ID_ROUTES.has(id);
 
-  const viewedCompany = useCompanyDetails(isCompanyPage ? viewedItemId : "");
+  const pathSegments = location.pathname.split("/").filter(Boolean);
+  const isCompanyPage = pathSegments.includes("companies") && isDetailsPage;
+  const isMunicipalityPage =
+    pathSegments.includes("municipalities") && isDetailsPage;
+
+  const viewedCompany = useCompanyDetails(isCompanyPage ? id! : "");
   const viewedMunicipality = useMunicipalityDetails(
-    isMunicipalityPage ? viewedItemId : "",
+    isMunicipalityPage ? id! : "",
   );
 
   const headerTitle = isCompanyPage

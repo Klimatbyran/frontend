@@ -19,6 +19,7 @@ export function useMunicipalityDetails(id: string) {
     queryKey: ["municipality", id],
     queryFn: () => getMunicipalityDetails(id),
     enabled: !!id,
+    staleTime: 1800000,
   });
 
   return {
