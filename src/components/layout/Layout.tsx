@@ -21,16 +21,16 @@ export function Layout({ children }: LayoutProps) {
   }, [location.pathname]);
 
   useEffect(() => {
-    QueryClient.prefetchQuery({
+    queryClient.prefetchQuery({
       queryKey: ["companies"],
       queryFn: getCompanies,
     });
 
-    QueryClient.prefetchQuery({
+    queryClient.prefetchQuery({
       queryKey: ["municipalities"],
       queryFn: getMunicipalities,
     });
-  }, [QueryClient]);
+  }, [queryClient]);
 
   return (
     <div className="min-h-screen w-full overflow-x-hidden bg-black-3 flex flex-col">
