@@ -57,6 +57,7 @@ export function CompanyList({ companies }: CompanyListProps) {
     if (!companies) return [];
 
     return filteredCompanies.map((company) => {
+      console.log(company);
       const { wikidataId, name, industry, reportingPeriods } = company;
       const isFinancialsSector = industry?.industryGics?.sectorCode === "40";
       const latestPeriod = reportingPeriods?.[0];
@@ -153,6 +154,8 @@ export function CompanyList({ companies }: CompanyListProps) {
         largestEmission = undefined;
       }
 
+      const companyBaseYear = company?.baseYear?.year || null;
+
       return {
         name,
         description: sectorName,
@@ -194,6 +197,8 @@ export function CompanyList({ companies }: CompanyListProps) {
         largestEmissionTranslationKey: largestEmission
           ? t("companies.card.largestEmissionSource")
           : t("companies.card.unknown"),
+        emissionTrackingTranslationKey: t("companies.card.emissionTracking"),
+        companyBaseYear: companyBaseYear,
       };
     });
   }, [companies, t, currentLanguage, isEmissionsAIGenerated, sectorNames]);

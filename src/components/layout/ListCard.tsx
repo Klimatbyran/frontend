@@ -33,6 +33,10 @@ interface ListCardProps {
   latestReportTranslationKey: string;
   latestReportYearColor?: string;
 
+  //Emission tracking
+  emissionTrackingTranslationKey: string;
+  companyBaseYear: number | null;
+
   //Biggest emission category
   largestEmission:
     | {
@@ -67,6 +71,8 @@ export function ListCard({
   isFinancialsSector = false,
   largestEmission,
   largestEmissionTranslationKey,
+  emissionTrackingTranslationKey,
+  companyBaseYear,
 }: ListCardProps) {
   const { t } = useTranslation();
   const category = useCategoryMetadata();
@@ -87,7 +93,7 @@ export function ListCard({
       >
         {/* Header section */}
         <div>
-          <div className="flex justify-between">
+          <div className="flex">
             <div className="flex flex-col">
               <h2 className="text-3xl font-light">{name}</h2>
               <p className="text-grey text-sm line-clamp-2 min-h-[40px]">
@@ -119,46 +125,33 @@ export function ListCard({
           </div>
 
           {/* Sustainability report / Climate plan section */}
-          <div className="flex gap-32 mt-2">
+          <div className="flex gap-40 mt-2">
             <div>
-              <div className="flex gap-2 text-grey mt-2 text-lg">
-                {t(latestReportTranslationKey)}
+              <div className="flex flex-col gap-2 text-nowrap text-grey mt-2 text-lg">
+                {t(emissionTrackingTranslationKey)}
               </div>
-              <div
-                className={cn(
-                  "text-lg font-light",
-                  latestReportContainEmissions === true
-                    ? "text-green-3"
-                    : latestReportContainEmissions === false
-                      ? "text-pink-3"
-                      : "text-grey",
-                )}
-              >
-                {latestReportContainEmissions === true
-                  ? t("yes")
-                  : latestReportContainEmissions === false
-                    ? t("no")
+              <div className={cn("text-lg font-light", "text-white")}>
+                {latestReportContainEmissions ? companyBaseYear : t("unknown")}
+              </div>
+            </div>
+
+            <div>
+              <div className="flex flex-col gap-2 text-nowrap text-grey mt-2 text-lg">
+                {t(largestEmissionTranslationKey)}
+              </div>
+              <div className={cn("text-lg font-light", "text-white")}>
+                {categoryName
+                  ? categoryName
+                  : largestEmission?.key !== null
+                    ? largestEmission?.key
                     : t("unknown")}
               </div>
             </div>
-            {/* Emissions */}
-            <CardInfo
-              title={
-                emissionsYear
-                  ? `${t("companies.card.emissions")} ${emissionsYear}`
-                  : t("companies.card.emissions")
-              }
-              value={emissionsValue}
-              textColor="text-orange-2"
-              unit={emissionsUnit}
-              isAIGenerated={emissionsIsAIGenerated}
-              suffix={isFinancialsSector ? <FinancialsTooltip /> : undefined}
-            />
           </div>
         </div>
 
         {/* Emissions and largest emissions section */}
-        <div className="flex gap-32 mt-2">
+        <div className="flex gap-52 mt-2">
           {/* Change Rate */}
           <CardInfo
             title={t("companies.card.emissionsChangeRate")}
@@ -167,18 +160,19 @@ export function ListCard({
             isAIGenerated={changeRateIsAIGenerated}
             tooltip={changeRateTooltip}
           />
-          <div>
-            <div className="flex gap-2 text-grey mt-2 text-lg">
-              {t(largestEmissionTranslationKey)}
-            </div>
-            <div className={cn("text-lg font-light", "text-white")}>
-              {categoryName
-                ? categoryName
-                : largestEmission?.key !== null
-                  ? largestEmission?.key
-                  : t("unknown")}
-            </div>
-          </div>
+          {/* Emissions */}
+          <CardInfo
+            title={
+              emissionsYear
+                ? `${t("companies.card.emissions")} ${emissionsYear}`
+                : t("companies.card.emissions")
+            }
+            value={emissionsValue}
+            textColor="text-orange-2"
+            unit={emissionsUnit}
+            isAIGenerated={emissionsIsAIGenerated}
+            suffix={isFinancialsSector ? <FinancialsTooltip /> : undefined}
+          />
         </div>
       </LocalizedLink>
     </div>

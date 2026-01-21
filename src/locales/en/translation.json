@@ -1223,6 +1223,7 @@
       "missingReport": "Missing Report",
       "reportYear": "Report from {{year}}",
       "largestEmissionSource": "Largest emission source",
+      "emissionTracking": "Emission tracking since",
       "scope1": "Scope 1",
       "scope2": "Scope 2",
       "yes": "Yes",
