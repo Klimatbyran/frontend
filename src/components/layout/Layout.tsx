@@ -13,7 +13,7 @@ interface LayoutProps {
 
 export function Layout({ children }: LayoutProps) {
   const location = useLocation();
-  const QueryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
   // Scroll to top on route change
   useEffect(() => {
