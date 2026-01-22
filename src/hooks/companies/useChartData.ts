@@ -82,7 +82,13 @@ const buildYearData = (
 const createCompanyDataItem = (
   company: RankedCompany,
   selectedYear: string,
-): { name: string; value: number; sectorCode: string | undefined; wikidataId: string | undefined; total: number } | null => {
+): {
+  name: string;
+  value: number;
+  sectorCode: string | undefined;
+  wikidataId: string | undefined;
+  total: number;
+} | null => {
   const periodForYear = company.reportingPeriods.find((period) =>
     period.endDate.startsWith(selectedYear),
   );
@@ -122,8 +128,7 @@ const buildCompanyPieData = (
   selectedYear: string,
 ) => {
   const sectorCompanies = companies.filter(
-    (company) =>
-      company.industry?.industryGics.sectorCode === selectedSector,
+    (company) => company.industry?.industryGics.sectorCode === selectedSector,
   );
 
   const companyData = sectorCompanies

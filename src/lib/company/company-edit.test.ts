@@ -11,14 +11,20 @@ const baseMeta = {
   verifiedBy: null,
 };
 
-function makeCategory(overrides = {}) {
+function makeCategory(overrides: any = {}) {
   return {
     id: "cat",
     category: 1,
     total: 10,
-    unit: "tCO2e",
+    unit: ("tCO2e" as "tCO2e" | "tCO2" | null),
     metadata: baseMeta,
     ...overrides,
+  } as {
+    id: string;
+    category: number;
+    total: number;
+    unit: "tCO2e" | "tCO2" | null;
+    metadata: typeof baseMeta;
   };
 }
 
@@ -78,6 +84,7 @@ describe("mapCompanyEditFormToRequestBody", () => {
       );
       expect(result.reportingPeriods[0].emissions.scope1).toEqual({
         total: 42,
+        unit: "tCO2e",
         verified: false,
       });
     });
@@ -89,6 +96,7 @@ describe("mapCompanyEditFormToRequestBody", () => {
       );
       expect(result.reportingPeriods[0].emissions.scope1).toEqual({
         total: 42.75,
+        unit: "tCO2e",
         verified: false,
       });
     });
@@ -129,6 +137,7 @@ describe("mapCompanyEditFormToRequestBody", () => {
       );
       expect(result.reportingPeriods[0].emissions.scope1).toEqual({
         total: null,
+        unit: "tCO2e",
         verified: false,
       });
     });
@@ -139,6 +148,20 @@ describe("mapCompanyEditFormToRequestBody", () => {
         form([["scope-1-1", "0"]]),
       );
       expect(result.reportingPeriods[0].emissions.scope1.total).toBe(0);
+    });
+
+    it("should preserve original unit when updating scope1", () => {
+      const periodWithTCO2 = makeBasePeriod({
+        emissions: {
+          ...basePeriod.emissions!,
+          scope1: { id: "s1", total: 10, unit: "tCO2", metadata: baseMeta },
+        },
+      });
+      const result = mapCompanyEditFormToRequestBody(
+        [periodWithTCO2],
+        form([["scope-1-1", "42"]]),
+      );
+      expect(result.reportingPeriods[0].emissions.scope1.unit).toBe("tCO2");
     });
   });
 
@@ -153,6 +176,7 @@ describe("mapCompanyEditFormToRequestBody", () => {
       expect(
         result.reportingPeriods[0].emissions.scope2.unknown,
       ).toBeUndefined();
+      expect(result.reportingPeriods[0].emissions.scope2.unit).toBe("tCO2e");
     });
 
     it("should preserve decimal values for scope2 mb", () => {
@@ -194,6 +218,28 @@ describe("mapCompanyEditFormToRequestBody", () => {
       );
       expect(result.reportingPeriods[0].emissions.scope2.mb).toBe(0);
     });
+
+    it("should preserve original unit when updating scope2", () => {
+      const periodWithTCO2 = makeBasePeriod({
+        emissions: {
+          ...basePeriod.emissions!,
+          scope2: {
+            id: "s2",
+            mb: 5,
+            lb: 6,
+            unknown: 7,
+            unit: "tCO2",
+            calculatedTotalEmissions: 18,
+            metadata: baseMeta,
+          },
+        },
+      });
+      const result = mapCompanyEditFormToRequestBody(
+        [periodWithTCO2],
+        form([["scope-2-mb-1", "99"]]),
+      );
+      expect(result.reportingPeriods[0].emissions.scope2.unit).toBe("tCO2");
+    });
   });
 
   describe("scope3 categories", () => {
@@ -206,6 +252,7 @@ describe("mapCompanyEditFormToRequestBody", () => {
         {
           category: 1,
           total: 123,
+          unit: "tCO2e",
         },
       );
     });
@@ -216,7 +263,7 @@ describe("mapCompanyEditFormToRequestBody", () => {
         form([["scope-3-1-1-checkbox", "true"]]),
       );
       expect(result.reportingPeriods[0].emissions.scope3.categories).toEqual([
-        { category: 1, verified: true },
+        { category: 1, unit: "tCO2e", verified: true },
       ]);
     });
 
@@ -239,7 +286,7 @@ describe("mapCompanyEditFormToRequestBody", () => {
         form([["scope-3-1-3", "77"]]),
       );
       expect(result.reportingPeriods[0].emissions.scope3.categories).toEqual([
-        { category: 3, total: 77 },
+        { category: 3, total: 77, unit: "tCO2e" },
       ]);
       // Add value and verified
       result = mapCompanyEditFormToRequestBody(
@@ -250,7 +297,7 @@ describe("mapCompanyEditFormToRequestBody", () => {
         ]),
       );
       expect(result.reportingPeriods[0].emissions.scope3.categories).toEqual([
-        { category: 3, total: 88, verified: true },
+        { category: 3, total: 88, unit: "tCO2e", verified: true },
       ]);
     });
 
@@ -263,7 +310,7 @@ describe("mapCompanyEditFormToRequestBody", () => {
         ]),
       );
       expect(result.reportingPeriods[0].emissions.scope3.categories).toEqual([
-        { category: 1, total: 111, verified: true },
+        { category: 1, total: 111, unit: "tCO2e", verified: true },
       ]);
     });
 
@@ -279,8 +326,8 @@ describe("mapCompanyEditFormToRequestBody", () => {
       );
       const cats = result.reportingPeriods[0].emissions.scope3.categories;
       expect(cats.length).toBe(2);
-      expect(cats).toContainEqual({ category: 1, total: 111, verified: true });
-      expect(cats).toContainEqual({ category: 2, total: 222, verified: true });
+      expect(cats).toContainEqual({ category: 1, total: 111, unit: "tCO2e", verified: true });
+      expect(cats).toContainEqual({ category: 2, total: 222, unit: "tCO2e", verified: true });
     });
 
     it("should not send anything for scope3 category if only verified is checked and original value is undefined", () => {
@@ -316,6 +363,7 @@ describe("mapCompanyEditFormToRequestBody", () => {
         {
           category: 1,
           total: null,
+          unit: "tCO2e",
         },
       );
     });
@@ -329,8 +377,26 @@ describe("mapCompanyEditFormToRequestBody", () => {
         {
           category: 1,
           total: 0,
+          unit: "tCO2e",
         },
       );
+    });
+
+    it("should preserve original unit when updating scope3 category", () => {
+      const periodWithTCO2 = makeBasePeriod({
+        emissions: {
+          ...basePeriod.emissions!,
+          scope3: {
+            ...basePeriod.emissions!.scope3!,
+            categories: [makeCategory({ unit: "tCO2" })],
+          },
+        },
+      });
+      const result = mapCompanyEditFormToRequestBody(
+        [periodWithTCO2],
+        form([["scope-3-1-1", "123"]]),
+      );
+      expect(result.reportingPeriods[0].emissions.scope3.categories[0].unit).toBe("tCO2");
     });
   });
 
@@ -347,6 +413,7 @@ describe("mapCompanyEditFormToRequestBody", () => {
         result.reportingPeriods[0].emissions.scope3.statedTotalEmissions,
       ).toEqual({
         total: 555,
+        unit: "tCO2e",
         verified: true,
       });
     });
@@ -424,6 +491,30 @@ describe("mapCompanyEditFormToRequestBody", () => {
         result.reportingPeriods[0].emissions.scope3.statedTotalEmissions.total,
       ).toBe(0);
     });
+
+    it("should preserve original unit when updating scope3 statedTotalEmissions", () => {
+      const periodWithTCO2 = makeBasePeriod({
+        emissions: {
+          ...basePeriod.emissions!,
+          scope3: {
+            ...basePeriod.emissions!.scope3!,
+            statedTotalEmissions: {
+              id: "st1",
+              total: 123,
+              unit: "tCO2",
+              metadata: baseMeta,
+            },
+          },
+        },
+      });
+      const result = mapCompanyEditFormToRequestBody(
+        [periodWithTCO2],
+        form([["scope-3-statedTotalEmissions-1", "555"]]),
+      );
+      expect(
+        result.reportingPeriods[0].emissions.scope3.statedTotalEmissions.unit,
+      ).toBe("tCO2");
+    });
   });
 
   it("should not include emissions if only unrelated fields are changed", () => {
@@ -445,6 +536,9 @@ describe("mapCompanyEditFormToRequestBody", () => {
         expect(
           result.reportingPeriods[0].emissions.statedTotalEmissions.total,
         ).toBe(555);
+        expect(
+          result.reportingPeriods[0].emissions.statedTotalEmissions.unit,
+        ).toBe("tCO2e");
       });
 
       it("should send null for statedTotalEmissions total if cleared", () => {
@@ -467,6 +561,27 @@ describe("mapCompanyEditFormToRequestBody", () => {
           result.reportingPeriods[0].emissions.statedTotalEmissions.total,
         ).toBeNull();
       });
+
+      it("should preserve original unit when updating statedTotalEmissions", () => {
+        const periodWithTCO2 = makeBasePeriod({
+          emissions: {
+            ...basePeriod.emissions!,
+            statedTotalEmissions: {
+              id: "st1",
+              total: 123,
+              unit: "tCO2",
+              metadata: baseMeta,
+            },
+          },
+        });
+        const result = mapCompanyEditFormToRequestBody(
+          [periodWithTCO2],
+          form([["stated-total-1", "555"]]),
+        );
+        expect(
+          result.reportingPeriods[0].emissions.statedTotalEmissions.unit,
+        ).toBe("tCO2");
+      });
     });
 
     describe("scope1And2", () => {
@@ -476,6 +591,26 @@ describe("mapCompanyEditFormToRequestBody", () => {
           form([["scope-1-and-2-1", "100"]]),
         );
         expect(result.reportingPeriods[0].emissions.scope1And2.total).toBe(100);
+        expect(result.reportingPeriods[0].emissions.scope1And2.unit).toBe("tCO2e");
+      });
+
+      it("should preserve original unit when updating scope1And2", () => {
+        const periodWithTCO2 = makeBasePeriod({
+          emissions: {
+            ...basePeriod.emissions!,
+            scope1And2: {
+              id: "s12",
+              total: 50,
+              unit: "tCO2",
+              metadata: baseMeta,
+            },
+          },
+        });
+        const result = mapCompanyEditFormToRequestBody(
+          [periodWithTCO2],
+          form([["scope-1-and-2-1", "100"]]),
+        );
+        expect(result.reportingPeriods[0].emissions.scope1And2.unit).toBe("tCO2");
       });
     });
 
