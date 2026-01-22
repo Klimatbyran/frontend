@@ -49,6 +49,7 @@ export function mapCompanyEditFormToRequestBody(
       const val = formData.get(scope1ValueKey);
       periodUpdate.emissions.scope1 = {
         total: val === "" ? null : parseFloat(val!),
+        unit: originalScope1?.unit || "tCO2e",
         verified: scope1NewVerified ?? isVerified,
       };
     } else if (
@@ -105,6 +106,10 @@ export function mapCompanyEditFormToRequestBody(
         // Preserve previous verification if only values changed
         periodUpdate.emissions.scope2.verified = originalScope2IsVerified;
       }
+
+      // Include unit from original data or default to tCO2e
+      const originalScope2 = period.emissions?.scope2;
+      periodUpdate.emissions.scope2.unit = originalScope2?.unit || "tCO2e";
     }
 
     // --- Scope 3 logic ---
@@ -149,6 +154,7 @@ export function mapCompanyEditFormToRequestBody(
         ) {
           periodUpdate.emissions.scope3.categories.push({
             category: parseInt(categoryId),
+            unit: originalCategory?.unit || "tCO2e",
             verified: newVerified,
           });
         }
@@ -157,6 +163,7 @@ export function mapCompanyEditFormToRequestBody(
           const obj: any = {
             category: parseInt(categoryId),
             total: newValue === "" ? null : parseFloat(newValue!),
+            unit: originalCategory?.unit || "tCO2e",
           };
           // Only include verified if it was explicitly changed
           if (verifiedChanged) {
@@ -185,6 +192,7 @@ export function mapCompanyEditFormToRequestBody(
       const val = formData.get(statedTotalValueKey);
       periodUpdate.emissions.scope3.statedTotalEmissions = {
         total: val === "" ? null : parseFloat(val!),
+        unit: originalStatedTotal?.unit || "tCO2e",
         verified:
           statedTotalNewVerified ??
           !!originalStatedTotal?.metadata?.verifiedBy?.name,
@@ -222,6 +230,7 @@ export function mapCompanyEditFormToRequestBody(
       const val = formData.get(emissionsStatedTotalValueKey);
       periodUpdate.emissions.statedTotalEmissions = {
         total: val === "" ? null : parseFloat(val!),
+        unit: originalEmissionsStatedTotal?.unit || "tCO2e",
         verified:
           emissionsStatedTotalNewVerified ??
           !!originalEmissionsStatedTotal?.metadata?.verifiedBy?.name,
@@ -251,6 +260,7 @@ export function mapCompanyEditFormToRequestBody(
       const val = formData.get(scope1And2ValueKey);
       periodUpdate.emissions.scope1And2 = {
         total: val === "" ? null : parseFloat(val!),
+        unit: originalScope1And2?.unit || "tCO2e",
         verified:
           scope1And2NewVerified ??
           !!originalScope1And2?.metadata?.verifiedBy?.name,
