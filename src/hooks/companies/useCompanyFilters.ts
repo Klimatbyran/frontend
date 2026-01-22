@@ -233,6 +233,42 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
     },
   ];
 
+  const activeFilters = useMemo(() => {
+    return [
+      ...(sectors.length > 0 && !sectors.includes("all")
+        ? sectors.map((sector) => ({
+            type: "filter" as const,
+            label: sectorNames[sector as keyof typeof sectorNames] || sector,
+            onRemove: () => setSectors(sectors.filter((s) => s !== sector)),
+          }))
+        : []),
+      ...(meetsParisFilter !== "all"
+        ? [
+            {
+              type: "filter" as const,
+              label: `${t("explorePage.companies.filteringOptions.meetsParis")}: ${
+                meetsParisFilter === "yes"
+                  ? t("explorePage.companies.filteringOptions.meetsParisYes")
+                  : meetsParisFilter === "no"
+                    ? t("explorePage.companies.filteringOptions.meetsParisNo")
+                    : t(
+                        "explorePage.companies.filteringOptions.meetsParisUnknown",
+                      )
+              }`,
+              onRemove: () => setMeetsParisFilter("all"),
+            },
+          ]
+        : []),
+    ];
+  }, [
+    sectors,
+    meetsParisFilter,
+    sectorNames,
+    t,
+    setSectors,
+    setMeetsParisFilter,
+  ]);
+
   return {
     searchQuery,
     setSearchQuery,
@@ -246,5 +282,6 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
     setSortDirection,
     filteredCompanies,
     filterGroups,
+    activeFilters,
   };
 };

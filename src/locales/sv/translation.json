@@ -1824,8 +1824,8 @@
       "description": "Översikt över utsläpp och omställning i kommunerna",
       "errorTitle": "Det gick inte att hämta kommuninformation",
       "errorDescription": "Försök igen senare",
+      "searchPlaceholder": "Sök kommun (separera med komma)",
       "filteringOptions": {
-        "searchPlaceholder": "Sök kommun (flera: separera med komma)",
         "selectRegion": "Välj län",
         "allRegions": "Alla län",
         "sortBy": "Sortera efter",
