@@ -8,6 +8,8 @@ import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { ScrollToTop } from "./ScrollToTop";
 import { SuggestEdit } from "./SuggestEdit";
+import { Seo } from "@/components/SEO/Seo";
+import { getSeoForRoute } from "@/seo/routes";
 
 interface LayoutProps {
   children: ReactNode;
