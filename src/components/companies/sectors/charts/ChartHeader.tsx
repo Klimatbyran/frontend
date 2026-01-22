@@ -1,5 +1,5 @@
 import React from "react";
-import { PieChart, BarChart3, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import EmissionsTotalDisplay from "./EmissionsTotalDisplay";
