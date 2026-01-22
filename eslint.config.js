@@ -64,10 +64,10 @@ export default tseslint.config(
       "@typescript-eslint/no-explicit-any": "warn",
       complexity: ["warn", 10],
       "max-lines": ["warn", 500],
-      "max-lines-per-function": ["warn", 400],
+      "max-lines-per-function": ["warn", 50],
       "max-depth": ["warn", 4],
       "max-params": ["warn", 5],
-      "max-statements": ["warn", 40],
+      "max-statements": ["warn", 20],
       "no-magic-numbers": [
         "warn",
         {
@@ -147,7 +147,7 @@ export default tseslint.config(
       "**/*Component.tsx",
     ],
     rules: {
-      "max-lines-per-function": ["warn", 500],
+      "max-lines-per-function": ["warn", 100],
     },
   },
 );
