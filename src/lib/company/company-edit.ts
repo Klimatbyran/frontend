@@ -142,8 +142,6 @@ export function mapCompanyEditFormToRequestBody(
           ? formData.get(checkboxKey) === "true"
           : undefined;
         const originalValue = originalCategory?.total;
-        const originalCategoryIsVerified =
-          !!originalCategory?.metadata?.verifiedBy?.name;
 
         // If original value is not null/undefined and only verified is changed
         if (
@@ -154,6 +152,7 @@ export function mapCompanyEditFormToRequestBody(
         ) {
           periodUpdate.emissions.scope3.categories.push({
             category: parseInt(categoryId),
+            total: originalValue,
             unit: originalCategory?.unit || "tCO2e",
             verified: newVerified,
           });

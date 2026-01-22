@@ -16,7 +16,7 @@ function makeCategory(overrides: any = {}) {
     id: "cat",
     category: 1,
     total: 10,
-    unit: ("tCO2e" as "tCO2e" | "tCO2" | null),
+    unit: "tCO2e" as "tCO2e" | "tCO2" | null,
     metadata: baseMeta,
     ...overrides,
   } as {
@@ -263,7 +263,7 @@ describe("mapCompanyEditFormToRequestBody", () => {
         form([["scope-3-1-1-checkbox", "true"]]),
       );
       expect(result.reportingPeriods[0].emissions.scope3.categories).toEqual([
-        { category: 1, unit: "tCO2e", verified: true },
+        { category: 1, total: 10, unit: "tCO2e", verified: true },
       ]);
     });
 
@@ -326,8 +326,18 @@ describe("mapCompanyEditFormToRequestBody", () => {
       );
       const cats = result.reportingPeriods[0].emissions.scope3.categories;
       expect(cats.length).toBe(2);
-      expect(cats).toContainEqual({ category: 1, total: 111, unit: "tCO2e", verified: true });
-      expect(cats).toContainEqual({ category: 2, total: 222, unit: "tCO2e", verified: true });
+      expect(cats).toContainEqual({
+        category: 1,
+        total: 111,
+        unit: "tCO2e",
+        verified: true,
+      });
+      expect(cats).toContainEqual({
+        category: 2,
+        total: 222,
+        unit: "tCO2e",
+        verified: true,
+      });
     });
 
     it("should not send anything for scope3 category if only verified is checked and original value is undefined", () => {
@@ -396,7 +406,9 @@ describe("mapCompanyEditFormToRequestBody", () => {
         [periodWithTCO2],
         form([["scope-3-1-1", "123"]]),
       );
-      expect(result.reportingPeriods[0].emissions.scope3.categories[0].unit).toBe("tCO2");
+      expect(
+        result.reportingPeriods[0].emissions.scope3.categories[0].unit,
+      ).toBe("tCO2");
     });
   });
 
@@ -591,7 +603,9 @@ describe("mapCompanyEditFormToRequestBody", () => {
           form([["scope-1-and-2-1", "100"]]),
         );
         expect(result.reportingPeriods[0].emissions.scope1And2.total).toBe(100);
-        expect(result.reportingPeriods[0].emissions.scope1And2.unit).toBe("tCO2e");
+        expect(result.reportingPeriods[0].emissions.scope1And2.unit).toBe(
+          "tCO2e",
+        );
       });
 
       it("should preserve original unit when updating scope1And2", () => {
@@ -610,7 +624,9 @@ describe("mapCompanyEditFormToRequestBody", () => {
           [periodWithTCO2],
           form([["scope-1-and-2-1", "100"]]),
         );
-        expect(result.reportingPeriods[0].emissions.scope1And2.unit).toBe("tCO2");
+        expect(result.reportingPeriods[0].emissions.scope1And2.unit).toBe(
+          "tCO2",
+        );
       });
     });
 
