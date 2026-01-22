@@ -17,6 +17,7 @@ export function getSiteOrigin(): string {
  */
 export function buildAbsoluteUrl(path: string): string {
   const origin = getSiteOrigin();
+  // Ensure path starts with /
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
   return `${origin}${normalizedPath}`;
 }
@@ -27,6 +28,7 @@ export function buildAbsoluteUrl(path: string): string {
  * @returns Absolute URL
  */
 export function buildAbsoluteImageUrl(path: string): string {
+  // If already absolute, return as-is
   if (path.startsWith("http://") || path.startsWith("https://")) {
     return path;
   }

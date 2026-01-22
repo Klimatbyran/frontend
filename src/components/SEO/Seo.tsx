@@ -22,14 +22,19 @@ export function Seo({ meta }: SeoProps) {
 
   return (
     <Helmet>
+      {/* Title */}
       <title>{title}</title>
 
+      {/* Description */}
       {description && <meta name="description" content={description} />}
 
+      {/* Canonical */}
       {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
 
+      {/* Robots */}
       {noindex && <meta name="robots" content="noindex, nofollow" />}
 
+      {/* OpenGraph */}
       {og && (
         <>
           {og.title && <meta property="og:title" content={og.title} />}
@@ -42,6 +47,7 @@ export function Seo({ meta }: SeoProps) {
         </>
       )}
 
+      {/* Twitter */}
       {twitter && (
         <>
           {twitter.card && <meta name="twitter:card" content={twitter.card} />}
