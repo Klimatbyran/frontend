@@ -8,6 +8,7 @@
     "dev-gen": "npm run generate-api && vite",
     "prebuild": "npm run build:dataguide",
     "build": "tsc && vite build",
+    "build:prerender": "npm run build && node scripts/prerender.mjs",
     "build:dataguide": "node scripts/build-dataguide.js",
     "postbuild": "npm run generate-sitemap || echo 'Sitemap generation failed, but build completed' && tsx scripts/generate-report-html.ts",
     "lint": "eslint .",

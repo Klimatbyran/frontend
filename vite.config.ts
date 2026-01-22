@@ -17,6 +17,8 @@ export default ({ mode }: ConfigEnv) => {
         },
       }),
       markdown({ mode: ["html", "toc", "meta", "react"] as Mode[] }),
+      // Prerender plugin will be added here when installed
+      // For now, we'll use a build script approach
     ],
     resolve: {
       alias: {
