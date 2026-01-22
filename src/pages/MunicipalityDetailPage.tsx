@@ -1,6 +1,6 @@
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useMunicipalityDetails } from "@/hooks/municipalities/useMunicipalityDetails";
 import { useMunicipalityDetailHeaderStats } from "@/hooks/municipalities/useMunicipalityDetails";
 import { transformEmissionsData } from "@/types/municipality";
@@ -21,7 +21,7 @@ import {
   getCurrentYearFromAvailable,
 } from "@/utils/detail/sectorYearUtils";
 import { getProcurementRequirementsText } from "@/utils/municipality/procurement";
-import { MunicipalityDetailSEO } from "@/components/municipalities/detail/MunicipalityDetailSEO";
+import { Seo } from "@/components/SEO/Seo";
 import { LinkCard } from "@/components/detail/DetailLinkCard";
 import { DetailHeader } from "@/components/detail/DetailHeader";
 import { DetailSection } from "@/components/detail/DetailSection";
@@ -29,10 +29,13 @@ import { DetailWrapper } from "@/components/detail/DetailWrapper";
 import { useMunicipalitySectors } from "@/hooks/municipalities/useMunicipalitySectors";
 import { DetailLinkCardGrid } from "@/components/detail/DetailGrid";
 import { SectorEmissionsChart } from "@/components/charts/sectorChart/SectorEmissions";
+import { generateMunicipalitySeoMeta } from "@/utils/seo/entitySeo";
+import { getSeoForRoute } from "@/seo/routes";
 
 export function MunicipalityDetailPage() {
   const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
+  const location = useLocation();
   const { municipality, loading, error } = useMunicipalityDetails(id || "");
   const { currentLanguage } = useLanguage();
 
@@ -57,6 +60,19 @@ export function MunicipalityDetailPage() {
     lastYearEmissionsTon,
   );
 
+  // Generate data-driven SEO meta (memoized to prevent re-renders)
+  const seoMeta = useMemo(() => {
+    if (!municipality) {
+      // Fallback to route-level SEO when data not available
+      return getSeoForRoute(location.pathname, { id: id || "" });
+    }
+
+    return generateMunicipalitySeoMeta(municipality, location.pathname, {
+      lastYear,
+      lastYearEmissionsTon,
+    });
+  }, [municipality, location.pathname, lastYear, lastYearEmissionsTon, id]);
+
   if (loading) return <PageLoading />;
   if (error) return <PageError />;
   if (!municipality) return <PageNoData />;
@@ -80,12 +96,8 @@ export function MunicipalityDetailPage() {
 
   return (
     <>
-      <MunicipalityDetailSEO
-        id={id || ""}
-        municipality={municipality}
-        lastYearEmissionsTon={lastYearEmissionsTon}
-        lastYear={lastYear}
-      />
+      {/* Only render SEO when data is available, otherwise Layout will use route-level SEO */}
+      {municipality && <Seo meta={seoMeta} />}
 
       <DetailWrapper>
         <DetailHeader
