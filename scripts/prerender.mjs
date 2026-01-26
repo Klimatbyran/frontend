@@ -11,6 +11,9 @@ import { resolve, dirname, join } from "path";
 import { fileURLToPath } from "url";
 import { createServer } from "http";
 
+// Helper function to wait/delay
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 // Prerender routes - defined here to avoid TypeScript import issues
 const prerenderRoutes = [
   // Home routes (both languages)
@@ -143,7 +146,7 @@ async function prerender() {
       });
 
       // Wait for React to render and Helmet to update
-      await page.waitForTimeout(2000);
+      await delay(2000);
 
       // Wait for root element to have content
       try {
@@ -174,27 +177,31 @@ async function prerender() {
       }
 
       // Determine output path
-      // For root routes, use dist/index.html
+      // For root route, use dist/index.html
       // For other routes, create route/index.html
       let routeDir;
       let routeIndexPath;
 
-      if (route === "/" || route === "/sv" || route === "/en") {
-        // For home routes, we'll create separate files
-        routeDir = route === "/" ? distDir : join(distDir, route);
-        routeIndexPath = join(routeDir, "index.html");
+      if (route === "/") {
+        // Root route uses dist/index.html
+        routeIndexPath = indexPath;
       } else {
+        // All other routes get their own directory with index.html
         routeDir = join(distDir, route);
         routeIndexPath = join(routeDir, "index.html");
       }
 
-      // Create directory if needed
-      mkdirSync(routeDir, { recursive: true });
+      // Create directory if needed (skip for root route)
+      if (route !== "/") {
+        mkdirSync(routeDir, { recursive: true });
+      }
 
       // Create the final HTML with updated head (SEO meta tags) and body
       const finalHTML = `<!DOCTYPE html>
 <html lang="sv">
+<head>
 ${headMatch[1]}
+</head>
 ${bodyMatch[1]}
 </html>`;
 
