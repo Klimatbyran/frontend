@@ -11,6 +11,7 @@ const markdownFiles = import.meta.glob("/src/lib/blog/posts/*.md", {
 
 export function useBlogPosts() {
   const { currentLanguage } = useLanguage();
+
   return (
     blogMetadataByLanguage[currentLanguage]
       .map((b) => getBlogPost(b, currentLanguage).blogPost?.metadata)
@@ -54,7 +55,6 @@ export function getBlogPost(
       }
     }
   }
-
   // Final fallback if no language indicated in filename
   if (!rawMarkdown) {
     filePath = `/src/lib/blog/posts/${metadata.id}.md`;
@@ -65,7 +65,7 @@ export function getBlogPost(
     return { blogPost: null, loading: false, error: "Content not found" };
   }
 
-  const frontmatterRegex = /^---\n([\s\S]*?)\n---\n/;
+  const frontmatterRegex = /^---\r?\n([\s\S]*?)\r?\n---\r?\n/;
   const frontmatter = rawMarkdown.match(frontmatterRegex);
 
   if (!frontmatter) {
