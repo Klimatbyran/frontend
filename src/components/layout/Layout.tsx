@@ -4,6 +4,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { getCompanies, getMunicipalities } from "@/lib/api";
 import { Seo } from "@/components/SEO/Seo";
 import { getSeoForRoute } from "@/seo/routes";
+import { buildAbsoluteUrl, getSiteOrigin } from "@/utils/seo";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { ScrollToTop } from "./ScrollToTop";
@@ -13,6 +14,38 @@ interface LayoutProps {
   children: ReactNode;
 }
 
+/**
+ * Generate site-wide Organization and WebSite structured data
+ * This is added to every page for consistent site identification
+ */
+function generateSiteWideStructuredData() {
+  const siteOrigin = getSiteOrigin();
+  const logoUrl = buildAbsoluteUrl("/logos/Klimatkollen_default.webp");
+
+  return [
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      name: "Klimatkollen",
+      url: siteOrigin,
+      logo: logoUrl,
+      description:
+        "Open climate data for citizens. Track emissions and climate transition progress for companies and municipalities in Sweden.",
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: "Klimatkollen",
+      url: siteOrigin,
+      publisher: {
+        "@type": "Organization",
+        name: "Klimatkollen",
+        logo: logoUrl,
+      },
+    },
+  ];
+}
+
 export function Layout({ children }: LayoutProps) {
   const location = useLocation();
   const params = useParams();
@@ -20,7 +53,22 @@ export function Layout({ children }: LayoutProps) {
 
   // Get SEO metadata for current route
   const seoMeta = useMemo(() => {
-    return getSeoForRoute(location.pathname, params as Record<string, string>);
+    const routeSeo = getSeoForRoute(location.pathname, params as Record<string, string>);
+    
+    // Merge site-wide structured data with page-specific structured data
+    const siteWideStructuredData = generateSiteWideStructuredData();
+    const pageStructuredData = routeSeo.structuredData;
+    
+    // If page has structured data, combine with site-wide data
+    // Otherwise, just use site-wide data
+    const combinedStructuredData = pageStructuredData
+      ? [...siteWideStructuredData, ...(Array.isArray(pageStructuredData) ? pageStructuredData : [pageStructuredData])]
+      : siteWideStructuredData;
+
+    return {
+      ...routeSeo,
+      structuredData: combinedStructuredData,
+    };
   }, [location.pathname, params]);
 
   // Scroll to top on route change

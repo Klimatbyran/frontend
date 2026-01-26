@@ -5,7 +5,8 @@ import { ContentBlock } from "@/components/layout/ContentBlock";
 import { Typewriter } from "@/components/ui/typewriter";
 import { useCompanies } from "@/hooks/companies/useCompanies";
 import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
-import { PageSEO } from "@/components/SEO/PageSEO";
+import { Seo } from "@/components/SEO/Seo";
+import { buildAbsoluteUrl } from "@/utils/seo";
 import { useLanguage } from "@/components/LanguageProvider";
 import {
   formatEmissionsAbsolute,
@@ -20,18 +21,11 @@ export function LandingPage() {
   const { currentLanguage } = useLanguage();
 
   // Prepare SEO data
-  const canonicalUrl = "https://klimatkollen.se";
+  // Note: Site-wide Organization/WebSite schema is added by Layout component
+  // No need to duplicate Organization schema here
+  const canonicalUrl = buildAbsoluteUrl("/");
   const pageTitle = `Klimatkollen - ${t("landingPage.metaTitle")}`;
   const pageDescription = t("landingPage.metaDescription");
-
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: "Klimatkollen",
-    url: canonicalUrl,
-    logo: "https://klimatkollen.se/images/social-picture.png",
-    description: pageDescription,
-  };
 
   const TypeWriterTexts = [
     t("landingPage.typewriter.reduceEmissions"),
@@ -79,14 +73,25 @@ export function LandingPage() {
     </span>
   );
 
+  const seoMeta = {
+    title: pageTitle,
+    description: pageDescription,
+    canonical: "/",
+    og: {
+      title: pageTitle,
+      description: pageDescription,
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image" as const,
+      title: pageTitle,
+      description: pageDescription,
+    },
+  };
+
   return (
     <>
-      <PageSEO
-        title={pageTitle}
-        description={pageDescription}
-        canonicalUrl={canonicalUrl}
-        structuredData={structuredData}
-      />
+      <Seo meta={seoMeta} />
       <div className="flex flex-col">
         <div className="flex-1 flex flex-col items-center text-center px-4 py-14 md:py-24">
           <div className="max-w-lg md:max-w-4xl mx-auto space-y-4">

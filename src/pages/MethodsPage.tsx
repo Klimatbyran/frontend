@@ -6,7 +6,8 @@ import { MethodologyNavigation } from "@/components/methods/MethodNavigation";
 import { MethodologyContent } from "@/components/methods/MethodContent";
 import { MethodologySearch } from "@/components/methods/MethodSearch";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { PageSEO } from "@/components/SEO/PageSEO";
+import { Seo } from "@/components/SEO/Seo";
+import { buildAbsoluteUrl } from "@/utils/seo";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { getAllMethods } from "@/lib/methods/methodologyData";
 
@@ -57,7 +58,6 @@ export function MethodsPage() {
   };
 
   // Prepare SEO data
-  const canonicalUrl = "https://klimatkollen.se/methodology";
   const pageTitle = `${t("methodsPage.header.title")} - Klimatkollen`;
   const pageDescription = t("methodsPage.header.description");
 
@@ -66,7 +66,24 @@ export function MethodsPage() {
     "@type": "WebPage",
     name: t("methodsPage.header.title"),
     description: pageDescription,
-    url: canonicalUrl,
+    url: buildAbsoluteUrl("/methodology"),
+  };
+
+  const seoMeta = {
+    title: pageTitle,
+    description: pageDescription,
+    canonical: "/methodology",
+    og: {
+      title: pageTitle,
+      description: pageDescription,
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image" as const,
+      title: pageTitle,
+      description: pageDescription,
+    },
+    structuredData,
   };
 
   const toggleSearch = () => {
@@ -80,12 +97,7 @@ export function MethodsPage() {
 
   return (
     <>
-      <PageSEO
-        title={pageTitle}
-        description={pageDescription}
-        canonicalUrl={canonicalUrl}
-        structuredData={structuredData}
-      />
+      <Seo meta={seoMeta} />
       <div className="max-w-[1200px] mx-auto px-4 md:px-6 text-white">
         <PageHeader
           title={t("methodsPage.header.title")}

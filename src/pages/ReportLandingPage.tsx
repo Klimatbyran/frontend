@@ -5,6 +5,8 @@ import { useMemo } from "react";
 import { reports } from "@/lib/constants/reports";
 import { Seo } from "@/components/SEO/Seo";
 import { getReportOgImageUrl } from "@/utils/seo/ogImages";
+import { generateReportStructuredData } from "@/utils/seo/contentSeo";
+import { buildAbsoluteUrl, buildAbsoluteImageUrl } from "@/utils/seo";
 
 export function ReportLandingPage() {
   const { reportId } = useParams<{ reportId: string }>();
@@ -27,7 +29,6 @@ export function ReportLandingPage() {
   const title = report?.title || "Klimatkollen Rapport";
   const description = report?.excerpt || "Läs rapporten från Klimatkollen.";
   const pdfUrl = report?.link || `/reports/${reportId}.pdf`;
-  const canonicalUrl = `https://klimatkollen.se/reports/${reportId}`;
 
   // Generate SEO meta with preview support
   const seoMeta = useMemo(() => {
@@ -36,6 +37,18 @@ export function ReportLandingPage() {
     // Use API endpoint for preview generation (with fallback to static image)
     // API generates preview with title + excerpt, static image is just the image
     const ogImage = getReportOgImageUrl(reportId || "", image);
+
+    // Generate Report structured data
+    const canonicalUrl = buildAbsoluteUrl(canonical);
+    const absolutePdfUrl = pdfUrl.startsWith("http") ? pdfUrl : buildAbsoluteUrl(pdfUrl);
+    const absoluteImageUrl = buildAbsoluteImageUrl(image);
+    const structuredData = generateReportStructuredData(
+      title,
+      description,
+      canonicalUrl,
+      absolutePdfUrl,
+      absoluteImageUrl,
+    );
 
     return {
       title: `${title} - Klimatkollen`,
@@ -52,8 +65,9 @@ export function ReportLandingPage() {
         title,
         description,
       },
+      structuredData,
     };
-  }, [title, description, image, location.pathname, reportId]);
+  }, [title, description, image, location.pathname, reportId, pdfUrl]);
 
   return (
     <>

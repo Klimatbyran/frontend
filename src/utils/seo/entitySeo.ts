@@ -2,6 +2,7 @@ import { SeoMeta } from "@/types/seo";
 import { CompanyDetails } from "@/types/company";
 import { Municipality } from "@/types/municipality";
 import { getEntityOgImageUrl } from "./ogImages";
+import { buildAbsoluteUrl } from "@/utils/seo";
 
 const SITE_NAME = "Klimatkollen";
 const MAX_DESCRIPTION_LENGTH = 160;
@@ -128,6 +129,46 @@ export function buildMunicipalitySeoDescription(
 }
 
 /**
+ * Generate structured data for a company (Organization schema)
+ * @param company - Company data
+ * @param canonicalUrl - Absolute canonical URL
+ * @param description - Page description
+ * @param industry - Industry name (optional)
+ * @returns JSON-LD structured data object
+ */
+export function generateCompanyStructuredData(
+  company: CompanyDetails,
+  canonicalUrl: string,
+  description: string,
+  industry?: string,
+): Record<string, unknown> {
+  const structuredData: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: company.name,
+    url: canonicalUrl,
+    description: description,
+  };
+
+  // Add industry if available
+  if (industry) {
+    structuredData.industry = industry;
+  }
+
+  // Add logo if available
+  if (company.logoUrl) {
+    structuredData.logo = company.logoUrl;
+  }
+
+  // Add Wikidata ID if available
+  if (company.wikidataId) {
+    structuredData.sameAs = `https://www.wikidata.org/entity/${company.wikidataId}`;
+  }
+
+  return structuredData;
+}
+
+/**
  * Generate SEO meta for a company page
  * @param company - Company data
  * @param pathname - Current pathname
@@ -154,6 +195,15 @@ export function generateCompanySeoMeta(
   const entityId = company.wikidataId || "";
   const ogImage = getEntityOgImageUrl("companies", entityId, true);
 
+  // Generate structured data
+  const canonicalUrl = buildAbsoluteUrl(canonical);
+  const structuredData = generateCompanyStructuredData(
+    company,
+    canonicalUrl,
+    description,
+    options?.industry,
+  );
+
   return {
     title,
     description,
@@ -169,7 +219,41 @@ export function generateCompanySeoMeta(
       title,
       description,
     },
+    structuredData,
   };
+}
+
+/**
+ * Generate structured data for a municipality (GovernmentOrganization schema)
+ * @param municipality - Municipality data
+ * @param canonicalUrl - Absolute canonical URL
+ * @param description - Page description
+ * @returns JSON-LD structured data object
+ */
+export function generateMunicipalityStructuredData(
+  municipality: Municipality,
+  canonicalUrl: string,
+  description: string,
+): Record<string, unknown> {
+  const structuredData: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "GovernmentOrganization",
+    name: municipality.name,
+    url: canonicalUrl,
+    description: description,
+  };
+
+  // Add address if region is available
+  if (municipality.region) {
+    structuredData.address = {
+      "@type": "PostalAddress",
+      addressLocality: municipality.name,
+      addressRegion: municipality.region,
+      addressCountry: "SE",
+    };
+  }
+
+  return structuredData;
 }
 
 /**
@@ -201,6 +285,14 @@ export function generateMunicipalitySeoMeta(
   const entityId = options?.municipalityId || municipality.name.toLowerCase().replace(/\s+/g, "-");
   const ogImage = getEntityOgImageUrl("municipalities", entityId, true);
 
+  // Generate structured data
+  const canonicalUrl = buildAbsoluteUrl(canonical);
+  const structuredData = generateMunicipalityStructuredData(
+    municipality,
+    canonicalUrl,
+    description,
+  );
+
   return {
     title,
     description,
@@ -216,5 +308,6 @@ export function generateMunicipalitySeoMeta(
       title,
       description,
     },
+    structuredData,
   };
 }

@@ -18,6 +18,8 @@ import { blogMetadataByLanguage } from "@/lib/blog/blogPostsList";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { Seo } from "@/components/SEO/Seo";
 import { getArticleOgImageUrl, getDefaultOgImageUrl } from "@/utils/seo/ogImages";
+import { generateArticleStructuredData } from "@/utils/seo/contentSeo";
+import { buildAbsoluteUrl } from "@/utils/seo";
 
 export function BlogDetailPage() {
   const { t } = useTranslation();
@@ -47,6 +49,14 @@ export function BlogDetailPage() {
     // API generates preview with title + excerpt, static image is just the image
     const ogImage = getArticleOgImageUrl(id || "", metadata.image);
 
+    // Generate Article structured data
+    const canonicalUrl = buildAbsoluteUrl(canonical);
+    const structuredData = generateArticleStructuredData(
+      metadata,
+      canonicalUrl,
+      ogImage,
+    );
+
     return {
       title: `${metadata.title} - Klimatkollen`,
       description: metadata.excerpt || "",
@@ -62,6 +72,7 @@ export function BlogDetailPage() {
         title: metadata.title,
         description: metadata.excerpt || "",
       },
+      structuredData,
     };
   }, [blogPost, location.pathname, id]);
 

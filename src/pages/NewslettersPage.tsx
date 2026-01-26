@@ -5,13 +5,13 @@ import { useScreenSize } from "@/hooks/useScreenSize";
 import { NewsletterNavigation } from "@/components/newsletters/NewsletterNavigation";
 import { NewsletterType } from "@/lib/newsletterArchive/newsletterData";
 import { useNewsletters } from "@/hooks/useNewsletters";
-import { PageSEO } from "@/components/SEO/PageSEO";
+import { Seo } from "@/components/SEO/Seo";
+import { buildAbsoluteUrl } from "@/utils/seo";
 import { Text } from "@/components/ui/text";
 import { NewsletterPopover } from "@/components/newsletters/NewsletterPopover";
 
 export function NewsLetterArchivePage() {
   const { t } = useTranslation();
-  const canonicalUrl = "https://klimatkollen.se/insights/newsletter-archive";
   const pageTitle = t("newsletterArchivePage.title");
   const pageDescription = t("newsletterArchivePage.description");
   const { isMobile } = useScreenSize();
@@ -32,7 +32,24 @@ export function NewsLetterArchivePage() {
     "@type": "WebPage",
     name: pageTitle,
     description: pageDescription,
-    url: canonicalUrl,
+    url: buildAbsoluteUrl("/newsletter-archive"),
+  };
+
+  const seoMeta = {
+    title: `${pageTitle} - Klimatkollen`,
+    description: pageDescription,
+    canonical: "/newsletter-archive",
+    og: {
+      title: pageTitle,
+      description: pageDescription,
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image" as const,
+      title: pageTitle,
+      description: pageDescription,
+    },
+    structuredData,
   };
 
   if (isLoading) return <Text>{t("newsletterArchivePage.loading")}</Text>;
@@ -40,12 +57,7 @@ export function NewsLetterArchivePage() {
 
   return (
     <>
-      <PageSEO
-        title={pageTitle}
-        description={pageDescription}
-        canonicalUrl={canonicalUrl}
-        structuredData={structuredData}
-      />
+      <Seo meta={seoMeta} />
       <div className="max-w-[1200px] mx-auto px-4 md:px-6 text-white gap-4">
         <PageHeader title={pageTitle} description={pageDescription} />
         <div

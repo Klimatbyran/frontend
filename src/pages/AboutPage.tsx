@@ -6,7 +6,8 @@ import { useBoardMembers } from "@/hooks/useBoardMembers";
 import { LinkButton } from "@/components/layout/LinkButton";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { MembersGrid } from "@/components/MembersGrid";
-import { PageSEO } from "@/components/SEO/PageSEO";
+import { Seo } from "@/components/SEO/Seo";
+import { buildAbsoluteUrl } from "@/utils/seo";
 import KlimatkollenVideo from "@/components/ui/klimatkollenVideoPlayer";
 import { AccordionGroup } from "../components/layout/AccordionGroup";
 
@@ -16,27 +17,30 @@ export function AboutPage() {
   const boardMembers = useBoardMembers();
 
   // Prepare SEO data
-  const canonicalUrl = "https://klimatkollen.se/about";
+  // Note: Site-wide Organization/WebSite schema is added by Layout component
+  // No need to duplicate Organization schema here
   const pageTitle = `${t("aboutPage.header.title")} - Klimatkollen`;
   const pageDescription = t("aboutPage.header.description");
 
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: "Klimatkollen",
-    url: "https://klimatkollen.se",
-    logo: "https://klimatkollen.se/images/social-picture.png",
+  const seoMeta = {
+    title: pageTitle,
     description: pageDescription,
+    canonical: "/about",
+    og: {
+      title: pageTitle,
+      description: pageDescription,
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image" as const,
+      title: pageTitle,
+      description: pageDescription,
+    },
   };
 
   return (
     <>
-      <PageSEO
-        title={pageTitle}
-        description={pageDescription}
-        canonicalUrl={canonicalUrl}
-        structuredData={structuredData}
-      />
+      <Seo meta={seoMeta} />
       <div className="max-w-[1200px] mx-auto">
         <PageHeader
           title={t("aboutPage.header.title")}

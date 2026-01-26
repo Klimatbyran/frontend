@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import { PageSEO } from "@/components/SEO/PageSEO";
+import { Seo } from "@/components/SEO/Seo";
+import { buildAbsoluteUrl } from "@/utils/seo";
 import { Text } from "@/components/ui/text";
 import { useLanguage } from "@/components/LanguageProvider";
 
@@ -9,7 +10,6 @@ export function NotFoundPage() {
   const { currentLanguage } = useLanguage();
 
   // Prepare SEO data
-  const canonicalUrl = "https://klimatkollen.se/404";
   const pageTitle = `404 - ${t("notFoundPage.title")} - Klimatkollen`;
   const pageDescription = t("notFoundPage.description");
 
@@ -18,7 +18,25 @@ export function NotFoundPage() {
     "@type": "WebPage",
     name: t("notFoundPage.title"),
     description: pageDescription,
-    url: canonicalUrl,
+    url: buildAbsoluteUrl("/404"),
+  };
+
+  const seoMeta = {
+    title: pageTitle,
+    description: pageDescription,
+    canonical: "/404",
+    noindex: true, // Don't index 404 pages
+    og: {
+      title: pageTitle,
+      description: pageDescription,
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image" as const,
+      title: pageTitle,
+      description: pageDescription,
+    },
+    structuredData,
   };
 
   // Use the current language for any links on the 404 page
@@ -26,12 +44,7 @@ export function NotFoundPage() {
 
   return (
     <>
-      <PageSEO
-        title={pageTitle}
-        description={pageDescription}
-        canonicalUrl={canonicalUrl}
-        structuredData={structuredData}
-      />
+      <Seo meta={seoMeta} />
       <div className="flex flex-col items-center justify-center min-h-[70vh] px-4 text-center">
         <Text variant="h1" className="text-6xl mb-4">
           404

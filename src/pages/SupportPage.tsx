@@ -2,7 +2,8 @@ import { useTranslation } from "react-i18next";
 import { Heart, Code, Handshake, Building, Users } from "lucide-react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { SupportMethod } from "@/components/support/SupportMethod";
-import { PageSEO } from "@/components/SEO/PageSEO";
+import { Seo } from "@/components/SEO/Seo";
+import { buildAbsoluteUrl } from "@/utils/seo";
 
 type SupportReadMoreContent = {
   header: string;
@@ -16,7 +17,6 @@ export function SupportPage() {
   const { t } = useTranslation();
 
   // Prepare SEO data
-  const canonicalUrl = "https://klimatkollen.se/support";
   const pageTitle = `${t("supportPage.header.title")} - Klimatkollen`;
   const pageDescription = t("supportPage.header.description");
 
@@ -25,7 +25,24 @@ export function SupportPage() {
     "@type": "WebPage",
     name: t("supportPage.header.title"),
     description: pageDescription,
-    url: canonicalUrl,
+    url: buildAbsoluteUrl("/support"),
+  };
+
+  const seoMeta = {
+    title: pageTitle,
+    description: pageDescription,
+    canonical: "/support",
+    og: {
+      title: pageTitle,
+      description: pageDescription,
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image" as const,
+      title: pageTitle,
+      description: pageDescription,
+    },
+    structuredData,
   };
 
   const partnerEmailLink = `mailto:hej@klimatkollen.se?subject=${encodeURIComponent(t("supportPage.partnerships.email.subject"))}&body=${encodeURIComponent(t("supportPage.partnerships.email.body"))}`;
@@ -34,12 +51,7 @@ export function SupportPage() {
 
   return (
     <>
-      <PageSEO
-        title={pageTitle}
-        description={pageDescription}
-        canonicalUrl={canonicalUrl}
-        structuredData={structuredData}
-      />
+      <Seo meta={seoMeta} />
       <div className="max-w-[1200px] mx-auto px-4 md:px-6 text-white">
         <PageHeader
           title={t("supportPage.header.title")}

@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { PageSEO } from "@/components/SEO/PageSEO";
+import { Seo } from "@/components/SEO/Seo";
+import { buildAbsoluteUrl } from "@/utils/seo";
 
 interface ContentItem {
   id: string;
@@ -38,14 +39,31 @@ export function ContentGridPage({
 
   const pageTitle = `${title} - Klimatkollen`;
 
+  // Extract canonical path from URL (remove origin if present)
+  const canonicalPath = canonicalUrl.startsWith("http")
+    ? new URL(canonicalUrl).pathname
+    : canonicalUrl;
+
+  const seoMeta = {
+    title: pageTitle,
+    description: description,
+    canonical: canonicalPath,
+    og: {
+      title: pageTitle,
+      description: description,
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image" as const,
+      title: pageTitle,
+      description: description,
+    },
+    structuredData,
+  };
+
   return (
     <>
-      <PageSEO
-        title={pageTitle}
-        description={description}
-        canonicalUrl={canonicalUrl}
-        structuredData={structuredData}
-      />
+      <Seo meta={seoMeta} />
       <div className="w-full max-w-[1200px] mx-auto space-y-8">
         <PageHeader title={title} description={description} />
         {featuredPost && (

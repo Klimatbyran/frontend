@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
-import { PageSEO } from "@/components/SEO/PageSEO";
+import { Seo } from "@/components/SEO/Seo";
+import { buildAbsoluteUrl } from "@/utils/seo";
 import { Text } from "@/components/ui/text";
 
 export function ErrorPage() {
@@ -11,7 +12,6 @@ export function ErrorPage() {
   const isServerError = errorCode.startsWith("5");
 
   // Prepare SEO data
-  const canonicalUrl = `https://klimatkollen.se/error/${errorCode}`;
   const pageTitle = `${errorCode} - ${t("errorPage.title")} - Klimatkollen`;
   const pageDescription = t(
     isServerError ? "errorPage.serverDescription" : "errorPage.description",
@@ -22,17 +22,30 @@ export function ErrorPage() {
     "@type": "WebPage",
     name: t("errorPage.title"),
     description: pageDescription,
-    url: canonicalUrl,
+    url: buildAbsoluteUrl(`/error/${errorCode}`),
+  };
+
+  const seoMeta = {
+    title: pageTitle,
+    description: pageDescription,
+    canonical: `/error/${errorCode}`,
+    noindex: true, // Don't index error pages
+    og: {
+      title: pageTitle,
+      description: pageDescription,
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image" as const,
+      title: pageTitle,
+      description: pageDescription,
+    },
+    structuredData,
   };
 
   return (
     <>
-      <PageSEO
-        title={pageTitle}
-        description={pageDescription}
-        canonicalUrl={canonicalUrl}
-        structuredData={structuredData}
-      />
+      <Seo meta={seoMeta} />
       <div className="flex flex-col items-center justify-center min-h-[70vh] px-4 text-center">
         <Text variant="h1" className="text-6xl mb-4">
           {errorCode}

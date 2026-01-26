@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import { useLocation } from "react-router-dom";
 import { SeoMeta } from "@/types/seo";
-import { buildAbsoluteUrl, buildAbsoluteImageUrl, stripTrackingParams } from "@/utils/seo";
+import { buildAbsoluteUrl, buildAbsoluteImageUrl, stripTrackingParams, stripUndefined } from "@/utils/seo";
 import { getDefaultOgImageUrl } from "@/utils/seo/ogImages";
 import { getLanguageUrl } from "@/lib/languageDetection";
 
@@ -11,12 +11,13 @@ interface SeoProps {
 
 /**
  * SEO component that renders meta tags based on SeoMeta model
- * Handles title, description, canonical, robots, OpenGraph, Twitter tags, and hreflang
+ * Handles title, description, canonical, robots, OpenGraph, Twitter tags, hreflang, and JSON-LD structured data
  * Always provides absolute og:image URLs with fallbacks
  * Strips tracking parameters from canonical URLs
+ * Ensures valid JSON-LD by removing undefined values
  */
 export function Seo({ meta }: SeoProps) {
-  const { title, description, canonical, noindex, og, twitter } = meta;
+  const { title, description, canonical, noindex, og, twitter, structuredData } = meta;
   const location = useLocation();
 
   // Build absolute URLs and strip tracking parameters
@@ -105,6 +106,25 @@ export function Seo({ meta }: SeoProps) {
           )}
           {twitterImage && (
             <meta name="twitter:image" content={twitterImage} />
+          )}
+        </>
+      )}
+
+      {/* JSON-LD Structured Data */}
+      {structuredData && (
+        <>
+          {Array.isArray(structuredData) ? (
+            // Multiple structured data objects - render each in separate script tags
+            structuredData.map((data, index) => (
+              <script key={index} type="application/ld+json">
+                {JSON.stringify(stripUndefined(data), null, 0)}
+              </script>
+            ))
+          ) : (
+            // Single structured data object
+            <script type="application/ld+json">
+              {JSON.stringify(stripUndefined(structuredData), null, 0)}
+            </script>
           )}
         </>
       )}

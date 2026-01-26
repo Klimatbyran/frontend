@@ -36,6 +36,39 @@ export function buildAbsoluteImageUrl(path: string): string {
 }
 
 /**
+ * Recursively remove undefined and null values from an object
+ * This ensures valid JSON-LD (undefined values are invalid in JSON)
+ * @param obj - Object to clean
+ * @returns Cleaned object with no undefined/null values
+ */
+export function stripUndefined<T>(obj: T): T {
+  if (obj === null || obj === undefined) {
+    return obj;
+  }
+
+  if (Array.isArray(obj)) {
+    return obj
+      .map((item) => stripUndefined(item))
+      .filter((item) => item !== null && item !== undefined) as T;
+  }
+
+  if (typeof obj === "object") {
+    const cleaned: Record<string, unknown> = {};
+    for (const [key, value] of Object.entries(obj)) {
+      if (value !== undefined && value !== null) {
+        const cleanedValue = stripUndefined(value);
+        if (cleanedValue !== undefined && cleanedValue !== null) {
+          cleaned[key] = cleanedValue;
+        }
+      }
+    }
+    return cleaned as T;
+  }
+
+  return obj;
+}
+
+/**
  * Strip tracking parameters from a URL
  * Removes common tracking params: utm_*, ref, source, fbclid, gclid, etc.
  * @param url - URL string (can be absolute or relative)

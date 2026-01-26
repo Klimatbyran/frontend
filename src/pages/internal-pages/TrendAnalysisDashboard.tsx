@@ -6,7 +6,6 @@ import { calculateTrendline } from "@/lib/calculations/trends/analysis";
 import { calculateMeetsParis } from "@/lib/calculations/trends/meetsParis";
 import type { TrendAnalysis } from "@/lib/calculations/trends/types";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { PageSEO } from "@/components/SEO/PageSEO";
 import { useLanguage } from "@/components/LanguageProvider";
 import { TrendAnalysisSummaryCards } from "@/components/internalDashboards/TrendAnalysisSummaryCards";
 import { TrendAnalysisCompaniesTable } from "@/components/internalDashboards/TrendAnalysisCompaniesTable";
@@ -223,12 +222,6 @@ export function TrendAnalysisDashboard() {
 
   return (
     <>
-      <PageSEO
-        title="Trend Analysis Dashboard - Internal"
-        description="Internal dashboard for analyzing trend line choices across companies"
-        canonicalUrl="https://klimatkollen.se/internal/trend-analysis"
-      />
-
       <div className="container mx-auto px-4 py-8">
         <PageHeader
           title="Trend Analysis Dashboard"

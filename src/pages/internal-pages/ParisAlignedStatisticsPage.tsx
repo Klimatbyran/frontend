@@ -12,7 +12,6 @@ import {
   calculateCarbonLawCumulativeEmissions,
 } from "@/lib/calculations/trends/meetsParis";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { PageSEO } from "@/components/SEO/PageSEO";
 import { useLanguage } from "@/components/LanguageProvider";
 
 export function ParisAlignedStatisticsPage() {
@@ -304,12 +303,6 @@ export function ParisAlignedStatisticsPage() {
 
   return (
     <>
-      <PageSEO
-        title="Paris Aligned Statistics - Internal"
-        description="Internal dashboard showing aggregated Paris alignment statistics"
-        canonicalUrl="https://klimatkollen.se/internal/paris-aligned-statistics"
-      />
-
       <div className="container mx-auto px-4 py-8">
         <PageHeader
           title="Paris Aligned Statistics"

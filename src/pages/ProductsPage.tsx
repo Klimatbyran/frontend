@@ -12,7 +12,8 @@ import { useState } from "react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { ProductCard } from "@/components/products/ProductCard";
 import { RequestAccessModal } from "@/components/products/RequestAccessModal";
-import { PageSEO } from "@/components/SEO/PageSEO";
+import { Seo } from "@/components/SEO/Seo";
+import { buildAbsoluteUrl } from "@/utils/seo";
 
 interface DataCategoryProps {
   icon: React.ReactNode;
@@ -121,7 +122,6 @@ function ProductsPage() {
   );
 
   // Prepare SEO data
-  const canonicalUrl = "https://klimatkollen.se/products";
   const pageTitle = `${t("productsPage.title")} - Klimatkollen`;
   const pageDescription = t("productsPage.description");
 
@@ -130,17 +130,29 @@ function ProductsPage() {
     "@type": "WebPage",
     name: t("productsPage.title"),
     description: pageDescription,
-    url: canonicalUrl,
+    url: buildAbsoluteUrl("/products"),
+  };
+
+  const seoMeta = {
+    title: pageTitle,
+    description: pageDescription,
+    canonical: "/products",
+    og: {
+      title: pageTitle,
+      description: pageDescription,
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image" as const,
+      title: pageTitle,
+      description: pageDescription,
+    },
+    structuredData,
   };
 
   return (
     <>
-      <PageSEO
-        title={pageTitle}
-        description={pageDescription}
-        canonicalUrl={canonicalUrl}
-        structuredData={structuredData}
-      />
+      <Seo meta={seoMeta} />
 
       <div className="max-w-[1200px] mx-auto">
         <PageHeader

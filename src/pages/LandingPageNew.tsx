@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Building2Icon, ChevronDown, TreePineIcon } from "lucide-react";
-import { PageSEO } from "@/components/SEO/PageSEO";
+import { Seo } from "@/components/SEO/Seo";
 import { TopList, TopListItem } from "@/components/TopList";
 import { Typewriter } from "@/components/ui/typewriter";
 import { ScrollAnimationSection } from "@/components/layout/ScrollAnimationSection";
@@ -39,10 +39,8 @@ export function LandingPageNew() {
 
   // Get SEO data from hook
   const {
-    canonicalUrl,
     pageTitle,
     pageDescription,
-    structuredData,
     typeWriterTexts,
   } = useLandingPageSEO();
 
@@ -102,11 +100,23 @@ export function LandingPageNew() {
 
   return (
     <>
-      <PageSEO
-        title={pageTitle}
-        description={pageDescription}
-        canonicalUrl={canonicalUrl}
-        structuredData={structuredData}
+      <Seo
+        meta={{
+          title: pageTitle,
+          description: pageDescription,
+          canonical: "/",
+          og: {
+            title: pageTitle,
+            description: pageDescription,
+            type: "website",
+          },
+          twitter: {
+            card: "summary_large_image" as const,
+            title: pageTitle,
+            description: pageDescription,
+          },
+          // Note: structuredData not needed - Layout adds site-wide Organization/WebSite schema
+        }}
       />
       <div className="flex flex-col h-screen items-center">
         <div className="flex-1 flex flex-col items-center text-center px-4 py-44 md:py-56">

@@ -18,4 +18,5 @@ export interface SeoMeta {
     description?: string;
     image?: string;
   };
+  structuredData?: Record<string, unknown> | Array<Record<string, unknown>>;
 }

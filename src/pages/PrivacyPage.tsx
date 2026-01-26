@@ -2,22 +2,37 @@ import { useTranslation } from "react-i18next";
 import { Text } from "@/components/ui/text";
 import { Accordion } from "@/components/ui/accordion";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { PageSEO } from "@/components/SEO/PageSEO";
+import { Seo } from "@/components/SEO/Seo";
+import { buildAbsoluteUrl } from "@/utils/seo";
 import { AccordionGroup } from "../components/layout/AccordionGroup";
 
 export function PrivacyPage() {
   const { t } = useTranslation();
 
+  const seoMeta = {
+    title: t("privacyPage.seoTitle"),
+    description: t("privacyPage.seoDescription"),
+    canonical: "/privacy",
+    og: {
+      title: t("privacyPage.seoTitle"),
+      description: t("privacyPage.seoDescription"),
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image" as const,
+      title: t("privacyPage.seoTitle"),
+      description: t("privacyPage.seoDescription"),
+    },
+  };
+
   return (
     <>
-      <PageSEO
-        title={t("privacyPage.seoTitle")}
-        description={t("privacyPage.seoDescription")}
-        canonicalUrl="https://klimatkollen.se/privacy"
-      >
+      <Seo meta={seoMeta} />
+      {/* Hidden SEO content for search engines */}
+      <div className="sr-only">
         <h1>{t("privacyPage.seoHeading")}</h1>
         <p>{t("privacyPage.seoText")}</p>
-      </PageSEO>
+      </div>
 
       <div className="max-w-[1200px] mx-auto space-y-8">
         <PageHeader

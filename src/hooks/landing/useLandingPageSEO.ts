@@ -1,8 +1,6 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-
-const CANONICAL_URL = "https://klimatkollen.se";
-const LOGO_URL = "https://klimatkollen.se/images/social-picture.png";
+import { buildAbsoluteUrl, getSiteOrigin } from "@/utils/seo";
 
 export function useLandingPageSEO() {
   const { t } = useTranslation();
@@ -11,14 +9,8 @@ export function useLandingPageSEO() {
     const pageTitle = `Klimatkollen - ${t("landingPage.metaTitle")}`;
     const pageDescription = t("landingPage.metaDescription");
 
-    const structuredData = {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      name: "Klimatkollen",
-      url: CANONICAL_URL,
-      logo: LOGO_URL,
-      description: pageDescription,
-    };
+    // Note: structuredData is not needed here - Layout component adds site-wide Organization/WebSite schema
+    // This hook only provides page-specific data (title, description, typewriter texts)
 
     const typeWriterTexts = [
       t("landingPage.typewriter.reduceEmissions"),
@@ -29,10 +21,8 @@ export function useLandingPageSEO() {
     ];
 
     return {
-      canonicalUrl: CANONICAL_URL,
       pageTitle,
       pageDescription,
-      structuredData,
       typeWriterTexts,
     };
   }, [t]);
