@@ -147,7 +147,8 @@ export function getSeoForRoute(
     case "/municipalities/:id": {
       // Municipality detail page
       const municipalityId = routeParams.id;
-      const municipalityName = routeParams.name || `Municipality ${municipalityId}`;
+      const municipalityName =
+        routeParams.name || `Municipality ${municipalityId}`;
       return {
         ...baseSeo,
         title: `${municipalityName} - ${SITE_NAME}`,

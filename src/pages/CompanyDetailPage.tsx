@@ -5,9 +5,7 @@ import { useCompanyDetails } from "@/hooks/companies/useCompanyDetails";
 import { CompanyOverview } from "@/components/companies/detail/overview/CompanyOverview";
 import { EmissionsHistory } from "@/components/companies/detail/history/EmissionsHistory";
 import { Seo } from "@/components/SEO/Seo";
-import { createSlug } from "@/lib/utils";
 import { CompanyScope3 } from "@/components/companies/detail/CompanyScope3";
-import { getCompanyDescription } from "@/utils/business/company";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 import { getCompanySectorName } from "@/utils/data/industryGrouping";
@@ -30,9 +28,34 @@ export function CompanyDetailPage() {
   const [selectedYear, setSelectedYear] = useState<string>("latest");
   const { currentLanguage } = useLanguage();
   const sectorNames = useSectorNames();
-  const description = company
-    ? getCompanyDescription(company, currentLanguage)
-    : null;
+
+  // Calculate values needed for SEO (before early returns to satisfy hooks rules)
+  const sortedPeriods = company?.reportingPeriods
+    ? [...company.reportingPeriods].sort(
+        (a, b) => new Date(b.endDate).getTime() - new Date(a.endDate).getTime(),
+      )
+    : [];
+  const latestPeriod = sortedPeriods[0];
+  const latestYear = latestPeriod
+    ? new Date(latestPeriod.endDate).getFullYear()
+    : new Date().getFullYear();
+  const industry = company
+    ? getCompanySectorName(company, sectorNames)
+    : t("companyDetailPage.unknownIndustry");
+
+  // Generate data-driven SEO meta (memoized to prevent re-renders)
+  // Must be called before any early returns (React Hooks rule)
+  const seoMeta = useMemo(() => {
+    if (!company) {
+      // Fallback to route-level SEO when data not available
+      return getSeoForRoute(location.pathname, { id: id || "" });
+    }
+
+    return generateCompanySeoMeta(company, location.pathname, {
+      industry,
+      latestYear,
+    });
+  }, [company, location.pathname, industry, latestYear, id, sectorNames, t]);
 
   if (loading) {
     return <PageLoading />;
@@ -56,10 +79,6 @@ export function CompanyDetailPage() {
     );
   }
 
-  const sortedPeriods = [...company.reportingPeriods].sort(
-    (a, b) => new Date(b.endDate).getTime() - new Date(a.endDate).getTime(),
-  );
-
   const selectedPeriod =
     selectedYear === "latest"
       ? sortedPeriods[0]
@@ -74,38 +93,6 @@ export function CompanyDetailPage() {
     selectedIndex < sortedPeriods.length - 1
       ? sortedPeriods[selectedIndex + 1]
       : undefined;
-
-  // Get the latest reporting period for SEO content
-  const latestPeriod = sortedPeriods[0];
-  const latestYear = latestPeriod
-    ? new Date(latestPeriod.endDate).getFullYear()
-    : new Date().getFullYear();
-
-  // Calculate total emissions for SEO content
-  const totalEmissions = latestPeriod?.emissions?.calculatedTotalEmissions;
-  const formattedEmissions = totalEmissions
-    ? totalEmissions >= 1000
-      ? (totalEmissions / 1000).toFixed(1) + " tusen"
-      : totalEmissions.toFixed(1)
-    : "N/A";
-
-  // Get industry for SEO content
-  const industry = company
-    ? getCompanySectorName(company, sectorNames)
-    : t("companyDetailPage.unknownIndustry");
-
-  // Generate data-driven SEO meta (memoized to prevent re-renders)
-  const seoMeta = useMemo(() => {
-    if (!company) {
-      // Fallback to route-level SEO when data not available
-      return getSeoForRoute(location.pathname, { id: id || "" });
-    }
-
-    return generateCompanySeoMeta(company, location.pathname, {
-      industry,
-      latestYear,
-    });
-  }, [company, location.pathname, industry, latestYear, id]);
 
   const prevEmissions = previousPeriod?.emissions?.calculatedTotalEmissions;
 

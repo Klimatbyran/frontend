@@ -137,8 +137,6 @@ export function mapCompanyEditFormToRequestBody(
           ? formData.get(checkboxKey) === "true"
           : undefined;
         const originalValue = originalCategory?.total;
-        const originalCategoryIsVerified =
-          !!originalCategory?.metadata?.verifiedBy?.name;
 
         // If original value is not null/undefined and only verified is changed
         if (

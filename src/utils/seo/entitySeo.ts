@@ -1,7 +1,6 @@
 import { SeoMeta } from "@/types/seo";
 import { CompanyDetails } from "@/types/company";
 import { Municipality } from "@/types/municipality";
-import { buildAbsoluteUrl } from "@/utils/seo";
 
 const SITE_NAME = "Klimatkollen";
 const MAX_DESCRIPTION_LENGTH = 160;
@@ -55,8 +54,7 @@ export function buildCompanySeoDescription(
 
   // Latest emissions data
   const latestPeriod = company.reportingPeriods?.[0];
-  const totalEmissions =
-    latestPeriod?.emissions?.calculatedTotalEmissions;
+  const totalEmissions = latestPeriod?.emissions?.calculatedTotalEmissions;
 
   if (totalEmissions !== undefined && totalEmissions !== null) {
     const emissionsText =
