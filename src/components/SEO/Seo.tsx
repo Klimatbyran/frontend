@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { SeoMeta } from "@/types/seo";
 import { buildAbsoluteUrl, buildAbsoluteImageUrl, stripTrackingParams, stripUndefined } from "@/utils/seo";
 import { getDefaultOgImageUrl } from "@/utils/seo/ogImages";
-import { getLanguageUrl } from "@/lib/languageDetection";
+import { getLanguageUrl, detectLanguageFromPath, SupportedLanguage } from "@/lib/languageDetection";
 
 interface SeoProps {
   meta: SeoMeta;
@@ -32,6 +32,11 @@ export function Seo({ meta }: SeoProps) {
   const svUrl = buildAbsoluteUrl(svPath);
   const enUrl = buildAbsoluteUrl(enPath);
   
+  // Detect current language for locale
+  const currentLanguage: SupportedLanguage = detectLanguageFromPath(currentPath) || "sv";
+  const locale = currentLanguage === "sv" ? "sv_SE" : "en_US";
+  const alternateLocale = currentLanguage === "sv" ? "en_US" : "sv_SE";
+  
   // Always provide an og:image URL (with fallback to default)
   // og.image may already be absolute (from entity SEO), or relative
   const ogImage = og?.image
@@ -39,6 +44,9 @@ export function Seo({ meta }: SeoProps) {
         ? og.image
         : buildAbsoluteImageUrl(og.image))
     : getDefaultOgImageUrl();
+  
+  // Generate og:image:alt from description or title
+  const ogImageAlt = description || title || "Klimatkollen";
   
   // Twitter image defaults to og:image if not specified
   const twitterImage = twitter?.image
@@ -70,11 +78,15 @@ export function Seo({ meta }: SeoProps) {
       {/* OpenGraph - always include og:image */}
       {og && (
         <>
+          <meta property="og:site_name" content="Klimatkollen" />
+          <meta property="og:locale" content={locale} />
+          <meta property="og:locale:alternate" content={alternateLocale} />
           {og.title && <meta property="og:title" content={og.title} />}
           {og.description && (
             <meta property="og:description" content={og.description} />
           )}
           <meta property="og:image" content={ogImage} />
+          <meta property="og:image:alt" content={ogImageAlt} />
           {og.type && <meta property="og:type" content={og.type} />}
           {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
         </>

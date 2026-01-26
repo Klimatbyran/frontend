@@ -51,8 +51,16 @@ export function Layout({ children }: LayoutProps) {
   const params = useParams();
   const queryClient = useQueryClient();
 
+  // Check if this is an internal page (should not have SEO at all)
+  const isInternalPage = location.pathname.includes("/internal-pages");
+
   // Get SEO metadata for current route
   const seoMeta = useMemo(() => {
+    // Internal pages: no SEO at all
+    if (isInternalPage) {
+      return null;
+    }
+
     const routeSeo = getSeoForRoute(location.pathname, params as Record<string, string>);
     
     // Merge site-wide structured data with page-specific structured data
@@ -69,7 +77,7 @@ export function Layout({ children }: LayoutProps) {
       ...routeSeo,
       structuredData: combinedStructuredData,
     };
-  }, [location.pathname, params]);
+  }, [location.pathname, params, isInternalPage]);
 
   // Scroll to top on route change
   useEffect(() => {
@@ -90,7 +98,7 @@ export function Layout({ children }: LayoutProps) {
 
   return (
     <div className="min-h-screen w-full overflow-x-hidden bg-black-3 flex flex-col">
-      <Seo meta={seoMeta} />
+      {!isInternalPage && seoMeta && <Seo meta={seoMeta} />}
       <Header />
       <main className="flex-1 container mx-auto px-4 pt-24 pb-12 min-h-0">
         {children}
