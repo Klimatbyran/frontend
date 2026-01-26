@@ -17,7 +17,7 @@ import { useBlogPost, getBlogPost } from "@/hooks/useBlogPosts";
 import { blogMetadataByLanguage } from "@/lib/blog/blogPostsList";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { Seo } from "@/components/SEO/Seo";
-import { getArticleOgImageUrl } from "@/utils/seo/ogImages";
+import { getArticleOgImageUrl, getDefaultOgImageUrl } from "@/utils/seo/ogImages";
 
 export function BlogDetailPage() {
   const { t } = useTranslation();
@@ -45,7 +45,7 @@ export function BlogDetailPage() {
     
     // Use API endpoint for preview generation (with fallback to static image)
     // API generates preview with title + excerpt, static image is just the image
-    const ogImage = getArticleOgImageUrl(id, metadata.image);
+    const ogImage = getArticleOgImageUrl(id || "", metadata.image);
 
     return {
       title: `${metadata.title} - Klimatkollen`,
@@ -58,7 +58,7 @@ export function BlogDetailPage() {
         type: "article",
       },
       twitter: {
-        card: "summary_large_image",
+        card: "summary_large_image" as const,
         title: metadata.title,
         description: metadata.excerpt || "",
       },
