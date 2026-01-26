@@ -34,3 +34,59 @@ export function buildAbsoluteImageUrl(path: string): string {
   }
   return buildAbsoluteUrl(path);
 }
+
+/**
+ * Strip tracking parameters from a URL
+ * Removes common tracking params: utm_*, ref, source, fbclid, gclid, etc.
+ * @param url - URL string (can be absolute or relative)
+ * @returns URL without tracking parameters
+ */
+export function stripTrackingParams(url: string): string {
+  try {
+    // If it's a relative path, just remove query params if any
+    if (!url.includes("://") && !url.includes("?")) {
+      return url;
+    }
+
+    // Parse URL
+    const urlObj = new URL(url, url.startsWith("/") ? getSiteOrigin() : undefined);
+    
+    // List of tracking parameters to remove
+    const trackingParams = [
+      "utm_source",
+      "utm_medium",
+      "utm_campaign",
+      "utm_term",
+      "utm_content",
+      "ref",
+      "source",
+      "fbclid",
+      "gclid",
+      "msclkid",
+      "twclid",
+      "li_fat_id",
+      "mc_cid",
+      "mc_eid",
+      "_ga",
+      "_gid",
+    ];
+
+    // Remove tracking parameters
+    trackingParams.forEach((param) => {
+      urlObj.searchParams.delete(param);
+    });
+
+    // Reconstruct URL
+    // For relative paths, return pathname + search (without origin)
+    if (url.startsWith("/")) {
+      return urlObj.pathname + (urlObj.search ? urlObj.search : "");
+    }
+
+    // For absolute URLs, return full URL
+    return urlObj.toString();
+  } catch (error) {
+    // If URL parsing fails, return original URL
+    console.warn("Failed to parse URL for tracking param removal:", url, error);
+    return url;
+  }
+}

@@ -19,53 +19,56 @@ interface SitemapEntry {
 export async function generateSitemap(outputPath: string): Promise<void> {
   try {
     const currentDate = new Date().toISOString().split("T")[0];
+    
+    // Get site origin from environment variable, fallback to default
+    const siteOrigin = process.env.VITE_SITE_ORIGIN || "https://klimatkollen.se";
 
     // Static routes - Swedish (default)
     const staticRoutes: SitemapEntry[] = [
       {
-        loc: "https://klimatkollen.se/sv/",
+        loc: `${siteOrigin}/sv/`,
         lastmod: currentDate,
         changefreq: "weekly",
         priority: "1.0",
       },
       {
-        loc: "https://klimatkollen.se/sv/municipalities",
+        loc: `${siteOrigin}/sv/municipalities`,
         lastmod: currentDate,
         changefreq: "monthly",
         priority: "0.8",
       },
       {
-        loc: "https://klimatkollen.se/sv/companies",
+        loc: `${siteOrigin}/sv/companies`,
         lastmod: currentDate,
         changefreq: "monthly",
         priority: "0.8",
       },
       {
-        loc: "https://klimatkollen.se/sv/about",
+        loc: `${siteOrigin}/sv/about`,
         lastmod: currentDate,
         changefreq: "monthly",
         priority: "0.7",
       },
       {
-        loc: "https://klimatkollen.se/sv/methodology",
+        loc: `${siteOrigin}/sv/methodology`,
         lastmod: currentDate,
         changefreq: "monthly",
         priority: "0.6",
       },
       {
-        loc: "https://klimatkollen.se/sv/insights",
+        loc: `${siteOrigin}/sv/insights`,
         lastmod: currentDate,
         changefreq: "weekly",
         priority: "0.7",
       },
       {
-        loc: "https://klimatkollen.se/sv/insights/klimatmal",
+        loc: `${siteOrigin}/sv/insights/klimatmal`,
         lastmod: currentDate,
         changefreq: "monthly",
         priority: "0.6",
       },
       {
-        loc: "https://klimatkollen.se/sv/insights/utslappsberakning",
+        loc: `${siteOrigin}/sv/insights/utslappsberakning`,
         lastmod: currentDate,
         changefreq: "monthly",
         priority: "0.6",
@@ -75,49 +78,49 @@ export async function generateSitemap(outputPath: string): Promise<void> {
     // Static routes - English
     const englishStaticRoutes: SitemapEntry[] = [
       {
-        loc: "https://klimatkollen.se/en",
+        loc: `${siteOrigin}/en`,
         lastmod: currentDate,
         changefreq: "weekly",
         priority: "0.9",
       },
       {
-        loc: "https://klimatkollen.se/en/municipalities",
+        loc: `${siteOrigin}/en/municipalities`,
         lastmod: currentDate,
         changefreq: "monthly",
         priority: "0.7",
       },
       {
-        loc: "https://klimatkollen.se/en/companies",
+        loc: `${siteOrigin}/en/companies`,
         lastmod: currentDate,
         changefreq: "monthly",
         priority: "0.7",
       },
       {
-        loc: "https://klimatkollen.se/en/about",
+        loc: `${siteOrigin}/en/about`,
         lastmod: currentDate,
         changefreq: "monthly",
         priority: "0.6",
       },
       {
-        loc: "https://klimatkollen.se/en/methodology",
+        loc: `${siteOrigin}/en/methodology`,
         lastmod: currentDate,
         changefreq: "monthly",
         priority: "0.6",
       },
       {
-        loc: "https://klimatkollen.se/en/insights",
+        loc: `${siteOrigin}/en/insights`,
         lastmod: currentDate,
         changefreq: "weekly",
         priority: "0.6",
       },
       {
-        loc: "https://klimatkollen.se/en/insights/klimatmal",
+        loc: `${siteOrigin}/en/insights/klimatmal`,
         lastmod: currentDate,
         changefreq: "monthly",
         priority: "0.5",
       },
       {
-        loc: "https://klimatkollen.se/en/insights/utslappsberakning",
+        loc: `${siteOrigin}/en/insights/utslappsberakning`,
         lastmod: currentDate,
         changefreq: "monthly",
         priority: "0.5",
@@ -141,7 +144,7 @@ export async function generateSitemap(outputPath: string): Promise<void> {
             const id = createSlug(municipality.name);
 
             return {
-              loc: `https://klimatkollen.se/sv/municipalities/${id}`,
+              loc: `${siteOrigin}/sv/municipalities/${id}`,
               lastmod: currentDate,
               changefreq: "monthly",
               priority: "0.6",
@@ -152,8 +155,8 @@ export async function generateSitemap(outputPath: string): Promise<void> {
         const englishMunicipalityRoutes = municipalityRoutes.map((route) => ({
           ...route,
           loc: route.loc.replace(
-            "https://klimatkollen.se/sv/municipalities/",
-            "https://klimatkollen.se/en/municipalities/",
+            `${siteOrigin}/sv/municipalities/`,
+            `${siteOrigin}/en/municipalities/`,
           ),
           priority: "0.5", // Slightly lower priority for English versions
         }));
@@ -173,7 +176,7 @@ export async function generateSitemap(outputPath: string): Promise<void> {
           const slug = createSlug(company.name);
 
           return {
-            loc: `https://klimatkollen.se/sv/foretag/${slug}-${company.wikidataId}`,
+            loc: `${siteOrigin}/sv/foretag/${slug}-${company.wikidataId}`,
             lastmod: currentDate,
             changefreq: "monthly",
             priority: "0.6",
@@ -185,7 +188,7 @@ export async function generateSitemap(outputPath: string): Promise<void> {
           const slug = createSlug(company.name);
 
           return {
-            loc: `https://klimatkollen.se/en/companies/${company.wikidataId}/${slug}`,
+            loc: `${siteOrigin}/en/companies/${company.wikidataId}/${slug}`,
             lastmod: currentDate,
             changefreq: "monthly",
             priority: "0.5", // Slightly lower priority for English versions
@@ -215,8 +218,8 @@ ${allRoutes
     // Skip generating alternates for URLs that already have language prefixes
     if (!route.loc.includes("/en/")) {
       const enUrl = route.loc.replace(
-        "https://klimatkollen.se/sv/",
-        "https://klimatkollen.se/en/",
+        `${siteOrigin}/sv/`,
+        `${siteOrigin}/en/`,
       );
       alternateLinks = `
     <xhtml:link rel="alternate" hreflang="sv" href="${route.loc}" />
@@ -224,8 +227,8 @@ ${allRoutes
     <xhtml:link rel="alternate" hreflang="x-default" href="${route.loc}" />`;
     } else if (route.loc.includes("/en/")) {
       const svUrl = route.loc.replace(
-        "https://klimatkollen.se/en/",
-        "https://klimatkollen.se/sv/",
+        `${siteOrigin}/en/`,
+        `${siteOrigin}/sv/`,
       );
       alternateLinks = `
     <xhtml:link rel="alternate" hreflang="sv" href="${svUrl}" />

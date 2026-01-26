@@ -1,7 +1,9 @@
 import { Helmet } from "react-helmet-async";
+import { useLocation } from "react-router-dom";
 import { SeoMeta } from "@/types/seo";
-import { buildAbsoluteUrl, buildAbsoluteImageUrl } from "@/utils/seo";
+import { buildAbsoluteUrl, buildAbsoluteImageUrl, stripTrackingParams } from "@/utils/seo";
 import { getDefaultOgImageUrl } from "@/utils/seo/ogImages";
+import { getLanguageUrl } from "@/lib/languageDetection";
 
 interface SeoProps {
   meta: SeoMeta;
@@ -9,14 +11,25 @@ interface SeoProps {
 
 /**
  * SEO component that renders meta tags based on SeoMeta model
- * Handles title, description, canonical, robots, OpenGraph, and Twitter tags
+ * Handles title, description, canonical, robots, OpenGraph, Twitter tags, and hreflang
  * Always provides absolute og:image URLs with fallbacks
+ * Strips tracking parameters from canonical URLs
  */
 export function Seo({ meta }: SeoProps) {
   const { title, description, canonical, noindex, og, twitter } = meta;
+  const location = useLocation();
 
-  // Build absolute URLs
-  const canonicalUrl = canonical ? buildAbsoluteUrl(canonical) : undefined;
+  // Build absolute URLs and strip tracking parameters
+  const canonicalUrl = canonical
+    ? stripTrackingParams(buildAbsoluteUrl(canonical))
+    : undefined;
+  
+  // Generate hreflang tags for language alternates
+  const currentPath = location.pathname;
+  const svPath = getLanguageUrl(currentPath, "sv");
+  const enPath = getLanguageUrl(currentPath, "en");
+  const svUrl = buildAbsoluteUrl(svPath);
+  const enUrl = buildAbsoluteUrl(enPath);
   
   // Always provide an og:image URL (with fallback to default)
   // og.image may already be absolute (from entity SEO), or relative
@@ -42,8 +55,13 @@ export function Seo({ meta }: SeoProps) {
       {/* Description */}
       {description && <meta name="description" content={description} />}
 
-      {/* Canonical */}
+      {/* Canonical - tracking params already stripped */}
       {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+
+      {/* hreflang - language alternates */}
+      <link rel="alternate" hrefLang="sv" href={svUrl} />
+      <link rel="alternate" hrefLang="en" href={enUrl} />
+      <link rel="alternate" hrefLang="x-default" href={svUrl} />
 
       {/* Robots */}
       {noindex && <meta name="robots" content="noindex, nofollow" />}
