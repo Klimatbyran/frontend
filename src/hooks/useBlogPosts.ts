@@ -65,8 +65,9 @@ export function getBlogPost(
     return { blogPost: null, loading: false, error: "Content not found" };
   }
 
-  const frontmatterRegex = /^---\r?\n([\s\S]*?)\r?\n---\r?\n/;
-  const frontmatter = rawMarkdown.match(frontmatterRegex);
+  const normalizedMarkdown = rawMarkdown.replace(/\r\n/g, "\n");
+  const frontmatterRegex = /^---\n([\s\S]*?)\n---\n/;
+  const frontmatter = normalizedMarkdown.match(frontmatterRegex);
 
   if (!frontmatter) {
     return { blogPost: null, loading: false, error: "No frontmatter found." };
@@ -78,7 +79,7 @@ export function getBlogPost(
   return {
     blogPost: {
       metadata: parsedMarkdown,
-      content: rawMarkdown.replace(frontmatter[0], "").trim(),
+      content: normalizedMarkdown.replace(frontmatter[0], "").trim(),
     },
     loading: false,
     error: null,
