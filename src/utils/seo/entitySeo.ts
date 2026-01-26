@@ -1,6 +1,7 @@
 import { SeoMeta } from "@/types/seo";
 import { CompanyDetails } from "@/types/company";
 import { Municipality } from "@/types/municipality";
+import { getEntityOgImageUrl } from "./ogImages";
 
 const SITE_NAME = "Klimatkollen";
 const MAX_DESCRIPTION_LENGTH = 160;
@@ -148,6 +149,10 @@ export function generateCompanySeoMeta(
     options?.latestYear,
   );
   const canonical = pathname;
+  
+  // Use entity-specific OG image (falls back to default if not found)
+  const entityId = company.wikidataId || "";
+  const ogImage = getEntityOgImageUrl("companies", entityId, true);
 
   return {
     title,
@@ -156,6 +161,7 @@ export function generateCompanySeoMeta(
     og: {
       title,
       description,
+      image: ogImage,
       type: "website",
     },
     twitter: {
@@ -170,7 +176,7 @@ export function generateCompanySeoMeta(
  * Generate SEO meta for a municipality page
  * @param municipality - Municipality data
  * @param pathname - Current pathname
- * @param options - Additional options (lastYear, lastYearEmissionsTon)
+ * @param options - Additional options (lastYear, lastYearEmissionsTon, municipalityId)
  * @returns SeoMeta object
  */
 export function generateMunicipalitySeoMeta(
@@ -179,6 +185,7 @@ export function generateMunicipalitySeoMeta(
   options?: {
     lastYear?: number;
     lastYearEmissionsTon?: string;
+    municipalityId?: string;
   },
 ): SeoMeta {
   const title = `${municipality.name} - ${SITE_NAME}`;
@@ -188,6 +195,11 @@ export function generateMunicipalitySeoMeta(
     options?.lastYearEmissionsTon,
   );
   const canonical = pathname;
+  
+  // Use entity-specific OG image (falls back to default if not found)
+  // Use municipality name as ID (slugified) or provided ID
+  const entityId = options?.municipalityId || municipality.name.toLowerCase().replace(/\s+/g, "-");
+  const ogImage = getEntityOgImageUrl("municipalities", entityId, true);
 
   return {
     title,
@@ -196,6 +208,7 @@ export function generateMunicipalitySeoMeta(
     og: {
       title,
       description,
+      image: ogImage,
       type: "website",
     },
     twitter: {

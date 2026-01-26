@@ -1,8 +1,11 @@
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useMemo } from "react";
 import { reports } from "@/lib/constants/reports";
-import { PageSEO } from "@/components/SEO/PageSEO";
+import { Seo } from "@/components/SEO/Seo";
+import { buildAbsoluteImageUrl, buildAbsoluteUrl } from "@/utils/seo";
+import { getDefaultOgImageUrl } from "@/utils/seo/ogImages";
 
 export function ReportLandingPage() {
   const { reportId } = useParams<{ reportId: string }>();
@@ -20,21 +23,47 @@ export function ReportLandingPage() {
     return pdfFile === reportId;
   });
 
+  const location = useLocation();
   const image = report?.image || "/images/social-picture.png";
   const title = report?.title || "Klimatkollen Rapport";
   const description = report?.excerpt || "Läs rapporten från Klimatkollen.";
   const pdfUrl = report?.link || `/reports/${reportId}.pdf`;
   const canonicalUrl = `https://klimatkollen.se/reports/${reportId}`;
 
+  // Generate SEO meta with preview support
+  const seoMeta = useMemo(() => {
+    const canonical = location.pathname;
+    
+    // Use API endpoint for preview (when implemented) or fallback to static image
+    // Option 1: API endpoint (generates preview with title + excerpt)
+    // const ogImage = buildAbsoluteUrl(`/api/og/reports/${reportId}`);
+    
+    // Option 2: Static image (current - just the image)
+    const ogImage = image
+      ? buildAbsoluteImageUrl(image)
+      : getDefaultOgImageUrl();
+
+    return {
+      title: `${title} - Klimatkollen`,
+      description,
+      canonical,
+      og: {
+        title,
+        description,
+        image: ogImage,
+        type: "article",
+      },
+      twitter: {
+        card: "summary_large_image",
+        title,
+        description,
+      },
+    };
+  }, [title, description, image, location.pathname, reportId]);
+
   return (
     <>
-      <PageSEO
-        title={title}
-        description={description}
-        canonicalUrl={canonicalUrl}
-        ogType="article"
-        ogImage={image}
-      />
+      {report && <Seo meta={seoMeta} />}
       <div className="flex justify-center mt-12">
         <div className="group bg-black-2 rounded-level-2 overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(153,207,255,0.15)] hover:bg-[#1a1a1a] max-w-md w-full">
           <div className="relative h-36 overflow-hidden">

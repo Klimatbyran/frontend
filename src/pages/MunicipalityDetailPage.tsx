@@ -70,6 +70,7 @@ export function MunicipalityDetailPage() {
     return generateMunicipalitySeoMeta(municipality, location.pathname, {
       lastYear,
       lastYearEmissionsTon,
+      municipalityId: id || undefined,
     });
   }, [municipality, location.pathname, lastYear, lastYearEmissionsTon, id]);
 

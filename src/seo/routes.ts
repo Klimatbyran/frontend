@@ -1,7 +1,8 @@
 import { SeoMeta } from "@/types/seo";
+import { getDefaultOgImageUrl, getEntityOgImageUrl } from "@/utils/seo/ogImages";
 
 /**
- * Default OG image for the site
+ * Default OG image for the site (relative path)
  */
 const DEFAULT_OG_IMAGE = "/logos/Klimatkollen_default.webp";
 
@@ -81,13 +82,13 @@ export function getSeoForRoute(
   const { pattern, params: routeParams } = parseRoute(pathname, params);
   const canonical = normalizePathname(pathname);
 
-  // Build base SEO config
+  // Build base SEO config with absolute default OG image URL
   const baseSeo: SeoMeta = {
     title: SITE_NAME,
     description: DEFAULT_DESCRIPTION,
     canonical,
     og: {
-      image: DEFAULT_OG_IMAGE,
+      image: getDefaultOgImageUrl(),
       type: "website",
     },
     twitter: {
@@ -108,7 +109,7 @@ export function getSeoForRoute(
           title: `${SITE_NAME} - Open climate data for citizens`,
           description:
             "Track emissions and climate transition progress for companies and municipalities in Sweden.",
-          image: DEFAULT_OG_IMAGE,
+          image: getDefaultOgImageUrl(),
           type: "website",
         },
         twitter: {
@@ -116,7 +117,6 @@ export function getSeoForRoute(
           title: `${SITE_NAME} - Open climate data for citizens`,
           description:
             "Track emissions and climate transition progress for companies and municipalities in Sweden.",
-          image: DEFAULT_OG_IMAGE,
         },
       };
     }
@@ -125,6 +125,11 @@ export function getSeoForRoute(
       // Company detail page
       const companyId = routeParams.id;
       const companyName = routeParams.name || `Company ${companyId}`;
+      // Use entity-specific OG image (falls back to default)
+      const ogImage = companyId
+        ? getEntityOgImageUrl("companies", companyId, true)
+        : getDefaultOgImageUrl();
+      
       return {
         ...baseSeo,
         title: `${companyName} - ${SITE_NAME}`,
@@ -132,14 +137,13 @@ export function getSeoForRoute(
         og: {
           title: `${companyName} - ${SITE_NAME}`,
           description: `View emissions data and climate transition progress for ${companyName}.`,
-          image: DEFAULT_OG_IMAGE,
+          image: ogImage,
           type: "website",
         },
         twitter: {
           card: "summary_large_image",
           title: `${companyName} - ${SITE_NAME}`,
           description: `View emissions data and climate transition progress for ${companyName}.`,
-          image: DEFAULT_OG_IMAGE,
         },
       };
     }
@@ -149,6 +153,11 @@ export function getSeoForRoute(
       const municipalityId = routeParams.id;
       const municipalityName =
         routeParams.name || `Municipality ${municipalityId}`;
+      // Use entity-specific OG image (falls back to default)
+      const ogImage = municipalityId
+        ? getEntityOgImageUrl("municipalities", municipalityId, true)
+        : getDefaultOgImageUrl();
+      
       return {
         ...baseSeo,
         title: `${municipalityName} - ${SITE_NAME}`,
@@ -156,14 +165,13 @@ export function getSeoForRoute(
         og: {
           title: `${municipalityName} - ${SITE_NAME}`,
           description: `View emissions data and climate transition progress for ${municipalityName} municipality.`,
-          image: DEFAULT_OG_IMAGE,
+          image: ogImage,
           type: "website",
         },
         twitter: {
           card: "summary_large_image",
           title: `${municipalityName} - ${SITE_NAME}`,
           description: `View emissions data and climate transition progress for ${municipalityName} municipality.`,
-          image: DEFAULT_OG_IMAGE,
         },
       };
     }
@@ -176,8 +184,11 @@ export function getSeoForRoute(
         og: {
           title: `About - ${SITE_NAME}`,
           description: `Learn about ${SITE_NAME} and our mission to provide open climate data.`,
-          image: DEFAULT_OG_IMAGE,
+          image: getDefaultOgImageUrl(),
           type: "website",
+        },
+        twitter: {
+          card: "summary_large_image",
         },
       };
     }
@@ -190,8 +201,11 @@ export function getSeoForRoute(
         og: {
           title: `Methodology - ${SITE_NAME}`,
           description: `Learn about the methodology and data sources used by ${SITE_NAME}.`,
-          image: DEFAULT_OG_IMAGE,
+          image: getDefaultOgImageUrl(),
           type: "website",
+        },
+        twitter: {
+          card: "summary_large_image",
         },
       };
     }

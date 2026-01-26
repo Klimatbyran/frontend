@@ -27,3 +27,10 @@ pnpm-debug.log*
 .vscode/settings.json
 .aider*
 
+# Generated OG images (created by API endpoint or build script)
+# Keep the directories but ignore the generated PNG files
+public/og/companies/*.png
+public/og/municipalities/*.png
+public/og/articles/*.png
+public/og/reports/*.png
+

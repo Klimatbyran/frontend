@@ -9,6 +9,8 @@
     "prebuild": "npm run build:dataguide",
     "build": "tsc && vite build",
     "build:prerender": "npm run build && node scripts/prerender.mjs",
+    "generate:og-images": "node scripts/generate-og-images.mjs",
+    "build:og-images": "npm run generate:og-images",
     "build:dataguide": "node scripts/build-dataguide.js",
     "postbuild": "npm run generate-sitemap || echo 'Sitemap generation failed, but build completed' && tsx scripts/generate-report-html.ts",
     "lint": "eslint .",

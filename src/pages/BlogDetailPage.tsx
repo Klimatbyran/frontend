@@ -1,5 +1,5 @@
-import { useParams, Link } from "react-router-dom";
-import { useState } from "react";
+import { useParams, Link, useLocation } from "react-router-dom";
+import { useState, useMemo } from "react";
 import { CalendarDays, Clock, ArrowLeft, Share2, Check } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -16,14 +16,60 @@ import { useLanguage } from "@/components/LanguageProvider";
 import { useBlogPost, getBlogPost } from "@/hooks/useBlogPosts";
 import { blogMetadataByLanguage } from "@/lib/blog/blogPostsList";
 import { LocalizedLink } from "@/components/LocalizedLink";
+import { Seo } from "@/components/SEO/Seo";
+import { buildAbsoluteImageUrl, buildAbsoluteUrl } from "@/utils/seo";
+import { getDefaultOgImageUrl } from "@/utils/seo/ogImages";
 
 export function BlogDetailPage() {
   const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
+  const location = useLocation();
   const { blogPost, loading, error } = useBlogPost(id!);
   const [copied, setCopied] = useState(false);
   const { isMobile } = useScreenSize();
   const { currentLanguage } = useLanguage();
+
+  // Generate SEO meta with preview support
+  const seoMeta = useMemo(() => {
+    if (!blogPost) {
+      return {
+        title: "Klimatkollen",
+        description: "Open climate data for citizens",
+        og: {
+          image: getDefaultOgImageUrl(),
+        },
+      };
+    }
+
+    const { metadata } = blogPost;
+    const canonical = location.pathname;
+    
+    // Use API endpoint for preview (when implemented) or fallback to static image
+    // Option 1: API endpoint (generates preview with title + excerpt)
+    // const ogImage = buildAbsoluteUrl(`/api/og/articles/${id}`);
+    
+    // Option 2: Static image (current - just the image)
+    const ogImage = metadata.image
+      ? buildAbsoluteImageUrl(metadata.image)
+      : getDefaultOgImageUrl();
+
+    return {
+      title: `${metadata.title} - Klimatkollen`,
+      description: metadata.excerpt || "",
+      canonical,
+      og: {
+        title: metadata.title,
+        description: metadata.excerpt || "",
+        image: ogImage,
+        type: "article",
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: metadata.title,
+        description: metadata.excerpt || "",
+      },
+    };
+  }, [blogPost, location.pathname, id]);
 
   const handleShare = async () => {
     const shareUrl = window.location.href;
@@ -67,11 +113,13 @@ export function BlogDetailPage() {
     : [];
 
   return (
-    <div
-      className={`max-w-[1200px] mx-auto ${
-        isMobile ? "space-y-8" : "space-y-16"
-      } px-4`}
-    >
+    <>
+      {blogPost && <Seo meta={seoMeta} />}
+      <div
+        className={`max-w-[1200px] mx-auto ${
+          isMobile ? "space-y-8" : "space-y-16"
+        } px-4`}
+      >
       {/* Navigation */}
       <div className="flex items-center justify-between">
         <Button variant="ghost" size="sm" className="gap-2" asChild>
@@ -245,6 +293,7 @@ export function BlogDetailPage() {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 }

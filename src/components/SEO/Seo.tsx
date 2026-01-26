@@ -1,6 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import { SeoMeta } from "@/types/seo";
 import { buildAbsoluteUrl, buildAbsoluteImageUrl } from "@/utils/seo";
+import { getDefaultOgImageUrl } from "@/utils/seo/ogImages";
 
 interface SeoProps {
   meta: SeoMeta;
@@ -9,16 +10,29 @@ interface SeoProps {
 /**
  * SEO component that renders meta tags based on SeoMeta model
  * Handles title, description, canonical, robots, OpenGraph, and Twitter tags
+ * Always provides absolute og:image URLs with fallbacks
  */
 export function Seo({ meta }: SeoProps) {
   const { title, description, canonical, noindex, og, twitter } = meta;
 
   // Build absolute URLs
   const canonicalUrl = canonical ? buildAbsoluteUrl(canonical) : undefined;
-  const ogImage = og?.image ? buildAbsoluteImageUrl(og.image) : undefined;
+  
+  // Always provide an og:image URL (with fallback to default)
+  // og.image may already be absolute (from entity SEO), or relative
+  const ogImage = og?.image
+    ? (og.image.startsWith("http://") || og.image.startsWith("https://")
+        ? og.image
+        : buildAbsoluteImageUrl(og.image))
+    : getDefaultOgImageUrl();
+  
+  // Twitter image defaults to og:image if not specified
   const twitterImage = twitter?.image
     ? buildAbsoluteImageUrl(twitter.image)
-    : undefined;
+    : ogImage;
+  
+  // Twitter card defaults to summary_large_image when image is present
+  const twitterCard = twitter?.card || "summary_large_image";
 
   return (
     <Helmet>
@@ -34,30 +48,46 @@ export function Seo({ meta }: SeoProps) {
       {/* Robots */}
       {noindex && <meta name="robots" content="noindex, nofollow" />}
 
-      {/* OpenGraph */}
+      {/* OpenGraph - always include og:image */}
       {og && (
         <>
           {og.title && <meta property="og:title" content={og.title} />}
           {og.description && (
             <meta property="og:description" content={og.description} />
           )}
-          {ogImage && <meta property="og:image" content={ogImage} />}
+          <meta property="og:image" content={ogImage} />
           {og.type && <meta property="og:type" content={og.type} />}
           {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
         </>
       )}
 
-      {/* Twitter */}
-      {twitter && (
+      {/* Twitter - always include card and image when og is present */}
+      {og && (
         <>
-          {twitter.card && <meta name="twitter:card" content={twitter.card} />}
+          <meta name="twitter:card" content={twitterCard} />
+          {twitter?.title && (
+            <meta name="twitter:title" content={twitter.title} />
+          )}
+          {twitter?.description && (
+            <meta name="twitter:description" content={twitter.description} />
+          )}
+          <meta name="twitter:image" content={twitterImage} />
+        </>
+      )}
+      
+      {/* Twitter tags if explicitly provided without og */}
+      {!og && twitter && (
+        <>
+          <meta name="twitter:card" content={twitterCard} />
           {twitter.title && (
             <meta name="twitter:title" content={twitter.title} />
           )}
           {twitter.description && (
             <meta name="twitter:description" content={twitter.description} />
           )}
-          {twitterImage && <meta name="twitter:image" content={twitterImage} />}
+          {twitterImage && (
+            <meta name="twitter:image" content={twitterImage} />
+          )}
         </>
       )}
     </Helmet>
