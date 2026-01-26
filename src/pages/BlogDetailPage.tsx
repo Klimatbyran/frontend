@@ -17,8 +17,7 @@ import { useBlogPost, getBlogPost } from "@/hooks/useBlogPosts";
 import { blogMetadataByLanguage } from "@/lib/blog/blogPostsList";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { Seo } from "@/components/SEO/Seo";
-import { buildAbsoluteImageUrl, buildAbsoluteUrl } from "@/utils/seo";
-import { getDefaultOgImageUrl } from "@/utils/seo/ogImages";
+import { getArticleOgImageUrl } from "@/utils/seo/ogImages";
 
 export function BlogDetailPage() {
   const { t } = useTranslation();
@@ -44,14 +43,9 @@ export function BlogDetailPage() {
     const { metadata } = blogPost;
     const canonical = location.pathname;
     
-    // Use API endpoint for preview (when implemented) or fallback to static image
-    // Option 1: API endpoint (generates preview with title + excerpt)
-    // const ogImage = buildAbsoluteUrl(`/api/og/articles/${id}`);
-    
-    // Option 2: Static image (current - just the image)
-    const ogImage = metadata.image
-      ? buildAbsoluteImageUrl(metadata.image)
-      : getDefaultOgImageUrl();
+    // Use API endpoint for preview generation (with fallback to static image)
+    // API generates preview with title + excerpt, static image is just the image
+    const ogImage = getArticleOgImageUrl(id, metadata.image);
 
     return {
       title: `${metadata.title} - Klimatkollen`,

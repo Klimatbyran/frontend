@@ -4,8 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useMemo } from "react";
 import { reports } from "@/lib/constants/reports";
 import { Seo } from "@/components/SEO/Seo";
-import { buildAbsoluteImageUrl, buildAbsoluteUrl } from "@/utils/seo";
-import { getDefaultOgImageUrl } from "@/utils/seo/ogImages";
+import { getReportOgImageUrl } from "@/utils/seo/ogImages";
 
 export function ReportLandingPage() {
   const { reportId } = useParams<{ reportId: string }>();
@@ -34,14 +33,9 @@ export function ReportLandingPage() {
   const seoMeta = useMemo(() => {
     const canonical = location.pathname;
     
-    // Use API endpoint for preview (when implemented) or fallback to static image
-    // Option 1: API endpoint (generates preview with title + excerpt)
-    // const ogImage = buildAbsoluteUrl(`/api/og/reports/${reportId}`);
-    
-    // Option 2: Static image (current - just the image)
-    const ogImage = image
-      ? buildAbsoluteImageUrl(image)
-      : getDefaultOgImageUrl();
+    // Use API endpoint for preview generation (with fallback to static image)
+    // API generates preview with title + excerpt, static image is just the image
+    const ogImage = getReportOgImageUrl(reportId || "", image);
 
     return {
       title: `${title} - Klimatkollen`,
