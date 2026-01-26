@@ -1155,6 +1155,10 @@
     "mikael": {
       "role": "Utvecklare",
       "description": "Öppen källkods-utvecklare med en lång passion för användargränssnitt och löpning. Har bakgrund i Linux/GNOME, iOS och webbutveckling. Bidrar huvudsakligen till webbgränssnitet för Klimatkollen."
+    },
+    "myvi": {
+      "role": "Dataanalytiker",
+      "description": "Dataanalytiker specialiserad på att automatisera dataflöden och omvandla rådata till insikter och visualiseringar. Tidigare på Telia, KPMG, Vinnova och som biträdande professor i matematisk fysik vid Bharath Institute Of Science And Technology i Chennai, Indien."
     }
   },
   "board": {
