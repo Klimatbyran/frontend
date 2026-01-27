@@ -177,6 +177,7 @@ export function getSeoForRoute(
     case "/companies/:id": {
       // Company detail page
       const companyName = routeParams.name || getTranslation("common.company", language);
+      const metaTitle = getTranslation("companyDetailPage.metaTitle", language);
       const description = getTranslation(
         "companyDetailPage.metaDescription",
         language,
@@ -185,17 +186,17 @@ export function getSeoForRoute(
       
       return {
         ...baseSeo,
-        title: `${companyName} - ${SITE_NAME}`,
+        title: `${companyName} - ${metaTitle} - ${SITE_NAME}`,
         description,
         og: {
-          title: `${companyName} - ${SITE_NAME}`,
+          title: `${companyName} - ${metaTitle} - ${SITE_NAME}`,
           description,
           image: DEFAULT_OG_IMAGE,
           type: "website",
         },
         twitter: {
           card: "summary_large_image",
-          title: `${companyName} - ${SITE_NAME}`,
+          title: `${companyName} - ${metaTitle} - ${SITE_NAME}`,
           description,
           image: DEFAULT_OG_IMAGE,
         },
@@ -206,6 +207,7 @@ export function getSeoForRoute(
       // Municipality detail page
       const municipalityName =
         routeParams.name || getTranslation("common.municipality", language);
+      const metaTitle = getTranslation("municipalityDetailPage.metaTitle", language);
       const description = getTranslation(
         "municipalityDetailPage.metaDescription",
         language,
@@ -214,17 +216,17 @@ export function getSeoForRoute(
       
       return {
         ...baseSeo,
-        title: `${municipalityName} - ${SITE_NAME}`,
+        title: `${municipalityName} - ${metaTitle} - ${SITE_NAME}`,
         description,
         og: {
-          title: `${municipalityName} - ${SITE_NAME}`,
+          title: `${municipalityName} - ${metaTitle} - ${SITE_NAME}`,
           description,
           image: DEFAULT_OG_IMAGE,
           type: "website",
         },
         twitter: {
           card: "summary_large_image",
-          title: `${municipalityName} - ${SITE_NAME}`,
+          title: `${municipalityName} - ${metaTitle} - ${SITE_NAME}`,
           description,
           image: DEFAULT_OG_IMAGE,
         },
