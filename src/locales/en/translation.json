@@ -188,8 +188,7 @@
       "title": "About Us",
       "description": "Klimatkollen is a citizen platform that provides climate data. Click on the headings to learn more."
     },
-    "metaDescription": "Learn about Klimatkollen and our mission to provide open climate data for citizens."
-    },
+    "metaDescription": "Learn about Klimatkollen and our mission to provide open climate data for citizens.",
     "mainContent": {
       "title": "What is Klimatkollen?",
       "paragraph1": "Klimatkollen (eng, Climate Checker) is an open-source citizen platform that helps individuals, businesses and organisations track the climate transition by using Al to collect, analyse and spread key climate data.",
@@ -450,7 +449,6 @@
       "description": "Our starting point is the Paris Agreement's 1.5°C target, and all our data sources are publicly available. Click on the dropdown to learn more."
     },
     "metaDescription": "Learn about the methodology and data sources used by Klimatkollen to track emissions and climate transition.",
-    },
     "dataSelector": {
       "label": "Select what you want to learn about"
     },

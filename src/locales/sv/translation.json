@@ -189,7 +189,6 @@
       "description": "Klimatkollen är en medborgarplattform som tillgängliggör klimatdata. Klicka på rubrikerna för att läsa mer."
     },
     "metaDescription": "Lär dig mer om Klimatkollen och vårt uppdrag att tillgängliggöra öppen klimatdata för medborgare.",
-    },
     "mainContent": {
       "title": "Vad är Klimatkollen?",
       "paragraph1": "Klimatkollen är en öppen och medborgardriven plattform som hjälper individer, företag och organisationer att följa klimatomställningen genom att använda AI för att samla in, analysera och sprida viktig klimatdata.",
@@ -504,7 +503,6 @@
       "description": "Vår utgångspunkt är Parisavtalets 1,5-gradersmål, och alla våra datakällor är offentligt tillgängliga. Klicka på rullgardinsmenyn för att lära dig mer."
     },
     "metaDescription": "Lär dig mer om metodiken och datakällor som Klimatkollen använder för att spåra utsläpp och klimatomställning.",
-    },
     "dataSelector": {
       "label": "Välj vad du vill lära dig om"
     },

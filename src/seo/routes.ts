@@ -127,12 +127,15 @@ export function getSeoForRoute(
 ): SeoMeta {
   const { pattern, params: routeParams } = parseRoute(pathname, params);
   const canonical = normalizePathname(pathname);
-  
+
   // Detect language from pathname for translations
   const language = detectLanguageFromPath(pathname);
-  
+
   // Get translated default description
-  const defaultDescription = getTranslation("landingPage.metaDescription", language);
+  const defaultDescription = getTranslation(
+    "landingPage.metaDescription",
+    language,
+  );
 
   // Build base SEO config
   const baseSeo: SeoMeta = {
@@ -153,8 +156,11 @@ export function getSeoForRoute(
     case "/": {
       // Home route
       const metaTitle = getTranslation("landingPage.metaTitle", language);
-      const metaDescription = getTranslation("landingPage.metaDescription", language);
-      
+      const metaDescription = getTranslation(
+        "landingPage.metaDescription",
+        language,
+      );
+
       return {
         ...baseSeo,
         title: `${SITE_NAME} - ${metaTitle}`,
@@ -176,14 +182,15 @@ export function getSeoForRoute(
 
     case "/companies/:id": {
       // Company detail page
-      const companyName = routeParams.name || getTranslation("common.company", language);
+      const companyName =
+        routeParams.name || getTranslation("common.company", language);
       const metaTitle = getTranslation("companyDetailPage.metaTitle", language);
       const description = getTranslation(
         "companyDetailPage.metaDescription",
         language,
         { company: companyName, siteName: SITE_NAME },
       );
-      
+
       return {
         ...baseSeo,
         title: `${companyName} - ${metaTitle} - ${SITE_NAME}`,
@@ -207,13 +214,16 @@ export function getSeoForRoute(
       // Municipality detail page
       const municipalityName =
         routeParams.name || getTranslation("common.municipality", language);
-      const metaTitle = getTranslation("municipalityDetailPage.metaTitle", language);
+      const metaTitle = getTranslation(
+        "municipalityDetailPage.metaTitle",
+        language,
+      );
       const description = getTranslation(
         "municipalityDetailPage.metaDescription",
         language,
         { municipality: municipalityName, siteName: SITE_NAME },
       );
-      
+
       return {
         ...baseSeo,
         title: `${municipalityName} - ${metaTitle} - ${SITE_NAME}`,
@@ -235,8 +245,11 @@ export function getSeoForRoute(
 
     case "/about": {
       const aboutTitle = getTranslation("aboutPage.header.title", language);
-      const aboutDescription = getTranslation("aboutPage.metaDescription", language);
-      
+      const aboutDescription = getTranslation(
+        "aboutPage.metaDescription",
+        language,
+      );
+
       return {
         ...baseSeo,
         title: `${aboutTitle} - ${SITE_NAME}`,
@@ -251,9 +264,15 @@ export function getSeoForRoute(
     }
 
     case "/methodology": {
-      const methodologyTitle = getTranslation("methodsPage.header.title", language);
-      const methodologyDescription = getTranslation("methodsPage.metaDescription", language);
-      
+      const methodologyTitle = getTranslation(
+        "methodsPage.header.title",
+        language,
+      );
+      const methodologyDescription = getTranslation(
+        "methodsPage.metaDescription",
+        language,
+      );
+
       return {
         ...baseSeo,
         title: `${methodologyTitle} - ${SITE_NAME}`,
