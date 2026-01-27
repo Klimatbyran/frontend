@@ -8,7 +8,7 @@
   "header": {
     "data": "Data",
     "companies": "Företag",
-    "companiesSectors": "Sektorer",
+    "companiesSectors": "Branscher",
     "companiesRanked": "Topplistor",
     "explore": "Utforska",
     "municipalities": "Kommuner",
@@ -422,13 +422,13 @@
       "pie": "Cirkeldiagram",
       "stackedTotal": "Stapeldiagram",
       "back": "Tillbaka",
-      "sectorTotal": "Totala utsläpp i sektorn",
+      "sectorTotal": "Totala utsläpp i branschen",
       "total": "Totala utsläpp",
       "noDataAvailablePieChart": "Det finns inga data för detta år",
       "yearTotal": "Årlig total",
       "unknownCompany": "Okänt företag",
       "pieLegendCompany": "Visa företagsdetaljer",
-      "pieLegendSector": "Visa sektordetaljer",
+      "pieLegendSector": "Visa branschedetaljer",
       "emissionsSourcesAnalysis": "Analys av utsläppskällor",
       "ghgProtocolScopes": "(Scopes i GHG-protokollet)",
       "totalEmissions": "Totala utsläpp",
@@ -446,7 +446,7 @@
       "companies": "företag",
       "shareOfTotal": "Andel av total",
       "companiesReporting": "Företag som rapporterar",
-      "ofSector": "av sektor",
+      "ofSector": "av bransch",
       "ofTotal": "av total",
       "valueChainOverview": "Värdekedja",
       "upstream": "Uppströms",
@@ -1152,9 +1152,9 @@
       "role": "Utvecklare",
       "description": "Frontend-utvecklare som älskar naturen, klättring och att bygga verktyg som gör klimatdata lättare att förstå. Stöttar Klimatkollens volontärer, utvecklar webbsidan och försöker hitta den perfekta GIF:en för varje tillfälle."
     },
-    "mikael": {
-      "role": "Utvecklare",
-      "description": "Öppen källkods-utvecklare med en lång passion för användargränssnitt och löpning. Har bakgrund i Linux/GNOME, iOS och webbutveckling. Bidrar huvudsakligen till webbgränssnitet för Klimatkollen."
+    "myvi": {
+      "role": "Dataanalytiker",
+      "description": "Dataanalytiker specialiserad på att automatisera dataflöden och omvandla rådata till insikter och visualiseringar. Tidigare på Telia, KPMG, Vinnova och som biträdande professor i matematisk fysik vid Bharath Institute Of Science And Technology i Chennai, Indien."
     }
   },
   "board": {
@@ -1262,7 +1262,7 @@
     },
     "card": {
       "noData": "Ingen data",
-      "unknownSector": "Okänd sektor",
+      "unknownSector": "Okänd bransch",
       "emissions": "Utsläpp",
       "emissionsChangeRate": "Förändringstakt",
       "emissionsChangeRateInfo": "Förändringstakt för utsläpp jämfört med föregående rapporteringsperiod.",
@@ -1392,8 +1392,8 @@
       }
     },
     "overview": {
-      "unknownSector": "Okänd sektor",
-      "sector": "Sektor",
+      "unknownSector": "Okänd bransch",
+      "sector": "Bransch",
       "selectYear": "Välj år",
       "latestYear": "Senaste året",
       "totalEmissions": "Rapporterade utsläpp",
@@ -1436,7 +1436,7 @@
       "category": "Kategori"
     },
     "sectorComparison": {
-      "sectorUnknown": "Okänd sektor",
+      "sectorUnknown": "Okänd bransch",
       "emissionsReduction": "Utsläppsminskning",
       "reportingYears": "Rapporterade år",
       "reportedCategories": "Rapporterade scope 3-kategorier",
@@ -1452,6 +1452,8 @@
   },
   "regions": {
     "detailPage": {
+      "politicalRule": "Politiskt styre",
+      "politicalRSO": "Länsstyrelsens ordförande",
       "municipalities": "Kommuner"
     },
     "kpis": {
@@ -1672,7 +1674,7 @@
     },
     "successDetails": {
       "title": "Ändringarna har sparats!",
-      "description": "Ändringar i basår och/eller branschsektor har gjorts framgångsrikt"
+      "description": "Ändringar i basår och/eller bransch har gjorts framgångsrikt"
     },
     "unsavedChanges": {
       "title": "Osparade ändringar",
@@ -1869,13 +1871,13 @@
         "nameAsc": "Företagsnamn A-Ö",
         "nameDesc": "Företagsnamn Ö-A"
       },
-      "sector": "Sektor",
+      "sector": "Bransch",
       "searchPlaceholder": "Sök företag (separera med komma)",
       "noCompaniesFound": "Inga företag hittades",
       "tryDifferentCriteria": "Försök med andra sökkriterier",
       "sorting": "Sorterar:",
       "filtrering": "Filter:",
-      "allSectors": "Alla sektorer",
+      "allSectors": "Alla branscher",
       "sectionTitle": "Företag",
       "noCompaniesInSection": "Inga företag i denna kategori"
     }

@@ -22,13 +22,22 @@ export const AuthCallback = () => {
     const code = params.get("code");
     const error = params.get("error");
 
-    if (!code) return;
-    authenticate(code);
-
     if (error) {
       console.error("Authentication error:", error);
       navigate("/", { state: { error: t("authCallbackPage.failed") } });
+      return;
     }
+
+    if (code) {
+      authenticate(code).catch((error) => {
+        console.error("Authentication error:", error);
+        navigate("/", { state: { error: t("authCallbackPage.failed") } });
+      });
+      return;
+    }
+
+    console.error("No code found in callback URL");
+    navigate("/", { state: { error: t("authCallbackPage.failed") } });
   }, [location, navigate, authenticate, t]);
 
   useEffect(() => {

@@ -12,7 +12,7 @@ import { Token } from "@/types/token";
 export interface AuthContext {
   token: string;
   user: Token | null;
-  login: () => void;
+  login: (redirectUri?: string) => void;
   authenticate: (code: string) => Promise<boolean>;
   logout: () => void;
 }
@@ -65,12 +65,17 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
   }, [token]);
 
-  const login = () => {
+  const login = (redirectUri?: string) => {
     localStorage.setItem(
       "postLoginRedirect",
       window.location.pathname + window.location.search,
     );
-    window.location.href = baseUrl + "/auth/github";
+    const callbackUrl =
+      redirectUri || `${window.location.origin}/auth/callback`;
+    const authUrl = baseUrl + "/auth/github";
+    const url = new URL(authUrl, window.location.origin);
+    url.searchParams.set("redirect_uri", callbackUrl);
+    window.location.href = url.toString();
   };
 
   const authenticate = async (code: string) => {
