@@ -95,6 +95,7 @@ export default tseslint.config(
     },
   },
   // Disable magic numbers rule for API files (API responses often contain hard-coded values)
+  // Also disable max-lines for api-types.ts since it's auto-generated from the API
   {
     files: [
       "**/api-types.ts",
@@ -106,6 +107,12 @@ export default tseslint.config(
       "no-magic-numbers": "off",
     },
   },
+  {
+    files: ["**/api-types.ts"],
+    rules: {
+      "max-lines": "off",
+    },
+  },
   // Increase function line limit for component files (React components are often longer)
   {
     files: [
@@ -115,7 +122,7 @@ export default tseslint.config(
       "**/*Component.tsx",
     ],
     rules: {
-      "max-lines-per-function": ["warn", 100],
+      "max-lines-per-function": ["warn", 200],
     },
   },
 );
