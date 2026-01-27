@@ -2,12 +2,12 @@ import { ReactNode, useEffect, useMemo } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { getCompanies, getMunicipalities } from "@/lib/api";
+import { Seo } from "@/components/SEO/Seo";
+import { getSeoForRoute } from "@/seo/routes";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { ScrollToTop } from "./ScrollToTop";
 import { SuggestEdit } from "./SuggestEdit";
-import { Seo } from "@/components/SEO/Seo";
-import { getSeoForRoute } from "@/seo/routes";
 
 interface LayoutProps {
   children: ReactNode;
