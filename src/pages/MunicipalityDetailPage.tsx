@@ -22,7 +22,6 @@ import {
   getCurrentYearFromAvailable,
 } from "@/utils/detail/sectorYearUtils";
 import { getProcurementRequirementsText } from "@/utils/municipality/procurement";
-import { MunicipalityDetailSEO } from "@/components/municipalities/detail/MunicipalityDetailSEO";
 import { LinkCard } from "@/components/detail/DetailLinkCard";
 import { DetailHeader } from "@/components/detail/DetailHeader";
 import { DetailSection } from "@/components/detail/DetailSection";
@@ -32,6 +31,7 @@ import { DetailLinkCardGrid } from "@/components/detail/DetailGrid";
 import { SectorEmissionsChart } from "@/components/charts/sectorChart/SectorEmissions";
 import type { SupportedLanguage } from "@/lib/languageDetection";
 import type { DataGuideItemId } from "@/data-guide/items";
+import { MunicipalityDetailSEO } from "@/components/municipalities/detail/MunicipalityDetailSEO";
 
 function MunicipalityLinkCards({
   municipality,
