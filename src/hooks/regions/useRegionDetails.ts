@@ -130,7 +130,9 @@ export function useRegionDetails(name: string) {
 
   const transformedRegionDetails = useMemo(() => {
     const currentYear = new Date().getFullYear();
-    return region ? transformApiRegionToRegionDetails(region, currentYear) : null;
+    return region
+      ? transformApiRegionToRegionDetails(region, currentYear)
+      : null;
   }, [region]);
 
   // Find region using normalized comparison
