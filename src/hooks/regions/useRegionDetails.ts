@@ -7,7 +7,7 @@ import {
 } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
 import { DetailStat } from "@/components/detail/DetailHeader";
-import { getRegions } from "@/lib/api";
+import { getRegionDetails } from "@/lib/api";
 import {
   calculateParisValue,
   CARBON_LAW_REDUCTION_RATE,
@@ -42,14 +42,6 @@ type ApiRegionResponse = {
   politicalRule: string[];
   politicalRSO: string;
 };
-
-function normalizeRegionName(name: string): string {
-  return name
-    .trim()
-    .toLowerCase()
-    .replace(/\s*s?\s*län$/i, "")
-    .replace(/[^a-z0-9]/g, "");
-}
 
 function extractEmissionsRecord(
   emissions: ({ year: string; value: number } | null)[] | undefined,
@@ -128,34 +120,26 @@ function transformApiRegionToRegionDetails(
 
 export function useRegionDetails(name: string) {
   const {
-    data: regions = [],
+    data: region,
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["regions"],
-    queryFn: getRegions,
+    queryKey: ["region", name],
+    queryFn: () => getRegionDetails(name),
   });
 
   const transformedRegionDetails = useMemo(() => {
     const currentYear = new Date().getFullYear();
-    return (regions as ApiRegionResponse[]).map((r) =>
-      transformApiRegionToRegionDetails(r, currentYear),
-    );
-  }, [regions]);
-
-  const normalizedSearchName = normalizeRegionName(decodeURIComponent(name));
+    return region
+      ? transformApiRegionToRegionDetails(region, currentYear)
+      : null;
+  }, [region]);
 
   // Find region using normalized comparison
-  const region = transformedRegionDetails.find((r) => {
-    if (!r.name) return false;
-    const normalizedRegionName = normalizeRegionName(r.name);
-    return normalizedRegionName === normalizedSearchName;
-  });
-
   return {
-    region: region || null,
+    region: transformedRegionDetails ?? null,
     loading: isLoading,
-    error,
+    error: error as Error | null,
   };
 }
 
