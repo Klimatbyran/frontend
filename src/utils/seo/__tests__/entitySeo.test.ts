@@ -1,4 +1,6 @@
 import { describe, it, expect } from "vitest";
+import type { CompanyDetails } from "@/types/company";
+import type { Municipality } from "@/types/municipality";
 import {
   truncateDescription,
   buildCompanySeoDescription,
@@ -6,8 +8,6 @@ import {
   generateCompanySeoMeta,
   generateMunicipalitySeoMeta,
 } from "../entitySeo";
-import type { CompanyDetails } from "@/types/company";
-import type { Municipality } from "@/types/municipality";
 
 describe("truncateDescription", () => {
   it("should return text unchanged if under max length", () => {

@@ -55,8 +55,7 @@ export function buildCompanySeoDescription(
 
   // Latest emissions data
   const latestPeriod = company.reportingPeriods?.[0];
-  const totalEmissions =
-    latestPeriod?.emissions?.calculatedTotalEmissions;
+  const totalEmissions = latestPeriod?.emissions?.calculatedTotalEmissions;
 
   if (totalEmissions !== undefined && totalEmissions !== null) {
     const emissionsText =
