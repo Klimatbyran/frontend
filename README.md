@@ -39,6 +39,8 @@ keys |
 
 **Note:** When making changes to the data guide content (markdown files in `src/locales/dataguide/`), you need to run `npm run build:dataguide` to generate the updated JSON files. This step is automatically included when running `npm run build` for production builds.
 
+**Note:** npm audit vulnerabilities will fail the build.
+
 ## 👩‍💻 Contributing
 
 Do you have an idea for a feature? Jump into the code or head to our [Discord server](https://discord.gg/N5P64QPQ6v) to discuss your thoughts. You can also submit an [issue](https://github.com/Klimatbyran/beta/issues) explaining your suggestion.

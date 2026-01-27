@@ -12,6 +12,7 @@ export function useCompanyDetails(id: string) {
     queryKey: ["company", id],
     queryFn: () => getCompanyDetails(id),
     enabled: !!id,
+    staleTime: 1800000,
   });
 
   return {

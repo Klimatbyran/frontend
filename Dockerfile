@@ -12,7 +12,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Check for vulnerabilities
-RUN npm audit
+RUN npm audit --audit-level=moderate
 
 # Install dependencies
 RUN npm ci

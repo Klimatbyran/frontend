@@ -1,9 +1,9 @@
 import { ReactNode } from "react";
+import { PoliticalRuleSection } from "./PoliticalRuleSection";
 import { Text } from "@/components/ui/text";
 import { OverviewStat } from "@/components/companies/detail/overview/OverviewStat";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { DataGuideItemId } from "@/data-guide/items";
-import { PoliticalRuleSection } from "./PoliticalRuleSection";
 
 export interface DetailStat {
   label: string | ReactNode;
@@ -24,6 +24,7 @@ export interface DetailHeaderProps {
   stats: DetailStat[];
   translateNamespace: string;
   politicalRuleLabelKey?: string;
+  politicalXSOLabelKey?: string;
 }
 
 export function DetailHeader({
@@ -36,6 +37,7 @@ export function DetailHeader({
   stats,
   translateNamespace,
   politicalRuleLabelKey = "politicalRule",
+  politicalXSOLabelKey, // XSO = KSO or RSO hence the X
 }: DetailHeaderProps) {
   return (
     <SectionWithHelp helpItems={helpItems}>
@@ -57,6 +59,7 @@ export function DetailHeader({
           politicalRule={politicalRule}
           translateNamespace={translateNamespace}
           politicalRuleLabelKey={politicalRuleLabelKey}
+          politicalXSOLabelKey={politicalXSOLabelKey}
           politicalKSO={politicalKSO}
         />
       )}
