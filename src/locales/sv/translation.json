@@ -64,6 +64,7 @@
   },
   "landingPage": {
     "metaTitle": "Öppen klimatdata för medborgare",
+    "metaDescription": "Följ utsläpp och klimatomställning för företag och kommuner i Sverige. Öppen klimatdata för medborgare.",
     "typewriter": {
       "reduceEmissions": "att minska utsläppen?",
       "scope3Emissions": "scope 3-utsläppen?",
@@ -187,6 +188,7 @@
       "title": "Om oss",
       "description": "Klimatkollen är en medborgarplattform som tillgängliggör klimatdata. Klicka på rubrikerna för att läsa mer."
     },
+    "metaDescription": "Lär dig mer om Klimatkollen och vårt uppdrag att tillgängliggöra öppen klimatdata för medborgare.",
     "mainContent": {
       "title": "Vad är Klimatkollen?",
       "paragraph1": "Klimatkollen är en öppen och medborgardriven plattform som hjälper individer, företag och organisationer att följa klimatomställningen genom att använda AI för att samla in, analysera och sprida viktig klimatdata.",
@@ -406,7 +408,7 @@
   },
   "companyDetailPage": {
     "metaTitle": "Data om utsläpp och omställning",
-    "metaDescription": "Översikt över klimatpåverkan och hållbarhetsarbete",
+    "metaDescription": "Se utsläppsdata och klimatomställning för {{company}} på Klimatkollen.",
     "errorTitle": "Det gick inte att hämta företagsinformation",
     "errorDescription": "Försök igen senare",
     "notFoundTitle": "Företaget kunde inte hittas",
@@ -500,6 +502,7 @@
       "title": "Källor och metod",
       "description": "Vår utgångspunkt är Parisavtalets 1,5-gradersmål, och alla våra datakällor är offentligt tillgängliga. Klicka på rullgardinsmenyn för att lära dig mer."
     },
+    "metaDescription": "Lär dig mer om metodiken och datakällor som Klimatkollen använder för att spåra utsläpp och klimatomställning.",
     "dataSelector": {
       "label": "Välj vad du vill lära dig om"
     },
@@ -1072,7 +1075,7 @@
   },
   "municipalityDetailPage": {
     "metaTitle": "Data om utsläpp och omställning",
-    "metaDescription": "Översikt över klimatpåverkan och hållbarhetsarbete",
+    "metaDescription": "Se utsläppsdata och klimatomställning för {{municipality}} kommun på Klimatkollen.",
     "procurementScore": {
       "high": "Ja",
       "medium": "Kanske",
@@ -1766,7 +1769,9 @@
   },
   "common": {
     "loading": "Laddar...",
-    "error": "Fel"
+    "error": "Fel",
+    "company": "Företag",
+    "municipality": "Kommun"
   },
   "globalSearch": {
     "title": "Hitta ett företag eller kommun",
