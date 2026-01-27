@@ -1,6 +1,29 @@
 import { SeoMeta } from "@/types/seo";
 
 /**
+ * TODO: Consider refactoring this file as it grows (when it exceeds ~400-500 lines or has 3+ dynamic routes).
+ *
+ * Recommended structure for splitting:
+ *   src/seo/routes/
+ *     ├── index.ts              // Main export, routes to specific configs
+ *     ├── constants.ts           // Shared constants (DEFAULT_OG_IMAGE, SITE_NAME, DEFAULT_DESCRIPTION)
+ *     ├── utils.ts               // Shared utilities (normalizePathname, parseRoute)
+ *     ├── home.ts               // Home route
+ *     ├── companies.ts          // Company routes (detail, ranked, sectors)
+ *     ├── municipalities.ts     // Municipality routes (detail, ranked)
+ *     ├── regions.ts            // Region routes (detail, ranked)
+ *     ├── content.ts            // Articles, reports, learn-more (dynamic routes)
+ *     ├── static.ts             // About, methodology, support, privacy, products
+ *     └── protected.ts          // Internal pages, edit pages (with noindex)
+ *
+ * Benefits:
+ *   - Each file is focused and manageable (~50-100 lines)
+ *   - Easier to find and update specific routes
+ *   - Reduces merge conflicts
+ *   - Scales better as more routes are added
+ */
+
+/**
  * Default OG image for the site
  */
 const DEFAULT_OG_IMAGE = "/logos/Klimatkollen_default.jpg";
@@ -63,6 +86,12 @@ function parseRoute(pathname: string, params?: Record<string, string>) {
       params: { id: segments[1], ...(params || {}) },
     };
   }
+
+  // TODO: Add route parsing for dynamic routes that need SEO configs:
+  // - /regions/:id (region detail page)
+  // - /reports/:reportId (individual report page)
+  // - /insights/:id (blog/article detail page)
+  // - /learn-more/:id (learn more article detail page)
 
   // Other routes
   return { pattern: normalized, params: params || {} };
@@ -195,6 +224,37 @@ export function getSeoForRoute(
         },
       };
     }
+
+    // TODO: Add SEO configs for the following public routes:
+    //
+    // Static/List Pages:
+    // - /explore (explore page)
+    // - /companies/sectors (companies by sector page)
+    // - /companies/ranked (ranked companies list - staging)
+    // - /municipalities (municipalities ranked list)
+    // - /regions (regions ranked list - staging)
+    // - /support (support page)
+    // - /articles (articles/insights list page)
+    // - /reports (reports list page)
+    // - /learn-more (learn more overview page)
+    // - /newsletter-archive (newsletter archive page)
+    // - /privacy (privacy policy page)
+    // - /products (products page)
+    // - /products/database-download-2025 (download page)
+    //
+    // Dynamic Routes (need parsing in parseRoute function first):
+    // - /regions/:id (region detail page - staging, needs params: id, name)
+    // - /reports/:reportId (individual report page, needs params: reportId, title, description)
+    // - /insights/:id (blog/article detail page, needs params: id, title, description)
+    // - /learn-more/:id (learn more article detail page, needs params: id, title, description)
+    //
+    // Routes that should use noindex (protected/internal/error pages):
+    // - /companies/:id/edit (protected edit page - should set noindex: true)
+    // - /internal-pages/* (all internal dashboards - should set noindex: true)
+    // - /error/:code (error pages - should set noindex: true)
+    // - /403 (unauthorized page - should set noindex: true)
+    // - /auth/callback (auth callback - should set noindex: true)
+    // - /* (404 page - should set noindex: true)
 
     default: {
       // Fallback for unknown routes
