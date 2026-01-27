@@ -17,7 +17,10 @@ export interface paths {
      */
     get: {
       parameters: {
-        query?: never;
+        query?: {
+          redirect_uri?: string;
+          client?: string;
+        };
         header?: never;
         path?: never;
         cookie?: never;
@@ -49,6 +52,7 @@ export interface paths {
         content: {
           "application/json": {
             code: string;
+            state?: string;
           };
         };
       };
@@ -61,6 +65,9 @@ export interface paths {
           content: {
             "application/json": {
               token: string;
+              client?: string;
+              /** Format: uri */
+              redirect_uri?: string;
             };
           };
         };
@@ -79,6 +86,48 @@ export interface paths {
         };
       };
     };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/auth/github/callback": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * GitHub OAuth callback
+     * @description Handles the OAuth callback from GitHub and redirects to the frontend
+     */
+    get: {
+      parameters: {
+        query?: {
+          code?: string;
+          state?: string;
+          error?: string;
+          error_description?: string;
+        };
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Default Response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+      };
+    };
+    put?: never;
+    post?: never;
     delete?: never;
     options?: never;
     head?: never;
@@ -122,6 +171,9 @@ export interface paths {
           content: {
             "application/json": {
               token: string;
+              client?: string;
+              /** Format: uri */
+              redirect_uri?: string;
             };
           };
         };
@@ -1945,7 +1997,7 @@ export interface paths {
                   /** @enum {string|null} */
                   unit?: "tCO2e" | "tCO2" | null;
                   verified?: boolean;
-                };
+                } | null;
                 scope3?: {
                   categories?: {
                     category: number;

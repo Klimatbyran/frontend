@@ -1038,6 +1038,24 @@
     "annualChange": "Årlig förändring",
     "meetsParisGoal": "Klarar Parisavtalet",
     "changeSince2015": "Årlig utsläppsförändring sedan 2015",
+    "sectorEmissions": "Utsläppskällor",
+    "sectorEmissionsYear": "Utsläpp per sektor år {{year}}",
+    "filteredSectors": "Filtrerade sektorer",
+    "sectorChart": {
+      "clickToFilter": "Klicka för att filtrera bort",
+      "clickToShow": "Klicka för att visa"
+    },
+    "sectors": {
+      "industry": "Industri",
+      "productUse": "Produktanvändning",
+      "internationalTransport": "Utrikes transporter",
+      "agriculture": "Jordbruk",
+      "electricityAndHeating": "El och fjärrvärme",
+      "workingMachines": "Arbetsmaskiner",
+      "waste": "Avfall",
+      "ownHeating": "Uppvärmning av byggnader",
+      "transport": "Transporter"
+    },
     "graph": {
       "historical": "Historiskt",
       "estimated": "Uppskattat",
@@ -1080,25 +1098,7 @@
     "electricCarChange": "Ökning av andel elbilar",
     "electricCarsPerChargePoint": "Elbilar per laddpunkt",
     "noChargePoints": "Saknar laddpunkter",
-    "bicycleMetrePerCapita": "Cykelvägsmeter per invånare",
-    "sectorEmissions": "Utsläppskällor",
-    "sectorEmissionsYear": "Utsläpp per sektor år {{year}}",
-    "filteredSectors": "Filtrerade sektorer",
-    "sectorChart": {
-      "clickToFilter": "Klicka för att filtrera bort",
-      "clickToShow": "Klicka för att visa"
-    },
-    "sectors": {
-      "industry": "Industri",
-      "productUse": "Produktanvändning",
-      "internationalTransport": "Utrikes transporter",
-      "agriculture": "Jordbruk",
-      "electricityAndHeating": "El och fjärrvärme",
-      "workingMachines": "Arbetsmaskiner",
-      "waste": "Avfall",
-      "ownHeating": "Uppvärmning av byggnader",
-      "transport": "Transporter"
-    }
+    "bicycleMetrePerCapita": "Cykelvägsmeter per invånare"
   },
   "sector": {
     "energy": "Energi",
@@ -1152,9 +1152,9 @@
       "role": "Utvecklare",
       "description": "Frontend-utvecklare som älskar naturen, klättring och att bygga verktyg som gör klimatdata lättare att förstå. Stöttar Klimatkollens volontärer, utvecklar webbsidan och försöker hitta den perfekta GIF:en för varje tillfälle."
     },
-    "mikael": {
-      "role": "Utvecklare",
-      "description": "Öppen källkods-utvecklare med en lång passion för användargränssnitt och löpning. Har bakgrund i Linux/GNOME, iOS och webbutveckling. Bidrar huvudsakligen till webbgränssnitet för Klimatkollen."
+    "myvi": {
+      "role": "Dataanalytiker",
+      "description": "Dataanalytiker specialiserad på att automatisera dataflöden och omvandla rådata till insikter och visualiseringar. Tidigare på Telia, KPMG, Vinnova och som biträdande professor i matematisk fysik vid Bharath Institute Of Science And Technology i Chennai, Indien."
     }
   },
   "board": {
@@ -1452,6 +1452,8 @@
   },
   "regions": {
     "detailPage": {
+      "politicalRule": "Politiskt styre",
+      "politicalRSO": "Länsstyrelsens ordförande",
       "municipalities": "Kommuner"
     },
     "kpis": {

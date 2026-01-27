@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 
-export const MUNICIPALITY_SECTOR_TRANSLATION_KEYS = {
+export const SECTOR_TRANSLATION_KEYS = {
   "Industri (energi + processer)": "industry",
   "Produktanvändning (inkl. lösningsmedel)": "productUse",
   "Utrikes transporter": "internationalTransport",
@@ -24,27 +24,24 @@ const SECTOR_COLORS = {
   transport: "var(--orange-3)",
 } as const;
 
-export type MunicipalitySector =
-  keyof typeof MUNICIPALITY_SECTOR_TRANSLATION_KEYS;
-export type MunicipalitySectorKey =
-  (typeof MUNICIPALITY_SECTOR_TRANSLATION_KEYS)[MunicipalitySector];
+export type Sector = keyof typeof SECTOR_TRANSLATION_KEYS;
+export type SectorKey = (typeof SECTOR_TRANSLATION_KEYS)[Sector];
 
-interface SectorInfo {
+export interface SectorInfo {
   translatedName: string;
   color: string;
   originalName: string;
 }
 
-export function useMunicipalitySectors() {
+export function useSectors() {
   const { t } = useTranslation();
 
   const getSectorInfo = (sectorName: string): SectorInfo => {
-    const key =
-      MUNICIPALITY_SECTOR_TRANSLATION_KEYS[sectorName as MunicipalitySector];
+    const key = SECTOR_TRANSLATION_KEYS[sectorName as Sector];
 
     if (key) {
       return {
-        translatedName: t(`municipalityDetailPage.sectors.${key}`),
+        translatedName: t(`detailPage.sectors.${key}`),
         color: SECTOR_COLORS[key],
         originalName: sectorName,
       };

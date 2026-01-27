@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { DataPoint } from "@/types/municipality";
+import { DataPoint } from "@/types/emissions";
 import {
   getDynamicChartHeight,
   useDataView,
@@ -9,18 +9,18 @@ import {
 } from "@/components/charts";
 import { CardHeader } from "@/components/layout/CardHeader";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
-import { SectorEmissionsByYear } from "@/types/emissions";
-import { MunicipalityEmissionsGraph } from "./emissionsGraph/MunicipalityEmissionsGraph";
+import { SectorEmissions } from "@/types/emissions";
+import { TerritoryEmissionsGraph } from "./emissionsGraph/TerritoryEmissionsGraph";
 
 type DataView = "overview" | "sectors";
 
-interface MunicipalityEmissionsProps {
+interface TerritoryEmissionsProps {
   emissionsData: DataPoint[];
-  sectorEmissions: SectorEmissionsByYear | null;
+  sectorEmissions: SectorEmissions | null;
   className?: string;
 }
 
-export const MunicipalityEmissions: FC<MunicipalityEmissionsProps> = ({
+export const TerritoryEmissions: FC<TerritoryEmissionsProps> = ({
   emissionsData,
   sectorEmissions,
 }) => {
@@ -34,7 +34,8 @@ export const MunicipalityEmissions: FC<MunicipalityEmissionsProps> = ({
     useHiddenItems<string>([]);
 
   const hasSectorData =
-    !!sectorEmissions && Object.keys(sectorEmissions).length > 0;
+    !!sectorEmissions?.sectors &&
+    Object.keys(sectorEmissions.sectors).length > 0;
 
   const dataViewOptions = useMunicipalityViewOptions(hasSectorData);
 
@@ -57,7 +58,7 @@ export const MunicipalityEmissions: FC<MunicipalityEmissionsProps> = ({
         className="mt-8"
         style={{ height: getDynamicChartHeight(dataView, false) }}
       >
-        <MunicipalityEmissionsGraph
+        <TerritoryEmissionsGraph
           projectedData={emissionsData}
           sectorEmissions={sectorEmissions || undefined}
           dataView={dataView}

@@ -4,10 +4,10 @@ import { useResponsiveChartSize } from "@/hooks/useResponsiveChartSize";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import PieTooltip from "@/components/graphs/tooltips/PieTooltip";
 import { SectorInfo } from "@/types/charts";
-import { SectorEmissionsByYear } from "@/types/emissions";
+import { SectorEmissions } from "@/types/emissions";
 
 interface SectorPieChartProps {
-  sectorEmissions: SectorEmissionsByYear;
+  sectorEmissions: SectorEmissions;
   year: number;
   getSectorInfo: (name: string) => SectorInfo;
   filteredSectors?: Set<string>;

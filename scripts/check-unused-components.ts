@@ -1,4 +1,5 @@
 #!/usr/bin/env tsx
+/* eslint-disable no-console */
 
 import { readdirSync, readFileSync } from "fs";
 import { join, dirname, basename, relative } from "path";
@@ -61,111 +62,122 @@ function fileContainsPattern(filePath: string, pattern: RegExp): boolean {
   }
 }
 
-// Check if component is used
-function checkComponentUsage(file: string, srcRoot: string): boolean {
-  const componentName = getComponentName(file);
-
-  // Skip index files and utility files
+// Check if component should be skipped
+function shouldSkipComponent(file: string, componentName: string): boolean {
   if (
     componentName === "index" ||
     file.includes("/index.ts") ||
     file.includes("/index.tsx")
   ) {
-    return true; // Consider it "used" to skip it
+    return true;
   }
+  return file.includes(".test.") || file.includes("/test/");
+}
 
-  // Skip test files
-  if (file.includes(".test.") || file.includes("/test/")) {
-    return true; // Consider it "used" to skip it
-  }
-
-  // Get directory structure to build import paths
-  const relPath = relative(srcRoot, file);
-  const dirPath = dirname(relPath);
-  const importPath = relPath.replace(/\.tsx?$/, "");
-
-  // Escape component name for regex
+// Create search patterns for component usage
+function createSearchPatterns(
+  componentName: string,
+  importPath: string,
+  dirPath: string,
+): { patterns: RegExp[]; importPatterns: RegExp[] } {
   const escapedComponentName = componentName.replace(
     /[.*+?^${}()|[\]\\]/g,
     "\\$&",
   );
+  const escapedImportPath = importPath.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
-  // Check various import patterns
   const patterns: RegExp[] = [
-    // Import statements with component name
     new RegExp(`import\\s+.*\\b${escapedComponentName}\\b`),
     new RegExp(`from\\s+["']\\.\\./.*${escapedComponentName}`),
     new RegExp(`from\\s+["']\\./.*${escapedComponentName}`),
     new RegExp(`from\\s+["'].*${escapedComponentName}`),
     new RegExp(`from\\s+["']@/components.*${escapedComponentName}`),
-    new RegExp(
-      `from\\s+["']@/components.*${importPath.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`,
-    ),
-    // JSX usage
+    new RegExp(`from\\s+["']@/components.*${escapedImportPath}`),
     new RegExp(`<${escapedComponentName}\\b`),
   ];
 
-  // Also check for the file path as import
   const importPatterns: RegExp[] = [
-    new RegExp(
-      `from\\s+["'].*${importPath.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`,
-    ),
+    new RegExp(`from\\s+["'].*${escapedImportPath}`),
     new RegExp(`from\\s+["'].*${dirPath}/${componentName}`),
   ];
 
-  // Find all source files to search
+  return { patterns, importPatterns };
+}
+
+// Search for component usage in files
+function searchForUsage(
+  file: string,
+  srcRoot: string,
+  patterns: RegExp[],
+  importPatterns: RegExp[],
+): boolean {
   const searchFiles = findFiles(srcRoot, ["tsx", "ts", "js", "jsx"]);
 
-  // Search for usage (excluding the file itself)
   for (const searchFile of searchFiles) {
     if (searchFile === file) {
       continue;
     }
 
-    // Check component name patterns
     for (const pattern of patterns) {
       if (fileContainsPattern(searchFile, pattern)) {
-        return true; // Component is used
+        return true;
       }
     }
 
-    // Check import path patterns
     for (const pattern of importPatterns) {
       if (fileContainsPattern(searchFile, pattern)) {
-        return true; // Component is used
+        return true;
       }
     }
   }
 
-  return false; // Component is unused
+  return false;
 }
 
-// Main function
-function main() {
-  console.log("🔍 Checking for unused components...");
-  console.log("");
+// Check if component is used
+function checkComponentUsage(file: string, srcRoot: string): boolean {
+  const componentName = getComponentName(file);
 
-  const srcRoot = join(__dirname, "..", "src");
-  const componentsDir = join(srcRoot, "components");
+  if (shouldSkipComponent(file, componentName)) {
+    return true;
+  }
 
-  // Find all component files
-  const componentFiles = findFiles(componentsDir, ["tsx", "ts"]).sort();
+  const relPath = relative(srcRoot, file);
+  const dirPath = dirname(relPath);
+  const importPath = relPath.replace(/\.tsx?$/, "");
 
-  let unusedCount = 0;
+  const { patterns, importPatterns } = createSearchPatterns(
+    componentName,
+    importPath,
+    dirPath,
+  );
+
+  return searchForUsage(file, srcRoot, patterns, importPatterns);
+}
+
+// Process component files and categorize them
+function processComponents(
+  componentFiles: string[],
+  srcRoot: string,
+): { usedCount: number; unusedComponents: string[] } {
   let usedCount = 0;
   const unusedComponents: string[] = [];
 
-  // Process each component file
   for (const file of componentFiles) {
     if (checkComponentUsage(file, srcRoot)) {
       usedCount++;
     } else {
       unusedComponents.push(file);
-      unusedCount++;
     }
   }
 
-  // Print results
+  return { usedCount, unusedComponents };
+}
+
+// Print the results
+function printResults(usedCount: number, unusedComponents: string[]): void {
+  const unusedCount = unusedComponents.length;
+
   console.log("📊 Results:");
   console.log(`  ✅ Used components: ${usedCount}`);
   console.log(`  ❌ Unused components: ${unusedCount}`);
@@ -185,6 +197,23 @@ function main() {
   } else {
     console.log(`${GREEN}✓ All components appear to be used!${NC}`);
   }
+}
+
+// Main function
+function main() {
+  console.log("🔍 Checking for unused components...");
+  console.log("");
+
+  const srcRoot = join(__dirname, "..", "src");
+  const componentsDir = join(srcRoot, "components");
+  const componentFiles = findFiles(componentsDir, ["tsx", "ts"]).sort();
+
+  const { usedCount, unusedComponents } = processComponents(
+    componentFiles,
+    srcRoot,
+  );
+
+  printResults(usedCount, unusedComponents);
 }
 
 main();

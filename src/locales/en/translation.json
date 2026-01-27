@@ -985,6 +985,24 @@
     "annualChange": "Annual Change",
     "meetsParisGoal": "Meets the Paris Agreement",
     "changeSince2015": "Annual emission change since 2015",
+    "sectorEmissions": "Emission sources",
+    "sectorEmissionsYear": "Emissions by sector in {{year}}",
+    "filteredSectors": "Filtered Sectors",
+    "sectorChart": {
+      "clickToFilter": "Click to filter out",
+      "clickToShow": "Click to show"
+    },
+    "sectors": {
+      "industry": "Industry",
+      "productUse": "Product use",
+      "internationalTransport": "International transport",
+      "agriculture": "Agriculture",
+      "electricityAndHeating": "Electricity and heating",
+      "workingMachines": "Working machines",
+      "waste": "Waste",
+      "ownHeating": "Heating of buildings",
+      "transport": "Transport"
+    },
     "graph": {
       "historical": "Historical",
       "estimated": "Estimated",
@@ -1027,25 +1045,7 @@
     "electricCarChange": "Increase in electric car share",
     "electricCarsPerChargePoint": "Electric cars per charging point",
     "noChargePoints": "No charging points",
-    "bicycleMetrePerCapita": "Bicycle path metres per capita",
-    "sectorEmissions": "Emission sources",
-    "sectorEmissionsYear": "Emissions by sector in {{year}}",
-    "filteredSectors": "Filtered Sectors",
-    "sectorChart": {
-      "clickToFilter": "Click to filter out",
-      "clickToShow": "Click to show"
-    },
-    "sectors": {
-      "industry": "Industry",
-      "productUse": "Product use",
-      "internationalTransport": "International transport",
-      "agriculture": "Agriculture",
-      "electricityAndHeating": "Electricity and heating",
-      "workingMachines": "Working machines",
-      "waste": "Waste",
-      "ownHeating": "Heating of buildings",
-      "transport": "Transport"
-    }
+    "bicycleMetrePerCapita": "Bicycle path metres per capita"
   },
   "sector": {
     "energy": "Energy",
@@ -1099,9 +1099,9 @@
       "role": "Developer",
       "description": "Frontend developer who loves nature, climbing, and creating tools that make climate data easier to understand. Supports Klimatkollen's volunteers, develops the frontend, and tries to find the perfect GIFs for every occasion."
     },
-    "mikael": {
-      "role": "Developer",
-      "description": "Open source developer with a long passion for user interfaces and running. Coming from a background of Linux/GNOME, iOS  and web development. Mainly contributing to the web frontend at Klimatkollen."
+    "myvi": {
+      "role": "Data Analyst",
+      "description": "Data Analyst specializing in automating data workflows and transforming raw data into actionable insights and visualisations. Formerly at Telia, KPMG, Vinnova and Assistant Professor in mathematical engineering physics at Bharath Institute Of Science And Technology in Chennai, India."
     }
   },
   "board": {
@@ -1399,6 +1399,8 @@
   },
   "regions": {
     "detailPage": {
+      "politicalRule": "Political rule",
+      "politicalRSO": "Regional Executive Chair",
       "municipalities": "Municipalities"
     },
     "kpis": {
