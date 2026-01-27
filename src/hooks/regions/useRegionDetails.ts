@@ -16,6 +16,7 @@ import type { SupportedLanguage } from "@/lib/languageDetection";
 
 export type RegionDetails = {
   name: string;
+  logoUrl: string | null;
   emissions: Record<string, number>;
   approximatedHistoricalEmission: Record<string, number>;
   trend: Record<string, number>;
@@ -29,6 +30,7 @@ export type RegionDetails = {
 
 type ApiRegionResponse = {
   region: string;
+  logoUrl?: string | null;
   emissions: ({ year: string; value: number } | null)[];
   totalTrend: number;
   totalCarbonLaw: number;
@@ -106,6 +108,7 @@ function transformApiRegionToRegionDetails(
 ): RegionDetails {
   return {
     name: r.region,
+    logoUrl: r.logoUrl ?? null,
     politicalRule: r.politicalRule,
     politicalKSO: r.politicalRSO,
     municipalities: r.municipalities,

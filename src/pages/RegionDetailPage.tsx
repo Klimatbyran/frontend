@@ -87,6 +87,7 @@ export function RegionDetailPage() {
       <DetailWrapper>
         <DetailHeader
           name={region.name}
+          logoUrl={region.logoUrl}
           politicalRule={region.politicalRule}
           politicalKSO={region.politicalKSO}
           politicalXSOLabelKey="politicalRSO"
