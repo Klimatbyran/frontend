@@ -22,6 +22,18 @@ export type ReportingPeriod = ReportingPeriodFromDetail; // For detail pages
 
 export type Emissions = NonNullable<ReportingPeriod["emissions"]>;
 
+/**
+ * Type constraint for objects that can be checked for AI generation.
+ * Objects must have optional metadata with verifiedBy and user properties.
+ * Used for verification of emissions data (scope1, scope2, scope3 categories, etc.)
+ */
+export type AIGeneratable = {
+  metadata?: {
+    verifiedBy?: { name: string } | null;
+    user?: { name?: string } | null;
+  };
+};
+
 // Scope 3 category type extracted from API
 export type Scope3Category = NonNullable<
   NonNullable<CompanyDetails["reportingPeriods"][0]["emissions"]>["scope3"]

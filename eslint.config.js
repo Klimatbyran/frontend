@@ -38,26 +38,45 @@ export default tseslint.config(
       // Suppress defaultProps deprecation warnings from Recharts
       "react/no-deprecated": "off",
       "react/default-props-match-prop-types": "off",
-      "no-unused-expressions": "off",
-      "no-console": "off",
-      "no-duplicate-imports": "off",
-      "no-unreachable": "off",
-      "no-unused-labels": "off",
+      "no-unused-expressions": "warn",
+      // Allow console.error and console.warn for production error tracking
+      // but warn on console.log and other console methods
+      "no-console": [
+        "warn",
+        {
+          allow: ["error", "warn"],
+        },
+      ],
+      "no-duplicate-imports": "warn",
+      "no-unreachable": "warn",
+      "no-unused-labels": "warn",
 
       // Mimic Typescripts noUnusedLocals and noUnusedParameters behaviour
       // https://typescript-eslint.io/rules/no-unused-vars/#what-benefits-does-this-rule-have-over-typescript
-      "@typescript-eslint/no-unused-vars": "off",
-      "@typescript-eslint/no-explicit-any": "off",
-      complexity: "off",
-      "max-lines": "off",
-      "max-lines-per-function": "off",
-      "max-depth": "off",
-      "max-params": "off",
-      "max-statements": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          args: "all",
+          argsIgnorePattern: "^_",
+          caughtErrors: "all",
+          caughtErrorsIgnorePattern: "^_",
+          destructuredArrayIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          ignoreRestSiblings: true,
+        },
+      ],
+      "@typescript-eslint/no-explicit-any": "warn",
+      complexity: ["warn", 10],
+      "max-lines": ["warn", 500],
+      "max-lines-per-function": ["warn", 50],
+      "max-depth": ["warn", 4],
+      "max-params": ["warn", 5],
+      "max-statements": ["warn", 20],
+      // Temporarily disabled - too many warnings hiding more valuable issues
       "no-magic-numbers": "off",
-      "react/jsx-boolean-value": "off",
-      "react/jsx-no-bind": "off",
-      "react/jsx-no-duplicate-props": "off",
+      "react/jsx-boolean-value": ["warn", "never"],
+      "react/jsx-no-bind": ["warn", { allowArrowFunctions: true }],
+      "react/jsx-no-duplicate-props": "warn",
       "react/jsx-no-undef": "error",
       "react/jsx-uses-react": "off",
       "react/jsx-uses-vars": "off",

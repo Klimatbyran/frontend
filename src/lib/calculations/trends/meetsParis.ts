@@ -1,4 +1,4 @@
-import type { TrendAnalysis } from "./types";
+import type { TrendAnalysis, CompanyForTrendAnalysis } from "./types";
 
 // Carbon Law reduction rate constant (11.72% annual reduction)
 const CARBON_LAW_REDUCTION_RATE = 0.1172;
@@ -7,14 +7,14 @@ const CARBON_LAW_REDUCTION_RATE = 0.1172;
  * Get 2025 emissions (actual data or estimated from trendline)
  */
 export const get2025Emissions = (
-  company: any,
+  company: CompanyForTrendAnalysis,
   trendAnalysis: TrendAnalysis | null,
 ): number | null => {
   if (!trendAnalysis || !trendAnalysis.coefficients) return null;
 
   // Check if we have actual 2025 data
   const actual2025Data = company.reportingPeriods?.find(
-    (period: any) => new Date(period.endDate).getFullYear() === 2025,
+    (period) => new Date(period.endDate).getFullYear() === 2025,
   );
 
   if (actual2025Data?.emissions?.calculatedTotalEmissions) {
@@ -75,7 +75,7 @@ export const calculateCarbonLawCumulativeEmissions = (
  * Uses the carbon budget approach: company's cumulative emissions must be <= Carbon Law cumulative emissions
  */
 export const calculateMeetsParis = (
-  company: any,
+  company: CompanyForTrendAnalysis,
   trendAnalysis: TrendAnalysis | null,
 ): boolean => {
   if (!trendAnalysis || !trendAnalysis.coefficients) return false;
