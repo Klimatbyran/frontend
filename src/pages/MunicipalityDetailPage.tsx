@@ -1,9 +1,10 @@
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
+import type { TFunction } from "i18next";
 import { useMunicipalityDetails } from "@/hooks/municipalities/useMunicipalityDetails";
 import { useMunicipalityDetailHeaderStats } from "@/hooks/municipalities/useMunicipalityDetails";
-import { transformEmissionsData } from "@/types/municipality";
+import { Municipality, transformEmissionsData } from "@/types/municipality";
 import {
   formatEmissionsAbsolute,
   formatPercent,
@@ -29,20 +30,93 @@ import { DetailWrapper } from "@/components/detail/DetailWrapper";
 import { useMunicipalitySectors } from "@/hooks/municipalities/useMunicipalitySectors";
 import { DetailLinkCardGrid } from "@/components/detail/DetailGrid";
 import { SectorEmissionsChart } from "@/components/charts/sectorChart/SectorEmissions";
+import type { SupportedLanguage } from "@/lib/languageDetection";
+import type { DataGuideItemId } from "@/data-guide/items";
 
-export function MunicipalityDetailPage() {
+function MunicipalityLinkCards({
+  municipality,
+  requirementsInProcurement,
+  t,
+}: {
+  municipality: Municipality;
+  requirementsInProcurement: string;
+  t: TFunction;
+}) {
+  return (
+    <DetailLinkCardGrid>
+      <LinkCard
+        title={t("municipalityDetailPage.climatePlan")}
+        description={
+          municipality.climatePlanYear
+            ? t("municipalityDetailPage.adopted", {
+                year: municipality.climatePlanYear,
+              })
+            : t("municipalityDetailPage.noClimatePlan")
+        }
+        link={
+          municipality.climatePlanLink
+            ? municipality.climatePlanLink
+            : undefined
+        }
+        descriptionClassName={
+          municipality.climatePlanYear ? "text-green-3" : "text-pink-3"
+        }
+      />
+      <LinkCard
+        title={t("municipalityDetailPage.procurementRequirements")}
+        description={requirementsInProcurement}
+        link={municipality.procurementLink || undefined}
+        descriptionClassName={
+          municipality.procurementScore === 2
+            ? "text-green-3"
+            : municipality.procurementScore === 1
+              ? "text-orange-2"
+              : "text-pink-3"
+        }
+      />
+    </DetailLinkCardGrid>
+  );
+}
+
+function getSustainableTransportItems(
+  municipality: Municipality,
+  currentLanguage: SupportedLanguage,
+  t: TFunction,
+) {
+  const evcp = municipality.electricVehiclePerChargePoints;
+  return [
+    {
+      title: t("municipalityDetailPage.electricCarChange"),
+      value: `${formatPercent(
+        municipality.electricCarChangePercent,
+        currentLanguage,
+        true,
+      )}`,
+      valueClassName: "text-orange-2",
+    },
+    {
+      title: t("municipalityDetailPage.electricCarsPerChargePoint"),
+      value: evcp
+        ? localizeUnit(evcp, currentLanguage)
+        : t("municipalityDetailPage.noChargePoints"),
+      valueClassName: evcp && evcp > 10 ? "text-pink-3" : "text-green-3",
+    },
+    {
+      title: t("municipalityDetailPage.bicycleMetrePerCapita"),
+      value: localizeUnit(municipality.bicycleMetrePerCapita, currentLanguage),
+      valueClassName: "text-orange-2",
+    },
+  ];
+}
+
+function useMunicipalityPageData(id: string | undefined) {
   const { t } = useTranslation();
-  const { id } = useParams<{ id: string }>();
   const { municipality, loading, error } = useMunicipalityDetails(id || "");
   const { currentLanguage } = useLanguage();
-
-  const { sectorEmissions, loading: _loadingSectors } =
-    useMunicipalitySectorEmissions(id);
-
+  const { sectorEmissions } = useMunicipalitySectorEmissions(id);
   const { getSectorInfo } = useMunicipalitySectors();
   const { hiddenItems: filteredSectors, setHiddenItems: setFilteredSectors } =
     useHiddenItems<string>([]);
-
   const [selectedYear, setSelectedYear] = useState<string>("2023");
 
   const lastYearEmissions = municipality?.emissions.at(-1);
@@ -57,26 +131,85 @@ export function MunicipalityDetailPage() {
     lastYearEmissionsTon,
   );
 
-  if (loading) return <PageLoading />;
-  if (error) return <PageError />;
-  if (!municipality) return <PageNoData />;
+  const requirementsInProcurement = municipality
+    ? getProcurementRequirementsText(municipality.procurementScore, t)
+    : "";
 
-  const requirementsInProcurement = getProcurementRequirementsText(
-    municipality.procurementScore,
-    t,
-  );
-
-  const emissionsData = transformEmissionsData(municipality);
+  const emissionsData = municipality
+    ? transformEmissionsData(municipality)
+    : [];
 
   const availableYears = getAvailableYearsFromSectors(sectorEmissions);
-
   const currentYear = getCurrentYearFromAvailable(
     selectedYear,
     availableYears,
-    2023,
+    lastYear,
   );
 
-  const evcp = municipality.electricVehiclePerChargePoints;
+  return {
+    t,
+    municipality,
+    loading,
+    error,
+    currentLanguage,
+    sectorEmissions,
+    getSectorInfo,
+    filteredSectors,
+    setFilteredSectors,
+    selectedYear,
+    setSelectedYear,
+    lastYear,
+    lastYearEmissionsTon,
+    headerStats,
+    requirementsInProcurement,
+    emissionsData,
+    availableYears,
+    currentYear,
+  };
+}
+
+const HEADER_HELP_ITEMS: DataGuideItemId[] = [
+  "municipalityTotalEmissions",
+  "detailWhyDataDelay",
+  "municipalityDeeperChanges",
+  "municipalityConsumptionEmissionPerPerson",
+  "municipalityLocalVsConsumption",
+];
+
+const SUSTAINABLE_TRANSPORT_HELP_ITEMS: DataGuideItemId[] = [
+  "municipalityClimatePlans",
+  "municipalityProcurement",
+  "municipalityElectricCarShare",
+  "municipalityChargingPoints",
+  "municipalityBicyclePaths",
+];
+
+export function MunicipalityDetailPage() {
+  const { id } = useParams<{ id: string }>();
+  const {
+    t,
+    municipality,
+    loading,
+    error,
+    currentLanguage,
+    sectorEmissions,
+    getSectorInfo,
+    filteredSectors,
+    setFilteredSectors,
+    selectedYear,
+    setSelectedYear,
+    lastYear,
+    lastYearEmissionsTon,
+    headerStats,
+    requirementsInProcurement,
+    emissionsData,
+    availableYears,
+    currentYear,
+  } = useMunicipalityPageData(id);
+
+  if (loading) return <PageLoading />;
+  if (error) return <PageError />;
+  if (!municipality) return <PageNoData />;
 
   return (
     <>
@@ -94,13 +227,8 @@ export function MunicipalityDetailPage() {
           logoUrl={municipality.logoUrl}
           politicalRule={municipality.politicalRule}
           politicalKSO={municipality.politicalKSO}
-          helpItems={[
-            "municipalityTotalEmissions",
-            "detailWhyDataDelay",
-            "municipalityDeeperChanges",
-            "municipalityConsumptionEmissionPerPerson",
-            "municipalityLocalVsConsumption",
-          ]}
+          politicalXSOLabelKey="politicalKSO"
+          helpItems={HEADER_HELP_ITEMS}
           stats={headerStats}
           translateNamespace="municipalityDetailPage"
         />
@@ -123,75 +251,16 @@ export function MunicipalityDetailPage() {
           helpItems={["municipalityEmissionSources"]}
         />
 
-        <DetailLinkCardGrid>
-          <LinkCard
-            title={t("municipalityDetailPage.climatePlan")}
-            description={
-              municipality.climatePlanYear
-                ? t("municipalityDetailPage.adopted", {
-                    year: municipality.climatePlanYear,
-                  })
-                : t("municipalityDetailPage.noClimatePlan")
-            }
-            link={
-              municipality.climatePlanLink
-                ? municipality.climatePlanLink
-                : undefined
-            }
-            descriptionClassName={
-              municipality.climatePlanYear ? "text-green-3" : "text-pink-3"
-            }
-          />
-          <LinkCard
-            title={t("municipalityDetailPage.procurementRequirements")}
-            description={requirementsInProcurement}
-            link={municipality.procurementLink || undefined}
-            descriptionClassName={
-              municipality.procurementScore === 2
-                ? "text-green-3"
-                : municipality.procurementScore === 1
-                  ? "text-orange-2"
-                  : "text-pink-3"
-            }
-          />
-        </DetailLinkCardGrid>
+        <MunicipalityLinkCards
+          municipality={municipality}
+          requirementsInProcurement={requirementsInProcurement}
+          t={t}
+        />
 
         <DetailSection
           title={t("municipalityDetailPage.sustainableTransport")}
-          items={[
-            {
-              title: t("municipalityDetailPage.electricCarChange"),
-              value: `${formatPercent(
-                municipality.electricCarChangePercent,
-                currentLanguage,
-                true,
-              )}`,
-              valueClassName: "text-orange-2",
-            },
-            {
-              title: t("municipalityDetailPage.electricCarsPerChargePoint"),
-              value: evcp
-                ? localizeUnit(evcp, currentLanguage)
-                : t("municipalityDetailPage.noChargePoints"),
-              valueClassName:
-                evcp && evcp > 10 ? "text-pink-3" : "text-green-3",
-            },
-            {
-              title: t("municipalityDetailPage.bicycleMetrePerCapita"),
-              value: localizeUnit(
-                municipality.bicycleMetrePerCapita,
-                currentLanguage,
-              ),
-              valueClassName: "text-orange-2",
-            },
-          ]}
-          helpItems={[
-            "municipalityClimatePlans",
-            "municipalityProcurement",
-            "municipalityElectricCarShare",
-            "municipalityChargingPoints",
-            "municipalityBicyclePaths",
-          ]}
+          items={getSustainableTransportItems(municipality, currentLanguage, t)}
+          helpItems={SUSTAINABLE_TRANSPORT_HELP_ITEMS}
         />
       </DetailWrapper>
     </>
