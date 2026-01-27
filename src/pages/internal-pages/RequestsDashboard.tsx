@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { useLabeledGithubIssues, type GitHubIssue } from "@/hooks/useLabeledGithubIssues";
+import {
+  useLabeledGithubIssues,
+  type GitHubIssue,
+} from "@/hooks/useLabeledGithubIssues";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -10,7 +13,9 @@ const STATUS_FILTERS = [
   { label: "Finished", value: "finished" },
 ];
 
-function getStatus(issue: GitHubIssue): "finished" | "in-progress" | "in-queue" {
+function getStatus(
+  issue: GitHubIssue,
+): "finished" | "in-progress" | "in-queue" {
   if (issue.state === "closed") return "finished";
   if (issue.assignees && issue.assignees.length > 0) return "in-progress";
   return "in-queue";
@@ -35,7 +40,9 @@ export const RequestsDashboard = () => {
   const filteredIssues =
     statusFilter === "all"
       ? sortedIssues
-      : sortedIssues?.filter((issue: GitHubIssue) => getStatus(issue) === statusFilter);
+      : sortedIssues?.filter(
+          (issue: GitHubIssue) => getStatus(issue) === statusFilter,
+        );
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading issues</div>;
