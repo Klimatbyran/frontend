@@ -80,6 +80,7 @@ export function RankedList<T extends Record<string, unknown>>({
   );
 
   const handlePageChange = (page: number) => {
+    console.log("hej")
     setCurrentPage(page);
     const listElement = document.querySelector(".ranked-list-items");
     if (listElement) {

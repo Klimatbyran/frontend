@@ -1,8 +1,10 @@
 import React, { useState, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import type { ColorFunction } from "@/types/visualizations";
+import { useScreenSize } from "@/hooks/useScreenSize";
 import { BeeswarmTooltip } from "./BeeswarmTooltip";
 import { BeeswarmLegend } from "./BeeswarmLegend";
+import { MobileModal } from "@/components/layout/MobileModal";
 
 interface BeeswarmChartProps<T> {
   data: T[];
@@ -53,6 +55,7 @@ export function BeeswarmChart<T>({
   totalCount,
 }: BeeswarmChartProps<T>) {
   const { t } = useTranslation();
+  const { isMobile } = useScreenSize();
   const displayData = data.slice(0, maxDisplayCount);
   const [hoveredItem, setHoveredItem] = useState<{
     item: T;
@@ -81,6 +84,12 @@ export function BeeswarmChart<T>({
   const handleMouseLeave = useCallback(() => {
     setHoveredItem(null);
   }, []);
+
+  const handleDotClick = (item: T) => {
+    if (!isMobile) {
+      onCompanyClick?.(item);
+    }
+  };
 
   const legendGradient = useMemo(() => {
     if (!showLegend) return undefined;
@@ -183,7 +192,7 @@ export function BeeswarmChart<T>({
             return (
               <div
                 key={getCompanyId(item)}
-                onClick={() => onCompanyClick?.(item)}
+                onClick={() => handleDotClick(item)}
                 onMouseEnter={(e) => handleMouseEnter(e, item)}
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
