@@ -1,4 +1,7 @@
 import { SeoMeta } from "@/types/seo";
+import { detectLanguageFromPath } from "@/lib/languageDetection";
+// @ts-expect-error - i18n.js doesn't have TypeScript definitions
+import i18n from "@/i18n";
 
 /**
  * TODO: Consider refactoring this file as it grows (when it exceeds ~400-500 lines or has 3+ dynamic routes).
@@ -34,10 +37,25 @@ const DEFAULT_OG_IMAGE = "/logos/Klimatkollen_default.jpg";
 const SITE_NAME = "Klimatkollen";
 
 /**
- * Default description fallback
+ * Get translated text using i18n (works outside React components)
+ * @param key - Translation key
+ * @param language - Language code (sv or en)
+ * @param options - Optional interpolation options
+ * @returns Translated string
  */
-const DEFAULT_DESCRIPTION =
-  "Klimatkollen - Open climate data for citizens. Track emissions and climate transition progress for companies and municipalities in Sweden.";
+function getTranslation(
+  key: string,
+  language: string,
+  options?: Record<string, string>,
+): string {
+  // Change language temporarily for this translation
+  const currentLanguage = i18n.language;
+  i18n.changeLanguage(language);
+  const translated = i18n.t(key, options || {});
+  // Restore original language
+  i18n.changeLanguage(currentLanguage);
+  return translated as string;
+}
 
 /**
  * Normalize pathname by removing language prefix and trailing slashes
@@ -109,11 +127,17 @@ export function getSeoForRoute(
 ): SeoMeta {
   const { pattern, params: routeParams } = parseRoute(pathname, params);
   const canonical = normalizePathname(pathname);
+  
+  // Detect language from pathname for translations
+  const language = detectLanguageFromPath(pathname);
+  
+  // Get translated default description
+  const defaultDescription = getTranslation("landingPage.metaDescription", language);
 
   // Build base SEO config
   const baseSeo: SeoMeta = {
     title: SITE_NAME,
-    description: DEFAULT_DESCRIPTION,
+    description: defaultDescription,
     canonical,
     og: {
       image: DEFAULT_OG_IMAGE,
@@ -128,23 +152,23 @@ export function getSeoForRoute(
   switch (pattern) {
     case "/": {
       // Home route
+      const metaTitle = getTranslation("landingPage.metaTitle", language);
+      const metaDescription = getTranslation("landingPage.metaDescription", language);
+      
       return {
         ...baseSeo,
-        title: `${SITE_NAME} - Open climate data for citizens`,
-        description:
-          "Track emissions and climate transition progress for companies and municipalities in Sweden. Open climate data for citizens.",
+        title: `${SITE_NAME} - ${metaTitle}`,
+        description: metaDescription,
         og: {
-          title: `${SITE_NAME} - Open climate data for citizens`,
-          description:
-            "Track emissions and climate transition progress for companies and municipalities in Sweden.",
+          title: `${SITE_NAME} - ${metaTitle}`,
+          description: metaDescription,
           image: DEFAULT_OG_IMAGE,
           type: "website",
         },
         twitter: {
           card: "summary_large_image",
-          title: `${SITE_NAME} - Open climate data for citizens`,
-          description:
-            "Track emissions and climate transition progress for companies and municipalities in Sweden.",
+          title: `${SITE_NAME} - ${metaTitle}`,
+          description: metaDescription,
           image: DEFAULT_OG_IMAGE,
         },
       };
@@ -152,22 +176,27 @@ export function getSeoForRoute(
 
     case "/companies/:id": {
       // Company detail page
-      const companyId = routeParams.id;
-      const companyName = routeParams.name || `Company ${companyId}`;
+      const companyName = routeParams.name || getTranslation("common.company", language);
+      const description = getTranslation(
+        "companyDetailPage.metaDescription",
+        language,
+        { company: companyName, siteName: SITE_NAME },
+      );
+      
       return {
         ...baseSeo,
         title: `${companyName} - ${SITE_NAME}`,
-        description: `View emissions data and climate transition progress for ${companyName} on ${SITE_NAME}.`,
+        description,
         og: {
           title: `${companyName} - ${SITE_NAME}`,
-          description: `View emissions data and climate transition progress for ${companyName}.`,
+          description,
           image: DEFAULT_OG_IMAGE,
           type: "website",
         },
         twitter: {
           card: "summary_large_image",
           title: `${companyName} - ${SITE_NAME}`,
-          description: `View emissions data and climate transition progress for ${companyName}.`,
+          description,
           image: DEFAULT_OG_IMAGE,
         },
       };
@@ -175,36 +204,44 @@ export function getSeoForRoute(
 
     case "/municipalities/:id": {
       // Municipality detail page
-      const municipalityId = routeParams.id;
       const municipalityName =
-        routeParams.name || `Municipality ${municipalityId}`;
+        routeParams.name || getTranslation("common.municipality", language);
+      const description = getTranslation(
+        "municipalityDetailPage.metaDescription",
+        language,
+        { municipality: municipalityName, siteName: SITE_NAME },
+      );
+      
       return {
         ...baseSeo,
         title: `${municipalityName} - ${SITE_NAME}`,
-        description: `View emissions data and climate transition progress for ${municipalityName} municipality on ${SITE_NAME}.`,
+        description,
         og: {
           title: `${municipalityName} - ${SITE_NAME}`,
-          description: `View emissions data and climate transition progress for ${municipalityName} municipality.`,
+          description,
           image: DEFAULT_OG_IMAGE,
           type: "website",
         },
         twitter: {
           card: "summary_large_image",
           title: `${municipalityName} - ${SITE_NAME}`,
-          description: `View emissions data and climate transition progress for ${municipalityName} municipality.`,
+          description,
           image: DEFAULT_OG_IMAGE,
         },
       };
     }
 
     case "/about": {
+      const aboutTitle = getTranslation("aboutPage.header.title", language);
+      const aboutDescription = getTranslation("aboutPage.metaDescription", language);
+      
       return {
         ...baseSeo,
-        title: `About - ${SITE_NAME}`,
-        description: `Learn about ${SITE_NAME} and our mission to provide open climate data for citizens.`,
+        title: `${aboutTitle} - ${SITE_NAME}`,
+        description: aboutDescription,
         og: {
-          title: `About - ${SITE_NAME}`,
-          description: `Learn about ${SITE_NAME} and our mission to provide open climate data.`,
+          title: `${aboutTitle} - ${SITE_NAME}`,
+          description: aboutDescription,
           image: DEFAULT_OG_IMAGE,
           type: "website",
         },
@@ -212,13 +249,16 @@ export function getSeoForRoute(
     }
 
     case "/methodology": {
+      const methodologyTitle = getTranslation("methodsPage.header.title", language);
+      const methodologyDescription = getTranslation("methodsPage.metaDescription", language);
+      
       return {
         ...baseSeo,
-        title: `Methodology - ${SITE_NAME}`,
-        description: `Learn about the methodology and data sources used by ${SITE_NAME} to track emissions and climate transition.`,
+        title: `${methodologyTitle} - ${SITE_NAME}`,
+        description: methodologyDescription,
         og: {
-          title: `Methodology - ${SITE_NAME}`,
-          description: `Learn about the methodology and data sources used by ${SITE_NAME}.`,
+          title: `${methodologyTitle} - ${SITE_NAME}`,
+          description: methodologyDescription,
           image: DEFAULT_OG_IMAGE,
           type: "website",
         },
