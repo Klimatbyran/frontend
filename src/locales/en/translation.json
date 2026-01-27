@@ -1099,9 +1099,9 @@
       "role": "Developer",
       "description": "Frontend developer who loves nature, climbing, and creating tools that make climate data easier to understand. Supports Klimatkollen's volunteers, develops the frontend, and tries to find the perfect GIFs for every occasion."
     },
-    "mikael": {
-      "role": "Developer",
-      "description": "Open source developer with a long passion for user interfaces and running. Coming from a background of Linux/GNOME, iOS  and web development. Mainly contributing to the web frontend at Klimatkollen."
+    "myvi": {
+      "role": "Data Analyst",
+      "description": "Data Analyst specializing in automating data workflows and transforming raw data into actionable insights and visualisations. Formerly at Telia, KPMG, Vinnova and Assistant Professor in mathematical engineering physics at Bharath Institute Of Science And Technology in Chennai, India."
     }
   },
   "board": {
