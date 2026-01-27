@@ -127,7 +127,7 @@ export function getSeoForRoute(
       const companyName = routeParams.name || `Company ${companyId}`;
       // Use entity-specific OG image (falls back to default)
       const ogImage = companyId
-        ? getEntityOgImageUrl("companies", companyId, true)
+        ? getEntityOgImageUrl("companies", companyId)
         : getDefaultOgImageUrl();
       
       return {
@@ -155,7 +155,7 @@ export function getSeoForRoute(
         routeParams.name || `Municipality ${municipalityId}`;
       // Use entity-specific OG image (falls back to default)
       const ogImage = municipalityId
-        ? getEntityOgImageUrl("municipalities", municipalityId, true)
+        ? getEntityOgImageUrl("municipalities", municipalityId)
         : getDefaultOgImageUrl();
       
       return {

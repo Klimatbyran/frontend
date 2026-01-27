@@ -193,7 +193,7 @@ export function generateCompanySeoMeta(
   
   // Use entity-specific OG image (falls back to default if not found)
   const entityId = company.wikidataId || "";
-  const ogImage = getEntityOgImageUrl("companies", entityId, true);
+  const ogImage = getEntityOgImageUrl("companies", entityId);
 
   // Generate structured data
   const canonicalUrl = buildAbsoluteUrl(canonical);
@@ -283,7 +283,7 @@ export function generateMunicipalitySeoMeta(
   // Use entity-specific OG image (falls back to default if not found)
   // Use municipality name as ID (slugified) or provided ID
   const entityId = options?.municipalityId || municipality.name.toLowerCase().replace(/\s+/g, "-");
-  const ogImage = getEntityOgImageUrl("municipalities", entityId, true);
+  const ogImage = getEntityOgImageUrl("municipalities", entityId);
 
   // Generate structured data
   const canonicalUrl = buildAbsoluteUrl(canonical);

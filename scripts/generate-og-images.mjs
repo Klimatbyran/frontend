@@ -1,289 +1,28 @@
 /**
- * Generate OG images for entities using Puppeteer
- * Renders React components and saves as PNG files
+ * Generate OG images for articles and reports using Puppeteer
+ * Renders preview components and saves as PNG files
  * 
  * Run: node scripts/generate-og-images.mjs
  * 
  * This script:
- * 1. Fetches companies and municipalities from the API
- * 2. Generates SEO meta for each entity
- * 3. Renders OG images using Puppeteer
- * 4. Saves images to public/og/{type}/{id}.png
+ * 1. Reads articles and reports from frontend files (frontend-only data)
+ * 2. Generates OG preview images using Puppeteer
+ * 3. Saves images to public/og/{type}/{id}.png
+ * 
+ * Note: Companies and municipalities are handled by backend API endpoints
+ * (/api/og/companies/{id} and /api/og/municipalities/{id})
  */
 
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from "fs";
+import { readFileSync, mkdirSync, existsSync, readdirSync } from "fs";
 import { resolve, dirname, join } from "path";
 import { fileURLToPath } from "url";
-import { createServer } from "http";
-import fetch from "node-fetch";
+import { load } from "js-yaml";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // Helper function to wait/delay
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-// Simple HTTP server to serve the OG image HTML page
-function createOgImageServer(htmlContent, port) {
-  return new Promise((resolve) => {
-    const server = createServer((req, res) => {
-      if (req.url === "/og-image") {
-        res.writeHead(200, { "Content-Type": "text/html" });
-        res.end(htmlContent);
-      } else {
-        res.writeHead(404);
-        res.end("Not found");
-      }
-    });
-
-    server.listen(port, () => {
-      console.log(`OG Image server running on http://localhost:${port}`);
-      resolve(server);
-    });
-  });
-}
-
-/**
- * Generate Company OG Preview HTML (matches CompanyOgPreview component)
- */
-function generateCompanyPreviewHtml(company, options = {}) {
-  const {
-    latestYear,
-    totalEmissions,
-    emissionsChange,
-    industry,
-  } = options;
-
-  const formattedEmissions = totalEmissions
-    ? `${(totalEmissions / 1_000_000).toFixed(1)} Mt CO₂e`
-    : "No data";
-
-  const changeDisplay = emissionsChange
-    ? `${emissionsChange > 0 ? "+" : ""}${emissionsChange.toFixed(1)}%`
-    : null;
-
-  const parisStatus =
-    company.meetsParis === true
-      ? "On Track"
-      : company.meetsParis === false
-        ? "Not on Track"
-        : "Unknown";
-
-  const logoHtml = company.logoUrl
-    ? `<img src="${escapeHtml(company.logoUrl)}" alt="" style="height: 60px; width: auto; object-fit: contain;" />`
-    : "";
-
-  return `
-<!DOCTYPE html>
-<html lang="sv">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OG Image</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      width: 1200px;
-      height: 630px;
-      display: flex;
-      flex-direction: column;
-      background-color: #000000;
-      font-family: "DM Sans", system-ui, -apple-system, sans-serif;
-      position: relative;
-      overflow: hidden;
-    }
-  </style>
-</head>
-<body>
-  <!-- Header Section -->
-  <div style="padding: 60px 80px 40px; border-bottom: 1px solid #2e2e2e;">
-    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px;">
-      <div>
-        <h1 style="font-size: 56px; font-weight: 300; line-height: 1.1; color: #ffffff; margin: 0; margin-bottom: 8px; letter-spacing: -0.02em;">
-          ${escapeHtml(company.name)}
-        </h1>
-        ${industry ? `<div style="font-size: 20px; color: #878787; margin-top: 4px;">${escapeHtml(industry)}</div>` : ""}
-      </div>
-      ${logoHtml}
-    </div>
-  </div>
-
-  <!-- Stats Section -->
-  <div style="flex: 1; padding: 40px 80px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px;">
-    <!-- Total Emissions -->
-    <div>
-      <div style="font-size: 18px; color: #878787; margin-bottom: 12px;">
-        Total Emissions${latestYear ? ` (${latestYear})` : ""}
-      </div>
-      <div style="font-size: 42px; font-weight: 600; color: #ffffff;">
-        ${escapeHtml(formattedEmissions)}
-      </div>
-    </div>
-
-    <!-- Year-over-Year Change -->
-    ${changeDisplay ? `
-    <div>
-      <div style="font-size: 18px; color: #878787; margin-bottom: 12px;">
-        Year-over-Year Change
-      </div>
-      <div style="font-size: 42px; font-weight: 600; color: ${emissionsChange < 0 ? "#aae506" : "#f0759a"};">
-        ${escapeHtml(changeDisplay)}
-      </div>
-    </div>
-    ` : `
-    <div>
-      <div style="font-size: 18px; color: #878787; margin-bottom: 12px;">
-        Year-over-Year Change
-      </div>
-      <div style="font-size: 42px; font-weight: 600; color: #ffffff;">
-        No data
-      </div>
-    </div>
-    `}
-
-    <!-- Paris Alignment -->
-    <div>
-      <div style="font-size: 18px; color: #878787; margin-bottom: 12px;">
-        Paris Alignment
-      </div>
-      <div style="font-size: 42px; font-weight: 600; color: #ffffff;">
-        ${escapeHtml(parisStatus)}
-      </div>
-    </div>
-  </div>
-
-  <!-- Footer -->
-  <div style="padding: 24px 80px; background-color: #121212; border-top: 1px solid #2e2e2e; display: flex; justify-content: space-between; align-items: center;">
-    <div style="font-size: 20px; font-weight: 600; color: #ffffff;">
-      Klimatkollen
-    </div>
-    <div style="font-size: 16px; color: #878787;">
-      klimatkollen.se
-    </div>
-  </div>
-</body>
-</html>
-  `.trim();
-}
-
-/**
- * Generate Municipality OG Preview HTML (matches MunicipalityOgPreview component)
- */
-function generateMunicipalityPreviewHtml(municipality, options = {}) {
-  const { latestYear, totalEmissions, emissionsChange } = options;
-
-  const formattedEmissions = totalEmissions
-    ? `${(totalEmissions / 1_000).toFixed(1)} kt CO₂e`
-    : "No data";
-
-  const changeDisplay = emissionsChange
-    ? `${emissionsChange > 0 ? "+" : ""}${emissionsChange.toFixed(1)}%`
-    : null;
-
-  const parisStatus =
-    municipality.meetsParisGoal === true
-      ? "On Track"
-      : municipality.meetsParisGoal === false
-        ? "Not on Track"
-        : "Unknown";
-
-  return `
-<!DOCTYPE html>
-<html lang="sv">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OG Image</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      width: 1200px;
-      height: 630px;
-      display: flex;
-      flex-direction: column;
-      background-color: #000000;
-      font-family: "DM Sans", system-ui, -apple-system, sans-serif;
-      position: relative;
-      overflow: hidden;
-    }
-  </style>
-</head>
-<body>
-  <!-- Header Section -->
-  <div style="padding: 60px 80px 40px; border-bottom: 1px solid #2e2e2e;">
-    <h1 style="font-size: 56px; font-weight: 300; line-height: 1.1; color: #ffffff; margin: 0; margin-bottom: 8px; letter-spacing: -0.02em;">
-      ${escapeHtml(municipality.name)}
-    </h1>
-    <div style="font-size: 20px; color: #878787; margin-top: 4px;">
-      Municipality
-    </div>
-  </div>
-
-  <!-- Stats Section -->
-  <div style="flex: 1; padding: 40px 80px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px;">
-    <!-- Total Emissions -->
-    <div>
-      <div style="font-size: 18px; color: #878787; margin-bottom: 12px;">
-        Total Emissions${latestYear ? ` (${latestYear})` : ""}
-      </div>
-      <div style="font-size: 42px; font-weight: 600; color: #ffffff;">
-        ${escapeHtml(formattedEmissions)}
-      </div>
-    </div>
-
-    <!-- Historical Change -->
-    ${changeDisplay ? `
-    <div>
-      <div style="font-size: 18px; color: #878787; margin-bottom: 12px;">
-        Historical Change
-      </div>
-      <div style="font-size: 42px; font-weight: 600; color: ${emissionsChange < 0 ? "#aae506" : "#f0759a"};">
-        ${escapeHtml(changeDisplay)}
-      </div>
-    </div>
-    ` : `
-    <div>
-      <div style="font-size: 18px; color: #878787; margin-bottom: 12px;">
-        Historical Change
-      </div>
-      <div style="font-size: 42px; font-weight: 600; color: #ffffff;">
-        No data
-      </div>
-    </div>
-    `}
-
-    <!-- Paris Alignment -->
-    <div>
-      <div style="font-size: 18px; color: #878787; margin-bottom: 12px;">
-        Paris Alignment
-      </div>
-      <div style="font-size: 42px; font-weight: 600; color: #ffffff;">
-        ${escapeHtml(parisStatus)}
-      </div>
-    </div>
-  </div>
-
-  <!-- Footer -->
-  <div style="padding: 24px 80px; background-color: #121212; border-top: 1px solid #2e2e2e; display: flex; justify-content: space-between; align-items: center;">
-    <div style="font-size: 20px; font-weight: 600; color: #ffffff;">
-      Klimatkollen
-    </div>
-    <div style="font-size: 16px; color: #878787;">
-      klimatkollen.se
-    </div>
-  </div>
-</body>
-</html>
-  `.trim();
-}
 
 function escapeHtml(text) {
   const map = {
@@ -299,11 +38,16 @@ function escapeHtml(text) {
 /**
  * Generate Report OG Preview HTML (matches ReportOgPreview component)
  */
-function generateReportPreviewHtml(report) {
+function generateReportPreviewHtml(report, publicDir) {
   const truncatedExcerpt =
     report.excerpt && report.excerpt.length > 150
       ? `${report.excerpt.substring(0, 150)}...`
       : report.excerpt || "";
+
+  // Resolve image path to absolute file path
+  const imageSrc = report.image 
+    ? resolveImagePath(report.image, publicDir) || ""
+    : "";
 
   return `
 <!DOCTYPE html>
@@ -333,7 +77,7 @@ function generateReportPreviewHtml(report) {
 <body>
   <!-- Image Section -->
   <div style="position: relative; height: 280px; overflow: hidden;">
-    <img src="${escapeHtml(report.image)}" alt="" style="width: 100%; height: 100%; object-fit: cover;" />
+    ${imageSrc ? `<img src="${escapeHtml(imageSrc)}" alt="" style="width: 100%; height: 100%; object-fit: cover;" />` : '<div style="width: 100%; height: 100%; background-color: #121212;"></div>'}
     <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 80px; background: linear-gradient(to top, rgba(0, 0, 0, 0.95), transparent);"></div>
   </div>
 
@@ -368,13 +112,45 @@ function generateReportPreviewHtml(report) {
 }
 
 /**
+ * Convert image path to absolute file path for Puppeteer
+ * Handles both relative paths (/images/...) and absolute URLs (https://...)
+ */
+function resolveImagePath(imagePath, publicDir) {
+  if (!imagePath) return null;
+  
+  // If it's already an absolute URL (http/https), use it as-is
+  if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
+    return imagePath;
+  }
+  
+  // Convert relative path to absolute file path
+  // Remove leading slash and resolve from public directory
+  const relativePath = imagePath.startsWith("/") ? imagePath.slice(1) : imagePath;
+  const absolutePath = resolve(publicDir, relativePath);
+  
+  // Check if file exists
+  if (existsSync(absolutePath)) {
+    // Convert to file:// URL for Puppeteer
+    return `file://${absolutePath}`;
+  }
+  
+  console.warn(`  ⚠ Image not found: ${imagePath} (resolved to ${absolutePath})`);
+  return null;
+}
+
+/**
  * Generate Article OG Preview HTML (matches ArticleOgPreview component)
  */
-function generateArticlePreviewHtml(article) {
+function generateArticlePreviewHtml(article, publicDir) {
   const truncatedExcerpt =
     article.excerpt && article.excerpt.length > 150
       ? `${article.excerpt.substring(0, 150)}...`
       : article.excerpt || "";
+
+  // Resolve image path to absolute file path
+  const imageSrc = article.image 
+    ? resolveImagePath(article.image, publicDir) || ""
+    : "";
 
   return `
 <!DOCTYPE html>
@@ -404,7 +180,7 @@ function generateArticlePreviewHtml(article) {
 <body>
   <!-- Image Section -->
   <div style="position: relative; height: 280px; overflow: hidden;">
-    <img src="${escapeHtml(article.image)}" alt="" style="width: 100%; height: 100%; object-fit: cover;" />
+    ${imageSrc ? `<img src="${escapeHtml(imageSrc)}" alt="" style="width: 100%; height: 100%; object-fit: cover;" />` : '<div style="width: 100%; height: 100%; background-color: #121212;"></div>'}
     <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 80px; background: linear-gradient(to top, rgba(0, 0, 0, 0.95), transparent);"></div>
   </div>
 
@@ -463,208 +239,150 @@ async function generateOgImages() {
 
   // Create output directories
   const outputDir = resolve(__dirname, "../public/og");
-  const companiesDir = join(outputDir, "companies");
-  const municipalitiesDir = join(outputDir, "municipalities");
+  const publicDir = resolve(__dirname, "../public");
+  const articlesDir = join(outputDir, "articles");
+  const reportsDir = join(outputDir, "reports");
 
-  if (!existsSync(companiesDir)) {
-    mkdirSync(companiesDir, { recursive: true });
+  if (!existsSync(articlesDir)) {
+    mkdirSync(articlesDir, { recursive: true });
   }
-  if (!existsSync(municipalitiesDir)) {
-    mkdirSync(municipalitiesDir, { recursive: true });
+  if (!existsSync(reportsDir)) {
+    mkdirSync(reportsDir, { recursive: true });
   }
-
-  // Note: Server not needed for preview approach, but keeping for compatibility
-  const serverPort = 3001;
-  const server = await createOgImageServer("", serverPort);
 
   try {
-    console.log("Fetching entities from API...");
-
-    // Fetch companies and municipalities from API
-    const apiBaseUrl =
-      process.env.VITE_API_PROXY ||
-      process.env.API_URL ||
-      "https://api.klimatkollen.se/api";
-
-    let companies = [];
-    let municipalities = [];
-
-    try {
-      const companiesResponse = await fetch(`${apiBaseUrl}/companies/`);
-      if (companiesResponse.ok) {
-        companies = await companiesResponse.json();
-        console.log(`Found ${companies.length} companies`);
-      } else {
-        console.warn(
-          `Failed to fetch companies: ${companiesResponse.status}`,
-        );
-      }
-    } catch (error) {
-      console.warn("Error fetching companies:", error.message);
-    }
-
-    try {
-      const municipalitiesResponse = await fetch(
-        `${apiBaseUrl}/municipalities/`,
-      );
-      if (municipalitiesResponse.ok) {
-        municipalities = await municipalitiesResponse.json();
-        console.log(`Found ${municipalities.length} municipalities`);
-      } else {
-        console.warn(
-          `Failed to fetch municipalities: ${municipalitiesResponse.status}`,
-        );
-      }
-    } catch (error) {
-      console.warn("Error fetching municipalities:", error.message);
-    }
-
-    // Generate images for companies
-    // Limit can be set via OG_IMAGE_LIMIT env var (default: 10 for testing)
-    const limit = parseInt(process.env.OG_IMAGE_LIMIT || "10", 10);
-    const shouldLimit = process.env.OG_IMAGE_LIMIT !== "0" && limit > 0;
-    const companiesToProcess = shouldLimit ? companies.slice(0, limit) : companies;
+    // Generate images for articles (frontend-only, build-time generation)
+    console.log("\nGenerating OG images for articles...");
+    const blogPostsDir = resolve(__dirname, "../src/lib/blog/posts");
+    const blogMetadataPath = resolve(__dirname, "../src/lib/blog/blogPostsList.ts");
     
-    console.log(
-      `\nGenerating OG images for companies... (${companiesToProcess.length} of ${companies.length})`,
-    );
-    for (const company of companiesToProcess) {
-      const entityId = company.wikidataId || company.id;
-      if (!entityId) continue;
+    // Read blog metadata (simple parsing - just get IDs)
+    let articleIds = [];
+    try {
+      const blogMetadataContent = readFileSync(blogMetadataPath, "utf-8");
+      const idMatches = blogMetadataContent.matchAll(/id:\s*"([^"]+)"/g);
+      articleIds = Array.from(idMatches, (m) => m[1]);
+    } catch (error) {
+      console.warn("Could not read blog metadata, skipping articles:", error.message);
+    }
 
-      // Fetch full company details for preview
-      let companyDetails = company;
-      try {
-        const detailsResponse = await fetch(
-          `${apiBaseUrl}/companies/${entityId}`,
-        );
-        if (detailsResponse.ok) {
-          companyDetails = await detailsResponse.json();
+    // Read markdown files and parse frontmatter
+    const markdownFiles = readdirSync(blogPostsDir).filter((f) => f.endsWith(".md"));
+    const articlesProcessed = new Set();
+    
+    for (const articleId of articleIds) {
+      if (articlesProcessed.has(articleId)) continue;
+      
+      // Try to find markdown file for this article
+      let articleMetadata = null;
+      for (const filename of markdownFiles) {
+        if (filename.startsWith(articleId)) {
+          try {
+            const filePath = join(blogPostsDir, filename);
+            const content = readFileSync(filePath, "utf-8");
+            const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---\n/);
+            if (frontmatterMatch) {
+              articleMetadata = load(frontmatterMatch[1]);
+              articleMetadata.id = articleId;
+              break;
+            }
+          } catch (error) {
+            console.warn(`  ⚠ Could not parse ${filename}:`, error.message);
+          }
         }
-      } catch (error) {
-        console.warn(`  ⚠ Could not fetch details for ${company.name}, using list data`);
       }
-
-      // Calculate stats for preview
-      const sortedPeriods = companyDetails.reportingPeriods
-        ? [...companyDetails.reportingPeriods].sort(
-            (a, b) =>
-              new Date(b.endDate).getTime() - new Date(a.endDate).getTime(),
-          )
-        : [];
-      const latestPeriod = sortedPeriods[0];
-      const previousPeriod = sortedPeriods[1];
-      const latestYear = latestPeriod
-        ? new Date(latestPeriod.endDate).getFullYear()
-        : undefined;
-      const totalEmissions =
-        latestPeriod?.emissions?.calculatedTotalEmissions || null;
-      const prevEmissions =
-        previousPeriod?.emissions?.calculatedTotalEmissions || null;
-      const emissionsChange =
-        totalEmissions && prevEmissions && prevEmissions > 0
-          ? ((totalEmissions - prevEmissions) / prevEmissions) * 100
-          : null;
-
-      // Get industry (simplified - you may want to fetch sector names)
-      const industry =
-        companyDetails.industry?.industryGics?.sectorName || null;
-
-      // Generate preview HTML
-      const html = generateCompanyPreviewHtml(companyDetails, {
-        latestYear,
-        totalEmissions,
-        emissionsChange,
-        industry,
-      });
-
+      
+      if (!articleMetadata || !articleMetadata.title) {
+        console.warn(`  ⚠ Skipping ${articleId} - missing metadata`);
+        continue;
+      }
+      
+      // Generate preview HTML (pass publicDir for image path resolution)
+      const html = generateArticlePreviewHtml(articleMetadata, publicDir);
+      
       await page.setContent(html);
-      await delay(500); // Wait for rendering
-
-      const outputPath = join(companiesDir, `${entityId}.png`);
+      // Wait for images to load (increase delay for external URLs)
+      await delay(articleMetadata.image?.startsWith("http") ? 2000 : 1000);
+      
+      const outputPath = join(articlesDir, `${articleId}.png`);
       await page.screenshot({
         path: outputPath,
         type: "png",
         clip: { x: 0, y: 0, width: 1200, height: 630 },
       });
-
-      console.log(`  ✓ ${company.name} (${entityId}.png)`);
+      
+      console.log(`  ✓ ${articleMetadata.title} (${articleId}.png)`);
+      articlesProcessed.add(articleId);
     }
 
-    // Generate images for municipalities
-    const municipalitiesToProcess = shouldLimit
-      ? municipalities.slice(0, limit)
-      : municipalities;
+    // Generate images for reports (frontend-only, build-time generation)
+    console.log("\nGenerating OG images for reports...");
+    const reportsPath = resolve(__dirname, "../src/lib/constants/reports.ts");
     
-    console.log(
-      `\nGenerating OG images for municipalities... (${municipalitiesToProcess.length} of ${municipalities.length})`,
-    );
-    for (const municipality of municipalitiesToProcess) {
-      const entityId =
-        municipality.name?.toLowerCase().replace(/\s+/g, "-") ||
-        municipality.id;
-      if (!entityId) continue;
-
-      // Fetch full municipality details for preview
-      let municipalityDetails = municipality;
-      try {
-        const detailsResponse = await fetch(
-          `${apiBaseUrl}/municipalities/${encodeURIComponent(municipality.name)}`,
-        );
-        if (detailsResponse.ok) {
-          municipalityDetails = await detailsResponse.json();
-        }
-      } catch (error) {
-        console.warn(`  ⚠ Could not fetch details for ${municipality.name}, using list data`);
+    // Simple parsing to extract report data (or we could import it if ESM works)
+    let reports = [];
+    try {
+      // Read the reports file and parse it (simplified - just get basic structure)
+      // For a more robust solution, we could use a build step to export JSON
+      const reportsContent = readFileSync(reportsPath, "utf-8");
+      
+      // Try to extract report objects using regex (simplified approach)
+      // This is a bit fragile, but works for the current structure
+      const reportMatches = reportsContent.matchAll(/{\s*id:\s*"([^"]+)",[\s\S]*?title:\s*"([^"]+)",[\s\S]*?excerpt:\s*"([^"]+)",[\s\S]*?image:\s*"([^"]+)",[\s\S]*?date:\s*"([^"]+)",[\s\S]*?readTime:\s*"([^"]+)",[\s\S]*?category:\s*"([^"]+)"/g);
+      
+      for (const match of reportMatches) {
+        reports.push({
+          id: match[1],
+          title: match[2],
+          excerpt: match[3],
+          image: match[4],
+          date: match[5],
+          readTime: match[6],
+          category: match[7],
+        });
       }
-
-      // Calculate stats for preview
-      const emissions = municipalityDetails.emissions || [];
-      const latestEmissions = emissions[emissions.length - 1];
-      const previousEmissions = emissions[emissions.length - 2];
-      const latestYear = latestEmissions?.year || undefined;
-      const totalEmissions = latestEmissions?.value || null;
-      const prevEmissions = previousEmissions?.value || null;
-      const emissionsChange =
-        totalEmissions && prevEmissions && prevEmissions > 0
-          ? ((totalEmissions - prevEmissions) / prevEmissions) * 100
-          : municipalityDetails.historicalEmissionChangePercent || null;
-
-      // Generate preview HTML
-      const html = generateMunicipalityPreviewHtml(municipalityDetails, {
-        latestYear,
-        totalEmissions,
-        emissionsChange,
-      });
-
+    } catch (error) {
+      console.warn("Could not parse reports file, trying alternative method:", error.message);
+      // Fallback: manually list reports (if regex parsing fails)
+      reports = [
+        { id: "1", title: "Storföretagens historiska utsläpp", excerpt: "En analys av 150 bolags klimatredovisningar", image: "/images/reportImages/2024_report_sv2.png", date: "2025-03-11", readTime: "15 min", category: "report" },
+        { id: "2", title: "Bolagsklimatkollen 2024", excerpt: "En analys av 150 svenska storbolags klimatredovisning 2023", image: "/images/reportImages/2023_bolagsklimatkollen2.png", date: "2024-06-01", readTime: "15 min", category: "report" },
+        { id: "3", title: "Corporate Climate Checker", excerpt: "An analysis of 150 major Swedish companies' climate reporting 2023", image: "/images/reportImages/2023_corportateclimatechecker2.png", date: "2024-08-01", readTime: "15 min", category: "report" },
+        { id: "4", title: "Typology of Data Quality Problems in the Corporate Reporting of GHG Emissions", excerpt: "A typology of data quality problems in corporate reporting of GHG emissions. A report by Green Data, Indicators, Algorithms (Green DIA), funded by the Bavarian Research Institute for Digital Transformation (bidt) and Klimatkollen.", image: "/images/reportImages/typology-of-errors.png", date: "2025-05-26", readTime: "15 min", category: "report" },
+        { id: "5", title: "Bolagsklimatkollen 2025", excerpt: "I årets version av rapporten Bolagsklimatkollen analyserar vi 235 storbolags klimatredovisning för 2024. Rapporten är ett samarbete mellan 2050 Consulting och Klimatkollen.", image: "/images/reportImages/2024_bolagsklimatkollen.png", date: "2025-06-23", readTime: "15 min", category: "report" },
+        { id: "6", title: "Applying Carbon Law From 2025", excerpt: "Summary of Klimatkollen's investigations for adjustments to the Carbon Law target trajectory, based on 2024 emissions and updated carbon budgets.", image: "/images/reportImages/2025_Carbon_Law.png", date: "2025-06-19", readTime: "7 min", category: "report" },
+      ];
+    }
+    
+    for (const report of reports) {
+      if (!report.id || !report.title) continue;
+      
+      // Generate preview HTML (pass publicDir for image path resolution)
+      const html = generateReportPreviewHtml(report, publicDir);
+      
       await page.setContent(html);
-      await delay(500); // Wait for rendering
-
-      const outputPath = join(municipalitiesDir, `${entityId}.png`);
+      // Wait for images to load (increase delay for external URLs)
+      await delay(report.image?.startsWith("http") ? 2000 : 1000);
+      
+      const outputPath = join(reportsDir, `${report.id}.png`);
       await page.screenshot({
         path: outputPath,
         type: "png",
         clip: { x: 0, y: 0, width: 1200, height: 630 },
       });
-
-      console.log(`  ✓ ${municipality.name} (${entityId}.png)`);
+      
+      console.log(`  ✓ ${report.title} (${report.id}.png)`);
     }
 
     console.log("\n✅ OG image generation complete!");
     console.log(
-      `Generated ${companiesToProcess.length} company images and ${municipalitiesToProcess.length} municipality images.`,
+      `Generated ${articlesProcessed.size} article images and ${reports.length} report images.`,
     );
-    if (shouldLimit) {
-      console.log(
-        `\nNote: Limited to ${limit} of each for testing. To generate all, set OG_IMAGE_LIMIT=0 or remove the limit.`,
-      );
-      console.log(
-        `  Example: OG_IMAGE_LIMIT=0 npm run generate:og-images`,
-      );
-    }
+    console.log(
+      `\nNote: Companies and municipalities are handled by backend API endpoints.`,
+    );
   } finally {
     await browser.close();
-    server.close();
   }
 }
 

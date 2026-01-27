@@ -51,14 +51,12 @@ export function getEntityOgImagePath(
  * 
  * @param entityType - Type of entity ("companies" or "municipalities")
  * @param id - Entity ID
- * @param fallbackToDefault - Whether to fallback to default if entity image doesn't exist (default: true)
  * @param useApi - Whether to use API endpoint (default: true, respects VITE_OG_USE_API env var)
  * @returns Absolute URL to OG image (entity-specific or default)
  */
 export function getEntityOgImageUrl(
   entityType: "companies" | "municipalities",
   id: string,
-  fallbackToDefault: boolean = true,
   useApi?: boolean,
 ): string {
   if (!id) {
@@ -80,24 +78,21 @@ export function getEntityOgImageUrl(
 
 /**
  * Get article/blog post OG image URL
- * Uses API endpoint to generate preview with title + excerpt (when available)
+ * Uses build-time generated preview images (articles are frontend-only)
  * Falls back to static image or default
  * 
  * @param articleId - Article/blog post ID
  * @param staticImagePath - Optional static image path to use as fallback
- * @param useApi - Whether to use API endpoint (default: true)
  * @returns Absolute URL to OG image
  */
 export function getArticleOgImageUrl(
   articleId: string,
   staticImagePath?: string,
-  useApi?: boolean,
 ): string {
-  const shouldUseApi = useApi !== undefined ? useApi : shouldUseApiEndpoint();
-  
-  // Use API endpoint for preview generation (when implemented)
-  if (shouldUseApi && articleId) {
-    return buildAbsoluteUrl(`/api/og/articles/${articleId}`);
+  // Articles are frontend-only (markdown files), so use build-time generated images
+  if (articleId) {
+    const articlePath = `/og/articles/${articleId}.png`;
+    return buildAbsoluteImageUrl(articlePath);
   }
   
   // Fallback to static image or default
@@ -110,24 +105,21 @@ export function getArticleOgImageUrl(
 
 /**
  * Get report OG image URL
- * Uses API endpoint to generate preview with title + excerpt (when available)
+ * Uses build-time generated preview images (reports are frontend-only)
  * Falls back to static image or default
  * 
  * @param reportId - Report ID
  * @param staticImagePath - Optional static image path to use as fallback
- * @param useApi - Whether to use API endpoint (default: true)
  * @returns Absolute URL to OG image
  */
 export function getReportOgImageUrl(
   reportId: string,
   staticImagePath?: string,
-  useApi?: boolean,
 ): string {
-  const shouldUseApi = useApi !== undefined ? useApi : shouldUseApiEndpoint();
-  
-  // Use API endpoint for preview generation (when implemented)
-  if (shouldUseApi && reportId) {
-    return buildAbsoluteUrl(`/api/og/reports/${reportId}`);
+  // Reports are frontend-only (static constants), so use build-time generated images
+  if (reportId) {
+    const reportPath = `/og/reports/${reportId}.png`;
+    return buildAbsoluteImageUrl(reportPath);
   }
   
   // Fallback to static image or default
@@ -159,7 +151,7 @@ export function getOgImageUrl(
 
   // If entity info provided, try entity-specific image
   if (entityType && entityId) {
-    return getEntityOgImageUrl(entityType, entityId, true);
+    return getEntityOgImageUrl(entityType, entityId);
   }
 
   // Fallback to default
