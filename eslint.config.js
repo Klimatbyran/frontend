@@ -42,7 +42,14 @@ export default tseslint.config(
       "react/no-deprecated": "off",
       "react/default-props-match-prop-types": "off",
       "no-unused-expressions": "warn",
-      "no-console": "warn",
+      // Allow console.error and console.warn for production error tracking
+      // but warn on console.log and other console methods
+      "no-console": [
+        "warn",
+        {
+          allow: ["error", "warn"],
+        },
+      ],
       "no-duplicate-imports": "warn",
       "no-unreachable": "warn",
       "no-unused-labels": "warn",
@@ -68,31 +75,8 @@ export default tseslint.config(
       "max-depth": ["warn", 4],
       "max-params": ["warn", 5],
       "max-statements": ["warn", 20],
-      "no-magic-numbers": [
-        "warn",
-        {
-          ignore: [
-            0,
-            1,
-            -1,
-            2,
-            3,
-            4,
-            5,
-            10,
-            100,
-            200, // HTTP status codes (OK)
-            1000,
-            2025,
-            2050, // Common year references
-          ],
-          ignoreArrayIndexes: true,
-          ignoreDefaultValues: true,
-          ignoreEnums: true,
-          enforceConst: true,
-          detectObjects: false,
-        },
-      ],
+      // Temporarily disabled - too many warnings hiding more valuable issues
+      "no-magic-numbers": "off",
       "react/jsx-boolean-value": ["warn", "never"],
       "react/jsx-no-bind": ["warn", { allowArrowFunctions: true }],
       "react/jsx-no-duplicate-props": "warn",

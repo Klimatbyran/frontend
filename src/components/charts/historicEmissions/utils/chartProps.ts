@@ -13,9 +13,13 @@ export const getChartContainerProps = (
 });
 
 // Line chart props
+// data accepts ChartData[] or similar chart data structures with dynamic properties
+ 
 export const getLineChartProps = (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any[],
-  onClick?: (data: any) => void,
+  // onClick receives chart data point objects - using unknown requires type checking
+  onClick?: (data: unknown) => void,
   margin: { top: number; right: number; left: number; bottom: number } = {
     top: 20,
     right: 0,
@@ -29,9 +33,12 @@ export const getLineChartProps = (
 });
 
 // Composed chart props
+ 
 export const getComposedChartProps = (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any[],
-  onClick?: (data: any) => void,
+  // onClick receives chart data point objects - using unknown requires type checking
+  onClick?: (data: unknown) => void,
   margin: { top: number; right: number; left: number; bottom: number } = {
     top: 20,
     right: 0,
@@ -47,8 +54,10 @@ export const getComposedChartProps = (
 // Unified chart props factory
 export const getChartProps = (
   chartType: "line" | "composed",
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any[],
-  onClick?: (data: any) => void,
+  // onClick receives chart data point objects - using unknown requires type checking
+  onClick?: (data: unknown) => void,
   margin?: { top: number; right: number; left: number; bottom: number },
 ) => {
   if (chartType === "composed") {

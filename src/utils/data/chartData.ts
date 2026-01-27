@@ -1,10 +1,14 @@
 import { ChartData } from "@/types/emissions";
-import type { ReportingPeriod } from "@/types/company";
+import type {
+  ReportingPeriod,
+  ReportingPeriodFromList,
+  AIGeneratable,
+} from "@/types/company";
 
 export function getChartData(
   processedPeriods: ReportingPeriod[],
-  isAIGenerated: (data: any) => boolean,
-  isEmissionsAIGenerated: (period: any) => boolean,
+  isAIGenerated: (data: AIGeneratable | undefined | null) => boolean,
+  isEmissionsAIGenerated: (period: ReportingPeriod | ReportingPeriodFromList) => boolean,
 ): ChartData[] {
   if (!processedPeriods || processedPeriods.length === 0) return [];
 
