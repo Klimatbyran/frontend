@@ -29,3 +29,20 @@ export type SectorEmissionsByYear = {
     [sector: string]: number;
   };
 };
+
+// The API returns { sectors: { [year]: { [sector]: number } } }
+export type SectorEmissionsResponse = {
+  sectors: SectorEmissionsByYear;
+};
+
+// Type alias for components that expect { sectors: SectorEmissionsByYear }
+export type SectorEmissions = SectorEmissionsResponse;
+
+// Territory emissions data point (used for municipalities and regions)
+export type DataPoint = {
+  year: number;
+  total: number | undefined;
+  trend: number | undefined;
+  approximated: number | undefined;
+  carbonLaw: number | undefined;
+};
