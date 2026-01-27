@@ -2,8 +2,30 @@ import { SeoMeta } from "@/types/seo";
 import { CompanyDetails } from "@/types/company";
 import { Municipality } from "@/types/municipality";
 
+/**
+ * TODO: Expand entity SEO coverage
+ *
+ * Current coverage:
+ * ✅ Companies (generateCompanySeoMeta)
+ * ✅ Municipalities (generateMunicipalitySeoMeta)
+ *
+ * Missing coverage:
+ * - Regions: Need generateRegionSeoMeta() for /regions/:id pages
+ *   - Similar to municipalities, should include region name, emissions data, Paris Agreement status
+ *   - See RegionDetailPage.tsx for data structure
+ *
+ * Note: Ranked list pages and sector pages use route-level SEO (handled in routes.ts):
+ * - /companies/ranked (CompaniesRankedPage)
+ * - /municipalities (MunicipalitiesRankedPage)
+ * - /regions (RegionalRankedPage)
+ * - /companies/sectors (CompaniesSectorsPage)
+ * These should be handled in routes.ts with getSeoForRoute() rather than entitySeo.ts
+ */
+
 const SITE_NAME = "Klimatkollen";
 const MAX_DESCRIPTION_LENGTH = 160;
+const FALLBACK_DESCRIPTION_SUFFIX =
+  "View emissions data and climate transition progress on";
 
 /**
  * Truncate a string to a maximum length, ensuring it ends at a word boundary
@@ -28,6 +50,30 @@ export function truncateDescription(
   }
 
   return truncated + "...";
+}
+
+/**
+ * Build a description from parts with fallback
+ * @param parts - Array of description parts
+ * @param entityName - Name of the entity
+ * @param entityType - Type of entity (e.g., "municipality" or empty for companies)
+ * @returns Truncated description string
+ */
+function buildDescriptionFromParts(
+  parts: string[],
+  entityName: string,
+  entityType: string = "",
+): string {
+  let description = parts.join(" ");
+
+  if (description.length === 0) {
+    const entityLabel = entityType ? `${entityName} ${entityType}` : entityName;
+    description = `${FALLBACK_DESCRIPTION_SUFFIX} ${entityLabel} on ${SITE_NAME}.`;
+  } else {
+    description = `${description}. ${FALLBACK_DESCRIPTION_SUFFIX} ${SITE_NAME}.`;
+  }
+
+  return truncateDescription(description);
 }
 
 /**
@@ -66,15 +112,7 @@ export function buildCompanySeoDescription(
     );
   }
 
-  // Build description
-  let description = parts.join(" ");
-  if (description.length === 0) {
-    description = `View emissions data and climate transition progress for ${company.name} on ${SITE_NAME}.`;
-  } else {
-    description = `${description}. View emissions data and climate transition progress on ${SITE_NAME}.`;
-  }
-
-  return truncateDescription(description);
+  return buildDescriptionFromParts(parts, company.name);
 }
 
 /**
@@ -115,15 +153,38 @@ export function buildMunicipalitySeoDescription(
     );
   }
 
-  // Build description
-  let description = parts.join(" ");
-  if (description.length === 0) {
-    description = `View emissions data and climate transition progress for ${municipality.name} municipality on ${SITE_NAME}.`;
-  } else {
-    description = `${description}. View emissions data and climate transition progress on ${SITE_NAME}.`;
-  }
+  return buildDescriptionFromParts(parts, municipality.name, "municipality");
+}
 
-  return truncateDescription(description);
+/**
+ * Generate SEO meta for an entity page
+ * @param entityName - Name of the entity
+ * @param pathname - Current pathname
+ * @param description - SEO description
+ * @returns SeoMeta object
+ */
+function generateEntitySeoMeta(
+  entityName: string,
+  pathname: string,
+  description: string,
+): SeoMeta {
+  const title = `${entityName} - ${SITE_NAME}`;
+
+  return {
+    title,
+    description,
+    canonical: pathname,
+    og: {
+      title,
+      description,
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
+  };
 }
 
 /**
@@ -141,29 +202,13 @@ export function generateCompanySeoMeta(
     latestYear?: number;
   },
 ): SeoMeta {
-  const title = `${company.name} - ${SITE_NAME}`;
   const description = buildCompanySeoDescription(
     company,
     options?.industry,
     options?.latestYear,
   );
-  const canonical = pathname;
 
-  return {
-    title,
-    description,
-    canonical,
-    og: {
-      title,
-      description,
-      type: "website",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-    },
-  };
+  return generateEntitySeoMeta(company.name, pathname, description);
 }
 
 /**
@@ -181,27 +226,11 @@ export function generateMunicipalitySeoMeta(
     lastYearEmissionsTon?: string;
   },
 ): SeoMeta {
-  const title = `${municipality.name} - ${SITE_NAME}`;
   const description = buildMunicipalitySeoDescription(
     municipality,
     options?.lastYear,
     options?.lastYearEmissionsTon,
   );
-  const canonical = pathname;
 
-  return {
-    title,
-    description,
-    canonical,
-    og: {
-      title,
-      description,
-      type: "website",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-    },
-  };
+  return generateEntitySeoMeta(municipality.name, pathname, description);
 }
