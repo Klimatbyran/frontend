@@ -1,68 +1,50 @@
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
 import { Input } from "@/components/ui/input";
 import { FilterBadges } from "@/components/companies/list/FilterBadges";
-import { FilterPopover } from "@/components/explore/FilterPopover";
-import { SortPopover } from "@/components/explore/SortPopover";
+import {
+  FilterPopover,
+  type FilterGroup,
+} from "@/components/explore/FilterPopover";
+import {
+  SortPopover,
+  type SortDirection,
+  type SortOption,
+} from "@/components/explore/SortPopover";
 import { cn } from "@/lib/utils";
 import { useScreenSize } from "@/hooks/useScreenSize";
-import { useSortOptions as useCompanySortOptions } from "@/hooks/companies/useCompanySorting";
-import { useSortOptions as useMunicipalitySortOption } from "@/hooks/municipalities/useMunicipalitiesSorting";
-import { useCompanyFilters } from "@/hooks/companies/useCompanyFilters";
-import { useMunicipalitiesFilters } from "@/hooks/municipalities/useMunicipalitiesFilters";
-import type { RankedCompany } from "@/types/company";
-import type { Municipality } from "@/types/municipality";
 
 interface IListFilter {
-  filteredCompanies?: RankedCompany[];
-  companyFilters?: ReturnType<typeof useCompanyFilters>;
-  companySortOptions?: ReturnType<typeof useCompanySortOptions>;
-  filteredMunicipalities?: Municipality[];
-  municipalityFilters?: ReturnType<typeof useMunicipalitiesFilters>;
-  municipalitySortOptions?: ReturnType<typeof useMunicipalitySortOption>;
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
+  sortBy: string;
+  setSortBy: (sort: string) => void;
+  sortDirection: string;
+  setSortDirection: (direction: string) => void;
+  filterGroups: FilterGroup[];
+  activeFilters: Array<{
+    type: "filter";
+    label: string;
+    onRemove: () => void;
+  }>;
+  sortOptions: readonly SortOption[];
+  searchPlaceholder: string;
 }
-// Type guard to check if data is companies
-const isCompanies = (
-  data: RankedCompany[] | Municipality[],
-): data is RankedCompany[] => {
-  return data.length > 0 && "industry" in data[0];
-};
-
-const selectFiltersAndOptions = (
-  isCompanyData: boolean,
-  companyFilters: ReturnType<typeof useCompanyFilters>,
-  municipalityFilters: ReturnType<typeof useMunicipalitiesFilters>,
-  companySortOptions: ReturnType<typeof useCompanySortOptions>,
-  municipalitySortOptions: ReturnType<typeof useMunicipalitySortOption>,
-) => {
-  return {
-    filters: isCompanyData ? companyFilters : municipalityFilters,
-    sortOptions: isCompanyData ? companySortOptions : municipalitySortOptions,
-  };
-};
 
 const ListFilter = ({
-  filteredCompanies = [],
-  companyFilters,
-  companySortOptions,
-  municipalityFilters,
-  municipalitySortOptions,
+  searchQuery,
+  setSearchQuery,
+  sortBy,
+  setSortBy,
+  sortDirection,
+  setSortDirection,
+  filterGroups,
+  activeFilters,
+  sortOptions,
+  searchPlaceholder,
 }: IListFilter) => {
-  const { t } = useTranslation();
   const screenSize = useScreenSize();
   const [filterOpen, setFilterOpen] = useState(false);
   const [sortOpen, setSortOpen] = useState(false);
-
-  const isCompanyData =
-    filteredCompanies.length > 0 && isCompanies(filteredCompanies);
-
-  const { filters, sortOptions } = selectFiltersAndOptions(
-    isCompanyData,
-    companyFilters as ReturnType<typeof useCompanyFilters>,
-    municipalityFilters as ReturnType<typeof useMunicipalitiesFilters>,
-    companySortOptions as ReturnType<typeof useCompanySortOptions>,
-    municipalitySortOptions as ReturnType<typeof useMunicipalitySortOption>,
-  );
 
   return (
     <div
@@ -78,13 +60,9 @@ const ListFilter = ({
         {/* Search Input */}
         <Input
           type="text"
-          placeholder={
-            isCompanyData
-              ? t("explorePage.companies.searchPlaceholder")
-              : t("explorePage.municipalities.searchPlaceholder")
-          }
-          value={filters.searchQuery}
-          onChange={(e) => filters.setSearchQuery(e.target.value)}
+          placeholder={searchPlaceholder}
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
           className="bg-black-1 rounded-md px-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-2 relative w-full md:w-[350px]"
         />
 
@@ -92,28 +70,30 @@ const ListFilter = ({
         <FilterPopover
           filterOpen={filterOpen}
           setFilterOpen={setFilterOpen}
-          groups={filters.filterGroups}
+          groups={filterGroups}
         />
 
         <SortPopover
           sortOpen={sortOpen}
           setSortOpen={setSortOpen}
           sortOptions={sortOptions}
-          sortBy={filters.sortBy}
-          setSortBy={filters.setSortBy}
-          sortDirection={filters.sortDirection}
-          setSortDirection={filters.setSortDirection}
+          sortBy={sortBy}
+          setSortBy={setSortBy}
+          sortDirection={(sortDirection as SortDirection) || "desc"}
+          setSortDirection={
+            setSortDirection as (direction: SortDirection) => void
+          }
         />
 
         {/* Badges */}
-        {filters.activeFilters.length > 0 && (
+        {activeFilters.length > 0 && (
           <div
             className={cn(
               "flex flex-wrap gap-2",
               screenSize.isMobile ? "w-full" : "flex-1",
             )}
           >
-            <FilterBadges filters={filters.activeFilters} view="list" />
+            <FilterBadges filters={activeFilters} view="list" />
           </div>
         )}
       </div>

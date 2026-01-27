@@ -39,9 +39,16 @@ export function CompanyList({ companies }: CompanyListProps) {
   return (
     <>
       <ListFilter
-        filteredCompanies={filteredCompanies}
-        companyFilters={companyFilters}
-        companySortOptions={sortOptions}
+        searchQuery={companyFilters.searchQuery}
+        setSearchQuery={companyFilters.setSearchQuery}
+        sortBy={companyFilters.sortBy}
+        setSortBy={companyFilters.setSortBy}
+        sortDirection={companyFilters.sortDirection}
+        setSortDirection={companyFilters.setSortDirection}
+        filterGroups={companyFilters.filterGroups}
+        activeFilters={companyFilters.activeFilters}
+        sortOptions={[...sortOptions]}
+        searchPlaceholder={t("explorePage.companies.searchPlaceholder")}
       />
       <CardGrid
         items={transformedCompanies}

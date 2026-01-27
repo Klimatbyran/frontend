@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { CardGrid } from "@/components/layout/CardGrid";
 import { ListCard } from "@/components/layout/ListCard";
 import type { Municipality } from "@/types/municipality";
@@ -11,6 +12,7 @@ interface MunicipalityListProps {
 }
 
 export function MunicipalityList({ municipalities }: MunicipalityListProps) {
+  const { t } = useTranslation();
   const municipalityFilters = useMunicipalitiesFilters(municipalities);
   const filteredMunicipalities = municipalityFilters.filteredMunicipalities;
   const municipalitySortOptions = useSortOptions();
@@ -23,9 +25,16 @@ export function MunicipalityList({ municipalities }: MunicipalityListProps) {
   return (
     <>
       <ListFilter
-        filteredMunicipalities={filteredMunicipalities}
-        municipalityFilters={municipalityFilters}
-        municipalitySortOptions={municipalitySortOptions}
+        searchQuery={municipalityFilters.searchQuery}
+        setSearchQuery={municipalityFilters.setSearchQuery}
+        sortBy={municipalityFilters.sortBy}
+        setSortBy={municipalityFilters.setSortBy}
+        sortDirection={municipalityFilters.sortDirection}
+        setSortDirection={municipalityFilters.setSortDirection}
+        filterGroups={municipalityFilters.filterGroups}
+        activeFilters={municipalityFilters.activeFilters}
+        sortOptions={municipalitySortOptions}
+        searchPlaceholder={t("explorePage.municipalities.searchPlaceholder")}
       />
       <CardGrid
         items={transformedMunicipalities}
