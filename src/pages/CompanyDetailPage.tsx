@@ -5,9 +5,7 @@ import { useCompanyDetails } from "@/hooks/companies/useCompanyDetails";
 import { CompanyOverview } from "@/components/companies/detail/overview/CompanyOverview";
 import { EmissionsHistory } from "@/components/companies/detail/history/EmissionsHistory";
 import { Seo } from "@/components/SEO/Seo";
-import { createSlug } from "@/lib/utils";
 import { CompanyScope3 } from "@/components/companies/detail/CompanyScope3";
-import { getCompanyDescription } from "@/utils/business/company";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 import { getCompanySectorName } from "@/utils/data/industryGrouping";
@@ -30,9 +28,6 @@ export function CompanyDetailPage() {
   const [selectedYear, setSelectedYear] = useState<string>("latest");
   const { currentLanguage } = useLanguage();
   const sectorNames = useSectorNames();
-  const description = company
-    ? getCompanyDescription(company, currentLanguage)
-    : null;
 
   if (loading) {
     return <PageLoading />;
@@ -75,19 +70,10 @@ export function CompanyDetailPage() {
       ? sortedPeriods[selectedIndex + 1]
       : undefined;
 
-  // Get the latest reporting period for SEO content
-  const latestPeriod = sortedPeriods[0];
-  const latestYear = latestPeriod
-    ? new Date(latestPeriod.endDate).getFullYear()
+  // Get data needed for SEO (entitySeo handles all formatting internally)
+  const latestYear = sortedPeriods[0]
+    ? new Date(sortedPeriods[0].endDate).getFullYear()
     : new Date().getFullYear();
-
-  // Calculate total emissions for SEO content
-  const totalEmissions = latestPeriod?.emissions?.calculatedTotalEmissions;
-  const formattedEmissions = totalEmissions
-    ? totalEmissions >= 1000
-      ? (totalEmissions / 1000).toFixed(1) + " tusen"
-      : totalEmissions.toFixed(1)
-    : "N/A";
 
   // Get industry for SEO content
   const industry = company
