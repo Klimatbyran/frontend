@@ -263,7 +263,7 @@ describe("mapCompanyEditFormToRequestBody", () => {
         form([["scope-3-1-1-checkbox", "true"]]),
       );
       expect(result.reportingPeriods[0].emissions.scope3.categories).toEqual([
-        { category: 1, unit: "tCO2e", verified: true },
+        { category: 1, total: 10, unit: "tCO2e", verified: true },
       ]);
     });
 
