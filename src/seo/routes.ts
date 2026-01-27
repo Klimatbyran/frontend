@@ -3,7 +3,7 @@ import { SeoMeta } from "@/types/seo";
 /**
  * Default OG image for the site
  */
-const DEFAULT_OG_IMAGE = "/logos/Klimatkollen_default.webp";
+const DEFAULT_OG_IMAGE = "/logos/Klimatkollen_default.jpg";
 
 /**
  * Site name for title suffixing
