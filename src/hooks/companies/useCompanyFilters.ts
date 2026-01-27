@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import type { RankedCompany } from "@/types/company";
@@ -47,25 +47,43 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
   const setOrDeleteSearchParam = (value: string | null, param: string) =>
     setSearchParams(
       (searchParams) => {
-        value ? searchParams.set(param, value) : searchParams.delete(param);
+        if (value) {
+          searchParams.set(param, value);
+        } else {
+          searchParams.delete(param);
+        }
         return searchParams;
       },
       { replace: true },
     );
 
-  const setSearchQuery = (searchQuery: string) =>
-    setOrDeleteSearchParam(searchQuery.trim() || null, "searchQuery");
-  const setMeetsParisFilter = (meetsParisFilter: string) =>
-    setOrDeleteSearchParam(meetsParisFilter, "meetsParisFilter");
-  const setSectors = (sectors: CompanySector[]) =>
-    setOrDeleteSearchParam(
-      sectors.length > 0 ? sectors.join(",") : null,
-      "sectors",
-    );
-  const setSortBy = (sortBy: string) =>
-    setOrDeleteSearchParam(sortBy, "sortBy");
-  const setSortDirection = (sortDirection: string) =>
-    setOrDeleteSearchParam(sortDirection, "sortDirection");
+  const setSearchQuery = useCallback(
+    (searchQuery: string) =>
+      setOrDeleteSearchParam(searchQuery.trim() || null, "searchQuery"),
+    [],
+  );
+  const setMeetsParisFilter = useCallback(
+    (meetsParisFilter: string) =>
+      setOrDeleteSearchParam(meetsParisFilter, "meetsParisFilter"),
+    [],
+  );
+  const setSectors = useCallback(
+    (sectors: CompanySector[]) =>
+      setOrDeleteSearchParam(
+        sectors.length > 0 ? sectors.join(",") : null,
+        "sectors",
+      ),
+    [],
+  );
+  const setSortBy = useCallback(
+    (sortBy: string) => setOrDeleteSearchParam(sortBy, "sortBy"),
+    [],
+  );
+  const setSortDirection = useCallback(
+    (sortDirection: string) =>
+      setOrDeleteSearchParam(sortDirection, "sortDirection"),
+    [],
+  );
 
   const sectorNames = useSectorNames();
   const { t } = useTranslation();

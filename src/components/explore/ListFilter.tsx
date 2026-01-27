@@ -14,8 +14,12 @@ import type { RankedCompany } from "@/types/company";
 import type { Municipality } from "@/types/municipality";
 
 interface IListFilter {
-  companies?: RankedCompany[];
-  municipalities?: Municipality[];
+  filteredCompanies?: RankedCompany[];
+  companyFilters?: ReturnType<typeof useCompanyFilters>;
+  companySortOptions?: ReturnType<typeof useCompanySortOptions>;
+  filteredMunicipalities?: Municipality[];
+  municipalityFilters?: ReturnType<typeof useMunicipalitiesFilters>;
+  municipalitySortOptions?: ReturnType<typeof useMunicipalitySortOption>;
 }
 // Type guard to check if data is companies
 const isCompanies = (
@@ -37,29 +41,28 @@ const selectFiltersAndOptions = (
   };
 };
 
-const ListFilter = ({ companies = [], municipalities = [] }: IListFilter) => {
+const ListFilter = ({
+  filteredCompanies = [],
+  companyFilters,
+  companySortOptions,
+  municipalityFilters,
+  municipalitySortOptions,
+}: IListFilter) => {
   const { t } = useTranslation();
   const screenSize = useScreenSize();
   const [filterOpen, setFilterOpen] = useState(false);
   const [sortOpen, setSortOpen] = useState(false);
-  const companySortOptions = useCompanySortOptions();
-  const municipalitySortOptions = useMunicipalitySortOption();
 
-  const isCompanyData = companies.length > 0 && isCompanies(companies);
-  const companyFilters = useCompanyFilters(companies);
-  const municipalityFilters = useMunicipalitiesFilters(municipalities);
+  const isCompanyData =
+    filteredCompanies.length > 0 && isCompanies(filteredCompanies);
 
   const { filters, sortOptions } = selectFiltersAndOptions(
     isCompanyData,
-    companyFilters,
-    municipalityFilters,
-    companySortOptions,
-    municipalitySortOptions,
+    companyFilters as ReturnType<typeof useCompanyFilters>,
+    municipalityFilters as ReturnType<typeof useMunicipalitiesFilters>,
+    companySortOptions as ReturnType<typeof useCompanySortOptions>,
+    municipalitySortOptions as ReturnType<typeof useMunicipalitySortOption>,
   );
-
-  if (!filters.activeFilters) {
-    return null;
-  }
 
   return (
     <div
