@@ -4,7 +4,6 @@ import type { ColorFunction } from "@/types/visualizations";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { BeeswarmTooltip } from "./BeeswarmTooltip";
 import { BeeswarmLegend } from "./BeeswarmLegend";
-import { MobileModal } from "@/components/layout/MobileModal";
 
 interface BeeswarmChartProps<T> {
   data: T[];
@@ -61,6 +60,8 @@ export function BeeswarmChart<T>({
     item: T;
     position: { x: number; y: number };
   } | null>(null);
+  const [displayMobileTooltip, setDisplayMobileTooltip] = useState(false);
+  const [clickedItem, setClickedItem] = useState<T | null>(null);
 
   const handleMouseEnter = useCallback((e: React.MouseEvent, item: T) => {
     setHoveredItem({
@@ -82,13 +83,24 @@ export function BeeswarmChart<T>({
   );
 
   const handleMouseLeave = useCallback(() => {
-    setHoveredItem(null);
-  }, []);
-
-  const handleDotClick = (item: T) => {
-    if (!isMobile) {
-      onCompanyClick?.(item);
+    // Don't clear on mobile if tooltip is open
+    if (isMobile && displayMobileTooltip) {
+      return;
     }
+    setHoveredItem(null);
+  }, [isMobile, displayMobileTooltip]);
+
+  const handleDotClick = (item: T, e: React.MouseEvent) => {
+    if (isMobile) {
+      setDisplayMobileTooltip(true);
+      setClickedItem(item);
+      setHoveredItem({
+        item,
+        position: { x: e.clientX, y: e.clientY },
+      });
+      return;
+    }
+    onCompanyClick?.(item);
   };
 
   const legendGradient = useMemo(() => {
@@ -132,7 +144,16 @@ export function BeeswarmChart<T>({
       </div>
 
       {/* Main visualization area */}
-      <div className="relative flex-1 border-t border-b border-black-4">
+      <div
+        className="relative flex-1 border-t border-b border-black-4"
+        onClick={() => {
+          if (isMobile && displayMobileTooltip) {
+            setDisplayMobileTooltip(false);
+            setClickedItem(null);
+            setHoveredItem(null);
+          }
+        }}
+      >
         {/* Zero line (vertical) - only show if 0 is within data range */}
         {min <= 0 && max >= 0 && (
           <div
@@ -192,7 +213,10 @@ export function BeeswarmChart<T>({
             return (
               <div
                 key={getCompanyId(item)}
-                onClick={() => handleDotClick(item)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDotClick(item, e);
+                }}
                 onMouseEnter={(e) => handleMouseEnter(e, item)}
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
@@ -277,7 +301,7 @@ export function BeeswarmChart<T>({
       </div>
 
       {/* Tooltip */}
-      {hoveredItem && (
+      {hoveredItem && (!isMobile || displayMobileTooltip) && (
         <BeeswarmTooltip
           companyName={getCompanyName(hoveredItem.item)}
           value={getValue(hoveredItem.item)}
