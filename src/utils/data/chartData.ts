@@ -8,7 +8,9 @@ import type {
 export function getChartData(
   processedPeriods: ReportingPeriod[],
   isAIGenerated: (data: AIGeneratable | undefined | null) => boolean,
-  isEmissionsAIGenerated: (period: ReportingPeriod | ReportingPeriodFromList) => boolean,
+  isEmissionsAIGenerated: (
+    period: ReportingPeriod | ReportingPeriodFromList,
+  ) => boolean,
 ): ChartData[] {
   if (!processedPeriods || processedPeriods.length === 0) return [];
 

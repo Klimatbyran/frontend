@@ -39,9 +39,7 @@ export function useVerificationStatus() {
   /**
    * Type guard to check if an object has the AIGeneratable structure
    */
-  function hasAIGeneratableMetadata(
-    obj: unknown,
-  ): obj is AIGeneratable {
+  function hasAIGeneratableMetadata(obj: unknown): obj is AIGeneratable {
     return (
       typeof obj === "object" &&
       obj !== null &&

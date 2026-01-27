@@ -2,7 +2,10 @@ import { useParams, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useState, useMemo } from "react";
 import type { TFunction } from "i18next";
-import { useMunicipalityDetails, useMunicipalityDetailHeaderStats } from "@/hooks/municipalities/useMunicipalityDetails";
+import {
+  useMunicipalityDetails,
+  useMunicipalityDetailHeaderStats,
+} from "@/hooks/municipalities/useMunicipalityDetails";
 import { Municipality, transformEmissionsData } from "@/types/municipality";
 import {
   formatEmissionsAbsolute,
