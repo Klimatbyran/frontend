@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import type { ColorFunction } from "@/types/visualizations";
 import { useScreenSize } from "@/hooks/useScreenSize";
@@ -61,7 +61,6 @@ export function BeeswarmChart<T>({
     position: { x: number; y: number };
   } | null>(null);
   const [displayMobileTooltip, setDisplayMobileTooltip] = useState(false);
-  const [clickedItem, setClickedItem] = useState<T | null>(null);
 
   const handleMouseEnter = useCallback((e: React.MouseEvent, item: T) => {
     setHoveredItem({
@@ -93,7 +92,6 @@ export function BeeswarmChart<T>({
   const handleDotClick = (item: T, e: React.MouseEvent) => {
     if (isMobile) {
       setDisplayMobileTooltip(true);
-      setClickedItem(item);
       setHoveredItem({
         item,
         position: { x: e.clientX, y: e.clientY },
@@ -102,6 +100,17 @@ export function BeeswarmChart<T>({
     }
     onCompanyClick?.(item);
   };
+
+  // Close tooltip on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      setHoveredItem(null);
+      setDisplayMobileTooltip(false);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const legendGradient = useMemo(() => {
     if (!showLegend) return undefined;
@@ -149,7 +158,6 @@ export function BeeswarmChart<T>({
         onClick={() => {
           if (isMobile && displayMobileTooltip) {
             setDisplayMobileTooltip(false);
-            setClickedItem(null);
             setHoveredItem(null);
           }
         }}
@@ -220,7 +228,13 @@ export function BeeswarmChart<T>({
                 onMouseEnter={(e) => handleMouseEnter(e, item)}
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
-                className="absolute cursor-pointer hover:scale-150 transition-transform z-10"
+                className={`absolute cursor-pointer transition-transform z-10 ${
+                  hoveredItem?.item === item
+                    ? "scale-150"
+                    : !isMobile
+                      ? "hover:scale-150"
+                      : ""
+                }`}
                 style={{
                   left: `calc(${xPercent}% - 8px)`,
                   top: `calc(50% + ${yOffset}px)`,
@@ -324,6 +338,8 @@ export function BeeswarmChart<T>({
           }
           rank={getRank ? getRank(hoveredItem.item) : undefined}
           total={totalCount}
+          isMobile={isMobile}
+          wikidataId={getCompanyId(hoveredItem.item)}
         />
       )}
     </div>
