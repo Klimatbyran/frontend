@@ -11,7 +11,13 @@ export interface ChartData {
     isAIGenerated?: boolean;
   }>;
   originalValues?: Record<string, number | null>; // Keeps track of original null values
-  [key: string]: any; // Allow any type for additional keys
+  // Index signature for dynamically added category keys (cat1, cat2, etc.)
+  // Category keys are added at runtime based on available scope3 categories
+  // Values are typically: number (category emissions) or undefined (future years)
+  // Using `any` here is pragmatic since properties are accessed dynamically (d[key])
+  // and TypeScript cannot provide meaningful type safety for dynamic property access
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
 }
 
 import type { CompanyDetails } from "@/types/company";

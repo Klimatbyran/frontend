@@ -473,7 +473,7 @@ export function ExploreChart({
 
     // Build step 5 data array from 2025 to 2050
     step5AreaData = [];
-    let totalAreaDifference = 0;
+    let _totalAreaDifference = 0;
 
     if (approximatedData) {
       for (let year = parisStartYear; year <= endYear2050; year++) {
@@ -483,7 +483,7 @@ export function ExploreChart({
 
         if (typeof trendValue === "number" && typeof parisValue === "number") {
           const areaDiff = trendValue - parisValue;
-          totalAreaDifference += areaDiff;
+          _totalAreaDifference += areaDiff;
 
           step5AreaData.push({
             year,
