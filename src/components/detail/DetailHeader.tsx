@@ -1,9 +1,9 @@
 import { ReactNode } from "react";
-import { PoliticalRuleSection } from "./PoliticalRuleSection";
 import { Text } from "@/components/ui/text";
 import { OverviewStat } from "@/components/companies/detail/overview/OverviewStat";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { DataGuideItemId } from "@/data-guide/items";
+import { PoliticalRuleSection } from "./PoliticalRuleSection";
 
 export interface DetailStat {
   label: string | ReactNode;
