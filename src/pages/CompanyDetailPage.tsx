@@ -7,8 +7,6 @@ import { EmissionsHistory } from "@/components/companies/detail/history/Emission
 import { Seo } from "@/components/SEO/Seo";
 import { CompanyScope3 } from "@/components/companies/detail/CompanyScope3";
 import { useLanguage } from "@/components/LanguageProvider";
-import { useSectorNames } from "@/hooks/companies/useCompanySectors";
-import { getCompanySectorName } from "@/utils/data/industryGrouping";
 import RelatableNumbers from "@/components/relatableNumbers";
 import type { Scope3Category } from "@/types/company";
 import { PageLoading } from "@/components/pageStates/Loading";
@@ -27,7 +25,6 @@ export function CompanyDetailPage() {
   const { company, loading, error } = useCompanyDetails(id!);
   const [selectedYear, setSelectedYear] = useState<string>("latest");
   const { currentLanguage } = useLanguage();
-  const sectorNames = useSectorNames();
 
   if (loading) {
     return <PageLoading />;
@@ -75,11 +72,6 @@ export function CompanyDetailPage() {
     ? new Date(sortedPeriods[0].endDate).getFullYear()
     : new Date().getFullYear();
 
-  // Get industry for SEO content
-  const industry = company
-    ? getCompanySectorName(company, sectorNames)
-    : t("companyDetailPage.unknownIndustry");
-
   // Generate data-driven SEO meta (memoized to prevent re-renders)
   const seoMeta = useMemo(() => {
     if (!company) {
@@ -88,10 +80,9 @@ export function CompanyDetailPage() {
     }
 
     return generateCompanySeoMeta(company, location.pathname, {
-      industry,
       latestYear,
     });
-  }, [company, location.pathname, industry, latestYear, id]);
+  }, [company, location.pathname, latestYear, id]);
 
   const prevEmissions = previousPeriod?.emissions?.calculatedTotalEmissions;
 

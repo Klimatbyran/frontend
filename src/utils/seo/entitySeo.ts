@@ -1,6 +1,7 @@
 import { SeoMeta } from "@/types/seo";
 import { CompanyDetails } from "@/types/company";
 import { Municipality } from "@/types/municipality";
+import { getCompanyIndustryFromData } from "@/utils/data/industryGrouping";
 
 /**
  * TODO: Expand entity SEO coverage
@@ -76,16 +77,15 @@ function buildDescriptionFromParts(
   return truncateDescription(description);
 }
 
+
 /**
  * Build a deterministic SEO description for a company
  * @param company - Company data
- * @param industry - Industry name (optional)
  * @param latestYear - Latest reporting year (optional)
  * @returns SEO description string
  */
 export function buildCompanySeoDescription(
   company: CompanyDetails,
-  industry?: string,
   latestYear?: number,
 ): string {
   const parts: string[] = [];
@@ -93,7 +93,8 @@ export function buildCompanySeoDescription(
   // Company name
   parts.push(company.name);
 
-  // Industry
+  // Industry (extracted directly from company data)
+  const industry = getCompanyIndustryFromData(company);
   if (industry) {
     parts.push(`in the ${industry} industry`);
   }
@@ -191,22 +192,17 @@ function generateEntitySeoMeta(
  * Generate SEO meta for a company page
  * @param company - Company data
  * @param pathname - Current pathname
- * @param options - Additional options (industry, latestYear)
+ * @param options - Additional options (latestYear)
  * @returns SeoMeta object
  */
 export function generateCompanySeoMeta(
   company: CompanyDetails,
   pathname: string,
   options?: {
-    industry?: string;
     latestYear?: number;
   },
 ): SeoMeta {
-  const description = buildCompanySeoDescription(
-    company,
-    options?.industry,
-    options?.latestYear,
-  );
+  const description = buildCompanySeoDescription(company, options?.latestYear);
 
   return generateEntitySeoMeta(company.name, pathname, description);
 }
