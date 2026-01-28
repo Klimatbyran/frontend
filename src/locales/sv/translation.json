@@ -3,6 +3,7 @@
   "no": "Nej",
   "noData": "Ingen data tillgänglig",
   "unknown": "Okänt",
+  "na": "Ej Tillämpligt",
   "all": "Alla",
   "emissionsUnit": "tCO₂e",
   "header": {
@@ -1276,7 +1277,9 @@
       "employees": "Anställda",
       "companyReport": "Hållbarhetsrapport",
       "missingReport": "Saknar report",
-      "reportYear": "Rapporterat från {{year}}"
+      "reportYear": "Rapporterat från {{year}}",
+      "largestEmissionSource": "Största utsläppskälla",
+      "emissionTracking": "Rapporterat sedan"
     },
     "dataView": {
       "overview": "Översikt",
