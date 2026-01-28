@@ -217,9 +217,7 @@ jobs:
 
       - name: Audit dependencies
         run: npm audit --audit-level=moderate
-        continue-on-error: true
 
   # Note: Main check steps will fail if issues are found, showing a red X in the PR
   # These checks are NOT required in branch protection, so they won't block merges
   # but will clearly show when there are issues that need attention.
-  # Only the audit step uses continue-on-error since it's informational.

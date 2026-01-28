@@ -24,6 +24,7 @@ export interface DetailHeaderProps {
   stats: DetailStat[];
   translateNamespace: string;
   politicalRuleLabelKey?: string;
+  politicalXSOLabelKey?: string;
 }
 
 export function DetailHeader({
@@ -36,6 +37,7 @@ export function DetailHeader({
   stats,
   translateNamespace,
   politicalRuleLabelKey = "politicalRule",
+  politicalXSOLabelKey, // XSO = KSO or RSO hence the X
 }: DetailHeaderProps) {
   return (
     <SectionWithHelp helpItems={helpItems}>
@@ -57,6 +59,7 @@ export function DetailHeader({
           politicalRule={politicalRule}
           translateNamespace={translateNamespace}
           politicalRuleLabelKey={politicalRuleLabelKey}
+          politicalXSOLabelKey={politicalXSOLabelKey}
           politicalKSO={politicalKSO}
         />
       )}

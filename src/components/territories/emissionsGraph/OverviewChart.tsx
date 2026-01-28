@@ -8,7 +8,7 @@ import {
 } from "recharts";
 import { useTranslation } from "react-i18next";
 import { XAxis, YAxis } from "recharts";
-import { DataPoint } from "@/types/municipality";
+import { DataPoint } from "@/types/emissions";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import {
   EnhancedLegend,

@@ -64,6 +64,7 @@
   },
   "landingPage": {
     "metaTitle": "Open climate data for citizens",
+    "metaDescription": "Track emissions and climate transition progress for companies and municipalities in Sweden. Open climate data for citizens.",
     "typewriter": {
       "scope3Emissions": "scope 3 emissions?",
       "reduceEmissions": "reducing emissions?",
@@ -187,6 +188,7 @@
       "title": "About Us",
       "description": "Klimatkollen is a citizen platform that provides climate data. Click on the headings to learn more."
     },
+    "metaDescription": "Learn about Klimatkollen and our mission to provide open climate data for citizens.",
     "mainContent": {
       "title": "What is Klimatkollen?",
       "paragraph1": "Klimatkollen (eng, Climate Checker) is an open-source citizen platform that helps individuals, businesses and organisations track the climate transition by using Al to collect, analyse and spread key climate data.",
@@ -406,7 +408,7 @@
   },
   "companyDetailPage": {
     "metaTitle": "Data on emissions and transition",
-    "metaDescription": "Overview of emissions and transition",
+    "metaDescription": "View emissions data and climate transition progress for {{company}} on Klimatkollen.",
     "errorTitle": "Unable to retrieve company information",
     "errorDescription": "Please try again later",
     "notFoundTitle": "Company not found",
@@ -446,6 +448,7 @@
       "title": "Sources and Method",
       "description": "Our starting point is the Paris Agreement's 1.5°C target, and all our data sources are publicly available. Click on the dropdown to learn more."
     },
+    "metaDescription": "Learn about the methodology and data sources used by Klimatkollen to track emissions and climate transition.",
     "dataSelector": {
       "label": "Select what you want to learn about"
     },
@@ -985,6 +988,24 @@
     "annualChange": "Annual Change",
     "meetsParisGoal": "Meets the Paris Agreement",
     "changeSince2015": "Annual emission change since 2015",
+    "sectorEmissions": "Emission sources",
+    "sectorEmissionsYear": "Emissions by sector in {{year}}",
+    "filteredSectors": "Filtered Sectors",
+    "sectorChart": {
+      "clickToFilter": "Click to filter out",
+      "clickToShow": "Click to show"
+    },
+    "sectors": {
+      "industry": "Industry",
+      "productUse": "Product use",
+      "internationalTransport": "International transport",
+      "agriculture": "Agriculture",
+      "electricityAndHeating": "Electricity and heating",
+      "workingMachines": "Working machines",
+      "waste": "Waste",
+      "ownHeating": "Heating of buildings",
+      "transport": "Transport"
+    },
     "graph": {
       "historical": "Historical",
       "estimated": "Estimated",
@@ -1001,7 +1022,7 @@
   },
   "municipalityDetailPage": {
     "metaTitle": "Data on emissions and transition",
-    "metaDescription": "Overview of emissions and transition",
+    "metaDescription": "View emissions data and climate transition progress for {{municipality}} municipality on Klimatkollen.",
     "procurementScore": {
       "high": "Yes",
       "medium": "Maybe",
@@ -1027,25 +1048,7 @@
     "electricCarChange": "Increase in electric car share",
     "electricCarsPerChargePoint": "Electric cars per charging point",
     "noChargePoints": "No charging points",
-    "bicycleMetrePerCapita": "Bicycle path metres per capita",
-    "sectorEmissions": "Emission sources",
-    "sectorEmissionsYear": "Emissions by sector in {{year}}",
-    "filteredSectors": "Filtered Sectors",
-    "sectorChart": {
-      "clickToFilter": "Click to filter out",
-      "clickToShow": "Click to show"
-    },
-    "sectors": {
-      "industry": "Industry",
-      "productUse": "Product use",
-      "internationalTransport": "International transport",
-      "agriculture": "Agriculture",
-      "electricityAndHeating": "Electricity and heating",
-      "workingMachines": "Working machines",
-      "waste": "Waste",
-      "ownHeating": "Heating of buildings",
-      "transport": "Transport"
-    }
+    "bicycleMetrePerCapita": "Bicycle path metres per capita"
   },
   "sector": {
     "energy": "Energy",
@@ -1099,9 +1102,9 @@
       "role": "Developer",
       "description": "Frontend developer who loves nature, climbing, and creating tools that make climate data easier to understand. Supports Klimatkollen's volunteers, develops the frontend, and tries to find the perfect GIFs for every occasion."
     },
-    "mikael": {
-      "role": "Developer",
-      "description": "Open source developer with a long passion for user interfaces and running. Coming from a background of Linux/GNOME, iOS  and web development. Mainly contributing to the web frontend at Klimatkollen."
+    "myvi": {
+      "role": "Data Analyst",
+      "description": "Data Analyst specializing in automating data workflows and transforming raw data into actionable insights and visualisations. Formerly at Telia, AVL, KPMG, Vinnova and Assistant Professor in mathematical engineering physics at Bharath Institute Of Science And Technology in Chennai, India."
     }
   },
   "board": {
@@ -1406,6 +1409,8 @@
   },
   "regions": {
     "detailPage": {
+      "politicalRule": "Political rule",
+      "politicalRSO": "Regional Executive Chair",
       "municipalities": "Municipalities"
     },
     "kpis": {
@@ -1718,7 +1723,9 @@
   },
   "common": {
     "loading": "Loading...",
-    "error": "Error"
+    "error": "Error",
+    "company": "Company",
+    "municipality": "Municipality"
   },
   "globalSearch": {
     "title": "Find a company or municipality",

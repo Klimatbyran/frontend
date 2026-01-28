@@ -8,7 +8,7 @@
   "header": {
     "data": "Data",
     "companies": "Företag",
-    "companiesSectors": "Sektorer",
+    "companiesSectors": "Branscher",
     "companiesRanked": "Topplistor",
     "explore": "Utforska",
     "municipalities": "Kommuner",
@@ -64,6 +64,7 @@
   },
   "landingPage": {
     "metaTitle": "Öppen klimatdata för medborgare",
+    "metaDescription": "Följ utsläpp och klimatomställning för företag och kommuner i Sverige. Öppen klimatdata för medborgare.",
     "typewriter": {
       "reduceEmissions": "att minska utsläppen?",
       "scope3Emissions": "scope 3-utsläppen?",
@@ -187,6 +188,7 @@
       "title": "Om oss",
       "description": "Klimatkollen är en medborgarplattform som tillgängliggör klimatdata. Klicka på rubrikerna för att läsa mer."
     },
+    "metaDescription": "Lär dig mer om Klimatkollen och vårt uppdrag att tillgängliggöra öppen klimatdata för medborgare.",
     "mainContent": {
       "title": "Vad är Klimatkollen?",
       "paragraph1": "Klimatkollen är en öppen och medborgardriven plattform som hjälper individer, företag och organisationer att följa klimatomställningen genom att använda AI för att samla in, analysera och sprida viktig klimatdata.",
@@ -406,7 +408,7 @@
   },
   "companyDetailPage": {
     "metaTitle": "Data om utsläpp och omställning",
-    "metaDescription": "Översikt över klimatpåverkan och hållbarhetsarbete",
+    "metaDescription": "Se utsläppsdata och klimatomställning för {{company}} på Klimatkollen.",
     "errorTitle": "Det gick inte att hämta företagsinformation",
     "errorDescription": "Försök igen senare",
     "notFoundTitle": "Företaget kunde inte hittas",
@@ -422,13 +424,13 @@
       "pie": "Cirkeldiagram",
       "stackedTotal": "Stapeldiagram",
       "back": "Tillbaka",
-      "sectorTotal": "Totala utsläpp i sektorn",
+      "sectorTotal": "Totala utsläpp i branschen",
       "total": "Totala utsläpp",
       "noDataAvailablePieChart": "Det finns inga data för detta år",
       "yearTotal": "Årlig total",
       "unknownCompany": "Okänt företag",
       "pieLegendCompany": "Visa företagsdetaljer",
-      "pieLegendSector": "Visa sektordetaljer",
+      "pieLegendSector": "Visa branschedetaljer",
       "emissionsSourcesAnalysis": "Analys av utsläppskällor",
       "ghgProtocolScopes": "(Scopes i GHG-protokollet)",
       "totalEmissions": "Totala utsläpp",
@@ -446,7 +448,7 @@
       "companies": "företag",
       "shareOfTotal": "Andel av total",
       "companiesReporting": "Företag som rapporterar",
-      "ofSector": "av sektor",
+      "ofSector": "av bransch",
       "ofTotal": "av total",
       "valueChainOverview": "Värdekedja",
       "upstream": "Uppströms",
@@ -500,6 +502,7 @@
       "title": "Källor och metod",
       "description": "Vår utgångspunkt är Parisavtalets 1,5-gradersmål, och alla våra datakällor är offentligt tillgängliga. Klicka på rullgardinsmenyn för att lära dig mer."
     },
+    "metaDescription": "Lär dig mer om metodiken och datakällor som Klimatkollen använder för att spåra utsläpp och klimatomställning.",
     "dataSelector": {
       "label": "Välj vad du vill lära dig om"
     },
@@ -1038,6 +1041,24 @@
     "annualChange": "Årlig förändring",
     "meetsParisGoal": "Klarar Parisavtalet",
     "changeSince2015": "Årlig utsläppsförändring sedan 2015",
+    "sectorEmissions": "Utsläppskällor",
+    "sectorEmissionsYear": "Utsläpp per sektor år {{year}}",
+    "filteredSectors": "Filtrerade sektorer",
+    "sectorChart": {
+      "clickToFilter": "Klicka för att filtrera bort",
+      "clickToShow": "Klicka för att visa"
+    },
+    "sectors": {
+      "industry": "Industri",
+      "productUse": "Produktanvändning",
+      "internationalTransport": "Utrikes transporter",
+      "agriculture": "Jordbruk",
+      "electricityAndHeating": "El och fjärrvärme",
+      "workingMachines": "Arbetsmaskiner",
+      "waste": "Avfall",
+      "ownHeating": "Uppvärmning av byggnader",
+      "transport": "Transporter"
+    },
     "graph": {
       "historical": "Historiskt",
       "estimated": "Uppskattat",
@@ -1054,7 +1075,7 @@
   },
   "municipalityDetailPage": {
     "metaTitle": "Data om utsläpp och omställning",
-    "metaDescription": "Översikt över klimatpåverkan och hållbarhetsarbete",
+    "metaDescription": "Se utsläppsdata och klimatomställning för {{municipality}} kommun på Klimatkollen.",
     "procurementScore": {
       "high": "Ja",
       "medium": "Kanske",
@@ -1080,25 +1101,7 @@
     "electricCarChange": "Ökning av andel elbilar",
     "electricCarsPerChargePoint": "Elbilar per laddpunkt",
     "noChargePoints": "Saknar laddpunkter",
-    "bicycleMetrePerCapita": "Cykelvägsmeter per invånare",
-    "sectorEmissions": "Utsläppskällor",
-    "sectorEmissionsYear": "Utsläpp per sektor år {{year}}",
-    "filteredSectors": "Filtrerade sektorer",
-    "sectorChart": {
-      "clickToFilter": "Klicka för att filtrera bort",
-      "clickToShow": "Klicka för att visa"
-    },
-    "sectors": {
-      "industry": "Industri",
-      "productUse": "Produktanvändning",
-      "internationalTransport": "Utrikes transporter",
-      "agriculture": "Jordbruk",
-      "electricityAndHeating": "El och fjärrvärme",
-      "workingMachines": "Arbetsmaskiner",
-      "waste": "Avfall",
-      "ownHeating": "Uppvärmning av byggnader",
-      "transport": "Transporter"
-    }
+    "bicycleMetrePerCapita": "Cykelvägsmeter per invånare"
   },
   "sector": {
     "energy": "Energi",
@@ -1152,9 +1155,9 @@
       "role": "Utvecklare",
       "description": "Frontend-utvecklare som älskar naturen, klättring och att bygga verktyg som gör klimatdata lättare att förstå. Stöttar Klimatkollens volontärer, utvecklar webbsidan och försöker hitta den perfekta GIF:en för varje tillfälle."
     },
-    "mikael": {
-      "role": "Utvecklare",
-      "description": "Öppen källkods-utvecklare med en lång passion för användargränssnitt och löpning. Har bakgrund i Linux/GNOME, iOS och webbutveckling. Bidrar huvudsakligen till webbgränssnitet för Klimatkollen."
+    "myvi": {
+      "role": "Dataanalytiker",
+      "description": "Dataanalytiker specialiserad på att automatisera dataflöden och omvandla rådata till insikter och visualiseringar. Tidigare på Telia, AVL, KPMG, Vinnova och som biträdande professor i matematisk fysik vid Bharath Institute Of Science And Technology i Chennai, Indien."
     }
   },
   "board": {
@@ -1262,7 +1265,7 @@
     },
     "card": {
       "noData": "Ingen data",
-      "unknownSector": "Okänd sektor",
+      "unknownSector": "Okänd bransch",
       "emissions": "Utsläpp",
       "emissionsChangeRate": "Förändringstakt",
       "emissionsChangeRateInfo": "Förändringstakt för utsläpp jämfört med föregående rapporteringsperiod.",
@@ -1392,8 +1395,8 @@
       }
     },
     "overview": {
-      "unknownSector": "Okänd sektor",
-      "sector": "Sektor",
+      "unknownSector": "Okänd bransch",
+      "sector": "Bransch",
       "selectYear": "Välj år",
       "latestYear": "Senaste året",
       "totalEmissions": "Rapporterade utsläpp",
@@ -1436,7 +1439,7 @@
       "category": "Kategori"
     },
     "sectorComparison": {
-      "sectorUnknown": "Okänd sektor",
+      "sectorUnknown": "Okänd bransch",
       "emissionsReduction": "Utsläppsminskning",
       "reportingYears": "Rapporterade år",
       "reportedCategories": "Rapporterade scope 3-kategorier",
@@ -1452,6 +1455,8 @@
   },
   "regions": {
     "detailPage": {
+      "politicalRule": "Politiskt styre",
+      "politicalRSO": "Länsstyrelsens ordförande",
       "municipalities": "Kommuner"
     },
     "kpis": {
@@ -1672,7 +1677,7 @@
     },
     "successDetails": {
       "title": "Ändringarna har sparats!",
-      "description": "Ändringar i basår och/eller branschsektor har gjorts framgångsrikt"
+      "description": "Ändringar i basår och/eller bransch har gjorts framgångsrikt"
     },
     "unsavedChanges": {
       "title": "Osparade ändringar",
@@ -1764,7 +1769,9 @@
   },
   "common": {
     "loading": "Laddar...",
-    "error": "Fel"
+    "error": "Fel",
+    "company": "Företag",
+    "municipality": "Kommun"
   },
   "globalSearch": {
     "title": "Hitta ett företag eller kommun",
@@ -1869,13 +1876,13 @@
         "nameAsc": "Företagsnamn A-Ö",
         "nameDesc": "Företagsnamn Ö-A"
       },
-      "sector": "Sektor",
+      "sector": "Bransch",
       "searchPlaceholder": "Sök företag (separera med komma)",
       "noCompaniesFound": "Inga företag hittades",
       "tryDifferentCriteria": "Försök med andra sökkriterier",
       "sorting": "Sorterar:",
       "filtrering": "Filter:",
-      "allSectors": "Alla sektorer",
+      "allSectors": "Alla branscher",
       "sectionTitle": "Företag",
       "noCompaniesInSection": "Inga företag i denna kategori"
     }
