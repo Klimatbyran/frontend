@@ -27,3 +27,4 @@ pnpm-debug.log*
 .vscode/settings.json
 .aider*
 
+.eslint.config.ts

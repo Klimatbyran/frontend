@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import type { RankedCompany } from "@/types/company";
@@ -47,25 +47,43 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
   const setOrDeleteSearchParam = (value: string | null, param: string) =>
     setSearchParams(
       (searchParams) => {
-        value ? searchParams.set(param, value) : searchParams.delete(param);
+        if (value) {
+          searchParams.set(param, value);
+        } else {
+          searchParams.delete(param);
+        }
         return searchParams;
       },
       { replace: true },
     );
 
-  const setSearchQuery = (searchQuery: string) =>
-    setOrDeleteSearchParam(searchQuery.trim() || null, "searchQuery");
-  const setMeetsParisFilter = (meetsParisFilter: string) =>
-    setOrDeleteSearchParam(meetsParisFilter, "meetsParisFilter");
-  const setSectors = (sectors: CompanySector[]) =>
-    setOrDeleteSearchParam(
-      sectors.length > 0 ? sectors.join(",") : null,
-      "sectors",
-    );
-  const setSortBy = (sortBy: string) =>
-    setOrDeleteSearchParam(sortBy, "sortBy");
-  const setSortDirection = (sortDirection: string) =>
-    setOrDeleteSearchParam(sortDirection, "sortDirection");
+  const setSearchQuery = useCallback(
+    (searchQuery: string) =>
+      setOrDeleteSearchParam(searchQuery.trim() || null, "searchQuery"),
+    [],
+  );
+  const setMeetsParisFilter = useCallback(
+    (meetsParisFilter: string) =>
+      setOrDeleteSearchParam(meetsParisFilter, "meetsParisFilter"),
+    [],
+  );
+  const setSectors = useCallback(
+    (sectors: CompanySector[]) =>
+      setOrDeleteSearchParam(
+        sectors.length > 0 ? sectors.join(",") : null,
+        "sectors",
+      ),
+    [],
+  );
+  const setSortBy = useCallback(
+    (sortBy: string) => setOrDeleteSearchParam(sortBy, "sortBy"),
+    [],
+  );
+  const setSortDirection = useCallback(
+    (sortDirection: string) =>
+      setOrDeleteSearchParam(sortDirection, "sortDirection"),
+    [],
+  );
 
   const sectorNames = useSectorNames();
   const { t } = useTranslation();
@@ -233,6 +251,42 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
     },
   ];
 
+  const activeFilters = useMemo(() => {
+    return [
+      ...(sectors.length > 0 && !sectors.includes("all")
+        ? sectors.map((sector) => ({
+            type: "filter" as const,
+            label: sectorNames[sector as keyof typeof sectorNames] || sector,
+            onRemove: () => setSectors(sectors.filter((s) => s !== sector)),
+          }))
+        : []),
+      ...(meetsParisFilter !== "all"
+        ? [
+            {
+              type: "filter" as const,
+              label: `${t("explorePage.companies.filteringOptions.meetsParis")}: ${
+                meetsParisFilter === "yes"
+                  ? t("explorePage.companies.filteringOptions.meetsParisYes")
+                  : meetsParisFilter === "no"
+                    ? t("explorePage.companies.filteringOptions.meetsParisNo")
+                    : t(
+                        "explorePage.companies.filteringOptions.meetsParisUnknown",
+                      )
+              }`,
+              onRemove: () => setMeetsParisFilter("all"),
+            },
+          ]
+        : []),
+    ];
+  }, [
+    sectors,
+    meetsParisFilter,
+    sectorNames,
+    t,
+    setSectors,
+    setMeetsParisFilter,
+  ]);
+
   return {
     searchQuery,
     setSearchQuery,
@@ -246,5 +300,6 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
     setSortDirection,
     filteredCompanies,
     filterGroups,
+    activeFilters,
   };
 };

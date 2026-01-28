@@ -29,8 +29,8 @@ export function FilterBadges({ filters, view }: FilterBadgesProps) {
           >
             <span className="text-grey text-xs mr-1">
               {filter.type === "sort"
-                ? t("explorePage.companies.sorting")
-                : t("explorePage.companies.filtering")}
+                ? t("explorePage.sorting")
+                : t("explorePage.filter")}
             </span>
             {filter.label}
             {filter.type === "filter" && filter.onRemove && (
