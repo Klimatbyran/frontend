@@ -47,7 +47,11 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
   const setOrDeleteSearchParam = (value: string | null, param: string) =>
     setSearchParams(
       (searchParams) => {
-        value ? searchParams.set(param, value) : searchParams.delete(param);
+        if (value !== null) {
+          searchParams.set(param, value);
+        } else {
+          searchParams.delete(param);
+        }
         return searchParams;
       },
       { replace: true },
