@@ -1,6 +1,7 @@
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import type { ColorFunction } from "@/types/visualizations";
+import { useScreenSize } from "@/hooks/useScreenSize";
 import { BeeswarmTooltip } from "./BeeswarmTooltip";
 import { BeeswarmLegend } from "./BeeswarmLegend";
 
@@ -53,11 +54,13 @@ export function BeeswarmChart<T>({
   totalCount,
 }: BeeswarmChartProps<T>) {
   const { t } = useTranslation();
+  const { isMobile } = useScreenSize();
   const displayData = data.slice(0, maxDisplayCount);
   const [hoveredItem, setHoveredItem] = useState<{
     item: T;
     position: { x: number; y: number };
   } | null>(null);
+  const [displayMobileTooltip, setDisplayMobileTooltip] = useState(false);
 
   const handleMouseEnter = useCallback((e: React.MouseEvent, item: T) => {
     setHoveredItem({
@@ -79,7 +82,34 @@ export function BeeswarmChart<T>({
   );
 
   const handleMouseLeave = useCallback(() => {
+    // Don't clear on mobile if tooltip is open
+    if (isMobile && displayMobileTooltip) {
+      return;
+    }
     setHoveredItem(null);
+  }, [isMobile, displayMobileTooltip]);
+
+  const handleDotClick = (item: T, e: React.MouseEvent) => {
+    if (isMobile) {
+      setDisplayMobileTooltip(true);
+      setHoveredItem({
+        item,
+        position: { x: e.clientX, y: e.clientY },
+      });
+      return;
+    }
+    onCompanyClick?.(item);
+  };
+
+  // Close tooltip on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      setHoveredItem(null);
+      setDisplayMobileTooltip(false);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const legendGradient = useMemo(() => {
@@ -123,7 +153,15 @@ export function BeeswarmChart<T>({
       </div>
 
       {/* Main visualization area */}
-      <div className="relative flex-1 border-t border-b border-black-4">
+      <div
+        className="relative flex-1 border-t border-b border-black-4"
+        onClick={() => {
+          if (isMobile && displayMobileTooltip) {
+            setDisplayMobileTooltip(false);
+            setHoveredItem(null);
+          }
+        }}
+      >
         {/* Zero line (vertical) - only show if 0 is within data range */}
         {min <= 0 && max >= 0 && (
           <div
@@ -183,11 +221,20 @@ export function BeeswarmChart<T>({
             return (
               <div
                 key={getCompanyId(item)}
-                onClick={() => onCompanyClick?.(item)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDotClick(item, e);
+                }}
                 onMouseEnter={(e) => handleMouseEnter(e, item)}
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
-                className="absolute cursor-pointer hover:scale-150 transition-transform z-10"
+                className={`absolute cursor-pointer transition-transform z-10 ${
+                  hoveredItem?.item === item
+                    ? "scale-150"
+                    : !isMobile
+                      ? "hover:scale-150"
+                      : ""
+                }`}
                 style={{
                   left: `calc(${xPercent}% - 8px)`,
                   top: `calc(50% + ${yOffset}px)`,
@@ -268,7 +315,7 @@ export function BeeswarmChart<T>({
       </div>
 
       {/* Tooltip */}
-      {hoveredItem && (
+      {hoveredItem && (!isMobile || displayMobileTooltip) && (
         <BeeswarmTooltip
           companyName={getCompanyName(hoveredItem.item)}
           value={getValue(hoveredItem.item)}
@@ -291,6 +338,8 @@ export function BeeswarmChart<T>({
           }
           rank={getRank ? getRank(hoveredItem.item) : undefined}
           total={totalCount}
+          isMobile={isMobile}
+          wikidataId={getCompanyId(hoveredItem.item)}
         />
       )}
     </div>
