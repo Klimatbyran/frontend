@@ -1,35 +1,30 @@
-import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { useParams, useLocation } from "react-router-dom";
+import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useCompanyDetails } from "@/hooks/companies/useCompanyDetails";
 import { CompanyOverview } from "@/components/companies/detail/overview/CompanyOverview";
 import { EmissionsHistory } from "@/components/companies/detail/history/EmissionsHistory";
-import { PageSEO } from "@/components/SEO/PageSEO";
-import { createSlug } from "@/lib/utils";
+import { Seo } from "@/components/SEO/Seo";
 import { CompanyScope3 } from "@/components/companies/detail/CompanyScope3";
-import { getCompanyDescription } from "@/utils/business/company";
 import { useLanguage } from "@/components/LanguageProvider";
-import { useSectorNames } from "@/hooks/companies/useCompanySectors";
-import { getCompanySectorName } from "@/utils/data/industryGrouping";
 import RelatableNumbers from "@/components/relatableNumbers";
 import type { Scope3Category } from "@/types/company";
 import { PageLoading } from "@/components/pageStates/Loading";
 import { PageError } from "@/components/pageStates/Error";
 import { PageNoData } from "@/components/pageStates/NoData";
 import { calculateEmissionsChange } from "@/utils/calculations/emissionsCalculations";
+import { generateCompanySeoMeta } from "@/utils/seo/entitySeo";
+import { getSeoForRoute } from "@/seo/routes";
 
 export function CompanyDetailPage() {
   const { t } = useTranslation();
   const { id } = useParams<{ id: string; slug?: string }>();
+  const location = useLocation();
   // The id parameter is always the Wikidata ID (Q-number)
   // It's either directly from /companies/:id or extracted from /foretag/:slug-:id
   const { company, loading, error } = useCompanyDetails(id!);
   const [selectedYear, setSelectedYear] = useState<string>("latest");
   const { currentLanguage } = useLanguage();
-  const sectorNames = useSectorNames();
-  const description = company
-    ? getCompanyDescription(company, currentLanguage)
-    : null;
 
   if (loading) {
     return <PageLoading />;
@@ -72,45 +67,22 @@ export function CompanyDetailPage() {
       ? sortedPeriods[selectedIndex + 1]
       : undefined;
 
-  // Get the latest reporting period for SEO content
-  const latestPeriod = sortedPeriods[0];
-  const latestYear = latestPeriod
-    ? new Date(latestPeriod.endDate).getFullYear()
+  // Get data needed for SEO (entitySeo handles all formatting internally)
+  const latestYear = sortedPeriods[0]
+    ? new Date(sortedPeriods[0].endDate).getFullYear()
     : new Date().getFullYear();
 
-  // Calculate total emissions for SEO content
-  const totalEmissions = latestPeriod?.emissions?.calculatedTotalEmissions;
-  const formattedEmissions = totalEmissions
-    ? totalEmissions >= 1000
-      ? (totalEmissions / 1000).toFixed(1) + " tusen"
-      : totalEmissions.toFixed(1)
-    : "N/A";
+  // Generate data-driven SEO meta (memoized to prevent re-renders)
+  const seoMeta = useMemo(() => {
+    if (!company) {
+      // Fallback to route-level SEO when data not available
+      return getSeoForRoute(location.pathname, { id: id || "" });
+    }
 
-  // Get industry for SEO content
-  const industry = company
-    ? getCompanySectorName(company, sectorNames)
-    : t("companyDetailPage.unknownIndustry");
-
-  // Prepare SEO data
-  const canonicalUrl = `https://klimatkollen.se/foretag/${createSlug(
-    company.name,
-  )}-${id}`;
-  const pageTitle = `${company.name} - ${t(
-    "companyDetailPage.metaTitle",
-  )} - Klimatkollen`;
-  const pageDescription = t("companyDetailPage.metaDescription", {
-    company: company.name,
-    industry: industry,
-  });
-
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: company.name,
-    description: description,
-    url: canonicalUrl,
-    industry: industry,
-  };
+    return generateCompanySeoMeta(company, location.pathname, {
+      latestYear,
+    });
+  }, [company, location.pathname, latestYear, id]);
 
   const prevEmissions = previousPeriod?.emissions?.calculatedTotalEmissions;
 
@@ -133,57 +105,8 @@ export function CompanyDetailPage() {
 
   return (
     <>
-      <PageSEO
-        title={pageTitle}
-        description={pageDescription}
-        canonicalUrl={canonicalUrl}
-        structuredData={structuredData}
-      >
-        <h1>
-          {company.name} - {t("companyDetailPage.seoText.climateData")}
-        </h1>
-        <p>
-          {t("companyDetailPage.seoText.intro", {
-            company: company.name,
-            industry: industry,
-          })}
-        </p>
-        <h2>{t("companyDetailPage.seoText.emissionsHeading")}</h2>
-        <p>
-          {t("companyDetailPage.seoText.emissionsText", {
-            company: company.name,
-            emissions: formattedEmissions,
-            year: latestYear,
-          })}
-        </p>
-        <h2>{t("companyDetailPage.seoText.industryHeading")}</h2>
-        <p>
-          {t("companyDetailPage.seoText.industryText", {
-            company: company.name,
-            industry: industry,
-          })}
-        </p>
-        {company.goals && company.goals.length > 0 && (
-          <>
-            <h2>{t("companyDetailPage.seoText.goalsHeading")}</h2>
-            <p>
-              {t("companyDetailPage.seoText.goalsText", {
-                company: company.name,
-              })}
-            </p>
-          </>
-        )}
-        {company.initiatives && company.initiatives.length > 0 && (
-          <>
-            <h2>{t("companyDetailPage.seoText.initiativesHeading")}</h2>
-            <p>
-              {t("companyDetailPage.seoText.initiativesText", {
-                company: company.name,
-              })}
-            </p>
-          </>
-        )}
-      </PageSEO>
+      {/* Only render SEO when data is available, otherwise Layout will use route-level SEO */}
+      {company && <Seo meta={seoMeta} />}
 
       <div className="space-y-8 md:space-y-16 max-w-[1400px] mx-auto">
         <CompanyOverview
