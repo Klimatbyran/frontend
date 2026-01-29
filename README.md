@@ -45,7 +45,7 @@ keys |
 
 Do you have an idea for a feature? Jump into the code or head to our [Discord server](https://discord.gg/N5P64QPQ6v) to discuss your thoughts. You can also submit an [issue](https://github.com/Klimatbyran/beta/issues) explaining your suggestion.
 
-### How to Contribute
+### How to Contribute 
 
 - **Discuss** your ideas on our Discord.
 - **Submit an issue** if you can't find an existing one.
