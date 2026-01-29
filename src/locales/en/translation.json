@@ -1778,6 +1778,8 @@
   "explorePage": {
     "title": "Explore the data",
     "description": "Explore and compare emissions data and climate targets for companies and municipalities.",
+    "filter": "Filter:",
+    "sorting": "Sorting by:",
     "municipalities": {
       "muncipality": "Municipality",
       "municipalities": "Municipalities",
@@ -1785,8 +1787,8 @@
       "description": "Overview of emissions and transition in municipalities",
       "errorTitle": "Failed to retrieve municipality information",
       "errorDescription": "Please try again later",
+      "searchPlaceholder": "Search municipalities (separate w/ commas)",
       "filteringOptions": {
-        "searchPlaceholder": "Search municipalities (separate w/ commas)",
         "selectRegion": "Select region",
         "allRegions": "All regions",
         "sortBy": "Sort by",
@@ -1837,7 +1839,7 @@
       "noCompaniesFound": "No companies found",
       "tryDifferentCriteria": "Try adjusting your search criteria.",
       "sorting": "Sorting:",
-      "filtrering": "Filter:",
+      "filtering": "Filter:",
       "allSectors": "All sectors",
       "sectionTitle": "Companies",
       "noCompaniesInSection": "No companies in this section"

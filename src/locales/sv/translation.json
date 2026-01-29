@@ -1825,6 +1825,8 @@
   "explorePage": {
     "title": "Utforska data",
     "description": "Utforska och jämför utsläppsdata och klimatmål för företag och kommuner.",
+    "filter": "Filter:",
+    "sorting": "Sorterar:",
     "municipalities": {
       "muncipality": "Kommun",
       "municipalities": "Kommuner",
@@ -1832,8 +1834,8 @@
       "description": "Översikt över utsläpp och omställning i kommunerna",
       "errorTitle": "Det gick inte att hämta kommuninformation",
       "errorDescription": "Försök igen senare",
+      "searchPlaceholder": "Sök kommun (separera med komma)",
       "filteringOptions": {
-        "searchPlaceholder": "Sök kommun (flera: separera med komma)",
         "selectRegion": "Välj län",
         "allRegions": "Alla län",
         "sortBy": "Sortera efter",
@@ -1884,7 +1886,7 @@
       "noCompaniesFound": "Inga företag hittades",
       "tryDifferentCriteria": "Försök med andra sökkriterier",
       "sorting": "Sorterar:",
-      "filtrering": "Filter:",
+      "filtering": "Filter:",
       "allSectors": "Alla branscher",
       "sectionTitle": "Företag",
       "noCompaniesInSection": "Inga företag i denna kategori"

@@ -1,5 +1,6 @@
 import { useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 interface BeeswarmTooltipProps {
   companyName: string;
@@ -16,6 +17,10 @@ interface BeeswarmTooltipProps {
   // For EmissionsChange visualization
   rank?: number | null;
   total?: number;
+  isMobile?: boolean;
+  onCompanyClick?: (company: any) => void;
+  //For navigation to company page on mobile
+  wikidataId?: string;
 }
 
 export function BeeswarmTooltip({
@@ -31,8 +36,11 @@ export function BeeswarmTooltip({
   budgetValue,
   rank,
   total,
+  isMobile,
+  wikidataId,
 }: BeeswarmTooltipProps) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const tooltipRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -64,6 +72,13 @@ export function BeeswarmTooltip({
     tooltip.style.top = `${top}px`;
   }, [position]);
 
+  const handleTooltipMobileClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (isMobile && wikidataId) {
+      navigate(`/companies/${wikidataId}`);
+    }
+  };
+
   if (!position) return null;
 
   // MeetsParis mode: Show "Meets Paris" or "Fails Paris" + budget status
@@ -91,9 +106,14 @@ export function BeeswarmTooltip({
     return (
       <div
         ref={tooltipRef}
-        className="fixed z-50 pointer-events-none bg-black/40 backdrop-blur-sm p-4 rounded-2xl"
+        className="fixed z-50 pointer-events-auto bg-black/40 backdrop-blur-sm p-4 rounded-2xl"
       >
-        <p className="text-white font-medium text-xl">{companyName}</p>
+        <button
+          onClick={(e) => handleTooltipMobileClick(e)}
+          className="w-full text-left hover:opacity-80 transition-opacity"
+        >
+          <p className="text-white font-medium text-xl">{companyName}</p>
+        </button>
         <div className="space-y-1 mt-2">
           <p className="text-white/70">
             <span className="text-orange-2">{meetsParisLabel}</span>
@@ -119,9 +139,14 @@ export function BeeswarmTooltip({
   return (
     <div
       ref={tooltipRef}
-      className="fixed z-50 pointer-events-none bg-black/40 backdrop-blur-sm p-4 rounded-2xl"
+      className="fixed z-50 pointer-events-auto bg-black/40 backdrop-blur-sm p-4 rounded-2xl"
     >
-      <p className="text-white font-medium text-xl">{companyName}</p>
+      <button
+        onClick={(e) => handleTooltipMobileClick(e)}
+        className="w-full text-left hover:opacity-80 transition-opacity"
+      >
+        <p className="text-white font-medium text-xl">{companyName}</p>
+      </button>
       <div className="space-y-1 mt-2">
         <p className="text-white/70">
           <span className="text-orange-2">{displayValue}</span>
