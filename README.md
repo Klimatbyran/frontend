@@ -63,6 +63,6 @@ We also extend our gratitude to our current and former partners:
 
 Postkodstiftelsen, ClimateView, Klimatklubben.se, Researcher's Desk, Exponential Roadmap, WWF, We Don't Have Time, Våra Barns Klimat, Argand, StormGeo.
 
-## LICENSE
+## LICENSE 
 
 This project is licensed under the terms of the [Apache 2.0](LICENSE) © Klimatbyrån Ideell Förening.

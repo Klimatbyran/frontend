@@ -63,7 +63,7 @@ export const useTeamMembers = () => {
       name: "Myvizhi Praveen Kumar",
       role: t("team.myvi.role"),
       description: t("team.myvi.description"),
-      imageUrl: "/people/myvi.jpeg",
+      imageUrl: "/people/myvi.jpg",
     },
   ];
 
