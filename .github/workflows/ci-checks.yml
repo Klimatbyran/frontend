@@ -2,7 +2,6 @@ name: CI (Tests, Type Check, Lint, Format, Audit)
 
 permissions:
   contents: read
-  security-events: write
 
 on:
   pull_request:
@@ -102,7 +101,7 @@ jobs:
       - name: Build app
         run: npm run build
 
-  # Lint job - runs ESLint and uploads SARIF results
+  # Lint job - runs ESLint (red/green only; no SARIF upload)
   lint:
     name: Lint
     runs-on: ubuntu-latest
@@ -126,42 +125,15 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Install ESLint SARIF formatter
-        run: npm install --no-save @microsoft/eslint-formatter-sarif
-
-      - name: Run ESLint (readable output)
+      - name: Run ESLint
         id: eslint
         run: npm run lint
         continue-on-error: true
 
-      - name: Run ESLint (SARIF output for Security tab)
-        if: always()
-        run: npm run lint -- -f @microsoft/eslint-formatter-sarif -o eslint-results.sarif || true
-
-      - name: Ensure eslint-results.sarif exists
-        if: always()
-        run: '[ -f eslint-results.sarif ] || echo "{\"version\":\"2.1.0\",\"runs\":[]}" > eslint-results.sarif'
-
-      - name: Check if SARIF has results
-        id: sarif_check
-        if: always()
-        run: |
-          if grep -q '"results":\[{' eslint-results.sarif; then
-            echo "empty_sarif=false" >> $GITHUB_OUTPUT
-          else
-            echo "empty_sarif=true" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Upload SARIF results to GitHub
-        if: always() && steps.sarif_check.outputs.empty_sarif == 'false'
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: eslint-results.sarif
-
       - name: Fail job if ESLint found issues
         if: steps.eslint.outcome == 'failure'
         run: |
-          echo "ESLint found issues - see details above and SARIF results in Security tab"
+          echo "ESLint found issues - see details above"
           exit 1
 
   # Format job - checks code formatting with Prettier
