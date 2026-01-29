@@ -14,6 +14,7 @@ import {
 } from "@/components/explore/SortPopover";
 import { FilterGroup } from "@/components/explore/FilterPopover";
 import { regions } from "@/lib/constants/regions";
+import setOrDeleteSearchParam from "@/utils/data/setOrDeleteSearchParam";
 
 export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -35,46 +36,38 @@ export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
       : "desc"
   ) as SortDirection;
 
-  const setOrDeleteSearchParam = useCallback(
-    (value: string | null, param: string) => {
-      setSearchParams(
-        (searchParams) => {
-          if (value) {
-            searchParams.set(param, value);
-          } else {
-            searchParams.delete(param);
-          }
-          return searchParams;
-        },
-        { replace: true },
-      );
-    },
-    [setSearchParams],
-  );
-
   const setSearchQuery = useCallback(
     (searchQuery: string) =>
-      setOrDeleteSearchParam(searchQuery.trim() || null, "searchQuery"),
-    [setOrDeleteSearchParam],
+      setOrDeleteSearchParam(
+        setSearchParams,
+        searchQuery.trim() || null,
+        "searchQuery",
+      ),
+    [],
   );
   const setMeetsParisFilter = useCallback(
     (meetsParisFilter: string) =>
-      setOrDeleteSearchParam(meetsParisFilter, "meetsParisFilter"),
-    [setOrDeleteSearchParam],
+      setOrDeleteSearchParam(
+        setSearchParams,
+        meetsParisFilter,
+        "meetsParisFilter",
+      ),
+    [],
   );
   const setSelectedRegion = useCallback(
     (selectedRegion: string) =>
-      setOrDeleteSearchParam(selectedRegion, "selectedRegion"),
-    [setOrDeleteSearchParam],
+      setOrDeleteSearchParam(setSearchParams, selectedRegion, "selectedRegion"),
+    [],
   );
   const setSortBy = useCallback(
-    (sortBy: string) => setOrDeleteSearchParam(sortBy, "sortBy"),
-    [setOrDeleteSearchParam],
+    (sortBy: string) =>
+      setOrDeleteSearchParam(setSearchParams, sortBy, "sortBy"),
+    [],
   );
   const setSortDirection = useCallback(
     (sortDirection: string) =>
-      setOrDeleteSearchParam(sortDirection, "sortDirection"),
-    [setOrDeleteSearchParam],
+      setOrDeleteSearchParam(setSearchParams, sortDirection, "sortDirection"),
+    [],
   );
 
   const filteredMunicipalities = useMemo(

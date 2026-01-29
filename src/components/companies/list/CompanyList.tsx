@@ -47,7 +47,7 @@ export function CompanyList({ companies }: CompanyListProps) {
         setSortDirection={companyFilters.setSortDirection}
         filterGroups={companyFilters.filterGroups}
         activeFilters={companyFilters.activeFilters}
-        sortOptions={[...sortOptions]}
+        sortOptions={sortOptions}
         searchPlaceholder={t("explorePage.companies.searchPlaceholder")}
       />
       <CardGrid

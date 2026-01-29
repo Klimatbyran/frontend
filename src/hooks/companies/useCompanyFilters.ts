@@ -12,6 +12,7 @@ import {
 import { getCompanySectorName } from "@/utils/data/industryGrouping";
 import { CompanySector, SECTORS } from "@/lib/constants/sectors";
 import { FilterGroup } from "@/components/explore/FilterPopover";
+import setOrDeleteSearchParam from "@/utils/data/setOrDeleteSearchParam";
 import { isSortOption, type SortOption } from "./useCompanySorting";
 
 const MEETS_PARIS_OPTIONS = ["all", "yes", "no", "unknown"] as const;
@@ -44,44 +45,41 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
       : "desc"
   ) as "asc" | "desc";
 
-  const setOrDeleteSearchParam = (value: string | null, param: string) =>
-    setSearchParams(
-      (searchParams) => {
-        if (value) {
-          searchParams.set(param, value);
-        } else {
-          searchParams.delete(param);
-        }
-        return searchParams;
-      },
-      { replace: true },
-    );
-
   const setSearchQuery = useCallback(
     (searchQuery: string) =>
-      setOrDeleteSearchParam(searchQuery.trim() || null, "searchQuery"),
+      setOrDeleteSearchParam(
+        setSearchParams,
+        searchQuery.trim() || null,
+        "searchQuery",
+      ),
     [],
   );
   const setMeetsParisFilter = useCallback(
     (meetsParisFilter: string) =>
-      setOrDeleteSearchParam(meetsParisFilter, "meetsParisFilter"),
+      setOrDeleteSearchParam(
+        setSearchParams,
+        meetsParisFilter,
+        "meetsParisFilter",
+      ),
     [],
   );
   const setSectors = useCallback(
     (sectors: CompanySector[]) =>
       setOrDeleteSearchParam(
+        setSearchParams,
         sectors.length > 0 ? sectors.join(",") : null,
         "sectors",
       ),
     [],
   );
   const setSortBy = useCallback(
-    (sortBy: string) => setOrDeleteSearchParam(sortBy, "sortBy"),
+    (sortBy: string) =>
+      setOrDeleteSearchParam(setSearchParams, sortBy, "sortBy"),
     [],
   );
   const setSortDirection = useCallback(
     (sortDirection: string) =>
-      setOrDeleteSearchParam(sortDirection, "sortDirection"),
+      setOrDeleteSearchParam(setSearchParams, sortDirection, "sortDirection"),
     [],
   );
 
