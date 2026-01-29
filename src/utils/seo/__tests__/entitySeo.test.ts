@@ -75,13 +75,22 @@ describe("buildCompanySeoDescription", () => {
   });
 
   it("should include industry when provided", () => {
-    const result = buildCompanySeoDescription(mockCompany, "Technology");
+    const companyWithIndustry = {
+      ...mockCompany,
+      industry: {
+        industryGics: {
+          en: { sectorName: "Technology" },
+          sectorCode: "45",
+        },
+      },
+    } as CompanyDetails;
+    const result = buildCompanySeoDescription(companyWithIndustry);
     expect(result).toContain("Technology");
     expect(result).toContain("industry");
   });
 
   it("should include emissions data when available", () => {
-    const result = buildCompanySeoDescription(mockCompany, undefined, 2023);
+    const result = buildCompanySeoDescription(mockCompany, 2023);
     expect(result).toContain("reported");
     expect(result).toContain("2023");
   });
@@ -292,11 +301,24 @@ describe("generateCompanySeoMeta", () => {
   });
 
   it("should use industry and year when provided", () => {
-    const result = generateCompanySeoMeta(mockCompany, "/companies/123", {
-      industry: "Technology",
-      latestYear: 2023,
-    });
+    const companyWithIndustry = {
+      ...mockCompany,
+      industry: {
+        industryGics: {
+          en: { sectorName: "Technology" },
+          sectorCode: "45",
+        },
+      },
+    } as CompanyDetails;
+    const result = generateCompanySeoMeta(
+      companyWithIndustry,
+      "/companies/123",
+      {
+        latestYear: 2023,
+      },
+    );
     expect(result.description).toContain("Technology");
+    expect(result.description).toContain("2023");
   });
 });
 

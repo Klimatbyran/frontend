@@ -77,7 +77,6 @@ function buildDescriptionFromParts(
   return truncateDescription(description);
 }
 
-
 /**
  * Build a deterministic SEO description for a company
  * @param company - Company data
