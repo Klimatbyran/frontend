@@ -23,13 +23,13 @@ reports.forEach((report) => {
     <meta name="description" content="${report.excerpt}" />
     <meta property="og:title" content="${report.title}" />
     <meta property="og:description" content="${report.excerpt}" />
-    <meta property="og:image" content="${makeAbsoluteUrl(report.coverImage)}" />
+    <meta property="og:image" content="${makeAbsoluteUrl(report.image)}" />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="${makeAbsoluteUrl(`/reports/${folderName}`)}" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${report.title}" />
     <meta name="twitter:description" content="${report.excerpt}" />
-    <meta name="twitter:image" content="${makeAbsoluteUrl(report.coverImage)}" />
+    <meta name="twitter:image" content="${makeAbsoluteUrl(report.image)}" />
     <link rel="canonical" href="${makeAbsoluteUrl(`/reports/${folderName}`)}" />
     <style>
       body {
@@ -98,10 +98,10 @@ reports.forEach((report) => {
     <div class="container">
       <div class="title">${report.title}</div>
       <div class="card">
-        <img src="${report.coverImage}" alt="${report.title}" class="cover" />
+        <img src="${report.image}" alt="${report.title}" class="cover" />
         <div class="subtitle">${report.title}</div>
         <div class="desc">${report.excerpt}</div>
-        <a href="${report.pdfUrl}" class="button">Öppna rapporten (PDF)</a>
+        <a href="${report.link}" class="button">Öppna rapporten (PDF)</a>
       </div>
     </div>
   </body>
