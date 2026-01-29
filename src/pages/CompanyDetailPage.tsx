@@ -26,6 +26,20 @@ export function CompanyDetailPage() {
   const [selectedYear, setSelectedYear] = useState<string>("latest");
   const { currentLanguage } = useLanguage();
 
+  // SEO meta: must run unconditionally (hooks rules). Fallback to route-level when no company.
+  const latestYear = company?.reportingPeriods?.[0]
+    ? new Date(company.reportingPeriods[0].endDate).getFullYear()
+    : new Date().getFullYear();
+
+  const seoMeta = useMemo(() => {
+    if (!company) {
+      return getSeoForRoute(location.pathname, { id: id || "" });
+    }
+    return generateCompanySeoMeta(company, location.pathname, {
+      latestYear,
+    });
+  }, [company, location.pathname, latestYear, id]);
+
   if (loading) {
     return <PageLoading />;
   }
@@ -66,23 +80,6 @@ export function CompanyDetailPage() {
     selectedIndex < sortedPeriods.length - 1
       ? sortedPeriods[selectedIndex + 1]
       : undefined;
-
-  // Get data needed for SEO (entitySeo handles all formatting internally)
-  const latestYear = sortedPeriods[0]
-    ? new Date(sortedPeriods[0].endDate).getFullYear()
-    : new Date().getFullYear();
-
-  // Generate data-driven SEO meta (memoized to prevent re-renders)
-  const seoMeta = useMemo(() => {
-    if (!company) {
-      // Fallback to route-level SEO when data not available
-      return getSeoForRoute(location.pathname, { id: id || "" });
-    }
-
-    return generateCompanySeoMeta(company, location.pathname, {
-      latestYear,
-    });
-  }, [company, location.pathname, latestYear, id]);
 
   const prevEmissions = previousPeriod?.emissions?.calculatedTotalEmissions;
 
