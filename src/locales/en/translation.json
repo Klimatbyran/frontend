@@ -1724,13 +1724,14 @@
     "title": "Find a company or municipality",
     "searchCategoryCompany": "Company",
     "searchCategoryMunicipality": "Municipality",
+    "searchCategoryBlogPost": "Blog Post",
     "searchCategoryPage": "Page",
-    "placeholder": "Example: Alfa Laval",
+    "placeholder": "Example: Alfa Laval, Stockholm, Paris Agreement",
     "headerButtonTitle": "Search",
     "searchDialog": {
       "title": "Search",
-      "description": "Search for companies or municipalities",
-      "emptyText": "Start typing to search for companies or municipalities",
+      "description": "Search for companies, municipalities or articles",
+      "emptyText": "Start typing to search for companies, municipalities or articles",
       "loadingText": "Fetching companies and municipalities...",
       "shortcutTipText": "Trigger search by Ctrl+K / ⌘+K"
     }

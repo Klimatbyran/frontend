@@ -28,6 +28,7 @@ interface SearchDialogProps {
 const resultTypeTranslationKeys = {
   companies: "globalSearch.searchCategoryCompany",
   municipalities: "globalSearch.searchCategoryMunicipality",
+  blogPosts: "globalSearch.searchCategoryBlogPost",
 } as const;
 
 const SearchResultItem = ({ item }: { item: CombinedData }) => {
