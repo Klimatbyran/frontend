@@ -5,7 +5,7 @@ import { FinancialsTooltip } from "@/components/companies/detail/overview/Financ
 import { CardInfo } from "@/components/layout/CardInfo";
 import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 
-interface ListCardProps {
+export interface ListCardProps {
   // Basic info
   name: string;
   description: string; // For municipalities: region, For companies: sector
@@ -30,13 +30,10 @@ interface ListCardProps {
 
   // Latest report
   latestReportContainEmissions?: boolean | string;
-  latestReportTranslationKey: string;
   latestReportYearColor?: string;
-  latestReportYear?: number; // Latest year with a report
 
-  //Emission tracking
-  emissionTrackingTranslationKey: string;
-  companyBaseYear: number | null;
+  //Reporting since (tracking)
+  baseYear: number | null;
 
   //Biggest emission category
   largestEmission:
@@ -46,7 +43,6 @@ interface ListCardProps {
         type: "scope1" | "scope2" | "scope3";
       }
     | undefined;
-  largestEmissionTranslationKey: string;
 
   // Optional features
   isFinancialsSector?: boolean;
@@ -69,27 +65,27 @@ export function ListCard({
   changeRateTooltip,
   isFinancialsSector = false,
   largestEmission,
-  largestEmissionTranslationKey,
-  emissionTrackingTranslationKey,
-  companyBaseYear,
-  latestReportYear,
+  baseYear,
 }: ListCardProps) {
   const { t } = useTranslation();
   const category = useCategoryMetadata();
 
   let categoryName;
-
   if (largestEmission?.type === "scope3" && largestEmission.key !== null) {
     categoryName = category.getCategoryName(largestEmission?.key as number);
+  } else if (largestEmission?.type === "scope1") {
+    categoryName = t("companies.card.scope1");
+  } else if (largestEmission?.type === "scope2") {
+    categoryName = t("companies.card.scope2");
+  } else {
+    categoryName = t("unknown");
   }
 
-  // Use companyBaseYear if available, otherwise fallback to latestReportYear
-  const displayYear = companyBaseYear ?? latestReportYear;
   return (
     <div className="relative rounded-level-2 @container">
       <LocalizedLink
         to={linkTo}
-        className="block bg-black-2 rounded-level-2 p-8 space-y-4 transition-all duration-300 hover:shadow-[0_0_10px_rgba(153,207,255,0.15)] hover:bg-[#1a1a1a]"
+        className="block bg-black-2 rounded-level-2 p-8 space-y-4 transition-all min-h-[450px] duration-300 hover:shadow-[0_0_10px_rgba(153,207,255,0.15)] hover:bg-[#1a1a1a]"
       >
         {/* Header section */}
         <div>
@@ -141,14 +137,14 @@ export function ListCard({
 
             <div>
               <div className="flex flex-col gap-2 text-nowrap text-grey mt-2 text-lg">
-                {t(emissionTrackingTranslationKey)}
+                {t("companies.card.reportingSince")}
               </div>
               <div
                 className={cn(
                   "text-lg font-light text-white line-clamp-2 h-[48px]",
                 )}
               >
-                {displayYear ?? t("unknown")}
+                {baseYear ?? t("unknown")}
               </div>
             </div>
           </div>
@@ -167,18 +163,14 @@ export function ListCard({
           {/* Emissions */}
           <div>
             <div className="flex flex-col gap-2 text-nowrap text-grey mt-2 text-lg">
-              {t(largestEmissionTranslationKey)}
+              {t("companies.card.largestEmissionSource")}
             </div>
             <div
               className={cn(
                 "text-lg font-light text-white line-clamp-2 h-[48px]",
               )}
             >
-              {categoryName
-                ? categoryName
-                : largestEmission?.key !== null
-                  ? t(`companies.card.${largestEmission?.key}`)
-                  : t("unknown")}
+              {categoryName}
             </div>
           </div>
         </div>

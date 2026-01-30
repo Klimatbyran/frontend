@@ -1279,7 +1279,9 @@
       "missingReport": "Saknar report",
       "reportYear": "Rapporterat från {{year}}",
       "largestEmissionSource": "Största utsläppskälla",
-      "emissionTracking": "Rapporterat sedan"
+      "reportingSince": "Rapporterat sedan",
+      "scope1": "Scope 1",
+      "scope2": "Scope 2"
     },
     "dataView": {
       "overview": "Översikt",

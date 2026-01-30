@@ -1227,11 +1227,9 @@
       "missingReport": "Missing Report",
       "reportYear": "Report from {{year}}",
       "largestEmissionSource": "Largest emission source",
-      "emissionTracking": "Reporting since",
+      "reportingSince": "Reporting since",
       "scope1": "Scope 1",
-      "scope2": "Scope 2",
-      "yes": "Yes",
-      "no": "No"
+      "scope2": "Scope 2"
     },
     "dataView": {
       "overview": "Overview",
