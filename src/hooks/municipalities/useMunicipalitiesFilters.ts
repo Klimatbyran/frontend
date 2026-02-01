@@ -27,10 +27,11 @@ export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
     ? (searchParams.get("meetsParisFilter") as MeetsParisFilter)
     : "all";
   const selectedRegions = (searchParams
-      .get("selectedRegions")
-      ?.split(",")
-      .filter((s) => Object.keys(regions).some((region) => region === s) || s == "all") ??
-      []) as string[];
+    .get("selectedRegions")
+    ?.split(",")
+    .filter(
+      (s) => Object.keys(regions).some((region) => region === s) || s == "all",
+    ) ?? ["all"]) as string[];
   const sortBy = isMunicipalitySortBy(searchParams.get("sortBy") ?? "")
     ? (searchParams.get("sortBy") as MunicipalitySortBy)
     : "emissions";
@@ -143,11 +144,14 @@ export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
 
   const activeFilters = useMemo(() => {
     return [
-      ...(selectedRegions.length > 0 && !selectedRegions.includes("all")
+      ...(!selectedRegions.includes("all")
         ? selectedRegions.map((selectedRegion) => ({
             type: "filter" as const,
             label: selectedRegion,
-            onRemove: () => setSelectedRegions(selectedRegions.filter((s) => s !== selectedRegion)),
+            onRemove: () =>
+              setSelectedRegions(
+                selectedRegions.filter((s) => s !== selectedRegion),
+              ),
           }))
         : []),
       ...(meetsParisFilter !== "all"
@@ -207,7 +211,10 @@ const filterAndSortMunicipalities = (
   return municipalities
     .filter((municipality) => {
       // Filter by region
-      if (selectedRegions.length > 0 && !selectedRegions.includes("all") && !selectedRegions.includes(municipality.region)) {
+      if (
+        !selectedRegions.includes("all") &&
+        !selectedRegions.includes(municipality.region)
+      ) {
         return false;
       }
 
