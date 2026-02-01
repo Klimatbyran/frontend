@@ -26,7 +26,11 @@ export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
   )
     ? (searchParams.get("meetsParisFilter") as MeetsParisFilter)
     : "all";
-  const selectedRegion = searchParams.get("selectedRegion") || "all";
+  const selectedRegions = (searchParams
+      .get("selectedRegions")
+      ?.split(",")
+      .filter((s) => Object.keys(regions).some((region) => region === s) || s == "all") ??
+      []) as string[];
   const sortBy = isMunicipalitySortBy(searchParams.get("sortBy") ?? "")
     ? (searchParams.get("sortBy") as MunicipalitySortBy)
     : "emissions";
@@ -54,9 +58,13 @@ export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
       ),
     [],
   );
-  const setSelectedRegion = useCallback(
-    (selectedRegion: string) =>
-      setOrDeleteSearchParam(setSearchParams, selectedRegion, "selectedRegion"),
+  const setSelectedRegions = useCallback(
+    (selectedRegions: string[]) =>
+      setOrDeleteSearchParam(
+        setSearchParams,
+        selectedRegions.length > 0 ? selectedRegions.join(",") : null,
+        "selectedRegions",
+      ),
     [],
   );
   const setSortBy = useCallback(
@@ -73,7 +81,7 @@ export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
   const filteredMunicipalities = useMemo(
     () =>
       filterAndSortMunicipalities(municipalities, {
-        selectedRegion,
+        selectedRegions,
         meetsParisFilter,
         searchQuery,
         sortBy,
@@ -81,7 +89,7 @@ export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
       }),
     [
       municipalities,
-      selectedRegion,
+      selectedRegions,
       meetsParisFilter,
       searchQuery,
       sortBy,
@@ -99,9 +107,19 @@ export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
         },
         ...Object.keys(regions).map((r) => ({ value: r, label: r })),
       ],
-      selectedValues: [selectedRegion],
-      onSelect: setSelectedRegion,
-      selectMultiple: false,
+      selectedValues: selectedRegions,
+      onSelect: (value: string) => {
+        if (value === "all") {
+          setSelectedRegions(["all"]);
+        } else if (selectedRegions.includes("all")) {
+          setSelectedRegions([value]);
+        } else if (selectedRegions.includes(value)) {
+          setSelectedRegions(selectedRegions.filter((s) => s !== value));
+        } else {
+          setSelectedRegions([...selectedRegions, value]);
+        }
+      },
+      selectMultiple: true,
     },
     {
       heading: t("explorePage.municipalities.sortingOptions.meetsParis"),
@@ -125,14 +143,12 @@ export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
 
   const activeFilters = useMemo(() => {
     return [
-      ...(selectedRegion !== "all"
-        ? [
-            {
-              type: "filter" as const,
-              label: selectedRegion,
-              onRemove: () => setSelectedRegion("all"),
-            },
-          ]
+      ...(selectedRegions.length > 0 && !selectedRegions.includes("all")
+        ? selectedRegions.map((selectedRegion) => ({
+            type: "filter" as const,
+            label: selectedRegion,
+            onRemove: () => setSelectedRegions(selectedRegions.filter((s) => s !== selectedRegion)),
+          }))
         : []),
       ...(meetsParisFilter !== "all"
         ? [
@@ -147,18 +163,18 @@ export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
         : []),
     ];
   }, [
-    selectedRegion,
+    selectedRegions,
     meetsParisFilter,
     t,
-    setSelectedRegion,
+    setSelectedRegions,
     setMeetsParisFilter,
   ]);
 
   return {
     searchQuery,
     setSearchQuery,
-    selectedRegion,
-    setSelectedRegion,
+    selectedRegions,
+    setSelectedRegions,
     meetsParisFilter,
     setMeetsParisFilter,
     sortBy,
@@ -174,7 +190,7 @@ export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
 const filterAndSortMunicipalities = (
   municipalities: Municipality[],
   filters: {
-    selectedRegion: string;
+    selectedRegions: string[];
     meetsParisFilter: MeetsParisFilter;
     searchQuery: string;
     sortBy: MunicipalitySortBy;
@@ -182,7 +198,7 @@ const filterAndSortMunicipalities = (
   },
 ): Municipality[] => {
   const {
-    selectedRegion,
+    selectedRegions,
     meetsParisFilter,
     searchQuery,
     sortBy,
@@ -191,7 +207,7 @@ const filterAndSortMunicipalities = (
   return municipalities
     .filter((municipality) => {
       // Filter by region
-      if (selectedRegion !== "all" && municipality.region !== selectedRegion) {
+      if (selectedRegions.length > 0 && !selectedRegions.includes("all") && !selectedRegions.includes(municipality.region)) {
         return false;
       }
 
