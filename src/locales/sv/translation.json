@@ -1779,15 +1779,15 @@
     "searchCategoryCompanies": "Företag",
     "searchCategoryMunicipality": "Kommun",
     "searchCategoryMunicipalities": "Kommuner",
-    "searchCategoryBlogPost": "Blogg Inlägg",
-    "searchCategoryBlogPosts": "Blogg Inlägg",
+    "searchCategoryBlogPost": "Blogginlägg",
+    "searchCategoryBlogPosts": "Blogginlägg",
     "searchCategoryPage": "Sida",
     "placeholder": "Exempel: Alfa Laval",
     "headerButtonTitle": "Sök",
     "searchDialog": {
       "title": "Sök",
-      "description": "Sök efter företag, kommuner eller blogg inlägg",
-      "emptyText": "Börja skriva för att söka efter företag, kommuner eller blogg inlägg",
+      "description": "Sök efter företag, kommuner eller blogginlägg",
+      "emptyText": "Börja skriva för att söka efter företag, kommuner eller blogginlägg",
       "loadingText": "Hämtar företag och kommuner...",
       "shortcutTipText": "Starta sök med Ctrl+K / ⌘+K"
     }
