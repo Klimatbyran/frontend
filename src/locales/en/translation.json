@@ -1733,8 +1733,8 @@
     "headerButtonTitle": "Search",
     "searchDialog": {
       "title": "Search",
-      "description": "Search for companies, municipalities or articles",
-      "emptyText": "Start typing to search for companies, municipalities or articles",
+      "description": "Search for companies, municipalities or blog posts",
+      "emptyText": "Start typing to search for companies, municipalities or blog posts",
       "loadingText": "Fetching companies and municipalities...",
       "shortcutTipText": "Trigger search by Ctrl+K / ⌘+K"
     }

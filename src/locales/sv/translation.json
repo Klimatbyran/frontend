@@ -1786,8 +1786,8 @@
     "headerButtonTitle": "Sök",
     "searchDialog": {
       "title": "Sök",
-      "description": "Sök efter företag, kommuner eller artiklar",
-      "emptyText": "Börja skriva för att söka efter företag, kommuner eller artiklar",
+      "description": "Sök efter företag, kommuner eller blogg inlägg",
+      "emptyText": "Börja skriva för att söka efter företag, kommuner eller blogg inlägg",
       "loadingText": "Hämtar företag och kommuner...",
       "shortcutTipText": "Starta sök med Ctrl+K / ⌘+K"
     }
