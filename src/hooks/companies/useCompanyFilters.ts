@@ -33,8 +33,9 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
   const sectors = (searchParams
     .get("sectors")
     ?.split(",")
-    .filter((s) => SECTORS.some((sector) => sector.value === s)) ??
-    []) as CompanySector[];
+    .filter((s) => SECTORS.some((sector) => sector.value === s)) ?? [
+    "all",
+  ]) as CompanySector[];
   const sortBy = isSortOption(searchParams.get("sortBy") ?? "")
     ? (searchParams.get("sortBy") as SortOption)
     : "total_emissions";
@@ -91,7 +92,6 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
       .filter((company) => {
         // Filter by sector
         const matchesSector =
-          sectors.length === 0 ||
           sectors.includes("all") ||
           (company.industry?.industryGics?.sectorCode &&
             sectors.includes(company.industry.industryGics.sectorCode));
@@ -251,7 +251,7 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
 
   const activeFilters = useMemo(() => {
     return [
-      ...(sectors.length > 0 && !sectors.includes("all")
+      ...(!sectors.includes("all")
         ? sectors.map((sector) => ({
             type: "filter" as const,
             label: sectorNames[sector as keyof typeof sectorNames] || sector,
