@@ -1,7 +1,7 @@
 /**
  * Prerender script for generating static HTML files
  * Uses Puppeteer to render routes and save HTML files
- * 
+ *
  * Install dependencies: npm install --save-dev puppeteer
  * Run: node scripts/prerender.mjs
  */
@@ -10,6 +10,24 @@ import { readFileSync, writeFileSync, mkdirSync, statSync } from "fs";
 import { resolve, dirname, join } from "path";
 import { fileURLToPath } from "url";
 import { createServer } from "http";
+
+/**
+ * Resolve and validate that the requested path is under the safe root.
+ * Prevents path traversal (e.g. ../../../etc/passwd).
+ * @param {string} rootDir - Safe root directory (e.g. dist)
+ * @param {string} requestPathname - Pathname from request (e.g. /sv/about)
+ * @returns {string|null} Resolved absolute path, or null if outside root
+ */
+function resolvePathWithinRoot(rootDir, requestPathname) {
+  const normalizedRoot = resolve(rootDir);
+  // Strip leading slash and treat empty as index
+  const relative = (requestPathname || "/").replace(/^\//, "") || "index.html";
+  const resolved = resolve(normalizedRoot, relative);
+  if (!resolved.startsWith(normalizedRoot)) {
+    return null;
+  }
+  return resolved;
+}
 
 // Helper function to wait/delay
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -44,13 +62,22 @@ const __dirname = dirname(__filename);
 function createStaticServer(distDir, port) {
   return new Promise((resolve) => {
     const server = createServer((req, res) => {
-      let filePath = join(distDir, req.url === "/" ? "index.html" : req.url);
+      const pathname = (req.url || "/").split("?")[0].split("#")[0];
+      let filePath = resolvePathWithinRoot(distDir, pathname);
+      if (filePath === null) {
+        res.writeHead(403, { "Content-Type": "text/plain" });
+        res.end("Forbidden");
+        return;
+      }
 
-      // If it's a directory, try index.html
+      // If it's a directory, try index.html (path stays under root)
       try {
         const stat = statSync(filePath);
         if (stat.isDirectory()) {
-          filePath = join(filePath, "index.html");
+          const withIndex = join(filePath, "index.html");
+          if (resolve(withIndex).startsWith(resolve(distDir))) {
+            filePath = withIndex;
+          }
         }
       } catch (e) {
         // File doesn't exist, try as file
