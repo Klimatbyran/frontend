@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { Command as CommandPrimitive } from "cmdk";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { useTranslation } from "react-i18next";
@@ -18,6 +18,7 @@ import {
   DialogPortal,
   DialogTitle,
 } from "../ui/dialog";
+import { Building2, TreePine, Newspaper } from "lucide-react";
 
 interface SearchDialogProps {
   open: boolean;
@@ -151,7 +152,8 @@ export function SearchDialog({
 
                 {companies.length > 0 && (
                   <div className="pt-4">
-                    <p className="text-sm">
+                    <p className="text-sm flex items-center gap-1">
+                      <Building2 height={15} />{" "}
                       {t("globalSearch.searchCategoryCompanies")}
                     </p>
                     {companies
@@ -173,7 +175,8 @@ export function SearchDialog({
 
                 {municipalities.length > 0 && (
                   <div className="pt-4">
-                    <p className="text-sm">
+                    <p className="text-sm flex items-center gap-1">
+                      <TreePine height={15} />
                       {t("globalSearch.searchCategoryMunicipalities")}
                     </p>
                     {municipalities
@@ -195,7 +198,8 @@ export function SearchDialog({
 
                 {blogPosts.length > 0 && (
                   <div className="pt-4">
-                    <p className="text-sm">
+                    <p className="text-sm flex items-center gap-1">
+                      <Newspaper height={15} />
                       {t("globalSearch.searchCategoryBlogPosts")}
                     </p>
                     {blogPosts
