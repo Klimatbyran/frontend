@@ -1,5 +1,5 @@
 #!/usr/bin/env tsx
-/* eslint-disable no-console */
+ 
 
 import { readdirSync, readFileSync } from "fs";
 import { join, dirname, basename, relative } from "path";
