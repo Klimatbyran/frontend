@@ -1227,6 +1227,7 @@
       "missingReport": "Missing Report",
       "reportYear": "Report from {{year}}",
       "largestEmissionSource": "Largest emission source",
+      "notEnoughData": "Not enough data to determine",
       "reportingSince": "Reporting since",
       "scope1": "Scope 1",
       "scope2": "Scope 2"

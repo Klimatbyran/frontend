@@ -113,7 +113,7 @@ export function ListCard({
               ? t("yes")
               : meetsParis === false
                 ? t("no")
-                : t("na")}
+                : t("companies.card.notEnoughData")}
           </div>
 
           {/* Sustainability report / Climate plan section */}
