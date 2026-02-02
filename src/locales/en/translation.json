@@ -1723,8 +1723,11 @@
   "globalSearch": {
     "title": "Find a company or municipality",
     "searchCategoryCompany": "Company",
+    "searchCategoryCompanies": "Companies",
     "searchCategoryMunicipality": "Municipality",
+    "searchCategoryMunicipalities": "Municipalities",
     "searchCategoryBlogPost": "Blog Post",
+    "searchCategoryBlogPosts": "Blog Posts",
     "searchCategoryPage": "Page",
     "placeholder": "Example: Alfa Laval, Stockholm, Paris Agreement",
     "headerButtonTitle": "Search",

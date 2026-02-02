@@ -1776,8 +1776,11 @@
   "globalSearch": {
     "title": "Hitta ett företag eller kommun",
     "searchCategoryCompany": "Företag",
+    "searchCategoryCompanies": "Företag",
     "searchCategoryMunicipality": "Kommun",
+    "searchCategoryMunicipalities": "Kommuner",
     "searchCategoryBlogPost": "Blogg Inlägg",
+    "searchCategoryBlogPosts": "Blogg Inlägg",
     "searchCategoryPage": "Sida",
     "placeholder": "Exempel: Alfa Laval",
     "headerButtonTitle": "Sök",

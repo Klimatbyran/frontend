@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Command as CommandPrimitive } from "cmdk";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { useTranslation } from "react-i18next";
@@ -37,7 +37,7 @@ const SearchResultItem = ({ item }: { item: CombinedData }) => {
   return (
     <div className="flex items-center w-full text-sm text-gray-500 hover:cursor-pointer">
       <span>{item.name}</span>
-      <span className="ml-auto mr-2">
+      <span className="ml-auto mr-2 min-w-[120px] text-right">
         {t(resultTypeTranslationKeys[item.category])}
       </span>
     </div>
@@ -84,6 +84,20 @@ export function SearchDialog({
     }
   }, [open]);
 
+  const companies = results.data.filter(
+    (item) => item.category === "companies",
+  );
+
+  const municipalities = results.data.filter(
+    (item) => item.category === "municipalities",
+  );
+
+  const blogPosts = results.data.filter(
+    (item) => item.category === "blogPosts",
+  );
+
+  console.log("companies", companies);
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogPortal>
@@ -118,7 +132,7 @@ export function SearchDialog({
                 </p>
               </CommandEmpty>
               <CommandList
-                className="transition-all duration-200 ease-in-out"
+                className="pt-4 transition-all duration-200 ease-in-out"
                 style={{
                   maxHeight:
                     results.data.length > 0
@@ -135,18 +149,71 @@ export function SearchDialog({
                   </CommandPrimitive.Loading>
                 )}
 
-                {results.data.map((item) => (
-                  <CommandItem
-                    key={item.id}
-                    onSelect={() => {
-                      onSelectResponse(item);
-                      setOpen(false);
-                    }}
-                    className="px-4 py-3"
-                  >
-                    <SearchResultItem item={item} />
-                  </CommandItem>
-                ))}
+                {companies.length > 0 && (
+                  <div className="pt-4">
+                    <p className="text-sm">
+                      {t("globalSearch.searchCategoryCompanies")}
+                    </p>
+                    {companies
+                      .map((item) => (
+                        <CommandItem
+                          key={item.id}
+                          onSelect={() => {
+                            onSelectResponse(item);
+                            setOpen(false);
+                          }}
+                          className="px-4 py-3"
+                        >
+                          <SearchResultItem item={item} />
+                        </CommandItem>
+                      ))
+                      .slice(0, 5)}
+                  </div>
+                )}
+
+                {municipalities.length > 0 && (
+                  <div className="pt-4">
+                    <p className="text-sm">
+                      {t("globalSearch.searchCategoryMunicipalities")}
+                    </p>
+                    {municipalities
+                      .map((item) => (
+                        <CommandItem
+                          key={item.id}
+                          onSelect={() => {
+                            onSelectResponse(item);
+                            setOpen(false);
+                          }}
+                          className="px-4 py-3"
+                        >
+                          <SearchResultItem item={item} />
+                        </CommandItem>
+                      ))
+                      .slice(0, 5)}
+                  </div>
+                )}
+
+                {blogPosts.length > 0 && (
+                  <div className="pt-4">
+                    <p className="text-sm">
+                      {t("globalSearch.searchCategoryBlogPosts")}
+                    </p>
+                    {blogPosts
+                      .map((item) => (
+                        <CommandItem
+                          key={item.id}
+                          onSelect={() => {
+                            onSelectResponse(item);
+                            setOpen(false);
+                          }}
+                          className="px-4 py-3"
+                        >
+                          <SearchResultItem item={item} />
+                        </CommandItem>
+                      ))
+                      .slice(0, 5)}
+                  </div>
+                )}
               </CommandList>
             </Command>
             <div className="flex justify-center text-white/40 text-sm mb-4">
