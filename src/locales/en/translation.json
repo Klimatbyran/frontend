@@ -8,11 +8,12 @@
   "header": {
     "data": "Data",
     "companies": "Companies",
+    "companiesTopLists": "Company Top Lists",
     "companiesSectors": "Sectors",
-    "companiesRanked": "Top Lists",
+    "companiesRanked": "Company Top Lists",
     "explore": "Explore",
     "municipalities": "Municipalities",
-    "municipalitiesRanked": "Top Lists",
+    "municipalitiesRanked": "Municipality Top Lists",
     "regionsRanked": "Regions",
     "about": "About",
     "aboutUs": "About Us",
@@ -358,7 +359,7 @@
     "relatedArticles": "Related Articles"
   },
   "companiesRankedPage": {
-    "title": "Company Rankings",
+    "title": "Company Top Lists",
     "description": "Compare companies based on key climate indicators",
     "errorTitle": "Failed to retrieve company information",
     "errorDescription": "Please try again later",

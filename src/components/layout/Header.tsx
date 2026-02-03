@@ -42,12 +42,12 @@ const NAV_LINKS: NavLink[] = [
     path: `/explore`,
     sublinks: [
       {
-        label: "header.companies",
+        label: "header.companiesRanked",
         path: `/companies/ranked`,
         onlyShowOnStaging: true,
       },
       {
-        label: "header.municipalities",
+        label: "header.municipalitiesRanked",
         path: `/municipalities`,
       },
       {
