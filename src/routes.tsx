@@ -37,6 +37,7 @@ import { RegionalRankedPage } from "./pages/RegionalRankedPage";
 import { RegionDetailPage } from "./pages/RegionDetailPage";
 import { CompaniesRankedPage } from "./pages/CompaniesRankedPage";
 import { ExplorePage } from "./pages/ExplorePage";
+import { EuropeanRankedPage } from "./pages/EuropeanRankedPage";
 
 // Conditional landing page component that shows new version on localhost/staging
 function ConditionalLandingPage() {
@@ -121,6 +122,9 @@ export function AppRoutes() {
       {/* Strict regions routes */}
       <Route path={`${basePath}/regions`} element={<RegionalRankedPage />} />
       <Route path={`${basePath}/regions/:id`} element={<RegionDetailPage />} />
+
+      {/* Strict europe routes */}
+      <Route path={`${basePath}/europe`} element={<EuropeanRankedPage />} />
 
       {/* Strict municipalities routes */}
       <Route

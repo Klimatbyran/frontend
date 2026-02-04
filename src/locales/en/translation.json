@@ -11,6 +11,7 @@
     "companiesSectors": "Sectors",
     "companiesRanked": "Top Lists",
     "explore": "Explore",
+    "europe": "Europe",
     "municipalities": "Municipalities",
     "municipalitiesRanked": "Top Lists",
     "regionsRanked": "Regions",
@@ -1433,6 +1434,39 @@
           "label": "Paris Agreement",
           "description": "Emissions trend compared to the Paris Agreement",
           "detailedDescription": "Which regions are on track to meet the Paris Agreement?",
+          "source": "National Emissions Database",
+          "booleanLabels": {
+            "true": "Meets Paris Agreement",
+            "false": "Fails Paris Agreement"
+          }
+        }
+      }
+    }
+  },
+  "europeanRankedPage": {
+    "title": "European Overview",
+    "description": "Overview of emissions and transition at the European level"
+  },
+  "europe": {
+    "list": {
+      "dataSelector": {
+        "label": "Select Data Point",
+        "tooltips": {
+          "higherBetter": "Higher values are better",
+          "lowerBetter": "Lower values are better"
+        }
+      },
+      "kpis": {
+        "historicalEmissionChangePercent": {
+          "label": "Emissions",
+          "description": "Historical change in emissions",
+          "detailedDescription": "Average annual percentage change in greenhouse gas emissions in European countries since the Paris Agreement in 2015.",
+          "source": "National Emissions Database"
+        },
+        "meetsParis": {
+          "label": "Paris Agreement",
+          "description": "Emissions trend compared to the Paris Agreement",
+          "detailedDescription": "Which European countries are on track to meet the Paris Agreement?",
           "source": "National Emissions Database",
           "booleanLabels": {
             "true": "Meets Paris Agreement",
