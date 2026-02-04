@@ -97,6 +97,13 @@ function EuropeanContentView({
           defaultCenter={[55, 15]}
           defaultZoom={3}
           propertyNameField="NAME"
+          colors={{
+            null: "color-mix(in srgb, var(--black-3) 80%, transparent)",
+            gradientStart: "var(--pink-5)",
+            gradientMidLow: "var(--pink-4)",
+            gradientMidHigh: "var(--pink-3)",
+            gradientEnd: "var(--blue-3)",
+          }}
         />
       </div>
     ) : (
@@ -130,17 +137,20 @@ export function EuropeanRankedPage() {
     setKPIInURL,
     setViewModeInURL,
   } = useRankedEuropeURLParams(europeanKPIs);
+
   const handleCountryClick = createEntityClickHandler(
     navigate,
     "europe",
     viewMode,
   );
+
   const { countryEntities, mapData, filteredGeoData, countriesAsEntities } =
     useEuropeanData(countriesData, selectedKPI, geoData);
   const handleCountryAreaClick = (name: string) => {
     const country = countriesData.find((c) => c.name === name);
     handleCountryClick(country || name);
   };
+
   const europeanRankedList = (
     <EuropeanRankedList
       countryEntities={countryEntities}
@@ -148,6 +158,7 @@ export function EuropeanRankedPage() {
       onItemClick={handleCountryClick}
     />
   );
+
   const handleKPIChange = (kpi: KPIValue<EuropeanCountry>) => {
     setSelectedKPI(kpi);
     setKPIInURL(String(kpi.key));
@@ -162,6 +173,7 @@ export function EuropeanRankedPage() {
         viewMode={viewMode}
         onViewModeChange={(mode) => setViewModeInURL(mode)}
       />
+
       <EuropeanContentView
         viewMode={viewMode}
         filteredGeoData={filteredGeoData}
@@ -170,6 +182,7 @@ export function EuropeanRankedPage() {
         onAreaClick={handleCountryAreaClick}
         europeanRankedList={europeanRankedList}
       />
+
       <EuropeanInsightsPanel
         countriesData={countriesAsEntities}
         selectedKPI={selectedKPI}
