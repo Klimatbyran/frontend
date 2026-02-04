@@ -1750,6 +1750,11 @@
     },
     "rank": "Rank: {{rank}} of {{total}}"
   },
+  "rankedInsights": {
+    "titleBest": "Top Five {{entityPlural}}",
+    "titleTop": "Top Performing {{entityPlural}}",
+    "titleWorst": "Bottom Five {{entityPlural}}"
+  },
   "chartLegend": {
     "clickToFilterOut": "Click to filter out",
     "scrollToSeeMore": "Scroll to see more"

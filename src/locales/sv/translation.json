@@ -1031,7 +1031,8 @@
   },
   "regionalRankedPage": {
     "title": "Länsöversikt",
-    "description": "Översikt över utsläpp och omställning på länsnivå"
+    "description": "Översikt över utsläpp och omställning på länsnivå",
+    "entityPlural": "län"
   },
   "detailPage": {
     "totalEmissions": "Totala utsläpp {{year}}",
@@ -1071,7 +1072,8 @@
     "errorTitle": "Det gick inte att hämta kommuninformation",
     "errorDescription": "Försök igen senare",
     "title": "Kommuntopplistor",
-    "description": "Data om utsläpp och klimatomställning i kommunerna"
+    "description": "Data om utsläpp och klimatomställning i kommunerna",
+    "entityPlural": "kommuner"
   },
   "municipalityDetailPage": {
     "metaTitle": "Data om utsläpp och omställning",
@@ -1802,6 +1804,11 @@
       "placeholder": "Sök..."
     },
     "rank": "Placering: {{rank}} av {{total}}"
+  },
+  "rankedInsights": {
+    "titleBest": "Topp fem {{entityPlural}}",
+    "titleTop": "Bästa {{entityPlural}}",
+    "titleWorst": "Botten fem {{entityPlural}}"
   },
   "chartLegend": {
     "clickToFilterOut": "Klicka för att filtrera bort",

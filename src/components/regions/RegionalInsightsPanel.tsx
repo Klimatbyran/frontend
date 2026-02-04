@@ -52,6 +52,8 @@ function RegionalInsightsPanel({
 
   const sourceLinks = createSourceLinks(selectedKPI);
 
+  const entityPlural = t("header.regionsRanked").toLowerCase();
+
   return (
     <div className="flex-1 overflow-y-auto min-h-0 pr-2">
       <div
@@ -72,8 +74,9 @@ function RegionalInsightsPanel({
             <InsightsList<Region>
               title={t(
                 selectedKPI.higherIsBetter
-                  ? "municipalities.list.insights.topPerformers.titleTop"
-                  : "municipalities.list.insights.topPerformers.titleBest",
+                  ? "rankedInsights.titleTop"
+                  : "rankedInsights.titleBest",
+                { entityPlural },
               )}
               entities={topMunicipalities}
               totalCount={regionData.length}
@@ -85,7 +88,9 @@ function RegionalInsightsPanel({
               nameKey="name"
             />
             <InsightsList
-              title={t("municipalities.list.insights.improvement.title")}
+              title={t("rankedInsights.titleWorst", {
+                entityPlural,
+              })}
               entities={bottomMunicipalities}
               totalCount={regionData.length}
               isBottomRanking
