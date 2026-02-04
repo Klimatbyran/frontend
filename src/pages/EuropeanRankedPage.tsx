@@ -95,6 +95,7 @@ function EuropeanContentView({
           selectedKPI={selectedKPI}
           onAreaClick={onAreaClick}
           defaultCenter={[55, 15]}
+          defaultZoom={3}
           propertyNameField="NAME"
         />
       </div>
