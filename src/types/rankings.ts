@@ -1,4 +1,4 @@
-import { DataItem } from "@/components/maps/SwedenMap";
+import { DataItem } from "@/components/maps/TerritoryMap";
 import { Municipality } from "./municipality";
 import { Region } from "./region";
 import { CompanyWithKPIs } from "./company";
