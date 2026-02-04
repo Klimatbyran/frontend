@@ -1,4 +1,5 @@
 import { t } from "i18next";
+import { Trans } from "react-i18next";
 import { Fragment } from "react/jsx-runtime";
 
 interface DistributionStat {
@@ -37,20 +38,41 @@ export default function KPIDetailsPanel({
   const sourceSection = sourceLinks.length > 0 && (
     <p className="text-gray-400 text-sm border-gray-700/50 italic">
       {t("municipalities.list.source")}{" "}
-      {sourceLinks.map((link, index) => (
-        <Fragment key={link.url}>
-          {index > 0 && ", "}
-          <a
-            href={link.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline hover:text-gray-300 transition-colors duration-200"
-            title={t(link.label)}
-          >
-            {t(link.label)}
-          </a>
-        </Fragment>
-      ))}
+      {sourceLinks.map((link, index) => {
+        const translationKey = link.label;
+        const translationString = t(translationKey, { returnObjects: false });
+        const hasComponents = typeof translationString === "string" && translationString.includes("<0>");
+        
+        return (
+          <Fragment key={link.url}>
+            {index > 0 && ", "}
+            {hasComponents ? (
+              <Trans
+                i18nKey={translationKey}
+                components={[
+                  <a
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline hover:text-gray-300 transition-colors duration-200"
+                    title={translationString.replace(/<[^>]*>/g, "")}
+                  />,
+                ]}
+              />
+            ) : (
+              <a
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-gray-300 transition-colors duration-200"
+                title={translationString}
+              >
+                {translationString}
+              </a>
+            )}
+          </Fragment>
+        );
+      })}
     </p>
   );
 

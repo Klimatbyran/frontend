@@ -1527,7 +1527,8 @@
           "label": "Bicycles",
           "description": "Bicycle path metres per capita",
           "detailedDescription": "Number of metres of bicycle paths per inhabitant per municipality in 2024. Longer is better, as good infrastructure promotes increased cycling.",
-          "source": "<0>National Road Database</0>, <1>Swedish Transport Administration</1>"
+          "source0": "<0>National Road Database</0>",
+          "source1": "<0>Swedish Transport Administration</0>"
         },
         "climatePlan": {
           "label": "Climate Plans",
