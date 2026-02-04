@@ -1601,13 +1601,6 @@
           "distributionAbove": "kommuner över genomsnittet",
           "distributionBelow": "kommuner under genomsnittet",
           "distributionBoolean": "kommuner "
-        },
-        "topPerformers": {
-          "titleBest": "Topp fem kommuner",
-          "titleTop": "Toppresterande kommuner"
-        },
-        "improvement": {
-          "title": "Botten fem kommuner"
         }
       },
       "viewToggle": {
