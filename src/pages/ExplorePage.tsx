@@ -20,6 +20,17 @@ export function ExplorePage() {
     useMunicipalities();
   const { companies, companiesLoading, companiesError } = useCompanies();
 
+  // Filter out search params that are not applicable to both municipalities and companies
+  const urlSearchParams = new URLSearchParams(window.location.search);
+  const globalUrlSearchParamStr = [
+    "sortBy",
+    "sortDirection",
+    "meetsParisFilter",
+  ]
+    .filter((s) => urlSearchParams.has(s))
+    .map((s) => `${s}=${urlSearchParams.get(s)}`)
+    .join("&");
+
   if (mainFilter !== "companies" && mainFilter !== "municipalities") {
     return <NotFoundPage />;
   }
@@ -74,7 +85,9 @@ export function ExplorePage() {
           <Toggle
             onClick={() => {
               if (mainFilter !== "companies") {
-                navigate("../companies", { relative: "path" });
+                navigate(["../companies", globalUrlSearchParamStr].join("?"), {
+                  relative: "path",
+                });
               }
             }}
             variant={"outlineWhite"}
@@ -85,7 +98,10 @@ export function ExplorePage() {
           <Toggle
             onClick={() => {
               if (mainFilter !== "municipalities") {
-                navigate("../municipalities", { relative: "path" });
+                navigate(
+                  ["../municipalities", globalUrlSearchParamStr].join("?"),
+                  { relative: "path" },
+                );
               }
             }}
             variant={"outlineWhite"}
