@@ -1373,13 +1373,6 @@
           "average": "Genomsnitt:",
           "distributionAbove": "företag över genomsnittet",
           "distributionBelow": "företag under genomsnittet"
-        },
-        "topPerformers": {
-          "titleTop": "Toppföretag",
-          "titleBest": "Bäst presterande företag"
-        },
-        "improvement": {
-          "title": "Företag som behöver förbättras"
         }
       },
       "sort": {
