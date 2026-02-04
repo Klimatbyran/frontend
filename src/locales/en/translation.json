@@ -1534,7 +1534,7 @@
           "label": "Climate Plans",
           "description": "Has an ongoing climate action plan",
           "detailedDescription": "Which municipalities have a climate action plan?",
-          "source": "<0>Klimatkollen’s open compilation of climate plans, with help from members of Klimatklubben and the Swedish Society for Nature Conservation (Naturskyddsföreningen).</0>",
+          "source": "Klimatkollen’s open compilation of climate plans, with help from members of Klimatklubben and the Swedish Society for Nature Conservation (Naturskyddsföreningen).",
           "booleanLabels": {
             "true": "Has Climate Plan",
             "false": "No Climate Plan"
