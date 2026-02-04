@@ -1401,6 +1401,11 @@
       "decreasing": "↘ Decreasing"
     }
   },
+  "nation": {
+    "detailPage": {
+      "regions": "Regions"
+    }
+  },
   "regions": {
     "detailPage": {
       "politicalRule": "Political rule",

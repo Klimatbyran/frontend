@@ -1454,6 +1454,11 @@
       "decreasing": "↘ Minskar"
     }
   },
+  "nation": {
+    "detailPage": {
+      "regions": "Län"
+    }
+  },
   "regions": {
     "detailPage": {
       "politicalRule": "Politiskt styre",
