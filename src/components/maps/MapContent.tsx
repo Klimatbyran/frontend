@@ -44,7 +44,11 @@ function MapContent({
       ref={mapRef}
       className="rounded-xl"
     >
-      <GeoJSON data={geoData} style={getAreaStyle} onEachFeature={onEachFeature} />
+      <GeoJSON
+        data={geoData}
+        style={getAreaStyle}
+        onEachFeature={onEachFeature}
+      />
       <MapController setPosition={setPosition} />
     </MapContainer>
   );
