@@ -17,16 +17,14 @@ import { createEntityClickHandler } from "@/utils/routing";
 import { KPIValue } from "@/types/rankings";
 import { EuropeanCountry } from "@/types/europe";
 import { DataItem } from "@/components/maps/SwedenMap";
-import React from "react";
 
-interface EuropeanContentViewProps {
-  viewMode: "map" | "list";
-  filteredGeoData: FeatureCollection;
-  mapData: DataItem[];
-  selectedKPI: KPIValue<EuropeanCountry>;
-  onAreaClick: (name: string) => void;
-  europeanRankedList: React.ReactNode;
-}
+const MAP_COLORS = {
+  null: "color-mix(in srgb, var(--black-3) 80%, transparent)",
+  gradientStart: "var(--pink-5)",
+  gradientMidLow: "var(--pink-4)",
+  gradientMidHigh: "var(--pink-3)",
+  gradientEnd: "var(--blue-3)",
+};
 
 interface EuropeanPageHeaderProps {
   selectedKPI: KPIValue<EuropeanCountry>;
@@ -77,49 +75,35 @@ function EuropeanPageHeader({
   );
 }
 
-function EuropeanContentView({
-  viewMode,
-  filteredGeoData,
+interface EuropeanMapProps {
+  geoData: FeatureCollection;
+  mapData: DataItem[];
+  selectedKPI: KPIValue<EuropeanCountry>;
+  onAreaClick: (name: string) => void;
+  className?: string;
+}
+
+function EuropeanMap({
+  geoData,
   mapData,
   selectedKPI,
   onAreaClick,
-  europeanRankedList,
-}: EuropeanContentViewProps) {
-  const renderMapOrList = (isMobile: boolean) =>
-    viewMode === "map" ? (
-      <div className={isMobile ? "relative h-[65vh]" : "relative h-full"}>
-        <MapOfSweden
-          entityType="europe"
-          geoData={filteredGeoData}
-          data={mapData}
-          selectedKPI={selectedKPI}
-          onAreaClick={onAreaClick}
-          defaultCenter={[55, 15]}
-          defaultZoom={3}
-          propertyNameField="NAME"
-          colors={{
-            null: "color-mix(in srgb, var(--black-3) 80%, transparent)",
-            gradientStart: "var(--pink-5)",
-            gradientMidLow: "var(--pink-4)",
-            gradientMidHigh: "var(--pink-3)",
-            gradientEnd: "var(--blue-3)",
-          }}
-        />
-      </div>
-    ) : (
-      europeanRankedList
-    );
-
+  className,
+}: EuropeanMapProps) {
   return (
-    <>
-      <div className="lg:hidden space-y-6">{renderMapOrList(true)}</div>
-      <div className="hidden lg:grid grid-cols-1 gap-6">
-        <div className="grid grid-cols-2 gap-6">
-          {renderMapOrList(false)}
-          {viewMode === "map" ? europeanRankedList : null}
-        </div>
-      </div>
-    </>
+    <div className={className}>
+      <MapOfSweden
+        entityType="europe"
+        geoData={geoData}
+        data={mapData}
+        selectedKPI={selectedKPI}
+        onAreaClick={onAreaClick}
+        defaultCenter={[55, 15]}
+        defaultZoom={3}
+        propertyNameField="NAME"
+        colors={MAP_COLORS}
+      />
+    </div>
   );
 }
 
@@ -164,6 +148,13 @@ export function EuropeanRankedPage() {
     setKPIInURL(String(kpi.key));
   };
 
+  const insightsPanel = (
+    <EuropeanInsightsPanel
+      countriesData={countriesAsEntities}
+      selectedKPI={selectedKPI}
+    />
+  );
+
   return (
     <>
       <EuropeanPageHeader
@@ -173,20 +164,37 @@ export function EuropeanRankedPage() {
         viewMode={viewMode}
         onViewModeChange={(mode) => setViewModeInURL(mode)}
       />
-
-      <EuropeanContentView
-        viewMode={viewMode}
-        filteredGeoData={filteredGeoData}
-        mapData={mapData}
-        selectedKPI={selectedKPI}
-        onAreaClick={handleCountryAreaClick}
-        europeanRankedList={europeanRankedList}
-      />
-
-      <EuropeanInsightsPanel
-        countriesData={countriesAsEntities}
-        selectedKPI={selectedKPI}
-      />
+      <div className="lg:hidden space-y-6">
+        {viewMode === "map" ? (
+          <EuropeanMap
+            geoData={filteredGeoData}
+            mapData={mapData}
+            selectedKPI={selectedKPI}
+            onAreaClick={handleCountryAreaClick}
+            className="relative h-[65vh]"
+          />
+        ) : (
+          europeanRankedList
+        )}
+        {insightsPanel}
+      </div>
+      <div className="hidden lg:grid grid-cols-1 gap-6">
+        <div className="grid grid-cols-2 gap-6">
+          {viewMode === "map" ? (
+            <EuropeanMap
+              geoData={filteredGeoData}
+              mapData={mapData}
+              selectedKPI={selectedKPI}
+              onAreaClick={handleCountryAreaClick}
+              className="relative h-full"
+            />
+          ) : (
+            europeanRankedList
+          )}
+          {viewMode === "map" ? europeanRankedList : null}
+        </div>
+        {insightsPanel}
+      </div>
     </>
   );
 }
