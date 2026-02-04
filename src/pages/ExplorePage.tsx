@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useCompanies } from "@/hooks/companies/useCompanies";
 import { PageHeader } from "@/components/layout/PageHeader";
@@ -8,17 +7,22 @@ import { CompanyList } from "@/components/companies/list/CompanyList";
 import { MunicipalityList } from "@/components/municipalities/list/MunicipalityList";
 import { Toggle } from "@/components/ui/toggle";
 import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
+import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router";
+import { NotFoundPage } from "./NotFoundPage";
 
 export function ExplorePage() {
   const { t } = useTranslation();
   const screenSize = useScreenSize();
-  const [mainFilter, setMainFilter] = useState<"companies" | "municipalities">(
-    "companies",
-  );
-
+  const navigate = useNavigate();
+  const { mainFilter } = useParams();
   const { municipalities, municipalitiesLoading, municipalitiesError } =
     useMunicipalities();
   const { companies, companiesLoading, companiesError } = useCompanies();
+
+  if (mainFilter !== "companies" && mainFilter !== "municipalities") {
+    return <NotFoundPage />;
+  }
 
   if (municipalitiesLoading || companiesLoading) {
     return (
@@ -68,7 +72,11 @@ export function ExplorePage() {
         <div className={cn("flex flex-wrap items-center gap-2 mb-4")}>
           {/* Search Input */}
           <Toggle
-            onClick={() => setMainFilter("companies")}
+            onClick={() => {
+              if (mainFilter !== "companies") {
+                navigate("../companies", { relative: "path" });
+              }
+            }}
             variant={"outlineWhite"}
             pressed={mainFilter === "companies"}
           >
@@ -76,7 +84,9 @@ export function ExplorePage() {
           </Toggle>
           <Toggle
             onClick={() => {
-              setMainFilter("municipalities");
+              if (mainFilter !== "municipalities") {
+                navigate("../municipalities", { relative: "path" });
+              }
             }}
             variant={"outlineWhite"}
             pressed={mainFilter === "municipalities"}
