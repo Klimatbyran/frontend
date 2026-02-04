@@ -14,6 +14,7 @@
     "municipalities": "Municipalities",
     "municipalitiesRanked": "Top Lists",
     "regionsRanked": "Regions",
+    "nation": "Sweden",
     "about": "About",
     "aboutUs": "About Us",
     "products": "Products",
@@ -1398,6 +1399,11 @@
       "trend": "Trend:",
       "increasing": "↗ Increasing",
       "decreasing": "↘ Decreasing"
+    }
+  },
+  "nation": {
+    "detailPage": {
+      "regions": "Regions"
     }
   },
   "regions": {

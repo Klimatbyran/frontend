@@ -35,6 +35,7 @@ import { ParisAlignedStatisticsPage } from "./pages/internal-pages/ParisAlignedS
 import { NewsLetterArchivePage } from "./pages/NewslettersPage";
 import { RegionalRankedPage } from "./pages/RegionalRankedPage";
 import { RegionDetailPage } from "./pages/RegionDetailPage";
+import { NationDetailPage } from "./pages/NationDetailPage";
 import { CompaniesRankedPage } from "./pages/CompaniesRankedPage";
 import { ExplorePage } from "./pages/ExplorePage";
 
@@ -121,6 +122,9 @@ export function AppRoutes() {
       {/* Strict regions routes */}
       <Route path={`${basePath}/regions`} element={<RegionalRankedPage />} />
       <Route path={`${basePath}/regions/:id`} element={<RegionDetailPage />} />
+
+      {/* Strict nation routes */}
+      <Route path={`${basePath}/nation`} element={<NationDetailPage />} />
 
       {/* Strict municipalities routes */}
       <Route
