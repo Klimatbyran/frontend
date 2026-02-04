@@ -13,7 +13,7 @@
     "explore": "Explore",
     "municipalities": "Municipalities",
     "municipalitiesRanked": "Top Lists",
-    "regionsRanked": "Regions",
+    "regions": "Regions",
     "about": "About",
     "aboutUs": "About Us",
     "products": "Products",
@@ -1543,8 +1543,6 @@
         },
         "keyStatistics": {
           "average": "Average:",
-          "distributionAbove": "municipalities above average",
-          "distributionBelow": "municipalities below average",
           "distributionBoolean": "municipalities "
         }
       },
@@ -1737,6 +1735,8 @@
     "rank": "Rank: {{rank}} of {{total}}"
   },
   "rankedInsights": {
+    "belowAverage": "{{entityPlural}} below average",
+    "aboveAverage": "{{entityPlural}} above average",
     "titleBest": "Top Five {{entityPlural}}",
     "titleTop": "Top Performing {{entityPlural}}",
     "titleWorst": "Bottom Five {{entityPlural}}"

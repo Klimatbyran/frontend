@@ -13,7 +13,7 @@
     "explore": "Utforska",
     "municipalities": "Kommuner",
     "municipalitiesRanked": "Topplistor",
-    "regionsRanked": "Län",
+    "regions": "Län",
     "about": "Om",
     "aboutUs": "Om oss",
     "products": "Produkter",
@@ -1598,8 +1598,6 @@
         },
         "keyStatistics": {
           "average": "Genomsnitt:",
-          "distributionAbove": "kommuner över genomsnittet",
-          "distributionBelow": "kommuner under genomsnittet",
           "distributionBoolean": "kommuner "
         }
       },
@@ -1792,6 +1790,8 @@
     "rank": "Placering: {{rank}} av {{total}}"
   },
   "rankedInsights": {
+    "belowAverage": "{{entityPlural}} under genomsnittet",
+    "aboveAverage": "{{entityPlural}} över genomsnittet",
     "titleBest": "Topp fem {{entityPlural}}",
     "titleTop": "Bästa {{entityPlural}}",
     "titleWorst": "Botten fem {{entityPlural}}"

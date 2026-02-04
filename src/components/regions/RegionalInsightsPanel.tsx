@@ -31,6 +31,7 @@ function RegionalInsightsPanel({
     regionData,
     selectedKPI,
     (m) => m[selectedKPI.key as keyof Region],
+    "regions",
   );
 
   if (!statistics.validData.length) {
@@ -52,7 +53,7 @@ function RegionalInsightsPanel({
 
   const sourceLinks = createSourceLinks(selectedKPI);
 
-  const entityPlural = t("header.regionsRanked").toLowerCase();
+  const entityPlural = t("header.regions").toLowerCase();
 
   return (
     <div className="flex-1 overflow-y-auto min-h-0 pr-2">
