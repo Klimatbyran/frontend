@@ -47,6 +47,11 @@ const NAV_LINKS: NavLink[] = [
         onlyShowOnStaging: true,
       },
       {
+        label: "header.europe",
+        path: `/europe`,
+        onlyShowOnStaging: true,
+      },
+      {
         label: "header.municipalities",
         path: `/municipalities`,
       },
