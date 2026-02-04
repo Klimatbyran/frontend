@@ -3,7 +3,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { KPIValue } from "@/types/rankings";
 import { EuropeanCountry } from "@/types/europe";
 
-export function useRankedEuropeURLParams(europeanKPIs: KPIValue<EuropeanCountry>[]) {
+export function useRankedEuropeURLParams(
+  europeanKPIs: KPIValue<EuropeanCountry>[],
+) {
   const location = useLocation();
   const navigate = useNavigate();
 

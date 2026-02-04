@@ -18,12 +18,12 @@ export function getEntityDetailPath(
 ): string {
   const name = typeof entity === "string" ? entity : entity.name;
   const formattedName = name.toLowerCase();
-  
+
   if (entityType === "europe") {
     // No detail page for European countries yet, return overview page
     return "/europe";
   }
-  
+
   const basePath = entityType === "region" ? "/regions" : "/municipalities";
 
   if (entityType === "municipality" && viewMode) {

@@ -1,120 +1,49 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { Map, List } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { FeatureCollection } from "geojson";
 import { useNavigate } from "react-router-dom";
 import { PageHeader } from "@/components/layout/PageHeader";
-import MapOfSweden, { DataItem } from "@/components/maps/SwedenMap";
+import MapOfSweden from "@/components/maps/SwedenMap";
 import europeGeoJson from "@/data/europeGeo.json";
 import { useRankedEuropeURLParams } from "@/hooks/europe/useRankedEuropeURLParams";
-import {
-  useEurope,
-  EuropeData,
-  useEuropeanKPIs,
-} from "@/hooks/europe/useEuropeKPIs";
+import { useEurope, useEuropeanKPIs } from "@/hooks/europe/useEuropeKPIs";
+import { useEuropeanData } from "@/hooks/europe/useEuropeanData";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import EuropeanInsightsPanel from "@/components/europe/EuropeanInsightsPanel";
-import { EuropeanCountry } from "@/types/europe";
 import { EuropeanRankedList } from "@/components/europe/EuropeanRankedList";
 import { KPIDataSelector } from "@/components/ranked/KPIDataSelector";
 import { createEntityClickHandler } from "@/utils/routing";
-import { RankedListItem } from "@/types/rankings";
+import { KPIValue } from "@/types/rankings";
+import { EuropeanCountry } from "@/types/europe";
+import { DataItem } from "@/components/maps/SwedenMap";
+import React from "react";
 
-export function EuropeanRankedPage() {
+interface EuropeanContentViewProps {
+  viewMode: "map" | "list";
+  filteredGeoData: FeatureCollection;
+  mapData: DataItem[];
+  selectedKPI: KPIValue<EuropeanCountry>;
+  onAreaClick: (name: string) => void;
+  europeanRankedList: React.ReactNode;
+}
+
+interface EuropeanPageHeaderProps {
+  selectedKPI: KPIValue<EuropeanCountry>;
+  onKPIChange: (kpi: KPIValue<EuropeanCountry>) => void;
+  europeanKPIs: KPIValue<EuropeanCountry>[];
+  viewMode: "map" | "list";
+  onViewModeChange: (mode: "map" | "list") => void;
+}
+
+function EuropeanPageHeader({
+  selectedKPI,
+  onKPIChange,
+  europeanKPIs,
+  viewMode,
+  onViewModeChange,
+}: EuropeanPageHeaderProps) {
   const { t } = useTranslation();
-  const europeanKPIs = useEuropeanKPIs();
-  const [geoData] = useState<FeatureCollection>(europeGeoJson as FeatureCollection);
-  const { countriesData } = useEurope();
-
-  const navigate = useNavigate();
-
-  const {
-    selectedKPI,
-    setSelectedKPI,
-    viewMode,
-    setKPIInURL,
-    setViewModeInURL,
-  } = useRankedEuropeURLParams(europeanKPIs);
-
-  const handleCountryClick = createEntityClickHandler(
-    navigate,
-    "europe",
-    viewMode,
-  );
-
-  // Create an adapter for MapOfSweden
-  const handleCountryAreaClick = (name: string) => {
-    const country = countriesData.find((c) => c.name === name);
-    if (country) {
-      handleCountryClick(country);
-    } else {
-      handleCountryClick(name);
-    }
-  };
-
-  // Transform countries data from European KPIs endpoint into required formats
-  const countryEntities: RankedListItem[] = useMemo(() => {
-    return countriesData.map((countryData: EuropeData) => {
-      return {
-        name: countryData.name,
-        id: countryData.name,
-        displayName: countryData.name,
-        mapName: countryData.name,
-        historicalEmissionChangePercent:
-          countryData.historicalEmissionChangePercent,
-        meetsParis: countryData.meetsParis,
-      };
-    });
-  }, [countriesData]);
-
-  const mapData: DataItem[] = useMemo(() => {
-    return countryEntities.map((country) => ({
-      ...country,
-      id: country.mapName,
-      name: country.mapName,
-      displayName: country.displayName,
-    }));
-  }, [countryEntities]);
-
-  const countriesAsEntities: EuropeanCountry[] = useMemo(() => {
-    return countryEntities.map((country) => ({
-      id: String(country.id),
-      name: country.displayName,
-      emissions: null,
-      historicalEmissionChangePercent:
-        typeof country.historicalEmissionChangePercent === "number"
-          ? country.historicalEmissionChangePercent
-          : null,
-      meetsParis:
-        typeof country.meetsParis === "boolean" ? country.meetsParis : null,
-    }));
-  }, [countryEntities]);
-
-  const europeanRankedList = (
-    <EuropeanRankedList
-      countryEntities={countryEntities}
-      selectedKPI={selectedKPI}
-      onItemClick={handleCountryClick}
-    />
-  );
-
-  const renderMapOrList = (isMobile: boolean) =>
-    viewMode === "map" ? (
-      <div className={isMobile ? "relative h-[65vh]" : "relative h-full"}>
-        <MapOfSweden
-          entityType="europe"
-          geoData={geoData}
-          data={mapData}
-          selectedKPI={selectedKPI}
-          onAreaClick={handleCountryAreaClick}
-          defaultCenter={[55, 15]}
-          propertyNameField="NAME"
-        />
-      </div>
-    ) : (
-      europeanRankedList
-    );
-
   return (
     <>
       <PageHeader
@@ -122,22 +51,17 @@ export function EuropeanRankedPage() {
         description={t("europeanRankedPage.description")}
         className="-ml-4"
       />
-
       <KPIDataSelector
         selectedKPI={selectedKPI}
-        onKPIChange={(kpi) => {
-          setSelectedKPI(kpi);
-          setKPIInURL(String(kpi.key));
-        }}
+        onKPIChange={onKPIChange}
         kpis={europeanKPIs}
         translationPrefix="europe.list"
       />
-
       <div className="flex mb-4 lg:hidden">
         <ViewModeToggle
           viewMode={viewMode}
           modes={["map", "list"]}
-          onChange={(mode) => setViewModeInURL(mode)}
+          onChange={onViewModeChange}
           titles={{
             map: t("viewModeToggle.map"),
             list: t("viewModeToggle.list"),
@@ -149,27 +73,106 @@ export function EuropeanRankedPage() {
           }}
         />
       </div>
+    </>
+  );
+}
 
-      {/* Mobile View */}
-      <div className="lg:hidden space-y-6">
-        {renderMapOrList(true)}
-        <EuropeanInsightsPanel
-          countriesData={countriesAsEntities}
+function EuropeanContentView({
+  viewMode,
+  filteredGeoData,
+  mapData,
+  selectedKPI,
+  onAreaClick,
+  europeanRankedList,
+}: EuropeanContentViewProps) {
+  const renderMapOrList = (isMobile: boolean) =>
+    viewMode === "map" ? (
+      <div className={isMobile ? "relative h-[65vh]" : "relative h-full"}>
+        <MapOfSweden
+          entityType="europe"
+          geoData={filteredGeoData}
+          data={mapData}
           selectedKPI={selectedKPI}
+          onAreaClick={onAreaClick}
+          defaultCenter={[55, 15]}
+          propertyNameField="NAME"
         />
       </div>
+    ) : (
+      europeanRankedList
+    );
 
-      {/* Desktop View */}
+  return (
+    <>
+      <div className="lg:hidden space-y-6">{renderMapOrList(true)}</div>
       <div className="hidden lg:grid grid-cols-1 gap-6">
         <div className="grid grid-cols-2 gap-6">
           {renderMapOrList(false)}
           {viewMode === "map" ? europeanRankedList : null}
         </div>
-        <EuropeanInsightsPanel
-          countriesData={countriesAsEntities}
-          selectedKPI={selectedKPI}
-        />
       </div>
+    </>
+  );
+}
+
+export function EuropeanRankedPage() {
+  const europeanKPIs = useEuropeanKPIs();
+  const [geoData] = useState<FeatureCollection>(
+    europeGeoJson as FeatureCollection,
+  );
+  const { countriesData } = useEurope();
+  const navigate = useNavigate();
+  const {
+    selectedKPI,
+    setSelectedKPI,
+    viewMode,
+    setKPIInURL,
+    setViewModeInURL,
+  } = useRankedEuropeURLParams(europeanKPIs);
+  const handleCountryClick = createEntityClickHandler(
+    navigate,
+    "europe",
+    viewMode,
+  );
+  const { countryEntities, mapData, filteredGeoData, countriesAsEntities } =
+    useEuropeanData(countriesData, selectedKPI, geoData);
+  const handleCountryAreaClick = (name: string) => {
+    const country = countriesData.find((c) => c.name === name);
+    handleCountryClick(country || name);
+  };
+  const europeanRankedList = (
+    <EuropeanRankedList
+      countryEntities={countryEntities}
+      selectedKPI={selectedKPI}
+      onItemClick={handleCountryClick}
+    />
+  );
+  const handleKPIChange = (kpi: KPIValue<EuropeanCountry>) => {
+    setSelectedKPI(kpi);
+    setKPIInURL(String(kpi.key));
+  };
+
+  return (
+    <>
+      <EuropeanPageHeader
+        selectedKPI={selectedKPI}
+        onKPIChange={handleKPIChange}
+        europeanKPIs={europeanKPIs}
+        viewMode={viewMode}
+        onViewModeChange={(mode) => setViewModeInURL(mode)}
+      />
+      <EuropeanContentView
+        viewMode={viewMode}
+        filteredGeoData={filteredGeoData}
+        mapData={mapData}
+        selectedKPI={selectedKPI}
+        onAreaClick={handleCountryAreaClick}
+        europeanRankedList={europeanRankedList}
+      />
+      <EuropeanInsightsPanel
+        countriesData={countriesAsEntities}
+        selectedKPI={selectedKPI}
+      />
     </>
   );
 }

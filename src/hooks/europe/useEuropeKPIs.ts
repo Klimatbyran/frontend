@@ -69,9 +69,7 @@ export const useEuropeanKPIs = (): KPIValue<EuropeanCountry>[] => {
       key: "meetsParis",
       unit: "",
       description: t("europe.list.kpis.meetsParis.description"),
-      detailedDescription: t(
-        "europe.list.kpis.meetsParis.detailedDescription",
-      ),
+      detailedDescription: t("europe.list.kpis.meetsParis.detailedDescription"),
       higherIsBetter: true,
       isBoolean: true,
       booleanLabels: {
