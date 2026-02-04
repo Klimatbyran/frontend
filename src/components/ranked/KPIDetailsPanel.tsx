@@ -39,36 +39,29 @@ export default function KPIDetailsPanel({
     <p className="text-gray-400 text-sm border-gray-700/50 italic">
       {t("municipalities.list.source")}{" "}
       {sourceLinks.map((link, index) => {
-        const translationKey = link.label;
-        const translationString = t(translationKey, { returnObjects: false });
-        const hasComponents = typeof translationString === "string" && translationString.includes("<0>");
-        
+        const translationString = t(link.label, { returnObjects: false });
+        const hasComponents =
+          typeof translationString === "string" &&
+          translationString.includes("<0>");
+
+        const linkProps = {
+          href: link.url,
+          target: "_blank" as const,
+          rel: "noopener noreferrer",
+          className:
+            "underline hover:text-gray-300 transition-colors duration-200",
+          title: hasComponents
+            ? translationString.replace(/<[^>]*>/g, "")
+            : translationString,
+        };
+
         return (
           <Fragment key={link.url}>
             {index > 0 && ", "}
             {hasComponents ? (
-              <Trans
-                i18nKey={translationKey}
-                components={[
-                  <a
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline hover:text-gray-300 transition-colors duration-200"
-                    title={translationString.replace(/<[^>]*>/g, "")}
-                  />,
-                ]}
-              />
+              <Trans i18nKey={link.label} components={[<a {...linkProps} />]} />
             ) : (
-              <a
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline hover:text-gray-300 transition-colors duration-200"
-                title={translationString}
-              >
-                {translationString}
-              </a>
+              <a {...linkProps}>{translationString}</a>
             )}
           </Fragment>
         );

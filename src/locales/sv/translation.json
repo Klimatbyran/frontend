@@ -1580,8 +1580,8 @@
           "label": "Cyklarna",
           "description": "Meter cykelväg per invånare",
           "detailedDescription": "Antal meter cykelväg per invånare per kommun år 2024. Ju längre desto bättre, god infrastruktur gynnar ökad cykling",
-          "source0": "<0>Nationella Vägdatabasen</0>",
-          "source1": "<0>Trafikverket</0>"
+          "source0": "Nationella Vägdatabasen",
+          "source1": "SCB"
         },
         "climatePlan": {
           "label": "Klimatplanerna",
