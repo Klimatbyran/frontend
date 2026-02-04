@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { SectorEmissionsResponse } from "@/types/emissions";
 
-export type EntityType = "municipalities" | "regions";
+export type EntityType = "municipalities" | "regions" | "nation";
 
 export function useSectorEmissions(
   entityType: EntityType,
@@ -13,11 +13,15 @@ export function useSectorEmissions(
     error,
   } = useQuery({
     queryKey: [`${entityType}SectorEmissions`, id],
-    queryFn: () =>
-      fetch(
+    queryFn: () => {
+      if (entityType === "nation") {
+        return fetch(`/api/nation/sector-emissions`).then((res) => res.json());
+      }
+      return fetch(
         `/api/${entityType}/${encodeURIComponent(id || "")}/sector-emissions`,
-      ).then((res) => res.json()),
-    enabled: !!id,
+      ).then((res) => res.json());
+    },
+    enabled: entityType === "nation" ? true : !!id,
   });
 
   return {
