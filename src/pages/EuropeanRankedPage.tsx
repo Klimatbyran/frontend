@@ -164,6 +164,7 @@ export function EuropeanRankedPage() {
         viewMode={viewMode}
         onViewModeChange={(mode) => setViewModeInURL(mode)}
       />
+
       <div className="lg:hidden space-y-6">
         {viewMode === "map" ? (
           <EuropeanMap
@@ -178,6 +179,7 @@ export function EuropeanRankedPage() {
         )}
         {insightsPanel}
       </div>
+
       <div className="hidden lg:grid grid-cols-1 gap-6">
         <div className="grid grid-cols-2 gap-6">
           {viewMode === "map" ? (
