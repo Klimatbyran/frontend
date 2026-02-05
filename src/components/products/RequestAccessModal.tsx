@@ -14,6 +14,10 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
+import createClient from "openapi-fetch";
+import type { paths } from "@/lib/api-types";
+import { baseUrl } from "@/lib/api";
+import { authMiddleware } from "@/lib/auth-middleware";
 
 interface RequestAccessModalProps {
   isOpen: boolean;
@@ -48,21 +52,19 @@ export const RequestAccessModal = ({
     }
 
     try {
-      const response = await fetch("/api/download-request", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
+      // Create a client instance with auth middleware for this request
+      const requestClient = createClient<paths>({ baseUrl });
+      requestClient.use(authMiddleware);
+
+      const { data, error } = await requestClient.POST("/download-request", {
+        body: {
           email,
           reason,
-        }),
+        } as paths["/download-request"]["post"]["requestBody"]["content"]["application/json"],
       });
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || "Failed to submit request");
+      if (error) {
+        throw new Error(error.message || "Failed to submit request");
       }
 
       setStatus("success");
