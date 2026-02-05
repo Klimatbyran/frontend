@@ -50,9 +50,6 @@ export function AppRoutes() {
   // Define base path based on language
   const basePath = currentLanguage === "sv" ? "/sv" : "/en";
 
-  //Redirecting old /companies and /municipalities/explore link to new combines /explore page
-  const RedirectToExplore = () => <Navigate to="/explore" replace />;
-
   return (
     <Routes>
       {/* Language redirect for non-prefixed routes */}
@@ -63,14 +60,20 @@ export function AppRoutes() {
       <Route path={`${basePath}/`} element={<ConditionalLandingPage />} />
 
       {/* General routes */}
-      <Route path={`${basePath}/explore`} element={<ExplorePage />} />
+      <Route
+        path={`${basePath}/explore/:mainFilter`}
+        element={<ExplorePage />}
+      />
 
       {/* Strict companies routes */}
       <Route
         path={`${basePath}/companies/sectors`}
         element={<CompaniesSectorsPage />}
       />
-      <Route path={`${basePath}/companies`} element={<RedirectToExplore />} />
+      <Route
+        path={`${basePath}/companies`}
+        element={<Navigate to="/explore/companies" replace />}
+      />
       <Route element={<StagingProtectedRoute />}>
         <Route
           path={`${basePath}/companies/ranked`}
@@ -133,7 +136,7 @@ export function AppRoutes() {
       />
       <Route
         path={`${basePath}/municipalities/explore`}
-        element={<RedirectToExplore />}
+        element={<Navigate to="/explore/municipalities" replace />}
       />
 
       {/* About Pages */}
