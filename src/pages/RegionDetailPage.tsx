@@ -131,7 +131,7 @@ export function RegionDetailPage() {
           getSectorInfo={getSectorInfo}
           filteredSectors={filteredSectors}
           onFilteredSectorsChange={setFilteredSectors}
-          helpItems={["municipalityEmissionSources"]}
+          helpItems={["municipalityAndRegionEmissionSources"]}
         />
 
         <EntityListBox
