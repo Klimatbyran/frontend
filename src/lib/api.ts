@@ -43,6 +43,21 @@ export async function authenticateWithGithub(code: string) {
   return data;
 }
 
+export async function authenticateWithClientSecret(
+  clientId: string,
+  clientSecret: string,
+) {
+  const { data, error } = await client.POST("/auth/token", {
+    body: {
+      client_id: clientId,
+      client_secret: clientSecret,
+    } as paths["/auth/token"]["post"]["requestBody"]["content"]["application/json"],
+  });
+
+  if (error) throw error;
+  return data;
+}
+
 // Companies API
 export async function getCompanies() {
   try {
