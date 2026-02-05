@@ -13,7 +13,8 @@ client.use(authMiddleware);
 // Set a timeout for API requests during sitemap generation
 const timeout = typeof window === "undefined" ? 10000 : undefined;
 
-const { GET } = createClient<paths>({
+// Create GET client with timeout support and apply auth middleware
+const getClient = createClient<paths>({
   baseUrl,
   fetch: (request: Request) => {
     if (typeof window === "undefined" && timeout) {
@@ -27,6 +28,8 @@ const { GET } = createClient<paths>({
     return fetch(request);
   },
 });
+getClient.use(authMiddleware);
+const { GET } = getClient;
 
 // Auth API
 export async function authenticateWithGithub(code: string) {
@@ -265,14 +268,12 @@ export async function getIndustryGics() {
 
 export const fetchNewsletters = async () => {
   try {
-    const response = await fetch(`${baseUrl}/newsletters/`);
-
-    if (response.ok) {
-      const result = await response.json();
-      return result;
-    }
+    const { data, error } = await client.GET("/newsletters/");
+    if (error) throw error;
+    return data;
   } catch (err) {
     console.log(err);
+    return null;
   }
 };
 
