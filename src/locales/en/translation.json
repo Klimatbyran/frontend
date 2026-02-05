@@ -102,11 +102,11 @@
       "description": "Monitor emissions data and climate commitments across Sweden.",
       "features": {
         "municipalityRankings": {
-          "title": "Municipality Rankings",
+          "title": "Municipality Top Lists",
           "description": "Track climate progress and emissions data from municipalities and local governments."
         },
         "companyRankings": {
-          "title": "Company Rankings",
+          "title": "Company Top Lists",
           "description": "Compare emissions performance, reduction targets, and sustainability metrics across Swedish companies."
         },
         "progressTracking": {

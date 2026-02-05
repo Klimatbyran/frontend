@@ -102,11 +102,11 @@
       "description": "Övervaka utsläppsdata och klimatåtaganden i hela Sverige.",
       "features": {
         "municipalityRankings": {
-          "title": "Kommunranking",
+          "title": "Kommuntopplistor",
           "description": "Spåra klimatframsteg och utsläppsdata från kommuner och lokala myndigheter."
         },
         "companyRankings": {
-          "title": "Företagsranking",
+          "title": "Företagstopplistor",
           "description": "Jämför utsläppsprestationer, minskningsmål och hållbarhetsmått för svenska företag."
         },
         "progressTracking": {
