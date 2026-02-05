@@ -1,5 +1,4 @@
 import { t } from "i18next";
-import { Trans } from "react-i18next";
 import { Fragment } from "react/jsx-runtime";
 
 interface DistributionStat {
@@ -40,9 +39,6 @@ export default function KPIDetailsPanel({
       {t("municipalities.list.source")}{" "}
       {sourceLinks.map((link, index) => {
         const translationString = t(link.label, { returnObjects: false });
-        const hasComponents =
-          typeof translationString === "string" &&
-          translationString.includes("<0>");
 
         const linkProps = {
           href: link.url,
@@ -50,19 +46,13 @@ export default function KPIDetailsPanel({
           rel: "noopener noreferrer",
           className:
             "underline hover:text-gray-300 transition-colors duration-200",
-          title: hasComponents
-            ? translationString.replace(/<[^>]*>/g, "")
-            : translationString,
+          title: translationString,
         };
 
         return (
           <Fragment key={link.url}>
             {index > 0 && ", "}
-            {hasComponents ? (
-              <Trans i18nKey={link.label} components={[<a {...linkProps} />]} />
-            ) : (
-              <a {...linkProps}>{translationString}</a>
-            )}
+            <a {...linkProps}>{translationString}</a>
           </Fragment>
         );
       })}
