@@ -45,7 +45,7 @@ export const useMunicipalityKPIs = (): KPIValue<Municipality>[] => {
       label: t("municipalities.list.kpis.totalConsumptionEmission.label"),
       key: "totalConsumptionEmission",
       unit: "t",
-      source: "municipalities.list.totalConsumptionEmission.source",
+      source: "municipalities.list.kpis.totalConsumptionEmission.source",
       sourceUrls: ["https://konsumtionskompassen.se/"],
       description: t(
         "municipalities.list.kpis.totalConsumptionEmission.description",
@@ -59,7 +59,7 @@ export const useMunicipalityKPIs = (): KPIValue<Municipality>[] => {
       label: t("municipalities.list.kpis.climatePlan.label"),
       key: "climatePlan",
       unit: "",
-      source: "municipalities.list.climatePlan.source",
+      source: "municipalities.list.kpis.climatePlan.source",
       sourceUrls: [
         "https://docs.google.com/spreadsheets/d/13CMqmfdd6QUD6agKFyVhwZUol4PKzvy253_EwtsFyvw/edit#gid=0",
       ],
@@ -114,7 +114,10 @@ export const useMunicipalityKPIs = (): KPIValue<Municipality>[] => {
       label: t("municipalities.list.kpis.bicycleMetrePerCapita.label"),
       key: "bicycleMetrePerCapita",
       unit: "m",
-      source: "municipalities.list.kpis.bicycleMetrePerCapita.source",
+      source: [
+        "municipalities.list.kpis.bicycleMetrePerCapita.source0",
+        "municipalities.list.kpis.bicycleMetrePerCapita.source1",
+      ],
       sourceUrls: [
         "https://nvdbpakarta.trafikverket.se/map",
         "https://www.scb.se/hitta-statistik/statistik-efter-amne/befolkning-och-levnadsforhallanden/befolkningens-sammansattning-och-utveckling/befolkningsstatistik/",
