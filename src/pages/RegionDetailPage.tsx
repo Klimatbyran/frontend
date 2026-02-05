@@ -11,7 +11,7 @@ import { PageNoData } from "@/components/pageStates/NoData";
 import { DetailHeader } from "@/components/detail/DetailHeader";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";
 import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
-import { MunicipalityListBox } from "@/components/regions/MunicipalityListBox";
+import { EntityListBox } from "@/components/territories/EntityListBox";
 import { useSectorEmissions } from "@/hooks/territories/useSectorEmissions";
 import { useSectors } from "@/hooks/territories/useSectors";
 import { useHiddenItems } from "@/components/charts";
@@ -131,7 +131,7 @@ export function RegionDetailPage() {
           getSectorInfo={getSectorInfo}
           filteredSectors={filteredSectors}
           onFilteredSectorsChange={setFilteredSectors}
-          helpItems={["regionEmissionSources"]}
+          helpItems={["municipalityEmissionSources"]}
         />
 
         <EntityListBox
