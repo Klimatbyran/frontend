@@ -131,11 +131,12 @@ export function RegionDetailPage() {
           getSectorInfo={getSectorInfo}
           filteredSectors={filteredSectors}
           onFilteredSectorsChange={setFilteredSectors}
-          helpItems={["municipalityEmissionSources"]}
+          helpItems={["regionEmissionSources"]}
         />
 
-        <MunicipalityListBox
-          municipalities={regionMunicipalities}
+        <EntityListBox
+          items={regionMunicipalities}
+          entityType="municipalities"
           translateNamespace="regions.detailPage"
         />
       </DetailWrapper>

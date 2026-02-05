@@ -32,6 +32,7 @@ export type DataGuideItemId =
   | "onTrackForParis"
   | "parisAgreementLine"
   | "regionTotalEmissions"
+  | "regionEmissionSources"
   | "relatableNumbers"
   | "scope1"
   | "scope2"
