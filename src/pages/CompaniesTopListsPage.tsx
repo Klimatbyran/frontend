@@ -154,7 +154,9 @@ export function CompaniesTopListPage() {
         <h3 className="text-red-500 mb-4 text-xl">
           {t("companiesTopListsPage.errorTitle")}
         </h3>
-        <p className="text-grey">{t("companiesTopListsPage.errorDescription")}</p>
+        <p className="text-grey">
+          {t("companiesTopListsPage.errorDescription")}
+        </p>
       </div>
     );
   }

@@ -286,9 +286,12 @@ export function BeeswarmChart<T>({
               />
             </div>
             <div className="text-center md:text-left order-1 md:order-2">
-              {t("companiesTopListsPage.visualizations.beeswarm.companiesShown", {
-                count: data.length,
-              })}
+              {t(
+                "companiesTopListsPage.visualizations.beeswarm.companiesShown",
+                {
+                  count: data.length,
+                },
+              )}
               {data.length >= maxDisplayCount &&
                 ` ${t(
                   "companiesTopListsPage.visualizations.beeswarm.showingFirst",

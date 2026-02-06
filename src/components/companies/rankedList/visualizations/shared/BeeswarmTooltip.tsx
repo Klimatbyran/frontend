@@ -96,12 +96,16 @@ export function BeeswarmTooltip({
 
     const budgetStatus =
       budgetValue < 0
-        ? t("companiesTopListsPage.visualizations.meetsParis.tooltip.underBudget")
+        ? t(
+            "companiesTopListsPage.visualizations.meetsParis.tooltip.underBudget",
+          )
         : budgetValue > 0
           ? t(
               "companiesTopListsPage.visualizations.meetsParis.tooltip.overBudget",
             )
-          : t("companiesTopListsPage.visualizations.meetsParis.tooltip.onBudget");
+          : t(
+              "companiesTopListsPage.visualizations.meetsParis.tooltip.onBudget",
+            );
 
     return (
       <div
@@ -161,7 +165,9 @@ export function BeeswarmTooltip({
         )}
         {isCapped && rawValue !== undefined && capThreshold !== undefined && (
           <p className="text-white/50 text-sm">
-            {t("companiesTopListsPage.visualizations.beeswarm.tooltip.cappedAt")}{" "}
+            {t(
+              "companiesTopListsPage.visualizations.beeswarm.tooltip.cappedAt",
+            )}{" "}
             {formatValue
               ? formatValue(capThreshold, unit)
               : `${capThreshold.toFixed(1)}${unit}`}{" "}
