@@ -9,7 +9,7 @@ import { AuthCallback } from "./pages/AuthCallback";
 import { BlogDetailPage } from "./pages/BlogDetailPage";
 import { CompanyEditPage } from "./pages/CompanyEditPage";
 import { CompanyDetailPage } from "./pages/CompanyDetailPage";
-import { CompaniesSectorsPage } from "./pages/CompaniesSectorsPage";
+import { SectorsOverviewPage } from "./pages/SectorsOverviewPage";
 import DownloadsPage from "./pages/DownloadsPage";
 import { ErrorPage } from "./pages/ErrorPage";
 import { InsightsPage } from "./pages/InsightsPage";
@@ -18,7 +18,7 @@ import { LandingPageNew } from "./pages/LandingPageNew";
 import { LearnMoreOverview } from "./pages/LearnMoreOverview";
 import { LearnMoreArticle } from "./pages/LearnMoreArticle";
 import { MethodsPage } from "./pages/MethodsPage";
-import { MunicipalitiesRankedPage } from "./pages/MunicipalitiesRankedPage";
+import { MunicipalitiesTopListPage } from "./pages/MunicipalitiesTopListsPage";
 import { MunicipalityDetailPage } from "./pages/MunicipalityDetailPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { ReportsPage } from "./pages/ReportsPage";
@@ -33,9 +33,9 @@ import { RequestsDashboard } from "./pages/internal-pages/RequestsDashboard";
 import { TrendAnalysisDashboard } from "./pages/internal-pages/TrendAnalysisDashboard";
 import { ParisAlignedStatisticsPage } from "./pages/internal-pages/ParisAlignedStatisticsPage";
 import { NewsLetterArchivePage } from "./pages/NewslettersPage";
-import { RegionalRankedPage } from "./pages/RegionalRankedPage";
+import { RegionalOverviewPage } from "./pages/RegionalOverviewPage";
 import { RegionDetailPage } from "./pages/RegionDetailPage";
-import { CompaniesRankedPage } from "./pages/CompaniesRankedPage";
+import { CompaniesTopListPage } from "./pages/CompaniesTopListsPage";
 import { ExplorePage } from "./pages/ExplorePage";
 
 // Conditional landing page component that shows new version on localhost/staging
@@ -50,9 +50,6 @@ export function AppRoutes() {
   // Define base path based on language
   const basePath = currentLanguage === "sv" ? "/sv" : "/en";
 
-  //Redirecting old /companies and /municipalities/explore link to new combines /explore page
-  const RedirectToExplore = () => <Navigate to="/explore" replace />;
-
   return (
     <Routes>
       {/* Language redirect for non-prefixed routes */}
@@ -66,15 +63,11 @@ export function AppRoutes() {
       <Route path={`${basePath}/explore`} element={<ExplorePage />} />
 
       {/* Strict companies routes */}
-      <Route
-        path={`${basePath}/companies/sectors`}
-        element={<CompaniesSectorsPage />}
-      />
-      <Route path={`${basePath}/companies`} element={<RedirectToExplore />} />
+      <Route path={`${basePath}/sectors`} element={<SectorsOverviewPage />} />
       <Route element={<StagingProtectedRoute />}>
         <Route
-          path={`${basePath}/companies/ranked`}
-          element={<CompaniesRankedPage />}
+          path={`${basePath}/companies`}
+          element={<CompaniesTopListPage />}
         />
       </Route>
       <Route
@@ -120,7 +113,10 @@ export function AppRoutes() {
 
       {/* Strict regions routes */}
       <Route element={<StagingProtectedRoute />}>
-        <Route path={`${basePath}/regions`} element={<RegionalRankedPage />} />
+        <Route
+          path={`${basePath}/regions`}
+          element={<RegionalOverviewPage />}
+        />
         <Route
           path={`${basePath}/regions/:id`}
           element={<RegionDetailPage />}
@@ -130,15 +126,11 @@ export function AppRoutes() {
       {/* Strict municipalities routes */}
       <Route
         path={`${basePath}/municipalities`}
-        element={<MunicipalitiesRankedPage />}
+        element={<MunicipalitiesTopListPage />}
       />
       <Route
         path={`${basePath}/municipalities/:id`}
         element={<MunicipalityDetailPage />}
-      />
-      <Route
-        path={`${basePath}/municipalities/explore`}
-        element={<RedirectToExplore />}
       />
 
       {/* About Pages */}

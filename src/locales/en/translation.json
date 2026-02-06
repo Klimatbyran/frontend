@@ -9,10 +9,10 @@
     "data": "Data",
     "companies": "Companies",
     "companiesSectors": "Sectors",
-    "companiesRanked": "Company Top Lists",
+    "companiesTopLists": "Company Top Lists",
     "explore": "Explore",
     "municipalities": "Municipalities",
-    "municipalitiesRanked": "Municipality Top Lists",
+    "municipalitiesTopLists": "Municipality Top Lists",
     "regionsRanked": "Regions",
     "about": "About",
     "aboutUs": "About Us",
@@ -357,7 +357,7 @@
     "shareText": "Check out this blog post!",
     "relatedArticles": "Related Articles"
   },
-  "companiesRankedPage": {
+  "companiesTopListsPage": {
     "title": "Company Top Lists",
     "description": "Compare companies based on key climate indicators",
     "errorTitle": "Failed to retrieve company information",
@@ -429,9 +429,9 @@
       "total": "Total Emissions"
     }
   },
-  "companiesSectorPage": {
-    "title": "Company Climate Data",
-    "description": "Overview of companies' climate impact and sustainability efforts",
+  "sectorsOverviewPage": {
+    "title": "Sector Overview",
+    "description": "Overview of emissions and transition at the sector level",
     "errorTitle": "Failed to retrieve company information",
     "errorDescription": "Please try again later",
     "noCompaniesFound": "No companies found",
@@ -976,9 +976,9 @@
       }
     }
   },
-  "regionalRankedPage": {
+  "regionalOverviewPage": {
     "title": "Regional Overview",
-    "description": "Overview of emissions and transition in the regional level"
+    "description": "Overview of emissions and transition at the regional level"
   },
   "detailPage": {
     "totalEmissions": "Total Emissions {{year}}",
@@ -1014,7 +1014,7 @@
       "noData": "No data available"
     }
   },
-  "municipalitiesRankedPage": {
+  "municipalitiesTopListsPage": {
     "errorTitle": "Failed to retrieve municipality information",
     "errorDescription": "Please try again later",
     "title": "Municipality Top Lists",

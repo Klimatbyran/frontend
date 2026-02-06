@@ -9,10 +9,10 @@
     "data": "Data",
     "companies": "Företag",
     "companiesSectors": "Branscher",
-    "companiesRanked": "Företagstopplistor",
+    "companiesTopLists": "Företagstopplistor",
     "explore": "Utforska",
     "municipalities": "Kommuner",
-    "municipalitiesRanked": "Kommuntopplistor",
+    "municipalitiesTopLists": "Kommuntopplistor",
     "regionsRanked": "Län",
     "about": "Om",
     "aboutUs": "Om oss",
@@ -357,7 +357,7 @@
     "shareText": "Kolla in det här blogginlägget!",
     "relatedArticles": "Relaterade artiklar"
   },
-  "companiesRankedPage": {
+  "companiesTopListsPage": {
     "title": "Företagstopplistor",
     "description": "Jämför företag baserat på viktiga klimatindikatorer",
     "errorTitle": "Kunde inte hämta företagsinformation",
@@ -483,9 +483,9 @@
       "downstreamActivitiesDescription": "Nedströmsaktiviteter bidrar med "
     }
   },
-  "companiesSectorPage": {
-    "title": "Företagens klimatdata",
-    "description": "Översikt över företagens klimatpåverkan och hållbarhetsarbete",
+  "sectorsOverviewPage": {
+    "title": "Branschöversikt",
+    "description": "Översikt över utsläpp och omställning på branschnivå",
     "errorTitle": "Det gick inte att hämta företagsinformation",
     "errorDescription": "Försök igen senare",
     "noCompaniesFound": "Inga företag hittades",
@@ -1029,7 +1029,7 @@
       }
     }
   },
-  "regionalRankedPage": {
+  "regionalOverviewPage": {
     "title": "Länsöversikt",
     "description": "Översikt över utsläpp och omställning på länsnivå"
   },
@@ -1067,7 +1067,7 @@
       "noData": "Inga data tillgängliga"
     }
   },
-  "municipalitiesRankedPage": {
+  "municipalitiesTopListsPage": {
     "errorTitle": "Det gick inte att hämta kommuninformation",
     "errorDescription": "Försök igen senare",
     "title": "Kommuntopplistor",

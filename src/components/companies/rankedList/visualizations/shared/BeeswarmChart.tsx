@@ -146,7 +146,7 @@ export function BeeswarmChart<T>({
           {unit}
           {capThreshold !== undefined && max >= capThreshold && (
             <span className="text-[10px] ml-1 opacity-70">
-              {t("companiesRankedPage.visualizations.beeswarm.capped")}
+              {t("companiesTopListsPage.visualizations.beeswarm.capped")}
             </span>
           )}
         </span>
@@ -286,12 +286,12 @@ export function BeeswarmChart<T>({
               />
             </div>
             <div className="text-center md:text-left order-1 md:order-2">
-              {t("companiesRankedPage.visualizations.beeswarm.companiesShown", {
+              {t("companiesTopListsPage.visualizations.beeswarm.companiesShown", {
                 count: data.length,
               })}
               {data.length >= maxDisplayCount &&
                 ` ${t(
-                  "companiesRankedPage.visualizations.beeswarm.showingFirst",
+                  "companiesTopListsPage.visualizations.beeswarm.showingFirst",
                   {
                     count: maxDisplayCount,
                   },
@@ -300,12 +300,12 @@ export function BeeswarmChart<T>({
           </>
         ) : (
           <div className="text-center w-full">
-            {t("companiesRankedPage.visualizations.beeswarm.companiesShown", {
+            {t("companiesTopListsPage.visualizations.beeswarm.companiesShown", {
               count: data.length,
             })}
             {data.length >= maxDisplayCount &&
               ` ${t(
-                "companiesRankedPage.visualizations.beeswarm.showingFirst",
+                "companiesTopListsPage.visualizations.beeswarm.showingFirst",
                 {
                   count: maxDisplayCount,
                 },
