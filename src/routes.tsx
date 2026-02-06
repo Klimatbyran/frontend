@@ -60,7 +60,10 @@ export function AppRoutes() {
       <Route path={`${basePath}/`} element={<ConditionalLandingPage />} />
 
       {/* General routes */}
-      <Route path={`${basePath}/explore`} element={<ExplorePage />} />
+      <Route
+        path={`${basePath}/explore/:mainFilter`}
+        element={<ExplorePage />}
+      />
 
       {/* Strict companies routes */}
       <Route path={`${basePath}/sectors`} element={<SectorsOverviewPage />} />
