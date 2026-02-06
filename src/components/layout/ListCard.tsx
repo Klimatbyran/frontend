@@ -85,14 +85,14 @@ export function ListCard({
     <div className="relative rounded-level-2 @container">
       <LocalizedLink
         to={linkTo}
-        className="block bg-black-2 rounded-level-2 p-8 space-y-4 transition-all min-h-[450px] duration-300 hover:shadow-[0_0_10px_rgba(153,207,255,0.15)] hover:bg-[#1a1a1a]"
+        className="block bg-black-2 rounded-level-2 p-8 md:space-y-4 transition-all min-h-[450px] duration-300 hover:shadow-[0_0_10px_rgba(153,207,255,0.15)] hover:bg-[#1a1a1a]"
       >
         {/* Header section */}
         <div>
-          <div className="flex">
+          <div className="flex justify-between">
             <div className="flex flex-col">
               <h2 className="text-3xl font-light">{name}</h2>
-              <p className="text-grey text-sm line-clamp-2 min-h-[40px]">
+              <p className="text-grey text-sm line -clamp-2 min-h-[40px]">
                 {description}
               </p>
             </div>
