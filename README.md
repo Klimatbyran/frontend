@@ -65,4 +65,4 @@ Postkodstiftelsen, ClimateView, Klimatklubben.se, Researcher's Desk, Exponential
 
 ## LICENSE 
 
-This project is licensed under the terms of the [Apache 2.0](LICENSE) © Klimatbyrån Ideell Förening. 
+This project is licensed under the terms of the [Apache 2.0](LICENSE) © Klimatbyrån Ideell Förening.
