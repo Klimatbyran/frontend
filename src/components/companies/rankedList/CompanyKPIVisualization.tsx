@@ -39,7 +39,7 @@ export function CompanyKPIVisualization({
       return (
         <div className="bg-black-2 rounded-level-2 p-8 h-full flex items-center justify-center">
           <p className="text-grey text-lg">
-            {t("companiesRankedPage.visualizations.noVisualizationAvailable")}
+            {t("companiesTopListsPage.visualizations.noVisualizationAvailable")}
           </p>
         </div>
       );

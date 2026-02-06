@@ -10,7 +10,7 @@ import { FilterBadges } from "@/components/companies/list/FilterBadges";
 import { useCompanyFilters } from "@/hooks/companies/useCompanyFilters";
 import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 
-export function CompaniesSectorsPage() {
+export function SectorsOverviewPage() {
   const { t } = useTranslation();
   const screenSize = useScreenSize();
   const { companies, companiesLoading, companiesError } = useCompanies();
@@ -39,12 +39,12 @@ export function CompaniesSectorsPage() {
       ? [
           {
             type: "filter" as const,
-            label: `${t("companiesSectorPage.filteringOptions.meetsParis")}: ${
+            label: `${t("sectorsOverviewPage.filteringOptions.meetsParis")}: ${
               meetsParisFilter === "yes"
-                ? t("companiesSectorPage.filteringOptions.meetsParisYes")
+                ? t("sectorsOverviewPage.filteringOptions.meetsParisYes")
                 : meetsParisFilter === "no"
-                  ? t("companiesSectorPage.filteringOptions.meetsParisNo")
-                  : t("companiesSectorPage.filteringOptions.meetsParisUnknown")
+                  ? t("sectorsOverviewPage.filteringOptions.meetsParisNo")
+                  : t("sectorsOverviewPage.filteringOptions.meetsParisUnknown")
             }`,
             onRemove: () => setMeetsParisFilter("all"),
           },
@@ -66,10 +66,10 @@ export function CompaniesSectorsPage() {
     return (
       <div className="text-center py-12">
         <h2 className="text-2xl font-light text-red-500">
-          {t("companiesSectorPage.errorTitle")}
+          {t("sectorsOverviewPage.errorTitle")}
         </h2>
         <p className="text-grey mt-2">
-          {t("companiesSectorPage.errorDescription")}
+          {t("sectorsOverviewPage.errorDescription")}
         </p>
       </div>
     );
@@ -78,8 +78,8 @@ export function CompaniesSectorsPage() {
   return (
     <>
       <PageHeader
-        title={t("companiesSectorPage.title")}
-        description={t("companiesSectorPage.description")}
+        title={t("sectorsOverviewPage.title")}
+        description={t("sectorsOverviewPage.description")}
         className="-ml-4"
       />
 
@@ -118,10 +118,10 @@ export function CompaniesSectorsPage() {
       {filteredCompanies.length === 0 ? (
         <div className="text-center py-12">
           <h3 className="text-xl font-light text-grey">
-            {t("companiesSectorPage.noCompaniesFound")}
+            {t("sectorsOverviewPage.noCompaniesFound")}
           </h3>
           <p className="text-grey mt-2">
-            {t("companiesSectorPage.tryDifferentCriteria")}
+            {t("sectorsOverviewPage.tryDifferentCriteria")}
           </p>
         </div>
       ) : (

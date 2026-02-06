@@ -21,7 +21,7 @@ import { KPIDataSelector } from "@/components/ranked/KPIDataSelector";
 import { createEntityClickHandler } from "@/utils/routing";
 import { RankedListItem } from "@/types/rankings";
 
-export function RegionalRankedPage() {
+export function RegionalOverviewPage() {
   const { t } = useTranslation();
   const regionalKPIs = useRegionalKPIs();
   const [geoData] = useState(regionGeoJson);
@@ -119,8 +119,8 @@ export function RegionalRankedPage() {
   return (
     <>
       <PageHeader
-        title={t("regionalRankedPage.title")}
-        description={t("regionalRankedPage.description")}
+        title={t("regionalOverviewPage.title")}
+        description={t("regionalOverviewPage.description")}
         className="-ml-4"
       />
 
