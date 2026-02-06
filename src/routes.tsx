@@ -18,7 +18,7 @@ import { LandingPageNew } from "./pages/LandingPageNew";
 import { LearnMoreOverview } from "./pages/LearnMoreOverview";
 import { LearnMoreArticle } from "./pages/LearnMoreArticle";
 import { MethodsPage } from "./pages/MethodsPage";
-import { MunicipalitiesRankedPage } from "./pages/MunicipalitiesRankedPage";
+import { MunicipalitiesTopListsPage } from "./pages/MunicipalitiesRankedPage";
 import { MunicipalityDetailPage } from "./pages/MunicipalityDetailPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { ReportsPage } from "./pages/ReportsPage";
@@ -35,7 +35,7 @@ import { ParisAlignedStatisticsPage } from "./pages/internal-pages/ParisAlignedS
 import { NewsLetterArchivePage } from "./pages/NewslettersPage";
 import { RegionalRankedPage } from "./pages/RegionalRankedPage";
 import { RegionDetailPage } from "./pages/RegionDetailPage";
-import { CompaniesRankedPage } from "./pages/CompaniesRankedPage";
+import { CompaniesTopListsPage } from "./pages/CompaniesRankedPage";
 import { ExplorePage } from "./pages/ExplorePage";
 
 // Conditional landing page component that shows new version on localhost/staging
@@ -50,9 +50,6 @@ export function AppRoutes() {
   // Define base path based on language
   const basePath = currentLanguage === "sv" ? "/sv" : "/en";
 
-  //Redirecting old /companies and /municipalities/explore link to new combines /explore page
-  const RedirectToExplore = () => <Navigate to="/explore" replace />;
-
   return (
     <Routes>
       {/* Language redirect for non-prefixed routes */}
@@ -66,15 +63,11 @@ export function AppRoutes() {
       <Route path={`${basePath}/explore`} element={<ExplorePage />} />
 
       {/* Strict companies routes */}
-      <Route
-        path={`${basePath}/companies/sectors`}
-        element={<CompaniesSectorsPage />}
-      />
-      <Route path={`${basePath}/companies`} element={<RedirectToExplore />} />
+      <Route path={`${basePath}/sectors`} element={<CompaniesSectorsPage />} />
       <Route element={<StagingProtectedRoute />}>
         <Route
-          path={`${basePath}/companies/ranked`}
-          element={<CompaniesRankedPage />}
+          path={`${basePath}/companies`}
+          element={<CompaniesTopListsPage />}
         />
       </Route>
       <Route
@@ -130,15 +123,11 @@ export function AppRoutes() {
       {/* Strict municipalities routes */}
       <Route
         path={`${basePath}/municipalities`}
-        element={<MunicipalitiesRankedPage />}
+        element={<MunicipalitiesTopListsPage />}
       />
       <Route
         path={`${basePath}/municipalities/:id`}
         element={<MunicipalityDetailPage />}
-      />
-      <Route
-        path={`${basePath}/municipalities/explore`}
-        element={<RedirectToExplore />}
       />
 
       {/* About Pages */}
