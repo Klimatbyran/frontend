@@ -15,7 +15,7 @@ import { RankedListItem } from "@/types/rankings";
 import { createEntityClickHandler } from "@/utils/routing";
 import { MunicipalityRankedList } from "@/components/municipalities/MunicipalityRankedList";
 
-export function MunicipalitiesTopListsPage() {
+export function MunicipalitiesRankedPage() {
   const { t } = useTranslation();
   const { municipalities, municipalitiesLoading, municipalitiesError } =
     useMunicipalities();

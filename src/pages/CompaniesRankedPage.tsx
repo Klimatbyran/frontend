@@ -18,7 +18,7 @@ import {
 } from "@/hooks/companies/useCompanyKPIs";
 import { DataPoint } from "@/types/rankings";
 
-export function CompaniesTopListsPage() {
+export function CompaniesRankedPage() {
   const { t } = useTranslation();
   const { companies, companiesLoading, companiesError } = useCompanies();
   const companyKPIs = useCompanyKPIs();
