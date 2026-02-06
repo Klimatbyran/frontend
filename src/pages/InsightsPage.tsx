@@ -12,7 +12,7 @@ import { localizeUnit } from "@/utils/formatting/localization";
 export function InsightsPage() {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
-  const blogPosts = useBlogPosts();
+  const { blogPosts } = useBlogPosts();
 
   const featuredPost = isMobile ? undefined : blogPosts[0];
   const otherPosts = isMobile ? blogPosts.slice(0) : blogPosts.slice(1);

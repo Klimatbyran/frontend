@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Command as CommandPrimitive } from "cmdk";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
@@ -8,7 +7,6 @@ import {
   Command,
   CommandEmpty,
   CommandInput,
-  CommandItem,
   CommandList,
 } from "../ui/command";
 import {
@@ -18,30 +16,14 @@ import {
   DialogPortal,
   DialogTitle,
 } from "../ui/dialog";
+import { Building2, TreePine, Newspaper } from "lucide-react";
+import SearchResultList from "./SearchResultList";
 
 interface SearchDialogProps {
   open: boolean;
   setOpen: (open: boolean) => void;
   onSelectResponse: (response: CombinedData) => void;
 }
-
-const resultTypeTranslationKeys = {
-  companies: "globalSearch.searchCategoryCompany",
-  municipalities: "globalSearch.searchCategoryMunicipality",
-} as const;
-
-const SearchResultItem = ({ item }: { item: CombinedData }) => {
-  const { t } = useTranslation();
-
-  return (
-    <div className="flex items-center w-full text-sm text-gray-500 hover:cursor-pointer">
-      <span>{item.name}</span>
-      <span className="ml-auto mr-2">
-        {t(resultTypeTranslationKeys[item.category])}
-      </span>
-    </div>
-  );
-};
 
 const useGlobalSearch = (query: string) => {
   const allData = useCombinedData();
@@ -83,6 +65,18 @@ export function SearchDialog({
     }
   }, [open]);
 
+  const companies = results.data.filter(
+    (item) => item.category === "companies",
+  );
+
+  const municipalities = results.data.filter(
+    (item) => item.category === "municipalities",
+  );
+
+  const blogPosts = results.data.filter(
+    (item) => item.category === "blogPosts",
+  );
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogPortal>
@@ -117,7 +111,7 @@ export function SearchDialog({
                 </p>
               </CommandEmpty>
               <CommandList
-                className="transition-all duration-200 ease-in-out"
+                className="pt-4 transition-all duration-200 ease-in-out min-h-32"
                 style={{
                   maxHeight:
                     results.data.length > 0
@@ -125,27 +119,29 @@ export function SearchDialog({
                       : "0px",
                 }}
               >
-                {results.loading && (
-                  <CommandPrimitive.Loading>
-                    {t(
-                      "globalSearch.searchDialog.loadingText",
-                      "Fetching companies and municipalities...",
-                    )}
-                  </CommandPrimitive.Loading>
-                )}
+                <SearchResultList
+                  list={companies}
+                  icon={Building2}
+                  translationKey={"globalSearch.searchCategoryCompanies"}
+                  onSelectResponse={onSelectResponse}
+                  setOpen={setOpen}
+                />
 
-                {results.data.map((item) => (
-                  <CommandItem
-                    key={item.id}
-                    onSelect={() => {
-                      onSelectResponse(item);
-                      setOpen(false);
-                    }}
-                    className="px-4 py-3"
-                  >
-                    <SearchResultItem item={item} />
-                  </CommandItem>
-                ))}
+                <SearchResultList
+                  list={municipalities}
+                  icon={TreePine}
+                  translationKey={"globalSearch.searchCategoryMunicipalities"}
+                  onSelectResponse={onSelectResponse}
+                  setOpen={setOpen}
+                />
+
+                <SearchResultList
+                  list={blogPosts}
+                  icon={Newspaper}
+                  translationKey={"globalSearch.searchCategoryBlogPosts"}
+                  onSelectResponse={onSelectResponse}
+                  setOpen={setOpen}
+                />
               </CommandList>
             </Command>
             <div className="flex justify-center text-white/40 text-sm mb-4">

@@ -12,11 +12,20 @@ const markdownFiles = import.meta.glob("/src/lib/blog/posts/*.md", {
 export function useBlogPosts() {
   const { currentLanguage } = useLanguage();
 
-  return (
-    blogMetadataByLanguage[currentLanguage]
-      .map((b) => getBlogPost(b, currentLanguage).blogPost?.metadata)
-      .filter((b) => b != null) || []
-  );
+  const blogPostsLoading = false;
+  let blogPostsError = null;
+  let blogPosts: ContentMeta[] = [];
+
+  try {
+    blogPosts =
+      blogMetadataByLanguage[currentLanguage]
+        .map((b) => getBlogPost(b, currentLanguage).blogPost?.metadata)
+        .filter((b) => b != null) || [];
+  } catch (e) {
+    blogPostsError = e;
+  }
+
+  return { blogPosts, blogPostsLoading, blogPostsError };
 }
 
 export function useBlogPost(id: string) {
@@ -81,7 +90,7 @@ export function getBlogPost(
       metadata: parsedMarkdown,
       content: normalizedMarkdown.replace(frontmatter[0], "").trim(),
     },
-    loading: false,
-    error: null,
+    blogPostsLoading: false,
+    blogPostsError: null,
   };
 }
