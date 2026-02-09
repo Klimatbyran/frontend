@@ -1830,7 +1830,9 @@
     "sorting": "Sorterar:",
     "sortingOptions": {
       "aToZ": "A-Ö",
-      "zToA": "Ö-A"
+      "zToA": "Ö-A",
+      "bestFirst": "Visa bäst först",
+      "worstFirst": "Visa sämst först"
     },
     "municipalities": {
       "muncipality": "Kommun",
@@ -1858,9 +1860,7 @@
         "meetsParis": "Klarar Parisavtalet",
         "name": "Namn",
         "emissions": "Totala utsläpp",
-        "emissionsChangeRate": "Utsläppsförändring (%)",
-        "bestFirst": "Visa bäst först",
-        "worstFirst": "Visa sämst först"
+        "emissionsChangeRate": "Utsläppsförändring (%)"
       }
     },
     "companies": {

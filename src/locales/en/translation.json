@@ -1778,7 +1778,9 @@
     "sorting": "Sorting by:",
     "sortingOptions": {
       "aToZ": "A-Z",
-      "zToA": "Z-A"
+      "zToA": "Z-A",
+      "bestFirst": "Show best first",
+      "worstFirst": "Show worst first"
     },
     "municipalities": {
       "muncipality": "Municipality",
@@ -1806,9 +1808,7 @@
         "meetsParis": "Meets the Paris Agreement",
         "name": "Name",
         "emissions": "Total Emissions",
-        "emissionsChangeRate": "Change in Emissions (%)",
-        "bestFirst": "Show best first",
-        "worstFirst": "Show worst first"
+        "emissionsChangeRate": "Change in Emissions (%)"
       }
     },
     "companies": {

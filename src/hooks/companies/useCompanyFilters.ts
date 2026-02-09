@@ -186,7 +186,7 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
             const bValue =
               bMeetsParis === true ? 2 : bMeetsParis === false ? 1 : 0;
 
-            return sortDirection === "asc" ? aValue - bValue : bValue - aValue;
+            return sortDirection === "asc" ? bValue - aValue : aValue - bValue;
           }
           case "name":
           default:

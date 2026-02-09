@@ -20,6 +20,11 @@ export const useSortOptions = (): SortOption[] => {
     {
       value: "meets_paris",
       label: t("explorePage.companies.sortingOptions.meetsParis"),
+      directionLabels: {
+        asc: t("explorePage.sortingOptions.bestFirst"),
+        desc: t("explorePage.sortingOptions.worstFirst"),
+      },
+      defaultDirection: "asc"
     },
     {
       value: "name",

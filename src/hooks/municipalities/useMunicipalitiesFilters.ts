@@ -36,7 +36,7 @@ export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
     ) ?? ["all"]) as string[];
   const sortBy = isMunicipalitySortBy(searchParams.get("sortBy") ?? "")
     ? (searchParams.get("sortBy") as MunicipalitySortBy)
-    : "emissions";
+    : "total_emissions";
   const sortDirection = (
     isSortDirection(searchParams.get("sortDirection") ?? "")
       ? searchParams.get("sortDirection")
@@ -261,9 +261,9 @@ const sortMunicipalities = (
       return compareMeetsParis(a, b, directionMultiplier);
     case "name":
       return compareNames(a, b, directionMultiplier);
-    case "emissions":
+    case "total_emissions":
       return compareEmissions(a, b, directionMultiplier);
-    case "emissionsChangeRate":
+    case "emissions_reduction":
       return compareEmissionsChangeRate(a, b, directionMultiplier);
     default:
       return 0;

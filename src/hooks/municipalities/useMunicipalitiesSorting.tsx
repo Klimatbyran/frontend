@@ -9,8 +9,8 @@ export const useSortOptions = (): SortOption[] => {
       value: "meets_paris",
       label: t("explorePage.municipalities.sortingOptions.meetsParis"),
       directionLabels: {
-        asc: t("explorePage.municipalities.sortingOptions.bestFirst"),
-        desc: t("explorePage.municipalities.sortingOptions.worstFirst"),
+        asc: t("explorePage.sortingOptions.bestFirst"),
+        desc: t("explorePage.sortingOptions.worstFirst"),
       },
     },
     {
@@ -23,11 +23,11 @@ export const useSortOptions = (): SortOption[] => {
       defaultDirection: "asc",
     },
     {
-      value: "emissions",
+      value: "total_emissions",
       label: t("explorePage.municipalities.sortingOptions.emissions"),
     },
     {
-      value: "emissionsChangeRate",
+      value: "emissions_reduction",
       label: t("explorePage.municipalities.sortingOptions.emissionsChangeRate"),
     },
   ];
