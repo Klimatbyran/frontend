@@ -1828,6 +1828,10 @@
     "description": "Utforska och jämför utsläppsdata och klimatmål för företag och kommuner.",
     "filter": "Filter:",
     "sorting": "Sorterar:",
+    "sortingOptions": {
+      "aToZ": "A-Ö",
+      "zToA": "Ö-A"
+    },
     "municipalities": {
       "muncipality": "Kommun",
       "municipalities": "Kommuner",
@@ -1855,8 +1859,6 @@
         "name": "Namn",
         "emissions": "Totala utsläpp",
         "emissionsChangeRate": "Utsläppsförändring (%)",
-        "aToZ": "A-Ö",
-        "zToA": "Ö-A",
         "bestFirst": "Visa bäst först",
         "worstFirst": "Visa sämst först"
       }
@@ -1879,8 +1881,7 @@
         "totalEmissions": "Totala utsläpp",
         "scope3Coverage": "Scope 3-rapportering",
         "meetsParis": "Uppfyller Parisavtalet",
-        "nameAsc": "Företagsnamn A-Ö",
-        "nameDesc": "Företagsnamn Ö-A"
+        "name": "Företagsnamn"
       },
       "sector": "Bransch",
       "searchPlaceholder": "Sök företag (separera med komma)",

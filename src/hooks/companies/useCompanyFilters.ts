@@ -13,7 +13,7 @@ import { getCompanySectorName } from "@/utils/data/industryGrouping";
 import { CompanySector, SECTORS } from "@/lib/constants/sectors";
 import { FilterGroup } from "@/components/explore/FilterPopover";
 import setOrDeleteSearchParam from "@/utils/data/setOrDeleteSearchParam";
-import { isSortOption, type SortOption } from "./useCompanySorting";
+import { isSortOption, useSortOptions, type CompanySortBy } from "./useCompanySorting";
 
 const MEETS_PARIS_OPTIONS = ["all", "yes", "no", "unknown"] as const;
 type MeetsParisFilter = (typeof MEETS_PARIS_OPTIONS)[number];
@@ -23,6 +23,7 @@ const isMeetsParisFilter = (value: string): value is MeetsParisFilter =>
 
 export const useCompanyFilters = (companies: RankedCompany[]) => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const sortingOptions = useSortOptions();
 
   const searchQuery = searchParams.get("searchQuery") || "";
   const meetsParisFilter = isMeetsParisFilter(
@@ -37,13 +38,13 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
     "all",
   ]) as CompanySector[];
   const sortBy = isSortOption(searchParams.get("sortBy") ?? "")
-    ? (searchParams.get("sortBy") as SortOption)
+    ? (searchParams.get("sortBy") as CompanySortBy)
     : "total_emissions";
   const sortDirection = (
     searchParams.get("sortDirection") == "asc" ||
     searchParams.get("sortDirection") == "desc"
       ? searchParams.get("sortDirection")
-      : "desc"
+      : sortingOptions.find(o => o.value == sortBy)?.defaultDirection ?? "desc"
   ) as "asc" | "desc";
 
   const setSearchQuery = useCallback(
@@ -187,10 +188,7 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
 
             return sortDirection === "asc" ? aValue - bValue : bValue - aValue;
           }
-          case "name_asc":
-            return a.name.localeCompare(b.name);
-          case "name_desc":
-            return b.name.localeCompare(a.name);
+          case "name":
           default:
             return sortDirection === "asc"
               ? a.name.localeCompare(b.name)

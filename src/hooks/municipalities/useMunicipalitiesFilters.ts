@@ -15,10 +15,12 @@ import {
 import { FilterGroup } from "@/components/explore/FilterPopover";
 import { regions } from "@/lib/constants/regions";
 import setOrDeleteSearchParam from "@/utils/data/setOrDeleteSearchParam";
+import { useSortOptions } from "./useMunicipalitiesSorting";
 
 export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { t } = useTranslation();
+  const sortOptions = useSortOptions();
 
   const searchQuery = searchParams.get("searchQuery") || "";
   const meetsParisFilter = isMeetsParisFilter(
@@ -38,7 +40,7 @@ export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
   const sortDirection = (
     isSortDirection(searchParams.get("sortDirection") ?? "")
       ? searchParams.get("sortDirection")
-      : "desc"
+      : sortOptions.find(o => o.value == sortBy)?.defaultDirection ?? "desc"
   ) as SortDirection;
 
   const setSearchQuery = useCallback(

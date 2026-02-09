@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
+import { SortOption } from "@/components/explore/SortPopover";
 
-export const useSortOptions = () => {
+export const useSortOptions = (): SortOption[] => {
   const { t } = useTranslation();
 
   return [
@@ -21,13 +22,14 @@ export const useSortOptions = () => {
       label: t("explorePage.companies.sortingOptions.meetsParis"),
     },
     {
-      value: "name_asc",
-      label: t("explorePage.companies.sortingOptions.nameAsc"),
-    },
-    {
-      value: "name_desc",
-      label: t("explorePage.companies.sortingOptions.nameDesc"),
-    },
+      value: "name",
+      label: t("explorePage.companies.sortingOptions.name"),
+      directionLabels: {
+        asc: t("explorePage.sortingOptions.aToZ"),
+        desc: t("explorePage.sortingOptions.zToA"),
+      },
+      defaultDirection: "asc",
+    }
   ] as const;
 };
 
@@ -36,11 +38,10 @@ const SORT_OPTIONS = [
   "total_emissions",
   "scope3_coverage",
   "meets_paris",
-  "name_asc",
-  "name_desc",
+  "name",
 ] as const;
-export type SortOption = (typeof SORT_OPTIONS)[number];
+export type CompanySortBy = (typeof SORT_OPTIONS)[number];
 
-export function isSortOption(value: string): value is SortOption {
-  return SORT_OPTIONS.includes(value as SortOption);
+export function isSortOption(value: string): value is CompanySortBy {
+  return SORT_OPTIONS.includes(value as CompanySortBy);
 }

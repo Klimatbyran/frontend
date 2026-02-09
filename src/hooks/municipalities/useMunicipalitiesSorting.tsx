@@ -17,8 +17,8 @@ export const useSortOptions = (): SortOption[] => {
       value: "name",
       label: t("explorePage.municipalities.sortingOptions.name"),
       directionLabels: {
-        asc: t("explorePage.municipalities.sortingOptions.aToZ"),
-        desc: t("explorePage.municipalities.sortingOptions.zToA"),
+        asc: t("explorePage.sortingOptions.aToZ"),
+        desc: t("explorePage.sortingOptions.zToA"),
       },
       defaultDirection: "asc",
     },
