@@ -13,7 +13,7 @@ export interface ListCardProps {
   logoUrl?: string | null;
 
   // Meets Paris
-  meetsParis: boolean | null; // true = Yes, false = No, null = Unknown
+  meetsParis: boolean | null;
   meetsParisTranslationKey: string;
 
   // Emissions data
@@ -79,6 +79,7 @@ export function ListCard({
   const { t } = useTranslation();
   const category = useCategoryMetadata();
   const isMunicipality = variant === "municipality";
+
   const climatePlanAdoptedText = isMunicipality
     ? climatePlanHasPlan
       ? t("municipalities.card.adopted", {
@@ -86,6 +87,17 @@ export function ListCard({
         })
       : t("municipalities.card.noPlan")
     : null;
+
+  const climatePlanStatusColor = isMunicipality
+    ? climatePlanHasPlan === true
+      ? "text-green-3"
+      : climatePlanHasPlan === false
+        ? "text-pink-3"
+        : "text-grey"
+    : "text-white";
+
+  const climatePlanAdoptedColor =
+    isMunicipality && !climatePlanHasPlan ? "text-grey" : "text-white";
 
   let categoryName;
   if (largestEmission?.type === "scope3" && largestEmission.key !== null) {
@@ -133,8 +145,6 @@ export function ListCard({
                 : t("companies.card.notEnoughData")}
           </div>
 
-          {/* Sustainability report / Climate plan section */}
-
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 pt-4">
             <div>
               {/* Emissions */}
@@ -153,19 +163,33 @@ export function ListCard({
             </div>
 
             <div>
-              <div className="flex flex-col gap-2 text-nowrap text-grey mt-2 text-lg">
+              <CardInfo
+                title={
+                  isMunicipality
+                    ? t("municipalities.card.changeRate")
+                    : t("companies.card.emissionsChangeRate")
+                }
+                value={changeRateValue}
+                textColor={changeRateColor || "text-orange-2"}
+                isAIGenerated={changeRateIsAIGenerated}
+                tooltip={changeRateTooltip}
+              />
+            </div>
+          </div>
+
+          {/* Sustainability report / Climate plan section */}
+
+          <div className="grid grid-cols-1 gap-2 lg:grid-cols-2 lg:gap-4 mt-6">
+            <div>
+              <div className="flex flex-col gap-2 text-nowrap text-grey text-lg">
                 {isMunicipality
                   ? t("municipalities.card.climatePlan")
                   : t("companies.card.reportingSince")}
               </div>
               <div
                 className={cn(
-                  "text-lg font-light line-clamp-2 h-[48px]",
-                  isMunicipality
-                    ? climatePlanHasPlan
-                      ? "text-green-3"
-                      : "text-pink-3"
-                    : "text-white",
+                  "text-xl font-light line-clamp-2 h-[48px]",
+                  climatePlanStatusColor,
                 )}
               >
                 {isMunicipality
@@ -177,37 +201,21 @@ export function ListCard({
                   : (baseYear ?? t("unknown"))}
               </div>
             </div>
-          </div>
-        </div>
 
-        {/* Emissions and largest emissions section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          {/* Change Rate */}
-          <CardInfo
-            title={
-              isMunicipality
-                ? t("municipalities.card.changeRate")
-                : t("companies.card.emissionsChangeRate")
-            }
-            value={changeRateValue}
-            textColor={changeRateColor || "text-orange-2"}
-            isAIGenerated={changeRateIsAIGenerated}
-            tooltip={changeRateTooltip}
-          />
-          {/* Secondary info */}
-          <div>
-            <div className="flex flex-col gap-2 text-nowrap text-grey mt-2 text-lg">
-              {isMunicipality
-                ? t("municipalities.card.climatePlanAdopted")
-                : t("companies.card.largestEmissionSource")}
-            </div>
-            <div
-              className={cn(
-                "text-lg font-light line-clamp-2 h-[48px]",
-                isMunicipality ? "text-white" : "text-white",
-              )}
-            >
-              {isMunicipality ? climatePlanAdoptedText : categoryName}
+            <div>
+              <div className="flex flex-col gap-2 text-nowrap text-grey text-lg">
+                {isMunicipality
+                  ? t("municipalities.card.climatePlanAdopted")
+                  : t("companies.card.largestEmissionSource")}
+              </div>
+              <div
+                className={cn(
+                  "text-xl font-light line-clamp-2 h-[48px]",
+                  climatePlanAdoptedColor,
+                )}
+              >
+                {isMunicipality ? climatePlanAdoptedText : categoryName}
+              </div>
             </div>
           </div>
         </div>

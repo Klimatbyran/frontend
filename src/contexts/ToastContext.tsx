@@ -7,7 +7,6 @@ export interface ToastContext {
 
 const ToastContext = createContext<ToastContext>({} as ToastContext);
 
- 
 export const useToast = () => {
   const context = useContext(ToastContext);
   if (!context) {
