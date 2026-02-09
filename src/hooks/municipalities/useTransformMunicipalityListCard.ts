@@ -34,13 +34,19 @@ const useTransformMunicipalityListCard = ({
         ? formatPercentChange(emissionsChangeExists, currentLanguage)
         : t("municipalities.card.noData");
 
-      const noClimatePlan = !municipality.climatePlanLink;
+      const hasClimatePlan =
+        municipality.climatePlan ??
+        Boolean(
+          municipality.climatePlanLink &&
+            municipality.climatePlanLink !== "Saknar plan",
+        );
 
       return {
         name: municipality.name,
         description: municipality.region,
         logoUrl: municipality.logoUrl,
         linkTo: `/municipalities/${municipality.name}`,
+        variant: "municipality" as const,
         meetsParis: meetsParisGoal,
         meetsParisTranslationKey: "municipalities.card.meetsParis",
         emissionsValue: lastYearEmissions,
@@ -50,20 +56,8 @@ const useTransformMunicipalityListCard = ({
         changeRateColor:
           emissionsChangeExists > 0 ? "text-pink-3" : "text-orange-2",
         changeRateTooltip: t("municipalities.card.changeRateInfo"),
-        linkCardLink:
-          municipality.climatePlanLink &&
-          municipality.climatePlanLink !== "Saknar plan"
-            ? municipality.climatePlanLink
-            : undefined,
-        linkCardTitle: t("municipalities.card.climatePlan"),
-        linkCardDescription: noClimatePlan
-          ? t("municipalities.card.noPlan")
-          : t("municipalities.card.adopted", {
-              year: municipality.climatePlanYear,
-            }),
-        linkCardDescriptionColor: noClimatePlan
-          ? "text-pink-3"
-          : "text-green-3",
+        climatePlanHasPlan: hasClimatePlan,
+        climatePlanYear: hasClimatePlan ? municipality.climatePlanYear : null,
       };
     });
   }, [filteredMunicipalities, currentLanguage, t]);

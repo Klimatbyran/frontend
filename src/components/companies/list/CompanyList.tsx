@@ -20,7 +20,7 @@ export function CompanyList({ companies }: CompanyListProps) {
   const sortOptions = useSortOptions();
 
   // Transform company data for ListCard components
-  const transformedCompanies: RankedCompany[] = useTransformCompanyListCard({
+  const transformedCompanies: ListCardProps[] = useTransformCompanyListCard({
     filteredCompanies,
   });
 

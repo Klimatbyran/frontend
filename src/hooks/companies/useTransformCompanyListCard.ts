@@ -38,7 +38,7 @@ const useTransformCompanyListCard = ({
       const isFinancialsSector = industry?.industryGics?.sectorCode === "40";
       const latestPeriod = reportingPeriods?.[0];
       const previousPeriod = reportingPeriods?.[1];
-      // ...existing code...
+
       // Get sector name instead of description
       const sectorName = getCompanySectorName(company, sectorNames);
 
@@ -81,7 +81,8 @@ const useTransformCompanyListCard = ({
 
       // Get values for scope 1 and 2
       const scope1Value = latestPeriod?.emissions?.scope1?.total ?? null;
-      const scope2Value = latestPeriod?.emissions?.scope2?.calculatedTotalEmissions ?? null;
+      const scope2Value =
+        latestPeriod?.emissions?.scope2?.calculatedTotalEmissions ?? null;
 
       // Get largest scope 3 category
       let largestScope3Cat:
@@ -139,6 +140,7 @@ const useTransformCompanyListCard = ({
       return {
         name,
         description: sectorName,
+        variant: "company" as const,
         baseYear: company?.baseYear?.year || null,
         linkTo: `/companies/${wikidataId}`,
         meetsParis,

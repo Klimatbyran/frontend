@@ -1513,6 +1513,7 @@
       "changeRate": "Förändringstakt",
       "changeRateInfo": "Förändringstakt för utsläppen sedan Parisavtalet tecknades 2015.",
       "climatePlan": "Klimatplan",
+      "climatePlanAdopted": "Klimatplan antagen",
       "noPlan": "Saknar plan",
       "adopted": "Antagen {{year}}"
     },

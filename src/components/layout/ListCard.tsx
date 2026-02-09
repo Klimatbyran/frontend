@@ -33,10 +33,10 @@ export interface ListCardProps {
   latestReportYearColor?: string;
 
   //Reporting since (tracking)
-  baseYear: number | null;
+  baseYear?: number | null;
 
   //Biggest emission category
-  largestEmission:
+  largestEmission?:
     | {
         key: string | number;
         value: number | null;
@@ -46,6 +46,12 @@ export interface ListCardProps {
 
   // Optional features
   isFinancialsSector?: boolean;
+
+  // Climate plan information (municipalities)
+  climatePlanHasPlan?: boolean | null;
+  climatePlanYear?: number | null;
+
+  variant?: "company" | "municipality";
 }
 
 export function ListCard({
@@ -66,9 +72,20 @@ export function ListCard({
   isFinancialsSector = false,
   largestEmission,
   baseYear,
+  climatePlanHasPlan,
+  climatePlanYear,
+  variant = "company",
 }: ListCardProps) {
   const { t } = useTranslation();
   const category = useCategoryMetadata();
+  const isMunicipality = variant === "municipality";
+  const climatePlanAdoptedText = isMunicipality
+    ? climatePlanHasPlan
+      ? t("municipalities.card.adopted", {
+          year: climatePlanYear ?? t("unknown"),
+        })
+      : t("municipalities.card.noPlan")
+    : null;
 
   let categoryName;
   if (largestEmission?.type === "scope3" && largestEmission.key !== null) {
@@ -85,7 +102,7 @@ export function ListCard({
     <div className="relative rounded-level-2 @container">
       <LocalizedLink
         to={linkTo}
-        className="block bg-black-2 rounded-level-2 p-8 md:space-y-4 transition-all min-h-[450px] duration-300 hover:shadow-[0_0_10px_rgba(153,207,255,0.15)] hover:bg-[#1a1a1a]"
+        className="block bg-black-2 rounded-level-2 p-8 md:space-y-4 transition-all min-h-[400px] duration-300 hover:shadow-[0_0_10px_rgba(153,207,255,0.15)] hover:bg-[#1a1a1a]"
       >
         {/* Header section */}
         <div>
@@ -137,14 +154,27 @@ export function ListCard({
 
             <div>
               <div className="flex flex-col gap-2 text-nowrap text-grey mt-2 text-lg">
-                {t("companies.card.reportingSince")}
+                {isMunicipality
+                  ? t("municipalities.card.climatePlan")
+                  : t("companies.card.reportingSince")}
               </div>
               <div
                 className={cn(
-                  "text-lg font-light text-white line-clamp-2 h-[48px]",
+                  "text-lg font-light line-clamp-2 h-[48px]",
+                  isMunicipality
+                    ? climatePlanHasPlan
+                      ? "text-green-3"
+                      : "text-pink-3"
+                    : "text-white",
                 )}
               >
-                {baseYear ?? t("unknown")}
+                {isMunicipality
+                  ? climatePlanHasPlan === true
+                    ? t("yes")
+                    : climatePlanHasPlan === false
+                      ? t("no")
+                      : t("unknown")
+                  : (baseYear ?? t("unknown"))}
               </div>
             </div>
           </div>
@@ -154,23 +184,30 @@ export function ListCard({
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {/* Change Rate */}
           <CardInfo
-            title={t("companies.card.emissionsChangeRate")}
+            title={
+              isMunicipality
+                ? t("municipalities.card.changeRate")
+                : t("companies.card.emissionsChangeRate")
+            }
             value={changeRateValue}
             textColor={changeRateColor || "text-orange-2"}
             isAIGenerated={changeRateIsAIGenerated}
             tooltip={changeRateTooltip}
           />
-          {/* Emissions */}
+          {/* Secondary info */}
           <div>
             <div className="flex flex-col gap-2 text-nowrap text-grey mt-2 text-lg">
-              {t("companies.card.largestEmissionSource")}
+              {isMunicipality
+                ? t("municipalities.card.climatePlanAdopted")
+                : t("companies.card.largestEmissionSource")}
             </div>
             <div
               className={cn(
-                "text-lg font-light text-white line-clamp-2 h-[48px]",
+                "text-lg font-light line-clamp-2 h-[48px]",
+                isMunicipality ? "text-white" : "text-white",
               )}
             >
-              {categoryName}
+              {isMunicipality ? climatePlanAdoptedText : categoryName}
             </div>
           </div>
         </div>
