@@ -76,7 +76,7 @@ export const useCombinedData = () => {
       loading: false,
       data: [...mappedMunicipalities, ...mappedCompanies, ...mappedBlogPosts],
     };
-  }, [municipalities, companies, isLoading, hasErrors]);
+  }, [municipalities, companies, blogPosts, isLoading, hasErrors]);
 
   return combinedData;
 };

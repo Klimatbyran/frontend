@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
+import { Command as CommandPrimitive } from "cmdk";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
-import { CombinedData, useCombinedData } from "@/hooks/useCombinedData";
+import { CombinedData } from "@/hooks/useCombinedData";
 import {
   Command,
   CommandEmpty,
@@ -18,33 +19,13 @@ import {
 } from "../ui/dialog";
 import { Building2, TreePine, Newspaper } from "lucide-react";
 import SearchResultList from "./SearchResultList";
+import useGlobalSearch from "@/hooks/useGlobalSearch";
 
 interface SearchDialogProps {
   open: boolean;
   setOpen: (open: boolean) => void;
   onSelectResponse: (response: CombinedData) => void;
 }
-
-const useGlobalSearch = (query: string) => {
-  const allData = useCombinedData();
-
-  if (allData.error || allData.loading) {
-    return allData;
-  }
-
-  const lcQuery = query.toLocaleLowerCase();
-  const result =
-    lcQuery.length > 1
-      ? allData.data
-          .filter((item) => item.name.toLocaleLowerCase().includes(lcQuery))
-          .sort((a, b) => a.name.localeCompare(b.name))
-      : [];
-
-  return {
-    ...allData,
-    data: result,
-  };
-};
 
 export function SearchDialog({
   open,
@@ -119,6 +100,14 @@ export function SearchDialog({
                       : "0px",
                 }}
               >
+                {results.loading && (
+                  <CommandPrimitive.Loading>
+                    {t(
+                      "globalSearch.searchDialog.loadingText",
+                      "Fetching companies, municipalities & blog posts...",
+                    )}
+                  </CommandPrimitive.Loading>
+                )}
                 <SearchResultList
                   list={companies}
                   icon={Building2}

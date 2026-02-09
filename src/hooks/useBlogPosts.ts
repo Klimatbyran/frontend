@@ -71,7 +71,11 @@ export function getBlogPost(
   }
 
   if (!rawMarkdown) {
-    return { blogPost: null, loading: false, error: "Content not found" };
+    return {
+      blogPost: null,
+      blogPostsLoading: false,
+      blogPostsError: "Content not found",
+    };
   }
 
   const normalizedMarkdown = rawMarkdown.replace(/\r\n/g, "\n");
@@ -79,7 +83,11 @@ export function getBlogPost(
   const frontmatter = normalizedMarkdown.match(frontmatterRegex);
 
   if (!frontmatter) {
-    return { blogPost: null, loading: false, error: "No frontmatter found." };
+    return {
+      blogPost: null,
+      blogPostsLoading: false,
+      blogPostsError: "No frontmatter found.",
+    };
   }
 
   const parsedMarkdown = load(frontmatter[1]) as ContentMeta;
