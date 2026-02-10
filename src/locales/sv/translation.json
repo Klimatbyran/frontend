@@ -9,10 +9,8 @@
     "data": "Data",
     "companies": "Företag",
     "companiesSectors": "Branscher",
-    "companiesTopLists": "Företagstopplistor",
     "explore": "Utforska",
     "municipalities": "Kommuner",
-    "municipalitiesTopLists": "Kommuntopplistor",
     "regionsRanked": "Län",
     "about": "Om",
     "aboutUs": "Om oss",
@@ -102,11 +100,11 @@
       "description": "Övervaka utsläppsdata och klimatåtaganden i hela Sverige.",
       "features": {
         "municipalityRankings": {
-          "title": "Kommuntopplistor",
+          "title": "Kommunöversikt",
           "description": "Spåra klimatframsteg och utsläppsdata från kommuner och lokala myndigheter."
         },
         "companyRankings": {
-          "title": "Företagstopplistor",
+          "title": "Företagsöversikt",
           "description": "Jämför utsläppsprestationer, minskningsmål och hållbarhetsmått för svenska företag."
         },
         "progressTracking": {
@@ -357,8 +355,8 @@
     "shareText": "Kolla in det här blogginlägget!",
     "relatedArticles": "Relaterade artiklar"
   },
-  "companiesTopListsPage": {
-    "title": "Företagstopplistor",
+  "companiesOverviewPage": {
+    "title": "Färetagsöversikt",
     "description": "Jämför företag baserat på viktiga klimatindikatorer",
     "errorTitle": "Kunde inte hämta företagsinformation",
     "errorDescription": "Försök igen senare",
@@ -1067,10 +1065,10 @@
       "noData": "Inga data tillgängliga"
     }
   },
-  "municipalitiesTopListsPage": {
+  "municipalitiesOverviewPage": {
     "errorTitle": "Det gick inte att hämta kommuninformation",
     "errorDescription": "Försök igen senare",
-    "title": "Kommuntopplistor",
+    "title": "Kommunöversikt",
     "description": "Data om utsläpp och klimatomställning i kommunerna"
   },
   "municipalityDetailPage": {

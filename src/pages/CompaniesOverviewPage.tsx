@@ -18,7 +18,7 @@ import {
 } from "@/hooks/companies/useCompanyKPIs";
 import { DataPoint } from "@/types/rankings";
 
-export function CompaniesTopListPage() {
+export function CompaniesOverviewPage() {
   const { t } = useTranslation();
   const { companies, companiesLoading, companiesError } = useCompanies();
   const companyKPIs = useCompanyKPIs();
@@ -152,10 +152,10 @@ export function CompaniesTopListPage() {
     return (
       <div className="text-center py-24">
         <h3 className="text-red-500 mb-4 text-xl">
-          {t("companiesTopListsPage.errorTitle")}
+          {t("companiesOverviewPage.errorTitle")}
         </h3>
         <p className="text-grey">
-          {t("companiesTopListsPage.errorDescription")}
+          {t("companiesOverviewPage.errorDescription")}
         </p>
       </div>
     );
@@ -211,8 +211,8 @@ export function CompaniesTopListPage() {
   return (
     <>
       <PageHeader
-        title={t("companiesTopListsPage.title")}
-        description={t("companiesTopListsPage.description")}
+        title={t("companiesOverviewPage.title")}
+        description={t("companiesOverviewPage.description")}
         className="-ml-4"
       />
 
@@ -222,8 +222,8 @@ export function CompaniesTopListPage() {
           modes={["graph", "list"]}
           onChange={(mode) => setViewModeInURL(mode)}
           titles={{
-            graph: t("companiesTopListsPage.viewToggle.showGraph", "Graph"),
-            list: t("companiesTopListsPage.viewToggle.showList", "List"),
+            graph: t("companiesOverviewPage.viewToggle.showGraph", "Graph"),
+            list: t("companiesOverviewPage.viewToggle.showList", "List"),
           }}
           showTitles
           icons={{

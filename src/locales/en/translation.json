@@ -9,10 +9,8 @@
     "data": "Data",
     "companies": "Companies",
     "companiesSectors": "Sectors",
-    "companiesTopLists": "Company Top Lists",
     "explore": "Explore",
     "municipalities": "Municipalities",
-    "municipalitiesTopLists": "Municipality Top Lists",
     "regionsRanked": "Regions",
     "about": "About",
     "aboutUs": "About Us",
@@ -102,11 +100,11 @@
       "description": "Monitor emissions data and climate commitments across Sweden.",
       "features": {
         "municipalityRankings": {
-          "title": "Municipality Top Lists",
+          "title": "Municipalities Overview",
           "description": "Track climate progress and emissions data from municipalities and local governments."
         },
         "companyRankings": {
-          "title": "Company Top Lists",
+          "title": "Companies Overview",
           "description": "Compare emissions performance, reduction targets, and sustainability metrics across Swedish companies."
         },
         "progressTracking": {
@@ -357,8 +355,8 @@
     "shareText": "Check out this blog post!",
     "relatedArticles": "Related Articles"
   },
-  "companiesTopListsPage": {
-    "title": "Company Top Lists",
+  "companiesOverviewPage": {
+    "title": "Companies Overview",
     "description": "Compare companies based on key climate indicators",
     "errorTitle": "Failed to retrieve company information",
     "errorDescription": "Please try again later",
@@ -1014,10 +1012,10 @@
       "noData": "No data available"
     }
   },
-  "municipalitiesTopListsPage": {
+  "municipalitiesOverviewPage": {
     "errorTitle": "Failed to retrieve municipality information",
     "errorDescription": "Please try again later",
-    "title": "Municipality Top Lists",
+    "title": "Municipalities Overview",
     "description": "Data on emissions and climate transition in municipalities"
   },
   "municipalityDetailPage": {

@@ -18,7 +18,7 @@ import { LandingPageNew } from "./pages/LandingPageNew";
 import { LearnMoreOverview } from "./pages/LearnMoreOverview";
 import { LearnMoreArticle } from "./pages/LearnMoreArticle";
 import { MethodsPage } from "./pages/MethodsPage";
-import { MunicipalitiesTopListPage } from "./pages/MunicipalitiesTopListsPage";
+import { MunicipalitiesOverviewPage } from "./pages/MunicipalitiesOverviewPage";
 import { MunicipalityDetailPage } from "./pages/MunicipalityDetailPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { ReportsPage } from "./pages/ReportsPage";
@@ -35,7 +35,7 @@ import { ParisAlignedStatisticsPage } from "./pages/internal-pages/ParisAlignedS
 import { NewsLetterArchivePage } from "./pages/NewslettersPage";
 import { RegionalOverviewPage } from "./pages/RegionalOverviewPage";
 import { RegionDetailPage } from "./pages/RegionDetailPage";
-import { CompaniesTopListPage } from "./pages/CompaniesTopListsPage";
+import { CompaniesOverviewPage } from "./pages/CompaniesOverviewPage";
 import { ExplorePage } from "./pages/ExplorePage";
 
 // Conditional landing page component that shows new version on localhost/staging
@@ -70,7 +70,7 @@ export function AppRoutes() {
       <Route element={<StagingProtectedRoute />}>
         <Route
           path={`${basePath}/companies`}
-          element={<CompaniesTopListPage />}
+          element={<CompaniesOverviewPage />}
         />
       </Route>
       <Route
@@ -129,7 +129,7 @@ export function AppRoutes() {
       {/* Strict municipalities routes */}
       <Route
         path={`${basePath}/municipalities`}
-        element={<MunicipalitiesTopListPage />}
+        element={<MunicipalitiesOverviewPage />}
       />
       <Route
         path={`${basePath}/municipalities/:id`}

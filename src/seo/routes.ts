@@ -291,8 +291,8 @@ export function getSeoForRoute(
     // Static/List Pages (route-level SEO in this file):
     // - /explore (explore page)
     // - /companies/sectors (companies by sector page - CompaniesSectorsPage)
-    // - /companies/ranked (ranked companies list - staging, companiesTopListsPage)
-    // - /municipalities (municipalities ranked list - municipalitiesTopListsPage)
+    // - /companies/ranked (ranked companies list - staging, companiesOverviewPage)
+    // - /municipalities (municipalities ranked list - municipalitiesOverviewPage)
     // - /regions (regions overview page - staging, regionalOverviewPage)
     // - /support (support page)
     // - /articles (articles/insights list page)
