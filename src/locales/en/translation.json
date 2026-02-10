@@ -8,10 +8,10 @@
   "header": {
     "data": "Data",
     "companies": "Companies",
-    "companiesSectors": "Sectors",
+    "sectors": "Sectors",
     "explore": "Explore",
     "municipalities": "Municipalities",
-    "regionsRanked": "Regions",
+    "regions": "Regions",
     "about": "About",
     "aboutUs": "About Us",
     "products": "Products",

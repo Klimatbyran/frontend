@@ -8,10 +8,10 @@
   "header": {
     "data": "Data",
     "companies": "Företag",
-    "companiesSectors": "Branscher",
+    "sectors": "Branscher",
     "explore": "Utforska",
     "municipalities": "Kommuner",
-    "regionsRanked": "Län",
+    "regions": "Län",
     "about": "Om",
     "aboutUs": "Om oss",
     "products": "Produkter",
