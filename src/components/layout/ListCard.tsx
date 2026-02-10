@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { FinancialsTooltip } from "@/components/companies/detail/overview/FinancialsTooltip";
 import { CardInfo } from "@/components/layout/CardInfo";
-import { useCategoryMetadata } from "@/hooks/companies/useCategories";
+import { useListCardMeta } from "@/hooks/useListCardMeta";
 
 export interface ListCardProps {
   // Basic info
@@ -27,10 +27,6 @@ export interface ListCardProps {
   changeRateIsAIGenerated?: boolean;
   changeRateColor?: string;
   changeRateTooltip?: string;
-
-  // Latest report
-  latestReportContainEmissions?: boolean | string;
-  latestReportYearColor?: string;
 
   //Reporting since (tracking)
   baseYear?: number | null;
@@ -77,38 +73,18 @@ export function ListCard({
   variant = "company",
 }: ListCardProps) {
   const { t } = useTranslation();
-  const category = useCategoryMetadata();
-  const isMunicipality = variant === "municipality";
-
-  const climatePlanAdoptedText = isMunicipality
-    ? climatePlanHasPlan
-      ? t("municipalities.card.adopted", {
-          year: climatePlanYear ?? t("unknown"),
-        })
-      : t("municipalities.card.noPlan")
-    : null;
-
-  const climatePlanStatusColor = isMunicipality
-    ? climatePlanHasPlan === true
-      ? "text-green-3"
-      : climatePlanHasPlan === false
-        ? "text-pink-3"
-        : "text-grey"
-    : "text-white";
-
-  const climatePlanAdoptedColor =
-    isMunicipality && !climatePlanHasPlan ? "text-grey" : "text-white";
-
-  let categoryName;
-  if (largestEmission?.type === "scope3" && largestEmission.key !== null) {
-    categoryName = category.getCategoryName(largestEmission?.key as number);
-  } else if (largestEmission?.type === "scope1") {
-    categoryName = t("companies.card.scope1");
-  } else if (largestEmission?.type === "scope2") {
-    categoryName = t("companies.card.scope2");
-  } else {
-    categoryName = t("unknown");
-  }
+  const {
+    isMunicipality,
+    climatePlanAdoptedText,
+    climatePlanStatusColor,
+    climatePlanAdoptedColor,
+    categoryName,
+  } = useListCardMeta({
+    variant,
+    climatePlanHasPlan,
+    climatePlanYear,
+    largestEmission,
+  });
 
   return (
     <div className="relative rounded-level-2 @container">
