@@ -30,7 +30,7 @@ Klimatkollen is making three methodological changes:
 The change in methodology means that the total number of tonnes reported on Klimatkollen for the country's municipalities will increase, as more greenhouse gases are included, not just fossil carbon dioxide.
 
 In terms of how emissions need to be reduced under the Paris Agreement, the reduction curve for most municipalities will be gentler than before, when it was based on the municipality's carbon dioxide budget. This is partly because the carbon dioxide budget included a fairness principle that gave Sweden a very small remaining national carbon dioxide budget. The transition to Carbon Law means a ‘same for all’ principle, i.e. a 12 per cent reduction per year for countries, municipalities and companies.
-- [Klimatkollen's method](en/methodology?view=municipalityDataOverview)
+- [Klimatkollen's method](en/methodology?view=dataOverview)
 - [Report on Carbon Law](/reports/2025-06-19_ApplyingCarbonLawFrom2025.pdf)
 - [Questions and answers about Carbon Law](en/insights/carbon-law-from-2025)
 

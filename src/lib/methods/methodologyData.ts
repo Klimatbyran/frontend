@@ -20,10 +20,10 @@ export const methodologySections: MethodologySectionType = {
     // { id: "interpretingOnTrack", category: "general" },
     { id: "emissionTypes", category: "general" },
   ],
-  municipality: [
-    { id: "municipalityDataOverview", category: "municipality" },
-    { id: "sources", category: "municipality" },
-    { id: "municipalityKPIs", category: "municipality" },
+  municipalityAndRegion: [
+    { id: "dataOverview", category: "municipalityAndRegion" },
+    { id: "sources", category: "municipalityAndRegion" },
+    { id: "KPIs", category: "municipalityAndRegion" },
   ],
   company: [
     { id: "companyDataOverview", category: "company" },
