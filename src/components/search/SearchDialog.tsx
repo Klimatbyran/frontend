@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Command as CommandPrimitive } from "cmdk";
 import { useTranslation } from "react-i18next";
@@ -35,6 +35,7 @@ export function SearchDialog({
   const [inputValue, setInputValue] = useState("");
   const results = useGlobalSearch(inputValue);
   const { t } = useTranslation();
+  const commandListRef = useRef<HTMLDivElement | null>(null);
 
   const handleInputChange = (value: string) => {
     setInputValue(value);
@@ -45,6 +46,20 @@ export function SearchDialog({
       setInputValue("");
     }
   }, [open]);
+
+  useLayoutEffect(() => {
+    if (!commandListRef.current) {
+      return;
+    }
+
+    const frame = requestAnimationFrame(() => {
+      if (commandListRef.current) {
+        commandListRef.current.scrollTop = 0;
+      }
+    });
+
+    return () => cancelAnimationFrame(frame);
+  }, [inputValue, results.data.length]);
 
   const companies = results.data.filter(
     (item) => item.category === "companies",
@@ -93,6 +108,7 @@ export function SearchDialog({
               </CommandEmpty>
               <CommandList
                 className="pt-4 transition-all duration-200 ease-in-out min-h-32"
+                ref={commandListRef}
                 style={{
                   maxHeight:
                     results.data.length > 0
