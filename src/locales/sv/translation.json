@@ -1774,14 +1774,18 @@
   "globalSearch": {
     "title": "Hitta ett företag eller kommun",
     "searchCategoryCompany": "Företag",
+    "searchCategoryCompanies": "Företag",
     "searchCategoryMunicipality": "Kommun",
+    "searchCategoryMunicipalities": "Kommuner",
+    "searchCategoryBlogPost": "Blogginlägg",
+    "searchCategoryBlogPosts": "Blogginlägg",
     "searchCategoryPage": "Sida",
-    "placeholder": "Exempel: Alfa Laval",
+    "placeholder": "Exempel: Alfa Laval, Göteborg, Parisavtalet",
     "headerButtonTitle": "Sök",
     "searchDialog": {
       "title": "Sök",
-      "description": "Sök efter företag eller kommuner",
-      "emptyText": "Börja skriva för att söka efter företag eller kommuner",
+      "description": "Sök efter företag, kommuner eller blogginlägg",
+      "emptyText": "Börja skriva för att söka efter företag, kommuner eller blogginlägg",
       "loadingText": "Hämtar företag och kommuner...",
       "shortcutTipText": "Starta sök med Ctrl+K / ⌘+K"
     }
