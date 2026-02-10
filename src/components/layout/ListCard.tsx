@@ -106,7 +106,7 @@ export function ListCard({
 
           {/* Meets Paris section */}
           <div className="flex items-center gap-2 text-grey text-lg ">
-            {t(meetsParisTranslationKey, { name })}
+            {t(meetsParisTranslationKey)}
           </div>
           <div
             className={cn(

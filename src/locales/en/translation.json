@@ -1218,7 +1218,7 @@
       "emissionsChangeRate": "Change Rate",
       "emissionsChangeRateInfo": "Change rate of emissions compared to the previous reporting period.",
       "emissionsChangeRateInfoExtended": "This value is so large due to inconsistencies in reported data between the last two reporting periods, thus this value is not representative of actual changes.",
-      "meetsParis": "Is {{name}} on track to meet the Paris Agreement?",
+      "meetsParis": "On track to meet the Paris Agreement?",
       "turnover": "Turnover",
       "turnoverAmount": "bn",
       "employees": "Employees",
@@ -1452,7 +1452,7 @@
   "municipalities": {
     "name": "Name",
     "card": {
-      "meetsParis": "Is {{name}} on track to meet the Paris Agreement?",
+      "meetsParis": "On track to meet the Paris Agreement?",
       "yes": "Yes",
       "no": "No",
       "emissionRanking": "EMISSION RANKING",

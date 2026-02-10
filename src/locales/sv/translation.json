@@ -1271,7 +1271,7 @@
       "emissionsChangeRate": "Förändringstakt",
       "emissionsChangeRateInfo": "Förändringstakt för utsläpp jämfört med föregående rapporteringsperiod.",
       "emissionsChangeRateInfoExtended": "Det här värdet är ovanligt högt på grund av inkonsekvent rapportering mellan de två senaste perioderna, vilket gör att procentförändringen inte speglar den faktiska utvecklingen.",
-      "meetsParis": "Är {{name}} på väg att uppfylla Parisavtalet?",
+      "meetsParis": "Är på väg att uppfylla Parisavtalet?",
       "turnover": "Omsättning",
       "turnoverAmount": "mdr",
       "employees": "Anställda",
@@ -1504,7 +1504,7 @@
   "municipalities": {
     "name": "Namn",
     "card": {
-      "meetsParis": "Är {{name}} på väg att klara Parisavtalet?",
+      "meetsParis": "Är på väg att klara Parisavtalet?",
       "yes": "Ja",
       "no": "Nej",
       "emissionRanking": "UTSLÄPPSRANKING",
