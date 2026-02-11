@@ -51,6 +51,8 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
 
   const sourceLinks = createSourceLinks(selectedKPI);
 
+  const entityPlural = t("header.municipalities").toLowerCase();
+
   return (
     <div className="flex-1 overflow-y-auto min-h-0 pr-2">
       <div
@@ -71,8 +73,9 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
             <InsightsList<Municipality>
               title={t(
                 selectedKPI.higherIsBetter
-                  ? "municipalities.list.insights.topPerformers.titleTop"
-                  : "municipalities.list.insights.topPerformers.titleBest",
+                  ? "rankedInsights.titleTop"
+                  : "rankedInsights.titleBest",
+                { entityPlural },
               )}
               entities={topMunicipalities}
               totalCount={municipalityData.length}
@@ -84,7 +87,9 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
               nameKey="name"
             />
             <InsightsList
-              title={t("municipalities.list.insights.improvement.title")}
+              title={t("rankedInsights.titleWorst", {
+                entityPlural,
+              })}
               entities={bottomMunicipalities}
               totalCount={municipalityData.length}
               isBottomRanking

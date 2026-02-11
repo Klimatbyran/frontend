@@ -9,7 +9,7 @@ import { useCombinedData } from "@/hooks/useCombinedData";
 type SearchItem = {
   id: string;
   name: string;
-  category: "companies" | "municipalities";
+  category: "companies" | "municipalities" | "blogPosts";
 };
 
 const GlobalSearch = () => {
@@ -70,7 +70,7 @@ const GlobalSearch = () => {
           placeholder={t("globalSearch.placeholder")}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="bg-black-1 placeholder:text-center relative h-10 rounded-md px-2 text-base text-lg focus:outline-white font-medium focus:text-left focus:ring-1 focus:ring-blue-2 relative w-full"
+          className="bg-black-1 placeholder:text-center  h-10 rounded-md px-2 focus:outline-white font-medium focus:text-left focus:ring-1 focus:ring-blue-2 relative w-full"
         />
         {searchQuery ? (
           <X

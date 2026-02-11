@@ -66,17 +66,10 @@ export function AppRoutes() {
       />
 
       {/* Strict companies routes */}
-      <Route
-        path={`${basePath}/companies/sectors`}
-        element={<CompaniesSectorsPage />}
-      />
-      <Route
-        path={`${basePath}/companies`}
-        element={<Navigate to="/explore/companies" replace />}
-      />
+      <Route path={`${basePath}/sectors`} element={<CompaniesSectorsPage />} />
       <Route element={<StagingProtectedRoute />}>
         <Route
-          path={`${basePath}/companies/ranked`}
+          path={`${basePath}/companies`}
           element={<CompaniesRankedPage />}
         />
       </Route>
