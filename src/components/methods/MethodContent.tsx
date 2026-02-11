@@ -64,7 +64,7 @@ export const MethodologyContent = forwardRef<
         return <EmissionTypesContent />;
       case "municipalityAndRegionDataOverview":
         return <MunicipalityAndRegionDataOverviewContent />;
-      case "KPIs":
+      case "municipalityKPIs":
         return <MunicipalityKPIsContent />;
       case "companyDataOverview":
         return <CompanyDataOverviewContent />;
