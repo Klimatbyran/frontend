@@ -21,9 +21,12 @@ export const methodologySections: MethodologySectionType = {
     { id: "emissionTypes", category: "general" },
   ],
   municipalityAndRegion: [
-    { id: "dataOverview", category: "municipalityAndRegion" },
+    {
+      id: "municipalityAndRegionDataOverview",
+      category: "municipalityAndRegion",
+    },
     { id: "sources", category: "municipalityAndRegion" },
-    { id: "KPIs", category: "municipalityAndRegion" },
+    { id: "municipalityKPIs", category: "municipalityAndRegion" },
   ],
   company: [
     { id: "companyDataOverview", category: "company" },
