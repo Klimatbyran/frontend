@@ -27,7 +27,6 @@ const LanguageContext = createContext<LanguageContextType>({
   getLocalizedPath: (path) => path,
 });
 
- 
 export const useLanguage = () => useContext(LanguageContext);
 
 interface LanguageProviderProps {
