@@ -1,4 +1,9 @@
-import { FeatureCollection } from "geojson";
+import {
+  FeatureCollection,
+  Feature,
+  Geometry,
+  GeoJsonProperties,
+} from "geojson";
 import { MapContainer, GeoJSON } from "react-leaflet";
 import type L from "leaflet";
 import { MapController } from "./MapController";
@@ -10,8 +15,13 @@ interface MapContentProps {
   minZoom: number;
   maxZoom: number;
   mapRef: React.RefObject<L.Map | null>;
-  getAreaStyle: (feature: any) => any;
-  onEachFeature: (feature: any, layer: any) => void;
+  getAreaStyle: (
+    feature: Feature<Geometry, GeoJsonProperties> | undefined,
+  ) => L.PathOptions | Record<string, unknown>;
+  onEachFeature: (
+    feature: Feature<Geometry, GeoJsonProperties> | undefined,
+    layer: L.Layer,
+  ) => void;
   setPosition: (pos: { center: [number, number]; zoom: number }) => void;
 }
 

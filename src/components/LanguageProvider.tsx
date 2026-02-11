@@ -27,7 +27,7 @@ const LanguageContext = createContext<LanguageContextType>({
   getLocalizedPath: (path) => path,
 });
 
-// eslint-disable-next-line react-refresh/only-export-components
+ 
 export const useLanguage = () => useContext(LanguageContext);
 
 interface LanguageProviderProps {
