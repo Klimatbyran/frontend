@@ -1,6 +1,19 @@
 import { t } from "i18next";
 
 /**
+ * Extract industry/sector name directly from company data (no translations)
+ * @param company - Company object with industry information
+ * @returns Industry name or undefined
+ */
+export function getCompanyIndustryFromData(company: any): string | undefined {
+  const industryGics = company?.industry?.industryGics;
+  if (!industryGics) return undefined;
+
+  // Prefer English, fallback to Swedish
+  return industryGics.en?.sectorName || industryGics.sv?.sectorName;
+}
+
+/**
  * Get the sector name for a company, using translated names when available
  *
  * @param company - Company object with industry information (accepts any company-like object)
@@ -17,9 +30,9 @@ export function getCompanySectorName(
     return sectorNames[sectorCode];
   }
 
+  // Fallback to direct extraction from company data
   return (
-    company?.industry?.industryGics?.sv?.sectorName ||
-    company?.industry?.industryGics?.en?.sectorName ||
+    getCompanyIndustryFromData(company) ||
     t("companies.overview.unknownSector", "Unknown Sector")
   );
 }

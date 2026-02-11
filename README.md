@@ -45,7 +45,7 @@ keys |
 
 Do you have an idea for a feature? Jump into the code or head to our [Discord server](https://discord.gg/N5P64QPQ6v) to discuss your thoughts. You can also submit an [issue](https://github.com/Klimatbyran/beta/issues) explaining your suggestion.
 
-### How to Contribute
+### How to Contribute 
 
 - **Discuss** your ideas on our Discord.
 - **Submit an issue** if you can't find an existing one.
@@ -63,6 +63,6 @@ We also extend our gratitude to our current and former partners:
 
 Postkodstiftelsen, ClimateView, Klimatklubben.se, Researcher's Desk, Exponential Roadmap, WWF, We Don't Have Time, Våra Barns Klimat, Argand, StormGeo.
 
-## LICENSE
+## LICENSE 
 
 This project is licensed under the terms of the [Apache 2.0](LICENSE) © Klimatbyrån Ideell Förening.

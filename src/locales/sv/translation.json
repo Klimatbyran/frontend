@@ -13,7 +13,7 @@
     "explore": "Utforska",
     "municipalities": "Kommuner",
     "municipalitiesRanked": "Topplistor",
-    "regionsRanked": "Län",
+    "regions": "Län",
     "about": "Om",
     "aboutUs": "Om oss",
     "products": "Produkter",
@@ -64,6 +64,7 @@
   },
   "landingPage": {
     "metaTitle": "Öppen klimatdata för medborgare",
+    "metaDescription": "Följ utsläpp och klimatomställning för företag och kommuner i Sverige. Öppen klimatdata för medborgare.",
     "typewriter": {
       "reduceEmissions": "att minska utsläppen?",
       "scope3Emissions": "scope 3-utsläppen?",
@@ -187,6 +188,7 @@
       "title": "Om oss",
       "description": "Klimatkollen är en medborgarplattform som tillgängliggör klimatdata. Klicka på rubrikerna för att läsa mer."
     },
+    "metaDescription": "Lär dig mer om Klimatkollen och vårt uppdrag att tillgängliggöra öppen klimatdata för medborgare.",
     "mainContent": {
       "title": "Vad är Klimatkollen?",
       "paragraph1": "Klimatkollen är en öppen och medborgardriven plattform som hjälper individer, företag och organisationer att följa klimatomställningen genom att använda AI för att samla in, analysera och sprida viktig klimatdata.",
@@ -406,7 +408,7 @@
   },
   "companyDetailPage": {
     "metaTitle": "Data om utsläpp och omställning",
-    "metaDescription": "Översikt över klimatpåverkan och hållbarhetsarbete",
+    "metaDescription": "Se utsläppsdata och klimatomställning för {{company}} på Klimatkollen.",
     "errorTitle": "Det gick inte att hämta företagsinformation",
     "errorDescription": "Försök igen senare",
     "notFoundTitle": "Företaget kunde inte hittas",
@@ -500,6 +502,7 @@
       "title": "Källor och metod",
       "description": "Vår utgångspunkt är Parisavtalets 1,5-gradersmål, och alla våra datakällor är offentligt tillgängliga. Klicka på rullgardinsmenyn för att lära dig mer."
     },
+    "metaDescription": "Lär dig mer om metodiken och datakällor som Klimatkollen använder för att spåra utsläpp och klimatomställning.",
     "dataSelector": {
       "label": "Välj vad du vill lära dig om"
     },
@@ -1068,11 +1071,12 @@
     "errorTitle": "Det gick inte att hämta kommuninformation",
     "errorDescription": "Försök igen senare",
     "title": "Kommuntopplistor",
-    "description": "Data om utsläpp och klimatomställning i kommunerna"
+    "description": "Data om utsläpp och klimatomställning i kommunerna",
+    "entityPlural": "kommuner"
   },
   "municipalityDetailPage": {
     "metaTitle": "Data om utsläpp och omställning",
-    "metaDescription": "Översikt över klimatpåverkan och hållbarhetsarbete",
+    "metaDescription": "Se utsläppsdata och klimatomställning för {{municipality}} kommun på Klimatkollen.",
     "procurementScore": {
       "high": "Ja",
       "medium": "Kanske",
@@ -1154,7 +1158,7 @@
     },
     "myvi": {
       "role": "Dataanalytiker",
-      "description": "Dataanalytiker specialiserad på att automatisera dataflöden och omvandla rådata till insikter och visualiseringar. Tidigare på Telia, KPMG, Vinnova och som biträdande professor i matematisk fysik vid Bharath Institute Of Science And Technology i Chennai, Indien."
+      "description": "Dataanalytiker specialiserad på att automatisera dataflöden och omvandla rådata till insikter och visualiseringar. Tidigare på Telia, AVL, KPMG, Vinnova och som biträdande professor i matematisk fysik vid Bharath Institute Of Science And Technology i Chennai, Indien."
     }
   },
   "board": {
@@ -1365,16 +1369,7 @@
           "metric": "Ingen data tillgänglig för {{metric}}"
         },
         "keyStatistics": {
-          "average": "Genomsnitt:",
-          "distributionAbove": "företag över genomsnittet",
-          "distributionBelow": "företag under genomsnittet"
-        },
-        "topPerformers": {
-          "titleTop": "Toppföretag",
-          "titleBest": "Bäst presterande företag"
-        },
-        "improvement": {
-          "title": "Företag som behöver förbättras"
+          "average": "Genomsnitt:"
         }
       },
       "sort": {
@@ -1552,7 +1547,7 @@
           "label": "Utsläppen",
           "description": "Historisk förändring av utsläpp",
           "detailedDescription": "Genomsnittlig årlig procentuell förändring av växthusgasutsläppen i Sveriges kommuner sedan Parisavtalet år 2015.",
-          "source": "<0>Nationella emissionsdatabasen</0>"
+          "source": "Nationella emissionsdatabasen"
         },
         "electricCarChangePercent": {
           "label": "Elbilarna",
@@ -1577,13 +1572,14 @@
           "label": "Cyklarna",
           "description": "Meter cykelväg per invånare",
           "detailedDescription": "Antal meter cykelväg per invånare per kommun år 2024. Ju längre desto bättre, god infrastruktur gynnar ökad cykling",
-          "source": "<0>Nationella Vägdatabasen</0>, <1>Trafikverket</1>"
+          "source0": "Nationella Vägdatabasen",
+          "source1": "SCB"
         },
         "climatePlan": {
           "label": "Klimatplanerna",
           "description": "Har en aktuell klimatplan",
           "detailedDescription": "Vilka kommuner har en aktuell klimatplan?",
-          "source": "<0>Klimatkollens öppna sammanställning av klimatplaner med hjälp från medlemmar av Klimatklubben och Naturskyddsföreningen</0>",
+          "source": "Klimatkollens öppna sammanställning av klimatplaner med hjälp från medlemmar av Klimatklubben och Naturskyddsföreningen",
           "booleanLabels": {
             "true": "Har klimatplan",
             "false": "Saknar klimatplan"
@@ -1599,17 +1595,7 @@
           "metric": "Ingen data tillgänglig för {{metric}}"
         },
         "keyStatistics": {
-          "average": "Genomsnitt:",
-          "distributionAbove": "kommuner över genomsnittet",
-          "distributionBelow": "kommuner under genomsnittet",
-          "distributionBoolean": "kommuner "
-        },
-        "topPerformers": {
-          "titleBest": "Topp fem kommuner",
-          "titleTop": "Toppresterande kommuner"
-        },
-        "improvement": {
-          "title": "Botten fem kommuner"
+          "average": "Genomsnitt:"
         }
       },
       "viewToggle": {
@@ -1766,19 +1752,25 @@
   },
   "common": {
     "loading": "Laddar...",
-    "error": "Fel"
+    "error": "Fel",
+    "company": "Företag",
+    "municipality": "Kommun"
   },
   "globalSearch": {
     "title": "Hitta ett företag eller kommun",
     "searchCategoryCompany": "Företag",
+    "searchCategoryCompanies": "Företag",
     "searchCategoryMunicipality": "Kommun",
+    "searchCategoryMunicipalities": "Kommuner",
+    "searchCategoryBlogPost": "Blogginlägg",
+    "searchCategoryBlogPosts": "Blogginlägg",
     "searchCategoryPage": "Sida",
-    "placeholder": "Exempel: Alfa Laval",
+    "placeholder": "Exempel: Alfa Laval, Göteborg, Parisavtalet",
     "headerButtonTitle": "Sök",
     "searchDialog": {
       "title": "Sök",
-      "description": "Sök efter företag eller kommuner",
-      "emptyText": "Börja skriva för att söka efter företag eller kommuner",
+      "description": "Sök efter företag, kommuner eller blogginlägg",
+      "emptyText": "Börja skriva för att söka efter företag, kommuner eller blogginlägg",
       "loadingText": "Hämtar företag och kommuner...",
       "shortcutTipText": "Starta sök med Ctrl+K / ⌘+K"
     }
@@ -1797,6 +1789,13 @@
       "placeholder": "Sök..."
     },
     "rank": "Placering: {{rank}} av {{total}}"
+  },
+  "rankedInsights": {
+    "belowAverage": "{{entityPlural}} under genomsnittet",
+    "aboveAverage": "{{entityPlural}} över genomsnittet",
+    "titleBest": "Topp fem {{entityPlural}}",
+    "titleTop": "Bästa {{entityPlural}}",
+    "titleWorst": "Botten fem {{entityPlural}}"
   },
   "chartLegend": {
     "clickToFilterOut": "Klicka för att filtrera bort",
@@ -1817,6 +1816,8 @@
   "explorePage": {
     "title": "Utforska data",
     "description": "Utforska och jämför utsläppsdata och klimatmål för företag och kommuner.",
+    "filter": "Filter:",
+    "sorting": "Sorterar:",
     "municipalities": {
       "muncipality": "Kommun",
       "municipalities": "Kommuner",
@@ -1824,8 +1825,8 @@
       "description": "Översikt över utsläpp och omställning i kommunerna",
       "errorTitle": "Det gick inte att hämta kommuninformation",
       "errorDescription": "Försök igen senare",
+      "searchPlaceholder": "Sök kommun (separera med komma)",
       "filteringOptions": {
-        "searchPlaceholder": "Sök kommun (flera: separera med komma)",
         "selectRegion": "Välj län",
         "allRegions": "Alla län",
         "sortBy": "Sortera efter",
@@ -1876,7 +1877,7 @@
       "noCompaniesFound": "Inga företag hittades",
       "tryDifferentCriteria": "Försök med andra sökkriterier",
       "sorting": "Sorterar:",
-      "filtrering": "Filter:",
+      "filtering": "Filter:",
       "allSectors": "Alla branscher",
       "sectionTitle": "Företag",
       "noCompaniesInSection": "Inga företag i denna kategori"

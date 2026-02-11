@@ -40,6 +40,9 @@ export const HeaderSearchButton = ({
       case "municipalities":
         navigate(`/municipalities/${response.id}`);
         break;
+      case "blogPosts":
+        navigate(`/insights/${response.id}`);
+        break;
     }
 
     onSearchResultClick?.();
