@@ -251,13 +251,13 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
 
   const activeFilters = useMemo(() => {
     return [
-      ...(!sectors.includes("all")
-        ? sectors.map((sector) => ({
+      ...(sectors.includes("all")
+        ? []
+        : sectors.map((sector) => ({
             type: "filter" as const,
             label: sectorNames[sector as keyof typeof sectorNames] || sector,
             onRemove: () => setSectors(sectors.filter((s) => s !== sector)),
-          }))
-        : []),
+          }))),
       ...(meetsParisFilter !== "all"
         ? [
             {
