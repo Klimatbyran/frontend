@@ -1031,8 +1031,7 @@
   },
   "regionalRankedPage": {
     "title": "Länsöversikt",
-    "description": "Översikt över utsläpp och omställning på länsnivå",
-    "entityPlural": "län"
+    "description": "Översikt över utsläpp och omställning på länsnivå"
   },
   "detailPage": {
     "totalEmissions": "Totala utsläpp {{year}}",
