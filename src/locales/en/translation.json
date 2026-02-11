@@ -13,7 +13,7 @@
     "explore": "Explore",
     "municipalities": "Municipalities",
     "municipalitiesRanked": "Top Lists",
-    "regionsRanked": "Regions",
+    "regions": "Regions",
     "about": "About",
     "aboutUs": "About Us",
     "products": "Products",
@@ -1315,16 +1315,7 @@
           "metric": "No data available for {{metric}}"
         },
         "keyStatistics": {
-          "average": "Average:",
-          "distributionAbove": "companies above average",
-          "distributionBelow": "companies below average"
-        },
-        "topPerformers": {
-          "titleTop": "Top Companies",
-          "titleBest": "Best Performing Companies"
-        },
-        "improvement": {
-          "title": "Companies Needing Improvement"
+          "average": "Average:"
         }
       },
       "sort": {
@@ -1549,17 +1540,7 @@
           "metric": "No data available for {{metric}}"
         },
         "keyStatistics": {
-          "average": "Average:",
-          "distributionAbove": "municipalities above average",
-          "distributionBelow": "municipalities below average",
-          "distributionBoolean": "municipalities "
-        },
-        "topPerformers": {
-          "titleBest": "Top Five Municipalities",
-          "titleTop": "Top Performing Municipalities"
-        },
-        "improvement": {
-          "title": "Bottom Five Municipalities"
+          "average": "Average:"
         }
       },
       "viewToggle": {
@@ -1753,6 +1734,13 @@
       "placeholder": "Search..."
     },
     "rank": "Rank: {{rank}} of {{total}}"
+  },
+  "rankedInsights": {
+    "belowAverage": "{{entityPlural}} below average",
+    "aboveAverage": "{{entityPlural}} above average",
+    "titleBest": "Top Five {{entityPlural}}",
+    "titleTop": "Top Performing {{entityPlural}}",
+    "titleWorst": "Bottom Five {{entityPlural}}"
   },
   "chartLegend": {
     "clickToFilterOut": "Click to filter out",
