@@ -491,7 +491,7 @@
     "noCompaniesFound": "Inga företag hittades",
     "tryDifferentCriteria": "Försök med andra sökkriterier",
     "filteringOptions": {
-      "meetsParis": "Uppfyller Parisavtalet",
+      "meetsParis": "Klarar Parisavtalet",
       "meetsParisYes": "Ja",
       "meetsParisNo": "Nej",
       "meetsParisUnknown": "Okänt"
@@ -1270,7 +1270,7 @@
       "emissionsChangeRate": "Förändringstakt",
       "emissionsChangeRateInfo": "Förändringstakt för utsläpp jämfört med föregående rapporteringsperiod.",
       "emissionsChangeRateInfoExtended": "Det här värdet är ovanligt högt på grund av inkonsekvent rapportering mellan de två senaste perioderna, vilket gör att procentförändringen inte speglar den faktiska utvecklingen.",
-      "meetsParis": "Är {{name}} på väg att uppfylla Parisavtalet?",
+      "meetsParis": "Är {{name}} på väg att klara Parisavtalet?",
       "turnover": "Omsättning",
       "turnoverAmount": "mdr",
       "employees": "Anställda",
@@ -1871,7 +1871,7 @@
       "errorTitle": "Det gick inte att hämta företagsinformation",
       "errorDescription": "Försök igen senare",
       "filteringOptions": {
-        "meetsParis": "Uppfyller Parisavtalet",
+        "meetsParis": "Klarar Parisavtalet",
         "meetsParisYes": "Ja",
         "meetsParisNo": "Nej",
         "meetsParisUnknown": "Okänt"
@@ -1880,8 +1880,8 @@
         "emissionsChange": "Utsläppsförändring (%)",
         "totalEmissions": "Totala utsläpp",
         "scope3Coverage": "Scope 3-rapportering",
-        "meetsParis": "Uppfyller Parisavtalet",
-        "name": "Företagsnamn"
+        "meetsParis": "Klarar Parisavtalet",
+        "name": "Namn"
       },
       "sector": "Bransch",
       "searchPlaceholder": "Sök företag (separera med komma)",

@@ -437,7 +437,7 @@
     "noCompaniesFound": "No companies found",
     "tryDifferentCriteria": "Try adjusting your search criteria.",
     "filteringOptions": {
-      "meetsParis": "Meets Paris Agreement",
+      "meetsParis": "Meets the Paris Agreement",
       "meetsParisYes": "Yes",
       "meetsParisNo": "No",
       "meetsParisUnknown": "Unknown"
@@ -1819,7 +1819,7 @@
       "errorTitle": "Failed to retrieve company information",
       "errorDescription": "Please try again later",
       "filteringOptions": {
-        "meetsParis": "Meets Paris Agreement",
+        "meetsParis": "Meets the Paris Agreement",
         "meetsParisYes": "Yes",
         "meetsParisNo": "No",
         "meetsParisUnknown": "Unknown"
@@ -1828,8 +1828,8 @@
         "emissionsChange": "Change in Emissions (%)",
         "totalEmissions": "Total Emissions",
         "scope3Coverage": "Scope 3 Coverage",
-        "meetsParis": "Meets Paris Agreement",
-        "name": "Company Name"
+        "meetsParis": "Meets the Paris Agreement",
+        "name": "Name"
       },
       "sector": "Sector",
       "searchPlaceholder": "Search companies (separate w/ commas)",
