@@ -1,6 +1,6 @@
 import { Trans, useTranslation } from "react-i18next";
 
-export const MunicipalityDataOverviewContent = () => {
+export const MunicipalityAndRegionDataOverviewContent = () => {
   const { t } = useTranslation();
   const paragraphWithLink = (text: string, link: string) => {
     return (
