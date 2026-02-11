@@ -1,5 +1,5 @@
+import { DataItem, DataKPI } from "@/types/rankings";
 import { useMemo } from "react";
-import { DataItem, DataKPI } from "../TerritoryMap";
 
 export function useMapData(data: DataItem[], selectedKPI: DataKPI) {
   const values = useMemo(() => {

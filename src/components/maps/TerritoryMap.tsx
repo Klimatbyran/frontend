@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { FeatureCollection } from "geojson";
-import { MapEntityType } from "@/types/rankings";
+import { DataItem, DataKPI, MapEntityType } from "@/types/rankings";
 import { calculateGeoBounds } from "./utils/geoBounds";
 import { useMapData } from "./hooks/useMapData";
 import { useMapInteractions } from "./hooks/useMapInteractions";
@@ -11,20 +11,6 @@ import MapContent from "./MapContent";
 import MapOverlays from "./MapOverlays";
 
 import "leaflet/dist/leaflet.css";
-
-export interface DataKPI {
-  key: string;
-  label: string;
-  unit?: string;
-  higherIsBetter?: boolean;
-  format?: (value: number | string | boolean | null) => string;
-}
-
-export interface DataItem {
-  id: string;
-  name: string;
-  [key: string]: string | number | boolean | null | undefined | Array<unknown>;
-}
 
 interface TerritoryMapProps {
   entityType: MapEntityType;

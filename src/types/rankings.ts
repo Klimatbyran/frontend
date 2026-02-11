@@ -1,7 +1,20 @@
-import { DataItem } from "@/components/maps/TerritoryMap";
 import { Municipality } from "./municipality";
 import { Region } from "./region";
 import { CompanyWithKPIs } from "./company";
+
+export interface DataKPI {
+  key: string;
+  label: string;
+  unit?: string;
+  higherIsBetter?: boolean;
+  format?: (value: number | string | boolean | null) => string;
+}
+
+export interface DataItem {
+  id: string;
+  name: string;
+  [key: string]: string | number | boolean | null | undefined | Array<unknown>;
+}
 
 export interface DataPoint<T> {
   label: string;
