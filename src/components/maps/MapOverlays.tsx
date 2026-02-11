@@ -1,9 +1,8 @@
 import { t } from "i18next";
-import { KPIValue, MapEntityType } from "@/types/rankings";
+import { DataItem, DataKPI, KPIValue, MapEntityType } from "@/types/rankings";
 import { MapZoomControls } from "./MapZoomControls";
 import { MapLegend } from "./MapLegend";
 import { MapTooltip } from "./MapTooltip";
-import { DataKPI, DataItem } from "./TerritoryMap";
 
 interface MapOverlaysProps {
   entityType: MapEntityType;
@@ -51,7 +50,7 @@ function MapOverlays({
           unit={selectedKPI.unit ?? ""}
           total={data.length}
           nullValue={
-            selectedKPI.key && t
+            selectedKPI.key
               ? t(`${entityType}.list.kpis.${selectedKPI.key}.nullValues`)
               : "No data"
           }
