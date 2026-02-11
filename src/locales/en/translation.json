@@ -785,7 +785,7 @@
         "paragraph3": "The forecast for future emissions is based on how emissions in each municipality or region have developed historically since the Paris Agreement in 2015. The trend line is weighted using the statistical method Least Absolute Deviations (LAD), which gives less weight to individual extreme values and provides a more fair and realistic picture of future emissions. You can read more about our emissions calculations <0>here</0>.",
         "paragraph4": "Alongside emissions data, Klimatkollen presents key indicators of municipal and regional performance in the energy transition and emissions reductions, such as growth with EVs and bicycle lanes."
       },
-      "KPIs": {
+      "mKPIs": {
         "title": "Municipality KPIs",
         "description": "What data we collect and present about the municipalities",
         "paragraph1": "In addition to showing whether emissions are on track with the Paris Agreement, we also present data on the progress of different transition measures in the municipalities.",
