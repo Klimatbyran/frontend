@@ -1369,9 +1369,7 @@
           "metric": "Ingen data tillgänglig för {{metric}}"
         },
         "keyStatistics": {
-          "average": "Genomsnitt:",
-          "distributionAbove": "företag över genomsnittet",
-          "distributionBelow": "företag under genomsnittet"
+          "average": "Genomsnitt:"
         }
       },
       "sort": {
@@ -1596,8 +1594,7 @@
           "metric": "Ingen data tillgänglig för {{metric}}"
         },
         "keyStatistics": {
-          "average": "Genomsnitt:",
-          "distributionBoolean": "kommuner "
+          "average": "Genomsnitt:"
         }
       },
       "viewToggle": {

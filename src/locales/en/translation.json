@@ -1315,9 +1315,7 @@
           "metric": "No data available for {{metric}}"
         },
         "keyStatistics": {
-          "average": "Average:",
-          "distributionAbove": "companies above average",
-          "distributionBelow": "companies below average"
+          "average": "Average:"
         }
       },
       "sort": {
@@ -1542,8 +1540,7 @@
           "metric": "No data available for {{metric}}"
         },
         "keyStatistics": {
-          "average": "Average:",
-          "distributionBoolean": "municipalities "
+          "average": "Average:"
         }
       },
       "viewToggle": {
