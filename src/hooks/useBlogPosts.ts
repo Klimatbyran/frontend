@@ -12,11 +12,20 @@ const markdownFiles = import.meta.glob("/src/lib/blog/posts/*.md", {
 export function useBlogPosts() {
   const { currentLanguage } = useLanguage();
 
-  return (
-    blogMetadataByLanguage[currentLanguage]
-      .map((b) => getBlogPost(b, currentLanguage).blogPost?.metadata)
-      .filter((b) => b != null) || []
-  );
+  const blogPostsLoading = false;
+  let blogPostsError = null;
+  let blogPosts: ContentMeta[] = [];
+
+  try {
+    blogPosts =
+      blogMetadataByLanguage[currentLanguage]
+        .map((b) => getBlogPost(b, currentLanguage).blogPost?.metadata)
+        .filter((b) => b != null) || [];
+  } catch (e) {
+    blogPostsError = e;
+  }
+
+  return { blogPosts, blogPostsLoading, blogPostsError };
 }
 
 export function useBlogPost(id: string) {
@@ -62,7 +71,11 @@ export function getBlogPost(
   }
 
   if (!rawMarkdown) {
-    return { blogPost: null, loading: false, error: "Content not found" };
+    return {
+      blogPost: null,
+      blogPostsLoading: false,
+      blogPostsError: "Content not found",
+    };
   }
 
   const normalizedMarkdown = rawMarkdown.replace(/\r\n/g, "\n");
@@ -70,7 +83,11 @@ export function getBlogPost(
   const frontmatter = normalizedMarkdown.match(frontmatterRegex);
 
   if (!frontmatter) {
-    return { blogPost: null, loading: false, error: "No frontmatter found." };
+    return {
+      blogPost: null,
+      blogPostsLoading: false,
+      blogPostsError: "No frontmatter found.",
+    };
   }
 
   const parsedMarkdown = load(frontmatter[1]) as ContentMeta;
@@ -81,7 +98,7 @@ export function getBlogPost(
       metadata: parsedMarkdown,
       content: normalizedMarkdown.replace(frontmatter[0], "").trim(),
     },
-    loading: false,
-    error: null,
+    blogPostsLoading: false,
+    blogPostsError: null,
   };
 }

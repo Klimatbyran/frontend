@@ -13,7 +13,7 @@
     "explore": "Utforska",
     "municipalities": "Kommuner",
     "municipalitiesRanked": "Topplistor",
-    "regionsRanked": "Län",
+    "regions": "Län",
     "about": "Om",
     "aboutUs": "Om oss",
     "products": "Produkter",
@@ -1071,7 +1071,8 @@
     "errorTitle": "Det gick inte att hämta kommuninformation",
     "errorDescription": "Försök igen senare",
     "title": "Kommuntopplistor",
-    "description": "Data om utsläpp och klimatomställning i kommunerna"
+    "description": "Data om utsläpp och klimatomställning i kommunerna",
+    "entityPlural": "kommuner"
   },
   "municipalityDetailPage": {
     "metaTitle": "Data om utsläpp och omställning",
@@ -1368,16 +1369,7 @@
           "metric": "Ingen data tillgänglig för {{metric}}"
         },
         "keyStatistics": {
-          "average": "Genomsnitt:",
-          "distributionAbove": "företag över genomsnittet",
-          "distributionBelow": "företag under genomsnittet"
-        },
-        "topPerformers": {
-          "titleTop": "Toppföretag",
-          "titleBest": "Bäst presterande företag"
-        },
-        "improvement": {
-          "title": "Företag som behöver förbättras"
+          "average": "Genomsnitt:"
         }
       },
       "sort": {
@@ -1555,7 +1547,7 @@
           "label": "Utsläppen",
           "description": "Historisk förändring av utsläpp",
           "detailedDescription": "Genomsnittlig årlig procentuell förändring av växthusgasutsläppen i Sveriges kommuner sedan Parisavtalet år 2015.",
-          "source": "<0>Nationella emissionsdatabasen</0>"
+          "source": "Nationella emissionsdatabasen"
         },
         "electricCarChangePercent": {
           "label": "Elbilarna",
@@ -1580,13 +1572,14 @@
           "label": "Cyklarna",
           "description": "Meter cykelväg per invånare",
           "detailedDescription": "Antal meter cykelväg per invånare per kommun år 2024. Ju längre desto bättre, god infrastruktur gynnar ökad cykling",
-          "source": "<0>Nationella Vägdatabasen</0>, <1>Trafikverket</1>"
+          "source0": "Nationella Vägdatabasen",
+          "source1": "SCB"
         },
         "climatePlan": {
           "label": "Klimatplanerna",
           "description": "Har en aktuell klimatplan",
           "detailedDescription": "Vilka kommuner har en aktuell klimatplan?",
-          "source": "<0>Klimatkollens öppna sammanställning av klimatplaner med hjälp från medlemmar av Klimatklubben och Naturskyddsföreningen</0>",
+          "source": "Klimatkollens öppna sammanställning av klimatplaner med hjälp från medlemmar av Klimatklubben och Naturskyddsföreningen",
           "booleanLabels": {
             "true": "Har klimatplan",
             "false": "Saknar klimatplan"
@@ -1602,17 +1595,7 @@
           "metric": "Ingen data tillgänglig för {{metric}}"
         },
         "keyStatistics": {
-          "average": "Genomsnitt:",
-          "distributionAbove": "kommuner över genomsnittet",
-          "distributionBelow": "kommuner under genomsnittet",
-          "distributionBoolean": "kommuner "
-        },
-        "topPerformers": {
-          "titleBest": "Topp fem kommuner",
-          "titleTop": "Toppresterande kommuner"
-        },
-        "improvement": {
-          "title": "Botten fem kommuner"
+          "average": "Genomsnitt:"
         }
       },
       "viewToggle": {
@@ -1776,14 +1759,18 @@
   "globalSearch": {
     "title": "Hitta ett företag eller kommun",
     "searchCategoryCompany": "Företag",
+    "searchCategoryCompanies": "Företag",
     "searchCategoryMunicipality": "Kommun",
+    "searchCategoryMunicipalities": "Kommuner",
+    "searchCategoryBlogPost": "Blogginlägg",
+    "searchCategoryBlogPosts": "Blogginlägg",
     "searchCategoryPage": "Sida",
-    "placeholder": "Exempel: Alfa Laval",
+    "placeholder": "Exempel: Alfa Laval, Göteborg, Parisavtalet",
     "headerButtonTitle": "Sök",
     "searchDialog": {
       "title": "Sök",
-      "description": "Sök efter företag eller kommuner",
-      "emptyText": "Börja skriva för att söka efter företag eller kommuner",
+      "description": "Sök efter företag, kommuner eller blogginlägg",
+      "emptyText": "Börja skriva för att söka efter företag, kommuner eller blogginlägg",
       "loadingText": "Hämtar företag och kommuner...",
       "shortcutTipText": "Starta sök med Ctrl+K / ⌘+K"
     }
@@ -1802,6 +1789,13 @@
       "placeholder": "Sök..."
     },
     "rank": "Placering: {{rank}} av {{total}}"
+  },
+  "rankedInsights": {
+    "belowAverage": "{{entityPlural}} under genomsnittet",
+    "aboveAverage": "{{entityPlural}} över genomsnittet",
+    "titleBest": "Topp fem {{entityPlural}}",
+    "titleTop": "Bästa {{entityPlural}}",
+    "titleWorst": "Botten fem {{entityPlural}}"
   },
   "chartLegend": {
     "clickToFilterOut": "Klicka för att filtrera bort",

@@ -1,5 +1,4 @@
 #!/usr/bin/env tsx
- 
 
 import { readdirSync, readFileSync } from "fs";
 import { join, dirname, basename, relative } from "path";

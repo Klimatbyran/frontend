@@ -41,7 +41,7 @@ export interface KPIValue<T = Municipality | Region> {
   label: string;
   key: keyof T;
   unit: string;
-  source: string;
+  source: string | string[];
   sourceUrls: string[];
   description: string;
   detailedDescription: string;
