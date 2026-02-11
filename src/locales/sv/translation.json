@@ -1547,7 +1547,7 @@
           "label": "Utsläppen",
           "description": "Historisk förändring av utsläpp",
           "detailedDescription": "Genomsnittlig årlig procentuell förändring av växthusgasutsläppen i Sveriges kommuner sedan Parisavtalet år 2015.",
-          "source": "<0>Nationella emissionsdatabasen</0>"
+          "source": "Nationella emissionsdatabasen"
         },
         "electricCarChangePercent": {
           "label": "Elbilarna",
@@ -1572,13 +1572,14 @@
           "label": "Cyklarna",
           "description": "Meter cykelväg per invånare",
           "detailedDescription": "Antal meter cykelväg per invånare per kommun år 2024. Ju längre desto bättre, god infrastruktur gynnar ökad cykling",
-          "source": "<0>Nationella Vägdatabasen</0>, <1>Trafikverket</1>"
+          "source0": "Nationella Vägdatabasen",
+          "source1": "SCB"
         },
         "climatePlan": {
           "label": "Klimatplanerna",
           "description": "Har en aktuell klimatplan",
           "detailedDescription": "Vilka kommuner har en aktuell klimatplan?",
-          "source": "<0>Klimatkollens öppna sammanställning av klimatplaner med hjälp från medlemmar av Klimatklubben och Naturskyddsföreningen</0>",
+          "source": "Klimatkollens öppna sammanställning av klimatplaner med hjälp från medlemmar av Klimatklubben och Naturskyddsföreningen",
           "booleanLabels": {
             "true": "Har klimatplan",
             "false": "Saknar klimatplan"
