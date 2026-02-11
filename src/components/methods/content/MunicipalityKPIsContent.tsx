@@ -18,8 +18,12 @@ export const MunicipalityKPIsContent = () => {
 
   return (
     <div className="mx-auto space-y-8 prose prose-invert">
-      <p>{t("methodsPage.municipalityAndRegion.KPIs.paragraph1")}</p>
-      <p>{t("methodsPage.municipalityAndRegion.KPIs.paragraph2")}</p>
+      <p>
+        {t("methodsPage.municipalityAndRegion.municipalityKPIs.paragraph1")}
+      </p>
+      <p>
+        {t("methodsPage.municipalityAndRegion.municipalityKPIs.paragraph2")}
+      </p>
       <div className="space-y-6">
         {kpiList.map((item, index) => (
           <ContentSection key={index} title={item.title}>

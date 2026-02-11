@@ -831,7 +831,7 @@
       }
     },
     "municipalityAndRegion": {
-      "dataOverview": {
+      "municipalityAndRegionDataOverview": {
         "title": "Kommun- och länsdata översikt",
         "description": "Vilken data vi samlar in och presenterar om kommunerna och länen",
         "paragraph1": "Klimatkollen visar data om utsläpp i Sveriges kommuner och län, med SMHI:s Nationella emissionsdatabas som främsta källa. För att vår kommundata, länsdata och företagsdata ska vara jämförbara visas sedan augusti 2025 utsläpp av alla växthusgaser (CO₂e) inte enbart koldioxid.",
@@ -839,7 +839,7 @@
         "paragraph3": "Prognosen för framtida utsläpp baseras på hur utsläppen i respektive kommun eller län har utvecklats historiskt sedan Parisavtalet 2015. Trendlinjen viktas enligt den statistiska metoden least absolute deviations (LAD), som ger mindre vikt åt enskilda extremvärden och en mer rättvis och realistisk bild av de framtida utsläppen. Läs mer om våra utsläppsberäkningar <0>här</0>.",
         "paragraph4": "Utöver utsläppsdata visas även nyckeltal för hur det går i kommunerna och länen med att ställa om och minska utsläppen."
       },
-      "KPIs": {
+      "municipalityKPIs": {
         "title": "Nyckeltal omställning i kommunerna",
         "description": "Här förklaras vilken data vi visar om klimatomställningen i kommunerna",
         "paragraph1": "Utöver data om hur det går med utsläppen jämfört med hur det behöver gå enligt Parisavtalet, så visar vi även data om hur det går med olika delomställningar som behöver ske för att minska utsläppen i kommunerna.",
