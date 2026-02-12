@@ -1,4 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
+import { parseTagsInput } from "@/lib/company/createCompanyBody";
 import { updateCompanyDetails } from "@/lib/api";
 import type { CompanyDetails } from "@/types/company";
 
@@ -40,13 +41,6 @@ function buildDescriptions(
     descriptions.push(item);
   }
   return descriptions;
-}
-
-function parseTagsInput(tagsInput: string): string[] {
-  return tagsInput
-    .split(",")
-    .map((s) => s.trim())
-    .filter(Boolean);
 }
 
 async function saveCompanyDetails({
