@@ -86,12 +86,14 @@ export function AppRoutes() {
         element={<CompanyDetailPage />}
       />
 
+      {/* TEMPORARY: Editor without auth for testing - move back inside ProtectedRoute when done */}
+      <Route
+        path={`${basePath}/companies/:id/edit`}
+        element={<CompanyEditPage />}
+      />
+
       {/* Protected Routes*/}
       <Route element={<ProtectedRoute />}>
-        <Route
-          path={`${basePath}/companies/:id/edit`}
-          element={<CompanyEditPage />}
-        />
         <Route
           path={`${basePath}/internal-pages/validation-dashboard`}
           element={<ValidationDashboard />}

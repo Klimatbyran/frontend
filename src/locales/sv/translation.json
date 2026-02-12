@@ -1627,6 +1627,11 @@
     "errorMessage": "Du har inte den nödvändiga behörigheten för att visa denna sida"
   },
   "companyEditPage": {
+    "tabs": {
+      "companyDetails": "Företagsuppgifter",
+      "emissionsData": "Utsläppsdata"
+    },
+    "emissionsDataSelectYear": "Välj minst ett år ovan för att redigera utsläppsdata.",
     "error": {
       "couldNotFetch": "Kunde inte hämta företagsdata",
       "tryAgainLater": "Vänligen försök igen senare",
@@ -1651,9 +1656,12 @@
     "sections": {
       "reportingPeriod": "Rapporteringsperiod",
       "emissions": "Utsläpp",
-      "economy": "Ekonomi"
+      "economy": "Ekonomi",
+      "industryAndBaseYear": "Bransch & basår"
     },
     "save": "Spara",
+    "saveCompanyDetails": "Spara företagsuppgifter",
+    "saveIndustryAndBaseYear": "Spara bransch & basår",
     "success": {
       "title": "Ändringarna har sparats!",
       "description": "Ändringar i rapporteringsperioden har gjorts framgångsrikt"
@@ -1661,6 +1669,9 @@
     "successDetails": {
       "title": "Ändringarna har sparats!",
       "description": "Ändringar i basår och/eller bransch har gjorts framgångsrikt"
+    },
+    "successCompanyDetails": {
+      "description": "Företagsuppgifterna har sparats"
     },
     "unsavedChanges": {
       "title": "Osparade ändringar",

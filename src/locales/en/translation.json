@@ -1573,6 +1573,11 @@
     "errorMessage": "You do not have the necessary permissions to view this page"
   },
   "companyEditPage": {
+    "tabs": {
+      "companyDetails": "Company details",
+      "emissionsData": "Emissions data"
+    },
+    "emissionsDataSelectYear": "Select at least one year above to edit emissions data.",
     "error": {
       "couldNotFetch": "Could not fetch company data",
       "tryAgainLater": "Please try again later",
@@ -1597,9 +1602,12 @@
     "sections": {
       "reportingPeriod": "Reporting Period",
       "emissions": "Emissions",
-      "economy": "Economy"
+      "economy": "Economy",
+      "industryAndBaseYear": "Industry & base year"
     },
     "save": "Save",
+    "saveCompanyDetails": "Save company details",
+    "saveIndustryAndBaseYear": "Save industry & base year",
     "success": {
       "title": "Changes have been saved!",
       "description": "Changes to the reporting period have been made successfully"
@@ -1607,6 +1615,9 @@
     "successDetails": {
       "title": "Changes have been saved!",
       "description": "Changes to the base year and/or industry sector have been made successfully"
+    },
+    "successCompanyDetails": {
+      "description": "Company details have been saved successfully"
     },
     "unsavedChanges": {
       "title": "Unsaved Changes",

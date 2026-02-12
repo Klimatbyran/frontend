@@ -1,24 +1,15 @@
 import { useParams } from "react-router-dom";
-import React, { useRef, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useCompanyDetails } from "@/hooks/companies/useCompanyDetails";
 import { Text } from "@/components/ui/text";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CompanyEditHeader } from "@/components/companies/edit/CompanyEditHeader";
-import { CompanyEditPeriod } from "@/components/companies/edit/CompanyEditPeriod";
-import { CompanyEditStatedTotal } from "@/components/companies/edit/CompanyEditStatedTotal";
-import { CompanyEditScope1 } from "@/components/companies/edit/CompanyEditScope1";
-import { CompanyEditScope1And2 } from "@/components/companies/edit/CompanyEditScope1And2";
-import { CompanyEditScope2 } from "@/components/companies/edit/CompanyEditScope2";
-import { CompanyEditScope3 } from "@/components/companies/edit/CompanyEditScope3";
-import { CompanyEditTurnover } from "@/components/companies/edit/CompanyEditTurnover";
-import { CompanyEditEmployees } from "@/components/companies/edit/CompanyEditEmployees";
+import { CompanyEditDetails } from "@/components/companies/edit/CompanyEditDetails";
+import { CompanyEditEmissionsDataWithGuard } from "@/components/companies/edit/CompanyEditEmissionsData";
 import { ReportingPeriod } from "@/types/company";
-import { mapCompanyEditFormToRequestBody } from "@/lib/company/company-edit";
-import { updateReportingPeriods } from "@/lib/api";
-import { useToast } from "@/contexts/ToastContext";
 import { AuthExpiredModal } from "@/components/companies/edit/AuthExpiredModal";
 import { useAuth } from "@/contexts/AuthContext";
-import { CompanyEditDetails } from "@/components/companies/edit/CompanyEditDetails";
 
 const isAuthError = (error: Error) => {
   if ("status" in error && typeof error.status === "number") {
@@ -36,9 +27,7 @@ export function CompanyEditPage() {
   const [formData, setFormData] = useState<Map<string, string>>(
     new Map<string, string>(),
   );
-  const formRef = useRef<HTMLFormElement | null>(null);
   const [isUpdating, setIsUpdating] = useState(false);
-  const { showToast } = useToast();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const { login } = useAuth();
 
@@ -104,92 +93,6 @@ export function CompanyEditPage() {
     );
   }
 
-  const handleInputChange = (
-    name: string,
-    value: string,
-    originalVerified?: boolean,
-  ) => {
-    const updateFormData = new Map(formData);
-    // Checkbox logic: only track if changed from false to true
-    if (name.endsWith("-checkbox") && originalVerified === false) {
-      if (value === "true") {
-        updateFormData.set(name, value);
-      } else {
-        updateFormData.delete(name);
-      }
-    } else {
-      updateFormData.set(name, value);
-    }
-    setFormData(updateFormData);
-  };
-
-  const onInputChange = handleInputChange;
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    setIsUpdating(true);
-    event.preventDefault();
-    if (formRef.current !== null) {
-      const inputs = formRef.current.querySelectorAll("input");
-      for (const input of inputs) {
-        if (input.type === "checkbox") {
-          if (input.checked === input.defaultChecked) continue;
-
-          setFormData(
-            formData.set(input.name, input.checked ? "true" : "false"),
-          );
-        } else {
-          if (input.value === input.defaultValue) continue;
-
-          setFormData(formData.set(input.name, input.value));
-        }
-      }
-      for (const textarea of formRef.current.querySelectorAll("textarea")) {
-        if (textarea.value === textarea.defaultValue) continue;
-
-        setFormData(formData.set(textarea.name, textarea.value));
-      }
-    }
-    if (id !== undefined) {
-      try {
-        const { reportingPeriods, metadata } = mapCompanyEditFormToRequestBody(
-          selectedPeriods,
-          formData,
-        );
-        await updateReportingPeriods(id, { reportingPeriods, metadata });
-        await refetch();
-        setSelectedYears(selectedYears);
-        setFormData(new Map());
-        showToast(
-          t("companyEditPage.success.title"),
-          t("companyEditPage.success.description"),
-        );
-      } catch (error: any) {
-        if (error?.status === 401) {
-          setShowAuthModal(true);
-        } else {
-          showToast(
-            t("companyEditPage.error.couldNotSave"),
-            t("companyEditPage.error.tryAgainLater"),
-          );
-        }
-      } finally {
-        setIsUpdating(false);
-      }
-    } else {
-      setIsUpdating(false);
-    }
-  };
-
-  const resetPeriod = (year: number) => {
-    const updatedFormData = new Map(formData);
-    for (const key of formData.keys()) {
-      if (key.includes(year.toString())) {
-        updatedFormData.delete(key);
-      }
-    }
-    setFormData(updatedFormData);
-  };
-
   return (
     <div className="space-y-16 max-w-[1400px] mx-auto">
       <div className="bg-black-2 rounded-level-1 p-16">
@@ -198,95 +101,36 @@ export function CompanyEditPage() {
           onYearsSelect={setSelectedYears}
           hasUnsavedChanges={formData.size > 0}
         />
-        <CompanyEditDetails company={company} onSave={refetch} />
-        <div className="mb-20" />
-        {selectedPeriods !== null && selectedPeriods.length > 0 && (
-          <form onSubmit={handleSubmit} ref={formRef}>
-            <div className="overflow-x-auto overflow-y-visible">
-              <div className="min-w-max">
-                {/* Reporting Period Section */}
-                <div className="mb-8">
-                  <CompanyEditPeriod
-                    periods={selectedPeriods}
-                    onInputChange={onInputChange}
-                    formData={formData}
-                    resetPeriod={resetPeriod}
-                  />
-                </div>
-
-                {/* Emissions Section */}
-                <div className="mb-8">
-                  <h3 className="text-sm font-medium text-gray-400 mb-4 px-2 uppercase tracking-wide">
-                    {t("companyEditPage.sections.emissions")}
-                  </h3>
-                  <CompanyEditStatedTotal
-                    periods={selectedPeriods}
-                    onInputChange={onInputChange}
-                    formData={formData}
-                  />
-                  <CompanyEditScope1
-                    periods={selectedPeriods}
-                    onInputChange={onInputChange}
-                    formData={formData}
-                  />
-                  <CompanyEditScope1And2
-                    periods={selectedPeriods}
-                    onInputChange={onInputChange}
-                    formData={formData}
-                  />
-                  <CompanyEditScope2
-                    periods={selectedPeriods}
-                    onInputChange={onInputChange}
-                    formData={formData}
-                  />
-                  <CompanyEditScope3
-                    periods={selectedPeriods}
-                    onInputChange={onInputChange}
-                    formData={formData}
-                  />
-                </div>
-
-                {/* Economy Section */}
-                <div className="mb-8">
-                  <h3 className="text-sm font-medium text-gray-400 mb-4 px-2 uppercase tracking-wide">
-                    {t("companyEditPage.sections.economy")}
-                  </h3>
-                  <CompanyEditTurnover
-                    periods={selectedPeriods}
-                    onInputChange={onInputChange}
-                    formData={formData}
-                  />
-                  <CompanyEditEmployees
-                    periods={selectedPeriods}
-                    onInputChange={onInputChange}
-                    formData={formData}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="w-full ps-4 pe-2 mt-6">
-              <textarea
-                className="ms-2 w-full p-2 border-gray-300 rounded text-white bg-black-1"
-                rows={4}
-                placeholder="Comment"
-                name="comment"
-              ></textarea>
-              <input
-                type="text"
-                className="ms-2 mt-2 w-full p-2 rounded text-white bg-black-1"
-                name="source"
-                placeholder="Source URL"
-              ></input>
-            </div>
-
-            <button
-              type="submit"
-              className="inline-flex float-right mt-3 items-center justify-center text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white disabled:pointer-events-none hover:opacity-80 active:ring-1 active:ring-white disabled:opacity-50 h-10 bg-blue-5 text-white rounded-lg hover:bg-blue-6 transition px-4 py-1 font-medium"
+        <Tabs defaultValue="company-details" className="w-full">
+          <TabsList className="mb-6 bg-black-1">
+            <TabsTrigger
+              value="company-details"
+              className="data-[state=active]:bg-black-2"
             >
-              {t("companyEditPage.save")}
-            </button>
-          </form>
-        )}
+              {t("companyEditPage.tabs.companyDetails")}
+            </TabsTrigger>
+            <TabsTrigger
+              value="emissions-data"
+              className="data-[state=active]:bg-black-2"
+            >
+              {t("companyEditPage.tabs.emissionsData")}
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value="company-details">
+            <CompanyEditDetails company={company} onSave={refetch} />
+          </TabsContent>
+          <TabsContent value="emissions-data">
+            <CompanyEditEmissionsDataWithGuard
+              company={company}
+              selectedPeriods={selectedPeriods}
+              formData={formData}
+              setFormData={setFormData}
+              refetch={refetch}
+              onAuthRequired={() => setShowAuthModal(true)}
+              onSubmittingChange={setIsUpdating}
+            />
+          </TabsContent>
+        </Tabs>
       </div>
       {showAuthModal && (
         <AuthExpiredModal
