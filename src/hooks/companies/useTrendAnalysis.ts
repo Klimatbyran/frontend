@@ -40,8 +40,12 @@ export const useTrendAnalysis = (
       noComparable: [],
     };
 
+    const sectorFilterActive =
+      selectedSectors.length > 0 && !selectedSectors.includes("all");
+
     companies.forEach((company) => {
       if (
+        sectorFilterActive &&
         !selectedSectors.includes(
           company.industry?.industryGics?.sectorCode || "",
         )
