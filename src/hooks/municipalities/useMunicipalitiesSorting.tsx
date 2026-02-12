@@ -29,6 +29,7 @@ export const useSortOptions = (): SortOption[] => {
         asc: t("explorePage.sortingOptions.bestFirst"),
         desc: t("explorePage.sortingOptions.worstFirst"),
       },
+      defaultDirection: "asc",
     },
   ];
 };
