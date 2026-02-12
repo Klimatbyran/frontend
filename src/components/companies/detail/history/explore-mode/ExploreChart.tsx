@@ -221,7 +221,6 @@ export function ExploreChart({
         d.year >= exploreData.baseYear &&
         d.year <= exploreData.lastReportedYear,
     );
-
   }
   // For step 2, calculate the extended trend segment from last reported year to current year + 5
   let step2TrendSegment: { year: number; approximated: number | undefined }[] =
@@ -253,7 +252,6 @@ export function ExploreChart({
         exploreData.lastReportedYear,
         lastReportedValue,
       );
-
     }
   }
 
