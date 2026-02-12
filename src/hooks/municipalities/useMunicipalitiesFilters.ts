@@ -40,7 +40,7 @@ export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
   const sortDirection = (
     isSortDirection(searchParams.get("sortDirection") ?? "")
       ? searchParams.get("sortDirection")
-      : sortOptions.find(o => o.value == sortBy)?.defaultDirection ?? "desc"
+      : (sortOptions.find((o) => o.value == sortBy)?.defaultDirection ?? "desc")
   ) as SortDirection;
 
   const setSearchQuery = useCallback(

@@ -13,7 +13,11 @@ import { getCompanySectorName } from "@/utils/data/industryGrouping";
 import { CompanySector, SECTORS } from "@/lib/constants/sectors";
 import { FilterGroup } from "@/components/explore/FilterPopover";
 import setOrDeleteSearchParam from "@/utils/data/setOrDeleteSearchParam";
-import { isSortOption, useSortOptions, type CompanySortBy } from "./useCompanySorting";
+import {
+  isSortOption,
+  useSortOptions,
+  type CompanySortBy,
+} from "./useCompanySorting";
 
 const MEETS_PARIS_OPTIONS = ["all", "yes", "no", "unknown"] as const;
 type MeetsParisFilter = (typeof MEETS_PARIS_OPTIONS)[number];
@@ -44,7 +48,8 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
     searchParams.get("sortDirection") == "asc" ||
     searchParams.get("sortDirection") == "desc"
       ? searchParams.get("sortDirection")
-      : sortingOptions.find(o => o.value == sortBy)?.defaultDirection ?? "desc"
+      : (sortingOptions.find((o) => o.value == sortBy)?.defaultDirection ??
+        "desc")
   ) as "asc" | "desc";
 
   const setSearchQuery = useCallback(

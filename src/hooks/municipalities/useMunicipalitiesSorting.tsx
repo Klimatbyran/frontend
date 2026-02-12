@@ -12,7 +12,7 @@ export const useSortOptions = (): SortOption[] => {
     {
       value: "emissions_reduction",
       label: t("explorePage.municipalities.sortingOptions.emissionsChangeRate"),
-    }, 
+    },
     {
       value: "name",
       label: t("explorePage.municipalities.sortingOptions.name"),

@@ -29,12 +29,12 @@ export const useSortOptions = (): SortOption[] => {
         asc: t("explorePage.sortingOptions.bestFirst"),
         desc: t("explorePage.sortingOptions.worstFirst"),
       },
-      defaultDirection: "asc"
+      defaultDirection: "asc",
     },
     {
       value: "scope3_coverage",
       label: t("explorePage.companies.sortingOptions.scope3Coverage"),
-    }, 
+    },
   ] as const;
 };
 
