@@ -6,16 +6,21 @@ export const useSortOptions = (): SortOption[] => {
 
   return [
     {
-      value: "emissions_reduction",
-      label: t("explorePage.companies.sortingOptions.emissionsChange"),
-    },
-    {
       value: "total_emissions",
       label: t("explorePage.companies.sortingOptions.totalEmissions"),
     },
     {
-      value: "scope3_coverage",
-      label: t("explorePage.companies.sortingOptions.scope3Coverage"),
+      value: "emissions_reduction",
+      label: t("explorePage.companies.sortingOptions.emissionsChange"),
+    },
+    {
+      value: "name",
+      label: t("explorePage.companies.sortingOptions.name"),
+      directionLabels: {
+        asc: t("explorePage.sortingOptions.aToZ"),
+        desc: t("explorePage.sortingOptions.zToA"),
+      },
+      defaultDirection: "asc",
     },
     {
       value: "meets_paris",
@@ -27,14 +32,9 @@ export const useSortOptions = (): SortOption[] => {
       defaultDirection: "asc"
     },
     {
-      value: "name",
-      label: t("explorePage.companies.sortingOptions.name"),
-      directionLabels: {
-        asc: t("explorePage.sortingOptions.aToZ"),
-        desc: t("explorePage.sortingOptions.zToA"),
-      },
-      defaultDirection: "asc",
-    }
+      value: "scope3_coverage",
+      label: t("explorePage.companies.sortingOptions.scope3Coverage"),
+    }, 
   ] as const;
 };
 
