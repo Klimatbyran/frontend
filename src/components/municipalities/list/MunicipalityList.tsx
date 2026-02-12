@@ -14,7 +14,7 @@ interface MunicipalityListProps {
 export function MunicipalityList({ municipalities }: MunicipalityListProps) {
   const { t } = useTranslation();
   const municipalityFilters = useMunicipalitiesFilters(municipalities);
-  const filteredMunicipalities = municipalityFilters.filteredMunicipalities;
+  const { filteredMunicipalities } = municipalityFilters;
   const municipalitySortOptions = useSortOptions();
 
   // Transform municipality data for ListCard components

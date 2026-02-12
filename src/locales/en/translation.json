@@ -13,7 +13,7 @@
     "explore": "Explore",
     "municipalities": "Municipalities",
     "municipalitiesRanked": "Top Lists",
-    "regionsRanked": "Regions",
+    "regions": "Regions",
     "about": "About",
     "aboutUs": "About Us",
     "products": "Products",
@@ -1315,16 +1315,7 @@
           "metric": "No data available for {{metric}}"
         },
         "keyStatistics": {
-          "average": "Average:",
-          "distributionAbove": "companies above average",
-          "distributionBelow": "companies below average"
-        },
-        "topPerformers": {
-          "titleTop": "Top Companies",
-          "titleBest": "Best Performing Companies"
-        },
-        "improvement": {
-          "title": "Companies Needing Improvement"
+          "average": "Average:"
         }
       },
       "sort": {
@@ -1502,7 +1493,7 @@
           "label": "Emissions",
           "description": "Historical change in emissions",
           "detailedDescription": "Average annual percentage change in greenhouse gas emissions in Swedish municipalities since the Paris Agreement in 2015.",
-          "source": "<0>National Emissions Database</0>"
+          "source": "National Emissions Database"
         },
         "electricCarChangePercent": {
           "label": "Electric Cars",
@@ -1527,13 +1518,14 @@
           "label": "Bicycles",
           "description": "Bicycle path metres per capita",
           "detailedDescription": "Number of metres of bicycle paths per inhabitant per municipality in 2024. Longer is better, as good infrastructure promotes increased cycling.",
-          "source": "<0>National Road Database</0>, <1>Swedish Transport Administration</1>"
+          "source0": "National Road Database",
+          "source1": "SCB"
         },
         "climatePlan": {
           "label": "Climate Plans",
           "description": "Has an ongoing climate action plan",
           "detailedDescription": "Which municipalities have a climate action plan?",
-          "source": "<0>Klimatkollen’s open compilation of climate plans, with help from members of Klimatklubben and the Swedish Society for Nature Conservation (Naturskyddsföreningen).</0>",
+          "source": "Klimatkollen’s open compilation of climate plans, with help from members of Klimatklubben and the Swedish Society for Nature Conservation (Naturskyddsföreningen).",
           "booleanLabels": {
             "true": "Has Climate Plan",
             "false": "No Climate Plan"
@@ -1549,17 +1541,7 @@
           "metric": "No data available for {{metric}}"
         },
         "keyStatistics": {
-          "average": "Average:",
-          "distributionAbove": "municipalities above average",
-          "distributionBelow": "municipalities below average",
-          "distributionBoolean": "municipalities "
-        },
-        "topPerformers": {
-          "titleBest": "Top Five Municipalities",
-          "titleTop": "Top Performing Municipalities"
-        },
-        "improvement": {
-          "title": "Bottom Five Municipalities"
+          "average": "Average:"
         }
       },
       "viewToggle": {
@@ -1753,6 +1735,13 @@
       "placeholder": "Search..."
     },
     "rank": "Rank: {{rank}} of {{total}}"
+  },
+  "rankedInsights": {
+    "belowAverage": "{{entityPlural}} below average",
+    "aboveAverage": "{{entityPlural}} above average",
+    "titleBest": "Top Five {{entityPlural}}",
+    "titleTop": "Top Performing {{entityPlural}}",
+    "titleWorst": "Bottom Five {{entityPlural}}"
   },
   "chartLegend": {
     "clickToFilterOut": "Click to filter out",

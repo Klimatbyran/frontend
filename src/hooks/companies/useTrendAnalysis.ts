@@ -1,8 +1,7 @@
 import { useMemo } from "react";
 import { TrendingDown, TrendingUp, MinusCircle } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { RankedCompany, TrendData } from "@/types/company";
-import { TrendCardInfo } from "@/types/company";
+import { RankedCompany, TrendData, TrendCardInfo } from "@/types/company";
 import { calculateEmissionsChangeFromBaseYear } from "@/utils/calculations/emissionsCalculations";
 
 export const useCategoryInfo = (): Record<string, TrendCardInfo> => {
@@ -41,10 +40,14 @@ export const useTrendAnalysis = (
       noComparable: [],
     };
 
+    const sectorFilterActive =
+      selectedSectors.length > 0 && !selectedSectors.includes("all");
+
     companies.forEach((company) => {
       if (
+        sectorFilterActive &&
         !selectedSectors.includes(
-          company.industry?.industryGics.sectorCode || "",
+          company.industry?.industryGics?.sectorCode || "",
         )
       ) {
         return;

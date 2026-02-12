@@ -5,9 +5,10 @@ import {
   ReferenceLine,
   Tooltip,
   ResponsiveContainer,
+  XAxis,
+  YAxis,
 } from "recharts";
 import { useTranslation } from "react-i18next";
-import { XAxis, YAxis } from "recharts";
 import { DataPoint } from "@/types/emissions";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import {

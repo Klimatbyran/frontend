@@ -22,10 +22,38 @@ export type ReportingPeriod = ReportingPeriodFromDetail; // For detail pages
 
 export type Emissions = NonNullable<ReportingPeriod["emissions"]>;
 
+/**
+ * Type constraint for objects that can be checked for AI generation.
+ * Objects must have optional metadata with verifiedBy and user properties.
+ * Used for verification of emissions data (scope1, scope2, scope3 categories, etc.)
+ */
+export type AIGeneratable = {
+  metadata?: {
+    verifiedBy?: { name: string } | null;
+    user?: { name?: string } | null;
+  };
+};
+
 // Scope 3 category type extracted from API
 export type Scope3Category = NonNullable<
   NonNullable<CompanyDetails["reportingPeriods"][0]["emissions"]>["scope3"]
 >["categories"][0];
+
+// Industry GICS shape from company detail API (list endpoint has sectorCode only; detail has en/sv names)
+export type CompanyIndustryGics = NonNullable<
+  NonNullable<CompanyDetails["industry"]>["industryGics"]
+>;
+
+// Localized GICS name fields (same shape as company.industry.industryGics.en / .sv). Use for
+// /industry-gics/ response values and anywhere we only need the name fields.
+export type GicsNameFields = NonNullable<CompanyIndustryGics["en"]>;
+
+// Company-like object with optional industry GICS (accepts list or detail response)
+export interface CompanyWithIndustryGics {
+  industry?: {
+    industryGics?: Partial<CompanyIndustryGics>;
+  } | null;
+}
 
 // Company type from the list endpoint (/companies/)
 export type CompanyListItem = NonNullable<
@@ -82,7 +110,8 @@ export interface TrendCardInfo {
   textColor: string;
 }
 
-// GICS option type for dropdown and details, based on API response
+// GICS option type for the /industry-gics/ dropdown (one option per code). For the
+// industry classification on a company use CompanyIndustryGics / CompanyWithIndustryGics.
 export type GicsOption = {
   code: string;
   label?: string;
