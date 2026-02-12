@@ -144,4 +144,11 @@ export default tseslint.config(
       "max-statements": "off",
     },
   },
+  // Allow console in scripts and build-only lib (intentional CLI/build output)
+  {
+    files: ["scripts/**/*.{ts,js}", "src/lib/sitemap-generator.ts"],
+    rules: {
+      "no-console": "off",
+    },
+  },
 );
