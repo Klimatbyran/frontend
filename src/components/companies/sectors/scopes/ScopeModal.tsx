@@ -39,7 +39,7 @@ const ScopeModal: React.FC<ScopeModalProps> = ({
       .map((sectorCode) => {
         const sectorName = sectorNames[sectorCode as keyof typeof sectorNames];
         const sectorCompanies = companies.filter(
-          (company) => company.industry?.industryGics.sectorCode === sectorCode,
+          (company) => company.industry?.industryGics?.sectorCode === sectorCode,
         );
 
         let total = 0;

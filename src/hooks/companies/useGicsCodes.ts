@@ -1,23 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { getIndustryGics } from "@/lib/api";
-import type { GicsOption } from "@/types/company";
-
-// Raw API response structure for a single GICS code value
-// The API returns a Record<string, GicsApiValue>
-interface GicsApiValue {
-  subIndustryName?: string;
-  sectorName?: string;
-  groupName?: string;
-  industryName?: string;
-  subIndustryDescription?: string;
-}
+import type { GicsNameFields, GicsOption } from "@/types/company";
 
 export function useGicsCodes() {
   return useQuery({
     queryKey: ["industry-gics"],
     queryFn: getIndustryGics,
     select: (data): GicsOption[] =>
-      Object.entries((data as Record<string, GicsApiValue>) || {}).map(
+      Object.entries((data as Record<string, Partial<GicsNameFields>>) || {}).map(
         ([code, value]) => ({
           code,
           label: value.subIndustryName,

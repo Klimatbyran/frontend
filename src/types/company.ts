@@ -39,6 +39,22 @@ export type Scope3Category = NonNullable<
   NonNullable<CompanyDetails["reportingPeriods"][0]["emissions"]>["scope3"]
 >["categories"][0];
 
+// Industry GICS shape from company detail API (list endpoint has sectorCode only; detail has en/sv names)
+export type CompanyIndustryGics = NonNullable<
+  NonNullable<CompanyDetails["industry"]>["industryGics"]
+>;
+
+// Localized GICS name fields (same shape as company.industry.industryGics.en / .sv). Use for
+// /industry-gics/ response values and anywhere we only need the name fields.
+export type GicsNameFields = NonNullable<CompanyIndustryGics["en"]>;
+
+// Company-like object with optional industry GICS (accepts list or detail response)
+export interface CompanyWithIndustryGics {
+  industry?: {
+    industryGics?: Partial<CompanyIndustryGics>;
+  } | null;
+}
+
 // Company type from the list endpoint (/companies/)
 export type CompanyListItem = NonNullable<
   paths["/companies/"]["get"]["responses"][200]["content"]["application/json"][number]
@@ -94,7 +110,8 @@ export interface TrendCardInfo {
   textColor: string;
 }
 
-// GICS option type for dropdown and details, based on API response
+// GICS option type for the /industry-gics/ dropdown (one option per code). For the
+// industry classification on a company use CompanyIndustryGics / CompanyWithIndustryGics.
 export type GicsOption = {
   code: string;
   label?: string;

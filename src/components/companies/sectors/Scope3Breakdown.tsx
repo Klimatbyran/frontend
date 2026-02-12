@@ -141,7 +141,7 @@ const Scope3Breakdown: React.FC<Scope3BreakdownProps> = ({
         const sectorName =
           SECTOR_NAMES[sectorCode as keyof typeof SECTOR_NAMES];
         const sectorCompanies = companies.filter(
-          (company) => company.industry?.industryGics.sectorCode === sectorCode,
+          (company) => company.industry?.industryGics?.sectorCode === sectorCode,
         );
 
         const totalScope3 = sectorCompanies.reduce((total, company) => {

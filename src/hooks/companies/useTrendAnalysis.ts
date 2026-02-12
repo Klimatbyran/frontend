@@ -44,7 +44,7 @@ export const useTrendAnalysis = (
     companies.forEach((company) => {
       if (
         !selectedSectors.includes(
-          company.industry?.industryGics.sectorCode || "",
+          company.industry?.industryGics?.sectorCode || "",
         )
       ) {
         return;
