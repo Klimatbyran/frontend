@@ -32,6 +32,7 @@ import { ReportLandingPage } from "./pages/ReportLandingPage";
 import { RequestsDashboard } from "./pages/internal-pages/RequestsDashboard";
 import { TrendAnalysisDashboard } from "./pages/internal-pages/TrendAnalysisDashboard";
 import { ParisAlignedStatisticsPage } from "./pages/internal-pages/ParisAlignedStatisticsPage";
+import { AddCompanyPage } from "./pages/internal-pages/AddCompanyPage";
 import { NewsLetterArchivePage } from "./pages/NewslettersPage";
 import { RegionalRankedPage } from "./pages/RegionalRankedPage";
 import { RegionDetailPage } from "./pages/RegionDetailPage";
@@ -86,14 +87,12 @@ export function AppRoutes() {
         element={<CompanyDetailPage />}
       />
 
-      {/* TEMPORARY: Editor without auth for testing - move back inside ProtectedRoute when done */}
-      <Route
-        path={`${basePath}/companies/:id/edit`}
-        element={<CompanyEditPage />}
-      />
-
       {/* Protected Routes*/}
       <Route element={<ProtectedRoute />}>
+        <Route
+          path={`${basePath}/companies/:id/edit`}
+          element={<CompanyEditPage />}
+        />
         <Route
           path={`${basePath}/internal-pages/validation-dashboard`}
           element={<ValidationDashboard />}
@@ -113,6 +112,10 @@ export function AppRoutes() {
         <Route
           path={`${basePath}/internal-pages/paris-aligned-statistics`}
           element={<ParisAlignedStatisticsPage />}
+        />
+        <Route
+          path={`${basePath}/internal-pages/add-company`}
+          element={<AddCompanyPage />}
         />
       </Route>
 

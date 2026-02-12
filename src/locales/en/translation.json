@@ -1580,6 +1580,7 @@
     "emissionsDataSelectYear": "Select at least one year above to edit emissions data.",
     "error": {
       "couldNotFetch": "Could not fetch company data",
+      "couldNotSave": "Could not save changes",
       "tryAgainLater": "Please try again later",
       "couldNotFind": "The company could not be found",
       "checkId": "Please make sure the company ID is correct"
@@ -1656,6 +1657,53 @@
       "message": "Your session has expired. Please log in again to continue editing.",
       "cancel": "Cancel",
       "login": "Log in"
+    }
+  },
+  "addCompanyPage": {
+    "title": "Add Company",
+    "subtitle": "Create a new company by providing a Wikidata ID and name. Optional fields can be filled in now or edited later.",
+    "sections": {
+      "required": "Required",
+      "descriptions": "Descriptions",
+      "linksAndMedia": "Links & media",
+      "other": "Other",
+      "metadata": "Metadata"
+    },
+    "fields": {
+      "wikidataId": "Wikidata ID",
+      "name": "Company name",
+      "descriptionEn": "Description (EN)",
+      "descriptionSv": "Description (SV)",
+      "url": "Website URL",
+      "logoUrl": "Logo URL",
+      "lei": "LEI",
+      "tags": "Tags",
+      "internalComment": "Internal comment",
+      "metadataComment": "Comment",
+      "metadataSource": "Source URL"
+    },
+    "placeholders": {
+      "name": "Company name",
+      "lei": "Legal Entity Identifier",
+      "tags": "Comma-separated tags",
+      "internalComment": "Internal note (not shown publicly)"
+    },
+    "help": {
+      "wikidataId": "Find the ID on wikidata.org (e.g. Q12345)."
+    },
+    "validation": {
+      "wikidataIdRequired": "Wikidata ID is required.",
+      "nameRequired": "Company name is required."
+    },
+    "submit": "Create company",
+    "submitting": "Creating…",
+    "success": {
+      "title": "Company created",
+      "description": "The company has been created. You can now add industry, base year, and emissions data.",
+      "goToEdit": "Go to company edit page"
+    },
+    "error": {
+      "title": "Could not create company"
     }
   },
   "authCallbackPage": {

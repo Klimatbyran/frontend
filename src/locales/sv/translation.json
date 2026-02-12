@@ -1634,6 +1634,7 @@
     "emissionsDataSelectYear": "Välj minst ett år ovan för att redigera utsläppsdata.",
     "error": {
       "couldNotFetch": "Kunde inte hämta företagsdata",
+      "couldNotSave": "Kunde inte spara ändringar",
       "tryAgainLater": "Vänligen försök igen senare",
       "couldNotFind": "Företaget kunde inte hittas",
       "checkId": "Kontrollera att företags-ID:t är korrekt"
@@ -1710,6 +1711,53 @@
       "message": "Din session har gått ut. Logga in igen för att fortsätta redigera.",
       "cancel": "Avbryt",
       "login": "Logga in"
+    }
+  },
+  "addCompanyPage": {
+    "title": "Lägg till företag",
+    "subtitle": "Skapa ett nytt företag genom att ange ett Wikidata-ID och namn. Valfria fält kan fyllas i nu eller redigeras senare.",
+    "sections": {
+      "required": "Obligatoriskt",
+      "descriptions": "Beskrivningar",
+      "linksAndMedia": "Länkar och media",
+      "other": "Övrigt",
+      "metadata": "Metadata"
+    },
+    "fields": {
+      "wikidataId": "Wikidata-ID",
+      "name": "Företagsnamn",
+      "descriptionEn": "Beskrivning (EN)",
+      "descriptionSv": "Beskrivning (SV)",
+      "url": "Webbplats-URL",
+      "logoUrl": "Logotyp-URL",
+      "lei": "LEI",
+      "tags": "Taggar",
+      "internalComment": "Intern kommentar",
+      "metadataComment": "Kommentar",
+      "metadataSource": "Käll-URL"
+    },
+    "placeholders": {
+      "name": "Företagsnamn",
+      "lei": "Legal Entity Identifier",
+      "tags": "Taggar separerade med komma",
+      "internalComment": "Intern anteckning (visas inte offentligt)"
+    },
+    "help": {
+      "wikidataId": "Hitta ID:t på wikidata.org (t.ex. Q12345)."
+    },
+    "validation": {
+      "wikidataIdRequired": "Wikidata-ID krävs.",
+      "nameRequired": "Företagsnamn krävs."
+    },
+    "submit": "Skapa företag",
+    "submitting": "Skapar…",
+    "success": {
+      "title": "Företag skapat",
+      "description": "Företaget har skapats. Du kan nu lägga till bransch, basår och utsläppsdata.",
+      "goToEdit": "Gå till företagets redigeringssida"
+    },
+    "error": {
+      "title": "Kunde inte skapa företag"
     }
   },
   "authCallbackPage": {
