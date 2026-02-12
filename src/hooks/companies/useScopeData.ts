@@ -21,7 +21,9 @@ export const useScopeData = (
 ) => {
   const scopeData = useMemo(() => {
     const filteredCompanies = companies.filter((company) =>
-      selectedSectors.includes(company.industry?.industryGics?.sectorCode || ""),
+      selectedSectors.includes(
+        company.industry?.industryGics?.sectorCode || "",
+      ),
     );
 
     const data = {

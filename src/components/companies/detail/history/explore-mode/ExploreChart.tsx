@@ -12,16 +12,16 @@ import {
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { isMobile } from "react-device-detect";
-import { ChartTooltip } from "@/components/charts";
-import { ChartData } from "@/types/emissions";
-import { formatEmissionsAbsoluteCompact } from "@/utils/formatting/localization";
-import { generateApproximatedData } from "@/lib/calculations/trends/approximatedData";
 import {
+  ChartTooltip,
   getBaseYearReferenceLineProps,
   getCurrentYearReferenceLineProps,
   getXAxisProps,
   getYAxisProps,
 } from "@/components/charts";
+import { ChartData } from "@/types/emissions";
+import { formatEmissionsAbsoluteCompact } from "@/utils/formatting/localization";
+import { generateApproximatedData } from "@/lib/calculations/trends/approximatedData";
 import { CumulativeSummaryBoxes } from "./CumulativeSummaryBoxes";
 
 interface ExploreChartProps {

@@ -1,8 +1,5 @@
 import { describe, it, expect } from "vitest";
-import type {
-  CompanyDetails,
-  CompanyWithIndustryGics,
-} from "@/types/company";
+import type { CompanyDetails, CompanyWithIndustryGics } from "@/types/company";
 import type { Municipality } from "@/types/municipality";
 import {
   truncateDescription,

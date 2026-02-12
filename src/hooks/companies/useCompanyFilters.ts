@@ -94,9 +94,7 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
         const matchesSector =
           sectors.includes("all") ||
           (company.industry?.industryGics?.sectorCode != null &&
-            sectors.includes(
-              company.industry?.industryGics?.sectorCode ?? "",
-            ));
+            sectors.includes(company.industry?.industryGics?.sectorCode ?? ""));
 
         // Filter by search query
         const searchTerms = searchQuery

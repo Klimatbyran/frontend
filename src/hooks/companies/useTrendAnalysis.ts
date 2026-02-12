@@ -1,8 +1,7 @@
 import { useMemo } from "react";
 import { TrendingDown, TrendingUp, MinusCircle } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { RankedCompany, TrendData } from "@/types/company";
-import { TrendCardInfo } from "@/types/company";
+import { RankedCompany, TrendData, TrendCardInfo } from "@/types/company";
 import { calculateEmissionsChangeFromBaseYear } from "@/utils/calculations/emissionsCalculations";
 
 export const useCategoryInfo = (): Record<string, TrendCardInfo> => {

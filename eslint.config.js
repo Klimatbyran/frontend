@@ -66,12 +66,17 @@ export default tseslint.config(
         },
       ],
       "@typescript-eslint/no-explicit-any": "warn",
-      complexity: ["warn", 10],
+      // Refactor hints: high enough to flag real problems, not so low they hide other warnings
+      // complexity 15 = flag very complex logic (e.g. 20+); 10 was ~62 warnings, mostly 11–14
+      complexity: ["warn", 15],
+      // max-lines 500 = only a few files exceed; keeps signal for very long files
       "max-lines": ["warn", 500],
-      "max-lines-per-function": ["warn", 50],
+      // 80 lines default = flag long hooks/utils; 50 was noisy. Components get 200 below.
+      "max-lines-per-function": ["warn", 80],
       "max-depth": ["warn", 4],
       "max-params": ["warn", 5],
-      "max-statements": ["warn", 20],
+      // 30 statements = flag very branchy/long functions; 20 triggered on many 23–26 line functions
+      "max-statements": ["warn", 30],
       // Temporarily disabled - too many warnings hiding more valuable issues
       "no-magic-numbers": "off",
       "react/jsx-boolean-value": ["warn", "never"],
@@ -123,6 +128,20 @@ export default tseslint.config(
     ],
     rules: {
       "max-lines-per-function": ["warn", 200],
+    },
+  },
+  // Scripts and tests: relax refactor metrics so they don't hide more important warnings
+  {
+    files: [
+      "scripts/**/*.{ts,js}",
+      "**/*.test.{ts,tsx}",
+      "**/__tests__/**/*.{ts,tsx}",
+    ],
+    rules: {
+      complexity: "off",
+      "max-lines": "off",
+      "max-lines-per-function": "off",
+      "max-statements": "off",
     },
   },
 );

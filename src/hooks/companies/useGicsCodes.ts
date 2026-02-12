@@ -7,16 +7,16 @@ export function useGicsCodes() {
     queryKey: ["industry-gics"],
     queryFn: getIndustryGics,
     select: (data): GicsOption[] =>
-      Object.entries((data as Record<string, Partial<GicsNameFields>>) || {}).map(
-        ([code, value]) => ({
-          code,
-          label: value.subIndustryName,
-          sector: value.sectorName,
-          group: value.groupName,
-          industry: value.industryName,
-          description: value.subIndustryDescription,
-          subIndustryName: value.subIndustryName,
-        }),
-      ),
+      Object.entries(
+        (data as Record<string, Partial<GicsNameFields>>) || {},
+      ).map(([code, value]) => ({
+        code,
+        label: value.subIndustryName,
+        sector: value.sectorName,
+        group: value.groupName,
+        industry: value.industryName,
+        description: value.subIndustryDescription,
+        subIndustryName: value.subIndustryName,
+      })),
   });
 }
