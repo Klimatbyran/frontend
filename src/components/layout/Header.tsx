@@ -47,8 +47,8 @@ const NAV_LINKS: NavLink[] = [
         onlyShowOnStaging: true,
       },
       {
-        label: "header.municipalities",
-        path: `/municipalities`,
+        label: "header.companiesSectors",
+        path: `/sectors`,
       },
       {
         label: "header.regions",
@@ -56,8 +56,8 @@ const NAV_LINKS: NavLink[] = [
         onlyShowOnStaging: true,
       },
       {
-        label: "header.companiesSectors",
-        path: `/sectors`,
+        label: "header.municipalities",
+        path: `/municipalities`,
       },
       {
         label: "header.explore",
