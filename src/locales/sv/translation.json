@@ -1638,6 +1638,32 @@
       "couldNotFind": "Företaget kunde inte hittas",
       "checkId": "Kontrollera att företags-ID:t är korrekt"
     },
+    "fields": {
+      "name": "Namn",
+      "descriptionEn": "Beskrivning (EN)",
+      "descriptionSv": "Beskrivning (SV)",
+      "lei": "LEI",
+      "tags": "Taggar",
+      "gicsSubIndustry": "GICS subbransch",
+      "baseYear": "Basår"
+    },
+    "loadingIndustry": "Laddar…",
+    "placeholders": {
+      "comment": "Kommentar",
+      "sourceUrl": "Käll-URL",
+      "lei": "Legal Entity Identifier",
+      "tags": "Taggar separerade med komma",
+      "selectIndustry": "Välj bransch…"
+    },
+    "aria": {
+      "undoName": "Ångra namnändring",
+      "undoDescriptionEn": "Ångra beskrivning (EN)-ändring",
+      "undoDescriptionSv": "Ångra beskrivning (SV)-ändring",
+      "undoLei": "Ångra LEI-ändring",
+      "undoTags": "Ångra taggändring",
+      "undoIndustry": "Ångra branschändring",
+      "undoBaseYear": "Ångra basårsändring"
+    },
     "rowName": {
       "reportingTimespan": "Rapporteringsperiod",
       "reportingStart": "Start",

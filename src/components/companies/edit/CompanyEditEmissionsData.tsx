@@ -190,14 +190,14 @@ export function CompanyEditEmissionsData({
         <textarea
           className="ms-2 w-full p-2 border-gray-300 rounded text-white bg-black-1"
           rows={4}
-          placeholder="Comment"
+          placeholder={t("companyEditPage.placeholders.comment")}
           name="comment"
         />
         <input
           type="text"
           className="ms-2 mt-2 w-full p-2 rounded text-white bg-black-1"
           name="source"
-          placeholder="Source URL"
+          placeholder={t("companyEditPage.placeholders.sourceUrl")}
         />
       </div>
 

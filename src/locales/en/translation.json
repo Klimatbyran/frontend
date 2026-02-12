@@ -1584,6 +1584,32 @@
       "couldNotFind": "The company could not be found",
       "checkId": "Please make sure the company ID is correct"
     },
+    "fields": {
+      "name": "Name",
+      "descriptionEn": "Description (EN)",
+      "descriptionSv": "Description (SV)",
+      "lei": "LEI",
+      "tags": "Tags",
+      "gicsSubIndustry": "GICS Sub-Industry",
+      "baseYear": "Base Year"
+    },
+    "loadingIndustry": "Loading…",
+    "placeholders": {
+      "comment": "Comment",
+      "sourceUrl": "Source URL",
+      "lei": "Legal Entity Identifier",
+      "tags": "Comma-separated tags",
+      "selectIndustry": "Select industry…"
+    },
+    "aria": {
+      "undoName": "Undo name change",
+      "undoDescriptionEn": "Undo description (EN) change",
+      "undoDescriptionSv": "Undo description (SV) change",
+      "undoLei": "Undo LEI change",
+      "undoTags": "Undo tags change",
+      "undoIndustry": "Undo industry change",
+      "undoBaseYear": "Undo base year change"
+    },
     "rowName": {
       "reportingTimespan": "Reporting Period",
       "reportingStart": "Start",

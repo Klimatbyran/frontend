@@ -219,16 +219,16 @@ export function CompanyEditDetails({
               {t("companyEditPage.tabs.companyDetails")}
             </h3>
             <CompanyEditFieldWithUndo
-              label="Name"
+              label={t("companyEditPage.fields.name")}
               value={name}
               originalValue={company.name ?? ""}
               onChange={setName}
               onUndo={() => setName(company.name ?? "")}
               type="input"
-              aria-label="Undo name change"
+              aria-label={t("companyEditPage.aria.undoName")}
             />
             <CompanyEditFieldWithUndo
-              label="Description (EN)"
+              label={t("companyEditPage.fields.descriptionEn")}
               value={descriptionEn}
               originalValue={getDescriptionByLang(company, "EN")}
               onChange={setDescriptionEn}
@@ -237,10 +237,10 @@ export function CompanyEditDetails({
               }
               type="textarea"
               textareaRows={3}
-              aria-label="Undo description (EN) change"
+              aria-label={t("companyEditPage.aria.undoDescriptionEn")}
             />
             <CompanyEditFieldWithUndo
-              label="Description (SV)"
+              label={t("companyEditPage.fields.descriptionSv")}
               value={descriptionSv}
               originalValue={getDescriptionByLang(company, "SV")}
               onChange={setDescriptionSv}
@@ -249,27 +249,27 @@ export function CompanyEditDetails({
               }
               type="textarea"
               textareaRows={3}
-              aria-label="Undo description (SV) change"
+              aria-label={t("companyEditPage.aria.undoDescriptionSv")}
             />
             <CompanyEditFieldWithUndo
-              label="LEI"
+              label={t("companyEditPage.fields.lei")}
               value={lei}
               originalValue={company.lei ?? ""}
               onChange={setLei}
               onUndo={() => setLei(company.lei ?? "")}
               type="input"
-              placeholder="Legal Entity Identifier"
-              aria-label="Undo LEI change"
+              placeholder={t("companyEditPage.placeholders.lei")}
+              aria-label={t("companyEditPage.aria.undoLei")}
             />
             <CompanyEditFieldWithUndo
-              label="Tags"
+              label={t("companyEditPage.fields.tags")}
               value={tagsInput}
               originalValue=""
               onChange={setTagsInput}
               onUndo={() => setTagsInput("")}
               type="input"
-              placeholder="Comma-separated tags"
-              aria-label="Undo tags change"
+              placeholder={t("companyEditPage.placeholders.tags")}
+              aria-label={t("companyEditPage.aria.undoTags")}
             />
           </div>
 
@@ -278,6 +278,8 @@ export function CompanyEditDetails({
             source={detailsSource}
             onCommentChange={setDetailsComment}
             onSourceChange={setDetailsSource}
+            commentPlaceholder={t("companyEditPage.placeholders.comment")}
+            sourcePlaceholder={t("companyEditPage.placeholders.sourceUrl")}
           />
           <button
             type="button"
@@ -301,11 +303,13 @@ export function CompanyEditDetails({
             </h3>
             <div className="mb-5 flex items-center">
               <span className="min-w-[140px] mr-4 font-medium">
-                GICS Sub-Industry
+                {t("companyEditPage.fields.gicsSubIndustry")}
               </span>
               <div className="w-[320px] max-w-full flex items-center">
                 {gicsLoading ? (
-                  <div className="text-grey py-2">Loading…</div>
+                  <div className="text-grey py-2">
+                    {t("companyEditPage.loadingIndustry")}
+                  </div>
                 ) : gicsError ? (
                   <div className="text-red-500 py-2">{gicsError}</div>
                 ) : (
@@ -326,7 +330,7 @@ export function CompanyEditDetails({
                           placeholder={
                             company.industry?.industryGics
                               ? `${company.industry.industryGics.en?.subIndustryName || company.industry.industryGics.subIndustryCode} (${company.industry.industryGics.subIndustryCode})`
-                              : "Select industry…"
+                              : t("companyEditPage.placeholders.selectIndustry")
                           }
                         />
                       </SelectTrigger>
@@ -356,7 +360,7 @@ export function CompanyEditDetails({
                           ? "cursor-not-allowed"
                           : "cursor-pointer")
                       }
-                      aria-label="Undo industry change"
+                      aria-label={t("companyEditPage.aria.undoIndustry")}
                     >
                       <Undo2
                         className={
@@ -388,7 +392,9 @@ export function CompanyEditDetails({
               </div>
             )}
             <div className="mb-6 flex items-center">
-              <span className="min-w-[140px] mr-4 font-medium">Base Year</span>
+              <span className="min-w-[140px] mr-4 font-medium">
+                {t("companyEditPage.fields.baseYear")}
+              </span>
               <Input
                 type="number"
                 value={baseYear}
@@ -408,7 +414,7 @@ export function CompanyEditDetails({
                     ? "cursor-not-allowed"
                     : "cursor-pointer")
                 }
-                aria-label="Undo base year change"
+                aria-label={t("companyEditPage.aria.undoBaseYear")}
               >
                 <Undo2
                   className={
@@ -436,6 +442,8 @@ export function CompanyEditDetails({
             onCommentChange={setIndustryComment}
             onSourceChange={setIndustrySource}
             wrapperClassName="mt-10"
+            commentPlaceholder={t("companyEditPage.placeholders.comment")}
+            sourcePlaceholder={t("companyEditPage.placeholders.sourceUrl")}
           />
           <button
             type="button"
