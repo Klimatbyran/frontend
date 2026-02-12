@@ -5,9 +5,12 @@ export const MunicipalityKPIsContent = () => {
   const { t } = useTranslation();
 
   // Get the list object with returnObjects: true
-  const rawKpiList = t("methodsPage.municipalityAndRegion.KPIs.list", {
-    returnObjects: true,
-  }) as Record<string, string>;
+  const rawKpiList = t(
+    "methodsPage.municipalityAndRegion.municipalityKPIs.list",
+    {
+      returnObjects: true,
+    },
+  ) as Record<string, string>;
 
   // Transform to list of objects with title and content
   const kpiList = Object.values(rawKpiList).map((item) => {
