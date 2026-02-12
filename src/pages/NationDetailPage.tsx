@@ -19,7 +19,6 @@ import {
 import { SectorEmissionsChart } from "@/components/charts/sectorChart/SectorEmissions";
 import { DataPoint } from "@/types/emissions";
 import { useRegions } from "@/hooks/useRegions";
-import { RegionListBox } from "@/components/nation/RegionListBox";
 import { EntityListBox } from "@/components/detail/EntityListBox";
 
 const EMISSIONS_DATA_START_YEAR = 1990;

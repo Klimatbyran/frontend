@@ -206,6 +206,8 @@ export function mapCompanyEditFormToRequestBody(
         periodUpdate.emissions.scope3 = {};
       }
       periodUpdate.emissions.scope3.statedTotalEmissions = {
+        total: originalStatedTotal.total,
+        unit: originalStatedTotal.unit || "tCO2e",
         verified: statedTotalNewVerified,
       };
     }
@@ -241,6 +243,8 @@ export function mapCompanyEditFormToRequestBody(
       originalEmissionsStatedTotal.total !== undefined
     ) {
       periodUpdate.emissions.statedTotalEmissions = {
+        total: originalEmissionsStatedTotal.total,
+        unit: originalEmissionsStatedTotal.unit || "tCO2e",
         verified: emissionsStatedTotalNewVerified,
       };
     }

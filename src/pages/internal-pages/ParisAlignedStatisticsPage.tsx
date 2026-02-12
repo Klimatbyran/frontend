@@ -4,13 +4,13 @@ import { Download } from "lucide-react";
 import { Text } from "@/components/ui/text";
 import { useCompanies } from "@/hooks/companies/useCompanies";
 import { calculateTrendline } from "@/lib/calculations/trends/analysis";
-import { calculateMeetsParis } from "@/lib/calculations/trends/meetsParis";
-import { calculateCarbonBudgetTonnes } from "@/utils/calculations/carbonBudget";
 import {
+  calculateMeetsParis,
   get2025Emissions,
   calculateCumulativeEmissions,
   calculateCarbonLawCumulativeEmissions,
 } from "@/lib/calculations/trends/meetsParis";
+import { calculateCarbonBudgetTonnes } from "@/utils/calculations/carbonBudget";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { useLanguage } from "@/components/LanguageProvider";

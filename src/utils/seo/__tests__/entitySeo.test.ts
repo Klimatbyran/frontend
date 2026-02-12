@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import type { CompanyDetails } from "@/types/company";
+import type { CompanyDetails, CompanyWithIndustryGics } from "@/types/company";
 import type { Municipality } from "@/types/municipality";
 import {
   truncateDescription,
@@ -75,14 +75,15 @@ describe("buildCompanySeoDescription", () => {
   });
 
   it("should include industry when provided", () => {
+    const industry: CompanyWithIndustryGics["industry"] = {
+      industryGics: {
+        en: { sectorName: "Technology" },
+        sectorCode: "45",
+      },
+    };
     const companyWithIndustry = {
       ...mockCompany,
-      industry: {
-        industryGics: {
-          en: { sectorName: "Technology" },
-          sectorCode: "45",
-        },
-      },
+      industry,
     } as CompanyDetails;
     const result = buildCompanySeoDescription(companyWithIndustry);
     expect(result).toContain("Technology");
@@ -301,14 +302,15 @@ describe("generateCompanySeoMeta", () => {
   });
 
   it("should use industry and year when provided", () => {
+    const industry: CompanyWithIndustryGics["industry"] = {
+      industryGics: {
+        en: { sectorName: "Technology" },
+        sectorCode: "45",
+      },
+    };
     const companyWithIndustry = {
       ...mockCompany,
-      industry: {
-        industryGics: {
-          en: { sectorName: "Technology" },
-          sectorCode: "45",
-        },
-      },
+      industry,
     } as CompanyDetails;
     const result = generateCompanySeoMeta(
       companyWithIndustry,

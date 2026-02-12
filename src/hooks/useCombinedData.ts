@@ -1,11 +1,13 @@
 import { useMemo } from "react";
 import { useCompanies } from "./companies/useCompanies";
 import { useMunicipalities } from "./municipalities/useMunicipalities";
+import { useBlogPosts } from "./useBlogPosts";
 
 export type CombinedData = {
   name: string;
   id: string;
-  category: "companies" | "municipalities";
+  category: "companies" | "municipalities" | "blogPosts";
+  blogExcerpt?: string;
 };
 
 export const useCombinedData = () => {
@@ -19,9 +21,11 @@ export const useCombinedData = () => {
     companiesLoading: isLoadingCompanies,
     companiesError: companiesError,
   } = useCompanies();
+  const { blogPosts, blogPostsLoading, blogPostsError } = useBlogPosts();
 
-  const hasErrors = municipalitiesError || companiesError;
-  const isLoading = isLoadingCompanies || isLoadingMunicipalities;
+  const hasErrors = municipalitiesError || companiesError || blogPostsError;
+  const isLoading =
+    isLoadingCompanies || isLoadingMunicipalities || blogPostsLoading;
 
   const combinedData = useMemo(() => {
     if (hasErrors) {
@@ -57,11 +61,22 @@ export const useCombinedData = () => {
       },
     );
 
+    const mappedBlogPosts: CombinedData[] = blogPosts?.map(
+      (blogPost): CombinedData => {
+        return {
+          name: blogPost.title,
+          id: blogPost.id,
+          category: "blogPosts",
+          blogExcerpt: blogPost.excerpt,
+        };
+      },
+    );
+
     return {
       loading: false,
-      data: [...mappedMunicipalities, ...mappedCompanies],
+      data: [...mappedMunicipalities, ...mappedCompanies, ...mappedBlogPosts],
     };
-  }, [municipalities, companies, isLoading, hasErrors]);
+  }, [municipalities, companies, blogPosts, isLoading, hasErrors]);
 
   return combinedData;
 };

@@ -13,8 +13,8 @@ import {
   Search,
   Layers,
   Plane,
+  type LucideIcon,
 } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import {
   UPSTREAM_CATEGORIES,

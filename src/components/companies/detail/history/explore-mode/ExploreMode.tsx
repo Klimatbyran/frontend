@@ -1,7 +1,6 @@
-import { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import React, { useEffect, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { ChartData } from "@/types/emissions";
 import { useScreenSize } from "@/hooks/useScreenSize";

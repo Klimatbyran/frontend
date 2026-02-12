@@ -63,9 +63,11 @@ export const getXAxisProps = (
   dataKey: string,
   domain?: [number, number],
   ticks?: number[],
-  customTick?: (props: any) => React.ReactElement,
+  customTick?: (props: TickProps) => React.ReactElement,
 ) => {
-  const baseProps: any = {
+  // baseProps matches Recharts XAxis props structure
+  // Using Record<string, unknown> is safer than any but still flexible for Recharts API
+  const baseProps: Record<string, unknown> = {
     dataKey,
     stroke: "var(--grey)",
     tickLine: false,
