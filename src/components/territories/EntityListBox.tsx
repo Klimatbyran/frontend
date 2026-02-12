@@ -1,6 +1,6 @@
 import { EntityListBox } from "@/components/detail/EntityListBox";
 import { DataGuideItemId } from "@/data-guide/items";
-import { EntityType } from "@/lib/constants/entities";
+import { EntityType } from "@/hooks/territories/useSectorEmissions";
 
 interface ListBoxProps {
   territories: string[];
