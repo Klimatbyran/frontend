@@ -109,9 +109,6 @@ export function RegionDetailPage() {
         <DetailHeader
           name={region.name}
           logoUrl={region.logoUrl}
-          politicalRule={region.politicalRule}
-          politicalKSO={region.politicalKSO}
-          politicalXSOLabelKey="politicalRSO"
           helpItems={["regionTotalEmissions", "detailWhyDataDelay"]}
           stats={headerStats}
           translateNamespace="regions.detailPage"
