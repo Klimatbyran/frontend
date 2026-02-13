@@ -10,25 +10,31 @@ import { InfoTooltip } from "@/components/layout/InfoTooltip";
 interface ScopeCardProps {
   title: string;
   icon: React.ElementType;
+  scope: "scope1" | "scope2" | "scope3_upstream" | "scope3_downstream";
   value: number;
   companies: number;
   color: string;
   percent: number;
   description: string;
-  onClick: () => void;
   showCategoryInfo?: boolean;
+  setSelectedScope: React.Dispatch<
+    React.SetStateAction<
+      "scope1" | "scope2" | "scope3_upstream" | "scope3_downstream" | null
+    >
+  >;
 }
 
 const ScopeCard: React.FC<ScopeCardProps> = ({
   title,
   icon: Icon,
+  scope,
   value,
   companies,
   color,
   percent,
   description,
-  onClick,
   showCategoryInfo = false,
+  setSelectedScope,
 }) => {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
@@ -43,9 +49,9 @@ const ScopeCard: React.FC<ScopeCardProps> = ({
         .closest("svg")
         ?.parentElement?.closest('button[aria-haspopup="dialog"]')
     ) {
-      return;
+      setSelectedScope(scope);
     }
-    onClick();
+    setSelectedScope(scope);
   };
 
   return (
