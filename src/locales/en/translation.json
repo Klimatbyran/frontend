@@ -413,6 +413,8 @@
     "errorDescription": "Please try again later",
     "notFoundTitle": "Company not found",
     "notFoundDescription": "Check if the company ID is correct",
+    "noEmissionsDataTitle": "No emissions data yet",
+    "noEmissionsDataDescription": "This company has no reported emissions data on Klimatkollen yet.",
     "billion": "billion",
     "sectorGraphs": {
       "yearRange": "Base year: {{baseYear}} → Current: {{currentYear}}",
@@ -1578,6 +1580,7 @@
       "emissionsData": "Emissions data"
     },
     "emissionsDataSelectYear": "Select at least one year above to edit emissions data.",
+    "noReportingPeriodsYet": "No reporting periods yet.",
     "error": {
       "couldNotFetch": "Could not fetch company data",
       "couldNotSave": "Could not save changes",
@@ -1645,6 +1648,12 @@
     },
     "successCompanyDetails": {
       "description": "Company details have been saved successfully"
+    },
+    "addReportPeriod": {
+      "button": "Add new report period",
+      "title": "Add new report period",
+      "yearLabel": "Year",
+      "add": "Add"
     },
     "unsavedChanges": {
       "title": "Unsaved Changes",

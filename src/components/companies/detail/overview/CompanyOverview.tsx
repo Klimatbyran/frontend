@@ -31,6 +31,7 @@ import { FinancialsTooltip } from "./FinancialsTooltip";
 import { CompanyDescription } from "./CompanyDescription";
 import { CompanyOverviewTooltip } from "./CompanyOverviewTooltip";
 import { OverviewStatistics } from "./OverviewStatistics";
+import { yearFromIsoDate } from "@/utils/date";
 
 interface CompanyOverviewProps {
   company: CompanyDetails;
@@ -56,7 +57,7 @@ export function CompanyOverview({
   const { currentLanguage } = useLanguage();
   const { isAIGenerated, isEmissionsAIGenerated } = useVerificationStatus();
 
-  const periodYear = new Date(selectedPeriod.endDate).getFullYear();
+  const periodYear = yearFromIsoDate(selectedPeriod.endDate);
 
   // Check if any data is AI-generated
   const totalEmissionsAIGenerated = isEmissionsAIGenerated(selectedPeriod);
@@ -151,9 +152,7 @@ export function CompanyOverview({
                   {t("companies.overview.latestYear")}
                 </SelectItem>
                 {sortedPeriods.map((period) => {
-                  const year = new Date(period.endDate)
-                    .getFullYear()
-                    .toString();
+                  const year = yearFromIsoDate(period.endDate);
                   return period.emissions?.calculatedTotalEmissions === null ||
                     period.emissions?.calculatedTotalEmissions === 0 ? null : (
                     <SelectItem key={year} value={year}>

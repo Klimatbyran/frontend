@@ -413,6 +413,8 @@
     "errorDescription": "Försök igen senare",
     "notFoundTitle": "Företaget kunde inte hittas",
     "notFoundDescription": "Kontrollera att företags-ID:t är korrekt",
+    "noEmissionsDataTitle": "Ingen utsläppsdata än",
+    "noEmissionsDataDescription": "Detta företag har ännu ingen rapporterad utsläppsdata på Klimatkollen.",
     "sectorGraphs": {
       "yearRange": "Basår: {{baseYear}} → Nu: {{currentYear}}",
       "noCompaniesInSector": "Inga företag i denna kategori",
@@ -1632,6 +1634,7 @@
       "emissionsData": "Utsläppsdata"
     },
     "emissionsDataSelectYear": "Välj minst ett år ovan för att redigera utsläppsdata.",
+    "noReportingPeriodsYet": "Inga rapporteringsperioder än.",
     "error": {
       "couldNotFetch": "Kunde inte hämta företagsdata",
       "couldNotSave": "Kunde inte spara ändringar",
@@ -1699,6 +1702,12 @@
     },
     "successCompanyDetails": {
       "description": "Företagsuppgifterna har sparats"
+    },
+    "addReportPeriod": {
+      "button": "Lägg till ny rapporteringsperiod",
+      "title": "Lägg till ny rapporteringsperiod",
+      "yearLabel": "År",
+      "add": "Lägg till"
     },
     "unsavedChanges": {
       "title": "Osparade ändringar",

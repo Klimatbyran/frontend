@@ -1,6 +1,9 @@
 import { useRef } from "react";
 import { useTranslation } from "react-i18next";
-import type { CompanyDetails, ReportingPeriod } from "@/types/company";
+import type {
+  CompanyDetails,
+  EditableReportingPeriod,
+} from "@/types/company";
 import { Text } from "@/components/ui/text";
 import { CompanyEditPeriod } from "./CompanyEditPeriod";
 import { CompanyEditStatedTotal } from "./CompanyEditStatedTotal";
@@ -16,10 +19,11 @@ import { useToast } from "@/contexts/ToastContext";
 
 export interface CompanyEditEmissionsDataProps {
   company: CompanyDetails;
-  selectedPeriods: ReportingPeriod[];
+  selectedPeriods: EditableReportingPeriod[];
   formData: Map<string, string>;
   setFormData: React.Dispatch<React.SetStateAction<Map<string, string>>>;
   refetch: () => void;
+  onSaveSuccess?: () => void;
   onAuthRequired?: () => void;
   onSubmittingChange?: (submitting: boolean) => void;
 }
@@ -30,6 +34,7 @@ export function CompanyEditEmissionsData({
   formData,
   setFormData,
   refetch,
+  onSaveSuccess,
   onAuthRequired,
   onSubmittingChange,
 }: CompanyEditEmissionsDataProps) {
@@ -96,6 +101,7 @@ export function CompanyEditEmissionsData({
         t("companyEditPage.success.title"),
         t("companyEditPage.success.description"),
       );
+      onSaveSuccess?.();
     } catch (error: unknown) {
       if (
         error &&
@@ -115,11 +121,12 @@ export function CompanyEditEmissionsData({
     }
   };
 
-  const resetPeriod = (year: number) => {
+  const resetPeriod = (identifier: string | number) => {
+    const match = String(identifier);
     setFormData((prev) => {
       const updated = new Map(prev);
       for (const key of prev.keys()) {
-        if (key.includes(year.toString())) updated.delete(key);
+        if (key.includes(match)) updated.delete(key);
       }
       return updated;
     });
