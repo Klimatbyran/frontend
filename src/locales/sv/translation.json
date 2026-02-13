@@ -8,11 +8,9 @@
   "header": {
     "data": "Data",
     "companies": "Företag",
-    "companiesSectors": "Branscher",
-    "companiesRanked": "Topplistor",
+    "sectors": "Branscher",
     "explore": "Utforska",
     "municipalities": "Kommuner",
-    "municipalitiesRanked": "Topplistor",
     "regions": "Län",
     "about": "Om",
     "aboutUs": "Om oss",
@@ -102,11 +100,11 @@
       "description": "Övervaka utsläppsdata och klimatåtaganden i hela Sverige.",
       "features": {
         "municipalityRankings": {
-          "title": "Kommunranking",
+          "title": "Kommunöversikt",
           "description": "Spåra klimatframsteg och utsläppsdata från kommuner och lokala myndigheter."
         },
         "companyRankings": {
-          "title": "Företagsranking",
+          "title": "Företagsöversikt",
           "description": "Jämför utsläppsprestationer, minskningsmål och hållbarhetsmått för svenska företag."
         },
         "progressTracking": {
@@ -357,8 +355,8 @@
     "shareText": "Kolla in det här blogginlägget!",
     "relatedArticles": "Relaterade artiklar"
   },
-  "companiesRankedPage": {
-    "title": "Företagsranking",
+  "companiesOverviewPage": {
+    "title": "Färetagsöversikt",
     "description": "Jämför företag baserat på viktiga klimatindikatorer",
     "errorTitle": "Kunde inte hämta företagsinformation",
     "errorDescription": "Försök igen senare",
@@ -483,9 +481,9 @@
       "downstreamActivitiesDescription": "Nedströmsaktiviteter bidrar med "
     }
   },
-  "companiesSectorPage": {
-    "title": "Företagens klimatdata",
-    "description": "Översikt över företagens klimatpåverkan och hållbarhetsarbete",
+  "sectorsOverviewPage": {
+    "title": "Branschöversikt",
+    "description": "Översikt över utsläpp och omställning på branschnivå",
     "errorTitle": "Det gick inte att hämta företagsinformation",
     "errorDescription": "Försök igen senare",
     "noCompaniesFound": "Inga företag hittades",
@@ -1029,7 +1027,7 @@
       }
     }
   },
-  "regionalRankedPage": {
+  "regionalOverviewPage": {
     "title": "Länsöversikt",
     "description": "Översikt över utsläpp och omställning på länsnivå"
   },
@@ -1067,12 +1065,11 @@
       "noData": "Inga data tillgängliga"
     }
   },
-  "municipalitiesRankedPage": {
+  "municipalitiesOverviewPage": {
     "errorTitle": "Det gick inte att hämta kommuninformation",
     "errorDescription": "Försök igen senare",
-    "title": "Kommuntopplistor",
-    "description": "Data om utsläpp och klimatomställning i kommunerna",
-    "entityPlural": "kommuner"
+    "title": "Kommunöversikt",
+    "description": "Data om utsläpp och klimatomställning i kommunerna"
   },
   "municipalityDetailPage": {
     "metaTitle": "Data om utsläpp och omställning",

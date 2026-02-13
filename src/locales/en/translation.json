@@ -8,11 +8,9 @@
   "header": {
     "data": "Data",
     "companies": "Companies",
-    "companiesSectors": "Sectors",
-    "companiesRanked": "Top Lists",
+    "sectors": "Sectors",
     "explore": "Explore",
     "municipalities": "Municipalities",
-    "municipalitiesRanked": "Top Lists",
     "regions": "Regions",
     "about": "About",
     "aboutUs": "About Us",
@@ -102,11 +100,11 @@
       "description": "Monitor emissions data and climate commitments across Sweden.",
       "features": {
         "municipalityRankings": {
-          "title": "Municipality Rankings",
+          "title": "Municipalities Overview",
           "description": "Track climate progress and emissions data from municipalities and local governments."
         },
         "companyRankings": {
-          "title": "Company Rankings",
+          "title": "Companies Overview",
           "description": "Compare emissions performance, reduction targets, and sustainability metrics across Swedish companies."
         },
         "progressTracking": {
@@ -357,8 +355,8 @@
     "shareText": "Check out this blog post!",
     "relatedArticles": "Related Articles"
   },
-  "companiesRankedPage": {
-    "title": "Company Rankings",
+  "companiesOverviewPage": {
+    "title": "Companies Overview",
     "description": "Compare companies based on key climate indicators",
     "errorTitle": "Failed to retrieve company information",
     "errorDescription": "Please try again later",
@@ -429,9 +427,9 @@
       "total": "Total Emissions"
     }
   },
-  "companiesSectorPage": {
-    "title": "Company Climate Data",
-    "description": "Overview of companies' climate impact and sustainability efforts",
+  "sectorsOverviewPage": {
+    "title": "Sector Overview",
+    "description": "Overview of emissions and transition at the sector level",
     "errorTitle": "Failed to retrieve company information",
     "errorDescription": "Please try again later",
     "noCompaniesFound": "No companies found",
@@ -976,9 +974,9 @@
       }
     }
   },
-  "regionalRankedPage": {
+  "regionalOverviewPage": {
     "title": "Regional Overview",
-    "description": "Overview of emissions and transition in the regional level"
+    "description": "Overview of emissions and transition at the regional level"
   },
   "detailPage": {
     "totalEmissions": "Total Emissions {{year}}",
@@ -1014,10 +1012,10 @@
       "noData": "No data available"
     }
   },
-  "municipalitiesRankedPage": {
+  "municipalitiesOverviewPage": {
     "errorTitle": "Failed to retrieve municipality information",
     "errorDescription": "Please try again later",
-    "title": "Municipality Top Lists",
+    "title": "Municipalities Overview",
     "description": "Data on emissions and climate transition in municipalities"
   },
   "municipalityDetailPage": {

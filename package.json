@@ -27,6 +27,7 @@
     "@fontsource/dm-sans": "^5.2.5",
     "@headlessui/react": "^2.2.1",
     "@hookform/resolvers": "^3.9.0",
+    "@mendable/firecrawl-js": "^4.12.0",
     "@pdf-viewer/react": "^1.5.1",
     "@radix-ui/react-accordion": "^1.2.0",
     "@radix-ui/react-alert-dialog": "^1.1.1",

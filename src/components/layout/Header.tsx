@@ -42,13 +42,17 @@ const NAV_LINKS: NavLink[] = [
     path: `/explore`,
     sublinks: [
       {
+        label: "header.explore",
+        path: `/explore/companies`,
+      },
+      {
         label: "header.companies",
         path: `/companies`,
         onlyShowOnStaging: true,
       },
       {
-        label: "header.municipalities",
-        path: `/municipalities`,
+        label: "header.sectors",
+        path: `/sectors`,
       },
       {
         label: "header.regions",
@@ -56,12 +60,8 @@ const NAV_LINKS: NavLink[] = [
         onlyShowOnStaging: true,
       },
       {
-        label: "header.companiesSectors",
-        path: `/sectors`,
-      },
-      {
-        label: "header.explore",
-        path: `/explore/companies`,
+        label: "header.municipalities",
+        path: `/municipalities`,
       },
     ],
   },
