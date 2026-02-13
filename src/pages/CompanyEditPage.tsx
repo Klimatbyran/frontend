@@ -10,10 +10,8 @@ import { CompanyEditEmissionsDataWithGuard } from "@/components/companies/edit/C
 import { DraftReportingPeriod, EditableReportingPeriod } from "@/types/company";
 import { yearFromIsoDate } from "@/utils/date";
 import { AuthExpiredModal } from "@/components/companies/edit/AuthExpiredModal";
+import { AddReportPeriodModal } from "@/components/companies/edit/AddReportPeriodModal";
 import { useAuth } from "@/contexts/AuthContext";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 const isAuthError = (error: Error) => {
   if ("status" in error && typeof error.status === "number") {
@@ -173,45 +171,16 @@ export function CompanyEditPage() {
         />
       )}
 
-      {showAddPeriodModal && (
-        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
-          <div className="bg-black-2 p-6 rounded-lg max-w-sm w-full mx-4 border border-black-1">
-            <h3 className="text-lg font-semibold text-foreground mb-4">
-              {t("companyEditPage.addReportPeriod.title")}
-            </h3>
-            <Label htmlFor="new-period-year" className="text-foreground">
-              {t("companyEditPage.addReportPeriod.yearLabel")}
-            </Label>
-            <Input
-              id="new-period-year"
-              type="number"
-              min="2000"
-              max="2030"
-              placeholder="2024"
-              value={newPeriodYear}
-              onChange={(e) => setNewPeriodYear(e.target.value)}
-              className="mt-2 mb-6 w-full bg-black-1 border text-foreground"
-            />
-            <div className="flex justify-end gap-3">
-              <Button
-                variant="outline"
-                onClick={() => {
-                  setShowAddPeriodModal(false);
-                  setNewPeriodYear("");
-                }}
-              >
-                {t("companyEditPage.unsavedChanges.cancel")}
-              </Button>
-              <Button
-                onClick={handleAddDraftPeriod}
-                disabled={!/^\d{4}$/.test(newPeriodYear.trim())}
-              >
-                {t("companyEditPage.addReportPeriod.add")}
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
+      <AddReportPeriodModal
+        isOpen={showAddPeriodModal}
+        year={newPeriodYear}
+        onYearChange={setNewPeriodYear}
+        onAdd={handleAddDraftPeriod}
+        onCancel={() => {
+          setShowAddPeriodModal(false);
+          setNewPeriodYear("");
+        }}
+      />
     </div>
   );
 }
