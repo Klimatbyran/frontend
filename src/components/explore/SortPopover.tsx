@@ -29,7 +29,7 @@ export type SortOption = {
     asc?: string;
     desc?: string;
   };
-  readonly defaultDirection?: SortDirection;
+  readonly defaultDirection?: "asc" | "desc";
 };
 
 interface SortPopoverProps {

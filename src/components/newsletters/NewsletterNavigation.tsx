@@ -2,8 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { NewsletterType } from "@/lib/newsletterArchive/newsletterData";
-import itemPagination from "@/utils/itemPagination";
-import { Page } from "@/utils/itemPagination";
+import itemPagination, { Page } from "@/utils/itemPagination";
 import {
   Pagination,
   PaginationContent,

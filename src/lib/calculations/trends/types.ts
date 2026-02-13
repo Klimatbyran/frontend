@@ -1,3 +1,5 @@
+import type { CompanyDetails, RankedCompany } from "@/types/company";
+
 /**
  * Standardized data format for all trend/statistics functions
  *
@@ -9,6 +11,14 @@ export interface DataPoint {
   year: number;
   value: number;
 }
+
+/**
+ * Company type that can be used for trend analysis calculations.
+ *
+ * Both CompanyDetails (from detail endpoint) and RankedCompany (from list endpoint)
+ * have the required properties: reportingPeriods, futureEmissionsTrendSlope, and baseYear.
+ */
+export type CompanyForTrendAnalysis = CompanyDetails | RankedCompany;
 
 /**
  * Trend analysis result for a company

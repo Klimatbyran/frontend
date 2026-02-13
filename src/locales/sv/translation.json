@@ -489,7 +489,7 @@
     "noCompaniesFound": "Inga företag hittades",
     "tryDifferentCriteria": "Försök med andra sökkriterier",
     "filteringOptions": {
-      "meetsParis": "Uppfyller Parisavtalet",
+      "meetsParis": "Klarar Parisavtalet",
       "meetsParisYes": "Ja",
       "meetsParisNo": "Nej",
       "meetsParisUnknown": "Okänt"
@@ -1268,7 +1268,7 @@
       "emissionsChangeRate": "Förändringstakt",
       "emissionsChangeRateInfo": "Förändringstakt för utsläpp jämfört med föregående rapporteringsperiod.",
       "emissionsChangeRateInfoExtended": "Det här värdet är ovanligt högt på grund av inkonsekvent rapportering mellan de två senaste perioderna, vilket gör att procentförändringen inte speglar den faktiska utvecklingen.",
-      "meetsParis": "Är {{name}} på väg att uppfylla Parisavtalet?",
+      "meetsParis": "Är {{name}} på väg att klara Parisavtalet?",
       "turnover": "Omsättning",
       "turnoverAmount": "mdr",
       "employees": "Anställda",
@@ -1366,16 +1366,7 @@
           "metric": "Ingen data tillgänglig för {{metric}}"
         },
         "keyStatistics": {
-          "average": "Genomsnitt:",
-          "distributionAbove": "företag över genomsnittet",
-          "distributionBelow": "företag under genomsnittet"
-        },
-        "topPerformers": {
-          "titleTop": "Toppföretag",
-          "titleBest": "Bäst presterande företag"
-        },
-        "improvement": {
-          "title": "Företag som behöver förbättras"
+          "average": "Genomsnitt:"
         }
       },
       "sort": {
@@ -1553,7 +1544,7 @@
           "label": "Utsläppen",
           "description": "Historisk förändring av utsläpp",
           "detailedDescription": "Genomsnittlig årlig procentuell förändring av växthusgasutsläppen i Sveriges kommuner sedan Parisavtalet år 2015.",
-          "source": "<0>Nationella emissionsdatabasen</0>"
+          "source": "Nationella emissionsdatabasen"
         },
         "electricCarChangePercent": {
           "label": "Elbilarna",
@@ -1578,13 +1569,14 @@
           "label": "Cyklarna",
           "description": "Meter cykelväg per invånare",
           "detailedDescription": "Antal meter cykelväg per invånare per kommun år 2024. Ju längre desto bättre, god infrastruktur gynnar ökad cykling",
-          "source": "<0>Nationella Vägdatabasen</0>, <1>Trafikverket</1>"
+          "source0": "Nationella Vägdatabasen",
+          "source1": "SCB"
         },
         "climatePlan": {
           "label": "Klimatplanerna",
           "description": "Har en aktuell klimatplan",
           "detailedDescription": "Vilka kommuner har en aktuell klimatplan?",
-          "source": "<0>Klimatkollens öppna sammanställning av klimatplaner med hjälp från medlemmar av Klimatklubben och Naturskyddsföreningen</0>",
+          "source": "Klimatkollens öppna sammanställning av klimatplaner med hjälp från medlemmar av Klimatklubben och Naturskyddsföreningen",
           "booleanLabels": {
             "true": "Har klimatplan",
             "false": "Saknar klimatplan"
@@ -1600,17 +1592,7 @@
           "metric": "Ingen data tillgänglig för {{metric}}"
         },
         "keyStatistics": {
-          "average": "Genomsnitt:",
-          "distributionAbove": "kommuner över genomsnittet",
-          "distributionBelow": "kommuner under genomsnittet",
-          "distributionBoolean": "kommuner "
-        },
-        "topPerformers": {
-          "titleBest": "Topp fem kommuner",
-          "titleTop": "Toppresterande kommuner"
-        },
-        "improvement": {
-          "title": "Botten fem kommuner"
+          "average": "Genomsnitt:"
         }
       },
       "viewToggle": {
@@ -1805,6 +1787,13 @@
     },
     "rank": "Placering: {{rank}} av {{total}}"
   },
+  "rankedInsights": {
+    "belowAverage": "{{entityPlural}} under genomsnittet",
+    "aboveAverage": "{{entityPlural}} över genomsnittet",
+    "titleBest": "Topp fem {{entityPlural}}",
+    "titleTop": "Bästa {{entityPlural}}",
+    "titleWorst": "Botten fem {{entityPlural}}"
+  },
   "chartLegend": {
     "clickToFilterOut": "Klicka för att filtrera bort",
     "scrollToSeeMore": "Scrolla för att se mer"
@@ -1826,6 +1815,12 @@
     "description": "Utforska och jämför utsläppsdata och klimatmål för företag och kommuner.",
     "filter": "Filter:",
     "sorting": "Sorterar:",
+    "sortingOptions": {
+      "aToZ": "A-Ö",
+      "zToA": "Ö-A",
+      "bestFirst": "Visa bäst först",
+      "worstFirst": "Visa sämst först"
+    },
     "municipalities": {
       "muncipality": "Kommun",
       "municipalities": "Kommuner",
@@ -1852,11 +1847,7 @@
         "meetsParis": "Klarar Parisavtalet",
         "name": "Namn",
         "emissions": "Totala utsläpp",
-        "emissionsChangeRate": "Utsläppsförändring (%)",
-        "aToZ": "A-Ö",
-        "zToA": "Ö-A",
-        "bestFirst": "Visa bäst först",
-        "worstFirst": "Visa sämst först"
+        "emissionsChangeRate": "Utsläppsförändring (%)"
       }
     },
     "companies": {
@@ -1867,7 +1858,7 @@
       "errorTitle": "Det gick inte att hämta företagsinformation",
       "errorDescription": "Försök igen senare",
       "filteringOptions": {
-        "meetsParis": "Uppfyller Parisavtalet",
+        "meetsParis": "Klarar Parisavtalet",
         "meetsParisYes": "Ja",
         "meetsParisNo": "Nej",
         "meetsParisUnknown": "Okänt"
@@ -1876,9 +1867,8 @@
         "emissionsChange": "Utsläppsförändring (%)",
         "totalEmissions": "Totala utsläpp",
         "scope3Coverage": "Scope 3-rapportering",
-        "meetsParis": "Uppfyller Parisavtalet",
-        "nameAsc": "Företagsnamn A-Ö",
-        "nameDesc": "Företagsnamn Ö-A"
+        "meetsParis": "Klarar Parisavtalet",
+        "name": "Namn"
       },
       "sector": "Bransch",
       "searchPlaceholder": "Sök företag (separera med komma)",

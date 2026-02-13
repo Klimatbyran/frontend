@@ -54,7 +54,7 @@ export function CompaniesOverviewPage() {
     if (!companies) return [];
     const sectors = new Set<string>();
     companies.forEach((company) => {
-      const sectorCode = (company as any).industry?.industryGics?.sectorCode;
+      const sectorCode = company.industry?.industryGics?.sectorCode;
       if (sectorCode) {
         sectors.add(sectorCode);
       }
@@ -119,7 +119,7 @@ export function CompaniesOverviewPage() {
     if (!companies || !selectedSector) return [];
 
     const filtered = companies.filter((company) => {
-      const sectorCode = (company as any).industry?.industryGics?.sectorCode;
+      const sectorCode = company.industry?.industryGics?.sectorCode;
       return sectorCode === selectedSector;
     });
 

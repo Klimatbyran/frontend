@@ -7,7 +7,7 @@ import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { KPIDataSelector } from "@/components/ranked/KPIDataSelector";
 import InsightsPanel from "@/components/municipalities/rankedList/MunicipalityInsightsPanel";
-import MapOfSweden from "@/components/maps/SwedenMap";
+import TerritoryMap from "@/components/maps/TerritoryMap";
 import municipalityGeoJson from "@/data/municipalityGeo.json";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import { useMunicipalityKPIs } from "@/hooks/municipalities/useMunicipalityKPIs";
@@ -126,7 +126,7 @@ export function MunicipalitiesOverviewPage() {
   const renderMapOrList = (isMobile: boolean) =>
     viewMode === "map" ? (
       <div className={isMobile ? "relative h-[65vh]" : "relative h-full"}>
-        <MapOfSweden
+        <TerritoryMap
           entityType="municipalities"
           geoData={geoData as FeatureCollection}
           data={municipalities.map((m) => {

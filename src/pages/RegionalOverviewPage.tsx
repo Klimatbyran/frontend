@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { FeatureCollection } from "geojson";
 import { useNavigate } from "react-router-dom";
 import { PageHeader } from "@/components/layout/PageHeader";
-import MapOfSweden, { DataItem } from "@/components/maps/SwedenMap";
+import TerritoryMap, { DataItem } from "@/components/maps/TerritoryMap";
 import regionGeoJson from "@/data/regionGeo.json";
 import { useRankedRegionsURLParams } from "@/hooks/regions/useRankedRegionsURLParams";
 import {
@@ -103,7 +103,7 @@ export function RegionalOverviewPage() {
   const renderMapOrList = (isMobile: boolean) =>
     viewMode === "map" ? (
       <div className={isMobile ? "relative h-[65vh]" : "relative h-full"}>
-        <MapOfSweden
+        <TerritoryMap
           entityType="regions"
           geoData={geoData as FeatureCollection}
           data={mapData}
