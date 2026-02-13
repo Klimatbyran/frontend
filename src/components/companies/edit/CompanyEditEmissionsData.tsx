@@ -1,9 +1,6 @@
 import { useRef } from "react";
 import { useTranslation } from "react-i18next";
-import type {
-  CompanyDetails,
-  EditableReportingPeriod,
-} from "@/types/company";
+import type { CompanyDetails, EditableReportingPeriod } from "@/types/company";
 import { Text } from "@/components/ui/text";
 import { CompanyEditPeriod } from "./CompanyEditPeriod";
 import { CompanyEditStatedTotal } from "./CompanyEditStatedTotal";

@@ -53,7 +53,10 @@ export function CompanyEditPeriodControls({
 }: CompanyEditPeriodControlsProps) {
   const { t } = useTranslation();
   const periods = [...sourcePeriods]
-    .map((p) => ({ value: yearFromIsoDate(p.endDate), label: yearFromIsoDate(p.endDate) }))
+    .map((p) => ({
+      value: yearFromIsoDate(p.endDate),
+      label: yearFromIsoDate(p.endDate),
+    }))
     .sort((a, b) => Number(a.value) - Number(b.value));
   const hasPeriods = periods.length > 0;
 
@@ -129,7 +132,10 @@ export function CompanyEditHeader({
 
   const sourcePeriods = periodsProp ?? company.reportingPeriods ?? [];
   const periods = [...sourcePeriods]
-    .map((p) => ({ value: yearFromIsoDate(p.endDate), label: yearFromIsoDate(p.endDate) }))
+    .map((p) => ({
+      value: yearFromIsoDate(p.endDate),
+      label: yearFromIsoDate(p.endDate),
+    }))
     .sort((a, b) => Number(a.value) - Number(b.value));
   const hasPeriods = periods.length > 0;
 
@@ -168,7 +174,9 @@ export function CompanyEditHeader({
                   <Select
                     options={periods}
                     isMulti
-                    value={periods.filter((p) => selectedYears.includes(p.value))}
+                    value={periods.filter((p) =>
+                      selectedYears.includes(p.value),
+                    )}
                     onChange={selected}
                     styles={selectStyles}
                   />

@@ -33,6 +33,13 @@ export type DraftReportingPeriod = {
 /** Saved period or draft; used in company editor. */
 export type EditableReportingPeriod = ReportingPeriod | DraftReportingPeriod;
 
+/** One reporting period in the create/update request body (POST reporting-periods). */
+export type ReportingPeriodPayloadItem = NonNullable<
+  paths["/companies/{wikidataId}/reporting-periods"]["post"]["requestBody"]
+>["content"]["application/json"]["reportingPeriods"][number] & {
+  id?: string | number;
+};
+
 export type Emissions = NonNullable<ReportingPeriod["emissions"]>;
 
 /**

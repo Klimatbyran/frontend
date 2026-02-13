@@ -1,11 +1,14 @@
-import type { EditableReportingPeriod } from "@/types/company";
+import type {
+  EditableReportingPeriod,
+  ReportingPeriodPayloadItem,
+} from "@/types/company";
 
 export function mapCompanyEditFormToRequestBody(
   selectedPeriods: EditableReportingPeriod[],
   formData: Map<string, string>,
 ) {
   const formKeys = Array.from(formData.keys());
-  const periodsUpdate = [];
+  const periodsUpdate: ReportingPeriodPayloadItem[] = [];
   for (const period of selectedPeriods) {
     const isNewPeriod =
       typeof period.id === "string" && String(period.id).startsWith("new-");
@@ -161,12 +164,16 @@ export function mapCompanyEditFormToRequestBody(
         }
         // If value is changed (from null or to a new value)
         else if (valueChanged) {
-          const obj: any = {
+          const obj: {
+            category: number;
+            total: number | null;
+            unit: string;
+            verified?: boolean;
+          } = {
             category: parseInt(categoryId),
             total: newValue === "" ? null : parseFloat(newValue!),
             unit: originalCategory?.unit || "tCO2e",
           };
-          // Only include verified if it was explicitly changed
           if (verifiedChanged) {
             obj.verified = newVerified;
           }
@@ -367,7 +374,7 @@ export function mapCompanyEditFormToRequestBody(
       hasPeriodChanges
     ) {
       // New periods are created without id; existing periods are updated with id
-      const finalUpdate: any = {
+      const finalUpdate: ReportingPeriodPayloadItem = {
         startDate: periodUpdate.startDate,
         endDate: periodUpdate.endDate,
       };

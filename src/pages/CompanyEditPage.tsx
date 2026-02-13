@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CompanyEditHeader } from "@/components/companies/edit/CompanyEditHeader";
 import { CompanyEditDetails } from "@/components/companies/edit/CompanyEditDetails";
 import { CompanyEditEmissionsDataWithGuard } from "@/components/companies/edit/CompanyEditEmissionsData";
-import { DraftReportingPeriod, ReportingPeriod } from "@/types/company";
+import { DraftReportingPeriod, EditableReportingPeriod } from "@/types/company";
 import { yearFromIsoDate } from "@/utils/date";
 import { AuthExpiredModal } from "@/components/companies/edit/AuthExpiredModal";
 import { useAuth } from "@/contexts/AuthContext";
@@ -42,7 +42,7 @@ export function CompanyEditPage() {
   const effectivePeriods = useMemo(() => {
     if (!company) return [];
     const existing = company.reportingPeriods ?? [];
-    return [...existing, ...draftPeriods] as (ReportingPeriod | DraftReportingPeriod)[];
+    return [...existing, ...draftPeriods] as EditableReportingPeriod[];
   }, [company, draftPeriods]);
 
   const selectedPeriods = useMemo(() => {
@@ -50,16 +50,12 @@ export function CompanyEditPage() {
       .map((year) =>
         effectivePeriods.find((p) => yearFromIsoDate(p.endDate) === year),
       )
-      .filter(Boolean) as (ReportingPeriod | DraftReportingPeriod)[];
+      .filter(Boolean) as EditableReportingPeriod[];
   }, [selectedYears, effectivePeriods]);
 
   // Set default selected year on first load or when company changes
   useEffect(() => {
-    if (
-      company &&
-      effectivePeriods.length > 0 &&
-      selectedYears.length === 0
-    ) {
+    if (company && effectivePeriods.length > 0 && selectedYears.length === 0) {
       const latestYear = effectivePeriods
         .map((p) => yearFromIsoDate(p.endDate))
         .sort((a, b) => Number(b) - Number(a))[0];
@@ -78,7 +74,9 @@ export function CompanyEditPage() {
       { id: tempId, startDate, endDate, reportURL: null },
     ]);
     setSelectedYears((prev) =>
-      [...prev, year].filter((v, i, a) => a.indexOf(v) === i).sort((a, b) => Number(b) - Number(a)),
+      [...prev, year]
+        .filter((v, i, a) => a.indexOf(v) === i)
+        .sort((a, b) => Number(b) - Number(a)),
     );
     setNewPeriodYear("");
     setShowAddPeriodModal(false);

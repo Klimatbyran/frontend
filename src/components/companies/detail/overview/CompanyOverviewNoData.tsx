@@ -28,12 +28,7 @@ export function CompanyOverviewNoData({ company }: CompanyOverviewNoDataProps) {
   const description = getCompanyDescription(company, currentLanguage);
 
   return (
-    <SectionWithHelp
-      helpItems={[
-        "companySectors",
-        "companyMissingData",
-      ]}
-    >
+    <SectionWithHelp helpItems={["companySectors", "companyMissingData"]}>
       <div className="flex items-start justify-between mb-4 md:mb-12">
         <div className="space-y-4">
           <div className="flex items-center gap-4">
