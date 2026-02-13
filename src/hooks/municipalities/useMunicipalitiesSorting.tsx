@@ -6,29 +6,30 @@ export const useSortOptions = (): SortOption[] => {
 
   return [
     {
-      value: "meets_paris",
-      label: t("explorePage.municipalities.sortingOptions.meetsParis"),
-      directionLabels: {
-        asc: t("explorePage.municipalities.sortingOptions.bestFirst"),
-        desc: t("explorePage.municipalities.sortingOptions.worstFirst"),
-      },
+      value: "total_emissions",
+      label: t("explorePage.municipalities.sortingOptions.emissions"),
+    },
+    {
+      value: "emissions_reduction",
+      label: t("explorePage.municipalities.sortingOptions.emissionsChangeRate"),
     },
     {
       value: "name",
       label: t("explorePage.municipalities.sortingOptions.name"),
       directionLabels: {
-        asc: t("explorePage.municipalities.sortingOptions.aToZ"),
-        desc: t("explorePage.municipalities.sortingOptions.zToA"),
+        asc: t("explorePage.sortingOptions.aToZ"),
+        desc: t("explorePage.sortingOptions.zToA"),
       },
       defaultDirection: "asc",
     },
     {
-      value: "emissions",
-      label: t("explorePage.municipalities.sortingOptions.emissions"),
-    },
-    {
-      value: "emissionsChangeRate",
-      label: t("explorePage.municipalities.sortingOptions.emissionsChangeRate"),
+      value: "meets_paris",
+      label: t("explorePage.municipalities.sortingOptions.meetsParis"),
+      directionLabels: {
+        asc: t("explorePage.sortingOptions.bestFirst"),
+        desc: t("explorePage.sortingOptions.worstFirst"),
+      },
+      defaultDirection: "asc",
     },
   ];
 };

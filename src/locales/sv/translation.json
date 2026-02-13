@@ -491,7 +491,7 @@
     "noCompaniesFound": "Inga företag hittades",
     "tryDifferentCriteria": "Försök med andra sökkriterier",
     "filteringOptions": {
-      "meetsParis": "Uppfyller Parisavtalet",
+      "meetsParis": "Klarar Parisavtalet",
       "meetsParisYes": "Ja",
       "meetsParisNo": "Nej",
       "meetsParisUnknown": "Okänt"
@@ -1271,7 +1271,7 @@
       "emissionsChangeRate": "Förändringstakt",
       "emissionsChangeRateInfo": "Förändringstakt för utsläpp jämfört med föregående rapporteringsperiod.",
       "emissionsChangeRateInfoExtended": "Det här värdet är ovanligt högt på grund av inkonsekvent rapportering mellan de två senaste perioderna, vilket gör att procentförändringen inte speglar den faktiska utvecklingen.",
-      "meetsParis": "Är {{name}} på väg att uppfylla Parisavtalet?",
+      "meetsParis": "Är {{name}} på väg att klara Parisavtalet?",
       "turnover": "Omsättning",
       "turnoverAmount": "mdr",
       "employees": "Anställda",
@@ -1818,6 +1818,12 @@
     "description": "Utforska och jämför utsläppsdata och klimatmål för företag och kommuner.",
     "filter": "Filter:",
     "sorting": "Sorterar:",
+    "sortingOptions": {
+      "aToZ": "A-Ö",
+      "zToA": "Ö-A",
+      "bestFirst": "Visa bäst först",
+      "worstFirst": "Visa sämst först"
+    },
     "municipalities": {
       "muncipality": "Kommun",
       "municipalities": "Kommuner",
@@ -1844,11 +1850,7 @@
         "meetsParis": "Klarar Parisavtalet",
         "name": "Namn",
         "emissions": "Totala utsläpp",
-        "emissionsChangeRate": "Utsläppsförändring (%)",
-        "aToZ": "A-Ö",
-        "zToA": "Ö-A",
-        "bestFirst": "Visa bäst först",
-        "worstFirst": "Visa sämst först"
+        "emissionsChangeRate": "Utsläppsförändring (%)"
       }
     },
     "companies": {
@@ -1859,7 +1861,7 @@
       "errorTitle": "Det gick inte att hämta företagsinformation",
       "errorDescription": "Försök igen senare",
       "filteringOptions": {
-        "meetsParis": "Uppfyller Parisavtalet",
+        "meetsParis": "Klarar Parisavtalet",
         "meetsParisYes": "Ja",
         "meetsParisNo": "Nej",
         "meetsParisUnknown": "Okänt"
@@ -1868,9 +1870,8 @@
         "emissionsChange": "Utsläppsförändring (%)",
         "totalEmissions": "Totala utsläpp",
         "scope3Coverage": "Scope 3-rapportering",
-        "meetsParis": "Uppfyller Parisavtalet",
-        "nameAsc": "Företagsnamn A-Ö",
-        "nameDesc": "Företagsnamn Ö-A"
+        "meetsParis": "Klarar Parisavtalet",
+        "name": "Namn"
       },
       "sector": "Bransch",
       "searchPlaceholder": "Sök företag (separera med komma)",
