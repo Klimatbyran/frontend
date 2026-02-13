@@ -119,7 +119,6 @@ export function CompanyEditHeader({
   onAddPeriod,
   showPeriodControls = false,
 }: CompanyEditHeaderProps) {
-  const { t } = useTranslation();
   const navigate = useNavigate();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
@@ -132,20 +131,6 @@ export function CompanyEditHeader({
   };
 
   const sourcePeriods = periodsProp ?? company.reportingPeriods ?? [];
-  const periods = [...sourcePeriods]
-    .map((p) => ({
-      value: yearFromIsoDate(p.endDate),
-      label: yearFromIsoDate(p.endDate),
-    }))
-    .sort((a, b) => Number(a.value) - Number(b.value));
-  const hasPeriods = periods.length > 0;
-
-  const selected = (
-    newValue: MultiValue<{ value: string; label: string }>,
-    _actionMeta: ActionMeta<{ value: string; label: string }>,
-  ) => {
-    onYearsSelect(newValue.map((o) => o.value));
-  };
 
   return (
     <>
@@ -158,36 +143,12 @@ export function CompanyEditHeader({
         </div>
         <div className="flex items-center gap-4 flex-wrap">
           {showPeriodControls && onAddPeriod && (
-            <>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                className="gap-2"
-                onClick={onAddPeriod}
-              >
-                <Plus className="w-4 h-4" />
-                {t("companyEditPage.addReportPeriod.button")}
-              </Button>
-              <div>
-                <label className="text-sm">Reporting Period(s):</label>
-                {hasPeriods ? (
-                  <Select
-                    options={periods}
-                    isMulti
-                    value={periods.filter((p) =>
-                      selectedYears.includes(p.value),
-                    )}
-                    onChange={selected}
-                    styles={selectStyles}
-                  />
-                ) : (
-                  <span className="text-grey text-sm block mt-1">
-                    {t("companyEditPage.noReportingPeriodsYet")}
-                  </span>
-                )}
-              </div>
-            </>
+            <CompanyEditPeriodControls
+              periods={sourcePeriods}
+              selectedYears={selectedYears}
+              onYearsSelect={onYearsSelect}
+              onAddPeriod={onAddPeriod}
+            />
           )}
           <button
             onClick={handleClose}

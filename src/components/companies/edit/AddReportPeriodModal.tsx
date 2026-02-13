@@ -45,10 +45,7 @@ export function AddReportPeriodModal({
           <Button variant="outline" onClick={onCancel}>
             {t("companyEditPage.unsavedChanges.cancel")}
           </Button>
-          <Button
-            onClick={onAdd}
-            disabled={!/^\d{4}$/.test(year.trim())}
-          >
+          <Button onClick={onAdd} disabled={!/^\d{4}$/.test(year.trim())}>
             {t("companyEditPage.addReportPeriod.add")}
           </Button>
         </div>
