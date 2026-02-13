@@ -508,7 +508,7 @@
     "noResultsFound": "Inga resultat hittades",
     "categories": {
       "general": "Allmän information",
-      "municipality": "Kommundata",
+      "municipalityAndRegion": "Kommun- och länsdata",
       "company": "Företagsdata"
     },
     "general": {
@@ -828,14 +828,14 @@
         }
       }
     },
-    "municipality": {
-      "municipalityDataOverview": {
-        "title": "Kommunsdata översikt",
-        "description": "Vilken data vi samlar in och presenterar om kommunerna",
-        "paragraph1": "Klimatkollen visar data om utsläpp i Sveriges kommuner, med SMHI:s Nationella emissionsdatabas som främsta källa. För att vår kommundata och företagsdata ska vara jämförbara visas sedan augusti 2025 utsläpp av alla växthusgaser (CO₂e) inte enbart koldioxid.",
+    "municipalityAndRegion": {
+      "municipalityAndRegionDataOverview": {
+        "title": "Kommun- och länsdata översikt",
+        "description": "Vilken data vi samlar in och presenterar om kommunerna och länen",
+        "paragraph1": "Klimatkollen visar data om utsläpp i Sveriges kommuner och län, med SMHI:s Nationella emissionsdatabas som främsta källa. För att vår kommundata, länsdata och företagsdata ska vara jämförbara visas sedan augusti 2025 utsläpp av alla växthusgaser (CO₂e) inte enbart koldioxid.",
         "paragraph2": "Vi visar även hur utsläppen skulle behöva minska för att klara Parisavtalet. Tidigare användes lokala koldioxidbudgetar, baserade på en nationell budget framtagen av forskare vid Uppsala universitet och Tyndall Centre i Storbritannien. Sedan augusti 2025 baserar vi istället ”Pariskurvan” på <0>Carbon Law</0>.",
-        "paragraph3": "Prognosen för framtida utsläpp baseras på hur utsläppen i respektive kommun har utvecklats historiskt sedan Parisavtalet 2015. Trendlinjen viktas enligt den statistiska metoden least absolute deviations (LAD), som ger mindre vikt åt enskilda extremvärden och en mer rättvis och realistisk bild av de framtida utsläppen. Läs mer om våra utsläppsberäkningar <0>här</0>.",
-        "paragraph4": "Utöver utsläppsdata visas även nyckeltal för hur det går i kommunerna med att ställa om och minska utsläppen."
+        "paragraph3": "Prognosen för framtida utsläpp baseras på hur utsläppen i respektive kommun eller län har utvecklats historiskt sedan Parisavtalet 2015. Trendlinjen viktas enligt den statistiska metoden least absolute deviations (LAD), som ger mindre vikt åt enskilda extremvärden och en mer rättvis och realistisk bild av de framtida utsläppen. Läs mer om våra utsläppsberäkningar <0>här</0>.",
+        "paragraph4": "Utöver utsläppsdata visas även nyckeltal för hur det går i kommunerna och länen med att ställa om och minska utsläppen."
       },
       "municipalityKPIs": {
         "title": "Nyckeltal omställning i kommunerna",
@@ -859,17 +859,17 @@
         "links": {
           "smhi": {
             "title": "Nationella emissionsdatabasen",
-            "text": "Växthusgasutsläpp i kommunerna",
+            "text": "Växthusgasutsläpp i kommunerna och länen",
             "link": "https://nationellaemissionsdatabasen.smhi.se/"
           },
           "skr": {
             "title": "Sveriges Kommuner och Regioner",
-            "text": "Politisk ledning i kommunerna",
+            "text": "Politisk ledning i kommunerna och länen",
             "link": "https://skr.se/kommunerochregioner/valochpolitiskastyrenikommunerochregioner.8381.html#h-Styreikommunereftervalet2022"
           },
           "wikidata": {
             "title": "Wikidata",
-            "text": "Kommunvapen och befolkningsantal",
+            "text": "Kommun- och länsvapen samt befolkningsantal",
             "link": "https://www.wikidata.org/wiki/Wikidata:Country_subdivision_task_force/Sweden/Municipalities"
           },
           "trafikanalys": {

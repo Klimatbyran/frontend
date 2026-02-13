@@ -454,7 +454,7 @@
     "noResultsFound": "No results found",
     "categories": {
       "general": "General Information",
-      "municipality": "Municipality Data",
+      "municipalityAndRegion": "Municipality and Region Data",
       "company": "Company Data"
     },
     "general": {
@@ -774,14 +774,14 @@
         }
       }
     },
-    "municipality": {
-      "municipalityDataOverview": {
-        "title": "Municipality Data Overview",
-        "description": "What data we collect and present about the municipalities",
-        "paragraph1": "Klimatkollen shows emissions data on Sweden's municipalities, with SMHI's national emissions database as our primary source. To make our municipal and company data comparable, emissions of all greenhouse gases (CO₂e) are shown since August 2025, not just CO₂.",
+    "municipalityAndRegion": {
+      "municipalityAndRegionDataOverview": {
+        "title": "Municipality and Region Data Overview",
+        "description": "What data we collect and present about the municipalities and regions",
+        "paragraph1": "Klimatkollen shows emissions data on Sweden's municipalities and regions, with SMHI's national emissions database as our primary source. To make our municipal, regional and company data comparable, emissions of all greenhouse gases (CO₂e) are shown since August 2025, not just CO₂.",
         "paragraph2": "We also show how emissions would need to decrease to meet the Paris Agreement. Previously, this was based on local carbon budgets derived from a national budget calculated by researchers at Uppsala University and the Tyndall Centre in the UK. Since August 2025, we have switched to use the 'Paris Curve' based on an updated <0>Carbon Law</0>.",
-        "paragraph3": "The forecast for future emissions is based on how emissions in each municipality have developed historically since the Paris Agreement in 2015. The trend line is weighted using the statistical method Least Absolute Deviations (LAD), which gives less weight to individual extreme values and provides a more fair and realistic picture of future emissions. You can read more about our emissions calculations <0>here</0>.",
-        "paragraph4": "Alongside emissions data, Klimatkollen presents key indicators of municipal performance in the energy transition and emissions reductions, such as growth with EVs and bicycle lanes."
+        "paragraph3": "The forecast for future emissions is based on how emissions in each municipality or region have developed historically since the Paris Agreement in 2015. The trend line is weighted using the statistical method Least Absolute Deviations (LAD), which gives less weight to individual extreme values and provides a more fair and realistic picture of future emissions. You can read more about our emissions calculations <0>here</0>.",
+        "paragraph4": "Alongside emissions data, Klimatkollen presents key indicators of municipal and regional performance in the energy transition and emissions reductions, such as growth with EVs and bicycle lanes."
       },
       "municipalityKPIs": {
         "title": "Municipality KPIs",
@@ -805,17 +805,17 @@
         "links": {
           "smhi": {
             "title": "National Emissions Database",
-            "text": "Greenhouse gas emissions in municipalities",
+            "text": "Greenhouse gas emissions in municipalities and regions",
             "link": "https://nationellaemissionsdatabasen.smhi.se/"
           },
           "skr": {
             "title": "Swedish Association of Local Authorities and Regions",
-            "text": "Political leadership in municipalities",
+            "text": "Political leadership in municipalities and regions",
             "link": "https://skr.se/kommunerochregioner/valochpolitiskastyrenikommunerochregioner.8381.html#h-Styreikommunereftervalet2022"
           },
           "wikidata": {
             "title": "Wikidata",
-            "text": "Municipal coats of arms and population numbers",
+            "text": "Municipal and regional coats of arms and population numbers",
             "link": "https://www.wikidata.org/wiki/Wikidata:Country_subdivision_task_force/Sweden/Municipalities"
           },
           "trafikanalys": {
@@ -825,7 +825,7 @@
           },
           "nvdb": {
             "title": "National Road Database",
-            "text": "Cycling paths per municipality",
+            "text": "Cycling paths per municipality and region",
             "link": "https://www.nvdb.se/sv"
           },
           "sei": {
@@ -845,7 +845,7 @@
           },
           "upphandlingsmyndigheten": {
             "title": "Procurement Authority",
-            "text": "Information on climate requirements in municipal procurements",
+            "text": "Information on climate requirements in municipal and regional procurements",
             "link": "https://www.klimatkollen.se/data/procurements/NUE2022_DATA_2023-12-20.xlsx"
           },
           "greenpeace": {
