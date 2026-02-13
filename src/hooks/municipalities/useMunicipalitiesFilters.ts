@@ -15,10 +15,12 @@ import {
 import { FilterGroup } from "@/components/explore/FilterPopover";
 import { regions } from "@/lib/constants/regions";
 import setOrDeleteSearchParam from "@/utils/data/setOrDeleteSearchParam";
+import { useSortOptions } from "./useMunicipalitiesSorting";
 
 export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { t } = useTranslation();
+  const sortOptions = useSortOptions();
 
   const searchQuery = searchParams.get("searchQuery") || "";
   const meetsParisFilter = isMeetsParisFilter(
@@ -34,11 +36,11 @@ export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
     ) ?? ["all"]) as string[];
   const sortBy = isMunicipalitySortBy(searchParams.get("sortBy") ?? "")
     ? (searchParams.get("sortBy") as MunicipalitySortBy)
-    : "emissions";
+    : "total_emissions";
   const sortDirection = (
     isSortDirection(searchParams.get("sortDirection") ?? "")
       ? searchParams.get("sortDirection")
-      : "desc"
+      : (sortOptions.find((o) => o.value == sortBy)?.defaultDirection ?? "desc")
   ) as SortDirection;
 
   const setSearchQuery = useCallback(
@@ -259,9 +261,9 @@ const sortMunicipalities = (
       return compareMeetsParis(a, b, directionMultiplier);
     case "name":
       return compareNames(a, b, directionMultiplier);
-    case "emissions":
+    case "total_emissions":
       return compareEmissions(a, b, directionMultiplier);
-    case "emissionsChangeRate":
+    case "emissions_reduction":
       return compareEmissionsChangeRate(a, b, directionMultiplier);
     default:
       return 0;

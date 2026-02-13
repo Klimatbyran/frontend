@@ -437,7 +437,7 @@
     "noCompaniesFound": "No companies found",
     "tryDifferentCriteria": "Try adjusting your search criteria.",
     "filteringOptions": {
-      "meetsParis": "Meets Paris Agreement",
+      "meetsParis": "Meets the Paris Agreement",
       "meetsParisYes": "Yes",
       "meetsParisNo": "No",
       "meetsParisUnknown": "Unknown"
@@ -1765,6 +1765,12 @@
     "description": "Explore and compare emissions data and climate targets for companies and municipalities.",
     "filter": "Filter:",
     "sorting": "Sorting by:",
+    "sortingOptions": {
+      "aToZ": "A-Z",
+      "zToA": "Z-A",
+      "bestFirst": "Show best first",
+      "worstFirst": "Show worst first"
+    },
     "municipalities": {
       "muncipality": "Municipality",
       "municipalities": "Municipalities",
@@ -1791,11 +1797,7 @@
         "meetsParis": "Meets the Paris Agreement",
         "name": "Name",
         "emissions": "Total Emissions",
-        "emissionsChangeRate": "Change in Emissions (%)",
-        "aToZ": "A-Z",
-        "zToA": "Z-A",
-        "bestFirst": "Show best first",
-        "worstFirst": "Show worst first"
+        "emissionsChangeRate": "Change in Emissions (%)"
       }
     },
     "companies": {
@@ -1806,7 +1808,7 @@
       "errorTitle": "Failed to retrieve company information",
       "errorDescription": "Please try again later",
       "filteringOptions": {
-        "meetsParis": "Meets Paris Agreement",
+        "meetsParis": "Meets the Paris Agreement",
         "meetsParisYes": "Yes",
         "meetsParisNo": "No",
         "meetsParisUnknown": "Unknown"
@@ -1815,9 +1817,8 @@
         "emissionsChange": "Change in Emissions (%)",
         "totalEmissions": "Total Emissions",
         "scope3Coverage": "Scope 3 Coverage",
-        "meetsParis": "Meets Paris Agreement",
-        "nameAsc": "Company Name A-Z",
-        "nameDesc": "Company Name Z-A"
+        "meetsParis": "Meets the Paris Agreement",
+        "name": "Name"
       },
       "sector": "Sector",
       "searchPlaceholder": "Search companies (separate w/ commas)",
