@@ -32,6 +32,7 @@ import { ReportLandingPage } from "./pages/ReportLandingPage";
 import { RequestsDashboard } from "./pages/internal-pages/RequestsDashboard";
 import { TrendAnalysisDashboard } from "./pages/internal-pages/TrendAnalysisDashboard";
 import { ParisAlignedStatisticsPage } from "./pages/internal-pages/ParisAlignedStatisticsPage";
+import { AddCompanyPage } from "./pages/internal-pages/AddCompanyPage";
 import { NewsLetterArchivePage } from "./pages/NewslettersPage";
 import { RegionalOverviewPage } from "./pages/RegionalOverviewPage";
 import { RegionDetailPage } from "./pages/RegionDetailPage";
@@ -111,6 +112,10 @@ export function AppRoutes() {
         <Route
           path={`${basePath}/internal-pages/paris-aligned-statistics`}
           element={<ParisAlignedStatisticsPage />}
+        />
+        <Route
+          path={`${basePath}/internal-pages/add-company`}
+          element={<AddCompanyPage />}
         />
       </Route>
 

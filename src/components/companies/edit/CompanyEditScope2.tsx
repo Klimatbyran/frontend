@@ -3,7 +3,7 @@ import { getNumericValue } from "@/utils/ui/form";
 import { isVerified } from "@/utils/business/verification";
 import type {
   CompanyEditComponentProps,
-  ReportingPeriod,
+  EditableReportingPeriod,
 } from "@/types/company";
 import { CompanyEditInputField, CompanyEmptyField } from "./CompanyEditField";
 import { CompanyEditRow } from "./CompanyEditRow";
@@ -18,7 +18,7 @@ export function CompanyEditScope2({
   return (
     <>
       <CompanyEditRow key={"scope-2"} headerName noHover name="Scope 2">
-        {periods.map((period: ReportingPeriod) => (
+        {periods.map((period: EditableReportingPeriod) => (
           <CompanyEmptyField key={period.id} />
         ))}
       </CompanyEditRow>
@@ -26,7 +26,7 @@ export function CompanyEditScope2({
         key={"scope-2-mb"}
         name={t("companyEditPage.rowName.marketBased")}
       >
-        {periods.map((period: ReportingPeriod) => (
+        {periods.map((period: EditableReportingPeriod) => (
           <CompanyEditInputField
             name={`scope-2-mb-${period.id}`}
             type="number"
@@ -42,7 +42,7 @@ export function CompanyEditScope2({
         key={"scope-2-lb"}
         name={t("companyEditPage.rowName.locationBased")}
       >
-        {periods.map((period: ReportingPeriod) => (
+        {periods.map((period: EditableReportingPeriod) => (
           <CompanyEditInputField
             name={`scope-2-lb-${period.id}`}
             type="number"
@@ -60,7 +60,7 @@ export function CompanyEditScope2({
         key={"scope-2-unknown"}
         name={t("companyEditPage.rowName.unknown")}
       >
-        {periods.map((period: ReportingPeriod) => (
+        {periods.map((period: EditableReportingPeriod) => (
           <CompanyEditInputField
             name={`scope-2-unknown-${period.id}`}
             type="number"

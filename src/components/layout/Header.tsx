@@ -112,6 +112,7 @@ const INTERNAL_LINKS = [
     label: "Trend Analysis Dashboard",
     path: "/internal-pages/trend-analysis-dashboard",
   },
+  { label: "Add Company", path: "/internal-pages/add-company" },
 ];
 
 const SubLinksMenu = ({ sublinks }: { sublinks: NavSubLink[] }) => {

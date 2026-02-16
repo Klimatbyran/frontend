@@ -3,6 +3,7 @@ import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useCompanyDetails } from "@/hooks/companies/useCompanyDetails";
 import { CompanyOverview } from "@/components/companies/detail/overview/CompanyOverview";
+import { CompanyOverviewNoData } from "@/components/companies/detail/overview/CompanyOverviewNoData";
 import { EmissionsHistory } from "@/components/companies/detail/history/EmissionsHistory";
 import { Seo } from "@/components/SEO/Seo";
 import { CompanyScope3 } from "@/components/companies/detail/CompanyScope3";
@@ -15,6 +16,7 @@ import { PageNoData } from "@/components/pageStates/NoData";
 import { calculateEmissionsChange } from "@/utils/calculations/emissionsCalculations";
 import { generateCompanySeoMeta } from "@/utils/seo/entitySeo";
 import { getSeoForRoute } from "@/seo/routes";
+import { yearFromIsoDate } from "@/utils/date";
 
 export function CompanyDetailPage() {
   const { t } = useTranslation();
@@ -28,7 +30,7 @@ export function CompanyDetailPage() {
 
   // SEO meta: must run unconditionally (hooks rules). Fallback to route-level when no company.
   const latestYear = company?.reportingPeriods?.[0]
-    ? new Date(company.reportingPeriods[0].endDate).getFullYear()
+    ? Number(yearFromIsoDate(company.reportingPeriods[0].endDate))
     : new Date().getFullYear();
 
   const seoMeta = useMemo(() => {
@@ -53,12 +55,23 @@ export function CompanyDetailPage() {
     );
   }
 
-  if (!company || !company.reportingPeriods.length) {
+  if (!company) {
     return (
       <PageNoData
         titleKey="companyDetailPage.notFoundTitle"
         descriptionKey="companyDetailPage.notFoundDescription"
       />
+    );
+  }
+
+  if (!company.reportingPeriods?.length) {
+    return (
+      <>
+        <Seo meta={seoMeta} />
+        <div className="space-y-8 md:space-y-16 max-w-[1400px] mx-auto">
+          <CompanyOverviewNoData company={company} />
+        </div>
+      </>
     );
   }
 
@@ -70,7 +83,7 @@ export function CompanyDetailPage() {
     selectedYear === "latest"
       ? sortedPeriods[0]
       : sortedPeriods.find(
-          (p) => new Date(p.endDate).getFullYear().toString() === selectedYear,
+          (p) => yearFromIsoDate(p.endDate) === selectedYear,
         ) || sortedPeriods[0];
 
   const selectedIndex = sortedPeriods.findIndex(
@@ -134,7 +147,7 @@ export function CompanyDetailPage() {
                 period.emissions.scope3.categories.length > 0,
             )
             .map((period) => ({
-              year: new Date(period.endDate).getFullYear(),
+              year: Number(yearFromIsoDate(period.endDate)),
               total: period.emissions!.scope3!.calculatedTotalEmissions!,
               unit:
                 period.emissions!.scope3!.statedTotalEmissions?.unit ||
