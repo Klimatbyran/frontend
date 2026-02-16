@@ -8,11 +8,9 @@
   "header": {
     "data": "Data",
     "companies": "Företag",
-    "companiesSectors": "Branscher",
-    "companiesRanked": "Topplistor",
+    "sectors": "Branscher",
     "explore": "Utforska",
     "municipalities": "Kommuner",
-    "municipalitiesRanked": "Topplistor",
     "regions": "Län",
     "about": "Om",
     "aboutUs": "Om oss",
@@ -102,11 +100,11 @@
       "description": "Övervaka utsläppsdata och klimatåtaganden i hela Sverige.",
       "features": {
         "municipalityRankings": {
-          "title": "Kommunranking",
+          "title": "Kommunöversikt",
           "description": "Spåra klimatframsteg och utsläppsdata från kommuner och lokala myndigheter."
         },
         "companyRankings": {
-          "title": "Företagsranking",
+          "title": "Företagsöversikt",
           "description": "Jämför utsläppsprestationer, minskningsmål och hållbarhetsmått för svenska företag."
         },
         "progressTracking": {
@@ -357,8 +355,8 @@
     "shareText": "Kolla in det här blogginlägget!",
     "relatedArticles": "Relaterade artiklar"
   },
-  "companiesRankedPage": {
-    "title": "Företagsranking",
+  "companiesOverviewPage": {
+    "title": "Färetagsöversikt",
     "description": "Jämför företag baserat på viktiga klimatindikatorer",
     "errorTitle": "Kunde inte hämta företagsinformation",
     "errorDescription": "Försök igen senare",
@@ -413,6 +411,8 @@
     "errorDescription": "Försök igen senare",
     "notFoundTitle": "Företaget kunde inte hittas",
     "notFoundDescription": "Kontrollera att företags-ID:t är korrekt",
+    "noEmissionsDataTitle": "Ingen utsläppsdata än",
+    "noEmissionsDataDescription": "Detta företag har ännu ingen rapporterad utsläppsdata på Klimatkollen.",
     "sectorGraphs": {
       "yearRange": "Basår: {{baseYear}} → Nu: {{currentYear}}",
       "noCompaniesInSector": "Inga företag i denna kategori",
@@ -483,15 +483,15 @@
       "downstreamActivitiesDescription": "Nedströmsaktiviteter bidrar med "
     }
   },
-  "companiesSectorPage": {
-    "title": "Företagens klimatdata",
-    "description": "Översikt över företagens klimatpåverkan och hållbarhetsarbete",
+  "sectorsOverviewPage": {
+    "title": "Branschöversikt",
+    "description": "Översikt över utsläpp och omställning på branschnivå",
     "errorTitle": "Det gick inte att hämta företagsinformation",
     "errorDescription": "Försök igen senare",
     "noCompaniesFound": "Inga företag hittades",
     "tryDifferentCriteria": "Försök med andra sökkriterier",
     "filteringOptions": {
-      "meetsParis": "Uppfyller Parisavtalet",
+      "meetsParis": "Klarar Parisavtalet",
       "meetsParisYes": "Ja",
       "meetsParisNo": "Nej",
       "meetsParisUnknown": "Okänt"
@@ -510,7 +510,7 @@
     "noResultsFound": "Inga resultat hittades",
     "categories": {
       "general": "Allmän information",
-      "municipality": "Kommundata",
+      "municipalityAndRegion": "Kommun- och länsdata",
       "company": "Företagsdata"
     },
     "general": {
@@ -830,14 +830,14 @@
         }
       }
     },
-    "municipality": {
-      "municipalityDataOverview": {
-        "title": "Kommunsdata översikt",
-        "description": "Vilken data vi samlar in och presenterar om kommunerna",
-        "paragraph1": "Klimatkollen visar data om utsläpp i Sveriges kommuner, med SMHI:s Nationella emissionsdatabas som främsta källa. För att vår kommundata och företagsdata ska vara jämförbara visas sedan augusti 2025 utsläpp av alla växthusgaser (CO₂e) inte enbart koldioxid.",
+    "municipalityAndRegion": {
+      "municipalityAndRegionDataOverview": {
+        "title": "Kommun- och länsdata översikt",
+        "description": "Vilken data vi samlar in och presenterar om kommunerna och länen",
+        "paragraph1": "Klimatkollen visar data om utsläpp i Sveriges kommuner och län, med SMHI:s Nationella emissionsdatabas som främsta källa. För att vår kommundata, länsdata och företagsdata ska vara jämförbara visas sedan augusti 2025 utsläpp av alla växthusgaser (CO₂e) inte enbart koldioxid.",
         "paragraph2": "Vi visar även hur utsläppen skulle behöva minska för att klara Parisavtalet. Tidigare användes lokala koldioxidbudgetar, baserade på en nationell budget framtagen av forskare vid Uppsala universitet och Tyndall Centre i Storbritannien. Sedan augusti 2025 baserar vi istället ”Pariskurvan” på <0>Carbon Law</0>.",
-        "paragraph3": "Prognosen för framtida utsläpp baseras på hur utsläppen i respektive kommun har utvecklats historiskt sedan Parisavtalet 2015. Trendlinjen viktas enligt den statistiska metoden least absolute deviations (LAD), som ger mindre vikt åt enskilda extremvärden och en mer rättvis och realistisk bild av de framtida utsläppen. Läs mer om våra utsläppsberäkningar <0>här</0>.",
-        "paragraph4": "Utöver utsläppsdata visas även nyckeltal för hur det går i kommunerna med att ställa om och minska utsläppen."
+        "paragraph3": "Prognosen för framtida utsläpp baseras på hur utsläppen i respektive kommun eller län har utvecklats historiskt sedan Parisavtalet 2015. Trendlinjen viktas enligt den statistiska metoden least absolute deviations (LAD), som ger mindre vikt åt enskilda extremvärden och en mer rättvis och realistisk bild av de framtida utsläppen. Läs mer om våra utsläppsberäkningar <0>här</0>.",
+        "paragraph4": "Utöver utsläppsdata visas även nyckeltal för hur det går i kommunerna och länen med att ställa om och minska utsläppen."
       },
       "municipalityKPIs": {
         "title": "Nyckeltal omställning i kommunerna",
@@ -861,17 +861,17 @@
         "links": {
           "smhi": {
             "title": "Nationella emissionsdatabasen",
-            "text": "Växthusgasutsläpp i kommunerna",
+            "text": "Växthusgasutsläpp i kommunerna och länen",
             "link": "https://nationellaemissionsdatabasen.smhi.se/"
           },
           "skr": {
             "title": "Sveriges Kommuner och Regioner",
-            "text": "Politisk ledning i kommunerna",
+            "text": "Politisk ledning i kommunerna och länen",
             "link": "https://skr.se/kommunerochregioner/valochpolitiskastyrenikommunerochregioner.8381.html#h-Styreikommunereftervalet2022"
           },
           "wikidata": {
             "title": "Wikidata",
-            "text": "Kommunvapen och befolkningsantal",
+            "text": "Kommun- och länsvapen samt befolkningsantal",
             "link": "https://www.wikidata.org/wiki/Wikidata:Country_subdivision_task_force/Sweden/Municipalities"
           },
           "trafikanalys": {
@@ -1029,7 +1029,7 @@
       }
     }
   },
-  "regionalRankedPage": {
+  "regionalOverviewPage": {
     "title": "Länsöversikt",
     "description": "Översikt över utsläpp och omställning på länsnivå"
   },
@@ -1067,12 +1067,11 @@
       "noData": "Inga data tillgängliga"
     }
   },
-  "municipalitiesRankedPage": {
+  "municipalitiesOverviewPage": {
     "errorTitle": "Det gick inte att hämta kommuninformation",
     "errorDescription": "Försök igen senare",
-    "title": "Kommuntopplistor",
-    "description": "Data om utsläpp och klimatomställning i kommunerna",
-    "entityPlural": "kommuner"
+    "title": "Kommunöversikt",
+    "description": "Data om utsläpp och klimatomställning i kommunerna"
   },
   "municipalityDetailPage": {
     "metaTitle": "Data om utsläpp och omställning",
@@ -1271,7 +1270,7 @@
       "emissionsChangeRate": "Förändringstakt",
       "emissionsChangeRateInfo": "Förändringstakt för utsläpp jämfört med föregående rapporteringsperiod.",
       "emissionsChangeRateInfoExtended": "Det här värdet är ovanligt högt på grund av inkonsekvent rapportering mellan de två senaste perioderna, vilket gör att procentförändringen inte speglar den faktiska utvecklingen.",
-      "meetsParis": "Är {{name}} på väg att uppfylla Parisavtalet?",
+      "meetsParis": "Är {{name}} på väg att klara Parisavtalet?",
       "turnover": "Omsättning",
       "turnoverAmount": "mdr",
       "employees": "Anställda",
@@ -1447,8 +1446,6 @@
   },
   "regions": {
     "detailPage": {
-      "politicalRule": "Politiskt styre",
-      "politicalRSO": "Länsstyrelsens ordförande",
       "municipalities": "Kommuner"
     },
     "kpis": {
@@ -1627,11 +1624,44 @@
     "errorMessage": "Du har inte den nödvändiga behörigheten för att visa denna sida"
   },
   "companyEditPage": {
+    "tabs": {
+      "companyDetails": "Företagsuppgifter",
+      "emissionsData": "Utsläppsdata"
+    },
+    "emissionsDataSelectYear": "Välj minst ett år ovan för att redigera utsläppsdata.",
+    "noReportingPeriodsYet": "Inga rapporteringsperioder än.",
     "error": {
       "couldNotFetch": "Kunde inte hämta företagsdata",
+      "couldNotSave": "Kunde inte spara ändringar",
       "tryAgainLater": "Vänligen försök igen senare",
       "couldNotFind": "Företaget kunde inte hittas",
       "checkId": "Kontrollera att företags-ID:t är korrekt"
+    },
+    "fields": {
+      "name": "Namn",
+      "descriptionEn": "Beskrivning (EN)",
+      "descriptionSv": "Beskrivning (SV)",
+      "lei": "LEI",
+      "tags": "Taggar",
+      "gicsSubIndustry": "GICS subbransch",
+      "baseYear": "Basår"
+    },
+    "loadingIndustry": "Laddar…",
+    "placeholders": {
+      "comment": "Kommentar",
+      "sourceUrl": "Käll-URL",
+      "lei": "Legal Entity Identifier",
+      "tags": "Taggar separerade med komma",
+      "selectIndustry": "Välj bransch…"
+    },
+    "aria": {
+      "undoName": "Ångra namnändring",
+      "undoDescriptionEn": "Ångra beskrivning (EN)-ändring",
+      "undoDescriptionSv": "Ångra beskrivning (SV)-ändring",
+      "undoLei": "Ångra LEI-ändring",
+      "undoTags": "Ångra taggändring",
+      "undoIndustry": "Ångra branschändring",
+      "undoBaseYear": "Ångra basårsändring"
     },
     "rowName": {
       "reportingTimespan": "Rapporteringsperiod",
@@ -1651,9 +1681,12 @@
     "sections": {
       "reportingPeriod": "Rapporteringsperiod",
       "emissions": "Utsläpp",
-      "economy": "Ekonomi"
+      "economy": "Ekonomi",
+      "industryAndBaseYear": "Bransch & basår"
     },
     "save": "Spara",
+    "saveCompanyDetails": "Spara företagsuppgifter",
+    "saveIndustryAndBaseYear": "Spara bransch & basår",
     "success": {
       "title": "Ändringarna har sparats!",
       "description": "Ändringar i rapporteringsperioden har gjorts framgångsrikt"
@@ -1661,6 +1694,15 @@
     "successDetails": {
       "title": "Ändringarna har sparats!",
       "description": "Ändringar i basår och/eller bransch har gjorts framgångsrikt"
+    },
+    "successCompanyDetails": {
+      "description": "Företagsuppgifterna har sparats"
+    },
+    "addReportPeriod": {
+      "button": "Lägg till ny rapporteringsperiod",
+      "title": "Lägg till ny rapporteringsperiod",
+      "yearLabel": "År",
+      "add": "Lägg till"
     },
     "unsavedChanges": {
       "title": "Osparade ändringar",
@@ -1673,6 +1715,53 @@
       "message": "Din session har gått ut. Logga in igen för att fortsätta redigera.",
       "cancel": "Avbryt",
       "login": "Logga in"
+    }
+  },
+  "addCompanyPage": {
+    "title": "Lägg till företag",
+    "subtitle": "Skapa ett nytt företag genom att ange ett Wikidata-ID och namn. Valfria fält kan fyllas i nu eller redigeras senare.",
+    "sections": {
+      "required": "Obligatoriskt",
+      "descriptions": "Beskrivningar",
+      "linksAndMedia": "Länkar och media",
+      "other": "Övrigt",
+      "metadata": "Metadata"
+    },
+    "fields": {
+      "wikidataId": "Wikidata-ID",
+      "name": "Företagsnamn",
+      "descriptionEn": "Beskrivning (EN)",
+      "descriptionSv": "Beskrivning (SV)",
+      "url": "Webbplats-URL",
+      "logoUrl": "Logotyp-URL",
+      "lei": "LEI",
+      "tags": "Taggar",
+      "internalComment": "Intern kommentar",
+      "metadataComment": "Kommentar",
+      "metadataSource": "Käll-URL"
+    },
+    "placeholders": {
+      "name": "Företagsnamn",
+      "lei": "Legal Entity Identifier",
+      "tags": "Taggar separerade med komma",
+      "internalComment": "Intern anteckning (visas inte offentligt)"
+    },
+    "help": {
+      "wikidataId": "Hitta ID:t på wikidata.org (t.ex. Q12345)."
+    },
+    "validation": {
+      "wikidataIdRequired": "Wikidata-ID krävs.",
+      "nameRequired": "Företagsnamn krävs."
+    },
+    "submit": "Skapa företag",
+    "submitting": "Skapar…",
+    "success": {
+      "title": "Företag skapat",
+      "description": "Företaget har skapats. Du kan nu lägga till bransch, basår och utsläppsdata.",
+      "goToEdit": "Gå till företagets redigeringssida"
+    },
+    "error": {
+      "title": "Kunde inte skapa företag"
     }
   },
   "authCallbackPage": {
@@ -1818,6 +1907,12 @@
     "description": "Utforska och jämför utsläppsdata och klimatmål för företag och kommuner.",
     "filter": "Filter:",
     "sorting": "Sorterar:",
+    "sortingOptions": {
+      "aToZ": "A-Ö",
+      "zToA": "Ö-A",
+      "bestFirst": "Visa bäst först",
+      "worstFirst": "Visa sämst först"
+    },
     "municipalities": {
       "muncipality": "Kommun",
       "municipalities": "Kommuner",
@@ -1844,11 +1939,7 @@
         "meetsParis": "Klarar Parisavtalet",
         "name": "Namn",
         "emissions": "Totala utsläpp",
-        "emissionsChangeRate": "Utsläppsförändring (%)",
-        "aToZ": "A-Ö",
-        "zToA": "Ö-A",
-        "bestFirst": "Visa bäst först",
-        "worstFirst": "Visa sämst först"
+        "emissionsChangeRate": "Utsläppsförändring (%)"
       }
     },
     "companies": {
@@ -1859,7 +1950,7 @@
       "errorTitle": "Det gick inte att hämta företagsinformation",
       "errorDescription": "Försök igen senare",
       "filteringOptions": {
-        "meetsParis": "Uppfyller Parisavtalet",
+        "meetsParis": "Klarar Parisavtalet",
         "meetsParisYes": "Ja",
         "meetsParisNo": "Nej",
         "meetsParisUnknown": "Okänt"
@@ -1868,9 +1959,8 @@
         "emissionsChange": "Utsläppsförändring (%)",
         "totalEmissions": "Totala utsläpp",
         "scope3Coverage": "Scope 3-rapportering",
-        "meetsParis": "Uppfyller Parisavtalet",
-        "nameAsc": "Företagsnamn A-Ö",
-        "nameDesc": "Företagsnamn Ö-A"
+        "meetsParis": "Klarar Parisavtalet",
+        "name": "Namn"
       },
       "sector": "Bransch",
       "searchPlaceholder": "Sök företag (separera med komma)",

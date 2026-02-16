@@ -1,12 +1,17 @@
-import type { ReportingPeriod } from "@/types/company";
+import type {
+  EditableReportingPeriod,
+  ReportingPeriodPayloadItem,
+} from "@/types/company";
 
 export function mapCompanyEditFormToRequestBody(
-  selectedPeriods: ReportingPeriod[],
+  selectedPeriods: EditableReportingPeriod[],
   formData: Map<string, string>,
 ) {
   const formKeys = Array.from(formData.keys());
-  const periodsUpdate = [];
+  const periodsUpdate: ReportingPeriodPayloadItem[] = [];
   for (const period of selectedPeriods) {
+    const isNewPeriod =
+      typeof period.id === "string" && String(period.id).startsWith("new-");
     const periodUpdate: any = {
       id: period.id,
     };
@@ -159,12 +164,16 @@ export function mapCompanyEditFormToRequestBody(
         }
         // If value is changed (from null or to a new value)
         else if (valueChanged) {
-          const obj: any = {
+          const obj: {
+            category: number;
+            total: number | null;
+            unit: string;
+            verified?: boolean;
+          } = {
             category: parseInt(categoryId),
             total: newValue === "" ? null : parseFloat(newValue!),
             unit: originalCategory?.unit || "tCO2e",
           };
-          // Only include verified if it was explicitly changed
           if (verifiedChanged) {
             obj.verified = newVerified;
           }
@@ -349,7 +358,7 @@ export function mapCompanyEditFormToRequestBody(
       };
     }
 
-    // Check if there are any changes to include
+    // Check if there are any changes to include (or this is a new period to create)
     const hasEmissionsChanges = Object.keys(periodUpdate.emissions).length > 0;
     const hasEconomyChanges =
       Object.keys(periodUpdate.economy || {}).length > 0;
@@ -358,18 +367,26 @@ export function mapCompanyEditFormToRequestBody(
       periodUpdate.endDate !== period.endDate ||
       periodUpdate.reportURL !== period.reportURL;
 
-    if (hasEmissionsChanges || hasEconomyChanges || hasPeriodChanges) {
-      // Create the final update object
-      // startDate and endDate are required by the API, so always include them
-      const finalUpdate: any = {
-        id: period.id,
+    if (
+      isNewPeriod ||
+      hasEmissionsChanges ||
+      hasEconomyChanges ||
+      hasPeriodChanges
+    ) {
+      // New periods are created without id; existing periods are updated with id
+      const finalUpdate: ReportingPeriodPayloadItem = {
         startDate: periodUpdate.startDate,
         endDate: periodUpdate.endDate,
       };
+      if (!isNewPeriod) {
+        finalUpdate.id = period.id;
+      }
 
-      // reportURL is optional, only include if it changed
-      if (periodUpdate.reportURL !== period.reportURL) {
-        finalUpdate.reportURL = periodUpdate.reportURL;
+      // API expects reportURL as string (empty string when blank), not null
+      if (isNewPeriod) {
+        finalUpdate.reportURL = periodUpdate.reportURL || "";
+      } else if (periodUpdate.reportURL !== period.reportURL) {
+        finalUpdate.reportURL = periodUpdate.reportURL ?? "";
       }
 
       if (hasEmissionsChanges) {

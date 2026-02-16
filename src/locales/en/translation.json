@@ -8,11 +8,9 @@
   "header": {
     "data": "Data",
     "companies": "Companies",
-    "companiesSectors": "Sectors",
-    "companiesRanked": "Top Lists",
+    "sectors": "Sectors",
     "explore": "Explore",
     "municipalities": "Municipalities",
-    "municipalitiesRanked": "Top Lists",
     "regions": "Regions",
     "about": "About",
     "aboutUs": "About Us",
@@ -102,11 +100,11 @@
       "description": "Monitor emissions data and climate commitments across Sweden.",
       "features": {
         "municipalityRankings": {
-          "title": "Municipality Rankings",
+          "title": "Municipalities Overview",
           "description": "Track climate progress and emissions data from municipalities and local governments."
         },
         "companyRankings": {
-          "title": "Company Rankings",
+          "title": "Companies Overview",
           "description": "Compare emissions performance, reduction targets, and sustainability metrics across Swedish companies."
         },
         "progressTracking": {
@@ -357,8 +355,8 @@
     "shareText": "Check out this blog post!",
     "relatedArticles": "Related Articles"
   },
-  "companiesRankedPage": {
-    "title": "Company Rankings",
+  "companiesOverviewPage": {
+    "title": "Companies Overview",
     "description": "Compare companies based on key climate indicators",
     "errorTitle": "Failed to retrieve company information",
     "errorDescription": "Please try again later",
@@ -413,6 +411,8 @@
     "errorDescription": "Please try again later",
     "notFoundTitle": "Company not found",
     "notFoundDescription": "Check if the company ID is correct",
+    "noEmissionsDataTitle": "No emissions data yet",
+    "noEmissionsDataDescription": "This company has no reported emissions data on Klimatkollen yet.",
     "billion": "billion",
     "sectorGraphs": {
       "yearRange": "Base year: {{baseYear}} → Current: {{currentYear}}",
@@ -429,15 +429,15 @@
       "total": "Total Emissions"
     }
   },
-  "companiesSectorPage": {
-    "title": "Company Climate Data",
-    "description": "Overview of companies' climate impact and sustainability efforts",
+  "sectorsOverviewPage": {
+    "title": "Sector Overview",
+    "description": "Overview of emissions and transition at the sector level",
     "errorTitle": "Failed to retrieve company information",
     "errorDescription": "Please try again later",
     "noCompaniesFound": "No companies found",
     "tryDifferentCriteria": "Try adjusting your search criteria.",
     "filteringOptions": {
-      "meetsParis": "Meets Paris Agreement",
+      "meetsParis": "Meets the Paris Agreement",
       "meetsParisYes": "Yes",
       "meetsParisNo": "No",
       "meetsParisUnknown": "Unknown"
@@ -456,7 +456,7 @@
     "noResultsFound": "No results found",
     "categories": {
       "general": "General Information",
-      "municipality": "Municipality Data",
+      "municipalityAndRegion": "Municipality and Region Data",
       "company": "Company Data"
     },
     "general": {
@@ -776,14 +776,14 @@
         }
       }
     },
-    "municipality": {
-      "municipalityDataOverview": {
-        "title": "Municipality Data Overview",
-        "description": "What data we collect and present about the municipalities",
-        "paragraph1": "Klimatkollen shows emissions data on Sweden's municipalities, with SMHI's national emissions database as our primary source. To make our municipal and company data comparable, emissions of all greenhouse gases (CO₂e) are shown since August 2025, not just CO₂.",
+    "municipalityAndRegion": {
+      "municipalityAndRegionDataOverview": {
+        "title": "Municipality and Region Data Overview",
+        "description": "What data we collect and present about the municipalities and regions",
+        "paragraph1": "Klimatkollen shows emissions data on Sweden's municipalities and regions, with SMHI's national emissions database as our primary source. To make our municipal, regional and company data comparable, emissions of all greenhouse gases (CO₂e) are shown since August 2025, not just CO₂.",
         "paragraph2": "We also show how emissions would need to decrease to meet the Paris Agreement. Previously, this was based on local carbon budgets derived from a national budget calculated by researchers at Uppsala University and the Tyndall Centre in the UK. Since August 2025, we have switched to use the 'Paris Curve' based on an updated <0>Carbon Law</0>.",
-        "paragraph3": "The forecast for future emissions is based on how emissions in each municipality have developed historically since the Paris Agreement in 2015. The trend line is weighted using the statistical method Least Absolute Deviations (LAD), which gives less weight to individual extreme values and provides a more fair and realistic picture of future emissions. You can read more about our emissions calculations <0>here</0>.",
-        "paragraph4": "Alongside emissions data, Klimatkollen presents key indicators of municipal performance in the energy transition and emissions reductions, such as growth with EVs and bicycle lanes."
+        "paragraph3": "The forecast for future emissions is based on how emissions in each municipality or region have developed historically since the Paris Agreement in 2015. The trend line is weighted using the statistical method Least Absolute Deviations (LAD), which gives less weight to individual extreme values and provides a more fair and realistic picture of future emissions. You can read more about our emissions calculations <0>here</0>.",
+        "paragraph4": "Alongside emissions data, Klimatkollen presents key indicators of municipal and regional performance in the energy transition and emissions reductions, such as growth with EVs and bicycle lanes."
       },
       "municipalityKPIs": {
         "title": "Municipality KPIs",
@@ -807,17 +807,17 @@
         "links": {
           "smhi": {
             "title": "National Emissions Database",
-            "text": "Greenhouse gas emissions in municipalities",
+            "text": "Greenhouse gas emissions in municipalities and regions",
             "link": "https://nationellaemissionsdatabasen.smhi.se/"
           },
           "skr": {
             "title": "Swedish Association of Local Authorities and Regions",
-            "text": "Political leadership in municipalities",
+            "text": "Political leadership in municipalities and regions",
             "link": "https://skr.se/kommunerochregioner/valochpolitiskastyrenikommunerochregioner.8381.html#h-Styreikommunereftervalet2022"
           },
           "wikidata": {
             "title": "Wikidata",
-            "text": "Municipal coats of arms and population numbers",
+            "text": "Municipal and regional coats of arms and population numbers",
             "link": "https://www.wikidata.org/wiki/Wikidata:Country_subdivision_task_force/Sweden/Municipalities"
           },
           "trafikanalys": {
@@ -827,7 +827,7 @@
           },
           "nvdb": {
             "title": "National Road Database",
-            "text": "Cycling paths per municipality",
+            "text": "Cycling paths per municipality and region",
             "link": "https://www.nvdb.se/sv"
           },
           "sei": {
@@ -847,7 +847,7 @@
           },
           "upphandlingsmyndigheten": {
             "title": "Procurement Authority",
-            "text": "Information on climate requirements in municipal procurements",
+            "text": "Information on climate requirements in municipal and regional procurements",
             "link": "https://www.klimatkollen.se/data/procurements/NUE2022_DATA_2023-12-20.xlsx"
           },
           "greenpeace": {
@@ -976,9 +976,9 @@
       }
     }
   },
-  "regionalRankedPage": {
+  "regionalOverviewPage": {
     "title": "Regional Overview",
-    "description": "Overview of emissions and transition in the regional level"
+    "description": "Overview of emissions and transition at the regional level"
   },
   "detailPage": {
     "totalEmissions": "Total Emissions {{year}}",
@@ -1014,10 +1014,10 @@
       "noData": "No data available"
     }
   },
-  "municipalitiesRankedPage": {
+  "municipalitiesOverviewPage": {
     "errorTitle": "Failed to retrieve municipality information",
     "errorDescription": "Please try again later",
-    "title": "Municipality Top Lists",
+    "title": "Municipalities Overview",
     "description": "Data on emissions and climate transition in municipalities"
   },
   "municipalityDetailPage": {
@@ -1393,8 +1393,6 @@
   },
   "regions": {
     "detailPage": {
-      "politicalRule": "Political rule",
-      "politicalRSO": "Regional Executive Chair",
       "municipalities": "Municipalities"
     },
     "kpis": {
@@ -1573,11 +1571,44 @@
     "errorMessage": "You do not have the necessary permissions to view this page"
   },
   "companyEditPage": {
+    "tabs": {
+      "companyDetails": "Company details",
+      "emissionsData": "Emissions data"
+    },
+    "emissionsDataSelectYear": "Select at least one year above to edit emissions data.",
+    "noReportingPeriodsYet": "No reporting periods yet.",
     "error": {
       "couldNotFetch": "Could not fetch company data",
+      "couldNotSave": "Could not save changes",
       "tryAgainLater": "Please try again later",
       "couldNotFind": "The company could not be found",
       "checkId": "Please make sure the company ID is correct"
+    },
+    "fields": {
+      "name": "Name",
+      "descriptionEn": "Description (EN)",
+      "descriptionSv": "Description (SV)",
+      "lei": "LEI",
+      "tags": "Tags",
+      "gicsSubIndustry": "GICS Sub-Industry",
+      "baseYear": "Base Year"
+    },
+    "loadingIndustry": "Loading…",
+    "placeholders": {
+      "comment": "Comment",
+      "sourceUrl": "Source URL",
+      "lei": "Legal Entity Identifier",
+      "tags": "Comma-separated tags",
+      "selectIndustry": "Select industry…"
+    },
+    "aria": {
+      "undoName": "Undo name change",
+      "undoDescriptionEn": "Undo description (EN) change",
+      "undoDescriptionSv": "Undo description (SV) change",
+      "undoLei": "Undo LEI change",
+      "undoTags": "Undo tags change",
+      "undoIndustry": "Undo industry change",
+      "undoBaseYear": "Undo base year change"
     },
     "rowName": {
       "reportingTimespan": "Reporting Period",
@@ -1597,9 +1628,12 @@
     "sections": {
       "reportingPeriod": "Reporting Period",
       "emissions": "Emissions",
-      "economy": "Economy"
+      "economy": "Economy",
+      "industryAndBaseYear": "Industry & base year"
     },
     "save": "Save",
+    "saveCompanyDetails": "Save company details",
+    "saveIndustryAndBaseYear": "Save industry & base year",
     "success": {
       "title": "Changes have been saved!",
       "description": "Changes to the reporting period have been made successfully"
@@ -1607,6 +1641,15 @@
     "successDetails": {
       "title": "Changes have been saved!",
       "description": "Changes to the base year and/or industry sector have been made successfully"
+    },
+    "successCompanyDetails": {
+      "description": "Company details have been saved successfully"
+    },
+    "addReportPeriod": {
+      "button": "Add new report period",
+      "title": "Add new report period",
+      "yearLabel": "Year",
+      "add": "Add"
     },
     "unsavedChanges": {
       "title": "Unsaved Changes",
@@ -1619,6 +1662,53 @@
       "message": "Your session has expired. Please log in again to continue editing.",
       "cancel": "Cancel",
       "login": "Log in"
+    }
+  },
+  "addCompanyPage": {
+    "title": "Add Company",
+    "subtitle": "Create a new company by providing a Wikidata ID and name. Optional fields can be filled in now or edited later.",
+    "sections": {
+      "required": "Required",
+      "descriptions": "Descriptions",
+      "linksAndMedia": "Links & media",
+      "other": "Other",
+      "metadata": "Metadata"
+    },
+    "fields": {
+      "wikidataId": "Wikidata ID",
+      "name": "Company name",
+      "descriptionEn": "Description (EN)",
+      "descriptionSv": "Description (SV)",
+      "url": "Website URL",
+      "logoUrl": "Logo URL",
+      "lei": "LEI",
+      "tags": "Tags",
+      "internalComment": "Internal comment",
+      "metadataComment": "Comment",
+      "metadataSource": "Source URL"
+    },
+    "placeholders": {
+      "name": "Company name",
+      "lei": "Legal Entity Identifier",
+      "tags": "Comma-separated tags",
+      "internalComment": "Internal note (not shown publicly)"
+    },
+    "help": {
+      "wikidataId": "Find the ID on wikidata.org (e.g. Q12345)."
+    },
+    "validation": {
+      "wikidataIdRequired": "Wikidata ID is required.",
+      "nameRequired": "Company name is required."
+    },
+    "submit": "Create company",
+    "submitting": "Creating…",
+    "success": {
+      "title": "Company created",
+      "description": "The company has been created. You can now add industry, base year, and emissions data.",
+      "goToEdit": "Go to company edit page"
+    },
+    "error": {
+      "title": "Could not create company"
     }
   },
   "authCallbackPage": {
@@ -1765,6 +1855,12 @@
     "description": "Explore and compare emissions data and climate targets for companies and municipalities.",
     "filter": "Filter:",
     "sorting": "Sorting by:",
+    "sortingOptions": {
+      "aToZ": "A-Z",
+      "zToA": "Z-A",
+      "bestFirst": "Show best first",
+      "worstFirst": "Show worst first"
+    },
     "municipalities": {
       "muncipality": "Municipality",
       "municipalities": "Municipalities",
@@ -1791,11 +1887,7 @@
         "meetsParis": "Meets the Paris Agreement",
         "name": "Name",
         "emissions": "Total Emissions",
-        "emissionsChangeRate": "Change in Emissions (%)",
-        "aToZ": "A-Z",
-        "zToA": "Z-A",
-        "bestFirst": "Show best first",
-        "worstFirst": "Show worst first"
+        "emissionsChangeRate": "Change in Emissions (%)"
       }
     },
     "companies": {
@@ -1806,7 +1898,7 @@
       "errorTitle": "Failed to retrieve company information",
       "errorDescription": "Please try again later",
       "filteringOptions": {
-        "meetsParis": "Meets Paris Agreement",
+        "meetsParis": "Meets the Paris Agreement",
         "meetsParisYes": "Yes",
         "meetsParisNo": "No",
         "meetsParisUnknown": "Unknown"
@@ -1815,9 +1907,8 @@
         "emissionsChange": "Change in Emissions (%)",
         "totalEmissions": "Total Emissions",
         "scope3Coverage": "Scope 3 Coverage",
-        "meetsParis": "Meets Paris Agreement",
-        "nameAsc": "Company Name A-Z",
-        "nameDesc": "Company Name Z-A"
+        "meetsParis": "Meets the Paris Agreement",
+        "name": "Name"
       },
       "sector": "Sector",
       "searchPlaceholder": "Search companies (separate w/ commas)",

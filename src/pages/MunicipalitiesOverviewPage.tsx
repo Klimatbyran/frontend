@@ -15,7 +15,7 @@ import { RankedListItem } from "@/types/rankings";
 import { createEntityClickHandler } from "@/utils/routing";
 import { MunicipalityRankedList } from "@/components/municipalities/MunicipalityRankedList";
 
-export function MunicipalitiesRankedPage() {
+export function MunicipalitiesOverviewPage() {
   const { t } = useTranslation();
   const { municipalities, municipalitiesLoading, municipalitiesError } =
     useMunicipalities();
@@ -106,10 +106,10 @@ export function MunicipalitiesRankedPage() {
     return (
       <div className="text-center py-24">
         <h3 className="text-red-500 mb-4 text-xl">
-          {t("municipalitiesRankedPage.errorTitle")}
+          {t("municipalitiesOverviewPage.errorTitle")}
         </h3>
         <p className="text-grey">
-          {t("municipalitiesRankedPage.errorDescription")}
+          {t("municipalitiesOverviewPage.errorDescription")}
         </p>
       </div>
     );
@@ -144,8 +144,8 @@ export function MunicipalitiesRankedPage() {
   return (
     <>
       <PageHeader
-        title={t("municipalitiesRankedPage.title")}
-        description={t("municipalitiesRankedPage.description")}
+        title={t("municipalitiesOverviewPage.title")}
+        description={t("municipalitiesOverviewPage.description")}
         className="-ml-4"
       />
 

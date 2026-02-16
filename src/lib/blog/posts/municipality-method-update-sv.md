@@ -31,7 +31,7 @@ Klimatkollen gör tre metodändringar:
 Metodskiftet innebär att det totala antalet ton som redovisas på Klimatkollen för landets kommuner ökar, då fler växthusgaser inkluderas, inte bara fossilt koldioxid. 
 
 När det gäller hur utsläppen behöver minska enligt Parisavtalet, blir minskningskurvan  för de flesta kommuner mjukare jämfört med tidigare när den baserades på kommunens koldioxidbudget. Det beror delvis på att koldioxidbudgeten inkluderade en rättviseprincip som gav Sverige en mycket liten kvarvarande nationell koldioxidbudget. Övergången till Carbon Law innebär en “samma för alla-princip”, det vill säga 12 procents minskning per år för länder, kommuner och företag. 
-- [Klimatkollens metod](/methodology?view=municipalityDataOverview)
+- [Klimatkollens metod](/methodology?view=municipalityAndRegionDataOverview)
 - [Rapport om Carbon Law](/reports/2025-06-19_ApplyingCarbonLawFrom2025.pdf) 
 - [Frågor och svar om Carbon Law](/insights/carbon-law-from-2025) 
 
