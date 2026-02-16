@@ -3,6 +3,9 @@ import { stagingFeatureFlagEnabled } from "@/utils/ui/featureFlags";
 import { LanguageRedirect } from "@/components/LanguageRedirect";
 import ProtectedRoute from "./components/ProtectedRoute";
 import StagingProtectedRoute from "./components/StagingProtectedRoute";
+// StagingProtectedRoute: use when developing new pages that should only be visible on staging.
+// Wrap the route(s) in <Route element={<StagingProtectedRoute />}> and nest your path(s) inside.
+// When ready for prod, remove the wrapper. Keep this import so dead-code scripts don't remove the component.
 import { useLanguage } from "./components/LanguageProvider";
 import { AboutPage } from "./pages/AboutPage";
 import { AuthCallback } from "./pages/AuthCallback";
@@ -68,12 +71,10 @@ export function AppRoutes() {
 
       {/* Strict companies routes */}
       <Route path={`${basePath}/sectors`} element={<SectorsOverviewPage />} />
-      <Route element={<StagingProtectedRoute />}>
-        <Route
-          path={`${basePath}/companies`}
-          element={<CompaniesOverviewPage />}
-        />
-      </Route>
+      <Route
+        path={`${basePath}/companies`}
+        element={<CompaniesOverviewPage />}
+      />
       <Route
         path={`${basePath}/companies/:id`}
         element={<CompanyDetailPage />}
@@ -120,16 +121,14 @@ export function AppRoutes() {
       </Route>
 
       {/* Strict regions routes */}
-      <Route element={<StagingProtectedRoute />}>
-        <Route
-          path={`${basePath}/regions`}
-          element={<RegionalOverviewPage />}
-        />
-        <Route
-          path={`${basePath}/regions/:id`}
-          element={<RegionDetailPage />}
-        />
-      </Route>
+      <Route
+        path={`${basePath}/regions`}
+        element={<RegionalOverviewPage />}
+      />
+      <Route
+        path={`${basePath}/regions/:id`}
+        element={<RegionDetailPage />}
+      />
 
       {/* Strict municipalities routes */}
       <Route
