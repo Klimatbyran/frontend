@@ -121,14 +121,8 @@ export function AppRoutes() {
       </Route>
 
       {/* Strict regions routes */}
-      <Route
-        path={`${basePath}/regions`}
-        element={<RegionalOverviewPage />}
-      />
-      <Route
-        path={`${basePath}/regions/:id`}
-        element={<RegionDetailPage />}
-      />
+      <Route path={`${basePath}/regions`} element={<RegionalOverviewPage />} />
+      <Route path={`${basePath}/regions/:id`} element={<RegionDetailPage />} />
 
       {/* Strict municipalities routes */}
       <Route
