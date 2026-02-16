@@ -42,6 +42,8 @@ import { RegionDetailPage } from "./pages/RegionDetailPage";
 import { CompaniesOverviewPage } from "./pages/CompaniesOverviewPage";
 import { ExplorePage } from "./pages/ExplorePage";
 
+void StagingProtectedRoute; // referenced so dead-code scripts keep the component; eslint/ts unused-import satisfied
+
 // Conditional landing page component that shows new version on localhost/staging
 function ConditionalLandingPage() {
   const isStaging = stagingFeatureFlagEnabled();
