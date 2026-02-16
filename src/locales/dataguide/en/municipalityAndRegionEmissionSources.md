@@ -1,6 +1,6 @@
 # Where Do Emissions Come From — and What Can You Do About Them?
 
-Your municipality’s emissions come from different everyday activities — heating homes, driving cars, using electricity, and even what we eat.
+Your municipality’s or region's emissions come from different everyday activities — heating homes, driving cars, using electricity, and even what we eat.
 
 Here’s what some of the categories mean for your daily life, and what to look out for:
 
@@ -12,7 +12,7 @@ As a resident:
 - Choose walking, biking, buses or carpools when you can
 - Consider an electric car — especially if your area offers public charging or free parking for EVs
 - Support bike lanes, bus routes, and traffic calming in your area
-- Push your municipality to electrify school buses and service vehicles
+- Push your municipality or region to electrify school buses and service vehicles
 
 **Heating & Energy Use in Buildings**
 Includes home heating (like oil boilers or electric radiators), and electricity from fossil sources.
@@ -30,7 +30,7 @@ In some municipalities, especially those with factories or cement plants, indust
 As a resident:
 
 - Support reuse and renovation instead of new construction when possible
-- Ask your municipality about fossil-free building standards for public projects
+- Ask about fossil-free building standards for public projects
 - Pay attention to large infrastructure projects (roads, data centres, etc.) — are they climate-smart?
 
 **Product Use & Waste**
@@ -49,7 +49,7 @@ As a resident:
 
 - Choose more plant-based meals when you can
 - Support local farms using climate-friendly practices
-- Ask your municipality to serve more climate-smart food in schools and elderly care
+- Ask your municipality or region to serve more climate-smart food in schools and elderly care
 
 **What to Watch for in Local Policy**
 Even if you don’t work in industry or build roads, your voice matters. Keep an eye on local decisions like:

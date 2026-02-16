@@ -6,8 +6,7 @@ import {
   useState,
 } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import { I18nextProvider } from "react-i18next";
+import { useTranslation, I18nextProvider } from "react-i18next";
 import {
   detectLanguageFromPath,
   getLanguageUrl,

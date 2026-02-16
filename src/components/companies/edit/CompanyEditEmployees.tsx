@@ -3,7 +3,7 @@ import { getNumericValue, getStringValue } from "@/utils/ui/form";
 import { isVerified } from "@/utils/business/verification";
 import type {
   CompanyEditComponentProps,
-  ReportingPeriod,
+  EditableReportingPeriod,
 } from "@/types/company";
 import { CompanyEditInputField } from "./CompanyEditField";
 import { CompanyEditRow } from "./CompanyEditRow";
@@ -22,7 +22,7 @@ export function CompanyEditEmployees({
         name={t("companyEditPage.rowName.employees")}
         key="employees-value"
       >
-        {periods.map((period: ReportingPeriod) => (
+        {periods.map((period: EditableReportingPeriod) => (
           <CompanyEditInputField
             name={`employees-value-${period.id}`}
             type="number"
@@ -40,7 +40,7 @@ export function CompanyEditEmployees({
         name={t("companyEditPage.rowName.unit")}
         key="employees-unit"
       >
-        {periods.map((period: ReportingPeriod) => (
+        {periods.map((period: EditableReportingPeriod) => (
           <CompanyEditInputField
             name={`employees-unit-${period.id}`}
             type="text"

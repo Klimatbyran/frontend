@@ -42,26 +42,26 @@ const NAV_LINKS: NavLink[] = [
     path: `/explore`,
     sublinks: [
       {
+        label: "header.explore",
+        path: `/explore/companies`,
+      },
+      {
         label: "header.companies",
-        path: `/companies/ranked`,
+        path: `/companies`,
+        onlyShowOnStaging: true,
+      },
+      {
+        label: "header.sectors",
+        path: `/sectors`,
+      },
+      {
+        label: "header.regions",
+        path: `/regions`,
         onlyShowOnStaging: true,
       },
       {
         label: "header.municipalities",
         path: `/municipalities`,
-      },
-      {
-        label: "header.regionsRanked",
-        path: `/regions`,
-        onlyShowOnStaging: true,
-      },
-      {
-        label: "header.companiesSectors",
-        path: `/companies/sectors`,
-      },
-      {
-        label: "header.explore",
-        path: `/explore`,
       },
     ],
   },
@@ -112,6 +112,7 @@ const INTERNAL_LINKS = [
     label: "Trend Analysis Dashboard",
     path: "/internal-pages/trend-analysis-dashboard",
   },
+  { label: "Add Company", path: "/internal-pages/add-company" },
 ];
 
 const SubLinksMenu = ({ sublinks }: { sublinks: NavSubLink[] }) => {

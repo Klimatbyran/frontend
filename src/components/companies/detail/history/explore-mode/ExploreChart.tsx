@@ -12,16 +12,16 @@ import {
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { isMobile } from "react-device-detect";
-import { ChartTooltip } from "@/components/charts";
-import { ChartData } from "@/types/emissions";
-import { formatEmissionsAbsoluteCompact } from "@/utils/formatting/localization";
-import { generateApproximatedData } from "@/lib/calculations/trends/approximatedData";
 import {
+  ChartTooltip,
   getBaseYearReferenceLineProps,
   getCurrentYearReferenceLineProps,
   getXAxisProps,
   getYAxisProps,
 } from "@/components/charts";
+import { ChartData } from "@/types/emissions";
+import { formatEmissionsAbsoluteCompact } from "@/utils/formatting/localization";
+import { generateApproximatedData } from "@/lib/calculations/trends/approximatedData";
 import { CumulativeSummaryBoxes } from "./CumulativeSummaryBoxes";
 
 interface ExploreChartProps {
@@ -221,17 +221,6 @@ export function ExploreChart({
         d.year >= exploreData.baseYear &&
         d.year <= exploreData.lastReportedYear,
     );
-
-    console.log("Step 1/2 Green Segment Debug:", {
-      step,
-      baseYear: exploreData.baseYear,
-      lastReportedYear: exploreData.lastReportedYear,
-      step1GreenSegment: step1GreenSegment.map((d) => ({
-        year: d.year,
-        total: d.total,
-      })),
-      allDataYears: data.map((d) => d.year).sort((a, b) => a - b),
-    });
   }
   // For step 2, calculate the extended trend segment from last reported year to current year + 5
   let step2TrendSegment: { year: number; approximated: number | undefined }[] =
@@ -240,16 +229,6 @@ export function ExploreChart({
     const { endYearShort } = getCommonYears();
     const approximatedData = generateApproximatedDataForStep(endYearShort);
     if (approximatedData) {
-      console.log("Step 2 Debug:", {
-        lastReportedYear: exploreData.lastReportedYear,
-        endYearShort,
-        approximatedDataYears: approximatedData.map((d) => ({
-          year: d.year,
-          approximated: d.approximated,
-        })),
-        baseYear: exploreData.baseYear,
-      });
-
       // Include the last reported year to ensure continuity, then continue to endYear
       step2TrendSegment = approximatedData
         .filter(
@@ -273,20 +252,6 @@ export function ExploreChart({
         exploreData.lastReportedYear,
         lastReportedValue,
       );
-
-      console.log("Step 2 Trend Segment:", step2TrendSegment);
-      console.log("Step 2 Complete Debug:", {
-        step,
-        lastReportedYear: exploreData.lastReportedYear,
-        lastReportedValue,
-        endYearShort,
-        step2TrendSegment,
-        originalData: data.filter(
-          (d) =>
-            d.year >= exploreData.lastReportedYear - 1 &&
-            d.year <= exploreData.lastReportedYear + 1,
-        ),
-      });
     }
   }
 
@@ -330,16 +295,6 @@ export function ExploreChart({
     // Orange line: only values after lastReportedYear, from approximatedData
     const approximatedData = generateApproximatedDataForStep(endYearShort);
     if (approximatedData) {
-      console.log("Step 3 Debug:", {
-        lastReportedYear: exploreData.lastReportedYear,
-        endYearShort,
-        approximatedDataYears: approximatedData.map((d) => ({
-          year: d.year,
-          approximated: d.approximated,
-        })),
-        step3FullDomain,
-      });
-
       step3OrangeLine = step3FullDomain.map((year) => {
         const found = approximatedData.find((d) => d.year === year);
         return {
@@ -349,19 +304,6 @@ export function ExploreChart({
               ? (found?.approximated ?? undefined)
               : undefined,
         };
-      });
-
-      console.log("Step 3 Orange Line Debug:", {
-        step,
-        lastReportedYear: exploreData.lastReportedYear,
-        endYearShort,
-        step3OrangeLine: step3OrangeLine.filter(
-          (d) => d.approximated !== undefined,
-        ),
-        approximatedDataYears: approximatedData.map((d) => ({
-          year: d.year,
-          approximated: d.approximated,
-        })),
       });
 
       // Ensure continuity by adding the last reported year if it's missing
@@ -473,7 +415,7 @@ export function ExploreChart({
 
     // Build step 5 data array from 2025 to 2050
     step5AreaData = [];
-    let totalAreaDifference = 0;
+    let _totalAreaDifference = 0;
 
     if (approximatedData) {
       for (let year = parisStartYear; year <= endYear2050; year++) {
@@ -483,7 +425,7 @@ export function ExploreChart({
 
         if (typeof trendValue === "number" && typeof parisValue === "number") {
           const areaDiff = trendValue - parisValue;
-          totalAreaDifference += areaDiff;
+          _totalAreaDifference += areaDiff;
 
           step5AreaData.push({
             year,
@@ -605,18 +547,6 @@ export function ExploreChart({
                         new Date().getFullYear()),
                   )}
                 />
-                {/* Debug: Log what data is being shown */}
-                {console.log("Step 1 Debug:", {
-                  step,
-                  lastReportedYear: exploreData?.lastReportedYear,
-                  filteredData: data.filter(
-                    (d) =>
-                      d.year <=
-                      (exploreData?.lastReportedYear ||
-                        new Date().getFullYear()),
-                  ),
-                  step1GreenSegment,
-                })}
                 {/* Green segment with dots for base year to last reported year */}
                 {companyBaseYear && step1GreenSegment.length > 0 && (
                   <Line

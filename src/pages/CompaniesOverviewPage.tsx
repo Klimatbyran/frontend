@@ -18,7 +18,7 @@ import {
 } from "@/hooks/companies/useCompanyKPIs";
 import { DataPoint } from "@/types/rankings";
 
-export function CompaniesRankedPage() {
+export function CompaniesOverviewPage() {
   const { t } = useTranslation();
   const { companies, companiesLoading, companiesError } = useCompanies();
   const companyKPIs = useCompanyKPIs();
@@ -54,7 +54,7 @@ export function CompaniesRankedPage() {
     if (!companies) return [];
     const sectors = new Set<string>();
     companies.forEach((company) => {
-      const sectorCode = (company as any).industry?.industryGics?.sectorCode;
+      const sectorCode = company.industry?.industryGics?.sectorCode;
       if (sectorCode) {
         sectors.add(sectorCode);
       }
@@ -119,7 +119,7 @@ export function CompaniesRankedPage() {
     if (!companies || !selectedSector) return [];
 
     const filtered = companies.filter((company) => {
-      const sectorCode = (company as any).industry?.industryGics?.sectorCode;
+      const sectorCode = company.industry?.industryGics?.sectorCode;
       return sectorCode === selectedSector;
     });
 
@@ -152,9 +152,11 @@ export function CompaniesRankedPage() {
     return (
       <div className="text-center py-24">
         <h3 className="text-red-500 mb-4 text-xl">
-          {t("companiesRankedPage.errorTitle")}
+          {t("companiesOverviewPage.errorTitle")}
         </h3>
-        <p className="text-grey">{t("companiesRankedPage.errorDescription")}</p>
+        <p className="text-grey">
+          {t("companiesOverviewPage.errorDescription")}
+        </p>
       </div>
     );
   }
@@ -209,8 +211,8 @@ export function CompaniesRankedPage() {
   return (
     <>
       <PageHeader
-        title={t("companiesRankedPage.title")}
-        description={t("companiesRankedPage.description")}
+        title={t("companiesOverviewPage.title")}
+        description={t("companiesOverviewPage.description")}
         className="-ml-4"
       />
 
@@ -220,8 +222,8 @@ export function CompaniesRankedPage() {
           modes={["graph", "list"]}
           onChange={(mode) => setViewModeInURL(mode)}
           titles={{
-            graph: t("companiesRankedPage.viewToggle.showGraph", "Graph"),
-            list: t("companiesRankedPage.viewToggle.showList", "List"),
+            graph: t("companiesOverviewPage.viewToggle.showGraph", "Graph"),
+            list: t("companiesOverviewPage.viewToggle.showList", "List"),
           }}
           showTitles
           icons={{

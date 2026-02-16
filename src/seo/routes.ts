@@ -288,12 +288,12 @@ export function getSeoForRoute(
 
     // TODO: Add SEO configs for the following public routes:
     //
-    // Static/List Pages:
+    // Static/List Pages (route-level SEO in this file):
     // - /explore (explore page)
-    // - /companies/sectors (companies by sector page)
-    // - /companies/ranked (ranked companies list - staging)
-    // - /municipalities (municipalities ranked list)
-    // - /regions (regions ranked list - staging)
+    // - /companies/sectors (companies by sector page - CompaniesSectorsPage)
+    // - /companies/ranked (ranked companies list - staging, companiesOverviewPage)
+    // - /municipalities (municipalities ranked list - municipalitiesOverviewPage)
+    // - /regions (regions overview page - staging, regionalOverviewPage)
     // - /support (support page)
     // - /articles (articles/insights list page)
     // - /reports (reports list page)
@@ -303,8 +303,12 @@ export function getSeoForRoute(
     // - /products (products page)
     // - /products/database-download-2025 (download page)
     //
-    // Dynamic Routes (need parsing in parseRoute function first):
-    // - /regions/:id (region detail page - staging, needs params: id, name)
+    // Dynamic Entity Routes (need entitySeo.ts functions + route parsing):
+    // - /regions/:id (region detail page - staging, needs generateRegionSeoMeta() in entitySeo.ts)
+    //   - Similar to municipalities, should use entitySeo.ts for data-driven SEO
+    //   - See RegionDetailPage.tsx for data structure
+    //
+    // Dynamic Content Routes (route-level SEO with params, need parsing in parseRoute function first):
     // - /reports/:reportId (individual report page, needs params: reportId, title, description)
     // - /insights/:id (blog/article detail page, needs params: id, title, description)
     // - /learn-more/:id (learn more article detail page, needs params: id, title, description)

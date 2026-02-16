@@ -15,10 +15,12 @@ import {
 import { FilterGroup } from "@/components/explore/FilterPopover";
 import { regions } from "@/lib/constants/regions";
 import setOrDeleteSearchParam from "@/utils/data/setOrDeleteSearchParam";
+import { useSortOptions } from "./useMunicipalitiesSorting";
 
 export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { t } = useTranslation();
+  const sortOptions = useSortOptions();
 
   const searchQuery = searchParams.get("searchQuery") || "";
   const meetsParisFilter = isMeetsParisFilter(
@@ -26,14 +28,19 @@ export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
   )
     ? (searchParams.get("meetsParisFilter") as MeetsParisFilter)
     : "all";
-  const selectedRegion = searchParams.get("selectedRegion") || "all";
+  const selectedRegions = (searchParams
+    .get("selectedRegions")
+    ?.split(",")
+    .filter(
+      (s) => Object.keys(regions).some((region) => region === s) || s == "all",
+    ) ?? ["all"]) as string[];
   const sortBy = isMunicipalitySortBy(searchParams.get("sortBy") ?? "")
     ? (searchParams.get("sortBy") as MunicipalitySortBy)
-    : "emissions";
+    : "total_emissions";
   const sortDirection = (
     isSortDirection(searchParams.get("sortDirection") ?? "")
       ? searchParams.get("sortDirection")
-      : "desc"
+      : (sortOptions.find((o) => o.value == sortBy)?.defaultDirection ?? "desc")
   ) as SortDirection;
 
   const setSearchQuery = useCallback(
@@ -54,9 +61,13 @@ export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
       ),
     [],
   );
-  const setSelectedRegion = useCallback(
-    (selectedRegion: string) =>
-      setOrDeleteSearchParam(setSearchParams, selectedRegion, "selectedRegion"),
+  const setSelectedRegions = useCallback(
+    (selectedRegions: string[]) =>
+      setOrDeleteSearchParam(
+        setSearchParams,
+        selectedRegions.length > 0 ? selectedRegions.join(",") : null,
+        "selectedRegions",
+      ),
     [],
   );
   const setSortBy = useCallback(
@@ -73,7 +84,7 @@ export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
   const filteredMunicipalities = useMemo(
     () =>
       filterAndSortMunicipalities(municipalities, {
-        selectedRegion,
+        selectedRegions,
         meetsParisFilter,
         searchQuery,
         sortBy,
@@ -81,7 +92,7 @@ export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
       }),
     [
       municipalities,
-      selectedRegion,
+      selectedRegions,
       meetsParisFilter,
       searchQuery,
       sortBy,
@@ -99,9 +110,19 @@ export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
         },
         ...Object.keys(regions).map((r) => ({ value: r, label: r })),
       ],
-      selectedValues: [selectedRegion],
-      onSelect: setSelectedRegion,
-      selectMultiple: false,
+      selectedValues: selectedRegions,
+      onSelect: (value: string) => {
+        if (value === "all") {
+          setSelectedRegions(["all"]);
+        } else if (selectedRegions.includes("all")) {
+          setSelectedRegions([value]);
+        } else if (selectedRegions.includes(value)) {
+          setSelectedRegions(selectedRegions.filter((s) => s !== value));
+        } else {
+          setSelectedRegions([...selectedRegions, value]);
+        }
+      },
+      selectMultiple: true,
     },
     {
       heading: t("explorePage.municipalities.sortingOptions.meetsParis"),
@@ -125,14 +146,15 @@ export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
 
   const activeFilters = useMemo(() => {
     return [
-      ...(selectedRegion !== "all"
-        ? [
-            {
-              type: "filter" as const,
-              label: selectedRegion,
-              onRemove: () => setSelectedRegion("all"),
-            },
-          ]
+      ...(!selectedRegions.includes("all")
+        ? selectedRegions.map((selectedRegion) => ({
+            type: "filter" as const,
+            label: selectedRegion,
+            onRemove: () =>
+              setSelectedRegions(
+                selectedRegions.filter((s) => s !== selectedRegion),
+              ),
+          }))
         : []),
       ...(meetsParisFilter !== "all"
         ? [
@@ -147,18 +169,18 @@ export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
         : []),
     ];
   }, [
-    selectedRegion,
+    selectedRegions,
     meetsParisFilter,
     t,
-    setSelectedRegion,
+    setSelectedRegions,
     setMeetsParisFilter,
   ]);
 
   return {
     searchQuery,
     setSearchQuery,
-    selectedRegion,
-    setSelectedRegion,
+    selectedRegions,
+    setSelectedRegions,
     meetsParisFilter,
     setMeetsParisFilter,
     sortBy,
@@ -174,7 +196,7 @@ export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
 const filterAndSortMunicipalities = (
   municipalities: Municipality[],
   filters: {
-    selectedRegion: string;
+    selectedRegions: string[];
     meetsParisFilter: MeetsParisFilter;
     searchQuery: string;
     sortBy: MunicipalitySortBy;
@@ -182,7 +204,7 @@ const filterAndSortMunicipalities = (
   },
 ): Municipality[] => {
   const {
-    selectedRegion,
+    selectedRegions,
     meetsParisFilter,
     searchQuery,
     sortBy,
@@ -191,7 +213,10 @@ const filterAndSortMunicipalities = (
   return municipalities
     .filter((municipality) => {
       // Filter by region
-      if (selectedRegion !== "all" && municipality.region !== selectedRegion) {
+      if (
+        !selectedRegions.includes("all") &&
+        !selectedRegions.includes(municipality.region)
+      ) {
         return false;
       }
 
@@ -236,9 +261,9 @@ const sortMunicipalities = (
       return compareMeetsParis(a, b, directionMultiplier);
     case "name":
       return compareNames(a, b, directionMultiplier);
-    case "emissions":
+    case "total_emissions":
       return compareEmissions(a, b, directionMultiplier);
-    case "emissionsChangeRate":
+    case "emissions_reduction":
       return compareEmissionsChangeRate(a, b, directionMultiplier);
     default:
       return 0;
