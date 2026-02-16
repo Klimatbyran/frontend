@@ -49,7 +49,7 @@ const ScopeCard: React.FC<ScopeCardProps> = ({
         .closest("svg")
         ?.parentElement?.closest('button[aria-haspopup="dialog"]')
     ) {
-      setSelectedScope(scope);
+      return;
     }
     setSelectedScope(scope);
   };
