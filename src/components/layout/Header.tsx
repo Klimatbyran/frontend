@@ -35,6 +35,12 @@ interface NavLink {
   onlyShowOnStaging?: boolean;
 }
 
+/**
+ * To hide a nav item until it's ready for prod (only show on localhost/stage):
+ * - Add onlyShowOnStaging: true to the link or sublink.
+ * - The item will be filtered out when stagingFeatureFlagEnabled() is false (production).
+ * - When ready for prod, remove onlyShowOnStaging and ensure the route is not wrapped in StagingProtectedRoute (see routes.tsx).
+ */
 const NAV_LINKS: NavLink[] = [
   {
     label: "header.data",
@@ -48,7 +54,6 @@ const NAV_LINKS: NavLink[] = [
       {
         label: "header.companies",
         path: `/companies`,
-        onlyShowOnStaging: true,
       },
       {
         label: "header.sectors",
@@ -57,7 +62,6 @@ const NAV_LINKS: NavLink[] = [
       {
         label: "header.regions",
         path: `/regions`,
-        onlyShowOnStaging: true,
       },
       {
         label: "header.municipalities",
