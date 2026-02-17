@@ -1802,6 +1802,7 @@
     "searchCategoryBlogPosts": "Blog Posts",
     "searchCategoryPage": "Page",
     "placeholder": "Example: Alfa Laval, Stockholm, Paris Agreement",
+    "heroPlaceholder": "Example: Alfa Laval, Stockholm",
     "headerButtonTitle": "Search",
     "searchDialog": {
       "title": "Search",

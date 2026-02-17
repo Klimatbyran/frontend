@@ -1855,6 +1855,7 @@
     "searchCategoryBlogPosts": "Blogginlägg",
     "searchCategoryPage": "Sida",
     "placeholder": "Exempel: Alfa Laval, Göteborg, Parisavtalet",
+    "heroPlaceholder": "Exempel: Alfa Laval, Göteborg",
     "headerButtonTitle": "Sök",
     "searchDialog": {
       "title": "Sök",
