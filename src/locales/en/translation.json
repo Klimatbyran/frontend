@@ -1662,6 +1662,29 @@
       "message": "Your session has expired. Please log in again to continue editing.",
       "cancel": "Cancel",
       "login": "Log in"
+    },
+    "deleteCompany": {
+      "dangerZone": "Danger zone",
+      "dangerZoneDescription": "Permanently remove this company and all its data. This cannot be undone.",
+      "title": "Delete company",
+      "description": "This action cannot be undone. The following company and all its data will be permanently removed.",
+      "wikidataId": "Wikidata ID",
+      "name": "Name",
+      "dataToDelete": "Summary of data that will be deleted:",
+      "summary": {
+        "reportingPeriods": "{{count}} reporting period(s)",
+        "industry": "Industry: {{name}}",
+        "baseYear": "Base year: {{year}}",
+        "goals": "{{count}} goal(s)",
+        "initiatives": "{{count}} initiative(s)",
+        "noData": "Company details only (no reporting periods, goals, or initiatives)"
+      },
+      "cancel": "Cancel",
+      "confirm": "Delete company",
+      "deleting": "Deleting…",
+      "button": "Delete company",
+      "success": "Company has been deleted.",
+      "error": "Failed to delete company. Please try again."
     }
   },
   "addCompanyPage": {

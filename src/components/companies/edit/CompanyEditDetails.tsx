@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Undo2 } from "lucide-react";
+import { Trash2, Undo2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { isVerified } from "@/utils/business/verification";
 import type {
@@ -34,9 +34,11 @@ function getDescriptionByLang(
 export function CompanyEditDetails({
   company,
   onSave,
+  onDeleteClick,
 }: {
   company: CompanyDetailsType;
   onSave?: () => void;
+  onDeleteClick?: () => void;
 }) {
   const { t } = useTranslation();
   const { showToast } = useToast();
@@ -457,6 +459,26 @@ export function CompanyEditDetails({
           </button>
         </div>
       </div>
+
+      {onDeleteClick && (
+        <div className="mt-16 pt-8 border-t border-black-1">
+          <h3 className="text-lg font-semibold text-red-400 mb-2">
+            {t("companyEditPage.deleteCompany.dangerZone")}
+          </h3>
+          <p className="text-sm text-muted-foreground mb-4">
+            {t("companyEditPage.deleteCompany.dangerZoneDescription")}
+          </p>
+          <button
+            type="button"
+            onClick={onDeleteClick}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-red-600/20 text-red-400 hover:bg-red-600/30 hover:text-red-300 transition-colors text-sm font-medium"
+            aria-label={t("companyEditPage.deleteCompany.button")}
+          >
+            <Trash2 className="w-4 h-4" />
+            {t("companyEditPage.deleteCompany.button")}
+          </button>
+        </div>
+      )}
 
       {(error || detailsMutationError || industryMutationError) && (
         <div className="text-red-500 mt-4">

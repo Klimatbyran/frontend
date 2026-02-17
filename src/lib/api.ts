@@ -79,6 +79,13 @@ export async function updateCompanyDetails(
   return data;
 }
 
+export async function deleteCompany(wikidataId: string) {
+  const { error } = await client.DELETE("/companies/{wikidataId}", {
+    params: { path: { wikidataId } },
+  });
+  if (error) throw error;
+}
+
 // Municipalities API
 export async function getMunicipalities() {
   try {
