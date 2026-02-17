@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useCompanyDetails } from "@/hooks/companies/useCompanyDetails";
@@ -11,7 +11,10 @@ import { DraftReportingPeriod, EditableReportingPeriod } from "@/types/company";
 import { yearFromIsoDate } from "@/utils/date";
 import { AuthExpiredModal } from "@/components/companies/edit/AuthExpiredModal";
 import { AddReportPeriodModal } from "@/components/companies/edit/AddReportPeriodModal";
+import { DeleteCompanyModal } from "@/components/companies/edit/DeleteCompanyModal";
 import { useAuth } from "@/contexts/AuthContext";
+import { deleteCompany } from "@/lib/api";
+import { useToast } from "@/contexts/ToastContext";
 
 const isAuthError = (error: Error) => {
   if ("status" in error && typeof error.status === "number") {
@@ -34,8 +37,12 @@ export function CompanyEditPage() {
   const [newPeriodYear, setNewPeriodYear] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [activeTab, setActiveTab] = useState("company-details");
   const { login } = useAuth();
+  const navigate = useNavigate();
+  const { showToast } = useToast();
 
   const effectivePeriods = useMemo(() => {
     if (!company) return [];
@@ -82,6 +89,20 @@ export function CompanyEditPage() {
 
   const clearDraftPeriodsAfterSave = () => {
     setDraftPeriods([]);
+  };
+
+  const handleDeleteCompany = async () => {
+    if (!company) return;
+    setIsDeleting(true);
+    try {
+      await deleteCompany(company.wikidataId);
+      showToast(t("companyEditPage.deleteCompany.success"), "success");
+      navigate("../..", { replace: true });
+    } catch {
+      showToast(t("companyEditPage.deleteCompany.error"), "error");
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   if (loading || isUpdating) {
@@ -147,7 +168,11 @@ export function CompanyEditPage() {
             </TabsTrigger>
           </TabsList>
           <TabsContent value="company-details">
-            <CompanyEditDetails company={company} onSave={refetch} />
+            <CompanyEditDetails
+              company={company}
+              onSave={refetch}
+              onDeleteClick={() => setShowDeleteModal(true)}
+            />
           </TabsContent>
           <TabsContent value="emissions-data">
             <CompanyEditEmissionsDataWithGuard
@@ -180,6 +205,14 @@ export function CompanyEditPage() {
           setShowAddPeriodModal(false);
           setNewPeriodYear("");
         }}
+      />
+
+      <DeleteCompanyModal
+        isOpen={showDeleteModal}
+        company={company}
+        isDeleting={isDeleting}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={handleDeleteCompany}
       />
     </div>
   );
