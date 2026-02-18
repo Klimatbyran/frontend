@@ -1802,7 +1802,7 @@
     "searchCategoryBlogPosts": "Blog Posts",
     "searchCategoryPage": "Page",
     "placeholder": "Example: Alfa Laval, Stockholm, Paris Agreement",
-    "headerButtonTitle": "Search",
+    "headerButtonTitle": "Search for data",
     "searchDialog": {
       "title": "Search",
       "description": "Search for companies, municipalities or blog posts",
