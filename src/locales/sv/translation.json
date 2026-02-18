@@ -10,6 +10,7 @@
     "companies": "Företag",
     "sectors": "Branscher",
     "explore": "Utforska",
+    "europe": "Europa",
     "municipalities": "Kommuner",
     "regions": "Län",
     "about": "Om",
@@ -1475,6 +1476,39 @@
           "label": "Parisavtalet",
           "description": "Utsläppstrend jämfört med Parisavtalet",
           "detailedDescription": "Vilka län är på väg att klara Parisavtalet?",
+          "source": "Nationella emissionsdatabasen",
+          "booleanLabels": {
+            "true": "Klarar Parisavtalet",
+            "false": "Missar Parisavtalet"
+          }
+        }
+      }
+    }
+  },
+  "europeanRankedPage": {
+    "title": "Europeisk översikt",
+    "description": "Översikt över utsläpp och omställning på europeisk nivå"
+  },
+  "europe": {
+    "list": {
+      "dataSelector": {
+        "label": "Välj datapunkt",
+        "tooltips": {
+          "higherBetter": "Högre värden är bättre",
+          "lowerBetter": "Lägre värden är bättre"
+        }
+      },
+      "kpis": {
+        "historicalEmissionChangePercent": {
+          "label": "Utsläppen",
+          "description": "Historisk förändring av utsläpp",
+          "detailedDescription": "Genomsnittlig årlig procentuell förändring av växthusgasutsläppen i europeiska länder sedan Parisavtalet år 2015.",
+          "source": "Nationella emissionsdatabasen"
+        },
+        "meetsParis": {
+          "label": "Parisavtalet",
+          "description": "Utsläppstrend jämfört med Parisavtalet",
+          "detailedDescription": "Vilka europeiska länder är på väg att klara Parisavtalet?",
           "source": "Nationella emissionsdatabasen",
           "booleanLabels": {
             "true": "Klarar Parisavtalet",

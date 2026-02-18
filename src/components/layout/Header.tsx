@@ -64,6 +64,11 @@ const NAV_LINKS: NavLink[] = [
         path: `/regions`,
       },
       {
+        label: "header.europe",
+        path: `/europe`,
+        onlyShowOnStaging: true,
+      },
+      {
         label: "header.municipalities",
         path: `/municipalities`,
       },

@@ -41,6 +41,7 @@ import { RegionalOverviewPage } from "./pages/RegionalOverviewPage";
 import { RegionDetailPage } from "./pages/RegionDetailPage";
 import { CompaniesOverviewPage } from "./pages/CompaniesOverviewPage";
 import { ExplorePage } from "./pages/ExplorePage";
+import { EuropeanRankedPage } from "./pages/EuropeanRankedPage";
 
 void StagingProtectedRoute; // referenced so dead-code scripts keep the component; eslint/ts unused-import satisfied
 
@@ -125,6 +126,9 @@ export function AppRoutes() {
       {/* Strict regions routes */}
       <Route path={`${basePath}/regions`} element={<RegionalOverviewPage />} />
       <Route path={`${basePath}/regions/:id`} element={<RegionDetailPage />} />
+
+      {/* Strict europe routes */}
+      <Route path={`${basePath}/europe`} element={<EuropeanRankedPage />} />
 
       {/* Strict municipalities routes */}
       <Route
