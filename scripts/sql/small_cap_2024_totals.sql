@@ -1,5 +1,8 @@
--- Companies that do NOT have "mid-cap" or "large-cap" in the tags array,
--- with scope totals and scope 3 category values per year (one row per company per year).
+-- Small cap companies (no mid-cap or large-cap in tags), 2024 only.
+-- Scope 2 total: market-based, then location-based, then unknown.
+-- Scope 1+2: use separate S1+S2 when present; else fallback to Scope1And2 total.
+-- All fields from the by-year query plus: scope 1+2+stated scope 3 sum,
+-- scope 1+2+summed scope 3 categories, stated total, and largest of those three.
 WITH Scope3_pivot AS (
   SELECT
     "scope3Id",
@@ -29,6 +32,8 @@ emissions_with_scopes AS (
     s1."total" AS s1_total,
     s2."mb" AS s2_mb,
     s2."lb" AS s2_lb,
+    s2."unknown" AS s2_unknown,
+    s12."total" AS scope1and2_total,
     (SELECT se."total" FROM "StatedTotalEmissions" se WHERE s3."id" = se."scope3Id") AS scope3_stated_total,
     (SELECT ste."total" FROM "StatedTotalEmissions" ste WHERE ste."emissionsId" = e."id" AND ste."scope3Id" IS NULL LIMIT 1) AS stated_total_emissions,
     sp.Scope3_cat_1, sp.Scope3_cat_2, sp.Scope3_cat_3, sp.Scope3_cat_4,
@@ -38,6 +43,7 @@ emissions_with_scopes AS (
   FROM "Emissions" e
   LEFT JOIN "Scope1" s1 ON e."id" = s1."emissionsId"
   LEFT JOIN "Scope2" s2 ON e."id" = s2."emissionsId"
+  LEFT JOIN "Scope1And2" s12 ON e."id" = s12."emissionsId"
   LEFT JOIN "Scope3" s3 ON e."id" = s3."emissionsId"
   LEFT JOIN Scope3_pivot sp ON s3."id" = sp."scope3Id"
 ),
@@ -48,6 +54,8 @@ reporting_with_company AS (
     es.s1_total,
     es.s2_mb,
     es.s2_lb,
+    es.s2_unknown,
+    es.scope1and2_total,
     es.scope3_stated_total,
     es.stated_total_emissions,
     es.Scope3_cat_1, es.Scope3_cat_2, es.Scope3_cat_3, es.Scope3_cat_4,
@@ -62,7 +70,7 @@ SELECT
   c.tags,
   rwc."year",
   rwc.s1_total AS scope_1_total,
-  COALESCE(NULLIF(rwc.s2_mb, 0), rwc.s2_lb) AS scope_2_total,
+  COALESCE(NULLIF(rwc.s2_mb, 0), rwc.s2_lb, rwc.s2_unknown) AS scope_2_total,
   rwc.scope3_stated_total AS scope_3_stated_total,
   rwc.Scope3_cat_1,
   rwc.Scope3_cat_2,
@@ -80,8 +88,52 @@ SELECT
   rwc.Scope3_cat_14,
   rwc.Scope3_cat_15,
   rwc.Scope3_cat_16,
-  rwc.stated_total_emissions
+  rwc.stated_total_emissions,
+  (
+    CASE
+      WHEN (rwc.s1_total IS NOT NULL OR rwc.s2_mb IS NOT NULL OR rwc.s2_lb IS NOT NULL OR rwc.s2_unknown IS NOT NULL)
+      THEN COALESCE(rwc.s1_total, 0) + COALESCE(NULLIF(rwc.s2_mb, 0), rwc.s2_lb, rwc.s2_unknown, 0)
+      ELSE COALESCE(rwc.scope1and2_total, 0)
+    END
+    + COALESCE(rwc.scope3_stated_total, 0)
+  ) AS scope_1_2_stated_scope3,
+  (
+    CASE
+      WHEN (rwc.s1_total IS NOT NULL OR rwc.s2_mb IS NOT NULL OR rwc.s2_lb IS NOT NULL OR rwc.s2_unknown IS NOT NULL)
+      THEN COALESCE(rwc.s1_total, 0) + COALESCE(NULLIF(rwc.s2_mb, 0), rwc.s2_lb, rwc.s2_unknown, 0)
+      ELSE COALESCE(rwc.scope1and2_total, 0)
+    END
+    + COALESCE(rwc.Scope3_cat_1, 0) + COALESCE(rwc.Scope3_cat_2, 0) + COALESCE(rwc.Scope3_cat_3, 0) + COALESCE(rwc.Scope3_cat_4, 0)
+    + COALESCE(rwc.Scope3_cat_5, 0) + COALESCE(rwc.Scope3_cat_6, 0) + COALESCE(rwc.Scope3_cat_7, 0) + COALESCE(rwc.Scope3_cat_8, 0)
+    + COALESCE(rwc.Scope3_cat_9, 0) + COALESCE(rwc.Scope3_cat_10, 0) + COALESCE(rwc.Scope3_cat_11, 0) + COALESCE(rwc.Scope3_cat_12, 0)
+    + COALESCE(rwc.Scope3_cat_13, 0) + COALESCE(rwc.Scope3_cat_14, 0) + COALESCE(rwc.Scope3_cat_15, 0) + COALESCE(rwc.Scope3_cat_16, 0)
+  ) AS scope_1_2_summed_scope3_cat,
+  rwc.stated_total_emissions AS stated_total,
+  GREATEST(
+    (
+      CASE
+        WHEN (rwc.s1_total IS NOT NULL OR rwc.s2_mb IS NOT NULL OR rwc.s2_lb IS NOT NULL OR rwc.s2_unknown IS NOT NULL)
+        THEN COALESCE(rwc.s1_total, 0) + COALESCE(NULLIF(rwc.s2_mb, 0), rwc.s2_lb, rwc.s2_unknown, 0)
+        ELSE COALESCE(rwc.scope1and2_total, 0)
+      END
+      + COALESCE(rwc.scope3_stated_total, 0)
+    ),
+    (
+      CASE
+        WHEN (rwc.s1_total IS NOT NULL OR rwc.s2_mb IS NOT NULL OR rwc.s2_lb IS NOT NULL OR rwc.s2_unknown IS NOT NULL)
+        THEN COALESCE(rwc.s1_total, 0) + COALESCE(NULLIF(rwc.s2_mb, 0), rwc.s2_lb, rwc.s2_unknown, 0)
+        ELSE COALESCE(rwc.scope1and2_total, 0)
+      END
+      + COALESCE(rwc.Scope3_cat_1, 0) + COALESCE(rwc.Scope3_cat_2, 0) + COALESCE(rwc.Scope3_cat_3, 0) + COALESCE(rwc.Scope3_cat_4, 0)
+      + COALESCE(rwc.Scope3_cat_5, 0) + COALESCE(rwc.Scope3_cat_6, 0) + COALESCE(rwc.Scope3_cat_7, 0) + COALESCE(rwc.Scope3_cat_8, 0)
+      + COALESCE(rwc.Scope3_cat_9, 0) + COALESCE(rwc.Scope3_cat_10, 0) + COALESCE(rwc.Scope3_cat_11, 0) + COALESCE(rwc.Scope3_cat_12, 0)
+      + COALESCE(rwc.Scope3_cat_13, 0) + COALESCE(rwc.Scope3_cat_14, 0) + COALESCE(rwc.Scope3_cat_15, 0) + COALESCE(rwc.Scope3_cat_16, 0)
+    ),
+    COALESCE(rwc.stated_total_emissions, 0)
+  ) AS largest_of_three
 FROM reporting_with_company rwc
 JOIN "Company" c ON rwc."companyId" = c."wikidataId"
 WHERE (c.tags IS NULL OR (NOT ('mid-cap' = ANY(c.tags)) AND NOT ('large-cap' = ANY(c.tags))))
-ORDER BY c."name", rwc."year";
+  AND rwc."year" = '2024'
+  AND c."name" != 'Folksam'
+ORDER BY c."name";
