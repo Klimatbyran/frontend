@@ -96,7 +96,7 @@ const RelatableNumbers = ({
 
   return (
     <SectionWithHelp
-      helpItems={["relatableNumbers", "forestFires", "citizens"]}
+      helpItems={["relatableNumbers", "degsWarming", "forestFires", "citizens"]}
     >
       <div className="flex items-center gap-2">
         <Text variant={"h3"}>{t("relatableNumbers.title")}</Text>
