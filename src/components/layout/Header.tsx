@@ -337,9 +337,9 @@ export function Header() {
             aria-label={menuOpen ? "Close menu" : "Open menu"}
           >
             {menuOpen ? (
-              <X className="w-8 h-8" />
+              <X className="w-6 h-6" />
             ) : (
-              <Menu className="w-8 h-8" />
+              <Menu className="w-6 h-6" />
             )}
           </button>
         </div>
