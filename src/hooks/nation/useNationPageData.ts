@@ -11,7 +11,7 @@ import {
   getCurrentYearFromAvailable,
 } from "@/utils/detail/sectorYearUtils";
 import { useRegions } from "@/hooks/useRegions";
-import { transformNationEmissionsData } from "@/utils/detail/nationEmissionsUtils";
+import { transformNationEmissionsData } from "@/utils/data/nationTransforms";
 
 export function useNationPageData() {
   const { nation, loading, error } = useNationDetails();
