@@ -67,10 +67,10 @@ const GlobalSearch = () => {
         <Input
           id="landingInput"
           type="text"
-          placeholder={t("globalSearch.placeholder")}
+          placeholder={t("globalSearch.heroPlaceholder")}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="bg-black-1 placeholder:text-center  h-10 rounded-md px-2 focus:outline-white font-medium focus:text-left focus:ring-1 focus:ring-blue-2 relative w-full"
+          className="bg-black-1 placeholder:text-center h-10 rounded-md px-2 focus:outline-white font-medium focus:text-left focus:ring-1 focus:ring-blue-2 relative w-full"
         />
         {searchQuery ? (
           <X

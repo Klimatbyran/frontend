@@ -1351,7 +1351,7 @@
       "noData": "No Data",
       "turnover": "Turnover",
       "employees": "Employees",
-      "notReported": "Not Reported",
+      "notReported": "Not Available",
       "readAnnualReport": "Read Annual Report",
       "readMore": "Read More",
       "readLess": "Read Less",
@@ -1810,6 +1810,7 @@
     "searchCategoryBlogPosts": "Blog Posts",
     "searchCategoryPage": "Page",
     "placeholder": "Example: Alfa Laval, Stockholm, Paris Agreement",
+    "heroPlaceholder": "Example: Alfa Laval, Stockholm",
     "headerButtonTitle": "Search",
     "searchDialog": {
       "title": "Search",

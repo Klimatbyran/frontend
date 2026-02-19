@@ -357,7 +357,7 @@
     "relatedArticles": "Relaterade artiklar"
   },
   "companiesOverviewPage": {
-    "title": "Färetagsöversikt",
+    "title": "Företagsöversikt",
     "description": "Jämför företag baserat på viktiga klimatindikatorer",
     "errorTitle": "Kunde inte hämta företagsinformation",
     "errorDescription": "Försök igen senare",
@@ -373,7 +373,7 @@
       "noVisualizationAvailable": "Ingen visualisering tillgänglig för denna KPI",
       "noDataAvailable": "Ingen data tillgänglig",
       "emissionsChange": {
-        "title": "Emissionsförändring från basår",
+        "title": "Utsläppsförändring från basår",
         "unknown": "Okänt"
       },
       "meetsParis": {
@@ -382,7 +382,7 @@
           "aboveBudget": "Över budget"
         },
         "budgetThreshold": "Budgettröskel (0{{unit}})",
-        "description": "Tonn över eller under varje företags kolbudget. Vi uppskattar framtida utsläpp med en LAD-trendlinje och jämför kumulativa utsläpp 2025–2050 med en Carbon Law-väg (11,7% årlig minskning).",
+        "description": "Ton över eller under varje företags kolbudget. Vi uppskattar framtida utsläpp med en LAD-trendlinje och jämför kumulativa utsläpp 2025–2050 med en Carbon Law-väg (11,7% årlig minskning).",
         "learnMore": "Läs mer",
         "tooltip": {
           "underBudget": "under kolbudget",
@@ -1403,7 +1403,7 @@
       "noData": "Ingen data",
       "turnover": "Omsättning",
       "employees": "Anställda",
-      "notReported": "Ej rapporterat",
+      "notReported": "Ej tillgänglig",
       "readAnnualReport": "Läs årsredovisning",
       "readMore": "Läs mer",
       "readLess": "Läs mindre",
@@ -1862,6 +1862,7 @@
     "searchCategoryBlogPosts": "Blogginlägg",
     "searchCategoryPage": "Sida",
     "placeholder": "Exempel: Alfa Laval, Göteborg, Parisavtalet",
+    "heroPlaceholder": "Exempel: Alfa Laval, Göteborg",
     "headerButtonTitle": "Sök",
     "searchDialog": {
       "title": "Sök",
