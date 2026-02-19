@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { CardGrid } from "@/components/layout/CardGrid";
 import { ListCard } from "@/components/layout/ListCard";
+import type { ListCardProps } from "@/components/layout/ListCard";
 import type { RankedCompany } from "@/types/company";
 import ListFilter from "@/components/explore/ListFilter";
 import { useCompanyFilters } from "@/hooks/companies/useCompanyFilters";
@@ -19,7 +20,7 @@ export function CompanyList({ companies }: CompanyListProps) {
   const sortOptions = useSortOptions();
 
   // Transform company data for ListCard components
-  const transformedCompanies = useTransformCompanyListCard({
+  const transformedCompanies: ListCardProps[] = useTransformCompanyListCard({
     filteredCompanies,
   });
 

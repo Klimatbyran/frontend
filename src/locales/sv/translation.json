@@ -3,6 +3,7 @@
   "no": "Nej",
   "noData": "Ingen data tillgänglig",
   "unknown": "Okänt",
+  "na": "Ej Tillämpligt",
   "all": "Alla",
   "emissionsUnit": "tCO₂e",
   "header": {
@@ -1270,13 +1271,18 @@
       "emissionsChangeRate": "Förändringstakt",
       "emissionsChangeRateInfo": "Förändringstakt för utsläpp jämfört med föregående rapporteringsperiod.",
       "emissionsChangeRateInfoExtended": "Det här värdet är ovanligt högt på grund av inkonsekvent rapportering mellan de två senaste perioderna, vilket gör att procentförändringen inte speglar den faktiska utvecklingen.",
-      "meetsParis": "Är {{name}} på väg att klara Parisavtalet?",
+      "meetsParis": "Är på väg att uppfylla Parisavtalet?",
       "turnover": "Omsättning",
       "turnoverAmount": "mdr",
       "employees": "Anställda",
       "companyReport": "Hållbarhetsrapport",
       "missingReport": "Saknar report",
-      "reportYear": "Rapporterat från {{year}}"
+      "reportYear": "Rapporterat från {{year}}",
+      "largestEmissionSource": "Största utsläppskälla",
+      "notEnoughData": "För lite data för att avgöra",
+      "reportingSince": "Rapporterat sedan",
+      "scope1": "Scope 1",
+      "scope2": "Scope 2"
     },
     "dataView": {
       "overview": "Översikt",
@@ -1487,7 +1493,7 @@
   "municipalities": {
     "name": "Namn",
     "card": {
-      "meetsParis": "Är {{name}} på väg att klara Parisavtalet?",
+      "meetsParis": "Är på väg att klara Parisavtalet?",
       "yes": "Ja",
       "no": "Nej",
       "emissionRanking": "UTSLÄPPSRANKING",
@@ -1496,6 +1502,7 @@
       "changeRate": "Förändringstakt",
       "changeRateInfo": "Förändringstakt för utsläppen sedan Parisavtalet tecknades 2015.",
       "climatePlan": "Klimatplan",
+      "climatePlanAdopted": "Klimatplan antagen",
       "noPlan": "Saknar plan",
       "adopted": "Antagen {{year}}"
     },
