@@ -186,7 +186,7 @@ export function ListCard({
               </div>
               <div
                 className={cn(
-                  "text-xl font-light line-clamp-2 h-[48px]",
+                  "text-xl font-light line-clamp-2 h-[55px]",
                   climatePlanAdoptedColor,
                 )}
               >
