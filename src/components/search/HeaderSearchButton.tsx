@@ -60,8 +60,8 @@ export const HeaderSearchButton = ({
           className,
         )}
       >
-        <SearchIcon className="h-4 w-4 mx-1" />
-        <span className="mr-2 text-sm text-grey">
+        <SearchIcon className="h-4 w-4" />
+        <span className="text-sm text-grey">
           {t("globalSearch.headerButtonTitle", "Search")}
         </span>
       </button>

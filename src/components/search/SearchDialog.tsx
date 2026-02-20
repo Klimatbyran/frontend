@@ -107,7 +107,7 @@ export function SearchDialog({
                 </p>
               </CommandEmpty>
               <CommandList
-                className="pt-4 transition-all duration-200 ease-in-out min-h-32"
+                className="pt-4 transition-all duration-200 ease-in-out min-h-60"
                 ref={commandListRef}
                 style={{
                   maxHeight:

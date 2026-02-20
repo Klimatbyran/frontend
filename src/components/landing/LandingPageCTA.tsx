@@ -1,7 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { BarChart3, Building2, LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import GlobalSearch from "@/components/ui/globalsearch";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { LandingSection } from "./LandingSection";
 
@@ -78,11 +77,6 @@ export function LandingPageCTA() {
           {t("landingPage.ctaSection.or")}
         </span>
         <div className="flex-1 h-px bg-grey opacity-30" aria-hidden="true" />
-      </div>
-
-      {/* Search Bar */}
-      <div className="flex justify-center">
-        <GlobalSearch />
       </div>
     </LandingSection>
   );
