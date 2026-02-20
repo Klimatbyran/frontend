@@ -11,6 +11,7 @@
     "companies": "Företag",
     "sectors": "Branscher",
     "explore": "Utforska",
+    "exploreRegions": "Utforska län",
     "municipalities": "Kommuner",
     "nation": "Sverige",
     "regions": "Län",
@@ -1457,6 +1458,10 @@
     }
   },
   "regions": {
+    "card": {
+      "meetsParis": "Klarar Parisavtalet",
+      "coatOfArmsAlt": "Vapen för {{name}}"
+    },
     "detailPage": {
       "municipalities": "Kommuner"
     },
@@ -1954,6 +1959,24 @@
         "name": "Namn",
         "emissions": "Totala utsläpp",
         "emissionsChangeRate": "Utsläppsförändring (%)"
+      }
+    },
+    "regions": {
+      "regions": "Län",
+      "searchPlaceholder": "Sök län (separera med komma)",
+      "noRegionsFound": "Inga län hittades",
+      "tryDifferentCriteria": "Försök med andra sökkriterier.",
+      "errorTitle": "Det gick inte att hämta länsinformation",
+      "errorDescription": "Försök igen senare",
+      "municipalityCount": "{{count}} kommuner",
+      "municipalitiesLabel": "Kommuner",
+      "changeRateLabel": "Utsläppsförändring (%)",
+      "changeRateInfo": "Förändring av utsläpp sedan 2015",
+      "sortingOptions": {
+        "emissions": "Totala utsläpp",
+        "emissionsChangeRate": "Utsläppsförändring (%)",
+        "name": "Namn",
+        "meetsParis": "Klarar Parisavtalet"
       }
     },
     "companies": {

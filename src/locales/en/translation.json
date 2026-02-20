@@ -11,6 +11,7 @@
     "companies": "Companies",
     "sectors": "Sectors",
     "explore": "Explore",
+    "exploreRegions": "Explore regions",
     "municipalities": "Municipalities",
     "nation": "Sweden",
     "regions": "Regions",
@@ -1405,6 +1406,10 @@
     }
   },
   "regions": {
+    "card": {
+      "meetsParis": "Meets the Paris Agreement",
+      "coatOfArmsAlt": "Coat of arms for {{name}}"
+    },
     "detailPage": {
       "municipalities": "Municipalities"
     },
@@ -1903,6 +1908,24 @@
         "name": "Name",
         "emissions": "Total Emissions",
         "emissionsChangeRate": "Change in Emissions (%)"
+      }
+    },
+    "regions": {
+      "regions": "Regions",
+      "searchPlaceholder": "Search regions (separate w/ commas)",
+      "noRegionsFound": "No regions found",
+      "tryDifferentCriteria": "Try adjusting your search criteria.",
+      "errorTitle": "Failed to retrieve region information",
+      "errorDescription": "Please try again later",
+      "municipalityCount": "{{count}} municipalities",
+      "municipalitiesLabel": "Municipalities",
+      "changeRateLabel": "Change in emissions (%)",
+      "changeRateInfo": "Change in emissions since 2015",
+      "sortingOptions": {
+        "emissions": "Total emissions",
+        "emissionsChangeRate": "Change in emissions (%)",
+        "name": "Name",
+        "meetsParis": "Meets the Paris Agreement"
       }
     },
     "companies": {
