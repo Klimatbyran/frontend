@@ -47,7 +47,10 @@ export interface ListCardProps {
   climatePlanHasPlan?: boolean | null;
   climatePlanYear?: number | null;
 
-  variant?: "company" | "municipality";
+  // Region list (number of municipalities in region)
+  regionMunicipalityCount?: number;
+
+  variant?: "company" | "municipality" | "region";
 }
 
 export function ListCard({
@@ -70,20 +73,24 @@ export function ListCard({
   baseYear,
   climatePlanHasPlan,
   climatePlanYear,
+  regionMunicipalityCount,
   variant = "company",
 }: ListCardProps) {
   const { t } = useTranslation();
   const {
     isMunicipality,
+    isRegion,
     climatePlanAdoptedText,
     climatePlanStatusColor,
     climatePlanAdoptedColor,
     categoryName,
+    regionMunicipalityCountText,
   } = useListCardMeta({
     variant,
     climatePlanHasPlan,
     climatePlanYear,
     largestEmission,
+    regionMunicipalityCount,
   });
 
   return (
@@ -101,7 +108,13 @@ export function ListCard({
                 {description}
               </p>
             </div>
-            {logoUrl && <img src={logoUrl} alt="logo" className="h-[50px]" />}
+            {logoUrl && (
+              <img
+                src={logoUrl}
+                alt={variant === "region" ? t("regions.card.coatOfArmsAlt", { name }) : "logo"}
+                className="h-[50px]"
+              />
+            )}
           </div>
 
           {/* Meets Paris section */}
@@ -141,7 +154,7 @@ export function ListCard({
             <div>
               <CardInfo
                 title={
-                  isMunicipality
+                  isRegion || isMunicipality
                     ? t("municipalities.card.changeRate")
                     : t("companies.card.emissionsChangeRate")
                 }
@@ -158,9 +171,11 @@ export function ListCard({
           <div className="grid grid-cols-1 gap-2 lg:grid-cols-2 lg:gap-4 mt-6">
             <div>
               <div className="flex flex-col gap-2 text-nowrap text-grey text-lg">
-                {isMunicipality
-                  ? t("municipalities.card.climatePlan")
-                  : t("companies.card.reportingSince")}
+                {isRegion
+                  ? t("municipalities.card.municipalitiesInRegion")
+                  : isMunicipality
+                    ? t("municipalities.card.climatePlan")
+                    : t("companies.card.reportingSince")}
               </div>
               <div
                 className={cn(
@@ -168,21 +183,25 @@ export function ListCard({
                   climatePlanStatusColor,
                 )}
               >
-                {isMunicipality
-                  ? climatePlanHasPlan === true
-                    ? t("yes")
-                    : climatePlanHasPlan === false
-                      ? t("no")
-                      : t("unknown")
-                  : (baseYear ?? t("unknown"))}
+                {isRegion
+                  ? regionMunicipalityCountText
+                  : isMunicipality
+                    ? climatePlanHasPlan === true
+                      ? t("yes")
+                      : climatePlanHasPlan === false
+                        ? t("no")
+                        : t("unknown")
+                    : (baseYear ?? t("unknown"))}
               </div>
             </div>
 
             <div>
               <div className="flex flex-col gap-2 text-nowrap text-grey text-lg">
-                {isMunicipality
-                  ? t("municipalities.card.climatePlanAdopted")
-                  : t("companies.card.largestEmissionSource")}
+                {isRegion
+                  ? "—"
+                  : isMunicipality
+                    ? t("municipalities.card.climatePlanAdopted")
+                    : t("companies.card.largestEmissionSource")}
               </div>
               <div
                 className={cn(
@@ -190,7 +209,7 @@ export function ListCard({
                   climatePlanAdoptedColor,
                 )}
               >
-                {isMunicipality ? climatePlanAdoptedText : categoryName}
+                {isRegion ? "—" : isMunicipality ? climatePlanAdoptedText : categoryName}
               </div>
             </div>
           </div>

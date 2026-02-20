@@ -10,18 +10,21 @@ type LargestEmission =
   | undefined;
 
 interface ListCardMetaInput {
-  variant: "company" | "municipality";
+  variant: "company" | "municipality" | "region";
   climatePlanHasPlan?: boolean | null;
   climatePlanYear?: number | null;
   largestEmission?: LargestEmission;
+  regionMunicipalityCount?: number;
 }
 
 interface ListCardMeta {
   isMunicipality: boolean;
+  isRegion: boolean;
   climatePlanAdoptedText: string | null;
   climatePlanStatusColor: string;
   climatePlanAdoptedColor: string;
   categoryName: string;
+  regionMunicipalityCountText: string | null;
 }
 
 export const useListCardMeta = ({
@@ -29,10 +32,12 @@ export const useListCardMeta = ({
   climatePlanHasPlan,
   climatePlanYear,
   largestEmission,
+  regionMunicipalityCount,
 }: ListCardMetaInput): ListCardMeta => {
   const { t } = useTranslation();
   const { getCategoryName } = useCategoryMetadata();
   const isMunicipality = variant === "municipality";
+  const isRegion = variant === "region";
 
   const climatePlanAdoptedText = isMunicipality
     ? climatePlanHasPlan
@@ -64,11 +69,18 @@ export const useListCardMeta = ({
     categoryName = t("unknown");
   }
 
+  const regionMunicipalityCountText =
+    isRegion && regionMunicipalityCount != null
+      ? String(regionMunicipalityCount)
+      : null;
+
   return {
     isMunicipality,
+    isRegion,
     climatePlanAdoptedText,
     climatePlanStatusColor,
     climatePlanAdoptedColor,
     categoryName,
+    regionMunicipalityCountText,
   };
 };

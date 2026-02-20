@@ -52,6 +52,10 @@ const NAV_LINKS: NavLink[] = [
         path: `/explore/companies`,
       },
       {
+        label: "header.exploreRegions",
+        path: `/explore/regions`,
+      },
+      {
         label: "header.companies",
         path: `/companies`,
       },
