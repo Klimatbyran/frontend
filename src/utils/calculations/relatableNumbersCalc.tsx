@@ -69,38 +69,41 @@ const burnComparison = (hectarBurnt: number) => {
     }
   }
 
-  const calculateSwedenShareEmissions = (calculatedTotal) => {
-    const swedenTotalEmissions = 44.2; // mtCO2e
-    const calculatedTotalMtCO2e = calculatedTotal / 1e6;
-    return calculatedTotalMtCO2e / swedenTotalEmissions;
-  };
+  return null;
+};
 
-  const calculateBoundaryGraph = (reportingPeriods) => {
-    const cumulativeTotalEmissions =
-      calculateCumulativeEmissions(reportingPeriods);
 
-    const totalEmissionGigatons = cumulativeTotalEmissions / 1e9;
-    const mediumReference = 0.450257;
-    /*     const minimumReference = 0.35;
-    const maximumReference = 0.55;
-    const lowShadeReference = 0.27;
-    const highShadeReference = 0.63; */
+//Here we want to calculate using the selected year's total, not the cumulative total
+ /*  const swedenTotalEmissions = 44.2; // mtCO2e
+  const calculatedTotalMtCO2e = calculatedTotal / 1e6;
+  return calculatedTotalMtCO2e / swedenTotalEmissions;
+};  */
 
-    /*     const ssp19ReferenceBoundary = totalEmissionGigatons * minimumReference;
-     */ const actualGlobalWarming = totalEmissionGigatons * mediumReference;
-    /*     const ssp585ReferenceBoundary = totalEmissionGigatons * maximumReference;
-    const lowShadeReferenceBoundary = totalEmissionGigatons * lowShadeReference;
-    const highShadeReferenceBoundary =
-      totalEmissionGigatons * highShadeReference;
-  */
+export const calculateTemperatureGauge = (reportingPeriods) => {
+  const cumulativeTotalEmissions =
+    calculateCumulativeEmissions(reportingPeriods);
 
-    return actualGlobalWarming;
-  };
+  const totalEmissionGigatons = cumulativeTotalEmissions / 1e9;
+  const mediumReference = 0.450257;
+  /*     const minimumReference = 0.35;
+  const maximumReference = 0.55;
+  const lowShadeReference = 0.27;
+  const highShadeReference = 0.63; */
 
-  const calculateCumulativeEmissions = (reportingPeriods) => {
-    return reportingPeriods.reduce(
-      (sum, period) => sum + (period.emissions?.calculatedTotalEmissions ?? 0),
-      0,
-    );
-  };
+  /*     const ssp19ReferenceBoundary = totalEmissionGigatons * minimumReference;
+   */ const actualGlobalWarming = totalEmissionGigatons * mediumReference;
+  /*     const ssp585ReferenceBoundary = totalEmissionGigatons * maximumReference;
+  const lowShadeReferenceBoundary = totalEmissionGigatons * lowShadeReference;
+  const highShadeReferenceBoundary =
+    totalEmissionGigatons * highShadeReference;
+*/
+
+  return actualGlobalWarming;
+};
+
+const calculateCumulativeEmissions = (reportingPeriods) => {
+  return reportingPeriods.reduce(
+    (sum, period) => sum + (period.emissions?.calculatedTotalEmissions ?? 0),
+    0,
+  );
 };

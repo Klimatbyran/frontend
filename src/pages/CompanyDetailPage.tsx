@@ -134,6 +134,7 @@ export function CompanyDetailPage() {
             companyName={company.name}
             emissionsChangeStatus={emissionsChangeStatus}
             yearOverYearChange={yearOverYearChange}
+            reportingPeriods={company.reportingPeriods}
           />
         )}
 

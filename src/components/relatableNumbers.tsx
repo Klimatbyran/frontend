@@ -4,6 +4,8 @@ import { Text } from "@/components/ui/text";
 import {
   calculateAreaBurnt,
   emissionsComparedToCitizen,
+  calculateTemperatureGauge,
+  calculateSwedenShareEmissions,
 } from "@/utils/calculations/relatableNumbersCalc";
 import { SupportedLanguage } from "@/lib/languageDetection";
 import {
@@ -12,6 +14,12 @@ import {
 } from "@/utils/formatting/localization";
 import { InfoTooltip } from "@/components/layout/InfoTooltip";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
+import ReactEChartsCore from "echarts-for-react/lib/core";
+import * as echarts from "echarts/core";
+import { GaugeChart } from "echarts/charts";
+import { CanvasRenderer } from "echarts/renderers";
+
+echarts.use([GaugeChart, CanvasRenderer]);
 
 type RelatableNumbersProps = {
   companyName: string;
@@ -19,6 +27,7 @@ type RelatableNumbersProps = {
   emissionsChangeStatus: string;
   currentLanguage: SupportedLanguage;
   yearOverYearChange: number | null;
+  reportingPeriods: any;
 };
 
 type Item = {
@@ -40,6 +49,7 @@ const RelatableNumbers = ({
   companyName,
   emissionsChangeStatus,
   yearOverYearChange,
+  reportingPeriods,
 }: RelatableNumbersProps) => {
   const { t } = useTranslation();
   const areaBurnt = calculateAreaBurnt(emissionsChange, currentLanguage);
@@ -94,6 +104,11 @@ const RelatableNumbers = ({
     ? formatRelatableNumber(emissionNumberOfCitizens, "yellow")
     : null;
 
+  const formattedSwedenShareString =
+    calculateSwedenShareEmissions(reportingPeriods);
+
+  const temperatureGaugeValue = calculateTemperatureGauge(reportingPeriods);
+
   return (
     <SectionWithHelp
       helpItems={["relatableNumbers", "degsWarming", "forestFires", "citizens"]}
@@ -141,6 +156,50 @@ const RelatableNumbers = ({
             <Text>{formattedCitizenString}</Text>
           </div>
         </div>
+
+        <ReactEChartsCore
+          echarts={echarts}
+          style={{ height: "400px", width: "100%" }}
+          option={{
+            series: [
+              {
+                type: "gauge",
+                startAngle: 180,
+                endAngle: 0,
+                min: 0,
+                max: 1,
+                splitNumber: 4,
+                axisLine: {
+                  lineStyle: {
+                    width: 10,
+                    color: [
+                      [0.25, "yellow"],
+                      [0.5, "yellow"],
+                      [0.75, "orange"],
+                      [1, "red"],
+                    ],
+                  },
+                },
+                pointer: {
+                  show: true,
+                  length: "50%",
+                  width: 4,
+                  color: "white",
+                  itemStyle: {
+                    color: "white",
+                  },
+                },
+                detail: {
+                  formatter: temperatureGaugeValue.toFixed(3) + " (m°C)",
+                  fontSize: 14,
+                  color: "white",
+                  offsetCenter: [0, "20%"],
+                },
+                data: [{ value: temperatureGaugeValue }],
+              },
+            ],
+          }}
+        />
       </div>
     </SectionWithHelp>
   );
