@@ -72,9 +72,8 @@ const burnComparison = (hectarBurnt: number) => {
   return null;
 };
 
-
 //Here we want to calculate using the selected year's total, not the cumulative total
- /*  const swedenTotalEmissions = 44.2; // mtCO2e
+/*  const swedenTotalEmissions = 44.2; // mtCO2e
   const calculatedTotalMtCO2e = calculatedTotal / 1e6;
   return calculatedTotalMtCO2e / swedenTotalEmissions;
 };  */
