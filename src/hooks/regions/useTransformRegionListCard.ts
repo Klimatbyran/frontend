@@ -46,7 +46,7 @@ export function useTransformRegionListCard({
         linkTo: getEntityDetailPath("region", region.name),
         variant: "region" as const,
         meetsParis: region.meetsParis,
-        meetsParisTranslationKey: "regions.card.meetsParis",
+        meetsParisTranslationKey: "municipalities.card.meetsParis",
         emissionsValue,
         emissionsYear: lastYearStr,
         emissionsUnit: t("emissionsUnit"),
@@ -56,7 +56,7 @@ export function useTransformRegionListCard({
           region.historicalEmissionChangePercent > 0
             ? "text-pink-3"
             : "text-orange-2",
-        changeRateTooltip: t("explorePage.regions.changeRateInfo"),
+        changeRateTooltip: t("municipalities.card.changeRateInfo"),
         regionMunicipalityCount: region.municipalityCount,
       };
     });

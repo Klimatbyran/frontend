@@ -154,11 +154,9 @@ export function ListCard({
             <div>
               <CardInfo
                 title={
-                  isRegion
-                    ? t("explorePage.regions.changeRateLabel")
-                    : isMunicipality
-                      ? t("municipalities.card.changeRate")
-                      : t("companies.card.emissionsChangeRate")
+                  isRegion || isMunicipality
+                    ? t("municipalities.card.changeRate")
+                    : t("companies.card.emissionsChangeRate")
                 }
                 value={changeRateValue}
                 textColor={changeRateColor || "text-orange-2"}
@@ -174,7 +172,7 @@ export function ListCard({
             <div>
               <div className="flex flex-col gap-2 text-nowrap text-grey text-lg">
                 {isRegion
-                  ? t("explorePage.regions.municipalitiesLabel")
+                  ? t("municipalities.card.municipalitiesInRegion")
                   : isMunicipality
                     ? t("municipalities.card.climatePlan")
                     : t("companies.card.reportingSince")}
