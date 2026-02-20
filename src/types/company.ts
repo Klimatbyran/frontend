@@ -20,6 +20,26 @@ export type ReportingPeriodFromDetail = NonNullable<
 // Simplified aliases for common usage
 export type ReportingPeriod = ReportingPeriodFromDetail; // For detail pages
 
+/** Draft reporting period (string id) created in the editor before save. */
+export type DraftReportingPeriod = {
+  id: string;
+  startDate: string;
+  endDate: string;
+  reportURL?: string | null;
+  emissions?: ReportingPeriod["emissions"];
+  economy?: ReportingPeriod["economy"];
+};
+
+/** Saved period or draft; used in company editor. */
+export type EditableReportingPeriod = ReportingPeriod | DraftReportingPeriod;
+
+/** One reporting period in the create/update request body (POST reporting-periods). */
+export type ReportingPeriodPayloadItem = NonNullable<
+  paths["/companies/{wikidataId}/reporting-periods"]["post"]["requestBody"]
+>["content"]["application/json"]["reportingPeriods"][number] & {
+  id?: string | number;
+};
+
 export type Emissions = NonNullable<ReportingPeriod["emissions"]>;
 
 /**
@@ -125,7 +145,7 @@ export type GicsOption = {
 
 // Props interface for company edit components
 export interface CompanyEditComponentProps {
-  periods: ReportingPeriod[];
+  periods: EditableReportingPeriod[];
   onInputChange: (name: string, value: string) => void;
   formData: Map<string, string>;
 }

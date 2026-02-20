@@ -71,11 +71,6 @@ export const partners = [
     alt: "Berget logo",
   },
   {
-    href: "https://www.netlight.com/",
-    src: "/logos/partners/netlight.svg",
-    alt: "Netlight logo",
-  },
-  {
     href: "https://2050.se/",
     src: "/logos/partners/2050_white.png",
     alt: "2050 logo",

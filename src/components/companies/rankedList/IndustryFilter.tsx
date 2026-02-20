@@ -45,7 +45,7 @@ export function IndustryFilter({
     return (
       <div className="space-y-2">
         <label className="text-sm text-grey">
-          {t("companiesRankedPage.selectIndustry", "Select industry")}:
+          {t("companiesOverviewPage.selectIndustry", "Select industry")}:
         </label>
         <Select
           value={selectedSector || undefined}
@@ -54,7 +54,7 @@ export function IndustryFilter({
           <SelectTrigger className="w-full bg-black-2 border-black-3 text-white">
             <SelectValue
               placeholder={t(
-                "companiesRankedPage.selectIndustry",
+                "companiesOverviewPage.selectIndustry",
                 "Select industry",
               )}
             >
@@ -86,7 +86,7 @@ export function IndustryFilter({
   return (
     <div className="flex flex-wrap items-center gap-2">
       <span className="text-sm text-grey mr-1">
-        {t("companiesRankedPage.selectIndustry", "Select industry")}:
+        {t("companiesOverviewPage.selectIndustry", "Select industry")}:
       </span>
       {availableSectors.map((sectorCode) => {
         const isSelected = selectedSector === sectorCode;

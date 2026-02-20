@@ -1,6 +1,6 @@
 # Var kommer utsläppen ifrån — och vad kan du göra åt dem?
 
-Utsläppen i din kommun orsakas av olika aktiviteter  — uppvärmning av hem, bilkörning, elanvändning och till och med vad vi äter.
+Utsläppen i din kommun eller län orsakas av olika aktiviteter  — uppvärmning av hem, bilkörning, elanvändning och till och med vad vi äter.
 
 Här är vad några av kategorierna betyder för ditt dagliga liv, och vad du bör vara uppmärksam på:
 
@@ -12,7 +12,7 @@ Som invånare:
 - Välj att gå, cykla, åka buss eller dela bil när du kan
 - Överväg en elbil — särskilt om du har tillgång tilloffentlig laddning eller gratis parkering för elbilar
 - Stöd cykelbanor, busslinjer och trafikdämpning i ditt område
-- Påverka din kommun att elektrifiera skolbussar och servicefordon
+- Påverka för att att elektrifiera skolbussar och servicefordon
 
 **Uppvärmning och energianvändning i byggnader**
 Inkluderar uppvärmning av bostäder (som oljepannor eller elradiatorer) och el från fossila källor.
@@ -25,12 +25,12 @@ Som invånare:
 - Uppmuntra energiuppgraderingar i lokala skolor och offentliga byggnader
 
 **Industri och byggande**
-I vissa kommuner, särskilt de med fabriker eller cementfabriker, är industrin en stor utsläppskälla.
+I vissa kommuner eller län, särskilt de med fabriker eller cementfabriker, är industrin en stor utsläppskälla.
 
 Som invånare:
 
 - Stöd återanvändning och renovering istället för nybyggnation när det är möjligt
-- Fråga din kommun om fossilfria byggstandarder för offentliga projekt
+- Fråga om fossilfria byggstandarder för offentliga projekt
 - Var uppmärksam på stora infrastrukturprojekt (vägar, datacenter, etc.) — är de klimatsmarta?
 
 **Produktanvändning och avfall**
@@ -56,6 +56,6 @@ Som invånare:
 
 - Nya byggprojekt: Är de fossilfria och energismarta?
 - Utbyggnad eller nedskärningar av kollektivtrafik
-- Skolmat och kommunal matpolicy
+- Skolmat och kommunal eller regional matpolicy
 - Offentlig upphandling: Finansierar dina skattepengar klimatvänliga val?
 - Medborgarförslag eller budgetanslag — engagera dig!

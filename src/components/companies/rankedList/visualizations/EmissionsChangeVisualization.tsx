@@ -48,7 +48,7 @@ export function EmissionsChangeVisualization({
     return (
       <div className="bg-black-2 rounded-level-2 p-8 h-full flex items-center justify-center">
         <p className="text-grey text-lg">
-          {t("companiesRankedPage.visualizations.noDataAvailable")}
+          {t("companiesOverviewPage.visualizations.noDataAvailable")}
         </p>
       </div>
     );
@@ -59,10 +59,10 @@ export function EmissionsChangeVisualization({
       {!isMobile && (
         <div className="flex items-center justify-between">
           <div className="text-sm text-grey">
-            {t("companiesRankedPage.visualizations.emissionsChange.title")}
+            {t("companiesOverviewPage.visualizations.emissionsChange.title")}
             {" · "}
             {t(
-              "companiesRankedPage.visualizations.emissionsChange.unknown",
+              "companiesOverviewPage.visualizations.emissionsChange.unknown",
             )}: {noData.length}
           </div>
         </div>

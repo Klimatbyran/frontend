@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect, useRef } from "react";
 import { X } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -33,15 +33,25 @@ const ScopeModal: React.FC<ScopeModalProps> = ({
   selectedYear,
 }) => {
   const sectorNames = useSectorNames();
-
   const sectorData = useMemo(() => {
-    const data = selectedSectors
+    const sectorCodes = selectedSectors.includes("all")
+      ? Array.from(
+          new Set(
+            companies
+              .map((company) => company.industry?.industryGics?.sectorCode)
+              .filter((sectorCode): sectorCode is string =>
+                Boolean(sectorCode),
+              ),
+          ),
+        )
+      : selectedSectors;
+
+    const data = sectorCodes
       .map((sectorCode) => {
         const sectorName = sectorNames[sectorCode as keyof typeof sectorNames];
-        const sectorCompanies = companies.filter(
-          (company) =>
-            company.industry?.industryGics?.sectorCode === sectorCode,
-        );
+        const sectorCompanies = companies.filter((company) => {
+          return company.industry?.industryGics?.sectorCode === sectorCode;
+        });
 
         let total = 0;
         const companyEmissions: Array<{
@@ -116,9 +126,27 @@ const ScopeModal: React.FC<ScopeModalProps> = ({
   };
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
+  const divRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (divRef.current && divRef.current === event.target) {
+        onClose();
+      } else {
+        return;
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm flex items-center justify-center z-50">
+    <div
+      ref={divRef}
+      className="fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm flex items-center justify-center z-50"
+    >
       <div className="bg-black-2 border border-black-1 rounded-xl shadow-xl w-full max-w-4xl mx-4 max-h-[90vh] flex flex-col">
         <div className="flex justify-between items-center p-6 border-b border-black-1">
           <h3 className="text-xl font-light text-white">{title}</h3>
@@ -135,7 +163,7 @@ const ScopeModal: React.FC<ScopeModalProps> = ({
             {sectorData.sectors.map((sector) => {
               const sectorColor =
                 sectorColors[sector.sectorCode as keyof typeof sectorColors]
-                  .base;
+                  ?.base;
               return (
                 <div
                   key={sector.sectorCode}

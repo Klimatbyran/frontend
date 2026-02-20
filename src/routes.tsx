@@ -1,15 +1,18 @@
-import { Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { stagingFeatureFlagEnabled } from "@/utils/ui/featureFlags";
 import { LanguageRedirect } from "@/components/LanguageRedirect";
 import ProtectedRoute from "./components/ProtectedRoute";
 import StagingProtectedRoute from "./components/StagingProtectedRoute";
+// StagingProtectedRoute: use when developing new pages that should only be visible on staging.
+// Wrap the route(s) in <Route element={<StagingProtectedRoute />}> and nest your path(s) inside.
+// When ready for prod, remove the wrapper. Keep this import so dead-code scripts don't remove the component.
 import { useLanguage } from "./components/LanguageProvider";
 import { AboutPage } from "./pages/AboutPage";
 import { AuthCallback } from "./pages/AuthCallback";
 import { BlogDetailPage } from "./pages/BlogDetailPage";
 import { CompanyEditPage } from "./pages/CompanyEditPage";
 import { CompanyDetailPage } from "./pages/CompanyDetailPage";
-import { CompaniesSectorsPage } from "./pages/CompaniesSectorsPage";
+import { SectorsOverviewPage } from "./pages/SectorsOverviewPage";
 import DownloadsPage from "./pages/DownloadsPage";
 import { ErrorPage } from "./pages/ErrorPage";
 import { InsightsPage } from "./pages/InsightsPage";
@@ -18,7 +21,7 @@ import { LandingPageNew } from "./pages/LandingPageNew";
 import { LearnMoreOverview } from "./pages/LearnMoreOverview";
 import { LearnMoreArticle } from "./pages/LearnMoreArticle";
 import { MethodsPage } from "./pages/MethodsPage";
-import { MunicipalitiesRankedPage } from "./pages/MunicipalitiesRankedPage";
+import { MunicipalitiesOverviewPage } from "./pages/MunicipalitiesOverviewPage";
 import { MunicipalityDetailPage } from "./pages/MunicipalityDetailPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { ReportsPage } from "./pages/ReportsPage";
@@ -32,12 +35,15 @@ import { ReportLandingPage } from "./pages/ReportLandingPage";
 import { RequestsDashboard } from "./pages/internal-pages/RequestsDashboard";
 import { TrendAnalysisDashboard } from "./pages/internal-pages/TrendAnalysisDashboard";
 import { ParisAlignedStatisticsPage } from "./pages/internal-pages/ParisAlignedStatisticsPage";
+import { AddCompanyPage } from "./pages/internal-pages/AddCompanyPage";
 import { NewsLetterArchivePage } from "./pages/NewslettersPage";
-import { RegionalRankedPage } from "./pages/RegionalRankedPage";
+import { RegionalOverviewPage } from "./pages/RegionalOverviewPage";
 import { RegionDetailPage } from "./pages/RegionDetailPage";
 import { NationDetailPage } from "./pages/NationDetailPage";
-import { CompaniesRankedPage } from "./pages/CompaniesRankedPage";
+import { CompaniesOverviewPage } from "./pages/CompaniesOverviewPage";
 import { ExplorePage } from "./pages/ExplorePage";
+
+void StagingProtectedRoute; // referenced so dead-code scripts keep the component; eslint/ts unused-import satisfied
 
 // Conditional landing page component that shows new version on localhost/staging
 function ConditionalLandingPage() {
@@ -67,13 +73,11 @@ export function AppRoutes() {
       />
 
       {/* Strict companies routes */}
-      <Route path={`${basePath}/sectors`} element={<CompaniesSectorsPage />} />
-      <Route element={<StagingProtectedRoute />}>
-        <Route
-          path={`${basePath}/companies`}
-          element={<CompaniesRankedPage />}
-        />
-      </Route>
+      <Route path={`${basePath}/sectors`} element={<SectorsOverviewPage />} />
+      <Route
+        path={`${basePath}/companies`}
+        element={<CompaniesOverviewPage />}
+      />
       <Route
         path={`${basePath}/companies/:id`}
         element={<CompanyDetailPage />}
@@ -113,10 +117,14 @@ export function AppRoutes() {
           path={`${basePath}/internal-pages/paris-aligned-statistics`}
           element={<ParisAlignedStatisticsPage />}
         />
+        <Route
+          path={`${basePath}/internal-pages/add-company`}
+          element={<AddCompanyPage />}
+        />
       </Route>
 
       {/* Strict regions routes */}
-      <Route path={`${basePath}/regions`} element={<RegionalRankedPage />} />
+      <Route path={`${basePath}/regions`} element={<RegionalOverviewPage />} />
       <Route path={`${basePath}/regions/:id`} element={<RegionDetailPage />} />
 
       {/* Strict nation routes */}
@@ -125,15 +133,11 @@ export function AppRoutes() {
       {/* Strict municipalities routes */}
       <Route
         path={`${basePath}/municipalities`}
-        element={<MunicipalitiesRankedPage />}
+        element={<MunicipalitiesOverviewPage />}
       />
       <Route
         path={`${basePath}/municipalities/:id`}
         element={<MunicipalityDetailPage />}
-      />
-      <Route
-        path={`${basePath}/municipalities/explore`}
-        element={<Navigate to="/explore/municipalities" replace />}
       />
 
       {/* About Pages */}

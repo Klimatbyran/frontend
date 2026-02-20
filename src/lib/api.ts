@@ -64,6 +64,21 @@ export async function getCompanyDetails(id: string) {
   return data;
 }
 
+export type UpdateCompanyDetailsBody =
+  paths["/companies/{wikidataId}"]["post"]["requestBody"]["content"]["application/json"];
+
+export async function updateCompanyDetails(
+  wikidataId: string,
+  body: UpdateCompanyDetailsBody,
+) {
+  const { data, error } = await client.POST("/companies/{wikidataId}", {
+    params: { path: { wikidataId } },
+    body,
+  });
+  if (error) throw error;
+  return data;
+}
+
 // Municipalities API
 export async function getMunicipalities() {
   try {
