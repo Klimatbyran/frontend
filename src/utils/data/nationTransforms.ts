@@ -44,4 +44,3 @@ export function transformNationEmissionsData(nation: {
         d.year <= EMISSIONS_DATA_END_YEAR,
     );
 }
-

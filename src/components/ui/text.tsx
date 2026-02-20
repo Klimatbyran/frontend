@@ -31,7 +31,8 @@ const textVariants = cva("font-light tracking-tight", {
 });
 
 interface TextProps
-  extends React.HTMLAttributes<HTMLParagraphElement>,
+  extends
+    React.HTMLAttributes<HTMLParagraphElement>,
     VariantProps<typeof textVariants> {
   as?: keyof JSX.IntrinsicElements;
 }
