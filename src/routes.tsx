@@ -39,6 +39,7 @@ import { AddCompanyPage } from "./pages/internal-pages/AddCompanyPage";
 import { NewsLetterArchivePage } from "./pages/NewslettersPage";
 import { RegionalOverviewPage } from "./pages/RegionalOverviewPage";
 import { RegionDetailPage } from "./pages/RegionDetailPage";
+import { NationDetailPage } from "./pages/NationDetailPage";
 import { CompaniesOverviewPage } from "./pages/CompaniesOverviewPage";
 import { ExplorePage } from "./pages/ExplorePage";
 
@@ -125,6 +126,9 @@ export function AppRoutes() {
       {/* Strict regions routes */}
       <Route path={`${basePath}/regions`} element={<RegionalOverviewPage />} />
       <Route path={`${basePath}/regions/:id`} element={<RegionDetailPage />} />
+
+      {/* Strict nation routes */}
+      <Route path={`${basePath}/nation`} element={<NationDetailPage />} />
 
       {/* Strict municipalities routes */}
       <Route

@@ -2,6 +2,7 @@
   "yes": "Yes",
   "no": "No",
   "unknown": "Unknown",
+  "na": "N/A",
   "all": "All",
   "emissionsUnit": "tCO₂e",
   "noData": "No data available",
@@ -11,6 +12,7 @@
     "sectors": "Sectors",
     "explore": "Explore",
     "municipalities": "Municipalities",
+    "nation": "Sweden",
     "regions": "Regions",
     "about": "About",
     "aboutUs": "About Us",
@@ -1217,13 +1219,19 @@
       "emissionsChangeRate": "Change Rate",
       "emissionsChangeRateInfo": "Change rate of emissions compared to the previous reporting period.",
       "emissionsChangeRateInfoExtended": "This value is so large due to inconsistencies in reported data between the last two reporting periods, thus this value is not representative of actual changes.",
-      "meetsParis": "Is {{name}} on track to meet the Paris Agreement?",
+      "meetsParis": "On track to meet the Paris Agreement?",
       "turnover": "Turnover",
       "turnoverAmount": "bn",
       "employees": "Employees",
       "companyReport": "Sustainability Report",
+      "latestReport": "Reports Emissions?",
       "missingReport": "Missing Report",
-      "reportYear": "Report from {{year}}"
+      "reportYear": "Report from {{year}}",
+      "largestEmissionSource": "Largest emission source",
+      "notEnoughData": "Not enough data to determine",
+      "reportingSince": "Reporting since",
+      "scope1": "Scope 1",
+      "scope2": "Scope 2"
     },
     "dataView": {
       "overview": "Overview",
@@ -1391,6 +1399,11 @@
       "decreasing": "↘ Decreasing"
     }
   },
+  "nation": {
+    "detailPage": {
+      "regions": "Regions"
+    }
+  },
   "regions": {
     "detailPage": {
       "municipalities": "Municipalities"
@@ -1434,7 +1447,7 @@
   "municipalities": {
     "name": "Name",
     "card": {
-      "meetsParis": "Is {{name}} on track to meet the Paris Agreement?",
+      "meetsParis": "On track to meet the Paris Agreement?",
       "yes": "Yes",
       "no": "No",
       "emissionRanking": "EMISSION RANKING",
@@ -1443,6 +1456,7 @@
       "changeRate": "Change Rate",
       "changeRateInfo": "Change rate of emissions since the Paris Agreement was signed in 2015.",
       "climatePlan": "Climate Plan",
+      "climatePlanAdopted": "Climate plan adopted",
       "noPlan": "No Plan",
       "adopted": "Adopted {{year}}"
     },
