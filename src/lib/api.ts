@@ -323,6 +323,19 @@ export async function getRegionsKPIs() {
   }
 }
 
+// Nation API
+export async function getNationDetails() {
+  const { data, error } = await GET("/nation/", {});
+  if (error) throw error;
+  return data;
+}
+
+export async function getNationSectorEmissions() {
+  const { data, error } = await GET("/nation/sector-emissions", {});
+  if (error) throw error;
+  return data;
+}
+
 // TODO: Add national data to API, this is prep for next stages
 export async function getNationalData() {
   try {

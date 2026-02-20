@@ -60,6 +60,10 @@ const NAV_LINKS: NavLink[] = [
         path: `/sectors`,
       },
       {
+        label: "header.nation",
+        path: `/nation`,
+      },
+      {
         label: "header.regions",
         path: `/regions`,
       },

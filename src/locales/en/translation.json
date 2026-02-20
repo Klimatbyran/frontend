@@ -12,6 +12,7 @@
     "sectors": "Sectors",
     "explore": "Explore",
     "municipalities": "Municipalities",
+    "nation": "Sweden",
     "regions": "Regions",
     "about": "About",
     "aboutUs": "About Us",
@@ -1396,6 +1397,11 @@
       "trend": "Trend:",
       "increasing": "↗ Increasing",
       "decreasing": "↘ Decreasing"
+    }
+  },
+  "nation": {
+    "detailPage": {
+      "regions": "Regions"
     }
   },
   "regions": {

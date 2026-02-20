@@ -12,6 +12,7 @@
     "sectors": "Branscher",
     "explore": "Utforska",
     "municipalities": "Kommuner",
+    "nation": "Sverige",
     "regions": "Län",
     "about": "Om",
     "aboutUs": "Om oss",
@@ -1448,6 +1449,11 @@
       "trend": "Trend:",
       "increasing": "↗ Ökar",
       "decreasing": "↘ Minskar"
+    }
+  },
+  "nation": {
+    "detailPage": {
+      "regions": "Län"
     }
   },
   "regions": {
