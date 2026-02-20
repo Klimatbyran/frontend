@@ -9,6 +9,7 @@ export type DataGuideItemId =
   | "companyRealChange"
   | "companySectors"
   | "companyTurnover"
+  | "degsWarming"
   | "detailWhyDataDelay"
   | "financialsScope3Category15"
   | "forestFires"
