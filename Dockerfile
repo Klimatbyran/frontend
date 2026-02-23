@@ -11,9 +11,6 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Check for vulnerabilities
-RUN npm audit --audit-level=moderate
-
 # Install dependencies
 RUN npm ci
 

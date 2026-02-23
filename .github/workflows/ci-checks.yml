@@ -164,7 +164,7 @@ jobs:
       - name: Run Prettier check
         run: npx prettier --check .
 
-  # Audit job - checks for dependency vulnerabilities
+  # Audit job - checks for dependency vulnerabilities (runs in CI only; not in Docker build)
   audit:
     name: Audit
     runs-on: ubuntu-latest
@@ -186,4 +186,3 @@ jobs:
 
   # Note: Main check steps will fail if issues are found, showing a red X in the PR
   # These checks are NOT required in branch protection, so they won't block merges
-  # but will clearly show when there are issues that need attention.
