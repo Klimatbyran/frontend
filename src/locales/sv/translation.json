@@ -2022,7 +2022,9 @@
         "name": "tennisbanor",
         "type": "unit"
       }
-    }
+    },
+    "impact": "Påverkan",
+    "impactDescription": "{{companyName}}s utsläpp under {{selectedYear}} på <highlightNumber>{{emissionsInTonnes}}</highlightNumber> bidrog till följande:"
   },
   "filterPopover": {
     "filter": "Filter",

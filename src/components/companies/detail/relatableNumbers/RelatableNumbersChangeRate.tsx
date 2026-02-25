@@ -103,12 +103,6 @@ const RelatableNumbersChangeRate = ({
       color: "yellow",
       icon: <Lightbulb stroke={"yellow"} height={35} width={35} />,
     },
-    {
-      id: "swedenShare",
-      value: swedenEmissionsShare,
-      color: "var(--blue-3)",
-      icon: <MapIcon stroke={"var(--blue-3)"} height={35} width={35} />,
-    },
   ];
 
   return (

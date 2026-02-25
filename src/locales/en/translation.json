@@ -1968,7 +1968,9 @@
         "name": "tennis courts.",
         "type": "unit"
       }
-    }
+    },
+    "impact": "Impact",
+    "impactDescription": "{{companyName}}'s {{selectedYear}} emissions of <highlightNumber>{{emissionsInTonnes}}</highlightNumber> contributed to the following:"
   },
   "filterPopover": {
     "filter": "Filter",

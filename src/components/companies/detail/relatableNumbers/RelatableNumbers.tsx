@@ -1,4 +1,4 @@
-import RelatableNumbersChangeRate from "@/components/relatableNumbers";
+import RelatableNumbersChangeRate from "@/components/companies/detail/relatableNumbers/RelatableNumbersChangeRate";
 import ImpactForSelectYear from "./ImpactForSelectYear";
 import { SupportedLanguage } from "@/lib/languageDetection";
 
