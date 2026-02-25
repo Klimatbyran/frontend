@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { CardGrid } from "@/components/layout/CardGrid";
-import { ListCard } from "@/components/layout/ListCard";
+import { ListCard } from "@/components/explore/ListCard";
 import type { Municipality } from "@/types/municipality";
 import ListFilter from "@/components/explore/ListFilter";
 import useTransformMunicipalityListCard from "@/hooks/municipalities/useTransformMunicipalityListCard";

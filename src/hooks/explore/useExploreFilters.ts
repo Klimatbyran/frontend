@@ -37,7 +37,9 @@ export function useExploreFilters<TSortBy extends string>({
 
   const meetsParisFilter = ((): MeetsParisFilter => {
     const raw = searchParams.get("meetsParisFilter") ?? "";
-    return raw === "yes" || raw === "no" || raw === "all" ? (raw as MeetsParisFilter) : "all";
+    return raw === "yes" || raw === "no" || raw === "all"
+      ? (raw as MeetsParisFilter)
+      : "all";
   })();
 
   const sortBy = ((): TSortBy => {
@@ -70,8 +72,7 @@ export function useExploreFilters<TSortBy extends string>({
   );
 
   const setSortBy = useCallback(
-    (value: string) =>
-      setOrDeleteSearchParam(setSearchParams, value, "sortBy"),
+    (value: string) => setOrDeleteSearchParam(setSearchParams, value, "sortBy"),
     [setSearchParams],
   );
 
@@ -92,4 +93,3 @@ export function useExploreFilters<TSortBy extends string>({
     setSortDirection,
   };
 }
-

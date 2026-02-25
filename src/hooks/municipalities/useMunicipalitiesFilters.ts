@@ -1,15 +1,15 @@
 import { useMemo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import { useSearchParams } from "react-router-dom";
 import {
   Municipality,
   isMunicipalitySortBy,
   type MunicipalitySortBy,
-  isMeetsParisFilter,
-  type MeetsParisFilter,
 } from "@/types/municipality";
 import { FilterGroup } from "@/components/explore/FilterPopover";
 import { regions } from "@/lib/constants/regions";
 import { useSortOptions } from "./useMunicipalitiesSorting";
+import setOrDeleteSearchParam from "@/utils/data/setOrDeleteSearchParam";
 import {
   useExploreFilters,
   type MeetsParisFilter,
@@ -17,6 +17,7 @@ import {
 import type { SortDirection } from "@/components/explore/SortPopover";
 
 export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const { t } = useTranslation();
   const sortOptions = useSortOptions();
 
