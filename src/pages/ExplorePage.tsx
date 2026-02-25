@@ -77,6 +77,24 @@ export function ExplorePage() {
     );
   }
 
+  const mainFilterToggles = [
+    {
+      key: "companies",
+      path: "../companies",
+      labelKey: "explorePage.companies.companies",
+    },
+    {
+      key: "municipalities",
+      path: "../municipalities",
+      labelKey: "explorePage.municipalities.municipalities",
+    },
+    {
+      key: "regions",
+      path: "../regions",
+      labelKey: "explorePage.regions.regions",
+    },
+  ] as const;
+
   return (
     <>
       <PageHeader
@@ -96,47 +114,22 @@ export function ExplorePage() {
 
         {/* Wrapper for Filters, Search, and Badges */}
         <div className={cn("flex flex-wrap items-center gap-2 mb-4")}>
-          {/* Search Input */}
-          <Toggle
-            onClick={() => {
-              if (mainFilter !== "companies") {
-                navigate(["../companies", globalUrlSearchParamStr].join("?"), {
-                  relative: "path",
-                });
-              }
-            }}
-            variant={"outlineWhite"}
-            pressed={mainFilter === "companies"}
-          >
-            {t("explorePage.companies.companies")}
-          </Toggle>
-          <Toggle
-            onClick={() => {
-              if (mainFilter !== "municipalities") {
-                navigate(
-                  ["../municipalities", globalUrlSearchParamStr].join("?"),
-                  { relative: "path" },
-                );
-              }
-            }}
-            variant={"outlineWhite"}
-            pressed={mainFilter === "municipalities"}
-          >
-            {t("explorePage.municipalities.municipalities")}
-          </Toggle>
-          <Toggle
-            onClick={() => {
-              if (mainFilter !== "regions") {
-                navigate(["../regions", globalUrlSearchParamStr].join("?"), {
-                  relative: "path",
-                });
-              }
-            }}
-            variant={"outlineWhite"}
-            pressed={mainFilter === "regions"}
-          >
-            {t("explorePage.regions.regions")}
-          </Toggle>
+          {mainFilterToggles.map(({ key, path, labelKey }) => (
+            <Toggle
+              key={key}
+              onClick={() => {
+                if (mainFilter !== key) {
+                  navigate([path, globalUrlSearchParamStr].join("?"), {
+                    relative: "path",
+                  });
+                }
+              }}
+              variant="outlineWhite"
+              pressed={mainFilter === key}
+            >
+              {t(labelKey)}
+            </Toggle>
+          ))}
         </div>
       </div>
 
