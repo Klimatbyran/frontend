@@ -5,6 +5,7 @@ import {
   calculateAreaBurnt,
   emissionsComparedToCitizen,
   calculateSwedenShareEmissions,
+  formatTranslationString,
 } from "@/utils/calculations/relatableNumbersCalc";
 import { SupportedLanguage } from "@/lib/languageDetection";
 import {
@@ -29,13 +30,6 @@ type Item = {
   translationKey?: string | undefined;
 };
 
-type Values = {
-  prefix: string;
-  count: string;
-  entity: string;
-  [key: string]: string;
-};
-
 type KpiItem = {
   id: string;
   value: Item | null;
@@ -43,7 +37,7 @@ type KpiItem = {
   icon?: React.ReactNode;
 };
 
-const RelatableNumbers = ({
+const RelatableNumbersChangeRate = ({
   emissionsChange,
   currentLanguage,
   companyName,
@@ -57,32 +51,25 @@ const RelatableNumbers = ({
     emissionsChange,
     currentLanguage,
   );
-
   const swedenEmissionsShare = calculateSwedenShareEmissions(
     reportingPeriods,
     currentLanguage,
   );
 
-  const formatTranslationString = (pattern: string, values: Values) => {
-    let formatted = pattern;
-
-    for (const key in values) {
-      formatted = formatted.split(`{{${key}}}`).join(values[key]);
+  const formatRelatableNumber = (item: Item, iconColor: string) => {
+    let type: string;
+    switch (item.translationKey) {
+      case "Citizens":
+        type = "citizens";
+        break;
+      case "shareSweden":
+        type = "shareSweden";
+        break;
+      default:
+        type = t(`relatableNumbers.entities.${item.translationKey}.type`);
     }
 
-    return formatted;
-  };
-
-  const formatRelatableNumber = (item: Item, iconColor: string) => {
-    const type =
-      item.translationKey === "Citizens"
-        ? "citizens"
-        : item.translationKey === "shareSweden"
-          ? "shareSweden"
-          : t(`relatableNumbers.entities.${item.translationKey}.type`);
-
     const pattern = t(`relatableNumbers.patterns.${type}`);
-
     const values = {
       prefix: t(`relatableNumbers.${item.prefix}`),
       count: item.comparisonNumber,
@@ -90,7 +77,6 @@ const RelatableNumbers = ({
     };
 
     const formattedString = formatTranslationString(pattern, values);
-
     const parts = formattedString.split(item.comparisonNumber);
 
     return (

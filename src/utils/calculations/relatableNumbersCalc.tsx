@@ -2,6 +2,23 @@ import { formatEmissionsAbsolute } from "../formatting/localization";
 import { SWEDISH_EMISSIONS_2024 } from "./general";
 import type { ReportingPeriod } from "@/types/company";
 
+type Values = {
+  prefix: string;
+  count: string;
+  entity: string;
+  [key: string]: string;
+};
+
+export const formatTranslationString = (pattern: string, values: Values) => {
+  let formatted = pattern;
+
+  for (const key in values) {
+    formatted = formatted.split(`{{${key}}}`).join(values[key]);
+  }
+
+  return formatted;
+};
+
 export const emissionsComparedToCitizen = (
   emissionsChange: number,
   currentLanguage: "sv" | "en",
@@ -94,33 +111,4 @@ export const calculateSwedenShareEmissions = (
     comparisonNumber: formatEmissionsAbsolute(swedenShare, currentLanguage),
     prefix: "prefixSwedenShare",
   };
-};
-
-export const calculateTemperatureGauge = (reportingPeriods) => {
-  const cumulativeTotalEmissions =
-    calculateCumulativeEmissions(reportingPeriods);
-
-  const totalEmissionGigatons = cumulativeTotalEmissions / 1e9;
-  const mediumReference = 0.450257;
-  /*     const minimumReference = 0.35;
-  const maximumReference = 0.55;
-  const lowShadeReference = 0.27;
-  const highShadeReference = 0.63; */
-
-  /*     const ssp19ReferenceBoundary = totalEmissionGigatons * minimumReference;
-   */ const actualGlobalWarming = totalEmissionGigatons * mediumReference;
-  /*     const ssp585ReferenceBoundary = totalEmissionGigatons * maximumReference;
-  const lowShadeReferenceBoundary = totalEmissionGigatons * lowShadeReference;
-  const highShadeReferenceBoundary =
-    totalEmissionGigatons * highShadeReference;
-*/
-
-  return actualGlobalWarming;
-};
-
-const calculateCumulativeEmissions = (reportingPeriods) => {
-  return reportingPeriods.reduce(
-    (sum, period) => sum + (period.emissions?.calculatedTotalEmissions ?? 0),
-    0,
-  );
 };

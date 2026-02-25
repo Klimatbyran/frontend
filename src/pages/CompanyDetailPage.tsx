@@ -8,7 +8,7 @@ import { EmissionsHistory } from "@/components/companies/detail/history/Emission
 import { Seo } from "@/components/SEO/Seo";
 import { CompanyScope3 } from "@/components/companies/detail/CompanyScope3";
 import { useLanguage } from "@/components/LanguageProvider";
-import RelatableNumbers from "@/components/relatableNumbers";
+import RelatableNumbers from "@/components/companies/detail/relatableNumbers/RelatableNumbers";
 import type { Scope3Category } from "@/types/company";
 import { PageLoading } from "@/components/pageStates/Loading";
 import { PageError } from "@/components/pageStates/Error";
