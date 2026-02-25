@@ -1,15 +1,9 @@
-import { useTranslation } from "react-i18next";
+import { Trans } from "react-i18next";
 import type { ReactNode } from "react";
 import { Text } from "@/components/ui/text";
-import { InfoTooltip } from "@/components/layout/InfoTooltip";
-import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { SkullIcon, MapIcon } from "lucide-react";
-import { Trans } from "react-i18next";
 
 const ImpactForSelectYear = () => {
-  const { t } = useTranslation();
-
-  // TODO: Add KPI calculations for selected year impact (e.g. areaBurnt, citizens, swedenShare equivalents)
   const kpis: {
     id: string;
     value: string | null;
@@ -23,44 +17,20 @@ const ImpactForSelectYear = () => {
     },
     {
       id: "swedenShare",
-      value: null, // Replace with calculated value for area swedens share of emissions,
+      value: null, // Replace with calculated value for area swedens share of emissions
       color: "var(--blue-3)",
       icon: <MapIcon stroke={"var(--blue-3)"} height={35} width={35} />,
     },
   ];
 
   return (
-    <SectionWithHelp
-      helpItems={["relatableNumbers", "degsWarming", "forestFires", "citizens"]}
-    >
-      <div className="flex items-center gap-2">
-        <Text variant={"h3"}>{t("relatableNumbers.impact")}</Text>
-        <InfoTooltip>{t("relatableNumbers.tooltip")}</InfoTooltip>
-      </div>
+    <>
       <Text variant="body" className="text-sm md:text-base lg:text-lg mt-2">
         <Trans
           i18nKey="relatableNumbers.impactDescription"
           components={{
             highlightNumber: <span className="text-orange-2" />,
           }}
-          /* values={{
-            companyName: companyName,
-            emissionsChangeStatus: t(
-              `relatableNumbers.${emissionsChangeStatus}`,
-            ),
-            emissionsInTonnes: formatEmissionsAbsolute(
-              emissionsChange,
-              currentLanguage,
-            ),
-            yearOverYearChange:
-              yearOverYearChange !== null
-                ? formatPercentChange(
-                    yearOverYearChange,
-                    currentLanguage,
-                    false,
-                  )
-                : "",
-          }} */
         />
       </Text>
       <div className="justify-between flex flex-col md:flex-row md:gap-6">
@@ -68,14 +38,14 @@ const ImpactForSelectYear = () => {
           kpi.value ? (
             <div key={kpi.id} className="mt-6 gap-4 flex flex-col">
               <div className="flex justify-center items-center gap-4">
-                {/* TODO: Add icon */}
+                {kpi.icon}
                 <Text>{kpi.value}</Text>
               </div>
             </div>
           ) : null,
         )}
       </div>
-    </SectionWithHelp>
+    </>
   );
 };
 

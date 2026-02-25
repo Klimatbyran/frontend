@@ -12,8 +12,6 @@ import {
   formatEmissionsAbsolute,
   formatPercentChange,
 } from "@/utils/formatting/localization";
-import { InfoTooltip } from "@/components/layout/InfoTooltip";
-import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 
 type RelatableNumbersProps = {
   companyName: string;
@@ -106,13 +104,7 @@ const RelatableNumbersChangeRate = ({
   ];
 
   return (
-    <SectionWithHelp
-      helpItems={["relatableNumbers", "degsWarming", "forestFires", "citizens"]}
-    >
-      <div className="flex items-center gap-2">
-        <Text variant={"h3"}>{t("relatableNumbers.title")}</Text>
-        <InfoTooltip>{t("relatableNumbers.tooltip")}</InfoTooltip>
-      </div>
+    <>
       <Text variant="body" className="text-sm md:text-base lg:text-lg mt-2">
         <Trans
           i18nKey="relatableNumbers.description"
@@ -151,7 +143,7 @@ const RelatableNumbersChangeRate = ({
           ) : null,
         )}
       </div>
-    </SectionWithHelp>
+    </>
   );
 };
 export default RelatableNumbersChangeRate;
