@@ -30,7 +30,7 @@ type Item = {
   translationKey?: string | undefined;
 };
 
-type KpiItem = {
+export type KpiItem = {
   id: string;
   value: Item | null;
   color: string;
