@@ -106,8 +106,8 @@ const RelatableNumbersChangeRate = ({
     {
       id: "swedenShare",
       value: swedenEmissionsShare,
-      color: "var(--blue-3",
-      icon: <MapIcon stroke={"var(--blue-3"} height={35} width={35} />,
+      color: "var(--blue-3)",
+      icon: <MapIcon stroke={"var(--blue-3)"} height={35} width={35} />,
     },
   ];
 
@@ -160,4 +160,4 @@ const RelatableNumbersChangeRate = ({
     </SectionWithHelp>
   );
 };
-export default RelatableNumbers;
+export default RelatableNumbersChangeRate;

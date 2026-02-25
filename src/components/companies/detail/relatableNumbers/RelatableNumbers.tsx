@@ -14,16 +14,17 @@ type RelatableNumbersProps = {
 
 const RelatableNumbers = (props: RelatableNumbersProps) => {
   return (
-    <div className="flex flex-col gap-10">
-      <section aria-labelledby="change-rate-impact-heading">
-        <Text id="change-rate-impact-heading" variant="h2" className="mb-4">
-          Change rate impact
-        </Text>
+    <div className="flex flex-col gap-8">
+      <section aria-label="Change rate impact">
         <RelatableNumbersChangeRate {...props} />
       </section>
 
       <section aria-labelledby="impact-select-year-heading">
-        <Text id="impact-select-year-heading" variant="h2" className="mb-4">
+        <Text
+          id="impact-select-year-heading"
+          variant="h2"
+          className="mb-6 border-b border-black-3 pb-4"
+        >
           Impact for the select year
         </Text>
         <ImpactForSelectYear />
