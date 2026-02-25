@@ -60,7 +60,6 @@ export function useTransformRegionListCard({
             ? "text-pink-3"
             : "text-orange-2",
         changeRateTooltip: t("municipalities.card.changeRateInfo"),
-        regionMunicipalityCount: region.municipalityCount,
         largestEmissionsSector: region.largestEmissionsSector ?? null,
       };
     });
