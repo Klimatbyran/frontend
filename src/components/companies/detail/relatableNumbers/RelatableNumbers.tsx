@@ -1,6 +1,5 @@
 import RelatableNumbersChangeRate from "@/components/relatableNumbers";
 import ImpactForSelectYear from "./ImpactForSelectYear";
-import { Text } from "@/components/ui/text";
 import { SupportedLanguage } from "@/lib/languageDetection";
 
 type RelatableNumbersProps = {
@@ -19,14 +18,7 @@ const RelatableNumbers = (props: RelatableNumbersProps) => {
         <RelatableNumbersChangeRate {...props} />
       </section>
 
-      <section aria-labelledby="impact-select-year-heading">
-        <Text
-          id="impact-select-year-heading"
-          variant="h2"
-          className="mb-6 border-b border-black-3 pb-4"
-        >
-          Impact for the select year
-        </Text>
+      <section aria-label="Impact for the select year">
         <ImpactForSelectYear />
       </section>
     </div>
