@@ -102,17 +102,7 @@ export function ListCard({
                 {description}
               </p>
             </div>
-            {logoUrl && (
-              <img
-                src={logoUrl}
-                alt={
-                  variant === "region"
-                    ? t("regions.card.coatOfArmsAlt", { name })
-                    : "logo"
-                }
-                className="h-[50px]"
-              />
-            )}
+            {logoUrl && <img src={logoUrl} alt="logo" className="h-[50px]" />}
           </div>
 
           {/* Meets Paris section */}
