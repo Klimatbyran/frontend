@@ -40,7 +40,7 @@ Vi föreslår en ny reduktionsbana med start 2025 för att klara Parisavtalet.
 
 ## 2. Vad är Klimatkollens justerade utsläppsbana?
 
-Med utgångspunkt i **Global Carbon Budget 2024** har Klimatkollen räknat om den utsläppsminskning som krävs för att hålla sig inom 1,5°C-budgeten.
+Med utgångspunkt i **Global Carbon Budget 2024** har Klimatkollen räknat om den utsläppsminskning som krävs för att hålla sig inom 1,5°C budgeten.
 
 - **Uppdaterad tumregel:** Halvera utsläppen vart femte år med start 2025  
 - **Motsvarar:** ~12% minskning per år 
@@ -57,16 +57,16 @@ Baserat på återstående koldioxidbudgetar från Global Carbon Budget 2024 gäl
 - Årlig minskningstakt: 11,72%
 
 **Uppvärmningsnivå 1,7°C**
-- 50% Chans budget: 655 GtCO₂
+- Budget för 50% chans att klara 1,7 grader: 655 GtCO₂
 - Årlig minskningstakt: 7,38%
 
 **Uppvärmningsnivå 2,0°C**
-- 50% Chans budget: 1,155 GtCO₂
+- Budget för 50% chans att klara 2 grader: 1,155 GtCO₂
 - Årlig minskningstakt: 7,38%
 
 
 **Antaganden:**
-Våra beräkningar utgår från kvarstående utsläpp på 5,5 GtCO₂ år 2050 och baseras på 50% chans att inte överskrida 1,5°C. *(Källa: All options, not silver bullets, needed to limit global warming to 1.5 °C: a scenario appraisal, 2023)*
+Våra beräkningar utgår från kvarstående utsläpp på 5,5 GtCO₂ år 2050 och baseras på 50% chans att inte överskrida 1,5°C. *(Källa: [All options, not silver bullets, needed to limit global warming to 1.5 °C: a scenario appraisal](https://iopscience.iop.org/article/10.1088/1748-9326/abfeec))*
 
 Minskningstakten 12% per år tar inte hänsyn till rättviseaspekter eller enskilda aktörers förmåga att ställa om, utan är en generell tumregel som beskriver takten som behövs för att ha en chans att begränsa den globala uppvärmningen till 1,5°C.
 
