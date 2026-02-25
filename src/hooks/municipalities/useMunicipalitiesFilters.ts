@@ -1,5 +1,4 @@
 import { useMemo, useCallback } from "react";
-import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   Municipality,
@@ -8,59 +7,40 @@ import {
   isMeetsParisFilter,
   type MeetsParisFilter,
 } from "@/types/municipality";
-import {
-  isSortDirection,
-  type SortDirection,
-} from "@/components/explore/SortPopover";
 import { FilterGroup } from "@/components/explore/FilterPopover";
 import { regions } from "@/lib/constants/regions";
-import setOrDeleteSearchParam from "@/utils/data/setOrDeleteSearchParam";
 import { useSortOptions } from "./useMunicipalitiesSorting";
+import {
+  useExploreFilters,
+  type MeetsParisFilter,
+} from "@/hooks/explore/useExploreFilters";
+import type { SortDirection } from "@/components/explore/SortPopover";
 
 export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
-  const [searchParams, setSearchParams] = useSearchParams();
   const { t } = useTranslation();
   const sortOptions = useSortOptions();
 
-  const searchQuery = searchParams.get("searchQuery") || "";
-  const meetsParisFilter = isMeetsParisFilter(
-    searchParams.get("meetsParisFilter") ?? "",
-  )
-    ? (searchParams.get("meetsParisFilter") as MeetsParisFilter)
-    : "all";
+  const {
+    searchQuery,
+    setSearchQuery,
+    meetsParisFilter,
+    setMeetsParisFilter,
+    sortBy,
+    setSortBy,
+    sortDirection,
+    setSortDirection,
+  } = useExploreFilters<MunicipalitySortBy>({
+    defaultSortBy: "total_emissions",
+    isValidSortBy: isMunicipalitySortBy,
+    sortOptions,
+  });
+
   const selectedRegions = (searchParams
     .get("selectedRegions")
     ?.split(",")
     .filter(
       (s) => Object.keys(regions).some((region) => region === s) || s == "all",
     ) ?? ["all"]) as string[];
-  const sortBy = isMunicipalitySortBy(searchParams.get("sortBy") ?? "")
-    ? (searchParams.get("sortBy") as MunicipalitySortBy)
-    : "total_emissions";
-  const sortDirection = (
-    isSortDirection(searchParams.get("sortDirection") ?? "")
-      ? searchParams.get("sortDirection")
-      : (sortOptions.find((o) => o.value == sortBy)?.defaultDirection ?? "desc")
-  ) as SortDirection;
-
-  const setSearchQuery = useCallback(
-    (searchQuery: string) =>
-      setOrDeleteSearchParam(
-        setSearchParams,
-        searchQuery.trim() || null,
-        "searchQuery",
-      ),
-    [],
-  );
-  const setMeetsParisFilter = useCallback(
-    (meetsParisFilter: string) =>
-      setOrDeleteSearchParam(
-        setSearchParams,
-        meetsParisFilter,
-        "meetsParisFilter",
-      ),
-    [],
-  );
   const setSelectedRegions = useCallback(
     (selectedRegions: string[]) =>
       setOrDeleteSearchParam(
@@ -70,17 +50,6 @@ export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
       ),
     [],
   );
-  const setSortBy = useCallback(
-    (sortBy: string) =>
-      setOrDeleteSearchParam(setSearchParams, sortBy, "sortBy"),
-    [],
-  );
-  const setSortDirection = useCallback(
-    (sortDirection: string) =>
-      setOrDeleteSearchParam(setSearchParams, sortDirection, "sortDirection"),
-    [],
-  );
-
   const filteredMunicipalities = useMemo(
     () =>
       filterAndSortMunicipalities(municipalities, {

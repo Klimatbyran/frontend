@@ -1,22 +1,19 @@
-import { useMemo, useCallback } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import type { RegionForExplore } from "./useRegionsForExplore";
-import {
-  isSortDirection,
-  type SortDirection,
-} from "@/components/explore/SortPopover";
 import { FilterGroup } from "@/components/explore/FilterPopover";
-import setOrDeleteSearchParam from "@/utils/data/setOrDeleteSearchParam";
 import { useRegionSortOptions } from "./useRegionSorting";
+import {
+  useExploreFilters,
+  type MeetsParisFilter,
+} from "@/hooks/explore/useExploreFilters";
+import type { SortDirection } from "@/components/explore/SortPopover";
 
 type RegionSortBy =
   | "total_emissions"
   | "emissions_reduction"
   | "name"
   | "meets_paris";
-type MeetsParisFilter = "all" | "yes" | "no";
-
 function isRegionSortBy(s: string): s is RegionSortBy {
   return [
     "total_emissions",
@@ -26,54 +23,24 @@ function isRegionSortBy(s: string): s is RegionSortBy {
   ].includes(s);
 }
 
-function isMeetsParisFilter(s: string): s is MeetsParisFilter {
-  return s === "all" || s === "yes" || s === "no";
-}
-
 export function useRegionsFilters(regions: RegionForExplore[]) {
-  const [searchParams, setSearchParams] = useSearchParams();
   const { t } = useTranslation();
   const sortOptions = useRegionSortOptions();
 
-  const searchQuery = searchParams.get("searchQuery") || "";
-  const meetsParisFilter = isMeetsParisFilter(
-    searchParams.get("meetsParisFilter") ?? "",
-  )
-    ? (searchParams.get("meetsParisFilter") as MeetsParisFilter)
-    : "all";
-  const sortBy = isRegionSortBy(searchParams.get("sortBy") ?? "")
-    ? (searchParams.get("sortBy") as RegionSortBy)
-    : "total_emissions";
-  const sortDirection = (
-    isSortDirection(searchParams.get("sortDirection") ?? "")
-      ? searchParams.get("sortDirection")
-      : (sortOptions.find((o) => o.value === sortBy)?.defaultDirection ??
-        "desc")
-  ) as SortDirection;
-
-  const setSearchQuery = useCallback(
-    (query: string) =>
-      setOrDeleteSearchParam(
-        setSearchParams,
-        query.trim() || null,
-        "searchQuery",
-      ),
-    [setSearchParams],
-  );
-  const setMeetsParisFilter = useCallback(
-    (value: string) =>
-      setOrDeleteSearchParam(setSearchParams, value, "meetsParisFilter"),
-    [setSearchParams],
-  );
-  const setSortBy = useCallback(
-    (value: string) => setOrDeleteSearchParam(setSearchParams, value, "sortBy"),
-    [setSearchParams],
-  );
-  const setSortDirection = useCallback(
-    (value: string) =>
-      setOrDeleteSearchParam(setSearchParams, value, "sortDirection"),
-    [setSearchParams],
-  );
+  const {
+    searchQuery,
+    setSearchQuery,
+    meetsParisFilter,
+    setMeetsParisFilter,
+    sortBy,
+    setSortBy,
+    sortDirection,
+    setSortDirection,
+  } = useExploreFilters<RegionSortBy>({
+    defaultSortBy: "total_emissions",
+    isValidSortBy: isRegionSortBy,
+    sortOptions,
+  });
 
   const filteredRegions = useMemo(
     () =>
