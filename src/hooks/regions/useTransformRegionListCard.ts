@@ -25,10 +25,13 @@ export function useTransformRegionListCard({
         .map(Number)
         .sort((a, b) => b - a)[0];
       const lastYearStr = lastYear?.toString() ?? "";
-      const lastYearValue = lastYear ? region.emissions[lastYearStr] : undefined;
-      const emissionsValue = lastYearValue !== undefined
-        ? formatEmissionsAbsolute(lastYearValue, currentLanguage)
-        : t("municipalities.card.noData");
+      const lastYearValue = lastYear
+        ? region.emissions[lastYearStr]
+        : undefined;
+      const emissionsValue =
+        lastYearValue !== undefined
+          ? formatEmissionsAbsolute(lastYearValue, currentLanguage)
+          : t("municipalities.card.noData");
       const changeValue =
         region.historicalEmissionChangePercent != null
           ? formatPercentChange(
@@ -58,6 +61,7 @@ export function useTransformRegionListCard({
             : "text-orange-2",
         changeRateTooltip: t("municipalities.card.changeRateInfo"),
         regionMunicipalityCount: region.municipalityCount,
+        largestEmissionsSector: region.largestEmissionsSector ?? null,
       };
     });
   }, [filteredRegions, currentLanguage, t]);

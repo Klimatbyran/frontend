@@ -50,6 +50,9 @@ export interface ListCardProps {
   // Region list (number of municipalities in region)
   regionMunicipalityCount?: number;
 
+  // Region list (biggest emissions sector name)
+  largestEmissionsSector?: string | null;
+
   variant?: "company" | "municipality" | "region";
 }
 
@@ -74,6 +77,7 @@ export function ListCard({
   climatePlanHasPlan,
   climatePlanYear,
   regionMunicipalityCount,
+  largestEmissionsSector,
   variant = "company",
 }: ListCardProps) {
   const { t } = useTranslation();
@@ -84,20 +88,18 @@ export function ListCard({
     climatePlanStatusColor,
     climatePlanAdoptedColor,
     categoryName,
-    regionMunicipalityCountText,
   } = useListCardMeta({
     variant,
     climatePlanHasPlan,
     climatePlanYear,
     largestEmission,
-    regionMunicipalityCount,
   });
 
   return (
     <div className="relative rounded-level-2 @container">
       <LocalizedLink
         to={linkTo}
-        className="block bg-black-2 rounded-level-2 p-8 md:space-y-4 transition-all min-h-[400px] duration-300 hover:shadow-[0_0_10px_rgba(153,207,255,0.15)] hover:bg-[#1a1a1a]"
+        className="block bg-black-2 rounded-level-2 p-8 md:space-y-4 transition-all duration-300 hover:shadow-[0_0_10px_rgba(153,207,255,0.15)] hover:bg-[#1a1a1a]"
       >
         {/* Header section */}
         <div>
@@ -111,7 +113,11 @@ export function ListCard({
             {logoUrl && (
               <img
                 src={logoUrl}
-                alt={variant === "region" ? t("regions.card.coatOfArmsAlt", { name }) : "logo"}
+                alt={
+                  variant === "region"
+                    ? t("regions.card.coatOfArmsAlt", { name })
+                    : "logo"
+                }
                 className="h-[50px]"
               />
             )}
@@ -166,53 +172,47 @@ export function ListCard({
             </div>
           </div>
 
-          {/* Sustainability report / Climate plan section */}
-
-          <div className="grid grid-cols-1 gap-2 lg:grid-cols-2 lg:gap-4 mt-6">
-            <div>
-              <div className="flex flex-col gap-2 text-nowrap text-grey text-lg">
-                {isRegion
-                  ? t("municipalities.card.municipalitiesInRegion")
-                  : isMunicipality
+          {!isRegion && (
+            <div className="grid grid-cols-1 gap-2 lg:grid-cols-2 lg:gap-4 mt-6">
+              <div>
+                <div className="flex flex-col gap-2 text-nowrap text-grey text-lg">
+                  {isMunicipality
                     ? t("municipalities.card.climatePlan")
                     : t("companies.card.reportingSince")}
-              </div>
-              <div
-                className={cn(
-                  "text-xl font-light line-clamp-2 h-[48px]",
-                  climatePlanStatusColor,
-                )}
-              >
-                {isRegion
-                  ? regionMunicipalityCountText
-                  : isMunicipality
+                </div>
+                <div
+                  className={cn(
+                    "text-xl font-light line-clamp-2",
+                    climatePlanStatusColor,
+                  )}
+                >
+                  {isMunicipality
                     ? climatePlanHasPlan === true
                       ? t("yes")
                       : climatePlanHasPlan === false
                         ? t("no")
                         : t("unknown")
                     : (baseYear ?? t("unknown"))}
+                </div>
               </div>
-            </div>
 
-            <div>
-              <div className="flex flex-col gap-2 text-nowrap text-grey text-lg">
-                {isRegion
-                  ? "—"
-                  : isMunicipality
+              <div>
+                <div className="flex flex-col gap-2 text-nowrap text-grey text-lg">
+                  {isMunicipality
                     ? t("municipalities.card.climatePlanAdopted")
                     : t("companies.card.largestEmissionSource")}
-              </div>
-              <div
-                className={cn(
-                  "text-xl font-light line-clamp-2 h-[55px]",
-                  climatePlanAdoptedColor,
-                )}
-              >
-                {isRegion ? "—" : isMunicipality ? climatePlanAdoptedText : categoryName}
+                </div>
+                <div
+                  className={cn(
+                    "text-xl font-light line-clamp-2",
+                    climatePlanAdoptedColor,
+                  )}
+                >
+                  {isMunicipality ? climatePlanAdoptedText : categoryName}
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </LocalizedLink>
     </div>

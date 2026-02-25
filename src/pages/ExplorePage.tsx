@@ -21,8 +21,11 @@ export function ExplorePage() {
   const { municipalities, municipalitiesLoading, municipalitiesError } =
     useMunicipalities();
   const { companies, companiesLoading, companiesError } = useCompanies();
-  const { regions, loading: regionsLoading, error: regionsError } =
-    useRegionsForExplore();
+  const {
+    regions,
+    loading: regionsLoading,
+    error: regionsError,
+  } = useRegionsForExplore();
 
   // Filter out search params that are not applicable to both municipalities and companies
   const urlSearchParams = new URLSearchParams(window.location.search);
@@ -124,10 +127,9 @@ export function ExplorePage() {
           <Toggle
             onClick={() => {
               if (mainFilter !== "regions") {
-                navigate(
-                  ["../regions", globalUrlSearchParamStr].join("?"),
-                  { relative: "path" },
-                );
+                navigate(["../regions", globalUrlSearchParamStr].join("?"), {
+                  relative: "path",
+                });
               }
             }}
             variant={"outlineWhite"}

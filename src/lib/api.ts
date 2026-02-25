@@ -312,6 +312,14 @@ export async function getRegionDetails(name: string) {
   return data;
 }
 
+export async function getRegionSectorEmissions(name: string) {
+  const { data, error } = await GET("/regions/{name}/sector-emissions", {
+    params: { path: { name } },
+  });
+  if (error) throw error;
+  return data;
+}
+
 export async function getRegionsKPIs() {
   try {
     const { data, error } = await GET("/regions/kpis", {});
