@@ -9,3 +9,5 @@
 export const calculateRateOfChange = (selected?: number, previous?: number) => {
   return previous && selected ? (selected - previous) / previous : null;
 };
+
+export const SWEDISH_EMISSIONS_2024 = 44.2; // mtCO2e

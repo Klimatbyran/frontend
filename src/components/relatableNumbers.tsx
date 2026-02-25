@@ -1,10 +1,9 @@
 import { useTranslation, Trans } from "react-i18next";
-import { Flame, Lightbulb } from "lucide-react";
+import { Flame, Lightbulb, MapIcon } from "lucide-react";
 import { Text } from "@/components/ui/text";
 import {
   calculateAreaBurnt,
   emissionsComparedToCitizen,
-  calculateTemperatureGauge,
   calculateSwedenShareEmissions,
 } from "@/utils/calculations/relatableNumbersCalc";
 import { SupportedLanguage } from "@/lib/languageDetection";
@@ -14,12 +13,6 @@ import {
 } from "@/utils/formatting/localization";
 import { InfoTooltip } from "@/components/layout/InfoTooltip";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
-import ReactEChartsCore from "echarts-for-react/lib/core";
-import * as echarts from "echarts/core";
-import { GaugeChart } from "echarts/charts";
-import { CanvasRenderer } from "echarts/renderers";
-
-echarts.use([GaugeChart, CanvasRenderer]);
 
 type RelatableNumbersProps = {
   companyName: string;
@@ -43,6 +36,13 @@ type Values = {
   [key: string]: string;
 };
 
+type KpiItem = {
+  id: string;
+  value: Item | null;
+  color: string;
+  icon?: React.ReactNode;
+};
+
 const RelatableNumbers = ({
   emissionsChange,
   currentLanguage,
@@ -55,6 +55,11 @@ const RelatableNumbers = ({
   const areaBurnt = calculateAreaBurnt(emissionsChange, currentLanguage);
   const emissionNumberOfCitizens = emissionsComparedToCitizen(
     emissionsChange,
+    currentLanguage,
+  );
+
+  const swedenEmissionsShare = calculateSwedenShareEmissions(
+    reportingPeriods,
     currentLanguage,
   );
 
@@ -72,7 +77,10 @@ const RelatableNumbers = ({
     const type =
       item.translationKey === "Citizens"
         ? "citizens"
-        : t(`relatableNumbers.entities.${item.translationKey}.type`);
+        : item.translationKey === "shareSweden"
+          ? "shareSweden"
+          : t(`relatableNumbers.entities.${item.translationKey}.type`);
+
     const pattern = t(`relatableNumbers.patterns.${type}`);
 
     const values = {
@@ -96,18 +104,26 @@ const RelatableNumbers = ({
     );
   };
 
-  const formattedFireString = areaBurnt
-    ? formatRelatableNumber(areaBurnt, "var(--pink-3)")
-    : null;
-
-  const formattedCitizenString = emissionNumberOfCitizens
-    ? formatRelatableNumber(emissionNumberOfCitizens, "yellow")
-    : null;
-
-  const formattedSwedenShareString =
-    calculateSwedenShareEmissions(reportingPeriods);
-
-  const temperatureGaugeValue = calculateTemperatureGauge(reportingPeriods);
+  const kpis: KpiItem[] = [
+    {
+      id: "fire",
+      value: areaBurnt,
+      color: "var(--pink-3)",
+      icon: <Flame stroke={"var(--pink-3)"} height={45} width={45} />,
+    },
+    {
+      id: "citizens",
+      value: emissionNumberOfCitizens,
+      color: "yellow",
+      icon: <Lightbulb stroke={"yellow"} height={35} width={35} />,
+    },
+    {
+      id: "swedenShare",
+      value: swedenEmissionsShare,
+      color: "var(--blue-3",
+      icon: <MapIcon stroke={"var(--blue-3"} height={35} width={35} />,
+    },
+  ];
 
   return (
     <SectionWithHelp
@@ -144,62 +160,16 @@ const RelatableNumbers = ({
         />
       </Text>
       <div className="justify-between flex flex-col md:flex-row md:gap-6">
-        <div className="mt-6 gap-4 flex flex-col">
-          <div className="flex items-center gap-4">
-            <Flame stroke={"var(--pink-3)"} height={45} width={45} />
-            <Text>{formattedFireString}</Text>
-          </div>
-        </div>
-        <div className="mt-6 gap-4 flex flex-col">
-          <div className="flex items-center gap-4">
-            <Lightbulb stroke={"yellow"} height={35} width={35} />
-            <Text>{formattedCitizenString}</Text>
-          </div>
-        </div>
-
-        <ReactEChartsCore
-          echarts={echarts}
-          style={{ height: "400px", width: "100%" }}
-          option={{
-            series: [
-              {
-                type: "gauge",
-                startAngle: 180,
-                endAngle: 0,
-                min: 0,
-                max: 1,
-                splitNumber: 4,
-                axisLine: {
-                  lineStyle: {
-                    width: 10,
-                    color: [
-                      [0.25, "yellow"],
-                      [0.5, "yellow"],
-                      [0.75, "orange"],
-                      [1, "red"],
-                    ],
-                  },
-                },
-                pointer: {
-                  show: true,
-                  length: "50%",
-                  width: 4,
-                  color: "white",
-                  itemStyle: {
-                    color: "white",
-                  },
-                },
-                detail: {
-                  formatter: temperatureGaugeValue.toFixed(3) + " (m°C)",
-                  fontSize: 14,
-                  color: "white",
-                  offsetCenter: [0, "20%"],
-                },
-                data: [{ value: temperatureGaugeValue }],
-              },
-            ],
-          }}
-        />
+        {kpis.map((kpi) =>
+          kpi.value ? (
+            <div key={kpi.id} className="mt-6 gap-4 flex flex-col">
+              <div className="flex justify-center items-center gap-4">
+                {kpi.icon}
+                <Text>{formatRelatableNumber(kpi.value, kpi.color)}</Text>
+              </div>
+            </div>
+          ) : null,
+        )}
       </div>
     </SectionWithHelp>
   );

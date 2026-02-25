@@ -1,4 +1,6 @@
 import { formatEmissionsAbsolute } from "../formatting/localization";
+import { SWEDISH_EMISSIONS_2024 } from "./general";
+import type { ReportingPeriod } from "@/types/company";
 
 export const emissionsComparedToCitizen = (
   emissionsChange: number,
@@ -73,10 +75,26 @@ const burnComparison = (hectarBurnt: number) => {
 };
 
 //Here we want to calculate using the selected year's total, not the cumulative total
-/*  const swedenTotalEmissions = 44.2; // mtCO2e
+
+export const calculateSwedenShareEmissions = (
+  reportingPeriods: ReportingPeriod[],
+  currentLanguage: "sv" | "en",
+) => {
+  const periodForYear = reportingPeriods.find((period) =>
+    period.endDate.startsWith("2024"),
+  );
+  const calculatedTotal = periodForYear?.emissions?.calculatedTotalEmissions;
+
+  if (!calculatedTotal) return null;
+
   const calculatedTotalMtCO2e = calculatedTotal / 1e6;
-  return calculatedTotalMtCO2e / swedenTotalEmissions;
-};  */
+  const swedenShare = calculatedTotalMtCO2e / SWEDISH_EMISSIONS_2024;
+  return {
+    translationKey: "shareSweden",
+    comparisonNumber: formatEmissionsAbsolute(swedenShare, currentLanguage),
+    prefix: "prefixSwedenShare",
+  };
+};
 
 export const calculateTemperatureGauge = (reportingPeriods) => {
   const cumulativeTotalEmissions =

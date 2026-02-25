@@ -1944,6 +1944,7 @@
     "description": "{{companyName}} {{emissionsChangeStatus}} their emissions by <highlightNumber>{{emissionsInTonnes}} ({{yearOverYearChange}})</highlightNumber> tCO2e from the previous year. This compares to:",
     "prefixFire": "Emissions from a forest fire",
     "prefixEmissions": "The annual emissions of {{count}} Swedes.",
+    "prefixSwedenShare": "share of Sweden's annual emissions",
     "increased": "increased",
     "decreased": "decreased",
     "patterns": {

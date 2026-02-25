@@ -1996,12 +1996,14 @@
     "description": "{{companyName}} {{emissionsChangeStatus}} sina utsläpp med <highlightNumber>{{emissionsInTonnes}} ({{yearOverYearChange}})</highlightNumber> tCO2e jämfört med föregående år. Detta kan jämföras med:",
     "prefixFire": "Utsläpp motsvarande en skogsbrand",
     "prefixEmissions": "{{count}} svenska invånares årsutsläpp.",
+    "prefixSwedenShare": "{{count}} del av Sveriges totala utsläpp",
     "increased": "ökade",
     "decreased": "minskade",
     "patterns": {
       "city": "{{prefix}} {{count}} gånger större än {{entity}}.",
       "unit": "{{prefix}} stor som {{count}} {{entity}}.",
-      "citizens": "{{prefix}}"
+      "citizens": "{{prefix}}",
+      "shareSweden": "{{count}} gånger av Sveriges totala utsläpp"
     },
     "entities": {
       "stockholm": {
