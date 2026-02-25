@@ -37,7 +37,6 @@ function normalizeRegion(apiRegion: ApiRegion): RegionForExplore {
     historicalEmissionChangePercent:
       apiRegion.historicalEmissionChangePercent ?? 0,
     municipalityCount: apiRegion.municipalities?.length ?? 0,
-    largestEmissionsSector: apiRegion.largestEmissionsSector ?? null,
   };
 }
 
