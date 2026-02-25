@@ -9,7 +9,6 @@ export type RegionForExplore = {
   meetsParis: boolean;
   historicalEmissionChangePercent: number;
   municipalityCount: number;
-  /** Name of the sector with the largest emissions in the region (when available from API) */
 };
 
 type ApiRegion = {
