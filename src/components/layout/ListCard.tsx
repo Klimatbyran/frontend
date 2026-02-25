@@ -47,12 +47,6 @@ export interface ListCardProps {
   climatePlanHasPlan?: boolean | null;
   climatePlanYear?: number | null;
 
-  // Region list (number of municipalities in region)
-  regionMunicipalityCount?: number;
-
-  // Region list (biggest emissions sector name)
-  largestEmissionsSector?: string | null;
-
   variant?: "company" | "municipality" | "region";
 }
 
@@ -76,8 +70,6 @@ export function ListCard({
   baseYear,
   climatePlanHasPlan,
   climatePlanYear,
-  regionMunicipalityCount,
-  largestEmissionsSector,
   variant = "company",
 }: ListCardProps) {
   const { t } = useTranslation();

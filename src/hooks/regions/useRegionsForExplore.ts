@@ -10,7 +10,6 @@ export type RegionForExplore = {
   historicalEmissionChangePercent: number;
   municipalityCount: number;
   /** Name of the sector with the largest emissions in the region (when available from API) */
-  largestEmissionsSector?: string | null;
 };
 
 type ApiRegion = {
@@ -20,7 +19,6 @@ type ApiRegion = {
   historicalEmissionChangePercent: number;
   meetsParis: boolean;
   municipalities: string[];
-  largestEmissionsSector?: string | null;
 };
 
 function normalizeRegion(apiRegion: ApiRegion): RegionForExplore {
