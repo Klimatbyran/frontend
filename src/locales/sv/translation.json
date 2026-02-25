@@ -1964,7 +1964,6 @@
       "errorTitle": "Det gick inte att hämta länsinformation",
       "errorDescription": "Försök igen senare",
       "municipalityCount": "{{count}} kommuner",
-      "municipalitiesLabel": "Kommuner",
       "changeRateLabel": "Utsläppsförändring (%)",
       "changeRateInfo": "Förändring av utsläpp sedan 2015",
       "sortingOptions": {

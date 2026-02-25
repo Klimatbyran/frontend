@@ -1913,7 +1913,6 @@
       "errorTitle": "Failed to retrieve region information",
       "errorDescription": "Please try again later",
       "municipalityCount": "{{count}} municipalities",
-      "municipalitiesLabel": "Municipalities",
       "changeRateLabel": "Change in emissions (%)",
       "changeRateInfo": "Change in emissions since 2015",
       "sortingOptions": {
