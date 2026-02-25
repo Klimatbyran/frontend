@@ -25,9 +25,24 @@ export function useMunicipalities(): IMunicipalitiesReturn {
     queryFn: getMunicipalities,
     staleTime: 1800000,
     select: (data) => {
+      const mapEmissionArray = (
+        points:
+          | ({ year: string | number; value: number } | null)[]
+          | null
+          | undefined,
+      ) =>
+        (points ?? []).map((p) =>
+          p ? { year: Number(p.year), value: p.value } : null,
+        );
+
       return data.map(
         (municipality): Municipality => ({
           ...municipality,
+          emissions: mapEmissionArray(municipality.emissions as any),
+          approximatedHistoricalEmission: mapEmissionArray(
+            municipality.approximatedHistoricalEmission as any,
+          ),
+          trend: mapEmissionArray(municipality.trend as any),
           meetsParisGoal:
             municipality.totalTrend <= municipality.totalCarbonLaw,
           climatePlan: municipality.climatePlanYear !== null,
