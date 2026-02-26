@@ -2024,7 +2024,7 @@
       }
     },
     "impact": "Påverkan",
-    "impactDescription": "{{companyName}}s utsläpp under {{impactYear}} på <highlightNumber>{{emissionsInTonnes}}</highlightNumber> MtCO2e bidra till följande:"
+    "impactDescription": "{{companyName}}s utsläpp under {{impactYear}} på <highlightNumber>{{impactYearEmissions}}</highlightNumber> tCO2e bidra till följande:"
   },
   "filterPopover": {
     "filter": "Filter",

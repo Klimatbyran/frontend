@@ -3,6 +3,8 @@ import type { ReactNode } from "react";
 import { Text } from "@/components/ui/text";
 import { SkullIcon, MapIcon } from "lucide-react";
 import { RelatableNumbersProps } from "./RelatableNumbers";
+import { yearFromIsoDate } from "@/utils/date";
+import { formatEmissionsAbsolute } from "@/utils/formatting/localization";
 
 const ImpactForSelectYear = ({
   emissionsChange,
@@ -11,7 +13,7 @@ const ImpactForSelectYear = ({
   emissionsChangeStatus,
   yearOverYearChange,
   reportingPeriods,
-  impactYearValue,
+  impactPeriod,
 }: RelatableNumbersProps) => {
   const kpis: {
     id: string;
@@ -32,6 +34,13 @@ const ImpactForSelectYear = ({
     },
   ];
 
+  const impactYearValue = impactPeriod
+    ? Number(yearFromIsoDate(impactPeriod.endDate))
+    : null;
+
+  const impactYearEmissionsValue =
+    impactPeriod?.emissions?.calculatedTotalEmissions || 0;
+
   return (
     <>
       <Text variant="body" className="text-sm md:text-base lg:text-lg mt-2">
@@ -43,6 +52,10 @@ const ImpactForSelectYear = ({
           values={{
             companyName: companyName,
             impactYear: impactYearValue,
+            impactYearEmissions: formatEmissionsAbsolute(
+              impactYearEmissionsValue,
+              currentLanguage,
+            ),
           }}
         />
       </Text>

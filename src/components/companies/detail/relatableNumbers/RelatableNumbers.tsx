@@ -6,6 +6,7 @@ import { Text } from "@/components/ui/text";
 import { InfoTooltip } from "@/components/layout/InfoTooltip";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { DataGuideItemId } from "@/data-guide/items";
+import { ReportingPeriod } from "@/types/company";
 
 const HELP_ITEMS: DataGuideItemId[] = [
   "relatableNumbers",
@@ -21,7 +22,7 @@ export type RelatableNumbersProps = {
   currentLanguage: SupportedLanguage;
   yearOverYearChange: number | null;
   reportingPeriods: any;
-  impactYearValue: number | null;
+  impactPeriod: ReportingPeriod;
 };
 
 const RelatableNumbers = (props: RelatableNumbersProps) => {

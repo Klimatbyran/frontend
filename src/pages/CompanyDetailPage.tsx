@@ -114,14 +114,10 @@ export function CompanyDetailPage() {
     previousPeriod,
   );
 
-  //Constant value to be used for Impact section of Relatable numbers. Set to 2024 for now.
-  const impactYear = company?.reportingPeriods?.find((period) =>
-    period.endDate.startsWith("2024"),
-  );
-
-  const impactYearValue = impactYear
-    ? Number(yearFromIsoDate(impactYear.endDate))
-    : null;
+  //Constant period to be used for Impact section of Relatable numbers. Set to 2024 for now.
+  const impactPeriod =
+    company.reportingPeriods.find((p) => p.endDate.startsWith("2024")) ??
+    company.reportingPeriods[0];
 
   return (
     <>
@@ -145,7 +141,7 @@ export function CompanyDetailPage() {
             emissionsChangeStatus={emissionsChangeStatus}
             yearOverYearChange={yearOverYearChange}
             reportingPeriods={company.reportingPeriods}
-            impactYearValue={impactYearValue}
+            impactPeriod={impactPeriod}
           />
         )}
 
