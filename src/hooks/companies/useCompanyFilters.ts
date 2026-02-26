@@ -19,6 +19,7 @@ import {
   type CompanySortBy,
 } from "./useCompanySorting";
 import { useExploreFilters } from "@/hooks/explore/useExploreFilters";
+import { getSearchTerms } from "@/hooks/explore/exploreFilterUtils";
 import type { SortDirection } from "@/components/explore/SortPopover";
 
 const MEETS_PARIS_OPTIONS = ["all", "yes", "no", "unknown"] as const;
@@ -98,10 +99,7 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
             sectors.includes(company.industry?.industryGics?.sectorCode ?? ""));
 
         // Filter by search query
-        const searchTerms = searchQuery
-          .split(",")
-          .map((term) => term.trim().toLowerCase())
-          .filter((term) => term.length > 0);
+        const searchTerms = getSearchTerms(searchQuery);
 
         const matchesSearch =
           searchTerms.length === 0 ||

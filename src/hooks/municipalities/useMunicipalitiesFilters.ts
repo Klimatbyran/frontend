@@ -6,7 +6,6 @@ import {
   isMunicipalitySortBy,
   type MunicipalitySortBy,
 } from "@/types/municipality";
-import { FilterGroup } from "@/components/explore/FilterPopover";
 import { regions } from "@/lib/constants/regions";
 import { useSortOptions } from "./useMunicipalitiesSorting";
 import setOrDeleteSearchParam from "@/utils/data/setOrDeleteSearchParam";
@@ -14,6 +13,11 @@ import {
   useExploreFilters,
   type MeetsParisFilter,
 } from "@/hooks/explore/useExploreFilters";
+import {
+  buildMeetsParisFilterGroup,
+  buildMeetsParisActiveFilter,
+  getSearchTerms,
+} from "@/hooks/explore/exploreFilterUtils";
 import type { SortDirection } from "@/components/explore/SortPopover";
 
 export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
@@ -70,7 +74,7 @@ export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
     ],
   );
 
-  const filterGroups: FilterGroup[] = [
+  const filterGroups = [
     {
       heading: t("explorePage.municipalities.filteringOptions.selectRegion"),
       options: [
@@ -94,49 +98,32 @@ export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
       },
       selectMultiple: true,
     },
-    {
-      heading: t("explorePage.municipalities.sortingOptions.meetsParis"),
-      options: [
-        { value: "all", label: t("all") },
-        {
-          value: "yes",
-          label: t("yes"),
-        },
-        {
-          value: "no",
-          label: t("no"),
-        },
-      ],
-      selectedValues: [meetsParisFilter],
-      onSelect: (value: string) =>
-        setMeetsParisFilter(value as MeetsParisFilter),
-      selectMultiple: false,
-    },
+    buildMeetsParisFilterGroup(
+      t,
+      "explorePage.municipalities.sortingOptions.meetsParis",
+      meetsParisFilter,
+      setMeetsParisFilter,
+    ),
   ];
 
   const activeFilters = useMemo(() => {
     return [
-      ...(!selectedRegions.includes("all")
-        ? selectedRegions.map((selectedRegion) => ({
+      ...(selectedRegions.includes("all")
+        ? []
+        : selectedRegions.map((selectedRegion) => ({
             type: "filter" as const,
             label: selectedRegion,
             onRemove: () =>
               setSelectedRegions(
                 selectedRegions.filter((s) => s !== selectedRegion),
               ),
-          }))
-        : []),
-      ...(meetsParisFilter !== "all"
-        ? [
-            {
-              type: "filter" as const,
-              label: `${t("explorePage.municipalities.sortingOptions.meetsParis")}: ${
-                meetsParisFilter === "yes" ? t("yes") : t("no")
-              }`,
-              onRemove: () => setMeetsParisFilter("all"),
-            },
-          ]
-        : []),
+          }))),
+      ...buildMeetsParisActiveFilter(
+        t,
+        "explorePage.municipalities.sortingOptions.meetsParis",
+        meetsParisFilter,
+        () => setMeetsParisFilter("all"),
+      ),
     ];
   }, [
     selectedRegions,
@@ -203,12 +190,7 @@ const filterAndSortMunicipalities = (
 
       // Filter by search query
       if (searchQuery) {
-        const searchTerms = searchQuery
-          .toLowerCase()
-          .split(",")
-          .map((term) => term.trim())
-          .filter((term) => term.length > 0);
-
+        const searchTerms = getSearchTerms(searchQuery);
         return searchTerms.some((term) =>
           municipality.name.toLowerCase().startsWith(term),
         );

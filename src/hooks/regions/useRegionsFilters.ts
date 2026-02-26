@@ -1,12 +1,16 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import type { RegionForExplore } from "./useRegionsForExplore";
-import { FilterGroup } from "@/components/explore/FilterPopover";
 import { useRegionSortOptions } from "./useRegionSorting";
 import {
   useExploreFilters,
   type MeetsParisFilter,
 } from "@/hooks/explore/useExploreFilters";
+import {
+  buildMeetsParisFilterGroup,
+  buildMeetsParisActiveFilter,
+  getSearchTerms,
+} from "@/hooks/explore/exploreFilterUtils";
 import type { SortDirection } from "@/components/explore/SortPopover";
 
 type RegionSortBy =
@@ -53,35 +57,23 @@ export function useRegionsFilters(regions: RegionForExplore[]) {
     [regions, meetsParisFilter, searchQuery, sortBy, sortDirection],
   );
 
-  const filterGroups: FilterGroup[] = [
-    {
-      heading: t("explorePage.regions.sortingOptions.meetsParis"),
-      options: [
-        { value: "all", label: t("all") },
-        { value: "yes", label: t("yes") },
-        { value: "no", label: t("no") },
-      ],
-      selectedValues: [meetsParisFilter],
-      onSelect: (value: string) =>
-        setMeetsParisFilter(value as MeetsParisFilter),
-      selectMultiple: false,
-    },
+  const filterGroups = [
+    buildMeetsParisFilterGroup(
+      t,
+      "explorePage.regions.sortingOptions.meetsParis",
+      meetsParisFilter,
+      setMeetsParisFilter,
+    ),
   ];
 
   const activeFilters = useMemo(
-    () => [
-      ...(meetsParisFilter !== "all"
-        ? [
-            {
-              type: "filter" as const,
-              label: `${t("explorePage.regions.sortingOptions.meetsParis")}: ${
-                meetsParisFilter === "yes" ? t("yes") : t("no")
-              }`,
-              onRemove: () => setMeetsParisFilter("all"),
-            },
-          ]
-        : []),
-    ],
+    () =>
+      buildMeetsParisActiveFilter(
+        t,
+        "explorePage.regions.sortingOptions.meetsParis",
+        meetsParisFilter,
+        () => setMeetsParisFilter("all"),
+      ),
     [meetsParisFilter, t, setMeetsParisFilter],
   );
 
@@ -112,11 +104,7 @@ function filterAndSortRegions(
 ): RegionForExplore[] {
   const { meetsParisFilter, searchQuery, sortBy, sortDirection } = filters;
 
-  const searchTerms = searchQuery
-    .toLowerCase()
-    .split(",")
-    .map((s) => s.trim())
-    .filter(Boolean);
+  const searchTerms = getSearchTerms(searchQuery);
 
   return regions
     .filter((region) => {
