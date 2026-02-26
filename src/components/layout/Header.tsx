@@ -239,7 +239,7 @@ export function Header() {
     <header
       className={cn(
         "fixed top-0 left-0 w-screen flex items-center justify-between bg-black-2 z-50",
-        "h-10 lg:h-12",
+        "h-12",
       )}
     >
       <div className="container lg:mx-auto px-4 flex justify-between">
@@ -329,22 +329,28 @@ export function Header() {
             {headerTitle}
           </span>
         )}
+        <div className="flex gap-6">
+          <HeaderSearchButton
+            className="w-full lg:hidden"
+            onSearchResultClick={toggleMenu}
+          />
 
-        <button
-          className="lg:hidden text-white"
-          onClick={toggleMenu}
-          aria-label={menuOpen ? "Close menu" : "Open menu"}
-        >
-          {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
+          <button
+            className="lg:hidden text-white"
+            onClick={toggleMenu}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+          >
+            {menuOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
+          </button>
+        </div>
         {menuOpen && (
           <div className="overflow-y-auto fixed inset-0 top-10 w-full z-100 bg-black-2">
             <div className="p-8">
               <div className="flex flex-col gap-6 text-lg w-full">
-                <HeaderSearchButton
-                  className="w-full"
-                  onSearchResultClick={toggleMenu}
-                />
                 <LanguageButtons />
                 {filteredNavLinks.map((link) => (
                   <div key={link.path} className="flex flex-col">

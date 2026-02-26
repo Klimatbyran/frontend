@@ -1,4 +1,5 @@
-import { Building2Icon, TreePineIcon } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Building2Icon, ChevronDown, TreePineIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { TopList, TopListItem } from "@/components/TopList";
 import { ContentBlock } from "@/components/layout/ContentBlock";
@@ -7,17 +8,21 @@ import { useCompanies } from "@/hooks/companies/useCompanies";
 import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { useLanguage } from "@/components/LanguageProvider";
+import { SCROLL_FADE_THRESHOLD } from "@/hooks/landing/useLandingPageData";
+import useThrottle from "@/hooks/useThrottle";
 import {
   formatEmissionsAbsolute,
   formatPercentChange,
 } from "@/utils/formatting/localization";
-import GlobalSearch from "@/components/ui/globalsearch";
+import { SCROLL_THROTTLE_DELAY } from "@/lib/constants/landingPage";
 
 export function LandingPage() {
   const { t } = useTranslation();
   const { companies } = useCompanies();
   const { getTopMunicipalities } = useMunicipalities();
   const { currentLanguage } = useLanguage();
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [fadeChevron, setFadeChevron] = useState(false);
 
   // Prepare SEO data
   const canonicalUrl = "https://klimatkollen.se";
@@ -79,6 +84,31 @@ export function LandingPage() {
     </span>
   );
 
+  const handleChevronClick = useCallback(() => {
+    const element = containerRef.current;
+    if (element) {
+      window.scrollTo({ top: element.offsetTop, behavior: "smooth" });
+    }
+  }, []);
+
+  const handleScroll = useCallback(() => {
+    if (window.scrollY > SCROLL_FADE_THRESHOLD) {
+      setFadeChevron(true);
+    } else {
+      setFadeChevron(false);
+    }
+  }, [SCROLL_FADE_THRESHOLD]);
+
+  const throttledScroll = useThrottle(handleScroll, SCROLL_THROTTLE_DELAY);
+
+  useEffect(() => {
+    window.addEventListener("scroll", throttledScroll);
+
+    return () => {
+      window.removeEventListener("scroll", throttledScroll);
+    };
+  }, [throttledScroll]);
+
   return (
     <>
       <PageSEO
@@ -87,8 +117,8 @@ export function LandingPage() {
         canonicalUrl={canonicalUrl}
         structuredData={structuredData}
       />
-      <div className="flex flex-col">
-        <div className="flex-1 flex flex-col items-center text-center px-4 py-14 md:py-24">
+      <div className="flex flex-col h-screen items-center">
+        <div className="flex-1 flex flex-col items-center text-center px-4 py-44 md:py-56">
           <div className="max-w-lg md:max-w-4xl mx-auto space-y-4">
             <h1 className="text-4xl md:text-7xl font-light tracking-tight">
               {t("landingPage.title")}
@@ -105,14 +135,23 @@ export function LandingPage() {
               />
             </div>
           </div>
-
-          <div className="flex flex-col items-center mt-16 gap-4 ">
-            <GlobalSearch />
-          </div>
         </div>
+        <ChevronDown
+          onClick={handleChevronClick}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              handleChevronClick();
+            }
+          }}
+          role="button"
+          tabIndex={0}
+          aria-label={t("landingPage.scrollToContent", "Scroll to content")}
+          className={`${fadeChevron ? "opacity-0 " : "opacity-50"} mb-32 cursor-pointer animate-bounce animati transition-opacity ease-in duration-750`}
+        />
       </div>
 
-      <div className="py-8 pt-36 md:py-36">
+      <div ref={containerRef} className="pb-20 md:pb-28">
         <div className="mx-2 sm:mx-8">
           <h2 className="text-4xl md:text-5xl font-light text-center mb-8 md:mb-16">
             {t("landingPage.bestPerformers")}

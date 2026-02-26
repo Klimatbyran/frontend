@@ -25,7 +25,7 @@ const SearchResultList = ({
 
   return (
     <div className="pt-4">
-      <p className="text-sm flex items-center gap-2">
+      <p className="text-sm flex pb-2 items-center gap-2">
         <Icon size={15} /> {t(translationKey)}
       </p>
       {list.slice(0, 5).map((item) => (
