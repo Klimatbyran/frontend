@@ -5,7 +5,10 @@ import { SkullIcon, MapIcon } from "lucide-react";
 import { RelatableNumbersProps } from "./RelatableNumbers";
 import { yearFromIsoDate } from "@/utils/date";
 import { formatEmissionsAbsolute } from "@/utils/formatting/localization";
-import { calculateSwedenShareEmissions } from "@/utils/calculations/relatableNumbersCalc";
+import {
+  calculateSwedenShareEmissions,
+  calculatedNumberOfdeaths,
+} from "@/utils/calculations/relatableNumbersCalc";
 
 const ImpactForSelectYear = ({
   currentLanguage,
@@ -24,6 +27,13 @@ const ImpactForSelectYear = ({
     currentLanguage,
   );
 
+  const calculatedDeaths = calculatedNumberOfdeaths(
+    selectedYearEmissions,
+    currentLanguage,
+  );
+
+  console.log(calculatedDeaths);
+
   const kpis: {
     id: string;
     value: string | undefined;
@@ -33,7 +43,8 @@ const ImpactForSelectYear = ({
   }[] = [
     {
       id: "deaths",
-      value: "123123", // Replace with calculated value deaths
+      value: calculatedDeaths.comparisonNumber,
+      color: "var(--blue-3)",
       icon: <SkullIcon stroke={"white"} height={35} width={35} />,
       translationKey: "deaths",
     },

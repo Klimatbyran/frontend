@@ -19,6 +19,19 @@ export const formatTranslationString = (pattern: string, values: Values) => {
   return formatted;
 };
 
+export const calculatedNumberOfdeaths = (
+  calculatedTotal: number,
+  currentLanguage: "sv" | "en",
+) => {
+  const deathsPerMtCO2e = 226;
+  const totalDeaths = (calculatedTotal / 1e6) * deathsPerMtCO2e;
+  return {
+    translationKey: "deaths",
+    comparisonNumber: formatEmissionsAbsolute(totalDeaths, currentLanguage),
+    prefix: "prefixDeaths",
+  };
+};
+
 export const emissionsComparedToCitizen = (
   emissionsChange: number,
   currentLanguage: "sv" | "en",

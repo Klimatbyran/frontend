@@ -4,7 +4,6 @@ import { Text } from "@/components/ui/text";
 import {
   calculateAreaBurnt,
   emissionsComparedToCitizen,
-  calculateSwedenShareEmissions,
   formatTranslationString,
 } from "@/utils/calculations/relatableNumbersCalc";
 import {
