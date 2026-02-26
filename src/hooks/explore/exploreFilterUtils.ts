@@ -16,8 +16,7 @@ export function buildMeetsParisFilterGroup(
       { value: "no", label: t("no") },
     ],
     selectedValues: [meetsParisFilter],
-    onSelect: (value: string) =>
-      setMeetsParisFilter(value as MeetsParisFilter),
+    onSelect: (value: string) => setMeetsParisFilter(value as MeetsParisFilter),
     selectMultiple: false,
   };
 }
@@ -50,5 +49,3 @@ export function getSearchTerms(searchQuery: string): string[] {
     .map((term) => term.trim())
     .filter((term) => term.length > 0);
 }
-
-
