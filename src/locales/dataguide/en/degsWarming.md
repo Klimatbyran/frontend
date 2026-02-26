@@ -19,3 +19,5 @@ These are not immediate deaths caused directly by a single emission source. Rath
 This relationship provides a way to approximate the long-term human cost associated with emissions at different scales — whether individual, municipal, national, or corporate.
 
 These figures are model-based estimates and depend on assumptions about future warming, adaptation, population changes, and vulnerability. They should not be interpreted as precise predictions. However, they offer a quantitative indicator of the broader social impact of emissions, helping to translate abstract carbon quantities into human consequences over time.
+
+Learn more about this research [here](https://doi.org/10.1038/s41467-021-24487-w).

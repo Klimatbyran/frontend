@@ -1998,8 +1998,8 @@
     "prefixEmissions": "{{count}} svenska invånares årsutsläpp.",
     "increased": "ökade",
     "decreased": "minskade",
-    "shareSweden": "<highlightNumber>{{count}}</highlightNumber> gånger av Sveriges totala utsläpp.",
-    "calculatedDeaths": "<highlightNumber>{{count}}</highlightNumber> temperaturrelaterad överdödlighet globalt fram till år 2100.",
+    "shareSweden": "<highlightNumber>{{count}}</highlightNumber>gånger av Sveriges totala utsläpp.",
+    "calculatedDeaths": "<highlightNumber>{{count}}</highlightNumber>temperaturrelaterad överdödlighet globalt fram till år 2100.",
     "patterns": {
       "city": "{{prefix}} {{count}} gånger större än {{entity}}.",
       "unit": "{{prefix}} stor som {{count}} {{entity}}.",

@@ -19,3 +19,5 @@ Detta är inte omedelbara dödsfall orsakade direkt av en enskild utsläppskäll
 Detta samband ger ett sätt att närma sig den långsiktiga mänskliga kostnaden kopplad till utsläpp i olika skalomfång — oavsett om det är individer, kommuner, nationer eller företag.
 
 Siffrorna är modellbaserade uppskattningar och beror på antaganden om framtida uppvärmning, anpassning, befolkningsförändringar och sårbarhet. De ska inte tolkas som exakta förutsägelser. De ger dock en kvantitativ indikator på utsläppens bredare samhällspåverkan och hjälper till att översätta abstrakta kolmängder till mänskliga konsekvenser över tid.
+
+Läs mer om denna forskning [här](https://doi.org/10.1038/s41467-021-24487-w).

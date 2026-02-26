@@ -1945,7 +1945,7 @@
     "prefixFire": "Emissions from a forest fire",
     "prefixEmissions": "The annual emissions of {{count}} Swedes.",
     "shareSweden": "<highlightNumber>{{count}}</highlightNumber>times Sweden's total annual emissions.",
-    "calculatedDeaths": "<highlightNumber>{{count}}</highlightNumber> excess temperature-related deaths globally by 2100.",
+    "calculatedDeaths": "<highlightNumber>{{count}}</highlightNumber>excess temperature-related deaths globally by 2100.",
     "increased": "increased",
     "decreased": "decreased",
     "patterns": {
