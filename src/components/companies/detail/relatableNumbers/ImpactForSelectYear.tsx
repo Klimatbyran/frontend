@@ -77,7 +77,7 @@ const ImpactForSelectYear = ({
         {kpis.map((kpi) =>
           kpi.value ? (
             <div key={kpi.id} className="mt-6 gap-4 flex flex-col">
-              <div className="flex items-start gap-2 max-w-full">
+              <div className="flex items-start items-center gap-2 max-w-full">
                 <span className="flex-shrink-0 mt-0.5">{kpi.icon}</span>
                 <span className="min-w-0 break-words">
                   <Text>
