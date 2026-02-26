@@ -1971,7 +1971,7 @@
       }
     },
     "impact": "Impact",
-    "impactDescription": "{{companyName}} had emissions of <highlightNumber>{{emissionsInTonnes}}</highlightNumber> in {{selectedYear}}. This links to:"
+    "impactDescription": "{{companyName}} reported emissions of <highlightNumber>{{emissionsInTonnes}}</highlightNumber> tCO2 in {{selectedYear}}. This corresponds to:"
   },
   "filterPopover": {
     "filter": "Filter",
