@@ -46,7 +46,7 @@ const ImpactForSelectYear = ({
       value: calculatedDeaths?.comparisonNumber,
       color: "var(--blue-3)",
       icon: <SkullIcon stroke={"white"} height={35} width={35} />,
-      translationKey: "calculatedDeaths",
+      translationKey: "relatableNumbers.calculatedDeaths",
     },
     {
       id: "swedenShare",
