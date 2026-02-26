@@ -1,20 +1,21 @@
-# Why use the TCRE framework?
+# Estimating the Human Impact of Carbon Emissions
 
-The **Transient Climate Response to Cumulative Emissions (TCRE)** is a scientifically proven framework that shows a direct, linear relationship between the total amount of CO₂ emitted and the resulting global temperature increase. It allows us to calculate exactly how much a company's cumulative emissions contribute to global warming in milli-degrees Celsius (m°C).
+It is possible to estimate the potential human impacts associated with additional greenhouse gas emissions. A 2021 peer-reviewed study published in *Nature Communications* examined the relationship between cumulative carbon dioxide (CO₂) emissions and temperature-related mortality.
 
-## How it shows a company's contribution
+The study estimates that for every **4,434 metric tonnes of CO₂** added to the atmosphere, **one excess death** may occur globally between 2020 and 2100 as a result of temperature-related impacts.
 
-By using the TCRE formula, we can take a company's total historical emissions (e.g., your 1.61 GtCO₂) and convert them directly into a temperature value (e.g., 0.72 m°C).
+## What is an "excess death"?
 
-- **It creates accountability:** It moves the conversation from "tons of gas" (which is hard to visualize) to "degrees of warming".
-- **It's a permanent record:** Since CO₂ emissions stay in the atmosphere for centuries, the TCRE represents a company's "permanent footprint" on the Earth's thermostat.
+An **excess death** refers to a death that would not have occurred in the absence of additional warming. In this context, it primarily relates to increased mortality from heat exposure and heatwaves in a warmer climate, compared to a counterfactual scenario in which global temperatures remained lower.
 
-## Cumulative vs. annual
+These are not immediate deaths caused directly by a single emission source. Rather, they are statistical estimates of additional mortality risk over time due to cumulative warming.
 
-This graph shows **cumulative** data. Unlike annual targets, cumulative emissions never go down unless carbon is physically removed from the atmosphere.
+## Expressed at a larger scale
 
-## Milli-degrees (m°C)
+- **1 million tonnes (1 MtCO₂)** ≈ **226 future excess deaths**
 
-While 0.7 m°C might sound small for one company (like ABB), there are thousands of large companies. When added together, these "milli-degrees" create the 1.5°C to 2.0°C total global warming.
+## Interpreting these numbers
 
-**Reference:** [Quantifying the regional to global climate impacts of individual fossil fuel projects to inform decision-making](https://www.nature.com/articles/s44168-025-00296-5) (npj Climate Action)
+This relationship provides a way to approximate the long-term human cost associated with emissions at different scales — whether individual, municipal, national, or corporate.
+
+These figures are model-based estimates and depend on assumptions about future warming, adaptation, population changes, and vulnerability. They should not be interpreted as precise predictions. However, they offer a quantitative indicator of the broader social impact of emissions, helping to translate abstract carbon quantities into human consequences over time.
