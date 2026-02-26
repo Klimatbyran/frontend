@@ -7,7 +7,6 @@ import {
   calculateSwedenShareEmissions,
   formatTranslationString,
 } from "@/utils/calculations/relatableNumbersCalc";
-import { SupportedLanguage } from "@/lib/languageDetection";
 import {
   formatEmissionsAbsolute,
   formatPercentChange,
@@ -33,16 +32,11 @@ const RelatableNumbersChangeRate = ({
   companyName,
   emissionsChangeStatus,
   yearOverYearChange,
-  reportingPeriods,
 }: RelatableNumbersProps) => {
   const { t } = useTranslation();
   const areaBurnt = calculateAreaBurnt(emissionsChange, currentLanguage);
   const emissionNumberOfCitizens = emissionsComparedToCitizen(
     emissionsChange,
-    currentLanguage,
-  );
-  const swedenEmissionsShare = calculateSwedenShareEmissions(
-    reportingPeriods,
     currentLanguage,
   );
 
@@ -51,9 +45,6 @@ const RelatableNumbersChangeRate = ({
     switch (item.translationKey) {
       case "Citizens":
         type = "citizens";
-        break;
-      case "shareSweden":
-        type = "shareSweden";
         break;
       default:
         type = t(`relatableNumbers.entities.${item.translationKey}.type`);

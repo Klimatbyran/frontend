@@ -5,41 +5,47 @@ import { SkullIcon, MapIcon } from "lucide-react";
 import { RelatableNumbersProps } from "./RelatableNumbers";
 import { yearFromIsoDate } from "@/utils/date";
 import { formatEmissionsAbsolute } from "@/utils/formatting/localization";
+import { calculateSwedenShareEmissions } from "@/utils/calculations/relatableNumbersCalc";
 
 const ImpactForSelectYear = ({
-  emissionsChange,
   currentLanguage,
   companyName,
-  emissionsChangeStatus,
-  yearOverYearChange,
   reportingPeriods,
   impactPeriod,
 }: RelatableNumbersProps) => {
-  const kpis: {
-    id: string;
-    value: string | null;
-    color?: string;
-    icon: ReactNode;
-  }[] = [
-    {
-      id: "deaths",
-      value: null, // Replace with calculated value for area burnt
-      icon: <SkullIcon stroke={"red"} height={35} width={35} />,
-    },
-    {
-      id: "swedenShare",
-      value: null, // Replace with calculated value for area swedens share of emissions
-      color: "var(--blue-3)",
-      icon: <MapIcon stroke={"var(--blue-3)"} height={35} width={35} />,
-    },
-  ];
-
   const impactYearValue = impactPeriod
     ? Number(yearFromIsoDate(impactPeriod.endDate))
     : null;
 
   const impactYearEmissionsValue =
     impactPeriod?.emissions?.calculatedTotalEmissions || 0;
+
+  const swedenEmissionsShare = calculateSwedenShareEmissions(
+    reportingPeriods,
+    currentLanguage,
+  );
+
+  const kpis: {
+    id: string;
+    value: string | undefined;
+    color?: string;
+    icon: ReactNode;
+    translationKey?: string;
+  }[] = [
+    {
+      id: "deaths",
+      value: "123123", // Replace with calculated value deaths
+      icon: <SkullIcon stroke={"white"} height={35} width={35} />,
+      translationKey: "deaths",
+    },
+    {
+      id: "swedenShare",
+      value: swedenEmissionsShare?.comparisonNumber, // Replace with calculated value for area swedens share of emissions
+      color: "var(--blue-3)",
+      icon: <MapIcon stroke={"var(--blue-3)"} height={35} width={35} />,
+      translationKey: "relatableNumbers.shareSweden",
+    },
+  ];
 
   return (
     <>
@@ -65,7 +71,15 @@ const ImpactForSelectYear = ({
             <div key={kpi.id} className="mt-6 gap-4 flex flex-col">
               <div className="flex justify-center items-center gap-4">
                 {kpi.icon}
-                <Text>{kpi.value}</Text>
+                <Trans
+                  i18nKey={kpi.translationKey}
+                  components={{
+                    highlightNumber: <span style={{ color: kpi.color }} />,
+                  }}
+                  values={{
+                    count: kpi.value,
+                  }}
+                />
               </div>
             </div>
           ) : null,
