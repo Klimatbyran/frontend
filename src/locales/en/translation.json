@@ -1944,8 +1944,8 @@
     "description": "{{companyName}} {{emissionsChangeStatus}} their emissions by <highlightNumber>{{emissionsInTonnes}} ({{yearOverYearChange}})</highlightNumber> tCO2e from the previous year. This compares to:",
     "prefixFire": "Emissions from a forest fire",
     "prefixEmissions": "The annual emissions of {{count}} Swedes.",
-    "shareSweden": "<highlightNumber>{{count}}</highlightNumber>times Sweden's total annual emissions.",
-    "calculatedDeaths": "<highlightNumber>{{count}}</highlightNumber>excess temperature-related deaths globally by 2100.",
+    "shareSweden": "<highlightNumber>{{count}}</highlightNumber> times Sweden's total annual emissions.",
+    "calculatedDeaths": "<highlightNumber>{{count}}</highlightNumber> excess temperature-related deaths globally by 2100.",
     "increased": "increased",
     "decreased": "decreased",
     "patterns": {
@@ -1970,6 +1970,8 @@
         "type": "unit"
       }
     },
+    "changeRateSubtitle": "Understanding the impact of a company's progress or regression on emissions change",
+    "impactSubtitle": "Total reported emissions for the selected year",
     "impact": "Impact",
     "impactDescription": "{{companyName}} reported emissions of <highlightNumber>{{emissionsInTonnes}}</highlightNumber> tCO2 in {{selectedYear}}. This corresponds to:"
   },

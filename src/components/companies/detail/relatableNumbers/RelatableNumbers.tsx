@@ -34,12 +34,27 @@ const RelatableNumbers = (props: RelatableNumbersProps) => {
         <Text variant="h3">{t("relatableNumbers.title")}</Text>
         <InfoTooltip>{t("relatableNumbers.tooltip")}</InfoTooltip>
       </div>
-      <section aria-label="Change rate impact">
+      <Text
+        variant="body"
+        className=" text-grey mt-6 mb-4 text-sm md:text-base lg:text-lg"
+      >
+        {t("relatableNumbers.changeRateSubtitle")}
+      </Text>
+      <section
+        aria-label="Change rate impact"
+        className="rounded-xl bg-black-1 p-4 md:p-6"
+      >
         <RelatableNumbersChangeRate {...props} />
       </section>
+      <Text
+        variant="body"
+        className=" text-grey mt-6 mb-4 text-sm md:text-base lg:text-lg"
+      >
+        {t("relatableNumbers.impactSubtitle")}
+      </Text>
       <section
         aria-label="Impact for the select year"
-        className="mt-8 pt-4 border-t border-black-1"
+        className="rounded-xl bg-black-1 p-4 md:p-6"
       >
         <ImpactForSelectYear {...props} />
       </section>

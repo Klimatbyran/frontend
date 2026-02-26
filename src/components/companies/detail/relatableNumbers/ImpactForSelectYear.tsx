@@ -80,22 +80,24 @@ const ImpactForSelectYear = ({
               <div className="flex items-start gap-2 max-w-full">
                 <span className="flex-shrink-0 mt-0.5">{kpi.icon}</span>
                 <span className="min-w-0 break-words">
-                  <Trans
-                    i18nKey={kpi.translationKey}
-                    components={{
-                      highlightNumber: (
-                        <span
-                          style={{
-                            color: kpi.color,
-                            marginRight: "0.25em",
-                          }}
-                        />
-                      ),
-                    }}
-                    values={{
-                      count: kpi.value,
-                    }}
-                  />
+                  <Text>
+                    <Trans
+                      i18nKey={kpi.translationKey}
+                      components={{
+                        highlightNumber: (
+                          <span
+                            style={{
+                              color: kpi.color ?? "currentColor",
+                              fontWeight: "bold",
+                            }}
+                          />
+                        ),
+                      }}
+                      values={{
+                        count: kpi.value,
+                      }}
+                    />
+                  </Text>
                 </span>
               </div>
             </div>

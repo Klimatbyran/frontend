@@ -74,8 +74,8 @@ const RelatableNumbersChangeRate = ({
     {
       id: "fire",
       value: areaBurnt,
-      color: "var(--pink-3)",
-      icon: <Flame stroke={"var(--pink-3)"} height={45} width={45} />,
+      color: "var(--blue-3)",
+      icon: <Flame stroke={"var(--blue-3)"} height={45} width={45} />,
     },
     {
       id: "citizens",
