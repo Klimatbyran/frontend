@@ -2023,7 +2023,7 @@
       }
     },
     "impact": "Påverkan",
-    "impactDescription": "{{companyName}}s utsläpp under {{impactYear}} på <highlightNumber>{{impactYearEmissions}}</highlightNumber> tCO2e beräknas bidra till följande:"
+    "impactDescription": "{{companyName}} hade utsläpp på <highlightNumber>{{emissionsInTonnes}}</highlightNumber> under {{selectedYear}}. Detta kopplar till:"
   },
   "filterPopover": {
     "filter": "Filter",

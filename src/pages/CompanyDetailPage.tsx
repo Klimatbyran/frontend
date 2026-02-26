@@ -17,7 +17,6 @@ import { calculateEmissionsChange } from "@/utils/calculations/emissionsCalculat
 import { generateCompanySeoMeta } from "@/utils/seo/entitySeo";
 import { getSeoForRoute } from "@/seo/routes";
 import { yearFromIsoDate } from "@/utils/date";
-import type { ReportingPeriod } from "@/types/company";
 
 export function CompanyDetailPage() {
   const { t } = useTranslation();

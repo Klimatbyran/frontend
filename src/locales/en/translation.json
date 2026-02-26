@@ -1970,7 +1970,7 @@
       }
     },
     "impact": "Impact",
-    "impactDescription": "{{companyName}}'s {{impactYear}} footprint of <highlightNumber>{{impactYearEmissions}}</highlightNumber> tCO2e is projected to contribute to the following:"
+    "impactDescription": "{{companyName}} had emissions of <highlightNumber>{{emissionsInTonnes}}</highlightNumber> in {{selectedYear}}. This links to:"
   },
   "filterPopover": {
     "filter": "Filter",

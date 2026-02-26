@@ -13,12 +13,11 @@ const ImpactForSelectYear = ({
   reportingPeriods,
   impactPeriod,
 }: RelatableNumbersProps) => {
-  const impactYearValue = impactPeriod
-    ? Number(yearFromIsoDate(impactPeriod.endDate))
-    : null;
-
-  const impactYearEmissionsValue =
-    impactPeriod?.emissions?.calculatedTotalEmissions || 0;
+  const selectedYear = impactPeriod
+    ? yearFromIsoDate(impactPeriod.endDate)
+    : "";
+  const selectedYearEmissions =
+    impactPeriod?.emissions?.calculatedTotalEmissions ?? 0;
 
   const swedenEmissionsShare = calculateSwedenShareEmissions(
     reportingPeriods,
@@ -40,7 +39,7 @@ const ImpactForSelectYear = ({
     },
     {
       id: "swedenShare",
-      value: swedenEmissionsShare?.comparisonNumber, // Replace with calculated value for area swedens share of emissions
+      value: swedenEmissionsShare?.comparisonNumber,
       color: "var(--blue-3)",
       icon: <MapIcon stroke={"var(--blue-3)"} height={35} width={35} />,
       translationKey: "relatableNumbers.shareSweden",
@@ -56,10 +55,10 @@ const ImpactForSelectYear = ({
             highlightNumber: <span className="text-orange-2" />,
           }}
           values={{
-            companyName: companyName,
-            impactYear: impactYearValue,
-            impactYearEmissions: formatEmissionsAbsolute(
-              impactYearEmissionsValue,
+            companyName,
+            selectedYear,
+            emissionsInTonnes: formatEmissionsAbsolute(
+              selectedYearEmissions,
               currentLanguage,
             ),
           }}
