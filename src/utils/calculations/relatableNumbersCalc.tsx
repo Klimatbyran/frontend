@@ -92,7 +92,6 @@ const burnComparison = (hectarBurnt: number) => {
 };
 
 //Here we want to calculate using the selected year's total, not the cumulative total
-
 export const calculateSwedenShareEmissions = (
   reportingPeriods: ReportingPeriod[],
   currentLanguage: "sv" | "en",

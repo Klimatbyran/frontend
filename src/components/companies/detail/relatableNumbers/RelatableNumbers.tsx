@@ -39,7 +39,7 @@ const RelatableNumbers = (props: RelatableNumbersProps) => {
       </section>
       <section
         aria-label="Impact for the select year"
-        className="mt-8 pt-8 border-t border-gray-500"
+        className="mt-8 pt-4 border-t border-black-1"
       >
         <ImpactForSelectYear {...props} />
       </section>
