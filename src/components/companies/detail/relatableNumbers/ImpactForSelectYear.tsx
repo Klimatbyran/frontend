@@ -43,10 +43,10 @@ const ImpactForSelectYear = ({
   }[] = [
     {
       id: "deaths",
-      value: calculatedDeaths.comparisonNumber,
+      value: calculatedDeaths?.comparisonNumber,
       color: "var(--blue-3)",
       icon: <SkullIcon stroke={"white"} height={35} width={35} />,
-      translationKey: "deaths",
+      translationKey: "calculatedDeaths",
     },
     {
       id: "swedenShare",

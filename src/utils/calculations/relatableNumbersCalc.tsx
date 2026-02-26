@@ -26,7 +26,7 @@ export const calculatedNumberOfdeaths = (
   const deathsPerMtCO2e = 226;
   const totalDeaths = (calculatedTotal / 1e6) * deathsPerMtCO2e;
   return {
-    translationKey: "deaths",
+    translationKey: "calculatedDeaths",
     comparisonNumber: formatEmissionsAbsolute(totalDeaths, currentLanguage),
     prefix: "prefixDeaths",
   };
