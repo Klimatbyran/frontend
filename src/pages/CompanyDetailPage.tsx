@@ -17,6 +17,7 @@ import { calculateEmissionsChange } from "@/utils/calculations/emissionsCalculat
 import { generateCompanySeoMeta } from "@/utils/seo/entitySeo";
 import { getSeoForRoute } from "@/seo/routes";
 import { yearFromIsoDate } from "@/utils/date";
+import type { ReportingPeriod } from "@/types/company";
 
 export function CompanyDetailPage() {
   const { t } = useTranslation();
@@ -113,6 +114,15 @@ export function CompanyDetailPage() {
     previousPeriod,
   );
 
+  //Constant value to be used for Impact section of Relatable numbers. Set to 2024 for now.
+  const impactYear = company?.reportingPeriods?.find((period) =>
+    period.endDate.startsWith("2024"),
+  );
+
+  const impactYearValue = impactYear
+    ? Number(yearFromIsoDate(impactYear.endDate))
+    : null;
+
   return (
     <>
       {/* Only render SEO when data is available, otherwise Layout will use route-level SEO */}
@@ -135,6 +145,7 @@ export function CompanyDetailPage() {
             emissionsChangeStatus={emissionsChangeStatus}
             yearOverYearChange={yearOverYearChange}
             reportingPeriods={company.reportingPeriods}
+            impactYearValue={impactYearValue}
           />
         )}
 

@@ -2,8 +2,17 @@ import { Trans } from "react-i18next";
 import type { ReactNode } from "react";
 import { Text } from "@/components/ui/text";
 import { SkullIcon, MapIcon } from "lucide-react";
+import { RelatableNumbersProps } from "./RelatableNumbers";
 
-const ImpactForSelectYear = () => {
+const ImpactForSelectYear = ({
+  emissionsChange,
+  currentLanguage,
+  companyName,
+  emissionsChangeStatus,
+  yearOverYearChange,
+  reportingPeriods,
+  impactYearValue,
+}: RelatableNumbersProps) => {
   const kpis: {
     id: string;
     value: string | null;
@@ -30,6 +39,10 @@ const ImpactForSelectYear = () => {
           i18nKey="relatableNumbers.impactDescription"
           components={{
             highlightNumber: <span className="text-orange-2" />,
+          }}
+          values={{
+            companyName: companyName,
+            impactYear: impactYearValue,
           }}
         />
       </Text>

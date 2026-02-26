@@ -14,13 +14,14 @@ const HELP_ITEMS: DataGuideItemId[] = [
   "citizens",
 ];
 
-type RelatableNumbersProps = {
+export type RelatableNumbersProps = {
   companyName: string;
   emissionsChange: number;
   emissionsChangeStatus: string;
   currentLanguage: SupportedLanguage;
   yearOverYearChange: number | null;
   reportingPeriods: any;
+  impactYearValue: number | null;
 };
 
 const RelatableNumbers = (props: RelatableNumbersProps) => {
@@ -39,7 +40,7 @@ const RelatableNumbers = (props: RelatableNumbersProps) => {
         aria-label="Impact for the select year"
         className="mt-8 pt-8 border-t border-gray-500"
       >
-        <ImpactForSelectYear />
+        <ImpactForSelectYear {...props} />
       </section>
     </SectionWithHelp>
   );

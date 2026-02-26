@@ -12,15 +12,7 @@ import {
   formatEmissionsAbsolute,
   formatPercentChange,
 } from "@/utils/formatting/localization";
-
-type RelatableNumbersProps = {
-  companyName: string;
-  emissionsChange: number;
-  emissionsChangeStatus: string;
-  currentLanguage: SupportedLanguage;
-  yearOverYearChange: number | null;
-  reportingPeriods: any;
-};
+import type { RelatableNumbersProps } from "./RelatableNumbers";
 
 type Item = {
   comparisonNumber: string;
