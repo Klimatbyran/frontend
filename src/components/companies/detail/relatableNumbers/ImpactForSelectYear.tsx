@@ -1,7 +1,7 @@
 import { Trans } from "react-i18next";
 import type { ReactNode } from "react";
 import { Text } from "@/components/ui/text";
-import { SkullIcon, MapIcon } from "lucide-react";
+import { Thermometer, MapIcon } from "lucide-react";
 import { RelatableNumbersProps } from "./RelatableNumbers";
 import { yearFromIsoDate } from "@/utils/date";
 import { formatEmissionsAbsolute } from "@/utils/formatting/localization";
@@ -41,7 +41,7 @@ const ImpactForSelectYear = ({
       id: "deaths",
       value: calculatedDeaths?.comparisonNumber,
       color: "var(--pink-3)",
-      icon: <SkullIcon stroke={"var(--pink-3)"} height={35} width={35} />,
+      icon: <Thermometer stroke={"var(--pink-3)"} height={35} width={35} />,
       translationKey: "relatableNumbers.calculatedDeaths",
     },
     {
