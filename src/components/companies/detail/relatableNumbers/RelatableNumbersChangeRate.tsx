@@ -87,7 +87,7 @@ const RelatableNumbersChangeRate = ({
         {kpis.map((kpi) =>
           kpi.value ? (
             <div key={kpi.id} className="mt-6 gap-4 flex flex-col">
-              <div className="flex justify-center items-center gap-4">
+              <div className="flex items-center gap-4">
                 {kpi.icon}
                 <Text>
                   <Trans
