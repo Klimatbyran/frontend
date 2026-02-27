@@ -75,7 +75,7 @@ export function OverviewStat({
       <div className="flex items-start gap-2">
         <Text
           className={cn(
-            "text-3xl md:text-4xl lg:text-6xl font-light tracking-tighter leading-none",
+            "text-4xl md:text-6xl font-light tracking-tighter leading-none",
             valueClassName,
           )}
         >
