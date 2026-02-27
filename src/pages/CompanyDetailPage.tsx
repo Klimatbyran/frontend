@@ -8,7 +8,7 @@ import { EmissionsHistory } from "@/components/companies/detail/history/Emission
 import { Seo } from "@/components/SEO/Seo";
 import { CompanyScope3 } from "@/components/companies/detail/CompanyScope3";
 import { useLanguage } from "@/components/LanguageProvider";
-import RelatableNumbers from "@/components/relatableNumbers";
+import RelatableNumbers from "@/components/companies/detail/relatableNumbers/RelatableNumbers";
 import type { Scope3Category } from "@/types/company";
 import { PageLoading } from "@/components/pageStates/Loading";
 import { PageError } from "@/components/pageStates/Error";
@@ -113,6 +113,11 @@ export function CompanyDetailPage() {
     previousPeriod,
   );
 
+  //Constant period to be used for Impact section of Relatable numbers. Set to 2024 for now.
+  const impactPeriod =
+    company.reportingPeriods.find((p) => p.endDate.startsWith("2024")) ??
+    company.reportingPeriods[0];
+
   return (
     <>
       {/* Only render SEO when data is available, otherwise Layout will use route-level SEO */}
@@ -134,6 +139,8 @@ export function CompanyDetailPage() {
             companyName={company.name}
             emissionsChangeStatus={emissionsChangeStatus}
             yearOverYearChange={yearOverYearChange}
+            reportingPeriods={company.reportingPeriods}
+            impactPeriod={impactPeriod}
           />
         )}
 

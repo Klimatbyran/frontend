@@ -1,4 +1,18 @@
 import { formatEmissionsAbsolute } from "../formatting/localization";
+import { SWEDISH_EMISSIONS_2024 } from "./general";
+import type { ReportingPeriod } from "@/types/company";
+
+export const calculatedNumberOfdeaths = (
+  calculatedTotal: number,
+  currentLanguage: "sv" | "en",
+) => {
+  const deathsPerMtCO2e = 226;
+  const totalDeaths = (calculatedTotal / 1e6) * deathsPerMtCO2e;
+  return {
+    translationKey: "calculatedDeaths",
+    comparisonNumber: formatEmissionsAbsolute(totalDeaths, currentLanguage),
+  };
+};
 
 export const emissionsComparedToCitizen = (
   emissionsChange: number,
@@ -18,54 +32,52 @@ export const emissionsComparedToCitizen = (
         comparisonNumber,
         currentLanguage,
       ),
-      translationKey: "Citizens",
-      prefix: "prefixEmissions",
+      translationKey: "citizens",
     };
   }
   return null;
 };
 
-export const calculateAreaBurnt = (
+export const calculateFlightsAroundGlobe = (
   emissionsChange: number,
   currentLanguage: "sv" | "en",
 ) => {
-  const averageCarbonPerHectar = 50;
-  const carbonConversion = 44 / 12;
-  const tco2ePerHectar = averageCarbonPerHectar * carbonConversion;
+  if (emissionsChange === null) return null;
 
-  const totalHectarBurnt = emissionsChange / tco2ePerHectar;
+  const earthCircumferenceKm = 40000; // in kilometers
+  const fuelBurnPerKm = 12; // kg
+  const fuelToCO2eFactor = 3.15; // 1 kg of jet fuel produces approximately 3.15 kg of CO2e
+  const co2ToCo2eFactor = 2.5;
+  const unitImpactKg =
+    earthCircumferenceKm * fuelBurnPerKm * fuelToCO2eFactor * co2ToCo2eFactor;
+  const unitImpactTonnes = unitImpactKg / 1000;
+  const flightsAroundGlobe = Math.abs(emissionsChange) / unitImpactTonnes;
 
-  const areaBurnt = burnComparison(totalHectarBurnt);
-
-  if (areaBurnt) {
-    return {
-      translationKey: areaBurnt.translationKey,
-      comparisonNumber: formatEmissionsAbsolute(
-        areaBurnt.comparisonNumber,
-        currentLanguage,
-      ),
-      prefix: "prefixFire",
-    };
-  }
-  return null;
+  return {
+    translationKey: "flights",
+    comparisonNumber: formatEmissionsAbsolute(
+      flightsAroundGlobe,
+      currentLanguage,
+    ),
+  };
 };
 
-const burnComparison = (hectarBurnt: number) => {
-  const burnAreas = [
-    { translationKey: "stockholm", sqm: 188000000 },
-    { translationKey: "monaco", sqm: 2020000 },
-    { translationKey: "footballFields", sqm: 7140 },
-    { translationKey: "tennisCourts", sqm: 261 },
-  ].sort((a, b) => b.sqm - a.sqm);
+//Here we want to calculate using the selected year's total, not the cumulative total.
+export const calculateSwedenShareEmissions = (
+  reportingPeriods: ReportingPeriod[],
+  currentLanguage: "sv" | "en",
+) => {
+  const periodForYear = reportingPeriods.find((period) =>
+    period.endDate.startsWith("2024"),
+  );
+  const calculatedTotal = periodForYear?.emissions?.calculatedTotalEmissions;
 
-  for (const { translationKey, sqm } of burnAreas) {
-    const nrBurnt = Math.abs((hectarBurnt * 10000) / sqm);
+  if (!calculatedTotal) return null;
 
-    if (nrBurnt >= 2) {
-      return {
-        translationKey: translationKey,
-        comparisonNumber: nrBurnt,
-      };
-    }
-  }
+  const calculatedTotalMtCO2e = calculatedTotal / 1e6;
+  const swedenShare = calculatedTotalMtCO2e / SWEDISH_EMISSIONS_2024;
+  return {
+    translationKey: "shareSweden",
+    comparisonNumber: formatEmissionsAbsolute(swedenShare, currentLanguage),
+  };
 };

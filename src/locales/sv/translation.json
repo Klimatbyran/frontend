@@ -817,8 +817,8 @@
         "description": "Läs mer om hur vi sätter siffrorna i ett mer begripligt sammanhang.",
         "paragraph1": "Utsläppssiffror är ofta svåra att greppa, så vi har översatt förändringar i utsläpp över tid till mer lättbegripliga termer, för att illustrera hur mycket en ökning eller minskning av utsläpp faktiskt betyder i praktiken.",
         "paragraph2": "I stället för att jämföra de totala utsläppen fokuserar vi på förändringen — till exempel hur mycket ett företags eller en kommuns utsläpp har ökat eller minskat jämfört med föregående år. ",
-        "forestFire": {
-          "title": "Skogsbränder",
+        "flights": {
+          "title": "Flights",
           "paragraph1": "Vi har räknat ut hur stor skogsbrand som skulle krävas  för att generera motsvarande mängd utsläpp. Vi utgår från följande antaganden:",
           "paragraph2": "Utifrån utsläpps­förändringen räknar vi ut hur många hektar som krävs för att motsvara den mängden CO₂. Därefter jämförs siffran med välkända ytstorlekar som fotbollsplaner, tennisbanor eller städer. Då kan vi säga till exempel: “Det här utsläppet motsvarar utsläppen från en skogsbrand stor som X fotbollsplaner“.",
           "bullet1": "I genomsnitt innehåller varje hektar skogsmark omkring 50 ton kol (C). (1)",
@@ -2006,33 +2006,16 @@
     "title": "Hur mycket är det?",
     "tooltip": "Läs mer om hur siffrorna beräknas på metodsidan.",
     "description": "{{companyName}} {{emissionsChangeStatus}} sina utsläpp med <highlightNumber>{{emissionsInTonnes}} ({{yearOverYearChange}})</highlightNumber> tCO2e jämfört med föregående år. Detta kan jämföras med:",
-    "prefixFire": "Utsläpp motsvarande en skogsbrand",
-    "prefixEmissions": "{{count}} svenska invånares årsutsläpp.",
+    "citizens": "<highlightNumber>{{count}}</highlightNumber> svenska invånares årsutsläpp.",
     "increased": "ökade",
     "decreased": "minskade",
-    "patterns": {
-      "city": "{{prefix}} {{count}} gånger större än {{entity}}.",
-      "unit": "{{prefix}} stor som {{count}} {{entity}}.",
-      "citizens": "{{prefix}}"
-    },
-    "entities": {
-      "stockholm": {
-        "name": "Stockholm",
-        "type": "city"
-      },
-      "monaco": {
-        "name": "Monaco",
-        "type": "city"
-      },
-      "footballFields": {
-        "name": "fotbollsplaner",
-        "type": "unit"
-      },
-      "tennisCourts": {
-        "name": "tennisbanor",
-        "type": "unit"
-      }
-    }
+    "shareSweden": "<highlightNumber>{{count}}</highlightNumber> gånger av Sveriges totala utsläpp.",
+    "calculatedDeaths": "<highlightNumber>{{count}}</highlightNumber> temperaturrelaterad överdödlighet globalt fram till år 2100.",
+    "flights": "<highlightNumber>{{count}}</highlightNumber> flygresor jorden runt i ett kommersiellt flygplan.",
+    "changeRateSubtitle": "Förstå påverkan av ett företags framsteg eller tillbakagång i utsläppsförändring",
+    "impactSubtitle": "Totalt rapporterade utsläpp för det valda året",
+    "impact": "Påverkan",
+    "impactDescription": "{{companyName}} rapporterade utsläpp på <highlightNumber>{{emissionsInTonnes}}</highlightNumber> tCO2e under {{impactYear}}. Detta motsvarar:"
   },
   "filterPopover": {
     "filter": "Filter",

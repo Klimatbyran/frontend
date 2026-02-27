@@ -763,8 +763,8 @@
         "description": "Learn more about how we put the numbers into context.",
         "paragraph1": "Emission numbers can be difficult to grasp, so we’ve translated changes in emissions over time into more relatable terms. This helps illustrate how much an increase or decrease in emissions really means.",
         "paragraph2": "Rather than comparing total emissions, we focus on the change — for example, how much a company or region’s emissions have gone up or down compared to the previous year.",
-        "forestFire": {
-          "title": "Forest Fires",
+        "flights": {
+          "title": "Flights",
           "paragraph1": "We have calculated how large a wild fire would have to be to  produce the same amount of emissions. We base this on the following data:",
           "paragraph2": "Based on the emissions change, we calculate how many hectares equals that amount of CO₂. This is then compared to familiar references such as football fields, tennis courts, or city areas. Using this method, we can express it as something like: “This amount of CO₂ corresponds to emissions from a wild fire as large as X football fields”.",
           "bullet1": "On average, each hectare of forest contains about 50 tons of carbon (C). (1)",
@@ -1955,32 +1955,16 @@
     "title": "How much is that?",
     "tooltip": "Learn more about how these numbers are calculated on the methods page.",
     "description": "{{companyName}} {{emissionsChangeStatus}} their emissions by <highlightNumber>{{emissionsInTonnes}} ({{yearOverYearChange}})</highlightNumber> tCO2e from the previous year. This compares to:",
-    "prefixFire": "Emissions from a forest fire",
-    "prefixEmissions": "The annual emissions of {{count}} Swedes.",
+    "citizens": "The annual emissions of <highlightNumber>{{count}}</highlightNumber> Swedes.",
+    "shareSweden": "<highlightNumber>{{count}}</highlightNumber> times Sweden's total annual emissions.",
+    "calculatedDeaths": "<highlightNumber>{{count}}</highlightNumber> excess temperature-related deaths globally by 2100.",
+    "flights": "<highlightNumber>{{count}}</highlightNumber> flights around the world in a standard commercial airplane.",
     "increased": "increased",
     "decreased": "decreased",
-    "patterns": {
-      "city": "{{prefix}} {{count}} times the size of {{entity}}.",
-      "unit": "{{prefix}} the size of {{count}} {{entity}}."
-    },
-    "entities": {
-      "stockholm": {
-        "name": "Stockholm",
-        "type": "city"
-      },
-      "monaco": {
-        "name": "Monaco",
-        "type": "city"
-      },
-      "footballFields": {
-        "name": "football fields",
-        "type": "unit"
-      },
-      "tennisCourts": {
-        "name": "tennis courts.",
-        "type": "unit"
-      }
-    }
+    "changeRateSubtitle": "Understanding the impact of a company's progress or regression on emissions change",
+    "impactSubtitle": "Total reported emissions for the selected year",
+    "impact": "Impact",
+    "impactDescription": "{{companyName}} reported emissions of <highlightNumber>{{emissionsInTonnes}}</highlightNumber> tCO2e in {{impactYear}}. This corresponds to:"
   },
   "filterPopover": {
     "filter": "Filter",
