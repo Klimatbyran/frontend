@@ -44,12 +44,19 @@ export const calculateFlightsAroundGlobe = (
 ) => {
   if (emissionsChange === null) return null;
 
-  const mockFlightsAroundGlobe = 12;
+  const earthCircumferenceKm = 40000; // in kilometers
+  const fuelBurnPerKm = 12; // kg
+  const fuelToCO2eFactor = 3.15; // 1 kg of jet fuel produces approximately 3.15 kg of CO2e
+  const co2ToCo2eFactor = 2.5;
+  const unitImpactKg =
+    earthCircumferenceKm * fuelBurnPerKm * fuelToCO2eFactor * co2ToCo2eFactor;
+  const unitImpactTonnes = unitImpactKg / 1000;
+  const flightsAroundGlobe = Math.abs(emissionsChange) / unitImpactTonnes;
 
   return {
     translationKey: "flights",
     comparisonNumber: formatEmissionsAbsolute(
-      mockFlightsAroundGlobe,
+      flightsAroundGlobe,
       currentLanguage,
     ),
   };
