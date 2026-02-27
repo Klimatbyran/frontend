@@ -1,8 +1,7 @@
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import { KPIValue, MapEntityType } from "@/types/rankings";
 
 export function MapTooltip({
-  entityType,
   name,
   value,
   rank,
@@ -22,16 +21,14 @@ export function MapTooltip({
   selectedKPI?: KPIValue;
   onClick?: () => void;
 }) {
+  const { t } = useTranslation();
+
   const description =
     value !== null && value !== undefined
       ? typeof value === "boolean"
         ? value
-          ? t(
-              `${entityType}.list.kpis.${selectedKPI?.key}.booleanLabels.true`,
-            ) || t("yes")
-          : t(
-              `${entityType}.list.kpis.${selectedKPI?.key}.booleanLabels.false`,
-            ) || t("no")
+          ? (selectedKPI?.booleanLabels?.true ?? t("yes"))
+          : (selectedKPI?.booleanLabels?.false ?? t("no"))
         : `${(value as number).toFixed(1)}${unit}`
       : nullValue;
 
