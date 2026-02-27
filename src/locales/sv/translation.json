@@ -1994,39 +1994,16 @@
     "title": "Hur mycket är det?",
     "tooltip": "Läs mer om hur siffrorna beräknas på metodsidan.",
     "description": "{{companyName}} {{emissionsChangeStatus}} sina utsläpp med <highlightNumber>{{emissionsInTonnes}} ({{yearOverYearChange}})</highlightNumber> tCO2e jämfört med föregående år. Detta kan jämföras med:",
-    "prefixFire": "Utsläpp motsvarande en skogsbrand",
-    "prefixEmissions": "{{count}} svenska invånares årsutsläpp.",
+    "citizens": "<highlightNumber>{{count}}</highlightNumber> svenska invånares årsutsläpp.",
     "increased": "ökade",
     "decreased": "minskade",
     "shareSweden": "<highlightNumber>{{count}}</highlightNumber> gånger av Sveriges totala utsläpp.",
     "calculatedDeaths": "<highlightNumber>{{count}}</highlightNumber> temperaturrelaterad överdödlighet globalt fram till år 2100.",
-    "patterns": {
-      "city": "{{prefix}} {{count}} gånger större än {{entity}}.",
-      "unit": "{{prefix}} stor som {{count}} {{entity}}.",
-      "citizens": "{{prefix}}"
-    },
-    "entities": {
-      "stockholm": {
-        "name": "Stockholm",
-        "type": "city"
-      },
-      "monaco": {
-        "name": "Monaco",
-        "type": "city"
-      },
-      "footballFields": {
-        "name": "fotbollsplaner",
-        "type": "unit"
-      },
-      "tennisCourts": {
-        "name": "tennisbanor",
-        "type": "unit"
-      }
-    },
+    "flights": "<highlightNumber>{{count}}</highlightNumber> flygresor jorden runt i ett kommersiellt flygplan.",
     "changeRateSubtitle": "Förstå påverkan av ett företags framsteg eller tillbakagång i utsläppsförändring",
     "impactSubtitle": "Totalt rapporterade utsläpp för det valda året",
     "impact": "Påverkan",
-    "impactDescription": "{{companyName}} rapporterade utsläpp på <highlightNumber>{{emissionsInTonnes}}</highlightNumber> tCO2 under {{selectedYear}}. Detta motsvarar:"
+    "impactDescription": "{{companyName}} rapporterade utsläpp på <highlightNumber>{{emissionsInTonnes}}</highlightNumber> tCO2e under {{impactYear}}. Detta motsvarar:"
   },
   "filterPopover": {
     "filter": "Filter",

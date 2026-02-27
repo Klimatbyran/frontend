@@ -16,9 +16,7 @@ const ImpactForSelectYear = ({
   reportingPeriods,
   impactPeriod,
 }: RelatableNumbersProps) => {
-  const selectedYear = impactPeriod
-    ? yearFromIsoDate(impactPeriod.endDate)
-    : "";
+  const impactYear = impactPeriod ? yearFromIsoDate(impactPeriod.endDate) : "";
   const selectedYearEmissions =
     impactPeriod?.emissions?.calculatedTotalEmissions ?? 0;
 
@@ -49,8 +47,8 @@ const ImpactForSelectYear = ({
     {
       id: "swedenShare",
       value: swedenEmissionsShare?.comparisonNumber,
-      color: "var(--blue-3)",
-      icon: <MapIcon stroke={"var(--blue-3)"} height={35} width={35} />,
+      color: "var(--green-3)",
+      icon: <MapIcon stroke={"var(--green-3)"} height={35} width={35} />,
       translationKey: "relatableNumbers.shareSweden",
     },
   ];
@@ -65,7 +63,7 @@ const ImpactForSelectYear = ({
           }}
           values={{
             companyName,
-            selectedYear,
+            impactYear,
             emissionsInTonnes: formatEmissionsAbsolute(
               selectedYearEmissions,
               currentLanguage,
@@ -77,7 +75,7 @@ const ImpactForSelectYear = ({
         {kpis.map((kpi) =>
           kpi.value ? (
             <div key={kpi.id} className="mt-6 gap-4 flex flex-col">
-              <div className="flex items-start items-center gap-2 max-w-full">
+              <div className="flex items-center gap-2 max-w-full">
                 <span className="flex-shrink-0 mt-0.5">{kpi.icon}</span>
                 <span className="min-w-0 break-words">
                   <Text>

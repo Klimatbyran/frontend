@@ -2,23 +2,6 @@ import { formatEmissionsAbsolute } from "../formatting/localization";
 import { SWEDISH_EMISSIONS_2024 } from "./general";
 import type { ReportingPeriod } from "@/types/company";
 
-type Values = {
-  prefix: string;
-  count: string;
-  entity: string;
-  [key: string]: string;
-};
-
-export const formatTranslationString = (pattern: string, values: Values) => {
-  let formatted = pattern;
-
-  for (const key in values) {
-    formatted = formatted.split(`{{${key}}}`).join(values[key]);
-  }
-
-  return formatted;
-};
-
 export const calculatedNumberOfdeaths = (
   calculatedTotal: number,
   currentLanguage: "sv" | "en",
@@ -28,7 +11,6 @@ export const calculatedNumberOfdeaths = (
   return {
     translationKey: "calculatedDeaths",
     comparisonNumber: formatEmissionsAbsolute(totalDeaths, currentLanguage),
-    prefix: "prefixDeaths",
   };
 };
 
@@ -50,61 +32,30 @@ export const emissionsComparedToCitizen = (
         comparisonNumber,
         currentLanguage,
       ),
-      translationKey: "Citizens",
-      prefix: "prefixEmissions",
+      translationKey: "citizens",
     };
   }
   return null;
 };
 
-export const calculateAreaBurnt = (
+export const calculateFlightsAroundGlobe = (
   emissionsChange: number,
   currentLanguage: "sv" | "en",
 ) => {
-  const averageCarbonPerHectar = 50;
-  const carbonConversion = 44 / 12;
-  const tco2ePerHectar = averageCarbonPerHectar * carbonConversion;
+  if (emissionsChange === null) return null;
 
-  const totalHectarBurnt = emissionsChange / tco2ePerHectar;
+  const mockFlightsAroundGlobe = 12;
 
-  const areaBurnt = burnComparison(totalHectarBurnt);
-
-  if (areaBurnt) {
-    return {
-      translationKey: areaBurnt.translationKey,
-      comparisonNumber: formatEmissionsAbsolute(
-        areaBurnt.comparisonNumber,
-        currentLanguage,
-      ),
-      prefix: "prefixFire",
-    };
-  }
-  return null;
+  return {
+    translationKey: "flights",
+    comparisonNumber: formatEmissionsAbsolute(
+      mockFlightsAroundGlobe,
+      currentLanguage,
+    ),
+  };
 };
 
-const burnComparison = (hectarBurnt: number) => {
-  const burnAreas = [
-    { translationKey: "stockholm", sqm: 188000000 },
-    { translationKey: "monaco", sqm: 2020000 },
-    { translationKey: "footballFields", sqm: 7140 },
-    { translationKey: "tennisCourts", sqm: 261 },
-  ].sort((a, b) => b.sqm - a.sqm);
-
-  for (const { translationKey, sqm } of burnAreas) {
-    const nrBurnt = Math.abs((hectarBurnt * 10000) / sqm);
-
-    if (nrBurnt >= 2) {
-      return {
-        translationKey: translationKey,
-        comparisonNumber: nrBurnt,
-      };
-    }
-  }
-
-  return null;
-};
-
-//Here we want to calculate using the selected year's total, not the cumulative total
+//Here we want to calculate using the selected year's total, not the cumulative total.
 export const calculateSwedenShareEmissions = (
   reportingPeriods: ReportingPeriod[],
   currentLanguage: "sv" | "en",
@@ -121,6 +72,5 @@ export const calculateSwedenShareEmissions = (
   return {
     translationKey: "shareSweden",
     comparisonNumber: formatEmissionsAbsolute(swedenShare, currentLanguage),
-    prefix: "prefixSwedenShare",
   };
 };

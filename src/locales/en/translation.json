@@ -1942,38 +1942,16 @@
     "title": "How much is that?",
     "tooltip": "Learn more about how these numbers are calculated on the methods page.",
     "description": "{{companyName}} {{emissionsChangeStatus}} their emissions by <highlightNumber>{{emissionsInTonnes}} ({{yearOverYearChange}})</highlightNumber> tCO2e from the previous year. This compares to:",
-    "prefixFire": "Emissions from a forest fire",
-    "prefixEmissions": "The annual emissions of {{count}} Swedes.",
+    "citizens": "The annual emissions of <highlightNumber>{{count}}</highlightNumber> Swedes.",
     "shareSweden": "<highlightNumber>{{count}}</highlightNumber> times Sweden's total annual emissions.",
     "calculatedDeaths": "<highlightNumber>{{count}}</highlightNumber> excess temperature-related deaths globally by 2100.",
+    "flights": "<highlightNumber>{{count}}</highlightNumber> flights around the world in a standard commercial airplane.",
     "increased": "increased",
     "decreased": "decreased",
-    "patterns": {
-      "city": "{{prefix}} {{count}} times the size of {{entity}}.",
-      "unit": "{{prefix}} the size of {{count}} {{entity}}."
-    },
-    "entities": {
-      "stockholm": {
-        "name": "Stockholm",
-        "type": "city"
-      },
-      "monaco": {
-        "name": "Monaco",
-        "type": "city"
-      },
-      "footballFields": {
-        "name": "football fields",
-        "type": "unit"
-      },
-      "tennisCourts": {
-        "name": "tennis courts.",
-        "type": "unit"
-      }
-    },
     "changeRateSubtitle": "Understanding the impact of a company's progress or regression on emissions change",
     "impactSubtitle": "Total reported emissions for the selected year",
     "impact": "Impact",
-    "impactDescription": "{{companyName}} reported emissions of <highlightNumber>{{emissionsInTonnes}}</highlightNumber> tCO2 in {{selectedYear}}. This corresponds to:"
+    "impactDescription": "{{companyName}} reported emissions of <highlightNumber>{{emissionsInTonnes}}</highlightNumber> tCO2e in {{impactYear}}. This corresponds to:"
   },
   "filterPopover": {
     "filter": "Filter",
