@@ -11,7 +11,7 @@ import { ReportingPeriod } from "@/types/company";
 const HELP_ITEMS: DataGuideItemId[] = [
   "relatableNumbers",
   "degsWarming",
-  "forestFires",
+  "flights",
   "citizens",
 ];
 

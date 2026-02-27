@@ -12,7 +12,7 @@ export type DataGuideItemId =
   | "degsWarming"
   | "detailWhyDataDelay"
   | "financialsScope3Category15"
-  | "forestFires"
+  | "flights"
   | "historicVsParis"
   | "historicalEmissions"
   | "howTrendLinesCalculated"

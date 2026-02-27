@@ -78,8 +78,8 @@
       "Financed emissions are often reported with a delay, as they are often based on the previous year's data from the companies included in the investment. We show emissions data in scope 3 category 15 in the year it is publicly reported in the annual report, even if it is sometimes stated that the data in this category comes from a previous year.\n\nThis means that when you see scope 3 category 15 emissions for a financial company, the actual emissions may have occurred in an earlier year than what's shown in the reporting year. This is common practice in the financial sector due to the time it takes to collect and verify emissions data from portfolio companies."
     ]
   },
-  "forestFires": {
-    "title": "Why relate to forest fires?",
+  "flights": {
+    "title": "Why relate to flights?",
     "content": [
       "We have calculated how large a wild fire would have to be to produce the same amount of emissions. We base this on the following data:\n\n- On average, each hectare of forest contains about 50 tons of carbon (C). (1)\n- Carbon is converted to carbon dioxide (CO₂) using the factor 44/12 (molecular weights), which means that one hectare corresponds to roughly 50 × (44/12) ≈ 183 tons of CO₂.\n\nBased on the emissions change, we calculate how many hectares equals that amount of CO₂. This is then compared to familiar references such as football fields, tennis courts, or city areas. Using this method, we can express it as something like: “This amount of CO₂ corresponds to emissions from a wild fire as large as X football fields”.\n\n[(1) https://climate.mit.edu/ask-mit/how-many-new-trees-would-we-need-offset-our-carbon-emissions](https://climate.mit.edu/ask-mit/how-many-new-trees-would-we-need-offset-our-carbon-emissions)"
     ]

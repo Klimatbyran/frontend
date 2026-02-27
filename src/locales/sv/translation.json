@@ -815,8 +815,8 @@
         "description": "Läs mer om hur vi sätter siffrorna i ett mer begripligt sammanhang.",
         "paragraph1": "Utsläppssiffror är ofta svåra att greppa, så vi har översatt förändringar i utsläpp över tid till mer lättbegripliga termer, för att illustrera hur mycket en ökning eller minskning av utsläpp faktiskt betyder i praktiken.",
         "paragraph2": "I stället för att jämföra de totala utsläppen fokuserar vi på förändringen — till exempel hur mycket ett företags eller en kommuns utsläpp har ökat eller minskat jämfört med föregående år. ",
-        "forestFire": {
-          "title": "Skogsbränder",
+        "flights": {
+          "title": "Flights",
           "paragraph1": "Vi har räknat ut hur stor skogsbrand som skulle krävas  för att generera motsvarande mängd utsläpp. Vi utgår från följande antaganden:",
           "paragraph2": "Utifrån utsläpps­förändringen räknar vi ut hur många hektar som krävs för att motsvara den mängden CO₂. Därefter jämförs siffran med välkända ytstorlekar som fotbollsplaner, tennisbanor eller städer. Då kan vi säga till exempel: “Det här utsläppet motsvarar utsläppen från en skogsbrand stor som X fotbollsplaner“.",
           "bullet1": "I genomsnitt innehåller varje hektar skogsmark omkring 50 ton kol (C). (1)",

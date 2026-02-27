@@ -8,7 +8,7 @@ export const RelatableNumbersContent = () => {
       <p>{t("methodsPage.company.relatableNumbers.paragraph1")}</p>
       <p>{t("methodsPage.company.relatableNumbers.paragraph2")}</p>
       <MethodSection
-        title={t("methodsPage.company.relatableNumbers.forestFire.title")}
+        title={t("methodsPage.company.relatableNumbers.flights.title")}
       >
         <p>{t("methodsPage.company.relatableNumbers.forestFire.paragraph1")}</p>
         <ul>
