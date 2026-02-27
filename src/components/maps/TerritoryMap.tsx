@@ -79,7 +79,6 @@ function TerritoryMap({
     values,
     propertyNameField,
     colors,
-    onAreaClick,
   });
 
   const mapBounds = useMemo(
@@ -123,6 +122,7 @@ function TerritoryMap({
         handleZoomIn={handleZoomIn}
         handleZoomOut={handleZoomOut}
         handleReset={handleReset}
+        onAreaClick={onAreaClick}
       />
     </div>
   );

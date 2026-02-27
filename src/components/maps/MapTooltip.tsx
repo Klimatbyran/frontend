@@ -10,6 +10,7 @@ export function MapTooltip({
   total,
   nullValue,
   selectedKPI,
+  onClick,
 }: {
   entityType: MapEntityType;
   name: string;
@@ -19,6 +20,7 @@ export function MapTooltip({
   total: number;
   nullValue?: string;
   selectedKPI?: KPIValue;
+  onClick?: () => void;
 }) {
   const description =
     value !== null && value !== undefined
@@ -34,7 +36,10 @@ export function MapTooltip({
       : nullValue;
 
   return (
-    <div className="absolute top-4 left-4 bg-black/40 backdrop-blur-sm p-4 rounded-2xl">
+    <div
+      className="absolute top-4 left-4 bg-black/40 backdrop-blur-sm p-4 rounded-2xl"
+      onClick={onClick}
+    >
       <p className="text-white font-medium text-xl">{name}</p>
       <div className="space-y-1 mt-2">
         <p className="text-white/70">
