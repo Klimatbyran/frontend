@@ -266,7 +266,7 @@ export function MunicipalityDetailPage() {
           getSectorInfo={getSectorInfo}
           filteredSectors={filteredSectors}
           onFilteredSectorsChange={setFilteredSectors}
-          helpItems={["municipalityEmissionSources"]}
+          helpItems={["municipalityAndRegionEmissionSources"]}
         />
 
         <MunicipalityLinkCards
