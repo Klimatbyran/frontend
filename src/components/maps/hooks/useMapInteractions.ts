@@ -18,6 +18,7 @@ interface UseMapInteractionsProps {
     gradientMidHigh: string;
     gradientEnd: string;
   };
+  onAreaClick?: (id: string) => void;
 }
 
 export function useMapInteractions({
@@ -27,6 +28,7 @@ export function useMapInteractions({
   values,
   propertyNameField,
   colors,
+  onAreaClick,
 }: UseMapInteractionsProps) {
   const [hoveredArea, setHoveredArea] = useState<string | null>(null);
   const [hoveredValue, setHoveredValue] = useState<number | boolean | null>(
@@ -141,11 +143,15 @@ export function useMapInteractions({
           click: () => {
             // On any device, clicking an area should show its tooltip.
             setHoveredArea(areaName);
+            // On desktop, also trigger navigation to the detail page.
+            if (!isMobile && onAreaClick) {
+              onAreaClick(areaName);
+            }
           },
         });
       }
     },
-    [propertyNameField],
+    [propertyNameField, onAreaClick],
   );
 
   useEffect(() => {

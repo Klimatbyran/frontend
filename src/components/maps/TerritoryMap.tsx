@@ -79,6 +79,7 @@ function TerritoryMap({
     values,
     propertyNameField,
     colors,
+    onAreaClick,
   });
 
   const mapBounds = useMemo(
