@@ -25,8 +25,6 @@ export default ({ mode }: ConfigEnv) => {
       },
     },
     server: {
-      host: true,
-      port: 5173,
       proxy: {
         "/api": {
           target: env.VITE_API_PROXY ?? "http://localhost:3000/", // Default to local, override in CI/CD
