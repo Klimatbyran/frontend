@@ -18,7 +18,7 @@ interface IUseTransformCompanyListCard {
 }
 
 //Recieves pre-filtered companies or municipalities
-import type { ListCardProps } from "@/components/layout/ListCard";
+import type { ListCardProps } from "@/components/explore/ListCard";
 
 const useTransformCompanyListCard = ({
   filteredCompanies,

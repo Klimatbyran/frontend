@@ -1,66 +1,51 @@
 import { useMemo, useCallback } from "react";
-import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useSearchParams } from "react-router-dom";
 import {
   Municipality,
   isMunicipalitySortBy,
   type MunicipalitySortBy,
-  isMeetsParisFilter,
-  type MeetsParisFilter,
 } from "@/types/municipality";
-import {
-  isSortDirection,
-  type SortDirection,
-} from "@/components/explore/SortPopover";
-import { FilterGroup } from "@/components/explore/FilterPopover";
 import { regions } from "@/lib/constants/regions";
-import setOrDeleteSearchParam from "@/utils/data/setOrDeleteSearchParam";
 import { useSortOptions } from "./useMunicipalitiesSorting";
+import setOrDeleteSearchParam from "@/utils/data/setOrDeleteSearchParam";
+import {
+  useExploreFilters,
+  type MeetsParisFilter,
+} from "@/hooks/explore/useExploreFilters";
+import {
+  buildMeetsParisFilterGroup,
+  buildMeetsParisActiveFilter,
+  getSearchTerms,
+} from "@/hooks/explore/exploreFilterUtils";
+import type { SortDirection } from "@/components/explore/SortPopover";
 
 export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { t } = useTranslation();
   const sortOptions = useSortOptions();
 
-  const searchQuery = searchParams.get("searchQuery") || "";
-  const meetsParisFilter = isMeetsParisFilter(
-    searchParams.get("meetsParisFilter") ?? "",
-  )
-    ? (searchParams.get("meetsParisFilter") as MeetsParisFilter)
-    : "all";
+  const {
+    searchQuery,
+    setSearchQuery,
+    meetsParisFilter,
+    setMeetsParisFilter,
+    sortBy,
+    setSortBy,
+    sortDirection,
+    setSortDirection,
+  } = useExploreFilters<MunicipalitySortBy>({
+    defaultSortBy: "total_emissions",
+    isValidSortBy: isMunicipalitySortBy,
+    sortOptions,
+  });
+
   const selectedRegions = (searchParams
     .get("selectedRegions")
     ?.split(",")
     .filter(
       (s) => Object.keys(regions).some((region) => region === s) || s == "all",
     ) ?? ["all"]) as string[];
-  const sortBy = isMunicipalitySortBy(searchParams.get("sortBy") ?? "")
-    ? (searchParams.get("sortBy") as MunicipalitySortBy)
-    : "total_emissions";
-  const sortDirection = (
-    isSortDirection(searchParams.get("sortDirection") ?? "")
-      ? searchParams.get("sortDirection")
-      : (sortOptions.find((o) => o.value == sortBy)?.defaultDirection ?? "desc")
-  ) as SortDirection;
-
-  const setSearchQuery = useCallback(
-    (searchQuery: string) =>
-      setOrDeleteSearchParam(
-        setSearchParams,
-        searchQuery.trim() || null,
-        "searchQuery",
-      ),
-    [],
-  );
-  const setMeetsParisFilter = useCallback(
-    (meetsParisFilter: string) =>
-      setOrDeleteSearchParam(
-        setSearchParams,
-        meetsParisFilter,
-        "meetsParisFilter",
-      ),
-    [],
-  );
   const setSelectedRegions = useCallback(
     (selectedRegions: string[]) =>
       setOrDeleteSearchParam(
@@ -70,17 +55,6 @@ export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
       ),
     [],
   );
-  const setSortBy = useCallback(
-    (sortBy: string) =>
-      setOrDeleteSearchParam(setSearchParams, sortBy, "sortBy"),
-    [],
-  );
-  const setSortDirection = useCallback(
-    (sortDirection: string) =>
-      setOrDeleteSearchParam(setSearchParams, sortDirection, "sortDirection"),
-    [],
-  );
-
   const filteredMunicipalities = useMemo(
     () =>
       filterAndSortMunicipalities(municipalities, {
@@ -100,7 +74,7 @@ export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
     ],
   );
 
-  const filterGroups: FilterGroup[] = [
+  const filterGroups = [
     {
       heading: t("explorePage.municipalities.filteringOptions.selectRegion"),
       options: [
@@ -124,49 +98,32 @@ export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
       },
       selectMultiple: true,
     },
-    {
-      heading: t("explorePage.municipalities.sortingOptions.meetsParis"),
-      options: [
-        { value: "all", label: t("all") },
-        {
-          value: "yes",
-          label: t("yes"),
-        },
-        {
-          value: "no",
-          label: t("no"),
-        },
-      ],
-      selectedValues: [meetsParisFilter],
-      onSelect: (value: string) =>
-        setMeetsParisFilter(value as MeetsParisFilter),
-      selectMultiple: false,
-    },
+    buildMeetsParisFilterGroup(
+      t,
+      "explorePage.municipalities.sortingOptions.meetsParis",
+      meetsParisFilter,
+      setMeetsParisFilter,
+    ),
   ];
 
   const activeFilters = useMemo(() => {
     return [
-      ...(!selectedRegions.includes("all")
-        ? selectedRegions.map((selectedRegion) => ({
+      ...(selectedRegions.includes("all")
+        ? []
+        : selectedRegions.map((selectedRegion) => ({
             type: "filter" as const,
             label: selectedRegion,
             onRemove: () =>
               setSelectedRegions(
                 selectedRegions.filter((s) => s !== selectedRegion),
               ),
-          }))
-        : []),
-      ...(meetsParisFilter !== "all"
-        ? [
-            {
-              type: "filter" as const,
-              label: `${t("explorePage.municipalities.sortingOptions.meetsParis")}: ${
-                meetsParisFilter === "yes" ? t("yes") : t("no")
-              }`,
-              onRemove: () => setMeetsParisFilter("all"),
-            },
-          ]
-        : []),
+          }))),
+      ...buildMeetsParisActiveFilter(
+        t,
+        "explorePage.municipalities.sortingOptions.meetsParis",
+        meetsParisFilter,
+        () => setMeetsParisFilter("all"),
+      ),
     ];
   }, [
     selectedRegions,
@@ -233,12 +190,7 @@ const filterAndSortMunicipalities = (
 
       // Filter by search query
       if (searchQuery) {
-        const searchTerms = searchQuery
-          .toLowerCase()
-          .split(",")
-          .map((term) => term.trim())
-          .filter((term) => term.length > 0);
-
+        const searchTerms = getSearchTerms(searchQuery);
         return searchTerms.some((term) =>
           municipality.name.toLowerCase().startsWith(term),
         );

@@ -18,6 +18,9 @@ import {
   useSortOptions,
   type CompanySortBy,
 } from "./useCompanySorting";
+import { useExploreFilters } from "@/hooks/explore/useExploreFilters";
+import { getSearchTerms } from "@/hooks/explore/exploreFilterUtils";
+import type { SortDirection } from "@/components/explore/SortPopover";
 
 const MEETS_PARIS_OPTIONS = ["all", "yes", "no", "unknown"] as const;
 type MeetsParisFilter = (typeof MEETS_PARIS_OPTIONS)[number];
@@ -29,11 +32,22 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const sortingOptions = useSortOptions();
 
-  const searchQuery = searchParams.get("searchQuery") || "";
-  const meetsParisFilter = isMeetsParisFilter(
-    searchParams.get("meetsParisFilter") ?? "",
-  )
-    ? (searchParams.get("meetsParisFilter") as MeetsParisFilter)
+  const {
+    searchQuery,
+    setSearchQuery,
+    sortBy,
+    setSortBy,
+    sortDirection,
+    setSortDirection,
+  } = useExploreFilters<CompanySortBy>({
+    defaultSortBy: "total_emissions",
+    isValidSortBy: isSortOption,
+    sortOptions: sortingOptions,
+  });
+
+  const meetsParisRaw = searchParams.get("meetsParisFilter") ?? "";
+  const meetsParisFilter: MeetsParisFilter = isMeetsParisFilter(meetsParisRaw)
+    ? (meetsParisRaw as MeetsParisFilter)
     : "all";
   const sectors = (searchParams
     .get("sectors")
@@ -41,25 +55,9 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
     .filter((s) => SECTORS.some((sector) => sector.value === s)) ?? [
     "all",
   ]) as CompanySector[];
-  const sortBy = isSortOption(searchParams.get("sortBy") ?? "")
-    ? (searchParams.get("sortBy") as CompanySortBy)
-    : "total_emissions";
-  const sortDirection = (
-    searchParams.get("sortDirection") == "asc" ||
-    searchParams.get("sortDirection") == "desc"
-      ? searchParams.get("sortDirection")
-      : (sortingOptions.find((o) => o.value == sortBy)?.defaultDirection ??
-        "desc")
-  ) as "asc" | "desc";
-
-  const setSearchQuery = useCallback(
-    (searchQuery: string) =>
-      setOrDeleteSearchParam(
-        setSearchParams,
-        searchQuery.trim() || null,
-        "searchQuery",
-      ),
-    [],
+  const setSearchQueryWrapped = useCallback(
+    (query: string) => setSearchQuery(query),
+    [setSearchQuery],
   );
   const setMeetsParisFilter = useCallback(
     (meetsParisFilter: string) =>
@@ -79,15 +77,13 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
       ),
     [],
   );
-  const setSortBy = useCallback(
-    (sortBy: string) =>
-      setOrDeleteSearchParam(setSearchParams, sortBy, "sortBy"),
-    [],
+  const setSortByWrapped = useCallback(
+    (value: string) => setSortBy(value),
+    [setSortBy],
   );
-  const setSortDirection = useCallback(
-    (sortDirection: string) =>
-      setOrDeleteSearchParam(setSearchParams, sortDirection, "sortDirection"),
-    [],
+  const setSortDirectionWrapped = useCallback(
+    (value: string) => setSortDirection(value as SortDirection),
+    [setSortDirection],
   );
 
   const sectorNames = useSectorNames();
@@ -103,10 +99,7 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
             sectors.includes(company.industry?.industryGics?.sectorCode ?? ""));
 
         // Filter by search query
-        const searchTerms = searchQuery
-          .split(",")
-          .map((term) => term.trim().toLowerCase())
-          .filter((term) => term.length > 0);
+        const searchTerms = getSearchTerms(searchQuery);
 
         const matchesSearch =
           searchTerms.length === 0 ||
@@ -290,15 +283,15 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
 
   return {
     searchQuery,
-    setSearchQuery,
+    setSearchQuery: setSearchQueryWrapped,
     sectors,
     setSectors,
     meetsParisFilter,
     setMeetsParisFilter,
     sortBy,
-    setSortBy,
+    setSortBy: setSortByWrapped,
     sortDirection,
-    setSortDirection,
+    setSortDirection: setSortDirectionWrapped,
     filteredCompanies,
     filterGroups,
     activeFilters,
