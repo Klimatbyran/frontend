@@ -1728,6 +1728,29 @@
       "message": "Din session har gått ut. Logga in igen för att fortsätta redigera.",
       "cancel": "Avbryt",
       "login": "Logga in"
+    },
+    "deleteCompany": {
+      "dangerZone": "Riskzon",
+      "dangerZoneDescription": "Ta bort detta företag och all dess data permanent. Detta kan inte ångras.",
+      "title": "Ta bort företag",
+      "description": "Åtgärden kan inte ångras. Följande företag och all dess data tas bort permanent.",
+      "wikidataId": "Wikidata-ID",
+      "name": "Namn",
+      "dataToDelete": "Sammanfattning av data som tas bort:",
+      "summary": {
+        "reportingPeriods": "{{count}} rapporteringsperiod(er)",
+        "industry": "Bransch: {{name}}",
+        "baseYear": "Basår: {{year}}",
+        "goals": "{{count}} mål",
+        "initiatives": "{{count}} initiativ",
+        "noData": "Endast företagsuppgifter (inga rapporteringsperioder, mål eller initiativ)"
+      },
+      "cancel": "Avbryt",
+      "confirm": "Ta bort företag",
+      "deleting": "Tar bort…",
+      "button": "Ta bort företag",
+      "success": "Företaget har tagits bort.",
+      "error": "Kunde inte ta bort företaget. Försök igen."
     }
   },
   "addCompanyPage": {
