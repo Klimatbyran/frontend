@@ -1244,6 +1244,8 @@
       "title": "Emissions development",
       "tooltip": "Showing the development of reported emissions over time; click on a point to remove the line from the graph. Hover over a point to see the values for the reporting period.",
       "unit": "In tons CO₂e",
+      "intensityUnit": "tons CO₂e / m. turnover",
+      "intensity": "Intensity",
       "totalEmissions": "Total Emissions",
       "baseYear": "Base year",
       "baseYearInfo": "The base year refers to a specific year chosen as a reference point against which future emissions are compared.",

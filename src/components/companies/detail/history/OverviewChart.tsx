@@ -32,6 +32,10 @@ import {
   filterValidTotalData,
   mergeChartDataWithApproximated,
   ChartTooltip,
+  getIntensityValue,
+  getLastDataYear,
+  getEmissionsUnit,
+  ChartMode,
 } from "@/components/charts";
 import { useLanguage } from "@/components/LanguageProvider";
 
@@ -46,6 +50,7 @@ interface OverviewChartProps {
   onYearSelect: (year: number) => void;
   exploreMode?: boolean;
   setExploreMode?: (val: boolean) => void;
+  chartMode?: ChartMode;
 }
 
 export const OverviewChart: FC<OverviewChartProps> = ({
@@ -59,6 +64,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({
   onYearSelect,
   exploreMode = false,
   setExploreMode,
+  chartMode = "absolute",
 }) => {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
@@ -70,6 +76,13 @@ export const OverviewChart: FC<OverviewChartProps> = ({
 
   const firstDataYear = filteredData[0]?.year || 2000;
 
+  // Last year with actual data (for revenue intensity mode - no future projections)
+  const lastDataYear = getLastDataYear(filteredData, currentYear);
+
+  // The effective end year depends on mode
+  const effectiveEndYear =
+    chartMode === "revenueIntensity" ? lastDataYear : chartEndYear;
+
   // Merge data similar to municipality structure for tooltip compatibility
   const chartData = useMemo(() => {
     const merged = mergeChartDataWithApproximated(
@@ -77,8 +90,12 @@ export const OverviewChart: FC<OverviewChartProps> = ({
       approximatedData,
     );
     // Filter to only include data from firstDataYear onwards to prevent empty space
-    return merged.filter((d) => d.year >= firstDataYear);
-  }, [filteredData, approximatedData, firstDataYear]);
+    const fromFirstYear = merged.filter((d) => d.year >= firstDataYear);
+    if (chartMode === "revenueIntensity") {
+      return fromFirstYear.filter((d) => d.year <= lastDataYear);
+    }
+    return fromFirstYear;
+  }, [filteredData, approximatedData, firstDataYear, chartMode, lastDataYear]);
 
   const isFirstYear = companyBaseYear === filteredData[0]?.year;
 
@@ -94,8 +111,8 @@ export const OverviewChart: FC<OverviewChartProps> = ({
 
   const ticks = generateChartTicks(
     firstDataYear,
-    chartEndYear,
-    shortEndYear,
+    effectiveEndYear,
+    chartMode === "revenueIntensity" ? lastDataYear : shortEndYear,
     currentYear,
   );
 
@@ -123,7 +140,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({
             )}
 
             {/* Current year reference line - only show if within chart domain */}
-            {currentYear <= chartEndYear && (
+            {currentYear <= effectiveEndYear && (
               <ReferenceLine
                 {...getCurrentYearReferenceLineProps(currentYear)}
               />
@@ -134,7 +151,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({
                 <ChartTooltip
                   dataView="overview"
                   companyBaseYear={companyBaseYear}
-                  unit={t("companies.tooltip.tonsCO2e")}
+                  unit={getEmissionsUnit(chartMode, t)}
                 />
               }
               wrapperStyle={{ outline: "none", zIndex: 60 }}
@@ -143,33 +160,94 @@ export const OverviewChart: FC<OverviewChartProps> = ({
             <XAxis
               {...getXAxisProps(
                 "year",
-                [firstDataYear, chartEndYear],
+                [firstDataYear, effectiveEndYear],
                 ticks,
                 createCustomTickRenderer(companyBaseYear),
               )}
               type="number"
             />
 
-            <YAxis {...getYAxisProps(currentLanguage)} />
+            {chartMode === "revenueIntensity" ? (
+              <YAxis
+                {...getYAxisProps(currentLanguage, [0, "auto"], {
+                  yAxisId: "revenueIntensity",
+                })}
+              />
+            ) : (
+              <>
+                <YAxis
+                  {...getYAxisProps(currentLanguage, [0, "auto"], {
+                    yAxisId: "left",
+                  })}
+                />
+                <YAxis
+                  {...getYAxisProps(currentLanguage, [0, "auto"], {
+                    orientation: "right",
+                    yAxisId: "right",
+                    formatter: (value) =>
+                      new Intl.NumberFormat(currentLanguage, {
+                        notation: "compact",
+                        maximumFractionDigits: 1,
+                      }).format(value),
+                  })}
+                />
+              </>
+            )}
 
             {/* Main total emissions line */}
-            <Line
-              type="monotone"
-              dataKey="total"
-              {...getConsistentLineProps(
-                "historical",
-                isMobile,
-                t("companies.emissionsHistory.totalEmissions"),
-              )}
-              connectNulls={false}
-            />
+            {chartMode === "absolute" && (
+              <Line
+                type="monotone"
+                dataKey="total"
+                yAxisId="left"
+                {...getConsistentLineProps(
+                  "historical",
+                  isMobile,
+                  t("companies.emissionsHistory.totalEmissions"),
+                )}
+                connectNulls={false}
+              />
+            )}
+
+            {/* Turnover line */}
+            {chartMode === "absolute" && (
+              <Line
+                type="monotone"
+                dataKey="turnover"
+                yAxisId="right"
+                {...getConsistentLineProps(
+                  "turnover",
+                  isMobile,
+                  t("companies.overview.turnover"),
+                )}
+                connectNulls={true}
+              />
+            )}
+
+            {/* Revenue intensity line */}
+            {chartMode === "revenueIntensity" && (
+              <Line
+                type="monotone"
+                dataKey={(d: ChartData) =>
+                  getIntensityValue(d.total, d.turnover)
+                }
+                yAxisId="revenueIntensity"
+                {...getConsistentLineProps(
+                  "intensity",
+                  isMobile,
+                  t("companies.emissionsHistory.intensity"),
+                )}
+                connectNulls={true}
+              />
+            )}
 
             {/* Approximated data lines */}
-            {approximatedData && (
+            {approximatedData && chartMode === "absolute" && (
               <>
                 <Line
                   type="linear"
                   dataKey="approximated"
+                  yAxisId="left"
                   {...getConsistentLineProps(
                     "estimated",
                     isMobile,
@@ -180,6 +258,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({
                 <Line
                   type="monotone"
                   dataKey="trend"
+                  yAxisId="left"
                   {...getConsistentLineProps(
                     "trend",
                     isMobile,
@@ -189,6 +268,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({
                 <Line
                   type="monotone"
                   dataKey="carbonLaw"
+                  yAxisId="left"
                   {...getConsistentLineProps(
                     "paris",
                     isMobile,
@@ -203,14 +283,16 @@ export const OverviewChart: FC<OverviewChartProps> = ({
 
       <ChartFooter>
         <EnhancedLegend items={legendItems} />
-        <ChartYearControls
-          chartEndYear={chartEndYear}
-          shortEndYear={shortEndYear}
-          longEndYear={longEndYear}
-          setChartEndYear={setChartEndYear}
-          exploreMode={exploreMode}
-          setExploreMode={setExploreMode}
-        />
+        {chartMode === "absolute" && (
+          <ChartYearControls
+            chartEndYear={chartEndYear}
+            shortEndYear={shortEndYear}
+            longEndYear={longEndYear}
+            setChartEndYear={setChartEndYear}
+            exploreMode={exploreMode}
+            setExploreMode={setExploreMode}
+          />
+        )}
       </ChartFooter>
     </ChartWrapper>
   );

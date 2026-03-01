@@ -30,6 +30,10 @@ import {
   createCustomTickRenderer,
   filterValidCategoryData,
   ChartTooltip,
+  getIntensityValue,
+  getLastDataYear,
+  getEmissionsUnit,
+  ChartMode,
 } from "@/components/charts";
 import { useLanguage } from "@/components/LanguageProvider";
 
@@ -47,6 +51,7 @@ interface CategoriesChartProps {
   onYearSelect: (year: number) => void;
   exploreMode?: boolean;
   setExploreMode?: (val: boolean) => void;
+  chartMode?: ChartMode;
 }
 
 export const CategoriesChart: FC<CategoriesChartProps> = ({
@@ -58,6 +63,7 @@ export const CategoriesChart: FC<CategoriesChartProps> = ({
   getCategoryName,
   getCategoryColor,
   onYearSelect,
+  chartMode = "absolute",
 }) => {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
@@ -68,9 +74,7 @@ export const CategoriesChart: FC<CategoriesChartProps> = ({
     return filterValidCategoryData(data);
   }, [data]);
 
-  const lastDataYear =
-    filteredData.filter((item) => item.total !== undefined).slice(-1)[0]
-      ?.year || shortEndYear;
+  const lastDataYear = getLastDataYear(filteredData, shortEndYear);
   const ticks = generateChartTicks(
     filteredData[0]?.year || 2000,
     lastDataYear,
@@ -126,7 +130,7 @@ export const CategoriesChart: FC<CategoriesChartProps> = ({
               content={
                 <ChartTooltip
                   companyBaseYear={companyBaseYear}
-                  unit={t("companies.tooltip.tonsCO2e")}
+                  unit={getEmissionsUnit(chartMode, t)}
                 />
               }
               wrapperStyle={{ outline: "none", zIndex: 60 }}
@@ -152,12 +156,17 @@ export const CategoriesChart: FC<CategoriesChartProps> = ({
               if (isHidden) return null;
 
               const categoryColor = getCategoryColor(categoryId);
+              const dataKey =
+                chartMode === "revenueIntensity"
+                  ? (d: ChartData) =>
+                      getIntensityValue(d[categoryKey] as number, d.turnover)
+                  : categoryKey;
 
               return (
                 <Line
                   key={categoryKey}
                   type="monotone"
-                  dataKey={categoryKey}
+                  dataKey={dataKey}
                   {...getConsistentLineProps(
                     "category",
                     isMobile,

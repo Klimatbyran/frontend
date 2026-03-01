@@ -85,6 +85,16 @@ export const LINE_CONFIGS = {
     color: "var(--pink-3)", // Will be overridden by stroke prop
     style: LINE_STYLES.primary,
   },
+  turnover: {
+    type: "primary" as const,
+    color: "var(--blue-2)",
+    style: LINE_STYLES.primary,
+  },
+  intensity: {
+    type: "primary" as const,
+    color: "var(--orange-2)",
+    style: LINE_STYLES.primary,
+  },
 } as const;
 
 // Re-export from utils modules

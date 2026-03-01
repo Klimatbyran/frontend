@@ -80,6 +80,11 @@ export const useDataView = <T extends string>(
 };
 
 /**
+ * Chart display mode - absolute values or revenue intensity (per million SEK turnover)
+ */
+export type ChartMode = "absolute" | "revenueIntensity";
+
+/**
  * Specialized hook for time-series charts with year range controls
  * Used for historic emissions charts and other temporal data
  */
@@ -88,6 +93,7 @@ export const useTimeSeriesChartState = (initialConfig?: {
   shortEndYear?: number;
   longEndYear?: number;
   currentYear?: number;
+  initialMode?: ChartMode;
 }) => {
   const currentYear = initialConfig?.currentYear || new Date().getFullYear();
   const defaultShortEndYear = initialConfig?.shortEndYear || currentYear + 5;
@@ -98,6 +104,9 @@ export const useTimeSeriesChartState = (initialConfig?: {
   const [chartEndYear, setChartEndYear] = useState(defaultChartEndYear);
   const [shortEndYear] = useState(defaultShortEndYear);
   const [longEndYear] = useState(defaultLongEndYear);
+  const [chartMode, setChartMode] = useState<ChartMode>(
+    initialConfig?.initialMode || "absolute",
+  );
 
   // Computed values
   const isShortView = useMemo(
@@ -118,5 +127,7 @@ export const useTimeSeriesChartState = (initialConfig?: {
     currentYear,
     isShortView,
     isLongView,
+    chartMode,
+    setChartMode,
   };
 };
