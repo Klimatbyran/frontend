@@ -143,5 +143,11 @@
     "vite": "^7.1.6",
     "vite-plugin-markdown": "^2.2.0",
     "vitest": "^3.1.4"
+  },
+  "overrides": {
+    "@redocly/openapi-core": {
+      "js-yaml": "4.1.1",
+      "minimatch": "5.1.8"
+    }
   }
 }
