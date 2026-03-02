@@ -45,7 +45,7 @@ function NationDetailContent({
         getSectorInfo={getSectorInfo}
         filteredSectors={filteredSectors}
         onFilteredSectorsChange={setFilteredSectors}
-        helpItems={["municipalityEmissionSources"]}
+        helpItems={["municipalityAndRegionEmissionSources"]}
       />
       <EntityListBox
         items={sortedRegions}
