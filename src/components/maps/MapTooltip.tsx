@@ -1,8 +1,7 @@
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import { KPIValue, MapEntityType } from "@/types/rankings";
 
 export function MapTooltip({
-  entityType,
   name,
   value,
   rank,
@@ -10,6 +9,7 @@ export function MapTooltip({
   total,
   nullValue,
   selectedKPI,
+  onClick,
 }: {
   entityType: MapEntityType;
   name: string;
@@ -19,22 +19,24 @@ export function MapTooltip({
   total: number;
   nullValue?: string;
   selectedKPI?: KPIValue;
+  onClick?: () => void;
 }) {
+  const { t } = useTranslation();
+
   const description =
     value !== null && value !== undefined
       ? typeof value === "boolean"
         ? value
-          ? t(
-              `${entityType}.list.kpis.${selectedKPI?.key}.booleanLabels.true`,
-            ) || t("yes")
-          : t(
-              `${entityType}.list.kpis.${selectedKPI?.key}.booleanLabels.false`,
-            ) || t("no")
+          ? (selectedKPI?.booleanLabels?.true ?? t("yes"))
+          : (selectedKPI?.booleanLabels?.false ?? t("no"))
         : `${(value as number).toFixed(1)}${unit}`
       : nullValue;
 
   return (
-    <div className="absolute top-4 left-4 bg-black/40 backdrop-blur-sm p-4 rounded-2xl">
+    <div
+      className="absolute top-4 left-4 bg-black/40 backdrop-blur-sm p-4 rounded-2xl"
+      onClick={onClick}
+    >
       <p className="text-white font-medium text-xl">{name}</p>
       <div className="space-y-1 mt-2">
         <p className="text-white/70">
