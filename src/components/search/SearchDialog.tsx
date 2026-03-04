@@ -4,12 +4,7 @@ import { Command as CommandPrimitive } from "cmdk";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 import { CombinedData } from "@/hooks/useCombinedData";
-import {
-  Command,
-  CommandEmpty,
-  CommandInput,
-  CommandList,
-} from "../ui/command";
+import { Command, CommandEmpty, CommandInput, CommandList } from "../ui/command";
 import {
   Dialog,
   DialogDescription,
@@ -17,7 +12,13 @@ import {
   DialogPortal,
   DialogTitle,
 } from "../ui/dialog";
-import { Building2, TreePine, Newspaper } from "lucide-react";
+import {
+  Building2,
+  TreePine,
+  Newspaper,
+  Map as MapIcon,
+  Globe2,
+} from "lucide-react";
 import SearchResultList from "./SearchResultList";
 import useGlobalSearch from "@/hooks/useGlobalSearch";
 
@@ -68,6 +69,10 @@ export function SearchDialog({
   const municipalities = results.data.filter(
     (item) => item.category === "municipalities",
   );
+
+  const regions = results.data.filter((item) => item.category === "regions");
+
+  const nations = results.data.filter((item) => item.category === "nations");
 
   const blogPosts = results.data.filter(
     (item) => item.category === "blogPosts",
@@ -130,6 +135,22 @@ export function SearchDialog({
                   list={municipalities}
                   icon={TreePine}
                   translationKey={"globalSearch.searchCategoryMunicipalities"}
+                  onSelectResponse={onSelectResponse}
+                  setOpen={setOpen}
+                />
+
+                <SearchResultList
+                  list={regions}
+                  icon={MapIcon}
+                  translationKey={"globalSearch.searchCategoryRegions"}
+                  onSelectResponse={onSelectResponse}
+                  setOpen={setOpen}
+                />
+
+                <SearchResultList
+                  list={nations}
+                  icon={Globe2}
+                  translationKey={"globalSearch.searchCategoryNations"}
                   onSelectResponse={onSelectResponse}
                   setOpen={setOpen}
                 />

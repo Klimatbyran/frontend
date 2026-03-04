@@ -2,11 +2,18 @@ import { useMemo } from "react";
 import { useCompanies } from "./companies/useCompanies";
 import { useMunicipalities } from "./municipalities/useMunicipalities";
 import { useBlogPosts } from "./useBlogPosts";
+import { useRegions } from "./useRegions";
+import { useNationalData } from "./useNationalData";
 
 export type CombinedData = {
   name: string;
   id: string;
-  category: "companies" | "municipalities" | "blogPosts";
+  category:
+    | "companies"
+    | "municipalities"
+    | "blogPosts"
+    | "regions"
+    | "nations";
   blogExcerpt?: string;
 };
 
@@ -22,61 +29,95 @@ export const useCombinedData = () => {
     companiesError: companiesError,
   } = useCompanies();
   const { blogPosts, blogPostsLoading, blogPostsError } = useBlogPosts();
+  const { regions } = useRegions();
+  const { data: nationalData } = useNationalData();
 
-  const hasErrors = municipalitiesError || companiesError || blogPostsError;
-  const isLoading =
+  const coreHasErrors = municipalitiesError || companiesError || blogPostsError;
+  const coreIsLoading =
     isLoadingCompanies || isLoadingMunicipalities || blogPostsLoading;
 
   const combinedData = useMemo(() => {
-    if (hasErrors) {
+    if (coreHasErrors) {
       return {
         loading: false,
-        error: new Error("Error fetching municipalities or companies"),
+        error: new Error(
+          "Error fetching municipalities, companies or blog posts",
+        ),
         data: [],
       };
     }
 
-    if (isLoading) {
+    if (coreIsLoading) {
       return {
         loading: true,
         data: [],
       };
     }
 
-    const mappedMunicipalities: CombinedData[] = municipalities?.map(
-      (municipality): CombinedData => ({
-        name: municipality.name,
-        id: municipality.name,
-        category: "municipalities",
-      }),
-    );
+    const mappedMunicipalities: CombinedData[] =
+      municipalities?.map(
+        (municipality): CombinedData => ({
+          name: municipality.name,
+          id: municipality.name,
+          category: "municipalities",
+        }),
+      ) ?? [];
 
-    const mappedCompanies: CombinedData[] = companies?.map(
-      (company): CombinedData => {
-        return {
+    const mappedCompanies: CombinedData[] =
+      companies?.map(
+        (company): CombinedData => ({
           name: company.name,
           id: company.wikidataId,
           category: "companies",
-        };
-      },
-    );
+        }),
+      ) ?? [];
 
-    const mappedBlogPosts: CombinedData[] = blogPosts?.map(
-      (blogPost): CombinedData => {
-        return {
+    const mappedBlogPosts: CombinedData[] =
+      blogPosts?.map(
+        (blogPost): CombinedData => ({
           name: blogPost.title,
           id: blogPost.id,
           category: "blogPosts",
           blogExcerpt: blogPost.excerpt,
-        };
+        }),
+      ) ?? [];
+
+    const mappedRegions: CombinedData[] =
+      regions?.map(
+        (regionName): CombinedData => ({
+          name: regionName,
+          id: regionName.toLowerCase(),
+          category: "regions",
+        }),
+      ) ?? [];
+
+    const mappedNations: CombinedData[] = [
+      {
+        name: nationalData?.country ?? "Sweden",
+        id: "nation",
+        category: "nations",
       },
-    );
+    ];
 
     return {
       loading: false,
-      data: [...mappedMunicipalities, ...mappedCompanies, ...mappedBlogPosts],
+      data: [
+        ...mappedMunicipalities,
+        ...mappedCompanies,
+        ...mappedRegions,
+        ...mappedNations,
+        ...mappedBlogPosts,
+      ],
     };
-  }, [municipalities, companies, blogPosts, isLoading, hasErrors]);
+  }, [
+    municipalities,
+    companies,
+    regions,
+    nationalData,
+    blogPosts,
+    coreIsLoading,
+    coreHasErrors,
+  ]);
 
   return combinedData;
 };
