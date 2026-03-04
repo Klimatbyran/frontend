@@ -32,12 +32,12 @@ export const useCombinedData = () => {
   const { regions } = useRegions();
   const { data: nationalData } = useNationalData();
 
-  const coreHasErrors = municipalitiesError || companiesError || blogPostsError;
+  const hasErrors = municipalitiesError || companiesError || blogPostsError;
   const coreIsLoading =
     isLoadingCompanies || isLoadingMunicipalities || blogPostsLoading;
 
   const combinedData = useMemo(() => {
-    if (coreHasErrors) {
+    if (hasErrors) {
       return {
         loading: false,
         error: new Error(
@@ -116,7 +116,7 @@ export const useCombinedData = () => {
     nationalData,
     blogPosts,
     coreIsLoading,
-    coreHasErrors,
+    hasErrors,
   ]);
 
   return combinedData;
