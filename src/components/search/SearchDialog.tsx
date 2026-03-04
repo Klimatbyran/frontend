@@ -75,6 +75,33 @@ export function SearchDialog({
   const nations = filterItems("nations");
   const blogPosts = filterItems("blogPosts");
 
+  const searchResultLists = [
+    {
+      items: companies,
+      icon: Building2,
+      translationKey: "globalSearch.searchCategoryCompanies",
+    },
+    {
+      items: municipalities,
+      icon: TreePine,
+      translationKey: "globalSearch.searchCategoryMunicipalities",
+    },
+    {
+      items: regions,
+      icon: MapIcon,
+      translationKey: "globalSearch.searchCategoryRegions",
+    },
+    {
+      items: nations,
+      icon: Globe2,
+      translationKey: "globalSearch.searchCategoryNations",
+    },
+    {
+      items: blogPosts,
+      icon: Newspaper,
+      translationKey: "globalSearch.searchCategoryBlogPosts",
+    },
+  ];
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogPortal>
@@ -120,45 +147,16 @@ export function SearchDialog({
                     )}
                   </CommandPrimitive.Loading>
                 )}
-                <SearchResultList
-                  list={companies}
-                  icon={Building2}
-                  translationKey={"globalSearch.searchCategoryCompanies"}
-                  onSelectResponse={onSelectResponse}
-                  setOpen={setOpen}
-                />
-
-                <SearchResultList
-                  list={municipalities}
-                  icon={TreePine}
-                  translationKey={"globalSearch.searchCategoryMunicipalities"}
-                  onSelectResponse={onSelectResponse}
-                  setOpen={setOpen}
-                />
-
-                <SearchResultList
-                  list={regions}
-                  icon={MapIcon}
-                  translationKey={"globalSearch.searchCategoryRegions"}
-                  onSelectResponse={onSelectResponse}
-                  setOpen={setOpen}
-                />
-
-                <SearchResultList
-                  list={nations}
-                  icon={Globe2}
-                  translationKey={"globalSearch.searchCategoryNations"}
-                  onSelectResponse={onSelectResponse}
-                  setOpen={setOpen}
-                />
-
-                <SearchResultList
-                  list={blogPosts}
-                  icon={Newspaper}
-                  translationKey={"globalSearch.searchCategoryBlogPosts"}
-                  onSelectResponse={onSelectResponse}
-                  setOpen={setOpen}
-                />
+                {searchResultLists.map((list) => (
+                  <SearchResultList
+                    key={list.translationKey}
+                    list={list.items}
+                    icon={list.icon}
+                    translationKey={list.translationKey}
+                    onSelectResponse={onSelectResponse}
+                    setOpen={setOpen}
+                  />
+                ))}
               </CommandList>
             </Command>
             <div className="flex justify-center text-white/40 text-sm mb-4">
