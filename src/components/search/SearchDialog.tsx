@@ -4,7 +4,12 @@ import { Command as CommandPrimitive } from "cmdk";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 import { CombinedData } from "@/hooks/useCombinedData";
-import { Command, CommandEmpty, CommandInput, CommandList } from "../ui/command";
+import {
+  Command,
+  CommandEmpty,
+  CommandInput,
+  CommandList,
+} from "../ui/command";
 import {
   Dialog,
   DialogDescription,
@@ -62,21 +67,13 @@ export function SearchDialog({
     return () => cancelAnimationFrame(frame);
   }, [inputValue, results.data.length]);
 
-  const companies = results.data.filter(
-    (item) => item.category === "companies",
-  );
-
-  const municipalities = results.data.filter(
-    (item) => item.category === "municipalities",
-  );
-
-  const regions = results.data.filter((item) => item.category === "regions");
-
-  const nations = results.data.filter((item) => item.category === "nations");
-
-  const blogPosts = results.data.filter(
-    (item) => item.category === "blogPosts",
-  );
+  const filterItems = (category: CombinedData["category"]) =>
+    results.data.filter((item) => item.category === category);
+  const companies = filterItems("companies");
+  const municipalities = filterItems("municipalities");
+  const regions = filterItems("regions");
+  const nations = filterItems("nations");
+  const blogPosts = filterItems("blogPosts");
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
