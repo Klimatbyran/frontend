@@ -20,7 +20,6 @@ import {
 } from "./useCompanySorting";
 import { useExploreFilters } from "@/hooks/explore/useExploreFilters";
 import { getSearchTerms } from "@/hooks/explore/exploreFilterUtils";
-import type { SortDirection } from "@/components/explore/SortPopover";
 
 const MEETS_PARIS_OPTIONS = ["all", "yes", "no", "unknown"] as const;
 type MeetsParisFilter = (typeof MEETS_PARIS_OPTIONS)[number];
@@ -55,10 +54,6 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
     .filter((s) => SECTORS.some((sector) => sector.value === s)) ?? [
     "all",
   ]) as CompanySector[];
-  const setSearchQueryWrapped = useCallback(
-    (query: string) => setSearchQuery(query),
-    [setSearchQuery],
-  );
   const setMeetsParisFilter = useCallback(
     (meetsParisFilter: string) =>
       setOrDeleteSearchParam(
@@ -76,14 +71,6 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
         "sectors",
       ),
     [],
-  );
-  const setSortByWrapped = useCallback(
-    (value: string) => setSortBy(value),
-    [setSortBy],
-  );
-  const setSortDirectionWrapped = useCallback(
-    (value: string) => setSortDirection(value as SortDirection),
-    [setSortDirection],
   );
 
   const sectorNames = useSectorNames();
@@ -283,15 +270,15 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
 
   return {
     searchQuery,
-    setSearchQuery: setSearchQueryWrapped,
+    setSearchQuery,
     sectors,
     setSectors,
     meetsParisFilter,
     setMeetsParisFilter,
     sortBy,
-    setSortBy: setSortByWrapped,
+    setSortBy,
     sortDirection,
-    setSortDirection: setSortDirectionWrapped,
+    setSortDirection,
     filteredCompanies,
     filterGroups,
     activeFilters,
