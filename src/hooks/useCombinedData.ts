@@ -4,6 +4,7 @@ import { useMunicipalities } from "./municipalities/useMunicipalities";
 import { useBlogPosts } from "./useBlogPosts";
 import { useRegions } from "./useRegions";
 import { useNationalData } from "./useNationalData";
+import { t } from "i18next";
 
 export type CombinedData = {
   name: string;
@@ -52,60 +53,50 @@ export const useCombinedData = () => {
       };
     }
 
-    const mappedMunicipalities: CombinedData[] =
-      municipalities?.map(
+    const mappedNations: CombinedData[] = [
+      {
+        name: nationalData?.country ?? t("header.nation"),
+        id: "nation",
+        category: "nations",
+      },
+    ];
+
+    const mappedData: CombinedData[] = [
+      ...(municipalities?.map(
         (municipality): CombinedData => ({
           name: municipality.name,
           id: municipality.name,
           category: "municipalities",
         }),
-      ) ?? [];
-
-    const mappedCompanies: CombinedData[] =
-      companies?.map(
+      ) ?? []),
+      ...(companies?.map(
         (company): CombinedData => ({
           name: company.name,
           id: company.wikidataId,
           category: "companies",
         }),
-      ) ?? [];
-
-    const mappedBlogPosts: CombinedData[] =
-      blogPosts?.map(
+      ) ?? []),
+      ...(regions?.map(
+        (regionName): CombinedData => ({
+          name: regionName,
+          id: regionName.toLowerCase(),
+          category: "regions",
+        }),
+      ) ?? []),
+      ...mappedNations,
+      ...(blogPosts?.map(
         (blogPost): CombinedData => ({
           name: blogPost.title,
           id: blogPost.id,
           category: "blogPosts",
           blogExcerpt: blogPost.excerpt,
         }),
-      ) ?? [];
-
-    const mappedRegions: CombinedData[] =
-      regions?.map(
-        (regionName): CombinedData => ({
-          name: regionName,
-          id: regionName.toLowerCase(),
-          category: "regions",
-        }),
-      ) ?? [];
-
-    const mappedNations: CombinedData[] = [
-      {
-        name: nationalData?.country ?? "Sweden",
-        id: "nation",
-        category: "nations",
-      },
+      ) ?? []),
     ];
 
     return {
       loading: false,
-      data: [
-        ...mappedMunicipalities,
-        ...mappedCompanies,
-        ...mappedRegions,
-        ...mappedNations,
-        ...mappedBlogPosts,
-      ],
+      data: mappedData,
     };
   }, [
     municipalities,
