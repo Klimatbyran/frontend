@@ -1823,9 +1823,9 @@
     "headerButtonTitle": "Search for data",
     "searchDialog": {
       "title": "Search",
-      "description": "Search for companies, municipalities, regions, the nation or blog posts",
+      "description": "Search for companies, municipalities, regions, nations or blog posts",
       "emptyText": "Start typing to search for companies, municipalities, regions, the nation or blog posts",
-      "loadingText": "Fetching companies, municipalities, regions, the nation and blog posts...",
+      "loadingText": "Fetching companies, municipalities, regions, nations and blog posts...",
       "shortcutTipText": "Trigger search by Ctrl+K / ⌘+K"
     }
   },
