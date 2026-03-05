@@ -39,9 +39,7 @@ function normalizeRegion(apiRegion: ApiRegion): RegionForExplore {
   };
 }
 
-export function getLastEmissionYear(
-  region: RegionForExplore,
-): string | null {
+export function getLastEmissionYear(region: RegionForExplore): string | null {
   const years = Object.keys(region.emissions)
     .filter((y) => !isNaN(Number(y)))
     .map(Number)
