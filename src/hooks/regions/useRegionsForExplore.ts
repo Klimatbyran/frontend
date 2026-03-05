@@ -55,14 +55,15 @@ export function useRegionsForExplore() {
     data: regions = [],
     isLoading,
     error,
-} = useQuery<ApiRegion[], Error>({
+  } = useQuery<ApiRegion[], Error>({
     queryKey: ["regions"],
     queryFn: getRegions,
   });
 
-  const regionsForExplore = useMemo(() => {
-    return (regions as ApiRegion[]).map(normalizeRegion);
-  }, [regions]);
+  const regionsForExplore = useMemo(
+    () => regions.map(normalizeRegion),
+    [regions],
+  );
 
   return {
     regions: regionsForExplore,
