@@ -38,11 +38,11 @@ export function useMunicipalities(): IMunicipalitiesReturn {
       return data.map(
         (municipality): Municipality => ({
           ...municipality,
-          emissions: mapEmissionArray(municipality.emissions as any),
+          emissions: mapEmissionArray(municipality.emissions),
           approximatedHistoricalEmission: mapEmissionArray(
-            municipality.approximatedHistoricalEmission as any,
+            municipality.approximatedHistoricalEmission,
           ),
-          trend: mapEmissionArray(municipality.trend as any),
+          trend: mapEmissionArray(municipality.trend),
           meetsParisGoal:
             municipality.totalTrend <= municipality.totalCarbonLaw,
           climatePlan: municipality.climatePlanYear !== null,
