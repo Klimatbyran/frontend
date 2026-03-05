@@ -57,7 +57,7 @@ export function useRegionsForExplore() {
     data: regions = [],
     isLoading,
     error,
-  } = useQuery({
+} = useQuery<ApiRegion[], Error>({
     queryKey: ["regions"],
     queryFn: getRegions,
   });
