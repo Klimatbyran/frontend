@@ -33,21 +33,19 @@ export const useCombinedData = () => {
   const { data: nationalData } = useNationalData();
 
   const hasErrors = municipalitiesError || companiesError || blogPostsError;
-  const coreIsLoading =
+  const isLoading =
     isLoadingCompanies || isLoadingMunicipalities || blogPostsLoading;
 
   const combinedData = useMemo(() => {
     if (hasErrors) {
       return {
         loading: false,
-        error: new Error(
-          "Error fetching municipalities, companies or blog posts",
-        ),
+        error: new Error("Error fetching data"),
         data: [],
       };
     }
 
-    if (coreIsLoading) {
+    if (isLoading) {
       return {
         loading: true,
         data: [],
@@ -115,7 +113,7 @@ export const useCombinedData = () => {
     regions,
     nationalData,
     blogPosts,
-    coreIsLoading,
+    isLoading,
     hasErrors,
   ]);
 
