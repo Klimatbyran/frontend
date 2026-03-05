@@ -39,6 +39,16 @@ function normalizeRegion(apiRegion: ApiRegion): RegionForExplore {
   };
 }
 
+export function getLastEmissionYear(
+  region: RegionForExplore,
+): string | null {
+  const years = Object.keys(region.emissions)
+    .filter((y) => !isNaN(Number(y)))
+    .map(Number)
+    .sort((a, b) => b - a);
+  return years.length > 0 ? String(years[0]) : null;
+}
+
 /**
  * Hook to get all regions with data needed for the explore list (emissions, meetsParis, change %).
  */

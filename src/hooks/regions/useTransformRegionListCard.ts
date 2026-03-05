@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
 import type { RegionForExplore } from "./useRegionsForExplore";
+import { getLastEmissionYear } from "./useRegionsForExplore";
 import {
   formatEmissionsAbsolute,
   formatPercentChange,
@@ -20,12 +21,8 @@ export function useTransformRegionListCard({
 
   return useMemo(() => {
     return filteredRegions.map((region) => {
-      const lastYear = Object.keys(region.emissions)
-        .filter((y) => !isNaN(Number(y)))
-        .map(Number)
-        .sort((a, b) => b - a)[0];
-      const lastYearStr = lastYear?.toString() ?? "";
-      const lastYearValue = lastYear
+      const lastYearStr = getLastEmissionYear(region) ?? "";
+      const lastYearValue = lastYearStr
         ? region.emissions[lastYearStr]
         : undefined;
       const emissionsValue =

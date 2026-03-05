@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import type { RegionForExplore } from "./useRegionsForExplore";
+import { getLastEmissionYear } from "./useRegionsForExplore";
 import { useRegionSortOptions } from "./useRegionSorting";
 import {
   useExploreFilters,
@@ -144,12 +145,4 @@ function filterAndSortRegions(
       if (sortDirection === "asc") return cmp;
       return -cmp;
     });
-}
-
-function getLastEmissionYear(region: RegionForExplore): string | null {
-  const years = Object.keys(region.emissions)
-    .filter((y) => !isNaN(Number(y)))
-    .map(Number)
-    .sort((a, b) => b - a);
-  return years.length > 0 ? String(years[0]) : null;
 }
