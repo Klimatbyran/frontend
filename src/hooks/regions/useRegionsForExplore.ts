@@ -69,6 +69,6 @@ export function useRegionsForExplore() {
   return {
     regions: regionsForExplore,
     loading: isLoading,
-    error: error as Error | undefined,
+    error,
   };
 }
