@@ -145,6 +145,9 @@
     "vitest": "^3.1.4"
   },
   "overrides": {
-    "ajv": ">=8.18.0"
+    "@redocly/openapi-core": {
+      "js-yaml": "4.1.1",
+      "minimatch": "5.1.8"
+    }
   }
 }

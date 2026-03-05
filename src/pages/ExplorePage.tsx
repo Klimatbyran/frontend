@@ -5,8 +5,10 @@ import { useScreenSize } from "@/hooks/useScreenSize";
 import { cn } from "@/lib/utils";
 import { CompanyList } from "@/components/companies/list/CompanyList";
 import { MunicipalityList } from "@/components/municipalities/list/MunicipalityList";
+import { RegionList } from "@/components/regions/list/RegionList";
 import { Toggle } from "@/components/ui/toggle";
 import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
+import { useRegionsForExplore } from "@/hooks/regions/useRegionsForExplore";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router";
 import { NotFoundPage } from "./NotFoundPage";
@@ -19,6 +21,11 @@ export function ExplorePage() {
   const { municipalities, municipalitiesLoading, municipalitiesError } =
     useMunicipalities();
   const { companies, companiesLoading, companiesError } = useCompanies();
+  const {
+    regions,
+    loading: regionsLoading,
+    error: regionsError,
+  } = useRegionsForExplore();
 
   // Filter out search params that are not applicable to both municipalities and companies
   const urlSearchParams = new URLSearchParams(window.location.search);
@@ -31,11 +38,15 @@ export function ExplorePage() {
     .map((s) => `${s}=${urlSearchParams.get(s)}`)
     .join("&");
 
-  if (mainFilter !== "companies" && mainFilter !== "municipalities") {
+  if (
+    mainFilter !== "companies" &&
+    mainFilter !== "municipalities" &&
+    mainFilter !== "regions"
+  ) {
     return <NotFoundPage />;
   }
 
-  if (municipalitiesLoading || companiesLoading) {
+  if (municipalitiesLoading || companiesLoading || regionsLoading) {
     return (
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-pulse">
         {[...Array(4)].map((_, i) => (
@@ -45,22 +56,44 @@ export function ExplorePage() {
     );
   }
 
-  if (companiesError || municipalitiesError) {
+  if (companiesError || municipalitiesError || regionsError) {
+    const errorTitle =
+      mainFilter === "companies"
+        ? t("explorePage.companies.errorTitle")
+        : mainFilter === "regions"
+          ? t("explorePage.regions.errorTitle")
+          : t("explorePage.municipalities.errorTitle");
+    const errorDescription =
+      mainFilter === "companies"
+        ? t("explorePage.companies.errorDescription")
+        : mainFilter === "regions"
+          ? t("explorePage.regions.errorDescription")
+          : t("explorePage.municipalities.errorDescription");
     return (
       <div className="text-center py-12">
-        <h2 className="text-2xl font-light text-red-500">
-          {mainFilter === "companies"
-            ? t("explorePage.companies.errorTitle")
-            : t("explorePage.municipalities.errorTitle")}
-        </h2>
-        <p className="text-grey mt-2">
-          {mainFilter === "companies"
-            ? t("explorePage.companies.errorDescription")
-            : t("explorePage.municipalities.errorDescription")}
-        </p>
+        <h2 className="text-2xl font-light text-red-500">{errorTitle}</h2>
+        <p className="text-grey mt-2">{errorDescription}</p>
       </div>
     );
   }
+
+  const mainFilterToggles = [
+    {
+      key: "companies",
+      path: "../companies",
+      labelKey: "explorePage.companies.companies",
+    },
+    {
+      key: "municipalities",
+      path: "../municipalities",
+      labelKey: "explorePage.municipalities.municipalities",
+    },
+    {
+      key: "regions",
+      path: "../regions",
+      labelKey: "explorePage.regions.regions",
+    },
+  ] as const;
 
   return (
     <>
@@ -81,39 +114,29 @@ export function ExplorePage() {
 
         {/* Wrapper for Filters, Search, and Badges */}
         <div className={cn("flex flex-wrap items-center gap-2 mb-4")}>
-          {/* Search Input */}
-          <Toggle
-            onClick={() => {
-              if (mainFilter !== "companies") {
-                navigate(["../companies", globalUrlSearchParamStr].join("?"), {
-                  relative: "path",
-                });
-              }
-            }}
-            variant={"outlineWhite"}
-            pressed={mainFilter === "companies"}
-          >
-            {t("explorePage.companies.companies")}
-          </Toggle>
-          <Toggle
-            onClick={() => {
-              if (mainFilter !== "municipalities") {
-                navigate(
-                  ["../municipalities", globalUrlSearchParamStr].join("?"),
-                  { relative: "path" },
-                );
-              }
-            }}
-            variant={"outlineWhite"}
-            pressed={mainFilter === "municipalities"}
-          >
-            {t("explorePage.municipalities.municipalities")}
-          </Toggle>
+          {mainFilterToggles.map(({ key, path, labelKey }) => (
+            <Toggle
+              key={key}
+              onClick={() => {
+                if (mainFilter !== key) {
+                  navigate([path, globalUrlSearchParamStr].join("?"), {
+                    relative: "path",
+                  });
+                }
+              }}
+              variant="outlineWhite"
+              pressed={mainFilter === key}
+            >
+              {t(labelKey)}
+            </Toggle>
+          ))}
         </div>
       </div>
 
       {mainFilter === "companies" ? (
         <CompanyList companies={companies} />
+      ) : mainFilter === "regions" ? (
+        <RegionList regions={regions} />
       ) : (
         <MunicipalityList municipalities={municipalities} />
       )}
