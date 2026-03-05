@@ -70,9 +70,13 @@ export function getChartData(
       acc[key] = categoryEntry?.total ?? null; // Preserve null if data is missing
       return acc;
     }, {});
+    const total = period.emissions?.calculatedTotalEmissions ?? 0;
+    const turnover = period.economy?.turnover?.value ?? undefined;
+
     return {
       year,
-      total: period.emissions?.calculatedTotalEmissions ?? 0,
+      total,
+      turnover,
       isAIGenerated: isEmissionsAIGenerated(period),
       scope1: scope1Data,
       scope2: scope2Data,

@@ -1296,6 +1296,8 @@
       "title": "Utsläppsutveckling",
       "tooltip": "Visar de rapporterade utsläppen över tid. Klicka på en punkt för att ta bort linjen från grafen. Hovra över punkten för att se värdena för rapporteringsperioden.",
       "unit": "I ton CO₂e",
+      "intensityUnit": "ton CO₂e / milj. omsättning",
+      "intensity": "Intensitet",
       "totalEmissions": "Totala utsläpp",
       "baseYear": "Basår",
       "baseYearInfo": "Basår syftar på ett specifikt år som väljs som referenspunkt för att jämföra framtida utsläpp mot.",
