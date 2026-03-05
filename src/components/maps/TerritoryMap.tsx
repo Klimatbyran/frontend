@@ -123,6 +123,7 @@ function TerritoryMap({
         handleZoomIn={handleZoomIn}
         handleZoomOut={handleZoomOut}
         handleReset={handleReset}
+        onAreaClick={onAreaClick}
       />
     </div>
   );

@@ -20,6 +20,7 @@ interface MapOverlaysProps {
   handleZoomIn: () => void;
   handleZoomOut: () => void;
   handleReset: () => void;
+  onAreaClick?: (id: string) => void;
 }
 
 function MapOverlays({
@@ -38,6 +39,7 @@ function MapOverlays({
   handleZoomIn,
   handleZoomOut,
   handleReset,
+  onAreaClick,
 }: MapOverlaysProps) {
   return (
     <>
@@ -55,6 +57,7 @@ function MapOverlays({
               : "No data"
           }
           selectedKPI={selectedKPI as KPIValue}
+          onClick={onAreaClick ? () => onAreaClick(hoveredArea) : undefined}
         />
       )}
       <MapLegend

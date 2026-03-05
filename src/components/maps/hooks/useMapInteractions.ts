@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 import { Feature, Geometry, GeoJsonProperties } from "geojson";
 import L from "leaflet";
-import { DataItem, DataKPI } from "../TerritoryMap";
+import { DataItem, DataKPI } from "@/types/rankings";
 import { createStatisticalGradient } from "@/utils/ui/colorGradients";
+import { isMobile } from "react-device-detect";
 
 interface UseMapInteractionsProps {
   data: DataItem[];
@@ -128,15 +129,24 @@ export function useMapInteractions({
 
         (layer as L.Path).on({
           mouseover: () => {
-            setHoveredArea(areaName);
+            if (!isMobile) {
+              setHoveredArea(areaName);
+            }
           },
           mouseout: () => {
-            setHoveredArea(null);
-            setHoveredValue(null);
-            setHoveredRank(null);
+            if (!isMobile) {
+              setHoveredArea(null);
+              setHoveredValue(null);
+              setHoveredRank(null);
+            }
           },
           click: () => {
-            if (onAreaClick) onAreaClick(areaName);
+            // On any device, clicking an area should show its tooltip.
+            setHoveredArea(areaName);
+            // On desktop, also trigger navigation to the detail page.
+            if (!isMobile && onAreaClick) {
+              onAreaClick(areaName);
+            }
           },
         });
       }
