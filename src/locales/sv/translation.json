@@ -1859,11 +1859,15 @@
     "municipality": "Kommun"
   },
   "globalSearch": {
-    "title": "Hitta ett företag eller kommun",
+    "title": "Hitta ett företag, en kommun, ett län eller land",
     "searchCategoryCompany": "Företag",
     "searchCategoryCompanies": "Företag",
     "searchCategoryMunicipality": "Kommun",
     "searchCategoryMunicipalities": "Kommuner",
+    "searchCategoryRegion": "Län",
+    "searchCategoryRegions": "Län",
+    "searchCategoryNation": "Land",
+    "searchCategoryNations": "Länder",
     "searchCategoryBlogPost": "Blogginlägg",
     "searchCategoryBlogPosts": "Blogginlägg",
     "searchCategoryPage": "Sida",
@@ -1871,9 +1875,9 @@
     "headerButtonTitle": "Sök efter data",
     "searchDialog": {
       "title": "Sök",
-      "description": "Sök efter företag, kommuner eller blogginlägg",
-      "emptyText": "Börja skriva för att söka efter företag, kommuner eller blogginlägg",
-      "loadingText": "Hämtar företag och kommuner...",
+      "description": "Sök efter företag, kommuner, län, länder eller blogginlägg",
+      "emptyText": "Börja skriva för att söka efter företag, kommuner, län, länder eller blogginlägg",
+      "loadingText": "Hämtar företag, kommuner, län, länder och blogginlägg...",
       "shortcutTipText": "Starta sök med Ctrl+K / ⌘+K"
     }
   },

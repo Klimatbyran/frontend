@@ -2,11 +2,19 @@ import { useMemo } from "react";
 import { useCompanies } from "./companies/useCompanies";
 import { useMunicipalities } from "./municipalities/useMunicipalities";
 import { useBlogPosts } from "./useBlogPosts";
+import { useRegions } from "./useRegions";
+import { useNationalData } from "./useNationalData";
+import { t } from "i18next";
 
 export type CombinedData = {
   name: string;
   id: string;
-  category: "companies" | "municipalities" | "blogPosts";
+  category:
+    | "companies"
+    | "municipalities"
+    | "blogPosts"
+    | "regions"
+    | "nations";
   blogExcerpt?: string;
 };
 
@@ -22,6 +30,8 @@ export const useCombinedData = () => {
     companiesError: companiesError,
   } = useCompanies();
   const { blogPosts, blogPostsLoading, blogPostsError } = useBlogPosts();
+  const { regions } = useRegions();
+  const { data: nationalData } = useNationalData();
 
   const hasErrors = municipalitiesError || companiesError || blogPostsError;
   const isLoading =
@@ -31,7 +41,7 @@ export const useCombinedData = () => {
     if (hasErrors) {
       return {
         loading: false,
-        error: new Error("Error fetching municipalities or companies"),
+        error: new Error("Error fetching data"),
         data: [],
       };
     }
@@ -43,40 +53,60 @@ export const useCombinedData = () => {
       };
     }
 
-    const mappedMunicipalities: CombinedData[] = municipalities?.map(
-      (municipality): CombinedData => ({
-        name: municipality.name,
-        id: municipality.name,
-        category: "municipalities",
-      }),
-    );
+    const mappedNations: CombinedData[] = [
+      {
+        name: nationalData?.country ?? t("header.nation"),
+        id: "nation",
+        category: "nations",
+      },
+    ];
 
-    const mappedCompanies: CombinedData[] = companies?.map(
-      (company): CombinedData => {
-        return {
+    const mappedData: CombinedData[] = [
+      ...(municipalities?.map(
+        (municipality): CombinedData => ({
+          name: municipality.name,
+          id: municipality.name,
+          category: "municipalities",
+        }),
+      ) ?? []),
+      ...(companies?.map(
+        (company): CombinedData => ({
           name: company.name,
           id: company.wikidataId,
           category: "companies",
-        };
-      },
-    );
-
-    const mappedBlogPosts: CombinedData[] = blogPosts?.map(
-      (blogPost): CombinedData => {
-        return {
+        }),
+      ) ?? []),
+      ...(regions?.map(
+        (regionName): CombinedData => ({
+          name: regionName,
+          id: regionName.toLowerCase(),
+          category: "regions",
+        }),
+      ) ?? []),
+      ...mappedNations,
+      ...(blogPosts?.map(
+        (blogPost): CombinedData => ({
           name: blogPost.title,
           id: blogPost.id,
           category: "blogPosts",
           blogExcerpt: blogPost.excerpt,
-        };
-      },
-    );
+        }),
+      ) ?? []),
+    ];
 
     return {
       loading: false,
-      data: [...mappedMunicipalities, ...mappedCompanies, ...mappedBlogPosts],
+      data: mappedData,
     };
-  }, [municipalities, companies, blogPosts, isLoading, hasErrors]);
+  }, [
+    municipalities,
+    companies,
+    regions,
+    nationalData,
+    blogPosts,
+    isLoading,
+    hasErrors,
+  ]);
 
   return combinedData;
 };

@@ -1807,11 +1807,15 @@
     "municipality": "Municipality"
   },
   "globalSearch": {
-    "title": "Find a company or municipality",
+    "title": "Find a company, municipality, region or nation",
     "searchCategoryCompany": "Company",
     "searchCategoryCompanies": "Companies",
     "searchCategoryMunicipality": "Municipality",
     "searchCategoryMunicipalities": "Municipalities",
+    "searchCategoryRegion": "Region",
+    "searchCategoryRegions": "Regions",
+    "searchCategoryNation": "Nation",
+    "searchCategoryNations": "Nations",
     "searchCategoryBlogPost": "Blog Post",
     "searchCategoryBlogPosts": "Blog Posts",
     "searchCategoryPage": "Page",
@@ -1819,9 +1823,9 @@
     "headerButtonTitle": "Search for data",
     "searchDialog": {
       "title": "Search",
-      "description": "Search for companies, municipalities or blog posts",
-      "emptyText": "Start typing to search for companies, municipalities or blog posts",
-      "loadingText": "Fetching companies and municipalities...",
+      "description": "Search for companies, municipalities, regions, nations or blog posts",
+      "emptyText": "Start typing to search for companies, municipalities, regions, the nation or blog posts",
+      "loadingText": "Fetching companies, municipalities, regions, nations and blog posts...",
       "shortcutTipText": "Trigger search by Ctrl+K / ⌘+K"
     }
   },

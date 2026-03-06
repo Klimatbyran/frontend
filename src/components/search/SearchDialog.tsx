@@ -17,7 +17,13 @@ import {
   DialogPortal,
   DialogTitle,
 } from "../ui/dialog";
-import { Building2, TreePine, Newspaper } from "lucide-react";
+import {
+  Building2,
+  TreePine,
+  Newspaper,
+  Map as MapIcon,
+  Globe2,
+} from "lucide-react";
 import SearchResultList from "./SearchResultList";
 import useGlobalSearch from "@/hooks/useGlobalSearch";
 
@@ -61,18 +67,41 @@ export function SearchDialog({
     return () => cancelAnimationFrame(frame);
   }, [inputValue, results.data.length]);
 
-  const companies = results.data.filter(
-    (item) => item.category === "companies",
-  );
+  const filterItems = (category: CombinedData["category"]) =>
+    results.data.filter((item) => item.category === category);
+  const companies = filterItems("companies");
+  const municipalities = filterItems("municipalities");
+  const regions = filterItems("regions");
+  const nations = filterItems("nations");
+  const blogPosts = filterItems("blogPosts");
 
-  const municipalities = results.data.filter(
-    (item) => item.category === "municipalities",
-  );
-
-  const blogPosts = results.data.filter(
-    (item) => item.category === "blogPosts",
-  );
-
+  const searchResultLists = [
+    {
+      items: companies,
+      icon: Building2,
+      translationKey: "globalSearch.searchCategoryCompanies",
+    },
+    {
+      items: municipalities,
+      icon: TreePine,
+      translationKey: "globalSearch.searchCategoryMunicipalities",
+    },
+    {
+      items: regions,
+      icon: MapIcon,
+      translationKey: "globalSearch.searchCategoryRegions",
+    },
+    {
+      items: nations,
+      icon: Globe2,
+      translationKey: "globalSearch.searchCategoryNations",
+    },
+    {
+      items: blogPosts,
+      icon: Newspaper,
+      translationKey: "globalSearch.searchCategoryBlogPosts",
+    },
+  ];
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogPortal>
@@ -118,29 +147,16 @@ export function SearchDialog({
                     )}
                   </CommandPrimitive.Loading>
                 )}
-                <SearchResultList
-                  list={companies}
-                  icon={Building2}
-                  translationKey={"globalSearch.searchCategoryCompanies"}
-                  onSelectResponse={onSelectResponse}
-                  setOpen={setOpen}
-                />
-
-                <SearchResultList
-                  list={municipalities}
-                  icon={TreePine}
-                  translationKey={"globalSearch.searchCategoryMunicipalities"}
-                  onSelectResponse={onSelectResponse}
-                  setOpen={setOpen}
-                />
-
-                <SearchResultList
-                  list={blogPosts}
-                  icon={Newspaper}
-                  translationKey={"globalSearch.searchCategoryBlogPosts"}
-                  onSelectResponse={onSelectResponse}
-                  setOpen={setOpen}
-                />
+                {searchResultLists.map((list) => (
+                  <SearchResultList
+                    key={list.translationKey}
+                    list={list.items}
+                    icon={list.icon}
+                    translationKey={list.translationKey}
+                    onSelectResponse={onSelectResponse}
+                    setOpen={setOpen}
+                  />
+                ))}
               </CommandList>
             </Command>
             <div className="flex justify-center text-white/40 text-sm mb-4">

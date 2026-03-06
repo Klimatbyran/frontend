@@ -4,6 +4,8 @@ import type { CombinedData } from "@/hooks/useCombinedData";
 const resultTypeTranslationKeys = {
   companies: "globalSearch.searchCategoryCompany",
   municipalities: "globalSearch.searchCategoryMunicipality",
+  regions: "globalSearch.searchCategoryRegion",
+  nations: "globalSearch.searchCategoryNation",
   blogPosts: "globalSearch.searchCategoryBlogPost",
 } as const;
 
