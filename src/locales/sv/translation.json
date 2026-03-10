@@ -92,10 +92,8 @@
     "emailTitle": "Förslag till",
     "ctaSection": {
       "title": "Redo att utforska datan?",
-      "description": "Börja din resa in i Sveriges klimatdata. Sök efter företag och kommuner, utforska rankinglistor och upptäck vem som leder kampen mot klimatförändringarna.",
-      "exploreClimateData": "Se kommunranking",
-      "viewCompanyRankings": "Utforska företagsdata",
-      "or": "Eller"
+      "description": "Börja din resa in i klimatdata. Sök efter företag, kommuner, regioner och länder. Utforska rankningar och upptäck vem som leder kampen mot klimatförändringarna.",
+      "exploreData": "Utforska Data"
     },
     "siteFeatures": {
       "title": "Omfattande klimatspårning",

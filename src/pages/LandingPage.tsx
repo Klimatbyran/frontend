@@ -15,6 +15,7 @@ import {
   formatPercentChange,
 } from "@/utils/formatting/localization";
 import { SCROLL_THROTTLE_DELAY } from "@/lib/constants/landingPage";
+import { LandingPageCTA } from "@/components/landing/LandingPageCTA";
 
 export function LandingPage() {
   const { t } = useTranslation();
@@ -118,7 +119,7 @@ export function LandingPage() {
         structuredData={structuredData}
       />
       <div className="flex flex-col h-screen items-center">
-        <div className="flex-1 flex flex-col items-center text-center px-4 py-44 md:py-56">
+        <div className="flex-1 flex flex-col items-center text-center px-4 gap-8 py-24 md:py-28">
           <div className="max-w-lg md:max-w-4xl mx-auto space-y-4">
             <h1 className="text-4xl md:text-7xl font-light tracking-tight">
               {t("landingPage.title")}
@@ -135,6 +136,7 @@ export function LandingPage() {
               />
             </div>
           </div>
+          <LandingPageCTA />
         </div>
         <ChevronDown
           onClick={handleChevronClick}
