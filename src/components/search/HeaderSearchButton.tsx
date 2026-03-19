@@ -8,29 +8,35 @@ import { SearchDialog } from "./SearchDialog";
 
 type HeaderSearchButtonProps = {
   className?: string;
-  onSearchResultClick?: () => void;
+  /** Mobile header: close the hamburger sheet when opening search or after choosing a result. */
+  closeMobileNav?: () => void;
 };
 
 export const HeaderSearchButton = ({
   className,
-  onSearchResultClick,
+  closeMobileNav,
 }: HeaderSearchButtonProps) => {
   const [commandOpen, setCommandOpen] = useState(false);
   const navigate = useNavigate();
   const { t } = useTranslation();
+
+  const openSearch = () => {
+    closeMobileNav?.();
+    setCommandOpen(true);
+  };
 
   // Open command palette with CMD+K
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
-        setCommandOpen(true);
+        openSearch();
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [closeMobileNav]);
 
   const handleSelectResponse = (response: CombinedData) => {
     switch (response.category) {
@@ -50,14 +56,13 @@ export const HeaderSearchButton = ({
         navigate(`/insights/${response.id}`);
         break;
     }
-
-    onSearchResultClick?.();
+    closeMobileNav?.();
   };
 
   return (
     <>
       <button
-        onClick={() => setCommandOpen(true)}
+        onClick={openSearch}
         className={cn(
           "px-2 py-1 bg-black-1 h-8",
           "flex items-center gap-2",

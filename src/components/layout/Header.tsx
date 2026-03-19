@@ -332,7 +332,7 @@ export function Header() {
         <div className="flex gap-6">
           <HeaderSearchButton
             className="w-full lg:hidden"
-            onSearchResultClick={toggleMenu}
+            closeMobileNav={() => setMenuOpen(false)}
           />
 
           <button
