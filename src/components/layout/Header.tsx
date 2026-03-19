@@ -160,6 +160,7 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const toggleMenu = useCallback(() => setMenuOpen((prev) => !prev), []);
+  const closeMobileNav = useCallback(() => setMenuOpen(false), []);
   const { user } = useAuth();
   const { headerTitle, showTitle, setShowTitle } = useHeaderTitle();
   const isStaging = stagingFeatureFlagEnabled();
@@ -332,7 +333,7 @@ export function Header() {
         <div className="flex gap-6">
           <HeaderSearchButton
             className="w-full lg:hidden"
-            closeMobileNav={() => setMenuOpen(false)}
+            closeMobileNav={closeMobileNav}
           />
 
           <button
