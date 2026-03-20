@@ -10,6 +10,7 @@ import {
 } from "@/lib/company/createCompanyBody";
 import { useToast } from "@/contexts/ToastContext";
 import { AddCompanySection } from "./AddCompanySection";
+import { LogoDevDialog } from "@/components/companies/edit/LogoDevDialog";
 
 const FIELD_WRAPPER = "flex flex-col gap-1";
 const LABEL_CLASS = "block text-foreground";
@@ -194,6 +195,9 @@ export function AddCompanyPage() {
               placeholder="https://..."
               className={INPUT_CLASS_XL}
             />
+            <div className="w-full max-w-xl flex flex-col">
+              <LogoDevDialog className="mt-2 place-self-end h-10 inline-block bg-black-1 hover:bg-grey text-white px-6 py-2 rounded-lg transition-colors duration-200" onSubmit={setLogoUrl}/>
+            </div>
           </div>
         </AddCompanySection>
 

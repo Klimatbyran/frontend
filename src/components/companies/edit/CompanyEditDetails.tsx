@@ -22,6 +22,7 @@ import { useToast } from "@/contexts/ToastContext";
 import { validateValue } from "../../../utils/ui/validation";
 import { CompanyEditFieldWithUndo } from "./CompanyEditFieldWithUndo";
 import { CommentSourceBlock } from "./CommentSourceBlock";
+import { LogoDevDialog } from "./LogoDevDialog";
 
 function getDescriptionByLang(
   company: CompanyDetailsType,
@@ -48,6 +49,7 @@ export function CompanyEditDetails({
   const [descriptionSv, setDescriptionSv] = useState(() =>
     getDescriptionByLang(company, "SV"),
   );
+  const [logoUrl, setLogoUrl] = useState(company.logoUrl ?? "");
   const [lei, setLei] = useState(company.lei ?? "");
   const [tagsInput, setTagsInput] = useState("");
   const [detailsComment, setDetailsComment] = useState("");
@@ -251,6 +253,21 @@ export function CompanyEditDetails({
               textareaRows={3}
               aria-label={t("companyEditPage.aria.undoDescriptionSv")}
             />
+            <CompanyEditFieldWithUndo
+              label={t("companyEditPage.fields.logoUrl")}
+              value={logoUrl}
+              originalValue={company.logoUrl ?? ""}
+              onChange={setLogoUrl}
+              onUndo={() => setLogoUrl(company.logoUrl ?? "")}
+              type="input"
+              aria-label={t("companyEditPage.aria.logoUrl")}
+            >
+              <LogoDevDialog
+                className="ml-3 place-self-center h-10 inline-block bg-black-1 hover:bg-grey text-white px-6 py-2 rounded-lg transition-colors duration-200"
+                onSubmit={setLogoUrl}
+              />
+            </CompanyEditFieldWithUndo>
+
             <CompanyEditFieldWithUndo
               label={t("companyEditPage.fields.lei")}
               value={lei}

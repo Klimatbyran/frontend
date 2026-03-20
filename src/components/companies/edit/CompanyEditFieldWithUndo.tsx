@@ -12,6 +12,7 @@ export interface CompanyEditFieldWithUndoProps {
   placeholder?: string;
   textareaRows?: number;
   "aria-label"?: string;
+  children?: React.ReactNode;
 }
 
 export function CompanyEditFieldWithUndo({
@@ -22,6 +23,7 @@ export function CompanyEditFieldWithUndo({
   onUndo,
   type,
   placeholder,
+  children,
   textareaRows = 3,
   "aria-label": ariaLabel,
 }: CompanyEditFieldWithUndoProps) {
@@ -61,6 +63,7 @@ export function CompanyEditFieldWithUndo({
           />
         </button>
       </div>
+      {children}
     </CompanyEditRow>
   );
 }
