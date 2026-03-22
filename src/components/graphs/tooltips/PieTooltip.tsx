@@ -25,6 +25,17 @@ interface PieTooltipProps {
   percentageLabel?: string;
 }
 
+function getActionHint(
+  customActionLabel: string | undefined,
+  isMobile: boolean,
+  t: (key: string) => string,
+): string {
+  if (customActionLabel) return customActionLabel;
+  return isMobile
+    ? t("graphs.pieChart.doubleClickToFilter")
+    : t("graphs.pieChart.clickToFilter");
+}
+
 const PieTooltip: React.FC<PieTooltipProps> = ({
   active,
   payload,
@@ -51,6 +62,7 @@ const PieTooltip: React.FC<PieTooltipProps> = ({
   const safeValue = value != null ? value : 0;
   const safeTotal = data?.total != null ? data.total : 1;
   const percentage = formatPercent(safeValue / safeTotal, currentLanguage);
+  const actionHint = getActionHint(customActionLabel, isMobile, t);
 
   return (
     <div className="bg-black-2 border border-black-1 rounded-lg shadow-xl p-4 text-white pointer-events-none z-50 relative">
@@ -78,13 +90,7 @@ const PieTooltip: React.FC<PieTooltipProps> = ({
             {percentage} {percentageLabel || t("graphs.pieChart.ofTotal")}
           </div>
         )}
-        <p className="text-xs italic text-blue-2 mt-2">
-          {customActionLabel
-            ? customActionLabel
-            : isMobile
-              ? t("graphs.pieChart.doubleClickToFilter")
-              : t("graphs.pieChart.clickToFilter")}
-        </p>
+        <p className="text-xs italic text-blue-2 mt-2">{actionHint}</p>
       </div>
     </div>
   );
