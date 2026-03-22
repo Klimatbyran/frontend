@@ -8,9 +8,17 @@ import {
 } from "@/utils/formatting/localization";
 import { useScreenSize } from "@/hooks/useScreenSize";
 
+interface PieTooltipEntry {
+  name?: string;
+  value?: number | null;
+  payload?: {
+    total?: number | null;
+  } | null;
+}
+
 interface PieTooltipProps {
   active?: boolean;
-  payload?: any[];
+  payload?: PieTooltipEntry[];
   label?: string;
   customActionLabel?: string;
   showPercentage?: boolean;
@@ -41,7 +49,7 @@ const PieTooltip: React.FC<PieTooltipProps> = ({
 
   const { value, payload: data } = payload[0];
   const safeValue = value != null ? value : 0;
-  const safeTotal = data.total != null ? data.total : 1;
+  const safeTotal = data?.total != null ? data.total : 1;
   const percentage = formatPercent(safeValue / safeTotal, currentLanguage);
 
   return (
