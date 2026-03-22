@@ -7,6 +7,7 @@ import {
   formatPercent,
 } from "@/utils/formatting/localization";
 import { useScreenSize } from "@/hooks/useScreenSize";
+import type { SupportedLanguage } from "@/lib/languageDetection";
 
 interface PieTooltipEntry {
   name?: string;
@@ -23,6 +24,15 @@ interface PieTooltipProps {
   customActionLabel?: string;
   showPercentage?: boolean;
   percentageLabel?: string;
+}
+
+function computePercent(
+  value: number,
+  total: number | null | undefined,
+  language: SupportedLanguage,
+): string | null {
+  if (total == null || total === 0) return null;
+  return formatPercent(value / total, language);
 }
 
 function getActionHint(
@@ -60,8 +70,7 @@ const PieTooltip: React.FC<PieTooltipProps> = ({
 
   const { value, payload: data } = payload[0];
   const safeValue = value != null ? value : 0;
-  const safeTotal = data?.total != null ? data.total : 1;
-  const percentage = formatPercent(safeValue / safeTotal, currentLanguage);
+  const percentage = computePercent(safeValue, data?.total, currentLanguage);
   const actionHint = getActionHint(customActionLabel, isMobile, t);
 
   return (
@@ -85,7 +94,7 @@ const PieTooltip: React.FC<PieTooltipProps> = ({
           {formatEmissionsAbsolute(Math.round(safeValue), currentLanguage)}{" "}
           {t("emissionsUnit")}
         </div>
-        {showPercentage && safeTotal && (
+        {showPercentage && percentage && (
           <div>
             {percentage} {percentageLabel || t("graphs.pieChart.ofTotal")}
           </div>
