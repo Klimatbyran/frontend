@@ -165,7 +165,12 @@ export function CompanyOverview({
             </Select>
           </div>
         </div>
-        {company.logoUrl && <CompanyLogo src={company.logoUrl} className="h-[100px] md:h-[120px] m-[10px] md:m-[20px]" />}
+        {company.logoUrl && (
+          <CompanyLogo
+            src={company.logoUrl}
+            className="h-[120px] m-[20px] rounded-xl hidden lg:inline "
+          />
+        )}
       </div>
 
       <div className="mb-2 md:mb-4 space-y-4 md:space-y-6">

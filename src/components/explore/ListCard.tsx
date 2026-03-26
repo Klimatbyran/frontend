@@ -124,8 +124,12 @@ export function ListCard({
             </div>
             {isMunicipality
               ? logoUrl && <img src={logoUrl} alt="logo" className="h-[50px]" />
-              : logoUrl && <CompanyLogo src={logoUrl} className="h-[70px] @lg:h-[90px]" />
-            }
+              : logoUrl && (
+                  <CompanyLogo
+                    src={logoUrl}
+                    className="rounded-xl h-[100px] hidden @lg:inline"
+                  />
+                )}
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 pt-4">
