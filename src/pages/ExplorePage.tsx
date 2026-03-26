@@ -57,22 +57,25 @@ export function ExplorePage() {
   }
 
   if (companiesError || municipalitiesError || regionsError) {
-    const errorTitle =
-      mainFilter === "companies"
-        ? t("explorePage.companies.errorTitle")
-        : mainFilter === "regions"
-          ? t("explorePage.regions.errorTitle")
-          : t("explorePage.municipalities.errorTitle");
-    const errorDescription =
-      mainFilter === "companies"
-        ? t("explorePage.companies.errorDescription")
-        : mainFilter === "regions"
-          ? t("explorePage.regions.errorDescription")
-          : t("explorePage.municipalities.errorDescription");
+    const errorMessages = {
+      companies: {
+        title: t("explorePage.companies.errorTitle"),
+        description: t("explorePage.companies.errorDescription"),
+      },
+      regions: {
+        title: t("explorePage.regions.errorTitle"),
+        description: t("explorePage.regions.errorDescription"),
+      },
+      municipalities: {
+        title: t("explorePage.municipalities.errorTitle"),
+        description: t("explorePage.municipalities.errorDescription"),
+      },
+    };
+    const { title, description } = errorMessages[mainFilter];
     return (
       <div className="text-center py-12">
-        <h2 className="text-2xl font-light text-red-500">{errorTitle}</h2>
-        <p className="text-grey mt-2">{errorDescription}</p>
+        <h2 className="text-2xl font-light text-red-500">{title}</h2>
+        <p className="text-grey mt-2">{description}</p>
       </div>
     );
   }
@@ -133,13 +136,13 @@ export function ExplorePage() {
         </div>
       </div>
 
-      {mainFilter === "companies" ? (
-        <CompanyList companies={companies} />
-      ) : mainFilter === "regions" ? (
-        <RegionList regions={regions} />
-      ) : (
-        <MunicipalityList municipalities={municipalities} />
-      )}
+      {
+        {
+          companies: <CompanyList companies={companies} />,
+          regions: <RegionList regions={regions} />,
+          municipalities: <MunicipalityList municipalities={municipalities} />,
+        }[mainFilter]
+      }
     </>
   );
 }
