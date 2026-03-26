@@ -20,7 +20,7 @@ export function AuthExpiredModal({
   const { t } = useTranslation();
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="bg-black-2">
+      <DialogContent className="bg-black-2 w-full max-w-md">
         <DialogTitle className="text-white">
           {t("companyEditPage.authExpired.title")}
         </DialogTitle>
