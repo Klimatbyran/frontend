@@ -122,7 +122,7 @@ export function ListCard({
                     : t("companies.card.notEnoughData")}
               </div>
             </div>
-            {isMunicipality
+            {isMunicipality || isRegion
               ? logoUrl && <img src={logoUrl} alt="logo" className="h-[50px]" />
               : logoUrl && (
                   <CompanyLogo

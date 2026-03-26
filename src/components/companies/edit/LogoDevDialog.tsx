@@ -15,24 +15,47 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CompanyLogo } from "../CompanyLogo";
 import { t } from "i18next";
 
 interface LogoDevDialogProps {
-  onSubmit: (value: string) => void;
+  logoUrl: string | null;
+  setLogoUrl: (value: string) => void;
   className?: string;
 }
 
-export function LogoDevDialog({ onSubmit, className }: LogoDevDialogProps) {
+export function LogoDevDialog({
+  logoUrl,
+  setLogoUrl,
+  className,
+}: LogoDevDialogProps) {
   const [domain, setDomain] = useState("");
-  const [theme, setTheme] = useState("");
+  const [theme, setTheme] = useState("auto");
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (open && logoUrl && logoUrl.includes("img.logo.dev")) {
+      try {
+        const url = new URL(logoUrl);
+
+        setDomain(url.pathname.substring(1));
+
+        if (url.searchParams.has("theme")) {
+          setTheme(url.searchParams.get("theme") ?? theme);
+        }
+      } catch {}
+    }
+  }, [open, logoUrl]);
 
   const url =
     domain.length > 3 &&
     domain.includes(".") &&
-    `https://img.logo.dev/${domain}${theme && "?theme=" + theme}`;
+    new URL(`https://img.logo.dev/${domain}`);
+
+  if (url && theme !== "auto") {
+    url.searchParams.append("theme", theme);
+  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -64,8 +87,8 @@ export function LogoDevDialog({ onSubmit, className }: LogoDevDialogProps) {
               {t("companies.logoDevDialog.theme")}
             </Label>
             <Select
-              defaultValue="auto"
-              onValueChange={(value) => setTheme(value === "auto" ? "" : value)}
+              defaultValue={theme}
+              onValueChange={(value) => setTheme(value)}
             >
               <SelectTrigger className="w-full bg-black-1 text-white border border-gray-600 px-3 py-2 rounded-md">
                 <SelectValue />
@@ -84,7 +107,9 @@ export function LogoDevDialog({ onSubmit, className }: LogoDevDialogProps) {
             </Select>
           </div>
           <div className="m-auto size-[100px] bg-black-1 p-3 rounded-level-3">
-            {url && <CompanyLogo src={url} />}
+            {url && (
+              <CompanyLogo src={url.toString()} className={"rounded-xl"} />
+            )}
           </div>
         </div>
         <DialogFooter>
@@ -92,7 +117,7 @@ export function LogoDevDialog({ onSubmit, className }: LogoDevDialogProps) {
             type="button"
             onClick={() => {
               if (url) {
-                onSubmit(url);
+                setLogoUrl(url.toString());
                 setOpen(false);
               }
             }}
