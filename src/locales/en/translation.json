@@ -687,7 +687,7 @@
         },
         "companiesIncluded": {
           "title": "Companies Included",
-          "paragraph1": "Currently, our database includes companies on the OMX Large Cap and Mid Cap lists of the Stockholm Stock Exchange, along with the 24 largest state-owned companies, five largest economic associations, and unlisted companies IKEA and ICA Group.",
+          "paragraph1": "Currently, our database includes companies on the OMX Large Cap, Mid Cap and Small Cap lists of the Stockholm Stock Exchange, along with the 24 largest state-owned companies, five largest economic associations, and unlisted companies IKEA and ICA Group.",
           "paragraph2": "The companies are categorized by industry according to the Global Industry Classification Standard (GICS), with a total of 290 companies currently tracked.",
           "link": {
             "title": "GICS",
