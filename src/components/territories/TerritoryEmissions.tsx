@@ -15,7 +15,7 @@ type DataView = "overview" | "sectors";
 
 interface TerritoryEmissionsProps {
   emissionsData: DataPoint[];
-  sectorEmissions: SectorEmissions | null;
+  sectorEmissions?: SectorEmissions;
   className?: string;
 }
 

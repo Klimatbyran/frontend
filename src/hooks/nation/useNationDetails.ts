@@ -39,8 +39,12 @@ type ApiNationResponse = {
   historicalEmissionChangePercent: number;
   meetsParis: boolean;
   biogenicEmissions?: ({ year: string; value: number } | null)[] | null;
-  consumptionAbroadEmissions?: ({ year: string; value: number } | null)[] | null;
-  exportOfOilProductsEmissions?: ({ year: string; value: number } | null)[] | null;
+  consumptionAbroadEmissions?:
+    | ({ year: string; value: number } | null)[]
+    | null;
+  exportOfOilProductsEmissions?:
+    | ({ year: string; value: number } | null)[]
+    | null;
 };
 
 function extractEmissionsRecord(
@@ -101,7 +105,9 @@ function transformApiNationToNationDetails(
   return {
     country: r.country,
     logoUrl: r.logoUrl ?? null,
-    territorialFossilEmissions: extractEmissionsRecord(r.territorialFossilEmissions),
+    territorialFossilEmissions: extractEmissionsRecord(
+      r.territorialFossilEmissions,
+    ),
     approximatedHistoricalEmission: extractEmissionsRecord(
       r.approximatedHistoricalEmission,
     ),
@@ -210,6 +216,12 @@ export function useNationDetailHeaderStats(
     return [];
   }
 
+  const totalEmissions =
+    nation.territorialFossilEmissions[lastYear] +
+    nation.biogenicEmissions[lastYear] +
+    nation.consumptionAbroadEmissions[lastYear] +
+    nation.exportOfOilProductsEmissions[lastYear];
+
   return [
     createMeetsParisStat(nation.meetsParis, t),
     createChangeSince2015Stat(
@@ -217,11 +229,6 @@ export function useNationDetailHeaderStats(
       currentLanguage,
       t,
     ),
-    createTotalEmissionsStat(
-      nation.territorialFossilEmissions[lastYear],
-      lastYear,
-      currentLanguage,
-      t,
-    ),
+    createTotalEmissionsStat(totalEmissions, lastYear, currentLanguage, t),
   ];
 }
