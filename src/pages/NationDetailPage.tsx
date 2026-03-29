@@ -32,10 +32,7 @@ function NationDetailContent({
         stats={headerStats}
         translateNamespace="nation.detailPage"
       />
-      <TerritoryEmissions
-        emissionsData={emissionsData}
-        sectorEmissions={sectorEmissions}
-      />
+      <TerritoryEmissions emissionsData={emissionsData} />
       <SectorEmissionsChart
         sectorEmissions={sectorEmissions}
         availableYears={availableYears}

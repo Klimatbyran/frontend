@@ -23,7 +23,7 @@ export const useCompanyViewOptions = (
 /**
  * Hook to generate municipality data view options
  */
-export const useMunicipalityViewOptions = (
+export const useTerritoryViewOptions = (
   hasSectors: boolean,
 ): ViewOption<string>[] => {
   const { t } = useTranslation();

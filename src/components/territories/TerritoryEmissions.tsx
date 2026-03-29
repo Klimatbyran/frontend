@@ -5,7 +5,7 @@ import {
   getDynamicChartHeight,
   useDataView,
   useHiddenItems,
-  useMunicipalityViewOptions,
+  useTerritoryViewOptions,
 } from "@/components/charts";
 import { CardHeader } from "@/components/layout/CardHeader";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
@@ -36,7 +36,8 @@ export const TerritoryEmissions: FC<TerritoryEmissionsProps> = ({
     !!sectorEmissions?.sectors &&
     Object.keys(sectorEmissions.sectors).length > 0;
 
-  const dataViewOptions = useMunicipalityViewOptions(hasSectorData);
+  const viewOptions = useTerritoryViewOptions(hasSectorData);
+  const dataViewOptions = hasSectorData ? viewOptions : undefined;
 
   return (
     <SectionWithHelp

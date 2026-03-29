@@ -32,11 +32,13 @@ export const TerritoryEmissionsGraph: FC<TerritoryEmissionsGraphProps> = ({
       {dataView === "overview" ? (
         <OverviewChart projectedData={projectedData} />
       ) : (
-        <SectorsChart
-          sectorEmissions={sectorEmissions || null}
-          hiddenSectors={hiddenSectors}
-          setHiddenSectors={setHiddenSectors}
-        />
+        sectorEmissions && (
+          <SectorsChart
+            sectorEmissions={sectorEmissions || null}
+            hiddenSectors={hiddenSectors}
+            setHiddenSectors={setHiddenSectors}
+          />
+        )
       )}
     </div>
   );
