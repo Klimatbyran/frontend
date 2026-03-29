@@ -1,4 +1,4 @@
-import { TerritoryEmissions } from "@/components/territories/TerritoryEmissions";
+import { NationEmissions } from "@/components/territories/NationEmissions";
 import { PageLoading } from "@/components/pageStates/Loading";
 import { PageError } from "@/components/pageStates/Error";
 import { PageNoData } from "@/components/pageStates/NoData";
@@ -32,7 +32,7 @@ function NationDetailContent({
         stats={headerStats}
         translateNamespace="nation.detailPage"
       />
-      <TerritoryEmissions emissionsData={emissionsData} />
+      <NationEmissions emissionsData={emissionsData} />
       <SectorEmissionsChart
         sectorEmissions={sectorEmissions}
         availableYears={availableYears}
