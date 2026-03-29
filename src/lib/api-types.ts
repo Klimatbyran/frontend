@@ -4,6 +4,972 @@
  */
 
 export interface paths {
+    "/internal-companies/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get all companies
+         * @description Retrieve a list of all companies with their emissions, economic data, industry classification, goals, and initiatives
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            wikidataId: string;
+                            name: string;
+                            lei?: string | null;
+                            /** Format: uri */
+                            logoUrl?: string | null;
+                            description?: string | null;
+                            descriptions?: {
+                                id: string;
+                                /** @enum {string} */
+                                language: "SV" | "EN";
+                                text: string;
+                            }[];
+                            reportingPeriods: {
+                                startDate: string;
+                                endDate: string;
+                                reportURL: string | null;
+                                emissionsChangeLastTwoYears?: {
+                                    absolute: number | null;
+                                    adjusted: number | null;
+                                };
+                                emissions: {
+                                    calculatedTotalEmissions: number | null;
+                                    scope1: {
+                                        total: number | null;
+                                        unit: string;
+                                        metadata: {
+                                            verifiedBy: {
+                                                name: string;
+                                            } | null;
+                                        };
+                                    } | null;
+                                    scope2: {
+                                        mb: number | null;
+                                        lb: number | null;
+                                        unknown: number | null;
+                                        unit: string;
+                                        calculatedTotalEmissions: number | null;
+                                        metadata: {
+                                            verifiedBy: {
+                                                name: string;
+                                            } | null;
+                                        };
+                                    } | null;
+                                    scope3: {
+                                        calculatedTotalEmissions: number | null;
+                                        metadata: {
+                                            verifiedBy: {
+                                                name: string;
+                                            } | null;
+                                        };
+                                        statedTotalEmissions: {
+                                            total: number | null;
+                                            unit: string;
+                                            metadata: {
+                                                verifiedBy: {
+                                                    name: string;
+                                                } | null;
+                                            };
+                                        } | null;
+                                        categories: {
+                                            category: number;
+                                            total: number | null;
+                                            /** @enum {string|null} */
+                                            unit: "tCO2e" | "tCO2" | null;
+                                            metadata: {
+                                                verifiedBy: {
+                                                    name: string;
+                                                } | null;
+                                            };
+                                        }[];
+                                    } | null;
+                                    scope1And2: {
+                                        total: number | null;
+                                        unit: string;
+                                        metadata: {
+                                            verifiedBy: {
+                                                name: string;
+                                            } | null;
+                                        };
+                                    } | null;
+                                    statedTotalEmissions: {
+                                        total: number | null;
+                                        unit: string;
+                                        metadata: {
+                                            verifiedBy: {
+                                                name: string;
+                                            } | null;
+                                        };
+                                    } | null;
+                                } | null;
+                                economy: {
+                                    employees: {
+                                        value: number | null;
+                                        unit: string | null;
+                                        metadata: {
+                                            verifiedBy: {
+                                                name: string;
+                                            } | null;
+                                        };
+                                    } | null;
+                                    turnover: {
+                                        value: number | null;
+                                        currency: string | null;
+                                        metadata: {
+                                            verifiedBy: {
+                                                name: string;
+                                            } | null;
+                                        };
+                                    } | null;
+                                } | null;
+                            }[];
+                            futureEmissionsTrendSlope: number | null;
+                            industry: {
+                                industryGics: {
+                                    sectorCode: string;
+                                    groupCode: string;
+                                    industryCode: string;
+                                    subIndustryCode: string;
+                                };
+                                metadata: {
+                                    verifiedBy: {
+                                        name: string;
+                                    } | null;
+                                };
+                            } | null;
+                            baseYear?: {
+                                id: string;
+                                year: number;
+                                metadata: {
+                                    id: string;
+                                    comment: string | null;
+                                    source: string | null;
+                                    updatedAt: string;
+                                    user: {
+                                        name: string;
+                                    };
+                                    verifiedBy: {
+                                        name: string;
+                                    } | null;
+                                };
+                            } | null;
+                            tags: string[];
+                        }[];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/internal-companies/{wikidataId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get detailed company
+         * @description Retrieve a company with its emissions, economic data, industry classification, goals, and initiatives
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    wikidataId: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            wikidataId: string;
+                            name: string;
+                            lei?: string | null;
+                            /** Format: uri */
+                            logoUrl?: string | null;
+                            description?: string | null;
+                            descriptions?: {
+                                id: string;
+                                /** @enum {string} */
+                                language: "SV" | "EN";
+                                text: string;
+                            }[];
+                            reportingPeriods: {
+                                id: string;
+                                startDate: string;
+                                endDate: string;
+                                reportURL: string | null;
+                                emissions: {
+                                    id: string;
+                                    scope1: {
+                                        id: string;
+                                        total: number | null;
+                                        unit: string;
+                                        metadata: {
+                                            id: string;
+                                            comment: string | null;
+                                            source: string | null;
+                                            updatedAt: string;
+                                            user: {
+                                                name: string;
+                                            };
+                                            verifiedBy: {
+                                                name: string;
+                                            } | null;
+                                        };
+                                    } | null;
+                                    scope2: {
+                                        id: string;
+                                        mb: number | null;
+                                        lb: number | null;
+                                        unknown: number | null;
+                                        unit: string;
+                                        metadata: {
+                                            id: string;
+                                            comment: string | null;
+                                            source: string | null;
+                                            updatedAt: string;
+                                            user: {
+                                                name: string;
+                                            };
+                                            verifiedBy: {
+                                                name: string;
+                                            } | null;
+                                        };
+                                        calculatedTotalEmissions: number | null;
+                                    } | null;
+                                    scope3: {
+                                        id: string;
+                                        categories: {
+                                            id: string;
+                                            category: number;
+                                            total: number | null;
+                                            /** @enum {string|null} */
+                                            unit: "tCO2e" | "tCO2" | null;
+                                            metadata: {
+                                                id: string;
+                                                comment: string | null;
+                                                source: string | null;
+                                                updatedAt: string;
+                                                user: {
+                                                    name: string;
+                                                };
+                                                verifiedBy: {
+                                                    name: string;
+                                                } | null;
+                                            };
+                                        }[];
+                                        statedTotalEmissions?: {
+                                            id: string;
+                                            total: number | null;
+                                            unit: string;
+                                            metadata: {
+                                                id: string;
+                                                comment: string | null;
+                                                source: string | null;
+                                                updatedAt: string;
+                                                user: {
+                                                    name: string;
+                                                };
+                                                verifiedBy: {
+                                                    name: string;
+                                                } | null;
+                                            };
+                                        } | null;
+                                        calculatedTotalEmissions: number | null;
+                                        metadata: {
+                                            id: string;
+                                            comment: string | null;
+                                            source: string | null;
+                                            updatedAt: string;
+                                            user: {
+                                                name: string;
+                                            };
+                                            verifiedBy: {
+                                                name: string;
+                                            } | null;
+                                        };
+                                    } | null;
+                                    scope1And2: {
+                                        id: string;
+                                        total: number | null;
+                                        unit: string;
+                                        metadata: {
+                                            id: string;
+                                            comment: string | null;
+                                            source: string | null;
+                                            updatedAt: string;
+                                            user: {
+                                                name: string;
+                                            };
+                                            verifiedBy: {
+                                                name: string;
+                                            } | null;
+                                        };
+                                    } | null;
+                                    biogenicEmissions: {
+                                        id: string;
+                                        total: number | null;
+                                        unit: string;
+                                        metadata: {
+                                            id: string;
+                                            comment: string | null;
+                                            source: string | null;
+                                            updatedAt: string;
+                                            user: {
+                                                name: string;
+                                            };
+                                            verifiedBy: {
+                                                name: string;
+                                            } | null;
+                                        };
+                                    } | null;
+                                    statedTotalEmissions: {
+                                        id: string;
+                                        total: number | null;
+                                        unit: string;
+                                        metadata: {
+                                            id: string;
+                                            comment: string | null;
+                                            source: string | null;
+                                            updatedAt: string;
+                                            user: {
+                                                name: string;
+                                            };
+                                            verifiedBy: {
+                                                name: string;
+                                            } | null;
+                                        };
+                                    } | null;
+                                    calculatedTotalEmissions: number | null;
+                                } | null;
+                                economy: {
+                                    id: string;
+                                    turnover: {
+                                        id: string;
+                                        value: number | null;
+                                        currency: string | null;
+                                        metadata: {
+                                            id: string;
+                                            comment: string | null;
+                                            source: string | null;
+                                            updatedAt: string;
+                                            user: {
+                                                name: string;
+                                            };
+                                            verifiedBy: {
+                                                name: string;
+                                            } | null;
+                                        };
+                                    } | null;
+                                    employees: {
+                                        id: string;
+                                        value: number | null;
+                                        unit: string | null;
+                                        metadata: {
+                                            id: string;
+                                            comment: string | null;
+                                            source: string | null;
+                                            updatedAt: string;
+                                            user: {
+                                                name: string;
+                                            };
+                                            verifiedBy: {
+                                                name: string;
+                                            } | null;
+                                        };
+                                    } | null;
+                                } | null;
+                                emissionsChangeLastTwoYears?: {
+                                    absolute: number | null;
+                                    adjusted: number | null;
+                                };
+                            }[];
+                            futureEmissionsTrendSlope: number | null;
+                            industry: {
+                                id: string;
+                                industryGics: {
+                                    sectorCode: string;
+                                    groupCode: string;
+                                    industryCode: string;
+                                    subIndustryCode: string;
+                                    sv: {
+                                        sectorName: string;
+                                        groupName: string;
+                                        industryName: string;
+                                        subIndustryName: string;
+                                        subIndustryDescription: string;
+                                    };
+                                    en: {
+                                        sectorName: string;
+                                        groupName: string;
+                                        industryName: string;
+                                        subIndustryName: string;
+                                        subIndustryDescription: string;
+                                    };
+                                };
+                                metadata: {
+                                    id: string;
+                                    comment: string | null;
+                                    source: string | null;
+                                    updatedAt: string;
+                                    user: {
+                                        name: string;
+                                    };
+                                    verifiedBy: {
+                                        name: string;
+                                    } | null;
+                                };
+                            } | null;
+                            baseYear?: {
+                                id: string;
+                                year: number;
+                                metadata: {
+                                    id: string;
+                                    comment: string | null;
+                                    source: string | null;
+                                    updatedAt: string;
+                                    user: {
+                                        name: string;
+                                    };
+                                    verifiedBy: {
+                                        name: string;
+                                    } | null;
+                                };
+                            } | null;
+                            goals: {
+                                id: string;
+                                description: string;
+                                year: string | null;
+                                baseYear: string | null;
+                                target: number | null;
+                                metadata: {
+                                    id: string;
+                                    comment: string | null;
+                                    source: string | null;
+                                    updatedAt: string;
+                                    user: {
+                                        name: string;
+                                    };
+                                    verifiedBy: {
+                                        name: string;
+                                    } | null;
+                                };
+                            }[] | null;
+                            initiatives: {
+                                id: string;
+                                title: string;
+                                description: string | null;
+                                year: string | null;
+                                scope: string | null;
+                                metadata: {
+                                    id: string;
+                                    comment: string | null;
+                                    source: string | null;
+                                    updatedAt: string;
+                                    user: {
+                                        name: string;
+                                    };
+                                    verifiedBy: {
+                                        name: string;
+                                    } | null;
+                                };
+                            }[] | null;
+                        };
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            message?: string;
+                            details?: unknown;
+                        };
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            message?: string;
+                            details?: unknown;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/internal-companies/search": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Search for companies
+         * @description Search for a company with its emissions, economic data, industry classification, goals, and initiatives
+         */
+        get: {
+            parameters: {
+                query: {
+                    q: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            wikidataId: string;
+                            name: string;
+                            lei?: string | null;
+                            /** Format: uri */
+                            logoUrl?: string | null;
+                            description?: string | null;
+                            descriptions?: {
+                                id: string;
+                                /** @enum {string} */
+                                language: "SV" | "EN";
+                                text: string;
+                            }[];
+                            reportingPeriods: {
+                                startDate: string;
+                                endDate: string;
+                                reportURL: string | null;
+                                emissionsChangeLastTwoYears?: {
+                                    absolute: number | null;
+                                    adjusted: number | null;
+                                };
+                                emissions: {
+                                    calculatedTotalEmissions: number | null;
+                                    scope1: {
+                                        total: number | null;
+                                        unit: string;
+                                        metadata: {
+                                            verifiedBy: {
+                                                name: string;
+                                            } | null;
+                                        };
+                                    } | null;
+                                    scope2: {
+                                        mb: number | null;
+                                        lb: number | null;
+                                        unknown: number | null;
+                                        unit: string;
+                                        calculatedTotalEmissions: number | null;
+                                        metadata: {
+                                            verifiedBy: {
+                                                name: string;
+                                            } | null;
+                                        };
+                                    } | null;
+                                    scope3: {
+                                        calculatedTotalEmissions: number | null;
+                                        metadata: {
+                                            verifiedBy: {
+                                                name: string;
+                                            } | null;
+                                        };
+                                        statedTotalEmissions: {
+                                            total: number | null;
+                                            unit: string;
+                                            metadata: {
+                                                verifiedBy: {
+                                                    name: string;
+                                                } | null;
+                                            };
+                                        } | null;
+                                        categories: {
+                                            category: number;
+                                            total: number | null;
+                                            /** @enum {string|null} */
+                                            unit: "tCO2e" | "tCO2" | null;
+                                            metadata: {
+                                                verifiedBy: {
+                                                    name: string;
+                                                } | null;
+                                            };
+                                        }[];
+                                    } | null;
+                                    scope1And2: {
+                                        total: number | null;
+                                        unit: string;
+                                        metadata: {
+                                            verifiedBy: {
+                                                name: string;
+                                            } | null;
+                                        };
+                                    } | null;
+                                    statedTotalEmissions: {
+                                        total: number | null;
+                                        unit: string;
+                                        metadata: {
+                                            verifiedBy: {
+                                                name: string;
+                                            } | null;
+                                        };
+                                    } | null;
+                                } | null;
+                                economy: {
+                                    employees: {
+                                        value: number | null;
+                                        unit: string | null;
+                                        metadata: {
+                                            verifiedBy: {
+                                                name: string;
+                                            } | null;
+                                        };
+                                    } | null;
+                                    turnover: {
+                                        value: number | null;
+                                        currency: string | null;
+                                        metadata: {
+                                            verifiedBy: {
+                                                name: string;
+                                            } | null;
+                                        };
+                                    } | null;
+                                } | null;
+                            }[];
+                            futureEmissionsTrendSlope: number | null;
+                            industry: {
+                                industryGics: {
+                                    sectorCode: string;
+                                    groupCode: string;
+                                    industryCode: string;
+                                    subIndustryCode: string;
+                                };
+                                metadata: {
+                                    verifiedBy: {
+                                        name: string;
+                                    } | null;
+                                };
+                            } | null;
+                            baseYear?: {
+                                id: string;
+                                year: number;
+                                metadata: {
+                                    id: string;
+                                    comment: string | null;
+                                    source: string | null;
+                                    updatedAt: string;
+                                    user: {
+                                        name: string;
+                                    };
+                                    verifiedBy: {
+                                        name: string;
+                                    } | null;
+                                };
+                            } | null;
+                            tags: string[];
+                        }[];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/internal-municipalities/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get all municipalities
+         * @description Retrieve a list of all municipalities with data about their emissions, carbon budget, climate plans, bike infrastructure, procurements, and much more. Returns 304 Not Modified if the resource has not changed since the last request (based on ETag).
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            name: string;
+                            region: string;
+                            logoUrl: string | null;
+                            totalTrend: number;
+                            totalCarbonLaw: number;
+                            historicalEmissionChangePercent: number;
+                            electricCarChangePercent: number;
+                            climatePlanLink: string | null;
+                            climatePlanYear: number | null;
+                            climatePlanComment: string | null;
+                            bicycleMetrePerCapita: number;
+                            totalConsumptionEmission: number;
+                            electricVehiclePerChargePoints: number | null;
+                            procurementScore: number;
+                            procurementLink: string | null;
+                            politicalRule: string[];
+                            politicalKSO: string;
+                            emissions: ({
+                                year: string;
+                                value: number;
+                            } | null)[];
+                            approximatedHistoricalEmission: ({
+                                year: string;
+                                value: number;
+                            } | null)[];
+                            trend: ({
+                                year: string;
+                                value: number;
+                            } | null)[];
+                        }[];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/internal-municipalities/{name}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get one municipality
+         * @description Retrieve a one municipality with data about their emissions, carbon budget, climate plans, bike infrastructure, procurements and much more.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    name: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            name: string;
+                            region: string;
+                            logoUrl: string | null;
+                            totalTrend: number;
+                            totalCarbonLaw: number;
+                            historicalEmissionChangePercent: number;
+                            electricCarChangePercent: number;
+                            climatePlanLink: string | null;
+                            climatePlanYear: number | null;
+                            climatePlanComment: string | null;
+                            bicycleMetrePerCapita: number;
+                            totalConsumptionEmission: number;
+                            electricVehiclePerChargePoints: number | null;
+                            procurementScore: number;
+                            procurementLink: string | null;
+                            politicalRule: string[];
+                            politicalKSO: string;
+                            emissions: ({
+                                year: string;
+                                value: number;
+                            } | null)[];
+                            approximatedHistoricalEmission: ({
+                                year: string;
+                                value: number;
+                            } | null)[];
+                            trend: ({
+                                year: string;
+                                value: number;
+                            } | null)[];
+                        };
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            message?: string;
+                            details?: unknown;
+                        };
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            message?: string;
+                            details?: unknown;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/internal-municipalities/{name}/sector-emissions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get municipality sector emissions
+         * @description Retrieve sector emissions data for a specific municipality, broken down by different sectors over time.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    name: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            sectors: {
+                                [key: string]: {
+                                    [key: string]: number;
+                                };
+                            };
+                        };
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            message?: string;
+                            details?: unknown;
+                        };
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            message?: string;
+                            details?: unknown;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/auth/github": {
         parameters: {
             query?: never;
@@ -1080,7 +2046,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/companies/names": {
+    "/companies/reports/database-list": {
         parameters: {
             query?: never;
             header?: never;
@@ -1088,8 +2054,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Get company names
-         * @description Retrieve a list of all company names
+         * Get list of all companies in the database with reporting periods for crawler purposes.
+         * @description Retrieve a list of all companies in the database, including their names and Wikidata IDs and reporting periods.
          */
         get: {
             parameters: {
@@ -1108,7 +2074,83 @@ export interface paths {
                     content: {
                         "application/json": {
                             name: string;
+                            wikidataId: string;
+                            reportingPeriods: {
+                                id: string;
+                                startDate: string;
+                                endDate: string;
+                                reportURL: string | null;
+                                emissionsChangeLastTwoYears?: {
+                                    absolute: number | null;
+                                    adjusted: number | null;
+                                };
+                            }[];
                         }[];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/companies/reports/preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Generate preview image from PDF URL
+         * @description Returns a preview image (JPEG) from the first page of the given PDF URL.
+         */
+        get: {
+            parameters: {
+                query: {
+                    pdfUrl: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            previewUrl: string | null;
+                        };
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Default Response */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
                     };
                 };
             };
@@ -1767,6 +2809,18 @@ export interface paths {
                                 year: string;
                                 value: number;
                             } | null)[];
+                            biogenicEmissions?: ({
+                                year: string;
+                                value: number;
+                            } | null)[];
+                            consumptionAbroadEmissions?: ({
+                                year: string;
+                                value: number;
+                            } | null)[];
+                            exportOfOilProductsEmissions?: ({
+                                year: string;
+                                value: number;
+                            } | null)[];
                             totalTrend: number;
                             totalCarbonLaw: number;
                             approximatedHistoricalEmission: ({
@@ -2018,6 +3072,19 @@ export interface paths {
                         };
                     };
                 };
+                /** @description Default Response */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            message?: string;
+                            details?: unknown;
+                        };
+                    };
+                };
             };
         };
         put?: never;
@@ -2026,6 +3093,326 @@ export interface paths {
         options?: never;
         head?: never;
         patch?: never;
+        trace?: never;
+    };
+    "/companies/reports/search-reports": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Scrape for reports
+         * @description Scrape for company reports based on the provided company name(s). This endpoint is intended to be used for scraping reports from external sources.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        name: string;
+                        reportYear?: string;
+                    }[];
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            companyName: string;
+                            results: {
+                                /** Format: uri */
+                                url?: string;
+                                title?: string;
+                                description?: string;
+                                position?: number;
+                            }[];
+                        }[];
+                    };
+                };
+                /** @description Default Response */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            message?: string;
+                            details?: unknown;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/companies/reports/save-reports": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Add reports to database
+         * @description Add one or more reports to the database. This endpoint is intended to be used for persisting reports that have been scraped from external sources.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        companyName: string;
+                        wikidataId?: string | null;
+                        reportYear: string;
+                        /** Format: uri */
+                        url: string;
+                    }[];
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                            successes: {
+                                id: string;
+                                companyName?: string | null;
+                                wikidataId?: string | null;
+                                reportYear?: string | null;
+                                /** Format: uri */
+                                url: string;
+                            }[];
+                            failed: {
+                                /** @enum {string} */
+                                error: "duplicate" | "unknown";
+                                companyName?: string | null;
+                                reportYear?: string | null;
+                                message: string;
+                            }[];
+                        };
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                            successes: {
+                                id: string;
+                                companyName?: string | null;
+                                wikidataId?: string | null;
+                                reportYear?: string | null;
+                                /** Format: uri */
+                                url: string;
+                            }[];
+                            failed: {
+                                /** @enum {string} */
+                                error: "duplicate" | "unknown";
+                                companyName?: string | null;
+                                reportYear?: string | null;
+                                message: string;
+                            }[];
+                        };
+                    };
+                };
+                /** @description Default Response */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                            successes: {
+                                id: string;
+                                companyName?: string | null;
+                                wikidataId?: string | null;
+                                reportYear?: string | null;
+                                /** Format: uri */
+                                url: string;
+                            }[];
+                            failed: {
+                                /** @enum {string} */
+                                error: "duplicate" | "unknown";
+                                companyName?: string | null;
+                                reportYear?: string | null;
+                                message: string;
+                            }[];
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/reports/registry/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get list of all reports in the registry
+         * @description Retrieve a list of all reports in the registry, including their company name, report year, and URL. This endpoint is intended to be used for retrieving the registry of reports that have been collected and saved in the database.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            id: string;
+                            /** Format: uri */
+                            url: string;
+                            companyName?: string | null;
+                            wikidataId?: string | null;
+                            reportYear?: string | null;
+                        }[];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/companies/{wikidataId}/tags": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update company tags
+         * @description Replaces the company tags. Each tag must be a valid tag option slug.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    wikidataId: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        tags: string[];
+                    };
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            ok: boolean;
+                        };
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            message?: string;
+                            details?: unknown;
+                        };
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            message?: string;
+                            details?: unknown;
+                        };
+                    };
+                };
+                /** @description Default Response */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            message?: string;
+                            details?: unknown;
+                        };
+                    };
+                };
+            };
+        };
         trace?: never;
     };
     "/companies/{wikidataId}/industry": {
@@ -3753,6 +5140,19 @@ export interface paths {
                         };
                     };
                 };
+                /** @description Default Response */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            message?: string;
+                            details?: unknown;
+                        };
+                    };
+                };
             };
         };
         put?: never;
@@ -3964,6 +5364,292 @@ export interface paths {
         options?: never;
         head?: never;
         patch?: never;
+        trace?: never;
+    };
+    "/tag-options/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List tag options
+         * @description Returns all valid tag options for company tags
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            id: string;
+                            slug: string;
+                            label: string | null;
+                        }[];
+                    };
+                };
+                /** @description Default Response */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            message?: string;
+                            details?: unknown;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        /**
+         * Create tag option
+         * @description Add a new valid tag option. Slug must be unique.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        slug: string;
+                        label?: string;
+                    };
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            id: string;
+                            slug: string;
+                            label: string | null;
+                        };
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            message?: string;
+                            details?: unknown;
+                        };
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            message?: string;
+                            details?: unknown;
+                        };
+                    };
+                };
+                /** @description Default Response */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            message?: string;
+                            details?: unknown;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/tag-options/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Delete tag option
+         * @description Deletes the tag option and removes it from all companies that had this tag.
+         */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            ok: boolean;
+                        };
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            message?: string;
+                            details?: unknown;
+                        };
+                    };
+                };
+                /** @description Default Response */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            message?: string;
+                            details?: unknown;
+                        };
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /**
+         * Update tag option
+         * @description Update slug and/or label. If slug changes, company tags are updated to the new slug.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        slug?: string;
+                        label?: string | null;
+                    };
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            id: string;
+                            slug: string;
+                            label: string | null;
+                        };
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            message?: string;
+                            details?: unknown;
+                        };
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            message?: string;
+                            details?: unknown;
+                        };
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            message?: string;
+                            details?: unknown;
+                        };
+                    };
+                };
+                /** @description Default Response */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            message?: string;
+                            details?: unknown;
+                        };
+                    };
+                };
+            };
+        };
         trace?: never;
     };
 }
