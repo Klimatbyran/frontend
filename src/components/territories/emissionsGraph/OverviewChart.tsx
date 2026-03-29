@@ -1,7 +1,8 @@
 import { FC, useState, useMemo } from "react";
 import {
-  LineChart,
+  ComposedChart,
   Line,
+  Area,
   ReferenceLine,
   Tooltip,
   ResponsiveContainer,
@@ -16,12 +17,11 @@ import {
   ChartYearControls,
   LegendItem,
   getConsistentLineProps,
-  createOverviewLegendItems,
   getXAxisProps,
   getYAxisProps,
   getCurrentYearReferenceLineProps,
   getChartContainerProps,
-  getLineChartProps,
+  getComposedChartProps,
   getResponsiveChartMargin,
   ChartWrapper,
   ChartArea,
@@ -29,6 +29,7 @@ import {
   filterDataByYearRange,
   ChartTooltip,
 } from "@/components/charts";
+import { LEGEND_CONFIGS } from "@/components/charts/historicEmissions/styles/legendStyles";
 import { useLanguage } from "@/components/LanguageProvider";
 
 interface OverviewChartProps {
@@ -45,9 +46,78 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
     new Date().getFullYear() + 5,
   );
 
+  const hasBiogenic = projectedData.some(
+    (d) => d.biogenicEmissions !== undefined,
+  );
+  const hasConsumption = projectedData.some(
+    (d) => d.consumptionAbroadEmissions !== undefined,
+  );
+  const hasOilExport = projectedData.some(
+    (d) => d.exportOfOilProductsEmissions !== undefined,
+  );
+
   const legendItems: LegendItem[] = useMemo(() => {
-    return createOverviewLegendItems(t, new Set(), true);
-  }, [t]);
+    // Build legend manually so historical shows as a solid area, not a dashed line
+    const baseItems: LegendItem[] = [
+      {
+        name: t("detailPage.graph.historical"),
+        color: LEGEND_CONFIGS.historical.color,
+        isClickable: false,
+        isHidden: false,
+        isDashed: false,
+      },
+      {
+        name: t("detailPage.graph.estimated"),
+        color: LEGEND_CONFIGS.estimated.color,
+        isClickable: false,
+        isHidden: false,
+        isDashed: true,
+      },
+      {
+        name: t("detailPage.graph.trend"),
+        color: LEGEND_CONFIGS.trend.color,
+        isClickable: false,
+        isHidden: false,
+        isDashed: true,
+      },
+      {
+        name: t("detailPage.graph.carbonLaw"),
+        color: LEGEND_CONFIGS.paris.color,
+        isClickable: false,
+        isHidden: false,
+        isDashed: true,
+      },
+    ];
+    const extraItems: LegendItem[] = [];
+    if (hasOilExport) {
+      extraItems.push({
+        name: t("detailPage.graph.exportOfOilProductsEmissions"),
+        color: LEGEND_CONFIGS.oilExport.color,
+        isClickable: false,
+        isHidden: false,
+        isDashed: false,
+      });
+    }
+    if (hasConsumption) {
+      extraItems.push({
+        name: t("detailPage.graph.consumptionAbroadEmissions"),
+        color: LEGEND_CONFIGS.consumption.color,
+        isClickable: false,
+        isHidden: false,
+        isDashed: false,
+      });
+    }
+    if (hasBiogenic) {
+      extraItems.push({
+        name: t("detailPage.graph.biogenicEmissions"),
+        color: LEGEND_CONFIGS.biogenic.color,
+        isClickable: false,
+        isHidden: false,
+        isDashed: false,
+      });
+    }
+    return [...baseItems, ...extraItems];
+  }, [t, hasBiogenic, hasConsumption, hasOilExport]);
 
   const filteredData = useMemo(() => {
     return filterDataByYearRange(projectedData, chartEndYear);
@@ -57,8 +127,8 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
     <ChartWrapper>
       <ChartArea>
         <ResponsiveContainer {...getChartContainerProps()}>
-          <LineChart
-            {...getLineChartProps(
+          <ComposedChart
+            {...getComposedChartProps(
               filteredData,
               undefined,
               getResponsiveChartMargin(isMobile),
@@ -85,18 +155,69 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
             {/* Current year reference line */}
             <ReferenceLine {...getCurrentYearReferenceLineProps(currentYear)} />
 
-            {/* Historical line */}
-            <Line
+            {/* Additional emission categories — rendered first so they sit below historical */}
+            {hasOilExport && (
+              <Area
+                type="monotone"
+                dataKey="exportOfOilProductsEmissions"
+                stackId="main"
+                name={t("detailPage.graph.exportOfOilProductsEmissions")}
+                stroke={LEGEND_CONFIGS.oilExport.color}
+                fill={LEGEND_CONFIGS.oilExport.color}
+                fillOpacity={0.3}
+                strokeWidth={2}
+                dot={false}
+                activeDot={{ r: 5 }}
+                connectNulls={false}
+              />
+            )}
+            {hasConsumption && (
+              <Area
+                type="monotone"
+                dataKey="consumptionAbroadEmissions"
+                stackId="main"
+                name={t("detailPage.graph.consumptionAbroadEmissions")}
+                stroke={LEGEND_CONFIGS.consumption.color}
+                fill={LEGEND_CONFIGS.consumption.color}
+                fillOpacity={0.3}
+                strokeWidth={2}
+                dot={false}
+                activeDot={{ r: 5 }}
+                connectNulls={false}
+              />
+            )}
+            {hasBiogenic && (
+              <Area
+                type="monotone"
+                dataKey="biogenicEmissions"
+                stackId="main"
+                name={t("detailPage.graph.biogenicEmissions")}
+                stroke={LEGEND_CONFIGS.biogenic.color}
+                fill={LEGEND_CONFIGS.biogenic.color}
+                fillOpacity={0.3}
+                strokeWidth={2}
+                dot={false}
+                activeDot={{ r: 5 }}
+                connectNulls={false}
+              />
+            )}
+
+            {/* Historical territorial emissions on top of the stack — from 1990 */}
+            <Area
               type="monotone"
               dataKey="total"
-              {...getConsistentLineProps(
-                "historical",
-                false,
-                t("detailPage.graph.historical"),
-              )}
+              stackId="main"
+              name={t("detailPage.graph.historical")}
+              stroke={LEGEND_CONFIGS.historical.color}
+              fill={LEGEND_CONFIGS.historical.color}
+              fillOpacity={0.2}
+              strokeWidth={2}
+              dot={false}
+              activeDot={{ r: 5 }}
+              connectNulls={false}
             />
 
-            {/* Estimated line */}
+            {/* Estimated line — overlay on the stacked areas */}
             <Line
               type="monotone"
               dataKey="approximated"
@@ -128,7 +249,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
                 t("detailPage.graph.carbonLaw"),
               )}
             />
-          </LineChart>
+          </ComposedChart>
         </ResponsiveContainer>
       </ChartArea>
 

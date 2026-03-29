@@ -2805,19 +2805,19 @@ export interface paths {
                         "application/json": {
                             country: string;
                             logoUrl?: string | null;
-                            emissions: ({
+                            territorialFossilEmissions: ({
                                 year: string;
                                 value: number;
                             } | null)[];
-                            biogenicEmissions?: ({
+                            biogenicEmissions: ({
                                 year: string;
                                 value: number;
                             } | null)[];
-                            consumptionAbroadEmissions?: ({
+                            consumptionAbroadEmissions: ({
                                 year: string;
                                 value: number;
                             } | null)[];
-                            exportOfOilProductsEmissions?: ({
+                            exportOfOilProductsEmissions: ({
                                 year: string;
                                 value: number;
                             } | null)[];

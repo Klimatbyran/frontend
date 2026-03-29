@@ -17,10 +17,13 @@ import type { SupportedLanguage } from "@/lib/languageDetection";
 export type NationDetails = {
   country: string;
   logoUrl: string | null;
-  emissions: Record<string, number>;
+  territorialFossilEmissions: Record<string, number>;
   approximatedHistoricalEmission: Record<string, number>;
   trend: Record<string, number>;
   carbonLaw: Record<string, number>;
+  biogenicEmissions: Record<string, number>;
+  consumptionAbroadEmissions: Record<string, number>;
+  exportOfOilProductsEmissions: Record<string, number>;
   meetsParis: boolean;
   historicalEmissionChangePercent: number;
 };
@@ -28,13 +31,16 @@ export type NationDetails = {
 type ApiNationResponse = {
   country: string;
   logoUrl?: string | null;
-  emissions: ({ year: string; value: number } | null)[];
+  territorialFossilEmissions: ({ year: string; value: number } | null)[];
   totalTrend: number;
   totalCarbonLaw: number;
   approximatedHistoricalEmission: ({ year: string; value: number } | null)[];
   trend: ({ year: string; value: number } | null)[];
   historicalEmissionChangePercent: number;
   meetsParis: boolean;
+  biogenicEmissions?: ({ year: string; value: number } | null)[] | null;
+  consumptionAbroadEmissions?: ({ year: string; value: number } | null)[] | null;
+  exportOfOilProductsEmissions?: ({ year: string; value: number } | null)[] | null;
 };
 
 function extractEmissionsRecord(
@@ -95,7 +101,7 @@ function transformApiNationToNationDetails(
   return {
     country: r.country,
     logoUrl: r.logoUrl ?? null,
-    emissions: extractEmissionsRecord(r.emissions),
+    territorialFossilEmissions: extractEmissionsRecord(r.territorialFossilEmissions),
     approximatedHistoricalEmission: extractEmissionsRecord(
       r.approximatedHistoricalEmission,
     ),
@@ -103,6 +109,13 @@ function transformApiNationToNationDetails(
     carbonLaw: calculateCarbonLawRecord(
       r.approximatedHistoricalEmission,
       currentYear,
+    ),
+    biogenicEmissions: extractEmissionsRecord(r.biogenicEmissions ?? []),
+    consumptionAbroadEmissions: extractEmissionsRecord(
+      r.consumptionAbroadEmissions ?? [],
+    ),
+    exportOfOilProductsEmissions: extractEmissionsRecord(
+      r.exportOfOilProductsEmissions ?? [],
     ),
     meetsParis: r.meetsParis ?? false,
     historicalEmissionChangePercent: r.historicalEmissionChangePercent ?? 0,
@@ -205,7 +218,7 @@ export function useNationDetailHeaderStats(
       t,
     ),
     createTotalEmissionsStat(
-      nation.emissions[lastYear],
+      nation.territorialFossilEmissions[lastYear],
       lastYear,
       currentLanguage,
       t,

@@ -1064,6 +1064,9 @@
       "estimated": "Uppskattat",
       "trend": "Trend",
       "carbonLaw": "Parisavtalet",
+      "biogenicEmissions": "Biogena utsläpp",
+      "consumptionAbroadEmissions": "Konsumtionsutsläpp utomlands",
+      "exportOfOilProductsEmissions": "Oljexportutsläpp",
       "noData": "Inga data tillgängliga"
     }
   },

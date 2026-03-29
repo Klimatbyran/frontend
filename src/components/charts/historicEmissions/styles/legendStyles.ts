@@ -31,6 +31,27 @@ export const LEGEND_CONFIGS = {
     isHidden: false,
     isDashed: true,
   },
+  biogenic: {
+    nameKey: "detailPage.graph.biogenicEmissions",
+    color: "var(--orange-2)",
+    isClickable: false,
+    isHidden: false,
+    isDashed: true,
+  },
+  consumption: {
+    nameKey: "detailPage.graph.consumptionAbroadEmissions",
+    color: "var(--blue-2)",
+    isClickable: false,
+    isHidden: false,
+    isDashed: true,
+  },
+  oilExport: {
+    nameKey: "detailPage.graph.exportOfOilProductsEmissions",
+    color: "var(--pink-2)",
+    isClickable: false,
+    isHidden: false,
+    isDashed: true,
+  },
   // Scope legend items
   scope1: {
     nameKey: "companies.emissionsHistory.scope1",

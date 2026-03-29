@@ -44,11 +44,14 @@ export type SectorEmissionsResponse = {
 // Type alias for components that expect { sectors: SectorEmissionsByYear }
 export type SectorEmissions = SectorEmissionsResponse;
 
-// Territory emissions data point (used for municipalities and regions)
+// Territory emissions data point (used for municipalities, regions and nation)
 export type DataPoint = {
   year: number;
   total: number | undefined;
   trend: number | undefined;
   approximated: number | undefined;
   carbonLaw: number | undefined;
+  biogenicEmissions?: number | undefined;
+  consumptionAbroadEmissions?: number | undefined;
+  exportOfOilProductsEmissions?: number | undefined;
 };

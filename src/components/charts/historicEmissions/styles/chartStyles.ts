@@ -85,6 +85,21 @@ export const LINE_CONFIGS = {
     color: "var(--pink-3)", // Will be overridden by stroke prop
     style: LINE_STYLES.primary,
   },
+  biogenic: {
+    type: "trend" as const,
+    color: "var(--orange-2)",
+    style: LINE_STYLES.trend,
+  },
+  consumption: {
+    type: "trend" as const,
+    color: "var(--blue-2)",
+    style: LINE_STYLES.trend,
+  },
+  oilExport: {
+    type: "trend" as const,
+    color: "var(--pink-2)",
+    style: LINE_STYLES.trend,
+  },
 } as const;
 
 // Re-export from utils modules

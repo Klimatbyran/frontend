@@ -1011,6 +1011,9 @@
       "estimated": "Estimated",
       "trend": "Trend",
       "carbonLaw": "Paris Agreement",
+      "biogenicEmissions": "Biogenic Emissions",
+      "consumptionAbroadEmissions": "Consumption Emissions Abroad",
+      "exportOfOilProductsEmissions": "Oil Export Emissions",
       "noData": "No data available"
     }
   },
