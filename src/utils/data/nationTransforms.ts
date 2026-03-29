@@ -15,7 +15,9 @@ export function transformNationEmissionsData(nation: {
   if (!nation || !nation.territorialFossilEmissions) return [];
 
   const years = new Set<string>();
-  Object.keys(nation.territorialFossilEmissions).forEach((year) => years.add(year));
+  Object.keys(nation.territorialFossilEmissions).forEach((year) =>
+    years.add(year),
+  );
   Object.keys(nation.approximatedHistoricalEmission || {}).forEach((year) =>
     years.add(year),
   );
@@ -53,10 +55,11 @@ export function transformNationEmissionsData(nation: {
         consumptionAbroadEmissions: nation.consumptionAbroadEmissions?.[year]
           ? nation.consumptionAbroadEmissions[year] / 1000
           : undefined,
-        exportOfOilProductsEmissions:
-          nation.exportOfOilProductsEmissions?.[year]
-            ? nation.exportOfOilProductsEmissions[year] / 1000
-            : undefined,
+        exportOfOilProductsEmissions: nation.exportOfOilProductsEmissions?.[
+          year
+        ]
+          ? nation.exportOfOilProductsEmissions[year] / 1000
+          : undefined,
       } as DataPoint;
     })
     .sort((a, b) => a.year - b.year)

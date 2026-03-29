@@ -10,7 +10,9 @@ interface NationEmissionsProps {
   emissionsData: DataPoint[];
 }
 
-export const NationEmissions: FC<NationEmissionsProps> = ({ emissionsData }) => {
+export const NationEmissions: FC<NationEmissionsProps> = ({
+  emissionsData,
+}) => {
   const { t } = useTranslation();
 
   return (
@@ -19,7 +21,10 @@ export const NationEmissions: FC<NationEmissionsProps> = ({ emissionsData }) => 
         title={t("detailPage.emissionsDevelopment")}
         unit={t("detailPage.inTons")}
       />
-      <div className="mt-8" style={{ height: getDynamicChartHeight("overview", false) }}>
+      <div
+        className="mt-8"
+        style={{ height: getDynamicChartHeight("overview", false) }}
+      >
         <NationOverviewChart projectedData={emissionsData} />
       </div>
     </SectionWithHelp>

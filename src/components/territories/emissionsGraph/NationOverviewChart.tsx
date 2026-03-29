@@ -32,45 +32,6 @@ import {
 import { LEGEND_CONFIGS } from "@/components/charts/historicEmissions/styles/legendStyles";
 import { useLanguage } from "@/components/LanguageProvider";
 
-// Hex equivalents of the CSS variables used as stroke colours — SVG stopColor
-// does not support CSS custom properties.
-const AREA_COLORS = {
-  historical:  "#ffffff", // --white
-  biogenic:    "#fdb768", // --orange-2
-  consumption: "#99cfff", // --blue-2
-  oilExport:   "#eea0b7", // --pink-2
-} as const;
-
-// Each gradient fades diagonally: transparent at the top-left (near the Y-axis)
-// building to peak opacity, then dissolving to transparent at the bottom — giving
-// both a left-edge fade and the standard vertical area fade.
-function AreaGradientDefs() {
-  return (
-    <defs>
-      {(Object.entries(AREA_COLORS) as [keyof typeof AREA_COLORS, string][]).map(
-        ([id, color]) => (
-          <linearGradient
-            key={id}
-            id={`ngrd-${id}`}
-            x1="0"
-            y1="0"
-            x2="0.6"
-            y2="1"
-            gradientUnits="objectBoundingBox"
-          >
-            {/* Top-left (near Y-axis): fully transparent */}
-            <stop offset="0%"   stopColor={color} stopOpacity={0}    />
-            {/* Mid-point: peak opacity */}
-            <stop offset="35%"  stopColor={color} stopOpacity={0.32} />
-            {/* Bottom: fade back to transparent */}
-            <stop offset="100%" stopColor={color} stopOpacity={0}    />
-          </linearGradient>
-        ),
-      )}
-    </defs>
-  );
-}
-
 interface StackedAreasProps {
   hasBiogenic: boolean;
   hasConsumption: boolean;
@@ -78,7 +39,12 @@ interface StackedAreasProps {
   t: (key: string) => string;
 }
 
-function StackedAreas({ hasBiogenic, hasConsumption, hasOilExport, t }: StackedAreasProps) {
+function StackedAreas({
+  hasBiogenic,
+  hasConsumption,
+  hasOilExport,
+  t,
+}: StackedAreasProps) {
   const areaProps = {
     type: "monotone" as const,
     stackId: "main",
@@ -86,18 +52,17 @@ function StackedAreas({ hasBiogenic, hasConsumption, hasOilExport, t }: StackedA
     dot: false as const,
     activeDot: { r: 5 },
     connectNulls: false,
-    fillOpacity: 1,
+    fillOpacity: 0.4,
   };
   return (
     <>
-      <AreaGradientDefs />
       {hasOilExport && (
         <Area
           {...areaProps}
           dataKey="exportOfOilProductsEmissions"
           name={t("detailPage.graph.exportOfOilProductsEmissions")}
           stroke={LEGEND_CONFIGS.oilExport.color}
-          fill="url(#ngrd-oilExport)"
+          fill={LEGEND_CONFIGS.oilExport.color}
         />
       )}
       {hasConsumption && (
@@ -106,7 +71,7 @@ function StackedAreas({ hasBiogenic, hasConsumption, hasOilExport, t }: StackedA
           dataKey="consumptionAbroadEmissions"
           name={t("detailPage.graph.consumptionAbroadEmissions")}
           stroke={LEGEND_CONFIGS.consumption.color}
-          fill="url(#ngrd-consumption)"
+          fill={LEGEND_CONFIGS.consumption.color}
         />
       )}
       {hasBiogenic && (
@@ -115,7 +80,7 @@ function StackedAreas({ hasBiogenic, hasConsumption, hasOilExport, t }: StackedA
           dataKey="biogenicEmissions"
           name={t("detailPage.graph.biogenicEmissions")}
           stroke={LEGEND_CONFIGS.biogenic.color}
-          fill="url(#ngrd-biogenic)"
+          fill={LEGEND_CONFIGS.biogenic.color}
         />
       )}
       {/* Historical territorial emissions on top of the stack — from 1990 */}
@@ -124,7 +89,7 @@ function StackedAreas({ hasBiogenic, hasConsumption, hasOilExport, t }: StackedA
         dataKey="total"
         name={t("detailPage.graph.historical")}
         stroke={LEGEND_CONFIGS.historical.color}
-        fill="url(#ngrd-historical)"
+        fill={LEGEND_CONFIGS.historical.color}
       />
     </>
   );
@@ -132,22 +97,68 @@ function StackedAreas({ hasBiogenic, hasConsumption, hasOilExport, t }: StackedA
 
 function buildLegendItems(
   t: (key: string) => string,
-  flags: { hasBiogenic: boolean; hasConsumption: boolean; hasOilExport: boolean },
+  flags: {
+    hasBiogenic: boolean;
+    hasConsumption: boolean;
+    hasOilExport: boolean;
+  },
 ): LegendItem[] {
   const items: LegendItem[] = [
-    { name: t("detailPage.graph.historical"), color: LEGEND_CONFIGS.historical.color, isClickable: false, isHidden: false, isDashed: false },
-    { name: t("detailPage.graph.estimated"),  color: LEGEND_CONFIGS.estimated.color,  isClickable: false, isHidden: false, isDashed: true  },
-    { name: t("detailPage.graph.trend"),      color: LEGEND_CONFIGS.trend.color,      isClickable: false, isHidden: false, isDashed: true  },
-    { name: t("detailPage.graph.carbonLaw"),  color: LEGEND_CONFIGS.paris.color,      isClickable: false, isHidden: false, isDashed: true  },
+    {
+      name: t("detailPage.graph.historical"),
+      color: LEGEND_CONFIGS.historical.color,
+      isClickable: false,
+      isHidden: false,
+      isDashed: false,
+    },
+    {
+      name: t("detailPage.graph.estimated"),
+      color: LEGEND_CONFIGS.estimated.color,
+      isClickable: false,
+      isHidden: false,
+      isDashed: true,
+    },
+    {
+      name: t("detailPage.graph.trend"),
+      color: LEGEND_CONFIGS.trend.color,
+      isClickable: false,
+      isHidden: false,
+      isDashed: true,
+    },
+    {
+      name: t("detailPage.graph.carbonLaw"),
+      color: LEGEND_CONFIGS.paris.color,
+      isClickable: false,
+      isHidden: false,
+      isDashed: true,
+    },
   ];
   if (flags.hasOilExport) {
-    items.push({ name: t("detailPage.graph.exportOfOilProductsEmissions"), color: LEGEND_CONFIGS.oilExport.color,  isClickable: false, isHidden: false, isDashed: false });
+    items.push({
+      name: t("detailPage.graph.exportOfOilProductsEmissions"),
+      color: LEGEND_CONFIGS.oilExport.color,
+      isClickable: false,
+      isHidden: false,
+      isDashed: false,
+    });
   }
   if (flags.hasConsumption) {
-    items.push({ name: t("detailPage.graph.consumptionAbroadEmissions"),   color: LEGEND_CONFIGS.consumption.color, isClickable: false, isHidden: false, isDashed: false });
+    items.push({
+      name: t("detailPage.graph.consumptionAbroadEmissions"),
+      color: LEGEND_CONFIGS.consumption.color,
+      isClickable: false,
+      isHidden: false,
+      isDashed: false,
+    });
   }
   if (flags.hasBiogenic) {
-    items.push({ name: t("detailPage.graph.biogenicEmissions"),            color: LEGEND_CONFIGS.biogenic.color,   isClickable: false, isHidden: false, isDashed: false });
+    items.push({
+      name: t("detailPage.graph.biogenicEmissions"),
+      color: LEGEND_CONFIGS.biogenic.color,
+      isClickable: false,
+      isHidden: false,
+      isDashed: false,
+    });
   }
   return items;
 }
@@ -156,7 +167,9 @@ interface NationOverviewChartProps {
   projectedData: DataPoint[];
 }
 
-export const NationOverviewChart: FC<NationOverviewChartProps> = ({ projectedData }) => {
+export const NationOverviewChart: FC<NationOverviewChartProps> = ({
+  projectedData,
+}) => {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
   const { isMobile } = useScreenSize();
@@ -165,9 +178,13 @@ export const NationOverviewChart: FC<NationOverviewChartProps> = ({ projectedDat
   const [chartEndYear, setChartEndYear] = useState(currentYear + 5);
 
   const flags = {
-    hasBiogenic:    projectedData.some((d) => d.biogenicEmissions !== undefined),
-    hasConsumption: projectedData.some((d) => d.consumptionAbroadEmissions !== undefined),
-    hasOilExport:   projectedData.some((d) => d.exportOfOilProductsEmissions !== undefined),
+    hasBiogenic: projectedData.some((d) => d.biogenicEmissions !== undefined),
+    hasConsumption: projectedData.some(
+      (d) => d.consumptionAbroadEmissions !== undefined,
+    ),
+    hasOilExport: projectedData.some(
+      (d) => d.exportOfOilProductsEmissions !== undefined,
+    ),
   };
 
   const legendItems = useMemo(
@@ -185,7 +202,11 @@ export const NationOverviewChart: FC<NationOverviewChartProps> = ({ projectedDat
       <ChartArea>
         <ResponsiveContainer {...getChartContainerProps()}>
           <ComposedChart
-            {...getComposedChartProps(filteredData, undefined, getResponsiveChartMargin(isMobile))}
+            {...getComposedChartProps(
+              filteredData,
+              undefined,
+              getResponsiveChartMargin(isMobile),
+            )}
           >
             <XAxis
               {...getXAxisProps(
@@ -198,23 +219,52 @@ export const NationOverviewChart: FC<NationOverviewChartProps> = ({ projectedDat
             />
             <YAxis {...getYAxisProps(currentLanguage)} />
             <Tooltip
-              content={<ChartTooltip dataView="overview" unit={t("emissionsUnit")} />}
+              content={
+                <ChartTooltip dataView="overview" unit={t("emissionsUnit")} />
+              }
               wrapperStyle={{ outline: "none", zIndex: 60 }}
             />
             <ReferenceLine {...getCurrentYearReferenceLineProps(currentYear)} />
 
             <StackedAreas {...flags} t={t} />
 
-            <Line type="monotone" dataKey="approximated" {...getConsistentLineProps("estimated", false, t("detailPage.graph.estimated"))} />
-            <Line type="monotone" dataKey="trend"        {...getConsistentLineProps("trend",     false, t("detailPage.graph.trend"))} />
-            <Line type="monotone" dataKey="carbonLaw"    {...getConsistentLineProps("paris",     false, t("detailPage.graph.carbonLaw"))} />
+            <Line
+              type="monotone"
+              dataKey="approximated"
+              {...getConsistentLineProps(
+                "estimated",
+                false,
+                t("detailPage.graph.estimated"),
+              )}
+            />
+            <Line
+              type="monotone"
+              dataKey="trend"
+              {...getConsistentLineProps(
+                "trend",
+                false,
+                t("detailPage.graph.trend"),
+              )}
+            />
+            <Line
+              type="monotone"
+              dataKey="carbonLaw"
+              {...getConsistentLineProps(
+                "paris",
+                false,
+                t("detailPage.graph.carbonLaw"),
+              )}
+            />
           </ComposedChart>
         </ResponsiveContainer>
       </ChartArea>
 
       <ChartFooter>
         <EnhancedLegend items={legendItems} />
-        <ChartYearControls chartEndYear={chartEndYear} setChartEndYear={setChartEndYear} />
+        <ChartYearControls
+          chartEndYear={chartEndYear}
+          setChartEndYear={setChartEndYear}
+        />
       </ChartFooter>
     </ChartWrapper>
   );
