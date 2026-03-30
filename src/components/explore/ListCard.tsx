@@ -127,7 +127,7 @@ export function ListCard({
               : logoUrl && (
                   <CompanyLogo
                     src={logoUrl}
-                    className="rounded-xl h-[100px] hidden @lg:inline"
+                    className="rounded-xl size-[90px] hidden @lg:inline"
                   />
                 )}
           </div>
