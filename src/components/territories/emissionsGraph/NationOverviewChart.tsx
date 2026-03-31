@@ -56,6 +56,23 @@ function StackedAreas({
   };
   return (
     <>
+      {/* Bottom of stack */}
+      <Area
+        {...areaProps}
+        dataKey="total"
+        name={t("detailPage.graph.fossilEmissions")}
+        stroke={LEGEND_CONFIGS.fossilEmissions.color}
+        fill={LEGEND_CONFIGS.fossilEmissions.color}
+      />
+      {hasBiogenic && (
+        <Area
+          {...areaProps}
+          dataKey="biogenicEmissions"
+          name={t("detailPage.graph.biogenicEmissions")}
+          stroke={LEGEND_CONFIGS.biogenic.color}
+          fill={LEGEND_CONFIGS.biogenic.color}
+        />
+      )}
       {hasOilExport && (
         <Area
           {...areaProps}
@@ -74,23 +91,7 @@ function StackedAreas({
           fill={LEGEND_CONFIGS.consumption.color}
         />
       )}
-      {hasBiogenic && (
-        <Area
-          {...areaProps}
-          dataKey="biogenicEmissions"
-          name={t("detailPage.graph.biogenicEmissions")}
-          stroke={LEGEND_CONFIGS.biogenic.color}
-          fill={LEGEND_CONFIGS.biogenic.color}
-        />
-      )}
-      {/* Historical territorial emissions on top of the stack — from 1990 */}
-      <Area
-        {...areaProps}
-        dataKey="total"
-        name={t("detailPage.graph.fossilEmissions")}
-        stroke={LEGEND_CONFIGS.fossilEmissions.color}
-        fill={LEGEND_CONFIGS.fossilEmissions.color}
-      />
+      {/* Top of stack */}
     </>
   );
 }
