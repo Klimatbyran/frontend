@@ -52,7 +52,7 @@ function StackedAreas({
     dot: false as const,
     activeDot: { r: 5 },
     connectNulls: false,
-    fillOpacity: 0.1,
+    fillOpacity: 0.05,
   };
   return (
     <>
