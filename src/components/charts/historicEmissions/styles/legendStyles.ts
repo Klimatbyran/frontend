@@ -12,7 +12,7 @@ export const LEGEND_CONFIGS = {
   },
   fossilEmissions: {
     nameKey: "detailPage.graph.fossilEmissions",
-    color: "var(--green-3)",
+    color: "var(--yellow-3)",
     isClickable: false,
     isHidden: false,
     isDashed: false,
@@ -54,7 +54,7 @@ export const LEGEND_CONFIGS = {
   },
   oilExport: {
     nameKey: "detailPage.graph.exportOfOilProductsEmissions",
-    color: "var(--pink-2)",
+    color: "var(--purple-3)",
     isClickable: false,
     isHidden: false,
     isDashed: true,

@@ -53,6 +53,20 @@
   --pink-4: #97455d;
   --pink-5: #73263d;
 
+  /* Yellow palette */
+  --yellow-1: #fef9cc;
+  --yellow-2: #fdef6b;
+  --yellow-3: #f5d000;
+  --yellow-4: #a08400;
+  --yellow-5: #574800;
+
+  /* Purple palette */
+  --purple-1: #f0e5ff;
+  --purple-2: #c9a0f5;
+  --purple-3: #9d59e8;
+  --purple-4: #5e2d9e;
+  --purple-5: #331660;
+
   /* Muted background colors for flip cards (20% opacity) */
   --green-3-muted: color-mix(in srgb, var(--green-3) 20%, transparent);
   --blue-3-muted: color-mix(in srgb, var(--blue-3) 20%, transparent);
