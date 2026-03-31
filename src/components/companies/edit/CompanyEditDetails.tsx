@@ -151,6 +151,7 @@ export function CompanyEditDetails({
         descriptionEn,
         descriptionSv,
         lei,
+        logoUrl,
         tagsInput,
         comment: detailsComment,
         source: detailsSource,
@@ -264,7 +265,8 @@ export function CompanyEditDetails({
             >
               <LogoDevDialog
                 className="ml-3 place-self-center h-10 inline-block bg-black-1 hover:bg-grey text-white px-6 py-2 rounded-lg transition-colors duration-200"
-                onSubmit={setLogoUrl}
+                logoUrl={logoUrl}
+                setLogoUrl={setLogoUrl}
               />
             </CompanyEditFieldWithUndo>
 
