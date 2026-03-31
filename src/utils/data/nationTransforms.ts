@@ -41,7 +41,9 @@ export function transformNationEmissionsData(nation: {
         year: yearNum,
         total: nation.territorialFossilEmissions[year]
           ? nation.territorialFossilEmissions[year] / 1000
-          : undefined,
+          : nation.approximatedHistoricalEmission?.[year]
+            ? nation.approximatedHistoricalEmission[year] / 1000
+            : undefined,
         approximated: nation.approximatedHistoricalEmission?.[year]
           ? nation.approximatedHistoricalEmission[year] / 1000
           : undefined,

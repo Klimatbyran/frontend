@@ -216,11 +216,14 @@ export function useNationDetailHeaderStats(
     return [];
   }
 
-  const totalEmissions =
-    nation.territorialFossilEmissions[lastYear] +
-    nation.biogenicEmissions[lastYear] +
-    nation.consumptionAbroadEmissions[lastYear] +
-    nation.exportOfOilProductsEmissions[lastYear];
+  const hasTerritorialData =
+    nation.territorialFossilEmissions[lastYear] !== undefined;
+  const totalEmissions = hasTerritorialData
+    ? (nation.territorialFossilEmissions[lastYear] ?? 0) +
+      (nation.biogenicEmissions[lastYear] ?? 0) +
+      (nation.consumptionAbroadEmissions[lastYear] ?? 0) +
+      (nation.exportOfOilProductsEmissions[lastYear] ?? 0)
+    : (nation.approximatedHistoricalEmission[lastYear] ?? 0);
 
   return [
     createMeetsParisStat(nation.meetsParis, t),
