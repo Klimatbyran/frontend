@@ -75,7 +75,7 @@
     "title": "Hur går det med",
     "seeResults": "Se resultat",
     "bestPerformers": "Topplistor",
-    "bestMunicipalities": "Sveriges bästa kommuner",
+    "bestMunicipalities": "Kommuner med snabbast utsläppsminskning",
     "municipalitiesDescription": "Årlig utsläppsminskning sedan Parisavtalet 2015",
     "largestEmittor": "Företag med störst utsläpp",
     "companiesDescription": "Utsläpp från senaste rapporterade året",
@@ -741,8 +741,8 @@
         },
         "companiesIncluded": {
           "title": "Inkluderade företag",
-          "paragraph1": "Vår databas omfattar företag på OMX Large Cap och Mid Cap på Stockholmsbörsen, de 24 största statliga företagen, de fem största ekonomiska föreningarna samt de olistade företagen IKEA och ICA Gruppen.",
-          "paragraph2": "Företagen kategoriseras efter bransch enligt Global Industry Classification Standard (GICS), totalt följs 290 företag.",
+          "paragraph1": "Vår databas omfattar företag på OMX Large Cap, Mid Cap och Small Cap på Stockholmsbörsen, de 24 största statliga företagen, de fem största ekonomiska föreningarna samt de olistade företagen IKEA och ICA Gruppen.",
+          "paragraph2": "Företagen kategoriseras efter bransch enligt Global Industry Classification Standard (GICS).",
           "link": {
             "title": "GICS",
             "text": "Läs mer om Global Industry Classification Standard (GICS)"
