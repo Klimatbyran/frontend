@@ -52,7 +52,7 @@ function StackedAreas({
     dot: false as const,
     activeDot: { r: 5 },
     connectNulls: false,
-    fillOpacity: 0.4,
+    fillOpacity: 0.1,
   };
   return (
     <>
@@ -104,13 +104,6 @@ function buildLegendItems(
   },
 ): LegendItem[] {
   const items: LegendItem[] = [
-    {
-      name: t("detailPage.graph.historical"),
-      color: LEGEND_CONFIGS.historical.color,
-      isClickable: false,
-      isHidden: false,
-      isDashed: false,
-    },
     {
       name: t("detailPage.graph.estimated"),
       color: LEGEND_CONFIGS.estimated.color,
