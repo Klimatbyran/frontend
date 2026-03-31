@@ -111,27 +111,6 @@ function buildLegendItems(
       isHidden: false,
       isDashed: false,
     },
-    {
-      name: t("detailPage.graph.estimated"),
-      color: LEGEND_CONFIGS.estimated.color,
-      isClickable: false,
-      isHidden: false,
-      isDashed: true,
-    },
-    {
-      name: t("detailPage.graph.trend"),
-      color: LEGEND_CONFIGS.trend.color,
-      isClickable: false,
-      isHidden: false,
-      isDashed: true,
-    },
-    {
-      name: t("detailPage.graph.carbonLaw"),
-      color: LEGEND_CONFIGS.paris.color,
-      isClickable: false,
-      isHidden: false,
-      isDashed: true,
-    },
   ];
   if (flags.hasOilExport) {
     items.push({
@@ -160,6 +139,29 @@ function buildLegendItems(
       isDashed: false,
     });
   }
+  items.push(
+    {
+      name: t("detailPage.graph.estimated"),
+      color: LEGEND_CONFIGS.estimated.color,
+      isClickable: false,
+      isHidden: false,
+      isDashed: true,
+    },
+    {
+      name: t("detailPage.graph.trend"),
+      color: LEGEND_CONFIGS.trend.color,
+      isClickable: false,
+      isHidden: false,
+      isDashed: true,
+    },
+    {
+      name: t("detailPage.graph.carbonLaw"),
+      color: LEGEND_CONFIGS.paris.color,
+      isClickable: false,
+      isHidden: false,
+      isDashed: true,
+    },
+  );
   return items;
 }
 
