@@ -3,9 +3,9 @@ import { useSearchParams } from "react-router-dom";
 import {
   isSortDirection,
   type SortDirection,
+  type SortOption,
 } from "@/components/explore/SortPopover";
 import setOrDeleteSearchParam from "@/utils/data/setOrDeleteSearchParam";
-import type { SortOption } from "@/components/explore/SortPopover";
 
 export type MeetsParisFilter = "all" | "yes" | "no";
 
@@ -57,11 +57,7 @@ export function useExploreFilters<TSortBy extends string>({
 
   const setSearchQuery = useCallback(
     (query: string) =>
-      setOrDeleteSearchParam(
-        setSearchParams,
-        query.trim() || null,
-        "searchQuery",
-      ),
+      setOrDeleteSearchParam(setSearchParams, query || null, "searchQuery"),
     [setSearchParams],
   );
 
