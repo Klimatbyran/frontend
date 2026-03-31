@@ -113,6 +113,15 @@ function buildLegendItems(
       isDashed: false,
     },
   ];
+  if (flags.hasBiogenic) {
+    items.push({
+      name: t("detailPage.graph.biogenicEmissions"),
+      color: LEGEND_CONFIGS.biogenic.color,
+      isClickable: false,
+      isHidden: false,
+      isDashed: false,
+    });
+  }
   if (flags.hasOilExport) {
     items.push({
       name: t("detailPage.graph.exportOfOilProductsEmissions"),
@@ -126,15 +135,6 @@ function buildLegendItems(
     items.push({
       name: t("detailPage.graph.consumptionAbroadEmissions"),
       color: LEGEND_CONFIGS.consumption.color,
-      isClickable: false,
-      isHidden: false,
-      isDashed: false,
-    });
-  }
-  if (flags.hasBiogenic) {
-    items.push({
-      name: t("detailPage.graph.biogenicEmissions"),
-      color: LEGEND_CONFIGS.biogenic.color,
       isClickable: false,
       isHidden: false,
       isDashed: false,
