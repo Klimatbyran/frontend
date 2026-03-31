@@ -87,9 +87,9 @@ function StackedAreas({
       <Area
         {...areaProps}
         dataKey="total"
-        name={t("detailPage.graph.historical")}
-        stroke={LEGEND_CONFIGS.historical.color}
-        fill={LEGEND_CONFIGS.historical.color}
+        name={t("detailPage.graph.fossilEmissions")}
+        stroke={LEGEND_CONFIGS.fossilEmissions.color}
+        fill={LEGEND_CONFIGS.fossilEmissions.color}
       />
     </>
   );
@@ -104,6 +104,13 @@ function buildLegendItems(
   },
 ): LegendItem[] {
   const items: LegendItem[] = [
+    {
+      name: t("detailPage.graph.fossilEmissions"),
+      color: LEGEND_CONFIGS.fossilEmissions.color,
+      isClickable: false,
+      isHidden: false,
+      isDashed: false,
+    },
     {
       name: t("detailPage.graph.estimated"),
       color: LEGEND_CONFIGS.estimated.color,

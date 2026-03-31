@@ -10,6 +10,13 @@ export const LEGEND_CONFIGS = {
     isHidden: false,
     isDashed: false,
   },
+  fossilEmissions: {
+    nameKey: "detailPage.graph.fossilEmissions",
+    color: "var(--green-3)",
+    isClickable: false,
+    isHidden: false,
+    isDashed: false,
+  },
   estimated: {
     nameKey: "companies.emissionsHistory.approximated", // Will be overridden for municipalities
     color: "var(--grey)",

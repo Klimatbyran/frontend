@@ -1008,6 +1008,7 @@
     },
     "graph": {
       "historical": "Historical",
+      "fossilEmissions": "Fossil Emissions",
       "estimated": "Estimated",
       "trend": "Trend",
       "carbonLaw": "Paris Agreement",

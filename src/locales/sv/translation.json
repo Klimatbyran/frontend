@@ -1061,6 +1061,7 @@
     },
     "graph": {
       "historical": "Historiskt",
+      "fossilEmissions": "Fossila utsläpp",
       "estimated": "Uppskattat",
       "trend": "Trend",
       "carbonLaw": "Parisavtalet",
