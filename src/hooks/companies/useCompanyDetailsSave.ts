@@ -9,6 +9,7 @@ export interface SaveCompanyDetailsArgs {
   descriptionEn: string;
   descriptionSv: string;
   lei: string;
+  logoUrl: string;
   tagsInput: string;
   comment?: string;
   source?: string;
@@ -49,6 +50,7 @@ async function saveCompanyDetails({
   descriptionEn,
   descriptionSv,
   lei,
+  logoUrl,
   tagsInput,
   comment,
   source,
@@ -66,6 +68,7 @@ async function saveCompanyDetails({
     name: name.trim(),
     ...(descriptions.length > 0 ? { descriptions } : undefined),
     ...(lei.trim() ? { lei: lei.trim() } : undefined),
+    ...(logoUrl.trim() ? { logoUrl: logoUrl.trim() } : undefined),
     ...(tags.length > 0 ? { tags } : undefined),
     ...(Object.keys(metadata).length > 0 ? { metadata } : undefined),
   });

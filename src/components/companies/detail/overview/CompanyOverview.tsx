@@ -32,6 +32,7 @@ import { CompanyDescription } from "./CompanyDescription";
 import { CompanyOverviewTooltip } from "./CompanyOverviewTooltip";
 import { OverviewStatistics } from "./OverviewStatistics";
 import { yearFromIsoDate } from "@/utils/date";
+import { CompanyLogo } from "../../CompanyLogo";
 
 interface CompanyOverviewProps {
   company: CompanyDetails;
@@ -106,7 +107,7 @@ export function CompanyOverview({
         // "historicVsParis",
       ]}
     >
-      <div className="flex items-start justify-between mb-4 md:mb-12">
+      <div className="flex gap-1 items-start justify-between mb-4 md:mb-12">
         <div className="space-y-4">
           <div className="flex items-center gap-4">
             <Text className="text-4xl lg:text-6xl">{company.name}</Text>
@@ -164,6 +165,12 @@ export function CompanyOverview({
             </Select>
           </div>
         </div>
+        {company.logoUrl && (
+          <CompanyLogo
+            src={company.logoUrl}
+            className="max-h-[120px] max-w-[120px] object-contain rounded-xl hidden lg:inline "
+          />
+        )}
       </div>
 
       <div className="mb-2 md:mb-4 space-y-4 md:space-y-6">

@@ -1395,6 +1395,17 @@
       "trend": "Trend:",
       "increasing": "↗ Increasing",
       "decreasing": "↘ Decreasing"
+    },
+    "logoDevDialog": {
+      "title": "Generate logo.dev URL",
+      "domain": "Domain",
+      "theme": "Theme",
+      "themeOptions": {
+        "auto": "Auto (default)",
+        "light": "Light",
+        "dark": "Dark"
+      },
+      "generate": "Generate"
     }
   },
   "nation": {
@@ -1600,6 +1611,7 @@
       "name": "Name",
       "descriptionEn": "Description (EN)",
       "descriptionSv": "Description (SV)",
+      "logoUrl": "Logo URL",
       "lei": "LEI",
       "tags": "Tags",
       "gicsSubIndustry": "GICS Sub-Industry",
@@ -1617,6 +1629,7 @@
       "undoName": "Undo name change",
       "undoDescriptionEn": "Undo description (EN) change",
       "undoDescriptionSv": "Undo description (SV) change",
+      "undoLogoUrl": "Undo logo URL change",
       "undoLei": "Undo LEI change",
       "undoTags": "Undo tags change",
       "undoIndustry": "Undo industry change",

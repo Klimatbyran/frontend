@@ -134,6 +134,7 @@ const useTransformCompanyListCard = ({
       return {
         name,
         description: sectorName,
+        logoUrl: company.logoUrl,
         variant: "company" as const,
         baseYear: company?.baseYear?.year || null,
         linkTo: `/companies/${wikidataId}`,

@@ -4,6 +4,7 @@ import { LocalizedLink } from "@/components/LocalizedLink";
 import { FinancialsTooltip } from "@/components/companies/detail/overview/FinancialsTooltip";
 import { CardInfo } from "@/components/layout/CardInfo";
 import { useListCardMeta } from "@/hooks/useListCardMeta";
+import { CompanyLogo } from "../companies/CompanyLogo";
 
 export interface ListCardProps {
   // Basic info
@@ -93,36 +94,42 @@ export function ListCard({
         to={linkTo}
         className={cn(
           "block bg-black-2 rounded-level-2 p-8 md:space-y-4 transition-all duration-300 hover:shadow-[0_0_10px_rgba(153,207,255,0.15)] hover:bg-[#1a1a1a]",
-          isRegion ? "min-h-[300px]" : "min-h-[400px]",
+          isRegion ? "min-h-[300px]" : "min-h-[410px]",
         )}
       >
         {/* Header section */}
         <div>
-          <div className="flex justify-between">
+          <div className="flex justify-between gap-1">
             <div className="flex flex-col">
               <h2 className="text-3xl font-light">{name}</h2>
               <p className="text-grey text-sm line -clamp-2 min-h-[40px]">
                 {description}
               </p>
+              {/* Meets Paris section */}
+              <div className="flex items-center gap-2 text-grey text-lg ">
+                {t(meetsParisTranslationKey)}
+              </div>
+              <div
+                className={cn(
+                  "text-xl font-light border-b border-black-1 pb-6",
+                  meetsParis === true ? "text-green-3" : "text-pink-3",
+                )}
+              >
+                {meetsParis === true
+                  ? t("yes")
+                  : meetsParis === false
+                    ? t("no")
+                    : t("companies.card.notEnoughData")}
+              </div>
             </div>
-            {logoUrl && <img src={logoUrl} alt="logo" className="h-[50px]" />}
-          </div>
-
-          {/* Meets Paris section */}
-          <div className="flex items-center gap-2 text-grey text-lg ">
-            {t(meetsParisTranslationKey)}
-          </div>
-          <div
-            className={cn(
-              "text-xl font-light border-b border-black-1 pb-6",
-              meetsParis === true ? "text-green-3" : "text-pink-3",
-            )}
-          >
-            {meetsParis === true
-              ? t("yes")
-              : meetsParis === false
-                ? t("no")
-                : t("companies.card.notEnoughData")}
+            {isMunicipality || isRegion
+              ? logoUrl && <img src={logoUrl} alt="logo" className="h-[50px]" />
+              : logoUrl && (
+                  <CompanyLogo
+                    src={logoUrl}
+                    className="rounded-xl max-w-[90px] max-h-[90px] object-contain hidden @lg:inline"
+                  />
+                )}
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 pt-4">
