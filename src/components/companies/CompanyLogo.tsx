@@ -134,6 +134,47 @@ function groupColors(colors: Color[]) {
   return colorGroups;
 }
 
+const LOGO_EDGE_NEIGHBOURS: { x: number; y: number }[] = [
+  { x: -1, y: 0 },
+  { x: 1, y: 0 },
+  { x: 0, y: -1 },
+  { x: 0, y: 1 },
+];
+
+type LogoEdgeCheckContext = {
+  imageData: ImageDataArray;
+  imageSize: number;
+  elementBackgroundColor: Color;
+  minContrast: number;
+};
+
+function isLogoEdgeLowContrast(
+  i: number,
+  j: number,
+  ctx: LogoEdgeCheckContext,
+): boolean {
+  const { imageData, imageSize, elementBackgroundColor, minContrast } = ctx;
+  const center = getColor(i, j, imageData, imageSize);
+  if (center.a <= 253) return false;
+  const touchesTransparent = LOGO_EDGE_NEIGHBOURS.some(
+    (n) => getColor(i + n.x, j + n.y, imageData, imageSize).a === 0,
+  );
+  if (!touchesTransparent) return false;
+  return contrast(center, elementBackgroundColor) < minContrast;
+}
+
+function hasLowContrastTransparentEdge(ctx: LogoEdgeCheckContext): boolean {
+  const { imageSize } = ctx;
+  for (let i = 1; i < imageSize - 1; i++) {
+    for (let j = 1; j < imageSize - 1; j++) {
+      if (isLogoEdgeLowContrast(i, j, ctx)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
 function calculateBackgroundColor(
   imageData: ImageDataArray,
   imageSize: number,
@@ -168,30 +209,16 @@ function calculateBackgroundColor(
       return { r: 255, g: 255, b: 255, a: 255 };
     }
 
-    const neighbours: { x: number; y: number }[] = [
-      { x: -1, y: 0 },
-      { x: 1, y: 0 },
-      { x: 0, y: -1 },
-      { x: 0, y: 1 },
-    ];
-
     // Try find the edges of the logo and compare their color to the background color of the container
-    for (let i = 1; i < imageSize - 1; i++) {
-      for (let j = 1; j < imageSize - 1; j++) {
-        if (getColor(i, j, imageData, imageSize).a > 253) {
-          if (
-            neighbours.some(
-              (n) => getColor(i + n.x, j + n.y, imageData, imageSize).a === 0,
-            ) &&
-            contrast(
-              getColor(i, j, imageData, imageSize),
-              elementBackgroundColor,
-            ) < minContrast
-          ) {
-            return { r: 255, g: 255, b: 255, a: 255 };
-          }
-        }
-      }
+    if (
+      hasLowContrastTransparentEdge({
+        imageData,
+        imageSize,
+        elementBackgroundColor,
+        minContrast,
+      })
+    ) {
+      return { r: 255, g: 255, b: 255, a: 255 };
     }
   } else if (sideColors[0].count > (imageSize - 1) * 4 * 0.5) {
     // If more than half of the pixels on the sides of image have the same colors, then that color is assumed to be the backgroud color
@@ -268,10 +295,10 @@ function parseColorToRgb(colorString: string): Color {
 
 function contrast(rgb1: Color, rgb2: Color) {
   // Calculates contrast using formula found at https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html#dfn-contrast-ratio
-  var lum1 = luminance(rgb1);
-  var lum2 = luminance(rgb2);
-  var brightest = Math.max(lum1, lum2);
-  var darkest = Math.min(lum1, lum2);
+  const lum1 = luminance(rgb1);
+  const lum2 = luminance(rgb2);
+  const brightest = Math.max(lum1, lum2);
+  const darkest = Math.min(lum1, lum2);
   return (brightest + 0.05) / (darkest + 0.05);
 }
 
@@ -280,7 +307,7 @@ function luminance(c: Color) {
   const GREEN = 0.7152;
   const BLUE = 0.0722;
 
-  var a = [c.r, c.g, c.b].map((v) => {
+  const a = [c.r, c.g, c.b].map((v) => {
     v /= 255;
     return v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
   });
