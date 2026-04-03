@@ -168,7 +168,7 @@ export function CompanyOverview({
         {company.logoUrl && (
           <CompanyLogo
             src={company.logoUrl}
-            className="max-h-[120px] max-w-[120px] object-contain rounded-xl hidden lg:inline "
+            className="rounded-xl size-[120px] object-contain hidden lg:inline"
           />
         )}
       </div>
