@@ -49,8 +49,8 @@ export function LogoDevDialog({
   }, [open, logoUrl]);
 
   const url =
-    domain.length > 3 &&
-    domain.includes(".") &&
+    domain.indexOf(".") > 0 &&
+    domain.indexOf(".") < domain.length - 1 &&
     new URL(`https://img.logo.dev/${domain}`);
 
   if (url && theme !== "auto") {

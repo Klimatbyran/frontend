@@ -39,8 +39,8 @@ export function CompanyLogo({ src, className }: CompanyLogoProps) {
     return (
       <img
         src={url.toString()}
-        alt="logo"
-        className={(padding ? "p-1 " : "") + className}
+        alt=""
+        className={className + (padding ? " p-1" : "")}
         crossOrigin="anonymous"
         style={{
           backgroundColor: `rgba(${backgroundColor.r}, ${backgroundColor.g}, ${backgroundColor.b}, ${backgroundColor.a / 255})`,
@@ -56,8 +56,8 @@ export function CompanyLogo({ src, className }: CompanyLogoProps) {
     return (
       <img
         src={url.toString()}
-        alt="logo"
-        className={"bg-white p-1 " + className}
+        alt=""
+        className={className + " bg-white p-1"}
       />
     );
   }
