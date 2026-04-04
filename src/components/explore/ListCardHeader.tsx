@@ -1,7 +1,15 @@
-import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
-import { CompanyLogo } from "@/components/companies/CompanyLogo";
-import { meetsParisAnswerLabel } from "./listCardHelpers";
+import { useListCardHeader } from "@/hooks/useListCardHeader";
+
+export interface ListCardHeaderProps {
+  name: string;
+  description: string;
+  meetsParis: boolean | null;
+  meetsParisTranslationKey: string;
+  logoUrl?: string | null;
+  isMunicipality: boolean;
+  isRegion: boolean;
+}
 
 export function ListCardHeader({
   name,
@@ -11,26 +19,19 @@ export function ListCardHeader({
   logoUrl,
   isMunicipality,
   isRegion,
-}: {
-  name: string;
-  description: string;
-  meetsParis: boolean | null;
-  meetsParisTranslationKey: string;
-  logoUrl?: string | null;
-  isMunicipality: boolean;
-  isRegion: boolean;
-}) {
-  const { t } = useTranslation();
-  const meetsParisAnswer = meetsParisAnswerLabel(meetsParis, t);
-  const logo =
-    isMunicipality || isRegion
-      ? logoUrl && <img src={logoUrl} alt="logo" className="h-[50px]" />
-      : logoUrl && (
-          <CompanyLogo
-            src={logoUrl}
-            className="shrink-0 rounded-xl max-w-[90px] max-h-[90px] object-contain inline-block"
-          />
-        );
+}: ListCardHeaderProps) {
+  const {
+    meetsParisAnswer,
+    meetsParisTitle,
+    logo,
+    meetsParisIsYes,
+  } = useListCardHeader({
+    meetsParis,
+    meetsParisTranslationKey,
+    logoUrl,
+    isMunicipality,
+    isRegion,
+  });
 
   return (
     <div className="w-full">
@@ -45,12 +46,12 @@ export function ListCardHeader({
       </div>
       <div className="w-full">
         <div className="flex items-center gap-2 text-grey text-lg">
-          {t(meetsParisTranslationKey)}
+          {meetsParisTitle}
         </div>
         <div
           className={cn(
             "w-full text-xl font-light border-b border-black-1 pb-6",
-            meetsParis === true ? "text-green-3" : "text-pink-3",
+            meetsParisIsYes ? "text-green-3" : "text-pink-3",
           )}
         >
           {meetsParisAnswer}
