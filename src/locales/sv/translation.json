@@ -1469,6 +1469,9 @@
         "territorial": "Territoriella (fossila)",
         "biogenic": "Biogena",
         "total": "Totalt (fossilt + biogent)",
+        "totalEmissionsComparisonTitle": "Totala utsläpp",
+        "totalEmissionsComparisonSubline": "Summan av territoriellt fossilt och biogent CO₂e.",
+        "totalEmissionsComparisonSublineFossilOnly": "Territoriellt fossilt CO₂e; biogena utsläpp ingår inte.",
         "biogenicUnavailable": "Biogena utsläpp finns ännu inte i den här datamängden; diagrammet visar endast territoriellt fossila utsläpp."
       }
     }
