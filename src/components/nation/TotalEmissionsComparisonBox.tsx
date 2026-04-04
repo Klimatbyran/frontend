@@ -1,6 +1,8 @@
 import { FC } from "react";
 import type { TFunction } from "i18next";
 import type { SupportedLanguage } from "@/lib/languageDetection";
+import { OverviewStat } from "@/components/companies/detail/overview/OverviewStat";
+import { Text } from "@/components/ui/text";
 import { formatEmissionsAbsolute } from "@/utils/formatting/localization";
 import {
   YEAR_TOTAL_TEXT_CLASS,
@@ -16,29 +18,36 @@ type TotalEmissionsComparisonBoxProps = {
 export const TotalEmissionsComparisonBox: FC<
   TotalEmissionsComparisonBoxProps
 > = ({ comparisonTotals, currentLanguage, t }) => (
-  <div className="rounded-level-2  bg-black-1/40 px-4 py-5 md:px-6 md:py-6">
-    <p className="mb-2 text-xs font-medium uppercase tracking-wide text-grey">
-      {t("nation.detailPage.territorialBiogenic.totalEmissionsComparisonTitle")}
-    </p>
-    <p className="mb-5 text-sm text-grey">
-      {t(
-        "nation.detailPage.territorialBiogenic.totalEmissionsComparisonSubline",
-      )}
-    </p>
-    <div className="grid grid-cols-2 gap-4 md:gap-8">
-      {comparisonTotals.map(({ year, totalTons }) => (
-        <div key={year} className="min-w-0">
-          <p className="mb-2 text-sm text-grey">{year}</p>
-          <p
-            className={`text-3xl font-light tabular-nums tracking-tight md:text-4xl ${YEAR_TOTAL_TEXT_CLASS[year] ?? "text-white"}`}
-          >
-            {totalTons != null
-              ? formatEmissionsAbsolute(totalTons, currentLanguage)
-              : "—"}
-          </p>
-          <p className="mt-2 text-xs text-grey">{t("emissionsUnit")}</p>
-        </div>
-      ))}
+  <div className="space-y-6">
+    <div>
+      <Text className="text-lg md:text-xl">
+        {t("nation.detailPage.territorialBiogenic.totalEmissionsComparisonTitle")}
+      </Text>
+      <Text className="mt-1 text-sm text-grey md:text-base">
+        {t(
+          "nation.detailPage.territorialBiogenic.totalEmissionsComparisonSubline",
+        )}
+      </Text>
+    </div>
+    <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-16">
+      {comparisonTotals.map(({ year, totalTons }) => {
+        const hasValue = totalTons != null;
+        return (
+          <OverviewStat
+            key={year}
+            variant="detail"
+            label={String(year)}
+            value={
+              hasValue
+                ? formatEmissionsAbsolute(totalTons, currentLanguage)
+                : "—"
+            }
+            unit={hasValue ? t("emissionsUnit") : undefined}
+            valueClassName={YEAR_TOTAL_TEXT_CLASS[year] ?? "text-white"}
+            useFlex1={false}
+          />
+        );
+      })}
     </div>
   </div>
 );
