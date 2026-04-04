@@ -22,13 +22,9 @@ export const TotalEmissionsComparisonBox: FC<
       {t("nation.detailPage.territorialBiogenic.totalEmissionsComparisonTitle")}
     </p>
     <p className="mb-5 text-sm text-grey">
-      {showTotal
-        ? t(
-            "nation.detailPage.territorialBiogenic.totalEmissionsComparisonSubline",
-          )
-        : t(
-            "nation.detailPage.territorialBiogenic.totalEmissionsComparisonSublineFossilOnly",
-          )}
+      {t(
+        "nation.detailPage.territorialBiogenic.totalEmissionsComparisonSubline",
+      )}
     </p>
     <div className="grid grid-cols-2 gap-4 md:gap-8">
       {comparisonTotals.map(({ year, totalTons }) => (
