@@ -18,6 +18,8 @@ export type NationDetails = {
   country: string;
   logoUrl: string | null;
   emissions: Record<string, number>;
+  territorialFossilEmissions: Record<string, number>;
+  biogenicEmissions: Record<string, number> | null;
   approximatedHistoricalEmission: Record<string, number>;
   trend: Record<string, number>;
   carbonLaw: Record<string, number>;
@@ -29,6 +31,8 @@ type ApiNationResponse = {
   country: string;
   logoUrl?: string | null;
   emissions: ({ year: string; value: number } | null)[];
+  territorialFossilEmissions?: ({ year: string; value: number } | null)[];
+  biogenicEmissions?: ({ year: string; value: number } | null)[];
   totalTrend: number;
   totalCarbonLaw: number;
   approximatedHistoricalEmission: ({ year: string; value: number } | null)[];
@@ -45,11 +49,12 @@ function extractEmissionsRecord(
     emissions.forEach((emission) => {
       if (
         emission &&
-        emission.year &&
+        emission.year !== undefined &&
+        emission.year !== null &&
         emission.value !== null &&
         !isNaN(Number(emission.year))
       ) {
-        record[emission.year] = emission.value;
+        record[String(emission.year)] = emission.value;
       }
     });
   }
@@ -88,14 +93,42 @@ function calculateCarbonLawRecord(
   return carbonLawRecord;
 }
 
+/** Overlay newer API series onto legacy `emissions` so partial year lists do not drop history. */
+function mergeYearlyEmissions(
+  base: Record<string, number>,
+  ...layers: Record<string, number>[]
+): Record<string, number> {
+  const out = { ...base };
+  for (const layer of layers) {
+    for (const [y, v] of Object.entries(layer)) {
+      out[y] = v;
+    }
+  }
+  return out;
+}
+
 function transformApiNationToNationDetails(
   r: ApiNationResponse,
   currentYear: number,
 ): NationDetails {
+  const emissions = extractEmissionsRecord(r.emissions);
+  const territorialFossilFromApi = extractEmissionsRecord(
+    r.territorialFossilEmissions,
+  );
+  const territorialFossilEmissions = mergeYearlyEmissions(
+    emissions,
+    territorialFossilFromApi,
+  );
+  const biogenicRecord = extractEmissionsRecord(r.biogenicEmissions);
+  const biogenicEmissions =
+    Object.keys(biogenicRecord).length > 0 ? biogenicRecord : null;
+
   return {
     country: r.country,
     logoUrl: r.logoUrl ?? null,
-    emissions: extractEmissionsRecord(r.emissions),
+    emissions,
+    territorialFossilEmissions,
+    biogenicEmissions,
     approximatedHistoricalEmission: extractEmissionsRecord(
       r.approximatedHistoricalEmission,
     ),

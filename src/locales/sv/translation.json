@@ -1462,7 +1462,14 @@
   },
   "nation": {
     "detailPage": {
-      "regions": "Län"
+      "regions": "Län",
+      "territorialBiogenic": {
+        "title": "Territoriella (fossila) och biogena utsläpp",
+        "description": "Nationella utsläpp 1990 jämfört med 2024. Territoriellt fossila utsläpp sker inom landets gränser (exklusive biogent CO₂); biogena utsläpp visas separat när data finns.",
+        "territorial": "Territoriella (fossila)",
+        "biogenic": "Biogena",
+        "biogenicUnavailable": "Biogena utsläpp finns ännu inte i den här datamängden; diagrammet visar endast territoriellt fossila utsläpp."
+      }
     }
   },
   "regions": {

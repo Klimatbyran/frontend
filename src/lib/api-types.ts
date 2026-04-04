@@ -1767,6 +1767,19 @@ export interface paths {
                                 year: string;
                                 value: number;
                             } | null)[];
+                            /** Territorial (within borders) CO₂e when reported separately from total `emissions` */
+                            territorialEmissions?: ({
+                                year: string;
+                                value: number;
+                            } | null)[];
+                            biogenicEmissions?: ({
+                                year: string;
+                                value: number;
+                            } | null)[];
+                            fossilEmissions?: ({
+                                year: string;
+                                value: number;
+                            } | null)[];
                             totalTrend: number;
                             totalCarbonLaw: number;
                             approximatedHistoricalEmission: ({

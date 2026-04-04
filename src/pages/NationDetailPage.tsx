@@ -6,6 +6,7 @@ import { DetailHeader } from "@/components/detail/DetailHeader";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";
 import { SectorEmissionsChart } from "@/components/charts/sectorChart/SectorEmissions";
 import { EntityListBox } from "@/components/detail/EntityListBox";
+import { NationalTerritorialBiogenicChart } from "@/components/nation/NationalTerritorialBiogenicChart";
 import { useNationPageData } from "@/hooks/nation/useNationPageData";
 
 function NationDetailContent({
@@ -36,6 +37,7 @@ function NationDetailContent({
         emissionsData={emissionsData}
         sectorEmissions={sectorEmissions}
       />
+      <NationalTerritorialBiogenicChart nation={nation} />
       <SectorEmissionsChart
         sectorEmissions={sectorEmissions}
         availableYears={availableYears}
