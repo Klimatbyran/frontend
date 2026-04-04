@@ -3,7 +3,6 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
-  Legend,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -13,7 +12,11 @@ import { useTranslation } from "react-i18next";
 import { CardHeader } from "@/components/layout/CardHeader";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import {
+  type LegendItem,
   CHART_COLORS,
+  ChartFooter,
+  ChartWrapper,
+  EnhancedLegend,
   getChartContainerProps,
   getResponsiveChartMargin,
   getYAxisProps,
@@ -85,105 +88,133 @@ export const NationalTerritorialBiogenicChart: FC<
     };
   }, [nation.territorialFossilEmissions, nation.biogenicEmissions]);
 
+  const legendItems: LegendItem[] = useMemo(() => {
+    const items: LegendItem[] = [
+      {
+        name: t("nation.detailPage.territorialBiogenic.territorial"),
+        color: CHART_COLORS.primary,
+      },
+    ];
+    if (showBiogenic) {
+      items.push({
+        name: t("nation.detailPage.territorialBiogenic.biogenic"),
+        color: "var(--orange-2)",
+      });
+    }
+    if (showTotal) {
+      items.push({
+        name: t("nation.detailPage.territorialBiogenic.total"),
+        color: CHART_COLORS.paris,
+      });
+    }
+    return items;
+  }, [t, showBiogenic, showTotal]);
+
   if (chartData.length === 0) {
     return null;
   }
 
   return (
     <SectionWithHelp helpItems={[]}>
-      <CardHeader
-        title={t("nation.detailPage.territorialBiogenic.title")}
-        description={t("nation.detailPage.territorialBiogenic.description")}
-        unit={t("detailPage.inTons")}
-      />
-      <div className="mt-8 h-[320px] w-full md:h-[400px]">
-        <ResponsiveContainer {...getChartContainerProps("100%", "100%")}>
-          <BarChart
-            data={chartData}
-            margin={getResponsiveChartMargin(isMobile)}
-            barGap={2}
-            barCategoryGap="12%"
-            barSize={28}
-          >
-            <CartesianGrid
-              stroke="var(--black-1)"
-              strokeDasharray="3 3"
-              vertical={false}
-            />
-            <XAxis
-              dataKey="year"
-              stroke="var(--grey)"
-              tickLine={false}
-              axisLine={false}
-              tick={{ fill: "var(--grey)", fontSize: 12 }}
-            />
-            <YAxis {...getYAxisProps(currentLanguage)} />
-            <Tooltip
-              cursor={{ fill: "var(--black-1)", opacity: 0.35 }}
-              content={({ active, payload, label }) => {
-                if (!active || !payload?.length) return null;
-                return (
-                  <div className="rounded-md border border-black-1 bg-black-2 px-3 py-2 text-sm shadow-md">
-                    <p className="mb-1 font-medium text-white">{label}</p>
-                    {payload.map((entry) => {
-                      const v = entry.value as number | null;
-                      if (v == null) return null;
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:items-start md:gap-8 lg:gap-10">
+        <div className="flex min-w-0 flex-col gap-4">
+          <CardHeader
+            title={t("nation.detailPage.territorialBiogenic.title")}
+            description={t("nation.detailPage.territorialBiogenic.description")}
+            unit={t("detailPage.inTons")}
+            className="[&>div]:!mb-0"
+          />
+          {!showBiogenic ? (
+            <p className="text-sm text-grey">
+              {t("nation.detailPage.territorialBiogenic.biogenicUnavailable")}
+            </p>
+          ) : null}
+        </div>
+        <div className="min-h-0 min-w-0 w-full">
+          <ChartWrapper>
+            <div className="h-[280px] w-full md:h-[340px]">
+              <ResponsiveContainer {...getChartContainerProps("100%", "100%")}>
+                <BarChart
+                  data={chartData}
+                  margin={getResponsiveChartMargin(isMobile)}
+                  barGap={2}
+                  barCategoryGap="12%"
+                  barSize={28}
+                >
+                  <CartesianGrid
+                    stroke="var(--black-1)"
+                    strokeDasharray="3 3"
+                    vertical={false}
+                  />
+                  <XAxis
+                    dataKey="year"
+                    stroke="var(--grey)"
+                    tickLine={false}
+                    axisLine={false}
+                    tick={{ fill: "var(--grey)", fontSize: 12 }}
+                  />
+                  <YAxis {...getYAxisProps(currentLanguage)} />
+                  <Tooltip
+                    cursor={{ fill: "var(--black-1)", opacity: 0.35 }}
+                    content={({ active, payload, label }) => {
+                      if (!active || !payload?.length) return null;
                       return (
-                        <p
-                          key={String(entry.dataKey)}
-                          className="text-sm"
-                          style={{ color: entry.color }}
-                        >
-                          {entry.name}:{" "}
-                          {formatEmissionsAbsolute(v, currentLanguage)}{" "}
-                          {t("emissionsUnit")}
-                        </p>
+                        <div className="rounded-md border border-black-1 bg-black-2 px-3 py-2 text-sm shadow-md">
+                          <p className="mb-1 font-medium text-white">{label}</p>
+                          {payload.map((entry) => {
+                            const v = entry.value as number | null;
+                            if (v == null) return null;
+                            return (
+                              <p
+                                key={String(entry.dataKey)}
+                                className="text-sm"
+                                style={{ color: entry.color }}
+                              >
+                                {entry.name}:{" "}
+                                {formatEmissionsAbsolute(v, currentLanguage)}{" "}
+                                {t("emissionsUnit")}
+                              </p>
+                            );
+                          })}
+                        </div>
                       );
-                    })}
-                  </div>
-                );
-              }}
-            />
-            <Legend
-              wrapperStyle={{ paddingTop: 16 }}
-              formatter={(value) => (
-                <span className="text-grey text-sm">{value}</span>
-              )}
-            />
-            <Bar
-              dataKey="territorial"
-              name={t("nation.detailPage.territorialBiogenic.territorial")}
-              fill={CHART_COLORS.primary}
-              stroke="var(--grey)"
-              strokeWidth={1}
-              radius={[4, 4, 0, 0]}
-            />
-            {showBiogenic ? (
-              <Bar
-                dataKey="biogenic"
-                name={t("nation.detailPage.territorialBiogenic.biogenic")}
-                fill="var(--orange-2)"
-                radius={[4, 4, 0, 0]}
-              />
-            ) : null}
-            {showTotal ? (
-              <Bar
-                dataKey="total"
-                name={t("nation.detailPage.territorialBiogenic.total")}
-                fill={CHART_COLORS.paris}
-                stroke="var(--grey)"
-                strokeWidth={1}
-                radius={[4, 4, 0, 0]}
-              />
-            ) : null}
-          </BarChart>
-        </ResponsiveContainer>
+                    }}
+                  />
+                  <Bar
+                    dataKey="territorial"
+                    name={t("nation.detailPage.territorialBiogenic.territorial")}
+                    fill={CHART_COLORS.primary}
+                    stroke="var(--grey)"
+                    strokeWidth={1}
+                    radius={[4, 4, 0, 0]}
+                  />
+                  {showBiogenic ? (
+                    <Bar
+                      dataKey="biogenic"
+                      name={t("nation.detailPage.territorialBiogenic.biogenic")}
+                      fill="var(--orange-2)"
+                      radius={[4, 4, 0, 0]}
+                    />
+                  ) : null}
+                  {showTotal ? (
+                    <Bar
+                      dataKey="total"
+                      name={t("nation.detailPage.territorialBiogenic.total")}
+                      fill={CHART_COLORS.paris}
+                      stroke="var(--grey)"
+                      strokeWidth={1}
+                      radius={[4, 4, 0, 0]}
+                    />
+                  ) : null}
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+            <ChartFooter>
+              <EnhancedLegend items={legendItems} />
+            </ChartFooter>
+          </ChartWrapper>
+        </div>
       </div>
-      {!showBiogenic ? (
-        <p className="mt-4 text-sm text-grey">
-          {t("nation.detailPage.territorialBiogenic.biogenicUnavailable")}
-        </p>
-      ) : null}
     </SectionWithHelp>
   );
 };
