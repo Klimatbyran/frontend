@@ -1418,8 +1418,7 @@
         "biogenic": "Biogenic",
         "total": "Total (fossil + biogenic)",
         "totalEmissionsComparisonTitle": "Total emissions",
-        "totalEmissionsComparisonSubline": "Sum of territorial (fossil) and biogenic CO₂e.",
-        "biogenicUnavailable": "Biogenic emissions are not available for this dataset yet; the chart shows territorial (fossil) emissions only."
+        "totalEmissionsComparisonSubline": "Sum of territorial (fossil) and biogenic CO₂e."
       }
     }
   },
