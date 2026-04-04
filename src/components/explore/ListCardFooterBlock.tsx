@@ -32,7 +32,7 @@ export function ListCardFooterBlock({
   const row2Value = isMunicipality ? climatePlanAdoptedText : categoryName;
 
   return (
-    <div className="grid grid-cols-1 gap-2 lg:grid-cols-2 lg:gap-4 mt-6">
+    <div className="grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-4 mt-6">
       <div>
         <div className="flex flex-col gap-2 text-nowrap text-grey text-lg">
           {row1Label}
