@@ -31,7 +31,7 @@ export function useListCardHeader({
     ) : (
       <CompanyLogo
         src={logoUrl}
-        className="shrink-0 rounded-xl max-w-[90px] max-h-[90px] object-contain inline-block"
+        className="shrink-0 rounded-xl size-[90px] object-contain"
       />
     )
   ) : null;
