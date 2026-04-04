@@ -33,25 +33,29 @@ export function ListCardHeader({
         );
 
   return (
-    <div className="flex justify-between gap-1">
-      <div className="flex flex-col">
-        <h2 className="text-3xl font-light">{name}</h2>
-        <p className="text-grey text-sm line-clamp-2 min-h-[40px]">
-          {description}
-        </p>
-        <div className="flex items-center gap-2 text-grey text-lg ">
+    <div className="w-full">
+      <div className="flex justify-between gap-1 items-start">
+        <div className="min-w-0 flex-1">
+          <h2 className="text-3xl font-light">{name}</h2>
+          <p className="text-grey text-sm line-clamp-2 min-h-[40px]">
+            {description}
+          </p>
+        </div>
+        {logo}
+      </div>
+      <div className="w-full">
+        <div className="flex items-center gap-2 text-grey text-lg">
           {t(meetsParisTranslationKey)}
         </div>
         <div
           className={cn(
-            "text-xl font-light border-b border-black-1 pb-6",
+            "w-full text-xl font-light border-b border-black-1 pb-6",
             meetsParis === true ? "text-green-3" : "text-pink-3",
           )}
         >
           {meetsParisAnswer}
         </div>
       </div>
-      {logo}
     </div>
   );
 }

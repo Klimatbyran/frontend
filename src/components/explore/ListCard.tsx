@@ -86,17 +86,15 @@ export function ListCard({
     largestEmission,
   });
 
-  const linkHeightClass = isRegion
-    ? "h-[320px] sm:h-[340px] md:h-[400px] lg:h-[380px] xl:h-[400px]"
-    : "h-[470px] sm:h-[490px] md:h-[560px] lg:h-[540px] xl:h-[520px]";
+  const linkMinHeightClass = isRegion ? "min-h-[300px]" : "min-h-[410px]";
 
   return (
     <div className="relative rounded-level-2">
       <LocalizedLink
         to={linkTo}
         className={cn(
-          "flex flex-col overflow-hidden bg-black-2 rounded-level-2 p-8 md:space-y-4 transition-all duration-300 hover:shadow-[0_0_10px_rgba(153,207,255,0.15)] hover:bg-[#1a1a1a]",
-          linkHeightClass,
+          "block bg-black-2 rounded-level-2 p-8 md:space-y-4 transition-all duration-300 hover:shadow-[0_0_10px_rgba(153,207,255,0.15)] hover:bg-[#1a1a1a]",
+          linkMinHeightClass,
         )}
       >
         <div>
