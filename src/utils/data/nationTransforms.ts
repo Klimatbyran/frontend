@@ -76,7 +76,9 @@ export function transformNationEmissionsData(nation: {
         ]
           ? nation.exportOfOilProductsEmissions[year] / 1000
           : undefined,
-        approximatedFossil: nation.approximatedTerritorialFossilEmissions?.[year]
+        approximatedFossil: nation.approximatedTerritorialFossilEmissions?.[
+          year
+        ]
           ? nation.approximatedTerritorialFossilEmissions[year] / 1000
           : undefined,
         approximatedBiogenicEmissions: nation.approximatedBiogenicEmissions?.[

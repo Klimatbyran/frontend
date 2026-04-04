@@ -244,9 +244,7 @@ function buildLegendItems(
       ...(approxFlags.hasApproxConsumption
         ? [
             {
-              name: t(
-                "detailPage.graph.estimatedConsumptionAbroadEmissions",
-              ),
+              name: t("detailPage.graph.estimatedConsumptionAbroadEmissions"),
               color: LEGEND_CONFIGS.consumption.color,
               isClickable: false,
               isHidden: false,
