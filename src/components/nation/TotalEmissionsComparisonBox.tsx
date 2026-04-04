@@ -21,7 +21,9 @@ export const TotalEmissionsComparisonBox: FC<
   <div className="space-y-6">
     <div>
       <Text className="text-lg md:text-xl">
-        {t("nation.detailPage.territorialBiogenic.totalEmissionsComparisonTitle")}
+        {t(
+          "nation.detailPage.territorialBiogenic.totalEmissionsComparisonTitle",
+        )}
       </Text>
       <Text className="mt-1 text-sm text-grey md:text-base">
         {t(

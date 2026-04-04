@@ -38,8 +38,8 @@ export const NationalTerritorialBiogenicChart: FC<
   }
 
   return (
-    <SectionWithHelp helpItems={[]}>
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:items-start md:gap-8 lg:gap-10">
+    <SectionWithHelp helpItems={["biogenicEmissions"]}>
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:items-start lg:gap-10">
         <div className="flex min-w-0 flex-col gap-4">
           <CardHeader
             title={t("nation.detailPage.territorialBiogenic.title")}
@@ -52,16 +52,12 @@ export const NationalTerritorialBiogenicChart: FC<
             currentLanguage={currentLanguage}
             t={t}
           />
-          {!model.showBiogenic ? (
-            <p className="text-sm text-grey">
-              {t("nation.detailPage.territorialBiogenic.biogenicUnavailable")}
-            </p>
-          ) : null}
+          <p className="text-sm text-grey">
+            {t("nation.detailPage.territorialBiogenic.biogenicUnavailable")}
+          </p>
         </div>
         <NationalTerritorialBarChartPanel
           chartData={model.chartData}
-          showBiogenic={model.showBiogenic}
-          showTotal={model.showTotal}
           legendItems={legendItems}
           isMobile={isMobile}
           currentLanguage={currentLanguage}

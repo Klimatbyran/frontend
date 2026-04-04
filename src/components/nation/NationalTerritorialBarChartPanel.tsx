@@ -65,8 +65,6 @@ const TerritorialBiogenicBarChartTooltip: FC<
 
 type NationalTerritorialBarChartPanelProps = {
   chartData: ChartRow[];
-  showBiogenic: boolean;
-  showTotal: boolean;
   legendItems: LegendItem[];
   isMobile: boolean;
   currentLanguage: SupportedLanguage;
@@ -75,14 +73,7 @@ type NationalTerritorialBarChartPanelProps = {
 
 export const NationalTerritorialBarChartPanel: FC<
   NationalTerritorialBarChartPanelProps
-> = ({
-  chartData,
-  showBiogenic,
-  legendItems,
-  isMobile,
-  currentLanguage,
-  t,
-}) => (
+> = ({ chartData, legendItems, isMobile, currentLanguage, t }) => (
   <div className="min-h-0 min-w-0 w-full">
     <ChartWrapper>
       <div className="h-[280px] w-full md:h-[340px]">
@@ -127,14 +118,12 @@ export const NationalTerritorialBarChartPanel: FC<
               strokeWidth={1}
               radius={[4, 4, 0, 0]}
             />
-            {showBiogenic ? (
-              <Bar
-                dataKey="biogenic"
-                name={t("nation.detailPage.territorialBiogenic.biogenic")}
-                fill="var(--orange-2)"
-                radius={[4, 4, 0, 0]}
-              />
-            ) : null}
+            <Bar
+              dataKey="biogenic"
+              name={t("nation.detailPage.territorialBiogenic.biogenic")}
+              fill="var(--orange-2)"
+              radius={[4, 4, 0, 0]}
+            />
             <Bar
               dataKey="total"
               name={t("nation.detailPage.territorialBiogenic.total")}
