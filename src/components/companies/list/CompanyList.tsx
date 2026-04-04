@@ -16,7 +16,7 @@ export function CompanyList({ companies }: CompanyListProps) {
   const { t } = useTranslation();
 
   const companyFilters = useCompanyFilters(companies);
-  const filteredCompanies = companyFilters.filteredCompanies;
+  const { filteredCompanies } = companyFilters;
   const sortOptions = useSortOptions();
 
   // Transform company data for ListCard components
