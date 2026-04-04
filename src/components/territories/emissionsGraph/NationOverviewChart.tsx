@@ -96,12 +96,82 @@ function StackedAreas({
   );
 }
 
+interface ApproximatedStackedAreasProps {
+  hasApproxBiogenic: boolean;
+  hasApproxConsumption: boolean;
+  hasApproxOilExport: boolean;
+  t: (key: string) => string;
+}
+
+/** Estimated emissions by category (API approximated* fields), same stack order as historical. */
+function ApproximatedStackedAreas({
+  hasApproxBiogenic,
+  hasApproxConsumption,
+  hasApproxOilExport,
+  t,
+}: ApproximatedStackedAreasProps) {
+  const areaProps = {
+    type: "monotone" as const,
+    stackId: "approximated",
+    strokeWidth: 2,
+    strokeDasharray: "4 4" as const,
+    dot: false as const,
+    activeDot: { r: 5 },
+    connectNulls: false,
+    fillOpacity: 0.05,
+  };
+  return (
+    <>
+      <Area
+        {...areaProps}
+        dataKey="approximatedFossil"
+        name={t("detailPage.graph.estimatedFossilEmissions")}
+        stroke={LEGEND_CONFIGS.fossilEmissions.color}
+        fill={LEGEND_CONFIGS.fossilEmissions.color}
+      />
+      {hasApproxBiogenic && (
+        <Area
+          {...areaProps}
+          dataKey="approximatedBiogenicEmissions"
+          name={t("detailPage.graph.estimatedBiogenicEmissions")}
+          stroke={LEGEND_CONFIGS.biogenic.color}
+          fill={LEGEND_CONFIGS.biogenic.color}
+        />
+      )}
+      {hasApproxOilExport && (
+        <Area
+          {...areaProps}
+          dataKey="approximatedExportOfOilProductsEmissions"
+          name={t("detailPage.graph.estimatedExportOfOilProductsEmissions")}
+          stroke={LEGEND_CONFIGS.oilExport.color}
+          fill={LEGEND_CONFIGS.oilExport.color}
+        />
+      )}
+      {hasApproxConsumption && (
+        <Area
+          {...areaProps}
+          dataKey="approximatedConsumptionAbroadEmissions"
+          name={t("detailPage.graph.estimatedConsumptionAbroadEmissions")}
+          stroke={LEGEND_CONFIGS.consumption.color}
+          fill={LEGEND_CONFIGS.consumption.color}
+        />
+      )}
+    </>
+  );
+}
+
 function buildLegendItems(
   t: (key: string) => string,
   flags: {
     hasBiogenic: boolean;
     hasConsumption: boolean;
     hasOilExport: boolean;
+  },
+  approxFlags: {
+    hasApproximatedStack: boolean;
+    hasApproxBiogenic: boolean;
+    hasApproxConsumption: boolean;
+    hasApproxOilExport: boolean;
   },
 ): LegendItem[] {
   const items: LegendItem[] = [
@@ -140,14 +210,61 @@ function buildLegendItems(
       isDashed: false,
     });
   }
-  items.push(
-    {
+  if (approxFlags.hasApproximatedStack) {
+    items.push(
+      {
+        name: t("detailPage.graph.estimatedFossilEmissions"),
+        color: LEGEND_CONFIGS.fossilEmissions.color,
+        isClickable: false,
+        isHidden: false,
+        isDashed: true,
+      },
+      ...(approxFlags.hasApproxBiogenic
+        ? [
+            {
+              name: t("detailPage.graph.estimatedBiogenicEmissions"),
+              color: LEGEND_CONFIGS.biogenic.color,
+              isClickable: false,
+              isHidden: false,
+              isDashed: true,
+            } satisfies LegendItem,
+          ]
+        : []),
+      ...(approxFlags.hasApproxOilExport
+        ? [
+            {
+              name: t("detailPage.graph.estimatedExportOfOilProductsEmissions"),
+              color: LEGEND_CONFIGS.oilExport.color,
+              isClickable: false,
+              isHidden: false,
+              isDashed: true,
+            } satisfies LegendItem,
+          ]
+        : []),
+      ...(approxFlags.hasApproxConsumption
+        ? [
+            {
+              name: t(
+                "detailPage.graph.estimatedConsumptionAbroadEmissions",
+              ),
+              color: LEGEND_CONFIGS.consumption.color,
+              isClickable: false,
+              isHidden: false,
+              isDashed: true,
+            } satisfies LegendItem,
+          ]
+        : []),
+    );
+  } else {
+    items.push({
       name: t("detailPage.graph.estimated"),
       color: LEGEND_CONFIGS.estimated.color,
       isClickable: false,
       isHidden: false,
       isDashed: true,
-    },
+    });
+  }
+  items.push(
     {
       name: t("detailPage.graph.trend"),
       color: LEGEND_CONFIGS.trend.color,
@@ -190,9 +307,40 @@ export const NationOverviewChart: FC<NationOverviewChartProps> = ({
     ),
   };
 
+  const approxStackFlags = {
+    hasApproxFossil: projectedData.some(
+      (d) => d.approximatedFossil !== undefined,
+    ),
+    hasApproxBiogenic: projectedData.some(
+      (d) => d.approximatedBiogenicEmissions !== undefined,
+    ),
+    hasApproxConsumption: projectedData.some(
+      (d) => d.approximatedConsumptionAbroadEmissions !== undefined,
+    ),
+    hasApproxOilExport: projectedData.some(
+      (d) => d.approximatedExportOfOilProductsEmissions !== undefined,
+    ),
+  };
+  const hasApproximatedStack = approxStackFlags.hasApproxFossil;
+
   const legendItems = useMemo(
-    () => buildLegendItems(t, flags),
-    [t, flags.hasBiogenic, flags.hasConsumption, flags.hasOilExport],
+    () =>
+      buildLegendItems(t, flags, {
+        hasApproximatedStack,
+        hasApproxBiogenic: approxStackFlags.hasApproxBiogenic,
+        hasApproxConsumption: approxStackFlags.hasApproxConsumption,
+        hasApproxOilExport: approxStackFlags.hasApproxOilExport,
+      }),
+    [
+      t,
+      flags.hasBiogenic,
+      flags.hasConsumption,
+      flags.hasOilExport,
+      hasApproximatedStack,
+      approxStackFlags.hasApproxBiogenic,
+      approxStackFlags.hasApproxConsumption,
+      approxStackFlags.hasApproxOilExport,
+    ],
   );
 
   const filteredData = useMemo(
@@ -231,15 +379,24 @@ export const NationOverviewChart: FC<NationOverviewChartProps> = ({
 
             <StackedAreas {...flags} t={t} />
 
-            <Line
-              type="monotone"
-              dataKey="approximated"
-              {...getConsistentLineProps(
-                "estimated",
-                false,
-                t("detailPage.graph.estimated"),
-              )}
-            />
+            {hasApproximatedStack ? (
+              <ApproximatedStackedAreas
+                hasApproxBiogenic={approxStackFlags.hasApproxBiogenic}
+                hasApproxConsumption={approxStackFlags.hasApproxConsumption}
+                hasApproxOilExport={approxStackFlags.hasApproxOilExport}
+                t={t}
+              />
+            ) : (
+              <Line
+                type="monotone"
+                dataKey="approximated"
+                {...getConsistentLineProps(
+                  "estimated",
+                  false,
+                  t("detailPage.graph.estimated"),
+                )}
+              />
+            )}
             <Line
               type="monotone"
               dataKey="trend"

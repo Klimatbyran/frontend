@@ -54,4 +54,9 @@ export type DataPoint = {
   biogenicEmissions?: number | undefined;
   consumptionAbroadEmissions?: number | undefined;
   exportOfOilProductsEmissions?: number | undefined;
+  /** Nation chart: estimated territorial fossil, from API approximatedTerritorialFossilEmissions */
+  approximatedFossil?: number | undefined;
+  approximatedBiogenicEmissions?: number | undefined;
+  approximatedConsumptionAbroadEmissions?: number | undefined;
+  approximatedExportOfOilProductsEmissions?: number | undefined;
 };

@@ -24,6 +24,10 @@ export type NationDetails = {
   biogenicEmissions: Record<string, number>;
   consumptionAbroadEmissions: Record<string, number>;
   exportOfOilProductsEmissions: Record<string, number>;
+  approximatedTerritorialFossilEmissions: Record<string, number>;
+  approximatedBiogenicEmissions: Record<string, number>;
+  approximatedConsumptionAbroadEmissions: Record<string, number>;
+  approximatedExportOfOilProductsEmissions: Record<string, number>;
   meetsParis: boolean;
   historicalEmissionChangePercent: number;
 };
@@ -43,6 +47,18 @@ type ApiNationResponse = {
     | ({ year: string; value: number } | null)[]
     | null;
   exportOfOilProductsEmissions?:
+    | ({ year: string; value: number } | null)[]
+    | null;
+  approximatedTerritorialFossilEmissions?:
+    | ({ year: string; value: number } | null)[]
+    | null;
+  approximatedBiogenicEmissions?:
+    | ({ year: string; value: number } | null)[]
+    | null;
+  approximatedConsumptionAbroadEmissions?:
+    | ({ year: string; value: number } | null)[]
+    | null;
+  approximatedExportOfOilProductsEmissions?:
     | ({ year: string; value: number } | null)[]
     | null;
 };
@@ -122,6 +138,18 @@ function transformApiNationToNationDetails(
     ),
     exportOfOilProductsEmissions: extractEmissionsRecord(
       r.exportOfOilProductsEmissions ?? [],
+    ),
+    approximatedTerritorialFossilEmissions: extractEmissionsRecord(
+      r.approximatedTerritorialFossilEmissions ?? [],
+    ),
+    approximatedBiogenicEmissions: extractEmissionsRecord(
+      r.approximatedBiogenicEmissions ?? [],
+    ),
+    approximatedConsumptionAbroadEmissions: extractEmissionsRecord(
+      r.approximatedConsumptionAbroadEmissions ?? [],
+    ),
+    approximatedExportOfOilProductsEmissions: extractEmissionsRecord(
+      r.approximatedExportOfOilProductsEmissions ?? [],
     ),
     meetsParis: r.meetsParis ?? false,
     historicalEmissionChangePercent: r.historicalEmissionChangePercent ?? 0,

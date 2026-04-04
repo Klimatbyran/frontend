@@ -1015,6 +1015,10 @@
       "biogenicEmissions": "Biogenic Emissions",
       "consumptionAbroadEmissions": "Consumption Emissions Abroad",
       "exportOfOilProductsEmissions": "Oil Export Emissions",
+      "estimatedFossilEmissions": "Estimated fossil emissions",
+      "estimatedBiogenicEmissions": "Estimated biogenic emissions",
+      "estimatedConsumptionAbroadEmissions": "Estimated consumption emissions abroad",
+      "estimatedExportOfOilProductsEmissions": "Estimated oil export emissions",
       "noData": "No data available"
     }
   },

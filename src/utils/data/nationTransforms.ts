@@ -11,6 +11,10 @@ export function transformNationEmissionsData(nation: {
   biogenicEmissions?: Record<string, number>;
   consumptionAbroadEmissions?: Record<string, number>;
   exportOfOilProductsEmissions?: Record<string, number>;
+  approximatedTerritorialFossilEmissions?: Record<string, number>;
+  approximatedBiogenicEmissions?: Record<string, number>;
+  approximatedConsumptionAbroadEmissions?: Record<string, number>;
+  approximatedExportOfOilProductsEmissions?: Record<string, number>;
 }): DataPoint[] {
   if (!nation || !nation.territorialFossilEmissions) return [];
 
@@ -31,6 +35,18 @@ export function transformNationEmissionsData(nation: {
   );
   Object.keys(nation.exportOfOilProductsEmissions || {}).forEach((year) =>
     years.add(year),
+  );
+  Object.keys(nation.approximatedTerritorialFossilEmissions || {}).forEach(
+    (year) => years.add(year),
+  );
+  Object.keys(nation.approximatedBiogenicEmissions || {}).forEach((year) =>
+    years.add(year),
+  );
+  Object.keys(nation.approximatedConsumptionAbroadEmissions || {}).forEach(
+    (year) => years.add(year),
+  );
+  Object.keys(nation.approximatedExportOfOilProductsEmissions || {}).forEach(
+    (year) => years.add(year),
   );
 
   return Array.from(years)
@@ -59,6 +75,22 @@ export function transformNationEmissionsData(nation: {
           year
         ]
           ? nation.exportOfOilProductsEmissions[year] / 1000
+          : undefined,
+        approximatedFossil: nation.approximatedTerritorialFossilEmissions?.[year]
+          ? nation.approximatedTerritorialFossilEmissions[year] / 1000
+          : undefined,
+        approximatedBiogenicEmissions: nation.approximatedBiogenicEmissions?.[
+          year
+        ]
+          ? nation.approximatedBiogenicEmissions[year] / 1000
+          : undefined,
+        approximatedConsumptionAbroadEmissions: nation
+          .approximatedConsumptionAbroadEmissions?.[year]
+          ? nation.approximatedConsumptionAbroadEmissions[year] / 1000
+          : undefined,
+        approximatedExportOfOilProductsEmissions: nation
+          .approximatedExportOfOilProductsEmissions?.[year]
+          ? nation.approximatedExportOfOilProductsEmissions[year] / 1000
           : undefined,
       } as DataPoint;
     })

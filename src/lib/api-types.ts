@@ -2833,6 +2833,22 @@ export interface paths {
                             } | null)[];
                             historicalEmissionChangePercent: number;
                             meetsParis: boolean;
+                            approximatedTerritorialFossilEmissions: ({
+                                year: string;
+                                value: number;
+                            } | null)[];
+                            approximatedBiogenicEmissions: ({
+                                year: string;
+                                value: number;
+                            } | null)[];
+                            approximatedConsumptionAbroadEmissions: ({
+                                year: string;
+                                value: number;
+                            } | null)[];
+                            approximatedExportOfOilProductsEmissions: ({
+                                year: string;
+                                value: number;
+                            } | null)[];
                         };
                     };
                 };

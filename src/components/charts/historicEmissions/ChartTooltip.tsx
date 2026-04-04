@@ -7,6 +7,14 @@ import { cn } from "@/lib/utils";
 import { AiIcon } from "@/components/ui/ai-icon";
 import type { Scope3Category } from "@/types/company";
 
+/** Nation overview: stacked estimated series by category */
+const APPROXIMATED_STACK_DATA_KEYS = new Set([
+  "approximatedFossil",
+  "approximatedBiogenicEmissions",
+  "approximatedExportOfOilProductsEmissions",
+  "approximatedConsumptionAbroadEmissions",
+]);
+
 interface PayloadEntry {
   dataKey?: string;
   value?: number | null;
@@ -86,8 +94,14 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
 
   // First, filter out zero, undefined, or null values, but keep trend and Paris data
   filteredPayload = payload.filter((entry) => {
-    // Keep trend and Paris data even if zero
-    if (entry.dataKey === "approximated" || entry.dataKey === "carbonLaw") {
+    const dk = entry.dataKey;
+    // Keep trend and Paris data even if zero; same for total approximated / stacked approximated
+    if (
+      dk === "approximated" ||
+      dk === "carbonLaw" ||
+      dk === "trend" ||
+      (dk != null && APPROXIMATED_STACK_DATA_KEYS.has(dk))
+    ) {
       return entry.value != null;
     }
 
@@ -123,17 +137,31 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
 
     if (hasActual) {
       filteredPayload = filteredPayload.filter(
-        (entry) => entry.dataKey !== "approximated",
+        (entry) =>
+          entry.dataKey !== "approximated" &&
+          !(
+            entry.dataKey != null &&
+            APPROXIMATED_STACK_DATA_KEYS.has(entry.dataKey)
+          ),
       );
     }
 
     const isApproximated = filteredPayload.some(
-      (entry) => entry.dataKey === "approximated" && entry.value != null,
+      (entry) =>
+        (entry.dataKey === "approximated" ||
+          (entry.dataKey != null &&
+            APPROXIMATED_STACK_DATA_KEYS.has(entry.dataKey))) &&
+        entry.value != null,
     );
 
     if (isApproximated) {
       filteredPayload = filteredPayload.filter(
-        (entry) => entry.dataKey === "approximated",
+        (entry) =>
+          entry.dataKey === "approximated" ||
+          (entry.dataKey != null &&
+            APPROXIMATED_STACK_DATA_KEYS.has(entry.dataKey)) ||
+          entry.dataKey === "trend" ||
+          entry.dataKey === "carbonLaw",
       );
     }
   }
@@ -242,7 +270,9 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
       {trendData &&
         payload?.some(
           (entry) =>
-            entry.dataKey === "approximated" &&
+            (entry.dataKey === "approximated" ||
+              (entry.dataKey != null &&
+                APPROXIMATED_STACK_DATA_KEYS.has(entry.dataKey))) &&
             entry.value != null &&
             entry.value > 0,
         ) && (
