@@ -9,14 +9,13 @@ import {
 
 type TotalEmissionsComparisonBoxProps = {
   comparisonTotals: NationTerritorialChartModel["comparisonTotals"];
-  showTotal: boolean;
   currentLanguage: SupportedLanguage;
   t: TFunction;
 };
 
 export const TotalEmissionsComparisonBox: FC<
   TotalEmissionsComparisonBoxProps
-> = ({ comparisonTotals, showTotal, currentLanguage, t }) => (
+> = ({ comparisonTotals, currentLanguage, t }) => (
   <div className="rounded-level-2  bg-black-1/40 px-4 py-5 md:px-6 md:py-6">
     <p className="mb-2 text-xs font-medium uppercase tracking-wide text-grey">
       {t("nation.detailPage.territorialBiogenic.totalEmissionsComparisonTitle")}

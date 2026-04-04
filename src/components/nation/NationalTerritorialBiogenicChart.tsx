@@ -49,7 +49,6 @@ export const NationalTerritorialBiogenicChart: FC<
           />
           <TotalEmissionsComparisonBox
             comparisonTotals={model.comparisonTotals}
-            showTotal={model.showTotal}
             currentLanguage={currentLanguage}
             t={t}
           />

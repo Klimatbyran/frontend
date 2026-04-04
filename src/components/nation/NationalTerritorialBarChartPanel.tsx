@@ -33,7 +33,7 @@ type TooltipPayloadEntry = {
 type TerritorialBiogenicBarChartTooltipProps = {
   active?: boolean;
   payload?: TooltipPayloadEntry[];
-  label?: string;
+  label: string;
   currentLanguage: SupportedLanguage;
   t: TFunction;
 };
@@ -78,7 +78,6 @@ export const NationalTerritorialBarChartPanel: FC<
 > = ({
   chartData,
   showBiogenic,
-  showTotal,
   legendItems,
   isMobile,
   currentLanguage,
@@ -136,16 +135,14 @@ export const NationalTerritorialBarChartPanel: FC<
                 radius={[4, 4, 0, 0]}
               />
             ) : null}
-            {showTotal ? (
-              <Bar
-                dataKey="total"
-                name={t("nation.detailPage.territorialBiogenic.total")}
-                fill={CHART_COLORS.paris}
-                stroke="var(--grey)"
-                strokeWidth={1}
-                radius={[4, 4, 0, 0]}
-              />
-            ) : null}
+            <Bar
+              dataKey="total"
+              name={t("nation.detailPage.territorialBiogenic.total")}
+              fill={CHART_COLORS.paris}
+              stroke="var(--grey)"
+              strokeWidth={1}
+              radius={[4, 4, 0, 0]}
+            />
           </BarChart>
         </ResponsiveContainer>
       </div>
