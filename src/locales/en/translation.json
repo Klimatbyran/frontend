@@ -1413,9 +1413,10 @@
       "regions": "Regions",
       "territorialBiogenic": {
         "title": "Territorial (fossil) and biogenic emissions",
-        "description": "National emissions in 1990 compared to 2024. Territorial fossil emissions occur within the country’s borders (excluding biogenic CO₂); biogenic emissions are shown separately when available.",
+        "description": "National emissions in 1990 compared to 2024. Territorial fossil emissions occur within the country’s borders (excluding biogenic CO₂); biogenic emissions are shown separately when available. Total is fossil plus biogenic for each year.",
         "territorial": "Territorial (fossil)",
         "biogenic": "Biogenic",
+        "total": "Total (fossil + biogenic)",
         "biogenicUnavailable": "Biogenic emissions are not available for this dataset yet; the chart shows territorial (fossil) emissions only."
       }
     }

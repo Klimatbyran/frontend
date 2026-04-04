@@ -49,23 +49,40 @@ export const NationalTerritorialBiogenicChart: FC<
   const { currentLanguage } = useLanguage();
   const { isMobile } = useScreenSize();
 
-  const { chartData, showBiogenic } = useMemo(() => {
+  const { chartData, showBiogenic, showTotal } = useMemo(() => {
     const territorial = nation.territorialFossilEmissions;
     const biogenic = nation.biogenicEmissions;
+
+    const hasBiogenicForAnyComparedYear =
+      !!biogenic &&
+      COMPARISON_YEARS.some((year) => pickYear(biogenic, year) !== undefined);
 
     const rows = COMPARISON_YEARS.map((year) => {
       const terrKg = pickYear(territorial, year);
       const bioKg = biogenic ? pickYear(biogenic, year) : undefined;
+      const terrTons = kgToTons(terrKg);
+      const bioTons = bioKg !== undefined ? kgToTons(bioKg) : null;
+      const hasPoint = terrTons !== null || bioTons !== null;
+      const totalTons =
+        hasBiogenicForAnyComparedYear && hasPoint
+          ? (terrTons ?? 0) + (bioTons ?? 0)
+          : null;
+
       return {
         year: String(year),
-        territorial: kgToTons(terrKg),
-        biogenic: bioKg !== undefined ? kgToTons(bioKg) : null,
+        territorial: terrTons,
+        biogenic: bioTons,
+        total: totalTons,
       };
     }).filter((row) => row.territorial !== null || row.biogenic !== null);
 
     const hasBiogenic = rows.some((row) => row.biogenic !== null);
 
-    return { chartData: rows, showBiogenic: hasBiogenic };
+    return {
+      chartData: rows,
+      showBiogenic: hasBiogenic,
+      showTotal: hasBiogenicForAnyComparedYear,
+    };
   }, [nation.territorialFossilEmissions, nation.biogenicEmissions]);
 
   if (chartData.length === 0) {
@@ -86,7 +103,7 @@ export const NationalTerritorialBiogenicChart: FC<
             margin={getResponsiveChartMargin(isMobile)}
             barGap={2}
             barCategoryGap="12%"
-            barSize={40}
+            barSize={28}
           >
             <CartesianGrid
               stroke="var(--black-1)"
@@ -146,6 +163,16 @@ export const NationalTerritorialBiogenicChart: FC<
                 dataKey="biogenic"
                 name={t("nation.detailPage.territorialBiogenic.biogenic")}
                 fill="var(--orange-2)"
+                radius={[4, 4, 0, 0]}
+              />
+            ) : null}
+            {showTotal ? (
+              <Bar
+                dataKey="total"
+                name={t("nation.detailPage.territorialBiogenic.total")}
+                fill={CHART_COLORS.paris}
+                stroke="var(--grey)"
+                strokeWidth={1}
                 radius={[4, 4, 0, 0]}
               />
             ) : null}
