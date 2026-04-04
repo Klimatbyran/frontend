@@ -20,18 +20,14 @@ export function ListCardHeader({
   isMunicipality,
   isRegion,
 }: ListCardHeaderProps) {
-  const {
-    meetsParisAnswer,
-    meetsParisTitle,
-    logo,
-    meetsParisIsYes,
-  } = useListCardHeader({
-    meetsParis,
-    meetsParisTranslationKey,
-    logoUrl,
-    isMunicipality,
-    isRegion,
-  });
+  const { meetsParisAnswer, meetsParisTitle, logo, meetsParisIsYes } =
+    useListCardHeader({
+      meetsParis,
+      meetsParisTranslationKey,
+      logoUrl,
+      isMunicipality,
+      isRegion,
+    });
 
   return (
     <div className="w-full">

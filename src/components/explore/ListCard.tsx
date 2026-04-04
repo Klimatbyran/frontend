@@ -77,6 +77,7 @@ export function ListCard({
     isRegion,
     climatePlanAdoptedText,
     climatePlanStatusColor,
+    climatePlanStatusLabel,
     climatePlanAdoptedColor,
     categoryName,
   } = useListCardMeta({
@@ -123,9 +124,9 @@ export function ListCard({
           {!isRegion && (
             <ListCardFooterBlock
               isMunicipality={isMunicipality}
-              climatePlanHasPlan={climatePlanHasPlan}
               climatePlanAdoptedText={climatePlanAdoptedText}
               climatePlanStatusColor={climatePlanStatusColor}
+              climatePlanStatusLabel={climatePlanStatusLabel}
               climatePlanAdoptedColor={climatePlanAdoptedColor}
               categoryName={categoryName}
               baseYear={baseYear}

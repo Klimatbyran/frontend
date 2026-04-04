@@ -1,20 +1,19 @@
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
-import { climatePlanStatusCopy } from "./listCardHelpers";
 
 export function ListCardFooterBlock({
   isMunicipality,
-  climatePlanHasPlan,
   climatePlanAdoptedText,
   climatePlanStatusColor,
+  climatePlanStatusLabel,
   climatePlanAdoptedColor,
   categoryName,
   baseYear,
 }: {
   isMunicipality: boolean;
-  climatePlanHasPlan?: boolean | null;
   climatePlanAdoptedText: string | null;
   climatePlanStatusColor: string;
+  climatePlanStatusLabel: string;
   climatePlanAdoptedColor: string;
   categoryName: string;
   baseYear?: number | null;
@@ -24,7 +23,7 @@ export function ListCardFooterBlock({
     ? t("municipalities.card.climatePlan")
     : t("companies.card.reportingSince");
   const row1Value = isMunicipality
-    ? climatePlanStatusCopy(climatePlanHasPlan, t)
+    ? climatePlanStatusLabel
     : (baseYear ?? t("unknown"));
   const row2Label = isMunicipality
     ? t("municipalities.card.climatePlanAdopted")
