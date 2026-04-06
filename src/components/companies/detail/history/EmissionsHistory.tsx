@@ -11,6 +11,7 @@ import {
   useTimeSeriesChartState,
   useHiddenItems,
   useCompanyViewOptions,
+  ChartModeSelector,
 } from "@/components/charts";
 import { CardHeader } from "@/components/layout/CardHeader";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
@@ -53,8 +54,14 @@ export function EmissionsHistory({
 
   const dataViewOptions = useCompanyViewOptions(hasScope3Categories);
 
-  const { chartEndYear, setChartEndYear, shortEndYear, longEndYear } =
-    useTimeSeriesChartState();
+  const {
+    chartEndYear,
+    setChartEndYear,
+    shortEndYear,
+    longEndYear,
+    chartMode,
+    setChartMode,
+  } = useTimeSeriesChartState();
 
   const { hiddenItems: hiddenScopes, toggleItem: toggleScope } = useHiddenItems<
     "scope1" | "scope2" | "scope3"
@@ -121,7 +128,7 @@ export function EmissionsHistory({
 
     // No trend analysis = no future projections
     return null;
-  }, [chartData, dataView, chartEndYear, companyBaseYear, trendAnalysis]);
+  }, [chartData, dataView, chartEndYear, trendAnalysis]);
 
   // Calculate yDomain for explore mode
   const yDomain = useMemo((): [number, number] => {
@@ -175,7 +182,12 @@ export function EmissionsHistory({
           <CardHeader
             title={t("companies.emissionsHistory.title")}
             tooltipContent={t("companies.emissionsHistory.tooltip")}
-            unit={t("companies.emissionsHistory.unit")}
+            unit={
+              <ChartModeSelector
+                chartMode={chartMode}
+                setChartMode={setChartMode}
+              />
+            }
             dataView={dataView}
             setDataView={(value) =>
               setDataView(value as "overview" | "scopes" | "categories")
@@ -198,6 +210,7 @@ export function EmissionsHistory({
                     onYearSelect={handleYearSelect}
                     exploreMode={exploreMode}
                     setExploreMode={setExploreMode}
+                    chartMode={chartMode}
                   />
                 )}
                 {dataView === "scopes" && (
@@ -213,6 +226,7 @@ export function EmissionsHistory({
                     onYearSelect={handleYearSelect}
                     exploreMode={exploreMode}
                     setExploreMode={setExploreMode}
+                    chartMode={chartMode}
                   />
                 )}
                 {dataView === "categories" && (
@@ -230,6 +244,7 @@ export function EmissionsHistory({
                     onYearSelect={handleYearSelect}
                     exploreMode={exploreMode}
                     setExploreMode={setExploreMode}
+                    chartMode={chartMode}
                   />
                 )}
               </>

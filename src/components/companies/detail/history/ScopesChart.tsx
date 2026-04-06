@@ -30,6 +30,10 @@ import {
   createCustomTickRenderer,
   filterValidScopeData,
   ChartTooltip,
+  getIntensityValue,
+  getLastDataYear,
+  getEmissionsUnit,
+  ChartMode,
 } from "@/components/charts";
 import { useLanguage } from "@/components/LanguageProvider";
 
@@ -45,6 +49,7 @@ interface ScopesChartProps {
   onYearSelect: (year: number) => void;
   exploreMode?: boolean;
   setExploreMode?: (val: boolean) => void;
+  chartMode?: ChartMode;
 }
 
 export const ScopesChart: FC<ScopesChartProps> = ({
@@ -54,6 +59,7 @@ export const ScopesChart: FC<ScopesChartProps> = ({
   hiddenScopes,
   handleScopeToggle,
   onYearSelect,
+  chartMode = "absolute",
 }) => {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
@@ -64,9 +70,7 @@ export const ScopesChart: FC<ScopesChartProps> = ({
     return filterValidScopeData(data);
   }, [data]);
 
-  const lastDataYear =
-    filteredData.filter((item) => item.total !== undefined).slice(-1)[0]
-      ?.year || shortEndYear;
+  const lastDataYear = getLastDataYear(filteredData, shortEndYear);
   const ticks = generateChartTicks(
     filteredData[0]?.year || 2000,
     lastDataYear,
@@ -79,6 +83,11 @@ export const ScopesChart: FC<ScopesChartProps> = ({
   const legendItems = useMemo(() => {
     return createScopeLegendItems(t, new Set(hiddenScopes));
   }, [t, hiddenScopes]);
+
+  const getScopeDataKey = (scope: "scope1" | "scope2" | "scope3") =>
+    chartMode === "revenueIntensity"
+      ? (d: ChartData) => getIntensityValue(d[scope]?.value, d.turnover)
+      : `${scope}.value`;
 
   return (
     <ChartWrapper>
@@ -105,7 +114,7 @@ export const ScopesChart: FC<ScopesChartProps> = ({
               content={
                 <ChartTooltip
                   companyBaseYear={companyBaseYear}
-                  unit={t("companies.tooltip.tonsCO2e")}
+                  unit={getEmissionsUnit(chartMode, t)}
                 />
               }
               wrapperStyle={{ outline: "none", zIndex: 60 }}
@@ -126,7 +135,7 @@ export const ScopesChart: FC<ScopesChartProps> = ({
             {!hiddenScopes.includes("scope1") && (
               <Line
                 type="monotone"
-                dataKey="scope1.value"
+                dataKey={getScopeDataKey("scope1")}
                 {...getConsistentLineProps(
                   "scope",
                   isMobile,
@@ -138,7 +147,7 @@ export const ScopesChart: FC<ScopesChartProps> = ({
             {!hiddenScopes.includes("scope2") && (
               <Line
                 type="monotone"
-                dataKey="scope2.value"
+                dataKey={getScopeDataKey("scope2")}
                 {...getConsistentLineProps(
                   "scope",
                   isMobile,
@@ -150,7 +159,7 @@ export const ScopesChart: FC<ScopesChartProps> = ({
             {!hiddenScopes.includes("scope3") && (
               <Line
                 type="monotone"
-                dataKey="scope3.value"
+                dataKey={getScopeDataKey("scope3")}
                 {...getConsistentLineProps(
                   "scope",
                   isMobile,
