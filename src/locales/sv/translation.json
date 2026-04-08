@@ -20,7 +20,7 @@
     "insights": "Insikter",
     "methodology": "Källor och metod",
     "support": "Stöd oss",
-    "newsletter": "Prenumerera på nyhetsbrev",
+    "newsletter": "Nyhetsbrev",
     "openMenu": "Öppna meny",
     "closeMenu": "Stäng meny",
     "articles": "Artiklar",
@@ -1447,6 +1447,17 @@
       "trend": "Trend:",
       "increasing": "↗ Ökar",
       "decreasing": "↘ Minskar"
+    },
+    "logoDevDialog": {
+      "title": "Generera logo.dev URL",
+      "domain": "Domän",
+      "theme": "Tema",
+      "themeOptions": {
+        "auto": "Automatiskt (standard)",
+        "light": "Ljust",
+        "dark": "Mörkt"
+      },
+      "generate": "Generera"
     }
   },
   "nation": {
@@ -1652,6 +1663,7 @@
       "name": "Namn",
       "descriptionEn": "Beskrivning (EN)",
       "descriptionSv": "Beskrivning (SV)",
+      "logoUrl": "Logotyp-URL",
       "lei": "LEI",
       "tags": "Taggar",
       "gicsSubIndustry": "GICS subbransch",
@@ -1669,6 +1681,7 @@
       "undoName": "Ångra namnändring",
       "undoDescriptionEn": "Ångra beskrivning (EN)-ändring",
       "undoDescriptionSv": "Ångra beskrivning (SV)-ändring",
+      "undoLogoUrl": "Åndra logotyp-URL-ändring",
       "undoLei": "Ångra LEI-ändring",
       "undoTags": "Ångra taggändring",
       "undoIndustry": "Ångra branschändring",

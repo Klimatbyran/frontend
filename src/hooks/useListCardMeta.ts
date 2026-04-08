@@ -22,6 +22,7 @@ interface ListCardMeta {
   climatePlanAdoptedText: string | null;
   climatePlanStatusColor: string;
   climatePlanAdoptedColor: string;
+  climatePlanStatusLabel: string;
   categoryName: string;
 }
 
@@ -55,6 +56,14 @@ export const useListCardMeta = ({
   const climatePlanAdoptedColor =
     isMunicipality && !climatePlanHasPlan ? "text-grey" : "text-white";
 
+  const climatePlanStatusLabel = isMunicipality
+    ? climatePlanHasPlan === true
+      ? t("yes")
+      : climatePlanHasPlan === false
+        ? t("no")
+        : t("unknown")
+    : "";
+
   let categoryName;
   if (largestEmission?.type === "scope3" && largestEmission.key !== null) {
     categoryName = getCategoryName(largestEmission?.key as number);
@@ -72,6 +81,7 @@ export const useListCardMeta = ({
     climatePlanAdoptedText,
     climatePlanStatusColor,
     climatePlanAdoptedColor,
+    climatePlanStatusLabel,
     categoryName,
   };
 };
