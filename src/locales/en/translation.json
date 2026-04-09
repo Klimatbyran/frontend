@@ -105,7 +105,11 @@
     },
     "companiesSection": {
       "title": "Hold companies accountable for their emissions",
-      "description": "Explore our comprehensive list of companies and get detailed data about emissions and how well they're doing on the path towards the Paris Agreement. Look at graphs, charts and make comparisons."
+      "description": "Explore our comprehensive list of companies and get detailed data on emissions, trends, and how well they are performing on the path toward the Paris Agreement. Use interactive graphs and KPIs to compare companies over time, spot leaders and laggards, and better understand where real climate progress is happening and where action is still needed."
+    },
+    "municipalitiesSection": {
+      "title": "How is your municipality performing?",
+      "description": "Explore emissions data from municipalities and see how they are progressing toward climate targets. Understand local impact, compare performance over time, and identify where progress is accelerating or stalling. Use the KPI selector to switch perspectives and get a clearer picture of how your municipality is performing today and where it needs to improve next."
     },
     "siteFeatures": {
       "title": "Comprehensive Climate Tracking",

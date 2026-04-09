@@ -90,17 +90,17 @@ export const CompaniesSection = ({ companies }: CompaniesSectionProps) => {
   }, [chartData, chartEndYear, trendAnalysis]);
 
   return (
-    <div className="bg-black w-full flex flex-col items-center min-h-screen py-16 md:py-96">
+    <div className="bg-black w-full flex flex-col items-center min-h-screen py-16 md:pt-96 md:pb-32">
       <div className="flex w-full flex-col container mx-auto px-4 gap-12">
         <div className="flex flex-col gap-4">
           <Text className="text-4xl font-light">
             {t("landingPage.companiesSection.title")}
           </Text>
-          <Text className="text-grey font-regular text-[18px] max-w-[900px]">
+          <Text className="text-grey font-regular text-[18px] max-w-[800px]">
             {t("landingPage.companiesSection.description")}
           </Text>
 
-          <div className="flex w-full flex-col gap-3 md:flex-row md:items-center md:justify-start md:gap-6">
+          <div className="flex w-full flex-col gap-3 md:flex-row md:items-center md:justify-start md:gap-6 md:pt-6">
             <div className="relative w-full max-w-[18rem]">
               <div className="relative">
                 <Search

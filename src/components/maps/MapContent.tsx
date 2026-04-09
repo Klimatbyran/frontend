@@ -1,3 +1,4 @@
+import type { RefObject } from "react";
 import {
   FeatureCollection,
   Feature,
@@ -23,6 +24,7 @@ interface MapContentProps {
     layer: L.Layer,
   ) => void;
   setPosition: (pos: { center: [number, number]; zoom: number }) => void;
+  backgroundColor?: string;
 }
 
 function MapContent({
@@ -35,6 +37,7 @@ function MapContent({
   getAreaStyle,
   onEachFeature,
   setPosition,
+  backgroundColor = "var(--black-2)",
 }: MapContentProps) {
   return (
     <MapContainer
@@ -43,7 +46,7 @@ function MapContent({
       style={{
         height: "100%",
         width: "100%",
-        backgroundColor: "var(--black-2)",
+        backgroundColor,
         zIndex: 0,
       }}
       zoomControl={false}
@@ -51,7 +54,7 @@ function MapContent({
       maxBounds={mapBounds}
       minZoom={minZoom}
       maxZoom={maxZoom}
-      ref={mapRef}
+      ref={mapRef as unknown as RefObject<L.Map>}
       className="rounded-xl"
     >
       <GeoJSON

@@ -28,6 +28,7 @@ interface TerritoryMapProps {
     gradientMidHigh: string;
     gradientEnd: string;
   };
+  mapBackgroundColor?: string;
 }
 
 function TerritoryMap({
@@ -46,6 +47,7 @@ function TerritoryMap({
     gradientMidHigh: "var(--pink-3)",
     gradientEnd: "var(--blue-3)",
   },
+  mapBackgroundColor = "var(--black-2)",
 }: TerritoryMapProps) {
   const { position, setPosition, getInitialZoom } = useMapPosition(
     defaultCenter,
@@ -106,6 +108,7 @@ function TerritoryMap({
         getAreaStyle={getAreaStyle}
         onEachFeature={onEachFeature}
         setPosition={setPosition}
+        backgroundColor={mapBackgroundColor}
       />
       <MapOverlays
         entityType={entityType}

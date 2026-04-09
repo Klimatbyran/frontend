@@ -11,11 +11,12 @@ import useThrottle from "@/hooks/useThrottle";
 import { SCROLL_THROTTLE_DELAY } from "@/lib/constants/landingPage";
 import { LandingPageCTA } from "@/components/landing/LandingPageCTA";
 import { CompaniesSection } from "@/components/landing/CompaniesSection";
+import { MunicipalitiesSection } from "@/components/landing/MunicipalitiesSection";
 
 export function LandingPage() {
   const { t } = useTranslation();
   const { companies } = useCompanies();
-  const { getTopMunicipalities } = useMunicipalities();
+  const { municipalities } = useMunicipalities();
   const { currentLanguage } = useLanguage();
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [fadeChevron, setFadeChevron] = useState(false);
@@ -115,6 +116,7 @@ export function LandingPage() {
         />
       </div>
       <CompaniesSection companies={companies} />
+      <MunicipalitiesSection municipalities={municipalities} />
     </>
   );
 }
