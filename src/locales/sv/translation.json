@@ -73,6 +73,8 @@
       "climatePlans": "klimatplanerna?"
     },
     "title": "Hur går det med",
+    "searchPlaceholder": "Sök efter ett företag...",
+    "placeholder": "Sök efter ett företag",
     "seeResults": "Se resultat",
     "bestPerformers": "Topplistor",
     "bestMunicipalities": "Kommuner med snabbast utsläppsminskning",
@@ -93,7 +95,16 @@
     "ctaSection": {
       "title": "Redo att utforska datan?",
       "description": "Börja din resa in i klimatdata. Sök efter företag, kommuner, regioner och länder. Utforska rankningar och upptäck vem som leder kampen mot klimatförändringarna.",
-      "exploreData": "Utforska Data"
+      "exploreData": "Utforska Data",
+      "stats": {
+        "companiesAvailable": "Tillgängliga företag",
+        "municipalitiesAdded": "Kommuner tillagda",
+        "esgAndAnnualReports": "ESG- och årsrapporter"
+      }
+    },
+    "companiesSection": {
+      "title": "Håll företag ansvariga för sina utsläpp",
+      "description": "Utforska vår omfattande lista över företag och få detaljerad data om utsläpp och hur väl de ligger till på vägen mot Parisavtalet. Titta på grafer, diagram och gör jämförelser."
     },
     "siteFeatures": {
       "title": "Omfattande klimatspårning",

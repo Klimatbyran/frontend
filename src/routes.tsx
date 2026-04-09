@@ -47,7 +47,7 @@ void StagingProtectedRoute; // referenced so dead-code scripts keep the componen
 
 // Conditional landing page component that shows new version on localhost/staging
 function ConditionalLandingPage() {
-  const isStaging = stagingFeatureFlagEnabled();
+  const isStaging = false;
   return isStaging ? <LandingPageNew /> : <LandingPage />;
 }
 
