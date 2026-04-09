@@ -10,6 +10,9 @@ import { getChartData } from "@/utils/data/chartData";
 import { calculateTrendline } from "@/lib/calculations/trends/analysis";
 import { generateApproximatedData } from "@/lib/calculations/trends/approximatedData";
 import type { RankedCompany, ReportingPeriod } from "@/types/company";
+import { Button } from "../ui/button";
+import { LocalizedLink } from "@/components/LocalizedLink";
+import { ArrowRight } from "lucide-react";
 
 interface CompaniesSectionProps {
   companies: RankedCompany[];
@@ -150,7 +153,7 @@ export const CompaniesSection = ({ companies }: CompaniesSectionProps) => {
             </div>
 
             <div className="w-full flex items-center gap-2">
-              <Text className="text-lg md:text-base text-grey">
+              <Text className="text-lg font-light text-[18px] text-grey">
                 Currently viewing:{" "}
               </Text>
               <Text className="text-white text-lg font-medium">
@@ -171,11 +174,32 @@ export const CompaniesSection = ({ companies }: CompaniesSectionProps) => {
               longEndYear={longEndYear}
               approximatedData={approximatedData}
               onYearSelect={() => undefined}
+              yearControlsPlacement="top-right"
             />
           </div>
         ) : (
           <Text className="text-grey">No emissions data available.</Text>
         )}
+        <LocalizedLink to="/companies" className="self-end w-fit shrink-0">
+          <Button
+            variant="outline"
+            size="lg"
+            className="group relative w-auto h-12 rounded-md overflow-hidden font-medium border-white group-hover:border-blue-3 hover:opacity-100 active:opacity-100"
+          >
+            <span
+              className="absolute inset-0 origin-left scale-x-0 bg-white transition-transform duration-500 ease-out group-hover:scale-x-100"
+              aria-hidden="true"
+            />
+            <span className="relative z-10 inline-flex items-center text-white transition-colors duration-500 group-hover:text-black">
+              Explore Companies
+            </span>
+            <ArrowRight
+              className="w-5 h-5 ml-2"
+              aria-hidden="true"
+              color="white"
+            />
+          </Button>
+        </LocalizedLink>
       </div>
     </div>
   );

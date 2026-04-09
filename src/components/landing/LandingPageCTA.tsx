@@ -2,7 +2,6 @@ import { useTranslation } from "react-i18next";
 import { BarChart3, LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LocalizedLink } from "@/components/LocalizedLink";
-import { Text } from "@/components/ui/text";
 import { LandingSection } from "./LandingSection";
 
 interface CTAButton {
@@ -67,10 +66,10 @@ export function LandingPageCTA() {
               <Button
                 variant={button.variant}
                 size="lg"
-                className="group relative w-auto px-8 h-12 rounded-md overflow-hidden font-medium hover:opacity-100 active:opacity-100"
+                className="group relative w-auto px-8 h-12 rounded-md overflow-hidden font-medium border-white group-hover:border-blue-3 hover:opacity-100 active:opacity-100"
               >
                 <span
-                  className="absolute inset-0 origin-left scale-x-0 bg-blue-3 transition-transform duration-500 ease-out group-hover:scale-x-100"
+                  className="absolute inset-0 origin-left scale-x-0 bg-white transition-transform duration-500 ease-out group-hover:scale-x-100"
                   aria-hidden="true"
                 />
                 <span className="relative z-10 inline-flex items-center text-white transition-colors duration-500 group-hover:text-black">
