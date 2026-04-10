@@ -25,6 +25,7 @@ interface MapContentProps {
   ) => void;
   setPosition: (pos: { center: [number, number]; zoom: number }) => void;
   backgroundColor?: string;
+  scrollWheelZoom?: boolean;
 }
 
 function MapContent({
@@ -38,6 +39,7 @@ function MapContent({
   onEachFeature,
   setPosition,
   backgroundColor = "var(--black-2)",
+  scrollWheelZoom = true,
 }: MapContentProps) {
   return (
     <MapContainer
@@ -54,6 +56,7 @@ function MapContent({
       maxBounds={mapBounds}
       minZoom={minZoom}
       maxZoom={maxZoom}
+      scrollWheelZoom={scrollWheelZoom}
       ref={mapRef as unknown as RefObject<L.Map>}
       className="rounded-xl"
     >

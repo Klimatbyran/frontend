@@ -101,6 +101,7 @@ export const MunicipalitiesSection = ({
                 selectedKPI={selectedKPI}
                 onAreaClick={handleMunicipalityAreaClick}
                 mapBackgroundColor="transparent"
+                scrollWheelZoom={false}
               />
             </div>
           </div>
