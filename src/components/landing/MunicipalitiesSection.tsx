@@ -72,7 +72,7 @@ export const MunicipalitiesSection = ({
   }
 
   return (
-    <div className="bg-black w-full flex flex-col items-center min-h-screen py-32">
+    <div className="bg-black w-full flex flex-col items-center min-h-screen pt-80">
       <div className="w-full container mx-auto px-4">
         <div className="flex flex-col lg:flex-row items-start gap-8 lg:gap-12">
           <div className="order-2 lg:order-2 w-full lg:w-3/5 flex flex-col gap-3">

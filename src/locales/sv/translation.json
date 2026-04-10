@@ -110,6 +110,10 @@
       "title": "Hur presterar din kommun?",
       "description": "Utforska utsläppsdata från kommuner och se hur de utvecklas mot klimatmålen. Förstå den lokala påverkan, jämför utvecklingen över tid och identifiera var omställningen går framåt eller tappar fart. Använd KPI-väljaren för att byta perspektiv och få en tydligare bild av hur din kommun presterar idag och var förbättringar behövs härnäst."
     },
+    "countriesSection": {
+      "title": "Utforska Sveriges utsläppskällor",
+      "description": "Upptäck de främsta källorna till utsläpp i Sverige, från energiproduktion till transporter och industri. Utforska hur olika sektorer bidrar till den totala utsläppsprofilen och följ framstegen mot nationella klimatmål."
+    },
     "siteFeatures": {
       "title": "Omfattande klimatspårning",
       "description": "Övervaka utsläppsdata och klimatåtaganden i hela Sverige.",

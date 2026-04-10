@@ -12,6 +12,7 @@ import { SCROLL_THROTTLE_DELAY } from "@/lib/constants/landingPage";
 import { LandingPageCTA } from "@/components/landing/LandingPageCTA";
 import { CompaniesSection } from "@/components/landing/CompaniesSection";
 import { MunicipalitiesSection } from "@/components/landing/MunicipalitiesSection";
+import { CountriesSection } from "@/components/landing/CountriesSection";
 
 export function LandingPage() {
   const { t } = useTranslation();
@@ -117,6 +118,7 @@ export function LandingPage() {
       </div>
       <CompaniesSection companies={companies} />
       <MunicipalitiesSection municipalities={municipalities} />
+      <CountriesSection />
     </>
   );
 }
