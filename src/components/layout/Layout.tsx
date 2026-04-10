@@ -56,8 +56,7 @@ export function Layout({ children }: LayoutProps) {
         <ScrollToTop />
         <SuggestEdit />
       </main>
-      {/*       <Footer />
-       */}{" "}
+      <Footer />
     </div>
   );
 }

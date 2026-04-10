@@ -6,21 +6,24 @@ import { ProgressiveDataGuide } from "./ProgressiveDataGuide";
 type SectionWithHelpProps = {
   children: React.ReactNode;
   helpItems: DataGuideItemId[];
+  className?: string;
 };
 
 export const SectionWithHelp = ({
   children,
   helpItems,
+  className,
 }: SectionWithHelpProps) => {
   const showDataGuide = dataGuideFeatureFlagEnabled() && helpItems.length > 0;
 
   return (
     <div
       className={cn(
-        " bg-black-2",
+        "bg-black-2",
         "rounded-level-3 md:rounded-level-1",
         "py-4 md:py-8",
         "px-4 md:px-8",
+        className,
       )}
     >
       <div className={cn(!showDataGuide && "md:mb-8 pb-8")}>{children}</div>
