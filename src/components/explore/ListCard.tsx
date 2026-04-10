@@ -90,7 +90,8 @@ export function ListCard({
   const linkMinHeightClass = isRegion ? "min-h-[300px]" : "min-h-[410px]";
 
   return (
-    <div className="relative rounded-level-2">
+    <div className="relative rounded-level-2 @container">
+      {" "}
       <LocalizedLink
         to={linkTo}
         className={cn(

@@ -37,21 +37,19 @@ export function ListCardHeader({
           <p className="text-grey text-sm line-clamp-2 min-h-[40px]">
             {description}
           </p>
+          <div className="flex items-center gap-2 text-grey text-lg">
+            {meetsParisTitle}
+          </div>
+          <div
+            className={cn(
+              "w-full text-xl font-light border-b border-black-1 pb-6",
+              meetsParisIsYes ? "text-green-3" : "text-pink-3",
+            )}
+          >
+            {meetsParisAnswer}
+          </div>
         </div>
         {logo}
-      </div>
-      <div className="w-full">
-        <div className="flex items-center gap-2 text-grey text-lg">
-          {meetsParisTitle}
-        </div>
-        <div
-          className={cn(
-            "w-full text-xl font-light border-b border-black-1 pb-6",
-            meetsParisIsYes ? "text-green-3" : "text-pink-3",
-          )}
-        >
-          {meetsParisAnswer}
-        </div>
       </div>
     </div>
   );
