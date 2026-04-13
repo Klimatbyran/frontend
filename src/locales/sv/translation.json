@@ -123,13 +123,15 @@
     },
     "countriesSection": {
       "title": "Utforska Sveriges utsläppskällor",
-      "description": "Upptäck de främsta källorna till utsläpp i Sverige, från energiproduktion till transporter och industri. Utforska hur olika sektorer bidrar till den totala utsläppsprofilen och följ framstegen mot nationella klimatmål."
+      "description": "Upptäck de främsta källorna till utsläpp i Sverige, från energiproduktion till transporter och industri. Utforska hur olika sektorer bidrar till den totala utsläppsprofilen och följ framstegen mot nationella klimatmål.",
+      "exploreButton": "Utforska Sverige"
     },
     "partnersSection": {
       "title": "Stöd och partners"
     },
     "missionSection": {
-      "title": "Vårt uppdrag"
+      "title": "Vårt uppdrag",
+      "button": "Vårt uppdrag"
     },
     "siteFeatures": {
       "title": "Omfattande klimatspårning",

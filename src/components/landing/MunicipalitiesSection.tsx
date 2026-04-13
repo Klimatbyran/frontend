@@ -247,12 +247,8 @@ export const MunicipalitiesSection = ({
                 />
                 <span className="relative z-10 inline-flex items-center text-white transition-colors duration-500 group-hover:text-black">
                   {exploreLabel}
+                  <ArrowRight className="w-5 h-5 ml-2" aria-hidden="true" />
                 </span>
-                <ArrowRight
-                  className="w-5 h-5 ml-2"
-                  aria-hidden="true"
-                  color="white"
-                />
               </Button>
             </LocalizedLink>
           </div>
@@ -272,12 +268,8 @@ export const MunicipalitiesSection = ({
               />
               <span className="relative z-10 inline-flex items-center text-white transition-colors duration-500 group-hover:text-black">
                 {exploreLabel}
+                <ArrowRight className="w-5 h-5 ml-2" aria-hidden="true" />
               </span>
-              <ArrowRight
-                className="w-5 h-5 ml-2"
-                aria-hidden="true"
-                color="white"
-              />
             </Button>
           </LocalizedLink>
         </div>

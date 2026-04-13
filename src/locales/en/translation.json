@@ -124,13 +124,15 @@
     },
     "countriesSection": {
       "title": "Explore Sweden’s emission sources",
-      "description": "Discover the main sources of emissions in Sweden, from energy production to transportation and industry. Explore how different sectors contribute to the overall emissions profile and track progress toward national climate goals."
+      "description": "Discover the main sources of emissions in Sweden, from energy production to transportation and industry. Explore how different sectors contribute to the overall emissions profile and track progress toward national climate goals.",
+      "exploreButton": "Explore Sweden"
     },
     "partnersSection": {
       "title": "Trusted by supporters and partners"
     },
     "missionSection": {
-      "title": "Our Mission"
+      "title": "Our Mission",
+      "button": "Our Mission"
     },
     "siteFeatures": {
       "title": "Comprehensive Climate Tracking",
