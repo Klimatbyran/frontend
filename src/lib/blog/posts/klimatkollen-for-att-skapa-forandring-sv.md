@@ -86,4 +86,4 @@ Tipsen med exempel finns också i en [guide](https://drive.google.com/file/d/1CU
 
     Våra sociala kanaler hittar du längst ner på sajten.
 
-Har du egna exempel på hur du har använt vår klimatdata? Hör gärna av dig till oss på [hej@klimatkollen.se].
+Har du egna exempel på hur du har använt vår klimatdata? Hör gärna av dig till oss på hej@klimatkollen.se.
