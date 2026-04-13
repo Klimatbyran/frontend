@@ -1,6 +1,6 @@
 const KlimatkollenVideo = () => {
   return (
-    <div className="w-full h-72 py-4 md:py-6 sm:h-96 lg:h-[600px]">
+    <div className="w-full h-72 sm:h-96 lg:h-[600px]">
       <div className="h-full w-full overflow-hidden rounded-md bg-[#121212]">
         <iframe
           className="h-full w-full"

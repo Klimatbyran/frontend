@@ -48,6 +48,7 @@ export const CountriesSection = () => {
             helpItems={[]}
             sectionClassName="bg-transparent"
             showHeader={false}
+            compactLayout={true}
           />
         </div>
 

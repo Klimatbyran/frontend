@@ -21,6 +21,7 @@ interface SectorEmissionsProps {
   helpItems: DataGuideItemId[];
   sectionClassName?: string;
   showHeader?: boolean;
+  compactLayout?: boolean;
 }
 
 export function SectorEmissionsChart({
@@ -35,6 +36,7 @@ export function SectorEmissionsChart({
   helpItems,
   sectionClassName,
   showHeader = true,
+  compactLayout = false,
 }: SectorEmissionsProps) {
   const { t } = useTranslation();
 
@@ -46,7 +48,15 @@ export function SectorEmissionsChart({
   const hasData = Object.keys(yearData).length > 0;
 
   return (
-    <SectionWithHelp helpItems={helpItems} className={sectionClassName}>
+    <SectionWithHelp
+      helpItems={helpItems}
+      compactLayout={compactLayout}
+      className={
+        compactLayout
+          ? `${sectionClassName ?? ""} !rounded-none !px-0 !py-0`
+          : sectionClassName
+      }
+    >
       {showHeader && (
         <CardHeader
           title={t("detailPage.sectorEmissions")}
