@@ -9,4 +9,4 @@ patches:
   - path: backend-service-patch.yaml
 images:
   - name: ghcr.io/klimatbyran/frontend
-    newTag: "6.0.3" # {"$imagepolicy": "flux-system:frontend:tag"}
+    newTag: "6.1.0" # {"$imagepolicy": "flux-system:frontend:tag"}
