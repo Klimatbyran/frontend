@@ -200,7 +200,9 @@ export function LandingPageCTA({
         )}
 
         <div className="mt-3 flex w-full items-center gap-2 overflow-x-auto whitespace-nowrap text-sm">
-          <Text className="shrink-0 text-white/70">Popular:</Text>
+          <Text className="shrink-0 text-white/70">
+            {t("landingPage.popularLabel")}
+          </Text>
           {POPULAR_ITEMS.map((item) => (
             <button
               key={`${item.type}-${item.label}`}

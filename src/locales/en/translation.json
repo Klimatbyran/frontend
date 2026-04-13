@@ -78,6 +78,7 @@
     "placeholder": "Search for a company",
     "heroSearchPlaceholder": "Search for a company or municipality...",
     "heroSearchLabel": "Search for a company or municipality",
+    "popularLabel": "Popular:",
     "searchResultType": {
       "company": "Company",
       "municipality": "Municipality"
@@ -127,6 +128,9 @@
     },
     "partnersSection": {
       "title": "Trusted by supporters and partners"
+    },
+    "missionSection": {
+      "title": "Our Mission"
     },
     "siteFeatures": {
       "title": "Comprehensive Climate Tracking",

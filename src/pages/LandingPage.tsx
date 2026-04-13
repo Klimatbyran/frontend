@@ -13,6 +13,7 @@ import { CompaniesSection } from "@/components/landing/CompaniesSection";
 import { MunicipalitiesSection } from "@/components/landing/MunicipalitiesSection";
 import { CountriesSection } from "@/components/landing/CountriesSection";
 import { PartnersSection } from "@/components/landing/PartnersSection";
+import { MissionSection } from "../components/landing/MissionSection";
 import { Text } from "@/components/ui/text";
 
 export function LandingPage() {
@@ -127,8 +128,9 @@ export function LandingPage() {
       </div>
       <CompaniesSection companies={companies} />
       <MunicipalitiesSection municipalities={municipalities} />
-      <CountriesSection />
       <PartnersSection />
+      <CountriesSection />
+      <MissionSection />
     </>
   );
 }

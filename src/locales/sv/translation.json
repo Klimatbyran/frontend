@@ -77,6 +77,7 @@
     "placeholder": "Sök efter ett företag",
     "heroSearchPlaceholder": "Sök efter ett företag eller en kommun...",
     "heroSearchLabel": "Sök efter ett företag eller en kommun",
+    "popularLabel": "Populärt:",
     "searchResultType": {
       "company": "Företag",
       "municipality": "Kommun"
@@ -125,7 +126,10 @@
       "description": "Upptäck de främsta källorna till utsläpp i Sverige, från energiproduktion till transporter och industri. Utforska hur olika sektorer bidrar till den totala utsläppsprofilen och följ framstegen mot nationella klimatmål."
     },
     "partnersSection": {
-      "title": "Betrodd av stöttande partners"
+      "title": "Stöd och partners"
+    },
+    "missionSection": {
+      "title": "Vårt uppdrag"
     },
     "siteFeatures": {
       "title": "Omfattande klimatspårning",
