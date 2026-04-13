@@ -105,7 +105,7 @@ export function LandingPage() {
         <div
           className={`flex flex-col ${fadeChevron ? "opacity-0 " : "opacity-50"} absolute bottom-0 items-center transition-opacity ease-in duration-750`}
         >
-          <Text>Explore</Text>
+          <Text>{t("header.explore")}</Text>
           <ChevronDown
             onClick={handleChevronClick}
             onKeyDown={(e) => {

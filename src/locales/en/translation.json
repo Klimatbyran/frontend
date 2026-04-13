@@ -103,15 +103,10 @@
     "ctaSection": {
       "title": "Ready to Explore the Data?",
       "description": "Start your journey into climate data. Search for companies, municipalities, regions, and countries. Explore rankings and discover who's leading the fight against climate change.",
-      "exploreData": "Explore Data",
-      "stats": {
-        "companiesAvailable": "Companies available",
-        "municipalitiesAdded": "Municipalities added",
-        "esgAndAnnualReports": "ESG & Annual Reports"
-      }
+      "exploreData": "Explore Data"
     },
     "companiesSection": {
-      "title": "Hold companies accountable for their emissions",
+      "title": "Hold Companies Accountable for their Emissions",
       "description": "Explore our comprehensive list of companies and get detailed data on emissions, trends, and how well they are performing on the path toward the Paris Agreement."
     },
     "municipalitiesSection": {
