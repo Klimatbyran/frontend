@@ -5,7 +5,6 @@ import { Typewriter } from "@/components/ui/typewriter";
 import { useCompanies } from "@/hooks/companies/useCompanies";
 import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
 import { PageSEO } from "@/components/SEO/PageSEO";
-import { useLanguage } from "@/components/LanguageProvider";
 import { SCROLL_FADE_THRESHOLD } from "@/hooks/landing/useLandingPageData";
 import useThrottle from "@/hooks/useThrottle";
 import { SCROLL_THROTTLE_DELAY } from "@/lib/constants/landingPage";
@@ -13,12 +12,13 @@ import { LandingPageCTA } from "@/components/landing/LandingPageCTA";
 import { CompaniesSection } from "@/components/landing/CompaniesSection";
 import { MunicipalitiesSection } from "@/components/landing/MunicipalitiesSection";
 import { CountriesSection } from "@/components/landing/CountriesSection";
+import { PartnersSection } from "@/components/landing/PartnersSection";
+import { Text } from "@/components/ui/text";
 
 export function LandingPage() {
   const { t } = useTranslation();
   const { companies } = useCompanies();
   const { municipalities } = useMunicipalities();
-  const { currentLanguage } = useLanguage();
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [fadeChevron, setFadeChevron] = useState(false);
 
@@ -95,21 +95,30 @@ export function LandingPage() {
               />
             </div>
           </div>
-          <LandingPageCTA />
+
+          <LandingPageCTA
+            companies={companies}
+            municipalities={municipalities}
+          />
         </div>
-        <ChevronDown
-          onClick={handleChevronClick}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              e.preventDefault();
-              handleChevronClick();
-            }
-          }}
-          role="button"
-          tabIndex={0}
-          aria-label={t("landingPage.scrollToContent", "Scroll to content")}
-          className={`${fadeChevron ? "opacity-0 " : "opacity-50"} absolute bottom-0 cursor-pointer animate-bounce animati transition-opacity ease-in duration-750`}
-        />
+        <div
+          className={`flex flex-col ${fadeChevron ? "opacity-0 " : "opacity-50"} absolute bottom-0 items-center transition-opacity ease-in duration-750`}
+        >
+          <Text>Explore</Text>
+          <ChevronDown
+            onClick={handleChevronClick}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                handleChevronClick();
+              }
+            }}
+            role="button"
+            tabIndex={0}
+            aria-label={t("landingPage.scrollToContent", "Scroll to content")}
+            className={`${fadeChevron ? "opacity-0 " : "opacity-50"} cursor-pointer animate-bounce animati transition-opacity ease-in duration-750 mt-2`}
+          />
+        </div>
         <img
           src="/images/web/hero-globe-image.jpg"
           alt="Illustration"
@@ -119,6 +128,7 @@ export function LandingPage() {
       <CompaniesSection companies={companies} />
       <MunicipalitiesSection municipalities={municipalities} />
       <CountriesSection />
+      <PartnersSection />
     </>
   );
 }

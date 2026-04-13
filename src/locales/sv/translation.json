@@ -75,6 +75,12 @@
     "title": "Hur går det med",
     "searchPlaceholder": "Sök efter ett företag...",
     "placeholder": "Sök efter ett företag",
+    "heroSearchPlaceholder": "Sök efter ett företag eller en kommun...",
+    "heroSearchLabel": "Sök efter ett företag eller en kommun",
+    "searchResultType": {
+      "company": "Företag",
+      "municipality": "Kommun"
+    },
     "seeResults": "Se resultat",
     "bestPerformers": "Topplistor",
     "bestMunicipalities": "Kommuner med snabbast utsläppsminskning",
@@ -104,15 +110,22 @@
     },
     "companiesSection": {
       "title": "Håll företag ansvariga för sina utsläpp",
-      "description": "Utforska vår omfattande lista över företag och få detaljerad data om utsläpp, trender och hur väl de ligger till på vägen mot Parisavtalet. Använd interaktiva grafer och nyckeltal för att jämföra företag över tid, identifiera ledare och eftersläntrare och förstå var verkliga klimatframsteg sker och var mer arbete fortfarande behövs."
+      "description": "Utforska vår omfattande lista över företag och få detaljerad data om utsläpp, trender och hur väl de ligger till på vägen mot Parisavtalet."
     },
     "municipalitiesSection": {
       "title": "Hur presterar din kommun?",
-      "description": "Utforska utsläppsdata från kommuner och se hur de utvecklas mot klimatmålen. Förstå den lokala påverkan, jämför utvecklingen över tid och identifiera var omställningen går framåt eller tappar fart. Använd KPI-väljaren för att byta perspektiv och få en tydligare bild av hur din kommun presterar idag och var förbättringar behövs härnäst."
+      "description": "Utforska utsläppsdata från kommuner och se hur de utvecklas mot klimatmålen. Förstå den lokala påverkan, jämför utvecklingen över tid och identifiera var omställningen går framåt eller tappar fart."
+    },
+    "regionsSection": {
+      "title": "Hur presterar ditt län?",
+      "description": "Utforska utsläppsdata från län och se hur de utvecklas mot klimatmålen. Förstå den regionala påverkan, jämför utvecklingen över tid och identifiera var omställningen går framåt eller tappar fart."
     },
     "countriesSection": {
       "title": "Utforska Sveriges utsläppskällor",
       "description": "Upptäck de främsta källorna till utsläpp i Sverige, från energiproduktion till transporter och industri. Utforska hur olika sektorer bidrar till den totala utsläppsprofilen och följ framstegen mot nationella klimatmål."
+    },
+    "partnersSection": {
+      "title": "Betrodd av stöttande partners"
     },
     "siteFeatures": {
       "title": "Omfattande klimatspårning",

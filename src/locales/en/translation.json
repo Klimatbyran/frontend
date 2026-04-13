@@ -76,6 +76,12 @@
     "title": "How is it going with",
     "searchPlaceholder": "Search for a company...",
     "placeholder": "Search for a company",
+    "heroSearchPlaceholder": "Search for a company or municipality...",
+    "heroSearchLabel": "Search for a company or municipality",
+    "searchResultType": {
+      "company": "Company",
+      "municipality": "Municipality"
+    },
     "seeResults": "See results",
     "bestPerformers": "Top Lists",
     "bestMunicipalities": "Municipalities with the fastest emission reduction",
@@ -105,15 +111,22 @@
     },
     "companiesSection": {
       "title": "Hold companies accountable for their emissions",
-      "description": "Explore our comprehensive list of companies and get detailed data on emissions, trends, and how well they are performing on the path toward the Paris Agreement. Use interactive graphs and KPIs to compare companies over time, spot leaders and laggards, and better understand where real climate progress is happening and where action is still needed."
+      "description": "Explore our comprehensive list of companies and get detailed data on emissions, trends, and how well they are performing on the path toward the Paris Agreement."
     },
     "municipalitiesSection": {
       "title": "How is your municipality performing?",
-      "description": "Explore emissions data from municipalities and see how they are progressing toward climate targets. Understand local impact, compare performance over time, and identify where progress is accelerating or stalling. Use the KPI selector to switch perspectives and get a clearer picture of how your municipality is performing today and where it needs to improve next."
+      "description": "Explore emissions data from municipalities and see how they are progressing toward climate targets. Understand local impact, compare performance over time, and identify where progress is accelerating or stalling. "
+    },
+    "regionsSection": {
+      "title": "How is your region performing?",
+      "description": "Explore emissions data from regions and see how they are progressing toward climate targets. Understand regional impact, compare performance over time, and identify where progress is accelerating or stalling."
     },
     "countriesSection": {
       "title": "Explore Sweden’s emission sources",
       "description": "Discover the main sources of emissions in Sweden, from energy production to transportation and industry. Explore how different sectors contribute to the overall emissions profile and track progress toward national climate goals."
+    },
+    "partnersSection": {
+      "title": "Trusted by supporters and partners"
     },
     "siteFeatures": {
       "title": "Comprehensive Climate Tracking",

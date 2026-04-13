@@ -22,7 +22,7 @@ export const CountriesSection = () => {
   const currentYear = getCurrentYearFromAvailable(selectedYear, availableYears);
 
   return (
-    <div className="bg-black w-full flex flex-col items-center pt-80">
+    <div className="bg-black w-full flex flex-col items-center pt-44 md:pt-52">
       <div className="w-full container mx-auto px-4 items-center flex flex-col gap-10">
         <div className="flex flex-col gap-4 text-center max-w-[600px]">
           <Text className="text-4xl font-light">

@@ -19,6 +19,8 @@ import {
 } from "@/hooks/landing/useLandingPageData";
 import { useLandingPageSEO } from "@/hooks/landing/useLandingPageSEO";
 import useThrottle from "@/hooks/useThrottle";
+import { useCompanies } from "@/hooks/companies/useCompanies";
+import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
 import {
   formatEmissionsAbsolute,
   formatPercentChange,
@@ -48,6 +50,8 @@ export function LandingPageNew() {
 
   // Get landing page data from hook
   const { largestCompanyEmitters, topMunicipalities } = useLandingPageData();
+  const { companies } = useCompanies();
+  const { municipalities } = useMunicipalities();
 
   // Get scroll animation steps
   const scrollSteps = useLandingPageScrollStepsWithContent();
@@ -126,7 +130,10 @@ export function LandingPageNew() {
               />
             </div>
           </div>
-          <LandingPageCTA />
+          <LandingPageCTA
+            companies={companies}
+            municipalities={municipalities}
+          />
         </div>
         <ChevronDown
           onClick={handleChevronClick}
