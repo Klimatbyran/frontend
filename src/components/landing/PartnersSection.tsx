@@ -8,9 +8,9 @@ export const PartnersSection = () => {
   const mobileRemainder = partners.length % mobileColumns;
 
   return (
-    <div className="bg-black w-full flex flex-col items-center pt-44 md:pt-52 pb-24">
+    <div className="bg-black w-full flex flex-col items-center pt-44 md:pt-52">
       <div className="w-full container mx-auto px-4 items-center flex flex-col gap-6">
-        <Text className="text-center tracking-tight text-4xl font-light">
+        <Text className="w-full text-left md:text-center tracking-tight text-3xl sm:text-4xl font-light">
           {t("landingPage.partnersSection.title")}
         </Text>
 

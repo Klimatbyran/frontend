@@ -227,7 +227,9 @@ export const MunicipalitiesSection = ({
 
           <div className="order-1 lg:order-1 w-full lg:w-2/5 flex flex-col gap-24 lg:pt-4">
             <div className="flex flex-col gap-4">
-              <Text className="text-4xl font-light">{sectionTitle}</Text>
+              <Text className="text-3xl sm:text-4xl font-light">
+                {sectionTitle}
+              </Text>
               <Text className="text-grey font-regular text-[18px]">
                 {sectionDescription}
               </Text>
@@ -255,7 +257,7 @@ export const MunicipalitiesSection = ({
 
           <LocalizedLink
             to={explorePath}
-            className="lg:hidden order-3 self-end w-fit pt-2"
+            className="lg:hidden order-3 self-start w-fit pt-2"
           >
             <Button
               variant="outline"
