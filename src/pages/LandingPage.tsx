@@ -20,7 +20,7 @@ export function LandingPage() {
   const { t } = useTranslation();
   const { companies } = useCompanies();
   const { municipalities } = useMunicipalities();
-  const containerRef = useRef<HTMLDivElement | null>(null);
+  const companiesSectionRef = useRef<HTMLDivElement | null>(null);
   const [fadeChevron, setFadeChevron] = useState(false);
 
   // Prepare SEO data
@@ -46,9 +46,9 @@ export function LandingPage() {
   ];
 
   const handleChevronClick = useCallback(() => {
-    const element = containerRef.current;
+    const element = companiesSectionRef.current;
     if (element) {
-      window.scrollTo({ top: element.offsetTop, behavior: "smooth" });
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }, []);
 
@@ -105,7 +105,21 @@ export function LandingPage() {
         <div
           className={`flex flex-col ${fadeChevron ? "opacity-0 " : "opacity-50"} absolute bottom-0 items-center transition-opacity ease-in duration-750`}
         >
-          <Text>{t("header.explore")}</Text>
+          <Text
+            onClick={handleChevronClick}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                handleChevronClick();
+              }
+            }}
+            role="button"
+            tabIndex={0}
+            aria-label={t("landingPage.scrollToContent", "Scroll to content")}
+            className="cursor-pointer"
+          >
+            {t("header.explore")}
+          </Text>
           <ChevronDown
             onClick={handleChevronClick}
             onKeyDown={(e) => {
@@ -126,7 +140,9 @@ export function LandingPage() {
           className="w-full object-cover"
         />
       </div>
-      <CompaniesSection companies={companies} />
+      <div ref={companiesSectionRef} id="companies-section" className="w-full">
+        <CompaniesSection companies={companies} />
+      </div>
       <MunicipalitiesSection municipalities={municipalities} />
       <PartnersSection />
       <CountriesSection />

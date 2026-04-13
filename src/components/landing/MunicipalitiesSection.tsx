@@ -149,8 +149,8 @@ export const MunicipalitiesSection = ({
     territoryMode === "municipalities" ? "/municipalities" : "/regions";
   const exploreLabel =
     territoryMode === "municipalities"
-      ? "Explore Municipalities"
-      : "Explore Regions";
+      ? t("landingPage.municipalitiesSection.exploreButton")
+      : t("landingPage.regionsSection.exploreButton");
 
   if (!selectedKPI) {
     return null;

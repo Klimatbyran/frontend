@@ -111,15 +111,18 @@
     },
     "companiesSection": {
       "title": "Håll företag ansvariga för sina utsläpp",
-      "description": "Utforska vår omfattande lista över företag och få detaljerad data om utsläpp, trender och hur väl de ligger till på vägen mot Parisavtalet."
+      "description": "Utforska vår omfattande lista över företag och få detaljerad data om utsläpp, trender och hur väl de ligger till på vägen mot Parisavtalet.",
+      "exploreButton": "Utforska företag"
     },
     "municipalitiesSection": {
       "title": "Hur presterar din kommun?",
-      "description": "Utforska utsläppsdata från kommuner och se hur de utvecklas mot klimatmålen. Förstå den lokala påverkan, jämför utvecklingen över tid och identifiera var omställningen går framåt eller tappar fart."
+      "description": "Utforska utsläppsdata från kommuner och se hur de utvecklas mot klimatmålen. Förstå den lokala påverkan, jämför utvecklingen över tid och identifiera var omställningen går framåt eller tappar fart.",
+      "exploreButton": "Utforska kommuner"
     },
     "regionsSection": {
       "title": "Hur presterar ditt län?",
-      "description": "Utforska utsläppsdata från län och se hur de utvecklas mot klimatmålen. Förstå den regionala påverkan, jämför utvecklingen över tid och identifiera var omställningen går framåt eller tappar fart."
+      "description": "Utforska utsläppsdata från län och se hur de utvecklas mot klimatmålen. Förstå den regionala påverkan, jämför utvecklingen över tid och identifiera var omställningen går framåt eller tappar fart.",
+      "exploreButton": "Utforska län"
     },
     "countriesSection": {
       "title": "Utforska Sveriges utsläppskällor",

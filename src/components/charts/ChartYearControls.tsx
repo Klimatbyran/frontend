@@ -93,7 +93,7 @@ export const ChartYearControls: React.FC<ChartYearControlsProps> = ({
   // Desktop layout: original absolute positioning
   return (
     <div className={`relative mt-2 px-4 w-full ${className}`}>
-      <div className="absolute left-0 top-0">
+      <div className="absolute right-0 top-0">
         {showShortButton && (
           <Button
             variant="outline"
@@ -105,8 +105,6 @@ export const ChartYearControls: React.FC<ChartYearControlsProps> = ({
             {defaultShortYear}
           </Button>
         )}
-      </div>
-      <div className="absolute right-0 top-0">
         {showLongButton && (
           <Button
             variant="outline"
