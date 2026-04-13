@@ -112,7 +112,8 @@
     "companiesSection": {
       "title": "Håll företag ansvariga för sina utsläpp",
       "description": "Utforska vår omfattande lista över företag och få detaljerad data om utsläpp, trender och hur väl de ligger till på vägen mot Parisavtalet.",
-      "exploreButton": "Utforska företag"
+      "exploreButton": "Utforska företag",
+      "currentlyViewing": "Visar just nu:"
     },
     "municipalitiesSection": {
       "title": "Hur presterar din kommun?",

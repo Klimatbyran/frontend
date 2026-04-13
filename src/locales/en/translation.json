@@ -70,8 +70,7 @@
       "reduceEmissions": "reducing emissions?",
       "meetParisAgreement": "meeting the Paris Agreement?",
       "climateActions": "the climate action?",
-      "climatePlans": "the climate plans?",
-      "searchPlaceholder": "Search for a company..."
+      "climatePlans": "the climate plans?"
     },
     "title": "How is it going with",
     "searchPlaceholder": "Search for a company...",
@@ -108,7 +107,8 @@
     "companiesSection": {
       "title": "Hold Companies Accountable for their Emissions",
       "description": "Explore our comprehensive list of companies and get detailed data on emissions, trends, and how well they are performing on the path toward the Paris Agreement.",
-      "exploreButton": "Explore Companies"
+      "exploreButton": "Explore Companies",
+      "currentlyViewing": "Currently viewing:"
     },
     "municipalitiesSection": {
       "title": "How is your municipality performing?",

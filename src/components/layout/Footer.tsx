@@ -50,7 +50,7 @@ export function Footer() {
       </div>
 
       <div className="container mx-auto w-full px-4">
-        <div className="rounded-2xlbg-black-1/40 p-5 md:p-8">
+        <div className="rounded-2xl p-5 md:p-8">
           <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-center md:gap-10">
             <div className="space-y-3 text-center md:text-left">
               <Text variant="h6" className="text-blue-3 md:text-base">
@@ -61,7 +61,7 @@ export function Footer() {
                   i18nKey="footer.description"
                   components={[
                     <a
-                      title="Klimatkollen's Github"
+                      title="Klimatkollen's GitHub"
                       className="underline decoration-white/30 underline-offset-4 transition-colors hover:text-white"
                       href="https://github.com/Klimatbyran/"
                       target="_blank"

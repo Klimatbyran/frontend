@@ -131,7 +131,7 @@ export function LandingPage() {
             role="button"
             tabIndex={0}
             aria-label={t("landingPage.scrollToContent", "Scroll to content")}
-            className={`${fadeChevron ? "opacity-0 " : "opacity-50"} cursor-pointer animate-bounce animati transition-opacity ease-in duration-750 mt-2`}
+            className={`${fadeChevron ? "opacity-0 " : "opacity-50"} cursor-pointer animate-bounce transition-opacity ease-in duration-750 mt-2`}
           />
         </div>
         <img

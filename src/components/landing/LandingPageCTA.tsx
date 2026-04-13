@@ -110,13 +110,10 @@ export function LandingPageCTA({
         return;
       }
 
-      const normalizedLabel = item.label.toLowerCase().replace("6", "&");
+      const label = item.label.toLowerCase();
       const companyMatch = companies.find((company) => {
         const companyName = company.name.toLowerCase();
-        return (
-          companyName.includes(item.label.toLowerCase()) ||
-          companyName.includes(normalizedLabel)
-        );
+        return companyName.includes(label);
       });
 
       if (!companyMatch) {

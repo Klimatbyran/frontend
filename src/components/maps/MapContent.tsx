@@ -1,10 +1,10 @@
-import type { RefObject } from "react";
 import {
   FeatureCollection,
   Feature,
   Geometry,
   GeoJsonProperties,
 } from "geojson";
+import type { MutableRefObject } from "react";
 import { MapContainer, GeoJSON } from "react-leaflet";
 import type L from "leaflet";
 import { MapController } from "./MapController";
@@ -15,7 +15,7 @@ interface MapContentProps {
   mapBounds: L.LatLngBounds;
   minZoom: number;
   maxZoom: number;
-  mapRef: React.RefObject<L.Map | null>;
+  mapRef: MutableRefObject<L.Map | null>;
   getAreaStyle: (
     feature: Feature<Geometry, GeoJsonProperties> | undefined,
   ) => L.PathOptions | Record<string, unknown>;
@@ -57,7 +57,9 @@ function MapContent({
       minZoom={minZoom}
       maxZoom={maxZoom}
       scrollWheelZoom={scrollWheelZoom}
-      ref={mapRef as unknown as RefObject<L.Map>}
+      ref={(instance) => {
+        mapRef.current = instance;
+      }}
       className="rounded-xl"
     >
       <GeoJSON

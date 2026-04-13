@@ -54,8 +54,9 @@ export function AppRoutes() {
       {/* Language redirect for non-prefixed routes */}
       <Route path="*" element={<LanguageRedirect />} />
 
-      {/* Root path - matches both /sv and /en */}
+      {/* Root path - matches both /sv and /en (with and without trailing slash) */}
       <Route path={`${basePath}`} element={<LandingPage />} />
+      <Route path={`${basePath}/`} element={<LandingPage />} />
 
       {/* General routes */}
       <Route

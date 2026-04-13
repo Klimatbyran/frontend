@@ -179,7 +179,7 @@ export const CompaniesSection = ({ companies }: CompaniesSectionProps) => {
 
               <div className="w-full flex items-center gap-2">
                 <Text className="text-lg font-light text-[18px] text-grey">
-                  Currently viewing:{" "}
+                  {t("landingPage.companiesSection.currentlyViewing")}
                 </Text>
                 <Text className="text-white text-lg font-medium">
                   {selectedCompany?.name ?? "-"}
