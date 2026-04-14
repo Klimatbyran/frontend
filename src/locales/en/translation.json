@@ -1519,7 +1519,7 @@
         "electricCarChangePercent": {
           "label": "Electric Cars",
           "description": "Change in electric car adoption",
-          "detailedDescription": "The growth rate in municipalities for the share of newly registered rechargeable cars 2015-2024, stated in percentage points per year.",
+          "detailedDescription": "The growth rate in municipalities for the share of newly registered rechargeable cars 2015-2025, stated in percentage points per year.",
           "source": "Transport Analysis"
         },
         "totalConsumptionEmission": {
@@ -1531,7 +1531,7 @@
         "electricVehiclePerChargePoints": {
           "label": "Charging Stations",
           "description": "Number of electric vehicles per charging point",
-          "detailedDescription": "Number of electric vehicles per public charging point, per municipality in 2024. Lower numbers are better, as good infrastructure promotes increased electric vehicle adoption.",
+          "detailedDescription": "Number of electric vehicles per public charging point, per municipality in 2025. Lower numbers are better, as good infrastructure promotes increased electric vehicle adoption.",
           "source": "Power Circle",
           "nullValues": "No charging points"
         },
