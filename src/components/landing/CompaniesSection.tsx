@@ -104,7 +104,7 @@ export const CompaniesSection = ({ companies }: CompaniesSectionProps) => {
             </div>
 
             <LocalizedLink
-              to="/companies"
+              to="/explore/companies"
               className="hidden lg:flex self-end w-fit shrink-0"
             >
               <Button
@@ -208,7 +208,7 @@ export const CompaniesSection = ({ companies }: CompaniesSectionProps) => {
           </div>
 
           <LocalizedLink
-            to="/companies"
+            to="/explore/companies"
             className="lg:hidden order-3 self-start w-fit shrink-0"
           >
             <Button
