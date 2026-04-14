@@ -146,7 +146,9 @@ export const MunicipalitiesSection = ({
       ? t("landingPage.municipalitiesSection.description")
       : t("landingPage.regionsSection.description");
   const explorePath =
-    territoryMode === "municipalities" ? "/explore/municipalities" : "/explore/regions";
+    territoryMode === "municipalities"
+      ? "/explore/municipalities"
+      : "/explore/regions";
   const exploreLabel =
     territoryMode === "municipalities"
       ? t("landingPage.municipalitiesSection.exploreButton")
