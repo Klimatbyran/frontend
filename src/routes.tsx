@@ -1,5 +1,4 @@
 import { Route, Routes } from "react-router-dom";
-import { stagingFeatureFlagEnabled } from "@/utils/ui/featureFlags";
 import { LanguageRedirect } from "@/components/LanguageRedirect";
 import ProtectedRoute from "./components/ProtectedRoute";
 import StagingProtectedRoute from "./components/StagingProtectedRoute";
@@ -17,7 +16,6 @@ import DownloadsPage from "./pages/DownloadsPage";
 import { ErrorPage } from "./pages/ErrorPage";
 import { InsightsPage } from "./pages/InsightsPage";
 import { LandingPage } from "./pages/LandingPage";
-import { LandingPageNew } from "./pages/LandingPageNew";
 import { LearnMoreOverview } from "./pages/LearnMoreOverview";
 import { LearnMoreArticle } from "./pages/LearnMoreArticle";
 import { MethodsPage } from "./pages/MethodsPage";
@@ -45,12 +43,6 @@ import { ExplorePage } from "./pages/ExplorePage";
 
 void StagingProtectedRoute; // referenced so dead-code scripts keep the component; eslint/ts unused-import satisfied
 
-// Conditional landing page component that shows new version on localhost/staging
-function ConditionalLandingPage() {
-  const isStaging = stagingFeatureFlagEnabled();
-  return isStaging ? <LandingPageNew /> : <LandingPage />;
-}
-
 export function AppRoutes() {
   const { currentLanguage } = useLanguage();
 
@@ -62,9 +54,9 @@ export function AppRoutes() {
       {/* Language redirect for non-prefixed routes */}
       <Route path="*" element={<LanguageRedirect />} />
 
-      {/* Root path - matches both /sv and /en */}
-      <Route path={`${basePath}`} element={<ConditionalLandingPage />} />
-      <Route path={`${basePath}/`} element={<ConditionalLandingPage />} />
+      {/* Root path - matches both /sv and /en (with and without trailing slash) */}
+      <Route path={`${basePath}`} element={<LandingPage />} />
+      <Route path={`${basePath}/`} element={<LandingPage />} />
 
       {/* General routes */}
       <Route

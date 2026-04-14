@@ -17,6 +17,7 @@ export function Layout({ children }: LayoutProps) {
   const location = useLocation();
   const params = useParams();
   const queryClient = useQueryClient();
+  const isLandingPage = /^\/(sv|en)\/?$/.test(location.pathname);
 
   // Get SEO metadata for current route
   const seoMeta = useMemo(() => {
@@ -44,7 +45,13 @@ export function Layout({ children }: LayoutProps) {
     <div className="min-h-screen w-full overflow-x-hidden bg-black-3 flex flex-col">
       <Seo meta={seoMeta} />
       <Header />
-      <main className="flex-1 container mx-auto px-4 pt-24 pb-12 min-h-0">
+      <main
+        className={
+          isLandingPage
+            ? "flex-1 min-h-0"
+            : "flex-1 container mx-auto px-4 pt-24 pb-12 min-h-0"
+        }
+      >
         {children}
         <ScrollToTop />
         <SuggestEdit />
