@@ -4,7 +4,7 @@ import react from "@vitejs/plugin-react";
 import { plugin as markdown, Mode } from "vite-plugin-markdown";
 
 export default ({ mode }: ConfigEnv) => {
-  const env = loadEnv(mode, process.cwd());
+  const env = loadEnv(mode, process.cwd(), "");
 
   return defineConfig({
     plugins: [
@@ -30,6 +30,15 @@ export default ({ mode }: ConfigEnv) => {
           target: env.VITE_API_PROXY ?? "http://localhost:3000/", // Default to local, override in CI/CD
           changeOrigin: true,
           secure: false,
+          configure: (proxy) => {
+            proxy.on("proxyReq", (proxyReq) => {
+              const key =
+                env.GARBO_PROXY_CLIENT_API_KEY ?? env.GARBO_PROXY_PUBLIC_API_KEY;
+              if (key) {
+                proxyReq.setHeader("X-API-Key", key);
+              }
+            });
+          },
         },
       },
     },
