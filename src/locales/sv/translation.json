@@ -1571,7 +1571,7 @@
         "electricCarChangePercent": {
           "label": "Elbilarna",
           "description": "Förändring i andel elbilar",
-          "detailedDescription": "Ökningstakten i kommunerna för andel nyregistrerade laddbara bilar 2015–2024, angivet i procentenheter per år.",
+          "detailedDescription": "Ökningstakten i kommunerna för andel nyregistrerade laddbara bilar 2015–2025, angivet i procentenheter per år.",
           "source": "Trafikanalys"
         },
         "totalConsumptionEmission": {
