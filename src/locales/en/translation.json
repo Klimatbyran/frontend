@@ -75,12 +75,13 @@
     "title": "How is it going with",
     "searchPlaceholder": "Search for a company...",
     "placeholder": "Search for a company",
-    "heroSearchPlaceholder": "Search for a company or municipality...",
-    "heroSearchLabel": "Search for a company or municipality",
+    "heroSearchPlaceholder": "Search for a company, municipality, or region...",
+    "heroSearchLabel": "Search for a company, municipality, or region",
     "popularLabel": "Popular:",
     "searchResultType": {
       "company": "Company",
-      "municipality": "Municipality"
+      "municipality": "Municipality",
+      "region": "Region"
     },
     "seeResults": "See results",
     "bestPerformers": "Top Lists",

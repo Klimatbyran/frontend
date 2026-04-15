@@ -75,12 +75,13 @@
     "title": "Hur går det med",
     "searchPlaceholder": "Sök efter ett företag...",
     "placeholder": "Sök efter ett företag",
-    "heroSearchPlaceholder": "Sök efter ett företag eller en kommun...",
-    "heroSearchLabel": "Sök efter ett företag eller en kommun",
+    "heroSearchPlaceholder": "Sök efter ett företag, en kommun eller ett län...",
+    "heroSearchLabel": "Sök efter ett företag, en kommun eller ett län",
     "popularLabel": "Populärt:",
     "searchResultType": {
       "company": "Företag",
-      "municipality": "Kommun"
+      "municipality": "Kommun",
+      "region": "Län"
     },
     "seeResults": "Se resultat",
     "bestPerformers": "Topplistor",
