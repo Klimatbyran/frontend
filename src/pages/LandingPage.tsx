@@ -145,8 +145,7 @@ export function LandingPage() {
       </div>
       <MunicipalitiesSection municipalities={municipalities} />
       <CountriesSection />
-      {/*       <MissionSection />
-       */}{" "}
+      <MissionSection />
       <PartnersSection />
     </>
   );

@@ -46,14 +46,14 @@ export const CountriesSection = () => {
             filteredSectors={filteredSectors}
             onFilteredSectorsChange={setFilteredSectors}
             helpItems={[]}
-            sectionClassName="bg-transparent"
+            sectionClassName="bg-transparent !rounded-none !px-0 !py-0 [&>div:first-child]:pb-0"
             showHeader={false}
             compactLayout={false}
           />
         </div>
 
         <div className="w-full flex justify-start md:justify-end">
-          <LocalizedLink to="/nation" className="w-fit pt-2">
+          <LocalizedLink to="/nation" className="w-fit md:pt-2">
             <Button
               variant="outline"
               size="lg"
