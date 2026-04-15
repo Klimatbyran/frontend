@@ -9,7 +9,7 @@ export const MissionSection = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="bg-black w-full flex flex-col items-center pt-44 md:pt-48">
+    <div className="bg-black w-full flex flex-col items-center pt-44 md:pt-52">
       <div className="w-full container max-w-7xl mx-auto px-4">
         <div className="flex w-full flex-col items-start gap-8 lg:flex-row lg:gap-12">
           <div className="w-full lg:w-2/5 flex flex-col gap-24 lg:pt-4">
@@ -23,7 +23,7 @@ export const MissionSection = () => {
             </div>
 
             <div className="hidden w-full lg:flex lg:justify-end">
-              <LocalizedLink to="/about" className="w-fit pt-2">
+              <LocalizedLink to="/about" className="w-fit md:pt-2">
                 <Button
                   variant="outline"
                   size="lg"
@@ -45,8 +45,8 @@ export const MissionSection = () => {
           <div className="w-full lg:w-3/5">
             <KlimatkollenVideo />
 
-            <div className="mt-6 flex w-full justify-start lg:hidden">
-              <LocalizedLink to="/about" className="w-fit pt-2">
+            <div className="mt-8 flex w-full justify-start lg:hidden">
+              <LocalizedLink to="/about" className="w-fit">
                 <Button
                   variant="outline"
                   size="lg"

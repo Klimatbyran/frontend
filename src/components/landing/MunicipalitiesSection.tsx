@@ -210,7 +210,7 @@ export const MunicipalitiesSection = ({
               </div>
             </div>
 
-            <div className="relative pt-4 md:pt-0 w-full h-[55vh] md:h-[65vh] lg:h-[75vh]">
+            <div className="relative w-full h-[55vh] md:h-[65vh] lg:h-[75vh]">
               <TerritoryMap
                 key={territoryMode}
                 entityType={territoryMode}
@@ -238,7 +238,7 @@ export const MunicipalitiesSection = ({
             </div>
             <LocalizedLink
               to={explorePath}
-              className="hidden lg:flex self-end w-fit pt-2"
+              className="hidden lg:flex self-end w-fit md:pt-2"
             >
               <Button
                 variant="outline"
@@ -259,7 +259,7 @@ export const MunicipalitiesSection = ({
 
           <LocalizedLink
             to={explorePath}
-            className="lg:hidden order-3 self-start w-fit pt-2"
+            className="lg:hidden order-3 self-start w-fit"
           >
             <Button
               variant="outline"

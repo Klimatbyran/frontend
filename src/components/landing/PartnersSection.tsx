@@ -9,7 +9,7 @@ export const PartnersSection = () => {
 
   return (
     <div className="bg-black w-full flex flex-col items-center pt-44 md:pt-52">
-      <div className="w-full container max-w-7xl mx-auto px-4 items-center flex flex-col gap-6">
+      <div className="w-full container max-w-7xl mx-auto px-4 items-center flex flex-col gap-8">
         <div className="flex w-full max-w-[760px] flex-col gap-4 text-center md:self-center md:text-center">
           <Text className="tracking-tight text-3xl sm:text-4xl font-light">
             {t("landingPage.partnersSection.title")}

@@ -90,7 +90,7 @@ export const CompaniesSection = ({ companies }: CompaniesSectionProps) => {
   }, [chartData, chartEndYear, trendAnalysis]);
 
   return (
-    <div className="bg-black w-full flex flex-col items-center min-h-screen pt-16 md:pt-80">
+    <div className="bg-black w-full flex flex-col items-center min-h-screen pt-44 md:pt-52">
       <div className="w-full container max-w-7xl mx-auto px-4">
         <div className="flex w-full flex-col items-start gap-8 lg:flex-row lg:gap-12">
           <div className="order-1 lg:order-2 w-full lg:w-2/5 flex flex-col gap-24 lg:pt-4">
@@ -105,7 +105,7 @@ export const CompaniesSection = ({ companies }: CompaniesSectionProps) => {
 
             <LocalizedLink
               to="/explore/companies"
-              className="hidden lg:flex self-end w-fit shrink-0"
+              className="hidden lg:flex self-end w-fit shrink-0 md:pt-2"
             >
               <Button
                 variant="outline"
@@ -125,7 +125,7 @@ export const CompaniesSection = ({ companies }: CompaniesSectionProps) => {
           </div>
 
           <div className="order-2 lg:order-1 w-full lg:w-3/5 flex flex-col gap-3">
-            <div className="flex w-full flex-col gap-3 md:flex-row md:items-center md:justify-start md:gap-6 md:pt-6">
+            <div className="flex w-full flex-col gap-3 md:flex-row md:items-center md:justify-start md:gap-6 md:pt-4">
               <div className="relative w-full max-w-[18rem]">
                 <div className="relative">
                   <Search
