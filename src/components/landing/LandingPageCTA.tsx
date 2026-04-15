@@ -21,14 +21,6 @@ interface LandingPageCTAProps {
   regions: string[];
 }
 
-const POPULAR_ITEMS = [
-  { label: "H&M", type: "company" as const },
-  { label: "ABB", type: "company" as const },
-  { label: "Stockholm", type: "municipality" as const },
-  { label: "Malmö", type: "municipality" as const },
-  { label: "Västra Götalands län", type: "region" as const },
-];
-
 export function LandingPageCTA({
   companies,
   municipalities,
@@ -97,6 +89,50 @@ export function LandingPageCTA({
     );
   }, [companies, municipalities, regions, searchQuery]);
 
+  const popularItems = useMemo<HeroSearchResult[]>(() => {
+    const preferredCompanies = ["h&m", "abb"];
+    const preferredMunicipalities = ["stockholm", "malmö"];
+
+    const popularCompanies = preferredCompanies
+      .map((preferred) =>
+        companies.find((company) =>
+          company.name.toLowerCase().includes(preferred),
+        ),
+      )
+      .filter((company): company is RankedCompany => company != null)
+      .slice(0, 2)
+      .map(
+        (company): HeroSearchResult => ({
+          type: "company",
+          id: String(company.wikidataId),
+          name: company.name,
+        }),
+      );
+
+    const popularMunicipalities = preferredMunicipalities
+      .map((preferred) =>
+        municipalities.find((municipality) =>
+          municipality.name.toLowerCase().includes(preferred),
+        ),
+      )
+      .filter(
+        (municipality): municipality is Municipality => municipality != null,
+      )
+      .slice(0, 2)
+      .map(
+        (municipality): HeroSearchResult => ({
+          type: "municipality",
+          name: municipality.name,
+        }),
+      );
+
+    const popularRegion = regions[0]
+      ? ([{ type: "region", name: regions[0] }] as HeroSearchResult[])
+      : [];
+
+    return [...popularCompanies, ...popularMunicipalities, ...popularRegion];
+  }, [companies, municipalities, regions]);
+
   const handleSearchSelection = useCallback(
     (result: HeroSearchResult) => {
       setSearchQuery(result.name);
@@ -128,38 +164,14 @@ export function LandingPageCTA({
   );
 
   const handlePopularClick = useCallback(
-    (item: (typeof POPULAR_ITEMS)[number]) => {
-      if (item.type === "region") {
-        handleSearchSelection({ type: "region", name: item.label });
-        return;
-      }
-
-      if (item.type === "municipality") {
-        handleSearchSelection({ type: "municipality", name: item.label });
-        return;
-      }
-
-      const label = item.label.toLowerCase();
-      const companyMatch = companies.find((company) => {
-        const companyName = company.name.toLowerCase();
-        return companyName.includes(label);
-      });
-
-      if (!companyMatch) {
-        return;
-      }
-
-      handleSearchSelection({
-        type: "company",
-        id: String(companyMatch.wikidataId),
-        name: companyMatch.name,
-      });
+    (item: HeroSearchResult) => {
+      handleSearchSelection(item);
     },
-    [companies, handleSearchSelection],
+    [handleSearchSelection],
   );
 
   return (
-    <LandingSection innerClassName="flex flex-col items-center max-w-4xl mx-auto space-y-8">
+    <LandingSection innerClassName="flex flex-col items-center max-w-4xl mx-auto space-y-8 -pt-4">
       {/* Description */}
       <p className="text-lg md:text-lg text-grey max-w-3xl">
         {t("landingPage.ctaSection.description")}
@@ -232,9 +244,9 @@ export function LandingPageCTA({
             {t("landingPage.popularLabel")}
           </Text>
 
-          {POPULAR_ITEMS.map((item) => (
+          {popularItems.map((item) => (
             <button
-              key={`${item.type}-${item.label}`}
+              key={`${item.type}-${item.type === "company" ? item.id : item.name}`}
               type="button"
               onClick={() => handlePopularClick(item)}
               className="group relative overflow-hidden rounded-md border border-white/20 px-2.5 py-1 hover:opacity-100 active:opacity-100"
@@ -244,7 +256,7 @@ export function LandingPageCTA({
                 aria-hidden="true"
               />
               <span className="relative z-10 text-white/90 transition-colors duration-500 group-hover:text-black">
-                {item.label}
+                {item.name}
               </span>
             </button>
           ))}

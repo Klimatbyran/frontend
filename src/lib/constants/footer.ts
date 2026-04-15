@@ -38,7 +38,7 @@ export const partners = [
   {
     href: "https://ai-bridges.org/",
     src: "/logos/partners/ai-bridges-logo.png",
-    alt: "Google.org logo",
+    alt: "AI Bridges logo",
   },
   {
     href: "https://www.climateview.global/",

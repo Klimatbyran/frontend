@@ -90,7 +90,7 @@ export const CompaniesSection = ({ companies }: CompaniesSectionProps) => {
   }, [chartData, chartEndYear, trendAnalysis]);
 
   return (
-    <div className="bg-black w-full flex flex-col items-center min-h-screen pt-44 md:pt-52">
+    <div className="bg-black w-full flex flex-col items-center min-h-screen pt-24 lg:pt-72">
       <div className="w-full container max-w-7xl mx-auto px-4">
         <div className="flex w-full flex-col items-start gap-8 lg:flex-row lg:gap-12">
           <div className="order-1 lg:order-2 w-full lg:w-2/5 flex flex-col gap-24 lg:pt-4">
