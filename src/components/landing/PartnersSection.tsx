@@ -9,12 +9,14 @@ export const PartnersSection = () => {
 
   return (
     <div className="bg-black w-full flex flex-col items-center pt-44 md:pt-52">
-      <div className="w-full container mx-auto px-4 items-center flex flex-col gap-6">
-        <Text className="w-full text-left md:text-center tracking-tight text-3xl sm:text-4xl font-light">
-          {t("landingPage.partnersSection.title")}
-        </Text>
+      <div className="w-full container max-w-7xl mx-auto px-4 items-center flex flex-col gap-6">
+        <div className="flex w-full max-w-[760px] flex-col gap-4 text-left md:self-center text-center">
+          <Text className="tracking-tight text-3xl sm:text-4xl font-light">
+            {t("landingPage.partnersSection.title")}
+          </Text>
+        </div>
 
-        <div className="grid w-full max-w-6xl grid-cols-4 gap-2 sm:gap-3 md:grid-cols-5 lg:grid-cols-10">
+        <div className="grid w-full grid-cols-4 gap-2 sm:gap-3 md:grid-cols-5 lg:grid-cols-10">
           {partners.map((logo, index) => {
             const isCenteredLastRowItem =
               mobileRemainder === 2 && index >= partners.length - 2;
@@ -34,9 +36,9 @@ export const PartnersSection = () => {
                 href={logo.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`group flex h-16 items-center justify-center rounded-md bg-black-2 px-2 transition-colors hover:bg-black-1 sm:h-20 sm:px-3 ${centeredStartClass}`}
+                className={`group flex h-20 items-center justify-center rounded-md bg-black-2 px-2 transition-colors hover:bg-black-1 sm:h-24 sm:px-3 ${centeredStartClass}`}
               >
-                <span className="flex h-12 w-full items-center justify-center sm:h-10">
+                <span className="flex h-14 w-full items-center justify-center sm:h-16">
                   <img
                     src={logo.src}
                     alt={logo.alt}

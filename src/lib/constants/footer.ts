@@ -36,8 +36,8 @@ export const socialLinks = [
 
 export const partners = [
   {
-    href: "https://www.google.org/",
-    src: "/logos/partners/google_org_white.svg",
+    href: "https://ai-bridges.org/",
+    src: "/logos/partners/ai-bridges-logo.png",
     alt: "Google.org logo",
   },
   {

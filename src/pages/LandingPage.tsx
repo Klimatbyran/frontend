@@ -144,9 +144,10 @@ export function LandingPage() {
         <CompaniesSection companies={companies} />
       </div>
       <MunicipalitiesSection municipalities={municipalities} />
-      <PartnersSection />
       <CountriesSection />
-      <MissionSection />
+      {/*       <MissionSection />
+       */}{" "}
+      <PartnersSection />
     </>
   );
 }

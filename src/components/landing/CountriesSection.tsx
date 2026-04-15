@@ -26,8 +26,8 @@ export const CountriesSection = () => {
 
   return (
     <div className="bg-black w-full flex flex-col items-center pt-44 md:pt-52">
-      <div className="w-full container mx-auto px-4 items-center flex flex-col gap-8">
-        <div className="flex w-full max-w-[600px] self-start flex-col gap-4 text-left md:self-center md:text-center">
+      <div className="w-full container max-w-7xl mx-auto px-4 items-center flex flex-col gap-8">
+        <div className="flex w-full max-w-[760px] self-start flex-col gap-4 text-left md:self-center md:text-center">
           <Text className="text-3xl sm:text-4xl font-light">
             {t("landingPage.countriesSection.title")}
           </Text>
@@ -35,7 +35,7 @@ export const CountriesSection = () => {
             {t("landingPage.countriesSection.description")}
           </Text>
         </div>
-        <div className="w-full max-w-6xl">
+        <div className="w-full">
           <SectorEmissionsChart
             sectorEmissions={sectorEmissions}
             availableYears={availableYears}
@@ -48,11 +48,11 @@ export const CountriesSection = () => {
             helpItems={[]}
             sectionClassName="bg-transparent"
             showHeader={false}
-            compactLayout={true}
+            compactLayout={false}
           />
         </div>
 
-        <div className="w-full max-w-6xl flex justify-start md:justify-end">
+        <div className="w-full flex justify-start md:justify-end">
           <LocalizedLink to="/nation" className="w-fit pt-2">
             <Button
               variant="outline"

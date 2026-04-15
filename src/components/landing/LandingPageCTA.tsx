@@ -130,7 +130,7 @@ export function LandingPageCTA({
   );
 
   return (
-    <LandingSection innerClassName="flex flex-col items-center max-w-4xl mx-auto space-y-16">
+    <LandingSection innerClassName="flex flex-col items-center max-w-4xl mx-auto space-y-8">
       {/* Description */}
       <p className="text-lg md:text-lg text-grey max-w-3xl">
         {t("landingPage.ctaSection.description")}

@@ -90,9 +90,9 @@ export const CompaniesSection = ({ companies }: CompaniesSectionProps) => {
   }, [chartData, chartEndYear, trendAnalysis]);
 
   return (
-    <div className="bg-black w-full flex flex-col items-center min-h-screen pt-24 md:pt-80">
-      <div className="w-full container mx-auto px-4">
-        <div className="flex flex-col lg:flex-row items-start gap-8 lg:gap-12">
+    <div className="bg-black w-full flex flex-col items-center min-h-screen pt-16 md:pt-80">
+      <div className="w-full container max-w-7xl mx-auto px-4">
+        <div className="flex w-full flex-col items-start gap-8 lg:flex-row lg:gap-12">
           <div className="order-1 lg:order-2 w-full lg:w-2/5 flex flex-col gap-24 lg:pt-4">
             <div className="flex flex-col gap-4">
               <Text className="text-3xl sm:text-4xl font-light">
@@ -124,7 +124,7 @@ export const CompaniesSection = ({ companies }: CompaniesSectionProps) => {
             </LocalizedLink>
           </div>
 
-          <div className="order-2 lg:order-1 w-full lg:w-3/5 max-w-screen-lg flex flex-col gap-3">
+          <div className="order-2 lg:order-1 w-full lg:w-3/5 flex flex-col gap-3">
             <div className="flex w-full flex-col gap-3 md:flex-row md:items-center md:justify-start md:gap-6 md:pt-6">
               <div className="relative w-full max-w-[18rem]">
                 <div className="relative">
