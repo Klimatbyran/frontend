@@ -8,12 +8,9 @@ import { useLanguage } from "@/components/LanguageProvider";
 import { getEntityDetailPath, localizedPath } from "@/utils/routing";
 import type { RankedCompany } from "@/types/company";
 import type { Municipality } from "@/types/municipality";
+import { usePopularHeroItems } from "@/hooks/usePopularHeroItems";
+import type { HeroSearchResult } from "@/hooks/usePopularHeroItems";
 import { Text } from "../ui/text";
-
-type HeroSearchResult =
-  | { type: "company"; id: string; name: string }
-  | { type: "municipality"; name: string }
-  | { type: "region"; name: string };
 
 interface LandingPageCTAProps {
   companies: RankedCompany[];
@@ -89,49 +86,11 @@ export function LandingPageCTA({
     );
   }, [companies, municipalities, regions, searchQuery]);
 
-  const popularItems = useMemo<HeroSearchResult[]>(() => {
-    const preferredCompanies = ["h&m"];
-    const preferredMunicipalities = ["stockholm"];
-
-    const popularCompanies = preferredCompanies
-      .map((preferred) =>
-        companies.find((company) =>
-          company.name.toLowerCase().includes(preferred),
-        ),
-      )
-      .filter((company): company is RankedCompany => company != null)
-      .slice(0, 2)
-      .map(
-        (company): HeroSearchResult => ({
-          type: "company",
-          id: String(company.wikidataId),
-          name: company.name,
-        }),
-      );
-
-    const popularMunicipalities = preferredMunicipalities
-      .map((preferred) =>
-        municipalities.find((municipality) =>
-          municipality.name.toLowerCase().includes(preferred),
-        ),
-      )
-      .filter(
-        (municipality): municipality is Municipality => municipality != null,
-      )
-      .slice(0, 2)
-      .map(
-        (municipality): HeroSearchResult => ({
-          type: "municipality",
-          name: municipality.name,
-        }),
-      );
-
-    const popularRegion = regions[0]
-      ? ([{ type: "region", name: regions[0] }] as HeroSearchResult[])
-      : [];
-
-    return [...popularCompanies, ...popularMunicipalities, ...popularRegion];
-  }, [companies, municipalities, regions]);
+  const popularItems = usePopularHeroItems({
+    companies,
+    municipalities,
+    regions,
+  });
 
   const handleSearchSelection = useCallback(
     (result: HeroSearchResult) => {
