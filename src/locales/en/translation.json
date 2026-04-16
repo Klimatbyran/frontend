@@ -1576,7 +1576,7 @@
         "bicycleMetrePerCapita": {
           "label": "Bicycles",
           "description": "Bicycle path metres per capita",
-          "detailedDescription": "Number of metres of bicycle paths per inhabitant per municipality in 2024. Longer is better, as good infrastructure promotes increased cycling.",
+          "detailedDescription": "Number of metres of bicycle paths per inhabitant per municipality in 2025. Longer is better, as good infrastructure promotes increased cycling.",
           "source0": "National Road Database",
           "source1": "SCB"
         },

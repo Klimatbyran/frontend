@@ -1633,7 +1633,7 @@
         "bicycleMetrePerCapita": {
           "label": "Cyklarna",
           "description": "Meter cykelväg per invånare",
-          "detailedDescription": "Antal meter cykelväg per invånare per kommun år 2024. Ju längre desto bättre, god infrastruktur gynnar ökad cykling",
+          "detailedDescription": "Antal meter cykelväg per invånare per kommun år 2025. Ju längre desto bättre, god infrastruktur gynnar ökad cykling",
           "source0": "Nationella Vägdatabasen",
           "source1": "SCB"
         },
