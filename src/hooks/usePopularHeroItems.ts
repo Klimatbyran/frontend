@@ -56,7 +56,7 @@ export function usePopularHeroItems({
       );
 
     const popularRegion = regions[0]
-      ? ([{ type: "region", name: regions[0] }] as HeroSearchResult[])
+      ? ([{ type: "region", name: "Skåne län" }] as HeroSearchResult[])
       : [];
 
     return [...popularCompanies, ...popularMunicipalities, ...popularRegion];
