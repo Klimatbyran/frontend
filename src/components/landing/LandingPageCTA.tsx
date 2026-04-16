@@ -90,8 +90,8 @@ export function LandingPageCTA({
   }, [companies, municipalities, regions, searchQuery]);
 
   const popularItems = useMemo<HeroSearchResult[]>(() => {
-    const preferredCompanies = ["h&m", "abb"];
-    const preferredMunicipalities = ["stockholm", "malmö"];
+    const preferredCompanies = ["h&m"];
+    const preferredMunicipalities = ["stockholm"];
 
     const popularCompanies = preferredCompanies
       .map((preferred) =>
