@@ -142,7 +142,7 @@ export function LandingPageCTA({
       >
         <div className="relative">
           <Search
-            className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/50"
+            className="absolute left-3 top-1/2 hidden h-4 w-4 -translate-y-1/2 text-white/50 min-[430px]:block"
             aria-hidden="true"
           />
           <Input
@@ -162,7 +162,7 @@ export function LandingPageCTA({
               }
             }}
             placeholder={t("landingPage.heroSearchPlaceholder")}
-            className="h-11 border-white/25 bg-black-2 pl-10 text-white placeholder:text-white/50 focus-visible:ring-white/40"
+            className="h-11 border-white/25 bg-black-2 pl-3 text-white placeholder:text-white/50 focus-visible:ring-white/40 min-[430px]:pl-8"
             aria-label={t("landingPage.heroSearchLabel")}
           />
         </div>
