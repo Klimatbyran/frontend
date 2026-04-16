@@ -8,27 +8,20 @@ import { useLanguage } from "@/components/LanguageProvider";
 import { getEntityDetailPath, localizedPath } from "@/utils/routing";
 import type { RankedCompany } from "@/types/company";
 import type { Municipality } from "@/types/municipality";
+import { usePopularHeroItems } from "@/hooks/usePopularHeroItems";
+import type { HeroSearchResult } from "@/hooks/usePopularHeroItems";
 import { Text } from "../ui/text";
-
-type HeroSearchResult =
-  | { type: "company"; id: string; name: string }
-  | { type: "municipality"; name: string };
 
 interface LandingPageCTAProps {
   companies: RankedCompany[];
   municipalities: Municipality[];
+  regions: string[];
 }
-
-const POPULAR_ITEMS = [
-  { label: "H&M", type: "company" as const },
-  { label: "ABB", type: "company" as const },
-  { label: "Stockholm", type: "municipality" as const },
-  { label: "Malmö", type: "municipality" as const },
-];
 
 export function LandingPageCTA({
   companies,
   municipalities,
+  regions,
 }: LandingPageCTAProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -80,8 +73,24 @@ export function LandingPageCTA({
         name: municipality.name,
       }));
 
-    return [...companyResults, ...municipalityResults].slice(0, 8);
-  }, [companies, municipalities, searchQuery]);
+    const regionResults: HeroSearchResult[] = regions
+      .filter((region) => region.toLowerCase().includes(query))
+      .map((region) => ({
+        type: "region",
+        name: region,
+      }));
+
+    return [...companyResults, ...municipalityResults, ...regionResults].slice(
+      0,
+      8,
+    );
+  }, [companies, municipalities, regions, searchQuery]);
+
+  const popularItems = usePopularHeroItems({
+    companies,
+    municipalities,
+    regions,
+  });
 
   const handleSearchSelection = useCallback(
     (result: HeroSearchResult) => {
@@ -90,6 +99,16 @@ export function LandingPageCTA({
 
       if (result.type === "company") {
         navigate(localizedPath(currentLanguage, `/companies/${result.id}`));
+        return;
+      }
+
+      if (result.type === "region") {
+        navigate(
+          localizedPath(
+            currentLanguage,
+            getEntityDetailPath("region", result.name),
+          ),
+        );
         return;
       }
 
@@ -104,33 +123,14 @@ export function LandingPageCTA({
   );
 
   const handlePopularClick = useCallback(
-    (item: (typeof POPULAR_ITEMS)[number]) => {
-      if (item.type === "municipality") {
-        handleSearchSelection({ type: "municipality", name: item.label });
-        return;
-      }
-
-      const label = item.label.toLowerCase();
-      const companyMatch = companies.find((company) => {
-        const companyName = company.name.toLowerCase();
-        return companyName.includes(label);
-      });
-
-      if (!companyMatch) {
-        return;
-      }
-
-      handleSearchSelection({
-        type: "company",
-        id: String(companyMatch.wikidataId),
-        name: companyMatch.name,
-      });
+    (item: HeroSearchResult) => {
+      handleSearchSelection(item);
     },
-    [companies, handleSearchSelection],
+    [handleSearchSelection],
   );
 
   return (
-    <LandingSection innerClassName="flex flex-col items-center max-w-4xl mx-auto space-y-16">
+    <LandingSection innerClassName="flex flex-col items-center max-w-4xl mx-auto space-y-8 -pt-4">
       {/* Description */}
       <p className="text-lg md:text-lg text-grey max-w-3xl">
         {t("landingPage.ctaSection.description")}
@@ -184,7 +184,9 @@ export function LandingPageCTA({
                   <span className="text-xs text-white/60">
                     {result.type === "company"
                       ? t("landingPage.searchResultType.company")
-                      : t("landingPage.searchResultType.municipality")}
+                      : result.type === "municipality"
+                        ? t("landingPage.searchResultType.municipality")
+                        : t("landingPage.searchResultType.region")}
                   </span>
                 </button>
               ))
@@ -196,23 +198,24 @@ export function LandingPageCTA({
           </div>
         )}
 
-        <div className="mt-3 flex w-full items-center gap-2 overflow-x-auto whitespace-nowrap text-sm">
-          <Text className="shrink-0 text-white/70">
+        <div className="mt-3 flex w-full flex-wrap items-center gap-2 text-sm">
+          <Text className="text-left text-white/70">
             {t("landingPage.popularLabel")}
           </Text>
-          {POPULAR_ITEMS.map((item) => (
+
+          {popularItems.map((item) => (
             <button
-              key={`${item.type}-${item.label}`}
+              key={`${item.type}-${item.type === "company" ? item.id : item.name}`}
               type="button"
               onClick={() => handlePopularClick(item)}
-              className="group rounded-md relative shrink-0 overflow-hidden border border-white/20 px-2.5 py-1 hover:opacity-100 active:opacity-100"
+              className="group relative overflow-hidden rounded-md border border-white/20 px-2.5 py-1 hover:opacity-100 active:opacity-100"
             >
               <span
                 className="absolute inset-0 origin-left scale-x-0 bg-white transition-transform duration-500 ease-out group-hover:scale-x-100"
                 aria-hidden="true"
               />
               <span className="relative z-10 text-white/90 transition-colors duration-500 group-hover:text-black">
-                {item.label}
+                {item.name}
               </span>
             </button>
           ))}

@@ -41,7 +41,7 @@ export function Footer() {
   const navigate = useNavigate();
 
   return (
-    <footer className="relative mt-56 w-full border-t bg-black-2 py-4">
+    <footer className="relative mt-24 md:mt-56 w-full border-t bg-black-2 py-4">
       <div
         className="pointer-events-none absolute inset-x-0 top-0 h-20"
         aria-hidden="true"

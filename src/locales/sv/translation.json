@@ -75,12 +75,13 @@
     "title": "Hur går det med",
     "searchPlaceholder": "Sök efter ett företag...",
     "placeholder": "Sök efter ett företag",
-    "heroSearchPlaceholder": "Sök efter ett företag eller en kommun...",
-    "heroSearchLabel": "Sök efter ett företag eller en kommun",
+    "heroSearchPlaceholder": "Sök efter ett företag, en kommun eller ett län...",
+    "heroSearchLabel": "Sök efter ett företag, en kommun eller ett län",
     "popularLabel": "Populärt:",
     "searchResultType": {
       "company": "Företag",
-      "municipality": "Kommun"
+      "municipality": "Kommun",
+      "region": "Län"
     },
     "seeResults": "Se resultat",
     "bestPerformers": "Topplistor",
@@ -110,19 +111,19 @@
       }
     },
     "companiesSection": {
-      "title": "Håll företag ansvariga för sina utsläpp",
-      "description": "Utforska vår omfattande lista över företag och få detaljerad data om utsläpp, trender och hur väl de ligger till på vägen mot Parisavtalet.",
+      "title": "Hur går det med företagens utsläpp?",
+      "description": "Utforska över 400 bolag och få detaljerad data om rapporterade utsläpp och om de ligger i linje med Parisavtalet.",
       "exploreButton": "Utforska företag",
       "currentlyViewing": "Visar just nu:"
     },
     "municipalitiesSection": {
       "title": "Hur presterar din kommun?",
-      "description": "Utforska utsläppsdata från kommuner och se hur de utvecklas mot klimatmålen. Förstå den lokala påverkan, jämför utvecklingen över tid och identifiera var omställningen går framåt eller tappar fart.",
+      "description": "Utforska utsläppsdata från kommuner och se utvecklingen över tid. Hitta nyckeltal som visar hur det går med omställningen och jämför med andra kommuner.",
       "exploreButton": "Utforska kommuner"
     },
     "regionsSection": {
       "title": "Hur presterar ditt län?",
-      "description": "Utforska utsläppsdata från län och se hur de utvecklas mot klimatmålen. Förstå den regionala påverkan, jämför utvecklingen över tid och identifiera var omställningen går framåt eller tappar fart.",
+      "description": "Utforska utsläppsdata från län och se utvecklingen över tid. Se vart utsläppen kommer ifrån och jämför med andra län.",
       "exploreButton": "Utforska län"
     },
     "countriesSection": {

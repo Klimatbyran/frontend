@@ -75,12 +75,13 @@
     "title": "How is it going with",
     "searchPlaceholder": "Search for a company...",
     "placeholder": "Search for a company",
-    "heroSearchPlaceholder": "Search for a company or municipality...",
-    "heroSearchLabel": "Search for a company or municipality",
+    "heroSearchPlaceholder": "Search for a company, municipality, or region...",
+    "heroSearchLabel": "Search for a company, municipality, or region",
     "popularLabel": "Popular:",
     "searchResultType": {
       "company": "Company",
-      "municipality": "Municipality"
+      "municipality": "Municipality",
+      "region": "Region"
     },
     "seeResults": "See results",
     "bestPerformers": "Top Lists",
@@ -105,19 +106,19 @@
       "exploreData": "Explore Data"
     },
     "companiesSection": {
-      "title": "Hold Companies Accountable for their Emissions",
-      "description": "Explore our comprehensive list of companies and get detailed data on emissions, trends, and how well they are performing on the path toward the Paris Agreement.",
+      "title": "How's it going with company emissions?",
+      "description": "Explore over 400 companies and access detailed data on reported emissions and whether they are aligned with the Paris Agreement.",
       "exploreButton": "Explore Companies",
       "currentlyViewing": "Currently viewing:"
     },
     "municipalitiesSection": {
       "title": "How is your municipality performing?",
-      "description": "Explore emissions data from municipalities and see how they are progressing toward climate targets. Understand local impact, compare performance over time, and identify where progress is accelerating or stalling. ",
+      "description": "Explore emissions data from municipalities and track changes over time. Discover key metrics that show progress in the transition and compare with other municipalities.",
       "exploreButton": "Explore Municipalities"
     },
     "regionsSection": {
       "title": "How is your region performing?",
-      "description": "Explore emissions data from regions and see how they are progressing toward climate targets. Understand regional impact, compare performance over time, and identify where progress is accelerating or stalling.",
+      "description": "Explore emissions data from counties and track changes over time. See where emissions come from and compare with other counties.",
       "exploreButton": "Explore Regions"
     },
     "countriesSection": {
@@ -129,8 +130,8 @@
       "title": "Trusted by Supporters and Partners"
     },
     "missionSection": {
-      "title": "Our Mission",
-      "button": "Our Mission"
+      "title": "About Us",
+      "button": "About Us"
     },
     "siteFeatures": {
       "title": "Comprehensive Climate Tracking",
