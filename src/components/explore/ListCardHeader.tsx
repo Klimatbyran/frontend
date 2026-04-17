@@ -30,7 +30,7 @@ export function ListCardHeader({
     });
 
   return (
-    <div className="w-full">
+    <div className="w-full border-b border-black-1 pb-6">
       <div className="flex justify-between gap-1 items-start">
         <div className="min-w-0 flex-1">
           <h2 className="text-3xl font-light">{name}</h2>
@@ -42,7 +42,7 @@ export function ListCardHeader({
           </div>
           <div
             className={cn(
-              "w-full text-xl font-light border-b border-black-1 pb-6",
+              "w-full text-xl font-light",
               meetsParisIsYes ? "text-green-3" : "text-pink-3",
             )}
           >
