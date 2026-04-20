@@ -1,5 +1,9 @@
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
+import {
+  UPSTREAM_CATEGORIES,
+  DOWNSTREAM_CATEGORIES,
+} from "@/lib/constants/categories";
 
 export function ListCardFooterBlock({
   isMunicipality,
@@ -7,7 +11,7 @@ export function ListCardFooterBlock({
   climatePlanStatusColor,
   climatePlanStatusLabel,
   climatePlanAdoptedColor,
-  categoryName,
+  scope3Coverage,
   baseYear,
 }: {
   isMunicipality: boolean;
@@ -15,7 +19,7 @@ export function ListCardFooterBlock({
   climatePlanStatusColor: string;
   climatePlanStatusLabel: string;
   climatePlanAdoptedColor: string;
-  categoryName: string;
+  scope3Coverage: number;
   baseYear?: number | null;
 }) {
   const { t } = useTranslation();
@@ -27,8 +31,14 @@ export function ListCardFooterBlock({
     : (baseYear ?? t("unknown"));
   const row2Label = isMunicipality
     ? t("municipalities.card.climatePlanAdopted")
-    : t("companies.card.largestEmissionSource");
-  const row2Value = isMunicipality ? climatePlanAdoptedText : categoryName;
+    : t("companies.card.scope3Coverage");
+  const row2Value = isMunicipality
+    ? climatePlanAdoptedText
+    : t("companies.card.scope3ReportedCategories", {
+        nrOfReportedCategories: scope3Coverage,
+        nrOfCategories:
+          UPSTREAM_CATEGORIES.length + DOWNSTREAM_CATEGORIES.length,
+      });
 
   return (
     <div className="grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-4 mt-6">
