@@ -1,19 +1,13 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import type { HeroSearchResult } from "@/hooks/usePopularHeroItems";
 import {
-  HERO_SEARCH_DEBOUNCE_MS,
   HERO_SEARCH_MAX_RESULTS,
   HERO_SEARCH_MAX_RESULTS_PER_TYPE,
 } from "@/lib/constants/landingPage";
-
-type GlobalSearchApiItem = {
-  name: string;
-  wikidataId?: string;
-  type: "company" | "municipality" | "region";
-};
+import { getGlobalSearch, GlobalSearchApiResponse } from "@/lib/api";
 
 function mapGlobalSearchResult(
-  item: GlobalSearchApiItem,
+  item: GlobalSearchApiResponse[number],
 ): HeroSearchResult | null {
   if (item.type === "company") {
     if (!item.wikidataId) {
@@ -82,65 +76,21 @@ function applyDiversityCap(
 }
 
 export function useHeroGlobalSearch(searchQuery: string) {
-  const [searchResults, setSearchResults] = useState<HeroSearchResult[]>([]);
-  const [isSearching, setIsSearching] = useState(false);
+  const query = searchQuery.trim();
+  const { data = [], isFetching: isSearching } = useQuery({
+    queryKey: ["globalSearch", query],
+    queryFn: () => (query ? getGlobalSearch(query) : Promise.resolve([])),
+    enabled: !!query,
+    staleTime: 60 * 1000,
+    select: (responseData: GlobalSearchApiResponse) =>
+      applyDiversityCap(
+        responseData
+          .map(mapGlobalSearchResult)
+          .filter((result): result is HeroSearchResult => result != null),
+        HERO_SEARCH_MAX_RESULTS,
+        HERO_SEARCH_MAX_RESULTS_PER_TYPE,
+      ),
+  });
 
-  useEffect(() => {
-    const query = searchQuery.trim();
-
-    if (!query) {
-      setSearchResults([]);
-      setIsSearching(false);
-      return;
-    }
-
-    setIsSearching(true);
-
-    const abortController = new AbortController();
-    const timeout = setTimeout(async () => {
-      try {
-        const response = await fetch("/api/global-search/", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ name: query }),
-          signal: abortController.signal,
-        });
-
-        if (!response.ok) {
-          throw new Error(
-            `Global search failed with status ${response.status}`,
-          );
-        }
-
-        const responseData: GlobalSearchApiItem[] = await response.json();
-        const mappedResults = applyDiversityCap(
-          responseData
-            .map(mapGlobalSearchResult)
-            .filter((result): result is HeroSearchResult => result != null),
-          HERO_SEARCH_MAX_RESULTS,
-          HERO_SEARCH_MAX_RESULTS_PER_TYPE,
-        );
-
-        setSearchResults(mappedResults);
-      } catch (error) {
-        if (!abortController.signal.aborted) {
-          console.error("Error fetching hero search results:", error);
-          setSearchResults([]);
-        }
-      } finally {
-        if (!abortController.signal.aborted) {
-          setIsSearching(false);
-        }
-      }
-    }, HERO_SEARCH_DEBOUNCE_MS);
-
-    return () => {
-      clearTimeout(timeout);
-      abortController.abort();
-    };
-  }, [searchQuery]);
-
-  return { searchResults, isSearching };
+  return { searchResults: data, isSearching };
 }

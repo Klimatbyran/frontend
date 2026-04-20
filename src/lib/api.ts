@@ -27,6 +27,28 @@ const { GET } = createClient<paths>({
     return fetch(request);
   },
 });
+// ...existing code above...
+
+// Global Search API
+export type GlobalSearchApiResponse =
+  paths["/global-search/"]["post"]["responses"][200]["content"]["application/json"];
+
+export async function getGlobalSearch(
+  query: string,
+): Promise<GlobalSearchApiResponse> {
+  try {
+    const { data, error } = await client.POST("/global-search/", {
+      body: {
+        name: query,
+      } as paths["/global-search/"]["post"]["requestBody"]["content"]["application/json"],
+    });
+    if (error) throw error;
+    return (data as GlobalSearchApiResponse) || [];
+  } catch (error) {
+    console.error("Error fetching global search results:", error);
+    return [];
+  }
+}
 
 // Auth API
 export async function authenticateWithGithub(code: string) {

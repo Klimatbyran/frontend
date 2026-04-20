@@ -6,11 +6,10 @@ import { Input } from "@/components/ui/input";
 import { LandingSection } from "./LandingSection";
 import { useLanguage } from "@/components/LanguageProvider";
 import { getEntityDetailPath, localizedPath } from "@/utils/routing";
-
 import type { HeroSearchResult } from "@/hooks/usePopularHeroItems";
 import { Text } from "../ui/text";
-import { useHeroGlobalSearch } from "@/hooks/landing";
 import { POPULAR_HERO_ITEMS } from "@/lib/constants/landingPage";
+import { useHeroGlobalSearch } from "../../hooks/landing/useHeroGlobalSearch";
 
 export function LandingPageCTA() {
   const { t } = useTranslation();
