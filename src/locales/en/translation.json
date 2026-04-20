@@ -77,6 +77,8 @@
     "placeholder": "Search for a company",
     "heroSearchPlaceholder": "Search companies, municipalities & regions...",
     "heroSearchLabel": "Search for a company, municipality, or region",
+    "heroSearchLoadingText": "Searching...",
+    "heroSearchEmptyText": "No matches found. Try another name.",
     "popularLabel": "Popular:",
     "searchResultType": {
       "company": "Company",
