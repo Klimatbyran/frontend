@@ -77,6 +77,8 @@
     "placeholder": "Sök efter ett företag",
     "heroSearchPlaceholder": "Sök efter företag, kommuner och län...",
     "heroSearchLabel": "Sök efter ett företag, en kommun eller ett län",
+    "heroSearchLoadingText": "Söker...",
+    "heroSearchEmptyText": "Inga träffar. Prova ett annat namn.",
     "popularLabel": "Populärt:",
     "searchResultType": {
       "company": "Företag",

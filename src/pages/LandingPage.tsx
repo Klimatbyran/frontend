@@ -15,13 +15,11 @@ import { CountriesSection } from "@/components/landing/CountriesSection";
 import { PartnersSection } from "@/components/landing/PartnersSection";
 import { MissionSection } from "../components/landing/MissionSection";
 import { Text } from "@/components/ui/text";
-import { useRegions } from "@/hooks/regions/useRegionKPIs";
 
 export function LandingPage() {
   const { t } = useTranslation();
   const { companies } = useCompanies();
   const { municipalities } = useMunicipalities();
-  const { regions } = useRegions();
   const companiesSectionRef = useRef<HTMLDivElement | null>(null);
   const [fadeChevron, setFadeChevron] = useState(false);
 
@@ -99,11 +97,7 @@ export function LandingPage() {
             </div>
           </div>
 
-          <LandingPageCTA
-            companies={companies}
-            municipalities={municipalities}
-            regions={regions}
-          />
+          <LandingPageCTA />
         </div>
         <div
           className={`flex flex-col ${fadeChevron ? "opacity-0 " : "opacity-50"} absolute bottom-0 items-center transition-opacity ease-in duration-750`}

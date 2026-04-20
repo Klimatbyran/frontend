@@ -1,34 +1,25 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Search } from "lucide-react";
+import { Loader2, Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { LandingSection } from "./LandingSection";
 import { useLanguage } from "@/components/LanguageProvider";
 import { getEntityDetailPath, localizedPath } from "@/utils/routing";
-import type { RankedCompany } from "@/types/company";
-import type { Municipality } from "@/types/municipality";
-import { usePopularHeroItems } from "@/hooks/usePopularHeroItems";
+
 import type { HeroSearchResult } from "@/hooks/usePopularHeroItems";
 import { Text } from "../ui/text";
+import { useHeroGlobalSearch } from "@/hooks/landing";
+import { POPULAR_HERO_ITEMS } from "@/lib/constants/landingPage";
 
-interface LandingPageCTAProps {
-  companies: RankedCompany[];
-  municipalities: Municipality[];
-  regions: string[];
-}
-
-export function LandingPageCTA({
-  companies,
-  municipalities,
-  regions,
-}: LandingPageCTAProps) {
+export function LandingPageCTA() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { currentLanguage } = useLanguage();
   const searchContainerRef = useRef<HTMLDivElement | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { searchResults, isSearching } = useHeroGlobalSearch(searchQuery);
 
   useEffect(() => {
     const target = searchContainerRef.current;
@@ -51,46 +42,6 @@ export function LandingPageCTA({
       observer.disconnect();
     };
   }, []);
-
-  const searchResults = useMemo(() => {
-    const query = searchQuery.trim().toLowerCase();
-    if (!query) {
-      return [] as HeroSearchResult[];
-    }
-
-    const companyResults: HeroSearchResult[] = companies
-      .filter((company) => company.name.toLowerCase().includes(query))
-      .map((company) => ({
-        type: "company",
-        id: String(company.wikidataId),
-        name: company.name,
-      }));
-
-    const municipalityResults: HeroSearchResult[] = municipalities
-      .filter((municipality) => municipality.name.toLowerCase().includes(query))
-      .map((municipality) => ({
-        type: "municipality",
-        name: municipality.name,
-      }));
-
-    const regionResults: HeroSearchResult[] = regions
-      .filter((region) => region.toLowerCase().includes(query))
-      .map((region) => ({
-        type: "region",
-        name: region,
-      }));
-
-    return [...companyResults, ...municipalityResults, ...regionResults].slice(
-      0,
-      8,
-    );
-  }, [companies, municipalities, regions, searchQuery]);
-
-  const popularItems = usePopularHeroItems({
-    companies,
-    municipalities,
-    regions,
-  });
 
   const handleSearchSelection = useCallback(
     (result: HeroSearchResult) => {
@@ -120,13 +71,6 @@ export function LandingPageCTA({
       );
     },
     [currentLanguage, navigate],
-  );
-
-  const handlePopularClick = useCallback(
-    (item: HeroSearchResult) => {
-      handleSearchSelection(item);
-    },
-    [handleSearchSelection],
   );
 
   return (
@@ -169,7 +113,12 @@ export function LandingPageCTA({
 
         {isDropdownOpen && searchQuery.trim() && (
           <div className="absolute left-0 top-full z-30 mt-2 max-h-56 w-full overflow-y-auto rounded-md border border-white/10 bg-black-2 shadow-lg">
-            {searchResults.length > 0 ? (
+            {isSearching ? (
+              <div className="flex items-center gap-2 px-3 py-2 text-sm text-white/70">
+                <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                <span>{t("landingPage.heroSearchLoadingText")}</span>
+              </div>
+            ) : searchResults.length > 0 ? (
               searchResults.map((result) => (
                 <button
                   key={`${result.type}-${
@@ -192,7 +141,7 @@ export function LandingPageCTA({
               ))
             ) : (
               <div className="px-3 py-2 text-sm text-white/60">
-                {t("globalSearch.searchDialog.emptyText")}
+                {t("landingPage.heroSearchEmptyText")}
               </div>
             )}
           </div>
@@ -203,11 +152,11 @@ export function LandingPageCTA({
             {t("landingPage.popularLabel")}
           </Text>
 
-          {popularItems.map((item) => (
+          {POPULAR_HERO_ITEMS.map((item) => (
             <button
               key={`${item.type}-${item.type === "company" ? item.id : item.name}`}
               type="button"
-              onClick={() => handlePopularClick(item)}
+              onClick={() => handleSearchSelection(item)}
               className="group relative overflow-hidden rounded-md border border-white/20 px-2.5 py-1 hover:opacity-100 active:opacity-100"
             >
               <span
