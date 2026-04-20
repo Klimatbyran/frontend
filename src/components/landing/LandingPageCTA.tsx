@@ -128,13 +128,21 @@ export function LandingPageCTA() {
                   onClick={() => handleSearchSelection(result)}
                   className="flex w-full items-center justify-between gap-3 px-3 py-2 text-left text-sm text-white hover:bg-white/10"
                 >
-                  <span>{result.name}</span>
+                  <span>
+                    {result.type === "nation"
+                      ? t(`nations.${result.name}`)
+                      : result.name}
+                  </span>
                   <span className="text-xs text-white/60">
                     {result.type === "company"
                       ? t("landingPage.searchResultType.company")
                       : result.type === "municipality"
                         ? t("landingPage.searchResultType.municipality")
-                        : t("landingPage.searchResultType.region")}
+                        : result.type === "region"
+                          ? t("landingPage.searchResultType.region")
+                          : result.type === "nation"
+                            ? t("landingPage.searchResultType.nation")
+                            : result.type}
                   </span>
                 </button>
               ))

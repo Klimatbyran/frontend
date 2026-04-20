@@ -83,7 +83,8 @@
     "searchResultType": {
       "company": "Company",
       "municipality": "Municipality",
-      "region": "Region"
+      "region": "Region",
+      "nation": "Nation"
     },
     "seeResults": "See results",
     "bestPerformers": "Top Lists",
@@ -2068,5 +2069,11 @@
       "asc": "Low to High",
       "desc": "High to Low"
     }
+  },
+  "nations": {
+    "Sverige": "Sweden",
+    "Finland": "Finland",
+    "Norge": "Norway",
+    "Danmark": "Denmark"
   }
 }

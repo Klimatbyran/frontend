@@ -28,8 +28,14 @@ function mapGlobalSearchResult(
     };
   }
 
+  if (item.type === "region") {
+    return {
+      type: "region",
+      name: item.name,
+    };
+  }
   return {
-    type: "region",
+    type: "nation",
     name: item.name,
   };
 }
@@ -43,6 +49,7 @@ function applyDiversityCap(
     company: 0,
     municipality: 0,
     region: 0,
+    nation: 0,
   };
 
   const cappedOut: HeroSearchResult[] = [];

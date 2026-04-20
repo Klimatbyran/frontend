@@ -83,7 +83,8 @@
     "searchResultType": {
       "company": "Företag",
       "municipality": "Kommun",
-      "region": "Län"
+      "region": "Län",
+      "nation": "Land"
     },
     "seeResults": "Se resultat",
     "bestPerformers": "Topplistor",
@@ -2125,5 +2126,11 @@
       "asc": "Låg till hög",
       "desc": "Hög till låg"
     }
+  },
+  "nations": {
+    "Sverige": "Sverige",
+    "Finland": "Finland",
+    "Norge": "Norge",
+    "Danmark": "Danmark"
   }
 }

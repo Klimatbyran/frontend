@@ -94,6 +94,7 @@ export const useCombinedData = () => {
       ) ?? []),
     ];
 
+    console.log("Combined data:", mappedData);
     return {
       loading: false,
       data: mappedData,
