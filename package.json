@@ -1,7 +1,7 @@
 {
   "name": "klimatkollen",
   "private": true,
-  "version": "7.0.2-rc.1",
+  "version": "7.0.2-rc.2",
   "type": "module",
   "scripts": {
     "dev": "vite",
