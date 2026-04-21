@@ -1,10 +1,6 @@
 import { useMemo } from "react";
-import { useCompanies } from "./companies/useCompanies";
-import { useMunicipalities } from "./municipalities/useMunicipalities";
+import { useLanguage } from "@/components/LanguageProvider";
 import { useBlogPosts } from "./useBlogPosts";
-import { useRegions } from "./useRegions";
-import { useNationalData } from "./useNationalData";
-import { t } from "i18next";
 
 export type CombinedData = {
   name: string;
@@ -18,96 +14,60 @@ export type CombinedData = {
   blogExcerpt?: string;
 };
 
-export const useCombinedData = () => {
-  const {
-    municipalities,
-    municipalitiesLoading: isLoadingMunicipalities,
-    municipalitiesError: municipalitiesError,
-  } = useMunicipalities();
-  const {
-    companies,
-    companiesLoading: isLoadingCompanies,
-    companiesError: companiesError,
-  } = useCompanies();
-  const { blogPosts, blogPostsLoading, blogPostsError } = useBlogPosts();
-  const { regions } = useRegions();
-  const { data: nationalData } = useNationalData();
-
-  const hasErrors = municipalitiesError || companiesError || blogPostsError;
-  const isLoading =
-    isLoadingCompanies || isLoadingMunicipalities || blogPostsLoading;
+export const useCombinedData = (
+  searchResults: any[] = [],
+  searchQuery: string = "",
+) => {
+  const { currentLanguage } = useLanguage();
+  const { blogPosts } = useBlogPosts();
 
   const combinedData = useMemo(() => {
-    if (hasErrors) {
-      return {
-        loading: false,
-        error: new Error("Error fetching data"),
-        data: [],
-      };
-    }
-
-    if (isLoading) {
-      return {
-        loading: true,
-        data: [],
-      };
-    }
-
-    const mappedNations: CombinedData[] = [
-      {
-        name: nationalData?.country ?? t("header.nation"),
-        id: "nation",
-        category: "nations",
-      },
-    ];
+    const lcQuery = searchQuery.trim().toLowerCase();
+    const filteredBlogPosts =
+      lcQuery.length > 1
+        ? (blogPosts ?? []).filter(
+            (post) =>
+              post.title.toLowerCase().includes(lcQuery) ||
+              (post.excerpt && post.excerpt.toLowerCase().includes(lcQuery)),
+          )
+        : [];
 
     const mappedData: CombinedData[] = [
-      ...(municipalities?.map(
-        (municipality): CombinedData => ({
-          name: municipality.name,
-          id: municipality.name,
-          category: "municipalities",
-        }),
-      ) ?? []),
-      ...(companies?.map(
-        (company): CombinedData => ({
-          name: company.name,
-          id: company.wikidataId,
-          category: "companies",
-        }),
-      ) ?? []),
-      ...(regions?.map(
-        (regionName): CombinedData => ({
-          name: regionName,
-          id: regionName.toLowerCase(),
-          category: "regions",
-        }),
-      ) ?? []),
-      ...mappedNations,
-      ...(blogPosts?.map(
-        (blogPost): CombinedData => ({
-          name: blogPost.title,
-          id: blogPost.id,
-          category: "blogPosts",
-          blogExcerpt: blogPost.excerpt,
-        }),
-      ) ?? []),
+      ...searchResults.map((item) => {
+        if (item.type === "nation" && item.country) {
+          return {
+            name:
+              item.country[currentLanguage] ||
+              item.country.sv ||
+              item.country.en,
+            id: "nation",
+            category: "nations" as CombinedData["category"],
+          };
+        }
+        // Map other types as needed
+        let category: CombinedData["category"];
+        if (item.type === "company") category = "companies";
+        else if (item.type === "municipality") category = "municipalities";
+        else if (item.type === "region") category = "regions";
+        else category = "nations";
+        return {
+          name: item.name,
+          id: item.id || item.name,
+          category,
+        };
+      }),
+      ...filteredBlogPosts.map((blogPost) => ({
+        name: blogPost.title,
+        id: blogPost.id,
+        category: "blogPosts" as CombinedData["category"],
+        blogExcerpt: blogPost.excerpt,
+      })),
     ];
-
-    console.log("Combined data:", mappedData);
     return {
       loading: false,
       data: mappedData,
     };
-  }, [
-    municipalities,
-    companies,
-    regions,
-    nationalData,
-    blogPosts,
-    isLoading,
-    hasErrors,
-  ]);
+  }, [searchResults, currentLanguage, blogPosts, searchQuery]);
 
   return combinedData;
 };

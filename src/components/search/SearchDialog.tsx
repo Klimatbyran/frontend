@@ -3,7 +3,7 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Command as CommandPrimitive } from "cmdk";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
-import { CombinedData } from "@/hooks/useCombinedData";
+import { CombinedData, useCombinedData } from "@/hooks/useCombinedData";
 import {
   Command,
   CommandEmpty,
@@ -20,12 +20,12 @@ import {
 import {
   Building2,
   TreePine,
-  Newspaper,
   Map as MapIcon,
   Globe2,
+  BookOpen,
 } from "lucide-react";
 import SearchResultList from "./SearchResultList";
-import useGlobalSearch from "@/hooks/useGlobalSearch";
+import { useHeroGlobalSearch } from "../../hooks/landing/useHeroGlobalSearch";
 
 interface SearchDialogProps {
   open: boolean;
@@ -39,7 +39,17 @@ export function SearchDialog({
   onSelectResponse,
 }: SearchDialogProps) {
   const [inputValue, setInputValue] = useState("");
-  const results = useGlobalSearch(inputValue);
+  const {
+    searchResults,
+    isSearching,
+  }: { searchResults: any[]; isSearching: boolean } =
+    useHeroGlobalSearch(inputValue);
+
+  // Transform searchResults and include relevant blog posts
+  const { data: combinedData, loading: combinedLoading } = useCombinedData(
+    searchResults,
+    inputValue,
+  );
   const { t } = useTranslation();
   const commandListRef = useRef<HTMLDivElement | null>(null);
 
@@ -65,15 +75,20 @@ export function SearchDialog({
     });
 
     return () => cancelAnimationFrame(frame);
-  }, [inputValue, results.data.length]);
+  }, [inputValue, searchResults.length]);
 
-  const filterItems = (category: CombinedData["category"]) =>
-    results.data.filter((item) => item.category === category);
-  const companies = filterItems("companies");
-  const municipalities = filterItems("municipalities");
-  const regions = filterItems("regions");
-  const nations = filterItems("nations");
-  const blogPosts = filterItems("blogPosts");
+  // Group combinedData by category for display
+  const companies = combinedData.filter(
+    (item) => item.category === "companies",
+  );
+  const municipalities = combinedData.filter(
+    (item) => item.category === "municipalities",
+  );
+  const regions = combinedData.filter((item) => item.category === "regions");
+  const nations = combinedData.filter((item) => item.category === "nations");
+  const blogPosts = combinedData.filter(
+    (item) => item.category === "blogPosts",
+  );
 
   const searchResultLists = [
     {
@@ -98,7 +113,7 @@ export function SearchDialog({
     },
     {
       items: blogPosts,
-      icon: Newspaper,
+      icon: BookOpen,
       translationKey: "globalSearch.searchCategoryBlogPosts",
     },
   ];
@@ -130,33 +145,39 @@ export function SearchDialog({
                 onValueChange={handleInputChange}
                 className="focus:ring-0"
               />
-              <CommandEmpty>
-                <p className="text-gray-400">
-                  {t("globalSearch.searchDialog.emptyText")}
-                </p>
-              </CommandEmpty>
+              {/* Only show CommandEmpty if not loading and no results */}
+              {!(isSearching || combinedLoading) &&
+                searchResultLists.every((list) => list.items.length === 0) && (
+                  <CommandEmpty>
+                    <p className="text-gray-400">
+                      {t("globalSearch.searchDialog.emptyText")}
+                    </p>
+                  </CommandEmpty>
+                )}
               <CommandList
                 className="pt-4 transition-all duration-200 ease-in-out max-h-[50vh] min-h-60"
                 ref={commandListRef}
               >
-                {results.loading && (
+                {(isSearching || combinedLoading) && (
                   <CommandPrimitive.Loading>
                     {t(
                       "globalSearch.searchDialog.loadingText",
-                      "Fetching companies, municipalities & blog posts...",
+                      "Fetching companies, municipalities, regions & blog posts...",
                     )}
                   </CommandPrimitive.Loading>
                 )}
-                {searchResultLists.map((list) => (
-                  <SearchResultList
-                    key={list.translationKey}
-                    list={list.items}
-                    icon={list.icon}
-                    translationKey={list.translationKey}
-                    onSelectResponse={onSelectResponse}
-                    setOpen={setOpen}
-                  />
-                ))}
+                {searchResultLists.map((list) =>
+                  list.items.length > 0 ? (
+                    <SearchResultList
+                      key={list.translationKey}
+                      list={list.items}
+                      icon={list.icon}
+                      translationKey={list.translationKey}
+                      onSelectResponse={onSelectResponse}
+                      setOpen={setOpen}
+                    />
+                  ) : null,
+                )}
               </CommandList>
             </Command>
             <div className="flex justify-center text-white/40 text-sm mb-4">

@@ -35,15 +35,18 @@ export type GlobalSearchApiResponse =
 
 export async function getGlobalSearch(
   query: string,
+  currentLanguage: string,
 ): Promise<GlobalSearchApiResponse> {
+  console.log(currentLanguage);
   try {
     const { data, error } = await client.POST("/global-search/", {
       body: {
         name: query,
+        currentLanguage: currentLanguage,
       } as paths["/global-search/"]["post"]["requestBody"]["content"]["application/json"],
     });
     if (error) throw error;
-    console.log(data)
+    console.log(data);
     return (data as GlobalSearchApiResponse) || [];
   } catch (error) {
     console.error("Error fetching global search results:", error);

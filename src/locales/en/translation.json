@@ -2069,11 +2069,5 @@
       "asc": "Low to High",
       "desc": "High to Low"
     }
-  },
-  "nations": {
-    "Sverige": "Sweden",
-    "Finland": "Finland",
-    "Norge": "Norway",
-    "Danmark": "Denmark"
   }
 }

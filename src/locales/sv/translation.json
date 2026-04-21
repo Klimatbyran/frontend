@@ -2126,11 +2126,5 @@
       "asc": "Låg till hög",
       "desc": "Hög till låg"
     }
-  },
-  "nations": {
-    "Sverige": "Sverige",
-    "Finland": "Finland",
-    "Norge": "Norge",
-    "Danmark": "Danmark"
   }
 }
