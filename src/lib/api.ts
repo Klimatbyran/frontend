@@ -37,7 +37,6 @@ export async function getGlobalSearch(
   query: string,
   currentLanguage: string,
 ): Promise<GlobalSearchApiResponse> {
-  console.log(currentLanguage);
   try {
     const { data, error } = await client.POST("/global-search/", {
       body: {
