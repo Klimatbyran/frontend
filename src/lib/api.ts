@@ -46,7 +46,6 @@ export async function getGlobalSearch(
       } as paths["/global-search/"]["post"]["requestBody"]["content"]["application/json"],
     });
     if (error) throw error;
-    console.log(data);
     return (data as GlobalSearchApiResponse) || [];
   } catch (error) {
     console.error("Error fetching global search results:", error);
