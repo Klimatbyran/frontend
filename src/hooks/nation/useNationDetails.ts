@@ -15,7 +15,7 @@ import {
 import type { SupportedLanguage } from "@/lib/languageDetection";
 
 export type NationDetails = {
-  country: string;
+  country: { sv: string; en: string };
   logoUrl: string | null;
   emissions: Record<string, number>;
   approximatedHistoricalEmission: Record<string, number>;
@@ -26,7 +26,7 @@ export type NationDetails = {
 };
 
 type ApiNationResponse = {
-  country: string;
+  country: { sv: string; en: string };
   logoUrl?: string | null;
   emissions: ({ year: string; value: number } | null)[];
   totalTrend: number;
@@ -93,7 +93,7 @@ function transformApiNationToNationDetails(
   currentYear: number,
 ): NationDetails {
   return {
-    country: r.country,
+    country: { sv: r.country.sv, en: r.country.en },
     logoUrl: r.logoUrl ?? null,
     emissions: extractEmissionsRecord(r.emissions),
     approximatedHistoricalEmission: extractEmissionsRecord(

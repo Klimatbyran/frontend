@@ -83,7 +83,8 @@
     "searchResultType": {
       "company": "Company",
       "municipality": "Municipality",
-      "region": "Region"
+      "region": "Region",
+      "nation": "Nation"
     },
     "seeResults": "See results",
     "bestPerformers": "Top Lists",

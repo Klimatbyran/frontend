@@ -18,7 +18,8 @@ export function LandingPageCTA() {
   const searchContainerRef = useRef<HTMLDivElement | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const { searchResults, isSearching } = useHeroGlobalSearch(searchQuery);
+  const { searchResults, isSearching, isDebouncing } =
+    useHeroGlobalSearch(searchQuery);
 
   useEffect(() => {
     const target = searchContainerRef.current;
@@ -59,6 +60,11 @@ export function LandingPageCTA() {
             getEntityDetailPath("region", result.name),
           ),
         );
+        return;
+      }
+
+      if (result.type === "nation") {
+        navigate(localizedPath(currentLanguage, `/nation`));
         return;
       }
 
@@ -112,7 +118,7 @@ export function LandingPageCTA() {
 
         {isDropdownOpen && searchQuery.trim() && (
           <div className="absolute left-0 top-full z-30 mt-2 max-h-56 w-full overflow-y-auto rounded-md border border-white/10 bg-black-2 shadow-lg">
-            {isSearching ? (
+            {isDebouncing || isSearching ? (
               <div className="flex items-center gap-2 px-3 py-2 text-sm text-white/70">
                 <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
                 <span>{t("landingPage.heroSearchLoadingText")}</span>
@@ -134,15 +140,19 @@ export function LandingPageCTA() {
                       ? t("landingPage.searchResultType.company")
                       : result.type === "municipality"
                         ? t("landingPage.searchResultType.municipality")
-                        : t("landingPage.searchResultType.region")}
+                        : result.type === "region"
+                          ? t("landingPage.searchResultType.region")
+                          : result.type === "nation"
+                            ? t("landingPage.searchResultType.nation")
+                            : null}
                   </span>
                 </button>
               ))
-            ) : (
+            ) : !isDebouncing && !isSearching && searchResults.length === 0 ? (
               <div className="px-3 py-2 text-sm text-white/60">
                 {t("landingPage.heroSearchEmptyText")}
               </div>
-            )}
+            ) : null}
           </div>
         )}
 

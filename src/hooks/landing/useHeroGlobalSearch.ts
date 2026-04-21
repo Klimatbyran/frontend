@@ -1,10 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import type { HeroSearchResult } from "@/hooks/usePopularHeroItems";
 import {
   HERO_SEARCH_MAX_RESULTS,
   HERO_SEARCH_MAX_RESULTS_PER_TYPE,
+  HERO_SEARCH_DEBOUNCE_MS,
 } from "@/lib/constants/landingPage";
 import { getGlobalSearch, GlobalSearchApiResponse } from "@/lib/api";
+import { useLanguage } from "@/components/LanguageProvider";
 
 function mapGlobalSearchResult(
   item: GlobalSearchApiResponse[number],
@@ -28,8 +31,14 @@ function mapGlobalSearchResult(
     };
   }
 
+  if (item.type === "region") {
+    return {
+      type: "region",
+      name: item.name,
+    };
+  }
   return {
-    type: "region",
+    type: "nation",
     name: item.name,
   };
 }
@@ -43,6 +52,7 @@ function applyDiversityCap(
     company: 0,
     municipality: 0,
     region: 0,
+    nation: 0,
   };
 
   const cappedOut: HeroSearchResult[] = [];
@@ -76,11 +86,29 @@ function applyDiversityCap(
 }
 
 export function useHeroGlobalSearch(searchQuery: string) {
-  const query = searchQuery.trim();
+  const { currentLanguage } = useLanguage();
+  const [debouncedQuery, setDebouncedQuery] = useState(searchQuery.trim());
+  const [isDebouncing, setIsDebouncing] = useState(false);
+
+  useEffect(() => {
+    setIsDebouncing(true);
+    const handler = setTimeout(() => {
+      setDebouncedQuery(searchQuery.trim());
+      setIsDebouncing(false);
+    }, HERO_SEARCH_DEBOUNCE_MS);
+    return () => {
+      clearTimeout(handler);
+      setIsDebouncing(false);
+    };
+  }, [searchQuery]);
+
   const { data = [], isFetching: isSearching } = useQuery({
-    queryKey: ["globalSearch", query],
-    queryFn: () => (query ? getGlobalSearch(query) : Promise.resolve([])),
-    enabled: !!query,
+    queryKey: ["globalSearch", debouncedQuery],
+    queryFn: () =>
+      debouncedQuery
+        ? getGlobalSearch(debouncedQuery, currentLanguage)
+        : Promise.resolve([]),
+    enabled: !!debouncedQuery,
     staleTime: 60 * 1000,
     select: (responseData: GlobalSearchApiResponse) =>
       applyDiversityCap(
@@ -92,5 +120,5 @@ export function useHeroGlobalSearch(searchQuery: string) {
       ),
   });
 
-  return { searchResults: data, isSearching };
+  return { searchResults: data, isSearching, isDebouncing };
 }

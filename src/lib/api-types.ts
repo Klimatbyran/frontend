@@ -2804,7 +2804,10 @@ export interface paths {
                     };
                     content: {
                         "application/json": {
-                            country: string;
+                            country: {
+                                sv: string;
+                                en: string;
+                            };
                             logoUrl?: string | null;
                             emissions: ({
                                 year: string;

@@ -83,7 +83,8 @@
     "searchResultType": {
       "company": "Företag",
       "municipality": "Kommun",
-      "region": "Län"
+      "region": "Län",
+      "nation": "Land"
     },
     "seeResults": "Se resultat",
     "bestPerformers": "Topplistor",

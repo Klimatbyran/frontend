@@ -10,8 +10,8 @@ export type NationalYearData = {
 };
 
 type NationalDataType = {
-  country: string;
-  [year: string]: NationalYearData | string;
+  country: { sv: string; en: string };
+  years: Record<number, NationalYearData>;
 };
 
 interface UseNationalDataReturn {
@@ -65,10 +65,11 @@ export function useNationalData(): UseNationalDataReturn {
   // Get an array of all available years
   const getYears = (): number[] => {
     if (!data) return [];
-    return Object.keys(data)
-      .filter((key) => !isNaN(Number(key)))
-      .map((year) => Number(year))
-      .sort((a, b) => a - b);
+    return data.years
+      ? Object.keys(data.years)
+          .map(Number)
+          .sort((a, b) => a - b)
+      : [];
   };
 
   // Get total emissions for all years
@@ -76,7 +77,7 @@ export function useNationalData(): UseNationalDataReturn {
     if (!data) return [];
     const years = getYears();
     return years.map((year) => {
-      const yearData = data[year.toString()] as NationalYearData;
+      const yearData = data.years?.[year] as NationalYearData;
       return {
         year,
         emissions: yearData.total_emissions,
@@ -89,7 +90,7 @@ export function useNationalData(): UseNationalDataReturn {
     year: number,
   ): { sector: string; emissions: number }[] | null => {
     if (!data) return null;
-    const yearData = data[year.toString()] as NationalYearData | undefined;
+    const yearData = data.years?.[year] as NationalYearData | undefined;
 
     if (!yearData) return null;
 
@@ -105,7 +106,7 @@ export function useNationalData(): UseNationalDataReturn {
     sector: string,
   ): { subsector: string; emissions: number }[] | null => {
     if (!data) return null;
-    const yearData = data[year.toString()] as NationalYearData | undefined;
+    const yearData = data.years?.[year] as NationalYearData | undefined;
 
     if (!yearData || !yearData.subsectors[sector]) return null;
 
@@ -122,7 +123,7 @@ export function useNationalData(): UseNationalDataReturn {
     year: number,
   ): { sector: string; subsector: string; emissions: number }[] | null => {
     if (!data) return null;
-    const yearData = data[year.toString()] as NationalYearData | undefined;
+    const yearData = data.years?.[year] as NationalYearData | undefined;
 
     if (!yearData) return null;
 
