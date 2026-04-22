@@ -31,11 +31,6 @@ export function Layout({ children }: LayoutProps) {
 
   useEffect(() => {
     queryClient.prefetchQuery({
-      queryKey: ["companies"],
-      queryFn: getCompanies,
-    });
-
-    queryClient.prefetchQuery({
       queryKey: ["municipalities"],
       queryFn: getMunicipalities,
     });
