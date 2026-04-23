@@ -157,9 +157,7 @@ export const MunicipalitiesSection = ({
       : t("landingPage.regionsSection.exploreButton");
 
   const mapLoading =
-    territoryMode === "municipalities"
-      ? municipalitiesLoading
-      : regionsLoading;
+    territoryMode === "municipalities" ? municipalitiesLoading : regionsLoading;
 
   if (!selectedKPI) {
     return null;
