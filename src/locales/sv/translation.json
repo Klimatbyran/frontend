@@ -117,7 +117,8 @@
       "title": "Hur går det med företagens utsläpp?",
       "description": "Utforska över 400 bolag och få detaljerad data om rapporterade utsläpp och om de ligger i linje med Parisavtalet.",
       "exploreButton": "Utforska företag",
-      "currentlyViewing": "Visar just nu:"
+      "currentlyViewing": "Visar just nu:",
+      "noEmissionsData": "Ingen utsläppsdata tillgänglig"
     },
     "municipalitiesSection": {
       "title": "Hur presterar din kommun?",
@@ -639,7 +640,7 @@
         },
         "whyWorks": {
           "title": "Varför fungerar en linjär trendlinje för Paris-bedömning?",
-          "paragraph1": "Bedömningen av Paris-linjen baseras på de totala kumulativa utsläppen 2025–2050 – organisationens koldioxidbudget för en 1,5°C-bana med ungefär 50 % sannolikhet.",
+          "paragraph1": "Bedömningen av Paris-linjen baseras på de totala kumulativa utsläppen 2025–2050 – organisationens koldioxidbudget för en 1,5°C-bana med ungefär 50 % sannolikhet att begränsa uppvärmningen till 1,5 °C.",
           "point1": "Den linjära trendlinjen gör det möjligt att uppskatta om den projicerade banan håller sig inom denna budget.",
           "point2": "Om trendlinjen ligger inom budgeten kommer utsläppen nödvändigtvis att närma sig mycket låga nivåer långt före 2050.",
           "point3": "Att använda samma metod för alla kommuner och företag möjliggör rättvisa och jämförbara bedömningar.",
@@ -1053,7 +1054,7 @@
             "Genom att publicera öppna klimatdata bidrar Klimatkollen till transparens och ett ökat stöd för Parisavtalet i politik och näringsliv. För om vi inte vet hur det går med utsläppen – och hur det borde gå – kommer vi inte kunna göra det som krävs för att minska dem i linje med Parisavtalet.",
             "Klimatkollen är en data-driven ideell förening som bygger en rörelse kring öppna klimatdata.",
             "Vi samverkar med näringsliv, akademi och civilsamhälle för ökad slagkraft. För oss står AI, öppna data, bred kommunikation och medborgarengagemang i centrum.",
-            "Var en del av rörelsen för öppna klimatdata – bli stödföretag i dag!"
+            "Var en del av rörelsen för öppen klimatdata – bli stödföretag i dag!"
           ],
           "benefitsHeader": "Som stödföretag får du:",
           "benefits": [
@@ -1546,7 +1547,9 @@
           "booleanLabels": {
             "true": "Klarar Parisavtalet",
             "false": "Missar Parisavtalet"
-          }
+          },
+          "aboveString": "är på väg att klara Parisavtalet",
+          "belowString": "är på väg att missa Parisavtalet"
         }
       }
     }
@@ -1644,7 +1647,7 @@
           "label": "Klimatplanerna",
           "description": "Har en aktuell klimatplan",
           "detailedDescription": "Vilka kommuner har en aktuell klimatplan?",
-          "source": "Klimatkollens öppna sammanställning av klimatplaner med hjälp från medlemmar av Klimatklubben och Naturskyddsföreningen",
+          "source": "Klimatkollens öppna sammanställning av klimatplaner med hjälp från medlemmar i Klimatklubben och Naturskyddsföreningen",
           "booleanLabels": {
             "true": "Har klimatplan",
             "false": "Saknar klimatplan"

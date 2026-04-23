@@ -112,7 +112,8 @@
       "title": "How's it going with company emissions?",
       "description": "Explore over 400 companies and access detailed data on reported emissions and whether they are aligned with the Paris Agreement.",
       "exploreButton": "Explore Companies",
-      "currentlyViewing": "Currently viewing:"
+      "currentlyViewing": "Currently viewing:",
+      "noEmissionsData": "No emissions data available."
     },
     "municipalitiesSection": {
       "title": "How is your municipality performing?",

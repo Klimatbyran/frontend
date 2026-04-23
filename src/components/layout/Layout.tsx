@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useMemo } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
-import { getCompanies, getMunicipalities } from "@/lib/api";
+import { getMunicipalities } from "@/lib/api";
 import { Seo } from "@/components/SEO/Seo";
 import { getSeoForRoute } from "@/seo/routes";
 import { Header } from "./Header";
@@ -30,11 +30,6 @@ export function Layout({ children }: LayoutProps) {
   }, [location.pathname]);
 
   useEffect(() => {
-    queryClient.prefetchQuery({
-      queryKey: ["companies"],
-      queryFn: getCompanies,
-    });
-
     queryClient.prefetchQuery({
       queryKey: ["municipalities"],
       queryFn: getMunicipalities,
