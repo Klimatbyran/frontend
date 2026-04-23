@@ -79,7 +79,11 @@ export function ListCard({
     climatePlanYear,
   });
 
-  const linkMinHeightClass = isRegion ? "min-h-[300px]" : "min-h-[410px]";
+  const linkMinHeightClass = isRegion
+    ? "min-h-[300px]"
+    : isMunicipality
+      ? "min-h-[400px]"
+      : "min-h-[418px]";
 
   return (
     <div className="relative rounded-level-2 @container">
