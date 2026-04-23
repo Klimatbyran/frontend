@@ -1,8 +1,7 @@
 import { useState, useEffect, useLayoutEffect, memo } from "react";
 import { useTranslation } from "react-i18next";
-import { Search } from "lucide-react";
+import { Loader2, Search } from "lucide-react";
 import { Input } from "../ui/input";
-import { Loader2 } from "lucide-react";
 import { useCompanySearch } from "@/hooks/companies/useCompanySearch";
 import { RankedCompany } from "@/types/company";
 
