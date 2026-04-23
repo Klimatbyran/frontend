@@ -7,12 +7,11 @@ import { useTimeSeriesChartState } from "@/components/charts";
 import { getChartData } from "@/utils/data/chartData";
 import { calculateTrendline } from "@/lib/calculations/trends/analysis";
 import { generateApproximatedData } from "@/lib/calculations/trends/approximatedData";
-import type { ReportingPeriod } from "@/types/company";
+import type { RankedCompany, ReportingPeriod } from "@/types/company";
 import { Button } from "../ui/button";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { ArrowRight } from "lucide-react";
 import { CompanySearchInput } from "./CompanySearchInput";
-import { RankedCompany } from "@/types/company";
 
 export const CompaniesSection = () => {
   const { t } = useTranslation();
