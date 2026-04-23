@@ -1320,7 +1320,7 @@
       "companyReport": "Hållbarhetsrapport",
       "missingReport": "Saknar report",
       "reportYear": "Rapporterat från {{year}}",
-      "largestEmissionSource": "Största utsläppskälla",
+      "scope3Coverage": "Scope 3-rapportering",
       "notEnoughData": "För lite data för att avgöra",
       "reportingSince": "Rapporterat sedan",
       "scope1": "Scope 1",
