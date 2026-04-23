@@ -26,7 +26,11 @@ export const CompaniesSection = () => {
   // Memoize chart section so it only re-renders when selectedCompany or chart props change
   const chartSection = useMemo(() => {
     if (!selectedCompany?.reportingPeriods?.length) {
-      return <Text className="text-grey">{t("landingPage.companiesSection.noEmissionsData")}</Text>;
+      return (
+        <Text className="text-grey">
+          {t("landingPage.companiesSection.noEmissionsData")}
+        </Text>
+      );
     }
     const companyBaseYear = selectedCompany?.baseYear?.year;
     const chartData = getChartData(
