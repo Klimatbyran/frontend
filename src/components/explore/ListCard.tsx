@@ -31,14 +31,8 @@ export interface ListCardProps {
   //Reporting since (tracking)
   baseYear?: number | null;
 
-  //Biggest emission category
-  largestEmission?:
-    | {
-        key: string | number;
-        value: number | null;
-        type: "scope1" | "scope2" | "scope3";
-      }
-    | undefined;
+  //Scope 3 coverage
+  hasScope3Coverage: boolean;
 
   // Optional features
   isFinancialsSector?: boolean;
@@ -66,7 +60,7 @@ export function ListCard({
   changeRateColor,
   changeRateTooltip,
   isFinancialsSector = false,
-  largestEmission,
+  hasScope3Coverage,
   baseYear,
   climatePlanHasPlan,
   climatePlanYear,
@@ -79,15 +73,17 @@ export function ListCard({
     climatePlanStatusColor,
     climatePlanStatusLabel,
     climatePlanAdoptedColor,
-    categoryName,
   } = useListCardMeta({
     variant,
     climatePlanHasPlan,
     climatePlanYear,
-    largestEmission,
   });
 
-  const linkMinHeightClass = isRegion ? "min-h-[300px]" : "min-h-[410px]";
+  const linkMinHeightClass = isRegion
+    ? "min-h-[300px]"
+    : isMunicipality
+      ? "min-h-[400px]"
+      : "min-h-[418px]";
 
   return (
     <div className="relative rounded-level-2 @container">
@@ -128,7 +124,7 @@ export function ListCard({
               climatePlanStatusColor={climatePlanStatusColor}
               climatePlanStatusLabel={climatePlanStatusLabel}
               climatePlanAdoptedColor={climatePlanAdoptedColor}
-              categoryName={categoryName}
+              hasScope3Coverage={hasScope3Coverage}
               baseYear={baseYear}
             />
           )}
