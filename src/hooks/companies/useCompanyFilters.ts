@@ -147,13 +147,19 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
               : bEmissions - aEmissions;
           }
           case "scope3_coverage": {
-            const aCategories =
-              a.reportingPeriods[0]?.emissions?.scope3?.categories?.length || 0;
-            const bCategories =
-              b.reportingPeriods[0]?.emissions?.scope3?.categories?.length || 0;
+            const aHasCategories =
+              (a.reportingPeriods[0]?.emissions?.scope3?.categories?.length ||
+                0) > 0
+                ? 1
+                : 0;
+            const bHasCategories =
+              (b.reportingPeriods[0]?.emissions?.scope3?.categories?.length ||
+                0) > 0
+                ? 1
+                : 0;
             return sortDirection === "asc"
-              ? aCategories - bCategories
-              : bCategories - aCategories;
+              ? bHasCategories - aHasCategories
+              : aHasCategories - bHasCategories;
           }
           case "meets_paris": {
             const aTrendAnalysis = calculateTrendline(a);
