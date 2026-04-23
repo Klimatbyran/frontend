@@ -5,7 +5,8 @@ import { HERO_SEARCH_DEBOUNCE_MS } from "@/lib/constants/landingPage";
 
 export function useCompanySearch(searchQuery: string) {
   const [debouncedQuery, setDebouncedQuery] = useState(searchQuery.trim());
-  const [isDebouncing, setIsDebouncing] = useState(false);
+  /** Start true so consumers can show loading until the first debounce cycle runs. */
+  const [isDebouncing, setIsDebouncing] = useState(true);
 
   useEffect(() => {
     setIsDebouncing(true);

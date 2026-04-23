@@ -15,7 +15,8 @@ import {
 
 export const CountriesSection = () => {
   const { t } = useTranslation();
-  const { sectorEmissions } = useSectorEmissions("nation", undefined);
+  const { sectorEmissions, loading: sectorEmissionsLoading } =
+    useSectorEmissions("nation", undefined);
   const { getSectorInfo } = useSectors();
   const { hiddenItems: filteredSectors, setHiddenItems: setFilteredSectors } =
     useHiddenItems<string>([]);
@@ -36,20 +37,24 @@ export const CountriesSection = () => {
           </Text>
         </div>
         <div className="w-full">
-          <SectorEmissionsChart
-            sectorEmissions={sectorEmissions}
-            availableYears={availableYears}
-            selectedYear={selectedYear}
-            onYearChange={setSelectedYear}
-            currentYear={currentYear}
-            getSectorInfo={getSectorInfo}
-            filteredSectors={filteredSectors}
-            onFilteredSectorsChange={setFilteredSectors}
-            helpItems={[]}
-            sectionClassName="bg-transparent !rounded-none !px-0 !py-0 [&>div:first-child]:pb-0"
-            showHeader={false}
-            compactLayout={false}
-          />
+          {sectorEmissionsLoading ? (
+            <div className="h-[min(520px,70vh)] w-full animate-pulse bg-black-2 rounded-level-2" />
+          ) : (
+            <SectorEmissionsChart
+              sectorEmissions={sectorEmissions}
+              availableYears={availableYears}
+              selectedYear={selectedYear}
+              onYearChange={setSelectedYear}
+              currentYear={currentYear}
+              getSectorInfo={getSectorInfo}
+              filteredSectors={filteredSectors}
+              onFilteredSectorsChange={setFilteredSectors}
+              helpItems={[]}
+              sectionClassName="bg-transparent !rounded-none !px-0 !py-0 [&>div:first-child]:pb-0"
+              showHeader={false}
+              compactLayout={false}
+            />
+          )}
         </div>
 
         <div className="w-full flex justify-start md:justify-end">

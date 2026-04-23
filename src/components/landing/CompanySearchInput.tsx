@@ -1,35 +1,40 @@
-import { useState, useEffect, memo } from "react";
+import { useState, useEffect, useLayoutEffect, memo } from "react";
 import { useTranslation } from "react-i18next";
-import { Search } from "lucide-react";
+import { Loader2, Search } from "lucide-react";
 import { Input } from "../ui/input";
-import { Loader2 } from "lucide-react";
 import { useCompanySearch } from "@/hooks/companies/useCompanySearch";
 import { RankedCompany } from "@/types/company";
 
 export const CompanySearchInput = memo(function CompanySearchInput({
   onSelect,
+  onBusyChange,
 }: {
   onSelect: (company: RankedCompany) => void;
+  onBusyChange?: (busy: boolean) => void;
 }) {
   const { t } = useTranslation();
   const [inputValue, setInputValue] = useState("");
-  const [searchQuery, setSearchQuery] = useState("ABB Ltd.");
+  const [searchQuery, setSearchQuery] = useState("Arla");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { searchResults, isSearching, isDebouncing } =
     useCompanySearch(searchQuery);
 
-  // On mount, set input and searchQuery to ABB Ltd.
   useEffect(() => {
-    setInputValue("ABB Ltd.");
-    setSearchQuery("ABB Ltd.");
+    onBusyChange?.(isDebouncing || isSearching);
+  }, [isDebouncing, isSearching, onBusyChange]);
+
+  // On mount, set input and searchQuery to Arla
+  useEffect(() => {
+    setInputValue("Arla");
+    setSearchQuery("Arla");
   }, []);
 
-  // Auto-select ABB Ltd. on mount
-  useEffect(() => {
-    if (searchQuery.trim() === "ABB Ltd." && searchResults.length > 0) {
+  // Auto-select Arla on mount before paint to avoid chart placeholder flash
+  useLayoutEffect(() => {
+    if (searchQuery.trim() === "Arla" && searchResults.length > 0) {
       onSelect(searchResults[0] as RankedCompany);
     }
-  }, [searchResults]);
+  }, [searchResults, searchQuery, onSelect]);
 
   return (
     <div className="relative w-full max-w-[18rem]">

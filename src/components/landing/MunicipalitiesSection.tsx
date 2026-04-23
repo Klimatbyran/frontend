@@ -24,18 +24,20 @@ import {
 
 interface MunicipalitiesSectionProps {
   municipalities: Municipality[];
+  municipalitiesLoading: boolean;
 }
 
 type TerritoryMode = "municipalities" | "regions";
 
 export const MunicipalitiesSection = ({
   municipalities,
+  municipalitiesLoading,
 }: MunicipalitiesSectionProps) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const municipalityKPIs = useMunicipalityKPIs();
   const regionalKPIs = useRegionalKPIs();
-  const { regionsData } = useRegions();
+  const { regionsData, loading: regionsLoading } = useRegions();
   const [territoryMode, setTerritoryMode] =
     useState<TerritoryMode>("municipalities");
   const [selectedKPIKey, setSelectedKPIKey] = useState<string>(
@@ -154,6 +156,9 @@ export const MunicipalitiesSection = ({
       ? t("landingPage.municipalitiesSection.exploreButton")
       : t("landingPage.regionsSection.exploreButton");
 
+  const mapLoading =
+    territoryMode === "municipalities" ? municipalitiesLoading : regionsLoading;
+
   if (!selectedKPI) {
     return null;
   }
@@ -211,19 +216,23 @@ export const MunicipalitiesSection = ({
             </div>
 
             <div className="relative w-full h-[55vh] md:h-[65vh] lg:h-[75vh]">
-              <TerritoryMap
-                key={territoryMode}
-                entityType={territoryMode}
-                geoData={activeGeoData}
-                data={activeMapData}
-                selectedKPI={selectedKPI}
-                onAreaClick={activeAreaClickHandler}
-                mapBackgroundColor="transparent"
-                scrollWheelZoom={false}
-                defaultCenter={
-                  territoryMode === "regions" ? [63.7, 17] : [63, 17]
-                }
-              />
+              {mapLoading ? (
+                <div className="h-full w-full animate-pulse bg-black-2 rounded-level-2" />
+              ) : (
+                <TerritoryMap
+                  key={territoryMode}
+                  entityType={territoryMode}
+                  geoData={activeGeoData}
+                  data={activeMapData}
+                  selectedKPI={selectedKPI}
+                  onAreaClick={activeAreaClickHandler}
+                  mapBackgroundColor="transparent"
+                  scrollWheelZoom={false}
+                  defaultCenter={
+                    territoryMode === "regions" ? [63.7, 17] : [63, 17]
+                  }
+                />
+              )}
             </div>
           </div>
 

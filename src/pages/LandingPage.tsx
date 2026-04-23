@@ -17,7 +17,7 @@ import { Text } from "@/components/ui/text";
 
 export function LandingPage() {
   const { t } = useTranslation();
-  const { municipalities } = useMunicipalities();
+  const { municipalities, municipalitiesLoading } = useMunicipalities();
   const companiesSectionRef = useRef<HTMLDivElement | null>(null);
   const [fadeChevron, setFadeChevron] = useState(false);
 
@@ -138,7 +138,10 @@ export function LandingPage() {
       <div ref={companiesSectionRef} id="companies-section" className="w-full">
         <CompaniesSection />
       </div>
-      <MunicipalitiesSection municipalities={municipalities} />
+      <MunicipalitiesSection
+        municipalities={municipalities}
+        municipalitiesLoading={municipalitiesLoading}
+      />
       <CountriesSection />
       <MissionSection />
       <PartnersSection />

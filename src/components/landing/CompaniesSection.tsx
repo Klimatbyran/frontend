@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Text } from "../ui/text";
 import { OverviewChart } from "../companies/detail/history/OverviewChart";
@@ -7,12 +7,11 @@ import { useTimeSeriesChartState } from "@/components/charts";
 import { getChartData } from "@/utils/data/chartData";
 import { calculateTrendline } from "@/lib/calculations/trends/analysis";
 import { generateApproximatedData } from "@/lib/calculations/trends/approximatedData";
-import type { ReportingPeriod } from "@/types/company";
+import type { RankedCompany, ReportingPeriod } from "@/types/company";
 import { Button } from "../ui/button";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { ArrowRight } from "lucide-react";
 import { CompanySearchInput } from "./CompanySearchInput";
-import { RankedCompany } from "@/types/company";
 
 export const CompaniesSection = () => {
   const { t } = useTranslation();
@@ -22,6 +21,10 @@ export const CompaniesSection = () => {
   const [selectedCompany, setSelectedCompany] = useState<RankedCompany | null>(
     null,
   );
+  const [isCompanySearchBusy, setIsCompanySearchBusy] = useState(true);
+  const handleSearchBusyChange = useCallback((busy: boolean) => {
+    setIsCompanySearchBusy(busy);
+  }, []);
 
   // Memoize chart section so it only re-renders when selectedCompany or chart props change
   const chartSection = useMemo(() => {
@@ -109,7 +112,10 @@ export const CompaniesSection = () => {
 
           <div className="order-2 lg:order-1 w-full lg:w-3/5 flex flex-col gap-3">
             <div className="flex w-full flex-col gap-3 md:flex-row md:items-center md:justify-start md:gap-6 md:pt-4">
-              <CompanySearchInput onSelect={setSelectedCompany} />
+              <CompanySearchInput
+                onSelect={setSelectedCompany}
+                onBusyChange={handleSearchBusyChange}
+              />
 
               <div className="w-full flex items-center gap-2">
                 <Text className="text-lg font-light text-[18px] text-grey">
@@ -121,7 +127,11 @@ export const CompaniesSection = () => {
               </div>
             </div>
 
-            {chartSection}
+            {isCompanySearchBusy ? (
+              <div className="w-full h-[520px] animate-pulse bg-black-2 rounded-level-2" />
+            ) : (
+              chartSection
+            )}
           </div>
 
           <LocalizedLink
