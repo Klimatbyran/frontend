@@ -20,9 +20,8 @@ export function useMunicipalitiesSection() {
   const { regionsData, loading: regionsLoading } = useRegions();
   const { municipalities, municipalitiesLoading } = useMunicipalities();
 
-  const [territoryMode, setTerritoryMode] = useState<TerritoryMode>(
-    "municipalities",
-  );
+  const [territoryMode, setTerritoryMode] =
+    useState<TerritoryMode>("municipalities");
   const [selectedKPIKey, setSelectedKPIKey] = useState<string>(
     "historicalEmissionChangePercent",
   );
@@ -33,9 +32,7 @@ export function useMunicipalitiesSection() {
   const selectedKPI = useMemo(
     () =>
       activeKPIs.find((kpi) => String(kpi.key) === selectedKPIKey) ||
-      activeKPIs.find(
-        (kpi) => kpi.key === "historicalEmissionChangePercent",
-      ) ||
+      activeKPIs.find((kpi) => kpi.key === "historicalEmissionChangePercent") ||
       activeKPIs[0],
     [activeKPIs, selectedKPIKey],
   );
