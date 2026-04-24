@@ -2,7 +2,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Typewriter } from "@/components/ui/typewriter";
-import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { SCROLL_FADE_THRESHOLD } from "@/hooks/landing/useLandingPageData";
 import useThrottle from "@/hooks/useThrottle";
@@ -17,7 +16,6 @@ import { Text } from "@/components/ui/text";
 
 export function LandingPage() {
   const { t } = useTranslation();
-  const { municipalities, municipalitiesLoading } = useMunicipalities();
   const companiesSectionRef = useRef<HTMLDivElement | null>(null);
   const [fadeChevron, setFadeChevron] = useState(false);
 
@@ -138,10 +136,7 @@ export function LandingPage() {
       <div ref={companiesSectionRef} id="companies-section" className="w-full">
         <CompaniesSection />
       </div>
-      <MunicipalitiesSection
-        municipalities={municipalities}
-        municipalitiesLoading={municipalitiesLoading}
-      />
+      <MunicipalitiesSection />
       <CountriesSection />
       <MissionSection />
       <PartnersSection />

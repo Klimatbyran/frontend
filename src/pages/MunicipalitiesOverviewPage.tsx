@@ -3,23 +3,38 @@ import { Map, List } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { FeatureCollection } from "geojson";
-import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { KPIDataSelector } from "@/components/ranked/KPIDataSelector";
 import InsightsPanel from "@/components/municipalities/rankedList/MunicipalityInsightsPanel";
 import TerritoryMap from "@/components/maps/TerritoryMap";
 import municipalityGeoJson from "@/data/municipalityGeo.json";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
-import { useMunicipalityKPIs } from "@/hooks/municipalities/useMunicipalityKPIs";
+import {
+  useMunicipalities,
+  useMunicipalityKPIs,
+} from "@/hooks/municipalities/useMunicipalityKPIs";
 import { RankedListItem } from "@/types/rankings";
 import { createEntityClickHandler } from "@/utils/routing";
 import { MunicipalityRankedList } from "@/components/municipalities/MunicipalityRankedList";
+import type { Municipality } from "@/types/municipality";
 
 export function MunicipalitiesOverviewPage() {
   const { t } = useTranslation();
-  const { municipalities, municipalitiesLoading, municipalitiesError } =
-    useMunicipalities();
+  const {
+    municipalitiesData,
+    loading: municipalitiesLoading,
+    error: municipalitiesError,
+  } = useMunicipalities();
   const municipalityKPIs = useMunicipalityKPIs();
+
+  const municipalities: Municipality[] = useMemo(
+    () =>
+      municipalitiesData.map((m) => {
+        const { meetsParis, ...rest } = m;
+        return { ...rest, meetsParisGoal: meetsParis } as Municipality;
+      }),
+    [municipalitiesData],
+  );
   const [geoData] = useState(municipalityGeoJson);
 
   const location = useLocation();
