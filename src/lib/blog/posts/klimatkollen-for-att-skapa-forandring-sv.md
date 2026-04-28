@@ -1,6 +1,6 @@
 ---
 id: "klimatkollen-for-att-skapa-forandring"
-title: "Klimatkollen för att skapa förändring"
+title: "10 sätt att använda Klimatkollen för att skapa förändring"
 excerpt: "Klimatkollens data kan användas av alla för att få till förändring inom klimatområdet. Här hittar du konkreta exempel på hur datan kan användas i praktiken."
 date: "2026-04-13"
 readTime: "6 min"
@@ -12,15 +12,13 @@ author:
   avatar: "/people/catharina.jpeg"
 ---
 
-Klimatkollens data kan användas av alla för att få till förändring inom klimatområdet. Här hittar du konkreta exempel på hur vår data har använts.
-
 Klimatkollens data finns öppen och tillgänglig för alla så att medborgare ska kunna utkräva ansvar från makthavare och beslutsfattare. Vår data ger dig fakta på hand när du har kontakt med politiker, kommuntjänstemän och företag om klimatfrågor.
 
 ## Ladda ner vår guide
 
 Sedan vi startade 2022 har vi fått in en mängd exempel på hur vår data har använts av medborgare och civilsamhället, och här delar vi med oss av några exempel som kanske kan inspirera dig till att agera för förändring.
 
-Tipsen med exempel finns också i en [guide](https://drive.google.com/file/d/1CUnJdBiQmCwpFW5cagsxwe4q6UbTpnHZ/view?usp=drive_link) som du kan ladda ner och dela med andra, eller skriva ut och bocka av.
+Tipsen med exempel finns också i en [guide](/documents/Klimatkollen_user_guide_SE.pdf) som du kan ladda ner och dela med andra, eller skriva ut och bocka av.
 
 ## 10 sätt att använda Klimatkollen för att skapa förändring
 
