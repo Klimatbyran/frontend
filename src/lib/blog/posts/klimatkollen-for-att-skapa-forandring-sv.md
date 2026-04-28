@@ -18,7 +18,7 @@ Klimatkollens data finns öppen och tillgänglig för alla så att medborgare sk
 
 Sedan vi startade 2022 har vi fått in en mängd exempel på hur vår data har använts av medborgare och civilsamhället, och här delar vi med oss av några exempel som kanske kan inspirera dig till att agera för förändring.
 
-Tipsen med exempel finns också i en [guide](/documents/Klimatkollen_user guide_SE.pdf) som du kan ladda ner och dela med andra, eller skriva ut och bocka av.
+Tipsen med exempel finns också i en [guide](/documents/Klimatkollen_user_guide_SE.pdf) som du kan ladda ner och dela med andra, eller skriva ut och bocka av.
 
 ## 10 sätt att använda Klimatkollen för att skapa förändring
 

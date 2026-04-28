@@ -18,7 +18,7 @@ Klimatkollen's data is open and accessible to all, so that citizens can hold tho
 
 Since we launched in 2022, we've received many examples of how our data has been used by citizens and civil society, and here we share some of them — which may inspire you to act for change!
 
-The tips are also available in a [guide](/documents/Klimatkollen_user guide_EN.pdf) that you can download and share with others, or print out and tick off.
+The tips are also available in a [guide](/documents/Klimatkollen_user_guide_EN.pdf) that you can download and share with others, or print out and tick off.
 
 ## 10 ways to use Klimatkollen to create change
 
