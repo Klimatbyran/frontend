@@ -1,5 +1,8 @@
 export const blogMetadata: { id: string; displayLanguages: string[] }[] = [
-  { id: "klimatkollen-for-att-skapa-forandring", displayLanguages: ["sv", "en"] },
+  {
+    id: "klimatkollen-for-att-skapa-forandring",
+    displayLanguages: ["sv", "en"],
+  },
   { id: "paris-aligned", displayLanguages: ["sv", "en"] },
   { id: "cop-2025", displayLanguages: ["sv", "en"] },
   { id: "how-we-present-data", displayLanguages: ["sv", "en"] },

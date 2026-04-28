@@ -1,6 +1,6 @@
 ---
 id: "klimatkollen-for-att-skapa-forandring"
-title: "10 sätt att använda Klimatkollen för att skapa förändring""
+title: "10 sätt att använda Klimatkollen för att skapa förändring"
 excerpt: "Klimatkollens data kan användas av alla för att få till förändring inom klimatområdet. Här hittar du konkreta exempel på hur datan kan användas i praktiken."
 date: "2026-04-13"
 readTime: "6 min"
