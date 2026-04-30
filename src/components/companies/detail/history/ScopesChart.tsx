@@ -43,8 +43,6 @@ interface ScopesChartProps {
   hiddenScopes: Array<"scope1" | "scope2" | "scope3">;
   handleScopeToggle: (scope: "scope1" | "scope2" | "scope3") => void;
   onYearSelect: (year: number) => void;
-  exploreMode?: boolean;
-  setExploreMode?: (val: boolean) => void;
 }
 
 export const ScopesChart: FC<ScopesChartProps> = ({

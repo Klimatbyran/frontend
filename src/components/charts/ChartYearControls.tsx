@@ -1,7 +1,6 @@
 import React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { stagingFeatureFlagEnabled } from "@/utils/ui/featureFlags";
 import { useScreenSize } from "@/hooks/useScreenSize";
 
 interface ChartYearControlsProps {
@@ -10,8 +9,6 @@ interface ChartYearControlsProps {
   longEndYear?: number; // Optional override, defaults to 2050
   setChartEndYear: (year: number) => void;
   className?: string;
-  exploreMode?: boolean;
-  setExploreMode?: (val: boolean) => void;
 }
 
 export const ChartYearControls: React.FC<ChartYearControlsProps> = ({
@@ -20,8 +17,6 @@ export const ChartYearControls: React.FC<ChartYearControlsProps> = ({
   longEndYear,
   setChartEndYear,
   className = "",
-  exploreMode = false,
-  setExploreMode,
 }) => {
   const { isMobile } = useScreenSize();
 
@@ -29,15 +24,10 @@ export const ChartYearControls: React.FC<ChartYearControlsProps> = ({
   const defaultShortYear = shortEndYear ?? currentYear + 5;
   const defaultLongYear = longEndYear ?? 2050;
 
-  // Hide controls when in explore mode
-  if (exploreMode) {
-    return null;
-  }
-
   const showShortButton = chartEndYear === defaultLongYear;
   const showLongButton = chartEndYear === defaultShortYear;
 
-  if (!showShortButton && !showLongButton && !setExploreMode) {
+  if (!showShortButton && !showLongButton) {
     return null;
   }
 
@@ -71,21 +61,6 @@ export const ChartYearControls: React.FC<ChartYearControlsProps> = ({
             )}
           </div>
         )}
-
-        {setExploreMode && stagingFeatureFlagEnabled() && (
-          <div className="flex justify-center">
-            <Button
-              variant="default"
-              size="sm"
-              onClick={() => {
-                setExploreMode(true);
-              }}
-              className="bg-green-3 text-black font-semibold shadow-md hover:bg-green-2 text-xs px-4 py-1"
-            >
-              Explore the Data
-            </Button>
-          </div>
-        )}
       </div>
     );
   }
@@ -117,21 +92,6 @@ export const ChartYearControls: React.FC<ChartYearControlsProps> = ({
           </Button>
         )}
       </div>
-
-      {setExploreMode && stagingFeatureFlagEnabled() && (
-        <div className="flex justify-center items-center">
-          <Button
-            variant="default"
-            size="sm"
-            onClick={() => {
-              setExploreMode(true);
-            }}
-            className="bg-green-3 text-black font-semibold shadow-md hover:bg-green-2"
-          >
-            Explore the Data
-          </Button>
-        </div>
-      )}
     </div>
   );
 };
