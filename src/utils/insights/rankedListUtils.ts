@@ -104,14 +104,14 @@ export function calculateEntityStatistics<
   const distributionStats = [
     {
       count: aboveAverageCount,
-      colorClass: "text-blue-3",
+      colorClass: selectedKPI.higherIsBetter ? "text-blue-3" : "text-pink-3",
       label: selectedKPI.isBoolean
         ? selectedKPI.booleanLabels?.true || t("yes")
         : aboveAverageLabel,
     },
     {
       count: belowAverageCount,
-      colorClass: "text-pink-3",
+      colorClass: selectedKPI.higherIsBetter ? "text-pink-3" : "text-blue-3",
       label: selectedKPI.isBoolean
         ? selectedKPI.booleanLabels?.false || t("no")
         : belowAverageLabel,

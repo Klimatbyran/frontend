@@ -3,6 +3,7 @@ import { Search } from "lucide-react";
 import { t } from "i18next";
 import MultiPagePagination from "@/components/ui/multi-page-pagination";
 import { DataPoint } from "@/types/rankings";
+import { cn } from "@/lib/utils";
 
 export interface RankedListProps<T extends Record<string, unknown>> {
   data: T[];
@@ -57,6 +58,22 @@ export function RankedList<T extends Record<string, unknown>>({
     const bNum = bValue as number;
     return selectedDataPoint.higherIsBetter ? bNum - aNum : aNum - bNum;
   });
+
+  const validValues = sortedData
+    .map((item) => item[selectedDataPoint.key])
+    .filter(
+      (value) =>
+        (selectedDataPoint.isBoolean && typeof value === "boolean") ||
+        (typeof value === "number" && !isNaN(value as number)),
+    );
+
+  const average =
+    validValues.reduce(
+      (sum, value) =>
+        sum +
+        (selectedDataPoint.isBoolean ? (value ? 1 : 0) : (value as number)),
+      0,
+    ) / validValues.length;
 
   const filteredData = sortedData.filter((item) => {
     const searchValue = item[searchKey];
@@ -121,6 +138,22 @@ export function RankedList<T extends Record<string, unknown>>({
     return originalRankMap.get(item) || 0;
   };
 
+  const getColor = (item: T): string => {
+    const value = item[selectedDataPoint.key];
+
+    if (value === null || value === undefined) {
+      return "text-pink-3";
+    } else if (selectedDataPoint.isBoolean) {
+      return value == selectedDataPoint.higherIsBetter
+        ? "text-blue-3"
+        : "text-pink-3";
+    } else {
+      return (value as number) > average == selectedDataPoint.higherIsBetter
+        ? "text-blue-3"
+        : "text-pink-3";
+    }
+  };
+
   const defaultRenderItem = (item: T, index: number) => {
     const originalRank = getOriginalRank(item);
     return (
@@ -140,7 +173,12 @@ export function RankedList<T extends Record<string, unknown>>({
             {String(item[searchKey])}
           </span>
         </div>
-        <span className="text-orange-2 text-sm md:text-base font-medium text-right">
+        <span
+          className={cn(
+            getColor(item),
+            "text-sm md:text-base font-medium text-right",
+          )}
+        >
           {formatValue(item)}
         </span>
       </button>
