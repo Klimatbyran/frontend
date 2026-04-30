@@ -29,13 +29,6 @@ export function Layout({ children }: LayoutProps) {
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
-  useEffect(() => {
-    queryClient.prefetchQuery({
-      queryKey: ["municipalities"],
-      queryFn: getMunicipalities,
-    });
-  }, [queryClient]);
-
   return (
     <div className="min-h-screen w-full overflow-x-hidden bg-black-3 flex flex-col">
       <Seo meta={seoMeta} />
