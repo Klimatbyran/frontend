@@ -134,9 +134,11 @@ function useRankedItemHelpers<T extends Record<string, unknown>>(
         ? "text-blue-3"
         : "text-pink-3";
     }
-    return (value as number) > average == selectedDataPoint.higherIsBetter
-      ? "text-blue-3"
-      : "text-pink-3";
+    // TODO: comment out for now, wait for gradient implementation
+    // return (value as number) > average == selectedDataPoint.higherIsBetter
+    //   ? "text-blue-3"
+    //   : "text-pink-3";
+    return "text-orange-2";
   };
 
   return { formatValue, getOriginalRank, getColor };
