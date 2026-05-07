@@ -24,7 +24,7 @@ import { MunicipalityDetailPage } from "./pages/MunicipalityDetailPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { ReportsPage } from "./pages/ReportsPage";
 import { PrivacyPage } from "./pages/PrivacyPage";
-import ProductsPage from "./pages/ProductsPage";
+import DownloadDataPage from "./pages/DownloadDataPage";
 import { UnauthorizedErrorPage } from "./pages/error/UnauthorizedErrorPage";
 import { SupportPage } from "./pages/SupportPage";
 import { ValidationDashboard } from "./pages/internal-pages/ValidationDashboard";
@@ -157,7 +157,7 @@ export function AppRoutes() {
 
       {/* Other Pages */}
       <Route path={`${basePath}/privacy`} element={<PrivacyPage />} />
-      <Route path={`${basePath}/products`} element={<ProductsPage />} />
+      <Route path={`${basePath}/products`} element={<DownloadDataPage />} />
       <Route
         path={`${basePath}/products/database-download-2025`}
         element={<DownloadsPage />}

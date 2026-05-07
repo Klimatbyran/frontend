@@ -47,22 +47,22 @@ const DataCategory = ({
   </div>
 );
 
-function ProductsPage() {
+function DownloadDataPage() {
   const { t } = useTranslation();
   const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
 
   const freeFeatures = [
     {
       icon: <Server className="h-5 w-5 text-blue-4" />,
-      text: t("productsPage.freeAccess.export"),
+      text: t("downloadDataPage.freeAccess.export"),
     },
     {
       icon: <Building2 className="h-5 w-5 text-blue-4" />,
-      text: t("productsPage.freeAccess.data"),
+      text: t("downloadDataPage.freeAccess.data"),
     },
     {
       icon: <Lock className="h-5 w-5 text-blue-4" />,
-      text: t("productsPage.freeAccess.license"),
+      text: t("downloadDataPage.freeAccess.license"),
     },
   ];
 
@@ -72,7 +72,7 @@ function ProductsPage() {
         onClick={() => setIsRequestModalOpen(true)}
         className="inline-flex items-center justify-center rounded-md bg-blue-4 px-6 py-3 text-base font-medium text-white shadow-lg hover:bg-blue-3 w-full transition-all"
       >
-        {t("productsPage.freeAccess.requestAccess")}
+        {t("downloadDataPage.freeAccess.requestAccess")}
       </button>
       <RequestAccessModal
         isOpen={isRequestModalOpen}
@@ -83,13 +83,13 @@ function ProductsPage() {
 
   // Prepare SEO data
   const canonicalUrl = "https://klimatkollen.se/products";
-  const pageTitle = `${t("productsPage.title")} - Klimatkollen`;
-  const pageDescription = t("productsPage.description");
+  const pageTitle = `${t("downloadDataPage.title")} - Klimatkollen`;
+  const pageDescription = t("downloadDataPage.description");
 
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    name: t("productsPage.title"),
+    name: t("downloadDataPage.title"),
     description: pageDescription,
     url: canonicalUrl,
   };
@@ -105,16 +105,16 @@ function ProductsPage() {
 
       <div className="max-w-[1200px] mx-auto">
         <PageHeader
-          title={t("productsPage.title")}
-          description={t("productsPage.description")}
+          title={t("downloadDataPage.title")}
+          description={t("downloadDataPage.description")}
         />
 
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid grid-cols-1">
             {/* Free Version */}
             <ProductCard
-              title={t("productsPage.freeAccess.title")}
-              description={t("productsPage.freeAccess.description")}
+              title={t("downloadDataPage.freeAccess.title")}
+              description={t("downloadDataPage.freeAccess.description")}
               icon={<Database className="h-6 w-6 text-blue-5" />}
               features={freeFeatures}
               actions={freeActions}
@@ -129,27 +129,27 @@ function ProductsPage() {
           {/* Data Overview Section */}
           <div className="mx-auto max-w-7xl mt-16 mb-16">
             <h2 className="text-2xl font-light text-white text-center mb-8">
-              {t("productsPage.dataOverview.title")}
+              {t("downloadDataPage.dataOverview.title")}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
               <DataCategory
                 icon={<Building2 className="h-5 w-5 text-grey" />}
-                title={t("productsPage.dataOverview.corporate.title")}
+                title={t("downloadDataPage.dataOverview.corporate.title")}
                 description={t(
-                  "productsPage.dataOverview.corporate.description",
+                  "downloadDataPage.dataOverview.corporate.description",
                 )}
                 isFirst
               />
               <DataCategory
                 icon={<FileText className="h-5 w-5 text-grey" />}
-                title={t("productsPage.dataOverview.reports.title")}
-                description={t("productsPage.dataOverview.reports.description")}
+                title={t("downloadDataPage.dataOverview.reports.title")}
+                description={t("downloadDataPage.dataOverview.reports.description")}
               />
               <DataCategory
                 icon={<MapPin className="h-5 w-5 text-grey" />}
-                title={t("productsPage.dataOverview.municipality.title")}
+                title={t("downloadDataPage.dataOverview.municipality.title")}
                 description={t(
-                  "productsPage.dataOverview.municipality.description",
+                  "downloadDataPage.dataOverview.municipality.description",
                 )}
                 isLast
               />
@@ -161,4 +161,4 @@ function ProductsPage() {
   );
 }
 
-export default ProductsPage;
+export default DownloadDataPage;
