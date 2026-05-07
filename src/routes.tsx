@@ -163,9 +163,9 @@ export function AppRoutes() {
         path={`${basePath}/explore/:mainFilter`}
         element={<ExplorePage />}
       />
-      <CompanyRoutes basePath={basePath} />
-      <TerritoryRoutes basePath={basePath} />
-      <ContentRoutes basePath={basePath} />
+      {CompanyRoutes({ basePath })}
+      {TerritoryRoutes({ basePath })}
+      {ContentRoutes({ basePath })}
       <Route path={`${basePath}/error/:code`} element={<ErrorPage />} />
       <Route path={`${basePath}/*`} element={<NotFoundPage />} />
       <Route path={`${basePath}/403`} element={<UnauthorizedErrorPage />} />
