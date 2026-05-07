@@ -1,11 +1,10 @@
 import {
   Database,
   Lock,
-  Mail,
-  Server,
   FileText,
   Building2,
   MapPin,
+  Server,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
@@ -52,25 +51,6 @@ function ProductsPage() {
   const { t } = useTranslation();
   const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
 
-  const apiFeatures = [
-    {
-      icon: <Server className="h-5 w-5 text-green-4" />,
-      text: t("productsPage.apiAccess.realtime"),
-    },
-    {
-      icon: <FileText className="h-5 w-5 text-green-4" />,
-      text: t("productsPage.apiAccess.documentation"),
-    },
-    // {
-    //   icon: <Lock className="h-5 w-5 text-green-4" />,
-    //   text: t("productsPage.apiAccess.secure"),
-    // },
-    {
-      icon: <Mail className="h-5 w-5 text-green-4" />,
-      text: t("productsPage.apiAccess.support"),
-    },
-  ];
-
   const freeFeatures = [
     {
       icon: <Server className="h-5 w-5 text-blue-4" />,
@@ -85,25 +65,6 @@ function ProductsPage() {
       text: t("productsPage.freeAccess.license"),
     },
   ];
-
-  const apiActions = (
-    <>
-      <a
-        href="mailto:hej@klimatkollen.se?subject=API%20Access%20Pricing%20Request&body=Hi%2C%0A%0AI'm%20interested%20in%20learning%20more%20about%20the%20API%20direct%20access%20pricing.%0A%0ABest%20regards"
-        className="inline-flex items-center justify-center rounded-md bg-green-4 px-6 py-3 text-base font-medium text-white shadow-lg hover:bg-green-3 w-full transition-all"
-      >
-        {t("productsPage.apiAccess.contactPricing")}
-      </a>
-      <a
-        href="https://api.klimatkollen.se/api/"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex items-center justify-center rounded-md bg-green-4 px-6 py-3 text-base font-medium text-white shadow-lg hover:bg-green-3 w-full transition-all border border-green-4"
-      >
-        {t("productsPage.apiAccess.viewDocs")}
-      </a>
-    </>
-  );
 
   const freeActions = (
     <>
@@ -149,21 +110,7 @@ function ProductsPage() {
         />
 
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-            {/* Premium Version */}
-            <ProductCard
-              title={t("productsPage.apiAccess.title")}
-              description={t("productsPage.apiAccess.description")}
-              icon={<Server className="h-6 w-6 text-green-5" />}
-              features={apiFeatures}
-              actions={apiActions}
-              bgColor="bg-green-1"
-              borderColor="border-green-4"
-              hoverBorderColor="border-green-5"
-              textColor="text-green-5"
-              iconBgColor="bg-green-2"
-            />
-
+          <div className="grid grid-cols-1">
             {/* Free Version */}
             <ProductCard
               title={t("productsPage.freeAccess.title")}
