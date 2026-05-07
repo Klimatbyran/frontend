@@ -16,10 +16,10 @@
     "regions": "Län",
     "about": "Om",
     "aboutUs": "Om oss",
-    "products": "Produkter",
     "insights": "Insikter",
     "methodology": "Källor och metod",
     "support": "Stöd oss",
+    "dataDownload": "Ladda ner vår data",
     "newsletter": "Nyhetsbrev",
     "openMenu": "Öppna meny",
     "closeMenu": "Stäng meny",
@@ -287,9 +287,9 @@
       "utslappsberakningText": "Beräkning av hur utsläppen skulle minska eller öka med partiernas politik"
     }
   },
-  "productsPage": {
+  "dataDownloadPage": {
     "title": "Få tillgång till klimatdata",
-    "description": "Få tillgång till Klimatkollens klimatdatabas, innehållande företagens utsläpp, hållbarhetsrapporter och kommunens klimatdata via vårt API.",
+    "description": "Få tillgång till Klimatkollens klimatdatabas, innehållande företagens utsläpp, hållbarhetsrapporter och kommunens klimatdata.",
     "viewDocumentation": "Visa API-dokumentation →",
     "apiAccess": {
       "title": "Direkt API-åtkomst",

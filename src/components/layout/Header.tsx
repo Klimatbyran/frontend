@@ -100,11 +100,8 @@ const NAV_LINKS: NavLink[] = [
         path: "https://www.mynewsdesk.com/se/klimatbyraan/latest_news",
       },
       { label: "header.support", path: `/support` },
+      { label: "header.dataDownload", path: `/data-download` },
     ],
-  },
-  {
-    label: "header.products",
-    path: `/products`,
   },
 ];
 

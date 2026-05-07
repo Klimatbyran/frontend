@@ -16,10 +16,10 @@
     "regions": "Regions",
     "about": "About",
     "aboutUs": "About Us",
-    "products": "Products",
     "insights": "Insights",
     "methodology": "Sources and Method",
     "support": "Support Us",
+    "dataDownload": "Download Our Data",
     "newsletter": "Newsletter",
     "openMenu": "Open Menu",
     "closeMenu": "Close Menu",
@@ -282,9 +282,9 @@
       "utslappsberakningText": "A projection of how emissions would increase or decrease under each party's policies."
     }
   },
-  "productsPage": {
+  "dataDownloadPage": {
     "title": "Access Climate Impact Data",
-    "description": "Get access to Klimatkollen's climate database, featuring corporate emissions data, sustainability reports, and municipal environmental metrics through our API.",
+    "description": "Get access to Klimatkollen's climate database, featuring corporate emissions data, sustainability reports, and municipal environmental metrics.",
     "viewDocumentation": "View API Documentation →",
     "apiAccess": {
       "title": "Direct API Access",
