@@ -1,17 +1,13 @@
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useHiddenItems } from "@/components/charts";
 import { SectorEmissionsChart } from "@/components/charts/sectorChart/SectorEmissions";
 import { useSectorEmissions } from "@/hooks/territories/useSectorEmissions";
 import { useSectors } from "@/hooks/territories/useSectors";
+import { useSectorYearSelection } from "@/hooks/territories/useSectorYearSelection";
 import { Text } from "../ui/text";
 import { Button } from "../ui/button";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { ArrowRight } from "lucide-react";
-import {
-  getAvailableYearsFromSectors,
-  getCurrentYearFromAvailable,
-} from "@/utils/detail/sectorYearUtils";
 
 export const CountriesSection = () => {
   const { t } = useTranslation();
@@ -20,10 +16,8 @@ export const CountriesSection = () => {
   const { getSectorInfo } = useSectors();
   const { hiddenItems: filteredSectors, setHiddenItems: setFilteredSectors } =
     useHiddenItems<string>([]);
-  const [selectedYear, setSelectedYear] = useState<string>("2023");
-
-  const availableYears = getAvailableYearsFromSectors(sectorEmissions);
-  const currentYear = getCurrentYearFromAvailable(selectedYear, availableYears);
+  const { selectedYear, setSelectedYear, availableYears, currentYear } =
+    useSectorYearSelection(sectorEmissions);
 
   return (
     <div className="bg-black w-full flex flex-col items-center pt-44 md:pt-52">

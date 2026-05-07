@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import {
   useNationDetails,
   useNationDetailHeaderStats,
@@ -6,10 +6,7 @@ import {
 import { useSectorEmissions } from "@/hooks/territories/useSectorEmissions";
 import { useSectors } from "@/hooks/territories/useSectors";
 import { useHiddenItems } from "@/components/charts";
-import {
-  getAvailableYearsFromSectors,
-  getCurrentYearFromAvailable,
-} from "@/utils/detail/sectorYearUtils";
+import { useSectorYearSelection } from "@/hooks/territories/useSectorYearSelection";
 import { useRegions } from "@/hooks/useRegions";
 import { transformNationEmissionsData } from "@/utils/data/nationTransforms";
 
@@ -20,8 +17,6 @@ export function useNationPageData() {
   const { getSectorInfo } = useSectors();
   const { hiddenItems: filteredSectors, setHiddenItems: setFilteredSectors } =
     useHiddenItems<string>([]);
-  const [selectedYear, setSelectedYear] = useState<string>("2023");
-
   const sortedRegions = useMemo(() => [...regions].sort(), [regions]);
   const emissionsData = useMemo(
     () => (nation ? transformNationEmissionsData(nation) : []),
@@ -35,12 +30,9 @@ export function useNationPageData() {
   }, [emissionsData]);
   const lastYear = lastYearEmissions?.year;
   const headerStats = useNationDetailHeaderStats(nation, lastYear);
-  const availableYears = getAvailableYearsFromSectors(sectorEmissions);
-  const currentYear = getCurrentYearFromAvailable(
-    selectedYear,
-    availableYears,
-    lastYear ?? 2023,
-  );
+
+  const { selectedYear, setSelectedYear, availableYears, currentYear } =
+    useSectorYearSelection(sectorEmissions, lastYear ?? 2023);
 
   return {
     nation,
