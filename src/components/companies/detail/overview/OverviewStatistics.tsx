@@ -33,10 +33,14 @@ export function OverviewStatistics({
             <span className="flex items-center gap-2">
               <Text>
                 {selectedPeriod.economy?.turnover?.value
-                  ? `${localizeUnit(
-                      selectedPeriod.economy.turnover.value / 1e9,
-                      currentLanguage,
-                    )} ${t("companies.overview.billion")} ${selectedPeriod.economy.turnover.currency}`
+                  ? (() => {
+                      const { value } = selectedPeriod.economy.turnover;
+                      const useMillions = value < 1e9;
+                      return `${localizeUnit(
+                        value / (useMillions ? 1e6 : 1e9),
+                        currentLanguage,
+                      )} ${t(useMillions ? "companies.overview.million" : "companies.overview.billion")} ${selectedPeriod.economy.turnover.currency}`;
+                    })()
                   : t("companies.overview.notReported")}
               </Text>
               {turnoverAIGenerated && <AiIcon size="md" />}
