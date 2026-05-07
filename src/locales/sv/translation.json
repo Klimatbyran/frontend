@@ -289,7 +289,7 @@
   },
   "productsPage": {
     "title": "Få tillgång till klimatdata",
-    "description": "Få tillgång till Klimatkollens klimatdatabas, innehållande företagens utsläpp, hållbarhetsrapporter och kommunens klimatdata via vårt API.",
+    "description": "Få tillgång till Klimatkollens klimatdatabas, innehållande företagens utsläpp, hållbarhetsrapporter och kommunens klimatdata.",
     "viewDocumentation": "Visa API-dokumentation →",
     "apiAccess": {
       "title": "Direkt API-åtkomst",

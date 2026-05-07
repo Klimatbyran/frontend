@@ -284,7 +284,7 @@
   },
   "productsPage": {
     "title": "Access Climate Impact Data",
-    "description": "Get access to Klimatkollen's climate database, featuring corporate emissions data, sustainability reports, and municipal environmental metrics through our API.",
+    "description": "Get access to Klimatkollen's climate database, featuring corporate emissions data, sustainability reports, and municipal environmental metrics.",
     "viewDocumentation": "View API Documentation →",
     "apiAccess": {
       "title": "Direct API Access",
