@@ -45,9 +45,6 @@ export function MethodsPage() {
     } else {
       return "parisAgreement";
     }
-
-    // Default fallback
-    return "parisAgreement";
   };
 
   // Prepare SEO data
