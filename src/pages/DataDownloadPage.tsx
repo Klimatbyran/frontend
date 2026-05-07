@@ -143,7 +143,9 @@ function DataDownloadPage() {
               <DataCategory
                 icon={<FileText className="h-5 w-5 text-grey" />}
                 title={t("dataDownloadPage.dataOverview.reports.title")}
-                description={t("dataDownloadPage.dataOverview.reports.description")}
+                description={t(
+                  "dataDownloadPage.dataOverview.reports.description",
+                )}
               />
               <DataCategory
                 icon={<MapPin className="h-5 w-5 text-grey" />}
