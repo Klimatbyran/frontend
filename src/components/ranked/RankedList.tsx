@@ -21,42 +21,40 @@ export interface RankedListProps<T extends Record<string, unknown>> {
   searchPlaceholder?: string;
 }
 
-export function RankedList<T extends Record<string, unknown>>({
+interface SortedRankedDataOptions<T extends Record<string, unknown>> {
+  data: T[];
+  selectedDataPoint: DataPoint<T>;
+  searchKey: keyof T;
+  searchTerm: string;
+  itemsPerPage: number;
+  currentPage: number;
+}
+
+function useSortedRankedData<T extends Record<string, unknown>>({
   data,
   selectedDataPoint,
-  onItemClick,
-  searchKey = "name" as keyof T,
-  itemsPerPage = 10,
-  renderItem,
-  className,
-  searchPlaceholder,
-}: RankedListProps<T>) {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-
+  searchKey,
+  searchTerm,
+  itemsPerPage,
+  currentPage,
+}: SortedRankedDataOptions<T>) {
   const sortedData = [...data].sort((a, b) => {
     const aValue = a[selectedDataPoint.key];
     const bValue = b[selectedDataPoint.key];
-
-    // Handle null/undefined values
     if (aValue === null || aValue === undefined) return 1;
     if (bValue === null || bValue === undefined) return -1;
-
-    // For boolean KPIs, sort alphabetically by name
     if (
       selectedDataPoint.isBoolean &&
       typeof aValue === "boolean" &&
       typeof bValue === "boolean"
     ) {
-      const aName = String(a[searchKey] || "");
-      const bName = String(b[searchKey] || "");
-      return aName.localeCompare(bName);
+      return String(a[searchKey] || "").localeCompare(
+        String(b[searchKey] || ""),
+      );
     }
-
-    // For non-boolean values, sort by the value
-    const aNum = aValue as number;
-    const bNum = bValue as number;
-    return selectedDataPoint.higherIsBetter ? bNum - aNum : aNum - bNum;
+    return selectedDataPoint.higherIsBetter
+      ? (bValue as number) - (aValue as number)
+      : (aValue as number) - (bValue as number);
   });
 
   const validValues = sortedData
@@ -75,6 +73,9 @@ export function RankedList<T extends Record<string, unknown>>({
       0,
     ) / validValues.length;
 
+  const originalRankMap = new Map<T, number>();
+  sortedData.forEach((item, index) => originalRankMap.set(item, index + 1));
+
   const filteredData = sortedData.filter((item) => {
     const searchValue = item[searchKey];
     return (
@@ -84,11 +85,6 @@ export function RankedList<T extends Record<string, unknown>>({
     );
   });
 
-  const originalRankMap = new Map<T, number>();
-  sortedData.forEach((item, index) => {
-    originalRankMap.set(item, index + 1);
-  });
-
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedData = filteredData.slice(
@@ -96,29 +92,27 @@ export function RankedList<T extends Record<string, unknown>>({
     startIndex + itemsPerPage,
   );
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-    const listElement = document.querySelector(".ranked-list-items");
-    if (listElement) {
-      listElement.scrollTop = 0;
-    }
+  return {
+    sortedData,
+    average,
+    originalRankMap,
+    filteredData,
+    totalPages,
+    startIndex,
+    paginatedData,
   };
+}
 
+function useRankedItemHelpers<T extends Record<string, unknown>>(
+  selectedDataPoint: DataPoint<T>,
+  average: number,
+  originalRankMap: Map<T, number>,
+) {
   const formatValue = (item: T) => {
     const value = item[selectedDataPoint.key];
-
-    // If there's a custom formatter, use it
-    if (selectedDataPoint.formatter) {
-      return selectedDataPoint.formatter(value);
-    }
-
-    // Default formatting logic
-    if (value === null) {
-      return selectedDataPoint.nullValues || t("noData");
-    }
-
+    if (selectedDataPoint.formatter) return selectedDataPoint.formatter(value);
+    if (value === null) return selectedDataPoint.nullValues || t("noData");
     if (typeof value === "boolean") {
-      // Use booleanLabels if available, otherwise fall back to generic labels
       if (selectedDataPoint.booleanLabels) {
         return value
           ? selectedDataPoint.booleanLabels.true
@@ -126,64 +120,89 @@ export function RankedList<T extends Record<string, unknown>>({
       }
       return value ? t("yes") : t("no");
     }
-
-    if (typeof value === "number") {
-      return `${value.toFixed(1)}`;
-    }
-
+    if (typeof value === "number") return `${value.toFixed(1)}`;
     return String(value);
   };
 
-  const getOriginalRank = (item: T): number => {
-    return originalRankMap.get(item) || 0;
-  };
+  const getOriginalRank = (item: T) => originalRankMap.get(item) || 0;
 
   const getColor = (item: T): string => {
     const value = item[selectedDataPoint.key];
-
-    if (value === null || value === undefined) {
-      return "text-pink-3";
-    } else if (selectedDataPoint.isBoolean) {
+    if (value === null || value === undefined) return "text-pink-3";
+    if (selectedDataPoint.isBoolean) {
       return value == selectedDataPoint.higherIsBetter
         ? "text-blue-3"
         : "text-pink-3";
-    } else {
-      return (value as number) > average == selectedDataPoint.higherIsBetter
-        ? "text-blue-3"
-        : "text-pink-3";
     }
+    // TODO: comment out for now, wait for gradient implementation
+    // return (value as number) > average == selectedDataPoint.higherIsBetter
+    //   ? "text-blue-3"
+    //   : "text-pink-3";
+    return "text-orange-2";
   };
 
-  const defaultRenderItem = (item: T, index: number) => {
-    const originalRank = getOriginalRank(item);
-    return (
-      <button
-        key={String(index)}
-        onClick={() => onItemClick?.(item)}
-        className="w-full p-4 hover:bg-black/40 transition-colors flex items-center justify-between group"
-      >
-        <div className="flex items-center gap-4">
-          <span className="text-white/30 text-sm w-8">
-            {selectedDataPoint.isBoolean
-              ? /* Empty span to maintain indentation for boolean KPIs */
-                ""
-              : originalRank}
-          </span>
-          <span className="text-white/90 text-sm md:text-base text-left">
-            {String(item[searchKey])}
-          </span>
-        </div>
-        <span
-          className={cn(
-            getColor(item),
-            "text-sm md:text-base font-medium text-right",
-          )}
-        >
-          {formatValue(item)}
-        </span>
-      </button>
-    );
+  return { formatValue, getOriginalRank, getColor };
+}
+
+export function RankedList<T extends Record<string, unknown>>({
+  data,
+  selectedDataPoint,
+  onItemClick,
+  searchKey = "name" as keyof T,
+  itemsPerPage = 10,
+  renderItem,
+  className,
+  searchPlaceholder,
+}: RankedListProps<T>) {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const { average, originalRankMap, totalPages, startIndex, paginatedData } =
+    useSortedRankedData({
+      data,
+      selectedDataPoint,
+      searchKey,
+      searchTerm,
+      itemsPerPage,
+      currentPage,
+    });
+
+  const { formatValue, getOriginalRank, getColor } = useRankedItemHelpers(
+    selectedDataPoint,
+    average,
+    originalRankMap,
+  );
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    const listElement = document.querySelector(".ranked-list-items");
+    if (listElement) listElement.scrollTop = 0;
   };
+
+  const defaultRenderItem = (item: T, index: number) => (
+    <button
+      key={String(index)}
+      onClick={() => onItemClick?.(item)}
+      className="w-full p-4 hover:bg-black/40 transition-colors flex items-center justify-between group"
+    >
+      <div className="flex items-center gap-4">
+        <span className="text-white/30 text-sm w-8">
+          {selectedDataPoint.isBoolean ? "" : getOriginalRank(item)}
+        </span>
+        <span className="text-white/90 text-sm md:text-base text-left">
+          {String(item[searchKey])}
+        </span>
+      </div>
+      <span
+        className={cn(
+          getColor(item),
+          "text-sm md:text-base font-medium text-right",
+        )}
+      >
+        {formatValue(item)}
+      </span>
+    </button>
+  );
 
   return (
     <div
@@ -212,18 +231,16 @@ export function RankedList<T extends Record<string, unknown>>({
       </div>
       <div className="flex-1 overflow-y-auto ranked-list-items min-h-[570px]">
         <div className="divide-y divide-white/10">
-          {paginatedData.map((item, index) => {
-            const originalRank = getOriginalRank(item);
-            return renderItem
-              ? renderItem(item, index, startIndex, originalRank)
-              : defaultRenderItem(item, index);
-          })}
-          {/* Add empty placeholder rows to maintain height */}
+          {paginatedData.map((item, index) =>
+            renderItem
+              ? renderItem(item, index, startIndex, getOriginalRank(item))
+              : defaultRenderItem(item, index),
+          )}
           {paginatedData.length < itemsPerPage &&
             Array(itemsPerPage - paginatedData.length)
               .fill(0)
               .map((_, i) => (
-                <div key={`empty-${i}`} className="p-4 h-[50px]"></div>
+                <div key={`empty-${i}`} className="p-4 h-[50px]" />
               ))}
         </div>
       </div>
