@@ -24,7 +24,7 @@ import { MunicipalityDetailPage } from "./pages/MunicipalityDetailPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { ReportsPage } from "./pages/ReportsPage";
 import { PrivacyPage } from "./pages/PrivacyPage";
-import DownloadDataPage from "./pages/DownloadDataPage";
+import DataDownloadPage from "./pages/DataDownloadPage";
 import { UnauthorizedErrorPage } from "./pages/error/UnauthorizedErrorPage";
 import { SupportPage } from "./pages/SupportPage";
 import { ValidationDashboard } from "./pages/internal-pages/ValidationDashboard";
@@ -138,9 +138,12 @@ function ContentRoutes({ basePath }: { basePath: string }) {
         element={<NewsLetterArchivePage />}
       />
       <Route path={`${basePath}/privacy`} element={<PrivacyPage />} />
-      <Route path={`${basePath}/products`} element={<DownloadDataPage />} />
       <Route
-        path={`${basePath}/products/database-download-2025`}
+        path={`${basePath}/data-download`}
+        element={<DataDownloadPage />}
+      />
+      <Route
+        path={`${basePath}/data-download/database-download-2025`}
         element={<DownloadsPage />}
       />
     </>

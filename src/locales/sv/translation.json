@@ -287,7 +287,7 @@
       "utslappsberakningText": "Beräkning av hur utsläppen skulle minska eller öka med partiernas politik"
     }
   },
-  "downloadDataPage": {
+  "dataDownloadPage": {
     "title": "Få tillgång till klimatdata",
     "description": "Få tillgång till Klimatkollens klimatdatabas, innehållande företagens utsläpp, hållbarhetsrapporter och kommunens klimatdata.",
     "viewDocumentation": "Visa API-dokumentation →",
