@@ -82,11 +82,6 @@ export function ExplorePage() {
 
   const mainFilterToggles = [
     {
-      key: "companies",
-      path: "../companies",
-      labelKey: "explorePage.companies.companies",
-    },
-    {
       key: "municipalities",
       path: "../municipalities",
       labelKey: "explorePage.municipalities.municipalities",
@@ -95,6 +90,11 @@ export function ExplorePage() {
       key: "regions",
       path: "../regions",
       labelKey: "explorePage.regions.regions",
+    },
+    {
+      key: "companies",
+      path: "../companies",
+      labelKey: "explorePage.companies.companies",
     },
   ] as const;
 
