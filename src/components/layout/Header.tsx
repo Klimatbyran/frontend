@@ -48,18 +48,6 @@ const NAV_LINKS: NavLink[] = [
     path: `/explore`,
     sublinks: [
       {
-        label: "header.explore",
-        path: `/explore/companies`,
-      },
-      {
-        label: "header.companies",
-        path: `/companies`,
-      },
-      {
-        label: "header.sectors",
-        path: `/sectors`,
-      },
-      {
         label: "header.nation",
         path: `/nation`,
       },
@@ -70,6 +58,18 @@ const NAV_LINKS: NavLink[] = [
       {
         label: "header.municipalities",
         path: `/municipalities`,
+      },
+      {
+        label: "header.explore",
+        path: `/explore/companies`,
+      },
+      {
+        label: "header.companies",
+        path: `/companies`,
+      },
+      {
+        label: "header.sectors",
+        path: `/sectors`,
       },
     ],
   },
