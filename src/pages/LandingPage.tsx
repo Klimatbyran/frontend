@@ -135,7 +135,11 @@ export function LandingPage() {
           className="w-full object-cover"
         />
       </div>
-      <div ref={municipalitiesSectionRef} id="municipalities-section" className="w-full">
+      <div
+        ref={municipalitiesSectionRef}
+        id="municipalities-section"
+        className="w-full"
+      >
         <MunicipalitiesSection
           municipalities={municipalities}
           municipalitiesLoading={municipalitiesLoading}
