@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { FeatureCollection } from "geojson";
 import municipalityGeoJson from "@/data/municipalityGeo.json";
 import regionGeoJson from "@/data/regionGeo.json";
-import { useMunicipalityKPIs } from "@/hooks/municipalities/useMunicipalityKPIs";
+import { useMunicipalityKPIDefinitions } from "@/hooks/municipalities/useMunicipalityKPIs";
 import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
 import { createEntityClickHandler } from "@/utils/routing";
 import { useRegionalKPIs, useRegions } from "@/hooks/regions/useRegionKPIs";
@@ -15,7 +15,7 @@ export type TerritoryMode = "municipalities" | "regions";
 export function useMunicipalitiesSection() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const municipalityKPIs = useMunicipalityKPIs();
+  const municipalityKPIs = useMunicipalityKPIDefinitions();
   const regionalKPIs = useRegionalKPIs();
   const { regionsData, loading: regionsLoading } = useRegions();
   const { municipalities, municipalitiesLoading } = useMunicipalities();

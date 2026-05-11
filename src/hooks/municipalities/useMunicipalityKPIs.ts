@@ -9,7 +9,7 @@ export type MunicipalityData = Awaited<
   ReturnType<typeof getMunicipalitiesKPIs>
 >[number];
 
-export function useMunicipalities() {
+export function useMunicipalityKPIs() {
   const {
     data: municipalitiesKPI = [],
     isLoading,
@@ -29,7 +29,7 @@ export function useMunicipalities() {
   };
 }
 
-export const useMunicipalityKPIs = (): KPIValue<Municipality>[] => {
+export const useMunicipalityKPIDefinitions = (): KPIValue<Municipality>[] => {
   const { t } = useTranslation();
   return buildMunicipalityKpiDefinitions(t);
 };

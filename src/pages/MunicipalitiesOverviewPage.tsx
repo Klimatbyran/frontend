@@ -10,8 +10,8 @@ import TerritoryMap from "@/components/maps/TerritoryMap";
 import municipalityGeoJson from "@/data/municipalityGeo.json";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import {
-  useMunicipalities,
   useMunicipalityKPIs,
+  useMunicipalityKPIDefinitions,
 } from "@/hooks/municipalities/useMunicipalityKPIs";
 import { RankedListItem } from "@/types/rankings";
 import { createEntityClickHandler } from "@/utils/routing";
@@ -24,8 +24,8 @@ export function MunicipalitiesOverviewPage() {
     municipalitiesData,
     loading: municipalitiesLoading,
     error: municipalitiesError,
-  } = useMunicipalities();
-  const municipalityKPIs = useMunicipalityKPIs();
+  } = useMunicipalityKPIs();
+  const municipalityKPIs = useMunicipalityKPIDefinitions();
 
   const municipalities: Municipality[] = useMemo(
     () =>
