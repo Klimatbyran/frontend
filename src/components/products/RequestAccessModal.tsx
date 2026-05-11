@@ -37,13 +37,13 @@ export const RequestAccessModal = ({
 
     if (!email) {
       setStatus("error");
-      setErrorMessage(t("productsPage.requestAccess.errorEmptyEmail"));
+      setErrorMessage(t("dataDownloadPage.requestAccess.errorEmptyEmail"));
       return;
     }
 
     if (email.indexOf("@") === -1) {
       setStatus("error");
-      setErrorMessage(t("productsPage.requestAccess.errorInvalidEmail"));
+      setErrorMessage(t("dataDownloadPage.requestAccess.errorInvalidEmail"));
       return;
     }
 
@@ -79,7 +79,7 @@ export const RequestAccessModal = ({
       setErrorMessage(
         error instanceof Error
           ? error.message
-          : t("productsPage.requestAccess.errorGeneric"),
+          : t("dataDownloadPage.requestAccess.errorGeneric"),
       );
     }
   };
@@ -87,8 +87,9 @@ export const RequestAccessModal = ({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="bg-black-2">
+
         <DialogTitle className="text-white">
-          {t("productsPage.requestAccess.title")}
+          {t("dataDownloadPage.requestAccess.title")}
         </DialogTitle>
 
         <form onSubmit={handleFormSubmit} className="space-y-4">
@@ -97,7 +98,7 @@ export const RequestAccessModal = ({
               htmlFor="email"
               className="block text-sm font-medium text-grey mb-2"
             >
-              {t("productsPage.requestAccess.emailLabel")}
+              {t("dataDownloadPage.requestAccess.emailLabel")}
             </label>
             <input
               type="email"
@@ -116,11 +117,12 @@ export const RequestAccessModal = ({
               htmlFor="reason"
               className="block text-sm font-medium text-grey mb-2"
             >
-              {t("productsPage.requestAccess.reasonLabel")}
+              {t("dataDownloadPage.requestAccess.reasonLabel")}
             </label>
             <DropdownMenu>
               <DropdownMenuTrigger className="w-full px-3 py-2 bg-black-1 border border-black-1 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-4 flex justify-between items-center">
-                {reason}
+                {t(`dataDownloadPage.requestAccess.reason${reason}`)}
+
                 <ChevronDown className="h-4 w-4" />
               </DropdownMenuTrigger>
               <DropdownMenuContent className="bg-black-2 border border-black-1">
@@ -129,13 +131,13 @@ export const RequestAccessModal = ({
                   onValueChange={setReason}
                 >
                   <DropdownMenuRadioItem value="Work">
-                    {t("productsPage.requestAccess.reasonWork")}
+                    {t("dataDownloadPage.requestAccess.reasonWork")}
                   </DropdownMenuRadioItem>
                   <DropdownMenuRadioItem value="Hobby">
-                    {t("productsPage.requestAccess.reasonHobby")}
+                    {t("dataDownloadPage.requestAccess.reasonHobby")}
                   </DropdownMenuRadioItem>
                   <DropdownMenuRadioItem value="Curiosity">
-                    {t("productsPage.requestAccess.reasonCuriosity")}
+                    {t("dataDownloadPage.requestAccess.reasonCuriosity")}
                   </DropdownMenuRadioItem>
                 </DropdownMenuRadioGroup>
               </DropdownMenuContent>
@@ -147,7 +149,7 @@ export const RequestAccessModal = ({
             <div className="mt-4 p-3 bg-green-4/30 border border-green-1 rounded flex items-center">
               <CheckCircle className="w-5 h-5 text-green-1 mr-2" />
               <p className="text-sm text-green-1">
-                {t("productsPage.requestAccess.successMessage")}
+                {t("dataDownloadPage.requestAccess.successMessage")}
               </p>
             </div>
           )}
@@ -178,14 +180,14 @@ export const RequestAccessModal = ({
               onClick={onClose}
               className="px-4 py-2 text-sm font-medium text-grey hover:text-white focus:outline-none"
             >
-              {t("productsPage.requestAccess.cancel")}
+              {t("dataDownloadPage.requestAccess.cancel")}
             </button>
             <button
               type="submit"
               className="inline-flex justify-center rounded-md bg-blue-4 px-4 py-2 text-sm font-medium text-white hover:bg-blue-3 focus:outline-none focus:ring-2 focus:ring-blue-4"
               disabled={status === "success"}
             >
-              {t("productsPage.requestAccess.submit")}
+              {t("dataDownloadPage.requestAccess.submit")}
             </button>
           </DialogFooter>
         </form>
