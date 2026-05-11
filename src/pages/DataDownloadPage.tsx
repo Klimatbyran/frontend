@@ -1,11 +1,10 @@
 import {
   Database,
   Lock,
-  Mail,
-  Server,
   FileText,
   Building2,
   MapPin,
+  Server,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
@@ -48,62 +47,24 @@ const DataCategory = ({
   </div>
 );
 
-function ProductsPage() {
+function DataDownloadPage() {
   const { t } = useTranslation();
   const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
-
-  const apiFeatures = [
-    {
-      icon: <Server className="h-5 w-5 text-green-4" />,
-      text: t("productsPage.apiAccess.realtime"),
-    },
-    {
-      icon: <FileText className="h-5 w-5 text-green-4" />,
-      text: t("productsPage.apiAccess.documentation"),
-    },
-    // {
-    //   icon: <Lock className="h-5 w-5 text-green-4" />,
-    //   text: t("productsPage.apiAccess.secure"),
-    // },
-    {
-      icon: <Mail className="h-5 w-5 text-green-4" />,
-      text: t("productsPage.apiAccess.support"),
-    },
-  ];
 
   const freeFeatures = [
     {
       icon: <Server className="h-5 w-5 text-blue-4" />,
-      text: t("productsPage.freeAccess.export"),
+      text: t("dataDownloadPage.freeAccess.export"),
     },
     {
       icon: <Building2 className="h-5 w-5 text-blue-4" />,
-      text: t("productsPage.freeAccess.data"),
+      text: t("dataDownloadPage.freeAccess.data"),
     },
     {
       icon: <Lock className="h-5 w-5 text-blue-4" />,
-      text: t("productsPage.freeAccess.license"),
+      text: t("dataDownloadPage.freeAccess.license"),
     },
   ];
-
-  const apiActions = (
-    <>
-      <a
-        href="mailto:hej@klimatkollen.se?subject=API%20Access%20Pricing%20Request&body=Hi%2C%0A%0AI'm%20interested%20in%20learning%20more%20about%20the%20API%20direct%20access%20pricing.%0A%0ABest%20regards"
-        className="inline-flex items-center justify-center rounded-md bg-green-4 px-6 py-3 text-base font-medium text-white shadow-lg hover:bg-green-3 w-full transition-all"
-      >
-        {t("productsPage.apiAccess.contactPricing")}
-      </a>
-      <a
-        href="https://api.klimatkollen.se/api/"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex items-center justify-center rounded-md bg-green-4 px-6 py-3 text-base font-medium text-white shadow-lg hover:bg-green-3 w-full transition-all border border-green-4"
-      >
-        {t("productsPage.apiAccess.viewDocs")}
-      </a>
-    </>
-  );
 
   const freeActions = (
     <>
@@ -111,7 +72,7 @@ function ProductsPage() {
         onClick={() => setIsRequestModalOpen(true)}
         className="inline-flex items-center justify-center rounded-md bg-blue-4 px-6 py-3 text-base font-medium text-white shadow-lg hover:bg-blue-3 w-full transition-all"
       >
-        {t("productsPage.freeAccess.requestAccess")}
+        {t("dataDownloadPage.freeAccess.requestAccess")}
       </button>
       <RequestAccessModal
         isOpen={isRequestModalOpen}
@@ -122,13 +83,13 @@ function ProductsPage() {
 
   // Prepare SEO data
   const canonicalUrl = "https://klimatkollen.se/products";
-  const pageTitle = `${t("productsPage.title")} - Klimatkollen`;
-  const pageDescription = t("productsPage.description");
+  const pageTitle = `${t("dataDownloadPage.title")} - Klimatkollen`;
+  const pageDescription = t("dataDownloadPage.description");
 
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    name: t("productsPage.title"),
+    name: t("dataDownloadPage.title"),
     description: pageDescription,
     url: canonicalUrl,
   };
@@ -144,30 +105,16 @@ function ProductsPage() {
 
       <div className="max-w-[1200px] mx-auto">
         <PageHeader
-          title={t("productsPage.title")}
-          description={t("productsPage.description")}
+          title={t("dataDownloadPage.title")}
+          description={t("dataDownloadPage.description")}
         />
 
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-            {/* Premium Version */}
-            <ProductCard
-              title={t("productsPage.apiAccess.title")}
-              description={t("productsPage.apiAccess.description")}
-              icon={<Server className="h-6 w-6 text-green-5" />}
-              features={apiFeatures}
-              actions={apiActions}
-              bgColor="bg-green-1"
-              borderColor="border-green-4"
-              hoverBorderColor="border-green-5"
-              textColor="text-green-5"
-              iconBgColor="bg-green-2"
-            />
-
+          <div className="grid grid-cols-1">
             {/* Free Version */}
             <ProductCard
-              title={t("productsPage.freeAccess.title")}
-              description={t("productsPage.freeAccess.description")}
+              title={t("dataDownloadPage.freeAccess.title")}
+              description={t("dataDownloadPage.freeAccess.description")}
               icon={<Database className="h-6 w-6 text-blue-5" />}
               features={freeFeatures}
               actions={freeActions}
@@ -182,27 +129,29 @@ function ProductsPage() {
           {/* Data Overview Section */}
           <div className="mx-auto max-w-7xl mt-16 mb-16">
             <h2 className="text-2xl font-light text-white text-center mb-8">
-              {t("productsPage.dataOverview.title")}
+              {t("dataDownloadPage.dataOverview.title")}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
               <DataCategory
                 icon={<Building2 className="h-5 w-5 text-grey" />}
-                title={t("productsPage.dataOverview.corporate.title")}
+                title={t("dataDownloadPage.dataOverview.corporate.title")}
                 description={t(
-                  "productsPage.dataOverview.corporate.description",
+                  "dataDownloadPage.dataOverview.corporate.description",
                 )}
                 isFirst
               />
               <DataCategory
                 icon={<FileText className="h-5 w-5 text-grey" />}
-                title={t("productsPage.dataOverview.reports.title")}
-                description={t("productsPage.dataOverview.reports.description")}
+                title={t("dataDownloadPage.dataOverview.reports.title")}
+                description={t(
+                  "dataDownloadPage.dataOverview.reports.description",
+                )}
               />
               <DataCategory
                 icon={<MapPin className="h-5 w-5 text-grey" />}
-                title={t("productsPage.dataOverview.municipality.title")}
+                title={t("dataDownloadPage.dataOverview.municipality.title")}
                 description={t(
-                  "productsPage.dataOverview.municipality.description",
+                  "dataDownloadPage.dataOverview.municipality.description",
                 )}
                 isLast
               />
@@ -214,4 +163,4 @@ function ProductsPage() {
   );
 }
 
-export default ProductsPage;
+export default DataDownloadPage;

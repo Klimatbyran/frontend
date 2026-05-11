@@ -16,7 +16,7 @@ import { Text } from "@/components/ui/text";
 
 export function LandingPage() {
   const { t } = useTranslation();
-  const companiesSectionRef = useRef<HTMLDivElement | null>(null);
+  const municipalitiesSectionRef = useRef<HTMLDivElement | null>(null);
   const [fadeChevron, setFadeChevron] = useState(false);
 
   // Prepare SEO data
@@ -42,7 +42,7 @@ export function LandingPage() {
   ];
 
   const handleChevronClick = useCallback(() => {
-    const element = companiesSectionRef.current;
+    const element = municipalitiesSectionRef.current;
     if (element) {
       element.scrollIntoView({ behavior: "smooth", block: "start" });
     }
@@ -133,11 +133,15 @@ export function LandingPage() {
           className="w-full object-cover"
         />
       </div>
-      <div ref={companiesSectionRef} id="companies-section" className="w-full">
-        <CompaniesSection />
+      <div
+        ref={municipalitiesSectionRef}
+        id="municipalities-section"
+        className="w-full"
+      >
+        <MunicipalitiesSection />
       </div>
-      <MunicipalitiesSection />
       <CountriesSection />
+      <CompaniesSection />
       <MissionSection />
       <PartnersSection />
     </>

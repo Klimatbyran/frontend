@@ -22,6 +22,17 @@ export function OverviewStatistics({
   employeesAIGenerated,
   className,
 }: OverviewStatisticProps) {
+  const formattedTurnover = selectedPeriod.economy?.turnover?.value
+    ? (() => {
+        const { value } = selectedPeriod.economy.turnover;
+        const useMillions = value < 1e9;
+        return `${localizeUnit(
+          value / (useMillions ? 1e6 : 1e9),
+          currentLanguage,
+        )} ${t(useMillions ? "companies.overview.million" : "companies.overview.billion")} ${selectedPeriod.economy.turnover.currency}`;
+      })()
+    : t("companies.overview.notReported");
+
   return (
     <div className={className ? `@container ${className}` : "@container"}>
       <div className="mt-8 @md:mt-12 bg-black-1 rounded-level-2 p-6">
@@ -31,14 +42,7 @@ export function OverviewStatistics({
               {t("companies.overview.turnover")}
             </Text>
             <span className="flex items-center gap-2">
-              <Text>
-                {selectedPeriod.economy?.turnover?.value
-                  ? `${localizeUnit(
-                      selectedPeriod.economy.turnover.value / 1e9,
-                      currentLanguage,
-                    )} ${t("companies.overview.billion")} ${selectedPeriod.economy.turnover.currency}`
-                  : t("companies.overview.notReported")}
-              </Text>
+              <Text>{formattedTurnover}</Text>
               {turnoverAIGenerated && <AiIcon size="md" />}
             </span>
           </div>

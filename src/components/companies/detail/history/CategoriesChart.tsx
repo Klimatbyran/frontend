@@ -45,8 +45,6 @@ interface CategoriesChartProps {
   getCategoryName: (id: number) => string;
   getCategoryColor: (id: number) => string;
   onYearSelect: (year: number) => void;
-  exploreMode?: boolean;
-  setExploreMode?: (val: boolean) => void;
 }
 
 export const CategoriesChart: FC<CategoriesChartProps> = ({

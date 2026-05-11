@@ -1,6 +1,6 @@
 import { useParams, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useState, useMemo } from "react";
+import { useMemo } from "react";
 import type { TFunction } from "i18next";
 import {
   useMunicipalityDetails,
@@ -19,10 +19,7 @@ import { useHiddenItems } from "@/components/charts";
 import { PageLoading } from "@/components/pageStates/Loading";
 import { PageError } from "@/components/pageStates/Error";
 import { PageNoData } from "@/components/pageStates/NoData";
-import {
-  getAvailableYearsFromSectors,
-  getCurrentYearFromAvailable,
-} from "@/utils/detail/sectorYearUtils";
+import { useSectorYearSelection } from "@/hooks/territories/useSectorYearSelection";
 import { getProcurementRequirementsText } from "@/utils/municipality/procurement";
 import { LinkCard } from "@/components/detail/DetailLinkCard";
 import { DetailHeader } from "@/components/detail/DetailHeader";
@@ -126,8 +123,6 @@ function useMunicipalityPageData(id: string | undefined) {
   const { getSectorInfo } = useSectors();
   const { hiddenItems: filteredSectors, setHiddenItems: setFilteredSectors } =
     useHiddenItems<string>([]);
-  const [selectedYear, setSelectedYear] = useState<string>("2023");
-
   const lastYearEmissions = municipality?.emissions.at(-1);
   const lastYear = lastYearEmissions?.year;
   const lastYearEmissionsTon = lastYearEmissions
@@ -148,12 +143,8 @@ function useMunicipalityPageData(id: string | undefined) {
     ? transformEmissionsData(municipality)
     : [];
 
-  const availableYears = getAvailableYearsFromSectors(sectorEmissions);
-  const currentYear = getCurrentYearFromAvailable(
-    selectedYear,
-    availableYears,
-    lastYear,
-  );
+  const { selectedYear, setSelectedYear, availableYears, currentYear } =
+    useSectorYearSelection(sectorEmissions, lastYear);
 
   return {
     t,
