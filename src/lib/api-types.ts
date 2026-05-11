@@ -2265,6 +2265,54 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/municipalities/kpis": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get municipality KPIs
+         * @description Retrieve key performance indicators for all municipalities: Paris alignment (trend within carbon budget), historical emission change, EVs per charge point, bicycle metres per capita, consumption emissions, electric car adoption change, and whether a published climate plan link exists in the data.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            name: string;
+                            meetsParis: boolean;
+                            historicalEmissionChangePercent: number;
+                            electricVehiclePerChargePoints: number | null;
+                            bicycleMetrePerCapita: number;
+                            totalConsumptionEmission: number;
+                            electricCarChangePercent: number;
+                            climatePlan: boolean;
+                        }[];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/municipalities/{name}": {
         parameters: {
             query?: never;
@@ -3115,6 +3163,8 @@ export interface paths {
                 content: {
                     "application/json": {
                         name: string;
+                        /** @enum {string} */
+                        currentLanguage: "sv" | "en";
                     };
                 };
             };
@@ -3129,7 +3179,7 @@ export interface paths {
                             name: string;
                             wikidataId?: string;
                             /** @enum {string} */
-                            type: "company" | "municipality" | "region";
+                            type: "company" | "municipality" | "region" | "nation";
                         }[];
                     };
                 };

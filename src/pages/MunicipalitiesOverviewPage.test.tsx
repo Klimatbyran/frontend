@@ -3,12 +3,25 @@ import { describe, expect, it, vi } from "vitest";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { MunicipalitiesOverviewPage } from "./MunicipalitiesOverviewPage";
 
-vi.mock("@/hooks/municipalities/useMunicipalities", () => ({
-  useMunicipalities: () => ({
+vi.mock("@/hooks/municipalities/useMunicipalityKPIs", () => ({
+  useMunicipalityKPIs: () => ({
+    municipalitiesData: [],
     municipalities: [],
-    municipalitiesLoading: false,
-    municipalitiesError: null,
+    loading: false,
+    error: null,
   }),
+  useMunicipalityKPIDefinitions: () => [
+    {
+      key: "bicycleMetrePerCapita",
+      label: "bicycleMetrePerCapita",
+      unit: "",
+      source: "",
+      sourceUrls: [],
+      description: "",
+      detailedDescription: "",
+      higherIsBetter: false,
+    },
+  ],
 }));
 
 vi.mock("@/components/layout/PageHeader", () => ({
@@ -16,25 +29,30 @@ vi.mock("@/components/layout/PageHeader", () => ({
 }));
 
 vi.mock("@/components/maps/TerritoryMap", () => ({
-  default: ({ selectedKPI }: any) => (
+  default: ({ selectedKPI }: { selectedKPI: { key: unknown } }) => (
     <div data-testid="territory-map">{String(selectedKPI.key)}</div>
   ),
 }));
 
 vi.mock("@/components/municipalities/MunicipalityRankedList", () => ({
-  MunicipalityRankedList: ({ selectedKPI }: any) => (
-    <div data-testid="ranked-list">{String(selectedKPI.key)}</div>
-  ),
+  MunicipalityRankedList: ({
+    selectedKPI,
+  }: {
+    selectedKPI: { key: unknown };
+  }) => <div data-testid="ranked-list">{String(selectedKPI.key)}</div>,
 }));
 
-vi.mock("@/components/municipalities/rankedList/MunicipalityInsightsPanel", () => ({
-  default: ({ selectedKPI }: any) => (
-    <div data-testid="insights-panel">{String(selectedKPI.key)}</div>
-  ),
-}));
+vi.mock(
+  "@/components/municipalities/rankedList/MunicipalityInsightsPanel",
+  () => ({
+    default: ({ selectedKPI }: { selectedKPI: { key: unknown } }) => (
+      <div data-testid="insights-panel">{String(selectedKPI.key)}</div>
+    ),
+  }),
+);
 
 vi.mock("@/components/ranked/KPIDataSelector", () => ({
-  KPIDataSelector: ({ selectedKPI }: any) => (
+  KPIDataSelector: ({ selectedKPI }: { selectedKPI: { key: unknown } }) => (
     <div data-testid="kpi-selector">{String(selectedKPI.key)}</div>
   ),
 }));
@@ -49,9 +67,7 @@ describe("MunicipalitiesOverviewPage", () => {
   it("selects municipality KPI from the URL using the stable KPI key", () => {
     render(
       <MemoryRouter
-        initialEntries={[
-          "/explore/municipalities?kpi=bicycleMetrePerCapita",
-        ]}
+        initialEntries={["/explore/municipalities?kpi=bicycleMetrePerCapita"]}
       >
         <Routes>
           <Route

@@ -149,5 +149,8 @@
       "js-yaml": "4.1.1",
       "minimatch": "5.1.8"
     }
+  },
+  "optionalDependencies": {
+    "@unrs/resolver-binding-darwin-arm64": "1.11.1"
   }
 }
