@@ -27,14 +27,11 @@ vi.mock("@/components/municipalities/MunicipalityRankedList", () => ({
   ),
 }));
 
-vi.mock(
-  "@/components/municipalities/rankedList/MunicipalityInsightsPanel",
-  () => ({
-    default: ({ selectedKPI }: any) => (
-      <div data-testid="insights-panel">{String(selectedKPI.key)}</div>
-    ),
-  }),
-);
+vi.mock("@/components/municipalities/rankedList/MunicipalityInsightsPanel", () => ({
+  default: ({ selectedKPI }: any) => (
+    <div data-testid="insights-panel">{String(selectedKPI.key)}</div>
+  ),
+}));
 
 vi.mock("@/components/ranked/KPIDataSelector", () => ({
   KPIDataSelector: ({ selectedKPI }: any) => (
@@ -52,7 +49,9 @@ describe("MunicipalitiesOverviewPage", () => {
   it("selects municipality KPI from the URL using the stable KPI key", () => {
     render(
       <MemoryRouter
-        initialEntries={["/explore/municipalities?kpi=bicycleMetrePerCapita"]}
+        initialEntries={[
+          "/explore/municipalities?kpi=bicycleMetrePerCapita",
+        ]}
       >
         <Routes>
           <Route
