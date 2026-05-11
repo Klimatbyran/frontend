@@ -87,7 +87,6 @@ export const RequestAccessModal = ({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="bg-black-2">
-
         <DialogTitle className="text-white">
           {t("dataDownloadPage.requestAccess.title")}
         </DialogTitle>
@@ -122,7 +121,6 @@ export const RequestAccessModal = ({
             <DropdownMenu>
               <DropdownMenuTrigger className="w-full px-3 py-2 bg-black-1 border border-black-1 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-4 flex justify-between items-center">
                 {t(`dataDownloadPage.requestAccess.reason${reason}`)}
-
                 <ChevronDown className="h-4 w-4" />
               </DropdownMenuTrigger>
               <DropdownMenuContent className="bg-black-2 border border-black-1">
