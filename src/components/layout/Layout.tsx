@@ -1,7 +1,5 @@
 import { ReactNode, useEffect, useMemo } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import { useQueryClient } from "@tanstack/react-query";
-import { getMunicipalities } from "@/lib/api";
 import { Seo } from "@/components/SEO/Seo";
 import { getSeoForRoute } from "@/seo/routes";
 import { Header } from "./Header";
@@ -16,7 +14,6 @@ interface LayoutProps {
 export function Layout({ children }: LayoutProps) {
   const location = useLocation();
   const params = useParams();
-  const queryClient = useQueryClient();
   const isLandingPage = /^\/(sv|en)\/?$/.test(location.pathname);
 
   // Get SEO metadata for current route
