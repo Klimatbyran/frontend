@@ -32,8 +32,7 @@ export default ({ mode }: ConfigEnv) => {
           secure: false,
           configure: (proxy) => {
             proxy.on("proxyReq", (proxyReq) => {
-              const key =
-                env.GARBO_PROXY_CLIENT_API_KEY ?? env.GARBO_PROXY_PUBLIC_API_KEY;
+              const key = env.GARBO_PROXY_CLIENT_API_KEY;
               if (key) {
                 proxyReq.setHeader("X-API-Key", key);
               }
