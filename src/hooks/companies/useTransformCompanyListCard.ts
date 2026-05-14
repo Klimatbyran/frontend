@@ -64,72 +64,8 @@ const useTransformCompanyListCard = ({
         ? calculateMeetsParis(company, trendAnalysis)
         : null; // null = unknown
 
-      // Find largest emission source (scope1, scope2, or scope3 category)
-      let largestEmission:
-        | {
-            key: string | number;
-            value: number | null;
-            type: "scope1" | "scope2" | "scope3";
-          }
-        | undefined = undefined;
-
-      // Get values for scope 1 and 2
-      const scope1Value = latestPeriod?.emissions?.scope1?.total ?? null;
-      const scope2Value =
-        latestPeriod?.emissions?.scope2?.calculatedTotalEmissions ?? null;
-
-      // Get largest scope 3 category
-      let largestScope3Cat:
-        | { category: number; total: number | null }
-        | undefined = undefined;
-      if (
-        latestPeriod?.emissions?.scope3?.categories &&
-        Array.isArray(latestPeriod.emissions.scope3.categories)
-      ) {
-        const categories = latestPeriod.emissions.scope3.categories;
-        const validCategories = categories.filter(
-          (cat) => cat && typeof cat.total === "number" && cat.total !== null,
-        );
-        if (validCategories.length > 0) {
-          largestScope3Cat = validCategories.reduce(
-            (max, cat) =>
-              (cat.total ?? -Infinity) > (max.total ?? -Infinity) ? cat : max,
-            validCategories[0],
-          );
-        }
-      }
-
-      // Compare all values
-      const candidates: Array<{
-        key: string | number;
-        value: number | null;
-        type: "scope1" | "scope2" | "scope3";
-      }> = [];
-      if (scope1Value !== null && typeof scope1Value === "number") {
-        candidates.push({ key: "scope1", value: scope1Value, type: "scope1" });
-      }
-      if (scope2Value !== null && typeof scope2Value === "number") {
-        candidates.push({ key: "scope2", value: scope2Value, type: "scope2" });
-      }
-      if (
-        largestScope3Cat &&
-        largestScope3Cat.total !== null &&
-        typeof largestScope3Cat.total === "number"
-      ) {
-        candidates.push({
-          key: largestScope3Cat.category,
-          value: largestScope3Cat.total,
-          type: "scope3",
-        });
-      }
-
-      if (candidates.length > 0) {
-        const largest = candidates.reduce(
-          (max, item) => (item.value! > (max.value ?? -Infinity) ? item : max),
-          candidates[0],
-        );
-        largestEmission = largest;
-      }
+      const hasScope3Coverage =
+        (latestPeriod?.emissions?.scope3?.categories?.length || 0) > 0;
 
       return {
         name,
@@ -164,7 +100,7 @@ const useTransformCompanyListCard = ({
             : t("companies.card.emissionsChangeRateInfo"),
 
         isFinancialsSector,
-        largestEmission,
+        hasScope3Coverage,
       };
     });
   }, [

@@ -44,8 +44,6 @@ interface OverviewChartProps {
   longEndYear: number;
   approximatedData?: ChartData[] | null;
   onYearSelect: (year: number) => void;
-  exploreMode?: boolean;
-  setExploreMode?: (val: boolean) => void;
   yearControlsPlacement?: "footer" | "top-right";
 }
 
@@ -58,8 +56,6 @@ export const OverviewChart: FC<OverviewChartProps> = ({
   longEndYear,
   approximatedData,
   onYearSelect,
-  exploreMode = false,
-  setExploreMode,
   yearControlsPlacement = "footer",
 }) => {
   const { t } = useTranslation();
@@ -112,8 +108,6 @@ export const OverviewChart: FC<OverviewChartProps> = ({
             shortEndYear={shortEndYear}
             longEndYear={longEndYear}
             setChartEndYear={setChartEndYear}
-            exploreMode={exploreMode}
-            setExploreMode={setExploreMode}
           />
         </div>
       )}
@@ -226,8 +220,6 @@ export const OverviewChart: FC<OverviewChartProps> = ({
             shortEndYear={shortEndYear}
             longEndYear={longEndYear}
             setChartEndYear={setChartEndYear}
-            exploreMode={exploreMode}
-            setExploreMode={setExploreMode}
           />
         )}
       </ChartFooter>

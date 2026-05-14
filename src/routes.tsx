@@ -24,7 +24,7 @@ import { MunicipalityDetailPage } from "./pages/MunicipalityDetailPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { ReportsPage } from "./pages/ReportsPage";
 import { PrivacyPage } from "./pages/PrivacyPage";
-import ProductsPage from "./pages/ProductsPage";
+import DataDownloadPage from "./pages/DataDownloadPage";
 import { UnauthorizedErrorPage } from "./pages/error/UnauthorizedErrorPage";
 import { SupportPage } from "./pages/SupportPage";
 import { ValidationDashboard } from "./pages/internal-pages/ValidationDashboard";
@@ -43,28 +43,9 @@ import { ExplorePage } from "./pages/ExplorePage";
 
 void StagingProtectedRoute; // referenced so dead-code scripts keep the component; eslint/ts unused-import satisfied
 
-export function AppRoutes() {
-  const { currentLanguage } = useLanguage();
-
-  // Define base path based on language
-  const basePath = currentLanguage === "sv" ? "/sv" : "/en";
-
+function CompanyRoutes({ basePath }: { basePath: string }) {
   return (
-    <Routes>
-      {/* Language redirect for non-prefixed routes */}
-      <Route path="*" element={<LanguageRedirect />} />
-
-      {/* Root path - matches both /sv and /en (with and without trailing slash) */}
-      <Route path={`${basePath}`} element={<LandingPage />} />
-      <Route path={`${basePath}/`} element={<LandingPage />} />
-
-      {/* General routes */}
-      <Route
-        path={`${basePath}/explore/:mainFilter`}
-        element={<ExplorePage />}
-      />
-
-      {/* Strict companies routes */}
+    <>
       <Route path={`${basePath}/sectors`} element={<SectorsOverviewPage />} />
       <Route
         path={`${basePath}/companies`}
@@ -82,8 +63,6 @@ export function AppRoutes() {
         path={`${basePath}/foretag/:slug-:id`}
         element={<CompanyDetailPage />}
       />
-
-      {/* Protected Routes*/}
       <Route element={<ProtectedRoute />}>
         <Route
           path={`${basePath}/companies/:id/edit`}
@@ -114,15 +93,16 @@ export function AppRoutes() {
           element={<AddCompanyPage />}
         />
       </Route>
+    </>
+  );
+}
 
-      {/* Strict regions routes */}
+function TerritoryRoutes({ basePath }: { basePath: string }) {
+  return (
+    <>
       <Route path={`${basePath}/regions`} element={<RegionalOverviewPage />} />
       <Route path={`${basePath}/regions/:id`} element={<RegionDetailPage />} />
-
-      {/* Strict nation routes */}
       <Route path={`${basePath}/nation`} element={<NationDetailPage />} />
-
-      {/* Strict municipalities routes */}
       <Route
         path={`${basePath}/municipalities`}
         element={<MunicipalitiesOverviewPage />}
@@ -131,13 +111,16 @@ export function AppRoutes() {
         path={`${basePath}/municipalities/:id`}
         element={<MunicipalityDetailPage />}
       />
+    </>
+  );
+}
 
-      {/* About Pages */}
+function ContentRoutes({ basePath }: { basePath: string }) {
+  return (
+    <>
       <Route path={`${basePath}/about`} element={<AboutPage />} />
       <Route path={`${basePath}/methodology`} element={<MethodsPage />} />
       <Route path={`${basePath}/support`} element={<SupportPage />} />
-
-      {/* Insights Pages */}
       <Route path={`${basePath}/articles`} element={<InsightsPage />} />
       <Route path={`${basePath}/reports`} element={<ReportsPage />} />
       <Route
@@ -147,26 +130,43 @@ export function AppRoutes() {
       <Route path={`${basePath}/insights/:id`} element={<BlogDetailPage />} />
       <Route path={`${basePath}/learn-more`} element={<LearnMoreOverview />} />
       <Route
-        path={`${basePath}/newsletter-archive`}
-        element={<NewsLetterArchivePage />}
-      />
-      <Route
         path={`${basePath}/learn-more/:id`}
         element={<LearnMoreArticle />}
       />
-
-      {/* Other Pages */}
-      <Route path={`${basePath}/privacy`} element={<PrivacyPage />} />
-      <Route path={`${basePath}/products`} element={<ProductsPage />} />
       <Route
-        path={`${basePath}/products/database-download-2025`}
+        path={`${basePath}/newsletter-archive`}
+        element={<NewsLetterArchivePage />}
+      />
+      <Route path={`${basePath}/privacy`} element={<PrivacyPage />} />
+      <Route
+        path={`${basePath}/data-download`}
+        element={<DataDownloadPage />}
+      />
+      <Route
+        path={`${basePath}/data-download/database-download-2025`}
         element={<DownloadsPage />}
       />
+    </>
+  );
+}
 
-      {/* Error pages */}
+export function AppRoutes() {
+  const { currentLanguage } = useLanguage();
+  const basePath = currentLanguage === "sv" ? "/sv" : "/en";
+
+  return (
+    <Routes>
+      <Route path="*" element={<LanguageRedirect />} />
+      <Route path={`${basePath}`} element={<LandingPage />} />
+      <Route path={`${basePath}/`} element={<LandingPage />} />
+      <Route
+        path={`${basePath}/explore/:mainFilter`}
+        element={<ExplorePage />}
+      />
+      {CompanyRoutes({ basePath })}
+      {TerritoryRoutes({ basePath })}
+      {ContentRoutes({ basePath })}
       <Route path={`${basePath}/error/:code`} element={<ErrorPage />} />
-
-      {/* This catch-all should now only handle invalid routes */}
       <Route path={`${basePath}/*`} element={<NotFoundPage />} />
       <Route path={`${basePath}/403`} element={<UnauthorizedErrorPage />} />
       <Route path="auth/callback" element={<AuthCallback />} />

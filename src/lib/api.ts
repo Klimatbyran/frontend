@@ -27,6 +27,30 @@ const { GET } = createClient<paths>({
     return fetch(request);
   },
 });
+// ...existing code above...
+
+// Global Search API
+export type GlobalSearchApiResponse =
+  paths["/global-search/"]["post"]["responses"][200]["content"]["application/json"];
+
+export async function getGlobalSearch(
+  query: string,
+  currentLanguage: string,
+): Promise<GlobalSearchApiResponse> {
+  try {
+    const { data, error } = await client.POST("/global-search/", {
+      body: {
+        name: query,
+        currentLanguage: currentLanguage,
+      } as paths["/global-search/"]["post"]["requestBody"]["content"]["application/json"],
+    });
+    if (error) throw error;
+    return (data as GlobalSearchApiResponse) || [];
+  } catch (error) {
+    console.error("Error fetching global search results:", error);
+    return [];
+  }
+}
 
 // Auth API
 export async function authenticateWithGithub(code: string) {
@@ -344,6 +368,25 @@ export async function getNationalData() {
     // return data || [];
   } catch (error) {
     console.error("Error fetching national data:", error);
+    return [];
+  }
+}
+
+// Company Search API
+export type CompanySearchApiResponse =
+  paths["/companies/search"]["get"]["responses"][200]["content"]["application/json"];
+
+export async function getCompaniesBySearchTerm(
+  q: string,
+): Promise<CompanySearchApiResponse> {
+  try {
+    const { data, error } = await GET("/companies/search", {
+      params: { query: { q } },
+    });
+    if (error) throw error;
+    return (data as CompanySearchApiResponse) || [];
+  } catch (error) {
+    console.error("Error searching companies:", error);
     return [];
   }
 }

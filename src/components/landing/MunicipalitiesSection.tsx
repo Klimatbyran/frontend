@@ -24,18 +24,20 @@ import {
 
 interface MunicipalitiesSectionProps {
   municipalities: Municipality[];
+  municipalitiesLoading: boolean;
 }
 
 type TerritoryMode = "municipalities" | "regions";
 
 export const MunicipalitiesSection = ({
   municipalities,
+  municipalitiesLoading,
 }: MunicipalitiesSectionProps) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const municipalityKPIs = useMunicipalityKPIs();
   const regionalKPIs = useRegionalKPIs();
-  const { regionsData } = useRegions();
+  const { regionsData, loading: regionsLoading } = useRegions();
   const [territoryMode, setTerritoryMode] =
     useState<TerritoryMode>("municipalities");
   const [selectedKPIKey, setSelectedKPIKey] = useState<string>(
@@ -154,14 +156,17 @@ export const MunicipalitiesSection = ({
       ? t("landingPage.municipalitiesSection.exploreButton")
       : t("landingPage.regionsSection.exploreButton");
 
+  const mapLoading =
+    territoryMode === "municipalities" ? municipalitiesLoading : regionsLoading;
+
   if (!selectedKPI) {
     return null;
   }
 
   return (
-    <div className="bg-black w-full flex flex-col items-center min-h-screen pt-44 md:pt-52">
-      <div className="w-full container mx-auto px-4">
-        <div className="flex flex-col lg:flex-row items-start gap-8 lg:gap-12">
+    <div className="bg-black w-full flex flex-col items-center min-h-screen pt-24 lg:pt-72">
+      <div className="w-full container max-w-7xl mx-auto px-4">
+        <div className="flex w-full flex-col items-start gap-8 lg:flex-row lg:gap-12">
           <div className="order-2 lg:order-2 w-full lg:w-3/5 flex flex-col gap-3">
             <div className="flex flex-wrap items-center gap-3 md:pt-4">
               <div className="inline-flex rounded-md border border-black-1 bg-black-2 p-1">
@@ -210,20 +215,24 @@ export const MunicipalitiesSection = ({
               </div>
             </div>
 
-            <div className="relative pt-4 md:pt-0 w-full h-[55vh] md:h-[65vh] lg:h-[75vh]">
-              <TerritoryMap
-                key={territoryMode}
-                entityType={territoryMode}
-                geoData={activeGeoData}
-                data={activeMapData}
-                selectedKPI={selectedKPI}
-                onAreaClick={activeAreaClickHandler}
-                mapBackgroundColor="transparent"
-                scrollWheelZoom={false}
-                defaultCenter={
-                  territoryMode === "regions" ? [63.7, 17] : [63, 17]
-                }
-              />
+            <div className="relative w-full h-[55vh] md:h-[65vh] lg:h-[75vh]">
+              {mapLoading ? (
+                <div className="h-full w-full animate-pulse bg-black-2 rounded-level-2" />
+              ) : (
+                <TerritoryMap
+                  key={territoryMode}
+                  entityType={territoryMode}
+                  geoData={activeGeoData}
+                  data={activeMapData}
+                  selectedKPI={selectedKPI}
+                  onAreaClick={activeAreaClickHandler}
+                  mapBackgroundColor="transparent"
+                  scrollWheelZoom={false}
+                  defaultCenter={
+                    territoryMode === "regions" ? [63.7, 17] : [63, 17]
+                  }
+                />
+              )}
             </div>
           </div>
 
@@ -238,7 +247,7 @@ export const MunicipalitiesSection = ({
             </div>
             <LocalizedLink
               to={explorePath}
-              className="hidden lg:flex self-end w-fit pt-2"
+              className="hidden lg:flex self-end w-fit md:pt-2"
             >
               <Button
                 variant="outline"
@@ -259,7 +268,7 @@ export const MunicipalitiesSection = ({
 
           <LocalizedLink
             to={explorePath}
-            className="lg:hidden order-3 self-start w-fit pt-2"
+            className="lg:hidden order-3 self-start w-fit"
           >
             <Button
               variant="outline"

@@ -1,33 +1,28 @@
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useHiddenItems } from "@/components/charts";
 import { SectorEmissionsChart } from "@/components/charts/sectorChart/SectorEmissions";
 import { useSectorEmissions } from "@/hooks/territories/useSectorEmissions";
 import { useSectors } from "@/hooks/territories/useSectors";
+import { useSectorYearSelection } from "@/hooks/territories/useSectorYearSelection";
 import { Text } from "../ui/text";
 import { Button } from "../ui/button";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { ArrowRight } from "lucide-react";
-import {
-  getAvailableYearsFromSectors,
-  getCurrentYearFromAvailable,
-} from "@/utils/detail/sectorYearUtils";
 
 export const CountriesSection = () => {
   const { t } = useTranslation();
-  const { sectorEmissions } = useSectorEmissions("nation", undefined);
+  const { sectorEmissions, loading: sectorEmissionsLoading } =
+    useSectorEmissions("nation", undefined);
   const { getSectorInfo } = useSectors();
   const { hiddenItems: filteredSectors, setHiddenItems: setFilteredSectors } =
     useHiddenItems<string>([]);
-  const [selectedYear, setSelectedYear] = useState<string>("2023");
-
-  const availableYears = getAvailableYearsFromSectors(sectorEmissions);
-  const currentYear = getCurrentYearFromAvailable(selectedYear, availableYears);
+  const { selectedYear, setSelectedYear, availableYears, currentYear } =
+    useSectorYearSelection(sectorEmissions);
 
   return (
     <div className="bg-black w-full flex flex-col items-center pt-44 md:pt-52">
-      <div className="w-full container mx-auto px-4 items-center flex flex-col gap-8">
-        <div className="flex w-full max-w-[600px] self-start flex-col gap-4 text-left md:self-center md:text-center">
+      <div className="w-full container max-w-7xl mx-auto px-4 items-center flex flex-col gap-8">
+        <div className="flex w-full max-w-[760px] self-start flex-col gap-4 text-left md:self-center md:text-center">
           <Text className="text-3xl sm:text-4xl font-light">
             {t("landingPage.countriesSection.title")}
           </Text>
@@ -35,25 +30,29 @@ export const CountriesSection = () => {
             {t("landingPage.countriesSection.description")}
           </Text>
         </div>
-        <div className="w-full max-w-6xl">
-          <SectorEmissionsChart
-            sectorEmissions={sectorEmissions}
-            availableYears={availableYears}
-            selectedYear={selectedYear}
-            onYearChange={setSelectedYear}
-            currentYear={currentYear}
-            getSectorInfo={getSectorInfo}
-            filteredSectors={filteredSectors}
-            onFilteredSectorsChange={setFilteredSectors}
-            helpItems={[]}
-            sectionClassName="bg-transparent"
-            showHeader={false}
-            compactLayout={true}
-          />
+        <div className="w-full">
+          {sectorEmissionsLoading ? (
+            <div className="h-[min(520px,70vh)] w-full animate-pulse bg-black-2 rounded-level-2" />
+          ) : (
+            <SectorEmissionsChart
+              sectorEmissions={sectorEmissions}
+              availableYears={availableYears}
+              selectedYear={selectedYear}
+              onYearChange={setSelectedYear}
+              currentYear={currentYear}
+              getSectorInfo={getSectorInfo}
+              filteredSectors={filteredSectors}
+              onFilteredSectorsChange={setFilteredSectors}
+              helpItems={[]}
+              sectionClassName="bg-transparent !rounded-none !px-0 !py-0 [&>div:first-child]:pb-0"
+              showHeader={false}
+              compactLayout={false}
+            />
+          )}
         </div>
 
-        <div className="w-full max-w-6xl flex justify-start md:justify-end">
-          <LocalizedLink to="/nation" className="w-fit pt-2">
+        <div className="w-full flex justify-start md:justify-end">
+          <LocalizedLink to="/nation" className="w-fit md:pt-2">
             <Button
               variant="outline"
               size="lg"

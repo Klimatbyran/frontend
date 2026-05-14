@@ -7,6 +7,7 @@ import { DetailWrapper } from "@/components/detail/DetailWrapper";
 import { SectorEmissionsChart } from "@/components/charts/sectorChart/SectorEmissions";
 import { EntityListBox } from "@/components/detail/EntityListBox";
 import { useNationPageData } from "@/hooks/nation/useNationPageData";
+import { useLanguage } from "@/components/LanguageProvider";
 
 function NationDetailContent({
   nation,
@@ -22,11 +23,13 @@ function NationDetailContent({
   availableYears,
   currentYear,
 }: ReturnType<typeof useNationPageData>) {
+  const { currentLanguage } = useLanguage();
   if (!nation) return <PageNoData />;
+
   return (
     <DetailWrapper>
       <DetailHeader
-        name={nation.country}
+        name={nation.country[currentLanguage]}
         logoUrl={nation.logoUrl}
         helpItems={["regionTotalEmissions", "detailWhyDataDelay"]}
         stats={headerStats}

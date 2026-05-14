@@ -1,41 +1,25 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Search } from "lucide-react";
+import { Loader2, Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { LandingSection } from "./LandingSection";
 import { useLanguage } from "@/components/LanguageProvider";
 import { getEntityDetailPath, localizedPath } from "@/utils/routing";
-import type { RankedCompany } from "@/types/company";
-import type { Municipality } from "@/types/municipality";
+import type { HeroSearchResult } from "@/hooks/usePopularHeroItems";
 import { Text } from "../ui/text";
+import { POPULAR_HERO_ITEMS } from "@/lib/constants/landingPage";
+import { useHeroGlobalSearch } from "../../hooks/landing/useHeroGlobalSearch";
 
-type HeroSearchResult =
-  | { type: "company"; id: string; name: string }
-  | { type: "municipality"; name: string };
-
-interface LandingPageCTAProps {
-  companies: RankedCompany[];
-  municipalities: Municipality[];
-}
-
-const POPULAR_ITEMS = [
-  { label: "H&M", type: "company" as const },
-  { label: "ABB", type: "company" as const },
-  { label: "Stockholm", type: "municipality" as const },
-  { label: "Malmö", type: "municipality" as const },
-];
-
-export function LandingPageCTA({
-  companies,
-  municipalities,
-}: LandingPageCTAProps) {
+export function LandingPageCTA() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { currentLanguage } = useLanguage();
   const searchContainerRef = useRef<HTMLDivElement | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { searchResults, isSearching, isDebouncing } =
+    useHeroGlobalSearch(searchQuery);
 
   useEffect(() => {
     const target = searchContainerRef.current;
@@ -59,30 +43,6 @@ export function LandingPageCTA({
     };
   }, []);
 
-  const searchResults = useMemo(() => {
-    const query = searchQuery.trim().toLowerCase();
-    if (!query) {
-      return [] as HeroSearchResult[];
-    }
-
-    const companyResults: HeroSearchResult[] = companies
-      .filter((company) => company.name.toLowerCase().includes(query))
-      .map((company) => ({
-        type: "company",
-        id: String(company.wikidataId),
-        name: company.name,
-      }));
-
-    const municipalityResults: HeroSearchResult[] = municipalities
-      .filter((municipality) => municipality.name.toLowerCase().includes(query))
-      .map((municipality) => ({
-        type: "municipality",
-        name: municipality.name,
-      }));
-
-    return [...companyResults, ...municipalityResults].slice(0, 8);
-  }, [companies, municipalities, searchQuery]);
-
   const handleSearchSelection = useCallback(
     (result: HeroSearchResult) => {
       setSearchQuery(result.name);
@@ -90,6 +50,21 @@ export function LandingPageCTA({
 
       if (result.type === "company") {
         navigate(localizedPath(currentLanguage, `/companies/${result.id}`));
+        return;
+      }
+
+      if (result.type === "region") {
+        navigate(
+          localizedPath(
+            currentLanguage,
+            getEntityDetailPath("region", result.name),
+          ),
+        );
+        return;
+      }
+
+      if (result.type === "nation") {
+        navigate(localizedPath(currentLanguage, `/nation`));
         return;
       }
 
@@ -103,34 +78,8 @@ export function LandingPageCTA({
     [currentLanguage, navigate],
   );
 
-  const handlePopularClick = useCallback(
-    (item: (typeof POPULAR_ITEMS)[number]) => {
-      if (item.type === "municipality") {
-        handleSearchSelection({ type: "municipality", name: item.label });
-        return;
-      }
-
-      const label = item.label.toLowerCase();
-      const companyMatch = companies.find((company) => {
-        const companyName = company.name.toLowerCase();
-        return companyName.includes(label);
-      });
-
-      if (!companyMatch) {
-        return;
-      }
-
-      handleSearchSelection({
-        type: "company",
-        id: String(companyMatch.wikidataId),
-        name: companyMatch.name,
-      });
-    },
-    [companies, handleSearchSelection],
-  );
-
   return (
-    <LandingSection innerClassName="flex flex-col items-center max-w-4xl mx-auto space-y-16">
+    <LandingSection innerClassName="flex flex-col items-center max-w-4xl mx-auto space-y-8 -pt-4">
       {/* Description */}
       <p className="text-lg md:text-lg text-grey max-w-3xl">
         {t("landingPage.ctaSection.description")}
@@ -142,7 +91,7 @@ export function LandingPageCTA({
       >
         <div className="relative">
           <Search
-            className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/50"
+            className="absolute left-3 top-1/2 hidden h-4 w-4 -translate-y-1/2 text-white/50 min-[430px]:block"
             aria-hidden="true"
           />
           <Input
@@ -162,14 +111,19 @@ export function LandingPageCTA({
               }
             }}
             placeholder={t("landingPage.heroSearchPlaceholder")}
-            className="h-11 border-white/25 bg-black-2 pl-10 text-white placeholder:text-white/50 focus-visible:ring-white/40"
+            className="h-11 border-white/25 bg-black-2 pl-3 text-white placeholder:text-white/50 focus-visible:ring-white/40 min-[430px]:pl-8"
             aria-label={t("landingPage.heroSearchLabel")}
           />
         </div>
 
         {isDropdownOpen && searchQuery.trim() && (
           <div className="absolute left-0 top-full z-30 mt-2 max-h-56 w-full overflow-y-auto rounded-md border border-white/10 bg-black-2 shadow-lg">
-            {searchResults.length > 0 ? (
+            {isDebouncing || isSearching ? (
+              <div className="flex items-center gap-2 px-3 py-2 text-sm text-white/70">
+                <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                <span>{t("landingPage.heroSearchLoadingText")}</span>
+              </div>
+            ) : searchResults.length > 0 ? (
               searchResults.map((result) => (
                 <button
                   key={`${result.type}-${
@@ -184,35 +138,42 @@ export function LandingPageCTA({
                   <span className="text-xs text-white/60">
                     {result.type === "company"
                       ? t("landingPage.searchResultType.company")
-                      : t("landingPage.searchResultType.municipality")}
+                      : result.type === "municipality"
+                        ? t("landingPage.searchResultType.municipality")
+                        : result.type === "region"
+                          ? t("landingPage.searchResultType.region")
+                          : result.type === "nation"
+                            ? t("landingPage.searchResultType.nation")
+                            : null}
                   </span>
                 </button>
               ))
-            ) : (
+            ) : !isDebouncing && !isSearching && searchResults.length === 0 ? (
               <div className="px-3 py-2 text-sm text-white/60">
-                {t("globalSearch.searchDialog.emptyText")}
+                {t("landingPage.heroSearchEmptyText")}
               </div>
-            )}
+            ) : null}
           </div>
         )}
 
-        <div className="mt-3 flex w-full items-center gap-2 overflow-x-auto whitespace-nowrap text-sm">
-          <Text className="shrink-0 text-white/70">
+        <div className="mt-3 flex w-full flex-wrap items-center gap-2 text-sm">
+          <Text className="text-left text-white/70">
             {t("landingPage.popularLabel")}
           </Text>
-          {POPULAR_ITEMS.map((item) => (
+
+          {POPULAR_HERO_ITEMS.map((item) => (
             <button
-              key={`${item.type}-${item.label}`}
+              key={`${item.type}-${item.type === "company" ? item.id : item.name}`}
               type="button"
-              onClick={() => handlePopularClick(item)}
-              className="group rounded-md relative shrink-0 overflow-hidden border border-white/20 px-2.5 py-1 hover:opacity-100 active:opacity-100"
+              onClick={() => handleSearchSelection(item)}
+              className="group relative overflow-hidden rounded-md border border-white/20 px-2.5 py-1 hover:opacity-100 active:opacity-100"
             >
               <span
                 className="absolute inset-0 origin-left scale-x-0 bg-white transition-transform duration-500 ease-out group-hover:scale-x-100"
                 aria-hidden="true"
               />
               <span className="relative z-10 text-white/90 transition-colors duration-500 group-hover:text-black">
-                {item.label}
+                {item.name}
               </span>
             </button>
           ))}

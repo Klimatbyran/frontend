@@ -2,7 +2,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Typewriter } from "@/components/ui/typewriter";
-import { useCompanies } from "@/hooks/companies/useCompanies";
 import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { SCROLL_FADE_THRESHOLD } from "@/hooks/landing/useLandingPageData";
@@ -18,9 +17,8 @@ import { Text } from "@/components/ui/text";
 
 export function LandingPage() {
   const { t } = useTranslation();
-  const { companies } = useCompanies();
-  const { municipalities } = useMunicipalities();
-  const companiesSectionRef = useRef<HTMLDivElement | null>(null);
+  const { municipalities, municipalitiesLoading } = useMunicipalities();
+  const municipalitiesSectionRef = useRef<HTMLDivElement | null>(null);
   const [fadeChevron, setFadeChevron] = useState(false);
 
   // Prepare SEO data
@@ -46,7 +44,7 @@ export function LandingPage() {
   ];
 
   const handleChevronClick = useCallback(() => {
-    const element = companiesSectionRef.current;
+    const element = municipalitiesSectionRef.current;
     if (element) {
       element.scrollIntoView({ behavior: "smooth", block: "start" });
     }
@@ -97,10 +95,7 @@ export function LandingPage() {
             </div>
           </div>
 
-          <LandingPageCTA
-            companies={companies}
-            municipalities={municipalities}
-          />
+          <LandingPageCTA />
         </div>
         <div
           className={`flex flex-col ${fadeChevron ? "opacity-0 " : "opacity-50"} absolute bottom-0 items-center transition-opacity ease-in duration-750`}
@@ -140,13 +135,20 @@ export function LandingPage() {
           className="w-full object-cover"
         />
       </div>
-      <div ref={companiesSectionRef} id="companies-section" className="w-full">
-        <CompaniesSection companies={companies} />
+      <div
+        ref={municipalitiesSectionRef}
+        id="municipalities-section"
+        className="w-full"
+      >
+        <MunicipalitiesSection
+          municipalities={municipalities}
+          municipalitiesLoading={municipalitiesLoading}
+        />
       </div>
-      <MunicipalitiesSection municipalities={municipalities} />
-      <PartnersSection />
       <CountriesSection />
+      <CompaniesSection />
       <MissionSection />
+      <PartnersSection />
     </>
   );
 }

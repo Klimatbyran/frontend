@@ -16,10 +16,10 @@
     "regions": "Regions",
     "about": "About",
     "aboutUs": "About Us",
-    "products": "Products",
     "insights": "Insights",
     "methodology": "Sources and Method",
     "support": "Support Us",
+    "dataDownload": "Download Our Data",
     "newsletter": "Newsletter",
     "openMenu": "Open Menu",
     "closeMenu": "Close Menu",
@@ -75,12 +75,16 @@
     "title": "How is it going with",
     "searchPlaceholder": "Search for a company...",
     "placeholder": "Search for a company",
-    "heroSearchPlaceholder": "Search for a company or municipality...",
-    "heroSearchLabel": "Search for a company or municipality",
+    "heroSearchPlaceholder": "Search companies, municipalities & regions...",
+    "heroSearchLabel": "Search for a company, municipality, or region",
+    "heroSearchLoadingText": "Searching...",
+    "heroSearchEmptyText": "No matches found. Try another name.",
     "popularLabel": "Popular:",
     "searchResultType": {
       "company": "Company",
-      "municipality": "Municipality"
+      "municipality": "Municipality",
+      "region": "Region",
+      "nation": "Nation"
     },
     "seeResults": "See results",
     "bestPerformers": "Top Lists",
@@ -105,19 +109,20 @@
       "exploreData": "Explore Data"
     },
     "companiesSection": {
-      "title": "Hold Companies Accountable for their Emissions",
-      "description": "Explore our comprehensive list of companies and get detailed data on emissions, trends, and how well they are performing on the path toward the Paris Agreement.",
+      "title": "How's it going with company emissions?",
+      "description": "Explore over 400 companies and access detailed data on reported emissions and whether they are aligned with the Paris Agreement.",
       "exploreButton": "Explore Companies",
-      "currentlyViewing": "Currently viewing:"
+      "currentlyViewing": "Currently viewing:",
+      "noEmissionsData": "No emissions data available."
     },
     "municipalitiesSection": {
       "title": "How is your municipality performing?",
-      "description": "Explore emissions data from municipalities and see how they are progressing toward climate targets. Understand local impact, compare performance over time, and identify where progress is accelerating or stalling. ",
+      "description": "Explore emissions data from municipalities and track changes over time. Discover key metrics that show progress in the transition and compare with other municipalities.",
       "exploreButton": "Explore Municipalities"
     },
     "regionsSection": {
       "title": "How is your region performing?",
-      "description": "Explore emissions data from regions and see how they are progressing toward climate targets. Understand regional impact, compare performance over time, and identify where progress is accelerating or stalling.",
+      "description": "Explore emissions data from counties and track changes over time. See where emissions come from and compare with other counties.",
       "exploreButton": "Explore Regions"
     },
     "countriesSection": {
@@ -129,8 +134,8 @@
       "title": "Trusted by Supporters and Partners"
     },
     "missionSection": {
-      "title": "Our Mission",
-      "button": "Our Mission"
+      "title": "About Us",
+      "button": "About Us"
     },
     "siteFeatures": {
       "title": "Comprehensive Climate Tracking",
@@ -277,9 +282,9 @@
       "utslappsberakningText": "A projection of how emissions would increase or decrease under each party's policies."
     }
   },
-  "productsPage": {
+  "dataDownloadPage": {
     "title": "Access Climate Impact Data",
-    "description": "Get access to Klimatkollen's climate database, featuring corporate emissions data, sustainability reports, and municipal environmental metrics through our API.",
+    "description": "Get access to Klimatkollen's climate database, featuring corporate emissions data, sustainability reports, and municipal environmental metrics.",
     "viewDocumentation": "View API Documentation →",
     "apiAccess": {
       "title": "Direct API Access",
@@ -818,9 +823,10 @@
         "title": "Municipality and Region Data Overview",
         "description": "What data we collect and present about the municipalities and regions",
         "paragraph1": "Klimatkollen shows emissions data on Sweden's municipalities and regions, with SMHI's national emissions database as our primary source. To make our municipal, regional and company data comparable, emissions of all greenhouse gases (CO₂e) are shown since August 2025, not just CO₂.",
-        "paragraph2": "We also show how emissions would need to decrease to meet the Paris Agreement. Previously, this was based on local carbon budgets derived from a national budget calculated by researchers at Uppsala University and the Tyndall Centre in the UK. Since August 2025, we have switched to use the 'Paris Curve' based on an updated <0>Carbon Law</0>.",
-        "paragraph3": "The forecast for future emissions is based on how emissions in each municipality or region have developed historically since the Paris Agreement in 2015. The trend line is weighted using the statistical method Least Absolute Deviations (LAD), which gives less weight to individual extreme values and provides a more fair and realistic picture of future emissions. You can read more about our emissions calculations <0>here</0>.",
-        "paragraph4": "Alongside emissions data, Klimatkollen presents key indicators of municipal and regional performance in the energy transition and emissions reductions, such as growth with EVs and bicycle lanes."
+        "paragraph2": "The annual average emissions change for each municipality or region is calculated using the Compound Annual Growth Rate (CAGR).",
+        "paragraph3": "We also show how emissions would need to decrease to meet the Paris Agreement. Previously, this was based on local carbon budgets derived from a national budget calculated by researchers at Uppsala University and the Tyndall Centre in the UK. Since August 2025, we have switched to use the 'Paris Curve' based on an updated <0>Carbon Law</0>.",
+        "paragraph4": "The forecast for future emissions is based on how emissions in each municipality or region have developed historically since the Paris Agreement in 2015. The trend line is weighted using the statistical method Least Absolute Deviations (LAD), which gives less weight to individual extreme values and provides a more fair and realistic picture of future emissions. You can read more about our emissions calculations <0>here</0>.",
+        "paragraph5": "Alongside emissions data, Klimatkollen presents key indicators of municipal and regional performance in the energy transition and emissions reductions, such as growth with EVs and bicycle lanes."
       },
       "municipalityKPIs": {
         "title": "Municipality KPIs",
@@ -1262,7 +1268,7 @@
       "latestReport": "Reports Emissions?",
       "missingReport": "Missing Report",
       "reportYear": "Report from {{year}}",
-      "largestEmissionSource": "Largest emission source",
+      "scope3Coverage": "Scope 3 Coverage",
       "notEnoughData": "Not enough data to determine",
       "reportingSince": "Reporting since",
       "scope1": "Scope 1",
@@ -1393,6 +1399,7 @@
       "readLess": "Read Less",
       "aiGeneratedData": "Includes AI-extracted values. To read more, visit our Sources and Methods page.",
       "billion": "bn",
+      "million": "mn",
       "financialsTooltip": "Financed emissions are often reported with a delay, as they are often based on the previous year's data from the companies included in the investment. We show emissions data in scope 3 category 15 in the year it is publicly reported in the annual report, even if it is sometimes stated that the data in this category comes from a previous year."
     },
     "sectionedCompanyList": {
@@ -1562,7 +1569,7 @@
         "totalConsumptionEmission": {
           "label": "Consumption",
           "description": "Consumption emissions per capita",
-          "detailedDescription": "Household consumption emissions (CO₂e) in tonnes per inhabitant and municipality in 2022. By 2050, emissions should be at most 1 tonne per person per year to be in line with the Paris Agreement.",
+          "detailedDescription": "Household consumption emissions (CO₂e) in tonnes per inhabitant and municipality in 2023. By 2050, emissions should be at most 1 tonne per person per year to be in line with the Paris Agreement.",
           "source": "Stockholm Environment Institute (2025), Konsumtionskompassen. Licensed under CC BY-NC-ND 4.0."
         },
         "electricVehiclePerChargePoints": {
@@ -1575,7 +1582,7 @@
         "bicycleMetrePerCapita": {
           "label": "Bicycles",
           "description": "Bicycle path metres per capita",
-          "detailedDescription": "Number of metres of bicycle paths per inhabitant per municipality in 2024. Longer is better, as good infrastructure promotes increased cycling.",
+          "detailedDescription": "Number of metres of bicycle paths per inhabitant per municipality in 2025. Longer is better, as good infrastructure promotes increased cycling.",
           "source0": "National Road Database",
           "source1": "SCB"
         },

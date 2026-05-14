@@ -41,6 +41,11 @@ export const MunicipalityAndRegionDataOverviewContent = () => {
           "methodsPage.municipalityAndRegion.municipalityAndRegionDataOverview.paragraph4",
         )}
       </p>
+      <p>
+        {t(
+          "methodsPage.municipalityAndRegion.municipalityAndRegionDataOverview.paragraph5",
+        )}
+      </p>
     </div>
   );
 };

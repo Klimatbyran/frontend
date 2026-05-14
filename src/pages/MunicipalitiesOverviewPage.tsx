@@ -27,9 +27,9 @@ export function MunicipalitiesOverviewPage() {
 
   const getKPIFromURL = useCallback(() => {
     const params = new URLSearchParams(location.search);
-    const kpiLabel = params.get("kpi");
+    const kpiKey = params.get("kpi");
     return (
-      municipalityKPIs.find((kpi) => kpi.label === kpiLabel) ||
+      municipalityKPIs.find((kpi) => String(kpi.key) === kpiKey) ||
       municipalityKPIs[0]
     );
   }, [location.search, municipalityKPIs]);
@@ -170,7 +170,7 @@ export function MunicipalitiesOverviewPage() {
         selectedKPI={selectedKPI}
         onKPIChange={(kpi) => {
           setSelectedKPI(kpi);
-          setKPIInURL(kpi.label);
+          setKPIInURL(String(kpi.key));
         }}
         kpis={municipalityKPIs}
         translationPrefix="municipalities.list"

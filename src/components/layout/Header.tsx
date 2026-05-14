@@ -49,7 +49,19 @@ const NAV_LINKS: NavLink[] = [
     sublinks: [
       {
         label: "header.explore",
-        path: `/explore/companies`,
+        path: `/explore/municipalities`,
+      },
+      {
+        label: "header.municipalities",
+        path: `/municipalities`,
+      },
+      {
+        label: "header.regions",
+        path: `/regions`,
+      },
+      {
+        label: "header.nation",
+        path: `/nation`,
       },
       {
         label: "header.companies",
@@ -58,18 +70,6 @@ const NAV_LINKS: NavLink[] = [
       {
         label: "header.sectors",
         path: `/sectors`,
-      },
-      {
-        label: "header.nation",
-        path: `/nation`,
-      },
-      {
-        label: "header.regions",
-        path: `/regions`,
-      },
-      {
-        label: "header.municipalities",
-        path: `/municipalities`,
       },
     ],
   },
@@ -100,11 +100,8 @@ const NAV_LINKS: NavLink[] = [
         path: "https://www.mynewsdesk.com/se/klimatbyraan/latest_news",
       },
       { label: "header.support", path: `/support` },
+      { label: "header.dataDownload", path: `/data-download` },
     ],
-  },
-  {
-    label: "header.products",
-    path: `/products`,
   },
 ];
 
