@@ -15,6 +15,7 @@
     "municipalities": "Municipalities",
     "nation": "Sweden",
     "regions": "Regions",
+    "countries": "Countries",
     "about": "About",
     "aboutUs": "About Us",
     "insights": "Insights",
@@ -1955,6 +1956,7 @@
     "rank": "Rank: {{rank}} of {{total}}"
   },
   "rankedInsights": {
+    "average": "Average:",
     "belowAverage": "{{entityPlural}} below average",
     "aboveAverage": "{{entityPlural}} above average",
     "titleBest": "Top Five {{entityPlural}}",

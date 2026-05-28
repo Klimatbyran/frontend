@@ -13,9 +13,7 @@ type EuropeGeoProperties = {
   ISO3: string;
 };
 
-function getGeoProperties(
-  feature: Feature,
-): EuropeGeoProperties | undefined {
+function getGeoProperties(feature: Feature): EuropeGeoProperties | undefined {
   const properties = feature.properties;
   if (
     !properties ||

@@ -1,4 +1,4 @@
-import { useTranslation } from "react-i18next";
+import { t } from "i18next";
 import { KPIValue } from "@/types/rankings";
 import { EuropeanCountry } from "@/types/europe";
 import KPIDetailsPanel from "@/components/ranked/KPIDetailsPanel";
@@ -18,8 +18,6 @@ function EuropeanInsightsPanel({
   countriesData: countryData,
   selectedKPI,
 }: InsightsPanelProps) {
-  const { t } = useTranslation();
-
   if (!countryData?.length) {
     return (
       <div className="bg-white/5 backdrop-blur-sm rounded-level-2 p-8 h-full flex items-center justify-center">
@@ -33,6 +31,7 @@ function EuropeanInsightsPanel({
     countryData,
     selectedKPI,
     (c) => c[selectedKPI.key as keyof EuropeanCountry],
+    "countries",
   );
 
   if (!statistics.validData.length) {
@@ -54,7 +53,7 @@ function EuropeanInsightsPanel({
 
   const sourceLinks = createSourceLinks(selectedKPI);
 
-  const entityPlural = t("learnMorePage.countries").toLowerCase();
+  const entityPlural = t("header.countries").toLowerCase();
 
   return (
     <div className="flex-1 overflow-y-auto min-h-0 pr-2">
@@ -64,7 +63,7 @@ function EuropeanInsightsPanel({
         <KPIDetailsPanel
           title={selectedKPI.label}
           averageValue={statistics.formattedAverage}
-          averageLabel={t("municipalities.list.insights.keyStatistics.average")}
+          averageLabel={t("rankedInsights.average")}
           distributionStats={statistics.distributionStats}
           missingDataCount={statistics.nullCount}
           missingDataLabel={selectedKPI.nullValues}

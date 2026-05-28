@@ -6,13 +6,13 @@ import { useNavigate } from "react-router-dom";
 import { PageHeader } from "@/components/layout/PageHeader";
 import TerritoryMap from "@/components/maps/TerritoryMap";
 import europeGeoJson from "@/data/europeGeo.json";
-import { useOverviewEuropeURLParams } from "@/hooks/europe/useOverviewEuropeURLParams";
+import { useRankedEuropeURLParams } from "@/hooks/europe/useRankedEuropeURLParams";
 import { useEurope, useEuropeanKPIs } from "@/hooks/europe/useEuropeKPIs";
 import { useClimateTraceEmissions } from "@/hooks/europe/useClimateTraceEmissions";
 import { useEuropeanData } from "@/hooks/europe/useEuropeanData";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import EuropeanInsightsPanel from "@/components/europe/EuropeanInsightsPanel";
-import { EuropeanOverviewList } from "@/components/europe/EuropeanOverviewList";
+import { EuropeanRankedList } from "@/components/europe/EuropeanRankedList";
 import { KPIDataSelector } from "@/components/ranked/KPIDataSelector";
 import { createEntityClickHandler } from "@/utils/routing";
 import { DataItem, KPIValue } from "@/types/rankings";
@@ -45,8 +45,8 @@ function EuropeanPageHeader({
   return (
     <>
       <PageHeader
-        title={t("europeanOverviewPage.title")}
-        description={t("europeanOverviewPage.description")}
+        title={t("europeanRankedPage.title")}
+        description={t("europeanRankedPage.description")}
         className="-ml-4"
       />
       <KPIDataSelector
@@ -121,7 +121,7 @@ export function EuropeanOverviewPage() {
     viewMode,
     setKPIInURL,
     setViewModeInURL,
-  } = useOverviewEuropeURLParams(europeanKPIs);
+  } = useRankedEuropeURLParams(europeanKPIs);
 
   const handleCountryClick = createEntityClickHandler(
     navigate,
@@ -137,7 +137,7 @@ export function EuropeanOverviewPage() {
   };
 
   const europeanOverviewList = (
-    <EuropeanOverviewList
+    <EuropeanRankedList
       countryEntities={countryEntities}
       selectedKPI={selectedKPI}
       onItemClick={handleCountryClick}
