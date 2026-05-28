@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Map, List } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { FeatureCollection } from "geojson";
-import { useNavigate } from "react-router-dom";
 import { PageHeader } from "@/components/layout/PageHeader";
 import TerritoryMap from "@/components/maps/TerritoryMap";
 import europeGeoJson from "@/data/europeGeo.json";
@@ -14,7 +13,6 @@ import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import EuropeanInsightsPanel from "@/components/europe/EuropeanInsightsPanel";
 import { EuropeanRankedList } from "@/components/europe/EuropeanRankedList";
 import { KPIDataSelector } from "@/components/ranked/KPIDataSelector";
-import { createEntityClickHandler } from "@/utils/routing";
 import { DataItem, KPIValue } from "@/types/rankings";
 import { EuropeanCountry } from "@/types/europe";
 
@@ -79,7 +77,6 @@ interface EuropeanMapProps {
   geoData: FeatureCollection;
   mapData: DataItem[];
   selectedKPI: KPIValue<EuropeanCountry>;
-  onAreaClick: (name: string) => void;
   className?: string;
 }
 
@@ -87,7 +84,6 @@ function EuropeanMap({
   geoData,
   mapData,
   selectedKPI,
-  onAreaClick,
   className,
 }: EuropeanMapProps) {
   return (
@@ -97,7 +93,6 @@ function EuropeanMap({
         geoData={geoData}
         data={mapData}
         selectedKPI={selectedKPI}
-        onAreaClick={onAreaClick}
         defaultCenter={[55, 15]}
         defaultZoom={3}
         propertyNameField="NAME"
@@ -114,7 +109,6 @@ export function EuropeanOverviewPage() {
   );
   const { countriesData } = useEurope();
   const { emissionsByIso } = useClimateTraceEmissions();
-  const navigate = useNavigate();
   const {
     selectedKPI,
     setSelectedKPI,
@@ -123,24 +117,13 @@ export function EuropeanOverviewPage() {
     setViewModeInURL,
   } = useRankedEuropeURLParams(europeanKPIs);
 
-  const handleCountryClick = createEntityClickHandler(
-    navigate,
-    "europe",
-    viewMode,
-  );
-
   const { countryEntities, mapData, filteredGeoData, countriesAsEntities } =
     useEuropeanData(countriesData, selectedKPI, geoData, emissionsByIso);
-  const handleCountryAreaClick = (mapName: string) => {
-    const country = countryEntities.find((c) => c.mapName === mapName);
-    handleCountryClick(country || mapName);
-  };
 
   const europeanOverviewList = (
     <EuropeanRankedList
       countryEntities={countryEntities}
       selectedKPI={selectedKPI}
-      onItemClick={handleCountryClick}
     />
   );
 
@@ -172,7 +155,6 @@ export function EuropeanOverviewPage() {
             geoData={filteredGeoData}
             mapData={mapData}
             selectedKPI={selectedKPI}
-            onAreaClick={handleCountryAreaClick}
             className="relative h-[65vh]"
           />
         ) : (
@@ -188,7 +170,6 @@ export function EuropeanOverviewPage() {
               geoData={filteredGeoData}
               mapData={mapData}
               selectedKPI={selectedKPI}
-              onAreaClick={handleCountryAreaClick}
               className="relative h-full"
             />
           ) : (

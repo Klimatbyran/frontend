@@ -74,10 +74,7 @@ function InsightsList<T>({
         }
 
         return (
-          <div
-            key={name}
-            className="block transition-colors hover:bg-white/5 rounded-lg"
-          >
+          <div key={name} className="rounded-lg">
             {content}
           </div>
         );
