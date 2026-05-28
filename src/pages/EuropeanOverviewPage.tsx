@@ -131,9 +131,9 @@ export function EuropeanOverviewPage() {
 
   const { countryEntities, mapData, filteredGeoData, countriesAsEntities } =
     useEuropeanData(countriesData, selectedKPI, geoData, emissionsByIso);
-  const handleCountryAreaClick = (name: string) => {
-    const country = countriesData.find((c) => c.name === name);
-    handleCountryClick(country || name);
+  const handleCountryAreaClick = (mapName: string) => {
+    const country = countryEntities.find((c) => c.mapName === mapName);
+    handleCountryClick(country || mapName);
   };
 
   const europeanOverviewList = (

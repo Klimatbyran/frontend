@@ -41,12 +41,20 @@ function MapOverlays({
   handleReset,
   onAreaClick,
 }: MapOverlaysProps) {
+  const hoveredItem = hoveredArea
+    ? data.find((item) => item.name === hoveredArea)
+    : undefined;
+  const tooltipName =
+    hoveredItem && typeof hoveredItem.displayName === "string"
+      ? hoveredItem.displayName
+      : hoveredArea;
+
   return (
     <>
       {hoveredArea && (
         <MapTooltip
           entityType={entityType}
-          name={hoveredArea}
+          name={tooltipName ?? hoveredArea}
           value={hoveredValue}
           rank={hoveredRank}
           unit={selectedKPI.unit ?? ""}
