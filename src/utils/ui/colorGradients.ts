@@ -113,6 +113,20 @@ export const DEFAULT_STATISTICAL_GRADIENT_COLORS = {
   gradientEnd: "var(--blue-3)",
 } as const;
 
+export function getStatisticalGradientLegendBackground(
+  colors: typeof DEFAULT_STATISTICAL_GRADIENT_COLORS = DEFAULT_STATISTICAL_GRADIENT_COLORS,
+): string {
+  const { gradientStart, gradientMidLow, gradientMidHigh, gradientEnd } =
+    colors;
+
+  return `linear-gradient(to right, 
+    ${gradientStart} 0%,
+    ${gradientMidLow} 33%,
+    ${gradientMidHigh} 66%,
+    ${gradientEnd} 100%
+  )`;
+}
+
 /**
  * Create a statistical gradient color based on z-score normalization
  * Used for: municipality map, and optionally for company visualizations

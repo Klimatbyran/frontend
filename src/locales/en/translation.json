@@ -1337,10 +1337,10 @@
       "trendIncreasingHint": "The company emits more per unit of turnover than the previous reporting year. This is a negative trend.",
       "trendDecreasingHint": "The company emits less per unit of turnover than the previous reporting year. This is a positive trend.",
       "trendStableHint": "Emissions per turnover has remained largely unchanged compared to the previous reporting year.",
-      "trendDescription": "{{change}} from {{previousYear}} to {{latestYear}}.",
       "trendUnknownDescription": "At least two reporting years with both emissions and turnover are needed to assess whether intensity is increasing, stable, or decreasing.",
-      "comparisonDescription": "Latest reported year ({{year}}), compared with {{count}} companies in the same industry.",
-      "comparisonDescriptionNoIndustry": "Latest reported year ({{year}}). Industry average is not available for this company.",
+      "legendLower": "Lower (better)",
+      "legendHigher": "Higher (worse)",
+      "colorScaleAriaLabel": "Color scale from pink for higher emissions intensity to blue for lower emissions intensity",
       "comparisonThisCompany": "This company",
       "comparisonIndustryAverage": "Industry average",
       "comparisonAllCompaniesAverage": "All companies average"

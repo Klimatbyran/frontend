@@ -104,6 +104,10 @@ export const getXAxisProps = (
 export const getYAxisProps = (
   currentLanguage: "sv" | "en",
   domain: [number, number | "auto"] = [0, "auto"],
+  formatValue: (
+    value: number,
+    language: "sv" | "en",
+  ) => string = formatEmissionsAbsoluteCompact,
 ) => ({
   stroke: "var(--grey)",
   tickLine: false,
@@ -119,7 +123,7 @@ export const getYAxisProps = (
         textAnchor: "end",
         transform: `rotate(-30, ${x - 5}, ${y + 5})`, // Updated transform origin
       },
-      formatEmissionsAbsoluteCompact(payload.value, currentLanguage),
+      formatValue(payload.value, currentLanguage),
     ) as unknown as React.ReactElement<SVGElement>;
   },
   domain,

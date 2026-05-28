@@ -128,6 +128,17 @@ export function getEmissionsIntensityHistory(
     .sort((a, b) => a.year - b.year);
 }
 
+export function filterIntensityHistoryFromBaseYear(
+  history: EmissionsIntensityPoint[],
+  baseYear?: number,
+): EmissionsIntensityPoint[] {
+  if (baseYear == null) {
+    return history;
+  }
+
+  return history.filter((point) => point.year >= baseYear);
+}
+
 export function getIntensityTrend(
   history: EmissionsIntensityPoint[],
 ): IntensityTrend {

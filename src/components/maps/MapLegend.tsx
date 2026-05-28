@@ -1,5 +1,8 @@
 import { t } from "i18next";
-import { DEFAULT_STATISTICAL_GRADIENT_COLORS } from "@/utils/ui/colorGradients";
+import {
+  DEFAULT_STATISTICAL_GRADIENT_COLORS,
+  getStatisticalGradientLegendBackground,
+} from "@/utils/ui/colorGradients";
 import { KPIValue, MapEntityType } from "@/types/rankings";
 
 export function MapLegend({
@@ -56,12 +59,7 @@ export function MapLegend({
                 <div
                   className="absolute inset-0 rounded-full"
                   style={{
-                    background: `linear-gradient(to right, 
-                        ${DEFAULT_STATISTICAL_GRADIENT_COLORS.gradientStart} 0%,
-                        ${DEFAULT_STATISTICAL_GRADIENT_COLORS.gradientMidLow} 33%,
-                        ${DEFAULT_STATISTICAL_GRADIENT_COLORS.gradientMidHigh} 66%,
-                        ${DEFAULT_STATISTICAL_GRADIENT_COLORS.gradientEnd} 100%
-                      )`,
+                    background: getStatisticalGradientLegendBackground(),
                   }}
                 />
               </div>

@@ -8,6 +8,7 @@ import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { Text } from "@/components/ui/text";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
 import {
+  filterIntensityHistoryFromBaseYear,
   getEmissionsIntensityHistory,
   getIntensityTrend,
   getIntensityUnitCurrency,
@@ -23,15 +24,22 @@ export function EmissionsIntensity({ company }: EmissionsIntensityProps) {
   const { t } = useTranslation();
   const { isAIGenerated, isEmissionsAIGenerated } = useVerificationStatus();
 
-  const history = useMemo(
-    () =>
-      getEmissionsIntensityHistory(
-        company.reportingPeriods,
-        isEmissionsAIGenerated,
-        isAIGenerated,
-      ),
-    [company.reportingPeriods, isEmissionsAIGenerated, isAIGenerated],
-  );
+  const baseYear = company.baseYear?.year;
+
+  const history = useMemo(() => {
+    const fullHistory = getEmissionsIntensityHistory(
+      company.reportingPeriods,
+      isEmissionsAIGenerated,
+      isAIGenerated,
+    );
+
+    return filterIntensityHistoryFromBaseYear(fullHistory, baseYear);
+  }, [
+    company.reportingPeriods,
+    isEmissionsAIGenerated,
+    isAIGenerated,
+    baseYear,
+  ]);
 
   const trend = useMemo(() => getIntensityTrend(history), [history]);
 
@@ -67,7 +75,7 @@ export function EmissionsIntensity({ company }: EmissionsIntensityProps) {
           <div style={{ height: getDynamicChartHeight("overview", isMobile) }}>
             <EmissionsIntensityTrendChart
               data={history}
-              companyBaseYear={company.baseYear?.year}
+              companyBaseYear={baseYear}
               unitLabel={unit}
             />
           </div>

@@ -20,7 +20,7 @@ import {
 } from "@/components/charts";
 import { useLanguage } from "@/components/LanguageProvider";
 import type { IntensityComparison } from "@/utils/data/emissionsIntensityData";
-import { formatEmissionsAbsolute } from "@/utils/formatting/localization";
+import { formatIntensityAxisValue } from "@/utils/formatting/localization";
 
 interface EmissionsIntensityComparisonChartProps {
   comparison: IntensityComparison;
@@ -85,6 +85,17 @@ export const EmissionsIntensityComparisonChart: FC<
     return bars;
   }, [comparison, includeAllCompaniesAverage, t]);
 
+  const maxIntensity = useMemo(
+    () => Math.max(...barData.map((bar) => bar.intensity)),
+    [barData],
+  );
+
+  const formatYAxisValue = useMemo(
+    () => (value: number) =>
+      formatIntensityAxisValue(value, currentLanguage, maxIntensity),
+    [currentLanguage, maxIntensity],
+  );
+
   return (
     <ChartWrapper>
       <ChartArea>
@@ -99,7 +110,7 @@ export const EmissionsIntensityComparisonChart: FC<
                 <ChartTooltip
                   showUnit={false}
                   customFormatter={(value) =>
-                    `${formatEmissionsAbsolute(value, currentLanguage)} ${unitLabel}`
+                    `${formatIntensityAxisValue(Number(value), currentLanguage, maxIntensity)} ${unitLabel}`
                   }
                 />
               }
@@ -117,7 +128,10 @@ export const EmissionsIntensityComparisonChart: FC<
               tick={{ fill: "var(--grey)", fontSize: 12 }}
             />
 
-            <YAxis {...getYAxisProps(currentLanguage)} dataKey="intensity" />
+            <YAxis
+              {...getYAxisProps(currentLanguage, [0, "auto"], formatYAxisValue)}
+              dataKey="intensity"
+            />
 
             <Bar dataKey="intensity" radius={[4, 4, 0, 0]}>
               {barData.map((entry) => (

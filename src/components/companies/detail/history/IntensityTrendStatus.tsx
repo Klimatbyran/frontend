@@ -60,25 +60,10 @@ export const IntensityTrendStatus: FC<IntensityTrendStatusProps> = ({
     unknown: "companies.emissionsIntensity.trendUnknownDescription",
   }[trend.direction];
 
-  const changeLine =
-    trend.changePercent != null &&
-    trend.previousYear != null &&
-    trend.direction !== "unknown"
-      ? t("companies.emissionsIntensity.trendDescription", {
-          change: formatPercentChange(
-            trend.changePercent,
-            currentLanguage,
-            true,
-          ),
-          latestYear: trend.latestYear,
-          previousYear: trend.previousYear,
-        })
-      : null;
-
   return (
     <div
       className={cn(
-        "rounded-level-2 border p-4 md:p-6 flex items-start gap-4",
+        "rounded-level-2  p-4 md:p-6 flex items-start gap-4",
         styles.container,
       )}
     >
@@ -92,11 +77,6 @@ export const IntensityTrendStatus: FC<IntensityTrendStatusProps> = ({
         <Text variant="body" className="text-grey">
           {t(hintKey)}
         </Text>
-        {changeLine && (
-          <Text variant="body" className="text-grey">
-            {changeLine}
-          </Text>
-        )}
       </div>
     </div>
   );

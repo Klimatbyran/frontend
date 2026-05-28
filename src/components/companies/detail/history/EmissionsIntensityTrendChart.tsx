@@ -13,6 +13,7 @@ import { useTranslation } from "react-i18next";
 import { isMobile } from "react-device-detect";
 import {
   ChartArea,
+  ChartFooter,
   ChartTooltip,
   ChartWrapper,
   createCustomTickRenderer,
@@ -23,16 +24,17 @@ import {
 } from "@/components/charts";
 import { useLanguage } from "@/components/LanguageProvider";
 import type { EmissionsIntensityPoint } from "@/utils/data/emissionsIntensityData";
-import { formatEmissionsAbsolute } from "@/utils/formatting/localization";
+import { formatIntensityAxisValue } from "@/utils/formatting/localization";
+import {
+  createStatisticalGradient,
+  getStatisticalGradientLegendBackground,
+} from "@/utils/ui/colorGradients";
 
 interface EmissionsIntensityTrendChartProps {
   data: EmissionsIntensityPoint[];
   companyBaseYear?: number;
   unitLabel: string;
 }
-
-const BAR_COLOR = "var(--grey)";
-const LATEST_BAR_COLOR = "var(--blue-2)";
 
 export const EmissionsIntensityTrendChart: FC<
   EmissionsIntensityTrendChartProps
@@ -43,15 +45,38 @@ export const EmissionsIntensityTrendChart: FC<
   const latestYear = data[data.length - 1]?.year;
   const isFirstYear = companyBaseYear === data[0]?.year;
 
+  const intensities = useMemo(
+    () => data.map((point) => point.intensity),
+    [data],
+  );
+
+  const intensityRange = useMemo(() => {
+    return {
+      min: Math.min(...intensities),
+      max: Math.max(...intensities),
+    };
+  }, [intensities]);
+
+  const hasColorScale = intensityRange.min !== intensityRange.max;
+
+  const formatYAxisValue = useMemo(
+    () => (value: number) =>
+      formatIntensityAxisValue(value, currentLanguage, intensityRange.max),
+    [currentLanguage, intensityRange.max],
+  );
+
   const chartData = useMemo(
     () =>
       data.map((point) => ({
         year: point.year,
         intensity: point.intensity,
         isAIGenerated: point.isAIGenerated,
-        fill: point.year === latestYear ? LATEST_BAR_COLOR : BAR_COLOR,
+        fill: hasColorScale
+          ? createStatisticalGradient(intensities, point.intensity, false)
+          : "var(--grey)",
+        isLatest: point.year === latestYear,
       })),
-    [data, latestYear],
+    [data, hasColorScale, intensities, latestYear],
   );
 
   return (
@@ -79,7 +104,7 @@ export const EmissionsIntensityTrendChart: FC<
                   companyBaseYear={companyBaseYear}
                   showUnit={false}
                   customFormatter={(value) =>
-                    `${formatEmissionsAbsolute(value, currentLanguage)} ${unitLabel}`
+                    `${formatIntensityAxisValue(Number(value), currentLanguage, intensityRange.max)} ${unitLabel}`
                   }
                 />
               }
@@ -97,7 +122,10 @@ export const EmissionsIntensityTrendChart: FC<
               padding={{ left: 8, right: 8 }}
             />
 
-            <YAxis {...getYAxisProps(currentLanguage)} dataKey="intensity" />
+            <YAxis
+              {...getYAxisProps(currentLanguage, [0, "auto"], formatYAxisValue)}
+              dataKey="intensity"
+            />
 
             <Bar
               dataKey="intensity"
@@ -105,12 +133,52 @@ export const EmissionsIntensityTrendChart: FC<
               radius={[4, 4, 0, 0]}
             >
               {chartData.map((entry) => (
-                <Cell key={entry.year} fill={entry.fill} />
+                <Cell
+                  key={entry.year}
+                  fill={entry.fill}
+                  stroke={entry.isLatest ? "var(--white)" : undefined}
+                  strokeWidth={entry.isLatest ? 2 : 0}
+                />
               ))}
             </Bar>
           </BarChart>
         </ResponsiveContainer>
       </ChartArea>
+
+      {hasColorScale && (
+        <ChartFooter>
+          <div
+            className="flex items-center justify-center gap-2 text-xs text-grey flex-wrap"
+            role="img"
+            aria-label={t("companies.emissionsIntensity.colorScaleAriaLabel")}
+          >
+            <span className="whitespace-nowrap">
+              {formatIntensityAxisValue(
+                intensityRange.max,
+                currentLanguage,
+                intensityRange.max,
+              )}{" "}
+              {unitLabel}
+            </span>
+            <div className="relative w-32 h-3 shrink-0">
+              <div
+                className="absolute inset-0 rounded-full"
+                style={{
+                  background: getStatisticalGradientLegendBackground(),
+                }}
+              />
+            </div>
+            <span className="whitespace-nowrap">
+              {formatIntensityAxisValue(
+                intensityRange.min,
+                currentLanguage,
+                intensityRange.max,
+              )}{" "}
+              {unitLabel}
+            </span>
+          </div>
+        </ChartFooter>
+      )}
     </ChartWrapper>
   );
 };
