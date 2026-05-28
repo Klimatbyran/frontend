@@ -151,4 +151,11 @@ export default tseslint.config(
       "no-console": "off",
     },
   },
+  // Large static KPI config tables
+  {
+    files: ["**/municipalities/municipalityKpiDefinitions.ts"],
+    rules: {
+      "max-lines-per-function": "off",
+    },
+  },
 );

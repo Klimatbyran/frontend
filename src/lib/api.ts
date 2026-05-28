@@ -116,6 +116,21 @@ export async function getMunicipalities() {
   }
 }
 
+export async function getMunicipalitiesKPIs(): Promise<
+  NonNullable<
+    paths["/municipalities/kpis"]["get"]["responses"][200]["content"]["application/json"]
+  >
+> {
+  try {
+    const { data, error } = await GET("/municipalities/kpis", {});
+    if (error) throw error;
+    return data ?? [];
+  } catch (error) {
+    console.error("Error fetching municipality KPIs:", error);
+    return [];
+  }
+}
+
 export async function getMunicipalityDetails(name: string) {
   const { data, error } = await GET("/municipalities/{name}", {
     params: {
