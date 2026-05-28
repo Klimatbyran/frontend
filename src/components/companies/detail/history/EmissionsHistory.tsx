@@ -3,8 +3,6 @@ import { useTranslation } from "react-i18next";
 import { isMobile } from "react-device-detect";
 import { Text } from "@/components/ui/text";
 import type { EmissionsHistoryProps, DataView } from "@/types/emissions";
-import { useCategoryMetadata } from "@/hooks/companies/useCategories";
-import { useLanguage } from "@/components/LanguageProvider";
 import {
   getDynamicChartHeight,
   useDataView,
@@ -18,7 +16,6 @@ import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { calculateTrendline } from "@/lib/calculations/trends/analysis";
 import { generateApproximatedData } from "@/lib/calculations/trends/approximatedData";
 import { getChartData } from "../../../../utils/data/chartData";
-import { CategoriesChart } from "./CategoriesChart";
 import { ScopesChart } from "./ScopesChart";
 import { OverviewChart } from "./OverviewChart";
 
@@ -27,30 +24,18 @@ export function EmissionsHistory({
   onYearSelect,
 }: EmissionsHistoryProps) {
   const { t } = useTranslation();
-  const { getCategoryName, getCategoryColor } = useCategoryMetadata();
-  const { currentLanguage } = useLanguage();
   const { isAIGenerated, isEmissionsAIGenerated } = useVerificationStatus();
 
   // Check if company is in Financials sector
   const isFinancialsSector =
     company.industry?.industryGics?.sectorCode === "40";
 
-  const hasScope3Categories = useMemo(
-    () =>
-      company.reportingPeriods.some(
-        (period) => period.emissions?.scope3?.categories?.length ?? false,
-      ),
-    [company.reportingPeriods],
-  );
-
-  const { dataView, setDataView } = useDataView<DataView>(
+  const { dataView, setDataView } = useDataView<DataView>("overview", [
     "overview",
-    hasScope3Categories
-      ? ["overview", "scopes", "categories"]
-      : ["overview", "scopes"],
-  );
+    "scopes",
+  ]);
 
-  const dataViewOptions = useCompanyViewOptions(hasScope3Categories);
+  const dataViewOptions = useCompanyViewOptions();
 
   const { chartEndYear, setChartEndYear, shortEndYear, longEndYear } =
     useTimeSeriesChartState();
@@ -58,9 +43,6 @@ export function EmissionsHistory({
   const { hiddenItems: hiddenScopes, toggleItem: toggleScope } = useHiddenItems<
     "scope1" | "scope2" | "scope3"
   >([]);
-
-  const { hiddenItems: hiddenCategories, toggleItem: toggleCategory } =
-    useHiddenItems<number>([]);
 
   const companyBaseYear = company.baseYear?.year;
 
@@ -95,10 +77,6 @@ export function EmissionsHistory({
   // Toggle handlers using the new hooks
   const handleScopeToggle = (scope: "scope1" | "scope2" | "scope3") => {
     toggleScope(scope);
-  };
-
-  const handleCategoryToggle = (categoryId: number) => {
-    toggleCategory(categoryId);
   };
 
   // Generate approximated data for overview
@@ -153,9 +131,7 @@ export function EmissionsHistory({
           tooltipContent={t("companies.emissionsHistory.tooltip")}
           unit={t("companies.emissionsHistory.unit")}
           dataView={dataView}
-          setDataView={(value) =>
-            setDataView(value as "overview" | "scopes" | "categories")
-          }
+          setDataView={(value) => setDataView(value as "overview" | "scopes")}
           dataViewOptions={dataViewOptions}
           dataViewPlaceholder={t("companies.dataView.selectView")}
         />
@@ -182,21 +158,6 @@ export function EmissionsHistory({
               longEndYear={longEndYear}
               hiddenScopes={Array.from(hiddenScopes)}
               handleScopeToggle={handleScopeToggle}
-              onYearSelect={handleYearSelect}
-            />
-          )}
-          {dataView === "categories" && (
-            <CategoriesChart
-              data={chartData}
-              companyBaseYear={companyBaseYear}
-              chartEndYear={chartEndYear}
-              setChartEndYear={setChartEndYear}
-              shortEndYear={shortEndYear}
-              longEndYear={longEndYear}
-              hiddenCategories={Array.from(hiddenCategories)}
-              handleCategoryToggle={handleCategoryToggle}
-              getCategoryName={getCategoryName}
-              getCategoryColor={getCategoryColor}
               onYearSelect={handleYearSelect}
             />
           )}
