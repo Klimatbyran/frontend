@@ -67,8 +67,7 @@ export function formatIntensityAxisValue(
   maxValue?: number,
 ) {
   const reference = maxValue ?? Math.abs(value);
-  const fractionDigits =
-    reference < 1 ? 2 : reference < 10 ? 1 : 0;
+  const fractionDigits = reference < 1 ? 2 : reference < 10 ? 1 : 0;
 
   return localizeNumber(value, currentLanguage, {
     maximumFractionDigits: fractionDigits,

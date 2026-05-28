@@ -92,7 +92,9 @@ export function matchesPeerGroup(
 
 function buildIntensityPoint(
   period: ReportingPeriod | ReportingPeriodFromList,
-  isEmissionsAIGenerated: (period: ReportingPeriod | ReportingPeriodFromList) => boolean,
+  isEmissionsAIGenerated: (
+    period: ReportingPeriod | ReportingPeriodFromList,
+  ) => boolean,
   isAIGenerated: (data: AIGeneratable | undefined | null) => boolean,
 ): EmissionsIntensityPoint | null {
   const emissions = period.emissions?.calculatedTotalEmissions;
@@ -110,14 +112,15 @@ function buildIntensityPoint(
     turnover,
     currency,
     isAIGenerated:
-      isEmissionsAIGenerated(period) ||
-      isAIGenerated(period.economy?.turnover),
+      isEmissionsAIGenerated(period) || isAIGenerated(period.economy?.turnover),
   };
 }
 
 export function getEmissionsIntensityHistory(
   periods: ReportingPeriod[] | ReportingPeriodFromList[],
-  isEmissionsAIGenerated: (period: ReportingPeriod | ReportingPeriodFromList) => boolean,
+  isEmissionsAIGenerated: (
+    period: ReportingPeriod | ReportingPeriodFromList,
+  ) => boolean,
   isAIGenerated: (data: AIGeneratable | undefined | null) => boolean,
 ): EmissionsIntensityPoint[] {
   return periods
@@ -256,9 +259,7 @@ export function getIntensityComparison(
   };
 }
 
-export function getIntensityUnitCurrency(
-  currencies: string[],
-): string | null {
+export function getIntensityUnitCurrency(currencies: string[]): string | null {
   if (currencies.length === 0) {
     return null;
   }
