@@ -54,6 +54,8 @@ function EuropeanInsightsPanel({
 
   const sourceLinks = createSourceLinks(selectedKPI);
 
+  const entityPlural = t("learnMorePage.countries").toLowerCase();
+
   return (
     <div className="flex-1 overflow-y-auto min-h-0 pr-2">
       <div
@@ -74,8 +76,9 @@ function EuropeanInsightsPanel({
             <InsightsList<EuropeanCountry>
               title={t(
                 selectedKPI.higherIsBetter
-                  ? "municipalities.list.insights.topPerformers.titleTop"
-                  : "municipalities.list.insights.topPerformers.titleBest",
+                  ? "rankedInsights.titleTop"
+                  : "rankedInsights.titleBest",
+                { entityPlural },
               )}
               entities={topCountries}
               totalCount={countryData.length}
@@ -87,7 +90,9 @@ function EuropeanInsightsPanel({
               nameKey="name"
             />
             <InsightsList
-              title={t("municipalities.list.insights.improvement.title")}
+              title={t("rankedInsights.titleWorst", {
+                entityPlural,
+              })}
               entities={bottomCountries}
               totalCount={countryData.length}
               isBottomRanking

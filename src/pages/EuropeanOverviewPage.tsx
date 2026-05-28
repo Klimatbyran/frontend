@@ -6,13 +6,13 @@ import { useNavigate } from "react-router-dom";
 import { PageHeader } from "@/components/layout/PageHeader";
 import TerritoryMap from "@/components/maps/TerritoryMap";
 import europeGeoJson from "@/data/europeGeo.json";
-import { useRankedEuropeURLParams } from "@/hooks/europe/useRankedEuropeURLParams";
+import { useOverviewEuropeURLParams } from "@/hooks/europe/useOverviewEuropeURLParams";
 import { useEurope, useEuropeanKPIs } from "@/hooks/europe/useEuropeKPIs";
 import { useClimateTraceEmissions } from "@/hooks/europe/useClimateTraceEmissions";
 import { useEuropeanData } from "@/hooks/europe/useEuropeanData";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import EuropeanInsightsPanel from "@/components/europe/EuropeanInsightsPanel";
-import { EuropeanRankedList } from "@/components/europe/EuropeanRankedList";
+import { EuropeanOverviewList } from "@/components/europe/EuropeanOverviewList";
 import { KPIDataSelector } from "@/components/ranked/KPIDataSelector";
 import { createEntityClickHandler } from "@/utils/routing";
 import { DataItem, KPIValue } from "@/types/rankings";
@@ -45,8 +45,8 @@ function EuropeanPageHeader({
   return (
     <>
       <PageHeader
-        title={t("europeanRankedPage.title")}
-        description={t("europeanRankedPage.description")}
+        title={t("europeanOverviewPage.title")}
+        description={t("europeanOverviewPage.description")}
         className="-ml-4"
       />
       <KPIDataSelector
@@ -107,7 +107,7 @@ function EuropeanMap({
   );
 }
 
-export function EuropeanRankedPage() {
+export function EuropeanOverviewPage() {
   const europeanKPIs = useEuropeanKPIs();
   const [geoData] = useState<FeatureCollection>(
     europeGeoJson as FeatureCollection,
@@ -121,7 +121,7 @@ export function EuropeanRankedPage() {
     viewMode,
     setKPIInURL,
     setViewModeInURL,
-  } = useRankedEuropeURLParams(europeanKPIs);
+  } = useOverviewEuropeURLParams(europeanKPIs);
 
   const handleCountryClick = createEntityClickHandler(
     navigate,
@@ -136,8 +136,8 @@ export function EuropeanRankedPage() {
     handleCountryClick(country || name);
   };
 
-  const europeanRankedList = (
-    <EuropeanRankedList
+  const europeanOverviewList = (
+    <EuropeanOverviewList
       countryEntities={countryEntities}
       selectedKPI={selectedKPI}
       onItemClick={handleCountryClick}
@@ -176,7 +176,7 @@ export function EuropeanRankedPage() {
             className="relative h-[65vh]"
           />
         ) : (
-          europeanRankedList
+          europeanOverviewList
         )}
         {insightsPanel}
       </div>
@@ -192,9 +192,9 @@ export function EuropeanRankedPage() {
               className="relative h-full"
             />
           ) : (
-            europeanRankedList
+            europeanOverviewList
           )}
-          {viewMode === "map" ? europeanRankedList : null}
+          {viewMode === "map" ? europeanOverviewList : null}
         </div>
         {insightsPanel}
       </div>

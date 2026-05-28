@@ -40,7 +40,7 @@ import { RegionDetailPage } from "./pages/RegionDetailPage";
 import { NationDetailPage } from "./pages/NationDetailPage";
 import { CompaniesOverviewPage } from "./pages/CompaniesOverviewPage";
 import { ExplorePage } from "./pages/ExplorePage";
-import { EuropeanRankedPage } from "./pages/EuropeanRankedPage";
+import { EuropeanOverviewPage } from "./pages/EuropeanOverviewPage";
 
 void StagingProtectedRoute; // referenced so dead-code scripts keep the component; eslint/ts unused-import satisfied
 
@@ -103,7 +103,7 @@ function TerritoryRoutes({ basePath }: { basePath: string }) {
     <>
       <Route path={`${basePath}/regions`} element={<RegionalOverviewPage />} />
       <Route path={`${basePath}/regions/:id`} element={<RegionDetailPage />} />
-      <Route path={`${basePath}/europe`} element={<EuropeanRankedPage />} />
+      <Route path={`${basePath}/europe`} element={<EuropeanOverviewPage />} />
       <Route path={`${basePath}/nation`} element={<NationDetailPage />} />
       <Route
         path={`${basePath}/municipalities`}
