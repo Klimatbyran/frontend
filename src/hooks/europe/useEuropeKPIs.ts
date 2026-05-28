@@ -60,7 +60,7 @@ export const useEuropeanKPIs = (): KPIValue<EuropeanCountry>[] => {
       ),
       higherIsBetter: false,
       source: "",
-      sourceUrls: [],
+      sourceUrls: ["https://climatetrace.org/"],
     },
     {
       label: t("europe.list.kpis.emissionsPercentChange.label"),
@@ -72,36 +72,7 @@ export const useEuropeanKPIs = (): KPIValue<EuropeanCountry>[] => {
       ),
       higherIsBetter: false,
       source: "",
-      sourceUrls: [],
-    },
-    {
-      label: t("europe.list.kpis.historicalEmissionChangePercent.label"),
-      key: "historicalEmissionChangePercent",
-      unit: "%",
-      description: t(
-        "europe.list.kpis.historicalEmissionChangePercent.description",
-      ),
-      detailedDescription: t(
-        "europe.list.kpis.historicalEmissionChangePercent.detailedDescription",
-      ),
-      higherIsBetter: false,
-      source: "europe.list.kpis.historicalEmissionChangePercent.source",
-      sourceUrls: ["https://nationellaemissionsdatabasen.smhi.se/"],
-    },
-    {
-      label: t("europe.list.kpis.meetsParis.label"),
-      key: "meetsParis",
-      unit: "",
-      description: t("europe.list.kpis.meetsParis.description"),
-      detailedDescription: t("europe.list.kpis.meetsParis.detailedDescription"),
-      higherIsBetter: true,
-      isBoolean: true,
-      booleanLabels: {
-        true: t("europe.list.kpis.meetsParis.booleanLabels.true"),
-        false: t("europe.list.kpis.meetsParis.booleanLabels.false"),
-      },
-      source: "europe.list.kpis.meetsParis.source",
-      sourceUrls: ["https://nationellaemissionsdatabasen.smhi.se/"],
+      sourceUrls: ["https://climatetrace.org/"],
     },
   ];
 };

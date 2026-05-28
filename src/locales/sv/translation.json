@@ -1590,24 +1590,8 @@
         },
         "emissionsPercentChange": {
           "label": "Förändring i utsläpp",
-          "description": "Förändring i utsläpp jämfört med föregående år",
-          "detailedDescription": "Procentuell förändring i CO₂e-utsläpp jämfört med föregående år."
-        },
-        "historicalEmissionChangePercent": {
-          "label": "Utsläppen",
-          "description": "Historisk förändring av utsläpp",
-          "detailedDescription": "Genomsnittlig årlig procentuell förändring av växthusgasutsläppen i europeiska länder sedan Parisavtalet år 2015.",
-          "source": "Nationella emissionsdatabasen"
-        },
-        "meetsParis": {
-          "label": "Parisavtalet",
-          "description": "Utsläppstrend jämfört med Parisavtalet",
-          "detailedDescription": "Vilka europeiska länder är på väg att klara Parisavtalet?",
-          "source": "Nationella emissionsdatabasen",
-          "booleanLabels": {
-            "true": "Klarar Parisavtalet",
-            "false": "Missar Parisavtalet"
-          }
+          "description": "Förändring i utsläpp under 2025",
+          "detailedDescription": "Procentuell förändring i CO₂e-utsläpp under 2025."
         }
       }
     }

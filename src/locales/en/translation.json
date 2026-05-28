@@ -1531,24 +1531,8 @@
         },
         "emissionsPercentChange": {
           "label": "Emissions change",
-          "description": "Year-over-year change in emissions",
-          "detailedDescription": "Percentage change in CO₂e emissions compared to the previous year."
-        },
-        "historicalEmissionChangePercent": {
-          "label": "Emissions",
-          "description": "Historical change in emissions",
-          "detailedDescription": "Average annual percentage change in greenhouse gas emissions in European countries since the Paris Agreement in 2015.",
-          "source": "National Emissions Database"
-        },
-        "meetsParis": {
-          "label": "Paris Agreement",
-          "description": "Emissions trend compared to the Paris Agreement",
-          "detailedDescription": "Which European countries are on track to meet the Paris Agreement?",
-          "source": "National Emissions Database",
-          "booleanLabels": {
-            "true": "Meets Paris Agreement",
-            "false": "Fails Paris Agreement"
-          }
+          "description": "Year-over-year change in emissions under 2025",
+          "detailedDescription": "Percentage change in CO₂e emissions under 2025."
         }
       }
     }
