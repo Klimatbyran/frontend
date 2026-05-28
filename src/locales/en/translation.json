@@ -1527,12 +1527,14 @@
           "label": "Emissions per capita",
           "description": "Annual greenhouse gas emissions per person",
           "detailedDescription": "Estimated annual CO₂e emissions per capita by country for 2025.",
-          "unit": " tCO₂e"
+          "unit": " tCO₂e",
+          "source": "Climate TRACE"
         },
         "emissionsPercentChange": {
           "label": "Emissions change",
           "description": "Year-over-year change in emissions under 2025",
-          "detailedDescription": "Percentage change in CO₂e emissions under 2025."
+          "detailedDescription": "Percentage change in CO₂e emissions under 2025.",
+          "source": "Climate TRACE"
         }
       }
     }

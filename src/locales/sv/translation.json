@@ -1586,12 +1586,14 @@
           "label": "Utsläpp per capita",
           "description": "Årliga växthusgasutsläpp per person",
           "detailedDescription": "Uppskattade årliga CO₂e-utsläpp per capita per land för 2025.",
-          "unit": " tCO₂e"
+          "unit": " tCO₂e",
+          "source": "Climate TRACE"
         },
         "emissionsPercentChange": {
           "label": "Förändring i utsläpp",
           "description": "Förändring i utsläpp under 2025",
-          "detailedDescription": "Procentuell förändring i CO₂e-utsläpp under 2025."
+          "detailedDescription": "Procentuell förändring i CO₂e-utsläpp under 2025.",
+          "source": "Climate TRACE"
         }
       }
     }

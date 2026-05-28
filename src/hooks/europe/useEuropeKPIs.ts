@@ -59,7 +59,7 @@ export const useEuropeanKPIs = (): KPIValue<EuropeanCountry>[] => {
         "europe.list.kpis.emissionsPerCapita.detailedDescription",
       ),
       higherIsBetter: false,
-      source: "",
+      source: "europe.list.kpis.emissionsPerCapita.source",
       sourceUrls: ["https://climatetrace.org/"],
     },
     {
@@ -71,7 +71,7 @@ export const useEuropeanKPIs = (): KPIValue<EuropeanCountry>[] => {
         "europe.list.kpis.emissionsPercentChange.detailedDescription",
       ),
       higherIsBetter: false,
-      source: "",
+      source: "europe.list.kpis.emissionsPercentChange.source",
       sourceUrls: ["https://climatetrace.org/"],
     },
   ];
