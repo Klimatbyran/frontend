@@ -1324,6 +1324,27 @@
       "totalEmissionsSaved": "total emissions saved vs Paris target",
       "totalEmissionsExcess": "total emissions excess vs Paris target"
     },
+    "emissionsIntensity": {
+      "title": "Emissions intensity",
+      "tooltip": "Emissions intensity shows how much a company emits relative to its turnover. It helps compare climate impact across companies of different sizes.",
+      "explanation": "Emissions intensity is total reported emissions divided by turnover. A lower value means the company produces less climate impact per unit of revenue. Tracking whether intensity is rising or falling shows if emissions are growing faster than the business itself.",
+      "unit": "tCO₂e per million {{currency}}",
+      "unitGeneric": "tCO₂e per million (local currency)",
+      "trendIncreasing": "Increasing intensity",
+      "trendDecreasing": "Decreasing intensity",
+      "trendStable": "Stable intensity",
+      "trendUnknown": "Trend unavailable",
+      "trendIncreasingHint": "The company emits more per unit of turnover than the previous reporting year. This is a negative trend.",
+      "trendDecreasingHint": "The company emits less per unit of turnover than the previous reporting year. This is a positive trend.",
+      "trendStableHint": "Emissions per turnover has remained largely unchanged compared to the previous reporting year.",
+      "trendDescription": "{{change}} from {{previousYear}} to {{latestYear}}.",
+      "trendUnknownDescription": "At least two reporting years with both emissions and turnover are needed to assess whether intensity is increasing, stable, or decreasing.",
+      "comparisonDescription": "Latest reported year ({{year}}), compared with {{count}} companies in the same industry.",
+      "comparisonDescriptionNoIndustry": "Latest reported year ({{year}}). Industry average is not available for this company.",
+      "comparisonThisCompany": "This company",
+      "comparisonIndustryAverage": "Industry average",
+      "comparisonAllCompaniesAverage": "All companies average"
+    },
     "list": {
       "error": {
         "fetchingCompanyInfo": "Failed to fetch company information",

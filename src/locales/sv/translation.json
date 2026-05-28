@@ -1381,6 +1381,27 @@
       "totalEmissionsSaved": "totala utsläpp sparade jämfört med Paris-målet",
       "totalEmissionsExcess": "totala utsläpp i överskott jämfört med Paris-målet"
     },
+    "emissionsIntensity": {
+      "title": "Utsläppsintensitet",
+      "tooltip": "Utsläppsintensitet visar hur mycket ett företag släpper ut i förhållande till sin omsättning. Måttet hjälper till att jämföra klimatpåverkan mellan företag av olika storlek.",
+      "explanation": "Utsläppsintensitet är totala rapporterade utsläpp dividerat med omsättning. Ett lägre värde innebär att företaget ger upphov till mindre klimatpåverkan per intäktskrona. Att följa om intensiteten stiger eller sjunker visar om utsläppen växer snabbare än verksamheten i sig.",
+      "unit": "tCO₂e per miljon {{currency}}",
+      "unitGeneric": "tCO₂e per miljon (lokal valuta)",
+      "trendIncreasing": "Ökande intensitet",
+      "trendDecreasing": "Minskande intensitet",
+      "trendStable": "Stabil intensitet",
+      "trendUnknown": "Trend saknas",
+      "trendIncreasingHint": "Företaget släpper ut mer per omsättningskrona än föregående rapporteringsår. Detta är en negativ utveckling.",
+      "trendDecreasingHint": "Företaget släpper ut mindre per omsättningskrona än föregående rapporteringsår. Detta är en positiv utveckling.",
+      "trendStableHint": "Utsläpp per omsättning har i stort sett varit oförändrat jämfört med föregående rapporteringsår.",
+      "trendDescription": "{{change}} från {{previousYear}} till {{latestYear}}.",
+      "trendUnknownDescription": "Minst två rapporteringsår med både utsläpp och omsättning krävs för att bedöma om intensiteten ökar, är stabil eller minskar.",
+      "comparisonDescription": "Senaste rapporterade året ({{year}}), jämfört med {{count}} företag i samma bransch.",
+      "comparisonDescriptionNoIndustry": "Senaste rapporterade året ({{year}}). Branschgenomsnitt saknas för detta företag.",
+      "comparisonThisCompany": "Detta företag",
+      "comparisonIndustryAverage": "Branschgenomsnitt",
+      "comparisonAllCompaniesAverage": "Genomsnitt alla företag"
+    },
     "list": {
       "error": {
         "fetchingCompanyInfo": "Det gick inte att hämta företagsinformation",

@@ -27,7 +27,7 @@ export default ({ mode }: ConfigEnv) => {
     server: {
       proxy: {
         "/api": {
-          target: env.VITE_API_PROXY ?? "http://localhost:3000/", // Default to local, override in CI/CD
+          target: env.VITE_API_PROXY ?? "https://api.klimatkollen.se/", // Default to local, override in CI/CD
           changeOrigin: true,
           secure: false,
           configure: (proxy) => {
