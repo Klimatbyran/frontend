@@ -2,19 +2,10 @@ import { useMemo } from "react";
 import { Feature, FeatureCollection } from "geojson";
 import { useLanguage } from "@/components/LanguageProvider";
 import { DataItem, RankedListItem, KPIValue } from "@/types/rankings";
-import { EuropeData } from "./useEuropeKPIs";
 import { EuropeanCountry } from "@/types/europe";
-import {
-  ClimateTraceEmissionsByIso,
-  isClimateTraceKpiKey,
-} from "@/lib/climateTrace";
+import { ClimateTraceEmissionsByIso } from "@/lib/climateTrace";
 import { SupportedLanguage } from "@/lib/languageDetection";
-import {
-  buildCountryGeoIndex,
-  CountryGeoIndex,
-  getLocalizedCountryName,
-  resolveCountryIso3,
-} from "@/utils/europe/countryNames";
+import { getLocalizedCountryName } from "@/utils/europe/countryNames";
 
 type EuropeGeoProperties = {
   NAME: string;
@@ -60,6 +51,14 @@ function buildCountryEntity(
   };
 }
 
+function hasKpiValue<T extends Record<string, unknown>>(
+  entity: T,
+  key: keyof T,
+): boolean {
+  const value = entity[key];
+  return value !== null && value !== undefined;
+}
+
 function buildClimateTraceEntities(
   geoData: FeatureCollection,
   emissionsByIso: ClimateTraceEmissionsByIso,
@@ -91,92 +90,14 @@ function buildClimateTraceEntities(
   });
 }
 
-function hasKpiValue<T extends Record<string, unknown>>(
-  entity: T,
-  key: keyof T,
-): boolean {
-  const value = entity[key];
-  return value !== null && value !== undefined;
-}
-
-function buildApiCountryEntities(
-  countriesData: EuropeData[],
+function buildCountryEntities(
   selectedKPI: KPIValue<EuropeanCountry>,
+  geoData: FeatureCollection,
+  emissionsByIso: ClimateTraceEmissionsByIso,
   language: SupportedLanguage,
-  geoIndex: CountryGeoIndex,
 ): RankedListItem[] {
-  const { nameToIso3, iso3ToEnglishName, iso3ToIso2 } = geoIndex;
-
-  return countriesData
-    .filter((countryData) =>
-      hasKpiValue(countryData, selectedKPI.key as keyof EuropeData),
-    )
-    .flatMap((countryData) => {
-      const iso3 = resolveCountryIso3(countryData.name, nameToIso3);
-      const mapName = iso3
-        ? (iso3ToEnglishName.get(iso3) ?? countryData.name)
-        : countryData.name;
-
-      if (!iso3) {
-        return [
-          {
-            name: mapName,
-            id: mapName,
-            displayName: countryData.name,
-            mapName,
-            emissionsPerCapita: null,
-            emissionsPercentChange: null,
-            historicalEmissionChangePercent:
-              countryData.historicalEmissionChangePercent,
-            meetsParis: countryData.meetsParis,
-          },
-        ];
-      }
-
-      return [
-        buildCountryEntity(
-          iso3,
-          iso3ToIso2.get(iso3) ?? iso3,
-          mapName,
-          language,
-          {
-            historicalEmissionChangePercent:
-              countryData.historicalEmissionChangePercent,
-            meetsParis: countryData.meetsParis,
-          },
-        ),
-      ];
-    });
-}
-
-type BuildCountryEntitiesInput = {
-  countriesData: EuropeData[];
-  selectedKPI: KPIValue<EuropeanCountry>;
-  geoData: FeatureCollection;
-  emissionsByIso: ClimateTraceEmissionsByIso;
-  language: SupportedLanguage;
-  geoIndex: CountryGeoIndex;
-};
-
-function buildCountryEntities({
-  countriesData,
-  selectedKPI,
-  geoData,
-  emissionsByIso,
-  language,
-  geoIndex,
-}: BuildCountryEntitiesInput): RankedListItem[] {
-  if (isClimateTraceKpiKey(selectedKPI.key)) {
-    return buildClimateTraceEntities(geoData, emissionsByIso, language).filter(
-      (country) => hasKpiValue(country, selectedKPI.key),
-    );
-  }
-
-  return buildApiCountryEntities(
-    countriesData,
-    selectedKPI,
-    language,
-    geoIndex,
+  return buildClimateTraceEntities(geoData, emissionsByIso, language).filter(
+    (country) => hasKpiValue(country, selectedKPI.key),
   );
 }
 
@@ -203,42 +124,27 @@ function toEuropeanCountries(
       typeof country.emissionsPercentChange === "number"
         ? country.emissionsPercentChange
         : null,
-    historicalEmissionChangePercent:
-      typeof country.historicalEmissionChangePercent === "number"
-        ? country.historicalEmissionChangePercent
-        : null,
-    meetsParis:
-      typeof country.meetsParis === "boolean" ? country.meetsParis : null,
+    historicalEmissionChangePercent: null,
+    meetsParis: null,
   }));
 }
 
 export function useEuropeanData(
-  countriesData: EuropeData[],
   selectedKPI: KPIValue<EuropeanCountry>,
   geoData: FeatureCollection,
   emissionsByIso: ClimateTraceEmissionsByIso = {},
 ) {
   const { currentLanguage } = useLanguage();
-  const geoIndex = useMemo(() => buildCountryGeoIndex(geoData), [geoData]);
 
   const countryEntities = useMemo(
     () =>
-      buildCountryEntities({
-        countriesData,
+      buildCountryEntities(
         selectedKPI,
         geoData,
         emissionsByIso,
-        language: currentLanguage,
-        geoIndex,
-      }),
-    [
-      countriesData,
-      selectedKPI,
-      geoData,
-      emissionsByIso,
-      currentLanguage,
-      geoIndex,
-    ],
+        currentLanguage,
+      ),
+    [selectedKPI, geoData, emissionsByIso, currentLanguage],
   );
 
   const mapData = useMemo(() => toMapData(countryEntities), [countryEntities]);

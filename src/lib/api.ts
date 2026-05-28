@@ -362,18 +362,6 @@ export async function getRegionsKPIs() {
   }
 }
 
-// Europe API
-export async function getEuropeKPIs() {
-  try {
-    const { data, error } = await GET("/europe/kpis", {});
-    if (error) throw error;
-    return data || [];
-  } catch (error) {
-    console.error("Error fetching European KPIs:", error);
-    return [];
-  }
-}
-
 // Nation API
 export async function getNationDetails() {
   const { data, error } = await GET("/nation/", {});

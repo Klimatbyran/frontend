@@ -6,7 +6,7 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import TerritoryMap from "@/components/maps/TerritoryMap";
 import europeGeoJson from "@/data/europeGeo.json";
 import { useRankedEuropeURLParams } from "@/hooks/europe/useRankedEuropeURLParams";
-import { useEurope, useEuropeanKPIs } from "@/hooks/europe/useEuropeKPIs";
+import { useEuropeanKPIs } from "@/hooks/europe/useEuropeKPIs";
 import { useClimateTraceEmissions } from "@/hooks/europe/useClimateTraceEmissions";
 import { useEuropeanData } from "@/hooks/europe/useEuropeanData";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
@@ -107,7 +107,6 @@ export function EuropeanOverviewPage() {
   const [geoData] = useState<FeatureCollection>(
     europeGeoJson as FeatureCollection,
   );
-  const { countriesData } = useEurope();
   const { emissionsByIso } = useClimateTraceEmissions();
   const {
     selectedKPI,
@@ -118,7 +117,7 @@ export function EuropeanOverviewPage() {
   } = useRankedEuropeURLParams(europeanKPIs);
 
   const { countryEntities, mapData, filteredGeoData, countriesAsEntities } =
-    useEuropeanData(countriesData, selectedKPI, geoData, emissionsByIso);
+    useEuropeanData(selectedKPI, geoData, emissionsByIso);
 
   const europeanOverviewList = (
     <EuropeanRankedList
