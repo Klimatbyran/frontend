@@ -4,46 +4,31 @@ import { getEuropeKPIs } from "@/lib/api";
 import { KPIValue } from "@/types/rankings";
 import { EuropeanCountry } from "@/types/europe";
 
-type ApiEuropeKPI = {
-  country: string;
-  meetsParis: boolean;
-  historicalEmissionChangePercent: number;
-};
-
 export type EuropeData = {
   name: string;
   historicalEmissionChangePercent: number | null;
   meetsParis: boolean | null;
 };
 
-const normalizeCountry = (country: ApiEuropeKPI): EuropeData => {
-  return {
-    name: country.country,
-    historicalEmissionChangePercent: country.historicalEmissionChangePercent,
-    meetsParis: country.meetsParis,
-  };
-};
-
 export function useEurope() {
-  const {
-    data: europeKPI = [],
-    isLoading,
-    error,
-  } = useQuery({
+  const { data: europeKPI = [] } = useQuery({
     queryKey: ["europe-kpis"],
     queryFn: getEuropeKPIs,
   });
 
-  const normalizedCountries = (europeKPI as ApiEuropeKPI[]).map((country) =>
-    normalizeCountry(country),
-  );
+  const countriesData: EuropeData[] = (
+    europeKPI as {
+      country: string;
+      historicalEmissionChangePercent: number;
+      meetsParis: boolean;
+    }[]
+  ).map(({ country, historicalEmissionChangePercent, meetsParis }) => ({
+    name: country,
+    historicalEmissionChangePercent,
+    meetsParis,
+  }));
 
-  return {
-    countries: normalizedCountries.map((country) => country.name),
-    countriesData: normalizedCountries,
-    loading: isLoading,
-    error,
-  };
+  return { countriesData };
 }
 
 export const useEuropeanKPIs = (): KPIValue<EuropeanCountry>[] => {
