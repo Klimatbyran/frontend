@@ -1,7 +1,8 @@
 export type EuropeanCountry = {
   id: string;
   name: string;
-  emissions: number | null;
+  emissionsPerCapita: number | null;
+  emissionsPercentChange: number | null;
   historicalEmissionChangePercent: number | null;
   meetsParis: boolean | null;
 };

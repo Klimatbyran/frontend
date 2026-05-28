@@ -126,7 +126,6 @@ const CommandItem = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Item>
 >(({ className, ...props }, ref) => {
-  console.log("ITEM");
   return (
     <CommandPrimitive.Item
       ref={ref}

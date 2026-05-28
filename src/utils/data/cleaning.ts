@@ -21,6 +21,7 @@ function normalizeTotalField<T extends { total?: number | null }>(
  * - The function preserves important fields (id, metadata.user, metadata.comment, metadata.source)
  *   that are used throughout the codebase for AI detection and edit forms
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function cleanEmissions(emissions: any): any {
   if (!emissions) return null;
 

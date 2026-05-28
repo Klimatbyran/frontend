@@ -26,7 +26,10 @@ export type RegionData = {
 
 const normalizeRegion = (apiRegion: ApiRegion): RegionData => {
   const emissionsRecord: Record<string, number> = {};
-  apiRegion.emissions.forEach((emission) => {
+  const emissionsList = Array.isArray(apiRegion.emissions)
+    ? apiRegion.emissions
+    : [];
+  emissionsList.forEach((emission) => {
     if (emission) {
       emissionsRecord[emission.year] = emission.value;
     }

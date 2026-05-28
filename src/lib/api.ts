@@ -27,6 +27,30 @@ const { GET } = createClient<paths>({
     return fetch(request);
   },
 });
+// ...existing code above...
+
+// Global Search API
+export type GlobalSearchApiResponse =
+  paths["/global-search/"]["post"]["responses"][200]["content"]["application/json"];
+
+export async function getGlobalSearch(
+  query: string,
+  currentLanguage: string,
+): Promise<GlobalSearchApiResponse> {
+  try {
+    const { data, error } = await client.POST("/global-search/", {
+      body: {
+        name: query,
+        currentLanguage: currentLanguage,
+      } as paths["/global-search/"]["post"]["requestBody"]["content"]["application/json"],
+    });
+    if (error) throw error;
+    return (data as GlobalSearchApiResponse) || [];
+  } catch (error) {
+    console.error("Error fetching global search results:", error);
+    return [];
+  }
+}
 
 // Auth API
 export async function authenticateWithGithub(code: string) {
@@ -64,6 +88,21 @@ export async function getCompanyDetails(id: string) {
   return data;
 }
 
+export type UpdateCompanyDetailsBody =
+  paths["/companies/{wikidataId}"]["post"]["requestBody"]["content"]["application/json"];
+
+export async function updateCompanyDetails(
+  wikidataId: string,
+  body: UpdateCompanyDetailsBody,
+) {
+  const { data, error } = await client.POST("/companies/{wikidataId}", {
+    params: { path: { wikidataId } },
+    body,
+  });
+  if (error) throw error;
+  return data;
+}
+
 // Municipalities API
 export async function getMunicipalities() {
   try {
@@ -73,6 +112,21 @@ export async function getMunicipalities() {
   } catch (error) {
     console.error("Error fetching municipalities:", error);
     // Return empty array to avoid undefined errors
+    return [];
+  }
+}
+
+export async function getMunicipalitiesKPIs(): Promise<
+  NonNullable<
+    paths["/municipalities/kpis"]["get"]["responses"][200]["content"]["application/json"]
+  >
+> {
+  try {
+    const { data, error } = await GET("/municipalities/kpis", {});
+    if (error) throw error;
+    return data ?? [];
+  } catch (error) {
+    console.error("Error fetching municipality KPIs:", error);
     return [];
   }
 }
@@ -272,7 +326,7 @@ export const fetchNewsletters = async () => {
       return result;
     }
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -320,6 +374,19 @@ export async function getEuropeKPIs() {
   }
 }
 
+// Nation API
+export async function getNationDetails() {
+  const { data, error } = await GET("/nation/", {});
+  if (error) throw error;
+  return data;
+}
+
+export async function getNationSectorEmissions() {
+  const { data, error } = await GET("/nation/sector-emissions", {});
+  if (error) throw error;
+  return data;
+}
+
 // TODO: Add national data to API, this is prep for next stages
 export async function getNationalData() {
   try {
@@ -328,6 +395,25 @@ export async function getNationalData() {
     // return data || [];
   } catch (error) {
     console.error("Error fetching national data:", error);
+    return [];
+  }
+}
+
+// Company Search API
+export type CompanySearchApiResponse =
+  paths["/companies/search"]["get"]["responses"][200]["content"]["application/json"];
+
+export async function getCompaniesBySearchTerm(
+  q: string,
+): Promise<CompanySearchApiResponse> {
+  try {
+    const { data, error } = await GET("/companies/search", {
+      params: { query: { q } },
+    });
+    if (error) throw error;
+    return (data as CompanySearchApiResponse) || [];
+  } catch (error) {
+    console.error("Error searching companies:", error);
     return [];
   }
 }

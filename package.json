@@ -1,7 +1,7 @@
 {
   "name": "klimatkollen",
   "private": true,
-  "version": "5.7.3-rc.5",
+  "version": "7.0.6-rc.5",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -115,8 +115,8 @@
     "@testing-library/react": "^16.3.0",
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^22.7.3",
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
     "@types/react-mailchimp-subscribe": "^2.1.4",
     "@types/testing-library__jest-dom": "^5.14.9",
     "@vitejs/plugin-react": "^4.3.1",
@@ -143,5 +143,14 @@
     "vite": "^7.1.6",
     "vite-plugin-markdown": "^2.2.0",
     "vitest": "^3.1.4"
+  },
+  "overrides": {
+    "@redocly/openapi-core": {
+      "js-yaml": "4.1.1",
+      "minimatch": "5.1.8"
+    }
+  },
+  "optionalDependencies": {
+    "@unrs/resolver-binding-darwin-arm64": "1.11.1"
   }
 }

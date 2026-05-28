@@ -1,67 +1,73 @@
 import { useMemo } from "react";
-import { useCompanies } from "./companies/useCompanies";
-import { useMunicipalities } from "./municipalities/useMunicipalities";
+import { useLanguage } from "@/components/LanguageProvider";
+import { useBlogPosts } from "./useBlogPosts";
 
 export type CombinedData = {
   name: string;
   id: string;
-  category: "companies" | "municipalities";
+  category:
+    | "companies"
+    | "municipalities"
+    | "blogPosts"
+    | "regions"
+    | "nations";
+  blogExcerpt?: string;
 };
 
-export const useCombinedData = () => {
-  const {
-    municipalities,
-    municipalitiesLoading: isLoadingMunicipalities,
-    municipalitiesError: municipalitiesError,
-  } = useMunicipalities();
-  const {
-    companies,
-    companiesLoading: isLoadingCompanies,
-    companiesError: companiesError,
-  } = useCompanies();
-
-  const hasErrors = municipalitiesError || companiesError;
-  const isLoading = isLoadingCompanies || isLoadingMunicipalities;
+export const useCombinedData = (
+  searchResults: any[] = [],
+  searchQuery: string = "",
+) => {
+  const { currentLanguage } = useLanguage();
+  const { blogPosts } = useBlogPosts();
 
   const combinedData = useMemo(() => {
-    if (hasErrors) {
-      return {
-        loading: false,
-        error: new Error("Error fetching municipalities or companies"),
-        data: [],
-      };
-    }
+    const lcQuery = searchQuery.trim().toLowerCase();
+    const filteredBlogPosts =
+      lcQuery.length > 1
+        ? (blogPosts ?? []).filter(
+            (post) =>
+              post.title.toLowerCase().includes(lcQuery) ||
+              (post.excerpt && post.excerpt.toLowerCase().includes(lcQuery)),
+          )
+        : [];
 
-    if (isLoading) {
-      return {
-        loading: true,
-        data: [],
-      };
-    }
-
-    const mappedMunicipalities: CombinedData[] = municipalities?.map(
-      (municipality): CombinedData => ({
-        name: municipality.name,
-        id: municipality.name,
-        category: "municipalities",
-      }),
-    );
-
-    const mappedCompanies: CombinedData[] = companies?.map(
-      (company): CombinedData => {
+    const mappedData: CombinedData[] = [
+      ...searchResults.map((item) => {
+        if (item.type === "nation" && item.country) {
+          return {
+            name:
+              item.country[currentLanguage] ||
+              item.country.sv ||
+              item.country.en,
+            id: "nation",
+            category: "nations" as CombinedData["category"],
+          };
+        }
+        // Map other types as needed
+        let category: CombinedData["category"];
+        if (item.type === "company") category = "companies";
+        else if (item.type === "municipality") category = "municipalities";
+        else if (item.type === "region") category = "regions";
+        else category = "nations";
         return {
-          name: company.name,
-          id: company.wikidataId,
-          category: "companies",
+          name: item.name,
+          id: item.id || item.name,
+          category,
         };
-      },
-    );
-
+      }),
+      ...filteredBlogPosts.map((blogPost) => ({
+        name: blogPost.title,
+        id: blogPost.id,
+        category: "blogPosts" as CombinedData["category"],
+        blogExcerpt: blogPost.excerpt,
+      })),
+    ];
     return {
       loading: false,
-      data: [...mappedMunicipalities, ...mappedCompanies],
+      data: mappedData,
     };
-  }, [municipalities, companies, isLoading, hasErrors]);
+  }, [searchResults, currentLanguage, blogPosts, searchQuery]);
 
   return combinedData;
 };

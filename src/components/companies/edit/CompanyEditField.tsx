@@ -109,8 +109,8 @@ export function CompanyEditInputField({
 
 interface CompanyYearHeaderFieldProps {
   text: string;
-  reset: (year: number) => void;
-  id: number;
+  reset: (identifier: string | number) => void;
+  id: string | number;
 }
 
 export function CompanyYearHeaderField({

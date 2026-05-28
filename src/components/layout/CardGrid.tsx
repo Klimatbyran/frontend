@@ -9,7 +9,7 @@ const gridComponents = {
       <div
         ref={ref}
         style={style}
-        className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4 md:mt-0"
+        className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4 lg:mt-0"
       >
         {children}
       </div>

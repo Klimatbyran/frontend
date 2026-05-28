@@ -6,9 +6,9 @@ Klimatkollen is an open-source, citizen-driven platform designed to visualize cl
 
 ## 🚀 Project Structure
 
-- **`src/pages/`**: Contains `.tsx` files for each page, which are routed based on their filenames.
-- **`src/components/`**: Houses reusable React components utilized throughout the application.
-- **`public/`**: Stores static assets such as images.
+- **`src/pages/`**: Contains `.tsx` files for each page, which are routed based on their filenames
+- **`src/components/`**: Houses reusable React components utilized throughout the application
+- **`public/`**: Stores static assets such as images
 
 ## 🗄️ Deciding on backend to run development client against
 
@@ -22,7 +22,7 @@ the root directory of the frontend code.
 cp .env.example .env.development
 ```
 
-## 🧞 Building and Running Locally
+## 🧞 Building and Running Locally 
 
 To run the project locally, execute the following commands from the root of the project in your terminal:
 
@@ -65,4 +65,4 @@ Postkodstiftelsen, ClimateView, Klimatklubben.se, Researcher's Desk, Exponential
 
 ## LICENSE 
 
-This project is licensed under the terms of the [Apache 2.0](LICENSE) © Klimatbyrån Ideell Förening.
+This project is licensed under the terms of the [Apache 2.0](LICENSE) © Klimatbyrån Ideell Förening. 

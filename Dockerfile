@@ -11,9 +11,6 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Check for vulnerabilities
-RUN npm audit --audit-level=moderate
-
 # Install dependencies
 RUN npm ci
 
@@ -32,11 +29,12 @@ FROM nginx:alpine
 # Copy built assets from build stage
 COPY --from=build /app/dist /usr/share/nginx/html
 
-# Copy custom nginx configuration
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Copy nginx config template and entrypoint
+COPY nginx.conf.template /etc/nginx/templates/nginx.conf.template
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
 
 # Expose port 80
 EXPOSE 80
 
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["/docker-entrypoint.sh"]

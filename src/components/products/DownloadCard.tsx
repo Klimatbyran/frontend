@@ -1,5 +1,4 @@
-import { LucideIcon } from "lucide-react";
-import { Download } from "lucide-react";
+import { LucideIcon, Download } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useToast } from "@/contexts/ToastContext";

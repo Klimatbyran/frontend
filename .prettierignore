@@ -6,6 +6,7 @@ node_modules
 .env.*
 !.env.example
 
+
 # test data
 src/data/*.json
 
@@ -20,3 +21,6 @@ yarn.lock
 *.yml
 *.yaml
 *.html
+
+# Generated API types
+src/lib/api-types.ts

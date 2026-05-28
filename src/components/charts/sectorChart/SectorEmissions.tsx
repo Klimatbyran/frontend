@@ -19,6 +19,9 @@ interface SectorEmissionsProps {
   filteredSectors: Set<string>;
   onFilteredSectorsChange: (sectors: Set<string>) => void;
   helpItems: DataGuideItemId[];
+  sectionClassName?: string;
+  showHeader?: boolean;
+  compactLayout?: boolean;
 }
 
 export function SectorEmissionsChart({
@@ -31,6 +34,9 @@ export function SectorEmissionsChart({
   filteredSectors,
   onFilteredSectorsChange,
   helpItems,
+  sectionClassName,
+  showHeader = true,
+  compactLayout = false,
 }: SectorEmissionsProps) {
   const { t } = useTranslation();
 
@@ -42,21 +48,31 @@ export function SectorEmissionsChart({
   const hasData = Object.keys(yearData).length > 0;
 
   return (
-    <SectionWithHelp helpItems={helpItems}>
-      <CardHeader
-        title={t("detailPage.sectorEmissions")}
-        description={t("detailPage.sectorEmissionsYear", {
-          year: currentYear,
-        })}
-        customDataViewSelector={
-          <YearSelector
-            selectedYear={selectedYear}
-            onYearChange={onYearChange}
-            availableYears={availableYears}
-          />
-        }
-        className="gap-8 md:gap-16"
-      />
+    <SectionWithHelp
+      helpItems={helpItems}
+      compactLayout={compactLayout}
+      className={
+        compactLayout
+          ? `${sectionClassName ?? ""} !rounded-none !px-0 !py-0`
+          : sectionClassName
+      }
+    >
+      {showHeader && (
+        <CardHeader
+          title={t("detailPage.sectorEmissions")}
+          description={t("detailPage.sectorEmissionsYear", {
+            year: currentYear,
+          })}
+          customDataViewSelector={
+            <YearSelector
+              selectedYear={selectedYear}
+              onYearChange={onYearChange}
+              availableYears={availableYears}
+            />
+          }
+          className="gap-8 md:gap-16"
+        />
+      )}
 
       <DetailPieSectorGrid>
         <SectorPieChart

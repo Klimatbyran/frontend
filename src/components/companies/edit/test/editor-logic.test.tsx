@@ -1,6 +1,7 @@
 import { render, fireEvent, screen } from "@testing-library/react";
 import { vi } from "vitest";
 import { MemoryRouter } from "react-router-dom";
+import type { CompanyDetails } from "@/types/company";
 import { CompanyEditInputField } from "../CompanyEditField";
 import { CompanyEditScope1 } from "../CompanyEditScope1";
 import { CompanyEditScope2 } from "../CompanyEditScope2";
@@ -128,25 +129,24 @@ describe("Editor Logic Integration", () => {
   });
 
   it("CompanyEditHeader: shows unsaved changes modal", () => {
+    const mockCompany = {
+      name: "TestCo",
+      wikidataId: "Q1",
+      reportingPeriods: [
+        {
+          id: "1",
+          startDate: "2022-01-01",
+          endDate: "2022-12-31",
+          reportURL: null,
+          emissions: null,
+          economy: null,
+        },
+      ],
+    } as CompanyDetails;
     render(
       <MemoryRouter>
         <CompanyEditHeader
-          company={
-            {
-              name: "TestCo",
-              wikidataId: "Q1",
-              reportingPeriods: [
-                {
-                  id: "1",
-                  startDate: "2022-01-01",
-                  endDate: "2022-12-31",
-                  reportURL: null,
-                  emissions: null,
-                  economy: null,
-                },
-              ],
-            } as any
-          }
+          company={mockCompany}
           onYearsSelect={vi.fn()}
           hasUnsavedChanges
         />
@@ -193,7 +193,7 @@ describe("Editor Logic Integration", () => {
             calculatedTotalEmissions: 6,
             metadata: { verifiedBy: null },
           },
-        } as any,
+        },
         economy: null,
       },
     ];
@@ -232,7 +232,7 @@ describe("Editor Logic Integration", () => {
               unit: "tCO2e",
             })),
           },
-        } as any,
+        },
         economy: null,
       },
     ];

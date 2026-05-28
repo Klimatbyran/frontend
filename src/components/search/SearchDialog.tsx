@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import { Command as CommandPrimitive } from "cmdk";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
+import { Command as CommandPrimitive } from "cmdk";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 import { CombinedData, useCombinedData } from "@/hooks/useCombinedData";
@@ -8,7 +8,6 @@ import {
   Command,
   CommandEmpty,
   CommandInput,
-  CommandItem,
   CommandList,
 } from "../ui/command";
 import {
@@ -18,6 +17,15 @@ import {
   DialogPortal,
   DialogTitle,
 } from "../ui/dialog";
+import {
+  Building2,
+  TreePine,
+  Map as MapIcon,
+  Globe2,
+  BookOpen,
+} from "lucide-react";
+import SearchResultList from "./SearchResultList";
+import { useHeroGlobalSearch } from "../../hooks/landing/useHeroGlobalSearch";
 
 interface SearchDialogProps {
   open: boolean;
@@ -25,53 +33,25 @@ interface SearchDialogProps {
   onSelectResponse: (response: CombinedData) => void;
 }
 
-const resultTypeTranslationKeys = {
-  companies: "globalSearch.searchCategoryCompany",
-  municipalities: "globalSearch.searchCategoryMunicipality",
-} as const;
-
-const SearchResultItem = ({ item }: { item: CombinedData }) => {
-  const { t } = useTranslation();
-
-  return (
-    <div className="flex items-center w-full text-sm text-gray-500 hover:cursor-pointer">
-      <span>{item.name}</span>
-      <span className="ml-auto mr-2">
-        {t(resultTypeTranslationKeys[item.category])}
-      </span>
-    </div>
-  );
-};
-
-const useGlobalSearch = (query: string) => {
-  const allData = useCombinedData();
-
-  if (allData.error || allData.loading) {
-    return allData;
-  }
-
-  const lcQuery = query.toLocaleLowerCase();
-  const result =
-    lcQuery.length > 1
-      ? allData.data
-          .filter((item) => item.name.toLocaleLowerCase().includes(lcQuery))
-          .sort((a, b) => a.name.localeCompare(b.name))
-      : [];
-
-  return {
-    ...allData,
-    data: result,
-  };
-};
-
 export function SearchDialog({
   open,
   setOpen,
   onSelectResponse,
 }: SearchDialogProps) {
   const [inputValue, setInputValue] = useState("");
-  const results = useGlobalSearch(inputValue);
+  const {
+    searchResults,
+    isSearching,
+  }: { searchResults: any[]; isSearching: boolean } =
+    useHeroGlobalSearch(inputValue);
+
+  // Transform searchResults and include relevant blog posts
+  const { data: combinedData, loading: combinedLoading } = useCombinedData(
+    searchResults,
+    inputValue,
+  );
   const { t } = useTranslation();
+  const commandListRef = useRef<HTMLDivElement | null>(null);
 
   const handleInputChange = (value: string) => {
     setInputValue(value);
@@ -83,6 +63,60 @@ export function SearchDialog({
     }
   }, [open]);
 
+  useLayoutEffect(() => {
+    if (!commandListRef.current) {
+      return;
+    }
+
+    const frame = requestAnimationFrame(() => {
+      if (commandListRef.current) {
+        commandListRef.current.scrollTop = 0;
+      }
+    });
+
+    return () => cancelAnimationFrame(frame);
+  }, [inputValue, searchResults.length]);
+
+  // Group combinedData by category for display
+  const companies = combinedData.filter(
+    (item) => item.category === "companies",
+  );
+  const municipalities = combinedData.filter(
+    (item) => item.category === "municipalities",
+  );
+  const regions = combinedData.filter((item) => item.category === "regions");
+  const nations = combinedData.filter((item) => item.category === "nations");
+  const blogPosts = combinedData.filter(
+    (item) => item.category === "blogPosts",
+  );
+
+  const searchResultLists = [
+    {
+      items: companies,
+      icon: Building2,
+      translationKey: "globalSearch.searchCategoryCompanies",
+    },
+    {
+      items: municipalities,
+      icon: TreePine,
+      translationKey: "globalSearch.searchCategoryMunicipalities",
+    },
+    {
+      items: regions,
+      icon: MapIcon,
+      translationKey: "globalSearch.searchCategoryRegions",
+    },
+    {
+      items: nations,
+      icon: Globe2,
+      translationKey: "globalSearch.searchCategoryNations",
+    },
+    {
+      items: blogPosts,
+      icon: BookOpen,
+      translationKey: "globalSearch.searchCategoryBlogPosts",
+    },
+  ];
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogPortal>
@@ -96,7 +130,7 @@ export function SearchDialog({
           )}
         </DialogDescription>
         <DialogOverlay className="backdrop-blur-sm bg-black/40" />
-        <DialogPrimitive.Content className="fixed top-16 left-1/2 transform -translate-x-1/2 w-full max-w-lg z-50 focus:outline-none">
+        <DialogPrimitive.Content className="fixed top-[7vh] left-1/2 transform -translate-x-1/2 w-full max-w-lg z-50 focus:outline-none">
           <div
             className={cn(
               "bg-black-2 shadow-lg overflow-hidden",
@@ -111,41 +145,39 @@ export function SearchDialog({
                 onValueChange={handleInputChange}
                 className="focus:ring-0"
               />
-              <CommandEmpty>
-                <p className="text-gray-400">
-                  {t("globalSearch.searchDialog.emptyText")}
-                </p>
-              </CommandEmpty>
+              {/* Only show CommandEmpty if not loading and no results */}
+              {!(isSearching || combinedLoading) &&
+                searchResultLists.every((list) => list.items.length === 0) && (
+                  <CommandEmpty>
+                    <p className="text-gray-400">
+                      {t("globalSearch.searchDialog.emptyText")}
+                    </p>
+                  </CommandEmpty>
+                )}
               <CommandList
-                className="transition-all duration-200 ease-in-out"
-                style={{
-                  maxHeight:
-                    results.data.length > 0
-                      ? `${Math.min(results.data.length * 48, 300)}px`
-                      : "0px",
-                }}
+                className="pt-4 transition-all duration-200 ease-in-out max-h-[50vh] min-h-60"
+                ref={commandListRef}
               >
-                {results.loading && (
+                {(isSearching || combinedLoading) && (
                   <CommandPrimitive.Loading>
                     {t(
                       "globalSearch.searchDialog.loadingText",
-                      "Fetching companies and municipalities...",
+                      "Fetching companies, municipalities, regions & blog posts...",
                     )}
                   </CommandPrimitive.Loading>
                 )}
-
-                {results.data.map((item) => (
-                  <CommandItem
-                    key={item.id}
-                    onSelect={() => {
-                      onSelectResponse(item);
-                      setOpen(false);
-                    }}
-                    className="px-4 py-3"
-                  >
-                    <SearchResultItem item={item} />
-                  </CommandItem>
-                ))}
+                {searchResultLists.map((list) =>
+                  list.items.length > 0 ? (
+                    <SearchResultList
+                      key={list.translationKey}
+                      list={list.items}
+                      icon={list.icon}
+                      translationKey={list.translationKey}
+                      onSelectResponse={onSelectResponse}
+                      setOpen={setOpen}
+                    />
+                  ) : null,
+                )}
               </CommandList>
             </Command>
             <div className="flex justify-center text-white/40 text-sm mb-4">

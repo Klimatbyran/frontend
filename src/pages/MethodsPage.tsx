@@ -41,13 +41,10 @@ export function MethodsPage() {
     if (searchQuery === "company") {
       return "companyDataOverview";
     } else if (searchQuery === "municipality") {
-      return "municipalityDataOverview";
+      return "municipalityAndRegionDataOverview";
     } else {
       return "parisAgreement";
     }
-
-    // Default fallback
-    return "parisAgreement";
   };
 
   // Prepare SEO data

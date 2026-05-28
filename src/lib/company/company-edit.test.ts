@@ -430,7 +430,7 @@ describe("mapCompanyEditFormToRequestBody", () => {
       });
     });
 
-    it("should only send verified for statedTotalEmissions if only verified is changed", () => {
+    it("should send value and unit with verified for statedTotalEmissions when only verified is changed", () => {
       const periodWithStatedTotal = makeBasePeriod({
         emissions: {
           ...basePeriod.emissions!,
@@ -452,6 +452,8 @@ describe("mapCompanyEditFormToRequestBody", () => {
       expect(
         result.reportingPeriods[0].emissions.scope3.statedTotalEmissions,
       ).toEqual({
+        total: 123,
+        unit: "tCO2e",
         verified: true,
       });
     });

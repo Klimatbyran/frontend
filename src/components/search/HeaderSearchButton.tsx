@@ -8,29 +8,36 @@ import { SearchDialog } from "./SearchDialog";
 
 type HeaderSearchButtonProps = {
   className?: string;
-  onSearchResultClick?: () => void;
+  /** Mobile header: close the hamburger sheet when opening search or after choosing a result. */
+  closeMobileNav?: () => void;
 };
 
 export const HeaderSearchButton = ({
   className,
-  onSearchResultClick,
+  closeMobileNav,
 }: HeaderSearchButtonProps) => {
   const [commandOpen, setCommandOpen] = useState(false);
   const navigate = useNavigate();
   const { t } = useTranslation();
+
+  const openSearch = () => {
+    closeMobileNav?.();
+    setCommandOpen(true);
+  };
 
   // Open command palette with CMD+K
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
+        closeMobileNav?.();
         setCommandOpen(true);
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [closeMobileNav]);
 
   const handleSelectResponse = (response: CombinedData) => {
     switch (response.category) {
@@ -40,15 +47,23 @@ export const HeaderSearchButton = ({
       case "municipalities":
         navigate(`/municipalities/${response.id}`);
         break;
+      case "regions":
+        navigate(`/regions/${response.id}`);
+        break;
+      case "nations":
+        navigate(`/nation`);
+        break;
+      case "blogPosts":
+        navigate(`/insights/${response.id}`);
+        break;
     }
-
-    onSearchResultClick?.();
+    closeMobileNav?.();
   };
 
   return (
     <>
       <button
-        onClick={() => setCommandOpen(true)}
+        onClick={openSearch}
         className={cn(
           "px-2 py-1 bg-black-1 h-8",
           "flex items-center gap-2",
@@ -57,8 +72,8 @@ export const HeaderSearchButton = ({
           className,
         )}
       >
-        <SearchIcon className="h-4 w-4 mx-1" />
-        <span className="mr-2 text-sm text-grey">
+        <SearchIcon className="h-4 w-4" />
+        <span className="text-sm text-grey">
           {t("globalSearch.headerButtonTitle", "Search")}
         </span>
       </button>

@@ -1,11 +1,14 @@
 import { t } from "i18next";
+import type { CompanyWithIndustryGics } from "@/types/company";
 
 /**
  * Extract industry/sector name directly from company data (no translations)
  * @param company - Company object with industry information
  * @returns Industry name or undefined
  */
-export function getCompanyIndustryFromData(company: any): string | undefined {
+export function getCompanyIndustryFromData(
+  company: CompanyWithIndustryGics,
+): string | undefined {
   const industryGics = company?.industry?.industryGics;
   if (!industryGics) return undefined;
 
@@ -16,12 +19,12 @@ export function getCompanyIndustryFromData(company: any): string | undefined {
 /**
  * Get the sector name for a company, using translated names when available
  *
- * @param company - Company object with industry information (accepts any company-like object)
+ * @param company - Company object with industry information (accepts any company-like object with optional industry GICS)
  * @param sectorNames - Map of sector codes to translated names (from useSectorNames hook)
  * @returns Sector name string
  */
 export function getCompanySectorName(
-  company: any,
+  company: CompanyWithIndustryGics,
   sectorNames: Record<string, string>,
 ): string {
   const sectorCode = company?.industry?.industryGics?.sectorCode;

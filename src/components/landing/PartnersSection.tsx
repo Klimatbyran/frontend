@@ -1,0 +1,56 @@
+import { useTranslation } from "react-i18next";
+import { Text } from "../ui/text";
+import { partners } from "@/lib/constants/footer";
+
+export const PartnersSection = () => {
+  const { t } = useTranslation();
+  const mobileColumns = 4;
+  const mobileRemainder = partners.length % mobileColumns;
+
+  return (
+    <div className="bg-black w-full flex flex-col items-center pt-44 md:pt-52">
+      <div className="w-full container max-w-7xl mx-auto px-4 items-center flex flex-col gap-8">
+        <div className="flex w-full max-w-[760px] flex-col gap-4 text-center md:self-center md:text-center">
+          <Text className="tracking-tight text-3xl sm:text-4xl font-light">
+            {t("landingPage.partnersSection.title")}
+          </Text>
+        </div>
+
+        <div className="grid w-full grid-cols-4 gap-2 sm:gap-3 md:grid-cols-5 lg:grid-cols-10">
+          {partners.map((logo, index) => {
+            const isCenteredLastRowItem =
+              mobileRemainder === 2 && index >= partners.length - 2;
+            const isFirstCenteredItem = index === partners.length - 2;
+            const isSecondCenteredItem = index === partners.length - 1;
+            const centeredStartClass = isCenteredLastRowItem
+              ? isFirstCenteredItem
+                ? "col-start-2 sm:col-start-auto"
+                : isSecondCenteredItem
+                  ? "col-start-3 sm:col-start-auto"
+                  : ""
+              : "";
+
+            return (
+              <a
+                key={logo.href}
+                href={logo.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`group flex h-20 items-center justify-center rounded-md bg-black-2 px-2 transition-colors hover:bg-black-1 sm:h-24 sm:px-3 lg:h-28 lg:px-4 ${centeredStartClass}`}
+              >
+                <span className="flex h-14 w-full items-center justify-center sm:h-16 lg:h-20">
+                  <img
+                    src={logo.src}
+                    alt={logo.alt}
+                    className="h-16 max-w-full object-contain opacity-90 transition-opacity group-hover:opacity-100"
+                    loading="lazy"
+                  />
+                </span>
+              </a>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+};

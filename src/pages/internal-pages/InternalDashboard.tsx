@@ -2,8 +2,7 @@ import { useState } from "react";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useCompanies } from "@/hooks/companies/useCompanies";
 import type { RankedCompany } from "@/types/company";
-import { SECTOR_NAMES } from "@/lib/constants/sectors";
-import type { SectorCode } from "@/lib/constants/sectors";
+import { SECTOR_NAMES, type SectorCode } from "@/lib/constants/sectors";
 import {
   formatEmissionsAbsolute,
   formatPercentChange,

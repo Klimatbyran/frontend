@@ -1,8 +1,4 @@
 // Common chart data types
-export interface ChartDataPoint {
-  year: number;
-  [key: string]: any;
-}
 
 export interface LegendItem {
   name: string;
@@ -33,10 +29,12 @@ export interface AxisConfig {
     domain?: [number, number];
     ticks?: number[];
     padding?: { left: number; right: number };
-    tickFormatter?: (value: any) => string;
+    // tickFormatter receives numeric values (years for x-axis, emissions for y-axis)
+    tickFormatter?: (value: number) => string;
   };
   yAxis?: {
-    tickFormatter?: (value: any) => string;
+    // tickFormatter receives numeric values (emissions values)
+    tickFormatter?: (value: number) => string;
     width?: number;
     domain?: [number, number];
     padding?: { top: number; bottom: number };
@@ -65,7 +63,9 @@ export type ChartView = "overview" | "sectors" | "scopes" | "categories";
 export interface ChartInteractionHandlers {
   onItemToggle?: (itemName: string) => void;
   onYearSelect?: (year: string) => void;
-  onDataPointClick?: (data: any) => void;
+  // onDataPointClick receives chart data point objects (ChartData or similar)
+  // Using unknown is safer than any - requires type checking before use
+  onDataPointClick?: (data: unknown) => void;
 }
 
 // Chart styling types

@@ -68,8 +68,8 @@ export type EmissionsData = {
 const MUNICIPALITY_SORT_BY = [
   "meets_paris",
   "name",
-  "emissions",
-  "emissionsChangeRate",
+  "total_emissions",
+  "emissions_reduction",
 ] as const;
 export type MunicipalitySortBy = (typeof MUNICIPALITY_SORT_BY)[number];
 

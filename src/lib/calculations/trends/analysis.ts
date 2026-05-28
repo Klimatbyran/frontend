@@ -1,12 +1,11 @@
-import type { CompanyDetails, RankedCompany } from "@/types/company";
-import { TrendAnalysis } from "./types";
+import type { TrendAnalysis, CompanyForTrendAnalysis } from "./types";
 
 /**
  * Calculates trendline analysis using API-provided slope when available
  * Returns null if API slope is not available (backend determined insufficient data)
  */
 export const calculateTrendline = (
-  company: CompanyDetails | RankedCompany,
+  company: CompanyForTrendAnalysis,
 ): TrendAnalysis | null => {
   // Early return if API doesn't provide slope (backend determined insufficient data)
   if (

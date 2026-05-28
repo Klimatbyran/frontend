@@ -30,7 +30,7 @@ export function YearSelectionModal({
 }: YearSelectionModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-black-2 text-white">
+      <DialogContent className="bg-black-2 text-white overflow-hidden w-full max-w-md">
         <DialogHeader>
           <DialogTitle className="text-2xl font-light">
             Select Years for Assessment

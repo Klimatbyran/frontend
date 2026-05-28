@@ -3,7 +3,7 @@ import { getNumericValue } from "@/utils/ui/form";
 import { isVerified } from "@/utils/business/verification";
 import type {
   CompanyEditComponentProps,
-  ReportingPeriod,
+  EditableReportingPeriod,
 } from "@/types/company";
 import { CompanyEditInputField } from "./CompanyEditField";
 import { CompanyEditRow } from "./CompanyEditRow";
@@ -21,7 +21,7 @@ export function CompanyEditStatedTotal({
       name={t("companyEditPage.rowName.statedTotalEmissions")}
       key="stated-total"
     >
-      {periods.map((period: ReportingPeriod) => (
+      {periods.map((period: EditableReportingPeriod) => (
         <CompanyEditInputField
           name={`stated-total-${period.id}`}
           type="number"

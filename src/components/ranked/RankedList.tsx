@@ -3,6 +3,7 @@ import { Search } from "lucide-react";
 import { t } from "i18next";
 import MultiPagePagination from "@/components/ui/multi-page-pagination";
 import { DataPoint } from "@/types/rankings";
+import { cn } from "@/lib/utils";
 
 export interface RankedListProps<T extends Record<string, unknown>> {
   data: T[];
@@ -20,6 +21,129 @@ export interface RankedListProps<T extends Record<string, unknown>> {
   searchPlaceholder?: string;
 }
 
+interface SortedRankedDataOptions<T extends Record<string, unknown>> {
+  data: T[];
+  selectedDataPoint: DataPoint<T>;
+  searchKey: keyof T;
+  searchTerm: string;
+  itemsPerPage: number;
+  currentPage: number;
+}
+
+function useSortedRankedData<T extends Record<string, unknown>>({
+  data,
+  selectedDataPoint,
+  searchKey,
+  searchTerm,
+  itemsPerPage,
+  currentPage,
+}: SortedRankedDataOptions<T>) {
+  const sortedData = [...data].sort((a, b) => {
+    const aValue = a[selectedDataPoint.key];
+    const bValue = b[selectedDataPoint.key];
+    if (aValue === null || aValue === undefined) return 1;
+    if (bValue === null || bValue === undefined) return -1;
+    if (
+      selectedDataPoint.isBoolean &&
+      typeof aValue === "boolean" &&
+      typeof bValue === "boolean"
+    ) {
+      return String(a[searchKey] || "").localeCompare(
+        String(b[searchKey] || ""),
+      );
+    }
+    return selectedDataPoint.higherIsBetter
+      ? (bValue as number) - (aValue as number)
+      : (aValue as number) - (bValue as number);
+  });
+
+  const validValues = sortedData
+    .map((item) => item[selectedDataPoint.key])
+    .filter(
+      (value) =>
+        (selectedDataPoint.isBoolean && typeof value === "boolean") ||
+        (typeof value === "number" && !isNaN(value as number)),
+    );
+
+  const average =
+    validValues.reduce(
+      (sum, value) =>
+        sum +
+        (selectedDataPoint.isBoolean ? (value ? 1 : 0) : (value as number)),
+      0,
+    ) / validValues.length;
+
+  const originalRankMap = new Map<T, number>();
+  sortedData.forEach((item, index) => originalRankMap.set(item, index + 1));
+
+  const filteredData = sortedData.filter((item) => {
+    const searchValue = item[searchKey];
+    return (
+      searchValue &&
+      typeof searchValue === "string" &&
+      searchValue.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  });
+
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedData = filteredData.slice(
+    startIndex,
+    startIndex + itemsPerPage,
+  );
+
+  return {
+    sortedData,
+    average,
+    originalRankMap,
+    filteredData,
+    totalPages,
+    startIndex,
+    paginatedData,
+  };
+}
+
+function useRankedItemHelpers<T extends Record<string, unknown>>(
+  selectedDataPoint: DataPoint<T>,
+  average: number,
+  originalRankMap: Map<T, number>,
+) {
+  const formatValue = (item: T) => {
+    const value = item[selectedDataPoint.key];
+    if (selectedDataPoint.formatter) return selectedDataPoint.formatter(value);
+    if (value === null) return selectedDataPoint.nullValues || t("noData");
+    if (typeof value === "boolean") {
+      if (selectedDataPoint.booleanLabels) {
+        return value
+          ? selectedDataPoint.booleanLabels.true
+          : selectedDataPoint.booleanLabels.false;
+      }
+      return value ? t("yes") : t("no");
+    }
+    if (typeof value === "number") return `${value.toFixed(1)}`;
+    return String(value);
+  };
+
+  const getOriginalRank = (item: T) => originalRankMap.get(item) || 0;
+
+  const getColor = (item: T): string => {
+    const value = item[selectedDataPoint.key];
+    if (value === null || value === undefined) return "text-pink-3";
+    if (selectedDataPoint.isBoolean) {
+      return value == selectedDataPoint.higherIsBetter
+        ? "text-blue-3"
+        : "text-pink-3";
+    }
+    // TODO: comment out for now, wait for gradient implementation
+    // return (value as number) > average == selectedDataPoint.higherIsBetter
+    //   ? "text-blue-3"
+    //   : "text-pink-3";
+    return "text-orange-2";
+  };
+
+  return { formatValue, getOriginalRank, getColor };
+}
+
 export function RankedList<T extends Record<string, unknown>>({
   data,
   selectedDataPoint,
@@ -33,119 +157,52 @@ export function RankedList<T extends Record<string, unknown>>({
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
-  const sortedData = [...data].sort((a, b) => {
-    const aValue = a[selectedDataPoint.key];
-    const bValue = b[selectedDataPoint.key];
+  const { average, originalRankMap, totalPages, startIndex, paginatedData } =
+    useSortedRankedData({
+      data,
+      selectedDataPoint,
+      searchKey,
+      searchTerm,
+      itemsPerPage,
+      currentPage,
+    });
 
-    // Handle null/undefined values
-    if (aValue === null || aValue === undefined) return 1;
-    if (bValue === null || bValue === undefined) return -1;
-
-    // For boolean KPIs, sort alphabetically by name
-    if (
-      selectedDataPoint.isBoolean &&
-      typeof aValue === "boolean" &&
-      typeof bValue === "boolean"
-    ) {
-      const aName = String(a[searchKey] || "");
-      const bName = String(b[searchKey] || "");
-      return aName.localeCompare(bName);
-    }
-
-    // For non-boolean values, sort by the value
-    const aNum = aValue as number;
-    const bNum = bValue as number;
-    return selectedDataPoint.higherIsBetter ? bNum - aNum : aNum - bNum;
-  });
-
-  const filteredData = sortedData.filter((item) => {
-    const searchValue = item[searchKey];
-    return (
-      searchValue &&
-      typeof searchValue === "string" &&
-      searchValue.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  });
-
-  const originalRankMap = new Map<T, number>();
-  sortedData.forEach((item, index) => {
-    originalRankMap.set(item, index + 1);
-  });
-
-  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedData = filteredData.slice(
-    startIndex,
-    startIndex + itemsPerPage,
+  const { formatValue, getOriginalRank, getColor } = useRankedItemHelpers(
+    selectedDataPoint,
+    average,
+    originalRankMap,
   );
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     const listElement = document.querySelector(".ranked-list-items");
-    if (listElement) {
-      listElement.scrollTop = 0;
-    }
+    if (listElement) listElement.scrollTop = 0;
   };
 
-  const formatValue = (item: T) => {
-    const value = item[selectedDataPoint.key];
-
-    // If there's a custom formatter, use it
-    if (selectedDataPoint.formatter) {
-      return selectedDataPoint.formatter(value);
-    }
-
-    // Default formatting logic
-    if (value === null) {
-      return selectedDataPoint.nullValues || t("noData");
-    }
-
-    if (typeof value === "boolean") {
-      // Use booleanLabels if available, otherwise fall back to generic labels
-      if (selectedDataPoint.booleanLabels) {
-        return value
-          ? selectedDataPoint.booleanLabels.true
-          : selectedDataPoint.booleanLabels.false;
-      }
-      return value ? t("yes") : t("no");
-    }
-
-    if (typeof value === "number") {
-      return `${value.toFixed(1)}`;
-    }
-
-    return String(value);
-  };
-
-  const getOriginalRank = (item: T): number => {
-    return originalRankMap.get(item) || 0;
-  };
-
-  const defaultRenderItem = (item: T, index: number) => {
-    const originalRank = getOriginalRank(item);
-    return (
-      <button
-        key={String(index)}
-        onClick={() => onItemClick?.(item)}
-        className="w-full p-4 hover:bg-black/40 transition-colors flex items-center justify-between group"
-      >
-        <div className="flex items-center gap-4">
-          <span className="text-white/30 text-sm w-8">
-            {selectedDataPoint.isBoolean
-              ? /* Empty span to maintain indentation for boolean KPIs */
-                ""
-              : originalRank}
-          </span>
-          <span className="text-white/90 text-sm md:text-base text-left">
-            {String(item[searchKey])}
-          </span>
-        </div>
-        <span className="text-orange-2 text-sm md:text-base font-medium text-right">
-          {formatValue(item)}
+  const defaultRenderItem = (item: T, index: number) => (
+    <button
+      key={String(index)}
+      onClick={() => onItemClick?.(item)}
+      className="w-full p-4 hover:bg-black/40 transition-colors flex items-center justify-between group"
+    >
+      <div className="flex items-center gap-4">
+        <span className="text-white/30 text-sm w-8">
+          {selectedDataPoint.isBoolean ? "" : getOriginalRank(item)}
         </span>
-      </button>
-    );
-  };
+        <span className="text-white/90 text-sm md:text-base text-left">
+          {String(item[searchKey])}
+        </span>
+      </div>
+      <span
+        className={cn(
+          getColor(item),
+          "text-sm md:text-base font-medium text-right",
+        )}
+      >
+        {formatValue(item)}
+      </span>
+    </button>
+  );
 
   return (
     <div
@@ -174,18 +231,16 @@ export function RankedList<T extends Record<string, unknown>>({
       </div>
       <div className="flex-1 overflow-y-auto ranked-list-items min-h-[570px]">
         <div className="divide-y divide-white/10">
-          {paginatedData.map((item, index) => {
-            const originalRank = getOriginalRank(item);
-            return renderItem
-              ? renderItem(item, index, startIndex, originalRank)
-              : defaultRenderItem(item, index);
-          })}
-          {/* Add empty placeholder rows to maintain height */}
+          {paginatedData.map((item, index) =>
+            renderItem
+              ? renderItem(item, index, startIndex, getOriginalRank(item))
+              : defaultRenderItem(item, index),
+          )}
           {paginatedData.length < itemsPerPage &&
             Array(itemsPerPage - paginatedData.length)
               .fill(0)
               .map((_, i) => (
-                <div key={`empty-${i}`} className="p-4 h-[50px]"></div>
+                <div key={`empty-${i}`} className="p-4 h-[50px]" />
               ))}
         </div>
       </div>

@@ -20,9 +20,15 @@ export const useScopeData = (
   selectedYear: string,
 ) => {
   const scopeData = useMemo(() => {
-    const filteredCompanies = companies.filter((company) =>
-      selectedSectors.includes(company.industry?.industryGics.sectorCode || ""),
-    );
+    // When "all" is selected, include all companies (no sector filter)
+    const filteredCompanies =
+      selectedSectors.includes("all") || selectedSectors.length === 0
+        ? companies
+        : companies.filter((company) =>
+            selectedSectors.includes(
+              company.industry?.industryGics?.sectorCode || "",
+            ),
+          );
 
     const data = {
       scope1: { total: 0, companies: 0 },

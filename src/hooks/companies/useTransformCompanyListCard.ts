@@ -18,9 +18,11 @@ interface IUseTransformCompanyListCard {
 }
 
 //Recieves pre-filtered companies or municipalities
+import type { ListCardProps } from "@/components/explore/ListCard";
+
 const useTransformCompanyListCard = ({
   filteredCompanies,
-}: IUseTransformCompanyListCard) => {
+}: IUseTransformCompanyListCard): ListCardProps[] => {
   const sectorNames = useSectorNames();
   const { isEmissionsAIGenerated } = useVerificationStatus();
   const { currentLanguage } = useLanguage();
@@ -49,12 +51,6 @@ const useTransformCompanyListCard = ({
         previousPeriod,
       );
 
-      const noSustainabilityReport =
-        !latestPeriod ||
-        latestPeriod?.reportURL === null ||
-        latestPeriod?.reportURL === "Saknar report" ||
-        latestPeriod?.reportURL === undefined;
-
       const totalEmissionsAIGenerated = latestPeriod
         ? isEmissionsAIGenerated(latestPeriod)
         : false;
@@ -68,9 +64,15 @@ const useTransformCompanyListCard = ({
         ? calculateMeetsParis(company, trendAnalysis)
         : null; // null = unknown
 
+      const hasScope3Coverage =
+        (latestPeriod?.emissions?.scope3?.categories?.length || 0) > 0;
+
       return {
         name,
         description: sectorName,
+        logoUrl: company.logoUrl,
+        variant: "company" as const,
+        baseYear: company?.baseYear?.year || null,
         linkTo: `/companies/${wikidataId}`,
         meetsParis,
         meetsParisTranslationKey: "companies.card.meetsParis",
@@ -96,19 +98,9 @@ const useTransformCompanyListCard = ({
           emissionsChange && (emissionsChange <= -80 || emissionsChange >= 80)
             ? `${t("companies.card.emissionsChangeRateInfo")}\n\n${t("companies.card.emissionsChangeRateInfoExtended")}`
             : t("companies.card.emissionsChangeRateInfo"),
-        linkCardLink: latestPeriod?.reportURL
-          ? latestPeriod.reportURL
-          : undefined,
-        linkCardTitle: t("companies.card.companyReport"),
-        linkCardDescription: noSustainabilityReport
-          ? t("companies.card.missingReport")
-          : t("companies.card.reportYear", {
-              year: new Date(latestPeriod.endDate).getFullYear(),
-            }),
-        linkCardDescriptionColor: noSustainabilityReport
-          ? "text-pink-3"
-          : "text-green-3",
+
         isFinancialsSector,
+        hasScope3Coverage,
       };
     });
   }, [

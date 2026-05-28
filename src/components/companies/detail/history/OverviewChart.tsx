@@ -44,8 +44,7 @@ interface OverviewChartProps {
   longEndYear: number;
   approximatedData?: ChartData[] | null;
   onYearSelect: (year: number) => void;
-  exploreMode?: boolean;
-  setExploreMode?: (val: boolean) => void;
+  yearControlsPlacement?: "footer" | "top-right";
 }
 
 export const OverviewChart: FC<OverviewChartProps> = ({
@@ -57,8 +56,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({
   longEndYear,
   approximatedData,
   onYearSelect,
-  exploreMode = false,
-  setExploreMode,
+  yearControlsPlacement = "footer",
 }) => {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
@@ -102,8 +100,21 @@ export const OverviewChart: FC<OverviewChartProps> = ({
   const handleClick = createChartClickHandler(onYearSelect);
 
   return (
-    <ChartWrapper>
-      <ChartArea>
+    <ChartWrapper className="relative">
+      {yearControlsPlacement === "top-right" && (
+        <div className="absolute right-0 top-0 z-20">
+          <ChartYearControls
+            chartEndYear={chartEndYear}
+            shortEndYear={shortEndYear}
+            longEndYear={longEndYear}
+            setChartEndYear={setChartEndYear}
+          />
+        </div>
+      )}
+
+      <ChartArea
+        className={yearControlsPlacement === "top-right" ? "pt-14" : ""}
+      >
         <ResponsiveContainer {...getChartContainerProps()}>
           <LineChart
             {...getLineChartProps(
@@ -203,14 +214,14 @@ export const OverviewChart: FC<OverviewChartProps> = ({
 
       <ChartFooter>
         <EnhancedLegend items={legendItems} />
-        <ChartYearControls
-          chartEndYear={chartEndYear}
-          shortEndYear={shortEndYear}
-          longEndYear={longEndYear}
-          setChartEndYear={setChartEndYear}
-          exploreMode={exploreMode}
-          setExploreMode={setExploreMode}
-        />
+        {yearControlsPlacement === "footer" && (
+          <ChartYearControls
+            chartEndYear={chartEndYear}
+            shortEndYear={shortEndYear}
+            longEndYear={longEndYear}
+            setChartEndYear={setChartEndYear}
+          />
+        )}
       </ChartFooter>
     </ChartWrapper>
   );

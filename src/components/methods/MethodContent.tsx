@@ -11,7 +11,7 @@ import { ParisAgreementContent } from "./content/ParisAgreementContent";
 import { EmissionTypesContent } from "./content/EmissionTypesContent";
 import { CalculationsContent } from "./content/CalculationsContent";
 import { CarbonLawContent } from "./content/CarbonLaw";
-import { MunicipalityDataOverviewContent } from "./content/MunicipalityDataOverview";
+import { MunicipalityAndRegionDataOverviewContent } from "./content/MunicipalityAndRegionDataOverview";
 import { MunicipalityKPIsContent } from "./content/MunicipalityKPIsContent";
 import { ParisAlignmentMethodContent } from "./content/OnTrackForParisContent";
 import { TrendlineContent } from "./content/TrendLineMethodContent";
@@ -62,8 +62,8 @@ export const MethodologyContent = forwardRef<
         return <InterpretingOnTrackContent />;
       case "emissionTypes":
         return <EmissionTypesContent />;
-      case "municipalityDataOverview":
-        return <MunicipalityDataOverviewContent />;
+      case "municipalityAndRegionDataOverview":
+        return <MunicipalityAndRegionDataOverviewContent />;
       case "municipalityKPIs":
         return <MunicipalityKPIsContent />;
       case "companyDataOverview":

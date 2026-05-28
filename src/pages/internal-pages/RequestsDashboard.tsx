@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { useLabeledGithubIssues } from "@/hooks/useLabeledGithubIssues";
+import {
+  useLabeledGithubIssues,
+  type GitHubIssue,
+} from "@/hooks/useLabeledGithubIssues";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -10,7 +13,9 @@ const STATUS_FILTERS = [
   { label: "Finished", value: "finished" },
 ];
 
-function getStatus(issue: any) {
+function getStatus(
+  issue: GitHubIssue,
+): "finished" | "in-progress" | "in-queue" {
   if (issue.state === "closed") return "finished";
   if (issue.assignees && issue.assignees.length > 0) return "in-progress";
   return "in-queue";
@@ -28,14 +33,16 @@ export const RequestsDashboard = () => {
   const sortedIssues = issues
     ?.slice()
     .sort(
-      (a: any, b: any) =>
+      (a: GitHubIssue, b: GitHubIssue) =>
         new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime(),
     );
 
   const filteredIssues =
     statusFilter === "all"
       ? sortedIssues
-      : sortedIssues?.filter((issue: any) => getStatus(issue) === statusFilter);
+      : sortedIssues?.filter(
+          (issue: GitHubIssue) => getStatus(issue) === statusFilter,
+        );
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading issues</div>;
@@ -75,7 +82,7 @@ export const RequestsDashboard = () => {
         </thead>
         <tbody>
           {filteredIssues && filteredIssues.length > 0 ? (
-            filteredIssues.map((issue: any) => {
+            filteredIssues.map((issue: GitHubIssue) => {
               const status = getStatus(issue);
               let rowClass = "border-t border-gray-700 transition-colors ";
               if (status === "in-queue")
@@ -104,7 +111,7 @@ export const RequestsDashboard = () => {
                   </td>
                   <td className="px-4 py-2 text-left">
                     {issue.assignees && issue.assignees.length > 0
-                      ? issue.assignees.map((a: any) => a.login).join(", ")
+                      ? issue.assignees.map((a) => a.login).join(", ")
                       : "Unassigned"}
                   </td>
                   <td className="px-4 py-2 text-left">

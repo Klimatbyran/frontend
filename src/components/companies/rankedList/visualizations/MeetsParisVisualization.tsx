@@ -172,7 +172,7 @@ export function MeetsParisVisualization({
             {
               value: 0,
               label: t(
-                "companiesRankedPage.visualizations.meetsParis.budgetThreshold",
+                "companiesOverviewPage.visualizations.meetsParis.budgetThreshold",
                 {
                   unit: unitScale.unit,
                 },
@@ -186,12 +186,12 @@ export function MeetsParisVisualization({
       </div>
 
       <p className="text-grey text-sm">
-        {t("companiesRankedPage.visualizations.meetsParis.description")}{" "}
+        {t("companiesOverviewPage.visualizations.meetsParis.description")}{" "}
         <a
           href="/methodology?view=companyDataOverview"
           className="underline hover:text-white"
         >
-          {t("companiesRankedPage.visualizations.meetsParis.learnMore")}
+          {t("companiesOverviewPage.visualizations.meetsParis.learnMore")}
         </a>
       </p>
     </div>

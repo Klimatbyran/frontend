@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import type { ReportingPeriod } from "@/types/company";
+import type { EditableReportingPeriod } from "@/types/company";
 import { CompanyEditRow } from "./CompanyEditRow";
 import {
   CompanyEditInputField,
@@ -7,10 +7,10 @@ import {
 } from "./CompanyEditField";
 
 interface CompanyEditPeriodProps {
-  periods: ReportingPeriod[];
+  periods: EditableReportingPeriod[];
   onInputChange: (name: string, value: string) => void;
   formData: Map<string, string>;
-  resetPeriod: (year: number) => void;
+  resetPeriod: (identifier: string | number) => void;
 }
 
 export function CompanyEditPeriod({
@@ -28,11 +28,11 @@ export function CompanyEditPeriod({
         headerName
         noHover
       >
-        {periods.map((period: ReportingPeriod) => (
+        {periods.map((period: EditableReportingPeriod) => (
           <CompanyYearHeaderField
             text={period.endDate.substring(0, 4)}
             reset={resetPeriod}
-            id={Number(period.id)}
+            id={period.id}
           />
         ))}
       </CompanyEditRow>
@@ -40,7 +40,7 @@ export function CompanyEditPeriod({
         name={t("companyEditPage.rowName.reportingStart")}
         key={"start-date"}
       >
-        {periods.map((period: ReportingPeriod) => (
+        {periods.map((period: EditableReportingPeriod) => (
           <CompanyEditInputField
             type="date"
             value={period.startDate.substring(0, 10)}
@@ -55,7 +55,7 @@ export function CompanyEditPeriod({
         name={t("companyEditPage.rowName.reportingEnd")}
         key={"end-date"}
       >
-        {periods.map((period: ReportingPeriod) => (
+        {periods.map((period: EditableReportingPeriod) => (
           <CompanyEditInputField
             type="date"
             value={period.endDate.substring(0, 10)}
@@ -70,10 +70,10 @@ export function CompanyEditPeriod({
         name={t("companyEditPage.rowName.reportURL")}
         key={"report-url"}
       >
-        {periods.map((period: ReportingPeriod) => (
+        {periods.map((period: EditableReportingPeriod) => (
           <CompanyEditInputField
             type="text"
-            value={period.reportURL || ""}
+            value={period.reportURL ?? ""}
             name={`report-url-${period.id}`}
             displayAddition="none"
             onInputChange={onInputChange}

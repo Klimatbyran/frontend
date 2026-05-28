@@ -36,7 +36,7 @@ const calculateSectorScopesForYear = (
   let scope3 = 0;
 
   const sectorCompanies = companies.filter(
-    (company) => company.industry?.industryGics.sectorCode === sectorCode,
+    (company) => company.industry?.industryGics?.sectorCode === sectorCode,
   );
 
   sectorCompanies.forEach((company) => {
@@ -107,7 +107,7 @@ const createCompanyDataItem = (
   return {
     name: company.name,
     value: totalEmissions,
-    sectorCode: company.industry?.industryGics.sectorCode,
+    sectorCode: company.industry?.industryGics?.sectorCode,
     wikidataId: company.wikidataId,
     total: totalEmissions,
   };
@@ -128,7 +128,7 @@ const buildCompanyPieData = (
   selectedYear: string,
 ) => {
   const sectorCompanies = companies.filter(
-    (company) => company.industry?.industryGics.sectorCode === selectedSector,
+    (company) => company.industry?.industryGics?.sectorCode === selectedSector,
   );
 
   const companyData = sectorCompanies

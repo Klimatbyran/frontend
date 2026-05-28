@@ -35,6 +35,12 @@ interface NavLink {
   onlyShowOnStaging?: boolean;
 }
 
+/**
+ * To hide a nav item until it's ready for prod (only show on localhost/stage):
+ * - Add onlyShowOnStaging: true to the link or sublink.
+ * - The item will be filtered out when stagingFeatureFlagEnabled() is false (production).
+ * - When ready for prod, remove onlyShowOnStaging and ensure the route is not wrapped in StagingProtectedRoute (see routes.tsx).
+ */
 const NAV_LINKS: NavLink[] = [
   {
     label: "header.data",
@@ -42,9 +48,8 @@ const NAV_LINKS: NavLink[] = [
     path: `/explore`,
     sublinks: [
       {
-        label: "header.companies",
-        path: `/companies/ranked`,
-        onlyShowOnStaging: true,
+        label: "header.explore",
+        path: `/explore/municipalities`,
       },
       {
         label: "header.europe",
@@ -56,17 +61,20 @@ const NAV_LINKS: NavLink[] = [
         path: `/municipalities`,
       },
       {
-        label: "header.regionsRanked",
+        label: "header.regions",
         path: `/regions`,
-        onlyShowOnStaging: true,
       },
       {
-        label: "header.companiesSectors",
-        path: `/companies/sectors`,
+        label: "header.nation",
+        path: `/nation`,
       },
       {
-        label: "header.explore",
-        path: `/explore`,
+        label: "header.companies",
+        path: `/companies`,
+      },
+      {
+        label: "header.sectors",
+        path: `/sectors`,
       },
     ],
   },
@@ -97,11 +105,8 @@ const NAV_LINKS: NavLink[] = [
         path: "https://www.mynewsdesk.com/se/klimatbyraan/latest_news",
       },
       { label: "header.support", path: `/support` },
+      { label: "header.dataDownload", path: `/data-download` },
     ],
-  },
-  {
-    label: "header.products",
-    path: `/products`,
   },
 ];
 
@@ -117,6 +122,7 @@ const INTERNAL_LINKS = [
     label: "Trend Analysis Dashboard",
     path: "/internal-pages/trend-analysis-dashboard",
   },
+  { label: "Add Company", path: "/internal-pages/add-company" },
 ];
 
 const SubLinksMenu = ({ sublinks }: { sublinks: NavSubLink[] }) => {
@@ -156,6 +162,7 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const toggleMenu = useCallback(() => setMenuOpen((prev) => !prev), []);
+  const closeMobileNav = useCallback(() => setMenuOpen(false), []);
   const { user } = useAuth();
   const { headerTitle, showTitle, setShowTitle } = useHeaderTitle();
   const isStaging = stagingFeatureFlagEnabled();
@@ -235,7 +242,7 @@ export function Header() {
     <header
       className={cn(
         "fixed top-0 left-0 w-screen flex items-center justify-between bg-black-2 z-50",
-        "h-10 lg:h-12",
+        "h-12",
       )}
     >
       <div className="container lg:mx-auto px-4 flex justify-between">
@@ -325,22 +332,28 @@ export function Header() {
             {headerTitle}
           </span>
         )}
+        <div className="flex gap-6">
+          <HeaderSearchButton
+            className="w-full lg:hidden"
+            closeMobileNav={closeMobileNav}
+          />
 
-        <button
-          className="lg:hidden text-white"
-          onClick={toggleMenu}
-          aria-label={menuOpen ? "Close menu" : "Open menu"}
-        >
-          {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
+          <button
+            className="lg:hidden text-white"
+            onClick={toggleMenu}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+          >
+            {menuOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
+          </button>
+        </div>
         {menuOpen && (
           <div className="overflow-y-auto fixed inset-0 top-10 w-full z-100 bg-black-2">
             <div className="p-8">
               <div className="flex flex-col gap-6 text-lg w-full">
-                <HeaderSearchButton
-                  className="w-full"
-                  onSearchResultClick={toggleMenu}
-                />
                 <LanguageButtons />
                 {filteredNavLinks.map((link) => (
                   <div key={link.path} className="flex flex-col">

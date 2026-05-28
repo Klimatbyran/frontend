@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import {
   useRegionDetails,
   useRegionDetailHeaderStats,
@@ -15,10 +15,7 @@ import { MunicipalityListBox } from "@/components/regions/MunicipalityListBox";
 import { useSectorEmissions } from "@/hooks/territories/useSectorEmissions";
 import { useSectors } from "@/hooks/territories/useSectors";
 import { useHiddenItems } from "@/components/charts";
-import {
-  getAvailableYearsFromSectors,
-  getCurrentYearFromAvailable,
-} from "@/utils/detail/sectorYearUtils";
+import { useSectorYearSelection } from "@/hooks/territories/useSectorYearSelection";
 import { SectorEmissionsChart } from "@/components/charts/sectorChart/SectorEmissions";
 import { DataPoint } from "@/types/emissions";
 
@@ -33,7 +30,6 @@ export function RegionDetailPage() {
   const { getSectorInfo } = useSectors();
   const { hiddenItems: filteredSectors, setHiddenItems: setFilteredSectors } =
     useHiddenItems<string>([]);
-  const [selectedYear, setSelectedYear] = useState<string>("2023");
 
   // Transform emissions data for chart
   const emissionsData = useMemo(() => {
@@ -83,12 +79,8 @@ export function RegionDetailPage() {
 
   const headerStats = useRegionDetailHeaderStats(region, lastYear);
 
-  const availableYears = getAvailableYearsFromSectors(sectorEmissions);
-  const currentYear = getCurrentYearFromAvailable(
-    selectedYear,
-    availableYears,
-    lastYear ?? 2023,
-  );
+  const { selectedYear, setSelectedYear, availableYears, currentYear } =
+    useSectorYearSelection(sectorEmissions, lastYear ?? 2023);
 
   // Filter municipalities that belong to this region
   const regionMunicipalities = useMemo(() => {
@@ -109,9 +101,6 @@ export function RegionDetailPage() {
         <DetailHeader
           name={region.name}
           logoUrl={region.logoUrl}
-          politicalRule={region.politicalRule}
-          politicalKSO={region.politicalKSO}
-          politicalXSOLabelKey="politicalRSO"
           helpItems={["regionTotalEmissions", "detailWhyDataDelay"]}
           stats={headerStats}
           translateNamespace="regions.detailPage"
@@ -131,7 +120,7 @@ export function RegionDetailPage() {
           getSectorInfo={getSectorInfo}
           filteredSectors={filteredSectors}
           onFilteredSectorsChange={setFilteredSectors}
-          helpItems={["municipalityEmissionSources"]}
+          helpItems={["municipalityAndRegionEmissionSources"]}
         />
 
         <MunicipalityListBox

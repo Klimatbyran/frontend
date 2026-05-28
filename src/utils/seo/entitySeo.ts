@@ -16,9 +16,9 @@ import { getCompanyIndustryFromData } from "@/utils/data/industryGrouping";
  *   - See RegionDetailPage.tsx for data structure
  *
  * Note: Ranked list pages and sector pages use route-level SEO (handled in routes.ts):
- * - /companies/ranked (CompaniesRankedPage)
- * - /municipalities (MunicipalitiesRankedPage)
- * - /regions (RegionalRankedPage)
+ * - /companies (companiesOverviewPage)
+ * - /municipalities (MunicipalitiesOverviewPage)
+ * - /regions (regionalOverviewPage)
  * - /companies/sectors (CompaniesSectorsPage)
  * These should be handled in routes.ts with getSeoForRoute() rather than entitySeo.ts
  */

@@ -4,19 +4,19 @@ import { useTranslation } from "react-i18next";
 import { FeatureCollection } from "geojson";
 import { useNavigate } from "react-router-dom";
 import { PageHeader } from "@/components/layout/PageHeader";
-import MapOfSweden from "@/components/maps/SwedenMap";
+import TerritoryMap from "@/components/maps/TerritoryMap";
 import europeGeoJson from "@/data/europeGeo.json";
 import { useRankedEuropeURLParams } from "@/hooks/europe/useRankedEuropeURLParams";
 import { useEurope, useEuropeanKPIs } from "@/hooks/europe/useEuropeKPIs";
+import { useClimateTraceEmissions } from "@/hooks/europe/useClimateTraceEmissions";
 import { useEuropeanData } from "@/hooks/europe/useEuropeanData";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import EuropeanInsightsPanel from "@/components/europe/EuropeanInsightsPanel";
 import { EuropeanRankedList } from "@/components/europe/EuropeanRankedList";
 import { KPIDataSelector } from "@/components/ranked/KPIDataSelector";
 import { createEntityClickHandler } from "@/utils/routing";
-import { KPIValue } from "@/types/rankings";
+import { DataItem, KPIValue } from "@/types/rankings";
 import { EuropeanCountry } from "@/types/europe";
-import { DataItem } from "@/components/maps/SwedenMap";
 
 const MAP_COLORS = {
   null: "color-mix(in srgb, var(--black-3) 80%, transparent)",
@@ -92,7 +92,7 @@ function EuropeanMap({
 }: EuropeanMapProps) {
   return (
     <div className={className}>
-      <MapOfSweden
+      <TerritoryMap
         entityType="europe"
         geoData={geoData}
         data={mapData}
@@ -113,6 +113,7 @@ export function EuropeanRankedPage() {
     europeGeoJson as FeatureCollection,
   );
   const { countriesData } = useEurope();
+  const { emissionsByIso } = useClimateTraceEmissions();
   const navigate = useNavigate();
   const {
     selectedKPI,
@@ -129,7 +130,7 @@ export function EuropeanRankedPage() {
   );
 
   const { countryEntities, mapData, filteredGeoData, countriesAsEntities } =
-    useEuropeanData(countriesData, selectedKPI, geoData);
+    useEuropeanData(countriesData, selectedKPI, geoData, emissionsByIso);
   const handleCountryAreaClick = (name: string) => {
     const country = countriesData.find((c) => c.name === name);
     handleCountryClick(country || name);

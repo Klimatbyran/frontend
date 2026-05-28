@@ -2,7 +2,7 @@ import { getNumericValue } from "@/utils/ui/form";
 import { isVerified } from "@/utils/business/verification";
 import type {
   CompanyEditComponentProps,
-  ReportingPeriod,
+  EditableReportingPeriod,
 } from "@/types/company";
 import { CompanyEditInputField } from "./CompanyEditField";
 import { CompanyEditRow } from "./CompanyEditRow";
@@ -14,7 +14,7 @@ export function CompanyEditScope1({
 }: CompanyEditComponentProps) {
   return (
     <CompanyEditRow headerName name="Scope 1" key="scope-1">
-      {periods.map((period: ReportingPeriod) => (
+      {periods.map((period: EditableReportingPeriod) => (
         <CompanyEditInputField
           name={`scope-1-${period.id}`}
           type="number"

@@ -61,7 +61,7 @@ export function calculateEntityStatistics<
   entities: T[],
   selectedKPI: KPI,
   getValue: (entity: T) => unknown,
-  entityType: "municipalities" | "companies" = "municipalities",
+  entityType: "municipalities" | "companies" | "regions" = "municipalities",
 ): EntityStatistics<T> {
   const validData = filterValidData(entities, selectedKPI, getValue);
 
@@ -91,24 +91,30 @@ export function calculateEntityStatistics<
     return value === null || value === undefined;
   }).length;
 
-  const aboveAverageLabel = `${entityType}.list.insights.keyStatistics.distributionAbove`;
-  const belowAverageLabel = `${entityType}.list.insights.keyStatistics.distributionBelow`;
+  const entityPlural = t("header." + entityType).toLowerCase();
+
+  const aboveAverageLabel = t("rankedInsights.aboveAverage", {
+    entityPlural,
+  });
+  const belowAverageLabel = t("rankedInsights.belowAverage", {
+    entityPlural,
+  });
 
   // Create distribution stats
   const distributionStats = [
     {
       count: aboveAverageCount,
-      colorClass: "text-blue-3",
+      colorClass: selectedKPI.higherIsBetter ? "text-blue-3" : "text-pink-3",
       label: selectedKPI.isBoolean
         ? selectedKPI.booleanLabels?.true || t("yes")
-        : t(aboveAverageLabel),
+        : aboveAverageLabel,
     },
     {
       count: belowAverageCount,
-      colorClass: "text-pink-3",
+      colorClass: selectedKPI.higherIsBetter ? "text-pink-3" : "text-blue-3",
       label: selectedKPI.isBoolean
         ? selectedKPI.booleanLabels?.false || t("no")
-        : t(belowAverageLabel),
+        : belowAverageLabel,
     },
   ];
 

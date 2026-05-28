@@ -24,8 +24,6 @@ export type RegionDetails = {
   meetsParis: boolean;
   historicalEmissionChangePercent: number;
   municipalities: string[];
-  politicalRule: string[];
-  politicalKSO: string;
 };
 
 type ApiRegionResponse = {
@@ -39,8 +37,6 @@ type ApiRegionResponse = {
   historicalEmissionChangePercent: number;
   meetsParis: boolean;
   municipalities: string[];
-  politicalRule: string[];
-  politicalRSO: string;
 };
 
 function extractEmissionsRecord(
@@ -101,8 +97,6 @@ function transformApiRegionToRegionDetails(
   return {
     name: r.region,
     logoUrl: r.logoUrl ?? null,
-    politicalRule: r.politicalRule,
-    politicalKSO: r.politicalRSO,
     municipalities: r.municipalities,
     emissions: extractEmissionsRecord(r.emissions),
     approximatedHistoricalEmission: extractEmissionsRecord(

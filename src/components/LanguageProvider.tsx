@@ -6,8 +6,7 @@ import {
   useState,
 } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import { I18nextProvider } from "react-i18next";
+import { useTranslation, I18nextProvider } from "react-i18next";
 import {
   detectLanguageFromPath,
   getLanguageUrl,
@@ -27,7 +26,6 @@ const LanguageContext = createContext<LanguageContextType>({
   getLocalizedPath: (path) => path,
 });
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const useLanguage = () => useContext(LanguageContext);
 
 interface LanguageProviderProps {

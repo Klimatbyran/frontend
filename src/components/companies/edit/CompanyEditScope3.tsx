@@ -3,7 +3,7 @@ import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { isVerified } from "@/utils/business/verification";
 import type {
   CompanyEditComponentProps,
-  ReportingPeriod,
+  EditableReportingPeriod,
 } from "@/types/company";
 import { CompanyEditInputField, CompanyEmptyField } from "./CompanyEditField";
 import { CompanyEditRow } from "./CompanyEditRow";
@@ -11,7 +11,7 @@ import { CompanyEditRow } from "./CompanyEditRow";
 interface Scope3CategoryWithMetadata {
   category: number;
   total: number;
-  unit: string;
+  unit: string | null;
   metadata?: { verifiedBy?: { name: string } | null };
 }
 
@@ -56,7 +56,7 @@ export function CompanyEditScope3({
   return (
     <>
       <CompanyEditRow key={"scope-3"} headerName noHover name="Scope 3">
-        {periods.map((period: ReportingPeriod) => (
+        {periods.map((period: EditableReportingPeriod) => (
           <CompanyEmptyField key={period.id} />
         ))}
       </CompanyEditRow>
@@ -66,7 +66,7 @@ export function CompanyEditScope3({
         key={"scope-3-stated-total"}
         name={t("companies.categories.statedTotal")}
       >
-        {periods.map((period: ReportingPeriod) => (
+        {periods.map((period: EditableReportingPeriod) => (
           <CompanyEditInputField
             name={`scope-3-statedTotalEmissions-${period.id}`}
             type="number"
@@ -98,7 +98,7 @@ export function CompanyEditScope3({
           key={"scope-3-" + categoryId}
           name={`${categoryId}. ${categoryMetadata[categoryId]?.name || ""}`}
         >
-          {periods.map((period: ReportingPeriod) => {
+          {periods.map((period: EditableReportingPeriod) => {
             const categories = (period.emissions?.scope3?.categories || [])
               .filter((cat) => cat.total !== null)
               .map((cat) => ({

@@ -20,7 +20,7 @@ import { LocalizedLink } from "@/components/LocalizedLink";
 export function BlogDetailPage() {
   const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
-  const { blogPost, loading, error } = useBlogPost(id!);
+  const { blogPost, blogPostsLoading, blogPostsError } = useBlogPost(id!);
   const [copied, setCopied] = useState(false);
   const { isMobile } = useScreenSize();
   const { currentLanguage } = useLanguage();
@@ -49,8 +49,8 @@ export function BlogDetailPage() {
     }
   };
 
-  if (loading) return <div>{t("blogDetailPage.loading")}</div>;
-  if (error) return <div>{t("blogDetailPage.postNotFound")}</div>;
+  if (blogPostsLoading) return <div>{t("blogDetailPage.loading")}</div>;
+  if (blogPostsError) return <div>{t("blogDetailPage.postNotFound")}</div>;
   if (!blogPost) return <div>{t("blogDetailPage.postNotFound")}</div>;
 
   const relatedPosts = blogPost.metadata.relatedPosts

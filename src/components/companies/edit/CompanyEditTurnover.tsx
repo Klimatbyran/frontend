@@ -3,7 +3,7 @@ import { getNumericValue, getStringValue } from "@/utils/ui/form";
 import { isVerified } from "@/utils/business/verification";
 import type {
   CompanyEditComponentProps,
-  ReportingPeriod,
+  EditableReportingPeriod,
 } from "@/types/company";
 import { CompanyEditInputField } from "./CompanyEditField";
 import { CompanyEditRow } from "./CompanyEditRow";
@@ -22,7 +22,7 @@ export function CompanyEditTurnover({
         name={t("companyEditPage.rowName.turnover")}
         key="turnover-value"
       >
-        {periods.map((period: ReportingPeriod) => (
+        {periods.map((period: EditableReportingPeriod) => (
           <CompanyEditInputField
             name={`turnover-value-${period.id}`}
             type="number"
@@ -40,7 +40,7 @@ export function CompanyEditTurnover({
         name={t("companyEditPage.rowName.currency")}
         key="turnover-currency"
       >
-        {periods.map((period: ReportingPeriod) => (
+        {periods.map((period: EditableReportingPeriod) => (
           <CompanyEditInputField
             name={`turnover-currency-${period.id}`}
             type="text"

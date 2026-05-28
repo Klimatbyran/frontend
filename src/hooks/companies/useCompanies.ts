@@ -12,7 +12,7 @@ function formatReductionValue(value: number): string {
 interface ICompaniesReturn {
   companies: RankedCompany[];
   companiesLoading: boolean;
-  companiesError: any;
+  companiesError: Error | null;
   getCompaniesBySector: (sectorCode: string) => RankedCompany[];
 }
 

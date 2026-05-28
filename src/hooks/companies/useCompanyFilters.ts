@@ -13,7 +13,13 @@ import { getCompanySectorName } from "@/utils/data/industryGrouping";
 import { CompanySector, SECTORS } from "@/lib/constants/sectors";
 import { FilterGroup } from "@/components/explore/FilterPopover";
 import setOrDeleteSearchParam from "@/utils/data/setOrDeleteSearchParam";
-import { isSortOption, type SortOption } from "./useCompanySorting";
+import {
+  isSortOption,
+  useSortOptions,
+  type CompanySortBy,
+} from "./useCompanySorting";
+import { useExploreFilters } from "@/hooks/explore/useExploreFilters";
+import { getSearchTerms } from "@/hooks/explore/exploreFilterUtils";
 
 const MEETS_PARIS_OPTIONS = ["all", "yes", "no", "unknown"] as const;
 type MeetsParisFilter = (typeof MEETS_PARIS_OPTIONS)[number];
@@ -23,12 +29,24 @@ const isMeetsParisFilter = (value: string): value is MeetsParisFilter =>
 
 export const useCompanyFilters = (companies: RankedCompany[]) => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const sortingOptions = useSortOptions();
 
-  const searchQuery = searchParams.get("searchQuery") || "";
-  const meetsParisFilter = isMeetsParisFilter(
-    searchParams.get("meetsParisFilter") ?? "",
-  )
-    ? (searchParams.get("meetsParisFilter") as MeetsParisFilter)
+  const {
+    searchQuery,
+    setSearchQuery,
+    sortBy,
+    setSortBy,
+    sortDirection,
+    setSortDirection,
+  } = useExploreFilters<CompanySortBy>({
+    defaultSortBy: "total_emissions",
+    isValidSortBy: isSortOption,
+    sortOptions: sortingOptions,
+  });
+
+  const meetsParisRaw = searchParams.get("meetsParisFilter") ?? "";
+  const meetsParisFilter: MeetsParisFilter = isMeetsParisFilter(meetsParisRaw)
+    ? (meetsParisRaw as MeetsParisFilter)
     : "all";
   const sectors = (searchParams
     .get("sectors")
@@ -36,25 +54,6 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
     .filter((s) => SECTORS.some((sector) => sector.value === s)) ?? [
     "all",
   ]) as CompanySector[];
-  const sortBy = isSortOption(searchParams.get("sortBy") ?? "")
-    ? (searchParams.get("sortBy") as SortOption)
-    : "total_emissions";
-  const sortDirection = (
-    searchParams.get("sortDirection") == "asc" ||
-    searchParams.get("sortDirection") == "desc"
-      ? searchParams.get("sortDirection")
-      : "desc"
-  ) as "asc" | "desc";
-
-  const setSearchQuery = useCallback(
-    (searchQuery: string) =>
-      setOrDeleteSearchParam(
-        setSearchParams,
-        searchQuery.trim() || null,
-        "searchQuery",
-      ),
-    [],
-  );
   const setMeetsParisFilter = useCallback(
     (meetsParisFilter: string) =>
       setOrDeleteSearchParam(
@@ -73,16 +72,6 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
       ),
     [],
   );
-  const setSortBy = useCallback(
-    (sortBy: string) =>
-      setOrDeleteSearchParam(setSearchParams, sortBy, "sortBy"),
-    [],
-  );
-  const setSortDirection = useCallback(
-    (sortDirection: string) =>
-      setOrDeleteSearchParam(setSearchParams, sortDirection, "sortDirection"),
-    [],
-  );
 
   const sectorNames = useSectorNames();
   const { t } = useTranslation();
@@ -93,14 +82,11 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
         // Filter by sector
         const matchesSector =
           sectors.includes("all") ||
-          (company.industry?.industryGics?.sectorCode &&
-            sectors.includes(company.industry.industryGics.sectorCode));
+          (company.industry?.industryGics?.sectorCode != null &&
+            sectors.includes(company.industry?.industryGics?.sectorCode ?? ""));
 
         // Filter by search query
-        const searchTerms = searchQuery
-          .split(",")
-          .map((term) => term.trim().toLowerCase())
-          .filter((term) => term.length > 0);
+        const searchTerms = getSearchTerms(searchQuery);
 
         const matchesSearch =
           searchTerms.length === 0 ||
@@ -161,13 +147,19 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
               : bEmissions - aEmissions;
           }
           case "scope3_coverage": {
-            const aCategories =
-              a.reportingPeriods[0]?.emissions?.scope3?.categories?.length || 0;
-            const bCategories =
-              b.reportingPeriods[0]?.emissions?.scope3?.categories?.length || 0;
+            const aHasCategories =
+              (a.reportingPeriods[0]?.emissions?.scope3?.categories?.length ||
+                0) > 0
+                ? 1
+                : 0;
+            const bHasCategories =
+              (b.reportingPeriods[0]?.emissions?.scope3?.categories?.length ||
+                0) > 0
+                ? 1
+                : 0;
             return sortDirection === "asc"
-              ? aCategories - bCategories
-              : bCategories - aCategories;
+              ? bHasCategories - aHasCategories
+              : aHasCategories - bHasCategories;
           }
           case "meets_paris": {
             const aTrendAnalysis = calculateTrendline(a);
@@ -185,12 +177,9 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
             const bValue =
               bMeetsParis === true ? 2 : bMeetsParis === false ? 1 : 0;
 
-            return sortDirection === "asc" ? aValue - bValue : bValue - aValue;
+            return sortDirection === "asc" ? bValue - aValue : aValue - bValue;
           }
-          case "name_asc":
-            return a.name.localeCompare(b.name);
-          case "name_desc":
-            return b.name.localeCompare(a.name);
+          case "name":
           default:
             return sortDirection === "asc"
               ? a.name.localeCompare(b.name)
@@ -251,13 +240,13 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
 
   const activeFilters = useMemo(() => {
     return [
-      ...(!sectors.includes("all")
-        ? sectors.map((sector) => ({
+      ...(sectors.includes("all")
+        ? []
+        : sectors.map((sector) => ({
             type: "filter" as const,
             label: sectorNames[sector as keyof typeof sectorNames] || sector,
             onRemove: () => setSectors(sectors.filter((s) => s !== sector)),
-          }))
-        : []),
+          }))),
       ...(meetsParisFilter !== "all"
         ? [
             {

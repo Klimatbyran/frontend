@@ -48,6 +48,9 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
     .filter((item) => !filteredSectors.has(item.name))
     .sort((a, b) => (b.value as number) - (a.value as number));
 
+  const total = pieData.reduce((sum, item) => sum + (item.value as number), 0);
+  const pieDataWithTotal = pieData.map((item) => ({ ...item, total }));
+
   const handleSectorClick = (data: SectorData) => {
     if (isMobile) {
       // On mobile, handle double-click for filtering
@@ -90,7 +93,7 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
       <ResponsiveContainer width="100%" height={size.outerRadius * 2.5}>
         <PieChart>
           <Pie
-            data={pieData}
+            data={pieDataWithTotal}
             dataKey="value"
             nameKey="translatedName"
             cx="50%"
@@ -103,7 +106,7 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
             animationBegin={0}
             animationDuration={300}
           >
-            {pieData.map((entry) => (
+            {pieDataWithTotal.map((entry) => (
               <Cell
                 key={entry.name}
                 fill={entry.color}

@@ -1,7 +1,5 @@
 import { ReactNode, useEffect, useMemo } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import { useQueryClient } from "@tanstack/react-query";
-import { getCompanies, getMunicipalities } from "@/lib/api";
 import { Seo } from "@/components/SEO/Seo";
 import { getSeoForRoute } from "@/seo/routes";
 import { Header } from "./Header";
@@ -16,7 +14,7 @@ interface LayoutProps {
 export function Layout({ children }: LayoutProps) {
   const location = useLocation();
   const params = useParams();
-  const queryClient = useQueryClient();
+  const isLandingPage = /^\/(sv|en)\/?$/.test(location.pathname);
 
   // Get SEO metadata for current route
   const seoMeta = useMemo(() => {
@@ -28,23 +26,17 @@ export function Layout({ children }: LayoutProps) {
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
-  useEffect(() => {
-    queryClient.prefetchQuery({
-      queryKey: ["companies"],
-      queryFn: getCompanies,
-    });
-
-    queryClient.prefetchQuery({
-      queryKey: ["municipalities"],
-      queryFn: getMunicipalities,
-    });
-  }, [queryClient]);
-
   return (
     <div className="min-h-screen w-full overflow-x-hidden bg-black-3 flex flex-col">
       <Seo meta={seoMeta} />
       <Header />
-      <main className="flex-1 container mx-auto px-4 pt-24 pb-12 min-h-0">
+      <main
+        className={
+          isLandingPage
+            ? "flex-1 min-h-0"
+            : "flex-1 container mx-auto px-4 pt-24 pb-12 min-h-0"
+        }
+      >
         {children}
         <ScrollToTop />
         <SuggestEdit />

@@ -64,6 +64,8 @@ function CompanyInsightsPanel({
 
   const sourceLinks = createSourceLinks(selectedKPI);
 
+  const entityPlural = t("header.companies").toLowerCase();
+
   return (
     <div className="flex-1 overflow-y-auto min-h-0 pr-2">
       <div
@@ -84,8 +86,9 @@ function CompanyInsightsPanel({
             <InsightsList
               title={t(
                 selectedKPI.higherIsBetter
-                  ? "companies.list.insights.topPerformers.titleTop"
-                  : "companies.list.insights.topPerformers.titleBest",
+                  ? "rankedInsights.titleTop"
+                  : "rankedInsights.titleBest",
+                { entityPlural },
               )}
               entities={topCompanies}
               totalCount={companyData.length}
@@ -97,7 +100,9 @@ function CompanyInsightsPanel({
               nameKey="name"
             />
             <InsightsList
-              title={t("companies.list.insights.improvement.title")}
+              title={t("rankedInsights.titleWorst", {
+                entityPlural,
+              })}
               entities={bottomCompanies}
               totalCount={companyData.length}
               isBottomRanking

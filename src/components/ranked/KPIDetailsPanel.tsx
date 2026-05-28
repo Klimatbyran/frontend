@@ -37,20 +37,25 @@ export default function KPIDetailsPanel({
   const sourceSection = sourceLinks.length > 0 && (
     <p className="text-gray-400 text-sm border-gray-700/50 italic">
       {t("municipalities.list.source")}{" "}
-      {sourceLinks.map((link, index) => (
-        <Fragment key={link.url}>
-          {index > 0 && ", "}
-          <a
-            href={link.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline hover:text-gray-300 transition-colors duration-200"
-            title={t(link.label)}
-          >
-            {t(link.label)}
-          </a>
-        </Fragment>
-      ))}
+      {sourceLinks.map((link, index) => {
+        const translationString = t(link.label, { returnObjects: false });
+
+        const linkProps = {
+          href: link.url,
+          target: "_blank" as const,
+          rel: "noopener noreferrer",
+          className:
+            "underline hover:text-gray-300 transition-colors duration-200",
+          title: translationString,
+        };
+
+        return (
+          <Fragment key={link.url}>
+            {index > 0 && ", "}
+            <a {...linkProps}>{translationString}</a>
+          </Fragment>
+        );
+      })}
     </p>
   );
 

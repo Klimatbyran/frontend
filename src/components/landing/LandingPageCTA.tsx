@@ -1,88 +1,183 @@
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { BarChart3, Building2, LucideIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import GlobalSearch from "@/components/ui/globalsearch";
-import { LocalizedLink } from "@/components/LocalizedLink";
+import { Loader2, Search } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Input } from "@/components/ui/input";
 import { LandingSection } from "./LandingSection";
-
-interface CTAButton {
-  to: string;
-  icon: LucideIcon;
-  translationKey: string;
-  variant: "default" | "outline";
-  gradientClasses: string;
-}
-
-const CTA_BUTTONS: CTAButton[] = [
-  {
-    to: "/municipalities",
-    icon: BarChart3,
-    translationKey: "landingPage.ctaSection.exploreClimateData",
-    variant: "default",
-    gradientClasses: "bg-gradient-to-r from-orange-2 to-orange-3",
-  },
-  {
-    to: "/companies",
-    icon: Building2,
-    translationKey: "landingPage.ctaSection.viewCompanyRankings",
-    variant: "outline",
-    gradientClasses: "bg-gradient-to-r from-blue-2 to-blue-3",
-  },
-];
+import { useLanguage } from "@/components/LanguageProvider";
+import { getEntityDetailPath, localizedPath } from "@/utils/routing";
+import type { HeroSearchResult } from "@/hooks/usePopularHeroItems";
+import { Text } from "../ui/text";
+import { POPULAR_HERO_ITEMS } from "@/lib/constants/landingPage";
+import { useHeroGlobalSearch } from "../../hooks/landing/useHeroGlobalSearch";
 
 export function LandingPageCTA() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { currentLanguage } = useLanguage();
+  const searchContainerRef = useRef<HTMLDivElement | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { searchResults, isSearching, isDebouncing } =
+    useHeroGlobalSearch(searchQuery);
+
+  useEffect(() => {
+    const target = searchContainerRef.current;
+    if (!target || typeof IntersectionObserver === "undefined") {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry?.isIntersecting) {
+          setIsDropdownOpen(false);
+        }
+      },
+      { threshold: 0.05 },
+    );
+
+    observer.observe(target);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  const handleSearchSelection = useCallback(
+    (result: HeroSearchResult) => {
+      setSearchQuery(result.name);
+      setIsDropdownOpen(false);
+
+      if (result.type === "company") {
+        navigate(localizedPath(currentLanguage, `/companies/${result.id}`));
+        return;
+      }
+
+      if (result.type === "region") {
+        navigate(
+          localizedPath(
+            currentLanguage,
+            getEntityDetailPath("region", result.name),
+          ),
+        );
+        return;
+      }
+
+      if (result.type === "nation") {
+        navigate(localizedPath(currentLanguage, `/nation`));
+        return;
+      }
+
+      navigate(
+        localizedPath(
+          currentLanguage,
+          getEntityDetailPath("municipality", result.name),
+        ),
+      );
+    },
+    [currentLanguage, navigate],
+  );
 
   return (
-    <LandingSection innerClassName="flex flex-col items-center max-w-4xl mx-auto space-y-8">
-      {/* Heading */}
-      <h2 className="text-4xl md:text-5xl font-light tracking-tight text-white">
-        {t("landingPage.ctaSection.title")}
-      </h2>
-
+    <LandingSection innerClassName="flex flex-col items-center max-w-4xl mx-auto space-y-8 -pt-4">
       {/* Description */}
-      <p className="text-lg md:text-xl text-grey max-w-3xl">
+      <p className="text-lg md:text-lg text-grey max-w-3xl">
         {t("landingPage.ctaSection.description")}
       </p>
 
-      {/* Buttons */}
-      <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-        {CTA_BUTTONS.map((button) => {
-          const Icon = button.icon;
-          return (
-            <LocalizedLink
-              key={button.to}
-              to={button.to}
-              className="flex-1 sm:flex-none"
-            >
-              <Button
-                variant={button.variant}
-                size="lg"
-                className={`w-full sm:w-auto px-8 h-12 rounded-md ${button.gradientClasses} text-black-3 hover:bg-black-1 font-medium`}
-              >
-                <Icon className="w-5 h-5 mr-2" aria-hidden="true" />
-                {t(button.translationKey)}
-              </Button>
-            </LocalizedLink>
-          );
-        })}
-      </div>
-
-      {/* Or Divider */}
       <div
-        className="flex items-center gap-4 w-full max-w-3xl"
-        role="separator"
+        ref={searchContainerRef}
+        className="relative mt-2 w-full max-w-[22rem]"
       >
-        <div className="flex-1 h-px bg-grey opacity-30" aria-hidden="true" />
-        <span className="text-grey text-sm font-light">
-          {t("landingPage.ctaSection.or")}
-        </span>
-        <div className="flex-1 h-px bg-grey opacity-30" aria-hidden="true" />
-      </div>
+        <div className="relative">
+          <Search
+            className="absolute left-3 top-1/2 hidden h-4 w-4 -translate-y-1/2 text-white/50 min-[430px]:block"
+            aria-hidden="true"
+          />
+          <Input
+            value={searchQuery}
+            onChange={(event) => {
+              setSearchQuery(event.target.value);
+              setIsDropdownOpen(true);
+            }}
+            onFocus={() => setIsDropdownOpen(true)}
+            onKeyDown={(event) => {
+              if (event.key === "Escape") {
+                setIsDropdownOpen(false);
+              }
 
-      {/* Search Bar */}
-      <div className="flex justify-center">
-        <GlobalSearch />
+              if (event.key === "Enter" && searchResults.length > 0) {
+                handleSearchSelection(searchResults[0]);
+              }
+            }}
+            placeholder={t("landingPage.heroSearchPlaceholder")}
+            className="h-11 border-white/25 bg-black-2 pl-3 text-white placeholder:text-white/50 focus-visible:ring-white/40 min-[430px]:pl-8"
+            aria-label={t("landingPage.heroSearchLabel")}
+          />
+        </div>
+
+        {isDropdownOpen && searchQuery.trim() && (
+          <div className="absolute left-0 top-full z-30 mt-2 max-h-56 w-full overflow-y-auto rounded-md border border-white/10 bg-black-2 shadow-lg">
+            {isDebouncing || isSearching ? (
+              <div className="flex items-center gap-2 px-3 py-2 text-sm text-white/70">
+                <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                <span>{t("landingPage.heroSearchLoadingText")}</span>
+              </div>
+            ) : searchResults.length > 0 ? (
+              searchResults.map((result) => (
+                <button
+                  key={`${result.type}-${
+                    result.type === "company" ? result.id : result.name
+                  }`}
+                  type="button"
+                  tabIndex={0}
+                  onClick={() => handleSearchSelection(result)}
+                  className="flex w-full items-center justify-between gap-3 px-3 py-2 text-left text-sm text-white hover:bg-white/10"
+                >
+                  <span>{result.name}</span>
+                  <span className="text-xs text-white/60">
+                    {result.type === "company"
+                      ? t("landingPage.searchResultType.company")
+                      : result.type === "municipality"
+                        ? t("landingPage.searchResultType.municipality")
+                        : result.type === "region"
+                          ? t("landingPage.searchResultType.region")
+                          : result.type === "nation"
+                            ? t("landingPage.searchResultType.nation")
+                            : null}
+                  </span>
+                </button>
+              ))
+            ) : !isDebouncing && !isSearching && searchResults.length === 0 ? (
+              <div className="px-3 py-2 text-sm text-white/60">
+                {t("landingPage.heroSearchEmptyText")}
+              </div>
+            ) : null}
+          </div>
+        )}
+
+        <div className="mt-3 flex w-full flex-wrap items-center gap-2 text-sm">
+          <Text className="text-left text-white/70">
+            {t("landingPage.popularLabel")}
+          </Text>
+
+          {POPULAR_HERO_ITEMS.map((item) => (
+            <button
+              key={`${item.type}-${item.type === "company" ? item.id : item.name}`}
+              type="button"
+              onClick={() => handleSearchSelection(item)}
+              className="group relative overflow-hidden rounded-md border border-white/20 px-2.5 py-1 hover:opacity-100 active:opacity-100"
+            >
+              <span
+                className="absolute inset-0 origin-left scale-x-0 bg-white transition-transform duration-500 ease-out group-hover:scale-x-100"
+                aria-hidden="true"
+              />
+              <span className="relative z-10 text-white/90 transition-colors duration-500 group-hover:text-black">
+                {item.name}
+              </span>
+            </button>
+          ))}
+        </div>
       </div>
     </LandingSection>
   );

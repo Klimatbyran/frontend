@@ -36,9 +36,9 @@ export const socialLinks = [
 
 export const partners = [
   {
-    href: "https://www.google.org/",
-    src: "/logos/partners/google_org_white.svg",
-    alt: "Google.org logo",
+    href: "https://ai-bridges.org/",
+    src: "/logos/partners/ai-bridges-logo.png",
+    alt: "AI Bridges logo",
   },
   {
     href: "https://www.climateview.global/",
@@ -69,11 +69,6 @@ export const partners = [
     href: "https://berget.ai/",
     src: "/logos/partners/berget-logo-white.svg",
     alt: "Berget logo",
-  },
-  {
-    href: "https://www.netlight.com/",
-    src: "/logos/partners/netlight.svg",
-    alt: "Netlight logo",
   },
   {
     href: "https://2050.se/",

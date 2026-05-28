@@ -1,1 +1,2 @@
 npm run format-prettier
+npm audit fix
