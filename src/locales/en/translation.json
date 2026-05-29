@@ -1454,7 +1454,12 @@
   },
   "nation": {
     "detailPage": {
-      "regions": "Regions"
+      "regions": "Regions",
+      "graph": {
+        "territorialFossil": "Territorial fossil emissions",
+        "biogenic": "Biogenic emissions",
+        "consumptionAbroad": "Consumption emissions abroad"
+      }
     }
   },
   "regions": {

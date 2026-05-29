@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { DataPoint, SectorEmissions } from "@/types/emissions";
+import { DataPoint, NationDataPoint, SectorEmissions } from "@/types/emissions";
 import {
   getDynamicChartHeight,
   useDataView,
@@ -14,14 +14,16 @@ import { TerritoryEmissionsGraph } from "./emissionsGraph/TerritoryEmissionsGrap
 type DataView = "overview" | "sectors";
 
 interface TerritoryEmissionsProps {
-  emissionsData: DataPoint[];
+  emissionsData: DataPoint[] | NationDataPoint[];
   sectorEmissions: SectorEmissions | null;
   className?: string;
+  stackedOverview?: boolean;
 }
 
 export const TerritoryEmissions: FC<TerritoryEmissionsProps> = ({
   emissionsData,
   sectorEmissions,
+  stackedOverview = false,
 }) => {
   const { t } = useTranslation();
 
@@ -63,6 +65,7 @@ export const TerritoryEmissions: FC<TerritoryEmissionsProps> = ({
           dataView={dataView}
           hiddenSectors={hiddenSectors}
           setHiddenSectors={setHiddenSectors}
+          stackedOverview={stackedOverview}
         />
       </div>
     </SectionWithHelp>

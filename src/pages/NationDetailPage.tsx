@@ -38,6 +38,7 @@ function NationDetailContent({
       <TerritoryEmissions
         emissionsData={emissionsData}
         sectorEmissions={sectorEmissions}
+        stackedOverview
       />
       <SectorEmissionsChart
         sectorEmissions={sectorEmissions}

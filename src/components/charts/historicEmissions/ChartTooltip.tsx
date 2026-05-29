@@ -40,7 +40,7 @@ interface ChartTooltipProps {
   };
 
   // Municipality-specific props
-  dataView?: "overview" | "sectors";
+  dataView?: "overview" | "sectors" | "nation-overview";
   hiddenSectors?: Set<string>;
 
   // Custom formatting
@@ -112,6 +112,19 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
   if (dataView === "sectors" && hiddenSectors.size > 0) {
     filteredPayload = filteredPayload.filter(
       (entry) => !hiddenSectors.has(entry.dataKey as string),
+    );
+  }
+
+  if (dataView === "nation-overview") {
+    const stackKeys = new Set([
+      "territorialFossil",
+      "biogenic",
+      "consumptionAbroad",
+      "trend",
+      "carbonLaw",
+    ]);
+    filteredPayload = filteredPayload.filter(
+      (entry) => entry.dataKey && stackKeys.has(entry.dataKey),
     );
   }
 

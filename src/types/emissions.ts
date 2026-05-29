@@ -52,3 +52,10 @@ export type DataPoint = {
   approximated: number | undefined;
   carbonLaw: number | undefined;
 };
+
+// Nation emissions data point with stacked emission categories
+export type NationDataPoint = DataPoint & {
+  territorialFossil?: number;
+  biogenic?: number;
+  consumptionAbroad?: number;
+};
