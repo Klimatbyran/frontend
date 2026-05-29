@@ -1455,6 +1455,12 @@
   "nation": {
     "detailPage": {
       "regions": "Regions"
+    },
+    "comparisonBubbles": {
+      "title": "How much is that?",
+      "description": "Sweden's emissions from e-commerce abroad (2025) compared to a municipality's estimated territorial emissions for the same year.",
+      "eHandelLabel": "e-handel",
+      "municipalityLabel": "{{municipality}}"
     }
   },
   "regions": {
