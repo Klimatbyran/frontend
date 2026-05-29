@@ -222,15 +222,15 @@ export function transformNationEmissionsData(
       const reported = resolveReportedStackValues(nation, year);
 
       const territorialFossil =
-        stackAnchorYear !== null && yearNum >= stackAnchorYear
+        stackAnchorYear !== null && yearNum > stackAnchorYear
           ? undefined
           : toTons(reported.territorialFossil);
       const biogenic =
-        stackAnchorYear !== null && yearNum >= stackAnchorYear
+        stackAnchorYear !== null && yearNum > stackAnchorYear
           ? undefined
           : toTons(reported.biogenic);
       const consumptionAbroad =
-        stackAnchorYear !== null && yearNum >= stackAnchorYear
+        stackAnchorYear !== null && yearNum > stackAnchorYear
           ? undefined
           : toTons(reported.consumptionAbroad);
 
@@ -241,54 +241,47 @@ export function transformNationEmissionsData(
       let biogenicTrendTop: number | undefined;
       let consumptionAbroadTrendTop: number | undefined;
 
-      if (stackAnchorYear !== null) {
-        if (yearNum === stackAnchorYear - 1) {
-          const bridgeTops = getCumulativeLayerTops(
-            territorialFossil,
-            biogenic,
-            consumptionAbroad,
-          );
-          territorialFossilTrendTop = bridgeTops.bottomTop;
-          biogenicTrendTop = bridgeTops.middleTop;
-          consumptionAbroadTrendTop = bridgeTops.topTop;
-        } else if (yearNum >= stackAnchorYear && yearNum <= currentYear) {
-          territorialFossilTrend = toTons(
-            getLayerTrendValueKg(
-              nation.territorialFossil,
-              nation.approximatedTerritorialFossil,
-              yearNum,
-              stackAnchorYear,
-              currentYear,
-            ),
-          );
-          biogenicTrend = toTons(
-            getLayerTrendValueKg(
-              nation.biogenic,
-              nation.approximatedBiogenic,
-              yearNum,
-              stackAnchorYear,
-              currentYear,
-            ),
-          );
-          consumptionAbroadTrend = toTons(
-            getLayerTrendValueKg(
-              nation.consumptionAbroad,
-              nation.approximatedConsumptionAbroad,
-              yearNum,
-              stackAnchorYear,
-              currentYear,
-            ),
-          );
+      if (
+        stackAnchorYear !== null &&
+        yearNum >= stackAnchorYear &&
+        yearNum <= currentYear
+      ) {
+        territorialFossilTrend = toTons(
+          getLayerTrendValueKg(
+            nation.territorialFossil,
+            nation.approximatedTerritorialFossil,
+            yearNum,
+            stackAnchorYear,
+            currentYear,
+          ),
+        );
+        biogenicTrend = toTons(
+          getLayerTrendValueKg(
+            nation.biogenic,
+            nation.approximatedBiogenic,
+            yearNum,
+            stackAnchorYear,
+            currentYear,
+          ),
+        );
+        consumptionAbroadTrend = toTons(
+          getLayerTrendValueKg(
+            nation.consumptionAbroad,
+            nation.approximatedConsumptionAbroad,
+            yearNum,
+            stackAnchorYear,
+            currentYear,
+          ),
+        );
 
-          const trendTops = getCumulativeLayerTops(
-            territorialFossilTrend,
-            biogenicTrend,
-            consumptionAbroadTrend,
-          );
-          territorialFossilTrendTop = trendTops.bottomTop;
-          biogenicTrendTop = trendTops.middleTop;
-          consumptionAbroadTrendTop = trendTops.topTop;
-        }
+        const trendTops = getCumulativeLayerTops(
+          territorialFossilTrend,
+          biogenicTrend,
+          consumptionAbroadTrend,
+        );
+        territorialFossilTrendTop = trendTops.bottomTop;
+        biogenicTrendTop = trendTops.middleTop;
+        consumptionAbroadTrendTop = trendTops.topTop;
       }
 
       let territorialFossilCarbonLaw: number | undefined;
