@@ -55,6 +55,24 @@ interface ChartTooltipProps {
   showAIIndicators?: boolean;
 }
 
+const NATION_PARIS_TOOLTIP_LAYERS = [
+  {
+    topKey: "territorialFossilCarbonLawTop",
+    valueKey: "territorialFossilCarbonLaw",
+    labelKey: "nation.detailPage.graph.territorialFossilParis",
+  },
+  {
+    topKey: "biogenicCarbonLawTop",
+    valueKey: "biogenicCarbonLaw",
+    labelKey: "nation.detailPage.graph.biogenicParis",
+  },
+  {
+    topKey: "consumptionAbroadCarbonLawTop",
+    valueKey: "consumptionAbroadCarbonLaw",
+    labelKey: "nation.detailPage.graph.consumptionAbroadParis",
+  },
+] as const;
+
 export const ChartTooltip: React.FC<ChartTooltipProps> = ({
   active,
   payload,
@@ -97,7 +115,6 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
       return entry.value != null;
     }
 
-    showUnit = false;
     // For other data, only show if not null and > 0
     return entry.value != null && entry.value > 0;
   });
@@ -122,6 +139,10 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
   }
 
   if (dataView === "nation-overview") {
+    const dataPoint = payload[0]?.payload as
+      | Record<string, number | undefined>
+      | undefined;
+
     const stackKeys = new Set([
       "territorialFossil",
       "biogenic",
@@ -129,17 +150,13 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
       "territorialFossilTrend",
       "biogenicTrend",
       "consumptionAbroadTrend",
-      "territorialFossilCarbonLaw",
-      "biogenicCarbonLaw",
-      "consumptionAbroadCarbonLaw",
     ]);
     filteredPayload = filteredPayload.filter(
       (entry) =>
         entry.dataKey &&
         stackKeys.has(entry.dataKey) &&
         !entry.dataKey.endsWith("TrendTop") &&
-        !entry.dataKey.endsWith("HistoricalTop") &&
-        !entry.dataKey.endsWith("CarbonLawTop"),
+        !entry.dataKey.endsWith("HistoricalTop"),
     );
 
     const hasReported = filteredPayload.some(
@@ -159,6 +176,28 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
           ),
       );
     }
+
+    const parisTooltipEntries: PayloadEntry[] = NATION_PARIS_TOOLTIP_LAYERS.flatMap(
+      (layer) => {
+        const topEntry = payload.find((entry) => entry.dataKey === layer.topKey);
+        const segmentValue = dataPoint?.[layer.valueKey];
+        if (segmentValue == null || !topEntry) {
+          return [];
+        }
+
+        return [
+          {
+            dataKey: layer.valueKey,
+            value: segmentValue,
+            name: t(layer.labelKey),
+            color: topEntry.color,
+            payload: payload[0]?.payload,
+          },
+        ];
+      },
+    );
+
+    filteredPayload = [...filteredPayload, ...parisTooltipEntries];
   }
 
   // For municipality overview, handle approximated data logic
