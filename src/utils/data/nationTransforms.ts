@@ -127,6 +127,18 @@ function getLatestCompleteStackYear(
   return completeYears[0] ?? null;
 }
 
+function getApproximatedStackEndYear(
+  nation: NationEmissionsInput,
+): number | null {
+  const years = collectYears(
+    nation.approximatedTerritorialFossil,
+    nation.approximatedBiogenic,
+    nation.approximatedConsumptionAbroad,
+  );
+  const numericYears = [...years].map(Number).filter((year) => !isNaN(year));
+  return numericYears.length > 0 ? Math.max(...numericYears) : null;
+}
+
 function getLayerTrendValueKg(
   reported: Record<string, number>,
   approximated: Record<string, number> | undefined,
@@ -145,13 +157,13 @@ function getLayerTrendValueKg(
   return approximated?.[year.toString()];
 }
 
-/** Continuous stack fill: reported through anchor year, then approximated through current year. */
+/** Continuous stack fill: reported through anchor year, then approximated through API end year. */
 function getLayerStackFillValueKg(
   reported: Record<string, number>,
   approximated: Record<string, number> | undefined,
   year: number,
   stackAnchorYear: number | null,
-  currentYear: number,
+  approximatedFillEndYear: number | null,
 ): number | undefined {
   if (stackAnchorYear === null) {
     return reported[year.toString()];
@@ -161,17 +173,20 @@ function getLayerStackFillValueKg(
     return reported[year.toString()];
   }
 
-  if (year <= currentYear) {
-    return getLayerTrendValueKg(
-      reported,
-      approximated,
-      year,
-      stackAnchorYear,
-      currentYear,
-    );
+  if (
+    approximatedFillEndYear === null ||
+    year > approximatedFillEndYear
+  ) {
+    return undefined;
   }
 
-  return undefined;
+  return getLayerTrendValueKg(
+    reported,
+    approximated,
+    year,
+    stackAnchorYear,
+    approximatedFillEndYear,
+  );
 }
 
 function getCumulativeLayerTops(
@@ -243,6 +258,7 @@ export function transformNationEmissionsData(
   );
 
   const stackAnchorYear = getLatestCompleteStackYear(nation);
+  const approximatedFillEndYear = getApproximatedStackEndYear(nation);
 
   return Array.from(years)
     .filter((year) => !isNaN(Number(year)))
@@ -256,7 +272,7 @@ export function transformNationEmissionsData(
           nation.approximatedTerritorialFossil,
           yearNum,
           stackAnchorYear,
-          currentYear,
+          approximatedFillEndYear,
         ),
       );
       const biogenic = toTons(
@@ -265,7 +281,7 @@ export function transformNationEmissionsData(
           nation.approximatedBiogenic,
           yearNum,
           stackAnchorYear,
-          currentYear,
+          approximatedFillEndYear,
         ),
       );
       const consumptionAbroad = toTons(
@@ -274,7 +290,7 @@ export function transformNationEmissionsData(
           nation.approximatedConsumptionAbroad,
           yearNum,
           stackAnchorYear,
-          currentYear,
+          approximatedFillEndYear,
         ),
       );
 
@@ -306,8 +322,9 @@ export function transformNationEmissionsData(
 
       if (
         stackAnchorYear !== null &&
+        approximatedFillEndYear !== null &&
         yearNum >= stackAnchorYear &&
-        yearNum <= currentYear
+        yearNum <= approximatedFillEndYear
       ) {
         territorialFossilTrend = toTons(
           getLayerTrendValueKg(
@@ -315,7 +332,7 @@ export function transformNationEmissionsData(
             nation.approximatedTerritorialFossil,
             yearNum,
             stackAnchorYear,
-            currentYear,
+            approximatedFillEndYear,
           ),
         );
         biogenicTrend = toTons(
@@ -324,7 +341,7 @@ export function transformNationEmissionsData(
             nation.approximatedBiogenic,
             yearNum,
             stackAnchorYear,
-            currentYear,
+            approximatedFillEndYear,
           ),
         );
         consumptionAbroadTrend = toTons(
@@ -333,7 +350,7 @@ export function transformNationEmissionsData(
             nation.approximatedConsumptionAbroad,
             yearNum,
             stackAnchorYear,
-            currentYear,
+            approximatedFillEndYear,
           ),
         );
 
@@ -411,8 +428,9 @@ export function transformNationEmissionsData(
 
       const hasApproximatedTrend =
         stackAnchorYear !== null &&
+        approximatedFillEndYear !== null &&
         yearNum > stackAnchorYear &&
-        yearNum <= currentYear &&
+        yearNum <= approximatedFillEndYear &&
         (territorialFossilTrend !== undefined ||
           biogenicTrend !== undefined ||
           consumptionAbroadTrend !== undefined);

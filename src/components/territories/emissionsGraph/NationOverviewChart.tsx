@@ -155,7 +155,7 @@ export const NationOverviewChart: FC<NationOverviewChartProps> = ({
                 fill={layer.color}
                 fillOpacity={0.6}
                 name={t(layer.translationKey)}
-                connectNulls
+                connectNulls={false}
               />
             ))}
 
