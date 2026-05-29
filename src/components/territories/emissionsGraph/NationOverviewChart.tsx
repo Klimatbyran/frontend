@@ -35,7 +35,7 @@ const NATION_STACK_CONFIG = [
   {
     dataKey: "territorialFossil" as const,
     trendTopDataKey: "territorialFossilTrendTop" as const,
-    carbonLawDataKey: "territorialFossilCarbonLaw" as const,
+    carbonLawTopDataKey: "territorialFossilCarbonLawTop" as const,
     color: "var(--orange-2)",
     translationKey: "nation.detailPage.graph.territorialFossil",
     parisTranslationKey: "nation.detailPage.graph.territorialFossilParis",
@@ -43,7 +43,7 @@ const NATION_STACK_CONFIG = [
   {
     dataKey: "biogenic" as const,
     trendTopDataKey: "biogenicTrendTop" as const,
-    carbonLawDataKey: "biogenicCarbonLaw" as const,
+    carbonLawTopDataKey: "biogenicCarbonLawTop" as const,
     color: "var(--green-2)",
     translationKey: "nation.detailPage.graph.biogenic",
     parisTranslationKey: "nation.detailPage.graph.biogenicParis",
@@ -51,7 +51,7 @@ const NATION_STACK_CONFIG = [
   {
     dataKey: "consumptionAbroad" as const,
     trendTopDataKey: "consumptionAbroadTrendTop" as const,
-    carbonLawDataKey: "consumptionAbroadCarbonLaw" as const,
+    carbonLawTopDataKey: "consumptionAbroadCarbonLawTop" as const,
     color: "var(--blue-2)",
     translationKey: "nation.detailPage.graph.consumptionAbroad",
     parisTranslationKey: "nation.detailPage.graph.consumptionAbroadParis",
@@ -97,13 +97,6 @@ export const NationOverviewChart: FC<NationOverviewChartProps> = ({
       {
         name: t("detailPage.graph.estimated"),
         color: "var(--grey)",
-        isClickable: false,
-        isHidden: false,
-        isDashed: true,
-      },
-      {
-        name: t("detailPage.graph.trend"),
-        color: "var(--pink-3)",
         isClickable: false,
         isHidden: false,
         isDashed: true,
@@ -180,10 +173,9 @@ export const NationOverviewChart: FC<NationOverviewChartProps> = ({
 
             {NATION_STACK_CONFIG.map((layer) => (
               <Line
-                key={layer.carbonLawDataKey}
+                key={layer.carbonLawTopDataKey}
                 type="monotone"
-                dataKey={layer.carbonLawDataKey}
-                stackId="paris"
+                dataKey={layer.carbonLawTopDataKey}
                 {...getLinePropsWithHover(
                   "secondary",
                   layer.color,
@@ -193,17 +185,6 @@ export const NationOverviewChart: FC<NationOverviewChartProps> = ({
                 connectNulls
               />
             ))}
-
-            <Line
-              type="monotone"
-              dataKey="trend"
-              {...getLinePropsWithHover(
-                "trend",
-                "var(--pink-3)",
-                isMobile,
-                t("detailPage.graph.trend"),
-              )}
-            />
           </ComposedChart>
         </ResponsiveContainer>
       </ChartArea>

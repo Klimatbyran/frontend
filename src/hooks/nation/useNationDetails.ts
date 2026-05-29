@@ -10,7 +10,6 @@ import { DetailStat } from "@/components/detail/DetailHeader";
 import { getNationDetails } from "@/lib/api";
 import {
   calculateCarbonLawFromApproximatedRecord,
-  calculateCarbonLawFromReportedRecord,
   sumNationEmissionRecords,
 } from "@/utils/data/nationTransforms";
 import type { SupportedLanguage } from "@/lib/languageDetection";
@@ -127,11 +126,18 @@ function transformApiNationToNationDetails(
       extractEmissionsRecord(r.approximatedHistoricalEmission),
       currentYear,
     ),
-    territorialFossilCarbonLaw:
-      calculateCarbonLawFromReportedRecord(territorialFossil),
-    biogenicCarbonLaw: calculateCarbonLawFromReportedRecord(biogenic),
-    consumptionAbroadCarbonLaw:
-      calculateCarbonLawFromReportedRecord(consumptionAbroad),
+    territorialFossilCarbonLaw: calculateCarbonLawFromApproximatedRecord(
+      approximatedTerritorialFossil,
+      currentYear,
+    ),
+    biogenicCarbonLaw: calculateCarbonLawFromApproximatedRecord(
+      approximatedBiogenic,
+      currentYear,
+    ),
+    consumptionAbroadCarbonLaw: calculateCarbonLawFromApproximatedRecord(
+      approximatedConsumptionAbroad,
+      currentYear,
+    ),
     meetsParis: r.meetsParis ?? false,
     historicalEmissionChangePercent: r.historicalEmissionChangePercent ?? 0,
   };

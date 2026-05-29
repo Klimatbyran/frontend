@@ -132,13 +132,13 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
       "territorialFossilCarbonLaw",
       "biogenicCarbonLaw",
       "consumptionAbroadCarbonLaw",
-      "trend",
     ]);
     filteredPayload = filteredPayload.filter(
       (entry) =>
         entry.dataKey &&
         stackKeys.has(entry.dataKey) &&
-        !entry.dataKey.endsWith("TrendTop"),
+        !entry.dataKey.endsWith("TrendTop") &&
+        !entry.dataKey.endsWith("CarbonLawTop"),
     );
 
     const hasReported = filteredPayload.some(

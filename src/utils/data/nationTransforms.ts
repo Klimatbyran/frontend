@@ -70,65 +70,35 @@ export function calculateCarbonLawFromApproximatedRecord(
   return carbonLawRecord;
 }
 
-/** Paris path per layer, anchored at the latest reported (historical) value for that layer. */
-export function calculateCarbonLawFromReportedRecord(
-  reported: Record<string, number>,
-): Record<string, number> {
-  const carbonLawRecord: Record<string, number> = {};
-
-  const baseEntry = Object.entries(reported)
-    .filter(([year]) => !isNaN(Number(year)))
-    .sort(([yearA], [yearB]) => Number(yearB) - Number(yearA))[0];
-
-  if (!baseEntry) return carbonLawRecord;
-
-  const [baseYearStr, carbonLawBaseValue] = baseEntry;
-  const carbonLawBaseYear = Number(baseYearStr);
-
-  for (let year = carbonLawBaseYear; year <= EMISSIONS_DATA_END_YEAR; year++) {
-    const carbonLawValue = calculateParisValue(
-      year,
-      carbonLawBaseYear,
-      carbonLawBaseValue,
-      CARBON_LAW_REDUCTION_RATE,
-    );
-    if (carbonLawValue !== null) {
-      carbonLawRecord[year.toString()] = carbonLawValue;
-    }
-  }
-
-  return carbonLawRecord;
-}
-
-function getLatestReportedYear(
-  reported: Record<string, number>,
-): number | null {
-  const years = Object.keys(reported)
-    .map(Number)
-    .filter((year) => !isNaN(year));
-  if (years.length === 0) return null;
-  return Math.max(...years);
-}
-
 function getLayerParisValueKg(
   reported: Record<string, number>,
+  approximated: Record<string, number> | undefined,
+  stackAnchorYear: number,
   year: number,
+  currentYear: number,
 ): number | undefined {
-  const anchorYear = getLatestReportedYear(reported);
-  if (anchorYear === null || year < anchorYear) return undefined;
+  if (year < currentYear || year > EMISSIONS_DATA_END_YEAR) {
+    return undefined;
+  }
 
-  const anchorValueKg = reported[anchorYear.toString()];
-  if (anchorValueKg === undefined) return undefined;
+  const baseValueKg = getLayerTrendValueKg(
+    reported,
+    approximated,
+    currentYear,
+    stackAnchorYear,
+    currentYear,
+  );
+  if (baseValueKg === undefined) return undefined;
 
-  if (year === anchorYear) {
-    return anchorValueKg;
+  if (year === currentYear) {
+    return baseValueKg;
   }
 
   return (
     calculateParisValue(
       year,
-      anchorYear,
-      anchorValueKg,
+      currentYear,
+      baseValueKg,
       CARBON_LAW_REDUCTION_RATE,
     ) ?? undefined
   );
@@ -175,33 +145,23 @@ function getLayerTrendValueKg(
   return approximated?.[year.toString()];
 }
 
-function getCumulativeTrendTops(
-  territorialFossilTrend?: number,
-  biogenicTrend?: number,
-  consumptionAbroadTrend?: number,
+function getCumulativeLayerTops(
+  bottom?: number,
+  middle?: number,
+  top?: number,
 ): {
-  territorialFossilTrendTop?: number;
-  biogenicTrendTop?: number;
-  consumptionAbroadTrendTop?: number;
+  bottomTop?: number;
+  middleTop?: number;
+  topTop?: number;
 } {
-  if (territorialFossilTrend === undefined) {
+  if (bottom === undefined) {
     return {};
   }
 
-  const biogenicTrendTop = sumDefined(
-    territorialFossilTrend,
-    biogenicTrend,
-  );
-  const consumptionAbroadTrendTop = sumDefined(
-    territorialFossilTrend,
-    biogenicTrend,
-    consumptionAbroadTrend,
-  );
-
   return {
-    territorialFossilTrendTop: territorialFossilTrend,
-    biogenicTrendTop,
-    consumptionAbroadTrendTop,
+    bottomTop: bottom,
+    middleTop: sumDefined(bottom, middle),
+    topTop: sumDefined(bottom, middle, top),
   };
 }
 
@@ -283,14 +243,14 @@ export function transformNationEmissionsData(
 
       if (stackAnchorYear !== null) {
         if (yearNum === stackAnchorYear - 1) {
-          const bridgeTops = getCumulativeTrendTops(
+          const bridgeTops = getCumulativeLayerTops(
             territorialFossil,
             biogenic,
             consumptionAbroad,
           );
-          territorialFossilTrendTop = bridgeTops.territorialFossilTrendTop;
-          biogenicTrendTop = bridgeTops.biogenicTrendTop;
-          consumptionAbroadTrendTop = bridgeTops.consumptionAbroadTrendTop;
+          territorialFossilTrendTop = bridgeTops.bottomTop;
+          biogenicTrendTop = bridgeTops.middleTop;
+          consumptionAbroadTrendTop = bridgeTops.topTop;
         } else if (yearNum >= stackAnchorYear && yearNum <= currentYear) {
           territorialFossilTrend = toTons(
             getLayerTrendValueKg(
@@ -320,30 +280,62 @@ export function transformNationEmissionsData(
             ),
           );
 
-          const trendTops = getCumulativeTrendTops(
+          const trendTops = getCumulativeLayerTops(
             territorialFossilTrend,
             biogenicTrend,
             consumptionAbroadTrend,
           );
-          territorialFossilTrendTop = trendTops.territorialFossilTrendTop;
-          biogenicTrendTop = trendTops.biogenicTrendTop;
-          consumptionAbroadTrendTop = trendTops.consumptionAbroadTrendTop;
+          territorialFossilTrendTop = trendTops.bottomTop;
+          biogenicTrendTop = trendTops.middleTop;
+          consumptionAbroadTrendTop = trendTops.topTop;
         }
       }
 
-      const territorialFossilParisKg = getLayerParisValueKg(
-        nation.territorialFossil,
-        yearNum,
-      );
-      const biogenicParisKg = getLayerParisValueKg(nation.biogenic, yearNum);
-      const consumptionAbroadParisKg = getLayerParisValueKg(
-        nation.consumptionAbroad,
-        yearNum,
-      );
+      let territorialFossilCarbonLaw: number | undefined;
+      let biogenicCarbonLaw: number | undefined;
+      let consumptionAbroadCarbonLaw: number | undefined;
+      let territorialFossilCarbonLawTop: number | undefined;
+      let biogenicCarbonLawTop: number | undefined;
+      let consumptionAbroadCarbonLawTop: number | undefined;
 
-      const territorialFossilCarbonLaw = toTons(territorialFossilParisKg);
-      const biogenicCarbonLaw = toTons(biogenicParisKg);
-      const consumptionAbroadCarbonLaw = toTons(consumptionAbroadParisKg);
+      if (stackAnchorYear !== null) {
+        territorialFossilCarbonLaw = toTons(
+          getLayerParisValueKg(
+            nation.territorialFossil,
+            nation.approximatedTerritorialFossil,
+            stackAnchorYear,
+            yearNum,
+            currentYear,
+          ),
+        );
+        biogenicCarbonLaw = toTons(
+          getLayerParisValueKg(
+            nation.biogenic,
+            nation.approximatedBiogenic,
+            stackAnchorYear,
+            yearNum,
+            currentYear,
+          ),
+        );
+        consumptionAbroadCarbonLaw = toTons(
+          getLayerParisValueKg(
+            nation.consumptionAbroad,
+            nation.approximatedConsumptionAbroad,
+            stackAnchorYear,
+            yearNum,
+            currentYear,
+          ),
+        );
+
+        const parisTops = getCumulativeLayerTops(
+          territorialFossilCarbonLaw,
+          biogenicCarbonLaw,
+          consumptionAbroadCarbonLaw,
+        );
+        territorialFossilCarbonLawTop = parisTops.bottomTop;
+        biogenicCarbonLawTop = parisTops.middleTop;
+        consumptionAbroadCarbonLawTop = parisTops.topTop;
+      }
 
       const stackedReported = sumDefined(
         territorialFossil,
@@ -389,6 +381,9 @@ export function transformNationEmissionsData(
         territorialFossilCarbonLaw,
         biogenicCarbonLaw,
         consumptionAbroadCarbonLaw,
+        territorialFossilCarbonLawTop,
+        biogenicCarbonLawTop,
+        consumptionAbroadCarbonLawTop,
       } as NationDataPoint;
     })
     .sort((a, b) => a.year - b.year)

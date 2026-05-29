@@ -69,4 +69,8 @@ export type NationDataPoint = DataPoint & {
   territorialFossilCarbonLaw?: number;
   biogenicCarbonLaw?: number;
   consumptionAbroadCarbonLaw?: number;
+  /** Cumulative stack height for Paris path lines */
+  territorialFossilCarbonLawTop?: number;
+  biogenicCarbonLawTop?: number;
+  consumptionAbroadCarbonLawTop?: number;
 };
