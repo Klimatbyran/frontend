@@ -33,7 +33,10 @@ export function useMapZoom(
     if (!mapRef.current) return;
 
     if (fitToBounds && mapBounds) {
-      mapRef.current.fitBounds(mapBounds, { padding: [20, 20], animate: false });
+      mapRef.current.fitBounds(mapBounds, {
+        padding: [20, 20],
+        animate: false,
+      });
       return;
     }
 

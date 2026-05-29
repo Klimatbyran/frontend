@@ -20,9 +20,7 @@ const PAGINATION_HEIGHT = 57;
 function calculateItemsPerPage(itemCount: number, panelHeight: number): number {
   const rowsWithoutPagination = Math.max(
     1,
-    Math.floor(
-      (panelHeight + LIST_ROW_GAP) / (LIST_ROW_HEIGHT + LIST_ROW_GAP),
-    ),
+    Math.floor((panelHeight + LIST_ROW_GAP) / (LIST_ROW_HEIGHT + LIST_ROW_GAP)),
   );
   const fitWithoutPagination = rowsWithoutPagination * LIST_COLUMNS;
 
@@ -107,15 +105,17 @@ export function EntityListBox({
   translateNamespace = "detailPage",
 }: EntityListBoxProps) {
   const { t } = useTranslation();
-  const { selectedKPI, mapData, territories, geoData, onAreaClick, defaultCenter, loading } =
-    useRelatedTerritoriesMap({ items, entityType });
   const {
-    panelRef,
-    currentPage,
-    setCurrentPage,
-    totalPages,
-    paginatedItems,
-  } = useTerritoryListPagination(territories.length);
+    selectedKPI,
+    mapData,
+    territories,
+    geoData,
+    onAreaClick,
+    defaultCenter,
+    loading,
+  } = useRelatedTerritoriesMap({ items, entityType });
+  const { panelRef, currentPage, setCurrentPage, totalPages, paginatedItems } =
+    useTerritoryListPagination(territories.length);
   const [hoveredMapArea, setHoveredMapArea] = useState<string | null>(null);
 
   if (items.length === 0) {

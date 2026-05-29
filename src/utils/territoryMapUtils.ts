@@ -29,9 +29,7 @@ export function toTerritoryMapName(
   entityType: MapEntityType,
   displayName: string,
 ): string {
-  return entityType === "regions"
-    ? toMapRegionName(displayName)
-    : displayName;
+  return entityType === "regions" ? toMapRegionName(displayName) : displayName;
 }
 
 export function getTerritoryKpiRawValue(

@@ -105,9 +105,7 @@ function TerritoryMap({
   );
 
   return (
-    <div
-      className={cn("relative h-full w-full max-w-screen-lg", className)}
-    >
+    <div className={cn("relative h-full w-full max-w-screen-lg", className)}>
       <MapContent
         geoData={geoData}
         position={position}
