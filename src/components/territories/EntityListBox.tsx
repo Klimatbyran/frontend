@@ -17,7 +17,7 @@ export function EntityListBox({
 }: ListBoxProps) {
   return (
     <EntityListBox
-      territories={territories}
+      items={territories}
       entityType={entityType}
       helpItems={helpItems}
       translateNamespace={translateNamespace}
