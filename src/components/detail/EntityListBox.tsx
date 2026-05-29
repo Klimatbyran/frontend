@@ -28,14 +28,8 @@ export function EntityListBox({
 }: EntityListBoxProps) {
   const { t } = useTranslation();
   const [viewMode, setViewMode] = useState<ViewMode>("list");
-  const {
-    selectedKPI,
-    mapData,
-    geoData,
-    onAreaClick,
-    defaultCenter,
-    loading,
-  } = useRelatedTerritoriesMap({ items, entityType });
+  const { selectedKPI, mapData, geoData, onAreaClick, defaultCenter, loading } =
+    useRelatedTerritoriesMap({ items, entityType });
 
   if (items.length === 0) {
     return null;
