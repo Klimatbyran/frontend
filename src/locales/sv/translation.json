@@ -1514,8 +1514,8 @@
       "regions": "Län"
     },
     "comparisonBubbles": {
-      "title": "Hur mycket är det?",
-      "description": "Sveriges utsläpp från e-handel från utlandet (2025) jämfört med en kommuns uppskattade territoriella utsläpp samma år.",
+      "title": "Utsläpp från e-handel från utlandet",
+      "description": "Sveriges utsläpp från e-handel från utlandet (2025), uppgivna i ton CO₂e (tCO₂e), jämfört med en kommuns uppskattade territoriella utsläpp samma år.",
       "eHandelLabel": "e-handel",
       "municipalityLabel": "{{municipality}}"
     }
