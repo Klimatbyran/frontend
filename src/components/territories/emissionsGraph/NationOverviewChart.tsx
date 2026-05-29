@@ -95,16 +95,7 @@ export const NationOverviewChart: FC<NationOverviewChartProps> = ({
       },
     ]);
 
-    return [
-      ...layerItems,
-      {
-        name: t("detailPage.graph.estimated"),
-        color: "var(--grey)",
-        isClickable: false,
-        isHidden: false,
-        isDashed: true,
-      },
-    ];
+    return layerItems;
   }, [t]);
 
   const filteredData = useMemo(() => {
@@ -183,6 +174,7 @@ export const NationOverviewChart: FC<NationOverviewChartProps> = ({
                 strokeDasharray="5 5"
                 fillOpacity={0}
                 dot={false}
+                legendType="none"
                 name={t("detailPage.graph.estimated")}
                 connectNulls={false}
               />
