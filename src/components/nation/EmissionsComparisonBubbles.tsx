@@ -75,7 +75,7 @@ function ComparisonBubble({
   );
 
   return (
-    <div className="flex flex-col items-center gap-3 px-1">
+    <div className="flex flex-col items-center gap-1.5 px-1">
       <Text className="text-sm font-bold text-black">{t("emissionsUnit")}</Text>
       {item.href ? (
         <LocalizedLink
@@ -144,13 +144,17 @@ export function EmissionsComparisonBubbles({ className }: { className?: string }
   }
 
   return (
-    <SectionWithHelp helpItems={[]} className={className}>
+    <SectionWithHelp
+      helpItems={[]}
+      className={cn("[&>div:first-child]:pb-2 [&>div:first-child]:md:mb-2", className)}
+    >
       <CardHeader
         title={t("nation.comparisonBubbles.title")}
         description={t("nation.comparisonBubbles.description")}
+        className="[&>div]:mb-4 [&>div]:@lg:mb-6"
       />
 
-      <div className="flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-0 sm:-space-x-10">
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-0 sm:-space-x-10 -mt-1">
         {bubbles.map((bubble) => (
           <ComparisonBubble key={bubble.id} item={bubble} maxValue={maxValue} />
         ))}
