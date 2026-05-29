@@ -20,6 +20,7 @@ type BubbleItem = {
   label: string;
   value: number;
   color: string;
+  valueClassName: string;
   href?: string;
 };
 
@@ -29,6 +30,12 @@ function getBubbleDiameter(
   maxDiameter: number,
 ): number {
   return Math.sqrt(value / maxValue) * maxDiameter;
+}
+
+function getValueTextClass(diameter: number) {
+  if (diameter >= 240) return "text-2xl md:text-3xl";
+  if (diameter >= 200) return "text-xl md:text-2xl";
+  return "text-lg md:text-xl";
 }
 
 function ComparisonBubble({
@@ -42,41 +49,40 @@ function ComparisonBubble({
   const { currentLanguage } = useLanguage();
   const diameter = getBubbleDiameter(item.value, maxValue, MAX_BUBBLE_DIAMETER);
   const formattedValue = formatEmissionsAbsolute(item.value, currentLanguage);
-  const valueFontSize = Math.max(16, Math.min(diameter * 0.13, 34));
-  const labelFontSize = Math.max(12, Math.min(diameter * 0.08, 18));
 
   const bubble = (
     <div
       className={cn(
-        "rounded-full shrink-0 flex flex-col items-center justify-center gap-1 px-3 text-center",
+        "rounded-full shrink-0 flex flex-col items-center justify-center gap-2 px-4 text-center bg-black-2",
         item.href && "transition-transform hover:scale-[1.03]",
       )}
       style={{
         width: diameter,
         height: diameter,
-        background: item.color,
-        border: "2px solid var(--black-4)",
+        border: `2px solid ${item.color}`,
         boxShadow: "0 2px 4px var(--black-4)",
       }}
     >
-      <span
-        className="font-bold tabular-nums leading-none text-black"
-        style={{ fontSize: valueFontSize }}
+      <Text className="text-sm md:text-base font-light leading-snug">
+        {item.label}
+      </Text>
+      <Text
+        className={cn(
+          "font-light tracking-tighter tabular-nums leading-none",
+          getValueTextClass(diameter),
+          item.valueClassName,
+        )}
       >
         {formattedValue}
-      </span>
-      <span
-        className="font-bold leading-tight text-black"
-        style={{ fontSize: labelFontSize }}
-      >
-        {item.label}
-      </span>
+      </Text>
     </div>
   );
 
   return (
     <div className="flex flex-col items-center gap-1.5 px-1">
-      <Text className="text-sm font-bold text-black">{t("emissionsUnit")}</Text>
+      <Text variant="small" className="text-grey">
+        {t("emissionsUnit")}
+      </Text>
       {item.href ? (
         <LocalizedLink
           to={item.href}
@@ -115,12 +121,14 @@ export function EmissionsComparisonBubbles({ className }: { className?: string }
         label: t("nation.comparisonBubbles.eHandelLabel"),
         value: E_HANDEL_FRAN_UTLANDET_EMISSIONS,
         color: "var(--orange-3)",
+        valueClassName: "text-orange-2",
       },
       {
         id: "municipality",
         label: comparisonMunicipality.name,
         value: comparisonMunicipality.value,
         color: "var(--blue-2)",
+        valueClassName: "text-blue-2",
         href: `/municipalities/${encodeURIComponent(comparisonMunicipality.name)}`,
       },
     ];
