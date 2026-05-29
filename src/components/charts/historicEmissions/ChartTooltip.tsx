@@ -138,6 +138,7 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
         entry.dataKey &&
         stackKeys.has(entry.dataKey) &&
         !entry.dataKey.endsWith("TrendTop") &&
+        !entry.dataKey.endsWith("HistoricalTop") &&
         !entry.dataKey.endsWith("CarbonLawTop"),
     );
 

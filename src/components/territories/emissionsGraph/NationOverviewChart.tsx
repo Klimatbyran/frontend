@@ -34,6 +34,7 @@ import { useLanguage } from "@/components/LanguageProvider";
 const NATION_STACK_CONFIG = [
   {
     dataKey: "territorialFossil" as const,
+    historicalTopDataKey: "territorialFossilHistoricalTop" as const,
     trendTopDataKey: "territorialFossilTrendTop" as const,
     carbonLawTopDataKey: "territorialFossilCarbonLawTop" as const,
     color: "var(--orange-2)",
@@ -42,6 +43,7 @@ const NATION_STACK_CONFIG = [
   },
   {
     dataKey: "biogenic" as const,
+    historicalTopDataKey: "biogenicHistoricalTop" as const,
     trendTopDataKey: "biogenicTrendTop" as const,
     carbonLawTopDataKey: "biogenicCarbonLawTop" as const,
     color: "var(--green-2)",
@@ -50,6 +52,7 @@ const NATION_STACK_CONFIG = [
   },
   {
     dataKey: "consumptionAbroad" as const,
+    historicalTopDataKey: "consumptionAbroadHistoricalTop" as const,
     trendTopDataKey: "consumptionAbroadTrendTop" as const,
     carbonLawTopDataKey: "consumptionAbroadCarbonLawTop" as const,
     color: "var(--blue-2)",
@@ -153,6 +156,20 @@ export const NationOverviewChart: FC<NationOverviewChartProps> = ({
                 fillOpacity={0.6}
                 name={t(layer.translationKey)}
                 connectNulls
+              />
+            ))}
+
+            {NATION_STACK_CONFIG.map((layer) => (
+              <Line
+                key={layer.historicalTopDataKey}
+                type="monotone"
+                dataKey={layer.historicalTopDataKey}
+                stroke={layer.color}
+                strokeWidth={2}
+                fillOpacity={0}
+                dot={false}
+                name={t(layer.translationKey)}
+                connectNulls={false}
               />
             ))}
 

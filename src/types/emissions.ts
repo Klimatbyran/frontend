@@ -62,7 +62,11 @@ export type NationDataPoint = DataPoint & {
   territorialFossilTrend?: number;
   biogenicTrend?: number;
   consumptionAbroadTrend?: number;
-  /** Cumulative stack height at each layer top (for dashed line Y positions) */
+  /** Cumulative stack height at each layer top (solid lines on historical years) */
+  territorialFossilHistoricalTop?: number;
+  biogenicHistoricalTop?: number;
+  consumptionAbroadHistoricalTop?: number;
+  /** Cumulative stack height at each layer top (dashed lines on approximated years) */
   territorialFossilTrendTop?: number;
   biogenicTrendTop?: number;
   consumptionAbroadTrendTop?: number;

@@ -278,6 +278,25 @@ export function transformNationEmissionsData(
         ),
       );
 
+      let territorialFossilHistoricalTop: number | undefined;
+      let biogenicHistoricalTop: number | undefined;
+      let consumptionAbroadHistoricalTop: number | undefined;
+
+      if (
+        stackAnchorYear !== null &&
+        yearNum <= stackAnchorYear &&
+        territorialFossil !== undefined
+      ) {
+        const historicalTops = getCumulativeLayerTops(
+          territorialFossil,
+          biogenic,
+          consumptionAbroad,
+        );
+        territorialFossilHistoricalTop = historicalTops.bottomTop;
+        biogenicHistoricalTop = historicalTops.middleTop;
+        consumptionAbroadHistoricalTop = historicalTops.topTop;
+      }
+
       let territorialFossilTrend: number | undefined;
       let biogenicTrend: number | undefined;
       let consumptionAbroadTrend: number | undefined;
@@ -406,6 +425,9 @@ export function transformNationEmissionsData(
         territorialFossilTrend,
         biogenicTrend,
         consumptionAbroadTrend,
+        territorialFossilHistoricalTop,
+        biogenicHistoricalTop,
+        consumptionAbroadHistoricalTop,
         territorialFossilTrendTop,
         biogenicTrendTop,
         consumptionAbroadTrendTop,
