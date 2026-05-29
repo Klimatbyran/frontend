@@ -4,11 +4,18 @@ import type L from "leaflet";
 const MIN_ZOOM = 3;
 const MAX_ZOOM = 10;
 
+interface UseMapZoomOptions {
+  fitToBounds?: boolean;
+  mapBounds?: L.LatLngBounds;
+}
+
 export function useMapZoom(
   defaultCenter: [number, number],
   getInitialZoom: () => number,
+  options: UseMapZoomOptions = {},
 ) {
   const mapRef = useRef<L.Map | null>(null);
+  const { fitToBounds = false, mapBounds } = options;
 
   const handleZoomIn = useCallback(() => {
     if (mapRef.current) {
@@ -23,10 +30,15 @@ export function useMapZoom(
   }, []);
 
   const handleReset = useCallback(() => {
-    if (mapRef.current) {
-      mapRef.current.setView(defaultCenter, getInitialZoom());
+    if (!mapRef.current) return;
+
+    if (fitToBounds && mapBounds) {
+      mapRef.current.fitBounds(mapBounds, { padding: [20, 20], animate: false });
+      return;
     }
-  }, [defaultCenter, getInitialZoom]);
+
+    mapRef.current.setView(defaultCenter, getInitialZoom());
+  }, [defaultCenter, getInitialZoom, fitToBounds, mapBounds]);
 
   return {
     mapRef,

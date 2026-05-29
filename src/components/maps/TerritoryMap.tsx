@@ -1,5 +1,7 @@
 import { useMemo } from "react";
 import { FeatureCollection } from "geojson";
+import { cn } from "@/lib/utils";
+import { TERRITORY_MAP_COLORS } from "@/utils/territoryMapUtils";
 import { DataItem, DataKPI, MapEntityType } from "@/types/rankings";
 import { calculateGeoBounds } from "./utils/geoBounds";
 import { useMapData } from "./hooks/useMapData";
@@ -30,6 +32,10 @@ interface TerritoryMapProps {
   };
   mapBackgroundColor?: string;
   scrollWheelZoom?: boolean;
+  className?: string;
+  fitToBounds?: boolean;
+  hoveredArea?: string | null;
+  onHoveredAreaChange?: (area: string | null) => void;
 }
 
 function TerritoryMap({
@@ -41,15 +47,13 @@ function TerritoryMap({
   defaultCenter = [63, 17],
   defaultZoom,
   propertyNameField = "name",
-  colors = {
-    null: "var(--grey)",
-    gradientStart: "var(--pink-5)",
-    gradientMidLow: "var(--pink-4)",
-    gradientMidHigh: "var(--pink-3)",
-    gradientEnd: "var(--blue-3)",
-  },
+  colors = TERRITORY_MAP_COLORS,
   mapBackgroundColor = "var(--black-2)",
   scrollWheelZoom = true,
+  className,
+  fitToBounds = false,
+  hoveredArea: hoveredAreaProp,
+  onHoveredAreaChange,
 }: TerritoryMapProps) {
   const { position, setPosition, getInitialZoom } = useMapPosition(
     defaultCenter,
@@ -61,6 +65,11 @@ function TerritoryMap({
     selectedKPI,
   );
 
+  const mapBounds = useMemo(
+    () => calculateGeoBounds(geoData, { padding: 0.05 }),
+    [geoData],
+  );
+
   const {
     mapRef,
     handleZoomIn,
@@ -68,7 +77,7 @@ function TerritoryMap({
     handleReset,
     MIN_ZOOM,
     MAX_ZOOM,
-  } = useMapZoom(defaultCenter, getInitialZoom);
+  } = useMapZoom(defaultCenter, getInitialZoom, { fitToBounds, mapBounds });
 
   const {
     hoveredArea,
@@ -84,12 +93,9 @@ function TerritoryMap({
     propertyNameField,
     colors,
     onAreaClick,
+    hoveredArea: hoveredAreaProp,
+    onHoveredAreaChange,
   });
-
-  const mapBounds = useMemo(
-    () => calculateGeoBounds(geoData, { padding: 0.05 }),
-    [geoData],
-  );
 
   const { leftValue, rightValue, hasNullValues } = useMapLegendValues(
     data,
@@ -99,7 +105,9 @@ function TerritoryMap({
   );
 
   return (
-    <div className="relative flex-1 h-full max-w-screen-lg">
+    <div
+      className={cn("relative h-full w-full max-w-screen-lg", className)}
+    >
       <MapContent
         geoData={geoData}
         position={position}
@@ -112,6 +120,7 @@ function TerritoryMap({
         setPosition={setPosition}
         backgroundColor={mapBackgroundColor}
         scrollWheelZoom={scrollWheelZoom}
+        fitToBounds={fitToBounds}
       />
       <MapOverlays
         entityType={entityType}

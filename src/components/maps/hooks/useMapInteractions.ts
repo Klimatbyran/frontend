@@ -2,7 +2,10 @@ import { useCallback, useEffect, useState } from "react";
 import { Feature, Geometry, GeoJsonProperties } from "geojson";
 import L from "leaflet";
 import { DataItem, DataKPI } from "@/types/rankings";
-import { createStatisticalGradient } from "@/utils/ui/colorGradients";
+import {
+  getTerritoryKpiRawValue,
+  getTerritoryMapFillColor,
+} from "@/utils/territoryMapUtils";
 import { isMobile } from "react-device-detect";
 
 interface UseMapInteractionsProps {
@@ -19,6 +22,8 @@ interface UseMapInteractionsProps {
     gradientEnd: string;
   };
   onAreaClick?: (id: string) => void;
+  hoveredArea?: string | null;
+  onHoveredAreaChange?: (area: string | null) => void;
 }
 
 export function useMapInteractions({
@@ -29,8 +34,30 @@ export function useMapInteractions({
   propertyNameField,
   colors,
   onAreaClick,
+  hoveredArea: controlledHoveredArea,
+  onHoveredAreaChange,
 }: UseMapInteractionsProps) {
-  const [hoveredArea, setHoveredArea] = useState<string | null>(null);
+  const [uncontrolledHoveredArea, setUncontrolledHoveredArea] = useState<
+    string | null
+  >(null);
+
+  const isControlled =
+    controlledHoveredArea !== undefined && onHoveredAreaChange !== undefined;
+  const hoveredArea = isControlled
+    ? controlledHoveredArea
+    : uncontrolledHoveredArea;
+
+  const setHoveredArea = useCallback(
+    (area: string | null) => {
+      if (isControlled) {
+        onHoveredAreaChange(area);
+        return;
+      }
+
+      setUncontrolledHoveredArea(area);
+    },
+    [isControlled, onHoveredAreaChange],
+  );
   const [hoveredValue, setHoveredValue] = useState<number | boolean | null>(
     null,
   );
@@ -50,14 +77,7 @@ export function useMapInteractions({
         return { value: null, rank: null };
       }
 
-      let value: number | boolean | null = null;
-      const rawValue = item[selectedKPI.key];
-      if (typeof rawValue === "number" || typeof rawValue === "boolean") {
-        value = rawValue;
-      } else if (rawValue !== null && rawValue !== undefined) {
-        const numericValue = Number(rawValue);
-        value = Number.isFinite(numericValue) ? numericValue : null;
-      }
+      const value = getTerritoryKpiRawValue(item, String(selectedKPI.key));
 
       const rankIndex = sortedData.findIndex(
         (d) => d.name && item.name && d.name === item.name,
@@ -71,25 +91,16 @@ export function useMapInteractions({
 
   const getColorByValue = useCallback(
     (value: number | boolean | null): string => {
-      if (
-        value === null ||
-        value === undefined ||
-        values.length === 0 ||
-        Number.isNaN(value)
-      ) {
-        return colors.null;
-      }
-
-      const { gradientMidLow, gradientEnd } = colors;
-
-      if (typeof value === "boolean") {
-        return value === true ? gradientEnd : gradientMidLow;
-      }
-
-      return createStatisticalGradient(
-        values,
+      return getTerritoryMapFillColor(
         value,
-        selectedKPI.higherIsBetter ?? false,
+        values,
+        {
+          higherIsBetter: selectedKPI.higherIsBetter,
+          isBoolean:
+            "isBoolean" in selectedKPI
+              ? Boolean(selectedKPI.isBoolean)
+              : undefined,
+        },
         colors,
       );
     },
@@ -101,7 +112,8 @@ export function useMapInteractions({
       if (feature?.properties?.[propertyNameField]) {
         const areaName = feature.properties[propertyNameField];
         const { value } = getAreaData(areaName);
-        const isHovered = hoveredArea === areaName;
+        const isHovered =
+          hoveredArea?.toLowerCase() === String(areaName).toLowerCase();
         const color = getColorByValue(value);
 
         return {
@@ -151,7 +163,7 @@ export function useMapInteractions({
         });
       }
     },
-    [propertyNameField, onAreaClick],
+    [propertyNameField, onAreaClick, setHoveredArea],
   );
 
   useEffect(() => {

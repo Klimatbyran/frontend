@@ -14,6 +14,10 @@ import {
 import { DataItem, MapEntityType } from "@/types/rankings";
 import { createEntityClickHandler } from "@/utils/routing";
 import { filterGeoDataByNames } from "@/utils/geoUtils";
+import {
+  buildTerritoryListEntries,
+  TerritoryKpi,
+} from "@/utils/territoryMapUtils";
 import { toMapRegionName } from "@/utils/regionUtils";
 
 interface UseRelatedTerritoriesMapOptions {
@@ -32,12 +36,14 @@ export function useRelatedTerritoriesMap({
   const { municipalitiesData, loading: municipalitiesLoading } =
     useMunicipalityKPIs();
 
-  const selectedKPI = useMemo(() => {
+  const selectedKPI = useMemo((): TerritoryKpi => {
     const kpis =
       entityType === "municipalities" ? municipalityKPIs : regionalKPIs;
+    const meetsParisKey =
+      entityType === "municipalities" ? "meetsParisGoal" : "meetsParis";
+
     return (
-      kpis.find((kpi) => kpi.key === "historicalEmissionChangePercent") ??
-      kpis[0]
+      (kpis.find((kpi) => kpi.key === meetsParisKey) ?? kpis[0]) as TerritoryKpi
     );
   }, [entityType, municipalityKPIs, regionalKPIs]);
 
@@ -88,13 +94,23 @@ export function useRelatedTerritoriesMap({
 
     return municipalitiesData
       .filter((municipality) => itemsSet.has(municipality.name.toLowerCase()))
-      .map((municipality) => ({
-        ...municipality,
-        id: municipality.name,
-        name: municipality.name,
-        displayName: municipality.name,
-      }));
+      .map((municipality) => {
+        const { meetsParis, ...rest } = municipality;
+
+        return {
+          ...rest,
+          meetsParisGoal: meetsParis,
+          id: municipality.name,
+          name: municipality.name,
+          displayName: municipality.name,
+        };
+      });
   }, [entityType, regionsData, municipalitiesData, itemsSet]);
+
+  const territories = useMemo(
+    () => buildTerritoryListEntries(items, entityType, mapData, selectedKPI),
+    [items, entityType, mapData, selectedKPI],
+  );
 
   const geoData = useMemo(() => {
     const source =
@@ -102,13 +118,12 @@ export function useRelatedTerritoriesMap({
         ? (municipalityGeoJson as FeatureCollection)
         : (regionGeoJson as FeatureCollection);
 
-    const namesForFilter =
-      entityType === "regions"
-        ? new Set(items.map((item) => toMapRegionName(item).toLowerCase()))
-        : itemsSet;
+    const namesForFilter = new Set(
+      territories.map((territory) => territory.mapName.toLowerCase()),
+    );
 
     return filterGeoDataByNames(source, namesForFilter);
-  }, [entityType, items, itemsSet]);
+  }, [entityType, territories]);
 
   const defaultCenter: [number, number] =
     entityType === "regions" ? [63.7, 17] : [63, 17];
@@ -116,6 +131,7 @@ export function useRelatedTerritoriesMap({
   return {
     selectedKPI,
     mapData,
+    territories,
     geoData,
     onAreaClick,
     defaultCenter,
