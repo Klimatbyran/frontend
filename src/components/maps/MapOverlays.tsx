@@ -21,11 +21,13 @@ interface MapOverlaysProps {
   handleZoomOut: () => void;
   handleReset: () => void;
   onAreaClick?: (id: string) => void;
+  showTooltip?: boolean;
 }
 
 function MapOverlays({
   entityType,
   selectedKPI,
+  showTooltip = true,
   hoveredArea,
   hoveredValue,
   hoveredRank,
@@ -43,7 +45,7 @@ function MapOverlays({
 }: MapOverlaysProps) {
   return (
     <>
-      {hoveredArea && (
+      {showTooltip && hoveredArea && (
         <MapTooltip
           entityType={entityType}
           name={hoveredArea}

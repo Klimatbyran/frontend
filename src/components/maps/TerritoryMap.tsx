@@ -34,6 +34,7 @@ interface TerritoryMapProps {
   scrollWheelZoom?: boolean;
   className?: string;
   fitToBounds?: boolean;
+  showTooltip?: boolean;
   hoveredArea?: string | null;
   onHoveredAreaChange?: (area: string | null) => void;
 }
@@ -52,6 +53,7 @@ function TerritoryMap({
   scrollWheelZoom = true,
   className,
   fitToBounds = false,
+  showTooltip = true,
   hoveredArea: hoveredAreaProp,
   onHoveredAreaChange,
 }: TerritoryMapProps) {
@@ -123,6 +125,7 @@ function TerritoryMap({
       <MapOverlays
         entityType={entityType}
         selectedKPI={selectedKPI}
+        showTooltip={showTooltip}
         hoveredArea={hoveredArea}
         hoveredValue={hoveredValue}
         hoveredRank={hoveredRank}

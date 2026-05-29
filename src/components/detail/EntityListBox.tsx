@@ -158,6 +158,7 @@ export function EntityListBox({
                 defaultCenter={defaultCenter}
                 scrollWheelZoom={false}
                 fitToBounds
+                showTooltip={false}
                 hoveredArea={hoveredMapArea}
                 onHoveredAreaChange={setHoveredMapArea}
                 className="max-w-none"
