@@ -191,7 +191,7 @@ export function EntityListBox({
                   <LocalizedLink
                     to={`${basePath}/${territory.displayName}`}
                     className={cn(
-                      "min-w-0 flex-1 truncate text-sm leading-5 text-grey underline hover:text-white md:text-base",
+                      "min-w-0 flex-1 truncate text-sm leading-5 text-grey hover:text-white md:text-base",
                       isHovered && "text-white",
                     )}
                   >
