@@ -20,6 +20,7 @@ export const SourcesContent = () => {
             "klimatplaner",
             "upphandlingsmyndigheten",
             "greenpeace",
+            "climateTrace",
           ].map((key) => (
             <LinkButton
               key={key}

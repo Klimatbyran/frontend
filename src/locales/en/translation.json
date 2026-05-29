@@ -11,9 +11,11 @@
     "companies": "Companies",
     "sectors": "Sectors",
     "explore": "Explore",
+    "europe": "Europe",
     "municipalities": "Municipalities",
     "nation": "Sweden",
     "regions": "Regions",
+    "countries": "Countries",
     "about": "About",
     "aboutUs": "About Us",
     "insights": "Insights",
@@ -897,6 +899,11 @@
             "title": "Greenpeace",
             "text": "Mapping of climate requirements in public procurement",
             "link": "https://docs.google.com/spreadsheets/d/1EdHUa49HJZn0rXqM-6tChdim4TJzXnwA/edit#gid=1040317160"
+          },
+          "climateTrace": {
+            "title": "Climate TRACE",
+            "text": "European country emissions data (CO₂e per capita and year-over-year change)",
+            "link": "https://climatetrace.org/"
           }
         }
       }
@@ -1497,6 +1504,41 @@
       }
     }
   },
+  "europeanRankedPage": {
+    "title": "European Overview",
+    "description": "Overview of emissions and transition at the European level"
+  },
+  "europe": {
+    "map": {
+      "legend": {
+        "null": "No data"
+      }
+    },
+    "list": {
+      "dataSelector": {
+        "label": "Select Data Point",
+        "tooltips": {
+          "higherBetter": "Higher values are better",
+          "lowerBetter": "Lower values are better"
+        }
+      },
+      "kpis": {
+        "emissionsPerCapita": {
+          "label": "Emissions per capita",
+          "description": "Annual greenhouse gas emissions per person",
+          "detailedDescription": "Estimated annual CO₂e emissions per capita by country for 2025.",
+          "unit": " tCO₂e",
+          "source": "Climate TRACE"
+        },
+        "emissionsPercentChange": {
+          "label": "Emissions change",
+          "description": "Year-over-year change in emissions under 2025",
+          "detailedDescription": "Percentage change in CO₂e emissions under 2025.",
+          "source": "Climate TRACE"
+        }
+      }
+    }
+  },
   "municipalities": {
     "name": "Name",
     "card": {
@@ -1900,6 +1942,7 @@
     "rank": "Rank: {{rank}} of {{total}}"
   },
   "rankedInsights": {
+    "average": "Average:",
     "belowAverage": "{{entityPlural}} below average",
     "aboveAverage": "{{entityPlural}} above average",
     "titleBest": "Top Five {{entityPlural}}",

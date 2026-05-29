@@ -11,9 +11,11 @@
     "companies": "Företag",
     "sectors": "Branscher",
     "explore": "Utforska",
+    "europe": "Europa",
     "municipalities": "Kommuner",
     "nation": "Sverige",
     "regions": "Län",
+    "countries": "Länder",
     "about": "Om",
     "aboutUs": "Om oss",
     "insights": "Insikter",
@@ -956,6 +958,11 @@
             "title": "Greenpeace",
             "text": "Kartläggning av klimatkrav i offentliga upphandlingar",
             "link": "https://docs.google.com/spreadsheets/d/1EdHUa49HJZn0rXqM-6tChdim4TJzXnwA/edit#gid=1040317160"
+          },
+          "climateTrace": {
+            "title": "Climate TRACE",
+            "text": "Utsläppsdata för europeiska länder (CO₂e per capita och årlig förändring)",
+            "link": "https://climatetrace.org/"
           }
         }
       }
@@ -1556,6 +1563,41 @@
       }
     }
   },
+  "europeanRankedPage": {
+    "title": "Europeisk översikt",
+    "description": "Översikt över utsläpp och omställning på europeisk nivå"
+  },
+  "europe": {
+    "map": {
+      "legend": {
+        "null": "Ingen data"
+      }
+    },
+    "list": {
+      "dataSelector": {
+        "label": "Välj datapunkt",
+        "tooltips": {
+          "higherBetter": "Högre värden är bättre",
+          "lowerBetter": "Lägre värden är bättre"
+        }
+      },
+      "kpis": {
+        "emissionsPerCapita": {
+          "label": "Utsläpp per capita",
+          "description": "Årliga växthusgasutsläpp per person",
+          "detailedDescription": "Uppskattade årliga CO₂e-utsläpp per capita per land för 2025.",
+          "unit": " tCO₂e",
+          "source": "Climate TRACE"
+        },
+        "emissionsPercentChange": {
+          "label": "Förändring i utsläpp",
+          "description": "Förändring i utsläpp under 2025",
+          "detailedDescription": "Procentuell förändring i CO₂e-utsläpp under 2025.",
+          "source": "Climate TRACE"
+        }
+      }
+    }
+  },
   "municipalities": {
     "name": "Namn",
     "card": {
@@ -1959,6 +2001,7 @@
     "rank": "Placering: {{rank}} av {{total}}"
   },
   "rankedInsights": {
+    "average": "Genomsnitt:",
     "belowAverage": "{{entityPlural}} under genomsnittet",
     "aboveAverage": "{{entityPlural}} över genomsnittet",
     "titleBest": "Topp fem {{entityPlural}}",

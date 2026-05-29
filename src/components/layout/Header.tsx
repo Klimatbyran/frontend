@@ -52,16 +52,21 @@ const NAV_LINKS: NavLink[] = [
         path: `/explore/municipalities`,
       },
       {
+        label: "header.europe",
+        path: `/europe`,
+        onlyShowOnStaging: true,
+      },
+      {
+        label: "header.nation",
+        path: `/nation`,
+      },
+      {
         label: "header.municipalities",
         path: `/municipalities`,
       },
       {
         label: "header.regions",
         path: `/regions`,
-      },
-      {
-        label: "header.nation",
-        path: `/nation`,
       },
       {
         label: "header.companies",

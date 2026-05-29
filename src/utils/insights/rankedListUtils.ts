@@ -61,7 +61,11 @@ export function calculateEntityStatistics<
   entities: T[],
   selectedKPI: KPI,
   getValue: (entity: T) => unknown,
-  entityType: "municipalities" | "companies" | "regions" = "municipalities",
+  entityType:
+    | "municipalities"
+    | "companies"
+    | "regions"
+    | "countries" = "municipalities",
 ): EntityStatistics<T> {
   const validData = filterValidData(entities, selectedKPI, getValue);
 

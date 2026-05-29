@@ -179,30 +179,49 @@ export function RankedList<T extends Record<string, unknown>>({
     if (listElement) listElement.scrollTop = 0;
   };
 
-  const defaultRenderItem = (item: T, index: number) => (
-    <button
-      key={String(index)}
-      onClick={() => onItemClick?.(item)}
-      className="w-full p-4 hover:bg-black/40 transition-colors flex items-center justify-between group"
-    >
-      <div className="flex items-center gap-4">
-        <span className="text-white/30 text-sm w-8">
-          {selectedDataPoint.isBoolean ? "" : getOriginalRank(item)}
+  const defaultRenderItem = (item: T, index: number) => {
+    const rowContent = (
+      <>
+        <div className="flex items-center gap-4">
+          <span className="text-white/30 text-sm w-8">
+            {selectedDataPoint.isBoolean ? "" : getOriginalRank(item)}
+          </span>
+          <span className="text-white/90 text-sm md:text-base text-left">
+            {String(item[searchKey])}
+          </span>
+        </div>
+        <span
+          className={cn(
+            getColor(item),
+            "text-sm md:text-base font-medium text-right",
+          )}
+        >
+          {formatValue(item)}
         </span>
-        <span className="text-white/90 text-sm md:text-base text-left">
-          {String(item[searchKey])}
-        </span>
-      </div>
-      <span
-        className={cn(
-          getColor(item),
-          "text-sm md:text-base font-medium text-right",
-        )}
+      </>
+    );
+
+    if (!onItemClick) {
+      return (
+        <div
+          key={String(index)}
+          className="w-full p-4 flex items-center justify-between"
+        >
+          {rowContent}
+        </div>
+      );
+    }
+
+    return (
+      <button
+        key={String(index)}
+        onClick={() => onItemClick(item)}
+        className="w-full p-4 hover:bg-black/40 transition-colors flex items-center justify-between group"
       >
-        {formatValue(item)}
-      </span>
-    </button>
-  );
+        {rowContent}
+      </button>
+    );
+  };
 
   return (
     <div
