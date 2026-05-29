@@ -75,7 +75,11 @@ export function buildCountryGeoIndex(
     nameToIso3.set(normalizeCountryName(englishName), iso3);
 
     for (const language of SUPPORTED_LANGUAGES) {
-      const localizedName = getLocalizedCountryName(iso2, language, englishName);
+      const localizedName = getLocalizedCountryName(
+        iso2,
+        language,
+        englishName,
+      );
       nameToIso3.set(normalizeCountryName(localizedName), iso3);
     }
   }
