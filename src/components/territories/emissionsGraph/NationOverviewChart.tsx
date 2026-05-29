@@ -36,6 +36,7 @@ const NATION_STACK_CONFIG = [
     dataKey: "territorialFossil" as const,
     historicalTopDataKey: "territorialFossilHistoricalTop" as const,
     trendTopDataKey: "territorialFossilTrendTop" as const,
+    carbonLawDataKey: "territorialFossilCarbonLaw" as const,
     carbonLawTopDataKey: "territorialFossilCarbonLawTop" as const,
     color: "var(--orange-2)",
     translationKey: "nation.detailPage.graph.territorialFossil",
@@ -45,6 +46,7 @@ const NATION_STACK_CONFIG = [
     dataKey: "biogenic" as const,
     historicalTopDataKey: "biogenicHistoricalTop" as const,
     trendTopDataKey: "biogenicTrendTop" as const,
+    carbonLawDataKey: "biogenicCarbonLaw" as const,
     carbonLawTopDataKey: "biogenicCarbonLawTop" as const,
     color: "var(--green-2)",
     translationKey: "nation.detailPage.graph.biogenic",
@@ -54,6 +56,7 @@ const NATION_STACK_CONFIG = [
     dataKey: "consumptionAbroad" as const,
     historicalTopDataKey: "consumptionAbroadHistoricalTop" as const,
     trendTopDataKey: "consumptionAbroadTrendTop" as const,
+    carbonLawDataKey: "consumptionAbroadCarbonLaw" as const,
     carbonLawTopDataKey: "consumptionAbroadCarbonLawTop" as const,
     color: "var(--blue-2)",
     translationKey: "nation.detailPage.graph.consumptionAbroad",
@@ -146,6 +149,21 @@ export const NationOverviewChart: FC<NationOverviewChartProps> = ({
                 fill={layer.color}
                 fillOpacity={0.6}
                 name={t(layer.translationKey)}
+                connectNulls={false}
+              />
+            ))}
+
+            {NATION_STACK_CONFIG.map((layer) => (
+              <Area
+                key={`paris-fill-${layer.carbonLawDataKey}`}
+                type="monotone"
+                dataKey={layer.carbonLawDataKey}
+                stackId="paris"
+                stroke="none"
+                fill={layer.color}
+                fillOpacity={0.4}
+                legendType="none"
+                name={t(layer.parisTranslationKey)}
                 connectNulls={false}
               />
             ))}
