@@ -1,6 +1,9 @@
 import { t } from "i18next";
+import { cn } from "@/lib/utils";
 import { DEFAULT_STATISTICAL_GRADIENT_COLORS } from "@/utils/ui/colorGradients";
 import { KPIValue, MapEntityType } from "@/types/rankings";
+
+export type MapLegendPosition = "bottom-left" | "bottom-right";
 
 export function MapLegend({
   entityType,
@@ -9,6 +12,7 @@ export function MapLegend({
   rightValue,
   selectedKPI,
   hasNullValues,
+  position = "bottom-right",
 }: {
   entityType: MapEntityType;
   unit: string;
@@ -16,6 +20,7 @@ export function MapLegend({
   rightValue: number;
   selectedKPI: KPIValue;
   hasNullValues: boolean;
+  position?: MapLegendPosition;
 }) {
   const booleanItem = (color: string, label: string) => (
     <div className="flex items-center">
@@ -32,7 +37,14 @@ export function MapLegend({
   );
 
   return (
-    <div className="absolute bottom-2 right-2 left-2 md:bottom-4 md:right-4 md:left-auto bg-black/60 backdrop-blur-sm p-2 md:p-4 rounded-2xl">
+    <div
+      className={cn(
+        "absolute bg-black/60 backdrop-blur-sm p-2 md:p-4 rounded-2xl",
+        position === "bottom-left"
+          ? "bottom-2 left-2 right-auto md:bottom-4 md:left-4"
+          : "bottom-2 right-2 left-2 md:bottom-4 md:right-4 md:left-auto",
+      )}
+    >
       <div className="flex flex-col md:flex-row items-start md:items-center space-y-2 md:space-y-0 w-full md:w-auto">
         <div className="flex items-center w-full md:w-auto gap-2">
           {selectedKPI.isBoolean ? (

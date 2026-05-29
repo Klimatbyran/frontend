@@ -11,6 +11,7 @@ import { useMapPosition } from "./hooks/useMapPosition";
 import { useMapLegendValues } from "./hooks/useMapLegendValues";
 import MapContent from "./MapContent";
 import MapOverlays from "./MapOverlays";
+import type { MapLegendPosition } from "./MapLegend";
 
 import "leaflet/dist/leaflet.css";
 
@@ -35,6 +36,7 @@ interface TerritoryMapProps {
   className?: string;
   fitToBounds?: boolean;
   showTooltip?: boolean;
+  legendPosition?: MapLegendPosition;
   hoveredArea?: string | null;
   onHoveredAreaChange?: (area: string | null) => void;
 }
@@ -54,6 +56,7 @@ function TerritoryMap({
   className,
   fitToBounds = false,
   showTooltip = true,
+  legendPosition = "bottom-right",
   hoveredArea: hoveredAreaProp,
   onHoveredAreaChange,
 }: TerritoryMapProps) {
@@ -126,6 +129,7 @@ function TerritoryMap({
         entityType={entityType}
         selectedKPI={selectedKPI}
         showTooltip={showTooltip}
+        legendPosition={legendPosition}
         hoveredArea={hoveredArea}
         hoveredValue={hoveredValue}
         hoveredRank={hoveredRank}
