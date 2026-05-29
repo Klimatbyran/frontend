@@ -65,17 +65,19 @@ export function getTerritoryMapFillColor(
   kpi: Pick<TerritoryKpi, "higherIsBetter" | "isBoolean">,
   colors: typeof TERRITORY_MAP_COLORS = TERRITORY_MAP_COLORS,
 ): string {
-  if (
-    value === null ||
-    value === undefined ||
-    values.length === 0 ||
-    (typeof value === "number" && Number.isNaN(value))
-  ) {
+  if (value === null || value === undefined) {
     return colors.null;
   }
 
   if (typeof value === "boolean") {
     return value === true ? colors.gradientEnd : colors.gradientMidLow;
+  }
+
+  if (
+    values.length === 0 ||
+    (typeof value === "number" && Number.isNaN(value))
+  ) {
+    return colors.null;
   }
 
   return createStatisticalGradient(
