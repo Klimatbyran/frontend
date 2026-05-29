@@ -12,8 +12,7 @@ export function useNationPageData() {
   const sortedRegions = useMemo(() => [...regions].sort(), [regions]);
   const calendarYear = new Date().getFullYear();
   const emissionsData = useMemo(
-    () =>
-      nation ? transformNationEmissionsData(nation, calendarYear) : [],
+    () => (nation ? transformNationEmissionsData(nation, calendarYear) : []),
     [nation, calendarYear],
   );
 

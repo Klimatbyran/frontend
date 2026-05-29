@@ -171,15 +171,19 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
       filteredPayload = filteredPayload.filter(
         (entry) =>
           !entry.dataKey ||
-          !["territorialFossilTrend", "biogenicTrend", "consumptionAbroadTrend"].includes(
-            entry.dataKey,
-          ),
+          ![
+            "territorialFossilTrend",
+            "biogenicTrend",
+            "consumptionAbroadTrend",
+          ].includes(entry.dataKey),
       );
     }
 
-    const parisTooltipEntries: PayloadEntry[] = NATION_PARIS_TOOLTIP_LAYERS.flatMap(
-      (layer) => {
-        const topEntry = payload.find((entry) => entry.dataKey === layer.topKey);
+    const parisTooltipEntries: PayloadEntry[] =
+      NATION_PARIS_TOOLTIP_LAYERS.flatMap((layer) => {
+        const topEntry = payload.find(
+          (entry) => entry.dataKey === layer.topKey,
+        );
         const segmentValue = dataPoint?.[layer.valueKey];
         if (segmentValue == null || !topEntry) {
           return [];
@@ -194,8 +198,7 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
             payload: payload[0]?.payload,
           },
         ];
-      },
-    );
+      });
 
     filteredPayload = [...filteredPayload, ...parisTooltipEntries];
   }
@@ -351,9 +354,11 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
 
       {dataView === "nation-overview" &&
         filteredPayload.some((entry) =>
-          ["territorialFossilTrend", "biogenicTrend", "consumptionAbroadTrend"].includes(
-            entry.dataKey as string,
-          ),
+          [
+            "territorialFossilTrend",
+            "biogenicTrend",
+            "consumptionAbroadTrend",
+          ].includes(entry.dataKey as string),
         ) && (
           <div className="text-xs text-blue-2 mt-2 col-span-2">
             {t("municipalities.graph.estimatedValue")}

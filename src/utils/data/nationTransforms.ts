@@ -173,10 +173,7 @@ function getLayerStackFillValueKg(
     return reported[year.toString()];
   }
 
-  if (
-    approximatedFillEndYear === null ||
-    year > approximatedFillEndYear
-  ) {
+  if (approximatedFillEndYear === null || year > approximatedFillEndYear) {
     return undefined;
   }
 
@@ -450,9 +447,7 @@ export function transformNationEmissionsData(
         biogenicTrendTop,
         consumptionAbroadTrendTop,
         total: stackedReported ?? stackedTrend ?? stackedParisTotal,
-        approximated: hasApproximatedTrend
-          ? stackedTrend
-          : undefined,
+        approximated: hasApproximatedTrend ? stackedTrend : undefined,
         trend: toTons(nation.trend?.[year]),
         carbonLaw: toTons(nation.carbonLaw?.[year]),
         territorialFossilCarbonLaw,
