@@ -145,6 +145,35 @@ function getLayerTrendValueKg(
   return approximated?.[year.toString()];
 }
 
+/** Continuous stack fill: reported through anchor year, then approximated through current year. */
+function getLayerStackFillValueKg(
+  reported: Record<string, number>,
+  approximated: Record<string, number> | undefined,
+  year: number,
+  stackAnchorYear: number | null,
+  currentYear: number,
+): number | undefined {
+  if (stackAnchorYear === null) {
+    return reported[year.toString()];
+  }
+
+  if (year < stackAnchorYear) {
+    return reported[year.toString()];
+  }
+
+  if (year <= currentYear) {
+    return getLayerTrendValueKg(
+      reported,
+      approximated,
+      year,
+      stackAnchorYear,
+      currentYear,
+    );
+  }
+
+  return undefined;
+}
+
 function getCumulativeLayerTops(
   bottom?: number,
   middle?: number,
@@ -221,18 +250,33 @@ export function transformNationEmissionsData(
       const yearNum = Number(year);
       const reported = resolveReportedStackValues(nation, year);
 
-      const territorialFossil =
-        stackAnchorYear !== null && yearNum > stackAnchorYear
-          ? undefined
-          : toTons(reported.territorialFossil);
-      const biogenic =
-        stackAnchorYear !== null && yearNum > stackAnchorYear
-          ? undefined
-          : toTons(reported.biogenic);
-      const consumptionAbroad =
-        stackAnchorYear !== null && yearNum > stackAnchorYear
-          ? undefined
-          : toTons(reported.consumptionAbroad);
+      const territorialFossil = toTons(
+        getLayerStackFillValueKg(
+          nation.territorialFossil,
+          nation.approximatedTerritorialFossil,
+          yearNum,
+          stackAnchorYear,
+          currentYear,
+        ),
+      );
+      const biogenic = toTons(
+        getLayerStackFillValueKg(
+          nation.biogenic,
+          nation.approximatedBiogenic,
+          yearNum,
+          stackAnchorYear,
+          currentYear,
+        ),
+      );
+      const consumptionAbroad = toTons(
+        getLayerStackFillValueKg(
+          nation.consumptionAbroad,
+          nation.approximatedConsumptionAbroad,
+          yearNum,
+          stackAnchorYear,
+          currentYear,
+        ),
+      );
 
       let territorialFossilTrend: number | undefined;
       let biogenicTrend: number | undefined;

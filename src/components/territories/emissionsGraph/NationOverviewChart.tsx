@@ -148,11 +148,11 @@ export const NationOverviewChart: FC<NationOverviewChartProps> = ({
                 type="monotone"
                 dataKey={layer.dataKey}
                 stackId="emissions"
-                stroke={layer.color}
+                stroke="none"
                 fill={layer.color}
                 fillOpacity={0.6}
                 name={t(layer.translationKey)}
-                connectNulls={false}
+                connectNulls
               />
             ))}
 
@@ -167,7 +167,7 @@ export const NationOverviewChart: FC<NationOverviewChartProps> = ({
                 fillOpacity={0}
                 dot={false}
                 name={t("detailPage.graph.estimated")}
-                connectNulls
+                connectNulls={false}
               />
             ))}
 
