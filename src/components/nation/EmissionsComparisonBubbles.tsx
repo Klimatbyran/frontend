@@ -155,7 +155,7 @@ export function EmissionsComparisonBubbles({ className }: { className?: string }
         className="[&>div]:mb-4 [&>div]:@lg:mb-6"
       />
 
-      <div className="flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-0 sm:-space-x-10 -mt-1">
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-6 -mt-1">
         {bubbles.map((bubble) => (
           <ComparisonBubble key={bubble.id} item={bubble} maxValue={maxValue} />
         ))}
