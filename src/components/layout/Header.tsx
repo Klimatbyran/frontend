@@ -27,12 +27,24 @@ interface NavSubLink {
   onlyShowOnStaging?: boolean;
 }
 
+interface NavSubGroup {
+  label: string;
+  path?: string;
+  items: NavSubLink[];
+}
+
+type NavSubItem = NavSubLink | NavSubGroup;
+
 interface NavLink {
   label: string;
   icon?: React.ReactElement;
   path: string;
-  sublinks?: NavSubLink[];
+  sublinks?: NavSubItem[];
   onlyShowOnStaging?: boolean;
+}
+
+function isNavSubGroup(item: NavSubItem): item is NavSubGroup {
+  return "items" in item;
 }
 
 /**
@@ -52,24 +64,27 @@ const NAV_LINKS: NavLink[] = [
         path: `/explore/municipalities`,
       },
       {
-        label: "header.municipalities",
-        path: `/municipalities`,
-      },
-      {
-        label: "header.regions",
-        path: `/regions`,
-      },
-      {
-        label: "header.nation",
-        path: `/nation`,
+        label: "header.sweden",
+        items: [
+          {
+            label: "header.municipalities",
+            path: `/municipalities`,
+          },
+          {
+            label: "header.regions",
+            path: `/regions`,
+          },
+        ],
       },
       {
         label: "header.companies",
         path: `/companies`,
-      },
-      {
-        label: "header.sectors",
-        path: `/sectors`,
+        items: [
+          {
+            label: "header.sectors",
+            path: `/sectors`,
+          },
+        ],
       },
     ],
   },
@@ -120,32 +135,140 @@ const INTERNAL_LINKS = [
   { label: "Add Company", path: "/internal-pages/add-company" },
 ];
 
-const SubLinksMenu = ({ sublinks }: { sublinks: NavSubLink[] }) => {
+function filterNavSubItem(
+  item: NavSubItem,
+  isStaging: boolean,
+): NavSubItem | null {
+  if (isNavSubGroup(item)) {
+    const items = item.items.filter(
+      (sublink) => !sublink.onlyShowOnStaging || isStaging,
+    );
+    return items.length > 0 ? { ...item, items } : null;
+  }
+
+  if (item.onlyShowOnStaging && !isStaging) {
+    return null;
+  }
+
+  return item;
+}
+
+function filterNavSublinks(
+  sublinks: NavSubItem[],
+  isStaging: boolean,
+): NavSubItem[] {
+  return sublinks
+    .map((item) => filterNavSubItem(item, isStaging))
+    .filter((item): item is NavSubItem => item !== null);
+}
+
+const NAV_PRIMARY_ITEM_CLASS = "text-sm";
+const NAV_NESTED_ITEM_CLASS =
+  "text-sm font-normal text-blue-2 hover:text-white transition-colors";
+
+const NavSubLinkItem = ({
+  sublink,
+  className,
+  onNavigate,
+}: {
+  sublink: NavSubLink;
+  className?: string;
+  onNavigate?: () => void;
+}) => {
+  const { t } = useTranslation();
+
+  if (sublink.path.startsWith("https://")) {
+    return (
+      <a
+        href={sublink.path}
+        className={cn("flex justify-between w-full", className)}
+        target="_blank"
+        onClick={onNavigate}
+      >
+        {t(sublink.label)}
+      </a>
+    );
+  }
+
+  return (
+    <LocalizedLink
+      to={sublink.path}
+      className={cn("flex justify-between w-full", className)}
+      onClick={onNavigate}
+    >
+      {t(sublink.label)}
+    </LocalizedLink>
+  );
+};
+
+const NavSubGroupSection = ({
+  group,
+  onNavigate,
+  primaryClassName,
+  nestedClassName,
+}: {
+  group: NavSubGroup;
+  onNavigate?: () => void;
+  primaryClassName?: string;
+  nestedClassName?: string;
+}) => {
   const { t } = useTranslation();
 
   return (
+    <div className="flex flex-col gap-1">
+      {group.path ? (
+        <NavSubLinkItem
+          sublink={{ label: group.label, path: group.path }}
+          className={cn(NAV_PRIMARY_ITEM_CLASS, primaryClassName)}
+          onNavigate={onNavigate}
+        />
+      ) : (
+        <span className={cn(NAV_PRIMARY_ITEM_CLASS, primaryClassName)}>
+          {t(group.label)}
+        </span>
+      )}
+      <ul className="space-y-1 pl-1">
+        {group.items.map((sublink) => (
+          <li
+            key={sublink.path}
+            className="hover:bg-black-1 rounded-md px-2 py-1.5"
+          >
+            <NavSubLinkItem
+              sublink={sublink}
+              className={cn(NAV_NESTED_ITEM_CLASS, nestedClassName)}
+              onNavigate={onNavigate}
+            />
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+const SubLinksMenu = ({
+  sublinks,
+  onNavigate,
+}: {
+  sublinks: NavSubItem[];
+  onNavigate?: () => void;
+}) => {
+  return (
     <ul>
-      {sublinks.map((sublink) => (
-        <li key={sublink.path} className="hover:bg-black-1 px-2 py-1.5 text-sm">
-          {sublink.path.startsWith("https://") ? (
-            <a
-              href={sublink.path}
-              className="flex justify-between w-full"
-              target="_blank"
-              key={sublink.path}
-            >
-              {t(sublink.label)}
-            </a>
-          ) : (
-            <LocalizedLink
-              to={sublink.path}
-              className="flex justify-between w-full"
-            >
-              {t(sublink.label)}
-            </LocalizedLink>
-          )}
-        </li>
-      ))}
+      {sublinks.map((item) =>
+        isNavSubGroup(item) ? (
+          <li key={item.label} className="px-2 py-1.5">
+            <NavSubGroupSection group={item} onNavigate={onNavigate} />
+          </li>
+        ) : (
+          <li key={item.path} className="hover:bg-black-1 px-2 py-1.5">
+            <NavSubLinkItem
+              sublink={item}
+              className={NAV_PRIMARY_ITEM_CLASS}
+              onNavigate={onNavigate}
+            />
+          </li>
+        ),
+      )}
     </ul>
   );
 };
@@ -172,9 +295,7 @@ export function Header() {
     if (link.sublinks) {
       return {
         ...link,
-        sublinks: link.sublinks.filter(
-          (sublink) => !sublink.onlyShowOnStaging || isStaging,
-        ),
+        sublinks: filterNavSublinks(link.sublinks, isStaging),
       };
     }
     return link;
@@ -362,26 +483,25 @@ export function Header() {
                     </LocalizedLink>
                     {link.sublinks && (
                       <div className="flex flex-col gap-2 pl-4 mt-2">
-                        {link.sublinks.map((sublink) =>
-                          sublink.path.startsWith("https://") ? (
-                            <a
-                              href={sublink.path}
-                              className="flex items-center gap-2 text-sm text-gray-400"
-                              target="_blank"
-                              key={sublink.path}
-                              onClick={toggleMenu}
-                            >
-                              {t(sublink.label)}
-                            </a>
+                        {link.sublinks.map((item) =>
+                          isNavSubGroup(item) ? (
+                            <NavSubGroupSection
+                              key={item.label}
+                              group={item}
+                              onNavigate={toggleMenu}
+                              primaryClassName="flex items-center gap-2"
+                              nestedClassName="flex items-center gap-2 text-blue-2"
+                            />
                           ) : (
-                            <LocalizedLink
-                              key={sublink.path}
-                              to={sublink.path}
-                              onClick={toggleMenu}
-                              className="flex items-center gap-2 text-sm text-gray-400"
-                            >
-                              {t(sublink.label)}
-                            </LocalizedLink>
+                            <NavSubLinkItem
+                              key={item.path}
+                              sublink={item}
+                              className={cn(
+                                NAV_PRIMARY_ITEM_CLASS,
+                                "flex items-center gap-2",
+                              )}
+                              onNavigate={toggleMenu}
+                            />
                           ),
                         )}
                       </div>
