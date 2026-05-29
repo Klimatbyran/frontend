@@ -87,7 +87,13 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
   // First, filter out zero, undefined, or null values, but keep trend and Paris data
   filteredPayload = payload.filter((entry) => {
     // Keep trend and Paris data even if zero
-    if (entry.dataKey === "approximated" || entry.dataKey === "carbonLaw") {
+    if (
+      entry.dataKey === "approximated" ||
+      entry.dataKey === "carbonLaw" ||
+      entry.dataKey === "territorialFossilCarbonLaw" ||
+      entry.dataKey === "biogenicCarbonLaw" ||
+      entry.dataKey === "consumptionAbroadCarbonLaw"
+    ) {
       return entry.value != null;
     }
 
@@ -120,12 +126,38 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
       "territorialFossil",
       "biogenic",
       "consumptionAbroad",
+      "territorialFossilTrend",
+      "biogenicTrend",
+      "consumptionAbroadTrend",
+      "territorialFossilCarbonLaw",
+      "biogenicCarbonLaw",
+      "consumptionAbroadCarbonLaw",
       "trend",
-      "carbonLaw",
     ]);
     filteredPayload = filteredPayload.filter(
-      (entry) => entry.dataKey && stackKeys.has(entry.dataKey),
+      (entry) =>
+        entry.dataKey &&
+        stackKeys.has(entry.dataKey) &&
+        !entry.dataKey.endsWith("TrendTop"),
     );
+
+    const hasReported = filteredPayload.some(
+      (entry) =>
+        entry.dataKey &&
+        ["territorialFossil", "biogenic", "consumptionAbroad"].includes(
+          entry.dataKey,
+        ) &&
+        entry.value != null,
+    );
+    if (hasReported) {
+      filteredPayload = filteredPayload.filter(
+        (entry) =>
+          !entry.dataKey ||
+          !["territorialFossilTrend", "biogenicTrend", "consumptionAbroadTrend"].includes(
+            entry.dataKey,
+          ),
+      );
+    }
   }
 
   // For municipality overview, handle approximated data logic
@@ -275,6 +307,17 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
               Trend: {trendData.slope >= 0 ? "↗ Increasing" : "↘ Decreasing"}
             </span>
           </span>
+        )}
+
+      {dataView === "nation-overview" &&
+        filteredPayload.some((entry) =>
+          ["territorialFossilTrend", "biogenicTrend", "consumptionAbroadTrend"].includes(
+            entry.dataKey as string,
+          ),
+        ) && (
+          <div className="text-xs text-blue-2 mt-2 col-span-2">
+            {t("municipalities.graph.estimatedValue")}
+          </div>
         )}
 
       {/* Municipality approximated value info */}

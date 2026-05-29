@@ -18,9 +18,11 @@ export function useNationPageData() {
   const { hiddenItems: filteredSectors, setHiddenItems: setFilteredSectors } =
     useHiddenItems<string>([]);
   const sortedRegions = useMemo(() => [...regions].sort(), [regions]);
+  const calendarYear = new Date().getFullYear();
   const emissionsData = useMemo(
-    () => (nation ? transformNationEmissionsData(nation) : []),
-    [nation],
+    () =>
+      nation ? transformNationEmissionsData(nation, calendarYear) : [],
+    [nation, calendarYear],
   );
 
   const lastYearEmissions = useMemo(() => {

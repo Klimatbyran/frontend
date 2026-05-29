@@ -1458,7 +1458,10 @@
       "graph": {
         "territorialFossil": "Territorial fossil emissions",
         "biogenic": "Biogenic emissions",
-        "consumptionAbroad": "Consumption emissions abroad"
+        "consumptionAbroad": "Consumption emissions abroad",
+        "territorialFossilParis": "Territorial fossil – Paris Agreement",
+        "biogenicParis": "Biogenic – Paris Agreement",
+        "consumptionAbroadParis": "Consumption abroad – Paris Agreement"
       }
     }
   },

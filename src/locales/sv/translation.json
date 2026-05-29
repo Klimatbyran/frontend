@@ -1515,7 +1515,10 @@
       "graph": {
         "territorialFossil": "Territoriella fossila utsläpp",
         "biogenic": "Biogena utsläpp",
-        "consumptionAbroad": "Konsumtionsutsläpp utomlands"
+        "consumptionAbroad": "Konsumtionsutsläpp utomlands",
+        "territorialFossilParis": "Territoriella fossila – Parisavtalet",
+        "biogenicParis": "Biogena – Parisavtalet",
+        "consumptionAbroadParis": "Konsumtion utomlands – Parisavtalet"
       }
     }
   },

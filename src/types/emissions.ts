@@ -58,4 +58,15 @@ export type NationDataPoint = DataPoint & {
   territorialFossil?: number;
   biogenic?: number;
   consumptionAbroad?: number;
+  /** Dashed trend segment from latest reported year toward current year */
+  territorialFossilTrend?: number;
+  biogenicTrend?: number;
+  consumptionAbroadTrend?: number;
+  /** Cumulative stack height at each layer top (for dashed line Y positions) */
+  territorialFossilTrendTop?: number;
+  biogenicTrendTop?: number;
+  consumptionAbroadTrendTop?: number;
+  territorialFossilCarbonLaw?: number;
+  biogenicCarbonLaw?: number;
+  consumptionAbroadCarbonLaw?: number;
 };

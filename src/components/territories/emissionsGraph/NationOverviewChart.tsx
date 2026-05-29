@@ -16,7 +16,7 @@ import {
   EnhancedLegend,
   ChartYearControls,
   LegendItem,
-  getConsistentLineProps,
+  getLinePropsWithHover,
   getXAxisProps,
   getYAxisProps,
   getCurrentYearReferenceLineProps,
@@ -34,18 +34,27 @@ import { useLanguage } from "@/components/LanguageProvider";
 const NATION_STACK_CONFIG = [
   {
     dataKey: "territorialFossil" as const,
+    trendTopDataKey: "territorialFossilTrendTop" as const,
+    carbonLawDataKey: "territorialFossilCarbonLaw" as const,
     color: "var(--orange-2)",
     translationKey: "nation.detailPage.graph.territorialFossil",
+    parisTranslationKey: "nation.detailPage.graph.territorialFossilParis",
   },
   {
     dataKey: "biogenic" as const,
+    trendTopDataKey: "biogenicTrendTop" as const,
+    carbonLawDataKey: "biogenicCarbonLaw" as const,
     color: "var(--green-2)",
     translationKey: "nation.detailPage.graph.biogenic",
+    parisTranslationKey: "nation.detailPage.graph.biogenicParis",
   },
   {
     dataKey: "consumptionAbroad" as const,
+    trendTopDataKey: "consumptionAbroadTrendTop" as const,
+    carbonLawDataKey: "consumptionAbroadCarbonLaw" as const,
     color: "var(--blue-2)",
     translationKey: "nation.detailPage.graph.consumptionAbroad",
+    parisTranslationKey: "nation.detailPage.graph.consumptionAbroadParis",
   },
 ] as const;
 
@@ -66,26 +75,35 @@ export const NationOverviewChart: FC<NationOverviewChartProps> = ({
   );
 
   const legendItems: LegendItem[] = useMemo(() => {
-    const stackItems: LegendItem[] = NATION_STACK_CONFIG.map((layer) => ({
-      name: t(layer.translationKey),
-      color: layer.color,
-      isClickable: false,
-      isHidden: false,
-      isDashed: false,
-    }));
+    const layerItems: LegendItem[] = NATION_STACK_CONFIG.flatMap((layer) => [
+      {
+        name: t(layer.translationKey),
+        color: layer.color,
+        isClickable: false,
+        isHidden: false,
+        isDashed: false,
+      },
+      {
+        name: t(layer.parisTranslationKey),
+        color: layer.color,
+        isClickable: false,
+        isHidden: false,
+        isDashed: true,
+      },
+    ]);
 
     return [
-      ...stackItems,
+      ...layerItems,
       {
-        name: t("detailPage.graph.trend"),
-        color: "var(--pink-3)",
+        name: t("detailPage.graph.estimated"),
+        color: "var(--grey)",
         isClickable: false,
         isHidden: false,
         isDashed: true,
       },
       {
-        name: t("detailPage.graph.carbonLaw"),
-        color: "var(--green-3)",
+        name: t("detailPage.graph.trend"),
+        color: "var(--pink-3)",
         isClickable: false,
         isHidden: false,
         isDashed: true,
@@ -145,23 +163,45 @@ export const NationOverviewChart: FC<NationOverviewChartProps> = ({
               />
             ))}
 
-            <Line
-              type="monotone"
-              dataKey="trend"
-              {...getConsistentLineProps(
-                "trend",
-                false,
-                t("detailPage.graph.trend"),
-              )}
-            />
+            {NATION_STACK_CONFIG.map((layer) => (
+              <Line
+                key={layer.trendTopDataKey}
+                type="monotone"
+                dataKey={layer.trendTopDataKey}
+                stroke={layer.color}
+                strokeWidth={2}
+                strokeDasharray="5 5"
+                fillOpacity={0}
+                dot={false}
+                name={t("detailPage.graph.estimated")}
+                connectNulls
+              />
+            ))}
+
+            {NATION_STACK_CONFIG.map((layer) => (
+              <Line
+                key={layer.carbonLawDataKey}
+                type="monotone"
+                dataKey={layer.carbonLawDataKey}
+                stackId="paris"
+                {...getLinePropsWithHover(
+                  "secondary",
+                  layer.color,
+                  isMobile,
+                  t(layer.parisTranslationKey),
+                )}
+                connectNulls
+              />
+            ))}
 
             <Line
               type="monotone"
-              dataKey="carbonLaw"
-              {...getConsistentLineProps(
-                "paris",
-                false,
-                t("detailPage.graph.carbonLaw"),
+              dataKey="trend"
+              {...getLinePropsWithHover(
+                "trend",
+                "var(--pink-3)",
+                isMobile,
+                t("detailPage.graph.trend"),
               )}
             />
           </ComposedChart>
