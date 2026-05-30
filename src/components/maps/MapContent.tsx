@@ -5,6 +5,7 @@ import {
   GeoJsonProperties,
 } from "geojson";
 import type { MutableRefObject } from "react";
+import { useEffect, useId, useState } from "react";
 import { MapContainer, GeoJSON } from "react-leaflet";
 import type L from "leaflet";
 import { MapController } from "./MapController";
@@ -44,8 +45,29 @@ function MapContent({
   scrollWheelZoom = true,
   fitToBounds = false,
 }: MapContentProps) {
+  const [isMounted, setIsMounted] = useState(false);
+  const mapId = useId();
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return (
+      <div
+        style={{
+          height: "100%",
+          width: "100%",
+          backgroundColor,
+        }}
+        className="rounded-xl"
+      />
+    );
+  }
+
   return (
     <MapContainer
+      key={mapId}
       center={position.center}
       zoom={position.zoom}
       style={{
