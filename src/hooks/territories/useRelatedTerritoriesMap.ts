@@ -39,9 +39,8 @@ export function useRelatedTerritoriesMap({
   const selectedKPI = useMemo((): TerritoryKpi => {
     const kpis =
       entityType === "municipalities" ? municipalityKPIs : regionalKPIs;
-    return (kpis.find(
-      (kpi) => kpi.key === "historicalEmissionChangePercent",
-    ) ?? kpis[0]) as TerritoryKpi;
+    return (kpis.find((kpi) => kpi.key === "historicalEmissionChangePercent") ??
+      kpis[0]) as TerritoryKpi;
   }, [entityType, municipalityKPIs, regionalKPIs]);
 
   const handleEntityClick = useMemo(
