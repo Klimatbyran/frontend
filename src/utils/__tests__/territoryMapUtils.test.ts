@@ -37,7 +37,10 @@ describe("getTerritoryKpiRawValue", () => {
       ),
     ).toBe(-2.5);
     expect(
-      getTerritoryKpiRawValue({ name: "A", meetsParisGoal: true }, "meetsParisGoal"),
+      getTerritoryKpiRawValue(
+        { name: "A", meetsParisGoal: true },
+        "meetsParisGoal",
+      ),
     ).toBe(true);
   });
 
@@ -125,9 +128,9 @@ describe("findTerritoryMapDataItem", () => {
   });
 
   it("matches by map name", () => {
-    expect(
-      findTerritoryMapDataItem(mapData, "Göteborg", "Göteborg")?.id,
-    ).toBe("Göteborg");
+    expect(findTerritoryMapDataItem(mapData, "Göteborg", "Göteborg")?.id).toBe(
+      "Göteborg",
+    );
   });
 
   it("returns undefined when no item matches", () => {
