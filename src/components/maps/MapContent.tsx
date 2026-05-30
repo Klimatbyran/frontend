@@ -29,7 +29,7 @@ interface MapContentProps {
   setPosition: (pos: { center: [number, number]; zoom: number }) => void;
   backgroundColor?: string;
   scrollWheelZoom?: boolean;
-  fitBoundsOnMount?: boolean;
+  fitBounds?: boolean;
 }
 
 function MapContent({
@@ -44,7 +44,7 @@ function MapContent({
   setPosition,
   backgroundColor = "var(--black-2)",
   scrollWheelZoom = true,
-  fitBoundsOnMount = false,
+  fitBounds = false,
 }: MapContentProps) {
   const [isMounted, setIsMounted] = useState(false);
   const mapId = useId();
@@ -93,7 +93,7 @@ function MapContent({
         style={getAreaStyle}
         onEachFeature={onEachFeature}
       />
-      {fitBoundsOnMount && (
+      {fitBounds && (
         <MapInitialBoundsFitter
           bounds={mapBounds}
           padding={MAP_FIT_BOUNDS_PADDING}

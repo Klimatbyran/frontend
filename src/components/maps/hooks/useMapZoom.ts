@@ -1,13 +1,13 @@
 import { useCallback, useRef } from "react";
 import type L from "leaflet";
-import { MAP_FIT_BOUNDS_PADDING } from "../mapConstants";
+import { fitMapToBounds } from "../mapUtils";
 
 const MIN_ZOOM = 3;
 const MAX_ZOOM = 10;
 
 interface UseMapZoomOptions {
   mapBounds?: L.LatLngBounds;
-  fitBoundsOnReset?: boolean;
+  fitBounds?: boolean;
 }
 
 export function useMapZoom(
@@ -16,7 +16,7 @@ export function useMapZoom(
   options: UseMapZoomOptions = {},
 ) {
   const mapRef = useRef<L.Map | null>(null);
-  const { mapBounds, fitBoundsOnReset = false } = options;
+  const { mapBounds, fitBounds = false } = options;
 
   const handleZoomIn = useCallback(() => {
     if (mapRef.current) {
@@ -33,16 +33,13 @@ export function useMapZoom(
   const handleReset = useCallback(() => {
     if (!mapRef.current) return;
 
-    if (fitBoundsOnReset && mapBounds) {
-      mapRef.current.fitBounds(mapBounds, {
-        padding: MAP_FIT_BOUNDS_PADDING,
-        animate: false,
-      });
+    if (fitBounds && mapBounds) {
+      fitMapToBounds(mapRef.current, mapBounds);
       return;
     }
 
     mapRef.current.setView(defaultCenter, getInitialZoom());
-  }, [defaultCenter, getInitialZoom, fitBoundsOnReset, mapBounds]);
+  }, [defaultCenter, getInitialZoom, fitBounds, mapBounds]);
 
   return {
     mapRef,

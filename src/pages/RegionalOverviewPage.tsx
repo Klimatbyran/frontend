@@ -16,6 +16,7 @@ import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import RegionalInsightsPanel from "@/components/regions/RegionalInsightsPanel";
 import { Region } from "@/types/region";
 import { toMapRegionName } from "@/utils/regionUtils";
+import { toRegionMapDataItem } from "@/utils/territoryMapData";
 import { RegionalRankedList } from "@/components/regions/RegionalRankedList";
 import { KPIDataSelector } from "@/components/ranked/KPIDataSelector";
 import { createEntityClickHandler } from "@/utils/routing";
@@ -70,12 +71,7 @@ export function RegionalOverviewPage() {
   }, [regionsData]);
 
   const mapData: DataItem[] = useMemo(() => {
-    return regionEntities.map((region) => ({
-      ...region,
-      id: region.mapName,
-      name: region.mapName,
-      displayName: region.displayName,
-    }));
+    return regionEntities.map((region) => toRegionMapDataItem(region));
   }, [regionEntities]);
 
   const regionsAsEntities: Region[] = useMemo(() => {

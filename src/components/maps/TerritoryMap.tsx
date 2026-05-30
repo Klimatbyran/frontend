@@ -35,7 +35,7 @@ interface TerritoryMapProps {
   scrollWheelZoom?: boolean;
   className?: string;
   showTooltip?: boolean;
-  fitBoundsOnMount?: boolean;
+  fitBounds?: boolean;
   legendPosition?: MapLegendPosition;
   hoveredArea?: string | null;
   onHoveredAreaChange?: (area: string | null) => void;
@@ -55,7 +55,7 @@ function TerritoryMap({
   scrollWheelZoom = true,
   className,
   showTooltip = true,
-  fitBoundsOnMount = false,
+  fitBounds = false,
   legendPosition = "bottom-right",
   hoveredArea: hoveredAreaProp,
   onHoveredAreaChange,
@@ -84,7 +84,7 @@ function TerritoryMap({
     MAX_ZOOM,
   } = useMapZoom(defaultCenter, getInitialZoom, {
     mapBounds,
-    fitBoundsOnReset: fitBoundsOnMount,
+    fitBounds,
   });
 
   const {
@@ -126,7 +126,7 @@ function TerritoryMap({
         setPosition={setPosition}
         backgroundColor={mapBackgroundColor}
         scrollWheelZoom={scrollWheelZoom}
-        fitBoundsOnMount={fitBoundsOnMount}
+        fitBounds={fitBounds}
       />
       <MapOverlays
         entityType={entityType}

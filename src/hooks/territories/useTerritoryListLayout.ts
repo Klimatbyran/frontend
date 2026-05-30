@@ -50,9 +50,8 @@ export function useTerritoryListLayout(
     ({ width }: { width: number }) => width >= SIDE_BY_SIDE_MIN_WIDTH,
     [],
   );
-  const [layoutRef, isSideBySide] = useContainerQuery<HTMLDivElement>(
-    sideBySideQuery,
-  );
+  const [layoutRef, isSideBySide] =
+    useContainerQuery<HTMLDivElement>(sideBySideQuery);
   const shouldPaginateList = isSideBySide && paginationEnabled;
 
   useEffect(() => {

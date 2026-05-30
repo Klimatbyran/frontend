@@ -11,11 +11,13 @@ import {
   useRegionalKPIs,
   useRegions as useRegionsKPI,
 } from "@/hooks/regions/useRegionKPIs";
-import type { RegionData } from "@/hooks/regions/useRegionKPIs";
-import type { MunicipalityData } from "@/hooks/municipalities/useMunicipalityKPIs";
 import { DataItem, MapEntityType } from "@/types/rankings";
 import { createEntityClickHandler } from "@/utils/routing";
 import { filterGeoDataByNames } from "@/utils/geoUtils";
+import {
+  toMunicipalityMapDataItem,
+  toRegionMapDataItem,
+} from "@/utils/territoryMapData";
 import {
   buildTerritoryListEntries,
   DETAIL_TERRITORY_KPI_KEY,
@@ -33,38 +35,6 @@ const DEFAULT_CENTERS: Record<MapEntityType, [number, number]> = {
   municipalities: [63, 17],
 };
 
-function buildRegionMapData(
-  regionsData: RegionData[],
-  itemsSet: Set<string>,
-): DataItem[] {
-  return regionsData
-    .filter((region) => itemsSet.has(region.name.toLowerCase()))
-    .map((region) => {
-      const mapName = toMapRegionName(region.name);
-      return {
-        ...region,
-        id: mapName,
-        name: mapName,
-        displayName: region.name,
-      };
-    });
-}
-
-function buildMunicipalityMapData(
-  municipalitiesData: MunicipalityData[],
-  itemsSet: Set<string>,
-): DataItem[] {
-  return municipalitiesData
-    .filter((municipality) => itemsSet.has(municipality.name.toLowerCase()))
-    .map(({ meetsParis, ...municipality }) => ({
-      ...municipality,
-      meetsParisGoal: meetsParis,
-      id: municipality.name,
-      name: municipality.name,
-      displayName: municipality.name,
-    }));
-}
-
 export function useRelatedTerritoriesMap({
   items,
   entityType,
@@ -80,8 +50,9 @@ export function useRelatedTerritoriesMap({
     entityType === "municipalities" ? municipalityKPIs : regionalKPIs;
 
   const selectedKPI = useMemo((): TerritoryKpi => {
-    return (kpiDefinitions.find((kpi) => kpi.key === DETAIL_TERRITORY_KPI_KEY) ??
-      kpiDefinitions[0]) as TerritoryKpi;
+    return (kpiDefinitions.find(
+      (kpi) => kpi.key === DETAIL_TERRITORY_KPI_KEY,
+    ) ?? kpiDefinitions[0]) as TerritoryKpi;
   }, [kpiDefinitions]);
 
   const handleEntityClick = useMemo(
@@ -116,10 +87,14 @@ export function useRelatedTerritoriesMap({
 
   const mapData = useMemo((): DataItem[] => {
     if (entityType === "regions") {
-      return buildRegionMapData(regionsData, itemsSet);
+      return regionsData
+        .filter((region) => itemsSet.has(region.name.toLowerCase()))
+        .map(toRegionMapDataItem);
     }
 
-    return buildMunicipalityMapData(municipalitiesData, itemsSet);
+    return municipalitiesData
+      .filter((municipality) => itemsSet.has(municipality.name.toLowerCase()))
+      .map(toMunicipalityMapDataItem);
   }, [entityType, regionsData, municipalitiesData, itemsSet]);
 
   const territories = useMemo(

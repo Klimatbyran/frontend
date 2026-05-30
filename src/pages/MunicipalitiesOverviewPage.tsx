@@ -16,6 +16,7 @@ import {
 import { RankedListItem } from "@/types/rankings";
 import { createEntityClickHandler } from "@/utils/routing";
 import { MunicipalityRankedList } from "@/components/municipalities/MunicipalityRankedList";
+import { normalizeMunicipalityKpiApiItem } from "@/utils/territoryMapData";
 import type { Municipality } from "@/types/municipality";
 
 export function MunicipalitiesOverviewPage() {
@@ -29,10 +30,9 @@ export function MunicipalitiesOverviewPage() {
 
   const municipalities: Municipality[] = useMemo(
     () =>
-      municipalitiesData.map((m) => {
-        const { meetsParis, ...rest } = m;
-        return { ...rest, meetsParisGoal: meetsParis } as Municipality;
-      }),
+      municipalitiesData.map((m) =>
+        normalizeMunicipalityKpiApiItem(m),
+      ) as Municipality[],
     [municipalitiesData],
   );
   const [geoData] = useState(municipalityGeoJson);
