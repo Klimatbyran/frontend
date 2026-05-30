@@ -202,7 +202,6 @@ export function EntityListBox({
                 onAreaClick={onAreaClick}
                 defaultCenter={defaultCenter}
                 scrollWheelZoom={false}
-                fitToBounds
                 showTooltip={false}
                 legendPosition="bottom-left"
                 hoveredArea={hoveredMapArea}
