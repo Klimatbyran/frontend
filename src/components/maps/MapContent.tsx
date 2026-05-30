@@ -9,6 +9,7 @@ import { useEffect, useId, useState } from "react";
 import { MapContainer, GeoJSON } from "react-leaflet";
 import type L from "leaflet";
 import { MapController } from "./MapController";
+import { MapInitialBoundsFitter } from "./MapInitialBoundsFitter";
 
 interface MapContentProps {
   geoData: FeatureCollection;
@@ -27,6 +28,7 @@ interface MapContentProps {
   setPosition: (pos: { center: [number, number]; zoom: number }) => void;
   backgroundColor?: string;
   scrollWheelZoom?: boolean;
+  fitBoundsOnMount?: boolean;
 }
 
 function MapContent({
@@ -41,6 +43,7 @@ function MapContent({
   setPosition,
   backgroundColor = "var(--black-2)",
   scrollWheelZoom = true,
+  fitBoundsOnMount = false,
 }: MapContentProps) {
   const [isMounted, setIsMounted] = useState(false);
   const mapId = useId();
@@ -89,6 +92,9 @@ function MapContent({
         style={getAreaStyle}
         onEachFeature={onEachFeature}
       />
+      {fitBoundsOnMount && (
+        <MapInitialBoundsFitter bounds={mapBounds} padding={[20, 20]} />
+      )}
       <MapController setPosition={setPosition} />
     </MapContainer>
   );

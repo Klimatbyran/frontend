@@ -157,9 +157,41 @@ export function EntityListBox({
   const { isMobile, isTablet } = useScreenSize();
   const { layoutRef, isSideBySide } = useSideBySideLayout(items.length > 0);
   const shouldPaginateList = isSideBySide && !isMobile && !isTablet;
-  const { panelRef, currentPage, setCurrentPage, totalPages, paginatedItems } =
-    useTerritoryListPagination(territories.length, shouldPaginateList);
+  const {
+    panelRef,
+    itemsPerPage,
+    currentPage,
+    setCurrentPage,
+    totalPages,
+    paginatedItems,
+  } = useTerritoryListPagination(territories.length, shouldPaginateList);
   const [hoveredMapArea, setHoveredMapArea] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!shouldPaginateList || !hoveredMapArea || itemsPerPage <= 0) {
+      return;
+    }
+
+    const index = territories.findIndex(
+      (territory) =>
+        territory.mapName.toLowerCase() === hoveredMapArea.toLowerCase(),
+    );
+    if (index === -1) {
+      return;
+    }
+
+    const targetPage = Math.floor(index / itemsPerPage) + 1;
+    if (targetPage !== currentPage) {
+      setCurrentPage(targetPage);
+    }
+  }, [
+    hoveredMapArea,
+    shouldPaginateList,
+    territories,
+    itemsPerPage,
+    currentPage,
+    setCurrentPage,
+  ]);
 
   if (items.length === 0) {
     return null;
@@ -202,6 +234,7 @@ export function EntityListBox({
                 onAreaClick={onAreaClick}
                 defaultCenter={defaultCenter}
                 scrollWheelZoom={false}
+                fitBoundsOnMount
                 showTooltip={false}
                 legendPosition="bottom-left"
                 hoveredArea={hoveredMapArea}
@@ -250,6 +283,14 @@ export function EntityListBox({
                   >
                     {territory.displayName}
                   </LocalizedLink>
+                  <span
+                    className={cn(
+                      "shrink-0 text-xs tabular-nums text-grey",
+                      isHovered && "text-white",
+                    )}
+                  >
+                    {territory.formattedValue}
+                  </span>
                 </div>
               );
             })}
