@@ -1,24 +1,18 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { CompanyWithKPIs } from "@/hooks/companies/useCompanyKPIs";
-import { calculateTrendline } from "@/lib/calculations/trends/analysis";
-import { calculateCarbonBudgetTonnes } from "@/utils/calculations/carbonBudget";
-import { createFixedRangeGradient } from "@/utils/ui/colorGradients";
 import { getBestUnit } from "@/utils/data/unitScaling";
 import { calculateCapThreshold } from "@/utils/data/capping";
 import { useScreenSize } from "@/hooks/useScreenSize";
-import type { ColorFunction } from "@/types/visualizations";
 import { BeeswarmChart } from "./shared/BeeswarmChart";
+import {
+  createBudgetColorFunction,
+  getCompanyBudgetData,
+} from "@/utils/company/companyKPIUtils";
 
 interface MeetsParisVisualizationProps {
   companies: CompanyWithKPIs[];
   onCompanyClick?: (company: CompanyWithKPIs) => void;
-}
-
-interface CompanyBudgetData {
-  company: CompanyWithKPIs;
-  budgetTonnes: number;
-  meetsParis: boolean | null;
 }
 
 export function MeetsParisVisualization({
@@ -30,41 +24,7 @@ export function MeetsParisVisualization({
 
   // Calculate budget data and basic statistics
   const { companyBudgetData, noBudgetCompanies, minRaw, maxRaw, budgetValues } =
-    useMemo(() => {
-      const withBudget: CompanyBudgetData[] = [];
-      const withoutBudget: CompanyWithKPIs[] = [];
-
-      companies.forEach((company) => {
-        const trendAnalysis = calculateTrendline(company);
-        const budgetTonnes = calculateCarbonBudgetTonnes(
-          company,
-          trendAnalysis,
-        );
-
-        if (budgetTonnes === null) {
-          withoutBudget.push(company);
-          return;
-        }
-
-        withBudget.push({
-          company,
-          budgetTonnes,
-          meetsParis: company.meetsParis ?? null,
-        });
-      });
-
-      const values = withBudget.map((d) => d.budgetTonnes);
-      const min = values.length ? Math.min(...values) : 0;
-      const max = values.length ? Math.max(...values) : 0;
-
-      return {
-        companyBudgetData: withBudget,
-        noBudgetCompanies: withoutBudget,
-        budgetValues: values,
-        minRaw: min,
-        maxRaw: max,
-      };
-    }, [companies]);
+    useMemo(() => getCompanyBudgetData(companies), [companies]);
 
   // Calculate unit scaling, capping, and display values
   const {
@@ -94,8 +54,7 @@ export function MeetsParisVisualization({
     const legendMin = minRaw / unitScale.divisor;
     const legendMax = maxRaw / unitScale.divisor;
 
-    const colorForTonnes: ColorFunction = (value: number) =>
-      createFixedRangeGradient(-absMax, absMax, value);
+    const colorForTonnes = createBudgetColorFunction(minRaw, maxRaw);
 
     const formatTooltipValue = (value: number, _unit: string) => {
       const sign = value < 0 ? "-" : "+";
