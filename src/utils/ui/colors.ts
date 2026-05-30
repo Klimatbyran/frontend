@@ -19,3 +19,9 @@ export function getDataQualityColor(
       return "var(--pink-3)";
   }
 }
+
+export const DEFAULT_KPI_COLORS = {
+  positive: "var(--blue-3)",
+  negative: "var(--pink-3)",
+  null: "var(--grey)",
+};
