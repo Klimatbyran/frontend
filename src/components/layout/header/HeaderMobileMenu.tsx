@@ -45,11 +45,7 @@ export function HeaderMobileMenu({
           onClick={onToggleMenu}
           aria-label={menuOpen ? "Close menu" : "Open menu"}
         >
-          {menuOpen ? (
-            <X className="w-6 h-6" />
-          ) : (
-            <Menu className="w-6 h-6" />
-          )}
+          {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </div>
       {menuOpen && (
