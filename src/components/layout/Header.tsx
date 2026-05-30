@@ -65,6 +65,7 @@ const NAV_LINKS: NavLink[] = [
       },
       {
         label: "header.sweden",
+        path: `/nation`,
         items: [
           {
             label: "header.municipalities",
@@ -162,9 +163,10 @@ function filterNavSublinks(
     .filter((item): item is NavSubItem => item !== null);
 }
 
-const NAV_PRIMARY_ITEM_CLASS = "text-sm";
-const NAV_NESTED_ITEM_CLASS =
-  "text-sm font-normal text-blue-2 hover:text-white transition-colors";
+const NAV_TITLE_CLASS =
+  "block rounded-md px-2 py-1.5 text-sm font-medium text-white hover:bg-black-1 transition-colors";
+const NAV_SUB_ITEM_CLASS =
+  "block rounded-md py-1 text-sm text-grey hover:bg-black-1 hover:text-white transition-colors";
 
 const NavSubLinkItem = ({
   sublink,
@@ -181,8 +183,9 @@ const NavSubLinkItem = ({
     return (
       <a
         href={sublink.path}
-        className={cn("flex justify-between w-full", className)}
+        className={cn("w-full", className)}
         target="_blank"
+        rel="noreferrer"
         onClick={onNavigate}
       >
         {t(sublink.label)}
@@ -193,7 +196,7 @@ const NavSubLinkItem = ({
   return (
     <LocalizedLink
       to={sublink.path}
-      className={cn("flex justify-between w-full", className)}
+      className={cn("w-full", className)}
       onClick={onNavigate}
     >
       {t(sublink.label)}
@@ -204,38 +207,43 @@ const NavSubLinkItem = ({
 const NavSubGroupSection = ({
   group,
   onNavigate,
-  primaryClassName,
-  nestedClassName,
 }: {
   group: NavSubGroup;
   onNavigate?: () => void;
-  primaryClassName?: string;
-  nestedClassName?: string;
 }) => {
   const { t } = useTranslation();
 
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col">
       {group.path ? (
         <NavSubLinkItem
           sublink={{ label: group.label, path: group.path }}
-          className={cn(NAV_PRIMARY_ITEM_CLASS, primaryClassName)}
+          className={NAV_TITLE_CLASS}
           onNavigate={onNavigate}
         />
       ) : (
-        <span className={cn(NAV_PRIMARY_ITEM_CLASS, primaryClassName)}>
+        <span className={cn(NAV_TITLE_CLASS, "hover:bg-transparent")}>
           {t(group.label)}
         </span>
       )}
-      <ul className="space-y-1 pl-1">
+      <ul className="flex flex-col pl-3">
         {group.items.map((sublink) => (
           <li
             key={sublink.path}
-            className="hover:bg-black-1 rounded-md px-2 py-1.5"
+            className="group/sub flex items-center gap-2 rounded-md pl-1 hover:bg-black-1"
           >
+            <span
+              className="text-grey group-hover/sub:text-white select-none transition-colors"
+              aria-hidden="true"
+            >
+              –
+            </span>
             <NavSubLinkItem
               sublink={sublink}
-              className={cn(NAV_NESTED_ITEM_CLASS, nestedClassName)}
+              className={cn(
+                NAV_SUB_ITEM_CLASS,
+                "hover:bg-transparent group-hover/sub:text-white",
+              )}
               onNavigate={onNavigate}
             />
           </li>
@@ -253,17 +261,17 @@ const SubLinksMenu = ({
   onNavigate?: () => void;
 }) => {
   return (
-    <ul>
+    <ul className="flex flex-col gap-2">
       {sublinks.map((item) =>
         isNavSubGroup(item) ? (
-          <li key={item.label} className="px-2 py-1.5">
+          <li key={item.label}>
             <NavSubGroupSection group={item} onNavigate={onNavigate} />
           </li>
         ) : (
-          <li key={item.path} className="hover:bg-black-1 px-2 py-1.5">
+          <li key={item.path}>
             <NavSubLinkItem
               sublink={item}
-              className={NAV_PRIMARY_ITEM_CLASS}
+              className={NAV_TITLE_CLASS}
               onNavigate={onNavigate}
             />
           </li>
@@ -489,17 +497,12 @@ export function Header() {
                               key={item.label}
                               group={item}
                               onNavigate={toggleMenu}
-                              primaryClassName="flex items-center gap-2"
-                              nestedClassName="flex items-center gap-2 text-blue-2"
                             />
                           ) : (
                             <NavSubLinkItem
                               key={item.path}
                               sublink={item}
-                              className={cn(
-                                NAV_PRIMARY_ITEM_CLASS,
-                                "flex items-center gap-2",
-                              )}
+                              className={NAV_TITLE_CLASS}
                               onNavigate={toggleMenu}
                             />
                           ),
