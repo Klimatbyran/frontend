@@ -1,5 +1,6 @@
 import { useCallback, useRef } from "react";
 import type L from "leaflet";
+import { MAP_FIT_BOUNDS_PADDING } from "../mapConstants";
 
 const MIN_ZOOM = 3;
 const MAX_ZOOM = 10;
@@ -34,7 +35,7 @@ export function useMapZoom(
 
     if (fitBoundsOnReset && mapBounds) {
       mapRef.current.fitBounds(mapBounds, {
-        padding: [20, 20],
+        padding: MAP_FIT_BOUNDS_PADDING,
         animate: false,
       });
       return;

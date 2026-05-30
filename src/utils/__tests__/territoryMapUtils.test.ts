@@ -1,9 +1,11 @@
 import { DataItem } from "@/types/rankings";
 import {
   buildTerritoryListEntries,
+  findTerritoryIndexByMapName,
   findTerritoryMapDataItem,
   formatTerritoryKpiValue,
   getTerritoryKpiRawValue,
+  getTerritoryListPage,
   getTerritoryMapFillColor,
   TERRITORY_MAP_COLORS,
   TerritoryKpi,
@@ -137,6 +139,40 @@ describe("findTerritoryMapDataItem", () => {
     expect(
       findTerritoryMapDataItem(mapData, "Unknown", "unknown"),
     ).toBeUndefined();
+  });
+});
+
+describe("findTerritoryIndexByMapName", () => {
+  const territories = [
+    {
+      displayName: "Alpha",
+      mapName: "Alpha",
+      value: -1,
+      formattedValue: "-1.0 %",
+      fillColor: "#000",
+    },
+    {
+      displayName: "Beta",
+      mapName: "beta-map",
+      value: 2,
+      formattedValue: "2.0 %",
+      fillColor: "#fff",
+    },
+  ];
+
+  it("finds territories case-insensitively", () => {
+    expect(findTerritoryIndexByMapName(territories, "BETA-MAP")).toBe(1);
+  });
+
+  it("returns -1 when territory is missing", () => {
+    expect(findTerritoryIndexByMapName(territories, "Missing")).toBe(-1);
+  });
+});
+
+describe("getTerritoryListPage", () => {
+  it("returns the page number for a list index", () => {
+    expect(getTerritoryListPage(0, 10)).toBe(1);
+    expect(getTerritoryListPage(10, 10)).toBe(2);
   });
 });
 

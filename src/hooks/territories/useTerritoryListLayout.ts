@@ -1,0 +1,135 @@
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import useContainerQuery from "@/hooks/useContainerQuery";
+import {
+  findTerritoryIndexByMapName,
+  getTerritoryListPage,
+  TerritoryListEntry,
+} from "@/utils/territoryMapUtils";
+
+export const TERRITORY_PANEL_CLASS = "h-[min(32rem,55vh)] min-h-[20rem]";
+export const SIDE_BY_SIDE_MIN_WIDTH = 768;
+
+const LIST_COLUMNS = 2;
+const LIST_ROW_HEIGHT = 28;
+const LIST_ROW_GAP = 8;
+const PAGINATION_HEIGHT = 57;
+
+function calculateItemsPerPage(itemCount: number, panelHeight: number): number {
+  const rowsWithoutPagination = Math.max(
+    1,
+    Math.floor((panelHeight + LIST_ROW_GAP) / (LIST_ROW_HEIGHT + LIST_ROW_GAP)),
+  );
+  const fitWithoutPagination = rowsWithoutPagination * LIST_COLUMNS;
+
+  if (itemCount <= fitWithoutPagination) {
+    return fitWithoutPagination;
+  }
+
+  const availableHeight = panelHeight - PAGINATION_HEIGHT;
+  const rowsWithPagination = Math.max(
+    1,
+    Math.floor(
+      (availableHeight + LIST_ROW_GAP) / (LIST_ROW_HEIGHT + LIST_ROW_GAP),
+    ),
+  );
+
+  return rowsWithPagination * LIST_COLUMNS;
+}
+
+export function useTerritoryListLayout(
+  territories: TerritoryListEntry[],
+  paginationEnabled: boolean,
+  hoveredMapArea: string | null,
+) {
+  const itemCount = territories.length;
+  const panelRef = useRef<HTMLDivElement>(null);
+  const [itemsPerPage, setItemsPerPage] = useState(itemCount);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const sideBySideQuery = useCallback(
+    ({ width }: { width: number }) => width >= SIDE_BY_SIDE_MIN_WIDTH,
+    [],
+  );
+  const [layoutRef, isSideBySide] = useContainerQuery<HTMLDivElement>(
+    sideBySideQuery,
+  );
+  const shouldPaginateList = isSideBySide && paginationEnabled;
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [itemCount, shouldPaginateList]);
+
+  useEffect(() => {
+    if (!shouldPaginateList) {
+      setItemsPerPage(itemCount);
+      return;
+    }
+
+    const panel = panelRef.current;
+    if (!panel) return;
+
+    const updateItemsPerPage = () => {
+      setItemsPerPage(calculateItemsPerPage(itemCount, panel.clientHeight));
+    };
+
+    updateItemsPerPage();
+
+    const observer = new ResizeObserver(updateItemsPerPage);
+    observer.observe(panel);
+
+    return () => observer.disconnect();
+  }, [itemCount, shouldPaginateList]);
+
+  const totalPages = Math.max(1, Math.ceil(itemCount / itemsPerPage));
+  const currentPageSafe = Math.min(currentPage, totalPages);
+
+  useEffect(() => {
+    if (currentPage !== currentPageSafe) {
+      setCurrentPage(currentPageSafe);
+    }
+  }, [currentPage, currentPageSafe]);
+
+  useEffect(() => {
+    if (!shouldPaginateList || !hoveredMapArea || itemsPerPage <= 0) {
+      return;
+    }
+
+    const index = findTerritoryIndexByMapName(territories, hoveredMapArea);
+    if (index === -1) {
+      return;
+    }
+
+    const targetPage = getTerritoryListPage(index, itemsPerPage);
+    if (targetPage !== currentPageSafe) {
+      setCurrentPage(targetPage);
+    }
+  }, [
+    hoveredMapArea,
+    shouldPaginateList,
+    territories,
+    itemsPerPage,
+    currentPageSafe,
+  ]);
+
+  const visibleRange = useMemo(() => {
+    if (!shouldPaginateList || itemsPerPage <= 0) {
+      return { startIndex: 0, endIndex: itemCount };
+    }
+
+    const startIndex = (currentPageSafe - 1) * itemsPerPage;
+    return {
+      startIndex,
+      endIndex: startIndex + itemsPerPage,
+    };
+  }, [shouldPaginateList, currentPageSafe, itemsPerPage, itemCount]);
+
+  return {
+    layoutRef,
+    panelRef,
+    currentPage: currentPageSafe,
+    setCurrentPage,
+    totalPages,
+    visibleRange,
+    showPagination: shouldPaginateList && totalPages > 1,
+  };
+}

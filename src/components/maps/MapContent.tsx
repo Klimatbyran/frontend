@@ -10,6 +10,7 @@ import { MapContainer, GeoJSON } from "react-leaflet";
 import type L from "leaflet";
 import { MapController } from "./MapController";
 import { MapInitialBoundsFitter } from "./MapInitialBoundsFitter";
+import { MAP_FIT_BOUNDS_PADDING } from "./mapConstants";
 
 interface MapContentProps {
   geoData: FeatureCollection;
@@ -93,7 +94,10 @@ function MapContent({
         onEachFeature={onEachFeature}
       />
       {fitBoundsOnMount && (
-        <MapInitialBoundsFitter bounds={mapBounds} padding={[20, 20]} />
+        <MapInitialBoundsFitter
+          bounds={mapBounds}
+          padding={MAP_FIT_BOUNDS_PADDING}
+        />
       )}
       <MapController setPosition={setPosition} />
     </MapContainer>

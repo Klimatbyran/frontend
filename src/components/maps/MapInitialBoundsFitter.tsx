@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useMap } from "react-leaflet";
 import type L from "leaflet";
+import { MAP_FIT_BOUNDS_PADDING } from "../mapConstants";
 
 interface MapInitialBoundsFitterProps {
   bounds: L.LatLngBounds;
@@ -9,7 +10,7 @@ interface MapInitialBoundsFitterProps {
 
 export function MapInitialBoundsFitter({
   bounds,
-  padding = 16,
+  padding = MAP_FIT_BOUNDS_PADDING,
 }: MapInitialBoundsFitterProps) {
   const map = useMap();
 

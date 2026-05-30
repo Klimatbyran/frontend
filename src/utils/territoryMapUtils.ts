@@ -25,6 +25,25 @@ export type TerritoryListEntry = {
   fillColor: string;
 };
 
+export const DETAIL_TERRITORY_KPI_KEY = "historicalEmissionChangePercent";
+
+export function findTerritoryIndexByMapName(
+  territories: TerritoryListEntry[],
+  mapName: string,
+): number {
+  const key = mapName.toLowerCase();
+  return territories.findIndex(
+    (territory) => territory.mapName.toLowerCase() === key,
+  );
+}
+
+export function getTerritoryListPage(
+  index: number,
+  itemsPerPage: number,
+): number {
+  return Math.floor(index / itemsPerPage) + 1;
+}
+
 export function toTerritoryMapName(
   entityType: MapEntityType,
   displayName: string,
