@@ -6,10 +6,11 @@ import { devApiProxy } from "./vite-api-proxy";
 
 export default ({ mode }: ConfigEnv) => {
   const env = loadEnv(mode, process.cwd(), "");
-  const apiProxyTarget =
-    env.VITE_API_PROXY ?? "http://localhost:3000/";
+  const apiProxyTarget = env.VITE_API_PROXY ?? "http://localhost:3000/";
 
-  console.log(`[vite] /api/* → ${apiProxyTarget.replace(/\/$/, "")} (via devApiProxy)`);
+  console.log(
+    `[vite] /api/* → ${apiProxyTarget.replace(/\/$/, "")} (via devApiProxy)`,
+  );
 
   return defineConfig({
     plugins: [
