@@ -6,8 +6,7 @@ import { authMiddleware } from "./auth-middleware";
 export const API_BASE_URL = "https://api.unearthdata.ai/api";
 
 // Browser: /api/* (Vite/nginx proxy with Host: api.unearthdata.ai). Node: direct API URL.
-export const baseUrl =
-  typeof window === "undefined" ? API_BASE_URL : "/api";
+export const baseUrl = typeof window === "undefined" ? API_BASE_URL : "/api";
 
 export function apiUrl(path: string): string {
   const normalized = path.startsWith("/") ? path : `/${path}`;
