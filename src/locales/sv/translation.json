@@ -1616,7 +1616,7 @@
         "historicalEmissionChangePercent": {
           "label": "Utsläppen",
           "description": "Historisk förändring av utsläpp",
-          "detailedDescription": "Genomsnittlig årlig procentuell förändring av växthusgasutsläppen i Sveriges kommuner sedan Parisavtalet år 2015.",
+          "detailedDescription": "Genomsnittlig årlig procentuell förändring av växthusgasutsläppen sedan Parisavtalet år 2015.",
           "source": "Nationella emissionsdatabasen"
         },
         "electricCarChangePercent": {
