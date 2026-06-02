@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import { LanguageRedirect } from "@/components/LanguageRedirect";
 import ProtectedRoute from "./components/ProtectedRoute";
 import StagingProtectedRoute from "./components/StagingProtectedRoute";
@@ -159,6 +159,12 @@ export function AppRoutes() {
       <Route path="*" element={<LanguageRedirect />} />
       <Route path={`${basePath}`} element={<LandingPage />} />
       <Route path={`${basePath}/`} element={<LandingPage />} />
+      <Route
+        path={`${basePath}/explore`}
+        element={
+          <Navigate to={`${basePath}/explore/municipalities`} replace />
+        }
+      />
       <Route
         path={`${basePath}/explore/:mainFilter`}
         element={<ExplorePage />}
