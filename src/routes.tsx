@@ -161,9 +161,7 @@ export function AppRoutes() {
       <Route path={`${basePath}/`} element={<LandingPage />} />
       <Route
         path={`${basePath}/explore`}
-        element={
-          <Navigate to={`${basePath}/explore/municipalities`} replace />
-        }
+        element={<Navigate to={`${basePath}/explore/municipalities`} replace />}
       />
       <Route
         path={`${basePath}/explore/:mainFilter`}
