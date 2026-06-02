@@ -18,6 +18,7 @@ import { createEntityClickHandler } from "@/utils/routing";
 import { MunicipalityRankedList } from "@/components/municipalities/MunicipalityRankedList";
 import { normalizeMunicipalityKpiApiItem } from "@/utils/territoryMapData";
 import type { Municipality } from "@/types/municipality";
+import { cn } from "@/lib/utils";
 
 export function MunicipalitiesOverviewPage() {
   const { t } = useTranslation();
@@ -138,23 +139,26 @@ export function MunicipalitiesOverviewPage() {
     />
   );
 
-  const renderMapOrList = (isMobile: boolean) =>
-    viewMode === "map" ? (
-      <div className={isMobile ? "relative h-[65vh]" : "relative h-full"}>
-        <TerritoryMap
-          entityType="municipalities"
-          geoData={geoData as FeatureCollection}
-          data={municipalities.map((m) => {
-            const { sectorEmissions, ...rest } = m;
-            return { ...rest, id: m.name };
-          })}
-          selectedKPI={selectedKPI}
-          onAreaClick={handleMunicipalityAreaClick}
-        />
-      </div>
-    ) : (
-      municipalityRankedList
-    );
+  const mapPanel = (
+    <div
+      className={cn(
+        "relative min-w-0 min-h-[65vh] md:min-h-[570px] h-full",
+        viewMode !== "map" && "max-md:hidden",
+      )}
+    >
+      <TerritoryMap
+        entityType="municipalities"
+        geoData={geoData as FeatureCollection}
+        data={municipalities.map((m) => {
+          const { sectorEmissions, ...rest } = m;
+          return { ...rest, id: m.name };
+        })}
+        selectedKPI={selectedKPI}
+        onAreaClick={handleMunicipalityAreaClick}
+        className="max-w-none"
+      />
+    </div>
+  );
 
   return (
     <>
@@ -164,7 +168,7 @@ export function MunicipalitiesOverviewPage() {
         className="-ml-4"
       />
 
-      <div className="flex mb-4 lg:hidden">
+      <div className="flex mb-4 md:hidden">
         <ViewModeToggle
           viewMode={viewMode}
           modes={["map", "list"]}
@@ -191,20 +195,17 @@ export function MunicipalitiesOverviewPage() {
         translationPrefix="municipalities.list"
       />
 
-      {/* Mobile Insights */}
-      <div className="lg:hidden space-y-6">
-        {renderMapOrList(true)}
-        <InsightsPanel
-          municipalityData={municipalities}
-          selectedKPI={selectedKPI}
-        />
-      </div>
-
-      {/* Desktop Insights */}
-      <div className="hidden lg:grid grid-cols-1 gap-6">
-        <div className="grid grid-cols-2 gap-6">
-          {renderMapOrList(false)}
-          {viewMode === "map" ? municipalityRankedList : null}
+      <div className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+          {mapPanel}
+          <div
+            className={cn(
+              "min-w-0 h-full",
+              viewMode !== "list" && "max-md:hidden",
+            )}
+          >
+            {municipalityRankedList}
+          </div>
         </div>
         <InsightsPanel
           municipalityData={municipalities}

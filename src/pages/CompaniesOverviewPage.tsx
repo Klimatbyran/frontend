@@ -17,6 +17,7 @@ import {
   enrichCompanyWithKPIs,
 } from "@/hooks/companies/useCompanyKPIs";
 import { DataPoint } from "@/types/rankings";
+import { cn } from "@/lib/utils";
 
 export function CompaniesOverviewPage() {
   const { t } = useTranslation();
@@ -189,24 +190,30 @@ export function CompaniesOverviewPage() {
     },
   });
 
-  const renderVisualizationOrList = (isMobile: boolean) =>
-    viewMode === "graph" ? (
-      <div className={isMobile ? "relative h-[65vh]" : "relative h-full"}>
-        <CompanyKPIVisualization
-          companies={companiesWithKPIs}
-          selectedKPI={selectedKPI}
-          onCompanyClick={handleCompanyClick}
-        />
-      </div>
-    ) : (
-      <RankedList
-        data={companiesWithKPIs}
-        selectedDataPoint={asDataPoint(selectedKPI)}
-        onItemClick={handleCompanyClick}
-        searchKey="name"
-        searchPlaceholder={t("rankedList.search.placeholder")}
+  const companyRankedList = (
+    <RankedList
+      data={companiesWithKPIs}
+      selectedDataPoint={asDataPoint(selectedKPI)}
+      onItemClick={handleCompanyClick}
+      searchKey="name"
+      searchPlaceholder={t("rankedList.search.placeholder")}
+    />
+  );
+
+  const visualizationPanel = (
+    <div
+      className={cn(
+        "relative min-w-0 min-h-[65vh] md:min-h-[570px] h-full",
+        viewMode !== "graph" && "max-md:hidden",
+      )}
+    >
+      <CompanyKPIVisualization
+        companies={companiesWithKPIs}
+        selectedKPI={selectedKPI}
+        onCompanyClick={handleCompanyClick}
       />
-    );
+    </div>
+  );
 
   return (
     <>
@@ -216,7 +223,7 @@ export function CompaniesOverviewPage() {
         className="-ml-4"
       />
 
-      <div className="flex mb-4 lg:hidden">
+      <div className="flex mb-4 md:hidden">
         <ViewModeToggle
           viewMode={viewMode}
           modes={["graph", "list"]}
@@ -251,28 +258,17 @@ export function CompaniesOverviewPage() {
         />
       </div>
 
-      {/* Mobile View */}
-      <div className="lg:hidden space-y-6">
-        {renderVisualizationOrList(true)}
-        <CompanyInsightsPanel
-          companyData={companiesWithKPIs}
-          selectedKPI={selectedKPI}
-        />
-      </div>
-
-      {/* Desktop View */}
-      <div className="hidden lg:grid grid-cols-1 gap-6">
-        <div className="grid grid-cols-2 gap-6">
-          {renderVisualizationOrList(false)}
-          {viewMode === "graph" ? (
-            <RankedList
-              data={companiesWithKPIs}
-              selectedDataPoint={asDataPoint(selectedKPI)}
-              onItemClick={handleCompanyClick}
-              searchKey="name"
-              searchPlaceholder={t("rankedList.search.placeholder")}
-            />
-          ) : null}
+      <div className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+          {visualizationPanel}
+          <div
+            className={cn(
+              "min-w-0 h-full",
+              viewMode !== "list" && "max-md:hidden",
+            )}
+          >
+            {companyRankedList}
+          </div>
         </div>
         <CompanyInsightsPanel
           companyData={companiesWithKPIs}

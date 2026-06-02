@@ -39,7 +39,7 @@ export function EntityListBox({
     defaultCenter,
     loading,
   } = useRelatedTerritoriesMap({ items, entityType });
-  const { isMobile, isTablet } = useScreenSize();
+  const { isMobile } = useScreenSize();
   const [hoveredMapArea, setHoveredMapArea] = useState<string | null>(null);
 
   const {
@@ -50,11 +50,7 @@ export function EntityListBox({
     totalPages,
     visibleRange,
     showPagination,
-  } = useTerritoryListLayout(
-    territories,
-    !isMobile && !isTablet,
-    hoveredMapArea,
-  );
+  } = useTerritoryListLayout(territories, !isMobile, hoveredMapArea);
 
   if (items.length === 0) {
     return null;
@@ -81,10 +77,10 @@ export function EntityListBox({
       )}
       <div
         ref={layoutRef}
-        className="@container grid grid-cols-1 @md:grid-cols-2 gap-4 @md:gap-6"
+        className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6"
       >
         {selectedKPI && (
-          <div className={cn("relative", TERRITORY_PANEL_CLASS)}>
+          <div className={cn("relative min-w-0", TERRITORY_PANEL_CLASS)}>
             {loading ? (
               <div className="h-full w-full animate-pulse bg-black-1 rounded-level-2" />
             ) : (
@@ -109,8 +105,8 @@ export function EntityListBox({
         <div
           ref={showPagination ? panelRef : undefined}
           className={cn(
-            "flex flex-col",
-            showPagination && cn("min-h-0", TERRITORY_PANEL_CLASS),
+            "flex flex-col min-w-0 md:h-[min(32rem,55vh)] md:min-h-[20rem]",
+            showPagination && "min-h-0",
           )}
         >
           <div

@@ -21,6 +21,7 @@ import { RegionalRankedList } from "@/components/regions/RegionalRankedList";
 import { KPIDataSelector } from "@/components/ranked/KPIDataSelector";
 import { createEntityClickHandler } from "@/utils/routing";
 import { RankedListItem } from "@/types/rankings";
+import { cn } from "@/lib/utils";
 
 export function RegionalOverviewPage() {
   const { t } = useTranslation();
@@ -96,21 +97,24 @@ export function RegionalOverviewPage() {
     />
   );
 
-  const renderMapOrList = (isMobile: boolean) =>
-    viewMode === "map" ? (
-      <div className={isMobile ? "relative h-[65vh]" : "relative h-full"}>
-        <TerritoryMap
-          entityType="regions"
-          geoData={geoData as FeatureCollection}
-          data={mapData}
-          selectedKPI={selectedKPI}
-          onAreaClick={handleRegionAreaClick}
-          defaultCenter={[63.7, 17]}
-        />
-      </div>
-    ) : (
-      regionalRankedList
-    );
+  const mapPanel = (
+    <div
+      className={cn(
+        "relative min-w-0 min-h-[65vh] md:min-h-[570px] h-full",
+        viewMode !== "map" && "max-md:hidden",
+      )}
+    >
+      <TerritoryMap
+        entityType="regions"
+        geoData={geoData as FeatureCollection}
+        data={mapData}
+        selectedKPI={selectedKPI}
+        onAreaClick={handleRegionAreaClick}
+        defaultCenter={[63.7, 17]}
+        className="max-w-none"
+      />
+    </div>
+  );
 
   return (
     <>
@@ -130,7 +134,7 @@ export function RegionalOverviewPage() {
         translationPrefix="regions.list"
       />
 
-      <div className="flex mb-4 lg:hidden">
+      <div className="flex mb-4 md:hidden">
         <ViewModeToggle
           viewMode={viewMode}
           modes={["map", "list"]}
@@ -147,20 +151,17 @@ export function RegionalOverviewPage() {
         />
       </div>
 
-      {/* Mobile View */}
-      <div className="lg:hidden space-y-6">
-        {renderMapOrList(true)}
-        <RegionalInsightsPanel
-          regionsData={regionsAsEntities}
-          selectedKPI={selectedKPI}
-        />
-      </div>
-
-      {/* Desktop View */}
-      <div className="hidden lg:grid grid-cols-1 gap-6">
-        <div className="grid grid-cols-2 gap-6">
-          {renderMapOrList(false)}
-          {viewMode === "map" ? regionalRankedList : null}
+      <div className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+          {mapPanel}
+          <div
+            className={cn(
+              "min-w-0 h-full",
+              viewMode !== "list" && "max-md:hidden",
+            )}
+          >
+            {regionalRankedList}
+          </div>
         </div>
         <RegionalInsightsPanel
           regionsData={regionsAsEntities}
