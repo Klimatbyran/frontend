@@ -43,7 +43,8 @@ function EntityListBoxContent({
     loading,
   } = useRelatedTerritoriesMap({ items, entityType });
   const { isMobile } = useScreenSize();
-  const { hoveredMapName, setHoveredMapName, isHovered } = useTerritoryHoverSync();
+  const { hoveredMapName, setHoveredMapName, isHovered } =
+    useTerritoryHoverSync();
 
   const {
     layoutRef,

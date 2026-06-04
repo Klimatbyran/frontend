@@ -24,10 +24,7 @@ const geoData: FeatureCollection = {
 
 describe("filterGeoDataByNames", () => {
   it("keeps features whose names match the set case-insensitively", () => {
-    const result = filterGeoDataByNames(
-      geoData,
-      new Set(["alpha", "gamma"]),
-    );
+    const result = filterGeoDataByNames(geoData, new Set(["alpha", "gamma"]));
 
     expect(result.features.map((f) => f.properties?.name)).toEqual([
       "Alpha",
