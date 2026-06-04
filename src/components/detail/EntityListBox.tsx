@@ -75,7 +75,10 @@ function EntityListBoxContent({
           </p>
         </div>
       )}
-      {(selectedKPI || loading) && (
+      {!loading && !selectedKPI && (
+        <p className="text-sm text-grey">{t("noData")}</p>
+      )}
+      {(loading || selectedKPI) && (
         <div
           ref={layoutRef}
           className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6"

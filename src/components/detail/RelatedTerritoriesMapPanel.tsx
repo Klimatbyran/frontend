@@ -29,9 +29,9 @@ export function RelatedTerritoriesMapPanel({
 }: RelatedTerritoriesMapPanelProps) {
   return (
     <div className={cn("relative min-w-0", TERRITORY_PANEL_CLASS)}>
-      {loading || !selectedKPI ? (
+      {loading ? (
         <div className="h-full w-full animate-pulse bg-black-1 rounded-level-2" />
-      ) : (
+      ) : selectedKPI ? (
         <DetailTerritoryMap
           entityType={entityType}
           geoData={geoData}
@@ -42,7 +42,7 @@ export function RelatedTerritoriesMapPanel({
           hoveredArea={hoveredMapName}
           onHoveredAreaChange={onHoveredMapNameChange}
         />
-      )}
+      ) : null}
     </div>
   );
 }
