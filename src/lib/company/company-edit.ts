@@ -2,6 +2,11 @@ import type {
   EditableReportingPeriod,
   ReportingPeriodPayloadItem,
 } from "@/types/company";
+import { parseFormNumber } from "@/utils/ui/numberFormat";
+
+function parseNullableFormNumber(value: string): number | null {
+  return value === "" ? null : parseFormNumber(value);
+}
 
 export function mapCompanyEditFormToRequestBody(
   selectedPeriods: EditableReportingPeriod[],
@@ -53,7 +58,7 @@ export function mapCompanyEditFormToRequestBody(
     if (scope1ValueChanged) {
       const val = formData.get(scope1ValueKey);
       periodUpdate.emissions.scope1 = {
-        total: val === "" ? null : parseFloat(val!),
+        total: val === "" ? null : parseNullableFormNumber(val!),
         unit: originalScope1?.unit || "tCO2e",
         verified: scope1NewVerified ?? isVerified,
       };
@@ -87,16 +92,16 @@ export function mapCompanyEditFormToRequestBody(
 
       if (scope2MbChanged) {
         const val = formData.get("scope-2-mb-" + period.id);
-        periodUpdate.emissions.scope2.mb = val === "" ? null : parseFloat(val!);
+        periodUpdate.emissions.scope2.mb = val === "" ? null : parseNullableFormNumber(val!);
       }
       if (scope2LbChanged) {
         const val = formData.get("scope-2-lb-" + period.id);
-        periodUpdate.emissions.scope2.lb = val === "" ? null : parseFloat(val!);
+        periodUpdate.emissions.scope2.lb = val === "" ? null : parseNullableFormNumber(val!);
       }
       if (scope2UnknownChanged) {
         const val = formData.get("scope-2-unknown-" + period.id);
         periodUpdate.emissions.scope2.unknown =
-          val === "" ? null : parseFloat(val!);
+          val === "" ? null : parseNullableFormNumber(val!);
       }
 
       const originalScope2IsVerified =
@@ -171,7 +176,7 @@ export function mapCompanyEditFormToRequestBody(
             verified?: boolean;
           } = {
             category: parseInt(categoryId),
-            total: newValue === "" ? null : parseFloat(newValue!),
+            total: newValue === "" ? null : parseNullableFormNumber(newValue!),
             unit: originalCategory?.unit || "tCO2e",
           };
           if (verifiedChanged) {
@@ -199,7 +204,7 @@ export function mapCompanyEditFormToRequestBody(
       }
       const val = formData.get(statedTotalValueKey);
       periodUpdate.emissions.scope3.statedTotalEmissions = {
-        total: val === "" ? null : parseFloat(val!),
+        total: val === "" ? null : parseNullableFormNumber(val!),
         unit: originalStatedTotal?.unit || "tCO2e",
         verified:
           statedTotalNewVerified ??
@@ -239,7 +244,7 @@ export function mapCompanyEditFormToRequestBody(
     if (emissionsStatedTotalValueChanged) {
       const val = formData.get(emissionsStatedTotalValueKey);
       periodUpdate.emissions.statedTotalEmissions = {
-        total: val === "" ? null : parseFloat(val!),
+        total: val === "" ? null : parseNullableFormNumber(val!),
         unit: originalEmissionsStatedTotal?.unit || "tCO2e",
         verified:
           emissionsStatedTotalNewVerified ??
@@ -271,7 +276,7 @@ export function mapCompanyEditFormToRequestBody(
     if (scope1And2ValueChanged) {
       const val = formData.get(scope1And2ValueKey);
       periodUpdate.emissions.scope1And2 = {
-        total: val === "" ? null : parseFloat(val!),
+        total: val === "" ? null : parseNullableFormNumber(val!),
         unit: originalScope1And2?.unit || "tCO2e",
         verified:
           scope1And2NewVerified ??
@@ -308,7 +313,7 @@ export function mapCompanyEditFormToRequestBody(
         value: turnoverValueChanged
           ? formData.get(turnoverValueKey) === ""
             ? undefined
-            : parseFloat(formData.get(turnoverValueKey)!)
+            : parseFormNumber(formData.get(turnoverValueKey)!)
           : originalTurnover?.value,
         currency: turnoverCurrencyChanged
           ? formData.get(turnoverCurrencyKey) === ""
@@ -341,7 +346,7 @@ export function mapCompanyEditFormToRequestBody(
         value: employeesValueChanged
           ? formData.get(employeesValueKey) === ""
             ? undefined
-            : parseFloat(formData.get(employeesValueKey)!)
+            : parseFormNumber(formData.get(employeesValueKey)!)
           : originalEmployees?.value,
         unit: employeesUnitChanged
           ? formData.get(employeesUnitKey) === ""

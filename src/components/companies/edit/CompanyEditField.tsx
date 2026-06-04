@@ -1,6 +1,10 @@
 import { Undo2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { IconCheckbox } from "@/components/ui/icon-checkbox";
+import {
+  formatNumberForInput,
+  stripNumberFormatting,
+} from "@/utils/ui/numberFormat";
 import { validateValue } from "../../../utils/ui/validation";
 
 export interface CompanyEditInputFieldProps {
@@ -29,13 +33,21 @@ export function CompanyEditInputField({
   formData,
 }: CompanyEditInputFieldProps) {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onInputChange(name, event.target.value);
+    const rawValue =
+      type === "number"
+        ? stripNumberFormatting(event.target.value)
+        : event.target.value;
+    onInputChange(name, rawValue);
   };
 
   const handleCheckboxChange = (event: boolean) => {
     onInputChange(name + "-checkbox", String(event), originalVerified);
   };
-  const currentValue = formData.has(name) ? formData.get(name) : value;
+  const rawValue = formData.has(name) ? formData.get(name) : value;
+  const currentValue =
+    type === "number" && rawValue !== undefined && rawValue !== ""
+      ? formatNumberForInput(rawValue)
+      : rawValue;
   const currentVerified = formData.has(name + "-checkbox")
     ? formData.get(name + "-checkbox") === "true"
     : verified;
@@ -45,7 +57,7 @@ export function CompanyEditInputField({
   let badgeIconClass = "";
   if (displayAddition === "verification") {
     [isDisabled, badgeIconClass] = validateValue({
-      value: currentValue ?? "",
+      value: rawValue ?? "",
       originalValue: value,
       originalVerified: !!originalVerified,
       verified: !!currentVerified,
@@ -84,11 +96,14 @@ export function CompanyEditInputField({
       <Input
         key={name}
         name={name}
-        type={type}
+        type={type === "number" ? "text" : type}
+        inputMode={type === "number" ? "decimal" : undefined}
         onChange={handleChange}
-        className={`w-[150px] align-right bg-black-1 border ${currentValue != value ? "border-orange-600" : ""}`}
+        className={`w-[150px] align-right bg-black-1 border ${rawValue != value ? "border-orange-600" : ""}`}
         value={currentValue}
-        placeholder={String(value)}
+        placeholder={
+          type === "number" ? formatNumberForInput(value) : String(value)
+        }
       ></Input>
       {displayAddition === "verification" && (
         <IconCheckbox
