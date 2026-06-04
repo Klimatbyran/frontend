@@ -52,3 +52,29 @@ export type DataPoint = {
   approximated: number | undefined;
   carbonLaw: number | undefined;
 };
+
+// Nation emissions data point with stacked emission categories
+export type NationDataPoint = DataPoint & {
+  territorialFossil?: number;
+  biogenic?: number;
+  consumptionAbroad?: number;
+  /** Dashed trend segment from latest reported year toward current year */
+  territorialFossilTrend?: number;
+  biogenicTrend?: number;
+  consumptionAbroadTrend?: number;
+  /** Cumulative stack height at each layer top (solid lines on historical years) */
+  territorialFossilHistoricalTop?: number;
+  biogenicHistoricalTop?: number;
+  consumptionAbroadHistoricalTop?: number;
+  /** Cumulative stack height at each layer top (dashed lines on approximated years) */
+  territorialFossilTrendTop?: number;
+  biogenicTrendTop?: number;
+  consumptionAbroadTrendTop?: number;
+  territorialFossilCarbonLaw?: number;
+  biogenicCarbonLaw?: number;
+  consumptionAbroadCarbonLaw?: number;
+  /** Cumulative stack height for Paris path lines */
+  territorialFossilCarbonLawTop?: number;
+  biogenicCarbonLawTop?: number;
+  consumptionAbroadCarbonLawTop?: number;
+};

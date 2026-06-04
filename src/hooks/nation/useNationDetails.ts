@@ -9,36 +9,53 @@ import { useLanguage } from "@/components/LanguageProvider";
 import { DetailStat } from "@/components/detail/DetailHeader";
 import { getNationDetails } from "@/lib/api";
 import {
-  calculateParisValue,
-  CARBON_LAW_REDUCTION_RATE,
-} from "@/utils/calculations/emissionsCalculations";
+  calculateCarbonLawFromApproximatedRecord,
+  sumNationEmissionRecords,
+} from "@/utils/data/nationTransforms";
 import type { SupportedLanguage } from "@/lib/languageDetection";
 
 export type NationDetails = {
   country: { sv: string; en: string };
   logoUrl: string | null;
   emissions: Record<string, number>;
+  territorialFossil: Record<string, number>;
+  biogenic: Record<string, number>;
+  consumptionAbroad: Record<string, number>;
+  approximatedTerritorialFossil: Record<string, number>;
+  approximatedBiogenic: Record<string, number>;
+  approximatedConsumptionAbroad: Record<string, number>;
   approximatedHistoricalEmission: Record<string, number>;
   trend: Record<string, number>;
   carbonLaw: Record<string, number>;
+  territorialFossilCarbonLaw: Record<string, number>;
+  biogenicCarbonLaw: Record<string, number>;
+  consumptionAbroadCarbonLaw: Record<string, number>;
   meetsParis: boolean;
   historicalEmissionChangePercent: number;
 };
 
+type EmissionSeries = ({ year: string; value: number } | null)[] | undefined;
+
 type ApiNationResponse = {
-  country: { sv: string; en: string };
+  country: { sv: string; en: string } | string;
   logoUrl?: string | null;
-  emissions: ({ year: string; value: number } | null)[];
+  territorialFossilEmissions?: EmissionSeries;
+  biogenicEmissions?: EmissionSeries;
+  consumptionAbroadEmissions?: EmissionSeries;
+  approximatedTerritorialFossilEmissions?: EmissionSeries;
+  approximatedBiogenicEmissions?: EmissionSeries;
+  approximatedConsumptionAbroadEmissions?: EmissionSeries;
+  emissions?: EmissionSeries;
   totalTrend: number;
   totalCarbonLaw: number;
-  approximatedHistoricalEmission: ({ year: string; value: number } | null)[];
-  trend: ({ year: string; value: number } | null)[];
+  approximatedHistoricalEmission: EmissionSeries;
+  trend: EmissionSeries;
   historicalEmissionChangePercent: number;
   meetsParis: boolean;
 };
 
 function extractEmissionsRecord(
-  emissions: ({ year: string; value: number } | null)[] | undefined,
+  emissions: EmissionSeries,
 ): Record<string, number> {
   const record: Record<string, number> = {};
   if (emissions) {
@@ -56,52 +73,69 @@ function extractEmissionsRecord(
   return record;
 }
 
-function calculateCarbonLawRecord(
-  approximatedHistoricalEmission:
-    | ({ year: string; value: number } | null)[]
-    | undefined,
-  currentYear: number,
-): Record<string, number> {
-  const carbonLawRecord: Record<string, number> = {};
-  if (!approximatedHistoricalEmission) return carbonLawRecord;
-
-  const approximatedDataAtCurrentYear = approximatedHistoricalEmission
-    .filter((d) => d && parseInt(d.year) <= currentYear)
-    .sort((a, b) => parseInt(b!.year) - parseInt(a!.year))[0];
-
-  if (approximatedDataAtCurrentYear) {
-    const carbonLawBaseValue = approximatedDataAtCurrentYear.value;
-    const carbonLawBaseYear = parseInt(approximatedDataAtCurrentYear.year);
-
-    for (let year = currentYear; year <= 2050; year++) {
-      const carbonLawValue = calculateParisValue(
-        year,
-        carbonLawBaseYear,
-        carbonLawBaseValue,
-        CARBON_LAW_REDUCTION_RATE,
-      );
-      if (carbonLawValue !== null) {
-        carbonLawRecord[year.toString()] = carbonLawValue;
-      }
-    }
+function normalizeCountry(country: ApiNationResponse["country"]): {
+  sv: string;
+  en: string;
+} {
+  if (typeof country === "string") {
+    return { sv: country, en: country };
   }
-  return carbonLawRecord;
+  return { sv: country.sv, en: country.en };
 }
 
 function transformApiNationToNationDetails(
   r: ApiNationResponse,
   currentYear: number,
 ): NationDetails {
+  const territorialFossil = extractEmissionsRecord(
+    r.territorialFossilEmissions ?? r.emissions,
+  );
+  const biogenic = extractEmissionsRecord(r.biogenicEmissions);
+  const consumptionAbroad = extractEmissionsRecord(
+    r.consumptionAbroadEmissions,
+  );
+  const approximatedTerritorialFossil = extractEmissionsRecord(
+    r.approximatedTerritorialFossilEmissions,
+  );
+  const approximatedBiogenic = extractEmissionsRecord(
+    r.approximatedBiogenicEmissions,
+  );
+  const approximatedConsumptionAbroad = extractEmissionsRecord(
+    r.approximatedConsumptionAbroadEmissions,
+  );
+
   return {
-    country: { sv: r.country.sv, en: r.country.en },
+    country: normalizeCountry(r.country),
     logoUrl: r.logoUrl ?? null,
-    emissions: extractEmissionsRecord(r.emissions),
+    territorialFossil,
+    biogenic,
+    consumptionAbroad,
+    approximatedTerritorialFossil,
+    approximatedBiogenic,
+    approximatedConsumptionAbroad,
+    emissions: sumNationEmissionRecords(
+      territorialFossil,
+      biogenic,
+      consumptionAbroad,
+    ),
     approximatedHistoricalEmission: extractEmissionsRecord(
       r.approximatedHistoricalEmission,
     ),
     trend: extractEmissionsRecord(r.trend),
-    carbonLaw: calculateCarbonLawRecord(
-      r.approximatedHistoricalEmission,
+    carbonLaw: calculateCarbonLawFromApproximatedRecord(
+      extractEmissionsRecord(r.approximatedHistoricalEmission),
+      currentYear,
+    ),
+    territorialFossilCarbonLaw: calculateCarbonLawFromApproximatedRecord(
+      approximatedTerritorialFossil,
+      currentYear,
+    ),
+    biogenicCarbonLaw: calculateCarbonLawFromApproximatedRecord(
+      approximatedBiogenic,
+      currentYear,
+    ),
+    consumptionAbroadCarbonLaw: calculateCarbonLawFromApproximatedRecord(
+      approximatedConsumptionAbroad,
       currentYear,
     ),
     meetsParis: r.meetsParis ?? false,
@@ -197,6 +231,11 @@ export function useNationDetailHeaderStats(
     return [];
   }
 
+  const lastYearEmissions = nation.emissions[lastYear];
+  if (lastYearEmissions === undefined) {
+    return [];
+  }
+
   return [
     createMeetsParisStat(nation.meetsParis, t),
     createChangeSince2015Stat(
@@ -204,11 +243,6 @@ export function useNationDetailHeaderStats(
       currentLanguage,
       t,
     ),
-    createTotalEmissionsStat(
-      nation.emissions[lastYear],
-      lastYear,
-      currentLanguage,
-      t,
-    ),
+    createTotalEmissionsStat(lastYearEmissions, lastYear, currentLanguage, t),
   ];
 }

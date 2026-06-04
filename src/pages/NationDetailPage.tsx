@@ -4,7 +4,6 @@ import { PageError } from "@/components/pageStates/Error";
 import { PageNoData } from "@/components/pageStates/NoData";
 import { DetailHeader } from "@/components/detail/DetailHeader";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";
-import { SectorEmissionsChart } from "@/components/charts/sectorChart/SectorEmissions";
 import { EntityListBox } from "@/components/detail/EntityListBox";
 import { useNationPageData } from "@/hooks/nation/useNationPageData";
 import { useLanguage } from "@/components/LanguageProvider";
@@ -13,15 +12,7 @@ function NationDetailContent({
   nation,
   sortedRegions,
   emissionsData,
-  sectorEmissions,
-  getSectorInfo,
-  filteredSectors,
-  setFilteredSectors,
-  selectedYear,
-  setSelectedYear,
   headerStats,
-  availableYears,
-  currentYear,
 }: ReturnType<typeof useNationPageData>) {
   const { currentLanguage } = useLanguage();
   if (!nation) return <PageNoData />;
@@ -37,18 +28,8 @@ function NationDetailContent({
       />
       <TerritoryEmissions
         emissionsData={emissionsData}
-        sectorEmissions={sectorEmissions}
-      />
-      <SectorEmissionsChart
-        sectorEmissions={sectorEmissions}
-        availableYears={availableYears}
-        selectedYear={selectedYear}
-        onYearChange={setSelectedYear}
-        currentYear={currentYear}
-        getSectorInfo={getSectorInfo}
-        filteredSectors={filteredSectors}
-        onFilteredSectorsChange={setFilteredSectors}
-        helpItems={["municipalityAndRegionEmissionSources"]}
+        sectorEmissions={null}
+        stackedOverview
       />
       <EntityListBox
         items={sortedRegions}

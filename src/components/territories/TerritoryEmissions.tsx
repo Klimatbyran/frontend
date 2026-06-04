@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { DataPoint, SectorEmissions } from "@/types/emissions";
+import { DataPoint, NationDataPoint, SectorEmissions } from "@/types/emissions";
 import {
   getDynamicChartHeight,
   useDataView,
@@ -14,14 +14,16 @@ import { TerritoryEmissionsGraph } from "./emissionsGraph/TerritoryEmissionsGrap
 type DataView = "overview" | "sectors";
 
 interface TerritoryEmissionsProps {
-  emissionsData: DataPoint[];
+  emissionsData: DataPoint[] | NationDataPoint[];
   sectorEmissions: SectorEmissions | null;
   className?: string;
+  stackedOverview?: boolean;
 }
 
 export const TerritoryEmissions: FC<TerritoryEmissionsProps> = ({
   emissionsData,
   sectorEmissions,
+  stackedOverview = false,
 }) => {
   const { t } = useTranslation();
 
@@ -36,33 +38,41 @@ export const TerritoryEmissions: FC<TerritoryEmissionsProps> = ({
     !!sectorEmissions?.sectors &&
     Object.keys(sectorEmissions.sectors).length > 0;
 
-  const dataViewOptions = useMunicipalityViewOptions(hasSectorData);
+  const municipalityViewOptions = useMunicipalityViewOptions(hasSectorData);
+  const dataViewOptions = stackedOverview ? [] : municipalityViewOptions;
+  const activeDataView: DataView = stackedOverview ? "overview" : dataView;
 
   return (
     <SectionWithHelp
       helpItems={[
         "parisAgreementLine",
-        "municipalityImportanceOfEmissionSources",
+        ...(stackedOverview
+          ? []
+          : (["municipalityImportanceOfEmissionSources"] as const)),
       ]}
     >
       <CardHeader
         title={t("detailPage.emissionsDevelopment")}
         unit={t("detailPage.inTons")}
-        dataView={dataView}
-        setDataView={(value) => setDataView(value as "overview" | "sectors")}
-        dataViewOptions={dataViewOptions}
-        dataViewPlaceholder={t("municipalities.graph.selectView")}
+        {...(!stackedOverview && {
+          dataView,
+          setDataView: (value: string) =>
+            setDataView(value as "overview" | "sectors"),
+          dataViewOptions,
+          dataViewPlaceholder: t("municipalities.graph.selectView"),
+        })}
       />
       <div
         className="mt-8"
-        style={{ height: getDynamicChartHeight(dataView, false) }}
+        style={{ height: getDynamicChartHeight(activeDataView, false) }}
       >
         <TerritoryEmissionsGraph
           projectedData={emissionsData}
           sectorEmissions={sectorEmissions || undefined}
-          dataView={dataView}
+          dataView={activeDataView}
           hiddenSectors={hiddenSectors}
           setHiddenSectors={setHiddenSectors}
+          stackedOverview={stackedOverview}
         />
       </div>
     </SectionWithHelp>

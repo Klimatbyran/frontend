@@ -40,7 +40,7 @@ interface ChartTooltipProps {
   };
 
   // Municipality-specific props
-  dataView?: "overview" | "sectors";
+  dataView?: "overview" | "sectors" | "nation-overview";
   hiddenSectors?: Set<string>;
 
   // Custom formatting
@@ -54,6 +54,24 @@ interface ChartTooltipProps {
   // AI data indicators
   showAIIndicators?: boolean;
 }
+
+const NATION_PARIS_TOOLTIP_LAYERS = [
+  {
+    topKey: "territorialFossilCarbonLawTop",
+    valueKey: "territorialFossilCarbonLaw",
+    labelKey: "nation.detailPage.graph.territorialFossilParis",
+  },
+  {
+    topKey: "biogenicCarbonLawTop",
+    valueKey: "biogenicCarbonLaw",
+    labelKey: "nation.detailPage.graph.biogenicParis",
+  },
+  {
+    topKey: "consumptionAbroadCarbonLawTop",
+    valueKey: "consumptionAbroadCarbonLaw",
+    labelKey: "nation.detailPage.graph.consumptionAbroadParis",
+  },
+] as const;
 
 export const ChartTooltip: React.FC<ChartTooltipProps> = ({
   active,
@@ -87,11 +105,16 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
   // First, filter out zero, undefined, or null values, but keep trend and Paris data
   filteredPayload = payload.filter((entry) => {
     // Keep trend and Paris data even if zero
-    if (entry.dataKey === "approximated" || entry.dataKey === "carbonLaw") {
+    if (
+      entry.dataKey === "approximated" ||
+      entry.dataKey === "carbonLaw" ||
+      entry.dataKey === "territorialFossilCarbonLaw" ||
+      entry.dataKey === "biogenicCarbonLaw" ||
+      entry.dataKey === "consumptionAbroadCarbonLaw"
+    ) {
       return entry.value != null;
     }
 
-    showUnit = false;
     // For other data, only show if not null and > 0
     return entry.value != null && entry.value > 0;
   });
@@ -113,6 +136,68 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
     filteredPayload = filteredPayload.filter(
       (entry) => !hiddenSectors.has(entry.dataKey as string),
     );
+  }
+
+  if (dataView === "nation-overview") {
+    const dataPoint = payload[0]?.payload as
+      | Record<string, number | undefined>
+      | undefined;
+
+    const stackKeys = new Set([
+      "territorialFossil",
+      "biogenic",
+      "consumptionAbroad",
+      "territorialFossilTrend",
+      "biogenicTrend",
+      "consumptionAbroadTrend",
+    ]);
+    filteredPayload = filteredPayload.filter(
+      (entry) =>
+        entry.dataKey &&
+        stackKeys.has(entry.dataKey) &&
+        !entry.dataKey.endsWith("TrendTop") &&
+        !entry.dataKey.endsWith("HistoricalTop"),
+    );
+
+    const hasReported = filteredPayload.some(
+      (entry) =>
+        entry.dataKey &&
+        ["territorialFossil", "biogenic", "consumptionAbroad"].includes(
+          entry.dataKey,
+        ) &&
+        entry.value != null,
+    );
+    if (hasReported) {
+      filteredPayload = filteredPayload.filter(
+        (entry) =>
+          !entry.dataKey ||
+          !["territorialFossilTrend", "biogenicTrend", "consumptionAbroadTrend"].includes(
+            entry.dataKey,
+          ),
+      );
+    }
+
+    const parisTooltipEntries: PayloadEntry[] = NATION_PARIS_TOOLTIP_LAYERS.flatMap(
+      (layer) => {
+        const topEntry = payload.find((entry) => entry.dataKey === layer.topKey);
+        const segmentValue = dataPoint?.[layer.valueKey];
+        if (segmentValue == null || !topEntry) {
+          return [];
+        }
+
+        return [
+          {
+            dataKey: layer.valueKey,
+            value: segmentValue,
+            name: t(layer.labelKey),
+            color: topEntry.color,
+            payload: payload[0]?.payload,
+          },
+        ];
+      },
+    );
+
+    filteredPayload = [...filteredPayload, ...parisTooltipEntries];
   }
 
   // For municipality overview, handle approximated data logic
@@ -262,6 +347,17 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
               Trend: {trendData.slope >= 0 ? "↗ Increasing" : "↘ Decreasing"}
             </span>
           </span>
+        )}
+
+      {dataView === "nation-overview" &&
+        filteredPayload.some((entry) =>
+          ["territorialFossilTrend", "biogenicTrend", "consumptionAbroadTrend"].includes(
+            entry.dataKey as string,
+          ),
+        ) && (
+          <div className="text-xs text-blue-2 mt-2 col-span-2">
+            {t("municipalities.graph.estimatedValue")}
+          </div>
         )}
 
       {/* Municipality approximated value info */}
