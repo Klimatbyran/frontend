@@ -17,7 +17,10 @@ import {
   enrichCompanyWithKPIs,
 } from "@/hooks/companies/useCompanyKPIs";
 import { DataPoint } from "@/types/rankings";
-import { OverviewSplitLayout } from "@/components/ranked/OverviewSplitLayout";
+import {
+  OverviewSplitLayout,
+  type OverviewViewMode,
+} from "@/components/ranked/OverviewSplitLayout";
 
 export function CompaniesOverviewPage() {
   const { t } = useTranslation();
@@ -39,12 +42,12 @@ export function CompaniesOverviewPage() {
     navigate({ search: params.toString() }, { replace: true });
   };
 
-  const getViewModeFromURL = () => {
+  const getViewModeFromURL = (): OverviewViewMode => {
     const params = new URLSearchParams(location.search);
     return params.get("view") === "list" ? "list" : "graph";
   };
 
-  const setViewModeInURL = (mode: "graph" | "list") => {
+  const setViewModeInURL = (mode: OverviewViewMode) => {
     const params = new URLSearchParams(location.search);
     params.set("view", mode);
     navigate({ search: params.toString() }, { replace: true });

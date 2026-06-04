@@ -1,13 +1,15 @@
 import { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
+export type OverviewViewMode = "map" | "list" | "graph";
+
 export const OVERVIEW_VISUALIZATION_PANEL_CLASS =
   "relative min-w-0 min-h-[65vh] md:min-h-[570px] h-full";
 
 interface OverviewSplitLayoutProps {
-  viewMode: string;
-  visualizationMode: string;
-  listMode?: string;
+  viewMode: OverviewViewMode;
+  visualizationMode: OverviewViewMode;
+  listMode?: OverviewViewMode;
   visualization: ReactNode;
   list: ReactNode;
 }

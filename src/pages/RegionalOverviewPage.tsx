@@ -19,7 +19,10 @@ import { resolveRegionFromMapName, toMapRegionName } from "@/utils/regionUtils";
 import { toRegionMapDataItem } from "@/utils/territoryMapData";
 import { RegionalRankedList } from "@/components/regions/RegionalRankedList";
 import { KPIDataSelector } from "@/components/ranked/KPIDataSelector";
-import { OverviewSplitLayout } from "@/components/ranked/OverviewSplitLayout";
+import {
+  OverviewSplitLayout,
+  type OverviewViewMode,
+} from "@/components/ranked/OverviewSplitLayout";
 import { createEntityClickHandler } from "@/utils/routing";
 import { RankedListItem } from "@/types/rankings";
 

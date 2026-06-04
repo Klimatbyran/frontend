@@ -47,11 +47,11 @@ export function RelatedTerritoriesList({
         )}
       >
         {visibleTerritories.map((territory) => (
-            <TerritoryListRow
-              key={territory.mapName}
-              territory={territory}
-              routingEntityType={routingEntityType}
-              isHovered={isHovered(territory.mapName)}
+          <TerritoryListRow
+            key={territory.mapName}
+            territory={territory}
+            routingEntityType={routingEntityType}
+            isHovered={isHovered(territory.mapName)}
             onHover={onHover}
           />
         ))}

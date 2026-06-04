@@ -20,7 +20,10 @@ import {
   normalizeMunicipalityKpiApiItem,
   toMunicipalityMapDataItem,
 } from "@/utils/territoryMapData";
-import { OverviewSplitLayout } from "@/components/ranked/OverviewSplitLayout";
+import {
+  OverviewSplitLayout,
+  type OverviewViewMode,
+} from "@/components/ranked/OverviewSplitLayout";
 import type { Municipality } from "@/types/municipality";
 
 export function MunicipalitiesOverviewPage() {
@@ -59,11 +62,11 @@ export function MunicipalitiesOverviewPage() {
     navigate({ search: params.toString() }, { replace: true });
   };
 
-  const getViewModeFromURL = () => {
+  const getViewModeFromURL = (): OverviewViewMode => {
     const params = new URLSearchParams(location.search);
     return params.get("view") === "list" ? "list" : "map";
   };
-  const setViewModeInURL = (mode: "map" | "list") => {
+  const setViewModeInURL = (mode: OverviewViewMode) => {
     const params = new URLSearchParams(location.search);
     params.set("view", mode);
     navigate({ search: params.toString() }, { replace: true });
