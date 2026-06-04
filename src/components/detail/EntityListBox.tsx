@@ -1,5 +1,4 @@
 import { useTranslation } from "react-i18next";
-import { FeatureCollection } from "geojson";
 import { Text } from "@/components/ui/text";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { DataGuideItemId } from "@/data-guide/items";
@@ -84,7 +83,7 @@ function EntityListBoxContent({
         >
           <RelatedTerritoriesMapPanel
             entityType={entityType}
-            geoData={geoData as FeatureCollection}
+            geoData={geoData}
             mapData={mapData}
             selectedKPI={selectedKPI}
             onAreaClick={onAreaClick}
