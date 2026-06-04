@@ -46,11 +46,16 @@ export function useRelatedTerritoriesMap({
   entityType,
 }: UseRelatedTerritoriesMapOptions) {
   const navigate = useNavigate();
+  const isRegions = entityType === "regions";
   const municipalityKPIs = useMunicipalityKPIDefinitions();
   const regionalKPIs = useRegionalKPIs();
-  const { regionsData, loading: regionsLoading } = useRegionsKPI();
+  const { regionsData, loading: regionsLoading } = useRegionsKPI({
+    enabled: isRegions,
+  });
   const { municipalitiesData, loading: municipalitiesLoading } =
-    useMunicipalityKPIs();
+    useMunicipalityKPIs({
+      enabled: !isRegions,
+    });
 
   const kpiDefinitions =
     entityType === "municipalities" ? municipalityKPIs : regionalKPIs;

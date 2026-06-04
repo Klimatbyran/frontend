@@ -24,7 +24,7 @@ const normalizeRegion = (region: ApiRegionKPI): RegionData => {
   };
 };
 
-export function useRegions() {
+export function useRegions(options?: { enabled?: boolean }) {
   const {
     data: regionsKPI = [],
     isLoading,
@@ -32,6 +32,7 @@ export function useRegions() {
   } = useQuery({
     queryKey: ["regions-kpis"],
     queryFn: getRegionsKPIs,
+    enabled: options?.enabled ?? true,
   });
 
   const normalizedRegions = (regionsKPI as ApiRegionKPI[]).map((region) =>
