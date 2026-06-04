@@ -37,7 +37,12 @@ interface TerritoryMapProps {
   showTooltip?: boolean;
   fitBounds?: boolean;
   legendPosition?: MapLegendPosition;
+  /**
+   * Controlled hover state. Must be passed together with `onHoveredAreaChange`;
+   * providing only one will fall back to uncontrolled internal state.
+   */
   hoveredArea?: string | null;
+  /** Pair with `hoveredArea` for controlled hover (e.g. list ↔ map sync). */
   onHoveredAreaChange?: (area: string | null) => void;
 }
 
