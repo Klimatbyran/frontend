@@ -40,8 +40,8 @@ describe("Editor Logic Integration", () => {
     );
     const input = screen.getByRole("textbox");
     expect(input).toHaveValue("42");
-    fireEvent.change(input, { target: { value: "1 234" } });
-    expect(onInputChange).toHaveBeenCalledWith("test", "1234");
+    fireEvent.change(input, { target: { value: "1 234,5" } });
+    expect(onInputChange).toHaveBeenCalledWith("test", "1234.5");
   });
 
   it("CompanyEditInputField: disables checkbox if originalVerified and value unchanged", () => {

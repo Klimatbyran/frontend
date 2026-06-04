@@ -101,10 +101,10 @@ describe("mapCompanyEditFormToRequestBody", () => {
       });
     });
 
-    it("should parse scope1 totals with space thousand separators", () => {
+    it("should parse scope1 totals with Swedish number formatting", () => {
       const result = mapCompanyEditFormToRequestBody(
         [basePeriod],
-        form([["scope-1-1", "1 234 567.5"]]),
+        form([["scope-1-1", "1 234 567,5"]]),
       );
       expect(result.reportingPeriods[0].emissions.scope1).toEqual({
         total: 1234567.5,
