@@ -91,11 +91,13 @@ export function mapCompanyEditFormToRequestBody(
 
       if (scope2MbChanged) {
         const val = formData.get("scope-2-mb-" + period.id);
-        periodUpdate.emissions.scope2.mb = val === "" ? null : parseNullableFormNumber(val!);
+        periodUpdate.emissions.scope2.mb =
+          val === "" ? null : parseNullableFormNumber(val!);
       }
       if (scope2LbChanged) {
         const val = formData.get("scope-2-lb-" + period.id);
-        periodUpdate.emissions.scope2.lb = val === "" ? null : parseNullableFormNumber(val!);
+        periodUpdate.emissions.scope2.lb =
+          val === "" ? null : parseNullableFormNumber(val!);
       }
       if (scope2UnknownChanged) {
         const val = formData.get("scope-2-unknown-" + period.id);

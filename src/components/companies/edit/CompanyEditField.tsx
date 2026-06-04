@@ -32,22 +32,24 @@ export function CompanyEditInputField({
   onInputChange,
   formData,
 }: CompanyEditInputFieldProps) {
+  const isNumericField = type === "number";
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const rawValue =
-      type === "number"
+    onInputChange(
+      name,
+      isNumericField
         ? stripNumberFormatting(event.target.value)
-        : event.target.value;
-    onInputChange(name, rawValue);
+        : event.target.value,
+    );
   };
 
   const handleCheckboxChange = (event: boolean) => {
     onInputChange(name + "-checkbox", String(event), originalVerified);
   };
   const rawValue = formData.has(name) ? formData.get(name) : value;
-  const currentValue =
-    type === "number" && rawValue !== undefined && rawValue !== ""
-      ? formatNumberForInput(rawValue)
-      : rawValue;
+  const displayValue = isNumericField
+    ? formatNumberForInput(rawValue ?? "")
+    : String(rawValue ?? "");
   const currentVerified = formData.has(name + "-checkbox")
     ? formData.get(name + "-checkbox") === "true"
     : verified;
@@ -96,14 +98,14 @@ export function CompanyEditInputField({
       <Input
         key={name}
         name={name}
-        type={type === "number" ? "text" : type}
-        inputMode={type === "number" ? "decimal" : undefined}
+        type={isNumericField ? "text" : type}
+        inputMode={isNumericField ? "decimal" : undefined}
         onChange={handleChange}
         className={`w-[150px] align-right bg-black-1 border ${String(rawValue) !== String(value) ? "border-orange-600" : ""}`}
-        value={currentValue}
-        data-formatted-number={type === "number" ? true : undefined}
+        value={displayValue}
+        data-formatted-number={isNumericField ? true : undefined}
         placeholder={
-          type === "number" ? formatNumberForInput(value) : String(value)
+          isNumericField ? formatNumberForInput(value) : String(value)
         }
       ></Input>
       {displayAddition === "verification" && (
