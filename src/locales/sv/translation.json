@@ -1512,6 +1512,12 @@
   "nation": {
     "detailPage": {
       "regions": "Län"
+    },
+    "exportOfOilProducts": {
+      "title": "Utsläpp från exporterade oljeprodukter",
+      "description": "Årliga utsläpp kopplade till exporterade oljeprodukter från Sverige, i ton CO₂e (tCO₂e), 1990–2024.",
+      "legendLow": "Lägre utsläpp",
+      "legendHigh": "Högre utsläpp"
     }
   },
   "regions": {

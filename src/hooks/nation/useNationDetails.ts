@@ -14,6 +14,11 @@ import {
 } from "@/utils/calculations/emissionsCalculations";
 import type { SupportedLanguage } from "@/lib/languageDetection";
 
+export type YearValuePoint = {
+  year: number;
+  value: number;
+};
+
 export type NationDetails = {
   country: { sv: string; en: string };
   logoUrl: string | null;
@@ -21,6 +26,7 @@ export type NationDetails = {
   approximatedHistoricalEmission: Record<string, number>;
   trend: Record<string, number>;
   carbonLaw: Record<string, number>;
+  exportOfOilProductsEmissions: YearValuePoint[];
   meetsParis: boolean;
   historicalEmissionChangePercent: number;
 };
@@ -29,6 +35,7 @@ type ApiNationResponse = {
   country: { sv: string; en: string };
   logoUrl?: string | null;
   emissions: ({ year: string; value: number } | null)[];
+  exportOfOilProductsEmissions?: ({ year: string; value: number } | null)[];
   totalTrend: number;
   totalCarbonLaw: number;
   approximatedHistoricalEmission: ({ year: string; value: number } | null)[];
@@ -36,6 +43,27 @@ type ApiNationResponse = {
   historicalEmissionChangePercent: number;
   meetsParis: boolean;
 };
+
+function extractYearValuePoints(
+  emissions: ({ year: string; value: number } | null)[] | undefined,
+): YearValuePoint[] {
+  if (!emissions) return [];
+
+  return emissions
+    .flatMap((emission) => {
+      if (
+        !emission ||
+        !emission.year ||
+        emission.value === null ||
+        isNaN(Number(emission.year))
+      ) {
+        return [];
+      }
+
+      return [{ year: Number(emission.year), value: emission.value }];
+    })
+    .sort((a, b) => a.year - b.year);
+}
 
 function extractEmissionsRecord(
   emissions: ({ year: string; value: number } | null)[] | undefined,
@@ -103,6 +131,9 @@ function transformApiNationToNationDetails(
     carbonLaw: calculateCarbonLawRecord(
       r.approximatedHistoricalEmission,
       currentYear,
+    ),
+    exportOfOilProductsEmissions: extractYearValuePoints(
+      r.exportOfOilProductsEmissions,
     ),
     meetsParis: r.meetsParis ?? false,
     historicalEmissionChangePercent: r.historicalEmissionChangePercent ?? 0,
