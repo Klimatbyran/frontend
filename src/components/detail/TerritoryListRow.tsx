@@ -28,6 +28,7 @@ export function TerritoryListRow({
       />
       <LocalizedLink
         to={`${basePath}/${territory.displayName}`}
+        aria-label={`${territory.displayName}, ${territory.formattedValue}`}
         className={cn(
           "min-w-0 flex-1 truncate text-sm leading-5 text-grey hover:text-white md:text-base",
           isHovered && "text-white",
@@ -40,6 +41,7 @@ export function TerritoryListRow({
           "shrink-0 text-xs tabular-nums text-grey",
           isHovered && "text-white",
         )}
+        aria-hidden
       >
         {territory.formattedValue}
       </span>
