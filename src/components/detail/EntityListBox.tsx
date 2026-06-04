@@ -122,7 +122,7 @@ function EntityListBoxContent({
           >
             {visibleTerritories.map((territory) => (
               <TerritoryListRow
-                key={territory.displayName}
+                key={territory.mapName}
                 territory={territory}
                 basePath={basePath}
                 isHovered={
