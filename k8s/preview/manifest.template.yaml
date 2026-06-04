@@ -1,0 +1,102 @@
+# Rendered per PR by k8s/preview/render.sh — do not apply this file directly.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-pr-__PR_NUMBER__
+  namespace: frontend-preview
+  labels:
+    app: frontend-preview
+    preview-pr: "__PR_NUMBER__"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend-preview
+      preview-pr: "__PR_NUMBER__"
+  template:
+    metadata:
+      labels:
+        app: frontend-preview
+        preview-pr: "__PR_NUMBER__"
+    spec:
+      containers:
+        - name: frontend
+          image: __IMAGE__
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+              name: http
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          env:
+            - name: VITE_NODE_ENV
+              value: "staging"
+            - name: GARBO_ALL_ACCESS_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: env
+                  key: GARBO_ALL_ACCESS_API_KEY
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-pr-__PR_NUMBER__
+  namespace: frontend-preview
+  labels:
+    app: frontend-preview
+    preview-pr: "__PR_NUMBER__"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+      name: http
+  selector:
+    app: frontend-preview
+    preview-pr: "__PR_NUMBER__"
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: frontend-pr-__PR_NUMBER__
+  namespace: frontend-preview
+  labels:
+    app: frontend-preview
+    preview-pr: "__PR_NUMBER__"
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - __PREVIEW_HOST__
+      secretName: frontend-pr-__PR_NUMBER__-tls
+  rules:
+    - host: __PREVIEW_HOST__
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend-pr-__PR_NUMBER__
+                port:
+                  number: 80
