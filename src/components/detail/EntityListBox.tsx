@@ -9,6 +9,7 @@ import MultiPagePagination from "@/components/ui/multi-page-pagination";
 import { TerritoryListRow } from "@/components/detail/TerritoryListRow";
 import { useRelatedTerritoriesMap } from "@/hooks/territories/useRelatedTerritoriesMap";
 import {
+  TERRITORY_LIST_PANEL_CLASS,
   TERRITORY_PANEL_CLASS,
   useTerritoryListLayout,
 } from "@/hooks/territories/useTerritoryListLayout";
@@ -109,7 +110,7 @@ function EntityListBoxContent({
         <div
           ref={showPagination ? panelRef : undefined}
           className={cn(
-            "flex flex-col min-w-0 md:h-[min(32rem,55vh)] md:min-h-[20rem]",
+            TERRITORY_LIST_PANEL_CLASS,
             showPagination && "min-h-0",
           )}
         >
