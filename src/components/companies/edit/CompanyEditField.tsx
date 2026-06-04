@@ -99,8 +99,9 @@ export function CompanyEditInputField({
         type={type === "number" ? "text" : type}
         inputMode={type === "number" ? "decimal" : undefined}
         onChange={handleChange}
-        className={`w-[150px] align-right bg-black-1 border ${rawValue != value ? "border-orange-600" : ""}`}
+        className={`w-[150px] align-right bg-black-1 border ${String(rawValue) !== String(value) ? "border-orange-600" : ""}`}
         value={currentValue}
+        data-formatted-number={type === "number" ? true : undefined}
         placeholder={
           type === "number" ? formatNumberForInput(value) : String(value)
         }

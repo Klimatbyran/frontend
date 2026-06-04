@@ -75,10 +75,9 @@ export function CompanyEditEmissionsData({
         }
       } else {
         if (input.value !== input.defaultValue) {
-          const value =
-            input.inputMode === "decimal"
-              ? stripNumberFormatting(input.value)
-              : input.value;
+          const value = input.hasAttribute("data-formatted-number")
+            ? stripNumberFormatting(input.value)
+            : input.value;
           nextFormData.set(input.name, value);
         }
       }

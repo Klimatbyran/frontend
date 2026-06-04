@@ -7,6 +7,7 @@
  * for API parsing.
  */
 
+// Regular space for display (easier to edit than Intl sv-SE narrow no-break space).
 const GROUP_SEPARATOR = " ";
 const DECIMAL_SEPARATOR = ",";
 
@@ -72,4 +73,9 @@ export function formatNumberForInput(value: string | number): string {
 /** Parses a form numeric value, tolerating Swedish formatting. */
 export function parseFormNumber(value: string | undefined): number {
   return parseFloat(stripNumberFormatting(value ?? ""));
+}
+
+/** Like parseFormNumber, but returns null for empty strings. */
+export function parseNullableFormNumber(value: string): number | null {
+  return value === "" ? null : parseFormNumber(value);
 }

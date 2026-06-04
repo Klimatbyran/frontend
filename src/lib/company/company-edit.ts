@@ -2,11 +2,10 @@ import type {
   EditableReportingPeriod,
   ReportingPeriodPayloadItem,
 } from "@/types/company";
-import { parseFormNumber } from "@/utils/ui/numberFormat";
-
-function parseNullableFormNumber(value: string): number | null {
-  return value === "" ? null : parseFormNumber(value);
-}
+import {
+  parseFormNumber,
+  parseNullableFormNumber,
+} from "@/utils/ui/numberFormat";
 
 export function mapCompanyEditFormToRequestBody(
   selectedPeriods: EditableReportingPeriod[],
