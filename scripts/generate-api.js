@@ -10,10 +10,9 @@ const outputPath = path.resolve("src/lib/api-types.ts");
 
 try {
   console.log(`Fetching OpenAPI schema from: ${schemaUrl}`);
-  execSync(
-    `npx openapi-typescript "${schemaUrl}" -o "${outputPath}"`,
-    { stdio: "inherit" },
-  );
+  execSync(`npx openapi-typescript "${schemaUrl}" -o "${outputPath}"`, {
+    stdio: "inherit",
+  });
 } catch (error) {
   console.error(
     "Failed to generate API types:",
