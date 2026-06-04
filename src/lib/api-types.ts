@@ -2882,6 +2882,10 @@ export interface paths {
                                 year: string;
                                 value: number;
                             } | null)[];
+                            exportOfOilProductsEmissions?: ({
+                                year: string;
+                                value: number;
+                            } | null)[];
                             totalTrend: number;
                             totalCarbonLaw: number;
                             approximatedHistoricalEmission: ({

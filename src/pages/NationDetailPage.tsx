@@ -6,6 +6,7 @@ import { DetailHeader } from "@/components/detail/DetailHeader";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";
 import { SectorEmissionsChart } from "@/components/charts/sectorChart/SectorEmissions";
 import { EntityListBox } from "@/components/detail/EntityListBox";
+import { ExportOfOilProductsEmissionsChart } from "@/components/nation/ExportOfOilProductsEmissionsChart";
 import { useNationPageData } from "@/hooks/nation/useNationPageData";
 import { useLanguage } from "@/components/LanguageProvider";
 
@@ -38,6 +39,9 @@ function NationDetailContent({
       <TerritoryEmissions
         emissionsData={emissionsData}
         sectorEmissions={sectorEmissions}
+      />
+      <ExportOfOilProductsEmissionsChart
+        data={nation.exportOfOilProductsEmissions}
       />
       <SectorEmissionsChart
         sectorEmissions={sectorEmissions}
