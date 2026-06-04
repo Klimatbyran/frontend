@@ -108,6 +108,7 @@ function TerritoryMap({
     onAreaClick,
     hoveredArea: hoveredAreaProp,
     onHoveredAreaChange,
+    showTooltip,
   });
 
   const { leftValue, rightValue, hasNullValues } = useMapLegendValues(

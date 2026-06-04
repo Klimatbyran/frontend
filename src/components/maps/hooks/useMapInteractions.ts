@@ -24,6 +24,7 @@ interface UseMapInteractionsProps {
   onAreaClick?: (id: string) => void;
   hoveredArea?: string | null;
   onHoveredAreaChange?: (area: string | null) => void;
+  showTooltip?: boolean;
 }
 
 export function useMapInteractions({
@@ -36,6 +37,7 @@ export function useMapInteractions({
   onAreaClick,
   hoveredArea: controlledHoveredArea,
   onHoveredAreaChange,
+  showTooltip = true,
 }: UseMapInteractionsProps) {
   const [uncontrolledHoveredArea, setUncontrolledHoveredArea] = useState<
     string | null
@@ -153,9 +155,9 @@ export function useMapInteractions({
             }
           },
           click: () => {
-            // On any device, clicking an area should show its tooltip.
-            setHoveredArea(areaName);
-            // On desktop, also trigger navigation to the detail page.
+            if (showTooltip) {
+              setHoveredArea(areaName);
+            }
             if (!isMobile && onAreaClick) {
               onAreaClick(areaName);
             }
@@ -163,7 +165,7 @@ export function useMapInteractions({
         });
       }
     },
-    [propertyNameField, onAreaClick, setHoveredArea],
+    [propertyNameField, onAreaClick, setHoveredArea, showTooltip],
   );
 
   useEffect(() => {
