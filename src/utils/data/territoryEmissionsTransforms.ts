@@ -32,10 +32,9 @@ export function transformTerritoryEmissionsData(
 
   const currentYear = new Date().getFullYear();
 
-  const approximatedDataAtCurrentYear =
-    territory.approximatedHistoricalEmission
-      .filter((d): d is EmissionDataPoint => d != null && d.year <= currentYear)
-      .sort((a, b) => b.year - a.year)[0];
+  const approximatedDataAtCurrentYear = territory.approximatedHistoricalEmission
+    .filter((d): d is EmissionDataPoint => d != null && d.year <= currentYear)
+    .sort((a, b) => b.year - a.year)[0];
 
   const carbonLawBaseValue = approximatedDataAtCurrentYear?.value;
   const carbonLawBaseYear = approximatedDataAtCurrentYear?.year ?? currentYear;
@@ -43,8 +42,9 @@ export function transformTerritoryEmissionsData(
   return Array.from(years)
     .sort((a, b) => a - b)
     .map((yearNum) => {
-      const historical = territory.emissions.find((d) => d?.year === yearNum)
-        ?.value;
+      const historical = territory.emissions.find(
+        (d) => d?.year === yearNum,
+      )?.value;
       const approximated = territory.approximatedHistoricalEmission.find(
         (d) => d?.year === yearNum,
       )?.value;
@@ -71,6 +71,7 @@ export function transformTerritoryEmissionsData(
     })
     .filter(
       (d) =>
-        d.year >= EMISSIONS_DATA_START_YEAR && d.year <= EMISSIONS_DATA_END_YEAR,
+        d.year >= EMISSIONS_DATA_START_YEAR &&
+        d.year <= EMISSIONS_DATA_END_YEAR,
     );
 }

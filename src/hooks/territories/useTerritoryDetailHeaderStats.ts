@@ -88,11 +88,6 @@ export function useTerritoryDetailHeaderStats(
       currentLanguage,
       t,
     ),
-    createTotalEmissionsStat(
-      lastYearEmissions,
-      lastYear,
-      currentLanguage,
-      t,
-    ),
+    createTotalEmissionsStat(lastYearEmissions, lastYear, currentLanguage, t),
   ];
 }

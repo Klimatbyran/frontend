@@ -23,7 +23,9 @@ type ApiNationResponse = {
   meetsParis: boolean;
 };
 
-function transformApiNationToNationDetails(r: ApiNationResponse): NationDetails {
+function transformApiNationToNationDetails(
+  r: ApiNationResponse,
+): NationDetails {
   return {
     country: { sv: r.country.sv, en: r.country.en },
     logoUrl: r.logoUrl ?? null,

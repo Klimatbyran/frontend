@@ -25,7 +25,9 @@ type ApiRegionResponse = {
   municipalities: string[];
 };
 
-function transformApiRegionToRegionDetails(r: ApiRegionResponse): RegionDetails {
+function transformApiRegionToRegionDetails(
+  r: ApiRegionResponse,
+): RegionDetails {
   return {
     name: r.region,
     logoUrl: r.logoUrl ?? null,
