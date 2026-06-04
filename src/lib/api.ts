@@ -2,7 +2,6 @@ import createClient from "openapi-fetch";
 import type { paths } from "./api-types";
 import { authMiddleware } from "./auth-middleware";
 
-/** Garbo API (replaces api.klimatkollen.se / stage.klimatkollen.se). */
 export const API_BASE_URL = "https://api.unearthdata.ai/api";
 
 // Browser: /api/* (Vite/nginx proxy with Host: api.unearthdata.ai). Node: direct API URL.
