@@ -158,7 +158,8 @@ export function useMapInteractions({
             if (showTooltip) {
               setHoveredArea(areaName);
             }
-            if (!isMobile && onAreaClick) {
+            // Detail maps disable tooltips; still allow tap-to-navigate on mobile.
+            if (onAreaClick && (!isMobile || !showTooltip)) {
               onAreaClick(areaName);
             }
           },
