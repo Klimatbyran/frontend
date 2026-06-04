@@ -1,27 +1,30 @@
 import { execSync } from "child_process";
 import path from "path";
-import { API_BASE_URL } from "../src/lib/constants/urls.js";
+import {
+  OPENAPI_SCHEMA_URL,
+  OPENAPI_SCHEMA_URLS,
+} from "../src/lib/constants/urls.js";
 
-async function generateApi() {
-  const outputPath = path.resolve("src/lib/api-types.ts");
+const schemaUrl = process.argv[2] ?? OPENAPI_SCHEMA_URL;
+const outputPath = path.resolve("src/lib/api-types.ts");
 
-  try {
-    console.log(
-      `Fetching OpenAPI schema from: ${API_BASE_URL}/api/openapi.json`,
-    );
-    execSync(
-      `npx openapi-typescript ${API_BASE_URL}/api/openapi.json -o ${outputPath}`,
-      {
-        stdio: "inherit",
-      },
-    );
-  } catch (error) {
-    console.error(
-      "Failed to generate API types:",
-      error instanceof Error ? error.message : "Unknown error occurred",
-    );
-    process.exit(1);
-  }
+try {
+  console.log(`Fetching OpenAPI schema from: ${schemaUrl}`);
+  execSync(`npx openapi-typescript "${schemaUrl}" -o "${outputPath}"`, {
+    stdio: "inherit",
+  });
+} catch (error) {
+  console.error(
+    "Failed to generate API types:",
+    error instanceof Error ? error.message : "Unknown error occurred",
+  );
+  console.error(
+    "URLs: local",
+    OPENAPI_SCHEMA_URLS.local,
+    "| staging",
+    OPENAPI_SCHEMA_URLS.staging,
+    "| production",
+    OPENAPI_SCHEMA_URLS.production,
+  );
+  process.exit(1);
 }
-
-generateApi();

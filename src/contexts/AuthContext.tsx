@@ -6,7 +6,7 @@ import React, {
   useEffect,
   useRef,
 } from "react";
-import { authenticateWithGithub, baseUrl } from "@/lib/api";
+import { authenticateWithGithub, apiUrl } from "@/lib/api";
 import { Token } from "@/types/token";
 
 export interface AuthContext {
@@ -71,8 +71,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     );
     const callbackUrl =
       redirectUri || `${window.location.origin}/auth/callback`;
-    const authUrl = baseUrl + "/auth/github";
-    const url = new URL(authUrl, window.location.origin);
+    const url = new URL(apiUrl("/auth/github"), window.location.origin);
     url.searchParams.set("redirect_uri", callbackUrl);
     window.location.href = url.toString();
   };
