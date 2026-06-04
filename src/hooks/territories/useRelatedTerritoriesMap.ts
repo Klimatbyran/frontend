@@ -14,6 +14,7 @@ import {
 import { DataItem, MapEntityType } from "@/types/rankings";
 import { createEntityClickHandler } from "@/utils/routing";
 import { filterGeoDataByNames } from "@/utils/geoUtils";
+import { resolveRegionFromMapName } from "@/utils/regionUtils";
 import {
   toMunicipalityMapDataItem,
   toRegionMapDataItem,
@@ -22,8 +23,8 @@ import {
   buildTerritoryListEntries,
   DETAIL_TERRITORY_KPI_KEY,
   TerritoryKpi,
+  toTerritoryMapName,
 } from "@/utils/territoryMapUtils";
-import { toMapRegionName } from "@/utils/regionUtils";
 
 interface UseRelatedTerritoriesMapOptions {
   items: string[];
@@ -33,6 +34,11 @@ interface UseRelatedTerritoriesMapOptions {
 const DEFAULT_CENTERS: Record<MapEntityType, [number, number]> = {
   regions: [63.7, 17],
   municipalities: [63, 17],
+};
+
+const GEO_JSON_BY_ENTITY: Record<MapEntityType, FeatureCollection> = {
+  municipalities: municipalityGeoJson as FeatureCollection,
+  regions: regionGeoJson as FeatureCollection,
 };
 
 export function useRelatedTerritoriesMap({
@@ -72,10 +78,7 @@ export function useRelatedTerritoriesMap({
   const onAreaClick = useCallback(
     (mapName: string) => {
       if (entityType === "regions") {
-        const region = regionsData.find(
-          (entry) =>
-            toMapRegionName(entry.name) === mapName || entry.name === mapName,
-        );
+        const region = resolveRegionFromMapName(mapName, regionsData);
         handleEntityClick(region?.name ?? mapName);
         return;
       }
@@ -111,17 +114,12 @@ export function useRelatedTerritoriesMap({
   }, [items, entityType, mapData, selectedKPI]);
 
   const geoData = useMemo(() => {
-    const source =
-      entityType === "municipalities"
-        ? (municipalityGeoJson as FeatureCollection)
-        : (regionGeoJson as FeatureCollection);
-
     const namesForFilter = new Set(
-      territories.map((territory) => territory.mapName.toLowerCase()),
+      items.map((item) => toTerritoryMapName(entityType, item).toLowerCase()),
     );
 
-    return filterGeoDataByNames(source, namesForFilter);
-  }, [entityType, territories]);
+    return filterGeoDataByNames(GEO_JSON_BY_ENTITY[entityType], namesForFilter);
+  }, [entityType, items]);
 
   return {
     selectedKPI,
