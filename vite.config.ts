@@ -14,7 +14,7 @@ export default ({ mode }: ConfigEnv) => {
 
   return defineConfig({
     plugins: [
-      devApiProxy(apiProxyTarget, env.GARBO_PROXY_CLIENT_API_KEY),
+      devApiProxy(apiProxyTarget, env.GARBO_ALL_ACCESS_API_KEY),
       react({
         babel: {
           plugins: [
