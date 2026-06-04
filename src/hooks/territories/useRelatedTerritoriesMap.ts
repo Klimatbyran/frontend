@@ -15,6 +15,7 @@ import { DataItem, MapEntityType } from "@/types/rankings";
 import { createEntityClickHandler } from "@/utils/routing";
 import { filterGeoDataByNames } from "@/utils/geoUtils";
 import { resolveRegionFromMapName } from "@/utils/regionUtils";
+import { toRoutingEntityType } from "@/utils/territoryMapUtils";
 import {
   toMunicipalityMapDataItem,
   toRegionMapDataItem,
@@ -57,8 +58,7 @@ export function useRelatedTerritoriesMap({
       enabled: !isRegions,
     });
 
-  const kpiDefinitions =
-    entityType === "municipalities" ? municipalityKPIs : regionalKPIs;
+  const kpiDefinitions = isRegions ? regionalKPIs : municipalityKPIs;
 
   const selectedKPI = useMemo((): TerritoryKpi | undefined => {
     if (kpiDefinitions.length === 0) {
@@ -71,18 +71,16 @@ export function useRelatedTerritoriesMap({
     );
   }, [kpiDefinitions]);
 
+  const routingEntityType = toRoutingEntityType(entityType);
+
   const handleEntityClick = useMemo(
-    () =>
-      createEntityClickHandler(
-        navigate,
-        entityType === "municipalities" ? "municipality" : "region",
-      ),
-    [navigate, entityType],
+    () => createEntityClickHandler(navigate, routingEntityType),
+    [navigate, routingEntityType],
   );
 
   const onAreaClick = useCallback(
     (mapName: string) => {
-      if (entityType === "regions") {
+      if (isRegions) {
         const region = resolveRegionFromMapName(mapName, regionsData);
         handleEntityClick(region?.name ?? mapName);
         return;
@@ -90,7 +88,7 @@ export function useRelatedTerritoriesMap({
 
       handleEntityClick(mapName);
     },
-    [entityType, regionsData, handleEntityClick],
+    [isRegions, regionsData, handleEntityClick],
   );
 
   const itemsSet = useMemo(
@@ -99,7 +97,7 @@ export function useRelatedTerritoriesMap({
   );
 
   const mapData = useMemo((): DataItem[] => {
-    if (entityType === "regions") {
+    if (isRegions) {
       return regionsData
         .filter((region) => itemsSet.has(region.name.toLowerCase()))
         .map(toRegionMapDataItem);
@@ -108,7 +106,7 @@ export function useRelatedTerritoriesMap({
     return municipalitiesData
       .filter((municipality) => itemsSet.has(municipality.name.toLowerCase()))
       .map(toMunicipalityMapDataItem);
-  }, [entityType, regionsData, municipalitiesData, itemsSet]);
+  }, [isRegions, regionsData, municipalitiesData, itemsSet]);
 
   const territories = useMemo(() => {
     if (!selectedKPI) {
@@ -133,6 +131,6 @@ export function useRelatedTerritoriesMap({
     geoData,
     onAreaClick,
     defaultCenter: DEFAULT_CENTERS[entityType],
-    loading: entityType === "regions" ? regionsLoading : municipalitiesLoading,
+    loading: isRegions ? regionsLoading : municipalitiesLoading,
   };
 }

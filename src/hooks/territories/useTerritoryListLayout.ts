@@ -117,17 +117,14 @@ export function useTerritoryListLayout(
     currentPageSafe,
   ]);
 
-  const visibleRange = useMemo(() => {
+  const visibleTerritories = useMemo(() => {
     if (!shouldPaginateList || itemsPerPage <= 0) {
-      return { startIndex: 0, endIndex: itemCount };
+      return territories;
     }
 
     const startIndex = (currentPageSafe - 1) * itemsPerPage;
-    return {
-      startIndex,
-      endIndex: startIndex + itemsPerPage,
-    };
-  }, [shouldPaginateList, currentPageSafe, itemsPerPage, itemCount]);
+    return territories.slice(startIndex, startIndex + itemsPerPage);
+  }, [shouldPaginateList, currentPageSafe, itemsPerPage, territories]);
 
   return {
     layoutRef,
@@ -135,7 +132,7 @@ export function useTerritoryListLayout(
     currentPage: currentPageSafe,
     setCurrentPage,
     totalPages,
-    visibleRange,
+    visibleTerritories,
     showPagination: shouldPaginateList && totalPages > 1,
   };
 }

@@ -51,6 +51,12 @@ export function toTerritoryMapName(
   return entityType === "regions" ? toMapRegionName(displayName) : displayName;
 }
 
+export function toRoutingEntityType(
+  entityType: MapEntityType,
+): "region" | "municipality" {
+  return entityType === "regions" ? "region" : "municipality";
+}
+
 export function getTerritoryKpiRawValue(
   item: DataItem,
   kpiKey: string,

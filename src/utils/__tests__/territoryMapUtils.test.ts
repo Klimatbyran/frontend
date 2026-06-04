@@ -7,6 +7,7 @@ import {
   getTerritoryKpiRawValue,
   getTerritoryListPage,
   getTerritoryMapFillColor,
+  toRoutingEntityType,
   TERRITORY_MAP_COLORS,
   TerritoryKpi,
 } from "../territoryMapUtils";
@@ -216,5 +217,12 @@ describe("buildTerritoryListEntries", () => {
       formattedValue: "–",
       fillColor: TERRITORY_MAP_COLORS.null,
     });
+  });
+});
+
+describe("toRoutingEntityType", () => {
+  it("maps map entity types to routing paths", () => {
+    expect(toRoutingEntityType("regions")).toBe("region");
+    expect(toRoutingEntityType("municipalities")).toBe("municipality");
   });
 });
