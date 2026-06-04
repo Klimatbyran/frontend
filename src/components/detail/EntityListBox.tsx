@@ -1,21 +1,15 @@
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FeatureCollection } from "geojson";
 import { Text } from "@/components/ui/text";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { DataGuideItemId } from "@/data-guide/items";
-import TerritoryMap from "@/components/maps/TerritoryMap";
-import MultiPagePagination from "@/components/ui/multi-page-pagination";
-import { TerritoryListRow } from "@/components/detail/TerritoryListRow";
+import { RelatedTerritoriesList } from "@/components/detail/RelatedTerritoriesList";
+import { RelatedTerritoriesMapPanel } from "@/components/detail/RelatedTerritoriesMapPanel";
 import { useRelatedTerritoriesMap } from "@/hooks/territories/useRelatedTerritoriesMap";
-import {
-  TERRITORY_LIST_PANEL_CLASS,
-  TERRITORY_PANEL_CLASS,
-  useTerritoryListLayout,
-} from "@/hooks/territories/useTerritoryListLayout";
+import { useTerritoryHoverSync } from "@/hooks/territories/useTerritoryHoverSync";
+import { useTerritoryListLayout } from "@/hooks/territories/useTerritoryListLayout";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { MapEntityType } from "@/types/rankings";
-import { cn } from "@/lib/utils";
 
 interface EntityListBoxProps {
   items: string[];
@@ -49,7 +43,7 @@ function EntityListBoxContent({
     loading,
   } = useRelatedTerritoriesMap({ items, entityType });
   const { isMobile } = useScreenSize();
-  const [hoveredMapArea, setHoveredMapArea] = useState<string | null>(null);
+  const { hoveredMapName, setHoveredMapName, isHovered } = useTerritoryHoverSync();
 
   const {
     layoutRef,
@@ -59,7 +53,7 @@ function EntityListBoxContent({
     totalPages,
     visibleRange,
     showPagination,
-  } = useTerritoryListLayout(territories, !isMobile, hoveredMapArea);
+  } = useTerritoryListLayout(territories, !isMobile, hoveredMapName);
 
   const translationKey = `${translateNamespace}.${entityType}`;
   const basePath = `/${entityType}`;
@@ -85,63 +79,29 @@ function EntityListBoxContent({
           ref={layoutRef}
           className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6"
         >
-          <div className={cn("relative min-w-0", TERRITORY_PANEL_CLASS)}>
-            {loading || !selectedKPI ? (
-              <div className="h-full w-full animate-pulse bg-black-1 rounded-level-2" />
-            ) : (
-              <TerritoryMap
-                entityType={entityType}
-                geoData={geoData as FeatureCollection}
-                data={mapData}
-                selectedKPI={selectedKPI}
-                onAreaClick={onAreaClick}
-                defaultCenter={defaultCenter}
-                // Detail maps are embedded; overview maps keep scrollWheelZoom enabled.
-                scrollWheelZoom={false}
-                fitBounds
-                showTooltip={false}
-                legendPosition="bottom-left"
-                hoveredArea={hoveredMapArea}
-                onHoveredAreaChange={setHoveredMapArea}
-                className="max-w-none"
-              />
-            )}
-          </div>
+          <RelatedTerritoriesMapPanel
+            entityType={entityType}
+            geoData={geoData as FeatureCollection}
+            mapData={mapData}
+            selectedKPI={selectedKPI}
+            onAreaClick={onAreaClick}
+            defaultCenter={defaultCenter}
+            loading={loading}
+            hoveredMapName={hoveredMapName}
+            onHoveredMapNameChange={setHoveredMapName}
+          />
           {selectedKPI && (
-            <div
-              ref={showPagination ? panelRef : undefined}
-              className={cn(
-                TERRITORY_LIST_PANEL_CLASS,
-                showPagination && "min-h-0",
-              )}
-            >
-              <div
-                className={cn(
-                  "grid grid-cols-2 gap-x-3 gap-y-2 content-start",
-                  showPagination && "flex-1 min-h-0",
-                )}
-              >
-                {visibleTerritories.map((territory) => (
-                  <TerritoryListRow
-                    key={territory.mapName}
-                    territory={territory}
-                    basePath={basePath}
-                    isHovered={
-                      hoveredMapArea?.toLowerCase() ===
-                      territory.mapName.toLowerCase()
-                    }
-                    onHover={setHoveredMapArea}
-                  />
-                ))}
-              </div>
-              {showPagination && (
-                <MultiPagePagination
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  onPageChange={setCurrentPage}
-                />
-              )}
-            </div>
+            <RelatedTerritoriesList
+              visibleTerritories={visibleTerritories}
+              basePath={basePath}
+              isHovered={isHovered}
+              onHover={setHoveredMapName}
+              panelRef={showPagination ? panelRef : undefined}
+              showPagination={showPagination}
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
           )}
         </div>
       )}
