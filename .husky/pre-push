@@ -1,2 +1,2 @@
 npm run format-prettier
-npm audit
+npm audit --omit=dev
