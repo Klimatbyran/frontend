@@ -49,10 +49,15 @@ export function useRelatedTerritoriesMap({
   const kpiDefinitions =
     entityType === "municipalities" ? municipalityKPIs : regionalKPIs;
 
-  const selectedKPI = useMemo((): TerritoryKpi => {
-    return (kpiDefinitions.find(
-      (kpi) => kpi.key === DETAIL_TERRITORY_KPI_KEY,
-    ) ?? kpiDefinitions[0]) as TerritoryKpi;
+  const selectedKPI = useMemo((): TerritoryKpi | undefined => {
+    if (kpiDefinitions.length === 0) {
+      return undefined;
+    }
+
+    return (
+      kpiDefinitions.find((kpi) => kpi.key === DETAIL_TERRITORY_KPI_KEY) ??
+      kpiDefinitions[0]
+    );
   }, [kpiDefinitions]);
 
   const handleEntityClick = useMemo(
@@ -97,10 +102,13 @@ export function useRelatedTerritoriesMap({
       .map(toMunicipalityMapDataItem);
   }, [entityType, regionsData, municipalitiesData, itemsSet]);
 
-  const territories = useMemo(
-    () => buildTerritoryListEntries(items, entityType, mapData, selectedKPI),
-    [items, entityType, mapData, selectedKPI],
-  );
+  const territories = useMemo(() => {
+    if (!selectedKPI) {
+      return [];
+    }
+
+    return buildTerritoryListEntries(items, entityType, mapData, selectedKPI);
+  }, [items, entityType, mapData, selectedKPI]);
 
   const geoData = useMemo(() => {
     const source =

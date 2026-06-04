@@ -80,13 +80,13 @@ function EntityListBoxContent({
           </p>
         </div>
       )}
-      <div
-        ref={layoutRef}
-        className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6"
-      >
-        {selectedKPI && (
+      {(selectedKPI || loading) && (
+        <div
+          ref={layoutRef}
+          className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6"
+        >
           <div className={cn("relative min-w-0", TERRITORY_PANEL_CLASS)}>
-            {loading ? (
+            {loading || !selectedKPI ? (
               <div className="h-full w-full animate-pulse bg-black-1 rounded-level-2" />
             ) : (
               <TerritoryMap
@@ -96,6 +96,7 @@ function EntityListBoxContent({
                 selectedKPI={selectedKPI}
                 onAreaClick={onAreaClick}
                 defaultCenter={defaultCenter}
+                // Detail maps are embedded; overview maps keep scrollWheelZoom enabled.
                 scrollWheelZoom={false}
                 fitBounds
                 showTooltip={false}
@@ -106,42 +107,44 @@ function EntityListBoxContent({
               />
             )}
           </div>
-        )}
-        <div
-          ref={showPagination ? panelRef : undefined}
-          className={cn(
-            TERRITORY_LIST_PANEL_CLASS,
-            showPagination && "min-h-0",
-          )}
-        >
-          <div
-            className={cn(
-              "grid grid-cols-2 gap-x-3 gap-y-2 content-start",
-              showPagination && "flex-1 min-h-0",
-            )}
-          >
-            {visibleTerritories.map((territory) => (
-              <TerritoryListRow
-                key={territory.mapName}
-                territory={territory}
-                basePath={basePath}
-                isHovered={
-                  hoveredMapArea?.toLowerCase() ===
-                  territory.mapName.toLowerCase()
-                }
-                onHover={setHoveredMapArea}
-              />
-            ))}
-          </div>
-          {showPagination && (
-            <MultiPagePagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={setCurrentPage}
-            />
+          {selectedKPI && (
+            <div
+              ref={showPagination ? panelRef : undefined}
+              className={cn(
+                TERRITORY_LIST_PANEL_CLASS,
+                showPagination && "min-h-0",
+              )}
+            >
+              <div
+                className={cn(
+                  "grid grid-cols-2 gap-x-3 gap-y-2 content-start",
+                  showPagination && "flex-1 min-h-0",
+                )}
+              >
+                {visibleTerritories.map((territory) => (
+                  <TerritoryListRow
+                    key={territory.mapName}
+                    territory={territory}
+                    basePath={basePath}
+                    isHovered={
+                      hoveredMapArea?.toLowerCase() ===
+                      territory.mapName.toLowerCase()
+                    }
+                    onHover={setHoveredMapArea}
+                  />
+                ))}
+              </div>
+              {showPagination && (
+                <MultiPagePagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={setCurrentPage}
+                />
+              )}
+            </div>
           )}
         </div>
-      </div>
+      )}
     </div>
   );
 
