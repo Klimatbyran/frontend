@@ -16,9 +16,12 @@ import {
 import { RankedListItem } from "@/types/rankings";
 import { createEntityClickHandler } from "@/utils/routing";
 import { MunicipalityRankedList } from "@/components/municipalities/MunicipalityRankedList";
-import { normalizeMunicipalityKpiApiItem } from "@/utils/territoryMapData";
+import {
+  normalizeMunicipalityKpiApiItem,
+  toMunicipalityMapDataItem,
+} from "@/utils/territoryMapData";
+import { OverviewSplitLayout } from "@/components/ranked/OverviewSplitLayout";
 import type { Municipality } from "@/types/municipality";
-import { cn } from "@/lib/utils";
 
 export function MunicipalitiesOverviewPage() {
   const { t } = useTranslation();
@@ -82,7 +85,11 @@ export function MunicipalitiesOverviewPage() {
     viewMode,
   );
 
-  // Create an adapter for MapOfSweden
+  const mapData = useMemo(
+    () => municipalitiesData.map(toMunicipalityMapDataItem),
+    [municipalitiesData],
+  );
+
   const handleMunicipalityAreaClick = (name: string) => {
     const municipality = municipalities.find((m) => m.name === name);
     if (municipality) {
@@ -140,24 +147,14 @@ export function MunicipalitiesOverviewPage() {
   );
 
   const mapPanel = (
-    <div
-      className={cn(
-        "relative min-w-0 min-h-[65vh] md:min-h-[570px] h-full",
-        viewMode !== "map" && "max-md:hidden",
-      )}
-    >
-      <TerritoryMap
-        entityType="municipalities"
-        geoData={geoData as FeatureCollection}
-        data={municipalities.map((m) => {
-          const { sectorEmissions, ...rest } = m;
-          return { ...rest, id: m.name };
-        })}
-        selectedKPI={selectedKPI}
-        onAreaClick={handleMunicipalityAreaClick}
-        className="max-w-none"
-      />
-    </div>
+    <TerritoryMap
+      entityType="municipalities"
+      geoData={geoData as FeatureCollection}
+      data={mapData}
+      selectedKPI={selectedKPI}
+      onAreaClick={handleMunicipalityAreaClick}
+      className="max-w-none"
+    />
   );
 
   return (
@@ -196,17 +193,12 @@ export function MunicipalitiesOverviewPage() {
       />
 
       <div className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
-          {mapPanel}
-          <div
-            className={cn(
-              "min-w-0 h-full",
-              viewMode !== "list" && "max-md:hidden",
-            )}
-          >
-            {municipalityRankedList}
-          </div>
-        </div>
+        <OverviewSplitLayout
+          viewMode={viewMode}
+          visualizationMode="map"
+          visualization={mapPanel}
+          list={municipalityRankedList}
+        />
         <InsightsPanel
           municipalityData={municipalities}
           selectedKPI={selectedKPI}

@@ -15,13 +15,13 @@ import {
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import RegionalInsightsPanel from "@/components/regions/RegionalInsightsPanel";
 import { Region } from "@/types/region";
-import { toMapRegionName } from "@/utils/regionUtils";
+import { resolveRegionFromMapName, toMapRegionName } from "@/utils/regionUtils";
 import { toRegionMapDataItem } from "@/utils/territoryMapData";
 import { RegionalRankedList } from "@/components/regions/RegionalRankedList";
 import { KPIDataSelector } from "@/components/ranked/KPIDataSelector";
+import { OverviewSplitLayout } from "@/components/ranked/OverviewSplitLayout";
 import { createEntityClickHandler } from "@/utils/routing";
 import { RankedListItem } from "@/types/rankings";
-import { cn } from "@/lib/utils";
 
 export function RegionalOverviewPage() {
   const { t } = useTranslation();
@@ -45,14 +45,9 @@ export function RegionalOverviewPage() {
     viewMode,
   );
 
-  // Create an adapter for MapOfSweden
   const handleRegionAreaClick = (name: string) => {
-    const region = regionsData.find((m) => m.name === name);
-    if (region) {
-      handleRegionClick(region);
-    } else {
-      handleRegionClick(name);
-    }
+    const region = resolveRegionFromMapName(name, regionsData);
+    handleRegionClick(region?.name ?? name);
   };
 
   // Transform regions data from regional KPIs endpoint into required formats
@@ -71,9 +66,10 @@ export function RegionalOverviewPage() {
     });
   }, [regionsData]);
 
-  const mapData: DataItem[] = useMemo(() => {
-    return regionEntities.map((region) => toRegionMapDataItem(region));
-  }, [regionEntities]);
+  const mapData: DataItem[] = useMemo(
+    () => regionsData.map(toRegionMapDataItem),
+    [regionsData],
+  );
 
   const regionsAsEntities: Region[] = useMemo(() => {
     return regionEntities.map((region) => ({
@@ -98,22 +94,15 @@ export function RegionalOverviewPage() {
   );
 
   const mapPanel = (
-    <div
-      className={cn(
-        "relative min-w-0 min-h-[65vh] md:min-h-[570px] h-full",
-        viewMode !== "map" && "max-md:hidden",
-      )}
-    >
-      <TerritoryMap
-        entityType="regions"
-        geoData={geoData as FeatureCollection}
-        data={mapData}
-        selectedKPI={selectedKPI}
-        onAreaClick={handleRegionAreaClick}
-        defaultCenter={[63.7, 17]}
-        className="max-w-none"
-      />
-    </div>
+    <TerritoryMap
+      entityType="regions"
+      geoData={geoData as FeatureCollection}
+      data={mapData}
+      selectedKPI={selectedKPI}
+      onAreaClick={handleRegionAreaClick}
+      defaultCenter={[63.7, 17]}
+      className="max-w-none"
+    />
   );
 
   return (
@@ -152,17 +141,12 @@ export function RegionalOverviewPage() {
       </div>
 
       <div className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
-          {mapPanel}
-          <div
-            className={cn(
-              "min-w-0 h-full",
-              viewMode !== "list" && "max-md:hidden",
-            )}
-          >
-            {regionalRankedList}
-          </div>
-        </div>
+        <OverviewSplitLayout
+          viewMode={viewMode}
+          visualizationMode="map"
+          visualization={mapPanel}
+          list={regionalRankedList}
+        />
         <RegionalInsightsPanel
           regionsData={regionsAsEntities}
           selectedKPI={selectedKPI}

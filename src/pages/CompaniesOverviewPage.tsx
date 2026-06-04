@@ -17,7 +17,7 @@ import {
   enrichCompanyWithKPIs,
 } from "@/hooks/companies/useCompanyKPIs";
 import { DataPoint } from "@/types/rankings";
-import { cn } from "@/lib/utils";
+import { OverviewSplitLayout } from "@/components/ranked/OverviewSplitLayout";
 
 export function CompaniesOverviewPage() {
   const { t } = useTranslation();
@@ -201,18 +201,11 @@ export function CompaniesOverviewPage() {
   );
 
   const visualizationPanel = (
-    <div
-      className={cn(
-        "relative min-w-0 min-h-[65vh] md:min-h-[570px] h-full",
-        viewMode !== "graph" && "max-md:hidden",
-      )}
-    >
-      <CompanyKPIVisualization
-        companies={companiesWithKPIs}
-        selectedKPI={selectedKPI}
-        onCompanyClick={handleCompanyClick}
-      />
-    </div>
+    <CompanyKPIVisualization
+      companies={companiesWithKPIs}
+      selectedKPI={selectedKPI}
+      onCompanyClick={handleCompanyClick}
+    />
   );
 
   return (
@@ -259,17 +252,12 @@ export function CompaniesOverviewPage() {
       </div>
 
       <div className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
-          {visualizationPanel}
-          <div
-            className={cn(
-              "min-w-0 h-full",
-              viewMode !== "list" && "max-md:hidden",
-            )}
-          >
-            {companyRankedList}
-          </div>
-        </div>
+        <OverviewSplitLayout
+          viewMode={viewMode}
+          visualizationMode="graph"
+          visualization={visualizationPanel}
+          list={companyRankedList}
+        />
         <CompanyInsightsPanel
           companyData={companiesWithKPIs}
           selectedKPI={selectedKPI}
