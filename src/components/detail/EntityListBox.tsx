@@ -23,7 +23,15 @@ interface EntityListBoxProps {
   translateNamespace?: string;
 }
 
-export function EntityListBox({
+export function EntityListBox(props: EntityListBoxProps) {
+  if (props.items.length === 0) {
+    return null;
+  }
+
+  return <EntityListBoxContent {...props} />;
+}
+
+function EntityListBoxContent({
   items,
   entityType,
   helpItems = [],
@@ -51,10 +59,6 @@ export function EntityListBox({
     visibleRange,
     showPagination,
   } = useTerritoryListLayout(territories, !isMobile, hoveredMapArea);
-
-  if (items.length === 0) {
-    return null;
-  }
 
   const translationKey = `${translateNamespace}.${entityType}`;
   const basePath = `/${entityType}`;
