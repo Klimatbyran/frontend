@@ -3,6 +3,21 @@ kind: Kustomization
 namespace: frontend-stage
 resources:
   - ../../base
+patches:
+  - patch: |-
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value:
+          name: PROXY_PASS
+          value: "https://stage-api.unearthdata.ai/api/"
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value:
+          name: PROXY_HOST_HEADER
+          value: "stage-api.unearthdata.ai"
+    target:
+      kind: Deployment
+      name: frontend
 images:
   - name: ghcr.io/klimatbyran/frontend
-    newTag: "7.0.6-rc.4" # {"$imagepolicy": "flux-system:frontend-stage:tag"}
+    newTag: "7.0.6-rc.5" # {"$imagepolicy": "flux-system:frontend-stage:tag"}

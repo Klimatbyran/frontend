@@ -2,12 +2,19 @@ import { defineConfig } from "vitest/config";
 import { loadEnv, ConfigEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import { plugin as markdown, Mode } from "vite-plugin-markdown";
+import { devApiProxy } from "./vite-api-proxy";
 
 export default ({ mode }: ConfigEnv) => {
   const env = loadEnv(mode, process.cwd(), "");
+  const apiProxyTarget = env.VITE_API_PROXY ?? "http://localhost:3000/";
+
+  console.log(
+    `[vite] /api/* → ${apiProxyTarget.replace(/\/$/, "")} (via devApiProxy)`,
+  );
 
   return defineConfig({
     plugins: [
+      devApiProxy(apiProxyTarget, env.GARBO_ALL_ACCESS_API_KEY),
       react({
         babel: {
           plugins: [
@@ -21,24 +28,7 @@ export default ({ mode }: ConfigEnv) => {
     resolve: {
       alias: {
         "@": new URL("./src", import.meta.url).pathname,
-        "@lib": new URL("./src/lib", import.meta.url).pathname, // Fixes your import issue
-      },
-    },
-    server: {
-      proxy: {
-        "/api": {
-          target: env.VITE_API_PROXY ?? "http://localhost:3000/", // Default to local, override in CI/CD
-          changeOrigin: true,
-          secure: false,
-          configure: (proxy) => {
-            proxy.on("proxyReq", (proxyReq) => {
-              const key = env.GARBO_PROXY_CLIENT_API_KEY;
-              if (key) {
-                proxyReq.setHeader("X-API-Key", key);
-              }
-            });
-          },
-        },
+        "@lib": new URL("./src/lib", import.meta.url).pathname,
       },
     },
     base: "/",
