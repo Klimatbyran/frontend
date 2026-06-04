@@ -14,8 +14,11 @@ export const TERRITORY_LIST_PANEL_CLASS =
 export const SIDE_BY_SIDE_MIN_WIDTH = 768;
 
 const LIST_COLUMNS = 2;
+/** Matches TerritoryListRow text-sm leading-5 row (~28px). */
 const LIST_ROW_HEIGHT = 28;
+/** Matches gap-y-2 between list rows. */
 const LIST_ROW_GAP = 8;
+/** Reserved height for MultiPagePagination below the list grid. */
 const PAGINATION_HEIGHT = 57;
 
 function calculateItemsPerPage(itemCount: number, panelHeight: number): number {
