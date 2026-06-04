@@ -2,12 +2,13 @@ import { RefObject } from "react";
 import MultiPagePagination from "@/components/ui/multi-page-pagination";
 import { TerritoryListRow } from "@/components/detail/TerritoryListRow";
 import { TERRITORY_LIST_PANEL_CLASS } from "@/hooks/territories/useTerritoryListLayout";
+import { MapEntityType } from "@/types/rankings";
 import { TerritoryListEntry } from "@/utils/territoryMapUtils";
 import { cn } from "@/lib/utils";
 
 interface RelatedTerritoriesListProps {
   visibleTerritories: TerritoryListEntry[];
-  basePath: string;
+  entityType: MapEntityType;
   isHovered: (mapName: string) => boolean;
   onHover: (mapName: string | null) => void;
   panelRef?: RefObject<HTMLDivElement | null>;
@@ -17,9 +18,14 @@ interface RelatedTerritoriesListProps {
   onPageChange: (page: number) => void;
 }
 
+const ROUTING_ENTITY_TYPE: Record<MapEntityType, "region" | "municipality"> = {
+  regions: "region",
+  municipalities: "municipality",
+};
+
 export function RelatedTerritoriesList({
   visibleTerritories,
-  basePath,
+  entityType,
   isHovered,
   onHover,
   panelRef,
@@ -28,6 +34,7 @@ export function RelatedTerritoriesList({
   totalPages,
   onPageChange,
 }: RelatedTerritoriesListProps) {
+  const routingEntityType = ROUTING_ENTITY_TYPE[entityType];
   return (
     <div
       ref={panelRef}
@@ -40,11 +47,11 @@ export function RelatedTerritoriesList({
         )}
       >
         {visibleTerritories.map((territory) => (
-          <TerritoryListRow
-            key={territory.mapName}
-            territory={territory}
-            basePath={basePath}
-            isHovered={isHovered(territory.mapName)}
+            <TerritoryListRow
+              key={territory.mapName}
+              territory={territory}
+              routingEntityType={routingEntityType}
+              isHovered={isHovered(territory.mapName)}
             onHover={onHover}
           />
         ))}

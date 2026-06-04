@@ -57,7 +57,6 @@ function EntityListBoxContent({
   } = useTerritoryListLayout(territories, !isMobile, hoveredMapName);
 
   const translationKey = `${translateNamespace}.${entityType}`;
-  const basePath = `/${entityType}`;
   const visibleTerritories = showPagination
     ? territories.slice(visibleRange.startIndex, visibleRange.endIndex)
     : territories;
@@ -97,7 +96,7 @@ function EntityListBoxContent({
           {selectedKPI && (
             <RelatedTerritoriesList
               visibleTerritories={visibleTerritories}
-              basePath={basePath}
+              entityType={entityType}
               isHovered={isHovered}
               onHover={setHoveredMapName}
               panelRef={showPagination ? panelRef : undefined}
