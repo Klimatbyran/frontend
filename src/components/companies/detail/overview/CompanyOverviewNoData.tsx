@@ -12,7 +12,7 @@ import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { getCompanyDescription } from "@/utils/business/company";
 import { CompanyDescription } from "./CompanyDescription";
 import { PageNoData } from "@/components/pageStates/NoData";
-import { DetailComparisonButton } from "@/components/explore/DetailComparisonButton";
+import { ComparisonDetailChip } from "@/components/explore/ComparisonDetailChip";
 import { buildComparisonLinkTo } from "@/utils/explore/comparisonUtils";
 
 interface CompanyOverviewNoDataProps {
@@ -36,10 +36,6 @@ export function CompanyOverviewNoData({ company }: CompanyOverviewNoDataProps) {
           <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:gap-3">
             <Text className="text-4xl lg:text-6xl">{company.name}</Text>
             <div className="flex flex-row flex-wrap gap-2">
-              <DetailComparisonButton
-                linkTo={buildComparisonLinkTo("company", company.wikidataId)}
-                variant="company"
-              />
               {token && (
                 <Button
                   variant="outline"
@@ -67,6 +63,13 @@ export function CompanyOverviewNoData({ company }: CompanyOverviewNoDataProps) {
               {sectorName}
             </Text>
           </div>
+        </div>
+        <div className="flex shrink-0 flex-col items-end gap-3">
+          <ComparisonDetailChip
+            linkTo={buildComparisonLinkTo("company", company.wikidataId)}
+            variant="company"
+            name={company.name}
+          />
         </div>
       </div>
 

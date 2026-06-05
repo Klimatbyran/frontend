@@ -33,7 +33,7 @@ import { CompanyOverviewTooltip } from "./CompanyOverviewTooltip";
 import { OverviewStatistics } from "./OverviewStatistics";
 import { yearFromIsoDate } from "@/utils/date";
 import { CompanyLogo } from "../../CompanyLogo";
-import { DetailComparisonButton } from "@/components/explore/DetailComparisonButton";
+import { ComparisonDetailChip } from "@/components/explore/ComparisonDetailChip";
 import { buildComparisonLinkTo } from "@/utils/explore/comparisonUtils";
 
 interface CompanyOverviewProps {
@@ -114,10 +114,6 @@ export function CompanyOverview({
           <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:gap-3">
             <Text className="text-4xl lg:text-6xl">{company.name}</Text>
             <div className="flex flex-row flex-wrap gap-2">
-              <DetailComparisonButton
-                linkTo={buildComparisonLinkTo("company", company.wikidataId)}
-                variant="company"
-              />
               {token && (
                 <>
                   <Button
@@ -173,12 +169,19 @@ export function CompanyOverview({
             </Select>
           </div>
         </div>
-        {company.logoUrl && (
-          <CompanyLogo
-            src={company.logoUrl}
-            className="rounded-xl size-[120px] object-contain hidden lg:inline"
+        <div className="flex shrink-0 flex-col items-end gap-3">
+          <ComparisonDetailChip
+            linkTo={buildComparisonLinkTo("company", company.wikidataId)}
+            variant="company"
+            name={company.name}
           />
-        )}
+          {company.logoUrl && (
+            <CompanyLogo
+              src={company.logoUrl}
+              className="hidden size-[120px] rounded-xl object-contain lg:inline"
+            />
+          )}
+        </div>
       </div>
 
       <div className="mb-2 md:mb-4 space-y-4 md:space-y-6">

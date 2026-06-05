@@ -25,7 +25,8 @@ export interface DetailHeaderProps {
   translateNamespace: string;
   politicalRuleLabelKey?: string;
   politicalXSOLabelKey?: string;
-  headerActions?: ReactNode;
+  /** Compare chip or other actions shown beside the logo. */
+  headerChip?: ReactNode;
 }
 
 export function DetailHeader({
@@ -39,28 +40,26 @@ export function DetailHeader({
   translateNamespace,
   politicalRuleLabelKey = "politicalRule",
   politicalXSOLabelKey, // XSO = KSO or RSO hence the X
-  headerActions,
+  headerChip,
 }: DetailHeaderProps) {
   return (
     <SectionWithHelp helpItems={helpItems}>
       <div className="flex items-start justify-between gap-4">
         <div className="flex min-w-0 flex-1 flex-col gap-2 md:gap-3">
-          <div className="flex flex-col gap-2 md:flex-row md:flex-wrap md:items-center md:gap-3">
-            <Text className="text-4xl md:text-8xl">{name}</Text>
-            {headerActions}
-          </div>
+          <Text className="text-4xl md:text-8xl">{name}</Text>
           {subtitle && (
             <Text className="text-grey text-sm md:text-base lg:text-lg">
               {subtitle}
             </Text>
           )}
         </div>
-        {logoUrl && (
-          <img
-            src={logoUrl}
-            alt="logo"
-            className="h-[50px] shrink-0 md:h-[80px]"
-          />
+        {(headerChip || logoUrl) && (
+          <div className="flex shrink-0 flex-col items-end gap-3">
+            {headerChip}
+            {logoUrl && (
+              <img src={logoUrl} alt="logo" className="h-[50px] md:h-[80px]" />
+            )}
+          </div>
         )}
       </div>
       {politicalRule && politicalRule.length > 0 && (
