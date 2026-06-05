@@ -129,17 +129,11 @@ export function buildCompanyComparisonDetails(
       : null,
     employeesIsAIGenerated: isAIGenerated(latestPeriod.economy?.employees),
     scope1Emissions:
-      scope1 != null
-        ? formatEmissionsAbsolute(scope1, currentLanguage)
-        : null,
+      scope1 != null ? formatEmissionsAbsolute(scope1, currentLanguage) : null,
     scope2Emissions:
-      scope2 != null
-        ? formatEmissionsAbsolute(scope2, currentLanguage)
-        : null,
+      scope2 != null ? formatEmissionsAbsolute(scope2, currentLanguage) : null,
     scope3Emissions:
-      scope3 != null
-        ? formatEmissionsAbsolute(scope3, currentLanguage)
-        : null,
+      scope3 != null ? formatEmissionsAbsolute(scope3, currentLanguage) : null,
   };
 }
 

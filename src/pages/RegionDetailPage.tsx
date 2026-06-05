@@ -49,28 +49,28 @@ export function RegionDetailPage() {
             translateNamespace="regions.detailPage"
           />
 
-        <TerritoryEmissions
-          emissionsData={emissionsData}
-          sectorEmissions={sectorEmissions}
-        />
+          <TerritoryEmissions
+            emissionsData={emissionsData}
+            sectorEmissions={sectorEmissions}
+          />
 
-        <SectorEmissionsChart
-          sectorEmissions={sectorEmissions}
-          availableYears={availableYears}
-          selectedYear={selectedYear}
-          onYearChange={setSelectedYear}
-          currentYear={currentYear}
-          getSectorInfo={getSectorInfo}
-          filteredSectors={filteredSectors}
-          onFilteredSectorsChange={setFilteredSectors}
-          helpItems={["municipalityAndRegionEmissionSources"]}
-        />
+          <SectorEmissionsChart
+            sectorEmissions={sectorEmissions}
+            availableYears={availableYears}
+            selectedYear={selectedYear}
+            onYearChange={setSelectedYear}
+            currentYear={currentYear}
+            getSectorInfo={getSectorInfo}
+            filteredSectors={filteredSectors}
+            onFilteredSectorsChange={setFilteredSectors}
+            helpItems={["municipalityAndRegionEmissionSources"]}
+          />
 
-        <EntityListBox
-          items={regionMunicipalities}
-          entityType="municipalities"
-          translateNamespace="regions.detailPage"
-        />
+          <EntityListBox
+            items={regionMunicipalities}
+            entityType="municipalities"
+            translateNamespace="regions.detailPage"
+          />
         </DetailWrapper>
       </ComparisonDetailEntityProvider>
     </>

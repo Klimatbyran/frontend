@@ -249,34 +249,38 @@ export function MunicipalityDetailPage() {
             translateNamespace="municipalityDetailPage"
           />
 
-        <TerritoryEmissions
-          emissionsData={emissionsData}
-          sectorEmissions={sectorEmissions}
-        />
+          <TerritoryEmissions
+            emissionsData={emissionsData}
+            sectorEmissions={sectorEmissions}
+          />
 
-        <SectorEmissionsChart
-          sectorEmissions={sectorEmissions}
-          availableYears={availableYears}
-          selectedYear={selectedYear}
-          onYearChange={setSelectedYear}
-          currentYear={currentYear}
-          getSectorInfo={getSectorInfo}
-          filteredSectors={filteredSectors}
-          onFilteredSectorsChange={setFilteredSectors}
-          helpItems={["municipalityAndRegionEmissionSources"]}
-        />
+          <SectorEmissionsChart
+            sectorEmissions={sectorEmissions}
+            availableYears={availableYears}
+            selectedYear={selectedYear}
+            onYearChange={setSelectedYear}
+            currentYear={currentYear}
+            getSectorInfo={getSectorInfo}
+            filteredSectors={filteredSectors}
+            onFilteredSectorsChange={setFilteredSectors}
+            helpItems={["municipalityAndRegionEmissionSources"]}
+          />
 
-        <MunicipalityLinkCards
-          municipality={municipality}
-          requirementsInProcurement={requirementsInProcurement}
-          t={t}
-        />
+          <MunicipalityLinkCards
+            municipality={municipality}
+            requirementsInProcurement={requirementsInProcurement}
+            t={t}
+          />
 
-        <DetailSection
-          title={t("municipalityDetailPage.sustainableTransport")}
-          items={getSustainableTransportItems(municipality, currentLanguage, t)}
-          helpItems={SUSTAINABLE_TRANSPORT_HELP_ITEMS}
-        />
+          <DetailSection
+            title={t("municipalityDetailPage.sustainableTransport")}
+            items={getSustainableTransportItems(
+              municipality,
+              currentLanguage,
+              t,
+            )}
+            helpItems={SUSTAINABLE_TRANSPORT_HELP_ITEMS}
+          />
         </DetailWrapper>
       </ComparisonDetailEntityProvider>
     </>
