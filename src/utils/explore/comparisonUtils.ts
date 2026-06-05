@@ -50,6 +50,18 @@ export function entityMatchesSelection(
   return false;
 }
 
+/** Returns cards in the order entities were selected. */
+export function orderSelectedCards(
+  cards: ListCardProps[],
+  selectedIdOrder: string[],
+): ListCardProps[] {
+  return selectedIdOrder
+    .map((selectedId) =>
+      cards.find((card) => isSameComparisonLink(card.linkTo, selectedId)),
+    )
+    .filter((card): card is ListCardProps => card !== undefined);
+}
+
 export function categoryToVariant(
   category: CombinedData["category"],
 ): ComparisonEntityVariant | null {

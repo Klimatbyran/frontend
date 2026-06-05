@@ -17,17 +17,12 @@ export function ComparisonControls({ comparison }: ComparisonControlsProps) {
   const { t } = useTranslation();
   const {
     isCompareMode,
-    showComparison,
     selectedCount,
     canViewComparison,
     toggleCompareMode,
     viewComparison,
     clearSelection,
   } = comparison;
-
-  if (showComparison) {
-    return null;
-  }
 
   return (
     <div className="flex flex-wrap items-center gap-2">

@@ -1,9 +1,5 @@
 import { useEffect, useRef } from "react";
-import { useTranslation } from "react-i18next";
-import { useComparison } from "@/contexts/ComparisonContext";
-import { useToast } from "@/contexts/ToastContext";
 import type { ComparisonPickerPrefill } from "@/components/explore/comparisonPicker.types";
-import { COMPARISON_MAX } from "@/utils/explore/comparisonUtils";
 
 interface UseComparisonPickerPrefillOptions {
   open: boolean;
@@ -21,9 +17,6 @@ export function useComparisonPickerPrefill({
   tryToggleSelection,
   isSelected,
 }: UseComparisonPickerPrefillOptions) {
-  const { t } = useTranslation();
-  const { showToast } = useToast();
-  const { selectedCount } = useComparison();
   const prefillAppliedRef = useRef(false);
 
   useEffect(() => {
@@ -42,28 +35,6 @@ export function useComparisonPickerPrefill({
       return;
     }
 
-    const added = tryToggleSelection(
-      prefillOnOpen.linkTo,
-      prefillOnOpen.variant,
-    );
-
-    if (added && prefillOnOpen.name) {
-      showToast(
-        t("explorePage.comparison.addedToastTitle"),
-        t("explorePage.comparison.addedToastMessage", {
-          name: prefillOnOpen.name,
-          count: selectedCount + 1,
-          max: COMPARISON_MAX,
-        }),
-      );
-    }
-  }, [
-    isSelected,
-    open,
-    prefillOnOpen,
-    selectedCount,
-    showToast,
-    t,
-    tryToggleSelection,
-  ]);
+    tryToggleSelection(prefillOnOpen.linkTo, prefillOnOpen.variant);
+  }, [isSelected, open, prefillOnOpen, tryToggleSelection]);
 }

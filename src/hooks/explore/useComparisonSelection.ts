@@ -1,5 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useComparison } from "@/contexts/ComparisonContext";
+import { useLanguage } from "@/components/LanguageProvider";
+import { localizedPath } from "@/utils/routing";
 import type { ListCardProps } from "@/components/explore/ListCard";
 
 export {
@@ -11,13 +14,14 @@ export {
  * Explore-list UI state layered on top of shared ComparisonContext.
  *
  * - ComparisonContext: selected ids + entity variant (session-persisted)
- * - This hook: compare mode toggle + inline/table view visibility
+ * - This hook: compare mode toggle; comparison view lives on /explore/compare
  */
 export function useComparisonSelection(items: ListCardProps[] = []) {
   const comparison = useComparison();
+  const navigate = useNavigate();
+  const { currentLanguage } = useLanguage();
   const { variant, clearSelection } = comparison;
   const [isCompareMode, setIsCompareMode] = useState(false);
-  const [showComparison, setShowComparison] = useState(false);
 
   const listVariant = items[0]?.variant ?? null;
 
@@ -33,10 +37,16 @@ export function useComparisonSelection(items: ListCardProps[] = []) {
     }
   }, [comparison.selectedCount, isCompareMode, listVariant, variant]);
 
+  // Exit compare mode when selection is cleared (e.g. after leaving compare page).
+  useEffect(() => {
+    if (comparison.selectedCount === 0 && isCompareMode) {
+      setIsCompareMode(false);
+    }
+  }, [comparison.selectedCount, isCompareMode]);
+
   // Clear stale selection when switching explore entity type.
   useEffect(() => {
     if (listVariant && variant && variant !== listVariant) {
-      setShowComparison(false);
       setIsCompareMode(false);
       clearSelection();
     }
@@ -45,7 +55,6 @@ export function useComparisonSelection(items: ListCardProps[] = []) {
   const toggleCompareMode = useCallback(() => {
     setIsCompareMode((prev) => {
       if (prev) {
-        setShowComparison(false);
         comparison.clearSelection();
       } else if (listVariant && variant && variant !== listVariant) {
         comparison.clearSelection();
@@ -66,28 +75,12 @@ export function useComparisonSelection(items: ListCardProps[] = []) {
 
   const viewComparison = useCallback(() => {
     if (comparison.canViewComparison) {
-      setShowComparison(true);
+      navigate(localizedPath(currentLanguage, "/explore/compare"));
     }
-  }, [comparison.canViewComparison]);
-
-  const backToList = useCallback(() => {
-    setShowComparison(false);
-    setIsCompareMode(false);
-    comparison.clearSelection();
-  }, [comparison]);
-
-  // Clear selection if the comparison view unmounts while active.
-  useEffect(() => {
-    return () => {
-      if (showComparison) {
-        clearSelection();
-      }
-    };
-  }, [clearSelection, showComparison]);
+  }, [comparison.canViewComparison, currentLanguage, navigate]);
 
   return {
     isCompareMode,
-    showComparison,
     selectedIds: comparison.selectedIds,
     selectedCount: comparison.selectedCount,
     canViewComparison: comparison.canViewComparison,
@@ -96,7 +89,6 @@ export function useComparisonSelection(items: ListCardProps[] = []) {
     isSelected: comparison.isSelected,
     isSelectionDisabled: comparison.isSelectionDisabled,
     viewComparison,
-    backToList,
     clearSelection: comparison.clearSelection,
     entityVariant: listVariant,
   };

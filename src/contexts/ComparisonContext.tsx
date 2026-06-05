@@ -22,6 +22,8 @@ interface StoredComparison {
 
 interface ComparisonContextValue {
   selectedIds: Set<string>;
+  /** Selection order as chosen by the user (oldest first). */
+  selectedIdOrder: string[];
   variant: ComparisonEntityVariant | null;
   selectedCount: number;
   canViewComparison: boolean;
@@ -105,23 +107,24 @@ export function ComparisonProvider({ children }: { children: ReactNode }) {
 
   const toggleSelection = useCallback(
     (linkTo: string, entityVariant: ComparisonEntityVariant) => {
-      const next = new Set(selectedIds);
-      const existing = [...next].find((id) => isSameComparisonLink(id, linkTo));
+      const existing = stored.selectedIds.find((id) =>
+        isSameComparisonLink(id, linkTo),
+      );
 
       if (existing) {
-        next.delete(existing);
-        updateStored(next, next.size === 0 ? null : stored.variant);
+        const nextOrder = stored.selectedIds.filter((id) => id !== existing);
+        updateStored(new Set(nextOrder), nextOrder.length === 0 ? null : stored.variant);
         return;
       }
 
-      if (!canAddVariant(entityVariant) || next.size >= COMPARISON_MAX) {
+      if (!canAddVariant(entityVariant) || stored.selectedIds.length >= COMPARISON_MAX) {
         return;
       }
 
-      next.add(linkTo);
-      updateStored(next, entityVariant);
+      const nextOrder = [...stored.selectedIds, linkTo];
+      updateStored(new Set(nextOrder), entityVariant);
     },
-    [canAddVariant, selectedIds, stored.variant, updateStored],
+    [canAddVariant, stored.selectedIds, stored.variant, updateStored],
   );
 
   const isSelected = useCallback(
@@ -139,6 +142,7 @@ export function ComparisonProvider({ children }: { children: ReactNode }) {
   const value = useMemo(
     (): ComparisonContextValue => ({
       selectedIds,
+      selectedIdOrder: stored.selectedIds,
       variant: stored.variant,
       selectedCount: selectedIds.size,
       canViewComparison: selectedIds.size >= COMPARISON_MIN,
@@ -154,6 +158,7 @@ export function ComparisonProvider({ children }: { children: ReactNode }) {
       isSelected,
       isSelectionDisabled,
       selectedIds,
+      stored.selectedIds,
       stored.variant,
       toggleSelection,
     ],

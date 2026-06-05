@@ -17,21 +17,12 @@ import {
   getRegionLinkTo,
 } from "@/utils/explore/buildComparisonDetails";
 import {
-  entityMatchesSelection,
   isSameComparisonLink,
+  orderSelectedCards,
 } from "@/utils/explore/comparisonUtils";
 
-function filterSelectedCards(
-  cards: ListCardProps[],
-  selectedIds: Set<string>,
-): ListCardProps[] {
-  return cards.filter((card) =>
-    entityMatchesSelection(card.linkTo, selectedIds),
-  );
-}
-
 export function useComparisonItems() {
-  const { selectedIds, variant, selectedCount } = useComparison();
+  const { selectedIdOrder, variant, selectedCount } = useComparison();
   const hasSelection = selectedCount > 0 && variant !== null;
   const loadCompanies = hasSelection && variant === "company";
   const loadMunicipalities = hasSelection && variant === "municipality";
@@ -72,7 +63,7 @@ export function useComparisonItems() {
           ? allMunicipalityCards
           : allRegionCards;
 
-    const selectedCards = filterSelectedCards(source, selectedIds);
+    const selectedCards = orderSelectedCards(source, selectedIdOrder);
 
     if (variant === "municipality") {
       return selectedCards.map((card) => {
@@ -124,7 +115,7 @@ export function useComparisonItems() {
     isAIGenerated,
     municipalities,
     regions,
-    selectedIds,
+    selectedIdOrder,
     t,
     variant,
   ]);
