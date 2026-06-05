@@ -145,6 +145,7 @@ export function BlogDetailPage() {
             src={blogPost.metadata.author.avatar}
             alt={blogPost.metadata.author.name}
             className="w-16 h-16 rounded-full object-cover"
+            loading="lazy"
           />
           <div>
             <Text variant="body">{blogPost.metadata.author.name}</Text>
@@ -162,6 +163,7 @@ export function BlogDetailPage() {
               <img
                 {...props}
                 className="w-2/3 mx-auto shadow-lg !rounded-lg !overflow-hidden"
+                loading="lazy"
               />
             ),
             a: ({ node, ...props }) => (
@@ -213,6 +215,7 @@ export function BlogDetailPage() {
                         src={post.image}
                         alt={post.title}
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        loading="lazy"
                       />
                     </div>
                     <div className="p-8 space-y-4">

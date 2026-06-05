@@ -42,6 +42,7 @@ export function CompanyLogo({ src, className }: CompanyLogoProps) {
         alt=""
         className={className + (padding ? " p-1" : "")}
         crossOrigin="anonymous"
+        loading="lazy"
         style={{
           backgroundColor: `rgba(${backgroundColor.r}, ${backgroundColor.g}, ${backgroundColor.b}, ${backgroundColor.a / 255})`,
         }}
@@ -58,6 +59,7 @@ export function CompanyLogo({ src, className }: CompanyLogoProps) {
         src={url.toString()}
         alt=""
         className={className + " bg-white p-1"}
+        loading="lazy"
       />
     );
   }

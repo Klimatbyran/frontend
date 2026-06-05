@@ -25,6 +25,7 @@ export function MembersGrid({ members }: MembersGridProps) {
                 src={member.imageUrl}
                 alt={member.name}
                 className="w-16 h-16 rounded-full object-cover mb-2"
+                loading="lazy"
               />
               <div>
                 <Text variant="body">{member.name}</Text>

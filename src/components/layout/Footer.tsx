@@ -22,6 +22,7 @@ function SocialLinks() {
               src={Icon}
               alt={title}
               className="h-5 w-5 opacity-80 transition-opacity duration-300 group-hover:opacity-100"
+              loading="lazy"
             />
           ) : (
             <Icon
