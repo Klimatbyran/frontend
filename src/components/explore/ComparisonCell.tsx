@@ -8,7 +8,10 @@ interface ComparisonCellProps {
   compact?: boolean;
 }
 
-export function ComparisonCell({ value, compact = false }: ComparisonCellProps) {
+export function ComparisonCell({
+  value,
+  compact = false,
+}: ComparisonCellProps) {
   const showBadge = value.displayAsBadge;
 
   return (
@@ -17,12 +20,16 @@ export function ComparisonCell({ value, compact = false }: ComparisonCellProps) 
         className={cn(
           "font-light",
           compact ? "text-base" : "text-lg",
-          showBadge && "inline-flex items-center rounded-full px-3 py-1 text-sm",
-          showBadge && value.colorClass === "text-green-3" &&
+          showBadge &&
+            "inline-flex items-center rounded-full px-3 py-1 text-sm",
+          showBadge &&
+            value.colorClass === "text-green-3" &&
             "bg-green-3/15 text-green-3",
-          showBadge && value.colorClass === "text-pink-3" &&
+          showBadge &&
+            value.colorClass === "text-pink-3" &&
             "bg-pink-3/15 text-pink-3",
-          showBadge && value.colorClass === "text-grey" &&
+          showBadge &&
+            value.colorClass === "text-grey" &&
             "bg-white/10 text-grey",
           !showBadge && value.colorClass,
         )}

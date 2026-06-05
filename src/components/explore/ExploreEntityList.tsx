@@ -32,10 +32,7 @@ export function ExploreEntityList({
         comparisonControls={<ComparisonControls comparison={comparison} />}
       />
       {comparison.showComparison ? (
-        <ComparisonView
-          items={selectedItems}
-          onBack={comparison.backToList}
-        />
+        <ComparisonView items={selectedItems} onBack={comparison.backToList} />
       ) : (
         <CardGrid
           items={items}
@@ -45,7 +42,9 @@ export function ExploreEntityList({
               {...transformedData}
               comparisonMode={comparison.isCompareMode}
               selected={comparison.isSelected(transformedData.linkTo)}
-              onSelect={() => comparison.toggleSelection(transformedData.linkTo)}
+              onSelect={() =>
+                comparison.toggleSelection(transformedData.linkTo)
+              }
               selectionDisabled={comparison.isSelectionDisabled(
                 transformedData.linkTo,
               )}

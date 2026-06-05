@@ -51,11 +51,7 @@ function getClimatePlanStatus(
 ): ComparisonCellValue {
   const hasPlan = item.climatePlanHasPlan;
   const text =
-    hasPlan === true
-      ? t("yes")
-      : hasPlan === false
-        ? t("no")
-        : t("unknown");
+    hasPlan === true ? t("yes") : hasPlan === false ? t("no") : t("unknown");
   const colorClass =
     hasPlan === true
       ? "text-green-3"
@@ -202,12 +198,8 @@ function getCompanySections(t: TFunction): ComparisonSection[] {
           id: "scope3Coverage",
           label: t("companies.card.scope3Coverage"),
           getValue: (item, translate) => ({
-            text: item.hasScope3Coverage
-              ? translate("yes")
-              : translate("no"),
-            colorClass: item.hasScope3Coverage
-              ? "text-green-3"
-              : "text-pink-3",
+            text: item.hasScope3Coverage ? translate("yes") : translate("no"),
+            colorClass: item.hasScope3Coverage ? "text-green-3" : "text-pink-3",
             displayAsBadge: true,
           }),
         },

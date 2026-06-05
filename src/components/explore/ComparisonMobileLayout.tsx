@@ -37,10 +37,7 @@ function MobileMetricRow({
             className="bg-black-1/30 rounded-lg p-3 min-w-0"
           >
             <p className="text-xs text-grey truncate mb-2">{item.name}</p>
-            <ComparisonCell
-              value={metric.getValue(item, t)}
-              compact
-            />
+            <ComparisonCell value={metric.getValue(item, t)} compact />
           </div>
         ))}
       </div>
@@ -55,11 +52,7 @@ export function ComparisonMobileLayout({ items }: ComparisonMobileLayoutProps) {
     <div className="space-y-4">
       <div className="space-y-2">
         {items.map((item) => (
-          <ComparisonEntityHeader
-            key={item.linkTo}
-            item={item}
-            compact
-          />
+          <ComparisonEntityHeader key={item.linkTo} item={item} compact />
         ))}
       </div>
 
@@ -72,11 +65,7 @@ export function ComparisonMobileLayout({ items }: ComparisonMobileLayoutProps) {
             {section.label}
           </div>
           {section.metrics.map((metric) => (
-            <MobileMetricRow
-              key={metric.id}
-              metric={metric}
-              items={items}
-            />
+            <MobileMetricRow key={metric.id} metric={metric} items={items} />
           ))}
         </div>
       ))}
