@@ -146,9 +146,7 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
             ))}
           </Pie>
           <Tooltip
-            content={
-              <PieTooltip customActionLabel={customActionLabel} />
-            }
+            content={<PieTooltip customActionLabel={customActionLabel} />}
             animationDuration={0}
             isAnimationActive={false}
           />

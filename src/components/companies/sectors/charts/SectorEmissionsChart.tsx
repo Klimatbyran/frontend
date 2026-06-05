@@ -59,8 +59,8 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
       color: selectedSector
         ? getCompanyColors(index).base
         : "sectorCode" in entry
-          ? sectorColors[entry.sectorCode as keyof typeof sectorColors]
-              ?.base || "var(--grey)"
+          ? sectorColors[entry.sectorCode as keyof typeof sectorColors]?.base ||
+            "var(--grey)"
           : "var(--grey)",
     }),
   );
