@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { Input } from "@/components/ui/input";
 import { FilterBadges } from "@/components/companies/list/FilterBadges";
 import {
@@ -28,6 +28,7 @@ interface IListFilter {
   }>;
   sortOptions: readonly SortOption[];
   searchPlaceholder: string;
+  comparisonControls?: ReactNode;
 }
 
 const ListFilter = ({
@@ -41,6 +42,7 @@ const ListFilter = ({
   activeFilters,
   sortOptions,
   searchPlaceholder,
+  comparisonControls,
 }: IListFilter) => {
   const screenSize = useScreenSize();
   const [filterOpen, setFilterOpen] = useState(false);
@@ -84,6 +86,8 @@ const ListFilter = ({
             setSortDirection as (direction: SortDirection) => void
           }
         />
+
+        {comparisonControls}
 
         {/* Badges */}
         {activeFilters.length > 0 && (

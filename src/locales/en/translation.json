@@ -1926,6 +1926,24 @@
   "explorePage": {
     "title": "Explore the data",
     "description": "Explore and compare emissions data and climate targets for companies and municipalities.",
+    "comparison": {
+      "compare": "Compare",
+      "toggleMode": "Toggle comparison mode",
+      "selected": "{{count}} selected ({{min}}–{{max}})",
+      "clearSelection": "Clear selection",
+      "viewComparison": "View comparison",
+      "backToList": "Back to list",
+      "title": "Side-by-side comparison",
+      "comparing": "Comparing {{count}} entities",
+      "viewDetails": "View full details",
+      "metric": "Metric",
+      "sections": {
+        "climateTarget": "Climate target",
+        "emissions": "Emissions",
+        "climatePlan": "Climate plan",
+        "reporting": "Reporting"
+      }
+    },
     "filter": "Filter:",
     "sorting": "Sorting by:",
     "sortingOptions": {

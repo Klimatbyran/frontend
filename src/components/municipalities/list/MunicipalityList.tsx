@@ -1,11 +1,9 @@
 import { useTranslation } from "react-i18next";
-import { CardGrid } from "@/components/layout/CardGrid";
-import { ListCard } from "@/components/explore/ListCard";
 import type { Municipality } from "@/types/municipality";
-import ListFilter from "@/components/explore/ListFilter";
 import useTransformMunicipalityListCard from "@/hooks/municipalities/useTransformMunicipalityListCard";
 import { useMunicipalitiesFilters } from "@/hooks/municipalities/useMunicipalitiesFilters";
 import { useSortOptions } from "@/hooks/municipalities/useMunicipalitiesSorting";
+import { ExploreEntityList } from "@/components/explore/ExploreEntityList";
 
 interface MunicipalityListProps {
   municipalities: Municipality[];
@@ -17,31 +15,29 @@ export function MunicipalityList({ municipalities }: MunicipalityListProps) {
   const { filteredMunicipalities } = municipalityFilters;
   const municipalitySortOptions = useSortOptions();
 
-  // Transform municipality data for ListCard components
   const transformedMunicipalities = useTransformMunicipalityListCard({
     filteredMunicipalities,
   });
+  const allTransformedMunicipalities = useTransformMunicipalityListCard({
+    filteredMunicipalities: municipalities,
+  });
 
   return (
-    <>
-      <ListFilter
-        searchQuery={municipalityFilters.searchQuery}
-        setSearchQuery={municipalityFilters.setSearchQuery}
-        sortBy={municipalityFilters.sortBy}
-        setSortBy={municipalityFilters.setSortBy}
-        sortDirection={municipalityFilters.sortDirection}
-        setSortDirection={municipalityFilters.setSortDirection}
-        filterGroups={municipalityFilters.filterGroups}
-        activeFilters={municipalityFilters.activeFilters}
-        sortOptions={municipalitySortOptions}
-        searchPlaceholder={t("explorePage.municipalities.searchPlaceholder")}
-      />
-      <CardGrid
-        items={transformedMunicipalities}
-        itemContent={(transformedData) => (
-          <ListCard key={transformedData.linkTo} {...transformedData} />
-        )}
-      />
-    </>
+    <ExploreEntityList
+      items={transformedMunicipalities}
+      allItems={allTransformedMunicipalities}
+      filterProps={{
+        searchQuery: municipalityFilters.searchQuery,
+        setSearchQuery: municipalityFilters.setSearchQuery,
+        sortBy: municipalityFilters.sortBy,
+        setSortBy: municipalityFilters.setSortBy,
+        sortDirection: municipalityFilters.sortDirection,
+        setSortDirection: municipalityFilters.setSortDirection,
+        filterGroups: municipalityFilters.filterGroups,
+        activeFilters: municipalityFilters.activeFilters,
+        sortOptions: municipalitySortOptions,
+        searchPlaceholder: t("explorePage.municipalities.searchPlaceholder"),
+      }}
+    />
   );
 }

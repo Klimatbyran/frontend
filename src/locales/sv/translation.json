@@ -1984,6 +1984,24 @@
   "explorePage": {
     "title": "Utforska data",
     "description": "Utforska och jämför utsläppsdata och klimatmål för företag och kommuner.",
+    "comparison": {
+      "compare": "Jämför",
+      "toggleMode": "Växla jämförelseläge",
+      "selected": "{{count}} valda ({{min}}–{{max}})",
+      "clearSelection": "Rensa val",
+      "viewComparison": "Visa jämförelse",
+      "backToList": "Tillbaka till listan",
+      "title": "Jämförelse sida vid sida",
+      "comparing": "Jämför {{count}} enheter",
+      "viewDetails": "Visa all data",
+      "metric": "Värde",
+      "sections": {
+        "climateTarget": "Klimatmål",
+        "emissions": "Utsläpp",
+        "climatePlan": "Klimatplan",
+        "reporting": "Rapportering"
+      }
+    },
     "filter": "Filter:",
     "sorting": "Sorterar:",
     "sortingOptions": {

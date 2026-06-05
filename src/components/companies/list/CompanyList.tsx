@@ -1,12 +1,10 @@
 import { useTranslation } from "react-i18next";
-import { CardGrid } from "@/components/layout/CardGrid";
-import { ListCard } from "@/components/explore/ListCard";
 import type { ListCardProps } from "@/components/explore/ListCard";
 import type { RankedCompany } from "@/types/company";
-import ListFilter from "@/components/explore/ListFilter";
 import { useCompanyFilters } from "@/hooks/companies/useCompanyFilters";
 import { useSortOptions } from "@/hooks/companies/useCompanySorting";
 import useTransformCompanyListCard from "@/hooks/companies/useTransformCompanyListCard";
+import { ExploreEntityList } from "@/components/explore/ExploreEntityList";
 
 interface CompanyListProps {
   companies: RankedCompany[];
@@ -19,9 +17,11 @@ export function CompanyList({ companies }: CompanyListProps) {
   const { filteredCompanies } = companyFilters;
   const sortOptions = useSortOptions();
 
-  // Transform company data for ListCard components
   const transformedCompanies: ListCardProps[] = useTransformCompanyListCard({
     filteredCompanies,
+  });
+  const allTransformedCompanies = useTransformCompanyListCard({
+    filteredCompanies: companies,
   });
 
   if (companies.length === 0) {
@@ -38,25 +38,21 @@ export function CompanyList({ companies }: CompanyListProps) {
   }
 
   return (
-    <>
-      <ListFilter
-        searchQuery={companyFilters.searchQuery}
-        setSearchQuery={companyFilters.setSearchQuery}
-        sortBy={companyFilters.sortBy}
-        setSortBy={companyFilters.setSortBy}
-        sortDirection={companyFilters.sortDirection}
-        setSortDirection={companyFilters.setSortDirection}
-        filterGroups={companyFilters.filterGroups}
-        activeFilters={companyFilters.activeFilters}
-        sortOptions={sortOptions}
-        searchPlaceholder={t("explorePage.companies.searchPlaceholder")}
-      />
-      <CardGrid
-        items={transformedCompanies}
-        itemContent={(transformedData) => (
-          <ListCard key={transformedData.linkTo} {...transformedData} />
-        )}
-      />
-    </>
+    <ExploreEntityList
+      items={transformedCompanies}
+      allItems={allTransformedCompanies}
+      filterProps={{
+        searchQuery: companyFilters.searchQuery,
+        setSearchQuery: companyFilters.setSearchQuery,
+        sortBy: companyFilters.sortBy,
+        setSortBy: companyFilters.setSortBy,
+        sortDirection: companyFilters.sortDirection,
+        setSortDirection: companyFilters.setSortDirection,
+        filterGroups: companyFilters.filterGroups,
+        activeFilters: companyFilters.activeFilters,
+        sortOptions,
+        searchPlaceholder: t("explorePage.companies.searchPlaceholder"),
+      }}
+    />
   );
 }

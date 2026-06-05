@@ -1,9 +1,7 @@
 import { cn } from "@/lib/utils";
 import { LocalizedLink } from "@/components/LocalizedLink";
-import { useListCardMeta } from "@/hooks/useListCardMeta";
-import { ListCardEmissionsBlock } from "./ListCardEmissionsBlock";
-import { ListCardFooterBlock } from "./ListCardFooterBlock";
-import { ListCardHeader } from "./ListCardHeader";
+import { Checkbox } from "@/components/ui/checkbox";
+import { ListCardBody } from "./ListCardBody";
 
 export interface ListCardProps {
   // Basic info
@@ -42,42 +40,25 @@ export interface ListCardProps {
   climatePlanYear?: number | null;
 
   variant?: "company" | "municipality" | "region";
+
+  // Comparison mode
+  comparisonMode?: boolean;
+  selected?: boolean;
+  onSelect?: () => void;
+  selectionDisabled?: boolean;
 }
 
 export function ListCard({
-  name,
-  description,
-  logoUrl,
   linkTo,
-  meetsParis,
-  meetsParisTranslationKey,
-  emissionsValue,
-  emissionsYear,
-  emissionsUnit,
-  emissionsIsAIGenerated,
-  changeRateValue,
-  changeRateIsAIGenerated,
-  changeRateColor,
-  changeRateTooltip,
-  isFinancialsSector = false,
-  hasScope3Coverage,
-  baseYear,
-  climatePlanHasPlan,
-  climatePlanYear,
   variant = "company",
+  comparisonMode = false,
+  selected = false,
+  onSelect,
+  selectionDisabled = false,
+  ...cardProps
 }: ListCardProps) {
-  const {
-    isMunicipality,
-    isRegion,
-    climatePlanAdoptedText,
-    climatePlanStatusColor,
-    climatePlanStatusLabel,
-    climatePlanAdoptedColor,
-  } = useListCardMeta({
-    variant,
-    climatePlanHasPlan,
-    climatePlanYear,
-  });
+  const isRegion = variant === "region";
+  const isMunicipality = variant === "municipality";
 
   const linkMinHeightClass = isRegion
     ? "min-h-[300px]"
@@ -85,50 +66,68 @@ export function ListCard({
       ? "min-h-[400px]"
       : "min-h-[418px]";
 
+  const cardClassName = cn(
+    "block bg-black-2 rounded-level-2 p-8 md:space-y-4 transition-all duration-300",
+    linkMinHeightClass,
+    !comparisonMode &&
+      "hover:shadow-[0_0_10px_rgba(153,207,255,0.15)] hover:bg-[#1a1a1a]",
+    comparisonMode && "cursor-pointer",
+    comparisonMode && selected && "ring-2 ring-blue-2",
+    comparisonMode && selectionDisabled && "opacity-50 cursor-not-allowed",
+  );
+
+  const cardContent = <ListCardBody variant={variant} {...cardProps} />;
+
+  if (comparisonMode) {
+    return (
+      <div className="relative rounded-level-2 @container">
+        <div
+          role="button"
+          tabIndex={selectionDisabled ? -1 : 0}
+          aria-pressed={selected}
+          aria-disabled={selectionDisabled}
+          className={cardClassName}
+          onClick={() => {
+            if (!selectionDisabled && onSelect) {
+              onSelect();
+            }
+          }}
+          onKeyDown={(e) => {
+            if (
+              !selectionDisabled &&
+              onSelect &&
+              (e.key === "Enter" || e.key === " ")
+            ) {
+              e.preventDefault();
+              onSelect();
+            }
+          }}
+        >
+          <div
+            className="absolute top-4 right-4 z-10"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Checkbox
+              checked={selected}
+              disabled={selectionDisabled}
+              onCheckedChange={() => {
+                if (!selectionDisabled && onSelect) {
+                  onSelect();
+                }
+              }}
+              aria-label={cardProps.name}
+            />
+          </div>
+          {cardContent}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="relative rounded-level-2 @container">
-      <LocalizedLink
-        to={linkTo}
-        className={cn(
-          "block bg-black-2 rounded-level-2 p-8 md:space-y-4 transition-all duration-300 hover:shadow-[0_0_10px_rgba(153,207,255,0.15)] hover:bg-[#1a1a1a]",
-          linkMinHeightClass,
-        )}
-      >
-        <div>
-          <ListCardHeader
-            name={name}
-            description={description}
-            meetsParis={meetsParis}
-            meetsParisTranslationKey={meetsParisTranslationKey}
-            logoUrl={logoUrl}
-            isMunicipality={isMunicipality}
-            isRegion={isRegion}
-          />
-          <ListCardEmissionsBlock
-            emissionsYear={emissionsYear}
-            emissionsValue={emissionsValue}
-            emissionsUnit={emissionsUnit}
-            emissionsIsAIGenerated={emissionsIsAIGenerated}
-            isFinancialsSector={isFinancialsSector}
-            changeRateValue={changeRateValue}
-            changeRateIsAIGenerated={changeRateIsAIGenerated}
-            changeRateColor={changeRateColor}
-            changeRateTooltip={changeRateTooltip}
-            isRegion={isRegion}
-            isMunicipality={isMunicipality}
-          />
-          {!isRegion && (
-            <ListCardFooterBlock
-              isMunicipality={isMunicipality}
-              climatePlanAdoptedText={climatePlanAdoptedText}
-              climatePlanStatusColor={climatePlanStatusColor}
-              climatePlanStatusLabel={climatePlanStatusLabel}
-              climatePlanAdoptedColor={climatePlanAdoptedColor}
-              hasScope3Coverage={hasScope3Coverage}
-              baseYear={baseYear}
-            />
-          )}
-        </div>
+      <LocalizedLink to={linkTo} className={cardClassName}>
+        {cardContent}
       </LocalizedLink>
     </div>
   );
