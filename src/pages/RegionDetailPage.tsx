@@ -37,44 +37,44 @@ export function RegionDetailPage() {
   return (
     <>
       <DetailWrapper>
-          <DetailHeader
-            name={region.name}
-            logoUrl={region.logoUrl}
-            helpItems={["regionTotalEmissions", "detailWhyDataDelay"]}
-            stats={headerStats}
-            translateNamespace="regions.detailPage"
-            headerChip={
-              <ComparisonDetailChip
-                linkTo={buildComparisonLinkTo("region", region.name)}
-                variant="region"
-                name={region.name}
-              />
-            }
-          />
+        <DetailHeader
+          name={region.name}
+          logoUrl={region.logoUrl}
+          helpItems={["regionTotalEmissions", "detailWhyDataDelay"]}
+          stats={headerStats}
+          translateNamespace="regions.detailPage"
+          headerChip={
+            <ComparisonDetailChip
+              linkTo={buildComparisonLinkTo("region", region.name)}
+              variant="region"
+              name={region.name}
+            />
+          }
+        />
 
-          <TerritoryEmissions
-            emissionsData={emissionsData}
-            sectorEmissions={sectorEmissions}
-          />
+        <TerritoryEmissions
+          emissionsData={emissionsData}
+          sectorEmissions={sectorEmissions}
+        />
 
-          <SectorEmissionsChart
-            sectorEmissions={sectorEmissions}
-            availableYears={availableYears}
-            selectedYear={selectedYear}
-            onYearChange={setSelectedYear}
-            currentYear={currentYear}
-            getSectorInfo={getSectorInfo}
-            filteredSectors={filteredSectors}
-            onFilteredSectorsChange={setFilteredSectors}
-            helpItems={["municipalityAndRegionEmissionSources"]}
-          />
+        <SectorEmissionsChart
+          sectorEmissions={sectorEmissions}
+          availableYears={availableYears}
+          selectedYear={selectedYear}
+          onYearChange={setSelectedYear}
+          currentYear={currentYear}
+          getSectorInfo={getSectorInfo}
+          filteredSectors={filteredSectors}
+          onFilteredSectorsChange={setFilteredSectors}
+          helpItems={["municipalityAndRegionEmissionSources"]}
+        />
 
-          <EntityListBox
-            items={regionMunicipalities}
-            entityType="municipalities"
-            translateNamespace="regions.detailPage"
-          />
-        </DetailWrapper>
+        <EntityListBox
+          items={regionMunicipalities}
+          entityType="municipalities"
+          translateNamespace="regions.detailPage"
+        />
+      </DetailWrapper>
     </>
   );
 }

@@ -233,61 +233,54 @@ export function MunicipalityDetailPage() {
       {municipality && <Seo meta={seoMeta} />}
 
       <DetailWrapper>
-          <DetailHeader
-            name={municipality.name}
-            subtitle={municipality.region}
-            logoUrl={municipality.logoUrl}
-            politicalRule={municipality.politicalRule}
-            politicalKSO={municipality.politicalKSO}
-            politicalXSOLabelKey="politicalKSO"
-            helpItems={HEADER_HELP_ITEMS}
-            stats={headerStats}
-            translateNamespace="municipalityDetailPage"
-            headerChip={
-              <ComparisonDetailChip
-                linkTo={buildComparisonLinkTo(
-                  "municipality",
-                  municipality.name,
-                )}
-                variant="municipality"
-                name={municipality.name}
-              />
-            }
-          />
+        <DetailHeader
+          name={municipality.name}
+          subtitle={municipality.region}
+          logoUrl={municipality.logoUrl}
+          politicalRule={municipality.politicalRule}
+          politicalKSO={municipality.politicalKSO}
+          politicalXSOLabelKey="politicalKSO"
+          helpItems={HEADER_HELP_ITEMS}
+          stats={headerStats}
+          translateNamespace="municipalityDetailPage"
+          headerChip={
+            <ComparisonDetailChip
+              linkTo={buildComparisonLinkTo("municipality", municipality.name)}
+              variant="municipality"
+              name={municipality.name}
+            />
+          }
+        />
 
-          <TerritoryEmissions
-            emissionsData={emissionsData}
-            sectorEmissions={sectorEmissions}
-          />
+        <TerritoryEmissions
+          emissionsData={emissionsData}
+          sectorEmissions={sectorEmissions}
+        />
 
-          <SectorEmissionsChart
-            sectorEmissions={sectorEmissions}
-            availableYears={availableYears}
-            selectedYear={selectedYear}
-            onYearChange={setSelectedYear}
-            currentYear={currentYear}
-            getSectorInfo={getSectorInfo}
-            filteredSectors={filteredSectors}
-            onFilteredSectorsChange={setFilteredSectors}
-            helpItems={["municipalityAndRegionEmissionSources"]}
-          />
+        <SectorEmissionsChart
+          sectorEmissions={sectorEmissions}
+          availableYears={availableYears}
+          selectedYear={selectedYear}
+          onYearChange={setSelectedYear}
+          currentYear={currentYear}
+          getSectorInfo={getSectorInfo}
+          filteredSectors={filteredSectors}
+          onFilteredSectorsChange={setFilteredSectors}
+          helpItems={["municipalityAndRegionEmissionSources"]}
+        />
 
-          <MunicipalityLinkCards
-            municipality={municipality}
-            requirementsInProcurement={requirementsInProcurement}
-            t={t}
-          />
+        <MunicipalityLinkCards
+          municipality={municipality}
+          requirementsInProcurement={requirementsInProcurement}
+          t={t}
+        />
 
-          <DetailSection
-            title={t("municipalityDetailPage.sustainableTransport")}
-            items={getSustainableTransportItems(
-              municipality,
-              currentLanguage,
-              t,
-            )}
-            helpItems={SUSTAINABLE_TRANSPORT_HELP_ITEMS}
-          />
-        </DetailWrapper>
+        <DetailSection
+          title={t("municipalityDetailPage.sustainableTransport")}
+          items={getSustainableTransportItems(municipality, currentLanguage, t)}
+          helpItems={SUSTAINABLE_TRANSPORT_HELP_ITEMS}
+        />
+      </DetailWrapper>
     </>
   );
 }

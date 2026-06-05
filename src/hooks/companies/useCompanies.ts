@@ -16,7 +16,9 @@ interface ICompaniesReturn {
   getCompaniesBySector: (sectorCode: string) => RankedCompany[];
 }
 
-export function useCompanies(options?: { enabled?: boolean }): ICompaniesReturn {
+export function useCompanies(options?: {
+  enabled?: boolean;
+}): ICompaniesReturn {
   const {
     data: companies = [],
     isLoading,

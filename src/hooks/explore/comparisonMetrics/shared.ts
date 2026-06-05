@@ -1,6 +1,10 @@
 import type { TFunction } from "i18next";
 import type { ListCardProps } from "@/components/explore/ListCard";
-import type { ComparisonCellValue, ComparisonMetric, ComparisonSection } from "./types";
+import type {
+  ComparisonCellValue,
+  ComparisonMetric,
+  ComparisonSection,
+} from "./types";
 
 export function getMeetsParisValue(
   item: ListCardProps,

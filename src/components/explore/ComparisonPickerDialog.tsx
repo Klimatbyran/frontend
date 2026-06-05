@@ -44,12 +44,8 @@ export function ComparisonPickerDialog({
   const [inputValue, setInputValue] = useState("");
   const commandListRef = useRef<HTMLDivElement | null>(null);
 
-  const {
-    selectedCount,
-    canViewComparison,
-    clearSelection,
-    variant,
-  } = useComparison();
+  const { selectedCount, canViewComparison, clearSelection, variant } =
+    useComparison();
   const { items: selectedItems, loading: selectedItemsLoading } =
     useComparisonItems();
   const { isSelected, isSelectionDisabled, tryToggleSelection } =
@@ -180,9 +176,7 @@ export function ComparisonPickerDialog({
               onDone={() => handleOpenChange(false)}
               onViewComparison={() => {
                 navigateToComparison();
-                navigate(
-                  localizedPath(currentLanguage, "/explore/compare"),
-                );
+                navigate(localizedPath(currentLanguage, "/explore/compare"));
               }}
             />
           </div>

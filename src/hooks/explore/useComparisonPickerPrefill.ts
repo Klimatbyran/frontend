@@ -8,7 +8,10 @@ import { COMPARISON_MAX } from "@/utils/explore/comparisonUtils";
 interface UseComparisonPickerPrefillOptions {
   open: boolean;
   prefillOnOpen?: ComparisonPickerPrefill;
-  tryToggleSelection: (linkTo: string, variant: ComparisonPickerPrefill["variant"]) => boolean;
+  tryToggleSelection: (
+    linkTo: string,
+    variant: ComparisonPickerPrefill["variant"],
+  ) => boolean;
   isSelected: (linkTo: string) => boolean;
 }
 

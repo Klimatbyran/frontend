@@ -7,12 +7,8 @@ import type { ComparisonEntityVariant } from "@/utils/explore/comparisonUtils";
 export function useComparisonPickerToggle() {
   const { t } = useTranslation();
   const { showToast } = useToast();
-  const {
-    toggleSelection,
-    isSelected,
-    isSelectionDisabled,
-    canAddVariant,
-  } = useComparison();
+  const { toggleSelection, isSelected, isSelectionDisabled, canAddVariant } =
+    useComparison();
 
   const showVariantMismatchToast = useCallback(() => {
     showToast(
