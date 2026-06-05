@@ -250,7 +250,10 @@ export function MunicipalityDetailPage() {
             translateNamespace="municipalityDetailPage"
             headerActions={
               <DetailComparisonButton
-                linkTo={buildComparisonLinkTo("municipality", municipality.name)}
+                linkTo={buildComparisonLinkTo(
+                  "municipality",
+                  municipality.name,
+                )}
                 variant="municipality"
               />
             }
