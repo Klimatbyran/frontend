@@ -5,10 +5,12 @@ import { sectorColors, getCompanyColors } from "@/lib/constants/companyColors";
 import { RankedCompany } from "@/types/company";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { useChartData } from "@/hooks/companies/useChartData";
-import { useResponsiveChartSize } from "@/hooks/useResponsiveChartSize";
-import PieChartView from "../../CompanyPieChartView";
+import SectorPieChart, {
+  PieChartItem,
+} from "@/components/charts/sectorChart/SectorPieChart";
+import SectorPieLegend from "@/components/charts/sectorChart/SectorPieLegend";
+import { DetailPieSectorGrid } from "@/components/detail/DetailGrid";
 import ChartHeader from "./ChartHeader";
-import SectorPieLegend from "./SectorPieLegend";
 
 interface EmissionsChartProps {
   companies: RankedCompany[];
@@ -35,7 +37,6 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
   const [selectedYear, setSelectedYear] = useState<string>("2024");
   const [selectedSector, setSelectedSector] = useState<string | null>(null);
   const screenSize = useScreenSize();
-  const { size } = useResponsiveChartSize();
 
   const { pieChartData, totalEmissions, years } = useChartData(
     companies,
@@ -52,15 +53,21 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
     }
   };
 
-  const pieChartDataWithColor = pieChartData.map((entry, index) => ({
-    ...entry,
-    color: selectedSector
-      ? getCompanyColors(index).base
-      : "sectorCode" in entry
-        ? sectorColors[entry.sectorCode as keyof typeof sectorColors]?.base ||
-          "var(--grey)"
-        : "var(--grey)",
-  }));
+  const pieChartDataWithColor: PieChartItem[] = pieChartData.map(
+    (entry, index) => ({
+      ...entry,
+      color: selectedSector
+        ? getCompanyColors(index).base
+        : "sectorCode" in entry
+          ? sectorColors[entry.sectorCode as keyof typeof sectorColors]
+              ?.base || "var(--grey)"
+          : "var(--grey)",
+    }),
+  );
+
+  const actionTooltipKey = selectedSector
+    ? "pieLegendCompany"
+    : "pieLegendSector";
 
   return (
     <div className="w-full space-y-6">
@@ -76,26 +83,31 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
 
       <div>
         {totalEmissions > 0 ? (
-          <div className="flex flex-col gap-4 mt-8 lg:flex-row lg:gap-8">
-            <div className="w-full lg:w-1/2 lg:h-full">
-              <PieChartView
-                pieChartData={pieChartDataWithColor}
-                size={size}
-                customActionLabel={t(
-                  `companyDetailPage.sectorGraphs.${selectedSector ? "pieLegendCompany" : "pieLegendSector"}`,
-                )}
-                handlePieClick={handlePieClick}
-                layout={screenSize.isMobile ? "mobile" : "desktop"}
-              />
-            </div>
-            <div className={"w-full h-full flex lg:w-1/2 lg:items-center"}>
-              <SectorPieLegend
-                payload={pieChartDataWithColor}
-                selectedLabel={selectedSector}
-                handlePieClick={handlePieClick}
-              />
-            </div>
-          </div>
+          <DetailPieSectorGrid>
+            <SectorPieChart
+              data={pieChartDataWithColor}
+              onItemClick={handlePieClick}
+              customActionLabel={t(
+                `companyDetailPage.sectorGraphs.${actionTooltipKey}`,
+              )}
+              desktopScale={!screenSize.isMobile}
+            />
+            <SectorPieLegend
+              data={pieChartDataWithColor}
+              total={totalEmissions}
+              onItemClick={(entry) => {
+                if (entry.wikidataId) {
+                  navigate(`/companies/${entry.wikidataId as string}`);
+                } else if (entry.sectorCode) {
+                  handlePieClick({ sectorCode: entry.sectorCode as string });
+                }
+              }}
+              getActionTooltip={() =>
+                t(`companyDetailPage.sectorGraphs.${actionTooltipKey}`)
+              }
+              gridColumns={2}
+            />
+          </DetailPieSectorGrid>
         ) : (
           <div className="flex justify-center items-center h-64">
             <p className="text-grey">

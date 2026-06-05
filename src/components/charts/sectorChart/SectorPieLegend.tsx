@@ -12,17 +12,17 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { SectorInfo } from "@/types/charts";
+import type { PieChartItem } from "./SectorPieChart";
 
 interface LegendProps {
-  data: Array<{
-    name: string;
-    value: number;
-    color: string;
-  }>;
+  data: PieChartItem[];
   total: number;
-  getSectorInfo: (name: string) => SectorInfo;
+  getSectorInfo?: (name: string) => SectorInfo;
   filteredSectors?: Set<string>;
   onFilteredSectorsChange?: (sectors: Set<string>) => void;
+  onItemClick?: (item: PieChartItem) => void;
+  getActionTooltip?: (item: PieChartItem) => string;
+  gridColumns?: 1 | 2;
 }
 
 const SectorPieLegend: React.FC<LegendProps> = ({
@@ -31,44 +31,57 @@ const SectorPieLegend: React.FC<LegendProps> = ({
   getSectorInfo,
   filteredSectors = new Set(),
   onFilteredSectorsChange,
+  onItemClick,
+  getActionTooltip,
+  gridColumns = 1,
 }) => {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
 
-  const handleLegendItemClick = (name: string) => {
+  const handleLegendItemClick = (entry: PieChartItem) => {
+    if (onItemClick) {
+      onItemClick(entry);
+      return;
+    }
+
     if (onFilteredSectorsChange) {
       const newFiltered = new Set(filteredSectors);
-      if (newFiltered.has(name)) {
-        newFiltered.delete(name);
+      if (newFiltered.has(entry.name)) {
+        newFiltered.delete(entry.name);
       } else {
-        newFiltered.add(name);
+        newFiltered.add(entry.name);
       }
       onFilteredSectorsChange(newFiltered);
     }
   };
 
-  // Filter out zero values and sort the data by value in descending order
   const sortedData = [...data]
     .filter((item) => item.value > 0)
     .map((item) => {
-      const { color, translatedName } = getSectorInfo(item.name);
-      return {
-        ...item,
-        color,
-        translatedName,
-      };
+      if (getSectorInfo) {
+        const { color, translatedName } = getSectorInfo(item.name);
+        return { ...item, color, translatedName };
+      }
+      return item;
     })
     .sort((a, b) => b.value - a.value);
 
+  const gridClass =
+    gridColumns === 2
+      ? "grid grid-cols-1 lg:grid-cols-2 gap-2 max-h-[300px] lg:max-h-[600px] overflow-y-auto w-full"
+      : "grid grid-cols-1 gap-2 w-full pr-2 mt-2 md:mt-4";
+
   return (
     <TooltipProvider>
-      <div className="grid grid-cols-1 gap-2 w-full pr-2 mt-2 md:mt-4">
+      <div className={gridClass}>
         {sortedData.map((entry, index) => {
-          const percentage = formatPercent(
-            entry.value / total,
-            currentLanguage,
-          );
+          const percentage =
+            entry.value / total < 0.001
+              ? "<0.1%"
+              : formatPercent(entry.value / total, currentLanguage);
           const isFiltered = filteredSectors.has(entry.name);
+          const displayName =
+            (entry.translatedName as string | undefined) ?? entry.name;
 
           return (
             <Tooltip key={`legend-${index}`}>
@@ -77,7 +90,7 @@ const SectorPieLegend: React.FC<LegendProps> = ({
                   className={`flex items-center gap-2 p-2 rounded-md hover:bg-black-1 transition-colors cursor-pointer ${
                     isFiltered ? "opacity-50" : ""
                   }`}
-                  onClick={() => handleLegendItemClick(entry.name)}
+                  onClick={() => handleLegendItemClick(entry)}
                 >
                   <div
                     className="w-3 h-3 rounded flex-shrink-0"
@@ -85,7 +98,7 @@ const SectorPieLegend: React.FC<LegendProps> = ({
                   />
                   <div className="min-w-0 flex-1">
                     <div className="text-sm text-white break-words">
-                      {entry.translatedName}
+                      {displayName}
                     </div>
                     <div className="text-xs text-grey flex justify-between">
                       <span>
@@ -102,11 +115,13 @@ const SectorPieLegend: React.FC<LegendProps> = ({
               </TooltipTrigger>
 
               <TooltipContent className="bg-black-1 text-white">
-                {t(
-                  `detailPage.sectorChart.${
-                    isFiltered ? "clickToShow" : "clickToFilter"
-                  }`,
-                )}
+                {getActionTooltip
+                  ? getActionTooltip(entry)
+                  : t(
+                      `detailPage.sectorChart.${
+                        isFiltered ? "clickToShow" : "clickToFilter"
+                      }`,
+                    )}
               </TooltipContent>
             </Tooltip>
           );

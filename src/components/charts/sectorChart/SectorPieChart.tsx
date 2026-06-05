@@ -6,19 +6,25 @@ import PieTooltip from "@/components/graphs/tooltips/PieTooltip";
 import { SectorInfo } from "@/types/charts";
 import { SectorEmissions } from "@/types/emissions";
 
-interface SectorPieChartProps {
-  sectorEmissions: SectorEmissions;
-  year: number;
-  getSectorInfo: (name: string) => SectorInfo;
-  filteredSectors?: Set<string>;
-  onFilteredSectorsChange?: (sectors: Set<string>) => void;
-}
-
-interface SectorData {
+export interface PieChartItem {
   name: string;
   value: number;
   color: string;
-  translatedName: string;
+  translatedName?: string;
+  [key: string]: unknown;
+}
+
+interface SectorPieChartProps {
+  sectorEmissions?: SectorEmissions;
+  year?: number;
+  getSectorInfo?: (name: string) => SectorInfo;
+  filteredSectors?: Set<string>;
+  onFilteredSectorsChange?: (sectors: Set<string>) => void;
+  data?: PieChartItem[];
+  nameKey?: string;
+  onItemClick?: (data: PieChartItem) => void;
+  customActionLabel?: string;
+  desktopScale?: boolean;
 }
 
 const SectorPieChart: React.FC<SectorPieChartProps> = ({
@@ -27,79 +33,103 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
   getSectorInfo,
   filteredSectors = new Set(),
   onFilteredSectorsChange,
+  data,
+  nameKey,
+  onItemClick,
+  customActionLabel,
+  desktopScale = false,
 }) => {
   const { isMobile } = useScreenSize();
   const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const { size } = useResponsiveChartSize();
 
-  const yearData = sectorEmissions.sectors[year] || {};
+  const pieData: PieChartItem[] = data
+    ? data
+        .filter((item) => item.value > 0)
+        .filter((item) => !filteredSectors.has(item.name))
+        .sort((a, b) => b.value - a.value)
+    : Object.entries(sectorEmissions?.sectors[year!] || {})
+        .map(([sector, value]) => {
+          const { color, translatedName } = getSectorInfo!(sector);
+          return {
+            name: sector,
+            value: value as number,
+            color,
+            translatedName,
+          };
+        })
+        .filter((item) => item.value > 0)
+        .filter((item) => !filteredSectors.has(item.name))
+        .sort((a, b) => b.value - a.value);
 
-  const pieData = Object.entries(yearData)
-    .map(([sector, value]) => {
-      const { color, translatedName } = getSectorInfo(sector);
-      return {
-        name: sector,
-        value,
-        color,
-        translatedName,
-      };
-    })
-    .filter((item) => (item.value as number) > 0)
-    .filter((item) => !filteredSectors.has(item.name))
-    .sort((a, b) => (b.value as number) - (a.value as number));
-
-  const total = pieData.reduce((sum, item) => sum + (item.value as number), 0);
+  const total = pieData.reduce((sum, item) => sum + item.value, 0);
   const pieDataWithTotal = pieData.map((item) => ({ ...item, total }));
+  const displayNameKey = nameKey ?? (data ? "name" : "translatedName");
 
-  const handleSectorClick = (data: SectorData) => {
-    if (isMobile) {
-      // On mobile, handle double-click for filtering
-      if (clickTimeoutRef.current) {
-        // This is a double-click
-        clearTimeout(clickTimeoutRef.current);
-        clickTimeoutRef.current = null;
+  const scale = desktopScale && !isMobile ? 1.2 : 1;
+  const innerRadius = size.innerRadius * scale;
+  const outerRadius = size.outerRadius * scale;
+  const chartHeight = Math.max(outerRadius * 2.5, desktopScale ? 300 : 0);
 
-        // Execute the filtering action
-        if (onFilteredSectorsChange) {
-          const sectorName = data.name;
-          const newFiltered = new Set(filteredSectors);
-          if (newFiltered.has(sectorName)) {
-            newFiltered.delete(sectorName);
-          } else {
-            newFiltered.add(sectorName);
-          }
-          onFilteredSectorsChange(newFiltered);
+  const toggleFilter = (sectorName: string) => {
+    if (!onFilteredSectorsChange) return;
+    const newFiltered = new Set(filteredSectors);
+    if (newFiltered.has(sectorName)) {
+      newFiltered.delete(sectorName);
+    } else {
+      newFiltered.add(sectorName);
+    }
+    onFilteredSectorsChange(newFiltered);
+  };
+
+  const handleSectorClick = (clickedData: PieChartItem) => {
+    if (onItemClick) {
+      if (isMobile) {
+        if (clickTimeoutRef.current) {
+          clearTimeout(clickTimeoutRef.current);
+          clickTimeoutRef.current = null;
+          onItemClick(clickedData);
+        } else {
+          clickTimeoutRef.current = setTimeout(() => {
+            clickTimeoutRef.current = null;
+          }, 300);
         }
       } else {
-        // This is a single-click, just show tooltip (no action)
+        onItemClick(clickedData);
+      }
+      return;
+    }
+
+    if (isMobile) {
+      if (clickTimeoutRef.current) {
+        clearTimeout(clickTimeoutRef.current);
+        clickTimeoutRef.current = null;
+        toggleFilter(clickedData.name);
+      } else {
         clickTimeoutRef.current = setTimeout(() => {
           clickTimeoutRef.current = null;
-        }, 300); // 300ms timeout for double-click detection
+        }, 300);
       }
-    } else if (onFilteredSectorsChange) {
-      const sectorName = data.name;
-      const newFiltered = new Set(filteredSectors);
-      if (newFiltered.has(sectorName)) {
-        newFiltered.delete(sectorName);
-      } else {
-        newFiltered.add(sectorName);
-      }
-      onFilteredSectorsChange(newFiltered);
+    } else {
+      toggleFilter(clickedData.name);
     }
   };
 
   return (
     <div className="max-h-[450px]">
-      <ResponsiveContainer width="100%" height={size.outerRadius * 2.5}>
+      <ResponsiveContainer
+        width="100%"
+        height={chartHeight || size.outerRadius * 2.5}
+      >
         <PieChart>
           <Pie
             data={pieDataWithTotal}
             dataKey="value"
-            nameKey="translatedName"
+            nameKey={displayNameKey}
             cx="50%"
             cy="50%"
-            innerRadius={size.innerRadius}
-            outerRadius={size.outerRadius}
+            innerRadius={innerRadius}
+            outerRadius={outerRadius}
             cornerRadius={8}
             paddingAngle={2}
             onClick={handleSectorClick}
@@ -116,7 +146,9 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
             ))}
           </Pie>
           <Tooltip
-            content={<PieTooltip />}
+            content={
+              <PieTooltip customActionLabel={customActionLabel} />
+            }
             animationDuration={0}
             isAnimationActive={false}
           />
