@@ -24,7 +24,6 @@ import { getProcurementRequirementsText } from "@/utils/municipality/procurement
 import { LinkCard } from "@/components/detail/DetailLinkCard";
 import { DetailHeader } from "@/components/detail/DetailHeader";
 import { ComparisonDetailChip } from "@/components/explore/ComparisonDetailChip";
-import { ComparisonDetailEntityProvider } from "@/contexts/ComparisonDetailEntityContext";
 import { buildComparisonLinkTo } from "@/utils/explore/comparisonUtils";
 import { DetailSection } from "@/components/detail/DetailSection";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";
@@ -233,11 +232,7 @@ export function MunicipalityDetailPage() {
       {/* Only render SEO when data is available, otherwise Layout will use route-level SEO */}
       {municipality && <Seo meta={seoMeta} />}
 
-      <ComparisonDetailEntityProvider
-        linkTo={buildComparisonLinkTo("municipality", municipality.name)}
-        variant="municipality"
-      >
-        <DetailWrapper>
+      <DetailWrapper>
           <DetailHeader
             name={municipality.name}
             subtitle={municipality.region}
@@ -293,7 +288,6 @@ export function MunicipalityDetailPage() {
             helpItems={SUSTAINABLE_TRANSPORT_HELP_ITEMS}
           />
         </DetailWrapper>
-      </ComparisonDetailEntityProvider>
     </>
   );
 }

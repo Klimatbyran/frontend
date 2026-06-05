@@ -1,13 +1,13 @@
 import { useTranslation } from "react-i18next";
 import { GitCompareArrows } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Toggle } from "@/components/ui/toggle";
 import { cn } from "@/lib/utils";
 import type { ComparisonSelection } from "@/hooks/explore/useComparisonSelection";
 import {
-  COMPARISON_MAX,
-  COMPARISON_MIN,
-} from "@/utils/explore/comparisonUtils";
+  ComparisonClearButton,
+  ComparisonSelectedCount,
+  ComparisonViewButton,
+} from "./ComparisonActions";
 
 interface ComparisonControlsProps {
   comparison: ComparisonSelection;
@@ -50,31 +50,14 @@ export function ComparisonControls({ comparison }: ComparisonControlsProps) {
 
       {isCompareMode && (
         <>
-          <span className="text-grey text-sm">
-            {t("explorePage.comparison.selected", {
-              count: selectedCount,
-              min: COMPARISON_MIN,
-              max: COMPARISON_MAX,
-            })}
-          </span>
+          <ComparisonSelectedCount count={selectedCount} />
           {selectedCount > 0 && (
-            <Button variant="ghost" size="sm" onClick={clearSelection}>
-              {t("explorePage.comparison.clearSelection")}
-            </Button>
+            <ComparisonClearButton onClick={clearSelection} />
           )}
-          <Button
-            size="default"
-            disabled={!canViewComparison}
+          <ComparisonViewButton
             onClick={viewComparison}
-            className={cn(
-              "gap-2 font-medium",
-              canViewComparison &&
-                "bg-blue-5 text-white hover:bg-blue-6 hover:opacity-100",
-            )}
-          >
-            <GitCompareArrows className="h-4 w-4" />
-            {t("explorePage.comparison.viewComparison")}
-          </Button>
+            disabled={!canViewComparison}
+          />
         </>
       )}
     </div>

@@ -50,7 +50,7 @@ export function getLastEmissionYear(region: RegionForExplore): string | null {
 /**
  * Hook to get all regions with data needed for the explore list (emissions, meetsParis, change %).
  */
-export function useRegionsForExplore() {
+export function useRegionsForExplore(options?: { enabled?: boolean }) {
   const {
     data: regions = [],
     isLoading,
@@ -58,6 +58,7 @@ export function useRegionsForExplore() {
   } = useQuery<ApiRegion[], Error>({
     queryKey: ["regions"],
     queryFn: getRegions,
+    enabled: options?.enabled ?? true,
   });
 
   const regionsForExplore = useMemo(

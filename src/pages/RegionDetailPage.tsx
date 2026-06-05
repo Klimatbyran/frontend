@@ -6,7 +6,6 @@ import { PageError } from "@/components/pageStates/Error";
 import { PageNoData } from "@/components/pageStates/NoData";
 import { DetailHeader } from "@/components/detail/DetailHeader";
 import { ComparisonDetailChip } from "@/components/explore/ComparisonDetailChip";
-import { ComparisonDetailEntityProvider } from "@/contexts/ComparisonDetailEntityContext";
 import { buildComparisonLinkTo } from "@/utils/explore/comparisonUtils";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";
 import { EntityListBox } from "@/components/detail/EntityListBox";
@@ -37,11 +36,7 @@ export function RegionDetailPage() {
 
   return (
     <>
-      <ComparisonDetailEntityProvider
-        linkTo={buildComparisonLinkTo("region", region.name)}
-        variant="region"
-      >
-        <DetailWrapper>
+      <DetailWrapper>
           <DetailHeader
             name={region.name}
             logoUrl={region.logoUrl}
@@ -80,7 +75,6 @@ export function RegionDetailPage() {
             translateNamespace="regions.detailPage"
           />
         </DetailWrapper>
-      </ComparisonDetailEntityProvider>
     </>
   );
 }

@@ -17,9 +17,6 @@ import { calculateEmissionsChange } from "@/utils/calculations/emissionsCalculat
 import { generateCompanySeoMeta } from "@/utils/seo/entitySeo";
 import { getSeoForRoute } from "@/seo/routes";
 import { yearFromIsoDate } from "@/utils/date";
-import { ComparisonDetailEntityProvider } from "@/contexts/ComparisonDetailEntityContext";
-import { buildComparisonLinkTo } from "@/utils/explore/comparisonUtils";
-
 export function CompanyDetailPage() {
   const { t } = useTranslation();
   const { id } = useParams<{ id: string; slug?: string }>();
@@ -68,15 +65,12 @@ export function CompanyDetailPage() {
 
   if (!company.reportingPeriods?.length) {
     return (
-      <ComparisonDetailEntityProvider
-        linkTo={buildComparisonLinkTo("company", company.wikidataId)}
-        variant="company"
-      >
+      <>
         <Seo meta={seoMeta} />
         <div className="space-y-8 md:space-y-16 max-w-[1400px] mx-auto">
           <CompanyOverviewNoData company={company} />
         </div>
-      </ComparisonDetailEntityProvider>
+      </>
     );
   }
 
@@ -119,10 +113,7 @@ export function CompanyDetailPage() {
   );
 
   return (
-    <ComparisonDetailEntityProvider
-      linkTo={buildComparisonLinkTo("company", company.wikidataId)}
-      variant="company"
-    >
+    <>
       {company && <Seo meta={seoMeta} />}
 
       <div className="space-y-8 md:space-y-16 max-w-[1400px] mx-auto">
@@ -172,6 +163,6 @@ export function CompanyDetailPage() {
             .sort((a, b) => a.year - b.year)}
         />
       </div>
-    </ComparisonDetailEntityProvider>
+    </>
   );
 }

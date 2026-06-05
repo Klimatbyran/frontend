@@ -1,0 +1,52 @@
+import { useCallback } from "react";
+import { useTranslation } from "react-i18next";
+import { useComparison } from "@/contexts/ComparisonContext";
+import { useToast } from "@/contexts/ToastContext";
+import type { ComparisonEntityVariant } from "@/utils/explore/comparisonUtils";
+
+export function useComparisonPickerToggle() {
+  const { t } = useTranslation();
+  const { showToast } = useToast();
+  const {
+    toggleSelection,
+    isSelected,
+    isSelectionDisabled,
+    canAddVariant,
+  } = useComparison();
+
+  const showVariantMismatchToast = useCallback(() => {
+    showToast(
+      t("explorePage.comparison.variantMismatchTitle"),
+      t("explorePage.comparison.variantMismatchMessage"),
+    );
+  }, [showToast, t]);
+
+  const tryToggleSelection = useCallback(
+    (linkTo: string, itemVariant: ComparisonEntityVariant): boolean => {
+      if (!isSelected(linkTo) && !canAddVariant(itemVariant)) {
+        showVariantMismatchToast();
+        return false;
+      }
+
+      if (isSelectionDisabled(linkTo)) {
+        return false;
+      }
+
+      toggleSelection(linkTo, itemVariant);
+      return true;
+    },
+    [
+      canAddVariant,
+      isSelected,
+      isSelectionDisabled,
+      showVariantMismatchToast,
+      toggleSelection,
+    ],
+  );
+
+  return {
+    isSelected,
+    isSelectionDisabled,
+    tryToggleSelection,
+  };
+}

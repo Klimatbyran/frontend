@@ -7,6 +7,12 @@ export {
   COMPARISON_MAX,
 } from "@/utils/explore/comparisonUtils";
 
+/**
+ * Explore-list UI state layered on top of shared ComparisonContext.
+ *
+ * - ComparisonContext: selected ids + entity variant (session-persisted)
+ * - This hook: compare mode toggle + inline/table view visibility
+ */
 export function useComparisonSelection(items: ListCardProps[] = []) {
   const comparison = useComparison();
   const { variant, clearSelection } = comparison;
@@ -14,8 +20,8 @@ export function useComparisonSelection(items: ListCardProps[] = []) {
   const [showComparison, setShowComparison] = useState(false);
 
   const listVariant = items[0]?.variant ?? null;
-  const entityVariant = listVariant;
 
+  // Re-enable compare mode when returning with an existing same-type selection.
   useEffect(() => {
     if (
       comparison.selectedCount > 0 &&
@@ -27,6 +33,7 @@ export function useComparisonSelection(items: ListCardProps[] = []) {
     }
   }, [comparison.selectedCount, isCompareMode, listVariant, variant]);
 
+  // Clear stale selection when switching explore entity type.
   useEffect(() => {
     if (listVariant && variant && variant !== listVariant) {
       setShowComparison(false);
@@ -69,6 +76,7 @@ export function useComparisonSelection(items: ListCardProps[] = []) {
     comparison.clearSelection();
   }, [comparison]);
 
+  // Clear selection if the comparison view unmounts while active.
   useEffect(() => {
     return () => {
       if (showComparison) {
@@ -90,7 +98,7 @@ export function useComparisonSelection(items: ListCardProps[] = []) {
     viewComparison,
     backToList,
     clearSelection: comparison.clearSelection,
-    entityVariant,
+    entityVariant: listVariant,
   };
 }
 

@@ -2,7 +2,6 @@ import { Suspense } from "react";
 import { PageLoading } from "@/components/pageStates/Loading";
 import { ToastProvider } from "./contexts/ToastContext";
 import { ComparisonProvider } from "./contexts/ComparisonContext";
-import { ComparisonDetailEntityRegistry } from "./contexts/ComparisonDetailEntityContext";
 import { useComparisonRouteEffects } from "./hooks/explore/useComparisonRouteEffects";
 import { AppRoutes } from "./routes";
 
@@ -16,11 +15,9 @@ function App() {
     <ToastProvider>
       <ComparisonProvider>
         <ComparisonRouteEffects />
-        <ComparisonDetailEntityRegistry>
-          <Suspense fallback={<PageLoading />}>
-            <AppRoutes />
-          </Suspense>
-        </ComparisonDetailEntityRegistry>
+        <Suspense fallback={<PageLoading />}>
+          <AppRoutes />
+        </Suspense>
       </ComparisonProvider>
     </ToastProvider>
   );

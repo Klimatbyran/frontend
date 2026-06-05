@@ -1,10 +1,10 @@
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { GitCompareArrows } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useComparison } from "@/contexts/ComparisonContext";
 import { COMPARISON_MAX } from "@/utils/explore/comparisonUtils";
 import type { ComparisonEntityVariant } from "@/utils/explore/comparisonUtils";
+import { useComparisonPickerTrigger } from "@/hooks/explore/useComparisonPickerTrigger";
 import { ComparisonPickerDialog } from "./ComparisonPickerDialog";
 
 interface ComparisonDetailChipProps {
@@ -21,8 +21,14 @@ export function ComparisonDetailChip({
   className,
 }: ComparisonDetailChipProps) {
   const { t } = useTranslation();
-  const [open, setOpen] = useState(false);
   const { selectedCount, isSelected } = useComparison();
+  const { openPicker, dialogProps } = useComparisonPickerTrigger({
+    entityVariant: variant,
+    prefillOnOpen: { linkTo, variant, name },
+    showViewComparison: true,
+    sheetOnMobile: true,
+    clearOnClose: true,
+  });
   const isCurrentSelected = isSelected(linkTo);
   const hasSelection = selectedCount > 0;
 
@@ -30,7 +36,7 @@ export function ComparisonDetailChip({
     <>
       <button
         type="button"
-        onClick={() => setOpen(true)}
+        onClick={openPicker}
         aria-label={
           hasSelection
             ? t("explorePage.comparison.chipAriaWithCount", {
@@ -61,15 +67,7 @@ export function ComparisonDetailChip({
           aria-hidden
         />
       </button>
-      <ComparisonPickerDialog
-        open={open}
-        onOpenChange={setOpen}
-        entityVariant={variant}
-        prefillOnOpen={{ linkTo, variant, name }}
-        showViewComparison
-        sheetOnMobile
-        clearOnClose
-      />
+      <ComparisonPickerDialog {...dialogProps} />
     </>
   );
 }

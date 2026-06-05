@@ -32,25 +32,36 @@ function filterSelectedCards(
 
 export function useComparisonItems() {
   const { selectedIds, variant, selectedCount } = useComparison();
-  const { companies, companiesLoading } = useCompanies();
-  const { municipalities, municipalitiesLoading } = useMunicipalities();
-  const { regions, loading: regionsLoading } = useRegionsForExplore();
+  const hasSelection = selectedCount > 0 && variant !== null;
+  const loadCompanies = hasSelection && variant === "company";
+  const loadMunicipalities = hasSelection && variant === "municipality";
+  const loadRegions = hasSelection && variant === "region";
+
+  const { companies, companiesLoading } = useCompanies({
+    enabled: loadCompanies,
+  });
+  const { municipalities, municipalitiesLoading } = useMunicipalities({
+    enabled: loadMunicipalities,
+  });
+  const { regions, loading: regionsLoading } = useRegionsForExplore({
+    enabled: loadRegions,
+  });
   const { currentLanguage } = useLanguage();
   const { t } = useTranslation();
   const { isAIGenerated } = useVerificationStatus();
 
   const allCompanyCards = useTransformCompanyListCard({
-    filteredCompanies: companies ?? [],
+    filteredCompanies: loadCompanies ? (companies ?? []) : [],
   });
   const allMunicipalityCards = useTransformMunicipalityListCard({
-    filteredMunicipalities: municipalities ?? [],
+    filteredMunicipalities: loadMunicipalities ? (municipalities ?? []) : [],
   });
   const allRegionCards = useTransformRegionListCard({
-    filteredRegions: regions ?? [],
+    filteredRegions: loadRegions ? (regions ?? []) : [],
   });
 
   const items = useMemo(() => {
-    if (selectedCount === 0 || !variant) {
+    if (!hasSelection || !variant) {
       return [];
     }
 
@@ -109,21 +120,22 @@ export function useComparisonItems() {
     allRegionCards,
     companies,
     currentLanguage,
+    hasSelection,
     isAIGenerated,
     municipalities,
     regions,
-    selectedCount,
     selectedIds,
     t,
     variant,
   ]);
 
-  const loading =
-    variant === "company"
-      ? companiesLoading
-      : variant === "municipality"
-        ? municipalitiesLoading
-        : regionsLoading;
+  const loading = loadCompanies
+    ? companiesLoading
+    : loadMunicipalities
+      ? municipalitiesLoading
+      : loadRegions
+        ? regionsLoading
+        : false;
 
   return { items, loading, variant, selectedCount };
 }

@@ -16,7 +16,9 @@ interface IMunicipalitiesReturn {
   getTopMunicipalities: (count?: number) => Municipality[];
 }
 
-export function useMunicipalities(): IMunicipalitiesReturn {
+export function useMunicipalities(options?: {
+  enabled?: boolean;
+}): IMunicipalitiesReturn {
   const {
     data: municipalities = [],
     isLoading,
@@ -24,6 +26,7 @@ export function useMunicipalities(): IMunicipalitiesReturn {
   } = useQuery<ApiMunicipality[], Error, Municipality[]>({
     queryKey: ["municipalities"],
     queryFn: getMunicipalities,
+    enabled: options?.enabled ?? true,
     staleTime: 1800000,
     select: (data) => {
       return data.map(

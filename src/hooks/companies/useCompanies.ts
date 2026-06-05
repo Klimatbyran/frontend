@@ -16,7 +16,7 @@ interface ICompaniesReturn {
   getCompaniesBySector: (sectorCode: string) => RankedCompany[];
 }
 
-export function useCompanies(): ICompaniesReturn {
+export function useCompanies(options?: { enabled?: boolean }): ICompaniesReturn {
   const {
     data: companies = [],
     isLoading,
@@ -24,6 +24,7 @@ export function useCompanies(): ICompaniesReturn {
   } = useQuery({
     queryKey: ["companies"],
     queryFn: getCompanies,
+    enabled: options?.enabled ?? true,
     staleTime: 1800000,
     select: (data): RankedCompany[] => {
       return data.map((company) => {
