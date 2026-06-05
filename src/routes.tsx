@@ -17,6 +17,7 @@ import {
   DownloadsPage,
   ErrorPage,
   ExplorePage,
+  ComparisonPage,
   InsightsPage,
   InternalDashboard,
   LearnMoreArticle,
@@ -164,6 +165,10 @@ export function AppRoutes() {
       <Route
         path={`${basePath}/explore`}
         element={<Navigate to={`${basePath}/explore/municipalities`} replace />}
+      />
+      <Route
+        path={`${basePath}/explore/compare`}
+        element={<ComparisonPage />}
       />
       <Route
         path={`${basePath}/explore/:mainFilter`}

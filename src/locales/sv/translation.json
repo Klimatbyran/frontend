@@ -1996,6 +1996,12 @@
       "viewDetails": "Visa all data",
       "metric": "Värde",
       "mobileScrollHint": "Alla enheter listas under varje värde för enkel jämförelse.",
+      "addToComparison": "Lägg till i jämförelse",
+      "addedToComparison": "Tillagd i jämförelse",
+      "variantMismatchTitle": "Kan inte blanda enhetstyper",
+      "variantMismatchMessage": "Du kan bara jämföra kommuner, län eller företag av samma typ. Rensa ditt val för att börja om.",
+      "notEnoughSelected": "Välj fler enheter att jämföra",
+      "notEnoughSelectedDescription": "Välj minst {{min}} enheter för att öppna jämförelsevyn.",
       "sections": {
         "climateTarget": "Klimatmål",
         "emissions": "Utsläpp",

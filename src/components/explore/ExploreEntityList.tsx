@@ -18,7 +18,7 @@ export function ExploreEntityList({
   allItems,
   filterProps,
 }: ExploreEntityListProps) {
-  const comparison = useComparisonSelection();
+  const comparison = useComparisonSelection(items);
 
   const itemLookup = allItems ?? items;
   const selectedItems = itemLookup.filter((item) =>

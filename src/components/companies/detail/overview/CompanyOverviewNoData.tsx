@@ -12,6 +12,8 @@ import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { getCompanyDescription } from "@/utils/business/company";
 import { CompanyDescription } from "./CompanyDescription";
 import { PageNoData } from "@/components/pageStates/NoData";
+import { DetailComparisonButton } from "@/components/explore/DetailComparisonButton";
+import { buildComparisonLinkTo } from "@/utils/explore/comparisonUtils";
 
 interface CompanyOverviewNoDataProps {
   company: CompanyDetails;
@@ -33,8 +35,12 @@ export function CompanyOverviewNoData({ company }: CompanyOverviewNoDataProps) {
         <div className="space-y-4">
           <div className="flex items-center gap-4">
             <Text className="text-4xl lg:text-6xl">{company.name}</Text>
-            {token && (
-              <div className="flex flex-row gap-2 mt-2 md:mt-0 md:ml-4">
+            <div className="flex flex-row flex-wrap gap-2 mt-2 md:mt-0 md:ml-4">
+              <DetailComparisonButton
+                linkTo={buildComparisonLinkTo("company", company.wikidataId)}
+                variant="company"
+              />
+              {token && (
                 <Button
                   variant="outline"
                   size="sm"
@@ -46,8 +52,8 @@ export function CompanyOverviewNoData({ company }: CompanyOverviewNoDataProps) {
                     <Pen />
                   </div>
                 </Button>
-              </div>
-            )}
+              )}
+            </div>
           </div>
           <CompanyDescription description={description} />
           <div className="flex flex-row items-center gap-2 my-4">

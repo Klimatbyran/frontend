@@ -1,72 +1,59 @@
 import { useCallback, useState } from "react";
+import { useComparison } from "@/contexts/ComparisonContext";
+import type { ListCardProps } from "@/components/explore/ListCard";
 
-export const COMPARISON_MIN = 2;
-export const COMPARISON_MAX = 4;
+export {
+  COMPARISON_MIN,
+  COMPARISON_MAX,
+} from "@/utils/explore/comparisonUtils";
 
-export function useComparisonSelection() {
+export function useComparisonSelection(items: ListCardProps[] = []) {
+  const comparison = useComparison();
   const [isCompareMode, setIsCompareMode] = useState(false);
   const [showComparison, setShowComparison] = useState(false);
-  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+
+  const variant = items[0]?.variant ?? comparison.variant ?? "company";
 
   const toggleCompareMode = useCallback(() => {
     setIsCompareMode((prev) => {
       if (prev) {
         setShowComparison(false);
-        setSelectedIds(new Set());
+        comparison.clearSelection();
       }
       return !prev;
     });
-  }, []);
+  }, [comparison]);
 
-  const toggleSelection = useCallback((id: string) => {
-    setSelectedIds((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) {
-        next.delete(id);
-      } else if (next.size < COMPARISON_MAX) {
-        next.add(id);
-      }
-      return next;
-    });
-  }, []);
-
-  const isSelected = useCallback(
-    (id: string) => selectedIds.has(id),
-    [selectedIds],
-  );
-
-  const isSelectionDisabled = useCallback(
-    (id: string) => selectedIds.size >= COMPARISON_MAX && !selectedIds.has(id),
-    [selectedIds],
+  const toggleSelection = useCallback(
+    (linkTo: string) => {
+      comparison.toggleSelection(linkTo, variant);
+    },
+    [comparison, variant],
   );
 
   const viewComparison = useCallback(() => {
-    if (selectedIds.size >= COMPARISON_MIN) {
+    if (comparison.canViewComparison) {
       setShowComparison(true);
     }
-  }, [selectedIds.size]);
+  }, [comparison.canViewComparison]);
 
   const backToList = useCallback(() => {
     setShowComparison(false);
   }, []);
 
-  const clearSelection = useCallback(() => {
-    setSelectedIds(new Set());
-  }, []);
-
   return {
     isCompareMode,
     showComparison,
-    selectedIds,
-    selectedCount: selectedIds.size,
-    canViewComparison: selectedIds.size >= COMPARISON_MIN,
+    selectedIds: comparison.selectedIds,
+    selectedCount: comparison.selectedCount,
+    canViewComparison: comparison.canViewComparison,
     toggleCompareMode,
     toggleSelection,
-    isSelected,
-    isSelectionDisabled,
+    isSelected: comparison.isSelected,
+    isSelectionDisabled: comparison.isSelectionDisabled,
     viewComparison,
     backToList,
-    clearSelection,
+    clearSelection: comparison.clearSelection,
   };
 }
 

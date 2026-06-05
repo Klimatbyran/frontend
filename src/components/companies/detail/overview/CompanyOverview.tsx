@@ -33,6 +33,8 @@ import { CompanyOverviewTooltip } from "./CompanyOverviewTooltip";
 import { OverviewStatistics } from "./OverviewStatistics";
 import { yearFromIsoDate } from "@/utils/date";
 import { CompanyLogo } from "../../CompanyLogo";
+import { DetailComparisonButton } from "@/components/explore/DetailComparisonButton";
+import { buildComparisonLinkTo } from "@/utils/explore/comparisonUtils";
 
 interface CompanyOverviewProps {
   company: CompanyDetails;
@@ -111,25 +113,31 @@ export function CompanyOverview({
         <div className="space-y-4">
           <div className="flex items-center gap-4">
             <Text className="text-4xl lg:text-6xl">{company.name}</Text>
-            {token && (
-              <div className="flex flex-row gap-2 mt-2 md:mt-0 md:ml-4">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="gap-2"
-                  onClick={() => navigate("edit")}
-                >
-                  Edit
-                  <div className="w-5 h-5 rounded-full bg-orange-5/30 text-orange-2 text-xs flex items-center justify-center">
-                    <Pen />
-                  </div>
-                </Button>
-                <EmissionsAssessmentButton
-                  wikidataId={company.wikidataId}
-                  sortedPeriods={sortedPeriods}
-                />
-              </div>
-            )}
+            <div className="flex flex-row flex-wrap gap-2 mt-2 md:mt-0 md:ml-4">
+              <DetailComparisonButton
+                linkTo={buildComparisonLinkTo("company", company.wikidataId)}
+                variant="company"
+              />
+              {token && (
+                <>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="gap-2"
+                    onClick={() => navigate("edit")}
+                  >
+                    Edit
+                    <div className="w-5 h-5 rounded-full bg-orange-5/30 text-orange-2 text-xs flex items-center justify-center">
+                      <Pen />
+                    </div>
+                  </Button>
+                  <EmissionsAssessmentButton
+                    wikidataId={company.wikidataId}
+                    sortedPeriods={sortedPeriods}
+                  />
+                </>
+              )}
+            </div>
           </div>
           <CompanyDescription description={description} />
           <div className="flex flex-row items-center gap-2 my-4">

@@ -25,6 +25,7 @@ export interface DetailHeaderProps {
   translateNamespace: string;
   politicalRuleLabelKey?: string;
   politicalXSOLabelKey?: string;
+  headerActions?: ReactNode;
 }
 
 export function DetailHeader({
@@ -38,11 +39,12 @@ export function DetailHeader({
   translateNamespace,
   politicalRuleLabelKey = "politicalRule",
   politicalXSOLabelKey, // XSO = KSO or RSO hence the X
+  headerActions,
 }: DetailHeaderProps) {
   return (
     <SectionWithHelp helpItems={helpItems}>
-      <div className="flex justify-between">
-        <div className="flex flex-col">
+      <div className="flex justify-between gap-4 items-start">
+        <div className="flex flex-col min-w-0">
           <Text className="text-4xl md:text-8xl">{name}</Text>
           {subtitle && (
             <Text className="text-grey text-sm md:text-base lg:text-lg">
@@ -50,9 +52,12 @@ export function DetailHeader({
             </Text>
           )}
         </div>
-        {logoUrl && (
-          <img src={logoUrl} alt="logo" className="h-[50px] md:h-[80px]" />
-        )}
+        <div className="flex flex-col items-end gap-3 shrink-0">
+          {headerActions}
+          {logoUrl && (
+            <img src={logoUrl} alt="logo" className="h-[50px] md:h-[80px]" />
+          )}
+        </div>
       </div>
       {politicalRule && politicalRule.length > 0 && (
         <PoliticalRuleSection

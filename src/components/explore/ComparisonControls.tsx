@@ -2,11 +2,11 @@ import { useTranslation } from "react-i18next";
 import { GitCompareArrows } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Toggle } from "@/components/ui/toggle";
+import type { ComparisonSelection } from "@/hooks/explore/useComparisonSelection";
 import {
   COMPARISON_MAX,
   COMPARISON_MIN,
-  type ComparisonSelection,
-} from "@/hooks/explore/useComparisonSelection";
+} from "@/utils/explore/comparisonUtils";
 
 interface ComparisonControlsProps {
   comparison: ComparisonSelection;

@@ -1938,6 +1938,12 @@
       "viewDetails": "View full details",
       "metric": "Metric",
       "mobileScrollHint": "All entities are listed below each metric for easy comparison.",
+      "addToComparison": "Add to comparison",
+      "addedToComparison": "Added to comparison",
+      "variantMismatchTitle": "Cannot mix entity types",
+      "variantMismatchMessage": "You can only compare municipalities, regions, or companies of the same type. Clear your selection to start over.",
+      "notEnoughSelected": "Select more entities to compare",
+      "notEnoughSelectedDescription": "Choose at least {{min}} entities to open the comparison view.",
       "sections": {
         "climateTarget": "Climate target",
         "emissions": "Emissions",
