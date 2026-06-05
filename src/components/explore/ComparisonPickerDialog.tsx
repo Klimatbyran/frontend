@@ -1,6 +1,5 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { Command as CommandPrimitive } from "cmdk";
 import { useTranslation } from "react-i18next";
 import { Building2, Map as MapIcon, TreePine } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -10,7 +9,6 @@ import { useComparison } from "@/contexts/ComparisonContext";
 import { useToast } from "@/contexts/ToastContext";
 import {
   Command,
-  CommandEmpty,
   CommandInput,
   CommandItem,
   CommandList,
@@ -126,8 +124,7 @@ function ComparisonPickerSelectedSection({
 function ComparisonPickerSearchResults({
   groupedLists,
   showTypeLabels,
-  isSearching,
-  combinedLoading,
+  isSearchPending,
   isSelected,
   isSelectionDisabled,
   onSelect,
@@ -139,21 +136,19 @@ function ComparisonPickerSearchResults({
     items: CombinedData[];
   }[];
   showTypeLabels: boolean;
-  isSearching: boolean;
-  combinedLoading: boolean;
+  isSearchPending: boolean;
   isSelected: (linkTo: string) => boolean;
   isSelectionDisabled: (linkTo: string) => boolean;
   onSelect: (item: CombinedData) => void;
 }) {
   const { t } = useTranslation();
 
+  if (isSearchPending) {
+    return null;
+  }
+
   return (
     <>
-      {(isSearching || combinedLoading) && (
-        <CommandPrimitive.Loading>
-          {t("explorePage.comparison.pickerLoading")}
-        </CommandPrimitive.Loading>
-      )}
       {groupedLists.map(({ category, icon: Icon, translationKey, items }) => (
         <div key={category} className="pt-2">
           {showTypeLabels && (
@@ -238,7 +233,8 @@ export function ComparisonPickerDialog({
   const { t } = useTranslation();
   const { showToast } = useToast();
   const [inputValue, setInputValue] = useState("");
-  const { searchResults, isSearching } = useHeroGlobalSearch(inputValue);
+  const { searchResults, isSearching, isDebouncing } =
+    useHeroGlobalSearch(inputValue);
   const { data: combinedData, loading: combinedLoading } = useCombinedData(
     searchResults,
     inputValue,
@@ -333,6 +329,7 @@ export function ComparisonPickerDialog({
   const hasResults = groupedLists.some((group) => group.items.length > 0);
   const showTypeLabels = !entityVariant;
   const hasSearchQuery = inputValue.trim().length > 0;
+  const isSearchPending = isSearching || isDebouncing || combinedLoading;
   const activeVariant = entityVariant ?? variant;
 
   return (
@@ -360,15 +357,16 @@ export function ComparisonPickerDialog({
                 activeVariant={activeVariant}
                 onToggle={handleToggle}
               />
-              {hasSearchQuery &&
-                !(isSearching || combinedLoading) &&
-                !hasResults && (
-                  <CommandEmpty>
-                    <p className="text-grey">
-                      {t(pickerCopyKey("pickerEmpty", entityVariant))}
-                    </p>
-                  </CommandEmpty>
-                )}
+              {hasSearchQuery && isSearchPending && (
+                <p className="text-grey py-4 text-center text-sm">
+                  {t("explorePage.comparison.pickerLoading")}
+                </p>
+              )}
+              {hasSearchQuery && !isSearchPending && !hasResults && (
+                <p className="text-grey py-4 text-center text-sm">
+                  {t(pickerCopyKey("pickerEmpty", entityVariant))}
+                </p>
+              )}
               <CommandList
                 ref={commandListRef}
                 className="max-h-[50vh] min-h-48 pt-4"
@@ -376,8 +374,7 @@ export function ComparisonPickerDialog({
                 <ComparisonPickerSearchResults
                   groupedLists={groupedLists}
                   showTypeLabels={showTypeLabels}
-                  isSearching={isSearching}
-                  combinedLoading={combinedLoading}
+                  isSearchPending={isSearchPending}
                   isSelected={isSelected}
                   isSelectionDisabled={isSelectionDisabled}
                   onSelect={handleSearchSelect}
