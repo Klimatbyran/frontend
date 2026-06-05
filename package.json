@@ -153,5 +153,9 @@
   },
   "optionalDependencies": {
     "@unrs/resolver-binding-darwin-arm64": "1.11.1"
+  },
+  "allowScripts": {
+    "esbuild": true,
+    "unrs-resolver": true
   }
 }
