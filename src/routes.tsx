@@ -6,40 +6,42 @@ import StagingProtectedRoute from "./components/StagingProtectedRoute";
 // Wrap the route(s) in <Route element={<StagingProtectedRoute />}> and nest your path(s) inside.
 // When ready for prod, remove the wrapper. Keep this import so dead-code scripts don't remove the component.
 import { useLanguage } from "./components/LanguageProvider";
-import { AboutPage } from "./pages/AboutPage";
+import {
+  AboutPage,
+  AddCompanyPage,
+  BlogDetailPage,
+  CompaniesOverviewPage,
+  CompanyDetailPage,
+  CompanyEditPage,
+  DataDownloadPage,
+  DownloadsPage,
+  ErrorPage,
+  ExplorePage,
+  InsightsPage,
+  InternalDashboard,
+  LearnMoreArticle,
+  LearnMoreOverview,
+  MethodsPage,
+  MunicipalitiesOverviewPage,
+  MunicipalityDetailPage,
+  NationDetailPage,
+  NewsLetterArchivePage,
+  NotFoundPage,
+  ParisAlignedStatisticsPage,
+  PrivacyPage,
+  RegionalOverviewPage,
+  RegionDetailPage,
+  ReportLandingPage,
+  ReportsPage,
+  RequestsDashboard,
+  SectorsOverviewPage,
+  SupportPage,
+  TrendAnalysisDashboard,
+  UnauthorizedErrorPage,
+  ValidationDashboard,
+} from "./lazyPages";
 import { AuthCallback } from "./pages/AuthCallback";
-import { BlogDetailPage } from "./pages/BlogDetailPage";
-import { CompanyEditPage } from "./pages/CompanyEditPage";
-import { CompanyDetailPage } from "./pages/CompanyDetailPage";
-import { SectorsOverviewPage } from "./pages/SectorsOverviewPage";
-import DownloadsPage from "./pages/DownloadsPage";
-import { ErrorPage } from "./pages/ErrorPage";
-import { InsightsPage } from "./pages/InsightsPage";
 import { LandingPage } from "./pages/LandingPage";
-import { LearnMoreOverview } from "./pages/LearnMoreOverview";
-import { LearnMoreArticle } from "./pages/LearnMoreArticle";
-import { MethodsPage } from "./pages/MethodsPage";
-import { MunicipalitiesOverviewPage } from "./pages/MunicipalitiesOverviewPage";
-import { MunicipalityDetailPage } from "./pages/MunicipalityDetailPage";
-import { NotFoundPage } from "./pages/NotFoundPage";
-import { ReportsPage } from "./pages/ReportsPage";
-import { PrivacyPage } from "./pages/PrivacyPage";
-import DataDownloadPage from "./pages/DataDownloadPage";
-import { UnauthorizedErrorPage } from "./pages/error/UnauthorizedErrorPage";
-import { SupportPage } from "./pages/SupportPage";
-import { ValidationDashboard } from "./pages/internal-pages/ValidationDashboard";
-import { InternalDashboard } from "./pages/internal-pages/InternalDashboard";
-import { ReportLandingPage } from "./pages/ReportLandingPage";
-import { RequestsDashboard } from "./pages/internal-pages/RequestsDashboard";
-import { TrendAnalysisDashboard } from "./pages/internal-pages/TrendAnalysisDashboard";
-import { ParisAlignedStatisticsPage } from "./pages/internal-pages/ParisAlignedStatisticsPage";
-import { AddCompanyPage } from "./pages/internal-pages/AddCompanyPage";
-import { NewsLetterArchivePage } from "./pages/NewslettersPage";
-import { RegionalOverviewPage } from "./pages/RegionalOverviewPage";
-import { RegionDetailPage } from "./pages/RegionDetailPage";
-import { NationDetailPage } from "./pages/NationDetailPage";
-import { CompaniesOverviewPage } from "./pages/CompaniesOverviewPage";
-import { ExplorePage } from "./pages/ExplorePage";
 
 void StagingProtectedRoute; // referenced so dead-code scripts keep the component; eslint/ts unused-import satisfied
 
