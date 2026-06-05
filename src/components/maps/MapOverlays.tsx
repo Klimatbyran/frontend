@@ -1,7 +1,7 @@
 import { t } from "i18next";
 import { DataItem, DataKPI, KPIValue, MapEntityType } from "@/types/rankings";
 import { MapZoomControls } from "./MapZoomControls";
-import { MapLegend } from "./MapLegend";
+import { MapLegend, MapLegendPosition } from "./MapLegend";
 import { MapTooltip } from "./MapTooltip";
 
 interface MapOverlaysProps {
@@ -21,11 +21,15 @@ interface MapOverlaysProps {
   handleZoomOut: () => void;
   handleReset: () => void;
   onAreaClick?: (id: string) => void;
+  showTooltip?: boolean;
+  legendPosition?: MapLegendPosition;
 }
 
 function MapOverlays({
   entityType,
   selectedKPI,
+  showTooltip = true,
+  legendPosition = "bottom-right",
   hoveredArea,
   hoveredValue,
   hoveredRank,
@@ -43,7 +47,7 @@ function MapOverlays({
 }: MapOverlaysProps) {
   return (
     <>
-      {hoveredArea && (
+      {showTooltip && hoveredArea && (
         <MapTooltip
           entityType={entityType}
           name={hoveredArea}
@@ -67,6 +71,7 @@ function MapOverlays({
         unit={selectedKPI.unit ?? ""}
         selectedKPI={selectedKPI as KPIValue}
         hasNullValues={hasNullValues}
+        position={legendPosition}
       />
       <MapZoomControls
         onZoomIn={handleZoomIn}

@@ -13,23 +13,42 @@ export type NationDetails = {
   historicalEmissionChangePercent: number;
 };
 
+type ApiEmissionsSeries = ({ year: string; value: number } | null)[];
+
 type ApiNationResponse = {
-  country: { sv: string; en: string };
+  country: { sv: string; en: string } | string;
   logoUrl?: string | null;
-  emissions: ({ year: string; value: number } | null)[];
-  approximatedHistoricalEmission: ({ year: string; value: number } | null)[];
-  trend: ({ year: string; value: number } | null)[];
+  emissions?: ApiEmissionsSeries;
+  territorialFossilEmissions?: ApiEmissionsSeries;
+  approximatedHistoricalEmission: ApiEmissionsSeries;
+  trend: ApiEmissionsSeries;
   historicalEmissionChangePercent: number;
   meetsParis: boolean;
 };
+
+function normalizeCountry(
+  country: ApiNationResponse["country"],
+): NationDetails["country"] {
+  if (typeof country === "string") {
+    return { sv: country, en: country };
+  }
+
+  return { sv: country.sv, en: country.en };
+}
+
+function getPrimaryEmissionsSeries(
+  response: ApiNationResponse,
+): ApiEmissionsSeries | undefined {
+  return response.emissions ?? response.territorialFossilEmissions;
+}
 
 function transformApiNationToNationDetails(
   r: ApiNationResponse,
 ): NationDetails {
   return {
-    country: { sv: r.country.sv, en: r.country.en },
+    country: normalizeCountry(r.country),
     logoUrl: r.logoUrl ?? null,
-    emissions: mapEmissionArray(r.emissions),
+    emissions: mapEmissionArray(getPrimaryEmissionsSeries(r)),
     approximatedHistoricalEmission: mapEmissionArray(
       r.approximatedHistoricalEmission,
     ),

@@ -17,6 +17,10 @@ import {
   enrichCompanyWithKPIs,
 } from "@/hooks/companies/useCompanyKPIs";
 import { DataPoint } from "@/types/rankings";
+import {
+  OverviewSplitLayout,
+  type OverviewViewMode,
+} from "@/components/ranked/OverviewSplitLayout";
 
 export function CompaniesOverviewPage() {
   const { t } = useTranslation();
@@ -38,12 +42,12 @@ export function CompaniesOverviewPage() {
     navigate({ search: params.toString() }, { replace: true });
   };
 
-  const getViewModeFromURL = () => {
+  const getViewModeFromURL = (): OverviewViewMode => {
     const params = new URLSearchParams(location.search);
     return params.get("view") === "list" ? "list" : "graph";
   };
 
-  const setViewModeInURL = (mode: "graph" | "list") => {
+  const setViewModeInURL = (mode: OverviewViewMode) => {
     const params = new URLSearchParams(location.search);
     params.set("view", mode);
     navigate({ search: params.toString() }, { replace: true });
@@ -189,24 +193,23 @@ export function CompaniesOverviewPage() {
     },
   });
 
-  const renderVisualizationOrList = (isMobile: boolean) =>
-    viewMode === "graph" ? (
-      <div className={isMobile ? "relative h-[65vh]" : "relative h-full"}>
-        <CompanyKPIVisualization
-          companies={companiesWithKPIs}
-          selectedKPI={selectedKPI}
-          onCompanyClick={handleCompanyClick}
-        />
-      </div>
-    ) : (
-      <RankedList
-        data={companiesWithKPIs}
-        selectedDataPoint={asDataPoint(selectedKPI)}
-        onItemClick={handleCompanyClick}
-        searchKey="name"
-        searchPlaceholder={t("rankedList.search.placeholder")}
-      />
-    );
+  const companyRankedList = (
+    <RankedList
+      data={companiesWithKPIs}
+      selectedDataPoint={asDataPoint(selectedKPI)}
+      onItemClick={handleCompanyClick}
+      searchKey="name"
+      searchPlaceholder={t("rankedList.search.placeholder")}
+    />
+  );
+
+  const visualizationPanel = (
+    <CompanyKPIVisualization
+      companies={companiesWithKPIs}
+      selectedKPI={selectedKPI}
+      onCompanyClick={handleCompanyClick}
+    />
+  );
 
   return (
     <>
@@ -216,7 +219,7 @@ export function CompaniesOverviewPage() {
         className="-ml-4"
       />
 
-      <div className="flex mb-4 lg:hidden">
+      <div className="flex mb-4 md:hidden">
         <ViewModeToggle
           viewMode={viewMode}
           modes={["graph", "list"]}
@@ -251,29 +254,13 @@ export function CompaniesOverviewPage() {
         />
       </div>
 
-      {/* Mobile View */}
-      <div className="lg:hidden space-y-6">
-        {renderVisualizationOrList(true)}
-        <CompanyInsightsPanel
-          companyData={companiesWithKPIs}
-          selectedKPI={selectedKPI}
+      <div className="space-y-6">
+        <OverviewSplitLayout
+          viewMode={viewMode}
+          visualizationMode="graph"
+          visualization={visualizationPanel}
+          list={companyRankedList}
         />
-      </div>
-
-      {/* Desktop View */}
-      <div className="hidden lg:grid grid-cols-1 gap-6">
-        <div className="grid grid-cols-2 gap-6">
-          {renderVisualizationOrList(false)}
-          {viewMode === "graph" ? (
-            <RankedList
-              data={companiesWithKPIs}
-              selectedDataPoint={asDataPoint(selectedKPI)}
-              onItemClick={handleCompanyClick}
-              searchKey="name"
-              searchPlaceholder={t("rankedList.search.placeholder")}
-            />
-          ) : null}
-        </div>
         <CompanyInsightsPanel
           companyData={companiesWithKPIs}
           selectedKPI={selectedKPI}

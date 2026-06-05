@@ -6,7 +6,7 @@ import { PageError } from "@/components/pageStates/Error";
 import { PageNoData } from "@/components/pageStates/NoData";
 import { DetailHeader } from "@/components/detail/DetailHeader";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";
-import { MunicipalityListBox } from "@/components/regions/MunicipalityListBox";
+import { EntityListBox } from "@/components/detail/EntityListBox";
 import { SectorEmissionsChart } from "@/components/charts/sectorChart/SectorEmissions";
 
 export function RegionDetailPage() {
@@ -60,8 +60,9 @@ export function RegionDetailPage() {
           helpItems={["municipalityAndRegionEmissionSources"]}
         />
 
-        <MunicipalityListBox
-          municipalities={regionMunicipalities}
+        <EntityListBox
+          items={regionMunicipalities}
+          entityType="municipalities"
           translateNamespace="regions.detailPage"
         />
       </DetailWrapper>

@@ -16,6 +16,14 @@ import {
 import { RankedListItem } from "@/types/rankings";
 import { createEntityClickHandler } from "@/utils/routing";
 import { MunicipalityRankedList } from "@/components/municipalities/MunicipalityRankedList";
+import {
+  normalizeMunicipalityKpiApiItem,
+  toMunicipalityMapDataItem,
+} from "@/utils/territoryMapData";
+import {
+  OverviewSplitLayout,
+  type OverviewViewMode,
+} from "@/components/ranked/OverviewSplitLayout";
 import type { Municipality } from "@/types/municipality";
 
 export function MunicipalitiesOverviewPage() {
@@ -29,10 +37,9 @@ export function MunicipalitiesOverviewPage() {
 
   const municipalities: Municipality[] = useMemo(
     () =>
-      municipalitiesData.map((m) => {
-        const { meetsParis, ...rest } = m;
-        return { ...rest, meetsParisGoal: meetsParis } as Municipality;
-      }),
+      municipalitiesData.map((m) =>
+        normalizeMunicipalityKpiApiItem(m),
+      ) as Municipality[],
     [municipalitiesData],
   );
   const [geoData] = useState(municipalityGeoJson);
@@ -55,11 +62,11 @@ export function MunicipalitiesOverviewPage() {
     navigate({ search: params.toString() }, { replace: true });
   };
 
-  const getViewModeFromURL = () => {
+  const getViewModeFromURL = (): OverviewViewMode => {
     const params = new URLSearchParams(location.search);
     return params.get("view") === "list" ? "list" : "map";
   };
-  const setViewModeInURL = (mode: "map" | "list") => {
+  const setViewModeInURL = (mode: OverviewViewMode) => {
     const params = new URLSearchParams(location.search);
     params.set("view", mode);
     navigate({ search: params.toString() }, { replace: true });
@@ -81,7 +88,11 @@ export function MunicipalitiesOverviewPage() {
     viewMode,
   );
 
-  // Create an adapter for MapOfSweden
+  const mapData = useMemo(
+    () => municipalitiesData.map(toMunicipalityMapDataItem),
+    [municipalitiesData],
+  );
+
   const handleMunicipalityAreaClick = (name: string) => {
     const municipality = municipalities.find((m) => m.name === name);
     if (municipality) {
@@ -138,23 +149,16 @@ export function MunicipalitiesOverviewPage() {
     />
   );
 
-  const renderMapOrList = (isMobile: boolean) =>
-    viewMode === "map" ? (
-      <div className={isMobile ? "relative h-[65vh]" : "relative h-full"}>
-        <TerritoryMap
-          entityType="municipalities"
-          geoData={geoData as FeatureCollection}
-          data={municipalities.map((m) => {
-            const { sectorEmissions, ...rest } = m;
-            return { ...rest, id: m.name };
-          })}
-          selectedKPI={selectedKPI}
-          onAreaClick={handleMunicipalityAreaClick}
-        />
-      </div>
-    ) : (
-      municipalityRankedList
-    );
+  const mapPanel = (
+    <TerritoryMap
+      entityType="municipalities"
+      geoData={geoData as FeatureCollection}
+      data={mapData}
+      selectedKPI={selectedKPI}
+      onAreaClick={handleMunicipalityAreaClick}
+      className="max-w-none"
+    />
+  );
 
   return (
     <>
@@ -164,7 +168,7 @@ export function MunicipalitiesOverviewPage() {
         className="-ml-4"
       />
 
-      <div className="flex mb-4 lg:hidden">
+      <div className="flex mb-4 md:hidden">
         <ViewModeToggle
           viewMode={viewMode}
           modes={["map", "list"]}
@@ -191,21 +195,13 @@ export function MunicipalitiesOverviewPage() {
         translationPrefix="municipalities.list"
       />
 
-      {/* Mobile Insights */}
-      <div className="lg:hidden space-y-6">
-        {renderMapOrList(true)}
-        <InsightsPanel
-          municipalityData={municipalities}
-          selectedKPI={selectedKPI}
+      <div className="space-y-6">
+        <OverviewSplitLayout
+          viewMode={viewMode}
+          visualizationMode="map"
+          visualization={mapPanel}
+          list={municipalityRankedList}
         />
-      </div>
-
-      {/* Desktop Insights */}
-      <div className="hidden lg:grid grid-cols-1 gap-6">
-        <div className="grid grid-cols-2 gap-6">
-          {renderMapOrList(false)}
-          {viewMode === "map" ? municipalityRankedList : null}
-        </div>
         <InsightsPanel
           municipalityData={municipalities}
           selectedKPI={selectedKPI}
