@@ -93,6 +93,12 @@ function pickerCopyKey(
   return `explorePage.comparison.${base}.default`;
 }
 
+const PICKER_RESULT_LIST_HEIGHT =
+  "h-36 max-h-36 min-h-36 [&_[cmdk-item]]:py-2.5";
+
+const PICKER_DARK_SCROLLBAR =
+  "[scrollbar-width:thin] [scrollbar-color:var(--black-1)_transparent] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-black-1 hover:[&::-webkit-scrollbar-thumb]:bg-grey/50";
+
 function ComparisonPickerSelectedSection({
   selectedCount,
   selectedItems,
@@ -108,47 +114,45 @@ function ComparisonPickerSelectedSection({
 }) {
   const { t } = useTranslation();
 
+  if (selectedCount === 0) {
+    return null;
+  }
+
   return (
-    <div className="flex h-36 shrink-0 flex-col border-b border-black-1 pt-4">
-      <p className="shrink-0 pb-2 text-sm text-grey">
+    <div className="shrink-0 border-b border-black-1 pb-2 pt-3">
+      <p className="pb-1.5 text-sm text-grey">
         {t("explorePage.comparison.pickerSelectedHeading", {
           count: selectedCount,
           max: COMPARISON_MAX,
         })}
       </p>
-      <div className="min-h-0 flex-1 overflow-y-auto pb-3">
-        {selectedCount === 0 ? (
-          <p className="text-grey text-sm">
-            {t("explorePage.comparison.pickerNoSelection")}
-          </p>
-        ) : loading ? (
-          <p className="text-grey text-sm">
-            {t("explorePage.comparison.pickerLoading")}
-          </p>
-        ) : (
-          <div className="space-y-1">
-            {selectedItems.map((item) => (
-              <button
-                key={item.linkTo}
-                type="button"
-                className="flex w-full rounded-sm px-2 py-2 text-left hover:bg-black-1"
-                onClick={() =>
-                  activeVariant && onToggle(item.linkTo, activeVariant)
-                }
-              >
-                <ComparisonPickerRow name={item.name} selected />
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
+      {loading ? (
+        <p className="text-grey text-sm">
+          {t("explorePage.comparison.pickerLoading")}
+        </p>
+      ) : (
+        <div className="space-y-0.5">
+          {selectedItems.map((item) => (
+            <button
+              key={item.linkTo}
+              type="button"
+              className="flex min-h-10 w-full rounded-sm px-2 py-2 text-left hover:bg-black-1"
+              onClick={() =>
+                activeVariant && onToggle(item.linkTo, activeVariant)
+              }
+            >
+              <ComparisonPickerRow name={item.name} selected />
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
 
 function ComparisonPickerSearchResults({
   groupedLists,
-  showTypeLabels,
+  showRowTypeLabels,
   isSearchPending,
   isSelected,
   isSelectionDisabled,
@@ -160,7 +164,7 @@ function ComparisonPickerSearchResults({
     translationKey: string;
     items: CombinedData[];
   }[];
-  showTypeLabels: boolean;
+  showRowTypeLabels: boolean;
   isSearchPending: boolean;
   isSelected: (linkTo: string) => boolean;
   isSelectionDisabled: (linkTo: string) => boolean;
@@ -174,50 +178,40 @@ function ComparisonPickerSearchResults({
 
   return (
     <>
-      {groupedLists.map(({ category, icon: Icon, translationKey, items }) => (
-        <div key={category} className="pt-2">
-          {showTypeLabels && (
-            <p className="flex items-center gap-2 pb-2 text-sm">
-              <Icon size={15} />
-              {t(translationKey)}
-            </p>
-          )}
-          {items.map((item) => {
-            const mapped = combinedDataToComparison(item);
-            const selected = mapped ? isSelected(mapped.linkTo) : false;
-            const disabled =
-              mapped !== null &&
-              !selected &&
-              isSelectionDisabled(mapped.linkTo);
+      {groupedLists.map(({ category, items }) =>
+        items.map((item) => {
+          const mapped = combinedDataToComparison(item);
+          const selected = mapped ? isSelected(mapped.linkTo) : false;
+          const disabled =
+            mapped !== null && !selected && isSelectionDisabled(mapped.linkTo);
 
-            return (
-              <CommandItem
-                key={`${category}-${item.id}`}
-                value={`${item.name}-${item.id}`}
-                disabled={disabled}
-                onSelect={() => onSelect(item)}
-                className="px-4 py-3"
-              >
-                <ComparisonPickerRow
-                  name={item.name}
-                  selected={selected}
-                  typeLabel={
-                    showTypeLabels
-                      ? t(
-                          item.category === "companies"
-                            ? "globalSearch.searchCategoryCompany"
-                            : item.category === "municipalities"
-                              ? "globalSearch.searchCategoryMunicipality"
-                              : "globalSearch.searchCategoryRegion",
-                        )
-                      : undefined
-                  }
-                />
-              </CommandItem>
-            );
-          })}
-        </div>
-      ))}
+          return (
+            <CommandItem
+              key={`${category}-${item.id}`}
+              value={`${item.name}-${item.id}`}
+              disabled={disabled}
+              onSelect={() => onSelect(item)}
+              className="px-4 py-2.5"
+            >
+              <ComparisonPickerRow
+                name={item.name}
+                selected={selected}
+                typeLabel={
+                  showRowTypeLabels
+                    ? t(
+                        item.category === "companies"
+                          ? "globalSearch.searchCategoryCompany"
+                          : item.category === "municipalities"
+                            ? "globalSearch.searchCategoryMunicipality"
+                            : "globalSearch.searchCategoryRegion",
+                      )
+                    : undefined
+                }
+              />
+            </CommandItem>
+          );
+        }),
+      )}
     </>
   );
 }
@@ -421,7 +415,7 @@ export function ComparisonPickerDialog({
   );
 
   const hasResults = groupedLists.some((group) => group.items.length > 0);
-  const showTypeLabels = !entityVariant;
+  const showRowTypeLabels = !entityVariant;
   const hasSearchQuery = inputValue.trim().length > 0;
   const isSearchPending = isSearching || isDebouncing || combinedLoading;
   const activeVariant = entityVariant ?? variant;
@@ -443,14 +437,14 @@ export function ComparisonPickerDialog({
         >
           <div
             className={cn(
-              "flex flex-col overflow-hidden border border-black-1 bg-black-2 shadow-lg",
+              "flex w-full flex-col overflow-hidden border border-black-1 bg-black-2 shadow-lg",
               sheetOnMobile
-                ? "h-[min(92vh,640px)] rounded-t-2xl md:m-4 md:h-auto md:max-h-[min(80vh,640px)] md:rounded-lg"
-                : "m-4 max-h-[min(80vh,640px)] rounded-lg",
+                ? "rounded-t-2xl md:m-4 md:rounded-lg"
+                : "m-4 rounded-lg",
             )}
           >
             <Command
-              className="flex min-h-0 flex-1 flex-col rounded-sm px-6 pt-2"
+              className="flex flex-col rounded-sm px-6 pt-1"
               shouldFilter={false}
             >
               <CommandInput
@@ -468,33 +462,37 @@ export function ComparisonPickerDialog({
                 activeVariant={activeVariant}
                 onToggle={handleToggle}
               />
-              <div className="flex h-10 shrink-0 items-center justify-center">
-                {hasSearchQuery && isSearchPending && (
-                  <p className="text-grey text-center text-sm">
-                    {t("explorePage.comparison.pickerLoading")}
-                  </p>
-                )}
-                {hasSearchQuery && !isSearchPending && !hasResults && (
-                  <p className="text-grey text-center text-sm">
-                    {t(pickerCopyKey("pickerEmpty", entityVariant))}
-                  </p>
-                )}
-              </div>
-              <CommandList
-                ref={commandListRef}
-                className="h-48 shrink-0 overflow-y-auto pt-2"
-              >
-                <ComparisonPickerSearchResults
-                  groupedLists={groupedLists}
-                  showTypeLabels={showTypeLabels}
-                  isSearchPending={isSearchPending}
-                  isSelected={isSelected}
-                  isSelectionDisabled={isSelectionDisabled}
-                  onSelect={handleSearchSelect}
-                />
-              </CommandList>
+              {hasSearchQuery && (
+                <CommandList
+                  ref={commandListRef}
+                  className={cn(
+                    PICKER_RESULT_LIST_HEIGHT,
+                    PICKER_DARK_SCROLLBAR,
+                    "shrink-0 overflow-y-auto",
+                  )}
+                >
+                  {isSearchPending ? (
+                    <p className="flex h-36 items-center justify-center text-sm text-grey">
+                      {t("explorePage.comparison.pickerLoading")}
+                    </p>
+                  ) : !hasResults ? (
+                    <p className="flex h-36 items-center justify-center text-sm text-grey">
+                      {t(pickerCopyKey("pickerEmpty", entityVariant))}
+                    </p>
+                  ) : (
+                    <ComparisonPickerSearchResults
+                      groupedLists={groupedLists}
+                      showRowTypeLabels={showRowTypeLabels}
+                      isSearchPending={isSearchPending}
+                      isSelected={isSelected}
+                      isSelectionDisabled={isSelectionDisabled}
+                      onSelect={handleSearchSelect}
+                    />
+                  )}
+                </CommandList>
+              )}
             </Command>
-            <div className="flex min-h-[4.5rem] shrink-0 flex-wrap items-center justify-between gap-3 border-t border-black-1 px-6 py-4">
+            <div className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-t border-black-1 px-6 py-3">
               <span className="text-grey text-sm">
                 {t("explorePage.comparison.selected", {
                   count: selectedCount,
