@@ -1937,6 +1937,7 @@
       "comparing": "Comparing {{count}} entities",
       "viewDetails": "View full details",
       "metric": "Metric",
+      "mobileScrollHint": "All entities are listed below each metric for easy comparison.",
       "sections": {
         "climateTarget": "Climate target",
         "emissions": "Emissions",

@@ -6,20 +6,28 @@ import type { ComparisonCellValue } from "@/hooks/explore/useComparisonMetrics";
 interface ComparisonCellProps {
   value: ComparisonCellValue;
   compact?: boolean;
+  align?: "start" | "end";
 }
 
 export function ComparisonCell({
   value,
   compact = false,
+  align = "start",
 }: ComparisonCellProps) {
   const showBadge = value.displayAsBadge;
 
   return (
-    <div className={cn(compact ? "" : "py-3 px-4")}>
+    <div
+      className={cn(
+        compact ? "" : "py-3 px-4",
+        align === "end" && "text-right",
+      )}
+    >
       <div
         className={cn(
           "font-light",
           compact ? "text-base" : "text-lg",
+          align === "end" && showBadge && "ml-auto",
           showBadge &&
             "inline-flex items-center rounded-full px-3 py-1 text-sm",
           showBadge &&

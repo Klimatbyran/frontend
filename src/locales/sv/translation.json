@@ -1995,6 +1995,7 @@
       "comparing": "Jämför {{count}} enheter",
       "viewDetails": "Visa all data",
       "metric": "Värde",
+      "mobileScrollHint": "Alla enheter listas under varje värde för enkel jämförelse.",
       "sections": {
         "climateTarget": "Klimatmål",
         "emissions": "Utsläpp",
