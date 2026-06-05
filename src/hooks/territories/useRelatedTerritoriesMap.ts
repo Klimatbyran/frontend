@@ -7,10 +7,7 @@ import {
   useMunicipalityKPIs,
   useMunicipalityKPIDefinitions,
 } from "@/hooks/municipalities/useMunicipalityKPIs";
-import {
-  useRegionalKPIs,
-  useRegionsKPIs,
-} from "@/hooks/regions/useRegionKPIs";
+import { useRegionalKPIs, useRegionsKPIs } from "@/hooks/regions/useRegionKPIs";
 import { DataItem, MapEntityType } from "@/types/rankings";
 import { createEntityClickHandler } from "@/utils/routing";
 import { filterGeoDataByNames } from "@/utils/geoUtils";
