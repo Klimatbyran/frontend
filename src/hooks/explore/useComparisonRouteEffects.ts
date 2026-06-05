@@ -1,10 +1,10 @@
 import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { useComparison } from "@/contexts/ComparisonContext";
-
-function isCompareRoute(pathname: string): boolean {
-  return pathname.includes("/explore/compare");
-}
+import {
+  clearComparisonReturnTo,
+  isCompareRoute,
+} from "@/utils/explore/comparisonUtils";
 
 /**
  * Clears comparison selection when navigating away from the dedicated compare page.
@@ -20,6 +20,7 @@ export function useComparisonRouteEffects() {
     const currentPath = location.pathname;
 
     if (isCompareRoute(previousPath) && !isCompareRoute(currentPath)) {
+      clearComparisonReturnTo();
       clearSelection();
     }
 

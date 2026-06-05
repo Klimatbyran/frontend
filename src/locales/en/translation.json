@@ -1937,6 +1937,7 @@
       "clearSelection": "Clear selection",
       "viewComparison": "View comparison",
       "backToList": "Back to list",
+      "backToPrevious": "Go back",
       "title": "Side-by-side comparison",
       "comparing": "Comparing {{count}} entities",
       "viewDetails": "View full details",

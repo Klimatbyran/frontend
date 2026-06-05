@@ -7,9 +7,16 @@ import { ComparisonTable } from "./ComparisonTable";
 interface ComparisonViewProps {
   items: ListCardProps[];
   onBack: () => void;
+  backLabelKey?:
+    | "explorePage.comparison.backToList"
+    | "explorePage.comparison.backToPrevious";
 }
 
-export function ComparisonView({ items, onBack }: ComparisonViewProps) {
+export function ComparisonView({
+  items,
+  onBack,
+  backLabelKey = "explorePage.comparison.backToList",
+}: ComparisonViewProps) {
   const { t } = useTranslation();
 
   return (
@@ -17,7 +24,7 @@ export function ComparisonView({ items, onBack }: ComparisonViewProps) {
       <div className="flex flex-wrap items-center gap-4 mb-6">
         <Button variant="outline" size="sm" onClick={onBack}>
           <ArrowLeft className="w-4 h-4 mr-2" />
-          {t("explorePage.comparison.backToList")}
+          {t(backLabelKey)}
         </Button>
         <div>
           <h2 className="text-xl md:text-2xl font-light">

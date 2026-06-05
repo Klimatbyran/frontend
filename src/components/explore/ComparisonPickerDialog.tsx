@@ -1,10 +1,8 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { useLanguage } from "@/components/LanguageProvider";
-import { localizedPath } from "@/utils/routing";
+import { useNavigateToComparison } from "@/hooks/explore/useNavigateToComparison";
 import { CombinedData } from "@/hooks/useCombinedData";
 import { useComparison } from "@/contexts/ComparisonContext";
 import { Command, CommandInput, CommandList } from "@/components/ui/command";
@@ -39,8 +37,7 @@ export function ComparisonPickerDialog({
   clearOnClose = false,
 }: ComparisonPickerDialogProps) {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  const { currentLanguage } = useLanguage();
+  const navigateToComparisonPage = useNavigateToComparison();
   const [inputValue, setInputValue] = useState("");
   const commandListRef = useRef<HTMLDivElement | null>(null);
 
@@ -176,7 +173,7 @@ export function ComparisonPickerDialog({
               onDone={() => handleOpenChange(false)}
               onViewComparison={() => {
                 navigateToComparison();
-                navigate(localizedPath(currentLanguage, "/explore/compare"));
+                navigateToComparisonPage();
               }}
             />
           </div>

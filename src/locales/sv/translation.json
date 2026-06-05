@@ -1995,6 +1995,7 @@
       "clearSelection": "Rensa val",
       "viewComparison": "Visa jämförelse",
       "backToList": "Tillbaka till listan",
+      "backToPrevious": "Gå tillbaka",
       "title": "Jämförelse sida vid sida",
       "comparing": "Jämför {{count}} enheter",
       "viewDetails": "Visa all data",

@@ -11,6 +11,58 @@ export type ComparisonEntityCategory = Extract<
 export const COMPARISON_MIN = 2;
 export const COMPARISON_MAX = 4;
 
+const COMPARISON_RETURN_TO_KEY = "klimatkollen-comparison-return-to";
+
+export function isCompareRoute(pathname: string): boolean {
+  return pathname.includes("/explore/compare");
+}
+
+export function buildComparisonReturnTo({
+  pathname,
+  search = "",
+  hash = "",
+}: {
+  pathname: string;
+  search?: string;
+  hash?: string;
+}): string {
+  return `${pathname}${search}${hash}`;
+}
+
+export function setComparisonReturnTo(path: string) {
+  if (typeof window === "undefined" || isCompareRoute(path)) {
+    return;
+  }
+
+  sessionStorage.setItem(COMPARISON_RETURN_TO_KEY, path);
+}
+
+export function getComparisonReturnTo(): string | null {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  try {
+    const path = sessionStorage.getItem(COMPARISON_RETURN_TO_KEY);
+    return path && !isCompareRoute(path) ? path : null;
+  } catch {
+    return null;
+  }
+}
+
+export function clearComparisonReturnTo() {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  sessionStorage.removeItem(COMPARISON_RETURN_TO_KEY);
+}
+
+/** True when return path points at an entity detail page (not explore list). */
+export function isComparisonDetailReturnPath(path: string): boolean {
+  return /\/(companies|municipalities|regions)\/[^/?#]+/.test(path);
+}
+
 const EXPLORE_PATHS: Record<ComparisonEntityVariant, string> = {
   company: "/explore/companies",
   municipality: "/explore/municipalities",

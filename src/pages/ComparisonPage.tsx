@@ -1,31 +1,16 @@
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import { useComparison } from "@/contexts/ComparisonContext";
 import { useComparisonItems } from "@/hooks/explore/useComparisonItems";
+import { useComparisonBackNavigation } from "@/hooks/explore/useComparisonBackNavigation";
 import { ComparisonView } from "@/components/explore/ComparisonView";
 import { PageLoading } from "@/components/pageStates/Loading";
-import { useLanguage } from "@/components/LanguageProvider";
-import { localizedPath } from "@/utils/routing";
-import {
-  COMPARISON_MIN,
-  getExplorePath,
-} from "@/utils/explore/comparisonUtils";
+import { COMPARISON_MIN } from "@/utils/explore/comparisonUtils";
 
 export function ComparisonPage() {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  const { currentLanguage } = useLanguage();
-  const { variant, selectedCount, clearSelection } = useComparison();
+  const { selectedCount } = useComparison();
   const { items, loading } = useComparisonItems();
-
-  const handleBack = () => {
-    clearSelection();
-    if (variant) {
-      navigate(localizedPath(currentLanguage, getExplorePath(variant)));
-      return;
-    }
-    navigate(localizedPath(currentLanguage, "/explore/municipalities"));
-  };
+  const { handleBack, backLabelKey } = useComparisonBackNavigation();
 
   if (loading) {
     return <PageLoading />;
@@ -45,16 +30,19 @@ export function ComparisonPage() {
         <button
           type="button"
           className="mt-6 text-blue-2 hover:underline"
-          onClick={() => {
-            clearSelection();
-            handleBack();
-          }}
+          onClick={handleBack}
         >
-          {t("explorePage.comparison.backToList")}
+          {t(backLabelKey)}
         </button>
       </div>
     );
   }
 
-  return <ComparisonView items={items} onBack={handleBack} />;
+  return (
+    <ComparisonView
+      items={items}
+      onBack={handleBack}
+      backLabelKey={backLabelKey}
+    />
+  );
 }

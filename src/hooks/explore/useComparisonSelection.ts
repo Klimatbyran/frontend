@@ -1,8 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useComparison } from "@/contexts/ComparisonContext";
-import { useLanguage } from "@/components/LanguageProvider";
-import { localizedPath } from "@/utils/routing";
+import { useNavigateToComparison } from "@/hooks/explore/useNavigateToComparison";
 import type { ListCardProps } from "@/components/explore/ListCard";
 
 export {
@@ -18,8 +16,7 @@ export {
  */
 export function useComparisonSelection(items: ListCardProps[] = []) {
   const comparison = useComparison();
-  const navigate = useNavigate();
-  const { currentLanguage } = useLanguage();
+  const navigateToComparison = useNavigateToComparison();
   const { variant, clearSelection } = comparison;
   const [isCompareMode, setIsCompareMode] = useState(false);
 
@@ -75,9 +72,9 @@ export function useComparisonSelection(items: ListCardProps[] = []) {
 
   const viewComparison = useCallback(() => {
     if (comparison.canViewComparison) {
-      navigate(localizedPath(currentLanguage, "/explore/compare"));
+      navigateToComparison();
     }
-  }, [comparison.canViewComparison, currentLanguage, navigate]);
+  }, [comparison.canViewComparison, navigateToComparison]);
 
   return {
     isCompareMode,
