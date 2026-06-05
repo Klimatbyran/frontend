@@ -13,7 +13,6 @@ export function DetailTerritoryMap({
 }: DetailTerritoryMapProps) {
   return (
     <TerritoryMap
-      scrollWheelZoom={false}
       fitBounds
       showTooltip={false}
       legendPosition="bottom-left"
