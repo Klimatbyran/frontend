@@ -6,24 +6,21 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import type { ComparisonEntityVariant } from "@/utils/explore/comparisonUtils";
 import {
-  COMPARISON_MAX,
-  COMPARISON_MIN,
-  isSameComparisonLink,
-  type ComparisonEntityVariant,
-} from "@/utils/explore/comparisonUtils";
+  canAddComparisonVariant,
+  canViewComparisonSelection,
+  EMPTY_COMPARISON_SELECTION,
+  isComparisonSelected,
+  isComparisonSelectionDisabled,
+  toggleComparisonSelection,
+  type ComparisonSelectionState,
+} from "@/utils/explore/comparisonSelection";
 
 const STORAGE_KEY = "klimatkollen-comparison";
 
-interface StoredComparison {
-  selectedIds: string[];
-  variant: ComparisonEntityVariant | null;
-}
-
 interface ComparisonContextValue {
-  selectedIds: Set<string>;
-  /** Selection order as chosen by the user (oldest first). */
-  selectedIdOrder: string[];
+  selectedIds: string[];
   variant: ComparisonEntityVariant | null;
   selectedCount: number;
   canViewComparison: boolean;
@@ -39,113 +36,82 @@ interface ComparisonContextValue {
 
 const ComparisonContext = createContext<ComparisonContextValue | null>(null);
 
-function loadStored(): StoredComparison {
+function loadStored(): ComparisonSelectionState {
   if (typeof window === "undefined") {
-    return { selectedIds: [], variant: null };
+    return EMPTY_COMPARISON_SELECTION;
   }
 
   try {
     const raw = sessionStorage.getItem(STORAGE_KEY);
     if (!raw) {
-      return { selectedIds: [], variant: null };
+      return EMPTY_COMPARISON_SELECTION;
     }
-    const parsed = JSON.parse(raw) as StoredComparison;
+    const parsed = JSON.parse(raw) as ComparisonSelectionState;
     return {
       selectedIds: Array.isArray(parsed.selectedIds) ? parsed.selectedIds : [],
       variant: parsed.variant ?? null,
     };
   } catch {
-    return { selectedIds: [], variant: null };
+    return EMPTY_COMPARISON_SELECTION;
   }
 }
 
-function persistStored(
-  selectedIds: Set<string>,
-  variant: ComparisonEntityVariant | null,
-) {
+function persistStored(state: ComparisonSelectionState) {
   if (typeof window === "undefined") {
     return;
   }
 
-  const payload: StoredComparison = {
-    selectedIds: [...selectedIds],
-    variant,
-  };
-  sessionStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+  sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
 
 export function ComparisonProvider({ children }: { children: ReactNode }) {
   const [stored, setStored] = useState(loadStored);
 
-  const selectedIds = useMemo(
-    () => new Set(stored.selectedIds),
-    [stored.selectedIds],
-  );
-
-  const updateStored = useCallback(
-    (nextIds: Set<string>, nextVariant: ComparisonEntityVariant | null) => {
-      const payload = {
-        selectedIds: [...nextIds],
-        variant: nextVariant,
-      };
-      setStored(payload);
-      persistStored(nextIds, nextVariant);
-    },
-    [],
-  );
+  const updateStored = useCallback((nextState: ComparisonSelectionState) => {
+    setStored(nextState);
+    persistStored(nextState);
+  }, []);
 
   const clearSelection = useCallback(() => {
-    updateStored(new Set(), null);
+    updateStored(EMPTY_COMPARISON_SELECTION);
   }, [updateStored]);
 
   const canAddVariant = useCallback(
-    (entityVariant: ComparisonEntityVariant) => {
-      return stored.variant === null || stored.variant === entityVariant;
-    },
-    [stored.variant],
+    (entityVariant: ComparisonEntityVariant) =>
+      canAddComparisonVariant(stored, entityVariant),
+    [stored],
   );
 
   const toggleSelection = useCallback(
     (linkTo: string, entityVariant: ComparisonEntityVariant) => {
-      const existing = stored.selectedIds.find((id) =>
-        isSameComparisonLink(id, linkTo),
+      const nextState = toggleComparisonSelection(
+        stored,
+        linkTo,
+        entityVariant,
       );
-
-      if (existing) {
-        const nextOrder = stored.selectedIds.filter((id) => id !== existing);
-        updateStored(new Set(nextOrder), nextOrder.length === 0 ? null : stored.variant);
-        return;
+      if (nextState) {
+        updateStored(nextState);
       }
-
-      if (!canAddVariant(entityVariant) || stored.selectedIds.length >= COMPARISON_MAX) {
-        return;
-      }
-
-      const nextOrder = [...stored.selectedIds, linkTo];
-      updateStored(new Set(nextOrder), entityVariant);
     },
-    [canAddVariant, stored.selectedIds, stored.variant, updateStored],
+    [stored, updateStored],
   );
 
   const isSelected = useCallback(
-    (linkTo: string) =>
-      [...selectedIds].some((id) => isSameComparisonLink(id, linkTo)),
-    [selectedIds],
+    (linkTo: string) => isComparisonSelected(stored, linkTo),
+    [stored],
   );
 
   const isSelectionDisabled = useCallback(
-    (linkTo: string) =>
-      selectedIds.size >= COMPARISON_MAX && !isSelected(linkTo),
-    [isSelected, selectedIds.size],
+    (linkTo: string) => isComparisonSelectionDisabled(stored, linkTo),
+    [stored],
   );
 
   const value = useMemo(
     (): ComparisonContextValue => ({
-      selectedIds,
-      selectedIdOrder: stored.selectedIds,
+      selectedIds: stored.selectedIds,
       variant: stored.variant,
-      selectedCount: selectedIds.size,
-      canViewComparison: selectedIds.size >= COMPARISON_MIN,
+      selectedCount: stored.selectedIds.length,
+      canViewComparison: canViewComparisonSelection(stored),
       toggleSelection,
       isSelected,
       isSelectionDisabled,
@@ -157,9 +123,7 @@ export function ComparisonProvider({ children }: { children: ReactNode }) {
       clearSelection,
       isSelected,
       isSelectionDisabled,
-      selectedIds,
-      stored.selectedIds,
-      stored.variant,
+      stored,
       toggleSelection,
     ],
   );

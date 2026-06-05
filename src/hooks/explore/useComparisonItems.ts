@@ -22,7 +22,7 @@ import {
 } from "@/utils/explore/comparisonUtils";
 
 export function useComparisonItems() {
-  const { selectedIdOrder, variant, selectedCount } = useComparison();
+  const { selectedIds, variant, selectedCount } = useComparison();
   const hasSelection = selectedCount > 0 && variant !== null;
   const loadCompanies = hasSelection && variant === "company";
   const loadMunicipalities = hasSelection && variant === "municipality";
@@ -63,7 +63,7 @@ export function useComparisonItems() {
           ? allMunicipalityCards
           : allRegionCards;
 
-    const selectedCards = orderSelectedCards(source, selectedIdOrder);
+    const selectedCards = orderSelectedCards(source, selectedIds);
 
     if (variant === "municipality") {
       return selectedCards.map((card) => {
@@ -115,7 +115,7 @@ export function useComparisonItems() {
     isAIGenerated,
     municipalities,
     regions,
-    selectedIdOrder,
+    selectedIds,
     t,
     variant,
   ]);

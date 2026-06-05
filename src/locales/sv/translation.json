@@ -1988,8 +1988,6 @@
       "compare": "Jämför",
       "compareModeActive": "Jämför aktivt",
       "chipAriaWithCount": "Jämförelse: {{count}} av {{max}} valda",
-      "addedToastTitle": "Tillagd i jämförelse",
-      "addedToastMessage": "{{name}} tillagd ({{count}}/{{max}})",
       "toggleMode": "Växla jämförelseläge",
       "selected": "{{count}} valda ({{min}}–{{max}})",
       "clearSelection": "Rensa val",
@@ -2034,7 +2032,6 @@
         "region": "Inga län hittades"
       },
       "pickerSelectedHeading": "Valda ({{count}}/{{max}})",
-      "pickerNoSelection": "Sök nedan för att lägga till enheter att jämföra.",
       "sections": {
         "climateTarget": "Klimatmål",
         "emissions": "Utsläpp",

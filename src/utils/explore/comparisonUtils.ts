@@ -105,9 +105,9 @@ export function entityMatchesSelection(
 /** Returns cards in the order entities were selected. */
 export function orderSelectedCards(
   cards: ListCardProps[],
-  selectedIdOrder: string[],
+  selectedIds: string[],
 ): ListCardProps[] {
-  return selectedIdOrder
+  return selectedIds
     .map((selectedId) =>
       cards.find((card) => isSameComparisonLink(card.linkTo, selectedId)),
     )

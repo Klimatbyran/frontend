@@ -1930,8 +1930,6 @@
       "compare": "Compare",
       "compareModeActive": "Comparing",
       "chipAriaWithCount": "Comparison: {{count}} of {{max}} selected",
-      "addedToastTitle": "Added to comparison",
-      "addedToastMessage": "{{name}} added ({{count}}/{{max}})",
       "toggleMode": "Toggle comparison mode",
       "selected": "{{count}} selected ({{min}}–{{max}})",
       "clearSelection": "Clear selection",
@@ -1976,7 +1974,6 @@
         "region": "No regions found"
       },
       "pickerSelectedHeading": "Selected ({{count}}/{{max}})",
-      "pickerNoSelection": "Search below to add entities to compare.",
       "sections": {
         "climateTarget": "Climate target",
         "emissions": "Emissions",
