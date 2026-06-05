@@ -42,7 +42,9 @@ export function useComparisonSelection(items: ListCardProps[] = []) {
 
   const backToList = useCallback(() => {
     setShowComparison(false);
-  }, []);
+    setIsCompareMode(false);
+    comparison.clearSelection();
+  }, [comparison]);
 
   return {
     isCompareMode,

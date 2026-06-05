@@ -27,10 +27,13 @@ export function ExploreEntityList({
 
   return (
     <>
-      <ListFilter
-        {...filterProps}
-        comparisonControls={<ComparisonControls comparison={comparison} />}
-      />
+      {!comparison.showComparison && (
+        <ListFilter
+          {...filterProps}
+          hideListControls={comparison.isCompareMode}
+          comparisonControls={<ComparisonControls comparison={comparison} />}
+        />
+      )}
       {comparison.showComparison ? (
         <ComparisonView items={selectedItems} onBack={comparison.backToList} />
       ) : (
