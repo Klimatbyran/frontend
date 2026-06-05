@@ -1986,6 +1986,7 @@
     "description": "Utforska och jämför utsläppsdata och klimatmål för företag och kommuner.",
     "comparison": {
       "compare": "Jämför",
+      "compareModeActive": "Jämför aktivt",
       "toggleMode": "Växla jämförelseläge",
       "selected": "{{count}} valda ({{min}}–{{max}})",
       "clearSelection": "Rensa val",

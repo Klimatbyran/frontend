@@ -1928,6 +1928,7 @@
     "description": "Explore and compare emissions data and climate targets for companies and municipalities.",
     "comparison": {
       "compare": "Compare",
+      "compareModeActive": "Comparing",
       "toggleMode": "Toggle comparison mode",
       "selected": "{{count}} selected ({{min}}–{{max}})",
       "clearSelection": "Clear selection",

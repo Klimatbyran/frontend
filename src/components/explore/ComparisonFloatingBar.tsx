@@ -24,10 +24,7 @@ export function ComparisonFloatingBar() {
   const detailEntity = useComparisonDetailEntity();
   const addEntityVariant = detailEntity?.variant ?? variant;
 
-  if (
-    location.pathname.includes("/explore/compare") ||
-    (!detailEntity && selectedCount === 0)
-  ) {
+  if (location.pathname.includes("/explore/compare") || !detailEntity) {
     return null;
   }
 

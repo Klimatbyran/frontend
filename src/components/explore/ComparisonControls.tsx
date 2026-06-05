@@ -36,9 +36,16 @@ export function ComparisonControls({ comparison }: ComparisonControlsProps) {
         pressed={isCompareMode}
         onClick={toggleCompareMode}
         aria-label={t("explorePage.comparison.toggleMode")}
+        aria-pressed={isCompareMode}
+        className={cn(
+          isCompareMode &&
+            "border-blue-2 bg-blue-5 text-white hover:bg-blue-6 data-[state=on]:bg-blue-5 data-[state=on]:text-white",
+        )}
       >
         <GitCompareArrows className="w-4 h-4 mr-2" />
-        {t("explorePage.comparison.compare")}
+        {isCompareMode
+          ? t("explorePage.comparison.compareModeActive")
+          : t("explorePage.comparison.compare")}
       </Toggle>
 
       {isCompareMode && (

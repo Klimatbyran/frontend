@@ -17,6 +17,17 @@ export function useComparisonSelection(items: ListCardProps[] = []) {
   const entityVariant = listVariant;
 
   useEffect(() => {
+    if (
+      comparison.selectedCount > 0 &&
+      listVariant &&
+      variant === listVariant &&
+      !isCompareMode
+    ) {
+      setIsCompareMode(true);
+    }
+  }, [comparison.selectedCount, isCompareMode, listVariant, variant]);
+
+  useEffect(() => {
     if (listVariant && variant && variant !== listVariant) {
       setShowComparison(false);
       setIsCompareMode(false);
