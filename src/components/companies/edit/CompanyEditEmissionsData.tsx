@@ -11,6 +11,7 @@ import { CompanyEditScope3 } from "./CompanyEditScope3";
 import { CompanyEditTurnover } from "./CompanyEditTurnover";
 import { CompanyEditEmployees } from "./CompanyEditEmployees";
 import { mapCompanyEditFormToRequestBody } from "@/lib/company/company-edit";
+import { stripNumberFormatting } from "@/utils/ui/numberFormat";
 import { updateReportingPeriods } from "@/lib/api";
 import { useToast } from "@/contexts/ToastContext";
 
@@ -74,7 +75,10 @@ export function CompanyEditEmissionsData({
         }
       } else {
         if (input.value !== input.defaultValue) {
-          nextFormData.set(input.name, input.value);
+          const value = input.hasAttribute("data-formatted-number")
+            ? stripNumberFormatting(input.value)
+            : input.value;
+          nextFormData.set(input.name, value);
         }
       }
     }
