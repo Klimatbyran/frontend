@@ -19,6 +19,7 @@ export function ComparisonPage() {
   const { items, loading } = useComparisonItems();
 
   const handleBack = () => {
+    clearSelection();
     if (variant) {
       navigate(localizedPath(currentLanguage, getExplorePath(variant)));
       return;

@@ -4,12 +4,19 @@ import { ToastProvider } from "./contexts/ToastContext";
 import { ComparisonProvider } from "./contexts/ComparisonContext";
 import { ComparisonDetailEntityRegistry } from "./contexts/ComparisonDetailEntityContext";
 import { ComparisonFloatingBar } from "./components/explore/ComparisonFloatingBar";
+import { useComparisonRouteEffects } from "./hooks/explore/useComparisonRouteEffects";
 import { AppRoutes } from "./routes";
+
+function ComparisonRouteEffects() {
+  useComparisonRouteEffects();
+  return null;
+}
 
 function App() {
   return (
     <ToastProvider>
       <ComparisonProvider>
+        <ComparisonRouteEffects />
         <ComparisonDetailEntityRegistry>
           <Suspense fallback={<PageLoading />}>
             <AppRoutes />

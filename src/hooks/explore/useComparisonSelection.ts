@@ -58,6 +58,14 @@ export function useComparisonSelection(items: ListCardProps[] = []) {
     comparison.clearSelection();
   }, [comparison]);
 
+  useEffect(() => {
+    return () => {
+      if (showComparison) {
+        clearSelection();
+      }
+    };
+  }, [clearSelection, showComparison]);
+
   return {
     isCompareMode,
     showComparison,
