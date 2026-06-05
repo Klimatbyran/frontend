@@ -41,12 +41,12 @@ export function MapLegend({
       className={cn(
         "absolute bg-black/60 backdrop-blur-sm p-2 md:p-4 rounded-2xl",
         position === "bottom-left"
-          ? "bottom-2 left-2 right-auto md:bottom-4 md:left-4"
+          ? "bottom-2 left-2 right-2 md:bottom-4 md:left-4 md:right-auto"
           : "bottom-2 right-2 left-2 md:bottom-4 md:right-4 md:left-auto",
       )}
     >
       <div className="flex flex-col md:flex-row items-start md:items-center space-y-2 md:space-y-0 w-full md:w-auto">
-        <div className="flex items-center w-full md:w-auto gap-2">
+        <div className="flex items-center w-full min-w-0 gap-2 md:w-auto">
           {selectedKPI.isBoolean ? (
             <>
               {booleanItem(
@@ -60,11 +60,11 @@ export function MapLegend({
             </>
           ) : (
             <>
-              <span className="text-gray-500 text-xs mr-2">
+              <span className="shrink-0 text-gray-500 text-xs mr-2">
                 {leftValue.toFixed(1)}
                 {unit}
               </span>
-              <div className="relative flex-1 md:w-[160px] h-[20px]">
+              <div className="relative min-w-0 flex-1 md:w-[160px] h-[20px]">
                 <div
                   className="absolute inset-0 rounded-full"
                   style={{
@@ -77,7 +77,7 @@ export function MapLegend({
                   }}
                 />
               </div>
-              <span className="text-gray-500 text-xs ml-2">
+              <span className="shrink-0 text-gray-500 text-xs ml-2">
                 {rightValue.toFixed(1)}
                 {unit}
               </span>
