@@ -26,7 +26,7 @@ export function ComparisonPickerFooter({
       onDone={onDone}
       onViewComparison={onViewComparison}
       showClear={showViewComparison}
-      showDone
+      showDone={!showViewComparison}
       showViewComparison={showViewComparison}
     />
   );
