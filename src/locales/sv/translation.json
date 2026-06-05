@@ -2002,6 +2002,32 @@
       "variantMismatchMessage": "Du kan bara jämföra kommuner, län eller företag av samma typ. Rensa ditt val för att börja om.",
       "notEnoughSelected": "Välj fler enheter att jämföra",
       "notEnoughSelectedDescription": "Välj minst {{min}} enheter för att öppna jämförelsevyn.",
+      "addEntity": {
+        "default": "Lägg till enheter",
+        "company": "Lägg till företag",
+        "municipality": "Lägg till kommun",
+        "region": "Lägg till län"
+      },
+      "pickerTitle": {
+        "default": "Lägg till i jämförelse",
+        "company": "Lägg till företag i jämförelse",
+        "municipality": "Lägg till kommun i jämförelse",
+        "region": "Lägg till län i jämförelse"
+      },
+      "pickerDescription": {
+        "default": "{{count}} av {{max}} valda — sök och tryck för att lägga till eller ta bort.",
+        "company": "{{count}} av {{max}} företag valda — sök och tryck för att lägga till eller ta bort.",
+        "municipality": "{{count}} av {{max}} kommuner valda — sök och tryck för att lägga till eller ta bort.",
+        "region": "{{count}} av {{max}} län valda — sök och tryck för att lägga till eller ta bort."
+      },
+      "pickerPlaceholder": {
+        "default": "Sök kommuner, län eller företag",
+        "company": "Sök företag",
+        "municipality": "Sök kommuner",
+        "region": "Sök län"
+      },
+      "pickerDone": "Klar",
+      "pickerSelectedHeading": "Valda ({{count}}/{{max}})",
       "sections": {
         "climateTarget": "Klimatmål",
         "emissions": "Utsläpp",

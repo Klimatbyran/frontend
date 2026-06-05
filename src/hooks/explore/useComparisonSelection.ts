@@ -12,7 +12,7 @@ export function useComparisonSelection(items: ListCardProps[] = []) {
   const [isCompareMode, setIsCompareMode] = useState(false);
   const [showComparison, setShowComparison] = useState(false);
 
-  const variant = items[0]?.variant ?? comparison.variant ?? "company";
+  const entityVariant = comparison.variant ?? items[0]?.variant ?? null;
 
   const toggleCompareMode = useCallback(() => {
     setIsCompareMode((prev) => {
@@ -26,9 +26,12 @@ export function useComparisonSelection(items: ListCardProps[] = []) {
 
   const toggleSelection = useCallback(
     (linkTo: string) => {
-      comparison.toggleSelection(linkTo, variant);
+      if (!entityVariant) {
+        return;
+      }
+      comparison.toggleSelection(linkTo, entityVariant);
     },
-    [comparison, variant],
+    [comparison, entityVariant],
   );
 
   const viewComparison = useCallback(() => {
@@ -54,6 +57,7 @@ export function useComparisonSelection(items: ListCardProps[] = []) {
     viewComparison,
     backToList,
     clearSelection: comparison.clearSelection,
+    entityVariant,
   };
 }
 

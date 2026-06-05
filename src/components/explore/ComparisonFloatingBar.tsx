@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import { GitCompareArrows } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ComparisonAddButton } from "./ComparisonAddButton";
 import { useComparison } from "@/contexts/ComparisonContext";
 import { useLanguage } from "@/components/LanguageProvider";
 import { localizedPath } from "@/utils/routing";
@@ -17,9 +18,8 @@ export function ComparisonFloatingBar() {
   const { currentLanguage } = useLanguage();
   const { selectedCount, canViewComparison, clearSelection } = useComparison();
 
-  const isExploreListPage = /\/explore\/(municipalities|regions|companies)\/?$/.test(
-    location.pathname,
-  );
+  const isExploreListPage =
+    /\/explore\/(municipalities|regions|companies)\/?$/.test(location.pathname);
 
   if (
     selectedCount === 0 ||
@@ -43,6 +43,7 @@ export function ComparisonFloatingBar() {
           </span>
         </div>
         <div className="flex flex-wrap items-center gap-2">
+          <ComparisonAddButton />
           <Button variant="ghost" size="sm" onClick={clearSelection}>
             {t("explorePage.comparison.clearSelection")}
           </Button>

@@ -13,17 +13,16 @@ function filterSelectedCards(
   cards: ListCardProps[],
   selectedIds: Set<string>,
 ): ListCardProps[] {
-  return cards.filter((card) => entityMatchesSelection(card.linkTo, selectedIds));
+  return cards.filter((card) =>
+    entityMatchesSelection(card.linkTo, selectedIds),
+  );
 }
 
 export function useComparisonItems() {
   const { selectedIds, variant, selectedCount } = useComparison();
   const { companies, companiesLoading } = useCompanies();
   const { municipalities, municipalitiesLoading } = useMunicipalities();
-  const {
-    regions,
-    loading: regionsLoading,
-  } = useRegionsForExplore();
+  const { regions, loading: regionsLoading } = useRegionsForExplore();
 
   const allCompanyCards = useTransformCompanyListCard({
     filteredCompanies: companies ?? [],

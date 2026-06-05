@@ -1,6 +1,12 @@
+import type { CombinedData } from "@/hooks/useCombinedData";
 import type { ListCardProps } from "@/components/explore/ListCard";
 
 export type ComparisonEntityVariant = NonNullable<ListCardProps["variant"]>;
+
+export type ComparisonEntityCategory = Extract<
+  CombinedData["category"],
+  "companies" | "municipalities" | "regions"
+>;
 
 export const COMPARISON_MIN = 2;
 export const COMPARISON_MAX = 4;
@@ -42,4 +48,40 @@ export function entityMatchesSelection(
     }
   }
   return false;
+}
+
+export function categoryToVariant(
+  category: CombinedData["category"],
+): ComparisonEntityVariant | null {
+  if (category === "companies") return "company";
+  if (category === "municipalities") return "municipality";
+  if (category === "regions") return "region";
+  return null;
+}
+
+export function variantToCategory(
+  variant: ComparisonEntityVariant,
+): ComparisonEntityCategory {
+  if (variant === "company") return "companies";
+  if (variant === "municipality") return "municipalities";
+  return "regions";
+}
+
+export function combinedDataToComparison(item: CombinedData): {
+  linkTo: string;
+  variant: ComparisonEntityVariant;
+} | null {
+  const variant = categoryToVariant(item.category);
+  if (!variant) {
+    return null;
+  }
+
+  return {
+    linkTo: buildComparisonLinkTo(variant, item.id),
+    variant,
+  };
+}
+
+export function isComparableSearchResult(item: CombinedData): boolean {
+  return categoryToVariant(item.category) !== null;
 }

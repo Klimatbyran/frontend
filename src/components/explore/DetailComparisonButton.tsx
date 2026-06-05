@@ -16,12 +16,8 @@ export function DetailComparisonButton({
 }: DetailComparisonButtonProps) {
   const { t } = useTranslation();
   const { showToast } = useToast();
-  const {
-    isSelected,
-    isSelectionDisabled,
-    toggleSelection,
-    canAddVariant,
-  } = useComparison();
+  const { isSelected, isSelectionDisabled, toggleSelection, canAddVariant } =
+    useComparison();
 
   const selected = isSelected(linkTo);
   const disabled = !selected && isSelectionDisabled(linkTo);

@@ -25,7 +25,10 @@ interface ComparisonContextValue {
   variant: ComparisonEntityVariant | null;
   selectedCount: number;
   canViewComparison: boolean;
-  toggleSelection: (linkTo: string, entityVariant: ComparisonEntityVariant) => void;
+  toggleSelection: (
+    linkTo: string,
+    entityVariant: ComparisonEntityVariant,
+  ) => void;
   isSelected: (linkTo: string) => boolean;
   isSelectionDisabled: (linkTo: string) => boolean;
   clearSelection: () => void;
@@ -54,7 +57,10 @@ function loadStored(): StoredComparison {
   }
 }
 
-function persistStored(selectedIds: Set<string>, variant: ComparisonEntityVariant | null) {
+function persistStored(
+  selectedIds: Set<string>,
+  variant: ComparisonEntityVariant | null,
+) {
   if (typeof window === "undefined") {
     return;
   }
@@ -69,7 +75,10 @@ function persistStored(selectedIds: Set<string>, variant: ComparisonEntityVarian
 export function ComparisonProvider({ children }: { children: ReactNode }) {
   const [stored, setStored] = useState(loadStored);
 
-  const selectedIds = useMemo(() => new Set(stored.selectedIds), [stored.selectedIds]);
+  const selectedIds = useMemo(
+    () => new Set(stored.selectedIds),
+    [stored.selectedIds],
+  );
 
   const updateStored = useCallback(
     (nextIds: Set<string>, nextVariant: ComparisonEntityVariant | null) => {
