@@ -34,22 +34,24 @@ export function DetailComparisonButton({
     toggleSelection(linkTo, variant);
   };
 
+  const label = selected
+    ? t("explorePage.comparison.addedToComparison")
+    : t("explorePage.comparison.compare");
+
   return (
     <Button
       variant={selected ? "default" : "outline"}
       size="sm"
       disabled={disabled}
       onClick={handleClick}
-      className="gap-2 shrink-0"
+      className="h-8 w-fit shrink-0 gap-1.5 px-2.5 text-xs sm:px-3 sm:text-sm"
     >
       {selected ? (
-        <Check className="w-4 h-4" />
+        <Check className="h-3.5 w-3.5 shrink-0" />
       ) : (
-        <GitCompareArrows className="w-4 h-4" />
+        <GitCompareArrows className="h-3.5 w-3.5 shrink-0" />
       )}
-      {selected
-        ? t("explorePage.comparison.addedToComparison")
-        : t("explorePage.comparison.compare")}
+      <span className="whitespace-nowrap">{label}</span>
     </Button>
   );
 }

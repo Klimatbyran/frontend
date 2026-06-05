@@ -1,3 +1,4 @@
+import { type ReactNode } from "react";
 import { Text } from "@/components/ui/text";
 import { OverviewStat } from "@/components/companies/detail/overview/OverviewStat";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
@@ -24,6 +25,7 @@ export interface DetailHeaderProps {
   translateNamespace: string;
   politicalRuleLabelKey?: string;
   politicalXSOLabelKey?: string;
+  headerActions?: ReactNode;
 }
 
 export function DetailHeader({
@@ -37,12 +39,16 @@ export function DetailHeader({
   translateNamespace,
   politicalRuleLabelKey = "politicalRule",
   politicalXSOLabelKey, // XSO = KSO or RSO hence the X
+  headerActions,
 }: DetailHeaderProps) {
   return (
     <SectionWithHelp helpItems={helpItems}>
-      <div className="flex justify-between gap-4 items-start">
-        <div className="flex flex-col min-w-0">
-          <Text className="text-4xl md:text-8xl">{name}</Text>
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex min-w-0 flex-1 flex-col gap-2 md:gap-3">
+          <div className="flex flex-col gap-2 md:flex-row md:flex-wrap md:items-center md:gap-3">
+            <Text className="text-4xl md:text-8xl">{name}</Text>
+            {headerActions}
+          </div>
           {subtitle && (
             <Text className="text-grey text-sm md:text-base lg:text-lg">
               {subtitle}

@@ -5,6 +5,7 @@ import { PageLoading } from "@/components/pageStates/Loading";
 import { PageError } from "@/components/pageStates/Error";
 import { PageNoData } from "@/components/pageStates/NoData";
 import { DetailHeader } from "@/components/detail/DetailHeader";
+import { DetailComparisonButton } from "@/components/explore/DetailComparisonButton";
 import { ComparisonDetailEntityProvider } from "@/contexts/ComparisonDetailEntityContext";
 import { buildComparisonLinkTo } from "@/utils/explore/comparisonUtils";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";
@@ -47,6 +48,12 @@ export function RegionDetailPage() {
             helpItems={["regionTotalEmissions", "detailWhyDataDelay"]}
             stats={headerStats}
             translateNamespace="regions.detailPage"
+            headerActions={
+              <DetailComparisonButton
+                linkTo={buildComparisonLinkTo("region", region.name)}
+                variant="region"
+              />
+            }
           />
 
           <TerritoryEmissions

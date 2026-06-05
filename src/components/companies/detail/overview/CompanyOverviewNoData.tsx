@@ -12,6 +12,8 @@ import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { getCompanyDescription } from "@/utils/business/company";
 import { CompanyDescription } from "./CompanyDescription";
 import { PageNoData } from "@/components/pageStates/NoData";
+import { DetailComparisonButton } from "@/components/explore/DetailComparisonButton";
+import { buildComparisonLinkTo } from "@/utils/explore/comparisonUtils";
 
 interface CompanyOverviewNoDataProps {
   company: CompanyDetails;
@@ -31,9 +33,13 @@ export function CompanyOverviewNoData({ company }: CompanyOverviewNoDataProps) {
     <SectionWithHelp helpItems={["companySectors", "companyMissingData"]}>
       <div className="flex items-start justify-between mb-4 md:mb-12">
         <div className="space-y-4">
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:gap-3">
             <Text className="text-4xl lg:text-6xl">{company.name}</Text>
-            <div className="flex flex-row flex-wrap gap-2 mt-2 md:mt-0 md:ml-4">
+            <div className="flex flex-row flex-wrap gap-2">
+              <DetailComparisonButton
+                linkTo={buildComparisonLinkTo("company", company.wikidataId)}
+                variant="company"
+              />
               {token && (
                 <Button
                   variant="outline"
