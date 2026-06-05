@@ -62,6 +62,19 @@ function getClimatePlanStatus(
   return { text, colorClass, displayAsBadge: true };
 }
 
+function getDetailValue(
+  item: ListCardProps,
+  key: keyof NonNullable<ListCardProps["comparisonDetails"]>,
+  fallback: string,
+  options?: Partial<ComparisonCellValue>,
+): ComparisonCellValue {
+  const value = item.comparisonDetails?.[key];
+  return {
+    text: value != null && value !== "" ? String(value) : fallback,
+    ...options,
+  };
+}
+
 function getClimatePlanAdopted(
   item: ListCardProps,
   t: TFunction,
@@ -109,13 +122,116 @@ function getMunicipalitySections(t: TFunction): ComparisonSection[] {
         },
         {
           id: "changeRate",
-          label: t("municipalities.card.changeRate"),
+          label: t("municipalityDetailPage.annualChangeSince2015"),
           getValue: (item, translate) => ({
             text: item.changeRateValue ?? translate("companies.card.noData"),
             colorClass: item.changeRateColor ?? "text-orange-2",
             isAIGenerated: item.changeRateIsAIGenerated,
             tooltip: item.changeRateTooltip,
           }),
+        },
+        {
+          id: "consumptionEmissions",
+          label: t("municipalityDetailPage.consumptionEmissionsPerCapita"),
+          getValue: (item, translate) =>
+            getDetailValue(
+              item,
+              "consumptionEmissionsPerCapita",
+              translate("companies.card.noData"),
+              {
+                colorClass: "text-orange-2",
+                unit: item.comparisonDetails?.consumptionEmissionsUnit,
+              },
+            ),
+        },
+      ],
+    },
+    {
+      id: "sustainableTransport",
+      label: t("explorePage.comparison.sections.sustainableTransport"),
+      metrics: [
+        {
+          id: "electricCarChange",
+          label: t("municipalityDetailPage.electricCarChange"),
+          getValue: (item, translate) =>
+            getDetailValue(
+              item,
+              "electricCarChangePercent",
+              translate("companies.card.noData"),
+              { colorClass: "text-orange-2" },
+            ),
+        },
+        {
+          id: "electricCarsPerChargePoint",
+          label: t("municipalityDetailPage.electricCarsPerChargePoint"),
+          getValue: (item, translate) =>
+            getDetailValue(
+              item,
+              "electricCarsPerChargePoint",
+              translate("companies.card.noData"),
+              {
+                colorClass:
+                  item.comparisonDetails?.electricCarsPerChargePointColorClass ??
+                  "text-white",
+              },
+            ),
+        },
+        {
+          id: "bicycleMetrePerCapita",
+          label: t("municipalityDetailPage.bicycleMetrePerCapita"),
+          getValue: (item, translate) =>
+            getDetailValue(
+              item,
+              "bicycleMetrePerCapita",
+              translate("companies.card.noData"),
+              { colorClass: "text-orange-2" },
+            ),
+        },
+      ],
+    },
+    {
+      id: "procurement",
+      label: t("explorePage.comparison.sections.procurement"),
+      metrics: [
+        {
+          id: "procurementRequirements",
+          label: t("municipalityDetailPage.procurementRequirements"),
+          getValue: (item, translate) =>
+            getDetailValue(
+              item,
+              "procurementRequirements",
+              translate("companies.card.noData"),
+              {
+                colorClass:
+                  item.comparisonDetails?.procurementColorClass ?? "text-white",
+              },
+            ),
+        },
+      ],
+    },
+    {
+      id: "politics",
+      label: t("explorePage.comparison.sections.politics"),
+      metrics: [
+        {
+          id: "politicalRule",
+          label: t("municipalityDetailPage.politicalRule"),
+          getValue: (item, translate) =>
+            getDetailValue(
+              item,
+              "politicalRule",
+              translate("companies.card.noData"),
+            ),
+        },
+        {
+          id: "politicalKSO",
+          label: t("municipalityDetailPage.politicalKSO"),
+          getValue: (item, translate) =>
+            getDetailValue(
+              item,
+              "politicalKSO",
+              translate("companies.card.noData"),
+            ),
         },
       ],
     },
@@ -176,6 +292,86 @@ function getCompanySections(t: TFunction): ComparisonSection[] {
             isAIGenerated: item.changeRateIsAIGenerated,
             tooltip: item.changeRateTooltip,
           }),
+        },
+        {
+          id: "scope1",
+          label: t("emissionsBreakdown.scope1"),
+          getValue: (item, translate) =>
+            getDetailValue(
+              item,
+              "scope1Emissions",
+              translate("companies.card.noData"),
+              {
+                colorClass: "text-orange-2",
+                unit: item.emissionsYear
+                  ? `${translate("emissionsUnit")} (${item.emissionsYear})`
+                  : translate("emissionsUnit"),
+              },
+            ),
+        },
+        {
+          id: "scope2",
+          label: t("emissionsBreakdown.scope2"),
+          getValue: (item, translate) =>
+            getDetailValue(
+              item,
+              "scope2Emissions",
+              translate("companies.card.noData"),
+              {
+                colorClass: "text-orange-2",
+                unit: item.emissionsYear
+                  ? `${translate("emissionsUnit")} (${item.emissionsYear})`
+                  : translate("emissionsUnit"),
+              },
+            ),
+        },
+        {
+          id: "scope3",
+          label: t("emissionsBreakdown.scope3"),
+          getValue: (item, translate) =>
+            getDetailValue(
+              item,
+              "scope3Emissions",
+              translate("companies.card.noData"),
+              {
+                colorClass: "text-orange-2",
+                unit: item.emissionsYear
+                  ? `${translate("emissionsUnit")} (${item.emissionsYear})`
+                  : translate("emissionsUnit"),
+              },
+            ),
+        },
+      ],
+    },
+    {
+      id: "companyOverview",
+      label: t("explorePage.comparison.sections.companyOverview"),
+      metrics: [
+        {
+          id: "turnover",
+          label: t("companies.overview.turnover"),
+          getValue: (item, translate) =>
+            getDetailValue(
+              item,
+              "turnover",
+              translate("companies.overview.notReported"),
+              {
+                isAIGenerated: item.comparisonDetails?.turnoverIsAIGenerated,
+              },
+            ),
+        },
+        {
+          id: "employees",
+          label: t("companies.overview.employees"),
+          getValue: (item, translate) =>
+            getDetailValue(
+              item,
+              "employees",
+              translate("companies.overview.notReported"),
+              {
+                isAIGenerated: item.comparisonDetails?.employeesIsAIGenerated,
+              },
+            ),
         },
       ],
     },
@@ -246,6 +442,22 @@ function getRegionSections(t: TFunction): ComparisonSection[] {
             isAIGenerated: item.changeRateIsAIGenerated,
             tooltip: item.changeRateTooltip,
           }),
+        },
+      ],
+    },
+    {
+      id: "overview",
+      label: t("explorePage.comparison.sections.overview"),
+      metrics: [
+        {
+          id: "municipalityCount",
+          label: t("explorePage.comparison.metrics.municipalityCount"),
+          getValue: (item, translate) =>
+            getDetailValue(
+              item,
+              "municipalityCount",
+              translate("companies.card.noData"),
+            ),
         },
       ],
     },

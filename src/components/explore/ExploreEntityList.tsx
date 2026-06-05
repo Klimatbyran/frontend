@@ -1,6 +1,8 @@
 import { CardGrid } from "@/components/layout/CardGrid";
 import { useComparisonSelection } from "@/hooks/explore/useComparisonSelection";
+import { useComparisonItems } from "@/hooks/explore/useComparisonItems";
 import ListFilter from "@/components/explore/ListFilter";
+import { PageLoading } from "@/components/pageStates/Loading";
 import type { ComponentProps } from "react";
 import { ListCard, type ListCardProps } from "./ListCard";
 import { ComparisonView } from "./ComparisonView";
@@ -8,22 +10,16 @@ import { ComparisonControls } from "./ComparisonControls";
 
 type ExploreEntityListProps = {
   items: ListCardProps[];
-  /** Full unfiltered set used to resolve selected items in comparison view */
-  allItems?: ListCardProps[];
   filterProps: ComponentProps<typeof ListFilter>;
 };
 
 export function ExploreEntityList({
   items,
-  allItems,
   filterProps,
 }: ExploreEntityListProps) {
   const comparison = useComparisonSelection(items);
-
-  const itemLookup = allItems ?? items;
-  const selectedItems = itemLookup.filter((item) =>
-    comparison.selectedIds.has(item.linkTo),
-  );
+  const { items: comparisonItems, loading: comparisonLoading } =
+    useComparisonItems();
 
   return (
     <>
@@ -35,7 +31,14 @@ export function ExploreEntityList({
         />
       )}
       {comparison.showComparison ? (
-        <ComparisonView items={selectedItems} onBack={comparison.backToList} />
+        comparisonLoading ? (
+          <PageLoading />
+        ) : (
+          <ComparisonView
+            items={comparisonItems}
+            onBack={comparison.backToList}
+          />
+        )
       ) : (
         <CardGrid
           items={items}

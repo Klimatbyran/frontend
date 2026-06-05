@@ -23,7 +23,7 @@ import { useSectorYearSelection } from "@/hooks/territories/useSectorYearSelecti
 import { getProcurementRequirementsText } from "@/utils/municipality/procurement";
 import { LinkCard } from "@/components/detail/DetailLinkCard";
 import { DetailHeader } from "@/components/detail/DetailHeader";
-import { DetailComparisonButton } from "@/components/explore/DetailComparisonButton";
+import { ComparisonDetailEntityProvider } from "@/contexts/ComparisonDetailEntityContext";
 import { buildComparisonLinkTo } from "@/utils/explore/comparisonUtils";
 import { DetailSection } from "@/components/detail/DetailSection";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";
@@ -232,24 +232,22 @@ export function MunicipalityDetailPage() {
       {/* Only render SEO when data is available, otherwise Layout will use route-level SEO */}
       {municipality && <Seo meta={seoMeta} />}
 
-      <DetailWrapper>
-        <DetailHeader
-          name={municipality.name}
-          subtitle={municipality.region}
-          logoUrl={municipality.logoUrl}
-          politicalRule={municipality.politicalRule}
-          politicalKSO={municipality.politicalKSO}
-          politicalXSOLabelKey="politicalKSO"
-          helpItems={HEADER_HELP_ITEMS}
-          stats={headerStats}
-          translateNamespace="municipalityDetailPage"
-          headerActions={
-            <DetailComparisonButton
-              linkTo={buildComparisonLinkTo("municipality", municipality.name)}
-              variant="municipality"
-            />
-          }
-        />
+      <ComparisonDetailEntityProvider
+        linkTo={buildComparisonLinkTo("municipality", municipality.name)}
+        variant="municipality"
+      >
+        <DetailWrapper>
+          <DetailHeader
+            name={municipality.name}
+            subtitle={municipality.region}
+            logoUrl={municipality.logoUrl}
+            politicalRule={municipality.politicalRule}
+            politicalKSO={municipality.politicalKSO}
+            politicalXSOLabelKey="politicalKSO"
+            helpItems={HEADER_HELP_ITEMS}
+            stats={headerStats}
+            translateNamespace="municipalityDetailPage"
+          />
 
         <TerritoryEmissions
           emissionsData={emissionsData}
@@ -279,7 +277,8 @@ export function MunicipalityDetailPage() {
           items={getSustainableTransportItems(municipality, currentLanguage, t)}
           helpItems={SUSTAINABLE_TRANSPORT_HELP_ITEMS}
         />
-      </DetailWrapper>
+        </DetailWrapper>
+      </ComparisonDetailEntityProvider>
     </>
   );
 }

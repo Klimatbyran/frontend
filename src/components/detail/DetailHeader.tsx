@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import { Text } from "@/components/ui/text";
 import { OverviewStat } from "@/components/companies/detail/overview/OverviewStat";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
@@ -25,7 +24,6 @@ export interface DetailHeaderProps {
   translateNamespace: string;
   politicalRuleLabelKey?: string;
   politicalXSOLabelKey?: string;
-  headerActions?: ReactNode;
 }
 
 export function DetailHeader({
@@ -39,7 +37,6 @@ export function DetailHeader({
   translateNamespace,
   politicalRuleLabelKey = "politicalRule",
   politicalXSOLabelKey, // XSO = KSO or RSO hence the X
-  headerActions,
 }: DetailHeaderProps) {
   return (
     <SectionWithHelp helpItems={helpItems}>
@@ -52,12 +49,13 @@ export function DetailHeader({
             </Text>
           )}
         </div>
-        <div className="flex flex-col items-end gap-3 shrink-0">
-          {headerActions}
-          {logoUrl && (
-            <img src={logoUrl} alt="logo" className="h-[50px] md:h-[80px]" />
-          )}
-        </div>
+        {logoUrl && (
+          <img
+            src={logoUrl}
+            alt="logo"
+            className="h-[50px] shrink-0 md:h-[80px]"
+          />
+        )}
       </div>
       {politicalRule && politicalRule.length > 0 && (
         <PoliticalRuleSection

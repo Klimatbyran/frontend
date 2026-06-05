@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useComparison } from "@/contexts/ComparisonContext";
 import type { ListCardProps } from "@/components/explore/ListCard";
 
@@ -9,29 +9,41 @@ export {
 
 export function useComparisonSelection(items: ListCardProps[] = []) {
   const comparison = useComparison();
+  const { variant, clearSelection } = comparison;
   const [isCompareMode, setIsCompareMode] = useState(false);
   const [showComparison, setShowComparison] = useState(false);
 
-  const entityVariant = comparison.variant ?? items[0]?.variant ?? null;
+  const listVariant = items[0]?.variant ?? null;
+  const entityVariant = listVariant;
+
+  useEffect(() => {
+    if (listVariant && variant && variant !== listVariant) {
+      setShowComparison(false);
+      setIsCompareMode(false);
+      clearSelection();
+    }
+  }, [clearSelection, listVariant, variant]);
 
   const toggleCompareMode = useCallback(() => {
     setIsCompareMode((prev) => {
       if (prev) {
         setShowComparison(false);
         comparison.clearSelection();
+      } else if (listVariant && variant && variant !== listVariant) {
+        comparison.clearSelection();
       }
       return !prev;
     });
-  }, [comparison]);
+  }, [comparison, listVariant, variant]);
 
   const toggleSelection = useCallback(
     (linkTo: string) => {
-      if (!entityVariant) {
+      if (!listVariant) {
         return;
       }
-      comparison.toggleSelection(linkTo, entityVariant);
+      comparison.toggleSelection(linkTo, listVariant);
     },
-    [comparison, entityVariant],
+    [comparison, listVariant],
   );
 
   const viewComparison = useCallback(() => {

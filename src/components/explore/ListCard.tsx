@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { Checkbox } from "@/components/ui/checkbox";
+import type { ComparisonDetails } from "@/utils/explore/buildComparisonDetails";
 import { ListCardBody } from "./ListCardBody";
 
 export interface ListCardProps {
@@ -40,6 +41,9 @@ export interface ListCardProps {
   climatePlanYear?: number | null;
 
   variant?: "company" | "municipality" | "region";
+
+  /** Extra metrics from detail pages, used in comparison view only */
+  comparisonDetails?: ComparisonDetails;
 
   // Comparison mode
   comparisonMode?: boolean;

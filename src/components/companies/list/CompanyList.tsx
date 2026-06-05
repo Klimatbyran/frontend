@@ -20,9 +20,6 @@ export function CompanyList({ companies }: CompanyListProps) {
   const transformedCompanies: ListCardProps[] = useTransformCompanyListCard({
     filteredCompanies,
   });
-  const allTransformedCompanies = useTransformCompanyListCard({
-    filteredCompanies: companies,
-  });
 
   if (companies.length === 0) {
     return (
@@ -40,7 +37,6 @@ export function CompanyList({ companies }: CompanyListProps) {
   return (
     <ExploreEntityList
       items={transformedCompanies}
-      allItems={allTransformedCompanies}
       filterProps={{
         searchQuery: companyFilters.searchQuery,
         setSearchQuery: companyFilters.setSearchQuery,

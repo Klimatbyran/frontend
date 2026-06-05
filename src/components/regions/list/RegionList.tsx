@@ -15,9 +15,6 @@ export function RegionList({ regions }: RegionListProps) {
   const transformedRegions = useTransformRegionListCard({
     filteredRegions,
   });
-  const allTransformedRegions = useTransformRegionListCard({
-    filteredRegions: regions,
-  });
 
   if (regions.length === 0) {
     return (
@@ -35,7 +32,6 @@ export function RegionList({ regions }: RegionListProps) {
   return (
     <ExploreEntityList
       items={transformedRegions}
-      allItems={allTransformedRegions}
       filterProps={{
         searchQuery: regionFilters.searchQuery,
         setSearchQuery: regionFilters.setSearchQuery,

@@ -2032,8 +2032,16 @@
       "sections": {
         "climateTarget": "Klimatmål",
         "emissions": "Utsläpp",
+        "sustainableTransport": "Hållbar transport",
+        "procurement": "Upphandling",
+        "politics": "Politik",
         "climatePlan": "Klimatplan",
-        "reporting": "Rapportering"
+        "companyOverview": "Företagsöversikt",
+        "reporting": "Rapportering",
+        "overview": "Översikt"
+      },
+      "metrics": {
+        "municipalityCount": "Kommuner i länet"
       }
     },
     "filter": "Filter:",

@@ -5,7 +5,7 @@ import { PageLoading } from "@/components/pageStates/Loading";
 import { PageError } from "@/components/pageStates/Error";
 import { PageNoData } from "@/components/pageStates/NoData";
 import { DetailHeader } from "@/components/detail/DetailHeader";
-import { DetailComparisonButton } from "@/components/explore/DetailComparisonButton";
+import { ComparisonDetailEntityProvider } from "@/contexts/ComparisonDetailEntityContext";
 import { buildComparisonLinkTo } from "@/utils/explore/comparisonUtils";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";
 import { EntityListBox } from "@/components/detail/EntityListBox";
@@ -36,20 +36,18 @@ export function RegionDetailPage() {
 
   return (
     <>
-      <DetailWrapper>
-        <DetailHeader
-          name={region.name}
-          logoUrl={region.logoUrl}
-          helpItems={["regionTotalEmissions", "detailWhyDataDelay"]}
-          stats={headerStats}
-          translateNamespace="regions.detailPage"
-          headerActions={
-            <DetailComparisonButton
-              linkTo={buildComparisonLinkTo("region", region.name)}
-              variant="region"
-            />
-          }
-        />
+      <ComparisonDetailEntityProvider
+        linkTo={buildComparisonLinkTo("region", region.name)}
+        variant="region"
+      >
+        <DetailWrapper>
+          <DetailHeader
+            name={region.name}
+            logoUrl={region.logoUrl}
+            helpItems={["regionTotalEmissions", "detailWhyDataDelay"]}
+            stats={headerStats}
+            translateNamespace="regions.detailPage"
+          />
 
         <TerritoryEmissions
           emissionsData={emissionsData}
@@ -73,7 +71,8 @@ export function RegionDetailPage() {
           entityType="municipalities"
           translateNamespace="regions.detailPage"
         />
-      </DetailWrapper>
+        </DetailWrapper>
+      </ComparisonDetailEntityProvider>
     </>
   );
 }

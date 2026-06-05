@@ -33,8 +33,6 @@ import { CompanyOverviewTooltip } from "./CompanyOverviewTooltip";
 import { OverviewStatistics } from "./OverviewStatistics";
 import { yearFromIsoDate } from "@/utils/date";
 import { CompanyLogo } from "../../CompanyLogo";
-import { DetailComparisonButton } from "@/components/explore/DetailComparisonButton";
-import { buildComparisonLinkTo } from "@/utils/explore/comparisonUtils";
 
 interface CompanyOverviewProps {
   company: CompanyDetails;
@@ -114,10 +112,6 @@ export function CompanyOverview({
           <div className="flex items-center gap-4">
             <Text className="text-4xl lg:text-6xl">{company.name}</Text>
             <div className="flex flex-row flex-wrap gap-2 mt-2 md:mt-0 md:ml-4">
-              <DetailComparisonButton
-                linkTo={buildComparisonLinkTo("company", company.wikidataId)}
-                variant="company"
-              />
               {token && (
                 <>
                   <Button

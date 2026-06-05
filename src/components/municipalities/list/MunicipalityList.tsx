@@ -18,14 +18,10 @@ export function MunicipalityList({ municipalities }: MunicipalityListProps) {
   const transformedMunicipalities = useTransformMunicipalityListCard({
     filteredMunicipalities,
   });
-  const allTransformedMunicipalities = useTransformMunicipalityListCard({
-    filteredMunicipalities: municipalities,
-  });
 
   return (
     <ExploreEntityList
       items={transformedMunicipalities}
-      allItems={allTransformedMunicipalities}
       filterProps={{
         searchQuery: municipalityFilters.searchQuery,
         setSearchQuery: municipalityFilters.setSearchQuery,

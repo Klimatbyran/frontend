@@ -49,7 +49,7 @@ export function DetailComparisonButton({
       )}
       {selected
         ? t("explorePage.comparison.addedToComparison")
-        : t("explorePage.comparison.addToComparison")}
+        : t("explorePage.comparison.compare")}
     </Button>
   );
 }

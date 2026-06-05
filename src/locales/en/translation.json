@@ -1974,8 +1974,16 @@
       "sections": {
         "climateTarget": "Climate target",
         "emissions": "Emissions",
+        "sustainableTransport": "Sustainable transport",
+        "procurement": "Procurement",
+        "politics": "Politics",
         "climatePlan": "Climate plan",
-        "reporting": "Reporting"
+        "companyOverview": "Company overview",
+        "reporting": "Reporting",
+        "overview": "Overview"
+      },
+      "metrics": {
+        "municipalityCount": "Municipalities in region"
       }
     },
     "filter": "Filter:",
