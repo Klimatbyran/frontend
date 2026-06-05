@@ -31,8 +31,10 @@ To run the project locally, execute the following commands from the root of the 
 | `npm install`     | Installs dependencies                         |
 | `npm run dev`     | Starts local dev server at `localhost:5173` or
 VITE_API_PROXY   |
-| `npm run dev-gen` | Starts local dev server at `localhost:5173` and generate api
-keys | 
+| `npm run dev-gen` | Starts local dev server and regenerates API types from OpenAPI |
+| `npm run generate-api` | Regenerates `src/lib/api-types.ts` from production OpenAPI (`/reference/openapi.json`) |
+| `npm run generate-api:local` | Same, from local Garbo (`http://localhost:3000/reference/openapi.json`) |
+| `npm run generate-api:staging` | Same, from staging API | 
 | `npm run build`   | Builds your production site to `./dist/`      |
 | `npm run preview` | Previews your build locally, before deploying |
 || `npm run build:dataguide` | Builds the data guide from markdown files in `src/locales/dataguide/` - run this when making changes to data guide content |

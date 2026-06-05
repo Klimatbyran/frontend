@@ -12,6 +12,20 @@ import { CompanyEditRow } from "../CompanyEditRow";
 import { AuthExpiredModal } from "../AuthExpiredModal";
 
 describe("Editor Logic Integration", () => {
+  it("CompanyEditInputField: formats large numbers for display", () => {
+    render(
+      <CompanyEditInputField
+        type="number"
+        value={1234567}
+        name="test"
+        displayAddition="none"
+        onInputChange={vi.fn()}
+        formData={new Map()}
+      />,
+    );
+    expect(screen.getByRole("textbox")).toHaveValue("1 234 567");
+  });
+
   it("CompanyEditInputField: renders input and calls onInputChange", () => {
     const onInputChange = vi.fn();
     render(
@@ -24,10 +38,10 @@ describe("Editor Logic Integration", () => {
         formData={new Map()}
       />,
     );
-    const input = screen.getByRole("spinbutton");
-    expect(input).toHaveValue(42);
-    fireEvent.change(input, { target: { value: "123" } });
-    expect(onInputChange).toHaveBeenCalledWith("test", "123");
+    const input = screen.getByRole("textbox");
+    expect(input).toHaveValue("42");
+    fireEvent.change(input, { target: { value: "1 234,5" } });
+    expect(onInputChange).toHaveBeenCalledWith("test", "1234.5");
   });
 
   it("CompanyEditInputField: disables checkbox if originalVerified and value unchanged", () => {
@@ -99,7 +113,7 @@ describe("Editor Logic Integration", () => {
         formData={new Map()}
       />,
     );
-    fireEvent.change(screen.getByRole("spinbutton"), {
+    fireEvent.change(screen.getByRole("textbox"), {
       target: { value: "99" },
     });
     expect(onInputChange).toHaveBeenCalled();
@@ -205,7 +219,7 @@ describe("Editor Logic Integration", () => {
       />,
     );
     // There should be three number inputs (mb, lb, unknown)
-    const inputs = screen.getAllByRole("spinbutton");
+    const inputs = screen.getAllByRole("textbox");
     expect(inputs.length).toBe(3);
     fireEvent.change(inputs[0], { target: { value: "10" } });
     fireEvent.change(inputs[1], { target: { value: "20" } });
@@ -244,7 +258,7 @@ describe("Editor Logic Integration", () => {
       />,
     );
     // There should be 16 number inputs for categories + 1 for statedTotalEmissions
-    const inputs = screen.getAllByRole("spinbutton");
+    const inputs = screen.getAllByRole("textbox");
     expect(inputs.length).toBe(17);
     // Interact with a few
     fireEvent.change(inputs[0], { target: { value: "1" } });

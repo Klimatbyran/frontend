@@ -2,16 +2,22 @@ import createClient from "openapi-fetch";
 import type { paths } from "./api-types";
 import { authMiddleware } from "./auth-middleware";
 
-// Determine the base URL based on the environment
-// For sitemap generation (Node.js environment), use the public API
-// For browser environment, use the relative path
-export const baseUrl =
-  typeof window === "undefined" ? "https://api.klimatkollen.se/api" : "/api";
+export const API_BASE_URL = "https://api.unearthdata.ai/api";
+
+// Browser: /api/* (Vite/nginx proxy with Host: api.unearthdata.ai). Node: direct API URL.
+export const baseUrl = typeof window === "undefined" ? API_BASE_URL : "/api";
+
+export function apiUrl(path: string): string {
+  const normalized = path.startsWith("/") ? path : `/${path}`;
+  return typeof window === "undefined"
+    ? `${API_BASE_URL}${normalized}`
+    : `/api${normalized}`;
+}
+
+const timeout = typeof window === "undefined" ? 10000 : undefined;
+
 const client = createClient<paths>({ baseUrl });
 client.use(authMiddleware);
-
-// Set a timeout for API requests during sitemap generation
-const timeout = typeof window === "undefined" ? 10000 : undefined;
 
 const { GET } = createClient<paths>({
   baseUrl,
@@ -319,7 +325,7 @@ export async function getIndustryGics() {
 
 export const fetchNewsletters = async () => {
   try {
-    const response = await fetch(`${baseUrl}/newsletters/`);
+    const response = await fetch(apiUrl("/newsletters/"));
 
     if (response.ok) {
       const result = await response.json();

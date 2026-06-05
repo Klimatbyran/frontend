@@ -8,8 +8,8 @@ import TerritoryMap, { DataItem } from "@/components/maps/TerritoryMap";
 import regionGeoJson from "@/data/regionGeo.json";
 import { useRankedRegionsURLParams } from "@/hooks/regions/useRankedRegionsURLParams";
 import {
-  useRegions,
-  RegionData,
+  useRegionsKPIs,
+  RegionKPIData,
   useRegionalKPIs,
 } from "@/hooks/regions/useRegionKPIs";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
@@ -30,7 +30,7 @@ export function RegionalOverviewPage() {
   const { t } = useTranslation();
   const regionalKPIs = useRegionalKPIs();
   const [geoData] = useState(regionGeoJson);
-  const { regionsData } = useRegions();
+  const { regionsData } = useRegionsKPIs();
 
   const navigate = useNavigate();
 
@@ -55,7 +55,7 @@ export function RegionalOverviewPage() {
 
   // Transform regions data from regional KPIs endpoint into required formats
   const regionEntities: RankedListItem[] = useMemo(() => {
-    return regionsData.map((regionData: RegionData) => {
+    return regionsData.map((regionData: RegionKPIData) => {
       const mapName = toMapRegionName(regionData.name);
       return {
         name: regionData.name,

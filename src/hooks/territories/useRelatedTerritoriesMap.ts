@@ -9,7 +9,7 @@ import {
 } from "@/hooks/municipalities/useMunicipalityKPIs";
 import {
   useRegionalKPIs,
-  useRegions as useRegionsKPI,
+  useRegionsKPIs,
 } from "@/hooks/regions/useRegionKPIs";
 import { DataItem, MapEntityType } from "@/types/rankings";
 import { createEntityClickHandler } from "@/utils/routing";
@@ -50,7 +50,7 @@ export function useRelatedTerritoriesMap({
   const isRegions = entityType === "regions";
   const municipalityKPIs = useMunicipalityKPIDefinitions();
   const regionalKPIs = useRegionalKPIs();
-  const { regionsData, loading: regionsLoading } = useRegionsKPI({
+  const { regionsData, loading: regionsLoading } = useRegionsKPIs({
     enabled: isRegions,
   });
   const { municipalitiesData, loading: municipalitiesLoading } =
