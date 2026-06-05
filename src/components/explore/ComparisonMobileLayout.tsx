@@ -70,10 +70,7 @@ function MobileMetricRow({
             <p className="text-xs text-grey mb-2 break-words leading-snug">
               {item.name}
             </p>
-            <ComparisonCell
-              value={metric.getValue(item, t)}
-              compact
-            />
+            <ComparisonCell value={metric.getValue(item, t)} compact />
           </div>
         ))}
       </div>
@@ -119,11 +116,7 @@ export function ComparisonMobileLayout({ items }: ComparisonMobileLayoutProps) {
             {section.label}
           </div>
           {section.metrics.map((metric) => (
-            <MobileMetricRow
-              key={metric.id}
-              metric={metric}
-              items={items}
-            />
+            <MobileMetricRow key={metric.id} metric={metric} items={items} />
           ))}
         </div>
       ))}
