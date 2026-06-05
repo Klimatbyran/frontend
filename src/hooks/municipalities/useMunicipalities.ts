@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getMunicipalities } from "@/lib/api";
 import type { paths } from "@/lib/api-types";
 import { Municipality } from "@/types/municipality";
+import { mapEmissionArray } from "@/utils/data/emissionArrayUtils";
 
 // Get municipality type from API types
 type ApiMunicipality = NonNullable<
@@ -25,16 +26,6 @@ export function useMunicipalities(): IMunicipalitiesReturn {
     queryFn: getMunicipalities,
     staleTime: 1800000,
     select: (data) => {
-      const mapEmissionArray = (
-        points:
-          | ({ year: string | number; value: number } | null)[]
-          | null
-          | undefined,
-      ) =>
-        (points ?? []).map((p) =>
-          p ? { year: Number(p.year), value: p.value } : null,
-        );
-
       return data.map(
         (municipality): Municipality => ({
           ...municipality,

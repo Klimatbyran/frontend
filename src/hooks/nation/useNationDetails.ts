@@ -1,26 +1,14 @@
-import { useMemo } from "react";
-import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
-import {
-  formatEmissionsAbsolute,
-  formatPercentChange,
-} from "@/utils/formatting/localization";
-import { useLanguage } from "@/components/LanguageProvider";
-import { DetailStat } from "@/components/detail/DetailHeader";
 import { getNationDetails } from "@/lib/api";
-import {
-  calculateParisValue,
-  CARBON_LAW_REDUCTION_RATE,
-} from "@/utils/calculations/emissionsCalculations";
-import type { SupportedLanguage } from "@/lib/languageDetection";
+import type { EmissionDataPoint } from "@/types/municipality";
+import { mapEmissionArray } from "@/utils/data/emissionArrayUtils";
 
 export type NationDetails = {
   country: { sv: string; en: string };
   logoUrl: string | null;
-  emissions: Record<string, number>;
-  approximatedHistoricalEmission: Record<string, number>;
-  trend: Record<string, number>;
-  carbonLaw: Record<string, number>;
+  emissions: (EmissionDataPoint | null)[];
+  approximatedHistoricalEmission: (EmissionDataPoint | null)[];
+  trend: (EmissionDataPoint | null)[];
   meetsParis: boolean;
   historicalEmissionChangePercent: number;
 };
@@ -29,81 +17,23 @@ type ApiNationResponse = {
   country: { sv: string; en: string };
   logoUrl?: string | null;
   emissions: ({ year: string; value: number } | null)[];
-  totalTrend: number;
-  totalCarbonLaw: number;
   approximatedHistoricalEmission: ({ year: string; value: number } | null)[];
   trend: ({ year: string; value: number } | null)[];
   historicalEmissionChangePercent: number;
   meetsParis: boolean;
 };
 
-function extractEmissionsRecord(
-  emissions: ({ year: string; value: number } | null)[] | undefined,
-): Record<string, number> {
-  const record: Record<string, number> = {};
-  if (emissions) {
-    emissions.forEach((emission) => {
-      if (
-        emission &&
-        emission.year &&
-        emission.value !== null &&
-        !isNaN(Number(emission.year))
-      ) {
-        record[emission.year] = emission.value;
-      }
-    });
-  }
-  return record;
-}
-
-function calculateCarbonLawRecord(
-  approximatedHistoricalEmission:
-    | ({ year: string; value: number } | null)[]
-    | undefined,
-  currentYear: number,
-): Record<string, number> {
-  const carbonLawRecord: Record<string, number> = {};
-  if (!approximatedHistoricalEmission) return carbonLawRecord;
-
-  const approximatedDataAtCurrentYear = approximatedHistoricalEmission
-    .filter((d) => d && parseInt(d.year) <= currentYear)
-    .sort((a, b) => parseInt(b!.year) - parseInt(a!.year))[0];
-
-  if (approximatedDataAtCurrentYear) {
-    const carbonLawBaseValue = approximatedDataAtCurrentYear.value;
-    const carbonLawBaseYear = parseInt(approximatedDataAtCurrentYear.year);
-
-    for (let year = currentYear; year <= 2050; year++) {
-      const carbonLawValue = calculateParisValue(
-        year,
-        carbonLawBaseYear,
-        carbonLawBaseValue,
-        CARBON_LAW_REDUCTION_RATE,
-      );
-      if (carbonLawValue !== null) {
-        carbonLawRecord[year.toString()] = carbonLawValue;
-      }
-    }
-  }
-  return carbonLawRecord;
-}
-
 function transformApiNationToNationDetails(
   r: ApiNationResponse,
-  currentYear: number,
 ): NationDetails {
   return {
     country: { sv: r.country.sv, en: r.country.en },
     logoUrl: r.logoUrl ?? null,
-    emissions: extractEmissionsRecord(r.emissions),
-    approximatedHistoricalEmission: extractEmissionsRecord(
+    emissions: mapEmissionArray(r.emissions),
+    approximatedHistoricalEmission: mapEmissionArray(
       r.approximatedHistoricalEmission,
     ),
-    trend: extractEmissionsRecord(r.trend),
-    carbonLaw: calculateCarbonLawRecord(
-      r.approximatedHistoricalEmission,
-      currentYear,
-    ),
+    trend: mapEmissionArray(r.trend),
     meetsParis: r.meetsParis ?? false,
     historicalEmissionChangePercent: r.historicalEmissionChangePercent ?? 0,
   };
@@ -119,96 +49,9 @@ export function useNationDetails() {
     queryFn: () => getNationDetails(),
   });
 
-  const transformedNationDetails = useMemo(() => {
-    const currentYear = new Date().getFullYear();
-    return nation
-      ? transformApiNationToNationDetails(nation, currentYear)
-      : null;
-  }, [nation]);
-
   return {
-    nation: transformedNationDetails ?? null,
+    nation: nation ? transformApiNationToNationDetails(nation) : null,
     loading: isLoading,
     error: error as Error | null,
   };
-}
-
-function createMeetsParisStat(
-  meetsParis: boolean,
-  t: ReturnType<typeof useTranslation>["t"],
-): DetailStat {
-  return {
-    label: t("detailPage.meetsParisGoal"),
-    value:
-      meetsParis === true
-        ? t("yes")
-        : meetsParis === false
-          ? t("no")
-          : t("unknown"),
-    valueClassName:
-      meetsParis === true
-        ? "text-green-3"
-        : meetsParis === false
-          ? "text-pink-3"
-          : "text-grey",
-  };
-}
-
-function createChangeSince2015Stat(
-  historicalEmissionChangePercent: number,
-  currentLanguage: SupportedLanguage,
-  t: ReturnType<typeof useTranslation>["t"],
-): DetailStat {
-  return {
-    label: t("detailPage.changeSince2015"),
-    value: formatPercentChange(
-      historicalEmissionChangePercent,
-      currentLanguage,
-    ),
-    valueClassName:
-      historicalEmissionChangePercent > 0 ? "text-pink-3" : "text-orange-2",
-  };
-}
-
-function createTotalEmissionsStat(
-  emissions: number,
-  lastYear: number,
-  currentLanguage: SupportedLanguage,
-  t: ReturnType<typeof useTranslation>["t"],
-): DetailStat {
-  return {
-    label: t("detailPage.totalEmissions", { year: lastYear }),
-    value: formatEmissionsAbsolute(emissions, currentLanguage),
-    unit: t("emissionsUnit"),
-    valueClassName: "text-orange-2",
-    info: true,
-    infoText: t("municipalityDetailPage.totalEmissionsTooltip"),
-  };
-}
-
-export function useNationDetailHeaderStats(
-  nation: NationDetails | null,
-  lastYear: number | undefined,
-) {
-  const { t } = useTranslation();
-  const { currentLanguage } = useLanguage();
-
-  if (!nation || !lastYear) {
-    return [];
-  }
-
-  return [
-    createMeetsParisStat(nation.meetsParis, t),
-    createChangeSince2015Stat(
-      nation.historicalEmissionChangePercent,
-      currentLanguage,
-      t,
-    ),
-    createTotalEmissionsStat(
-      nation.emissions[lastYear],
-      lastYear,
-      currentLanguage,
-      t,
-    ),
-  ];
 }

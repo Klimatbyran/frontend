@@ -1,53 +1,20 @@
 import { useMemo } from "react";
-import {
-  useNationDetails,
-  useNationDetailHeaderStats,
-} from "@/hooks/nation/useNationDetails";
-import { useSectorEmissions } from "@/hooks/territories/useSectorEmissions";
-import { useSectors } from "@/hooks/territories/useSectors";
-import { useHiddenItems } from "@/components/charts";
-import { useSectorYearSelection } from "@/hooks/territories/useSectorYearSelection";
-import { useRegions } from "@/hooks/useRegions";
-import { transformNationEmissionsData } from "@/utils/data/nationTransforms";
+import { useNationDetails } from "@/hooks/nation/useNationDetails";
+import { useTerritoryDetailPageData } from "@/hooks/territories/useTerritoryDetailPageData";
+import { useRegionsList } from "@/hooks/regions/useRegionsList";
 
 export function useNationPageData() {
   const { nation, loading, error } = useNationDetails();
-  const { regions } = useRegions();
-  const { sectorEmissions } = useSectorEmissions("nation", undefined);
-  const { getSectorInfo } = useSectors();
-  const { hiddenItems: filteredSectors, setHiddenItems: setFilteredSectors } =
-    useHiddenItems<string>([]);
+  const { regions } = useRegionsList();
   const sortedRegions = useMemo(() => [...regions].sort(), [regions]);
-  const emissionsData = useMemo(
-    () => (nation ? transformNationEmissionsData(nation) : []),
-    [nation],
-  );
 
-  const lastYearEmissions = useMemo(() => {
-    return emissionsData
-      .filter((d) => d.total !== undefined)
-      .sort((a, b) => b.year - a.year)[0];
-  }, [emissionsData]);
-  const lastYear = lastYearEmissions?.year;
-  const headerStats = useNationDetailHeaderStats(nation, lastYear);
-
-  const { selectedYear, setSelectedYear, availableYears, currentYear } =
-    useSectorYearSelection(sectorEmissions, lastYear ?? 2023);
+  const territoryPageData = useTerritoryDetailPageData(nation, "nation");
 
   return {
     nation,
     loading,
     error,
     sortedRegions,
-    emissionsData,
-    sectorEmissions,
-    getSectorInfo,
-    filteredSectors,
-    setFilteredSectors,
-    selectedYear,
-    setSelectedYear,
-    headerStats,
-    availableYears,
-    currentYear,
+    ...territoryPageData,
   };
 }

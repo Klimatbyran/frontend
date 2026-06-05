@@ -7,7 +7,7 @@ import regionGeoJson from "@/data/regionGeo.json";
 import { useMunicipalityKPIDefinitions } from "@/hooks/municipalities/useMunicipalityKPIs";
 import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
 import { createEntityClickHandler } from "@/utils/routing";
-import { useRegionalKPIs, useRegions } from "@/hooks/regions/useRegionKPIs";
+import { useRegionalKPIs, useRegionsKPIs } from "@/hooks/regions/useRegionKPIs";
 import { toMapRegionName } from "@/utils/regionUtils";
 
 export type TerritoryMode = "municipalities" | "regions";
@@ -17,7 +17,7 @@ export function useMunicipalitiesSection() {
   const navigate = useNavigate();
   const municipalityKPIs = useMunicipalityKPIDefinitions();
   const regionalKPIs = useRegionalKPIs();
-  const { regionsData, loading: regionsLoading } = useRegions();
+  const { regionsData, loading: regionsLoading } = useRegionsKPIs();
   const { municipalities, municipalitiesLoading } = useMunicipalities();
 
   const [territoryMode, setTerritoryMode] =
