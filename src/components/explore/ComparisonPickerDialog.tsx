@@ -17,7 +17,6 @@ import {
 } from "@/components/ui/command";
 import {
   Dialog,
-  DialogDescription,
   DialogOverlay,
   DialogPortal,
   DialogTitle,
@@ -64,7 +63,7 @@ const COMPARISON_SEARCH_LISTS: {
 ];
 
 function pickerCopyKey(
-  base: "pickerTitle" | "pickerDescription" | "pickerPlaceholder",
+  base: "pickerTitle" | "pickerPlaceholder" | "pickerEmpty" | "pickerLoading",
   entityVariant: ComparisonEntityVariant | null | undefined,
 ): string {
   if (entityVariant) {
@@ -102,7 +101,7 @@ function ComparisonPickerSelectedSection({
       </p>
       {loading ? (
         <p className="text-grey text-sm">
-          {t("globalSearch.searchDialog.loadingText")}
+          {t("explorePage.comparison.pickerLoading")}
         </p>
       ) : (
         <div className="space-y-1">
@@ -152,7 +151,7 @@ function ComparisonPickerSearchResults({
     <>
       {(isSearching || combinedLoading) && (
         <CommandPrimitive.Loading>
-          {t("globalSearch.searchDialog.loadingText")}
+          {t("explorePage.comparison.pickerLoading")}
         </CommandPrimitive.Loading>
       )}
       {groupedLists.map(({ category, icon: Icon, translationKey, items }) => (
@@ -342,12 +341,6 @@ export function ComparisonPickerDialog({
         <DialogTitle>
           {t(pickerCopyKey("pickerTitle", entityVariant))}
         </DialogTitle>
-        <DialogDescription>
-          {t(pickerCopyKey("pickerDescription", entityVariant), {
-            count: selectedCount,
-            max: COMPARISON_MAX,
-          })}
-        </DialogDescription>
         <DialogOverlay className="backdrop-blur-sm bg-black/40" />
         <DialogPrimitive.Content className="fixed top-[7vh] left-1/2 z-50 w-full max-w-lg -translate-x-1/2 transform focus:outline-none">
           <div className="m-4 overflow-hidden rounded-lg border border-black-1 bg-black-2 shadow-lg">
@@ -372,7 +365,7 @@ export function ComparisonPickerDialog({
                 !hasResults && (
                   <CommandEmpty>
                     <p className="text-grey">
-                      {t("globalSearch.searchDialog.emptyText")}
+                      {t(pickerCopyKey("pickerEmpty", entityVariant))}
                     </p>
                   </CommandEmpty>
                 )}

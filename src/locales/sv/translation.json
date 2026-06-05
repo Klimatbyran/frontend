@@ -2014,12 +2014,6 @@
         "municipality": "Lägg till kommun i jämförelse",
         "region": "Lägg till län i jämförelse"
       },
-      "pickerDescription": {
-        "default": "{{count}} av {{max}} valda — sök och tryck för att lägga till eller ta bort.",
-        "company": "{{count}} av {{max}} företag valda — sök och tryck för att lägga till eller ta bort.",
-        "municipality": "{{count}} av {{max}} kommuner valda — sök och tryck för att lägga till eller ta bort.",
-        "region": "{{count}} av {{max}} län valda — sök och tryck för att lägga till eller ta bort."
-      },
       "pickerPlaceholder": {
         "default": "Sök kommuner, län eller företag",
         "company": "Sök företag",
@@ -2027,6 +2021,13 @@
         "region": "Sök län"
       },
       "pickerDone": "Klar",
+      "pickerLoading": "Söker...",
+      "pickerEmpty": {
+        "default": "Inga resultat hittades",
+        "company": "Inga företag hittades",
+        "municipality": "Inga kommuner hittades",
+        "region": "Inga län hittades"
+      },
       "pickerSelectedHeading": "Valda ({{count}}/{{max}})",
       "sections": {
         "climateTarget": "Klimatmål",

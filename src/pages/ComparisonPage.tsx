@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useComparison } from "@/contexts/ComparisonContext";
 import { useComparisonItems } from "@/hooks/explore/useComparisonItems";
 import { ComparisonView } from "@/components/explore/ComparisonView";
-import { ComparisonAddButton } from "@/components/explore/ComparisonAddButton";
 import { PageLoading } from "@/components/pageStates/Loading";
 import { useLanguage } from "@/components/LanguageProvider";
 import { localizedPath } from "@/utils/routing";
@@ -42,9 +41,6 @@ export function ComparisonPage() {
             min: COMPARISON_MIN,
           })}
         </p>
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-          <ComparisonAddButton entityVariant={variant} />
-        </div>
         <button
           type="button"
           className="mt-6 text-blue-2 hover:underline"

@@ -1956,12 +1956,6 @@
         "municipality": "Add municipality to comparison",
         "region": "Add region to comparison"
       },
-      "pickerDescription": {
-        "default": "{{count}} of {{max}} selected — search and tap to add or remove.",
-        "company": "{{count}} of {{max}} companies selected — search and tap to add or remove.",
-        "municipality": "{{count}} of {{max}} municipalities selected — search and tap to add or remove.",
-        "region": "{{count}} of {{max}} regions selected — search and tap to add or remove."
-      },
       "pickerPlaceholder": {
         "default": "Search municipalities, regions, or companies",
         "company": "Search companies",
@@ -1969,6 +1963,13 @@
         "region": "Search regions"
       },
       "pickerDone": "Done",
+      "pickerLoading": "Searching...",
+      "pickerEmpty": {
+        "default": "No results found",
+        "company": "No companies found",
+        "municipality": "No municipalities found",
+        "region": "No regions found"
+      },
       "pickerSelectedHeading": "Selected ({{count}}/{{max}})",
       "sections": {
         "climateTarget": "Climate target",

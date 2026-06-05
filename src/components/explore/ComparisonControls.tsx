@@ -1,7 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { GitCompareArrows } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ComparisonAddButton } from "./ComparisonAddButton";
 import { Toggle } from "@/components/ui/toggle";
 import type { ComparisonSelection } from "@/hooks/explore/useComparisonSelection";
 import {
@@ -41,9 +40,7 @@ export function ComparisonControls({ comparison }: ComparisonControlsProps) {
         {t("explorePage.comparison.compare")}
       </Toggle>
 
-      <ComparisonAddButton entityVariant={comparison.entityVariant} />
-
-      {(isCompareMode || selectedCount > 0) && (
+      {isCompareMode && (
         <>
           <span className="text-grey text-sm">
             {t("explorePage.comparison.selected", {
