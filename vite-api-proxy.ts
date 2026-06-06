@@ -62,7 +62,18 @@ export function devApiProxy(apiOrigin: string, apiKey?: string): Plugin {
       const buffer = Buffer.from(await upstream.arrayBuffer());
       res.end(buffer);
     } catch (error) {
-      next(error as Error);
+      const message =
+        error instanceof Error ? error.message : "Unknown proxy error";
+      console.error(`[dev-api-proxy] ${req.method} ${url} failed:`, message);
+      res.statusCode = 502;
+      res.setHeader("Content-Type", "application/json");
+      res.end(
+        JSON.stringify({
+          error: "API proxy failed",
+          message,
+          hint: "Restart the dev server (npm run dev) if this persists.",
+        }),
+      );
     }
   };
 
