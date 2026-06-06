@@ -111,7 +111,11 @@ export function useHeroGlobalSearch(
   }, [searchQuery]);
 
   const { data = [], isFetching: isSearching } = useQuery({
-    queryKey: ["globalSearch", debouncedQuery, options?.skipDiversityCap ?? false],
+    queryKey: [
+      "globalSearch",
+      debouncedQuery,
+      options?.skipDiversityCap ?? false,
+    ],
     queryFn: () =>
       debouncedQuery
         ? getGlobalSearch(debouncedQuery, currentLanguage)
