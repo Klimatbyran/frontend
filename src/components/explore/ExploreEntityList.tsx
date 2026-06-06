@@ -8,7 +8,10 @@ type ExploreEntityListProps = {
   filterProps: ComponentProps<typeof ListFilter>;
 };
 
-export function ExploreEntityList({ items, filterProps }: ExploreEntityListProps) {
+export function ExploreEntityList({
+  items,
+  filterProps,
+}: ExploreEntityListProps) {
   return (
     <>
       <ListFilter {...filterProps} />

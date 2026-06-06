@@ -54,7 +54,9 @@ export function ExplorePage() {
 
   const isLoading =
     (isCompaniesTab && companiesLoading && companies.length === 0) ||
-    (isMunicipalitiesTab && municipalitiesLoading && municipalities.length === 0) ||
+    (isMunicipalitiesTab &&
+      municipalitiesLoading &&
+      municipalities.length === 0) ||
     (isRegionsTab && regionsLoading && regions.length === 0);
 
   const activeError = isCompaniesTab

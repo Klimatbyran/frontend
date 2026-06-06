@@ -110,7 +110,8 @@ export function ComparisonProvider({ children }: { children: ReactNode }) {
   );
 
   const isSelectionDisabled = useCallback(
-    (linkTo: string) => isComparisonSelectionDisabled(storedRef.current, linkTo),
+    (linkTo: string) =>
+      isComparisonSelectionDisabled(storedRef.current, linkTo),
     [],
   );
 
