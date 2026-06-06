@@ -58,8 +58,9 @@ describe("variant and category mapping", () => {
       variant: "company",
     });
 
-    expect(isComparableSearchResult({ id: "x", name: "x", category: "nations" }))
-      .toBe(false);
+    expect(
+      isComparableSearchResult({ id: "x", name: "x", category: "nations" }),
+    ).toBe(false);
   });
 });
 
@@ -93,9 +94,9 @@ describe("comparison route helpers", () => {
 
 describe("selection helpers", () => {
   it("matches links case-insensitively", () => {
-    expect(isSameComparisonLink("/regions/stockholm", "/regions/Stockholm")).toBe(
-      true,
-    );
+    expect(
+      isSameComparisonLink("/regions/stockholm", "/regions/Stockholm"),
+    ).toBe(true);
     expect(isSameComparisonLink("/companies/A", "/companies/B")).toBe(false);
   });
 
@@ -115,9 +116,8 @@ describe("selection helpers", () => {
       { linkTo: "/companies/C", variant: "company" },
     ] as ListCardProps[];
 
-    expect(orderSelectedCards(cards, ["/companies/C", "/companies/A"])).toEqual([
-      cards[2],
-      cards[0],
-    ]);
+    expect(orderSelectedCards(cards, ["/companies/C", "/companies/A"])).toEqual(
+      [cards[2], cards[0]],
+    );
   });
 });

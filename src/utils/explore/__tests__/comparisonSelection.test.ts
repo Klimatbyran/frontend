@@ -123,9 +123,9 @@ describe("tryToggleComparisonSelection", () => {
       variant: "company" as const,
     };
 
-    expect(
-      getTryToggleComparisonFailure(full, "/companies/E", "company"),
-    ).toBe("max_reached");
+    expect(getTryToggleComparisonFailure(full, "/companies/E", "company")).toBe(
+      "max_reached",
+    );
   });
 
   it("still allows removing entities when selection is full", () => {

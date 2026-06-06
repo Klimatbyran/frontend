@@ -27,7 +27,6 @@ export function ComparisonDetailChip({
     prefillOnOpen: { linkTo, variant, name },
     showViewComparison: true,
     sheetOnMobile: true,
-    clearOnClose: true,
   });
   const isCurrentSelected = isSelected(linkTo);
   const hasSelection = selectedCount > 0;

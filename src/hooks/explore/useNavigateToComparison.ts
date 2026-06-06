@@ -19,5 +19,11 @@ export function useNavigateToComparison() {
     }
 
     navigate(localizedPath(currentLanguage, "/explore/compare"));
-  }, [currentLanguage, location.hash, location.pathname, location.search, navigate]);
+  }, [
+    currentLanguage,
+    location.hash,
+    location.pathname,
+    location.search,
+    navigate,
+  ]);
 }

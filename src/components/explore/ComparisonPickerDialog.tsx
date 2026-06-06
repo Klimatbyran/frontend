@@ -34,7 +34,7 @@ export function ComparisonPickerDialog({
   prefillOnOpen,
   showViewComparison = false,
   sheetOnMobile = false,
-  clearOnClose = false,
+  clearOnClose = true,
 }: ComparisonPickerDialogProps) {
   const { t } = useTranslation();
   const navigateToComparisonPage = useNavigateToComparison();

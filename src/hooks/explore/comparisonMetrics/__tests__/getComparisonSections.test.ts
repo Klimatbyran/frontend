@@ -63,7 +63,12 @@ describe("getComparisonSections", () => {
       "overview",
     ]);
     expect(metricIds("region")).toEqual(
-      expect.arrayContaining(["meetsParis", "totalEmissions", "changeRate", "municipalityCount"]),
+      expect.arrayContaining([
+        "meetsParis",
+        "totalEmissions",
+        "changeRate",
+        "municipalityCount",
+      ]),
     );
   });
 });

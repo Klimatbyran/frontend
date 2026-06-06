@@ -8,19 +8,21 @@ interface UseComparisonPickerDialogStateOptions {
 
 export function useComparisonPickerDialogState({
   onOpenChange,
-  clearOnClose = false,
+  clearOnClose = true,
 }: UseComparisonPickerDialogStateOptions) {
   const { clearSelection } = useComparison();
   const navigatingToComparisonRef = useRef(false);
 
   const handleOpenChange = useCallback(
     (nextOpen: boolean) => {
-      if (!nextOpen && clearOnClose && !navigatingToComparisonRef.current) {
-        clearSelection();
+      if (nextOpen) {
+        navigatingToComparisonRef.current = false;
+        onOpenChange(nextOpen);
+        return;
       }
 
-      if (!nextOpen) {
-        navigatingToComparisonRef.current = false;
+      if (clearOnClose && !navigatingToComparisonRef.current) {
+        clearSelection();
       }
 
       onOpenChange(nextOpen);

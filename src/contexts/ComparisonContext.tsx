@@ -3,6 +3,7 @@ import {
   useCallback,
   useContext,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -66,6 +67,8 @@ function persistStored(state: ComparisonSelectionState) {
 
 export function ComparisonProvider({ children }: { children: ReactNode }) {
   const [stored, setStored] = useState(loadStored);
+  const storedRef = useRef(stored);
+  storedRef.current = stored;
 
   const updateStored = useCallback((nextState: ComparisonSelectionState) => {
     setStored(nextState);
@@ -78,32 +81,37 @@ export function ComparisonProvider({ children }: { children: ReactNode }) {
 
   const canAddVariant = useCallback(
     (entityVariant: ComparisonEntityVariant) =>
-      canAddComparisonVariant(stored, entityVariant),
-    [stored],
+      canAddComparisonVariant(storedRef.current, entityVariant),
+    [],
   );
 
   const toggleSelection = useCallback(
     (linkTo: string, entityVariant: ComparisonEntityVariant) => {
-      const nextState = toggleComparisonSelection(
-        stored,
-        linkTo,
-        entityVariant,
-      );
-      if (nextState) {
-        updateStored(nextState);
-      }
+      setStored((current) => {
+        const nextState = toggleComparisonSelection(
+          current,
+          linkTo,
+          entityVariant,
+        );
+        if (!nextState) {
+          return current;
+        }
+
+        persistStored(nextState);
+        return nextState;
+      });
     },
-    [stored, updateStored],
+    [],
   );
 
   const isSelected = useCallback(
-    (linkTo: string) => isComparisonSelected(stored, linkTo),
-    [stored],
+    (linkTo: string) => isComparisonSelected(storedRef.current, linkTo),
+    [],
   );
 
   const isSelectionDisabled = useCallback(
-    (linkTo: string) => isComparisonSelectionDisabled(stored, linkTo),
-    [stored],
+    (linkTo: string) => isComparisonSelectionDisabled(storedRef.current, linkTo),
+    [],
   );
 
   const value = useMemo(

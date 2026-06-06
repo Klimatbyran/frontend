@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils";
 import { LocalizedLink } from "@/components/LocalizedLink";
-import { Checkbox } from "@/components/ui/checkbox";
 import type { ComparisonDetails } from "@/utils/explore/buildComparisonDetails";
 import { ListCardBody } from "./ListCardBody";
 
@@ -44,21 +43,11 @@ export interface ListCardProps {
 
   /** Extra metrics from detail pages, used in comparison view only */
   comparisonDetails?: ComparisonDetails;
-
-  // Comparison mode
-  comparisonMode?: boolean;
-  selected?: boolean;
-  onSelect?: () => void;
-  selectionDisabled?: boolean;
 }
 
 export function ListCard({
   linkTo,
   variant = "company",
-  comparisonMode = false,
-  selected = false,
-  onSelect,
-  selectionDisabled = false,
   ...cardProps
 }: ListCardProps) {
   const isRegion = variant === "region";
@@ -73,60 +62,10 @@ export function ListCard({
   const cardClassName = cn(
     "block bg-black-2 rounded-level-2 p-8 md:space-y-4 transition-all duration-300",
     linkMinHeightClass,
-    !comparisonMode &&
-      "hover:shadow-[0_0_10px_rgba(153,207,255,0.15)] hover:bg-[#1a1a1a]",
-    comparisonMode && "cursor-pointer",
-    comparisonMode && selected && "ring-2 ring-blue-2",
-    comparisonMode && selectionDisabled && "opacity-50 cursor-not-allowed",
+    "hover:shadow-[0_0_10px_rgba(153,207,255,0.15)] hover:bg-[#1a1a1a]",
   );
 
   const cardContent = <ListCardBody variant={variant} {...cardProps} />;
-
-  if (comparisonMode) {
-    return (
-      <div className="relative rounded-level-2 @container">
-        <div
-          role="button"
-          tabIndex={selectionDisabled ? -1 : 0}
-          aria-pressed={selected}
-          aria-disabled={selectionDisabled}
-          className={cardClassName}
-          onClick={() => {
-            if (!selectionDisabled && onSelect) {
-              onSelect();
-            }
-          }}
-          onKeyDown={(e) => {
-            if (
-              !selectionDisabled &&
-              onSelect &&
-              (e.key === "Enter" || e.key === " ")
-            ) {
-              e.preventDefault();
-              onSelect();
-            }
-          }}
-        >
-          <div
-            className="absolute top-4 right-4 z-10"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <Checkbox
-              checked={selected}
-              disabled={selectionDisabled}
-              onCheckedChange={() => {
-                if (!selectionDisabled && onSelect) {
-                  onSelect();
-                }
-              }}
-              aria-label={cardProps.name}
-            />
-          </div>
-          {cardContent}
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="relative rounded-level-2 @container">

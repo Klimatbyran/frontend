@@ -6,10 +6,7 @@ import {
   isCompareRoute,
 } from "@/utils/explore/comparisonUtils";
 
-/**
- * Clears comparison selection when navigating away from the dedicated compare page.
- * Uses route changes instead of component unmount to stay compatible with StrictMode.
- */
+/** Clears comparison state when leaving the dedicated compare page. */
 export function useComparisonRouteEffects() {
   const location = useLocation();
   const { clearSelection } = useComparison();
