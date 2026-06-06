@@ -21,8 +21,10 @@ export function useComparisonPickerSearch(
   entityVariant?: ComparisonEntityVariant | null,
 ) {
   const { isSelected } = useComparison();
-  const { searchResults, isSearching, isDebouncing } =
-    useHeroGlobalSearch(inputValue);
+  const { searchResults, isSearching, isDebouncing } = useHeroGlobalSearch(
+    inputValue,
+    { skipDiversityCap: true },
+  );
   const { data: combinedData, loading: combinedLoading } = useCombinedData(
     searchResults,
     inputValue,
