@@ -48,7 +48,7 @@ export function ComparisonPickerDialog({
   const { isSelected, isSelectionDisabled, tryToggleSelection } =
     useComparisonPickerToggle();
   const { handleOpenChange, navigateToComparison } =
-    useComparisonPickerDialogState({ onOpenChange, clearOnClose });
+    useComparisonPickerDialogState({ onOpenChange, clearOnClose, open });
   const {
     groupedLists,
     hasSearchQuery,

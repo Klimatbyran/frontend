@@ -1,16 +1,28 @@
+import { vi } from "vitest";
 import type { ListCardProps } from "@/components/explore/ListCard";
 import {
   buildComparisonLinkTo,
   buildComparisonReturnTo,
   categoryToVariant,
+  clearComparisonViewSnapshot,
+  clearComparisonViewed,
+  clearNavigatingToComparison,
   combinedDataToComparison,
+  getComparisonViewSnapshot,
   entityMatchesSelection,
   getExplorePath,
   isComparableSearchResult,
   isComparisonDetailReturnPath,
   isCompareRoute,
+  isComparisonViewed,
+  isNavigatingToComparison,
   isSameComparisonLink,
+  markComparisonViewed,
+  markNavigatingToComparison,
+  resetComparisonAfterView,
   orderSelectedCards,
+  setComparisonViewSnapshot,
+  shouldResetComparisonAfterLeavingRoute,
   variantToCategory,
 } from "../comparisonUtils";
 
@@ -67,7 +79,57 @@ describe("variant and category mapping", () => {
 describe("comparison route helpers", () => {
   it("detects compare routes", () => {
     expect(isCompareRoute("/en/explore/compare")).toBe(true);
+    expect(isCompareRoute("/sv/explore/compare")).toBe(true);
     expect(isCompareRoute("/en/explore/companies")).toBe(false);
+  });
+
+  it("detects when compare state should reset after leaving compare", () => {
+    clearComparisonViewed();
+    clearComparisonViewSnapshot();
+
+    expect(
+      shouldResetComparisonAfterLeavingRoute(
+        "/en/municipalities/Stockholm",
+        "/en/municipalities/Göteborg",
+      ),
+    ).toBe(false);
+
+    expect(
+      shouldResetComparisonAfterLeavingRoute(
+        "/en/municipalities/Stockholm",
+        "/en/explore/compare",
+      ),
+    ).toBe(true);
+
+    markComparisonViewed();
+    expect(
+      shouldResetComparisonAfterLeavingRoute(
+        "/en/municipalities/Stockholm",
+        "/en/municipalities/Göteborg",
+      ),
+    ).toBe(true);
+
+    setComparisonViewSnapshot({
+      selectedIds: ["/municipalities/A", "/municipalities/B"],
+      variant: "municipality",
+    });
+    clearComparisonViewed();
+    expect(
+      shouldResetComparisonAfterLeavingRoute(
+        "/en/explore/municipalities",
+        "/en/explore/municipalities",
+      ),
+    ).toBe(true);
+
+    expect(
+      shouldResetComparisonAfterLeavingRoute(
+        "/en/explore/compare",
+        "/en/explore/compare",
+      ),
+    ).toBe(false);
+
+    clearComparisonViewSnapshot();
+    clearComparisonViewed();
   });
 
   it("builds return paths with search and hash", () => {
@@ -89,6 +151,62 @@ describe("comparison route helpers", () => {
     expect(getExplorePath("company")).toBe("/explore/companies");
     expect(getExplorePath("municipality")).toBe("/explore/municipalities");
     expect(getExplorePath("region")).toBe("/explore/regions");
+  });
+
+  it("stores a one-off snapshot for the compare view page", () => {
+    clearComparisonViewSnapshot();
+    expect(getComparisonViewSnapshot()).toBeNull();
+
+    setComparisonViewSnapshot({
+      selectedIds: ["/municipalities/Luleå", "/municipalities/Göteborg"],
+      variant: "municipality",
+    });
+    expect(getComparisonViewSnapshot()).toEqual({
+      selectedIds: ["/municipalities/Luleå", "/municipalities/Göteborg"],
+      variant: "municipality",
+    });
+
+    clearComparisonViewSnapshot();
+    expect(getComparisonViewSnapshot()).toBeNull();
+  });
+
+  it("tracks navigation into the compare view", () => {
+    clearNavigatingToComparison();
+    expect(isNavigatingToComparison()).toBe(false);
+
+    markNavigatingToComparison();
+    expect(isNavigatingToComparison()).toBe(true);
+
+    clearNavigatingToComparison();
+    expect(isNavigatingToComparison()).toBe(false);
+  });
+
+  it("tracks when the compare view page has been opened", () => {
+    clearComparisonViewed();
+    expect(isComparisonViewed()).toBe(false);
+
+    markComparisonViewed();
+    expect(isComparisonViewed()).toBe(true);
+
+    clearComparisonViewed();
+    expect(isComparisonViewed()).toBe(false);
+  });
+
+  it("clears all compare state after the view page was opened", () => {
+    markComparisonViewed();
+    setComparisonViewSnapshot({
+      selectedIds: ["/municipalities/A", "/municipalities/B"],
+      variant: "municipality",
+    });
+    markNavigatingToComparison();
+
+    const clearSelection = vi.fn();
+    resetComparisonAfterView(clearSelection);
+
+    expect(clearSelection).toHaveBeenCalledOnce();
+    expect(isComparisonViewed()).toBe(false);
+    expect(getComparisonViewSnapshot()).toBeNull();
+    expect(isNavigatingToComparison()).toBe(false);
   });
 });
 

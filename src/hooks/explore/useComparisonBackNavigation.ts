@@ -4,10 +4,10 @@ import { useComparison } from "@/contexts/ComparisonContext";
 import { useLanguage } from "@/components/LanguageProvider";
 import { localizedPath } from "@/utils/routing";
 import {
-  clearComparisonReturnTo,
   getComparisonReturnTo,
   getExplorePath,
   isComparisonDetailReturnPath,
+  resetComparisonAfterView,
 } from "@/utils/explore/comparisonUtils";
 
 export function useComparisonBackNavigation() {
@@ -25,8 +25,7 @@ export function useComparisonBackNavigation() {
 
   const handleBack = useCallback(() => {
     const storedReturnTo = getComparisonReturnTo();
-    clearComparisonReturnTo();
-    clearSelection();
+    resetComparisonAfterView(clearSelection);
 
     if (storedReturnTo) {
       navigate(storedReturnTo);

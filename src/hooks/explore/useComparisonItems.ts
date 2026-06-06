@@ -17,16 +17,22 @@ import {
   getRegionLinkTo,
 } from "@/utils/explore/buildComparisonDetails";
 import {
+  getComparisonViewSnapshot,
   isSameComparisonLink,
   orderSelectedCards,
 } from "@/utils/explore/comparisonUtils";
 
 export function useComparisonItems() {
   const { selectedIds, variant, selectedCount } = useComparison();
-  const hasSelection = selectedCount > 0 && variant !== null;
-  const loadCompanies = hasSelection && variant === "company";
-  const loadMunicipalities = hasSelection && variant === "municipality";
-  const loadRegions = hasSelection && variant === "region";
+  const viewSnapshot = getComparisonViewSnapshot();
+  const activeIds =
+    selectedCount > 0 && variant ? selectedIds : (viewSnapshot?.selectedIds ?? []);
+  const activeVariant =
+    selectedCount > 0 && variant ? variant : (viewSnapshot?.variant ?? null);
+  const hasViewData = activeIds.length > 0 && activeVariant !== null;
+  const loadCompanies = hasViewData && activeVariant === "company";
+  const loadMunicipalities = hasViewData && activeVariant === "municipality";
+  const loadRegions = hasViewData && activeVariant === "region";
 
   const { companies, companiesLoading } = useCompanies({
     enabled: loadCompanies,
@@ -52,20 +58,20 @@ export function useComparisonItems() {
   });
 
   const items = useMemo(() => {
-    if (!hasSelection || !variant) {
+    if (!hasViewData || !activeVariant) {
       return [];
     }
 
     const source =
-      variant === "company"
+      activeVariant === "company"
         ? allCompanyCards
-        : variant === "municipality"
+        : activeVariant === "municipality"
           ? allMunicipalityCards
           : allRegionCards;
 
-    const selectedCards = orderSelectedCards(source, selectedIds);
+    const selectedCards = orderSelectedCards(source, activeIds);
 
-    if (variant === "municipality") {
+    if (activeVariant === "municipality") {
       return selectedCards.map((card) => {
         const municipality = (municipalities ?? []).find((m) =>
           isSameComparisonLink(getMunicipalityLinkTo(m.name), card.linkTo),
@@ -79,7 +85,7 @@ export function useComparisonItems() {
       });
     }
 
-    if (variant === "company") {
+    if (activeVariant === "company") {
       return selectedCards.map((card) => {
         const company = (companies ?? []).find((c) =>
           isSameComparisonLink(getCompanyLinkTo(c.wikidataId), card.linkTo),
@@ -106,18 +112,18 @@ export function useComparisonItems() {
       });
     });
   }, [
+    activeIds,
+    activeVariant,
     allCompanyCards,
     allMunicipalityCards,
     allRegionCards,
     companies,
     currentLanguage,
-    hasSelection,
+    hasViewData,
     isAIGenerated,
     municipalities,
     regions,
-    selectedIds,
     t,
-    variant,
   ]);
 
   const loading = loadCompanies
@@ -128,5 +134,10 @@ export function useComparisonItems() {
         ? regionsLoading
         : false;
 
-  return { items, loading, variant, selectedCount };
+  return {
+    items,
+    loading,
+    variant: activeVariant,
+    viewCount: activeIds.length,
+  };
 }

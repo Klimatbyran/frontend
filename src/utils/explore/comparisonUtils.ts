@@ -1,5 +1,6 @@
 import type { CombinedData } from "@/hooks/useCombinedData";
 import type { ListCardProps } from "@/components/explore/ListCard";
+import type { ComparisonSelectionState } from "@/utils/explore/comparisonSelection";
 
 export type ComparisonEntityVariant = NonNullable<ListCardProps["variant"]>;
 
@@ -12,9 +13,137 @@ export const COMPARISON_MIN = 2;
 export const COMPARISON_MAX = 4;
 
 const COMPARISON_RETURN_TO_KEY = "klimatkollen-comparison-return-to";
+const COMPARISON_NAVIGATING_KEY = "klimatkollen-comparison-navigating";
+const COMPARISON_VIEW_KEY = "klimatkollen-comparison-view";
+const COMPARISON_VIEWED_KEY = "klimatkollen-comparison-viewed";
+
+export function markNavigatingToComparison() {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  sessionStorage.setItem(COMPARISON_NAVIGATING_KEY, "1");
+}
+
+export function isNavigatingToComparison(): boolean {
+  if (typeof window === "undefined") {
+    return false;
+  }
+
+  return sessionStorage.getItem(COMPARISON_NAVIGATING_KEY) === "1";
+}
+
+export function clearNavigatingToComparison() {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  sessionStorage.removeItem(COMPARISON_NAVIGATING_KEY);
+}
+
+export function setComparisonViewSnapshot(state: ComparisonSelectionState) {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  sessionStorage.setItem(COMPARISON_VIEW_KEY, JSON.stringify(state));
+}
+
+export function getComparisonViewSnapshot(): ComparisonSelectionState | null {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  try {
+    const raw = sessionStorage.getItem(COMPARISON_VIEW_KEY);
+    if (!raw) {
+      return null;
+    }
+
+    const parsed = JSON.parse(raw) as ComparisonSelectionState;
+    if (
+      !Array.isArray(parsed.selectedIds) ||
+      parsed.selectedIds.length === 0 ||
+      !parsed.variant
+    ) {
+      return null;
+    }
+
+    return {
+      selectedIds: parsed.selectedIds,
+      variant: parsed.variant,
+    };
+  } catch {
+    return null;
+  }
+}
+
+export function clearComparisonViewSnapshot() {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  sessionStorage.removeItem(COMPARISON_VIEW_KEY);
+}
+
+export function markComparisonViewed() {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  sessionStorage.setItem(COMPARISON_VIEWED_KEY, "1");
+}
+
+export function isComparisonViewed(): boolean {
+  if (typeof window === "undefined") {
+    return false;
+  }
+
+  return sessionStorage.getItem(COMPARISON_VIEWED_KEY) === "1";
+}
+
+export function clearComparisonViewed() {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  sessionStorage.removeItem(COMPARISON_VIEWED_KEY);
+}
+
+/** Clears active picker selection and navigation helpers (not the compare-view snapshot). */
+export function resetComparisonSession(clearSelection: () => void) {
+  clearNavigatingToComparison();
+  clearComparisonReturnTo();
+  clearSelection();
+}
+
+/** Clears everything after the user has opened the compare view page. */
+export function resetComparisonAfterView(clearSelection: () => void) {
+  clearNavigatingToComparison();
+  clearComparisonReturnTo();
+  clearComparisonViewSnapshot();
+  clearComparisonViewed();
+  clearSelection();
+}
 
 export function isCompareRoute(pathname: string): boolean {
   return pathname.includes("/explore/compare");
+}
+
+/** True when the user has left compare and active picker state should be cleared. */
+export function shouldResetComparisonAfterLeavingRoute(
+  pathname: string,
+  previousPathname: string,
+): boolean {
+  if (isCompareRoute(pathname)) {
+    return false;
+  }
+
+  return (
+    isCompareRoute(previousPathname) ||
+    isComparisonViewed() ||
+    getComparisonViewSnapshot() !== null
+  );
 }
 
 export function buildComparisonReturnTo({

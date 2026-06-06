@@ -2,7 +2,11 @@ import { useTranslation } from "react-i18next";
 import { GitCompareArrows } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useComparison } from "@/contexts/ComparisonContext";
-import { COMPARISON_MAX } from "@/utils/explore/comparisonUtils";
+import {
+  COMPARISON_MAX,
+  getComparisonViewSnapshot,
+  isComparisonViewed,
+} from "@/utils/explore/comparisonUtils";
 import type { ComparisonEntityVariant } from "@/utils/explore/comparisonUtils";
 import { useComparisonPickerTrigger } from "@/hooks/explore/useComparisonPickerTrigger";
 import { ComparisonPickerDialog } from "./ComparisonPickerDialog";
@@ -29,7 +33,9 @@ export function ComparisonDetailChip({
     sheetOnMobile: true,
   });
   const isCurrentSelected = isSelected(linkTo);
-  const hasSelection = selectedCount > 0;
+  const compareViewPending =
+    isComparisonViewed() || getComparisonViewSnapshot() !== null;
+  const hasSelection = selectedCount > 0 && !compareViewPending;
 
   return (
     <>

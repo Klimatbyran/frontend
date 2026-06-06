@@ -1,5 +1,4 @@
 import { useTranslation } from "react-i18next";
-import { useComparison } from "@/contexts/ComparisonContext";
 import { useComparisonItems } from "@/hooks/explore/useComparisonItems";
 import { useComparisonBackNavigation } from "@/hooks/explore/useComparisonBackNavigation";
 import { ComparisonView } from "@/components/explore/ComparisonView";
@@ -8,15 +7,14 @@ import { COMPARISON_MIN } from "@/utils/explore/comparisonUtils";
 
 export function ComparisonPage() {
   const { t } = useTranslation();
-  const { selectedCount } = useComparison();
-  const { items, loading } = useComparisonItems();
+  const { items, loading, viewCount } = useComparisonItems();
   const { handleBack, backLabelKey } = useComparisonBackNavigation();
 
   if (loading) {
     return <PageLoading />;
   }
 
-  if (selectedCount < COMPARISON_MIN || items.length < COMPARISON_MIN) {
+  if (viewCount < COMPARISON_MIN || items.length < COMPARISON_MIN) {
     return (
       <div className="py-16 text-center">
         <h2 className="text-2xl font-light">
