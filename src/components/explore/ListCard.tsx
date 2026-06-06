@@ -113,7 +113,7 @@ export function ListCard({
         >
           <div
             className={cn(
-              "absolute top-4 left-4 z-10 flex h-7 w-7 items-center justify-center rounded-full border-2 transition-colors",
+              "absolute top-5 left-5 z-10 flex h-5 w-5 items-center justify-center rounded-full border transition-colors",
               selected
                 ? "border-blue-2 bg-blue-5 text-white"
                 : selectionDisabled
@@ -122,7 +122,7 @@ export function ListCard({
             )}
             aria-hidden
           >
-            {selected && <Check className="h-4 w-4" strokeWidth={2.5} />}
+            {selected && <Check className="h-3 w-3" strokeWidth={2.5} />}
           </div>
           {cardContent}
         </div>

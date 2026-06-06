@@ -20,6 +20,7 @@ import {
   markComparisonViewed,
   markNavigatingToComparison,
   resetComparisonAfterView,
+  resetComparisonPickerAfterLeavingCompare,
   orderSelectedCards,
   setComparisonViewSnapshot,
   shouldResetComparisonAfterLeavingRoute,
@@ -206,6 +207,26 @@ describe("comparison route helpers", () => {
     expect(clearSelection).toHaveBeenCalledOnce();
     expect(isComparisonViewed()).toBe(false);
     expect(getComparisonViewSnapshot()).toBeNull();
+    expect(isNavigatingToComparison()).toBe(false);
+  });
+
+  it("keeps the view snapshot when leaving compare for another page", () => {
+    markComparisonViewed();
+    setComparisonViewSnapshot({
+      selectedIds: ["/municipalities/A", "/municipalities/B"],
+      variant: "municipality",
+    });
+    markNavigatingToComparison();
+
+    const clearSelection = vi.fn();
+    resetComparisonPickerAfterLeavingCompare(clearSelection);
+
+    expect(clearSelection).toHaveBeenCalledOnce();
+    expect(isComparisonViewed()).toBe(false);
+    expect(getComparisonViewSnapshot()).toEqual({
+      selectedIds: ["/municipalities/A", "/municipalities/B"],
+      variant: "municipality",
+    });
     expect(isNavigatingToComparison()).toBe(false);
   });
 });

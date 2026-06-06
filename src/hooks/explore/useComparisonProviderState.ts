@@ -20,7 +20,7 @@ import {
   clearNavigatingToComparison,
   isCompareRoute,
   markComparisonViewed,
-  resetComparisonAfterView,
+  resetComparisonPickerAfterLeavingCompare,
   shouldResetComparisonAfterLeavingRoute,
   type ComparisonEntityVariant,
 } from "@/utils/explore/comparisonUtils";
@@ -99,7 +99,7 @@ function useComparisonRouteSync(
     }
 
     if (shouldResetComparisonAfterLeavingRoute(currentPath, previousPath)) {
-      resetComparisonAfterView(clearSelection);
+      resetComparisonPickerAfterLeavingCompare(clearSelection);
     }
 
     prevPathRef.current = currentPath;

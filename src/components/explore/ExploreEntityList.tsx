@@ -3,7 +3,10 @@ import { useComparisonSelection } from "@/hooks/explore/useComparisonSelection";
 import ListFilter from "@/components/explore/ListFilter";
 import type { ComponentProps } from "react";
 import { ListCard, type ListCardProps } from "./ListCard";
-import { ComparisonControls } from "./ComparisonControls";
+import {
+  ComparisonActiveBar,
+  ComparisonToggle,
+} from "./ComparisonControls";
 
 type ExploreEntityListProps = {
   items: ListCardProps[];
@@ -20,8 +23,12 @@ export function ExploreEntityList({
     <>
       <ListFilter
         {...filterProps}
-        hideListControls={comparison.isCompareMode}
-        comparisonControls={<ComparisonControls comparison={comparison} />}
+        comparisonToggle={<ComparisonToggle comparison={comparison} />}
+        comparisonActiveBar={
+          comparison.isCompareMode ? (
+            <ComparisonActiveBar comparison={comparison} />
+          ) : null
+        }
       />
       <CardGrid
         items={items}

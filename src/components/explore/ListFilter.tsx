@@ -28,7 +28,8 @@ interface IListFilter {
   }>;
   sortOptions: readonly SortOption[];
   searchPlaceholder: string;
-  comparisonControls?: ReactNode;
+  comparisonToggle?: ReactNode;
+  comparisonActiveBar?: ReactNode;
   hideListControls?: boolean;
 }
 
@@ -43,7 +44,8 @@ const ListFilter = ({
   activeFilters,
   sortOptions,
   searchPlaceholder,
-  comparisonControls,
+  comparisonToggle,
+  comparisonActiveBar,
   hideListControls = false,
 }: IListFilter) => {
   const screenSize = useScreenSize();
@@ -59,7 +61,12 @@ const ListFilter = ({
     >
       <div className="absolute inset-0 w-full bg-black -z-10" />
 
-      <div className={cn("flex flex-wrap items-center gap-2 mb-2 md:mb-4")}>
+      <div
+        className={cn(
+          "flex flex-wrap items-center gap-2",
+          comparisonActiveBar ? "mb-2" : "mb-2 md:mb-4",
+        )}
+      >
         {!hideListControls && (
           <>
             <Input
@@ -90,7 +97,7 @@ const ListFilter = ({
           </>
         )}
 
-        {comparisonControls}
+        {comparisonToggle}
 
         {!hideListControls && activeFilters.length > 0 && (
           <div
@@ -103,6 +110,12 @@ const ListFilter = ({
           </div>
         )}
       </div>
+
+      {comparisonActiveBar && (
+        <div className="mb-2 md:mb-4 border-t border-white/10 pt-2">
+          {comparisonActiveBar}
+        </div>
+      )}
     </div>
   );
 };

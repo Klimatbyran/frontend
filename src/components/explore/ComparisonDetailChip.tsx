@@ -4,7 +4,6 @@ import { cn } from "@/lib/utils";
 import { useComparison } from "@/contexts/ComparisonContext";
 import {
   COMPARISON_MAX,
-  getComparisonViewSnapshot,
   isComparisonViewed,
 } from "@/utils/explore/comparisonUtils";
 import type { ComparisonEntityVariant } from "@/utils/explore/comparisonUtils";
@@ -33,9 +32,7 @@ export function ComparisonDetailChip({
     sheetOnMobile: true,
   });
   const isCurrentSelected = isSelected(linkTo);
-  const compareViewPending =
-    isComparisonViewed() || getComparisonViewSnapshot() !== null;
-  const hasSelection = selectedCount > 0 && !compareViewPending;
+  const hasSelection = selectedCount > 0 && !isComparisonViewed();
 
   return (
     <>

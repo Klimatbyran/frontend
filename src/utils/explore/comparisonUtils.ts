@@ -117,7 +117,16 @@ export function resetComparisonSession(clearSelection: () => void) {
   clearSelection();
 }
 
-/** Clears everything after the user has opened the compare view page. */
+/** Clears active picker state when leaving compare but keeps the view snapshot for history back. */
+export function resetComparisonPickerAfterLeavingCompare(
+  clearSelection: () => void,
+) {
+  clearNavigatingToComparison();
+  clearComparisonViewed();
+  clearSelection();
+}
+
+/** Clears everything when the user abandons the compare view page. */
 export function resetComparisonAfterView(clearSelection: () => void) {
   clearNavigatingToComparison();
   clearComparisonReturnTo();
