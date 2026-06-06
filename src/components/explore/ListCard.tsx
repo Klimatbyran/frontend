@@ -1,6 +1,6 @@
+import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { LocalizedLink } from "@/components/LocalizedLink";
-import { Checkbox } from "@/components/ui/checkbox";
 import type { ComparisonDetails } from "@/utils/explore/buildComparisonDetails";
 import { ListCardBody } from "./ListCardBody";
 
@@ -76,6 +76,9 @@ export function ListCard({
     !comparisonMode &&
       "hover:shadow-[0_0_10px_rgba(153,207,255,0.15)] hover:bg-[#1a1a1a]",
     comparisonMode && "cursor-pointer",
+    comparisonMode &&
+      !selectionDisabled &&
+      "hover:shadow-[0_0_10px_rgba(153,207,255,0.15)] hover:bg-[#1a1a1a]",
     comparisonMode && selected && "ring-2 ring-blue-2",
     comparisonMode && selectionDisabled && "opacity-50 cursor-not-allowed",
   );
@@ -90,6 +93,7 @@ export function ListCard({
           tabIndex={selectionDisabled ? -1 : 0}
           aria-pressed={selected}
           aria-disabled={selectionDisabled}
+          aria-label={cardProps.name}
           className={cardClassName}
           onClick={() => {
             if (!selectionDisabled && onSelect) {
@@ -107,21 +111,14 @@ export function ListCard({
             }
           }}
         >
-          <div
-            className="absolute top-4 right-4 z-10"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <Checkbox
-              checked={selected}
-              disabled={selectionDisabled}
-              onCheckedChange={() => {
-                if (!selectionDisabled && onSelect) {
-                  onSelect();
-                }
-              }}
-              aria-label={cardProps.name}
-            />
-          </div>
+          {selected && (
+            <div
+              className="absolute top-4 left-4 z-10 flex h-7 w-7 items-center justify-center rounded-full bg-blue-5 text-white"
+              aria-hidden
+            >
+              <Check className="h-4 w-4" strokeWidth={2.5} />
+            </div>
+          )}
           {cardContent}
         </div>
       </div>
