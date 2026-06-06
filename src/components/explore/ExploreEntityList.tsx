@@ -3,10 +3,7 @@ import { useComparisonSelection } from "@/hooks/explore/useComparisonSelection";
 import ListFilter from "@/components/explore/ListFilter";
 import type { ComponentProps } from "react";
 import { ListCard, type ListCardProps } from "./ListCard";
-import {
-  ComparisonActiveBar,
-  ComparisonToggle,
-} from "./ComparisonControls";
+import { ComparisonActiveBar, ComparisonToggle } from "./ComparisonControls";
 
 type ExploreEntityListProps = {
   items: ListCardProps[];

@@ -33,12 +33,8 @@ export function ComparisonToggle({ comparison }: ComparisonControlsProps) {
 }
 
 export function ComparisonActiveBar({ comparison }: ComparisonControlsProps) {
-  const {
-    selectedCount,
-    canViewComparison,
-    viewComparison,
-    clearSelection,
-  } = comparison;
+  const { selectedCount, canViewComparison, viewComparison, clearSelection } =
+    comparison;
 
   return (
     <ComparisonActionBar
