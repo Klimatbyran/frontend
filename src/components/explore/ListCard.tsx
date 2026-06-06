@@ -111,14 +111,19 @@ export function ListCard({
             }
           }}
         >
-          {selected && (
-            <div
-              className="absolute top-4 left-4 z-10 flex h-7 w-7 items-center justify-center rounded-full bg-blue-5 text-white"
-              aria-hidden
-            >
-              <Check className="h-4 w-4" strokeWidth={2.5} />
-            </div>
-          )}
+          <div
+            className={cn(
+              "absolute top-4 left-4 z-10 flex h-7 w-7 items-center justify-center rounded-full border-2 transition-colors",
+              selected
+                ? "border-blue-2 bg-blue-5 text-white"
+                : selectionDisabled
+                  ? "border-white/25 bg-white/5"
+                  : "border-white/40 bg-white/10",
+            )}
+            aria-hidden
+          >
+            {selected && <Check className="h-4 w-4" strokeWidth={2.5} />}
+          </div>
           {cardContent}
         </div>
       </div>
