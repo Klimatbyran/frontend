@@ -26,7 +26,9 @@ export function useComparisonItems() {
   const { selectedIds, variant, selectedCount } = useComparison();
   const viewSnapshot = getComparisonViewSnapshot();
   const activeIds =
-    selectedCount > 0 && variant ? selectedIds : (viewSnapshot?.selectedIds ?? []);
+    selectedCount > 0 && variant
+      ? selectedIds
+      : (viewSnapshot?.selectedIds ?? []);
   const activeVariant =
     selectedCount > 0 && variant ? variant : (viewSnapshot?.variant ?? null);
   const hasViewData = activeIds.length > 0 && activeVariant !== null;
