@@ -249,7 +249,9 @@ export function ExportOfOilProductsEmissionsChart({
                 <YAxis {...getYAxisProps(currentLanguage)} />
 
                 <Tooltip
-                  content={<ExportOfOilProductsTooltip unit={t("emissionsUnit")} />}
+                  content={
+                    <ExportOfOilProductsTooltip unit={t("emissionsUnit")} />
+                  }
                   cursor={{ fill: "var(--black-1)", opacity: 0.35 }}
                   wrapperStyle={{ outline: "none", zIndex: 60 }}
                 />
