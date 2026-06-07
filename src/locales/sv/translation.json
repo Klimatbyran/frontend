@@ -788,7 +788,7 @@
         },
         "companiesIncluded": {
           "title": "Inkluderade företag",
-          "paragraph1": "Vår databas omfattar företag på OMX Large Cap, Mid Cap och Small Cap på Stockholmsbörsen, de 24 största statliga företagen, de fem största ekonomiska föreningarna samt de olistade företagen IKEA och ICA Gruppen.",
+          "paragraph1": "Vår databas omfattar alla företag på Stockholmsbörsen (OMX Large Cap, Mid Cap och Small Cap), de 24 största statliga företagen, de fem största ekonomiska föreningarna, de olistade företagen IKEA och ICA Gruppen samt företag noterade på Nasdaq Baltic (samt ett par olistade balttiska företag).",
           "paragraph2": "Företagen kategoriseras efter bransch enligt Global Industry Classification Standard (GICS).",
           "link": {
             "title": "GICS",
