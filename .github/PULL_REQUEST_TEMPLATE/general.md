@@ -7,6 +7,10 @@
 <!-- Add before/after images or UI previews -->
 
 
+### 🌐 PR preview (optional)
+
+Add the **`preview`** label to deploy this branch to `https://pr-<number>.stage.klimatkollen.se` (Garbo stage). See [`k8s/preview/README.md`](../../k8s/preview/README.md) for cluster setup.
+
 ### 📋 Checklist
 
 - [ ] PR title starts with [#issue-number]; if no issue is applicable use: [fix], [feat], [prod], or [copy]
