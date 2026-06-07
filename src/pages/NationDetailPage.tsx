@@ -6,6 +6,7 @@ import { DetailHeader } from "@/components/detail/DetailHeader";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";
 import { SectorEmissionsChart } from "@/components/charts/sectorChart/SectorEmissions";
 import { EntityListBox } from "@/components/detail/EntityListBox";
+import { EmissionsComparisonBubbles } from "@/components/nation/EmissionsComparisonBubbles";
 import { useNationPageData } from "@/hooks/nation/useNationPageData";
 import { useLanguage } from "@/components/LanguageProvider";
 
@@ -39,6 +40,7 @@ function NationDetailContent({
         emissionsData={emissionsData}
         sectorEmissions={sectorEmissions}
       />
+      <EmissionsComparisonBubbles />
       <SectorEmissionsChart
         sectorEmissions={sectorEmissions}
         availableYears={availableYears}
