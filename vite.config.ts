@@ -5,6 +5,15 @@ import { plugin as markdown, Mode } from "vite-plugin-markdown";
 
 export default ({ mode }: ConfigEnv) => {
   const env = loadEnv(mode, process.cwd(), "");
+  const apiProxyTarget = env.VITE_API_PROXY ?? "https://klimatkollen.se/";
+  const isLocalGarboProxy = /localhost|127\.0\.0\.1/.test(apiProxyTarget);
+
+  if (isLocalGarboProxy && !env.GARBO_PROXY_CLIENT_API_KEY) {
+    console.warn(
+      "[vite] GARBO_PROXY_CLIENT_API_KEY is missing. Local Garbo returns 401 without it. " +
+        "Add your key to .env.development or use VITE_API_PROXY=https://klimatkollen.se/",
+    );
+  }
 
   return defineConfig({
     plugins: [
@@ -27,7 +36,7 @@ export default ({ mode }: ConfigEnv) => {
     server: {
       proxy: {
         "/api": {
-          target: env.VITE_API_PROXY ?? "http://localhost:3000/", // Default to local, override in CI/CD
+          target: apiProxyTarget,
           changeOrigin: true,
           secure: false,
           configure: (proxy) => {

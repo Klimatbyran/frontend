@@ -55,24 +55,6 @@ interface ChartTooltipProps {
   showAIIndicators?: boolean;
 }
 
-const NATION_PARIS_TOOLTIP_LAYERS = [
-  {
-    topKey: "territorialFossilCarbonLawTop",
-    valueKey: "territorialFossilCarbonLaw",
-    labelKey: "nation.detailPage.graph.territorialFossilParis",
-  },
-  {
-    topKey: "biogenicCarbonLawTop",
-    valueKey: "biogenicCarbonLaw",
-    labelKey: "nation.detailPage.graph.biogenicParis",
-  },
-  {
-    topKey: "consumptionAbroadCarbonLawTop",
-    valueKey: "consumptionAbroadCarbonLaw",
-    labelKey: "nation.detailPage.graph.consumptionAbroadParis",
-  },
-] as const;
-
 export const ChartTooltip: React.FC<ChartTooltipProps> = ({
   active,
   payload,
@@ -107,10 +89,8 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
     // Keep trend and Paris data even if zero
     if (
       entry.dataKey === "approximated" ||
-      entry.dataKey === "carbonLaw" ||
-      entry.dataKey === "territorialFossilCarbonLaw" ||
-      entry.dataKey === "biogenicCarbonLaw" ||
-      entry.dataKey === "consumptionAbroadCarbonLaw"
+      entry.dataKey === "trend" ||
+      entry.dataKey === "carbonLaw"
     ) {
       return entry.value != null;
     }
@@ -139,9 +119,16 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
   }
 
   if (dataView === "nation-overview") {
-    const dataPoint = payload[0]?.payload as
-      | Record<string, number | undefined>
-      | undefined;
+    const nationTrendLabelKeys: Record<string, string> = {
+      territorialFossilTrend: "nation.detailPage.graph.territorialFossil",
+      biogenicTrend: "nation.detailPage.graph.biogenic",
+      consumptionAbroadTrend: "nation.detailPage.graph.consumptionAbroad",
+    };
+    const nationTrendColors: Record<string, string> = {
+      territorialFossilTrend: "var(--orange-2)",
+      biogenicTrend: "var(--green-2)",
+      consumptionAbroadTrend: "var(--blue-2)",
+    };
 
     const stackKeys = new Set([
       "territorialFossil",
@@ -151,56 +138,34 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
       "biogenicTrend",
       "consumptionAbroadTrend",
     ]);
-    filteredPayload = filteredPayload.filter(
-      (entry) =>
-        entry.dataKey &&
-        stackKeys.has(entry.dataKey) &&
-        !entry.dataKey.endsWith("TrendTop") &&
-        !entry.dataKey.endsWith("HistoricalTop"),
-    );
-
-    const hasReported = filteredPayload.some(
-      (entry) =>
-        entry.dataKey &&
-        ["territorialFossil", "biogenic", "consumptionAbroad"].includes(
-          entry.dataKey,
-        ) &&
-        entry.value != null,
-    );
-    if (hasReported) {
-      filteredPayload = filteredPayload.filter(
+    filteredPayload = filteredPayload
+      .filter(
         (entry) =>
-          !entry.dataKey ||
-          ![
-            "territorialFossilTrend",
-            "biogenicTrend",
-            "consumptionAbroadTrend",
-          ].includes(entry.dataKey),
-      );
-    }
-
-    const parisTooltipEntries: PayloadEntry[] =
-      NATION_PARIS_TOOLTIP_LAYERS.flatMap((layer) => {
-        const topEntry = payload.find(
-          (entry) => entry.dataKey === layer.topKey,
-        );
-        const segmentValue = dataPoint?.[layer.valueKey];
-        if (segmentValue == null || !topEntry) {
-          return [];
+          entry.dataKey &&
+          stackKeys.has(entry.dataKey) &&
+          !entry.dataKey.endsWith("TrendTop") &&
+          !entry.dataKey.endsWith("HistoricalTop"),
+      )
+      .map((entry) => {
+        const labelKey = nationTrendLabelKeys[entry.dataKey as string];
+        if (!labelKey) {
+          return entry;
         }
 
-        return [
-          {
-            dataKey: layer.valueKey,
-            value: segmentValue,
-            name: t(layer.labelKey),
-            color: topEntry.color,
-            payload: payload[0]?.payload,
-          },
-        ];
+        return {
+          ...entry,
+          name: `${t(labelKey)} (${t("detailPage.graph.trend")})`,
+          color: nationTrendColors[entry.dataKey as string] ?? entry.color,
+        };
       });
 
-    filteredPayload = [...filteredPayload, ...parisTooltipEntries];
+    const seenDataKeys = new Set<string>();
+    filteredPayload = filteredPayload.filter((entry) => {
+      if (!entry.dataKey) return false;
+      if (seenDataKeys.has(entry.dataKey)) return false;
+      seenDataKeys.add(entry.dataKey);
+      return true;
+    });
   }
 
   // For municipality overview, handle approximated data logic

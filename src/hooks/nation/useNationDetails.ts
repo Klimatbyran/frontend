@@ -83,10 +83,36 @@ function normalizeCountry(country: ApiNationResponse["country"]): {
   return { sv: country.sv, en: country.en };
 }
 
+function warnIfNationLayerFieldsMissing(r: ApiNationResponse): void {
+  if (!import.meta.env.DEV) return;
+
+  const missing: string[] = [];
+  if (!r.territorialFossilEmissions?.length) {
+    missing.push("territorialFossilEmissions");
+  }
+  if (!r.biogenicEmissions?.length) {
+    missing.push("biogenicEmissions");
+  }
+  if (!r.consumptionAbroadEmissions?.length) {
+    missing.push("consumptionAbroadEmissions");
+  }
+
+  if (missing.length === 0) return;
+
+  console.warn(
+    `[nation] Stacked chart needs per-layer API fields (${missing.join(", ")}). ` +
+      `Received only: ${Object.keys(r).join(", ")}. ` +
+      `Use VITE_API_PROXY=http://localhost:3000/ with GARBO_PROXY_CLIENT_API_KEY, ` +
+      `and ensure Garbo NationDataSchema + nation-data.json expose the layer fields.`,
+  );
+}
+
 function transformApiNationToNationDetails(
   r: ApiNationResponse,
   currentYear: number,
 ): NationDetails {
+  warnIfNationLayerFieldsMissing(r);
+
   const territorialFossil = extractEmissionsRecord(
     r.territorialFossilEmissions ?? r.emissions,
   );

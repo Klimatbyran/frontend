@@ -16,7 +16,6 @@ import {
   EnhancedLegend,
   ChartYearControls,
   LegendItem,
-  getLinePropsWithHover,
   getXAxisProps,
   getYAxisProps,
   getCurrentYearReferenceLineProps,
@@ -36,31 +35,22 @@ const NATION_STACK_CONFIG = [
     dataKey: "territorialFossil" as const,
     historicalTopDataKey: "territorialFossilHistoricalTop" as const,
     trendTopDataKey: "territorialFossilTrendTop" as const,
-    carbonLawDataKey: "territorialFossilCarbonLaw" as const,
-    carbonLawTopDataKey: "territorialFossilCarbonLawTop" as const,
     color: "var(--orange-2)",
     translationKey: "nation.detailPage.graph.territorialFossil",
-    parisTranslationKey: "nation.detailPage.graph.territorialFossilParis",
   },
   {
     dataKey: "biogenic" as const,
     historicalTopDataKey: "biogenicHistoricalTop" as const,
     trendTopDataKey: "biogenicTrendTop" as const,
-    carbonLawDataKey: "biogenicCarbonLaw" as const,
-    carbonLawTopDataKey: "biogenicCarbonLawTop" as const,
     color: "var(--green-2)",
     translationKey: "nation.detailPage.graph.biogenic",
-    parisTranslationKey: "nation.detailPage.graph.biogenicParis",
   },
   {
     dataKey: "consumptionAbroad" as const,
     historicalTopDataKey: "consumptionAbroadHistoricalTop" as const,
     trendTopDataKey: "consumptionAbroadTrendTop" as const,
-    carbonLawDataKey: "consumptionAbroadCarbonLaw" as const,
-    carbonLawTopDataKey: "consumptionAbroadCarbonLawTop" as const,
     color: "var(--blue-2)",
     translationKey: "nation.detailPage.graph.consumptionAbroad",
-    parisTranslationKey: "nation.detailPage.graph.consumptionAbroadParis",
   },
 ] as const;
 
@@ -81,7 +71,7 @@ export const NationOverviewChart: FC<NationOverviewChartProps> = ({
   );
 
   const legendItems: LegendItem[] = useMemo(() => {
-    const layerItems: LegendItem[] = NATION_STACK_CONFIG.flatMap((layer) => [
+    return NATION_STACK_CONFIG.flatMap((layer) => [
       {
         name: t(layer.translationKey),
         color: layer.color,
@@ -90,15 +80,13 @@ export const NationOverviewChart: FC<NationOverviewChartProps> = ({
         isDashed: false,
       },
       {
-        name: t(layer.parisTranslationKey),
+        name: `${t(layer.translationKey)} (${t("detailPage.graph.trend")})`,
         color: layer.color,
         isClickable: false,
         isHidden: false,
         isDashed: true,
       },
     ]);
-
-    return layerItems;
   }, [t]);
 
   const filteredData = useMemo(() => {
@@ -154,21 +142,6 @@ export const NationOverviewChart: FC<NationOverviewChartProps> = ({
             ))}
 
             {NATION_STACK_CONFIG.map((layer) => (
-              <Area
-                key={`paris-fill-${layer.carbonLawDataKey}`}
-                type="monotone"
-                dataKey={layer.carbonLawDataKey}
-                stackId="paris"
-                stroke="none"
-                fill={layer.color}
-                fillOpacity={0.4}
-                legendType="none"
-                name={t(layer.parisTranslationKey)}
-                connectNulls={false}
-              />
-            ))}
-
-            {NATION_STACK_CONFIG.map((layer) => (
               <Line
                 key={layer.historicalTopDataKey}
                 type="monotone"
@@ -193,23 +166,8 @@ export const NationOverviewChart: FC<NationOverviewChartProps> = ({
                 fillOpacity={0}
                 dot={false}
                 legendType="none"
-                name={t("detailPage.graph.estimated")}
+                name={t("detailPage.graph.trend")}
                 connectNulls={false}
-              />
-            ))}
-
-            {NATION_STACK_CONFIG.map((layer) => (
-              <Line
-                key={layer.carbonLawTopDataKey}
-                type="monotone"
-                dataKey={layer.carbonLawTopDataKey}
-                {...getLinePropsWithHover(
-                  "secondary",
-                  layer.color,
-                  isMobile,
-                  t(layer.parisTranslationKey),
-                )}
-                connectNulls
               />
             ))}
           </ComposedChart>

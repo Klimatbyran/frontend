@@ -6,6 +6,8 @@ import {
 
 const EMISSIONS_DATA_START_YEAR = 1990;
 const EMISSIONS_DATA_END_YEAR = 2050;
+/** Years used to fit per-layer linear trend slopes. */
+const NATION_TREND_FIT_START_YEAR = 2015;
 
 const KG_TO_TONS = 1000;
 
@@ -104,6 +106,14 @@ function getLayerParisValueKg(
   );
 }
 
+function getLatestLayerYear(reported: Record<string, number>): number | null {
+  const years = Object.keys(reported)
+    .map(Number)
+    .filter((year) => !isNaN(year) && reported[year.toString()] !== undefined);
+
+  return years.length > 0 ? Math.max(...years) : null;
+}
+
 function getLatestCompleteStackYear(
   nation: NationEmissionsInput,
 ): number | null {
@@ -157,6 +167,92 @@ function getLayerTrendValueKg(
   return approximated?.[year.toString()];
 }
 
+function computeLayerTrendSlopeKgPerYear(
+  reported: Record<string, number>,
+  startYear: number,
+  endYear: number,
+): number | null {
+  const points = Object.entries(reported)
+    .map(([year, value]) => ({ year: Number(year), value }))
+    .filter(
+      ({ year, value }) =>
+        !isNaN(year) &&
+        year >= startYear &&
+        year <= endYear &&
+        value !== undefined,
+    )
+    .sort((a, b) => a.year - b.year);
+
+  if (points.length < 2) {
+    return null;
+  }
+
+  const n = points.length;
+  const meanX = points.reduce((sum, point) => sum + point.year, 0) / n;
+  const meanY = points.reduce((sum, point) => sum + point.value, 0) / n;
+  const numerator = points.reduce(
+    (sum, point) => sum + (point.year - meanX) * (point.value - meanY),
+    0,
+  );
+  const denominator = points.reduce(
+    (sum, point) => sum + (point.year - meanX) ** 2,
+    0,
+  );
+
+  if (denominator === 0) {
+    return null;
+  }
+
+  return numerator / denominator;
+}
+
+/** Per-layer trend: slope from fit window, displayed from each layer's last reported year. */
+function getLayerStackTrendValueKg(
+  reported: Record<string, number>,
+  approximated: Record<string, number> | undefined,
+  slopeKgPerYear: number | null,
+  layerAnchorYear: number,
+  year: number,
+  approximatedFillEndYear: number | null,
+  trendDisplayStartYear: number,
+): number | undefined {
+  if (
+    slopeKgPerYear === null ||
+    year < trendDisplayStartYear ||
+    year > EMISSIONS_DATA_END_YEAR
+  ) {
+    return undefined;
+  }
+
+  const anchorValue = reported[layerAnchorYear.toString()];
+  if (anchorValue === undefined) {
+    return undefined;
+  }
+
+  if (
+    approximatedFillEndYear !== null &&
+    year > layerAnchorYear &&
+    year <= approximatedFillEndYear
+  ) {
+    const approximatedValue = approximated?.[year.toString()];
+    if (approximatedValue !== undefined) {
+      return approximatedValue;
+    }
+  }
+
+  const projectionBaseYear =
+    approximatedFillEndYear !== null && year > approximatedFillEndYear
+      ? approximatedFillEndYear
+      : layerAnchorYear;
+  const projectionBaseValue =
+    projectionBaseYear === layerAnchorYear
+      ? anchorValue
+      : (approximated?.[projectionBaseYear.toString()] ??
+        anchorValue + slopeKgPerYear * (projectionBaseYear - layerAnchorYear));
+
+  return projectionBaseValue + slopeKgPerYear * (year - projectionBaseYear);
+}
+
 /** Continuous stack fill: reported through anchor year, then approximated through API end year. */
 function getLayerStackFillValueKg(
   reported: Record<string, number>,
@@ -195,14 +291,13 @@ function getCumulativeLayerTops(
   middleTop?: number;
   topTop?: number;
 } {
-  if (bottom === undefined) {
-    return {};
-  }
+  const bottomValue = bottom ?? 0;
+  const middleValue = middle ?? 0;
 
   return {
     bottomTop: bottom,
-    middleTop: sumDefined(bottom, middle),
-    topTop: sumDefined(bottom, middle, top),
+    middleTop: middle !== undefined ? bottomValue + middleValue : undefined,
+    topTop: top !== undefined ? bottomValue + middleValue + top : undefined,
   };
 }
 
@@ -256,6 +351,37 @@ export function transformNationEmissionsData(
 
   const stackAnchorYear = getLatestCompleteStackYear(nation);
   const approximatedFillEndYear = getApproximatedStackEndYear(nation);
+  const territorialFossilAnchorYear = getLatestLayerYear(
+    nation.territorialFossil,
+  );
+  const biogenicAnchorYear = getLatestLayerYear(nation.biogenic);
+  const consumptionAbroadAnchorYear = getLatestLayerYear(
+    nation.consumptionAbroad,
+  );
+  const territorialFossilTrendSlope =
+    territorialFossilAnchorYear !== null
+      ? computeLayerTrendSlopeKgPerYear(
+          nation.territorialFossil,
+          NATION_TREND_FIT_START_YEAR,
+          territorialFossilAnchorYear,
+        )
+      : null;
+  const biogenicTrendSlope =
+    biogenicAnchorYear !== null
+      ? computeLayerTrendSlopeKgPerYear(
+          nation.biogenic,
+          NATION_TREND_FIT_START_YEAR,
+          biogenicAnchorYear,
+        )
+      : null;
+  const consumptionAbroadTrendSlope =
+    consumptionAbroadAnchorYear !== null
+      ? computeLayerTrendSlopeKgPerYear(
+          nation.consumptionAbroad,
+          NATION_TREND_FIT_START_YEAR,
+          consumptionAbroadAnchorYear,
+        )
+      : null;
 
   return Array.from(years)
     .filter((year) => !isNaN(Number(year)))
@@ -263,7 +389,7 @@ export function transformNationEmissionsData(
       const yearNum = Number(year);
       const reported = resolveReportedStackValues(nation, year);
 
-      const territorialFossil = toTons(
+      let territorialFossil = toTons(
         getLayerStackFillValueKg(
           nation.territorialFossil,
           nation.approximatedTerritorialFossil,
@@ -272,7 +398,7 @@ export function transformNationEmissionsData(
           approximatedFillEndYear,
         ),
       );
-      const biogenic = toTons(
+      let biogenic = toTons(
         getLayerStackFillValueKg(
           nation.biogenic,
           nation.approximatedBiogenic,
@@ -281,7 +407,7 @@ export function transformNationEmissionsData(
           approximatedFillEndYear,
         ),
       );
-      const consumptionAbroad = toTons(
+      let consumptionAbroad = toTons(
         getLayerStackFillValueKg(
           nation.consumptionAbroad,
           nation.approximatedConsumptionAbroad,
@@ -295,10 +421,90 @@ export function transformNationEmissionsData(
       let biogenicHistoricalTop: number | undefined;
       let consumptionAbroadHistoricalTop: number | undefined;
 
+      let territorialFossilTrend: number | undefined;
+      let biogenicTrend: number | undefined;
+      let consumptionAbroadTrend: number | undefined;
+      let territorialFossilTrendTop: number | undefined;
+      let biogenicTrendTop: number | undefined;
+      let consumptionAbroadTrendTop: number | undefined;
+
+      if (territorialFossilAnchorYear !== null) {
+        territorialFossilTrend = toTons(
+          getLayerStackTrendValueKg(
+            nation.territorialFossil,
+            nation.approximatedTerritorialFossil,
+            territorialFossilTrendSlope,
+            territorialFossilAnchorYear,
+            yearNum,
+            approximatedFillEndYear,
+            territorialFossilAnchorYear,
+          ),
+        );
+      }
+      if (biogenicAnchorYear !== null) {
+        biogenicTrend = toTons(
+          getLayerStackTrendValueKg(
+            nation.biogenic,
+            nation.approximatedBiogenic,
+            biogenicTrendSlope,
+            biogenicAnchorYear,
+            yearNum,
+            approximatedFillEndYear,
+            biogenicAnchorYear,
+          ),
+        );
+      }
+      if (consumptionAbroadAnchorYear !== null) {
+        consumptionAbroadTrend = toTons(
+          getLayerStackTrendValueKg(
+            nation.consumptionAbroad,
+            nation.approximatedConsumptionAbroad,
+            consumptionAbroadTrendSlope,
+            consumptionAbroadAnchorYear,
+            yearNum,
+            approximatedFillEndYear,
+            consumptionAbroadAnchorYear,
+          ),
+        );
+      }
+
       if (
-        stackAnchorYear !== null &&
-        yearNum <= stackAnchorYear &&
-        territorialFossil !== undefined
+        territorialFossilTrend !== undefined ||
+        biogenicTrend !== undefined ||
+        consumptionAbroadTrend !== undefined
+      ) {
+        const trendTops = getCumulativeLayerTops(
+          territorialFossilTrend,
+          biogenicTrend,
+          consumptionAbroadTrend,
+        );
+        territorialFossilTrendTop = trendTops.bottomTop;
+        biogenicTrendTop = trendTops.middleTop;
+        consumptionAbroadTrendTop = trendTops.topTop;
+      }
+
+      // Continue one stack with trend after approximated end (2026 stays on reported/approximated fill).
+      if (
+        approximatedFillEndYear !== null &&
+        yearNum > approximatedFillEndYear
+      ) {
+        if (territorialFossilTrend !== undefined) {
+          territorialFossil = territorialFossilTrend;
+        }
+        if (biogenicTrend !== undefined) {
+          biogenic = biogenicTrend;
+        }
+        if (consumptionAbroadTrend !== undefined) {
+          consumptionAbroad = consumptionAbroadTrend;
+        }
+      }
+
+      const stackOutlineEndYear = approximatedFillEndYear ?? stackAnchorYear;
+      if (
+        (stackOutlineEndYear === null || yearNum <= stackOutlineEndYear) &&
+        (territorialFossil !== undefined ||
+          biogenic !== undefined ||
+          consumptionAbroad !== undefined)
       ) {
         const historicalTops = getCumulativeLayerTops(
           territorialFossil,
@@ -310,56 +516,10 @@ export function transformNationEmissionsData(
         consumptionAbroadHistoricalTop = historicalTops.topTop;
       }
 
-      let territorialFossilTrend: number | undefined;
-      let biogenicTrend: number | undefined;
-      let consumptionAbroadTrend: number | undefined;
-      let territorialFossilTrendTop: number | undefined;
-      let biogenicTrendTop: number | undefined;
-      let consumptionAbroadTrendTop: number | undefined;
-
-      if (
-        stackAnchorYear !== null &&
-        approximatedFillEndYear !== null &&
-        yearNum >= stackAnchorYear &&
-        yearNum <= approximatedFillEndYear
-      ) {
-        territorialFossilTrend = toTons(
-          getLayerTrendValueKg(
-            nation.territorialFossil,
-            nation.approximatedTerritorialFossil,
-            yearNum,
-            stackAnchorYear,
-            approximatedFillEndYear,
-          ),
-        );
-        biogenicTrend = toTons(
-          getLayerTrendValueKg(
-            nation.biogenic,
-            nation.approximatedBiogenic,
-            yearNum,
-            stackAnchorYear,
-            approximatedFillEndYear,
-          ),
-        );
-        consumptionAbroadTrend = toTons(
-          getLayerTrendValueKg(
-            nation.consumptionAbroad,
-            nation.approximatedConsumptionAbroad,
-            yearNum,
-            stackAnchorYear,
-            approximatedFillEndYear,
-          ),
-        );
-
-        const trendTops = getCumulativeLayerTops(
-          territorialFossilTrend,
-          biogenicTrend,
-          consumptionAbroadTrend,
-        );
-        territorialFossilTrendTop = trendTops.bottomTop;
-        biogenicTrendTop = trendTops.middleTop;
-        consumptionAbroadTrendTop = trendTops.topTop;
-      }
+      // Trend fill uses the main stack; keep trend fields for dashed outlines only.
+      territorialFossilTrend = undefined;
+      biogenicTrend = undefined;
+      consumptionAbroadTrend = undefined;
 
       let territorialFossilCarbonLaw: number | undefined;
       let biogenicCarbonLaw: number | undefined;
@@ -423,14 +583,10 @@ export function transformNationEmissionsData(
         consumptionAbroadCarbonLaw,
       );
 
-      const hasApproximatedTrend =
-        stackAnchorYear !== null &&
+      const hasProjectedTrend =
         approximatedFillEndYear !== null &&
-        yearNum > stackAnchorYear &&
-        yearNum <= approximatedFillEndYear &&
-        (territorialFossilTrend !== undefined ||
-          biogenicTrend !== undefined ||
-          consumptionAbroadTrend !== undefined);
+        yearNum >= approximatedFillEndYear &&
+        stackedReported !== undefined;
 
       return {
         year: yearNum,
@@ -447,7 +603,7 @@ export function transformNationEmissionsData(
         biogenicTrendTop,
         consumptionAbroadTrendTop,
         total: stackedReported ?? stackedTrend ?? stackedParisTotal,
-        approximated: hasApproximatedTrend ? stackedTrend : undefined,
+        approximated: hasProjectedTrend ? stackedReported : undefined,
         trend: toTons(nation.trend?.[year]),
         carbonLaw: toTons(nation.carbonLaw?.[year]),
         territorialFossilCarbonLaw,

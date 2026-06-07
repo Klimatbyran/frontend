@@ -58,7 +58,7 @@ export type NationDataPoint = DataPoint & {
   territorialFossil?: number;
   biogenic?: number;
   consumptionAbroad?: number;
-  /** Dashed trend segment from latest reported year toward current year */
+  /** Per-layer trend segment from 2015 (linear fit, then approximated where available) */
   territorialFossilTrend?: number;
   biogenicTrend?: number;
   consumptionAbroadTrend?: number;
