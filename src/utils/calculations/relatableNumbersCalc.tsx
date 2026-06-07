@@ -1,28 +1,44 @@
 import { formatEmissionsAbsolute } from "../formatting/localization";
 
+/** tCO2e per Swedish citizen — https://konsumtionskompassen.se/ */
+export const SWEDISH_CITIZEN_ANNUAL_EMISSIONS_TCO2E = 9;
+
+export function emissionsToSwedishCitizenEquivalent(
+  emissionsTonnes: number,
+  currentLanguage: "sv" | "en",
+) {
+  const count = Math.round(
+    emissionsTonnes / SWEDISH_CITIZEN_ANNUAL_EMISSIONS_TCO2E,
+  );
+
+  if (count < 2) {
+    return null;
+  }
+
+  return {
+    count,
+    formattedCount: formatEmissionsAbsolute(count, currentLanguage),
+  };
+}
+
 export const emissionsComparedToCitizen = (
   emissionsChange: number,
   currentLanguage: "sv" | "en",
 ) => {
-  const citizenTotalEmission = 9; // tCO2e per Swedish citizen according to https://konsumtionskompassen.se/
-
   if (emissionsChange === null) return null;
 
-  const comparisonNumber = Math.round(
-    Math.abs(emissionsChange / citizenTotalEmission),
+  const equivalent = emissionsToSwedishCitizenEquivalent(
+    Math.abs(emissionsChange),
+    currentLanguage,
   );
 
-  if (comparisonNumber >= 2) {
-    return {
-      comparisonNumber: formatEmissionsAbsolute(
-        comparisonNumber,
-        currentLanguage,
-      ),
-      translationKey: "Citizens",
-      prefix: "prefixEmissions",
-    };
-  }
-  return null;
+  if (!equivalent) return null;
+
+  return {
+    comparisonNumber: equivalent.formattedCount,
+    translationKey: "Citizens",
+    prefix: "prefixEmissions",
+  };
 };
 
 export const calculateAreaBurnt = (

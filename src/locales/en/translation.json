@@ -1459,6 +1459,11 @@
     "exportOfOilProducts": {
       "title": "Emissions from exported oil products",
       "description": "Annual emissions attributed to exported oil products from Sweden, in tonnes CO₂e (tCO₂e), 1990–2024.",
+      "citizenComparisonLabel": "How much is that?",
+      "citizenComparisonTooltipAria": "How the comparison to Swedes is calculated",
+      "citizenComparisonTooltip": "Based on {{year}} oil export emissions. We divide annual oil export emissions by 9 t CO₂e per person — the average Swede's annual footprint according to Konsumtionskompassen. The result shows how many Swedes would need to emit at that rate for one year to match the total.",
+      "citizenComparisonHighlight": "That equals <highlight>{{count}}</highlight> Swedes' annual emissions<tooltip/>",
+      "citizenEquivalent": "≈ {{count}} Swedes' annual emissions",
       "legendLow": "Lower emissions",
       "legendHigh": "Higher emissions"
     }

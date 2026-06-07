@@ -9,8 +9,10 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { useTranslation } from "react-i18next";
+import { useTranslation, Trans } from "react-i18next";
+import { Lightbulb } from "lucide-react";
 import { CardHeader } from "@/components/layout/CardHeader";
+import { InfoTooltip } from "@/components/layout/InfoTooltip";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useScreenSize } from "@/hooks/useScreenSize";
@@ -24,6 +26,7 @@ import {
   getYAxisProps,
 } from "@/components/charts";
 import { formatEmissionsAbsolute } from "@/utils/formatting/localization";
+import { emissionsToSwedishCitizenEquivalent } from "@/utils/calculations/relatableNumbersCalc";
 import { DEFAULT_STATISTICAL_GRADIENT_COLORS } from "@/utils/ui/colorGradients";
 import type { YearValuePoint } from "@/hooks/nation/useNationDetails";
 
@@ -82,6 +85,59 @@ function toChartData(points: YearValuePoint[]): ChartDatum[] {
   });
 }
 
+function getLatestYearPoint(data: YearValuePoint[]): YearValuePoint | null {
+  return data.length > 0 ? data[data.length - 1] : null;
+}
+
+function CitizenComparisonCallout({
+  year,
+  formattedCount,
+}: {
+  year: number;
+  formattedCount: string;
+}) {
+  const { t } = useTranslation();
+
+  return (
+    <div className="-mt-2 mb-6 flex gap-3 rounded-level-2 border border-yellow-3/35 bg-yellow-3/5 px-4 py-4 @lg:-mt-4 @lg:mb-8 @lg:px-5 @lg:py-5">
+      <Lightbulb
+        className="mt-0.5 shrink-0 text-yellow-3"
+        height={28}
+        width={28}
+        aria-hidden
+      />
+      <div className="min-w-0">
+        <p className="text-xs font-medium uppercase tracking-wide text-yellow-3">
+          {t("nation.exportOfOilProducts.citizenComparisonLabel")}
+        </p>
+        <p className="mt-1 text-sm leading-relaxed text-white @lg:text-base">
+          <Trans
+            i18nKey="nation.exportOfOilProducts.citizenComparisonHighlight"
+            values={{ count: formattedCount }}
+            components={{
+              highlight: (
+                <span className="text-xl font-semibold tabular-nums text-orange-2 @lg:text-2xl" />
+              ),
+              tooltip: (
+                <InfoTooltip
+                  ariaLabel={t(
+                    "nation.exportOfOilProducts.citizenComparisonTooltipAria",
+                  )}
+                  className="ml-1 inline-block h-4 w-4 shrink-0 align-middle"
+                >
+                  {t("nation.exportOfOilProducts.citizenComparisonTooltip", {
+                    year,
+                  })}
+                </InfoTooltip>
+              ),
+            }}
+          />
+        </p>
+      </div>
+    </div>
+  );
+}
+
 type ExportOfOilProductsTooltipProps = {
   active?: boolean;
   payload?: Array<{ payload?: ChartDatum }>;
@@ -93,6 +149,7 @@ function ExportOfOilProductsTooltip({
   payload,
   unit,
 }: ExportOfOilProductsTooltipProps) {
+  const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
 
   if (!active || !payload?.length || !payload[0]?.payload) {
@@ -104,6 +161,10 @@ function ExportOfOilProductsTooltip({
     valueKt * 1000,
     currentLanguage,
   );
+  const citizenEquivalent = emissionsToSwedishCitizenEquivalent(
+    valueKt * 1000,
+    currentLanguage,
+  );
 
   return (
     <div className="rounded-level-2 border border-black-1 bg-black-2 px-3 py-2 shadow-md">
@@ -111,6 +172,13 @@ function ExportOfOilProductsTooltip({
       <p className="text-sm text-grey tabular-nums">
         {formattedValue} {unit}
       </p>
+      {citizenEquivalent && (
+        <p className="mt-2 border-t border-black-1 pt-2 text-sm font-medium text-yellow-3 tabular-nums">
+          {t("nation.exportOfOilProducts.citizenEquivalent", {
+            count: citizenEquivalent.formattedCount,
+          })}
+        </p>
+      )}
     </div>
   );
 }
@@ -127,11 +195,21 @@ export function ExportOfOilProductsEmissionsChart({
   const { isMobile } = useScreenSize();
 
   const chartData = useMemo(() => toChartData(data), [data]);
+  const latestYearPoint = useMemo(() => getLatestYearPoint(data), [data]);
+  const latestCitizenEquivalent = useMemo(() => {
+    if (!latestYearPoint) return null;
+    return emissionsToSwedishCitizenEquivalent(
+      latestYearPoint.value,
+      currentLanguage,
+    );
+  }, [latestYearPoint, currentLanguage]);
   const baselineValueKt = chartData[0]?.valueKt;
   const xAxisTicks = useMemo(
     () => chartData.map((point) => point.year).filter((year) => year % 5 === 0),
     [chartData],
   );
+  const showCitizenComparison =
+    latestYearPoint !== null && latestCitizenEquivalent !== null;
 
   if (chartData.length === 0) {
     return null;
@@ -145,8 +223,15 @@ export function ExportOfOilProductsEmissionsChart({
         className="[&>div]:mb-4 [&>div]:@lg:mb-6"
       />
 
+      {showCitizenComparison && latestYearPoint && latestCitizenEquivalent && (
+        <CitizenComparisonCallout
+          year={latestYearPoint.year}
+          formattedCount={latestCitizenEquivalent.formattedCount}
+        />
+      )}
+
       <div
-        className="mt-8"
+        className={showCitizenComparison ? "mt-2" : "mt-8"}
         style={{ height: getDynamicChartHeight("overview", isMobile) }}
       >
         <ChartWrapper>
@@ -164,9 +249,7 @@ export function ExportOfOilProductsEmissionsChart({
                 <YAxis {...getYAxisProps(currentLanguage)} />
 
                 <Tooltip
-                  content={
-                    <ExportOfOilProductsTooltip unit={t("emissionsUnit")} />
-                  }
+                  content={<ExportOfOilProductsTooltip unit={t("emissionsUnit")} />}
                   cursor={{ fill: "var(--black-1)", opacity: 0.35 }}
                   wrapperStyle={{ outline: "none", zIndex: 60 }}
                 />
