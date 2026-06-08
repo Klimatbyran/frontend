@@ -125,7 +125,7 @@ export function CompanyOverview({
                   </div>
                 </Button>
                 <EmissionsAssessmentButton
-                  wikidataId={company.wikidataId}
+                  companyId={company.id}
                   sortedPeriods={sortedPeriods}
                 />
               </div>

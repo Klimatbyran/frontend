@@ -7,9 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useAuth } from "@/contexts/AuthContext";
 import { RankedCompany, useCompanies } from "@/hooks/companies/useCompanies";
-import { useValidationClaims } from "@/hooks/useValidationClaims";
 import {
   githubProjectUrl,
   GithubValidationIssue,
@@ -18,6 +16,7 @@ import {
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
 import { cn } from "@/lib/utils";
 import { ReportingPeriod } from "@/types/company";
+import { getCompanyDetailPath } from "@/utils/companyRouting";
 import { formatPercent } from "@/utils/formatting/localization";
 
 const useGetUnverifiedCompaniesForYear = (year: number) => {
@@ -43,10 +42,11 @@ const useGetUnverifiedCompaniesForYear = (year: number) => {
 
 const githubUrl = (company: RankedCompany, reportUrl?: string | null) => {
   const body = reportUrl ? `\nReport URL: ${reportUrl}` : "";
+  const label = company.wikidataId
+    ? `[${company.wikidataId}] ${company.name}`
+    : `[${company.id}] ${company.name}`;
 
-  const encodedTitle = encodeURIComponent(
-    `[${company.wikidataId}] ${company.name}`,
-  );
+  const encodedTitle = encodeURIComponent(label);
   const encodedBody = encodeURIComponent(body);
   return `${githubProjectUrl}/issues/new?title=${encodedTitle}&body=${encodedBody}`;
 };
@@ -72,7 +72,7 @@ const IssueView = ({ issues, className, error }: IssueViewProps) => {
 
   return (
     <div className={cn("flex flex-col gap-1", className)}>
-      {issues.map((issue, _index) => (
+      {issues.map((issue) => (
         <div key={issue.number} className="flex items-center">
           <a
             href={issue.html_url}
@@ -112,20 +112,11 @@ export const ValidationDashboard = () => {
   } = useCompanies();
   const unverifiedCompanies = useGetUnverifiedCompaniesForYear(parseInt(year));
   const { currentLanguage } = useLanguage();
-  const { user } = useAuth();
   const {
     issues,
     isLoading: issuesLoading,
     error: issuesError,
   } = useValidationReports();
-
-  const {
-    claims,
-    claimValidation,
-    unclaimValidation,
-    isLoading: claimsLoading,
-    error: claimsError,
-  } = useValidationClaims();
 
   const handleYearChange = (selectedYear: string) => {
     const url = new URL(window.location.href);
@@ -134,20 +125,16 @@ export const ValidationDashboard = () => {
     window.location.reload();
   };
 
-  const stealClaim = (wikidataId: string) => {
-    claimValidation(wikidataId, true);
-  };
-
   const years = Array.from({ length: 5 }, (_, i) => 2024 - i);
 
   const nrFinishedCompanies = allCompanies.length - unverifiedCompanies.length;
   const progress = nrFinishedCompanies / allCompanies.length;
 
-  if (companiesError || claimsError) {
+  if (companiesError) {
     return <span>Error</span>;
   }
 
-  if (issuesLoading || companiesLoading || claimsLoading) {
+  if (issuesLoading || companiesLoading) {
     return <span>Loading</span>;
   }
 
@@ -167,14 +154,16 @@ export const ValidationDashboard = () => {
           </SelectTrigger>
           <SelectContent className="bg-black-1 text-white">
             {years.map((y) => (
-              <SelectItem value={y.toString()}>{y}</SelectItem>
+              <SelectItem key={y} value={y.toString()}>
+                {y}
+              </SelectItem>
             ))}
           </SelectContent>
         </Select>
       </div>
 
-      <div className="inline-grid grid-cols-[auto_auto_auto_auto_auto_1fr] mb-6 gap-x-8 gap-y-2 border-b border-gray-400 pb-2">
-        <div className="col-span-6">
+      <div className="inline-grid grid-cols-[auto_auto_auto_1fr] mb-6 gap-x-8 gap-y-2 border-b border-gray-400 pb-2">
+        <div className="col-span-4">
           <p className="text-gray-400 mb-1">
             Verified: {allCompanies.length - unverifiedCompanies.length} of{" "}
             {allCompanies.length}
@@ -184,11 +173,9 @@ export const ValidationDashboard = () => {
           </p>
           <Progress value={progress * 100} className="mb-8" />
         </div>
-        <div className="grid grid-cols-subgrid col-span-6 text-gray-400 border-b border-gray-400 pb-1 mb-2">
+        <div className="grid grid-cols-subgrid col-span-4 text-gray-400 border-b border-gray-400 pb-1 mb-2">
           <span>Company name</span>
           <span>Report link</span>
-          <span>In progress by</span>
-          <span>Start/stop working</span>
           <span>Report issue</span>
           <span>Issues</span>
         </div>
@@ -196,10 +183,13 @@ export const ValidationDashboard = () => {
         {unverifiedCompanies.length > 0 ? (
           unverifiedCompanies.map(({ company, period }) => (
             <div
-              key={company.wikidataId}
-              className="grid grid-cols-subgrid col-span-6"
+              key={company.id}
+              className="grid grid-cols-subgrid col-span-4"
             >
-              <a target="_blank" href={`/companies/${company.wikidataId}/edit`}>
+              <a
+                target="_blank"
+                href={`${getCompanyDetailPath(company)}/edit`}
+              >
                 {company.name}
               </a>
               {period.reportURL ? (
@@ -213,44 +203,6 @@ export const ValidationDashboard = () => {
               ) : (
                 <span />
               )}
-              {claims[company.wikidataId] ? (
-                <span
-                  className={cn(
-                    claims[company.wikidataId] === user?.githubId
-                      ? "text-pink-3"
-                      : "text-gray-400",
-                  )}
-                >
-                  {claims[company.wikidataId]}
-                </span>
-              ) : (
-                <span></span>
-              )}
-
-              <div className="text-center">
-                {claims[company.wikidataId] === user?.githubId ? (
-                  <button
-                    onClick={() => unclaimValidation(company.wikidataId)}
-                    className="text-blue-2"
-                  >
-                    Release
-                  </button>
-                ) : claims[company.wikidataId] ? (
-                  <button
-                    onClick={() => stealClaim(company.wikidataId)}
-                    className="text-pink-4"
-                  >
-                    Take over
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => claimValidation(company.wikidataId)}
-                    className="text-green-2"
-                  >
-                    Claim
-                  </button>
-                )}
-              </div>
 
               <a
                 target="_blank"
@@ -261,14 +213,18 @@ export const ValidationDashboard = () => {
               </a>
 
               <IssueView
-                issues={issues?.[company.wikidataId]}
+                issues={
+                  company.wikidataId
+                    ? issues?.[company.wikidataId]
+                    : undefined
+                }
                 error={!!issuesError}
                 className=""
               />
             </div>
           ))
         ) : (
-          <span className="col-span-6 text-center text-2xl my-4">
+          <span className="col-span-4 text-center text-2xl my-4">
             All done! 🎉
           </span>
         )}

@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { RankedCompany } from "@/types/company";
+import { getCompanyUrlSegment } from "@/utils/companyRouting";
 import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 
 const extractYears = (companies: RankedCompany[]): string[] => {
@@ -108,7 +109,7 @@ const createCompanyDataItem = (
     name: company.name,
     value: totalEmissions,
     sectorCode: company.industry?.industryGics?.sectorCode,
-    wikidataId: company.wikidataId,
+    wikidataId: getCompanyUrlSegment(company),
     total: totalEmissions,
   };
 };

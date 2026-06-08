@@ -378,7 +378,85 @@ export interface paths {
             };
         };
         put?: never;
-        post?: never;
+        /**
+         * Create a company
+         * @description Creates a new company
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        wikidataId?: string;
+                        name: string;
+                        descriptions?: {
+                            id?: string;
+                            /** @enum {string} */
+                            language: "SV" | "EN";
+                            text: string;
+                        }[];
+                        /** Format: uri */
+                        url?: string;
+                        /** Format: uri */
+                        logoUrl?: string | null;
+                        internalComment?: string;
+                        tags?: string[];
+                        lei?: string;
+                        metadata?: {
+                            source?: string;
+                            comment?: string;
+                        };
+                        verified?: boolean;
+                    };
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            ok: boolean;
+                            /** Format: uuid */
+                            id: string;
+                        };
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            message?: string;
+                            details?: unknown;
+                        };
+                    };
+                };
+                /** @description Default Response */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            message?: string;
+                            details?: unknown;
+                        };
+                    };
+                };
+            };
+        };
         delete?: never;
         options?: never;
         head?: never;
@@ -933,23 +1011,39 @@ export interface paths {
             };
         };
         put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/companies/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
         /**
-         * Create or update a company
-         * @description Creates a new company or updates an existing one based on wikidataId
+         * Update a company
+         * @description Updates an existing company by internal id
          */
         post: {
             parameters: {
                 query?: never;
                 header?: never;
                 path: {
-                    wikidataId: string;
+                    id: string;
                 };
                 cookie?: never;
             };
             requestBody: {
                 content: {
                     "application/json": {
-                        wikidataId: string;
+                        wikidataId?: string;
                         name: string;
                         descriptions?: {
                             id?: string;
@@ -1027,14 +1121,14 @@ export interface paths {
         };
         /**
          * Delete company
-         * @description Delete a company by Wikidata ID
+         * @description Delete a company by internal id
          */
         delete: {
             parameters: {
                 query?: never;
                 header?: never;
                 path: {
-                    wikidataId: string;
+                    id: string;
                 };
                 cookie?: never;
             };
@@ -3254,7 +3348,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/companies/{wikidataId}/tags": {
+    "/companies/{id}/tags": {
         parameters: {
             query?: never;
             header?: never;
@@ -3276,7 +3370,7 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    wikidataId: string;
+                    id: string;
                 };
                 cookie?: never;
             };
@@ -3342,7 +3436,7 @@ export interface paths {
         };
         trace?: never;
     };
-    "/companies/{wikidataId}/industry": {
+    "/companies/{id}/industry": {
         parameters: {
             query?: never;
             header?: never;
@@ -3360,7 +3454,7 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    wikidataId: string;
+                    id: string;
                 };
                 cookie?: never;
             };
@@ -3501,7 +3595,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/companies/{wikidataId}/reporting-periods": {
+    "/companies/{id}/reporting-periods": {
         parameters: {
             query?: never;
             header?: never;
@@ -3519,7 +3613,7 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    wikidataId: string;
+                    id: string;
                 };
                 cookie?: never;
             };
@@ -3682,7 +3776,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/companies/{wikidataId}/goals": {
+    "/companies/{id}/goals": {
         parameters: {
             query?: never;
             header?: never;
@@ -3700,7 +3794,7 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    wikidataId: string;
+                    id: string;
                 };
                 cookie?: never;
             };
@@ -3780,7 +3874,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/companies/{wikidataId}/goals/{id}": {
+    "/companies/{id}/goals/{goalId}": {
         parameters: {
             query?: never;
             header?: never;
@@ -3878,7 +3972,7 @@ export interface paths {
         };
         trace?: never;
     };
-    "/companies/{wikidataId}/base-year": {
+    "/companies/{id}/base-year": {
         parameters: {
             query?: never;
             header?: never;
@@ -3896,7 +3990,7 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    wikidataId: string;
+                    id: string;
                 };
                 cookie?: never;
             };
@@ -3971,7 +4065,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/companies/{wikidataId}/initiatives": {
+    "/companies/{id}/initiatives": {
         parameters: {
             query?: never;
             header?: never;
@@ -3989,7 +4083,7 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    wikidataId: string;
+                    id: string;
                 };
                 cookie?: never;
             };
@@ -4069,7 +4163,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/companies/{wikidataId}/initiatives/{id}": {
+    "/companies/{id}/initiatives/{initiativeId}": {
         parameters: {
             query?: never;
             header?: never;
@@ -5038,136 +5132,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/validation/claim": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get all validation claims
-         * @description Get a list of all claimed companies for manual validation
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Default Response */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            [key: string]: string;
-                        };
-                    };
-                };
-                /** @description Default Response */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            code: string;
-                            message?: string;
-                            details?: unknown;
-                        };
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/validation/claim/{wikidataId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Claim a company
-         * @description Used to claim that a company report is being worked on
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    wikidataId: string;
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": {
-                        steal: boolean;
-                    };
-                };
-            };
-            responses: {
-                /** @description Default Response */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            ok: boolean;
-                        };
-                    };
-                };
-            };
-        };
-        /**
-         * Delete a claim
-         * @description Used to release a claim
-         */
-        delete: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    wikidataId: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Default Response */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            ok: boolean;
-                        };
-                    };
-                };
-            };
-        };
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/emissions-assessment/": {
         parameters: {
             query?: never;
@@ -5191,7 +5155,7 @@ export interface paths {
             requestBody: {
                 content: {
                     "application/json": {
-                        wikidataId: string;
+                        id: string;
                         years: string[];
                     };
                 };

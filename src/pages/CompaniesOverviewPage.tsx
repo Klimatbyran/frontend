@@ -21,6 +21,7 @@ import {
   OverviewSplitLayout,
   type OverviewViewMode,
 } from "@/components/ranked/OverviewSplitLayout";
+import { getCompanyDetailPath } from "@/utils/companyRouting";
 
 export function CompaniesOverviewPage() {
   const { t } = useTranslation();
@@ -136,7 +137,7 @@ export function CompaniesOverviewPage() {
   };
 
   const handleCompanyClick = (company: CompanyWithKPIs) => {
-    navigate(`/companies/${company.wikidataId}`);
+    navigate(getCompanyDetailPath(company));
   };
 
   if (companiesLoading) {

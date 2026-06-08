@@ -14,6 +14,7 @@ import { calculateCarbonBudgetTonnes } from "@/utils/calculations/carbonBudget";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { useLanguage } from "@/components/LanguageProvider";
+import { getCompanyDetailPath } from "@/utils/companyRouting";
 
 export function ParisAlignedStatisticsPage() {
   const { companies, companiesLoading, companiesError } = useCompanies();
@@ -43,6 +44,7 @@ export function ParisAlignedStatisticsPage() {
     // Collect data for companies marked as "Yes"
     const yesCompanies: Array<{
       name: string;
+      id: string;
       wikidataId: string;
       emissions2025: number;
       carbonBudget: number;
@@ -169,6 +171,7 @@ export function ParisAlignedStatisticsPage() {
               companyCumulativeEmissions - carbonLawCumulativeEmissions;
             yesCompanies.push({
               name: company.name,
+              id: company.id,
               wikidataId: company.wikidataId,
               emissions2025,
               carbonBudget: carbonLawCumulativeEmissions,
@@ -547,7 +550,7 @@ export function ParisAlignedStatisticsPage() {
                   <tbody>
                     {statistics.yesCompanies.map((company, index) => {
                       const basePath = currentLanguage === "sv" ? "/sv" : "/en";
-                      const companyUrl = `${basePath}/companies/${company.wikidataId}`;
+                      const companyUrl = getCompanyDetailPath(company, basePath);
 
                       return (
                         <tr
