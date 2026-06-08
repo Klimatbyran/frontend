@@ -6,7 +6,7 @@ import {
   createSymmetricRangeGradient,
 } from "@/utils/ui/colorGradients";
 import type { ColorFunction } from "@/types/visualizations";
-import { DEFAULT_KPI_COLORS } from "../ui/colors";
+import { DEFAULT_NULL_DATA_COLOR } from "../ui/colors";
 
 export interface CompanyBudgetData {
   company: CompanyWithKPIs;
@@ -61,21 +61,21 @@ export function createBudgetColorFunction(
   return (value: number) => createFixedRangeGradient(-absMax, absMax, value);
 }
 
-export function createSymmetricKPIColorGetter(
-  companies: CompanyWithKPIs[],
-  kpiKey: keyof CompanyWithKPIs,
+export function createSymmetricKPIColorGetter<T>(
+  entities: T[],
+  kpiKey: keyof T,
 ) {
-  const values = companies
-    .map((company) => company[kpiKey])
-    .filter((value): value is number => typeof value === "number");
+  const values = entities
+    .filter((entity) => typeof entity[kpiKey] === "number")
+    .map((entity) => entity[kpiKey] as number);
 
   const min = values.length ? Math.min(...values) : 0;
   const max = values.length ? Math.max(...values) : 0;
 
-  return (company: CompanyWithKPIs) => {
-    const value = company[kpiKey];
+  return (entitiy: T) => {
+    const value = entitiy[kpiKey];
     return value === null || value === undefined
-      ? DEFAULT_KPI_COLORS.null
+      ? DEFAULT_NULL_DATA_COLOR
       : createSymmetricRangeGradient(min, max, value as number);
   };
 }
@@ -93,7 +93,7 @@ export function createBudgetKPIColorGetter(companies: CompanyWithKPIs[]) {
   return (company: CompanyWithKPIs) => {
     const budgetTonnes = budgetTonnesByCompanyId.get(company.wikidataId);
     return budgetTonnes === undefined
-      ? DEFAULT_KPI_COLORS.null
+      ? DEFAULT_NULL_DATA_COLOR
       : colorForTonnes(budgetTonnes);
   };
 }

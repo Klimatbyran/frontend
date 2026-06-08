@@ -6,6 +6,7 @@ import {
 import { getSortedEntityKPIValues } from "@/utils/data/sorting";
 import {
   calculateEntityStatistics,
+  createDefaultColorGetter,
   createSourceLinks,
 } from "@/utils/insights/rankedListUtils";
 import KPIDetailsPanel from "../../ranked/KPIDetailsPanel";
@@ -66,6 +67,15 @@ function CompanyInsightsPanel({
 
   const entityPlural = t("header.companies").toLowerCase();
 
+  const colorItem = selectedKPI.createKPIColorGetter
+    ? selectedKPI.createKPIColorGetter(companyData)
+    : createDefaultColorGetter(
+        companyData,
+        selectedKPI.key,
+        selectedKPI.isBoolean,
+        selectedKPI.higherIsBetter,
+      );
+
   return (
     <div className="flex-1 overflow-y-auto min-h-0 pr-2">
       <div
@@ -95,9 +105,9 @@ function CompanyInsightsPanel({
               dataPointKey={selectedKPI.key}
               unit={selectedKPI.unit}
               nullValues={selectedKPI.nullValues}
-              textColor="text-blue-3"
               entityType="companies"
               nameKey="name"
+              colorItem={colorItem}
             />
             <InsightsList
               title={t("rankedInsights.titleWorst", {
@@ -109,9 +119,9 @@ function CompanyInsightsPanel({
               dataPointKey={selectedKPI.key}
               unit={selectedKPI.unit}
               nullValues={selectedKPI.nullValues}
-              textColor="text-pink-3"
               entityType="companies"
               nameKey="name"
+              colorItem={colorItem}
             />
           </>
         )}

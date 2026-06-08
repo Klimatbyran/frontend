@@ -15,6 +15,14 @@
 
 import { t } from "i18next";
 import { EntityWithKPIs, KPIValue } from "@/types/rankings";
+import {
+  createStatisticalGradient,
+  DEFAULT_STATISTICAL_GRADIENT_COLORS,
+} from "../ui/colorGradients";
+import {
+  DEFAULT_BOOLEAN_DATA_COLORS,
+  DEFAULT_NULL_DATA_COLOR,
+} from "../ui/colors";
 
 export interface EntityStatistics<T> {
   validData: T[];
@@ -149,4 +157,38 @@ export function createSourceLinks<T = EntityWithKPIs>(
         : selectedKPI.source || "",
     })) || []
   );
+}
+
+export function createDefaultColorGetter<T>(
+  entities: T[],
+  dataPointKey: keyof T,
+  dataPointIsBoolean: boolean | undefined,
+  dataPointHigherIsBetter: boolean,
+) {
+  const numericalValues = entities
+    .filter(
+      (entity) =>
+        typeof entity[dataPointKey] === "number" &&
+        !isNaN(entity[dataPointKey] as number),
+    )
+    .map((entity) => entity[dataPointKey] as number);
+
+  return (entity: T) => {
+    const value = entity[dataPointKey];
+
+    if (value === null || value === undefined) return DEFAULT_NULL_DATA_COLOR;
+
+    if (dataPointIsBoolean) {
+      return value == dataPointHigherIsBetter
+        ? DEFAULT_BOOLEAN_DATA_COLORS.positive
+        : DEFAULT_BOOLEAN_DATA_COLORS.negative;
+    }
+
+    return createStatisticalGradient(
+      numericalValues,
+      value as number,
+      dataPointHigherIsBetter ?? false,
+      DEFAULT_STATISTICAL_GRADIENT_COLORS,
+    );
+  };
 }

@@ -5,12 +5,12 @@ interface InsightsListProps<T> {
   entities: T[];
   dataPointKey: keyof T;
   unit: string;
-  textColor: string;
   totalCount: number;
   isBottomRanking?: boolean;
   nullValues?: string;
   entityType: string;
   nameKey: keyof T;
+  colorItem: (item: T) => string;
 }
 
 function InsightsList<T>({
@@ -18,12 +18,12 @@ function InsightsList<T>({
   entities,
   dataPointKey,
   unit,
-  textColor,
   totalCount,
   isBottomRanking = false,
   nullValues,
   entityType,
   nameKey,
+  colorItem,
 }: InsightsListProps<T>) {
   return (
     <div className="bg-white/10 rounded-level-2 p-4 md:p-6">
@@ -38,7 +38,10 @@ function InsightsList<T>({
               <span className="text-orange-2">{position}</span>
               <span>{name}</span>
             </div>
-            <span className={`${textColor} font-semibold`}>
+            <span
+              className="font-semibold"
+              style={{ color: colorItem(entity) }}
+            >
               {entity[dataPointKey] != null
                 ? (entity[dataPointKey] as number).toFixed(1) + unit
                 : nullValues}

@@ -4,6 +4,7 @@ import { Region } from "@/types/region";
 import { KPIValue } from "@/types/rankings";
 import {
   calculateEntityStatistics,
+  createDefaultColorGetter,
   createSourceLinks,
 } from "@/utils/insights/rankedListUtils";
 import InsightsList from "../ranked/InsightsList";
@@ -55,6 +56,13 @@ function RegionalInsightsPanel({
 
   const entityPlural = t("header.regions").toLowerCase();
 
+  const colorItem = createDefaultColorGetter(
+    regionData,
+    selectedKPI.key,
+    selectedKPI.isBoolean,
+    selectedKPI.higherIsBetter,
+  );
+
   return (
     <div className="flex-1 overflow-y-auto min-h-0 pr-2">
       <div
@@ -84,9 +92,9 @@ function RegionalInsightsPanel({
               dataPointKey={selectedKPI.key as keyof Region}
               unit={selectedKPI.unit}
               nullValues={selectedKPI.nullValues}
-              textColor="text-blue-3"
               entityType="regions"
               nameKey="name"
+              colorItem={colorItem}
             />
             <InsightsList
               title={t("rankedInsights.titleWorst", {
@@ -98,9 +106,9 @@ function RegionalInsightsPanel({
               dataPointKey={selectedKPI.key as keyof Region}
               unit={selectedKPI.unit}
               nullValues={selectedKPI.nullValues}
-              textColor="text-pink-3"
               entityType="regions"
               nameKey="name"
+              colorItem={colorItem}
             />
           </>
         )}

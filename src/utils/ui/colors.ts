@@ -20,8 +20,9 @@ export function getDataQualityColor(
   }
 }
 
-export const DEFAULT_KPI_COLORS = {
+export const DEFAULT_BOOLEAN_DATA_COLORS = {
   positive: "var(--blue-3)",
   negative: "var(--pink-3)",
-  null: "var(--grey)",
 };
+
+export const DEFAULT_NULL_DATA_COLOR = "var(--grey)";
