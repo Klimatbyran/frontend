@@ -79,18 +79,14 @@ export function TerritorySupplementalData({
         </SupplementalDataField>
       )}
       {hasParties && (
-        <SupplementalDataField
-          label={t(`${translateNamespace}.politicalRule`)}
-        >
+        <SupplementalDataField label={t(`${translateNamespace}.politicalRule`)}>
           <Text>
             <PoliticalPartyLogos parties={parties} />
           </Text>
         </SupplementalDataField>
       )}
       {politicalKSO && (
-        <SupplementalDataField
-          label={t(`${translateNamespace}.politicalKSO`)}
-        >
+        <SupplementalDataField label={t(`${translateNamespace}.politicalKSO`)}>
           <PoliticalRuleLabel
             src={`/logos/politicalParties/${politicalKSO}.png`}
             alt={politicalKSO}
