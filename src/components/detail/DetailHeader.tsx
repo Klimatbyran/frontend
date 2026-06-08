@@ -18,7 +18,7 @@ export interface DetailHeaderProps {
   logoUrl?: string | null;
   helpItems: DataGuideItemId[];
   stats: DetailStat[];
-  metadata?: ReactNode;
+  supplementalData?: ReactNode;
 }
 
 export function DetailHeader({
@@ -26,7 +26,7 @@ export function DetailHeader({
   logoUrl,
   helpItems,
   stats,
-  metadata,
+  supplementalData,
 }: DetailHeaderProps) {
   return (
     <SectionWithHelp helpItems={helpItems}>
@@ -51,7 +51,7 @@ export function DetailHeader({
           />
         ))}
       </div>
-      {metadata}
+      {supplementalData}
     </SectionWithHelp>
   );
 }

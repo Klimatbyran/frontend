@@ -2,15 +2,15 @@ import { ReactNode } from "react";
 import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
 
-interface DetailMetadataPanelProps {
+interface SupplementalDataPanelProps {
   children: ReactNode;
   className?: string;
 }
 
-export function DetailMetadataPanel({
+export function SupplementalDataPanel({
   children,
   className,
-}: DetailMetadataPanelProps) {
+}: SupplementalDataPanelProps) {
   return (
     <div className={cn("@container mt-3 md:mt-0", className)}>
       <div className="mt-8 @md:mt-12 bg-black-1 rounded-level-2 p-6">
@@ -22,15 +22,15 @@ export function DetailMetadataPanel({
   );
 }
 
-interface DetailMetadataFieldProps {
+interface SupplementalDataFieldProps {
   label: ReactNode;
   children: ReactNode;
 }
 
-export function DetailMetadataField({
+export function SupplementalDataField({
   label,
   children,
-}: DetailMetadataFieldProps) {
+}: SupplementalDataFieldProps) {
   return (
     <div>
       <Text className="md:mb-2 font-bold">{label}</Text>

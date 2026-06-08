@@ -23,7 +23,7 @@ import { useSectorYearSelection } from "@/hooks/territories/useSectorYearSelecti
 import { getProcurementRequirementsText } from "@/utils/municipality/procurement";
 import { LinkCard } from "@/components/detail/DetailLinkCard";
 import { DetailHeader } from "@/components/detail/DetailHeader";
-import { TerritoryMetadataSection } from "@/components/detail/TerritoryMetadataSection";
+import { TerritorySupplementalData } from "@/components/detail/TerritorySupplementalData";
 import { DetailSection } from "@/components/detail/DetailSection";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";
 import { useSectors } from "@/hooks/territories/useSectors";
@@ -238,8 +238,8 @@ export function MunicipalityDetailPage() {
           logoUrl={municipality.logoUrl}
           helpItems={HEADER_HELP_ITEMS}
           stats={headerStats}
-          metadata={
-            <TerritoryMetadataSection
+          supplementalData={
+            <TerritorySupplementalData
               region={municipality.region}
               regionLinkTo={
                 municipality.region

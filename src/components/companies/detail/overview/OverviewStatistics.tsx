@@ -3,9 +3,9 @@ import { ArrowUpRight } from "lucide-react";
 import { AiIcon } from "@/components/ui/ai-icon";
 import { Text } from "@/components/ui/text";
 import {
-  DetailMetadataField,
-  DetailMetadataPanel,
-} from "@/components/detail/DetailMetadataPanel";
+  SupplementalDataField,
+  SupplementalDataPanel,
+} from "@/components/detail/SupplementalDataPanel";
 import { ReportingPeriod } from "@/types/company";
 import { localizeUnit } from "@/utils/formatting/localization";
 
@@ -38,20 +38,20 @@ export function OverviewStatistics({
     : t("companies.overview.notReported");
 
   return (
-    <DetailMetadataPanel className={className}>
-      <DetailMetadataField label={t("companies.overview.turnover")}>
+    <SupplementalDataPanel className={className}>
+      <SupplementalDataField label={t("companies.overview.turnover")}>
         <span className="flex items-center gap-2">
           <Text>{formattedTurnover}</Text>
           {turnoverAIGenerated && <AiIcon size="md" />}
         </span>
-      </DetailMetadataField>
+      </SupplementalDataField>
 
-      <DetailMetadataField label={t("companies.overview.employees")}>
+      <SupplementalDataField label={t("companies.overview.employees")}>
         <span className="flex items-center gap-2">
           <Text>{formattedEmployeeCount}</Text>
           {employeesAIGenerated && <AiIcon size="md" />}
         </span>
-      </DetailMetadataField>
+      </SupplementalDataField>
 
       {selectedPeriod?.reportURL && (
         <div className="flex items-end self-start">
@@ -66,6 +66,6 @@ export function OverviewStatistics({
           </a>
         </div>
       )}
-    </DetailMetadataPanel>
+    </SupplementalDataPanel>
   );
 }

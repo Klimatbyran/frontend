@@ -4,11 +4,11 @@ import { LocalizedLink } from "@/components/LocalizedLink";
 import { Text } from "@/components/ui/text";
 import { PoliticalRuleLabel } from "./PoliticalRuleLabel";
 import {
-  DetailMetadataField,
-  DetailMetadataPanel,
-} from "./DetailMetadataPanel";
+  SupplementalDataField,
+  SupplementalDataPanel,
+} from "./SupplementalDataPanel";
 
-export interface TerritoryMetadataSectionProps {
+export interface TerritorySupplementalDataProps {
   region?: string;
   regionLinkTo?: string;
   politicalRule?: string[];
@@ -16,7 +16,7 @@ export interface TerritoryMetadataSectionProps {
   translateNamespace?: string;
 }
 
-function MetadataValue({
+function SupplementalDataValue({
   linkTo,
   children,
 }: {
@@ -54,13 +54,13 @@ function PoliticalPartyLogos({ parties }: { parties: string[] }) {
   );
 }
 
-export function TerritoryMetadataSection({
+export function TerritorySupplementalData({
   region,
   regionLinkTo,
   politicalRule,
   politicalKSO,
   translateNamespace = "municipalityDetailPage",
-}: TerritoryMetadataSectionProps) {
+}: TerritorySupplementalDataProps) {
   const { t } = useTranslation();
   const parties = politicalRule?.filter(Boolean) ?? [];
   const hasParties = parties.length > 0;
@@ -70,28 +70,34 @@ export function TerritoryMetadataSection({
   }
 
   return (
-    <DetailMetadataPanel>
+    <SupplementalDataPanel>
       {region && (
-        <DetailMetadataField label={t(`${translateNamespace}.region`)}>
-          <MetadataValue linkTo={regionLinkTo}>{region}</MetadataValue>
-        </DetailMetadataField>
+        <SupplementalDataField label={t(`${translateNamespace}.region`)}>
+          <SupplementalDataValue linkTo={regionLinkTo}>
+            {region}
+          </SupplementalDataValue>
+        </SupplementalDataField>
       )}
       {hasParties && (
-        <DetailMetadataField label={t(`${translateNamespace}.politicalRule`)}>
+        <SupplementalDataField
+          label={t(`${translateNamespace}.politicalRule`)}
+        >
           <Text>
             <PoliticalPartyLogos parties={parties} />
           </Text>
-        </DetailMetadataField>
+        </SupplementalDataField>
       )}
       {politicalKSO && (
-        <DetailMetadataField label={t(`${translateNamespace}.politicalKSO`)}>
+        <SupplementalDataField
+          label={t(`${translateNamespace}.politicalKSO`)}
+        >
           <PoliticalRuleLabel
             src={`/logos/politicalParties/${politicalKSO}.png`}
             alt={politicalKSO}
             fallback={politicalKSO}
           />
-        </DetailMetadataField>
+        </SupplementalDataField>
       )}
-    </DetailMetadataPanel>
+    </SupplementalDataPanel>
   );
 }
