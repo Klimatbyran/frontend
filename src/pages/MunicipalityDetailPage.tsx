@@ -23,6 +23,7 @@ import { useSectorYearSelection } from "@/hooks/territories/useSectorYearSelecti
 import { getProcurementRequirementsText } from "@/utils/municipality/procurement";
 import { LinkCard } from "@/components/detail/DetailLinkCard";
 import { DetailHeader } from "@/components/detail/DetailHeader";
+import { TerritoryMetadataSection } from "@/components/detail/TerritoryMetadataSection";
 import { DetailSection } from "@/components/detail/DetailSection";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";
 import { useSectors } from "@/hooks/territories/useSectors";
@@ -33,6 +34,7 @@ import type { DataGuideItemId } from "@/data-guide/items";
 import { Seo } from "@/components/SEO/Seo";
 import { generateMunicipalitySeoMeta } from "@/utils/seo/entitySeo";
 import { getSeoForRoute } from "@/seo/routes";
+import { getEntityDetailPath } from "@/utils/routing";
 
 function MunicipalityLinkCards({
   municipality,
@@ -233,14 +235,21 @@ export function MunicipalityDetailPage() {
       <DetailWrapper>
         <DetailHeader
           name={municipality.name}
-          subtitle={municipality.region}
           logoUrl={municipality.logoUrl}
-          politicalRule={municipality.politicalRule}
-          politicalKSO={municipality.politicalKSO}
-          politicalXSOLabelKey="politicalKSO"
           helpItems={HEADER_HELP_ITEMS}
           stats={headerStats}
-          translateNamespace="municipalityDetailPage"
+          metadata={
+            <TerritoryMetadataSection
+              region={municipality.region}
+              regionLinkTo={
+                municipality.region
+                  ? getEntityDetailPath("region", municipality.region)
+                  : undefined
+              }
+              politicalRule={municipality.politicalRule}
+              politicalKSO={municipality.politicalKSO}
+            />
+          }
         />
 
         <TerritoryEmissions

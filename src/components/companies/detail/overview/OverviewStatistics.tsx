@@ -2,6 +2,10 @@ import { t } from "i18next";
 import { ArrowUpRight } from "lucide-react";
 import { AiIcon } from "@/components/ui/ai-icon";
 import { Text } from "@/components/ui/text";
+import {
+  DetailMetadataField,
+  DetailMetadataPanel,
+} from "@/components/detail/DetailMetadataPanel";
 import { ReportingPeriod } from "@/types/company";
 import { localizeUnit } from "@/utils/formatting/localization";
 
@@ -34,44 +38,34 @@ export function OverviewStatistics({
     : t("companies.overview.notReported");
 
   return (
-    <div className={className ? `@container ${className}` : "@container"}>
-      <div className="mt-8 @md:mt-12 bg-black-1 rounded-level-2 p-6">
-        <div className="grid grid-cols-1 @md:grid-cols-3 gap-4 @md:gap-8">
-          <div>
-            <Text className="md:mb-2 font-bold">
-              {t("companies.overview.turnover")}
-            </Text>
-            <span className="flex items-center gap-2">
-              <Text>{formattedTurnover}</Text>
-              {turnoverAIGenerated && <AiIcon size="md" />}
-            </span>
-          </div>
+    <DetailMetadataPanel className={className}>
+      <DetailMetadataField label={t("companies.overview.turnover")}>
+        <span className="flex items-center gap-2">
+          <Text>{formattedTurnover}</Text>
+          {turnoverAIGenerated && <AiIcon size="md" />}
+        </span>
+      </DetailMetadataField>
 
-          <div>
-            <Text className="md:mb-2 font-bold">
-              {t("companies.overview.employees")}
-            </Text>
-            <span className="flex items-center gap-2">
-              <Text>{formattedEmployeeCount}</Text>
-              {employeesAIGenerated && <AiIcon size="md" />}
-            </span>
-          </div>
+      <DetailMetadataField label={t("companies.overview.employees")}>
+        <span className="flex items-center gap-2">
+          <Text>{formattedEmployeeCount}</Text>
+          {employeesAIGenerated && <AiIcon size="md" />}
+        </span>
+      </DetailMetadataField>
 
-          {selectedPeriod?.reportURL && (
-            <div className="flex items-end self-start">
-              <a
-                href={selectedPeriod.reportURL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-blue-2 hover:text-blue-1 transition-colors"
-              >
-                {t("companies.overview.readAnnualReport")}
-                <ArrowUpRight className="w-4 h-4 sm:w-3 sm:h-3" />
-              </a>
-            </div>
-          )}
+      {selectedPeriod?.reportURL && (
+        <div className="flex items-end self-start">
+          <a
+            href={selectedPeriod.reportURL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-blue-2 hover:text-blue-1 transition-colors"
+          >
+            {t("companies.overview.readAnnualReport")}
+            <ArrowUpRight className="w-4 h-4 sm:w-3 sm:h-3" />
+          </a>
         </div>
-      </div>
-    </div>
+      )}
+    </DetailMetadataPanel>
   );
 }
