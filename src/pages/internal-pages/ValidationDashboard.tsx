@@ -182,14 +182,8 @@ export const ValidationDashboard = () => {
 
         {unverifiedCompanies.length > 0 ? (
           unverifiedCompanies.map(({ company, period }) => (
-            <div
-              key={company.id}
-              className="grid grid-cols-subgrid col-span-4"
-            >
-              <a
-                target="_blank"
-                href={`${getCompanyDetailPath(company)}/edit`}
-              >
+            <div key={company.id} className="grid grid-cols-subgrid col-span-4">
+              <a target="_blank" href={`${getCompanyDetailPath(company)}/edit`}>
                 {company.name}
               </a>
               {period.reportURL ? (
@@ -214,9 +208,7 @@ export const ValidationDashboard = () => {
 
               <IssueView
                 issues={
-                  company.wikidataId
-                    ? issues?.[company.wikidataId]
-                    : undefined
+                  company.wikidataId ? issues?.[company.wikidataId] : undefined
                 }
                 error={!!issuesError}
                 className=""

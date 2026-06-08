@@ -550,7 +550,10 @@ export function ParisAlignedStatisticsPage() {
                   <tbody>
                     {statistics.yesCompanies.map((company, index) => {
                       const basePath = currentLanguage === "sv" ? "/sv" : "/en";
-                      const companyUrl = getCompanyDetailPath(company, basePath);
+                      const companyUrl = getCompanyDetailPath(
+                        company,
+                        basePath,
+                      );
 
                       return (
                         <tr

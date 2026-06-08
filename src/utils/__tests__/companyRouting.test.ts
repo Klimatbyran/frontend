@@ -13,9 +13,9 @@ describe("companyRouting", () => {
   });
 
   it("detects full company uuids", () => {
-    expect(
-      isFullCompanyUuid("a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
-    ).toBe(true);
+    expect(isFullCompanyUuid("a1b2c3d4-e5f6-7890-abcd-ef1234567890")).toBe(
+      true,
+    );
     expect(isFullCompanyUuid("a1b2c3d4")).toBe(false);
   });
 
