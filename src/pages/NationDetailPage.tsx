@@ -33,7 +33,6 @@ function NationDetailContent({
         logoUrl={nation.logoUrl}
         helpItems={["regionTotalEmissions", "detailWhyDataDelay"]}
         stats={headerStats}
-        translateNamespace="nation.detailPage"
       />
       <TerritoryEmissions
         emissionsData={emissionsData}
