@@ -159,7 +159,7 @@ export interface CompanyWithKPIs extends RankedCompany {
 
 // Extended KPI value type for companies
 export interface CompanyKPIValue extends KPIValue<CompanyWithKPIs> {
-  generateKPIColorGetter?: (
+  createKPIColorGetter?: (
     companies: CompanyWithKPIs[],
   ) => (company: CompanyWithKPIs) => string;
 }

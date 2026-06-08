@@ -1,5 +1,6 @@
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { getCompanyDetailPath } from "@/utils/companyRouting";
+import { color } from "framer-motion";
 
 function calcBarWidth(
   showBars: boolean,
@@ -23,6 +24,7 @@ interface InsightsListProps<T> {
   entityType: string;
   nameKey: keyof T;
   showBars?: boolean;
+  colorItem: (item: T) => string;
 }
 
 function InsightsList<T>({
@@ -30,14 +32,13 @@ function InsightsList<T>({
   entities,
   dataPointKey,
   unit,
-  textColor,
-  barColor,
   totalCount,
   isBottomRanking = false,
   nullValues,
   entityType,
   nameKey,
   showBars = false,
+  colorItem,
 }: InsightsListProps<T>) {
   const numericValues = entities
     .map((e) => e[dataPointKey])
@@ -57,6 +58,7 @@ function InsightsList<T>({
           const numVal =
             typeof rawValue === "number" && !isNaN(rawValue) ? rawValue : null;
           const barWidth = calcBarWidth(showBars, numVal, absMax);
+          const color = colorItem(entity);
 
           const content = (
             <div
@@ -71,7 +73,7 @@ function InsightsList<T>({
                   className="absolute inset-y-0 left-0 rounded-lg opacity-20 group-hover:opacity-30"
                   style={{
                     width: `${barWidth}%`,
-                    backgroundColor: barColor ?? "currentColor",
+                    backgroundColor: color ?? "currentColor",
                     transition: `width 0.6s ease-out ${index * 40}ms, opacity 0.3s ease`,
                   }}
                 />
@@ -84,7 +86,10 @@ function InsightsList<T>({
                   <span className="text-sm truncate">{name}</span>
                 </div>
                 <span
-                  className={`${textColor} font-semibold text-sm ml-2 shrink-0`}
+                  className={`font-semibold text-sm ml-2 shrink-0`}
+                  style={{
+                    color: color,
+                  }}
                 >
                   {numVal !== null
                     ? numVal.toFixed(1) + unit

@@ -213,6 +213,10 @@ export function CompaniesOverviewPage() {
       }}
     />
   );
+  
+  const colorItem = selectedKPI.createKPIColorGetter
+    ? selectedKPI.createKPIColorGetter(companiesWithKPIs)
+    : undefined;
 
   const companyRankedList = (
     <RankedList
@@ -223,6 +227,7 @@ export function CompaniesOverviewPage() {
       searchPlaceholder={t("rankedList.search.placeholder")}
       itemsPerPage={isMobile ? 6 : 8}
       headerAction={viewToggle}
+      colorItem={colorItem}
     />
   );
 

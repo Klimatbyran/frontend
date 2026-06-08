@@ -9,7 +9,7 @@ import { BeeswarmChart } from "./shared/BeeswarmChart";
 import {
   createBudgetColorFunction,
   getCompanyBudgetData,
-} from "@/utils/company/companyKPIUtils";
+} from "@/utils/insights/kpiColorUtils";
 
 interface MeetsParisVisualizationProps {
   companies: CompanyWithKPIs[];

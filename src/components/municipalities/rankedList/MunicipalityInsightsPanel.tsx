@@ -5,6 +5,7 @@ import { KPIValue } from "@/types/rankings";
 import { getSortedEntityKPIValues } from "@/utils/data/sorting";
 import {
   calculateEntityStatistics,
+  createDefaultColorGetter,
   createSourceLinks,
   buildPerformerProps,
   TOP_N,
@@ -66,6 +67,14 @@ function InsightsPanel({
     statistics.validData,
     selectedKPI,
   );
+
+  const colorItem = createDefaultColorGetter(
+      municipalityData,
+      selectedKPI.key,
+      selectedKPI.isBoolean,
+      selectedKPI.higherIsBetter,
+    );
+
   const topMunicipalities = sortedData.slice(0, TOP_N);
   const bottomMunicipalities = sortedData.slice(-TOP_N).reverse();
   const sourceLinks = createSourceLinks(selectedKPI);
@@ -143,6 +152,7 @@ function InsightsPanel({
       entityType="municipalities"
       nameKey="name"
       showBars
+      colorItem={colorItem}
     />
   ) : (
     booleanSummary
@@ -162,6 +172,7 @@ function InsightsPanel({
       entityType="municipalities"
       nameKey="name"
       showBars
+      colorItem={colorItem}
     />
   ) : null;
 

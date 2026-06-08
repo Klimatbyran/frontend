@@ -3,9 +3,7 @@ import { ArrowDown, ArrowUp, Search } from "lucide-react";
 import { t } from "i18next";
 import MultiPagePagination from "@/components/ui/multi-page-pagination";
 import { DataPoint } from "@/types/rankings";
-import { isMissingRankedValue } from "@/utils/insights/rankedListUtils";
-import { DEFAULT_KPI_COLORS } from "@/utils/ui/colors";
-import { createStatisticalGradient, DEFAULT_STATISTICAL_GRADIENT_COLORS } from "@/utils/ui/colorGradients";
+import { createDefaultColorGetter, isMissingRankedValue } from "@/utils/insights/rankedListUtils";
 
 export interface RankedListProps<T extends Record<string, unknown>> {
   data: T[];
@@ -55,10 +53,10 @@ function useSortedRankedData<T extends Record<string, unknown>>({
 
   const withValue = data.filter(
     (item) =>
-      !isMissingRankedValue(item[selectedDataPoint.key], selectedDataPoint),
+      !isMissingRankedValue(item[selectedDataPoint.key], selectedDataPoint.isBoolean),
   );
   const withoutValue = data.filter((item) =>
-    isMissingRankedValue(item[selectedDataPoint.key], selectedDataPoint),
+    isMissingRankedValue(item[selectedDataPoint.key], selectedDataPoint.isBoolean),
   );
 
   const sortedWithValue = [...withValue].sort((a, b) => {
@@ -128,7 +126,7 @@ function useRankedItemHelpers<T extends Record<string, unknown>>(
 ) {
   const formatValue = (item: T) => {
     const value = item[selectedDataPoint.key];
-    if (isMissingRankedValue(value, selectedDataPoint)) {
+    if (isMissingRankedValue(value, selectedDataPoint.isBoolean)) {
       return selectedDataPoint.nullValues || t("noData");
     }
     if (selectedDataPoint.formatter) return selectedDataPoint.formatter(value);
@@ -146,31 +144,12 @@ function useRankedItemHelpers<T extends Record<string, unknown>>(
 
   const getOriginalRank = (item: T) => originalRankMap.get(item) || 0;
 
-  const numericalValules = Array.from(originalRankMap.keys())
-    .filter(
-      (item) =>
-        typeof item[selectedDataPoint.key] === "number" &&
-        !isNaN(item[selectedDataPoint.key] as number),
-    )
-    .map((item) => item[selectedDataPoint.key] as number);
-
-  const defaultColorItem = (item: T): string => {
-    const value = item[selectedDataPoint.key];
-    if (isMissingRankedValue(value, selectedDataPoint)) return DEFAULT_KPI_COLORS.null;
-    
-    if (selectedDataPoint.isBoolean) {
-      return value == selectedDataPoint.higherIsBetter
-        ? DEFAULT_KPI_COLORS.positive
-        : DEFAULT_KPI_COLORS.negative;
-    }
-
-    return createStatisticalGradient(
-      numericalValules,
-      value as number,
-      selectedDataPoint.higherIsBetter ?? false,
-      DEFAULT_STATISTICAL_GRADIENT_COLORS,
-    );
-  };
+  const defaultColorItem = createDefaultColorGetter(
+    Array.from(originalRankMap.keys()),
+    selectedDataPoint.key,
+    selectedDataPoint.isBoolean,
+    selectedDataPoint.higherIsBetter
+  );
 
   return { formatValue, getOriginalRank, defaultColorItem };
 }
@@ -225,7 +204,7 @@ export function RankedList<T extends Record<string, unknown>>({
     <button
       key={String(index)}
       onClick={() => onItemClick?.(item)}
-      className="w-full p-4 hover:bg-black/40 transition-colors flex items-center justify-between group"
+      className="w-full p-4 hover:bg-black/70 transition-colors flex items-center justify-between group"
     >
       <div className="flex items-center gap-4">
         <span className="text-white/30 text-sm w-8 shrink-0 tabular-nums text-left">

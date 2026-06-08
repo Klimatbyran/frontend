@@ -11,7 +11,7 @@ import { calculateEmissionsChangeFromBaseYear } from "@/utils/calculations/emiss
 import {
   createBudgetKPIColorGetter,
   createSymmetricKPIColorGetter,
-} from "@/utils/company/companyKPIUtils";
+} from "@/utils/insights/kpiColorUtils";
 
 // Re-export types for convenience
 export type { CompanyWithKPIs, CompanyKPIValue } from "@/types/company";
@@ -46,7 +46,7 @@ export const useCompanyKPIs = (): CompanyKPIValue[] => {
           "companies.list.kpis.emissionsChangeFromBaseYear.detailedDescription",
         ),
         higherIsBetter: false,
-        generateKPIColorGetter: (companies: CompanyWithKPIs[]) =>
+        createKPIColorGetter: (companies: CompanyWithKPIs[]) =>
           createSymmetricKPIColorGetter(
             companies,
             "emissionsChangeFromBaseYear",
