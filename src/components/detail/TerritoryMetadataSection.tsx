@@ -77,18 +77,14 @@ export function TerritoryMetadataSection({
         </DetailMetadataField>
       )}
       {hasParties && (
-        <DetailMetadataField
-          label={t(`${translateNamespace}.politicalRule`)}
-        >
+        <DetailMetadataField label={t(`${translateNamespace}.politicalRule`)}>
           <Text>
             <PoliticalPartyLogos parties={parties} />
           </Text>
         </DetailMetadataField>
       )}
       {politicalKSO && (
-        <DetailMetadataField
-          label={t(`${translateNamespace}.politicalKSO`)}
-        >
+        <DetailMetadataField label={t(`${translateNamespace}.politicalKSO`)}>
           <PoliticalRuleLabel
             src={`/logos/politicalParties/${politicalKSO}.png`}
             alt={politicalKSO}

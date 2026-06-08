@@ -27,7 +27,10 @@ interface DetailMetadataFieldProps {
   children: ReactNode;
 }
 
-export function DetailMetadataField({ label, children }: DetailMetadataFieldProps) {
+export function DetailMetadataField({
+  label,
+  children,
+}: DetailMetadataFieldProps) {
   return (
     <div>
       <Text className="md:mb-2 font-bold">{label}</Text>
