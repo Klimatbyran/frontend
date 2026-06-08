@@ -3,7 +3,7 @@ import { Search } from "lucide-react";
 import { t } from "i18next";
 import MultiPagePagination from "@/components/ui/multi-page-pagination";
 import { DataPoint } from "@/types/rankings";
-import { cn } from "@/lib/utils";
+import { createDefaultColorGetter } from "@/utils/insights/rankedListUtils";
 
 export interface RankedListProps<T extends Record<string, unknown>> {
   data: T[];
@@ -17,6 +17,7 @@ export interface RankedListProps<T extends Record<string, unknown>> {
     startIndex: number,
     originalRank: number,
   ) => React.ReactNode;
+  colorItem?: (item: T) => string;
   className?: string;
   searchPlaceholder?: string;
 }
@@ -57,22 +58,6 @@ function useSortedRankedData<T extends Record<string, unknown>>({
       : (aValue as number) - (bValue as number);
   });
 
-  const validValues = sortedData
-    .map((item) => item[selectedDataPoint.key])
-    .filter(
-      (value) =>
-        (selectedDataPoint.isBoolean && typeof value === "boolean") ||
-        (typeof value === "number" && !isNaN(value as number)),
-    );
-
-  const average =
-    validValues.reduce(
-      (sum, value) =>
-        sum +
-        (selectedDataPoint.isBoolean ? (value ? 1 : 0) : (value as number)),
-      0,
-    ) / validValues.length;
-
   const originalRankMap = new Map<T, number>();
   sortedData.forEach((item, index) => originalRankMap.set(item, index + 1));
 
@@ -94,7 +79,6 @@ function useSortedRankedData<T extends Record<string, unknown>>({
 
   return {
     sortedData,
-    average,
     originalRankMap,
     filteredData,
     totalPages,
@@ -105,7 +89,6 @@ function useSortedRankedData<T extends Record<string, unknown>>({
 
 function useRankedItemHelpers<T extends Record<string, unknown>>(
   selectedDataPoint: DataPoint<T>,
-  average: number,
   originalRankMap: Map<T, number>,
 ) {
   const formatValue = (item: T) => {
@@ -126,22 +109,14 @@ function useRankedItemHelpers<T extends Record<string, unknown>>(
 
   const getOriginalRank = (item: T) => originalRankMap.get(item) || 0;
 
-  const getColor = (item: T): string => {
-    const value = item[selectedDataPoint.key];
-    if (value === null || value === undefined) return "text-pink-3";
-    if (selectedDataPoint.isBoolean) {
-      return value == selectedDataPoint.higherIsBetter
-        ? "text-blue-3"
-        : "text-pink-3";
-    }
-    // TODO: comment out for now, wait for gradient implementation
-    // return (value as number) > average == selectedDataPoint.higherIsBetter
-    //   ? "text-blue-3"
-    //   : "text-pink-3";
-    return "text-orange-2";
-  };
+  const defaultColorItem = createDefaultColorGetter(
+    Array.from(originalRankMap.keys()),
+    selectedDataPoint.key,
+    selectedDataPoint.isBoolean,
+    selectedDataPoint.higherIsBetter,
+  );
 
-  return { formatValue, getOriginalRank, getColor };
+  return { formatValue, getOriginalRank, defaultColorItem };
 }
 
 export function RankedList<T extends Record<string, unknown>>({
@@ -151,13 +126,14 @@ export function RankedList<T extends Record<string, unknown>>({
   searchKey = "name" as keyof T,
   itemsPerPage = 10,
   renderItem,
+  colorItem,
   className,
   searchPlaceholder,
 }: RankedListProps<T>) {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { average, originalRankMap, totalPages, startIndex, paginatedData } =
+  const { originalRankMap, totalPages, startIndex, paginatedData } =
     useSortedRankedData({
       data,
       selectedDataPoint,
@@ -167,11 +143,8 @@ export function RankedList<T extends Record<string, unknown>>({
       currentPage,
     });
 
-  const { formatValue, getOriginalRank, getColor } = useRankedItemHelpers(
-    selectedDataPoint,
-    average,
-    originalRankMap,
-  );
+  const { formatValue, getOriginalRank, defaultColorItem } =
+    useRankedItemHelpers(selectedDataPoint, originalRankMap);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -179,11 +152,11 @@ export function RankedList<T extends Record<string, unknown>>({
     if (listElement) listElement.scrollTop = 0;
   };
 
-  const defaultRenderItem = (item: T, index: number) => (
+  const defaultRenderItem = (item: T, index: number, color: string) => (
     <button
       key={String(index)}
       onClick={() => onItemClick?.(item)}
-      className="w-full p-4 hover:bg-black/40 transition-colors flex items-center justify-between group"
+      className="w-full p-4 hover:bg-black/70 transition-colors flex items-center justify-between group"
     >
       <div className="flex items-center gap-4">
         <span className="text-white/30 text-sm w-8">
@@ -194,10 +167,8 @@ export function RankedList<T extends Record<string, unknown>>({
         </span>
       </div>
       <span
-        className={cn(
-          getColor(item),
-          "text-sm md:text-base font-medium text-right",
-        )}
+        className="text-sm md:text-base font-medium text-right"
+        style={{ color: color }}
       >
         {formatValue(item)}
       </span>
@@ -230,11 +201,15 @@ export function RankedList<T extends Record<string, unknown>>({
         )}
       </div>
       <div className="flex-1 overflow-y-auto ranked-list-items min-h-[570px]">
-        <div className="divide-y divide-white/10">
+        <div className="bg-black/30 divide-y divide-white/10">
           {paginatedData.map((item, index) =>
             renderItem
               ? renderItem(item, index, startIndex, getOriginalRank(item))
-              : defaultRenderItem(item, index),
+              : defaultRenderItem(
+                  item,
+                  index,
+                  colorItem ? colorItem(item) : defaultColorItem(item),
+                ),
           )}
           {paginatedData.length < itemsPerPage &&
             Array(itemsPerPage - paginatedData.length)

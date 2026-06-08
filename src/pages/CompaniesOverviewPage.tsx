@@ -193,6 +193,10 @@ export function CompaniesOverviewPage() {
     },
   });
 
+  const colorItem = selectedKPI.createKPIColorGetter
+    ? selectedKPI.createKPIColorGetter(companiesWithKPIs)
+    : undefined;
+
   const companyRankedList = (
     <RankedList
       data={companiesWithKPIs}
@@ -200,6 +204,7 @@ export function CompaniesOverviewPage() {
       onItemClick={handleCompanyClick}
       searchKey="name"
       searchPlaceholder={t("rankedList.search.placeholder")}
+      colorItem={colorItem}
     />
   );
 

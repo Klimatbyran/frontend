@@ -8,6 +8,10 @@ import {
 import { calculateTrendline } from "@/lib/calculations/trends/analysis";
 import { calculateMeetsParis } from "@/lib/calculations/trends/meetsParis";
 import { calculateEmissionsChangeFromBaseYear } from "@/utils/calculations/emissionsCalculations";
+import {
+  createBudgetKPIColorGetter,
+  createSymmetricKPIColorGetter,
+} from "@/utils/insights/kpiColorUtils";
 
 // Re-export types for convenience
 export type { CompanyWithKPIs, CompanyKPIValue } from "@/types/company";
@@ -43,6 +47,8 @@ export const useCompanyKPIs = (): CompanyKPIValue[] => {
           false: t("companies.list.kpis.meetsParis.booleanLabels.false"),
         },
         nullValues: t("companies.list.kpis.meetsParis.nullValues"),
+        createKPIColorGetter: (companies: CompanyWithKPIs[]) =>
+          createBudgetKPIColorGetter(companies),
       },
       {
         label: t(
@@ -60,6 +66,11 @@ export const useCompanyKPIs = (): CompanyKPIValue[] => {
           "companies.list.kpis.emissionsChangeFromBaseYear.detailedDescription",
         ),
         higherIsBetter: false,
+        createKPIColorGetter: (companies: CompanyWithKPIs[]) =>
+          createSymmetricKPIColorGetter(
+            companies,
+            "emissionsChangeFromBaseYear",
+          ),
       },
     ];
   }, [t]);
