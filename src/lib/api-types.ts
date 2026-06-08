@@ -225,6 +225,8 @@ export interface paths {
                     };
                     content: {
                         "application/json": {
+                            /** Format: uuid */
+                            id: string;
                             wikidataId: string;
                             name: string;
                             lei?: string | null;
@@ -412,6 +414,8 @@ export interface paths {
                     };
                     content: {
                         "application/json": {
+                            /** Format: uuid */
+                            id: string;
                             wikidataId: string;
                             name: string;
                             lei?: string | null;
@@ -599,6 +603,8 @@ export interface paths {
                     };
                     content: {
                         "application/json": {
+                            /** Format: uuid */
+                            id: string;
                             wikidataId: string;
                             name: string;
                             lei?: string | null;
@@ -1148,6 +1154,8 @@ export interface paths {
                     };
                     content: {
                         "application/json": {
+                            /** Format: uuid */
+                            id: string;
                             wikidataId: string;
                             name: string;
                             lei?: string | null;
@@ -1335,6 +1343,8 @@ export interface paths {
                     };
                     content: {
                         "application/json": {
+                            /** Format: uuid */
+                            id: string;
                             wikidataId: string;
                             name: string;
                             lei?: string | null;
@@ -1520,6 +1530,8 @@ export interface paths {
                     };
                     content: {
                         "application/json": {
+                            /** Format: uuid */
+                            id: string;
                             name: string;
                             wikidataId: string;
                             reportingPeriods: {
@@ -1642,6 +1654,8 @@ export interface paths {
                     };
                     content: {
                         "application/json": {
+                            /** Format: uuid */
+                            id: string;
                             wikidataId: string;
                             name: string;
                             lei?: string | null;
@@ -3198,6 +3212,8 @@ export interface paths {
                     content: {
                         "application/json": {
                             name: string;
+                            /** Format: uuid */
+                            id?: string;
                             wikidataId?: string;
                             /** @enum {string} */
                             type: "company" | "municipality" | "region" | "nation";
