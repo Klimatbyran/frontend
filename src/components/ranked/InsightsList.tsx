@@ -1,4 +1,5 @@
 import { LocalizedLink } from "@/components/LocalizedLink";
+import { getCompanyDetailPath } from "@/utils/companyRouting";
 
 interface InsightsListProps<T> {
   title: string;
@@ -59,12 +60,15 @@ function InsightsList<T>({
         }
 
         if (entityType === "companies") {
-          const companyId = (entity as { wikidataId?: string }).wikidataId;
-          if (companyId) {
+          const company = entity as {
+            id: string;
+            wikidataId?: string | null;
+          };
+          if (company.id) {
             return (
               <LocalizedLink
                 key={name}
-                to={`/${entityType}/${companyId}`}
+                to={getCompanyDetailPath(company)}
                 className="block transition-colors hover:bg-white/5 rounded-lg"
               >
                 {content}

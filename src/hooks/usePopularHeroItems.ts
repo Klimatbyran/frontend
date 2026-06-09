@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import type { RankedCompany } from "@/types/company";
 import type { Municipality } from "@/types/municipality";
+import { getCompanyUrlSegment } from "@/utils/companyRouting";
 
 export type HeroSearchResult =
   | { type: "company"; id: string; name: string }
@@ -34,7 +35,7 @@ export function usePopularHeroItems({
       .map(
         (company): HeroSearchResult => ({
           type: "company",
-          id: String(company.wikidataId),
+          id: getCompanyUrlSegment(company),
           name: company.name,
         }),
       );

@@ -14,6 +14,7 @@ import {
   UPSTREAM_CATEGORIES,
   DOWNSTREAM_CATEGORIES,
 } from "@/lib/constants/categories";
+import { getCompanyDetailPath } from "@/utils/companyRouting";
 
 interface ScopeModalProps {
   scope: "scope1" | "scope2" | "scope3_upstream" | "scope3_downstream";
@@ -119,10 +120,9 @@ const ScopeModal: React.FC<ScopeModalProps> = ({
     return { sectors: data, total: totalEmissions };
   }, [companies, selectedSectors, selectedYear, scope, sectorNames]);
 
-  // Add a function to find the company's wikidataId by name
-  const getCompanyWikidataId = (companyName: string): string | undefined => {
+  const getCompanyPath = (companyName: string): string | undefined => {
     const company = companies.find((c) => c.name === companyName);
-    return company?.wikidataId;
+    return company ? getCompanyDetailPath(company) : undefined;
   };
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
@@ -203,12 +203,12 @@ const ScopeModal: React.FC<ScopeModalProps> = ({
 
                   <div className="space-y-2">
                     {sector.companies.map((company) => {
-                      const wikidataId = getCompanyWikidataId(company.name);
+                      const companyPath = getCompanyPath(company.name);
 
-                      return wikidataId ? (
+                      return companyPath ? (
                         <Link
                           key={company.name}
-                          to={`/companies/${wikidataId}`}
+                          to={companyPath}
                           className="block"
                         >
                           <div className="bg-black-2 rounded-lg p-4 flex items-center justify-between group hover:bg-opacity-60 transition-colors cursor-pointer">

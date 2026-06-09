@@ -8,6 +8,10 @@ import { yearFromIsoDate } from "@/utils/date";
 import { Text } from "@/components/ui/text";
 import { Button } from "@/components/ui/button";
 import { UnsavedChangesModal } from "./UnsavedChangesModal";
+import {
+  getCompanyDetailPath,
+  getCompanyUrlSegment,
+} from "@/utils/companyRouting";
 
 const selectStyles = {
   control: (baseStyles: object) => ({
@@ -126,7 +130,7 @@ export function CompanyEditHeader({
     if (hasUnsavedChanges) {
       setShowConfirmModal(true);
     } else {
-      navigate(`/companies/${company.wikidataId}`);
+      navigate(getCompanyDetailPath(company));
     }
   };
 
@@ -162,7 +166,7 @@ export function CompanyEditHeader({
 
       <UnsavedChangesModal
         isOpen={showConfirmModal}
-        companyWikidataId={company.wikidataId}
+        companyUrlSegment={getCompanyUrlSegment(company)}
         onClose={() => setShowConfirmModal(false)}
       />
     </>
