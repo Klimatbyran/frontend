@@ -31,10 +31,9 @@ import { FinancialsTooltip } from "./FinancialsTooltip";
 import { CompanyDescription } from "./CompanyDescription";
 import { CompanyOverviewTooltip } from "./CompanyOverviewTooltip";
 import { OverviewStatistics } from "./OverviewStatistics";
+import { type ReactNode } from "react";
 import { yearFromIsoDate } from "@/utils/date";
 import { CompanyLogo } from "../../CompanyLogo";
-import { ComparisonDetailChip } from "@/components/explore/ComparisonDetailChip";
-import { buildComparisonLinkTo } from "@/utils/explore/comparisonUtils";
 
 interface CompanyOverviewProps {
   company: CompanyDetails;
@@ -43,6 +42,7 @@ interface CompanyOverviewProps {
   onYearSelect: (year: string) => void;
   selectedYear: string;
   yearOverYearChange: number | null;
+  headerChip?: ReactNode;
 }
 
 export function CompanyOverview({
@@ -52,6 +52,7 @@ export function CompanyOverview({
   onYearSelect,
   selectedYear,
   yearOverYearChange,
+  headerChip,
 }: CompanyOverviewProps) {
   const { t } = useTranslation();
   const { token } = useAuth();
@@ -111,29 +112,27 @@ export function CompanyOverview({
     >
       <div className="flex gap-1 items-start justify-between mb-4 md:mb-12">
         <div className="space-y-4">
-          <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:gap-3">
+          <div className="flex items-center gap-4">
             <Text className="text-4xl lg:text-6xl">{company.name}</Text>
-            <div className="flex flex-row flex-wrap gap-2">
-              {token && (
-                <>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="gap-2"
-                    onClick={() => navigate("edit")}
-                  >
-                    Edit
-                    <div className="w-5 h-5 rounded-full bg-orange-5/30 text-orange-2 text-xs flex items-center justify-center">
-                      <Pen />
-                    </div>
-                  </Button>
-                  <EmissionsAssessmentButton
-                    wikidataId={company.wikidataId}
-                    sortedPeriods={sortedPeriods}
-                  />
-                </>
-              )}
-            </div>
+            {token && (
+              <div className="mt-2 flex flex-row gap-2 md:ml-4 md:mt-0">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="gap-2"
+                  onClick={() => navigate("edit")}
+                >
+                  Edit
+                  <div className="flex h-5 w-5 items-center justify-center rounded-full bg-orange-5/30 text-xs text-orange-2">
+                    <Pen />
+                  </div>
+                </Button>
+                <EmissionsAssessmentButton
+                  wikidataId={company.wikidataId}
+                  sortedPeriods={sortedPeriods}
+                />
+              </div>
+            )}
           </div>
           <CompanyDescription description={description} />
           <div className="flex flex-row items-center gap-2 my-4">
@@ -169,19 +168,17 @@ export function CompanyOverview({
             </Select>
           </div>
         </div>
-        <div className="flex shrink-0 flex-col items-end gap-3">
-          <ComparisonDetailChip
-            linkTo={buildComparisonLinkTo("company", company.wikidataId)}
-            variant="company"
-            name={company.name}
-          />
-          {company.logoUrl && (
-            <CompanyLogo
-              src={company.logoUrl}
-              className="hidden size-[120px] rounded-xl object-contain lg:inline"
-            />
-          )}
-        </div>
+        {(headerChip || company.logoUrl) && (
+          <div className="flex shrink-0 flex-col items-end gap-3">
+            {headerChip}
+            {company.logoUrl && (
+              <CompanyLogo
+                src={company.logoUrl}
+                className="hidden size-[120px] rounded-xl object-contain lg:inline"
+              />
+            )}
+          </div>
+        )}
       </div>
 
       <div className="mb-2 md:mb-4 space-y-4 md:space-y-6">

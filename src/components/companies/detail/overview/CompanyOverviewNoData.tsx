@@ -1,3 +1,4 @@
+import { type ReactNode } from "react";
 import { Pen } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -12,14 +13,16 @@ import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { getCompanyDescription } from "@/utils/business/company";
 import { CompanyDescription } from "./CompanyDescription";
 import { PageNoData } from "@/components/pageStates/NoData";
-import { ComparisonDetailChip } from "@/components/explore/ComparisonDetailChip";
-import { buildComparisonLinkTo } from "@/utils/explore/comparisonUtils";
 
 interface CompanyOverviewNoDataProps {
   company: CompanyDetails;
+  headerChip?: ReactNode;
 }
 
-export function CompanyOverviewNoData({ company }: CompanyOverviewNoDataProps) {
+export function CompanyOverviewNoData({
+  company,
+  headerChip,
+}: CompanyOverviewNoDataProps) {
   const { t } = useTranslation();
   const { token } = useAuth();
   const navigate = useNavigate();
@@ -33,10 +36,10 @@ export function CompanyOverviewNoData({ company }: CompanyOverviewNoDataProps) {
     <SectionWithHelp helpItems={["companySectors", "companyMissingData"]}>
       <div className="flex items-start justify-between mb-4 md:mb-12">
         <div className="space-y-4">
-          <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:gap-3">
+          <div className="flex items-center gap-4">
             <Text className="text-4xl lg:text-6xl">{company.name}</Text>
-            <div className="flex flex-row flex-wrap gap-2">
-              {token && (
+            {token && (
+              <div className="mt-2 flex flex-row gap-2 md:ml-4 md:mt-0">
                 <Button
                   variant="outline"
                   size="sm"
@@ -44,12 +47,12 @@ export function CompanyOverviewNoData({ company }: CompanyOverviewNoDataProps) {
                   onClick={() => navigate("edit")}
                 >
                   Edit
-                  <div className="w-5 h-5 rounded-full bg-orange-5/30 text-orange-2 text-xs flex items-center justify-center">
+                  <div className="flex h-5 w-5 items-center justify-center rounded-full bg-orange-5/30 text-xs text-orange-2">
                     <Pen />
                   </div>
                 </Button>
-              )}
-            </div>
+              </div>
+            )}
           </div>
           <CompanyDescription description={description} />
           <div className="flex flex-row items-center gap-2 my-4">
@@ -64,13 +67,9 @@ export function CompanyOverviewNoData({ company }: CompanyOverviewNoDataProps) {
             </Text>
           </div>
         </div>
-        <div className="flex shrink-0 flex-col items-end gap-3">
-          <ComparisonDetailChip
-            linkTo={buildComparisonLinkTo("company", company.wikidataId)}
-            variant="company"
-            name={company.name}
-          />
-        </div>
+        {headerChip && (
+          <div className="flex shrink-0 flex-col items-end gap-3">{headerChip}</div>
+        )}
       </div>
 
       <div className="py-8">
