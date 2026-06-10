@@ -68,7 +68,9 @@ export function CompanyOverviewNoData({
           </div>
         </div>
         {headerChip && (
-          <div className="flex shrink-0 flex-col items-end gap-3">{headerChip}</div>
+          <div className="flex shrink-0 flex-col items-end gap-3">
+            {headerChip}
+          </div>
         )}
       </div>
 
