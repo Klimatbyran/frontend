@@ -17,6 +17,7 @@ import { calculateEmissionsChange } from "@/utils/calculations/emissionsCalculat
 import { generateCompanySeoMeta } from "@/utils/seo/entitySeo";
 import { getSeoForRoute } from "@/seo/routes";
 import { yearFromIsoDate } from "@/utils/date";
+
 export function CompanyDetailPage() {
   const { t } = useTranslation();
   const { id } = useParams<{ id: string; slug?: string }>();
@@ -114,6 +115,7 @@ export function CompanyDetailPage() {
 
   return (
     <>
+      {/* Only render SEO when data is available, otherwise Layout will use route-level SEO */}
       {company && <Seo meta={seoMeta} />}
 
       <div className="space-y-8 md:space-y-16 max-w-[1400px] mx-auto">
