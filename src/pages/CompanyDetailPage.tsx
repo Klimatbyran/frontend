@@ -1,6 +1,5 @@
 import { useParams, useLocation } from "react-router-dom";
 import { useMemo, useState } from "react";
-import { CompanyDetailHeader } from "@/components/companies/detail/CompanyDetailHeader";
 import { ComparisonDetailChip } from "@/components/compare/ComparisonDetailChip";
 import { buildComparisonLinkTo } from "@/utils/compare/comparisonUtils";
 import { useTranslation } from "react-i18next";
@@ -80,12 +79,10 @@ export function CompanyDetailPage() {
       <>
         <Seo meta={seoMeta} />
         <div className="mx-auto max-w-[1400px] space-y-8 md:space-y-16">
-          <CompanyDetailHeader
-            name={company.name}
-            logoUrl={company.logoUrl}
+          <CompanyOverviewNoData
+            company={company}
             headerChip={comparisonChip}
           />
-          <CompanyOverviewNoData company={company} />
         </div>
       </>
     );
@@ -135,11 +132,6 @@ export function CompanyDetailPage() {
       {company && <Seo meta={seoMeta} />}
 
       <div className="mx-auto max-w-[1400px] space-y-8 md:space-y-16">
-        <CompanyDetailHeader
-          name={company.name}
-          logoUrl={company.logoUrl}
-          headerChip={comparisonChip}
-        />
         <CompanyOverview
           company={company}
           selectedPeriod={selectedPeriod}
@@ -147,6 +139,7 @@ export function CompanyDetailPage() {
           onYearSelect={setSelectedYear}
           selectedYear={selectedYear}
           yearOverYearChange={yearOverYearChange}
+          headerChip={comparisonChip}
         />
         {validEmissionsChangeNumber && validEmissionsChangeNumber > 100 && (
           <RelatableNumbers
