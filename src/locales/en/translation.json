@@ -1020,6 +1020,8 @@
     }
   },
   "regionalOverviewPage": {
+    "errorTitle": "Failed to retrieve regional information",
+    "errorDescription": "Please try again later",
     "title": "Regional Overview",
     "description": "Overview of emissions and transition at the regional level"
   },
