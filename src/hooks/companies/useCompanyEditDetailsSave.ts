@@ -48,7 +48,7 @@ async function saveCompanyEditDetails({
   ) {
     didChange = true;
     await updateCompanyIndustry(
-      company.wikidataId,
+      company.id,
       subIndustryCode,
       hasMetadata ? metadata : undefined,
       industryVerified,
@@ -62,7 +62,7 @@ async function saveCompanyEditDetails({
   ) {
     didChange = true;
     await updateCompanyBaseYear(
-      company.wikidataId,
+      company.id,
       Number(baseYear),
       hasMetadata ? metadata : undefined,
       baseYearVerified,

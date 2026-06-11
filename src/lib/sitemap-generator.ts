@@ -3,6 +3,13 @@ import path from "path";
 import { getCompanies, getMunicipalities } from "./api.js";
 import { createSlug } from "./utils.js";
 
+function getCompanyUrlSegment(company: {
+  id: string;
+  wikidataId?: string | null;
+}): string {
+  return company.wikidataId ?? company.id.split("-")[0];
+}
+
 // Set NODE_TLS_REJECT_UNAUTHORIZED to allow self-signed certificates during development
 // This is only used during sitemap generation in Node.js environment
 if (typeof process !== "undefined" && process.env.NODE_ENV !== "production") {
@@ -173,7 +180,7 @@ export async function generateSitemap(outputPath: string): Promise<void> {
           const slug = createSlug(company.name);
 
           return {
-            loc: `https://klimatkollen.se/sv/foretag/${slug}-${company.wikidataId}`,
+            loc: `https://klimatkollen.se/sv/foretag/${slug}-${getCompanyUrlSegment(company)}`,
             lastmod: currentDate,
             changefreq: "monthly",
             priority: "0.6",
@@ -185,7 +192,7 @@ export async function generateSitemap(outputPath: string): Promise<void> {
           const slug = createSlug(company.name);
 
           return {
-            loc: `https://klimatkollen.se/en/companies/${company.wikidataId}/${slug}`,
+            loc: `https://klimatkollen.se/en/companies/${getCompanyUrlSegment(company)}/${slug}`,
             lastmod: currentDate,
             changefreq: "monthly",
             priority: "0.5", // Slightly lower priority for English versions

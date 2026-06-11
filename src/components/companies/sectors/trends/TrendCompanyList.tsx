@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { RankedCompany } from "@/types/company";
 import { useLanguage } from "@/components/LanguageProvider";
 import { getCompanyDescription } from "@/utils/business/company";
+import { getCompanyDetailPath } from "@/utils/companyRouting";
 
 interface TrendCompanyListProps {
   category: "decreasing" | "increasing" | "noComparable";
@@ -41,11 +42,11 @@ const TrendCompanyList: React.FC<TrendCompanyListProps> = ({
             const description = getCompanyDescription(company, currentLanguage);
             return (
               <div
-                key={company.wikidataId}
+                key={company.id}
                 className="bg-black-1 rounded-lg px-4 py-3 text-sm"
               >
                 <div className="flex justify-between items-start mb-2">
-                  <Link to={`/companies/${company.wikidataId}`}>
+                  <Link to={getCompanyDetailPath(company)}>
                     <div className="font-medium text-white hover:scale-105">
                       {company.name}
                     </div>
@@ -67,11 +68,11 @@ const TrendCompanyList: React.FC<TrendCompanyListProps> = ({
             const description = getCompanyDescription(company, currentLanguage);
             return (
               <div
-                key={company.wikidataId}
+                key={company.id}
                 className="bg-black-1 rounded-lg px-4 py-3 text-sm"
               >
                 {" "}
-                <Link to={`/companies/${company.wikidataId}`}>
+                <Link to={getCompanyDetailPath(company)}>
                   <div className="flex justify-between items-start mb-2">
                     <div className="font-medium text-white hover:scale-105">
                       {company.name}

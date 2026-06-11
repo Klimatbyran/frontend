@@ -42,7 +42,6 @@ export function RegionDetailPage() {
           logoUrl={region.logoUrl}
           helpItems={["regionTotalEmissions", "detailWhyDataDelay"]}
           stats={headerStats}
-          translateNamespace="regions.detailPage"
           headerChip={
             <ComparisonDetailChip
               linkTo={buildComparisonLinkTo("region", region.name)}

@@ -703,12 +703,12 @@
       "emissionTypes": {
         "title": "Different Types of Emissions",
         "description": "Learn about the various types of emissions and how they are measured",
-        "paragraph1": "Klimatkollen is an independent fact-based platform that follows established standards for emissions reporting. The climate data we present reflects the boundaries and assumptions used in carbon budget calculations. For example, carbon budgets cannot be directly linked to all greenhouse gas emissions, as other gases like methane, nitrous oxide, and water vapour are also included in overall climate impact assessments.",
-        "paragraph2": "Emissions from cement production are excluded from the IPCC's global carbon budget and, as a result, are also omitted from Sweden's carbon budget and emissions data. This specifically affects the municipalities of Gotland, Skövde, and Mörbylånga, where cement production is currently or has previously taken place.",
-        "paragraph3": "Sweden also has a significant climate impact from goods imported from other countries, leading to emissions abroad. These consumption-based emissions are not included in the carbon budget.",
-        "paragraph4": "Similarly, emissions from forests and land (known as biogenic emissions) are also excluded from the carbon budget.",
-        "paragraph5": "In reality, climate-impacting emissions are much higher than the territorial fossil carbon emissions typically reported by authorities and the media. The data currently displayed on Klimatkollen reflects these territorial emissions.",
-        "paragraph6": "Klimatkollen is actively exploring how to incorporate other greenhouse gas emissions on the website in the future, while maintaining the ability to compare current emissions with carbon budgets."
+        "paragraph1": "Klimatkollen is an independent fact-based platform that follows established standards for emissions reporting. The climate data we present reflects the boundaries used in official territorial emissions inventories. For municipalities and regions, we show emissions of all greenhouse gases (CO₂e) — including gases such as methane and nitrous oxide — sourced from SMHI's National Emissions Database.",
+        "paragraph2": "Some municipalities have unusually high emissions due to large industrial facilities, including cement production. This particularly affects municipalities such as Gotland, Skövde, and Mörbylånga, where cement production currently takes place or has taken place historically.",
+        "paragraph3": "Sweden also has a significant climate impact from goods imported from other countries, leading to emissions abroad. These consumption-based emissions are not included in territorial emissions totals, but we show them separately as a key indicator where data is available.",
+        "paragraph4": "Similarly, emissions and removals from forests and land (known as biogenic emissions) are reported separately and are not included in the territorial greenhouse gas totals shown on Klimatkollen.",
+        "paragraph5": "In reality, a municipality's full climate footprint is often larger than its territorial emissions alone suggest. The data currently displayed on Klimatkollen reflects territorial emissions — those that physically occur within each municipality's or region's borders.",
+        "paragraph6": "We compare territorial emissions against the Paris-aligned reduction rate defined by Carbon Law (approximately 12% per year from 2025). Klimatkollen continues to explore how to present a more complete picture of climate impact on the platform."
       }
     },
     "company": {
@@ -729,7 +729,7 @@
         },
         "companiesIncluded": {
           "title": "Companies Included",
-          "paragraph1": "Currently, our database includes companies on the OMX Large Cap, Mid Cap and Small Cap lists of the Stockholm Stock Exchange, along with the 24 largest state-owned companies, five largest economic associations, and unlisted companies IKEA and ICA Group.",
+          "paragraph1": "Currently, our database includes all companies on the Stockholm Stock Exchange (the OMX Large Cap, Mid Cap and Small Cap lists), along with the 24 largest state-owned companies, five largest economic associations, unlisted companies IKEA and ICA Group, and companies listed on the Nasdaq Baltic exchange (as well as a few non-listed Baltic companies).",
           "paragraph2": "The companies are categorized by industry according to the Global Industry Classification Standard (GICS).",
           "link": {
             "title": "GICS",
@@ -1071,6 +1071,7 @@
       "medium": "Maybe",
       "low": "No"
     },
+    "region": "Region",
     "politicalRule": "Political rule",
     "politicalKSO": "Municipal Executive Chair",
     "totalEmissionsTooltip": "This is the latest reported emissions. For calculated estimates on the current year, please see the emissions development graph below.",

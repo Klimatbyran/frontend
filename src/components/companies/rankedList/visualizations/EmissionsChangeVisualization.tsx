@@ -5,6 +5,7 @@ import { createSymmetricRangeGradient } from "@/utils/ui/colorGradients";
 import { useBeeswarmData } from "@/hooks/companies/useBeeswarmData";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { BeeswarmChart } from "./shared/BeeswarmChart";
+import { getCompanyUrlSegment } from "@/utils/companyRouting";
 
 interface EmissionsChangeVisualizationProps {
   companies: CompanyWithKPIs[];
@@ -39,7 +40,7 @@ export function EmissionsChangeVisualization({
     );
     const map = new Map<string, number>();
     sorted.forEach((company, index) => {
-      map.set(company.wikidataId, index + 1);
+      map.set(company.id, index + 1);
     });
     return map;
   }, [withData]);
@@ -73,13 +74,13 @@ export function EmissionsChangeVisualization({
           data={withData}
           getValue={(c) => c.emissionsChangeFromBaseYear as number}
           getCompanyName={(c) => c.name}
-          getCompanyId={(c) => c.wikidataId}
+          getCompanyId={(c) => getCompanyUrlSegment(c)}
           colorForValue={colorForValue}
           min={min}
           max={max}
           unit="%"
           onCompanyClick={onCompanyClick}
-          getRank={(c) => rankMap.get(c.wikidataId) ?? null}
+          getRank={(c) => rankMap.get(c.id) ?? null}
           totalCount={withData.length}
         />
       </div>

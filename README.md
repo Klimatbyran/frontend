@@ -43,6 +43,26 @@ VITE_API_PROXY   |
 
 **Note:** npm audit vulnerabilities will fail the build.
 
+### Company IDs and API types
+
+Companies are keyed by internal UUID (`Company.id`) in the database. The frontend uses two identifier shapes:
+
+| Use case | Identifier |
+|----------|------------|
+| Public URLs (`/companies/...`) | `wikidataId` if set, else first 8 hex chars of `id` |
+| Partner read (`getCompanyDetails`) | URL param as-is — API resolves Q-id, full UUID, or 8-char prefix |
+| Staff mutations (edit pages) | Always full internal `company.id` |
+
+Helpers live in `src/utils/companyRouting.ts` (`getCompanyUrlSegment`, `getCompanyDetailPath`).
+
+After the API with staff `/:id` routes is deployed, regenerate OpenAPI types before building against production:
+
+```bash
+npm run generate-api:staging   # or generate-api:local against a running API
+```
+
+Do not hand-edit `src/lib/api-types.ts` except when temporarily ahead of a staged OpenAPI publish.
+
 ## 👩‍💻 Contributing
 
 Do you have an idea for a feature? Jump into the code or head to our [Discord server](https://discord.gg/N5P64QPQ6v) to discuss your thoughts. You can also submit an [issue](https://github.com/Klimatbyran/beta/issues) explaining your suggestion.

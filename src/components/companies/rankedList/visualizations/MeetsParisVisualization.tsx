@@ -8,6 +8,7 @@ import { getBestUnit } from "@/utils/data/unitScaling";
 import { calculateCapThreshold } from "@/utils/data/capping";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import type { ColorFunction } from "@/types/visualizations";
+import { getCompanyUrlSegment } from "@/utils/companyRouting";
 import { BeeswarmChart } from "./shared/BeeswarmChart";
 
 interface MeetsParisVisualizationProps {
@@ -156,7 +157,7 @@ export function MeetsParisVisualization({
           }}
           getRawValue={(d) => d.budgetTonnes / unitScale.divisor}
           getCompanyName={(d) => d.company.name}
-          getCompanyId={(d) => d.company.wikidataId}
+          getCompanyId={(d) => getCompanyUrlSegment(d.company)}
           colorForValue={(value) => colorForTonnes(value * unitScale.divisor)}
           getMeetsParis={(d) => d.meetsParis}
           getBudgetValue={(d) => d.budgetTonnes / unitScale.divisor}

@@ -4,13 +4,13 @@ import { Text } from "@/components/ui/text";
 
 interface UnsavedChangesModalProps {
   isOpen: boolean;
-  companyWikidataId: string;
+  companyUrlSegment: string;
   onClose: () => void;
 }
 
 export function UnsavedChangesModal({
   isOpen,
-  companyWikidataId,
+  companyUrlSegment,
   onClose,
 }: UnsavedChangesModalProps) {
   const { t } = useTranslation();
@@ -38,7 +38,7 @@ export function UnsavedChangesModal({
             {t("companyEditPage.unsavedChanges.cancel")}
           </button>
           <button
-            onClick={() => navigate(`/companies/${companyWikidataId}`)}
+            onClick={() => navigate(`/companies/${companyUrlSegment}`)}
             className="px-4 py-2 rounded-lg bg-pink-5 hover:bg-pink-6 transition-colors"
           >
             {t("companyEditPage.unsavedChanges.discard")}

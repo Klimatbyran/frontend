@@ -8,18 +8,22 @@ import {
 } from "@/lib/constants/landingPage";
 import { getGlobalSearch, GlobalSearchApiResponse } from "@/lib/api";
 import { useLanguage } from "@/components/LanguageProvider";
+import { getCompanyUrlSegment } from "@/utils/companyRouting";
 
 function mapGlobalSearchResult(
   item: GlobalSearchApiResponse[number],
 ): HeroSearchResult | null {
   if (item.type === "company") {
-    if (!item.wikidataId) {
+    if (!item.id) {
       return null;
     }
 
     return {
       type: "company",
-      id: String(item.wikidataId),
+      id: getCompanyUrlSegment({
+        id: String(item.id),
+        wikidataId: item.wikidataId,
+      }),
       name: item.name,
     };
   }

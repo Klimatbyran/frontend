@@ -92,7 +92,7 @@ export function CompanyEditEmissionsData({
         selectedPeriods,
         nextFormData,
       );
-      await updateReportingPeriods(company.wikidataId, {
+      await updateReportingPeriods(company.id, {
         reportingPeriods,
         metadata,
       });

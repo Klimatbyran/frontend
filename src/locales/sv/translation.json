@@ -762,12 +762,12 @@
       "emissionTypes": {
         "title": "Olika typer av utsläpp",
         "description": "Lär dig om olika typer av utsläpp och hur de mäts",
-        "paragraph1": "Klimatkollen är en oberoende faktabaserad plattform som följer etablerade standarder för utsläppsrapportering. Klimatdata vi presenterar speglar de gränser och antaganden som används i koldioxidbudgetberäkningar. Till exempel kan koldioxidbudgetar inte direkt kopplas till alla växthusgasutsläpp, eftersom andra gaser som metan, lustgas och vattenånga också ingår i klimatpåverkan.",
-        "paragraph2": "Utsläpp från cementproduktion exkluderas från IPCC:s globala koldioxidbudget och är därför också utelämnade från Sveriges koldioxidbudget och utsläppsdata. Detta påverkar särskilt kommunerna Gotland, Skövde och Mörbylånga där cementproduktion förekommer eller har förekommit.",
-        "paragraph3": "Sverige har också en betydande klimatpåverkan från varor som importeras från andra länder, vilket leder till utsläpp utomlands. Dessa konsumtionsbaserade utsläpp ingår inte i koldioxidbudgeten.",
-        "paragraph4": "På samma sätt exkluderas utsläpp från skog och mark (så kallade biogena utsläpp) från koldioxidbudgeten.",
-        "paragraph5": "I verkligheten är klimatpåverkande utsläpp mycket högre än de territoriella fossila koldioxidutsläpp som vanligtvis rapporteras av myndigheter och media. Den data som visas på Klimatkollen speglar dessa territoriella utsläpp.",
-        "paragraph6": "Klimatkollen undersöker aktivt hur andra växthusgasutsläpp kan inkluderas på webbplatsen i framtiden, samtidigt som möjligheten att jämföra nuvarande utsläpp med koldioxidbudgetar behålls."
+        "paragraph1": "Klimatkollen är en oberoende faktabaserad plattform som följer etablerade standarder för utsläppsrapportering. Den klimatdata vi presenterar speglar de avgränsningar som används i officiella territoriella utsläppsinventeringar. För kommuner och län visar vi utsläpp av alla växthusgaser (CO₂e) — inklusive gaser som metan och lustgas — från SMHI:s Nationella emissionsdatabas.",
+        "paragraph2": "Vissa kommuner har ovanligt höga utsläpp på grund av stora industriella anläggningar, inklusive cementproduktion. Detta påverkar särskilt kommuner som Gotland, Skövde och Mörbylånga, där cementproduktion pågår eller har pågått historiskt.",
+        "paragraph3": "Sverige har också en betydande klimatpåverkan från varor som importeras från andra länder, vilket leder till utsläpp utomlands. Dessa konsumtionsbaserade utsläpp ingår inte i de territoriella utsläppssummorna, men vi visar dem separat som ett nyckeltal där data finns tillgänglig.",
+        "paragraph4": "På samma sätt rapporteras utsläpp och upptag från skog och mark (så kallade biogena utsläpp) separat och ingår inte i de territoriella växthusgasutsläpp som visas på Klimatkollen.",
+        "paragraph5": "I verkligheten är en kommuns fulla klimatavtryck ofta större än vad de territoriella utsläppen ensamma antyder. Den data som visas på Klimatkollen speglar territoriella utsläpp — det vill säga utsläpp som fysiskt sker inom respektive kommuns eller längräns.",
+        "paragraph6": "Vi jämför territoriella utsläpp med den Parisanpassade minskningstakt som definieras av Carbon Law (cirka 12 % per år från 2025). Klimatkollen fortsätter att utforska hur vi kan presentera en mer fullständig bild av klimatpåverkan på plattformen."
       }
     },
     "company": {
@@ -788,7 +788,7 @@
         },
         "companiesIncluded": {
           "title": "Inkluderade företag",
-          "paragraph1": "Vår databas omfattar företag på OMX Large Cap, Mid Cap och Small Cap på Stockholmsbörsen, de 24 största statliga företagen, de fem största ekonomiska föreningarna samt de olistade företagen IKEA och ICA Gruppen.",
+          "paragraph1": "Vår databas omfattar alla företag på Stockholmsbörsen (OMX Large Cap, Mid Cap och Small Cap), de 24 största statliga företagen, de fem största ekonomiska föreningarna, de olistade företagen IKEA och ICA Gruppen samt företag noterade på Nasdaq Baltic (samt ett par olistade balttiska företag).",
           "paragraph2": "Företagen kategoriseras efter bransch enligt Global Industry Classification Standard (GICS).",
           "link": {
             "title": "GICS",
@@ -1129,6 +1129,7 @@
       "medium": "Kanske",
       "low": "Nej"
     },
+    "region": "Län",
     "politicalRule": "Politiskt styre",
     "politicalKSO": "Kommunstyrelsens ordförande",
     "totalEmissionsTooltip": "Detta är de senast rapporterade utsläppen. För beräknade uppskattningar för innevarande år, se grafen Utsläppsutveckling nedan.",

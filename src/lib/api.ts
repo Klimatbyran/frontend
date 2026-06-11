@@ -95,14 +95,23 @@ export async function getCompanyDetails(id: string) {
 }
 
 export type UpdateCompanyDetailsBody =
-  paths["/companies/{wikidataId}"]["post"]["requestBody"]["content"]["application/json"];
+  paths["/companies/{id}"]["post"]["requestBody"]["content"]["application/json"];
+
+export type CreateCompanyResponse =
+  paths["/companies/"]["post"]["responses"][200]["content"]["application/json"];
+
+export async function createCompany(body: UpdateCompanyDetailsBody) {
+  const { data, error } = await client.POST("/companies/", { body });
+  if (error) throw error;
+  return data as CreateCompanyResponse;
+}
 
 export async function updateCompanyDetails(
-  wikidataId: string,
+  companyId: string,
   body: UpdateCompanyDetailsBody,
 ) {
-  const { data, error } = await client.POST("/companies/{wikidataId}", {
-    params: { path: { wikidataId } },
+  const { data, error } = await client.POST("/companies/{id}", {
+    params: { path: { id: companyId } },
     body,
   });
   if (error) throw error;
@@ -148,14 +157,14 @@ export async function getMunicipalityDetails(name: string) {
 }
 
 export async function updateReportingPeriods(
-  wikidataId: string,
-  body: paths["/companies/{wikidataId}/reporting-periods"]["post"]["requestBody"]["content"]["application/json"],
+  companyId: string,
+  body: paths["/companies/{id}/reporting-periods"]["post"]["requestBody"]["content"]["application/json"],
 ) {
   const { data, error } = await client.POST(
-    "/companies/{wikidataId}/reporting-periods",
+    "/companies/{id}/reporting-periods",
     {
       params: {
-        path: { wikidataId },
+        path: { id: companyId },
       },
       body,
     },
@@ -214,53 +223,6 @@ export async function getReportingYears(): Promise<string[]> {
   }
 }
 
-export async function getValidationClaims(): Promise<Record<string, string>> {
-  try {
-    const { data, error } = await client.GET("/validation/claim", {});
-    if (error) throw error;
-    return data;
-  } catch (error) {
-    console.error("Error fetching validation claims:", error);
-    return {};
-  }
-}
-export async function createValidationClaim(wikidataId: string, steal = false) {
-  try {
-    const { data, error } = await client.POST(
-      "/validation/claim/{wikidataId}",
-      {
-        params: {
-          path: { wikidataId },
-        },
-        body: { steal }, // empty object
-      },
-    );
-    if (error) throw error;
-    return data;
-  } catch (error) {
-    console.error("Error fetching validation claims:", error);
-    return {};
-  }
-}
-
-export async function deleteValidationClaim(wikidataId: string) {
-  try {
-    const { data, error } = await client.DELETE(
-      "/validation/claim/{wikidataId}",
-      {
-        params: {
-          path: { wikidataId },
-        },
-      },
-    );
-    if (error) throw error;
-    return data;
-  } catch (error) {
-    console.error("Error fetching validation claims:", error);
-    return {};
-  }
-}
-
 export async function assessEmissions(
   params: paths["/emissions-assessment/"]["post"]["requestBody"]["content"]["application/json"],
 ) {
@@ -283,35 +245,29 @@ export async function assessEmissions(
 }
 
 export async function updateCompanyIndustry(
-  wikidataId: string,
+  companyId: string,
   subIndustryCode: string,
   metadata?: { source?: string; comment?: string },
   verified?: boolean,
 ) {
-  const { data, error } = await client.POST(
-    "/companies/{wikidataId}/industry",
-    {
-      params: { path: { wikidataId } },
-      body: { industry: { subIndustryCode }, metadata, verified },
-    },
-  );
+  const { data, error } = await client.POST("/companies/{id}/industry", {
+    params: { path: { id: companyId } },
+    body: { industry: { subIndustryCode }, metadata, verified },
+  });
   if (error) throw error;
   return data;
 }
 
 export async function updateCompanyBaseYear(
-  wikidataId: string,
+  companyId: string,
   baseYear: number,
   metadata?: { source?: string; comment?: string },
   verified?: boolean,
 ) {
-  const { data, error } = await client.POST(
-    "/companies/{wikidataId}/base-year",
-    {
-      params: { path: { wikidataId } },
-      body: { baseYear, metadata, verified },
-    },
-  );
+  const { data, error } = await client.POST("/companies/{id}/base-year", {
+    params: { path: { id: companyId } },
+    body: { baseYear, metadata, verified },
+  });
   if (error) throw error;
   return data;
 }

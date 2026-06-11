@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useCompanies } from "@/hooks/companies/useCompanies";
 import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
+import { getCompanyDetailPath } from "@/utils/companyRouting";
 
 const TOP_LIST_COUNT = 5;
 export const SCROLL_FADE_THRESHOLD = 200;
@@ -23,7 +24,7 @@ export function useLandingPageData() {
         value:
           company.reportingPeriods.at(0)?.emissions?.calculatedTotalEmissions ||
           0,
-        link: `/companies/${company.wikidataId}`,
+        link: getCompanyDetailPath(company),
       }));
   }, [companies]);
 

@@ -35,7 +35,7 @@ export type EditableReportingPeriod = ReportingPeriod | DraftReportingPeriod;
 
 /** One reporting period in the create/update request body (POST reporting-periods). */
 export type ReportingPeriodPayloadItem = NonNullable<
-  paths["/companies/{wikidataId}/reporting-periods"]["post"]["requestBody"]
+  paths["/companies/{id}/reporting-periods"]["post"]["requestBody"]
 >["content"]["application/json"]["reportingPeriods"][number] & {
   id?: string | number;
 };
