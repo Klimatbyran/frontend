@@ -14,7 +14,22 @@
 // 4. Avoids over-complicating the codebase with excessive file splitting
 
 import { t } from "i18next";
-import { EntityWithKPIs, KPIValue } from "@/types/rankings";
+import { DataPoint, EntityWithKPIs, KPIValue } from "@/types/rankings";
+
+export function isMissingRankedValue(
+  value: unknown,
+  selectedDataPoint: Pick<DataPoint<unknown>, "isBoolean">,
+): boolean {
+  if (value === null || value === undefined) {
+    return true;
+  }
+
+  if (selectedDataPoint.isBoolean) {
+    return typeof value !== "boolean";
+  }
+
+  return typeof value !== "number" || Number.isNaN(value);
+}
 
 export interface EntityStatistics<T> {
   validData: T[];
@@ -40,14 +55,7 @@ export function filterValidData<T, KPI extends KPIValue<T> = KPIValue<T>>(
 ): T[] {
   return entities.filter((entity) => {
     const value = getValue(entity);
-
-    // Handle boolean values if KPI is binary
-    if (selectedKPI.isBoolean) {
-      return typeof value === "boolean";
-    }
-
-    // Handle numeric values
-    return typeof value === "number" && !isNaN(value as number);
+    return !isMissingRankedValue(value, selectedKPI);
   });
 }
 
@@ -88,7 +96,7 @@ export function calculateEntityStatistics<
 
   const nullCount = entities.filter((entity) => {
     const value = getValue(entity);
-    return value === null || value === undefined;
+    return isMissingRankedValue(value, selectedKPI);
   }).length;
 
   const entityPlural = t("header." + entityType).toLowerCase();
