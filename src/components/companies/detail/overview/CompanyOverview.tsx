@@ -1,4 +1,5 @@
 import { Pen } from "lucide-react";
+import { type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import {
@@ -32,6 +33,7 @@ import { CompanyDescription } from "./CompanyDescription";
 import { CompanyOverviewTooltip } from "./CompanyOverviewTooltip";
 import { OverviewStatistics } from "./OverviewStatistics";
 import { yearFromIsoDate } from "@/utils/date";
+import { CompanyDetailHeader } from "../CompanyDetailHeader";
 
 interface CompanyOverviewProps {
   company: CompanyDetails;
@@ -40,6 +42,7 @@ interface CompanyOverviewProps {
   onYearSelect: (year: string) => void;
   selectedYear: string;
   yearOverYearChange: number | null;
+  headerChip?: ReactNode;
 }
 
 export function CompanyOverview({
@@ -49,6 +52,7 @@ export function CompanyOverview({
   onYearSelect,
   selectedYear,
   yearOverYearChange,
+  headerChip,
 }: CompanyOverviewProps) {
   const { t } = useTranslation();
   const { token } = useAuth();
@@ -107,6 +111,11 @@ export function CompanyOverview({
       ]}
     >
       <div className="mb-4 space-y-4 md:mb-12">
+        <CompanyDetailHeader
+          name={company.name}
+          logoUrl={company.logoUrl}
+          headerChip={headerChip}
+        />
         {token && (
           <div className="flex flex-row gap-2">
             <Button

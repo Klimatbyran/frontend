@@ -1,4 +1,5 @@
 import { Pen } from "lucide-react";
+import { type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Text } from "@/components/ui/text";
@@ -12,12 +13,17 @@ import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { getCompanyDescription } from "@/utils/business/company";
 import { CompanyDescription } from "./CompanyDescription";
 import { PageNoData } from "@/components/pageStates/NoData";
+import { CompanyDetailHeader } from "../CompanyDetailHeader";
 
 interface CompanyOverviewNoDataProps {
   company: CompanyDetails;
+  headerChip?: ReactNode;
 }
 
-export function CompanyOverviewNoData({ company }: CompanyOverviewNoDataProps) {
+export function CompanyOverviewNoData({
+  company,
+  headerChip,
+}: CompanyOverviewNoDataProps) {
   const { t } = useTranslation();
   const { token } = useAuth();
   const navigate = useNavigate();
@@ -30,6 +36,11 @@ export function CompanyOverviewNoData({ company }: CompanyOverviewNoDataProps) {
   return (
     <SectionWithHelp helpItems={["companySectors", "companyMissingData"]}>
       <div className="mb-4 space-y-4 md:mb-12">
+        <CompanyDetailHeader
+          name={company.name}
+          logoUrl={company.logoUrl}
+          headerChip={headerChip}
+        />
         {token && (
           <div className="flex flex-row gap-2">
             <Button

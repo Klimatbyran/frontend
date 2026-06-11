@@ -19,7 +19,7 @@ export interface DetailHeaderProps {
   helpItems: DataGuideItemId[];
   stats: DetailStat[];
   supplementalData?: ReactNode;
-  /** Compare chip or other actions shown beside the logo. */
+  /** Compare chip or other actions shown below the title (keeps logo unobstructed). */
   headerChip?: ReactNode;
 }
 
@@ -34,14 +34,16 @@ export function DetailHeader({
   return (
     <SectionWithHelp helpItems={helpItems}>
       <div className="flex items-start justify-between gap-4">
-        <Text className="text-4xl md:text-8xl">{name}</Text>
-        {(headerChip || logoUrl) && (
-          <div className="flex shrink-0 flex-col items-end gap-3">
-            {headerChip}
-            {logoUrl && (
-              <img src={logoUrl} alt="logo" className="h-[50px] md:h-[80px]" />
-            )}
-          </div>
+        <div className="flex min-w-0 flex-1 flex-col gap-3">
+          <Text className="text-4xl md:text-8xl">{name}</Text>
+          {headerChip && <div className="w-fit shrink-0">{headerChip}</div>}
+        </div>
+        {logoUrl && (
+          <img
+            src={logoUrl}
+            alt="logo"
+            className="h-[50px] shrink-0 md:h-[80px]"
+          />
         )}
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-16 mt-8">
