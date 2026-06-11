@@ -1,5 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { ReactNode } from "react";
+import { DEFAULT_OG_IMAGE } from "@/utils/seo";
 
 interface PageSEOProps {
   title: string;
@@ -20,7 +21,7 @@ export function PageSEO({
   description,
   canonicalUrl,
   ogType = "website",
-  ogImage = "/images/social-picture.png",
+  ogImage = DEFAULT_OG_IMAGE,
   structuredData,
   children,
 }: PageSEOProps) {
