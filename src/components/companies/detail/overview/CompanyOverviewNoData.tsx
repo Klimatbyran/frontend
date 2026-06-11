@@ -1,4 +1,3 @@
-import { type ReactNode } from "react";
 import { Pen } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -16,13 +15,9 @@ import { PageNoData } from "@/components/pageStates/NoData";
 
 interface CompanyOverviewNoDataProps {
   company: CompanyDetails;
-  headerChip?: ReactNode;
 }
 
-export function CompanyOverviewNoData({
-  company,
-  headerChip,
-}: CompanyOverviewNoDataProps) {
+export function CompanyOverviewNoData({ company }: CompanyOverviewNoDataProps) {
   const { t } = useTranslation();
   const { token } = useAuth();
   const navigate = useNavigate();
@@ -34,44 +29,34 @@ export function CompanyOverviewNoData({
 
   return (
     <SectionWithHelp helpItems={["companySectors", "companyMissingData"]}>
-      <div className="flex items-start justify-between mb-4 md:mb-12">
-        <div className="space-y-4">
-          <div className="flex items-center gap-4">
-            <Text className="text-4xl lg:text-6xl">{company.name}</Text>
-            {token && (
-              <div className="mt-2 flex flex-row gap-2 md:ml-4 md:mt-0">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="gap-2"
-                  onClick={() => navigate("edit")}
-                >
-                  Edit
-                  <div className="flex h-5 w-5 items-center justify-center rounded-full bg-orange-5/30 text-xs text-orange-2">
-                    <Pen />
-                  </div>
-                </Button>
-              </div>
-            )}
-          </div>
-          <CompanyDescription description={description} />
-          <div className="flex flex-row items-center gap-2 my-4">
-            <Text
-              variant="body"
-              className="text-grey text-sm md:text-base lg:text-lg"
+      <div className="mb-4 space-y-4 md:mb-12">
+        {token && (
+          <div className="flex flex-row gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-2"
+              onClick={() => navigate("edit")}
             >
-              {t("companies.overview.sector")}:
-            </Text>
-            <Text variant="body" className="text-sm md:text-base lg:text-lg">
-              {sectorName}
-            </Text>
-          </div>
-        </div>
-        {headerChip && (
-          <div className="flex shrink-0 flex-col items-end gap-3">
-            {headerChip}
+              Edit
+              <div className="flex h-5 w-5 items-center justify-center rounded-full bg-orange-5/30 text-xs text-orange-2">
+                <Pen />
+              </div>
+            </Button>
           </div>
         )}
+        <CompanyDescription description={description} />
+        <div className="my-4 flex flex-row items-center gap-2">
+          <Text
+            variant="body"
+            className="text-grey text-sm md:text-base lg:text-lg"
+          >
+            {t("companies.overview.sector")}:
+          </Text>
+          <Text variant="body" className="text-sm md:text-base lg:text-lg">
+            {sectorName}
+          </Text>
+        </div>
       </div>
 
       <div className="py-8">

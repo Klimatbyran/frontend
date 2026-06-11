@@ -31,9 +31,7 @@ import { FinancialsTooltip } from "./FinancialsTooltip";
 import { CompanyDescription } from "./CompanyDescription";
 import { CompanyOverviewTooltip } from "./CompanyOverviewTooltip";
 import { OverviewStatistics } from "./OverviewStatistics";
-import { type ReactNode } from "react";
 import { yearFromIsoDate } from "@/utils/date";
-import { CompanyLogo } from "../../CompanyLogo";
 
 interface CompanyOverviewProps {
   company: CompanyDetails;
@@ -42,7 +40,6 @@ interface CompanyOverviewProps {
   onYearSelect: (year: string) => void;
   selectedYear: string;
   yearOverYearChange: number | null;
-  headerChip?: ReactNode;
 }
 
 export function CompanyOverview({
@@ -52,7 +49,6 @@ export function CompanyOverview({
   onYearSelect,
   selectedYear,
   yearOverYearChange,
-  headerChip,
 }: CompanyOverviewProps) {
   const { t } = useTranslation();
   const { token } = useAuth();
@@ -110,31 +106,27 @@ export function CompanyOverview({
         // "historicVsParis",
       ]}
     >
-      <div className="flex gap-1 items-start justify-between mb-4 md:mb-12">
-        <div className="space-y-4">
-          <div className="flex items-center gap-4">
-            <Text className="text-4xl lg:text-6xl">{company.name}</Text>
-            {token && (
-              <div className="mt-2 flex flex-row gap-2 md:ml-4 md:mt-0">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="gap-2"
-                  onClick={() => navigate("edit")}
-                >
-                  Edit
-                  <div className="flex h-5 w-5 items-center justify-center rounded-full bg-orange-5/30 text-xs text-orange-2">
-                    <Pen />
-                  </div>
-                </Button>
-                <EmissionsAssessmentButton
-                  companyId={company.id}
-                  sortedPeriods={sortedPeriods}
-                />
+      <div className="mb-4 space-y-4 md:mb-12">
+        {token && (
+          <div className="flex flex-row gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-2"
+              onClick={() => navigate("edit")}
+            >
+              Edit
+              <div className="flex h-5 w-5 items-center justify-center rounded-full bg-orange-5/30 text-xs text-orange-2">
+                <Pen />
               </div>
-            )}
+            </Button>
+            <EmissionsAssessmentButton
+              companyId={company.id}
+              sortedPeriods={sortedPeriods}
+            />
           </div>
-          <CompanyDescription description={description} />
+        )}
+        <CompanyDescription description={description} />
           <div className="flex flex-row items-center gap-2 my-4">
             <Text
               variant="body"
@@ -167,18 +159,6 @@ export function CompanyOverview({
               </SelectContent>
             </Select>
           </div>
-        </div>
-        {(headerChip || company.logoUrl) && (
-          <div className="flex shrink-0 flex-col items-end gap-3">
-            {headerChip}
-            {company.logoUrl && (
-              <CompanyLogo
-                src={company.logoUrl}
-                className="hidden size-[120px] rounded-xl object-contain lg:inline"
-              />
-            )}
-          </div>
-        )}
       </div>
 
       <div className="mb-2 md:mb-4 space-y-4 md:space-y-6">
