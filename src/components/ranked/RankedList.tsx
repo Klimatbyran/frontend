@@ -1,9 +1,10 @@
-import { useState } from "react";
-import { Search } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ArrowDown, ArrowUp, Search } from "lucide-react";
 import { t } from "i18next";
 import MultiPagePagination from "@/components/ui/multi-page-pagination";
 import { DataPoint } from "@/types/rankings";
 import { cn } from "@/lib/utils";
+import { isMissingRankedValue } from "@/utils/insights/rankedListUtils";
 
 export interface RankedListProps<T extends Record<string, unknown>> {
   data: T[];
@@ -28,6 +29,11 @@ interface SortedRankedDataOptions<T extends Record<string, unknown>> {
   searchTerm: string;
   itemsPerPage: number;
   currentPage: number;
+  sortReversed: boolean;
+}
+
+function getDefaultSortAscending(higherIsBetter: boolean) {
+  return !higherIsBetter;
 }
 
 function useSortedRankedData<T extends Record<string, unknown>>({
@@ -37,12 +43,23 @@ function useSortedRankedData<T extends Record<string, unknown>>({
   searchTerm,
   itemsPerPage,
   currentPage,
+  sortReversed,
 }: SortedRankedDataOptions<T>) {
-  const sortedData = [...data].sort((a, b) => {
+  const sortAscending = sortReversed
+    ? !getDefaultSortAscending(selectedDataPoint.higherIsBetter)
+    : getDefaultSortAscending(selectedDataPoint.higherIsBetter);
+
+  const withValue = data.filter(
+    (item) =>
+      !isMissingRankedValue(item[selectedDataPoint.key], selectedDataPoint),
+  );
+  const withoutValue = data.filter((item) =>
+    isMissingRankedValue(item[selectedDataPoint.key], selectedDataPoint),
+  );
+
+  const sortedWithValue = [...withValue].sort((a, b) => {
     const aValue = a[selectedDataPoint.key];
     const bValue = b[selectedDataPoint.key];
-    if (aValue === null || aValue === undefined) return 1;
-    if (bValue === null || bValue === undefined) return -1;
     if (
       selectedDataPoint.isBoolean &&
       typeof aValue === "boolean" &&
@@ -52,29 +69,45 @@ function useSortedRankedData<T extends Record<string, unknown>>({
         String(b[searchKey] || ""),
       );
     }
-    return selectedDataPoint.higherIsBetter
-      ? (bValue as number) - (aValue as number)
-      : (aValue as number) - (bValue as number);
+    const comparison = (aValue as number) - (bValue as number);
+    return sortAscending ? comparison : -comparison;
   });
 
-  const validValues = sortedData
+  const sortedWithoutValue = [...withoutValue].sort((a, b) =>
+    String(a[searchKey] || "").localeCompare(String(b[searchKey] || "")),
+  );
+
+  const sortedData = [...sortedWithValue, ...sortedWithoutValue];
+
+  const validValues = sortedWithValue
     .map((item) => item[selectedDataPoint.key])
     .filter(
       (value) =>
         (selectedDataPoint.isBoolean && typeof value === "boolean") ||
-        (typeof value === "number" && !isNaN(value as number)),
+        (typeof value === "number" && !Number.isNaN(value as number)),
     );
 
   const average =
-    validValues.reduce(
-      (sum, value) =>
-        sum +
-        (selectedDataPoint.isBoolean ? (value ? 1 : 0) : (value as number)),
-      0,
-    ) / validValues.length;
+    validValues.length > 0
+      ? validValues.reduce(
+          (sum, value) =>
+            sum +
+            (selectedDataPoint.isBoolean ? (value ? 1 : 0) : (value as number)),
+          0,
+        ) / validValues.length
+      : 0;
 
+  const validCount = sortedWithValue.length;
   const originalRankMap = new Map<T, number>();
-  sortedData.forEach((item, index) => originalRankMap.set(item, index + 1));
+  sortedData.forEach((item, index) => {
+    const rank =
+      index < validCount
+        ? sortReversed
+          ? validCount - index
+          : index + 1
+        : index + 1;
+    originalRankMap.set(item, rank);
+  });
 
   const filteredData = sortedData.filter((item) => {
     const searchValue = item[searchKey];
@@ -100,6 +133,7 @@ function useSortedRankedData<T extends Record<string, unknown>>({
     totalPages,
     startIndex,
     paginatedData,
+    sortAscending,
   };
 }
 
@@ -110,8 +144,10 @@ function useRankedItemHelpers<T extends Record<string, unknown>>(
 ) {
   const formatValue = (item: T) => {
     const value = item[selectedDataPoint.key];
+    if (isMissingRankedValue(value, selectedDataPoint)) {
+      return selectedDataPoint.nullValues || t("noData");
+    }
     if (selectedDataPoint.formatter) return selectedDataPoint.formatter(value);
-    if (value === null) return selectedDataPoint.nullValues || t("noData");
     if (typeof value === "boolean") {
       if (selectedDataPoint.booleanLabels) {
         return value
@@ -128,7 +164,7 @@ function useRankedItemHelpers<T extends Record<string, unknown>>(
 
   const getColor = (item: T): string => {
     const value = item[selectedDataPoint.key];
-    if (value === null || value === undefined) return "text-pink-3";
+    if (isMissingRankedValue(value, selectedDataPoint)) return "text-pink-3";
     if (selectedDataPoint.isBoolean) {
       return value == selectedDataPoint.higherIsBetter
         ? "text-blue-3"
@@ -156,16 +192,29 @@ export function RankedList<T extends Record<string, unknown>>({
 }: RankedListProps<T>) {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [sortReversed, setSortReversed] = useState(false);
 
-  const { average, originalRankMap, totalPages, startIndex, paginatedData } =
-    useSortedRankedData({
-      data,
-      selectedDataPoint,
-      searchKey,
-      searchTerm,
-      itemsPerPage,
-      currentPage,
-    });
+  useEffect(() => {
+    setSortReversed(false);
+    setCurrentPage(1);
+  }, [selectedDataPoint.key]);
+
+  const {
+    average,
+    originalRankMap,
+    totalPages,
+    startIndex,
+    paginatedData,
+    sortAscending,
+  } = useSortedRankedData({
+    data,
+    selectedDataPoint,
+    searchKey,
+    searchTerm,
+    itemsPerPage,
+    currentPage,
+    sortReversed,
+  });
 
   const { formatValue, getOriginalRank, getColor } = useRankedItemHelpers(
     selectedDataPoint,
@@ -186,7 +235,7 @@ export function RankedList<T extends Record<string, unknown>>({
       className="w-full p-4 hover:bg-black/40 transition-colors flex items-center justify-between group"
     >
       <div className="flex items-center gap-4">
-        <span className="text-white/30 text-sm w-8">
+        <span className="text-white/30 text-sm w-8 shrink-0 tabular-nums text-left">
           {selectedDataPoint.isBoolean ? "" : getOriginalRank(item)}
         </span>
         <span className="text-white/90 text-sm md:text-base text-left">
@@ -223,9 +272,34 @@ export function RankedList<T extends Record<string, unknown>>({
           />
         </div>
         {selectedDataPoint.unit && (
-          <div className="text-grey flex items-center pl-12 pt-4 -mb-2 w-full justify-between">
-            <span>{t("rankedList.name")}</span>
-            <span>{selectedDataPoint.unit}</span>
+          <div className="flex items-center justify-between pt-4 -mb-2 w-full text-grey">
+            <div className="flex items-center gap-4 min-w-0">
+              {!selectedDataPoint.isBoolean ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSortReversed((prev) => !prev);
+                    setCurrentPage(1);
+                  }}
+                  className="w-8 shrink-0 flex items-center justify-start hover:text-white transition-colors"
+                  aria-label={
+                    sortAscending
+                      ? t("rankedList.sort.asc")
+                      : t("rankedList.sort.desc")
+                  }
+                >
+                  {sortAscending ? (
+                    <ArrowUp className="w-3 h-3" aria-hidden="true" />
+                  ) : (
+                    <ArrowDown className="w-3 h-3" aria-hidden="true" />
+                  )}
+                </button>
+              ) : (
+                <span className="w-8 shrink-0" aria-hidden="true" />
+              )}
+              <span>{t("rankedList.name")}</span>
+            </div>
+            <span className="shrink-0">{selectedDataPoint.unit}</span>
           </div>
         )}
       </div>

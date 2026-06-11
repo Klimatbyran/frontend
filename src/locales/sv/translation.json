@@ -1959,7 +1959,11 @@
     "search": {
       "placeholder": "Sök..."
     },
-    "rank": "Placering: {{rank}} av {{total}}"
+    "rank": "Placering: {{rank}} av {{total}}",
+    "sort": {
+      "asc": "Sortera från lågt till högt",
+      "desc": "Sortera från högt till lågt"
+    }
   },
   "rankedInsights": {
     "belowAverage": "{{entityPlural}} under genomsnittet",
