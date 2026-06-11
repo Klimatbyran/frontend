@@ -9,7 +9,7 @@ import {
   isCompareRoute,
   setComparisonReturnTo,
   setComparisonViewSnapshot,
-} from "@/utils/explore/comparisonUtils";
+} from "@/utils/compare/comparisonUtils";
 
 export function useNavigateToComparison() {
   const navigate = useNavigate();

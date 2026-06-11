@@ -1,9 +1,9 @@
 import { useTranslation } from "react-i18next";
-import { useComparisonItems } from "@/hooks/explore/useComparisonItems";
-import { useComparisonBackNavigation } from "@/hooks/explore/useComparisonBackNavigation";
-import { ComparisonView } from "@/components/explore/ComparisonView";
+import { useComparisonItems } from "@/hooks/compare/useComparisonItems";
+import { useComparisonBackNavigation } from "@/hooks/compare/useComparisonBackNavigation";
+import { ComparisonView } from "@/components/compare/ComparisonView";
 import { PageLoading } from "@/components/pageStates/Loading";
-import { COMPARISON_MIN } from "@/utils/explore/comparisonUtils";
+import { COMPARISON_MIN } from "@/utils/compare/comparisonUtils";
 
 export function ComparisonPage() {
   const { t } = useTranslation();

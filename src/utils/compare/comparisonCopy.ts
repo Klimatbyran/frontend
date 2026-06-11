@@ -1,4 +1,4 @@
-import type { ComparisonEntityVariant } from "@/utils/explore/comparisonUtils";
+import type { ComparisonEntityVariant } from "@/utils/compare/comparisonUtils";
 
 type ComparisonCopyBase =
   | "pickerTitle"

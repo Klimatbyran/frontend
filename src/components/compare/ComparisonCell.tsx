@@ -1,7 +1,7 @@
 import { InfoTooltip } from "@/components/layout/InfoTooltip";
 import { AiIcon } from "@/components/ui/ai-icon";
 import { cn } from "@/lib/utils";
-import type { ComparisonCellValue } from "@/hooks/explore/useComparisonMetrics";
+import type { ComparisonCellValue } from "@/hooks/compare/useComparisonMetrics";
 
 interface ComparisonCellProps {
   value: ComparisonCellValue;

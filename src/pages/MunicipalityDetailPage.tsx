@@ -23,8 +23,8 @@ import { useSectorYearSelection } from "@/hooks/territories/useSectorYearSelecti
 import { getProcurementRequirementsText } from "@/utils/municipality/procurement";
 import { LinkCard } from "@/components/detail/DetailLinkCard";
 import { DetailHeader } from "@/components/detail/DetailHeader";
-import { ComparisonDetailChip } from "@/components/explore/ComparisonDetailChip";
-import { buildComparisonLinkTo } from "@/utils/explore/comparisonUtils";
+import { ComparisonDetailChip } from "@/components/compare/ComparisonDetailChip";
+import { buildComparisonLinkTo } from "@/utils/compare/comparisonUtils";
 import { TerritorySupplementalData } from "@/components/detail/TerritorySupplementalData";
 import { DetailSection } from "@/components/detail/DetailSection";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";

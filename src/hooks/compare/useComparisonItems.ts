@@ -15,12 +15,12 @@ import {
   getCompanyLinkTo,
   getMunicipalityLinkTo,
   getRegionLinkTo,
-} from "@/utils/explore/buildComparisonDetails";
+} from "@/utils/compare/buildComparisonDetails";
 import {
   getComparisonViewSnapshot,
   isSameComparisonLink,
   orderSelectedCards,
-} from "@/utils/explore/comparisonUtils";
+} from "@/utils/compare/comparisonUtils";
 
 export function useComparisonItems() {
   const { selectedIds, variant, selectedCount } = useComparison();

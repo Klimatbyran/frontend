@@ -1,6 +1,6 @@
 import type { CombinedData } from "@/hooks/useCombinedData";
 import type { ListCardProps } from "@/components/explore/ListCard";
-import type { ComparisonSelectionState } from "@/utils/explore/comparisonSelection";
+import type { ComparisonSelectionState } from "@/utils/compare/comparisonSelection";
 
 export type ComparisonEntityVariant = NonNullable<ListCardProps["variant"]>;
 

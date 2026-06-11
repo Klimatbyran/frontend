@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import type { ListCardProps } from "@/components/explore/ListCard";
-import { COMPARISON_MAX } from "@/utils/explore/comparisonUtils";
-import type { ComparisonEntityVariant } from "@/utils/explore/comparisonUtils";
+import { COMPARISON_MAX } from "@/utils/compare/comparisonUtils";
+import type { ComparisonEntityVariant } from "@/utils/compare/comparisonUtils";
 import { ComparisonPickerRow } from "./ComparisonPickerRow";
 
 interface ComparisonPickerSelectedSectionProps {

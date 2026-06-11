@@ -43,7 +43,7 @@ import {
 } from "./lazyPages";
 import { AuthCallback } from "./pages/AuthCallback";
 import { LandingPage } from "./pages/LandingPage";
-import { ComparisonRouteLayout } from "./components/explore/ComparisonRouteLayout";
+import { ComparisonRouteLayout } from "./components/compare/ComparisonRouteLayout";
 
 void StagingProtectedRoute; // referenced so dead-code scripts keep the component; eslint/ts unused-import satisfied
 

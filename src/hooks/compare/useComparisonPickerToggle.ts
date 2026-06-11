@@ -2,8 +2,8 @@ import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useComparison } from "@/contexts/ComparisonContext";
 import { useToast } from "@/contexts/ToastContext";
-import type { ComparisonEntityVariant } from "@/utils/explore/comparisonUtils";
-import { getTryToggleComparisonFailure } from "@/utils/explore/comparisonSelection";
+import type { ComparisonEntityVariant } from "@/utils/compare/comparisonUtils";
+import { getTryToggleComparisonFailure } from "@/utils/compare/comparisonSelection";
 
 export function useComparisonPickerToggle() {
   const { t } = useTranslation();

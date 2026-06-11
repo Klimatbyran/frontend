@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import { useComparison } from "@/contexts/ComparisonContext";
-import { useNavigateToComparison } from "@/hooks/explore/useNavigateToComparison";
+import { useNavigateToComparison } from "@/hooks/compare/useNavigateToComparison";
 import type { ListCardProps } from "@/components/explore/ListCard";
 
 export {
   COMPARISON_MIN,
   COMPARISON_MAX,
-} from "@/utils/explore/comparisonUtils";
+} from "@/utils/compare/comparisonUtils";
 
 /**
  * Explore-list UI state layered on top of shared ComparisonContext.

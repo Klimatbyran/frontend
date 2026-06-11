@@ -4,7 +4,7 @@ import { useScreenSize } from "@/hooks/useScreenSize";
 import {
   useComparisonSections,
   type ComparisonMetric,
-} from "@/hooks/explore/useComparisonMetrics";
+} from "@/hooks/compare/useComparisonMetrics";
 import type { ListCardProps } from "./ListCard";
 import { ComparisonCell } from "./ComparisonCell";
 import { ComparisonEntityHeader } from "./ComparisonEntityHeader";

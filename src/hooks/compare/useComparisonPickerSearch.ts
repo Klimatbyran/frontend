@@ -2,14 +2,14 @@ import { useMemo } from "react";
 import { CombinedData, useCombinedData } from "@/hooks/useCombinedData";
 import { useHeroGlobalSearch } from "@/hooks/landing/useHeroGlobalSearch";
 import { useComparison } from "@/contexts/ComparisonContext";
-import { COMPARISON_SEARCH_CATEGORIES } from "@/components/explore/comparisonPicker.constants";
+import { COMPARISON_SEARCH_CATEGORIES } from "@/components/compare/comparisonPicker.constants";
 import {
   combinedDataToComparison,
   isComparableSearchResult,
   variantToCategory,
   type ComparisonEntityCategory,
   type ComparisonEntityVariant,
-} from "@/utils/explore/comparisonUtils";
+} from "@/utils/compare/comparisonUtils";
 
 export type ComparisonPickerSearchGroup = {
   category: ComparisonEntityCategory;

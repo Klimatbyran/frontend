@@ -1,7 +1,7 @@
 import { createContext, useContext, type ReactNode } from "react";
-import { useComparisonProviderState } from "@/hooks/explore/useComparisonProviderState";
+import { useComparisonProviderState } from "@/hooks/compare/useComparisonProviderState";
 
-export type { ComparisonContextValue } from "@/hooks/explore/useComparisonProviderState";
+export type { ComparisonContextValue } from "@/hooks/compare/useComparisonProviderState";
 
 const ComparisonContext = createContext<ReturnType<
   typeof useComparisonProviderState

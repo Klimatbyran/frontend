@@ -3,7 +3,7 @@ import { useComparison } from "@/contexts/ComparisonContext";
 import {
   isNavigatingToComparison,
   markNavigatingToComparison,
-} from "@/utils/explore/comparisonUtils";
+} from "@/utils/compare/comparisonUtils";
 
 interface UseComparisonPickerDialogStateOptions {
   onOpenChange: (open: boolean) => void;

@@ -1,8 +1,8 @@
 import { useTranslation } from "react-i18next";
 import { CombinedData } from "@/hooks/useCombinedData";
 import { CommandItem } from "@/components/ui/command";
-import type { ComparisonPickerSearchGroup } from "@/hooks/explore/useComparisonPickerSearch";
-import { combinedDataToComparison } from "@/utils/explore/comparisonUtils";
+import type { ComparisonPickerSearchGroup } from "@/hooks/compare/useComparisonPickerSearch";
+import { combinedDataToComparison } from "@/utils/compare/comparisonUtils";
 import { ComparisonPickerRow } from "./ComparisonPickerRow";
 
 interface ComparisonPickerSearchResultsProps {

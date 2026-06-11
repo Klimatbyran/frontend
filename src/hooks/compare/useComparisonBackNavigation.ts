@@ -8,7 +8,7 @@ import {
   getExplorePath,
   isComparisonDetailReturnPath,
   resetComparisonAfterView,
-} from "@/utils/explore/comparisonUtils";
+} from "@/utils/compare/comparisonUtils";
 
 export function useComparisonBackNavigation() {
   const navigate = useNavigate();

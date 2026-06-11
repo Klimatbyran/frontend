@@ -2,9 +2,9 @@ import { useTranslation } from "react-i18next";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useComparison } from "@/contexts/ComparisonContext";
-import { getComparisonCopyKey } from "@/utils/explore/comparisonCopy";
-import type { ComparisonEntityVariant } from "@/utils/explore/comparisonUtils";
-import { useComparisonPickerTrigger } from "@/hooks/explore/useComparisonPickerTrigger";
+import { getComparisonCopyKey } from "@/utils/compare/comparisonCopy";
+import type { ComparisonEntityVariant } from "@/utils/compare/comparisonUtils";
+import { useComparisonPickerTrigger } from "@/hooks/compare/useComparisonPickerTrigger";
 import { ComparisonPickerDialog } from "./ComparisonPickerDialog";
 
 interface ComparisonAddButtonProps {

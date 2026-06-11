@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { ComparisonPickerDialogProps } from "@/components/explore/comparisonPicker.types";
+import type { ComparisonPickerDialogProps } from "@/components/compare/comparisonPicker.types";
 
 type ComparisonPickerConfig = Omit<
   ComparisonPickerDialogProps,

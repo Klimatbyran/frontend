@@ -3,7 +3,7 @@ import {
   COMPARISON_MIN,
   isSameComparisonLink,
   type ComparisonEntityVariant,
-} from "@/utils/explore/comparisonUtils";
+} from "@/utils/compare/comparisonUtils";
 
 export interface ComparisonSelectionState {
   selectedIds: string[];

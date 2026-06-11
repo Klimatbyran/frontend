@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
-import { useNavigateToComparison } from "@/hooks/explore/useNavigateToComparison";
+import { useNavigateToComparison } from "@/hooks/compare/useNavigateToComparison";
 import { CombinedData } from "@/hooks/useCombinedData";
 import { useComparison } from "@/contexts/ComparisonContext";
 import { Command, CommandInput, CommandList } from "@/components/ui/command";
@@ -12,20 +12,20 @@ import {
   DialogPortal,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useComparisonItems } from "@/hooks/explore/useComparisonItems";
-import { useComparisonPickerDialogState } from "@/hooks/explore/useComparisonPickerDialogState";
-import { useComparisonPickerPrefill } from "@/hooks/explore/useComparisonPickerPrefill";
-import { useComparisonPickerSearch } from "@/hooks/explore/useComparisonPickerSearch";
-import { useComparisonPickerToggle } from "@/hooks/explore/useComparisonPickerToggle";
-import { combinedDataToComparison } from "@/utils/explore/comparisonUtils";
-import { getComparisonCopyKey } from "@/utils/explore/comparisonCopy";
-import { PICKER_RESULT_LIST_HEIGHT } from "@/components/explore/comparisonPicker.constants";
-import type { ComparisonPickerDialogProps } from "@/components/explore/comparisonPicker.types";
+import { useComparisonItems } from "@/hooks/compare/useComparisonItems";
+import { useComparisonPickerDialogState } from "@/hooks/compare/useComparisonPickerDialogState";
+import { useComparisonPickerPrefill } from "@/hooks/compare/useComparisonPickerPrefill";
+import { useComparisonPickerSearch } from "@/hooks/compare/useComparisonPickerSearch";
+import { useComparisonPickerToggle } from "@/hooks/compare/useComparisonPickerToggle";
+import { combinedDataToComparison } from "@/utils/compare/comparisonUtils";
+import { getComparisonCopyKey } from "@/utils/compare/comparisonCopy";
+import { PICKER_RESULT_LIST_HEIGHT } from "@/components/compare/comparisonPicker.constants";
+import type { ComparisonPickerDialogProps } from "@/components/compare/comparisonPicker.types";
 import { ComparisonPickerFooter } from "./ComparisonPickerFooter";
 import { ComparisonPickerSearchResults } from "./ComparisonPickerSearchResults";
 import { ComparisonPickerSelectedSection } from "./ComparisonPickerSelectedSection";
 
-export type { ComparisonPickerPrefill } from "@/components/explore/comparisonPicker.types";
+export type { ComparisonPickerPrefill } from "@/components/compare/comparisonPicker.types";
 
 export function ComparisonPickerDialog({
   open,

@@ -1,8 +1,8 @@
 import { useParams, useLocation } from "react-router-dom";
 import { useMemo, useState } from "react";
 import { CompanyDetailHeader } from "@/components/companies/detail/CompanyDetailHeader";
-import { ComparisonDetailChip } from "@/components/explore/ComparisonDetailChip";
-import { buildComparisonLinkTo } from "@/utils/explore/comparisonUtils";
+import { ComparisonDetailChip } from "@/components/compare/ComparisonDetailChip";
+import { buildComparisonLinkTo } from "@/utils/compare/comparisonUtils";
 import { useTranslation } from "react-i18next";
 import { useCompanyDetails } from "@/hooks/companies/useCompanyDetails";
 import { CompanyOverview } from "@/components/companies/detail/overview/CompanyOverview";

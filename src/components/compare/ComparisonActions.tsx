@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import {
   COMPARISON_MAX,
   COMPARISON_MIN,
-} from "@/utils/explore/comparisonUtils";
+} from "@/utils/compare/comparisonUtils";
 
 export function ComparisonSelectedCount({ count }: { count: number }) {
   const { t } = useTranslation();

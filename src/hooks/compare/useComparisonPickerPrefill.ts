@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import type { ComparisonPickerPrefill } from "@/components/explore/comparisonPicker.types";
+import type { ComparisonPickerPrefill } from "@/components/compare/comparisonPicker.types";
 
 interface UseComparisonPickerPrefillOptions {
   open: boolean;

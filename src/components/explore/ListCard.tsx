@@ -1,7 +1,7 @@
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { LocalizedLink } from "@/components/LocalizedLink";
-import type { ComparisonDetails } from "@/utils/explore/buildComparisonDetails";
+import type { ComparisonDetails } from "@/utils/compare/buildComparisonDetails";
 import { ListCardBody } from "./ListCardBody";
 
 export interface ListCardProps {

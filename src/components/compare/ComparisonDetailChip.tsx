@@ -5,9 +5,9 @@ import { useComparison } from "@/contexts/ComparisonContext";
 import {
   COMPARISON_MAX,
   isComparisonViewed,
-} from "@/utils/explore/comparisonUtils";
-import type { ComparisonEntityVariant } from "@/utils/explore/comparisonUtils";
-import { useComparisonPickerTrigger } from "@/hooks/explore/useComparisonPickerTrigger";
+} from "@/utils/compare/comparisonUtils";
+import type { ComparisonEntityVariant } from "@/utils/compare/comparisonUtils";
+import { useComparisonPickerTrigger } from "@/hooks/compare/useComparisonPickerTrigger";
 import { ComparisonPickerDialog } from "./ComparisonPickerDialog";
 
 interface ComparisonDetailChipProps {

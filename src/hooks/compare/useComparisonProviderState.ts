@@ -15,7 +15,7 @@ import {
   isComparisonSelectionDisabled,
   toggleComparisonSelection,
   type ComparisonSelectionState,
-} from "@/utils/explore/comparisonSelection";
+} from "@/utils/compare/comparisonSelection";
 import {
   clearNavigatingToComparison,
   isCompareRoute,
@@ -23,7 +23,7 @@ import {
   resetComparisonPickerAfterLeavingCompare,
   shouldResetComparisonAfterLeavingRoute,
   type ComparisonEntityVariant,
-} from "@/utils/explore/comparisonUtils";
+} from "@/utils/compare/comparisonUtils";
 
 const STORAGE_KEY = "klimatkollen-comparison";
 
