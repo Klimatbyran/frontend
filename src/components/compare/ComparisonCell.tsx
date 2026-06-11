@@ -1,4 +1,3 @@
-import { InfoTooltip } from "@/components/layout/InfoTooltip";
 import { AiIcon } from "@/components/ui/ai-icon";
 import { cn } from "@/lib/utils";
 import type { ComparisonCellValue } from "@/hooks/compare/useComparisonMetrics";
@@ -46,13 +45,6 @@ export function ComparisonCell({
         {value.isAIGenerated && (
           <span className="ml-2 inline-flex">
             <AiIcon size="sm" />
-          </span>
-        )}
-        {value.tooltip && (
-          <span className="ml-1 text-grey">
-            <InfoTooltip ariaLabel="Additional information">
-              <p>{value.tooltip}</p>
-            </InfoTooltip>
           </span>
         )}
       </div>

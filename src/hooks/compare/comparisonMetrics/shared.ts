@@ -110,7 +110,6 @@ export function createChangeRateMetric(
       text: item.changeRateValue ?? translate("companies.card.noData"),
       colorClass: item.changeRateColor ?? "text-orange-2",
       isAIGenerated: item.changeRateIsAIGenerated,
-      tooltip: item.changeRateTooltip,
     }),
   };
 }

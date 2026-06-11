@@ -6,7 +6,6 @@ export type ComparisonCellValue = {
   colorClass?: string;
   unit?: string;
   isAIGenerated?: boolean;
-  tooltip?: string;
   displayAsBadge?: boolean;
 };
 
