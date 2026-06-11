@@ -1,5 +1,3 @@
-import { useMemo } from "react";
-import { useTranslation } from "react-i18next";
 import type { TFunction } from "i18next";
 import type { ListCardProps } from "@/components/explore/ListCard";
 import { getCompanySections } from "./company";
@@ -25,15 +23,4 @@ export function getComparisonSections(
     default:
       return getCompanySections(t);
   }
-}
-
-export function useComparisonSections(items: ListCardProps[]) {
-  const { t } = useTranslation();
-
-  return useMemo(() => {
-    if (items.length === 0) {
-      return [];
-    }
-    return getComparisonSections(items[0].variant, t);
-  }, [items, t]);
 }

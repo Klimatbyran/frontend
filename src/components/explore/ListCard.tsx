@@ -113,7 +113,7 @@ export function ListCard({
         >
           <div
             className={cn(
-              "absolute top-5 left-5 z-10 flex h-5 w-5 items-center justify-center rounded-full border transition-colors",
+              "absolute top-3 left-3 z-10 flex h-5 w-5 items-center justify-center rounded-full border transition-colors",
               selected
                 ? "border-blue-2 bg-blue-5 text-white"
                 : selectionDisabled
