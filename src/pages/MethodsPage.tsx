@@ -42,6 +42,8 @@ export function MethodsPage() {
       return "companyDataOverview";
     } else if (searchQuery === "municipality") {
       return "municipalityAndRegionDataOverview";
+    } else if (searchQuery === "nation") {
+      return "nationDataOverview";
     } else {
       return "parisAgreement";
     }
