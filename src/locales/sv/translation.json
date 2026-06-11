@@ -880,7 +880,7 @@
     },
     "nation": {
       "nationDataOverview": {
-        "title": "Nationell data – översikt",
+        "title": "Nationell data översikt",
         "description": "Vilken data vi samlar in och presenterar om Sveriges nationella utsläpp",
         "paragraph1": "Klimatkollen visar utsläppsdata för Sverige på nationell nivå, med SMHI:s Nationella emissionsdatabas som främsta källa. För att vår nationella, läns-, kommun- och företagsdata ska vara jämförbar visas sedan augusti 2025 utsläpp av alla växthusgaser (CO₂e), inte enbart koldioxid.",
         "paragraph2": "Den genomsnittliga årliga utsläppsförändringen för Sverige beräknas med hjälp av sammansatt årlig tillväxttakt (CAGR, compound annual growth rate).",
