@@ -1078,6 +1078,8 @@
     }
   },
   "regionalOverviewPage": {
+    "errorTitle": "Det gick inte att hämta länsinformation",
+    "errorDescription": "Försök igen senare",
     "title": "Länsöversikt",
     "description": "Översikt över utsläpp och omställning på länsnivå"
   },

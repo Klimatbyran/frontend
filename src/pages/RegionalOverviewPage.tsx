@@ -30,7 +30,11 @@ export function RegionalOverviewPage() {
   const { t } = useTranslation();
   const regionalKPIs = useRegionalKPIs();
   const [geoData] = useState(regionGeoJson);
-  const { regionsData } = useRegionsKPIs();
+  const {
+    regionsData,
+    loading: regionsLoading,
+    error: regionsError,
+  } = useRegionsKPIs();
 
   const navigate = useNavigate();
 
@@ -87,6 +91,32 @@ export function RegionalOverviewPage() {
         typeof region.meetsParis === "boolean" ? region.meetsParis : null,
     }));
   }, [regionEntities]);
+
+  if (regionsLoading) {
+    return (
+      <div className="animate-pulse space-y-16">
+        <div className="h-12 w-1/3 bg-black-1 rounded" />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {[...Array(6)].map((_, i) => (
+            <div key={i} className="h-96 bg-black-1 rounded-level-2" />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (regionsError) {
+    return (
+      <div className="text-center py-24">
+        <h3 className="text-red-500 mb-4 text-xl">
+          {t("regionalOverviewPage.errorTitle")}
+        </h3>
+        <p className="text-grey">
+          {t("regionalOverviewPage.errorDescription")}
+        </p>
+      </div>
+    );
+  }
 
   const regionalRankedList = (
     <RegionalRankedList
