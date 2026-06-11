@@ -89,7 +89,15 @@ function applyDiversityCap(
   return diversified;
 }
 
-export function useHeroGlobalSearch(searchQuery: string) {
+export type HeroGlobalSearchOptions = {
+  /** When true, return all API hits instead of the landing-page diversity cap. */
+  skipDiversityCap?: boolean;
+};
+
+export function useHeroGlobalSearch(
+  searchQuery: string,
+  options?: HeroGlobalSearchOptions,
+) {
   const { currentLanguage } = useLanguage();
   const [debouncedQuery, setDebouncedQuery] = useState(searchQuery.trim());
   const [isDebouncing, setIsDebouncing] = useState(false);
@@ -107,21 +115,32 @@ export function useHeroGlobalSearch(searchQuery: string) {
   }, [searchQuery]);
 
   const { data = [], isFetching: isSearching } = useQuery({
-    queryKey: ["globalSearch", debouncedQuery],
+    queryKey: [
+      "globalSearch",
+      debouncedQuery,
+      options?.skipDiversityCap ?? false,
+    ],
     queryFn: () =>
       debouncedQuery
         ? getGlobalSearch(debouncedQuery, currentLanguage)
         : Promise.resolve([]),
     enabled: !!debouncedQuery,
     staleTime: 60 * 1000,
-    select: (responseData: GlobalSearchApiResponse) =>
-      applyDiversityCap(
-        responseData
-          .map(mapGlobalSearchResult)
-          .filter((result): result is HeroSearchResult => result != null),
+    select: (responseData: GlobalSearchApiResponse) => {
+      const mapped = responseData
+        .map(mapGlobalSearchResult)
+        .filter((result): result is HeroSearchResult => result != null);
+
+      if (options?.skipDiversityCap) {
+        return mapped;
+      }
+
+      return applyDiversityCap(
+        mapped,
         HERO_SEARCH_MAX_RESULTS,
         HERO_SEARCH_MAX_RESULTS_PER_TYPE,
-      ),
+      );
+    },
   });
 
   return { searchResults: data, isSearching, isDebouncing };

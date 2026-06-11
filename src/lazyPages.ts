@@ -132,3 +132,8 @@ export const CompaniesOverviewPage = lazy(() =>
 export const ExplorePage = lazy(() =>
   import("./pages/ExplorePage").then((m) => ({ default: m.ExplorePage })),
 );
+export const ComparisonPage = lazy(() =>
+  import("./pages/ComparisonPage").then((m) => ({
+    default: m.ComparisonPage,
+  })),
+);

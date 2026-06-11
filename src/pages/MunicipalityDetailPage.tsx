@@ -23,6 +23,8 @@ import { useSectorYearSelection } from "@/hooks/territories/useSectorYearSelecti
 import { getProcurementRequirementsText } from "@/utils/municipality/procurement";
 import { LinkCard } from "@/components/detail/DetailLinkCard";
 import { DetailHeader } from "@/components/detail/DetailHeader";
+import { ComparisonDetailChip } from "@/components/compare/ComparisonDetailChip";
+import { buildComparisonLinkTo } from "@/utils/compare/comparisonUtils";
 import { TerritorySupplementalData } from "@/components/detail/TerritorySupplementalData";
 import { DetailSection } from "@/components/detail/DetailSection";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";
@@ -238,6 +240,13 @@ export function MunicipalityDetailPage() {
           logoUrl={municipality.logoUrl}
           helpItems={HEADER_HELP_ITEMS}
           stats={headerStats}
+          headerChip={
+            <ComparisonDetailChip
+              linkTo={buildComparisonLinkTo("municipality", municipality.name)}
+              variant="municipality"
+              name={municipality.name}
+            />
+          }
           supplementalData={
             <TerritorySupplementalData
               region={municipality.region}

@@ -1933,6 +1933,69 @@
   "explorePage": {
     "title": "Explore the data",
     "description": "Explore and compare emissions data and climate targets for companies and municipalities.",
+    "comparison": {
+      "compare": "Compare",
+      "compareModeActive": "Comparing",
+      "chipAriaWithCount": "Comparison: {{count}} of {{max}} selected",
+      "toggleMode": "Toggle comparison mode",
+      "selected": "{{count}} selected ({{min}}–{{max}})",
+      "clearSelection": "Clear selection",
+      "viewComparison": "View comparison",
+      "backToList": "Back to list",
+      "backToPrevious": "Go back",
+      "title": "Side-by-side comparison",
+      "comparing": "Comparing {{count}} entities",
+      "viewDetails": "View full details",
+      "metric": "Metric",
+      "mobileScrollHint": "All entities are listed below each metric for easy comparison.",
+      "addToComparison": "Add to comparison",
+      "addedToComparison": "Added to comparison",
+      "variantMismatchTitle": "Cannot mix entity types",
+      "variantMismatchMessage": "You can only compare municipalities, regions, or companies of the same type. Clear your selection to start over.",
+      "notEnoughSelected": "Select more entities to compare",
+      "notEnoughSelectedDescription": "Choose at least {{min}} entities to open the comparison view.",
+      "addEntity": {
+        "default": "Add entities",
+        "company": "Add company",
+        "municipality": "Add municipality",
+        "region": "Add region"
+      },
+      "pickerTitle": {
+        "default": "Add to comparison",
+        "company": "Add company to comparison",
+        "municipality": "Add municipality to comparison",
+        "region": "Add region to comparison"
+      },
+      "pickerPlaceholder": {
+        "default": "Search municipalities, regions, or companies",
+        "company": "Search companies",
+        "municipality": "Search municipalities",
+        "region": "Search regions"
+      },
+      "pickerDone": "Done",
+      "pickerLoading": "Searching...",
+      "pickerEmpty": {
+        "default": "No results found",
+        "company": "No companies found",
+        "municipality": "No municipalities found",
+        "region": "No regions found"
+      },
+      "pickerSelectedHeading": "Selected ({{count}}/{{max}})",
+      "sections": {
+        "climateTarget": "Climate target",
+        "emissions": "Emissions",
+        "sustainableTransport": "Sustainable transport",
+        "procurement": "Procurement",
+        "politics": "Politics",
+        "climatePlan": "Climate plan",
+        "companyOverview": "Company overview",
+        "reporting": "Reporting",
+        "overview": "Overview"
+      },
+      "metrics": {
+        "municipalityCount": "Municipalities in region"
+      }
+    },
     "filter": "Filter:",
     "sorting": "Sorting by:",
     "sortingOptions": {

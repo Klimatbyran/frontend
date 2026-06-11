@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { Input } from "@/components/ui/input";
 import { FilterBadges } from "@/components/companies/list/FilterBadges";
 import {
@@ -28,6 +28,9 @@ interface IListFilter {
   }>;
   sortOptions: readonly SortOption[];
   searchPlaceholder: string;
+  comparisonToggle?: ReactNode;
+  comparisonActiveBar?: ReactNode;
+  hideListControls?: boolean;
 }
 
 const ListFilter = ({
@@ -41,6 +44,9 @@ const ListFilter = ({
   activeFilters,
   sortOptions,
   searchPlaceholder,
+  comparisonToggle,
+  comparisonActiveBar,
+  hideListControls = false,
 }: IListFilter) => {
   const screenSize = useScreenSize();
   const [filterOpen, setFilterOpen] = useState(false);
@@ -55,38 +61,45 @@ const ListFilter = ({
     >
       <div className="absolute inset-0 w-full bg-black -z-10" />
 
-      {/* Wrapper for Filters, Search, and Badges */}
-      <div className={cn("flex flex-wrap items-center gap-2 mb-2 md:mb-4")}>
-        {/* Search Input */}
-        <Input
-          type="text"
-          placeholder={searchPlaceholder}
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="bg-black-1 rounded-md px-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-2 relative w-full md:w-[350px]"
-        />
+      <div
+        className={cn(
+          "flex flex-wrap items-center gap-2",
+          comparisonActiveBar ? "mb-2" : "mb-2 md:mb-4",
+        )}
+      >
+        {!hideListControls && (
+          <>
+            <Input
+              type="text"
+              placeholder={searchPlaceholder}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="bg-black-1 rounded-md px-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-2 relative w-full md:w-[350px]"
+            />
 
-        {/* Filter and Sort Buttons */}
-        <FilterPopover
-          filterOpen={filterOpen}
-          setFilterOpen={setFilterOpen}
-          groups={filterGroups}
-        />
+            <FilterPopover
+              filterOpen={filterOpen}
+              setFilterOpen={setFilterOpen}
+              groups={filterGroups}
+            />
 
-        <SortPopover
-          sortOpen={sortOpen}
-          setSortOpen={setSortOpen}
-          sortOptions={sortOptions}
-          sortBy={sortBy}
-          setSortBy={setSortBy}
-          sortDirection={(sortDirection as SortDirection) || "desc"}
-          setSortDirection={
-            setSortDirection as (direction: SortDirection) => void
-          }
-        />
+            <SortPopover
+              sortOpen={sortOpen}
+              setSortOpen={setSortOpen}
+              sortOptions={sortOptions}
+              sortBy={sortBy}
+              setSortBy={setSortBy}
+              sortDirection={(sortDirection as SortDirection) || "desc"}
+              setSortDirection={
+                setSortDirection as (direction: SortDirection) => void
+              }
+            />
+          </>
+        )}
 
-        {/* Badges */}
-        {activeFilters.length > 0 && (
+        {comparisonToggle}
+
+        {!hideListControls && activeFilters.length > 0 && (
           <div
             className={cn(
               "flex flex-wrap gap-2",
@@ -97,6 +110,12 @@ const ListFilter = ({
           </div>
         )}
       </div>
+
+      {comparisonActiveBar && (
+        <div className="mb-2 md:mb-4 border-t border-white/10 pt-2">
+          {comparisonActiveBar}
+        </div>
+      )}
     </div>
   );
 };

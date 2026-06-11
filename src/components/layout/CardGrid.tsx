@@ -18,17 +18,21 @@ const gridComponents = {
   Item: ({ children }: React.HTMLAttributes<HTMLDivElement>) => children,
 };
 
-type CardGridProps<T> = {
+type CardGridProps<T, C> = {
   items: T[];
-  itemContent: (data: T) => ReactNode;
+  itemContent: (data: T, context: C) => ReactNode;
+  itemContext: C;
 };
 
-export function CardGrid<T>({ items, itemContent }: CardGridProps<T>) {
+export function CardGrid<T, C>({
+  items,
+  itemContent,
+  itemContext,
+}: CardGridProps<T, C>) {
   const { isMobile } = useScreenSize();
   const location = useLocation();
   const isMountedRef = useRef(true);
 
-  // Track mount state to prevent operations after unmount
   useEffect(() => {
     isMountedRef.current = true;
     return () => {
@@ -36,22 +40,18 @@ export function CardGrid<T>({ items, itemContent }: CardGridProps<T>) {
     };
   }, []);
 
-  // Use location pathname as key to force clean remount when navigating between pages
-  // This prevents race conditions where react-virtuoso tries to manipulate DOM nodes
-  // that React Router has already removed during navigation
-  // Only use pathname (not search params) to avoid unnecessary remounts on filter changes
   const gridKey = location.pathname;
 
-  // On mobile, using different grid settings to prevent scrolling errors
   if (isMobile) {
     return (
       <Virtuoso
         key={gridKey}
         data={items}
+        context={itemContext}
         useWindowScroll
         style={{ height: "calc(100vh - 120px)" }}
-        itemContent={(_index, item) => (
-          <div className="mb-6">{itemContent(item)}</div>
+        itemContent={(_index, item, context) => (
+          <div className="mb-6">{itemContent(item, context)}</div>
         )}
       />
     );
@@ -62,11 +62,10 @@ export function CardGrid<T>({ items, itemContent }: CardGridProps<T>) {
       key={gridKey}
       totalCount={items.length}
       data={items}
+      context={itemContext}
       components={gridComponents}
       useWindowScroll
-      itemContent={(_index, item) => {
-        return itemContent(item);
-      }}
+      itemContent={(_index, item, context) => itemContent(item, context)}
     />
   );
 }

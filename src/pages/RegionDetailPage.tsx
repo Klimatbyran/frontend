@@ -5,6 +5,8 @@ import { PageLoading } from "@/components/pageStates/Loading";
 import { PageError } from "@/components/pageStates/Error";
 import { PageNoData } from "@/components/pageStates/NoData";
 import { DetailHeader } from "@/components/detail/DetailHeader";
+import { ComparisonDetailChip } from "@/components/compare/ComparisonDetailChip";
+import { buildComparisonLinkTo } from "@/utils/compare/comparisonUtils";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";
 import { EntityListBox } from "@/components/detail/EntityListBox";
 import { SectorEmissionsChart } from "@/components/charts/sectorChart/SectorEmissions";
@@ -40,6 +42,13 @@ export function RegionDetailPage() {
           logoUrl={region.logoUrl}
           helpItems={["regionTotalEmissions", "detailWhyDataDelay"]}
           stats={headerStats}
+          headerChip={
+            <ComparisonDetailChip
+              linkTo={buildComparisonLinkTo("region", region.name)}
+              variant="region"
+              name={region.name}
+            />
+          }
         />
 
         <TerritoryEmissions

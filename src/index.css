@@ -245,6 +245,30 @@ input[type="number"] {
   }
 }
 
+@layer utilities {
+  .scrollbar-dark {
+    scrollbar-width: thin;
+    scrollbar-color: var(--black-1) transparent;
+  }
+
+  .scrollbar-dark::-webkit-scrollbar {
+    width: 0.375rem;
+  }
+
+  .scrollbar-dark::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-dark::-webkit-scrollbar-thumb {
+    border-radius: 9999px;
+    background-color: var(--black-1);
+  }
+
+  .scrollbar-dark:hover::-webkit-scrollbar-thumb {
+    background-color: color-mix(in srgb, var(--grey) 50%, transparent);
+  }
+}
+
 /* Prevent mobile scroll bounce issues */
 @supports (-webkit-touch-callout: none) {
   body {

@@ -1991,6 +1991,69 @@
   "explorePage": {
     "title": "Utforska data",
     "description": "Utforska och jämför utsläppsdata och klimatmål för företag och kommuner.",
+    "comparison": {
+      "compare": "Jämför",
+      "compareModeActive": "Jämför aktivt",
+      "chipAriaWithCount": "Jämförelse: {{count}} av {{max}} valda",
+      "toggleMode": "Växla jämförelseläge",
+      "selected": "{{count}} valda ({{min}}–{{max}})",
+      "clearSelection": "Rensa val",
+      "viewComparison": "Visa jämförelse",
+      "backToList": "Tillbaka till listan",
+      "backToPrevious": "Gå tillbaka",
+      "title": "Jämförelse sida vid sida",
+      "comparing": "Jämför {{count}} enheter",
+      "viewDetails": "Visa all data",
+      "metric": "Värde",
+      "mobileScrollHint": "Alla enheter listas under varje värde för enkel jämförelse.",
+      "addToComparison": "Lägg till i jämförelse",
+      "addedToComparison": "Tillagd i jämförelse",
+      "variantMismatchTitle": "Kan inte blanda enhetstyper",
+      "variantMismatchMessage": "Du kan bara jämföra kommuner, län eller företag av samma typ. Rensa ditt val för att börja om.",
+      "notEnoughSelected": "Välj fler enheter att jämföra",
+      "notEnoughSelectedDescription": "Välj minst {{min}} enheter för att öppna jämförelsevyn.",
+      "addEntity": {
+        "default": "Lägg till enheter",
+        "company": "Lägg till företag",
+        "municipality": "Lägg till kommun",
+        "region": "Lägg till län"
+      },
+      "pickerTitle": {
+        "default": "Lägg till i jämförelse",
+        "company": "Lägg till företag i jämförelse",
+        "municipality": "Lägg till kommun i jämförelse",
+        "region": "Lägg till län i jämförelse"
+      },
+      "pickerPlaceholder": {
+        "default": "Sök kommuner, län eller företag",
+        "company": "Sök företag",
+        "municipality": "Sök kommuner",
+        "region": "Sök län"
+      },
+      "pickerDone": "Klar",
+      "pickerLoading": "Söker...",
+      "pickerEmpty": {
+        "default": "Inga resultat hittades",
+        "company": "Inga företag hittades",
+        "municipality": "Inga kommuner hittades",
+        "region": "Inga län hittades"
+      },
+      "pickerSelectedHeading": "Valda ({{count}}/{{max}})",
+      "sections": {
+        "climateTarget": "Klimatmål",
+        "emissions": "Utsläpp",
+        "sustainableTransport": "Hållbar transport",
+        "procurement": "Upphandling",
+        "politics": "Politik",
+        "climatePlan": "Klimatplan",
+        "companyOverview": "Företagsöversikt",
+        "reporting": "Rapportering",
+        "overview": "Översikt"
+      },
+      "metrics": {
+        "municipalityCount": "Kommuner i länet"
+      }
+    },
     "filter": "Filter:",
     "sorting": "Sorterar:",
     "sortingOptions": {

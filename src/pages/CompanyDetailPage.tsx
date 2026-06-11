@@ -1,5 +1,8 @@
 import { useParams, useLocation } from "react-router-dom";
-import { useState, useMemo } from "react";
+import { useMemo, useState } from "react";
+import { CompanyDetailHeader } from "@/components/companies/detail/CompanyDetailHeader";
+import { ComparisonDetailChip } from "@/components/compare/ComparisonDetailChip";
+import { buildComparisonLinkTo } from "@/utils/compare/comparisonUtils";
 import { useTranslation } from "react-i18next";
 import { useCompanyDetails } from "@/hooks/companies/useCompanyDetails";
 import { CompanyOverview } from "@/components/companies/detail/overview/CompanyOverview";
@@ -64,11 +67,24 @@ export function CompanyDetailPage() {
     );
   }
 
+  const comparisonChip = (
+    <ComparisonDetailChip
+      linkTo={buildComparisonLinkTo("company", company.wikidataId)}
+      variant="company"
+      name={company.name}
+    />
+  );
+
   if (!company.reportingPeriods?.length) {
     return (
       <>
         <Seo meta={seoMeta} />
-        <div className="space-y-8 md:space-y-16 max-w-[1400px] mx-auto">
+        <div className="mx-auto max-w-[1400px] space-y-8 md:space-y-16">
+          <CompanyDetailHeader
+            name={company.name}
+            logoUrl={company.logoUrl}
+            headerChip={comparisonChip}
+          />
           <CompanyOverviewNoData company={company} />
         </div>
       </>
@@ -118,7 +134,12 @@ export function CompanyDetailPage() {
       {/* Only render SEO when data is available, otherwise Layout will use route-level SEO */}
       {company && <Seo meta={seoMeta} />}
 
-      <div className="space-y-8 md:space-y-16 max-w-[1400px] mx-auto">
+      <div className="mx-auto max-w-[1400px] space-y-8 md:space-y-16">
+        <CompanyDetailHeader
+          name={company.name}
+          logoUrl={company.logoUrl}
+          headerChip={comparisonChip}
+        />
         <CompanyOverview
           company={company}
           selectedPeriod={selectedPeriod}

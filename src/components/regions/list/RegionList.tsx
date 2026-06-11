@@ -1,10 +1,8 @@
 import { useTranslation } from "react-i18next";
-import { CardGrid } from "@/components/layout/CardGrid";
-import { ListCard } from "@/components/explore/ListCard";
-import ListFilter from "@/components/explore/ListFilter";
 import { useRegionsFilters } from "@/hooks/regions/useRegionsFilters";
 import { useTransformRegionListCard } from "@/hooks/regions/useTransformRegionListCard";
 import type { RegionForExplore } from "@/hooks/regions/useRegionsForExplore";
+import { ExploreEntityList } from "@/components/explore/ExploreEntityList";
 
 interface RegionListProps {
   regions: RegionForExplore[];
@@ -32,25 +30,20 @@ export function RegionList({ regions }: RegionListProps) {
   }
 
   return (
-    <>
-      <ListFilter
-        searchQuery={regionFilters.searchQuery}
-        setSearchQuery={regionFilters.setSearchQuery}
-        sortBy={regionFilters.sortBy}
-        setSortBy={regionFilters.setSortBy}
-        sortDirection={regionFilters.sortDirection}
-        setSortDirection={regionFilters.setSortDirection}
-        filterGroups={regionFilters.filterGroups}
-        activeFilters={regionFilters.activeFilters}
-        sortOptions={sortOptions}
-        searchPlaceholder={t("explorePage.regions.searchPlaceholder")}
-      />
-      <CardGrid
-        items={transformedRegions}
-        itemContent={(transformedData) => (
-          <ListCard key={transformedData.linkTo} {...transformedData} />
-        )}
-      />
-    </>
+    <ExploreEntityList
+      items={transformedRegions}
+      filterProps={{
+        searchQuery: regionFilters.searchQuery,
+        setSearchQuery: regionFilters.setSearchQuery,
+        sortBy: regionFilters.sortBy,
+        setSortBy: regionFilters.setSortBy,
+        sortDirection: regionFilters.sortDirection,
+        setSortDirection: regionFilters.setSortDirection,
+        filterGroups: regionFilters.filterGroups,
+        activeFilters: regionFilters.activeFilters,
+        sortOptions,
+        searchPlaceholder: t("explorePage.regions.searchPlaceholder"),
+      }}
+    />
   );
 }
