@@ -35,6 +35,7 @@ export const methodologySections: MethodologySectionType = {
     { id: "historicalData", category: "company" },
     { id: "relatableNumbers", category: "company" },
   ],
+  nation: [{ id: "nationDataOverview", category: "nation" }],
 };
 
 // Function to get a method by ID

@@ -499,7 +499,8 @@
     "categories": {
       "general": "General Information",
       "municipalityAndRegion": "Municipality and Region Data",
-      "company": "Company Data"
+      "company": "Company Data",
+      "nation": "Nation Data"
     },
     "general": {
       "parisAgreement": {
@@ -815,6 +816,21 @@
           "title": "Citizens",
           "paragraph": "To make the emissions change easier to understand, we compare it to the average annual conspumtion based greenhouse gas emissions per person per year. In our case, we assume that an average person accounts for 9 tons of CO₂-equivalents (tCO₂e) per year. (2)",
           "source": "https://konsumtionskompassen.se/"
+        }
+      }
+    },
+    "nation": {
+      "nationDataOverview": {
+        "title": "Nation Data Overview",
+        "description": "What data we collect and present about Sweden's national emissions",
+        "paragraph1": "Klimatkollen shows emissions data for Sweden at the national level, with SMHI's National Emissions Database as our primary source. To make our national, regional, municipal and company data comparable, emissions of all greenhouse gases (CO₂e) are shown since August 2025, not just CO₂.",
+        "paragraph2": "The annual average emissions change for Sweden is calculated using the Compound Annual Growth Rate (CAGR).",
+        "paragraph3": "We also show how emissions would need to decrease to meet the Paris Agreement. Previously, this was based on local carbon budgets derived from a national budget calculated by researchers at Uppsala University and the Tyndall Centre in the UK. Since August 2025, we have switched to use the 'Paris Curve' based on an updated <0>Carbon Law</0>.",
+        "paragraph4": "The forecast for future emissions is based on how Sweden's emissions have developed historically since the Paris Agreement in 2015. The trend line is weighted using the statistical method Least Absolute Deviations (LAD), which gives less weight to individual extreme values and provides a more fair and realistic picture of future emissions. You can read more about our emissions calculations <0>here</0>.",
+        "paragraph5": "Alongside total emissions, Klimatkollen shows a sector breakdown of Sweden's greenhouse gas emissions and links to regional data for each county.",
+        "link": {
+          "title": "Sweden's National Emissions",
+          "text": "View Sweden's national emissions data on Klimatkollen"
         }
       }
     },

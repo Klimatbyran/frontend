@@ -31,7 +31,7 @@ function NationDetailContent({
       <DetailHeader
         name={nation.country[currentLanguage]}
         logoUrl={nation.logoUrl}
-        helpItems={["regionTotalEmissions", "detailWhyDataDelay"]}
+        helpItems={["nationTotalEmissions", "detailWhyDataDelay"]}
         stats={headerStats}
       />
       <TerritoryEmissions
