@@ -1900,7 +1900,11 @@
     "search": {
       "placeholder": "Search..."
     },
-    "rank": "Rank: {{rank}} of {{total}}"
+    "rank": "Rank: {{rank}} of {{total}}",
+    "sort": {
+      "asc": "Sort from low to high",
+      "desc": "Sort from high to low"
+    }
   },
   "rankedInsights": {
     "belowAverage": "{{entityPlural}} below average",

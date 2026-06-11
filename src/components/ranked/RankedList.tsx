@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Search } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ArrowDown, ArrowUp, Search } from "lucide-react";
 import { t } from "i18next";
 import MultiPagePagination from "@/components/ui/multi-page-pagination";
 import { DataPoint } from "@/types/rankings";
@@ -28,6 +28,11 @@ interface SortedRankedDataOptions<T extends Record<string, unknown>> {
   searchTerm: string;
   itemsPerPage: number;
   currentPage: number;
+  sortReversed: boolean;
+}
+
+function getDefaultSortAscending(higherIsBetter: boolean) {
+  return !higherIsBetter;
 }
 
 function useSortedRankedData<T extends Record<string, unknown>>({
@@ -37,7 +42,12 @@ function useSortedRankedData<T extends Record<string, unknown>>({
   searchTerm,
   itemsPerPage,
   currentPage,
+  sortReversed,
 }: SortedRankedDataOptions<T>) {
+  const sortAscending = sortReversed
+    ? !getDefaultSortAscending(selectedDataPoint.higherIsBetter)
+    : getDefaultSortAscending(selectedDataPoint.higherIsBetter);
+
   const sortedData = [...data].sort((a, b) => {
     const aValue = a[selectedDataPoint.key];
     const bValue = b[selectedDataPoint.key];
@@ -52,9 +62,8 @@ function useSortedRankedData<T extends Record<string, unknown>>({
         String(b[searchKey] || ""),
       );
     }
-    return selectedDataPoint.higherIsBetter
-      ? (bValue as number) - (aValue as number)
-      : (aValue as number) - (bValue as number);
+    const comparison = (aValue as number) - (bValue as number);
+    return sortAscending ? comparison : -comparison;
   });
 
   const validValues = sortedData
@@ -100,6 +109,7 @@ function useSortedRankedData<T extends Record<string, unknown>>({
     totalPages,
     startIndex,
     paginatedData,
+    sortAscending,
   };
 }
 
@@ -156,16 +166,29 @@ export function RankedList<T extends Record<string, unknown>>({
 }: RankedListProps<T>) {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [sortReversed, setSortReversed] = useState(false);
 
-  const { average, originalRankMap, totalPages, startIndex, paginatedData } =
-    useSortedRankedData({
-      data,
-      selectedDataPoint,
-      searchKey,
-      searchTerm,
-      itemsPerPage,
-      currentPage,
-    });
+  useEffect(() => {
+    setSortReversed(false);
+    setCurrentPage(1);
+  }, [selectedDataPoint.key]);
+
+  const {
+    average,
+    originalRankMap,
+    totalPages,
+    startIndex,
+    paginatedData,
+    sortAscending,
+  } = useSortedRankedData({
+    data,
+    selectedDataPoint,
+    searchKey,
+    searchTerm,
+    itemsPerPage,
+    currentPage,
+    sortReversed,
+  });
 
   const { formatValue, getOriginalRank, getColor } = useRankedItemHelpers(
     selectedDataPoint,
@@ -225,7 +248,26 @@ export function RankedList<T extends Record<string, unknown>>({
         {selectedDataPoint.unit && (
           <div className="text-grey flex items-center pl-12 pt-4 -mb-2 w-full justify-between">
             <span>{t("rankedList.name")}</span>
-            <span>{selectedDataPoint.unit}</span>
+            <button
+              type="button"
+              onClick={() => {
+                setSortReversed((prev) => !prev);
+                setCurrentPage(1);
+              }}
+              className="flex items-center gap-1 hover:text-white transition-colors"
+              aria-label={
+                sortAscending
+                  ? t("rankedList.sort.asc")
+                  : t("rankedList.sort.desc")
+              }
+            >
+              <span>{selectedDataPoint.unit}</span>
+              {sortAscending ? (
+                <ArrowUp className="w-3 h-3" aria-hidden="true" />
+              ) : (
+                <ArrowDown className="w-3 h-3" aria-hidden="true" />
+              )}
+            </button>
           </div>
         )}
       </div>
