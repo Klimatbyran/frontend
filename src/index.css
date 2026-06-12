@@ -64,8 +64,15 @@
   * {
     @apply border-border;
   }
-  body {
+  html {
     @apply bg-black text-white;
+    color-scheme: dark;
+  }
+  body {
+    @apply bg-black text-white min-h-screen;
+  }
+  #root {
+    @apply min-h-screen;
   }
   h1,
   h2,
@@ -205,15 +212,6 @@ input[type="number"] {
   appearance: textfield;
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}
-
 @theme inline {
   @keyframes marquee {
     from {
@@ -267,6 +265,10 @@ input[type="number"] {
   .scrollbar-dark:hover::-webkit-scrollbar-thumb {
     background-color: color-mix(in srgb, var(--grey) 50%, transparent);
   }
+}
+
+.leaflet-container {
+  background: var(--black-2);
 }
 
 /* Prevent mobile scroll bounce issues */
