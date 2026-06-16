@@ -48,7 +48,7 @@ server {
     location /foretag/utslappen/lista {
         return 301 https://klimatkollen.se/companies;
     }
-    location ~^/foretag/(.+)-(Q\d+|[0-9a-f]{8})$ {
+    location ~ ^/foretag/(.+)-(Q\d+|[0-9a-f]\{8\})$ {
         return 301 https://klimatkollen.se/companies/$2;
     }
     location ~^/geografiskt/(koldioxidbudgetarna|klimatplanerna|konsumtionen|elbilarna|laddarna|cyklarna|upphandlingarna|utslappen)/(karta|lista)$ {
