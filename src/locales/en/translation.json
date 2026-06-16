@@ -907,7 +907,9 @@
       "employees": "Employees",
       "companyReport": "Sustainability Report",
       "missingReport": "Missing Report",
-      "reportYear": "Report from {{year}}"
+      "reportYear": "Report from {{year}}",
+      "reportingSince": "Reporting since",
+      "largestEmissionsSource": "Largest emissions source"
     },
     "dataView": {
       "overview": "Overview",

@@ -32,7 +32,9 @@ export function MunicipalityCard({ municipality }: MunicipalityCardProps) {
     ? formatPercentChange(emissionsChangeExists, currentLanguage)
     : t("municipalities.card.noData");
 
-  const noClimatePlan = !municipality.climatePlanLink;
+  const noClimatePlan =
+    !municipality.climatePlanLink ||
+    municipality.climatePlanLink === "Saknar plan";
 
   return (
     <Link

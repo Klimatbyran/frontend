@@ -45,7 +45,7 @@ export function CompanyCard({
   reportingPeriods,
 }: CompanyCardProps) {
   const { t } = useTranslation();
-  const { getCategoryColor } = useCategoryMetadata();
+  const { getCategoryColor, getCategoryName } = useCategoryMetadata();
   const sectorNames = useSectorNames();
   const { currentLanguage } = useLanguage();
   const { isAIGenerated, isEmissionsAIGenerated } = useVerificationStatus();
@@ -81,10 +81,18 @@ export function CompanyCard({
     latestPeriod?.reportURL === "Saknar report" ||
     latestPeriod?.reportURL === undefined;
 
-  // Get the color for the largest category
+  // Get the color and name for the largest category
   const categoryColor = largestCategory
     ? getCategoryColor(largestCategory.category)
     : "var(--blue-2)";
+  const largestCategoryName = largestCategory
+    ? getCategoryName(largestCategory.category)
+    : null;
+
+  const reportingStartYear =
+    reportingPeriods.length > 0
+      ? new Date(reportingPeriods.at(-1)!.startDate).getFullYear()
+      : null;
 
   const totalEmissionsAIGenerated = isEmissionsAIGenerated(latestPeriod);
   const turnoverAIGenerated = isAIGenerated(latestPeriod.economy?.turnover);
@@ -285,6 +293,37 @@ export function CompanyCard({
                 )}
               </Text>
             )}
+          </div>
+        </div>
+        <div className="grid grid-cols-2 gap-4 pt-4 border-t border-black-1">
+          <div>
+            <Text
+              variant="body"
+              className="text-grey mb-2 text-lg"
+            >
+              {t("companies.card.reportingSince")}
+            </Text>
+            <Text
+              variant="h6"
+              className={reportingStartYear ? "text-green-3" : "text-pink-3"}
+            >
+              {reportingStartYear ?? t("companies.card.noData")}
+            </Text>
+          </div>
+          <div>
+            <Text
+              variant="body"
+              className="text-grey mb-2 text-lg"
+            >
+              {t("companies.card.largestEmissionsSource")}
+            </Text>
+            <Text
+              variant="h6"
+              style={{ color: largestCategoryName ? categoryColor : undefined }}
+              className={largestCategoryName ? undefined : "text-grey"}
+            >
+              {largestCategoryName ?? t("companies.card.noData")}
+            </Text>
           </div>
         </div>
         {/* Sustainability Report */}

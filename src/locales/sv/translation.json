@@ -910,7 +910,9 @@
       "employees": "Anställda",
       "companyReport": "Hållbarhetsrapport",
       "missingReport": "Saknar report",
-      "reportYear": "Rapporterat från {{year}}"
+      "reportYear": "Rapporterat från {{year}}",
+      "reportingSince": "Rapporterat sedan",
+      "largestEmissionsSource": "Största utsläppskälla"
     },
     "dataView": {
       "overview": "Översikt",
