@@ -772,6 +772,10 @@
         "title": "Emissions and Categories",
         "description": "Understanding different types of emissions and how they are categorized",
         "paragraph1": "Companies report their emissions according to the GHG Protocol's three scopes:",
+        "scope1": {
+          "title": "Scope 1: Direct Emissions",
+          "paragraph1": "Scope 1 emissions are direct greenhouse gas emissions from sources owned or controlled by the company, such as fuel burned in company vehicles, on-site boilers, and manufacturing processes. Klimatkollen presents scope 1 emissions as reported by companies."
+        },
         "scope2": {
           "title": "Scope 2: Indirect Energy Emissions",
           "paragraph1": "Scope 2 emissions are primarily calculated using the market-based method, which takes into account whether companies purchase renewable electricity. If such data is missing, we use data from the location-based method instead."
