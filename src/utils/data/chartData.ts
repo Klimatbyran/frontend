@@ -70,9 +70,16 @@ export function getChartData(
       acc[key] = categoryEntry?.total ?? null; // Preserve null if data is missing
       return acc;
     }, {});
+    const turnover = period.economy?.turnover;
+
     return {
       year,
       total: period.emissions?.calculatedTotalEmissions ?? 0,
+      turnover: turnover?.value ?? undefined,
+      turnoverCurrency: turnover?.currency ?? undefined,
+      turnoverIsAIGenerated: turnover
+        ? isAIGenerated(turnover)
+        : undefined,
       isAIGenerated: isEmissionsAIGenerated(period),
       scope1: scope1Data,
       scope2: scope2Data,

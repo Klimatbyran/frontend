@@ -1,29 +1,27 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { isMobile } from "react-device-detect";
+import type { EmissionsHistoryProps } from "@/types/emissions";
 import { getDynamicChartHeight } from "@/components/charts";
 import { CardHeader } from "@/components/layout/CardHeader";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
-import type { EmissionsHistoryProps } from "@/types/emissions";
-import {
-  getEmissionsIntensityData,
-  getEmissionsIntensitySummary,
-  hasEnoughIntensityData,
-} from "@/utils/data/emissionsIntensityData";
-import { EmissionsIntensityChart } from "./EmissionsIntensityChart";
-import { EmissionsIntensitySummaryPanel } from "./EmissionsIntensitySummary";
+import { getChartData } from "@/utils/data/chartData";
+import { hasEnoughTurnoverData } from "@/utils/data/turnoverChartData";
+import { TurnoverEmissionsChart } from "./TurnoverEmissionsChart";
 
-export function EmissionsIntensityHistory({
+export function TurnoverEmissionsHistory({
   company,
   onYearSelect,
 }: EmissionsHistoryProps) {
   const { t } = useTranslation();
   const { isAIGenerated, isEmissionsAIGenerated } = useVerificationStatus();
 
-  const intensityData = useMemo(
+  const companyBaseYear = company.baseYear?.year;
+
+  const chartData = useMemo(
     () =>
-      getEmissionsIntensityData(
+      getChartData(
         company.reportingPeriods,
         isAIGenerated,
         isEmissionsAIGenerated,
@@ -31,12 +29,7 @@ export function EmissionsIntensityHistory({
     [company.reportingPeriods, isAIGenerated, isEmissionsAIGenerated],
   );
 
-  const summary = useMemo(
-    () => getEmissionsIntensitySummary(intensityData),
-    [intensityData],
-  );
-
-  if (!hasEnoughIntensityData(company.reportingPeriods) || !summary) {
+  if (!hasEnoughTurnoverData(company.reportingPeriods)) {
     return null;
   }
 
@@ -48,20 +41,14 @@ export function EmissionsIntensityHistory({
     <div>
       <SectionWithHelp helpItems={["companyTurnover", "historicalEmissions"]}>
         <CardHeader
-          title={t("companies.emissionsIntensity.title")}
-          tooltipContent={t("companies.emissionsIntensity.tooltip")}
-          unit={t("companies.emissionsIntensity.unit", {
-            currency: summary.turnoverCurrency ?? "",
-          })}
+          title={t("companies.turnoverEmissionsHistory.title")}
+          tooltipContent={t("companies.turnoverEmissionsHistory.tooltip")}
+          unit={t("companies.turnoverEmissionsHistory.unit")}
         />
-
-        <EmissionsIntensitySummaryPanel summary={summary} />
-
         <div style={{ height: getDynamicChartHeight("overview", isMobile) }}>
-          <EmissionsIntensityChart
-            data={intensityData}
-            summary={summary}
-            companyBaseYear={company.baseYear?.year}
+          <TurnoverEmissionsChart
+            data={chartData}
+            companyBaseYear={companyBaseYear}
             onYearSelect={handleYearSelect}
           />
         </div>

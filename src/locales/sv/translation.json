@@ -1404,29 +1404,10 @@
       "totalEmissionsSaved": "totala utsläpp sparade jämfört med Paris-målet",
       "totalEmissionsExcess": "totala utsläpp i överskott jämfört med Paris-målet"
     },
-    "emissionsIntensity": {
-      "title": "Utsläppsintensitet över tid",
-      "tooltip": "Visar hur många ton CO₂e företaget släpper ut per miljon i rapporterad omsättning. En sjunkande linje betyder att företaget blir mindre utsläppsintensivt även om de totala utsläppen är oförändrade eller ökar.",
-      "unit": "Ton CO₂e per miljon {{currency}} i omsättning",
-      "unitShort": "t / milj. {{currency}}",
-      "intensity": "Utsläppsintensitet",
-      "baseline": "Första rapporterade året",
-      "summary": {
-        "latestIntensity": "Senaste intensitet",
-        "latestYear": "Rapporteringsår {{year}}",
-        "trend": "Övergripande riktning",
-        "improving": "Mindre intensivt",
-        "improvingDescription": "Färre ton CO₂e släpps ut per omsättningsenhet än i början av perioden.",
-        "worsening": "Mer intensivt",
-        "worseningDescription": "Fler ton CO₂e släpps ut per omsättningsenhet än i början av perioden.",
-        "stable": "Ungefär oförändrat",
-        "stableDescription": "Utsläppsintensiteten har legat nära det första rapporterade året."
-      },
-      "chartTooltip": {
-        "changeFromPreviousYear": "Förändring från föregående år",
-        "changeFromFirstYear": "Förändring från första året",
-        "lowerIsBetter": "Lägre intensitet är bättre — färre utsläpp per omsättningsenhet."
-      }
+    "turnoverEmissionsHistory": {
+      "title": "Utsläpp och omsättning över tid",
+      "tooltip": "Jämför rapporterade utsläpp och omsättning över tid. Vänster axel visar utsläpp i ton CO₂e och höger axel visar omsättning i företagets rapporteringsvaluta.",
+      "unit": "Utsläpp i ton CO₂e · Omsättning i företagets valuta"
     },
     "list": {
       "error": {

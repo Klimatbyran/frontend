@@ -1347,29 +1347,10 @@
       "totalEmissionsSaved": "total emissions saved vs Paris target",
       "totalEmissionsExcess": "total emissions excess vs Paris target"
     },
-    "emissionsIntensity": {
-      "title": "Emissions intensity over time",
-      "tooltip": "Shows how many tons of CO₂e the company emits per million in reported turnover. A falling line means the company is becoming less emissions intense even if total emissions stay flat or rise.",
-      "unit": "Tons CO₂e per million {{currency}} in turnover",
-      "unitShort": "t / m. {{currency}}",
-      "intensity": "Emissions intensity",
-      "baseline": "First reported year",
-      "summary": {
-        "latestIntensity": "Latest intensity",
-        "latestYear": "Reporting year {{year}}",
-        "trend": "Overall direction",
-        "improving": "Less intense",
-        "improvingDescription": "Fewer tons of CO₂e are emitted per unit of turnover than at the start of the period.",
-        "worsening": "More intense",
-        "worseningDescription": "More tons of CO₂e are emitted per unit of turnover than at the start of the period.",
-        "stable": "Roughly unchanged",
-        "stableDescription": "Emissions intensity has stayed close to the first reported year."
-      },
-      "chartTooltip": {
-        "changeFromPreviousYear": "Change from previous year",
-        "changeFromFirstYear": "Change from first year",
-        "lowerIsBetter": "Lower intensity is better — fewer emissions per unit of turnover."
-      }
+    "turnoverEmissionsHistory": {
+      "title": "Emissions and turnover over time",
+      "tooltip": "Compare reported emissions and turnover over time. The left axis shows emissions in tons of CO₂e and the right axis shows turnover in the company's reporting currency.",
+      "unit": "Emissions in tons CO₂e · Turnover in company currency"
     },
     "list": {
       "error": {
