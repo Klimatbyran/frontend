@@ -77,9 +77,7 @@ export function getChartData(
       total: period.emissions?.calculatedTotalEmissions ?? 0,
       turnover: turnover?.value ?? undefined,
       turnoverCurrency: turnover?.currency ?? undefined,
-      turnoverIsAIGenerated: turnover
-        ? isAIGenerated(turnover)
-        : undefined,
+      turnoverIsAIGenerated: turnover ? isAIGenerated(turnover) : undefined,
       isAIGenerated: isEmissionsAIGenerated(period),
       scope1: scope1Data,
       scope2: scope2Data,

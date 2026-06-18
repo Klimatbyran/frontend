@@ -64,7 +64,9 @@ export const TurnoverEmissionsChart: FC<TurnoverEmissionsChartProps> = ({
     return Array.from(years)
       .sort((a, b) => a - b)
       .map((year) => {
-        const emissionsPoint = emissionsData.find((point) => point.year === year);
+        const emissionsPoint = emissionsData.find(
+          (point) => point.year === year,
+        );
         const turnoverPoint = turnoverData.find((point) => point.year === year);
 
         return {

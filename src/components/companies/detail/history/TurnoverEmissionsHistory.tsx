@@ -20,7 +20,12 @@ export function TurnoverEmissionsHistory({
   const companyBaseYear = company.baseYear?.year;
 
   const chartData = useMemo(
-    () => getChartData(company.reportingPeriods, isAIGenerated, isEmissionsAIGenerated),
+    () =>
+      getChartData(
+        company.reportingPeriods,
+        isAIGenerated,
+        isEmissionsAIGenerated,
+      ),
     [company.reportingPeriods, isAIGenerated, isEmissionsAIGenerated],
   );
 
