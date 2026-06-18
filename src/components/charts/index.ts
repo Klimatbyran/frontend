@@ -40,7 +40,6 @@ export {
   getResponsiveChartMargin,
   getDynamicChartHeight,
   getLegendContainerHeight,
-  formatTurnoverAxisValue,
 } from "./historicEmissions/styles/chartStyles";
 
 // Reference line types

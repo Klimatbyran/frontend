@@ -2,7 +2,6 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
 import { formatEmissionsAbsolute } from "@/utils/formatting/localization";
-import { formatTurnoverChartValue } from "@/utils/formatting/turnoverFormatting";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { cn } from "@/lib/utils";
 import { AiIcon } from "@/components/ui/ai-icon";
@@ -20,9 +19,6 @@ interface PayloadEntry {
     scope2?: { isAIGenerated?: boolean };
     scope3?: { isAIGenerated?: boolean };
     scope3Categories?: Array<Scope3Category & { isAIGenerated?: boolean }>;
-    turnover?: number;
-    turnoverCurrency?: string;
-    turnoverIsAIGenerated?: boolean;
   };
 }
 
@@ -147,15 +143,10 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
     formatEmissionsAbsolute(Math.round(value ?? 0), currentLanguage);
 
   const defaultNameFormatter = (name: string, entry: PayloadEntry) => {
-    const dataKey = typeof entry.dataKey === "string" ? entry.dataKey : null;
-
     // Handle company category names
-    if (dataKey?.startsWith("cat")) {
-      const categoryId = parseInt(dataKey.replace("cat", ""));
+    if (entry.dataKey?.startsWith("cat")) {
+      const categoryId = parseInt(entry.dataKey.replace("cat", ""));
       return `${categoryId.toLocaleString()}. ${name}`;
-    }
-    if (dataKey === "turnover") {
-      return t("companies.overview.turnover");
     }
     return name;
   };
@@ -169,33 +160,23 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
     }
 
     const name = formatName(String(entry.name || entry.dataKey || ""), entry);
-    const isTurnoverEntry = entry.dataKey === "turnover";
-    const value = isTurnoverEntry
-      ? formatTurnoverChartValue(
-          entry.value as number,
-          entry.payload?.turnoverCurrency,
-          currentLanguage,
-          t,
-        )
-      : formatValue(
-          entry.value as number,
-          String(entry.name || entry.dataKey || ""),
-          entry,
-        );
+    const value = formatValue(
+      entry.value as number,
+      String(entry.name || entry.dataKey || ""),
+      entry,
+    );
     // Check if this data point is AI-generated
     const isDataAI =
       showAIIndicators &&
-      (isTurnoverEntry
-        ? entry.payload?.turnoverIsAIGenerated
-        : entry.payload?.isAIGenerated ||
-          entry.payload?.scope1?.isAIGenerated ||
-          entry.payload?.scope2?.isAIGenerated ||
-          entry.payload?.scope3?.isAIGenerated ||
-          entry.payload?.scope3Categories?.some(
-            (cat: Scope3Category & { isAIGenerated?: boolean }) =>
-              cat.isAIGenerated,
-          ) ||
-          false);
+      (entry.payload?.isAIGenerated ||
+        entry.payload?.scope1?.isAIGenerated ||
+        entry.payload?.scope2?.isAIGenerated ||
+        entry.payload?.scope3?.isAIGenerated ||
+        entry.payload?.scope3Categories?.some(
+          (cat: Scope3Category & { isAIGenerated?: boolean }) =>
+            cat.isAIGenerated,
+        ) ||
+        false);
 
     return (
       <div

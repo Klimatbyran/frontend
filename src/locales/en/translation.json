@@ -1347,11 +1347,6 @@
       "totalEmissionsSaved": "total emissions saved vs Paris target",
       "totalEmissionsExcess": "total emissions excess vs Paris target"
     },
-    "turnoverEmissionsHistory": {
-      "title": "Emissions and turnover over time",
-      "tooltip": "Comparing reported emissions and turnover over time. The left axis shows emissions in tons CO₂e and the right axis shows turnover in the company's reporting currency.",
-      "unit": "Emissions in tons CO₂e · Turnover in company currency"
-    },
     "list": {
       "error": {
         "fetchingCompanyInfo": "Failed to fetch company information",
