@@ -1404,6 +1404,42 @@
       "totalEmissionsSaved": "totala utsläpp sparade jämfört med Paris-målet",
       "totalEmissionsExcess": "totala utsläpp i överskott jämfört med Paris-målet"
     },
+    "emissionsIntensity": {
+      "title": "Utsläppsintensitet över tid",
+      "tooltip": "Visar hur många ton CO₂e företaget släpper ut per miljon i rapporterad omsättning. En sjunkande linje betyder att företaget blir mindre utsläppsintensivt även om de totala utsläppen är oförändrade eller ökar.",
+      "unit": "Ton CO₂e per miljon {{currency}} i omsättning",
+      "unitShort": "t / milj. {{currency}}",
+      "intensity": "Utsläppsintensitet",
+      "baseline": "Första rapporterade året",
+      "views": {
+        "intensity": "Intensitetstrend",
+        "growth": "Tillväxtjämförelse"
+      },
+      "growth": {
+        "emissionsIndex": "Utsläppstillväxt",
+        "turnoverIndex": "Omsättningstillväxt",
+        "baseline": "Baslinje (100)"
+      },
+      "summary": {
+        "latestIntensity": "Senaste intensitet",
+        "latestYear": "Rapporteringsår {{year}}",
+        "changeSinceFirstYear": "Förändring sedan första året",
+        "sinceYear": "Jämfört med {{year}}",
+        "trend": "Övergripande riktning",
+        "improving": "Mindre intensivt",
+        "improvingDescription": "Färre ton CO₂e släpps ut per omsättningsenhet än i början av perioden.",
+        "worsening": "Mer intensivt",
+        "worseningDescription": "Fler ton CO₂e släpps ut per omsättningsenhet än i början av perioden.",
+        "stable": "Ungefär oförändrat",
+        "stableDescription": "Utsläppsintensiteten har legat nära det första rapporterade året."
+      },
+      "chartTooltip": {
+        "changeFromPreviousYear": "Förändring från föregående år",
+        "changeFromFirstYear": "Förändring från första året",
+        "lowerIsBetter": "Lägre intensitet är bättre — färre utsläpp per omsättningsenhet.",
+        "growthHint": "När den vita linjen stiger snabbare än den blå linjen växer utsläppen snabbare än omsättningen och intensiteten försämras."
+      }
+    },
     "list": {
       "error": {
         "fetchingCompanyInfo": "Det gick inte att hämta företagsinformation",
