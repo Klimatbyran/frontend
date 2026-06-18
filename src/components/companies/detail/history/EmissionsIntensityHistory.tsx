@@ -1,10 +1,7 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { isMobile } from "react-device-detect";
-import {
-  getDynamicChartHeight,
-  useDataView,
-} from "@/components/charts";
+import { getDynamicChartHeight, useDataView } from "@/components/charts";
 import { ViewOption } from "@/components/charts/DataViewSelector";
 import { CardHeader } from "@/components/layout/CardHeader";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";

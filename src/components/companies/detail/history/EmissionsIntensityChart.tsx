@@ -139,7 +139,13 @@ export const EmissionsIntensityChart: FC<EmissionsIntensityChartProps> = ({
               )}
             >
               <defs>
-                <linearGradient id="intensityGradient" x1="0" y1="0" x2="0" y2="1">
+                <linearGradient
+                  id="intensityGradient"
+                  x1="0"
+                  y1="0"
+                  x2="0"
+                  y2="1"
+                >
                   <stop
                     offset="5%"
                     stopColor="var(--orange-2)"
@@ -160,9 +166,7 @@ export const EmissionsIntensityChart: FC<EmissionsIntensityChartProps> = ({
               />
 
               <Tooltip
-                content={
-                  <EmissionsIntensityTooltip dataView="intensity" />
-                }
+                content={<EmissionsIntensityTooltip dataView="intensity" />}
                 wrapperStyle={{ outline: "none", zIndex: 60 }}
               />
 
@@ -282,10 +286,7 @@ function localizeIntensityAxis(
   value: number,
   currentLanguage: "sv" | "en",
 ): string {
-  return new Intl.NumberFormat(
-    currentLanguage === "sv" ? "sv-SE" : "en-GB",
-    {
-      maximumFractionDigits: value < 10 ? 1 : 0,
-    },
-  ).format(value);
+  return new Intl.NumberFormat(currentLanguage === "sv" ? "sv-SE" : "en-GB", {
+    maximumFractionDigits: value < 10 ? 1 : 0,
+  }).format(value);
 }

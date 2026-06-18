@@ -106,7 +106,9 @@ export function EmissionsIntensitySummaryPanel({
             {trendConfig.label}
           </Text>
         </div>
-        <Text className="mt-2 text-xs text-grey">{trendConfig.description}</Text>
+        <Text className="mt-2 text-xs text-grey">
+          {trendConfig.description}
+        </Text>
       </div>
     </div>
   );
