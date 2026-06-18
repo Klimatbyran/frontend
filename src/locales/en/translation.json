@@ -1366,8 +1366,6 @@
       "summary": {
         "latestIntensity": "Latest intensity",
         "latestYear": "Reporting year {{year}}",
-        "changeSinceFirstYear": "Change since first year",
-        "sinceYear": "Compared with {{year}}",
         "trend": "Overall direction",
         "improving": "Less intense",
         "improvingDescription": "Fewer tons of CO₂e are emitted per unit of turnover than at the start of the period.",

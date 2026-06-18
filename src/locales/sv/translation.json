@@ -1423,8 +1423,6 @@
       "summary": {
         "latestIntensity": "Senaste intensitet",
         "latestYear": "Rapporteringsår {{year}}",
-        "changeSinceFirstYear": "Förändring sedan första året",
-        "sinceYear": "Jämfört med {{year}}",
         "trend": "Övergripande riktning",
         "improving": "Mindre intensivt",
         "improvingDescription": "Färre ton CO₂e släpps ut per omsättningsenhet än i början av perioden.",
