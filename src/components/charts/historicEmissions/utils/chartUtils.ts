@@ -104,22 +104,36 @@ export const getXAxisProps = (
 export const getYAxisProps = (
   currentLanguage: "sv" | "en",
   domain: [number, number | "auto"] = [0, "auto"],
+  options: {
+    orientation?: "left" | "right";
+    yAxisId?: string;
+    formatter?: (value: number, lang: "sv" | "en") => string;
+  } = {},
 ) => ({
   stroke: "var(--grey)",
   tickLine: false,
   axisLine: false,
+  orientation: options.orientation || "left",
+  yAxisId: options.yAxisId || "left",
   tick: ({ x, y, payload }: TickProps) => {
+    const formattedValue = options.formatter
+      ? options.formatter(payload.value, currentLanguage)
+      : formatEmissionsAbsoluteCompact(payload.value, currentLanguage);
+
     return React.createElement(
       "text",
       {
-        x: x - 5, // Moved further left
+        x: options.orientation === "right" ? x + 5 : x - 5,
         y: y + 5,
         fontSize: 12,
         fill: "var(--grey)",
-        textAnchor: "end",
-        transform: `rotate(-30, ${x - 5}, ${y + 5})`, // Updated transform origin
+        textAnchor: options.orientation === "right" ? "start" : "end",
+        transform:
+          options.orientation === "right"
+            ? `rotate(30, ${x + 5}, ${y + 5})`
+            : `rotate(-30, ${x - 5}, ${y + 5})`,
       },
-      formatEmissionsAbsoluteCompact(payload.value, currentLanguage),
+      formattedValue,
     ) as unknown as React.ReactElement<SVGElement>;
   },
   domain,
@@ -302,3 +316,12 @@ export const getLineStyle = (type: keyof typeof LINE_STYLES) =>
 // Utility function to get color
 export const getChartColor = (color: keyof typeof CHART_COLORS) =>
   CHART_COLORS[color];
+
+export const formatTurnoverAxisValue = (
+  value: number,
+  currentLanguage: "sv" | "en",
+): string =>
+  new Intl.NumberFormat(currentLanguage === "sv" ? "sv-SE" : "en-GB", {
+    notation: "compact",
+    maximumFractionDigits: 1,
+  }).format(value);
