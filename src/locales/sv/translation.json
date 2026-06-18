@@ -1411,15 +1411,6 @@
       "unitShort": "t / milj. {{currency}}",
       "intensity": "Utsläppsintensitet",
       "baseline": "Första rapporterade året",
-      "views": {
-        "intensity": "Intensitetstrend",
-        "growth": "Tillväxtjämförelse"
-      },
-      "growth": {
-        "emissionsIndex": "Utsläppstillväxt",
-        "turnoverIndex": "Omsättningstillväxt",
-        "baseline": "Baslinje (100)"
-      },
       "summary": {
         "latestIntensity": "Senaste intensitet",
         "latestYear": "Rapporteringsår {{year}}",
@@ -1434,8 +1425,7 @@
       "chartTooltip": {
         "changeFromPreviousYear": "Förändring från föregående år",
         "changeFromFirstYear": "Förändring från första året",
-        "lowerIsBetter": "Lägre intensitet är bättre — färre utsläpp per omsättningsenhet.",
-        "growthHint": "När den vita linjen stiger snabbare än den blå linjen växer utsläppen snabbare än omsättningen och intensiteten försämras."
+        "lowerIsBetter": "Lägre intensitet är bättre — färre utsläpp per omsättningsenhet."
       }
     },
     "list": {

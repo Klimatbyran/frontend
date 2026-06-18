@@ -1,13 +1,11 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { isMobile } from "react-device-detect";
-import { getDynamicChartHeight, useDataView } from "@/components/charts";
-import { ViewOption } from "@/components/charts/DataViewSelector";
+import { getDynamicChartHeight } from "@/components/charts";
 import { CardHeader } from "@/components/layout/CardHeader";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import type { EmissionsHistoryProps } from "@/types/emissions";
-import type { EmissionsIntensityView } from "@/types/emissionsIntensity";
 import {
   getEmissionsIntensityData,
   getEmissionsIntensitySummary,
@@ -22,25 +20,6 @@ export function EmissionsIntensityHistory({
 }: EmissionsHistoryProps) {
   const { t } = useTranslation();
   const { isAIGenerated, isEmissionsAIGenerated } = useVerificationStatus();
-
-  const { dataView, setDataView } = useDataView<EmissionsIntensityView>(
-    "intensity",
-    ["intensity", "growth"],
-  );
-
-  const dataViewOptions = useMemo(
-    (): ViewOption<EmissionsIntensityView>[] => [
-      {
-        value: "intensity",
-        label: t("companies.emissionsIntensity.views.intensity"),
-      },
-      {
-        value: "growth",
-        label: t("companies.emissionsIntensity.views.growth"),
-      },
-    ],
-    [t],
-  );
 
   const intensityData = useMemo(
     () =>
@@ -74,19 +53,14 @@ export function EmissionsIntensityHistory({
           unit={t("companies.emissionsIntensity.unit", {
             currency: summary.turnoverCurrency ?? "",
           })}
-          dataView={dataView}
-          setDataView={setDataView}
-          dataViewOptions={dataViewOptions}
-          dataViewPlaceholder={t("companies.dataView.selectView")}
         />
 
         <EmissionsIntensitySummaryPanel summary={summary} />
 
-        <div style={{ height: getDynamicChartHeight(dataView, isMobile) }}>
+        <div style={{ height: getDynamicChartHeight("overview", isMobile) }}>
           <EmissionsIntensityChart
             data={intensityData}
             summary={summary}
-            dataView={dataView}
             companyBaseYear={company.baseYear?.year}
             onYearSelect={handleYearSelect}
           />

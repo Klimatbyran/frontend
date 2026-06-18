@@ -24,12 +24,11 @@ interface EmissionsIntensityTooltipProps {
   active?: boolean;
   payload?: PayloadEntry[];
   label?: string;
-  dataView: "intensity" | "growth";
 }
 
 export const EmissionsIntensityTooltip: React.FC<
   EmissionsIntensityTooltipProps
-> = ({ active, payload, label, dataView }) => {
+> = ({ active, payload, label }) => {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
   const { isMobile } = useScreenSize();
@@ -41,89 +40,77 @@ export const EmissionsIntensityTooltip: React.FC<
   const point = payload[0]?.payload;
   if (!point) return null;
 
-  const rows =
-    dataView === "intensity"
+  const rows = [
+    {
+      label: t("companies.emissionsIntensity.intensity"),
+      value: point.intensity
+        ? `${localizeUnit(point.intensity, currentLanguage)} ${t(
+            "companies.emissionsIntensity.unitShort",
+            { currency: point.turnoverCurrency ?? "" },
+          )}`
+        : t("companies.overview.notReported"),
+      highlight: true,
+    },
+    {
+      label: t("companies.emissionsHistory.totalEmissions"),
+      value: point.total
+        ? `${formatEmissionsAbsolute(point.total, currentLanguage)} ${t(
+            "companies.tooltip.tonsCO2e",
+          )}`
+        : t("companies.overview.notReported"),
+      showAi: point.emissionsIsAIGenerated,
+    },
+    {
+      label: t("companies.overview.turnover"),
+      value: point.turnover
+        ? formatTurnoverChartValue(
+            point.turnover,
+            point.turnoverCurrency,
+            currentLanguage,
+            t,
+          )
+        : t("companies.overview.notReported"),
+      showAi: point.turnoverIsAIGenerated,
+    },
+    ...(point.intensityChangeFromPreviousYear != null
       ? [
           {
-            label: t("companies.emissionsIntensity.intensity"),
-            value: point.intensity
-              ? `${localizeUnit(point.intensity, currentLanguage)} ${t(
-                  "companies.emissionsIntensity.unitShort",
-                  { currency: point.turnoverCurrency ?? "" },
-                )}`
-              : t("companies.overview.notReported"),
-            highlight: true,
+            label: t(
+              "companies.emissionsIntensity.chartTooltip.changeFromPreviousYear",
+            ),
+            value: formatPercentChange(
+              point.intensityChangeFromPreviousYear,
+              currentLanguage,
+            ),
+            highlight:
+              point.intensityChangeFromPreviousYear < 0
+                ? "positive"
+                : point.intensityChangeFromPreviousYear > 0
+                  ? "negative"
+                  : undefined,
           },
-          {
-            label: t("companies.emissionsHistory.totalEmissions"),
-            value: point.total
-              ? `${formatEmissionsAbsolute(point.total, currentLanguage)} ${t(
-                  "companies.tooltip.tonsCO2e",
-                )}`
-              : t("companies.overview.notReported"),
-            showAi: point.emissionsIsAIGenerated,
-          },
-          {
-            label: t("companies.overview.turnover"),
-            value: point.turnover
-              ? formatTurnoverChartValue(
-                  point.turnover,
-                  point.turnoverCurrency,
-                  currentLanguage,
-                  t,
-                )
-              : t("companies.overview.notReported"),
-            showAi: point.turnoverIsAIGenerated,
-          },
-          ...(point.intensityChangeFromPreviousYear != null
-            ? [
-                {
-                  label: t(
-                    "companies.emissionsIntensity.chartTooltip.changeFromPreviousYear",
-                  ),
-                  value: formatPercentChange(
-                    point.intensityChangeFromPreviousYear,
-                    currentLanguage,
-                  ),
-                  highlight:
-                    point.intensityChangeFromPreviousYear < 0
-                      ? "positive"
-                      : point.intensityChangeFromPreviousYear > 0
-                        ? "negative"
-                        : undefined,
-                },
-              ]
-            : []),
-          ...(point.intensityChangeFromFirstYear != null
-            ? [
-                {
-                  label: t(
-                    "companies.emissionsIntensity.chartTooltip.changeFromFirstYear",
-                  ),
-                  value: formatPercentChange(
-                    point.intensityChangeFromFirstYear,
-                    currentLanguage,
-                  ),
-                  highlight:
-                    point.intensityChangeFromFirstYear < 0
-                      ? "positive"
-                      : point.intensityChangeFromFirstYear > 0
-                        ? "negative"
-                        : undefined,
-                },
-              ]
-            : []),
         ]
-      : payload
-          .filter((entry) => entry.value != null)
-          .map((entry) => ({
-            label: String(entry.name ?? entry.dataKey),
-            value:
-              entry.value != null
-                ? localizeUnit(entry.value, currentLanguage)
-                : t("companies.overview.notReported"),
-            color: entry.color,
-          }));
+      : []),
+    ...(point.intensityChangeFromFirstYear != null
+      ? [
+          {
+            label: t(
+              "companies.emissionsIntensity.chartTooltip.changeFromFirstYear",
+            ),
+            value: formatPercentChange(
+              point.intensityChangeFromFirstYear,
+              currentLanguage,
+            ),
+            highlight:
+              point.intensityChangeFromFirstYear < 0
+                ? "positive"
+                : point.intensityChangeFromFirstYear > 0
+                  ? "negative"
+                  : undefined,
+          },
+        ]
+      : []),
+  ];
 
   return (
     <div
@@ -157,16 +144,9 @@ export const EmissionsIntensityTooltip: React.FC<
           </div>
         ))}
       </div>
-      {dataView === "intensity" && (
-        <p className="mt-3 text-xs text-blue-2">
-          {t("companies.emissionsIntensity.chartTooltip.lowerIsBetter")}
-        </p>
-      )}
-      {dataView === "growth" && (
-        <p className="mt-3 text-xs text-blue-2">
-          {t("companies.emissionsIntensity.chartTooltip.growthHint")}
-        </p>
-      )}
+      <p className="mt-3 text-xs text-blue-2">
+        {t("companies.emissionsIntensity.chartTooltip.lowerIsBetter")}
+      </p>
     </div>
   );
 };

@@ -7,14 +7,9 @@ export interface EmissionsIntensityDataPoint {
   intensity?: number;
   emissionsIsAIGenerated?: boolean;
   turnoverIsAIGenerated?: boolean;
-  /** Indexed to 100 in the first year with both emissions and turnover */
-  emissionsIndex?: number;
-  turnoverIndex?: number;
   intensityChangeFromFirstYear?: number;
   intensityChangeFromPreviousYear?: number;
 }
-
-export type EmissionsIntensityView = "intensity" | "growth";
 
 export interface EmissionsIntensitySummary {
   firstYear: number;

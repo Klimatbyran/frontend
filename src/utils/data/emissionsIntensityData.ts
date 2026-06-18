@@ -80,8 +80,6 @@ export function getEmissionsIntensityData(
 
   const firstPoint = rawPoints[0];
   const firstIntensity = firstPoint.intensity!;
-  const firstTotal = firstPoint.total!;
-  const firstTurnover = firstPoint.turnover!;
 
   return rawPoints.map((point, index) => {
     const previousPoint = index > 0 ? rawPoints[index - 1] : undefined;
@@ -93,8 +91,6 @@ export function getEmissionsIntensityData(
 
     return {
       ...point,
-      emissionsIndex: (point.total! / firstTotal) * 100,
-      turnoverIndex: (point.turnover! / firstTurnover) * 100,
       intensityChangeFromFirstYear:
         ((point.intensity! - firstIntensity) / firstIntensity) * 100,
       intensityChangeFromPreviousYear,

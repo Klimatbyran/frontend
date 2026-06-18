@@ -1354,15 +1354,6 @@
       "unitShort": "t / m. {{currency}}",
       "intensity": "Emissions intensity",
       "baseline": "First reported year",
-      "views": {
-        "intensity": "Intensity trend",
-        "growth": "Growth comparison"
-      },
-      "growth": {
-        "emissionsIndex": "Emissions growth",
-        "turnoverIndex": "Turnover growth",
-        "baseline": "Baseline (100)"
-      },
       "summary": {
         "latestIntensity": "Latest intensity",
         "latestYear": "Reporting year {{year}}",
@@ -1377,8 +1368,7 @@
       "chartTooltip": {
         "changeFromPreviousYear": "Change from previous year",
         "changeFromFirstYear": "Change from first year",
-        "lowerIsBetter": "Lower intensity is better — fewer emissions per unit of turnover.",
-        "growthHint": "When the white line rises faster than the blue line, emissions are growing faster than turnover and intensity is worsening."
+        "lowerIsBetter": "Lower intensity is better — fewer emissions per unit of turnover."
       }
     },
     "list": {

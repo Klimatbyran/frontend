@@ -49,8 +49,6 @@ describe("emissionsIntensityData", () => {
     );
 
     expect(data).toHaveLength(2);
-    expect(data[0].emissionsIndex).toBe(100);
-    expect(data[0].turnoverIndex).toBe(100);
     expect(data[1].intensity).toBeLessThan(data[0].intensity!);
     expect(data[1].intensityChangeFromPreviousYear).toBeLessThan(0);
   });
