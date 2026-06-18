@@ -230,7 +230,8 @@ export function createDefaultColorGetter<T>(
   return (entity: T) => {
     const value = entity[dataPointKey];
 
-    if (isMissingRankedValue(value, dataPointIsBoolean)) return DEFAULT_NULL_DATA_COLOR;
+    if (isMissingRankedValue(value, dataPointIsBoolean))
+      return DEFAULT_NULL_DATA_COLOR;
 
     if (dataPointIsBoolean) {
       return value == dataPointHigherIsBetter
