@@ -831,6 +831,10 @@
         "title": "Utsläpp och utsläppskategorier",
         "description": "Förstå olika typer av utsläpp och hur de kategoriseras",
         "paragraph1": "Företag rapporterar sina utsläpp enligt GHG-protokollets tre scope:",
+        "scope1": {
+          "title": "Scope 1: Direkta utsläpp",
+          "paragraph1": "Scope 1-utsläpp är direkta växthusgasutsläpp från källor som ägs eller kontrolleras av företaget, till exempel bränsleförbränning i företagsfordon, värmepannor på plats och tillverkningsprocesser. Klimatkollen presenterar scope 1-utsläpp som de rapporteras av företagen."
+        },
         "scope2": {
           "title": "Scope 2: Indirekta energiutsläpp",
           "paragraph1": "Scope 2-utsläpp beräknas primärt med marknadsbaserad metod, där det tas hänsyn till om företagen köper förnybar el. Om sådan data saknas används platsbaserad metod istället."
