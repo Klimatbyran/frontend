@@ -7,7 +7,6 @@ import { useCompanyDetails } from "@/hooks/companies/useCompanyDetails";
 import { CompanyOverview } from "@/components/companies/detail/overview/CompanyOverview";
 import { CompanyOverviewNoData } from "@/components/companies/detail/overview/CompanyOverviewNoData";
 import { EmissionsHistory } from "@/components/companies/detail/history/EmissionsHistory";
-import { TurnoverHistory } from "@/components/companies/detail/history/TurnoverHistory";
 import { TurnoverEmissionsHistory } from "@/components/companies/detail/history/TurnoverEmissionsHistory";
 import { Seo } from "@/components/SEO/Seo";
 import { CompanyScope3 } from "@/components/companies/detail/CompanyScope3";
@@ -154,7 +153,6 @@ export function CompanyDetailPage() {
         )}
 
         <EmissionsHistory company={company} onYearSelect={setSelectedYear} />
-        <TurnoverHistory company={company} onYearSelect={setSelectedYear} />
         <TurnoverEmissionsHistory
           company={company}
           onYearSelect={setSelectedYear}
