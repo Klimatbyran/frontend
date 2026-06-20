@@ -32,7 +32,7 @@ import {
 } from "@/components/charts";
 import { useLanguage } from "@/components/LanguageProvider";
 import { LegendItem } from "@/types/charts";
-import { filterCompleteTurnoverEmissionsData } from "@/utils/data/turnoverChartData";
+import { filterCompleteTurnoverEmissionsDataFromBaseYear } from "@/utils/data/turnoverChartData";
 
 interface TurnoverEmissionsChartProps {
   data: ChartData[];
@@ -50,8 +50,8 @@ export const TurnoverEmissionsChart: FC<TurnoverEmissionsChartProps> = ({
   const currentYear = new Date().getFullYear();
 
   const chartData = useMemo(
-    () => filterCompleteTurnoverEmissionsData(data),
-    [data],
+    () => filterCompleteTurnoverEmissionsDataFromBaseYear(data, companyBaseYear),
+    [data, companyBaseYear],
   );
 
   const firstDataYear = chartData[0]?.year || 2000;

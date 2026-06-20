@@ -63,6 +63,25 @@ export function filterCompleteTurnoverEmissionsData(
     });
 }
 
+export function filterCompleteTurnoverEmissionsDataFromBaseYear(
+  data: ChartData[],
+  baseYear?: number,
+): ChartData[] {
+  const completeData = filterCompleteTurnoverEmissionsData(data);
+  if (baseYear == null) return completeData;
+  return completeData.filter((point) => point.year >= baseYear);
+}
+
+export function hasEnoughChartDisplayData(
+  data: ChartData[],
+  baseYear?: number,
+): boolean {
+  return (
+    filterCompleteTurnoverEmissionsDataFromBaseYear(data, baseYear).length >=
+    MIN_TURNOVER_DATA_POINTS
+  );
+}
+
 export function getLastTurnoverYear(
   data: ChartData[],
   fallback: number,
@@ -131,19 +150,19 @@ export function getDecouplingComparison(
   data: ChartData[],
   baseYear?: number,
 ): DecouplingComparison | null {
-  const completeData = filterCompleteTurnoverEmissionsData(data);
+  const completeData = filterCompleteTurnoverEmissionsDataFromBaseYear(
+    data,
+    baseYear,
+  );
   if (completeData.length < 2) return null;
 
   const end = completeData[completeData.length - 1];
   let start = completeData[0];
-  let usedBaseYear = false;
+  const usedBaseYear = baseYear != null;
 
   if (baseYear != null) {
     const baseYearPoint = completeData.find((point) => point.year === baseYear);
-    if (baseYearPoint && baseYearPoint.year !== end.year) {
-      start = baseYearPoint;
-      usedBaseYear = true;
-    }
+    start = baseYearPoint ?? completeData[0];
   }
 
   if (start.year === end.year) return null;

@@ -9,7 +9,7 @@ import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { getChartData } from "@/utils/data/chartData";
 import {
   getDecouplingComparison,
-  hasEnoughTurnoverData,
+  hasEnoughChartDisplayData,
 } from "@/utils/data/turnoverChartData";
 import { TurnoverEmissionsChart } from "./TurnoverEmissionsChart";
 import { TurnoverEmissionsIntensityPanel } from "./TurnoverEmissionsIntensityPanel";
@@ -39,7 +39,7 @@ export function TurnoverEmissionsHistory({
   );
 
   if (
-    !hasEnoughTurnoverData(company.reportingPeriods) ||
+    !hasEnoughChartDisplayData(chartData, companyBaseYear) ||
     !decouplingComparison
   ) {
     return null;

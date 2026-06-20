@@ -3,10 +3,12 @@ import {
   countTurnoverDataPoints,
   countCompleteTurnoverEmissionsDataPoints,
   filterCompleteTurnoverEmissionsData,
+  filterCompleteTurnoverEmissionsDataFromBaseYear,
   filterValidTurnoverData,
   getDecouplingComparison,
   getDecouplingVerdict,
   getLastTurnoverYear,
+  hasEnoughChartDisplayData,
   hasEnoughTurnoverData,
 } from "./turnoverChartData";
 
@@ -110,7 +112,7 @@ describe("turnoverChartData", () => {
     });
   });
 
-  it("falls back to first complete year without base year data", () => {
+  it("compares from first complete year on or after base year", () => {
     const comparison = getDecouplingComparison(
       [
         { year: 2019, total: 1000, turnover: 1_000_000 },
@@ -123,7 +125,32 @@ describe("turnoverChartData", () => {
       startYear: 2019,
       endYear: 2020,
       verdict: "yes",
-      usedBaseYear: false,
+      usedBaseYear: true,
     });
+  });
+
+  it("excludes complete data before base year from chart display", () => {
+    expect(
+      filterCompleteTurnoverEmissionsDataFromBaseYear(
+        [
+          { year: 2018, total: 1000, turnover: 1_000_000 },
+          { year: 2019, total: 900, turnover: 1_200_000 },
+          { year: 2020, total: 800, turnover: 1_500_000 },
+        ],
+        2019,
+      ),
+    ).toEqual([
+      { year: 2019, total: 900, turnover: 1_200_000 },
+      { year: 2020, total: 800, turnover: 1_500_000 },
+    ]);
+  });
+
+  it("requires at least two data points after base year filtering", () => {
+    expect(
+      hasEnoughChartDisplayData(
+        [{ year: 2018, total: 1000, turnover: 1_000_000 }],
+        2019,
+      ),
+    ).toBe(false);
   });
 });
