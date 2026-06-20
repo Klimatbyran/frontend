@@ -1413,11 +1413,9 @@
         "question": "Ökar företaget omsättningen samtidigt som utsläppen minskar?",
         "periodBaseYear": "Jämförelse från basår {{startYear}} till {{endYear}}.",
         "periodFirstYear": "Jämförelse från {{startYear}} till {{endYear}} (första året med både utsläpp och omsättning).",
-        "verdictYes": "Omsättningen har ökat medan utsläppen minskat under perioden.",
-        "verdictNoRedOpposite": "Utsläppen har ökat medan omsättningen minskat — motsatsen till hållbar avkoppling.",
-        "verdictNoRed": "Utsläppen har ökat samtidigt som omsättningen ökat, så utsläppsintensiteten förbättras inte.",
-        "verdictNoYellow": "Omsättning och utsläpp har legat ungefär oförändrade under perioden.",
-        "verdictNoYellowMixed": "Omsättning och utsläpp har inte tydligt avkopplats under perioden."
+        "verdictYes": "Utsläppsintensiteten har minskat — företaget släpper ut mindre per omsatt krona.",
+        "verdictNoRed": "Utsläppsintensiteten har ökat — företaget släpper ut mer per omsatt krona.",
+        "verdictNoYellow": "Utsläppsintensiteten har legat ungefär oförändrad under perioden."
       }
     },
     "list": {

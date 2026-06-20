@@ -92,7 +92,7 @@ export function getLastTurnoverYear(
   );
 }
 
-export const DECOUPLING_CHANGE_THRESHOLD = 5;
+export const INTENSITY_STABLE_THRESHOLD = 3;
 export const INTENSITY_PER_MILLION = 1_000_000;
 
 export type DecouplingVerdict = "yes" | "no-red" | "no-yellow";
@@ -104,6 +104,7 @@ export interface DecouplingComparison {
   emissionsChangePercent: number;
   startIntensity: number;
   endIntensity: number;
+  intensityChangePercent: number;
   verdict: DecouplingVerdict;
   usedBaseYear: boolean;
 }
@@ -115,31 +116,23 @@ export function calculateEmissionsIntensity(
   return (totalEmissions / turnover) * INTENSITY_PER_MILLION;
 }
 
-export function getDecouplingVerdict(
-  turnoverChangePercent: number,
-  emissionsChangePercent: number,
-  threshold = DECOUPLING_CHANGE_THRESHOLD,
-): DecouplingVerdict {
-  const turnoverUp = turnoverChangePercent > threshold;
-  const turnoverDown = turnoverChangePercent < -threshold;
-  const emissionsUp = emissionsChangePercent > threshold;
-  const emissionsDown = emissionsChangePercent < -threshold;
-  const turnoverStable = !turnoverUp && !turnoverDown;
-  const emissionsStable = !emissionsUp && !emissionsDown;
+export function calculateIntensityChangePercent(
+  startIntensity: number,
+  endIntensity: number,
+): number {
+  if (startIntensity === 0) return 0;
+  return ((endIntensity - startIntensity) / startIntensity) * 100;
+}
 
-  if (turnoverUp && emissionsDown) {
+export function getDecouplingVerdict(
+  intensityChangePercent: number,
+  threshold = INTENSITY_STABLE_THRESHOLD,
+): DecouplingVerdict {
+  if (intensityChangePercent < -threshold) {
     return "yes";
   }
 
-  if (turnoverDown && emissionsUp) {
-    return "no-red";
-  }
-
-  if (turnoverStable && emissionsStable) {
-    return "no-yellow";
-  }
-
-  if (turnoverUp && emissionsUp) {
+  if (intensityChangePercent > threshold) {
     return "no-red";
   }
 
@@ -175,18 +168,22 @@ export function getDecouplingComparison(
   const turnoverChangePercent =
     ((endTurnover - startTurnover) / startTurnover) * 100;
   const emissionsChangePercent = ((endTotal - startTotal) / startTotal) * 100;
+  const startIntensity = calculateEmissionsIntensity(startTotal, startTurnover);
+  const endIntensity = calculateEmissionsIntensity(endTotal, endTurnover);
+  const intensityChangePercent = calculateIntensityChangePercent(
+    startIntensity,
+    endIntensity,
+  );
 
   return {
     startYear: start.year,
     endYear: end.year,
     turnoverChangePercent,
     emissionsChangePercent,
-    startIntensity: calculateEmissionsIntensity(startTotal, startTurnover),
-    endIntensity: calculateEmissionsIntensity(endTotal, endTurnover),
-    verdict: getDecouplingVerdict(
-      turnoverChangePercent,
-      emissionsChangePercent,
-    ),
+    startIntensity,
+    endIntensity,
+    intensityChangePercent,
+    verdict: getDecouplingVerdict(intensityChangePercent),
     usedBaseYear,
   };
 }

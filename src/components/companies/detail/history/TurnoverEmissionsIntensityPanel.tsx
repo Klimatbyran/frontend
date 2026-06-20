@@ -18,30 +18,12 @@ export function TurnoverEmissionsIntensityPanel({
     "no-yellow": "text-orange-2",
   }[comparison.verdict];
 
-  const verdictExplanationKey = (() => {
-    if (comparison.verdict === "yes") {
-      return "companies.turnoverEmissionsHistory.intensityPanel.verdictYes";
-    }
-
-    if (comparison.verdict === "no-red") {
-      if (
-        comparison.turnoverChangePercent < -5 &&
-        comparison.emissionsChangePercent > 5
-      ) {
-        return "companies.turnoverEmissionsHistory.intensityPanel.verdictNoRedOpposite";
-      }
-      return "companies.turnoverEmissionsHistory.intensityPanel.verdictNoRed";
-    }
-
-    if (
-      Math.abs(comparison.turnoverChangePercent) <= 5 &&
-      Math.abs(comparison.emissionsChangePercent) <= 5
-    ) {
-      return "companies.turnoverEmissionsHistory.intensityPanel.verdictNoYellow";
-    }
-
-    return "companies.turnoverEmissionsHistory.intensityPanel.verdictNoYellowMixed";
-  })();
+  const verdictExplanationKey = {
+    yes: "companies.turnoverEmissionsHistory.intensityPanel.verdictYes",
+    "no-red": "companies.turnoverEmissionsHistory.intensityPanel.verdictNoRed",
+    "no-yellow":
+      "companies.turnoverEmissionsHistory.intensityPanel.verdictNoYellow",
+  }[comparison.verdict];
 
   const periodKey = comparison.usedBaseYear
     ? "companies.turnoverEmissionsHistory.intensityPanel.periodBaseYear"

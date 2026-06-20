@@ -82,16 +82,22 @@ describe("turnoverChartData", () => {
     ).toBe(2021);
   });
 
-  it("returns green yes when turnover rises and emissions fall", () => {
-    expect(getDecouplingVerdict(10, -10)).toBe("yes");
+  it("returns green yes when emissions intensity falls meaningfully", () => {
+    expect(getDecouplingVerdict(-10)).toBe("yes");
   });
 
-  it("returns red no when turnover falls and emissions rise", () => {
-    expect(getDecouplingVerdict(-10, 10)).toBe("no-red");
+  it("returns red no when emissions intensity rises meaningfully", () => {
+    expect(getDecouplingVerdict(10)).toBe("no-red");
   });
 
-  it("returns yellow no when both metrics are stable", () => {
-    expect(getDecouplingVerdict(1, -1)).toBe("no-yellow");
+  it("returns orange no when emissions intensity is nearly unchanged", () => {
+    expect(getDecouplingVerdict(2)).toBe("no-yellow");
+    expect(getDecouplingVerdict(-2)).toBe("no-yellow");
+  });
+
+  it("treats intensity change at the stable threshold as orange no", () => {
+    expect(getDecouplingVerdict(3)).toBe("no-yellow");
+    expect(getDecouplingVerdict(-3)).toBe("no-yellow");
   });
 
   it("compares from base year when available in complete data", () => {
