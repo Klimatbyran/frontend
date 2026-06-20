@@ -63,12 +63,26 @@ export function filterCompleteTurnoverEmissionsData(
     });
 }
 
+export function hasCompleteTurnoverEmissionsAtYear(
+  data: ChartData[],
+  year: number,
+): boolean {
+  return filterCompleteTurnoverEmissionsData(data).some(
+    (point) => point.year === year,
+  );
+}
+
 export function filterCompleteTurnoverEmissionsDataFromBaseYear(
   data: ChartData[],
   baseYear?: number,
 ): ChartData[] {
   const completeData = filterCompleteTurnoverEmissionsData(data);
   if (baseYear == null) return completeData;
+
+  if (!hasCompleteTurnoverEmissionsAtYear(data, baseYear)) {
+    return completeData;
+  }
+
   return completeData.filter((point) => point.year >= baseYear);
 }
 
@@ -149,14 +163,12 @@ export function getDecouplingComparison(
   );
   if (completeData.length < 2) return null;
 
+  const start = completeData[0];
   const end = completeData[completeData.length - 1];
-  let start = completeData[0];
-  const usedBaseYear = baseYear != null;
-
-  if (baseYear != null) {
-    const baseYearPoint = completeData.find((point) => point.year === baseYear);
-    start = baseYearPoint ?? completeData[0];
-  }
+  const usedBaseYear =
+    baseYear != null &&
+    completeData.length > 0 &&
+    completeData[0].year === baseYear;
 
   if (start.year === end.year) return null;
 

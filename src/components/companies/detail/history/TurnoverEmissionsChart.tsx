@@ -50,14 +50,18 @@ export const TurnoverEmissionsChart: FC<TurnoverEmissionsChartProps> = ({
   const currentYear = new Date().getFullYear();
 
   const chartData = useMemo(
-    () => filterCompleteTurnoverEmissionsDataFromBaseYear(data, companyBaseYear),
+    () =>
+      filterCompleteTurnoverEmissionsDataFromBaseYear(data, companyBaseYear),
     [data, companyBaseYear],
   );
 
   const firstDataYear = chartData[0]?.year || 2000;
   const lastDataYear = chartData[chartData.length - 1]?.year || currentYear;
 
-  const isFirstYear = companyBaseYear === chartData[0]?.year;
+  const showBaseYear =
+    companyBaseYear != null &&
+    chartData.some((point) => point.year === companyBaseYear);
+  const isFirstYear = showBaseYear && companyBaseYear === chartData[0]?.year;
 
   const legendItems = useMemo((): LegendItem[] => {
     return [
@@ -104,7 +108,7 @@ export const TurnoverEmissionsChart: FC<TurnoverEmissionsChartProps> = ({
               getResponsiveChartMargin(isMobile),
             )}
           >
-            {companyBaseYear && (
+            {showBaseYear && (
               <ReferenceLine
                 {...getBaseYearReferenceLineProps(
                   companyBaseYear,
@@ -123,7 +127,7 @@ export const TurnoverEmissionsChart: FC<TurnoverEmissionsChartProps> = ({
             <Tooltip
               content={
                 <ChartTooltip
-                  companyBaseYear={companyBaseYear}
+                  companyBaseYear={showBaseYear ? companyBaseYear : undefined}
                   unit={t("companies.tooltip.tonsCO2e")}
                 />
               }
@@ -135,7 +139,7 @@ export const TurnoverEmissionsChart: FC<TurnoverEmissionsChartProps> = ({
                 "year",
                 [firstDataYear, lastDataYear],
                 ticks,
-                createCustomTickRenderer(companyBaseYear),
+                createCustomTickRenderer(showBaseYear ? companyBaseYear : undefined),
               )}
               type="number"
             />

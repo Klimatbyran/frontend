@@ -118,7 +118,7 @@ describe("turnoverChartData", () => {
     });
   });
 
-  it("compares from first complete year on or after base year", () => {
+  it("compares from first complete year when base year predates complete data", () => {
     const comparison = getDecouplingComparison(
       [
         { year: 2019, total: 1000, turnover: 1_000_000 },
@@ -131,8 +131,25 @@ describe("turnoverChartData", () => {
       startYear: 2019,
       endYear: 2020,
       verdict: "yes",
-      usedBaseYear: true,
+      usedBaseYear: false,
     });
+  });
+
+  it("shows all complete data when base year predates complete data", () => {
+    expect(
+      filterCompleteTurnoverEmissionsDataFromBaseYear(
+        [
+          { year: 2018, total: 1000, turnover: 1_000_000 },
+          { year: 2019, total: 900, turnover: 1_200_000 },
+          { year: 2020, total: 800, turnover: 1_500_000 },
+        ],
+        2017,
+      ),
+    ).toEqual([
+      { year: 2018, total: 1000, turnover: 1_000_000 },
+      { year: 2019, total: 900, turnover: 1_200_000 },
+      { year: 2020, total: 800, turnover: 1_500_000 },
+    ]);
   });
 
   it("excludes complete data before base year from chart display", () => {
