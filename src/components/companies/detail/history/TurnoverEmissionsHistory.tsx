@@ -52,21 +52,25 @@ export function TurnoverEmissionsHistory({
   return (
     <div>
       <SectionWithHelp helpItems={["companyTurnover", "historicalEmissions"]}>
-        <CardHeader
-          title={t("companies.turnoverEmissionsHistory.title")}
-          tooltipContent={t("companies.turnoverEmissionsHistory.tooltip")}
-          unit={t("companies.turnoverEmissionsHistory.unit")}
-        />
         <div className="flex flex-col gap-6 lg:flex-row lg:items-stretch lg:gap-8">
-          <div
-            className="w-full lg:w-1/2"
-            style={{ height: getDynamicChartHeight("overview", isMobile) }}
-          >
-            <TurnoverEmissionsChart
-              data={chartData}
-              companyBaseYear={companyBaseYear}
-              onYearSelect={handleYearSelect}
+          <div className="flex w-full flex-col lg:w-1/2">
+            <CardHeader
+              title={t("companies.turnoverEmissionsHistory.title")}
+              tooltipContent={t("companies.turnoverEmissionsHistory.tooltip")}
+              unit={t("companies.turnoverEmissionsHistory.unit")}
+              className="[&>div]:mb-4 lg:[&>div]:mb-6"
             />
+            <div
+              style={{
+                height: getDynamicChartHeight("overview", isMobile),
+              }}
+            >
+              <TurnoverEmissionsChart
+                data={chartData}
+                companyBaseYear={companyBaseYear}
+                onYearSelect={handleYearSelect}
+              />
+            </div>
           </div>
           <div className="flex w-full lg:w-1/2">
             <TurnoverEmissionsIntensityPanel
