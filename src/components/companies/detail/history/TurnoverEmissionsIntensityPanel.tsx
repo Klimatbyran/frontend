@@ -53,7 +53,7 @@ export function TurnoverEmissionsIntensityPanel({
         })}
       </Text>
 
-      <div className="my-6 border-t border-black-2 md:my-8" />
+      <div className="my-6 border-t border-white/20 md:my-8" />
 
       <div className="flex flex-1 flex-col justify-center">
         <OverviewStat
@@ -70,7 +70,7 @@ export function TurnoverEmissionsIntensityPanel({
         </Text>
       </div>
 
-      <div className="mt-6 border-t border-black-2 pt-6 md:mt-8 md:pt-8">
+      <div className="mt-6 border-t border-white/20 pt-6 md:mt-8 md:pt-8">
         <div className="grid grid-cols-2 gap-4 md:gap-8">
           <div>
             <Text className="mb-1 text-sm text-grey md:text-base">
