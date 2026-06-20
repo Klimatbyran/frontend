@@ -1352,7 +1352,9 @@
       "tooltip": "Compare reported emissions and turnover over time. The left axis shows emissions in tons of CO₂e and the right axis shows turnover in the company's reporting currency.",
       "unit": "Emissions in tons CO₂e · Turnover in company currency",
       "intensityPanel": {
+        "title": "Emissions intensity",
         "description": "Emissions intensity shows how many tons of CO₂e a company emits per million in turnover. It puts emissions in relation to business size and helps show whether a company can grow while cutting climate impact.",
+        "intensityUnit": "t CO₂e / M turnover",
         "question": "Is the company increasing turnover while decreasing emissions?",
         "periodBaseYear": "Compared from base year {{startYear}} to {{endYear}}.",
         "periodFirstYear": "Compared from {{startYear}} to {{endYear}} (first year with both emissions and turnover).",

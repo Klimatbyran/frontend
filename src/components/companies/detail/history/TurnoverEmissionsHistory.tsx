@@ -57,7 +57,7 @@ export function TurnoverEmissionsHistory({
           tooltipContent={t("companies.turnoverEmissionsHistory.tooltip")}
           unit={t("companies.turnoverEmissionsHistory.unit")}
         />
-        <div className="flex flex-col gap-6 lg:flex-row lg:gap-8">
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-stretch lg:gap-8">
           <div
             className="w-full lg:w-1/2"
             style={{ height: getDynamicChartHeight("overview", isMobile) }}
@@ -68,7 +68,7 @@ export function TurnoverEmissionsHistory({
               onYearSelect={handleYearSelect}
             />
           </div>
-          <div className="w-full lg:w-1/2">
+          <div className="flex w-full lg:w-1/2">
             <TurnoverEmissionsIntensityPanel
               comparison={decouplingComparison}
             />

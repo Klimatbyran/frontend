@@ -1409,7 +1409,9 @@
       "tooltip": "Jämför rapporterade utsläpp och omsättning över tid. Vänster axel visar utsläpp i ton CO₂e och höger axel visar omsättning i företagets rapporteringsvaluta.",
       "unit": "Utsläpp i ton CO₂e · Omsättning i företagets valuta",
       "intensityPanel": {
+        "title": "Utsläppsintensitet",
         "description": "Utsläppsintensitet visar hur många ton CO₂e ett företag släpper ut per miljon i omsättning. Det sätter utsläpp i relation till företagets storlek och visar om verksamheten kan växa samtidigt som klimatpåverkan minskar.",
+        "intensityUnit": "t CO₂e / M omsättning",
         "question": "Ökar företaget omsättningen samtidigt som utsläppen minskar?",
         "periodBaseYear": "Jämförelse från basår {{startYear}} till {{endYear}}.",
         "periodFirstYear": "Jämförelse från {{startYear}} till {{endYear}} (första året med både utsläpp och omsättning).",
