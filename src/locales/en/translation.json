@@ -1350,7 +1350,18 @@
     "turnoverEmissionsHistory": {
       "title": "Emissions and turnover over time",
       "tooltip": "Compare reported emissions and turnover over time. The left axis shows emissions in tons of CO₂e and the right axis shows turnover in the company's reporting currency.",
-      "unit": "Emissions in tons CO₂e · Turnover in company currency"
+      "unit": "Emissions in tons CO₂e · Turnover in company currency",
+      "intensityPanel": {
+        "description": "Emissions intensity shows how many tons of CO₂e a company emits per million in turnover. It puts emissions in relation to business size and helps show whether a company can grow while cutting climate impact.",
+        "question": "Is the company increasing turnover while decreasing emissions?",
+        "periodBaseYear": "Compared from base year {{startYear}} to {{endYear}}.",
+        "periodFirstYear": "Compared from {{startYear}} to {{endYear}} (first year with both emissions and turnover).",
+        "verdictYes": "Turnover has risen while emissions have fallen over the period.",
+        "verdictNoRedOpposite": "Emissions have risen while turnover has fallen — the opposite of sustainable decoupling.",
+        "verdictNoRed": "Emissions have risen together with turnover, so emissions intensity is not improving.",
+        "verdictNoYellow": "Turnover and emissions have stayed roughly unchanged over the period.",
+        "verdictNoYellowMixed": "Turnover and emissions have not clearly decoupled over the period."
+      }
     },
     "list": {
       "error": {

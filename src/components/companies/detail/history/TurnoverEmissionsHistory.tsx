@@ -7,8 +7,12 @@ import { CardHeader } from "@/components/layout/CardHeader";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { getChartData } from "@/utils/data/chartData";
-import { hasEnoughTurnoverData } from "@/utils/data/turnoverChartData";
+import {
+  getDecouplingComparison,
+  hasEnoughTurnoverData,
+} from "@/utils/data/turnoverChartData";
 import { TurnoverEmissionsChart } from "./TurnoverEmissionsChart";
+import { TurnoverEmissionsIntensityPanel } from "./TurnoverEmissionsIntensityPanel";
 
 export function TurnoverEmissionsHistory({
   company,
@@ -29,7 +33,12 @@ export function TurnoverEmissionsHistory({
     [company.reportingPeriods, isAIGenerated, isEmissionsAIGenerated],
   );
 
-  if (!hasEnoughTurnoverData(company.reportingPeriods)) {
+  const decouplingComparison = useMemo(
+    () => getDecouplingComparison(chartData, companyBaseYear),
+    [chartData, companyBaseYear],
+  );
+
+  if (!hasEnoughTurnoverData(company.reportingPeriods) || !decouplingComparison) {
     return null;
   }
 
@@ -45,12 +54,20 @@ export function TurnoverEmissionsHistory({
           tooltipContent={t("companies.turnoverEmissionsHistory.tooltip")}
           unit={t("companies.turnoverEmissionsHistory.unit")}
         />
-        <div style={{ height: getDynamicChartHeight("overview", isMobile) }}>
-          <TurnoverEmissionsChart
-            data={chartData}
-            companyBaseYear={companyBaseYear}
-            onYearSelect={handleYearSelect}
-          />
+        <div className="flex flex-col gap-6 lg:flex-row lg:gap-8">
+          <div
+            className="w-full lg:w-2/3"
+            style={{ height: getDynamicChartHeight("overview", isMobile) }}
+          >
+            <TurnoverEmissionsChart
+              data={chartData}
+              companyBaseYear={companyBaseYear}
+              onYearSelect={handleYearSelect}
+            />
+          </div>
+          <div className="w-full lg:w-1/3">
+            <TurnoverEmissionsIntensityPanel comparison={decouplingComparison} />
+          </div>
         </div>
       </SectionWithHelp>
     </div>

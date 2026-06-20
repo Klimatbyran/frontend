@@ -55,8 +55,7 @@ export const TurnoverEmissionsChart: FC<TurnoverEmissionsChartProps> = ({
   );
 
   const firstDataYear = chartData[0]?.year || 2000;
-  const lastDataYear =
-    chartData[chartData.length - 1]?.year || currentYear;
+  const lastDataYear = chartData[chartData.length - 1]?.year || currentYear;
 
   const isFirstYear = companyBaseYear === chartData[0]?.year;
 

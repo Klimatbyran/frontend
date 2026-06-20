@@ -72,3 +72,102 @@ export function getLastTurnoverYear(
     fallback
   );
 }
+
+export const DECOUPLING_CHANGE_THRESHOLD = 5;
+export const INTENSITY_PER_MILLION = 1_000_000;
+
+export type DecouplingVerdict = "yes" | "no-red" | "no-yellow";
+
+export interface DecouplingComparison {
+  startYear: number;
+  endYear: number;
+  turnoverChangePercent: number;
+  emissionsChangePercent: number;
+  startIntensity: number;
+  endIntensity: number;
+  verdict: DecouplingVerdict;
+  usedBaseYear: boolean;
+}
+
+export function calculateEmissionsIntensity(
+  totalEmissions: number,
+  turnover: number,
+): number {
+  return (totalEmissions / turnover) * INTENSITY_PER_MILLION;
+}
+
+export function getDecouplingVerdict(
+  turnoverChangePercent: number,
+  emissionsChangePercent: number,
+  threshold = DECOUPLING_CHANGE_THRESHOLD,
+): DecouplingVerdict {
+  const turnoverUp = turnoverChangePercent > threshold;
+  const turnoverDown = turnoverChangePercent < -threshold;
+  const emissionsUp = emissionsChangePercent > threshold;
+  const emissionsDown = emissionsChangePercent < -threshold;
+  const turnoverStable = !turnoverUp && !turnoverDown;
+  const emissionsStable = !emissionsUp && !emissionsDown;
+
+  if (turnoverUp && emissionsDown) {
+    return "yes";
+  }
+
+  if (turnoverDown && emissionsUp) {
+    return "no-red";
+  }
+
+  if (turnoverStable && emissionsStable) {
+    return "no-yellow";
+  }
+
+  if (turnoverUp && emissionsUp) {
+    return "no-red";
+  }
+
+  return "no-yellow";
+}
+
+export function getDecouplingComparison(
+  data: ChartData[],
+  baseYear?: number,
+): DecouplingComparison | null {
+  const completeData = filterCompleteTurnoverEmissionsData(data);
+  if (completeData.length < 2) return null;
+
+  const end = completeData[completeData.length - 1];
+  let start = completeData[0];
+  let usedBaseYear = false;
+
+  if (baseYear != null) {
+    const baseYearPoint = completeData.find((point) => point.year === baseYear);
+    if (baseYearPoint && baseYearPoint.year !== end.year) {
+      start = baseYearPoint;
+      usedBaseYear = true;
+    }
+  }
+
+  if (start.year === end.year) return null;
+
+  const startTotal = start.total!;
+  const startTurnover = start.turnover!;
+  const endTotal = end.total!;
+  const endTurnover = end.turnover!;
+
+  const turnoverChangePercent =
+    ((endTurnover - startTurnover) / startTurnover) * 100;
+  const emissionsChangePercent = ((endTotal - startTotal) / startTotal) * 100;
+
+  return {
+    startYear: start.year,
+    endYear: end.year,
+    turnoverChangePercent,
+    emissionsChangePercent,
+    startIntensity: calculateEmissionsIntensity(startTotal, startTurnover),
+    endIntensity: calculateEmissionsIntensity(endTotal, endTurnover),
+    verdict: getDecouplingVerdict(
+      turnoverChangePercent,
+      emissionsChangePercent,
+    ),
+    usedBaseYear,
+  };
+}

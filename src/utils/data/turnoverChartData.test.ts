@@ -4,6 +4,8 @@ import {
   countCompleteTurnoverEmissionsDataPoints,
   filterCompleteTurnoverEmissionsData,
   filterValidTurnoverData,
+  getDecouplingComparison,
+  getDecouplingVerdict,
   getLastTurnoverYear,
   hasEnoughTurnoverData,
 } from "./turnoverChartData";
@@ -76,5 +78,52 @@ describe("turnoverChartData", () => {
         2019,
       ),
     ).toBe(2021);
+  });
+
+  it("returns green yes when turnover rises and emissions fall", () => {
+    expect(getDecouplingVerdict(10, -10)).toBe("yes");
+  });
+
+  it("returns red no when turnover falls and emissions rise", () => {
+    expect(getDecouplingVerdict(-10, 10)).toBe("no-red");
+  });
+
+  it("returns yellow no when both metrics are stable", () => {
+    expect(getDecouplingVerdict(1, -1)).toBe("no-yellow");
+  });
+
+  it("compares from base year when available in complete data", () => {
+    const comparison = getDecouplingComparison(
+      [
+        { year: 2018, total: 1000, turnover: 1_000_000 },
+        { year: 2019, total: 900, turnover: 1_200_000 },
+        { year: 2020, total: 800, turnover: 1_500_000 },
+      ],
+      2019,
+    );
+
+    expect(comparison).toMatchObject({
+      startYear: 2019,
+      endYear: 2020,
+      verdict: "yes",
+      usedBaseYear: true,
+    });
+  });
+
+  it("falls back to first complete year without base year data", () => {
+    const comparison = getDecouplingComparison(
+      [
+        { year: 2019, total: 1000, turnover: 1_000_000 },
+        { year: 2020, total: 800, turnover: 1_500_000 },
+      ],
+      2018,
+    );
+
+    expect(comparison).toMatchObject({
+      startYear: 2019,
+      endYear: 2020,
+      verdict: "yes",
+      usedBaseYear: false,
+    });
   });
 });
