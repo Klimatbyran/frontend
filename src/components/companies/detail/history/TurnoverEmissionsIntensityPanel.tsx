@@ -15,7 +15,7 @@ export function TurnoverEmissionsIntensityPanel({
   const verdictColorClass = {
     yes: "text-green-3",
     "no-red": "text-pink-3",
-    "no-yellow": "text-yellow-400",
+    "no-yellow": "text-orange-2",
   }[comparison.verdict];
 
   const verdictExplanationKey = (() => {
@@ -60,7 +60,7 @@ export function TurnoverEmissionsIntensityPanel({
         })}
       </Text>
 
-      <Text className="mt-8 text-xl font-bold leading-snug text-white md:text-2xl lg:text-3xl">
+      <Text className="mt-8 text-xl leading-snug text-white md:text-2xl lg:text-3xl">
         {t("companies.turnoverEmissionsHistory.intensityPanel.question")}
       </Text>
 
