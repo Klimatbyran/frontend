@@ -1,0 +1,81 @@
+import { describe, expect, it } from "vitest";
+import {
+  calculateClimateTraceCountryKpis,
+  calculateHistoricalEmissionChangePercent,
+  calculateMeetsParisFromTimeSeries,
+  CLIMATE_TRACE_BASE_YEAR,
+} from "./climateTraceKpis";
+
+describe("climateTraceKpis", () => {
+  it("calculates annualized emissions change since 2015 (CAGR)", () => {
+    const emissionsByYear = {
+      2015: 100,
+      2016: 95,
+      2017: 90,
+      2018: 85,
+      2019: 80,
+      2020: 75,
+      2021: 70,
+      2022: 65,
+      2023: 60,
+      2024: 55,
+    };
+
+    const change = calculateHistoricalEmissionChangePercent(emissionsByYear);
+
+    expect(change).not.toBeNull();
+    expect(change!).toBeCloseTo(-6.43, 1);
+  });
+
+  it("returns null when base year data is missing", () => {
+    expect(
+      calculateHistoricalEmissionChangePercent({
+        2016: 100,
+        2024: 80,
+      }),
+    ).toBeNull();
+  });
+
+  it("returns true for steeply declining emissions trajectories", () => {
+    const emissionsByYear = Object.fromEntries(
+      Array.from({ length: 11 }, (_, index) => {
+        const year = CLIMATE_TRACE_BASE_YEAR + index;
+        return [year, 1_000_000 * 0.92 ** index];
+      }),
+    );
+
+    expect(calculateMeetsParisFromTimeSeries(emissionsByYear)).toBe(true);
+  });
+
+  it("returns false for steeply increasing emissions trajectories", () => {
+    const emissionsByYear = Object.fromEntries(
+      Array.from({ length: 11 }, (_, index) => {
+        const year = CLIMATE_TRACE_BASE_YEAR + index;
+        return [year, 1_000_000 * 1.05 ** index];
+      }),
+    );
+
+    expect(calculateMeetsParisFromTimeSeries(emissionsByYear)).toBe(false);
+  });
+
+  it("calculates both KPIs together", () => {
+    const emissionsByYear = {
+      2015: 1_000_000,
+      2016: 980_000,
+      2017: 960_000,
+      2018: 940_000,
+      2019: 920_000,
+      2020: 900_000,
+      2021: 880_000,
+      2022: 860_000,
+      2023: 840_000,
+      2024: 820_000,
+      2025: 800_000,
+    };
+
+    const kpis = calculateClimateTraceCountryKpis(emissionsByYear);
+
+    expect(kpis.historicalEmissionChangePercent).not.toBeNull();
+    expect(typeof kpis.meetsParis).toBe("boolean");
+  });
+});

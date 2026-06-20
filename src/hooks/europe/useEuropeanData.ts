@@ -84,6 +84,9 @@ function buildClimateTraceEntities(
         {
           emissionsPerCapita: ranking.emissionsPerCapita,
           emissionsPercentChange: ranking.emissionsPercentChange,
+          historicalEmissionChangePercent:
+            ranking.historicalEmissionChangePercent,
+          meetsParis: ranking.meetsParis,
         },
       ),
     ];
@@ -124,8 +127,12 @@ function toEuropeanCountries(
       typeof country.emissionsPercentChange === "number"
         ? country.emissionsPercentChange
         : null,
-    historicalEmissionChangePercent: null,
-    meetsParis: null,
+    historicalEmissionChangePercent:
+      typeof country.historicalEmissionChangePercent === "number"
+        ? country.historicalEmissionChangePercent
+        : null,
+    meetsParis:
+      typeof country.meetsParis === "boolean" ? country.meetsParis : null,
   }));
 }
 

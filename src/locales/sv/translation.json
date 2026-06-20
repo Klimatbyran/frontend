@@ -1594,6 +1594,22 @@
           "description": "Förändring i utsläpp under 2025",
           "detailedDescription": "Procentuell förändring i CO₂e-utsläpp under 2025.",
           "source": "Climate TRACE"
+        },
+        "historicalEmissionChangePercent": {
+          "label": "Utsläppsförändring sedan 2015",
+          "description": "Årlig utsläppsförändring sedan 2015",
+          "detailedDescription": "Genomsnittlig årlig procentuell förändring i CO₂e-utsläpp sedan 2015, baserad på Climate TRACE-data från 2015 till senaste tillgängliga år.",
+          "source": "Climate TRACE"
+        },
+        "meetsParis": {
+          "label": "Parisavtalet",
+          "description": "Utsläppstrend jämfört med Parisavtalet",
+          "detailedDescription": "Om landets projicerade utsläppsbana klarar Parisavtalet, baserat på en trendlinje från 2015 och en Carbon Law-väg (11,7% årlig minskning från 2025).",
+          "source": "Klimatkollen Analys",
+          "booleanLabels": {
+            "true": "Klarar Parisavtalet",
+            "false": "Missar Parisavtalet"
+          }
         }
       }
     }

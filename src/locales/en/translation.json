@@ -1535,6 +1535,22 @@
           "description": "Year-over-year change in emissions under 2025",
           "detailedDescription": "Percentage change in CO₂e emissions under 2025.",
           "source": "Climate TRACE"
+        },
+        "historicalEmissionChangePercent": {
+          "label": "Emissions change since 2015",
+          "description": "Annual change in emissions since 2015",
+          "detailedDescription": "Average annual percentage change in CO₂e emissions since 2015, based on Climate TRACE data from 2015 to the latest available year.",
+          "source": "Climate TRACE"
+        },
+        "meetsParis": {
+          "label": "Paris Agreement",
+          "description": "Emissions trend compared to the Paris Agreement",
+          "detailedDescription": "Whether a country's projected emissions path meets the Paris Agreement, based on a trendline from 2015 and a Carbon Law pathway (11.7% annual reduction from 2025).",
+          "source": "Klimatkollen Analysis",
+          "booleanLabels": {
+            "true": "Meets Paris Agreement",
+            "false": "Fails Paris Agreement"
+          }
         }
       }
     }

@@ -3,7 +3,7 @@ import { getClimateTraceCountryEmissions } from "@/lib/climateTrace";
 
 export function useClimateTraceEmissions() {
   const { data, isLoading, error } = useQuery({
-    queryKey: ["climate-trace-country-emissions"],
+    queryKey: ["climate-trace-country-emissions-time-series"],
     queryFn: getClimateTraceCountryEmissions,
     staleTime: 1000 * 60 * 60,
   });
