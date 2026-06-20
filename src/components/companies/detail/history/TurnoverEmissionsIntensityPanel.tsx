@@ -60,14 +60,13 @@ export function TurnoverEmissionsIntensityPanel({
         })}
       </Text>
 
-      <Text className="mt-6 text-base font-bold text-white md:text-lg">
+      <Text className="mt-8 text-xl font-bold leading-snug text-white md:text-2xl lg:text-3xl">
         {t("companies.turnoverEmissionsHistory.intensityPanel.question")}
       </Text>
 
       <Text
-        variant="h3"
         className={cn(
-          "mt-3 text-2xl font-medium md:text-3xl",
+          "mt-4 text-4xl font-light leading-none tracking-tighter md:text-6xl",
           verdictColorClass,
         )}
       >
