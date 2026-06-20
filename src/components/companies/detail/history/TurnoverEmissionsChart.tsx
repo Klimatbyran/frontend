@@ -27,16 +27,12 @@ import {
   generateChartTicks,
   createChartClickHandler,
   createCustomTickRenderer,
-  filterValidTotalData,
   ChartTooltip,
   formatTurnoverAxisValue,
 } from "@/components/charts";
 import { useLanguage } from "@/components/LanguageProvider";
 import { LegendItem } from "@/types/charts";
-import {
-  filterValidTurnoverData,
-  getLastTurnoverYear,
-} from "@/utils/data/turnoverChartData";
+import { filterCompleteTurnoverEmissionsData } from "@/utils/data/turnoverChartData";
 
 interface TurnoverEmissionsChartProps {
   data: ChartData[];
@@ -53,39 +49,14 @@ export const TurnoverEmissionsChart: FC<TurnoverEmissionsChartProps> = ({
   const { currentLanguage } = useLanguage();
   const currentYear = new Date().getFullYear();
 
-  const chartData = useMemo(() => {
-    const emissionsData = filterValidTotalData(data);
-    const turnoverData = filterValidTurnoverData(data);
-    const years = new Set([
-      ...emissionsData.map((point) => point.year),
-      ...turnoverData.map((point) => point.year),
-    ]);
-
-    return Array.from(years)
-      .sort((a, b) => a - b)
-      .map((year) => {
-        const emissionsPoint = emissionsData.find(
-          (point) => point.year === year,
-        );
-        const turnoverPoint = turnoverData.find((point) => point.year === year);
-
-        return {
-          year,
-          total: emissionsPoint?.total,
-          isAIGenerated: emissionsPoint?.isAIGenerated,
-          turnover: turnoverPoint?.turnover,
-          turnoverCurrency: turnoverPoint?.turnoverCurrency,
-          turnoverIsAIGenerated: turnoverPoint?.turnoverIsAIGenerated,
-        };
-      })
-      .filter((point) => point.total != null || point.turnover != null);
-  }, [data]);
+  const chartData = useMemo(
+    () => filterCompleteTurnoverEmissionsData(data),
+    [data],
+  );
 
   const firstDataYear = chartData[0]?.year || 2000;
-  const lastDataYear = getLastTurnoverYear(
-    chartData,
-    chartData[chartData.length - 1]?.year || currentYear,
-  );
+  const lastDataYear =
+    chartData[chartData.length - 1]?.year || currentYear;
 
   const isFirstYear = companyBaseYear === chartData[0]?.year;
 
