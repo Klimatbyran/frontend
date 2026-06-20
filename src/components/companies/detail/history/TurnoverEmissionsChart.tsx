@@ -139,7 +139,9 @@ export const TurnoverEmissionsChart: FC<TurnoverEmissionsChartProps> = ({
                 "year",
                 [firstDataYear, lastDataYear],
                 ticks,
-                createCustomTickRenderer(showBaseYear ? companyBaseYear : undefined),
+                createCustomTickRenderer(
+                  showBaseYear ? companyBaseYear : undefined,
+                ),
               )}
               type="number"
             />
