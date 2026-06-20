@@ -66,7 +66,10 @@ export function TurnoverEmissionsIntensityPanel({
 
       <Text
         variant="h3"
-        className={cn("mt-3 text-2xl font-medium md:text-3xl", verdictColorClass)}
+        className={cn(
+          "mt-3 text-2xl font-medium md:text-3xl",
+          verdictColorClass,
+        )}
       >
         {comparison.verdict === "yes" ? t("yes") : t("no")}
       </Text>
