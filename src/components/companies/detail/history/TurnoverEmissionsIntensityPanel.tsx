@@ -9,10 +9,7 @@ interface TurnoverEmissionsIntensityPanelProps {
   comparison: DecouplingComparison;
 }
 
-function formatIntensity(
-  intensity: number,
-  language: "sv" | "en",
-): string {
+function formatIntensity(intensity: number, language: "sv" | "en"): string {
   return localizeUnit(intensity, language);
 }
 
