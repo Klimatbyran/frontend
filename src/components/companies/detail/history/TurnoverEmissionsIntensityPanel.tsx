@@ -48,27 +48,30 @@ export function TurnoverEmissionsIntensityPanel({
     : "companies.turnoverEmissionsHistory.intensityPanel.periodFirstYear";
 
   return (
-    <div className="flex h-full flex-col justify-center rounded-level-2 bg-black-1 p-4 md:p-5 lg:min-h-[500px]">
-      <Text className="text-sm leading-relaxed text-grey">
+    <div className="flex h-full flex-col justify-center rounded-level-2 bg-black-1 p-4 md:p-6 lg:min-h-[500px]">
+      <Text className="text-base leading-relaxed text-white md:text-lg">
         {t("companies.turnoverEmissionsHistory.intensityPanel.description")}
       </Text>
 
-      <Text className="mt-4 text-xs text-grey">
+      <Text className="mt-4 text-sm text-white md:text-base">
         {t(periodKey, {
           startYear: comparison.startYear,
           endYear: comparison.endYear,
         })}
       </Text>
 
-      <Text className="mt-6 text-sm">
+      <Text className="mt-6 text-base font-bold text-white md:text-lg">
         {t("companies.turnoverEmissionsHistory.intensityPanel.question")}
       </Text>
 
-      <Text variant="h3" className={cn("mt-2 font-medium", verdictColorClass)}>
+      <Text
+        variant="h3"
+        className={cn("mt-3 text-2xl font-medium md:text-3xl", verdictColorClass)}
+      >
         {comparison.verdict === "yes" ? t("yes") : t("no")}
       </Text>
 
-      <Text className="mt-2 text-xs leading-relaxed text-grey">
+      <Text className="mt-3 text-sm leading-relaxed text-white md:text-base">
         {t(verdictExplanationKey)}
       </Text>
     </div>

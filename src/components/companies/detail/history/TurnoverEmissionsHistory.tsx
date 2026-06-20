@@ -59,7 +59,7 @@ export function TurnoverEmissionsHistory({
         />
         <div className="flex flex-col gap-6 lg:flex-row lg:gap-8">
           <div
-            className="w-full lg:w-2/3"
+            className="w-full lg:w-1/2"
             style={{ height: getDynamicChartHeight("overview", isMobile) }}
           >
             <TurnoverEmissionsChart
@@ -68,7 +68,7 @@ export function TurnoverEmissionsHistory({
               onYearSelect={handleYearSelect}
             />
           </div>
-          <div className="w-full lg:w-1/3">
+          <div className="w-full lg:w-1/2">
             <TurnoverEmissionsIntensityPanel
               comparison={decouplingComparison}
             />
