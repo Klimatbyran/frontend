@@ -38,7 +38,10 @@ export function TurnoverEmissionsHistory({
     [chartData, companyBaseYear],
   );
 
-  if (!hasEnoughTurnoverData(company.reportingPeriods) || !decouplingComparison) {
+  if (
+    !hasEnoughTurnoverData(company.reportingPeriods) ||
+    !decouplingComparison
+  ) {
     return null;
   }
 
@@ -66,7 +69,9 @@ export function TurnoverEmissionsHistory({
             />
           </div>
           <div className="w-full lg:w-1/3">
-            <TurnoverEmissionsIntensityPanel comparison={decouplingComparison} />
+            <TurnoverEmissionsIntensityPanel
+              comparison={decouplingComparison}
+            />
           </div>
         </div>
       </SectionWithHelp>
