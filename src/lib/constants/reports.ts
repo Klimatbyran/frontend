@@ -117,7 +117,8 @@ export const reports: ContentMeta[] = [
     readTime: "3 min",
     category: "report",
     author: {
-      name: "Klimatkollen",
+      name: "Catharina Bratt",
+      avatar: "/people/catharina.jpeg",
     },
     link: "/reports/2025-06-23_Klimatkollens_klimatpaverkan.pdf",
     image: "/images/reportImages/2025_klimatkollens_klimatpaverkan.png",
