@@ -1,36 +1,19 @@
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
-import { reports } from "../src/lib/constants/reports";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const outputDir = path.join(__dirname, "../public/reports");
-
-function makeAbsoluteUrl(relativePath: string) {
-  return `https://klimatkollen.se${relativePath}`;
-}
-
-reports.forEach((report) => {
-  const folderName = path.basename(report.link, ".pdf");
-  const html = `
 <!DOCTYPE html>
 <html lang="sv">
   <head>
     <meta charset="UTF-8" />
-    <title>${report.title}</title>
-    <meta name="description" content="${report.excerpt}" />
-    <meta property="og:title" content="${report.title}" />
-    <meta property="og:description" content="${report.excerpt}" />
-    <meta property="og:image" content="${makeAbsoluteUrl(report.image ?? "")}" />
+    <title>Klimatkollens klimatpåverkan 2025</title>
+    <meta name="description" content="En redovisning av Klimatkollens egna växthusgasutsläpp och klimatpåverkan för 2025." />
+    <meta property="og:title" content="Klimatkollens klimatpåverkan 2025" />
+    <meta property="og:description" content="En redovisning av Klimatkollens egna växthusgasutsläpp och klimatpåverkan för 2025." />
+    <meta property="og:image" content="https://klimatkollen.se/images/reportImages/2025_klimatkollens_klimatpaverkan.png" />
     <meta property="og:type" content="article" />
-    <meta property="og:url" content="${makeAbsoluteUrl(`/reports/${folderName}`)}" />
+    <meta property="og:url" content="https://klimatkollen.se/reports/2025-06-23_Klimatkollens_klimatpaverkan" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="${report.title}" />
-    <meta name="twitter:description" content="${report.excerpt}" />
-    <meta name="twitter:image" content="${makeAbsoluteUrl(report.image ?? "")}" />
-    <link rel="canonical" href="${makeAbsoluteUrl(`/reports/${folderName}`)}" />
+    <meta name="twitter:title" content="Klimatkollens klimatpåverkan 2025" />
+    <meta name="twitter:description" content="En redovisning av Klimatkollens egna växthusgasutsläpp och klimatpåverkan för 2025." />
+    <meta name="twitter:image" content="https://klimatkollen.se/images/reportImages/2025_klimatkollens_klimatpaverkan.png" />
+    <link rel="canonical" href="https://klimatkollen.se/reports/2025-06-23_Klimatkollens_klimatpaverkan" />
     <style>
       body {
         background: #000;
@@ -96,20 +79,13 @@ reports.forEach((report) => {
   </head>
   <body>
     <div class="container">
-      <div class="title">${report.title}</div>
+      <div class="title">Klimatkollens klimatpåverkan 2025</div>
       <div class="card">
-        <img src="${report.image}" alt="${report.title}" class="cover" />
-        <div class="subtitle">${report.title}</div>
-        <div class="desc">${report.excerpt}</div>
-        <a href="${report.link}" class="button">Öppna rapporten (PDF)</a>
+        <img src="/images/reportImages/2025_klimatkollens_klimatpaverkan.png" alt="Klimatkollens klimatpåverkan 2025" class="cover" />
+        <div class="subtitle">Klimatkollens klimatpåverkan 2025</div>
+        <div class="desc">En redovisning av Klimatkollens egna växthusgasutsläpp och klimatpåverkan för 2025.</div>
+        <a href="/reports/2025-06-23_Klimatkollens_klimatpaverkan.pdf" class="button">Öppna rapporten (PDF)</a>
       </div>
     </div>
   </body>
 </html>
-  `;
-  const reportDir = path.join(outputDir, folderName);
-  fs.mkdirSync(reportDir, { recursive: true });
-  fs.writeFileSync(path.join(reportDir, "index.html"), html.trim());
-});
-
-console.log("Static report HTML pages generated.");

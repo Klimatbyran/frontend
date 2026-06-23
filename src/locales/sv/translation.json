@@ -264,6 +264,12 @@
         "antikorruptionspolicyLink": "antikorruptionspolicy"
       }
     },
+    "emissionsSection": {
+      "title": "Våra utsläpp",
+      "paragraph1": "Som en organisation som arbetar för klimattransparens tycker vi att det är viktigt att vara öppna med vår egen klimatpåverkan. Vi arbetar löpande med att mäta och minska de utsläpp som är kopplade till vår verksamhet.",
+      "paragraph2": "Det omfattar bland annat utsläpp från resor, digital infrastruktur, kontorsverksamhet och andra delar av vårt arbete. Vi går igenom vårt klimatavtryck regelbundet och letar efter sätt att minska det över tid.",
+      "reportLink": "För att se vår fullständiga utsläppsredovisning, läs vår rapport <0>här</0>."
+    },
     "financingSection": {
       "title": "Så finansieras vi",
       "paragraph1": "Från november 2025 till slutet av 2026 får Klimatkollen stöd av Postkodstiftelsen för projektet 'AI för lokal klimatpåverkan'.",

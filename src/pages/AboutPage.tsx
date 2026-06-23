@@ -149,6 +149,30 @@ export function AboutPage() {
             </div>
           </AccordionGroup>
 
+          {/* Emissions Section */}
+          <AccordionGroup
+            title={t("aboutPage.emissionsSection.title")}
+            value="emissionsSection"
+          >
+            <div className="prose prose-invert w-[90%] max-w-5xl mx-auto space-y-4">
+              <p>{t("aboutPage.emissionsSection.paragraph1")}</p>
+              <p>{t("aboutPage.emissionsSection.paragraph2")}</p>
+              <p>
+                <Trans
+                  i18nKey="aboutPage.emissionsSection.reportLink"
+                  components={[
+                    <a
+                      href="/reports/2025-06-23_Klimatkollens_klimatpaverkan.pdf"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline hover:text-white"
+                    />,
+                  ]}
+                />
+              </p>
+            </div>
+          </AccordionGroup>
+
           {/* Financing Section */}
           <AccordionGroup
             title={t("aboutPage.financingSection.title")}
