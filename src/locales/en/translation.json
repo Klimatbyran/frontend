@@ -1353,14 +1353,18 @@
       "unit": "Emissions in tons CO₂e · Turnover in company currency",
       "intensityPanel": {
         "title": "Emissions intensity",
-        "description": "Emissions intensity shows how many tons of CO₂e a company emits per million in turnover. It puts emissions in relation to business size and helps show whether a company can grow while cutting climate impact.",
-        "intensityUnit": "t CO₂e / M turnover",
-        "question": "Is the company increasing turnover while decreasing emissions?",
-        "periodBaseYear": "Compared from base year {{startYear}} to {{endYear}}.",
-        "periodFirstYear": "Compared from {{startYear}} to {{endYear}} (first year with both emissions and turnover).",
-        "verdictYes": "Emissions intensity has fallen — the company emits less per unit of turnover.",
-        "verdictNoRed": "Emissions intensity has risen — the company emits more per unit of turnover.",
-        "verdictNoYellow": "Emissions intensity has stayed roughly unchanged over the period."
+        "tooltip": "Emissions intensity is total emissions divided by turnover (t CO₂e per million). Compare two years — lower is better. Intensity falls when emissions drop faster than turnover grows, or when emissions fall while turnover rises.",
+        "intensityUnit": "t CO₂e / M",
+        "question": "Has emissions intensity decreased?",
+        "compareHeading": "Compare the two years",
+        "intensityChange": "Intensity",
+        "emissionsLabel": "Emissions",
+        "turnoverLabel": "Turnover",
+        "periodBaseYear": "From base year {{startYear}} to {{endYear}}. Lower is better",
+        "periodFirstYear": "From {{startYear}} to {{endYear}} — first year with both emissions and turnover. Lower is better",
+        "verdictYes": "Emissions intensity has fallen. The company emits less per unit of turnover than before.",
+        "verdictNoRed": "Emissions intensity has risen. The company emits more per unit of turnover than before.",
+        "verdictNoYellow": "Emissions intensity has stayed roughly unchanged. The company emits about the same per unit of turnover as before."
       }
     },
     "list": {

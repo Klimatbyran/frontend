@@ -55,8 +55,12 @@ export function TurnoverEmissionsHistory({
         <div className="flex flex-col gap-6 lg:flex-row lg:items-stretch lg:gap-8">
           <div className="flex w-full flex-col lg:w-1/2">
             <CardHeader
-              title={t("companies.turnoverEmissionsHistory.title")}
-              tooltipContent={t("companies.turnoverEmissionsHistory.tooltip")}
+              title={t(
+                "companies.turnoverEmissionsHistory.intensityPanel.title",
+              )}
+              tooltipContent={t(
+                "companies.turnoverEmissionsHistory.intensityPanel.tooltip",
+              )}
               unit={t("companies.turnoverEmissionsHistory.unit")}
               className="[&>div]:mb-4 lg:[&>div]:mb-6"
             />
@@ -72,7 +76,7 @@ export function TurnoverEmissionsHistory({
               />
             </div>
           </div>
-          <div className="flex w-full lg:w-1/2">
+          <div className="flex w-full flex-col lg:w-1/2">
             <TurnoverEmissionsIntensityPanel
               comparison={decouplingComparison}
             />
