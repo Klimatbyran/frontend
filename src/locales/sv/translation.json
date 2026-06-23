@@ -1411,14 +1411,13 @@
       "intensityPanel": {
         "title": "Utsläppsintensitet",
         "tooltip": "Utsläppsintensitet är utsläpp delat med omsättning (t CO₂e per miljon). Jämför två år — lägre är bättre. Intensiteten minskar när utsläppen faller snabbare än omsättningen växer, eller när utsläppen minskar samtidigt som omsättningen ökar.",
-        "intensityUnit": "t CO₂e / M",
+        "intensityUnit": "t CO₂e per miljon i omsättning",
         "question": "Har utsläppsintensiteten minskat?",
-        "compareHeading": "Jämför de två åren",
         "intensityChange": "Intensitet",
         "emissionsLabel": "Utsläpp",
         "turnoverLabel": "Omsättning",
-        "periodBaseYear": "Från basår {{startYear}} till {{endYear}}. Lägre är bättre",
-        "periodFirstYear": "Från {{startYear}} till {{endYear}} — första året med både utsläpp och omsättning. Lägre är bättre",
+        "periodBaseYearNote": "Basår jämfört med senast rapporterade året med utsläpps- och omsättningsdata. Lägre är bättre.",
+        "periodFirstYearNote": "Första året med utsläpps- och omsättningsdata, jämfört med senast rapporterade året. Lägre är bättre.",
         "verdictYes": "Utsläppsintensiteten har minskat. Företaget släpper ut mindre per omsatt krona än tidigare.",
         "verdictNoRed": "Utsläppsintensiteten har ökat. Företaget släpper ut mer per omsatt krona än tidigare.",
         "verdictNoYellow": "Utsläppsintensiteten har legat ungefär oförändrad. Företaget släpper ut ungefär lika mycket per omsatt krona som tidigare."

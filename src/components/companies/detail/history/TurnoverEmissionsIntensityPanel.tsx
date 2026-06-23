@@ -39,9 +39,7 @@ function FooterMetric({
   return (
     <div>
       <Text className="text-sm text-grey md:text-base">{label}</Text>
-      <Text
-        className={`mt-1 text-2xl font-light md:text-3xl ${colorClass}`}
-      >
+      <Text className={`mt-1 text-2xl font-light md:text-3xl ${colorClass}`}>
         {value}
       </Text>
     </div>
@@ -63,9 +61,13 @@ export function TurnoverEmissionsIntensityPanel({
       "companies.turnoverEmissionsHistory.intensityPanel.verdictNoYellow",
   }[comparison.verdict];
 
-  const periodKey = comparison.usedBaseYear
-    ? "companies.turnoverEmissionsHistory.intensityPanel.periodBaseYear"
-    : "companies.turnoverEmissionsHistory.intensityPanel.periodFirstYear";
+  const periodNoteKey = comparison.usedBaseYear
+    ? "companies.turnoverEmissionsHistory.intensityPanel.periodBaseYearNote"
+    : "companies.turnoverEmissionsHistory.intensityPanel.periodFirstYearNote";
+
+  const intensityUnit = t(
+    "companies.turnoverEmissionsHistory.intensityPanel.intensityUnit",
+  );
 
   return (
     <div className="flex h-full min-h-[500px] flex-col justify-evenly rounded-level-2 bg-black-1 px-6 py-6 md:px-8 md:py-8 lg:min-h-0">
@@ -84,17 +86,7 @@ export function TurnoverEmissionsIntensityPanel({
       </div>
 
       <div>
-        <Text className="text-base font-medium text-white md:text-lg">
-          {t("companies.turnoverEmissionsHistory.intensityPanel.compareHeading")}
-        </Text>
-        <Text className="mt-1 text-sm leading-snug text-grey md:text-base">
-          {t(periodKey, {
-            startYear: comparison.startYear,
-            endYear: comparison.endYear,
-          })}
-        </Text>
-
-        <div className="mt-4 grid grid-cols-[1fr_auto_1fr] items-end gap-4 md:mt-6 md:gap-6">
+        <div className="grid grid-cols-[1fr_auto_1fr] items-end gap-4 md:gap-6">
           <div>
             <Text className="text-sm text-grey md:text-base">
               {comparison.startYear}
@@ -118,8 +110,13 @@ export function TurnoverEmissionsIntensityPanel({
             </Text>
           </div>
         </div>
-        <Text className="mt-2 text-center text-sm text-grey md:text-base">
-          {t("companies.turnoverEmissionsHistory.intensityPanel.intensityUnit")}
+
+        <Text className="mt-2 text-sm text-grey md:text-base">
+          {intensityUnit}
+        </Text>
+
+        <Text className="mt-4 text-sm leading-snug text-grey md:mt-5 md:text-base">
+          {t(periodNoteKey)}
         </Text>
       </div>
 
@@ -157,7 +154,7 @@ export function TurnoverEmissionsIntensityPanel({
             currentLanguage,
             false,
           )}
-          colorClass="text-white"
+          colorClass="text-orange-2"
         />
       </div>
     </div>
