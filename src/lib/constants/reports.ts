@@ -107,4 +107,21 @@ export const reports: ContentMeta[] = [
     displayLanguages: ["en", "all"],
     language: "en",
   },
+  {
+    id: "7",
+    title: "Klimatkollens klimatpåverkan 2025",
+    slug: "klimatkollens-klimatpaverkan-2025",
+    date: "2026-06-22",
+    excerpt:
+      "En redovisning av Klimatkollens egna växthusgasutsläpp och klimatpåverkan för 2025.",
+    readTime: "3 min",
+    category: "report",
+    author: {
+      name: "Klimatkollen",
+    },
+    link: "/reports/2025-06-23_Klimatkollens_klimatpaverkan.pdf",
+    image: "/images/reportImages/2025_klimatkollens_klimatpaverkan.png",
+    displayLanguages: ["sv", "en"],
+    language: "sv",
+  },
 ];

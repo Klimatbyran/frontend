@@ -259,6 +259,12 @@
         "antikorruptionspolicyLink": "anti-corruption policy"
       }
     },
+    "emissionsSection": {
+      "title": "Our Emissions",
+      "paragraph1": "As an organisation working for climate transparency, we believe it is important to be open about our own climate impact. We are working to measure and reduce the emissions associated with our operations.",
+      "paragraph2": "This includes emissions from travel, digital infrastructure, office activities and other parts of our work. We review our footprint regularly and look for ways to reduce it over time.",
+      "reportLink": "To see our full emissions breakdown, read our report <0>here</0>."
+    },
     "financingSection": {
       "title": "How We Are Funded",
       "paragraph1": "From November 2025 to the end of 2026, Klimatkollen will receive financial support from Postkodstiftelsen for the project 'AI for local climate influence'.",
