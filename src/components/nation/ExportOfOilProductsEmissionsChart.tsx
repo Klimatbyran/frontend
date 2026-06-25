@@ -28,6 +28,7 @@ import {
 import { formatEmissionsAbsolute } from "@/utils/formatting/localization";
 import { emissionsToSwedishCitizenEquivalent } from "@/utils/calculations/relatableNumbersCalc";
 import { DEFAULT_STATISTICAL_GRADIENT_COLORS } from "@/utils/ui/colorGradients";
+import { getNationStoryScrollBarScale } from "@/components/nation/story/nationStoryScrollAnimation";
 import type { YearValuePoint } from "@/hooks/nation/useNationDetails";
 
 const MAP_GRADIENT_STOPS = [
@@ -49,27 +50,6 @@ type ChartDatum = {
   displayValueKt: number;
   fill: string;
 };
-
-const clamp = (value: number, min: number, max: number) =>
-  Math.min(Math.max(value, min), max);
-
-function getScrollBarScale(
-  scrollProgress: number,
-  barIndex: number,
-  barCount: number,
-): number {
-  if (barCount <= 1) {
-    return scrollProgress;
-  }
-
-  const staggerEnd = 0.92;
-  const overlap = 0.12 / barCount;
-  const segment = staggerEnd / barCount;
-  const start = barIndex * segment;
-  const end = start + segment + overlap;
-
-  return clamp((scrollProgress - start) / (end - start), 0, 1);
-}
 
 function getBarColor(
   value: number,
@@ -222,7 +202,7 @@ export function ExportOfOilProductsEmissionsChart({
       ...point,
       displayValueKt:
         point.valueKt *
-        getScrollBarScale(scrollProgress, index, chartData.length),
+        getNationStoryScrollBarScale(scrollProgress, index, chartData.length),
     }));
   }, [chartData, scrollProgress, scrollYProgress]);
   const latestYearPoint = useMemo(() => getLatestYearPoint(data), [data]);

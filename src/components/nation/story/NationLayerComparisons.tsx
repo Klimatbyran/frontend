@@ -7,12 +7,9 @@ import {
 } from "@/utils/data/nationStoryMetrics";
 import { formatPercentChange } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
+import { NATION_STORY_STAGGER_RANGES } from "@/components/nation/story/nationStoryScrollAnimation";
 
-const ROW_RANGES: [number, number][] = [
-  [0, 0.25],
-  [0.2, 0.43],
-  [0.38, 0.62],
-];
+const ROW_RANGES = NATION_STORY_STAGGER_RANGES;
 
 function LayerRow({
   layer,
@@ -36,7 +33,7 @@ function LayerRow({
   ]);
   const barLatestWidth = useTransform(
     scrollYProgress,
-    [range[0] + 0.05, range[1]],
+    [range[0] + 0.03, range[1]],
     ["0%", `${(layer.mtonLatest / maxMton) * 100}%`],
   );
 
@@ -132,7 +129,7 @@ export function NationLayerComparisons({
             latestYear={latestYear}
             maxMton={maxMton}
             scrollYProgress={scrollYProgress}
-            range={ROW_RANGES[index] ?? [0, 0.37]}
+            range={ROW_RANGES[index] ?? [0, NATION_STORY_STAGGER_RANGES[2][1]]}
           />
         ))}
       </div>

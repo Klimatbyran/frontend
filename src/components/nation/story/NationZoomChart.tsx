@@ -9,6 +9,7 @@ import { useState } from "react";
 import type { NationStoryMetrics } from "@/utils/data/nationStoryMetrics";
 import { formatMton } from "@/utils/data/nationStoryMetrics";
 import { useLanguage } from "@/components/LanguageProvider";
+import { NATION_STORY_STAGGER_RANGES } from "@/components/nation/story/nationStoryScrollAnimation";
 
 const LAYERS = [
   {
@@ -16,7 +17,7 @@ const LAYERS = [
     color: "var(--orange-2)",
     labelKey: "nation.story.graph.territorialFossil",
     getMton: (m: NationStoryMetrics) => m.territorialLatestMton,
-    range: [0, 0.22] as [number, number],
+    range: NATION_STORY_STAGGER_RANGES[0],
     phase: 0,
   },
   {
@@ -24,7 +25,7 @@ const LAYERS = [
     color: "var(--green-2)",
     labelKey: "nation.story.graph.biogenic",
     getMton: (m: NationStoryMetrics) => m.biogenicLatestMton,
-    range: [0.18, 0.42] as [number, number],
+    range: NATION_STORY_STAGGER_RANGES[1],
     phase: 1,
   },
   {
@@ -32,7 +33,7 @@ const LAYERS = [
     color: "var(--blue-2)",
     labelKey: "nation.story.graph.consumptionAbroad",
     getMton: (m: NationStoryMetrics) => m.consumptionLatestMton,
-    range: [0.38, 0.62] as [number, number],
+    range: NATION_STORY_STAGGER_RANGES[2],
     phase: 2,
   },
 ];
@@ -51,8 +52,8 @@ export function NationZoomChart({
   const [phase, setPhase] = useState(0);
 
   useMotionValueEvent(scrollYProgress, "change", (v) => {
-    if (v < 0.18) setPhase(0);
-    else if (v < 0.38) setPhase(1);
+    if (v < NATION_STORY_STAGGER_RANGES[1][0]) setPhase(0);
+    else if (v < NATION_STORY_STAGGER_RANGES[2][0]) setPhase(1);
     else setPhase(2);
   });
 

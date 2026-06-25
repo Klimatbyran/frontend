@@ -2,12 +2,9 @@ import { useTranslation } from "react-i18next";
 import { motion, useTransform, type MotionValue } from "framer-motion";
 import { formatTonnes } from "@/utils/data/nationStoryMetrics";
 import { useLanguage } from "@/components/LanguageProvider";
+import { NATION_STORY_STAGGER_RANGES } from "@/components/nation/story/nationStoryScrollAnimation";
 
-const BAR_RANGES: [number, number][] = [
-  [0, 0.25],
-  [0.2, 0.43],
-  [0.38, 0.62],
-];
+const BAR_RANGES = NATION_STORY_STAGGER_RANGES;
 
 function ScaleBar({
   label: barLabel,
@@ -135,7 +132,7 @@ export function NationECommerceScale({
             maxTonnes={maxTonnes}
             barHeight={barHeight}
             scrollYProgress={scrollYProgress}
-            range={BAR_RANGES[index] ?? [0, 0.37]}
+            range={BAR_RANGES[index] ?? [0, NATION_STORY_STAGGER_RANGES[2][1]]}
           />
         ))}
       </div>
