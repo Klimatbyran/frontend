@@ -125,11 +125,6 @@ export function KPIChipSelector<T>({
         })}
       </div>
 
-      {selectedKPI.description && (
-        <p className="text-sm text-white/50 px-1 leading-relaxed">
-          {selectedKPI.description}
-        </p>
-      )}
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { ArrowDownCircle, Leaf } from "lucide-react";
+import { ArrowDownCircle, Leaf, Map, List } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { FeatureCollection } from "geojson";
 import { useNavigate } from "react-router-dom";
@@ -18,6 +18,10 @@ import { resolveRegionFromMapName, toMapRegionName } from "@/utils/regionUtils";
 import { toRegionMapDataItem } from "@/utils/territoryMapData";
 import { RegionalRankedList } from "@/components/regions/RegionalRankedList";
 import { KPIChipSelector } from "@/components/ranked/KPIChipSelector";
+import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
+import {
+  OverviewSplitLayout,
+} from "@/components/ranked/OverviewSplitLayout";
 import { createEntityClickHandler } from "@/utils/routing";
 import { RankedListItem } from "@/types/rankings";
 
@@ -38,10 +42,15 @@ export function RegionalOverviewPage() {
 
   const navigate = useNavigate();
 
-  const { selectedKPI, setSelectedKPI, setKPIInURL } =
-    useRankedRegionsURLParams(regionalKPIs);
+  const {
+    selectedKPI,
+    setSelectedKPI,
+    viewMode,
+    setKPIInURL,
+    setViewModeInURL,
+  } = useRankedRegionsURLParams(regionalKPIs);
 
-  const handleRegionClick = createEntityClickHandler(navigate, "region");
+  const handleRegionClick = createEntityClickHandler(navigate, "region", viewMode);
 
   const handleRegionAreaClick = (name: string) => {
     const region = resolveRegionFromMapName(name, regionsData);
@@ -150,11 +159,31 @@ export function RegionalOverviewPage() {
       />
 
       <div className="space-y-6">
-        {/* Row 1: map + stats side by side */}
+        <div className="flex">
+          <ViewModeToggle
+            viewMode={viewMode}
+            modes={["map", "list"]}
+            onChange={setViewModeInURL}
+            titles={{
+              map: t("viewModeToggle.map"),
+              list: t("viewModeToggle.list"),
+            }}
+            showTitles
+            icons={{
+              map: <Map className="w-4 h-4" />,
+              list: <List className="w-4 h-4" />,
+            }}
+          />
+        </div>
+
+        {/* Row 1: map/list toggle | stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
-          <div className="relative min-w-0 min-h-[65vh] md:min-h-[570px] h-full">
-            {mapPanel}
-          </div>
+          <OverviewSplitLayout
+            viewMode={viewMode}
+            visualizationMode="map"
+            visualization={mapPanel}
+            list={regionalRankedList}
+          />
           <RegionalInsightsPanel
             regionsData={regionsAsEntities}
             selectedKPI={selectedKPI}
@@ -162,8 +191,13 @@ export function RegionalOverviewPage() {
           />
         </div>
 
-        {/* Row 2: top | bottom | ranked list */}
+        {/* Row 2: distribution | top | bottom */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+          <RegionalInsightsPanel
+            regionsData={regionsAsEntities}
+            selectedKPI={selectedKPI}
+            section="distribution"
+          />
           <RegionalInsightsPanel
             regionsData={regionsAsEntities}
             selectedKPI={selectedKPI}
@@ -174,7 +208,6 @@ export function RegionalOverviewPage() {
             selectedKPI={selectedKPI}
             section="bottom"
           />
-          {regionalRankedList}
         </div>
       </div>
     </>

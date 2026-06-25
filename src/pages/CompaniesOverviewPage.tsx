@@ -1,10 +1,15 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { Leaf, ArrowDownCircle } from "lucide-react";
+import { Leaf, ArrowDownCircle, BarChart2, List } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useCompanies } from "@/hooks/companies/useCompanies";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { KPIChipSelector } from "@/components/ranked/KPIChipSelector";
+import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
+import {
+  OverviewSplitLayout,
+  type OverviewViewMode,
+} from "@/components/ranked/OverviewSplitLayout";
 import RankedList from "@/components/ranked/RankedList";
 import CompanyInsightsPanel from "@/components/companies/rankedList/CompanyInsightsPanel";
 import { CompanyKPIVisualization } from "@/components/companies/rankedList/CompanyKPIVisualization";
@@ -79,10 +84,23 @@ export function CompaniesOverviewPage() {
     [location.search, navigate],
   );
 
+  const getViewModeFromURL = useCallback((): OverviewViewMode => {
+    const params = new URLSearchParams(location.search);
+    return params.get("view") === "list" ? "list" : "graph";
+  }, [location.search]);
+
+  const setViewModeInURL = (mode: OverviewViewMode) => {
+    const params = new URLSearchParams(location.search);
+    params.set("view", mode);
+    navigate({ search: params.toString() }, { replace: true });
+  };
+
   const [selectedKPI, setSelectedKPI] = useState(getKPIFromURL());
   const [selectedSector, setSelectedSector] = useState<string | null>(
     getSectorFromURL(),
   );
+  const viewMode = getViewModeFromURL();
+
   // Ensure a sector is selected on initial load
   useEffect(() => {
     if (!selectedSector && availableSectors.length > 0) {
@@ -228,9 +246,35 @@ export function CompaniesOverviewPage() {
       </div>
 
       <div className="space-y-6">
-        {/* Row 1: visualization + stats side by side */}
+        <div className="flex">
+          <ViewModeToggle
+            viewMode={viewMode}
+            modes={["graph", "list"]}
+            onChange={setViewModeInURL}
+            titles={{
+              graph: t("companiesOverviewPage.viewToggle.showGraph", "Graf"),
+              list: t("companiesOverviewPage.viewToggle.showList", "Lista"),
+            }}
+            showTitles
+            icons={{
+              graph: <BarChart2 className="w-4 h-4" />,
+              list: <List className="w-4 h-4" />,
+            }}
+          />
+        </div>
+
+        {/* Row 1: graph/list toggle | stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
-          <div className="min-h-[500px] md:min-h-[570px]">{visualizationPanel}</div>
+          <OverviewSplitLayout
+            viewMode={viewMode}
+            visualizationMode="graph"
+            visualization={
+              <div className="min-h-[500px] md:min-h-[570px] h-full">
+                {visualizationPanel}
+              </div>
+            }
+            list={companyRankedList}
+          />
           <CompanyInsightsPanel
             companyData={companiesWithKPIs}
             selectedKPI={selectedKPI}
@@ -238,8 +282,13 @@ export function CompaniesOverviewPage() {
           />
         </div>
 
-        {/* Row 2: top | bottom | ranked list */}
+        {/* Row 2: distribution | top | bottom */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+          <CompanyInsightsPanel
+            companyData={companiesWithKPIs}
+            selectedKPI={selectedKPI}
+            section="distribution"
+          />
           <CompanyInsightsPanel
             companyData={companiesWithKPIs}
             selectedKPI={selectedKPI}
@@ -250,7 +299,6 @@ export function CompaniesOverviewPage() {
             selectedKPI={selectedKPI}
             section="bottom"
           />
-          {companyRankedList}
         </div>
       </div>
     </>

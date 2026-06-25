@@ -13,7 +13,7 @@ import KPIDetailsPanel from "../../ranked/KPIDetailsPanel";
 import InsightsList from "../../ranked/InsightsList";
 import { KPIDistributionChart } from "../../ranked/KPIDistributionChart";
 
-export type InsightsPanelSection = "stats" | "top" | "bottom";
+export type InsightsPanelSection = "stats" | "top" | "bottom" | "distribution";
 
 interface InsightsPanelProps {
   companyData: CompanyWithKPIs[];
@@ -80,14 +80,18 @@ function CompanyInsightsPanel({
       missingDataCount={statistics.nullCount}
       missingDataLabel={selectedKPI.nullValues}
       sourceLinks={sourceLinks}
-    >
+    />
+  );
+
+  const distributionPanel = (
+    <div className="bg-white/5 rounded-level-2 p-6 h-full flex flex-col justify-center">
       <KPIDistributionChart<CompanyWithKPIs>
         data={companyData}
         selectedKPI={selectedKPI}
         average={!selectedKPI.isBoolean ? statistics.average : undefined}
         entityLabel={entityPlural}
       />
-    </KPIDetailsPanel>
+    </div>
   );
 
   const booleanSummary = (
@@ -152,6 +156,7 @@ function CompanyInsightsPanel({
   ) : null;
 
   if (section === "stats") return statsPanel;
+  if (section === "distribution") return distributionPanel;
   if (section === "top") return topPanel;
   if (section === "bottom") return bottomPanel ?? statsPanel;
 
