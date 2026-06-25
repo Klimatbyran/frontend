@@ -91,9 +91,7 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({ data }) => {
             />
             <YAxis
               {...getYAxisProps(currentLanguage)}
-              tickFormatter={(v: number) =>
-                formatMton(v, currentLanguage, 0)
-              }
+              tickFormatter={(v: number) => formatMton(v, currentLanguage, 0)}
             />
             <Tooltip
               formatter={(value: number, name: string) => [
@@ -108,9 +106,7 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({ data }) => {
               }}
               wrapperStyle={{ outline: "none", zIndex: 60 }}
             />
-            <ReferenceLine
-              {...getCurrentYearReferenceLineProps(currentYear)}
-            />
+            <ReferenceLine {...getCurrentYearReferenceLineProps(currentYear)} />
             {LAYERS.map((layer) => (
               <Area
                 key={layer.dataKey}
