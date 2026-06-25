@@ -36,11 +36,8 @@ export function formatTurnoverAxisValue(
   value: number,
   currentLanguage: SupportedLanguage,
 ): string {
-  return new Intl.NumberFormat(
-    currentLanguage === "sv" ? "sv-SE" : "en-GB",
-    {
-      notation: "compact",
-      maximumFractionDigits: 1,
-    },
-  ).format(value);
+  return new Intl.NumberFormat(currentLanguage === "sv" ? "sv-SE" : "en-GB", {
+    notation: "compact",
+    maximumFractionDigits: 1,
+  }).format(value);
 }
