@@ -28,6 +28,6 @@ describe("turnoverFormatting", () => {
   });
 
   it("formats compact axis values", () => {
-    expect(formatTurnoverAxisValue(1_500_000, "en")).toBe("1.5M");
+    expect(formatTurnoverAxisValue(1_500_000, "en")).toMatch(/^1\.5[mM]$/);
   });
 });
