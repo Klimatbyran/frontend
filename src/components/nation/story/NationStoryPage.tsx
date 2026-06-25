@@ -105,7 +105,7 @@ export function NationStoryPage({
       </FullScreenSection>
 
       {/* Footer */}
-      <section className="max-w-5xl mx-auto px-4 md:px-8 pt-6 pb-16">
+      <section className="max-w-5xl mx-auto px-4 md:px-8 py-16">
         <motion.div
           initial={{ opacity: 0, y: 32 }}
           whileInView={{ opacity: 1, y: 0 }}
