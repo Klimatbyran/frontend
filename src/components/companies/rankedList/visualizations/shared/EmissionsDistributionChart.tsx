@@ -56,18 +56,15 @@ export function EmissionsDistributionChart({
           {t("companiesOverviewPage.visualizations.emissionsChange.title")}
         </h3>
         <p className="text-sm text-grey leading-relaxed">
-          {t(
-            "companiesOverviewPage.visualizations.emissionsChange.summary",
-            {
-              reduced: summary.reducedCount,
-              total: summary.totalWithData,
-              percent: reducedPercent,
-              median:
-                summary.median !== null
-                  ? `${summary.median.toFixed(1)}%`
-                  : t("noData"),
-            },
-          )}
+          {t("companiesOverviewPage.visualizations.emissionsChange.summary", {
+            reduced: summary.reducedCount,
+            total: summary.totalWithData,
+            percent: reducedPercent,
+            median:
+              summary.median !== null
+                ? `${summary.median.toFixed(1)}%`
+                : t("noData"),
+          })}
         </p>
         <p className="text-xs text-grey">
           {t(
@@ -111,9 +108,7 @@ export function EmissionsDistributionChart({
 
       <div className="min-h-[280px] flex-1 rounded-level-2 bg-black-3/40 p-4">
         <p className="mb-3 text-xs text-grey">
-          {t(
-            "companiesOverviewPage.visualizations.emissionsChange.axisLabel",
-          )}
+          {t("companiesOverviewPage.visualizations.emissionsChange.axisLabel")}
         </p>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart

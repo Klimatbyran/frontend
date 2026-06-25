@@ -41,10 +41,7 @@ export function EmissionsChangeVisualization({
 
   return (
     <div className="w-full h-full bg-black-2 rounded-level-2 p-4 md:p-6 overflow-hidden">
-      <EmissionsDistributionChart
-        values={values}
-        unknownCount={unknownCount}
-      />
+      <EmissionsDistributionChart values={values} unknownCount={unknownCount} />
     </div>
   );
 }

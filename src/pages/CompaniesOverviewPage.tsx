@@ -97,9 +97,8 @@ export function CompaniesOverviewPage() {
   );
 
   const [selectedKPI, setSelectedKPI] = useState(getKPIFromURL());
-  const [selectedSector, setSelectedSector] = useState<string>(
-    getSectorFromURL(),
-  );
+  const [selectedSector, setSelectedSector] =
+    useState<string>(getSectorFromURL());
   const viewMode = getViewModeFromURL();
 
   useEffect(() => {
