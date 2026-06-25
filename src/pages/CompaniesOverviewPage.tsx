@@ -229,8 +229,8 @@ export function CompaniesOverviewPage() {
 
       <div className="space-y-6">
         {/* Row 1: visualization + stats side by side */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
-          <div className="min-h-[500px]">{visualizationPanel}</div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+          <div className="min-h-[500px] md:min-h-[570px]">{visualizationPanel}</div>
           <CompanyInsightsPanel
             companyData={companiesWithKPIs}
             selectedKPI={selectedKPI}

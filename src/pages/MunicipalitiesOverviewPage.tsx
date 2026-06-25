@@ -185,8 +185,11 @@ export function MunicipalitiesOverviewPage() {
 
       <div className="space-y-6">
         {/* Row 1: map + stats panel side by side */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
-          <div className="min-h-[500px] md:min-h-[570px]">{mapPanel}</div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+          {/* map needs relative + explicit height so Leaflet can render */}
+          <div className="relative min-w-0 min-h-[65vh] md:min-h-[570px] h-full">
+            {mapPanel}
+          </div>
           <InsightsPanel
             municipalityData={municipalities}
             selectedKPI={selectedKPI}

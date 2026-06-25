@@ -151,8 +151,10 @@ export function RegionalOverviewPage() {
 
       <div className="space-y-6">
         {/* Row 1: map + stats side by side */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
-          <div className="min-h-[500px] md:min-h-[570px]">{mapPanel}</div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+          <div className="relative min-w-0 min-h-[65vh] md:min-h-[570px] h-full">
+            {mapPanel}
+          </div>
           <RegionalInsightsPanel
             regionsData={regionsAsEntities}
             selectedKPI={selectedKPI}
