@@ -7,24 +7,14 @@ import {
   localizeUnit,
 } from "@/utils/formatting/localization";
 import type { DecouplingComparison } from "@/utils/data/turnoverChartData";
+import {
+  getEmissionsChangeColorClass,
+  VERDICT_COLOR_CLASS,
+  VERDICT_EXPLANATION_KEY,
+} from "./turnoverEmissionsPanelUtils";
 
 interface TurnoverEmissionsIntensityPanelProps {
   comparison: DecouplingComparison;
-}
-
-const END_INTENSITY_COLOR_CLASS: Record<
-  DecouplingComparison["verdict"],
-  string
-> = {
-  yes: "text-green-3",
-  "no-red": "text-pink-3",
-  "no-yellow": "text-orange-2",
-};
-
-function getEmissionsChangeColorClass(changePercent: number): string {
-  if (changePercent < 0) return "text-green-3";
-  if (changePercent > 0) return "text-pink-3";
-  return "text-orange-2";
 }
 
 function FooterMetric({
@@ -52,19 +42,10 @@ export function TurnoverEmissionsIntensityPanel({
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
 
-  const verdictColorClass = END_INTENSITY_COLOR_CLASS[comparison.verdict];
-
-  const verdictExplanationKey = {
-    yes: "companies.turnoverEmissionsHistory.intensityPanel.verdictYes",
-    "no-red": "companies.turnoverEmissionsHistory.intensityPanel.verdictNoRed",
-    "no-yellow":
-      "companies.turnoverEmissionsHistory.intensityPanel.verdictNoYellow",
-  }[comparison.verdict];
-
+  const verdictColorClass = VERDICT_COLOR_CLASS[comparison.verdict];
   const periodNoteKey = comparison.usedBaseYear
     ? "companies.turnoverEmissionsHistory.intensityPanel.periodBaseYearNote"
     : "companies.turnoverEmissionsHistory.intensityPanel.periodFirstYearNote";
-
   const intensityUnit = t(
     "companies.turnoverEmissionsHistory.intensityPanel.intensityUnit",
   );
@@ -81,7 +62,7 @@ export function TurnoverEmissionsIntensityPanel({
           {comparison.verdict === "yes" ? t("yes") : t("no")}
         </Text>
         <Text className="mt-3 text-base leading-relaxed text-white md:text-lg">
-          {t(verdictExplanationKey)}
+          {t(VERDICT_EXPLANATION_KEY[comparison.verdict])}
         </Text>
       </div>
 
@@ -104,7 +85,7 @@ export function TurnoverEmissionsIntensityPanel({
               {comparison.endYear}
             </Text>
             <Text
-              className={`text-3xl font-light md:text-4xl ${END_INTENSITY_COLOR_CLASS[comparison.verdict]}`}
+              className={`text-3xl font-light md:text-4xl ${verdictColorClass}`}
             >
               {localizeUnit(comparison.endIntensity, currentLanguage)}
             </Text>

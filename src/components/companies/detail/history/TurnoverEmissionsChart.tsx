@@ -32,16 +32,16 @@ import {
 } from "@/components/charts";
 import { useLanguage } from "@/components/LanguageProvider";
 import { LegendItem } from "@/types/charts";
-import { filterCompleteTurnoverEmissionsDataFromBaseYear } from "@/utils/data/turnoverChartData";
+import { getBaseYearChartSettings } from "@/utils/data/turnoverChartData";
 
 interface TurnoverEmissionsChartProps {
-  data: ChartData[];
+  displayData: ChartData[];
   companyBaseYear?: number;
   onYearSelect?: (year: number) => void;
 }
 
 export const TurnoverEmissionsChart: FC<TurnoverEmissionsChartProps> = ({
-  data,
+  displayData,
   companyBaseYear,
   onYearSelect,
 }) => {
@@ -49,22 +49,17 @@ export const TurnoverEmissionsChart: FC<TurnoverEmissionsChartProps> = ({
   const { currentLanguage } = useLanguage();
   const currentYear = new Date().getFullYear();
 
-  const chartData = useMemo(
-    () =>
-      filterCompleteTurnoverEmissionsDataFromBaseYear(data, companyBaseYear),
-    [data, companyBaseYear],
+  const baseYearSettings = useMemo(
+    () => getBaseYearChartSettings(displayData, companyBaseYear),
+    [displayData, companyBaseYear],
   );
 
-  const firstDataYear = chartData[0]?.year || 2000;
-  const lastDataYear = chartData[chartData.length - 1]?.year || currentYear;
+  const firstDataYear = displayData[0]?.year ?? currentYear;
+  const lastDataYear =
+    displayData[displayData.length - 1]?.year ?? currentYear;
 
-  const showBaseYear =
-    companyBaseYear != null &&
-    chartData.some((point) => point.year === companyBaseYear);
-  const isFirstYear = showBaseYear && companyBaseYear === chartData[0]?.year;
-
-  const legendItems = useMemo((): LegendItem[] => {
-    return [
+  const legendItems = useMemo(
+    (): LegendItem[] => [
       {
         name: t("companies.emissionsHistory.totalEmissions"),
         color: "white",
@@ -79,8 +74,9 @@ export const TurnoverEmissionsChart: FC<TurnoverEmissionsChartProps> = ({
         isHidden: false,
         isDashed: false,
       },
-    ];
-  }, [t]);
+    ],
+    [t],
+  );
 
   const ticks = generateChartTicks(
     firstDataYear,
@@ -93,9 +89,11 @@ export const TurnoverEmissionsChart: FC<TurnoverEmissionsChartProps> = ({
     ? createChartClickHandler(onYearSelect)
     : undefined;
 
-  if (chartData.length === 0) {
+  if (displayData.length === 0) {
     return null;
   }
+
+  const { showBaseYear, baseYear, isFirstYear } = baseYearSettings;
 
   return (
     <ChartWrapper className="relative">
@@ -103,18 +101,14 @@ export const TurnoverEmissionsChart: FC<TurnoverEmissionsChartProps> = ({
         <ResponsiveContainer {...getChartContainerProps()}>
           <LineChart
             {...getLineChartProps(
-              chartData,
+              displayData,
               handleClick,
               getResponsiveChartMargin(isMobile),
             )}
           >
-            {showBaseYear && (
+            {showBaseYear && baseYear != null && (
               <ReferenceLine
-                {...getBaseYearReferenceLineProps(
-                  companyBaseYear,
-                  isFirstYear,
-                  t,
-                )}
+                {...getBaseYearReferenceLineProps(baseYear, isFirstYear, t)}
               />
             )}
 
@@ -127,7 +121,7 @@ export const TurnoverEmissionsChart: FC<TurnoverEmissionsChartProps> = ({
             <Tooltip
               content={
                 <ChartTooltip
-                  companyBaseYear={showBaseYear ? companyBaseYear : undefined}
+                  companyBaseYear={baseYear}
                   unit={t("companies.tooltip.tonsCO2e")}
                 />
               }
@@ -139,9 +133,7 @@ export const TurnoverEmissionsChart: FC<TurnoverEmissionsChartProps> = ({
                 "year",
                 [firstDataYear, lastDataYear],
                 ticks,
-                createCustomTickRenderer(
-                  showBaseYear ? companyBaseYear : undefined,
-                ),
+                createCustomTickRenderer(baseYear),
               )}
               type="number"
             />

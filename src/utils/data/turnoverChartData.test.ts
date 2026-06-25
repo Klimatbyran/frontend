@@ -1,64 +1,22 @@
 import { describe, expect, it } from "vitest";
 import {
-  countTurnoverDataPoints,
-  countCompleteTurnoverEmissionsDataPoints,
-  filterCompleteTurnoverEmissionsData,
-  filterCompleteTurnoverEmissionsDataFromBaseYear,
-  filterValidTurnoverData,
-  getDecouplingComparison,
+  buildDecouplingComparison,
+  getBaseYearChartSettings,
   getDecouplingVerdict,
-  getLastTurnoverYear,
-  hasEnoughChartDisplayData,
-  hasEnoughTurnoverData,
+  getDisplayData,
+  getTurnoverEmissionsSection,
 } from "./turnoverChartData";
 
+const completeSeries = [
+  { year: 2018, total: 1000, turnover: 1_000_000 },
+  { year: 2019, total: 900, turnover: 1_200_000 },
+  { year: 2020, total: 800, turnover: 1_500_000 },
+];
+
 describe("turnoverChartData", () => {
-  const periods = [
-    {
-      emissions: { calculatedTotalEmissions: 1000 },
-      economy: { turnover: { value: 1_000_000, currency: "SEK" } },
-    },
-    {
-      emissions: { calculatedTotalEmissions: 900 },
-      economy: { turnover: { value: 2_000_000, currency: "SEK" } },
-    },
-    {
-      emissions: { calculatedTotalEmissions: 500 },
-      economy: { turnover: { value: null, currency: "SEK" } },
-    },
-  ] as Parameters<typeof countTurnoverDataPoints>[0];
-
-  it("counts turnover data points", () => {
-    expect(countTurnoverDataPoints(periods)).toBe(2);
-  });
-
-  it("counts years with both emissions and turnover", () => {
-    expect(countCompleteTurnoverEmissionsDataPoints(periods)).toBe(2);
-  });
-
-  it("requires at least two complete data points", () => {
-    expect(hasEnoughTurnoverData(periods)).toBe(true);
-    expect(hasEnoughTurnoverData([periods[0]])).toBe(false);
-    expect(
-      hasEnoughTurnoverData([
-        periods[0],
-        { economy: { turnover: { value: 1_000_000, currency: "SEK" } } },
-      ] as Parameters<typeof countTurnoverDataPoints>[0]),
-    ).toBe(false);
-  });
-
-  it("filters valid turnover chart data", () => {
-    expect(
-      filterValidTurnoverData([
-        { year: 2020, turnover: 0 },
-        { year: 2021, turnover: 100 },
-      ]),
-    ).toEqual([{ year: 2021, turnover: 100 }]);
-  });
-
   it("keeps only years with both emissions and turnover", () => {
     expect(
-      filterCompleteTurnoverEmissionsData([
+      getDisplayData([
         { year: 2019, total: 1000, turnover: 1_000_000 },
         { year: 2020, total: 900 },
         { year: 2021, turnover: 2_000_000 },
@@ -68,18 +26,6 @@ describe("turnoverChartData", () => {
       { year: 2019, total: 1000, turnover: 1_000_000 },
       { year: 2022, total: 800, turnover: 2_500_000 },
     ]);
-  });
-
-  it("returns the last year with turnover data", () => {
-    expect(
-      getLastTurnoverYear(
-        [
-          { year: 2020, turnover: 100 },
-          { year: 2021, turnover: 200 },
-        ],
-        2019,
-      ),
-    ).toBe(2021);
   });
 
   it("returns green yes when emissions intensity falls meaningfully", () => {
@@ -93,41 +39,33 @@ describe("turnoverChartData", () => {
   it("returns orange no when emissions intensity is nearly unchanged", () => {
     expect(getDecouplingVerdict(2)).toBe("no-yellow");
     expect(getDecouplingVerdict(-2)).toBe("no-yellow");
-  });
-
-  it("treats intensity change at the stable threshold as orange no", () => {
     expect(getDecouplingVerdict(3)).toBe("no-yellow");
     expect(getDecouplingVerdict(-3)).toBe("no-yellow");
   });
 
-  it("compares from base year when available in complete data", () => {
-    const comparison = getDecouplingComparison(
-      [
-        { year: 2018, total: 1000, turnover: 1_000_000 },
-        { year: 2019, total: 900, turnover: 1_200_000 },
-        { year: 2020, total: 800, turnover: 1_500_000 },
-      ],
-      2019,
-    );
-
-    expect(comparison).toMatchObject({
-      startYear: 2019,
-      endYear: 2020,
-      verdict: "yes",
-      usedBaseYear: true,
-    });
+  it("compares from base year when complete data exists there", () => {
+    expect(buildDecouplingComparison(getDisplayData(completeSeries, 2019), 2019))
+      .toMatchObject({
+        startYear: 2019,
+        endYear: 2020,
+        verdict: "yes",
+        usedBaseYear: true,
+      });
   });
 
   it("compares from first complete year when base year predates complete data", () => {
-    const comparison = getDecouplingComparison(
-      [
-        { year: 2019, total: 1000, turnover: 1_000_000 },
-        { year: 2020, total: 800, turnover: 1_500_000 },
-      ],
-      2018,
-    );
-
-    expect(comparison).toMatchObject({
+    expect(
+      buildDecouplingComparison(
+        getDisplayData(
+          [
+            { year: 2019, total: 1000, turnover: 1_000_000 },
+            { year: 2020, total: 800, turnover: 1_500_000 },
+          ],
+          2018,
+        ),
+        2018,
+      ),
+    ).toMatchObject({
       startYear: 2019,
       endYear: 2020,
       verdict: "yes",
@@ -136,44 +74,61 @@ describe("turnoverChartData", () => {
   });
 
   it("shows all complete data when base year predates complete data", () => {
-    expect(
-      filterCompleteTurnoverEmissionsDataFromBaseYear(
-        [
-          { year: 2018, total: 1000, turnover: 1_000_000 },
-          { year: 2019, total: 900, turnover: 1_200_000 },
-          { year: 2020, total: 800, turnover: 1_500_000 },
-        ],
-        2017,
-      ),
-    ).toEqual([
-      { year: 2018, total: 1000, turnover: 1_000_000 },
+    expect(getDisplayData(completeSeries, 2017)).toEqual(completeSeries);
+  });
+
+  it("excludes complete data before base year", () => {
+    expect(getDisplayData(completeSeries, 2019)).toEqual([
       { year: 2019, total: 900, turnover: 1_200_000 },
       { year: 2020, total: 800, turnover: 1_500_000 },
     ]);
   });
 
-  it("excludes complete data before base year from chart display", () => {
+  it("returns null section data when fewer than two complete points", () => {
     expect(
-      filterCompleteTurnoverEmissionsDataFromBaseYear(
-        [
-          { year: 2018, total: 1000, turnover: 1_000_000 },
-          { year: 2019, total: 900, turnover: 1_200_000 },
-          { year: 2020, total: 800, turnover: 1_500_000 },
-        ],
-        2019,
-      ),
-    ).toEqual([
-      { year: 2019, total: 900, turnover: 1_200_000 },
-      { year: 2020, total: 800, turnover: 1_500_000 },
-    ]);
+      getTurnoverEmissionsSection([
+        { year: 2018, total: 1000, turnover: 1_000_000 },
+      ]),
+    ).toBeNull();
   });
 
-  it("requires at least two data points after base year filtering", () => {
+  it("returns chart data and comparison together", () => {
+    const section = getTurnoverEmissionsSection(completeSeries, 2019);
+
+    expect(section).toMatchObject({
+      displayData: [
+        { year: 2019, total: 900, turnover: 1_200_000 },
+        { year: 2020, total: 800, turnover: 1_500_000 },
+      ],
+      comparison: {
+        startYear: 2019,
+        endYear: 2020,
+        verdict: "yes",
+      },
+    });
+  });
+
+  it("hides base year reference when base year lacks complete data", () => {
     expect(
-      hasEnoughChartDisplayData(
-        [{ year: 2018, total: 1000, turnover: 1_000_000 }],
-        2019,
+      getBaseYearChartSettings(
+        [
+          { year: 2019, total: 1000, turnover: 1_000_000 },
+          { year: 2020, total: 800, turnover: 1_500_000 },
+        ],
+        2018,
       ),
-    ).toBe(false);
+    ).toEqual({
+      showBaseYear: false,
+      baseYear: undefined,
+      isFirstYear: false,
+    });
+  });
+
+  it("shows base year reference when that year has complete data", () => {
+    expect(getBaseYearChartSettings(completeSeries, 2019)).toEqual({
+      showBaseYear: true,
+      baseYear: 2019,
+      isFirstYear: false,
+    });
   });
 });

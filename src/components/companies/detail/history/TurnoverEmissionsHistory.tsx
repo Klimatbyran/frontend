@@ -7,10 +7,7 @@ import { CardHeader } from "@/components/layout/CardHeader";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { getChartData } from "@/utils/data/chartData";
-import {
-  getDecouplingComparison,
-  hasEnoughChartDisplayData,
-} from "@/utils/data/turnoverChartData";
+import { getTurnoverEmissionsSection } from "@/utils/data/turnoverChartData";
 import { TurnoverEmissionsChart } from "./TurnoverEmissionsChart";
 import { TurnoverEmissionsIntensityPanel } from "./TurnoverEmissionsIntensityPanel";
 
@@ -23,66 +20,47 @@ export function TurnoverEmissionsHistory({
 
   const companyBaseYear = company.baseYear?.year;
 
-  const chartData = useMemo(
-    () =>
-      getChartData(
-        company.reportingPeriods,
-        isAIGenerated,
-        isEmissionsAIGenerated,
-      ),
-    [company.reportingPeriods, isAIGenerated, isEmissionsAIGenerated],
-  );
+  const section = useMemo(() => {
+    const chartData = getChartData(
+      company.reportingPeriods,
+      isAIGenerated,
+      isEmissionsAIGenerated,
+    );
 
-  const decouplingComparison = useMemo(
-    () => getDecouplingComparison(chartData, companyBaseYear),
-    [chartData, companyBaseYear],
-  );
+    return getTurnoverEmissionsSection(chartData, companyBaseYear);
+  }, [
+    company.reportingPeriods,
+    companyBaseYear,
+    isAIGenerated,
+    isEmissionsAIGenerated,
+  ]);
 
-  if (
-    !hasEnoughChartDisplayData(chartData, companyBaseYear) ||
-    !decouplingComparison
-  ) {
-    return null;
-  }
-
-  const handleYearSelect = (year: number) => {
-    onYearSelect?.(year.toString());
-  };
+  if (!section) return null;
 
   return (
-    <div>
-      <SectionWithHelp helpItems={["companyTurnover", "historicalEmissions"]}>
-        <div className="flex flex-col gap-6 lg:flex-row lg:items-stretch lg:gap-8">
-          <div className="flex w-full flex-col lg:w-1/2">
-            <CardHeader
-              title={t(
-                "companies.turnoverEmissionsHistory.intensityPanel.title",
-              )}
-              tooltipContent={t(
-                "companies.turnoverEmissionsHistory.intensityPanel.tooltip",
-              )}
-              unit={t("companies.turnoverEmissionsHistory.unit")}
-              className="[&>div]:mb-4 lg:[&>div]:mb-6"
-            />
-            <div
-              style={{
-                height: getDynamicChartHeight("overview", isMobile),
-              }}
-            >
-              <TurnoverEmissionsChart
-                data={chartData}
-                companyBaseYear={companyBaseYear}
-                onYearSelect={handleYearSelect}
-              />
-            </div>
-          </div>
-          <div className="flex w-full flex-col lg:w-1/2">
-            <TurnoverEmissionsIntensityPanel
-              comparison={decouplingComparison}
+    <SectionWithHelp helpItems={["companyTurnover", "historicalEmissions"]}>
+      <div className="flex flex-col gap-6 lg:flex-row lg:items-stretch lg:gap-8">
+        <div className="flex w-full flex-col lg:w-1/2">
+          <CardHeader
+            title={t("companies.turnoverEmissionsHistory.title")}
+            tooltipContent={t("companies.turnoverEmissionsHistory.tooltip")}
+            unit={t("companies.turnoverEmissionsHistory.unit")}
+            className="[&>div]:mb-4 lg:[&>div]:mb-6"
+          />
+          <div
+            style={{ height: getDynamicChartHeight("overview", isMobile) }}
+          >
+            <TurnoverEmissionsChart
+              displayData={section.displayData}
+              companyBaseYear={companyBaseYear}
+              onYearSelect={(year) => onYearSelect?.(year.toString())}
             />
           </div>
         </div>
-      </SectionWithHelp>
-    </div>
+        <div className="flex w-full flex-col lg:w-1/2">
+          <TurnoverEmissionsIntensityPanel comparison={section.comparison} />
+        </div>
+      </div>
+    </SectionWithHelp>
   );
 }
