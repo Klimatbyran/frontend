@@ -4,11 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { FeatureCollection } from "geojson";
 import municipalityGeoJson from "@/data/municipalityGeo.json";
 import regionGeoJson from "@/data/regionGeo.json";
-import { useMunicipalityKPIDefinitions } from "@/hooks/municipalities/useMunicipalityKPIs";
-import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
+import {
+  useMunicipalityKPIDefinitions,
+  useMunicipalityKPIs,
+} from "@/hooks/municipalities/useMunicipalityKPIs";
 import { createEntityClickHandler } from "@/utils/routing";
 import { useRegionalKPIs, useRegionsKPIs } from "@/hooks/regions/useRegionKPIs";
 import { toMapRegionName } from "@/utils/regionUtils";
+import { toMunicipalityMapDataItem } from "@/utils/territoryMapData";
 
 export type TerritoryMode = "municipalities" | "regions";
 
@@ -18,7 +21,8 @@ export function useMunicipalitiesSection() {
   const municipalityKPIs = useMunicipalityKPIDefinitions();
   const regionalKPIs = useRegionalKPIs();
   const { regionsData, loading: regionsLoading } = useRegionsKPIs();
-  const { municipalities, municipalitiesLoading } = useMunicipalities();
+  const { municipalitiesData, loading: municipalitiesLoading } =
+    useMunicipalityKPIs();
 
   const [territoryMode, setTerritoryMode] =
     useState<TerritoryMode>("municipalities");
@@ -66,22 +70,12 @@ export function useMunicipalitiesSection() {
   );
 
   const handleMunicipalityAreaClick = (name: string) => {
-    const municipality = municipalities.find((m) => m.name === name);
-    if (municipality) {
-      handleMunicipalityClick(municipality);
-      return;
-    }
-
     handleMunicipalityClick(name);
   };
 
   const mapData = useMemo(
-    () =>
-      municipalities.map((m) => {
-        const { sectorEmissions, ...rest } = m;
-        return { ...rest, id: m.name };
-      }),
-    [municipalities],
+    () => municipalitiesData.map(toMunicipalityMapDataItem),
+    [municipalitiesData],
   );
 
   const regionMapData = useMemo(
