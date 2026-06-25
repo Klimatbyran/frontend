@@ -5,8 +5,14 @@ import { NationStoryPage } from "@/components/nation/story/NationStoryPage";
 import { useNationStoryData } from "@/hooks/nation/useNationStoryData";
 
 export function NationDetailPage() {
-  const { nation, metrics, sortedRegions, gavleEmissionsTonnes, loading, error } =
-    useNationStoryData();
+  const {
+    nation,
+    metrics,
+    sortedRegions,
+    gavleEmissionsTonnes,
+    loading,
+    error,
+  } = useNationStoryData();
 
   if (loading) return <PageLoading />;
   if (error) return <PageError />;

@@ -22,7 +22,9 @@ export function NationStorySection({
       <Text variant="h2" className="text-3xl md:text-4xl font-light mb-8">
         {title}
       </Text>
-      <div className="space-y-6 text-grey text-lg leading-relaxed">{children}</div>
+      <div className="space-y-6 text-grey text-lg leading-relaxed">
+        {children}
+      </div>
     </section>
   );
 }

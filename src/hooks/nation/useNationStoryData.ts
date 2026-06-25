@@ -30,10 +30,7 @@ export function useNationStoryData() {
 
   const comparisonYear = metrics?.latestYear ?? new Date().getFullYear();
 
-  const {
-    data: gavleMunicipality,
-    isLoading: gavleLoading,
-  } = useQuery({
+  const { data: gavleMunicipality, isLoading: gavleLoading } = useQuery({
     queryKey: ["municipality", GAVLE_MUNICIPALITY, comparisonYear],
     queryFn: () => getMunicipalityDetails(GAVLE_MUNICIPALITY),
     enabled: !!metrics,

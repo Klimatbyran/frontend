@@ -141,7 +141,8 @@ export function computeNationStoryMetrics(
     (series.territorialFossil[NATION_BASELINE_YEAR] ?? 0) + biogenic1990Tonnes;
   const prodBiogenicLatestTonnes =
     territorialLatestTonnes + biogenicLatestTonnes;
-  const consumption1990Tonnes = series.consumptionAbroad[NATION_BASELINE_YEAR] ?? 0;
+  const consumption1990Tonnes =
+    series.consumptionAbroad[NATION_BASELINE_YEAR] ?? 0;
   const consumptionLatestTonnes = series.consumptionAbroad[latestYear] ?? 0;
 
   const eCommerceYears = Object.keys(series.eCommerce)

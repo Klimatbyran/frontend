@@ -9,10 +9,7 @@ import { NationStorySection } from "@/components/nation/story/NationStorySection
 import { useLanguage } from "@/components/LanguageProvider";
 import type { NationDetails } from "@/hooks/nation/useNationDetails";
 import type { NationStoryMetrics } from "@/utils/data/nationStoryMetrics";
-import {
-  formatMton,
-  formatTonnes,
-} from "@/utils/data/nationStoryMetrics";
+import { formatMton, formatTonnes } from "@/utils/data/nationStoryMetrics";
 import { formatPercentChange } from "@/utils/formatting/localization";
 import { LocalizedLink } from "@/components/LocalizedLink";
 
@@ -75,10 +72,7 @@ export function NationStoryPage({
         <p>{t("nation.story.combined.paragraph2")}</p>
       </NationStorySection>
 
-      <NationStorySection
-        id="biogent"
-        title={t("nation.story.biogenic.title")}
-      >
+      <NationStorySection id="biogent" title={t("nation.story.biogenic.title")}>
         <p>{t("nation.story.biogenic.paragraph1")}</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 not-prose">
           <NationStatCallout
