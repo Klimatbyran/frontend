@@ -115,7 +115,10 @@ export default function KPIDetailsPanel({
                   ? ((stat.count / totalDistribution) * 100).toFixed(0)
                   : 0;
               return (
-                <div key={index} className="flex items-center justify-between text-sm">
+                <div
+                  key={index}
+                  className="flex items-center justify-between text-sm"
+                >
                   <div className="flex items-center gap-2">
                     <span
                       className="inline-block w-2.5 h-2.5 rounded-full"

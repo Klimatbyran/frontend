@@ -8,7 +8,7 @@ import {
 } from "@/utils/insights/rankedListUtils";
 import KPIDetailsPanel from "../../ranked/KPIDetailsPanel";
 import InsightsList from "../../ranked/InsightsList";
-import { KPIDistributionChart } from "./KPIDistributionChart";
+import { KPIDistributionChart } from "../../ranked/KPIDistributionChart";
 
 interface InsightsPanelProps {
   municipalityData: Municipality[];
@@ -76,11 +76,9 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
           sourceLinks={sourceLinks}
         >
           <KPIDistributionChart
-            municipalityData={municipalityData}
+            data={municipalityData}
             selectedKPI={selectedKPI}
-            average={
-              !selectedKPI.isBoolean ? statistics.average : undefined
-            }
+            average={!selectedKPI.isBoolean ? statistics.average : undefined}
           />
         </KPIDetailsPanel>
 

@@ -1,8 +1,7 @@
 import { useMemo } from "react";
-import { useTranslation, TFunction } from "react-i18next";
-import type { Municipality } from "@/types/municipality";
-import type { KPIValue } from "@/types/rankings";
+import { TFunction, useTranslation } from "react-i18next";
 import { TrendingUp, TrendingDown, Minus } from "lucide-react";
+import { KPIValue } from "@/types/rankings";
 
 interface StatItem {
   label: string;
@@ -11,26 +10,25 @@ interface StatItem {
   trend: "up" | "down" | null;
 }
 
-function buildBooleanStats(
-  municipalities: Municipality[],
-  selectedKPI: KPIValue<Municipality>,
+function buildBooleanStats<T>(
+  entities: T[],
+  selectedKPI: KPIValue<T>,
   t: TFunction,
+  entityNoun: string,
 ): StatItem[] {
-  const total = municipalities.length;
-  const withData = municipalities.filter((m) => {
-    const v = m[selectedKPI.key];
+  const total = entities.length;
+  const withData = entities.filter((e) => {
+    const v = e[selectedKPI.key];
     return v !== null && v !== undefined;
   }).length;
   const missingData = total - withData;
-  const trueCount = municipalities.filter(
-    (m) => m[selectedKPI.key] === true,
-  ).length;
+  const trueCount = entities.filter((e) => e[selectedKPI.key] === true).length;
   const pct = withData > 0 ? ((trueCount / withData) * 100).toFixed(0) : "0";
   const items: StatItem[] = [
     {
       label: t("municipalities.list.summary.total"),
       value: String(total),
-      sub: t("municipalities.list.summary.municipalities"),
+      sub: entityNoun,
       trend: null,
     },
     {
@@ -57,29 +55,30 @@ function buildBooleanStats(
   return items;
 }
 
-function buildNumericStats(
-  municipalities: Municipality[],
-  selectedKPI: KPIValue<Municipality>,
+function buildNumericStats<T>(
+  entities: T[],
+  selectedKPI: KPIValue<T>,
   t: TFunction,
+  entityNoun: string,
 ): StatItem[] {
-  const total = municipalities.length;
-  const numericValues = municipalities
-    .map((m) => m[selectedKPI.key])
+  const total = entities.length;
+  const numericValues = entities
+    .map((e) => e[selectedKPI.key])
     .filter((v): v is number => typeof v === "number" && !isNaN(v));
 
   if (!numericValues.length) return [];
 
-  const average = numericValues.reduce((s, v) => s + v, 0) / numericValues.length;
+  const average =
+    numericValues.reduce((s, v) => s + v, 0) / numericValues.length;
   const aboveAvg = numericValues.filter((v) => v > average).length;
   const belowAvg = numericValues.filter((v) => v < average).length;
   const unit = selectedKPI.unit || "";
-  const avgPositive = average > 0;
 
   return [
     {
       label: t("municipalities.list.summary.total"),
       value: String(total),
-      sub: t("municipalities.list.summary.municipalities"),
+      sub: entityNoun,
       trend: null,
     },
     {
@@ -87,12 +86,12 @@ function buildNumericStats(
       value: `${average.toFixed(1)}${unit}`,
       sub: t("municipalities.list.summary.nationalAvg"),
       trend: selectedKPI.higherIsBetter
-        ? avgPositive
+        ? average > 0
           ? "up"
           : "down"
-        : avgPositive
-          ? "down"
-          : "up",
+        : average < 0
+          ? "up"
+          : "down",
     },
     {
       label: t("rankedInsights.aboveAverage", { entityPlural: "" }).trim(),
@@ -109,31 +108,27 @@ function buildNumericStats(
   ];
 }
 
-function buildStats(
-  municipalities: Municipality[],
-  selectedKPI: KPIValue<Municipality>,
-  t: TFunction,
-): StatItem[] {
-  if (selectedKPI.isBoolean) {
-    return buildBooleanStats(municipalities, selectedKPI, t);
-  }
-  return buildNumericStats(municipalities, selectedKPI, t);
+interface EntitySummaryBarProps<T> {
+  entities: T[];
+  selectedKPI: KPIValue<T>;
+  /** Plural noun for the entity type, e.g. "kommuner" */
+  entityNoun?: string;
 }
 
-interface MunicipalitySummaryBarProps {
-  municipalities: Municipality[];
-  selectedKPI: KPIValue<Municipality>;
-}
-
-export function MunicipalitySummaryBar({
-  municipalities,
+export function EntitySummaryBar<T>({
+  entities,
   selectedKPI,
-}: MunicipalitySummaryBarProps) {
+  entityNoun,
+}: EntitySummaryBarProps<T>) {
   const { t } = useTranslation();
+  const noun = entityNoun ?? t("header.municipalities").toLowerCase();
 
   const stats = useMemo(
-    () => buildStats(municipalities, selectedKPI, t),
-    [municipalities, selectedKPI, t],
+    () =>
+      selectedKPI.isBoolean
+        ? buildBooleanStats(entities, selectedKPI, t, noun)
+        : buildNumericStats(entities, selectedKPI, t, noun),
+    [entities, selectedKPI, t, noun],
   );
 
   if (!stats.length) return null;
@@ -143,7 +138,7 @@ export function MunicipalitySummaryBar({
       {stats.map((stat, i) => (
         <div
           key={i}
-          className="bg-white/5 rounded-2xl p-4 flex flex-col gap-1 border border-white/5"
+          className="bg-white/5 rounded-2xl p-4 flex flex-col gap-1"
         >
           <p className="text-xs text-white/40 uppercase tracking-wider leading-tight">
             {stat.label}

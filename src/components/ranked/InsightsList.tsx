@@ -76,10 +76,12 @@ function InsightsList<T>({
                   </span>
                   <span className="text-sm truncate">{name}</span>
                 </div>
-                <span className={`${textColor} font-semibold text-sm ml-2 shrink-0`}>
+                <span
+                  className={`${textColor} font-semibold text-sm ml-2 shrink-0`}
+                >
                   {numVal !== null
                     ? numVal.toFixed(1) + unit
-                    : nullValues ?? "–"}
+                    : (nullValues ?? "–")}
                 </span>
               </div>
             </div>

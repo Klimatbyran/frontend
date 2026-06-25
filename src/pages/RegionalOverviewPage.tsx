@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Map, List } from "lucide-react";
+import { Map, List, TrendingDown, Leaf } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { FeatureCollection } from "geojson";
 import { useNavigate } from "react-router-dom";
@@ -18,13 +18,16 @@ import { Region } from "@/types/region";
 import { resolveRegionFromMapName, toMapRegionName } from "@/utils/regionUtils";
 import { toRegionMapDataItem } from "@/utils/territoryMapData";
 import { RegionalRankedList } from "@/components/regions/RegionalRankedList";
-import { KPIDataSelector } from "@/components/ranked/KPIDataSelector";
-import {
-  OverviewSplitLayout,
-  type OverviewViewMode,
-} from "@/components/ranked/OverviewSplitLayout";
+import { KPIChipSelector } from "@/components/ranked/KPIChipSelector";
+import { EntitySummaryBar } from "@/components/ranked/EntitySummaryBar";
+import { OverviewSplitLayout } from "@/components/ranked/OverviewSplitLayout";
 import { createEntityClickHandler } from "@/utils/routing";
 import { RankedListItem } from "@/types/rankings";
+
+const REGION_KPI_ICONS: Record<string, React.ReactNode> = {
+  historicalEmissionChangePercent: <TrendingDown className="w-4 h-4" />,
+  meetsParis: <Leaf className="w-4 h-4" />,
+};
 
 export function RegionalOverviewPage() {
   const { t } = useTranslation();
@@ -146,14 +149,16 @@ export function RegionalOverviewPage() {
         className="-ml-4"
       />
 
-      <KPIDataSelector
+      <KPIChipSelector<Region>
         selectedKPI={selectedKPI}
+        kpis={regionalKPIs}
         onKPIChange={(kpi) => {
           setSelectedKPI(kpi);
           setKPIInURL(String(kpi.key));
         }}
-        kpis={regionalKPIs}
+        iconMap={REGION_KPI_ICONS}
         translationPrefix="regions.list"
+        label={t("municipalities.list.dataSelector.label")}
       />
 
       <div className="flex mb-4 md:hidden">
@@ -179,6 +184,11 @@ export function RegionalOverviewPage() {
           visualizationMode="map"
           visualization={mapPanel}
           list={regionalRankedList}
+        />
+        <EntitySummaryBar<Region>
+          entities={regionsAsEntities}
+          selectedKPI={selectedKPI}
+          entityNoun={t("header.regions").toLowerCase()}
         />
         <RegionalInsightsPanel
           regionsData={regionsAsEntities}

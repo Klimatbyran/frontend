@@ -1,10 +1,11 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { Map, List } from "lucide-react";
+import { Map, List, Leaf, TrendingDown } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useCompanies } from "@/hooks/companies/useCompanies";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { KPIDataSelector } from "@/components/ranked/KPIDataSelector";
+import { KPIChipSelector } from "@/components/ranked/KPIChipSelector";
+import { EntitySummaryBar } from "@/components/ranked/EntitySummaryBar";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import RankedList from "@/components/ranked/RankedList";
 import CompanyInsightsPanel from "@/components/companies/rankedList/CompanyInsightsPanel";
@@ -22,6 +23,11 @@ import {
   type OverviewViewMode,
 } from "@/components/ranked/OverviewSplitLayout";
 import { getCompanyDetailPath } from "@/utils/companyRouting";
+
+const COMPANY_KPI_ICONS: Record<string, React.ReactNode> = {
+  meetsParis: <Leaf className="w-4 h-4" />,
+  emissionsChangeFromBaseYear: <TrendingDown className="w-4 h-4" />,
+};
 
 export function CompaniesOverviewPage() {
   const { t } = useTranslation();
@@ -237,14 +243,16 @@ export function CompaniesOverviewPage() {
         />
       </div>
 
-      <KPIDataSelector
+      <KPIChipSelector<CompanyWithKPIs>
         selectedKPI={selectedKPI}
+        kpis={companyKPIs}
         onKPIChange={(kpi) => {
           setSelectedKPI(kpi);
           setKPIInURL(String(kpi.key));
         }}
-        kpis={companyKPIs}
+        iconMap={COMPANY_KPI_ICONS}
         translationPrefix="companies.list"
+        label={t("municipalities.list.dataSelector.label")}
       />
 
       <div className="mb-4">
@@ -261,6 +269,11 @@ export function CompaniesOverviewPage() {
           visualizationMode="graph"
           visualization={visualizationPanel}
           list={companyRankedList}
+        />
+        <EntitySummaryBar<CompanyWithKPIs>
+          entities={companiesWithKPIs}
+          selectedKPI={selectedKPI}
+          entityNoun={t("header.companies").toLowerCase()}
         />
         <CompanyInsightsPanel
           companyData={companiesWithKPIs}

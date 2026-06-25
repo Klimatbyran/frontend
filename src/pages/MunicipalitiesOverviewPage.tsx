@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { Map, List } from "lucide-react";
+import { Map, List, Leaf, TrendingDown, ShoppingCart, FileCheck, Car, Zap, Bike } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { FeatureCollection } from "geojson";
@@ -23,9 +23,19 @@ import {
   OverviewSplitLayout,
   type OverviewViewMode,
 } from "@/components/ranked/OverviewSplitLayout";
-import { MunicipalityKPISelector } from "@/components/municipalities/MunicipalityKPISelector";
-import { MunicipalitySummaryBar } from "@/components/municipalities/MunicipalitySummaryBar";
+import { KPIChipSelector } from "@/components/ranked/KPIChipSelector";
+import { EntitySummaryBar } from "@/components/ranked/EntitySummaryBar";
 import type { Municipality } from "@/types/municipality";
+
+const MUNICIPALITY_KPI_ICONS: Record<string, React.ReactNode> = {
+  meetsParisGoal: <Leaf className="w-4 h-4" />,
+  historicalEmissionChangePercent: <TrendingDown className="w-4 h-4" />,
+  totalConsumptionEmission: <ShoppingCart className="w-4 h-4" />,
+  climatePlan: <FileCheck className="w-4 h-4" />,
+  electricCarChangePercent: <Car className="w-4 h-4" />,
+  electricVehiclePerChargePoints: <Zap className="w-4 h-4" />,
+  bicycleMetrePerCapita: <Bike className="w-4 h-4" />,
+};
 
 export function MunicipalitiesOverviewPage() {
   const { t } = useTranslation();
@@ -186,18 +196,15 @@ export function MunicipalitiesOverviewPage() {
         />
       </div>
 
-      <MunicipalityKPISelector
+      <KPIChipSelector<Municipality>
         selectedKPI={selectedKPI}
         kpis={municipalityKPIs}
         onKPIChange={(kpi) => {
           setSelectedKPI(kpi);
           setKPIInURL(String(kpi.key));
         }}
-      />
-
-      <MunicipalitySummaryBar
-        municipalities={municipalities}
-        selectedKPI={selectedKPI}
+        iconMap={MUNICIPALITY_KPI_ICONS}
+        translationPrefix="municipalities.list"
       />
 
       <div className="space-y-6">
@@ -206,6 +213,11 @@ export function MunicipalitiesOverviewPage() {
           visualizationMode="map"
           visualization={mapPanel}
           list={municipalityRankedList}
+        />
+        <EntitySummaryBar<Municipality>
+          entities={municipalities}
+          selectedKPI={selectedKPI}
+          entityNoun={t("header.municipalities").toLowerCase()}
         />
         <InsightsPanel
           municipalityData={municipalities}
