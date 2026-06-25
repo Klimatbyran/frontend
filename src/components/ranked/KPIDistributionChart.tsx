@@ -65,7 +65,9 @@ function binColor(
     return COLORS.orange2;
   }
   // "good" side depends on KPI direction
-  const isGoodSide = higherIsBetter ? binMid > (average ?? 0) : binMid < (average ?? 0);
+  const isGoodSide = higherIsBetter
+    ? binMid > (average ?? 0)
+    : binMid < (average ?? 0);
   return isGoodSide ? COLORS.blue3 : COLORS.pink3;
 }
 
@@ -108,8 +110,16 @@ function useBooleanValues<T>(
     const trueCount = data.filter((m) => m[selectedKPI.key] === true).length;
     const falseCount = data.filter((m) => m[selectedKPI.key] === false).length;
     return [
-      { name: selectedKPI.booleanLabels?.true || t("yes"), value: trueCount, fill: COLORS.blue3 },
-      { name: selectedKPI.booleanLabels?.false || t("no"), value: falseCount, fill: COLORS.pink3 },
+      {
+        name: selectedKPI.booleanLabels?.true || t("yes"),
+        value: trueCount,
+        fill: COLORS.blue3,
+      },
+      {
+        name: selectedKPI.booleanLabels?.false || t("no"),
+        value: falseCount,
+        fill: COLORS.pink3,
+      },
     ];
   }, [data, selectedKPI, t]);
 }
@@ -269,9 +279,7 @@ export function KPIDistributionChart<T>({
                 selectedKPI.higherIsBetter,
               );
               const opacity = 0.5 + (bin.count / maxCount) * 0.5;
-              return (
-                <Cell key={i} fill={color} fillOpacity={opacity} />
-              );
+              return <Cell key={i} fill={color} fillOpacity={opacity} />;
             })}
           </Bar>
         </BarChart>
