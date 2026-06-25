@@ -28,6 +28,7 @@ export function NationDetailPage() {
       gavleEmissionsTonnes={gavleEmissionsTonnes}
       smallMunicipalityName={smallMunicipalityName}
       smallMunicipalityTonnes={smallMunicipalityTonnes}
+      oilPoints={nation.exportOfOilProductsPoints}
     />
   );
 }

@@ -3,9 +3,15 @@ import { getNationDetails } from "@/lib/api";
 import nationFixture from "@/data/nation-data.fixture.json";
 import type { NationEmissionSeries } from "@/utils/data/nationStoryMetrics";
 
+export type YearValuePoint = {
+  year: number;
+  value: number;
+};
+
 export type NationDetails = {
   country: { sv: string; en: string };
   logoUrl: string | null;
+  exportOfOilProductsPoints: YearValuePoint[];
 } & NationEmissionSeries;
 
 type YearlyRecord = Record<string, number>;
@@ -77,9 +83,19 @@ function hasStorySchema(response: RawNationResponse): boolean {
   );
 }
 
+function recordToSortedPoints(record: Record<number, number>): YearValuePoint[] {
+  return Object.entries(record)
+    .map(([year, value]) => ({ year: Number(year), value }))
+    .sort((a, b) => a.year - b.year);
+}
+
 function transformRawNation(response: RawNationResponse): NationDetails {
   const territorialSource =
     response.territorialFossilEmissions ?? response.emissions;
+
+  const exportOfOilProducts = extractYearRecord(
+    response.exportOfOilProductsEmissions,
+  );
 
   return {
     country: normalizeCountry(response.country),
@@ -88,9 +104,8 @@ function transformRawNation(response: RawNationResponse): NationDetails {
     biogenic: extractYearRecord(response.biogenicEmissions),
     consumptionAbroad: extractYearRecord(response.consumptionAbroadEmissions),
     eCommerce: extractYearRecord(response.eCommerceEmissions),
-    exportOfOilProducts: extractYearRecord(
-      response.exportOfOilProductsEmissions,
-    ),
+    exportOfOilProducts,
+    exportOfOilProductsPoints: recordToSortedPoints(exportOfOilProducts),
   };
 }
 

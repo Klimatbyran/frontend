@@ -1,5 +1,22 @@
 import { formatEmissionsAbsolute } from "../formatting/localization";
 
+/** tCO₂e per Swedish citizen — https://konsumtionskompassen.se/ */
+export const SWEDISH_CITIZEN_ANNUAL_EMISSIONS_TCO2E = 9;
+
+export function emissionsToSwedishCitizenEquivalent(
+  emissionsTonnes: number,
+  currentLanguage: "sv" | "en",
+) {
+  const count = Math.round(
+    emissionsTonnes / SWEDISH_CITIZEN_ANNUAL_EMISSIONS_TCO2E,
+  );
+  if (count < 2) return null;
+  return {
+    count,
+    formattedCount: formatEmissionsAbsolute(count, currentLanguage),
+  };
+}
+
 export const emissionsComparedToCitizen = (
   emissionsChange: number,
   currentLanguage: "sv" | "en",

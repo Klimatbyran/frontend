@@ -18,6 +18,7 @@ type NationStoryPageProps = {
   gavleEmissionsTonnes: number | null;
   smallMunicipalityName: string | null;
   smallMunicipalityTonnes: number | null;
+  oilPoints: NationDetails["exportOfOilProductsPoints"];
 };
 
 export function NationStoryPage({
@@ -27,6 +28,7 @@ export function NationStoryPage({
   gavleEmissionsTonnes,
   smallMunicipalityName,
   smallMunicipalityTonnes,
+  oilPoints,
 }: NationStoryPageProps) {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
@@ -90,7 +92,7 @@ export function NationStoryPage({
       <NationPinnedSection heightVh={190}>
         {(progress) => (
           <NationOilExportsSection
-            metrics={metrics}
+            oilPoints={oilPoints}
             scrollYProgress={progress}
           />
         )}
