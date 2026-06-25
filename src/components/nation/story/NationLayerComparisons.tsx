@@ -8,11 +8,11 @@ import {
 import { formatPercentChange } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
 
-// 3 rows, each gets a ~25% window, staggered
+// 3 rows spread across the full 0–1 range
 const ROW_RANGES: [number, number][] = [
-  [0.08, 0.38],
-  [0.36, 0.66],
-  [0.64, 0.94],
+  [0.05, 0.38],
+  [0.34, 0.67],
+  [0.63, 0.96],
 ];
 
 function LayerRow({
@@ -32,11 +32,10 @@ function LayerRow({
   const { currentLanguage } = useLanguage();
 
   // Only the bars animate – everything else is always visible
-  const bar1990Width = useTransform(
-    scrollYProgress,
-    range,
-    ["0%", `${(layer.mton1990 / maxMton) * 100}%`],
-  );
+  const bar1990Width = useTransform(scrollYProgress, range, [
+    "0%",
+    `${(layer.mton1990 / maxMton) * 100}%`,
+  ]);
   const barLatestWidth = useTransform(
     scrollYProgress,
     [range[0] + 0.06, range[1]],
@@ -72,7 +71,11 @@ function LayerRow({
           <div className="flex-1 h-8 bg-black-2 rounded-md overflow-hidden">
             <motion.div
               className="h-full rounded-md"
-              style={{ width: bar1990Width, backgroundColor: layer.color, opacity: 0.5 }}
+              style={{
+                width: bar1990Width,
+                backgroundColor: layer.color,
+                opacity: 0.5,
+              }}
             />
           </div>
           <span className="text-xs text-grey w-20 text-right shrink-0">

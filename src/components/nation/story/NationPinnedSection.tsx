@@ -3,7 +3,6 @@ import { useScroll } from "framer-motion";
 import type { MotionValue } from "framer-motion";
 
 type NationPinnedSectionProps = {
-  /** Scroll distance while pinned; 200vh = 100vh scrollable above the viewport height */
   heightVh?: number;
   children: (scrollYProgress: MotionValue<number>) => ReactNode;
   className?: string;
@@ -15,9 +14,13 @@ export function NationPinnedSection({
   className = "",
 }: NationPinnedSectionProps) {
   const ref = useRef<HTMLElement>(null);
+
+  // progress=0  → section top at viewport top (enters)
+  // progress=1  → section center at viewport center (centered on screen)
+  // The remaining half of the sticky phase shows the fully-drawn state.
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start start", "end end"],
+    offset: ["start start", "center center"],
   });
 
   return (

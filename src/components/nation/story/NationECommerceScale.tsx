@@ -3,11 +3,11 @@ import { motion, useTransform, type MotionValue } from "framer-motion";
 import { formatTonnes } from "@/utils/data/nationStoryMetrics";
 import { useLanguage } from "@/components/LanguageProvider";
 
-// 3 bars, staggered across the scroll range
+// 3 bars spread across the full 0–1 range
 const BAR_RANGES: [number, number][] = [
-  [0.05, 0.38],
-  [0.33, 0.66],
-  [0.61, 0.94],
+  [0.03, 0.37],
+  [0.33, 0.67],
+  [0.63, 0.97],
 ];
 
 function ScaleBar({
@@ -93,19 +93,28 @@ export function NationECommerceScale({
       : null,
     {
       id: "ecommerce",
-      label: t("nation.story.ecommerce.ecommerceLabel", { year: eCommerceYear }),
+      label: t("nation.story.ecommerce.ecommerceLabel", {
+        year: eCommerceYear,
+      }),
       tonnes: eCommerceTonnes,
       color: "var(--orange-2)",
     },
     gavleTonnes != null
       ? {
           id: "gavle",
-          label: t("nation.story.ecommerce.gavleLabel", { year: eCommerceYear }),
+          label: t("nation.story.ecommerce.gavleLabel", {
+            year: eCommerceYear,
+          }),
           tonnes: gavleTonnes,
           color: "var(--blue-2)",
         }
       : null,
-  ].filter(Boolean) as Array<{ id: string; label: string; tonnes: number; color: string }>;
+  ].filter(Boolean) as Array<{
+    id: string;
+    label: string;
+    tonnes: number;
+    color: string;
+  }>;
 
   return (
     <div className="w-full max-w-4xl mx-auto">

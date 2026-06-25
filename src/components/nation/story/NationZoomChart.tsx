@@ -31,14 +31,14 @@ const LAYERS = [
   },
 ];
 
-// Each layer gets ~25% of the progress range, staggered
+// Three layers staggered across the full 0–1 progress range
 const LAYER_RANGES = [
-  [0.05, 0.35] as [number, number], // territorial
-  [0.35, 0.65] as [number, number], // biogenic
-  [0.65, 0.95] as [number, number], // consumption
+  [0.02, 0.36] as [number, number], // territorial
+  [0.33, 0.67] as [number, number], // biogenic
+  [0.64, 0.98] as [number, number], // consumption
 ];
 
-const PHASE_THRESHOLDS = [0.35, 0.65];
+const PHASE_THRESHOLDS = [0.33, 0.64];
 
 type NationZoomChartProps = {
   metrics: NationStoryMetrics;
