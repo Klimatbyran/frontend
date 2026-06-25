@@ -172,7 +172,6 @@ function ExportOfOilProductsTooltip({
   payload,
   unit,
 }: ExportOfOilProductsTooltipProps) {
-  const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
 
   if (!active || !payload?.length || !payload[0]?.payload) {
@@ -184,10 +183,6 @@ function ExportOfOilProductsTooltip({
     valueKt * 1000,
     currentLanguage,
   );
-  const citizenEquivalent = emissionsToSwedishCitizenEquivalent(
-    valueKt * 1000,
-    currentLanguage,
-  );
 
   return (
     <div className="rounded-level-2 border border-black-1 bg-black-2 px-3 py-2 shadow-md">
@@ -195,13 +190,6 @@ function ExportOfOilProductsTooltip({
       <p className="text-sm text-grey tabular-nums">
         {formattedValue} {unit}
       </p>
-      {citizenEquivalent && (
-        <p className="mt-2 border-t border-black-1 pt-2 text-sm font-medium text-yellow-3 tabular-nums">
-          {t("nation.exportOfOilProducts.citizenEquivalent", {
-            count: citizenEquivalent.formattedCount,
-          })}
-        </p>
-      )}
     </div>
   );
 }
