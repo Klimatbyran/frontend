@@ -291,14 +291,14 @@ export function KPIDistributionChart<T>({
             className="inline-block w-3 h-3 rounded-sm shrink-0"
             style={{ backgroundColor: COLORS.blue3 }}
           />
-          <span className="text-sm text-white/70">{goodLabel}</span>
+          <span className="text-xs text-white/40">{goodLabel}</span>
         </div>
         <div className="flex items-center gap-2">
           <span
             className="inline-block w-3 h-3 rounded-sm shrink-0"
             style={{ backgroundColor: COLORS.orange2 }}
           />
-          <span className="text-sm text-white/70">
+          <span className="text-xs text-white/40">
             {t("municipalities.list.insights.distribution.average")}
           </span>
         </div>
@@ -307,7 +307,7 @@ export function KPIDistributionChart<T>({
             className="inline-block w-3 h-3 rounded-sm shrink-0"
             style={{ backgroundColor: COLORS.pink3 }}
           />
-          <span className="text-sm text-white/70">{badLabel}</span>
+          <span className="text-xs text-white/40">{badLabel}</span>
         </div>
       </div>
     </div>
