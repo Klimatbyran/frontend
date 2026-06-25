@@ -8,12 +8,11 @@ import {
 import { formatPercentChange } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
 
-// Section is 210vh → 110vh scrollable. Spread 3 rows evenly.
-// Header: 0–0.15, Row1: 0.1–0.42, Row2: 0.35–0.67, Row3: 0.60–0.92
+// 3 rows, each gets a ~25% window, staggered
 const ROW_RANGES: [number, number][] = [
-  [0.1, 0.42],
-  [0.35, 0.67],
-  [0.6, 0.92],
+  [0.08, 0.38],
+  [0.36, 0.66],
+  [0.64, 0.94],
 ];
 
 function LayerRow({
@@ -32,25 +31,20 @@ function LayerRow({
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
 
-  const rowProgress = useTransform(scrollYProgress, range, [0, 1]);
-  const opacity = useTransform(rowProgress, [0, 0.25, 1], [0, 1, 1]);
-  const slideX = useTransform(rowProgress, [0, 0.35], [-28, 0]);
+  // Only the bars animate – everything else is always visible
   const bar1990Width = useTransform(
-    rowProgress,
-    [0.08, 0.5],
+    scrollYProgress,
+    range,
     ["0%", `${(layer.mton1990 / maxMton) * 100}%`],
   );
   const barLatestWidth = useTransform(
-    rowProgress,
-    [0.22, 0.65],
+    scrollYProgress,
+    [range[0] + 0.06, range[1]],
     ["0%", `${(layer.mtonLatest / maxMton) * 100}%`],
   );
 
   return (
-    <motion.div
-      style={{ opacity, x: slideX }}
-      className="space-y-3 py-6 border-b border-white/10 last:border-0"
-    >
+    <div className="space-y-3 py-6 border-b border-white/10 last:border-0">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
         <h3 className="text-lg md:text-xl text-white font-light flex items-center gap-2">
           <span
@@ -70,6 +64,7 @@ function LayerRow({
       </div>
 
       <div className="space-y-2">
+        {/* 1990 bar */}
         <div className="flex items-center gap-3">
           <span className="text-xs text-grey w-12 shrink-0">
             {NATION_BASELINE_YEAR}
@@ -77,11 +72,7 @@ function LayerRow({
           <div className="flex-1 h-8 bg-black-2 rounded-md overflow-hidden">
             <motion.div
               className="h-full rounded-md"
-              style={{
-                width: bar1990Width,
-                backgroundColor: layer.color,
-                opacity: 0.5,
-              }}
+              style={{ width: bar1990Width, backgroundColor: layer.color, opacity: 0.5 }}
             />
           </div>
           <span className="text-xs text-grey w-20 text-right shrink-0">
@@ -89,15 +80,13 @@ function LayerRow({
             {t("nation.story.unit.mton")}
           </span>
         </div>
+        {/* Latest bar */}
         <div className="flex items-center gap-3">
           <span className="text-xs text-grey w-12 shrink-0">{latestYear}</span>
           <div className="flex-1 h-8 bg-black-2 rounded-md overflow-hidden">
             <motion.div
               className="h-full rounded-md"
-              style={{
-                width: barLatestWidth,
-                backgroundColor: layer.color,
-              }}
+              style={{ width: barLatestWidth, backgroundColor: layer.color }}
             />
           </div>
           <span className="text-xs text-white w-20 text-right shrink-0">
@@ -106,7 +95,7 @@ function LayerRow({
           </span>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -124,25 +113,19 @@ export function NationLayerComparisons({
   scrollYProgress,
 }: NationLayerComparisonsProps) {
   const { t } = useTranslation();
-
-  const headerOpacity = useTransform(scrollYProgress, [0, 0.14], [0, 1]);
-  const headerY = useTransform(scrollYProgress, [0, 0.14], [28, 0]);
-
   const mainLayers = layers.filter((l) => l.key !== "exportOfOilProducts");
 
   return (
     <div className="w-full max-w-4xl mx-auto">
-      <motion.div
-        style={{ opacity: headerOpacity, y: headerY }}
-        className="mb-8"
-      >
+      {/* Header always visible */}
+      <div className="mb-8">
         <h2 className="text-3xl md:text-4xl font-light text-white mb-3">
           {t("nation.story.comparisons.title")}
         </h2>
         <p className="text-grey text-lg">
           {t("nation.story.comparisons.description")}
         </p>
-      </motion.div>
+      </div>
 
       <div>
         {mainLayers.map((layer, index) => (
@@ -152,7 +135,7 @@ export function NationLayerComparisons({
             latestYear={latestYear}
             maxMton={maxMton}
             scrollYProgress={scrollYProgress}
-            range={ROW_RANGES[index] ?? [0.1, 0.42]}
+            range={ROW_RANGES[index] ?? [0.08, 0.38]}
           />
         ))}
       </div>

@@ -1,6 +1,5 @@
-import { useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { EntityListBox } from "@/components/detail/EntityListBox";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { NationECommerceScale } from "@/components/nation/story/NationECommerceScale";
@@ -33,56 +32,28 @@ export function NationStoryPage({
   const { currentLanguage } = useLanguage();
   const countryName = nation.country[currentLanguage];
 
-  // Intro section has its own scroll tracking
-  const introRef = useRef<HTMLElement>(null);
-  const { scrollYProgress: introProgress } = useScroll({
-    target: introRef,
-    offset: ["start start", "end end"],
-  });
-  const introP1 = useTransform(introProgress, [0, 0.3], [0, 1]);
-  const introP2 = useTransform(introProgress, [0.28, 0.58], [0, 1]);
-  const introP3 = useTransform(introProgress, [0.56, 0.86], [0, 1]);
-  const introP1Y = useTransform(introP1, [0, 1], [20, 0]);
-  const introP2Y = useTransform(introP2, [0, 1], [20, 0]);
-  const introP3Y = useTransform(introP3, [0, 1], [20, 0]);
-
   return (
     <div className="bg-black text-white pb-24">
-      {/* Intro – 230vh so 3 paragraphs have ~43vh each to animate in */}
-      <section
-        ref={introRef}
-        className="relative"
-        style={{ height: "230vh" }}
-      >
-        <div className="sticky top-0 h-screen flex items-center justify-center px-4 md:px-8">
-          <div className="max-w-3xl mx-auto text-center space-y-8">
-            {nation.logoUrl ? (
-              <img
-                src={nation.logoUrl}
-                alt=""
-                className="h-16 w-16 mx-auto object-contain opacity-80"
-              />
-            ) : null}
-            <h1 className="text-4xl md:text-6xl font-light">{countryName}</h1>
-            <motion.p
-              style={{ opacity: introP1, y: introP1Y }}
-              className="text-lg md:text-xl text-grey leading-relaxed"
-            >
-              {t("nation.story.intro.paragraph1")}
-            </motion.p>
-            <motion.p
-              style={{ opacity: introP2, y: introP2Y }}
-              className="text-lg md:text-xl text-grey leading-relaxed"
-            >
-              {t("nation.story.intro.paragraph2")}
-            </motion.p>
-            <motion.p
-              style={{ opacity: introP3, y: introP3Y }}
-              className="text-lg md:text-xl text-white leading-relaxed"
-            >
-              {t("nation.story.intro.paragraph3")}
-            </motion.p>
-          </div>
+      {/* Intro – static, no scroll gating */}
+      <section className="flex items-center justify-center min-h-screen px-4 md:px-8 py-24">
+        <div className="max-w-3xl mx-auto text-center space-y-8">
+          {nation.logoUrl ? (
+            <img
+              src={nation.logoUrl}
+              alt=""
+              className="h-16 w-16 mx-auto object-contain opacity-80"
+            />
+          ) : null}
+          <h1 className="text-4xl md:text-6xl font-light">{countryName}</h1>
+          <p className="text-lg md:text-xl text-grey leading-relaxed">
+            {t("nation.story.intro.paragraph1")}
+          </p>
+          <p className="text-lg md:text-xl text-grey leading-relaxed">
+            {t("nation.story.intro.paragraph2")}
+          </p>
+          <p className="text-lg md:text-xl text-white leading-relaxed">
+            {t("nation.story.intro.paragraph3")}
+          </p>
         </div>
       </section>
 
@@ -122,7 +93,10 @@ export function NationStoryPage({
       {/* Oil exports ~200vh */}
       <NationPinnedSection heightVh={200}>
         {(progress) => (
-          <NationOilExportsSection metrics={metrics} scrollYProgress={progress} />
+          <NationOilExportsSection
+            metrics={metrics}
+            scrollYProgress={progress}
+          />
         )}
       </NationPinnedSection>
 

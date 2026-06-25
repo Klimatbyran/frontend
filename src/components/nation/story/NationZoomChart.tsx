@@ -31,16 +31,14 @@ const LAYERS = [
   },
 ];
 
-// Section has 280vh → 180vh scrollable (at 100vh viewport).
-// Spread 4 phases across the full 0–1 range.
-const PHASE_RANGES = {
-  territorial: [0, 0.2] as [number, number],
-  biogenic: [0.22, 0.48] as [number, number],
-  consumption: [0.48, 0.72] as [number, number],
-  legend: [0.72, 0.92] as [number, number],
-};
+// Each layer gets ~25% of the progress range, staggered
+const LAYER_RANGES = [
+  [0.05, 0.35] as [number, number], // territorial
+  [0.35, 0.65] as [number, number], // biogenic
+  [0.65, 0.95] as [number, number], // consumption
+];
 
-const PHASE_BOUNDARIES = [0.22, 0.48, 0.72];
+const PHASE_THRESHOLDS = [0.35, 0.65];
 
 type NationZoomChartProps = {
   metrics: NationStoryMetrics;
@@ -55,119 +53,56 @@ export function NationZoomChart({
   const { currentLanguage } = useLanguage();
   const [phase, setPhase] = useState(0);
 
-  const zoomScale = useTransform(
-    scrollYProgress,
-    [0, 0.2, 0.48, 0.72, 1],
-    [1.35, 1.1, 0.92, 0.85, 0.85],
-  );
-  const territorialReveal = useTransform(
-    scrollYProgress,
-    PHASE_RANGES.territorial,
-    [0, 1],
-  );
-  const biogenicReveal = useTransform(
-    scrollYProgress,
-    PHASE_RANGES.biogenic,
-    [0, 1],
-  );
-  const consumptionReveal = useTransform(
-    scrollYProgress,
-    PHASE_RANGES.consumption,
-    [0, 1],
-  );
-  const legendReveal = useTransform(
-    scrollYProgress,
-    PHASE_RANGES.legend,
-    [0, 1],
-  );
-
-  // Caption fades between phases
-  const captionOpacity = useTransform(
-    scrollYProgress,
-    [0, 0.16, 0.22, 0.44, 0.48, 0.68, 0.72, 0.88, 0.92, 1],
-    [1, 1, 0, 1, 0, 1, 0, 1, 1, 1],
-  );
-
   useMotionValueEvent(scrollYProgress, "change", (v) => {
-    if (v < PHASE_BOUNDARIES[0]) setPhase(0);
-    else if (v < PHASE_BOUNDARIES[1]) setPhase(1);
-    else if (v < PHASE_BOUNDARIES[2]) setPhase(2);
-    else setPhase(3);
+    if (v < PHASE_THRESHOLDS[0]) setPhase(0);
+    else if (v < PHASE_THRESHOLDS[1]) setPhase(1);
+    else setPhase(2);
   });
 
   const maxMton = metrics.combinedLatestMton;
-  const barMaxHeight = 260;
+  const barMaxHeight = 280;
+
+  const barScales = LAYER_RANGES.map((range) =>
+    useTransform(scrollYProgress, range, [0, 1]),
+  );
 
   const captions = [
     t("nation.story.zoom.phase1"),
     t("nation.story.zoom.phase2"),
     t("nation.story.zoom.phase3"),
-    t("nation.story.zoom.phase4", {
-      ratio: metrics.ratioReportedToFull.toLocaleString(
-        currentLanguage === "sv" ? "sv-SE" : "en-GB",
-        { maximumFractionDigits: 1 },
-      ),
-      total: formatMton(metrics.combinedLatestMton, currentLanguage, 0),
-    }),
   ];
 
   return (
     <div className="flex flex-col items-center gap-8 w-full">
-      <motion.p
-        style={{ opacity: captionOpacity }}
-        className="text-xl md:text-2xl text-center text-grey max-w-2xl min-h-[4rem] font-light"
-      >
+      {/* Caption always visible, text switches on phase */}
+      <p className="text-xl md:text-2xl text-center text-grey max-w-2xl min-h-[4rem] font-light">
         {captions[phase]}
-      </motion.p>
+      </p>
 
-      <motion.div
-        style={{ scale: zoomScale }}
-        className="flex items-end justify-center gap-6 md:gap-10 w-full"
-      >
+      {/* Bar */}
+      <div className="flex items-end justify-center gap-6 md:gap-10 w-full">
         <div className="flex flex-col items-center gap-3">
           <div
-            className="relative flex flex-col-reverse items-stretch w-24 md:w-32 rounded-t-lg overflow-hidden border border-white/10"
+            className="flex flex-col-reverse items-stretch w-24 md:w-32 rounded-t-lg overflow-hidden border border-white/10"
             style={{ height: barMaxHeight }}
           >
-            <motion.div
-              className="w-full"
-              style={{
-                height: `${(metrics.territorialLatestMton / maxMton) * 100}%`,
-                backgroundColor: LAYERS[0].color,
-                scaleY: territorialReveal,
-                transformOrigin: "bottom",
-              }}
-            />
-            <motion.div
-              className="w-full"
-              style={{
-                height: `${(metrics.biogenicLatestMton / maxMton) * 100}%`,
-                backgroundColor: LAYERS[1].color,
-                scaleY: biogenicReveal,
-                transformOrigin: "bottom",
-              }}
-            />
-            <motion.div
-              className="w-full"
-              style={{
-                height: `${(metrics.consumptionLatestMton / maxMton) * 100}%`,
-                backgroundColor: LAYERS[2].color,
-                scaleY: consumptionReveal,
-                transformOrigin: "bottom",
-              }}
-            />
+            {LAYERS.map((layer, i) => (
+              <motion.div
+                key={layer.key}
+                style={{
+                  height: `${(layer.getMton(metrics) / maxMton) * 100}%`,
+                  backgroundColor: layer.color,
+                  scaleY: barScales[i],
+                  transformOrigin: "bottom",
+                }}
+              />
+            ))}
           </div>
-          <span className="text-xs md:text-sm text-grey text-center">
-            {formatMton(metrics.combinedLatestMton, currentLanguage, 0)}{" "}
-            {t("nation.story.unit.mton")}
-          </span>
         </div>
-      </motion.div>
+      </div>
 
-      <motion.div
-        style={{ opacity: legendReveal }}
-        className="flex flex-wrap justify-center gap-4 md:gap-6"
-      >
+      {/* Legend always visible */}
+      <div className="flex flex-wrap justify-center gap-4 md:gap-6">
         {LAYERS.map((layer) => (
           <div key={layer.key} className="flex items-center gap-2">
             <span
@@ -183,7 +118,7 @@ export function NationZoomChart({
             </span>
           </div>
         ))}
-      </motion.div>
+      </div>
     </div>
   );
 }
