@@ -72,6 +72,8 @@ function CompanyInsightsPanel({
   const statsPanel = (
     <KPIDetailsPanel
       title={selectedKPI.label}
+      description={selectedKPI.description}
+      higherIsBetter={selectedKPI.higherIsBetter}
       averageValue={statistics.formattedAverage}
       averageLabel={t("companies.list.insights.keyStatistics.average")}
       distributionStats={statistics.distributionStats}

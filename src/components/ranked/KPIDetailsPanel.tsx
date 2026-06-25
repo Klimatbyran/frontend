@@ -15,6 +15,8 @@ interface SourceLink {
 
 interface KPIDetailsPanelProps {
   title: string;
+  description?: string;
+  higherIsBetter?: boolean;
   averageValue?: string | number;
   averageLabel?: string;
   distributionStats: DistributionStat[];
@@ -35,6 +37,8 @@ const STAT_COLOR_MAP: Record<string, string> = {
 
 export default function KPIDetailsPanel({
   title,
+  description,
+  higherIsBetter,
   averageValue,
   averageLabel,
   distributionStats,
@@ -83,7 +87,30 @@ export default function KPIDetailsPanel({
     <div
       className={`p-6 flex flex-col justify-between gap-4 bg-white/5 rounded-level-2 shadow-lg h-full ${className}`}
     >
-      <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
+      <div className="space-y-2">
+        <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
+        {description && (
+          <p className="text-sm text-white/60 leading-relaxed">{description}</p>
+        )}
+        {higherIsBetter !== undefined && (
+          <span
+            className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full"
+            style={{
+              backgroundColor: higherIsBetter
+                ? `${COLORS.blue3}22`
+                : `${COLORS.pink3}22`,
+              color: higherIsBetter ? COLORS.blue3 : COLORS.pink3,
+            }}
+          >
+            <span>{higherIsBetter ? "↑" : "↓"}</span>
+            <span>
+              {higherIsBetter
+                ? t("municipalities.list.insights.distribution.higherBetter")
+                : t("municipalities.list.insights.distribution.lowerBetter")}
+            </span>
+          </span>
+        )}
+      </div>
 
       {averageValue !== undefined && (
         <div className="p-4 bg-white/10 rounded-level-2">
@@ -143,7 +170,9 @@ export default function KPIDetailsPanel({
         </div>
       )}
 
-      {children && <div className="flex-1 flex flex-col justify-end">{children}</div>}
+      {children && (
+        <div className="flex-1 flex flex-col justify-end">{children}</div>
+      )}
 
       <div className="space-y-1">
         {typeof missingDataCount === "number" &&

@@ -62,6 +62,8 @@ function RegionalInsightsPanel({
   const statsPanel = (
     <KPIDetailsPanel
       title={selectedKPI.label}
+      description={selectedKPI.description}
+      higherIsBetter={selectedKPI.higherIsBetter}
       averageValue={statistics.formattedAverage}
       averageLabel={t("municipalities.list.insights.keyStatistics.average")}
       distributionStats={statistics.distributionStats}
