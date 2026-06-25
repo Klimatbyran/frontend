@@ -1484,6 +1484,59 @@
   "nation": {
     "detailPage": {
       "regions": "Regions"
+    },
+    "story": {
+      "unit": {
+        "mton": "Mt"
+      },
+      "intro": {
+        "paragraph1": "Parties across the political spectrum often say Sweden's emissions have fallen by a third while the economy has doubled. That is only partly true. Everything depends on which data you choose to present, over what time period, and which types of emissions you include.",
+        "paragraph2": "This is sometimes called \"cherry picking\" – selecting data that supports the argument you want to make. The question of which emissions Sweden can influence (our control) is not the same as the question of where emissions occur.",
+        "paragraph3": "The atmosphere responds to the total amount of greenhouse gases – and they accumulate over time. That is why it is important to show a more complete picture."
+      },
+      "headline": {
+        "eyebrow": "Main angle",
+        "title": "Sweden's emissions are roughly <0>{{ratio}} times</0> larger than what is usually reported",
+        "reportedLabel": "Reported territorial fossil emissions ({{year}})",
+        "fullLabel": "Production-based, biogenic and consumption-based emissions ({{year}})",
+        "ratioCaption": "{{ratio}}× larger than the official figure",
+        "description": "The usual narrative is built almost entirely on territorial fossil emissions within Sweden's borders. Adding biogenic emissions and consumption-based emissions abroad changes the scale entirely.",
+        "combinedChange": "Combined, the three layers have moved from {{from}} to {{to}} Mt since 1990 ({{change}})."
+      },
+      "combined": {
+        "title": "Almost unchanged since 1990",
+        "paragraph1": "When we examine production-based, consumption-based and biogenic emissions together, they are almost as large today as in 1990. That paints a different picture than the usual story of Sweden's successful emission reductions.",
+        "changeLabel": "Change since 1990",
+        "paragraph2": "Official statistics show a clear decline in territorial fossil emissions. But when the full picture is included, the curve flattens out."
+      },
+      "biogenic": {
+        "title": "Biogenic emissions have more than doubled",
+        "paragraph1": "Biogenic emissions have more than doubled since 1990. To a large extent this is because heating today uses biomass in district heating and combined heat and power instead of oil and gas as before. Biogenic emissions also arise in the pulp and paper industry, and when cars run on biofuels.",
+        "biogenicChangeLabel": "Change in biogenic emissions",
+        "biogenicValues": "{{from}} → {{to}} Mt",
+        "prodBiogenicLabel": "Production + biogenic since 1990",
+        "prodBiogenicValues": "{{from}} → {{to}} Mt",
+        "paragraph2": "Combining production-based and biogenic emissions, totals have not fallen at all since 1990 – they have increased. Uptake of biogenic emissions from forests and land is not shown here."
+      },
+      "consumption": {
+        "title": "Consumption abroad – a hidden part of the picture",
+        "paragraph1": "Consumption-based emissions abroad are larger than production-based territorial emissions. Over time since 1990 they have fallen somewhat, but official statistics do not capture everything.",
+        "consumptionChangeLabel": "Consumption abroad since 1990",
+        "since1990": "since 1990",
+        "eCommerceLabel": "Private e-commerce from abroad ({{year}})",
+        "eCommerceDescription": "For the first time we have figures for emissions from private e-commerce from abroad – for example clothes ordered from foreign web shops.",
+        "gavleComparison": "Roughly equivalent to emissions in {{municipality}} in {{year}} ({{gavleTonnes}} tCO₂e)",
+        "paragraph2": "Consumption emissions abroad reflect where the goods and services we use in Sweden are produced – regardless of whether that happens inside or outside our borders."
+      },
+      "graph": {
+        "territorialFossil": "Production-based (territorial fossil)",
+        "biogenic": "Biogenic emissions",
+        "consumptionAbroad": "Consumption-based abroad"
+      },
+      "footer": {
+        "methodsPrompt": "Read more about data sources and methodology:",
+        "methodsLink": "National data in methodology"
+      }
     }
   },
   "regions": {

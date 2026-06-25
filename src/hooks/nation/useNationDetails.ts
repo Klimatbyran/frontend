@@ -1,61 +1,116 @@
 import { useQuery } from "@tanstack/react-query";
 import { getNationDetails } from "@/lib/api";
-import type { EmissionDataPoint } from "@/types/municipality";
-import { mapEmissionArray } from "@/utils/data/emissionArrayUtils";
+import nationFixture from "@/data/nation-data.fixture.json";
+import type { NationEmissionSeries } from "@/utils/data/nationStoryMetrics";
 
 export type NationDetails = {
   country: { sv: string; en: string };
   logoUrl: string | null;
-  emissions: (EmissionDataPoint | null)[];
-  approximatedHistoricalEmission: (EmissionDataPoint | null)[];
-  trend: (EmissionDataPoint | null)[];
-  meetsParis: boolean;
-  historicalEmissionChangePercent: number;
-};
+} & NationEmissionSeries;
 
-type ApiEmissionsSeries = ({ year: string; value: number } | null)[];
+type YearlyRecord = Record<string, number>;
+type EmissionSeries = ({ year: string; value: number } | null)[] | undefined;
 
-type ApiNationResponse = {
+type RawNationResponse = {
   country: { sv: string; en: string } | string;
   logoUrl?: string | null;
-  emissions?: ApiEmissionsSeries;
-  territorialFossilEmissions?: ApiEmissionsSeries;
-  approximatedHistoricalEmission: ApiEmissionsSeries;
-  trend: ApiEmissionsSeries;
-  historicalEmissionChangePercent: number;
-  meetsParis: boolean;
+  territorialFossilEmissions?: EmissionSeries | YearlyRecord;
+  biogenicEmissions?: EmissionSeries | YearlyRecord;
+  consumptionAbroadEmissions?: EmissionSeries | YearlyRecord;
+  eCommerceEmissions?: EmissionSeries | YearlyRecord;
+  emissions?: EmissionSeries | YearlyRecord;
 };
 
 function normalizeCountry(
-  country: ApiNationResponse["country"],
+  country: RawNationResponse["country"],
 ): NationDetails["country"] {
   if (typeof country === "string") {
-    return { sv: country, en: country };
+    return { sv: country, en: country === "Sverige" ? "Sweden" : country };
   }
-
   return { sv: country.sv, en: country.en };
 }
 
-function getPrimaryEmissionsSeries(
-  response: ApiNationResponse,
-): ApiEmissionsSeries | undefined {
-  return response.emissions ?? response.territorialFossilEmissions;
+function isYearlyRecord(value: unknown): value is YearlyRecord {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    !Array.isArray(value) &&
+    Object.keys(value).some((key) => !Number.isNaN(Number(key)))
+  );
 }
 
-function transformApiNationToNationDetails(
-  r: ApiNationResponse,
-): NationDetails {
+function extractYearRecord(
+  emissions: EmissionSeries | YearlyRecord | undefined,
+): Record<number, number> {
+  const record: Record<number, number> = {};
+
+  if (!emissions) return record;
+
+  if (isYearlyRecord(emissions)) {
+    Object.entries(emissions).forEach(([year, value]) => {
+      const parsedYear = Number(year);
+      if (!Number.isNaN(parsedYear) && typeof value === "number") {
+        record[parsedYear] = value;
+      }
+    });
+    return record;
+  }
+
+  emissions.forEach((point) => {
+    if (!point) return;
+    const parsedYear = Number(point.year);
+    if (!Number.isNaN(parsedYear)) {
+      record[parsedYear] = point.value;
+    }
+  });
+
+  return record;
+}
+
+function hasStorySchema(response: RawNationResponse): boolean {
+  const territorial = response.territorialFossilEmissions ?? response.emissions;
+  return (
+    !!territorial &&
+    !!response.biogenicEmissions &&
+    !!response.consumptionAbroadEmissions
+  );
+}
+
+function transformRawNation(response: RawNationResponse): NationDetails {
+  const territorialSource =
+    response.territorialFossilEmissions ?? response.emissions;
+
   return {
-    country: normalizeCountry(r.country),
-    logoUrl: r.logoUrl ?? null,
-    emissions: mapEmissionArray(getPrimaryEmissionsSeries(r)),
-    approximatedHistoricalEmission: mapEmissionArray(
-      r.approximatedHistoricalEmission,
-    ),
-    trend: mapEmissionArray(r.trend),
-    meetsParis: r.meetsParis ?? false,
-    historicalEmissionChangePercent: r.historicalEmissionChangePercent ?? 0,
+    country: normalizeCountry(response.country),
+    logoUrl: response.logoUrl ?? null,
+    territorialFossil: extractYearRecord(territorialSource),
+    biogenic: extractYearRecord(response.biogenicEmissions),
+    consumptionAbroad: extractYearRecord(response.consumptionAbroadEmissions),
+    eCommerce: extractYearRecord(response.eCommerceEmissions),
   };
+}
+
+function getFixtureNation(): RawNationResponse {
+  const fixtureEntry = nationFixture[0] as RawNationResponse;
+  return fixtureEntry;
+}
+
+async function fetchNationDetails(): Promise<NationDetails> {
+  const data = await getNationDetails();
+  const raw = (Array.isArray(data) ? data[0] : data) as RawNationResponse;
+
+  if (hasStorySchema(raw)) {
+    return transformRawNation(raw);
+  }
+
+  if (import.meta.env.DEV) {
+    console.warn(
+      "[nation] API response missing PR #1311 fields; using nation-data.fixture.json",
+    );
+    return transformRawNation(getFixtureNation());
+  }
+
+  return transformRawNation(raw);
 }
 
 export function useNationDetails() {
@@ -65,11 +120,11 @@ export function useNationDetails() {
     error,
   } = useQuery({
     queryKey: ["nation"],
-    queryFn: () => getNationDetails(),
+    queryFn: fetchNationDetails,
   });
 
   return {
-    nation: nation ? transformApiNationToNationDetails(nation) : null,
+    nation: nation ?? null,
     loading: isLoading,
     error: error as Error | null,
   };
