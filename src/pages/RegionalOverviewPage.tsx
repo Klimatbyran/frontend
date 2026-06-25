@@ -19,9 +19,7 @@ import { toRegionMapDataItem } from "@/utils/territoryMapData";
 import { RegionalRankedList } from "@/components/regions/RegionalRankedList";
 import { KPIChipSelector } from "@/components/ranked/KPIChipSelector";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
-import {
-  OverviewSplitLayout,
-} from "@/components/ranked/OverviewSplitLayout";
+import { OverviewSplitLayout } from "@/components/ranked/OverviewSplitLayout";
 import { createEntityClickHandler } from "@/utils/routing";
 import { RankedListItem } from "@/types/rankings";
 
@@ -50,7 +48,11 @@ export function RegionalOverviewPage() {
     setViewModeInURL,
   } = useRankedRegionsURLParams(regionalKPIs);
 
-  const handleRegionClick = createEntityClickHandler(navigate, "region", viewMode);
+  const handleRegionClick = createEntityClickHandler(
+    navigate,
+    "region",
+    viewMode,
+  );
 
   const handleRegionAreaClick = (name: string) => {
     const region = resolveRegionFromMapName(name, regionsData);
@@ -192,7 +194,7 @@ export function RegionalOverviewPage() {
         </div>
 
         {/* Row 2: distribution | top | bottom */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
           <RegionalInsightsPanel
             regionsData={regionsAsEntities}
             selectedKPI={selectedKPI}

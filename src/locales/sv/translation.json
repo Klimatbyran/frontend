@@ -1698,6 +1698,7 @@
         },
         "distribution": {
           "title": "Fördelning",
+          "subtitle": "Antal per värdeintervall för vald indikator",
           "summary": "Sammanfattning",
           "average": "Genomsnitt",
           "higherBetter": "Högre = bättre",

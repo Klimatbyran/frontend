@@ -1639,6 +1639,7 @@
         },
         "distribution": {
           "title": "Distribution",
+          "subtitle": "Count per value interval for selected indicator",
           "summary": "Summary",
           "average": "Average",
           "higherBetter": "Higher = better",

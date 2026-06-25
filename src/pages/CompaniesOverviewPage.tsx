@@ -283,7 +283,7 @@ export function CompaniesOverviewPage() {
         </div>
 
         {/* Row 2: distribution | top | bottom */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
           <CompanyInsightsPanel
             companyData={companiesWithKPIs}
             selectedKPI={selectedKPI}

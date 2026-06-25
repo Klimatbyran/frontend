@@ -236,7 +236,7 @@ export function MunicipalitiesOverviewPage() {
         </div>
 
         {/* Row 2: distribution | top list | bottom list */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
           <InsightsPanel
             municipalityData={municipalities}
             selectedKPI={selectedKPI}

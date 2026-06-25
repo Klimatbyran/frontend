@@ -222,7 +222,10 @@ export function KPIDistributionChart<T>({
   return (
     <div>
       <ResponsiveContainer width="100%" height={220}>
-        <BarChart data={bins} margin={{ top: 16, right: 4, bottom: 4, left: 4 }}>
+        <BarChart
+          data={bins}
+          margin={{ top: 16, right: 4, bottom: 4, left: 4 }}
+        >
           <XAxis
             dataKey="label"
             tick={{ fontSize: 11, fill: "rgba(255,255,255,0.45)" }}
@@ -282,20 +285,20 @@ export function KPIDistributionChart<T>({
         </BarChart>
       </ResponsiveContainer>
       {/* Color legend */}
-      <div className="flex items-center justify-between mt-3 px-1 gap-2">
+      <div className="flex items-center justify-between mt-3 px-1 gap-3">
         <div className="flex items-center gap-2">
           <span
             className="inline-block w-3 h-3 rounded-sm shrink-0"
             style={{ backgroundColor: COLORS.blue3 }}
           />
-          <span className="text-xs text-white/60">{goodLabel}</span>
+          <span className="text-sm text-white/70">{goodLabel}</span>
         </div>
         <div className="flex items-center gap-2">
           <span
             className="inline-block w-3 h-3 rounded-sm shrink-0"
             style={{ backgroundColor: COLORS.orange2 }}
           />
-          <span className="text-xs text-white/60">
+          <span className="text-sm text-white/70">
             {t("municipalities.list.insights.distribution.average")}
           </span>
         </div>
@@ -304,7 +307,7 @@ export function KPIDistributionChart<T>({
             className="inline-block w-3 h-3 rounded-sm shrink-0"
             style={{ backgroundColor: COLORS.pink3 }}
           />
-          <span className="text-xs text-white/60">{badLabel}</span>
+          <span className="text-sm text-white/70">{badLabel}</span>
         </div>
       </div>
     </div>

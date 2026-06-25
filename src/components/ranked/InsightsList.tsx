@@ -47,7 +47,7 @@ function InsightsList<T>({
     : 1;
 
   return (
-    <div className="bg-white/10 rounded-level-2 p-4 md:p-6">
+    <div className="bg-white/10 rounded-level-2 p-4 md:p-6 h-full">
       <h3 className="text-white text-lg font-semibold mb-3">{title}</h3>
       <div className="space-y-1">
         {entities.map((entity, index) => {
