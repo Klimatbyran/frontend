@@ -221,14 +221,11 @@ export function KPIDistributionChart<T>({
 
   return (
     <div>
-      <p className="text-xs text-white/50 mb-2 text-center">
-        {t("municipalities.list.insights.distribution.title")}
-      </p>
-      <ResponsiveContainer width="100%" height={140}>
-        <BarChart data={bins} margin={{ top: 8, right: 4, bottom: 4, left: 4 }}>
+      <ResponsiveContainer width="100%" height={220}>
+        <BarChart data={bins} margin={{ top: 16, right: 4, bottom: 4, left: 4 }}>
           <XAxis
             dataKey="label"
-            tick={{ fontSize: 9, fill: "rgba(255,255,255,0.35)" }}
+            tick={{ fontSize: 11, fill: "rgba(255,255,255,0.45)" }}
             tickLine={false}
             axisLine={false}
             interval="preserveStartEnd"
@@ -263,7 +260,7 @@ export function KPIDistributionChart<T>({
                   label={{
                     value: `Ø ${average.toFixed(1)}${unit}`,
                     position: "top",
-                    fontSize: 9,
+                    fontSize: 11,
                     fill: COLORS.orange2,
                   }}
                 />
@@ -285,29 +282,29 @@ export function KPIDistributionChart<T>({
         </BarChart>
       </ResponsiveContainer>
       {/* Color legend */}
-      <div className="flex items-center justify-between mt-1 px-1">
-        <div className="flex items-center gap-1.5">
+      <div className="flex items-center justify-between mt-3 px-1 gap-2">
+        <div className="flex items-center gap-2">
           <span
-            className="inline-block w-2.5 h-2.5 rounded-sm"
+            className="inline-block w-3 h-3 rounded-sm shrink-0"
             style={{ backgroundColor: COLORS.blue3 }}
           />
-          <span className="text-[10px] text-white/50">{goodLabel}</span>
+          <span className="text-xs text-white/60">{goodLabel}</span>
         </div>
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-2">
           <span
-            className="inline-block w-2.5 h-2.5 rounded-sm"
+            className="inline-block w-3 h-3 rounded-sm shrink-0"
             style={{ backgroundColor: COLORS.orange2 }}
           />
-          <span className="text-[10px] text-white/50">
+          <span className="text-xs text-white/60">
             {t("municipalities.list.insights.distribution.average")}
           </span>
         </div>
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-2">
           <span
-            className="inline-block w-2.5 h-2.5 rounded-sm"
+            className="inline-block w-3 h-3 rounded-sm shrink-0"
             style={{ backgroundColor: COLORS.pink3 }}
           />
-          <span className="text-[10px] text-white/50">{badLabel}</span>
+          <span className="text-xs text-white/60">{badLabel}</span>
         </div>
       </div>
     </div>

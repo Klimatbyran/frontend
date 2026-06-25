@@ -6,7 +6,7 @@ export function useMapPosition(
   defaultZoom?: number,
 ) {
   const getInitialZoom = useCallback(
-    () => defaultZoom || (isMobile ? 4 : 5),
+    () => defaultZoom || (isMobile ? 3 : 4),
     [defaultZoom],
   );
 

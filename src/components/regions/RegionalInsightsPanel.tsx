@@ -74,7 +74,13 @@ function RegionalInsightsPanel({
   );
 
   const distributionPanel = (
-    <div className="bg-white/5 rounded-level-2 p-6 h-full flex flex-col justify-center">
+    <div className="bg-white/5 rounded-level-2 p-6 flex flex-col gap-4">
+      <div>
+        <h3 className="text-lg font-semibold text-white">
+          {t("municipalities.list.insights.distribution.title")}
+        </h3>
+        <p className="text-sm text-white/50 mt-1">{selectedKPI.label}</p>
+      </div>
       <KPIDistributionChart<Region>
         data={regionData}
         selectedKPI={selectedKPI}
