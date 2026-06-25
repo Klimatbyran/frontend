@@ -1,5 +1,6 @@
+import { useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { motion, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { EntityListBox } from "@/components/detail/EntityListBox";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { NationECommerceScale } from "@/components/nation/story/NationECommerceScale";
@@ -7,7 +8,6 @@ import { NationLayerComparisons } from "@/components/nation/story/NationLayerCom
 import { NationOilExportsSection } from "@/components/nation/story/NationOilExportsSection";
 import { NationPinnedSection } from "@/components/nation/story/NationPinnedSection";
 import { NationZoomChart } from "@/components/nation/story/NationZoomChart";
-import { useScrollSection } from "@/components/nation/story/useScrollSection";
 import { useLanguage } from "@/components/LanguageProvider";
 import type { NationDetails } from "@/hooks/nation/useNationDetails";
 import type { NationStoryMetrics } from "@/utils/data/nationStoryMetrics";
@@ -33,26 +33,26 @@ export function NationStoryPage({
   const { currentLanguage } = useLanguage();
   const countryName = nation.country[currentLanguage];
 
-  const introScroll = useScrollSection({ heightVh: 120 });
-  const zoomScroll = useScrollSection({ heightVh: 450 });
-  const comparisonsScroll = useScrollSection({ heightVh: 380 });
-  const ecommerceScroll = useScrollSection({ heightVh: 320 });
-  const oilScroll = useScrollSection({ heightVh: 340 });
-
-  const introP1 = useTransform(introScroll.scrollYProgress, [0, 0.25], [0, 1]);
-  const introP2 = useTransform(introScroll.scrollYProgress, [0.2, 0.45], [0, 1]);
-  const introP3 = useTransform(introScroll.scrollYProgress, [0.4, 0.65], [0, 1]);
-  const introP1Y = useTransform(introP1, [0, 1], [24, 0]);
-  const introP2Y = useTransform(introP2, [0, 1], [24, 0]);
-  const introP3Y = useTransform(introP3, [0, 1], [24, 0]);
+  // Intro section has its own scroll tracking
+  const introRef = useRef<HTMLElement>(null);
+  const { scrollYProgress: introProgress } = useScroll({
+    target: introRef,
+    offset: ["start start", "end end"],
+  });
+  const introP1 = useTransform(introProgress, [0, 0.3], [0, 1]);
+  const introP2 = useTransform(introProgress, [0.28, 0.58], [0, 1]);
+  const introP3 = useTransform(introProgress, [0.56, 0.86], [0, 1]);
+  const introP1Y = useTransform(introP1, [0, 1], [20, 0]);
+  const introP2Y = useTransform(introP2, [0, 1], [20, 0]);
+  const introP3Y = useTransform(introP3, [0, 1], [20, 0]);
 
   return (
     <div className="bg-black text-white pb-24">
-      {/* Intro */}
+      {/* Intro – 230vh so 3 paragraphs have ~43vh each to animate in */}
       <section
-        ref={introScroll.ref}
+        ref={introRef}
         className="relative"
-        style={{ height: `${introScroll.heightVh}vh` }}
+        style={{ height: "230vh" }}
       >
         <div className="sticky top-0 h-screen flex items-center justify-center px-4 md:px-8">
           <div className="max-w-3xl mx-auto text-center space-y-8">
@@ -86,54 +86,44 @@ export function NationStoryPage({
         </div>
       </section>
 
-      {/* Zoom-out chart */}
-      <NationPinnedSection
-        scrollYProgress={zoomScroll.scrollYProgress}
-        heightVh={zoomScroll.heightVh}
-      >
-        <NationZoomChart
-          metrics={metrics}
-          scrollYProgress={zoomScroll.scrollYProgress}
-        />
+      {/* Zoom-out chart – 4 phases, each needs ~50vh of scroll; total ~280vh */}
+      <NationPinnedSection heightVh={280}>
+        {(progress) => (
+          <NationZoomChart metrics={metrics} scrollYProgress={progress} />
+        )}
       </NationPinnedSection>
 
-      {/* 1990 → today comparisons */}
-      <NationPinnedSection
-        scrollYProgress={comparisonsScroll.scrollYProgress}
-        heightVh={comparisonsScroll.heightVh}
-      >
-        <NationLayerComparisons
-          layers={metrics.layerComparisons}
-          latestYear={metrics.latestYear}
-          maxMton={metrics.maxLayerMton}
-          scrollYProgress={comparisonsScroll.scrollYProgress}
-        />
+      {/* 1990 → today comparisons – header + 3 rows, ~50vh each = ~210vh */}
+      <NationPinnedSection heightVh={210}>
+        {(progress) => (
+          <NationLayerComparisons
+            layers={metrics.layerComparisons}
+            latestYear={metrics.latestYear}
+            maxMton={metrics.maxLayerMton}
+            scrollYProgress={progress}
+          />
+        )}
       </NationPinnedSection>
 
-      {/* E-commerce scale */}
-      <NationPinnedSection
-        scrollYProgress={ecommerceScroll.scrollYProgress}
-        heightVh={ecommerceScroll.heightVh}
-      >
-        <NationECommerceScale
-          eCommerceTonnes={metrics.eCommerceLatestTonnes}
-          eCommerceYear={metrics.eCommerceYear}
-          smallMunicipalityName={smallMunicipalityName}
-          smallMunicipalityTonnes={smallMunicipalityTonnes}
-          gavleTonnes={gavleEmissionsTonnes}
-          scrollYProgress={ecommerceScroll.scrollYProgress}
-        />
+      {/* E-commerce scale – 3 bars + footer text ~180vh */}
+      <NationPinnedSection heightVh={200}>
+        {(progress) => (
+          <NationECommerceScale
+            eCommerceTonnes={metrics.eCommerceLatestTonnes}
+            eCommerceYear={metrics.eCommerceYear}
+            smallMunicipalityName={smallMunicipalityName}
+            smallMunicipalityTonnes={smallMunicipalityTonnes}
+            gavleTonnes={gavleEmissionsTonnes}
+            scrollYProgress={progress}
+          />
+        )}
       </NationPinnedSection>
 
-      {/* Oil exports */}
-      <NationPinnedSection
-        scrollYProgress={oilScroll.scrollYProgress}
-        heightVh={oilScroll.heightVh}
-      >
-        <NationOilExportsSection
-          metrics={metrics}
-          scrollYProgress={oilScroll.scrollYProgress}
-        />
+      {/* Oil exports ~200vh */}
+      <NationPinnedSection heightVh={200}>
+        {(progress) => (
+          <NationOilExportsSection metrics={metrics} scrollYProgress={progress} />
+        )}
       </NationPinnedSection>
 
       {/* Footer */}

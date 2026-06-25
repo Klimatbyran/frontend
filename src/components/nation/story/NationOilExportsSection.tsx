@@ -8,6 +8,7 @@ import {
 import { formatPercentChange } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
 
+// Section is 200vh → 100vh scrollable. Spread content across 0–0.95.
 type NationOilExportsSectionProps = {
   metrics: NationStoryMetrics;
   scrollYProgress: MotionValue<number>;
@@ -21,15 +22,12 @@ export function NationOilExportsSection({
   const { currentLanguage } = useLanguage();
 
   const headerOpacity = useTransform(scrollYProgress, [0, 0.15], [0, 1]);
-  const headerY = useTransform(scrollYProgress, [0, 0.15], [30, 0]);
-  const barReveal = useTransform(scrollYProgress, [0.2, 0.5], [0, 1]);
-  const stackReveal = useTransform(scrollYProgress, [0.45, 0.75], [0, 1]);
-  const textReveal = useTransform(scrollYProgress, [0.65, 0.9], [0, 1]);
+  const headerY = useTransform(scrollYProgress, [0, 0.15], [28, 0]);
+  const oilBarReveal = useTransform(scrollYProgress, [0.18, 0.48], [0, 1]);
+  const stackReveal = useTransform(scrollYProgress, [0.42, 0.68], [0, 1]);
+  const textReveal = useTransform(scrollYProgress, [0.62, 0.88], [0, 1]);
 
-  const maxMton = Math.max(
-    metrics.combinedLatestMton + metrics.oilExportLatestMton,
-    metrics.oilExportLatestMton,
-  );
+  const maxMton = metrics.combinedLatestMton + metrics.oilExportLatestMton;
   const barHeight = 260;
 
   return (
@@ -65,7 +63,7 @@ export function NationOilExportsSection({
               style={{
                 height: `${(metrics.oilExportLatestMton / maxMton) * 100}%`,
                 backgroundColor: "var(--pink-3)",
-                scaleY: barReveal,
+                scaleY: oilBarReveal,
                 transformOrigin: "bottom",
               }}
             />
@@ -85,7 +83,7 @@ export function NationOilExportsSection({
           </div>
           <div>
             <p className="text-sm text-grey">{metrics.latestYear}</p>
-            <p className="text-3xl text-pink-3 font-light">
+            <p className="text-3xl font-light" style={{ color: "var(--pink-3)" }}>
               {formatMton(metrics.oilExportLatestMton, currentLanguage, 0)}{" "}
               {t("nation.story.unit.mton")}
             </p>

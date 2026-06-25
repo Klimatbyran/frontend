@@ -8,6 +8,14 @@ import {
 import { formatPercentChange } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
 
+// Section is 210vh → 110vh scrollable. Spread 3 rows evenly.
+// Header: 0–0.15, Row1: 0.1–0.42, Row2: 0.35–0.67, Row3: 0.60–0.92
+const ROW_RANGES: [number, number][] = [
+  [0.1, 0.42],
+  [0.35, 0.67],
+  [0.6, 0.92],
+];
+
 function LayerRow({
   layer,
   latestYear,
@@ -25,16 +33,16 @@ function LayerRow({
   const { currentLanguage } = useLanguage();
 
   const rowProgress = useTransform(scrollYProgress, range, [0, 1]);
-  const opacity = useTransform(rowProgress, [0, 0.3, 1], [0, 1, 1]);
-  const slideX = useTransform(rowProgress, [0, 0.4], [-30, 0]);
+  const opacity = useTransform(rowProgress, [0, 0.25, 1], [0, 1, 1]);
+  const slideX = useTransform(rowProgress, [0, 0.35], [-28, 0]);
   const bar1990Width = useTransform(
     rowProgress,
-    [0.1, 0.55],
+    [0.08, 0.5],
     ["0%", `${(layer.mton1990 / maxMton) * 100}%`],
   );
   const barLatestWidth = useTransform(
     rowProgress,
-    [0.25, 0.7],
+    [0.22, 0.65],
     ["0%", `${(layer.mtonLatest / maxMton) * 100}%`],
   );
 
@@ -72,7 +80,7 @@ function LayerRow({
               style={{
                 width: bar1990Width,
                 backgroundColor: layer.color,
-                opacity: 0.55,
+                opacity: 0.5,
               }}
             />
           </div>
@@ -117,15 +125,10 @@ export function NationLayerComparisons({
 }: NationLayerComparisonsProps) {
   const { t } = useTranslation();
 
-  const headerOpacity = useTransform(scrollYProgress, [0, 0.15], [0, 1]);
-  const headerY = useTransform(scrollYProgress, [0, 0.15], [30, 0]);
+  const headerOpacity = useTransform(scrollYProgress, [0, 0.14], [0, 1]);
+  const headerY = useTransform(scrollYProgress, [0, 0.14], [28, 0]);
 
   const mainLayers = layers.filter((l) => l.key !== "exportOfOilProducts");
-  const rowRanges: [number, number][] = [
-    [0.1, 0.45],
-    [0.28, 0.63],
-    [0.46, 0.81],
-  ];
 
   return (
     <div className="w-full max-w-4xl mx-auto">
@@ -149,7 +152,7 @@ export function NationLayerComparisons({
             latestYear={latestYear}
             maxMton={maxMton}
             scrollYProgress={scrollYProgress}
-            range={rowRanges[index] ?? [0.1, 0.45]}
+            range={ROW_RANGES[index] ?? [0.1, 0.42]}
           />
         ))}
       </div>

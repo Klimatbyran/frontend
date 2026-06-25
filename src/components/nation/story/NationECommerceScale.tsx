@@ -3,6 +3,14 @@ import { motion, useTransform, type MotionValue } from "framer-motion";
 import { formatTonnes } from "@/utils/data/nationStoryMetrics";
 import { useLanguage } from "@/components/LanguageProvider";
 
+// Section is 200vh → 100vh scrollable.
+// Bar ranges spread across 0.1–0.75 so nothing finishes too early.
+const BAR_RANGES: [number, number][] = [
+  [0.08, 0.38],
+  [0.3, 0.6],
+  [0.52, 0.8],
+];
+
 function ScaleBar({
   label: barLabel,
   tonnes,
@@ -22,8 +30,8 @@ function ScaleBar({
 }) {
   const { currentLanguage } = useLanguage();
   const itemProgress = useTransform(scrollYProgress, range, [0, 1]);
-  const barScale = useTransform(itemProgress, [0, 1], [0, 1]);
-  const labelOpacity = useTransform(itemProgress, [0.35, 1], [0, 1]);
+  const barScale = useTransform(itemProgress, [0, 0.8], [0, 1]);
+  const labelOpacity = useTransform(itemProgress, [0.3, 1], [0, 1]);
 
   return (
     <motion.div
@@ -68,9 +76,9 @@ export function NationECommerceScale({
 }: NationECommerceScaleProps) {
   const { t } = useTranslation();
 
-  const headerOpacity = useTransform(scrollYProgress, [0, 0.12], [0, 1]);
-  const headerY = useTransform(scrollYProgress, [0, 0.12], [24, 0]);
-  const footerOpacity = useTransform(scrollYProgress, [0.72, 0.92], [0, 1]);
+  const headerOpacity = useTransform(scrollYProgress, [0, 0.1], [0, 1]);
+  const headerY = useTransform(scrollYProgress, [0, 0.1], [20, 0]);
+  const footerOpacity = useTransform(scrollYProgress, [0.75, 0.95], [0, 1]);
 
   const maxTonnes = Math.max(
     eCommerceTonnes,
@@ -79,6 +87,44 @@ export function NationECommerceScale({
     1,
   );
   const barHeight = 220;
+
+  // Bars available: small (optional), ecommerce, gavle (optional)
+  const bars = [
+    smallMunicipalityTonnes != null && smallMunicipalityName
+      ? {
+          id: "small",
+          label: t("nation.story.ecommerce.smallLabel", {
+            municipality: smallMunicipalityName,
+            year: eCommerceYear,
+          }),
+          tonnes: smallMunicipalityTonnes,
+          color: "var(--grey)",
+        }
+      : null,
+    {
+      id: "ecommerce",
+      label: t("nation.story.ecommerce.ecommerceLabel", {
+        year: eCommerceYear,
+      }),
+      tonnes: eCommerceTonnes,
+      color: "var(--orange-2)",
+    },
+    gavleTonnes != null
+      ? {
+          id: "gavle",
+          label: t("nation.story.ecommerce.gavleLabel", {
+            year: eCommerceYear,
+          }),
+          tonnes: gavleTonnes,
+          color: "var(--blue-2)",
+        }
+      : null,
+  ].filter(Boolean) as Array<{
+    id: string;
+    label: string;
+    tonnes: number;
+    color: string;
+  }>;
 
   return (
     <div className="w-full max-w-4xl mx-auto">
@@ -95,44 +141,18 @@ export function NationECommerceScale({
       </motion.div>
 
       <div className="flex items-end justify-center gap-6 md:gap-12 min-h-[280px]">
-        {smallMunicipalityTonnes != null && smallMunicipalityName ? (
+        {bars.map((bar, index) => (
           <ScaleBar
-            label={t("nation.story.ecommerce.smallLabel", {
-              municipality: smallMunicipalityName,
-              year: eCommerceYear,
-            })}
-            tonnes={smallMunicipalityTonnes}
-            color="var(--grey)"
+            key={bar.id}
+            label={bar.label}
+            tonnes={bar.tonnes}
+            color={bar.color}
             maxTonnes={maxTonnes}
             barHeight={barHeight}
             scrollYProgress={scrollYProgress}
-            range={[0.12, 0.38]}
+            range={BAR_RANGES[index] ?? [0.08, 0.38]}
           />
-        ) : null}
-        <ScaleBar
-          label={t("nation.story.ecommerce.ecommerceLabel", {
-            year: eCommerceYear,
-          })}
-          tonnes={eCommerceTonnes}
-          color="var(--orange-2)"
-          maxTonnes={maxTonnes}
-          barHeight={barHeight}
-          scrollYProgress={scrollYProgress}
-          range={[0.28, 0.54]}
-        />
-        {gavleTonnes != null ? (
-          <ScaleBar
-            label={t("nation.story.ecommerce.gavleLabel", {
-              year: eCommerceYear,
-            })}
-            tonnes={gavleTonnes}
-            color="var(--blue-2)"
-            maxTonnes={maxTonnes}
-            barHeight={barHeight}
-            scrollYProgress={scrollYProgress}
-            range={[0.44, 0.7]}
-          />
-        ) : null}
+        ))}
       </div>
 
       <motion.p
