@@ -83,7 +83,9 @@ function hasStorySchema(response: RawNationResponse): boolean {
   );
 }
 
-function recordToSortedPoints(record: Record<number, number>): YearValuePoint[] {
+function recordToSortedPoints(
+  record: Record<number, number>,
+): YearValuePoint[] {
   return Object.entries(record)
     .map(([year, value]) => ({ year: Number(year), value }))
     .sort((a, b) => a.year - b.year);
