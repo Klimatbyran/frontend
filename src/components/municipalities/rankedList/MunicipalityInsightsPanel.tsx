@@ -78,12 +78,14 @@ function InsightsPanel({
   );
 
   const distributionPanel = (
-    <div className="bg-white/5 rounded-level-2 p-6 flex flex-col gap-4 h-full">
+    <div className="bg-white/5 rounded-level-2 p-6 flex flex-col justify-between h-full gap-6">
       <div>
         <h3 className="text-2xl font-bold text-white">
           {t("municipalities.list.insights.distribution.title")}
         </h3>
-        <p className="text-sm text-white/50 mt-1">{t("municipalities.list.insights.distribution.subtitle")}</p>
+        <p className="text-sm text-white/50 mt-1">
+          {t("municipalities.list.insights.distribution.subtitle")}
+        </p>
       </div>
       <KPIDistributionChart
         data={municipalityData}
