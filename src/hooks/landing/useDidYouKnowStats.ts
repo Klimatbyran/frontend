@@ -10,9 +10,10 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { useCompanies } from "@/hooks/companies/useCompanies";
-import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
+import { useCompaniesKPIs } from "@/hooks/companies/useCompaniesKPIs";
 import { enrichCompanyWithKPIs } from "@/hooks/companies/useCompanyKPIs";
-import { calculateEmissionsChangeFromBaseYear } from "@/utils/calculations/emissionsCalculations";
+import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
+import type { CompanyKpiData } from "@/types/company";
 
 interface StatCard {
   icon: LucideIcon;
@@ -28,9 +29,25 @@ interface StatCard {
 const REDUCTION_THRESHOLD = -20;
 const MILLION_DIVISOR = 1_000_000;
 
+function toKpiDataFromCompanies(
+  companies: ReturnType<typeof useCompanies>["companies"],
+): CompanyKpiData[] {
+  return companies.map((company) => {
+    const enriched = enrichCompanyWithKPIs(company);
+    return {
+      wikidataId: company.wikidataId,
+      name: company.name,
+      meetsParis: enriched.meetsParis ?? null,
+      emissionsChangeFromBaseYear:
+        enriched.emissionsChangeFromBaseYear ?? null,
+    };
+  });
+}
+
 export function useDidYouKnowStats() {
   const { t } = useTranslation();
   const { companies } = useCompanies();
+  const { companiesKpiData } = useCompaniesKPIs();
   const { municipalities } = useMunicipalities();
 
   const stats = useMemo(() => {
@@ -38,30 +55,29 @@ export function useDidYouKnowStats() {
       return [];
     }
 
-    const enrichedCompanies = companies.map(enrichCompanyWithKPIs);
+    const kpiSource =
+      companiesKpiData.length > 0
+        ? companiesKpiData
+        : toKpiDataFromCompanies(companies);
 
-    // Stat #1: Companies with >20% reduction since base year
-    const companiesWithSignificantReduction = enrichedCompanies.filter(
-      (company) => {
-        const changePercent = calculateEmissionsChangeFromBaseYear(company, {
-          useLastPeriod: false,
-        });
-        return changePercent !== null && changePercent < REDUCTION_THRESHOLD;
-      },
+    const companyCount = kpiSource.length;
+
+    // Stat #1: Companies with >20% reduction since base year (from /companies/kpis)
+    const companiesWithSignificantReduction = kpiSource.filter(
+      (company) =>
+        company.emissionsChangeFromBaseYear !== null &&
+        company.emissionsChangeFromBaseYear < REDUCTION_THRESHOLD,
     );
 
-    // Stat #2: Companies with increased emissions from base year
-    const companiesWithIncreasedEmissions = enrichedCompanies.filter(
-      (company) => {
-        const changePercent = calculateEmissionsChangeFromBaseYear(company, {
-          useLastPeriod: false,
-        });
-        return changePercent !== null && changePercent > 0;
-      },
+    // Stat #2: Companies with increased emissions from base year (from /companies/kpis)
+    const companiesWithIncreasedEmissions = kpiSource.filter(
+      (company) =>
+        company.emissionsChangeFromBaseYear !== null &&
+        company.emissionsChangeFromBaseYear > 0,
     );
 
     // Stat #3: Combined Paris alignment (companies + municipalities)
-    const companiesMeetingParis = enrichedCompanies.filter(
+    const companiesMeetingParis = kpiSource.filter(
       (company) => company.meetsParis === true,
     );
     const municipalitiesOnTrack = municipalities.filter(
@@ -70,7 +86,7 @@ export function useDidYouKnowStats() {
     const totalParisAligned =
       companiesMeetingParis.length + municipalitiesOnTrack.length;
 
-    // Stat #4: Companies reporting Scope 3 categories
+    // Stat #4: Companies reporting Scope 3 categories (requires full /companies/ data)
     const companiesWithScope3Categories = companies.filter((company) => {
       const latestPeriod = company.reportingPeriods?.[0];
       const scope3Categories =
@@ -123,7 +139,7 @@ export function useDidYouKnowStats() {
         headline: `${companiesWithSignificantReduction.length}`,
         description: t("landingPage.didYouKnow.stat1.description", {
           count: companiesWithSignificantReduction.length,
-          total: companies.length,
+          total: companyCount,
         }),
         bgColor: "bg-green-4",
         iconBgColor: "bg-green-3",
@@ -136,7 +152,7 @@ export function useDidYouKnowStats() {
         headline: `${companiesWithIncreasedEmissions.length}`,
         description: t("landingPage.didYouKnow.stat2.description", {
           count: companiesWithIncreasedEmissions.length,
-          total: companies.length,
+          total: companyCount,
         }),
         bgColor: "bg-pink-4",
         iconBgColor: "bg-pink-3",
@@ -149,7 +165,7 @@ export function useDidYouKnowStats() {
         headline: `${totalParisAligned}`,
         description: t("landingPage.didYouKnow.stat3.description", {
           companyCount: companiesMeetingParis.length,
-          companyTotal: companies.length,
+          companyTotal: companyCount,
           municipalityCount: municipalitiesOnTrack.length,
           municipalityTotal: municipalities.length,
         }),
@@ -201,7 +217,7 @@ export function useDidYouKnowStats() {
     ];
 
     return statCards;
-  }, [companies, municipalities, t]);
+  }, [companies, companiesKpiData, municipalities, t]);
 
   return stats;
 }

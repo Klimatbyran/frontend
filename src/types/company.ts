@@ -80,6 +80,11 @@ export type CompanyListItem = NonNullable<
   paths["/companies/"]["get"]["responses"][200]["content"]["application/json"][number]
 >;
 
+// Company KPI type from the KPI endpoint (/companies/kpis)
+export type CompanyKpiData = NonNullable<
+  paths["/companies/kpis"]["get"]["responses"][200]["content"]["application/json"][number]
+>;
+
 // Extended company type with metrics and optional rankings
 export interface RankedCompany
   extends Omit<CompanyListItem, "reportingPeriods"> {

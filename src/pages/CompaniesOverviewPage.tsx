@@ -16,6 +16,11 @@ import {
   CompanyWithKPIs,
   enrichCompanyWithKPIs,
 } from "@/hooks/companies/useCompanyKPIs";
+import {
+  useCompaniesKPIs,
+  buildCompanyKpiLookup,
+  mergeApiKpisOntoCompany,
+} from "@/hooks/companies/useCompaniesKPIs";
 import { DataPoint } from "@/types/rankings";
 import {
   OverviewSplitLayout,
@@ -26,6 +31,7 @@ import { getCompanyDetailPath } from "@/utils/companyRouting";
 export function CompaniesOverviewPage() {
   const { t } = useTranslation();
   const { companies, companiesLoading, companiesError } = useCompanies();
+  const { companiesKpiData } = useCompaniesKPIs();
   const companyKPIs = useCompanyKPIs();
 
   const location = useLocation();
@@ -119,17 +125,25 @@ export function CompaniesOverviewPage() {
     }
   }, [getSectorFromURL, selectedSector]);
 
-  // Filter and enrich companies with KPI values
+  // Filter companies by sector and merge API KPI values (fallback to client calc if KPI API unavailable)
   const companiesWithKPIs: CompanyWithKPIs[] = useMemo(() => {
-    if (!companies || !selectedSector) return [];
+    if (!companies || !selectedSector) {
+      return [];
+    }
 
     const filtered = companies.filter((company) => {
       const sectorCode = company.industry?.industryGics?.sectorCode;
       return sectorCode === selectedSector;
     });
 
-    return filtered.map((company) => enrichCompanyWithKPIs(company));
-  }, [companies, selectedSector]);
+    if (companiesKpiData.length === 0) {
+      return filtered.map((company) => enrichCompanyWithKPIs(company));
+    }
+
+    const kpiLookup = buildCompanyKpiLookup(companiesKpiData);
+
+    return filtered.map((company) => mergeApiKpisOntoCompany(company, kpiLookup));
+  }, [companies, companiesKpiData, selectedSector]);
 
   const handleSectorChange = (sector: string) => {
     setSelectedSector(sector);
