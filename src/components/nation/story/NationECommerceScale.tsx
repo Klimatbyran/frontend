@@ -1,10 +1,8 @@
 import { useTranslation } from "react-i18next";
-import { motion, useTransform, type MotionValue } from "framer-motion";
+import { motion } from "framer-motion";
 import { formatTonnes } from "@/utils/data/nationStoryMetrics";
 import { useLanguage } from "@/components/LanguageProvider";
 import { NATION_STORY_STAGGER_RANGES } from "@/components/nation/story/nationStoryScrollAnimation";
-
-const BAR_RANGES = NATION_STORY_STAGGER_RANGES;
 
 function ScaleBar({
   label: barLabel,
@@ -12,29 +10,30 @@ function ScaleBar({
   color,
   maxTonnes,
   barHeight,
-  scrollYProgress,
-  range,
+  staggerIndex,
 }: {
   label: string;
   tonnes: number;
   color: string;
   maxTonnes: number;
   barHeight: number;
-  scrollYProgress: MotionValue<number>;
-  range: [number, number];
+  staggerIndex: number;
 }) {
   const { currentLanguage } = useLanguage();
-  const barScale = useTransform(scrollYProgress, range, [0, 1]);
+  const finalHeight = (tonnes / maxTonnes) * barHeight;
 
   return (
     <div className="flex flex-col items-center gap-3 flex-1 max-w-[160px]">
       <motion.div
         className="w-full rounded-t-lg"
-        style={{
-          height: (tonnes / maxTonnes) * barHeight,
-          backgroundColor: color,
-          scaleY: barScale,
-          transformOrigin: "bottom",
+        style={{ backgroundColor: color, transformOrigin: "bottom" }}
+        initial={{ height: 0 }}
+        whileInView={{ height: finalHeight }}
+        viewport={{ once: false, amount: 0.4 }}
+        transition={{
+          duration: 0.7,
+          delay: staggerIndex * 0.18,
+          ease: [0.16, 1, 0.3, 1],
         }}
       />
       <div className="text-center space-y-1">
@@ -54,7 +53,6 @@ type NationECommerceScaleProps = {
   smallMunicipalityName: string | null;
   smallMunicipalityTonnes: number | null;
   gavleTonnes: number | null;
-  scrollYProgress: MotionValue<number>;
 };
 
 export function NationECommerceScale({
@@ -64,7 +62,6 @@ export function NationECommerceScale({
   smallMunicipalityName,
   smallMunicipalityTonnes,
   gavleTonnes,
-  scrollYProgress,
 }: NationECommerceScaleProps) {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
@@ -127,7 +124,7 @@ export function NationECommerceScale({
   }>;
 
   return (
-    <div className="w-full max-w-4xl mx-auto">
+    <div>
       <div className="mb-10 text-center md:text-left">
         <h2 className="text-3xl md:text-4xl font-light text-white mb-3">
           {t("nation.story.ecommerce.title")}
@@ -137,7 +134,7 @@ export function NationECommerceScale({
         </p>
       </div>
 
-      <div className="flex items-end justify-center gap-6 md:gap-12 min-h-[280px]">
+      <div className="flex items-end justify-center gap-6 md:gap-12 min-h-[260px]">
         {bars.map((bar, index) => (
           <ScaleBar
             key={bar.id}
@@ -146,8 +143,7 @@ export function NationECommerceScale({
             color={bar.color}
             maxTonnes={maxTonnes}
             barHeight={barHeight}
-            scrollYProgress={scrollYProgress}
-            range={BAR_RANGES[index] ?? [0, NATION_STORY_STAGGER_RANGES[2][1]]}
+            staggerIndex={index}
           />
         ))}
       </div>

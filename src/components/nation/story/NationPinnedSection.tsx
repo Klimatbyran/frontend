@@ -4,16 +4,12 @@ import type { MotionValue } from "framer-motion";
 
 type NationPinnedSectionProps = {
   heightVh?: number;
-  /** Pull section up by one viewport height so it sticks immediately after
-   * the previous section un-pins, eliminating dead scroll between sections. */
-  overlap?: boolean;
   children: (scrollYProgress: MotionValue<number>) => ReactNode;
   className?: string;
 };
 
 export function NationPinnedSection({
   heightVh = 220,
-  overlap = false,
   children,
   className = "",
 }: NationPinnedSectionProps) {
@@ -34,17 +30,10 @@ export function NationPinnedSection({
   return (
     <section
       ref={ref}
-      className={`relative w-full bg-black ${className}`}
-      style={{
-        height: `${heightVh}vh`,
-        // Negative margin pulls this section up so its sticky starts exactly
-        // when the previous section's sticky ends – zero dead scroll between.
-        marginTop: overlap ? "-100vh" : undefined,
-        // Stay above lower sections while this one is sticky
-        zIndex: overlap ? 10 : undefined,
-      }}
+      className={`relative w-full ${className}`}
+      style={{ height: `${heightVh}vh` }}
     >
-      <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
+      <div className="sticky top-0 h-screen w-full flex items-center justify-center">
         <div className="w-full max-w-6xl mx-auto px-4 md:px-8 h-full flex flex-col justify-center">
           {children(smoothProgress)}
         </div>

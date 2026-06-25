@@ -21,6 +21,15 @@ type NationStoryPageProps = {
   oilPoints: NationDetails["exportOfOilProductsPoints"];
 };
 
+/** Wrapper for non-pinned sections that still need to be full-screen centered */
+function FullScreenSection({ children }: { children: React.ReactNode }) {
+  return (
+    <section className="min-h-screen flex items-center justify-center px-4 md:px-8 py-16">
+      <div className="w-full max-w-4xl mx-auto">{children}</div>
+    </section>
+  );
+}
+
 export function NationStoryPage({
   nation,
   metrics,
@@ -36,7 +45,7 @@ export function NationStoryPage({
 
   return (
     <div className="bg-black text-white pb-24">
-      {/* Intro – static, no scroll gating */}
+      {/* Intro */}
       <section className="flex items-center justify-center min-h-screen px-4 md:px-8 py-24">
         <div className="max-w-3xl mx-auto text-center space-y-8">
           {nation.logoUrl ? (
@@ -59,12 +68,14 @@ export function NationStoryPage({
         </div>
       </section>
 
+      {/* Zoom chart – sticky scroll-driven (sequential layer reveal) */}
       <NationPinnedSection heightVh={200}>
         {(progress) => (
           <NationZoomChart metrics={metrics} scrollYProgress={progress} />
         )}
       </NationPinnedSection>
 
+      {/* 1990 → today – sticky scroll-driven (sequential row reveal) */}
       <NationPinnedSection heightVh={195}>
         {(progress) => (
           <NationLayerComparisons
@@ -76,36 +87,25 @@ export function NationStoryPage({
         )}
       </NationPinnedSection>
 
-      <NationPinnedSection heightVh={150}>
-        {(progress) => (
-          <NationECommerceScale
-            eCommerceTonnes={metrics.eCommerceLatestTonnes}
-            eCommerceYear={metrics.eCommerceYear}
-            territorialEmissionsTonnes={
-              metrics.territorialLatestMton * 1_000_000
-            }
-            smallMunicipalityName={smallMunicipalityName}
-            smallMunicipalityTonnes={smallMunicipalityTonnes}
-            gavleTonnes={gavleEmissionsTonnes}
-            scrollYProgress={progress}
-          />
-        )}
-      </NationPinnedSection>
+      {/* E-commerce – plain full-screen section, bars animate on viewport entry */}
+      <FullScreenSection>
+        <NationECommerceScale
+          eCommerceTonnes={metrics.eCommerceLatestTonnes}
+          eCommerceYear={metrics.eCommerceYear}
+          territorialEmissionsTonnes={metrics.territorialLatestMton * 1_000_000}
+          smallMunicipalityName={smallMunicipalityName}
+          smallMunicipalityTonnes={smallMunicipalityTonnes}
+          gavleTonnes={gavleEmissionsTonnes}
+        />
+      </FullScreenSection>
 
-      <NationPinnedSection heightVh={150} overlap>
-        {(progress) => (
-          <NationOilExportsSection
-            oilPoints={oilPoints}
-            scrollYProgress={progress}
-          />
-        )}
-      </NationPinnedSection>
+      {/* Oil – plain full-screen section */}
+      <FullScreenSection>
+        <NationOilExportsSection oilPoints={oilPoints} />
+      </FullScreenSection>
 
-      {/* Footer – pulled up so it starts as oil exits */}
-      <section
-        className="max-w-5xl mx-auto px-4 md:px-8 pt-6 relative bg-black"
-        style={{ marginTop: "-100vh", zIndex: 20 }}
-      >
+      {/* Footer */}
+      <section className="max-w-5xl mx-auto px-4 md:px-8 pt-6 pb-16">
         <motion.div
           initial={{ opacity: 0, y: 32 }}
           whileInView={{ opacity: 1, y: 0 }}

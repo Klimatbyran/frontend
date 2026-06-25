@@ -1,16 +1,13 @@
 import { useTranslation } from "react-i18next";
 import { ExportOfOilProductsEmissionsChart } from "@/components/nation/ExportOfOilProductsEmissionsChart";
 import type { YearValuePoint } from "@/hooks/nation/useNationDetails";
-import type { MotionValue } from "framer-motion";
 
 type NationOilExportsSectionProps = {
   oilPoints: YearValuePoint[];
-  scrollYProgress: MotionValue<number>;
 };
 
 export function NationOilExportsSection({
   oilPoints,
-  scrollYProgress,
 }: NationOilExportsSectionProps) {
   const { t } = useTranslation();
 
@@ -24,10 +21,7 @@ export function NationOilExportsSection({
           {t("nation.story.oil.description")}
         </p>
       </div>
-      <ExportOfOilProductsEmissionsChart
-        data={oilPoints}
-        scrollYProgress={scrollYProgress}
-      />
+      <ExportOfOilProductsEmissionsChart data={oilPoints} />
     </div>
   );
 }
