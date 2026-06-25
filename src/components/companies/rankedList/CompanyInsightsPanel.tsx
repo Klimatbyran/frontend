@@ -101,7 +101,9 @@ function CompanyInsightsPanel({
           >
             {stat.count}
           </div>
-          <div className="text-white/70 text-sm leading-tight">{stat.label}</div>
+          <div className="text-white/70 text-sm leading-tight">
+            {stat.label}
+          </div>
         </div>
       ))}
     </div>

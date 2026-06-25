@@ -38,11 +38,8 @@ export function RegionalOverviewPage() {
 
   const navigate = useNavigate();
 
-  const {
-    selectedKPI,
-    setSelectedKPI,
-    setKPIInURL,
-  } = useRankedRegionsURLParams(regionalKPIs);
+  const { selectedKPI, setSelectedKPI, setKPIInURL } =
+    useRankedRegionsURLParams(regionalKPIs);
 
   const handleRegionClick = createEntityClickHandler(navigate, "region");
 
