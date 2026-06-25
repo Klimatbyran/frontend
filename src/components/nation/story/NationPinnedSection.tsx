@@ -33,7 +33,7 @@ export function NationPinnedSection({
       className={`relative w-full ${className}`}
       style={{ height: `${heightVh}vh` }}
     >
-      <div className="sticky top-0 h-screen w-full flex items-center justify-center">
+      <div className="sticky top-0 h-screen w-full flex items-center justify-center bg-black">
         <div className="w-full max-w-6xl mx-auto px-4 md:px-8 h-full flex flex-col justify-center">
           {children(smoothProgress)}
         </div>

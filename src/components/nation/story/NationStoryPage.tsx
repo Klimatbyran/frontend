@@ -83,7 +83,7 @@ export function NationStoryPage({
       </NationPinnedSection>
 
       {/* Stacked area chart – full historical view */}
-      <FullScreenSection overlap>
+      <FullScreenSection>
         <div className="mb-8">
           <h2 className="text-3xl md:text-4xl font-light text-white mb-3">
             {t("nation.story.stacked.title")}
