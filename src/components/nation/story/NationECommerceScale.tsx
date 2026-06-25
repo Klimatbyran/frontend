@@ -9,7 +9,6 @@ const TRELLEBORG_TONNES = 129_769;
 
 function ScaleBar({
   label: barLabel,
-  sublabel,
   tonnes,
   color,
   maxTonnes,
@@ -18,7 +17,6 @@ function ScaleBar({
   highlight = false,
 }: {
   label: string;
-  sublabel?: string;
   tonnes: number;
   color: string;
   maxTonnes: number;
@@ -49,12 +47,11 @@ function ScaleBar({
         >
           {formatTonnes(tonnes, currentLanguage, 0)}
         </p>
-        <p className={`text-xs leading-snug ${highlight ? "text-white" : "text-grey"}`}>
+        <p
+          className={`text-xs leading-snug ${highlight ? "text-white" : "text-grey"}`}
+        >
           {barLabel}
         </p>
-        {sublabel && (
-          <p className="text-xs text-grey leading-snug">{sublabel}</p>
-        )}
       </div>
     </div>
   );
@@ -88,7 +85,6 @@ export function NationECommerceScale({
       <div className="flex items-end justify-center gap-6 md:gap-12 min-h-[260px]">
         <ScaleBar
           label="Trelleborg"
-          sublabel={t("nation.story.ecommerce.municipalityLabel")}
           tonnes={TRELLEBORG_TONNES}
           color="var(--grey)"
           maxTonnes={maxTonnes}
@@ -108,7 +104,6 @@ export function NationECommerceScale({
         />
         <ScaleBar
           label="Gävle"
-          sublabel={t("nation.story.ecommerce.municipalityLabel")}
           tonnes={GAVLE_TONNES}
           color="var(--blue-2)"
           maxTonnes={maxTonnes}
@@ -120,11 +115,7 @@ export function NationECommerceScale({
       <p className="mt-8 text-grey text-center text-base md:text-lg max-w-2xl mx-auto">
         {t("nation.story.ecommerce.comparisonFooter", {
           ecommerceYear: eCommerceYear,
-          ecommerceTonnes: formatTonnes(
-            eCommerceTonnes,
-            "sv",
-            0,
-          ),
+          ecommerceTonnes: formatTonnes(eCommerceTonnes, "sv", 0),
         })}
       </p>
     </div>
