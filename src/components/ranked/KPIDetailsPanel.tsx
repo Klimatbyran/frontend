@@ -81,9 +81,9 @@ export default function KPIDetailsPanel({
 
   return (
     <div
-      className={`p-6 space-y-4 bg-white/5 rounded-level-2 shadow-lg ${className}`}
+      className={`p-6 flex flex-col justify-between gap-4 bg-white/5 rounded-level-2 shadow-lg h-full ${className}`}
     >
-      <h2 className="text-2xl font-semibold tracking-tight mb-4">{title}</h2>
+      <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
 
       {averageValue !== undefined && (
         <div className="p-4 bg-white/10 rounded-level-2">
@@ -143,16 +143,18 @@ export default function KPIDetailsPanel({
         </div>
       )}
 
-      {children}
+      {children && <div className="flex-1 flex flex-col justify-end">{children}</div>}
 
-      {typeof missingDataCount === "number" &&
-        missingDataCount > 0 &&
-        missingDataLabel && (
-          <p className="text-gray-400 text-xs italic">
-            {missingDataCount} {lowercaseFirstLetter(missingDataLabel)}
-          </p>
-        )}
-      {sourceSection}
+      <div className="space-y-1">
+        {typeof missingDataCount === "number" &&
+          missingDataCount > 0 &&
+          missingDataLabel && (
+            <p className="text-gray-400 text-xs italic">
+              {missingDataCount} {lowercaseFirstLetter(missingDataLabel)}
+            </p>
+          )}
+        {sourceSection}
+      </div>
     </div>
   );
 }
