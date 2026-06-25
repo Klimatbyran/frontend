@@ -5,16 +5,7 @@ import { NationStoryPage } from "@/components/nation/story/NationStoryPage";
 import { useNationStoryData } from "@/hooks/nation/useNationStoryData";
 
 export function NationDetailPage() {
-  const {
-    nation,
-    metrics,
-    sortedRegions,
-    gavleEmissionsTonnes,
-    smallMunicipalityName,
-    smallMunicipalityTonnes,
-    loading,
-    error,
-  } = useNationStoryData();
+  const { nation, metrics, sortedRegions, loading, error } = useNationStoryData();
 
   if (loading) return <PageLoading />;
   if (error) return <PageError />;
@@ -25,9 +16,6 @@ export function NationDetailPage() {
       nation={nation}
       metrics={metrics}
       sortedRegions={sortedRegions}
-      gavleEmissionsTonnes={gavleEmissionsTonnes}
-      smallMunicipalityName={smallMunicipalityName}
-      smallMunicipalityTonnes={smallMunicipalityTonnes}
       oilPoints={nation.exportOfOilProductsPoints}
     />
   );

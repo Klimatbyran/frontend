@@ -214,8 +214,8 @@ export function ExportOfOilProductsEmissionsChart({
   const fallbackProgress = useMotionValue(0);
   const activeProgress = scrollYProgress ?? fallbackProgress;
 
-  const [scrollProgress, setScrollProgress] = useState(
-    () => activeProgress.get(),
+  const [scrollProgress, setScrollProgress] = useState(() =>
+    activeProgress.get(),
   );
 
   useEffect(() => {

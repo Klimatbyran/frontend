@@ -14,9 +14,6 @@ type NationStoryPageProps = {
   nation: NationDetails;
   metrics: NationStoryMetrics;
   sortedRegions: string[];
-  gavleEmissionsTonnes: number | null;
-  smallMunicipalityName: string | null;
-  smallMunicipalityTonnes: number | null;
   oilPoints: NationDetails["exportOfOilProductsPoints"];
 };
 
@@ -33,9 +30,6 @@ export function NationStoryPage({
   nation,
   metrics,
   sortedRegions,
-  gavleEmissionsTonnes,
-  smallMunicipalityName,
-  smallMunicipalityTonnes,
   oilPoints,
 }: NationStoryPageProps) {
   const { t } = useTranslation();
@@ -91,10 +85,6 @@ export function NationStoryPage({
         <NationECommerceScale
           eCommerceTonnes={metrics.eCommerceLatestTonnes}
           eCommerceYear={metrics.eCommerceYear}
-          territorialEmissionsTonnes={metrics.territorialLatestMton * 1_000_000}
-          smallMunicipalityName={smallMunicipalityName}
-          smallMunicipalityTonnes={smallMunicipalityTonnes}
-          gavleTonnes={gavleEmissionsTonnes}
         />
       </FullScreenSection>
 

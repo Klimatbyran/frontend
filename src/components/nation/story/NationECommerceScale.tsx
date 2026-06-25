@@ -2,22 +2,29 @@ import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { formatTonnes } from "@/utils/data/nationStoryMetrics";
 import { useLanguage } from "@/components/LanguageProvider";
-import { NATION_STORY_STAGGER_RANGES } from "@/components/nation/story/nationStoryScrollAnimation";
+
+// Hardcoded reference municipality values for perspective
+const GAVLE_TONNES = 328_161;
+const TRELLEBORG_TONNES = 129_769;
 
 function ScaleBar({
   label: barLabel,
+  sublabel,
   tonnes,
   color,
   maxTonnes,
   barHeight,
   staggerIndex,
+  highlight = false,
 }: {
   label: string;
+  sublabel?: string;
   tonnes: number;
   color: string;
   maxTonnes: number;
   barHeight: number;
   staggerIndex: number;
+  highlight?: boolean;
 }) {
   const { currentLanguage } = useLanguage();
   const finalHeight = (tonnes / maxTonnes) * barHeight;
@@ -37,10 +44,17 @@ function ScaleBar({
         }}
       />
       <div className="text-center space-y-1">
-        <p className="text-white text-sm font-medium">
+        <p
+          className={`text-sm font-medium ${highlight ? "text-orange-2" : "text-white"}`}
+        >
           {formatTonnes(tonnes, currentLanguage, 0)}
         </p>
-        <p className="text-xs text-grey leading-snug">{barLabel}</p>
+        <p className={`text-xs leading-snug ${highlight ? "text-white" : "text-grey"}`}>
+          {barLabel}
+        </p>
+        {sublabel && (
+          <p className="text-xs text-grey leading-snug">{sublabel}</p>
+        )}
       </div>
     </div>
   );
@@ -49,79 +63,16 @@ function ScaleBar({
 type NationECommerceScaleProps = {
   eCommerceTonnes: number;
   eCommerceYear: number;
-  territorialEmissionsTonnes: number;
-  smallMunicipalityName: string | null;
-  smallMunicipalityTonnes: number | null;
-  gavleTonnes: number | null;
 };
 
 export function NationECommerceScale({
   eCommerceTonnes,
   eCommerceYear,
-  territorialEmissionsTonnes,
-  smallMunicipalityName,
-  smallMunicipalityTonnes,
-  gavleTonnes,
 }: NationECommerceScaleProps) {
   const { t } = useTranslation();
-  const { currentLanguage } = useLanguage();
 
-  const proportionPercent =
-    territorialEmissionsTonnes > 0
-      ? (eCommerceTonnes / territorialEmissionsTonnes) * 100
-      : null;
-  const proportionFormatted =
-    proportionPercent != null
-      ? proportionPercent.toLocaleString(
-          currentLanguage === "sv" ? "sv-SE" : "en-GB",
-          { minimumFractionDigits: 1, maximumFractionDigits: 1 },
-        )
-      : null;
-
-  const maxTonnes = Math.max(
-    eCommerceTonnes,
-    gavleTonnes ?? 0,
-    smallMunicipalityTonnes ?? 0,
-    1,
-  );
+  const maxTonnes = Math.max(eCommerceTonnes, GAVLE_TONNES, 1);
   const barHeight = 220;
-
-  const bars = [
-    smallMunicipalityTonnes != null && smallMunicipalityName
-      ? {
-          id: "small",
-          label: t("nation.story.ecommerce.smallLabel", {
-            municipality: smallMunicipalityName,
-            year: eCommerceYear,
-          }),
-          tonnes: smallMunicipalityTonnes,
-          color: "var(--grey)",
-        }
-      : null,
-    {
-      id: "ecommerce",
-      label: t("nation.story.ecommerce.ecommerceLabel", {
-        year: eCommerceYear,
-      }),
-      tonnes: eCommerceTonnes,
-      color: "var(--orange-2)",
-    },
-    gavleTonnes != null
-      ? {
-          id: "gavle",
-          label: t("nation.story.ecommerce.gavleLabel", {
-            year: eCommerceYear,
-          }),
-          tonnes: gavleTonnes,
-          color: "var(--blue-2)",
-        }
-      : null,
-  ].filter(Boolean) as Array<{
-    id: string;
-    label: string;
-    tonnes: number;
-    color: string;
-  }>;
 
   return (
     <div>
@@ -135,30 +86,46 @@ export function NationECommerceScale({
       </div>
 
       <div className="flex items-end justify-center gap-6 md:gap-12 min-h-[260px]">
-        {bars.map((bar, index) => (
-          <ScaleBar
-            key={bar.id}
-            label={bar.label}
-            tonnes={bar.tonnes}
-            color={bar.color}
-            maxTonnes={maxTonnes}
-            barHeight={barHeight}
-            staggerIndex={index}
-          />
-        ))}
-      </div>
-
-      {proportionFormatted != null && (
-        <p className="mt-6 text-center text-sm text-grey">
-          {t("nation.story.ecommerce.proportionLabel", {
-            percent: proportionFormatted,
+        <ScaleBar
+          label="Trelleborg"
+          sublabel={t("nation.story.ecommerce.municipalityLabel")}
+          tonnes={TRELLEBORG_TONNES}
+          color="var(--grey)"
+          maxTonnes={maxTonnes}
+          barHeight={barHeight}
+          staggerIndex={0}
+        />
+        <ScaleBar
+          label={t("nation.story.ecommerce.ecommerceLabel", {
             year: eCommerceYear,
           })}
-        </p>
-      )}
+          tonnes={eCommerceTonnes}
+          color="var(--orange-2)"
+          maxTonnes={maxTonnes}
+          barHeight={barHeight}
+          staggerIndex={1}
+          highlight
+        />
+        <ScaleBar
+          label="Gävle"
+          sublabel={t("nation.story.ecommerce.municipalityLabel")}
+          tonnes={GAVLE_TONNES}
+          color="var(--blue-2)"
+          maxTonnes={maxTonnes}
+          barHeight={barHeight}
+          staggerIndex={2}
+        />
+      </div>
 
-      <p className="mt-4 text-grey text-center text-base md:text-lg">
-        {t("nation.story.ecommerce.footer")}
+      <p className="mt-8 text-grey text-center text-base md:text-lg max-w-2xl mx-auto">
+        {t("nation.story.ecommerce.comparisonFooter", {
+          ecommerceYear: eCommerceYear,
+          ecommerceTonnes: formatTonnes(
+            eCommerceTonnes,
+            "sv",
+            0,
+          ),
+        })}
       </p>
     </div>
   );
