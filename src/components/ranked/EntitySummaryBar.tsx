@@ -136,10 +136,7 @@ export function EntitySummaryBar<T>({
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
       {stats.map((stat, i) => (
-        <div
-          key={i}
-          className="bg-white/5 rounded-2xl p-4 flex flex-col gap-1"
-        >
+        <div key={i} className="bg-white/5 rounded-2xl p-4 flex flex-col gap-1">
           <p className="text-xs text-white/40 uppercase tracking-wider leading-tight">
             {stat.label}
           </p>

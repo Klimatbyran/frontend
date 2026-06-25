@@ -21,12 +21,25 @@ export function OverviewSplitLayout({
   visualization,
   list,
 }: OverviewSplitLayoutProps) {
+  const showBoth =
+    viewMode !== visualizationMode && viewMode !== listMode;
+  const showVisualization =
+    showBoth || viewMode === visualizationMode;
+  const showList = showBoth || viewMode === listMode;
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+    <div
+      className={cn(
+        "grid gap-6 items-stretch",
+        showVisualization && showList
+          ? "grid-cols-1 md:grid-cols-2"
+          : "grid-cols-1",
+      )}
+    >
       <div
         className={cn(
           OVERVIEW_VISUALIZATION_PANEL_CLASS,
-          viewMode !== visualizationMode && "max-md:hidden",
+          !showVisualization && "hidden",
         )}
       >
         {visualization}
@@ -34,7 +47,7 @@ export function OverviewSplitLayout({
       <div
         className={cn(
           "min-w-0 h-full",
-          viewMode !== listMode && "max-md:hidden",
+          !showList && "hidden",
         )}
       >
         {list}

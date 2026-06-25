@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Map, List, TrendingDown, Leaf } from "lucide-react";
+import { Map, List, ArrowDownCircle, Leaf } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { FeatureCollection } from "geojson";
 import { useNavigate } from "react-router-dom";
@@ -19,13 +19,12 @@ import { resolveRegionFromMapName, toMapRegionName } from "@/utils/regionUtils";
 import { toRegionMapDataItem } from "@/utils/territoryMapData";
 import { RegionalRankedList } from "@/components/regions/RegionalRankedList";
 import { KPIChipSelector } from "@/components/ranked/KPIChipSelector";
-import { EntitySummaryBar } from "@/components/ranked/EntitySummaryBar";
 import { OverviewSplitLayout } from "@/components/ranked/OverviewSplitLayout";
 import { createEntityClickHandler } from "@/utils/routing";
 import { RankedListItem } from "@/types/rankings";
 
 const REGION_KPI_ICONS: Record<string, React.ReactNode> = {
-  historicalEmissionChangePercent: <TrendingDown className="w-4 h-4" />,
+  historicalEmissionChangePercent: <ArrowDownCircle className="w-4 h-4" />,
   meetsParis: <Leaf className="w-4 h-4" />,
 };
 
@@ -161,34 +160,28 @@ export function RegionalOverviewPage() {
         label={t("municipalities.list.dataSelector.label")}
       />
 
-      <div className="flex mb-4 md:hidden">
-        <ViewModeToggle
-          viewMode={viewMode}
-          modes={["map", "list"]}
-          onChange={(mode) => setViewModeInURL(mode)}
-          titles={{
-            map: t("viewModeToggle.map"),
-            list: t("viewModeToggle.list"),
-          }}
-          showTitles
-          icons={{
-            map: <Map className="w-4 h-4" />,
-            list: <List className="w-4 h-4" />,
-          }}
-        />
-      </div>
-
-      <div className="space-y-6">
+      <div className="space-y-4">
+        <div className="flex">
+          <ViewModeToggle
+            viewMode={viewMode}
+            modes={["map", "list"]}
+            onChange={(mode) => setViewModeInURL(mode)}
+            titles={{
+              map: t("viewModeToggle.map"),
+              list: t("viewModeToggle.list"),
+            }}
+            showTitles
+            icons={{
+              map: <Map className="w-4 h-4" />,
+              list: <List className="w-4 h-4" />,
+            }}
+          />
+        </div>
         <OverviewSplitLayout
           viewMode={viewMode}
           visualizationMode="map"
           visualization={mapPanel}
           list={regionalRankedList}
-        />
-        <EntitySummaryBar<Region>
-          entities={regionsAsEntities}
-          selectedKPI={selectedKPI}
-          entityNoun={t("header.regions").toLowerCase()}
         />
         <RegionalInsightsPanel
           regionsData={regionsAsEntities}

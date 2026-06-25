@@ -1,5 +1,16 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { Map, List, Leaf, TrendingDown, ShoppingCart, FileCheck, Car, Zap, Bike } from "lucide-react";
+import {
+  Map,
+  List,
+  Leaf,
+  ArrowDownCircle,
+  ShoppingCart,
+  FileCheck,
+  Car,
+  Zap,
+  Bike,
+  ArrowUpCircle,
+} from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { FeatureCollection } from "geojson";
@@ -24,17 +35,18 @@ import {
   type OverviewViewMode,
 } from "@/components/ranked/OverviewSplitLayout";
 import { KPIChipSelector } from "@/components/ranked/KPIChipSelector";
-import { EntitySummaryBar } from "@/components/ranked/EntitySummaryBar";
 import type { Municipality } from "@/types/municipality";
 
+// ArrowDownCircle = "lower is better / goal is reduction"
+// ArrowUpCircle   = "higher is better / goal is increase"
 const MUNICIPALITY_KPI_ICONS: Record<string, React.ReactNode> = {
   meetsParisGoal: <Leaf className="w-4 h-4" />,
-  historicalEmissionChangePercent: <TrendingDown className="w-4 h-4" />,
+  historicalEmissionChangePercent: <ArrowDownCircle className="w-4 h-4" />,
   totalConsumptionEmission: <ShoppingCart className="w-4 h-4" />,
   climatePlan: <FileCheck className="w-4 h-4" />,
-  electricCarChangePercent: <Car className="w-4 h-4" />,
+  electricCarChangePercent: <ArrowUpCircle className="w-4 h-4" />,
   electricVehiclePerChargePoints: <Zap className="w-4 h-4" />,
-  bicycleMetrePerCapita: <Bike className="w-4 h-4" />,
+  bicycleMetrePerCapita: <ArrowUpCircle className="w-4 h-4" />,
 };
 
 export function MunicipalitiesOverviewPage() {
@@ -179,23 +191,6 @@ export function MunicipalitiesOverviewPage() {
         className="-ml-4"
       />
 
-      <div className="flex mb-4 md:hidden">
-        <ViewModeToggle
-          viewMode={viewMode}
-          modes={["map", "list"]}
-          onChange={(mode) => setViewModeInURL(mode)}
-          titles={{
-            map: t("municipalities.list.viewToggle.showMap"),
-            list: t("municipalities.list.viewToggle.showList"),
-          }}
-          showTitles
-          icons={{
-            map: <Map className="w-4 h-4" />,
-            list: <List className="w-4 h-4" />,
-          }}
-        />
-      </div>
-
       <KPIChipSelector<Municipality>
         selectedKPI={selectedKPI}
         kpis={municipalityKPIs}
@@ -207,17 +202,28 @@ export function MunicipalitiesOverviewPage() {
         translationPrefix="municipalities.list"
       />
 
-      <div className="space-y-6">
+      <div className="space-y-4">
+        <div className="flex">
+          <ViewModeToggle
+            viewMode={viewMode}
+            modes={["map", "list"]}
+            onChange={(mode) => setViewModeInURL(mode)}
+            titles={{
+              map: t("municipalities.list.viewToggle.showMap"),
+              list: t("municipalities.list.viewToggle.showList"),
+            }}
+            showTitles
+            icons={{
+              map: <Map className="w-4 h-4" />,
+              list: <List className="w-4 h-4" />,
+            }}
+          />
+        </div>
         <OverviewSplitLayout
           viewMode={viewMode}
           visualizationMode="map"
           visualization={mapPanel}
           list={municipalityRankedList}
-        />
-        <EntitySummaryBar<Municipality>
-          entities={municipalities}
-          selectedKPI={selectedKPI}
-          entityNoun={t("header.municipalities").toLowerCase()}
         />
         <InsightsPanel
           municipalityData={municipalities}

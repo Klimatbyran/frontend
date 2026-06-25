@@ -1,11 +1,10 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { Map, List, Leaf, TrendingDown } from "lucide-react";
+import { Map, List, Leaf, ArrowDownCircle } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useCompanies } from "@/hooks/companies/useCompanies";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { KPIChipSelector } from "@/components/ranked/KPIChipSelector";
-import { EntitySummaryBar } from "@/components/ranked/EntitySummaryBar";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import RankedList from "@/components/ranked/RankedList";
 import CompanyInsightsPanel from "@/components/companies/rankedList/CompanyInsightsPanel";
@@ -26,7 +25,7 @@ import { getCompanyDetailPath } from "@/utils/companyRouting";
 
 const COMPANY_KPI_ICONS: Record<string, React.ReactNode> = {
   meetsParis: <Leaf className="w-4 h-4" />,
-  emissionsChangeFromBaseYear: <TrendingDown className="w-4 h-4" />,
+  emissionsChangeFromBaseYear: <ArrowDownCircle className="w-4 h-4" />,
 };
 
 export function CompaniesOverviewPage() {
@@ -226,23 +225,6 @@ export function CompaniesOverviewPage() {
         className="-ml-4"
       />
 
-      <div className="flex mb-4 md:hidden">
-        <ViewModeToggle
-          viewMode={viewMode}
-          modes={["graph", "list"]}
-          onChange={(mode) => setViewModeInURL(mode)}
-          titles={{
-            graph: t("companiesOverviewPage.viewToggle.showGraph", "Graph"),
-            list: t("companiesOverviewPage.viewToggle.showList", "List"),
-          }}
-          showTitles
-          icons={{
-            graph: <Map className="w-4 h-4" />,
-            list: <List className="w-4 h-4" />,
-          }}
-        />
-      </div>
-
       <KPIChipSelector<CompanyWithKPIs>
         selectedKPI={selectedKPI}
         kpis={companyKPIs}
@@ -263,17 +245,28 @@ export function CompaniesOverviewPage() {
         />
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-4">
+        <div className="flex">
+          <ViewModeToggle
+            viewMode={viewMode}
+            modes={["graph", "list"]}
+            onChange={(mode) => setViewModeInURL(mode)}
+            titles={{
+              graph: t("companiesOverviewPage.viewToggle.showGraph", "Graf"),
+              list: t("companiesOverviewPage.viewToggle.showList", "Lista"),
+            }}
+            showTitles
+            icons={{
+              graph: <Map className="w-4 h-4" />,
+              list: <List className="w-4 h-4" />,
+            }}
+          />
+        </div>
         <OverviewSplitLayout
           viewMode={viewMode}
           visualizationMode="graph"
           visualization={visualizationPanel}
           list={companyRankedList}
-        />
-        <EntitySummaryBar<CompanyWithKPIs>
-          entities={companiesWithKPIs}
-          selectedKPI={selectedKPI}
-          entityNoun={t("header.companies").toLowerCase()}
         />
         <CompanyInsightsPanel
           companyData={companiesWithKPIs}

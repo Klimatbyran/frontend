@@ -30,7 +30,10 @@ export function KPIChipSelector<T>({
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
         setMobileOpen(false);
       }
     };
@@ -45,8 +48,7 @@ export function KPIChipSelector<T>({
     return kpi.label;
   };
 
-  const selectorLabel =
-    label ?? t("municipalities.list.dataSelector.label");
+  const selectorLabel = label ?? t("municipalities.list.dataSelector.label");
 
   return (
     <div className="mb-6 space-y-3">
