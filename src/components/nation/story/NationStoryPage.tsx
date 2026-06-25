@@ -83,7 +83,7 @@ export function NationStoryPage({
       </NationPinnedSection>
 
       {/* Stacked area chart – full historical view */}
-      <FullScreenSection>
+      <FullScreenSection overlap>
         <div className="mb-8">
           <h2 className="text-3xl md:text-4xl font-light text-white mb-3">
             {t("nation.story.stacked.title")}
@@ -92,11 +92,13 @@ export function NationStoryPage({
             {t("nation.story.stacked.description")}
           </p>
         </div>
-        <NationStackedChart data={metrics.stackData} />
+        <div className="h-[400px]">
+          <NationStackedChart data={metrics.stackData} />
+        </div>
       </FullScreenSection>
 
       {/* 1990 → today – sticky scroll-driven (sequential row reveal) */}
-      <NationPinnedSection heightVh={195}>
+      <NationPinnedSection heightVh={195} overlap>
         {(progress) => (
           <NationLayerComparisons
             layers={metrics.layerComparisons}

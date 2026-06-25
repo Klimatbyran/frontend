@@ -4,12 +4,15 @@ import type { MotionValue } from "framer-motion";
 
 type NationPinnedSectionProps = {
   heightVh?: number;
+  /** Pull up by 100vh so this section pins immediately after the previous one exits */
+  overlap?: boolean;
   children: (scrollYProgress: MotionValue<number>) => ReactNode;
   className?: string;
 };
 
 export function NationPinnedSection({
   heightVh = 220,
+  overlap = false,
   children,
   className = "",
 }: NationPinnedSectionProps) {
@@ -31,7 +34,11 @@ export function NationPinnedSection({
     <section
       ref={ref}
       className={`relative w-full ${className}`}
-      style={{ height: `${heightVh}vh` }}
+      style={{
+        height: `${heightVh}vh`,
+        marginTop: overlap ? "-100vh" : undefined,
+        zIndex: overlap ? 10 : undefined,
+      }}
     >
       <div className="sticky top-0 h-screen w-full flex items-center justify-center bg-black">
         <div className="w-full max-w-6xl mx-auto px-4 md:px-8 h-full flex flex-col justify-center">
