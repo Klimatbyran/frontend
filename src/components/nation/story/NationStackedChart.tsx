@@ -19,7 +19,6 @@ import {
   ChartWrapper,
   ChartYearControls,
   EnhancedLegend,
-  filterDataByYearRange,
   getChartContainerProps,
   getCurrentYearReferenceLineProps,
   getResponsiveChartMargin,
@@ -70,7 +69,7 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({ data }) => {
   );
 
   const filteredData = useMemo(
-    () => filterDataByYearRange(data, chartEndYear),
+    () => data.filter((d) => d.year <= chartEndYear),
     [data, chartEndYear],
   );
 
