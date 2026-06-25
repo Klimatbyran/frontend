@@ -28,11 +28,12 @@ import {
   createChartClickHandler,
   createCustomTickRenderer,
   ChartTooltip,
-  formatTurnoverAxisValue,
 } from "@/components/charts";
+import { formatTurnoverAxisValue } from "@/utils/formatting/turnoverFormatting";
 import { useLanguage } from "@/components/LanguageProvider";
 import { LegendItem } from "@/types/charts";
 import { getBaseYearChartSettings } from "@/utils/data/turnoverChartData";
+import { formatTurnoverAxisValue } from "@/utils/formatting/turnoverFormatting";
 
 interface TurnoverEmissionsChartProps {
   displayData: ChartData[];

@@ -140,15 +140,6 @@ export const getYAxisProps = (
   padding: { top: 0, bottom: 0 },
 });
 
-export const formatTurnoverAxisValue = (
-  value: number,
-  currentLanguage: "sv" | "en",
-): string =>
-  new Intl.NumberFormat(currentLanguage === "sv" ? "sv-SE" : "en-GB", {
-    notation: "compact",
-    maximumFractionDigits: 1,
-  }).format(value);
-
 // Custom tick renderer factory
 export const createCustomTickRenderer =
   (baseYear?: number, isBaseYearBold: boolean = true) =>

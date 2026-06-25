@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
 import { formatEmissionsAbsolute } from "@/utils/formatting/localization";
-import { formatTurnoverChartValue } from "@/utils/formatting/turnoverFormatting";
+import { formatTurnoverValue } from "@/utils/formatting/turnoverFormatting";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { cn } from "@/lib/utils";
 import { AiIcon } from "@/components/ui/ai-icon";
@@ -171,7 +171,7 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
     const name = formatName(String(entry.name || entry.dataKey || ""), entry);
     const isTurnoverEntry = entry.dataKey === "turnover";
     const value = isTurnoverEntry
-      ? formatTurnoverChartValue(
+      ? formatTurnoverValue(
           entry.value as number,
           entry.payload?.turnoverCurrency,
           currentLanguage,
