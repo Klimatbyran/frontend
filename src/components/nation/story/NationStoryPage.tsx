@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { EntityListBox } from "@/components/detail/EntityListBox";
 import { NationECommerceScale } from "@/components/nation/story/NationECommerceScale";
 import { NationLayerComparisons } from "@/components/nation/story/NationLayerComparisons";
+import { NationStackedChart } from "@/components/nation/story/NationStackedChart";
 import { NationOilExportsSection } from "@/components/nation/story/NationOilExportsSection";
 import { NationPinnedSection } from "@/components/nation/story/NationPinnedSection";
 import { NationZoomChart } from "@/components/nation/story/NationZoomChart";
@@ -29,7 +30,9 @@ function FullScreenSection({
     <section
       className="min-h-screen flex items-center justify-center px-4 md:px-8 py-16 bg-black"
       style={
-        overlap ? { marginTop: "-100vh", position: "relative", zIndex: 10 } : undefined
+        overlap
+          ? { marginTop: "-100vh", position: "relative", zIndex: 10 }
+          : undefined
       }
     >
       <div className="w-full max-w-4xl mx-auto">{children}</div>
@@ -78,6 +81,19 @@ export function NationStoryPage({
           <NationZoomChart metrics={metrics} scrollYProgress={progress} />
         )}
       </NationPinnedSection>
+
+      {/* Stacked area chart – full historical view */}
+      <FullScreenSection overlap>
+        <div className="mb-8">
+          <h2 className="text-3xl md:text-4xl font-light text-white mb-3">
+            {t("nation.story.stacked.title")}
+          </h2>
+          <p className="text-grey text-lg max-w-2xl">
+            {t("nation.story.stacked.description")}
+          </p>
+        </div>
+        <NationStackedChart data={metrics.stackData} />
+      </FullScreenSection>
 
       {/* 1990 → today – sticky scroll-driven (sequential row reveal) */}
       <NationPinnedSection heightVh={195}>

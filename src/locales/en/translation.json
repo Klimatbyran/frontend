@@ -1551,6 +1551,10 @@
         "phase3": "Add consumption-based emissions abroad – where we actually consume.",
         "phase4": "The full picture is {{ratio}}× larger: {{total}} Mt – an entirely different scale."
       },
+      "stacked": {
+        "title": "Combined emissions since 1990",
+        "description": "Stacked view of territorial fossil, biogenic and consumption-based emissions abroad since 1990."
+      },
       "comparisons": {
         "title": "1990 compared to today",
         "description": "Scroll to see how each emission category has changed since 1990.",

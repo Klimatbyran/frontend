@@ -1608,6 +1608,10 @@
         "phase3": "Lägg till konsumtionsbaserade utsläpp utomlands – var vi faktiskt konsumerar.",
         "phase4": "Helheten är {{ratio}}× större: {{total}} Mton – en helt annan skala."
       },
+      "stacked": {
+        "title": "De samlade utsläppen sedan 1990",
+        "description": "Staplat diagram över territoriella fossila, biogena och konsumtionsbaserade utsläpp utomlands sedan 1990."
+      },
       "comparisons": {
         "title": "1990 jämfört med idag",
         "description": "Scrolla för att se hur varje utsläppskategori utvecklats sedan 1990.",
