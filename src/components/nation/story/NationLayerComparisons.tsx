@@ -52,7 +52,7 @@ function LayerRow({
             layer.changePercent <= 0 ? "text-green-3" : "text-pink-3"
           }`}
         >
-          {formatPercentChange(layer.changePercent, currentLanguage, true)}{" "}
+          {formatPercentChange(layer.changePercent, currentLanguage)}{" "}
           {t("nation.story.comparisons.since1990")}
         </span>
       </div>
