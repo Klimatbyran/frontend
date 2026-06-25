@@ -18,9 +18,20 @@ type NationStoryPageProps = {
 };
 
 /** Wrapper for non-pinned sections that still need to be full-screen centered */
-function FullScreenSection({ children }: { children: React.ReactNode }) {
+function FullScreenSection({
+  children,
+  overlap = false,
+}: {
+  children: React.ReactNode;
+  overlap?: boolean;
+}) {
   return (
-    <section className="min-h-screen flex items-center justify-center px-4 md:px-8 py-16">
+    <section
+      className="min-h-screen flex items-center justify-center px-4 md:px-8 py-16 bg-black"
+      style={
+        overlap ? { marginTop: "-100vh", position: "relative", zIndex: 10 } : undefined
+      }
+    >
       <div className="w-full max-w-4xl mx-auto">{children}</div>
     </section>
   );
@@ -80,8 +91,8 @@ export function NationStoryPage({
         )}
       </NationPinnedSection>
 
-      {/* E-commerce – plain full-screen section, bars animate on viewport entry */}
-      <FullScreenSection>
+      {/* E-commerce – pulled up to close dead scroll after comparisons */}
+      <FullScreenSection overlap>
         <NationECommerceScale
           eCommerceTonnes={metrics.eCommerceLatestTonnes}
           eCommerceYear={metrics.eCommerceYear}
