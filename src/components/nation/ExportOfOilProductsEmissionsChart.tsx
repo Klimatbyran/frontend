@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useMotionValueEvent, type MotionValue } from "framer-motion";
 import {
   Bar,
@@ -177,22 +177,38 @@ function ExportOfOilProductsTooltip({
 export function ExportOfOilProductsEmissionsChart({
   data,
   scrollYProgress,
+  hideHeader = false,
   className,
 }: {
   data: YearValuePoint[];
   scrollYProgress?: MotionValue<number>;
+  hideHeader?: boolean;
   className?: string;
 }) {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
   const { isMobile } = useScreenSize();
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const [scrollProgress, setScrollProgress] = useState(
+    () => scrollYProgress?.get() ?? 0,
+  );
+
+  useEffect(() => {
+    if (!scrollYProgress) {
+      return;
+    }
+
+    setScrollProgress(scrollYProgress.get());
+  }, [scrollYProgress]);
 
   useMotionValueEvent(scrollYProgress ?? null, "change", (value) => {
     setScrollProgress(value);
   });
 
   const chartData = useMemo(() => toChartData(data), [data]);
+  const yAxisMax = useMemo(() => {
+    const maxValueKt = Math.max(...chartData.map((point) => point.valueKt), 0);
+    return maxValueKt > 0 ? maxValueKt * 1.05 : "auto";
+  }, [chartData]);
   const animatedChartData = useMemo(() => {
     if (!scrollYProgress) {
       return chartData;
@@ -226,11 +242,13 @@ export function ExportOfOilProductsEmissionsChart({
 
   return (
     <SectionWithHelp helpItems={[]} className={className}>
-      <CardHeader
-        title={t("nation.exportOfOilProducts.title")}
-        description={t("nation.exportOfOilProducts.description")}
-        className="[&>div]:mb-4 [&>div]:@lg:mb-6"
-      />
+      {!hideHeader && (
+        <CardHeader
+          title={t("nation.exportOfOilProducts.title")}
+          description={t("nation.exportOfOilProducts.description")}
+          className="[&>div]:mb-4 [&>div]:@lg:mb-6"
+        />
+      )}
 
       {showCitizenComparison && latestYearPoint && latestCitizenEquivalent && (
         <CitizenComparisonCallout
@@ -240,7 +258,15 @@ export function ExportOfOilProductsEmissionsChart({
       )}
 
       <div
-        className={showCitizenComparison ? "mt-2" : "mt-8"}
+        className={
+          hideHeader
+            ? showCitizenComparison
+              ? "mt-2"
+              : "mt-0"
+            : showCitizenComparison
+              ? "mt-2"
+              : "mt-8"
+        }
         style={{ height: getDynamicChartHeight("overview", isMobile) }}
       >
         <ChartWrapper>
@@ -255,7 +281,9 @@ export function ExportOfOilProductsEmissionsChart({
                   interval={0}
                   tickFormatter={(year) => year}
                 />
-                <YAxis {...getYAxisProps(currentLanguage)} />
+                <YAxis
+                  {...getYAxisProps(currentLanguage, [0, yAxisMax])}
+                />
 
                 <Tooltip
                   content={

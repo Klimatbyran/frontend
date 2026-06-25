@@ -2,13 +2,13 @@ const clamp = (value: number, min: number, max: number) =>
   Math.min(Math.max(value, min), max);
 
 /** Scroll progress at which staged bar animations should be fully complete. */
-export const NATION_STORY_ANIMATION_END = 0.38;
+export const NATION_STORY_ANIMATION_END = 0.55;
 
 /** Stagger ranges for sections with up to three sequential items (rows/bars/layers). */
 export const NATION_STORY_STAGGER_RANGES: [number, number][] = [
-  [0, 0.14],
-  [0.11, 0.26],
-  [0.22, NATION_STORY_ANIMATION_END],
+  [0, 0.22],
+  [0.18, 0.4],
+  [0.36, NATION_STORY_ANIMATION_END],
 ];
 
 export function getNationStoryScrollBarScale(
@@ -17,14 +17,17 @@ export function getNationStoryScrollBarScale(
   barCount: number,
   staggerEnd = NATION_STORY_ANIMATION_END,
 ): number {
+  const globalProgress = clamp(scrollProgress / staggerEnd, 0, 1);
+
   if (barCount <= 1) {
-    return clamp(scrollProgress / staggerEnd, 0, 1);
+    return globalProgress;
   }
 
-  const overlap = 0.08 / barCount;
-  const segment = staggerEnd / barCount;
-  const start = barIndex * segment;
-  const end = start + segment + overlap;
+  // Keep a visible left-to-right wave while still finishing before section center.
+  const staggerSpread = 0.3;
+  const barStart =
+    barCount > 1 ? (barIndex / (barCount - 1)) * staggerSpread : 0;
+  const activeWindow = 1 - barStart;
 
-  return clamp((scrollProgress - start) / (end - start), 0, 1);
+  return clamp((globalProgress - barStart) / activeWindow, 0, 1);
 }
