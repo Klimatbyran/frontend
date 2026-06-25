@@ -21,10 +21,8 @@ export function OverviewSplitLayout({
   visualization,
   list,
 }: OverviewSplitLayoutProps) {
-  const showBoth =
-    viewMode !== visualizationMode && viewMode !== listMode;
-  const showVisualization =
-    showBoth || viewMode === visualizationMode;
+  const showBoth = viewMode !== visualizationMode && viewMode !== listMode;
+  const showVisualization = showBoth || viewMode === visualizationMode;
   const showList = showBoth || viewMode === listMode;
 
   return (
@@ -44,14 +42,7 @@ export function OverviewSplitLayout({
       >
         {visualization}
       </div>
-      <div
-        className={cn(
-          "min-w-0 h-full",
-          !showList && "hidden",
-        )}
-      >
-        {list}
-      </div>
+      <div className={cn("min-w-0 h-full", !showList && "hidden")}>{list}</div>
     </div>
   );
 }

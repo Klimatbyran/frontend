@@ -254,9 +254,7 @@ export function RankedList<T extends Record<string, unknown>>({
   );
 
   return (
-    <div
-      className={`bg-black-2 rounded-2xl flex flex-col ${className}`}
-    >
+    <div className={`bg-black-2 rounded-2xl flex flex-col ${className}`}>
       <div className="p-4 border-b border-white/10">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/50 w-5 h-5" />

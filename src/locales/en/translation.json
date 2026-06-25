@@ -1638,8 +1638,13 @@
           "average": "Average:"
         },
         "distribution": {
-          "title": "Distribution across municipalities",
-          "summary": "Summary"
+          "title": "Distribution",
+          "summary": "Summary",
+          "average": "Average",
+          "higherBetter": "Higher = better",
+          "lowerBetter": "Lower = better",
+          "higherWorse": "Higher = worse",
+          "lowerWorse": "Lower = worse"
         }
       },
       "summary": {

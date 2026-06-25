@@ -1,5 +1,6 @@
 import { t } from "i18next";
 import { Fragment } from "react/jsx-runtime";
+import { COLORS } from "@/lib/colors";
 
 interface DistributionStat {
   count: number;
@@ -26,10 +27,10 @@ interface KPIDetailsPanelProps {
 }
 
 const STAT_COLOR_MAP: Record<string, string> = {
-  "text-blue-3": "#4C9BE8",
-  "text-pink-3": "#E8666A",
-  "text-green-3": "#4CAF50",
-  "text-orange-2": "#F5A623",
+  "text-blue-3": COLORS.blue3,
+  "text-pink-3": COLORS.pink3,
+  "text-green-3": COLORS.green3,
+  "text-orange-2": COLORS.orange2,
 };
 
 export default function KPIDetailsPanel({

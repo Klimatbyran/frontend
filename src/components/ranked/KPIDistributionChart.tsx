@@ -14,12 +14,13 @@ import {
   Legend,
 } from "recharts";
 import { KPIValue } from "@/types/rankings";
+import { COLORS } from "@/lib/colors";
 
 interface KPIDistributionChartProps<T> {
   data: T[];
   selectedKPI: KPIValue<T>;
   average?: number;
-  /** Plural label used in the tooltip, e.g. "kommuner" */
+  /** Plural label used in tooltips, e.g. "kommuner" */
   entityLabel?: string;
 }
 
@@ -50,6 +51,24 @@ function buildHistogramBins(
   return bins;
 }
 
+/** Color a histogram bin: good side = blue-3, bad side = pink-3, near avg = orange-2 */
+function binColor(
+  binMid: number,
+  average: number | undefined,
+  binWidth: number,
+  higherIsBetter: boolean,
+): string {
+  if (
+    average !== undefined &&
+    Math.abs(binMid - average) < Math.abs(binWidth) * 0.75
+  ) {
+    return COLORS.orange2;
+  }
+  // "good" side depends on KPI direction
+  const isGoodSide = higherIsBetter ? binMid > (average ?? 0) : binMid < (average ?? 0);
+  return isGoodSide ? COLORS.blue3 : COLORS.pink3;
+}
+
 function HistogramTooltip({
   active,
   payload,
@@ -66,8 +85,8 @@ function HistogramTooltip({
   const bin = payload[0]?.payload;
   if (!bin) return null;
   return (
-    <div className="bg-black-2 border border-white/10 rounded-lg px-3 py-2 text-xs shadow-xl">
-      <p className="text-white/70 mb-1">
+    <div className="bg-black-1 border border-white/10 rounded-lg px-3 py-2 text-xs shadow-xl">
+      <p className="text-white/60 mb-1">
         {Number(bin.min).toFixed(1)}
         {unit} – {Number(bin.max).toFixed(1)}
         {unit}
@@ -77,6 +96,22 @@ function HistogramTooltip({
       </p>
     </div>
   );
+}
+
+function useBooleanValues<T>(
+  data: T[],
+  selectedKPI: KPIValue<T>,
+  t: ReturnType<typeof useTranslation>["t"],
+) {
+  return useMemo(() => {
+    if (!selectedKPI.isBoolean) return null;
+    const trueCount = data.filter((m) => m[selectedKPI.key] === true).length;
+    const falseCount = data.filter((m) => m[selectedKPI.key] === false).length;
+    return [
+      { name: selectedKPI.booleanLabels?.true || t("yes"), value: trueCount, fill: COLORS.blue3 },
+      { name: selectedKPI.booleanLabels?.false || t("no"), value: falseCount, fill: COLORS.pink3 },
+    ];
+  }, [data, selectedKPI, t]);
 }
 
 export function KPIDistributionChart<T>({
@@ -96,23 +131,7 @@ export function KPIDistributionChart<T>({
     [data, selectedKPI.key],
   );
 
-  const booleanValues = useMemo(() => {
-    if (!selectedKPI.isBoolean) return null;
-    const trueCount = data.filter((m) => m[selectedKPI.key] === true).length;
-    const falseCount = data.filter((m) => m[selectedKPI.key] === false).length;
-    return [
-      {
-        name: selectedKPI.booleanLabels?.true || t("yes"),
-        value: trueCount,
-        fill: "#4C9BE8",
-      },
-      {
-        name: selectedKPI.booleanLabels?.false || t("no"),
-        fill: "#E8666A",
-        value: falseCount,
-      },
-    ];
-  }, [data, selectedKPI, t]);
+  const booleanValues = useBooleanValues(data, selectedKPI, t);
 
   const bins = useMemo(
     () => (!selectedKPI.isBoolean ? buildHistogramBins(values, NUM_BINS) : []),
@@ -162,9 +181,9 @@ export function KPIDistributionChart<T>({
                     ? ((Number(item.value) / total) * 100).toFixed(1)
                     : 0;
                 return (
-                  <div className="bg-black-2 border border-white/10 rounded-lg px-3 py-2 text-xs shadow-xl">
+                  <div className="bg-black-1 border border-white/10 rounded-lg px-3 py-2 text-xs shadow-xl">
                     <p className="text-white font-semibold">{item.name}</p>
-                    <p className="text-white/70">
+                    <p className="text-white/60">
                       {item.value} {label} ({pct}%)
                     </p>
                   </div>
@@ -181,6 +200,14 @@ export function KPIDistributionChart<T>({
 
   const unit = selectedKPI.unit || "";
   const maxCount = Math.max(...bins.map((b) => b.count));
+  const binWidth = bins[1] ? bins[1].min - bins[0].min : 1;
+
+  const goodLabel = selectedKPI.higherIsBetter
+    ? t("municipalities.list.insights.distribution.higherBetter")
+    : t("municipalities.list.insights.distribution.lowerBetter");
+  const badLabel = selectedKPI.higherIsBetter
+    ? t("municipalities.list.insights.distribution.lowerWorse")
+    : t("municipalities.list.insights.distribution.higherWorse");
 
   return (
     <div>
@@ -188,10 +215,10 @@ export function KPIDistributionChart<T>({
         {t("municipalities.list.insights.distribution.title")}
       </p>
       <ResponsiveContainer width="100%" height={140}>
-        <BarChart data={bins} margin={{ top: 4, right: 4, bottom: 4, left: 4 }}>
+        <BarChart data={bins} margin={{ top: 8, right: 4, bottom: 4, left: 4 }}>
           <XAxis
             dataKey="label"
-            tick={{ fontSize: 9, fill: "rgba(255,255,255,0.4)" }}
+            tick={{ fontSize: 9, fill: "rgba(255,255,255,0.35)" }}
             tickLine={false}
             axisLine={false}
             interval="preserveStartEnd"
@@ -221,35 +248,60 @@ export function KPIDistributionChart<T>({
               return (
                 <ReferenceLine
                   x={bins[closestIdx]?.label}
-                  stroke="#F5A623"
+                  stroke={COLORS.orange2}
                   strokeDasharray="3 3"
                   label={{
                     value: `Ø ${average.toFixed(1)}${unit}`,
                     position: "top",
                     fontSize: 9,
-                    fill: "#F5A623",
+                    fill: COLORS.orange2,
                   }}
                 />
               );
             })()}
-          <Bar dataKey="count" radius={[3, 3, 0, 0]} maxBarSize={30}>
+          <Bar dataKey="count" radius={[3, 3, 0, 0]} maxBarSize={32}>
             {bins.map((bin, i) => {
               const binMid = (bin.min + bin.max) / 2;
-              const binWidth = bins[1] ? bins[1].min - bins[0].min : 1;
-              const isNearAverage =
-                average !== undefined &&
-                Math.abs(binMid - average) < Math.abs(binWidth) * 0.75;
-              const lightness = 45 + (bin.count / maxCount) * 20;
-              const color = isNearAverage
-                ? "#F5A623"
-                : selectedKPI.higherIsBetter
-                  ? `hsl(${210 + (i / bins.length) * 40}, 70%, ${lightness}%)`
-                  : `hsl(${340 + (i / bins.length) * 30}, 65%, ${lightness}%)`;
-              return <Cell key={i} fill={color} fillOpacity={0.85} />;
+              const color = binColor(
+                binMid,
+                average,
+                binWidth,
+                selectedKPI.higherIsBetter,
+              );
+              const opacity = 0.5 + (bin.count / maxCount) * 0.5;
+              return (
+                <Cell key={i} fill={color} fillOpacity={opacity} />
+              );
             })}
           </Bar>
         </BarChart>
       </ResponsiveContainer>
+      {/* Color legend */}
+      <div className="flex items-center justify-between mt-1 px-1">
+        <div className="flex items-center gap-1.5">
+          <span
+            className="inline-block w-2.5 h-2.5 rounded-sm"
+            style={{ backgroundColor: COLORS.blue3 }}
+          />
+          <span className="text-[10px] text-white/50">{goodLabel}</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <span
+            className="inline-block w-2.5 h-2.5 rounded-sm"
+            style={{ backgroundColor: COLORS.orange2 }}
+          />
+          <span className="text-[10px] text-white/50">
+            {t("municipalities.list.insights.distribution.average")}
+          </span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <span
+            className="inline-block w-2.5 h-2.5 rounded-sm"
+            style={{ backgroundColor: COLORS.pink3 }}
+          />
+          <span className="text-[10px] text-white/50">{badLabel}</span>
+        </div>
+      </div>
     </div>
   );
 }

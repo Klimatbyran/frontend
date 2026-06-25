@@ -1,3 +1,4 @@
+import { COLORS } from "@/lib/colors";
 import { useTranslation } from "react-i18next";
 import { getSortedEntityKPIValues } from "@/utils/data/sorting";
 import { Region } from "@/types/region";
@@ -95,7 +96,7 @@ function RegionalInsightsPanel({
               unit={selectedKPI.unit}
               nullValues={selectedKPI.nullValues}
               textColor="text-blue-3"
-              barColor="#4C9BE8"
+              barColor={COLORS.blue3}
               entityType="regions"
               nameKey="name"
               showBars
@@ -109,7 +110,7 @@ function RegionalInsightsPanel({
               unit={selectedKPI.unit}
               nullValues={selectedKPI.nullValues}
               textColor="text-pink-3"
-              barColor="#E8666A"
+              barColor={COLORS.pink3}
               entityType="regions"
               nameKey="name"
               showBars
@@ -124,7 +125,7 @@ function RegionalInsightsPanel({
               <div key={i} className="flex items-center gap-3">
                 <div
                   className="text-4xl font-bold"
-                  style={{ color: i === 0 ? "#4C9BE8" : "#E8666A" }}
+                  style={{ color: i === 0 ? COLORS.blue3 : COLORS.pink3 }}
                 >
                   {stat.count}
                 </div>

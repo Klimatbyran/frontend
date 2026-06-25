@@ -1697,8 +1697,13 @@
           "average": "Genomsnitt:"
         },
         "distribution": {
-          "title": "Fördelning bland kommuner",
-          "summary": "Sammanfattning"
+          "title": "Fördelning",
+          "summary": "Sammanfattning",
+          "average": "Genomsnitt",
+          "higherBetter": "Högre = bättre",
+          "lowerBetter": "Lägre = bättre",
+          "higherWorse": "Högre = sämre",
+          "lowerWorse": "Lägre = sämre"
         }
       },
       "summary": {
