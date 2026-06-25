@@ -82,19 +82,9 @@ export function NationStoryPage({
         )}
       </NationPinnedSection>
 
-      {/* Stacked area chart – full historical view */}
+      {/* Stacked area chart – grey box with title + chart */}
       <FullScreenSection overlap>
-        <div className="mb-8">
-          <h2 className="text-3xl md:text-4xl font-light text-white mb-3">
-            {t("nation.story.stacked.title")}
-          </h2>
-          <p className="text-grey text-lg max-w-2xl">
-            {t("nation.story.stacked.description")}
-          </p>
-        </div>
-        <div className="h-[400px]">
-          <NationStackedChart data={metrics.stackData} />
-        </div>
+        <NationStackedChart data={metrics.stackData} />
       </FullScreenSection>
 
       {/* 1990 → today – sticky scroll-driven (sequential row reveal) */}

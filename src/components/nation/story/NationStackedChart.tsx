@@ -26,6 +26,8 @@ import {
   getYAxisProps,
   type LegendItem,
 } from "@/components/charts";
+import { CardHeader } from "@/components/layout/CardHeader";
+import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 
 const LAYERS = [
   {
@@ -47,9 +49,13 @@ const LAYERS = [
 
 interface NationStackedChartProps {
   data: NationStackDataPoint[];
+  className?: string;
 }
 
-export const NationStackedChart: FC<NationStackedChartProps> = ({ data }) => {
+export const NationStackedChart: FC<NationStackedChartProps> = ({
+  data,
+  className,
+}) => {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
   const { isMobile } = useScreenSize();
@@ -74,62 +80,71 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({ data }) => {
   );
 
   return (
-    <ChartWrapper>
-      <ChartArea>
-        <ResponsiveContainer {...getChartContainerProps()}>
-          <AreaChart
-            data={filteredData}
-            margin={getResponsiveChartMargin(isMobile)}
-          >
-            <XAxis
-              {...getXAxisProps(
-                "year",
-                [1990, currentYear],
-                [1990, 2000, 2010, 2020, currentYear],
-              )}
+    <SectionWithHelp helpItems={[]} className={className}>
+      <CardHeader
+        title={t("nation.story.stacked.title")}
+        description={t("nation.story.stacked.description")}
+        className="[&>div]:mb-4 [&>div]:@lg:mb-6"
+      />
+
+      <div style={{ height: isMobile ? "260px" : "340px" }}>
+        <ChartWrapper>
+          <ChartArea className="min-h-0 h-full">
+            <ResponsiveContainer {...getChartContainerProps()}>
+              <AreaChart
+                data={filteredData}
+                margin={getResponsiveChartMargin(isMobile)}
+              >
+                <XAxis
+                  {...getXAxisProps(
+                    "year",
+                    [1990, currentYear],
+                    [1990, 2000, 2010, 2020, currentYear],
+                  )}
+                />
+                <YAxis {...getYAxisProps(currentLanguage)} />
+                <Tooltip
+                  formatter={(value: number, name: string) => [
+                    `${formatMton(value, currentLanguage, 1)} ${t("nation.story.unit.mton")}`,
+                    name,
+                  ]}
+                  labelFormatter={(year) => String(year)}
+                  contentStyle={{
+                    backgroundColor: "var(--black-1)",
+                    border: "none",
+                    borderRadius: "8px",
+                  }}
+                  wrapperStyle={{ outline: "none", zIndex: 60 }}
+                />
+                <ReferenceLine
+                  {...getCurrentYearReferenceLineProps(currentYear)}
+                />
+                {LAYERS.map((layer) => (
+                  <Area
+                    key={layer.dataKey}
+                    type="monotone"
+                    dataKey={layer.dataKey}
+                    stackId="emissions"
+                    stroke={layer.color}
+                    strokeWidth={1.5}
+                    fill={layer.color}
+                    fillOpacity={0.6}
+                    name={t(layer.translationKey)}
+                    connectNulls={false}
+                  />
+                ))}
+              </AreaChart>
+            </ResponsiveContainer>
+          </ChartArea>
+          <ChartFooter>
+            <EnhancedLegend items={legendItems} />
+            <ChartYearControls
+              chartEndYear={chartEndYear}
+              setChartEndYear={setChartEndYear}
             />
-            <YAxis
-              {...getYAxisProps(currentLanguage)}
-              tickFormatter={(v: number) => formatMton(v, currentLanguage, 0)}
-            />
-            <Tooltip
-              formatter={(value: number, name: string) => [
-                `${formatMton(value, currentLanguage, 1)} ${t("nation.story.unit.mton")}`,
-                name,
-              ]}
-              labelFormatter={(year) => String(year)}
-              contentStyle={{
-                backgroundColor: "var(--black-1)",
-                border: "none",
-                borderRadius: "8px",
-              }}
-              wrapperStyle={{ outline: "none", zIndex: 60 }}
-            />
-            <ReferenceLine {...getCurrentYearReferenceLineProps(currentYear)} />
-            {LAYERS.map((layer) => (
-              <Area
-                key={layer.dataKey}
-                type="monotone"
-                dataKey={layer.dataKey}
-                stackId="emissions"
-                stroke={layer.color}
-                strokeWidth={1.5}
-                fill={layer.color}
-                fillOpacity={0.6}
-                name={t(layer.translationKey)}
-                connectNulls={false}
-              />
-            ))}
-          </AreaChart>
-        </ResponsiveContainer>
-      </ChartArea>
-      <ChartFooter>
-        <EnhancedLegend items={legendItems} />
-        <ChartYearControls
-          chartEndYear={chartEndYear}
-          setChartEndYear={setChartEndYear}
-        />
-      </ChartFooter>
-    </ChartWrapper>
+          </ChartFooter>
+        </ChartWrapper>
+      </div>
+    </SectionWithHelp>
   );
 };
