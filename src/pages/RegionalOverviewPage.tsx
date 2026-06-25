@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Map, List, ArrowDownCircle, Leaf } from "lucide-react";
+import { ArrowDownCircle, Leaf } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { FeatureCollection } from "geojson";
 import { useNavigate } from "react-router-dom";
@@ -12,14 +12,12 @@ import {
   RegionKPIData,
   useRegionalKPIs,
 } from "@/hooks/regions/useRegionKPIs";
-import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import RegionalInsightsPanel from "@/components/regions/RegionalInsightsPanel";
 import { Region } from "@/types/region";
 import { resolveRegionFromMapName, toMapRegionName } from "@/utils/regionUtils";
 import { toRegionMapDataItem } from "@/utils/territoryMapData";
 import { RegionalRankedList } from "@/components/regions/RegionalRankedList";
 import { KPIChipSelector } from "@/components/ranked/KPIChipSelector";
-import { OverviewSplitLayout } from "@/components/ranked/OverviewSplitLayout";
 import { createEntityClickHandler } from "@/utils/routing";
 import { RankedListItem } from "@/types/rankings";
 
@@ -43,16 +41,10 @@ export function RegionalOverviewPage() {
   const {
     selectedKPI,
     setSelectedKPI,
-    viewMode,
     setKPIInURL,
-    setViewModeInURL,
   } = useRankedRegionsURLParams(regionalKPIs);
 
-  const handleRegionClick = createEntityClickHandler(
-    navigate,
-    "region",
-    viewMode,
-  );
+  const handleRegionClick = createEntityClickHandler(navigate, "region");
 
   const handleRegionAreaClick = (name: string) => {
     const region = resolveRegionFromMapName(name, regionsData);
@@ -160,33 +152,31 @@ export function RegionalOverviewPage() {
         label={t("municipalities.list.dataSelector.label")}
       />
 
-      <div className="space-y-4">
-        <div className="flex">
-          <ViewModeToggle
-            viewMode={viewMode}
-            modes={["map", "list"]}
-            onChange={(mode) => setViewModeInURL(mode)}
-            titles={{
-              map: t("viewModeToggle.map"),
-              list: t("viewModeToggle.list"),
-            }}
-            showTitles
-            icons={{
-              map: <Map className="w-4 h-4" />,
-              list: <List className="w-4 h-4" />,
-            }}
+      <div className="space-y-6">
+        {/* Row 1: map + stats side by side */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+          <div className="min-h-[500px] md:min-h-[570px]">{mapPanel}</div>
+          <RegionalInsightsPanel
+            regionsData={regionsAsEntities}
+            selectedKPI={selectedKPI}
+            section="stats"
           />
         </div>
-        <OverviewSplitLayout
-          viewMode={viewMode}
-          visualizationMode="map"
-          visualization={mapPanel}
-          list={regionalRankedList}
-        />
-        <RegionalInsightsPanel
-          regionsData={regionsAsEntities}
-          selectedKPI={selectedKPI}
-        />
+
+        {/* Row 2: top | bottom | ranked list */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+          <RegionalInsightsPanel
+            regionsData={regionsAsEntities}
+            selectedKPI={selectedKPI}
+            section="top"
+          />
+          <RegionalInsightsPanel
+            regionsData={regionsAsEntities}
+            selectedKPI={selectedKPI}
+            section="bottom"
+          />
+          {regionalRankedList}
+        </div>
       </div>
     </>
   );

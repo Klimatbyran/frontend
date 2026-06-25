@@ -1,11 +1,10 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { Map, List, Leaf, ArrowDownCircle } from "lucide-react";
+import { Leaf, ArrowDownCircle } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useCompanies } from "@/hooks/companies/useCompanies";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { KPIChipSelector } from "@/components/ranked/KPIChipSelector";
-import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import RankedList from "@/components/ranked/RankedList";
 import CompanyInsightsPanel from "@/components/companies/rankedList/CompanyInsightsPanel";
 import { CompanyKPIVisualization } from "@/components/companies/rankedList/CompanyKPIVisualization";
@@ -17,10 +16,6 @@ import {
   enrichCompanyWithKPIs,
 } from "@/hooks/companies/useCompanyKPIs";
 import { DataPoint } from "@/types/rankings";
-import {
-  OverviewSplitLayout,
-  type OverviewViewMode,
-} from "@/components/ranked/OverviewSplitLayout";
 import { getCompanyDetailPath } from "@/utils/companyRouting";
 
 const COMPANY_KPI_ICONS: Record<string, React.ReactNode> = {
@@ -45,17 +40,6 @@ export function CompaniesOverviewPage() {
   const setKPIInURL = (kpiKey: string) => {
     const params = new URLSearchParams(location.search);
     params.set("kpi", kpiKey);
-    navigate({ search: params.toString() }, { replace: true });
-  };
-
-  const getViewModeFromURL = (): OverviewViewMode => {
-    const params = new URLSearchParams(location.search);
-    return params.get("view") === "list" ? "list" : "graph";
-  };
-
-  const setViewModeInURL = (mode: OverviewViewMode) => {
-    const params = new URLSearchParams(location.search);
-    params.set("view", mode);
     navigate({ search: params.toString() }, { replace: true });
   };
 
@@ -99,8 +83,6 @@ export function CompaniesOverviewPage() {
   const [selectedSector, setSelectedSector] = useState<string | null>(
     getSectorFromURL(),
   );
-  const viewMode = getViewModeFromURL();
-
   // Ensure a sector is selected on initial load
   useEffect(() => {
     if (!selectedSector && availableSectors.length > 0) {
@@ -245,33 +227,31 @@ export function CompaniesOverviewPage() {
         />
       </div>
 
-      <div className="space-y-4">
-        <div className="flex">
-          <ViewModeToggle
-            viewMode={viewMode}
-            modes={["graph", "list"]}
-            onChange={(mode) => setViewModeInURL(mode)}
-            titles={{
-              graph: t("companiesOverviewPage.viewToggle.showGraph", "Graf"),
-              list: t("companiesOverviewPage.viewToggle.showList", "Lista"),
-            }}
-            showTitles
-            icons={{
-              graph: <Map className="w-4 h-4" />,
-              list: <List className="w-4 h-4" />,
-            }}
+      <div className="space-y-6">
+        {/* Row 1: visualization + stats side by side */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+          <div className="min-h-[500px]">{visualizationPanel}</div>
+          <CompanyInsightsPanel
+            companyData={companiesWithKPIs}
+            selectedKPI={selectedKPI}
+            section="stats"
           />
         </div>
-        <OverviewSplitLayout
-          viewMode={viewMode}
-          visualizationMode="graph"
-          visualization={visualizationPanel}
-          list={companyRankedList}
-        />
-        <CompanyInsightsPanel
-          companyData={companiesWithKPIs}
-          selectedKPI={selectedKPI}
-        />
+
+        {/* Row 2: top | bottom | ranked list */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+          <CompanyInsightsPanel
+            companyData={companiesWithKPIs}
+            selectedKPI={selectedKPI}
+            section="top"
+          />
+          <CompanyInsightsPanel
+            companyData={companiesWithKPIs}
+            selectedKPI={selectedKPI}
+            section="bottom"
+          />
+          {companyRankedList}
+        </div>
       </div>
     </>
   );

@@ -1,7 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import {
-  Map,
-  List,
   Leaf,
   ArrowDownCircle,
   ShoppingCart,
@@ -18,7 +16,6 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import InsightsPanel from "@/components/municipalities/rankedList/MunicipalityInsightsPanel";
 import TerritoryMap from "@/components/maps/TerritoryMap";
 import municipalityGeoJson from "@/data/municipalityGeo.json";
-import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import {
   useMunicipalityKPIs,
   useMunicipalityKPIDefinitions,
@@ -30,10 +27,6 @@ import {
   normalizeMunicipalityKpiApiItem,
   toMunicipalityMapDataItem,
 } from "@/utils/territoryMapData";
-import {
-  OverviewSplitLayout,
-  type OverviewViewMode,
-} from "@/components/ranked/OverviewSplitLayout";
 import { KPIChipSelector } from "@/components/ranked/KPIChipSelector";
 import type { Municipality } from "@/types/municipality";
 
@@ -85,18 +78,7 @@ export function MunicipalitiesOverviewPage() {
     navigate({ search: params.toString() }, { replace: true });
   };
 
-  const getViewModeFromURL = (): OverviewViewMode => {
-    const params = new URLSearchParams(location.search);
-    return params.get("view") === "list" ? "list" : "map";
-  };
-  const setViewModeInURL = (mode: OverviewViewMode) => {
-    const params = new URLSearchParams(location.search);
-    params.set("view", mode);
-    navigate({ search: params.toString() }, { replace: true });
-  };
-
   const [selectedKPI, setSelectedKPI] = useState(getKPIFromURL());
-  const viewMode = getViewModeFromURL();
 
   useEffect(() => {
     const kpiFromUrl = getKPIFromURL();
@@ -108,7 +90,6 @@ export function MunicipalitiesOverviewPage() {
   const handleMunicipalityClick = createEntityClickHandler(
     navigate,
     "municipality",
-    viewMode,
   );
 
   const mapData = useMemo(
@@ -202,33 +183,31 @@ export function MunicipalitiesOverviewPage() {
         translationPrefix="municipalities.list"
       />
 
-      <div className="space-y-4">
-        <div className="flex">
-          <ViewModeToggle
-            viewMode={viewMode}
-            modes={["map", "list"]}
-            onChange={(mode) => setViewModeInURL(mode)}
-            titles={{
-              map: t("municipalities.list.viewToggle.showMap"),
-              list: t("municipalities.list.viewToggle.showList"),
-            }}
-            showTitles
-            icons={{
-              map: <Map className="w-4 h-4" />,
-              list: <List className="w-4 h-4" />,
-            }}
+      <div className="space-y-6">
+        {/* Row 1: map + stats panel side by side */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+          <div className="min-h-[500px] md:min-h-[570px]">{mapPanel}</div>
+          <InsightsPanel
+            municipalityData={municipalities}
+            selectedKPI={selectedKPI}
+            section="stats"
           />
         </div>
-        <OverviewSplitLayout
-          viewMode={viewMode}
-          visualizationMode="map"
-          visualization={mapPanel}
-          list={municipalityRankedList}
-        />
-        <InsightsPanel
-          municipalityData={municipalities}
-          selectedKPI={selectedKPI}
-        />
+
+        {/* Row 2: top list | bottom list | ranked list */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+          <InsightsPanel
+            municipalityData={municipalities}
+            selectedKPI={selectedKPI}
+            section="top"
+          />
+          <InsightsPanel
+            municipalityData={municipalities}
+            selectedKPI={selectedKPI}
+            section="bottom"
+          />
+          {municipalityRankedList}
+        </div>
       </div>
     </>
   );

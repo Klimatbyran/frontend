@@ -11,9 +11,12 @@ import InsightsList from "../ranked/InsightsList";
 import KPIDetailsPanel from "../ranked/KPIDetailsPanel";
 import { KPIDistributionChart } from "../ranked/KPIDistributionChart";
 
+export type InsightsPanelSection = "stats" | "top" | "bottom";
+
 interface InsightsPanelProps {
   regionsData: Region[];
   selectedKPI: KPIValue<Region>;
+  section?: InsightsPanelSection;
 }
 
 const TOP_N = 10;
@@ -21,6 +24,7 @@ const TOP_N = 10;
 function RegionalInsightsPanel({
   regionsData: regionData,
   selectedKPI,
+  section,
 }: InsightsPanelProps) {
   const { t } = useTranslation();
 
@@ -55,6 +59,88 @@ function RegionalInsightsPanel({
   const sourceLinks = createSourceLinks(selectedKPI);
   const entityPlural = t("header.regions").toLowerCase();
 
+  const statsPanel = (
+    <KPIDetailsPanel
+      title={selectedKPI.label}
+      averageValue={statistics.formattedAverage}
+      averageLabel={t("municipalities.list.insights.keyStatistics.average")}
+      distributionStats={statistics.distributionStats}
+      missingDataCount={statistics.nullCount}
+      missingDataLabel={selectedKPI.nullValues}
+      sourceLinks={sourceLinks}
+    >
+      <KPIDistributionChart<Region>
+        data={regionData}
+        selectedKPI={selectedKPI}
+        average={!selectedKPI.isBoolean ? statistics.average : undefined}
+        entityLabel={entityPlural}
+      />
+    </KPIDetailsPanel>
+  );
+
+  const booleanSummary = (
+    <div className="bg-white/5 rounded-level-2 p-6 flex flex-col justify-center gap-6 h-full">
+      <h3 className="text-lg font-semibold text-white">
+        {t("municipalities.list.insights.distribution.summary")}
+      </h3>
+      {statistics.distributionStats.map((stat, i) => (
+        <div key={i} className="flex items-center gap-3">
+          <div
+            className="text-4xl font-bold"
+            style={{ color: i === 0 ? COLORS.blue3 : COLORS.pink3 }}
+          >
+            {stat.count}
+          </div>
+          <div className="text-white/70 text-sm leading-tight">{stat.label}</div>
+        </div>
+      ))}
+    </div>
+  );
+
+  const topPanel = !selectedKPI.isBoolean ? (
+    <InsightsList<Region>
+      title={t(
+        selectedKPI.higherIsBetter
+          ? "rankedInsights.titleTop"
+          : "rankedInsights.titleBest",
+        { entityPlural },
+      )}
+      entities={topRegions}
+      totalCount={regionData.length}
+      dataPointKey={selectedKPI.key as keyof Region}
+      unit={selectedKPI.unit}
+      nullValues={selectedKPI.nullValues}
+      textColor="text-blue-3"
+      barColor={COLORS.blue3}
+      entityType="regions"
+      nameKey="name"
+      showBars
+    />
+  ) : (
+    booleanSummary
+  );
+
+  const bottomPanel = !selectedKPI.isBoolean ? (
+    <InsightsList<Region>
+      title={t("rankedInsights.titleWorst", { entityPlural })}
+      entities={bottomRegions}
+      totalCount={regionData.length}
+      isBottomRanking
+      dataPointKey={selectedKPI.key as keyof Region}
+      unit={selectedKPI.unit}
+      nullValues={selectedKPI.nullValues}
+      textColor="text-pink-3"
+      barColor={COLORS.pink3}
+      entityType="regions"
+      nameKey="name"
+      showBars
+    />
+  ) : null;
+
+  if (section === "stats") return statsPanel;
+  if (section === "top") return topPanel;
+  if (section === "bottom") return bottomPanel ?? statsPanel;
+
   return (
     <div>
       <div
@@ -64,78 +150,9 @@ function RegionalInsightsPanel({
             : "grid grid-cols-1 md:grid-cols-2 gap-6"
         }
       >
-        <KPIDetailsPanel
-          title={selectedKPI.label}
-          averageValue={statistics.formattedAverage}
-          averageLabel={t("municipalities.list.insights.keyStatistics.average")}
-          distributionStats={statistics.distributionStats}
-          missingDataCount={statistics.nullCount}
-          missingDataLabel={selectedKPI.nullValues}
-          sourceLinks={sourceLinks}
-        >
-          <KPIDistributionChart<Region>
-            data={regionData}
-            selectedKPI={selectedKPI}
-            average={!selectedKPI.isBoolean ? statistics.average : undefined}
-            entityLabel={entityPlural}
-          />
-        </KPIDetailsPanel>
-
-        {!selectedKPI.isBoolean ? (
-          <>
-            <InsightsList<Region>
-              title={t(
-                selectedKPI.higherIsBetter
-                  ? "rankedInsights.titleTop"
-                  : "rankedInsights.titleBest",
-                { entityPlural },
-              )}
-              entities={topRegions}
-              totalCount={regionData.length}
-              dataPointKey={selectedKPI.key as keyof Region}
-              unit={selectedKPI.unit}
-              nullValues={selectedKPI.nullValues}
-              textColor="text-blue-3"
-              barColor={COLORS.blue3}
-              entityType="regions"
-              nameKey="name"
-              showBars
-            />
-            <InsightsList<Region>
-              title={t("rankedInsights.titleWorst", { entityPlural })}
-              entities={bottomRegions}
-              totalCount={regionData.length}
-              isBottomRanking
-              dataPointKey={selectedKPI.key as keyof Region}
-              unit={selectedKPI.unit}
-              nullValues={selectedKPI.nullValues}
-              textColor="text-pink-3"
-              barColor={COLORS.pink3}
-              entityType="regions"
-              nameKey="name"
-              showBars
-            />
-          </>
-        ) : (
-          <div className="bg-white/5 rounded-level-2 p-6 flex flex-col justify-center gap-6">
-            <h3 className="text-lg font-semibold text-white">
-              {t("municipalities.list.insights.distribution.summary")}
-            </h3>
-            {statistics.distributionStats.map((stat, i) => (
-              <div key={i} className="flex items-center gap-3">
-                <div
-                  className="text-4xl font-bold"
-                  style={{ color: i === 0 ? COLORS.blue3 : COLORS.pink3 }}
-                >
-                  {stat.count}
-                </div>
-                <div className="text-white/70 text-sm leading-tight">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+        {statsPanel}
+        {topPanel}
+        {!selectedKPI.isBoolean && bottomPanel}
       </div>
     </div>
   );
