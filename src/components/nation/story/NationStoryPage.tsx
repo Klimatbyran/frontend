@@ -76,12 +76,14 @@ export function NationStoryPage({
         )}
       </NationPinnedSection>
 
-      <NationPinnedSection heightVh={190}>
+      <NationPinnedSection heightVh={150}>
         {(progress) => (
           <NationECommerceScale
             eCommerceTonnes={metrics.eCommerceLatestTonnes}
             eCommerceYear={metrics.eCommerceYear}
-            territorialEmissionsTonnes={metrics.territorialLatestMton * 1_000_000}
+            territorialEmissionsTonnes={
+              metrics.territorialLatestMton * 1_000_000
+            }
             smallMunicipalityName={smallMunicipalityName}
             smallMunicipalityTonnes={smallMunicipalityTonnes}
             gavleTonnes={gavleEmissionsTonnes}
@@ -90,7 +92,7 @@ export function NationStoryPage({
         )}
       </NationPinnedSection>
 
-      <NationPinnedSection heightVh={190}>
+      <NationPinnedSection heightVh={150}>
         {(progress) => (
           <NationOilExportsSection
             oilPoints={oilPoints}
@@ -100,7 +102,7 @@ export function NationStoryPage({
       </NationPinnedSection>
 
       {/* Footer */}
-      <section className="max-w-5xl mx-auto px-4 md:px-8 pt-16">
+      <section className="max-w-5xl mx-auto px-4 md:px-8 pt-6">
         <motion.div
           initial={{ opacity: 0, y: 32 }}
           whileInView={{ opacity: 1, y: 0 }}
