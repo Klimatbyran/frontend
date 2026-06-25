@@ -92,7 +92,7 @@ export function NationStoryPage({
         )}
       </NationPinnedSection>
 
-      <NationPinnedSection heightVh={150}>
+      <NationPinnedSection heightVh={150} overlap>
         {(progress) => (
           <NationOilExportsSection
             oilPoints={oilPoints}
@@ -101,8 +101,11 @@ export function NationStoryPage({
         )}
       </NationPinnedSection>
 
-      {/* Footer */}
-      <section className="max-w-5xl mx-auto px-4 md:px-8 pt-6">
+      {/* Footer – pulled up so it starts as oil exits */}
+      <section
+        className="max-w-5xl mx-auto px-4 md:px-8 pt-6 relative bg-black"
+        style={{ marginTop: "-100vh", zIndex: 20 }}
+      >
         <motion.div
           initial={{ opacity: 0, y: 32 }}
           whileInView={{ opacity: 1, y: 0 }}
