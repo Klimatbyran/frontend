@@ -4,7 +4,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { FeatureCollection } from "geojson";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { KPIDataSelector } from "@/components/ranked/KPIDataSelector";
 import InsightsPanel from "@/components/municipalities/rankedList/MunicipalityInsightsPanel";
 import TerritoryMap from "@/components/maps/TerritoryMap";
 import municipalityGeoJson from "@/data/municipalityGeo.json";
@@ -24,6 +23,8 @@ import {
   OverviewSplitLayout,
   type OverviewViewMode,
 } from "@/components/ranked/OverviewSplitLayout";
+import { MunicipalityKPISelector } from "@/components/municipalities/MunicipalityKPISelector";
+import { MunicipalitySummaryBar } from "@/components/municipalities/MunicipalitySummaryBar";
 import type { Municipality } from "@/types/municipality";
 
 export function MunicipalitiesOverviewPage() {
@@ -185,14 +186,18 @@ export function MunicipalitiesOverviewPage() {
         />
       </div>
 
-      <KPIDataSelector
+      <MunicipalityKPISelector
         selectedKPI={selectedKPI}
+        kpis={municipalityKPIs}
         onKPIChange={(kpi) => {
           setSelectedKPI(kpi);
           setKPIInURL(String(kpi.key));
         }}
-        kpis={municipalityKPIs}
-        translationPrefix="municipalities.list"
+      />
+
+      <MunicipalitySummaryBar
+        municipalities={municipalities}
+        selectedKPI={selectedKPI}
       />
 
       <div className="space-y-6">

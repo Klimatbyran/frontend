@@ -1695,7 +1695,18 @@
         },
         "keyStatistics": {
           "average": "Genomsnitt:"
+        },
+        "distribution": {
+          "title": "Fördelning bland kommuner",
+          "summary": "Sammanfattning"
         }
+      },
+      "summary": {
+        "total": "Totalt",
+        "municipalities": "kommuner",
+        "nationalAvg": "riksgenomsnittet",
+        "missingData": "Saknar data",
+        "noReported": "ej rapporterat"
       },
       "viewToggle": {
         "showList": "Visa lista",
@@ -1994,9 +2005,9 @@
   "rankedInsights": {
     "belowAverage": "{{entityPlural}} under genomsnittet",
     "aboveAverage": "{{entityPlural}} över genomsnittet",
-    "titleBest": "Topp fem {{entityPlural}}",
-    "titleTop": "Bästa {{entityPlural}}",
-    "titleWorst": "Botten fem {{entityPlural}}"
+    "titleBest": "Topp 10 {{entityPlural}}",
+    "titleTop": "Bästa 10 {{entityPlural}}",
+    "titleWorst": "Sämsta 10 {{entityPlural}}"
   },
   "chartLegend": {
     "clickToFilterOut": "Klicka för att filtrera bort",

@@ -1,4 +1,4 @@
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import { Municipality } from "@/types/municipality";
 import { KPIValue } from "@/types/rankings";
 import { getSortedEntityKPIValues } from "@/utils/data/sorting";
@@ -8,13 +8,18 @@ import {
 } from "@/utils/insights/rankedListUtils";
 import KPIDetailsPanel from "../../ranked/KPIDetailsPanel";
 import InsightsList from "../../ranked/InsightsList";
+import { KPIDistributionChart } from "./KPIDistributionChart";
 
 interface InsightsPanelProps {
   municipalityData: Municipality[];
   selectedKPI: KPIValue<Municipality>;
 }
 
+const TOP_N = 10;
+
 function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
+  const { t } = useTranslation();
+
   if (!municipalityData?.length) {
     return (
       <div className="bg-white/5 backdrop-blur-sm rounded-level-2 p-8 h-full flex items-center justify-center">
@@ -25,7 +30,6 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
     );
   }
 
-  // Calculate statistics using shared utility
   const statistics = calculateEntityStatistics(
     municipalityData,
     selectedKPI,
@@ -46,17 +50,21 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
 
   const sortedData = getSortedEntityKPIValues(municipalityData, selectedKPI);
 
-  const topMunicipalities = sortedData.slice(0, 5);
-  const bottomMunicipalities = sortedData.slice(-5).reverse();
+  const topMunicipalities = sortedData.slice(0, TOP_N);
+  const bottomMunicipalities = sortedData.slice(-TOP_N).reverse();
 
   const sourceLinks = createSourceLinks(selectedKPI);
 
   const entityPlural = t("header.municipalities").toLowerCase();
 
   return (
-    <div className="flex-1 overflow-y-auto min-h-0 pr-2">
+    <div>
       <div
-        className={`${!selectedKPI.isBoolean ? "space-y-6 md:space-y-0 md:grid md:grid-cols-3 md:gap-6" : ""} `}
+        className={
+          !selectedKPI.isBoolean
+            ? "grid grid-cols-1 md:grid-cols-3 gap-6"
+            : "grid grid-cols-1 md:grid-cols-2 gap-6"
+        }
       >
         <KPIDetailsPanel
           title={selectedKPI.label}
@@ -66,9 +74,17 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
           missingDataCount={statistics.nullCount}
           missingDataLabel={selectedKPI.nullValues}
           sourceLinks={sourceLinks}
-        />
+        >
+          <KPIDistributionChart
+            municipalityData={municipalityData}
+            selectedKPI={selectedKPI}
+            average={
+              !selectedKPI.isBoolean ? statistics.average : undefined
+            }
+          />
+        </KPIDetailsPanel>
 
-        {!selectedKPI.isBoolean && (
+        {!selectedKPI.isBoolean ? (
           <>
             <InsightsList<Municipality>
               title={t(
@@ -83,10 +99,12 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
               unit={selectedKPI.unit}
               nullValues={selectedKPI.nullValues}
               textColor="text-blue-3"
+              barColor="#4C9BE8"
               entityType="municipalities"
               nameKey="name"
+              showBars
             />
-            <InsightsList
+            <InsightsList<Municipality>
               title={t("rankedInsights.titleWorst", {
                 entityPlural,
               })}
@@ -97,10 +115,35 @@ function InsightsPanel({ municipalityData, selectedKPI }: InsightsPanelProps) {
               unit={selectedKPI.unit}
               nullValues={selectedKPI.nullValues}
               textColor="text-pink-3"
+              barColor="#E8666A"
               entityType="municipalities"
               nameKey="name"
+              showBars
             />
           </>
+        ) : (
+          <div className="bg-white/5 rounded-level-2 p-6 flex flex-col justify-center gap-6">
+            <h3 className="text-lg font-semibold text-white">
+              {t("municipalities.list.insights.distribution.summary", {
+                defaultValue: "Sammanfattning",
+              })}
+            </h3>
+            {statistics.distributionStats.map((stat, i) => (
+              <div key={i} className="flex items-center gap-3">
+                <div
+                  className="text-4xl font-bold"
+                  style={{
+                    color: i === 0 ? "#4C9BE8" : "#E8666A",
+                  }}
+                >
+                  {stat.count}
+                </div>
+                <div className="text-white/70 text-sm leading-tight">
+                  {stat.label}
+                </div>
+              </div>
+            ))}
+          </div>
         )}
       </div>
     </div>

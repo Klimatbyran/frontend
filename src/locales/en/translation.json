@@ -1636,7 +1636,18 @@
         },
         "keyStatistics": {
           "average": "Average:"
+        },
+        "distribution": {
+          "title": "Distribution across municipalities",
+          "summary": "Summary"
         }
+      },
+      "summary": {
+        "total": "Total",
+        "municipalities": "municipalities",
+        "nationalAvg": "national average",
+        "missingData": "Missing data",
+        "noReported": "not reported"
       },
       "viewToggle": {
         "showList": "Show List",
@@ -1935,9 +1946,9 @@
   "rankedInsights": {
     "belowAverage": "{{entityPlural}} below average",
     "aboveAverage": "{{entityPlural}} above average",
-    "titleBest": "Top Five {{entityPlural}}",
-    "titleTop": "Top Performing {{entityPlural}}",
-    "titleWorst": "Bottom Five {{entityPlural}}"
+    "titleBest": "Top 10 {{entityPlural}}",
+    "titleTop": "Top Performing 10 {{entityPlural}}",
+    "titleWorst": "Bottom 10 {{entityPlural}}"
   },
   "chartLegend": {
     "clickToFilterOut": "Click to filter out",
