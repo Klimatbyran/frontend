@@ -1,4 +1,5 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { useMotionValueEvent, type MotionValue } from "framer-motion";
 import {
   Bar,
   BarChart,
@@ -46,8 +47,30 @@ const MAP_GRADIENT_CSS = `linear-gradient(to right,
 type ChartDatum = {
   year: number;
   valueKt: number;
+  displayValueKt: number;
   fill: string;
 };
+
+const clamp = (value: number, min: number, max: number) =>
+  Math.min(Math.max(value, min), max);
+
+function getScrollBarScale(
+  scrollProgress: number,
+  barIndex: number,
+  barCount: number,
+): number {
+  if (barCount <= 1) {
+    return scrollProgress;
+  }
+
+  const staggerEnd = 0.92;
+  const overlap = 0.12 / barCount;
+  const segment = staggerEnd / barCount;
+  const start = barIndex * segment;
+  const end = start + segment + overlap;
+
+  return clamp((scrollProgress - start) / (end - start), 0, 1);
+}
 
 function getBarColor(
   value: number,
@@ -80,6 +103,7 @@ function toChartData(points: YearValuePoint[]): ChartDatum[] {
     return {
       year: point.year,
       valueKt,
+      displayValueKt: valueKt,
       fill: getBarColor(valueKt, minValue, maxValue),
     };
   });
@@ -185,16 +209,35 @@ function ExportOfOilProductsTooltip({
 
 export function ExportOfOilProductsEmissionsChart({
   data,
+  scrollYProgress,
   className,
 }: {
   data: YearValuePoint[];
+  scrollYProgress?: MotionValue<number>;
   className?: string;
 }) {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
   const { isMobile } = useScreenSize();
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  useMotionValueEvent(scrollYProgress ?? null, "change", (value) => {
+    setScrollProgress(value);
+  });
 
   const chartData = useMemo(() => toChartData(data), [data]);
+  const animatedChartData = useMemo(() => {
+    if (!scrollYProgress) {
+      return chartData;
+    }
+
+    return chartData.map((point, index) => ({
+      ...point,
+      displayValueKt:
+        point.valueKt *
+        getScrollBarScale(scrollProgress, index, chartData.length),
+    }));
+  }, [chartData, scrollProgress, scrollYProgress]);
   const latestYearPoint = useMemo(() => getLatestYearPoint(data), [data]);
   const latestCitizenEquivalent = useMemo(() => {
     if (!latestYearPoint) return null;
@@ -238,7 +281,7 @@ export function ExportOfOilProductsEmissionsChart({
           <ChartArea className="min-h-0 h-full">
             <ResponsiveContainer {...getChartContainerProps()}>
               <BarChart
-                data={chartData}
+                data={animatedChartData}
                 margin={getResponsiveChartMargin(isMobile)}
               >
                 <XAxis
@@ -271,11 +314,15 @@ export function ExportOfOilProductsEmissionsChart({
                 )}
 
                 <Bar
-                  dataKey="valueKt"
+                  dataKey="displayValueKt"
                   radius={[4, 4, 0, 0]}
                   maxBarSize={isMobile ? 10 : 16}
+                  isAnimationActive={!scrollYProgress}
+                  animationBegin={0}
+                  animationDuration={600}
+                  animationEasing="ease-out"
                 >
-                  {chartData.map((entry) => (
+                  {animatedChartData.map((entry) => (
                     <Cell key={entry.year} fill={entry.fill} />
                   ))}
                 </Bar>
