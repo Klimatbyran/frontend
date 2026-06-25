@@ -1,182 +1,165 @@
 import { useTranslation } from "react-i18next";
+import { motion, useTransform } from "framer-motion";
 import { EntityListBox } from "@/components/detail/EntityListBox";
-import { NationCombinedStackChart } from "@/components/nation/story/NationCombinedStackChart";
-import { NationComparisonBars } from "@/components/nation/story/NationComparisonBars";
-import { NationStatCallout } from "@/components/nation/story/NationStatCallout";
-import { NationStoryHeadline } from "@/components/nation/story/NationStoryHeadline";
-import { NationStoryHero } from "@/components/nation/story/NationStoryHero";
-import { NationStorySection } from "@/components/nation/story/NationStorySection";
+import { LocalizedLink } from "@/components/LocalizedLink";
+import { NationECommerceScale } from "@/components/nation/story/NationECommerceScale";
+import { NationLayerComparisons } from "@/components/nation/story/NationLayerComparisons";
+import { NationOilExportsSection } from "@/components/nation/story/NationOilExportsSection";
+import { NationPinnedSection } from "@/components/nation/story/NationPinnedSection";
+import { NationZoomChart } from "@/components/nation/story/NationZoomChart";
+import { useScrollSection } from "@/components/nation/story/useScrollSection";
 import { useLanguage } from "@/components/LanguageProvider";
 import type { NationDetails } from "@/hooks/nation/useNationDetails";
 import type { NationStoryMetrics } from "@/utils/data/nationStoryMetrics";
-import { formatMton, formatTonnes } from "@/utils/data/nationStoryMetrics";
-import { formatPercentChange } from "@/utils/formatting/localization";
-import { LocalizedLink } from "@/components/LocalizedLink";
 
-interface NationStoryPageProps {
+type NationStoryPageProps = {
   nation: NationDetails;
   metrics: NationStoryMetrics;
   sortedRegions: string[];
   gavleEmissionsTonnes: number | null;
-}
+  smallMunicipalityName: string | null;
+  smallMunicipalityTonnes: number | null;
+};
 
 export function NationStoryPage({
   nation,
   metrics,
   sortedRegions,
   gavleEmissionsTonnes,
+  smallMunicipalityName,
+  smallMunicipalityTonnes,
 }: NationStoryPageProps) {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
-
   const countryName = nation.country[currentLanguage];
 
+  const introScroll = useScrollSection({ heightVh: 120 });
+  const zoomScroll = useScrollSection({ heightVh: 450 });
+  const comparisonsScroll = useScrollSection({ heightVh: 380 });
+  const ecommerceScroll = useScrollSection({ heightVh: 320 });
+  const oilScroll = useScrollSection({ heightVh: 340 });
+
+  const introP1 = useTransform(introScroll.scrollYProgress, [0, 0.25], [0, 1]);
+  const introP2 = useTransform(introScroll.scrollYProgress, [0.2, 0.45], [0, 1]);
+  const introP3 = useTransform(introScroll.scrollYProgress, [0.4, 0.65], [0, 1]);
+  const introP1Y = useTransform(introP1, [0, 1], [24, 0]);
+  const introP2Y = useTransform(introP2, [0, 1], [24, 0]);
+  const introP3Y = useTransform(introP3, [0, 1], [24, 0]);
+
   return (
-    <div className="bg-black text-white pb-20">
-      <NationStoryHero nation={nation} countryName={countryName} />
-      <NationStoryHeadline metrics={metrics} />
-
-      <NationStorySection
-        id="helheten"
-        title={t("nation.story.combined.title")}
+    <div className="bg-black text-white pb-24">
+      {/* Intro */}
+      <section
+        ref={introScroll.ref}
+        className="relative"
+        style={{ height: `${introScroll.heightVh}vh` }}
       >
-        <p>{t("nation.story.combined.paragraph1")}</p>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 not-prose">
-          <NationStatCallout
-            label={`${metrics.latestYear}`}
-            value={formatMton(metrics.combinedLatestMton, currentLanguage, 0)}
-            unit={t("nation.story.unit.mton")}
-          />
-          <NationStatCallout
-            label={`${1990}`}
-            value={formatMton(metrics.combined1990Mton, currentLanguage, 0)}
-            unit={t("nation.story.unit.mton")}
-          />
-          <NationStatCallout
-            label={t("nation.story.combined.changeLabel")}
-            value={formatPercentChange(
-              metrics.combinedChangePercent,
-              currentLanguage,
-              true,
-            )}
-            deltaClassName={
-              metrics.combinedChangePercent <= 0
-                ? "text-green-3"
-                : "text-pink-3"
-            }
-          />
+        <div className="sticky top-0 h-screen flex items-center justify-center px-4 md:px-8">
+          <div className="max-w-3xl mx-auto text-center space-y-8">
+            {nation.logoUrl ? (
+              <img
+                src={nation.logoUrl}
+                alt=""
+                className="h-16 w-16 mx-auto object-contain opacity-80"
+              />
+            ) : null}
+            <h1 className="text-4xl md:text-6xl font-light">{countryName}</h1>
+            <motion.p
+              style={{ opacity: introP1, y: introP1Y }}
+              className="text-lg md:text-xl text-grey leading-relaxed"
+            >
+              {t("nation.story.intro.paragraph1")}
+            </motion.p>
+            <motion.p
+              style={{ opacity: introP2, y: introP2Y }}
+              className="text-lg md:text-xl text-grey leading-relaxed"
+            >
+              {t("nation.story.intro.paragraph2")}
+            </motion.p>
+            <motion.p
+              style={{ opacity: introP3, y: introP3Y }}
+              className="text-lg md:text-xl text-white leading-relaxed"
+            >
+              {t("nation.story.intro.paragraph3")}
+            </motion.p>
+          </div>
         </div>
-        <div className="not-prose pt-4">
-          <NationCombinedStackChart data={metrics.stackData} />
-        </div>
-        <p>{t("nation.story.combined.paragraph2")}</p>
-      </NationStorySection>
+      </section>
 
-      <NationStorySection id="biogent" title={t("nation.story.biogenic.title")}>
-        <p>{t("nation.story.biogenic.paragraph1")}</p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 not-prose">
-          <NationStatCallout
-            label={t("nation.story.biogenic.biogenicChangeLabel")}
-            value={formatPercentChange(
-              metrics.biogenicChangePercent,
-              currentLanguage,
-              true,
-            )}
-            delta={t("nation.story.biogenic.biogenicValues", {
-              from: formatMton(metrics.biogenic1990Mton, currentLanguage, 0),
-              to: formatMton(metrics.biogenicLatestMton, currentLanguage, 0),
-            })}
-          />
-          <NationStatCallout
-            label={t("nation.story.biogenic.prodBiogenicLabel")}
-            value={formatPercentChange(
-              metrics.prodBiogenicChangePercent,
-              currentLanguage,
-              true,
-            )}
-            delta={t("nation.story.biogenic.prodBiogenicValues", {
-              from: formatMton(
-                metrics.prodBiogenic1990Mton,
-                currentLanguage,
-                0,
-              ),
-              to: formatMton(
-                metrics.prodBiogenicLatestMton,
-                currentLanguage,
-                0,
-              ),
-            })}
-          />
-        </div>
-        <p>{t("nation.story.biogenic.paragraph2")}</p>
-      </NationStorySection>
-
-      <NationStorySection
-        id="konsumtion"
-        title={t("nation.story.consumption.title")}
+      {/* Zoom-out chart */}
+      <NationPinnedSection
+        scrollYProgress={zoomScroll.scrollYProgress}
+        heightVh={zoomScroll.heightVh}
       >
-        <p>{t("nation.story.consumption.paragraph1")}</p>
-        <div className="not-prose">
-          <NationComparisonBars
-            territorialMton={metrics.territorialLatestMton}
-            consumptionMton={metrics.consumptionLatestMton}
-            year={metrics.latestYear}
-          />
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 not-prose">
-          <NationStatCallout
-            label={t("nation.story.consumption.consumptionChangeLabel")}
-            value={formatPercentChange(
-              metrics.consumptionChangePercent,
-              currentLanguage,
-              true,
-            )}
-            delta={t("nation.story.consumption.since1990")}
-          />
-          <NationStatCallout
-            label={t("nation.story.consumption.eCommerceLabel", {
-              year: metrics.latestYear,
-            })}
-            value={formatTonnes(
-              metrics.eCommerceLatestTonnes,
-              currentLanguage,
-              0,
-            )}
-            unit={t("emissionsUnit")}
-            delta={
-              gavleEmissionsTonnes != null
-                ? t("nation.story.consumption.gavleComparison", {
-                    municipality: "Gävle",
-                    year: metrics.latestYear,
-                    gavleTonnes: formatTonnes(
-                      gavleEmissionsTonnes,
-                      currentLanguage,
-                      0,
-                    ),
-                  })
-                : t("nation.story.consumption.eCommerceDescription")
-            }
-          />
-        </div>
-        <p>{t("nation.story.consumption.paragraph2")}</p>
-      </NationStorySection>
-
-      <div className="w-full max-w-5xl mx-auto px-4 md:px-8 pt-8">
-        <EntityListBox
-          items={sortedRegions}
-          entityType="regions"
-          translateNamespace="nation.detailPage"
+        <NationZoomChart
+          metrics={metrics}
+          scrollYProgress={zoomScroll.scrollYProgress}
         />
-        <p className="mt-8 text-grey text-sm">
-          {t("nation.story.footer.methodsPrompt")}{" "}
-          <LocalizedLink
-            to="/methodology?view=nationDataOverview"
-            className="underline hover:text-white transition-colors"
-          >
-            {t("nation.story.footer.methodsLink")}
-          </LocalizedLink>
-        </p>
-      </div>
+      </NationPinnedSection>
+
+      {/* 1990 → today comparisons */}
+      <NationPinnedSection
+        scrollYProgress={comparisonsScroll.scrollYProgress}
+        heightVh={comparisonsScroll.heightVh}
+      >
+        <NationLayerComparisons
+          layers={metrics.layerComparisons}
+          latestYear={metrics.latestYear}
+          maxMton={metrics.maxLayerMton}
+          scrollYProgress={comparisonsScroll.scrollYProgress}
+        />
+      </NationPinnedSection>
+
+      {/* E-commerce scale */}
+      <NationPinnedSection
+        scrollYProgress={ecommerceScroll.scrollYProgress}
+        heightVh={ecommerceScroll.heightVh}
+      >
+        <NationECommerceScale
+          eCommerceTonnes={metrics.eCommerceLatestTonnes}
+          eCommerceYear={metrics.eCommerceYear}
+          smallMunicipalityName={smallMunicipalityName}
+          smallMunicipalityTonnes={smallMunicipalityTonnes}
+          gavleTonnes={gavleEmissionsTonnes}
+          scrollYProgress={ecommerceScroll.scrollYProgress}
+        />
+      </NationPinnedSection>
+
+      {/* Oil exports */}
+      <NationPinnedSection
+        scrollYProgress={oilScroll.scrollYProgress}
+        heightVh={oilScroll.heightVh}
+      >
+        <NationOilExportsSection
+          metrics={metrics}
+          scrollYProgress={oilScroll.scrollYProgress}
+        />
+      </NationPinnedSection>
+
+      {/* Footer */}
+      <section className="max-w-5xl mx-auto px-4 md:px-8 pt-16">
+        <motion.div
+          initial={{ opacity: 0, y: 32 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.25 }}
+          transition={{ duration: 0.5 }}
+        >
+          <EntityListBox
+            items={sortedRegions}
+            entityType="regions"
+            translateNamespace="nation.detailPage"
+          />
+          <p className="mt-8 text-grey text-sm">
+            {t("nation.story.footer.methodsPrompt")}{" "}
+            <LocalizedLink
+              to="/methodology?view=nationDataOverview"
+              className="underline hover:text-white transition-colors"
+            >
+              {t("nation.story.footer.methodsLink")}
+            </LocalizedLink>
+          </p>
+        </motion.div>
+      </section>
     </div>
   );
 }

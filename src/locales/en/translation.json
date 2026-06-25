@@ -1531,7 +1531,33 @@
       "graph": {
         "territorialFossil": "Production-based (territorial fossil)",
         "biogenic": "Biogenic emissions",
-        "consumptionAbroad": "Consumption-based abroad"
+        "consumptionAbroad": "Consumption-based abroad",
+        "oilExports": "Export of oil products"
+      },
+      "zoom": {
+        "phase1": "This is what we usually focus on – territorial fossil emissions within Sweden's borders.",
+        "phase2": "But biogenic emissions add up – from district heating, industry and transport.",
+        "phase3": "Add consumption-based emissions abroad – where we actually consume.",
+        "phase4": "The full picture is {{ratio}}× larger: {{total}} Mt – an entirely different scale."
+      },
+      "comparisons": {
+        "title": "1990 compared to today",
+        "description": "Scroll to see how each emission category has changed since 1990.",
+        "since1990": "since 1990"
+      },
+      "ecommerce": {
+        "title": "E-commerce from abroad",
+        "description": "For the first time we have figures for private e-commerce emissions from abroad. How big is it?",
+        "smallLabel": "{{municipality}} ({{year}})",
+        "ecommerceLabel": "Private e-commerce ({{year}})",
+        "gavleLabel": "Gävle ({{year}})",
+        "footer": "E-commerce emissions are roughly equivalent to an entire municipality's annual emissions – yet rarely part of the usual picture."
+      },
+      "oil": {
+        "title": "And there is even more",
+        "description": "Export of oil products is another emission layer rarely included in the official narrative.",
+        "stackLabel": "Three layers + oil exports",
+        "footer": "Biogenic uptake in forests and land, international aviation and shipping and more – a complete climate picture requires including more perspectives."
       },
       "footer": {
         "methodsPrompt": "Read more about data sources and methodology:",

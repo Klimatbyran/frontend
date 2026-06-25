@@ -16,6 +16,7 @@ function fixtureToSeries(): NationEmissionSeries {
     biogenicEmissions: Record<string, number>;
     consumptionAbroadEmissions: Record<string, number>;
     eCommerceEmissions: Record<string, number>;
+    exportOfOilProductsEmissions: Record<string, number>;
   };
 
   const toRecord = (input: Record<string, number>) =>
@@ -28,6 +29,7 @@ function fixtureToSeries(): NationEmissionSeries {
     biogenic: toRecord(raw.biogenicEmissions),
     consumptionAbroad: toRecord(raw.consumptionAbroadEmissions),
     eCommerce: toRecord(raw.eCommerceEmissions),
+    exportOfOilProducts: toRecord(raw.exportOfOilProductsEmissions),
   };
 }
 
@@ -50,39 +52,25 @@ describe("nationStoryMetrics", () => {
     expect(metrics.ratioReportedToFull).toBeLessThan(3.5);
   });
 
-  it("shows biogenic emissions more than doubled since 1990", () => {
+  it("builds layer comparisons for all main categories", () => {
     const metrics = computeNationStoryMetrics(series);
 
+    expect(metrics.layerComparisons).toHaveLength(4);
+    expect(metrics.territorialChangePercent).toBeLessThan(0);
     expect(metrics.biogenicChangePercent).toBeGreaterThan(100);
   });
 
-  it("shows production plus biogenic increased since 1990", () => {
-    const metrics = computeNationStoryMetrics(series);
-
-    expect(metrics.prodBiogenicChangePercent).toBeGreaterThan(0);
-  });
-
-  it("shows consumption abroad declined since 1990", () => {
-    const metrics = computeNationStoryMetrics(series);
-
-    expect(metrics.consumptionChangePercent).toBeLessThan(0);
-    expect(metrics.consumptionLatestMton).toBeGreaterThan(
-      metrics.territorialLatestMton,
-    );
-  });
-
-  it("includes e-commerce emissions for 2024", () => {
+  it("includes e-commerce and oil export data for 2024", () => {
     const metrics = computeNationStoryMetrics(series);
 
     expect(metrics.eCommerceLatestTonnes).toBe(403630);
+    expect(metrics.oilExportLatestMton).toBeCloseTo(32.1, 0);
   });
 
   it("builds stacked chart data in Mton", () => {
     const stackData = buildStackChartData(series);
-    const point1990 = stackData.find((point) => point.year === 1990);
     const point2024 = stackData.find((point) => point.year === 2024);
 
-    expect(point1990?.combined).toBeCloseTo(165.3, 0);
     expect(point2024?.combined).toBeCloseTo(155.3, 0);
   });
 

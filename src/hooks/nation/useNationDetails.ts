@@ -18,6 +18,7 @@ type RawNationResponse = {
   biogenicEmissions?: EmissionSeries | YearlyRecord;
   consumptionAbroadEmissions?: EmissionSeries | YearlyRecord;
   eCommerceEmissions?: EmissionSeries | YearlyRecord;
+  exportOfOilProductsEmissions?: EmissionSeries | YearlyRecord;
   emissions?: EmissionSeries | YearlyRecord;
 };
 
@@ -87,6 +88,9 @@ function transformRawNation(response: RawNationResponse): NationDetails {
     biogenic: extractYearRecord(response.biogenicEmissions),
     consumptionAbroad: extractYearRecord(response.consumptionAbroadEmissions),
     eCommerce: extractYearRecord(response.eCommerceEmissions),
+    exportOfOilProducts: extractYearRecord(
+      response.exportOfOilProductsEmissions,
+    ),
   };
 }
 

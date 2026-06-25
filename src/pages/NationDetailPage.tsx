@@ -10,6 +10,8 @@ export function NationDetailPage() {
     metrics,
     sortedRegions,
     gavleEmissionsTonnes,
+    smallMunicipalityName,
+    smallMunicipalityTonnes,
     loading,
     error,
   } = useNationStoryData();
@@ -24,6 +26,8 @@ export function NationDetailPage() {
       metrics={metrics}
       sortedRegions={sortedRegions}
       gavleEmissionsTonnes={gavleEmissionsTonnes}
+      smallMunicipalityName={smallMunicipalityName}
+      smallMunicipalityTonnes={smallMunicipalityTonnes}
     />
   );
 }

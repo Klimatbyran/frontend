@@ -1588,7 +1588,33 @@
       "graph": {
         "territorialFossil": "Produktionsbaserade (territoriella fossila)",
         "biogenic": "Biogena utsläpp",
-        "consumptionAbroad": "Konsumtionsbaserade utomlands"
+        "consumptionAbroad": "Konsumtionsbaserade utomlands",
+        "oilExports": "Export av oljeprodukter"
+      },
+      "zoom": {
+        "phase1": "Det här är det vi brukar fokusera på – territoriella fossila utsläpp inom Sveriges gränser.",
+        "phase2": "Men biogena utsläpp tillkommer – från fjärrvärme, industri och transporter.",
+        "phase3": "Lägg till konsumtionsbaserade utsläpp utomlands – var vi faktiskt konsumerar.",
+        "phase4": "Helheten är {{ratio}}× större: {{total}} Mton – en helt annan skala."
+      },
+      "comparisons": {
+        "title": "1990 jämfört med idag",
+        "description": "Scrolla för att se hur varje utsläppskategori utvecklats sedan 1990.",
+        "since1990": "sedan 1990"
+      },
+      "ecommerce": {
+        "title": "E-handel från utlandet",
+        "description": "För första gången har vi siffror på utsläpp från privat e-handel utomlands – som kläder från Shein. Hur stort är det?",
+        "smallLabel": "{{municipality}} ({{year}})",
+        "ecommerceLabel": "Privat e-handel ({{year}})",
+        "gavleLabel": "Gävle ({{year}})",
+        "footer": "E-handelsutsläppen motsvarar ungefär en hel kommuns årsutsläpp – men fångas sällan i den vanliga bilden."
+      },
+      "oil": {
+        "title": "Och det finns ännu mer",
+        "description": "Export av oljeprodukter är ytterligare ett utsläppslager som sällan räknas med i den offentliga berättelsen.",
+        "stackLabel": "Tre lager + oljeexport",
+        "footer": "Biogent upptag i skog och mark, internationell flyg- och sjöfart och mer – en fullständig klimatbild kräver att vi vågar inkludera fler perspektiv."
       },
       "footer": {
         "methodsPrompt": "Läs mer om datakällor och metod:",

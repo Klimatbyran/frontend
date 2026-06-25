@@ -9,6 +9,7 @@ import {
 } from "@/utils/data/nationStoryMetrics";
 
 const GAVLE_MUNICIPALITY = "Gävle";
+const SMALL_MUNICIPALITY = "Habo";
 
 function getMunicipalityEmissionsForYear(
   emissions: Array<{ year: number; value: number } | null> | undefined,
@@ -16,6 +17,10 @@ function getMunicipalityEmissionsForYear(
 ): number | null {
   const match = emissions?.find((point) => point?.year === year);
   return match?.value ?? null;
+}
+
+function toDisplayTonnes(rawKg: number): number {
+  return rawKg / 1000;
 }
 
 export function useNationStoryData() {
@@ -30,9 +35,16 @@ export function useNationStoryData() {
 
   const comparisonYear = metrics?.latestYear ?? new Date().getFullYear();
 
-  const { data: gavleMunicipality, isLoading: gavleLoading } = useQuery({
+  const { data: gavleMunicipality } = useQuery({
     queryKey: ["municipality", GAVLE_MUNICIPALITY, comparisonYear],
     queryFn: () => getMunicipalityDetails(GAVLE_MUNICIPALITY),
+    enabled: !!metrics,
+    staleTime: 1_800_000,
+  });
+
+  const { data: smallMunicipality } = useQuery({
+    queryKey: ["municipality", SMALL_MUNICIPALITY, comparisonYear],
+    queryFn: () => getMunicipalityDetails(SMALL_MUNICIPALITY),
     enabled: !!metrics,
     staleTime: 1_800_000,
   });
@@ -43,16 +55,25 @@ export function useNationStoryData() {
       gavleMunicipality.emissions,
       comparisonYear,
     );
-    if (value == null) return null;
-    return value / 1000;
+    return value == null ? null : toDisplayTonnes(value);
   }, [gavleMunicipality, comparisonYear]);
+
+  const smallMunicipalityTonnes = useMemo(() => {
+    if (!smallMunicipality?.emissions) return null;
+    const value = getMunicipalityEmissionsForYear(
+      smallMunicipality.emissions,
+      comparisonYear,
+    );
+    return value == null ? null : toDisplayTonnes(value);
+  }, [smallMunicipality, comparisonYear]);
 
   return {
     nation,
     metrics,
     sortedRegions,
     gavleEmissionsTonnes,
-    gavleLoading,
+    smallMunicipalityName: smallMunicipality?.name ?? SMALL_MUNICIPALITY,
+    smallMunicipalityTonnes,
     loading,
     error,
   };

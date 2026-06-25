@@ -7,6 +7,22 @@ export type NationEmissionSeries = {
   biogenic: Record<number, number>;
   consumptionAbroad: Record<number, number>;
   eCommerce: Record<number, number>;
+  exportOfOilProducts: Record<number, number>;
+};
+
+export type NationLayerKey =
+  | "territorialFossil"
+  | "biogenic"
+  | "consumptionAbroad"
+  | "exportOfOilProducts";
+
+export type NationLayerComparison = {
+  key: NationLayerKey;
+  labelKey: string;
+  color: string;
+  mton1990: number;
+  mtonLatest: number;
+  changePercent: number;
 };
 
 export type NationStackDataPoint = {
@@ -19,24 +35,27 @@ export type NationStackDataPoint = {
 
 export type NationStoryMetrics = {
   latestYear: number;
-  reportedYear: number;
   ratioReportedToFull: number;
   combined1990Mton: number;
   combinedLatestMton: number;
   combinedChangePercent: number;
   territorialLatestMton: number;
+  territorial1990Mton: number;
+  territorialChangePercent: number;
   biogenic1990Mton: number;
   biogenicLatestMton: number;
   biogenicChangePercent: number;
-  prodBiogenic1990Mton: number;
-  prodBiogenicLatestMton: number;
-  prodBiogenicChangePercent: number;
   consumptionLatestMton: number;
   consumption1990Mton: number;
   consumptionChangePercent: number;
-  eCommerceLatestMton: number;
+  oilExport1990Mton: number;
+  oilExportLatestMton: number;
+  oilExportChangePercent: number;
   eCommerceLatestTonnes: number;
+  eCommerceYear: number;
+  layerComparisons: NationLayerComparison[];
   stackData: NationStackDataPoint[];
+  maxLayerMton: number;
 };
 
 const TONNES_PER_MTON = 1_000_000;
@@ -126,34 +145,90 @@ export function buildStackChartData(
   });
 }
 
+function buildLayerComparison(
+  key: NationLayerKey,
+  labelKey: string,
+  color: string,
+  series: NationEmissionSeries,
+  latestYear: number,
+): NationLayerComparison {
+  const tonnes1990 = series[key][NATION_BASELINE_YEAR] ?? 0;
+  const tonnesLatest = series[key][latestYear] ?? 0;
+
+  return {
+    key,
+    labelKey,
+    color,
+    mton1990: toMton(tonnes1990),
+    mtonLatest: toMton(tonnesLatest),
+    changePercent: percentChange(tonnes1990, tonnesLatest),
+  };
+}
+
 export function computeNationStoryMetrics(
   series: NationEmissionSeries,
 ): NationStoryMetrics {
   const latestYear = getLatestCompleteYear(series);
-  const reportedYear = latestYear;
 
   const combined1990Tonnes = sumSeriesAtYear(series, NATION_BASELINE_YEAR);
   const combinedLatestTonnes = sumSeriesAtYear(series, latestYear);
+  const territorial1990Tonnes =
+    series.territorialFossil[NATION_BASELINE_YEAR] ?? 0;
   const territorialLatestTonnes = series.territorialFossil[latestYear] ?? 0;
   const biogenic1990Tonnes = series.biogenic[NATION_BASELINE_YEAR] ?? 0;
   const biogenicLatestTonnes = series.biogenic[latestYear] ?? 0;
-  const prodBiogenic1990Tonnes =
-    (series.territorialFossil[NATION_BASELINE_YEAR] ?? 0) + biogenic1990Tonnes;
-  const prodBiogenicLatestTonnes =
-    territorialLatestTonnes + biogenicLatestTonnes;
   const consumption1990Tonnes =
     series.consumptionAbroad[NATION_BASELINE_YEAR] ?? 0;
   const consumptionLatestTonnes = series.consumptionAbroad[latestYear] ?? 0;
+  const oilExport1990Tonnes =
+    series.exportOfOilProducts[NATION_BASELINE_YEAR] ?? 0;
+  const oilExportLatestTonnes = series.exportOfOilProducts[latestYear] ?? 0;
 
-  const eCommerceYears = Object.keys(series.eCommerce)
-    .map(Number)
-    .filter((year) => !Number.isNaN(year))
-    .sort((a, b) => a - b);
-  const eCommerceLatestYear =
+  const eCommerceYear =
     series.eCommerce[latestYear] !== undefined
       ? latestYear
-      : (eCommerceYears.at(-1) ?? latestYear);
-  const eCommerceLatestTonnes = series.eCommerce[eCommerceLatestYear] ?? 0;
+      : (Object.keys(series.eCommerce)
+          .map(Number)
+          .filter((y) => !Number.isNaN(y))
+          .sort((a, b) => a - b)
+          .at(-1) ?? latestYear);
+  const eCommerceLatestTonnes = series.eCommerce[eCommerceYear] ?? 0;
+
+  const layerComparisons = [
+    buildLayerComparison(
+      "territorialFossil",
+      "nation.story.graph.territorialFossil",
+      "var(--orange-2)",
+      series,
+      latestYear,
+    ),
+    buildLayerComparison(
+      "biogenic",
+      "nation.story.graph.biogenic",
+      "var(--green-2)",
+      series,
+      latestYear,
+    ),
+    buildLayerComparison(
+      "consumptionAbroad",
+      "nation.story.graph.consumptionAbroad",
+      "var(--blue-2)",
+      series,
+      latestYear,
+    ),
+    buildLayerComparison(
+      "exportOfOilProducts",
+      "nation.story.graph.oilExports",
+      "var(--pink-3)",
+      series,
+      latestYear,
+    ),
+  ];
+
+  const maxLayerMton = Math.max(
+    ...layerComparisons.flatMap((l) => [l.mton1990, l.mtonLatest]),
+    toMton(combinedLatestTonnes),
+  );
 
   const ratioReportedToFull =
     territorialLatestTonnes > 0
@@ -162,7 +237,6 @@ export function computeNationStoryMetrics(
 
   return {
     latestYear,
-    reportedYear,
     ratioReportedToFull,
     combined1990Mton: toMton(combined1990Tonnes),
     combinedLatestMton: toMton(combinedLatestTonnes),
@@ -171,17 +245,16 @@ export function computeNationStoryMetrics(
       combinedLatestTonnes,
     ),
     territorialLatestMton: toMton(territorialLatestTonnes),
+    territorial1990Mton: toMton(territorial1990Tonnes),
+    territorialChangePercent: percentChange(
+      territorial1990Tonnes,
+      territorialLatestTonnes,
+    ),
     biogenic1990Mton: toMton(biogenic1990Tonnes),
     biogenicLatestMton: toMton(biogenicLatestTonnes),
     biogenicChangePercent: percentChange(
       biogenic1990Tonnes,
       biogenicLatestTonnes,
-    ),
-    prodBiogenic1990Mton: toMton(prodBiogenic1990Tonnes),
-    prodBiogenicLatestMton: toMton(prodBiogenicLatestTonnes),
-    prodBiogenicChangePercent: percentChange(
-      prodBiogenic1990Tonnes,
-      prodBiogenicLatestTonnes,
     ),
     consumptionLatestMton: toMton(consumptionLatestTonnes),
     consumption1990Mton: toMton(consumption1990Tonnes),
@@ -189,8 +262,16 @@ export function computeNationStoryMetrics(
       consumption1990Tonnes,
       consumptionLatestTonnes,
     ),
-    eCommerceLatestMton: toMton(eCommerceLatestTonnes),
+    oilExport1990Mton: toMton(oilExport1990Tonnes),
+    oilExportLatestMton: toMton(oilExportLatestTonnes),
+    oilExportChangePercent: percentChange(
+      oilExport1990Tonnes,
+      oilExportLatestTonnes,
+    ),
     eCommerceLatestTonnes,
+    eCommerceYear,
+    layerComparisons,
     stackData: buildStackChartData(series),
+    maxLayerMton,
   };
 }
