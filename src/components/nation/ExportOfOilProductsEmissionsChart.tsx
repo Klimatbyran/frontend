@@ -1,5 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
-import { useMotionValueEvent, type MotionValue } from "framer-motion";
+import {
+  useMotionValue,
+  useMotionValueEvent,
+  type MotionValue,
+} from "framer-motion";
 import {
   Bar,
   BarChart,
@@ -206,19 +210,19 @@ export function ExportOfOilProductsEmissionsChart({
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
   const { isMobile } = useScreenSize();
+  // Stable fallback so useMotionValueEvent always receives a real MotionValue
+  const fallbackProgress = useMotionValue(0);
+  const activeProgress = scrollYProgress ?? fallbackProgress;
+
   const [scrollProgress, setScrollProgress] = useState(
-    () => scrollYProgress?.get() ?? 0,
+    () => activeProgress.get(),
   );
 
   useEffect(() => {
-    if (!scrollYProgress) {
-      return;
-    }
+    setScrollProgress(activeProgress.get());
+  }, [activeProgress]);
 
-    setScrollProgress(scrollYProgress.get());
-  }, [scrollYProgress]);
-
-  useMotionValueEvent(scrollYProgress ?? null, "change", (value) => {
+  useMotionValueEvent(activeProgress, "change", (value) => {
     setScrollProgress(value);
   });
 
