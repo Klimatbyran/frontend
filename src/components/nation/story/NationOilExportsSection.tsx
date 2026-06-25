@@ -20,8 +20,7 @@ export function NationOilExportsSection({
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
 
-  // Only the bars animate – oil grows first, then the stacked total
-  const oilBarScale = useTransform(scrollYProgress, [0.05, 0.5], [0, 1]);
+  const oilBarScale = useTransform(scrollYProgress, [0, 0.5], [0, 1]);
   const stackBarScale = useTransform(scrollYProgress, [0.45, 0.95], [0, 1]);
 
   const maxMton = metrics.combinedLatestMton + metrics.oilExportLatestMton;
@@ -29,7 +28,6 @@ export function NationOilExportsSection({
 
   return (
     <div className="w-full max-w-4xl mx-auto">
-      {/* Header always visible */}
       <div className="mb-10">
         <h2 className="text-3xl md:text-4xl font-light text-white mb-3">
           {t("nation.story.oil.title")}
@@ -38,7 +36,6 @@ export function NationOilExportsSection({
       </div>
 
       <div className="flex items-end justify-center gap-10 md:gap-16">
-        {/* Animated stacked bar */}
         <div className="flex flex-col items-center gap-3">
           <div
             className="relative flex flex-col-reverse w-28 md:w-36 rounded-t-lg overflow-hidden border border-white/10"
@@ -67,7 +64,6 @@ export function NationOilExportsSection({
           </span>
         </div>
 
-        {/* Stats always visible */}
         <div className="space-y-4 max-w-sm">
           <div>
             <p className="text-sm text-grey">{NATION_BASELINE_YEAR}</p>

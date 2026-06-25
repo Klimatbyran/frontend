@@ -8,11 +8,12 @@ import {
 import { formatPercentChange } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
 
-// 3 rows spread across the full 0–1 range
+// Row 1: 0–0.37, Row 2: 0.3–0.67, Row 3: 0.6–0.97
+// Overlap intentional so they start before previous fully finishes
 const ROW_RANGES: [number, number][] = [
-  [0.05, 0.38],
-  [0.34, 0.67],
-  [0.63, 0.96],
+  [0, 0.37],
+  [0.3, 0.67],
+  [0.6, 0.97],
 ];
 
 function LayerRow({
@@ -31,14 +32,14 @@ function LayerRow({
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
 
-  // Only the bars animate – everything else is always visible
-  const bar1990Width = useTransform(scrollYProgress, range, [
-    "0%",
-    `${(layer.mton1990 / maxMton) * 100}%`,
-  ]);
+  const bar1990Width = useTransform(
+    scrollYProgress,
+    range,
+    ["0%", `${(layer.mton1990 / maxMton) * 100}%`],
+  );
   const barLatestWidth = useTransform(
     scrollYProgress,
-    [range[0] + 0.06, range[1]],
+    [range[0] + 0.05, range[1]],
     ["0%", `${(layer.mtonLatest / maxMton) * 100}%`],
   );
 
@@ -63,7 +64,6 @@ function LayerRow({
       </div>
 
       <div className="space-y-2">
-        {/* 1990 bar */}
         <div className="flex items-center gap-3">
           <span className="text-xs text-grey w-12 shrink-0">
             {NATION_BASELINE_YEAR}
@@ -83,7 +83,6 @@ function LayerRow({
             {t("nation.story.unit.mton")}
           </span>
         </div>
-        {/* Latest bar */}
         <div className="flex items-center gap-3">
           <span className="text-xs text-grey w-12 shrink-0">{latestYear}</span>
           <div className="flex-1 h-8 bg-black-2 rounded-md overflow-hidden">
@@ -120,7 +119,6 @@ export function NationLayerComparisons({
 
   return (
     <div className="w-full max-w-4xl mx-auto">
-      {/* Header always visible */}
       <div className="mb-8">
         <h2 className="text-3xl md:text-4xl font-light text-white mb-3">
           {t("nation.story.comparisons.title")}
@@ -129,7 +127,6 @@ export function NationLayerComparisons({
           {t("nation.story.comparisons.description")}
         </p>
       </div>
-
       <div>
         {mainLayers.map((layer, index) => (
           <LayerRow
@@ -138,7 +135,7 @@ export function NationLayerComparisons({
             latestYear={latestYear}
             maxMton={maxMton}
             scrollYProgress={scrollYProgress}
-            range={ROW_RANGES[index] ?? [0.08, 0.38]}
+            range={ROW_RANGES[index] ?? [0, 0.37]}
           />
         ))}
       </div>

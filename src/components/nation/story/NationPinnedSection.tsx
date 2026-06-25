@@ -1,5 +1,5 @@
 import { useRef, type ReactNode } from "react";
-import { useScroll } from "framer-motion";
+import { useScroll, useSpring } from "framer-motion";
 import type { MotionValue } from "framer-motion";
 
 type NationPinnedSectionProps = {
@@ -9,18 +9,27 @@ type NationPinnedSectionProps = {
 };
 
 export function NationPinnedSection({
-  heightVh = 200,
+  heightVh = 220,
   children,
   className = "",
 }: NationPinnedSectionProps) {
   const ref = useRef<HTMLElement>(null);
 
-  // progress=0  → section top at viewport top (enters)
-  // progress=1  → section center at viewport center (centered on screen)
-  // The remaining half of the sticky phase shows the fully-drawn state.
+  // progress=0: section top at viewport bottom (section approaching from below)
+  // progress=1: section center at viewport center (section perfectly centered)
+  // This means bars are fully grown exactly when the section is centered.
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start start", "center center"],
+    offset: ["start end", "center center"],
+  });
+
+  // Spring smooths out jitter from raw scroll events – animations feel
+  // physical and independent of how fast the user scrolls.
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 80,
+    damping: 25,
+    mass: 0.5,
+    restDelta: 0.001,
   });
 
   return (
@@ -31,7 +40,7 @@ export function NationPinnedSection({
     >
       <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
         <div className="w-full max-w-6xl mx-auto px-4 md:px-8 h-full flex flex-col justify-center">
-          {children(scrollYProgress)}
+          {children(smoothProgress)}
         </div>
       </div>
     </section>

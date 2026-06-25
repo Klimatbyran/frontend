@@ -3,11 +3,10 @@ import { motion, useTransform, type MotionValue } from "framer-motion";
 import { formatTonnes } from "@/utils/data/nationStoryMetrics";
 import { useLanguage } from "@/components/LanguageProvider";
 
-// 3 bars spread across the full 0–1 range
 const BAR_RANGES: [number, number][] = [
-  [0.03, 0.37],
-  [0.33, 0.67],
-  [0.63, 0.97],
+  [0, 0.37],
+  [0.3, 0.67],
+  [0.6, 0.97],
 ];
 
 function ScaleBar({
@@ -28,7 +27,6 @@ function ScaleBar({
   range: [number, number];
 }) {
   const { currentLanguage } = useLanguage();
-  // Only the bar height animates
   const barScale = useTransform(scrollYProgress, range, [0, 1]);
 
   return (
@@ -118,7 +116,6 @@ export function NationECommerceScale({
 
   return (
     <div className="w-full max-w-4xl mx-auto">
-      {/* Header always visible */}
       <div className="mb-10 text-center md:text-left">
         <h2 className="text-3xl md:text-4xl font-light text-white mb-3">
           {t("nation.story.ecommerce.title")}
@@ -128,7 +125,6 @@ export function NationECommerceScale({
         </p>
       </div>
 
-      {/* Bars animate */}
       <div className="flex items-end justify-center gap-6 md:gap-12 min-h-[280px]">
         {bars.map((bar, index) => (
           <ScaleBar
@@ -139,12 +135,11 @@ export function NationECommerceScale({
             maxTonnes={maxTonnes}
             barHeight={barHeight}
             scrollYProgress={scrollYProgress}
-            range={BAR_RANGES[index] ?? [0.05, 0.38]}
+            range={BAR_RANGES[index] ?? [0, 0.37]}
           />
         ))}
       </div>
 
-      {/* Footer always visible */}
       <p className="mt-10 text-grey text-center text-base md:text-lg">
         {t("nation.story.ecommerce.footer")}
       </p>

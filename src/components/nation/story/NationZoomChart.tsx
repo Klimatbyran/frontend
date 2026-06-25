@@ -16,29 +16,29 @@ const LAYERS = [
     color: "var(--orange-2)",
     labelKey: "nation.story.graph.territorialFossil",
     getMton: (m: NationStoryMetrics) => m.territorialLatestMton,
+    // Grows from progress 0→0.33
+    range: [0, 0.4] as [number, number],
+    phase: 0,
   },
   {
     key: "biogenic" as const,
     color: "var(--green-2)",
     labelKey: "nation.story.graph.biogenic",
     getMton: (m: NationStoryMetrics) => m.biogenicLatestMton,
+    // Grows from progress 0.3→0.65
+    range: [0.3, 0.65] as [number, number],
+    phase: 1,
   },
   {
     key: "consumption" as const,
     color: "var(--blue-2)",
     labelKey: "nation.story.graph.consumptionAbroad",
     getMton: (m: NationStoryMetrics) => m.consumptionLatestMton,
+    // Grows from progress 0.6→0.95
+    range: [0.6, 0.95] as [number, number],
+    phase: 2,
   },
 ];
-
-// Three layers staggered across the full 0–1 progress range
-const LAYER_RANGES = [
-  [0.02, 0.36] as [number, number], // territorial
-  [0.33, 0.67] as [number, number], // biogenic
-  [0.64, 0.98] as [number, number], // consumption
-];
-
-const PHASE_THRESHOLDS = [0.33, 0.64];
 
 type NationZoomChartProps = {
   metrics: NationStoryMetrics;
@@ -54,16 +54,16 @@ export function NationZoomChart({
   const [phase, setPhase] = useState(0);
 
   useMotionValueEvent(scrollYProgress, "change", (v) => {
-    if (v < PHASE_THRESHOLDS[0]) setPhase(0);
-    else if (v < PHASE_THRESHOLDS[1]) setPhase(1);
+    if (v < 0.3) setPhase(0);
+    else if (v < 0.6) setPhase(1);
     else setPhase(2);
   });
 
   const maxMton = metrics.combinedLatestMton;
   const barMaxHeight = 280;
 
-  const barScales = LAYER_RANGES.map((range) =>
-    useTransform(scrollYProgress, range, [0, 1]),
+  const barScales = LAYERS.map((layer) =>
+    useTransform(scrollYProgress, layer.range, [0, 1]),
   );
 
   const captions = [
@@ -74,12 +74,10 @@ export function NationZoomChart({
 
   return (
     <div className="flex flex-col items-center gap-8 w-full">
-      {/* Caption always visible, text switches on phase */}
       <p className="text-xl md:text-2xl text-center text-grey max-w-2xl min-h-[4rem] font-light">
         {captions[phase]}
       </p>
 
-      {/* Bar */}
       <div className="flex items-end justify-center gap-6 md:gap-10 w-full">
         <div className="flex flex-col items-center gap-3">
           <div
