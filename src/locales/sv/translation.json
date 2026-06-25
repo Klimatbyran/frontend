@@ -1619,6 +1619,7 @@
         "smallLabel": "{{municipality}} ({{year}})",
         "ecommerceLabel": "Privat e-handel ({{year}})",
         "gavleLabel": "Gävle ({{year}})",
+        "proportionLabel": "Det motsvarar {{percent}} % av de territoriella fossila utsläppen ({{year}})",
         "footer": "E-handelsutsläppen motsvarar ungefär en hel kommuns årsutsläpp – men fångas sällan i den vanliga bilden."
       },
       "oil": {

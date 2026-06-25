@@ -37,11 +37,13 @@ const MAP_GRADIENT_STOPS = [
   DEFAULT_STATISTICAL_GRADIENT_COLORS.gradientEnd,
 ] as const;
 
+// Legend swatch runs light (low) → dark (high) left-to-right so the
+// label order "Lägre … Högre" reads naturally alongside the gradient.
 const MAP_GRADIENT_CSS = `linear-gradient(to right, 
-  ${DEFAULT_STATISTICAL_GRADIENT_COLORS.gradientStart} 0%,
-  ${DEFAULT_STATISTICAL_GRADIENT_COLORS.gradientMidLow} 33%,
-  ${DEFAULT_STATISTICAL_GRADIENT_COLORS.gradientMidHigh} 66%,
-  ${DEFAULT_STATISTICAL_GRADIENT_COLORS.gradientEnd} 100%)`;
+  ${DEFAULT_STATISTICAL_GRADIENT_COLORS.gradientEnd} 0%,
+  ${DEFAULT_STATISTICAL_GRADIENT_COLORS.gradientMidHigh} 33%,
+  ${DEFAULT_STATISTICAL_GRADIENT_COLORS.gradientMidLow} 66%,
+  ${DEFAULT_STATISTICAL_GRADIENT_COLORS.gradientStart} 100%)`;
 
 type ChartDatum = {
   year: number;
@@ -173,10 +175,17 @@ function ExportOfOilProductsTooltip({
     >
       <div className="text-sm font-medium mb-2 grid grid-cols-subgrid col-span-2">
         <span>{label}</span>
-        <span className="flex justify-end mr-1">{unit || t("emissionsUnit")}</span>
+        <span className="flex justify-end mr-1">
+          {unit || t("emissionsUnit")}
+        </span>
       </div>
-      <div className="text-grey mr-2">{t("nation.exportOfOilProducts.title")}</div>
-      <div className="flex pl-2 justify-end tabular-nums" style={{ color: payload[0]?.payload?.fill }}>
+      <div className="text-grey mr-2">
+        {t("nation.exportOfOilProducts.title")}
+      </div>
+      <div
+        className="flex pl-2 justify-end tabular-nums"
+        style={{ color: payload[0]?.payload?.fill }}
+      >
         {formattedValue}
       </div>
     </div>
@@ -320,12 +329,12 @@ export function ExportOfOilProductsEmissionsChart({
       </div>
 
       <div className="mt-4 flex items-center justify-center gap-3 text-xs text-grey">
-        <span>{t("nation.exportOfOilProducts.legendHigh")}</span>
+        <span>{t("nation.exportOfOilProducts.legendLow")}</span>
         <div
           className="h-5 w-40 rounded-full"
           style={{ background: MAP_GRADIENT_CSS }}
         />
-        <span>{t("nation.exportOfOilProducts.legendLow")}</span>
+        <span>{t("nation.exportOfOilProducts.legendHigh")}</span>
       </div>
     </SectionWithHelp>
   );

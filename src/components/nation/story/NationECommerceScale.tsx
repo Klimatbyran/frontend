@@ -50,6 +50,7 @@ function ScaleBar({
 type NationECommerceScaleProps = {
   eCommerceTonnes: number;
   eCommerceYear: number;
+  territorialEmissionsTonnes: number;
   smallMunicipalityName: string | null;
   smallMunicipalityTonnes: number | null;
   gavleTonnes: number | null;
@@ -59,12 +60,26 @@ type NationECommerceScaleProps = {
 export function NationECommerceScale({
   eCommerceTonnes,
   eCommerceYear,
+  territorialEmissionsTonnes,
   smallMunicipalityName,
   smallMunicipalityTonnes,
   gavleTonnes,
   scrollYProgress,
 }: NationECommerceScaleProps) {
   const { t } = useTranslation();
+  const { currentLanguage } = useLanguage();
+
+  const proportionPercent =
+    territorialEmissionsTonnes > 0
+      ? (eCommerceTonnes / territorialEmissionsTonnes) * 100
+      : null;
+  const proportionFormatted =
+    proportionPercent != null
+      ? proportionPercent.toLocaleString(
+          currentLanguage === "sv" ? "sv-SE" : "en-GB",
+          { minimumFractionDigits: 1, maximumFractionDigits: 1 },
+        )
+      : null;
 
   const maxTonnes = Math.max(
     eCommerceTonnes,
@@ -137,7 +152,16 @@ export function NationECommerceScale({
         ))}
       </div>
 
-      <p className="mt-10 text-grey text-center text-base md:text-lg">
+      {proportionFormatted != null && (
+        <p className="mt-6 text-center text-sm text-grey">
+          {t("nation.story.ecommerce.proportionLabel", {
+            percent: proportionFormatted,
+            year: eCommerceYear,
+          })}
+        </p>
+      )}
+
+      <p className="mt-4 text-grey text-center text-base md:text-lg">
         {t("nation.story.ecommerce.footer")}
       </p>
     </div>

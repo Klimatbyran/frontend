@@ -1562,6 +1562,7 @@
         "smallLabel": "{{municipality}} ({{year}})",
         "ecommerceLabel": "Private e-commerce ({{year}})",
         "gavleLabel": "Gävle ({{year}})",
+        "proportionLabel": "That is {{percent}}% of territorial fossil emissions ({{year}})",
         "footer": "E-commerce emissions are roughly equivalent to an entire municipality's annual emissions – yet rarely part of the usual picture."
       },
       "oil": {

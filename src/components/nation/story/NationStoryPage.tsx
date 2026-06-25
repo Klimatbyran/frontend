@@ -81,6 +81,7 @@ export function NationStoryPage({
           <NationECommerceScale
             eCommerceTonnes={metrics.eCommerceLatestTonnes}
             eCommerceYear={metrics.eCommerceYear}
+            territorialEmissionsTonnes={metrics.territorialLatestMton * 1_000_000}
             smallMunicipalityName={smallMunicipalityName}
             smallMunicipalityTonnes={smallMunicipalityTonnes}
             gavleTonnes={gavleEmissionsTonnes}
