@@ -55,8 +55,7 @@ export const TurnoverEmissionsChart: FC<TurnoverEmissionsChartProps> = ({
   );
 
   const firstDataYear = displayData[0]?.year ?? currentYear;
-  const lastDataYear =
-    displayData[displayData.length - 1]?.year ?? currentYear;
+  const lastDataYear = displayData[displayData.length - 1]?.year ?? currentYear;
 
   const legendItems = useMemo(
     (): LegendItem[] => [

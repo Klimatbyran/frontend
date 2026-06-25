@@ -44,13 +44,14 @@ describe("turnoverChartData", () => {
   });
 
   it("compares from base year when complete data exists there", () => {
-    expect(buildDecouplingComparison(getDisplayData(completeSeries, 2019), 2019))
-      .toMatchObject({
-        startYear: 2019,
-        endYear: 2020,
-        verdict: "yes",
-        usedBaseYear: true,
-      });
+    expect(
+      buildDecouplingComparison(getDisplayData(completeSeries, 2019), 2019),
+    ).toMatchObject({
+      startYear: 2019,
+      endYear: 2020,
+      verdict: "yes",
+      usedBaseYear: true,
+    });
   });
 
   it("compares from first complete year when base year predates complete data", () => {

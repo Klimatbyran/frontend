@@ -47,9 +47,7 @@ export function TurnoverEmissionsHistory({
             unit={t("companies.turnoverEmissionsHistory.unit")}
             className="[&>div]:mb-4 lg:[&>div]:mb-6"
           />
-          <div
-            style={{ height: getDynamicChartHeight("overview", isMobile) }}
-          >
+          <div style={{ height: getDynamicChartHeight("overview", isMobile) }}>
             <TurnoverEmissionsChart
               displayData={section.displayData}
               companyBaseYear={companyBaseYear}
