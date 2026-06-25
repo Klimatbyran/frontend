@@ -1,6 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { getCompaniesKPIs } from "@/lib/api";
-import type { CompanyKpiData, CompanyWithKPIs, RankedCompany } from "@/types/company";
+import type {
+  CompanyKpiData,
+  CompanyWithKPIs,
+  RankedCompany,
+} from "@/types/company";
 
 export type { CompanyKpiData } from "@/types/company";
 

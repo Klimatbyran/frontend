@@ -142,7 +142,9 @@ export function CompaniesOverviewPage() {
 
     const kpiLookup = buildCompanyKpiLookup(companiesKpiData);
 
-    return filtered.map((company) => mergeApiKpisOntoCompany(company, kpiLookup));
+    return filtered.map((company) =>
+      mergeApiKpisOntoCompany(company, kpiLookup),
+    );
   }, [companies, companiesKpiData, selectedSector]);
 
   const handleSectorChange = (sector: string) => {

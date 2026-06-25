@@ -38,8 +38,7 @@ function toKpiDataFromCompanies(
       wikidataId: company.wikidataId,
       name: company.name,
       meetsParis: enriched.meetsParis ?? null,
-      emissionsChangeFromBaseYear:
-        enriched.emissionsChangeFromBaseYear ?? null,
+      emissionsChangeFromBaseYear: enriched.emissionsChangeFromBaseYear ?? null,
     };
   });
 }
