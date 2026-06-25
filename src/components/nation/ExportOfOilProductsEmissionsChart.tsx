@@ -4,7 +4,6 @@ import {
   Bar,
   BarChart,
   Cell,
-  ReferenceLine,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -246,7 +245,6 @@ export function ExportOfOilProductsEmissionsChart({
       currentLanguage,
     );
   }, [latestYearPoint, currentLanguage]);
-  const baselineValueKt = chartData[0]?.valueKt;
   const xAxisTicks = useMemo(
     () => chartData.map((point) => point.year).filter((year) => year % 5 === 0),
     [chartData],
@@ -298,20 +296,6 @@ export function ExportOfOilProductsEmissionsChart({
                   cursor={{ fill: "var(--black-1)", opacity: 0.35 }}
                   wrapperStyle={{ outline: "none", zIndex: 60 }}
                 />
-
-                {baselineValueKt !== undefined && (
-                  <ReferenceLine
-                    y={baselineValueKt}
-                    stroke="var(--grey)"
-                    strokeDasharray="4 4"
-                    label={{
-                      value: "1990",
-                      position: "insideTopRight",
-                      fill: "var(--grey)",
-                      fontSize: 12,
-                    }}
-                  />
-                )}
 
                 <Bar
                   dataKey="displayValueKt"
