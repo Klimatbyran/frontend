@@ -1,7 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { EntityListBox } from "@/components/detail/EntityListBox";
-import { LocalizedLink } from "@/components/LocalizedLink";
 import { NationECommerceScale } from "@/components/nation/story/NationECommerceScale";
 import { NationLayerComparisons } from "@/components/nation/story/NationLayerComparisons";
 import { NationOilExportsSection } from "@/components/nation/story/NationOilExportsSection";
@@ -117,15 +116,6 @@ export function NationStoryPage({
             entityType="regions"
             translateNamespace="nation.detailPage"
           />
-          <p className="mt-8 text-grey text-sm">
-            {t("nation.story.footer.methodsPrompt")}{" "}
-            <LocalizedLink
-              to="/methodology?view=nationDataOverview"
-              className="underline hover:text-white transition-colors"
-            >
-              {t("nation.story.footer.methodsLink")}
-            </LocalizedLink>
-          </p>
         </motion.div>
       </section>
     </div>
