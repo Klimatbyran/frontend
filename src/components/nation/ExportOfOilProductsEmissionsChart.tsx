@@ -20,7 +20,6 @@ import {
   ChartArea,
   ChartWrapper,
   getChartContainerProps,
-  getDynamicChartHeight,
   getResponsiveChartMargin,
   getXAxisProps,
   getYAxisProps,
@@ -144,32 +143,42 @@ function CitizenComparisonCallout({
 type ExportOfOilProductsTooltipProps = {
   active?: boolean;
   payload?: Array<{ payload?: ChartDatum }>;
+  label?: string | number;
   unit?: string;
 };
 
 function ExportOfOilProductsTooltip({
   active,
   payload,
+  label,
   unit,
 }: ExportOfOilProductsTooltipProps) {
+  const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
+  const { isMobile } = useScreenSize();
 
   if (!active || !payload?.length || !payload[0]?.payload) {
     return null;
   }
 
-  const { year, valueKt } = payload[0].payload;
+  const { valueKt } = payload[0].payload;
   const formattedValue = formatEmissionsAbsolute(
     valueKt * 1000,
     currentLanguage,
   );
 
   return (
-    <div className="rounded-level-2 border border-black-1 bg-black-2 px-3 py-2 shadow-md">
-      <p className="text-sm font-semibold text-white">{year}</p>
-      <p className="text-sm text-grey tabular-nums">
-        {formattedValue} {unit}
-      </p>
+    <div
+      className={`${isMobile ? "max-w-[220px]" : "max-w-[300px]"} bg-black-1 px-4 py-3 rounded-level-2 grid grid-cols-[1fr_auto] text-xs z-[60] relative`}
+    >
+      <div className="text-sm font-medium mb-2 grid grid-cols-subgrid col-span-2">
+        <span>{label}</span>
+        <span className="flex justify-end mr-1">{unit || t("emissionsUnit")}</span>
+      </div>
+      <div className="text-grey mr-2">{t("nation.exportOfOilProducts.title")}</div>
+      <div className="flex pl-2 justify-end tabular-nums" style={{ color: payload[0]?.payload?.fill }}>
+        {formattedValue}
+      </div>
     </div>
   );
 }
@@ -267,7 +276,7 @@ export function ExportOfOilProductsEmissionsChart({
               ? "mt-2"
               : "mt-8"
         }
-        style={{ height: getDynamicChartHeight("overview", isMobile) }}
+        style={{ height: isMobile ? "min(240px, 35vh)" : "340px" }}
       >
         <ChartWrapper>
           <ChartArea className="min-h-0 h-full">
@@ -281,9 +290,7 @@ export function ExportOfOilProductsEmissionsChart({
                   interval={0}
                   tickFormatter={(year) => year}
                 />
-                <YAxis
-                  {...getYAxisProps(currentLanguage, [0, yAxisMax])}
-                />
+                <YAxis {...getYAxisProps(currentLanguage, [0, yAxisMax])} />
 
                 <Tooltip
                   content={
