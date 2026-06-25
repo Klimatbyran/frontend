@@ -16,8 +16,7 @@ const LAYERS = [
     color: "var(--orange-2)",
     labelKey: "nation.story.graph.territorialFossil",
     getMton: (m: NationStoryMetrics) => m.territorialLatestMton,
-    // Grows from progress 0→0.33
-    range: [0, 0.4] as [number, number],
+    range: [0, 0.22] as [number, number],
     phase: 0,
   },
   {
@@ -25,8 +24,7 @@ const LAYERS = [
     color: "var(--green-2)",
     labelKey: "nation.story.graph.biogenic",
     getMton: (m: NationStoryMetrics) => m.biogenicLatestMton,
-    // Grows from progress 0.3→0.65
-    range: [0.3, 0.65] as [number, number],
+    range: [0.18, 0.42] as [number, number],
     phase: 1,
   },
   {
@@ -34,8 +32,7 @@ const LAYERS = [
     color: "var(--blue-2)",
     labelKey: "nation.story.graph.consumptionAbroad",
     getMton: (m: NationStoryMetrics) => m.consumptionLatestMton,
-    // Grows from progress 0.6→0.95
-    range: [0.6, 0.95] as [number, number],
+    range: [0.38, 0.62] as [number, number],
     phase: 2,
   },
 ];
@@ -54,8 +51,8 @@ export function NationZoomChart({
   const [phase, setPhase] = useState(0);
 
   useMotionValueEvent(scrollYProgress, "change", (v) => {
-    if (v < 0.3) setPhase(0);
-    else if (v < 0.6) setPhase(1);
+    if (v < 0.18) setPhase(0);
+    else if (v < 0.38) setPhase(1);
     else setPhase(2);
   });
 

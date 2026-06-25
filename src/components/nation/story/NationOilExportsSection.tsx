@@ -20,8 +20,8 @@ export function NationOilExportsSection({
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
 
-  const oilBarScale = useTransform(scrollYProgress, [0, 0.5], [0, 1]);
-  const stackBarScale = useTransform(scrollYProgress, [0.45, 0.95], [0, 1]);
+  const oilBarScale = useTransform(scrollYProgress, [0, 0.35], [0, 1]);
+  const stackBarScale = useTransform(scrollYProgress, [0.3, 0.62], [0, 1]);
 
   const maxMton = metrics.combinedLatestMton + metrics.oilExportLatestMton;
   const barHeight = 260;

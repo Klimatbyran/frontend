@@ -4,9 +4,9 @@ import { formatTonnes } from "@/utils/data/nationStoryMetrics";
 import { useLanguage } from "@/components/LanguageProvider";
 
 const BAR_RANGES: [number, number][] = [
-  [0, 0.37],
-  [0.3, 0.67],
-  [0.6, 0.97],
+  [0, 0.25],
+  [0.2, 0.43],
+  [0.38, 0.62],
 ];
 
 function ScaleBar({

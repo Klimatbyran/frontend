@@ -8,12 +8,10 @@ import {
 import { formatPercentChange } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
 
-// Row 1: 0–0.37, Row 2: 0.3–0.67, Row 3: 0.6–0.97
-// Overlap intentional so they start before previous fully finishes
 const ROW_RANGES: [number, number][] = [
-  [0, 0.37],
-  [0.3, 0.67],
-  [0.6, 0.97],
+  [0, 0.25],
+  [0.2, 0.43],
+  [0.38, 0.62],
 ];
 
 function LayerRow({
@@ -32,11 +30,10 @@ function LayerRow({
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
 
-  const bar1990Width = useTransform(
-    scrollYProgress,
-    range,
-    ["0%", `${(layer.mton1990 / maxMton) * 100}%`],
-  );
+  const bar1990Width = useTransform(scrollYProgress, range, [
+    "0%",
+    `${(layer.mton1990 / maxMton) * 100}%`,
+  ]);
   const barLatestWidth = useTransform(
     scrollYProgress,
     [range[0] + 0.05, range[1]],

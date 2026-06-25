@@ -57,15 +57,13 @@ export function NationStoryPage({
         </div>
       </section>
 
-      {/* Zoom chart – bars grow as section scrolls up into center view */}
-      <NationPinnedSection heightVh={260}>
+      <NationPinnedSection heightVh={200}>
         {(progress) => (
           <NationZoomChart metrics={metrics} scrollYProgress={progress} />
         )}
       </NationPinnedSection>
 
-      {/* 1990 → today comparisons */}
-      <NationPinnedSection heightVh={250}>
+      <NationPinnedSection heightVh={195}>
         {(progress) => (
           <NationLayerComparisons
             layers={metrics.layerComparisons}
@@ -76,8 +74,7 @@ export function NationStoryPage({
         )}
       </NationPinnedSection>
 
-      {/* E-commerce scale */}
-      <NationPinnedSection heightVh={240}>
+      <NationPinnedSection heightVh={190}>
         {(progress) => (
           <NationECommerceScale
             eCommerceTonnes={metrics.eCommerceLatestTonnes}
@@ -90,8 +87,7 @@ export function NationStoryPage({
         )}
       </NationPinnedSection>
 
-      {/* Oil exports */}
-      <NationPinnedSection heightVh={240}>
+      <NationPinnedSection heightVh={190}>
         {(progress) => (
           <NationOilExportsSection
             metrics={metrics}
