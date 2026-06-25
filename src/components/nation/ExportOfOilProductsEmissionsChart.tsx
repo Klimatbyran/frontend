@@ -1,9 +1,9 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { useMotionValueEvent, type MotionValue } from "framer-motion";
 import {
   Bar,
   BarChart,
   Cell,
-  ReferenceLine,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -46,8 +46,30 @@ const MAP_GRADIENT_CSS = `linear-gradient(to right,
 type ChartDatum = {
   year: number;
   valueKt: number;
+  displayValueKt: number;
   fill: string;
 };
+
+const clamp = (value: number, min: number, max: number) =>
+  Math.min(Math.max(value, min), max);
+
+function getScrollBarScale(
+  scrollProgress: number,
+  barIndex: number,
+  barCount: number,
+): number {
+  if (barCount <= 1) {
+    return scrollProgress;
+  }
+
+  const staggerEnd = 0.92;
+  const overlap = 0.12 / barCount;
+  const segment = staggerEnd / barCount;
+  const start = barIndex * segment;
+  const end = start + segment + overlap;
+
+  return clamp((scrollProgress - start) / (end - start), 0, 1);
+}
 
 function getBarColor(
   value: number,
@@ -80,6 +102,7 @@ function toChartData(points: YearValuePoint[]): ChartDatum[] {
     return {
       year: point.year,
       valueKt,
+      displayValueKt: valueKt,
       fill: getBarColor(valueKt, minValue, maxValue),
     };
   });
@@ -149,7 +172,6 @@ function ExportOfOilProductsTooltip({
   payload,
   unit,
 }: ExportOfOilProductsTooltipProps) {
-  const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
 
   if (!active || !payload?.length || !payload[0]?.payload) {
@@ -161,10 +183,6 @@ function ExportOfOilProductsTooltip({
     valueKt * 1000,
     currentLanguage,
   );
-  const citizenEquivalent = emissionsToSwedishCitizenEquivalent(
-    valueKt * 1000,
-    currentLanguage,
-  );
 
   return (
     <div className="rounded-level-2 border border-black-1 bg-black-2 px-3 py-2 shadow-md">
@@ -172,29 +190,41 @@ function ExportOfOilProductsTooltip({
       <p className="text-sm text-grey tabular-nums">
         {formattedValue} {unit}
       </p>
-      {citizenEquivalent && (
-        <p className="mt-2 border-t border-black-1 pt-2 text-sm font-medium text-yellow-3 tabular-nums">
-          {t("nation.exportOfOilProducts.citizenEquivalent", {
-            count: citizenEquivalent.formattedCount,
-          })}
-        </p>
-      )}
     </div>
   );
 }
 
 export function ExportOfOilProductsEmissionsChart({
   data,
+  scrollYProgress,
   className,
 }: {
   data: YearValuePoint[];
+  scrollYProgress?: MotionValue<number>;
   className?: string;
 }) {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
   const { isMobile } = useScreenSize();
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  useMotionValueEvent(scrollYProgress ?? null, "change", (value) => {
+    setScrollProgress(value);
+  });
 
   const chartData = useMemo(() => toChartData(data), [data]);
+  const animatedChartData = useMemo(() => {
+    if (!scrollYProgress) {
+      return chartData;
+    }
+
+    return chartData.map((point, index) => ({
+      ...point,
+      displayValueKt:
+        point.valueKt *
+        getScrollBarScale(scrollProgress, index, chartData.length),
+    }));
+  }, [chartData, scrollProgress, scrollYProgress]);
   const latestYearPoint = useMemo(() => getLatestYearPoint(data), [data]);
   const latestCitizenEquivalent = useMemo(() => {
     if (!latestYearPoint) return null;
@@ -203,7 +233,6 @@ export function ExportOfOilProductsEmissionsChart({
       currentLanguage,
     );
   }, [latestYearPoint, currentLanguage]);
-  const baselineValueKt = chartData[0]?.valueKt;
   const xAxisTicks = useMemo(
     () => chartData.map((point) => point.year).filter((year) => year % 5 === 0),
     [chartData],
@@ -238,7 +267,7 @@ export function ExportOfOilProductsEmissionsChart({
           <ChartArea className="min-h-0 h-full">
             <ResponsiveContainer {...getChartContainerProps()}>
               <BarChart
-                data={chartData}
+                data={animatedChartData}
                 margin={getResponsiveChartMargin(isMobile)}
               >
                 <XAxis
@@ -256,26 +285,16 @@ export function ExportOfOilProductsEmissionsChart({
                   wrapperStyle={{ outline: "none", zIndex: 60 }}
                 />
 
-                {baselineValueKt !== undefined && (
-                  <ReferenceLine
-                    y={baselineValueKt}
-                    stroke="var(--grey)"
-                    strokeDasharray="4 4"
-                    label={{
-                      value: "1990",
-                      position: "insideTopRight",
-                      fill: "var(--grey)",
-                      fontSize: 12,
-                    }}
-                  />
-                )}
-
                 <Bar
-                  dataKey="valueKt"
+                  dataKey="displayValueKt"
                   radius={[4, 4, 0, 0]}
                   maxBarSize={isMobile ? 10 : 16}
+                  isAnimationActive={!scrollYProgress}
+                  animationBegin={0}
+                  animationDuration={600}
+                  animationEasing="ease-out"
                 >
-                  {chartData.map((entry) => (
+                  {animatedChartData.map((entry) => (
                     <Cell key={entry.year} fill={entry.fill} />
                   ))}
                 </Bar>

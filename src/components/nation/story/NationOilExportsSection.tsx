@@ -10,10 +10,14 @@ type NationOilExportsSectionProps = {
 
 export function NationOilExportsSection({
   oilPoints,
+  scrollYProgress,
 }: NationOilExportsSectionProps) {
   return (
     <div className="w-full max-w-4xl mx-auto">
-      <ExportOfOilProductsEmissionsChart data={oilPoints} />
+      <ExportOfOilProductsEmissionsChart
+        data={oilPoints}
+        scrollYProgress={scrollYProgress}
+      />
     </div>
   );
 }
