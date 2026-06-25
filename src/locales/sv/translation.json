@@ -426,13 +426,35 @@
       "noDataAvailable": "Ingen data tillgänglig",
       "emissionsChange": {
         "title": "Utsläppsförändring från basår",
-        "unknown": "Okänt"
+        "unknown": "Okänt",
+        "description": "Varje stapel visar hur många företag som ligger inom ett intervall av förändring från basår till senaste rapporteringsperiod. Negativa värden innebär minskade utsläpp.",
+        "summary": "{{reduced}} av {{total}} företag ({{percent}} %) har minskat sina utsläpp. Medianförändring: {{median}}.",
+        "axisLabel": "Förändring i totala utsläpp (%)",
+        "yAxis": "Företag",
+        "tooltipCount": "{{count}} företag",
+        "cards": {
+          "reduced": "Minskade utsläpp",
+          "increased": "Ökade utsläpp",
+          "average": "Genomsnittlig förändring",
+          "unknown": "Saknar data"
+        },
+        "bins": {
+          "largeReduction": "< −30 %",
+          "moderateReduction": "−30 till −10 %",
+          "smallReduction": "−10 till 0 %",
+          "smallIncrease": "0 till 10 %",
+          "moderateIncrease": "10 till 30 %",
+          "largeIncrease": "> 30 %"
+        }
       },
       "meetsParis": {
         "legend": {
           "belowBudget": "Under budget",
           "aboveBudget": "Över budget"
         },
+        "summary": "{{yes}} av {{total}} företag med data ({{percent}} %) ligger i fas med Parisavtalet.",
+        "summaryUnknownOnly": "{{unknown}} företag saknar tillräcklig data för att bedöma Paris-anpassning.",
+        "axisLabel": "Antal företag per Paris-status",
         "budgetThreshold": "Budgettröskel (0{{unit}})",
         "description": "Ton över eller under varje företags kolbudget. Vi uppskattar framtida utsläpp med en LAD-trendlinje och jämför kumulativa utsläpp 2025–2050 med en Carbon Law-väg (11,7% årlig minskning).",
         "learnMore": "Läs mer",

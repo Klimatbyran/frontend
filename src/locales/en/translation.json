@@ -421,13 +421,35 @@
       "noDataAvailable": "No data available",
       "emissionsChange": {
         "title": "Emissions Change from Base Year",
-        "unknown": "Unknown"
+        "unknown": "Unknown",
+        "description": "Each bar shows how many companies fall in a change range from their base year to the latest reporting period. Negative values mean emissions went down.",
+        "summary": "{{reduced}} of {{total}} companies ({{percent}}%) reduced emissions. Median change: {{median}}.",
+        "axisLabel": "Change in total emissions (%)",
+        "yAxis": "Companies",
+        "tooltipCount": "{{count}} companies",
+        "cards": {
+          "reduced": "Reduced emissions",
+          "increased": "Increased emissions",
+          "average": "Average change",
+          "unknown": "Missing data"
+        },
+        "bins": {
+          "largeReduction": "< −30%",
+          "moderateReduction": "−30 to −10%",
+          "smallReduction": "−10 to 0%",
+          "smallIncrease": "0 to 10%",
+          "moderateIncrease": "10 to 30%",
+          "largeIncrease": "> 30%"
+        }
       },
       "meetsParis": {
         "legend": {
           "belowBudget": "Below budget",
           "aboveBudget": "Above budget"
         },
+        "summary": "{{yes}} of {{total}} companies with data ({{percent}}%) are on track to meet the Paris Agreement.",
+        "summaryUnknownOnly": "{{unknown}} companies lack enough data to assess Paris alignment.",
+        "axisLabel": "Number of companies by Paris alignment",
         "budgetThreshold": "Budget threshold (0{{unit}})",
         "description": "Tonnes over or under each company's carbon budget. We estimate future emissions with an LAD trendline and compare cumulative 2025–2050 emissions to a Carbon Law path (11.7% yearly reduction).",
         "learnMore": "Learn more",

@@ -9,7 +9,11 @@ import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import RankedList from "@/components/ranked/RankedList";
 import CompanyInsightsPanel from "@/components/companies/rankedList/CompanyInsightsPanel";
 import { CompanyKPIVisualization } from "@/components/companies/rankedList/CompanyKPIVisualization";
-import { IndustryFilter } from "@/components/companies/rankedList/IndustryFilter";
+import {
+  ALL_SECTORS_VALUE,
+  IndustryFilter,
+} from "@/components/companies/rankedList/IndustryFilter";
+import { SECTOR_ORDER } from "@/lib/constants/sectors";
 import {
   useCompanyKPIs,
   CompanyKPIValue,
@@ -54,7 +58,7 @@ export function CompaniesOverviewPage() {
     navigate({ search: params.toString() }, { replace: true });
   };
 
-  // Get available sectors from companies
+  // Get available sectors from companies in canonical order
   const availableSectors = useMemo(() => {
     if (!companies) return [];
     const sectors = new Set<string>();
@@ -64,17 +68,19 @@ export function CompaniesOverviewPage() {
         sectors.add(sectorCode);
       }
     });
-    return Array.from(sectors).sort();
+    return SECTOR_ORDER.filter((code) => sectors.has(code));
   }, [companies]);
 
   const getSectorFromURL = useCallback(() => {
     const params = new URLSearchParams(location.search);
     const sectorParam = params.get("sector");
+    if (sectorParam === ALL_SECTORS_VALUE) {
+      return ALL_SECTORS_VALUE;
+    }
     if (sectorParam && availableSectors.includes(sectorParam)) {
       return sectorParam;
     }
-    // Default to first available sector if none selected
-    return availableSectors.length > 0 ? availableSectors[0] : null;
+    return ALL_SECTORS_VALUE;
   }, [location.search, availableSectors]);
 
   const setSectorInURL = useCallback(
@@ -91,19 +97,10 @@ export function CompaniesOverviewPage() {
   );
 
   const [selectedKPI, setSelectedKPI] = useState(getKPIFromURL());
-  const [selectedSector, setSelectedSector] = useState<string | null>(
+  const [selectedSector, setSelectedSector] = useState<string>(
     getSectorFromURL(),
   );
   const viewMode = getViewModeFromURL();
-
-  // Ensure a sector is selected on initial load
-  useEffect(() => {
-    if (!selectedSector && availableSectors.length > 0) {
-      const firstSector = availableSectors[0];
-      setSelectedSector(firstSector);
-      setSectorInURL(firstSector);
-    }
-  }, [availableSectors, selectedSector, setSectorInURL]);
 
   useEffect(() => {
     const kpiFromUrl = getKPIFromURL();
@@ -121,12 +118,15 @@ export function CompaniesOverviewPage() {
 
   // Filter and enrich companies with KPI values
   const companiesWithKPIs: CompanyWithKPIs[] = useMemo(() => {
-    if (!companies || !selectedSector) return [];
+    if (!companies) return [];
 
-    const filtered = companies.filter((company) => {
-      const sectorCode = company.industry?.industryGics?.sectorCode;
-      return sectorCode === selectedSector;
-    });
+    const filtered =
+      selectedSector === ALL_SECTORS_VALUE
+        ? companies
+        : companies.filter((company) => {
+            const sectorCode = company.industry?.industryGics?.sectorCode;
+            return sectorCode === selectedSector;
+          });
 
     return filtered.map((company) => enrichCompanyWithKPIs(company));
   }, [companies, selectedSector]);

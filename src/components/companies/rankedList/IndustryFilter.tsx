@@ -1,7 +1,7 @@
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { cn } from "@/lib/utils";
+import { SECTOR_ORDER } from "@/lib/constants/sectors";
 import { useSectorNames } from "@/hooks/companies/useCompanySectors";
-import { useScreenSize } from "@/hooks/useScreenSize";
 import {
   Select,
   SelectContent,
@@ -10,9 +10,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+export const ALL_SECTORS_VALUE = "all";
+
 interface IndustryFilterProps {
   availableSectors: string[];
-  selectedSector: string | null;
+  selectedSector: string;
   onSectorChange: (sector: string) => void;
 }
 
@@ -23,93 +25,60 @@ export function IndustryFilter({
 }: IndustryFilterProps) {
   const { t } = useTranslation();
   const sectorNames = useSectorNames();
-  const { isMobile } = useScreenSize();
 
-  const handleSectorClick = (sectorCode: string) => {
-    if (selectedSector !== sectorCode) {
-      onSectorChange(sectorCode);
-    }
-  };
+  const sectorOptions = useMemo(() => {
+    const options = SECTOR_ORDER.filter((code) =>
+      availableSectors.includes(code),
+    ).map((code) => ({
+      value: code,
+      label: sectorNames[code],
+    }));
+
+    return [
+      {
+        value: ALL_SECTORS_VALUE,
+        label: t("explorePage.companies.allSectors"),
+      },
+      ...options,
+    ];
+  }, [availableSectors, sectorNames, t]);
+
+  const selectedSectorName =
+    sectorOptions.find((option) => option.value === selectedSector)?.label ??
+    t("explorePage.companies.allSectors");
 
   if (availableSectors.length === 0) {
     return null;
   }
 
-  // Mobile: Use dropdown
-  if (isMobile) {
-    const selectedSectorName =
-      selectedSector &&
-      (sectorNames[selectedSector as keyof typeof sectorNames] ||
-        selectedSector);
-
-    return (
-      <div className="space-y-2">
-        <label className="text-sm text-grey">
-          {t("companiesOverviewPage.selectIndustry", "Select industry")}:
-        </label>
-        <Select
-          value={selectedSector || undefined}
-          onValueChange={(value) => onSectorChange(value)}
-        >
-          <SelectTrigger className="w-full bg-black-2 border-black-3 text-white">
-            <SelectValue
-              placeholder={t(
-                "companiesOverviewPage.selectIndustry",
-                "Select industry",
-              )}
-            >
-              {selectedSectorName}
-            </SelectValue>
-          </SelectTrigger>
-          <SelectContent className="bg-black-1 border-black-3">
-            {availableSectors.map((sectorCode) => {
-              const sectorName =
-                sectorNames[sectorCode as keyof typeof sectorNames] ||
-                sectorCode;
-              return (
-                <SelectItem
-                  key={sectorCode}
-                  value={sectorCode}
-                  className="text-white focus:bg-black-2"
-                >
-                  {sectorName}
-                </SelectItem>
-              );
-            })}
-          </SelectContent>
-        </Select>
-      </div>
-    );
-  }
-
-  // Desktop: Use badges
   return (
-    <div className="flex flex-wrap items-center gap-2">
-      <span className="text-sm text-grey mr-1">
+    <div className="space-y-2">
+      <label className="text-sm text-grey">
         {t("companiesOverviewPage.selectIndustry", "Select industry")}:
-      </span>
-      {availableSectors.map((sectorCode) => {
-        const isSelected = selectedSector === sectorCode;
-        const sectorName =
-          sectorNames[sectorCode as keyof typeof sectorNames] || sectorCode;
-
-        return (
-          <button
-            key={sectorCode}
-            type="button"
-            onClick={() => handleSectorClick(sectorCode)}
-            className={cn(
-              "px-3 py-1.5 rounded-level-1 text-xs font-medium transition-all",
-              "border",
-              isSelected
-                ? "bg-blue-5/30 border-blue-4 text-blue-2 hover:bg-blue-5/40"
-                : "bg-black-2 border-black-3 text-grey hover:bg-black-3 hover:border-black-4",
+      </label>
+      <Select value={selectedSector} onValueChange={onSectorChange}>
+        <SelectTrigger className="w-full md:max-w-sm bg-black-2 border-black-3 text-white">
+          <SelectValue
+            placeholder={t(
+              "companiesOverviewPage.selectIndustry",
+              "Select industry",
             )}
           >
-            {sectorName}
-          </button>
-        );
-      })}
+            {selectedSectorName}
+          </SelectValue>
+        </SelectTrigger>
+        <SelectContent className="bg-black-1 border-black-3">
+          {sectorOptions.map((option) => (
+            <SelectItem
+              key={option.value}
+              value={option.value}
+              className="text-white focus:bg-black-2"
+            >
+              {option.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
     </div>
   );
 }
