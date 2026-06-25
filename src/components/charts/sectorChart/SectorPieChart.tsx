@@ -116,43 +116,41 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
   };
 
   return (
-    <div className="max-h-[450px]">
-      <ResponsiveContainer
-        width="100%"
-        height={chartHeight || size.outerRadius * 2.5}
-      >
-        <PieChart>
-          <Pie
-            data={pieDataWithTotal}
-            dataKey="value"
-            nameKey={displayNameKey}
-            cx="50%"
-            cy="50%"
-            innerRadius={innerRadius}
-            outerRadius={outerRadius}
-            cornerRadius={8}
-            paddingAngle={2}
-            onClick={handleSectorClick}
-            animationBegin={0}
-            animationDuration={300}
-          >
-            {pieDataWithTotal.map((entry) => (
-              <Cell
-                key={entry.name}
-                fill={entry.color}
-                stroke={entry.color}
-                style={{ cursor: "pointer" }}
-              />
-            ))}
-          </Pie>
-          <Tooltip
-            content={<PieTooltip customActionLabel={customActionLabel} />}
-            animationDuration={0}
-            isAnimationActive={false}
-          />
-        </PieChart>
-      </ResponsiveContainer>
-    </div>
+    <ResponsiveContainer
+      width="100%"
+      height={chartHeight || size.outerRadius * 2.5}
+    >
+      <PieChart>
+        <Pie
+          data={pieDataWithTotal}
+          dataKey="value"
+          nameKey={displayNameKey}
+          cx="50%"
+          cy="50%"
+          innerRadius={innerRadius}
+          outerRadius={outerRadius}
+          cornerRadius={8}
+          paddingAngle={2}
+          onClick={handleSectorClick}
+          animationBegin={0}
+          animationDuration={300}
+        >
+          {pieDataWithTotal.map((entry) => (
+            <Cell
+              key={entry.name}
+              fill={entry.color}
+              stroke={entry.color}
+              style={{ cursor: "pointer" }}
+            />
+          ))}
+        </Pie>
+        <Tooltip
+          content={<PieTooltip customActionLabel={customActionLabel} />}
+          animationDuration={0}
+          isAnimationActive={false}
+        />
+      </PieChart>
+    </ResponsiveContainer>
   );
 };
 
