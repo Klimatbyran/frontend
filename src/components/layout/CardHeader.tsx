@@ -106,7 +106,7 @@ export const CardHeader = <T extends string = string>({
 
         {/* Data view selector - either custom or default */}
         {showDataViewSelector && (
-          <div>
+          <div className="@lg:translate-y-[1px]">
             {customDataViewSelector || (
               <DataViewSelector
                 dataView={dataView!}
