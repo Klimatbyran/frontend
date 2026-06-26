@@ -54,6 +54,7 @@ export function RegionalRankedList({
       onItemClick={onItemClick}
       searchKey="displayName"
       searchPlaceholder={t("rankedList.search.placeholder")}
+      itemsPerPage={8}
     />
   );
 }

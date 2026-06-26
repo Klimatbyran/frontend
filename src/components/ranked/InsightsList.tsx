@@ -52,6 +52,12 @@ function InsightsList<T>({
 
   return (
     <div className="bg-white/10 rounded-level-2 p-4 md:p-6 h-full">
+      <style>{`
+        @keyframes fadeSlideIn {
+          from { opacity: 0; transform: translateY(6px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
       <h3 className="text-white text-lg font-semibold mb-3">{title}</h3>
       <div className="space-y-1">
         {entities.map((entity, index) => {
@@ -63,7 +69,13 @@ function InsightsList<T>({
           const barWidth = calcBarWidth(showBars, numVal, absMax);
 
           const content = (
-            <div className="relative rounded-lg overflow-hidden group">
+            <div
+              className="relative rounded-lg overflow-hidden group"
+              style={{
+                animation: `fadeSlideIn 0.35s ease-out both`,
+                animationDelay: `${index * 35}ms`,
+              }}
+            >
               {showBars && barWidth > 0 && (
                 <div
                   className="absolute inset-y-0 left-0 rounded-lg opacity-20 group-hover:opacity-30"

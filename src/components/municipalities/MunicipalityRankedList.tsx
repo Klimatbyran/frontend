@@ -56,6 +56,7 @@ export function MunicipalityRankedList({
       onItemClick={onItemClick}
       searchKey="name"
       searchPlaceholder={t("rankedList.search.placeholder")}
+      itemsPerPage={8}
     />
   );
 }
