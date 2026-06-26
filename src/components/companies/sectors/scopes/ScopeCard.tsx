@@ -17,6 +17,7 @@ interface ScopeCardProps {
   percent: number;
   description: string;
   showCategoryInfo?: boolean;
+  compact?: boolean;
   setSelectedScope: React.Dispatch<
     React.SetStateAction<
       "scope1" | "scope2" | "scope3_upstream" | "scope3_downstream" | null
@@ -34,6 +35,7 @@ const ScopeCard: React.FC<ScopeCardProps> = ({
   percent,
   description,
   showCategoryInfo = false,
+  compact = false,
   setSelectedScope,
 }) => {
   const { t } = useTranslation();
@@ -76,9 +78,9 @@ const ScopeCard: React.FC<ScopeCardProps> = ({
         )}
       </div>
 
-      <p className="text-sm text-grey">{description}</p>
+      {!compact && <p className="text-sm text-grey">{description}</p>}
 
-      <div className="space-y-4">
+      <div className={compact ? "space-y-3" : "space-y-4"}>
         <div className="space-y-1">
           <div className="text-sm text-grey">
             {t("companyDetailPage.sectorGraphs.totalEmissions")}

@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { RankedCompany } from "@/types/company";
 import { useTrendAnalysis } from "@/hooks/companies/useTrendAnalysis";
-import { useScreenSize } from "@/hooks/useScreenSize";
 import TrendCards from "./TrendCards";
+import { TrendDistributionChart } from "./TrendDistributionChart";
 
 interface EmissionsTrendAnalysisProps {
   companies: RankedCompany[];
@@ -18,29 +18,29 @@ const EmissionsTrendAnalysis: React.FC<EmissionsTrendAnalysisProps> = ({
     "decreasing" | "increasing" | "noComparable" | null
   >(null);
   const trends = useTrendAnalysis(companies, selectedSectors);
-  const screenSize = useScreenSize();
   const { t } = useTranslation();
 
   return (
-    <div className="mt-12 space-y-6">
-      <div
-        className={`flex ${
-          screenSize.isMobile ? "flex-col" : "items-center"
-        } gap-2`}
-      >
-        <h2 className="text-xl font-light text-white">
-          {t("companyDetailPage.sectorGraphs.emissionsTrendAnalysis")}
-        </h2>
-        <span className="text-sm text-grey">
-          {t("companyDetailPage.sectorGraphs.fromBaseYear")}
-        </span>
-      </div>
-
-      <TrendCards
+    <div className="space-y-6">
+      <TrendDistributionChart
         trends={trends}
         selectedCategory={selectedCategory}
         onCategorySelect={setSelectedCategory}
       />
+
+      {selectedCategory && (
+        <TrendCards
+          trends={trends}
+          selectedCategory={selectedCategory}
+          onCategorySelect={setSelectedCategory}
+        />
+      )}
+
+      {!selectedCategory && (
+        <p className="text-sm text-grey text-center">
+          {t("sectorsOverviewPage.trendHint")}
+        </p>
+      )}
     </div>
   );
 };

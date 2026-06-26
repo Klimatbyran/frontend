@@ -2,29 +2,33 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { RankedCompany } from "@/types/company";
 import { useScopeData } from "@/hooks/companies/useScopeData";
-import { useScreenSize } from "@/hooks/useScreenSize";
 import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 import EmissionsTotalDisplay from "../charts/EmissionsTotalDisplay";
 import ScopeCards from "./ScopeCards";
-import ValueChainOverview from "./ValueChainOverview";
-import KeyInsights from "./KeyInsights";
+import { ScopeBreakdownChart } from "./ScopeBreakdownChart";
+import { ScopeValueChainChart } from "./ScopeValueChainChart";
+import ScopeModal from "./ScopeModal";
 
 interface EmissionsSourcesAnalysisProps {
   companies: RankedCompany[];
   selectedSectors: string[];
+  selectedYear: string;
+  onYearChange: (year: string) => void;
 }
 
 const EmissionsSourcesAnalysis: React.FC<EmissionsSourcesAnalysisProps> = ({
   companies,
   selectedSectors,
+  selectedYear,
+  onYearChange,
 }) => {
   const { t } = useTranslation();
-  const screenSize = useScreenSize();
   const sectorNames = useSectorNames();
 
-  const [selectedYear, setSelectedYear] = useState<string>("2024");
+  const [selectedScope, setSelectedScope] = useState<
+    "scope1" | "scope2" | "scope3_upstream" | "scope3_downstream" | null
+  >(null);
 
-  // If no sectors are selected, use all sectors except "all"
   const effectiveSectors =
     selectedSectors.length > 0
       ? selectedSectors
@@ -36,39 +40,29 @@ const EmissionsSourcesAnalysis: React.FC<EmissionsSourcesAnalysisProps> = ({
     selectedYear,
   );
 
-  // Generate years array from 2020 to current year
   return (
-    <div className="mt-12 space-y-6">
-      <div
-        className={`${
-          screenSize.isMobile
-            ? "flex flex-col gap-1"
-            : "flex items-center justify-between"
-        }`}
-      >
-        <div
-          className={`${
-            screenSize.isMobile
-              ? "flex flex-col gap-1"
-              : "flex items-center gap-2"
-          }`}
-        >
-          <h2 className="text-xl font-light text-white">
-            {t("companyDetailPage.sectorGraphs.emissionsSourcesAnalysis")}
-          </h2>
-          <span className="text-sm text-grey">
-            {t("companyDetailPage.sectorGraphs.ghgProtocolScopes")}
-          </span>
-        </div>
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end">
         <EmissionsTotalDisplay
           totalEmissions={totalEmissions}
           selectedYear={selectedYear}
           years={years}
-          onYearChange={setSelectedYear}
+          onYearChange={onYearChange}
           isSectorView={effectiveSectors.length > 0}
-          hideTotal // TODO: decide if we want to display the total again, and whether that should be complete total or excluding statedScope3 total
+          hideTotal
         />
       </div>
+
+      <ScopeBreakdownChart
+        scopeData={scopeData}
+        totalEmissions={totalEmissions}
+        onScopeSelect={setSelectedScope}
+      />
+
+      <ScopeValueChainChart
+        scopeData={scopeData}
+        totalEmissions={totalEmissions}
+      />
 
       <ScopeCards
         scopeData={scopeData}
@@ -76,19 +70,28 @@ const EmissionsSourcesAnalysis: React.FC<EmissionsSourcesAnalysisProps> = ({
         companies={companies}
         selectedSectors={effectiveSectors}
         selectedYear={selectedYear}
+        compact
+        onScopeSelect={setSelectedScope}
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-        <ValueChainOverview />
-        <KeyInsights scopeData={scopeData} totalEmissions={totalEmissions} />
-      </div>
-
-      {/* Commented out for now as it's not complete */}
-      {/* <Scope3Breakdown
-        companies={companies}
-        selectedSectors={selectedSectors}
-        selectedYear={selectedYear}
-      /> */}
+      {selectedScope && (
+        <ScopeModal
+          scope={selectedScope}
+          title={
+            selectedScope === "scope1"
+              ? t("companyDetailPage.sectorGraphs.scope1")
+              : selectedScope === "scope2"
+                ? t("companyDetailPage.sectorGraphs.scope2")
+                : selectedScope === "scope3_upstream"
+                  ? t("companyDetailPage.sectorGraphs.scope3Upstream")
+                  : t("companyDetailPage.sectorGraphs.scope3Downstream")
+          }
+          onClose={() => setSelectedScope(null)}
+          companies={companies}
+          selectedSectors={effectiveSectors}
+          selectedYear={selectedYear}
+        />
+      )}
     </div>
   );
 };

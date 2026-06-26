@@ -1,20 +1,26 @@
-import { useState } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useCompanies } from "@/hooks/companies/useCompanies";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { cn } from "@/lib/utils";
 import SectorGraphs from "@/components/companies/sectors/SectorGraphs";
+import { SectorOverviewStats } from "@/components/companies/sectors/SectorOverviewStats";
 import { FilterPopover } from "@/components/explore/FilterPopover";
 import { FilterBadges } from "@/components/companies/list/FilterBadges";
 import { useCompanyFilters } from "@/hooks/companies/useCompanyFilters";
 import { useSectorNames } from "@/hooks/companies/useCompanySectors";
+import { useSectorOverviewStats } from "@/hooks/companies/useSectorOverviewStats";
+import type { SectorSectionId } from "@/components/companies/sectors/SectorsPageNav";
 
 export function SectorsOverviewPage() {
   const { t } = useTranslation();
   const screenSize = useScreenSize();
   const { companies, companiesLoading, companiesError } = useCompanies();
   const [filterOpen, setFilterOpen] = useState(false);
+  const [selectedYear, setSelectedYear] = useState("2024");
+  const [activeSection, setActiveSection] =
+    useState<SectorSectionId>("distribution");
   const sectorNames = useSectorNames();
 
   const {
@@ -26,7 +32,36 @@ export function SectorsOverviewPage() {
     filterGroups,
   } = useCompanyFilters(companies);
 
-  // Create active filters for badges
+  const effectiveSectors =
+    sectors.length > 0 && !sectors.includes("all")
+      ? sectors
+      : Object.keys(sectorNames).filter((key) => key !== "all");
+
+  const availableYears = useMemo(() => {
+    const yearSet = new Set<string>();
+    filteredCompanies.forEach((company) => {
+      company.reportingPeriods.forEach((period) => {
+        yearSet.add(period.endDate.substring(0, 4));
+      });
+    });
+    return Array.from(yearSet).sort();
+  }, [filteredCompanies]);
+
+  useEffect(() => {
+    if (
+      availableYears.length > 0 &&
+      !availableYears.includes(selectedYear)
+    ) {
+      setSelectedYear(availableYears[availableYears.length - 1]);
+    }
+  }, [availableYears, selectedYear]);
+
+  const stats = useSectorOverviewStats(
+    filteredCompanies,
+    effectiveSectors,
+    selectedYear,
+  );
+
   const activeFilters = [
     ...(sectors.length > 0 && !sectors.includes("all")
       ? sectors.map((sector) => ({
@@ -54,9 +89,15 @@ export function SectorsOverviewPage() {
 
   if (companiesLoading) {
     return (
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-pulse">
-        {[...Array(4)].map((_, i) => (
-          <div key={i} className="h-64 bg-black-2 rounded-level-2" />
+      <div className="space-y-6 animate-pulse">
+        <div className="h-20 bg-black-2 rounded-level-2" />
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="h-24 bg-black-2 rounded-level-2" />
+          ))}
+        </div>
+        {[...Array(3)].map((_, i) => (
+          <div key={i} className="h-72 bg-black-2 rounded-level-2" />
         ))}
       </div>
     );
@@ -83,7 +124,6 @@ export function SectorsOverviewPage() {
         className="-ml-4"
       />
 
-      {/* Filters Section */}
       <div
         className={cn(
           screenSize.isMobile ? "relative" : "sticky top-0 z-10",
@@ -92,16 +132,13 @@ export function SectorsOverviewPage() {
       >
         <div className="absolute inset-0 w-full bg-black -z-10" />
 
-        {/* Wrapper for Filters and Badges */}
         <div className={cn("flex flex-wrap items-center gap-2 mb-2 md:mb-4")}>
-          {/* Filter Button */}
           <FilterPopover
             filterOpen={filterOpen}
             setFilterOpen={setFilterOpen}
             groups={filterGroups}
           />
 
-          {/* Badges */}
           {activeFilters.length > 0 && (
             <div
               className={cn(
@@ -125,14 +162,31 @@ export function SectorsOverviewPage() {
           </p>
         </div>
       ) : (
-        <SectorGraphs
-          companies={filteredCompanies}
-          selectedSectors={
-            sectors.length > 0
-              ? sectors
-              : Object.keys(sectorNames).filter((key) => key !== "all")
-          }
-        />
+        <>
+          <SectorOverviewStats
+            companyCount={stats.companyCount}
+            sectorCount={stats.sectorCount}
+            totalEmissions={stats.totalEmissions}
+            reducingCount={stats.reducingCount}
+            reducingPercent={stats.reducingPercent}
+            meetsParisYes={stats.meetsParisYes}
+            meetsParisPercent={stats.meetsParisPercent}
+            selectedYear={selectedYear}
+          />
+
+          <SectorGraphs
+            companies={filteredCompanies}
+            selectedSectors={
+              sectors.length > 0
+                ? sectors
+                : Object.keys(sectorNames).filter((key) => key !== "all")
+            }
+            selectedYear={selectedYear}
+            onYearChange={setSelectedYear}
+            activeSection={activeSection}
+            onSectionChange={setActiveSection}
+          />
+        </>
       )}
     </>
   );

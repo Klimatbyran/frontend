@@ -538,11 +538,45 @@
   },
   "sectorsOverviewPage": {
     "title": "Branschöversikt",
-    "description": "Översikt över utsläpp och omställning på branschnivå",
+    "description": "Utforska utsläpp, trender och utsläppskällor per bransch",
     "errorTitle": "Det gick inte att hämta företagsinformation",
     "errorDescription": "Försök igen senare",
     "noCompaniesFound": "Inga företag hittades",
     "tryDifferentCriteria": "Försök med andra sökkriterier",
+    "noTrendData": "Ingen trenddata tillgänglig",
+    "trendHint": "Klicka på en kategori i diagrammet för att se företagslistan",
+    "scopeDetailsToggle": "Visa detaljerad scope-uppdelning",
+    "valueChainTitle": "Utsläpp längs värdekedjan",
+    "chartViews": {
+      "bar": "Stapeldiagram"
+    },
+    "nav": {
+      "label": "Sidnavigering",
+      "distribution": "Fördelning",
+      "trends": "Trender",
+      "sources": "Utsläppskällor"
+    },
+    "sections": {
+      "distribution": {
+        "title": "Utsläppsfördelning per bransch",
+        "subtitle": "Klicka på en bransch för att se enskilda företag"
+      },
+      "trends": {
+        "title": "Utsläppsutveckling",
+        "subtitle": "Företag som minskar, ökar eller saknar jämförbar data sedan basår"
+      },
+      "sources": {
+        "title": "Var kommer utsläppen ifrån?",
+        "subtitle": "Uppdelning enligt GHG-protokollets scope 1, 2 och 3"
+      }
+    },
+    "stats": {
+      "companies": "Företag",
+      "sectorsCount": "{{count}} branscher",
+      "totalEmissions": "Totala utsläpp {{year}}",
+      "reducing": "Minskar utsläpp",
+      "parisAligned": "Klarar Parisavtalet"
+    },
     "filteringOptions": {
       "meetsParis": "Klarar Parisavtalet",
       "meetsParisYes": "Ja",
