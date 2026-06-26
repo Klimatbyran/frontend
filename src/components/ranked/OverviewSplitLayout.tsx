@@ -3,8 +3,11 @@ import { cn } from "@/lib/utils";
 
 export type OverviewViewMode = "map" | "list" | "graph";
 
-export const OVERVIEW_VISUALIZATION_PANEL_CLASS =
-  "relative min-w-0 min-h-[65vh] md:min-h-[570px] h-full";
+/** Shared min-height for map/list panels — taller on mobile for better usability. */
+export const OVERVIEW_PANEL_MIN_HEIGHT_CLASS =
+  "min-h-[75dvh] md:min-h-[570px]";
+
+export const OVERVIEW_VISUALIZATION_PANEL_CLASS = `relative min-w-0 h-full ${OVERVIEW_PANEL_MIN_HEIGHT_CLASS}`;
 
 interface OverviewSplitLayoutProps {
   viewMode: OverviewViewMode;
@@ -34,6 +37,7 @@ export function OverviewSplitLayout({
       <div
         className={cn(
           "min-w-0 h-full",
+          OVERVIEW_PANEL_MIN_HEIGHT_CLASS,
           viewMode !== listMode && "max-md:hidden",
         )}
       >

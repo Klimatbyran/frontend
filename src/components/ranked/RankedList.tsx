@@ -255,7 +255,7 @@ export function RankedList<T extends Record<string, unknown>>({
 
   return (
     <div
-      className={`bg-black-2 rounded-2xl flex flex-col border border-white/10 ${className}`}
+      className={`bg-black-2 rounded-2xl flex flex-col h-full border border-white/10 ${className}`}
     >
       <div className="p-4 border-b border-white/10">
         <div className="relative">
@@ -303,7 +303,7 @@ export function RankedList<T extends Record<string, unknown>>({
           </div>
         )}
       </div>
-      <div className="flex-1 overflow-y-auto ranked-list-items min-h-[570px]">
+      <div className="flex-1 overflow-y-auto ranked-list-items min-h-0 md:min-h-[570px]">
         <div className="divide-y divide-white/10">
           {paginatedData.map((item, index) =>
             renderItem
