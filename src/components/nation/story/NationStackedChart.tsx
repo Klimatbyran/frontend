@@ -105,6 +105,12 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
     [data, chartEndYear],
   );
 
+  const point1990 = useMemo(() => data.find((d) => d.year === 1990), [data]);
+  const pointLatest = useMemo(
+    () => [...data].sort((a, b) => b.year - a.year)[0],
+    [data],
+  );
+
   const chartHeight = isMobile ? 240 : 320;
 
   return (
@@ -169,6 +175,30 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
           setChartEndYear={setChartEndYear}
         />
       </ChartFooter>
+
+      {/* Big-number totals */}
+      {point1990 && pointLatest && (
+        <div className="mt-6 grid grid-cols-2 gap-4 border-t border-white/10 pt-6">
+          <div>
+            <p className="text-xs uppercase tracking-wide text-grey mb-1">
+              1990
+            </p>
+            <p className="text-3xl md:text-4xl font-light text-white tabular-nums">
+              {formatMton(point1990.combined, currentLanguage, 0)}
+            </p>
+            <p className="text-sm text-grey mt-1">{t("nation.story.unit.mton")}</p>
+          </div>
+          <div>
+            <p className="text-xs uppercase tracking-wide text-grey mb-1">
+              {pointLatest.year}
+            </p>
+            <p className="text-3xl md:text-4xl font-light text-white tabular-nums">
+              {formatMton(pointLatest.combined, currentLanguage, 0)}
+            </p>
+            <p className="text-sm text-grey mt-1">{t("nation.story.unit.mton")}</p>
+          </div>
+        </div>
+      )}
     </SectionWithHelp>
   );
 };
