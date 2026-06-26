@@ -4,8 +4,7 @@ import { cn } from "@/lib/utils";
 export type OverviewViewMode = "map" | "list" | "graph";
 
 /** Shared class for the visualization slot — keep in sync with the list slot height */
-export const OVERVIEW_VISUALIZATION_PANEL_CLASS =
-  "relative min-w-0 h-full";
+export const OVERVIEW_VISUALIZATION_PANEL_CLASS = "relative min-w-0 h-full";
 
 interface OverviewSplitLayoutProps {
   viewMode: OverviewViewMode;
