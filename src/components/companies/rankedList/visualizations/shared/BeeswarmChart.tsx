@@ -28,6 +28,7 @@ interface BeeswarmChartProps<T> {
   getBudgetValue?: (item: T) => number;
   getRank?: (item: T) => number | null;
   totalCount?: number;
+  highlightId?: string;
 }
 
 export function BeeswarmChart<T>({
@@ -52,6 +53,7 @@ export function BeeswarmChart<T>({
   getBudgetValue,
   getRank,
   totalCount,
+  highlightId,
 }: BeeswarmChartProps<T>) {
   const { t } = useTranslation();
   const { isMobile } = useScreenSize();
@@ -218,6 +220,8 @@ export function BeeswarmChart<T>({
             const spread = Math.min(Math.abs(yJitter) / 6, 80);
             const yOffset = yJitter > 0 ? spread : -spread;
 
+            const isHighlighted = highlightId === getCompanyId(item);
+
             return (
               <div
                 key={getCompanyId(item)}
@@ -229,7 +233,7 @@ export function BeeswarmChart<T>({
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
                 className={`absolute cursor-pointer transition-transform z-10 ${
-                  hoveredItem?.item === item
+                  hoveredItem?.item === item || isHighlighted
                     ? "scale-150"
                     : !isMobile
                       ? "hover:scale-150"
@@ -244,11 +248,15 @@ export function BeeswarmChart<T>({
                 <div
                   className="absolute rounded-full"
                   style={{
-                    width: "16px",
-                    height: "16px",
+                    width: isHighlighted ? "20px" : "16px",
+                    height: isHighlighted ? "20px" : "16px",
                     background: colorForValue(rawValue),
-                    border: "2px solid var(--black-4)",
-                    boxShadow: "0 2px 4px var(--black-4)",
+                    border: isHighlighted
+                      ? "3px solid var(--orange-2)"
+                      : "2px solid var(--black-4)",
+                    boxShadow: isHighlighted
+                      ? "0 0 12px var(--orange-2)"
+                      : "0 2px 4px var(--black-4)",
                   }}
                 />
                 {/* Capped indicator - triangle arrow on the right */}

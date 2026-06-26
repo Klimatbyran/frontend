@@ -1085,6 +1085,29 @@
       "noData": "No data available"
     }
   },
+  "territoryBenchmarks": {
+    "title": "How does this compare?",
+    "description": "See how this area performs compared to regional and national averages.",
+    "nationalAverage": "National average",
+    "regionalAverage": "Average in {{region}}",
+    "regionalAverageGeneric": "Regional average",
+    "regionsAverage": "Average of all regions",
+    "rankLabel": "Ranking",
+    "rankValue": "#{{rank}} of {{total}}",
+    "rankDescription": "Position among comparable areas for {{name}}",
+    "percentileLabel": "Better than",
+    "percentileValue": "{{percentile}}%",
+    "percentileDescription": "Share of comparable areas performing worse on this metric",
+    "diffFromAverageLabel": "Vs average",
+    "diffFromAverageDescription": "Difference from the national peer average",
+    "higherIsBetterHint": "Higher values are better for this metric.",
+    "lowerIsBetterHint": "Lower values are better for this metric.",
+    "noDistributionData": "Not enough data to show the distribution.",
+    "views": {
+      "comparison": "Compare averages",
+      "distribution": "See all areas"
+    }
+  },
   "municipalitiesOverviewPage": {
     "errorTitle": "Failed to retrieve municipality information",
     "errorDescription": "Please try again later",

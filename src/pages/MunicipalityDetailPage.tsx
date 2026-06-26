@@ -10,11 +10,10 @@ import { Municipality, transformEmissionsData } from "@/types/municipality";
 import {
   formatEmissionsAbsolute,
   formatPercent,
-  localizeUnit,
 } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
+import { TerritoryDetailCore } from "@/components/territories/TerritoryDetailCore";
 import { useSectorEmissions } from "@/hooks/territories/useSectorEmissions";
-import { TerritoryEmissions } from "@/components/territories/TerritoryEmissions";
 import { useHiddenItems } from "@/components/charts";
 import { PageLoading } from "@/components/pageStates/Loading";
 import { PageError } from "@/components/pageStates/Error";
@@ -30,7 +29,6 @@ import { DetailSection } from "@/components/detail/DetailSection";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";
 import { useSectors } from "@/hooks/territories/useSectors";
 import { DetailLinkCardGrid } from "@/components/detail/DetailGrid";
-import { SectorEmissionsChart } from "@/components/charts/sectorChart/SectorEmissions";
 import type { SupportedLanguage } from "@/lib/languageDetection";
 import type { DataGuideItemId } from "@/data-guide/items";
 import { Seo } from "@/components/SEO/Seo";
@@ -261,12 +259,12 @@ export function MunicipalityDetailPage() {
           }
         />
 
-        <TerritoryEmissions
+        <TerritoryDetailCore
+          entityType="municipality"
+          entityId={municipality.name}
+          entityName={municipality.name}
+          regionName={municipality.region}
           emissionsData={emissionsData}
-          sectorEmissions={sectorEmissions}
-        />
-
-        <SectorEmissionsChart
           sectorEmissions={sectorEmissions}
           availableYears={availableYears}
           selectedYear={selectedYear}
@@ -275,20 +273,32 @@ export function MunicipalityDetailPage() {
           getSectorInfo={getSectorInfo}
           filteredSectors={filteredSectors}
           onFilteredSectorsChange={setFilteredSectors}
-          helpItems={["municipalityAndRegionEmissionSources"]}
-        />
+          entityValueOverrides={{
+            historicalEmissionChangePercent:
+              municipality.historicalEmissionChangePercent,
+            totalConsumptionEmission: municipality.totalConsumptionEmission,
+            electricCarChangePercent: municipality.electricCarChangePercent,
+            bicycleMetrePerCapita: municipality.bicycleMetrePerCapita,
+            electricVehiclePerChargePoints:
+              municipality.electricVehiclePerChargePoints,
+          }}
+        >
+          <MunicipalityLinkCards
+            municipality={municipality}
+            requirementsInProcurement={requirementsInProcurement}
+            t={t}
+          />
 
-        <MunicipalityLinkCards
-          municipality={municipality}
-          requirementsInProcurement={requirementsInProcurement}
-          t={t}
-        />
-
-        <DetailSection
-          title={t("municipalityDetailPage.sustainableTransport")}
-          items={getSustainableTransportItems(municipality, currentLanguage, t)}
-          helpItems={SUSTAINABLE_TRANSPORT_HELP_ITEMS}
-        />
+          <DetailSection
+            title={t("municipalityDetailPage.sustainableTransport")}
+            items={getSustainableTransportItems(
+              municipality,
+              currentLanguage,
+              t,
+            )}
+            helpItems={SUSTAINABLE_TRANSPORT_HELP_ITEMS}
+          />
+        </TerritoryDetailCore>
       </DetailWrapper>
     </>
   );

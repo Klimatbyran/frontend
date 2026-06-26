@@ -3,7 +3,6 @@ import { useQuery } from "@tanstack/react-query";
 import { cn } from "@/lib/utils";
 import {
   formatPercentChange,
-  localizeUnit,
 } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
 import { DetailStat } from "@/components/detail/DetailHeader";
@@ -47,17 +46,23 @@ export function useMunicipalityDetailHeaderStats(
   const stats: DetailStat[] = municipality
     ? [
         {
-          label: t("detailPage.totalEmissions", {
-            year: lastYear,
-          }),
-          value: lastYearEmissionsTon,
-          unit: t("emissionsUnit"),
-          valueClassName: "text-orange-2",
-          info: true,
-          infoText: t("municipalityDetailPage.totalEmissionsTooltip"),
+          label: t("detailPage.meetsParisGoal"),
+          value:
+            municipality.meetsParisGoal === true
+              ? t("yes")
+              : municipality.meetsParisGoal === false
+                ? t("no")
+                : t("unknown"),
+          valueClassName: cn(
+            municipality.meetsParisGoal === true
+              ? "text-green-3"
+              : municipality.meetsParisGoal === false
+                ? "text-pink-3"
+                : "text-grey",
+          ),
         },
         {
-          label: t("municipalityDetailPage.annualChangeSince2015"),
+          label: t("detailPage.changeSince2015"),
           value: formatPercentChange(
             municipality.historicalEmissionChangePercent,
             currentLanguage,
@@ -69,13 +74,14 @@ export function useMunicipalityDetailHeaderStats(
           ),
         },
         {
-          label: t("municipalityDetailPage.consumptionEmissionsPerCapita"),
-          value: localizeUnit(
-            municipality.totalConsumptionEmission,
-            currentLanguage,
-          ),
-          valueClassName: "text-orange-2",
+          label: t("detailPage.totalEmissions", {
+            year: lastYear,
+          }),
+          value: lastYearEmissionsTon,
           unit: t("emissionsUnit"),
+          valueClassName: "text-orange-2",
+          info: true,
+          infoText: t("municipalityDetailPage.totalEmissionsTooltip"),
         },
       ]
     : [];

@@ -1,13 +1,12 @@
-import { TerritoryEmissions } from "@/components/territories/TerritoryEmissions";
 import { PageLoading } from "@/components/pageStates/Loading";
 import { PageError } from "@/components/pageStates/Error";
 import { PageNoData } from "@/components/pageStates/NoData";
 import { DetailHeader } from "@/components/detail/DetailHeader";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";
-import { SectorEmissionsChart } from "@/components/charts/sectorChart/SectorEmissions";
 import { EntityListBox } from "@/components/detail/EntityListBox";
 import { useNationPageData } from "@/hooks/nation/useNationPageData";
 import { useLanguage } from "@/components/LanguageProvider";
+import { TerritoryDetailCore } from "@/components/territories/TerritoryDetailCore";
 
 function NationDetailContent({
   nation,
@@ -26,19 +25,22 @@ function NationDetailContent({
   const { currentLanguage } = useLanguage();
   if (!nation) return <PageNoData />;
 
+  const nationName = nation.country[currentLanguage];
+
   return (
     <DetailWrapper>
       <DetailHeader
-        name={nation.country[currentLanguage]}
+        name={nationName}
         logoUrl={nation.logoUrl}
         helpItems={["nationTotalEmissions", "detailWhyDataDelay"]}
         stats={headerStats}
       />
-      <TerritoryEmissions
+
+      <TerritoryDetailCore
+        entityType="nation"
+        entityId={nationName}
+        entityName={nationName}
         emissionsData={emissionsData}
-        sectorEmissions={sectorEmissions}
-      />
-      <SectorEmissionsChart
         sectorEmissions={sectorEmissions}
         availableYears={availableYears}
         selectedYear={selectedYear}
@@ -47,13 +49,13 @@ function NationDetailContent({
         getSectorInfo={getSectorInfo}
         filteredSectors={filteredSectors}
         onFilteredSectorsChange={setFilteredSectors}
-        helpItems={["municipalityAndRegionEmissionSources"]}
-      />
-      <EntityListBox
-        items={sortedRegions}
-        entityType="regions"
-        translateNamespace="nation.detailPage"
-      />
+      >
+        <EntityListBox
+          items={sortedRegions}
+          entityType="regions"
+          translateNamespace="nation.detailPage"
+        />
+      </TerritoryDetailCore>
     </DetailWrapper>
   );
 }

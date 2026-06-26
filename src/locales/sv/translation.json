@@ -1143,6 +1143,29 @@
       "noData": "Inga data tillgängliga"
     }
   },
+  "territoryBenchmarks": {
+    "title": "Hur står sig detta?",
+    "description": "Se hur området presterar jämfört med regionala och nationella medelvärden.",
+    "nationalAverage": "Rikssnitt",
+    "regionalAverage": "Snitt i {{region}}",
+    "regionalAverageGeneric": "Regionalt snitt",
+    "regionsAverage": "Snitt för alla län",
+    "rankLabel": "Placering",
+    "rankValue": "#{{rank}} av {{total}}",
+    "rankDescription": "Placering bland jämförbara områden för {{name}}",
+    "percentileLabel": "Bättre än",
+    "percentileValue": "{{percentile}}%",
+    "percentileDescription": "Andel jämförbara områden som presterar sämre på detta mått",
+    "diffFromAverageLabel": "Mot snitt",
+    "diffFromAverageDescription": "Skillnad mot rikssnittet",
+    "higherIsBetterHint": "Högre värden är bättre för detta mått.",
+    "lowerIsBetterHint": "Lägre värden är bättre för detta mått.",
+    "noDistributionData": "Inte tillräckligt med data för att visa fördelningen.",
+    "views": {
+      "comparison": "Jämför medelvärden",
+      "distribution": "Se alla områden"
+    }
+  },
   "municipalitiesOverviewPage": {
     "errorTitle": "Det gick inte att hämta kommuninformation",
     "errorDescription": "Försök igen senare",
