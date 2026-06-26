@@ -101,6 +101,15 @@ function InsightsPanel({
             }
           : undefined
       }
+      chart={
+        selectedKPI.isBoolean ? (
+          <KPIDistributionChart
+            data={municipalityData}
+            selectedKPI={selectedKPI}
+            entityLabel={t("header.municipalities").toLowerCase()}
+          />
+        ) : undefined
+      }
       distributionStats={statistics.distributionStats}
       missingDataCount={statistics.nullCount}
       missingDataLabel={selectedKPI.nullValues}

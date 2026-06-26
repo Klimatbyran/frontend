@@ -97,6 +97,15 @@ function RegionalInsightsPanel({
             }
           : undefined
       }
+      chart={
+        selectedKPI.isBoolean ? (
+          <KPIDistributionChart
+            data={regionData}
+            selectedKPI={selectedKPI}
+            entityLabel={entityPlural}
+          />
+        ) : undefined
+      }
       distributionStats={statistics.distributionStats}
       missingDataCount={statistics.nullCount}
       missingDataLabel={selectedKPI.nullValues}

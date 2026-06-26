@@ -34,6 +34,8 @@ interface KPIDetailsPanelProps {
   missingDataLabel?: string;
   sourceLinks?: SourceLink[];
   className?: string;
+  /** Optional chart rendered between the header and distribution bar */
+  chart?: React.ReactNode;
 }
 
 const STAT_COLOR_MAP: Record<string, string> = {
@@ -57,6 +59,7 @@ export default function KPIDetailsPanel({
   missingDataLabel,
   sourceLinks = [],
   className = "",
+  chart,
 }: KPIDetailsPanelProps) {
   const sourceSection = sourceLinks.length > 0 && (
     <p className="text-white/40 text-sm italic">
@@ -120,6 +123,8 @@ export default function KPIDetailsPanel({
           </span>
         )}
       </div>
+
+      {chart && <div>{chart}</div>}
 
       {/* Top & bottom performers */}
       {(topPerformer || bottomPerformer) && (
@@ -202,7 +207,7 @@ export default function KPIDetailsPanel({
               return (
                 <div
                   key={index}
-                  className="flex items-center justify-between text-base"
+                  className="flex items-center justify-between"
                 >
                   <div className="flex items-center gap-2.5">
                     <span
@@ -212,11 +217,11 @@ export default function KPIDetailsPanel({
                           STAT_COLOR_MAP[stat.colorClass] ?? "#888",
                       }}
                     />
-                    <span className="text-white/70">
+                    <span className="text-white/70 text-base">
                       {lowercaseFirstLetter(stat.label)}
                     </span>
                   </div>
-                  <span className={`font-semibold text-lg ${stat.colorClass}`}>
+                  <span className={`font-bold text-2xl ${stat.colorClass}`}>
                     {stat.count}{" "}
                     <span className="text-white/40 font-normal text-sm">
                       ({pct}%)

@@ -105,6 +105,15 @@ function CompanyInsightsPanel({
             }
           : undefined
       }
+      chart={
+        selectedKPI.isBoolean ? (
+          <KPIDistributionChart
+            data={companyData}
+            selectedKPI={selectedKPI}
+            entityLabel={entityPlural}
+          />
+        ) : undefined
+      }
       distributionStats={statistics.distributionStats}
       missingDataCount={statistics.nullCount}
       missingDataLabel={selectedKPI.nullValues}
