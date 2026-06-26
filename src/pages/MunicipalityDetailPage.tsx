@@ -7,11 +7,7 @@ import {
   useMunicipalityDetailHeaderStats,
 } from "@/hooks/municipalities/useMunicipalityDetails";
 import { Municipality, transformEmissionsData } from "@/types/municipality";
-import {
-  formatEmissionsAbsolute,
-  formatPercent,
-  localizeUnit,
-} from "@/utils/formatting/localization";
+import * as localization from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
 import { TerritoryDetailCore } from "@/components/territories/TerritoryDetailCore";
 import { useSectorEmissions } from "@/hooks/territories/useSectorEmissions";
@@ -91,23 +87,26 @@ function getSustainableTransportItems(
   return [
     {
       title: t("municipalityDetailPage.electricCarChange"),
-      value: `${formatPercent(
+      value: localization.formatPercent(
         municipality.electricCarChangePercent,
         currentLanguage,
         true,
-      )}`,
+      ),
       valueClassName: "text-orange-2",
     },
     {
       title: t("municipalityDetailPage.electricCarsPerChargePoint"),
       value: evcp
-        ? localizeUnit(evcp, currentLanguage)
+        ? localization.localizeUnit(evcp, currentLanguage)
         : t("municipalityDetailPage.noChargePoints"),
       valueClassName: evcp && evcp > 10 ? "text-pink-3" : "text-green-3",
     },
     {
       title: t("municipalityDetailPage.bicycleMetrePerCapita"),
-      value: localizeUnit(municipality.bicycleMetrePerCapita, currentLanguage),
+      value: localization.localizeUnit(
+        municipality.bicycleMetrePerCapita,
+        currentLanguage,
+      ),
       valueClassName: "text-orange-2",
     },
   ];
@@ -129,7 +128,10 @@ function useMunicipalityPageData(id: string | undefined) {
   const lastYearEmissions = municipality?.emissions.at(-1);
   const lastYear = lastYearEmissions?.year;
   const lastYearEmissionsTon = lastYearEmissions
-    ? formatEmissionsAbsolute(lastYearEmissions.value, currentLanguage)
+    ? localization.formatEmissionsAbsolute(
+        lastYearEmissions.value,
+        currentLanguage,
+      )
     : t("noData");
 
   const headerStats = useMunicipalityDetailHeaderStats(
