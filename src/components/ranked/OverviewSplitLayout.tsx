@@ -42,7 +42,14 @@ export function OverviewSplitLayout({
       >
         {visualization}
       </div>
-      <div className={cn("min-w-0 h-full", !showList && "hidden")}>{list}</div>
+      <div
+        className={cn(
+          "min-w-0 min-h-[65vh] md:min-h-[570px] overflow-y-auto",
+          !showList && "hidden",
+        )}
+      >
+        {list}
+      </div>
     </div>
   );
 }
