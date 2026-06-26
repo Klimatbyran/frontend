@@ -28,14 +28,14 @@ export function ViewModeToggle<T extends string>({
   } as Record<string, React.ReactNode>;
 
   return (
-    <div className={cn("flex bg-black-1 rounded-md overflow-hidden")}>
+    <div className={cn("flex w-full md:w-auto bg-black-1 rounded-md overflow-hidden")}>
       {modes.map((mode) => (
         <Button
           key={mode}
           variant="ghost"
           size="sm"
           className={cn(
-            "h-8 px-3 rounded-none",
+            "flex-1 md:flex-none h-8 px-3 rounded-none",
             viewMode === mode ? "bg-blue-5/30 text-blue-2" : "text-grey",
           )}
           onClick={() => onChange(mode)}
