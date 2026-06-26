@@ -1,9 +1,4 @@
-import {
-  Building2,
-  Factory,
-  TrendingDown,
-  Target,
-} from "lucide-react";
+import { Building2, Factory, TrendingDown, Target } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
 import {
@@ -53,9 +48,7 @@ function StatCard({
       </div>
       <div>
         <div className="text-2xl font-light text-white">{value}</div>
-        {subValue && (
-          <div className="text-xs text-grey mt-0.5">{subValue}</div>
-        )}
+        {subValue && <div className="text-xs text-grey mt-0.5">{subValue}</div>}
       </div>
       {progress !== undefined && (
         <div className="h-1.5 bg-black-1 rounded-full overflow-hidden">

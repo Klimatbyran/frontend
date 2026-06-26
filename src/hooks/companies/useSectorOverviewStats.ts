@@ -4,10 +4,7 @@ import { calculateTrendline } from "@/lib/calculations/trends/analysis";
 import { calculateMeetsParis } from "@/lib/calculations/trends/meetsParis";
 import { useTrendAnalysis } from "@/hooks/companies/useTrendAnalysis";
 
-const getEmissionsForYear = (
-  company: RankedCompany,
-  year: string,
-): number => {
+const getEmissionsForYear = (company: RankedCompany, year: string): number => {
   const period = company.reportingPeriods.find((p) =>
     p.endDate.startsWith(year),
   );
@@ -71,8 +68,7 @@ export const useSectorOverviewStats = (
       reducingCount,
       increasingCount,
       noComparableCount,
-      reducingPercent:
-        trendTotal > 0 ? reducingCount / trendTotal : 0,
+      reducingPercent: trendTotal > 0 ? reducingCount / trendTotal : 0,
       meetsParisYes,
       meetsParisNo,
       meetsParisUnknown,

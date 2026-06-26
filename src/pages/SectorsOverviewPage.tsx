@@ -48,10 +48,7 @@ export function SectorsOverviewPage() {
   }, [filteredCompanies]);
 
   useEffect(() => {
-    if (
-      availableYears.length > 0 &&
-      !availableYears.includes(selectedYear)
-    ) {
+    if (availableYears.length > 0 && !availableYears.includes(selectedYear)) {
       setSelectedYear(availableYears[availableYears.length - 1]);
     }
   }, [availableYears, selectedYear]);

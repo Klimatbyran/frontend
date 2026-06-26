@@ -70,9 +70,7 @@ export function SectorSection({
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-6">
         <div>
           <h2 className="text-xl font-light text-white">{title}</h2>
-          {subtitle && (
-            <p className="text-sm text-grey mt-1">{subtitle}</p>
-          )}
+          {subtitle && <p className="text-sm text-grey mt-1">{subtitle}</p>}
         </div>
         {action}
       </div>

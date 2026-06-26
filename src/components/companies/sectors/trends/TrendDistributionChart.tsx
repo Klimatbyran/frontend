@@ -28,14 +28,14 @@ export function TrendDistributionChart({
   const { currentLanguage } = useLanguage();
   const categoryInfo = useCategoryInfo();
 
-  const chartData = (
-    Object.keys(trends) as Array<keyof TrendData>
-  ).map((key) => ({
-    key,
-    name: categoryInfo[key].title,
-    value: trends[key].length,
-    color: CATEGORY_COLORS[key],
-  }));
+  const chartData = (Object.keys(trends) as Array<keyof TrendData>).map(
+    (key) => ({
+      key,
+      name: categoryInfo[key].title,
+      value: trends[key].length,
+      color: CATEGORY_COLORS[key],
+    }),
+  );
 
   const total = chartData.reduce((sum, d) => sum + d.value, 0);
 
@@ -65,9 +65,7 @@ export function TrendDistributionChart({
               onClick={(_, index) => {
                 const key = chartData[index]?.key;
                 if (key) {
-                  onCategorySelect(
-                    selectedCategory === key ? null : key,
-                  );
+                  onCategorySelect(selectedCategory === key ? null : key);
                 }
               }}
               style={{ cursor: "pointer" }}
@@ -119,9 +117,7 @@ export function TrendDistributionChart({
             <button
               key={entry.key}
               type="button"
-              onClick={() =>
-                onCategorySelect(isSelected ? null : entry.key)
-              }
+              onClick={() => onCategorySelect(isSelected ? null : entry.key)}
               className={`w-full flex items-center gap-3 p-3 rounded-lg transition-colors text-left ${
                 isSelected
                   ? "bg-black-1 ring-1 ring-white/20"

@@ -72,7 +72,10 @@ export function SectorEmissionsBarChart({
   const barHeight = Math.max(36, Math.min(48, height / sortedData.length));
 
   return (
-    <ResponsiveContainer width="100%" height={sortedData.length * barHeight + 40}>
+    <ResponsiveContainer
+      width="100%"
+      height={sortedData.length * barHeight + 40}
+    >
       <BarChart
         data={sortedData}
         layout="vertical"
@@ -87,7 +90,10 @@ export function SectorEmissionsBarChart({
           axisLine={false}
           tickLine={false}
         />
-        <Tooltip content={<BarTooltip />} cursor={{ fill: "rgba(255,255,255,0.05)" }} />
+        <Tooltip
+          content={<BarTooltip />}
+          cursor={{ fill: "rgba(255,255,255,0.05)" }}
+        />
         <Bar
           dataKey="value"
           radius={[0, 4, 4, 0]}

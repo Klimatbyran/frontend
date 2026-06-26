@@ -5,11 +5,7 @@ import { RankedCompany } from "@/types/company";
 import { ScopeData } from "@/hooks/companies/useScopeData";
 import ScopeCard from "./ScopeCard";
 
-type ScopeKey =
-  | "scope1"
-  | "scope2"
-  | "scope3_upstream"
-  | "scope3_downstream";
+type ScopeKey = "scope1" | "scope2" | "scope3_upstream" | "scope3_downstream";
 
 interface ScopeCardsProps {
   scopeData: ScopeData;
@@ -61,7 +57,9 @@ const ScopeCards: React.FC<ScopeCardsProps> = ({
       companies: scopeData.scope3.upstream.companies,
       color: "bg-blue-3",
       percent: scopeData.scope3.upstream.total / totalEmissions,
-      description: t("companyDetailPage.sectorGraphs.scope3UpstreamDescription"),
+      description: t(
+        "companyDetailPage.sectorGraphs.scope3UpstreamDescription",
+      ),
       showCategoryInfo: true,
     },
     {
