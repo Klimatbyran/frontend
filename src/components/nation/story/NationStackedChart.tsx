@@ -1,4 +1,4 @@
-import { FC, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useRef, useState } from "react";
 import {
   Area,
   AreaChart,
@@ -9,6 +9,7 @@ import {
   YAxis,
 } from "recharts";
 import { useTranslation } from "react-i18next";
+import { useInView } from "framer-motion";
 import type { NationStackDataPoint } from "@/utils/data/nationStoryMetrics";
 import { formatMton } from "@/utils/data/nationStoryMetrics";
 import { useLanguage } from "@/components/LanguageProvider";
@@ -45,6 +46,9 @@ const LAYERS = [
   },
 ];
 
+// Delay between each layer appearing (ms)
+const LAYER_STAGGER_MS = 900;
+
 interface NationStackedChartProps {
   data: NationStackDataPoint[];
   className?: string;
@@ -60,16 +64,46 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
   const currentYear = new Date().getFullYear();
   const [chartEndYear, setChartEndYear] = useState(currentYear);
 
-  const legendItems: LegendItem[] = useMemo(
+  // Track how many layers are currently visible (0 = none, 3 = all)
+  const [visibleLayers, setVisibleLayers] = useState(0);
+  const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(containerRef, { once: false, amount: 0.4 });
+
+  useEffect(() => {
+    // Clear any running timers
+    timersRef.current.forEach(clearTimeout);
+    timersRef.current = [];
+
+    if (inView) {
+      // Reveal layers one by one with stagger
+      setVisibleLayers(1);
+      LAYERS.slice(1).forEach((_, i) => {
+        const t = setTimeout(
+          () => setVisibleLayers(i + 2),
+          (i + 1) * LAYER_STAGGER_MS,
+        );
+        timersRef.current.push(t);
+      });
+    } else {
+      // Reset so animation replays next time
+      setVisibleLayers(0);
+    }
+
+    return () => timersRef.current.forEach(clearTimeout);
+  }, [inView]);
+
+  const visibleLegendItems: LegendItem[] = useMemo(
     () =>
-      LAYERS.map((layer) => ({
+      LAYERS.slice(0, visibleLayers).map((layer) => ({
         name: t(layer.translationKey),
         color: layer.color,
         isClickable: false,
         isHidden: false,
         isDashed: false,
       })),
-    [t],
+    [t, visibleLayers],
   );
 
   const filteredData = useMemo(
@@ -87,8 +121,7 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
         className="[&>div]:mb-4 [&>div]:@lg:mb-6"
       />
 
-      {/* Direct ResponsiveContainer in an explicitly-sized div */}
-      <div style={{ width: "100%", height: chartHeight }}>
+      <div ref={containerRef} style={{ width: "100%", height: chartHeight }}>
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
             data={filteredData}
@@ -114,7 +147,9 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
               wrapperStyle={{ outline: "none", zIndex: 60 }}
             />
             <ReferenceLine {...getCurrentYearReferenceLineProps(currentYear)} />
-            {LAYERS.map((layer) => (
+
+            {/* Render only visible layers; each new one triggers Recharts animation */}
+            {LAYERS.slice(0, visibleLayers).map((layer) => (
               <Area
                 key={layer.dataKey}
                 type="monotone"
@@ -126,6 +161,9 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
                 fillOpacity={0.6}
                 name={t(layer.translationKey)}
                 connectNulls={false}
+                isAnimationActive
+                animationDuration={700}
+                animationEasing="ease-out"
               />
             ))}
           </AreaChart>
@@ -133,7 +171,7 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
       </div>
 
       <ChartFooter>
-        <EnhancedLegend items={legendItems} />
+        <EnhancedLegend items={visibleLegendItems} />
         <ChartYearControls
           chartEndYear={chartEndYear}
           setChartEndYear={setChartEndYear}
