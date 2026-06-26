@@ -185,20 +185,16 @@ export function MunicipalitiesOverviewPage() {
   );
 
   const mapPanel = (
-    <div className="flex flex-col h-full">
-      <div className="flex-none flex items-center justify-end px-4 py-3 border-b border-white/10 bg-black-2 rounded-t-2xl">
-        {viewToggle}
-      </div>
-      <div className="flex-1 relative min-h-0">
-        <TerritoryMap
-          entityType="municipalities"
-          geoData={geoData as FeatureCollection}
-          data={mapData}
-          selectedKPI={selectedKPI}
-          onAreaClick={handleMunicipalityAreaClick}
-          className="max-w-none"
-        />
-      </div>
+    <div className="relative h-full">
+      <div className="absolute top-3 right-3 z-[1000]">{viewToggle}</div>
+      <TerritoryMap
+        entityType="municipalities"
+        geoData={geoData as FeatureCollection}
+        data={mapData}
+        selectedKPI={selectedKPI}
+        onAreaClick={handleMunicipalityAreaClick}
+        className="max-w-none"
+      />
     </div>
   );
 

@@ -225,17 +225,13 @@ export function CompaniesOverviewPage() {
   );
 
   const visualizationPanel = (
-    <div className="flex flex-col h-full">
-      <div className="flex-none flex items-center justify-end px-4 py-3 border-b border-white/10 bg-black-2 rounded-t-2xl">
-        {viewToggle}
-      </div>
-      <div className="flex-1 min-h-[500px] md:min-h-[570px]">
-        <CompanyKPIVisualization
-          companies={companiesWithKPIs}
-          selectedKPI={selectedKPI}
-          onCompanyClick={handleCompanyClick}
-        />
-      </div>
+    <div className="relative h-full min-h-[500px] md:min-h-[570px]">
+      <div className="absolute top-3 right-3 z-[1000]">{viewToggle}</div>
+      <CompanyKPIVisualization
+        companies={companiesWithKPIs}
+        selectedKPI={selectedKPI}
+        onCompanyClick={handleCompanyClick}
+      />
     </div>
   );
 
