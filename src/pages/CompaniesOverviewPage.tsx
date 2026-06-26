@@ -202,7 +202,7 @@ export function CompaniesOverviewPage() {
       onItemClick={handleCompanyClick}
       searchKey="name"
       searchPlaceholder={t("rankedList.search.placeholder")}
-      itemsPerPage={7}
+      itemsPerPage={8}
     />
   );
 
