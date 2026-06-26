@@ -134,6 +134,7 @@ export function RegionalOverviewPage() {
       regionEntities={regionEntities}
       selectedKPI={selectedKPI}
       onItemClick={handleRegionClick}
+      headerAction={viewToggle}
     />
   );
 

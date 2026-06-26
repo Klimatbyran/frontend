@@ -220,6 +220,7 @@ export function CompaniesOverviewPage() {
       searchKey="name"
       searchPlaceholder={t("rankedList.search.placeholder")}
       itemsPerPage={8}
+      headerAction={viewToggle}
     />
   );
 

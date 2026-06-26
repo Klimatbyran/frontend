@@ -180,6 +180,7 @@ export function MunicipalitiesOverviewPage() {
       municipalityEntities={municipalityEntities}
       selectedKPI={selectedKPI}
       onItemClick={handleMunicipalityClick}
+      headerAction={viewToggle}
     />
   );
 
