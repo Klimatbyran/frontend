@@ -96,7 +96,7 @@ export default function KPIDetailsPanel({
 
   return (
     <div
-      className={`p-8 flex flex-col justify-between gap-6 bg-white/5 rounded-level-2 shadow-lg h-full ${className}`}
+      className={`p-8 flex flex-col justify-between gap-6 bg-white/5 rounded-level-2 shadow-lg h-full overflow-hidden ${className}`}
     >
       {/* Title + description + direction badge */}
       <div className="space-y-3">
@@ -242,7 +242,7 @@ export default function KPIDetailsPanel({
         {typeof missingDataCount === "number" &&
           missingDataCount > 0 &&
           missingDataLabel && (
-            <p className="text-white/40 text-sm italic">
+            <p className="text-white/40 text-sm italic truncate">
               {missingDataCount} {lowercaseFirstLetter(missingDataLabel)}
             </p>
           )}
