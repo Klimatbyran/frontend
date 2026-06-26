@@ -83,12 +83,12 @@ export function NationStoryPage({
       </NationPinnedSection>
 
       {/* Stacked area chart – grey box with title + chart */}
-      <FullScreenSection overlap>
+      <FullScreenSection>
         <NationStackedChart data={metrics.stackData} />
       </FullScreenSection>
 
       {/* 1990 → today – sticky scroll-driven (sequential row reveal) */}
-      <NationPinnedSection heightVh={195} overlap>
+      <NationPinnedSection heightVh={195}>
         {(progress) => (
           <NationLayerComparisons
             layers={metrics.layerComparisons}
@@ -99,8 +99,8 @@ export function NationStoryPage({
         )}
       </NationPinnedSection>
 
-      {/* E-commerce – pulled up to close dead scroll after comparisons */}
-      <FullScreenSection overlap>
+      {/* E-commerce */}
+      <FullScreenSection>
         <NationECommerceScale
           eCommerceTonnes={metrics.eCommerceLatestTonnes}
           eCommerceYear={metrics.eCommerceYear}
