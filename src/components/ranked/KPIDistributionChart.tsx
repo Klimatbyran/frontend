@@ -168,20 +168,6 @@ export function KPIDistributionChart<T>({
                 <Cell key={i} fill={entry.fill} />
               ))}
             </Pie>
-            <Legend
-              formatter={(value, entry) => {
-                // @ts-expect-error recharts Legend payload types
-                const pct =
-                  total > 0
-                    ? ((entry.payload.value / total) * 100).toFixed(0)
-                    : 0;
-                return (
-                  <span className="text-white/80 text-xs">
-                    {value} ({pct}%)
-                  </span>
-                );
-              }}
-            />
             <Tooltip
               content={({ active, payload: p }) => {
                 if (!active || !p?.length) return null;

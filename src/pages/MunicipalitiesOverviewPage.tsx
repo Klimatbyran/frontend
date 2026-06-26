@@ -235,8 +235,8 @@ export function MunicipalitiesOverviewPage() {
           />
         </div>
 
-        {/* Row 2: top list | bottom list | distribution */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+        {/* Row 2: top list | bottom list | distribution (numeric KPIs only) */}
+        {!selectedKPI.isBoolean && <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
           <InsightsPanel
             municipalityData={municipalities}
             selectedKPI={selectedKPI}
@@ -252,7 +252,7 @@ export function MunicipalitiesOverviewPage() {
             selectedKPI={selectedKPI}
             section="distribution"
           />
-        </div>
+        </div>}
       </div>
     </>
   );

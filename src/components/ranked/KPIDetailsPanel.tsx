@@ -23,6 +23,7 @@ interface Performer {
 interface KPIDetailsPanelProps {
   title: string;
   description?: string;
+  isBoolean?: boolean;
   higherIsBetter?: boolean;
   averageValue?: string | number;
   medianValue?: string | number;
@@ -48,6 +49,7 @@ const STAT_COLOR_MAP: Record<string, string> = {
 export default function KPIDetailsPanel({
   title,
   description,
+  isBoolean,
   higherIsBetter,
   averageValue,
   medianValue,
@@ -106,7 +108,7 @@ export default function KPIDetailsPanel({
             {description}
           </p>
         )}
-        {higherIsBetter !== undefined && (
+        {!isBoolean && higherIsBetter !== undefined && (
           <span
             className="inline-flex items-center gap-1.5 text-sm font-medium px-3 py-1 rounded-full"
             style={{

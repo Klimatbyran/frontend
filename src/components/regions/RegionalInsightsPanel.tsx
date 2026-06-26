@@ -75,6 +75,7 @@ function RegionalInsightsPanel({
     <KPIDetailsPanel
       title={selectedKPI.label}
       description={selectedKPI.description}
+      isBoolean={selectedKPI.isBoolean}
       higherIsBetter={selectedKPI.higherIsBetter}
       averageValue={statistics.formattedAverage}
       medianValue={statistics.formattedMedian}
