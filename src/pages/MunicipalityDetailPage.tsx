@@ -10,6 +10,7 @@ import { Municipality, transformEmissionsData } from "@/types/municipality";
 import {
   formatEmissionsAbsolute,
   formatPercent,
+  localizeUnit,
 } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
 import { TerritoryDetailCore } from "@/components/territories/TerritoryDetailCore";
