@@ -11,6 +11,8 @@ interface OverviewSplitLayoutProps {
   listMode?: OverviewViewMode;
   visualization: ReactNode;
   list: ReactNode;
+  /** Rendered as a full-width header row above both map and list panels */
+  toggle?: ReactNode;
 }
 
 export function OverviewSplitLayout({
@@ -19,6 +21,7 @@ export function OverviewSplitLayout({
   listMode = "list",
   visualization,
   list,
+  toggle,
 }: OverviewSplitLayoutProps) {
   const showBoth = viewMode !== visualizationMode && viewMode !== listMode;
   const showVisualization = showBoth || viewMode === visualizationMode;
@@ -36,19 +39,29 @@ export function OverviewSplitLayout({
   return (
     // Fixed height wrapper — both map and list fill this exactly, so no
     // layout shift when toggling between them.
-    <div className="h-[65vh] md:h-[630px]">
-      <div
-        className={cn(
-          VISUALIZATION_PANEL_CLASS,
-          !showVisualization && "hidden",
-        )}
-      >
-        {visualization}
-      </div>
-      <div
-        className={cn("min-w-0 h-full overflow-hidden", !showList && "hidden")}
-      >
-        {list}
+    <div className="flex flex-col h-[65vh] md:h-[630px]">
+      {toggle && (
+        <div className="flex-none p-3 bg-black-2 rounded-t-2xl border-b border-white/5">
+          {toggle}
+        </div>
+      )}
+      <div className="flex-1 relative min-h-0">
+        <div
+          className={cn(
+            VISUALIZATION_PANEL_CLASS,
+            !showVisualization && "hidden",
+          )}
+        >
+          {visualization}
+        </div>
+        <div
+          className={cn(
+            "min-w-0 h-full overflow-hidden",
+            !showList && "hidden",
+          )}
+        >
+          {list}
+        </div>
       </div>
     </div>
   );

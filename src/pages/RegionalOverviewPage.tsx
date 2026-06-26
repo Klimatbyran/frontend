@@ -134,23 +134,19 @@ export function RegionalOverviewPage() {
       regionEntities={regionEntities}
       selectedKPI={selectedKPI}
       onItemClick={handleRegionClick}
-      headerAction={viewToggle}
     />
   );
 
   const mapPanel = (
-    <div className="relative h-full">
-      <div className="absolute top-3 right-3 z-[1000]">{viewToggle}</div>
-      <TerritoryMap
-        entityType="regions"
-        geoData={geoData as FeatureCollection}
-        data={mapData}
-        selectedKPI={selectedKPI}
-        onAreaClick={handleRegionAreaClick}
-        defaultCenter={[63.7, 17]}
-        className="max-w-none"
-      />
-    </div>
+    <TerritoryMap
+      entityType="regions"
+      geoData={geoData as FeatureCollection}
+      data={mapData}
+      selectedKPI={selectedKPI}
+      onAreaClick={handleRegionAreaClick}
+      defaultCenter={[63.7, 17]}
+      className="max-w-none"
+    />
   );
 
   return (
@@ -181,6 +177,7 @@ export function RegionalOverviewPage() {
             visualizationMode="map"
             visualization={mapPanel}
             list={regionalRankedList}
+            toggle={viewToggle}
           />
           <RegionalInsightsPanel
             regionsData={regionsAsEntities}

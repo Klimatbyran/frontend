@@ -220,13 +220,11 @@ export function CompaniesOverviewPage() {
       searchKey="name"
       searchPlaceholder={t("rankedList.search.placeholder")}
       itemsPerPage={8}
-      headerAction={viewToggle}
     />
   );
 
   const visualizationPanel = (
-    <div className="relative h-full min-h-[500px] md:min-h-[570px]">
-      <div className="absolute top-3 right-3 z-[1000]">{viewToggle}</div>
+    <div className="h-full min-h-[500px] md:min-h-[570px]">
       <CompanyKPIVisualization
         companies={companiesWithKPIs}
         selectedKPI={selectedKPI}
@@ -271,6 +269,7 @@ export function CompaniesOverviewPage() {
             visualizationMode="graph"
             visualization={visualizationPanel}
             list={companyRankedList}
+            toggle={viewToggle}
           />
           <CompanyInsightsPanel
             companyData={companiesWithKPIs}

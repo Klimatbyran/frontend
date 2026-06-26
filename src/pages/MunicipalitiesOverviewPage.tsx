@@ -180,22 +180,18 @@ export function MunicipalitiesOverviewPage() {
       municipalityEntities={municipalityEntities}
       selectedKPI={selectedKPI}
       onItemClick={handleMunicipalityClick}
-      headerAction={viewToggle}
     />
   );
 
   const mapPanel = (
-    <div className="relative h-full">
-      <div className="absolute top-3 right-3 z-[1000]">{viewToggle}</div>
-      <TerritoryMap
-        entityType="municipalities"
-        geoData={geoData as FeatureCollection}
-        data={mapData}
-        selectedKPI={selectedKPI}
-        onAreaClick={handleMunicipalityAreaClick}
-        className="max-w-none"
-      />
-    </div>
+    <TerritoryMap
+      entityType="municipalities"
+      geoData={geoData as FeatureCollection}
+      data={mapData}
+      selectedKPI={selectedKPI}
+      onAreaClick={handleMunicipalityAreaClick}
+      className="max-w-none"
+    />
   );
 
   return (
@@ -225,6 +221,7 @@ export function MunicipalitiesOverviewPage() {
             visualizationMode="map"
             visualization={mapPanel}
             list={municipalityRankedList}
+            toggle={viewToggle}
           />
           <InsightsPanel
             municipalityData={municipalities}
