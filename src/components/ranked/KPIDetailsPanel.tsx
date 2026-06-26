@@ -1,6 +1,7 @@
 import { t } from "i18next";
 import { Fragment } from "react/jsx-runtime";
 import { COLORS } from "@/lib/colors";
+import { LocalizedLink } from "@/components/LocalizedLink";
 
 interface DistributionStat {
   count: number;
@@ -13,12 +14,21 @@ interface SourceLink {
   label: string;
 }
 
+interface Performer {
+  name: string;
+  value: string;
+  href?: string;
+}
+
 interface KPIDetailsPanelProps {
   title: string;
   description?: string;
   higherIsBetter?: boolean;
   averageValue?: string | number;
+  medianValue?: string | number;
   averageLabel?: string;
+  topPerformer?: Performer;
+  bottomPerformer?: Performer;
   distributionStats: DistributionStat[];
   missingDataCount?: number;
   missingDataLabel?: string;
@@ -38,7 +48,10 @@ export default function KPIDetailsPanel({
   description,
   higherIsBetter,
   averageValue,
+  medianValue,
   averageLabel,
+  topPerformer,
+  bottomPerformer,
   distributionStats,
   missingDataCount,
   missingDataLabel,
@@ -86,7 +99,9 @@ export default function KPIDetailsPanel({
           {title}
         </h2>
         {description && (
-          <p className="text-base text-white/60 leading-relaxed">{description}</p>
+          <p className="text-base text-white/60 leading-relaxed">
+            {description}
+          </p>
         )}
         {higherIsBetter !== undefined && (
           <span
@@ -106,13 +121,69 @@ export default function KPIDetailsPanel({
         )}
       </div>
 
-      {/* Average */}
+      {/* Average + median */}
       {averageValue !== undefined && (
-        <div className="p-5 bg-white/10 rounded-level-2">
-          <p className="text-xs text-white/50 uppercase tracking-wider mb-2">
-            {averageLabel}
-          </p>
-          <p className="text-4xl font-bold text-orange-2">{averageValue}</p>
+        <div className="grid grid-cols-2 gap-3">
+          <div className="p-4 bg-white/10 rounded-2xl">
+            <p className="text-xs text-white/50 uppercase tracking-wider mb-1">
+              {averageLabel}
+            </p>
+            <p className="text-3xl font-bold text-orange-2">{averageValue}</p>
+          </div>
+          {medianValue !== undefined && (
+            <div className="p-4 bg-white/10 rounded-2xl">
+              <p className="text-xs text-white/50 uppercase tracking-wider mb-1">
+                {t("municipalities.list.insights.keyStatistics.median")}
+              </p>
+              <p className="text-3xl font-bold text-white/80">{medianValue}</p>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Top & bottom performers */}
+      {(topPerformer || bottomPerformer) && (
+        <div className="grid grid-cols-2 gap-3">
+          {topPerformer && (
+            <div className="p-4 bg-white/10 rounded-2xl space-y-1">
+              <p className="text-xs text-white/50 uppercase tracking-wider">
+                {t("municipalities.list.insights.keyStatistics.best")}
+              </p>
+              {topPerformer.href ? (
+                <LocalizedLink
+                  to={topPerformer.href}
+                  className="block font-semibold text-blue-3 hover:underline truncate"
+                >
+                  {topPerformer.name}
+                </LocalizedLink>
+              ) : (
+                <p className="font-semibold text-blue-3 truncate">
+                  {topPerformer.name}
+                </p>
+              )}
+              <p className="text-sm text-white/60">{topPerformer.value}</p>
+            </div>
+          )}
+          {bottomPerformer && (
+            <div className="p-4 bg-white/10 rounded-2xl space-y-1">
+              <p className="text-xs text-white/50 uppercase tracking-wider">
+                {t("municipalities.list.insights.keyStatistics.worst")}
+              </p>
+              {bottomPerformer.href ? (
+                <LocalizedLink
+                  to={bottomPerformer.href}
+                  className="block font-semibold text-pink-3 hover:underline truncate"
+                >
+                  {bottomPerformer.name}
+                </LocalizedLink>
+              ) : (
+                <p className="font-semibold text-pink-3 truncate">
+                  {bottomPerformer.name}
+                </p>
+              )}
+              <p className="text-sm text-white/60">{bottomPerformer.value}</p>
+            </div>
+          )}
         </div>
       )}
 

@@ -68,6 +68,10 @@ function CompanyInsightsPanel({
   const bottomCompanies = sortedValidData.slice(-TOP_N).reverse();
   const sourceLinks = createSourceLinks(selectedKPI);
   const entityPlural = t("header.companies").toLowerCase();
+  const unit = selectedKPI.unit || "";
+
+  const bestItem = sortedValidData[0];
+  const worstItem = sortedValidData[sortedValidData.length - 1];
 
   const statsPanel = (
     <KPIDetailsPanel
@@ -75,7 +79,24 @@ function CompanyInsightsPanel({
       description={selectedKPI.description}
       higherIsBetter={selectedKPI.higherIsBetter}
       averageValue={statistics.formattedAverage}
+      medianValue={statistics.formattedMedian}
       averageLabel={t("companies.list.insights.keyStatistics.average")}
+      topPerformer={
+        bestItem
+          ? {
+              name: bestItem.name,
+              value: `${(bestItem[selectedKPI.key] as number)?.toFixed(1)}${unit}`,
+            }
+          : undefined
+      }
+      bottomPerformer={
+        worstItem && worstItem !== bestItem
+          ? {
+              name: worstItem.name,
+              value: `${(worstItem[selectedKPI.key] as number)?.toFixed(1)}${unit}`,
+            }
+          : undefined
+      }
       distributionStats={statistics.distributionStats}
       missingDataCount={statistics.nullCount}
       missingDataLabel={selectedKPI.nullValues}

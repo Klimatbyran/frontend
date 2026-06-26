@@ -1635,7 +1635,10 @@
           "metric": "No data available for {{metric}}"
         },
         "keyStatistics": {
-          "average": "Average:"
+          "average": "Average",
+          "median": "Median",
+          "best": "Best",
+          "worst": "Worst"
         },
         "distribution": {
           "title": "Distribution",

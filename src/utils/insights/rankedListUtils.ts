@@ -34,6 +34,7 @@ export function isMissingRankedValue(
 export interface EntityStatistics<T> {
   validData: T[];
   average: number;
+  median: number;
   aboveAverageCount: number;
   belowAverageCount: number;
   nullCount: number;
@@ -43,6 +44,7 @@ export interface EntityStatistics<T> {
     label: string;
   }>;
   formattedAverage?: string;
+  formattedMedian?: string;
 }
 
 /**
@@ -85,6 +87,13 @@ export function calculateEntityStatistics<
 
   const average = values.reduce((sum, val) => sum + val, 0) / values.length;
 
+  const sortedValues = [...values].sort((a, b) => a - b);
+  const mid = Math.floor(sortedValues.length / 2);
+  const median =
+    sortedValues.length % 2 === 0
+      ? (sortedValues[mid - 1] + sortedValues[mid]) / 2
+      : sortedValues[mid];
+
   // For boolean KPIs, these counts have a different meaning
   const aboveAverageCount = selectedKPI.isBoolean
     ? values.filter((val) => val > 0).length // Count of "true" values
@@ -126,19 +135,24 @@ export function calculateEntityStatistics<
     },
   ];
 
-  // Format the average value for display
+  const unit = selectedKPI.unit || "";
   const formattedAverage = selectedKPI.isBoolean
     ? undefined
-    : `${average.toFixed(1)}${selectedKPI.unit || ""}`;
+    : `${average.toFixed(1)}${unit}`;
+  const formattedMedian = selectedKPI.isBoolean
+    ? undefined
+    : `${median.toFixed(1)}${unit}`;
 
   return {
     validData,
     average,
+    median,
     aboveAverageCount,
     belowAverageCount,
     nullCount,
     distributionStats,
     formattedAverage,
+    formattedMedian,
   };
 }
 

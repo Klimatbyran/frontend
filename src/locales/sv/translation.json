@@ -1694,7 +1694,10 @@
           "metric": "Ingen data tillgänglig för {{metric}}"
         },
         "keyStatistics": {
-          "average": "Genomsnitt:"
+          "average": "Genomsnitt",
+          "median": "Median",
+          "best": "Bäst",
+          "worst": "Sämst"
         },
         "distribution": {
           "title": "Fördelning",

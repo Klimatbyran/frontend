@@ -58,6 +58,10 @@ function RegionalInsightsPanel({
   const bottomRegions = sortedData.slice(-TOP_N).reverse();
   const sourceLinks = createSourceLinks(selectedKPI);
   const entityPlural = t("header.regions").toLowerCase();
+  const unit = selectedKPI.unit || "";
+
+  const bestItem = sortedData[0];
+  const worstItem = sortedData[sortedData.length - 1];
 
   const statsPanel = (
     <KPIDetailsPanel
@@ -65,7 +69,26 @@ function RegionalInsightsPanel({
       description={selectedKPI.description}
       higherIsBetter={selectedKPI.higherIsBetter}
       averageValue={statistics.formattedAverage}
+      medianValue={statistics.formattedMedian}
       averageLabel={t("municipalities.list.insights.keyStatistics.average")}
+      topPerformer={
+        bestItem
+          ? {
+              name: bestItem.name,
+              value: `${(bestItem[selectedKPI.key as keyof Region] as number)?.toFixed(1)}${unit}`,
+              href: `/regions/${bestItem.name}`,
+            }
+          : undefined
+      }
+      bottomPerformer={
+        worstItem && worstItem !== bestItem
+          ? {
+              name: worstItem.name,
+              value: `${(worstItem[selectedKPI.key as keyof Region] as number)?.toFixed(1)}${unit}`,
+              href: `/regions/${worstItem.name}`,
+            }
+          : undefined
+      }
       distributionStats={statistics.distributionStats}
       missingDataCount={statistics.nullCount}
       missingDataLabel={selectedKPI.nullValues}
