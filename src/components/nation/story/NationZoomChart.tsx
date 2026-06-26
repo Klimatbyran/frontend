@@ -36,93 +36,82 @@ export function NationZoomChart({ metrics }: NationZoomChartProps) {
   const { currentLanguage } = useLanguage();
   const maxMton = Math.max(...LAYERS.map((l) => l.getMton(metrics)));
 
+  const bubbles = LAYERS.map((layer) => {
+    const mton = layer.getMton(metrics);
+    const radius = Math.sqrt(mton / maxMton) * MAX_RADIUS;
+    return { ...layer, mton, diameter: radius * 2 };
+  });
+
   return (
-    <div className="flex flex-col items-center gap-10 w-full">
+    <div className="flex flex-col items-center gap-8 w-full">
       <p className="text-xl md:text-2xl text-center text-grey max-w-2xl font-light">
         {t("nation.story.zoom.phase3")}
       </p>
 
-      <div className="flex flex-col items-center gap-2">
-        {/* Top row: territorial + biogenic */}
+      {/* Pyramid: two on top, one (largest) centered below */}
+      <div className="flex flex-col items-center">
         <div className="flex items-end justify-center gap-4 md:gap-6">
-          {LAYERS.slice(0, 2).map((layer, i) => {
-            const mton = layer.getMton(metrics);
-            const radius = Math.sqrt(mton / maxMton) * MAX_RADIUS;
-            const diameter = radius * 2;
-            return (
-              <div key={layer.key} className="flex flex-col items-center gap-3">
-                <motion.div
-                  style={{
-                    width: diameter,
-                    height: diameter,
-                    borderRadius: "50%",
-                    backgroundColor: layer.color,
-                    opacity: 0.85,
-                  }}
-                  initial={{ scale: 0 }}
-                  whileInView={{ scale: 1 }}
-                  viewport={{ once: false, amount: 0.4 }}
-                  transition={{ type: "spring", stiffness: 200, damping: 18, delay: i * 0.25 }}
-                />
-                <motion.div
-                  initial={{ opacity: 0, y: 6 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: false, amount: 0.4 }}
-                  transition={{ duration: 0.4, delay: i * 0.25 + 0.1 }}
-                  className="text-center space-y-0.5"
-                >
-                  <p className="text-white text-sm font-medium tabular-nums">
-                    {formatMton(mton, currentLanguage, 0)}{" "}
-                    {t("nation.story.unit.mton")}
-                  </p>
-                  <p className="text-xs text-grey max-w-[110px] leading-snug">
-                    {t(layer.labelKey)}
-                  </p>
-                </motion.div>
-              </div>
-            );
-          })}
+          {bubbles.slice(0, 2).map((b, i) => (
+            <motion.div
+              key={b.key}
+              style={{
+                width: b.diameter,
+                height: b.diameter,
+                borderRadius: "50%",
+                backgroundColor: b.color,
+                opacity: 0.85,
+              }}
+              initial={{ scale: 0 }}
+              whileInView={{ scale: 1 }}
+              viewport={{ once: false, amount: 0.4 }}
+              transition={{
+                type: "spring",
+                stiffness: 200,
+                damping: 18,
+                delay: i * 0.25,
+              }}
+            />
+          ))}
         </div>
 
-        {/* Bottom: consumption abroad (largest) centered */}
-        {(() => {
-          const layer = LAYERS[2];
-          const mton = layer.getMton(metrics);
-          const radius = Math.sqrt(mton / maxMton) * MAX_RADIUS;
-          const diameter = radius * 2;
-          return (
-            <div className="flex flex-col items-center gap-3 -mt-3">
-              <motion.div
-                style={{
-                  width: diameter,
-                  height: diameter,
-                  borderRadius: "50%",
-                  backgroundColor: layer.color,
-                  opacity: 0.85,
-                }}
-                initial={{ scale: 0 }}
-                whileInView={{ scale: 1 }}
-                viewport={{ once: false, amount: 0.4 }}
-                transition={{ type: "spring", stiffness: 200, damping: 18, delay: 0.5 }}
-              />
-              <motion.div
-                initial={{ opacity: 0, y: 6 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false, amount: 0.4 }}
-                transition={{ duration: 0.4, delay: 0.6 }}
-                className="text-center space-y-0.5"
-              >
-                <p className="text-white text-sm font-medium tabular-nums">
-                  {formatMton(mton, currentLanguage, 0)}{" "}
-                  {t("nation.story.unit.mton")}
-                </p>
-                <p className="text-xs text-grey max-w-[130px] leading-snug">
-                  {t(layer.labelKey)}
-                </p>
-              </motion.div>
-            </div>
-          );
-        })()}
+        <motion.div
+          style={{
+            width: bubbles[2].diameter,
+            height: bubbles[2].diameter,
+            borderRadius: "50%",
+            backgroundColor: bubbles[2].color,
+            opacity: 0.85,
+            marginTop: "-14px",
+          }}
+          initial={{ scale: 0 }}
+          whileInView={{ scale: 1 }}
+          viewport={{ once: false, amount: 0.4 }}
+          transition={{ type: "spring", stiffness: 200, damping: 18, delay: 0.5 }}
+        />
+      </div>
+
+      {/* Legend below, one row per layer */}
+      <div className="flex flex-col gap-2 w-full max-w-sm">
+        {bubbles.map((b, i) => (
+          <motion.div
+            key={b.key}
+            initial={{ opacity: 0, x: -10 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: false, amount: 0.4 }}
+            transition={{ duration: 0.35, delay: i * 0.25 + 0.15 }}
+            className="flex items-center gap-3"
+          >
+            <span
+              className="w-3 h-3 rounded-full shrink-0"
+              style={{ backgroundColor: b.color }}
+            />
+            <span className="text-sm text-grey flex-1">{t(b.labelKey)}</span>
+            <span className="text-sm text-white font-medium tabular-nums shrink-0">
+              {formatMton(b.mton, currentLanguage, 0)}{" "}
+              {t("nation.story.unit.mton")}
+            </span>
+          </motion.div>
+        ))}
       </div>
     </div>
   );
