@@ -14,7 +14,7 @@ export function DetailPieSectorGrid({
   children: React.ReactNode;
 }) {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center">
       {children}
     </div>
   );

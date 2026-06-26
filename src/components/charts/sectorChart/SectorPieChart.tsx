@@ -69,7 +69,7 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
   const scale = desktopScale && !isMobile ? 1.2 : 1;
   const innerRadius = size.innerRadius * scale;
   const outerRadius = size.outerRadius * scale;
-  const chartHeight = Math.max(outerRadius * 2.5, desktopScale ? 300 : 0);
+  const chartHeight = outerRadius * 2;
 
   const toggleFilter = (sectorName: string) => {
     if (!onFilteredSectorsChange) return;
@@ -118,7 +118,7 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
   return (
     <ResponsiveContainer
       width="100%"
-      height={chartHeight || size.outerRadius * 2.5}
+      height={chartHeight}
     >
       <PieChart>
         <Pie
