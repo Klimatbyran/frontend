@@ -92,21 +92,23 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
               )}
               desktopScale={!screenSize.isMobile}
             />
-            <SectorPieLegend
-              data={pieChartDataWithColor}
-              total={totalEmissions}
-              onItemClick={(entry) => {
-                if (entry.wikidataId) {
-                  navigate(`/companies/${entry.wikidataId as string}`);
-                } else if (entry.sectorCode) {
-                  handlePieClick({ sectorCode: entry.sectorCode as string });
+            <div className="w-full flex lg:items-center">
+              <SectorPieLegend
+                data={pieChartDataWithColor}
+                total={totalEmissions}
+                onItemClick={(entry) => {
+                  if (entry.wikidataId) {
+                    navigate(`/companies/${entry.wikidataId as string}`);
+                  } else if (entry.sectorCode) {
+                    handlePieClick({ sectorCode: entry.sectorCode as string });
+                  }
+                }}
+                getActionTooltip={() =>
+                  t(`companyDetailPage.sectorGraphs.${actionTooltipKey}`)
                 }
-              }}
-              getActionTooltip={() =>
-                t(`companyDetailPage.sectorGraphs.${actionTooltipKey}`)
-              }
-              gridColumns={2}
-            />
+                gridColumns={2}
+              />
+            </div>
           </DetailPieSectorGrid>
         ) : (
           <div className="flex justify-center items-center h-64">
