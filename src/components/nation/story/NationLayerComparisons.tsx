@@ -65,7 +65,11 @@ function LayerRow({
                 width: `${(layer.mton1990 / maxMton) * 100}%`,
               }}
               viewport={{ once: false, amount: 0.3 }}
-              transition={{ duration: 0.6, delay: delay + 0.1, ease: [0.16, 1, 0.3, 1] }}
+              transition={{
+                duration: 0.6,
+                delay: delay + 0.1,
+                ease: [0.16, 1, 0.3, 1],
+              }}
             />
           </div>
           <span className="text-xs text-grey w-20 text-right shrink-0">
@@ -85,7 +89,11 @@ function LayerRow({
                 width: `${(layer.mtonLatest / maxMton) * 100}%`,
               }}
               viewport={{ once: false, amount: 0.3 }}
-              transition={{ duration: 0.6, delay: delay + 0.2, ease: [0.16, 1, 0.3, 1] }}
+              transition={{
+                duration: 0.6,
+                delay: delay + 0.2,
+                ease: [0.16, 1, 0.3, 1],
+              }}
             />
           </div>
           <span className="text-xs text-white w-20 text-right shrink-0">
