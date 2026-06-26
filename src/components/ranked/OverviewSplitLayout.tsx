@@ -43,7 +43,7 @@ export function OverviewSplitLayout({
       <div className="flex-1 relative min-h-0">
         {/* Toggle overlaid on map/graph (no space taken, no background) */}
         {toggle && showVisualization && (
-          <div className="absolute top-3 right-3 z-[1000]">{toggle}</div>
+          <div className="absolute top-4 right-4 z-[1000]">{toggle}</div>
         )}
         <div
           className={cn(
