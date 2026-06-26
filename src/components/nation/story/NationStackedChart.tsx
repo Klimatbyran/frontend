@@ -114,9 +114,7 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
               }}
               wrapperStyle={{ outline: "none", zIndex: 60 }}
             />
-            <ReferenceLine
-              {...getCurrentYearReferenceLineProps(currentYear)}
-            />
+            <ReferenceLine {...getCurrentYearReferenceLineProps(currentYear)} />
             {LAYERS.map((layer) => (
               <Area
                 key={layer.dataKey}
