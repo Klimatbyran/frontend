@@ -158,23 +158,48 @@ export function MunicipalitiesOverviewPage() {
     );
   }
 
+  const viewToggle = (
+    <ViewModeToggle
+      viewMode={viewMode}
+      modes={["map", "list"]}
+      onChange={setViewModeInURL}
+      titles={{
+        map: t("municipalities.list.viewToggle.showMap"),
+        list: t("municipalities.list.viewToggle.showList"),
+      }}
+      showTitles
+      icons={{
+        map: <Map className="w-4 h-4" />,
+        list: <List className="w-4 h-4" />,
+      }}
+    />
+  );
+
   const municipalityRankedList = (
     <MunicipalityRankedList
       municipalityEntities={municipalityEntities}
       selectedKPI={selectedKPI}
       onItemClick={handleMunicipalityClick}
+      headerAction={viewToggle}
     />
   );
 
   const mapPanel = (
-    <TerritoryMap
-      entityType="municipalities"
-      geoData={geoData as FeatureCollection}
-      data={mapData}
-      selectedKPI={selectedKPI}
-      onAreaClick={handleMunicipalityAreaClick}
-      className="max-w-none"
-    />
+    <div className="flex flex-col h-full">
+      <div className="flex-none flex items-center px-4 py-3 border-b border-white/10 bg-black-2 rounded-t-2xl">
+        {viewToggle}
+      </div>
+      <div className="flex-1 relative min-h-0">
+        <TerritoryMap
+          entityType="municipalities"
+          geoData={geoData as FeatureCollection}
+          data={mapData}
+          selectedKPI={selectedKPI}
+          onAreaClick={handleMunicipalityAreaClick}
+          className="max-w-none"
+        />
+      </div>
+    </div>
   );
 
   return (
@@ -204,22 +229,6 @@ export function MunicipalitiesOverviewPage() {
             visualizationMode="map"
             visualization={mapPanel}
             list={municipalityRankedList}
-            toggle={
-              <ViewModeToggle
-                viewMode={viewMode}
-                modes={["map", "list"]}
-                onChange={setViewModeInURL}
-                titles={{
-                  map: t("municipalities.list.viewToggle.showMap"),
-                  list: t("municipalities.list.viewToggle.showList"),
-                }}
-                showTitles
-                icons={{
-                  map: <Map className="w-4 h-4" />,
-                  list: <List className="w-4 h-4" />,
-                }}
-              />
-            }
           />
           <InsightsPanel
             municipalityData={municipalities}

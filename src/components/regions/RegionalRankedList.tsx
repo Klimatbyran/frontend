@@ -7,12 +7,14 @@ interface RegionalRankedListProps {
   regionEntities: RankedListItem[];
   selectedKPI: KPIValue<Region>;
   onItemClick: (item: RankedListItem) => void;
+  headerAction?: React.ReactNode;
 }
 
 export function RegionalRankedList({
   regionEntities,
   selectedKPI,
   onItemClick,
+  headerAction,
 }: RegionalRankedListProps) {
   const { t } = useTranslation();
 
@@ -55,6 +57,7 @@ export function RegionalRankedList({
       searchKey="displayName"
       searchPlaceholder={t("rankedList.search.placeholder")}
       itemsPerPage={8}
+      headerAction={headerAction}
     />
   );
 }

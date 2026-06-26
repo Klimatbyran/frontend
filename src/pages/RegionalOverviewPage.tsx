@@ -112,24 +112,49 @@ export function RegionalOverviewPage() {
     );
   }
 
+  const viewToggle = (
+    <ViewModeToggle
+      viewMode={viewMode}
+      modes={["map", "list"]}
+      onChange={setViewModeInURL}
+      titles={{
+        map: t("viewModeToggle.map"),
+        list: t("viewModeToggle.list"),
+      }}
+      showTitles
+      icons={{
+        map: <Map className="w-4 h-4" />,
+        list: <List className="w-4 h-4" />,
+      }}
+    />
+  );
+
   const regionalRankedList = (
     <RegionalRankedList
       regionEntities={regionEntities}
       selectedKPI={selectedKPI}
       onItemClick={handleRegionClick}
+      headerAction={viewToggle}
     />
   );
 
   const mapPanel = (
-    <TerritoryMap
-      entityType="regions"
-      geoData={geoData as FeatureCollection}
-      data={mapData}
-      selectedKPI={selectedKPI}
-      onAreaClick={handleRegionAreaClick}
-      defaultCenter={[63.7, 17]}
-      className="max-w-none"
-    />
+    <div className="flex flex-col h-full">
+      <div className="flex-none flex items-center px-4 py-3 border-b border-white/10 bg-black-2 rounded-t-2xl">
+        {viewToggle}
+      </div>
+      <div className="flex-1 relative min-h-0">
+        <TerritoryMap
+          entityType="regions"
+          geoData={geoData as FeatureCollection}
+          data={mapData}
+          selectedKPI={selectedKPI}
+          onAreaClick={handleRegionAreaClick}
+          defaultCenter={[63.7, 17]}
+          className="max-w-none"
+        />
+      </div>
+    </div>
   );
 
   return (
@@ -160,22 +185,6 @@ export function RegionalOverviewPage() {
             visualizationMode="map"
             visualization={mapPanel}
             list={regionalRankedList}
-            toggle={
-              <ViewModeToggle
-                viewMode={viewMode}
-                modes={["map", "list"]}
-                onChange={setViewModeInURL}
-                titles={{
-                  map: t("viewModeToggle.map"),
-                  list: t("viewModeToggle.list"),
-                }}
-                showTitles
-                icons={{
-                  map: <Map className="w-4 h-4" />,
-                  list: <List className="w-4 h-4" />,
-                }}
-              />
-            }
           />
           <RegionalInsightsPanel
             regionsData={regionsAsEntities}

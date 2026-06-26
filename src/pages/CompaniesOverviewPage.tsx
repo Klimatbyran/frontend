@@ -195,6 +195,23 @@ export function CompaniesOverviewPage() {
     },
   });
 
+  const viewToggle = (
+    <ViewModeToggle
+      viewMode={viewMode}
+      modes={["graph", "list"]}
+      onChange={setViewModeInURL}
+      titles={{
+        graph: t("companiesOverviewPage.viewToggle.showGraph", "Graf"),
+        list: t("companiesOverviewPage.viewToggle.showList", "Lista"),
+      }}
+      showTitles
+      icons={{
+        graph: <BarChart2 className="w-4 h-4" />,
+        list: <List className="w-4 h-4" />,
+      }}
+    />
+  );
+
   const companyRankedList = (
     <RankedList
       data={companiesWithKPIs}
@@ -203,15 +220,23 @@ export function CompaniesOverviewPage() {
       searchKey="name"
       searchPlaceholder={t("rankedList.search.placeholder")}
       itemsPerPage={8}
+      headerAction={viewToggle}
     />
   );
 
   const visualizationPanel = (
-    <CompanyKPIVisualization
-      companies={companiesWithKPIs}
-      selectedKPI={selectedKPI}
-      onCompanyClick={handleCompanyClick}
-    />
+    <div className="flex flex-col h-full">
+      <div className="flex-none flex items-center px-4 py-3 border-b border-white/10 bg-black-2 rounded-t-2xl">
+        {viewToggle}
+      </div>
+      <div className="flex-1 min-h-[500px] md:min-h-[570px]">
+        <CompanyKPIVisualization
+          companies={companiesWithKPIs}
+          selectedKPI={selectedKPI}
+          onCompanyClick={handleCompanyClick}
+        />
+      </div>
+    </div>
   );
 
   return (
@@ -248,34 +273,8 @@ export function CompaniesOverviewPage() {
           <OverviewSplitLayout
             viewMode={viewMode}
             visualizationMode="graph"
-            visualization={
-              <div className="min-h-[500px] md:min-h-[570px] h-full">
-                {visualizationPanel}
-              </div>
-            }
+            visualization={visualizationPanel}
             list={companyRankedList}
-            toggle={
-              <ViewModeToggle
-                viewMode={viewMode}
-                modes={["graph", "list"]}
-                onChange={setViewModeInURL}
-                titles={{
-                  graph: t(
-                    "companiesOverviewPage.viewToggle.showGraph",
-                    "Graf",
-                  ),
-                  list: t(
-                    "companiesOverviewPage.viewToggle.showList",
-                    "Lista",
-                  ),
-                }}
-                showTitles
-                icons={{
-                  graph: <BarChart2 className="w-4 h-4" />,
-                  list: <List className="w-4 h-4" />,
-                }}
-              />
-            }
           />
           <CompanyInsightsPanel
             companyData={companiesWithKPIs}

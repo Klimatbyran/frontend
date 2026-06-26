@@ -7,12 +7,14 @@ interface MunicipalityRankedListProps {
   municipalityEntities: RankedListItem[];
   selectedKPI: KPIValue<Municipality>;
   onItemClick: (item: RankedListItem) => void;
+  headerAction?: React.ReactNode;
 }
 
 export function MunicipalityRankedList({
   municipalityEntities,
   selectedKPI,
   onItemClick,
+  headerAction,
 }: MunicipalityRankedListProps) {
   const { t } = useTranslation();
 
@@ -57,6 +59,7 @@ export function MunicipalityRankedList({
       searchKey="name"
       searchPlaceholder={t("rankedList.search.placeholder")}
       itemsPerPage={8}
+      headerAction={headerAction}
     />
   );
 }
