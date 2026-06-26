@@ -121,26 +121,6 @@ export default function KPIDetailsPanel({
         )}
       </div>
 
-      {/* Average + median */}
-      {averageValue !== undefined && (
-        <div className="grid grid-cols-2 gap-3">
-          <div className="p-4 bg-white/10 rounded-2xl">
-            <p className="text-xs text-white/50 uppercase tracking-wider mb-1">
-              {averageLabel}
-            </p>
-            <p className="text-3xl font-bold text-orange-2">{averageValue}</p>
-          </div>
-          {medianValue !== undefined && (
-            <div className="p-4 bg-white/10 rounded-2xl">
-              <p className="text-xs text-white/50 uppercase tracking-wider mb-1">
-                {t("municipalities.list.insights.keyStatistics.median")}
-              </p>
-              <p className="text-3xl font-bold text-white/80">{medianValue}</p>
-            </div>
-          )}
-        </div>
-      )}
-
       {/* Top & bottom performers */}
       {(topPerformer || bottomPerformer) && (
         <div className="grid grid-cols-2 gap-3">
@@ -184,6 +164,16 @@ export default function KPIDetailsPanel({
               <p className="text-sm text-white/60">{bottomPerformer.value}</p>
             </div>
           )}
+        </div>
+      )}
+
+      {/* Average */}
+      {averageValue !== undefined && (
+        <div className="p-4 bg-white/10 rounded-2xl">
+          <p className="text-xs text-white/50 uppercase tracking-wider mb-1">
+            {averageLabel}
+          </p>
+          <p className="text-3xl font-bold text-orange-2">{averageValue}</p>
         </div>
       )}
 
