@@ -14,7 +14,6 @@ interface KPIChipSelectorProps<T> {
   translationPrefix?: string;
   /** Label shown above the chips / as the dropdown trigger label */
   label?: string;
-  className?: string;
 }
 
 export function KPIChipSelector<T>({
@@ -24,7 +23,6 @@ export function KPIChipSelector<T>({
   iconMap = {},
   translationPrefix,
   label,
-  className,
 }: KPIChipSelectorProps<T>) {
   const { t } = useTranslation();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -53,7 +51,7 @@ export function KPIChipSelector<T>({
   const selectorLabel = label ?? t("municipalities.list.dataSelector.label");
 
   return (
-    <div className={cn("mb-6 space-y-3", className)}>
+    <div className="mb-6 space-y-3">
       {selectorLabel && (
         <p className="text-xs text-white/50 uppercase tracking-wider px-1">
           {selectorLabel}

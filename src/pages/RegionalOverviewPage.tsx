@@ -3,6 +3,7 @@ import { ArrowDownCircle, Leaf, Map, List } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { FeatureCollection } from "geojson";
 import { useNavigate } from "react-router-dom";
+import { PageHeader } from "@/components/layout/PageHeader";
 import TerritoryMap, { DataItem } from "@/components/maps/TerritoryMap";
 import regionGeoJson from "@/data/regionGeo.json";
 import { useRankedRegionsURLParams } from "@/hooks/regions/useRankedRegionsURLParams";
@@ -133,23 +134,23 @@ export function RegionalOverviewPage() {
 
   return (
     <>
-      <div className="flex flex-wrap items-center gap-x-6 gap-y-3 mb-4">
-        <h1 className="text-2xl font-light shrink-0">
-          {t("regionalOverviewPage.title")}
-        </h1>
-        <KPIChipSelector<Region>
-          selectedKPI={selectedKPI}
-          kpis={regionalKPIs}
-          onKPIChange={(kpi) => {
-            setSelectedKPI(kpi);
-            setKPIInURL(String(kpi.key));
-          }}
-          iconMap={REGION_KPI_ICONS}
-          translationPrefix="regions.list"
-          label=""
-          className="mb-0 flex-1 min-w-0"
-        />
-      </div>
+      <PageHeader
+        title={t("regionalOverviewPage.title")}
+        description={t("regionalOverviewPage.description")}
+        className="-ml-4"
+      />
+
+      <KPIChipSelector<Region>
+        selectedKPI={selectedKPI}
+        kpis={regionalKPIs}
+        onKPIChange={(kpi) => {
+          setSelectedKPI(kpi);
+          setKPIInURL(String(kpi.key));
+        }}
+        iconMap={REGION_KPI_ICONS}
+        translationPrefix="regions.list"
+        label={t("municipalities.list.dataSelector.label")}
+      />
 
       <div className="space-y-6">
         <div className="flex">

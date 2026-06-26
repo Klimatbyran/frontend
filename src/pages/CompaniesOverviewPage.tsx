@@ -3,6 +3,7 @@ import { Leaf, ArrowDownCircle, BarChart2, List } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useCompanies } from "@/hooks/companies/useCompanies";
+import { PageHeader } from "@/components/layout/PageHeader";
 import { KPIChipSelector } from "@/components/ranked/KPIChipSelector";
 import { OverviewPageSkeleton } from "@/components/ranked/OverviewPageSkeleton";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
@@ -215,23 +216,23 @@ export function CompaniesOverviewPage() {
 
   return (
     <>
-      <div className="flex flex-wrap items-center gap-x-6 gap-y-3 mb-4">
-        <h1 className="text-2xl font-light shrink-0">
-          {t("companiesOverviewPage.title")}
-        </h1>
-        <KPIChipSelector<CompanyWithKPIs>
-          selectedKPI={selectedKPI}
-          kpis={companyKPIs}
-          onKPIChange={(kpi) => {
-            setSelectedKPI(kpi);
-            setKPIInURL(String(kpi.key));
-          }}
-          iconMap={COMPANY_KPI_ICONS}
-          translationPrefix="companies.list"
-          label=""
-          className="mb-0 flex-1 min-w-0"
-        />
-      </div>
+      <PageHeader
+        title={t("companiesOverviewPage.title")}
+        description={t("companiesOverviewPage.description")}
+        className="-ml-4"
+      />
+
+      <KPIChipSelector<CompanyWithKPIs>
+        selectedKPI={selectedKPI}
+        kpis={companyKPIs}
+        onKPIChange={(kpi) => {
+          setSelectedKPI(kpi);
+          setKPIInURL(String(kpi.key));
+        }}
+        iconMap={COMPANY_KPI_ICONS}
+        translationPrefix="companies.list"
+        label={t("municipalities.list.dataSelector.label")}
+      />
 
       <div className="mb-4">
         <IndustryFilter
