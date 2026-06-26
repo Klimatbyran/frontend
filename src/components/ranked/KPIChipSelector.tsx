@@ -124,7 +124,6 @@ export function KPIChipSelector<T>({
           );
         })}
       </div>
-
     </div>
   );
 }
