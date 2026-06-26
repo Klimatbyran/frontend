@@ -27,6 +27,23 @@ export const useCompanyKPIs = (): CompanyKPIValue[] => {
   return useMemo<CompanyKPIValue[]>(() => {
     return [
       {
+        label: t(
+          "companies.list.kpis.emissionsChangeFromBaseYear.label",
+          "Overall Emissions Change",
+        ),
+        key: "emissionsChangeFromBaseYear",
+        unit: "%",
+        source: "companies.list.kpis.emissionsChangeFromBaseYear.source",
+        sourceUrls: [],
+        description: t(
+          "companies.list.kpis.emissionsChangeFromBaseYear.description",
+        ),
+        detailedDescription: t(
+          "companies.list.kpis.emissionsChangeFromBaseYear.detailedDescription",
+        ),
+        higherIsBetter: false,
+      },
+      {
         label: t("companies.list.kpis.meetsParis.label"),
         key: "meetsParis",
         unit: "",
@@ -43,23 +60,6 @@ export const useCompanyKPIs = (): CompanyKPIValue[] => {
           false: t("companies.list.kpis.meetsParis.booleanLabels.false"),
         },
         nullValues: t("companies.list.kpis.meetsParis.nullValues"),
-      },
-      {
-        label: t(
-          "companies.list.kpis.emissionsChangeFromBaseYear.label",
-          "Overall Emissions Change",
-        ),
-        key: "emissionsChangeFromBaseYear",
-        unit: "%",
-        source: "companies.list.kpis.emissionsChangeFromBaseYear.source",
-        sourceUrls: [],
-        description: t(
-          "companies.list.kpis.emissionsChangeFromBaseYear.description",
-        ),
-        detailedDescription: t(
-          "companies.list.kpis.emissionsChangeFromBaseYear.detailedDescription",
-        ),
-        higherIsBetter: false,
       },
     ];
   }, [t]);
