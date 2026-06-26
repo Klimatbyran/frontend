@@ -47,7 +47,9 @@ export function ViewModeToggle<T extends string>({
         >
           {icons?.[mode] ?? defaultIcons[mode]}{" "}
           {showTitles && (
-            <span className="ml-1.5 text-xs md:text-sm">{titles?.[mode]}</span>
+            <span className="ml-1.5 text-xs md:text-sm whitespace-nowrap">
+              {titles?.[mode]}
+            </span>
           )}
         </Button>
       ))}
