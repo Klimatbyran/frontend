@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import { cn } from "@/lib/utils";
 
 export type OverviewViewMode = "map" | "list" | "graph";
@@ -23,6 +23,15 @@ export function OverviewSplitLayout({
   const showBoth = viewMode !== visualizationMode && viewMode !== listMode;
   const showVisualization = showBoth || viewMode === visualizationMode;
   const showList = showBoth || viewMode === listMode;
+
+  // When the visualization panel becomes visible again, Leaflet needs to
+  // recalculate its dimensions. Dispatching a resize event triggers
+  // Leaflet's built-in invalidateSize listener.
+  useEffect(() => {
+    if (showVisualization) {
+      requestAnimationFrame(() => window.dispatchEvent(new Event("resize")));
+    }
+  }, [showVisualization]);
 
   return (
     // Fixed height wrapper — both map and list fill this exactly, so no
