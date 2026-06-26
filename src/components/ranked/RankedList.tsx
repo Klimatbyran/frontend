@@ -301,7 +301,7 @@ export function RankedList<T extends Record<string, unknown>>({
           </div>
         )}
       </div>
-      <div className="flex-1 overflow-y-auto ranked-list-items min-h-[570px]">
+      <div className="overflow-y-auto ranked-list-items">
         <div className="divide-y divide-white/10">
           {paginatedData.map((item, index) =>
             renderItem
