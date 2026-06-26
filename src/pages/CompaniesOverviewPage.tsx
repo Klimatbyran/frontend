@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useCompanies } from "@/hooks/companies/useCompanies";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { KPIChipSelector } from "@/components/ranked/KPIChipSelector";
+import { OverviewPageSkeleton } from "@/components/ranked/OverviewPageSkeleton";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import {
   OverviewSplitLayout,
@@ -150,16 +151,7 @@ export function CompaniesOverviewPage() {
   };
 
   if (companiesLoading) {
-    return (
-      <div className="animate-pulse space-y-16">
-        <div className="h-12 w-1/3 bg-black-1 rounded" />
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {[...Array(6)].map((_, i) => (
-            <div key={i} className="h-96 bg-black-1 rounded-level-2" />
-          ))}
-        </div>
-      </div>
-    );
+    return <OverviewPageSkeleton />;
   }
 
   if (companiesError) {
