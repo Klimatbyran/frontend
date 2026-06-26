@@ -39,7 +39,9 @@ interface BooleanSummaryBoxProps {
 }
 
 /** Large yes/no count display for boolean KPIs. */
-export function BooleanSummaryBox({ distributionStats }: BooleanSummaryBoxProps) {
+export function BooleanSummaryBox({
+  distributionStats,
+}: BooleanSummaryBoxProps) {
   const { t } = useTranslation();
   return (
     <div className="bg-white/5 rounded-level-2 p-6 flex flex-col justify-center gap-6 h-full">
@@ -54,7 +56,9 @@ export function BooleanSummaryBox({ distributionStats }: BooleanSummaryBoxProps)
           >
             {stat.count}
           </div>
-          <div className="text-white/70 text-sm leading-tight">{stat.label}</div>
+          <div className="text-white/70 text-sm leading-tight">
+            {stat.label}
+          </div>
         </div>
       ))}
     </div>

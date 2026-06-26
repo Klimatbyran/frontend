@@ -260,9 +260,7 @@ export function RankedList<T extends Record<string, unknown>>({
     <div className={`bg-black-2 rounded-2xl flex flex-col ${className}`}>
       <div className="p-4 border-b border-white/10">
         <div className="flex items-center gap-3">
-          {headerAction && (
-            <div className="shrink-0">{headerAction}</div>
-          )}
+          {headerAction && <div className="shrink-0">{headerAction}</div>}
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/50 w-5 h-5" />
             <input
