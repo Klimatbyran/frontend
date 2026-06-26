@@ -299,7 +299,8 @@ export function CompaniesOverviewPage() {
             selectedKPI={selectedKPI}
             section="distribution"
           />
-        </div>}
+        </div>
+        )}
       </div>
     </>
   );

@@ -210,7 +210,8 @@ export function RegionalOverviewPage() {
             selectedKPI={selectedKPI}
             section="distribution"
           />
-        </div>}
+        </div>
+        )}
       </div>
     </>
   );
