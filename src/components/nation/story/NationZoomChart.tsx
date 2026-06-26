@@ -42,14 +42,56 @@ export function NationZoomChart({ metrics }: NationZoomChartProps) {
         {t("nation.story.zoom.phase3")}
       </p>
 
-      <div className="flex items-center justify-center gap-8 md:gap-12 flex-wrap">
-        {LAYERS.map((layer, i) => {
+      <div className="flex flex-col items-center gap-2">
+        {/* Top row: territorial + biogenic */}
+        <div className="flex items-end justify-center gap-4 md:gap-6">
+          {LAYERS.slice(0, 2).map((layer, i) => {
+            const mton = layer.getMton(metrics);
+            const radius = Math.sqrt(mton / maxMton) * MAX_RADIUS;
+            const diameter = radius * 2;
+            return (
+              <div key={layer.key} className="flex flex-col items-center gap-3">
+                <motion.div
+                  style={{
+                    width: diameter,
+                    height: diameter,
+                    borderRadius: "50%",
+                    backgroundColor: layer.color,
+                    opacity: 0.85,
+                  }}
+                  initial={{ scale: 0 }}
+                  whileInView={{ scale: 1 }}
+                  viewport={{ once: false, amount: 0.4 }}
+                  transition={{ type: "spring", stiffness: 200, damping: 18, delay: i * 0.25 }}
+                />
+                <motion.div
+                  initial={{ opacity: 0, y: 6 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: false, amount: 0.4 }}
+                  transition={{ duration: 0.4, delay: i * 0.25 + 0.1 }}
+                  className="text-center space-y-0.5"
+                >
+                  <p className="text-white text-sm font-medium tabular-nums">
+                    {formatMton(mton, currentLanguage, 0)}{" "}
+                    {t("nation.story.unit.mton")}
+                  </p>
+                  <p className="text-xs text-grey max-w-[110px] leading-snug">
+                    {t(layer.labelKey)}
+                  </p>
+                </motion.div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Bottom: consumption abroad (largest) centered */}
+        {(() => {
+          const layer = LAYERS[2];
           const mton = layer.getMton(metrics);
           const radius = Math.sqrt(mton / maxMton) * MAX_RADIUS;
           const diameter = radius * 2;
-
           return (
-            <div key={layer.key} className="flex flex-col items-center gap-4">
+            <div className="flex flex-col items-center gap-3 -mt-3">
               <motion.div
                 style={{
                   width: diameter,
@@ -61,21 +103,16 @@ export function NationZoomChart({ metrics }: NationZoomChartProps) {
                 initial={{ scale: 0 }}
                 whileInView={{ scale: 1 }}
                 viewport={{ once: false, amount: 0.4 }}
-                transition={{
-                  type: "spring",
-                  stiffness: 200,
-                  damping: 18,
-                  delay: i * 0.25,
-                }}
+                transition={{ type: "spring", stiffness: 200, damping: 18, delay: 0.5 }}
               />
               <motion.div
-                initial={{ opacity: 0, y: 8 }}
+                initial={{ opacity: 0, y: 6 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: false, amount: 0.4 }}
-                transition={{ duration: 0.4, delay: i * 0.25 + 0.1 }}
-                className="text-center space-y-1"
+                transition={{ duration: 0.4, delay: 0.6 }}
+                className="text-center space-y-0.5"
               >
-                <p className="text-white text-sm md:text-base font-medium tabular-nums">
+                <p className="text-white text-sm font-medium tabular-nums">
                   {formatMton(mton, currentLanguage, 0)}{" "}
                   {t("nation.story.unit.mton")}
                 </p>
@@ -85,7 +122,7 @@ export function NationZoomChart({ metrics }: NationZoomChartProps) {
               </motion.div>
             </div>
           );
-        })}
+        })()}
       </div>
     </div>
   );
