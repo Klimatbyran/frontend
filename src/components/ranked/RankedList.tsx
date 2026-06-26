@@ -308,12 +308,6 @@ export function RankedList<T extends Record<string, unknown>>({
               ? renderItem(item, index, startIndex, getOriginalRank(item))
               : defaultRenderItem(item, index),
           )}
-          {paginatedData.length < itemsPerPage &&
-            Array(itemsPerPage - paginatedData.length)
-              .fill(0)
-              .map((_, i) => (
-                <div key={`empty-${i}`} className="p-4 h-[50px]" />
-              ))}
         </div>
       </div>
       {totalPages > 1 && (
