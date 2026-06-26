@@ -40,12 +40,6 @@ export function OverviewSplitLayout({
     // Fixed height wrapper — both map and list fill this exactly, so no
     // layout shift when toggling between them.
     <div className="flex flex-col h-[65vh] md:h-[630px]">
-      {/* Toggle above list (takes space so search bar sits below) */}
-      {toggle && showList && (
-        <div className="flex-none p-3 w-full">
-          {toggle}
-        </div>
-      )}
       <div className="flex-1 relative min-h-0">
         {/* Toggle overlaid on map/graph (no space taken, no background) */}
         {toggle && showVisualization && (

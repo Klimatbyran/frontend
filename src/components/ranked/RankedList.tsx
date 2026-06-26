@@ -259,6 +259,9 @@ export function RankedList<T extends Record<string, unknown>>({
   return (
     <div className={`bg-black-2 rounded-2xl flex flex-col ${className}`}>
       <div className="p-4 border-b border-white/10">
+        {headerAction && (
+          <div className="mb-3 md:hidden">{headerAction}</div>
+        )}
         <div className="flex items-center gap-3">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/50 w-5 h-5" />
@@ -273,7 +276,9 @@ export function RankedList<T extends Record<string, unknown>>({
               className="w-full pl-10 pr-4 py-2 bg-black-3 text-white rounded-xl placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/20"
             />
           </div>
-          {headerAction && <div className="shrink-0">{headerAction}</div>}
+          {headerAction && (
+            <div className="hidden md:block shrink-0">{headerAction}</div>
+          )}
         </div>
         {selectedDataPoint.unit && (
           <div className="flex items-center justify-between pt-4 -mb-2 w-full text-grey">
