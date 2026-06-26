@@ -64,14 +64,6 @@ function InsightsPanel({
   const entityPlural = t("header.municipalities").toLowerCase();
   const unit = selectedKPI.unit || "";
 
-  const datasetMax = Math.max(
-    ...statistics.validData
-      .map((m) => m[selectedKPI.key as keyof Municipality])
-      .filter((v): v is number => typeof v === "number" && !isNaN(v))
-      .map(Math.abs),
-    1,
-  );
-
   const bestItem = sortedData[0];
   const worstItem = sortedData[sortedData.length - 1];
 
@@ -176,7 +168,6 @@ function InsightsPanel({
       entityType="municipalities"
       nameKey="name"
       showBars
-      datasetMax={datasetMax}
     />
   ) : (
     booleanSummary
@@ -196,7 +187,6 @@ function InsightsPanel({
       entityType="municipalities"
       nameKey="name"
       showBars
-      datasetMax={datasetMax}
     />
   ) : null;
 
