@@ -12,7 +12,6 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { FeatureCollection } from "geojson";
-import { PageHeader } from "@/components/layout/PageHeader";
 import InsightsPanel from "@/components/municipalities/rankedList/MunicipalityInsightsPanel";
 import TerritoryMap from "@/components/maps/TerritoryMap";
 import municipalityGeoJson from "@/data/municipalityGeo.json";
@@ -179,22 +178,23 @@ export function MunicipalitiesOverviewPage() {
 
   return (
     <>
-      <PageHeader
-        title={t("municipalitiesOverviewPage.title")}
-        description={t("municipalitiesOverviewPage.description")}
-        className="-ml-4"
-      />
-
-      <KPIChipSelector<Municipality>
-        selectedKPI={selectedKPI}
-        kpis={municipalityKPIs}
-        onKPIChange={(kpi) => {
-          setSelectedKPI(kpi);
-          setKPIInURL(String(kpi.key));
-        }}
-        iconMap={MUNICIPALITY_KPI_ICONS}
-        translationPrefix="municipalities.list"
-      />
+      <div className="flex flex-wrap items-center gap-x-6 gap-y-3 mb-4">
+        <h1 className="text-2xl font-light shrink-0">
+          {t("municipalitiesOverviewPage.title")}
+        </h1>
+        <KPIChipSelector<Municipality>
+          selectedKPI={selectedKPI}
+          kpis={municipalityKPIs}
+          onKPIChange={(kpi) => {
+            setSelectedKPI(kpi);
+            setKPIInURL(String(kpi.key));
+          }}
+          iconMap={MUNICIPALITY_KPI_ICONS}
+          translationPrefix="municipalities.list"
+          label=""
+          className="mb-0 flex-1 min-w-0"
+        />
+      </div>
 
       <div className="space-y-6">
         {/* Map/list toggle */}
