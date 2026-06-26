@@ -9,7 +9,6 @@ import { useState } from "react";
 import type { NationStoryMetrics } from "@/utils/data/nationStoryMetrics";
 import { formatMton } from "@/utils/data/nationStoryMetrics";
 import { useLanguage } from "@/components/LanguageProvider";
-import { NATION_STORY_STAGGER_RANGES } from "@/components/nation/story/nationStoryScrollAnimation";
 
 const LAYERS = [
   {
@@ -17,7 +16,7 @@ const LAYERS = [
     color: "var(--orange-2)",
     labelKey: "nation.story.graph.territorialFossil",
     getMton: (m: NationStoryMetrics) => m.territorialLatestMton,
-    range: NATION_STORY_STAGGER_RANGES[0],
+    range: [0, 0.22] as [number, number],
     phase: 0,
   },
   {
@@ -25,7 +24,7 @@ const LAYERS = [
     color: "var(--green-2)",
     labelKey: "nation.story.graph.biogenic",
     getMton: (m: NationStoryMetrics) => m.biogenicLatestMton,
-    range: NATION_STORY_STAGGER_RANGES[1],
+    range: [0.18, 0.42] as [number, number],
     phase: 1,
   },
   {
@@ -33,10 +32,12 @@ const LAYERS = [
     color: "var(--blue-2)",
     labelKey: "nation.story.graph.consumptionAbroad",
     getMton: (m: NationStoryMetrics) => m.consumptionLatestMton,
-    range: NATION_STORY_STAGGER_RANGES[2],
+    range: [0.38, 0.62] as [number, number],
     phase: 2,
   },
 ];
+
+const MAX_RADIUS = 90; // px for the largest bubble
 
 type NationZoomChartProps = {
   metrics: NationStoryMetrics;
@@ -52,15 +53,14 @@ export function NationZoomChart({
   const [phase, setPhase] = useState(0);
 
   useMotionValueEvent(scrollYProgress, "change", (v) => {
-    if (v < NATION_STORY_STAGGER_RANGES[1][0]) setPhase(0);
-    else if (v < NATION_STORY_STAGGER_RANGES[2][0]) setPhase(1);
+    if (v < 0.18) setPhase(0);
+    else if (v < 0.38) setPhase(1);
     else setPhase(2);
   });
 
-  const maxMton = metrics.combinedLatestMton;
-  const barMaxHeight = 280;
+  const maxMton = Math.max(...LAYERS.map((l) => l.getMton(metrics)));
 
-  const barScales = LAYERS.map((layer) =>
+  const bubbleScales = LAYERS.map((layer) =>
     useTransform(scrollYProgress, layer.range, [0, 1]),
   );
 
@@ -71,49 +71,47 @@ export function NationZoomChart({
   ];
 
   return (
-    <div className="flex flex-col items-center gap-8 w-full">
-      <p className="text-xl md:text-2xl text-center text-grey max-w-2xl min-h-[4rem] font-light">
+    <div className="flex flex-col items-center gap-10 w-full">
+      {/* Caption */}
+      <p className="text-xl md:text-2xl text-center text-grey max-w-2xl min-h-[3.5rem] font-light">
         {captions[phase]}
       </p>
 
-      <div className="flex items-end justify-center gap-6 md:gap-10 w-full">
-        <div className="flex flex-col items-center gap-3">
-          <div
-            className="flex flex-col-reverse items-stretch w-24 md:w-32 rounded-t-lg overflow-hidden border border-white/10"
-            style={{ height: barMaxHeight }}
-          >
-            {LAYERS.map((layer, i) => (
-              <motion.div
-                key={layer.key}
-                style={{
-                  height: `${(layer.getMton(metrics) / maxMton) * 100}%`,
-                  backgroundColor: layer.color,
-                  scaleY: barScales[i],
-                  transformOrigin: "bottom",
-                }}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
+      {/* Bubbles */}
+      <div className="flex items-center justify-center gap-8 md:gap-12 flex-wrap">
+        {LAYERS.map((layer, i) => {
+          const mton = layer.getMton(metrics);
+          const radius = Math.sqrt(mton / maxMton) * MAX_RADIUS;
+          const diameter = radius * 2;
 
-      {/* Legend always visible */}
-      <div className="flex flex-wrap justify-center gap-4 md:gap-6">
-        {LAYERS.map((layer) => (
-          <div key={layer.key} className="flex items-center gap-2">
-            <span
-              className="w-3 h-3 rounded-full shrink-0"
-              style={{ backgroundColor: layer.color }}
-            />
-            <span className="text-sm text-grey">
-              {t(layer.labelKey)}:{" "}
-              <span className="text-white">
-                {formatMton(layer.getMton(metrics), currentLanguage, 0)}{" "}
-                {t("nation.story.unit.mton")}
-              </span>
-            </span>
-          </div>
-        ))}
+          return (
+            <div key={layer.key} className="flex flex-col items-center gap-4">
+              <motion.div
+                style={{
+                  width: diameter,
+                  height: diameter,
+                  borderRadius: "50%",
+                  backgroundColor: layer.color,
+                  opacity: 0.85,
+                  scale: bubbleScales[i],
+                }}
+                transition={{ type: "spring", stiffness: 200, damping: 18 }}
+              />
+              <motion.div
+                style={{ opacity: bubbleScales[i] }}
+                className="text-center space-y-1"
+              >
+                <p className="text-white text-sm md:text-base font-medium tabular-nums">
+                  {formatMton(mton, currentLanguage, 0)}{" "}
+                  {t("nation.story.unit.mton")}
+                </p>
+                <p className="text-xs text-grey max-w-[130px] leading-snug">
+                  {t(layer.labelKey)}
+                </p>
+              </motion.div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
