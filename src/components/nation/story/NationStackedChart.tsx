@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { FC, useEffect, useMemo, useRef, useState } from "react";
 import {
   Area,
   AreaChart,
@@ -47,7 +47,6 @@ const LAYERS = [
 ];
 
 const LAYER_STAGGER_MS = 900;
-type StackedView = "usual" | "total";
 
 interface NationStackedChartProps {
   data: NationStackDataPoint[];
@@ -63,77 +62,42 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
   const { isMobile } = useScreenSize();
   const currentYear = new Date().getFullYear();
   const [chartEndYear, setChartEndYear] = useState(currentYear);
-  const [stackedView, setStackedView] = useState<StackedView>("usual");
-
-  // How many layers to show: 1 for "usual", up to 3 for "total"
-  const [visibleLayers, setVisibleLayers] = useState(1);
+  const [visibleLayers, setVisibleLayers] = useState(0);
   const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const inView = useInView(containerRef, { once: false, amount: 0.4 });
 
-  const revealAllLayers = useCallback(() => {
-    timersRef.current.forEach(clearTimeout);
-    timersRef.current = [];
-    setVisibleLayers(1);
-    LAYERS.slice(1).forEach((_, i) => {
-      const timer = setTimeout(
-        () => setVisibleLayers(i + 2),
-        (i + 1) * LAYER_STAGGER_MS,
-      );
-      timersRef.current.push(timer);
-    });
-  }, []);
-
-  // When toggling to "total", run the stagger animation
-  const handleViewChange = useCallback(
-    (view: StackedView) => {
-      setStackedView(view);
-      if (view === "usual") {
-        timersRef.current.forEach(clearTimeout);
-        timersRef.current = [];
-        setVisibleLayers(1);
-      } else {
-        revealAllLayers();
-      }
-    },
-    [revealAllLayers],
-  );
-
-  // On initial viewport entry, auto-reveal all layers
   useEffect(() => {
     timersRef.current.forEach(clearTimeout);
     timersRef.current = [];
 
-    if (inView && stackedView === "total") {
-      revealAllLayers();
-    } else if (!inView) {
-      if (stackedView === "total") setVisibleLayers(0);
+    if (inView) {
+      setVisibleLayers(1);
+      LAYERS.slice(1).forEach((_, i) => {
+        const timer = setTimeout(
+          () => setVisibleLayers(i + 2),
+          (i + 1) * LAYER_STAGGER_MS,
+        );
+        timersRef.current.push(timer);
+      });
+    } else {
+      setVisibleLayers(0);
     }
 
     return () => timersRef.current.forEach(clearTimeout);
-  }, [inView, stackedView, revealAllLayers]);
-
-  const layerCount = stackedView === "usual" ? 1 : visibleLayers;
+  }, [inView]);
 
   const visibleLegendItems: LegendItem[] = useMemo(
     () =>
-      LAYERS.slice(0, layerCount).map((layer) => ({
+      LAYERS.slice(0, visibleLayers).map((layer) => ({
         name: t(layer.translationKey),
         color: layer.color,
         isClickable: false,
         isHidden: false,
         isDashed: false,
       })),
-    [t, layerCount],
-  );
-
-  const viewOptions = useMemo(
-    () => [
-      { value: "usual" as StackedView, label: t("nation.story.stacked.viewUsual") },
-      { value: "total" as StackedView, label: t("nation.story.stacked.viewTotal") },
-    ],
-    [t],
+    [t, visibleLayers],
   );
 
   const filteredData = useMemo(
@@ -148,9 +112,6 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
       <CardHeader
         title={t("nation.story.stacked.title")}
         description={t("nation.story.stacked.description")}
-        dataView={stackedView}
-        setDataView={handleViewChange}
-        dataViewOptions={viewOptions}
         className="[&>div]:mb-4 [&>div]:@lg:mb-6"
       />
 
@@ -180,8 +141,7 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
               wrapperStyle={{ outline: "none", zIndex: 60 }}
             />
             <ReferenceLine {...getCurrentYearReferenceLineProps(currentYear)} />
-
-            {LAYERS.slice(0, layerCount).map((layer) => (
+            {LAYERS.slice(0, visibleLayers).map((layer) => (
               <Area
                 key={layer.dataKey}
                 type="monotone"

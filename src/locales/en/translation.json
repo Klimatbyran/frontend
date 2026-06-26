@@ -1554,8 +1554,6 @@
       "stacked": {
         "title": "Combined emissions since 1990",
         "description": "When production-based, biogenic and consumption-based emissions are added together, the picture looks very different. The stack shows how the three layers combined have barely changed since 1990 – a different story from the official statistics.",
-        "viewUsual": "Usually discussed emissions",
-        "viewTotal": "Sweden's total emissions"
       },
       "comparisons": {
         "title": "1990 compared to today",
