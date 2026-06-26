@@ -103,7 +103,9 @@ export function TerritoryBenchmarkSection({
         ))}
       </div>
 
-      <Text className="text-sm text-grey mb-8">{selectedMetric.description}</Text>
+      <Text className="text-sm text-grey mb-8">
+        {selectedMetric.description}
+      </Text>
 
       <BenchmarkSummaryCards
         benchmarkData={benchmarkData}

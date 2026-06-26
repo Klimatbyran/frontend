@@ -58,11 +58,7 @@ export function BenchmarkSummaryCards({
       label: t("territoryBenchmarks.diffFromAverageLabel"),
       value:
         diffFromPeerAverage !== null
-          ? formatDiffValue(
-              diffFromPeerAverage,
-              metric.unit,
-              currentLanguage,
-            )
+          ? formatDiffValue(diffFromPeerAverage, metric.unit, currentLanguage)
           : t("noData"),
       description: t("territoryBenchmarks.diffFromAverageDescription"),
       valueClassName:
@@ -89,7 +85,9 @@ export function BenchmarkSummaryCards({
           <Text className={`text-3xl md:text-5xl ${card.valueClassName}`}>
             {card.value}
           </Text>
-          <Text className="text-xs md:text-sm text-grey">{card.description}</Text>
+          <Text className="text-xs md:text-sm text-grey">
+            {card.description}
+          </Text>
         </div>
       ))}
     </div>

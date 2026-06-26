@@ -133,7 +133,9 @@ function buildMunicipalityBenchmarkData(
   const peerAverage = computeAverage(peerValues);
   const regionalAverage = computeAverage(regionalValues);
   const rank =
-    entityValue !== null ? computeRank(entityValue, peerValues, metric.higherIsBetter) : null;
+    entityValue !== null
+      ? computeRank(entityValue, peerValues, metric.higherIsBetter)
+      : null;
   const percentile =
     rank !== null ? computePercentile(rank, peerValues.length) : null;
   const diffFromPeerAverage =
@@ -186,7 +188,10 @@ function buildMunicipalityBenchmarkData(
 function buildRegionBenchmarkData(
   metric: BenchmarkMetricDefinition,
   entityId: string,
-  regions: Array<{ name: string; historicalEmissionChangePercent: number | null }>,
+  regions: Array<{
+    name: string;
+    historicalEmissionChangePercent: number | null;
+  }>,
   nationValue: number | null,
   overrides?: Partial<Record<string, number | null>>,
 ): TerritoryBenchmarkData {
@@ -198,7 +203,9 @@ function buildRegionBenchmarkData(
   );
   const peerAverage = computeAverage(peerValues);
   const rank =
-    entityValue !== null ? computeRank(entityValue, peerValues, metric.higherIsBetter) : null;
+    entityValue !== null
+      ? computeRank(entityValue, peerValues, metric.higherIsBetter)
+      : null;
   const percentile =
     rank !== null ? computePercentile(rank, peerValues.length) : null;
   const diffFromPeerAverage =
@@ -245,14 +252,19 @@ function buildRegionBenchmarkData(
 function buildNationBenchmarkData(
   metric: BenchmarkMetricDefinition,
   entityValue: number | null,
-  regions: Array<{ name: string; historicalEmissionChangePercent: number | null }>,
+  regions: Array<{
+    name: string;
+    historicalEmissionChangePercent: number | null;
+  }>,
 ): TerritoryBenchmarkData {
   const peerValues = extractNumericValues(regions, (item) =>
     getMetricValue(item, metric.key),
   );
   const peerAverage = computeAverage(peerValues);
   const rank =
-    entityValue !== null ? computeRank(entityValue, peerValues, metric.higherIsBetter) : null;
+    entityValue !== null
+      ? computeRank(entityValue, peerValues, metric.higherIsBetter)
+      : null;
   const percentile =
     rank !== null ? computePercentile(rank, peerValues.length) : null;
   const diffFromPeerAverage =
@@ -306,8 +318,10 @@ export function useTerritoryBenchmarks({
   const { t } = useTranslation();
   const { municipalitiesData, loading: municipalitiesLoading } =
     useMunicipalityKPIs({ enabled: entityType === "municipality" });
-  const { municipalities: municipalitiesWithRegion, municipalitiesLoading: municipalitiesListLoading } =
-    useMunicipalities({ enabled: entityType === "municipality" });
+  const {
+    municipalities: municipalitiesWithRegion,
+    municipalitiesLoading: municipalitiesListLoading,
+  } = useMunicipalities({ enabled: entityType === "municipality" });
   const { regionsData, loading: regionsLoading } = useRegionsKPIs({
     enabled: entityType !== "municipality",
   });

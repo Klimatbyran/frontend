@@ -65,9 +65,7 @@ export function BenchmarkComparisonBars({
 
   const range = useMemo(
     () =>
-      symmetric
-        ? getSymmetricBarRange(values)
-        : getPositiveBarRange(values),
+      symmetric ? getSymmetricBarRange(values) : getPositiveBarRange(values),
     [symmetric, values],
   );
 
@@ -119,7 +117,9 @@ export function BenchmarkComparisonBars({
                   className={`h-full rounded-full transition-all duration-700 ease-out ${reference.colorClass} ${
                     reference.isHighlighted ? "opacity-100" : "opacity-80"
                   }`}
-                  style={{ width: `${Math.max(width, reference.value === 0 ? 2 : 4)}%` }}
+                  style={{
+                    width: `${Math.max(width, reference.value === 0 ? 2 : 4)}%`,
+                  }}
                 />
               </div>
             </div>

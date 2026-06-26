@@ -53,7 +53,9 @@ export function BenchmarkDistributionChart({
   if (chartData.length === 0) {
     return (
       <div className="rounded-level-2 bg-black-1/60 p-8 flex items-center justify-center min-h-[280px]">
-        <p className="text-grey">{t("territoryBenchmarks.noDistributionData")}</p>
+        <p className="text-grey">
+          {t("territoryBenchmarks.noDistributionData")}
+        </p>
       </div>
     );
   }
@@ -82,7 +84,8 @@ export function BenchmarkDistributionChart({
         highlightId={highlightId}
         onCompanyClick={
           detailPathPrefix
-            ? (item) => navigate(getEntityDetailPath(detailPathPrefix, item.name))
+            ? (item) =>
+                navigate(getEntityDetailPath(detailPathPrefix, item.name))
             : undefined
         }
       />

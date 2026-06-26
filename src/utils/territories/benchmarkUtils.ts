@@ -62,13 +62,19 @@ export function buildDistributionItems<T>(
     .filter((item): item is BenchmarkDistributionItem => item !== null);
 }
 
-export function getSymmetricBarRange(values: number[]): { min: number; max: number } {
+export function getSymmetricBarRange(values: number[]): {
+  min: number;
+  max: number;
+} {
   if (values.length === 0) return { min: 0, max: 0 };
   const absMax = Math.max(...values.map((value) => Math.abs(value)), 1);
   return { min: -absMax, max: absMax };
 }
 
-export function getPositiveBarRange(values: number[]): { min: number; max: number } {
+export function getPositiveBarRange(values: number[]): {
+  min: number;
+  max: number;
+} {
   if (values.length === 0) return { min: 0, max: 1 };
   const max = Math.max(...values, 1);
   return { min: 0, max: max * 1.1 };
