@@ -70,6 +70,14 @@ function CompanyInsightsPanel({
   const entityPlural = t("header.companies").toLowerCase();
   const unit = selectedKPI.unit || "";
 
+  const datasetMax = Math.max(
+    ...statistics.validData
+      .map((c) => c[selectedKPI.key])
+      .filter((v): v is number => typeof v === "number" && !isNaN(v))
+      .map(Math.abs),
+    1,
+  );
+
   const bestItem = sortedValidData[0];
   const worstItem = sortedValidData[sortedValidData.length - 1];
 
@@ -162,6 +170,7 @@ function CompanyInsightsPanel({
       entityType="companies"
       nameKey="name"
       showBars
+      datasetMax={datasetMax}
     />
   ) : (
     booleanSummary
@@ -181,6 +190,7 @@ function CompanyInsightsPanel({
       entityType="companies"
       nameKey="name"
       showBars
+      datasetMax={datasetMax}
     />
   ) : null;
 

@@ -60,6 +60,14 @@ function RegionalInsightsPanel({
   const entityPlural = t("header.regions").toLowerCase();
   const unit = selectedKPI.unit || "";
 
+  const datasetMax = Math.max(
+    ...statistics.validData
+      .map((r) => r[selectedKPI.key as keyof Region])
+      .filter((v): v is number => typeof v === "number" && !isNaN(v))
+      .map(Math.abs),
+    1,
+  );
+
   const bestItem = sortedData[0];
   const worstItem = sortedData[sortedData.length - 1];
 
@@ -154,6 +162,7 @@ function RegionalInsightsPanel({
       entityType="regions"
       nameKey="name"
       showBars
+      datasetMax={datasetMax}
     />
   ) : (
     booleanSummary
@@ -173,6 +182,7 @@ function RegionalInsightsPanel({
       entityType="regions"
       nameKey="name"
       showBars
+      datasetMax={datasetMax}
     />
   ) : null;
 
