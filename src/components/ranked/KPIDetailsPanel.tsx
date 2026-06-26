@@ -194,7 +194,11 @@ export default function KPIDetailsPanel({
               return (
                 <div
                   key={i}
-                  style={{ width: `${pct}%`, backgroundColor: bg }}
+                  style={{
+                    width: `${pct}%`,
+                    backgroundColor: bg,
+                    transition: "width 0.8s ease-out",
+                  }}
                   title={`${stat.label}: ${stat.count}`}
                 />
               );

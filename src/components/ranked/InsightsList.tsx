@@ -66,10 +66,11 @@ function InsightsList<T>({
             <div className="relative rounded-lg overflow-hidden group">
               {showBars && barWidth > 0 && (
                 <div
-                  className="absolute inset-y-0 left-0 rounded-lg opacity-20 transition-all duration-500 ease-out group-hover:opacity-30"
+                  className="absolute inset-y-0 left-0 rounded-lg opacity-20 group-hover:opacity-30"
                   style={{
                     width: `${barWidth}%`,
                     backgroundColor: barColor ?? "currentColor",
+                    transition: `width 0.6s ease-out ${index * 40}ms, opacity 0.3s ease`,
                   }}
                 />
               )}

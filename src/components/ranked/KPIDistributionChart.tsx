@@ -163,6 +163,10 @@ export function KPIDistributionChart<T>({
               paddingAngle={3}
               dataKey="value"
               strokeWidth={0}
+              isAnimationActive
+              animationBegin={0}
+              animationDuration={900}
+              animationEasing="ease-out"
             >
               {booleanValues.map((entry, i) => (
                 <Cell key={i} fill={entry.fill} />
@@ -255,7 +259,15 @@ export function KPIDistributionChart<T>({
                 />
               );
             })()}
-          <Bar dataKey="count" radius={[3, 3, 0, 0]} maxBarSize={32}>
+          <Bar
+            dataKey="count"
+            radius={[3, 3, 0, 0]}
+            maxBarSize={32}
+            isAnimationActive
+            animationBegin={0}
+            animationDuration={800}
+            animationEasing="ease-out"
+          >
             {bins.map((bin, i) => {
               const binMid = (bin.min + bin.max) / 2;
               const color = binColor(
