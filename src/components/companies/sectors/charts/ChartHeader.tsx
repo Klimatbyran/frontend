@@ -34,20 +34,17 @@ const ChartHeader: React.FC<ChartHeaderProps> = ({
             : "justify-between items-center"
         }`}
       >
-        <button
-          onClick={onSectorClear}
-          disabled={!selectedSector}
-          aria-hidden={!selectedSector}
-          tabIndex={selectedSector ? 0 : -1}
-          className={`flex items-center gap-2 rounded-lg text-grey hover:text-white focus:outline-none transition-colors self-start ${
-            !selectedSector ? "invisible pointer-events-none" : ""
-          }`}
-        >
-          <ArrowLeft className="h-4 w-4" />
-          <span className="text-sm font-medium">
-            {t("companyDetailPage.sectorGraphs.back")}
-          </span>
-        </button>
+        {selectedSector && (
+          <button
+            onClick={onSectorClear}
+            className="flex items-center gap-2 rounded-lg text-grey hover:text-white focus:outline-none transition-colors self-start"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            <span className="text-sm font-medium">
+              {t("companyDetailPage.sectorGraphs.back")}
+            </span>
+          </button>
+        )}
 
         <EmissionsTotalDisplay
           totalEmissions={totalEmissions}
