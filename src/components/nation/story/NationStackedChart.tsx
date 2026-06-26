@@ -15,6 +15,7 @@ import { useLanguage } from "@/components/LanguageProvider";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import {
   ChartFooter,
+  ChartTooltip,
   ChartYearControls,
   EnhancedLegend,
   getCurrentYearReferenceLineProps,
@@ -102,16 +103,14 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
             />
             <YAxis {...getYAxisProps(currentLanguage)} />
             <Tooltip
-              formatter={(value: number, name: string) => [
-                `${formatMton(value, currentLanguage, 1)} ${t("nation.story.unit.mton")}`,
-                name,
-              ]}
-              labelFormatter={(year) => String(year)}
-              contentStyle={{
-                backgroundColor: "var(--black-1)",
-                border: "none",
-                borderRadius: "8px",
-              }}
+              content={
+                <ChartTooltip
+                  unit={t("nation.story.unit.mton")}
+                  customFormatter={(value) =>
+                    formatMton(value, currentLanguage, 1)
+                  }
+                />
+              }
               wrapperStyle={{ outline: "none", zIndex: 60 }}
             />
             <ReferenceLine {...getCurrentYearReferenceLineProps(currentYear)} />
