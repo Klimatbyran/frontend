@@ -26,6 +26,7 @@ import {
   type LegendItem,
 } from "@/components/charts";
 import { CardHeader } from "@/components/layout/CardHeader";
+import { OverviewStat } from "@/components/companies/detail/overview/OverviewStat";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 
 const LAYERS = [
@@ -178,24 +179,21 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
 
       {/* Big-number totals */}
       {point1990 && pointLatest && (
-        <div className="mt-6 grid grid-cols-2 gap-4 border-t border-white/10 pt-6">
-          <div>
-            <p className="text-xs uppercase tracking-wide text-grey mb-1">
-              1990
-            </p>
-            <p className="text-3xl md:text-4xl font-light text-white tabular-nums">
-              {formatMton(point1990.combined, currentLanguage, 0)}
-            </p>
-            <p className="text-sm text-grey mt-1">{t("nation.story.unit.mton")}</p>
-          </div>
-          <div>
-            <p className="text-xs uppercase tracking-wide text-grey mb-1">
-              {pointLatest.year}
-            </p>
-            <p className="text-3xl md:text-4xl font-light text-white tabular-nums">
-              {formatMton(pointLatest.combined, currentLanguage, 0)}
-            </p>
-            <p className="text-sm text-grey mt-1">{t("nation.story.unit.mton")}</p>
+        <div className="mt-6 border-t border-white/10 pt-6 space-y-4">
+          <p className="text-sm text-grey">
+            {t("nation.story.stacked.totalsDescription")}
+          </p>
+          <div className="grid grid-cols-2 gap-6">
+            <OverviewStat
+              label={String(1990)}
+              value={formatMton(point1990.combined, currentLanguage, 0)}
+              unit={t("nation.story.unit.mton")}
+            />
+            <OverviewStat
+              label={String(pointLatest.year)}
+              value={formatMton(pointLatest.combined, currentLanguage, 0)}
+              unit={t("nation.story.unit.mton")}
+            />
           </div>
         </div>
       )}
