@@ -90,7 +90,7 @@ function CompanyInsightsPanel({
       medianValue={statistics.formattedMedian}
       averageLabel={t("companies.list.insights.keyStatistics.average")}
       topPerformer={
-        bestItem
+        !selectedKPI.isBoolean && bestItem
           ? {
               name: bestItem.name,
               value: `${(bestItem[selectedKPI.key] as number)?.toFixed(1)}${unit}`,
@@ -98,7 +98,7 @@ function CompanyInsightsPanel({
           : undefined
       }
       bottomPerformer={
-        worstItem && worstItem !== bestItem
+        !selectedKPI.isBoolean && worstItem && worstItem !== bestItem
           ? {
               name: worstItem.name,
               value: `${(worstItem[selectedKPI.key] as number)?.toFixed(1)}${unit}`,

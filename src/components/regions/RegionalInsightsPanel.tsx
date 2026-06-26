@@ -80,7 +80,7 @@ function RegionalInsightsPanel({
       medianValue={statistics.formattedMedian}
       averageLabel={t("municipalities.list.insights.keyStatistics.average")}
       topPerformer={
-        bestItem
+        !selectedKPI.isBoolean && bestItem
           ? {
               name: bestItem.name,
               value: `${(bestItem[selectedKPI.key as keyof Region] as number)?.toFixed(1)}${unit}`,
@@ -89,7 +89,7 @@ function RegionalInsightsPanel({
           : undefined
       }
       bottomPerformer={
-        worstItem && worstItem !== bestItem
+        !selectedKPI.isBoolean && worstItem && worstItem !== bestItem
           ? {
               name: worstItem.name,
               value: `${(worstItem[selectedKPI.key as keyof Region] as number)?.toFixed(1)}${unit}`,
