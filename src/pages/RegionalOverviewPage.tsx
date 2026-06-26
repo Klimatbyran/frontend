@@ -153,23 +153,6 @@ export function RegionalOverviewPage() {
       />
 
       <div className="space-y-6">
-        <div className="flex">
-          <ViewModeToggle
-            viewMode={viewMode}
-            modes={["map", "list"]}
-            onChange={setViewModeInURL}
-            titles={{
-              map: t("viewModeToggle.map"),
-              list: t("viewModeToggle.list"),
-            }}
-            showTitles
-            icons={{
-              map: <Map className="w-4 h-4" />,
-              list: <List className="w-4 h-4" />,
-            }}
-          />
-        </div>
-
         {/* Row 1: map/list toggle | stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
           <OverviewSplitLayout
@@ -177,6 +160,22 @@ export function RegionalOverviewPage() {
             visualizationMode="map"
             visualization={mapPanel}
             list={regionalRankedList}
+            toggle={
+              <ViewModeToggle
+                viewMode={viewMode}
+                modes={["map", "list"]}
+                onChange={setViewModeInURL}
+                titles={{
+                  map: t("viewModeToggle.map"),
+                  list: t("viewModeToggle.list"),
+                }}
+                showTitles
+                icons={{
+                  map: <Map className="w-4 h-4" />,
+                  list: <List className="w-4 h-4" />,
+                }}
+              />
+            }
           />
           <RegionalInsightsPanel
             regionsData={regionsAsEntities}

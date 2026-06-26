@@ -243,23 +243,6 @@ export function CompaniesOverviewPage() {
       </div>
 
       <div className="space-y-6">
-        <div className="flex">
-          <ViewModeToggle
-            viewMode={viewMode}
-            modes={["graph", "list"]}
-            onChange={setViewModeInURL}
-            titles={{
-              graph: t("companiesOverviewPage.viewToggle.showGraph", "Graf"),
-              list: t("companiesOverviewPage.viewToggle.showList", "Lista"),
-            }}
-            showTitles
-            icons={{
-              graph: <BarChart2 className="w-4 h-4" />,
-              list: <List className="w-4 h-4" />,
-            }}
-          />
-        </div>
-
         {/* Row 1: graph/list toggle | stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
           <OverviewSplitLayout
@@ -271,6 +254,28 @@ export function CompaniesOverviewPage() {
               </div>
             }
             list={companyRankedList}
+            toggle={
+              <ViewModeToggle
+                viewMode={viewMode}
+                modes={["graph", "list"]}
+                onChange={setViewModeInURL}
+                titles={{
+                  graph: t(
+                    "companiesOverviewPage.viewToggle.showGraph",
+                    "Graf",
+                  ),
+                  list: t(
+                    "companiesOverviewPage.viewToggle.showList",
+                    "Lista",
+                  ),
+                }}
+                showTitles
+                icons={{
+                  graph: <BarChart2 className="w-4 h-4" />,
+                  list: <List className="w-4 h-4" />,
+                }}
+              />
+            }
           />
           <CompanyInsightsPanel
             companyData={companiesWithKPIs}

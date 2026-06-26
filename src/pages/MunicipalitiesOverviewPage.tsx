@@ -197,24 +197,6 @@ export function MunicipalitiesOverviewPage() {
       />
 
       <div className="space-y-6">
-        {/* Map/list toggle */}
-        <div className="flex">
-          <ViewModeToggle
-            viewMode={viewMode}
-            modes={["map", "list"]}
-            onChange={setViewModeInURL}
-            titles={{
-              map: t("municipalities.list.viewToggle.showMap"),
-              list: t("municipalities.list.viewToggle.showList"),
-            }}
-            showTitles
-            icons={{
-              map: <Map className="w-4 h-4" />,
-              list: <List className="w-4 h-4" />,
-            }}
-          />
-        </div>
-
         {/* Row 1: map/list (toggled) | stats panel */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
           <OverviewSplitLayout
@@ -222,6 +204,22 @@ export function MunicipalitiesOverviewPage() {
             visualizationMode="map"
             visualization={mapPanel}
             list={municipalityRankedList}
+            toggle={
+              <ViewModeToggle
+                viewMode={viewMode}
+                modes={["map", "list"]}
+                onChange={setViewModeInURL}
+                titles={{
+                  map: t("municipalities.list.viewToggle.showMap"),
+                  list: t("municipalities.list.viewToggle.showList"),
+                }}
+                showTitles
+                icons={{
+                  map: <Map className="w-4 h-4" />,
+                  list: <List className="w-4 h-4" />,
+                }}
+              />
+            }
           />
           <InsightsPanel
             municipalityData={municipalities}

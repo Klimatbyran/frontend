@@ -11,6 +11,8 @@ interface OverviewSplitLayoutProps {
   listMode?: OverviewViewMode;
   visualization: ReactNode;
   list: ReactNode;
+  /** Optional toggle rendered as an overlay in the top-left of the container */
+  toggle?: ReactNode;
 }
 
 export function OverviewSplitLayout({
@@ -19,6 +21,7 @@ export function OverviewSplitLayout({
   listMode = "list",
   visualization,
   list,
+  toggle,
 }: OverviewSplitLayoutProps) {
   const showBoth = viewMode !== visualizationMode && viewMode !== listMode;
   const showVisualization = showBoth || viewMode === visualizationMode;
@@ -36,7 +39,10 @@ export function OverviewSplitLayout({
   return (
     // Fixed height wrapper — both map and list fill this exactly, so no
     // layout shift when toggling between them.
-    <div className="h-[65vh] md:h-[630px]">
+    <div className="relative h-[65vh] md:h-[630px]">
+      {toggle && (
+        <div className="absolute top-3 left-3 z-[1000]">{toggle}</div>
+      )}
       <div
         className={cn(
           VISUALIZATION_PANEL_CLASS,
