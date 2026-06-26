@@ -62,7 +62,7 @@ const EmissionsTotalDisplay: React.FC<EmissionsTotalDisplayProps> = ({
       <select
         value={selectedYear}
         onChange={(e) => onYearChange(e.target.value)}
-        className={`bg-black-2 border border-black-1 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-orange-3 transition-shadow ${
+        className={`bg-black-2 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-orange-3 transition-shadow ${
           isMobile ? "w-full" : ""
         }`}
       >

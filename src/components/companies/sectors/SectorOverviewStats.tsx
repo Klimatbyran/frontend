@@ -39,7 +39,7 @@ function StatCard({
   progressColor = "bg-green-3",
 }: StatCardProps) {
   return (
-    <div className="bg-black-2 rounded-lg border border-black-1 p-4 flex flex-col gap-3">
+    <div className="bg-black-2 rounded-lg p-4 flex flex-col gap-3">
       <div className="flex items-center gap-3">
         <div className={`rounded-full p-2 ${iconBg}`}>
           <Icon className={`h-4 w-4 ${iconColor}`} />

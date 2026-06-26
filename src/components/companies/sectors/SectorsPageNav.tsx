@@ -65,7 +65,7 @@ export function SectorSection({
   return (
     <section
       id={`sector-section-${id}`}
-      className="scroll-mt-24 bg-black-2 rounded-lg border border-black-1 p-4 md:p-6"
+      className="scroll-mt-24 bg-black-2 rounded-lg p-4 md:p-6"
     >
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-6">
         <div>

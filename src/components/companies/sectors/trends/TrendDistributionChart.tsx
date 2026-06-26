@@ -120,7 +120,7 @@ export function TrendDistributionChart({
               onClick={() => onCategorySelect(isSelected ? null : entry.key)}
               className={`w-full flex items-center gap-3 p-3 rounded-lg transition-colors text-left ${
                 isSelected
-                  ? "bg-black-1 ring-1 ring-white/20"
+                  ? "bg-black-1"
                   : "bg-black-1/50 hover:bg-black-1"
               }`}
             >
