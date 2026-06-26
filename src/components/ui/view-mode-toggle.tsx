@@ -46,7 +46,9 @@ export function ViewModeToggle<T extends string>({
           title={titles?.[mode] ?? t(`${mode}`)}
         >
           {icons?.[mode] ?? defaultIcons[mode]}{" "}
-          {showTitles && <span className="ml-2">{titles?.[mode]}</span>}
+          {showTitles && (
+            <span className="ml-1.5 text-xs md:text-sm">{titles?.[mode]}</span>
+          )}
         </Button>
       ))}
     </div>
