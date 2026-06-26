@@ -73,6 +73,9 @@ export function MunicipalitiesOverviewPage() {
     const kpiKey = params.get("kpi");
     return (
       municipalityKPIs.find((kpi) => String(kpi.key) === kpiKey) ||
+      municipalityKPIs.find(
+        (kpi) => String(kpi.key) === "historicalEmissionChangePercent",
+      ) ||
       municipalityKPIs[0]
     );
   }, [location.search, municipalityKPIs]);

@@ -39,7 +39,11 @@ export function CompaniesOverviewPage() {
   const getKPIFromURL = useCallback(() => {
     const params = new URLSearchParams(location.search);
     const kpiKey = params.get("kpi");
-    return companyKPIs.find((kpi) => kpi.key === kpiKey) || companyKPIs[0];
+    return (
+      companyKPIs.find((kpi) => kpi.key === kpiKey) ||
+      companyKPIs.find((kpi) => kpi.key === "emissionsChangeFromBaseYear") ||
+      companyKPIs[0]
+    );
   }, [location.search, companyKPIs]);
 
   const setKPIInURL = (kpiKey: string) => {
