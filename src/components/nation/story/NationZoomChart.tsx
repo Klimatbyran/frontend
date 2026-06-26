@@ -1,11 +1,5 @@
 import { useTranslation } from "react-i18next";
-import {
-  motion,
-  useMotionValueEvent,
-  useTransform,
-  type MotionValue,
-} from "framer-motion";
-import { useState } from "react";
+import { motion } from "framer-motion";
 import type { NationStoryMetrics } from "@/utils/data/nationStoryMetrics";
 import { formatMton } from "@/utils/data/nationStoryMetrics";
 import { useLanguage } from "@/components/LanguageProvider";
@@ -16,68 +10,38 @@ const LAYERS = [
     color: "var(--orange-2)",
     labelKey: "nation.story.graph.territorialFossil",
     getMton: (m: NationStoryMetrics) => m.territorialLatestMton,
-    range: [0, 0.22] as [number, number],
-    phase: 0,
   },
   {
     key: "biogenic" as const,
     color: "var(--green-2)",
     labelKey: "nation.story.graph.biogenic",
     getMton: (m: NationStoryMetrics) => m.biogenicLatestMton,
-    range: [0.18, 0.42] as [number, number],
-    phase: 1,
   },
   {
     key: "consumption" as const,
     color: "var(--blue-2)",
     labelKey: "nation.story.graph.consumptionAbroad",
     getMton: (m: NationStoryMetrics) => m.consumptionLatestMton,
-    range: [0.38, 0.62] as [number, number],
-    phase: 2,
   },
 ];
 
-const MAX_RADIUS = 90; // px for the largest bubble
+const MAX_RADIUS = 90;
 
 type NationZoomChartProps = {
   metrics: NationStoryMetrics;
-  scrollYProgress: MotionValue<number>;
 };
 
-export function NationZoomChart({
-  metrics,
-  scrollYProgress,
-}: NationZoomChartProps) {
+export function NationZoomChart({ metrics }: NationZoomChartProps) {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
-  const [phase, setPhase] = useState(0);
-
-  useMotionValueEvent(scrollYProgress, "change", (v) => {
-    if (v < 0.18) setPhase(0);
-    else if (v < 0.38) setPhase(1);
-    else setPhase(2);
-  });
-
   const maxMton = Math.max(...LAYERS.map((l) => l.getMton(metrics)));
-
-  const bubbleScales = LAYERS.map((layer) =>
-    useTransform(scrollYProgress, layer.range, [0, 1]),
-  );
-
-  const captions = [
-    t("nation.story.zoom.phase1"),
-    t("nation.story.zoom.phase2"),
-    t("nation.story.zoom.phase3"),
-  ];
 
   return (
     <div className="flex flex-col items-center gap-10 w-full">
-      {/* Caption */}
-      <p className="text-xl md:text-2xl text-center text-grey max-w-2xl min-h-[3.5rem] font-light">
-        {captions[phase]}
+      <p className="text-xl md:text-2xl text-center text-grey max-w-2xl font-light">
+        {t("nation.story.zoom.phase3")}
       </p>
 
-      {/* Bubbles */}
       <div className="flex items-center justify-center gap-8 md:gap-12 flex-wrap">
         {LAYERS.map((layer, i) => {
           const mton = layer.getMton(metrics);
@@ -93,12 +57,22 @@ export function NationZoomChart({
                   borderRadius: "50%",
                   backgroundColor: layer.color,
                   opacity: 0.85,
-                  scale: bubbleScales[i],
                 }}
-                transition={{ type: "spring", stiffness: 200, damping: 18 }}
+                initial={{ scale: 0 }}
+                whileInView={{ scale: 1 }}
+                viewport={{ once: false, amount: 0.4 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 200,
+                  damping: 18,
+                  delay: i * 0.25,
+                }}
               />
               <motion.div
-                style={{ opacity: bubbleScales[i] }}
+                initial={{ opacity: 0, y: 8 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false, amount: 0.4 }}
+                transition={{ duration: 0.4, delay: i * 0.25 + 0.1 }}
                 className="text-center space-y-1"
               >
                 <p className="text-white text-sm md:text-base font-medium tabular-nums">

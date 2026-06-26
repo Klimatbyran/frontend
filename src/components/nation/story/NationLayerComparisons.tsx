@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { motion, useTransform, type MotionValue } from "framer-motion";
+import { motion } from "framer-motion";
 import type { NationLayerComparison } from "@/utils/data/nationStoryMetrics";
 import {
   formatMton,
@@ -7,38 +7,31 @@ import {
 } from "@/utils/data/nationStoryMetrics";
 import { formatPercentChange } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
-import { NATION_STORY_STAGGER_RANGES } from "@/components/nation/story/nationStoryScrollAnimation";
 
-const ROW_RANGES = NATION_STORY_STAGGER_RANGES;
+const ROW_DELAYS = [0, 0.18, 0.36];
 
 function LayerRow({
   layer,
   latestYear,
   maxMton,
-  scrollYProgress,
-  range,
+  delay,
 }: {
   layer: NationLayerComparison;
   latestYear: number;
   maxMton: number;
-  scrollYProgress: MotionValue<number>;
-  range: [number, number];
+  delay: number;
 }) {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
 
-  const bar1990Width = useTransform(scrollYProgress, range, [
-    "0%",
-    `${(layer.mton1990 / maxMton) * 100}%`,
-  ]);
-  const barLatestWidth = useTransform(
-    scrollYProgress,
-    [range[0] + 0.03, range[1]],
-    ["0%", `${(layer.mtonLatest / maxMton) * 100}%`],
-  );
-
   return (
-    <div className="space-y-3 py-6 border-b border-white/10 last:border-0">
+    <motion.div
+      initial={{ opacity: 0, x: -20 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: false, amount: 0.3 }}
+      transition={{ duration: 0.45, delay }}
+      className="space-y-3 py-6 border-b border-white/10 last:border-0"
+    >
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
         <h3 className="text-lg md:text-xl text-white font-light flex items-center gap-2">
           <span
@@ -58,6 +51,7 @@ function LayerRow({
       </div>
 
       <div className="space-y-2">
+        {/* 1990 bar */}
         <div className="flex items-center gap-3">
           <span className="text-xs text-grey w-12 shrink-0">
             {NATION_BASELINE_YEAR}
@@ -65,11 +59,13 @@ function LayerRow({
           <div className="flex-1 h-8 bg-black-2 rounded-md overflow-hidden">
             <motion.div
               className="h-full rounded-md"
-              style={{
-                width: bar1990Width,
-                backgroundColor: layer.color,
-                opacity: 0.5,
+              style={{ backgroundColor: layer.color, opacity: 0.5 }}
+              initial={{ width: "0%" }}
+              whileInView={{
+                width: `${(layer.mton1990 / maxMton) * 100}%`,
               }}
+              viewport={{ once: false, amount: 0.3 }}
+              transition={{ duration: 0.6, delay: delay + 0.1, ease: [0.16, 1, 0.3, 1] }}
             />
           </div>
           <span className="text-xs text-grey w-20 text-right shrink-0">
@@ -77,12 +73,19 @@ function LayerRow({
             {t("nation.story.unit.mton")}
           </span>
         </div>
+        {/* Latest bar */}
         <div className="flex items-center gap-3">
           <span className="text-xs text-grey w-12 shrink-0">{latestYear}</span>
           <div className="flex-1 h-8 bg-black-2 rounded-md overflow-hidden">
             <motion.div
               className="h-full rounded-md"
-              style={{ width: barLatestWidth, backgroundColor: layer.color }}
+              style={{ backgroundColor: layer.color }}
+              initial={{ width: "0%" }}
+              whileInView={{
+                width: `${(layer.mtonLatest / maxMton) * 100}%`,
+              }}
+              viewport={{ once: false, amount: 0.3 }}
+              transition={{ duration: 0.6, delay: delay + 0.2, ease: [0.16, 1, 0.3, 1] }}
             />
           </div>
           <span className="text-xs text-white w-20 text-right shrink-0">
@@ -91,7 +94,7 @@ function LayerRow({
           </span>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -99,14 +102,12 @@ type NationLayerComparisonsProps = {
   layers: NationLayerComparison[];
   latestYear: number;
   maxMton: number;
-  scrollYProgress: MotionValue<number>;
 };
 
 export function NationLayerComparisons({
   layers,
   latestYear,
   maxMton,
-  scrollYProgress,
 }: NationLayerComparisonsProps) {
   const { t } = useTranslation();
   const mainLayers = layers.filter((l) => l.key !== "exportOfOilProducts");
@@ -128,8 +129,7 @@ export function NationLayerComparisons({
             layer={layer}
             latestYear={latestYear}
             maxMton={maxMton}
-            scrollYProgress={scrollYProgress}
-            range={ROW_RANGES[index] ?? [0, NATION_STORY_STAGGER_RANGES[2][1]]}
+            delay={ROW_DELAYS[index] ?? 0}
           />
         ))}
       </div>

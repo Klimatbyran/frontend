@@ -5,7 +5,6 @@ import { NationECommerceScale } from "@/components/nation/story/NationECommerceS
 import { NationLayerComparisons } from "@/components/nation/story/NationLayerComparisons";
 import { NationStackedChart } from "@/components/nation/story/NationStackedChart";
 import { NationOilExportsSection } from "@/components/nation/story/NationOilExportsSection";
-import { NationPinnedSection } from "@/components/nation/story/NationPinnedSection";
 import { NationZoomChart } from "@/components/nation/story/NationZoomChart";
 import { useLanguage } from "@/components/LanguageProvider";
 import type { NationDetails } from "@/hooks/nation/useNationDetails";
@@ -18,23 +17,9 @@ type NationStoryPageProps = {
   oilPoints: NationDetails["exportOfOilProductsPoints"];
 };
 
-/** Wrapper for non-pinned sections that still need to be full-screen centered */
-function FullScreenSection({
-  children,
-  overlap = false,
-}: {
-  children: React.ReactNode;
-  overlap?: boolean;
-}) {
+function FullScreenSection({ children }: { children: React.ReactNode }) {
   return (
-    <section
-      className="min-h-screen flex items-center justify-center px-4 md:px-8 py-16 bg-black"
-      style={
-        overlap
-          ? { marginTop: "-100vh", position: "relative", zIndex: 10 }
-          : undefined
-      }
-    >
+    <section className="min-h-screen flex items-center justify-center px-4 md:px-8 py-16">
       <div className="w-full max-w-4xl mx-auto">{children}</div>
     </section>
   );
@@ -75,31 +60,22 @@ export function NationStoryPage({
         </div>
       </section>
 
-      {/* Zoom chart – sticky scroll-driven (sequential layer reveal) */}
-      <NationPinnedSection heightVh={200}>
-        {(progress) => (
-          <NationZoomChart metrics={metrics} scrollYProgress={progress} />
-        )}
-      </NationPinnedSection>
+      <FullScreenSection>
+        <NationZoomChart metrics={metrics} />
+      </FullScreenSection>
 
-      {/* Stacked area chart – grey box with title + chart */}
       <FullScreenSection>
         <NationStackedChart data={metrics.stackData} />
       </FullScreenSection>
 
-      {/* 1990 → today – sticky scroll-driven (sequential row reveal) */}
-      <NationPinnedSection heightVh={195}>
-        {(progress) => (
-          <NationLayerComparisons
-            layers={metrics.layerComparisons}
-            latestYear={metrics.latestYear}
-            maxMton={metrics.maxLayerMton}
-            scrollYProgress={progress}
-          />
-        )}
-      </NationPinnedSection>
+      <FullScreenSection>
+        <NationLayerComparisons
+          layers={metrics.layerComparisons}
+          latestYear={metrics.latestYear}
+          maxMton={metrics.maxLayerMton}
+        />
+      </FullScreenSection>
 
-      {/* E-commerce */}
       <FullScreenSection>
         <NationECommerceScale
           eCommerceTonnes={metrics.eCommerceLatestTonnes}
@@ -107,7 +83,6 @@ export function NationStoryPage({
         />
       </FullScreenSection>
 
-      {/* Oil – plain full-screen section */}
       <FullScreenSection>
         <NationOilExportsSection oilPoints={oilPoints} />
       </FullScreenSection>
