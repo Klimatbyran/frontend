@@ -44,9 +44,24 @@ export function NationZoomChart({ metrics }: NationZoomChartProps) {
 
   return (
     <div className="flex flex-col items-center gap-8 w-full">
-      <p className="text-xl md:text-2xl text-center text-grey max-w-2xl font-light">
-        {t("nation.story.zoom.phase3")}
-      </p>
+      <div className="flex flex-col gap-3 max-w-2xl text-center">
+        {[
+          t("nation.story.zoom.phase1"),
+          t("nation.story.zoom.phase2"),
+          t("nation.story.zoom.phase3"),
+        ].map((caption, i) => (
+          <motion.p
+            key={i}
+            className="text-base md:text-lg text-grey font-light leading-relaxed"
+            initial={{ opacity: 0, y: 8 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.4 }}
+            transition={{ duration: 0.4, delay: i * 0.25 }}
+          >
+            {caption}
+          </motion.p>
+        ))}
+      </div>
 
       {/* Pyramid: two on top, one (largest) centered below */}
       <div className="flex flex-col items-center">
@@ -86,7 +101,12 @@ export function NationZoomChart({ metrics }: NationZoomChartProps) {
           initial={{ scale: 0 }}
           whileInView={{ scale: 1 }}
           viewport={{ once: false, amount: 0.4 }}
-          transition={{ type: "spring", stiffness: 200, damping: 18, delay: 0.5 }}
+          transition={{
+            type: "spring",
+            stiffness: 200,
+            damping: 18,
+            delay: 0.5,
+          }}
         />
       </div>
 
