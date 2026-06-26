@@ -142,8 +142,6 @@ function RegionalInsightsPanel({
       dataPointKey={selectedKPI.key as keyof Region}
       unit={selectedKPI.unit}
       nullValues={selectedKPI.nullValues}
-      textColor="text-blue-3"
-      barColor={COLORS.blue3}
       entityType="regions"
       nameKey="name"
       showBars
@@ -162,8 +160,6 @@ function RegionalInsightsPanel({
       dataPointKey={selectedKPI.key as keyof Region}
       unit={selectedKPI.unit}
       nullValues={selectedKPI.nullValues}
-      textColor="text-pink-3"
-      barColor={COLORS.pink3}
       entityType="regions"
       nameKey="name"
       showBars

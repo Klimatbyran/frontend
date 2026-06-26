@@ -1,6 +1,5 @@
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { getCompanyDetailPath } from "@/utils/companyRouting";
-import { color } from "framer-motion";
 
 function calcBarWidth(
   showBars: boolean,
@@ -16,8 +15,6 @@ interface InsightsListProps<T> {
   entities: T[];
   dataPointKey: keyof T;
   unit: string;
-  textColor: string;
-  barColor?: string;
   totalCount: number;
   isBottomRanking?: boolean;
   nullValues?: string;
@@ -48,9 +45,9 @@ function InsightsList<T>({
     : 1;
 
   return (
-    <div className="bg-white/10 rounded-level-2 p-4 md:p-6 h-full">
-      <h3 className="text-white text-lg font-semibold mb-3">{title}</h3>
-      <div className="space-y-1">
+    <div className="bg-black-2 border border-white/10 rounded-level-2 h-full">
+      <h3 className="text-white text-lg font-semibold m-4 md:m-6 mb-2 md:mb-2">{title}</h3>
+      <div className="space-y-1 bg-black/40 mb-6 border-y border-white/10 px-4 md:px-6 py-2">
         {entities.map((entity, index) => {
           const position = isBottomRanking ? totalCount - index : index + 1;
           const name = String(entity[nameKey]);
@@ -62,7 +59,7 @@ function InsightsList<T>({
 
           const content = (
             <div
-              className="relative rounded-lg overflow-hidden group"
+              className="relative overflow-hidden group"
               style={{
                 animation: `fadeSlideIn 0.35s ease-out both`,
                 animationDelay: `${index * 35}ms`,
