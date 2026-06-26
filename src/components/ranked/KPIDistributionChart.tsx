@@ -152,7 +152,11 @@ export function KPIDistributionChart<T>({
     const total = booleanValues.reduce((s, d) => s + d.value, 0);
     return (
       <div className="flex flex-col items-center">
-        <ResponsiveContainer key={String(selectedKPI.key)} width="100%" height={180}>
+        <ResponsiveContainer
+          key={String(selectedKPI.key)}
+          width="100%"
+          height={180}
+        >
           <PieChart>
             <Pie
               data={booleanValues}
@@ -211,7 +215,11 @@ export function KPIDistributionChart<T>({
 
   return (
     <div>
-      <ResponsiveContainer key={String(selectedKPI.key)} width="100%" height={220}>
+      <ResponsiveContainer
+        key={String(selectedKPI.key)}
+        width="100%"
+        height={220}
+      >
         <BarChart
           data={bins}
           margin={{ top: 16, right: 4, bottom: 4, left: 4 }}
