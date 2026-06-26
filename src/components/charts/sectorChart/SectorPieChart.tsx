@@ -116,10 +116,7 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
   };
 
   return (
-    <ResponsiveContainer
-      width="100%"
-      height={chartHeight}
-    >
+    <ResponsiveContainer width="100%" height={chartHeight}>
       <PieChart>
         <Pie
           data={pieDataWithTotal}
