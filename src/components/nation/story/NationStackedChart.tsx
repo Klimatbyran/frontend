@@ -14,12 +14,9 @@ import { formatMton } from "@/utils/data/nationStoryMetrics";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import {
-  ChartArea,
   ChartFooter,
-  ChartWrapper,
   ChartYearControls,
   EnhancedLegend,
-  getChartContainerProps,
   getCurrentYearReferenceLineProps,
   getResponsiveChartMargin,
   getXAxisProps,
@@ -79,6 +76,8 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
     [data, chartEndYear],
   );
 
+  const chartHeight = isMobile ? 240 : 320;
+
   return (
     <SectionWithHelp helpItems={[]} className={className}>
       <CardHeader
@@ -87,64 +86,62 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
         className="[&>div]:mb-4 [&>div]:@lg:mb-6"
       />
 
-      <div style={{ height: isMobile ? "260px" : "340px" }}>
-        <ChartWrapper>
-          <ChartArea className="min-h-0 h-full">
-            <ResponsiveContainer {...getChartContainerProps()}>
-              <AreaChart
-                data={filteredData}
-                margin={getResponsiveChartMargin(isMobile)}
-              >
-                <XAxis
-                  {...getXAxisProps(
-                    "year",
-                    [1990, currentYear],
-                    [1990, 2000, 2010, 2020, currentYear],
-                  )}
-                />
-                <YAxis {...getYAxisProps(currentLanguage)} />
-                <Tooltip
-                  formatter={(value: number, name: string) => [
-                    `${formatMton(value, currentLanguage, 1)} ${t("nation.story.unit.mton")}`,
-                    name,
-                  ]}
-                  labelFormatter={(year) => String(year)}
-                  contentStyle={{
-                    backgroundColor: "var(--black-1)",
-                    border: "none",
-                    borderRadius: "8px",
-                  }}
-                  wrapperStyle={{ outline: "none", zIndex: 60 }}
-                />
-                <ReferenceLine
-                  {...getCurrentYearReferenceLineProps(currentYear)}
-                />
-                {LAYERS.map((layer) => (
-                  <Area
-                    key={layer.dataKey}
-                    type="monotone"
-                    dataKey={layer.dataKey}
-                    stackId="emissions"
-                    stroke={layer.color}
-                    strokeWidth={1.5}
-                    fill={layer.color}
-                    fillOpacity={0.6}
-                    name={t(layer.translationKey)}
-                    connectNulls={false}
-                  />
-                ))}
-              </AreaChart>
-            </ResponsiveContainer>
-          </ChartArea>
-          <ChartFooter>
-            <EnhancedLegend items={legendItems} />
-            <ChartYearControls
-              chartEndYear={chartEndYear}
-              setChartEndYear={setChartEndYear}
+      {/* Direct ResponsiveContainer in an explicitly-sized div */}
+      <div style={{ width: "100%", height: chartHeight }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart
+            data={filteredData}
+            margin={getResponsiveChartMargin(isMobile)}
+          >
+            <XAxis
+              {...getXAxisProps(
+                "year",
+                [1990, currentYear],
+                [1990, 2000, 2010, 2020, currentYear],
+              )}
             />
-          </ChartFooter>
-        </ChartWrapper>
+            <YAxis {...getYAxisProps(currentLanguage)} />
+            <Tooltip
+              formatter={(value: number, name: string) => [
+                `${formatMton(value, currentLanguage, 1)} ${t("nation.story.unit.mton")}`,
+                name,
+              ]}
+              labelFormatter={(year) => String(year)}
+              contentStyle={{
+                backgroundColor: "var(--black-1)",
+                border: "none",
+                borderRadius: "8px",
+              }}
+              wrapperStyle={{ outline: "none", zIndex: 60 }}
+            />
+            <ReferenceLine
+              {...getCurrentYearReferenceLineProps(currentYear)}
+            />
+            {LAYERS.map((layer) => (
+              <Area
+                key={layer.dataKey}
+                type="monotone"
+                dataKey={layer.dataKey}
+                stackId="emissions"
+                stroke={layer.color}
+                strokeWidth={1.5}
+                fill={layer.color}
+                fillOpacity={0.6}
+                name={t(layer.translationKey)}
+                connectNulls={false}
+              />
+            ))}
+          </AreaChart>
+        </ResponsiveContainer>
       </div>
+
+      <ChartFooter>
+        <EnhancedLegend items={legendItems} />
+        <ChartYearControls
+          chartEndYear={chartEndYear}
+          setChartEndYear={setChartEndYear}
+        />
+      </ChartFooter>
     </SectionWithHelp>
   );
 };
