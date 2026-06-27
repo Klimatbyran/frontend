@@ -220,7 +220,7 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
 
       {/* Change comparison */}
       {territorialChangePct !== null && combinedChangePct !== null && (
-        <div className="mt-6 border-t border-white/10 pt-6 space-y-4">
+        <div className="mt-4 border-t border-white/10 pt-4 space-y-3">
           <p className="text-sm text-grey">
             {t("nation.story.stacked.changeContext")}
           </p>
@@ -236,7 +236,7 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
               valueClassName="text-pink-3"
             />
           </div>
-          <p className="text-sm text-grey mt-4">
+          <p className="text-base md:text-lg text-white mt-3">
             {t("nation.story.stacked.changeFooter")}
           </p>
         </div>
