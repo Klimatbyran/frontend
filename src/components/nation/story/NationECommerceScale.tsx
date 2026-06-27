@@ -86,7 +86,7 @@ export function NationECommerceScale({
         <ScaleBar
           label="Trelleborg"
           tonnes={TRELLEBORG_TONNES}
-          color="var(--green-4)"
+          color="var(--blue-4)"
           maxTonnes={maxTonnes}
           barHeight={barHeight}
           staggerIndex={0}
@@ -94,7 +94,7 @@ export function NationECommerceScale({
         <ScaleBar
           label="Gävle"
           tonnes={GAVLE_TONNES}
-          color="var(--orange-3)"
+          color="var(--orange-4)"
           maxTonnes={maxTonnes}
           barHeight={barHeight}
           staggerIndex={1}
