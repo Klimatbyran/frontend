@@ -235,8 +235,8 @@ export function ParisBubbleChart({
               dataKey="x"
               domain={[0, axisMax]}
               tick={{ fill: COLORS.grey, fontSize: 11 }}
-              axisLine={{ stroke: COLORS.black1 }}
-              tickLine={{ stroke: COLORS.black1 }}
+              axisLine={false}
+              tickLine={false}
               label={{
                 value: t(
                   "companiesOverviewPage.visualizations.meetsParis.bubbleChart.xAxis",
@@ -254,8 +254,8 @@ export function ParisBubbleChart({
               domain={[0, axisMax]}
               width={56}
               tick={{ fill: COLORS.grey, fontSize: 11 }}
-              axisLine={{ stroke: COLORS.black1 }}
-              tickLine={{ stroke: COLORS.black1 }}
+              axisLine={false}
+              tickLine={false}
               label={{
                 value: t(
                   "companiesOverviewPage.visualizations.meetsParis.bubbleChart.yAxis",
