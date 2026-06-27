@@ -114,13 +114,20 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
   );
 
   const territorialChangePct = useMemo(() => {
-    if (!point1990 || !pointLatest || point1990.territorialFossil === 0) return null;
-    return ((pointLatest.territorialFossil - point1990.territorialFossil) / point1990.territorialFossil) * 100;
+    if (!point1990 || !pointLatest || point1990.territorialFossil === 0)
+      return null;
+    return (
+      ((pointLatest.territorialFossil - point1990.territorialFossil) /
+        point1990.territorialFossil) *
+      100
+    );
   }, [point1990, pointLatest]);
 
   const combinedChangePct = useMemo(() => {
     if (!point1990 || !pointLatest || point1990.combined === 0) return null;
-    return ((pointLatest.combined - point1990.combined) / point1990.combined) * 100;
+    return (
+      ((pointLatest.combined - point1990.combined) / point1990.combined) * 100
+    );
   }, [point1990, pointLatest]);
 
   const chartHeight = isMobile ? 240 : 320;

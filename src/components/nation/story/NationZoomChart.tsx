@@ -64,8 +64,10 @@ export function NationZoomChart({ metrics }: NationZoomChartProps) {
       viewport={{ once: false, amount: 0.4 }}
       transition={{ type: "spring", stiffness: 200, damping: 18, delay }}
     >
-      <span className="text-black font-bold text-base md:text-xl tabular-nums select-none">
+      <span className="text-black font-bold text-base md:text-xl tabular-nums select-none leading-tight text-center">
         {formatMton(b.mton, currentLanguage, 0)}
+        <br />
+        <span className="text-xs font-medium">{t("nation.story.unit.mton")}</span>
       </span>
     </motion.div>
   );
@@ -118,7 +120,7 @@ export function NationZoomChart({ metrics }: NationZoomChartProps) {
               <span className="text-sm text-grey flex-1">{t(b.labelKey)}</span>
               <span className="text-sm text-white font-medium tabular-nums shrink-0">
                 {formatMton(b.mton, currentLanguage, 0)}{" "}
-                {t("nation.story.unit.mton")}
+                {t("nation.story.unit.millionTco2e")}
               </span>
             </motion.div>
           );
