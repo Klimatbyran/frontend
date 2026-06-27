@@ -4,10 +4,7 @@ import { useTranslation } from "react-i18next";
 import { sectorColors, getCompanyColors } from "@/lib/constants/companyColors";
 import { RankedCompany } from "@/types/company";
 import { useScreenSize } from "@/hooks/useScreenSize";
-import {
-  extractYears,
-  useChartData,
-} from "@/hooks/companies/useChartData";
+import { extractYears, useChartData } from "@/hooks/companies/useChartData";
 import SectorPieChart, {
   PieChartItem,
 } from "@/components/charts/sectorChart/SectorPieChart";
