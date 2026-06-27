@@ -68,27 +68,32 @@ export function CompaniesOverviewPage() {
     return Array.from(sectors).sort();
   }, [companies]);
 
-  const getSectorFromURL = useCallback(() => {
+  const getSectorsFromURL = useCallback(() => {
     const params = new URLSearchParams(location.search);
     const sectorParam = params.get("sector");
-    if (sectorParam && availableSectors.includes(sectorParam)) {
-      return sectorParam;
+    if (!sectorParam) {
+      return availableSectors;
     }
-    // Default to first available sector if none selected
-    return availableSectors.length > 0 ? availableSectors[0] : null;
+    const parsed = sectorParam
+      .split(",")
+      .filter((sector) => availableSectors.includes(sector));
+    return parsed.length > 0 ? parsed : availableSectors;
   }, [location.search, availableSectors]);
 
-  const setSectorInURL = useCallback(
-    (sector: string | null) => {
+  const setSectorsInURL = useCallback(
+    (sectors: string[]) => {
       const params = new URLSearchParams(location.search);
-      if (sector) {
-        params.set("sector", sector);
-      } else {
+      const allSelected =
+        availableSectors.length > 0 &&
+        availableSectors.every((sector) => sectors.includes(sector));
+      if (allSelected) {
         params.delete("sector");
+      } else {
+        params.set("sector", sectors.join(","));
       }
       navigate({ search: params.toString() }, { replace: true });
     },
-    [location.search, navigate],
+    [availableSectors, location.search, navigate],
   );
 
   const getViewModeFromURL = useCallback((): OverviewViewMode => {
@@ -103,19 +108,10 @@ export function CompaniesOverviewPage() {
   };
 
   const [selectedKPI, setSelectedKPI] = useState(getKPIFromURL());
-  const [selectedSector, setSelectedSector] = useState<string | null>(
-    getSectorFromURL(),
+  const [selectedSectors, setSelectedSectors] = useState<string[]>(
+    getSectorsFromURL(),
   );
   const viewMode = getViewModeFromURL();
-
-  // Ensure a sector is selected on initial load
-  useEffect(() => {
-    if (!selectedSector && availableSectors.length > 0) {
-      const firstSector = availableSectors[0];
-      setSelectedSector(firstSector);
-      setSectorInURL(firstSector);
-    }
-  }, [availableSectors, selectedSector, setSectorInURL]);
 
   useEffect(() => {
     const kpiFromUrl = getKPIFromURL();
@@ -125,27 +121,37 @@ export function CompaniesOverviewPage() {
   }, [getKPIFromURL, selectedKPI.key]);
 
   useEffect(() => {
-    const sectorFromUrl = getSectorFromURL();
-    if (sectorFromUrl !== selectedSector) {
-      setSelectedSector(sectorFromUrl);
+    const sectorsFromUrl = getSectorsFromURL();
+    const urlMatchesSelection =
+      sectorsFromUrl.length === selectedSectors.length &&
+      sectorsFromUrl.every((sector) => selectedSectors.includes(sector));
+    if (!urlMatchesSelection) {
+      setSelectedSectors(sectorsFromUrl);
     }
-  }, [getSectorFromURL, selectedSector]);
+  }, [getSectorsFromURL, selectedSectors]);
 
   // Filter and enrich companies with KPI values
   const companiesWithKPIs: CompanyWithKPIs[] = useMemo(() => {
-    if (!companies || !selectedSector) return [];
+    if (!companies || selectedSectors.length === 0) return [];
 
     const filtered = companies.filter((company) => {
       const sectorCode = company.industry?.industryGics?.sectorCode;
-      return sectorCode === selectedSector;
+      return sectorCode != null && selectedSectors.includes(sectorCode);
     });
 
     return filtered.map((company) => enrichCompanyWithKPIs(company));
-  }, [companies, selectedSector]);
+  }, [companies, selectedSectors]);
 
-  const handleSectorChange = (sector: string) => {
-    setSelectedSector(sector);
-    setSectorInURL(sector);
+  const handleSectorToggle = (sector: string) => {
+    setSelectedSectors((prev) => {
+      const next = prev.includes(sector)
+        ? prev.length === 1
+          ? prev
+          : prev.filter((s) => s !== sector)
+        : [...prev, sector].sort();
+      setSectorsInURL(next);
+      return next;
+    });
   };
 
   const handleCompanyClick = (company: CompanyWithKPIs) => {
@@ -259,8 +265,8 @@ export function CompaniesOverviewPage() {
       <div className="mb-4">
         <IndustryFilter
           availableSectors={availableSectors}
-          selectedSector={selectedSector}
-          onSectorChange={handleSectorChange}
+          selectedSectors={selectedSectors}
+          onSectorToggle={handleSectorToggle}
         />
       </div>
 
