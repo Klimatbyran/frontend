@@ -40,13 +40,11 @@ export function NationStoryPage({
       {/* Intro */}
       <section className="flex items-center justify-center min-h-screen px-4 md:px-8 py-24">
         <div className="max-w-3xl mx-auto text-center space-y-8">
-          {nation.logoUrl ? (
-            <img
-              src={nation.logoUrl}
-              alt=""
-              className="h-16 w-16 mx-auto object-contain opacity-80"
-            />
-          ) : null}
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Flag_of_Sweden.svg"
+            alt=""
+            className="h-12 w-20 mx-auto object-contain opacity-90 rounded-sm"
+          />
           <h1 className="text-4xl md:text-6xl font-light">{countryName}</h1>
           <p className="text-lg md:text-xl text-grey leading-relaxed">
             {t("nation.story.intro.paragraph1")}
