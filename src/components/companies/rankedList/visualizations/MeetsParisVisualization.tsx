@@ -1,6 +1,9 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { CompanyWithKPIs } from "@/hooks/companies/useCompanyKPIs";
+import {
+  CompanyWithKPIs,
+  CompanyKPIValue,
+} from "@/hooks/companies/useCompanyKPIs";
 import { calculateTrendline } from "@/lib/calculations/trends/analysis";
 import {
   calculateParisPathBudget,
@@ -11,11 +14,13 @@ import { ParisBubbleChart } from "./ParisBubbleChart";
 
 interface MeetsParisVisualizationProps {
   companies: CompanyWithKPIs[];
+  selectedKPI: CompanyKPIValue;
   onCompanyClick?: (company: CompanyWithKPIs) => void;
 }
 
 export function MeetsParisVisualization({
   companies,
+  selectedKPI,
   onCompanyClick,
 }: MeetsParisVisualizationProps) {
   const { t } = useTranslation();
@@ -58,6 +63,7 @@ export function MeetsParisVisualization({
     <div className="w-full h-full flex flex-col gap-3">
       <ParisBubbleChart
         companies={chartCompanies}
+        selectedKPI={selectedKPI}
         onCompanyClick={onCompanyClick}
       />
 

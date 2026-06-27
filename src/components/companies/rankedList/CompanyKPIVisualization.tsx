@@ -12,11 +12,13 @@ interface CompanyKPIVisualizationProps {
 
 export function CompanyKPIVisualization({
   companies,
+  selectedKPI,
   onCompanyClick,
 }: CompanyKPIVisualizationProps) {
   return (
     <MeetsParisVisualization
       companies={companies}
+      selectedKPI={selectedKPI}
       onCompanyClick={onCompanyClick}
     />
   );

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Cell,
@@ -11,7 +11,10 @@ import {
   YAxis,
   ZAxis,
 } from "recharts";
-import type { CompanyWithKPIs } from "@/hooks/companies/useCompanyKPIs";
+import type {
+  CompanyKPIValue,
+  CompanyWithKPIs,
+} from "@/hooks/companies/useCompanyKPIs";
 import { calculateTrendline } from "@/lib/calculations/trends/analysis";
 import { get2025Emissions } from "@/lib/calculations/trends/meetsParis";
 import {
@@ -22,9 +25,15 @@ import { getBestUnit, formatWithBestUnit } from "@/utils/data/unitScaling";
 import { COLORS } from "@/lib/colors";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { getCompanyUrlSegment } from "@/utils/companyRouting";
+import {
+  getCompanyOverviewKPIColor,
+  getCompanyOverviewKPINumericRange,
+} from "@/utils/insights/companyOverviewKpiColor";
+import { BeeswarmLegend } from "./shared/BeeswarmLegend";
 
 interface ParisBubbleChartProps {
   companies: CompanyWithKPIs[];
+  selectedKPI: CompanyKPIValue;
   onCompanyClick?: (company: CompanyWithKPIs) => void;
 }
 
@@ -33,7 +42,7 @@ interface BubblePoint {
   x: number;
   y: number;
   z: number;
-  meetsParis: boolean | null;
+  color: string;
   parisBudgetRaw: number;
   trendTotalRaw: number;
   emissions2025Raw: number;
@@ -43,22 +52,45 @@ interface BubbleTooltipProps {
   active?: boolean;
   payload?: Array<{ payload: BubblePoint }>;
   maxValue: number;
+  selectedKPI: CompanyKPIValue;
 }
 
-function BubbleTooltip({ active, payload, maxValue }: BubbleTooltipProps) {
+function formatKPIValue(
+  company: CompanyWithKPIs,
+  selectedKPI: CompanyKPIValue,
+): string {
+  const value = company[selectedKPI.key as keyof CompanyWithKPIs];
+
+  if (value === null || value === undefined) {
+    return selectedKPI.nullValues ?? "—";
+  }
+
+  if (typeof value === "boolean") {
+    return value
+      ? (selectedKPI.booleanLabels?.true ?? "Yes")
+      : (selectedKPI.booleanLabels?.false ?? "No");
+  }
+
+  if (typeof value === "number") {
+    return `${value.toFixed(1)}${selectedKPI.unit ?? ""}`;
+  }
+
+  return String(value);
+}
+
+function BubbleTooltip({
+  active,
+  payload,
+  maxValue,
+  selectedKPI,
+}: BubbleTooltipProps) {
   const { t } = useTranslation();
 
   if (!active || !payload?.length) return null;
 
   const point = payload[0].payload;
   const formatTonnes = (value: number) => formatWithBestUnit(value, maxValue);
-
-  const meetsParisLabel =
-    point.meetsParis === true
-      ? t("companies.list.kpis.meetsParis.booleanLabels.true")
-      : point.meetsParis === false
-        ? t("companies.list.kpis.meetsParis.booleanLabels.false")
-        : t("companies.list.kpis.meetsParis.nullValues");
+  const kpiValue = formatKPIValue(point.company, selectedKPI);
 
   return (
     <div className="rounded-2xl bg-black/80 backdrop-blur-sm border border-black-3 p-4 text-sm shadow-lg">
@@ -66,6 +98,10 @@ function BubbleTooltip({ active, payload, maxValue }: BubbleTooltipProps) {
         {point.company.name}
       </p>
       <div className="space-y-1 text-white/70">
+        <p>
+          <span className="text-grey">{selectedKPI.label}:</span>{" "}
+          <span style={{ color: point.color }}>{kpiValue}</span>
+        </p>
         <p>
           <span className="text-grey">
             {t(
@@ -93,9 +129,6 @@ function BubbleTooltip({ active, payload, maxValue }: BubbleTooltipProps) {
           </span>{" "}
           {formatTonnes(point.emissions2025Raw)}
         </p>
-        <p className="pt-1">
-          <span className="text-orange-2">{meetsParisLabel}</span>
-        </p>
       </div>
     </div>
   );
@@ -103,69 +136,82 @@ function BubbleTooltip({ active, payload, maxValue }: BubbleTooltipProps) {
 
 export function ParisBubbleChart({
   companies,
+  selectedKPI,
   onCompanyClick,
 }: ParisBubbleChartProps) {
   const { t } = useTranslation();
   const { isMobile } = useScreenSize();
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
-  const { points, unitScale, axisMax, maxRawValue } = useMemo(() => {
-    const rawPoints: Array<{
-      company: CompanyWithKPIs;
-      parisBudgetRaw: number;
-      trendTotalRaw: number;
-      emissions2025Raw: number;
-      meetsParis: boolean | null;
-    }> = [];
+  useEffect(() => {
+    setActiveIndex(null);
+  }, [selectedKPI.key]);
 
-    companies.forEach((company) => {
-      const trendAnalysis = calculateTrendline(company);
-      const parisBudgetRaw = calculateParisPathBudget(company, trendAnalysis);
-      const trendTotalRaw = calculateTrendTotalEmissions(
-        company,
-        trendAnalysis,
+  const { points, unitScale, axisMax, maxRawValue, numericRange } =
+    useMemo(() => {
+      const numericRange = getCompanyOverviewKPINumericRange(
+        companies,
+        selectedKPI,
       );
-      const emissions2025Raw = get2025Emissions(company, trendAnalysis);
+      const rawPoints: Array<{
+        company: CompanyWithKPIs;
+        parisBudgetRaw: number;
+        trendTotalRaw: number;
+        emissions2025Raw: number;
+      }> = [];
 
-      if (
-        parisBudgetRaw === null ||
-        trendTotalRaw === null ||
-        emissions2025Raw === null ||
-        emissions2025Raw <= 0
-      ) {
-        return;
-      }
+      companies.forEach((company) => {
+        const trendAnalysis = calculateTrendline(company);
+        const parisBudgetRaw = calculateParisPathBudget(company, trendAnalysis);
+        const trendTotalRaw = calculateTrendTotalEmissions(
+          company,
+          trendAnalysis,
+        );
+        const emissions2025Raw = get2025Emissions(company, trendAnalysis);
 
-      rawPoints.push({
-        company,
-        parisBudgetRaw,
-        trendTotalRaw,
-        emissions2025Raw,
-        meetsParis: company.meetsParis ?? null,
+        if (
+          parisBudgetRaw === null ||
+          trendTotalRaw === null ||
+          emissions2025Raw === null ||
+          emissions2025Raw <= 0
+        ) {
+          return;
+        }
+
+        rawPoints.push({
+          company,
+          parisBudgetRaw,
+          trendTotalRaw,
+          emissions2025Raw,
+        });
       });
-    });
 
-    const maxRawValue = Math.max(
-      0,
-      ...rawPoints.flatMap((point) => [
-        point.parisBudgetRaw,
-        point.trendTotalRaw,
-      ]),
-    );
-    const unitScale = getBestUnit(maxRawValue);
+      const maxRawValue = Math.max(
+        0,
+        ...rawPoints.flatMap((point) => [
+          point.parisBudgetRaw,
+          point.trendTotalRaw,
+        ]),
+      );
+      const unitScale = getBestUnit(maxRawValue);
 
-    const points: BubblePoint[] = rawPoints.map((point) => ({
-      ...point,
-      x: point.parisBudgetRaw / unitScale.divisor,
-      y: point.trendTotalRaw / unitScale.divisor,
-      z: point.emissions2025Raw,
-    }));
+      const points: BubblePoint[] = rawPoints.map((point) => ({
+        ...point,
+        x: point.parisBudgetRaw / unitScale.divisor,
+        y: point.trendTotalRaw / unitScale.divisor,
+        z: point.emissions2025Raw,
+        color: getCompanyOverviewKPIColor(
+          point.company,
+          selectedKPI,
+          numericRange,
+        ),
+      }));
 
-    const axisMax =
-      Math.ceil((maxRawValue / unitScale.divisor) * 1.05 * 10) / 10;
+      const axisMax =
+        Math.ceil((maxRawValue / unitScale.divisor) * 1.05 * 10) / 10;
 
-    return { points, unitScale, axisMax, maxRawValue };
-  }, [companies]);
+      return { points, unitScale, axisMax, maxRawValue, numericRange };
+    }, [companies, selectedKPI]);
 
   if (points.length === 0) {
     return (
@@ -223,7 +269,14 @@ export function ParisBubbleChart({
               }}
             />
             <ZAxis type="number" dataKey="z" range={[48, 320]} />
-            <Tooltip content={<BubbleTooltip maxValue={maxRawValue} />} />
+            <Tooltip
+              content={
+                <BubbleTooltip
+                  maxValue={maxRawValue}
+                  selectedKPI={selectedKPI}
+                />
+              }
+            />
             <ReferenceLine
               segment={[
                 { x: 0, y: 0 },
@@ -250,13 +303,7 @@ export function ParisBubbleChart({
               {points.map((point, index) => (
                 <Cell
                   key={getCompanyUrlSegment(point.company)}
-                  fill={
-                    point.meetsParis === true
-                      ? COLORS.blue3
-                      : point.meetsParis === false
-                        ? COLORS.pink3
-                        : COLORS.grey
-                  }
+                  fill={point.color}
                   fillOpacity={activeIndex === index ? 1 : 0.75}
                   stroke={
                     activeIndex === index ? COLORS.orange2 : "transparent"
@@ -270,20 +317,32 @@ export function ParisBubbleChart({
       </div>
 
       <div className="flex flex-wrap items-center gap-4 text-xs text-grey">
-        <div className="flex items-center gap-2">
-          <span
-            className="inline-block h-2.5 w-2.5 rounded-full"
-            style={{ backgroundColor: COLORS.blue3 }}
-          />
-          {t("companies.list.kpis.meetsParis.booleanLabels.true")}
-        </div>
-        <div className="flex items-center gap-2">
-          <span
-            className="inline-block h-2.5 w-2.5 rounded-full"
-            style={{ backgroundColor: COLORS.pink3 }}
-          />
-          {t("companies.list.kpis.meetsParis.booleanLabels.false")}
-        </div>
+        {selectedKPI.isBoolean ? (
+          <>
+            <div className="flex items-center gap-2">
+              <span
+                className="inline-block h-2.5 w-2.5 rounded-full"
+                style={{ backgroundColor: COLORS.blue3 }}
+              />
+              {selectedKPI.booleanLabels?.true ?? t("yes")}
+            </div>
+            <div className="flex items-center gap-2">
+              <span
+                className="inline-block h-2.5 w-2.5 rounded-full"
+                style={{ backgroundColor: COLORS.pink3 }}
+              />
+              {selectedKPI.booleanLabels?.false ?? t("no")}
+            </div>
+          </>
+        ) : (
+          numericRange && (
+            <BeeswarmLegend
+              min={numericRange.min}
+              max={numericRange.max}
+              unit={selectedKPI.unit ?? ""}
+            />
+          )
+        )}
         <div className="flex items-center gap-2">
           <span
             className="inline-block h-2.5 w-2.5 rounded-full border border-dashed"
