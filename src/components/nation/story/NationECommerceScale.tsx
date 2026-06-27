@@ -86,29 +86,27 @@ export function NationECommerceScale({
         <ScaleBar
           label="Trelleborg"
           tonnes={TRELLEBORG_TONNES}
-          color="var(--grey)"
+          color="var(--green-4)"
           maxTonnes={maxTonnes}
           barHeight={barHeight}
           staggerIndex={0}
         />
         <ScaleBar
-          label={t("nation.story.ecommerce.ecommerceLabel", {
-            year: eCommerceYear,
-          })}
-          tonnes={eCommerceTonnes}
-          color="var(--orange-2)"
+          label="Gävle"
+          tonnes={GAVLE_TONNES}
+          color="var(--orange-3)"
           maxTonnes={maxTonnes}
           barHeight={barHeight}
           staggerIndex={1}
-          highlight
         />
         <ScaleBar
-          label="Gävle"
-          tonnes={GAVLE_TONNES}
-          color="var(--blue-2)"
+          label={t("nation.story.ecommerce.ecommerceLabel")}
+          tonnes={eCommerceTonnes}
+          color="var(--pink-3)"
           maxTonnes={maxTonnes}
           barHeight={barHeight}
           staggerIndex={2}
+          highlight
         />
       </div>
 

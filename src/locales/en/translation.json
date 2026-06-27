@@ -1566,7 +1566,7 @@
         "title": "E-commerce from abroad",
         "description": "For the first time we have figures for private e-commerce emissions from abroad. How big is it?",
         "smallLabel": "{{municipality}} ({{year}})",
-        "ecommerceLabel": "Private e-commerce ({{year}})",
+        "ecommerceLabel": "Private e-commerce",
         "municipalityLabel": "Municipal emissions",
         "comparisonFooter": "Private e-commerce emissions from abroad ({{ecommerceYear}}) exceed the entire territorial emissions of Gävle and are nearly three times those of Trelleborg – yet they are not captured in official statistics.",
         "footer": "E-commerce emissions are roughly equivalent to an entire municipality's annual emissions – yet rarely part of the usual picture."

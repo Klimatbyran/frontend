@@ -1623,7 +1623,7 @@
         "title": "E-handel från utlandet",
         "description": "För första gången har vi siffror på utsläpp från privat e-handel utomlands – som kläder från Shein. Hur stort är det?",
         "smallLabel": "{{municipality}} ({{year}})",
-        "ecommerceLabel": "Privat e-handel ({{year}})",
+        "ecommerceLabel": "Privat e-handel",
         "municipalityLabel": "Kommunens utsläpp",
         "comparisonFooter": "Privata e-handelsutsläpp från utlandet ({{ecommerceYear}}) är större än hela Gävles territoriella utsläpp och nästan tre gånger Trelleborgs – men ingår inte i den officiella statistiken.",
         "footer": "E-handelsutsläppen motsvarar ungefär en hel kommuns årsutsläpp – men fångas sällan i den vanliga bilden."
