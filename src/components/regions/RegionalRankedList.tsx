@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { useIsMobile } from "@/hooks/useIsMobile";
 import RankedList from "@/components/ranked/RankedList";
 import { DataPoint, KPIValue, RankedListItem } from "@/types/rankings";
 import { Region } from "@/types/region";
@@ -17,6 +18,7 @@ export function RegionalRankedList({
   headerAction,
 }: RegionalRankedListProps) {
   const { t } = useTranslation();
+  const isMobile = useIsMobile();
 
   const asDataPoint = (kpi: unknown): DataPoint<RankedListItem> =>
     kpi as DataPoint<RankedListItem>;
@@ -56,7 +58,7 @@ export function RegionalRankedList({
       onItemClick={onItemClick}
       searchKey="displayName"
       searchPlaceholder={t("rankedList.search.placeholder")}
-      itemsPerPage={6}
+      itemsPerPage={isMobile ? 6 : 7}
       headerAction={headerAction}
     />
   );

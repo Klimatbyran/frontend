@@ -3,6 +3,7 @@ import { Leaf, ArrowDownCircle, BarChart2, List } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useCompanies } from "@/hooks/companies/useCompanies";
+import { useIsMobile } from "@/hooks/useIsMobile";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { KPIChipSelector } from "@/components/ranked/KPIChipSelector";
 import { OverviewPageSkeleton } from "@/components/ranked/OverviewPageSkeleton";
@@ -31,6 +32,7 @@ const COMPANY_KPI_ICONS: Record<string, React.ReactNode> = {
 
 export function CompaniesOverviewPage() {
   const { t } = useTranslation();
+  const isMobile = useIsMobile();
   const { companies, companiesLoading, companiesError } = useCompanies();
   const companyKPIs = useCompanyKPIs();
 
@@ -219,7 +221,7 @@ export function CompaniesOverviewPage() {
       onItemClick={handleCompanyClick}
       searchKey="name"
       searchPlaceholder={t("rankedList.search.placeholder")}
-      itemsPerPage={6}
+      itemsPerPage={isMobile ? 6 : 7}
       headerAction={viewToggle}
     />
   );
