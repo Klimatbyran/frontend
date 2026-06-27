@@ -48,7 +48,10 @@ interface BubblePoint {
   emissions2025Raw: number;
 }
 
-function getLogAxisBounds(values: number[]): { axisMin: number; axisMax: number } {
+function getLogAxisBounds(values: number[]): {
+  axisMin: number;
+  axisMax: number;
+} {
   const positiveValues = values.filter((value) => value > 0);
   if (positiveValues.length === 0) {
     return { axisMin: 1, axisMax: 10 };
