@@ -187,12 +187,14 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
             <OverviewStat
               label={String(1990)}
               value={formatMton(point1990.combined, currentLanguage, 0)}
-              unit={t("nation.story.unit.mton")}
+              unit={t("nation.story.unit.millionTco2e")}
+              valueClassName="text-orange-2"
             />
             <OverviewStat
               label={String(pointLatest.year)}
               value={formatMton(pointLatest.combined, currentLanguage, 0)}
-              unit={t("nation.story.unit.mton")}
+              unit={t("nation.story.unit.millionTco2e")}
+              valueClassName="text-orange-2"
             />
           </div>
         </div>

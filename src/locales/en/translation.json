@@ -1498,7 +1498,8 @@
     },
     "story": {
       "unit": {
-        "mton": "Mt"
+        "mton": "Mt",
+        "millionTco2e": "million tCO₂e"
       },
       "intro": {
         "paragraph1": "Parties across the political spectrum often say Sweden's emissions have fallen by a third while the economy has doubled. That is only partly true. Everything depends on which data you choose to present, over what time period, and which types of emissions you include.",

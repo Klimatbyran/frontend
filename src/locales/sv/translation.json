@@ -1555,7 +1555,8 @@
     },
     "story": {
       "unit": {
-        "mton": "Mton"
+        "mton": "Mton",
+        "millionTco2e": "miljoner tCO₂e"
       },
       "intro": {
         "paragraph1": "Partier av olika färger brukar säga att Sveriges utsläpp minskat med en tredjedel samtidigt som ekonomin har fördubblats. Men det är en sanning med modifikation. Allt beror på vilken data du väljer att presentera, under vilken tidsperiod och vilka typer av utsläpp du väljer att ha med.",

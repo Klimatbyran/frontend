@@ -104,7 +104,8 @@ export function NationZoomChart({ metrics }: NationZoomChartProps) {
       {/* Legend with percent of total */}
       <div className="flex flex-col gap-2 w-full max-w-sm">
         {bubbles.map((b, i) => {
-          const pct = totalMton > 0 ? Math.round((b.mton / totalMton) * 100) : 0;
+          const pct =
+            totalMton > 0 ? Math.round((b.mton / totalMton) * 100) : 0;
           return (
             <motion.div
               key={b.key}
