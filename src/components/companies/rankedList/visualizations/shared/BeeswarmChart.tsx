@@ -285,35 +285,9 @@ export function BeeswarmChart<T>({
                 gradientBackground={legendGradient}
               />
             </div>
-            <div className="text-center md:text-left order-1 md:order-2">
-              {t(
-                "companiesOverviewPage.visualizations.beeswarm.companiesShown",
-                {
-                  count: data.length,
-                },
-              )}
-              {data.length >= maxDisplayCount &&
-                ` ${t(
-                  "companiesOverviewPage.visualizations.beeswarm.showingFirst",
-                  {
-                    count: maxDisplayCount,
-                  },
-                )}`}
-            </div>
           </>
         ) : (
-          <div className="text-center w-full">
-            {t("companiesOverviewPage.visualizations.beeswarm.companiesShown", {
-              count: data.length,
-            })}
-            {data.length >= maxDisplayCount &&
-              ` ${t(
-                "companiesOverviewPage.visualizations.beeswarm.showingFirst",
-                {
-                  count: maxDisplayCount,
-                },
-              )}`}
-          </div>
+          <div />
         )}
       </div>
 
