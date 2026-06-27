@@ -47,7 +47,7 @@ const LAYERS = [
   },
 ];
 
-const LAYER_STAGGER_MS = 900;
+const LAYER_STAGGER_MS = 1500;
 
 interface NationStackedChartProps {
   data: NationStackDataPoint[];
@@ -161,7 +161,7 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
                 name={t(layer.translationKey)}
                 connectNulls={false}
                 isAnimationActive
-                animationDuration={700}
+                animationDuration={1000}
                 animationEasing="ease-out"
               />
             ))}
