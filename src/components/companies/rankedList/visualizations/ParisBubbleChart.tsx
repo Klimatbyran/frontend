@@ -52,8 +52,7 @@ function BubbleTooltip({ active, payload, maxValue }: BubbleTooltipProps) {
   if (!active || !payload?.length) return null;
 
   const point = payload[0].payload;
-  const formatTonnes = (value: number) =>
-    formatWithBestUnit(value, maxValue);
+  const formatTonnes = (value: number) => formatWithBestUnit(value, maxValue);
 
   const meetsParisLabel =
     point.meetsParis === true
@@ -264,7 +263,9 @@ export function ParisBubbleChart({
                         : COLORS.grey
                   }
                   fillOpacity={activeIndex === index ? 1 : 0.75}
-                  stroke={activeIndex === index ? COLORS.orange2 : "transparent"}
+                  stroke={
+                    activeIndex === index ? COLORS.orange2 : "transparent"
+                  }
                   strokeWidth={2}
                 />
               ))}
