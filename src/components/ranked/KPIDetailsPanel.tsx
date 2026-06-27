@@ -220,11 +220,13 @@ export default function KPIDetailsPanel({
                           STAT_COLOR_MAP[stat.colorClass] ?? "#888",
                       }}
                     />
-                    <span className="text-white/70 text-base">
+                    <span className="text-white/70 text-sm md:text-base">
                       {lowercaseFirstLetter(stat.label)}
                     </span>
                   </div>
-                  <span className={`font-bold text-2xl ${stat.colorClass}`}>
+                  <span
+                    className={`font-bold text-lg md:text-2xl ${stat.colorClass}`}
+                  >
                     {stat.count}{" "}
                     <span className="text-white/40 font-normal text-sm">
                       ({pct}%)
