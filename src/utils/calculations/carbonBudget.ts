@@ -54,3 +54,45 @@ export const calculateCarbonBudgetTonnes = (
 
   return tonnesDiff;
 };
+
+/**
+ * Cumulative emissions along the LAD trendline from 2025–2050 (tonnes).
+ */
+export const calculateTrendTotalEmissions = (
+  company: RankedCompany,
+  trendAnalysis: TrendAnalysis | null,
+): number | null => {
+  if (!trendAnalysis?.coefficients) return null;
+
+  const emissions2025 = get2025Emissions(company, trendAnalysis);
+  if (emissions2025 === null || emissions2025 === undefined) return null;
+
+  const slope =
+    "slope" in trendAnalysis.coefficients
+      ? trendAnalysis.coefficients.slope
+      : trendAnalysis.coefficients.a;
+
+  return calculateCumulativeEmissions(emissions2025, slope, 2025, 2050);
+};
+
+/**
+ * Cumulative Paris-aligned carbon budget from 2025–2050 (tonnes).
+ */
+export const calculateParisPathBudget = (
+  company: RankedCompany,
+  trendAnalysis: TrendAnalysis | null,
+): number | null => {
+  if (!trendAnalysis?.coefficients) return null;
+
+  const emissions2025 = get2025Emissions(company, trendAnalysis);
+  if (emissions2025 === null || emissions2025 === undefined) return null;
+  if (emissions2025 <= 0) return 0;
+
+  const budget = calculateCarbonLawCumulativeEmissions(
+    emissions2025,
+    2025,
+    2050,
+  );
+
+  return budget === 0 ? null : budget;
+};

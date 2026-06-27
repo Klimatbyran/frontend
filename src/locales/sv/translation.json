@@ -440,6 +440,15 @@
           "underBudget": "under kolbudget",
           "overBudget": "över kolbudget",
           "onBudget": "på kolbudget"
+        },
+        "bubbleChart": {
+          "xAxis": "Parisvägsbudget ({{unit}})",
+          "yAxis": "Trendtotal ({{unit}})",
+          "parisBudget": "Parisvägsbudget",
+          "trendTotal": "Trendtotal",
+          "emissions2025": "Utsläpp 2025 (bubbelstorlek)",
+          "parityLine": "På rätt spår om under linjen",
+          "sizeLegend": "Bubbelstorlek = utsläpp 2025"
         }
       },
       "beeswarm": {

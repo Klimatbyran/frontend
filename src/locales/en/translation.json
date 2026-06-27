@@ -435,6 +435,15 @@
           "underBudget": "under carbon budget",
           "overBudget": "over carbon budget",
           "onBudget": "on carbon budget"
+        },
+        "bubbleChart": {
+          "xAxis": "Paris path budget ({{unit}})",
+          "yAxis": "Trend total ({{unit}})",
+          "parisBudget": "Paris path budget",
+          "trendTotal": "Trend total",
+          "emissions2025": "2025 emissions (bubble size)",
+          "parityLine": "On track if below line",
+          "sizeLegend": "Bubble size = 2025 emissions"
         }
       },
       "beeswarm": {
