@@ -175,15 +175,6 @@ export function MeetsParisVisualization({
         />
       </div>
 
-      <p className="text-grey text-sm">
-        {t("companiesOverviewPage.visualizations.meetsParis.description")}{" "}
-        <a
-          href="/methodology?view=companyDataOverview"
-          className="underline hover:text-white"
-        >
-          {t("companiesOverviewPage.visualizations.meetsParis.learnMore")}
-        </a>
-      </p>
       {!isMobile && (
         <div className="text-sm text-grey">
           {t("companies.list.kpis.meetsParis.label")}
