@@ -206,12 +206,17 @@ export function KPIDistributionChart<T>({
   const maxCount = Math.max(...bins.map((b) => b.count));
   const binWidth = bins[1] ? bins[1].min - bins[0].min : 1;
 
-  const goodLabel = selectedKPI.higherIsBetter
-    ? t("municipalities.list.insights.distribution.higherBetter")
-    : t("municipalities.list.insights.distribution.lowerBetter");
-  const badLabel = selectedKPI.higherIsBetter
-    ? t("municipalities.list.insights.distribution.lowerWorse")
-    : t("municipalities.list.insights.distribution.higherWorse");
+  // Both keys now translate to just "Bättre" / "Sämre"
+  const betterLabel = t("municipalities.list.insights.distribution.higherBetter");
+  const worseLabel = t("municipalities.list.insights.distribution.higherWorse");
+
+  // For lowerIsBetter KPIs (e.g. emissions), blue bars are on the LEFT (low values).
+  // For higherIsBetter KPIs, blue bars are on the RIGHT (high values).
+  // Legend order reflects this so "Sämre" is always next to the pink side.
+  const leftLabel = selectedKPI.higherIsBetter ? worseLabel : betterLabel;
+  const leftColor = selectedKPI.higherIsBetter ? COLORS.pink3 : COLORS.blue3;
+  const rightLabel = selectedKPI.higherIsBetter ? betterLabel : worseLabel;
+  const rightColor = selectedKPI.higherIsBetter ? COLORS.blue3 : COLORS.pink3;
 
   return (
     <div>
@@ -290,14 +295,14 @@ export function KPIDistributionChart<T>({
           </Bar>
         </BarChart>
       </ResponsiveContainer>
-      {/* Color legend */}
+      {/* Color legend — order mirrors the histogram: bad side matches its colour */}
       <div className="flex items-center justify-between mt-3 px-1 gap-3">
         <div className="flex items-center gap-2">
           <span
             className="inline-block w-3 h-3 rounded-sm shrink-0"
-            style={{ backgroundColor: COLORS.blue3 }}
+            style={{ backgroundColor: leftColor }}
           />
-          <span className="text-xs text-white/40">{goodLabel}</span>
+          <span className="text-xs text-white/40">{leftLabel}</span>
         </div>
         <div className="flex items-center gap-2">
           <span
@@ -311,9 +316,9 @@ export function KPIDistributionChart<T>({
         <div className="flex items-center gap-2">
           <span
             className="inline-block w-3 h-3 rounded-sm shrink-0"
-            style={{ backgroundColor: COLORS.pink3 }}
+            style={{ backgroundColor: rightColor }}
           />
-          <span className="text-xs text-white/40">{badLabel}</span>
+          <span className="text-xs text-white/40">{rightLabel}</span>
         </div>
       </div>
     </div>

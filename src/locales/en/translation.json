@@ -1502,8 +1502,8 @@
       "dataSelector": {
         "label": "Select Data Point",
         "tooltips": {
-          "higherBetter": "Higher values are better",
-          "lowerBetter": "Lower values are better"
+          "higherBetter": "Better",
+          "lowerBetter": "Better"
         }
       },
       "kpis": {
@@ -1566,8 +1566,8 @@
       "dataSelector": {
         "label": "Select Data Point",
         "tooltips": {
-          "higherBetter": "Higher values are better",
-          "lowerBetter": "Lower values are better"
+          "higherBetter": "Better",
+          "lowerBetter": "Better"
         }
       },
       "kpis": {
@@ -1645,10 +1645,10 @@
           "subtitle": "Shows how municipalities are spread across the scale for the selected indicator. Blue bars mean better results, pink worse, and the dashed line marks the national average.",
           "summary": "Summary",
           "average": "Average",
-          "higherBetter": "Higher = better",
-          "lowerBetter": "Lower = better",
-          "higherWorse": "Higher = worse",
-          "lowerWorse": "Lower = worse"
+          "higherBetter": "Better",
+          "lowerBetter": "Better",
+          "higherWorse": "Worse",
+          "lowerWorse": "Worse"
         }
       },
       "summary": {
