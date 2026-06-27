@@ -1636,7 +1636,6 @@
         },
         "keyStatistics": {
           "average": "Average",
-          "median": "Median",
           "best": "Best",
           "worst": "Worst"
         },
@@ -1647,16 +1646,8 @@
           "average": "Average",
           "higherBetter": "Better",
           "lowerBetter": "Better",
-          "higherWorse": "Worse",
-          "lowerWorse": "Worse"
+          "higherWorse": "Worse"
         }
-      },
-      "summary": {
-        "total": "Total",
-        "municipalities": "municipalities",
-        "nationalAvg": "national average",
-        "missingData": "Missing data",
-        "noReported": "not reported"
       },
       "viewToggle": {
         "showList": "List",

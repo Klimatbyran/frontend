@@ -1695,7 +1695,6 @@
         },
         "keyStatistics": {
           "average": "Genomsnitt",
-          "median": "Median",
           "best": "Bäst",
           "worst": "Sämst"
         },
@@ -1706,16 +1705,8 @@
           "average": "Genomsnitt",
           "higherBetter": "Bättre",
           "lowerBetter": "Bättre",
-          "higherWorse": "Sämre",
-          "lowerWorse": "Sämre"
+          "higherWorse": "Sämre"
         }
-      },
-      "summary": {
-        "total": "Totalt",
-        "municipalities": "kommuner",
-        "nationalAvg": "riksgenomsnittet",
-        "missingData": "Saknar data",
-        "noReported": "ej rapporterat"
       },
       "viewToggle": {
         "showList": "Lista",

@@ -34,7 +34,6 @@ export function isMissingRankedValue(
 export interface EntityStatistics<T> {
   validData: T[];
   average: number;
-  median: number;
   aboveAverageCount: number;
   belowAverageCount: number;
   nullCount: number;
@@ -44,7 +43,6 @@ export interface EntityStatistics<T> {
     label: string;
   }>;
   formattedAverage?: string;
-  formattedMedian?: string;
 }
 
 /**
@@ -87,12 +85,6 @@ export function calculateEntityStatistics<
 
   const average = values.reduce((sum, val) => sum + val, 0) / values.length;
 
-  const sortedValues = [...values].sort((a, b) => a - b);
-  const mid = Math.floor(sortedValues.length / 2);
-  const median =
-    sortedValues.length % 2 === 0
-      ? (sortedValues[mid - 1] + sortedValues[mid]) / 2
-      : sortedValues[mid];
 
   // For boolean KPIs, these counts have a different meaning
   const aboveAverageCount = selectedKPI.isBoolean
@@ -139,20 +131,15 @@ export function calculateEntityStatistics<
   const formattedAverage = selectedKPI.isBoolean
     ? undefined
     : `${average.toFixed(1)}${unit}`;
-  const formattedMedian = selectedKPI.isBoolean
-    ? undefined
-    : `${median.toFixed(1)}${unit}`;
 
   return {
     validData,
     average,
-    median,
     aboveAverageCount,
     belowAverageCount,
     nullCount,
     distributionStats,
     formattedAverage,
-    formattedMedian,
   };
 }
 
@@ -160,6 +147,37 @@ export function calculateEntityStatistics<
  * Create source links from KPI
  * Accepts any KPIValue regardless of entity type
  */
+interface PerformerResult {
+  name: string;
+  value: string;
+  href?: string;
+}
+
+/**
+ * Build top and bottom performer objects for KPIDetailsPanel.
+ * Returns undefined for boolean KPIs or when data is too sparse.
+ */
+export function buildPerformerProps<T extends { name: string }>(
+  sortedData: T[],
+  kpi: { key: keyof T; unit?: string; isBoolean?: boolean },
+  hrefPrefix?: string,
+): { topPerformer?: PerformerResult; bottomPerformer?: PerformerResult } {
+  if (kpi.isBoolean || !sortedData.length) return {};
+  const unit = kpi.unit || "";
+  const fmt = (item: T) =>
+    `${(item[kpi.key] as number)?.toFixed(1)}${unit}`;
+  const best = sortedData[0];
+  const worst = sortedData[sortedData.length - 1];
+  return {
+    topPerformer: best
+      ? { name: best.name, value: fmt(best), href: hrefPrefix ? `${hrefPrefix}/${best.name}` : undefined }
+      : undefined,
+    bottomPerformer: worst && worst !== best
+      ? { name: worst.name, value: fmt(worst), href: hrefPrefix ? `${hrefPrefix}/${worst.name}` : undefined }
+      : undefined,
+  };
+}
+
 export function createSourceLinks<T = EntityWithKPIs>(
   selectedKPI: KPIValue<T>,
 ) {

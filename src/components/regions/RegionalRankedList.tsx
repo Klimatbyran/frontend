@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { useIsMobile } from "@/hooks/useIsMobile";
+import { useScreenSize } from "@/hooks/useScreenSize";
 import RankedList from "@/components/ranked/RankedList";
 import { DataPoint, KPIValue, RankedListItem } from "@/types/rankings";
 import { Region } from "@/types/region";
@@ -18,7 +18,7 @@ export function RegionalRankedList({
   headerAction,
 }: RegionalRankedListProps) {
   const { t } = useTranslation();
-  const isMobile = useIsMobile();
+  const { isMobile } = useScreenSize();
 
   const asDataPoint = (kpi: unknown): DataPoint<RankedListItem> =>
     kpi as DataPoint<RankedListItem>;

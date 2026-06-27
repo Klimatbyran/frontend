@@ -11,7 +11,6 @@ import {
   ReferenceLine,
   PieChart,
   Pie,
-  Legend,
 } from "recharts";
 import { KPIValue } from "@/types/rankings";
 import { COLORS } from "@/lib/colors";

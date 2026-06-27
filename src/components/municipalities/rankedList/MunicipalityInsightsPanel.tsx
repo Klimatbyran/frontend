@@ -6,6 +6,7 @@ import { getSortedEntityKPIValues } from "@/utils/data/sorting";
 import {
   calculateEntityStatistics,
   createSourceLinks,
+  buildPerformerProps,
 } from "@/utils/insights/rankedListUtils";
 import KPIDetailsPanel from "../../ranked/KPIDetailsPanel";
 import InsightsList from "../../ranked/InsightsList";
@@ -68,8 +69,11 @@ function InsightsPanel({
   const entityPlural = t("header.municipalities").toLowerCase();
   const unit = selectedKPI.unit || "";
 
-  const bestItem = sortedData[0];
-  const worstItem = sortedData[sortedData.length - 1];
+  const { topPerformer, bottomPerformer } = buildPerformerProps(
+    sortedData,
+    { key: selectedKPI.key as keyof Municipality, unit, isBoolean: selectedKPI.isBoolean },
+    "/municipalities",
+  );
 
   const statsPanel = (
     <KPIDetailsPanel
@@ -78,26 +82,9 @@ function InsightsPanel({
       isBoolean={selectedKPI.isBoolean}
       higherIsBetter={selectedKPI.higherIsBetter}
       averageValue={statistics.formattedAverage}
-      medianValue={statistics.formattedMedian}
       averageLabel={t("municipalities.list.insights.keyStatistics.average")}
-      topPerformer={
-        !selectedKPI.isBoolean && bestItem
-          ? {
-              name: bestItem.name,
-              value: `${(bestItem[selectedKPI.key as keyof Municipality] as number)?.toFixed(1)}${unit}`,
-              href: `/municipalities/${bestItem.name}`,
-            }
-          : undefined
-      }
-      bottomPerformer={
-        !selectedKPI.isBoolean && worstItem && worstItem !== bestItem
-          ? {
-              name: worstItem.name,
-              value: `${(worstItem[selectedKPI.key as keyof Municipality] as number)?.toFixed(1)}${unit}`,
-              href: `/municipalities/${worstItem.name}`,
-            }
-          : undefined
-      }
+      topPerformer={topPerformer}
+      bottomPerformer={bottomPerformer}
       chart={
         selectedKPI.isBoolean ? (
           <KPIDistributionChart

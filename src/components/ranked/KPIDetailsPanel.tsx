@@ -26,7 +26,6 @@ interface KPIDetailsPanelProps {
   isBoolean?: boolean;
   higherIsBetter?: boolean;
   averageValue?: string | number;
-  medianValue?: string | number;
   averageLabel?: string;
   topPerformer?: Performer;
   bottomPerformer?: Performer;
@@ -52,7 +51,6 @@ export default function KPIDetailsPanel({
   isBoolean,
   higherIsBetter,
   averageValue,
-  medianValue,
   averageLabel,
   topPerformer,
   bottomPerformer,
