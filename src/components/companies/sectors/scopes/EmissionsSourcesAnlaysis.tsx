@@ -1,8 +1,8 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { RankedCompany } from "@/types/company";
-import { extractYears } from "@/hooks/companies/useChartData";
 import { useScopeData } from "@/hooks/companies/useScopeData";
+import { getSectorsReportingYear } from "@/utils/data/yearUtils";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 import ScopeCards from "./ScopeCards";
@@ -28,15 +28,12 @@ const EmissionsSourcesAnalysis: React.FC<EmissionsSourcesAnalysisProps> = ({
       ? selectedSectors
       : Object.keys(sectorNames).filter((key) => key !== "all");
 
-  const latestYear = useMemo(() => {
-    const years = extractYears(companies);
-    return years.length > 0 ? years[years.length - 1] : "2024";
-  }, [companies]);
+  const reportingYear = getSectorsReportingYear().toString();
 
   const { scopeData, totalEmissions } = useScopeData(
     companies,
     effectiveSectors,
-    latestYear,
+    reportingYear,
   );
   return (
     <div className="mt-12 space-y-6">
@@ -58,7 +55,7 @@ const EmissionsSourcesAnalysis: React.FC<EmissionsSourcesAnalysisProps> = ({
         totalEmissions={totalEmissions}
         companies={companies}
         selectedSectors={effectiveSectors}
-        selectedYear={latestYear}
+        selectedYear={reportingYear}
       />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
@@ -70,7 +67,7 @@ const EmissionsSourcesAnalysis: React.FC<EmissionsSourcesAnalysisProps> = ({
       {/* <Scope3Breakdown
         companies={companies}
         selectedSectors={selectedSectors}
-        selectedYear={latestYear}
+        selectedYear={reportingYear}
       /> */}
     </div>
   );
