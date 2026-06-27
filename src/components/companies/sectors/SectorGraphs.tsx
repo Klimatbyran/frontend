@@ -3,7 +3,6 @@ import { RankedCompany } from "@/types/company";
 import type { CompanySector } from "@/lib/constants/sectors";
 import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 import SectorEmissionsChart from "@/components/companies/sectors/charts/SectorEmissionsChart";
-import EmissionsTrendAnalysis from "./trends/EmissionsTrendAnalysis";
 import EmissionsSourcesAnalysis from "./scopes/EmissionsSourcesAnlaysis";
 
 interface SectorGraphsProps {
@@ -31,11 +30,6 @@ const SectorGraphs: React.FC<SectorGraphsProps> = ({
           }
         />
       </div>
-
-      <EmissionsTrendAnalysis
-        companies={companies}
-        selectedSectors={selectedSectors}
-      />
 
       <EmissionsSourcesAnalysis
         companies={companies}
