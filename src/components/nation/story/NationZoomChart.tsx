@@ -42,6 +42,36 @@ export function NationZoomChart({ metrics }: NationZoomChartProps) {
     return { ...layer, mton, diameter: radius * 2 };
   });
 
+  const totalMton = bubbles.reduce((sum, b) => sum + b.mton, 0);
+
+  const renderBubble = (
+    b: (typeof bubbles)[0],
+    delay: number,
+    extraStyle?: React.CSSProperties,
+  ) => (
+    <motion.div
+      key={b.key}
+      className="relative flex items-center justify-center"
+      style={{
+        width: b.diameter,
+        height: b.diameter,
+        borderRadius: "50%",
+        backgroundColor: b.color,
+        opacity: 0.85,
+        flexShrink: 0,
+        ...extraStyle,
+      }}
+      initial={{ scale: 0 }}
+      whileInView={{ scale: 1 }}
+      viewport={{ once: false, amount: 0.4 }}
+      transition={{ type: "spring", stiffness: 200, damping: 18, delay }}
+    >
+      <span className="text-white font-semibold text-sm md:text-base tabular-nums select-none">
+        {formatMton(b.mton, currentLanguage, 0)}
+      </span>
+    </motion.div>
+  );
+
   return (
     <div className="flex flex-col items-center gap-8 w-full">
       <div className="flex flex-col gap-3 max-w-2xl text-center">
@@ -63,75 +93,42 @@ export function NationZoomChart({ metrics }: NationZoomChartProps) {
         ))}
       </div>
 
-      {/* Pyramid: two on top, one (largest) centered below */}
+      {/* Pyramid: two on top, largest centered below */}
       <div className="flex flex-col items-center">
         <div className="flex items-end justify-center gap-4 md:gap-6">
-          {bubbles.slice(0, 2).map((b, i) => (
-            <motion.div
-              key={b.key}
-              style={{
-                width: b.diameter,
-                height: b.diameter,
-                borderRadius: "50%",
-                backgroundColor: b.color,
-                opacity: 0.85,
-              }}
-              initial={{ scale: 0 }}
-              whileInView={{ scale: 1 }}
-              viewport={{ once: false, amount: 0.4 }}
-              transition={{
-                type: "spring",
-                stiffness: 200,
-                damping: 18,
-                delay: i * 0.25,
-              }}
-            />
-          ))}
+          {bubbles.slice(0, 2).map((b, i) => renderBubble(b, i * 0.25))}
         </div>
-
-        <motion.div
-          style={{
-            width: bubbles[2].diameter,
-            height: bubbles[2].diameter,
-            borderRadius: "50%",
-            backgroundColor: bubbles[2].color,
-            opacity: 0.85,
-            marginTop: "-14px",
-          }}
-          initial={{ scale: 0 }}
-          whileInView={{ scale: 1 }}
-          viewport={{ once: false, amount: 0.4 }}
-          transition={{
-            type: "spring",
-            stiffness: 200,
-            damping: 18,
-            delay: 0.5,
-          }}
-        />
+        {renderBubble(bubbles[2], 0.5, { marginTop: "-14px" })}
       </div>
 
-      {/* Legend below, one row per layer */}
+      {/* Legend with percent of total */}
       <div className="flex flex-col gap-2 w-full max-w-sm">
-        {bubbles.map((b, i) => (
-          <motion.div
-            key={b.key}
-            initial={{ opacity: 0, x: -10 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: false, amount: 0.4 }}
-            transition={{ duration: 0.35, delay: i * 0.25 + 0.15 }}
-            className="flex items-center gap-3"
-          >
-            <span
-              className="w-3 h-3 rounded-full shrink-0"
-              style={{ backgroundColor: b.color }}
-            />
-            <span className="text-sm text-grey flex-1">{t(b.labelKey)}</span>
-            <span className="text-sm text-white font-medium tabular-nums shrink-0">
-              {formatMton(b.mton, currentLanguage, 0)}{" "}
-              {t("nation.story.unit.mton")}
-            </span>
-          </motion.div>
-        ))}
+        {bubbles.map((b, i) => {
+          const pct = totalMton > 0 ? Math.round((b.mton / totalMton) * 100) : 0;
+          return (
+            <motion.div
+              key={b.key}
+              initial={{ opacity: 0, x: -10 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: false, amount: 0.4 }}
+              transition={{ duration: 0.35, delay: i * 0.25 + 0.15 }}
+              className="flex items-center gap-3"
+            >
+              <span
+                className="w-3 h-3 rounded-full shrink-0"
+                style={{ backgroundColor: b.color }}
+              />
+              <span className="text-sm text-grey flex-1">{t(b.labelKey)}</span>
+              <span className="text-xs text-grey/70 tabular-nums shrink-0 mr-1">
+                {pct}%
+              </span>
+              <span className="text-sm text-white font-medium tabular-nums shrink-0">
+                {formatMton(b.mton, currentLanguage, 0)}{" "}
+                {t("nation.story.unit.mton")}
+              </span>
+            </motion.div>
+          );
+        })}
       </div>
     </div>
   );
