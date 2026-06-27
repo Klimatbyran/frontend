@@ -37,12 +37,12 @@ const LAYERS = [
   },
   {
     dataKey: "biogenic" as const,
-    color: "var(--green-2)",
+    color: "var(--orange-3)",
     translationKey: "nation.story.graph.biogenic",
   },
   {
     dataKey: "consumptionAbroad" as const,
-    color: "var(--blue-2)",
+    color: "var(--pink-4)",
     translationKey: "nation.story.graph.consumptionAbroad",
   },
 ];

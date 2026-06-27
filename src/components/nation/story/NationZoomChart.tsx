@@ -13,13 +13,13 @@ const LAYERS = [
   },
   {
     key: "biogenic" as const,
-    color: "var(--green-2)",
+    color: "var(--orange-3)",
     labelKey: "nation.story.graph.biogenic",
     getMton: (m: NationStoryMetrics) => m.biogenicLatestMton,
   },
   {
     key: "consumption" as const,
-    color: "var(--blue-2)",
+    color: "var(--pink-4)",
     labelKey: "nation.story.graph.consumptionAbroad",
     getMton: (m: NationStoryMetrics) => m.consumptionLatestMton,
   },
