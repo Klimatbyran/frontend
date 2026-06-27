@@ -12,6 +12,8 @@ import SectorPieChart, {
 import SectorPieLegend from "@/components/charts/sectorChart/SectorPieLegend";
 import { DetailPieSectorGrid } from "@/components/detail/DetailGrid";
 import ChartHeader from "./ChartHeader";
+import SectorChartInsights from "./SectorChartInsights";
+import { useSectorChartInsights } from "@/hooks/companies/useSectorChartInsights";
 
 interface EmissionsChartProps {
   companies: RankedCompany[];
@@ -43,6 +45,13 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
   const { pieChartData, totalEmissions } = useChartData(
     companies,
     selectedSectors,
+    selectedSector,
+    reportingYear,
+  );
+
+  const insights = useSectorChartInsights(
+    companies,
+    pieChartData,
     selectedSector,
     reportingYear,
   );
@@ -116,6 +125,8 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
           </div>
         )}
       </div>
+
+      {totalEmissions > 0 && <SectorChartInsights insights={insights} />}
     </div>
   );
 };

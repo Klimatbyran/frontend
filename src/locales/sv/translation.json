@@ -548,6 +548,21 @@
       "meetsParisYes": "Ja",
       "meetsParisNo": "Nej",
       "meetsParisUnknown": "Okänt"
+    },
+    "insights": {
+      "largestSector": "Största branschen",
+      "largestSectorDescription": "{{name}} står för {{share}} av totala utsläpp",
+      "topThreeSectors": "Topp 3 branscher",
+      "topThreeSectorsDescription": "De tre största branscherna står för {{share}} av utsläppen",
+      "reportingCompanies": "Rapporterande företag",
+      "reportingCompaniesDescription": "{{count}} företag rapporterade utsläpp för {{year}}",
+      "largestCompany": "Största utsläpparen",
+      "largestCompanyDescription": "{{name}} står för {{share}} av branschens utsläpp",
+      "companiesInSector": "Företag i branschen",
+      "companiesInSectorDescription": "{{count}} företag rapporterade utsläpp",
+      "reducingEmissions": "Minskar utsläppen",
+      "reducingEmissionsDescription": "{{count}} av {{total}} företag har minskat utsläppen sedan basår",
+      "noComparableTrendData": "Inte tillräckligt med jämförbar trenddata för företag i branschen"
     }
   },
   "methodsPage": {

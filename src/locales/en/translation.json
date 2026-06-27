@@ -489,6 +489,21 @@
       "meetsParisYes": "Yes",
       "meetsParisNo": "No",
       "meetsParisUnknown": "Unknown"
+    },
+    "insights": {
+      "largestSector": "Largest sector",
+      "largestSectorDescription": "{{name}} accounts for {{share}} of total emissions",
+      "topThreeSectors": "Top 3 sectors",
+      "topThreeSectorsDescription": "The three largest sectors account for {{share}} of emissions",
+      "reportingCompanies": "Reporting companies",
+      "reportingCompaniesDescription": "{{count}} companies reported emissions for {{year}}",
+      "largestCompany": "Largest emitter",
+      "largestCompanyDescription": "{{name}} accounts for {{share}} of sector emissions",
+      "companiesInSector": "Companies in sector",
+      "companiesInSectorDescription": "{{count}} companies reported emissions",
+      "reducingEmissions": "Reducing emissions",
+      "reducingEmissionsDescription": "{{count}} of {{total}} companies reduced emissions since base year",
+      "noComparableTrendData": "Not enough comparable trend data for companies in this sector"
     }
   },
   "methodsPage": {
