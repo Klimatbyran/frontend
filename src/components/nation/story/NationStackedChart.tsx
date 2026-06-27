@@ -228,7 +228,7 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
             <OverviewStat
               label={t("nation.story.stacked.changeTerritorialLabel")}
               value={formatPercentChange(territorialChangePct, currentLanguage)}
-              valueClassName="text-green-3"
+              valueClassName="text-blue-3"
             />
             <OverviewStat
               label={t("nation.story.stacked.changeCombinedLabel")}
