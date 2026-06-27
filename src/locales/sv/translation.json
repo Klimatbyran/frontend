@@ -1718,8 +1718,8 @@
         "noReported": "ej rapporterat"
       },
       "viewToggle": {
-        "showList": "Visa lista",
-        "showMap": "Visa karta"
+        "showList": "Lista",
+        "showMap": "Karta"
       }
     }
   },

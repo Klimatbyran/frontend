@@ -1659,8 +1659,8 @@
         "noReported": "not reported"
       },
       "viewToggle": {
-        "showList": "Show List",
-        "showMap": "Show Map"
+        "showList": "List",
+        "showMap": "Map"
       }
     }
   },
