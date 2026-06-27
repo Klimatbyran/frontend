@@ -1555,7 +1555,10 @@
       "stacked": {
         "title": "Combined emissions since 1990",
         "description": "When production-based, biogenic and consumption-based emissions are added together, the picture looks very different. The stack shows how the three layers combined have barely changed since 1990 – a different story from the official statistics.",
-        "totalsDescription": "Sum of territorial fossil, biogenic and consumption-based emissions abroad"
+        "totalsDescription": "Sum of territorial fossil, biogenic and consumption-based emissions abroad",
+        "changeContext": "The change since 1990 looks very different depending on which emissions you include:",
+        "changeTerritorialLabel": "Production-based (territorial fossil)",
+        "changeCombinedLabel": "All three emission types combined"
       },
       "comparisons": {
         "title": "1990 compared to today",

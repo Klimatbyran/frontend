@@ -26,6 +26,7 @@ import {
   type LegendItem,
 } from "@/components/charts";
 import { CardHeader } from "@/components/layout/CardHeader";
+import { formatPercentChange } from "@/utils/formatting/localization";
 import { OverviewStat } from "@/components/companies/detail/overview/OverviewStat";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 
@@ -112,6 +113,16 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
     [data],
   );
 
+  const territorialChangePct = useMemo(() => {
+    if (!point1990 || !pointLatest || point1990.territorialFossil === 0) return null;
+    return ((pointLatest.territorialFossil - point1990.territorialFossil) / point1990.territorialFossil) * 100;
+  }, [point1990, pointLatest]);
+
+  const combinedChangePct = useMemo(() => {
+    if (!point1990 || !pointLatest || point1990.combined === 0) return null;
+    return ((pointLatest.combined - point1990.combined) / point1990.combined) * 100;
+  }, [point1990, pointLatest]);
+
   const chartHeight = isMobile ? 240 : 320;
 
   return (
@@ -194,6 +205,27 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
               label={String(pointLatest.year)}
               value={formatMton(pointLatest.combined, currentLanguage, 0)}
               unit={t("nation.story.unit.millionTco2e")}
+              valueClassName="text-orange-2"
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Change comparison */}
+      {territorialChangePct !== null && combinedChangePct !== null && (
+        <div className="mt-6 border-t border-white/10 pt-6 space-y-4">
+          <p className="text-sm text-grey">
+            {t("nation.story.stacked.changeContext")}
+          </p>
+          <div className="grid grid-cols-2 gap-6">
+            <OverviewStat
+              label={t("nation.story.stacked.changeTerritorialLabel")}
+              value={formatPercentChange(territorialChangePct, currentLanguage)}
+              valueClassName="text-orange-2"
+            />
+            <OverviewStat
+              label={t("nation.story.stacked.changeCombinedLabel")}
+              value={formatPercentChange(combinedChangePct, currentLanguage)}
               valueClassName="text-orange-2"
             />
           </div>
