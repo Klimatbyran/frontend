@@ -42,7 +42,7 @@ function LayerRow({
         </h3>
         <span
           className={`text-sm font-medium ${
-            layer.changePercent <= 0 ? "text-green-3" : "text-pink-3"
+            layer.changePercent <= 0 ? "text-blue-3" : "text-pink-3"
           }`}
         >
           {formatPercentChange(layer.changePercent, currentLanguage)}{" "}
