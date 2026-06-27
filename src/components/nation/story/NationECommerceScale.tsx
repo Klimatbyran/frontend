@@ -43,7 +43,8 @@ function ScaleBar({
       />
       <div className="text-center space-y-1">
         <p
-          className={`text-sm font-medium ${highlight ? "text-orange-2" : "text-white"}`}
+          className="text-sm font-medium"
+          style={highlight ? { color } : undefined}
         >
           {formatTonnes(tonnes, currentLanguage, 0)}
         </p>
