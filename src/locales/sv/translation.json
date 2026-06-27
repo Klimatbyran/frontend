@@ -448,7 +448,8 @@
           "trendTotal": "Trendtotal",
           "emissions2025": "Utsläpp 2025 (bubbelstorlek)",
           "parityLine": "På rätt spår om under linjen",
-          "sizeLegend": "Bubbelstorlek = utsläpp 2025"
+          "sizeLegend": "Bubbelstorlek = utsläpp 2025",
+          "missingData": "{{count}} företag utan trenddata"
         }
       },
       "beeswarm": {

@@ -48,9 +48,7 @@ export function MeetsParisVisualization({
     return (
       <div className="bg-black-2 rounded-level-2 p-8 h-full flex items-center justify-center">
         <p className="text-grey text-lg">
-          {t("companies.list.insights.noData.metric", {
-            metric: t("companies.list.kpis.meetsParis.label"),
-          })}
+          {t("companiesOverviewPage.visualizations.noDataAvailable")}
         </p>
       </div>
     );
@@ -65,10 +63,9 @@ export function MeetsParisVisualization({
 
       {!isMobile && noDataCount > 0 && (
         <div className="text-sm text-grey">
-          {t("companies.list.kpis.meetsParis.label")}
-          {" · "}
-          {t("companies.list.kpis.meetsParis.nullValues", "Unknown")}:{" "}
-          {noDataCount}
+          {t("companiesOverviewPage.visualizations.bubbleChart.missingData", {
+            count: noDataCount,
+          })}
         </div>
       )}
     </div>

@@ -443,7 +443,8 @@
           "trendTotal": "Trend total",
           "emissions2025": "2025 emissions (bubble size)",
           "parityLine": "On track if below line",
-          "sizeLegend": "Bubble size = 2025 emissions"
+          "sizeLegend": "Bubble size = 2025 emissions",
+          "missingData": "{{count}} companies without trend data"
         }
       },
       "beeswarm": {
