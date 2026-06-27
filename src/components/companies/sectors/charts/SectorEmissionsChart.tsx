@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { sectorColors, getCompanyColors } from "@/lib/constants/companyColors";
 import { RankedCompany } from "@/types/company";
 import { useScreenSize } from "@/hooks/useScreenSize";
-import { useChartData } from "@/hooks/companies/useChartData";
+import {
+  extractYears,
+  useChartData,
+} from "@/hooks/companies/useChartData";
 import SectorPieChart, {
   PieChartItem,
 } from "@/components/charts/sectorChart/SectorPieChart";
@@ -34,15 +37,19 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const [selectedYear, setSelectedYear] = useState<string>("2024");
   const [selectedSector, setSelectedSector] = useState<string | null>(null);
   const screenSize = useScreenSize();
 
-  const { pieChartData, totalEmissions, years } = useChartData(
+  const latestYear = useMemo(() => {
+    const years = extractYears(companies);
+    return years.length > 0 ? years[years.length - 1] : "2024";
+  }, [companies]);
+
+  const { pieChartData, totalEmissions } = useChartData(
     companies,
     selectedSectors,
     selectedSector,
-    selectedYear,
+    latestYear,
   );
 
   const handlePieClick = (data: PieChartClickData) => {
@@ -74,11 +81,7 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
       <ChartHeader
         selectedSector={selectedSector}
         totalEmissions={totalEmissions}
-        selectedYear={selectedYear}
-        years={years}
         onSectorClear={() => setSelectedSector(null)}
-        onYearChange={setSelectedYear}
-        selectedSectors={selectedSectors}
       />
 
       <div>

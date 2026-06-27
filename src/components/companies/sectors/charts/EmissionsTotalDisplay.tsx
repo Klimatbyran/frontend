@@ -6,18 +6,12 @@ import { useLanguage } from "@/components/LanguageProvider";
 
 interface EmissionsTotalDisplayProps {
   totalEmissions: number;
-  selectedYear: string;
-  years: string[];
-  onYearChange: (year: string) => void;
   isSectorView?: boolean;
   hideTotal?: boolean;
 }
 
 const EmissionsTotalDisplay: React.FC<EmissionsTotalDisplayProps> = ({
   totalEmissions,
-  selectedYear,
-  years,
-  onYearChange,
   isSectorView = false,
   hideTotal = false,
 }) => {
@@ -59,19 +53,6 @@ const EmissionsTotalDisplay: React.FC<EmissionsTotalDisplayProps> = ({
           </div>
         </div>
       )}
-      <select
-        value={selectedYear}
-        onChange={(e) => onYearChange(e.target.value)}
-        className={`bg-black-2 border border-black-1 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-orange-3 transition-shadow ${
-          isMobile ? "w-full" : ""
-        }`}
-      >
-        {years.map((year) => (
-          <option key={year} value={year}>
-            {year}
-          </option>
-        ))}
-      </select>
     </div>
   );
 };
