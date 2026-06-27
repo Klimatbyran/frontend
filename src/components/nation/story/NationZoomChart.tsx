@@ -67,7 +67,9 @@ export function NationZoomChart({ metrics }: NationZoomChartProps) {
       <span className="text-black font-bold text-base md:text-xl tabular-nums select-none leading-tight text-center">
         {formatMton(b.mton, currentLanguage, 0)}
         <br />
-        <span className="text-xs font-medium">{t("nation.story.unit.mton")}</span>
+        <span className="text-xs font-medium">
+          {t("nation.story.unit.mton")}
+        </span>
       </span>
     </motion.div>
   );

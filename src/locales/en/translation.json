@@ -1558,7 +1558,8 @@
         "totalsDescription": "Sum of territorial fossil, biogenic and consumption-based emissions abroad",
         "changeContext": "The change since 1990 looks very different depending on which emissions you include:",
         "changeTerritorialLabel": "Production-based (territorial fossil)",
-        "changeCombinedLabel": "All three emission types combined"
+        "changeCombinedLabel": "All three emission types combined",
+        "changeFooter": "Looking only at territorial emissions, Sweden appears successful. But once biogenic and consumption-based emissions are included, the reduction since 1990 is far less impressive."
       },
       "comparisons": {
         "title": "1990 compared to today",
