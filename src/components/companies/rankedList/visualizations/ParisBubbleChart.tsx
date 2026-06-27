@@ -390,11 +390,6 @@ export function ParisBubbleChart({
             "companiesOverviewPage.visualizations.meetsParis.bubbleChart.parityLine",
           )}
         </div>
-        <span>
-          {t(
-            "companiesOverviewPage.visualizations.meetsParis.bubbleChart.sizeLegend",
-          )}
-        </span>
       </div>
     </div>
   );

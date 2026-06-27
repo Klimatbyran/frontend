@@ -33,6 +33,7 @@ interface KPIDetailsPanelProps {
   distributionStats: DistributionStat[];
   missingDataCount?: number;
   missingDataLabel?: string;
+  footerNote?: string;
   sourceLinks?: SourceLink[];
   className?: string;
   /** Optional chart rendered between the header and distribution bar */
@@ -59,6 +60,7 @@ export default function KPIDetailsPanel({
   distributionStats,
   missingDataCount,
   missingDataLabel,
+  footerNote,
   sourceLinks = [],
   className = "",
   chart,
@@ -239,8 +241,11 @@ export default function KPIDetailsPanel({
         </div>
       )}
 
-      {/* Footer: missing data + source */}
+      {/* Footer: chart hint, missing data + source */}
       <div className="space-y-1.5">
+        {footerNote && (
+          <p className="text-white/40 text-sm italic">{footerNote}</p>
+        )}
         {typeof missingDataCount === "number" &&
           missingDataCount > 0 &&
           missingDataLabel && (

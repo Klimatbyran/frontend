@@ -113,6 +113,9 @@ function CompanyInsightsPanel({
       }
       distributionStats={statistics.distributionStats}
       sourceLinks={sourceLinks}
+      footerNote={t(
+        "companiesOverviewPage.visualizations.meetsParis.bubbleChart.sizeLegend",
+      )}
     />
   );
 
