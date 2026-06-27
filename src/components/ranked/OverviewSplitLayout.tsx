@@ -57,7 +57,7 @@ export function OverviewSplitLayout({
         </div>
         <div
           className={cn(
-            "min-w-0 h-full overflow-hidden",
+            "min-w-0 h-full overflow-y-auto",
             !showList && "hidden",
           )}
         >
