@@ -1616,7 +1616,8 @@
         "changeContext": "Förändring sedan 1990 ser väldigt olika ut beroende på vilka utsläpp man räknar med:",
         "changeTerritorialLabel": "Produktionsbaserade (territoriella fossila)",
         "changeCombinedLabel": "Alla tre utsläppstyper sammantaget",
-        "changeFooter": "Ser man bara på de territoriella utsläppen ser Sverige framgångsrikt ut. Men inkluderar man biogena och konsumtionsbaserade utsläpp är minskningen sedan 1990 betydligt mindre imponerande."
+        "changeFooterLine1": "Ser man bara på de territoriella utsläppen ser Sverige framgångsrikt ut.",
+        "changeFooterLine2": "Men inkluderar man biogena och konsumtionsbaserade utsläpp är minskningen sedan 1990 betydligt mindre imponerande."
       },
       "comparisons": {
         "title": "1990 jämfört med idag",

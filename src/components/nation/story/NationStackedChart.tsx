@@ -236,9 +236,10 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
               valueClassName="text-pink-3"
             />
           </div>
-          <p className="text-base md:text-lg text-white mt-3">
-            {t("nation.story.stacked.changeFooter")}
-          </p>
+          <div className="text-base md:text-lg text-white mt-3 -mb-4 space-y-2">
+            <p>{t("nation.story.stacked.changeFooterLine1")}</p>
+            <p>{t("nation.story.stacked.changeFooterLine2")}</p>
+          </div>
         </div>
       )}
     </SectionWithHelp>
