@@ -207,7 +207,9 @@ export function KPIDistributionChart<T>({
   const binWidth = bins[1] ? bins[1].min - bins[0].min : 1;
 
   // Both keys now translate to just "Bättre" / "Sämre"
-  const betterLabel = t("municipalities.list.insights.distribution.higherBetter");
+  const betterLabel = t(
+    "municipalities.list.insights.distribution.higherBetter",
+  );
   const worseLabel = t("municipalities.list.insights.distribution.higherWorse");
 
   // For lowerIsBetter KPIs (e.g. emissions), blue bars are on the LEFT (low values).
