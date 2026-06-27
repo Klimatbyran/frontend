@@ -38,7 +38,7 @@ export function NationStoryPage({
   return (
     <div className="bg-black text-white pb-24">
       {/* Intro */}
-      <section className="flex items-center justify-center min-h-screen px-4 md:px-8 py-24">
+      <section className="flex items-start justify-center min-h-screen px-4 md:px-8 pt-16 md:pt-24 pb-16">
         <div className="max-w-3xl mx-auto text-center space-y-8">
           <img
             src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Flag_of_Sweden.svg"
