@@ -26,7 +26,7 @@ interface InsightsPanelProps {
 }
 
 const TOP_N = 10;
-const MIN_COMPANIES = 10;
+const MIN_COMPANIES = 2;
 
 function CompanyInsightsPanel({
   companyData,
