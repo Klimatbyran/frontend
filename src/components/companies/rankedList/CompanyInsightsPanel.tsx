@@ -112,8 +112,6 @@ function CompanyInsightsPanel({
         ) : undefined
       }
       distributionStats={statistics.distributionStats}
-      missingDataCount={statistics.nullCount}
-      missingDataLabel={selectedKPI.nullValues}
       sourceLinks={sourceLinks}
     />
   );
