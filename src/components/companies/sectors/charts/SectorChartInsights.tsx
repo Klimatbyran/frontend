@@ -26,7 +26,9 @@ const SectorChartInsights: React.FC<SectorChartInsightsProps> = ({
               <div className={`rounded-full p-2 ${insight.bgColor}`}>
                 <Icon className={`h-5 w-5 ${insight.iconColor}`} />
               </div>
-              <h3 className="text-sm font-medium text-white">{insight.title}</h3>
+              <h3 className="text-sm font-medium text-white">
+                {insight.title}
+              </h3>
             </div>
             <p className="text-sm text-grey">{insight.description}</p>
           </div>

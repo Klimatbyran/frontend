@@ -127,13 +127,10 @@ export const useSectorChartInsights = (
           title: t("sectorsOverviewPage.insights.reducingEmissions"),
           description:
             comparableCount > 0
-              ? t(
-                  "sectorsOverviewPage.insights.reducingEmissionsDescription",
-                  {
-                    count: reducingCount,
-                    total: comparableCount,
-                  },
-                )
+              ? t("sectorsOverviewPage.insights.reducingEmissionsDescription", {
+                  count: reducingCount,
+                  total: comparableCount,
+                })
               : t("sectorsOverviewPage.insights.noComparableTrendData"),
           icon: TrendingDown,
           iconColor: "text-green-3",
@@ -157,10 +154,13 @@ export const useSectorChartInsights = (
     return [
       {
         title: t("sectorsOverviewPage.insights.largestSector"),
-        description: t("sectorsOverviewPage.insights.largestSectorDescription", {
-          name: largest.name,
-          share: largestShare,
-        }),
+        description: t(
+          "sectorsOverviewPage.insights.largestSectorDescription",
+          {
+            name: largest.name,
+            share: largestShare,
+          },
+        ),
         icon: PieChart,
         iconColor: "text-orange-3",
         bgColor: "bg-orange-5",

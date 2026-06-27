@@ -56,14 +56,16 @@ export const useCompanyFilters = (
   const meetsParisFilter: MeetsParisFilter = isMeetsParisFilter(meetsParisRaw)
     ? (meetsParisRaw as MeetsParisFilter)
     : "all";
-  const sectors = (includeSectorFilter
-    ? (searchParams
-        .get("sectors")
-        ?.split(",")
-        .filter((s) => SECTORS.some((sector) => sector.value === s)) ?? [
-        "all",
-      ])
-    : ["all"]) as CompanySector[];
+  const sectors = (
+    includeSectorFilter
+      ? (searchParams
+          .get("sectors")
+          ?.split(",")
+          .filter((s) => SECTORS.some((sector) => sector.value === s)) ?? [
+          "all",
+        ])
+      : ["all"]
+  ) as CompanySector[];
   const setMeetsParisFilter = useCallback(
     (meetsParisFilter: string) =>
       setOrDeleteSearchParam(
