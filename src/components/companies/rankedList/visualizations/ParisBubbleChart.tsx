@@ -48,6 +48,34 @@ interface BubblePoint {
   emissions2025Raw: number;
 }
 
+function getLogAxisBounds(values: number[]): { axisMin: number; axisMax: number } {
+  const positiveValues = values.filter((value) => value > 0);
+  if (positiveValues.length === 0) {
+    return { axisMin: 1, axisMax: 10 };
+  }
+
+  const dataMin = Math.min(...positiveValues);
+  const dataMax = Math.max(...positiveValues);
+
+  return {
+    axisMin: Math.pow(10, Math.floor(Math.log10(dataMin))),
+    axisMax: Math.pow(10, Math.ceil(Math.log10(dataMax * 1.05))),
+  };
+}
+
+function formatLogAxisTick(value: number, unitLabel: string): string {
+  if (value >= 1000) {
+    return `${(value / 1000).toFixed(value >= 10000 ? 0 : 1)}k${unitLabel}`;
+  }
+  if (value >= 1) {
+    return `${value}${unitLabel}`;
+  }
+  if (value >= 0.1) {
+    return `${value.toFixed(1)}${unitLabel}`;
+  }
+  return `${value.toFixed(2)}${unitLabel}`;
+}
+
 interface BubbleTooltipProps {
   active?: boolean;
   payload?: Array<{ payload: BubblePoint }>;
@@ -147,7 +175,7 @@ export function ParisBubbleChart({
     setActiveIndex(null);
   }, [selectedKPI.key]);
 
-  const { points, unitScale, axisMax, maxRawValue, numericRange } =
+  const { points, unitScale, axisMin, axisMax, maxRawValue, numericRange } =
     useMemo(() => {
       const numericRange = getCompanyOverviewKPINumericRange(
         companies,
@@ -207,10 +235,11 @@ export function ParisBubbleChart({
         ),
       }));
 
-      const axisMax =
-        Math.ceil((maxRawValue / unitScale.divisor) * 1.05 * 10) / 10;
+      const { axisMin, axisMax } = getLogAxisBounds(
+        points.flatMap((point) => [point.x, point.y]),
+      );
 
-      return { points, unitScale, axisMax, maxRawValue, numericRange };
+      return { points, unitScale, axisMin, axisMax, maxRawValue, numericRange };
     }, [companies, selectedKPI]);
 
   if (points.length === 0) {
@@ -233,8 +262,11 @@ export function ParisBubbleChart({
             <XAxis
               type="number"
               dataKey="x"
-              domain={[0, axisMax]}
+              scale="log"
+              domain={[axisMin, axisMax]}
+              allowDataOverflow
               tick={{ fill: COLORS.grey, fontSize: 11 }}
+              tickFormatter={(value) => formatLogAxisTick(value, unitLabel)}
               axisLine={false}
               tickLine={false}
               label={{
@@ -251,9 +283,12 @@ export function ParisBubbleChart({
             <YAxis
               type="number"
               dataKey="y"
-              domain={[0, axisMax]}
+              scale="log"
+              domain={[axisMin, axisMax]}
+              allowDataOverflow
               width={56}
               tick={{ fill: COLORS.grey, fontSize: 11 }}
+              tickFormatter={(value) => formatLogAxisTick(value, unitLabel)}
               axisLine={false}
               tickLine={false}
               label={{
@@ -279,7 +314,7 @@ export function ParisBubbleChart({
             />
             <ReferenceLine
               segment={[
-                { x: 0, y: 0 },
+                { x: axisMin, y: axisMin },
                 { x: axisMax, y: axisMax },
               ]}
               stroke={COLORS.orange2}
