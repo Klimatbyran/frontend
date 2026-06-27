@@ -1,5 +1,6 @@
 import { COLORS } from "@/lib/colors";
 import { useTranslation } from "react-i18next";
+import type { OverviewViewMode } from "@/components/ranked/OverviewSplitLayout";
 import {
   CompanyWithKPIs,
   CompanyKPIValue,
@@ -23,6 +24,7 @@ interface InsightsPanelProps {
   companyData: CompanyWithKPIs[];
   selectedKPI: CompanyKPIValue;
   section?: InsightsPanelSection;
+  viewMode?: OverviewViewMode;
 }
 
 const TOP_N = 10;
@@ -32,6 +34,7 @@ function CompanyInsightsPanel({
   companyData,
   selectedKPI,
   section,
+  viewMode = "graph",
 }: InsightsPanelProps) {
   const { t } = useTranslation();
 
@@ -113,9 +116,13 @@ function CompanyInsightsPanel({
       }
       distributionStats={statistics.distributionStats}
       sourceLinks={sourceLinks}
-      footerNote={t(
-        "companiesOverviewPage.visualizations.meetsParis.bubbleChart.sizeLegend",
-      )}
+      footerNote={
+        viewMode === "graph"
+          ? t(
+              "companiesOverviewPage.visualizations.meetsParis.bubbleChart.sizeLegend",
+            )
+          : undefined
+      }
     />
   );
 

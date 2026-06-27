@@ -276,6 +276,7 @@ export function CompaniesOverviewPage() {
             companyData={companiesWithKPIs}
             selectedKPI={selectedKPI}
             section="stats"
+            viewMode={viewMode}
           />
         </div>
 

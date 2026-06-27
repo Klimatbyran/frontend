@@ -126,6 +126,15 @@ export default function KPIDetailsPanel({
             </span>
           </span>
         )}
+        {footerNote && (
+          <div className="flex items-center gap-2.5 pt-1 text-sm text-white/70">
+            <span className="inline-flex items-end gap-1 shrink-0">
+              <span className="w-2 h-2 rounded-full bg-white/50" />
+              <span className="w-3.5 h-3.5 rounded-full bg-white/50" />
+            </span>
+            <span>{footerNote}</span>
+          </div>
+        )}
       </div>
 
       {chart && <div>{chart}</div>}
@@ -241,11 +250,8 @@ export default function KPIDetailsPanel({
         </div>
       )}
 
-      {/* Footer: chart hint, missing data + source */}
+      {/* Footer: missing data + source */}
       <div className="space-y-1.5">
-        {footerNote && (
-          <p className="text-white/40 text-sm italic">{footerNote}</p>
-        )}
         {typeof missingDataCount === "number" &&
           missingDataCount > 0 &&
           missingDataLabel && (
