@@ -127,7 +127,7 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
           innerRadius={innerRadius}
           outerRadius={outerRadius}
           cornerRadius={8}
-          paddingAngle={0}
+          paddingAngle={2}
           onClick={handleSectorClick}
           animationBegin={0}
           animationDuration={300}
@@ -136,7 +136,7 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
             <Cell
               key={entry.name}
               fill={entry.color}
-              stroke="none"
+              stroke={entry.color}
               style={{ cursor: "pointer" }}
             />
           ))}
