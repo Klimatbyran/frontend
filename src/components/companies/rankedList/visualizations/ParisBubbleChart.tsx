@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
-  CartesianGrid,
   Cell,
   ReferenceLine,
   ResponsiveContainer,
@@ -185,7 +184,6 @@ export function ParisBubbleChart({
       <div className="relative flex-1 min-h-[420px] bg-black-2 rounded-level-2 p-4 overflow-hidden">
         <ResponsiveContainer width="100%" height="100%">
           <ScatterChart margin={{ top: 12, right: 16, bottom: 48, left: 8 }}>
-            <CartesianGrid stroke={COLORS.black1} strokeDasharray="3 3" />
             <XAxis
               type="number"
               dataKey="x"
@@ -225,10 +223,7 @@ export function ParisBubbleChart({
               }}
             />
             <ZAxis type="number" dataKey="z" range={[48, 320]} />
-            <Tooltip
-              content={<BubbleTooltip maxValue={maxRawValue} />}
-              cursor={{ strokeDasharray: "3 3", stroke: COLORS.grey }}
-            />
+            <Tooltip content={<BubbleTooltip maxValue={maxRawValue} />} />
             <ReferenceLine
               segment={[
                 { x: 0, y: 0 },
