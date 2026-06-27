@@ -42,8 +42,6 @@ export function NationZoomChart({ metrics }: NationZoomChartProps) {
     return { ...layer, mton, diameter: radius * 2 };
   });
 
-  const totalMton = bubbles.reduce((sum, b) => sum + b.mton, 0);
-
   const renderBubble = (
     b: (typeof bubbles)[0],
     delay: number,
@@ -66,7 +64,7 @@ export function NationZoomChart({ metrics }: NationZoomChartProps) {
       viewport={{ once: false, amount: 0.4 }}
       transition={{ type: "spring", stiffness: 200, damping: 18, delay }}
     >
-      <span className="text-white font-semibold text-sm md:text-base tabular-nums select-none">
+      <span className="text-black font-bold text-base md:text-xl tabular-nums select-none">
         {formatMton(b.mton, currentLanguage, 0)}
       </span>
     </motion.div>
@@ -101,11 +99,9 @@ export function NationZoomChart({ metrics }: NationZoomChartProps) {
         {renderBubble(bubbles[2], 0.5, { marginTop: "-14px" })}
       </div>
 
-      {/* Legend with percent of total */}
+      {/* Legend */}
       <div className="flex flex-col gap-2 w-full max-w-sm">
         {bubbles.map((b, i) => {
-          const pct =
-            totalMton > 0 ? Math.round((b.mton / totalMton) * 100) : 0;
           return (
             <motion.div
               key={b.key}
@@ -120,9 +116,6 @@ export function NationZoomChart({ metrics }: NationZoomChartProps) {
                 style={{ backgroundColor: b.color }}
               />
               <span className="text-sm text-grey flex-1">{t(b.labelKey)}</span>
-              <span className="text-xs text-grey/70 tabular-nums shrink-0 mr-1">
-                {pct}%
-              </span>
               <span className="text-sm text-white font-medium tabular-nums shrink-0">
                 {formatMton(b.mton, currentLanguage, 0)}{" "}
                 {t("nation.story.unit.mton")}
