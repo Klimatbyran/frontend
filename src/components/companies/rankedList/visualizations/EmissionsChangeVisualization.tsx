@@ -57,18 +57,6 @@ export function EmissionsChangeVisualization({
 
   return (
     <div className="w-full h-full flex flex-col gap-3">
-      {!isMobile && (
-        <div className="flex items-center justify-between">
-          <div className="text-sm text-grey">
-            {t("companiesOverviewPage.visualizations.emissionsChange.title")}
-            {" · "}
-            {t(
-              "companiesOverviewPage.visualizations.emissionsChange.unknown",
-            )}: {noData.length}
-          </div>
-        </div>
-      )}
-
       <div className="relative flex-1 bg-black-2 rounded-level-2 p-4 overflow-hidden">
         <BeeswarmChart
           data={withData}
