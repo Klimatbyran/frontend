@@ -48,12 +48,6 @@ function InsightsList<T>({
 
   return (
     <div className="bg-white/10 rounded-level-2 p-4 md:p-6 h-full">
-      <style>{`
-        @keyframes fadeSlideIn {
-          from { opacity: 0; transform: translateY(6px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-      `}</style>
       <h3 className="text-white text-lg font-semibold mb-3">{title}</h3>
       <div className="space-y-1">
         {entities.map((entity, index) => {
