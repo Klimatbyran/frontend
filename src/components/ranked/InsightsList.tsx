@@ -104,7 +104,7 @@ function InsightsList<T>({
             return (
               <LocalizedLink
                 key={name}
-                to={`/${entityType}/${name}`}
+                to={`/${entityType}/${name.toLowerCase()}`}
                 className="block transition-colors hover:bg-white/5 rounded-lg"
               >
                 {content}

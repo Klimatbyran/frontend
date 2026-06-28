@@ -85,7 +85,6 @@ export function calculateEntityStatistics<
 
   const average = values.reduce((sum, val) => sum + val, 0) / values.length;
 
-
   // For boolean KPIs, these counts have a different meaning
   const aboveAverageCount = selectedKPI.isBoolean
     ? values.filter((val) => val > 0).length // Count of "true" values
@@ -164,17 +163,25 @@ export function buildPerformerProps<T extends { name: string }>(
 ): { topPerformer?: PerformerResult; bottomPerformer?: PerformerResult } {
   if (kpi.isBoolean || !sortedData.length) return {};
   const unit = kpi.unit || "";
-  const fmt = (item: T) =>
-    `${(item[kpi.key] as number)?.toFixed(1)}${unit}`;
+  const fmt = (item: T) => `${(item[kpi.key] as number)?.toFixed(1)}${unit}`;
   const best = sortedData[0];
   const worst = sortedData[sortedData.length - 1];
   return {
     topPerformer: best
-      ? { name: best.name, value: fmt(best), href: hrefPrefix ? `${hrefPrefix}/${best.name}` : undefined }
+      ? {
+          name: best.name,
+          value: fmt(best),
+          href: hrefPrefix ? `${hrefPrefix}/${best.name.toLowerCase()}` : undefined,
+        }
       : undefined,
-    bottomPerformer: worst && worst !== best
-      ? { name: worst.name, value: fmt(worst), href: hrefPrefix ? `${hrefPrefix}/${worst.name}` : undefined }
-      : undefined,
+    bottomPerformer:
+      worst && worst !== best
+        ? {
+            name: worst.name,
+            value: fmt(worst),
+            href: hrefPrefix ? `${hrefPrefix}/${worst.name.toLowerCase()}` : undefined,
+          }
+        : undefined,
   };
 }
 
