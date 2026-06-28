@@ -157,11 +157,7 @@ const buildTrendChangeBars = (
 
   return topTrends.map((trend, index) => ({
     label: trend.name,
-    valueLabel: formatPercentChange(
-      trend.changePercent,
-      currentLanguage,
-      true,
-    ),
+    valueLabel: formatPercentChange(trend.changePercent, currentLanguage, true),
     share: Math.abs(trend.changePercent) / maxAbsChange,
     color: getCompanyColors(index).base,
   }));
@@ -246,10 +242,13 @@ export const useSectorChartInsights = (
             comparableCount > 0
               ? reducingBars.length > 0
                 ? t("sectorsOverviewPage.insights.topReducersDescription")
-                : t("sectorsOverviewPage.insights.reducingEmissionsDescription", {
-                    count: reducingCount,
-                    total: comparableCount,
-                  })
+                : t(
+                    "sectorsOverviewPage.insights.reducingEmissionsDescription",
+                    {
+                      count: reducingCount,
+                      total: comparableCount,
+                    },
+                  )
               : t("sectorsOverviewPage.insights.noComparableTrendData"),
           bars: reducingBars.length > 0 ? reducingBars : undefined,
           icon: TrendingDown,
