@@ -55,8 +55,7 @@ function getBubbleSizeValue(
 ): number {
   if (maxEmissions <= minEmissions) return 1;
 
-  const normalized =
-    (emissions - minEmissions) / (maxEmissions - minEmissions);
+  const normalized = (emissions - minEmissions) / (maxEmissions - minEmissions);
   return Math.pow(normalized, 1.45);
 }
 
