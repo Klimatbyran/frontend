@@ -474,7 +474,8 @@
       "stackedTotal": "Stacked Total",
       "back": "Back",
       "sectorTotal": "Sector Total Emissions",
-      "total": "Total Emissions"
+      "total": "Total Emissions",
+      "emissionsUnit": "ton CO₂e"
     }
   },
   "sectorsOverviewPage": {

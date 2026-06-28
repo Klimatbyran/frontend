@@ -117,6 +117,10 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
                     t(`companyDetailPage.sectorGraphs.${actionTooltipKey}`)
                   }
                   gridColumns={2}
+                  emissionsUnit={t(
+                    "companyDetailPage.sectorGraphs.emissionsUnit",
+                  )}
+                  emissionsUnitClassName="text-white"
                 />
               </div>
             </DetailPieSectorGrid>

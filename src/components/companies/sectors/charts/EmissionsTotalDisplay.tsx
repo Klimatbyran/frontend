@@ -47,8 +47,10 @@ const EmissionsTotalDisplay: React.FC<EmissionsTotalDisplayProps> = ({
               {formatEmissionsAbsolute(
                 Math.round(totalEmissions),
                 currentLanguage,
-              )}{" "}
-              {t("emissionsUnit")}
+              )}
+            </span>
+            <span className="ml-1 text-xl font-light text-white">
+              {t("companyDetailPage.sectorGraphs.emissionsUnit")}
             </span>
           </div>
         </div>

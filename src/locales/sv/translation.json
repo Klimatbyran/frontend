@@ -479,6 +479,7 @@
       "back": "Tillbaka",
       "sectorTotal": "Totala utsläpp i branschen",
       "total": "Totala utsläpp",
+      "emissionsUnit": "ton CO₂e",
       "noDataAvailablePieChart": "Det finns inga data för detta år",
       "yearTotal": "Årlig total",
       "unknownCompany": "Okänt företag",

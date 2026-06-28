@@ -23,6 +23,8 @@ interface LegendProps {
   onItemClick?: (item: PieChartItem) => void;
   getActionTooltip?: (item: PieChartItem) => string;
   gridColumns?: 1 | 2;
+  emissionsUnit?: string;
+  emissionsUnitClassName?: string;
 }
 
 const SectorPieLegend: React.FC<LegendProps> = ({
@@ -34,6 +36,8 @@ const SectorPieLegend: React.FC<LegendProps> = ({
   onItemClick,
   getActionTooltip,
   gridColumns = 1,
+  emissionsUnit,
+  emissionsUnitClassName,
 }) => {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
@@ -65,6 +69,8 @@ const SectorPieLegend: React.FC<LegendProps> = ({
       return item;
     })
     .sort((a, b) => b.value - a.value);
+
+  const unitLabel = emissionsUnit ?? t("emissionsUnit");
 
   const gridClass =
     gridColumns === 2
@@ -106,7 +112,9 @@ const SectorPieLegend: React.FC<LegendProps> = ({
                           Math.round(entry.value),
                           currentLanguage,
                         )}{" "}
-                        {t("emissionsUnit")}
+                        <span className={emissionsUnitClassName}>
+                          {unitLabel}
+                        </span>
                       </span>
                       <span>{percentage}</span>
                     </div>
