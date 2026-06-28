@@ -97,11 +97,7 @@ function formatKPIValue(
   return String(value);
 }
 
-function BubbleTooltip({
-  active,
-  payload,
-  selectedKPI,
-}: BubbleTooltipProps) {
+function BubbleTooltip({ active, payload, selectedKPI }: BubbleTooltipProps) {
   const { t } = useTranslation();
 
   if (!active || !payload?.length) return null;
@@ -172,7 +168,8 @@ export function ParisBubbleChart({
     setActiveIndex(null);
   }, [selectedKPI.key]);
 
-  const { points, unitScale, xAxisMax, yAxisMax, numericRange } = useMemo(() => {
+  const { points, unitScale, xAxisMax, yAxisMax, numericRange } =
+    useMemo(() => {
       const numericRange = getCompanyOverviewKPINumericRange(
         companies,
         selectedKPI,
@@ -320,11 +317,7 @@ export function ParisBubbleChart({
               domain={[0, 1]}
               range={bubbleSizeRange}
             />
-            <Tooltip
-              content={
-                <BubbleTooltip selectedKPI={selectedKPI} />
-              }
-            />
+            <Tooltip content={<BubbleTooltip selectedKPI={selectedKPI} />} />
             <ReferenceLine
               segment={[
                 { x: 0, y: 0 },
