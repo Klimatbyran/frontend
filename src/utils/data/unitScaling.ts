@@ -32,38 +32,36 @@ const UNIT_LABELS: Record<
  * Determine the best unit for displaying values based on magnitude
  * @param maxAbsValue - The maximum absolute value in the dataset
  * @param unitSystem - Unit system to use: "tonnes" (Gt/Mt/kt/t) or "generic" (B/M/k)
+ * @param maxDivisor - Optional cap on unit size (e.g. 1_000_000 to avoid Gt for company data)
  * @returns Unit scale configuration
  */
 export function getBestUnit(
   maxAbsValue: number,
   unitSystem: UnitSystem = "tonnes",
+  maxDivisor?: number,
 ): UnitScale {
   const absValue = Math.abs(maxAbsValue);
   const labels = UNIT_LABELS[unitSystem];
 
+  let divisor: number;
   if (absValue >= 1_000_000_000) {
-    return {
-      unit: labels[1_000_000_000].unit,
-      divisor: 1_000_000_000,
-      label: labels[1_000_000_000].label,
-    };
+    divisor = 1_000_000_000;
   } else if (absValue >= 1_000_000) {
-    return {
-      unit: labels[1_000_000].unit,
-      divisor: 1_000_000,
-      label: labels[1_000_000].label,
-    };
+    divisor = 1_000_000;
   } else if (absValue >= 1_000) {
-    return {
-      unit: labels[1_000].unit,
-      divisor: 1_000,
-      label: labels[1_000].label,
-    };
+    divisor = 1_000;
+  } else {
+    divisor = 1;
   }
+
+  if (maxDivisor !== undefined && divisor > maxDivisor) {
+    divisor = maxDivisor;
+  }
+
   return {
-    unit: labels[1].unit,
-    divisor: 1,
-    label: labels[1].label,
+    unit: labels[divisor].unit,
+    divisor,
+    label: labels[divisor].label,
   };
 }
 
@@ -80,8 +78,9 @@ export function formatWithBestUnit(
   maxAbsValue: number,
   unitSystem: UnitSystem = "tonnes",
   decimals: number = 1,
+  maxDivisor?: number,
 ): string {
-  const scale = getBestUnit(maxAbsValue, unitSystem);
+  const scale = getBestUnit(maxAbsValue, unitSystem, maxDivisor);
   const scaled = value / scale.divisor;
   return `${scaled.toFixed(decimals)}${scale.unit}`;
 }

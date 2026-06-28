@@ -31,6 +31,9 @@ import {
 } from "@/utils/insights/companyOverviewKpiColor";
 import { BeeswarmLegend } from "./shared/BeeswarmLegend";
 
+/** Company cumulative budgets are never shown in Gt — Mt at most. */
+const MAX_COMPANY_BUDGET_UNIT_DIVISOR = 1_000_000;
+
 interface ParisBubbleChartProps {
   companies: CompanyWithKPIs[];
   selectedKPI: CompanyKPIValue;
@@ -68,7 +71,6 @@ function getAxisMax(maxValue: number, divisor: number): number {
 interface BubbleTooltipProps {
   active?: boolean;
   payload?: Array<{ payload: BubblePoint }>;
-  maxValue: number;
   selectedKPI: CompanyKPIValue;
 }
 
@@ -98,7 +100,6 @@ function formatKPIValue(
 function BubbleTooltip({
   active,
   payload,
-  maxValue,
   selectedKPI,
 }: BubbleTooltipProps) {
   const { t } = useTranslation();
@@ -106,7 +107,14 @@ function BubbleTooltip({
   if (!active || !payload?.length) return null;
 
   const point = payload[0].payload;
-  const formatTonnes = (value: number) => formatWithBestUnit(value, maxValue);
+  const formatTonnes = (value: number) =>
+    formatWithBestUnit(
+      value,
+      Math.max(Math.abs(value), 1),
+      "tonnes",
+      1,
+      MAX_COMPANY_BUDGET_UNIT_DIVISOR,
+    );
   const kpiValue = formatKPIValue(point.company, selectedKPI);
 
   return (
@@ -164,8 +172,7 @@ export function ParisBubbleChart({
     setActiveIndex(null);
   }, [selectedKPI.key]);
 
-  const { points, unitScale, xAxisMax, yAxisMax, maxRawValue, numericRange } =
-    useMemo(() => {
+  const { points, unitScale, xAxisMax, yAxisMax, numericRange } = useMemo(() => {
       const numericRange = getCompanyOverviewKPINumericRange(
         companies,
         selectedKPI,
@@ -212,7 +219,11 @@ export function ParisBubbleChart({
         ...rawPoints.map((point) => point.trendTotalRaw),
       );
       const maxRawValue = Math.max(maxParisBudget, maxTrendTotal);
-      const unitScale = getBestUnit(maxRawValue);
+      const unitScale = getBestUnit(
+        maxRawValue,
+        "tonnes",
+        MAX_COMPANY_BUDGET_UNIT_DIVISOR,
+      );
 
       const emissionsValues = rawPoints.map((point) => point.emissions2025Raw);
       const minEmissions = Math.min(...emissionsValues);
@@ -242,7 +253,6 @@ export function ParisBubbleChart({
         unitScale,
         xAxisMax,
         yAxisMax,
-        maxRawValue,
         numericRange,
       };
     }, [companies, selectedKPI]);
@@ -312,10 +322,7 @@ export function ParisBubbleChart({
             />
             <Tooltip
               content={
-                <BubbleTooltip
-                  maxValue={maxRawValue}
-                  selectedKPI={selectedKPI}
-                />
+                <BubbleTooltip selectedKPI={selectedKPI} />
               }
             />
             <ReferenceLine
