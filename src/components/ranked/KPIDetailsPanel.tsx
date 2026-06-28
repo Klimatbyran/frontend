@@ -86,7 +86,7 @@ export default function KPIDetailsPanel({
   );
 
   const lowercaseFirstLetter = (str: string): string =>
-    str ? str.charAt(0).toLowerCase() + str.slice(1) : str;
+    str ? str.charAt(0).toLocaleLowerCase() + str.slice(1) : str;
 
   const totalDistribution = distributionStats.reduce(
     (sum, s) => sum + s.count,
