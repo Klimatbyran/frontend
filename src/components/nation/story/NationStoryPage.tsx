@@ -75,6 +75,11 @@ export function NationStoryPage({
         />
       </FullScreenSection>
 
+      {/* Conclusion – the punchline tying the journey together */}
+      <FullScreenSection>
+        <NationConclusion metrics={metrics} />
+      </FullScreenSection>
+
       <FullScreenSection>
         <NationECommerceScale
           eCommerceTonnes={metrics.eCommerceLatestTonnes}
@@ -84,11 +89,6 @@ export function NationStoryPage({
 
       <FullScreenSection>
         <NationOilExportsSection oilPoints={oilPoints} />
-      </FullScreenSection>
-
-      {/* Conclusion – the punchline tying the journey together */}
-      <FullScreenSection>
-        <NationConclusion metrics={metrics} />
       </FullScreenSection>
 
       {/* Footer */}

@@ -42,7 +42,7 @@ export function NationConclusion({ metrics }: NationConclusionProps) {
         transition={{ duration: 0.5, delay: 0.15 }}
         className="grid grid-cols-1 sm:grid-cols-2 gap-6 py-2"
       >
-        <div className="rounded-level-2 border border-white/10 bg-black-2/60 p-6">
+        <div className="p-2">
           <p className="text-xs uppercase tracking-wide text-grey mb-2">
             {t("nation.story.conclusion.usualLabel")}
           </p>
@@ -53,12 +53,15 @@ export function NationConclusion({ metrics }: NationConclusionProps) {
             </span>
           </p>
           <p className="mt-2 text-sm text-blue-3">
-            {formatPercentChange(metrics.territorialChangePercent, currentLanguage)}{" "}
+            {formatPercentChange(
+              metrics.territorialChangePercent,
+              currentLanguage,
+            )}{" "}
             {t("nation.story.conclusion.since1990")}
           </p>
         </div>
 
-        <div className="rounded-level-2 border border-pink-3/30 bg-pink-3/5 p-6">
+        <div className="p-2">
           <p className="text-xs uppercase tracking-wide text-grey mb-2">
             {t("nation.story.conclusion.fullLabel")}
           </p>
@@ -69,7 +72,10 @@ export function NationConclusion({ metrics }: NationConclusionProps) {
             </span>
           </p>
           <p className="mt-2 text-sm text-pink-3">
-            {formatPercentChange(metrics.combinedChangePercent, currentLanguage)}{" "}
+            {formatPercentChange(
+              metrics.combinedChangePercent,
+              currentLanguage,
+            )}{" "}
             {t("nation.story.conclusion.since1990")}
           </p>
         </div>
