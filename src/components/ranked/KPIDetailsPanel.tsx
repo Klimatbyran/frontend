@@ -192,7 +192,7 @@ export default function KPIDetailsPanel({
               const bg = STAT_COLOR_MAP[stat.colorClass] ?? "#888";
               return (
                 <div
-                  key={i}
+                  key={stat.label}
                   style={{
                     width: `${pct}%`,
                     backgroundColor: bg,
@@ -210,7 +210,7 @@ export default function KPIDetailsPanel({
                   ? ((stat.count / totalDistribution) * 100).toFixed(0)
                   : 0;
               return (
-                <div key={index} className="flex items-center justify-between">
+                <div key={stat.label} className="flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
                     <span
                       className="inline-block w-3 h-3 rounded-full shrink-0"
