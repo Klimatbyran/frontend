@@ -1568,8 +1568,8 @@
         "since1990": "since 1990"
       },
       "ecommerce": {
-    "title": "One example: e-commerce from abroad",
-    "description": "For the first time we have figures for private e-commerce emissions from abroad – like clothes from Shein. These are emissions we cause, but that never show up in the statistics. How big is it?",
+        "title": "One example: e-commerce from abroad",
+        "description": "For the first time we have figures for private e-commerce emissions from abroad – like clothes from Shein. These are emissions we cause, but that never show up in the statistics. How big is it?",
         "smallLabel": "{{municipality}} ({{year}})",
         "ecommerceLabel": "Private e-commerce",
         "municipalityLabel": "Municipal emissions",
@@ -1577,19 +1577,19 @@
         "footer": "E-commerce emissions are roughly equivalent to an entire municipality's annual emissions – yet rarely part of the usual picture."
       },
       "oil": {
-    "title": "Another example: the oil we export",
-    "description": "The 155 million tonnes do not include emissions from exported oil products – controlled by just three Swedish companies. Including them makes Sweden's total climate impact even larger.",
+        "title": "Another example: the oil we export",
+        "description": "The 155 million tonnes do not include emissions from exported oil products – controlled by just three Swedish companies. Including them makes Sweden's total climate impact even larger.",
         "stackLabel": "Three layers + oil exports",
         "footer": "Add to that biogenic uptake in forests and land, international aviation and shipping and more – a complete climate picture requires including more perspectives."
       },
       "conclusion": {
         "eyebrow": "The takeaway",
         "title": "We only discuss a fraction of Sweden's emissions",
-    "usualLabel": "What we usually discuss",
-    "fullLabel": "Sweden's total emissions",
-    "since1990": "since 1990",
-    "body": "The usual figure paints an overly optimistic picture. Counting everything gives a far more realistic view of how things are actually going – and even then, we haven't counted everything."
-  },
+        "usualLabel": "What we usually discuss",
+        "fullLabel": "Sweden's total emissions",
+        "since1990": "since 1990",
+        "body": "The usual figure paints an overly optimistic picture. Counting everything gives a far more realistic view of how things are actually going – and even then, we haven't counted everything."
+      },
       "footer": {
         "methodsPrompt": "Read more about data sources and methodology:",
         "methodsLink": "National data in methodology"

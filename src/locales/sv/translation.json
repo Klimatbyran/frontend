@@ -1625,8 +1625,8 @@
         "since1990": "sedan 1990"
       },
       "ecommerce": {
-    "title": "Ett exempel: e-handeln från utlandet",
-    "description": "För första gången har vi siffror på utsläppen från privat e-handel utomlands – som kläder från Shein. Det är utsläpp vi orsakar, men som aldrig syns i statistiken. Hur stort är det?",
+        "title": "Ett exempel: e-handeln från utlandet",
+        "description": "För första gången har vi siffror på utsläppen från privat e-handel utomlands – som kläder från Shein. Det är utsläpp vi orsakar, men som aldrig syns i statistiken. Hur stort är det?",
         "smallLabel": "{{municipality}} ({{year}})",
         "ecommerceLabel": "Privat e-handel",
         "municipalityLabel": "Kommunens utsläpp",
@@ -1634,19 +1634,19 @@
         "footer": "E-handelsutsläppen motsvarar ungefär en hel kommuns årsutsläpp – men fångas sällan i den vanliga bilden."
       },
       "oil": {
-    "title": "Ett annat exempel: oljan vi exporterar",
-    "description": "De 155 miljoner tonnen inkluderar inte utsläppen från exporterade oljeprodukter – som kontrolleras av bara tre svenska bolag. Räknar man med dem blir Sveriges samlade klimatpåverkan ännu större.",
+        "title": "Ett annat exempel: oljan vi exporterar",
+        "description": "De 155 miljoner tonnen inkluderar inte utsläppen från exporterade oljeprodukter – som kontrolleras av bara tre svenska bolag. Räknar man med dem blir Sveriges samlade klimatpåverkan ännu större.",
         "stackLabel": "Tre lager + oljeexport",
         "footer": "Lägg därtill biogent upptag i skog och mark, internationell flyg- och sjöfart och mer – en fullständig klimatbild kräver att vi vågar inkludera fler perspektiv."
       },
       "conclusion": {
         "eyebrow": "Slutsatsen",
         "title": "Vi diskuterar bara en bråkdel av Sveriges utsläpp",
-    "usualLabel": "Det vi vanligtvis diskuterar",
-    "fullLabel": "Sveriges samlade utsläpp",
-    "since1990": "sedan 1990",
-    "body": "Den vanliga siffran ger en överdrivet optimistisk bild. Räknar vi in allt får vi en betydligt mer realistisk bild av hur det faktiskt går – och ändå har vi inte räknat allt."
-  },
+        "usualLabel": "Det vi vanligtvis diskuterar",
+        "fullLabel": "Sveriges samlade utsläpp",
+        "since1990": "sedan 1990",
+        "body": "Den vanliga siffran ger en överdrivet optimistisk bild. Räknar vi in allt får vi en betydligt mer realistisk bild av hur det faktiskt går – och ändå har vi inte räknat allt."
+      },
       "footer": {
         "methodsPrompt": "Läs mer om datakällor och metod:",
         "methodsLink": "Nationell data i metodologi"
