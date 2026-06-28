@@ -176,7 +176,7 @@ const buildTrendChangeBars = (
 
   return topTrends.map((trend, index) => ({
     label: trend.name,
-    valueLabel: formatPercentChange(trend.changePercent, currentLanguage, true),
+    valueLabel: formatPercentChange(trend.changePercent, currentLanguage),
     share: Math.abs(trend.changePercent) / maxAbsChange,
     color: palette[index % palette.length],
   }));
