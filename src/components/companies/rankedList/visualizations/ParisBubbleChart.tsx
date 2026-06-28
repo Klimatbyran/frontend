@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Cell,
-  ReferenceLine,
   ResponsiveContainer,
   Scatter,
   ScatterChart,
@@ -277,16 +276,6 @@ export function ParisBubbleChart({
                 />
               }
             />
-            <ReferenceLine
-              segment={[
-                { x: 0, y: 0 },
-                { x: axisMax, y: axisMax },
-              ]}
-              stroke={COLORS.orange2}
-              strokeDasharray="5 5"
-              strokeWidth={1.5}
-              ifOverflow="extendDomain"
-            />
             <Scatter
               data={points}
               onClick={(data) => {
@@ -343,15 +332,6 @@ export function ParisBubbleChart({
             />
           )
         )}
-        <div className="flex items-center gap-2">
-          <span
-            className="inline-block h-2.5 w-2.5 rounded-full border border-dashed"
-            style={{ borderColor: COLORS.orange2 }}
-          />
-          {t(
-            "companiesOverviewPage.visualizations.meetsParis.bubbleChart.parityLine",
-          )}
-        </div>
       </div>
     </div>
   );
