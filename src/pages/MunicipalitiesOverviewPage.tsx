@@ -103,7 +103,7 @@ export function MunicipalitiesOverviewPage() {
 
   useEffect(() => {
     const kpiFromUrl = getKPIFromURL();
-    if (kpiFromUrl.label !== selectedKPI.label) {
+    if (String(kpiFromUrl.key) !== String(selectedKPI.key)) {
       setSelectedKPI(kpiFromUrl);
     }
   }, [getKPIFromURL, selectedKPI.label]);
