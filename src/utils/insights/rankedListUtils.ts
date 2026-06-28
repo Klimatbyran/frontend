@@ -174,7 +174,9 @@ export function buildPerformerProps<T extends { name: string }>(
       ? {
           name: best.name,
           value: fmt(best),
-          href: hrefPrefix ? `${hrefPrefix}/${best.name.toLowerCase()}` : undefined,
+          href: hrefPrefix
+            ? `${hrefPrefix}/${best.name.toLowerCase()}`
+            : undefined,
         }
       : undefined,
     bottomPerformer:
@@ -182,7 +184,9 @@ export function buildPerformerProps<T extends { name: string }>(
         ? {
             name: worst.name,
             value: fmt(worst),
-            href: hrefPrefix ? `${hrefPrefix}/${worst.name.toLowerCase()}` : undefined,
+            href: hrefPrefix
+              ? `${hrefPrefix}/${worst.name.toLowerCase()}`
+              : undefined,
           }
         : undefined,
   };

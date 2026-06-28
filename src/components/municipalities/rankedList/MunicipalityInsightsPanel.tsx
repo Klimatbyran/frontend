@@ -62,7 +62,10 @@ function InsightsPanel({
   }
 
   // Sort only valid data so null-valued entities don't appear in performer/bottom lists
-  const sortedData = getSortedEntityKPIValues(statistics.validData, selectedKPI);
+  const sortedData = getSortedEntityKPIValues(
+    statistics.validData,
+    selectedKPI,
+  );
   const topMunicipalities = sortedData.slice(0, TOP_N);
   const bottomMunicipalities = sortedData.slice(-TOP_N).reverse();
   const sourceLinks = createSourceLinks(selectedKPI);

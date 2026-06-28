@@ -137,7 +137,11 @@ export function KPIChipSelector<T>({
       </div>
 
       {/* Desktop: chips */}
-      <div className="hidden md:flex gap-2 flex-wrap" role="group" aria-label={selectorLabel || undefined}>
+      <div
+        className="hidden md:flex gap-2 flex-wrap"
+        role="group"
+        aria-label={selectorLabel || undefined}
+      >
         {kpis.map((kpi) => {
           const isSelected = String(kpi.key) === String(selectedKPI.key);
           return (

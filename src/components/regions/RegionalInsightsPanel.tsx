@@ -57,7 +57,10 @@ function RegionalInsightsPanel({
     );
   }
 
-  const sortedData = getSortedEntityKPIValues(statistics.validData, selectedKPI);
+  const sortedData = getSortedEntityKPIValues(
+    statistics.validData,
+    selectedKPI,
+  );
   const topRegions = sortedData.slice(0, TOP_N);
   const bottomRegions = sortedData.slice(-TOP_N).reverse();
   const sourceLinks = createSourceLinks(selectedKPI);

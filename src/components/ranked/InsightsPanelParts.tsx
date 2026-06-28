@@ -28,7 +28,11 @@ interface DistributionBoxProps {
 }
 
 /** Titled box that places a description at the top and a chart at the bottom. */
-export function DistributionBox({ chart, title, subtitle }: DistributionBoxProps) {
+export function DistributionBox({
+  chart,
+  title,
+  subtitle,
+}: DistributionBoxProps) {
   const { t } = useTranslation();
   return (
     <div className="bg-white/5 rounded-level-2 p-6 flex flex-col justify-between h-full gap-6">
