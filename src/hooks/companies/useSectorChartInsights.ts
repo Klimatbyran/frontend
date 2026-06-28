@@ -128,6 +128,22 @@ const getComparableCompanyTrends = (
   });
 };
 
+const REDUCING_BAR_COLORS = [
+  "var(--green-3)",
+  "var(--green-4)",
+  "var(--green-2)",
+  "var(--green-5)",
+  "var(--green-4)",
+] as const;
+
+const INCREASING_BAR_COLORS = [
+  "var(--pink-3)",
+  "var(--pink-4)",
+  "var(--pink-2)",
+  "var(--pink-5)",
+  "var(--pink-4)",
+] as const;
+
 const buildTrendChangeBars = (
   trends: CompanyTrend[],
   direction: "reducing" | "increasing",
@@ -155,11 +171,14 @@ const buildTrendChangeBars = (
     return [];
   }
 
+  const palette =
+    direction === "reducing" ? REDUCING_BAR_COLORS : INCREASING_BAR_COLORS;
+
   return topTrends.map((trend, index) => ({
     label: trend.name,
     valueLabel: formatPercentChange(trend.changePercent, currentLanguage, true),
     share: Math.abs(trend.changePercent) / maxAbsChange,
-    color: getCompanyColors(index).base,
+    color: palette[index % palette.length],
   }));
 };
 
