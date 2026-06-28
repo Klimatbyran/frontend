@@ -1,5 +1,5 @@
-import { t } from "i18next";
 import { Fragment } from "react/jsx-runtime";
+import { useTranslation } from "react-i18next";
 import { COLORS } from "@/lib/colors";
 import { LocalizedLink } from "@/components/LocalizedLink";
 
@@ -61,6 +61,7 @@ export default function KPIDetailsPanel({
   className = "",
   chart,
 }: KPIDetailsPanelProps) {
+  const { t } = useTranslation();
   const sourceSection = sourceLinks.length > 0 && (
     <p className="text-white/40 text-sm italic">
       {t("municipalities.list.source")}{" "}
