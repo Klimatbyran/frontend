@@ -58,7 +58,7 @@ function RegionalInsightsPanel({
     );
   }
 
-  const sortedData = getSortedEntityKPIValues(regionData, selectedKPI);
+  const sortedData = getSortedEntityKPIValues(statistics.validData, selectedKPI);
   const topRegions = sortedData.slice(0, TOP_N);
   const bottomRegions = sortedData.slice(-TOP_N).reverse();
   const sourceLinks = createSourceLinks(selectedKPI);
@@ -67,7 +67,11 @@ function RegionalInsightsPanel({
 
   const { topPerformer, bottomPerformer } = buildPerformerProps(
     sortedData,
-    { key: selectedKPI.key as keyof Region, unit, isBoolean: selectedKPI.isBoolean },
+    {
+      key: selectedKPI.key as keyof Region,
+      unit,
+      isBoolean: selectedKPI.isBoolean,
+    },
     "/regions",
   );
 

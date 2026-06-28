@@ -62,7 +62,8 @@ function InsightsPanel({
     );
   }
 
-  const sortedData = getSortedEntityKPIValues(municipalityData, selectedKPI);
+  // Sort only valid data so null-valued entities don't appear in performer/bottom lists
+  const sortedData = getSortedEntityKPIValues(statistics.validData, selectedKPI);
   const topMunicipalities = sortedData.slice(0, TOP_N);
   const bottomMunicipalities = sortedData.slice(-TOP_N).reverse();
   const sourceLinks = createSourceLinks(selectedKPI);
@@ -71,7 +72,11 @@ function InsightsPanel({
 
   const { topPerformer, bottomPerformer } = buildPerformerProps(
     sortedData,
-    { key: selectedKPI.key as keyof Municipality, unit, isBoolean: selectedKPI.isBoolean },
+    {
+      key: selectedKPI.key as keyof Municipality,
+      unit,
+      isBoolean: selectedKPI.isBoolean,
+    },
     "/municipalities",
   );
 
