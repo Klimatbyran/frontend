@@ -57,7 +57,7 @@ function getBubbleSizeValue(
   if (maxEmissions <= minEmissions) return 1;
 
   const normalized = (emissions - minEmissions) / (maxEmissions - minEmissions);
-  return Math.pow(normalized, 3);
+  return Math.pow(normalized, 4.5);
 }
 
 function getAxisMax(maxValue: number, divisor: number): number {
@@ -258,7 +258,7 @@ export function ParisBubbleChart({
   }
 
   const unitLabel = unitScale.unit.trim();
-  const bubbleSizeRange: [number, number] = isMobile ? [2, 520] : [2, 900];
+  const bubbleSizeRange: [number, number] = isMobile ? [1, 850] : [1, 1500];
   const parityLineMax = Math.min(xAxisMax, yAxisMax);
 
   return (
