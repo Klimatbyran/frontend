@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { EntityListBox } from "@/components/detail/EntityListBox";
+import { NationConclusion } from "@/components/nation/story/NationConclusion";
 import { NationECommerceScale } from "@/components/nation/story/NationECommerceScale";
 import { NationLayerComparisons } from "@/components/nation/story/NationLayerComparisons";
 import { NationStackedChart } from "@/components/nation/story/NationStackedChart";
@@ -83,6 +84,11 @@ export function NationStoryPage({
 
       <FullScreenSection>
         <NationOilExportsSection oilPoints={oilPoints} />
+      </FullScreenSection>
+
+      {/* Conclusion – the punchline tying the journey together */}
+      <FullScreenSection>
+        <NationConclusion metrics={metrics} />
       </FullScreenSection>
 
       {/* Footer */}

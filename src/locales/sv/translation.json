@@ -1558,11 +1558,11 @@
         "mton": "Mton",
         "millionTco2e": "miljoner ton CO₂e"
       },
-      "intro": {
-        "paragraph1": "Partier av olika färger brukar säga att Sveriges utsläpp minskat med en tredjedel samtidigt som ekonomin har fördubblats. Men det är en sanning med modifikation. Allt beror på vilken data du väljer att presentera, under vilken tidsperiod och vilka typer av utsläpp du väljer att ha med.",
-        "paragraph2": "Detta kallas ibland för \"cherry picking\" – att välja ut data som stödjer en tes man vill driva. Frågan om vilka utsläpp Sverige kan påverka (vår rådighet) är inte samma sak som frågan var utsläppen sker.",
-        "paragraph3": "Atmosfären reagerar på mängden växthusgaser totalt – och dessa ackumuleras över tid. Därför är det viktigt att visa en mer komplett bild."
-      },
+  "intro": {
+    "paragraph1": "Partier av olika färger brukar säga att Sveriges utsläpp minskat med en tredjedel sedan 1990. Det stämmer – om man bara räknar en viss typ av utsläpp.",
+    "paragraph2": "Men frågan om vilka utsläpp Sverige faktiskt kan påverka – vår rådighet – är inte samma sak som de utsläpp vi vanligtvis räknar. Atmosfären reagerar på den totala mängden växthusgaser, oavsett var de sker.",
+    "paragraph3": "Så hur stora är egentligen de utsläpp Sverige rår över? Låt oss räkna – steg för steg."
+  },
       "headline": {
         "eyebrow": "Huvudvinkeln",
         "title": "Sveriges utsläpp är <0>{{ratio}} gånger</0> så stora som det som oftast rapporteras",
@@ -1603,12 +1603,12 @@
         "consumptionAbroad": "Konsumtionsbaserade utomlands",
         "oilExports": "Export av oljeprodukter"
       },
-      "zoom": {
-        "phase1": "Det här är det vi brukar fokusera på – territoriella fossila utsläpp inom Sveriges gränser.",
-        "phase2": "Men biogena utsläpp tillkommer – från fjärrvärme, industri och transporter.",
-        "phase3": "Lägg till konsumtionsbaserade utsläpp utomlands – var vi faktiskt konsumerar.",
-        "phase4": "Helheten är {{ratio}}× större: {{total}} Mton – en helt annan skala."
-      },
+  "zoom": {
+    "phase1": "Det vi vanligtvis diskuterar är de territoriella fossila utsläppen inom Sveriges gränser – knappt 48 miljoner ton.",
+    "phase2": "Men Sverige rår över mer än så. Biogena utsläpp tillkommer – från fjärrvärme, industri och transporter.",
+    "phase3": "Och de konsumtionsbaserade utsläppen utomlands – det vi orsakar genom varorna vi köper.",
+    "phase4": "Helheten är {{ratio}}× större: {{total}} Mton – en helt annan skala."
+  },
       "stacked": {
         "title": "De samlade utsläppen sedan 1990",
         "description": "När man slår samman produktionsbaserade, biogena och konsumtionsbaserade utsläpp ser bilden helt annorlunda ut. Stacken visar hur de tre lagren tillsammans knappt förändrats sedan 1990 – en annan berättelse än den officiella statistiken.",
@@ -1633,16 +1633,24 @@
         "comparisonFooter": "Privata e-handelsutsläpp från utlandet ({{ecommerceYear}}) är större än hela Gävles territoriella utsläpp och nästan tre gånger Trelleborgs – men ingår inte i den officiella statistiken.",
         "footer": "E-handelsutsläppen motsvarar ungefär en hel kommuns årsutsläpp – men fångas sällan i den vanliga bilden."
       },
-      "oil": {
-        "title": "Och det finns ännu mer",
-        "description": "Export av oljeprodukter är ytterligare ett utsläppslager som sällan räknas med i den offentliga berättelsen.",
-        "stackLabel": "Tre lager + oljeexport",
-        "footer": "Biogent upptag i skog och mark, internationell flyg- och sjöfart och mer – en fullständig klimatbild kräver att vi vågar inkludera fler perspektiv."
-      },
-      "footer": {
-        "methodsPrompt": "Läs mer om datakällor och metod:",
-        "methodsLink": "Nationell data i metodologi"
-      }
+  "oil": {
+    "title": "Och vi har ändå inte räknat allt",
+    "description": "De 155 miljoner tonnen inkluderar inte utsläppen från exporterade oljeprodukter – som kontrolleras av bara tre svenska bolag. Räknar man med dem blir Sveriges samlade klimatpåverkan ännu större.",
+    "stackLabel": "Tre lager + oljeexport",
+    "footer": "Lägg därtill biogent upptag i skog och mark, internationell flyg- och sjöfart och mer – en fullständig klimatbild kräver att vi vågar inkludera fler perspektiv."
+  },
+  "conclusion": {
+    "eyebrow": "Slutsatsen",
+    "title": "Vi diskuterar bara en bråkdel av Sveriges utsläpp",
+    "usualLabel": "Det vi vanligtvis diskuterar",
+    "fullLabel": "Sveriges samlade utsläpp",
+    "since1990": "sedan 1990",
+    "body": "Den vanliga siffran beskriver bara en del av de utsläpp Sverige rår över. Räknar vi in allt får vi en betydligt mer realistisk – och mindre optimistisk – bild av hur det faktiskt går."
+  },
+  "footer": {
+    "methodsPrompt": "Läs mer om datakällor och metod:",
+    "methodsLink": "Nationell data i metodologi"
+  }
     }
   },
   "regions": {

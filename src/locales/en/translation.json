@@ -1501,11 +1501,11 @@
         "mton": "Mt",
         "millionTco2e": "million tonnes CO₂e"
       },
-      "intro": {
-        "paragraph1": "Parties across the political spectrum often say Sweden's emissions have fallen by a third while the economy has doubled. That is only partly true. Everything depends on which data you choose to present, over what time period, and which types of emissions you include.",
-        "paragraph2": "This is sometimes called \"cherry picking\" – selecting data that supports the argument you want to make. The question of which emissions Sweden can influence (our control) is not the same as the question of where emissions occur.",
-        "paragraph3": "The atmosphere responds to the total amount of greenhouse gases – and they accumulate over time. That is why it is important to show a more complete picture."
-      },
+  "intro": {
+    "paragraph1": "Parties across the political spectrum often say Sweden's emissions have fallen by a third since 1990. That is true – if you only count one type of emissions.",
+    "paragraph2": "But the question of which emissions Sweden can actually influence – our control – is not the same as the emissions we usually count. The atmosphere responds to the total amount of greenhouse gases, regardless of where they occur.",
+    "paragraph3": "So how large are the emissions Sweden actually controls? Let's count – step by step."
+  },
       "headline": {
         "eyebrow": "Main angle",
         "title": "Sweden's emissions are roughly <0>{{ratio}} times</0> larger than what is usually reported",
@@ -1546,12 +1546,12 @@
         "consumptionAbroad": "Consumption-based abroad",
         "oilExports": "Export of oil products"
       },
-      "zoom": {
-        "phase1": "This is what we usually focus on – territorial fossil emissions within Sweden's borders.",
-        "phase2": "But biogenic emissions add up – from district heating, industry and transport.",
-        "phase3": "Add consumption-based emissions abroad – where we actually consume.",
-        "phase4": "The full picture is {{ratio}}× larger: {{total}} Mt – an entirely different scale."
-      },
+  "zoom": {
+    "phase1": "What we usually discuss is territorial fossil emissions within Sweden's borders – just under 48 million tonnes.",
+    "phase2": "But Sweden controls more than that. Biogenic emissions add up – from district heating, industry and transport.",
+    "phase3": "And consumption-based emissions abroad – what we cause through the goods we buy.",
+    "phase4": "The full picture is {{ratio}}× larger: {{total}} Mt – an entirely different scale."
+  },
       "stacked": {
         "title": "Combined emissions since 1990",
         "description": "When production-based, biogenic and consumption-based emissions are added together, the picture looks very different. The stack shows how the three layers combined have barely changed since 1990 – a different story from the official statistics.",
@@ -1576,16 +1576,24 @@
         "comparisonFooter": "Private e-commerce emissions from abroad ({{ecommerceYear}}) exceed the entire territorial emissions of Gävle and are nearly three times those of Trelleborg – yet they are not captured in official statistics.",
         "footer": "E-commerce emissions are roughly equivalent to an entire municipality's annual emissions – yet rarely part of the usual picture."
       },
-      "oil": {
-        "title": "And there is even more",
-        "description": "Export of oil products is another emission layer rarely included in the official narrative.",
-        "stackLabel": "Three layers + oil exports",
-        "footer": "Biogenic uptake in forests and land, international aviation and shipping and more – a complete climate picture requires including more perspectives."
-      },
-      "footer": {
-        "methodsPrompt": "Read more about data sources and methodology:",
-        "methodsLink": "National data in methodology"
-      }
+  "oil": {
+    "title": "And we still haven't counted everything",
+    "description": "The 155 million tonnes do not include emissions from exported oil products – controlled by just three Swedish companies. Including them makes Sweden's total climate impact even larger.",
+    "stackLabel": "Three layers + oil exports",
+    "footer": "Add to that biogenic uptake in forests and land, international aviation and shipping and more – a complete climate picture requires including more perspectives."
+  },
+  "conclusion": {
+    "eyebrow": "The takeaway",
+    "title": "We only discuss a fraction of Sweden's emissions",
+    "usualLabel": "What we usually discuss",
+    "fullLabel": "Sweden's total emissions",
+    "since1990": "since 1990",
+    "body": "The usual figure describes only part of the emissions Sweden controls. Counting everything gives a far more realistic – and less optimistic – picture of how things are actually going."
+  },
+  "footer": {
+    "methodsPrompt": "Read more about data sources and methodology:",
+    "methodsLink": "National data in methodology"
+  }
     }
   },
   "regions": {
