@@ -1,8 +1,10 @@
 import React from "react";
+import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { formatEmissionsAbsolute } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
+import { useChartMotion } from "@/hooks/useChartMotion";
 
 interface EmissionsTotalDisplayProps {
   totalEmissions: number;
@@ -18,6 +20,11 @@ const EmissionsTotalDisplay: React.FC<EmissionsTotalDisplayProps> = ({
   const { t } = useTranslation();
   const { isMobile, isTablet } = useScreenSize();
   const { currentLanguage } = useLanguage();
+  const { reduceMotion, fadeDuration, ease } = useChartMotion();
+  const formattedTotal = formatEmissionsAbsolute(
+    Math.round(totalEmissions),
+    currentLanguage,
+  );
 
   return (
     <div
@@ -43,12 +50,15 @@ const EmissionsTotalDisplay: React.FC<EmissionsTotalDisplayProps> = ({
             {isSectorView
               ? t("companyDetailPage.sectorGraphs.sectorTotal")
               : t("companyDetailPage.sectorGraphs.total")}
-            <span className="ml-2 text-xl font-light text-orange-3">
-              {formatEmissionsAbsolute(
-                Math.round(totalEmissions),
-                currentLanguage,
-              )}
-            </span>
+            <motion.span
+              key={formattedTotal}
+              className="ml-2 text-xl font-light text-orange-3 inline-block"
+              initial={reduceMotion ? false : { opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: fadeDuration, ease }}
+            >
+              {formattedTotal}
+            </motion.span>
             <span className="ml-1 text-xl font-light text-white">
               {t("companyDetailPage.sectorGraphs.emissionsUnit")}
             </span>

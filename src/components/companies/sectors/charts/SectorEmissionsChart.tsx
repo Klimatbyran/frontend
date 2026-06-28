@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { sectorColors, getCompanyColors } from "@/lib/constants/companyColors";
@@ -14,6 +15,7 @@ import { DetailPieSectorGrid } from "@/components/detail/DetailGrid";
 import ChartHeader from "./ChartHeader";
 import SectorChartInsights from "./SectorChartInsights";
 import { useSectorChartInsights } from "@/hooks/companies/useSectorChartInsights";
+import { useChartMotion } from "@/hooks/useChartMotion";
 
 interface EmissionsChartProps {
   companies: RankedCompany[];
@@ -36,6 +38,7 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
 }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { reduceMotion, fadeDuration, ease } = useChartMotion();
 
   const [selectedSector, setSelectedSector] = useState<string | null>(null);
   const screenSize = useScreenSize();
@@ -80,6 +83,8 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
     ? "pieLegendCompany"
     : "pieLegendSector";
 
+  const chartAnimationKey = `${selectedSector ?? "all-sectors"}-${reportingYear}`;
+
   return (
     <>
       <div className="bg-black-2 rounded-lg border p-6 w-full space-y-6">
@@ -91,39 +96,48 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
 
         <div>
           {totalEmissions > 0 ? (
-            <DetailPieSectorGrid>
-              <SectorPieChart
-                data={pieChartDataWithColor}
-                onItemClick={handlePieClick}
-                customActionLabel={t(
-                  `companyDetailPage.sectorGraphs.${actionTooltipKey}`,
-                )}
-                desktopScale={!screenSize.isMobile}
-              />
-              <div className="w-full flex lg:items-center">
-                <SectorPieLegend
+            <motion.div
+              key={chartAnimationKey}
+              initial={reduceMotion ? false : { opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: fadeDuration, ease }}
+            >
+              <DetailPieSectorGrid>
+                <SectorPieChart
                   data={pieChartDataWithColor}
-                  total={totalEmissions}
-                  onItemClick={(entry) => {
-                    if (entry.wikidataId) {
-                      navigate(`/companies/${entry.wikidataId as string}`);
-                    } else if (entry.sectorCode) {
-                      handlePieClick({
-                        sectorCode: entry.sectorCode as string,
-                      });
-                    }
-                  }}
-                  getActionTooltip={() =>
-                    t(`companyDetailPage.sectorGraphs.${actionTooltipKey}`)
-                  }
-                  gridColumns={2}
-                  emissionsUnit={t(
-                    "companyDetailPage.sectorGraphs.emissionsUnit",
+                  onItemClick={handlePieClick}
+                  customActionLabel={t(
+                    `companyDetailPage.sectorGraphs.${actionTooltipKey}`,
                   )}
-                  emissionsUnitClassName="text-white"
+                  desktopScale={!screenSize.isMobile}
+                  animationKey={chartAnimationKey}
                 />
-              </div>
-            </DetailPieSectorGrid>
+                <div className="w-full flex lg:items-center">
+                  <SectorPieLegend
+                    data={pieChartDataWithColor}
+                    total={totalEmissions}
+                    onItemClick={(entry) => {
+                      if (entry.wikidataId) {
+                        navigate(`/companies/${entry.wikidataId as string}`);
+                      } else if (entry.sectorCode) {
+                        handlePieClick({
+                          sectorCode: entry.sectorCode as string,
+                        });
+                      }
+                    }}
+                    getActionTooltip={() =>
+                      t(`companyDetailPage.sectorGraphs.${actionTooltipKey}`)
+                    }
+                    gridColumns={2}
+                    emissionsUnit={t(
+                      "companyDetailPage.sectorGraphs.emissionsUnit",
+                    )}
+                    emissionsUnitClassName="text-white"
+                    animationKey={chartAnimationKey}
+                  />
+                </div>
+              </DetailPieSectorGrid>
+            </motion.div>
           ) : (
             <div className="flex justify-center items-center h-64">
               <p className="text-grey">
@@ -134,7 +148,12 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
         </div>
       </div>
 
-      {totalEmissions > 0 && <SectorChartInsights insights={insights} />}
+      {totalEmissions > 0 && (
+        <SectorChartInsights
+          insights={insights}
+          animationKey={chartAnimationKey}
+        />
+      )}
     </>
   );
 };

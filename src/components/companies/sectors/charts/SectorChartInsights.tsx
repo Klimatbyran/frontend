@@ -1,27 +1,40 @@
 import React from "react";
+import { motion } from "framer-motion";
 import { ChartInsight } from "@/hooks/companies/useSectorChartInsights";
+import { useChartMotion } from "@/hooks/useChartMotion";
 import { InsightBarChart, InsightStackedBar } from "./InsightVisualization";
 
 interface SectorChartInsightsProps {
   insights: ChartInsight[];
+  animationKey?: string;
 }
 
 const SectorChartInsights: React.FC<SectorChartInsightsProps> = ({
   insights,
+  animationKey = "default",
 }) => {
+  const { reduceMotion, fadeDuration, stagger, ease } = useChartMotion();
+
   if (insights.length === 0) {
     return null;
   }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-      {insights.map((insight) => {
+      {insights.map((insight, index) => {
         const Icon = insight.icon;
 
         return (
-          <div
-            key={insight.title}
+          <motion.div
+            key={`${animationKey}-${insight.title}`}
             className="bg-black-2 rounded-lg border p-6 space-y-4"
+            initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: fadeDuration,
+              delay: stagger(index, 0.12),
+              ease,
+            }}
           >
             <div className="flex items-center gap-3">
               <div className={`rounded-full p-2 ${insight.bgColor}`}>
@@ -35,9 +48,15 @@ const SectorChartInsights: React.FC<SectorChartInsightsProps> = ({
             {(insight.stat || insight.statLabel) && (
               <div>
                 {insight.stat && (
-                  <div className="text-3xl font-light text-white">
+                  <motion.div
+                    key={`${animationKey}-${insight.stat}`}
+                    className="text-3xl font-light text-white"
+                    initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: fadeDuration, ease }}
+                  >
                     {insight.stat}
-                  </div>
+                  </motion.div>
                 )}
                 {insight.statLabel && (
                   <div className="text-sm text-grey mt-1">
@@ -56,7 +75,7 @@ const SectorChartInsights: React.FC<SectorChartInsightsProps> = ({
             {insight.segments && insight.segments.length > 0 && (
               <InsightStackedBar segments={insight.segments} />
             )}
-          </div>
+          </motion.div>
         );
       })}
     </div>
