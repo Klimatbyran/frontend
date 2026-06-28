@@ -87,7 +87,7 @@ export function NationECommerceScale({
         <ScaleBar
           label="Trelleborg"
           tonnes={TRELLEBORG_TONNES}
-          color="var(--blue-5)"
+          color="var(--green-5)"
           maxTonnes={maxTonnes}
           barHeight={barHeight}
           staggerIndex={0}
@@ -95,7 +95,7 @@ export function NationECommerceScale({
         <ScaleBar
           label="Gävle"
           tonnes={GAVLE_TONNES}
-          color="var(--orange-5)"
+          color="var(--green-4)"
           maxTonnes={maxTonnes}
           barHeight={barHeight}
           staggerIndex={1}
@@ -103,7 +103,7 @@ export function NationECommerceScale({
         <ScaleBar
           label={t("nation.story.ecommerce.ecommerceLabel")}
           tonnes={eCommerceTonnes}
-          color="var(--pink-4)"
+          color="var(--pink-3)"
           maxTonnes={maxTonnes}
           barHeight={barHeight}
           staggerIndex={2}
