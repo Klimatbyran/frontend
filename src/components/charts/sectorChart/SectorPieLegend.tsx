@@ -68,7 +68,7 @@ const SectorPieLegend: React.FC<LegendProps> = ({
 
   const gridClass =
     gridColumns === 2
-      ? "grid grid-cols-1 lg:grid-cols-2 gap-2 max-h-[300px] lg:max-h-[600px] overflow-y-auto w-full"
+      ? "grid grid-cols-1 lg:grid-cols-2 gap-2 max-h-[300px] lg:max-h-[600px] overflow-y-auto scrollbar-legend w-full pr-1"
       : "grid grid-cols-1 gap-2 w-full pr-2 mt-2 md:mt-4";
 
   return (
