@@ -81,53 +81,57 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
     : "pieLegendSector";
 
   return (
-    <div className="w-full space-y-6">
-      <ChartHeader
-        selectedSector={selectedSector}
-        totalEmissions={totalEmissions}
-        onSectorClear={() => setSelectedSector(null)}
-      />
+    <>
+      <div className="bg-black-2 rounded-lg border p-6 w-full space-y-6">
+        <ChartHeader
+          selectedSector={selectedSector}
+          totalEmissions={totalEmissions}
+          onSectorClear={() => setSelectedSector(null)}
+        />
 
-      <div>
-        {totalEmissions > 0 ? (
-          <DetailPieSectorGrid>
-            <SectorPieChart
-              data={pieChartDataWithColor}
-              onItemClick={handlePieClick}
-              customActionLabel={t(
-                `companyDetailPage.sectorGraphs.${actionTooltipKey}`,
-              )}
-              desktopScale={!screenSize.isMobile}
-            />
-            <div className="w-full flex lg:items-center">
-              <SectorPieLegend
+        <div>
+          {totalEmissions > 0 ? (
+            <DetailPieSectorGrid>
+              <SectorPieChart
                 data={pieChartDataWithColor}
-                total={totalEmissions}
-                onItemClick={(entry) => {
-                  if (entry.wikidataId) {
-                    navigate(`/companies/${entry.wikidataId as string}`);
-                  } else if (entry.sectorCode) {
-                    handlePieClick({ sectorCode: entry.sectorCode as string });
-                  }
-                }}
-                getActionTooltip={() =>
-                  t(`companyDetailPage.sectorGraphs.${actionTooltipKey}`)
-                }
-                gridColumns={2}
+                onItemClick={handlePieClick}
+                customActionLabel={t(
+                  `companyDetailPage.sectorGraphs.${actionTooltipKey}`,
+                )}
+                desktopScale={!screenSize.isMobile}
               />
+              <div className="w-full flex lg:items-center">
+                <SectorPieLegend
+                  data={pieChartDataWithColor}
+                  total={totalEmissions}
+                  onItemClick={(entry) => {
+                    if (entry.wikidataId) {
+                      navigate(`/companies/${entry.wikidataId as string}`);
+                    } else if (entry.sectorCode) {
+                      handlePieClick({
+                        sectorCode: entry.sectorCode as string,
+                      });
+                    }
+                  }}
+                  getActionTooltip={() =>
+                    t(`companyDetailPage.sectorGraphs.${actionTooltipKey}`)
+                  }
+                  gridColumns={2}
+                />
+              </div>
+            </DetailPieSectorGrid>
+          ) : (
+            <div className="flex justify-center items-center h-64">
+              <p className="text-grey">
+                {t("companyDetailPage.sectorGraphs.noDataAvailablePieChart")}
+              </p>
             </div>
-          </DetailPieSectorGrid>
-        ) : (
-          <div className="flex justify-center items-center h-64">
-            <p className="text-grey">
-              {t("companyDetailPage.sectorGraphs.noDataAvailablePieChart")}
-            </p>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       {totalEmissions > 0 && <SectorChartInsights insights={insights} />}
-    </div>
+    </>
   );
 };
 

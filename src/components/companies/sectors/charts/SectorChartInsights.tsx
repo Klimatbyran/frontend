@@ -20,7 +20,7 @@ const SectorChartInsights: React.FC<SectorChartInsightsProps> = ({
         return (
           <div
             key={insight.title}
-            className="bg-black-2 rounded-lg p-6 space-y-3"
+            className="bg-black-2 rounded-lg border p-6 space-y-3"
           >
             <div className="flex items-center gap-3">
               <div className={`rounded-full p-2 ${insight.bgColor}`}>

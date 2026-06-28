@@ -18,17 +18,15 @@ const SectorGraphs: React.FC<SectorGraphsProps> = ({
   const sectorNames = useSectorNames();
 
   return (
-    <div className="bg-black">
-      <div className="bg-black-2 rounded-lg border p-6">
-        <SectorEmissionsChart
-          companies={companies}
-          selectedSectors={
-            sectorCodes.length > 0
-              ? sectorCodes
-              : Object.keys(sectorNames).filter((key) => key !== "all")
-          }
-        />
-      </div>
+    <div className="bg-black space-y-4">
+      <SectorEmissionsChart
+        companies={companies}
+        selectedSectors={
+          sectorCodes.length > 0
+            ? sectorCodes
+            : Object.keys(sectorNames).filter((key) => key !== "all")
+        }
+      />
     </div>
   );
 };
