@@ -108,16 +108,20 @@ function useBooleanValues<T>(
     if (!selectedKPI.isBoolean) return null;
     const trueCount = data.filter((m) => m[selectedKPI.key] === true).length;
     const falseCount = data.filter((m) => m[selectedKPI.key] === false).length;
+    // When higherIsBetter: true = good (blue), false = bad (pink).
+    // When !higherIsBetter: true = bad (pink), false = good (blue).
+    const trueColor = selectedKPI.higherIsBetter ? COLORS.blue3 : COLORS.pink3;
+    const falseColor = selectedKPI.higherIsBetter ? COLORS.pink3 : COLORS.blue3;
     return [
       {
         name: selectedKPI.booleanLabels?.true || t("yes"),
         value: trueCount,
-        fill: COLORS.blue3,
+        fill: trueColor,
       },
       {
         name: selectedKPI.booleanLabels?.false || t("no"),
         value: falseCount,
-        fill: COLORS.pink3,
+        fill: falseColor,
       },
     ];
   }, [data, selectedKPI, t]);
