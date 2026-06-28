@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useId, useRef, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -10,7 +10,7 @@ interface KPIChipSelectorProps<T> {
   onKPIChange: (kpi: KPIValue<T>) => void;
   /** Optional icon for each KPI key */
   iconMap?: Record<string, React.ReactNode>;
-  /** i18n prefix for kpi labels, e.g. "municipalities.list" → key = municipalities.list.kpis.<key>.label */
+  /** i18n prefix for kpi labels, e.g. "municipalities.list" */
   translationPrefix?: string;
   /** Label shown above the chips / as the dropdown trigger label */
   label?: string;
@@ -27,19 +27,23 @@ export function KPIChipSelector<T>({
   const { t } = useTranslation();
   const [mobileOpen, setMobileOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const menuId = useId();
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (
         dropdownRef.current &&
-        !dropdownRef.current.contains(e.target as Node)
+        e.target instanceof Node &&
+        !dropdownRef.current.contains(e.target)
       ) {
         setMobileOpen(false);
       }
     };
-    document.addEventListener("mousedown", handleClickOutside);
+    if (mobileOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [mobileOpen]);
 
   const getLabel = (kpi: KPIValue<T>) => {
     if (translationPrefix) {
@@ -49,6 +53,23 @@ export function KPIChipSelector<T>({
   };
 
   const selectorLabel = label ?? t("municipalities.list.dataSelector.label");
+
+  const handleTriggerKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      setMobileOpen((o) => !o);
+    }
+    if (e.key === "Escape") setMobileOpen(false);
+  };
+
+  const handleItemKeyDown = (e: React.KeyboardEvent, kpi: KPIValue<T>) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onKPIChange(kpi);
+      setMobileOpen(false);
+    }
+    if (e.key === "Escape") setMobileOpen(false);
+  };
 
   return (
     <div className="mb-6 space-y-3">
@@ -62,6 +83,10 @@ export function KPIChipSelector<T>({
       <div className="md:hidden relative" ref={dropdownRef}>
         <button
           onClick={() => setMobileOpen((o) => !o)}
+          onKeyDown={handleTriggerKeyDown}
+          aria-haspopup="listbox"
+          aria-expanded={mobileOpen}
+          aria-controls={menuId}
           className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-black-1 text-white"
         >
           <span className="flex items-center gap-2 font-medium">
@@ -69,6 +94,7 @@ export function KPIChipSelector<T>({
             {getLabel(selectedKPI)}
           </span>
           <ChevronDown
+            aria-hidden="true"
             className={cn(
               "w-4 h-4 text-white/60 transition-transform",
               mobileOpen && "rotate-180",
@@ -76,16 +102,24 @@ export function KPIChipSelector<T>({
           />
         </button>
         {mobileOpen && (
-          <div className="absolute z-50 w-full mt-1 bg-black-1 rounded-xl shadow-xl overflow-hidden border border-white/10">
+          <div
+            id={menuId}
+            role="listbox"
+            aria-label={selectorLabel || undefined}
+            className="absolute z-50 w-full mt-1 bg-black-1 rounded-xl shadow-xl overflow-hidden border border-white/10"
+          >
             {kpis.map((kpi) => {
               const isSelected = String(kpi.key) === String(selectedKPI.key);
               return (
                 <button
                   key={String(kpi.key)}
+                  role="option"
+                  aria-selected={isSelected}
                   onClick={() => {
                     onKPIChange(kpi);
                     setMobileOpen(false);
                   }}
+                  onKeyDown={(e) => handleItemKeyDown(e, kpi)}
                   className={cn(
                     "w-full flex items-center gap-2 px-4 py-3 text-sm text-left transition-colors",
                     isSelected
@@ -103,7 +137,7 @@ export function KPIChipSelector<T>({
       </div>
 
       {/* Desktop: chips */}
-      <div className="hidden md:flex gap-2 flex-wrap">
+      <div className="hidden md:flex gap-2 flex-wrap" role="group" aria-label={selectorLabel || undefined}>
         {kpis.map((kpi) => {
           const isSelected = String(kpi.key) === String(selectedKPI.key);
           return (
@@ -111,6 +145,7 @@ export function KPIChipSelector<T>({
               key={String(kpi.key)}
               onClick={() => onKPIChange(kpi)}
               title={kpi.description}
+              aria-current={isSelected ? "true" : undefined}
               className={cn(
                 "flex items-center gap-2 px-3 py-2 rounded-full text-sm font-medium transition-all duration-200 border whitespace-nowrap",
                 isSelected
