@@ -504,7 +504,19 @@
       "companiesInSectorDescription": "{{count}} companies reported emissions",
       "reducingEmissions": "Reducing emissions",
       "reducingEmissionsDescription": "{{count}} of {{total}} companies reduced emissions since base year",
-      "noComparableTrendData": "Not enough comparable trend data for companies in this sector"
+      "noComparableTrendData": "Not enough comparable trend data for companies in this sector",
+      "emissionsAmount": "{{amount}} {{unit}}",
+      "ofTotalEmissions": "of total emissions",
+      "forReportingYear": "for {{year}}",
+      "reportingCompaniesAvg": "Average {{amount}} {{unit}} per reporting company",
+      "companiesReportingLabel": "companies reporting",
+      "topEmittersInSectorDescription": "Share of sector emissions among the largest companies",
+      "sinceBaseYear": "reducing since base year",
+      "reducing": "Reducing",
+      "increasing": "Increasing",
+      "scope1": "Scope 1",
+      "scope2": "Scope 2",
+      "scope3": "Scope 3"
     }
   },
   "methodsPage": {

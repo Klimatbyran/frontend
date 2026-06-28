@@ -563,7 +563,19 @@
       "companiesInSectorDescription": "{{count}} företag rapporterade utsläpp",
       "reducingEmissions": "Minskar utsläppen",
       "reducingEmissionsDescription": "{{count}} av {{total}} företag har minskat utsläppen sedan basår",
-      "noComparableTrendData": "Inte tillräckligt med jämförbar trenddata för företag i branschen"
+      "noComparableTrendData": "Inte tillräckligt med jämförbar trenddata för företag i branschen",
+      "emissionsAmount": "{{amount}} {{unit}}",
+      "ofTotalEmissions": "av totala utsläpp",
+      "forReportingYear": "för {{year}}",
+      "reportingCompaniesAvg": "Genomsnitt {{amount}} {{unit}} per rapporterande företag",
+      "companiesReportingLabel": "rapporterande företag",
+      "topEmittersInSectorDescription": "Andel av branschens utsläpp bland de största företagen",
+      "sinceBaseYear": "minskar sedan basår",
+      "reducing": "Minskar",
+      "increasing": "Ökar",
+      "scope1": "Scope 1",
+      "scope2": "Scope 2",
+      "scope3": "Scope 3"
     }
   },
   "methodsPage": {
