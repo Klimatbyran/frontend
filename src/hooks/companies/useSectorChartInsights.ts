@@ -129,19 +129,19 @@ const getComparableCompanyTrends = (
 };
 
 const REDUCING_BAR_COLORS = [
-  "var(--green-1)",
-  "var(--green-2)",
-  "var(--green-3)",
-  "var(--green-4)",
   "var(--green-5)",
+  "var(--green-4)",
+  "var(--green-3)",
+  "var(--green-2)",
+  "var(--green-1)",
 ] as const;
 
 const INCREASING_BAR_COLORS = [
-  "var(--pink-1)",
-  "var(--pink-2)",
-  "var(--pink-3)",
-  "var(--pink-4)",
   "var(--pink-5)",
+  "var(--pink-4)",
+  "var(--pink-3)",
+  "var(--pink-2)",
+  "var(--pink-1)",
 ] as const;
 
 const buildTrendChangeBars = (
