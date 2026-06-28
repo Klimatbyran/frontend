@@ -4,7 +4,7 @@ import {
   Layers,
   PieChart,
   TrendingDown,
-  Trophy,
+  TrendingUp,
   Users,
   type LucideIcon,
 } from "lucide-react";
@@ -15,6 +15,7 @@ import {
   formatEmissionsAbsolute,
   formatEmissionsAbsoluteCompact,
   formatPercent,
+  formatPercentChange,
 } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
 import { calculateTrendline } from "@/lib/calculations/trends/analysis";
@@ -106,6 +107,66 @@ const formatEmissionsLabel = (
   return `${formatPercent(share, currentLanguage)} · ${formatEmissionsAbsoluteCompact(value, currentLanguage)}`;
 };
 
+type CompanyTrend = {
+  name: string;
+  changePercent: number;
+};
+
+const getComparableCompanyTrends = (
+  reportingCompanies: RankedCompany[],
+): CompanyTrend[] => {
+  return reportingCompanies.flatMap((company) => {
+    const changePercent = calculateEmissionsChangeFromBaseYear(company, {
+      useLastPeriod: true,
+    });
+
+    if (changePercent === null || Math.abs(changePercent) > 60) {
+      return [];
+    }
+
+    return [{ name: company.name, changePercent }];
+  });
+};
+
+const buildTrendChangeBars = (
+  trends: CompanyTrend[],
+  direction: "reducing" | "increasing",
+  currentLanguage: ReturnType<typeof useLanguage>["currentLanguage"],
+): InsightBar[] => {
+  const filtered = trends.filter((trend) =>
+    direction === "reducing"
+      ? trend.changePercent < 0
+      : trend.changePercent > 0,
+  );
+
+  const sorted = [...filtered].sort((a, b) =>
+    direction === "reducing"
+      ? a.changePercent - b.changePercent
+      : b.changePercent - a.changePercent,
+  );
+
+  const topTrends = sorted.slice(0, 5);
+  const maxAbsChange = topTrends.reduce(
+    (max, trend) => Math.max(max, Math.abs(trend.changePercent)),
+    0,
+  );
+
+  if (maxAbsChange === 0) {
+    return [];
+  }
+
+  return topTrends.map((trend, index) => ({
+    label: trend.name,
+    valueLabel: formatPercentChange(
+      trend.changePercent,
+      currentLanguage,
+      true,
+    ),
+    share: Math.abs(trend.changePercent) / maxAbsChange,
+    color: getCompanyColors(index).base,
+  }));
+};
+
 export const useSectorChartInsights = (
   companies: RankedCompany[],
   pieChartData: PieChartEntry[],
@@ -122,32 +183,20 @@ export const useSectorChartInsights = (
     }
 
     if (selectedSector) {
-      const largest = pieChartData[0];
-      const largestShare = largest.value / largest.total;
       const reportingCompanies = countReportingCompanies(
         companies,
         reportingYear,
         selectedSector,
       );
 
-      let reducingCount = 0;
-      let increasingCount = 0;
-      let comparableCount = 0;
-
-      reportingCompanies.forEach((company) => {
-        const changePercent = calculateEmissionsChangeFromBaseYear(company, {
-          useLastPeriod: true,
-        });
-
-        if (changePercent !== null && Math.abs(changePercent) <= 60) {
-          comparableCount += 1;
-          if (changePercent < 0) {
-            reducingCount += 1;
-          } else if (changePercent > 0) {
-            increasingCount += 1;
-          }
-        }
-      });
+      const comparableTrends = getComparableCompanyTrends(reportingCompanies);
+      const reducingCount = comparableTrends.filter(
+        (trend) => trend.changePercent < 0,
+      ).length;
+      const increasingCount = comparableTrends.filter(
+        (trend) => trend.changePercent > 0,
+      ).length;
+      const comparableCount = comparableTrends.length;
 
       const topCompanyBars: InsightBar[] = pieChartData
         .slice(0, 5)
@@ -162,43 +211,18 @@ export const useSectorChartInsights = (
           color: getCompanyColors(index).base,
         }));
 
-      const trendSegments: InsightSegment[] = [
-        {
-          label: t("sectorsOverviewPage.insights.reducing"),
-          count: reducingCount,
-          color: "var(--green-3)",
-        },
-        {
-          label: t("sectorsOverviewPage.insights.increasing"),
-          count: increasingCount,
-          color: "var(--pink-3)",
-        },
-      ];
+      const reducingBars = buildTrendChangeBars(
+        comparableTrends,
+        "reducing",
+        currentLanguage,
+      );
+      const increasingBars = buildTrendChangeBars(
+        comparableTrends,
+        "increasing",
+        currentLanguage,
+      );
 
       return [
-        {
-          title: t("sectorsOverviewPage.insights.largestCompany"),
-          stat: formatPercent(largestShare, currentLanguage),
-          statLabel: largest.name,
-          description: t("sectorsOverviewPage.insights.emissionsAmount", {
-            amount: formatEmissionsAbsolute(
-              Math.round(largest.value),
-              currentLanguage,
-            ),
-            unit: emissionsUnit,
-          }),
-          bars: [
-            {
-              label: largest.name,
-              valueLabel: formatPercent(largestShare, currentLanguage),
-              share: largestShare,
-              color: getCompanyColors(0).base,
-            },
-          ],
-          icon: Trophy,
-          iconColor: "text-orange-3",
-          bgColor: "bg-orange-5",
-        },
         {
           title: t("sectorsOverviewPage.insights.companiesInSector"),
           stat: String(reportingCompanies.length),
@@ -220,15 +244,44 @@ export const useSectorChartInsights = (
           statLabel: t("sectorsOverviewPage.insights.sinceBaseYear"),
           description:
             comparableCount > 0
-              ? t("sectorsOverviewPage.insights.reducingEmissionsDescription", {
-                  count: reducingCount,
-                  total: comparableCount,
-                })
+              ? reducingBars.length > 0
+                ? t("sectorsOverviewPage.insights.topReducersDescription")
+                : t("sectorsOverviewPage.insights.reducingEmissionsDescription", {
+                    count: reducingCount,
+                    total: comparableCount,
+                  })
               : t("sectorsOverviewPage.insights.noComparableTrendData"),
-          segments: comparableCount > 0 ? trendSegments : undefined,
+          bars: reducingBars.length > 0 ? reducingBars : undefined,
           icon: TrendingDown,
           iconColor: "text-green-3",
           bgColor: "bg-green-5",
+        },
+        {
+          title: t("sectorsOverviewPage.insights.increasingEmissions"),
+          stat:
+            comparableCount > 0
+              ? formatPercent(
+                  increasingCount / comparableCount,
+                  currentLanguage,
+                )
+              : "–",
+          statLabel: t("sectorsOverviewPage.insights.increasingSinceBaseYear"),
+          description:
+            comparableCount > 0
+              ? increasingBars.length > 0
+                ? t("sectorsOverviewPage.insights.topIncreasersDescription")
+                : t(
+                    "sectorsOverviewPage.insights.increasingEmissionsDescription",
+                    {
+                      count: increasingCount,
+                      total: comparableCount,
+                    },
+                  )
+              : t("sectorsOverviewPage.insights.noComparableTrendData"),
+          bars: increasingBars.length > 0 ? increasingBars : undefined,
+          icon: TrendingUp,
+          iconColor: "text-pink-3",
+          bgColor: "bg-pink-5",
         },
       ];
     }
