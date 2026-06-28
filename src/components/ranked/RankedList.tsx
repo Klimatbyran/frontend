@@ -20,6 +20,8 @@ export interface RankedListProps<T extends Record<string, unknown>> {
   ) => React.ReactNode;
   className?: string;
   searchPlaceholder?: string;
+  /** Rendered to the left of the search bar in the header row */
+  headerAction?: React.ReactNode;
 }
 
 interface SortedRankedDataOptions<T extends Record<string, unknown>> {
@@ -189,6 +191,7 @@ export function RankedList<T extends Record<string, unknown>>({
   renderItem,
   className,
   searchPlaceholder,
+  headerAction,
 }: RankedListProps<T>) {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -254,22 +257,26 @@ export function RankedList<T extends Record<string, unknown>>({
   );
 
   return (
-    <div
-      className={`bg-black-2 rounded-2xl flex flex-col border border-white/10 ${className}`}
-    >
+    <div className={`bg-black-2 rounded-2xl flex flex-col ${className}`}>
       <div className="p-4 border-b border-white/10">
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/50 w-5 h-5" />
-          <input
-            type="text"
-            placeholder={searchPlaceholder}
-            value={searchTerm}
-            onChange={(e) => {
-              setSearchTerm(e.target.value);
-              setCurrentPage(1);
-            }}
-            className="w-full pl-10 pr-4 py-2 bg-black-3 text-white rounded-xl placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/20"
-          />
+        {headerAction && <div className="mb-3 md:hidden">{headerAction}</div>}
+        <div className="flex items-center gap-3">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/50 w-5 h-5" />
+            <input
+              type="text"
+              placeholder={searchPlaceholder}
+              value={searchTerm}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                setCurrentPage(1);
+              }}
+              className="w-full pl-10 pr-4 py-2 bg-black-3 text-white rounded-xl placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/20"
+            />
+          </div>
+          {headerAction && (
+            <div className="hidden md:block shrink-0">{headerAction}</div>
+          )}
         </div>
         {selectedDataPoint.unit && (
           <div className="flex items-center justify-between pt-4 -mb-2 w-full text-grey">
@@ -303,19 +310,13 @@ export function RankedList<T extends Record<string, unknown>>({
           </div>
         )}
       </div>
-      <div className="flex-1 overflow-y-auto ranked-list-items min-h-[570px]">
+      <div className="overflow-y-auto ranked-list-items">
         <div className="divide-y divide-white/10">
           {paginatedData.map((item, index) =>
             renderItem
               ? renderItem(item, index, startIndex, getOriginalRank(item))
               : defaultRenderItem(item, index),
           )}
-          {paginatedData.length < itemsPerPage &&
-            Array(itemsPerPage - paginatedData.length)
-              .fill(0)
-              .map((_, i) => (
-                <div key={`empty-${i}`} className="p-4 h-[50px]" />
-              ))}
         </div>
       </div>
       {totalPages > 1 && (

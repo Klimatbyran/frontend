@@ -1559,8 +1559,8 @@
       "dataSelector": {
         "label": "Välj datapunkt",
         "tooltips": {
-          "higherBetter": "Högre värden är bättre",
-          "lowerBetter": "Lägre värden är bättre"
+          "higherBetter": "Bättre",
+          "lowerBetter": "Bättre"
         }
       },
       "kpis": {
@@ -1625,8 +1625,8 @@
       "dataSelector": {
         "label": "Välj datapunkt",
         "tooltips": {
-          "higherBetter": "Högre värden är bättre",
-          "lowerBetter": "Lägre värden är bättre"
+          "higherBetter": "Bättre",
+          "lowerBetter": "Bättre"
         }
       },
       "kpis": {
@@ -1694,12 +1694,23 @@
           "metric": "Ingen data tillgänglig för {{metric}}"
         },
         "keyStatistics": {
-          "average": "Genomsnitt:"
+          "average": "Genomsnitt",
+          "best": "Bäst",
+          "worst": "Sämst"
+        },
+        "distribution": {
+          "title": "Fördelning",
+          "subtitle": "Visar hur kommunerna sprider sig längs skalan för vald indikator. Blå staplar betyder bättre resultat, rosa sämre, och den streckade linjen markerar riksgenomsnittet.",
+          "summary": "Sammanfattning",
+          "average": "Genomsnitt",
+          "higherBetter": "Bättre",
+          "lowerBetter": "Bättre",
+          "higherWorse": "Sämre"
         }
       },
       "viewToggle": {
-        "showList": "Visa lista",
-        "showMap": "Visa karta"
+        "showList": "Lista",
+        "showMap": "Karta"
       }
     }
   },
@@ -1994,9 +2005,9 @@
   "rankedInsights": {
     "belowAverage": "{{entityPlural}} under genomsnittet",
     "aboveAverage": "{{entityPlural}} över genomsnittet",
-    "titleBest": "Topp fem {{entityPlural}}",
-    "titleTop": "Bästa {{entityPlural}}",
-    "titleWorst": "Botten fem {{entityPlural}}"
+    "titleBest": "Topp 10 {{entityPlural}}",
+    "titleTop": "Bästa 10 {{entityPlural}}",
+    "titleWorst": "Sämsta 10 {{entityPlural}}"
   },
   "chartLegend": {
     "clickToFilterOut": "Klicka för att filtrera bort",

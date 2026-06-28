@@ -1502,8 +1502,8 @@
       "dataSelector": {
         "label": "Select Data Point",
         "tooltips": {
-          "higherBetter": "Higher values are better",
-          "lowerBetter": "Lower values are better"
+          "higherBetter": "Better",
+          "lowerBetter": "Better"
         }
       },
       "kpis": {
@@ -1566,8 +1566,8 @@
       "dataSelector": {
         "label": "Select Data Point",
         "tooltips": {
-          "higherBetter": "Higher values are better",
-          "lowerBetter": "Lower values are better"
+          "higherBetter": "Better",
+          "lowerBetter": "Better"
         }
       },
       "kpis": {
@@ -1635,12 +1635,23 @@
           "metric": "No data available for {{metric}}"
         },
         "keyStatistics": {
-          "average": "Average:"
+          "average": "Average",
+          "best": "Best",
+          "worst": "Worst"
+        },
+        "distribution": {
+          "title": "Distribution",
+          "subtitle": "Shows how municipalities are spread across the scale for the selected indicator. Blue bars mean better results, pink worse, and the dashed line marks the national average.",
+          "summary": "Summary",
+          "average": "Average",
+          "higherBetter": "Better",
+          "lowerBetter": "Better",
+          "higherWorse": "Worse"
         }
       },
       "viewToggle": {
-        "showList": "Show List",
-        "showMap": "Show Map"
+        "showList": "List",
+        "showMap": "Map"
       }
     }
   },
@@ -1935,9 +1946,9 @@
   "rankedInsights": {
     "belowAverage": "{{entityPlural}} below average",
     "aboveAverage": "{{entityPlural}} above average",
-    "titleBest": "Top Five {{entityPlural}}",
-    "titleTop": "Top Performing {{entityPlural}}",
-    "titleWorst": "Bottom Five {{entityPlural}}"
+    "titleBest": "Top 10 {{entityPlural}}",
+    "titleTop": "Top Performing 10 {{entityPlural}}",
+    "titleWorst": "Bottom 10 {{entityPlural}}"
   },
   "chartLegend": {
     "clickToFilterOut": "Click to filter out",

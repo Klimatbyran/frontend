@@ -130,17 +130,6 @@ export function MeetsParisVisualization({
 
   return (
     <div className="w-full h-full flex flex-col gap-3">
-      {!isMobile && (
-        <div className="flex items-center justify-between">
-          <div className="text-sm text-grey">
-            {t("companies.list.kpis.meetsParis.label")}
-            {" · "}
-            {t("companies.list.kpis.meetsParis.nullValues", "Unknown")}:{" "}
-            {noBudgetCompanies.length}
-          </div>
-        </div>
-      )}
-
       <div className="relative flex-1 bg-black-2 rounded-level-2 p-4 overflow-hidden">
         <BeeswarmChart
           data={companyBudgetData}
@@ -186,15 +175,14 @@ export function MeetsParisVisualization({
         />
       </div>
 
-      <p className="text-grey text-sm">
-        {t("companiesOverviewPage.visualizations.meetsParis.description")}{" "}
-        <a
-          href="/methodology?view=companyDataOverview"
-          className="underline hover:text-white"
-        >
-          {t("companiesOverviewPage.visualizations.meetsParis.learnMore")}
-        </a>
-      </p>
+      {!isMobile && (
+        <div className="text-sm text-grey">
+          {t("companies.list.kpis.meetsParis.label")}
+          {" · "}
+          {t("companies.list.kpis.meetsParis.nullValues", "Unknown")}:{" "}
+          {noBudgetCompanies.length}
+        </div>
+      )}
     </div>
   );
 }
