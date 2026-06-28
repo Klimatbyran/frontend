@@ -6,6 +6,8 @@ import { getSortedEntityKPIValues } from "@/utils/data/sorting";
 import {
   calculateEntityStatistics,
   createSourceLinks,
+  buildPerformerProps,
+  TOP_N,
 } from "@/utils/insights/rankedListUtils";
 import KPIDetailsPanel from "../../ranked/KPIDetailsPanel";
 import InsightsList from "../../ranked/InsightsList";
@@ -23,8 +25,6 @@ interface InsightsPanelProps {
   /** Render only one section. Omit to render all three (legacy). */
   section?: InsightsPanelSection;
 }
-
-const TOP_N = 10;
 
 function InsightsPanel({
   municipalityData,
@@ -61,15 +61,26 @@ function InsightsPanel({
     );
   }
 
-  const sortedData = getSortedEntityKPIValues(municipalityData, selectedKPI);
+  // Sort only valid data so null-valued entities don't appear in performer/bottom lists
+  const sortedData = getSortedEntityKPIValues(
+    statistics.validData,
+    selectedKPI,
+  );
   const topMunicipalities = sortedData.slice(0, TOP_N);
   const bottomMunicipalities = sortedData.slice(-TOP_N).reverse();
   const sourceLinks = createSourceLinks(selectedKPI);
   const entityPlural = t("header.municipalities").toLowerCase();
   const unit = selectedKPI.unit || "";
 
-  const bestItem = sortedData[0];
-  const worstItem = sortedData[sortedData.length - 1];
+  const { topPerformer, bottomPerformer } = buildPerformerProps(
+    sortedData,
+    {
+      key: selectedKPI.key as keyof Municipality,
+      unit,
+      isBoolean: selectedKPI.isBoolean,
+    },
+    "/municipalities",
+  );
 
   const statsPanel = (
     <KPIDetailsPanel
@@ -78,26 +89,9 @@ function InsightsPanel({
       isBoolean={selectedKPI.isBoolean}
       higherIsBetter={selectedKPI.higherIsBetter}
       averageValue={statistics.formattedAverage}
-      medianValue={statistics.formattedMedian}
       averageLabel={t("municipalities.list.insights.keyStatistics.average")}
-      topPerformer={
-        !selectedKPI.isBoolean && bestItem
-          ? {
-              name: bestItem.name,
-              value: `${(bestItem[selectedKPI.key as keyof Municipality] as number)?.toFixed(1)}${unit}`,
-              href: `/municipalities/${bestItem.name}`,
-            }
-          : undefined
-      }
-      bottomPerformer={
-        !selectedKPI.isBoolean && worstItem && worstItem !== bestItem
-          ? {
-              name: worstItem.name,
-              value: `${(worstItem[selectedKPI.key as keyof Municipality] as number)?.toFixed(1)}${unit}`,
-              href: `/municipalities/${worstItem.name}`,
-            }
-          : undefined
-      }
+      topPerformer={topPerformer}
+      bottomPerformer={bottomPerformer}
       chart={
         selectedKPI.isBoolean ? (
           <KPIDistributionChart

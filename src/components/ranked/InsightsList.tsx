@@ -23,8 +23,6 @@ interface InsightsListProps<T> {
   entityType: string;
   nameKey: keyof T;
   showBars?: boolean;
-  /** Max absolute value across the full dataset — bars scale against this */
-  datasetMax?: number;
 }
 
 function InsightsList<T>({
@@ -40,24 +38,16 @@ function InsightsList<T>({
   entityType,
   nameKey,
   showBars = false,
-  datasetMax,
 }: InsightsListProps<T>) {
   const numericValues = entities
     .map((e) => e[dataPointKey])
     .filter((v): v is number => typeof v === "number" && !isNaN(v));
-  const localMax = numericValues.length
+  const absMax = numericValues.length
     ? Math.max(...numericValues.map(Math.abs))
     : 1;
-  const absMax = datasetMax ?? localMax;
 
   return (
     <div className="bg-white/10 rounded-level-2 p-4 md:p-6 h-full">
-      <style>{`
-        @keyframes fadeSlideIn {
-          from { opacity: 0; transform: translateY(6px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-      `}</style>
       <h3 className="text-white text-lg font-semibold mb-3">{title}</h3>
       <div className="space-y-1">
         {entities.map((entity, index) => {
@@ -108,7 +98,7 @@ function InsightsList<T>({
             return (
               <LocalizedLink
                 key={name}
-                to={`/${entityType}/${name}`}
+                to={`/${entityType}/${name.toLowerCase()}`}
                 className="block transition-colors hover:bg-white/5 rounded-lg"
               >
                 {content}

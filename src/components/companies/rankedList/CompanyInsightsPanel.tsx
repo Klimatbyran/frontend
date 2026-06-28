@@ -9,6 +9,8 @@ import { getSortedEntityKPIValues } from "@/utils/data/sorting";
 import {
   calculateEntityStatistics,
   createSourceLinks,
+  buildPerformerProps,
+  TOP_N,
 } from "@/utils/insights/rankedListUtils";
 import KPIDetailsPanel from "../../ranked/KPIDetailsPanel";
 import InsightsList from "../../ranked/InsightsList";
@@ -27,7 +29,6 @@ interface InsightsPanelProps {
   viewMode?: OverviewViewMode;
 }
 
-const TOP_N = 10;
 const MIN_COMPANIES = 2;
 
 function CompanyInsightsPanel({
@@ -77,8 +78,10 @@ function CompanyInsightsPanel({
   const entityPlural = t("header.companies").toLowerCase();
   const unit = selectedKPI.unit || "";
 
-  const bestItem = sortedValidData[0];
-  const worstItem = sortedValidData[sortedValidData.length - 1];
+  const { topPerformer, bottomPerformer } = buildPerformerProps(
+    sortedValidData,
+    { key: selectedKPI.key, unit, isBoolean: selectedKPI.isBoolean },
+  );
 
   const statsPanel = (
     <KPIDetailsPanel
@@ -87,24 +90,9 @@ function CompanyInsightsPanel({
       isBoolean={selectedKPI.isBoolean}
       higherIsBetter={selectedKPI.higherIsBetter}
       averageValue={statistics.formattedAverage}
-      medianValue={statistics.formattedMedian}
       averageLabel={t("companies.list.insights.keyStatistics.average")}
-      topPerformer={
-        !selectedKPI.isBoolean && bestItem
-          ? {
-              name: bestItem.name,
-              value: `${(bestItem[selectedKPI.key] as number)?.toFixed(1)}${unit}`,
-            }
-          : undefined
-      }
-      bottomPerformer={
-        !selectedKPI.isBoolean && worstItem && worstItem !== bestItem
-          ? {
-              name: worstItem.name,
-              value: `${(worstItem[selectedKPI.key] as number)?.toFixed(1)}${unit}`,
-            }
-          : undefined
-      }
+      topPerformer={topPerformer}
+      bottomPerformer={bottomPerformer}
       chart={
         selectedKPI.isBoolean ? (
           <KPIDistributionChart

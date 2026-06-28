@@ -1,5 +1,5 @@
-import { t } from "i18next";
 import { Fragment } from "react/jsx-runtime";
+import { useTranslation } from "react-i18next";
 import { COLORS } from "@/lib/colors";
 import { LocalizedLink } from "@/components/LocalizedLink";
 
@@ -65,6 +65,7 @@ export default function KPIDetailsPanel({
   className = "",
   chart,
 }: KPIDetailsPanelProps) {
+  const { t } = useTranslation();
   const sourceSection = sourceLinks.length > 0 && (
     <p className="text-white/40 text-sm italic">
       {t("municipalities.list.source")}{" "}
@@ -89,7 +90,7 @@ export default function KPIDetailsPanel({
   );
 
   const lowercaseFirstLetter = (str: string): string =>
-    str ? str.charAt(0).toLowerCase() + str.slice(1) : str;
+    str ? str.charAt(0).toLocaleLowerCase() + str.slice(1) : str;
 
   const totalDistribution = distributionStats.reduce(
     (sum, s) => sum + s.count,
@@ -199,12 +200,12 @@ export default function KPIDetailsPanel({
       {distributionStats.length > 0 && totalDistribution > 0 && (
         <div className="space-y-4">
           <div className="flex rounded-full overflow-hidden h-3">
-            {distributionStats.map((stat, i) => {
+            {distributionStats.map((stat) => {
               const pct = (stat.count / totalDistribution) * 100;
               const bg = STAT_COLOR_MAP[stat.colorClass] ?? "#888";
               return (
                 <div
-                  key={i}
+                  key={stat.label}
                   style={{
                     width: `${pct}%`,
                     backgroundColor: bg,
@@ -216,13 +217,16 @@ export default function KPIDetailsPanel({
             })}
           </div>
           <div className="space-y-2">
-            {distributionStats.map((stat, index) => {
+            {distributionStats.map((stat) => {
               const pct =
                 totalDistribution > 0
                   ? ((stat.count / totalDistribution) * 100).toFixed(0)
                   : 0;
               return (
-                <div key={index} className="flex items-center justify-between">
+                <div
+                  key={stat.label}
+                  className="flex items-center justify-between"
+                >
                   <div className="flex items-center gap-2.5">
                     <span
                       className="inline-block w-3 h-3 rounded-full shrink-0"

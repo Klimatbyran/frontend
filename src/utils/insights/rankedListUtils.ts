@@ -1,4 +1,7 @@
 // Ranked List Utilities
+
+/** Default number of top/bottom entities shown in insight lists */
+export const TOP_N = 10;
 //
 // This file contains utilities for ranked entity list views (municipalities, regions, companies).
 // It provides functions for:
@@ -160,6 +163,49 @@ export function calculateEntityStatistics<
  * Create source links from KPI
  * Accepts any KPIValue regardless of entity type
  */
+interface PerformerResult {
+  name: string;
+  value: string;
+  href?: string;
+}
+
+/**
+ * Build top and bottom performer objects for KPIDetailsPanel.
+ * Returns undefined for boolean KPIs or when data is too sparse.
+ */
+export function buildPerformerProps<T extends { name: string }>(
+  sortedData: T[],
+  kpi: { key: keyof T; unit?: string; isBoolean?: boolean },
+  hrefPrefix?: string,
+): { topPerformer?: PerformerResult; bottomPerformer?: PerformerResult } {
+  if (kpi.isBoolean || !sortedData.length) return {};
+  const unit = kpi.unit || "";
+  const fmt = (item: T) => `${(item[kpi.key] as number)?.toFixed(1)}${unit}`;
+  const best = sortedData[0];
+  const worst = sortedData[sortedData.length - 1];
+  return {
+    topPerformer: best
+      ? {
+          name: best.name,
+          value: fmt(best),
+          href: hrefPrefix
+            ? `${hrefPrefix}/${best.name.toLowerCase()}`
+            : undefined,
+        }
+      : undefined,
+    bottomPerformer:
+      worst && worst !== best
+        ? {
+            name: worst.name,
+            value: fmt(worst),
+            href: hrefPrefix
+              ? `${hrefPrefix}/${worst.name.toLowerCase()}`
+              : undefined,
+          }
+        : undefined,
+  };
+}
+
 export function createSourceLinks<T = EntityWithKPIs>(
   selectedKPI: KPIValue<T>,
 ) {

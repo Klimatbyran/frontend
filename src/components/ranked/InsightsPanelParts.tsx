@@ -5,6 +5,13 @@
 import { useTranslation } from "react-i18next";
 import { COLORS } from "@/lib/colors";
 
+const STAT_COLOR_MAP: Record<string, string> = {
+  "text-blue-3": COLORS.blue3,
+  "text-pink-3": COLORS.pink3,
+  "text-green-3": COLORS.green3,
+  "text-orange-2": COLORS.orange2,
+};
+
 interface DistributionStat {
   count: number;
   colorClass: string;
@@ -14,19 +21,27 @@ interface DistributionStat {
 interface DistributionBoxProps {
   /** The chart or visualisation to display at the bottom */
   chart: React.ReactNode;
+  /** Override the default title (falls back to distribution.title key) */
+  title?: string;
+  /** Override the default subtitle (falls back to distribution.subtitle key) */
+  subtitle?: string;
 }
 
 /** Titled box that places a description at the top and a chart at the bottom. */
-export function DistributionBox({ chart }: DistributionBoxProps) {
+export function DistributionBox({
+  chart,
+  title,
+  subtitle,
+}: DistributionBoxProps) {
   const { t } = useTranslation();
   return (
     <div className="bg-white/5 rounded-level-2 p-6 flex flex-col justify-between h-full gap-6">
       <div>
         <h3 className="text-2xl font-bold text-white">
-          {t("municipalities.list.insights.distribution.title")}
+          {title ?? t("municipalities.list.insights.distribution.title")}
         </h3>
         <p className="text-sm text-white/60 leading-relaxed mt-2">
-          {t("municipalities.list.insights.distribution.subtitle")}
+          {subtitle ?? t("municipalities.list.insights.distribution.subtitle")}
         </p>
       </div>
       {chart}
@@ -49,10 +64,10 @@ export function BooleanSummaryBox({
         {t("municipalities.list.insights.distribution.summary")}
       </h3>
       {distributionStats.map((stat, i) => (
-        <div key={i} className="flex items-center gap-3">
+        <div key={stat.label || i} className="flex items-center gap-3">
           <div
             className="text-4xl font-bold"
-            style={{ color: i === 0 ? COLORS.blue3 : COLORS.pink3 }}
+            style={{ color: STAT_COLOR_MAP[stat.colorClass] ?? COLORS.grey }}
           >
             {stat.count}
           </div>
