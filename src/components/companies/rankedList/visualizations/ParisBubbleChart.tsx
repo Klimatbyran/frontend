@@ -47,6 +47,19 @@ interface BubblePoint {
   emissions2025Raw: number;
 }
 
+/** Skew bubble sizes toward high emitters so the largest companies stand out. */
+function getBubbleSizeValue(
+  emissions: number,
+  minEmissions: number,
+  maxEmissions: number,
+): number {
+  if (maxEmissions <= minEmissions) return 1;
+
+  const normalized =
+    (emissions - minEmissions) / (maxEmissions - minEmissions);
+  return Math.pow(normalized, 1.45);
+}
+
 interface BubbleTooltipProps {
   active?: boolean;
   payload?: Array<{ payload: BubblePoint }>;
@@ -194,11 +207,19 @@ export function ParisBubbleChart({
       );
       const unitScale = getBestUnit(maxRawValue);
 
+      const emissionsValues = rawPoints.map((point) => point.emissions2025Raw);
+      const minEmissions = Math.min(...emissionsValues);
+      const maxEmissions = Math.max(...emissionsValues);
+
       const points: BubblePoint[] = rawPoints.map((point) => ({
         ...point,
         x: point.parisBudgetRaw / unitScale.divisor,
         y: point.trendTotalRaw / unitScale.divisor,
-        z: point.emissions2025Raw,
+        z: getBubbleSizeValue(
+          point.emissions2025Raw,
+          minEmissions,
+          maxEmissions,
+        ),
         color: getCompanyOverviewKPIColor(
           point.company,
           selectedKPI,
@@ -223,6 +244,7 @@ export function ParisBubbleChart({
   }
 
   const unitLabel = unitScale.unit.trim();
+  const bubbleSizeRange: [number, number] = isMobile ? [8, 360] : [10, 520];
 
   return (
     <div className="w-full h-full flex flex-col gap-3">
@@ -267,7 +289,12 @@ export function ParisBubbleChart({
                 fontSize: 12,
               }}
             />
-            <ZAxis type="number" dataKey="z" range={[48, 320]} />
+            <ZAxis
+              type="number"
+              dataKey="z"
+              domain={[0, 1]}
+              range={bubbleSizeRange}
+            />
             <Tooltip
               content={
                 <BubbleTooltip
