@@ -14,7 +14,7 @@ interface OverviewSplitLayoutProps {
   listMode?: OverviewViewMode;
   visualization: ReactNode;
   list: ReactNode;
-  /** Rendered as a full-width header row above both map and list panels */
+  /** Rendered above the visualization panel (list view uses headerAction instead) */
   toggle?: ReactNode;
 }
 
@@ -43,13 +43,10 @@ export function OverviewSplitLayout({
     // Fixed height wrapper — both map and list fill this exactly, so no
     // layout shift when toggling between them.
     <div className={`flex flex-col ${OVERVIEW_PANEL_HEIGHT}`}>
+      {toggle && showVisualization && (
+        <div className="flex justify-end shrink-0 mb-3">{toggle}</div>
+      )}
       <div className="flex-1 relative min-h-0">
-        {/* Toggle overlaid on map/graph (no space taken, no background) */}
-        {toggle && showVisualization && (
-          <div className="absolute top-4 md:top-[20px] left-4 right-4 md:left-auto z-40">
-            {toggle}
-          </div>
-        )}
         <div
           className={cn(
             VISUALIZATION_PANEL_CLASS,
