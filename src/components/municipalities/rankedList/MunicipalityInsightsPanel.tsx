@@ -7,6 +7,7 @@ import {
   calculateEntityStatistics,
   createSourceLinks,
   buildPerformerProps,
+  TOP_N,
 } from "@/utils/insights/rankedListUtils";
 import KPIDetailsPanel from "../../ranked/KPIDetailsPanel";
 import InsightsList from "../../ranked/InsightsList";
@@ -24,8 +25,6 @@ interface InsightsPanelProps {
   /** Render only one section. Omit to render all three (legacy). */
   section?: InsightsPanelSection;
 }
-
-const TOP_N = 10;
 
 function InsightsPanel({
   municipalityData,

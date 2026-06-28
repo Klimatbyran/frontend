@@ -5,6 +5,9 @@ export type OverviewViewMode = "map" | "list" | "graph";
 
 const VISUALIZATION_PANEL_CLASS = "relative min-w-0 h-full";
 
+/** Mobile viewport fraction and fixed desktop pixel height for the map/list panel */
+export const OVERVIEW_PANEL_HEIGHT = "h-[85vh] md:h-[630px]" as const;
+
 interface OverviewSplitLayoutProps {
   viewMode: OverviewViewMode;
   visualizationMode: OverviewViewMode;
@@ -39,7 +42,7 @@ export function OverviewSplitLayout({
   return (
     // Fixed height wrapper — both map and list fill this exactly, so no
     // layout shift when toggling between them.
-    <div className="flex flex-col h-[85vh] md:h-[630px]">
+    <div className={`flex flex-col ${OVERVIEW_PANEL_HEIGHT}`}>
       <div className="flex-1 relative min-h-0">
         {/* Toggle overlaid on map/graph (no space taken, no background) */}
         {toggle && showVisualization && (

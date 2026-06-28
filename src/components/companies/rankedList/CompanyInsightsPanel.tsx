@@ -9,6 +9,7 @@ import {
   calculateEntityStatistics,
   createSourceLinks,
   buildPerformerProps,
+  TOP_N,
 } from "@/utils/insights/rankedListUtils";
 import KPIDetailsPanel from "../../ranked/KPIDetailsPanel";
 import InsightsList from "../../ranked/InsightsList";

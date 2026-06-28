@@ -1,4 +1,7 @@
 // Ranked List Utilities
+
+/** Default number of top/bottom entities shown in insight lists */
+export const TOP_N = 10;
 //
 // This file contains utilities for ranked entity list views (municipalities, regions, companies).
 // It provides functions for:

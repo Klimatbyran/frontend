@@ -7,6 +7,7 @@ import {
   calculateEntityStatistics,
   createSourceLinks,
   buildPerformerProps,
+  TOP_N,
 } from "@/utils/insights/rankedListUtils";
 import InsightsList from "../ranked/InsightsList";
 import KPIDetailsPanel from "../ranked/KPIDetailsPanel";
@@ -23,8 +24,6 @@ interface InsightsPanelProps {
   selectedKPI: KPIValue<Region>;
   section?: InsightsPanelSection;
 }
-
-const TOP_N = 10;
 
 function RegionalInsightsPanel({
   regionsData: regionData,
