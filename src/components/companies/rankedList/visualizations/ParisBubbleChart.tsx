@@ -59,6 +59,11 @@ function getBubbleSizeValue(
   return Math.pow(normalized, 1.45);
 }
 
+function getAxisMax(maxValue: number, divisor: number): number {
+  if (maxValue <= 0) return 1;
+  return Math.ceil((maxValue / divisor) * 1.05 * 10) / 10;
+}
+
 interface BubbleTooltipProps {
   active?: boolean;
   payload?: Array<{ payload: BubblePoint }>;
@@ -158,7 +163,7 @@ export function ParisBubbleChart({
     setActiveIndex(null);
   }, [selectedKPI.key]);
 
-  const { points, unitScale, axisMax, maxRawValue, numericRange } =
+  const { points, unitScale, xAxisMax, yAxisMax, maxRawValue, numericRange } =
     useMemo(() => {
       const numericRange = getCompanyOverviewKPINumericRange(
         companies,
@@ -197,13 +202,15 @@ export function ParisBubbleChart({
         });
       });
 
-      const maxRawValue = Math.max(
+      const maxParisBudget = Math.max(
         0,
-        ...rawPoints.flatMap((point) => [
-          point.parisBudgetRaw,
-          point.trendTotalRaw,
-        ]),
+        ...rawPoints.map((point) => point.parisBudgetRaw),
       );
+      const maxTrendTotal = Math.max(
+        0,
+        ...rawPoints.map((point) => point.trendTotalRaw),
+      );
+      const maxRawValue = Math.max(maxParisBudget, maxTrendTotal);
       const unitScale = getBestUnit(maxRawValue);
 
       const emissionsValues = rawPoints.map((point) => point.emissions2025Raw);
@@ -226,10 +233,17 @@ export function ParisBubbleChart({
         ),
       }));
 
-      const axisMax =
-        Math.ceil((maxRawValue / unitScale.divisor) * 1.05 * 10) / 10;
+      const xAxisMax = getAxisMax(maxParisBudget, unitScale.divisor);
+      const yAxisMax = getAxisMax(maxTrendTotal, unitScale.divisor);
 
-      return { points, unitScale, axisMax, maxRawValue, numericRange };
+      return {
+        points,
+        unitScale,
+        xAxisMax,
+        yAxisMax,
+        maxRawValue,
+        numericRange,
+      };
     }, [companies, selectedKPI]);
 
   if (points.length === 0) {
@@ -253,7 +267,7 @@ export function ParisBubbleChart({
             <XAxis
               type="number"
               dataKey="x"
-              domain={[0, axisMax]}
+              domain={[0, xAxisMax]}
               tick={{ fill: COLORS.grey, fontSize: 11 }}
               axisLine={false}
               tickLine={false}
@@ -271,7 +285,7 @@ export function ParisBubbleChart({
             <YAxis
               type="number"
               dataKey="y"
-              domain={[0, axisMax]}
+              domain={[0, yAxisMax]}
               width={56}
               tick={{ fill: COLORS.grey, fontSize: 11 }}
               axisLine={false}
