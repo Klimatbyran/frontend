@@ -1,9 +1,6 @@
 import React from "react";
 import { ChartInsight } from "@/hooks/companies/useSectorChartInsights";
-import {
-  InsightBarChart,
-  InsightStackedBar,
-} from "./InsightVisualization";
+import { InsightBarChart, InsightStackedBar } from "./InsightVisualization";
 
 interface SectorChartInsightsProps {
   insights: ChartInsight[];
@@ -43,7 +40,9 @@ const SectorChartInsights: React.FC<SectorChartInsightsProps> = ({
                   </div>
                 )}
                 {insight.statLabel && (
-                  <div className="text-sm text-grey mt-1">{insight.statLabel}</div>
+                  <div className="text-sm text-grey mt-1">
+                    {insight.statLabel}
+                  </div>
                 )}
               </div>
             )}

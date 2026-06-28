@@ -19,10 +19,7 @@ import {
 import { useLanguage } from "@/components/LanguageProvider";
 import { calculateTrendline } from "@/lib/calculations/trends/analysis";
 import { calculateMeetsParis } from "@/lib/calculations/trends/meetsParis";
-import {
-  getCompanyColors,
-  sectorColors,
-} from "@/lib/constants/companyColors";
+import { getCompanyColors, sectorColors } from "@/lib/constants/companyColors";
 import type { SectorCode } from "@/lib/constants/sectors";
 
 export type InsightBar = {
@@ -98,9 +95,7 @@ const getSectorColor = (sectorCode?: string): string => {
     return "var(--grey)";
   }
 
-  return (
-    sectorColors[sectorCode as SectorCode]?.base ?? "var(--grey)"
-  );
+  return sectorColors[sectorCode as SectorCode]?.base ?? "var(--grey)";
 };
 
 const formatEmissionsLabel = (
@@ -225,13 +220,10 @@ export const useSectorChartInsights = (
           statLabel: t("sectorsOverviewPage.insights.sinceBaseYear"),
           description:
             comparableCount > 0
-              ? t(
-                  "sectorsOverviewPage.insights.reducingEmissionsDescription",
-                  {
-                    count: reducingCount,
-                    total: comparableCount,
-                  },
-                )
+              ? t("sectorsOverviewPage.insights.reducingEmissionsDescription", {
+                  count: reducingCount,
+                  total: comparableCount,
+                })
               : t("sectorsOverviewPage.insights.noComparableTrendData"),
           segments: comparableCount > 0 ? trendSegments : undefined,
           icon: TrendingDown,
@@ -256,9 +248,7 @@ export const useSectorChartInsights = (
             const period = company.reportingPeriods.find((p) =>
               p.endDate.startsWith(reportingYear),
             );
-            return (
-              sum + (period?.emissions?.calculatedTotalEmissions ?? 0)
-            );
+            return sum + (period?.emissions?.calculatedTotalEmissions ?? 0);
           }, 0) / reportingCompanies.length
         : 0;
 
