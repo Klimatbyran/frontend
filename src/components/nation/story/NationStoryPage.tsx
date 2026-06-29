@@ -20,7 +20,7 @@ type NationStoryPageProps = {
 
 function FullScreenSection({ children }: { children: React.ReactNode }) {
   return (
-    <section className="min-h-screen flex items-center justify-center px-4 md:px-8 py-16">
+    <section className="min-h-[80vh] flex items-center justify-center px-4 md:px-8 py-10">
       <div className="w-full max-w-4xl mx-auto">{children}</div>
     </section>
   );
@@ -39,7 +39,7 @@ export function NationStoryPage({
   return (
     <div className="bg-black text-white pb-24">
       {/* Intro */}
-      <section className="flex items-start justify-center min-h-screen px-4 md:px-8 pt-16 md:pt-24 pb-16">
+      <section className="flex items-start justify-center min-h-screen px-4 md:px-8 pt-16 md:pt-24 pb-10">
         <div className="max-w-3xl mx-auto text-center space-y-8">
           <img
             src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Flag_of_Sweden.svg"
@@ -92,7 +92,7 @@ export function NationStoryPage({
       </FullScreenSection>
 
       {/* Footer */}
-      <section className="max-w-5xl mx-auto px-4 md:px-8 py-32 md:py-48">
+      <section className="max-w-5xl mx-auto px-4 md:px-8 py-20 md:py-28">
         <motion.div
           initial={{ opacity: 0, y: 32 }}
           whileInView={{ opacity: 1, y: 0 }}
