@@ -205,14 +205,14 @@ export function computeNationStoryMetrics(
     buildLayerComparison(
       "biogenic",
       "nation.story.graph.biogenic",
-      "var(--orange-3)",
+      "var(--green-3)",
       series,
       latestYear,
     ),
     buildLayerComparison(
       "consumptionAbroad",
       "nation.story.graph.consumptionAbroad",
-      "var(--pink-4)",
+      "var(--pink-3)",
       series,
       latestYear,
     ),
