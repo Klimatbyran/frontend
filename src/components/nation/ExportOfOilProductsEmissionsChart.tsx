@@ -1,5 +1,7 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
+  animate,
+  useInView,
   useMotionValue,
   useMotionValueEvent,
   type MotionValue,
@@ -97,12 +99,38 @@ function getLatestYearPoint(data: YearValuePoint[]): YearValuePoint | null {
   return data.length > 0 ? data[data.length - 1] : null;
 }
 
+function CountUp({ value }: { value: number }) {
+  const { currentLanguage } = useLanguage();
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: false, amount: 0.6 });
+  const [display, setDisplay] = useState(0);
+
+  useEffect(() => {
+    if (!inView) {
+      setDisplay(0);
+      return;
+    }
+    const controls = animate(0, value, {
+      duration: 1.6,
+      ease: "easeOut",
+      onUpdate: (v) => setDisplay(v),
+    });
+    return () => controls.stop();
+  }, [inView, value]);
+
+  return (
+    <span ref={ref}>
+      {formatEmissionsAbsolute(Math.round(display), currentLanguage)}
+    </span>
+  );
+}
+
 function CitizenComparisonCallout({
   year,
-  formattedCount,
+  count,
 }: {
   year: number;
-  formattedCount: string;
+  count: number;
 }) {
   const { t } = useTranslation();
 
@@ -121,11 +149,11 @@ function CitizenComparisonCallout({
         <p className="mt-1 text-sm leading-relaxed text-white @lg:text-base">
           <Trans
             i18nKey="nation.exportOfOilProducts.citizenComparisonHighlight"
-            values={{ count: formattedCount }}
             components={{
               highlight: (
                 <span className="text-xl font-semibold tabular-nums text-orange-2 @lg:text-2xl" />
               ),
+              count: <CountUp value={count} />,
               tooltip: (
                 <InfoTooltip
                   ariaLabel={t(
@@ -275,7 +303,7 @@ export function ExportOfOilProductsEmissionsChart({
       {showCitizenComparison && latestYearPoint && latestCitizenEquivalent && (
         <CitizenComparisonCallout
           year={latestYearPoint.year}
-          formattedCount={latestCitizenEquivalent.formattedCount}
+          count={latestCitizenEquivalent.count}
         />
       )}
 

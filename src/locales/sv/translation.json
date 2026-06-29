@@ -1545,7 +1545,7 @@
       "citizenComparisonLabel": "Hur mycket är det?",
       "citizenComparisonTooltipAria": "Hur jämförelsen med svenskar beräknas",
       "citizenComparisonTooltip": "Baserat på oljeexportutsläppen för {{year}}. Vi delar årliga utsläpp från oljeexport med 9 ton CO₂e per person — en genomsnittlig svens persons årliga klimatavtryck enligt Konsumtionskompassen. Resultatet visar hur många svenskar som skulle behöva släppa ut i den takten under ett år för att motsvara totalen.",
-      "citizenComparisonHighlight": "Det motsvarar <highlight>{{count}}</highlight> svenskars årliga utsläpp<tooltip/>",
+      "citizenComparisonHighlight": "Det motsvarar <highlight><count/></highlight> svenskars årliga utsläpp<tooltip/>",
       "citizenEquivalent": "≈ {{count}} svenskars årliga utsläpp",
       "legendLow": "Lägre utsläpp",
       "legendHigh": "Högre utsläpp"
