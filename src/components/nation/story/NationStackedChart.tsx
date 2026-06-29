@@ -9,7 +9,7 @@ import {
   YAxis,
 } from "recharts";
 import { useTranslation } from "react-i18next";
-import { useInView } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import type { NationStackDataPoint } from "@/utils/data/nationStoryMetrics";
 import { formatMton } from "@/utils/data/nationStoryMetrics";
 import { useLanguage } from "@/components/LanguageProvider";
@@ -48,7 +48,12 @@ const LAYERS = [
   },
 ];
 
-const LAYER_STAGGER_MS = 1100;
+const LAYER_STAGGER_MS = 2000;
+const LAYER_CAPTION_KEYS = [
+  "nation.story.stacked.layerCaption1",
+  "nation.story.stacked.layerCaption2",
+  "nation.story.stacked.layerCaption3",
+];
 
 interface NationStackedChartProps {
   data: NationStackDataPoint[];
@@ -140,6 +145,25 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
         className="[&>div]:mb-4 [&>div]:@lg:mb-6"
       />
 
+      {/* Caption explaining the layer currently being drawn */}
+      <div className="min-h-[2.5rem] mb-2">
+        {visibleLayers > 0 && (
+          <motion.p
+            key={visibleLayers}
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            className="flex items-center gap-2 text-sm md:text-base text-white"
+          >
+            <span
+              className="w-3 h-3 rounded-full shrink-0"
+              style={{ backgroundColor: LAYERS[visibleLayers - 1].color }}
+            />
+            {t(LAYER_CAPTION_KEYS[visibleLayers - 1])}
+          </motion.p>
+        )}
+      </div>
+
       <div ref={containerRef} style={{ width: "100%", height: chartHeight }}>
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
@@ -179,7 +203,7 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
                 name={t(layer.translationKey)}
                 connectNulls={false}
                 isAnimationActive
-                animationDuration={800}
+                animationDuration={1400}
                 animationEasing="ease-out"
               />
             ))}
