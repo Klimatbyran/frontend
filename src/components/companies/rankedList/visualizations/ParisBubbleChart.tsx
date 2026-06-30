@@ -51,16 +51,14 @@ interface BubblePoint {
   emissions2025Raw: number;
 }
 
-/** Skew bubble sizes toward high emitters so the largest companies stand out. */
+/** Linear diameter vs emissions (Recharts maps z → area, so z ∝ emissions²). */
 function getBubbleSizeValue(
   emissions: number,
-  minEmissions: number,
   maxEmissions: number,
 ): number {
-  if (maxEmissions <= minEmissions) return 1;
-
-  const normalized = (emissions - minEmissions) / (maxEmissions - minEmissions);
-  return Math.pow(normalized, 4.5);
+  if (maxEmissions <= 0) return 0;
+  const ratio = emissions / maxEmissions;
+  return ratio * ratio;
 }
 
 function getAxisMax(maxValue: number, divisor: number): number {
@@ -222,19 +220,16 @@ export function ParisBubbleChart({
         MAX_COMPANY_BUDGET_UNIT_DIVISOR,
       );
 
-      const emissionsValues = rawPoints.map((point) => point.emissions2025Raw);
-      const minEmissions = Math.min(...emissionsValues);
-      const maxEmissions = Math.max(...emissionsValues);
+      const maxEmissions = Math.max(
+        0,
+        ...rawPoints.map((point) => point.emissions2025Raw),
+      );
 
       const points: BubblePoint[] = rawPoints.map((point) => ({
         ...point,
         x: point.parisBudgetRaw / unitScale.divisor,
         y: point.trendTotalRaw / unitScale.divisor,
-        z: getBubbleSizeValue(
-          point.emissions2025Raw,
-          minEmissions,
-          maxEmissions,
-        ),
+        z: getBubbleSizeValue(point.emissions2025Raw, maxEmissions),
         color: getCompanyOverviewKPIColor(
           point.company,
           selectedKPI,
