@@ -15,14 +15,13 @@ interface InsightsListProps<T> {
   entities: T[];
   dataPointKey: keyof T;
   unit: string;
-  textColor: string;
-  barColor?: string;
   totalCount: number;
   isBottomRanking?: boolean;
   nullValues?: string;
   entityType: string;
   nameKey: keyof T;
   showBars?: boolean;
+  colorItem: (item: T) => string;
 }
 
 function InsightsList<T>({
@@ -30,14 +29,13 @@ function InsightsList<T>({
   entities,
   dataPointKey,
   unit,
-  textColor,
-  barColor,
   totalCount,
   isBottomRanking = false,
   nullValues,
   entityType,
   nameKey,
   showBars = false,
+  colorItem,
 }: InsightsListProps<T>) {
   const numericValues = entities
     .map((e) => e[dataPointKey])
@@ -47,9 +45,11 @@ function InsightsList<T>({
     : 1;
 
   return (
-    <div className="bg-white/10 rounded-level-2 p-4 md:p-6 h-full">
-      <h3 className="text-white text-lg font-semibold mb-3">{title}</h3>
-      <div className="space-y-1">
+    <div className="flex flex-col bg-black-2 border border-white/10 rounded-level-2 py-6">
+      <h3 className="text-white text-lg font-semibold px-4 md:px-6 pb-2 md:pb-2">
+        {title}
+      </h3>
+      <div className="space-y-1 bg-black/40 h-full border-y border-white/10 px-4 md:px-6 py-2">
         {entities.map((entity, index) => {
           const position = isBottomRanking ? totalCount - index : index + 1;
           const name = String(entity[nameKey]);
@@ -57,10 +57,11 @@ function InsightsList<T>({
           const numVal =
             typeof rawValue === "number" && !isNaN(rawValue) ? rawValue : null;
           const barWidth = calcBarWidth(showBars, numVal, absMax);
+          const color = colorItem(entity);
 
           const content = (
             <div
-              className="relative rounded-lg overflow-hidden group"
+              className="relative overflow-hidden group"
               style={{
                 animation: `fadeSlideIn 0.35s ease-out both`,
                 animationDelay: `${index * 35}ms`,
@@ -71,7 +72,7 @@ function InsightsList<T>({
                   className="absolute inset-y-0 left-0 rounded-lg opacity-20 group-hover:opacity-30"
                   style={{
                     width: `${barWidth}%`,
-                    backgroundColor: barColor ?? "currentColor",
+                    backgroundColor: color ?? "currentColor",
                     transition: `width 0.6s ease-out ${index * 40}ms, opacity 0.3s ease`,
                   }}
                 />
@@ -84,7 +85,10 @@ function InsightsList<T>({
                   <span className="text-sm truncate">{name}</span>
                 </div>
                 <span
-                  className={`${textColor} font-semibold text-sm ml-2 shrink-0`}
+                  className={`font-semibold text-sm ml-2 shrink-0`}
+                  style={{
+                    color: color,
+                  }}
                 >
                   {numVal !== null
                     ? numVal.toFixed(1) + unit

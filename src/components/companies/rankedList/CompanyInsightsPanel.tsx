@@ -7,6 +7,7 @@ import {
 import { getSortedEntityKPIValues } from "@/utils/data/sorting";
 import {
   calculateEntityStatistics,
+  createDefaultColorGetter,
   createSourceLinks,
   buildPerformerProps,
   TOP_N,
@@ -80,6 +81,15 @@ function CompanyInsightsPanel({
     { key: selectedKPI.key, unit, isBoolean: selectedKPI.isBoolean },
   );
 
+  const colorItem = selectedKPI.createKPIColorGetter
+    ? selectedKPI.createKPIColorGetter(companyData)
+    : createDefaultColorGetter(
+        companyData,
+        selectedKPI.key,
+        selectedKPI.isBoolean,
+        selectedKPI.higherIsBetter,
+      );
+
   const statsPanel = (
     <KPIDetailsPanel
       title={selectedKPI.label}
@@ -134,11 +144,10 @@ function CompanyInsightsPanel({
       dataPointKey={selectedKPI.key}
       unit={selectedKPI.unit}
       nullValues={selectedKPI.nullValues}
-      textColor="text-blue-3"
-      barColor={COLORS.blue3}
       entityType="companies"
       nameKey="name"
       showBars
+      colorItem={colorItem}
     />
   ) : (
     booleanSummary
@@ -153,11 +162,10 @@ function CompanyInsightsPanel({
       dataPointKey={selectedKPI.key}
       unit={selectedKPI.unit}
       nullValues={selectedKPI.nullValues}
-      textColor="text-pink-3"
-      barColor={COLORS.pink3}
       entityType="companies"
       nameKey="name"
       showBars
+      colorItem={colorItem}
     />
   ) : null;
 

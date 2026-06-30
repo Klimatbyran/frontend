@@ -17,17 +17,25 @@ export const TOP_N = 10;
 // 4. Avoids over-complicating the codebase with excessive file splitting
 
 import { t } from "i18next";
-import { DataPoint, EntityWithKPIs, KPIValue } from "@/types/rankings";
+import { EntityWithKPIs, KPIValue } from "@/types/rankings";
+import {
+  createStatisticalGradient,
+  DEFAULT_STATISTICAL_GRADIENT_COLORS,
+} from "../ui/colorGradients";
+import {
+  DEFAULT_BOOLEAN_DATA_COLORS,
+  DEFAULT_NULL_DATA_COLOR,
+} from "../ui/colors";
 
 export function isMissingRankedValue(
   value: unknown,
-  selectedDataPoint: Pick<DataPoint<unknown>, "isBoolean">,
+  isBoolean: boolean | undefined,
 ): boolean {
   if (value === null || value === undefined) {
     return true;
   }
 
-  if (selectedDataPoint.isBoolean) {
+  if (isBoolean) {
     return typeof value !== "boolean";
   }
 
@@ -58,7 +66,7 @@ export function filterValidData<T, KPI extends KPIValue<T> = KPIValue<T>>(
 ): T[] {
   return entities.filter((entity) => {
     const value = getValue(entity);
-    return !isMissingRankedValue(value, selectedKPI);
+    return !isMissingRankedValue(value, selectedKPI.isBoolean);
   });
 }
 
@@ -99,7 +107,7 @@ export function calculateEntityStatistics<
 
   const nullCount = entities.filter((entity) => {
     const value = getValue(entity);
-    return isMissingRankedValue(value, selectedKPI);
+    return isMissingRankedValue(value, selectedKPI.isBoolean);
   }).length;
 
   const entityPlural = t("header." + entityType).toLowerCase();
@@ -203,4 +211,39 @@ export function createSourceLinks<T = EntityWithKPIs>(
         : selectedKPI.source || "",
     })) || []
   );
+}
+
+export function createDefaultColorGetter<T>(
+  entities: T[],
+  dataPointKey: keyof T,
+  dataPointIsBoolean: boolean | undefined,
+  dataPointHigherIsBetter: boolean,
+) {
+  const numericalValues = entities
+    .filter(
+      (entity) =>
+        typeof entity[dataPointKey] === "number" &&
+        !isNaN(entity[dataPointKey] as number),
+    )
+    .map((entity) => entity[dataPointKey] as number);
+
+  return (entity: T) => {
+    const value = entity[dataPointKey];
+
+    if (isMissingRankedValue(value, dataPointIsBoolean))
+      return DEFAULT_NULL_DATA_COLOR;
+
+    if (dataPointIsBoolean) {
+      return value == dataPointHigherIsBetter
+        ? DEFAULT_BOOLEAN_DATA_COLORS.positive
+        : DEFAULT_BOOLEAN_DATA_COLORS.negative;
+    }
+
+    return createStatisticalGradient(
+      numericalValues,
+      value as number,
+      dataPointHigherIsBetter ?? false,
+      DEFAULT_STATISTICAL_GRADIENT_COLORS,
+    );
+  };
 }

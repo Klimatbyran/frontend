@@ -5,6 +5,7 @@ import { Region } from "@/types/region";
 import { KPIValue } from "@/types/rankings";
 import {
   calculateEntityStatistics,
+  createDefaultColorGetter,
   createSourceLinks,
   buildPerformerProps,
   TOP_N,
@@ -61,6 +62,14 @@ function RegionalInsightsPanel({
     statistics.validData,
     selectedKPI,
   );
+
+  const colorItem = createDefaultColorGetter(
+    regionData,
+    selectedKPI.key,
+    selectedKPI.isBoolean,
+    selectedKPI.higherIsBetter,
+  );
+
   const topRegions = sortedData.slice(0, TOP_N);
   const bottomRegions = sortedData.slice(-TOP_N).reverse();
   const sourceLinks = createSourceLinks(selectedKPI);
@@ -133,11 +142,10 @@ function RegionalInsightsPanel({
       dataPointKey={selectedKPI.key as keyof Region}
       unit={selectedKPI.unit}
       nullValues={selectedKPI.nullValues}
-      textColor="text-blue-3"
-      barColor={COLORS.blue3}
       entityType="regions"
       nameKey="name"
       showBars
+      colorItem={colorItem}
     />
   ) : (
     booleanSummary
@@ -152,11 +160,10 @@ function RegionalInsightsPanel({
       dataPointKey={selectedKPI.key as keyof Region}
       unit={selectedKPI.unit}
       nullValues={selectedKPI.nullValues}
-      textColor="text-pink-3"
-      barColor={COLORS.pink3}
       entityType="regions"
       nameKey="name"
       showBars
+      colorItem={colorItem}
     />
   ) : null;
 
