@@ -474,7 +474,8 @@
       "stackedTotal": "Stacked Total",
       "back": "Back",
       "sectorTotal": "Sector Total Emissions",
-      "total": "Total Emissions"
+      "total": "Total Emissions",
+      "emissionsUnit": "ton CO₂e"
     }
   },
   "sectorsOverviewPage": {
@@ -489,6 +490,38 @@
       "meetsParisYes": "Yes",
       "meetsParisNo": "No",
       "meetsParisUnknown": "Unknown"
+    },
+    "insights": {
+      "largestSector": "Largest sector",
+      "largestSectorDescription": "{{name}} accounts for {{share}} of total emissions",
+      "topThreeSectors": "Top 3 sectors",
+      "topThreeSectorsDescription": "The three largest sectors account for {{share}} of emissions",
+      "reportingCompanies": "Reporting companies",
+      "reportingCompaniesDescription": "{{count}} companies reported emissions for {{year}}",
+      "largestCompany": "Largest emitter",
+      "largestCompanyDescription": "{{name}} accounts for {{share}} of sector emissions",
+      "companiesInSector": "Companies in sector",
+      "companiesInSectorDescription": "{{count}} companies reported emissions",
+      "reducingEmissions": "Reducing emissions",
+      "reducingEmissionsDescription": "{{count}} of {{total}} companies reduced emissions since base year",
+      "increasingEmissions": "Increasing emissions",
+      "increasingEmissionsDescription": "{{count}} of {{total}} companies increased emissions since base year",
+      "noComparableTrendData": "Not enough comparable trend data for companies in this sector",
+      "emissionsAmount": "{{amount}} {{unit}}",
+      "ofTotalEmissions": "of total emissions",
+      "forReportingYear": "for {{year}}",
+      "reportingCompaniesAvg": "Average {{amount}} {{unit}} per reporting company",
+      "companiesReportingLabel": "companies reporting",
+      "topEmittersInSectorDescription": "Share of sector emissions among the largest companies",
+      "sinceBaseYear": "reducing since base year",
+      "increasingSinceBaseYear": "increasing since base year",
+      "topReducersDescription": "Companies with the largest emissions reductions since base year",
+      "topIncreasersDescription": "Companies with the largest emissions increases since base year",
+      "reducing": "Reducing",
+      "increasing": "Increasing",
+      "scope1": "Scope 1",
+      "scope2": "Scope 2",
+      "scope3": "Scope 3"
     }
   },
   "methodsPage": {

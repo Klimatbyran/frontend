@@ -265,6 +265,29 @@ input[type="number"] {
   .scrollbar-dark:hover::-webkit-scrollbar-thumb {
     background-color: color-mix(in srgb, var(--grey) 50%, transparent);
   }
+
+  .scrollbar-legend {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--grey) 30%, transparent)
+      transparent;
+  }
+
+  .scrollbar-legend::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .scrollbar-legend::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-legend::-webkit-scrollbar-thumb {
+    border-radius: 9999px;
+    background-color: color-mix(in srgb, var(--grey) 30%, transparent);
+  }
+
+  .scrollbar-legend:hover::-webkit-scrollbar-thumb {
+    background-color: color-mix(in srgb, var(--grey) 50%, transparent);
+  }
 }
 
 .leaflet-container {

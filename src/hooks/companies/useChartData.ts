@@ -3,7 +3,7 @@ import { RankedCompany } from "@/types/company";
 import { getCompanyUrlSegment } from "@/utils/companyRouting";
 import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 
-const extractYears = (companies: RankedCompany[]): string[] => {
+export const extractYears = (companies: RankedCompany[]): string[] => {
   const years = new Set<string>();
   companies.forEach((company) => {
     company.reportingPeriods.forEach((period) => {

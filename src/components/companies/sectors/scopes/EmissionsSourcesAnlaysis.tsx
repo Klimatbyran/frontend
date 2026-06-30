@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { RankedCompany } from "@/types/company";
 import { useScopeData } from "@/hooks/companies/useScopeData";
+import { getSectorsReportingYear } from "@/utils/data/yearUtils";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { useSectorNames } from "@/hooks/companies/useCompanySectors";
-import EmissionsTotalDisplay from "../charts/EmissionsTotalDisplay";
 import ScopeCards from "./ScopeCards";
 import ValueChainOverview from "./ValueChainOverview";
 import KeyInsights from "./KeyInsights";
@@ -22,52 +22,32 @@ const EmissionsSourcesAnalysis: React.FC<EmissionsSourcesAnalysisProps> = ({
   const screenSize = useScreenSize();
   const sectorNames = useSectorNames();
 
-  const [selectedYear, setSelectedYear] = useState<string>("2024");
-
   // If no sectors are selected, use all sectors except "all"
   const effectiveSectors =
     selectedSectors.length > 0
       ? selectedSectors
       : Object.keys(sectorNames).filter((key) => key !== "all");
 
-  const { scopeData, totalEmissions, years } = useScopeData(
+  const reportingYear = getSectorsReportingYear().toString();
+
+  const { scopeData, totalEmissions } = useScopeData(
     companies,
     effectiveSectors,
-    selectedYear,
+    reportingYear,
   );
-
-  // Generate years array from 2020 to current year
   return (
     <div className="mt-12 space-y-6">
       <div
-        className={`${
-          screenSize.isMobile
-            ? "flex flex-col gap-1"
-            : "flex items-center justify-between"
+        className={`flex ${
+          screenSize.isMobile ? "flex-col gap-1" : "items-center gap-2"
         }`}
       >
-        <div
-          className={`${
-            screenSize.isMobile
-              ? "flex flex-col gap-1"
-              : "flex items-center gap-2"
-          }`}
-        >
-          <h2 className="text-xl font-light text-white">
-            {t("companyDetailPage.sectorGraphs.emissionsSourcesAnalysis")}
-          </h2>
-          <span className="text-sm text-grey">
-            {t("companyDetailPage.sectorGraphs.ghgProtocolScopes")}
-          </span>
-        </div>
-        <EmissionsTotalDisplay
-          totalEmissions={totalEmissions}
-          selectedYear={selectedYear}
-          years={years}
-          onYearChange={setSelectedYear}
-          isSectorView={effectiveSectors.length > 0}
-          hideTotal // TODO: decide if we want to display the total again, and whether that should be complete total or excluding statedScope3 total
-        />
+        <h2 className="text-xl font-light text-white">
+          {t("companyDetailPage.sectorGraphs.emissionsSourcesAnalysis")}
+        </h2>
+        <span className="text-sm text-grey">
+          {t("companyDetailPage.sectorGraphs.ghgProtocolScopes")}
+        </span>
       </div>
 
       <ScopeCards
@@ -75,7 +55,7 @@ const EmissionsSourcesAnalysis: React.FC<EmissionsSourcesAnalysisProps> = ({
         totalEmissions={totalEmissions}
         companies={companies}
         selectedSectors={effectiveSectors}
-        selectedYear={selectedYear}
+        selectedYear={reportingYear}
       />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
@@ -87,7 +67,7 @@ const EmissionsSourcesAnalysis: React.FC<EmissionsSourcesAnalysisProps> = ({
       {/* <Scope3Breakdown
         companies={companies}
         selectedSectors={selectedSectors}
-        selectedYear={selectedYear}
+        selectedYear={reportingYear}
       /> */}
     </div>
   );
