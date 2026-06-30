@@ -69,7 +69,7 @@ export const useCompanyKPIs = (): CompanyKPIValue[] => {
           false: t("companies.list.kpis.meetsParis.booleanLabels.false"),
         },
         nullValues: t("companies.list.kpis.meetsParis.nullValues"),
-        generateKPIColorGetter: (companies: CompanyWithKPIs[]) =>
+        createKPIColorGetter: (companies: CompanyWithKPIs[]) =>
           createBudgetKPIColorGetter(companies),
       },
     ];
