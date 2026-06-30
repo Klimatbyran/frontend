@@ -52,7 +52,7 @@ const EmissionsTotalDisplay: React.FC<EmissionsTotalDisplayProps> = ({
               : t("companyDetailPage.sectorGraphs.total")}
             <motion.span
               key={formattedTotal}
-              className="ml-2 text-xl font-light text-orange-3 inline-block"
+              className="ml-2 text-xl font-light text-orange-2 inline-block"
               initial={reduceMotion ? false : { opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: fadeDuration, ease }}
