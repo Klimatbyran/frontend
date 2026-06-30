@@ -213,7 +213,7 @@ export function CompaniesOverviewPage() {
       }}
     />
   );
-  
+
   const colorItem = selectedKPI.createKPIColorGetter
     ? selectedKPI.createKPIColorGetter(companiesWithKPIs)
     : undefined;

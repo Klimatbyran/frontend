@@ -239,7 +239,9 @@ export function RankedList<T extends Record<string, unknown>>({
   );
 
   return (
-    <div className={`bg-black-2 rounded-2xl border border-white/10 flex flex-col h-full ${className}`}>
+    <div
+      className={`bg-black-2 rounded-2xl border border-white/10 flex flex-col ${className}`}
+    >
       <div className="p-4 border-b border-white/10">
         {headerAction && <div className="mb-3 md:hidden">{headerAction}</div>}
         <div className="flex items-center gap-3">
@@ -303,10 +305,6 @@ export function RankedList<T extends Record<string, unknown>>({
                   colorItem ? colorItem(item) : defaultColorItem(item),
                 ),
           )}
-          {paginatedData.length < itemsPerPage &&
-            Array(itemsPerPage - paginatedData.length)
-              .fill(0)
-              .map((_, i) => <div key={`empty-${i}`} />)}
         </div>
       </div>
       {totalPages > 1 && (

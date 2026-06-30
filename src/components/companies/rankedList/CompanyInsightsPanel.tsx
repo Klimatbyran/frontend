@@ -144,8 +144,6 @@ function CompanyInsightsPanel({
       dataPointKey={selectedKPI.key}
       unit={selectedKPI.unit}
       nullValues={selectedKPI.nullValues}
-      textColor="text-blue-3"
-      barColor={COLORS.blue3}
       entityType="companies"
       nameKey="name"
       showBars
@@ -164,8 +162,6 @@ function CompanyInsightsPanel({
       dataPointKey={selectedKPI.key}
       unit={selectedKPI.unit}
       nullValues={selectedKPI.nullValues}
-      textColor="text-pink-3"
-      barColor={COLORS.pink3}
       entityType="companies"
       nameKey="name"
       showBars

@@ -69,11 +69,11 @@ function InsightsPanel({
   );
 
   const colorItem = createDefaultColorGetter(
-      municipalityData,
-      selectedKPI.key,
-      selectedKPI.isBoolean,
-      selectedKPI.higherIsBetter,
-    );
+    municipalityData,
+    selectedKPI.key,
+    selectedKPI.isBoolean,
+    selectedKPI.higherIsBetter,
+  );
 
   const topMunicipalities = sortedData.slice(0, TOP_N);
   const bottomMunicipalities = sortedData.slice(-TOP_N).reverse();
@@ -147,8 +147,6 @@ function InsightsPanel({
       dataPointKey={selectedKPI.key as keyof Municipality}
       unit={selectedKPI.unit}
       nullValues={selectedKPI.nullValues}
-      textColor="text-blue-3"
-      barColor={COLORS.blue3}
       entityType="municipalities"
       nameKey="name"
       showBars
@@ -167,8 +165,6 @@ function InsightsPanel({
       dataPointKey={selectedKPI.key as keyof Municipality}
       unit={selectedKPI.unit}
       nullValues={selectedKPI.nullValues}
-      textColor="text-pink-3"
-      barColor={COLORS.pink3}
       entityType="municipalities"
       nameKey="name"
       showBars

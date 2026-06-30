@@ -64,11 +64,11 @@ function RegionalInsightsPanel({
   );
 
   const colorItem = createDefaultColorGetter(
-      regionData,
-      selectedKPI.key,
-      selectedKPI.isBoolean,
-      selectedKPI.higherIsBetter,
-    );
+    regionData,
+    selectedKPI.key,
+    selectedKPI.isBoolean,
+    selectedKPI.higherIsBetter,
+  );
 
   const topRegions = sortedData.slice(0, TOP_N);
   const bottomRegions = sortedData.slice(-TOP_N).reverse();
