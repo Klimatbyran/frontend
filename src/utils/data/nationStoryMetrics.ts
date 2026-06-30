@@ -1,0 +1,277 @@
+import type { SupportedLanguage } from "@/lib/languageDetection";
+
+export const NATION_BASELINE_YEAR = 1990;
+
+export type NationEmissionSeries = {
+  territorialFossil: Record<number, number>;
+  biogenic: Record<number, number>;
+  consumptionAbroad: Record<number, number>;
+  eCommerce: Record<number, number>;
+  exportOfOilProducts: Record<number, number>;
+};
+
+export type NationLayerKey =
+  | "territorialFossil"
+  | "biogenic"
+  | "consumptionAbroad"
+  | "exportOfOilProducts";
+
+export type NationLayerComparison = {
+  key: NationLayerKey;
+  labelKey: string;
+  color: string;
+  mton1990: number;
+  mtonLatest: number;
+  changePercent: number;
+};
+
+export type NationStackDataPoint = {
+  year: number;
+  territorialFossil: number;
+  biogenic: number;
+  consumptionAbroad: number;
+  combined: number;
+};
+
+export type NationStoryMetrics = {
+  latestYear: number;
+  ratioReportedToFull: number;
+  combined1990Mton: number;
+  combinedLatestMton: number;
+  combinedChangePercent: number;
+  territorialLatestMton: number;
+  territorial1990Mton: number;
+  territorialChangePercent: number;
+  biogenic1990Mton: number;
+  biogenicLatestMton: number;
+  biogenicChangePercent: number;
+  consumptionLatestMton: number;
+  consumption1990Mton: number;
+  consumptionChangePercent: number;
+  oilExport1990Mton: number;
+  oilExportLatestMton: number;
+  oilExportChangePercent: number;
+  eCommerceLatestTonnes: number;
+  eCommerceYear: number;
+  layerComparisons: NationLayerComparison[];
+  stackData: NationStackDataPoint[];
+  maxLayerMton: number;
+};
+
+const TONNES_PER_MTON = 1_000_000;
+
+export function toMton(tonnes: number): number {
+  return tonnes / TONNES_PER_MTON;
+}
+
+export function formatMton(
+  mton: number,
+  language: SupportedLanguage,
+  maximumFractionDigits = 0,
+): string {
+  return new Intl.NumberFormat(language === "sv" ? "sv-SE" : "en-GB", {
+    maximumFractionDigits,
+    minimumFractionDigits: 0,
+  }).format(mton);
+}
+
+export function formatTonnes(
+  tonnes: number,
+  language: SupportedLanguage,
+  maximumFractionDigits = 0,
+): string {
+  return new Intl.NumberFormat(language === "sv" ? "sv-SE" : "en-GB", {
+    maximumFractionDigits,
+    minimumFractionDigits: 0,
+  }).format(tonnes);
+}
+
+export function percentChange(from: number, to: number): number {
+  if (from === 0) return 0;
+  return ((to - from) / from) * 100;
+}
+
+export function sumSeriesAtYear(
+  series: NationEmissionSeries,
+  year: number,
+  layers: Array<keyof NationEmissionSeries> = [
+    "territorialFossil",
+    "biogenic",
+    "consumptionAbroad",
+  ],
+): number {
+  return layers.reduce((total, layer) => total + (series[layer][year] ?? 0), 0);
+}
+
+function collectYears(series: NationEmissionSeries): number[] {
+  const years = new Set<number>();
+  (["territorialFossil", "biogenic", "consumptionAbroad"] as const).forEach(
+    (layer) => {
+      Object.keys(series[layer]).forEach((year) => {
+        const parsed = Number(year);
+        if (!Number.isNaN(parsed)) years.add(parsed);
+      });
+    },
+  );
+  return [...years].sort((a, b) => a - b);
+}
+
+function getLatestCompleteYear(series: NationEmissionSeries): number {
+  const years = collectYears(series);
+  const completeYears = years.filter(
+    (year) =>
+      series.territorialFossil[year] !== undefined &&
+      series.biogenic[year] !== undefined &&
+      series.consumptionAbroad[year] !== undefined,
+  );
+  return completeYears.at(-1) ?? years.at(-1) ?? NATION_BASELINE_YEAR;
+}
+
+export function buildStackChartData(
+  series: NationEmissionSeries,
+): NationStackDataPoint[] {
+  return collectYears(series).map((year) => {
+    const territorialFossil = toMton(series.territorialFossil[year] ?? 0);
+    const biogenic = toMton(series.biogenic[year] ?? 0);
+    const consumptionAbroad = toMton(series.consumptionAbroad[year] ?? 0);
+
+    return {
+      year,
+      territorialFossil,
+      biogenic,
+      consumptionAbroad,
+      combined: territorialFossil + biogenic + consumptionAbroad,
+    };
+  });
+}
+
+function buildLayerComparison(
+  key: NationLayerKey,
+  labelKey: string,
+  color: string,
+  series: NationEmissionSeries,
+  latestYear: number,
+): NationLayerComparison {
+  const tonnes1990 = series[key][NATION_BASELINE_YEAR] ?? 0;
+  const tonnesLatest = series[key][latestYear] ?? 0;
+
+  return {
+    key,
+    labelKey,
+    color,
+    mton1990: toMton(tonnes1990),
+    mtonLatest: toMton(tonnesLatest),
+    changePercent: percentChange(tonnes1990, tonnesLatest),
+  };
+}
+
+export function computeNationStoryMetrics(
+  series: NationEmissionSeries,
+): NationStoryMetrics {
+  const latestYear = getLatestCompleteYear(series);
+
+  const combined1990Tonnes = sumSeriesAtYear(series, NATION_BASELINE_YEAR);
+  const combinedLatestTonnes = sumSeriesAtYear(series, latestYear);
+  const territorial1990Tonnes =
+    series.territorialFossil[NATION_BASELINE_YEAR] ?? 0;
+  const territorialLatestTonnes = series.territorialFossil[latestYear] ?? 0;
+  const biogenic1990Tonnes = series.biogenic[NATION_BASELINE_YEAR] ?? 0;
+  const biogenicLatestTonnes = series.biogenic[latestYear] ?? 0;
+  const consumption1990Tonnes =
+    series.consumptionAbroad[NATION_BASELINE_YEAR] ?? 0;
+  const consumptionLatestTonnes = series.consumptionAbroad[latestYear] ?? 0;
+  const oilExport1990Tonnes =
+    series.exportOfOilProducts[NATION_BASELINE_YEAR] ?? 0;
+  const oilExportLatestTonnes = series.exportOfOilProducts[latestYear] ?? 0;
+
+  const eCommerceYear =
+    series.eCommerce[latestYear] !== undefined
+      ? latestYear
+      : (Object.keys(series.eCommerce)
+          .map(Number)
+          .filter((y) => !Number.isNaN(y))
+          .sort((a, b) => a - b)
+          .at(-1) ?? latestYear);
+  const eCommerceLatestTonnes = series.eCommerce[eCommerceYear] ?? 0;
+
+  const layerComparisons = [
+    buildLayerComparison(
+      "territorialFossil",
+      "nation.story.graph.territorialFossil",
+      "var(--orange-2)",
+      series,
+      latestYear,
+    ),
+    buildLayerComparison(
+      "biogenic",
+      "nation.story.graph.biogenic",
+      "var(--green-3)",
+      series,
+      latestYear,
+    ),
+    buildLayerComparison(
+      "consumptionAbroad",
+      "nation.story.graph.consumptionAbroad",
+      "var(--pink-3)",
+      series,
+      latestYear,
+    ),
+    buildLayerComparison(
+      "exportOfOilProducts",
+      "nation.story.graph.oilExports",
+      "var(--pink-3)",
+      series,
+      latestYear,
+    ),
+  ];
+
+  const maxLayerMton = Math.max(
+    ...layerComparisons.flatMap((l) => [l.mton1990, l.mtonLatest]),
+    toMton(combinedLatestTonnes),
+  );
+
+  const ratioReportedToFull =
+    territorialLatestTonnes > 0
+      ? combinedLatestTonnes / territorialLatestTonnes
+      : 0;
+
+  return {
+    latestYear,
+    ratioReportedToFull,
+    combined1990Mton: toMton(combined1990Tonnes),
+    combinedLatestMton: toMton(combinedLatestTonnes),
+    combinedChangePercent: percentChange(
+      combined1990Tonnes,
+      combinedLatestTonnes,
+    ),
+    territorialLatestMton: toMton(territorialLatestTonnes),
+    territorial1990Mton: toMton(territorial1990Tonnes),
+    territorialChangePercent: percentChange(
+      territorial1990Tonnes,
+      territorialLatestTonnes,
+    ),
+    biogenic1990Mton: toMton(biogenic1990Tonnes),
+    biogenicLatestMton: toMton(biogenicLatestTonnes),
+    biogenicChangePercent: percentChange(
+      biogenic1990Tonnes,
+      biogenicLatestTonnes,
+    ),
+    consumptionLatestMton: toMton(consumptionLatestTonnes),
+    consumption1990Mton: toMton(consumption1990Tonnes),
+    consumptionChangePercent: percentChange(
+      consumption1990Tonnes,
+      consumptionLatestTonnes,
+    ),
+    oilExport1990Mton: toMton(oilExport1990Tonnes),
+    oilExportLatestMton: toMton(oilExportLatestTonnes),
+    oilExportChangePercent: percentChange(
+      oilExport1990Tonnes,
+      oilExportLatestTonnes,
+    ),
+    eCommerceLatestTonnes,
+    eCommerceYear,
+    layerComparisons,
+    stackData: buildStackChartData(series),
+    maxLayerMton,
+  };
+}
