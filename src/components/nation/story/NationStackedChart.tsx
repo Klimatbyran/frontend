@@ -27,7 +27,6 @@ import {
 } from "@/components/charts";
 import { CardHeader } from "@/components/layout/CardHeader";
 import { formatPercentChange } from "@/utils/formatting/localization";
-import { OverviewStat } from "@/components/companies/detail/overview/OverviewStat";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 
 const LAYERS = [
@@ -221,46 +220,58 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
 
       {/* Big-number totals */}
       {point1990 && pointLatest && (
-        <div className="mt-6 border-t border-white/10 pt-6 space-y-4">
-          <p className="text-sm text-grey">
+        <div className="mt-8 border-t border-white/10 pt-8">
+          <p className="text-sm text-grey mb-6">
             {t("nation.story.stacked.totalsDescription")}
           </p>
-          <div className="grid grid-cols-2 gap-6">
-            <OverviewStat
-              label={String(1990)}
-              value={formatMton(point1990.combined, currentLanguage, 0)}
-              unit={t("nation.story.unit.millionTco2e")}
-              valueClassName="text-orange-2"
-            />
-            <OverviewStat
-              label={String(pointLatest.year)}
-              value={formatMton(pointLatest.combined, currentLanguage, 0)}
-              unit={t("nation.story.unit.millionTco2e")}
-              valueClassName="text-orange-2"
-            />
+          <div className="grid grid-cols-2 gap-8 md:gap-12">
+            <div>
+              <p className="text-sm text-grey mb-3">{1990}</p>
+              <p className="text-4xl md:text-6xl font-light text-orange-2 tabular-nums leading-none">
+                {formatMton(point1990.combined, currentLanguage, 0)}
+              </p>
+              <p className="text-sm text-grey mt-3">
+                {t("nation.story.unit.millionTco2e")}
+              </p>
+            </div>
+            <div>
+              <p className="text-sm text-grey mb-3">{pointLatest.year}</p>
+              <p className="text-4xl md:text-6xl font-light text-orange-2 tabular-nums leading-none">
+                {formatMton(pointLatest.combined, currentLanguage, 0)}
+              </p>
+              <p className="text-sm text-grey mt-3">
+                {t("nation.story.unit.millionTco2e")}
+              </p>
+            </div>
           </div>
         </div>
       )}
 
       {/* Change comparison */}
       {territorialChangePct !== null && combinedChangePct !== null && (
-        <div className="mt-4 border-t border-white/10 pt-4 space-y-3">
-          <p className="text-sm text-grey">
+        <div className="mt-10 border-t border-white/10 pt-8">
+          <p className="text-sm text-grey mb-6">
             {t("nation.story.stacked.changeContext")}
           </p>
-          <div className="grid grid-cols-2 gap-6">
-            <OverviewStat
-              label={t("nation.story.stacked.changeTerritorialLabel")}
-              value={formatPercentChange(territorialChangePct, currentLanguage)}
-              valueClassName="text-blue-3"
-            />
-            <OverviewStat
-              label={t("nation.story.stacked.changeCombinedLabel")}
-              value={formatPercentChange(combinedChangePct, currentLanguage)}
-              valueClassName="text-pink-3"
-            />
+          <div className="grid grid-cols-2 gap-8 md:gap-12">
+            <div>
+              <p className="text-sm text-grey mb-3 leading-snug">
+                {t("nation.story.stacked.changeTerritorialLabel")}
+              </p>
+              <p className="text-4xl md:text-6xl font-light text-blue-3 tabular-nums leading-none">
+                {formatPercentChange(territorialChangePct, currentLanguage)}
+              </p>
+            </div>
+            <div>
+              <p className="text-sm text-grey mb-3 leading-snug">
+                {t("nation.story.stacked.changeCombinedLabel")}
+              </p>
+              <p className="text-4xl md:text-6xl font-light text-pink-3 tabular-nums leading-none">
+                {formatPercentChange(combinedChangePct, currentLanguage)}
+              </p>
+            </div>
           </div>
-          <div className="text-base md:text-lg text-white mt-3 -mb-4 space-y-2">
+          <div className="text-base md:text-lg text-white mt-8 -mb-4 md:-mb-8 space-y-2 leading-relaxed">
             <p>{t("nation.story.stacked.changeFooterLine1")}</p>
             <p>{t("nation.story.stacked.changeFooterLine2")}</p>
           </div>
