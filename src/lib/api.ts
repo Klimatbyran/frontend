@@ -82,6 +82,21 @@ export async function getCompanies() {
   }
 }
 
+export async function getCompaniesKPIs(): Promise<
+  NonNullable<
+    paths["/companies/kpis"]["get"]["responses"][200]["content"]["application/json"]
+  >
+> {
+  try {
+    const { data, error } = await GET("/companies/kpis", {});
+    if (error) throw error;
+    return data ?? [];
+  } catch (error) {
+    console.error("Error fetching company KPIs:", error);
+    return [];
+  }
+}
+
 export async function getCompanyDetails(id: string) {
   const { data, error } = await client.GET("/companies/{wikidataId}", {
     params: {

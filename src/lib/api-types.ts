@@ -477,6 +477,50 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/companies/kpis": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get company KPIs
+         * @description Retrieve key performance indicators for all companies, including Paris agreement compliance and emissions change from base year.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            wikidataId: string;
+                            name: string;
+                            meetsParis: boolean | null;
+                            emissionsChangeFromBaseYear: number | null;
+                        }[];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/companies/search": {
         parameters: {
             query?: never;
