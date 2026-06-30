@@ -52,10 +52,7 @@ interface BubblePoint {
 }
 
 /** Linear diameter vs emissions (Recharts maps z → area, so z ∝ emissions²). */
-function getBubbleSizeValue(
-  emissions: number,
-  maxEmissions: number,
-): number {
+function getBubbleSizeValue(emissions: number, maxEmissions: number): number {
   if (maxEmissions <= 0) return 0;
   const ratio = emissions / maxEmissions;
   return ratio * ratio;
