@@ -1353,6 +1353,26 @@
       "totalEmissionsSaved": "total emissions saved vs Paris target",
       "totalEmissionsExcess": "total emissions excess vs Paris target"
     },
+    "turnoverEmissionsHistory": {
+      "title": "Emissions and turnover over time",
+      "tooltip": "Compare reported emissions and turnover over time. The left axis shows emissions in tons of CO₂e and the right axis shows turnover in the company's reporting currency.",
+      "unit": "Emissions in tons CO₂e · Turnover in company currency",
+      "intensityPanel": {
+        "title": "Emissions intensity",
+        "tooltip": "Emissions intensity is total emissions divided by turnover (t CO₂e per million). Compare two years — lower is better. Intensity falls when emissions drop faster than turnover grows, or when emissions fall while turnover rises.",
+        "intensityUnit": "t CO₂e per million in turnover",
+        "question": "Has emissions intensity decreased?",
+        "verdictStableLabel": "Stable",
+        "intensityChange": "Intensity",
+        "emissionsLabel": "Emissions",
+        "turnoverLabel": "Turnover",
+        "periodBaseYearNote": "Base year compared to the latest reported year with emissions and turnover data. Lower is better.",
+        "periodFirstYearNote": "First year with emissions and turnover data, compared to the latest reported year. Lower is better.",
+        "verdictYes": "Emissions intensity has fallen. The company emits less per unit of turnover than before.",
+        "verdictNoRed": "Emissions intensity has risen. The company emits more per unit of turnover than before.",
+        "verdictNoYellow": "Emissions intensity has stayed roughly unchanged. The company emits about the same per unit of turnover as before."
+      }
+    },
     "list": {
       "error": {
         "fetchingCompanyInfo": "Failed to fetch company information",

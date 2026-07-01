@@ -11,6 +11,7 @@ import {
   localizeUnit,
   type SupportedLanguage,
 } from "@/utils/formatting/localization";
+import { formatTurnoverValue } from "@/utils/formatting/turnoverFormatting";
 import { getEntityDetailPath } from "@/utils/routing";
 
 export type ComparisonDetails = {
@@ -44,11 +45,12 @@ function formatTurnover(
     return null;
   }
 
-  const useMillions = turnover.value < 1e9;
-  return `${localizeUnit(
-    turnover.value / (useMillions ? 1e6 : 1e9),
+  return formatTurnoverValue(
+    turnover.value,
     currentLanguage,
-  )} ${t(useMillions ? "companies.overview.million" : "companies.overview.billion")} ${turnover.currency}`;
+    t,
+    turnover.currency,
+  );
 }
 
 export function buildMunicipalityComparisonDetails(
