@@ -96,8 +96,18 @@ describe("turnoverChartData", () => {
   it("returns null when turnover currencies differ across years", () => {
     expect(
       getTurnoverEmissionsSection([
-        { year: 2019, total: 1000, turnover: 1_000_000, turnoverCurrency: "SEK" },
-        { year: 2020, total: 800, turnover: 1_500_000, turnoverCurrency: "EUR" },
+        {
+          year: 2019,
+          total: 1000,
+          turnover: 1_000_000,
+          turnoverCurrency: "SEK",
+        },
+        {
+          year: 2020,
+          total: 800,
+          turnover: 1_500_000,
+          turnoverCurrency: "EUR",
+        },
       ]),
     ).toBeNull();
   });
