@@ -35,7 +35,6 @@ import {
   ReportLandingPage,
   ReportsPage,
   RequestsDashboard,
-  SectorsOverviewPage,
   SupportPage,
   TrendAnalysisDashboard,
   UnauthorizedErrorPage,
@@ -82,7 +81,10 @@ function ComparisonRoutes({ basePath }: { basePath: string }) {
 function CompanyRoutes({ basePath }: { basePath: string }) {
   return (
     <>
-      <Route path={`${basePath}/sectors`} element={<SectorsOverviewPage />} />
+      <Route
+        path={`${basePath}/sectors`}
+        element={<Navigate to={`${basePath}/companies`} replace />}
+      />
       <Route
         path={`${basePath}/companies`}
         element={<CompaniesOverviewPage />}

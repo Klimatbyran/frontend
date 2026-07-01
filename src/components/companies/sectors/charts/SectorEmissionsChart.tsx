@@ -15,6 +15,8 @@ import ChartHeader from "./ChartHeader";
 interface EmissionsChartProps {
   companies: RankedCompany[];
   selectedSectors: string[];
+  drilldownSector?: string | null;
+  onDrilldownSectorChange?: (sector: string | null) => void;
 }
 
 interface PieChartClickData {
@@ -30,12 +32,20 @@ interface PieChartClickData {
 const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
   companies,
   selectedSectors,
+  drilldownSector,
+  onDrilldownSectorChange,
 }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
   const [selectedYear, setSelectedYear] = useState<string>("2024");
-  const [selectedSector, setSelectedSector] = useState<string | null>(null);
+  const [internalDrilldownSector, setInternalDrilldownSector] = useState<
+    string | null
+  >(null);
+  const selectedSector =
+    drilldownSector !== undefined ? drilldownSector : internalDrilldownSector;
+  const setSelectedSector =
+    onDrilldownSectorChange ?? setInternalDrilldownSector;
   const screenSize = useScreenSize();
 
   const { pieChartData, totalEmissions, years } = useChartData(

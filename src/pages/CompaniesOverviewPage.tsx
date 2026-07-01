@@ -16,6 +16,8 @@ import RankedList from "@/components/ranked/RankedList";
 import CompanyInsightsPanel from "@/components/companies/rankedList/CompanyInsightsPanel";
 import { CompanyKPIVisualization } from "@/components/companies/rankedList/CompanyKPIVisualization";
 import { IndustryFilter } from "@/components/companies/rankedList/IndustryFilter";
+import SectorEmissionsChart from "@/components/companies/sectors/charts/SectorEmissionsChart";
+import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 import {
   useCompanyKPIs,
   CompanyKPIValue,
@@ -35,6 +37,7 @@ export function CompaniesOverviewPage() {
   const { isMobile } = useScreenSize();
   const { companies, companiesLoading, companiesError } = useCompanies();
   const companyKPIs = useCompanyKPIs();
+  const sectorNames = useSectorNames();
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -106,7 +109,15 @@ export function CompaniesOverviewPage() {
   const [selectedSector, setSelectedSector] = useState<string | null>(
     getSectorFromURL(),
   );
+  const [pieDrilldownSector, setPieDrilldownSector] = useState<string | null>(
+    null,
+  );
   const viewMode = getViewModeFromURL();
+
+  const allSectorCodes = useMemo(
+    () => Object.keys(sectorNames).filter((key) => key !== "all"),
+    [sectorNames],
+  );
 
   // Ensure a sector is selected on initial load
   useEffect(() => {
@@ -146,6 +157,17 @@ export function CompaniesOverviewPage() {
   const handleSectorChange = (sector: string) => {
     setSelectedSector(sector);
     setSectorInURL(sector);
+    if (pieDrilldownSector !== null) {
+      setPieDrilldownSector(sector);
+    }
+  };
+
+  const handlePieDrilldownChange = (sector: string | null) => {
+    setPieDrilldownSector(sector);
+    if (sector) {
+      setSelectedSector(sector);
+      setSectorInURL(sector);
+    }
   };
 
   const handleCompanyClick = (company: CompanyWithKPIs) => {
@@ -260,6 +282,17 @@ export function CompaniesOverviewPage() {
         translationPrefix="companies.list"
         label={t("municipalities.list.dataSelector.label")}
       />
+
+      <div className="mb-6 bg-black-2 rounded-lg border p-6">
+        <SectorEmissionsChart
+          companies={companies ?? []}
+          selectedSectors={
+            availableSectors.length > 0 ? availableSectors : allSectorCodes
+          }
+          drilldownSector={pieDrilldownSector}
+          onDrilldownSectorChange={handlePieDrilldownChange}
+        />
+      </div>
 
       <div className="mb-4">
         <IndustryFilter

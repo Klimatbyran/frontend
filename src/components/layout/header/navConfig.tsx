@@ -34,12 +34,6 @@ export const NAV_LINKS: NavLink[] = [
       {
         label: "header.companies",
         path: `/companies`,
-        items: [
-          {
-            label: "header.sectors",
-            path: `/sectors`,
-          },
-        ],
       },
     ],
   },
