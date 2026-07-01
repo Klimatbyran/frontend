@@ -93,6 +93,26 @@ describe("turnoverChartData", () => {
     ).toBeNull();
   });
 
+  it("returns null when turnover currencies differ across years", () => {
+    expect(
+      getTurnoverEmissionsSection([
+        { year: 2019, total: 1000, turnover: 1_000_000, turnoverCurrency: "SEK" },
+        { year: 2020, total: 800, turnover: 1_500_000, turnoverCurrency: "EUR" },
+      ]),
+    ).toBeNull();
+  });
+
+  it("returns zero emissions change when starting emissions are zero", () => {
+    expect(
+      buildDecouplingComparison([
+        { year: 2019, total: 0, turnover: 1_000_000 },
+        { year: 2020, total: 800, turnover: 1_500_000 },
+      ]),
+    ).toMatchObject({
+      emissionsChangePercent: 0,
+    });
+  });
+
   it("returns chart data and comparison together", () => {
     const section = getTurnoverEmissionsSection(completeSeries, 2019);
 

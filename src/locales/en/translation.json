@@ -1356,6 +1356,7 @@
         "tooltip": "Emissions intensity is total emissions divided by turnover (t CO₂e per million). Compare two years — lower is better. Intensity falls when emissions drop faster than turnover grows, or when emissions fall while turnover rises.",
         "intensityUnit": "t CO₂e per million in turnover",
         "question": "Has emissions intensity decreased?",
+        "verdictStableLabel": "Stable",
         "intensityChange": "Intensity",
         "emissionsLabel": "Emissions",
         "turnoverLabel": "Turnover",

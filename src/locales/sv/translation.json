@@ -1413,6 +1413,7 @@
         "tooltip": "Utsläppsintensitet är utsläpp delat med omsättning (t CO₂e per miljon). Jämför två år — lägre är bättre. Intensiteten minskar när utsläppen faller snabbare än omsättningen växer, eller när utsläppen minskar samtidigt som omsättningen ökar.",
         "intensityUnit": "t CO₂e per miljon i omsättning",
         "question": "Har utsläppsintensiteten minskat?",
+        "verdictStableLabel": "Oförändrad",
         "intensityChange": "Intensitet",
         "emissionsLabel": "Utsläpp",
         "turnoverLabel": "Omsättning",

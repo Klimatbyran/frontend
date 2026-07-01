@@ -11,6 +11,7 @@ import {
   getEmissionsChangeColorClass,
   VERDICT_COLOR_CLASS,
   VERDICT_EXPLANATION_KEY,
+  VERDICT_LABEL_KEY,
 } from "./turnoverEmissionsPanelUtils";
 
 interface TurnoverEmissionsIntensityPanelProps {
@@ -58,8 +59,9 @@ export function TurnoverEmissionsIntensityPanel({
         </Text>
         <Text
           className={`mt-2 text-5xl font-light md:text-6xl ${verdictColorClass}`}
+          aria-label={t(VERDICT_EXPLANATION_KEY[comparison.verdict])}
         >
-          {comparison.verdict === "yes" ? t("yes") : t("no")}
+          {t(VERDICT_LABEL_KEY[comparison.verdict])}
         </Text>
         <Text className="mt-3 text-base leading-relaxed text-white md:text-lg">
           {t(VERDICT_EXPLANATION_KEY[comparison.verdict])}

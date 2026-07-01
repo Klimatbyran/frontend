@@ -6,6 +6,13 @@ export const VERDICT_COLOR_CLASS: Record<DecouplingVerdict, string> = {
   "no-yellow": "text-orange-2",
 };
 
+export const VERDICT_LABEL_KEY: Record<DecouplingVerdict, string> = {
+  yes: "yes",
+  "no-red": "no",
+  "no-yellow":
+    "companies.turnoverEmissionsHistory.intensityPanel.verdictStableLabel",
+};
+
 export const VERDICT_EXPLANATION_KEY: Record<DecouplingVerdict, string> = {
   yes: "companies.turnoverEmissionsHistory.intensityPanel.verdictYes",
   "no-red": "companies.turnoverEmissionsHistory.intensityPanel.verdictNoRed",

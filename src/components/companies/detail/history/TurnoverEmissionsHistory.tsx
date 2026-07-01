@@ -56,6 +56,15 @@ export function TurnoverEmissionsHistory({
           </div>
         </div>
         <div className="flex w-full flex-col lg:w-1/2">
+          <CardHeader
+            title={t(
+              "companies.turnoverEmissionsHistory.intensityPanel.title",
+            )}
+            tooltipContent={t(
+              "companies.turnoverEmissionsHistory.intensityPanel.tooltip",
+            )}
+            className="[&>div]:mb-4 lg:[&>div]:mb-6"
+          />
           <TurnoverEmissionsIntensityPanel comparison={section.comparison} />
         </div>
       </div>

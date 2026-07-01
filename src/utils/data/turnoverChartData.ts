@@ -104,7 +104,18 @@ function calculateIntensityChangePercent(
 }
 
 function calculatePercentChange(start: number, end: number): number {
+  if (start === 0) return 0;
   return ((end - start) / start) * 100;
+}
+
+function hasConsistentTurnoverCurrency(data: ChartData[]): boolean {
+  const currencies = new Set(
+    data
+      .map((point) => point.turnoverCurrency?.trim())
+      .filter((currency): currency is string => Boolean(currency)),
+  );
+
+  return currencies.size <= 1;
 }
 
 export function buildDecouplingComparison(
@@ -151,6 +162,8 @@ export function getTurnoverEmissionsSection(
   baseYear?: number,
 ): TurnoverEmissionsSection | null {
   const displayData = getDisplayData(data, baseYear);
+  if (!hasConsistentTurnoverCurrency(displayData)) return null;
+
   const comparison = buildDecouplingComparison(displayData, baseYear);
 
   if (!comparison) return null;
