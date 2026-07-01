@@ -173,9 +173,9 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
     const value = isTurnoverEntry
       ? formatTurnoverValue(
           entry.value as number,
-          entry.payload?.turnoverCurrency,
           currentLanguage,
           t,
+          entry.payload?.turnoverCurrency,
         )
       : formatValue(
           entry.value as number,

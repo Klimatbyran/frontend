@@ -138,15 +138,12 @@ export const TurnoverEmissionsChart: FC<TurnoverEmissionsChartProps> = ({
             />
 
             <YAxis
-              yAxisId="left"
               {...getYAxisProps(currentLanguage, [0, "auto"], {
                 yAxisId: "left",
               })}
             />
 
             <YAxis
-              yAxisId="right"
-              orientation="right"
               {...getYAxisProps(currentLanguage, [0, "auto"], {
                 orientation: "right",
                 yAxisId: "right",
