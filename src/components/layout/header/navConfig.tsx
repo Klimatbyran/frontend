@@ -18,7 +18,7 @@ export const NAV_LINKS: NavLink[] = [
         path: `/explore/municipalities`,
       },
       {
-        label: "header.localEmissions",
+        label: "header.territories",
         items: [
           {
             label: "header.nation",
