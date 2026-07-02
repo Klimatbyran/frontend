@@ -37,9 +37,25 @@ describe("transformEuropeanCountryEmissionsData", () => {
     const data = transformEuropeanCountryEmissionsData(emissionsByYear);
     const markerYear = CLIMATE_TRACE_PROJECTION_START_YEAR;
 
-    expect(data.find((point) => point.year === markerYear)?.trend).toBeDefined();
-    expect(data.find((point) => point.year === markerYear - 1)?.trend).toBeUndefined();
-    expect(data.find((point) => point.year === markerYear + 1)?.trend).toBeDefined();
+    expect(
+      data.find((point) => point.year === markerYear)?.trend,
+    ).toBeDefined();
+    expect(
+      data.find((point) => point.year === markerYear - 1)?.trend,
+    ).toBeUndefined();
+    expect(
+      data.find((point) => point.year === markerYear + 1)?.trend,
+    ).toBeDefined();
+  });
+
+  it("anchors the trend line to the last reported total at the orange marker", () => {
+    const data = transformEuropeanCountryEmissionsData(emissionsByYear);
+    const markerPoint = data.find(
+      (point) => point.year === CLIMATE_TRACE_PROJECTION_START_YEAR,
+    );
+
+    expect(markerPoint?.total).toBe(emissionsByYear[2025]);
+    expect(markerPoint?.trend).toBe(emissionsByYear[2025]);
   });
 
   it("anchors the Paris path at the last reported year on the 2026 boundary", () => {

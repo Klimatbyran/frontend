@@ -29,7 +29,15 @@ function buildTrendRecord(
     return {};
   }
 
-  const basePoint = points[0];
+  const anchorEmissions = getEmissionsForParisProjection(
+    emissionsByYear,
+    slope,
+    projectionStartYear,
+  );
+  if (anchorEmissions === null) {
+    return {};
+  }
+
   const trend: Record<number, number> = {};
 
   for (
@@ -37,7 +45,7 @@ function buildTrendRecord(
     year <= EMISSIONS_DATA_END_YEAR;
     year++
   ) {
-    const projected = basePoint.value + slope * (year - basePoint.year);
+    const projected = anchorEmissions + slope * (year - projectionStartYear);
     if (projected > 0) {
       trend[year] = projected;
     }
