@@ -1,17 +1,15 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 import type { NationStoryMetrics } from "@/utils/data/nationStoryMetrics";
 import { formatMton } from "@/utils/data/nationStoryMetrics";
 import { useLanguage } from "@/components/LanguageProvider";
 
 type JourneyStep = {
   key: string;
-  /** "layer" builds up the bubble; "message" keeps the full bubble and shows prose */
-  kind: "layer" | "message";
-  labelKey?: string;
+  labelKey: string;
   textKey: string;
-  color?: string;
+  color: string;
   /** cumulative total in Mton after this step */
   total: number;
   /** this step's own contribution in Mton */
@@ -21,13 +19,14 @@ type JourneyStep = {
   /** small extra addition drawn as a dashed ring (private e-commerce) */
   ring?: boolean;
   badgeKey?: string;
-  /** larger emphasised prose (the closing question) */
-  emphasis?: boolean;
 };
 
 const MAX_DIAMETER = 300;
 /** Scroll distance (vh) allotted to each step */
 const STEP_VH = 90;
+
+const clamp = (v: number, min: number, max: number) =>
+  Math.min(Math.max(v, min), max);
 
 function buildSteps(metrics: NationStoryMetrics): JourneyStep[] {
   const territorial = metrics.territorialLatestMton; // ~47
@@ -36,12 +35,9 @@ function buildSteps(metrics: NationStoryMetrics): JourneyStep[] {
   // Production-based is ~4 Mton above territorial per the report (51 vs 47)
   const production = territorial + 4;
 
-  const fullTotal = production + consumption + biogenic;
-
   return [
     {
       key: "step1",
-      kind: "layer",
       labelKey: "nation.story.journey.step1.label",
       textKey: "nation.story.journey.step1.text",
       color: "var(--orange-2)",
@@ -51,7 +47,6 @@ function buildSteps(metrics: NationStoryMetrics): JourneyStep[] {
     },
     {
       key: "step2",
-      kind: "layer",
       labelKey: "nation.story.journey.step2.label",
       textKey: "nation.story.journey.step2.text",
       color: "var(--blue-3)",
@@ -61,7 +56,6 @@ function buildSteps(metrics: NationStoryMetrics): JourneyStep[] {
     },
     {
       key: "step3",
-      kind: "layer",
       labelKey: "nation.story.journey.step3.label",
       textKey: "nation.story.journey.step3.text",
       color: "var(--pink-3)",
@@ -71,7 +65,6 @@ function buildSteps(metrics: NationStoryMetrics): JourneyStep[] {
     },
     {
       key: "step4",
-      kind: "layer",
       labelKey: "nation.story.journey.step4.label",
       textKey: "nation.story.journey.step4.text",
       color: "var(--pink-2)",
@@ -83,64 +76,17 @@ function buildSteps(metrics: NationStoryMetrics): JourneyStep[] {
     },
     {
       key: "step5",
-      kind: "layer",
       labelKey: "nation.story.journey.step5.label",
       textKey: "nation.story.journey.step5.text",
       color: "var(--green-3)",
-      total: fullTotal,
+      total: production + consumption + biogenic,
       delta: biogenic,
       layer: true,
-    },
-    {
-      key: "bathtub",
-      kind: "message",
-      textKey: "nation.story.bathtub.text",
-      total: fullTotal,
-      delta: 0,
-      layer: false,
-    },
-    {
-      key: "question",
-      kind: "message",
-      textKey: "nation.story.bathtub.question",
-      total: fullTotal,
-      delta: 0,
-      layer: false,
-      emphasis: true,
     },
   ];
 }
 
-/**
- * Invisible scroll trigger. Uses IntersectionObserver (via useInView) so it
- * works regardless of which element is the scroll container. It reports as
- * active when it crosses the vertical center of the viewport.
- */
-function StepSentinel({
-  index,
-  top,
-  onActivate,
-}: {
-  index: number;
-  top: string;
-  onActivate: (index: number) => void;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { margin: "-50% 0px -50% 0px" });
-
-  useEffect(() => {
-    if (inView) onActivate(index);
-  }, [inView, index, onActivate]);
-
-  return (
-    <div
-      ref={ref}
-      aria-hidden
-      className="pointer-events-none absolute left-0 w-px"
-      style={{ top, height: `${STEP_VH}vh` }}
-    />
-  );
-}
+type PinMode = "before" | "pinned" | "after";
 
 type NationEmissionsJourneyProps = {
   metrics: NationStoryMetrics;
@@ -154,12 +100,44 @@ export function NationEmissionsJourney({
 
   const steps = buildSteps(metrics);
   const maxTotal = steps[steps.length - 1].total;
-
-  const [step, setStep] = useState(0);
-  const onActivate = useCallback((i: number) => setStep(i), []);
+  const sectionVh = steps.length * STEP_VH;
 
   const sectionRef = useRef<HTMLElement>(null);
-  const sectionInView = useInView(sectionRef);
+  const [step, setStep] = useState(0);
+  const [mode, setMode] = useState<PinMode>("before");
+
+  useEffect(() => {
+    const update = () => {
+      const el = sectionRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const viewport = window.innerHeight;
+      const pinDistance = rect.height - viewport;
+      const scrolled = -rect.top;
+
+      let nextMode: PinMode = "pinned";
+      if (rect.top > 0) nextMode = "before";
+      else if (scrolled >= pinDistance) nextMode = "after";
+
+      const progress = pinDistance > 0 ? clamp(scrolled / pinDistance, 0, 1) : 0;
+      const nextStep = clamp(
+        Math.floor(progress * steps.length),
+        0,
+        steps.length - 1,
+      );
+
+      setMode(nextMode);
+      setStep(nextStep);
+    };
+
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, [steps.length]);
 
   const current = steps[step];
 
@@ -175,28 +153,30 @@ export function NationEmissionsJourney({
   const diameterFor = (total: number) =>
     Math.sqrt(total / maxTotal) * MAX_DIAMETER;
 
+  // Position the stage so it stays within the section bounds (no overlap):
+  // absolute at the top before pinning, fixed while pinned, absolute at the
+  // bottom once the section has scrolled past.
+  const stageStyle: React.CSSProperties =
+    mode === "pinned"
+      ? { position: "fixed", top: 0, left: 0, right: 0 }
+      : mode === "before"
+        ? { position: "absolute", top: 0, left: 0, right: 0 }
+        : {
+            position: "absolute",
+            top: `calc(${sectionVh}vh - 100vh)`,
+            left: 0,
+            right: 0,
+          };
+
   return (
     <section
       ref={sectionRef}
       className="relative"
-      style={{ height: `${steps.length * STEP_VH}vh` }}
+      style={{ height: `${sectionVh}vh` }}
     >
-      {steps.map((s, i) => (
-        <StepSentinel
-          key={s.key}
-          index={i}
-          top={`${i * STEP_VH}vh`}
-          onActivate={onActivate}
-        />
-      ))}
-
-      {/* Fixed pin (sticky is broken by the layout's overflow-x-hidden) */}
       <div
-        className="fixed inset-x-0 top-0 h-screen flex items-center px-4 md:px-8 transition-opacity duration-300"
-        style={{
-          opacity: sectionInView ? 1 : 0,
-          pointerEvents: sectionInView ? "auto" : "none",
-        }}
+        className="h-screen flex items-center px-4 md:px-8"
+        style={stageStyle}
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center w-full max-w-5xl mx-auto">
           {/* Bubble = accumulating colored layers */}
@@ -261,32 +241,18 @@ export function NationEmissionsJourney({
               transition={{ duration: 0.4 }}
               className="space-y-3"
             >
-              {current.kind === "message" ? (
-                <p
-                  className={
-                    current.emphasis
-                      ? "text-xl md:text-2xl text-white font-light leading-snug"
-                      : "text-base md:text-lg text-grey leading-relaxed"
-                  }
-                >
-                  {t(current.textKey)}
-                </p>
-              ) : (
-                <>
-                  <p className="flex items-center gap-2 text-lg md:text-xl text-white font-medium">
-                    <span
-                      className="w-3 h-3 rounded-full shrink-0"
-                      style={{ backgroundColor: current.color }}
-                    />
-                    {current.labelKey ? t(current.labelKey) : null}
-                  </p>
-                  <p className="text-base md:text-lg text-grey leading-relaxed">
-                    {t(current.textKey)}
-                  </p>
-                  {current.badgeKey && (
-                    <p className="text-sm text-pink-2">{t(current.badgeKey)}</p>
-                  )}
-                </>
+              <p className="flex items-center gap-2 text-lg md:text-xl text-white font-medium">
+                <span
+                  className="w-3 h-3 rounded-full shrink-0"
+                  style={{ backgroundColor: current.color }}
+                />
+                {t(current.labelKey)}
+              </p>
+              <p className="text-base md:text-lg text-grey leading-relaxed">
+                {t(current.textKey)}
+              </p>
+              {current.badgeKey && (
+                <p className="text-sm text-pink-2">{t(current.badgeKey)}</p>
               )}
             </motion.div>
 
