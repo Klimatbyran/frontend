@@ -111,7 +111,11 @@ export function NationEmissionsJourney({
     Math.sqrt(total / maxTotal) * MAX_DIAMETER;
 
   return (
-    <section ref={ref} className="relative" style={{ height: `${sectionVh}vh` }}>
+    <section
+      ref={ref}
+      className="relative"
+      style={{ height: `${sectionVh}vh` }}
+    >
       <div
         className="h-screen flex items-center px-4 md:px-8"
         style={stageStyle}
@@ -165,7 +169,7 @@ export function NationEmissionsJourney({
               </div>
             </div>
 
-            <p className="text-xs uppercase tracking-widest text-grey">
+            <p className="mt-6 md:mt-10 text-xs uppercase tracking-widest text-grey">
               {t("nation.story.journey.runningTotalLabel")}
             </p>
           </div>
