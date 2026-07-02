@@ -2,7 +2,6 @@ import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { EntityListBox } from "@/components/detail/EntityListBox";
 import { NationConclusion } from "@/components/nation/story/NationConclusion";
-import { NationEmissionsChange } from "@/components/nation/story/NationEmissionsChange";
 import { NationEmissionsJourney } from "@/components/nation/story/NationEmissionsJourney";
 import { NationStackedChart } from "@/components/nation/story/NationStackedChart";
 import { useLanguage } from "@/components/LanguageProvider";
@@ -84,10 +83,6 @@ export function NationStoryPage({
 
       {/* Historic emissions: pinned, layers reveal on scroll */}
       <NationStackedChart data={metrics.stackData} />
-
-      <FullScreenSection>
-        <NationEmissionsChange data={metrics.stackData} />
-      </FullScreenSection>
 
       {/* Conclusion – the punchline tying the journey together */}
       <FullScreenSection>

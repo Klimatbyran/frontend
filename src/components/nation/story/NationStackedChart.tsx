@@ -89,7 +89,11 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
   const chartHeight = isMobile ? 240 : 320;
 
   return (
-    <section ref={ref} className="relative" style={{ height: `${sectionVh}vh` }}>
+    <section
+      ref={ref}
+      className="relative"
+      style={{ height: `${sectionVh}vh` }}
+    >
       <div
         className="h-screen flex items-center px-4 md:px-8"
         style={stageStyle}

@@ -1658,15 +1658,9 @@
       "stacked": {
         "title": "De samlade utsläppen sedan 1990",
         "description": "När man slår samman produktionsbaserade, biogena och konsumtionsbaserade utsläpp ser bilden helt annorlunda ut. Stacken visar hur de tre lagren tillsammans knappt förändrats sedan 1990 – en annan berättelse än den officiella statistiken.",
-        "totalsDescription": "Summan av territoriella fossila, biogena och konsumtionsbaserade utsläpp utomlands",
         "layerCaption1": "Först ritar vi ut de territoriella fossila utsläppen – det vi vanligtvis diskuterar.",
         "layerCaption2": "Nu lägger vi till de biogena utsläppen ovanpå.",
-        "layerCaption3": "Och slutligen de konsumtionsbaserade utsläppen utomlands – hela bilden.",
-        "changeContext": "Förändring sedan 1990 ser väldigt olika ut beroende på vilka utsläpp man räknar med:",
-        "changeTerritorialLabel": "Produktionsbaserade (territoriella fossila)",
-        "changeCombinedLabel": "Alla tre utsläppstyper sammantaget",
-        "changeFooterLine1": "Ser man bara på de territoriella utsläppen ser Sverige framgångsrikt ut.",
-        "changeFooterLine2": "Men inkluderar man biogena och konsumtionsbaserade utsläpp är minskningen sedan 1990 betydligt mindre imponerande."
+        "layerCaption3": "Och slutligen de konsumtionsbaserade utsläppen utomlands – hela bilden."
       },
       "conclusion": {
         "eyebrow": "Slutsatsen",

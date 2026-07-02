@@ -1600,15 +1600,9 @@
       "stacked": {
         "title": "Combined emissions since 1990",
         "description": "When production-based, biogenic and consumption-based emissions are added together, the picture looks very different. The stack shows how the three layers combined have barely changed since 1990 – a different story from the official statistics.",
-        "totalsDescription": "Sum of territorial fossil, biogenic and consumption-based emissions abroad",
         "layerCaption1": "First we draw the territorial fossil emissions – what we usually discuss.",
         "layerCaption2": "Now we add the biogenic emissions on top.",
-        "layerCaption3": "And finally the consumption-based emissions abroad – the full picture.",
-        "changeContext": "The change since 1990 looks very different depending on which emissions you include:",
-        "changeTerritorialLabel": "Production-based (territorial fossil)",
-        "changeCombinedLabel": "All three emission types combined",
-        "changeFooterLine1": "Looking only at territorial emissions, Sweden appears successful.",
-        "changeFooterLine2": "But once biogenic and consumption-based emissions are included, the reduction since 1990 is far less impressive."
+        "layerCaption3": "And finally the consumption-based emissions abroad – the full picture."
       },
       "conclusion": {
         "eyebrow": "The takeaway",
