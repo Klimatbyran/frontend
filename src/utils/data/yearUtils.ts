@@ -1,4 +1,8 @@
 // Helper function to get latest year's data
+export function getSectorsReportingYear(): number {
+  return Math.round(new Date().getFullYear() - 1.5);
+}
+
 export function getLatestYearData<T>(
   data: Record<string, T> | undefined,
 ): T | undefined {

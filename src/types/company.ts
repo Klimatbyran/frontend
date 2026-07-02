@@ -1,4 +1,3 @@
-import { DivideIcon as LucideIcon } from "lucide-react";
 import type { paths } from "@/lib/api-types";
 import type { KPIValue } from "./rankings";
 
@@ -105,29 +104,6 @@ export interface Scope3HistoricalData {
     total: number;
     unit: string;
   }>;
-}
-
-export interface TrendData {
-  decreasing: Array<{
-    company: RankedCompany;
-    changePercent: number;
-    baseYear: string;
-    currentYear: string;
-  }>;
-  increasing: Array<{
-    company: RankedCompany;
-    changePercent: number;
-    baseYear: string;
-    currentYear: string;
-  }>;
-  noComparable: RankedCompany[];
-}
-
-export interface TrendCardInfo {
-  title: string;
-  icon: typeof LucideIcon;
-  color: string;
-  textColor: string;
 }
 
 // GICS option type for the /industry-gics/ dropdown (one option per code). For the
