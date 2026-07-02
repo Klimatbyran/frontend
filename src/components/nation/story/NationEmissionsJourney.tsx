@@ -1,6 +1,6 @@
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { motion, useMotionValueEvent, useScroll } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import type { NationStoryMetrics } from "@/utils/data/nationStoryMetrics";
 import { formatMton } from "@/utils/data/nationStoryMetrics";
 import { useLanguage } from "@/components/LanguageProvider";
@@ -18,6 +18,8 @@ type JourneyStep = {
 };
 
 const MAX_DIAMETER = 300;
+/** Scroll distance (vh) allotted to each step */
+const STEP_VH = 90;
 
 function buildSteps(metrics: NationStoryMetrics): JourneyStep[] {
   const territorial = metrics.territorialLatestMton; // ~47
@@ -67,6 +69,37 @@ function buildSteps(metrics: NationStoryMetrics): JourneyStep[] {
   ];
 }
 
+/**
+ * Invisible scroll trigger. Uses IntersectionObserver (via useInView) so it
+ * works regardless of which element is the scroll container. It reports as
+ * active when it crosses the vertical center of the viewport.
+ */
+function StepSentinel({
+  index,
+  top,
+  onActivate,
+}: {
+  index: number;
+  top: string;
+  onActivate: (index: number) => void;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { margin: "-50% 0px -50% 0px" });
+
+  useEffect(() => {
+    if (inView) onActivate(index);
+  }, [inView, index, onActivate]);
+
+  return (
+    <div
+      ref={ref}
+      aria-hidden
+      className="pointer-events-none absolute left-0 w-px"
+      style={{ top, height: `${STEP_VH}vh` }}
+    />
+  );
+}
+
 type NationEmissionsJourneyProps = {
   metrics: NationStoryMetrics;
 };
@@ -80,28 +113,27 @@ export function NationEmissionsJourney({
   const steps = buildSteps(metrics);
   const maxTotal = steps[steps.length - 1].total;
 
-  const wrapperRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: wrapperRef,
-    offset: ["start start", "end end"],
-  });
-
   const [step, setStep] = useState(0);
-  useMotionValueEvent(scrollYProgress, "change", (v) => {
-    // Map 0–1 scroll progress across the steps
-    const idx = Math.min(steps.length - 1, Math.floor(v * steps.length));
-    setStep(Math.max(0, idx));
-  });
+  const onActivate = useCallback((i: number) => setStep(i), []);
 
   const current = steps[step];
   const diameter = Math.sqrt(current.total / maxTotal) * MAX_DIAMETER;
 
   return (
     <section
-      ref={wrapperRef}
       className="relative"
-      style={{ height: `${steps.length * 90}vh` }}
+      style={{ height: `${steps.length * STEP_VH}vh` }}
     >
+      {/* Scroll triggers spread across the section */}
+      {steps.map((s, i) => (
+        <StepSentinel
+          key={s.key}
+          index={i}
+          top={`${i * STEP_VH}vh`}
+          onActivate={onActivate}
+        />
+      ))}
+
       <div className="sticky top-0 h-screen flex items-center px-4 md:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center w-full max-w-5xl mx-auto">
           {/* Bubble stays in place; size + color animate on scroll */}
