@@ -116,11 +116,16 @@ export function NationEmissionsJourney({
   const [step, setStep] = useState(0);
   const onActivate = useCallback((i: number) => setStep(i), []);
 
+  const sectionRef = useRef<HTMLElement>(null);
+  // Pin the visual only while the section occupies the viewport.
+  const sectionInView = useInView(sectionRef);
+
   const current = steps[step];
   const diameter = Math.sqrt(current.total / maxTotal) * MAX_DIAMETER;
 
   return (
     <section
+      ref={sectionRef}
       className="relative"
       style={{ height: `${steps.length * STEP_VH}vh` }}
     >
@@ -134,7 +139,14 @@ export function NationEmissionsJourney({
         />
       ))}
 
-      <div className="sticky top-0 h-screen flex items-center px-4 md:px-8">
+      {/* Fixed pin (sticky is broken by the layout's overflow-x-hidden) */}
+      <div
+        className="fixed inset-x-0 top-0 h-screen flex items-center px-4 md:px-8 transition-opacity duration-300"
+        style={{
+          opacity: sectionInView ? 1 : 0,
+          pointerEvents: sectionInView ? "auto" : "none",
+        }}
+      >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center w-full max-w-5xl mx-auto">
           {/* Bubble stays in place; size + color animate on scroll */}
           <div className="flex flex-col items-center gap-4">
