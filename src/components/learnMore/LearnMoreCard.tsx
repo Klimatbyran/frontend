@@ -23,6 +23,7 @@ export function LearnMoreCard({
           src={article.image}
           alt={t(article.titleKey)}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          loading="lazy"
         />
       </div>
       <div className="p-8 space-y-4">

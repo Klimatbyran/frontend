@@ -31,8 +31,10 @@ To run the project locally, execute the following commands from the root of the 
 | `npm install`     | Installs dependencies                         |
 | `npm run dev`     | Starts local dev server at `localhost:5173` or
 VITE_API_PROXY   |
-| `npm run dev-gen` | Starts local dev server at `localhost:5173` and generate api
-keys | 
+| `npm run dev-gen` | Starts local dev server and regenerates API types from OpenAPI |
+| `npm run generate-api` | Regenerates `src/lib/api-types.ts` from production OpenAPI (`/reference/openapi.json`) |
+| `npm run generate-api:local` | Same, from local Garbo (`http://localhost:3000/reference/openapi.json`) |
+| `npm run generate-api:staging` | Same, from staging API | 
 | `npm run build`   | Builds your production site to `./dist/`      |
 | `npm run preview` | Previews your build locally, before deploying |
 || `npm run build:dataguide` | Builds the data guide from markdown files in `src/locales/dataguide/` - run this when making changes to data guide content |
@@ -40,6 +42,26 @@ keys |
 **Note:** When making changes to the data guide content (markdown files in `src/locales/dataguide/`), you need to run `npm run build:dataguide` to generate the updated JSON files. This step is automatically included when running `npm run build` for production builds.
 
 **Note:** npm audit vulnerabilities will fail the build.
+
+### Company IDs and API types
+
+Companies are keyed by internal UUID (`Company.id`) in the database. The frontend uses two identifier shapes:
+
+| Use case | Identifier |
+|----------|------------|
+| Public URLs (`/companies/...`) | `wikidataId` if set, else first 8 hex chars of `id` |
+| Partner read (`getCompanyDetails`) | URL param as-is — API resolves Q-id, full UUID, or 8-char prefix |
+| Staff mutations (edit pages) | Always full internal `company.id` |
+
+Helpers live in `src/utils/companyRouting.ts` (`getCompanyUrlSegment`, `getCompanyDetailPath`).
+
+After the API with staff `/:id` routes is deployed, regenerate OpenAPI types before building against production:
+
+```bash
+npm run generate-api:staging   # or generate-api:local against a running API
+```
+
+Do not hand-edit `src/lib/api-types.ts` except when temporarily ahead of a staged OpenAPI publish.
 
 ## 👩‍💻 Contributing
 

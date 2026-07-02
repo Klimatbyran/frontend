@@ -7,13 +7,13 @@ import { EmissionsAssessmentDialog } from "./EmissionsAssessmentDialog";
 import { YearSelectionModal } from "./YearSelectionModal";
 
 interface EmissionsAssessmentButtonProps {
-  wikidataId: string;
+  companyId: string;
   sortedPeriods: ReportingPeriod[];
   disabled?: boolean;
 }
 
 export function EmissionsAssessmentButton({
-  wikidataId,
+  companyId,
   sortedPeriods,
   disabled = false,
 }: EmissionsAssessmentButtonProps) {
@@ -25,7 +25,7 @@ export function EmissionsAssessmentButton({
 
   const handleAssessEmissions = () => {
     assessEmissions(
-      { wikidataId, years: selectedYears },
+      { id: companyId, years: selectedYears },
       {
         onSuccess: () => {
           setShowAssessmentModal(true);

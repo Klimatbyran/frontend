@@ -7,20 +7,13 @@ import EmissionsTotalDisplay from "./EmissionsTotalDisplay";
 interface ChartHeaderProps {
   selectedSector: string | null;
   totalEmissions: number;
-  selectedYear: string;
-  years: string[];
   onSectorClear: () => void;
-  onYearChange: (year: string) => void;
-  selectedSectors: string[];
 }
 
 const ChartHeader: React.FC<ChartHeaderProps> = ({
   selectedSector,
   totalEmissions,
-  selectedYear,
-  years,
   onSectorClear,
-  onYearChange,
 }) => {
   const { isMobile, isTablet } = useScreenSize();
   const { t } = useTranslation();
@@ -48,9 +41,6 @@ const ChartHeader: React.FC<ChartHeaderProps> = ({
 
         <EmissionsTotalDisplay
           totalEmissions={totalEmissions}
-          selectedYear={selectedYear}
-          years={years}
-          onYearChange={onYearChange}
           isSectorView={!!selectedSector}
         />
       </div>

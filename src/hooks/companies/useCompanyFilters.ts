@@ -27,7 +27,15 @@ type MeetsParisFilter = (typeof MEETS_PARIS_OPTIONS)[number];
 const isMeetsParisFilter = (value: string): value is MeetsParisFilter =>
   MEETS_PARIS_OPTIONS.includes(value as MeetsParisFilter);
 
-export const useCompanyFilters = (companies: RankedCompany[]) => {
+type UseCompanyFiltersOptions = {
+  includeSectorFilter?: boolean;
+};
+
+export const useCompanyFilters = (
+  companies: RankedCompany[],
+  options: UseCompanyFiltersOptions = {},
+) => {
+  const { includeSectorFilter = true } = options;
   const [searchParams, setSearchParams] = useSearchParams();
   const sortingOptions = useSortOptions();
 
@@ -48,12 +56,16 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
   const meetsParisFilter: MeetsParisFilter = isMeetsParisFilter(meetsParisRaw)
     ? (meetsParisRaw as MeetsParisFilter)
     : "all";
-  const sectors = (searchParams
-    .get("sectors")
-    ?.split(",")
-    .filter((s) => SECTORS.some((sector) => sector.value === s)) ?? [
-    "all",
-  ]) as CompanySector[];
+  const sectors = (
+    includeSectorFilter
+      ? (searchParams
+          .get("sectors")
+          ?.split(",")
+          .filter((s) => SECTORS.some((sector) => sector.value === s)) ?? [
+          "all",
+        ])
+      : ["all"]
+  ) as CompanySector[];
   const setMeetsParisFilter = useCallback(
     (meetsParisFilter: string) =>
       setOrDeleteSearchParam(
@@ -74,6 +86,7 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
   );
 
   const sectorNames = useSectorNames();
+  const sectorOptions = useSectors();
   const { t } = useTranslation();
 
   const filteredCompanies = useMemo(() => {
@@ -197,23 +210,30 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
   ]);
 
   const filterGroups: FilterGroup[] = [
-    {
-      heading: t("explorePage.companies.sector"),
-      options: useSectors().map((s) => ({ value: s.value, label: s.label })),
-      selectedValues: sectors,
-      onSelect: (value: string) => {
-        if (value === "all") {
-          setSectors(["all"]);
-        } else if (sectors.includes("all")) {
-          setSectors([value]);
-        } else if (sectors.includes(value)) {
-          setSectors(sectors.filter((s) => s !== value));
-        } else {
-          setSectors([...sectors, value]);
-        }
-      },
-      selectMultiple: true,
-    },
+    ...(includeSectorFilter
+      ? [
+          {
+            heading: t("explorePage.companies.sector"),
+            options: sectorOptions.map((s) => ({
+              value: s.value,
+              label: s.label,
+            })),
+            selectedValues: sectors,
+            onSelect: (value: string) => {
+              if (value === "all") {
+                setSectors(["all"]);
+              } else if (sectors.includes("all")) {
+                setSectors([value]);
+              } else if (sectors.includes(value)) {
+                setSectors(sectors.filter((s) => s !== value));
+              } else {
+                setSectors([...sectors, value]);
+              }
+            },
+            selectMultiple: true,
+          } satisfies FilterGroup,
+        ]
+      : []),
     {
       heading: t("explorePage.companies.filteringOptions.meetsParis"),
       options: [
@@ -240,13 +260,13 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
 
   const activeFilters = useMemo(() => {
     return [
-      ...(sectors.includes("all")
-        ? []
-        : sectors.map((sector) => ({
+      ...(includeSectorFilter && !sectors.includes("all")
+        ? sectors.map((sector) => ({
             type: "filter" as const,
             label: sectorNames[sector as keyof typeof sectorNames] || sector,
             onRemove: () => setSectors(sectors.filter((s) => s !== sector)),
-          }))),
+          }))
+        : []),
       ...(meetsParisFilter !== "all"
         ? [
             {
@@ -266,6 +286,7 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
         : []),
     ];
   }, [
+    includeSectorFilter,
     sectors,
     meetsParisFilter,
     sectorNames,

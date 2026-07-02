@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Map, List } from "lucide-react";
+import { ArrowDownCircle, Leaf, Map, List, TrendingDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { FeatureCollection } from "geojson";
@@ -13,8 +13,10 @@ import { useEuropeanData } from "@/hooks/europe/useEuropeanData";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import EuropeanInsightsPanel from "@/components/europe/EuropeanInsightsPanel";
 import { EuropeanRankedList } from "@/components/europe/EuropeanRankedList";
-import { KPIDataSelector } from "@/components/ranked/KPIDataSelector";
-import { DataItem, KPIValue } from "@/types/rankings";
+import { KPIChipSelector } from "@/components/ranked/KPIChipSelector";
+import { OverviewPageSkeleton } from "@/components/ranked/OverviewPageSkeleton";
+import { OverviewSplitLayout } from "@/components/ranked/OverviewSplitLayout";
+import { DataItem } from "@/types/rankings";
 import { EuropeanCountry } from "@/types/europe";
 import { createEntityClickHandler } from "@/utils/routing";
 import { RankedListItem } from "@/types/rankings";
@@ -24,96 +26,15 @@ import {
   resolveCountryIso3,
 } from "@/utils/europe/countryNames";
 
-const MAP_COLORS = {
-  null: "color-mix(in srgb, var(--black-3) 80%, transparent)",
-  gradientStart: "var(--pink-5)",
-  gradientMidLow: "var(--pink-4)",
-  gradientMidHigh: "var(--pink-3)",
-  gradientEnd: "var(--blue-3)",
+const EUROPE_KPI_ICONS: Record<string, React.ReactNode> = {
+  emissionsPerCapita: <TrendingDown className="w-4 h-4" />,
+  emissionsPercentChange: <ArrowDownCircle className="w-4 h-4" />,
+  historicalEmissionChangePercent: <ArrowDownCircle className="w-4 h-4" />,
+  meetsParis: <Leaf className="w-4 h-4" />,
 };
 
-interface EuropeanPageHeaderProps {
-  selectedKPI: KPIValue<EuropeanCountry>;
-  onKPIChange: (kpi: KPIValue<EuropeanCountry>) => void;
-  europeanKPIs: KPIValue<EuropeanCountry>[];
-  viewMode: "map" | "list";
-  onViewModeChange: (mode: "map" | "list") => void;
-}
-
-function EuropeanPageHeader({
-  selectedKPI,
-  onKPIChange,
-  europeanKPIs,
-  viewMode,
-  onViewModeChange,
-}: EuropeanPageHeaderProps) {
-  const { t } = useTranslation();
-  return (
-    <>
-      <PageHeader
-        title={t("europeanRankedPage.title")}
-        description={t("europeanRankedPage.description")}
-        className="-ml-4"
-      />
-      <KPIDataSelector
-        selectedKPI={selectedKPI}
-        onKPIChange={onKPIChange}
-        kpis={europeanKPIs}
-        translationPrefix="europe.list"
-      />
-      <div className="flex mb-4 lg:hidden">
-        <ViewModeToggle
-          viewMode={viewMode}
-          modes={["map", "list"]}
-          onChange={onViewModeChange}
-          titles={{
-            map: t("viewModeToggle.map"),
-            list: t("viewModeToggle.list"),
-          }}
-          showTitles
-          icons={{
-            map: <Map className="w-4 h-4" />,
-            list: <List className="w-4 h-4" />,
-          }}
-        />
-      </div>
-    </>
-  );
-}
-
-interface EuropeanMapProps {
-  geoData: FeatureCollection;
-  mapData: DataItem[];
-  selectedKPI: KPIValue<EuropeanCountry>;
-  onAreaClick: (name: string) => void;
-  className?: string;
-}
-
-function EuropeanMap({
-  geoData,
-  mapData,
-  selectedKPI,
-  onAreaClick,
-  className,
-}: EuropeanMapProps) {
-  return (
-    <div className={className}>
-      <TerritoryMap
-        entityType="europe"
-        geoData={geoData}
-        data={mapData}
-        selectedKPI={selectedKPI}
-        onAreaClick={onAreaClick}
-        defaultCenter={[55, 15]}
-        defaultZoom={3}
-        propertyNameField="NAME"
-        colors={MAP_COLORS}
-      />
-    </div>
-  );
-}
-
 export function EuropeanOverviewPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { currentLanguage } = useLanguage();
   const europeanKPIs = useEuropeanKPIs();
@@ -124,7 +45,7 @@ export function EuropeanOverviewPage() {
     () => buildCountryGeoIndex(geoData),
     [geoData],
   );
-  const { emissionsByIso } = useClimateTraceEmissions();
+  const { emissionsByIso, isLoading, error } = useClimateTraceEmissions();
   const {
     selectedKPI,
     setSelectedKPI,
@@ -156,67 +77,118 @@ export function EuropeanOverviewPage() {
     }
   };
 
+  if (isLoading) {
+    return <OverviewPageSkeleton />;
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-24">
+        <h3 className="text-red-500 mb-4 text-xl">
+          {t("europeanRankedPage.errorTitle")}
+        </h3>
+        <p className="text-grey">
+          {t("europeanRankedPage.errorDescription")}
+        </p>
+      </div>
+    );
+  }
+
+  const viewToggle = (
+    <ViewModeToggle
+      viewMode={viewMode}
+      modes={["map", "list"]}
+      onChange={setViewModeInURL}
+      titles={{
+        map: t("viewModeToggle.map"),
+        list: t("viewModeToggle.list"),
+      }}
+      showTitles
+      icons={{
+        map: <Map className="w-4 h-4" />,
+        list: <List className="w-4 h-4" />,
+      }}
+    />
+  );
+
   const europeanOverviewList = (
     <EuropeanRankedList
       countryEntities={countryEntities}
       selectedKPI={selectedKPI}
       onItemClick={handleCountryClick}
+      headerAction={viewToggle}
     />
   );
 
-  const handleKPIChange = (kpi: KPIValue<EuropeanCountry>) => {
-    setSelectedKPI(kpi);
-    setKPIInURL(String(kpi.key));
-  };
-
-  const insightsPanel = (
-    <EuropeanInsightsPanel
-      countriesData={countriesAsEntities}
+  const mapPanel = (
+    <TerritoryMap
+      entityType="europe"
+      geoData={filteredGeoData}
+      data={mapData as DataItem[]}
       selectedKPI={selectedKPI}
+      onAreaClick={handleCountryAreaClick}
+      defaultCenter={[55, 15]}
+      defaultZoom={3}
+      propertyNameField="NAME"
+      className="max-w-none"
     />
   );
 
   return (
     <>
-      <EuropeanPageHeader
-        selectedKPI={selectedKPI}
-        onKPIChange={handleKPIChange}
-        europeanKPIs={europeanKPIs}
-        viewMode={viewMode}
-        onViewModeChange={(mode) => setViewModeInURL(mode)}
+      <PageHeader
+        title={t("europeanRankedPage.title")}
+        description={t("europeanRankedPage.description")}
+        className="-ml-4"
       />
 
-      <div className="lg:hidden space-y-6">
-        {viewMode === "map" ? (
-          <EuropeanMap
-            geoData={filteredGeoData}
-            mapData={mapData}
-            selectedKPI={selectedKPI}
-            onAreaClick={handleCountryAreaClick}
-            className="relative h-[65vh]"
-          />
-        ) : (
-          europeanOverviewList
-        )}
-        {insightsPanel}
-      </div>
+      <KPIChipSelector<EuropeanCountry>
+        selectedKPI={selectedKPI}
+        kpis={europeanKPIs}
+        onKPIChange={(kpi) => {
+          setSelectedKPI(kpi);
+          setKPIInURL(String(kpi.key));
+        }}
+        iconMap={EUROPE_KPI_ICONS}
+        translationPrefix="europe.list"
+        label={t("municipalities.list.dataSelector.label")}
+      />
 
-      <div className="hidden lg:grid grid-cols-1 gap-6">
-        <div className="grid grid-cols-2 gap-6">
-          {viewMode === "map" ? (
-            <EuropeanMap
-              geoData={filteredGeoData}
-              mapData={mapData}
-              selectedKPI={selectedKPI}
-              onAreaClick={handleCountryAreaClick}
-              className="relative h-full"
-            />
-          ) : (
-            europeanOverviewList
-          )}
-          {viewMode === "map" ? europeanOverviewList : null}
+      <div className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+          <OverviewSplitLayout
+            viewMode={viewMode}
+            visualizationMode="map"
+            visualization={mapPanel}
+            list={europeanOverviewList}
+            toggle={viewToggle}
+          />
+          <EuropeanInsightsPanel
+            countriesData={countriesAsEntities}
+            selectedKPI={selectedKPI}
+            section="stats"
+          />
         </div>
-        {insightsPanel}
+
+        {!selectedKPI.isBoolean && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+            <EuropeanInsightsPanel
+              countriesData={countriesAsEntities}
+              selectedKPI={selectedKPI}
+              section="top"
+            />
+            <EuropeanInsightsPanel
+              countriesData={countriesAsEntities}
+              selectedKPI={selectedKPI}
+              section="bottom"
+            />
+            <EuropeanInsightsPanel
+              countriesData={countriesAsEntities}
+              selectedKPI={selectedKPI}
+              section="distribution"
+            />
+          </div>
+        )}
       </div>
     </>
   );

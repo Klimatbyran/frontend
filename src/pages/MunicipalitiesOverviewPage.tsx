@@ -1,10 +1,18 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { Map, List } from "lucide-react";
+import {
+  Leaf,
+  ArrowDownCircle,
+  ShoppingCart,
+  FileCheck,
+  Zap,
+  ArrowUpCircle,
+  Map,
+  List,
+} from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { FeatureCollection } from "geojson";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { KPIDataSelector } from "@/components/ranked/KPIDataSelector";
 import InsightsPanel from "@/components/municipalities/rankedList/MunicipalityInsightsPanel";
 import TerritoryMap from "@/components/maps/TerritoryMap";
 import municipalityGeoJson from "@/data/municipalityGeo.json";
@@ -16,7 +24,29 @@ import {
 import { RankedListItem } from "@/types/rankings";
 import { createEntityClickHandler } from "@/utils/routing";
 import { MunicipalityRankedList } from "@/components/municipalities/MunicipalityRankedList";
+import {
+  normalizeMunicipalityKpiApiItem,
+  toMunicipalityMapDataItem,
+} from "@/utils/territoryMapData";
+import {
+  OverviewSplitLayout,
+  type OverviewViewMode,
+} from "@/components/ranked/OverviewSplitLayout";
+import { KPIChipSelector } from "@/components/ranked/KPIChipSelector";
+import { OverviewPageSkeleton } from "@/components/ranked/OverviewPageSkeleton";
 import type { Municipality } from "@/types/municipality";
+
+// ArrowDownCircle = "lower is better / goal is reduction"
+// ArrowUpCircle   = "higher is better / goal is increase"
+const MUNICIPALITY_KPI_ICONS: Record<string, React.ReactNode> = {
+  meetsParisGoal: <Leaf className="w-4 h-4" />,
+  historicalEmissionChangePercent: <ArrowDownCircle className="w-4 h-4" />,
+  totalConsumptionEmission: <ShoppingCart className="w-4 h-4" />,
+  climatePlan: <FileCheck className="w-4 h-4" />,
+  electricCarChangePercent: <ArrowUpCircle className="w-4 h-4" />,
+  electricVehiclePerChargePoints: <Zap className="w-4 h-4" />,
+  bicycleMetrePerCapita: <ArrowUpCircle className="w-4 h-4" />,
+};
 
 export function MunicipalitiesOverviewPage() {
   const { t } = useTranslation();
@@ -29,10 +59,9 @@ export function MunicipalitiesOverviewPage() {
 
   const municipalities: Municipality[] = useMemo(
     () =>
-      municipalitiesData.map((m) => {
-        const { meetsParis, ...rest } = m;
-        return { ...rest, meetsParisGoal: meetsParis } as Municipality;
-      }),
+      municipalitiesData.map((m) =>
+        normalizeMunicipalityKpiApiItem(m),
+      ) as Municipality[],
     [municipalitiesData],
   );
   const [geoData] = useState(municipalityGeoJson);
@@ -45,6 +74,9 @@ export function MunicipalitiesOverviewPage() {
     const kpiKey = params.get("kpi");
     return (
       municipalityKPIs.find((kpi) => String(kpi.key) === kpiKey) ||
+      municipalityKPIs.find(
+        (kpi) => String(kpi.key) === "historicalEmissionChangePercent",
+      ) ||
       municipalityKPIs[0]
     );
   }, [location.search, municipalityKPIs]);
@@ -55,11 +87,12 @@ export function MunicipalitiesOverviewPage() {
     navigate({ search: params.toString() }, { replace: true });
   };
 
-  const getViewModeFromURL = () => {
+  const getViewModeFromURL = useCallback((): OverviewViewMode => {
     const params = new URLSearchParams(location.search);
     return params.get("view") === "list" ? "list" : "map";
-  };
-  const setViewModeInURL = (mode: "map" | "list") => {
+  }, [location.search]);
+
+  const setViewModeInURL = (mode: OverviewViewMode) => {
     const params = new URLSearchParams(location.search);
     params.set("view", mode);
     navigate({ search: params.toString() }, { replace: true });
@@ -70,7 +103,7 @@ export function MunicipalitiesOverviewPage() {
 
   useEffect(() => {
     const kpiFromUrl = getKPIFromURL();
-    if (kpiFromUrl.label !== selectedKPI.label) {
+    if (String(kpiFromUrl.key) !== String(selectedKPI.key)) {
       setSelectedKPI(kpiFromUrl);
     }
   }, [getKPIFromURL, selectedKPI.label]);
@@ -81,7 +114,11 @@ export function MunicipalitiesOverviewPage() {
     viewMode,
   );
 
-  // Create an adapter for MapOfSweden
+  const mapData = useMemo(
+    () => municipalitiesData.map(toMunicipalityMapDataItem),
+    [municipalitiesData],
+  );
+
   const handleMunicipalityAreaClick = (name: string) => {
     const municipality = municipalities.find((m) => m.name === name);
     if (municipality) {
@@ -105,16 +142,7 @@ export function MunicipalitiesOverviewPage() {
   }, [municipalities]);
 
   if (municipalitiesLoading) {
-    return (
-      <div className="animate-pulse space-y-16">
-        <div className="h-12 w-1/3 bg-black-1 rounded" />
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {[...Array(6)].map((_, i) => (
-            <div key={i} className="h-96 bg-black-1 rounded-level-2" />
-          ))}
-        </div>
-      </div>
-    );
+    return <OverviewPageSkeleton />;
   }
 
   if (municipalitiesError) {
@@ -130,31 +158,42 @@ export function MunicipalitiesOverviewPage() {
     );
   }
 
+  const viewToggle = (
+    <ViewModeToggle
+      viewMode={viewMode}
+      modes={["map", "list"]}
+      onChange={setViewModeInURL}
+      titles={{
+        map: t("municipalities.list.viewToggle.showMap"),
+        list: t("municipalities.list.viewToggle.showList"),
+      }}
+      showTitles
+      icons={{
+        map: <Map className="w-4 h-4" />,
+        list: <List className="w-4 h-4" />,
+      }}
+    />
+  );
+
   const municipalityRankedList = (
     <MunicipalityRankedList
       municipalityEntities={municipalityEntities}
       selectedKPI={selectedKPI}
       onItemClick={handleMunicipalityClick}
+      headerAction={viewToggle}
     />
   );
 
-  const renderMapOrList = (isMobile: boolean) =>
-    viewMode === "map" ? (
-      <div className={isMobile ? "relative h-[65vh]" : "relative h-full"}>
-        <TerritoryMap
-          entityType="municipalities"
-          geoData={geoData as FeatureCollection}
-          data={municipalities.map((m) => {
-            const { sectorEmissions, ...rest } = m;
-            return { ...rest, id: m.name };
-          })}
-          selectedKPI={selectedKPI}
-          onAreaClick={handleMunicipalityAreaClick}
-        />
-      </div>
-    ) : (
-      municipalityRankedList
-    );
+  const mapPanel = (
+    <TerritoryMap
+      entityType="municipalities"
+      geoData={geoData as FeatureCollection}
+      data={mapData}
+      selectedKPI={selectedKPI}
+      onAreaClick={handleMunicipalityAreaClick}
+      className="max-w-none"
+    />
+  );
 
   return (
     <>
@@ -164,52 +203,54 @@ export function MunicipalitiesOverviewPage() {
         className="-ml-4"
       />
 
-      <div className="flex mb-4 lg:hidden">
-        <ViewModeToggle
-          viewMode={viewMode}
-          modes={["map", "list"]}
-          onChange={(mode) => setViewModeInURL(mode)}
-          titles={{
-            map: t("municipalities.list.viewToggle.showMap"),
-            list: t("municipalities.list.viewToggle.showList"),
-          }}
-          showTitles
-          icons={{
-            map: <Map className="w-4 h-4" />,
-            list: <List className="w-4 h-4" />,
-          }}
-        />
-      </div>
-
-      <KPIDataSelector
+      <KPIChipSelector<Municipality>
         selectedKPI={selectedKPI}
+        kpis={municipalityKPIs}
         onKPIChange={(kpi) => {
           setSelectedKPI(kpi);
           setKPIInURL(String(kpi.key));
         }}
-        kpis={municipalityKPIs}
+        iconMap={MUNICIPALITY_KPI_ICONS}
         translationPrefix="municipalities.list"
       />
 
-      {/* Mobile Insights */}
-      <div className="lg:hidden space-y-6">
-        {renderMapOrList(true)}
-        <InsightsPanel
-          municipalityData={municipalities}
-          selectedKPI={selectedKPI}
-        />
-      </div>
-
-      {/* Desktop Insights */}
-      <div className="hidden lg:grid grid-cols-1 gap-6">
-        <div className="grid grid-cols-2 gap-6">
-          {renderMapOrList(false)}
-          {viewMode === "map" ? municipalityRankedList : null}
+      <div className="space-y-6">
+        {/* Row 1: map/list (toggled) | stats panel */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+          <OverviewSplitLayout
+            viewMode={viewMode}
+            visualizationMode="map"
+            visualization={mapPanel}
+            list={municipalityRankedList}
+            toggle={viewToggle}
+          />
+          <InsightsPanel
+            municipalityData={municipalities}
+            selectedKPI={selectedKPI}
+            section="stats"
+          />
         </div>
-        <InsightsPanel
-          municipalityData={municipalities}
-          selectedKPI={selectedKPI}
-        />
+
+        {/* Row 2: top list | bottom list | distribution (numeric KPIs only) */}
+        {!selectedKPI.isBoolean && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+            <InsightsPanel
+              municipalityData={municipalities}
+              selectedKPI={selectedKPI}
+              section="top"
+            />
+            <InsightsPanel
+              municipalityData={municipalities}
+              selectedKPI={selectedKPI}
+              section="bottom"
+            />
+            <InsightsPanel
+              municipalityData={municipalities}
+              selectedKPI={selectedKPI}
+              section="distribution"
+            />
+          </div>
+        )}
       </div>
     </>
   );

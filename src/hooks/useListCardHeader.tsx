@@ -27,7 +27,7 @@ export function useListCardHeader({
 
   const logo = logoUrl ? (
     isMunicipality || isRegion ? (
-      <img src={logoUrl} alt="logo" className="h-[50px]" />
+      <img src={logoUrl} alt="logo" className="h-[50px]" loading="lazy" />
     ) : (
       <CompanyLogo
         src={logoUrl}

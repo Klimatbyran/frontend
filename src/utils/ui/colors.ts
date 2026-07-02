@@ -19,3 +19,10 @@ export function getDataQualityColor(
       return "var(--pink-3)";
   }
 }
+
+export const DEFAULT_BOOLEAN_DATA_COLORS = {
+  positive: "var(--blue-3)",
+  negative: "var(--pink-3)",
+};
+
+export const DEFAULT_NULL_DATA_COLOR = "var(--grey)";

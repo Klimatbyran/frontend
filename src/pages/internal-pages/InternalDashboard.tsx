@@ -10,6 +10,7 @@ import {
 } from "@/utils/formatting/localization";
 import { calculateRateOfChange } from "@/utils/calculations/general";
 import { calculateEmissionsChange } from "@/utils/calculations/emissionsCalculations";
+import { getCompanyDetailPath } from "@/utils/companyRouting";
 
 const companyChangeRate = (company: RankedCompany) =>
   calculateRateOfChange(
@@ -246,11 +247,11 @@ export const InternalDashboard = () => {
                     : "text-gray-600";
 
               return (
-                <tr key={company.wikidataId} className="hover:bg-blue-5">
+                <tr key={company.id} className="hover:bg-blue-5">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div>
                       <div className="text-sm font-medium text-gray-200">
-                        <a href={`/companies/${company.wikidataId}`}>
+                        <a href={getCompanyDetailPath(company)}>
                           {company.name}
                         </a>
                       </div>

@@ -12,6 +12,7 @@ import { useLanguage } from "@/components/LanguageProvider";
 import { calculateEmissionsChange } from "@/utils/calculations/emissionsCalculations";
 import { useVerificationStatus } from "../useVerificationStatus";
 import { useSectorNames } from "./useCompanySectors";
+import { getCompanyDetailPath } from "@/utils/companyRouting";
 
 interface IUseTransformCompanyListCard {
   filteredCompanies: RankedCompany[];
@@ -34,7 +35,7 @@ const useTransformCompanyListCard = ({
       return [];
     }
     return filteredCompanies.map((company: RankedCompany) => {
-      const { wikidataId, name, industry, reportingPeriods } = company;
+      const { name, industry, reportingPeriods } = company;
       const isFinancialsSector = industry?.industryGics?.sectorCode === "40";
       const latestPeriod = reportingPeriods?.[0];
       const previousPeriod = reportingPeriods?.[1];
@@ -73,7 +74,7 @@ const useTransformCompanyListCard = ({
         logoUrl: company.logoUrl,
         variant: "company" as const,
         baseYear: company?.baseYear?.year || null,
-        linkTo: `/companies/${wikidataId}`,
+        linkTo: getCompanyDetailPath(company),
         meetsParis,
         meetsParisTranslationKey: "companies.card.meetsParis",
         emissionsValue:

@@ -3,8 +3,8 @@ import { useTranslation } from "react-i18next";
 import type { CompanyWithKPIs } from "@/types/company";
 import { createSymmetricRangeGradient } from "@/utils/ui/colorGradients";
 import { useBeeswarmData } from "@/hooks/companies/useBeeswarmData";
-import { useScreenSize } from "@/hooks/useScreenSize";
 import { BeeswarmChart } from "./shared/BeeswarmChart";
+import { getCompanyUrlSegment } from "@/utils/companyRouting";
 
 interface EmissionsChangeVisualizationProps {
   companies: CompanyWithKPIs[];
@@ -16,10 +16,8 @@ export function EmissionsChangeVisualization({
   onCompanyClick,
 }: EmissionsChangeVisualizationProps) {
   const { t } = useTranslation();
-  const { isMobile } = useScreenSize();
   const {
     valid: withData,
-    invalid: noData,
     min,
     max,
     colorForValue,
@@ -39,7 +37,7 @@ export function EmissionsChangeVisualization({
     );
     const map = new Map<string, number>();
     sorted.forEach((company, index) => {
-      map.set(company.wikidataId, index + 1);
+      map.set(company.id, index + 1);
     });
     return map;
   }, [withData]);
@@ -56,30 +54,18 @@ export function EmissionsChangeVisualization({
 
   return (
     <div className="w-full h-full flex flex-col gap-3">
-      {!isMobile && (
-        <div className="flex items-center justify-between">
-          <div className="text-sm text-grey">
-            {t("companiesOverviewPage.visualizations.emissionsChange.title")}
-            {" · "}
-            {t(
-              "companiesOverviewPage.visualizations.emissionsChange.unknown",
-            )}: {noData.length}
-          </div>
-        </div>
-      )}
-
       <div className="relative flex-1 bg-black-2 rounded-level-2 p-4 overflow-hidden">
         <BeeswarmChart
           data={withData}
           getValue={(c) => c.emissionsChangeFromBaseYear as number}
           getCompanyName={(c) => c.name}
-          getCompanyId={(c) => c.wikidataId}
+          getCompanyId={(c) => getCompanyUrlSegment(c)}
           colorForValue={colorForValue}
           min={min}
           max={max}
           unit="%"
           onCompanyClick={onCompanyClick}
-          getRank={(c) => rankMap.get(c.wikidataId) ?? null}
+          getRank={(c) => rankMap.get(c.id) ?? null}
           totalCount={withData.length}
         />
       </div>

@@ -12,7 +12,11 @@ export function useRankedRegionsURLParams(regionalKPIs: KPIValue<Region>[]) {
     const kpiKey = params.get("kpi");
 
     return (
-      regionalKPIs.find((kpi) => String(kpi.key) === kpiKey) || regionalKPIs[0]
+      regionalKPIs.find((kpi) => String(kpi.key) === kpiKey) ||
+      regionalKPIs.find(
+        (kpi) => String(kpi.key) === "historicalEmissionChangePercent",
+      ) ||
+      regionalKPIs[0]
     );
   }, [location.search, regionalKPIs]);
 

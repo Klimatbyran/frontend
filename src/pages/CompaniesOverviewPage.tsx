@@ -1,11 +1,17 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { Map, List } from "lucide-react";
+import { Leaf, ArrowDownCircle, BarChart2, List } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useCompanies } from "@/hooks/companies/useCompanies";
+import { useScreenSize } from "@/hooks/useScreenSize";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { KPIDataSelector } from "@/components/ranked/KPIDataSelector";
+import { KPIChipSelector } from "@/components/ranked/KPIChipSelector";
+import { OverviewPageSkeleton } from "@/components/ranked/OverviewPageSkeleton";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
+import {
+  OverviewSplitLayout,
+  type OverviewViewMode,
+} from "@/components/ranked/OverviewSplitLayout";
 import RankedList from "@/components/ranked/RankedList";
 import CompanyInsightsPanel from "@/components/companies/rankedList/CompanyInsightsPanel";
 import { CompanyKPIVisualization } from "@/components/companies/rankedList/CompanyKPIVisualization";
@@ -17,9 +23,16 @@ import {
   enrichCompanyWithKPIs,
 } from "@/hooks/companies/useCompanyKPIs";
 import { DataPoint } from "@/types/rankings";
+import { getCompanyDetailPath } from "@/utils/companyRouting";
+
+const COMPANY_KPI_ICONS: Record<string, React.ReactNode> = {
+  meetsParis: <Leaf className="w-4 h-4" />,
+  emissionsChangeFromBaseYear: <ArrowDownCircle className="w-4 h-4" />,
+};
 
 export function CompaniesOverviewPage() {
   const { t } = useTranslation();
+  const { isMobile } = useScreenSize();
   const { companies, companiesLoading, companiesError } = useCompanies();
   const companyKPIs = useCompanyKPIs();
 
@@ -29,23 +42,16 @@ export function CompaniesOverviewPage() {
   const getKPIFromURL = useCallback(() => {
     const params = new URLSearchParams(location.search);
     const kpiKey = params.get("kpi");
-    return companyKPIs.find((kpi) => kpi.key === kpiKey) || companyKPIs[0];
+    return (
+      companyKPIs.find((kpi) => kpi.key === kpiKey) ||
+      companyKPIs.find((kpi) => kpi.key === "emissionsChangeFromBaseYear") ||
+      companyKPIs[0]
+    );
   }, [location.search, companyKPIs]);
 
   const setKPIInURL = (kpiKey: string) => {
     const params = new URLSearchParams(location.search);
     params.set("kpi", kpiKey);
-    navigate({ search: params.toString() }, { replace: true });
-  };
-
-  const getViewModeFromURL = () => {
-    const params = new URLSearchParams(location.search);
-    return params.get("view") === "list" ? "list" : "graph";
-  };
-
-  const setViewModeInURL = (mode: "graph" | "list") => {
-    const params = new URLSearchParams(location.search);
-    params.set("view", mode);
     navigate({ search: params.toString() }, { replace: true });
   };
 
@@ -84,6 +90,17 @@ export function CompaniesOverviewPage() {
     },
     [location.search, navigate],
   );
+
+  const getViewModeFromURL = useCallback((): OverviewViewMode => {
+    const params = new URLSearchParams(location.search);
+    return params.get("view") === "list" ? "list" : "graph";
+  }, [location.search]);
+
+  const setViewModeInURL = (mode: OverviewViewMode) => {
+    const params = new URLSearchParams(location.search);
+    params.set("view", mode);
+    navigate({ search: params.toString() }, { replace: true });
+  };
 
   const [selectedKPI, setSelectedKPI] = useState(getKPIFromURL());
   const [selectedSector, setSelectedSector] = useState<string | null>(
@@ -132,20 +149,11 @@ export function CompaniesOverviewPage() {
   };
 
   const handleCompanyClick = (company: CompanyWithKPIs) => {
-    navigate(`/companies/${company.wikidataId}`);
+    navigate(getCompanyDetailPath(company));
   };
 
   if (companiesLoading) {
-    return (
-      <div className="animate-pulse space-y-16">
-        <div className="h-12 w-1/3 bg-black-1 rounded" />
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {[...Array(6)].map((_, i) => (
-            <div key={i} className="h-96 bg-black-1 rounded-level-2" />
-          ))}
-        </div>
-      </div>
-    );
+    return <OverviewPageSkeleton />;
   }
 
   if (companiesError) {
@@ -189,24 +197,49 @@ export function CompaniesOverviewPage() {
     },
   });
 
-  const renderVisualizationOrList = (isMobile: boolean) =>
-    viewMode === "graph" ? (
-      <div className={isMobile ? "relative h-[65vh]" : "relative h-full"}>
-        <CompanyKPIVisualization
-          companies={companiesWithKPIs}
-          selectedKPI={selectedKPI}
-          onCompanyClick={handleCompanyClick}
-        />
-      </div>
-    ) : (
-      <RankedList
-        data={companiesWithKPIs}
-        selectedDataPoint={asDataPoint(selectedKPI)}
-        onItemClick={handleCompanyClick}
-        searchKey="name"
-        searchPlaceholder={t("rankedList.search.placeholder")}
+  const viewToggle = (
+    <ViewModeToggle
+      viewMode={viewMode}
+      modes={["graph", "list"]}
+      onChange={setViewModeInURL}
+      titles={{
+        graph: t("companiesOverviewPage.viewToggle.showGraph", "Graf"),
+        list: t("companiesOverviewPage.viewToggle.showList", "Lista"),
+      }}
+      showTitles
+      icons={{
+        graph: <BarChart2 className="w-4 h-4" />,
+        list: <List className="w-4 h-4" />,
+      }}
+    />
+  );
+
+  const colorItem = selectedKPI.createKPIColorGetter
+    ? selectedKPI.createKPIColorGetter(companiesWithKPIs)
+    : undefined;
+
+  const companyRankedList = (
+    <RankedList
+      data={companiesWithKPIs}
+      selectedDataPoint={asDataPoint(selectedKPI)}
+      onItemClick={handleCompanyClick}
+      searchKey="name"
+      searchPlaceholder={t("rankedList.search.placeholder")}
+      itemsPerPage={isMobile ? 6 : 8}
+      headerAction={viewToggle}
+      colorItem={colorItem}
+    />
+  );
+
+  const visualizationPanel = (
+    <div className="h-full min-h-[500px] md:min-h-[570px]">
+      <CompanyKPIVisualization
+        companies={companiesWithKPIs}
+        selectedKPI={selectedKPI}
+        onCompanyClick={handleCompanyClick}
       />
-    );
+    </div>
+  );
 
   return (
     <>
@@ -216,31 +249,16 @@ export function CompaniesOverviewPage() {
         className="-ml-4"
       />
 
-      <div className="flex mb-4 lg:hidden">
-        <ViewModeToggle
-          viewMode={viewMode}
-          modes={["graph", "list"]}
-          onChange={(mode) => setViewModeInURL(mode)}
-          titles={{
-            graph: t("companiesOverviewPage.viewToggle.showGraph", "Graph"),
-            list: t("companiesOverviewPage.viewToggle.showList", "List"),
-          }}
-          showTitles
-          icons={{
-            graph: <Map className="w-4 h-4" />,
-            list: <List className="w-4 h-4" />,
-          }}
-        />
-      </div>
-
-      <KPIDataSelector
+      <KPIChipSelector<CompanyWithKPIs>
         selectedKPI={selectedKPI}
+        kpis={companyKPIs}
         onKPIChange={(kpi) => {
           setSelectedKPI(kpi);
           setKPIInURL(String(kpi.key));
         }}
-        kpis={companyKPIs}
+        iconMap={COMPANY_KPI_ICONS}
         translationPrefix="companies.list"
+        label={t("municipalities.list.dataSelector.label")}
       />
 
       <div className="mb-4">
@@ -251,33 +269,42 @@ export function CompaniesOverviewPage() {
         />
       </div>
 
-      {/* Mobile View */}
-      <div className="lg:hidden space-y-6">
-        {renderVisualizationOrList(true)}
-        <CompanyInsightsPanel
-          companyData={companiesWithKPIs}
-          selectedKPI={selectedKPI}
-        />
-      </div>
-
-      {/* Desktop View */}
-      <div className="hidden lg:grid grid-cols-1 gap-6">
-        <div className="grid grid-cols-2 gap-6">
-          {renderVisualizationOrList(false)}
-          {viewMode === "graph" ? (
-            <RankedList
-              data={companiesWithKPIs}
-              selectedDataPoint={asDataPoint(selectedKPI)}
-              onItemClick={handleCompanyClick}
-              searchKey="name"
-              searchPlaceholder={t("rankedList.search.placeholder")}
-            />
-          ) : null}
+      <div className="space-y-6">
+        {/* Row 1: graph/list toggle | stats */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+          <OverviewSplitLayout
+            viewMode={viewMode}
+            visualizationMode="graph"
+            visualization={visualizationPanel}
+            list={companyRankedList}
+            toggle={viewToggle}
+          />
+          <CompanyInsightsPanel
+            companyData={companiesWithKPIs}
+            selectedKPI={selectedKPI}
+            section="stats"
+          />
         </div>
-        <CompanyInsightsPanel
-          companyData={companiesWithKPIs}
-          selectedKPI={selectedKPI}
-        />
+
+        {!selectedKPI.isBoolean && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+            <CompanyInsightsPanel
+              companyData={companiesWithKPIs}
+              selectedKPI={selectedKPI}
+              section="top"
+            />
+            <CompanyInsightsPanel
+              companyData={companiesWithKPIs}
+              selectedKPI={selectedKPI}
+              section="bottom"
+            />
+            <CompanyInsightsPanel
+              companyData={companiesWithKPIs}
+              selectedKPI={selectedKPI}
+              section="distribution"
+            />
+          </div>
+        )}
       </div>
     </>
   );

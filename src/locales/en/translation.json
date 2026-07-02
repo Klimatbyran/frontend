@@ -261,6 +261,12 @@
         "antikorruptionspolicyLink": "anti-corruption policy"
       }
     },
+    "emissionsSection": {
+      "title": "Our Emissions",
+      "paragraph1": "As an organisation working for climate transparency, we believe it is important to be open about our own climate impact. We are working to measure and reduce the emissions associated with our operations.",
+      "paragraph2": "This includes emissions from travel, digital infrastructure, office activities and other parts of our work. We review our footprint regularly and look for ways to reduce it over time.",
+      "reportLink": "To see our full emissions breakdown, read our report <0>here</0>."
+    },
     "financingSection": {
       "title": "How We Are Funded",
       "paragraph1": "From November 2025 to the end of 2026, Klimatkollen will receive financial support from Postkodstiftelsen for the project 'AI for local climate influence'.",
@@ -470,7 +476,8 @@
       "stackedTotal": "Stacked Total",
       "back": "Back",
       "sectorTotal": "Sector Total Emissions",
-      "total": "Total Emissions"
+      "total": "Total Emissions",
+      "emissionsUnit": "ton CO₂e"
     }
   },
   "sectorsOverviewPage": {
@@ -485,6 +492,38 @@
       "meetsParisYes": "Yes",
       "meetsParisNo": "No",
       "meetsParisUnknown": "Unknown"
+    },
+    "insights": {
+      "largestSector": "Largest sector",
+      "largestSectorDescription": "{{name}} accounts for {{share}} of total emissions",
+      "topThreeSectors": "Top 3 sectors",
+      "topThreeSectorsDescription": "The three largest sectors account for {{share}} of emissions",
+      "reportingCompanies": "Reporting companies",
+      "reportingCompaniesDescription": "{{count}} companies reported emissions for {{year}}",
+      "largestCompany": "Largest emitter",
+      "largestCompanyDescription": "{{name}} accounts for {{share}} of sector emissions",
+      "companiesInSector": "Companies in sector",
+      "companiesInSectorDescription": "{{count}} companies reported emissions",
+      "reducingEmissions": "Reducing emissions",
+      "reducingEmissionsDescription": "{{count}} of {{total}} companies reduced emissions since base year",
+      "increasingEmissions": "Increasing emissions",
+      "increasingEmissionsDescription": "{{count}} of {{total}} companies increased emissions since base year",
+      "noComparableTrendData": "Not enough comparable trend data for companies in this sector",
+      "emissionsAmount": "{{amount}} {{unit}}",
+      "ofTotalEmissions": "of total emissions",
+      "forReportingYear": "for {{year}}",
+      "reportingCompaniesAvg": "Average {{amount}} {{unit}} per reporting company",
+      "companiesReportingLabel": "companies reporting",
+      "topEmittersInSectorDescription": "Share of sector emissions among the largest companies",
+      "sinceBaseYear": "reducing since base year",
+      "increasingSinceBaseYear": "increasing since base year",
+      "topReducersDescription": "Companies with the largest emissions reductions since base year",
+      "topIncreasersDescription": "Companies with the largest emissions increases since base year",
+      "reducing": "Reducing",
+      "increasing": "Increasing",
+      "scope1": "Scope 1",
+      "scope2": "Scope 2",
+      "scope3": "Scope 3"
     }
   },
   "methodsPage": {
@@ -501,7 +540,8 @@
     "categories": {
       "general": "General Information",
       "municipalityAndRegion": "Municipality and Region Data",
-      "company": "Company Data"
+      "company": "Company Data",
+      "nation": "Nation Data"
     },
     "general": {
       "parisAgreement": {
@@ -705,12 +745,12 @@
       "emissionTypes": {
         "title": "Different Types of Emissions",
         "description": "Learn about the various types of emissions and how they are measured",
-        "paragraph1": "Klimatkollen is an independent fact-based platform that follows established standards for emissions reporting. The climate data we present reflects the boundaries and assumptions used in carbon budget calculations. For example, carbon budgets cannot be directly linked to all greenhouse gas emissions, as other gases like methane, nitrous oxide, and water vapour are also included in overall climate impact assessments.",
-        "paragraph2": "Emissions from cement production are excluded from the IPCC's global carbon budget and, as a result, are also omitted from Sweden's carbon budget and emissions data. This specifically affects the municipalities of Gotland, Skövde, and Mörbylånga, where cement production is currently or has previously taken place.",
-        "paragraph3": "Sweden also has a significant climate impact from goods imported from other countries, leading to emissions abroad. These consumption-based emissions are not included in the carbon budget.",
-        "paragraph4": "Similarly, emissions from forests and land (known as biogenic emissions) are also excluded from the carbon budget.",
-        "paragraph5": "In reality, climate-impacting emissions are much higher than the territorial fossil carbon emissions typically reported by authorities and the media. The data currently displayed on Klimatkollen reflects these territorial emissions.",
-        "paragraph6": "Klimatkollen is actively exploring how to incorporate other greenhouse gas emissions on the website in the future, while maintaining the ability to compare current emissions with carbon budgets."
+        "paragraph1": "Klimatkollen is an independent fact-based platform that follows established standards for emissions reporting. The climate data we present reflects the boundaries used in official territorial emissions inventories. For municipalities and regions, we show emissions of all greenhouse gases (CO₂e) — including gases such as methane and nitrous oxide — sourced from SMHI's National Emissions Database.",
+        "paragraph2": "Some municipalities have unusually high emissions due to large industrial facilities, including cement production. This particularly affects municipalities such as Gotland, Skövde, and Mörbylånga, where cement production currently takes place or has taken place historically.",
+        "paragraph3": "Sweden also has a significant climate impact from goods imported from other countries, leading to emissions abroad. These consumption-based emissions are not included in territorial emissions totals, but we show them separately as a key indicator where data is available.",
+        "paragraph4": "Similarly, emissions and removals from forests and land (known as biogenic emissions) are reported separately and are not included in the territorial greenhouse gas totals shown on Klimatkollen.",
+        "paragraph5": "In reality, a municipality's full climate footprint is often larger than its territorial emissions alone suggest. The data currently displayed on Klimatkollen reflects territorial emissions — those that physically occur within each municipality's or region's borders.",
+        "paragraph6": "We compare territorial emissions against the Paris-aligned reduction rate defined by Carbon Law (approximately 12% per year from 2025). Klimatkollen continues to explore how to present a more complete picture of climate impact on the platform."
       }
     },
     "company": {
@@ -731,7 +771,7 @@
         },
         "companiesIncluded": {
           "title": "Companies Included",
-          "paragraph1": "Currently, our database includes companies on the OMX Large Cap, Mid Cap and Small Cap lists of the Stockholm Stock Exchange, along with the 24 largest state-owned companies, five largest economic associations, and unlisted companies IKEA and ICA Group.",
+          "paragraph1": "Currently, our database includes all companies on the Stockholm Stock Exchange (the OMX Large Cap, Mid Cap and Small Cap lists), along with the 24 largest state-owned companies, five largest economic associations, unlisted companies IKEA and ICA Group, and companies listed on the Nasdaq Baltic exchange (as well as a few non-listed Baltic companies).",
           "paragraph2": "The companies are categorized by industry according to the Global Industry Classification Standard (GICS).",
           "link": {
             "title": "GICS",
@@ -773,6 +813,10 @@
         "title": "Emissions and Categories",
         "description": "Understanding different types of emissions and how they are categorized",
         "paragraph1": "Companies report their emissions according to the GHG Protocol's three scopes:",
+        "scope1": {
+          "title": "Scope 1: Direct Emissions",
+          "paragraph1": "Scope 1 emissions are direct greenhouse gas emissions from sources owned or controlled by the company, such as fuel burned in company vehicles, on-site boilers, and manufacturing processes. Klimatkollen presents scope 1 emissions as reported by companies."
+        },
         "scope2": {
           "title": "Scope 2: Indirect Energy Emissions",
           "paragraph1": "Scope 2 emissions are primarily calculated using the market-based method, which takes into account whether companies purchase renewable electricity. If such data is missing, we use data from the location-based method instead."
@@ -817,6 +861,21 @@
           "title": "Citizens",
           "paragraph": "To make the emissions change easier to understand, we compare it to the average annual conspumtion based greenhouse gas emissions per person per year. In our case, we assume that an average person accounts for 9 tons of CO₂-equivalents (tCO₂e) per year. (2)",
           "source": "https://konsumtionskompassen.se/"
+        }
+      }
+    },
+    "nation": {
+      "nationDataOverview": {
+        "title": "Nation Data Overview",
+        "description": "What data we collect and present about Sweden's national emissions",
+        "paragraph1": "Klimatkollen shows emissions data for Sweden at the national level, with SMHI's National Emissions Database as our primary source. To make our national, regional, municipal and company data comparable, emissions of all greenhouse gases (CO₂e) are shown since August 2025, not just CO₂.",
+        "paragraph2": "The annual average emissions change for Sweden is calculated using the Compound Annual Growth Rate (CAGR).",
+        "paragraph3": "We also show how emissions would need to decrease to meet the Paris Agreement. Previously, this was based on local carbon budgets derived from a national budget calculated by researchers at Uppsala University and the Tyndall Centre in the UK. Since August 2025, we have switched to use the 'Paris Curve' based on an updated <0>Carbon Law</0>.",
+        "paragraph4": "The forecast for future emissions is based on how Sweden's emissions have developed historically since the Paris Agreement in 2015. The trend line is weighted using the statistical method Least Absolute Deviations (LAD), which gives less weight to individual extreme values and provides a more fair and realistic picture of future emissions. You can read more about our emissions calculations <0>here</0>.",
+        "paragraph5": "Alongside total emissions, Klimatkollen shows a sector breakdown of Sweden's greenhouse gas emissions and links to regional data for each county.",
+        "link": {
+          "title": "Sweden's National Emissions",
+          "text": "View Sweden's national emissions data on Klimatkollen"
         }
       }
     },
@@ -1027,6 +1086,8 @@
     }
   },
   "regionalOverviewPage": {
+    "errorTitle": "Failed to retrieve regional information",
+    "errorDescription": "Please try again later",
     "title": "Regional Overview",
     "description": "Overview of emissions and transition at the regional level"
   },
@@ -1078,6 +1139,7 @@
       "medium": "Maybe",
       "low": "No"
     },
+    "region": "Region",
     "politicalRule": "Political rule",
     "politicalKSO": "Municipal Executive Chair",
     "totalEmissionsTooltip": "This is the latest reported emissions. For calculated estimates on the current year, please see the emissions development graph below.",
@@ -1480,15 +1542,15 @@
       "dataSelector": {
         "label": "Select Data Point",
         "tooltips": {
-          "higherBetter": "Higher values are better",
-          "lowerBetter": "Lower values are better"
+          "higherBetter": "Better",
+          "lowerBetter": "Better"
         }
       },
       "kpis": {
         "historicalEmissionChangePercent": {
           "label": "Emissions",
           "description": "Historical change in emissions",
-          "detailedDescription": "Average annual percentage change in greenhouse gas emissions in Swedish regions since the Paris Agreement in 2015.",
+          "detailedDescription": "Average annual percentage change in greenhouse gas emissions since the Paris Agreement in 2015.",
           "source": "National Emissions Database"
         },
         "meetsParis": {
@@ -1505,6 +1567,8 @@
     }
   },
   "europeanRankedPage": {
+    "errorTitle": "Failed to retrieve European country data",
+    "errorDescription": "Please try again later",
     "title": "European Overview",
     "description": "Overview of emissions and transition at the European level"
   },
@@ -1599,8 +1663,8 @@
       "dataSelector": {
         "label": "Select Data Point",
         "tooltips": {
-          "higherBetter": "Higher values are better",
-          "lowerBetter": "Lower values are better"
+          "higherBetter": "Better",
+          "lowerBetter": "Better"
         }
       },
       "kpis": {
@@ -1668,12 +1732,23 @@
           "metric": "No data available for {{metric}}"
         },
         "keyStatistics": {
-          "average": "Average:"
+          "average": "Average",
+          "best": "Best",
+          "worst": "Worst"
+        },
+        "distribution": {
+          "title": "Distribution",
+          "subtitle": "Shows how municipalities are spread across the scale for the selected indicator. Blue bars mean better results, pink worse, and the dashed line marks the national average.",
+          "summary": "Summary",
+          "average": "Average",
+          "higherBetter": "Better",
+          "lowerBetter": "Better",
+          "higherWorse": "Worse"
         }
       },
       "viewToggle": {
-        "showList": "Show List",
-        "showMap": "Show Map"
+        "showList": "List",
+        "showMap": "Map"
       }
     }
   },
@@ -1959,15 +2034,19 @@
     "search": {
       "placeholder": "Search..."
     },
-    "rank": "Rank: {{rank}} of {{total}}"
+    "rank": "Rank: {{rank}} of {{total}}",
+    "sort": {
+      "asc": "Sort from low to high",
+      "desc": "Sort from high to low"
+    }
   },
   "rankedInsights": {
     "average": "Average:",
     "belowAverage": "{{entityPlural}} below average",
     "aboveAverage": "{{entityPlural}} above average",
-    "titleBest": "Top Five {{entityPlural}}",
-    "titleTop": "Top Performing {{entityPlural}}",
-    "titleWorst": "Bottom Five {{entityPlural}}"
+    "titleBest": "Top 10 {{entityPlural}}",
+    "titleTop": "Top Performing 10 {{entityPlural}}",
+    "titleWorst": "Bottom 10 {{entityPlural}}"
   },
   "chartLegend": {
     "clickToFilterOut": "Click to filter out",
@@ -1989,6 +2068,69 @@
   "explorePage": {
     "title": "Explore the data",
     "description": "Explore and compare emissions data and climate targets for companies and municipalities.",
+    "comparison": {
+      "compare": "Compare",
+      "compareModeActive": "Comparing",
+      "chipAriaWithCount": "Comparison: {{count}} of {{max}} selected",
+      "toggleMode": "Toggle comparison mode",
+      "selected": "{{count}} selected ({{min}}–{{max}})",
+      "clearSelection": "Clear selection",
+      "viewComparison": "View comparison",
+      "backToList": "Back to list",
+      "backToPrevious": "Go back",
+      "title": "Side-by-side comparison",
+      "comparing": "Comparing {{count}} entities",
+      "viewDetails": "View full details",
+      "metric": "Metric",
+      "mobileScrollHint": "All entities are listed below each metric for easy comparison.",
+      "addToComparison": "Add to comparison",
+      "addedToComparison": "Added to comparison",
+      "variantMismatchTitle": "Cannot mix entity types",
+      "variantMismatchMessage": "You can only compare municipalities, regions, or companies of the same type. Clear your selection to start over.",
+      "notEnoughSelected": "Select more entities to compare",
+      "notEnoughSelectedDescription": "Choose at least {{min}} entities to open the comparison view.",
+      "addEntity": {
+        "default": "Add entities",
+        "company": "Add company",
+        "municipality": "Add municipality",
+        "region": "Add region"
+      },
+      "pickerTitle": {
+        "default": "Add to comparison",
+        "company": "Add company to comparison",
+        "municipality": "Add municipality to comparison",
+        "region": "Add region to comparison"
+      },
+      "pickerPlaceholder": {
+        "default": "Search municipalities, regions, or companies",
+        "company": "Search companies",
+        "municipality": "Search municipalities",
+        "region": "Search regions"
+      },
+      "pickerDone": "Done",
+      "pickerLoading": "Searching...",
+      "pickerEmpty": {
+        "default": "No results found",
+        "company": "No companies found",
+        "municipality": "No municipalities found",
+        "region": "No regions found"
+      },
+      "pickerSelectedHeading": "Selected ({{count}}/{{max}})",
+      "sections": {
+        "climateTarget": "Climate target",
+        "emissions": "Emissions",
+        "sustainableTransport": "Sustainable transport",
+        "procurement": "Procurement",
+        "politics": "Politics",
+        "climatePlan": "Climate plan",
+        "companyOverview": "Company overview",
+        "reporting": "Reporting",
+        "overview": "Overview"
+      },
+      "metrics": {
+        "municipalityCount": "Municipalities in region"
+      }
+    },
     "filter": "Filter:",
     "sorting": "Sorting by:",
     "sortingOptions": {

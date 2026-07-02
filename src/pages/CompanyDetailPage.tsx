@@ -1,5 +1,7 @@
 import { useParams, useLocation } from "react-router-dom";
-import { useState, useMemo } from "react";
+import { useMemo, useState } from "react";
+import { ComparisonDetailChip } from "@/components/compare/ComparisonDetailChip";
+import { buildComparisonLinkTo } from "@/utils/compare/comparisonUtils";
 import { useTranslation } from "react-i18next";
 import { useCompanyDetails } from "@/hooks/companies/useCompanyDetails";
 import { CompanyOverview } from "@/components/companies/detail/overview/CompanyOverview";
@@ -64,12 +66,23 @@ export function CompanyDetailPage() {
     );
   }
 
+  const comparisonChip = (
+    <ComparisonDetailChip
+      linkTo={buildComparisonLinkTo("company", company.wikidataId)}
+      variant="company"
+      name={company.name}
+    />
+  );
+
   if (!company.reportingPeriods?.length) {
     return (
       <>
         <Seo meta={seoMeta} />
-        <div className="space-y-8 md:space-y-16 max-w-[1400px] mx-auto">
-          <CompanyOverviewNoData company={company} />
+        <div className="mx-auto max-w-[1400px] space-y-8 md:space-y-16">
+          <CompanyOverviewNoData
+            company={company}
+            headerChip={comparisonChip}
+          />
         </div>
       </>
     );
@@ -118,7 +131,7 @@ export function CompanyDetailPage() {
       {/* Only render SEO when data is available, otherwise Layout will use route-level SEO */}
       {company && <Seo meta={seoMeta} />}
 
-      <div className="space-y-8 md:space-y-16 max-w-[1400px] mx-auto">
+      <div className="mx-auto max-w-[1400px] space-y-8 md:space-y-16">
         <CompanyOverview
           company={company}
           selectedPeriod={selectedPeriod}
@@ -126,6 +139,7 @@ export function CompanyDetailPage() {
           onYearSelect={setSelectedYear}
           selectedYear={selectedYear}
           yearOverYearChange={yearOverYearChange}
+          headerChip={comparisonChip}
         />
         {validEmissionsChangeNumber && validEmissionsChangeNumber > 100 && (
           <RelatableNumbers

@@ -9,7 +9,7 @@ export type MunicipalityData = Awaited<
   ReturnType<typeof getMunicipalitiesKPIs>
 >[number];
 
-export function useMunicipalityKPIs() {
+export function useMunicipalityKPIs(options?: { enabled?: boolean }) {
   const {
     data: municipalitiesKPI = [],
     isLoading,
@@ -17,6 +17,7 @@ export function useMunicipalityKPIs() {
   } = useQuery({
     queryKey: ["municipalities-kpis"],
     queryFn: getMunicipalitiesKPIs,
+    enabled: options?.enabled ?? true,
   });
 
   const municipalitiesData: MunicipalityData[] = municipalitiesKPI;

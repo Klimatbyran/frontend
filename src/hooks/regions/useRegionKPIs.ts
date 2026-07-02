@@ -10,13 +10,13 @@ type ApiRegionKPI = {
   historicalEmissionChangePercent: number;
 };
 
-export type RegionData = {
+export type RegionKPIData = {
   name: string;
   historicalEmissionChangePercent: number | null;
   meetsParis: boolean | null;
 };
 
-const normalizeRegion = (region: ApiRegionKPI): RegionData => {
+const normalizeRegion = (region: ApiRegionKPI): RegionKPIData => {
   return {
     name: region.region,
     historicalEmissionChangePercent: region.historicalEmissionChangePercent,
@@ -24,7 +24,8 @@ const normalizeRegion = (region: ApiRegionKPI): RegionData => {
   };
 };
 
-export function useRegions() {
+/** Fetches region KPIs from `/regions/kpis` (overview / landing). */
+export function useRegionsKPIs(options?: { enabled?: boolean }) {
   const {
     data: regionsKPI = [],
     isLoading,
@@ -32,6 +33,7 @@ export function useRegions() {
   } = useQuery({
     queryKey: ["regions-kpis"],
     queryFn: getRegionsKPIs,
+    enabled: options?.enabled ?? true,
   });
 
   const normalizedRegions = (regionsKPI as ApiRegionKPI[]).map((region) =>

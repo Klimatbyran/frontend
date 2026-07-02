@@ -40,7 +40,7 @@ server {
     add_header X-XSS-Protection "1; mode=block";
     add_header X-Content-Type-Options "nosniff";
     add_header Referrer-Policy "strict-origin-when-cross-origin";
-    add_header Content-Security-Policy "default-src 'self' https://api.klimatkollen.se https://images.unsplash.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https://images.unsplash.com data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://plausible.io; connect-src 'self' https://api.klimatkollen.se https://plausible.io;";
+    add_header Content-Security-Policy "default-src 'self' https://api.unearthdata.ai https://images.unsplash.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https://images.unsplash.com data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://plausible.io; connect-src 'self' https://api.unearthdata.ai https://plausible.io;";
     add_header Permissions-Policy "camera=(), microphone=(), geolocation=()";
     add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
 
@@ -48,7 +48,7 @@ server {
     location /foretag/utslappen/lista {
         return 301 https://klimatkollen.se/companies;
     }
-    location ~^/foretag/(.+)-(Q\d+)$ {
+    location ~ ^/foretag/(.+)-(Q\d+|[0-9a-f]\{8\})$ {
         return 301 https://klimatkollen.se/companies/$2;
     }
     location ~^/geografiskt/(koldioxidbudgetarna|klimatplanerna|konsumtionen|elbilarna|laddarna|cyklarna|upphandlingarna|utslappen)/(karta|lista)$ {
@@ -76,13 +76,14 @@ server {
         return 301 https://klimatkollen.se/insights/klimatmal;
     }
 
-    # API proxy
+    # API proxy (PROXY_PASS / PROXY_HOST_HEADER set in docker-entrypoint.sh)
     location /api/ {
-        proxy_pass http://backend/api/;
+        proxy_pass ${PROXY_PASS};
         proxy_http_version 1.1;
+        proxy_ssl_server_name on;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
+        proxy_set_header Host ${PROXY_HOST_HEADER};
         proxy_cache_bypass $http_upgrade;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;

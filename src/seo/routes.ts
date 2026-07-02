@@ -1,5 +1,6 @@
 import { SeoMeta } from "@/types/seo";
 import { detectLanguageFromPath } from "@/lib/languageDetection";
+import { DEFAULT_OG_IMAGE } from "@/utils/seo";
 // @ts-expect-error - i18n.js doesn't have TypeScript definitions
 import i18n from "@/i18n";
 
@@ -25,11 +26,6 @@ import i18n from "@/i18n";
  *   - Reduces merge conflicts
  *   - Scales better as more routes are added
  */
-
-/**
- * Default OG image for the site
- */
-const DEFAULT_OG_IMAGE = "/logos/Klimatkollen_default.jpg";
 
 /**
  * Site name for title suffixing

@@ -1,4 +1,7 @@
 // Ranked List Utilities
+
+/** Default number of top/bottom entities shown in insight lists */
+export const TOP_N = 10;
 //
 // This file contains utilities for ranked entity list views (municipalities, regions, companies).
 // It provides functions for:
@@ -15,6 +18,29 @@
 
 import { t } from "i18next";
 import { EntityWithKPIs, KPIValue } from "@/types/rankings";
+import {
+  createStatisticalGradient,
+  DEFAULT_STATISTICAL_GRADIENT_COLORS,
+} from "../ui/colorGradients";
+import {
+  DEFAULT_BOOLEAN_DATA_COLORS,
+  DEFAULT_NULL_DATA_COLOR,
+} from "../ui/colors";
+
+export function isMissingRankedValue(
+  value: unknown,
+  isBoolean: boolean | undefined,
+): boolean {
+  if (value === null || value === undefined) {
+    return true;
+  }
+
+  if (isBoolean) {
+    return typeof value !== "boolean";
+  }
+
+  return typeof value !== "number" || Number.isNaN(value);
+}
 
 export interface EntityStatistics<T> {
   validData: T[];
@@ -40,14 +66,7 @@ export function filterValidData<T, KPI extends KPIValue<T> = KPIValue<T>>(
 ): T[] {
   return entities.filter((entity) => {
     const value = getValue(entity);
-
-    // Handle boolean values if KPI is binary
-    if (selectedKPI.isBoolean) {
-      return typeof value === "boolean";
-    }
-
-    // Handle numeric values
-    return typeof value === "number" && !isNaN(value as number);
+    return !isMissingRankedValue(value, selectedKPI.isBoolean);
   });
 }
 
@@ -92,7 +111,7 @@ export function calculateEntityStatistics<
 
   const nullCount = entities.filter((entity) => {
     const value = getValue(entity);
-    return value === null || value === undefined;
+    return isMissingRankedValue(value, selectedKPI.isBoolean);
   }).length;
 
   const entityPlural = t("header." + entityType).toLowerCase();
@@ -122,10 +141,10 @@ export function calculateEntityStatistics<
     },
   ];
 
-  // Format the average value for display
+  const unit = selectedKPI.unit || "";
   const formattedAverage = selectedKPI.isBoolean
     ? undefined
-    : `${average.toFixed(1)}${selectedKPI.unit || ""}`;
+    : `${average.toFixed(1)}${unit}`;
 
   return {
     validData,
@@ -142,6 +161,49 @@ export function calculateEntityStatistics<
  * Create source links from KPI
  * Accepts any KPIValue regardless of entity type
  */
+interface PerformerResult {
+  name: string;
+  value: string;
+  href?: string;
+}
+
+/**
+ * Build top and bottom performer objects for KPIDetailsPanel.
+ * Returns undefined for boolean KPIs or when data is too sparse.
+ */
+export function buildPerformerProps<T extends { name: string }>(
+  sortedData: T[],
+  kpi: { key: keyof T; unit?: string; isBoolean?: boolean },
+  hrefPrefix?: string,
+): { topPerformer?: PerformerResult; bottomPerformer?: PerformerResult } {
+  if (kpi.isBoolean || !sortedData.length) return {};
+  const unit = kpi.unit || "";
+  const fmt = (item: T) => `${(item[kpi.key] as number)?.toFixed(1)}${unit}`;
+  const best = sortedData[0];
+  const worst = sortedData[sortedData.length - 1];
+  return {
+    topPerformer: best
+      ? {
+          name: best.name,
+          value: fmt(best),
+          href: hrefPrefix
+            ? `${hrefPrefix}/${best.name.toLowerCase()}`
+            : undefined,
+        }
+      : undefined,
+    bottomPerformer:
+      worst && worst !== best
+        ? {
+            name: worst.name,
+            value: fmt(worst),
+            href: hrefPrefix
+              ? `${hrefPrefix}/${worst.name.toLowerCase()}`
+              : undefined,
+          }
+        : undefined,
+  };
+}
+
 export function createSourceLinks<T = EntityWithKPIs>(
   selectedKPI: KPIValue<T>,
 ) {
@@ -153,4 +215,39 @@ export function createSourceLinks<T = EntityWithKPIs>(
         : selectedKPI.source || "",
     })) || []
   );
+}
+
+export function createDefaultColorGetter<T>(
+  entities: T[],
+  dataPointKey: keyof T,
+  dataPointIsBoolean: boolean | undefined,
+  dataPointHigherIsBetter: boolean,
+) {
+  const numericalValues = entities
+    .filter(
+      (entity) =>
+        typeof entity[dataPointKey] === "number" &&
+        !isNaN(entity[dataPointKey] as number),
+    )
+    .map((entity) => entity[dataPointKey] as number);
+
+  return (entity: T) => {
+    const value = entity[dataPointKey];
+
+    if (isMissingRankedValue(value, dataPointIsBoolean))
+      return DEFAULT_NULL_DATA_COLOR;
+
+    if (dataPointIsBoolean) {
+      return value == dataPointHigherIsBetter
+        ? DEFAULT_BOOLEAN_DATA_COLORS.positive
+        : DEFAULT_BOOLEAN_DATA_COLORS.negative;
+    }
+
+    return createStatisticalGradient(
+      numericalValues,
+      value as number,
+      dataPointHigherIsBetter ?? false,
+      DEFAULT_STATISTICAL_GRADIENT_COLORS,
+    );
+  };
 }
