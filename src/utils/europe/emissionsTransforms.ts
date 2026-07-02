@@ -4,7 +4,7 @@ import {
   CARBON_LAW_REDUCTION_RATE,
 } from "@/utils/calculations/emissionsCalculations";
 import {
-  calculateLinearRegressionSlope,
+  calculateLadRegressionSlope,
   CLIMATE_TRACE_CHART_START_YEAR,
   CLIMATE_TRACE_REPORTED_END_YEAR,
   EmissionsByYear,
@@ -24,7 +24,7 @@ function buildTrendRecord(
   projectionStartYear: number,
 ): Record<number, number> {
   const points = getEmissionsPointsFromBaseYear(emissionsByYear);
-  const slope = calculateLinearRegressionSlope(points);
+  const slope = calculateLadRegressionSlope(points);
   if (slope === null || points.length === 0) {
     return {};
   }
@@ -59,7 +59,7 @@ function buildCarbonLawRecord(
   projectionStartYear: number,
 ): Record<number, number> {
   const points = getEmissionsPointsFromBaseYear(emissionsByYear);
-  const slope = calculateLinearRegressionSlope(points);
+  const slope = calculateLadRegressionSlope(points);
   if (slope === null) {
     return {};
   }

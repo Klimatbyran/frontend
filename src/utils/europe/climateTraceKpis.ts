@@ -80,6 +80,63 @@ export function calculateLinearRegressionSlope(
   return numerator / denominator;
 }
 
+function median(values: number[]): number {
+  if (values.length === 0) {
+    return 0;
+  }
+
+  const sorted = [...values].sort((a, b) => a - b);
+  const mid = Math.floor(sorted.length / 2);
+
+  return sorted.length % 2 === 0
+    ? (sorted[mid - 1] + sorted[mid]) / 2
+    : sorted[mid];
+}
+
+/** LAD regression anchored at the last point, matching nation territorial trends. */
+export function calculateLadRegressionSlope(
+  points: { year: number; value: number }[],
+): number | null {
+  if (points.length < 2) {
+    return null;
+  }
+
+  const lastYear = points[points.length - 1].year;
+  const centered = points.map((point) => ({
+    x: point.year - lastYear,
+    y: point.value,
+  }));
+
+  const slopeCandidates = new Set<number>([0]);
+  for (let i = 0; i < centered.length; i++) {
+    for (let j = i + 1; j < centered.length; j++) {
+      const dx = centered[j].x - centered[i].x;
+      if (dx !== 0) {
+        slopeCandidates.add((centered[j].y - centered[i].y) / dx);
+      }
+    }
+  }
+
+  let bestSlope = 0;
+  let bestError = Number.POSITIVE_INFINITY;
+
+  for (const slope of slopeCandidates) {
+    const residuals = centered.map((point) => point.y - slope * point.x);
+    const intercept = median(residuals);
+    const error = centered.reduce(
+      (sum, point) => sum + Math.abs(point.y - (intercept + slope * point.x)),
+      0,
+    );
+
+    if (error < bestError) {
+      bestError = error;
+      bestSlope = slope;
+    }
+  }
+
+  return bestSlope;
+}
+
 export function getEmissionsPointsFromBaseYear(
   emissionsByYear: EmissionsByYear,
   baseYear: number = CLIMATE_TRACE_BASE_YEAR,
@@ -157,18 +214,29 @@ export function getEmissionsForParisProjection(
 export function calculateMeetsParisFromTimeSeries(
   emissionsByYear: EmissionsByYear,
   baseYear: number = CLIMATE_TRACE_BASE_YEAR,
+  reportedEndYear: number = CLIMATE_TRACE_REPORTED_END_YEAR,
 ): boolean | null {
-  const points = getEmissionsPointsFromBaseYear(emissionsByYear, baseYear);
+  const reportedEmissionsByYear = getReportedClimateTraceEmissionsByYear(
+    emissionsByYear,
+    reportedEndYear,
+  );
+  const points = getEmissionsPointsFromBaseYear(
+    reportedEmissionsByYear,
+    baseYear,
+  );
   if (points.length < 2) {
     return null;
   }
 
-  const slope = calculateLinearRegressionSlope(points);
+  const slope = calculateLadRegressionSlope(points);
   if (slope === null) {
     return null;
   }
 
-  const emissions2025 = getEmissionsForParisProjection(emissionsByYear, slope);
+  const emissions2025 = getEmissionsForParisProjection(
+    reportedEmissionsByYear,
+    slope,
+  );
   if (emissions2025 === null) {
     return null;
   }

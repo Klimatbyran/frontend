@@ -81,6 +81,30 @@ describe("climateTraceKpis", () => {
     expect(reported).toEqual({ 2024: 100, 2025: 90 });
   });
 
+  it("does not treat partial current-year totals as meeting Paris", () => {
+    const ukraineLikeEmissions = {
+      2015: 428_893_988,
+      2016: 437_072_633,
+      2017: 421_874_251,
+      2018: 427_715_432,
+      2019: 414_266_963,
+      2020: 420_852_391,
+      2021: 402_639_803,
+      2022: 330_331_647,
+      2023: 309_412_492,
+      2024: 303_847_520,
+      2025: 315_391_576,
+      2026: 94_674_716,
+    };
+
+    expect(calculateMeetsParisFromTimeSeries(ukraineLikeEmissions)).toBe(
+      false,
+    );
+    expect(
+      calculateClimateTraceCountryKpis(ukraineLikeEmissions).meetsParis,
+    ).toBe(false);
+  });
+
   it("calculates both KPIs together", () => {
     const emissionsByYear = {
       2015: 1_000_000,
