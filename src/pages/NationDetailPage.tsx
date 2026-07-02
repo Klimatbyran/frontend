@@ -8,6 +8,7 @@ import { SectorEmissionsChart } from "@/components/charts/sectorChart/SectorEmis
 import { EntityListBox } from "@/components/detail/EntityListBox";
 import { useNationPageData } from "@/hooks/nation/useNationPageData";
 import { useLanguage } from "@/components/LanguageProvider";
+import { useTranslation } from "react-i18next";
 
 function NationDetailContent({
   nation,
@@ -24,6 +25,7 @@ function NationDetailContent({
   currentYear,
 }: ReturnType<typeof useNationPageData>) {
   const { currentLanguage } = useLanguage();
+  const { t } = useTranslation();
   if (!nation) return <PageNoData />;
 
   return (
@@ -31,8 +33,10 @@ function NationDetailContent({
       <DetailHeader
         name={nation.country[currentLanguage]}
         logoUrl={nation.logoUrl}
-        helpItems={["nationTotalEmissions", "detailWhyDataDelay"]}
+        subtitle={t("europe.detailPage.dataSource")}
+        helpItems={["regionTotalEmissions", "detailWhyDataDelay"]}
         stats={headerStats}
+        translateNamespace="europe.detailPage"
       />
       <TerritoryEmissions
         emissionsData={emissionsData}

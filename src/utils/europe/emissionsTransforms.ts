@@ -6,6 +6,8 @@ import {
 import {
   calculateLinearRegressionSlope,
   CLIMATE_TRACE_BASE_YEAR,
+  CLIMATE_TRACE_PROJECTION_START_YEAR,
+  CLIMATE_TRACE_REPORTED_END_YEAR,
   EmissionsByYear,
   getEmissionsForParisProjection,
   getEmissionsPointsFromBaseYear,
@@ -15,6 +17,16 @@ import {
 
 const EMISSIONS_DATA_START_YEAR = CLIMATE_TRACE_BASE_YEAR;
 const EMISSIONS_DATA_END_YEAR = PARIS_PROJECTION_END_YEAR;
+
+function getReportedEmissionsByYear(
+  emissionsByYear: EmissionsByYear,
+): EmissionsByYear {
+  return Object.fromEntries(
+    Object.entries(emissionsByYear).filter(
+      ([year]) => Number(year) <= CLIMATE_TRACE_REPORTED_END_YEAR,
+    ),
+  );
+}
 
 function buildTrendRecord(
   emissionsByYear: EmissionsByYear,
@@ -29,7 +41,7 @@ function buildTrendRecord(
   const trend: Record<number, number> = {};
 
   for (
-    let year = EMISSIONS_DATA_START_YEAR;
+    let year = CLIMATE_TRACE_PROJECTION_START_YEAR;
     year <= EMISSIONS_DATA_END_YEAR;
     year++
   ) {
@@ -58,7 +70,7 @@ function buildCarbonLawRecord(
 
   const carbonLaw: Record<number, number> = {};
   for (
-    let year = PARIS_PROJECTION_START_YEAR;
+    let year = CLIMATE_TRACE_PROJECTION_START_YEAR;
     year <= EMISSIONS_DATA_END_YEAR;
     year++
   ) {
@@ -83,11 +95,14 @@ export function transformEuropeanCountryEmissionsData(
     return [];
   }
 
-  const trend = buildTrendRecord(emissionsByYear);
-  const carbonLaw = buildCarbonLawRecord(emissionsByYear);
+  const reportedEmissionsByYear = getReportedEmissionsByYear(emissionsByYear);
+  const trend = buildTrendRecord(reportedEmissionsByYear);
+  const carbonLaw = buildCarbonLawRecord(reportedEmissionsByYear);
 
   const years = new Set<number>();
-  Object.keys(emissionsByYear).forEach((year) => years.add(Number(year)));
+  Object.keys(reportedEmissionsByYear).forEach((year) =>
+    years.add(Number(year)),
+  );
   Object.keys(trend).forEach((year) => years.add(Number(year)));
   Object.keys(carbonLaw).forEach((year) => years.add(Number(year)));
 
@@ -96,11 +111,14 @@ export function transformEuropeanCountryEmissionsData(
     .sort((a, b) => a - b)
     .map((yearNum) => ({
       year: yearNum,
-      total: emissionsByYear[yearNum],
-      trend: trend[yearNum],
+      total: reportedEmissionsByYear[yearNum],
+      trend:
+        yearNum >= CLIMATE_TRACE_PROJECTION_START_YEAR
+          ? trend[yearNum]
+          : undefined,
       approximated: undefined,
       carbonLaw:
-        yearNum >= PARIS_PROJECTION_START_YEAR
+        yearNum >= CLIMATE_TRACE_PROJECTION_START_YEAR
           ? carbonLaw[yearNum]
           : undefined,
     }))

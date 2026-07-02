@@ -1,7 +1,7 @@
-import { getCurrentYear } from "@/utils/calculations/emissionsCalculations";
 import {
   calculateClimateTraceCountryKpis,
   CLIMATE_TRACE_BASE_YEAR,
+  CLIMATE_TRACE_REPORTED_END_YEAR,
   EmissionsByYear,
 } from "@/utils/europe/climateTraceKpis";
 
@@ -10,7 +10,7 @@ const CLIMATE_TRACE_API_BASE = "https://api.climatetrace.org/v7";
 export const CLIMATE_TRACE_EMISSIONS_PARAMS = {
   gas: "co2e_100yr",
   startYear: CLIMATE_TRACE_BASE_YEAR,
-  endYear: getCurrentYear(),
+  endYear: CLIMATE_TRACE_REPORTED_END_YEAR,
 } as const;
 
 export type ClimateTraceCountryRanking = {

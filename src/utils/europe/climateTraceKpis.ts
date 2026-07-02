@@ -4,7 +4,10 @@ import {
 } from "@/lib/calculations/trends/meetsParis";
 
 export const CLIMATE_TRACE_BASE_YEAR = 2015;
-export const PARIS_PROJECTION_START_YEAR = 2025;
+export const CLIMATE_TRACE_REPORTED_END_YEAR = 2025;
+export const CLIMATE_TRACE_PROJECTION_START_YEAR =
+  CLIMATE_TRACE_REPORTED_END_YEAR + 1;
+export const PARIS_PROJECTION_START_YEAR = CLIMATE_TRACE_REPORTED_END_YEAR;
 export const PARIS_PROJECTION_END_YEAR = 2050;
 
 export type EmissionsByYear = Record<number, number>;
