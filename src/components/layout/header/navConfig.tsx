@@ -18,29 +18,23 @@ export const NAV_LINKS: NavLink[] = [
         path: `/explore/municipalities`,
       },
       {
-        label: "header.territorialEmissions",
+        label: "header.nation",
+        path: `/nation`,
         items: [
           {
-            label: "header.nation",
-            path: `/nation`,
+            label: "header.municipalities",
+            path: `/municipalities`,
           },
           {
             label: "header.regions",
             path: `/regions`,
           },
-          {
-            label: "header.municipalities",
-            path: `/municipalities`,
-          },
         ],
       },
       {
         label: "header.companies",
+        path: `/companies`,
         items: [
-          {
-            label: "header.allCompanies",
-            path: `/companies`,
-          },
           {
             label: "header.sectors",
             path: `/sectors`,
