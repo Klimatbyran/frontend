@@ -3,6 +3,7 @@ import {
   useEuropeanCountryDetails,
   useEuropeanCountryDetailHeaderStats,
 } from "@/hooks/europe/useEuropeanCountryDetails";
+import { useEuropeanCountryKpiComparisons } from "@/hooks/europe/useEuropeanCountryKpiComparisons";
 import { transformEuropeanCountryEmissionsData } from "@/utils/europe/emissionsTransforms";
 import { CLIMATE_TRACE_REPORTED_END_YEAR } from "@/utils/europe/climateTraceKpis";
 
@@ -29,6 +30,7 @@ export function useEuropeanCountryPageData(countryId: string | undefined) {
 
   const lastYear = lastYearEmissions?.year;
   const headerStats = useEuropeanCountryDetailHeaderStats(country, lastYear);
+  const kpiComparisons = useEuropeanCountryKpiComparisons(country, lastYear);
 
   return {
     country,
@@ -36,5 +38,6 @@ export function useEuropeanCountryPageData(countryId: string | undefined) {
     error,
     emissionsData,
     headerStats,
+    kpiComparisons,
   };
 }

@@ -5,18 +5,11 @@ import { useLanguage } from "@/components/LanguageProvider";
 import { DetailStat } from "@/components/detail/DetailHeader";
 import { ClimateTraceCountryData } from "@/lib/climateTrace";
 import {
-  formatEmissionsAbsolute,
-  formatPercentChange,
-} from "@/utils/formatting/localization";
-import { createEmissionsPerCapitaStat } from "@/hooks/territories/useTerritoryDetailHeaderStats";
-import {
   buildCountryGeoIndex,
   getLocalizedCountryName,
 } from "@/utils/europe/countryNames";
 import { useClimateTraceEmissions } from "@/hooks/europe/useClimateTraceEmissions";
 import europeGeoJson from "@/data/europeGeo.json";
-import type { SupportedLanguage } from "@/lib/languageDetection";
-
 export type EuropeanCountryDetails = {
   iso3: string;
   iso2: string;
@@ -52,42 +45,6 @@ function createMeetsParisStat(
         : meetsParis === false
           ? "text-pink-3"
           : "text-grey",
-  };
-}
-
-function createChangeSince2015Stat(
-  historicalEmissionChangePercent: number | null,
-  currentLanguage: SupportedLanguage,
-  t: ReturnType<typeof useTranslation>["t"],
-): DetailStat {
-  return {
-    label: t("detailPage.changeSince2015"),
-    value:
-      historicalEmissionChangePercent === null
-        ? t("unknown")
-        : formatPercentChange(historicalEmissionChangePercent, currentLanguage),
-    valueClassName:
-      historicalEmissionChangePercent === null
-        ? "text-grey"
-        : historicalEmissionChangePercent > 0
-          ? "text-pink-3"
-          : "text-orange-2",
-  };
-}
-
-function createTotalEmissionsStat(
-  emissions: number,
-  lastYear: number,
-  currentLanguage: SupportedLanguage,
-  t: ReturnType<typeof useTranslation>["t"],
-): DetailStat {
-  return {
-    label: t("detailPage.totalEmissions", { year: lastYear }),
-    value: formatEmissionsAbsolute(emissions, currentLanguage),
-    unit: t("emissionsUnit"),
-    valueClassName: "text-orange-2",
-    info: true,
-    infoText: t("europe.detailPage.totalEmissionsTooltip"),
   };
 }
 
@@ -138,7 +95,6 @@ export function useEuropeanCountryDetailHeaderStats(
   lastYear: number | undefined,
 ) {
   const { t } = useTranslation();
-  const { currentLanguage } = useLanguage();
 
   if (!country || !lastYear) {
     return [];
@@ -149,23 +105,5 @@ export function useEuropeanCountryDetailHeaderStats(
     return [];
   }
 
-  return [
-    createMeetsParisStat(country.meetsParis, t),
-    createChangeSince2015Stat(
-      country.historicalEmissionChangePercent,
-      currentLanguage,
-      t,
-    ),
-    createTotalEmissionsStat(lastYearEmissions, lastYear, currentLanguage, t),
-    createEmissionsPerCapitaStat(
-      country.emissionsPerCapita,
-      currentLanguage,
-      t,
-      {
-        label: t("europe.list.kpis.emissionsPerCapita.label"),
-        unit: t("europe.list.kpis.emissionsPerCapita.unit"),
-        infoText: t("europe.list.kpis.emissionsPerCapita.detailedDescription"),
-      },
-    ),
-  ];
+  return [createMeetsParisStat(country.meetsParis, t)];
 }

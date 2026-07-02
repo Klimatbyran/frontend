@@ -21,6 +21,7 @@ export function useNationPageData() {
     error: climateTraceError,
     emissionsData,
     headerStats,
+    kpiComparisons,
   } = useEuropeanCountryPageData(SWEDEN_ISO3);
 
   const { sectorEmissions } = useSectorEmissions("nation");
@@ -50,6 +51,7 @@ export function useNationPageData() {
     sortedRegions,
     emissionsData,
     headerStats,
+    kpiComparisons,
     lastYear,
     sectorEmissions,
     getSectorInfo,

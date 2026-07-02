@@ -9,6 +9,7 @@ import { EntityListBox } from "@/components/detail/EntityListBox";
 import { useNationPageData } from "@/hooks/nation/useNationPageData";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useTranslation } from "react-i18next";
+import { EuropeanCountryKpiComparisonsPanel } from "@/components/europe/EuropeanCountryKpiComparisonsPanel";
 
 function NationDetailContent({
   nation,
@@ -21,6 +22,7 @@ function NationDetailContent({
   selectedYear,
   setSelectedYear,
   headerStats,
+  kpiComparisons,
   availableYears,
   currentYear,
 }: ReturnType<typeof useNationPageData>) {
@@ -37,6 +39,14 @@ function NationDetailContent({
         helpItems={["regionTotalEmissions", "detailWhyDataDelay"]}
         stats={headerStats}
         translateNamespace="europe.detailPage"
+        supplementalData={
+          kpiComparisons ? (
+            <EuropeanCountryKpiComparisonsPanel
+              comparisons={kpiComparisons}
+              countryName={nation.country[currentLanguage]}
+            />
+          ) : null
+        }
       />
       <TerritoryEmissions
         emissionsData={emissionsData}

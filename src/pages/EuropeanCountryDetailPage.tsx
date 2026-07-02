@@ -9,21 +9,18 @@ import { DetailWrapper } from "@/components/detail/DetailWrapper";
 import { useEuropeanCountryPageData } from "@/hooks/europe/useEuropeanCountryPageData";
 import { useLanguage } from "@/components/LanguageProvider";
 import { localizedPath, SWEDEN_ISO3 } from "@/utils/routing";
+import { EuropeanCountryKpiComparisonsPanel } from "@/components/europe/EuropeanCountryKpiComparisonsPanel";
 
 export function EuropeanCountryDetailPage() {
   const { id } = useParams<{ id: string }>();
   const { currentLanguage } = useLanguage();
   const { t } = useTranslation();
   const pageData = useEuropeanCountryPageData(id);
-  const { country, loading, error, emissionsData, headerStats } = pageData;
+  const { country, loading, error, emissionsData, headerStats, kpiComparisons } =
+    pageData;
 
   if (id?.toUpperCase() === SWEDEN_ISO3) {
-    return (
-      <Navigate
-        to={localizedPath(currentLanguage, "/nation")}
-        replace
-      />
-    );
+    return <Navigate to={localizedPath(currentLanguage, "/nation")} replace />;
   }
 
   if (loading) return <PageLoading />;
@@ -38,6 +35,14 @@ export function EuropeanCountryDetailPage() {
         helpItems={["regionTotalEmissions", "detailWhyDataDelay"]}
         stats={headerStats}
         translateNamespace="europe.detailPage"
+        supplementalData={
+          kpiComparisons ? (
+            <EuropeanCountryKpiComparisonsPanel
+              comparisons={kpiComparisons}
+              countryName={country.name}
+            />
+          ) : null
+        }
       />
       <TerritoryEmissions
         emissionsData={emissionsData}
