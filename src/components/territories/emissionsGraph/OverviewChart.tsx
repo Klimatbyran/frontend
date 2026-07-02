@@ -31,6 +31,7 @@ import {
 } from "@/components/charts";
 import { useLanguage } from "@/components/LanguageProvider";
 import {
+  chartYearToReportingYear,
   CLIMATE_TRACE_PROJECTION_START_YEAR,
   CLIMATE_TRACE_REPORTED_END_YEAR,
 } from "@/utils/europe/climateTraceKpis";
@@ -88,7 +89,12 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
             <YAxis {...getYAxisProps(currentLanguage)} />
 
             <Tooltip
-              labelFormatter={(label) => String(label)}
+              labelFormatter={(label) => {
+                const chartYear = Number(label);
+                return Number.isNaN(chartYear)
+                  ? String(label)
+                  : String(chartYearToReportingYear(chartYear));
+              }}
               content={
                 <ChartTooltip dataView="overview" unit={t("emissionsUnit")} />
               }

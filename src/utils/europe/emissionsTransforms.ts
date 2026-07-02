@@ -13,6 +13,7 @@ import {
   getReportedClimateTraceEmissionsByYear,
   PARIS_PROJECTION_END_YEAR,
   PARIS_PROJECTION_START_YEAR,
+  reportingYearToChartYear,
 } from "@/utils/europe/climateTraceKpis";
 
 const EMISSIONS_DATA_START_YEAR = CLIMATE_TRACE_BASE_YEAR;
@@ -80,6 +81,22 @@ function buildCarbonLawRecord(
   return carbonLaw;
 }
 
+function upsertChartPoint(
+  pointsByChartYear: Map<number, DataPoint>,
+  chartYear: number,
+  patch: Partial<DataPoint>,
+): void {
+  const existing = pointsByChartYear.get(chartYear) ?? {
+    year: chartYear,
+    total: undefined,
+    trend: undefined,
+    approximated: undefined,
+    carbonLaw: undefined,
+  };
+
+  pointsByChartYear.set(chartYear, { ...existing, ...patch, year: chartYear });
+}
+
 export function transformEuropeanCountryEmissionsData(
   emissionsByYear: EmissionsByYear,
 ): DataPoint[] {
@@ -91,37 +108,66 @@ export function transformEuropeanCountryEmissionsData(
     emissionsByYear,
     CLIMATE_TRACE_REPORTED_END_YEAR,
   );
-  const chartProjectionStartYear = PARIS_PROJECTION_START_YEAR;
   const trend = buildTrendRecord(
     reportedEmissionsByYear,
-    chartProjectionStartYear,
+    PARIS_PROJECTION_START_YEAR,
   );
   const carbonLaw = buildCarbonLawRecord(
     reportedEmissionsByYear,
-    chartProjectionStartYear,
+    PARIS_PROJECTION_START_YEAR,
   );
 
-  const years = new Set<number>();
-  Object.keys(reportedEmissionsByYear).forEach((year) =>
-    years.add(Number(year)),
-  );
-  Object.keys(trend).forEach((year) => years.add(Number(year)));
-  Object.keys(carbonLaw).forEach((year) => years.add(Number(year)));
+  const pointsByChartYear = new Map<number, DataPoint>();
 
-  return Array.from(years)
-    .filter((year) => !isNaN(year))
-    .sort((a, b) => a - b)
-    .map((yearNum) => ({
-      year: yearNum,
-      total: reportedEmissionsByYear[yearNum],
-      trend: yearNum >= chartProjectionStartYear ? trend[yearNum] : undefined,
-      approximated: undefined,
-      carbonLaw:
-        yearNum >= chartProjectionStartYear ? carbonLaw[yearNum] : undefined,
-    }))
-    .filter(
-      (point) =>
-        point.year >= EMISSIONS_DATA_START_YEAR &&
-        point.year <= EMISSIONS_DATA_END_YEAR,
+  for (const [year, total] of Object.entries(reportedEmissionsByYear)) {
+    const reportingYear = Number(year);
+    if (Number.isNaN(reportingYear)) {
+      continue;
+    }
+
+    upsertChartPoint(pointsByChartYear, reportingYearToChartYear(reportingYear), {
+      total,
+    });
+  }
+
+  for (const [year, value] of Object.entries(trend)) {
+    const reportingYear = Number(year);
+    if (
+      Number.isNaN(reportingYear) ||
+      reportingYear < PARIS_PROJECTION_START_YEAR
+    ) {
+      continue;
+    }
+
+    upsertChartPoint(
+      pointsByChartYear,
+      reportingYearToChartYear(reportingYear),
+      { trend: value },
     );
+  }
+
+  for (const [year, value] of Object.entries(carbonLaw)) {
+    const reportingYear = Number(year);
+    if (
+      Number.isNaN(reportingYear) ||
+      reportingYear < PARIS_PROJECTION_START_YEAR
+    ) {
+      continue;
+    }
+
+    upsertChartPoint(
+      pointsByChartYear,
+      reportingYearToChartYear(reportingYear),
+      { carbonLaw: value },
+    );
+  }
+
+  const minChartYear = reportingYearToChartYear(EMISSIONS_DATA_START_YEAR);
+  const maxChartYear = reportingYearToChartYear(EMISSIONS_DATA_END_YEAR);
+
+  return Array.from(pointsByChartYear.values())
+    .filter(
+      (point) => point.year >= minChartYear && point.year <= maxChartYear,
+    )
+    .sort((a, b) => a.year - b.year);
 }

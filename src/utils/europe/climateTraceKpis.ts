@@ -10,6 +10,17 @@ export const CLIMATE_TRACE_PROJECTION_START_YEAR =
 export const PARIS_PROJECTION_START_YEAR = CLIMATE_TRACE_REPORTED_END_YEAR;
 export const PARIS_PROJECTION_END_YEAR = 2050;
 
+/** Annual totals cover Jan–Dec; plot at the following year's boundary (1 Jan). */
+export const CLIMATE_TRACE_CHART_YEAR_OFFSET = 1;
+
+export function reportingYearToChartYear(reportingYear: number): number {
+  return reportingYear + CLIMATE_TRACE_CHART_YEAR_OFFSET;
+}
+
+export function chartYearToReportingYear(chartYear: number): number {
+  return chartYear - CLIMATE_TRACE_CHART_YEAR_OFFSET;
+}
+
 export type EmissionsByYear = Record<number, number>;
 
 export function getReportedClimateTraceEmissionsByYear(
