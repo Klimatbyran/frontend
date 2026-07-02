@@ -45,6 +45,9 @@ export const useCompanyKPIs = (): CompanyKPIValue[] => {
         detailedDescription: t(
           "companies.list.kpis.emissionsChangeFromBaseYear.detailedDescription",
         ),
+        nullValues: t(
+          "companies.list.kpis.emissionsChangeFromBaseYear.nullValues",
+        ),
         higherIsBetter: false,
         createKPIColorGetter: (companies: CompanyWithKPIs[]) =>
           createSymmetricKPIColorGetter(

@@ -93,7 +93,7 @@ function CompanyInsightsPanel({
   const statsPanel = (
     <KPIDetailsPanel
       title={selectedKPI.label}
-      description={selectedKPI.description}
+      description={selectedKPI.detailedDescription || selectedKPI.description}
       isBoolean={selectedKPI.isBoolean}
       higherIsBetter={selectedKPI.higherIsBetter}
       averageValue={statistics.formattedAverage}
