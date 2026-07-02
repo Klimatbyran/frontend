@@ -1,4 +1,8 @@
 import { describe, expect, it } from "vitest";
+import {
+  calculateParisValue,
+  CARBON_LAW_REDUCTION_RATE,
+} from "@/utils/calculations/emissionsCalculations";
 import { transformTerritoryEmissionsData } from "./territoryEmissionsTransforms";
 
 describe("transformTerritoryEmissionsData", () => {
@@ -41,6 +45,21 @@ describe("transformTerritoryEmissionsData", () => {
       trendAtToday + annualSlope * (2027 - (2026 + yearProgress)),
       0,
     );
+
+    const todayPosition = 2026 + yearProgress;
+    const parisAtToday =
+      calculateParisValue(
+        todayPosition,
+        2026,
+        44_000_000,
+        CARBON_LAW_REDUCTION_RATE,
+      )! / 1000;
+    const parisAt2027 =
+      parisAtToday *
+      Math.pow(1 - CARBON_LAW_REDUCTION_RATE, 2027 - todayPosition);
+
+    expect(point2026?.carbonLaw).toBeCloseTo(parisAtToday, 0);
+    expect(point2027?.carbonLaw).toBeCloseTo(parisAt2027, 0);
   });
 
   it("leaves completed years unchanged", () => {

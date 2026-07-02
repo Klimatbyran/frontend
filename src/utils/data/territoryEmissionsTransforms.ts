@@ -64,6 +64,52 @@ function adjustTrendFromToday(
   return trendAtToday + annualSlope * (yearNum - todayPosition);
 }
 
+/** Project Paris Agreement path from today's position on the exponential decay curve. */
+function adjustCarbonLawFromToday(
+  yearNum: number,
+  calendarYear: number,
+  yearProgress: number,
+  carbonLawBaseYear: number,
+  carbonLawBaseValue: number,
+): number | undefined {
+  if (yearNum < calendarYear || carbonLawBaseValue <= 0) {
+    return undefined;
+  }
+
+  if (yearProgress <= 0 || yearProgress >= 1) {
+    return (
+      calculateParisValue(
+        yearNum,
+        carbonLawBaseYear,
+        carbonLawBaseValue,
+        CARBON_LAW_REDUCTION_RATE,
+      ) ?? undefined
+    );
+  }
+
+  const todayPosition = calendarYear + yearProgress;
+  const parisAtToday = calculateParisValue(
+    todayPosition,
+    carbonLawBaseYear,
+    carbonLawBaseValue,
+    CARBON_LAW_REDUCTION_RATE,
+  );
+
+  if (parisAtToday == null) {
+    return undefined;
+  }
+
+  if (yearNum === calendarYear) {
+    return parisAtToday;
+  }
+
+  const projected =
+    parisAtToday *
+    Math.pow(1 - CARBON_LAW_REDUCTION_RATE, yearNum - todayPosition);
+
+  return projected > 0 ? projected : undefined;
+}
+
 export function transformTerritoryEmissionsData(
   territory: TerritoryEmissionsSource,
   now: Date = new Date(),
@@ -103,16 +149,16 @@ export function transformTerritoryEmissionsData(
       )?.value;
       const trend = territory.trend.find((d) => d?.year === yearNum)?.value;
 
-      let carbonLaw: number | undefined;
-      if (carbonLawBaseValue != null && yearNum >= calendarYear) {
-        carbonLaw =
-          calculateParisValue(
-            yearNum,
-            carbonLawBaseYear,
-            carbonLawBaseValue,
-            CARBON_LAW_REDUCTION_RATE,
-          ) ?? undefined;
-      }
+      const carbonLaw =
+        carbonLawBaseValue != null
+          ? adjustCarbonLawFromToday(
+              yearNum,
+              calendarYear,
+              yearProgress,
+              carbonLawBaseYear,
+              carbonLawBaseValue,
+            )
+          : undefined;
 
       const isPartialCurrentYear =
         yearNum === calendarYear && yearProgress > 0 && yearProgress < 1;
