@@ -6,6 +6,7 @@ import {
 import {
   calculateLinearRegressionSlope,
   CLIMATE_TRACE_BASE_YEAR,
+  CLIMATE_TRACE_PROJECTION_START_YEAR,
   CLIMATE_TRACE_REPORTED_END_YEAR,
   EmissionsByYear,
   getEmissionsForParisProjection,
@@ -110,7 +111,7 @@ export function transformEuropeanCountryEmissionsData(
   );
   const trend = buildTrendRecord(
     reportedEmissionsByYear,
-    PARIS_PROJECTION_START_YEAR,
+    CLIMATE_TRACE_PROJECTION_START_YEAR,
   );
   const carbonLaw = buildCarbonLawRecord(
     reportedEmissionsByYear,
@@ -138,7 +139,7 @@ export function transformEuropeanCountryEmissionsData(
     const reportingYear = Number(year);
     if (
       Number.isNaN(reportingYear) ||
-      reportingYear < PARIS_PROJECTION_START_YEAR
+      reportingYear < CLIMATE_TRACE_PROJECTION_START_YEAR
     ) {
       continue;
     }

@@ -26,8 +26,16 @@ describe("transformEuropeanCountryEmissionsData", () => {
 
     const point2026 = data.find((point) => point.year === 2026);
     expect(point2026?.total).toBe(emissionsByYear[2025]);
-    expect(point2026?.trend).toBeDefined();
+    expect(point2026?.trend).toBeUndefined();
     expect(point2026?.carbonLaw).toBeDefined();
+  });
+
+  it("starts the trend line from 2026 at the 2027 chart boundary", () => {
+    const data = transformEuropeanCountryEmissionsData(emissionsByYear);
+
+    expect(data.find((point) => point.year === 2026)?.trend).toBeUndefined();
+    expect(data.find((point) => point.year === 2027)?.trend).toBeDefined();
+    expect(data.find((point) => point.year === 2027)?.total).toBeUndefined();
   });
 
   it("anchors the Paris path at the last reported year on the 2026 boundary", () => {
@@ -65,7 +73,7 @@ describe("transformEuropeanCountryEmissionsData", () => {
 
     expect(data.find((point) => point.year === 2025)?.total).toBeDefined();
     expect(data.find((point) => point.year === 2026)?.total).toBeDefined();
-    expect(data.find((point) => point.year === 2026)?.trend).toBeDefined();
+    expect(data.find((point) => point.year === 2026)?.trend).toBeUndefined();
     expect(data.find((point) => point.year === 2026)?.carbonLaw).toBeDefined();
     expect(data.find((point) => point.year === 2027)?.total).toBeUndefined();
     expect(data.find((point) => point.year === 2027)?.trend).toBeDefined();
