@@ -44,6 +44,8 @@ interface TerritoryMapProps {
   hoveredArea?: string | null;
   /** Pair with `hoveredArea` for controlled hover (e.g. list ↔ map sync). */
   onHoveredAreaChange?: (area: string | null) => void;
+  /** Always-emphasized area (e.g. current entity on a detail page). */
+  highlightedArea?: string | null;
 }
 
 function TerritoryMap({
@@ -64,6 +66,7 @@ function TerritoryMap({
   legendPosition = "bottom-right",
   hoveredArea: hoveredAreaProp,
   onHoveredAreaChange,
+  highlightedArea,
 }: TerritoryMapProps) {
   const { position, setPosition, getInitialZoom } = useMapPosition(
     defaultCenter,
@@ -108,6 +111,7 @@ function TerritoryMap({
     onAreaClick,
     hoveredArea: hoveredAreaProp,
     onHoveredAreaChange,
+    highlightedArea,
     showTooltip,
   });
 

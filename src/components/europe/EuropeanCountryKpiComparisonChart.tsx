@@ -1,16 +1,8 @@
 import { useMemo } from "react";
-import {
-  Bar,
-  BarChart,
-  Cell,
-  ReferenceLine,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
+import { motion } from "framer-motion";
 import { Text } from "@/components/ui/text";
 import { InfoTooltip } from "@/components/layout/InfoTooltip";
+import { useChartMotion } from "@/hooks/useChartMotion";
 import { COLORS } from "@/lib/colors";
 
 type ComparisonDatum = {
@@ -45,28 +37,8 @@ function getCountryBarColor(
   return isBetter ? COLORS.blue3 : COLORS.pink3;
 }
 
-function ComparisonTooltip({
-  active,
-  payload,
-}: {
-  active?: boolean;
-  payload?: Array<{ payload: ComparisonDatum }>;
-}) {
-  if (!active || !payload?.length) {
-    return null;
-  }
-
-  const item = payload[0]?.payload;
-  if (!item) {
-    return null;
-  }
-
-  return (
-    <div className="rounded-lg border border-white/10 bg-black-1 px-3 py-2 text-xs shadow-xl">
-      <p className="font-semibold text-white">{item.label}</p>
-      <p className="text-white/60">{item.formattedValue}</p>
-    </div>
-  );
+function getBarWidth(value: number, maxMagnitude: number): number {
+  return Math.max((Math.abs(value) / maxMagnitude) * 100, 4);
 }
 
 export function EuropeanCountryKpiComparisonChart({
@@ -80,8 +52,11 @@ export function EuropeanCountryKpiComparisonChart({
   info = false,
   infoText,
 }: EuropeanCountryKpiComparisonChartProps) {
-  const data = useMemo(
-    (): ComparisonDatum[] => [
+  const { reduceMotion, barDuration, fadeDuration, stagger, ease } =
+    useChartMotion();
+
+  const data = useMemo((): ComparisonDatum[] => {
+    return [
       {
         key: "country",
         label: countryLabel,
@@ -96,73 +71,77 @@ export function EuropeanCountryKpiComparisonChart({
         formattedValue: formatValue(averageValue),
         fill: COLORS.orange2,
       },
-    ],
-    [
-      averageValue,
-      countryLabel,
-      countryValue,
-      europeanAverageLabel,
-      formatValue,
-      lowerIsBetter,
-    ],
+    ];
+  }, [
+    averageValue,
+    countryLabel,
+    countryValue,
+    europeanAverageLabel,
+    formatValue,
+    lowerIsBetter,
+  ]);
+
+  const maxMagnitude = useMemo(
+    () =>
+      Math.max(
+        Math.abs(countryValue),
+        Math.abs(averageValue),
+        Number.EPSILON,
+      ),
+    [averageValue, countryValue],
   );
 
-  const yDomain = useMemo(() => {
-    const values = data.map((item) => item.value);
-    const minValue = Math.min(...values, 0);
-    const maxValue = Math.max(...values, 0);
-    const padding =
-      (maxValue - minValue) * 0.15 || Math.abs(maxValue) * 0.1 || 1;
-
-    return [minValue - padding, maxValue + padding] as [number, number];
-  }, [data]);
-
   return (
-    <div className="flex flex-col gap-3">
-      <div className="flex gap-2">
-        <Text className="text-lg md:text-xl">{title}</Text>
+    <div className="flex min-w-0 flex-col gap-3">
+      <div className="flex min-w-0 gap-2">
+        <Text className="text-base leading-snug break-words md:text-lg">
+          {title}
+        </Text>
         {info && infoText && (
-          <span className="text-grey">
+          <span className="shrink-0 text-grey">
             <InfoTooltip ariaLabel="Additional information">
               <p>{infoText}</p>
             </InfoTooltip>
           </span>
         )}
       </div>
-      <ResponsiveContainer width="100%" height={180}>
-        <BarChart
-          data={data}
-          margin={{ top: 12, right: 8, bottom: 4, left: 8 }}
-        >
-          <XAxis
-            dataKey="label"
-            tick={{ fontSize: 11, fill: "rgba(255,255,255,0.45)" }}
-            tickLine={false}
-            axisLine={false}
-            interval={0}
-          />
-          <YAxis hide domain={yDomain} />
-          <ReferenceLine y={0} stroke="rgba(255,255,255,0.15)" />
-          <Tooltip
-            content={(props) => (
-              <ComparisonTooltip
-                active={props.active}
-                payload={
-                  props.payload as
-                    | Array<{ payload: ComparisonDatum }>
-                    | undefined
-                }
+      <div className="space-y-3">
+        {data.map((item, index) => (
+          <motion.div
+            key={item.key}
+            className="min-w-0 space-y-1"
+            initial={reduceMotion ? false : { opacity: 0, x: -8 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{
+              duration: fadeDuration,
+              delay: stagger(index, 0.06),
+              ease,
+            }}
+          >
+            <div className="flex min-w-0 items-baseline justify-between gap-3 text-xs">
+              <span className="min-w-0 truncate text-white/70">{item.label}</span>
+              <span className="shrink-0 text-right tabular-nums text-grey">
+                {item.formattedValue}
+              </span>
+            </div>
+            <div className="h-2 overflow-hidden rounded-full bg-black-1">
+              <motion.div
+                className="h-full rounded-full"
+                initial={reduceMotion ? false : { width: 0 }}
+                animate={{
+                  width: `${getBarWidth(item.value, maxMagnitude)}%`,
+                }}
+                transition={{
+                  duration: barDuration,
+                  delay: stagger(index, 0.08),
+                  ease,
+                }}
+                style={{ backgroundColor: item.fill }}
               />
-            )}
-            cursor={{ fill: "rgba(255,255,255,0.05)" }}
-          />
-          <Bar dataKey="value" radius={[3, 3, 0, 0]} maxBarSize={48}>
-            {data.map((item) => (
-              <Cell key={item.key} fill={item.fill} />
-            ))}
-          </Bar>
-        </BarChart>
-      </ResponsiveContainer>
+            </div>
+          </motion.div>
+        ))}
+      </div>
     </div>
   );
 }
