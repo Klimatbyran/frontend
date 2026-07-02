@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import type { HeroSearchResult } from "@/hooks/usePopularHeroItems";
+import type { HeroSearchResult } from "@/types/landing";
 import {
   HERO_SEARCH_MAX_RESULTS,
   HERO_SEARCH_MAX_RESULTS_PER_TYPE,
