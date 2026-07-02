@@ -1,13 +1,9 @@
+import {
+  calculateParisValue,
+  CARBON_LAW_REDUCTION_RATE,
+} from "@/utils/calculations/emissionsCalculations";
 import type { EmissionDataPoint } from "@/types/municipality";
 import type { DataPoint } from "@/types/emissions";
-import {
-  adjustCarbonLawFromToday,
-  adjustTrendFromToday,
-  getChartYearPosition,
-  getEstimatedEmissionsAtToday,
-  getYearToDateContext,
-  isBeforeTodayOnChart,
-} from "@/utils/data/chartYearToDate";
 
 const EMISSIONS_DATA_START_YEAR = 1990;
 const EMISSIONS_DATA_END_YEAR = 2050;
@@ -63,7 +59,6 @@ function shouldShowApproximatedForYear(
 
 export function transformTerritoryEmissionsData(
   territory: TerritoryEmissionsSource,
-  now: Date = new Date(),
   options: TransformOptions = { valuesInKg: true },
 ): DataPoint[] {
   const valuesInKg = options.valuesInKg ?? true;
@@ -75,26 +70,16 @@ export function transformTerritoryEmissionsData(
   );
   territory.trend.forEach((d) => d?.year && years.add(d.year));
 
-  const { calendarYear, yearProgress } = getYearToDateContext(now);
-  const trendAtCalendarYear = territory.trend.find(
-    (d) => d?.year === calendarYear,
-  )?.value;
-  const trendAtNextYear = territory.trend.find(
-    (d) => d?.year === calendarYear + 1,
-  )?.value;
-
-  const approximatedDataAtCurrentYear = territory.approximatedHistoricalEmission
-    .filter((d): d is EmissionDataPoint => d != null && d.year <= calendarYear)
-    .sort((a, b) => b.year - a.year)[0];
-
-  const approximatedDataAtPreviousYear =
-    territory.approximatedHistoricalEmission.find(
-      (d) => d?.year === calendarYear - 1,
-    )?.value;
-
-  const carbonLawBaseValue = approximatedDataAtCurrentYear?.value;
-  const carbonLawBaseYear = approximatedDataAtCurrentYear?.year ?? calendarYear;
   const lastReportedYear = getLastReportedEmissionsYear(territory.emissions);
+  const carbonLawBaseYear = lastReportedYear;
+  const carbonLawBaseValue =
+    carbonLawBaseYear !== undefined
+      ? (territory.emissions.find((d) => d?.year === carbonLawBaseYear)
+          ?.value ??
+        territory.approximatedHistoricalEmission.find(
+          (d) => d?.year === carbonLawBaseYear,
+        )?.value)
+      : undefined;
 
   return Array.from(years)
     .sort((a, b) => a - b)
@@ -107,64 +92,28 @@ export function transformTerritoryEmissionsData(
       )?.value;
       const trend = territory.trend.find((d) => d?.year === yearNum)?.value;
 
-      const hideProjectionBeforeToday = isBeforeTodayOnChart(
-        yearNum,
-        calendarYear,
-        yearProgress,
-      );
-
       const carbonLawRaw =
-        carbonLawBaseValue != null && !hideProjectionBeforeToday
-          ? adjustCarbonLawFromToday(
+        carbonLawBaseValue != null &&
+        carbonLawBaseYear != null &&
+        yearNum >= carbonLawBaseYear
+          ? (calculateParisValue(
               yearNum,
-              calendarYear,
-              yearProgress,
               carbonLawBaseYear,
               carbonLawBaseValue,
-            )
-          : undefined;
-
-      const trendRaw =
-        trend !== undefined && !hideProjectionBeforeToday
-          ? adjustTrendFromToday(
-              trend,
-              yearNum,
-              calendarYear,
-              yearProgress,
-              trendAtCalendarYear,
-              trendAtNextYear,
-            )
+              CARBON_LAW_REDUCTION_RATE,
+            ) ?? undefined)
           : undefined;
 
       return {
-        year: getChartYearPosition(yearNum, calendarYear, yearProgress),
-        total: toDisplayTonnes(
-          getEstimatedEmissionsAtToday(
-            historical,
-            territory.emissions.find((d) => d?.year === calendarYear - 1)
-              ?.value,
-            yearNum,
-            calendarYear,
-            yearProgress,
-          ),
-          valuesInKg,
-        ),
-        trend: toDisplayTonnes(trendRaw, valuesInKg),
+        year: yearNum,
+        total: toDisplayTonnes(historical, valuesInKg),
+        trend: toDisplayTonnes(trend, valuesInKg),
         approximated: shouldShowApproximatedForYear(
           yearNum,
           lastReportedYear,
           historical,
         )
-          ? toDisplayTonnes(
-              getEstimatedEmissionsAtToday(
-                approximated,
-                approximatedDataAtPreviousYear,
-                yearNum,
-                calendarYear,
-                yearProgress,
-              ),
-              valuesInKg,
-            )
+          ? toDisplayTonnes(approximated, valuesInKg)
           : undefined,
         carbonLaw: toDisplayTonnes(carbonLawRaw, valuesInKg),
       };

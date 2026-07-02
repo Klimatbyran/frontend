@@ -22,68 +22,49 @@ describe("transformTerritoryEmissionsData", () => {
     ],
   };
 
-  it("prorates current-year estimated values to year-to-date and projects trend from today", () => {
-    const midYear = new Date("2026-07-02T12:00:00Z");
-    const data = transformTerritoryEmissionsData(territory, midYear);
-    const yearProgress =
-      (midYear.getTime() - Date.UTC(2026, 0, 1)) /
-      (Date.UTC(2027, 0, 1) - Date.UTC(2026, 0, 1));
-    const annualSlope = 42_000 - 44_000;
-    const trendAtToday = 44_000 + annualSlope * yearProgress;
-    const expectedApproximatedTonnes =
-      46_000 * yearProgress +
-      0.5 * (44_000 - 46_000) * yearProgress * yearProgress;
-
-    const point2025 = data.find((point) => point.year === 2025);
-    const point2026 = data.find(
-      (point) => point.year > 2026 && point.year < 2027,
-    );
-    const point2027 = data.find((point) => point.year === 2027);
-
-    expect(point2025?.approximated).toBeUndefined();
-    expect(point2025?.total).toBe(46_000);
-    expect(
-      data.find((point) => point.year === 2024)?.approximated,
-    ).toBeUndefined();
-    expect(point2026?.year).toBeCloseTo(2026 + yearProgress, 5);
-    expect(point2026?.approximated).toBeCloseTo(expectedApproximatedTonnes, 0);
-    expect(point2026?.trend).toBeCloseTo(trendAtToday, 0);
-    expect(point2027?.trend).toBeCloseTo(
-      trendAtToday + annualSlope * (2027 - (2026 + yearProgress)),
-      0,
-    );
-
-    const todayPosition = 2026 + yearProgress;
-    const parisAtToday =
-      calculateParisValue(
-        todayPosition,
-        2026,
-        44_000_000,
-        CARBON_LAW_REDUCTION_RATE,
-      )! / 1000;
-    const parisAt2027 =
-      parisAtToday *
-      Math.pow(1 - CARBON_LAW_REDUCTION_RATE, 2027 - todayPosition);
-
-    expect(point2026?.carbonLaw).toBeCloseTo(parisAtToday, 0);
-    expect(point2027?.carbonLaw).toBeCloseTo(parisAt2027, 0);
-  });
-
-  it("leaves completed years unchanged", () => {
-    const data = transformTerritoryEmissionsData(
-      territory,
-      new Date("2026-07-02T12:00:00Z"),
-    );
+  it("ends reported data at the last emissions year and starts projections from 2026", () => {
+    const data = transformTerritoryEmissionsData(territory);
 
     expect(data.find((point) => point.year === 2024)?.total).toBe(47_490);
     expect(data.find((point) => point.year === 2025)?.total).toBe(46_000);
+    expect(data.find((point) => point.year === 2025)?.approximated).toBeUndefined();
+    expect(data.find((point) => point.year === 2025)?.trend).toBeUndefined();
+    expect(data.find((point) => point.year === 2026)?.total).toBeUndefined();
+    expect(data.find((point) => point.year === 2026)?.approximated).toBe(44_000);
+    expect(data.find((point) => point.year === 2026)?.trend).toBe(44_000);
+    expect(data.find((point) => point.year === 2027)?.trend).toBe(42_000);
+  });
+
+  it("anchors the Paris path at the last reported year", () => {
+    const data = transformTerritoryEmissionsData(territory);
+
+    const parisAt2025 =
+      calculateParisValue(
+        2025,
+        2025,
+        46_000_000,
+        CARBON_LAW_REDUCTION_RATE,
+      )! / 1000;
+    const parisAt2026 =
+      calculateParisValue(
+        2026,
+        2025,
+        46_000_000,
+        CARBON_LAW_REDUCTION_RATE,
+      )! / 1000;
+
+    expect(data.find((point) => point.year === 2025)?.carbonLaw).toBeCloseTo(
+      parisAt2025,
+      0,
+    );
+    expect(data.find((point) => point.year === 2026)?.carbonLaw).toBeCloseTo(
+      parisAt2026,
+      0,
+    );
   });
 
   it("does not mark reported emissions years as approximated", () => {
-    const data = transformTerritoryEmissionsData(
-      territory,
-      new Date("2026-07-02T12:00:00Z"),
-    );
+    const data = transformTerritoryEmissionsData(territory);
 
     expect(
       data.find((point) => point.year === 2024)?.approximated,
@@ -91,25 +72,5 @@ describe("transformTerritoryEmissionsData", () => {
     expect(
       data.find((point) => point.year === 2025)?.approximated,
     ).toBeUndefined();
-  });
-
-  it("does not draw trend or paris before today's position in the current year", () => {
-    const territoryWithEarlierTrend = {
-      ...territory,
-      trend: [
-        { year: 2025, value: 45_000_000 },
-        { year: 2026, value: 44_000_000 },
-        { year: 2027, value: 42_000_000 },
-      ],
-    };
-    const data = transformTerritoryEmissionsData(
-      territoryWithEarlierTrend,
-      new Date("2026-07-02T12:00:00Z"),
-    );
-
-    expect(data.find((point) => point.year === 2025)?.trend).toBeUndefined();
-    expect(
-      data.find((point) => point.year > 2026 && point.year < 2027)?.trend,
-    ).toBeDefined();
   });
 });
