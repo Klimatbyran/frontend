@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { type ReactNode, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
 import { EuropeanCountryKpiComparisonChart } from "@/components/europe/EuropeanCountryKpiComparisonChart";
@@ -8,13 +8,35 @@ import {
   formatEmissionsAbsoluteCompact,
   formatPercentChange,
 } from "@/utils/formatting/localization";
+import { cn } from "@/lib/utils";
 
 type EuropeanCountryKpiComparisonsProps = {
-  comparisons: EuropeanCountryKpiComparisons;
+  comparisons: EuropeanCountryKpiComparisons | null;
+  leadingContent?: ReactNode;
 };
+
+function KpiChartCard({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <div
+      className={cn(
+        "min-w-0 rounded-level-2 bg-white/5 p-4 shadow-lg backdrop-blur-sm",
+        className,
+      )}
+    >
+      {children}
+    </div>
+  );
+}
 
 export function EuropeanCountryKpiComparisonsPanel({
   comparisons,
+  leadingContent,
 }: EuropeanCountryKpiComparisonsProps) {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
@@ -38,10 +60,38 @@ export function EuropeanCountryKpiComparisonsPanel({
     [currentLanguage, t],
   );
 
+  if (!leadingContent && !comparisons) {
+    return null;
+  }
+
+  const hasLeadingContent = Boolean(leadingContent);
+  const chartCount = [
+    comparisons?.changeSince2015,
+    comparisons?.totalEmissions,
+    comparisons?.emissionsPerCapita,
+  ].filter(Boolean).length;
+
+  if (chartCount === 0 && !hasLeadingContent) {
+    return null;
+  }
+
   return (
-    <div className="mt-6 grid grid-cols-1 gap-6 md:mt-8 lg:grid-cols-3">
-      {comparisons.changeSince2015 && (
-        <div className="min-w-0 rounded-level-2 bg-white/5 p-6 shadow-lg backdrop-blur-sm">
+    <div
+      className={cn(
+        "mt-4 grid gap-4",
+        hasLeadingContent
+          ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
+          : "grid-cols-1 lg:grid-cols-3",
+      )}
+    >
+      {leadingContent && (
+        <div className="flex min-w-0 items-center sm:col-span-2 lg:col-span-1">
+          {leadingContent}
+        </div>
+      )}
+
+      {comparisons?.changeSince2015 && (
+        <KpiChartCard>
           <EuropeanCountryKpiComparisonChart
             title={t("detailPage.changeSince2015")}
             countryLabel={countryLabel}
@@ -50,10 +100,10 @@ export function EuropeanCountryKpiComparisonsPanel({
             averageValue={comparisons.changeSince2015.averageValue}
             formatValue={formatPercent}
           />
-        </div>
+        </KpiChartCard>
       )}
-      {comparisons.totalEmissions && (
-        <div className="min-w-0 rounded-level-2 bg-white/5 p-6 shadow-lg backdrop-blur-sm">
+      {comparisons?.totalEmissions && (
+        <KpiChartCard>
           <EuropeanCountryKpiComparisonChart
             title={t("detailPage.totalEmissions", {
               year: comparisons.totalEmissions.year,
@@ -66,10 +116,10 @@ export function EuropeanCountryKpiComparisonsPanel({
             info
             infoText={t("europe.detailPage.totalEmissionsTooltip")}
           />
-        </div>
+        </KpiChartCard>
       )}
-      {comparisons.emissionsPerCapita && (
-        <div className="min-w-0 rounded-level-2 bg-white/5 p-6 shadow-lg backdrop-blur-sm">
+      {comparisons?.emissionsPerCapita && (
+        <KpiChartCard>
           <EuropeanCountryKpiComparisonChart
             title={t("europe.list.kpis.emissionsPerCapita.label")}
             countryLabel={countryLabel}
@@ -82,7 +132,7 @@ export function EuropeanCountryKpiComparisonsPanel({
               "europe.list.kpis.emissionsPerCapita.detailedDescription",
             )}
           />
-        </div>
+        </KpiChartCard>
       )}
     </div>
   );
