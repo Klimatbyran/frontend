@@ -68,6 +68,7 @@ export function EuropeanCountryDetailHeader({
 
       {(parisStat || kpiComparisons) && (
         <EuropeanCountryKpiComparisonsPanel
+          countryName={name}
           comparisons={kpiComparisons}
           leadingContent={
             parisStat ? <CompactParisStat stat={parisStat} /> : undefined

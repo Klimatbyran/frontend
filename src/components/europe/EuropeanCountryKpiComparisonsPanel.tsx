@@ -11,6 +11,7 @@ import {
 import { cn } from "@/lib/utils";
 
 type EuropeanCountryKpiComparisonsProps = {
+  countryName: string;
   comparisons: EuropeanCountryKpiComparisons | null;
   leadingContent?: ReactNode;
 };
@@ -35,12 +36,12 @@ function KpiChartCard({
 }
 
 export function EuropeanCountryKpiComparisonsPanel({
+  countryName,
   comparisons,
   leadingContent,
 }: EuropeanCountryKpiComparisonsProps) {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
-  const countryLabel = t("europe.detailPage.countryLabel");
   const europeanAverageLabel = t("europe.detailPage.europeanAverage");
 
   const formatPercent = useCallback(
@@ -94,7 +95,7 @@ export function EuropeanCountryKpiComparisonsPanel({
         <KpiChartCard>
           <EuropeanCountryKpiComparisonChart
             title={t("detailPage.changeSince2015")}
-            countryLabel={countryLabel}
+            countryLabel={countryName}
             europeanAverageLabel={europeanAverageLabel}
             countryValue={comparisons.changeSince2015.countryValue}
             averageValue={comparisons.changeSince2015.averageValue}
@@ -108,7 +109,7 @@ export function EuropeanCountryKpiComparisonsPanel({
             title={t("detailPage.totalEmissions", {
               year: comparisons.totalEmissions.year,
             })}
-            countryLabel={countryLabel}
+            countryLabel={countryName}
             europeanAverageLabel={europeanAverageLabel}
             countryValue={comparisons.totalEmissions.countryValue}
             averageValue={comparisons.totalEmissions.averageValue}
@@ -122,7 +123,7 @@ export function EuropeanCountryKpiComparisonsPanel({
         <KpiChartCard>
           <EuropeanCountryKpiComparisonChart
             title={t("europe.list.kpis.emissionsPerCapita.label")}
-            countryLabel={countryLabel}
+            countryLabel={countryName}
             europeanAverageLabel={europeanAverageLabel}
             countryValue={comparisons.emissionsPerCapita.countryValue}
             averageValue={comparisons.emissionsPerCapita.averageValue}
