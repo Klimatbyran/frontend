@@ -2,6 +2,11 @@ import { useQuery } from "@tanstack/react-query";
 import { getNationDetails } from "@/lib/api";
 import type { EmissionDataPoint } from "@/types/municipality";
 import { mapEmissionArray } from "@/utils/data/emissionArrayUtils";
+import {
+  computeNationDerivedMetrics,
+  extractYearRecord,
+  type NationEmissionBreakdown,
+} from "@/utils/data/nationTerritorialTransforms";
 
 export type NationDetails = {
   country: { sv: string; en: string };
@@ -11,51 +16,112 @@ export type NationDetails = {
   trend: (EmissionDataPoint | null)[];
   meetsParis: boolean;
   historicalEmissionChangePercent: number;
+  emissionBreakdown: NationEmissionBreakdown;
 };
 
-type ApiEmissionsSeries = ({ year: string; value: number } | null)[];
+type EmissionSeries =
+  | ({ year: string | number; value: number } | null)[]
+  | Record<string, number>
+  | undefined;
 
 type ApiNationResponse = {
   country: { sv: string; en: string } | string;
   logoUrl?: string | null;
-  emissions?: ApiEmissionsSeries;
-  territorialFossilEmissions?: ApiEmissionsSeries;
-  approximatedHistoricalEmission: ApiEmissionsSeries;
-  trend: ApiEmissionsSeries;
-  historicalEmissionChangePercent: number;
-  meetsParis: boolean;
+  territorialFossilEmissions?: EmissionSeries;
+  biogenicEmissions?: EmissionSeries;
+  consumptionAbroadEmissions?: EmissionSeries;
+  exportOfOilProductsEmissions?: EmissionSeries;
+  eCommerceEmissions?: EmissionSeries;
+  emissions?: EmissionSeries;
+  approximatedHistoricalEmission?: EmissionSeries;
+  trend?: EmissionSeries;
+  historicalEmissionChangePercent?: number;
+  meetsParis?: boolean;
 };
 
 function normalizeCountry(
   country: ApiNationResponse["country"],
 ): NationDetails["country"] {
   if (typeof country === "string") {
-    return { sv: country, en: country };
+    return { sv: country, en: country === "Sverige" ? "Sweden" : country };
   }
 
   return { sv: country.sv, en: country.en };
 }
 
-function getPrimaryEmissionsSeries(
+function getTerritorialFossilSeries(
   response: ApiNationResponse,
-): ApiEmissionsSeries | undefined {
-  return response.emissions ?? response.territorialFossilEmissions;
+): EmissionSeries | undefined {
+  return response.territorialFossilEmissions ?? response.emissions;
+}
+
+function hasLegacyTrendFields(response: ApiNationResponse): boolean {
+  return (
+    Array.isArray(response.approximatedHistoricalEmission) &&
+    Array.isArray(response.trend)
+  );
+}
+
+function buildEmissionBreakdown(
+  response: ApiNationResponse,
+): NationEmissionBreakdown {
+  return {
+    territorialFossil: extractYearRecord(getTerritorialFossilSeries(response)),
+    biogenic: extractYearRecord(response.biogenicEmissions),
+    consumptionAbroad: extractYearRecord(response.consumptionAbroadEmissions),
+    exportOfOilProducts: extractYearRecord(
+      response.exportOfOilProductsEmissions,
+    ),
+    eCommerce: extractYearRecord(response.eCommerceEmissions),
+  };
+}
+
+function transformLegacyNationResponse(
+  response: ApiNationResponse,
+): NationDetails {
+  return {
+    country: normalizeCountry(response.country),
+    logoUrl: response.logoUrl ?? null,
+    emissions: mapEmissionArray(getTerritorialFossilSeries(response)),
+    approximatedHistoricalEmission: mapEmissionArray(
+      response.approximatedHistoricalEmission,
+    ),
+    trend: mapEmissionArray(response.trend),
+    meetsParis: response.meetsParis ?? false,
+    historicalEmissionChangePercent:
+      response.historicalEmissionChangePercent ?? 0,
+    emissionBreakdown: buildEmissionBreakdown(response),
+  };
+}
+
+function transformNewNationResponse(
+  response: ApiNationResponse,
+): NationDetails {
+  const territorialFossil = extractYearRecord(
+    getTerritorialFossilSeries(response),
+  );
+  const derived = computeNationDerivedMetrics(territorialFossil);
+
+  return {
+    country: normalizeCountry(response.country),
+    logoUrl: response.logoUrl ?? null,
+    emissions: derived.emissions,
+    approximatedHistoricalEmission: derived.approximatedHistoricalEmission,
+    trend: derived.trend,
+    meetsParis: derived.meetsParis,
+    historicalEmissionChangePercent: derived.historicalEmissionChangePercent,
+    emissionBreakdown: buildEmissionBreakdown(response),
+  };
 }
 
 function transformApiNationToNationDetails(
-  r: ApiNationResponse,
+  response: ApiNationResponse,
 ): NationDetails {
-  return {
-    country: normalizeCountry(r.country),
-    logoUrl: r.logoUrl ?? null,
-    emissions: mapEmissionArray(getPrimaryEmissionsSeries(r)),
-    approximatedHistoricalEmission: mapEmissionArray(
-      r.approximatedHistoricalEmission,
-    ),
-    trend: mapEmissionArray(r.trend),
-    meetsParis: r.meetsParis ?? false,
-    historicalEmissionChangePercent: r.historicalEmissionChangePercent ?? 0,
-  };
+  if (hasLegacyTrendFields(response)) {
+    return transformLegacyNationResponse(response);
+  }
+
+  return transformNewNationResponse(response);
 }
 
 export function useNationDetails() {
@@ -65,11 +131,17 @@ export function useNationDetails() {
     error,
   } = useQuery({
     queryKey: ["nation"],
-    queryFn: () => getNationDetails(),
+    queryFn: async () => {
+      const data = await getNationDetails();
+      const response = (
+        Array.isArray(data) ? data[0] : data
+      ) as ApiNationResponse;
+      return transformApiNationToNationDetails(response);
+    },
   });
 
   return {
-    nation: nation ? transformApiNationToNationDetails(nation) : null,
+    nation: nation ?? null,
     loading: isLoading,
     error: error as Error | null,
   };
