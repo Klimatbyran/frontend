@@ -3,6 +3,7 @@ import {
   calculateCumulativeEmissions,
 } from "@/lib/calculations/trends/meetsParis";
 
+export const CLIMATE_TRACE_CHART_START_YEAR = 1990;
 export const CLIMATE_TRACE_BASE_YEAR = 2015;
 export const CLIMATE_TRACE_REPORTED_END_YEAR = 2025;
 export const CLIMATE_TRACE_PROJECTION_START_YEAR =

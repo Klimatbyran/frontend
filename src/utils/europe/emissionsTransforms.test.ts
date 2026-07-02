@@ -4,6 +4,7 @@ import {
   CARBON_LAW_REDUCTION_RATE,
 } from "@/utils/calculations/emissionsCalculations";
 import {
+  CLIMATE_TRACE_CHART_START_YEAR,
   CLIMATE_TRACE_PROJECTION_START_YEAR,
   reportingYearToChartYear,
 } from "@/utils/europe/climateTraceKpis";
@@ -16,6 +17,25 @@ describe("transformEuropeanCountryEmissionsData", () => {
       return [year, 1_000_000 * 0.95 ** index];
     }),
   );
+
+  it("includes reported totals from 1990 onwards when available", () => {
+    const emissionsWithHistory = {
+      1990: 2_000_000,
+      2000: 1_500_000,
+      ...emissionsByYear,
+    };
+
+    const data = transformEuropeanCountryEmissionsData(emissionsWithHistory);
+
+    expect(
+      data.find((point) => point.year === reportingYearToChartYear(1990))
+        ?.total,
+    ).toBe(2_000_000);
+    expect(
+      data.find((point) => point.year === reportingYearToChartYear(2000))
+        ?.total,
+    ).toBe(1_500_000);
+  });
 
   it("plots reported totals at the following year's boundary", () => {
     const data = transformEuropeanCountryEmissionsData(emissionsByYear);

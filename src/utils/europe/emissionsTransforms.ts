@@ -5,7 +5,7 @@ import {
 } from "@/utils/calculations/emissionsCalculations";
 import {
   calculateLinearRegressionSlope,
-  CLIMATE_TRACE_BASE_YEAR,
+  CLIMATE_TRACE_CHART_START_YEAR,
   CLIMATE_TRACE_REPORTED_END_YEAR,
   EmissionsByYear,
   getEmissionsForParisProjection,
@@ -16,7 +16,7 @@ import {
   reportingYearToChartYear,
 } from "@/utils/europe/climateTraceKpis";
 
-const EMISSIONS_DATA_START_YEAR = CLIMATE_TRACE_BASE_YEAR;
+const EMISSIONS_DATA_START_YEAR = CLIMATE_TRACE_CHART_START_YEAR;
 const EMISSIONS_DATA_END_YEAR = PARIS_PROJECTION_END_YEAR;
 
 function buildTrendRecord(

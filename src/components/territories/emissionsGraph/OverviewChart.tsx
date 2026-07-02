@@ -32,6 +32,7 @@ import {
 import { useLanguage } from "@/components/LanguageProvider";
 import {
   chartYearToReportingYear,
+  CLIMATE_TRACE_CHART_START_YEAR,
   CLIMATE_TRACE_PROJECTION_START_YEAR,
   CLIMATE_TRACE_REPORTED_END_YEAR,
 } from "@/utils/europe/climateTraceKpis";
@@ -73,9 +74,9 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
             <XAxis
               {...getXAxisProps(
                 "year",
-                [1990, 2050],
+                [CLIMATE_TRACE_CHART_START_YEAR, 2050],
                 [
-                  1990,
+                  CLIMATE_TRACE_CHART_START_YEAR,
                   2015,
                   2020,
                   reportedEndYear,
