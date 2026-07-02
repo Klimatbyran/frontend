@@ -61,7 +61,6 @@ function fitLADRegression(points: { year: number; value: number }[]): {
   }
 
   let bestSlope = 0;
-  let bestIntercept = lastValue;
   let bestError = Number.POSITIVE_INFINITY;
 
   for (const slope of slopeCandidates) {
@@ -75,12 +74,13 @@ function fitLADRegression(points: { year: number; value: number }[]): {
     if (error < bestError) {
       bestError = error;
       bestSlope = slope;
-      bestIntercept = intercept;
     }
   }
 
-  const interceptAtLast = bestIntercept;
-  const shift = lastValue - interceptAtLast;
+  // Anchor the trend line at the last observed data point so the projected
+  // series is continuous with the historical emissions series. `shift` is the
+  // value at the last data year (x = 0 in centered coordinates).
+  const shift = lastValue;
 
   return { slope: bestSlope, shift };
 }
