@@ -8,6 +8,7 @@ import {
   formatEmissionsAbsolute,
   formatPercentChange,
 } from "@/utils/formatting/localization";
+import { createEmissionsPerCapitaStat } from "@/hooks/territories/useTerritoryDetailHeaderStats";
 import {
   buildCountryGeoIndex,
   getLocalizedCountryName,
@@ -156,5 +157,15 @@ export function useEuropeanCountryDetailHeaderStats(
       t,
     ),
     createTotalEmissionsStat(lastYearEmissions, lastYear, currentLanguage, t),
+    createEmissionsPerCapitaStat(
+      country.emissionsPerCapita,
+      currentLanguage,
+      t,
+      {
+        label: t("europe.list.kpis.emissionsPerCapita.label"),
+        unit: t("europe.list.kpis.emissionsPerCapita.unit"),
+        infoText: t("europe.list.kpis.emissionsPerCapita.detailedDescription"),
+      },
+    ),
   ];
 }

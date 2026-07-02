@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import {
   formatEmissionsAbsolute,
   formatPercentChange,
+  localizeUnit,
 } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
 import { DetailStat } from "@/components/detail/DetailHeader";
@@ -64,6 +65,28 @@ function createTotalEmissionsStat(
     valueClassName: "text-orange-2",
     info: true,
     infoText: t("municipalityDetailPage.totalEmissionsTooltip"),
+  };
+}
+
+type EmissionsPerCapitaStatOptions = {
+  label?: string;
+  unit?: string;
+  infoText?: string;
+};
+
+export function createEmissionsPerCapitaStat(
+  emissionsPerCapita: number,
+  currentLanguage: SupportedLanguage,
+  t: ReturnType<typeof useTranslation>["t"],
+  options: EmissionsPerCapitaStatOptions = {},
+): DetailStat {
+  return {
+    label: options.label ?? t("detailPage.emissionsPerCapita"),
+    value: localizeUnit(emissionsPerCapita, currentLanguage),
+    unit: options.unit ?? t("detailPage.emissionsPerCapitaUnit"),
+    valueClassName: "text-orange-2",
+    info: Boolean(options.infoText),
+    infoText: options.infoText,
   };
 }
 

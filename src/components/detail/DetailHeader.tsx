@@ -3,6 +3,7 @@ import { Text } from "@/components/ui/text";
 import { OverviewStat } from "@/components/companies/detail/overview/OverviewStat";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { DataGuideItemId } from "@/data-guide/items";
+import { cn } from "@/lib/utils";
 
 export interface DetailStat {
   label: string | ReactNode;
@@ -46,7 +47,12 @@ export function DetailHeader({
           />
         )}
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-16 mt-8">
+      <div
+        className={cn(
+          "grid grid-cols-1 sm:grid-cols-2 gap-8 md:gap-16 mt-8",
+          stats.length >= 4 ? "lg:grid-cols-4" : "lg:grid-cols-3",
+        )}
+      >
         {stats.map((stat, index) => (
           <OverviewStat
             key={index}
