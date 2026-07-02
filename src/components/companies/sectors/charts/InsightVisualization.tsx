@@ -1,10 +1,12 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { LocalizedLink } from "@/components/LocalizedLink";
 import {
   InsightBar,
   InsightSegment,
 } from "@/hooks/companies/useSectorChartInsights";
 import { useChartMotion } from "@/hooks/useChartMotion";
+import { getCompanyDetailPath } from "@/utils/companyRouting";
 
 interface InsightBarChartProps {
   bars: InsightBar[];
@@ -24,41 +26,60 @@ export const InsightBarChart: React.FC<InsightBarChartProps> = ({
 
   return (
     <div className="space-y-2.5">
-      {bars.map((bar, index) => (
-        <motion.div
-          key={bar.label}
-          className="space-y-1"
-          initial={reduceMotion ? false : { opacity: 0, x: -8 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{
-            duration: fadeDuration,
-            delay: stagger(index, 0.06),
-            ease,
-          }}
-        >
-          <div className="flex items-center justify-between gap-2 text-xs">
-            <span className="text-white truncate">{bar.label}</span>
-            {showValues && (
-              <span className="text-grey shrink-0">{bar.valueLabel}</span>
-            )}
+      {bars.map((bar, index) => {
+        const content = (
+          <motion.div
+            className="space-y-1"
+            initial={reduceMotion ? false : { opacity: 0, x: -8 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{
+              duration: fadeDuration,
+              delay: stagger(index, 0.06),
+              ease,
+            }}
+          >
+            <div className="flex items-center justify-between gap-2 text-xs">
+              <span className="text-white truncate">{bar.label}</span>
+              {showValues && (
+                <span className="text-grey shrink-0">{bar.valueLabel}</span>
+              )}
+            </div>
+            <div className="h-2 rounded-full bg-black-1 overflow-hidden">
+              <motion.div
+                className="h-full rounded-full"
+                initial={reduceMotion ? false : { width: 0 }}
+                animate={{
+                  width: `${Math.max(bar.share * 100, 2)}%`,
+                }}
+                transition={{
+                  duration: barDuration,
+                  delay: stagger(index, 0.08),
+                  ease,
+                }}
+                style={{ backgroundColor: bar.color }}
+              />
+            </div>
+          </motion.div>
+        );
+
+        if (bar.company?.id) {
+          return (
+            <LocalizedLink
+              key={bar.label}
+              to={getCompanyDetailPath(bar.company)}
+              className="block rounded-lg px-1 -mx-1 transition-colors hover:bg-white/5"
+            >
+              {content}
+            </LocalizedLink>
+          );
+        }
+
+        return (
+          <div key={bar.label} className="space-y-1">
+            {content}
           </div>
-          <div className="h-2 rounded-full bg-black-1 overflow-hidden">
-            <motion.div
-              className="h-full rounded-full"
-              initial={reduceMotion ? false : { width: 0 }}
-              animate={{
-                width: `${Math.max(bar.share * 100, 2)}%`,
-              }}
-              transition={{
-                duration: barDuration,
-                delay: stagger(index, 0.08),
-                ease,
-              }}
-              style={{ backgroundColor: bar.color }}
-            />
-          </div>
-        </motion.div>
-      ))}
+        );
+      })}
     </div>
   );
 };

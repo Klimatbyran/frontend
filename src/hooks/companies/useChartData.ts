@@ -54,6 +54,7 @@ const createCompanyDataItem = (
   value: number;
   sectorCode: string | undefined;
   wikidataId: string | undefined;
+  companyId: string;
   total: number;
 } | null => {
   const periodForYear = company.reportingPeriods.find((period) =>
@@ -76,6 +77,7 @@ const createCompanyDataItem = (
     value: totalEmissions,
     sectorCode: company.industry?.industryGics?.sectorCode,
     wikidataId: getCompanyUrlSegment(company),
+    companyId: company.id,
     total: totalEmissions,
   };
 };

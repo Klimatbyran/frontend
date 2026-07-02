@@ -28,6 +28,7 @@ export type InsightBar = {
   valueLabel: string;
   share: number;
   color: string;
+  company?: { id: string; wikidataId?: string | null };
 };
 
 export type InsightSegment = {
@@ -55,6 +56,7 @@ type PieChartEntry = {
   total: number;
   sectorCode?: string;
   wikidataId?: string;
+  companyId?: string;
   scope1?: number;
   scope2?: number;
   scope3?: number;
@@ -110,6 +112,7 @@ const formatEmissionsLabel = (
 type CompanyTrend = {
   name: string;
   changePercent: number;
+  company: { id: string; wikidataId?: string | null };
 };
 
 const getComparableCompanyTrends = (
@@ -124,7 +127,13 @@ const getComparableCompanyTrends = (
       return [];
     }
 
-    return [{ name: company.name, changePercent }];
+    return [
+      {
+        name: company.name,
+        changePercent,
+        company: { id: company.id, wikidataId: company.wikidataId },
+      },
+    ];
   });
 };
 
@@ -179,6 +188,7 @@ const buildTrendChangeBars = (
     valueLabel: formatPercentChange(trend.changePercent, currentLanguage),
     share: Math.abs(trend.changePercent) / maxAbsChange,
     color: palette[index % palette.length],
+    company: trend.company,
   }));
 };
 
@@ -224,6 +234,9 @@ export const useSectorChartInsights = (
           ),
           share: entry.value / entry.total,
           color: getCompanyColors(index).base,
+          company: entry.companyId
+            ? { id: entry.companyId, wikidataId: entry.wikidataId }
+            : undefined,
         }));
 
       const reducingBars = buildTrendChangeBars(
