@@ -118,9 +118,11 @@ export function EuropeanCountryKpiComparisonChart({
   }, [data]);
 
   return (
-    <div className="flex flex-col gap-3">
-      <div className="flex gap-2">
-        <Text className="text-lg md:text-xl">{title}</Text>
+    <div className="flex min-w-0 flex-col gap-4">
+      <div className="flex min-w-0 gap-2">
+        <Text className="text-base leading-snug break-words md:text-lg">
+          {title}
+        </Text>
         {info && infoText && (
           <span className="text-grey">
             <InfoTooltip ariaLabel="Additional information">
@@ -129,17 +131,20 @@ export function EuropeanCountryKpiComparisonChart({
           </span>
         )}
       </div>
-      <ResponsiveContainer width="100%" height={180}>
+      <ResponsiveContainer width="100%" height={160}>
         <BarChart
           data={data}
-          margin={{ top: 12, right: 8, bottom: 4, left: 8 }}
+          margin={{ top: 8, right: 4, bottom: 20, left: 4 }}
         >
           <XAxis
             dataKey="label"
-            tick={{ fontSize: 11, fill: "rgba(255,255,255,0.45)" }}
+            tick={{ fontSize: 10, fill: "rgba(255,255,255,0.45)" }}
             tickLine={false}
             axisLine={false}
             interval={0}
+            angle={-20}
+            textAnchor="end"
+            height={48}
           />
           <YAxis hide domain={yDomain} />
           <ReferenceLine y={0} stroke="rgba(255,255,255,0.15)" />
