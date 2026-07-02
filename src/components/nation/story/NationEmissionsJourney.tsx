@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import type { NationStoryMetrics } from "@/utils/data/nationStoryMetrics";
 import { formatMton } from "@/utils/data/nationStoryMetrics";
 import { useLanguage } from "@/components/LanguageProvider";
+import { usePinnedSteps } from "@/components/nation/story/usePinnedSteps";
 
 type JourneyStep = {
   key: string;
@@ -22,11 +22,6 @@ type JourneyStep = {
 };
 
 const MAX_DIAMETER = 300;
-/** Scroll distance (vh) allotted to each step */
-const STEP_VH = 90;
-
-const clamp = (v: number, min: number, max: number) =>
-  Math.min(Math.max(v, min), max);
 
 function buildSteps(metrics: NationStoryMetrics): JourneyStep[] {
   const territorial = metrics.territorialLatestMton; // ~47
@@ -86,8 +81,6 @@ function buildSteps(metrics: NationStoryMetrics): JourneyStep[] {
   ];
 }
 
-type PinMode = "before" | "pinned" | "after";
-
 type NationEmissionsJourneyProps = {
   metrics: NationStoryMetrics;
 };
@@ -100,45 +93,8 @@ export function NationEmissionsJourney({
 
   const steps = buildSteps(metrics);
   const maxTotal = steps[steps.length - 1].total;
-  const sectionVh = steps.length * STEP_VH;
 
-  const sectionRef = useRef<HTMLElement>(null);
-  const [step, setStep] = useState(0);
-  const [mode, setMode] = useState<PinMode>("before");
-
-  useEffect(() => {
-    const update = () => {
-      const el = sectionRef.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const viewport = window.innerHeight;
-      const pinDistance = rect.height - viewport;
-      const scrolled = -rect.top;
-
-      let nextMode: PinMode = "pinned";
-      if (rect.top > 0) nextMode = "before";
-      else if (scrolled >= pinDistance) nextMode = "after";
-
-      const progress =
-        pinDistance > 0 ? clamp(scrolled / pinDistance, 0, 1) : 0;
-      const nextStep = clamp(
-        Math.floor(progress * steps.length),
-        0,
-        steps.length - 1,
-      );
-
-      setMode(nextMode);
-      setStep(nextStep);
-    };
-
-    update();
-    window.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
-    return () => {
-      window.removeEventListener("scroll", update);
-      window.removeEventListener("resize", update);
-    };
-  }, [steps.length]);
+  const { ref, step, sectionVh, stageStyle } = usePinnedSteps(steps.length);
 
   const current = steps[step];
 
@@ -154,27 +110,8 @@ export function NationEmissionsJourney({
   const diameterFor = (total: number) =>
     Math.sqrt(total / maxTotal) * MAX_DIAMETER;
 
-  // Position the stage so it stays within the section bounds (no overlap):
-  // absolute at the top before pinning, fixed while pinned, absolute at the
-  // bottom once the section has scrolled past.
-  const stageStyle: React.CSSProperties =
-    mode === "pinned"
-      ? { position: "fixed", top: 0, left: 0, right: 0 }
-      : mode === "before"
-        ? { position: "absolute", top: 0, left: 0, right: 0 }
-        : {
-            position: "absolute",
-            top: `calc(${sectionVh}vh - 100vh)`,
-            left: 0,
-            right: 0,
-          };
-
   return (
-    <section
-      ref={sectionRef}
-      className="relative"
-      style={{ height: `${sectionVh}vh` }}
-    >
+    <section ref={ref} className="relative" style={{ height: `${sectionVh}vh` }}>
       <div
         className="h-screen flex items-center px-4 md:px-8"
         style={stageStyle}
