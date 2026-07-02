@@ -86,10 +86,7 @@ export function Seo({ meta }: SeoProps) {
                 content={String(ogImageHeight)}
               />
               <meta property="og:image:alt" content={ogImageAlt} />
-              <meta
-                property="og:image:type"
-                content={imageMimeType(ogImage)}
-              />
+              <meta property="og:image:type" content={imageMimeType(ogImage)} />
             </>
           )}
           {og.type && <meta property="og:type" content={og.type} />}

@@ -191,9 +191,7 @@ function buildSimpleSeo(
     title,
     description,
     canonical,
-    hreflang: buildHreflang(
-      canonical.replace(/^\/(sv|en)/, "") || "/",
-    ),
+    hreflang: buildHreflang(canonical.replace(/^\/(sv|en)/, "") || "/"),
     og: { ...social.og, ...options?.extra?.og },
     twitter: { ...social.twitter, ...options?.extra?.twitter },
   };

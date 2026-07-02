@@ -17,8 +17,7 @@ export function Layout({ children }: LayoutProps) {
   const isLandingPage = /^\/(sv|en)\/?$/.test(location.pathname);
 
   const isStagingHost =
-    typeof window !== "undefined" &&
-    window.location.hostname.includes("stage");
+    typeof window !== "undefined" && window.location.hostname.includes("stage");
 
   // Get SEO metadata for current route
   const seoMeta = useMemo(() => {
