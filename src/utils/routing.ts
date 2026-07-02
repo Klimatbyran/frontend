@@ -1,5 +1,7 @@
 import { To } from "react-router-dom";
 
+export const SWEDEN_ISO3 = "SWE";
+
 export const localizedPath = (lang: string, path: To) => {
   return `/${lang}${path}`;
 };
@@ -22,6 +24,9 @@ export function getEntityDetailPath(
   if (entityType === "europe") {
     const countryId =
       typeof entity === "string" ? entity : (entity.id ?? entity.name);
+    if (countryId.toUpperCase() === SWEDEN_ISO3) {
+      return "/nation";
+    }
     return `/europe/${countryId.toLowerCase()}`;
   }
 
@@ -45,9 +50,10 @@ export function createEntityClickHandler(
   navigate: (path: string) => void,
   entityType: "region" | "municipality" | "europe",
   viewMode?: string,
+  language?: string,
 ) {
-  return (entity: { name: string } | string) => {
+  return (entity: { name: string; id?: string } | string) => {
     const path = getEntityDetailPath(entityType, entity, viewMode);
-    navigate(path);
+    navigate(language ? localizedPath(language, path) : path);
   };
 }

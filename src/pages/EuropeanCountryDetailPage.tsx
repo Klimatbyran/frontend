@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { TerritoryEmissions } from "@/components/territories/TerritoryEmissions";
 import { PageLoading } from "@/components/pageStates/Loading";
@@ -8,26 +7,23 @@ import { PageNoData } from "@/components/pageStates/NoData";
 import { DetailHeader } from "@/components/detail/DetailHeader";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";
 import { useEuropeanCountryPageData } from "@/hooks/europe/useEuropeanCountryPageData";
-import { SWEDEN_ISO3 } from "@/hooks/europe/useEuropeanCountryDetails";
 import { useLanguage } from "@/components/LanguageProvider";
-import { localizedPath } from "@/utils/routing";
+import { localizedPath, SWEDEN_ISO3 } from "@/utils/routing";
 
 export function EuropeanCountryDetailPage() {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
   const { currentLanguage } = useLanguage();
   const { t } = useTranslation();
   const pageData = useEuropeanCountryPageData(id);
   const { country, loading, error, emissionsData, headerStats } = pageData;
 
-  useEffect(() => {
-    if (id?.toUpperCase() === SWEDEN_ISO3) {
-      navigate(localizedPath(currentLanguage, "/nation"), { replace: true });
-    }
-  }, [id, navigate, currentLanguage]);
-
   if (id?.toUpperCase() === SWEDEN_ISO3) {
-    return <PageLoading />;
+    return (
+      <Navigate
+        to={localizedPath(currentLanguage, "/nation")}
+        replace
+      />
+    );
   }
 
   if (loading) return <PageLoading />;

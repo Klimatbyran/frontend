@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Map, List } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -18,6 +18,11 @@ import { DataItem, KPIValue } from "@/types/rankings";
 import { EuropeanCountry } from "@/types/europe";
 import { createEntityClickHandler } from "@/utils/routing";
 import { RankedListItem } from "@/types/rankings";
+import { useLanguage } from "@/components/LanguageProvider";
+import {
+  buildCountryGeoIndex,
+  resolveCountryIso3,
+} from "@/utils/europe/countryNames";
 
 const MAP_COLORS = {
   null: "color-mix(in srgb, var(--black-3) 80%, transparent)",
@@ -110,9 +115,14 @@ function EuropeanMap({
 
 export function EuropeanOverviewPage() {
   const navigate = useNavigate();
+  const { currentLanguage } = useLanguage();
   const europeanKPIs = useEuropeanKPIs();
   const [geoData] = useState<FeatureCollection>(
     europeGeoJson as FeatureCollection,
+  );
+  const countryGeoIndex = useMemo(
+    () => buildCountryGeoIndex(geoData),
+    [geoData],
   );
   const { emissionsByIso } = useClimateTraceEmissions();
   const {
@@ -126,12 +136,23 @@ export function EuropeanOverviewPage() {
   const { countryEntities, mapData, filteredGeoData, countriesAsEntities } =
     useEuropeanData(selectedKPI, geoData, emissionsByIso);
 
-  const handleCountryClick = createEntityClickHandler(navigate, "europe");
+  const handleCountryClick = createEntityClickHandler(
+    navigate,
+    "europe",
+    undefined,
+    currentLanguage,
+  );
 
   const handleCountryAreaClick = (name: string) => {
     const country = countryEntities.find((item) => item.mapName === name);
     if (country) {
       handleCountryClick(country as RankedListItem);
+      return;
+    }
+
+    const iso3 = resolveCountryIso3(name, countryGeoIndex.nameToIso3);
+    if (iso3) {
+      handleCountryClick({ id: iso3, name: iso3 });
     }
   };
 
