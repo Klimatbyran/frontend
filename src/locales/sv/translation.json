@@ -426,6 +426,8 @@
       "noDataAvailable": "Ingen data tillgänglig",
       "emissionsChange": {
         "title": "Utsläppsförändring från basår",
+        "description": "Endast företag med ett definierat basår och jämförbara uppföljningsdata rankas.",
+        "noComparableData": "Inga företag i denna sektor med jämförbar utsläppsförändringsdata.",
         "unknown": "Okänt"
       },
       "meetsParis": {
@@ -1465,9 +1467,10 @@
         },
         "emissionsChangeFromBaseYear": {
           "label": "Utsläppsförändring",
-          "description": "Förändring i utsläpp från basår till senaste rapporteringsår",
-          "detailedDescription": "Procentuell förändring i totala utsläpp från företagets basår till senaste rapporteringsår. Lägre värden indikerar bättre prestation.",
-          "source": "Företagsrapporteringsdata"
+          "description": "Förändring i utsläpp från basår till senaste rapporteringsår. Endast företag med jämförbara utsläppsdata rankas.",
+          "detailedDescription": "Procentuell förändring i totala utsläpp från företagets basår till senaste rapporteringsår. Rankningen omfattar endast företag med definierat basår, giltiga basårsutsläpp och minst ett senare rapporteringsår med jämförbar data. Lägre värden indikerar bättre prestation.",
+          "source": "Företagsrapporteringsdata",
+          "nullValues": "Ej jämförbar"
         },
         "trendSlope": {
           "label": "Utsläppstrend",

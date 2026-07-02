@@ -421,6 +421,8 @@
       "noDataAvailable": "No data available",
       "emissionsChange": {
         "title": "Emissions Change from Base Year",
+        "description": "Only companies with a defined base year and comparable follow-up emissions data are ranked.",
+        "noComparableData": "No companies in this sector with comparable emissions change data.",
         "unknown": "Unknown"
       },
       "meetsParis": {
@@ -1408,9 +1410,10 @@
         },
         "emissionsChangeFromBaseYear": {
           "label": "Overall Emissions Change",
-          "description": "Change in emissions from base year to latest reporting period",
-          "detailedDescription": "Percentage change in total emissions from the company's base year to their most recent reporting period. Lower values indicate better performance.",
-          "source": "Company Reporting Data"
+          "description": "Change in emissions from base year to latest reporting period. Only companies with comparable emissions data are ranked.",
+          "detailedDescription": "Percentage change in total emissions from the company's base year to their most recent reporting period. Rankings include only companies with a defined base year, valid baseline emissions, and at least one later reporting period with comparable data. Lower values indicate better performance.",
+          "source": "Company Reporting Data",
+          "nullValues": "Not comparable"
         },
         "trendSlope": {
           "label": "Emissions Trend",
