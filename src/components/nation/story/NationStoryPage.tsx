@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import { EntityListBox } from "@/components/detail/EntityListBox";
 import { NationConclusion } from "@/components/nation/story/NationConclusion";
 import { NationEmissionsJourney } from "@/components/nation/story/NationEmissionsJourney";
-import { NationLayerComparisons } from "@/components/nation/story/NationLayerComparisons";
 import { NationStackedChart } from "@/components/nation/story/NationStackedChart";
 import { useLanguage } from "@/components/LanguageProvider";
 import type { NationDetails } from "@/hooks/nation/useNationDetails";
@@ -86,14 +85,6 @@ export function NationStoryPage({
 
       <FullScreenSection>
         <NationStackedChart data={metrics.stackData} />
-      </FullScreenSection>
-
-      <FullScreenSection>
-        <NationLayerComparisons
-          layers={metrics.layerComparisons}
-          latestYear={metrics.latestYear}
-          maxMton={metrics.maxLayerMton}
-        />
       </FullScreenSection>
 
       {/* Conclusion – the punchline tying the journey together */}

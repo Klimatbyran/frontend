@@ -1574,11 +1574,6 @@
         "changeFooterLine1": "Looking only at territorial emissions, Sweden appears successful.",
         "changeFooterLine2": "But once biogenic and consumption-based emissions are included, the reduction since 1990 is far less impressive."
       },
-      "comparisons": {
-        "title": "1990 compared to today",
-        "description": "Scroll to see how each emission category has changed since 1990.",
-        "since1990": "since 1990"
-      },
       "conclusion": {
         "eyebrow": "The takeaway",
         "title": "We only discuss a fraction of Sweden's emissions",

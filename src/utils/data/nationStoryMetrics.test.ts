@@ -48,10 +48,9 @@ describe("nationStoryMetrics", () => {
     expect(metrics.ratioReportedToFull).toBeLessThan(3.5);
   });
 
-  it("builds layer comparisons for all main categories", () => {
+  it("computes per-category change since 1990", () => {
     const metrics = computeNationStoryMetrics(series);
 
-    expect(metrics.layerComparisons).toHaveLength(3);
     expect(metrics.territorialChangePercent).toBeLessThan(0);
     expect(metrics.biogenicChangePercent).toBeGreaterThan(100);
   });

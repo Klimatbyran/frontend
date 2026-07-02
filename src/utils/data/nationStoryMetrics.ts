@@ -8,20 +8,6 @@ export type NationEmissionSeries = {
   consumptionAbroad: Record<number, number>;
 };
 
-export type NationLayerKey =
-  | "territorialFossil"
-  | "biogenic"
-  | "consumptionAbroad";
-
-export type NationLayerComparison = {
-  key: NationLayerKey;
-  labelKey: string;
-  color: string;
-  mton1990: number;
-  mtonLatest: number;
-  changePercent: number;
-};
-
 export type NationStackDataPoint = {
   year: number;
   territorialFossil: number;
@@ -45,9 +31,7 @@ export type NationStoryMetrics = {
   consumptionLatestMton: number;
   consumption1990Mton: number;
   consumptionChangePercent: number;
-  layerComparisons: NationLayerComparison[];
   stackData: NationStackDataPoint[];
-  maxLayerMton: number;
 };
 
 const TONNES_PER_MTON = 1_000_000;
@@ -126,26 +110,6 @@ export function buildStackChartData(
   });
 }
 
-function buildLayerComparison(
-  key: NationLayerKey,
-  labelKey: string,
-  color: string,
-  series: NationEmissionSeries,
-  latestYear: number,
-): NationLayerComparison {
-  const tonnes1990 = series[key][NATION_BASELINE_YEAR] ?? 0;
-  const tonnesLatest = series[key][latestYear] ?? 0;
-
-  return {
-    key,
-    labelKey,
-    color,
-    mton1990: toMton(tonnes1990),
-    mtonLatest: toMton(tonnesLatest),
-    changePercent: percentChange(tonnes1990, tonnesLatest),
-  };
-}
-
 export function computeNationStoryMetrics(
   series: NationEmissionSeries,
 ): NationStoryMetrics {
@@ -161,35 +125,6 @@ export function computeNationStoryMetrics(
   const consumption1990Tonnes =
     series.consumptionAbroad[NATION_BASELINE_YEAR] ?? 0;
   const consumptionLatestTonnes = series.consumptionAbroad[latestYear] ?? 0;
-
-  const layerComparisons = [
-    buildLayerComparison(
-      "territorialFossil",
-      "nation.story.graph.territorialFossil",
-      "var(--orange-2)",
-      series,
-      latestYear,
-    ),
-    buildLayerComparison(
-      "biogenic",
-      "nation.story.graph.biogenic",
-      "var(--green-3)",
-      series,
-      latestYear,
-    ),
-    buildLayerComparison(
-      "consumptionAbroad",
-      "nation.story.graph.consumptionAbroad",
-      "var(--pink-3)",
-      series,
-      latestYear,
-    ),
-  ];
-
-  const maxLayerMton = Math.max(
-    ...layerComparisons.flatMap((l) => [l.mton1990, l.mtonLatest]),
-    toMton(combinedLatestTonnes),
-  );
 
   const ratioReportedToFull =
     territorialLatestTonnes > 0
@@ -223,8 +158,6 @@ export function computeNationStoryMetrics(
       consumption1990Tonnes,
       consumptionLatestTonnes,
     ),
-    layerComparisons,
     stackData: buildStackChartData(series),
-    maxLayerMton,
   };
 }

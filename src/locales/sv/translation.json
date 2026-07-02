@@ -1632,11 +1632,6 @@
         "changeFooterLine1": "Ser man bara på de territoriella utsläppen ser Sverige framgångsrikt ut.",
         "changeFooterLine2": "Men inkluderar man biogena och konsumtionsbaserade utsläpp är minskningen sedan 1990 betydligt mindre imponerande."
       },
-      "comparisons": {
-        "title": "1990 jämfört med idag",
-        "description": "Scrolla för att se hur varje utsläppskategori utvecklats sedan 1990.",
-        "since1990": "sedan 1990"
-      },
       "conclusion": {
         "eyebrow": "Slutsatsen",
         "title": "Vi diskuterar bara en bråkdel av Sveriges utsläpp",
