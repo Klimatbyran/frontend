@@ -54,32 +54,8 @@ export function NationStoryPage({
         </div>
       </section>
 
-      {/* Growing-bubble journey: scroll-driven, sticky bubble */}
+      {/* Scroll-driven journey: bubble builds up, then the bathtub metaphor */}
       <NationEmissionsJourney metrics={metrics} />
-
-      {/* Bathtub metaphor – transition into the time series */}
-      <section className="min-h-[70vh] flex items-center justify-center px-4 md:px-8 py-10">
-        <div className="max-w-2xl mx-auto text-center space-y-6">
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, amount: 0.5 }}
-            transition={{ duration: 0.5 }}
-            className="text-lg md:text-xl text-grey leading-relaxed"
-          >
-            {t("nation.story.bathtub.text")}
-          </motion.p>
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, amount: 0.5 }}
-            transition={{ duration: 0.5, delay: 0.15 }}
-            className="text-xl md:text-2xl text-white font-light leading-snug"
-          >
-            {t("nation.story.bathtub.question")}
-          </motion.p>
-        </div>
-      </section>
 
       <FullScreenSection>
         <NationStackedChart data={metrics.stackData} />

@@ -7,9 +7,11 @@ import { useLanguage } from "@/components/LanguageProvider";
 
 type JourneyStep = {
   key: string;
-  labelKey: string;
+  /** "layer" builds up the bubble; "message" keeps the full bubble and shows prose */
+  kind: "layer" | "message";
+  labelKey?: string;
   textKey: string;
-  color: string;
+  color?: string;
   /** cumulative total in Mton after this step */
   total: number;
   /** this step's own contribution in Mton */
@@ -19,6 +21,8 @@ type JourneyStep = {
   /** small extra addition drawn as a dashed ring (private e-commerce) */
   ring?: boolean;
   badgeKey?: string;
+  /** larger emphasised prose (the closing question) */
+  emphasis?: boolean;
 };
 
 const MAX_DIAMETER = 300;
@@ -32,9 +36,12 @@ function buildSteps(metrics: NationStoryMetrics): JourneyStep[] {
   // Production-based is ~4 Mton above territorial per the report (51 vs 47)
   const production = territorial + 4;
 
+  const fullTotal = production + consumption + biogenic;
+
   return [
     {
       key: "step1",
+      kind: "layer",
       labelKey: "nation.story.journey.step1.label",
       textKey: "nation.story.journey.step1.text",
       color: "var(--orange-2)",
@@ -44,6 +51,7 @@ function buildSteps(metrics: NationStoryMetrics): JourneyStep[] {
     },
     {
       key: "step2",
+      kind: "layer",
       labelKey: "nation.story.journey.step2.label",
       textKey: "nation.story.journey.step2.text",
       color: "var(--blue-3)",
@@ -53,6 +61,7 @@ function buildSteps(metrics: NationStoryMetrics): JourneyStep[] {
     },
     {
       key: "step3",
+      kind: "layer",
       labelKey: "nation.story.journey.step3.label",
       textKey: "nation.story.journey.step3.text",
       color: "var(--pink-3)",
@@ -62,6 +71,7 @@ function buildSteps(metrics: NationStoryMetrics): JourneyStep[] {
     },
     {
       key: "step4",
+      kind: "layer",
       labelKey: "nation.story.journey.step4.label",
       textKey: "nation.story.journey.step4.text",
       color: "var(--pink-2)",
@@ -73,12 +83,30 @@ function buildSteps(metrics: NationStoryMetrics): JourneyStep[] {
     },
     {
       key: "step5",
+      kind: "layer",
       labelKey: "nation.story.journey.step5.label",
       textKey: "nation.story.journey.step5.text",
       color: "var(--green-3)",
-      total: production + consumption + biogenic,
+      total: fullTotal,
       delta: biogenic,
       layer: true,
+    },
+    {
+      key: "bathtub",
+      kind: "message",
+      textKey: "nation.story.bathtub.text",
+      total: fullTotal,
+      delta: 0,
+      layer: false,
+    },
+    {
+      key: "question",
+      kind: "message",
+      textKey: "nation.story.bathtub.question",
+      total: fullTotal,
+      delta: 0,
+      layer: false,
+      emphasis: true,
     },
   ];
 }
@@ -233,18 +261,32 @@ export function NationEmissionsJourney({
               transition={{ duration: 0.4 }}
               className="space-y-3"
             >
-              <p className="flex items-center gap-2 text-lg md:text-xl text-white font-medium">
-                <span
-                  className="w-3 h-3 rounded-full shrink-0"
-                  style={{ backgroundColor: current.color }}
-                />
-                {t(current.labelKey)}
-              </p>
-              <p className="text-base md:text-lg text-grey leading-relaxed">
-                {t(current.textKey)}
-              </p>
-              {current.badgeKey && (
-                <p className="text-sm text-pink-2">{t(current.badgeKey)}</p>
+              {current.kind === "message" ? (
+                <p
+                  className={
+                    current.emphasis
+                      ? "text-xl md:text-2xl text-white font-light leading-snug"
+                      : "text-base md:text-lg text-grey leading-relaxed"
+                  }
+                >
+                  {t(current.textKey)}
+                </p>
+              ) : (
+                <>
+                  <p className="flex items-center gap-2 text-lg md:text-xl text-white font-medium">
+                    <span
+                      className="w-3 h-3 rounded-full shrink-0"
+                      style={{ backgroundColor: current.color }}
+                    />
+                    {current.labelKey ? t(current.labelKey) : null}
+                  </p>
+                  <p className="text-base md:text-lg text-grey leading-relaxed">
+                    {t(current.textKey)}
+                  </p>
+                  {current.badgeKey && (
+                    <p className="text-sm text-pink-2">{t(current.badgeKey)}</p>
+                  )}
+                </>
               )}
             </motion.div>
 
@@ -268,7 +310,6 @@ export function NationEmissionsJourney({
                   </div>
                 ))}
             </div>
-
           </div>
         </div>
       </div>
