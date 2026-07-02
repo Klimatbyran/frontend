@@ -3,7 +3,10 @@ import {
   calculateParisValue,
   CARBON_LAW_REDUCTION_RATE,
 } from "@/utils/calculations/emissionsCalculations";
-import { reportingYearToChartYear } from "@/utils/europe/climateTraceKpis";
+import {
+  CLIMATE_TRACE_PROJECTION_START_YEAR,
+  reportingYearToChartYear,
+} from "@/utils/europe/climateTraceKpis";
 import { transformEuropeanCountryEmissionsData } from "./emissionsTransforms";
 
 describe("transformEuropeanCountryEmissionsData", () => {
@@ -26,16 +29,17 @@ describe("transformEuropeanCountryEmissionsData", () => {
 
     const point2026 = data.find((point) => point.year === 2026);
     expect(point2026?.total).toBe(emissionsByYear[2025]);
-    expect(point2026?.trend).toBeUndefined();
+    expect(point2026?.trend).toBeDefined();
     expect(point2026?.carbonLaw).toBeDefined();
   });
 
-  it("starts the trend line from 2026 at the 2027 chart boundary", () => {
+  it("starts the trend line at the orange projection marker on the chart", () => {
     const data = transformEuropeanCountryEmissionsData(emissionsByYear);
+    const markerYear = CLIMATE_TRACE_PROJECTION_START_YEAR;
 
-    expect(data.find((point) => point.year === 2026)?.trend).toBeUndefined();
-    expect(data.find((point) => point.year === 2027)?.trend).toBeDefined();
-    expect(data.find((point) => point.year === 2027)?.total).toBeUndefined();
+    expect(data.find((point) => point.year === markerYear)?.trend).toBeDefined();
+    expect(data.find((point) => point.year === markerYear - 1)?.trend).toBeUndefined();
+    expect(data.find((point) => point.year === markerYear + 1)?.trend).toBeDefined();
   });
 
   it("anchors the Paris path at the last reported year on the 2026 boundary", () => {
@@ -73,7 +77,7 @@ describe("transformEuropeanCountryEmissionsData", () => {
 
     expect(data.find((point) => point.year === 2025)?.total).toBeDefined();
     expect(data.find((point) => point.year === 2026)?.total).toBeDefined();
-    expect(data.find((point) => point.year === 2026)?.trend).toBeUndefined();
+    expect(data.find((point) => point.year === 2026)?.trend).toBeDefined();
     expect(data.find((point) => point.year === 2026)?.carbonLaw).toBeDefined();
     expect(data.find((point) => point.year === 2027)?.total).toBeUndefined();
     expect(data.find((point) => point.year === 2027)?.trend).toBeDefined();
