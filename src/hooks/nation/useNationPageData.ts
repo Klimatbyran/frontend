@@ -30,12 +30,7 @@ export function useNationPageData() {
         infoText: t("detailPage.emissionsPerCapitaTooltipClimateTrace"),
       }),
     ];
-  }, [
-    territoryPageData.headerStats,
-    emissionsByIso,
-    currentLanguage,
-    t,
-  ]);
+  }, [territoryPageData.headerStats, emissionsByIso, currentLanguage, t]);
 
   return {
     nation,
