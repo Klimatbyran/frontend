@@ -86,7 +86,7 @@ export function createBudgetKPIColorGetter(companies: CompanyWithKPIs[]) {
   const colorForTonnes = createBudgetColorFunction(minRaw, maxRaw);
   const budgetTonnesByCompanyId = new Map<string, number>();
 
-  for (let data of companyBudgetData) {
+  for (const data of companyBudgetData) {
     budgetTonnesByCompanyId.set(data.company.wikidataId, data.budgetTonnes);
   }
 

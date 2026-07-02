@@ -93,7 +93,7 @@ function CompanyInsightsPanel({
   const statsPanel = (
     <KPIDetailsPanel
       title={selectedKPI.label}
-      description={selectedKPI.description}
+      description={selectedKPI.detailedDescription || selectedKPI.description}
       isBoolean={selectedKPI.isBoolean}
       higherIsBetter={selectedKPI.higherIsBetter}
       averageValue={statistics.formattedAverage}
@@ -140,7 +140,7 @@ function CompanyInsightsPanel({
         { entityPlural },
       )}
       entities={topCompanies}
-      totalCount={companyData.length}
+      totalCount={statistics.validData.length}
       dataPointKey={selectedKPI.key}
       unit={selectedKPI.unit}
       nullValues={selectedKPI.nullValues}
@@ -157,7 +157,7 @@ function CompanyInsightsPanel({
     <InsightsList<CompanyWithKPIs>
       title={t("rankedInsights.titleWorst", { entityPlural })}
       entities={bottomCompanies}
-      totalCount={companyData.length}
+      totalCount={statistics.validData.length}
       isBottomRanking
       dataPointKey={selectedKPI.key}
       unit={selectedKPI.unit}

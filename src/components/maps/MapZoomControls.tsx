@@ -1,4 +1,6 @@
 import { RotateCcw, ZoomIn, ZoomOut } from "lucide-react";
+import { cn } from "@/lib/utils";
+import type { MapLegendPosition } from "./MapLegend";
 
 export function MapZoomControls({
   onZoomIn,
@@ -6,15 +8,28 @@ export function MapZoomControls({
   onReset,
   canZoomIn,
   canZoomOut,
+  legendPosition = "bottom-right",
 }: {
   onZoomIn: () => void;
   onZoomOut: () => void;
   onReset: () => void;
   canZoomIn: boolean;
   canZoomOut: boolean;
+  legendPosition?: MapLegendPosition;
 }) {
   return (
-    <div className="absolute top-[56px] md:top-4 left-4 flex flex-col gap-2">
+    <div
+      className={cn(
+        "absolute flex flex-col gap-2",
+        // Mobile: keep clear of the top-left tooltip and overview view toggle.
+        "top-14 right-4",
+        // Desktop: place controls in the corner opposite the legend.
+        legendPosition === "bottom-right" &&
+          "md:top-auto md:right-auto md:bottom-4 md:left-4",
+        legendPosition === "bottom-left" &&
+          "md:top-4 md:right-auto md:bottom-auto md:left-4",
+      )}
+    >
       <button
         onClick={onZoomIn}
         disabled={!canZoomIn}

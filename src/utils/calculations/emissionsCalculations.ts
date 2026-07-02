@@ -2,6 +2,8 @@
  * Common utility functions for emissions calculations
  */
 
+import { yearFromIsoDate } from "@/utils/date";
+
 /**
  * Get year-over-year emissions change percentage from API
  * Uses API-provided absolute value (all data) if available,
@@ -278,7 +280,8 @@ export function calculateEmissionsChangeFromBaseYear(
     return null;
   }
 
-  const baseYear = company.baseYear.year.toString();
+  const baseYear = company.baseYear.year;
+  const baseYearStr = baseYear.toString();
 
   // Sort periods by start date (oldest first)
   const periods = [...company.reportingPeriods].sort((a, b) =>
@@ -290,10 +293,9 @@ export function calculateEmissionsChangeFromBaseYear(
   }
 
   // Find baseline period matching the base year (using endDate year)
-  const baselinePeriod = periods.find((p) => {
-    const periodYear = new Date(p.endDate).getFullYear().toString();
-    return periodYear === baseYear;
-  });
+  const baselinePeriod = periods.find(
+    (p) => yearFromIsoDate(p.endDate) === baseYearStr,
+  );
 
   if (!baselinePeriod) {
     return null;
@@ -320,8 +322,13 @@ export function calculateEmissionsChangeFromBaseYear(
     // Use the last period in the array (even if 0)
     latestPeriod = periods[periods.length - 1];
   } else {
-    // Find latest period with >0 emissions (working backwards from latest)
+    // Find latest period with >0 emissions after the base year
     for (let i = periods.length - 1; i >= 0; i--) {
+      const periodYear = Number(yearFromIsoDate(periods[i].endDate));
+      if (periodYear <= baseYear) {
+        continue;
+      }
+
       const emissions = periods[i].emissions?.calculatedTotalEmissions ?? null;
       if (emissions !== null && emissions > 0) {
         latestPeriod = periods[i];
@@ -334,10 +341,10 @@ export function calculateEmissionsChangeFromBaseYear(
     return null;
   }
 
-  // Check if latest period is the same year as base year (using endDate year)
-  const latestYear = new Date(latestPeriod.endDate).getFullYear().toString();
-  if (latestYear === baseYear) {
-    return null; // No change possible - same year
+  // Latest period must be after the base year
+  const latestYear = Number(yearFromIsoDate(latestPeriod.endDate));
+  if (latestYear <= baseYear) {
+    return null;
   }
 
   const latestEmissions = latestPeriod.emissions?.calculatedTotalEmissions ?? 0;
