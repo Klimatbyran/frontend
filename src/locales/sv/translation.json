@@ -1637,7 +1637,6 @@
   "europe": {
     "detailPage": {
       "dataSource": "Källa: Climate TRACE",
-      "countryLabel": "Landet",
       "europeanAverage": "Europeiskt genomsnitt",
       "totalEmissionsTooltip": "Landets totala växthusgasutsläpp baserat på Climate TRACE-data."
     },

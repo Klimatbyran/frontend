@@ -1578,7 +1578,6 @@
   "europe": {
     "detailPage": {
       "dataSource": "Source: Climate TRACE",
-      "countryLabel": "This country",
       "europeanAverage": "European average",
       "totalEmissionsTooltip": "Total greenhouse gas emissions for the country based on Climate TRACE data."
     },

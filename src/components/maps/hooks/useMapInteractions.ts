@@ -24,7 +24,6 @@ interface UseMapInteractionsProps {
   onAreaClick?: (id: string) => void;
   hoveredArea?: string | null;
   onHoveredAreaChange?: (area: string | null) => void;
-  highlightedArea?: string | null;
   showTooltip?: boolean;
 }
 
@@ -38,7 +37,6 @@ export function useMapInteractions({
   onAreaClick,
   hoveredArea: controlledHoveredArea,
   onHoveredAreaChange,
-  highlightedArea,
   showTooltip = true,
 }: UseMapInteractionsProps) {
   const [uncontrolledHoveredArea, setUncontrolledHoveredArea] = useState<
@@ -116,19 +114,15 @@ export function useMapInteractions({
       if (feature?.properties?.[propertyNameField]) {
         const areaName = feature.properties[propertyNameField];
         const { value } = getAreaData(areaName);
-        const normalizedAreaName = String(areaName).toLowerCase();
-        const isHighlighted =
-          highlightedArea?.toLowerCase() === normalizedAreaName;
-        const isHovered = hoveredArea?.toLowerCase() === normalizedAreaName;
+        const isHovered =
+          hoveredArea?.toLowerCase() === String(areaName).toLowerCase();
         const color = getColorByValue(value);
 
         return {
-          fillColor: isHighlighted
-            ? `color-mix(in srgb, ${color} 55%, white 45%)`
-            : isHovered
-              ? `color-mix(in srgb, ${color} 70%, white 30%)`
-              : color,
-          weight: isHighlighted ? 1.5 : 0.75,
+          fillColor: isHovered
+            ? `color-mix(in srgb, ${color} 70%, white 30%)`
+            : color,
+          weight: 0.75,
           color: "var(--black-1)",
           fillOpacity: 1,
           cursor: "pointer",
@@ -136,7 +130,7 @@ export function useMapInteractions({
       }
       return {};
     },
-    [propertyNameField, getAreaData, getColorByValue, highlightedArea, hoveredArea],
+    [propertyNameField, getAreaData, getColorByValue, hoveredArea],
   );
 
   const onEachFeature = useCallback(

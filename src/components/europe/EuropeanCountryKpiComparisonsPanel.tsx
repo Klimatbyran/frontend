@@ -5,20 +5,20 @@ import { EuropeanCountryKpiComparisonChart } from "@/components/europe/EuropeanC
 import { EuropeanCountryKpiComparisons } from "@/hooks/europe/useEuropeanCountryKpiComparisons";
 import {
   formatEmissionsAbsolute,
-  formatEmissionsAbsoluteCompact,
   formatPercentChange,
 } from "@/utils/formatting/localization";
 
 type EuropeanCountryKpiComparisonsProps = {
   comparisons: EuropeanCountryKpiComparisons;
+  countryName: string;
 };
 
 export function EuropeanCountryKpiComparisonsPanel({
   comparisons,
+  countryName,
 }: EuropeanCountryKpiComparisonsProps) {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
-  const countryLabel = t("europe.detailPage.countryLabel");
   const europeanAverageLabel = t("europe.detailPage.europeanAverage");
 
   const formatPercent = useCallback(
@@ -28,7 +28,7 @@ export function EuropeanCountryKpiComparisonsPanel({
 
   const formatEmissions = useCallback(
     (value: number) =>
-      `${formatEmissionsAbsoluteCompact(value, currentLanguage)} ${t("emissionsUnit")}`,
+      `${formatEmissionsAbsolute(value, currentLanguage)} ${t("emissionsUnit")}`,
     [currentLanguage, t],
   );
 
@@ -39,11 +39,11 @@ export function EuropeanCountryKpiComparisonsPanel({
   );
 
   return (
-    <div className="grid min-w-0 grid-cols-1 gap-6 xl:grid-cols-3 xl:gap-8">
+    <div className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2 md:gap-12 lg:grid-cols-3">
       {comparisons.changeSince2015 && (
         <EuropeanCountryKpiComparisonChart
           title={t("detailPage.changeSince2015")}
-          countryLabel={countryLabel}
+          countryLabel={countryName}
           europeanAverageLabel={europeanAverageLabel}
           countryValue={comparisons.changeSince2015.countryValue}
           averageValue={comparisons.changeSince2015.averageValue}
@@ -55,7 +55,7 @@ export function EuropeanCountryKpiComparisonsPanel({
           title={t("detailPage.totalEmissions", {
             year: comparisons.totalEmissions.year,
           })}
-          countryLabel={countryLabel}
+          countryLabel={countryName}
           europeanAverageLabel={europeanAverageLabel}
           countryValue={comparisons.totalEmissions.countryValue}
           averageValue={comparisons.totalEmissions.averageValue}
@@ -67,7 +67,7 @@ export function EuropeanCountryKpiComparisonsPanel({
       {comparisons.emissionsPerCapita && (
         <EuropeanCountryKpiComparisonChart
           title={t("europe.list.kpis.emissionsPerCapita.label")}
-          countryLabel={countryLabel}
+          countryLabel={countryName}
           europeanAverageLabel={europeanAverageLabel}
           countryValue={comparisons.emissionsPerCapita.countryValue}
           averageValue={comparisons.emissionsPerCapita.averageValue}

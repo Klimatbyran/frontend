@@ -2,13 +2,14 @@ import { TerritoryEmissions } from "@/components/territories/TerritoryEmissions"
 import { PageLoading } from "@/components/pageStates/Loading";
 import { PageError } from "@/components/pageStates/Error";
 import { PageNoData } from "@/components/pageStates/NoData";
+import { DetailHeader } from "@/components/detail/DetailHeader";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";
 import { SectorEmissionsChart } from "@/components/charts/sectorChart/SectorEmissions";
 import { EntityListBox } from "@/components/detail/EntityListBox";
 import { useNationPageData } from "@/hooks/nation/useNationPageData";
 import { useLanguage } from "@/components/LanguageProvider";
-import { EuropeanCountryDetailHeader } from "@/components/europe/EuropeanCountryDetailHeader";
-import { SWEDEN_ISO3 } from "@/hooks/europe/useEuropeanCountryDetails";
+import { useTranslation } from "react-i18next";
+import { EuropeanCountryKpiComparisonsPanel } from "@/components/europe/EuropeanCountryKpiComparisonsPanel";
 
 function NationDetailContent({
   nation,
@@ -26,17 +27,26 @@ function NationDetailContent({
   currentYear,
 }: ReturnType<typeof useNationPageData>) {
   const { currentLanguage } = useLanguage();
+  const { t } = useTranslation();
   if (!nation) return <PageNoData />;
 
   return (
     <DetailWrapper>
-      <EuropeanCountryDetailHeader
+      <DetailHeader
         name={nation.country[currentLanguage]}
-        iso3={SWEDEN_ISO3}
         logoUrl={nation.logoUrl}
+        subtitle={t("europe.detailPage.dataSource")}
         helpItems={["regionTotalEmissions", "detailWhyDataDelay"]}
         stats={headerStats}
-        kpiComparisons={kpiComparisons}
+        translateNamespace="europe.detailPage"
+        supplementalData={
+          kpiComparisons ? (
+            <EuropeanCountryKpiComparisonsPanel
+              comparisons={kpiComparisons}
+              countryName={nation.country[currentLanguage]}
+            />
+          ) : null
+        }
       />
       <TerritoryEmissions
         emissionsData={emissionsData}

@@ -4,7 +4,7 @@ import TerritoryMap from "./TerritoryMap";
 
 type DetailTerritoryMapProps = Omit<
   ComponentProps<typeof TerritoryMap>,
-  "fitBounds" | "showTooltip" | "legendPosition"
+  "scrollWheelZoom" | "fitBounds" | "showTooltip" | "legendPosition"
 >;
 
 export function DetailTerritoryMap({
