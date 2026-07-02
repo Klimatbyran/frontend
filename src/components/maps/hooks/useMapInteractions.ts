@@ -136,13 +136,7 @@ export function useMapInteractions({
       }
       return {};
     },
-    [
-      propertyNameField,
-      getAreaData,
-      getColorByValue,
-      highlightedArea,
-      hoveredArea,
-    ],
+    [propertyNameField, getAreaData, getColorByValue, highlightedArea, hoveredArea],
   );
 
   const onEachFeature = useCallback(
