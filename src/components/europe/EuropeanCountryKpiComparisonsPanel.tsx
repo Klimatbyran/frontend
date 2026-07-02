@@ -14,6 +14,7 @@ type EuropeanCountryKpiComparisonsProps = {
   countryName: string;
   comparisons: EuropeanCountryKpiComparisons | null;
   leadingContent?: ReactNode;
+  className?: string;
 };
 
 function KpiChartCard({
@@ -39,6 +40,7 @@ export function EuropeanCountryKpiComparisonsPanel({
   countryName,
   comparisons,
   leadingContent,
+  className,
 }: EuropeanCountryKpiComparisonsProps) {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
@@ -79,7 +81,8 @@ export function EuropeanCountryKpiComparisonsPanel({
   return (
     <div
       className={cn(
-        "mt-4 grid gap-4",
+        "grid gap-4",
+        className,
         hasLeadingContent
           ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
           : "grid-cols-1 lg:grid-cols-3",
