@@ -11,8 +11,15 @@ interface SeoProps {
  * Handles title, description, canonical, robots, OpenGraph, and Twitter tags
  */
 export function Seo({ meta }: SeoProps) {
-  const { title, description, canonical, noindex, og, twitter, structuredData } =
-    meta;
+  const {
+    title,
+    description,
+    canonical,
+    noindex,
+    og,
+    twitter,
+    structuredData,
+  } = meta;
 
   // Build absolute URLs
   const canonicalUrl = canonical ? buildAbsoluteUrl(canonical) : undefined;
