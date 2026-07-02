@@ -13,6 +13,14 @@ This repo is the **Klimatkollen frontend** only: a React 18 + TypeScript + Vite 
 - The hosted prod AND staging APIs both require an API key. Without `GARBO_ALL_ACCESS_API_KEY` set, all `/api/*` requests return **401 "Missing API key"**, so data-driven pages (companies, municipalities, regions, search) render but show "Ingen … data tillgänglig" / empty states. Static/content pages (home, methodology, data guide, blog) work fine without it.
 - To exercise the core data-visualization functionality, set `GARBO_ALL_ACCESS_API_KEY` (a secret) in the environment, then restart `npm run dev`. The OpenAPI schema at `/reference/openapi.json` is public (no key needed), so `npm run generate-api` works without the key.
 
+### Optional: running the backend (Garbo) locally instead of the hosted API
+The backend is a **separate repo** (`github.com/Klimatbyran/garbo`, Node 22, needs Docker). Its own `README.md` has the canonical steps; the non-obvious gotchas discovered here:
+- Bypass the API key locally by setting `ALLOW_ANONYMOUS_CLIENT_API=true` in garbo's `.env` — then no `X-API-Key` / `GARBO_ALL_ACCESS_API_KEY` is needed. This is likely the "run without the API key" flag.
+- `.env.example` ships `OPENAPI_PREFIX=api`, which the server **rejects on boot** ("cannot be 'api'"). Change it to `OPENAPI_PREFIX=reference` (matches what the frontend's `generate-api` expects).
+- Start only the API (what the frontend needs) with `npm run dev-api` (serves `http://localhost:3000`). `dev-api` runs under `--watch`, so it stays alive and waits after a crash — send Ctrl-C before re-running or your next command goes to its stdin.
+- Bring up deps with `docker compose up -d postgres redis chroma`, then `npm run prisma migrate dev` (applies migrations + seed). Seed only loads GICS/users/tags/API-keys — **`/api/companies/` is empty**, but **`/api/municipalities/` returns full real data**, so the Municipalities pages work out of the box. Full company data requires a private DB dump from the team.
+- To point the frontend at it, set `VITE_API_PROXY=http://localhost:3000/` in `.env.development` and restart `npm run dev`.
+
 ### Checks / build
 - Type check: `npx tsc --noEmit` (clean).
 - Tests: `npm run test -- --run` (Vitest + jsdom, self-contained, no services needed).
