@@ -4,6 +4,7 @@ import {
   calculateHistoricalEmissionChangePercent,
   calculateMeetsParisFromTimeSeries,
   CLIMATE_TRACE_BASE_YEAR,
+  getReportedClimateTraceEmissionsByYear,
 } from "./climateTraceKpis";
 
 describe("climateTraceKpis", () => {
@@ -56,6 +57,16 @@ describe("climateTraceKpis", () => {
     );
 
     expect(calculateMeetsParisFromTimeSeries(emissionsByYear)).toBe(false);
+  });
+
+  it("drops partial years beyond the reported end year", () => {
+    const reported = getReportedClimateTraceEmissionsByYear({
+      2024: 100,
+      2025: 90,
+      2026: 20,
+    });
+
+    expect(reported).toEqual({ 2024: 100, 2025: 90 });
   });
 
   it("calculates both KPIs together", () => {

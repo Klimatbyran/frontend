@@ -11,6 +11,7 @@ import {
   EmissionsByYear,
   getEmissionsForParisProjection,
   getEmissionsPointsFromBaseYear,
+  getReportedClimateTraceEmissionsByYear,
   PARIS_PROJECTION_END_YEAR,
   PARIS_PROJECTION_START_YEAR,
 } from "@/utils/europe/climateTraceKpis";
@@ -18,18 +19,9 @@ import {
 const EMISSIONS_DATA_START_YEAR = CLIMATE_TRACE_BASE_YEAR;
 const EMISSIONS_DATA_END_YEAR = PARIS_PROJECTION_END_YEAR;
 
-function getReportedEmissionsByYear(
-  emissionsByYear: EmissionsByYear,
-): EmissionsByYear {
-  return Object.fromEntries(
-    Object.entries(emissionsByYear).filter(
-      ([year]) => Number(year) <= CLIMATE_TRACE_REPORTED_END_YEAR,
-    ),
-  );
-}
-
 function buildTrendRecord(
   emissionsByYear: EmissionsByYear,
+  projectionStartYear: number,
 ): Record<number, number> {
   const points = getEmissionsPointsFromBaseYear(emissionsByYear);
   const slope = calculateLinearRegressionSlope(points);
@@ -41,7 +33,7 @@ function buildTrendRecord(
   const trend: Record<number, number> = {};
 
   for (
-    let year = CLIMATE_TRACE_PROJECTION_START_YEAR;
+    let year = projectionStartYear;
     year <= EMISSIONS_DATA_END_YEAR;
     year++
   ) {
@@ -56,6 +48,7 @@ function buildTrendRecord(
 
 function buildCarbonLawRecord(
   emissionsByYear: EmissionsByYear,
+  projectionStartYear: number,
 ): Record<number, number> {
   const points = getEmissionsPointsFromBaseYear(emissionsByYear);
   const slope = calculateLinearRegressionSlope(points);
@@ -70,7 +63,7 @@ function buildCarbonLawRecord(
 
   const carbonLaw: Record<number, number> = {};
   for (
-    let year = CLIMATE_TRACE_PROJECTION_START_YEAR;
+    let year = projectionStartYear;
     year <= EMISSIONS_DATA_END_YEAR;
     year++
   ) {
@@ -95,9 +88,16 @@ export function transformEuropeanCountryEmissionsData(
     return [];
   }
 
-  const reportedEmissionsByYear = getReportedEmissionsByYear(emissionsByYear);
-  const trend = buildTrendRecord(reportedEmissionsByYear);
-  const carbonLaw = buildCarbonLawRecord(reportedEmissionsByYear);
+  const reportedEmissionsByYear = getReportedClimateTraceEmissionsByYear(
+    emissionsByYear,
+    CLIMATE_TRACE_REPORTED_END_YEAR,
+  );
+  const projectionStartYear = CLIMATE_TRACE_PROJECTION_START_YEAR;
+  const trend = buildTrendRecord(reportedEmissionsByYear, projectionStartYear);
+  const carbonLaw = buildCarbonLawRecord(
+    reportedEmissionsByYear,
+    projectionStartYear,
+  );
 
   const years = new Set<number>();
   Object.keys(reportedEmissionsByYear).forEach((year) =>
@@ -112,15 +112,10 @@ export function transformEuropeanCountryEmissionsData(
     .map((yearNum) => ({
       year: yearNum,
       total: reportedEmissionsByYear[yearNum],
-      trend:
-        yearNum >= CLIMATE_TRACE_PROJECTION_START_YEAR
-          ? trend[yearNum]
-          : undefined,
+      trend: yearNum >= projectionStartYear ? trend[yearNum] : undefined,
       approximated: undefined,
       carbonLaw:
-        yearNum >= CLIMATE_TRACE_PROJECTION_START_YEAR
-          ? carbonLaw[yearNum]
-          : undefined,
+        yearNum >= projectionStartYear ? carbonLaw[yearNum] : undefined,
     }))
     .filter(
       (point) =>

@@ -12,6 +12,34 @@ export const PARIS_PROJECTION_END_YEAR = 2050;
 
 export type EmissionsByYear = Record<number, number>;
 
+export function getReportedClimateTraceEmissionsByYear(
+  emissionsByYear: EmissionsByYear,
+  reportedEndYear: number = CLIMATE_TRACE_REPORTED_END_YEAR,
+): EmissionsByYear {
+  return Object.fromEntries(
+    Object.entries(emissionsByYear).filter(
+      ([year, value]) =>
+        Number(year) <= reportedEndYear &&
+        value !== undefined &&
+        value !== null &&
+        !Number.isNaN(Number(value)),
+    ),
+  );
+}
+
+export function getClimateTraceReportedEndYear(
+  emissionsByYear: EmissionsByYear,
+  reportedEndYear: number = CLIMATE_TRACE_REPORTED_END_YEAR,
+): number | undefined {
+  const reportedYears = Object.keys(
+    getReportedClimateTraceEmissionsByYear(emissionsByYear, reportedEndYear),
+  )
+    .map(Number)
+    .filter((year) => !Number.isNaN(year));
+
+  return reportedYears.length > 0 ? Math.max(...reportedYears) : undefined;
+}
+
 export function calculateLinearRegressionSlope(
   points: { year: number; value: number }[],
 ): number | null {
@@ -151,9 +179,13 @@ export function calculateClimateTraceCountryKpis(
   historicalEmissionChangePercent: number | null;
   meetsParis: boolean | null;
 } {
+  const reportedEmissionsByYear =
+    getReportedClimateTraceEmissionsByYear(emissionsByYear);
+
   return {
-    historicalEmissionChangePercent:
-      calculateHistoricalEmissionChangePercent(emissionsByYear),
-    meetsParis: calculateMeetsParisFromTimeSeries(emissionsByYear),
+    historicalEmissionChangePercent: calculateHistoricalEmissionChangePercent(
+      reportedEmissionsByYear,
+    ),
+    meetsParis: calculateMeetsParisFromTimeSeries(reportedEmissionsByYear),
   };
 }

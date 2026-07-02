@@ -44,7 +44,12 @@ describe("transformEuropeanCountryEmissionsData", () => {
 
     const data = transformEuropeanCountryEmissionsData(emissionsByYear);
 
+    expect(data.find((point) => point.year === 2024)?.total).toBeDefined();
     expect(data.find((point) => point.year === 2025)?.total).toBeDefined();
+    expect(data.find((point) => point.year === 2025)?.trend).toBeUndefined();
+    expect(
+      data.find((point) => point.year === 2025)?.carbonLaw,
+    ).toBeUndefined();
     expect(data.find((point) => point.year === 2026)?.total).toBeUndefined();
     expect(data.find((point) => point.year === 2026)?.trend).toBeDefined();
     expect(data.find((point) => point.year === 2026)?.carbonLaw).toBeDefined();

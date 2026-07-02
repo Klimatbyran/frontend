@@ -30,7 +30,10 @@ import {
   ChartTooltip,
 } from "@/components/charts";
 import { useLanguage } from "@/components/LanguageProvider";
-import { CLIMATE_TRACE_PROJECTION_START_YEAR } from "@/utils/europe/climateTraceKpis";
+import {
+  CLIMATE_TRACE_PROJECTION_START_YEAR,
+  CLIMATE_TRACE_REPORTED_END_YEAR,
+} from "@/utils/europe/climateTraceKpis";
 
 interface OverviewChartProps {
   projectedData: DataPoint[];
@@ -41,6 +44,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
   const { currentLanguage } = useLanguage();
   const { isMobile } = useScreenSize();
   const projectionStartYear = CLIMATE_TRACE_PROJECTION_START_YEAR;
+  const reportedEndYear = CLIMATE_TRACE_REPORTED_END_YEAR;
 
   const [chartEndYear, setChartEndYear] = useState(
     new Date().getFullYear() + 5,
@@ -69,7 +73,16 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
               {...getXAxisProps(
                 "year",
                 [1990, 2050],
-                [1990, 2015, 2020, projectionStartYear, 2030, 2040, 2050],
+                [
+                  1990,
+                  2015,
+                  2020,
+                  reportedEndYear,
+                  projectionStartYear,
+                  2030,
+                  2040,
+                  2050,
+                ],
               )}
             />
             <YAxis {...getYAxisProps(currentLanguage)} />
@@ -82,9 +95,11 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
               wrapperStyle={{ outline: "none", zIndex: 60 }}
             />
 
-            {/* Current year reference line */}
             <ReferenceLine
-              {...getCurrentYearReferenceLineProps(projectionStartYear)}
+              {...getCurrentYearReferenceLineProps(
+                projectionStartYear,
+                String(projectionStartYear),
+              )}
             />
 
             {/* Historical line */}
