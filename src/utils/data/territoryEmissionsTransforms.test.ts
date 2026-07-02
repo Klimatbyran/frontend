@@ -21,7 +21,8 @@ describe("transformTerritoryEmissionsData", () => {
   it("prorates current-year estimated values to year-to-date and projects trend from today", () => {
     const midYear = new Date("2026-07-02T12:00:00Z");
     const data = transformTerritoryEmissionsData(territory, midYear);
-    const yearProgress = (midYear.getTime() - Date.UTC(2026, 0, 1)) /
+    const yearProgress =
+      (midYear.getTime() - Date.UTC(2026, 0, 1)) /
       (Date.UTC(2027, 0, 1) - Date.UTC(2026, 0, 1));
     const annualSlope = 42_000 - 44_000;
     const trendAtToday = 44_000 + annualSlope * yearProgress;

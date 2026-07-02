@@ -53,12 +53,9 @@ function adjustTrendFromToday(
   }
 
   const annualSlope =
-    trendAtNextYear !== undefined
-      ? trendAtNextYear - trendAtCalendarYear
-      : 0;
+    trendAtNextYear !== undefined ? trendAtNextYear - trendAtCalendarYear : 0;
   const todayPosition = calendarYear + yearProgress;
-  const trendAtToday =
-    trendAtCalendarYear + annualSlope * yearProgress;
+  const trendAtToday = trendAtCalendarYear + annualSlope * yearProgress;
 
   if (yearNum === calendarYear) {
     return trendAtToday;
