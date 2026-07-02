@@ -94,21 +94,20 @@ async function fetchClimateTraceCountryRankingsForYearWithRetry(
     try {
       const rankings = await fetchClimateTraceCountryRankingsForYear(year);
       if (rankings.length === 0) {
-        throw new Error(
-          `Climate TRACE API returned no rankings for ${year}`,
-        );
+        throw new Error(`Climate TRACE API returned no rankings for ${year}`);
       }
       return rankings;
     } catch (error) {
-      lastError =
-        error instanceof Error ? error : new Error(String(error));
+      lastError = error instanceof Error ? error : new Error(String(error));
       if (attempt < FETCH_RETRY_ATTEMPTS - 1) {
         await sleep(FETCH_RETRY_BASE_DELAY_MS * 2 ** attempt);
       }
     }
   }
 
-  throw lastError ?? new Error(`Failed to fetch Climate TRACE data for ${year}`);
+  throw (
+    lastError ?? new Error(`Failed to fetch Climate TRACE data for ${year}`)
+  );
 }
 
 function buildEmissionsByYearFromRankings(
