@@ -10,8 +10,10 @@ import {
 } from "recharts";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
-import type { NationStackDataPoint } from "@/utils/data/nationStoryMetrics";
-import { formatMton } from "@/utils/data/nationStoryMetrics";
+import {
+  formatMton,
+  type NationStackDataPoint,
+} from "@/utils/data/nationStoryMetrics";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import {

@@ -1616,40 +1616,6 @@
         "text": "Atmosfären reagerar på mängden växthusgaser totalt – och dessa ackumuleras över tid. Lite som ett badkar där kranen står på: tills kranen dras åt helt fortsätter vattnet att stiga. Därför spelar det roll hur snabbt vi minskar utsläppen ner mot noll.",
         "question": "Så hur har de olika utsläppsperspektiven förändrats sedan 1990?"
       },
-      "headline": {
-        "eyebrow": "Huvudvinkeln",
-        "title": "Sveriges utsläpp är <0>{{ratio}} gånger</0> så stora som det som oftast rapporteras",
-        "reportedLabel": "Rapporterade territoriella fossila utsläpp ({{year}})",
-        "fullLabel": "Produktions-, biogena och konsumtionsbaserade utsläpp ({{year}})",
-        "ratioCaption": "{{ratio}}× större än den officiella siffran",
-        "description": "Den vanliga berättelsen bygger nästan uteslutande på territoriella fossila utsläpp inom Sveriges gränser. Lägger man till biogena utsläpp och konsumtionsbaserade utsläpp utomlands får bilden en helt annan skala.",
-        "combinedChange": "Sammantaget har de tre lagren gått från {{from}} till {{to}} Mton sedan 1990 ({{change}})."
-      },
-      "combined": {
-        "title": "Nästan oförändrat sedan 1990",
-        "paragraph1": "När vi genomlyser de produktionsbaserade, konsumtionsbaserade och biogena utsläppen sammantaget ser vi att de är nästan lika stora idag som 1990. Det ger en annan bild än den vanliga berättelsen om Sveriges framgångsrika utsläppsminskning.",
-        "changeLabel": "Förändring sedan 1990",
-        "paragraph2": "Den officiella statistiken visar en tydlig minskning av fossila territoriella utsläpp. Men när hela bilden inkluderas planar kurvan ut."
-      },
-      "biogenic": {
-        "title": "Biogena utsläpp har mer än fördubblats",
-        "paragraph1": "De biogena utsläppen har mer än fördubblats sedan 1990. I stor utsträckning beror det på att uppvärmning idag sker med biomassa i fjärrvärme och kraftvärme istället för som tidigare med olja och gas. Biogena utsläpp uppstår även i pappers- och massaindustrin, samt när bilar kör på biobränsle.",
-        "biogenicChangeLabel": "Förändring biogena utsläpp",
-        "biogenicValues": "{{from}} → {{to}} Mton",
-        "prodBiogenicLabel": "Produktions + biogent sedan 1990",
-        "prodBiogenicValues": "{{from}} → {{to}} Mton",
-        "paragraph2": "Lägger man samman produktionsbaserat och biogent har utsläppen inte minskat alls sedan 1990, utan ökat. Det sker även ett upptag av biogena utsläpp av skog och mark, men detta redovisas inte här."
-      },
-      "consumption": {
-        "title": "Konsumtion utomlands – en dold del av bilden",
-        "paragraph1": "De konsumtionsbaserade utsläppen utomlands är större än de produktionsbaserade territoriella utsläppen. Sett över tid sedan 1990 har de gått ner en del, men den offentliga statistiken fångar inte allt.",
-        "consumptionChangeLabel": "Konsumtion utomlands sedan 1990",
-        "since1990": "sedan 1990",
-        "eCommerceLabel": "Privat e-handel från utlandet ({{year}})",
-        "eCommerceDescription": "Vi har för första gången siffror på utsläppen från privat e-handel från utlandet – exempelvis kläder som klickas hem från utländska webbshoppar.",
-        "gavleComparison": "Motsvarar ungefär utsläppen i {{municipality}} {{year}} ({{gavleTonnes}} tCO₂e)",
-        "paragraph2": "Konsumtionsutsläpp utomlands speglar var varor och tjänster vi använder i Sverige tillverkas – oavsett om de sker innanför eller utanför våra gränser."
-      },
       "graph": {
         "territorialFossil": "Produktionsbaserade (territoriella fossila)",
         "biogenic": "Biogena utsläpp",
@@ -1669,10 +1635,6 @@
         "fullLabel": "Sveriges samlade utsläpp",
         "since1990": "sedan 1990",
         "body": "Den vanliga siffran ger en överdrivet optimistisk bild. Räknar vi in allt får vi en betydligt mer realistisk bild av hur det faktiskt går – och ändå har vi inte räknat allt."
-      },
-      "footer": {
-        "methodsPrompt": "Läs mer om datakällor och metod:",
-        "methodsLink": "Nationell data i metodologi"
       }
     }
   },

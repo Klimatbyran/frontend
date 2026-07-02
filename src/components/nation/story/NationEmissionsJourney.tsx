@@ -1,7 +1,9 @@
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
-import type { NationStoryMetrics } from "@/utils/data/nationStoryMetrics";
-import { formatMton } from "@/utils/data/nationStoryMetrics";
+import {
+  formatMton,
+  type NationStoryMetrics,
+} from "@/utils/data/nationStoryMetrics";
 import { useLanguage } from "@/components/LanguageProvider";
 import { usePinnedSteps } from "@/components/nation/story/usePinnedSteps";
 
