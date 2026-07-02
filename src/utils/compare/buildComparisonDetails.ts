@@ -177,8 +177,15 @@ export function enrichComparisonItem(
     isAIGenerated?: IsAIGeneratedFn;
   },
 ): ListCardProps {
-  const { municipality, company, region, nation, currentLanguage, t, isAIGenerated } =
-    options;
+  const {
+    municipality,
+    company,
+    region,
+    nation,
+    currentLanguage,
+    t,
+    isAIGenerated,
+  } = options;
 
   if (card.variant === "municipality" && municipality) {
     return {

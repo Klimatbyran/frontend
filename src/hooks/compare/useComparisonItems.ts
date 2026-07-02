@@ -55,7 +55,8 @@ export function useComparisonItems() {
   const { regions, loading: regionsLoading } = useRegionsForExplore({
     enabled: loadRegions,
   });
-  const { emissionsByIso, isLoading: nationsLoading } = useClimateTraceEmissions();
+  const { emissionsByIso, isLoading: nationsLoading } =
+    useClimateTraceEmissions();
   const { countryEntities } = useEuropeanData(
     defaultEuropeanKpi,
     europeGeoJson as FeatureCollection,
@@ -127,7 +128,10 @@ export function useComparisonItems() {
     if (activeVariant === "nation") {
       return selectedCards.map((card) => {
         const nation = countryEntities.find((country) =>
-          isSameComparisonLink(getNationLinkTo(String(country.id)), card.linkTo),
+          isSameComparisonLink(
+            getNationLinkTo(String(country.id)),
+            card.linkTo,
+          ),
         );
 
         return enrichComparisonItem(card, {

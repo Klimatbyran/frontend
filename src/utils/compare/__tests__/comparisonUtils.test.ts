@@ -89,7 +89,11 @@ describe("variant and category mapping", () => {
     });
 
     expect(
-      isComparableSearchResult({ id: "DEU", name: "Germany", category: "nations" }),
+      isComparableSearchResult({
+        id: "DEU",
+        name: "Germany",
+        category: "nations",
+      }),
     ).toBe(true);
   });
 });
