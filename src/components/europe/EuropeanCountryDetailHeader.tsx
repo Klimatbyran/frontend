@@ -46,21 +46,17 @@ export function EuropeanCountryDetailHeader({
       {stats.length > 0 && (
         <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {stats.map((stat, index) => (
-            <div
+            <OverviewStat
               key={index}
-              className="min-w-0 rounded-level-2 bg-white/5 p-6 shadow-lg backdrop-blur-sm"
-            >
-              <OverviewStat
-                variant="detail"
-                label={stat.label}
-                value={stat.value}
-                unit={stat.unit}
-                valueClassName={stat.valueClassName}
-                info={stat.info}
-                infoText={stat.infoText}
-                useFlex1={false}
-              />
-            </div>
+              variant="detail"
+              label={stat.label}
+              value={stat.value}
+              unit={stat.unit}
+              valueClassName={stat.valueClassName}
+              info={stat.info}
+              infoText={stat.infoText}
+              useFlex1={false}
+            />
           ))}
         </div>
       )}
