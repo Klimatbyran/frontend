@@ -1509,6 +1509,10 @@
     "description": "Overview of emissions and transition at the European level"
   },
   "europe": {
+    "detailPage": {
+      "dataSource": "Source: Climate TRACE",
+      "totalEmissionsTooltip": "Total greenhouse gas emissions for the country based on Climate TRACE data."
+    },
     "map": {
       "legend": {
         "null": "No data"

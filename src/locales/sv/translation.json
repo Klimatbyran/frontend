@@ -1568,6 +1568,10 @@
     "description": "Översikt över utsläpp och omställning på europeisk nivå"
   },
   "europe": {
+    "detailPage": {
+      "dataSource": "Källa: Climate TRACE",
+      "totalEmissionsTooltip": "Landets totala växthusgasutsläpp baserat på Climate TRACE-data."
+    },
     "map": {
       "legend": {
         "null": "Ingen data"

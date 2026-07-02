@@ -13,15 +13,16 @@ export const localizedPath = (lang: string, path: To) => {
  */
 export function getEntityDetailPath(
   entityType: "region" | "municipality" | "europe",
-  entity: { name: string } | string,
+  entity: { name: string; id?: string } | string,
   viewMode?: string,
 ): string {
   const name = typeof entity === "string" ? entity : entity.name;
   const formattedName = name.toLowerCase();
 
   if (entityType === "europe") {
-    // No detail page for European countries yet, return overview page
-    return "/europe";
+    const countryId =
+      typeof entity === "string" ? entity : (entity.id ?? entity.name);
+    return `/europe/${countryId.toLowerCase()}`;
   }
 
   const basePath = entityType === "region" ? "/regions" : "/municipalities";

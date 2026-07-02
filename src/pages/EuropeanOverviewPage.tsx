@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Map, List } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { FeatureCollection } from "geojson";
 import { PageHeader } from "@/components/layout/PageHeader";
 import TerritoryMap from "@/components/maps/TerritoryMap";
@@ -15,6 +16,8 @@ import { EuropeanRankedList } from "@/components/europe/EuropeanRankedList";
 import { KPIDataSelector } from "@/components/ranked/KPIDataSelector";
 import { DataItem, KPIValue } from "@/types/rankings";
 import { EuropeanCountry } from "@/types/europe";
+import { createEntityClickHandler } from "@/utils/routing";
+import { RankedListItem } from "@/types/rankings";
 
 const MAP_COLORS = {
   null: "color-mix(in srgb, var(--black-3) 80%, transparent)",
@@ -77,6 +80,7 @@ interface EuropeanMapProps {
   geoData: FeatureCollection;
   mapData: DataItem[];
   selectedKPI: KPIValue<EuropeanCountry>;
+  onAreaClick: (name: string) => void;
   className?: string;
 }
 
@@ -84,6 +88,7 @@ function EuropeanMap({
   geoData,
   mapData,
   selectedKPI,
+  onAreaClick,
   className,
 }: EuropeanMapProps) {
   return (
@@ -93,6 +98,7 @@ function EuropeanMap({
         geoData={geoData}
         data={mapData}
         selectedKPI={selectedKPI}
+        onAreaClick={onAreaClick}
         defaultCenter={[55, 15]}
         defaultZoom={3}
         propertyNameField="NAME"
@@ -103,6 +109,7 @@ function EuropeanMap({
 }
 
 export function EuropeanOverviewPage() {
+  const navigate = useNavigate();
   const europeanKPIs = useEuropeanKPIs();
   const [geoData] = useState<FeatureCollection>(
     europeGeoJson as FeatureCollection,
@@ -119,10 +126,20 @@ export function EuropeanOverviewPage() {
   const { countryEntities, mapData, filteredGeoData, countriesAsEntities } =
     useEuropeanData(selectedKPI, geoData, emissionsByIso);
 
+  const handleCountryClick = createEntityClickHandler(navigate, "europe");
+
+  const handleCountryAreaClick = (name: string) => {
+    const country = countryEntities.find((item) => item.mapName === name);
+    if (country) {
+      handleCountryClick(country as RankedListItem);
+    }
+  };
+
   const europeanOverviewList = (
     <EuropeanRankedList
       countryEntities={countryEntities}
       selectedKPI={selectedKPI}
+      onItemClick={handleCountryClick}
     />
   );
 
@@ -154,6 +171,7 @@ export function EuropeanOverviewPage() {
             geoData={filteredGeoData}
             mapData={mapData}
             selectedKPI={selectedKPI}
+            onAreaClick={handleCountryAreaClick}
             className="relative h-[65vh]"
           />
         ) : (
@@ -169,6 +187,7 @@ export function EuropeanOverviewPage() {
               geoData={filteredGeoData}
               mapData={mapData}
               selectedKPI={selectedKPI}
+              onAreaClick={handleCountryAreaClick}
               className="relative h-full"
             />
           ) : (

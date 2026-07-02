@@ -6,11 +6,13 @@ import { EuropeanCountry } from "@/types/europe";
 interface EuropeanRankedListProps {
   countryEntities: RankedListItem[];
   selectedKPI: KPIValue<EuropeanCountry>;
+  onItemClick?: (item: RankedListItem) => void;
 }
 
 export function EuropeanRankedList({
   countryEntities,
   selectedKPI,
+  onItemClick,
 }: EuropeanRankedListProps) {
   const { t } = useTranslation();
 
@@ -51,6 +53,7 @@ export function EuropeanRankedList({
       selectedDataPoint={selectedDataPoint}
       searchKey="displayName"
       searchPlaceholder={t("rankedList.search.placeholder")}
+      onItemClick={onItemClick}
     />
   );
 }
