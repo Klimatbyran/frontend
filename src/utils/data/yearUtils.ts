@@ -1,6 +1,6 @@
 // Helper function to get latest year's data
 export function getSectorsReportingYear(): number {
-  return Math.round(new Date().getFullYear() - 1.5);
+  return new Date().getFullYear() - 2;
 }
 
 export function getLatestYearData<T>(
