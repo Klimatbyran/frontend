@@ -112,7 +112,7 @@ export const InternalDashboard = () => {
     const changeRate = calculateEmissionsChange(company.reportingPeriods[0]);
 
     return changeRate
-      ? formatPercentChange(changeRate, currentLanguage, true)
+      ? formatPercentChange(changeRate, currentLanguage)
       : "N/A";
   };
 
