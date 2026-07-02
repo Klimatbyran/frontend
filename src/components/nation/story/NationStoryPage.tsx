@@ -54,10 +54,8 @@ export function NationStoryPage({
         </div>
       </section>
 
-      {/* Growing-bubble journey: broadening the emissions perspective */}
-      <FullScreenSection>
-        <NationEmissionsJourney metrics={metrics} />
-      </FullScreenSection>
+      {/* Growing-bubble journey: scroll-driven, sticky bubble */}
+      <NationEmissionsJourney metrics={metrics} />
 
       {/* Bathtub metaphor – transition into the time series */}
       <section className="min-h-[70vh] flex items-center justify-center px-4 md:px-8 py-10">

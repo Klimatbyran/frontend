@@ -1,15 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { motion, useInView } from "framer-motion";
+import { motion, useMotionValueEvent, useScroll } from "framer-motion";
 import type { NationStoryMetrics } from "@/utils/data/nationStoryMetrics";
 import { formatMton } from "@/utils/data/nationStoryMetrics";
 import { useLanguage } from "@/components/LanguageProvider";
 
-/**
- * Cumulative "running total" of Swedish emissions in Mton, per the report.
- * Territorial and consumption/biogenic totals come from live data; the
- * production-based figure (not in the dataset) uses the report's value.
- */
 type JourneyStep = {
   key: string;
   labelKey: string;
@@ -22,8 +17,7 @@ type JourneyStep = {
   badgeKey?: string;
 };
 
-const STEP_INTERVAL_MS = 3200;
-const MAX_DIAMETER = 260;
+const MAX_DIAMETER = 300;
 
 function buildSteps(metrics: NationStoryMetrics): JourneyStep[] {
   const territorial = metrics.territorialLatestMton; // ~47
@@ -86,125 +80,117 @@ export function NationEmissionsJourney({
   const steps = buildSteps(metrics);
   const maxTotal = steps[steps.length - 1].total;
 
+  const wrapperRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: wrapperRef,
+    offset: ["start start", "end end"],
+  });
+
   const [step, setStep] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const inView = useInView(containerRef, { once: false, amount: 0.4 });
-  const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
-
-  useEffect(() => {
-    timersRef.current.forEach(clearTimeout);
-    timersRef.current = [];
-
-    if (inView) {
-      setStep(0);
-      steps.slice(1).forEach((_, i) => {
-        const timer = setTimeout(
-          () => setStep(i + 1),
-          (i + 1) * STEP_INTERVAL_MS,
-        );
-        timersRef.current.push(timer);
-      });
-    } else {
-      setStep(0);
-    }
-
-    return () => timersRef.current.forEach(clearTimeout);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [inView]);
+  useMotionValueEvent(scrollYProgress, "change", (v) => {
+    // Map 0–1 scroll progress across the steps
+    const idx = Math.min(steps.length - 1, Math.floor(v * steps.length));
+    setStep(Math.max(0, idx));
+  });
 
   const current = steps[step];
   const diameter = Math.sqrt(current.total / maxTotal) * MAX_DIAMETER;
 
   return (
-    <div
-      ref={containerRef}
-      className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center w-full"
+    <section
+      ref={wrapperRef}
+      className="relative"
+      style={{ height: `${steps.length * 90}vh` }}
     >
-      {/* Growing bubble */}
-      <div className="flex flex-col items-center gap-4">
-        <div
-          className="relative flex items-center justify-center"
-          style={{ height: MAX_DIAMETER }}
-        >
-          <motion.div
-            className="relative flex items-center justify-center"
-            animate={{ width: diameter, height: diameter }}
-            transition={{ type: "spring", stiffness: 120, damping: 20 }}
-            style={{
-              borderRadius: "50%",
-              backgroundColor: current.color,
-              opacity: 0.9,
-            }}
-          >
-            <span className="text-black font-bold text-2xl md:text-4xl tabular-nums select-none leading-none text-center">
-              {formatMton(current.total, currentLanguage, 0)}
-              <span className="block text-xs md:text-sm font-medium mt-1">
-                {t("nation.story.unit.mton")}
-              </span>
-            </span>
-
-            {/* Private e-commerce ring */}
-            {current.ring && (
-              <motion.span
-                className="absolute rounded-full border-2 border-dashed"
-                style={{
-                  inset: -14,
-                  borderColor: current.color,
+      <div className="sticky top-0 h-screen flex items-center px-4 md:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center w-full max-w-5xl mx-auto">
+          {/* Bubble stays in place; size + color animate on scroll */}
+          <div className="flex flex-col items-center gap-4">
+            <div
+              className="relative flex items-center justify-center"
+              style={{ height: MAX_DIAMETER }}
+            >
+              <motion.div
+                className="relative flex items-center justify-center"
+                animate={{
+                  width: diameter,
+                  height: diameter,
+                  backgroundColor: current.color,
                 }}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5 }}
-              />
+                transition={{ type: "spring", stiffness: 120, damping: 20 }}
+                style={{ borderRadius: "50%", opacity: 0.9 }}
+              >
+                <span className="text-black font-bold text-2xl md:text-4xl tabular-nums select-none leading-none text-center">
+                  {formatMton(current.total, currentLanguage, 0)}
+                  <span className="block text-xs md:text-sm font-medium mt-1">
+                    {t("nation.story.unit.mton")}
+                  </span>
+                </span>
+
+                {/* Private e-commerce ring */}
+                {current.ring && (
+                  <motion.span
+                    className="absolute rounded-full border-2 border-dashed"
+                    style={{ inset: -14, borderColor: current.color }}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5 }}
+                  />
+                )}
+              </motion.div>
+            </div>
+
+            {current.ring && current.badgeKey && (
+              <motion.p
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4 }}
+                className="text-sm text-pink-2"
+              >
+                {t(current.badgeKey)}
+              </motion.p>
             )}
-          </motion.div>
+
+            <p className="text-xs uppercase tracking-widest text-grey">
+              {t("nation.story.journey.runningTotalLabel")}
+            </p>
+          </div>
+
+          {/* Caption changes with scroll */}
+          <div className="space-y-3">
+            <motion.div
+              key={current.key}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+              className="space-y-3"
+            >
+              <p className="flex items-center gap-2 text-lg md:text-xl text-white font-medium">
+                <span
+                  className="w-3 h-3 rounded-full shrink-0"
+                  style={{ backgroundColor: current.color }}
+                />
+                {t(current.labelKey)}
+              </p>
+              <p className="text-base md:text-lg text-grey leading-relaxed">
+                {t(current.textKey)}
+              </p>
+            </motion.div>
+
+            {/* Scroll progress indicator */}
+            <div className="flex gap-2 pt-2">
+              {steps.map((s, i) => (
+                <span
+                  key={s.key}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                    i === step ? "w-8 bg-white" : "w-1.5 bg-white/30"
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
         </div>
-
-        {current.ring && current.badgeKey && (
-          <motion.p
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-            className="text-sm text-pink-2"
-          >
-            {t(current.badgeKey)}
-          </motion.p>
-        )}
-
-        <p className="text-xs uppercase tracking-widest text-grey">
-          {t("nation.story.journey.runningTotalLabel")}
-        </p>
       </div>
-
-      {/* Caption for the current step */}
-      <motion.div
-        key={current.key}
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.45 }}
-        className="space-y-3"
-      >
-        <p className="flex items-center gap-2 text-lg md:text-xl text-white font-medium">
-          <span
-            className="w-3 h-3 rounded-full shrink-0"
-            style={{ backgroundColor: current.color }}
-          />
-          {t(current.labelKey)}
-        </p>
-        <p className="text-base md:text-lg text-grey leading-relaxed">
-          {t(current.textKey)}
-        </p>
-        {/* Step progress dots */}
-        <div className="flex gap-2 pt-2">
-          {steps.map((s, i) => (
-            <span
-              key={s.key}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                i === step ? "w-8 bg-white" : "w-1.5 bg-white/30"
-              }`}
-            />
-          ))}
-        </div>
-      </motion.div>
-    </div>
+    </section>
   );
 }
