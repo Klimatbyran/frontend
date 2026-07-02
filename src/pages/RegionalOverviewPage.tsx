@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Map, List } from "lucide-react";
+import { ArrowDownCircle, Leaf, Map, List } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { FeatureCollection } from "geojson";
 import { useNavigate } from "react-router-dom";
@@ -12,19 +12,22 @@ import {
   RegionKPIData,
   useRegionalKPIs,
 } from "@/hooks/regions/useRegionKPIs";
-import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import RegionalInsightsPanel from "@/components/regions/RegionalInsightsPanel";
 import { Region } from "@/types/region";
 import { resolveRegionFromMapName, toMapRegionName } from "@/utils/regionUtils";
 import { toRegionMapDataItem } from "@/utils/territoryMapData";
 import { RegionalRankedList } from "@/components/regions/RegionalRankedList";
-import { KPIDataSelector } from "@/components/ranked/KPIDataSelector";
-import {
-  OverviewSplitLayout,
-  type OverviewViewMode,
-} from "@/components/ranked/OverviewSplitLayout";
+import { KPIChipSelector } from "@/components/ranked/KPIChipSelector";
+import { OverviewPageSkeleton } from "@/components/ranked/OverviewPageSkeleton";
+import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
+import { OverviewSplitLayout } from "@/components/ranked/OverviewSplitLayout";
 import { createEntityClickHandler } from "@/utils/routing";
 import { RankedListItem } from "@/types/rankings";
+
+const REGION_KPI_ICONS: Record<string, React.ReactNode> = {
+  historicalEmissionChangePercent: <ArrowDownCircle className="w-4 h-4" />,
+  meetsParis: <Leaf className="w-4 h-4" />,
+};
 
 export function RegionalOverviewPage() {
   const { t } = useTranslation();
@@ -93,16 +96,7 @@ export function RegionalOverviewPage() {
   }, [regionEntities]);
 
   if (regionsLoading) {
-    return (
-      <div className="animate-pulse space-y-16">
-        <div className="h-12 w-1/3 bg-black-1 rounded" />
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {[...Array(6)].map((_, i) => (
-            <div key={i} className="h-96 bg-black-1 rounded-level-2" />
-          ))}
-        </div>
-      </div>
-    );
+    return <OverviewPageSkeleton />;
   }
 
   if (regionsError) {
@@ -118,11 +112,29 @@ export function RegionalOverviewPage() {
     );
   }
 
+  const viewToggle = (
+    <ViewModeToggle
+      viewMode={viewMode}
+      modes={["map", "list"]}
+      onChange={setViewModeInURL}
+      titles={{
+        map: t("viewModeToggle.map"),
+        list: t("viewModeToggle.list"),
+      }}
+      showTitles
+      icons={{
+        map: <Map className="w-4 h-4" />,
+        list: <List className="w-4 h-4" />,
+      }}
+    />
+  );
+
   const regionalRankedList = (
     <RegionalRankedList
       regionEntities={regionEntities}
       selectedKPI={selectedKPI}
       onItemClick={handleRegionClick}
+      headerAction={viewToggle}
     />
   );
 
@@ -146,44 +158,54 @@ export function RegionalOverviewPage() {
         className="-ml-4"
       />
 
-      <KPIDataSelector
+      <KPIChipSelector<Region>
         selectedKPI={selectedKPI}
+        kpis={regionalKPIs}
         onKPIChange={(kpi) => {
           setSelectedKPI(kpi);
           setKPIInURL(String(kpi.key));
         }}
-        kpis={regionalKPIs}
+        iconMap={REGION_KPI_ICONS}
         translationPrefix="regions.list"
+        label={t("municipalities.list.dataSelector.label")}
       />
 
-      <div className="flex mb-4 md:hidden">
-        <ViewModeToggle
-          viewMode={viewMode}
-          modes={["map", "list"]}
-          onChange={(mode) => setViewModeInURL(mode)}
-          titles={{
-            map: t("viewModeToggle.map"),
-            list: t("viewModeToggle.list"),
-          }}
-          showTitles
-          icons={{
-            map: <Map className="w-4 h-4" />,
-            list: <List className="w-4 h-4" />,
-          }}
-        />
-      </div>
-
       <div className="space-y-6">
-        <OverviewSplitLayout
-          viewMode={viewMode}
-          visualizationMode="map"
-          visualization={mapPanel}
-          list={regionalRankedList}
-        />
-        <RegionalInsightsPanel
-          regionsData={regionsAsEntities}
-          selectedKPI={selectedKPI}
-        />
+        {/* Row 1: map/list toggle | stats */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+          <OverviewSplitLayout
+            viewMode={viewMode}
+            visualizationMode="map"
+            visualization={mapPanel}
+            list={regionalRankedList}
+            toggle={viewToggle}
+          />
+          <RegionalInsightsPanel
+            regionsData={regionsAsEntities}
+            selectedKPI={selectedKPI}
+            section="stats"
+          />
+        </div>
+
+        {!selectedKPI.isBoolean && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+            <RegionalInsightsPanel
+              regionsData={regionsAsEntities}
+              selectedKPI={selectedKPI}
+              section="top"
+            />
+            <RegionalInsightsPanel
+              regionsData={regionsAsEntities}
+              selectedKPI={selectedKPI}
+              section="bottom"
+            />
+            <RegionalInsightsPanel
+              regionsData={regionsAsEntities}
+              selectedKPI={selectedKPI}
+              section="distribution"
+            />
+          </div>
+        )}
       </div>
     </>
   );

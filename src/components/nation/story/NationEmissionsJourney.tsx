@@ -119,7 +119,8 @@ export function NationEmissionsJourney({
       if (rect.top > 0) nextMode = "before";
       else if (scrolled >= pinDistance) nextMode = "after";
 
-      const progress = pinDistance > 0 ? clamp(scrolled / pinDistance, 0, 1) : 0;
+      const progress =
+        pinDistance > 0 ? clamp(scrolled / pinDistance, 0, 1) : 0;
       const nextStep = clamp(
         Math.floor(progress * steps.length),
         0,

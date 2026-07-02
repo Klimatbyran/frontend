@@ -426,6 +426,8 @@
       "noDataAvailable": "Ingen data tillgänglig",
       "emissionsChange": {
         "title": "Utsläppsförändring från basår",
+        "description": "Endast företag med ett definierat basår och jämförbara uppföljningsdata rankas.",
+        "noComparableData": "Inga företag i denna sektor med jämförbar utsläppsförändringsdata.",
         "unknown": "Okänt"
       },
       "meetsParis": {
@@ -479,6 +481,7 @@
       "back": "Tillbaka",
       "sectorTotal": "Totala utsläpp i branschen",
       "total": "Totala utsläpp",
+      "emissionsUnit": "ton CO₂e",
       "noDataAvailablePieChart": "Det finns inga data för detta år",
       "yearTotal": "Årlig total",
       "unknownCompany": "Okänt företag",
@@ -548,6 +551,38 @@
       "meetsParisYes": "Ja",
       "meetsParisNo": "Nej",
       "meetsParisUnknown": "Okänt"
+    },
+    "insights": {
+      "largestSector": "Största branschen",
+      "largestSectorDescription": "{{name}} står för {{share}} av totala utsläpp",
+      "topThreeSectors": "Topp 3 branscher",
+      "topThreeSectorsDescription": "De tre största branscherna står för {{share}} av utsläppen",
+      "reportingCompanies": "Rapporterande företag",
+      "reportingCompaniesDescription": "{{count}} företag rapporterade utsläpp för {{year}}",
+      "largestCompany": "Största utsläpparen",
+      "largestCompanyDescription": "{{name}} står för {{share}} av branschens utsläpp",
+      "companiesInSector": "Företag i branschen",
+      "companiesInSectorDescription": "{{count}} företag rapporterade utsläpp",
+      "reducingEmissions": "Minskar utsläppen",
+      "reducingEmissionsDescription": "{{count}} av {{total}} företag har minskat utsläppen sedan basår",
+      "increasingEmissions": "Ökar utsläppen",
+      "increasingEmissionsDescription": "{{count}} av {{total}} företag har ökat utsläppen sedan basår",
+      "noComparableTrendData": "Inte tillräckligt med jämförbar trenddata för företag i branschen",
+      "emissionsAmount": "{{amount}} {{unit}}",
+      "ofTotalEmissions": "av totala utsläpp",
+      "forReportingYear": "för {{year}}",
+      "reportingCompaniesAvg": "Genomsnitt {{amount}} {{unit}} per rapporterande företag",
+      "companiesReportingLabel": "rapporterande företag",
+      "topEmittersInSectorDescription": "Andel av branschens utsläpp bland de största företagen",
+      "sinceBaseYear": "minskar sedan basår",
+      "increasingSinceBaseYear": "ökar sedan basår",
+      "topReducersDescription": "Företag med störst minskning sedan basår",
+      "topIncreasersDescription": "Företag med störst ökning sedan basår",
+      "reducing": "Minskar",
+      "increasing": "Ökar",
+      "scope1": "Scope 1",
+      "scope2": "Scope 2",
+      "scope3": "Scope 3"
     }
   },
   "methodsPage": {
@@ -1432,9 +1467,10 @@
         },
         "emissionsChangeFromBaseYear": {
           "label": "Utsläppsförändring",
-          "description": "Förändring i utsläpp från basår till senaste rapporteringsår",
-          "detailedDescription": "Procentuell förändring i totala utsläpp från företagets basår till senaste rapporteringsår. Lägre värden indikerar bättre prestation.",
-          "source": "Företagsrapporteringsdata"
+          "description": "Förändring i utsläpp från basår till senaste rapporteringsår. Endast företag med jämförbara utsläppsdata rankas.",
+          "detailedDescription": "Procentuell förändring i totala utsläpp från företagets basår till senaste rapporteringsår. Rankningen omfattar endast företag med definierat basår, giltiga basårsutsläpp och minst ett senare rapporteringsår med jämförbar data. Lägre värden indikerar bättre prestation.",
+          "source": "Företagsrapporteringsdata",
+          "nullValues": "Ej jämförbar"
         },
         "trendSlope": {
           "label": "Utsläppstrend",
@@ -1662,8 +1698,8 @@
       "dataSelector": {
         "label": "Välj datapunkt",
         "tooltips": {
-          "higherBetter": "Högre värden är bättre",
-          "lowerBetter": "Lägre värden är bättre"
+          "higherBetter": "Bättre",
+          "lowerBetter": "Bättre"
         }
       },
       "kpis": {
@@ -1728,8 +1764,8 @@
       "dataSelector": {
         "label": "Välj datapunkt",
         "tooltips": {
-          "higherBetter": "Högre värden är bättre",
-          "lowerBetter": "Lägre värden är bättre"
+          "higherBetter": "Bättre",
+          "lowerBetter": "Bättre"
         }
       },
       "kpis": {
@@ -1797,12 +1833,23 @@
           "metric": "Ingen data tillgänglig för {{metric}}"
         },
         "keyStatistics": {
-          "average": "Genomsnitt:"
+          "average": "Genomsnitt",
+          "best": "Bäst",
+          "worst": "Sämst"
+        },
+        "distribution": {
+          "title": "Fördelning",
+          "subtitle": "Visar hur kommunerna sprider sig längs skalan för vald indikator. Blå staplar betyder bättre resultat, rosa sämre, och den streckade linjen markerar riksgenomsnittet.",
+          "summary": "Sammanfattning",
+          "average": "Genomsnitt",
+          "higherBetter": "Bättre",
+          "lowerBetter": "Bättre",
+          "higherWorse": "Sämre"
         }
       },
       "viewToggle": {
-        "showList": "Visa lista",
-        "showMap": "Visa karta"
+        "showList": "Lista",
+        "showMap": "Karta"
       }
     }
   },
@@ -2097,9 +2144,9 @@
   "rankedInsights": {
     "belowAverage": "{{entityPlural}} under genomsnittet",
     "aboveAverage": "{{entityPlural}} över genomsnittet",
-    "titleBest": "Topp fem {{entityPlural}}",
-    "titleTop": "Bästa {{entityPlural}}",
-    "titleWorst": "Botten fem {{entityPlural}}"
+    "titleBest": "Topp 10 {{entityPlural}}",
+    "titleTop": "Bästa 10 {{entityPlural}}",
+    "titleWorst": "Sämsta 10 {{entityPlural}}"
   },
   "chartLegend": {
     "clickToFilterOut": "Klicka för att filtrera bort",

@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import {
   formatEmissionsAbsolute,
@@ -12,6 +13,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { SectorInfo } from "@/types/charts";
+import { useChartMotion } from "@/hooks/useChartMotion";
 import type { PieChartItem } from "./SectorPieChart";
 
 interface LegendProps {
@@ -23,6 +25,9 @@ interface LegendProps {
   onItemClick?: (item: PieChartItem) => void;
   getActionTooltip?: (item: PieChartItem) => string;
   gridColumns?: 1 | 2;
+  emissionsUnit?: string;
+  emissionsUnitClassName?: string;
+  animationKey?: string;
 }
 
 const SectorPieLegend: React.FC<LegendProps> = ({
@@ -34,9 +39,13 @@ const SectorPieLegend: React.FC<LegendProps> = ({
   onItemClick,
   getActionTooltip,
   gridColumns = 1,
+  emissionsUnit,
+  emissionsUnitClassName,
+  animationKey = "default",
 }) => {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
+  const { reduceMotion, fadeDuration, stagger, ease } = useChartMotion();
 
   const handleLegendItemClick = (entry: PieChartItem) => {
     if (onItemClick) {
@@ -66,9 +75,11 @@ const SectorPieLegend: React.FC<LegendProps> = ({
     })
     .sort((a, b) => b.value - a.value);
 
+  const unitLabel = emissionsUnit ?? t("emissionsUnit");
+
   const gridClass =
     gridColumns === 2
-      ? "grid grid-cols-1 lg:grid-cols-2 gap-2 max-h-[300px] lg:max-h-[600px] overflow-y-auto w-full"
+      ? "grid grid-cols-1 lg:grid-cols-2 gap-2 max-h-[300px] lg:max-h-[600px] overflow-y-auto scrollbar-legend w-full pr-1"
       : "grid grid-cols-1 gap-2 w-full pr-2 mt-2 md:mt-4";
 
   return (
@@ -84,13 +95,18 @@ const SectorPieLegend: React.FC<LegendProps> = ({
             (entry.translatedName as string | undefined) ?? entry.name;
 
           return (
-            <Tooltip key={`legend-${index}`}>
+            <Tooltip key={`${animationKey}-legend-${index}`}>
               <TooltipTrigger asChild>
-                <div
-                  className={`flex items-center gap-2 p-2 rounded-md hover:bg-black-1 transition-colors cursor-pointer ${
-                    isFiltered ? "opacity-50" : ""
-                  }`}
+                <motion.div
+                  className="flex items-center gap-2 p-2 rounded-md hover:bg-black-1 transition-colors cursor-pointer"
                   onClick={() => handleLegendItemClick(entry)}
+                  initial={reduceMotion ? false : { opacity: 0, x: -10 }}
+                  animate={{ opacity: isFiltered ? 0.5 : 1, x: 0 }}
+                  transition={{
+                    duration: fadeDuration,
+                    delay: stagger(index, 0.04),
+                    ease,
+                  }}
                 >
                   <div
                     className="w-3 h-3 rounded flex-shrink-0"
@@ -106,12 +122,14 @@ const SectorPieLegend: React.FC<LegendProps> = ({
                           Math.round(entry.value),
                           currentLanguage,
                         )}{" "}
-                        {t("emissionsUnit")}
+                        <span className={emissionsUnitClassName}>
+                          {unitLabel}
+                        </span>
                       </span>
                       <span>{percentage}</span>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               </TooltipTrigger>
 
               <TooltipContent className="bg-black-1 text-white">

@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from "recharts";
 import { useResponsiveChartSize } from "@/hooks/useResponsiveChartSize";
 import { useScreenSize } from "@/hooks/useScreenSize";
+import { useChartMotion } from "@/hooks/useChartMotion";
 import PieTooltip from "@/components/graphs/tooltips/PieTooltip";
 import { SectorInfo } from "@/types/charts";
 import { SectorEmissions } from "@/types/emissions";
@@ -25,6 +26,7 @@ interface SectorPieChartProps {
   onItemClick?: (data: PieChartItem) => void;
   customActionLabel?: string;
   desktopScale?: boolean;
+  animationKey?: string;
 }
 
 const SectorPieChart: React.FC<SectorPieChartProps> = ({
@@ -38,8 +40,10 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
   onItemClick,
   customActionLabel,
   desktopScale = false,
+  animationKey,
 }) => {
   const { isMobile } = useScreenSize();
+  const { pieDuration, reduceMotion } = useChartMotion();
   const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const { size } = useResponsiveChartSize();
 
@@ -69,7 +73,10 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
   const scale = desktopScale && !isMobile ? 1.2 : 1;
   const innerRadius = size.innerRadius * scale;
   const outerRadius = size.outerRadius * scale;
-  const chartHeight = Math.max(outerRadius * 2.5, desktopScale ? 300 : 0);
+  const chartHeight = outerRadius * 2;
+  const pieAnimationKey =
+    animationKey ??
+    pieDataWithTotal.map((entry) => `${entry.name}-${entry.value}`).join("|");
 
   const toggleFilter = (sectorName: string) => {
     if (!onFilteredSectorsChange) return;
@@ -116,43 +123,41 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
   };
 
   return (
-    <div className="max-h-[450px]">
-      <ResponsiveContainer
-        width="100%"
-        height={chartHeight || size.outerRadius * 2.5}
-      >
-        <PieChart>
-          <Pie
-            data={pieDataWithTotal}
-            dataKey="value"
-            nameKey={displayNameKey}
-            cx="50%"
-            cy="50%"
-            innerRadius={innerRadius}
-            outerRadius={outerRadius}
-            cornerRadius={8}
-            paddingAngle={2}
-            onClick={handleSectorClick}
-            animationBegin={0}
-            animationDuration={300}
-          >
-            {pieDataWithTotal.map((entry) => (
-              <Cell
-                key={entry.name}
-                fill={entry.color}
-                stroke={entry.color}
-                style={{ cursor: "pointer" }}
-              />
-            ))}
-          </Pie>
-          <Tooltip
-            content={<PieTooltip customActionLabel={customActionLabel} />}
-            animationDuration={0}
-            isAnimationActive={false}
-          />
-        </PieChart>
-      </ResponsiveContainer>
-    </div>
+    <ResponsiveContainer width="100%" height={chartHeight}>
+      <PieChart>
+        <Pie
+          key={pieAnimationKey}
+          data={pieDataWithTotal}
+          dataKey="value"
+          nameKey={displayNameKey}
+          cx="50%"
+          cy="50%"
+          innerRadius={innerRadius}
+          outerRadius={outerRadius}
+          cornerRadius={8}
+          paddingAngle={2}
+          onClick={handleSectorClick}
+          isAnimationActive={!reduceMotion}
+          animationBegin={0}
+          animationDuration={pieDuration}
+          animationEasing="ease-out"
+        >
+          {pieDataWithTotal.map((entry) => (
+            <Cell
+              key={entry.name}
+              fill={entry.color}
+              stroke={entry.color}
+              style={{ cursor: "pointer" }}
+            />
+          ))}
+        </Pie>
+        <Tooltip
+          content={<PieTooltip customActionLabel={customActionLabel} />}
+          animationDuration={0}
+          isAnimationActive={false}
+        />
+      </PieChart>
+    </ResponsiveContainer>
   );
 };
 

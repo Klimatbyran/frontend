@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import type { CompanyWithKPIs } from "@/types/company";
 import { createSymmetricRangeGradient } from "@/utils/ui/colorGradients";
 import { useBeeswarmData } from "@/hooks/companies/useBeeswarmData";
-import { useScreenSize } from "@/hooks/useScreenSize";
 import { BeeswarmChart } from "./shared/BeeswarmChart";
 import { getCompanyUrlSegment } from "@/utils/companyRouting";
 
@@ -17,10 +16,8 @@ export function EmissionsChangeVisualization({
   onCompanyClick,
 }: EmissionsChangeVisualizationProps) {
   const { t } = useTranslation();
-  const { isMobile } = useScreenSize();
   const {
     valid: withData,
-    invalid: noData,
     min,
     max,
     colorForValue,
@@ -48,8 +45,10 @@ export function EmissionsChangeVisualization({
   if (withData.length === 0) {
     return (
       <div className="bg-black-2 rounded-level-2 p-8 h-full flex items-center justify-center">
-        <p className="text-grey text-lg">
-          {t("companiesOverviewPage.visualizations.noDataAvailable")}
+        <p className="text-grey text-lg text-center px-4">
+          {t(
+            "companiesOverviewPage.visualizations.emissionsChange.noComparableData",
+          )}
         </p>
       </div>
     );
@@ -57,18 +56,6 @@ export function EmissionsChangeVisualization({
 
   return (
     <div className="w-full h-full flex flex-col gap-3">
-      {!isMobile && (
-        <div className="flex items-center justify-between">
-          <div className="text-sm text-grey">
-            {t("companiesOverviewPage.visualizations.emissionsChange.title")}
-            {" · "}
-            {t(
-              "companiesOverviewPage.visualizations.emissionsChange.unknown",
-            )}: {noData.length}
-          </div>
-        </div>
-      )}
-
       <div className="relative flex-1 bg-black-2 rounded-level-2 p-4 overflow-hidden">
         <BeeswarmChart
           data={withData}
@@ -84,6 +71,9 @@ export function EmissionsChangeVisualization({
           totalCount={withData.length}
         />
       </div>
+      <p className="text-sm text-white/50 px-1">
+        {t("companiesOverviewPage.visualizations.emissionsChange.description")}
+      </p>
     </div>
   );
 }

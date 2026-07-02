@@ -7,6 +7,22 @@ export function buildMunicipalityKpiDefinitions(
 ): KPIValue<Municipality>[] {
   return [
     {
+      label: t(
+        "municipalities.list.kpis.historicalEmissionChangePercent.label",
+      ),
+      key: "historicalEmissionChangePercent",
+      unit: "%",
+      source: "municipalities.list.kpis.historicalEmissionChangePercent.source",
+      sourceUrls: ["https://nationellaemissionsdatabasen.smhi.se/"],
+      description: t(
+        "municipalities.list.kpis.historicalEmissionChangePercent.description",
+      ),
+      detailedDescription: t(
+        "municipalities.list.kpis.historicalEmissionChangePercent.detailedDescription",
+      ),
+      higherIsBetter: false,
+    },
+    {
       label: t("municipalities.list.kpis.meetsParisGoal.label"),
       key: "meetsParisGoal",
       unit: "",
@@ -24,22 +40,6 @@ export function buildMunicipalityKpiDefinitions(
       },
       belowString: t("municipalities.list.kpis.meetsParisGoal.belowString"),
       aboveString: t("municipalities.list.kpis.meetsParisGoal.aboveString"),
-    },
-    {
-      label: t(
-        "municipalities.list.kpis.historicalEmissionChangePercent.label",
-      ),
-      key: "historicalEmissionChangePercent",
-      unit: "%",
-      source: "municipalities.list.kpis.historicalEmissionChangePercent.source",
-      sourceUrls: ["https://nationellaemissionsdatabasen.smhi.se/"],
-      description: t(
-        "municipalities.list.kpis.historicalEmissionChangePercent.description",
-      ),
-      detailedDescription: t(
-        "municipalities.list.kpis.historicalEmissionChangePercent.detailedDescription",
-      ),
-      higherIsBetter: false,
     },
     {
       label: t("municipalities.list.kpis.totalConsumptionEmission.label"),

@@ -1,4 +1,3 @@
-import { DivideIcon as LucideIcon } from "lucide-react";
 import type { paths } from "@/lib/api-types";
 import type { KPIValue } from "./rankings";
 
@@ -107,29 +106,6 @@ export interface Scope3HistoricalData {
   }>;
 }
 
-export interface TrendData {
-  decreasing: Array<{
-    company: RankedCompany;
-    changePercent: number;
-    baseYear: string;
-    currentYear: string;
-  }>;
-  increasing: Array<{
-    company: RankedCompany;
-    changePercent: number;
-    baseYear: string;
-    currentYear: string;
-  }>;
-  noComparable: RankedCompany[];
-}
-
-export interface TrendCardInfo {
-  title: string;
-  icon: typeof LucideIcon;
-  color: string;
-  textColor: string;
-}
-
 // GICS option type for the /industry-gics/ dropdown (one option per code). For the
 // industry classification on a company use CompanyIndustryGics / CompanyWithIndustryGics.
 export type GicsOption = {
@@ -157,5 +133,9 @@ export interface CompanyWithKPIs extends RankedCompany {
   [key: string]: unknown;
 }
 
-// KPI value type for companies (aliased to generic KPIValue for type safety)
-export type CompanyKPIValue = KPIValue<CompanyWithKPIs>;
+// Extended KPI value type for companies
+export interface CompanyKPIValue extends KPIValue<CompanyWithKPIs> {
+  createKPIColorGetter?: (
+    companies: CompanyWithKPIs[],
+  ) => (company: CompanyWithKPIs) => string;
+}
