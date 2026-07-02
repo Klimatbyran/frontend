@@ -16,6 +16,8 @@ import { useLanguage } from "@/components/LanguageProvider";
 import { useBlogPost, getBlogPost } from "@/hooks/useBlogPosts";
 import { blogMetadataByLanguage } from "@/lib/blog/blogPostsList";
 import { LocalizedLink } from "@/components/LocalizedLink";
+import { PageSEO } from "@/components/SEO/PageSEO";
+import { buildAbsoluteUrl } from "@/utils/seo";
 
 export function BlogDetailPage() {
   const { t } = useTranslation();
@@ -53,6 +55,33 @@ export function BlogDetailPage() {
   if (blogPostsError) return <div>{t("blogDetailPage.postNotFound")}</div>;
   if (!blogPost) return <div>{t("blogDetailPage.postNotFound")}</div>;
 
+  const postCanonicalUrl = buildAbsoluteUrl(
+    `/${currentLanguage}/insights/${id}`,
+  );
+
+  const articleStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: blogPost.metadata.title,
+    description: blogPost.metadata.excerpt,
+    image: blogPost.metadata.image
+      ? buildAbsoluteUrl(blogPost.metadata.image)
+      : undefined,
+    datePublished: blogPost.metadata.date,
+    author: blogPost.metadata.author
+      ? { "@type": "Person", name: blogPost.metadata.author.name }
+      : undefined,
+    publisher: {
+      "@type": "Organization",
+      name: "Klimatkollen",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://klimatkollen.se/images/social-picture.png",
+      },
+    },
+    url: postCanonicalUrl,
+  };
+
   const relatedPosts = blogPost.metadata.relatedPosts
     ? blogPost.metadata.relatedPosts
         .map((relatedId) => {
@@ -72,6 +101,16 @@ export function BlogDetailPage() {
         isMobile ? "space-y-8" : "space-y-16"
       } px-4`}
     >
+      <PageSEO
+        title={`${blogPost.metadata.title} - Klimatkollen`}
+        description={blogPost.metadata.excerpt}
+        canonicalUrl={postCanonicalUrl}
+        ogType="article"
+        ogImage={blogPost.metadata.image}
+        ogImageAlt={blogPost.metadata.title}
+        structuredData={articleStructuredData}
+      />
+
       {/* Navigation */}
       <div className="flex items-center justify-between">
         <Button variant="ghost" size="sm" className="gap-2" asChild>

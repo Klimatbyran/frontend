@@ -2,7 +2,7 @@
  * SEO utility functions
  */
 
-/** Default Open Graph / Twitter card image (landing page screenshot) */
+/** Default Open Graph / Twitter card image (landing page) */
 export const DEFAULT_OG_IMAGE = "/images/landing-page-og.png";
 
 /**
@@ -30,6 +30,7 @@ export function buildAbsoluteUrl(path: string): string {
  * @returns Absolute URL
  */
 export function buildAbsoluteImageUrl(path: string): string {
+  if (!path) return buildAbsoluteUrl(DEFAULT_OG_IMAGE);
   if (path.startsWith("http://") || path.startsWith("https://")) {
     return path;
   }

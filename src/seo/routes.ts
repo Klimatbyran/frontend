@@ -1,6 +1,6 @@
 import { SeoMeta } from "@/types/seo";
 import { detectLanguageFromPath } from "@/lib/languageDetection";
-import { DEFAULT_OG_IMAGE } from "@/utils/seo";
+import { DEFAULT_OG_IMAGE, buildAbsoluteUrl } from "@/utils/seo";
 // @ts-expect-error - i18n.js doesn't have TypeScript definitions
 import i18n from "@/i18n";
 
@@ -19,79 +19,76 @@ import i18n from "@/i18n";
  *     ├── content.ts            // Articles, reports, learn-more (dynamic routes)
  *     ├── static.ts             // About, methodology, support, privacy, products
  *     └── protected.ts          // Internal pages, edit pages (with noindex)
- *
- * Benefits:
- *   - Each file is focused and manageable (~50-100 lines)
- *   - Easier to find and update specific routes
- *   - Reduces merge conflicts
- *   - Scales better as more routes are added
  */
 
-/**
- * Site name for title suffixing
- */
 const SITE_NAME = "Klimatkollen";
 
-/**
- * Get translated text using i18n (works outside React components)
- * @param key - Translation key
- * @param language - Language code (sv or en)
- * @param options - Optional interpolation options
- * @returns Translated string
- */
 function getTranslation(
   key: string,
   language: string,
   options?: Record<string, string>,
 ): string {
-  // Change language temporarily for this translation
   const currentLanguage = i18n.language;
   i18n.changeLanguage(language);
   const translated = i18n.t(key, options || {});
-  // Restore original language
   i18n.changeLanguage(currentLanguage);
   return translated as string;
 }
 
-/**
- * Normalize pathname by removing language prefix and trailing slashes
- * @param pathname - Full pathname (e.g., "/sv/companies/123" or "/en/about")
- * @returns Normalized path without language prefix (e.g., "/companies/123" or "/about")
- */
 function normalizePathname(pathname: string): string {
-  // Remove language prefix (/sv or /en)
   let normalized = pathname.replace(/^\/(sv|en)(\/|$)/, "/");
-  // Remove trailing slash except for root
   if (normalized !== "/" && normalized.endsWith("/")) {
     normalized = normalized.slice(0, -1);
   }
-  // Ensure root is just "/"
   if (normalized === "") {
     normalized = "/";
   }
   return normalized;
 }
 
-/**
- * Extract route pattern and params from pathname
- * @param pathname - Normalized pathname
- * @returns Object with pattern and extracted params
- */
+/** Preserve the language prefix in canonical paths (e.g. "/sv/about"). */
+function getCanonicalPath(pathname: string): string {
+  if (/^\/(sv|en)\/?$/.test(pathname)) {
+    const lang = pathname.match(/^\/(sv|en)/)![1];
+    return `/${lang}/`;
+  }
+  if (pathname !== "/" && pathname.endsWith("/")) {
+    return pathname.slice(0, -1);
+  }
+  return pathname || "/";
+}
+
 function parseRoute(pathname: string, params?: Record<string, string>) {
   const normalized = normalizePathname(pathname);
   const segments = normalized.split("/").filter(Boolean);
 
-  // Home route
   if (normalized === "/" || segments.length === 0) {
     return { pattern: "/", params: {} };
   }
 
-  // Entity detail routes
   if (segments[0] === "companies" && segments[1]) {
+    if (segments[2] === "edit") {
+      return { pattern: "/companies/:id/edit", params: {} };
+    }
     return {
       pattern: "/companies/:id",
       params: { id: segments[1], ...(params || {}) },
     };
+  }
+
+  // Swedish company URLs: /foretag/:slug-:id (e.g. /foretag/volvo-cars-Q123)
+  if (segments[0] === "foretag" && segments[1]) {
+    const lastHyphen = segments[1].lastIndexOf("-");
+    if (lastHyphen > 0) {
+      return {
+        pattern: "/companies/:id",
+        params: {
+          id: segments[1].slice(lastHyphen + 1),
+          slug: segments[1].slice(0, lastHyphen),
+          ...(params || {}),
+        },
+      };
+    }
   }
 
   if (segments[0] === "municipalities" && segments[1]) {
@@ -101,39 +98,119 @@ function parseRoute(pathname: string, params?: Record<string, string>) {
     };
   }
 
-  // TODO: Add route parsing for dynamic routes that need SEO configs:
-  // - /regions/:id (region detail page)
-  // - /reports/:reportId (individual report page)
-  // - /insights/:id (blog/article detail page)
-  // - /learn-more/:id (learn more article detail page)
+  if (segments[0] === "regions" && segments[1]) {
+    return {
+      pattern: "/regions/:id",
+      params: { id: segments[1], ...(params || {}) },
+    };
+  }
 
-  // Other routes
+  if (segments[0] === "insights" && segments[1]) {
+    return {
+      pattern: "/insights/:id",
+      params: { id: segments[1], ...(params || {}) },
+    };
+  }
+
+  if (segments[0] === "internal-pages") {
+    return { pattern: "/internal-pages", params: {} };
+  }
+
+  if (segments[0] === "error") {
+    return { pattern: "/error/:code", params: {} };
+  }
+
+  if (segments[0] === "403") {
+    return { pattern: "/403", params: {} };
+  }
+
+  if (segments[0] === "auth") {
+    return { pattern: "/auth/callback", params: {} };
+  }
+
   return { pattern: normalized, params: params || {} };
 }
 
-/**
- * Get SEO metadata for a route
- * @param pathname - Full pathname (e.g., "/sv/companies/123" or "/en/about")
- * @param params - Optional route parameters (e.g., { id: "123", name: "Company Name" })
- * @returns SeoMeta object for the route
- */
+/** Build hreflang alternates for a language-neutral path (e.g. "/about"). */
+function buildHreflang(pathWithoutLang: string): SeoMeta["hreflang"] {
+  const path = pathWithoutLang === "/" ? "" : pathWithoutLang;
+  const svPath = `/sv${path}`;
+  const enPath = `/en${path}`;
+  return [
+    { lang: "sv", href: buildAbsoluteUrl(svPath) },
+    { lang: "en", href: buildAbsoluteUrl(enPath) },
+    { lang: "x-default", href: buildAbsoluteUrl(svPath) },
+  ];
+}
+
+function withDefaultOg(
+  title: string,
+  description: string,
+  image: string = DEFAULT_OG_IMAGE,
+): Pick<SeoMeta, "og" | "twitter"> {
+  return {
+    og: {
+      title,
+      description,
+      image,
+      imageWidth: 1200,
+      imageHeight: 630,
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      image,
+    },
+  };
+}
+
+interface BuildSimpleSeoOptions {
+  /** When false, titleKey is used as-is (e.g. privacyPage.seoTitle already includes the site name). */
+  suffixSiteName?: boolean;
+  extra?: Partial<SeoMeta>;
+}
+
+function buildSimpleSeo(
+  titleKey: string,
+  descriptionKey: string,
+  language: string,
+  canonical: string,
+  options?: BuildSimpleSeoOptions,
+): SeoMeta {
+  const rawTitle = getTranslation(titleKey, language);
+  const suffixSiteName = options?.suffixSiteName ?? true;
+  const title = suffixSiteName ? `${rawTitle} - ${SITE_NAME}` : rawTitle;
+  const description = getTranslation(descriptionKey, language);
+  const ogImage = options?.extra?.og?.image ?? DEFAULT_OG_IMAGE;
+  const social = withDefaultOg(title, description, ogImage);
+
+  return {
+    ...options?.extra,
+    title,
+    description,
+    canonical,
+    hreflang: buildHreflang(canonical.replace(/^\/(sv|en)/, "") || "/"),
+    og: { ...social.og, ...options?.extra?.og },
+    twitter: { ...social.twitter, ...options?.extra?.twitter },
+  };
+}
+
 export function getSeoForRoute(
   pathname: string,
   params?: Record<string, string>,
 ): SeoMeta {
   const { pattern, params: routeParams } = parseRoute(pathname, params);
-  const canonical = normalizePathname(pathname);
-
-  // Detect language from pathname for translations
+  const canonical = getCanonicalPath(pathname);
+  const pathWithoutLang = normalizePathname(pathname);
   const language = detectLanguageFromPath(pathname);
 
-  // Get translated default description
   const defaultDescription = getTranslation(
     "landingPage.metaDescription",
     language,
   );
 
-  // Build base SEO config
   const baseSeo: SeoMeta = {
     title: SITE_NAME,
     description: defaultDescription,
@@ -147,37 +224,26 @@ export function getSeoForRoute(
     },
   };
 
-  // Route-specific SEO configs
   switch (pattern) {
     case "/": {
-      // Home route
       const metaTitle = getTranslation("landingPage.metaTitle", language);
       const metaDescription = getTranslation(
         "landingPage.metaDescription",
         language,
       );
+      const title = `${SITE_NAME} - ${metaTitle}`;
+      const social = withDefaultOg(title, metaDescription);
 
       return {
         ...baseSeo,
-        title: `${SITE_NAME} - ${metaTitle}`,
+        title,
         description: metaDescription,
-        og: {
-          title: `${SITE_NAME} - ${metaTitle}`,
-          description: metaDescription,
-          image: DEFAULT_OG_IMAGE,
-          type: "website",
-        },
-        twitter: {
-          card: "summary_large_image",
-          title: `${SITE_NAME} - ${metaTitle}`,
-          description: metaDescription,
-          image: DEFAULT_OG_IMAGE,
-        },
+        hreflang: buildHreflang(pathWithoutLang),
+        ...social,
       };
     }
 
     case "/companies/:id": {
-      // Company detail page
       const companyName =
         routeParams.name || getTranslation("common.company", language);
       const metaTitle = getTranslation("companyDetailPage.metaTitle", language);
@@ -186,28 +252,13 @@ export function getSeoForRoute(
         language,
         { company: companyName, siteName: SITE_NAME },
       );
+      const title = `${companyName} - ${metaTitle} - ${SITE_NAME}`;
+      const social = withDefaultOg(title, description);
 
-      return {
-        ...baseSeo,
-        title: `${companyName} - ${metaTitle} - ${SITE_NAME}`,
-        description,
-        og: {
-          title: `${companyName} - ${metaTitle} - ${SITE_NAME}`,
-          description,
-          image: DEFAULT_OG_IMAGE,
-          type: "website",
-        },
-        twitter: {
-          card: "summary_large_image",
-          title: `${companyName} - ${metaTitle} - ${SITE_NAME}`,
-          description,
-          image: DEFAULT_OG_IMAGE,
-        },
-      };
+      return { ...baseSeo, title, description, ...social };
     }
 
     case "/municipalities/:id": {
-      // Municipality detail page
       const municipalityName =
         routeParams.name || getTranslation("common.municipality", language);
       const metaTitle = getTranslation(
@@ -219,107 +270,166 @@ export function getSeoForRoute(
         language,
         { municipality: municipalityName, siteName: SITE_NAME },
       );
+      const title = `${municipalityName} - ${metaTitle} - ${SITE_NAME}`;
+      const social = withDefaultOg(title, description);
+
+      return { ...baseSeo, title, description, ...social };
+    }
+
+    case "/regions/:id": {
+      const regionName =
+        routeParams.name || getTranslation("common.region", language);
+      const description = getTranslation(
+        "regionDetailPage.metaDescription",
+        language,
+        { region: regionName, siteName: SITE_NAME },
+      );
+      const title = `${regionName} - ${SITE_NAME}`;
+      const social = withDefaultOg(title, description);
+
+      return { ...baseSeo, title, description, ...social };
+    }
+
+    case "/insights/:id": {
+      const articleTitle =
+        routeParams.title || getTranslation("insightsPage.title", language);
+      const description =
+        routeParams.description ||
+        getTranslation("insightsPage.description", language);
+      const title = `${articleTitle} - ${SITE_NAME}`;
+      const ogImage = routeParams.image ?? DEFAULT_OG_IMAGE;
+      const social = withDefaultOg(title, description, ogImage);
 
       return {
         ...baseSeo,
-        title: `${municipalityName} - ${metaTitle} - ${SITE_NAME}`,
+        title,
         description,
-        og: {
-          title: `${municipalityName} - ${metaTitle} - ${SITE_NAME}`,
-          description,
-          image: DEFAULT_OG_IMAGE,
-          type: "website",
-        },
-        twitter: {
-          card: "summary_large_image",
-          title: `${municipalityName} - ${metaTitle} - ${SITE_NAME}`,
-          description,
-          image: DEFAULT_OG_IMAGE,
-        },
+        og: { ...social.og, type: "article" },
+        twitter: social.twitter,
       };
     }
 
-    case "/about": {
-      const aboutTitle = getTranslation("aboutPage.header.title", language);
-      const aboutDescription = getTranslation(
+    case "/about":
+      return buildSimpleSeo(
+        "aboutPage.header.title",
         "aboutPage.metaDescription",
         language,
+        canonical,
       );
 
-      return {
-        ...baseSeo,
-        title: `${aboutTitle} - ${SITE_NAME}`,
-        description: aboutDescription,
-        og: {
-          title: `${aboutTitle} - ${SITE_NAME}`,
-          description: aboutDescription,
-          image: DEFAULT_OG_IMAGE,
-          type: "website",
-        },
-      };
-    }
-
-    case "/methodology": {
-      const methodologyTitle = getTranslation(
+    case "/methodology":
+      return buildSimpleSeo(
         "methodsPage.header.title",
-        language,
-      );
-      const methodologyDescription = getTranslation(
         "methodsPage.metaDescription",
         language,
+        canonical,
       );
 
-      return {
-        ...baseSeo,
-        title: `${methodologyTitle} - ${SITE_NAME}`,
-        description: methodologyDescription,
-        og: {
-          title: `${methodologyTitle} - ${SITE_NAME}`,
-          description: methodologyDescription,
-          image: DEFAULT_OG_IMAGE,
-          type: "website",
-        },
-      };
-    }
+    case "/support":
+      return buildSimpleSeo(
+        "supportPage.header.title",
+        "supportPage.header.description",
+        language,
+        canonical,
+      );
 
-    // TODO: Add SEO configs for the following public routes:
-    //
-    // Static/List Pages (route-level SEO in this file):
-    // - /explore (explore page)
-    // - /companies/sectors (companies by sector page - CompaniesSectorsPage)
-    // - /companies/ranked (ranked companies list - staging, companiesOverviewPage)
-    // - /municipalities (municipalities ranked list - municipalitiesOverviewPage)
-    // - /regions (regions overview page - staging, regionalOverviewPage)
-    // - /support (support page)
-    // - /articles (articles/insights list page)
-    // - /reports (reports list page)
-    // - /learn-more (learn more overview page)
-    // - /newsletter-archive (newsletter archive page)
-    // - /privacy (privacy policy page)
-    // - /products (products page)
-    // - /products/database-download-2025 (download page)
-    //
-    // Dynamic Entity Routes (need entitySeo.ts functions + route parsing):
-    // - /regions/:id (region detail page - staging, needs generateRegionSeoMeta() in entitySeo.ts)
-    //   - Similar to municipalities, should use entitySeo.ts for data-driven SEO
-    //   - See RegionDetailPage.tsx for data structure
-    //
-    // Dynamic Content Routes (route-level SEO with params, need parsing in parseRoute function first):
-    // - /reports/:reportId (individual report page, needs params: reportId, title, description)
-    // - /insights/:id (blog/article detail page, needs params: id, title, description)
-    // - /learn-more/:id (learn more article detail page, needs params: id, title, description)
-    //
-    // Routes that should use noindex (protected/internal/error pages):
-    // - /companies/:id/edit (protected edit page - should set noindex: true)
-    // - /internal-pages/* (all internal dashboards - should set noindex: true)
-    // - /error/:code (error pages - should set noindex: true)
-    // - /403 (unauthorized page - should set noindex: true)
-    // - /auth/callback (auth callback - should set noindex: true)
-    // - /* (404 page - should set noindex: true)
+    case "/privacy":
+      return buildSimpleSeo(
+        "privacyPage.seoTitle",
+        "privacyPage.seoDescription",
+        language,
+        canonical,
+        { suffixSiteName: false },
+      );
 
-    default: {
-      // Fallback for unknown routes
+    case "/articles":
+      return buildSimpleSeo(
+        "insightsPage.title",
+        "insightsPage.description",
+        language,
+        canonical,
+      );
+
+    case "/reports":
+      return buildSimpleSeo(
+        "reportsPage.title",
+        "reportsPage.description",
+        language,
+        canonical,
+      );
+
+    case "/learn-more":
+      return buildSimpleSeo(
+        "learnMoreOverview.title",
+        "learnMoreOverview.description",
+        language,
+        canonical,
+      );
+
+    case "/newsletter-archive":
+      return buildSimpleSeo(
+        "newsletterArchivePage.title",
+        "newsletterArchivePage.description",
+        language,
+        canonical,
+      );
+
+    case "/companies":
+      return buildSimpleSeo(
+        "companiesOverviewPage.title",
+        "companiesOverviewPage.description",
+        language,
+        canonical,
+      );
+
+    case "/sectors":
+      return buildSimpleSeo(
+        "sectorsOverviewPage.title",
+        "sectorsOverviewPage.description",
+        language,
+        canonical,
+      );
+
+    case "/municipalities":
+      return buildSimpleSeo(
+        "municipalitiesOverviewPage.title",
+        "municipalitiesOverviewPage.description",
+        language,
+        canonical,
+      );
+
+    case "/regions":
+      return buildSimpleSeo(
+        "regionalOverviewPage.title",
+        "regionalOverviewPage.description",
+        language,
+        canonical,
+      );
+
+    case "/nation":
+      return buildSimpleSeo(
+        "nationDetailPage.title",
+        "nationDetailPage.description",
+        language,
+        canonical,
+      );
+
+    case "/data-download":
+      return buildSimpleSeo(
+        "dataDownloadPage.title",
+        "dataDownloadPage.description",
+        language,
+        canonical,
+      );
+
+    case "/companies/:id/edit":
+    case "/internal-pages":
+    case "/error/:code":
+    case "/403":
+    case "/auth/callback":
+      return { ...baseSeo, noindex: true };
+
+    default:
       return baseSeo;
-    }
   }
 }

@@ -1893,7 +1893,15 @@
     "loading": "Laddar...",
     "error": "Fel",
     "company": "Företag",
-    "municipality": "Kommun"
+    "municipality": "Kommun",
+    "region": "Län"
+  },
+  "regionDetailPage": {
+    "metaDescription": "Se utsläppsdata och klimatomställning för {{region}} på Klimatkollen."
+  },
+  "nationDetailPage": {
+    "title": "Sveriges klimatomställning",
+    "description": "Nationell översikt över utsläpp och klimatomställning i Sverige jämfört med Parisavtalets mål."
   },
   "globalSearch": {
     "title": "Hitta ett företag, en kommun, ett län eller land",

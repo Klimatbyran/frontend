@@ -1838,7 +1838,15 @@
     "loading": "Loading...",
     "error": "Error",
     "company": "Company",
-    "municipality": "Municipality"
+    "municipality": "Municipality",
+    "region": "Region"
+  },
+  "regionDetailPage": {
+    "metaDescription": "View emissions data and climate transition progress for {{region}} on Klimatkollen."
+  },
+  "nationDetailPage": {
+    "title": "Sweden's Climate Transition",
+    "description": "National overview of emissions and climate transition in Sweden compared to the Paris Agreement targets."
   },
   "globalSearch": {
     "title": "Find a company, municipality, region or nation",

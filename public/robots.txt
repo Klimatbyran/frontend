@@ -3,7 +3,9 @@ Allow: /
 
 Sitemap: https://klimatkollen.se/sitemap.xml
 
-# Disallow staging environment
-User-agent: *
-Disallow: /
-Host: stage.klimatkollen.se
+# Internal/protected routes - disallow crawling
+Disallow: /*/internal-pages/
+Disallow: /*/companies/*/edit
+Disallow: /*/403
+Disallow: /auth/callback
+Disallow: /*/error/

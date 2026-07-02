@@ -9,6 +9,14 @@ interface PageSEOProps {
   canonicalUrl: string;
   ogType?: string;
   ogImage?: string;
+  /** Alt text for the social image — defaults to the page title. */
+  ogImageAlt?: string;
+  /** Actual pixel width of the OG image (default 1200). */
+  ogImageWidth?: number;
+  /** Actual pixel height of the OG image (default 630). */
+  ogImageHeight?: number;
+  twitterCard?: "summary" | "summary_large_image";
+  noindex?: boolean;
   structuredData?: Record<string, unknown>;
   children?: ReactNode;
 }
@@ -30,6 +38,11 @@ export function PageSEO({
   canonicalUrl,
   ogType = "website",
   ogImage = DEFAULT_OG_IMAGE,
+  ogImageAlt,
+  ogImageWidth = 1200,
+  ogImageHeight = 630,
+  twitterCard = "summary_large_image",
+  noindex = false,
   structuredData,
   children,
 }: PageSEOProps) {
@@ -37,17 +50,22 @@ export function PageSEO({
     title,
     description,
     canonical: toCanonicalPath(canonicalUrl),
+    noindex,
     og: {
       title,
       description,
       image: ogImage,
+      imageAlt: ogImageAlt ?? title,
+      imageWidth: ogImageWidth,
+      imageHeight: ogImageHeight,
       type: ogType,
     },
     twitter: {
-      card: "summary_large_image",
+      card: twitterCard,
       title,
       description,
       image: ogImage,
+      imageAlt: ogImageAlt ?? title,
     },
     structuredData,
   };
