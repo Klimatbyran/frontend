@@ -336,19 +336,6 @@ export async function getNationSectorEmissions() {
   if (error) throw error;
   return data;
 }
-
-// TODO: Add national data to API, this is prep for next stages
-export async function getNationalData() {
-  try {
-    // const { data, error } = await GET("/national-data/", {});
-    // if (error) throw error;
-    // return data || [];
-  } catch (error) {
-    console.error("Error fetching national data:", error);
-    return [];
-  }
-}
-
 // Company Search API
 export type CompanySearchApiResponse =
   paths["/companies/search"]["get"]["responses"][200]["content"]["application/json"];
