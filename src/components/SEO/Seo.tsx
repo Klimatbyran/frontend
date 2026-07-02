@@ -11,7 +11,8 @@ interface SeoProps {
  * Handles title, description, canonical, robots, OpenGraph, and Twitter tags
  */
 export function Seo({ meta }: SeoProps) {
-  const { title, description, canonical, noindex, og, twitter } = meta;
+  const { title, description, canonical, noindex, og, twitter, structuredData } =
+    meta;
 
   // Build absolute URLs
   const canonicalUrl = canonical ? buildAbsoluteUrl(canonical) : undefined;
@@ -53,6 +54,12 @@ export function Seo({ meta }: SeoProps) {
           )}
           {twitterImage && <meta name="twitter:image" content={twitterImage} />}
         </>
+      )}
+
+      {structuredData && (
+        <script type="application/ld+json">
+          {JSON.stringify(structuredData)}
+        </script>
       )}
     </Helmet>
   );
