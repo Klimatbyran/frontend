@@ -73,7 +73,9 @@ export function EuropeanCountryKpiComparisonsPanel({
           averageValue={comparisons.emissionsPerCapita.averageValue}
           formatValue={formatPerCapita}
           info
-          infoText={t("europe.list.kpis.emissionsPerCapita.detailedDescription")}
+          infoText={t(
+            "europe.list.kpis.emissionsPerCapita.detailedDescription",
+          )}
         />
       )}
     </div>

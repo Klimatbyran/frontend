@@ -16,8 +16,14 @@ export function EuropeanCountryDetailPage() {
   const { currentLanguage } = useLanguage();
   const { t } = useTranslation();
   const pageData = useEuropeanCountryPageData(id);
-  const { country, loading, error, emissionsData, headerStats, kpiComparisons } =
-    pageData;
+  const {
+    country,
+    loading,
+    error,
+    emissionsData,
+    headerStats,
+    kpiComparisons,
+  } = pageData;
 
   if (id?.toUpperCase() === SWEDEN_ISO3) {
     return <Navigate to={localizedPath(currentLanguage, "/nation")} replace />;

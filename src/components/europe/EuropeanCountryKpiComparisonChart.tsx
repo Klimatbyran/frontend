@@ -111,7 +111,8 @@ export function EuropeanCountryKpiComparisonChart({
     const values = data.map((item) => item.value);
     const minValue = Math.min(...values, 0);
     const maxValue = Math.max(...values, 0);
-    const padding = (maxValue - minValue) * 0.15 || Math.abs(maxValue) * 0.1 || 1;
+    const padding =
+      (maxValue - minValue) * 0.15 || Math.abs(maxValue) * 0.1 || 1;
 
     return [minValue - padding, maxValue + padding] as [number, number];
   }, [data]);
@@ -129,7 +130,10 @@ export function EuropeanCountryKpiComparisonChart({
         )}
       </div>
       <ResponsiveContainer width="100%" height={180}>
-        <BarChart data={data} margin={{ top: 12, right: 8, bottom: 4, left: 8 }}>
+        <BarChart
+          data={data}
+          margin={{ top: 12, right: 8, bottom: 4, left: 8 }}
+        >
           <XAxis
             dataKey="label"
             tick={{ fontSize: 11, fill: "rgba(255,255,255,0.45)" }}
@@ -144,7 +148,9 @@ export function EuropeanCountryKpiComparisonChart({
               <ComparisonTooltip
                 active={props.active}
                 payload={
-                  props.payload as Array<{ payload: ComparisonDatum }> | undefined
+                  props.payload as
+                    | Array<{ payload: ComparisonDatum }>
+                    | undefined
                 }
               />
             )}
