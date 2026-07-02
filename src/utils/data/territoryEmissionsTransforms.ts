@@ -4,6 +4,7 @@ import {
 } from "@/utils/calculations/emissionsCalculations";
 import type { EmissionDataPoint } from "@/types/municipality";
 import type { DataPoint } from "@/types/emissions";
+import { getYearProgress } from "@/utils/data/yearUtils";
 
 const EMISSIONS_DATA_START_YEAR = 1990;
 const EMISSIONS_DATA_END_YEAR = 2050;
@@ -19,8 +20,22 @@ function toTonnes(value: number | undefined): number | undefined {
   return value !== undefined ? value / KG_PER_TONNE : undefined;
 }
 
+function applyCurrentYearToDate<T extends number | undefined>(
+  value: T,
+  yearNum: number,
+  calendarYear: number,
+  yearProgress: number,
+): T {
+  if (value === undefined || yearNum !== calendarYear || yearProgress >= 1) {
+    return value;
+  }
+
+  return (value * yearProgress) as T;
+}
+
 export function transformTerritoryEmissionsData(
   territory: TerritoryEmissionsSource,
+  now: Date = new Date(),
 ): DataPoint[] {
   const years = new Set<number>();
 
@@ -30,14 +45,15 @@ export function transformTerritoryEmissionsData(
   );
   territory.trend.forEach((d) => d?.year && years.add(d.year));
 
-  const currentYear = new Date().getFullYear();
+  const calendarYear = now.getFullYear();
+  const yearProgress = getYearProgress(now);
 
   const approximatedDataAtCurrentYear = territory.approximatedHistoricalEmission
-    .filter((d): d is EmissionDataPoint => d != null && d.year <= currentYear)
+    .filter((d): d is EmissionDataPoint => d != null && d.year <= calendarYear)
     .sort((a, b) => b.year - a.year)[0];
 
   const carbonLawBaseValue = approximatedDataAtCurrentYear?.value;
-  const carbonLawBaseYear = approximatedDataAtCurrentYear?.year ?? currentYear;
+  const carbonLawBaseYear = approximatedDataAtCurrentYear?.year ?? calendarYear;
 
   return Array.from(years)
     .sort((a, b) => a - b)
@@ -51,7 +67,7 @@ export function transformTerritoryEmissionsData(
       const trend = territory.trend.find((d) => d?.year === yearNum)?.value;
 
       let carbonLaw: number | undefined;
-      if (carbonLawBaseValue != null && yearNum >= currentYear) {
+      if (carbonLawBaseValue != null && yearNum >= calendarYear) {
         carbonLaw =
           calculateParisValue(
             yearNum,
@@ -61,11 +77,30 @@ export function transformTerritoryEmissionsData(
           ) ?? undefined;
       }
 
+      const isPartialCurrentYear =
+        yearNum === calendarYear && yearProgress > 0 && yearProgress < 1;
+
       return {
-        year: yearNum,
-        total: toTonnes(historical),
-        trend: toTonnes(trend),
-        approximated: toTonnes(approximated),
+        year: isPartialCurrentYear ? yearNum + yearProgress : yearNum,
+        total: toTonnes(
+          applyCurrentYearToDate(
+            historical,
+            yearNum,
+            calendarYear,
+            yearProgress,
+          ),
+        ),
+        trend: toTonnes(
+          applyCurrentYearToDate(trend, yearNum, calendarYear, yearProgress),
+        ),
+        approximated: toTonnes(
+          applyCurrentYearToDate(
+            approximated,
+            yearNum,
+            calendarYear,
+            yearProgress,
+          ),
+        ),
         carbonLaw: toTonnes(carbonLaw),
       };
     })

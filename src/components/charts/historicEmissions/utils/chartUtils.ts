@@ -177,7 +177,7 @@ export const getCurrentYearReferenceLineProps = (currentYear: number) => ({
   stroke: "var(--orange-3)",
   strokeWidth: 1,
   label: {
-    value: currentYear,
+    value: Math.floor(currentYear),
     position: "top" as const,
     fill: "var(--orange-3)",
     fontSize: 12,

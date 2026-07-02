@@ -30,6 +30,7 @@ import {
   ChartTooltip,
 } from "@/components/charts";
 import { useLanguage } from "@/components/LanguageProvider";
+import { getCurrentYearChartPosition } from "@/utils/data/yearUtils";
 
 interface OverviewChartProps {
   projectedData: DataPoint[];
@@ -40,6 +41,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
   const { currentLanguage } = useLanguage();
   const { isMobile } = useScreenSize();
   const currentYear = new Date().getFullYear();
+  const currentYearChartPosition = getCurrentYearChartPosition();
 
   const [chartEndYear, setChartEndYear] = useState(
     new Date().getFullYear() + 5,
@@ -83,7 +85,9 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
             />
 
             {/* Current year reference line */}
-            <ReferenceLine {...getCurrentYearReferenceLineProps(currentYear)} />
+            <ReferenceLine
+              {...getCurrentYearReferenceLineProps(currentYearChartPosition)}
+            />
 
             {/* Historical line */}
             <Line
