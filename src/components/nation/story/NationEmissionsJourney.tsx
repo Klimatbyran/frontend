@@ -254,10 +254,7 @@ export function NationEmissionsJourney({
                 .slice(0, step + 1)
                 .filter((s) => s.layer)
                 .map((s, i) => (
-                  <div
-                    key={s.key}
-                    className="flex items-center gap-2 text-sm"
-                  >
+                  <div key={s.key} className="flex items-center gap-2 text-sm">
                     <span
                       className="w-2.5 h-2.5 rounded-full shrink-0"
                       style={{ backgroundColor: s.color }}
@@ -272,17 +269,6 @@ export function NationEmissionsJourney({
                 ))}
             </div>
 
-            {/* Scroll progress indicator */}
-            <div className="flex gap-2 pt-1">
-              {steps.map((s, i) => (
-                <span
-                  key={s.key}
-                  className={`h-1.5 rounded-full transition-all duration-300 ${
-                    i === step ? "w-8 bg-white" : "w-1.5 bg-white/30"
-                  }`}
-                />
-              ))}
-            </div>
           </div>
         </div>
       </div>
