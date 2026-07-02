@@ -3,11 +3,11 @@ import { getComparisonSections } from "../index";
 
 const t = ((key: string) => key) as TFunction;
 
-function sectionIds(variant: "company" | "municipality" | "region") {
+function sectionIds(variant: "company" | "municipality" | "region" | "nation") {
   return getComparisonSections(variant, t).map((section) => section.id);
 }
 
-function metricIds(variant: "company" | "municipality" | "region") {
+function metricIds(variant: "company" | "municipality" | "region" | "nation") {
   return getComparisonSections(variant, t).flatMap((section) =>
     section.metrics.map((metric) => metric.id),
   );
@@ -68,6 +68,18 @@ describe("getComparisonSections", () => {
         "totalEmissions",
         "changeRate",
         "municipalityCount",
+      ]),
+    );
+  });
+
+  it("returns nation-specific sections and metrics", () => {
+    expect(sectionIds("nation")).toEqual(["climateTarget", "emissions"]);
+    expect(metricIds("nation")).toEqual(
+      expect.arrayContaining([
+        "meetsParis",
+        "totalEmissions",
+        "changeRate",
+        "emissionsPerCapita",
       ]),
     );
   });

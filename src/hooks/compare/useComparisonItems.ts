@@ -8,12 +8,19 @@ import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
 import useTransformMunicipalityListCard from "@/hooks/municipalities/useTransformMunicipalityListCard";
 import { useRegionsForExplore } from "@/hooks/regions/useRegionsForExplore";
 import { useTransformRegionListCard } from "@/hooks/regions/useTransformRegionListCard";
+import { useClimateTraceEmissions } from "@/hooks/europe/useClimateTraceEmissions";
+import { useTransformNationListCard } from "@/hooks/europe/useTransformNationListCard";
+import europeGeoJson from "@/data/europeGeo.json";
+import { FeatureCollection } from "geojson";
+import { useEuropeanData } from "@/hooks/europe/useEuropeanData";
+import { useEuropeanKPIs } from "@/hooks/europe/useEuropeKPIs";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
 import {
   enrichComparisonItem,
   getCompanyLinkTo,
   getMunicipalityLinkTo,
+  getNationLinkTo,
   getRegionLinkTo,
 } from "@/utils/compare/buildComparisonDetails";
 import {
@@ -35,6 +42,9 @@ export function useComparisonItems() {
   const loadCompanies = hasViewData && activeVariant === "company";
   const loadMunicipalities = hasViewData && activeVariant === "municipality";
   const loadRegions = hasViewData && activeVariant === "region";
+  const loadNations = hasViewData && activeVariant === "nation";
+  const europeanKPIs = useEuropeanKPIs();
+  const defaultEuropeanKpi = europeanKPIs[0];
 
   const { companies, companiesLoading } = useCompanies({
     enabled: loadCompanies,
@@ -45,6 +55,12 @@ export function useComparisonItems() {
   const { regions, loading: regionsLoading } = useRegionsForExplore({
     enabled: loadRegions,
   });
+  const { emissionsByIso, isLoading: nationsLoading } = useClimateTraceEmissions();
+  const { countryEntities } = useEuropeanData(
+    defaultEuropeanKpi,
+    europeGeoJson as FeatureCollection,
+    loadNations ? emissionsByIso : {},
+  );
   const { currentLanguage } = useLanguage();
   const { t } = useTranslation();
   const { isAIGenerated } = useVerificationStatus();
@@ -58,6 +74,10 @@ export function useComparisonItems() {
   const allRegionCards = useTransformRegionListCard({
     filteredRegions: loadRegions ? (regions ?? []) : [],
   });
+  const allNationCards = useTransformNationListCard({
+    countries: loadNations ? countryEntities : [],
+    emissionsByIso: loadNations ? emissionsByIso : {},
+  });
 
   const items = useMemo(() => {
     if (!hasViewData || !activeVariant) {
@@ -69,7 +89,9 @@ export function useComparisonItems() {
         ? allCompanyCards
         : activeVariant === "municipality"
           ? allMunicipalityCards
-          : allRegionCards;
+          : activeVariant === "nation"
+            ? allNationCards
+            : allRegionCards;
 
     const selectedCards = orderSelectedCards(source, activeIds);
 
@@ -102,6 +124,20 @@ export function useComparisonItems() {
       });
     }
 
+    if (activeVariant === "nation") {
+      return selectedCards.map((card) => {
+        const nation = countryEntities.find((country) =>
+          isSameComparisonLink(getNationLinkTo(String(country.id)), card.linkTo),
+        );
+
+        return enrichComparisonItem(card, {
+          nation,
+          currentLanguage,
+          t,
+        });
+      });
+    }
+
     return selectedCards.map((card) => {
       const region = (regions ?? []).find((r) =>
         isSameComparisonLink(getRegionLinkTo(r.name), card.linkTo),
@@ -118,8 +154,10 @@ export function useComparisonItems() {
     activeVariant,
     allCompanyCards,
     allMunicipalityCards,
+    allNationCards,
     allRegionCards,
     companies,
+    countryEntities,
     currentLanguage,
     hasViewData,
     isAIGenerated,
@@ -132,9 +170,11 @@ export function useComparisonItems() {
     ? companiesLoading
     : loadMunicipalities
       ? municipalitiesLoading
-      : loadRegions
-        ? regionsLoading
-        : false;
+      : loadNations
+        ? nationsLoading
+        : loadRegions
+          ? regionsLoading
+          : false;
 
   return {
     items,

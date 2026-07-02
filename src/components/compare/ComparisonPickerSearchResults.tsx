@@ -55,7 +55,9 @@ export function ComparisonPickerSearchResults({
                           ? "globalSearch.searchCategoryCompany"
                           : item.category === "municipalities"
                             ? "globalSearch.searchCategoryMunicipality"
-                            : "globalSearch.searchCategoryRegion",
+                            : item.category === "nations"
+                              ? "globalSearch.searchCategoryNation"
+                              : "globalSearch.searchCategoryRegion",
                       )
                     : undefined
                 }

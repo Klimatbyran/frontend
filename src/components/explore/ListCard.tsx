@@ -40,7 +40,7 @@ export interface ListCardProps {
   climatePlanHasPlan?: boolean | null;
   climatePlanYear?: number | null;
 
-  variant?: "company" | "municipality" | "region";
+  variant?: "company" | "municipality" | "region" | "nation";
 
   /** Extra metrics from detail pages, used in comparison view only */
   comparisonDetails?: ComparisonDetails;
@@ -63,12 +63,15 @@ export function ListCard({
 }: ListCardProps) {
   const isRegion = variant === "region";
   const isMunicipality = variant === "municipality";
+  const isNation = variant === "nation";
 
   const linkMinHeightClass = isRegion
     ? "min-h-[300px]"
-    : isMunicipality
-      ? "min-h-[400px]"
-      : "min-h-[418px]";
+    : isNation
+      ? "min-h-[300px]"
+      : isMunicipality
+        ? "min-h-[400px]"
+        : "min-h-[418px]";
 
   const cardClassName = cn(
     "block bg-black-2 rounded-level-2 p-8 md:space-y-4 transition-all duration-300",

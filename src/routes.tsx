@@ -81,6 +81,8 @@ function ComparisonRoutes({ basePath }: { basePath: string }) {
         path={`${basePath}/europe/:id`}
         element={<EuropeanCountryDetailPage />}
       />
+      <Route path={`${basePath}/europe`} element={<EuropeanOverviewPage />} />
+      <Route path={`${basePath}/nation`} element={<NationDetailPage />} />
     </Route>
   );
 }
@@ -131,8 +133,6 @@ function TerritoryRoutes({ basePath }: { basePath: string }) {
   return (
     <>
       <Route path={`${basePath}/regions`} element={<RegionalOverviewPage />} />
-      <Route path={`${basePath}/europe`} element={<EuropeanOverviewPage />} />
-      <Route path={`${basePath}/nation`} element={<NationDetailPage />} />
       <Route
         path={`${basePath}/municipalities`}
         element={<MunicipalitiesOverviewPage />}

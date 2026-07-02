@@ -10,9 +10,10 @@ import { useRankedEuropeURLParams } from "@/hooks/europe/useRankedEuropeURLParam
 import { useEuropeanKPIs } from "@/hooks/europe/useEuropeKPIs";
 import { useClimateTraceEmissions } from "@/hooks/europe/useClimateTraceEmissions";
 import { useEuropeanData } from "@/hooks/europe/useEuropeanData";
+import { useTransformNationListCard } from "@/hooks/europe/useTransformNationListCard";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import EuropeanInsightsPanel from "@/components/europe/EuropeanInsightsPanel";
-import { EuropeanRankedList } from "@/components/europe/EuropeanRankedList";
+import { EuropeanCountryExploreList } from "@/components/europe/EuropeanCountryExploreList";
 import { KPIChipSelector } from "@/components/ranked/KPIChipSelector";
 import { OverviewPageSkeleton } from "@/components/ranked/OverviewPageSkeleton";
 import { OverviewSplitLayout } from "@/components/ranked/OverviewSplitLayout";
@@ -55,6 +56,10 @@ export function EuropeanOverviewPage() {
 
   const { countryEntities, mapData, filteredGeoData, countriesAsEntities } =
     useEuropeanData(selectedKPI, geoData, emissionsByIso);
+  const nationListCards = useTransformNationListCard({
+    countries: countryEntities,
+    emissionsByIso,
+  });
 
   const handleCountryClick = createEntityClickHandler(
     navigate,
@@ -109,10 +114,8 @@ export function EuropeanOverviewPage() {
   );
 
   const europeanOverviewList = (
-    <EuropeanRankedList
-      countryEntities={countryEntities}
-      selectedKPI={selectedKPI}
-      onItemClick={handleCountryClick}
+    <EuropeanCountryExploreList
+      items={nationListCards}
       headerAction={viewToggle}
     />
   );

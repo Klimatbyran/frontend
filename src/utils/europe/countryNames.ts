@@ -1,4 +1,5 @@
 import { FeatureCollection } from "geojson";
+import europeGeoJson from "@/data/europeGeo.json";
 import {
   SUPPORTED_LANGUAGES,
   SupportedLanguage,
@@ -92,4 +93,20 @@ export function resolveCountryIso3(
   nameToIso3: Map<string, string>,
 ): string | undefined {
   return nameToIso3.get(normalizeCountryName(name));
+}
+
+let defaultCountryGeoIndex: CountryGeoIndex | undefined;
+
+function getDefaultCountryGeoIndex(): CountryGeoIndex {
+  if (!defaultCountryGeoIndex) {
+    defaultCountryGeoIndex = buildCountryGeoIndex(
+      europeGeoJson as FeatureCollection,
+    );
+  }
+
+  return defaultCountryGeoIndex;
+}
+
+export function resolveCountryIso3FromName(name: string): string | undefined {
+  return resolveCountryIso3(name, getDefaultCountryGeoIndex().nameToIso3);
 }

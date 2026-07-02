@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useBlogPosts } from "./useBlogPosts";
+import { resolveCountryIso3FromName } from "@/utils/europe/countryNames";
 
 export type CombinedData = {
   name: string;
@@ -34,13 +35,11 @@ export const useCombinedData = (
 
     const mappedData: CombinedData[] = [
       ...searchResults.map((item) => {
-        if (item.type === "nation" && item.country) {
+        if (item.type === "nation") {
+          const iso3 = resolveCountryIso3FromName(item.name) ?? "SWE";
           return {
-            name:
-              item.country[currentLanguage] ||
-              item.country.sv ||
-              item.country.en,
-            id: "nation",
+            name: item.name,
+            id: iso3,
             category: "nations" as CombinedData["category"],
           };
         }

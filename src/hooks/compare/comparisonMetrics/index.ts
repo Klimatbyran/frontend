@@ -2,6 +2,7 @@ import type { TFunction } from "i18next";
 import type { ListCardProps } from "@/components/explore/ListCard";
 import { getCompanySections } from "./company";
 import { getMunicipalitySections } from "./municipality";
+import { getNationSections } from "./nation";
 import { getRegionSections } from "./region";
 
 export type {
@@ -19,6 +20,8 @@ export function getComparisonSections(
       return getMunicipalitySections(t);
     case "region":
       return getRegionSections(t);
+    case "nation":
+      return getNationSections(t);
     case "company":
     default:
       return getCompanySections(t);

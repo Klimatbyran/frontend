@@ -1,12 +1,13 @@
 import type { CombinedData } from "@/hooks/useCombinedData";
 import type { ListCardProps } from "@/components/explore/ListCard";
 import type { ComparisonSelectionState } from "@/utils/compare/comparisonSelection";
+import { getEntityDetailPath } from "@/utils/routing";
 
 export type ComparisonEntityVariant = NonNullable<ListCardProps["variant"]>;
 
 export type ComparisonEntityCategory = Extract<
   CombinedData["category"],
-  "companies" | "municipalities" | "regions"
+  "companies" | "municipalities" | "regions" | "nations"
 >;
 
 export const COMPARISON_MIN = 2;
@@ -198,13 +199,17 @@ export function clearComparisonReturnTo() {
 
 /** True when return path points at an entity detail page (not explore list). */
 export function isComparisonDetailReturnPath(path: string): boolean {
-  return /\/(companies|municipalities|regions)\/[^/?#]+/.test(path);
+  return (
+    /\/(companies|municipalities|regions|europe)\/[^/?#]+/.test(path) ||
+    /\/nation(?:\/|$|\?|#)/.test(path)
+  );
 }
 
 const EXPLORE_PATHS: Record<ComparisonEntityVariant, string> = {
   company: "/explore/companies",
   municipality: "/explore/municipalities",
   region: "/explore/regions",
+  nation: "/europe",
 };
 
 export function buildComparisonLinkTo(
@@ -216,6 +221,9 @@ export function buildComparisonLinkTo(
   }
   if (variant === "region") {
     return `/regions/${id.toLowerCase()}`;
+  }
+  if (variant === "nation") {
+    return getEntityDetailPath("europe", { id, name: id });
   }
   return `/municipalities/${id}`;
 }
@@ -258,6 +266,7 @@ export function categoryToVariant(
   if (category === "companies") return "company";
   if (category === "municipalities") return "municipality";
   if (category === "regions") return "region";
+  if (category === "nations") return "nation";
   return null;
 }
 
@@ -266,7 +275,8 @@ export function variantToCategory(
 ): ComparisonEntityCategory {
   if (variant === "company") return "companies";
   if (variant === "municipality") return "municipalities";
-  return "regions";
+  if (variant === "region") return "regions";
+  return "nations";
 }
 
 export function combinedDataToComparison(item: CombinedData): {

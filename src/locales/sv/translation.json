@@ -2143,26 +2143,29 @@
       "addToComparison": "Lägg till i jämförelse",
       "addedToComparison": "Tillagd i jämförelse",
       "variantMismatchTitle": "Kan inte blanda enhetstyper",
-      "variantMismatchMessage": "Du kan bara jämföra kommuner, län eller företag av samma typ. Rensa ditt val för att börja om.",
+      "variantMismatchMessage": "Du kan bara jämföra kommuner, län, länder eller företag av samma typ. Rensa ditt val för att börja om.",
       "notEnoughSelected": "Välj fler enheter att jämföra",
       "notEnoughSelectedDescription": "Välj minst {{min}} enheter för att öppna jämförelsevyn.",
       "addEntity": {
         "default": "Lägg till enheter",
         "company": "Lägg till företag",
         "municipality": "Lägg till kommun",
-        "region": "Lägg till län"
+        "region": "Lägg till län",
+        "nation": "Lägg till land"
       },
       "pickerTitle": {
         "default": "Lägg till i jämförelse",
         "company": "Lägg till företag i jämförelse",
         "municipality": "Lägg till kommun i jämförelse",
-        "region": "Lägg till län i jämförelse"
+        "region": "Lägg till län i jämförelse",
+        "nation": "Lägg till land i jämförelse"
       },
       "pickerPlaceholder": {
-        "default": "Sök kommuner, län eller företag",
+        "default": "Sök kommuner, län, länder eller företag",
         "company": "Sök företag",
         "municipality": "Sök kommuner",
-        "region": "Sök län"
+        "region": "Sök län",
+        "nation": "Sök länder"
       },
       "pickerDone": "Klar",
       "pickerLoading": "Söker...",
@@ -2170,7 +2173,8 @@
         "default": "Inga resultat hittades",
         "company": "Inga företag hittades",
         "municipality": "Inga kommuner hittades",
-        "region": "Inga län hittades"
+        "region": "Inga län hittades",
+        "nation": "Inga länder hittades"
       },
       "pickerSelectedHeading": "Valda ({{count}}/{{max}})",
       "sections": {

@@ -5,9 +5,12 @@ import { PageNoData } from "@/components/pageStates/NoData";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";
 import { SectorEmissionsChart } from "@/components/charts/sectorChart/SectorEmissions";
 import { EntityListBox } from "@/components/detail/EntityListBox";
+import { ComparisonDetailChip } from "@/components/compare/ComparisonDetailChip";
+import { buildComparisonLinkTo } from "@/utils/compare/comparisonUtils";
 import { useNationPageData } from "@/hooks/nation/useNationPageData";
 import { useLanguage } from "@/components/LanguageProvider";
 import { EuropeanCountryDetailHeader } from "@/components/europe/EuropeanCountryDetailHeader";
+import { SWEDEN_ISO3 } from "@/utils/routing";
 
 function NationDetailContent({
   nation,
@@ -35,6 +38,13 @@ function NationDetailContent({
         helpItems={["regionTotalEmissions", "detailWhyDataDelay"]}
         stats={headerStats}
         kpiComparisons={kpiComparisons}
+        headerChip={
+          <ComparisonDetailChip
+            linkTo={buildComparisonLinkTo("nation", SWEDEN_ISO3)}
+            variant="nation"
+            name={nation.country[currentLanguage]}
+          />
+        }
       />
       <TerritoryEmissions
         emissionsData={emissionsData}

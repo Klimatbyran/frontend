@@ -3,6 +3,7 @@ import type { ListCardProps } from "@/components/explore/ListCard";
 import type { RankedCompany } from "@/types/company";
 import type { Municipality } from "@/types/municipality";
 import type { RegionForExplore } from "@/hooks/regions/useRegionsForExplore";
+import type { RankedListItem } from "@/types/rankings";
 import { getProcurementRequirementsText } from "@/utils/municipality/procurement";
 import {
   formatEmployeeCount,
@@ -32,6 +33,8 @@ export type ComparisonDetails = {
   scope2Emissions?: string | null;
   scope3Emissions?: string | null;
   municipalityCount?: string | null;
+  emissionsPerCapita?: string | null;
+  emissionsPerCapitaUnit?: string;
 };
 
 function formatTurnover(
@@ -148,18 +151,33 @@ export function buildRegionComparisonDetails(
   };
 }
 
+export function buildNationComparisonDetails(
+  country: RankedListItem,
+  currentLanguage: SupportedLanguage,
+  t: TFunction,
+): ComparisonDetails {
+  return {
+    emissionsPerCapita:
+      typeof country.emissionsPerCapita === "number"
+        ? localizeUnit(country.emissionsPerCapita, currentLanguage)
+        : null,
+    emissionsPerCapitaUnit: t("europe.list.kpis.emissionsPerCapita.unit"),
+  };
+}
+
 export function enrichComparisonItem(
   card: ListCardProps,
   options: {
     municipality?: Municipality;
     company?: RankedCompany;
     region?: RegionForExplore;
+    nation?: RankedListItem;
     currentLanguage: SupportedLanguage;
     t: TFunction;
     isAIGenerated?: IsAIGeneratedFn;
   },
 ): ListCardProps {
-  const { municipality, company, region, currentLanguage, t, isAIGenerated } =
+  const { municipality, company, region, nation, currentLanguage, t, isAIGenerated } =
     options;
 
   if (card.variant === "municipality" && municipality) {
@@ -192,6 +210,17 @@ export function enrichComparisonItem(
     };
   }
 
+  if (card.variant === "nation" && nation) {
+    return {
+      ...card,
+      comparisonDetails: buildNationComparisonDetails(
+        nation,
+        currentLanguage,
+        t,
+      ),
+    };
+  }
+
   return card;
 }
 
@@ -205,4 +234,8 @@ export function getCompanyLinkTo(wikidataId: string): string {
 
 export function getRegionLinkTo(name: string): string {
   return getEntityDetailPath("region", name);
+}
+
+export function getNationLinkTo(iso3: string): string {
+  return getEntityDetailPath("europe", { id: iso3, name: iso3 });
 }

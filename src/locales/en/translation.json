@@ -2085,26 +2085,29 @@
       "addToComparison": "Add to comparison",
       "addedToComparison": "Added to comparison",
       "variantMismatchTitle": "Cannot mix entity types",
-      "variantMismatchMessage": "You can only compare municipalities, regions, or companies of the same type. Clear your selection to start over.",
+      "variantMismatchMessage": "You can only compare municipalities, regions, nations, or companies of the same type. Clear your selection to start over.",
       "notEnoughSelected": "Select more entities to compare",
       "notEnoughSelectedDescription": "Choose at least {{min}} entities to open the comparison view.",
       "addEntity": {
         "default": "Add entities",
         "company": "Add company",
         "municipality": "Add municipality",
-        "region": "Add region"
+        "region": "Add region",
+        "nation": "Add country"
       },
       "pickerTitle": {
         "default": "Add to comparison",
         "company": "Add company to comparison",
         "municipality": "Add municipality to comparison",
-        "region": "Add region to comparison"
+        "region": "Add region to comparison",
+        "nation": "Add country to comparison"
       },
       "pickerPlaceholder": {
-        "default": "Search municipalities, regions, or companies",
+        "default": "Search municipalities, regions, nations, or companies",
         "company": "Search companies",
         "municipality": "Search municipalities",
-        "region": "Search regions"
+        "region": "Search regions",
+        "nation": "Search countries"
       },
       "pickerDone": "Done",
       "pickerLoading": "Searching...",
@@ -2112,7 +2115,8 @@
         "default": "No results found",
         "company": "No companies found",
         "municipality": "No municipalities found",
-        "region": "No regions found"
+        "region": "No regions found",
+        "nation": "No countries found"
       },
       "pickerSelectedHeading": "Selected ({{count}}/{{max}})",
       "sections": {

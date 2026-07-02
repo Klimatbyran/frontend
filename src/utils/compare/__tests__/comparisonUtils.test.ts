@@ -43,6 +43,11 @@ describe("buildComparisonLinkTo", () => {
       "/regions/stockholms län",
     );
   });
+
+  it("builds nation links with Sweden routed to /nation", () => {
+    expect(buildComparisonLinkTo("nation", "SWE")).toBe("/nation");
+    expect(buildComparisonLinkTo("nation", "DEU")).toBe("/europe/deu");
+  });
 });
 
 describe("variant and category mapping", () => {
@@ -50,13 +55,14 @@ describe("variant and category mapping", () => {
     expect(categoryToVariant("companies")).toBe("company");
     expect(categoryToVariant("municipalities")).toBe("municipality");
     expect(categoryToVariant("regions")).toBe("region");
-    expect(categoryToVariant("nations")).toBeNull();
+    expect(categoryToVariant("nations")).toBe("nation");
   });
 
   it("maps variants to categories", () => {
     expect(variantToCategory("company")).toBe("companies");
     expect(variantToCategory("municipality")).toBe("municipalities");
     expect(variantToCategory("region")).toBe("regions");
+    expect(variantToCategory("nation")).toBe("nations");
   });
 
   it("maps combined search data to comparison entities", () => {
@@ -72,8 +78,19 @@ describe("variant and category mapping", () => {
     });
 
     expect(
-      isComparableSearchResult({ id: "x", name: "x", category: "nations" }),
-    ).toBe(false);
+      combinedDataToComparison({
+        id: "DEU",
+        name: "Germany",
+        category: "nations",
+      }),
+    ).toEqual({
+      linkTo: "/europe/deu",
+      variant: "nation",
+    });
+
+    expect(
+      isComparableSearchResult({ id: "DEU", name: "Germany", category: "nations" }),
+    ).toBe(true);
   });
 });
 
@@ -145,6 +162,8 @@ describe("comparison route helpers", () => {
 
   it("detects detail return paths", () => {
     expect(isComparisonDetailReturnPath("/en/companies/Q1")).toBe(true);
+    expect(isComparisonDetailReturnPath("/en/europe/deu")).toBe(true);
+    expect(isComparisonDetailReturnPath("/en/nation")).toBe(true);
     expect(isComparisonDetailReturnPath("/en/explore/companies")).toBe(false);
   });
 
@@ -152,6 +171,7 @@ describe("comparison route helpers", () => {
     expect(getExplorePath("company")).toBe("/explore/companies");
     expect(getExplorePath("municipality")).toBe("/explore/municipalities");
     expect(getExplorePath("region")).toBe("/explore/regions");
+    expect(getExplorePath("nation")).toBe("/europe");
   });
 
   it("stores a one-off snapshot for the compare view page", () => {

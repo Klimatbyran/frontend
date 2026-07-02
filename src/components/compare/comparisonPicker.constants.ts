@@ -5,4 +5,5 @@ export const COMPARISON_SEARCH_CATEGORIES = [
   "companies",
   "municipalities",
   "regions",
+  "nations",
 ] as const;

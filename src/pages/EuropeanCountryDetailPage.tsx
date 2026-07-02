@@ -5,6 +5,8 @@ import { PageError } from "@/components/pageStates/Error";
 import { PageNoData } from "@/components/pageStates/NoData";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";
 import { EuropeanCountryDetailHeader } from "@/components/europe/EuropeanCountryDetailHeader";
+import { ComparisonDetailChip } from "@/components/compare/ComparisonDetailChip";
+import { buildComparisonLinkTo } from "@/utils/compare/comparisonUtils";
 import { useEuropeanCountryPageData } from "@/hooks/europe/useEuropeanCountryPageData";
 import { useLanguage } from "@/components/LanguageProvider";
 import { localizedPath, SWEDEN_ISO3 } from "@/utils/routing";
@@ -38,6 +40,13 @@ export function EuropeanCountryDetailPage() {
         helpItems={["regionTotalEmissions", "detailWhyDataDelay"]}
         stats={headerStats}
         kpiComparisons={kpiComparisons}
+        headerChip={
+          <ComparisonDetailChip
+            linkTo={buildComparisonLinkTo("nation", country.iso3)}
+            variant="nation"
+            name={country.name}
+          />
+        }
       />
       <TerritoryEmissions
         emissionsData={emissionsData}
