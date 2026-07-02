@@ -7,7 +7,11 @@ type CountryFlagProps = {
   className?: string;
 };
 
-export function CountryFlag({ iso2, countryName, className }: CountryFlagProps) {
+export function CountryFlag({
+  iso2,
+  countryName,
+  className,
+}: CountryFlagProps) {
   return (
     <img
       src={getCountryFlagUrl(iso2)}
