@@ -69,7 +69,9 @@ function buildEmissionBreakdown(
     territorialFossil: extractYearRecord(getTerritorialFossilSeries(response)),
     biogenic: extractYearRecord(response.biogenicEmissions),
     consumptionAbroad: extractYearRecord(response.consumptionAbroadEmissions),
-    exportOfOilProducts: extractYearRecord(response.exportOfOilProductsEmissions),
+    exportOfOilProducts: extractYearRecord(
+      response.exportOfOilProductsEmissions,
+    ),
     eCommerce: extractYearRecord(response.eCommerceEmissions),
   };
 }
@@ -95,7 +97,9 @@ function transformLegacyNationResponse(
 function transformNewNationResponse(
   response: ApiNationResponse,
 ): NationDetails {
-  const territorialFossil = extractYearRecord(getTerritorialFossilSeries(response));
+  const territorialFossil = extractYearRecord(
+    getTerritorialFossilSeries(response),
+  );
   const derived = computeNationDerivedMetrics(territorialFossil);
 
   return {

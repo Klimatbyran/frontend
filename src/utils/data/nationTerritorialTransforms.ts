@@ -35,9 +35,10 @@ function median(values: number[]): number {
     : sorted[mid];
 }
 
-function fitLADRegression(
-  points: { year: number; value: number }[],
-): { slope: number; shift: number } {
+function fitLADRegression(points: { year: number; value: number }[]): {
+  slope: number;
+  shift: number;
+} {
   if (points.length < 2) {
     return { slope: 0, shift: points[0]?.value ?? 0 };
   }
@@ -108,9 +109,7 @@ function toEmissionArray(
     .map(([year, value]) => ({ year, value }));
 }
 
-function calculateHistoricalEmissionChangePercent(
-  record: YearRecord,
-): number {
+function calculateHistoricalEmissionChangePercent(record: YearRecord): number {
   const startValue = record[CUTOFF_YEAR];
   const endValue = record[LAST_YEAR_WITH_SMHI_DATA];
 
