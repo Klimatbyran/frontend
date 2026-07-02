@@ -2,7 +2,7 @@ import { SupportedLanguage } from "@/lib/languageDetection";
 
 // Helper function to get latest year's data
 export function getSectorsReportingYear(): number {
-  return Math.round(new Date().getFullYear() - 1.5);
+  return new Date().getFullYear() - 2;
 }
 
 /** Fraction of the calendar year elapsed at `date` (0 at Jan 1, 1 at Dec 31 end). */

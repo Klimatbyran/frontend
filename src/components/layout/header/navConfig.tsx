@@ -23,23 +23,29 @@ export const NAV_LINKS: NavLink[] = [
         onlyShowOnStaging: true,
       },
       {
-        label: "header.nation",
-        path: `/nation`,
+        label: "header.territories",
         items: [
           {
-            label: "header.municipalities",
-            path: `/municipalities`,
+            label: "header.nation",
+            path: `/nation`,
           },
           {
             label: "header.regions",
             path: `/regions`,
           },
+          {
+            label: "header.municipalities",
+            path: `/municipalities`,
+          },
         ],
       },
       {
         label: "header.companies",
-        path: `/companies`,
         items: [
+          {
+            label: "header.allCompanies",
+            path: `/companies`,
+          },
           {
             label: "header.sectors",
             path: `/sectors`,

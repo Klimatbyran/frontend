@@ -5,6 +5,7 @@ import {
   getValidData,
   getMinYear,
   calculateParisValue,
+  calculateEmissionsChangeFromBaseYear,
 } from "../calculations/emissionsCalculations";
 
 describe("generateYearRange", () => {
@@ -175,5 +176,127 @@ describe("calculateParisValue", () => {
     expect(() => calculateParisValue(2024, 2023, NaN)).toThrow(
       "calculateParisValue: Current year value must be a valid number",
     );
+  });
+});
+
+describe("calculateEmissionsChangeFromBaseYear", () => {
+  const createCompany = (
+    baseYear: number,
+    periods: Array<{
+      startDate: string;
+      endDate: string;
+      emissions?: number | null;
+    }>,
+  ) => ({
+    baseYear: { year: baseYear },
+    reportingPeriods: periods.map((period) => ({
+      startDate: period.startDate,
+      endDate: period.endDate,
+      emissions:
+        period.emissions === undefined
+          ? undefined
+          : {
+              calculatedTotalEmissions: period.emissions,
+            },
+    })),
+  });
+
+  it("returns null when company has no base year", () => {
+    expect(
+      calculateEmissionsChangeFromBaseYear({
+        reportingPeriods: [
+          {
+            startDate: "2020-01-01",
+            endDate: "2020-12-31",
+            emissions: { calculatedTotalEmissions: 100 },
+          },
+        ],
+      }),
+    ).toBeNull();
+  });
+
+  it("calculates percentage change from base year to latest period after base year", () => {
+    const company = createCompany(2020, [
+      {
+        startDate: "2020-01-01",
+        endDate: "2020-12-31",
+        emissions: 100,
+      },
+      {
+        startDate: "2023-01-01",
+        endDate: "2023-12-31",
+        emissions: 80,
+      },
+    ]);
+
+    expect(calculateEmissionsChangeFromBaseYear(company)).toBe(-20);
+  });
+
+  it("matches base year using ISO date string, not local timezone", () => {
+    const company = createCompany(2020, [
+      {
+        startDate: "2020-01-01",
+        endDate: "2020-12-31T23:59:59.999Z",
+        emissions: 100,
+      },
+      {
+        startDate: "2023-01-01",
+        endDate: "2023-12-31T23:59:59.999Z",
+        emissions: 125,
+      },
+    ]);
+
+    expect(calculateEmissionsChangeFromBaseYear(company)).toBe(25);
+  });
+
+  it("ignores periods before the base year when finding the latest period", () => {
+    const company = createCompany(2020, [
+      {
+        startDate: "2018-01-01",
+        endDate: "2018-12-31",
+        emissions: 200,
+      },
+      {
+        startDate: "2020-01-01",
+        endDate: "2020-12-31",
+        emissions: 100,
+      },
+      {
+        startDate: "2023-01-01",
+        endDate: "2023-12-31",
+        emissions: 90,
+      },
+    ]);
+
+    expect(calculateEmissionsChangeFromBaseYear(company)).toBe(-10);
+  });
+
+  it("returns null when there is no reporting period after the base year", () => {
+    const company = createCompany(2020, [
+      {
+        startDate: "2020-01-01",
+        endDate: "2020-12-31",
+        emissions: 100,
+      },
+    ]);
+
+    expect(calculateEmissionsChangeFromBaseYear(company)).toBeNull();
+  });
+
+  it("filters out extreme outliers above 200%", () => {
+    const company = createCompany(2020, [
+      {
+        startDate: "2020-01-01",
+        endDate: "2020-12-31",
+        emissions: 100,
+      },
+      {
+        startDate: "2023-01-01",
+        endDate: "2023-12-31",
+        emissions: 350,
+      },
+    ]);
+
+    expect(calculateEmissionsChangeFromBaseYear(company)).toBeNull();
   });
 });

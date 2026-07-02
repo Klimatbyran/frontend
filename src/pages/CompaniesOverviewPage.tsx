@@ -137,11 +137,22 @@ export function CompaniesOverviewPage() {
 
     const filtered = companies.filter((company) => {
       const sectorCode = company.industry?.industryGics?.sectorCode;
-      return sectorCode === selectedSector;
+      if (sectorCode !== selectedSector) {
+        return false;
+      }
+
+      if (
+        selectedKPI.key === "emissionsChangeFromBaseYear" &&
+        !company.baseYear?.year
+      ) {
+        return false;
+      }
+
+      return true;
     });
 
     return filtered.map((company) => enrichCompanyWithKPIs(company));
-  }, [companies, selectedSector]);
+  }, [companies, selectedSector, selectedKPI.key]);
 
   const handleSectorChange = (sector: string) => {
     setSelectedSector(sector);
