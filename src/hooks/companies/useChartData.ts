@@ -3,16 +3,6 @@ import { RankedCompany } from "@/types/company";
 import { getCompanyUrlSegment } from "@/utils/companyRouting";
 import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 
-export const extractYears = (companies: RankedCompany[]): string[] => {
-  const years = new Set<string>();
-  companies.forEach((company) => {
-    company.reportingPeriods.forEach((period) => {
-      years.add(period.endDate.substring(0, 4));
-    });
-  });
-  return Array.from(years).sort();
-};
-
 const getEmissionsFromPeriod = (
   period: RankedCompany["reportingPeriods"][number],
 ): { scope1: number; scope2: number; scope3: number } => {
@@ -54,30 +44,6 @@ const calculateSectorScopesForYear = (
   });
 
   return { scope1, scope2, scope3 };
-};
-
-const buildYearData = (
-  year: string,
-  companies: RankedCompany[],
-  selectedSectors: string[],
-  sectorNames: Record<string, string>,
-): Record<string, unknown> => {
-  const yearData: Record<string, unknown> = { year };
-
-  selectedSectors.forEach((sectorCode) => {
-    const sectorName = sectorNames[sectorCode as keyof typeof sectorNames];
-    const { scope1, scope2, scope3 } = calculateSectorScopesForYear(
-      companies,
-      sectorCode,
-      year,
-    );
-
-    yearData[`${sectorName}_scope1`] = scope1;
-    yearData[`${sectorName}_scope2`] = scope2;
-    yearData[`${sectorName}_scope3`] = scope3;
-  });
-
-  return yearData;
 };
 
 const createCompanyDataItem = (
@@ -140,20 +106,19 @@ const buildCompanyPieData = (
 };
 
 const buildSectorPieData = (
-  chartData: Array<Record<string, unknown>>,
+  companies: RankedCompany[],
   selectedYear: string,
   selectedSectors: string[],
   sectorNames: Record<string, string>,
 ) => {
-  const yearData = chartData.find((d) => d.year === selectedYear);
-  if (!yearData) return [];
-
   const sectorTotals = selectedSectors
     .map((sectorCode) => {
       const sectorName = sectorNames[sectorCode as keyof typeof sectorNames];
-      const scope1 = (yearData[`${sectorName}_scope1`] as number) || 0;
-      const scope2 = (yearData[`${sectorName}_scope2`] as number) || 0;
-      const scope3 = (yearData[`${sectorName}_scope3`] as number) || 0;
+      const { scope1, scope2, scope3 } = calculateSectorScopesForYear(
+        companies,
+        sectorCode,
+        selectedYear,
+      );
       const value = scope1 + scope2 + scope3;
 
       return {
@@ -176,18 +141,6 @@ const buildSectorPieData = (
     .sort((a, b) => b.value / b.total - a.value / a.total);
 };
 
-const calculateTotalEmissions = (
-  pieChartData: Array<{ value: number }>,
-): number => {
-  return pieChartData.reduce((sum, item) => sum + item.value, 0);
-};
-
-const extractUniqueYears = (
-  chartData: Array<Record<string, unknown>>,
-): string[] => {
-  return Array.from(new Set(chartData.map((d) => d.year as string))).sort();
-};
-
 export const useChartData = (
   companies: RankedCompany[],
   selectedSectors: string[],
@@ -196,38 +149,22 @@ export const useChartData = (
 ) => {
   const sectorNames = useSectorNames();
 
-  const chartData = useMemo(() => {
-    const years = extractYears(companies);
-    return years.map((year) =>
-      buildYearData(year, companies, selectedSectors, sectorNames),
-    );
-  }, [companies, selectedSectors, sectorNames]);
-
   const pieChartData = useMemo(() => {
     if (selectedSector) {
       return buildCompanyPieData(companies, selectedSector, selectedYear);
     }
     return buildSectorPieData(
-      chartData,
+      companies,
       selectedYear,
       selectedSectors,
       sectorNames,
     );
-  }, [
-    chartData,
-    selectedYear,
-    selectedSectors,
-    selectedSector,
-    companies,
-    sectorNames,
-  ]);
+  }, [companies, selectedYear, selectedSectors, selectedSector, sectorNames]);
 
   const totalEmissions = useMemo(
-    () => calculateTotalEmissions(pieChartData),
+    () => pieChartData.reduce((sum, item) => sum + item.value, 0),
     [pieChartData],
   );
 
-  const years = useMemo(() => extractUniqueYears(chartData), [chartData]);
-
-  return { chartData, pieChartData, totalEmissions, years };
+  return { pieChartData, totalEmissions };
 };
