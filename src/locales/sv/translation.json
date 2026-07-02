@@ -9,8 +9,10 @@
   "header": {
     "data": "Data",
     "companies": "Företag",
+    "allCompanies": "Alla företag",
     "sectors": "Branscher",
     "explore": "Utforska",
+    "territories": "Territorier",
     "municipalities": "Kommuner",
     "nation": "Sverige",
     "regions": "Län",
