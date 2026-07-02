@@ -44,7 +44,6 @@ function buildCountryEntity(
     displayName: getLocalizedCountryName(iso2, language, mapName),
     mapName,
     emissionsPerCapita: null,
-    emissionsPercentChange: null,
     historicalEmissionChangePercent: null,
     meetsParis: null,
     ...values,
@@ -83,7 +82,6 @@ function buildClimateTraceEntities(
         language,
         {
           emissionsPerCapita: ranking.emissionsPerCapita,
-          emissionsPercentChange: ranking.emissionsPercentChange,
           historicalEmissionChangePercent:
             ranking.historicalEmissionChangePercent,
           meetsParis: ranking.meetsParis,
@@ -122,10 +120,6 @@ function toEuropeanCountries(
     emissionsPerCapita:
       typeof country.emissionsPerCapita === "number"
         ? country.emissionsPerCapita
-        : null,
-    emissionsPercentChange:
-      typeof country.emissionsPercentChange === "number"
-        ? country.emissionsPercentChange
         : null,
     historicalEmissionChangePercent:
       typeof country.historicalEmissionChangePercent === "number"

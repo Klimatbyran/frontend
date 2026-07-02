@@ -21,7 +21,6 @@ export type ClimateTraceCountryRanking = {
   emissionsQuantity: number;
   emissionsPerCapita: number;
   percentage: number;
-  emissionsPercentChange: number;
 };
 
 export type ClimateTraceCountryData = ClimateTraceCountryRanking & {
@@ -33,25 +32,6 @@ export type ClimateTraceCountryData = ClimateTraceCountryRanking & {
 type ClimateTraceCountryRankingsResponse = {
   rankings: ClimateTraceCountryRanking[];
 };
-
-export type ClimateTraceKpiKey =
-  | "emissionsPerCapita"
-  | "emissionsPercentChange"
-  | "historicalEmissionChangePercent"
-  | "meetsParis";
-
-export const CLIMATE_TRACE_KPI_KEYS = new Set<ClimateTraceKpiKey>([
-  "emissionsPerCapita",
-  "emissionsPercentChange",
-  "historicalEmissionChangePercent",
-  "meetsParis",
-]);
-
-export function isClimateTraceKpiKey(
-  key: PropertyKey,
-): key is ClimateTraceKpiKey {
-  return CLIMATE_TRACE_KPI_KEYS.has(key as ClimateTraceKpiKey);
-}
 
 export type ClimateTraceEmissionsByIso = Record<
   string,

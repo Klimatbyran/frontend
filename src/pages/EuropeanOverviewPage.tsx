@@ -28,7 +28,6 @@ import {
 
 const EUROPE_KPI_ICONS: Record<string, React.ReactNode> = {
   emissionsPerCapita: <TrendingDown className="w-4 h-4" />,
-  emissionsPercentChange: <ArrowDownCircle className="w-4 h-4" />,
   historicalEmissionChangePercent: <ArrowDownCircle className="w-4 h-4" />,
   meetsParis: <Leaf className="w-4 h-4" />,
 };
@@ -87,9 +86,7 @@ export function EuropeanOverviewPage() {
         <h3 className="text-red-500 mb-4 text-xl">
           {t("europeanRankedPage.errorTitle")}
         </h3>
-        <p className="text-grey">
-          {t("europeanRankedPage.errorDescription")}
-        </p>
+        <p className="text-grey">{t("europeanRankedPage.errorDescription")}</p>
       </div>
     );
   }

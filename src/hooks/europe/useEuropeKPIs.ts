@@ -19,18 +19,6 @@ export const useEuropeanKPIs = (): KPIValue<EuropeanCountry>[] => {
       sourceUrls: ["https://climatetrace.org/"],
     },
     {
-      label: t("europe.list.kpis.emissionsPercentChange.label"),
-      key: "emissionsPercentChange",
-      unit: "%",
-      description: t("europe.list.kpis.emissionsPercentChange.description"),
-      detailedDescription: t(
-        "europe.list.kpis.emissionsPercentChange.detailedDescription",
-      ),
-      higherIsBetter: false,
-      source: "europe.list.kpis.emissionsPercentChange.source",
-      sourceUrls: ["https://climatetrace.org/"],
-    },
-    {
       label: t("europe.list.kpis.historicalEmissionChangePercent.label"),
       key: "historicalEmissionChangePercent",
       unit: "%",

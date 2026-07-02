@@ -1660,12 +1660,6 @@
           "unit": " tCO₂e",
           "source": "Climate TRACE"
         },
-        "emissionsPercentChange": {
-          "label": "Förändring i utsläpp",
-          "description": "Förändring i utsläpp under 2025",
-          "detailedDescription": "Procentuell förändring i CO₂e-utsläpp under 2025.",
-          "source": "Climate TRACE"
-        },
         "historicalEmissionChangePercent": {
           "label": "Utsläppsförändring sedan 2015",
           "description": "Årlig utsläppsförändring sedan 2015",

@@ -1601,12 +1601,6 @@
           "unit": " tCO₂e",
           "source": "Climate TRACE"
         },
-        "emissionsPercentChange": {
-          "label": "Emissions change",
-          "description": "Year-over-year change in emissions under 2025",
-          "detailedDescription": "Percentage change in CO₂e emissions under 2025.",
-          "source": "Climate TRACE"
-        },
         "historicalEmissionChangePercent": {
           "label": "Emissions change since 2015",
           "description": "Annual change in emissions since 2015",
