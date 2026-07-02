@@ -10,7 +10,10 @@ describe("transformEuropeanCountryEmissionsData", () => {
       }),
     );
 
-    const data = transformEuropeanCountryEmissionsData(emissionsByYear);
+    const data = transformEuropeanCountryEmissionsData(
+      emissionsByYear,
+      new Date("2024-01-01T00:00:00.000Z"),
+    );
 
     expect(data.length).toBeGreaterThan(0);
 
@@ -26,5 +29,34 @@ describe("transformEuropeanCountryEmissionsData", () => {
 
   it("returns empty array when no emissions data is provided", () => {
     expect(transformEuropeanCountryEmissionsData({})).toEqual([]);
+  });
+
+  it("prorates the current year and starts projections from today", () => {
+    const emissionsByYear = Object.fromEntries(
+      Array.from({ length: 12 }, (_, index) => {
+        const year = 2015 + index;
+        return [year, 1_000_000 * 0.95 ** index];
+      }),
+    );
+    const midYear = new Date("2026-07-02T12:00:00Z");
+    const yearProgress =
+      (midYear.getTime() - Date.UTC(2026, 0, 1)) /
+      (Date.UTC(2027, 0, 1) - Date.UTC(2026, 0, 1));
+    const data = transformEuropeanCountryEmissionsData(
+      emissionsByYear,
+      midYear,
+    );
+
+    const point2026 = data.find(
+      (point) => point.year > 2026 && point.year < 2027,
+    );
+
+    expect(point2026?.total).toBeCloseTo(
+      emissionsByYear[2026] * yearProgress,
+      0,
+    );
+    expect(data.find((point) => point.year === 2025)?.trend).toBeUndefined();
+    expect(point2026?.trend).toBeDefined();
+    expect(point2026?.carbonLaw).toBeDefined();
   });
 });

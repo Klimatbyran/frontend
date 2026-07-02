@@ -115,6 +115,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
             <Line
               type="monotone"
               dataKey="trend"
+              connectNulls={false}
               {...getConsistentLineProps(
                 "trend",
                 false,
@@ -126,6 +127,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
             <Line
               type="monotone"
               dataKey="carbonLaw"
+              connectNulls={false}
               {...getConsistentLineProps(
                 "paris",
                 false,

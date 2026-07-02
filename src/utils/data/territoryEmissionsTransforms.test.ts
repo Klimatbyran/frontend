@@ -71,4 +71,24 @@ describe("transformTerritoryEmissionsData", () => {
     expect(data.find((point) => point.year === 2024)?.total).toBe(47_490);
     expect(data.find((point) => point.year === 2025)?.total).toBe(46_000);
   });
+
+  it("does not draw trend or paris before today's position in the current year", () => {
+    const territoryWithEarlierTrend = {
+      ...territory,
+      trend: [
+        { year: 2025, value: 45_000_000 },
+        { year: 2026, value: 44_000_000 },
+        { year: 2027, value: 42_000_000 },
+      ],
+    };
+    const data = transformTerritoryEmissionsData(
+      territoryWithEarlierTrend,
+      new Date("2026-07-02T12:00:00Z"),
+    );
+
+    expect(data.find((point) => point.year === 2025)?.trend).toBeUndefined();
+    expect(
+      data.find((point) => point.year > 2026 && point.year < 2027)?.trend,
+    ).toBeDefined();
+  });
 });

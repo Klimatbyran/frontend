@@ -1,10 +1,13 @@
-import {
-  calculateParisValue,
-  CARBON_LAW_REDUCTION_RATE,
-} from "@/utils/calculations/emissionsCalculations";
 import type { EmissionDataPoint } from "@/types/municipality";
 import type { DataPoint } from "@/types/emissions";
-import { getYearProgress } from "@/utils/data/yearUtils";
+import {
+  adjustCarbonLawFromToday,
+  adjustTrendFromToday,
+  applyCurrentYearToDate,
+  getChartYearPosition,
+  getYearToDateContext,
+  isBeforeTodayOnChart,
+} from "@/utils/data/chartYearToDate";
 
 const EMISSIONS_DATA_START_YEAR = 1990;
 const EMISSIONS_DATA_END_YEAR = 2050;
@@ -16,104 +19,28 @@ export type TerritoryEmissionsSource = {
   trend: (EmissionDataPoint | null)[];
 };
 
-function toTonnes(value: number | undefined): number | undefined {
-  return value !== undefined ? value / KG_PER_TONNE : undefined;
-}
+type TransformOptions = {
+  /** Input values are stored in kilograms and should be converted to tonnes. */
+  valuesInKg?: boolean;
+};
 
-function applyCurrentYearToDate<T extends number | undefined>(
-  value: T,
-  yearNum: number,
-  calendarYear: number,
-  yearProgress: number,
-): T {
-  if (value === undefined || yearNum !== calendarYear || yearProgress >= 1) {
-    return value;
-  }
-
-  return (value * yearProgress) as T;
-}
-
-/** Project trend from today's position instead of Jan 1 full-year regression points. */
-function adjustTrendFromToday(
-  trend: number | undefined,
-  yearNum: number,
-  calendarYear: number,
-  yearProgress: number,
-  trendAtCalendarYear: number | undefined,
-  trendAtNextYear: number | undefined,
+function toDisplayTonnes(
+  value: number | undefined,
+  valuesInKg: boolean,
 ): number | undefined {
-  if (
-    trend === undefined ||
-    yearNum < calendarYear ||
-    yearProgress <= 0 ||
-    yearProgress >= 1 ||
-    trendAtCalendarYear === undefined
-  ) {
-    return trend;
-  }
-
-  const annualSlope =
-    trendAtNextYear !== undefined ? trendAtNextYear - trendAtCalendarYear : 0;
-  const todayPosition = calendarYear + yearProgress;
-  const trendAtToday = trendAtCalendarYear + annualSlope * yearProgress;
-
-  if (yearNum === calendarYear) {
-    return trendAtToday;
-  }
-
-  return trendAtToday + annualSlope * (yearNum - todayPosition);
-}
-
-/** Project Paris Agreement path from today's position on the exponential decay curve. */
-function adjustCarbonLawFromToday(
-  yearNum: number,
-  calendarYear: number,
-  yearProgress: number,
-  carbonLawBaseYear: number,
-  carbonLawBaseValue: number,
-): number | undefined {
-  if (yearNum < calendarYear || carbonLawBaseValue <= 0) {
+  if (value === undefined) {
     return undefined;
   }
 
-  if (yearProgress <= 0 || yearProgress >= 1) {
-    return (
-      calculateParisValue(
-        yearNum,
-        carbonLawBaseYear,
-        carbonLawBaseValue,
-        CARBON_LAW_REDUCTION_RATE,
-      ) ?? undefined
-    );
-  }
-
-  const todayPosition = calendarYear + yearProgress;
-  const parisAtToday = calculateParisValue(
-    todayPosition,
-    carbonLawBaseYear,
-    carbonLawBaseValue,
-    CARBON_LAW_REDUCTION_RATE,
-  );
-
-  if (parisAtToday == null) {
-    return undefined;
-  }
-
-  if (yearNum === calendarYear) {
-    return parisAtToday;
-  }
-
-  const projected =
-    parisAtToday *
-    Math.pow(1 - CARBON_LAW_REDUCTION_RATE, yearNum - todayPosition);
-
-  return projected > 0 ? projected : undefined;
+  return valuesInKg ? value / KG_PER_TONNE : value;
 }
 
 export function transformTerritoryEmissionsData(
   territory: TerritoryEmissionsSource,
   now: Date = new Date(),
+  options: TransformOptions = { valuesInKg: true },
 ): DataPoint[] {
+  const valuesInKg = options.valuesInKg ?? true;
   const years = new Set<number>();
 
   territory.emissions.forEach((d) => d?.year && years.add(d.year));
@@ -122,8 +49,7 @@ export function transformTerritoryEmissionsData(
   );
   territory.trend.forEach((d) => d?.year && years.add(d.year));
 
-  const calendarYear = now.getFullYear();
-  const yearProgress = getYearProgress(now);
+  const { calendarYear, yearProgress } = getYearToDateContext(now);
   const trendAtCalendarYear = territory.trend.find(
     (d) => d?.year === calendarYear,
   )?.value;
@@ -149,8 +75,14 @@ export function transformTerritoryEmissionsData(
       )?.value;
       const trend = territory.trend.find((d) => d?.year === yearNum)?.value;
 
-      const carbonLaw =
-        carbonLawBaseValue != null
+      const hideProjectionBeforeToday = isBeforeTodayOnChart(
+        yearNum,
+        calendarYear,
+        yearProgress,
+      );
+
+      const carbonLawRaw =
+        carbonLawBaseValue != null && !hideProjectionBeforeToday
           ? adjustCarbonLawFromToday(
               yearNum,
               calendarYear,
@@ -160,38 +92,40 @@ export function transformTerritoryEmissionsData(
             )
           : undefined;
 
-      const isPartialCurrentYear =
-        yearNum === calendarYear && yearProgress > 0 && yearProgress < 1;
+      const trendRaw =
+        trend !== undefined && !hideProjectionBeforeToday
+          ? adjustTrendFromToday(
+              trend,
+              yearNum,
+              calendarYear,
+              yearProgress,
+              trendAtCalendarYear,
+              trendAtNextYear,
+            )
+          : undefined;
 
       return {
-        year: isPartialCurrentYear ? yearNum + yearProgress : yearNum,
-        total: toTonnes(
+        year: getChartYearPosition(yearNum, calendarYear, yearProgress),
+        total: toDisplayTonnes(
           applyCurrentYearToDate(
             historical,
             yearNum,
             calendarYear,
             yearProgress,
           ),
+          valuesInKg,
         ),
-        trend: toTonnes(
-          adjustTrendFromToday(
-            trend,
-            yearNum,
-            calendarYear,
-            yearProgress,
-            trendAtCalendarYear,
-            trendAtNextYear,
-          ),
-        ),
-        approximated: toTonnes(
+        trend: toDisplayTonnes(trendRaw, valuesInKg),
+        approximated: toDisplayTonnes(
           applyCurrentYearToDate(
             approximated,
             yearNum,
             calendarYear,
             yearProgress,
           ),
+          valuesInKg,
         ),
-        carbonLaw: toTonnes(carbonLaw),
+        carbonLaw: toDisplayTonnes(carbonLawRaw, valuesInKg),
       };
     })
     .filter(

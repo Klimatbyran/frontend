@@ -4,6 +4,14 @@ import {
   CARBON_LAW_REDUCTION_RATE,
 } from "@/utils/calculations/emissionsCalculations";
 import {
+  adjustCarbonLawFromToday,
+  adjustTrendFromToday,
+  applyCurrentYearToDate,
+  getChartYearPosition,
+  getYearToDateContext,
+  isBeforeTodayOnChart,
+} from "@/utils/data/chartYearToDate";
+import {
   calculateLinearRegressionSlope,
   CLIMATE_TRACE_BASE_YEAR,
   EmissionsByYear,
@@ -78,6 +86,7 @@ function buildCarbonLawRecord(
 
 export function transformEuropeanCountryEmissionsData(
   emissionsByYear: EmissionsByYear,
+  now: Date = new Date(),
 ): DataPoint[] {
   if (!emissionsByYear || Object.keys(emissionsByYear).length === 0) {
     return [];
@@ -85,22 +94,72 @@ export function transformEuropeanCountryEmissionsData(
 
   const trend = buildTrendRecord(emissionsByYear);
   const carbonLaw = buildCarbonLawRecord(emissionsByYear);
+  const regressionSlope = calculateLinearRegressionSlope(
+    getEmissionsPointsFromBaseYear(emissionsByYear),
+  );
+  const carbonLawBaseValue =
+    regressionSlope === null
+      ? undefined
+      : getEmissionsForParisProjection(emissionsByYear, regressionSlope);
 
   const years = new Set<number>();
   Object.keys(emissionsByYear).forEach((year) => years.add(Number(year)));
   Object.keys(trend).forEach((year) => years.add(Number(year)));
   Object.keys(carbonLaw).forEach((year) => years.add(Number(year)));
 
+  const { calendarYear, yearProgress } = getYearToDateContext(now);
+  const trendAtCalendarYear = trend[calendarYear];
+  const trendAtNextYear = trend[calendarYear + 1];
+  const carbonLawBaseYear = PARIS_PROJECTION_START_YEAR;
+
   return Array.from(years)
     .filter((year) => !isNaN(year))
-    .map((year) => ({
-      year,
-      total: emissionsByYear[year] ?? undefined,
-      trend: trend[year] ?? undefined,
-      approximated: undefined,
-      carbonLaw: carbonLaw[year] ?? undefined,
-    }))
-    .sort((a, b) => a.year - b.year)
+    .sort((a, b) => a - b)
+    .map((yearNum) => {
+      const total = emissionsByYear[yearNum];
+      const hideProjectionBeforeToday = isBeforeTodayOnChart(
+        yearNum,
+        calendarYear,
+        yearProgress,
+      );
+
+      const trendValue =
+        trend[yearNum] !== undefined && !hideProjectionBeforeToday
+          ? adjustTrendFromToday(
+              trend[yearNum],
+              yearNum,
+              calendarYear,
+              yearProgress,
+              trendAtCalendarYear,
+              trendAtNextYear,
+            )
+          : undefined;
+
+      const carbonLawValue = hideProjectionBeforeToday
+        ? undefined
+        : yearNum >= calendarYear && carbonLawBaseValue != null
+          ? adjustCarbonLawFromToday(
+              yearNum,
+              calendarYear,
+              yearProgress,
+              carbonLawBaseYear,
+              carbonLawBaseValue,
+            )
+          : carbonLaw[yearNum];
+
+      return {
+        year: getChartYearPosition(yearNum, calendarYear, yearProgress),
+        total: applyCurrentYearToDate(
+          total,
+          yearNum,
+          calendarYear,
+          yearProgress,
+        ),
+        trend: trendValue,
+        approximated: undefined,
+        carbonLaw: carbonLawValue,
+      };
+    })
     .filter(
       (point) =>
         point.year >= EMISSIONS_DATA_START_YEAR &&
