@@ -125,9 +125,13 @@ export function transformEuropeanCountryEmissionsData(
       continue;
     }
 
-    upsertChartPoint(pointsByChartYear, reportingYearToChartYear(reportingYear), {
-      total,
-    });
+    upsertChartPoint(
+      pointsByChartYear,
+      reportingYearToChartYear(reportingYear),
+      {
+        total,
+      },
+    );
   }
 
   for (const [year, value] of Object.entries(trend)) {
@@ -166,8 +170,6 @@ export function transformEuropeanCountryEmissionsData(
   const maxChartYear = reportingYearToChartYear(EMISSIONS_DATA_END_YEAR);
 
   return Array.from(pointsByChartYear.values())
-    .filter(
-      (point) => point.year >= minChartYear && point.year <= maxChartYear,
-    )
+    .filter((point) => point.year >= minChartYear && point.year <= maxChartYear)
     .sort((a, b) => a.year - b.year);
 }
