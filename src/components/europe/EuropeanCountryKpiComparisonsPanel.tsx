@@ -13,7 +13,6 @@ import { cn } from "@/lib/utils";
 type EuropeanCountryKpiComparisonsProps = {
   countryName: string;
   comparisons: EuropeanCountryKpiComparisons | null;
-  leadingContent?: ReactNode;
   className?: string;
 };
 
@@ -39,7 +38,6 @@ function KpiChartCard({
 export function EuropeanCountryKpiComparisonsPanel({
   countryName,
   comparisons,
-  leadingContent,
   className,
 }: EuropeanCountryKpiComparisonsProps) {
   const { t } = useTranslation();
@@ -63,38 +61,23 @@ export function EuropeanCountryKpiComparisonsPanel({
     [currentLanguage, t],
   );
 
-  if (!leadingContent && !comparisons) {
+  if (!comparisons) {
     return null;
   }
 
-  const hasLeadingContent = Boolean(leadingContent);
   const chartCount = [
-    comparisons?.changeSince2015,
-    comparisons?.totalEmissions,
-    comparisons?.emissionsPerCapita,
+    comparisons.changeSince2015,
+    comparisons.totalEmissions,
+    comparisons.emissionsPerCapita,
   ].filter(Boolean).length;
 
-  if (chartCount === 0 && !hasLeadingContent) {
+  if (chartCount === 0) {
     return null;
   }
 
   return (
-    <div
-      className={cn(
-        "grid gap-4",
-        className,
-        hasLeadingContent
-          ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
-          : "grid-cols-1 lg:grid-cols-3",
-      )}
-    >
-      {leadingContent && (
-        <div className="flex min-w-0 items-center sm:col-span-2 lg:col-span-1">
-          {leadingContent}
-        </div>
-      )}
-
-      {comparisons?.changeSince2015 && (
+    <div className={cn("grid grid-cols-1 gap-4 lg:grid-cols-3", className)}>
+      {comparisons.changeSince2015 && (
         <KpiChartCard>
           <EuropeanCountryKpiComparisonChart
             title={t("detailPage.changeSince2015")}
@@ -106,7 +89,7 @@ export function EuropeanCountryKpiComparisonsPanel({
           />
         </KpiChartCard>
       )}
-      {comparisons?.totalEmissions && (
+      {comparisons.totalEmissions && (
         <KpiChartCard>
           <EuropeanCountryKpiComparisonChart
             title={t("detailPage.totalEmissions", {
@@ -122,7 +105,7 @@ export function EuropeanCountryKpiComparisonsPanel({
           />
         </KpiChartCard>
       )}
-      {comparisons?.emissionsPerCapita && (
+      {comparisons.emissionsPerCapita && (
         <KpiChartCard>
           <EuropeanCountryKpiComparisonChart
             title={t("europe.list.kpis.emissionsPerCapita.label")}

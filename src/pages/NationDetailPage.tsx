@@ -20,7 +20,6 @@ function NationDetailContent({
   selectedYear,
   setSelectedYear,
   headerStats,
-  kpiComparisons,
   availableYears,
   currentYear,
 }: ReturnType<typeof useNationPageData>) {
@@ -34,7 +33,6 @@ function NationDetailContent({
         iso2="SE"
         helpItems={["regionTotalEmissions", "detailWhyDataDelay"]}
         stats={headerStats}
-        kpiComparisons={kpiComparisons}
       />
       <TerritoryEmissions
         emissionsData={emissionsData}

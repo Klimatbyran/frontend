@@ -16,7 +16,7 @@ export type TerritoryDetailStatsSource = {
 };
 
 function createMeetsParisStat(
-  meetsParis: boolean,
+  meetsParis: boolean | null,
   t: ReturnType<typeof useTranslation>["t"],
 ): DetailStat {
   return {
@@ -37,10 +37,18 @@ function createMeetsParisStat(
 }
 
 function createChangeSince2015Stat(
-  historicalEmissionChangePercent: number,
+  historicalEmissionChangePercent: number | null,
   currentLanguage: SupportedLanguage,
   t: ReturnType<typeof useTranslation>["t"],
 ): DetailStat {
+  if (historicalEmissionChangePercent === null) {
+    return {
+      label: t("detailPage.changeSince2015"),
+      value: t("unknown"),
+      valueClassName: "text-grey",
+    };
+  }
+
   return {
     label: t("detailPage.changeSince2015"),
     value: formatPercentChange(
@@ -57,6 +65,7 @@ function createTotalEmissionsStat(
   lastYear: number,
   currentLanguage: SupportedLanguage,
   t: ReturnType<typeof useTranslation>["t"],
+  options: { infoText?: string } = {},
 ): DetailStat {
   return {
     label: t("detailPage.totalEmissions", { year: lastYear }),
@@ -64,7 +73,8 @@ function createTotalEmissionsStat(
     unit: t("emissionsUnit"),
     valueClassName: "text-orange-2",
     info: true,
-    infoText: t("municipalityDetailPage.totalEmissionsTooltip"),
+    infoText:
+      options.infoText ?? t("municipalityDetailPage.totalEmissionsTooltip"),
   };
 }
 
@@ -89,6 +99,12 @@ export function createEmissionsPerCapitaStat(
     infoText: options.infoText,
   };
 }
+
+export {
+  createMeetsParisStat,
+  createChangeSince2015Stat,
+  createTotalEmissionsStat,
+};
 
 export function useTerritoryDetailHeaderStats(
   territory: TerritoryDetailStatsSource | null,

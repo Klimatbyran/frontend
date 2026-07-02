@@ -13,14 +13,7 @@ export function EuropeanCountryDetailPage() {
   const { id } = useParams<{ id: string }>();
   const { currentLanguage } = useLanguage();
   const pageData = useEuropeanCountryPageData(id);
-  const {
-    country,
-    loading,
-    error,
-    emissionsData,
-    headerStats,
-    kpiComparisons,
-  } = pageData;
+  const { country, loading, error, emissionsData, headerStats } = pageData;
 
   if (id?.toUpperCase() === SWEDEN_ISO3) {
     return <Navigate to={localizedPath(currentLanguage, "/nation")} replace />;
@@ -37,7 +30,6 @@ export function EuropeanCountryDetailPage() {
         iso2={country.iso2}
         helpItems={["regionTotalEmissions", "detailWhyDataDelay"]}
         stats={headerStats}
-        kpiComparisons={kpiComparisons}
       />
       <TerritoryEmissions
         emissionsData={emissionsData}

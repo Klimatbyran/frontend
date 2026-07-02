@@ -17,6 +17,7 @@ export interface DetailStat {
 export interface DetailHeaderProps {
   name: string;
   logoUrl?: string | null;
+  headerImage?: ReactNode;
   helpItems: DataGuideItemId[];
   stats: DetailStat[];
   supplementalData?: ReactNode;
@@ -27,6 +28,7 @@ export interface DetailHeaderProps {
 export function DetailHeader({
   name,
   logoUrl,
+  headerImage,
   helpItems,
   stats,
   supplementalData,
@@ -39,13 +41,14 @@ export function DetailHeader({
           <Text className="text-4xl md:text-8xl">{name}</Text>
           {headerChip && <div className="w-fit shrink-0">{headerChip}</div>}
         </div>
-        {logoUrl && (
-          <img
-            src={logoUrl}
-            alt="logo"
-            className="h-[50px] shrink-0 md:h-[80px]"
-          />
-        )}
+        {headerImage ??
+          (logoUrl ? (
+            <img
+              src={logoUrl}
+              alt="logo"
+              className="h-[50px] shrink-0 md:h-[80px]"
+            />
+          ) : null)}
       </div>
       <div
         className={cn(
