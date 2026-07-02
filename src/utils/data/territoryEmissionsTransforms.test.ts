@@ -30,6 +30,8 @@ describe("transformTerritoryEmissionsData", () => {
       (Date.UTC(2027, 0, 1) - Date.UTC(2026, 0, 1));
     const annualSlope = 42_000 - 44_000;
     const trendAtToday = 44_000 + annualSlope * yearProgress;
+    const expectedApproximatedTonnes =
+      46_000 * yearProgress + 0.5 * (44_000 - 46_000) * yearProgress * yearProgress;
 
     const point2025 = data.find((point) => point.year === 2025);
     const point2026 = data.find(
@@ -39,7 +41,7 @@ describe("transformTerritoryEmissionsData", () => {
 
     expect(point2025?.approximated).toBe(46_000);
     expect(point2026?.year).toBeCloseTo(2026 + yearProgress, 5);
-    expect(point2026?.approximated).toBeCloseTo(44_000 * yearProgress, 0);
+    expect(point2026?.approximated).toBeCloseTo(expectedApproximatedTonnes, 0);
     expect(point2026?.trend).toBeCloseTo(trendAtToday, 0);
     expect(point2027?.trend).toBeCloseTo(
       trendAtToday + annualSlope * (2027 - (2026 + yearProgress)),

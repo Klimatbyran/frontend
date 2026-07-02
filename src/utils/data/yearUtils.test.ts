@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getCurrentYearChartPosition, getYearProgress } from "./yearUtils";
+import { getCurrentYearChartPosition, getYearProgress, formatChartYearLabel } from "./yearUtils";
 
 describe("getYearProgress", () => {
   it("returns 0 at the start of the year", () => {
@@ -20,5 +20,13 @@ describe("getCurrentYearChartPosition", () => {
       2026 + getYearProgress(date),
       5,
     );
+  });
+});
+
+describe("formatChartYearLabel", () => {
+  it("formats a fractional chart year as a calendar date", () => {
+    const label = formatChartYearLabel(2026 + getYearProgress(new Date(2026, 6, 2, 12, 0, 0)), "en");
+    expect(label).toContain("2026");
+    expect(label.toLowerCase()).toMatch(/jul/);
   });
 });

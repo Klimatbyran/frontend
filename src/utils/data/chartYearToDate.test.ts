@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   applyCurrentYearToDate,
+  getEstimatedEmissionsAtToday,
   getChartYearPosition,
   isBeforeTodayOnChart,
 } from "./chartYearToDate";
@@ -20,11 +21,31 @@ describe("chartYearToDate", () => {
   });
 
   it("prorates current-year values to year-to-date", () => {
-    expect(applyCurrentYearToDate(44_000, 2026, 2026, yearProgress)).toBeCloseTo(
-      44_000 * yearProgress,
-      5,
+    expect(
+      applyCurrentYearToDate(44_000, 2026, 2026, yearProgress),
+    ).toBeCloseTo(44_000 * yearProgress, 5);
+    expect(applyCurrentYearToDate(44_000, 2025, 2026, yearProgress)).toBe(
+      44_000,
     );
-    expect(applyCurrentYearToDate(44_000, 2025, 2026, yearProgress)).toBe(44_000);
+  });
+
+  it("estimates cumulative emissions through today with linear annual change", () => {
+    const previousYearValue = 46_000;
+    const currentYearValue = 44_000;
+    const annualSlope = currentYearValue - previousYearValue;
+    const expected =
+      previousYearValue * yearProgress +
+      0.5 * annualSlope * yearProgress * yearProgress;
+
+    expect(
+      getEstimatedEmissionsAtToday(
+        currentYearValue,
+        previousYearValue,
+        2026,
+        2026,
+        yearProgress,
+      ),
+    ).toBeCloseTo(expected, 5);
   });
 
   it("hides earlier projection points during a partial current year", () => {

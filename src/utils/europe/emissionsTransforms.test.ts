@@ -1,4 +1,6 @@
 import { describe, expect, it } from "vitest";
+import { getEstimatedEmissionsAtToday } from "@/utils/data/chartYearToDate";
+import { getYearProgress } from "@/utils/data/yearUtils";
 import { transformEuropeanCountryEmissionsData } from "./emissionsTransforms";
 
 describe("transformEuropeanCountryEmissionsData", () => {
@@ -39,9 +41,7 @@ describe("transformEuropeanCountryEmissionsData", () => {
       }),
     );
     const midYear = new Date("2026-07-02T12:00:00Z");
-    const yearProgress =
-      (midYear.getTime() - Date.UTC(2026, 0, 1)) /
-      (Date.UTC(2027, 0, 1) - Date.UTC(2026, 0, 1));
+    const yearProgress = getYearProgress(midYear);
     const data = transformEuropeanCountryEmissionsData(
       emissionsByYear,
       midYear,
@@ -52,7 +52,13 @@ describe("transformEuropeanCountryEmissionsData", () => {
     );
 
     expect(point2026?.total).toBeCloseTo(
-      emissionsByYear[2026] * yearProgress,
+      getEstimatedEmissionsAtToday(
+        emissionsByYear[2026],
+        emissionsByYear[2025],
+        2026,
+        2026,
+        yearProgress,
+      )!,
       0,
     );
     expect(data.find((point) => point.year === 2025)?.trend).toBeUndefined();

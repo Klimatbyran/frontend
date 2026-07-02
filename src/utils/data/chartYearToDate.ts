@@ -35,6 +35,40 @@ export function applyCurrentYearToDate<T extends number | undefined>(
   return (value * yearProgress) as T;
 }
 
+/**
+ * Estimated cumulative emissions from 1 Jan through today, assuming the annual
+ * rate changes linearly from the previous year's estimate to this year's estimate.
+ */
+export function getEstimatedEmissionsAtToday(
+  value: number | undefined,
+  previousYearValue: number | undefined,
+  yearNum: number,
+  calendarYear: number,
+  yearProgress: number,
+): number | undefined {
+  if (value === undefined || yearNum !== calendarYear) {
+    return value;
+  }
+
+  if (yearProgress <= 0) {
+    return undefined;
+  }
+
+  if (yearProgress >= 1) {
+    return value;
+  }
+
+  if (previousYearValue !== undefined) {
+    const annualSlope = value - previousYearValue;
+    return (
+      previousYearValue * yearProgress +
+      0.5 * annualSlope * yearProgress * yearProgress
+    );
+  }
+
+  return value * yearProgress;
+}
+
 /** Project trend from today's position instead of Jan 1 full-year regression points. */
 export function adjustTrendFromToday(
   trend: number | undefined,

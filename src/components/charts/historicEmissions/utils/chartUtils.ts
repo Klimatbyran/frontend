@@ -172,12 +172,15 @@ export const getBaseYearReferenceLineProps = (
 });
 
 // Current year reference line styling
-export const getCurrentYearReferenceLineProps = (currentYear: number) => ({
-  x: currentYear,
+export const getCurrentYearReferenceLineProps = (
+  currentYearPosition: number,
+  label?: string,
+) => ({
+  x: currentYearPosition,
   stroke: "var(--orange-3)",
   strokeWidth: 1,
   label: {
-    value: Math.floor(currentYear),
+    value: label ?? String(Math.floor(currentYearPosition)),
     position: "top" as const,
     fill: "var(--orange-3)",
     fontSize: 12,

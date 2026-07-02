@@ -1,3 +1,5 @@
+import { SupportedLanguage } from "@/lib/languageDetection";
+
 // Helper function to get latest year's data
 export function getSectorsReportingYear(): number {
   return Math.round(new Date().getFullYear() - 1.5);
@@ -6,8 +8,8 @@ export function getSectorsReportingYear(): number {
 /** Fraction of the calendar year elapsed at `date` (0 at Jan 1, 1 at Dec 31 end). */
 export function getYearProgress(date: Date = new Date()): number {
   const year = date.getFullYear();
-  const start = Date.UTC(year, 0, 1);
-  const end = Date.UTC(year + 1, 0, 1);
+  const start = new Date(year, 0, 1).getTime();
+  const end = new Date(year + 1, 0, 1).getTime();
   const elapsed = date.getTime() - start;
   const total = end - start;
   if (total <= 0) {
@@ -20,6 +22,34 @@ export function getYearProgress(date: Date = new Date()): number {
 export function getCurrentYearChartPosition(date: Date = new Date()): number {
   const year = date.getFullYear();
   return year + getYearProgress(date);
+}
+
+export function isPartialChartYear(chartYear: number): boolean {
+  const progress = chartYear - Math.floor(chartYear);
+  return progress > 0 && progress < 1;
+}
+
+/** Format a fractional chart year (e.g. 2026.5) as a calendar date like "2 Jul 2026". */
+export function formatChartYearLabel(
+  chartYear: number,
+  language: SupportedLanguage,
+): string {
+  const calendarYear = Math.floor(chartYear);
+  const progress = chartYear - calendarYear;
+
+  if (progress <= 0 || progress >= 1) {
+    return String(calendarYear);
+  }
+
+  const start = new Date(calendarYear, 0, 1).getTime();
+  const end = new Date(calendarYear + 1, 0, 1).getTime();
+  const date = new Date(start + progress * (end - start));
+
+  return new Intl.DateTimeFormat(language === "sv" ? "sv-SE" : "en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  }).format(date);
 }
 
 export function getLatestYearData<T>(

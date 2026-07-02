@@ -3,8 +3,8 @@ import type { DataPoint } from "@/types/emissions";
 import {
   adjustCarbonLawFromToday,
   adjustTrendFromToday,
-  applyCurrentYearToDate,
   getChartYearPosition,
+  getEstimatedEmissionsAtToday,
   getYearToDateContext,
   isBeforeTodayOnChart,
 } from "@/utils/data/chartYearToDate";
@@ -61,6 +61,9 @@ export function transformTerritoryEmissionsData(
     .filter((d): d is EmissionDataPoint => d != null && d.year <= calendarYear)
     .sort((a, b) => b.year - a.year)[0];
 
+  const approximatedDataAtPreviousYear = territory.approximatedHistoricalEmission
+    .find((d) => d?.year === calendarYear - 1)?.value;
+
   const carbonLawBaseValue = approximatedDataAtCurrentYear?.value;
   const carbonLawBaseYear = approximatedDataAtCurrentYear?.year ?? calendarYear;
 
@@ -107,8 +110,9 @@ export function transformTerritoryEmissionsData(
       return {
         year: getChartYearPosition(yearNum, calendarYear, yearProgress),
         total: toDisplayTonnes(
-          applyCurrentYearToDate(
+          getEstimatedEmissionsAtToday(
             historical,
+            territory.emissions.find((d) => d?.year === calendarYear - 1)?.value,
             yearNum,
             calendarYear,
             yearProgress,
@@ -117,8 +121,9 @@ export function transformTerritoryEmissionsData(
         ),
         trend: toDisplayTonnes(trendRaw, valuesInKg),
         approximated: toDisplayTonnes(
-          applyCurrentYearToDate(
+          getEstimatedEmissionsAtToday(
             approximated,
+            approximatedDataAtPreviousYear,
             yearNum,
             calendarYear,
             yearProgress,

@@ -30,7 +30,10 @@ import {
   ChartTooltip,
 } from "@/components/charts";
 import { useLanguage } from "@/components/LanguageProvider";
-import { getCurrentYearChartPosition } from "@/utils/data/yearUtils";
+import {
+  formatChartYearLabel,
+  getCurrentYearChartPosition,
+} from "@/utils/data/yearUtils";
 
 interface OverviewChartProps {
   projectedData: DataPoint[];
@@ -42,6 +45,18 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
   const { isMobile } = useScreenSize();
   const currentYear = new Date().getFullYear();
   const currentYearChartPosition = getCurrentYearChartPosition();
+  const todayLabel = formatChartYearLabel(
+    currentYearChartPosition,
+    currentLanguage,
+  );
+
+  const formatChartYearTick = (year: number) => {
+    if (!Number.isInteger(year)) {
+      return "";
+    }
+
+    return String(year);
+  };
 
   const [chartEndYear, setChartEndYear] = useState(
     new Date().getFullYear() + 5,
@@ -73,11 +88,14 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
                 [1990, 2015, 2020, currentYear, 2030, 2040, 2050],
               )}
               allowDuplicatedCategory
-              tickFormatter={(year) => year}
+              tickFormatter={formatChartYearTick}
             />
             <YAxis {...getYAxisProps(currentLanguage)} />
 
             <Tooltip
+              labelFormatter={(label) =>
+                formatChartYearLabel(Number(label), currentLanguage)
+              }
               content={
                 <ChartTooltip dataView="overview" unit={t("emissionsUnit")} />
               }
@@ -86,7 +104,10 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
 
             {/* Current year reference line */}
             <ReferenceLine
-              {...getCurrentYearReferenceLineProps(currentYearChartPosition)}
+              {...getCurrentYearReferenceLineProps(
+                currentYearChartPosition,
+                todayLabel,
+              )}
             />
 
             {/* Historical line */}
@@ -104,6 +125,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
             <Line
               type="monotone"
               dataKey="approximated"
+              connectNulls={false}
               {...getConsistentLineProps(
                 "estimated",
                 false,

@@ -6,8 +6,8 @@ import {
 import {
   adjustCarbonLawFromToday,
   adjustTrendFromToday,
-  applyCurrentYearToDate,
   getChartYearPosition,
+  getEstimatedEmissionsAtToday,
   getYearToDateContext,
   isBeforeTodayOnChart,
 } from "@/utils/data/chartYearToDate";
@@ -149,8 +149,9 @@ export function transformEuropeanCountryEmissionsData(
 
       return {
         year: getChartYearPosition(yearNum, calendarYear, yearProgress),
-        total: applyCurrentYearToDate(
+        total: getEstimatedEmissionsAtToday(
           total,
+          emissionsByYear[calendarYear - 1],
           yearNum,
           calendarYear,
           yearProgress,
