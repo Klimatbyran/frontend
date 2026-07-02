@@ -131,43 +131,46 @@ export function EuropeanCountryKpiComparisonChart({
           </span>
         )}
       </div>
-      <ResponsiveContainer width="100%" height={132}>
-        <BarChart
-          data={data}
-          margin={{ top: 4, right: 4, bottom: 16, left: 4 }}
-        >
-          <XAxis
-            dataKey="label"
-            tick={{ fontSize: 10, fill: "rgba(255,255,255,0.45)" }}
-            tickLine={false}
-            axisLine={false}
-            interval={0}
-            angle={-20}
-            textAnchor="end"
-            height={40}
-          />
-          <YAxis hide domain={yDomain} />
-          <ReferenceLine y={0} stroke="rgba(255,255,255,0.15)" />
-          <Tooltip
-            content={(props) => (
-              <ComparisonTooltip
-                active={props.active}
-                payload={
-                  props.payload as
-                    | Array<{ payload: ComparisonDatum }>
-                    | undefined
-                }
-              />
-            )}
-            cursor={{ fill: "rgba(255,255,255,0.05)" }}
-          />
-          <Bar dataKey="value" radius={[3, 3, 0, 0]} maxBarSize={48}>
-            {data.map((item) => (
-              <Cell key={item.key} fill={item.fill} />
-            ))}
-          </Bar>
-        </BarChart>
-      </ResponsiveContainer>
+      <div className="mx-auto w-full max-w-[11.5rem]">
+        <ResponsiveContainer width="100%" height={132}>
+          <BarChart
+            data={data}
+            barCategoryGap={8}
+            margin={{ top: 4, right: 0, bottom: 16, left: 0 }}
+          >
+            <XAxis
+              dataKey="label"
+              tick={{ fontSize: 10, fill: "rgba(255,255,255,0.45)" }}
+              tickLine={false}
+              axisLine={false}
+              interval={0}
+              angle={-20}
+              textAnchor="end"
+              height={40}
+            />
+            <YAxis hide domain={yDomain} />
+            <ReferenceLine y={0} stroke="rgba(255,255,255,0.15)" />
+            <Tooltip
+              content={(props) => (
+                <ComparisonTooltip
+                  active={props.active}
+                  payload={
+                    props.payload as
+                      | Array<{ payload: ComparisonDatum }>
+                      | undefined
+                  }
+                />
+              )}
+              cursor={{ fill: "rgba(255,255,255,0.05)" }}
+            />
+            <Bar dataKey="value" barSize={40} radius={[3, 3, 0, 0]}>
+              {data.map((item) => (
+                <Cell key={item.key} fill={item.fill} />
+              ))}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 }
