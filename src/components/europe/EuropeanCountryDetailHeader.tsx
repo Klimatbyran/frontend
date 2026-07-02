@@ -23,7 +23,10 @@ function CompactParisStat({ stat }: { stat: DetailStat }) {
     <div className="flex min-w-0 flex-col justify-center">
       <Text className="text-base leading-snug md:text-lg">{stat.label}</Text>
       <Text
-        className={cn("mt-1 text-3xl leading-none md:text-4xl", stat.valueClassName)}
+        className={cn(
+          "mt-1 text-3xl leading-none md:text-4xl",
+          stat.valueClassName,
+        )}
       >
         {stat.value}
       </Text>
@@ -53,8 +56,12 @@ export function EuropeanCountryDetailHeader({
           <Text className="break-words text-3xl leading-tight lg:text-5xl">
             {name}
           </Text>
-          <Text className="text-sm text-grey">{t("europe.detailPage.dataSource")}</Text>
-          {headerChip && <div className="mt-1 w-fit shrink-0">{headerChip}</div>}
+          <Text className="text-sm text-grey">
+            {t("europe.detailPage.dataSource")}
+          </Text>
+          {headerChip && (
+            <div className="mt-1 w-fit shrink-0">{headerChip}</div>
+          )}
         </div>
         <CountryFlag iso2={iso2} countryName={name} className="md:h-16" />
       </div>
