@@ -2812,7 +2812,7 @@ export interface paths {
         };
         /**
          * Get national data
-         * @description Retrieve national (Sweden) data with historical emissions, trends, and Paris agreement compliance status. Returns 304 Not Modified if the resource has not changed since the last request (based on ETag).
+         * @description Retrieve national (Sweden) data with territorial fossil, biogenic, consumption abroad, oil export, and e-commerce emissions. Returns 304 Not Modified if the resource has not changed since the last request (based on ETag).
          */
         get: {
             parameters: {
@@ -2835,22 +2835,26 @@ export interface paths {
                                 en: string;
                             };
                             logoUrl?: string | null;
-                            emissions: ({
+                            territorialFossilEmissions: ({
                                 year: string;
                                 value: number;
                             } | null)[];
-                            totalTrend: number;
-                            totalCarbonLaw: number;
-                            approximatedHistoricalEmission: ({
+                            biogenicEmissions: ({
                                 year: string;
                                 value: number;
                             } | null)[];
-                            trend: ({
+                            consumptionAbroadEmissions: ({
                                 year: string;
                                 value: number;
                             } | null)[];
-                            historicalEmissionChangePercent: number;
-                            meetsParis: boolean;
+                            exportOfOilProductsEmissions: ({
+                                year: string;
+                                value: number;
+                            } | null)[];
+                            eCommerceEmissions: ({
+                                year: string;
+                                value: number;
+                            } | null)[];
                         };
                     };
                 };
