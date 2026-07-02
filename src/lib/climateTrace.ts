@@ -6,6 +6,8 @@ import {
 } from "@/utils/europe/climateTraceKpis";
 
 const CLIMATE_TRACE_API_BASE = "https://api.climatetrace.org/v7";
+const FETCH_RETRY_ATTEMPTS = 4;
+const FETCH_RETRY_BASE_DELAY_MS = 1000;
 
 export const CLIMATE_TRACE_EMISSIONS_PARAMS = {
   gas: "co2e_100yr",
@@ -38,11 +40,25 @@ export type ClimateTraceEmissionsByIso = Record<
   ClimateTraceCountryData
 >;
 
+export function buildClimateTraceFetchYears(
+  startYear: number = CLIMATE_TRACE_EMISSIONS_PARAMS.startYear,
+  endYear: number = CLIMATE_TRACE_EMISSIONS_PARAMS.endYear,
+): number[] {
+  return Array.from(
+    { length: endYear - startYear + 1 },
+    (_, index) => startYear + index,
+  );
+}
+
 function buildYearDateRange(year: number): { start: string; end: string } {
   return {
     start: `${year}-01-01`,
     end: `${year}-12-31`,
   };
+}
+
+async function sleep(ms: number): Promise<void> {
+  await new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 async function fetchClimateTraceCountryRankingsForYear(
@@ -67,6 +83,32 @@ async function fetchClimateTraceCountryRankingsForYear(
 
   const data = (await response.json()) as ClimateTraceCountryRankingsResponse;
   return data.rankings;
+}
+
+async function fetchClimateTraceCountryRankingsForYearWithRetry(
+  year: number,
+): Promise<ClimateTraceCountryRanking[]> {
+  let lastError: Error | undefined;
+
+  for (let attempt = 0; attempt < FETCH_RETRY_ATTEMPTS; attempt++) {
+    try {
+      const rankings = await fetchClimateTraceCountryRankingsForYear(year);
+      if (rankings.length === 0) {
+        throw new Error(
+          `Climate TRACE API returned no rankings for ${year}`,
+        );
+      }
+      return rankings;
+    } catch (error) {
+      lastError =
+        error instanceof Error ? error : new Error(String(error));
+      if (attempt < FETCH_RETRY_ATTEMPTS - 1) {
+        await sleep(FETCH_RETRY_BASE_DELAY_MS * 2 ** attempt);
+      }
+    }
+  }
+
+  throw lastError ?? new Error(`Failed to fetch Climate TRACE data for ${year}`);
 }
 
 function buildEmissionsByYearFromRankings(
@@ -110,21 +152,33 @@ function enrichRankingsWithTimeSeries(
   );
 }
 
-export async function getClimateTraceCountryEmissions(): Promise<ClimateTraceEmissionsByIso> {
-  const years = Array.from(
-    {
-      length:
-        CLIMATE_TRACE_EMISSIONS_PARAMS.endYear -
-        CLIMATE_TRACE_EMISSIONS_PARAMS.startYear +
-        1,
-    },
-    (_, index) => CLIMATE_TRACE_EMISSIONS_PARAMS.startYear + index,
+function assertReportedEndYearCoverage(
+  emissionsByIso: Record<string, EmissionsByYear>,
+  expectedEndYear: number,
+): void {
+  const hasExpectedYear = Object.values(emissionsByIso).some(
+    (emissionsByYear) =>
+      typeof emissionsByYear[expectedEndYear] === "number" &&
+      emissionsByYear[expectedEndYear] > 0,
   );
+
+  if (!hasExpectedYear) {
+    throw new Error(
+      `Climate TRACE data is missing reported emissions for ${expectedEndYear}`,
+    );
+  }
+}
+
+export async function getClimateTraceCountryEmissions(): Promise<ClimateTraceEmissionsByIso> {
+  const years = buildClimateTraceFetchYears();
 
   const rankingsByYearEntries = await Promise.all(
     years.map(
       async (year) =>
-        [year, await fetchClimateTraceCountryRankingsForYear(year)] as const,
+        [
+          year,
+          await fetchClimateTraceCountryRankingsForYearWithRetry(year),
+        ] as const,
     ),
   );
 
@@ -132,6 +186,8 @@ export async function getClimateTraceCountryEmissions(): Promise<ClimateTraceEmi
   const latestYear = years[years.length - 1];
   const latestRankings = rankingsByYear[latestYear] ?? [];
   const emissionsByIso = buildEmissionsByYearFromRankings(rankingsByYear);
+
+  assertReportedEndYearCoverage(emissionsByIso, latestYear);
 
   return enrichRankingsWithTimeSeries(latestRankings, emissionsByIso);
 }

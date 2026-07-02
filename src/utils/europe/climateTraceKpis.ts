@@ -86,18 +86,26 @@ export function getEmissionsPointsFromBaseYear(
 export function calculateHistoricalEmissionChangePercent(
   emissionsByYear: EmissionsByYear,
   baseYear: number = CLIMATE_TRACE_BASE_YEAR,
+  reportedEndYear: number = CLIMATE_TRACE_REPORTED_END_YEAR,
 ): number | null {
-  const baseYearEmissions = emissionsByYear[baseYear];
+  const reportedEmissionsByYear = getReportedClimateTraceEmissionsByYear(
+    emissionsByYear,
+    reportedEndYear,
+  );
+  const baseYearEmissions = reportedEmissionsByYear[baseYear];
   if (!baseYearEmissions || baseYearEmissions <= 0) {
     return null;
   }
 
-  const latestYear = Math.max(...Object.keys(emissionsByYear).map(Number));
-  if (latestYear <= baseYear) {
+  const latestYear = getClimateTraceReportedEndYear(
+    reportedEmissionsByYear,
+    reportedEndYear,
+  );
+  if (!latestYear || latestYear <= baseYear) {
     return null;
   }
 
-  const latestEmissions = emissionsByYear[latestYear];
+  const latestEmissions = reportedEmissionsByYear[latestYear];
   if (!latestEmissions || latestEmissions <= 0) {
     return null;
   }

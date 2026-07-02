@@ -37,6 +37,18 @@ describe("climateTraceKpis", () => {
     ).toBeNull();
   });
 
+  it("ignores partial years beyond the reported end year", () => {
+    const change = calculateHistoricalEmissionChangePercent({
+      2015: 100,
+      2024: 80,
+      2025: 70,
+      2026: 10,
+    });
+
+    expect(change).not.toBeNull();
+    expect(change!).toBeCloseTo(-3.5, 1);
+  });
+
   it("returns true for steeply declining emissions trajectories", () => {
     const emissionsByYear = Object.fromEntries(
       Array.from({ length: 11 }, (_, index) => {

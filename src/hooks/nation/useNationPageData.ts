@@ -7,7 +7,6 @@ import { useNationDetails } from "@/hooks/nation/useNationDetails";
 import { useRegionsList } from "@/hooks/regions/useRegionsList";
 import { useEuropeanCountryPageData } from "@/hooks/europe/useEuropeanCountryPageData";
 import { SWEDEN_ISO3 } from "@/hooks/europe/useEuropeanCountryDetails";
-import { CLIMATE_TRACE_REPORTED_END_YEAR } from "@/utils/europe/climateTraceKpis";
 
 export function useNationPageData() {
   const {
@@ -22,6 +21,7 @@ export function useNationPageData() {
     emissionsData,
     headerStats,
     kpiComparisons,
+    lastYear,
   } = useEuropeanCountryPageData(SWEDEN_ISO3);
 
   const { sectorEmissions } = useSectorEmissions("nation");
@@ -30,16 +30,6 @@ export function useNationPageData() {
     useHiddenItems<string>([]);
 
   const sortedRegions = useMemo(() => [...regions].sort(), [regions]);
-
-  const lastYear = useMemo(() => {
-    return emissionsData
-      .filter(
-        (point) =>
-          point.total !== undefined &&
-          point.year <= CLIMATE_TRACE_REPORTED_END_YEAR,
-      )
-      .sort((a, b) => b.year - a.year)[0]?.year;
-  }, [emissionsData]);
 
   const { selectedYear, setSelectedYear, availableYears, currentYear } =
     useSectorYearSelection(sectorEmissions, lastYear ?? 2025);
