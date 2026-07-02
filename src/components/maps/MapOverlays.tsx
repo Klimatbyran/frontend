@@ -79,6 +79,7 @@ function MapOverlays({
         onReset={handleReset}
         canZoomIn={positionZoom < maxZoom}
         canZoomOut={positionZoom > minZoom}
+        legendPosition={legendPosition}
       />
     </>
   );
