@@ -34,7 +34,7 @@ export function MapTooltip({
 
   return (
     <div
-      className="absolute top-4 left-4 bg-black/40 backdrop-blur-sm p-4 rounded-2xl"
+      className="absolute top-4 left-4 z-20 bg-black/40 backdrop-blur-sm p-4 rounded-2xl"
       onClick={onClick}
     >
       <p className="text-white font-medium text-xl">{name}</p>

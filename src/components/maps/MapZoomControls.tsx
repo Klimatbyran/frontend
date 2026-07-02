@@ -14,7 +14,7 @@ export function MapZoomControls({
   canZoomOut: boolean;
 }) {
   return (
-    <div className="absolute top-[56px] md:top-4 left-4 flex flex-col gap-2">
+    <div className="absolute top-[56px] left-4 z-10 flex flex-col gap-2">
       <button
         onClick={onZoomIn}
         disabled={!canZoomIn}
