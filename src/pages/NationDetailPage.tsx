@@ -10,6 +10,7 @@ import { buildComparisonLinkTo } from "@/utils/compare/comparisonUtils";
 import { useNationPageData } from "@/hooks/nation/useNationPageData";
 import { useLanguage } from "@/components/LanguageProvider";
 import { EuropeanCountryDetailHeader } from "@/components/europe/EuropeanCountryDetailHeader";
+import { EuropeanCountryKpiComparisonsPanel } from "@/components/europe/EuropeanCountryKpiComparisonsPanel";
 import { SWEDEN_ISO3 } from "@/utils/routing";
 
 function NationDetailContent({
@@ -37,7 +38,6 @@ function NationDetailContent({
         iso2="SE"
         helpItems={["regionTotalEmissions", "detailWhyDataDelay"]}
         stats={headerStats}
-        kpiComparisons={kpiComparisons}
         headerChip={
           <ComparisonDetailChip
             linkTo={buildComparisonLinkTo("nation", SWEDEN_ISO3)}
@@ -46,6 +46,12 @@ function NationDetailContent({
           />
         }
       />
+      {kpiComparisons && (
+        <EuropeanCountryKpiComparisonsPanel
+          countryName={nation.country[currentLanguage]}
+          comparisons={kpiComparisons}
+        />
+      )}
       <TerritoryEmissions
         emissionsData={emissionsData}
         sectorEmissions={sectorEmissions}

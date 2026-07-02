@@ -5,6 +5,7 @@ import { PageError } from "@/components/pageStates/Error";
 import { PageNoData } from "@/components/pageStates/NoData";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";
 import { EuropeanCountryDetailHeader } from "@/components/europe/EuropeanCountryDetailHeader";
+import { EuropeanCountryKpiComparisonsPanel } from "@/components/europe/EuropeanCountryKpiComparisonsPanel";
 import { ComparisonDetailChip } from "@/components/compare/ComparisonDetailChip";
 import { buildComparisonLinkTo } from "@/utils/compare/comparisonUtils";
 import { useEuropeanCountryPageData } from "@/hooks/europe/useEuropeanCountryPageData";
@@ -39,7 +40,6 @@ export function EuropeanCountryDetailPage() {
         iso2={country.iso2}
         helpItems={["regionTotalEmissions", "detailWhyDataDelay"]}
         stats={headerStats}
-        kpiComparisons={kpiComparisons}
         headerChip={
           <ComparisonDetailChip
             linkTo={buildComparisonLinkTo("nation", country.iso3)}
@@ -48,6 +48,12 @@ export function EuropeanCountryDetailPage() {
           />
         }
       />
+      {kpiComparisons && (
+        <EuropeanCountryKpiComparisonsPanel
+          countryName={country.name}
+          comparisons={kpiComparisons}
+        />
+      )}
       <TerritoryEmissions
         emissionsData={emissionsData}
         sectorEmissions={null}

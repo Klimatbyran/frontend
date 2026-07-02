@@ -2,13 +2,18 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { FeatureCollection } from "geojson";
 import { useLanguage } from "@/components/LanguageProvider";
-import { DetailStat } from "@/components/detail/DetailHeader";
 import { ClimateTraceCountryData } from "@/lib/climateTrace";
 import {
   buildCountryGeoIndex,
   getLocalizedCountryName,
 } from "@/utils/europe/countryNames";
 import { useClimateTraceEmissions } from "@/hooks/europe/useClimateTraceEmissions";
+import {
+  createChangeSince2015Stat,
+  createEmissionsPerCapitaStat,
+  createMeetsParisStat,
+  createTotalEmissionsStat,
+} from "@/hooks/territories/useTerritoryDetailHeaderStats";
 import europeGeoJson from "@/data/europeGeo.json";
 export type EuropeanCountryDetails = {
   iso3: string;
@@ -26,27 +31,6 @@ const countryGeoIndex = buildCountryGeoIndex(
 );
 
 export const SWEDEN_ISO3 = "SWE";
-
-function createMeetsParisStat(
-  meetsParis: boolean | null,
-  t: ReturnType<typeof useTranslation>["t"],
-): DetailStat {
-  return {
-    label: t("detailPage.meetsParisGoal"),
-    value:
-      meetsParis === true
-        ? t("yes")
-        : meetsParis === false
-          ? t("no")
-          : t("unknown"),
-    valueClassName:
-      meetsParis === true
-        ? "text-green-3"
-        : meetsParis === false
-          ? "text-pink-3"
-          : "text-grey",
-  };
-}
 
 export function useEuropeanCountryDetails(countryId: string | undefined) {
   const { emissionsByIso, isLoading, error } = useClimateTraceEmissions();
@@ -95,6 +79,7 @@ export function useEuropeanCountryDetailHeaderStats(
   lastYear: number | undefined,
 ) {
   const { t } = useTranslation();
+  const { currentLanguage } = useLanguage();
 
   if (!country || !lastYear) {
     return [];
@@ -105,5 +90,33 @@ export function useEuropeanCountryDetailHeaderStats(
     return [];
   }
 
-  return [createMeetsParisStat(country.meetsParis, t)];
+  return [
+    createMeetsParisStat(country.meetsParis, t),
+    createChangeSince2015Stat(
+      country.historicalEmissionChangePercent,
+      currentLanguage,
+      t,
+    ),
+    createTotalEmissionsStat(
+      lastYearEmissions,
+      lastYear,
+      currentLanguage,
+      t,
+      {
+        infoText: t("europe.detailPage.totalEmissionsTooltip"),
+      },
+    ),
+    createEmissionsPerCapitaStat(
+      country.emissionsPerCapita,
+      currentLanguage,
+      t,
+      {
+        label: t("europe.list.kpis.emissionsPerCapita.label"),
+        unit: t("europe.list.kpis.emissionsPerCapita.unit"),
+        infoText: t(
+          "europe.list.kpis.emissionsPerCapita.detailedDescription",
+        ),
+      },
+    ),
+  ];
 }
