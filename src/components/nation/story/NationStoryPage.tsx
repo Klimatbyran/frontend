@@ -2,11 +2,9 @@ import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { EntityListBox } from "@/components/detail/EntityListBox";
 import { NationConclusion } from "@/components/nation/story/NationConclusion";
-import { NationECommerceScale } from "@/components/nation/story/NationECommerceScale";
 import { NationEmissionsJourney } from "@/components/nation/story/NationEmissionsJourney";
 import { NationLayerComparisons } from "@/components/nation/story/NationLayerComparisons";
 import { NationStackedChart } from "@/components/nation/story/NationStackedChart";
-import { NationOilExportsSection } from "@/components/nation/story/NationOilExportsSection";
 import { useLanguage } from "@/components/LanguageProvider";
 import type { NationDetails } from "@/hooks/nation/useNationDetails";
 import type { NationStoryMetrics } from "@/utils/data/nationStoryMetrics";
@@ -15,7 +13,6 @@ type NationStoryPageProps = {
   nation: NationDetails;
   metrics: NationStoryMetrics;
   sortedRegions: string[];
-  oilPoints: NationDetails["exportOfOilProductsPoints"];
 };
 
 function FullScreenSection({ children }: { children: React.ReactNode }) {
@@ -30,7 +27,6 @@ export function NationStoryPage({
   nation,
   metrics,
   sortedRegions,
-  oilPoints,
 }: NationStoryPageProps) {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
@@ -103,17 +99,6 @@ export function NationStoryPage({
       {/* Conclusion – the punchline tying the journey together */}
       <FullScreenSection>
         <NationConclusion metrics={metrics} />
-      </FullScreenSection>
-
-      <FullScreenSection>
-        <NationECommerceScale
-          eCommerceTonnes={metrics.eCommerceLatestTonnes}
-          eCommerceYear={metrics.eCommerceYear}
-        />
-      </FullScreenSection>
-
-      <FullScreenSection>
-        <NationOilExportsSection oilPoints={oilPoints} />
       </FullScreenSection>
 
       {/* Footer */}

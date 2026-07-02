@@ -15,8 +15,6 @@ function fixtureToSeries(): NationEmissionSeries {
     territorialFossilEmissions: Record<string, number>;
     biogenicEmissions: Record<string, number>;
     consumptionAbroadEmissions: Record<string, number>;
-    eCommerceEmissions: Record<string, number>;
-    exportOfOilProductsEmissions: Record<string, number>;
   };
 
   const toRecord = (input: Record<string, number>) =>
@@ -28,8 +26,6 @@ function fixtureToSeries(): NationEmissionSeries {
     territorialFossil: toRecord(raw.territorialFossilEmissions),
     biogenic: toRecord(raw.biogenicEmissions),
     consumptionAbroad: toRecord(raw.consumptionAbroadEmissions),
-    eCommerce: toRecord(raw.eCommerceEmissions),
-    exportOfOilProducts: toRecord(raw.exportOfOilProductsEmissions),
   };
 }
 
@@ -55,16 +51,9 @@ describe("nationStoryMetrics", () => {
   it("builds layer comparisons for all main categories", () => {
     const metrics = computeNationStoryMetrics(series);
 
-    expect(metrics.layerComparisons).toHaveLength(4);
+    expect(metrics.layerComparisons).toHaveLength(3);
     expect(metrics.territorialChangePercent).toBeLessThan(0);
     expect(metrics.biogenicChangePercent).toBeGreaterThan(100);
-  });
-
-  it("includes e-commerce and oil export data for 2024", () => {
-    const metrics = computeNationStoryMetrics(series);
-
-    expect(metrics.eCommerceLatestTonnes).toBe(403630);
-    expect(metrics.oilExportLatestMton).toBeCloseTo(32.1, 0);
   });
 
   it("builds stacked chart data in Mton", () => {

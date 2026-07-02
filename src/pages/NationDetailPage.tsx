@@ -17,7 +17,6 @@ export function NationDetailPage() {
       nation={nation}
       metrics={metrics}
       sortedRegions={sortedRegions}
-      oilPoints={nation.exportOfOilProductsPoints}
     />
   );
 }

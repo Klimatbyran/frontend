@@ -6,15 +6,12 @@ export type NationEmissionSeries = {
   territorialFossil: Record<number, number>;
   biogenic: Record<number, number>;
   consumptionAbroad: Record<number, number>;
-  eCommerce: Record<number, number>;
-  exportOfOilProducts: Record<number, number>;
 };
 
 export type NationLayerKey =
   | "territorialFossil"
   | "biogenic"
-  | "consumptionAbroad"
-  | "exportOfOilProducts";
+  | "consumptionAbroad";
 
 export type NationLayerComparison = {
   key: NationLayerKey;
@@ -48,11 +45,6 @@ export type NationStoryMetrics = {
   consumptionLatestMton: number;
   consumption1990Mton: number;
   consumptionChangePercent: number;
-  oilExport1990Mton: number;
-  oilExportLatestMton: number;
-  oilExportChangePercent: number;
-  eCommerceLatestTonnes: number;
-  eCommerceYear: number;
   layerComparisons: NationLayerComparison[];
   stackData: NationStackDataPoint[];
   maxLayerMton: number;
@@ -73,17 +65,6 @@ export function formatMton(
     maximumFractionDigits,
     minimumFractionDigits: 0,
   }).format(mton);
-}
-
-export function formatTonnes(
-  tonnes: number,
-  language: SupportedLanguage,
-  maximumFractionDigits = 0,
-): string {
-  return new Intl.NumberFormat(language === "sv" ? "sv-SE" : "en-GB", {
-    maximumFractionDigits,
-    minimumFractionDigits: 0,
-  }).format(tonnes);
 }
 
 export function percentChange(from: number, to: number): number {
@@ -180,19 +161,6 @@ export function computeNationStoryMetrics(
   const consumption1990Tonnes =
     series.consumptionAbroad[NATION_BASELINE_YEAR] ?? 0;
   const consumptionLatestTonnes = series.consumptionAbroad[latestYear] ?? 0;
-  const oilExport1990Tonnes =
-    series.exportOfOilProducts[NATION_BASELINE_YEAR] ?? 0;
-  const oilExportLatestTonnes = series.exportOfOilProducts[latestYear] ?? 0;
-
-  const eCommerceYear =
-    series.eCommerce[latestYear] !== undefined
-      ? latestYear
-      : (Object.keys(series.eCommerce)
-          .map(Number)
-          .filter((y) => !Number.isNaN(y))
-          .sort((a, b) => a - b)
-          .at(-1) ?? latestYear);
-  const eCommerceLatestTonnes = series.eCommerce[eCommerceYear] ?? 0;
 
   const layerComparisons = [
     buildLayerComparison(
@@ -212,13 +180,6 @@ export function computeNationStoryMetrics(
     buildLayerComparison(
       "consumptionAbroad",
       "nation.story.graph.consumptionAbroad",
-      "var(--pink-3)",
-      series,
-      latestYear,
-    ),
-    buildLayerComparison(
-      "exportOfOilProducts",
-      "nation.story.graph.oilExports",
       "var(--pink-3)",
       series,
       latestYear,
@@ -262,14 +223,6 @@ export function computeNationStoryMetrics(
       consumption1990Tonnes,
       consumptionLatestTonnes,
     ),
-    oilExport1990Mton: toMton(oilExport1990Tonnes),
-    oilExportLatestMton: toMton(oilExportLatestTonnes),
-    oilExportChangePercent: percentChange(
-      oilExport1990Tonnes,
-      oilExportLatestTonnes,
-    ),
-    eCommerceLatestTonnes,
-    eCommerceYear,
     layerComparisons,
     stackData: buildStackChartData(series),
     maxLayerMton,

@@ -118,7 +118,6 @@ export function NationLayerComparisons({
   maxMton,
 }: NationLayerComparisonsProps) {
   const { t } = useTranslation();
-  const mainLayers = layers.filter((l) => l.key !== "exportOfOilProducts");
 
   return (
     <div className="w-full max-w-4xl mx-auto">
@@ -131,7 +130,7 @@ export function NationLayerComparisons({
         </p>
       </div>
       <div>
-        {mainLayers.map((layer, index) => (
+        {layers.map((layer, index) => (
           <LayerRow
             key={layer.key}
             layer={layer}

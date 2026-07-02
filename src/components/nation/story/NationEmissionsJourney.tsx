@@ -77,7 +77,9 @@ type NationEmissionsJourneyProps = {
   metrics: NationStoryMetrics;
 };
 
-export function NationEmissionsJourney({ metrics }: NationEmissionsJourneyProps) {
+export function NationEmissionsJourney({
+  metrics,
+}: NationEmissionsJourneyProps) {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
 
