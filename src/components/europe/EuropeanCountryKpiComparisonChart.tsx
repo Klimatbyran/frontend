@@ -131,11 +131,11 @@ export function EuropeanCountryKpiComparisonChart({
           </span>
         )}
       </div>
-      <div className="mx-auto w-full max-w-[11.5rem]">
+      <div className="mx-auto w-full max-w-[13rem]">
         <ResponsiveContainer width="100%" height={132}>
           <BarChart
             data={data}
-            barCategoryGap={8}
+            barCategoryGap={10}
             margin={{ top: 4, right: 0, bottom: 16, left: 0 }}
           >
             <XAxis
@@ -163,7 +163,7 @@ export function EuropeanCountryKpiComparisonChart({
               )}
               cursor={{ fill: "rgba(255,255,255,0.05)" }}
             />
-            <Bar dataKey="value" barSize={40} radius={[3, 3, 0, 0]}>
+            <Bar dataKey="value" barSize={68} radius={[4, 4, 0, 0]}>
               {data.map((item) => (
                 <Cell key={item.key} fill={item.fill} />
               ))}
