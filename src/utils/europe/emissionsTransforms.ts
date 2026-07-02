@@ -6,7 +6,6 @@ import {
 import {
   calculateLinearRegressionSlope,
   CLIMATE_TRACE_BASE_YEAR,
-  CLIMATE_TRACE_PROJECTION_START_YEAR,
   CLIMATE_TRACE_REPORTED_END_YEAR,
   EmissionsByYear,
   getEmissionsForParisProjection,
@@ -92,11 +91,14 @@ export function transformEuropeanCountryEmissionsData(
     emissionsByYear,
     CLIMATE_TRACE_REPORTED_END_YEAR,
   );
-  const projectionStartYear = CLIMATE_TRACE_PROJECTION_START_YEAR;
-  const trend = buildTrendRecord(reportedEmissionsByYear, projectionStartYear);
+  const chartProjectionStartYear = PARIS_PROJECTION_START_YEAR;
+  const trend = buildTrendRecord(
+    reportedEmissionsByYear,
+    chartProjectionStartYear,
+  );
   const carbonLaw = buildCarbonLawRecord(
     reportedEmissionsByYear,
-    projectionStartYear,
+    chartProjectionStartYear,
   );
 
   const years = new Set<number>();
@@ -112,10 +114,10 @@ export function transformEuropeanCountryEmissionsData(
     .map((yearNum) => ({
       year: yearNum,
       total: reportedEmissionsByYear[yearNum],
-      trend: yearNum >= projectionStartYear ? trend[yearNum] : undefined,
+      trend: yearNum >= chartProjectionStartYear ? trend[yearNum] : undefined,
       approximated: undefined,
       carbonLaw:
-        yearNum >= projectionStartYear ? carbonLaw[yearNum] : undefined,
+        yearNum >= chartProjectionStartYear ? carbonLaw[yearNum] : undefined,
     }))
     .filter(
       (point) =>
