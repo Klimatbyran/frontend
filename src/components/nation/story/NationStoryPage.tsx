@@ -3,10 +3,10 @@ import { motion } from "framer-motion";
 import { EntityListBox } from "@/components/detail/EntityListBox";
 import { NationConclusion } from "@/components/nation/story/NationConclusion";
 import { NationECommerceScale } from "@/components/nation/story/NationECommerceScale";
+import { NationEmissionsJourney } from "@/components/nation/story/NationEmissionsJourney";
 import { NationLayerComparisons } from "@/components/nation/story/NationLayerComparisons";
 import { NationStackedChart } from "@/components/nation/story/NationStackedChart";
 import { NationOilExportsSection } from "@/components/nation/story/NationOilExportsSection";
-import { NationZoomChart } from "@/components/nation/story/NationZoomChart";
 import { useLanguage } from "@/components/LanguageProvider";
 import type { NationDetails } from "@/hooks/nation/useNationDetails";
 import type { NationStoryMetrics } from "@/utils/data/nationStoryMetrics";
@@ -59,9 +59,34 @@ export function NationStoryPage({
         </div>
       </section>
 
+      {/* Growing-bubble journey: broadening the emissions perspective */}
       <FullScreenSection>
-        <NationZoomChart metrics={metrics} />
+        <NationEmissionsJourney metrics={metrics} />
       </FullScreenSection>
+
+      {/* Bathtub metaphor – transition into the time series */}
+      <section className="min-h-[70vh] flex items-center justify-center px-4 md:px-8 py-10">
+        <div className="max-w-2xl mx-auto text-center space-y-6">
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.5 }}
+            transition={{ duration: 0.5 }}
+            className="text-lg md:text-xl text-grey leading-relaxed"
+          >
+            {t("nation.story.bathtub.text")}
+          </motion.p>
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.5 }}
+            transition={{ duration: 0.5, delay: 0.15 }}
+            className="text-xl md:text-2xl text-white font-light leading-snug"
+          >
+            {t("nation.story.bathtub.question")}
+          </motion.p>
+        </div>
+      </section>
 
       <FullScreenSection>
         <NationStackedChart data={metrics.stackData} />

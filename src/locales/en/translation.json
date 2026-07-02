@@ -1501,11 +1501,39 @@
         "mton": "Mt",
         "millionTco2e": "million tonnes CO₂e"
       },
-      "intro": {
-        "paragraph1": "Parties across the political spectrum often say Sweden's emissions have fallen by a third since 1990. That is true – if you only count one type of emissions.",
-        "paragraph2": "But the question of which emissions Sweden can actually influence – our control – is not the same as the emissions we usually count. The atmosphere responds to the total amount of greenhouse gases, regardless of where they occur.",
-        "paragraph3": "So how large are the emissions Sweden actually controls? Let's count – step by step."
-      },
+  "intro": {
+    "paragraph1": "Parties across the political spectrum often say Sweden's emissions have fallen by a third while the economy has doubled. But everything depends on which data you choose to present, over what time period, and which types of emissions you include.",
+    "paragraph2": "Usually only territorial greenhouse gas emissions are considered – emissions that occur within Sweden's geographic borders. It is the main measure used to track Sweden's national and international climate goals, and includes for example domestic aviation, electricity and district heating, and waste.",
+    "paragraph3": "But Sweden's climate impact is larger than that. Let's broaden the perspective – step by step."
+  },
+  "journey": {
+    "runningTotalLabel": "Sweden's emissions so far",
+    "step1": {
+      "label": "Territorial emissions",
+      "text": "Emissions that occur within Sweden's geographic borders – the main measure for our climate goals. It includes for example domestic aviation, electricity and district heating, and waste."
+    },
+    "step2": {
+      "label": "Production-based emissions",
+      "text": "But Swedes' emissions also occur elsewhere. A production perspective looks at the Swedish economy rather than geography – it also includes Swedish shipping and airlines in international waters and airspace."
+    },
+    "step3": {
+      "label": "Consumption abroad",
+      "text": "Swedes also cause emissions through their lifestyle and consumption, at home and abroad. This counts household and public consumption and investments – while emissions from goods produced in Sweden but exported are subtracted."
+    },
+    "step4": {
+      "label": "Private e-commerce",
+      "text": "We have also estimated emissions from private consumption – what we order from Amazon and Shein. Based on parcel statistics and an emission factor for clothing, that is about 310,000 tonnes CO₂e, roughly as much as the whole of Gävle (2024).",
+      "badge": "+310,000 t ≈ Gävle"
+    },
+    "step5": {
+      "label": "Biogenic emissions",
+      "text": "Biogenic CO₂ emissions from human activity – biofuels in electricity and district heating, industry, transport, machinery and waste. It can take decades for new forest to absorb the same amount of carbon, so biogenic emissions are a climate problem here and now."
+    }
+  },
+  "bathtub": {
+    "text": "The atmosphere responds to the total amount of greenhouse gases – and they accumulate over time. A bit like a bathtub with the tap running: until the tap is fully closed, the water keeps rising. That is why how fast we cut emissions toward zero matters.",
+    "question": "So how have the different emission perspectives changed since 1990?"
+  },
       "headline": {
         "eyebrow": "Main angle",
         "title": "Sweden's emissions are roughly <0>{{ratio}} times</0> larger than what is usually reported",
@@ -1546,19 +1574,13 @@
         "consumptionAbroad": "Consumption-based abroad",
         "oilExports": "Export of oil products"
       },
-      "zoom": {
-        "phase1": "What we usually discuss is territorial fossil emissions within Sweden's borders – just under 48 million tonnes.",
-        "phase2": "But Sweden controls more than that. Biogenic emissions add up – from district heating, industry and transport.",
-        "phase3": "And consumption-based emissions abroad – what we cause through the goods we buy.",
-        "phase4": "The full picture is {{ratio}}× larger: {{total}} Mt – an entirely different scale."
-      },
       "stacked": {
         "title": "Combined emissions since 1990",
         "description": "When production-based, biogenic and consumption-based emissions are added together, the picture looks very different. The stack shows how the three layers combined have barely changed since 1990 – a different story from the official statistics.",
         "totalsDescription": "Sum of territorial fossil, biogenic and consumption-based emissions abroad",
-    "layerCaption1": "First we draw the territorial fossil emissions – what we usually discuss.",
-    "layerCaption2": "Now we add the biogenic emissions on top.",
-    "layerCaption3": "And finally the consumption-based emissions abroad – the full picture.",
+        "layerCaption1": "First we draw the territorial fossil emissions – what we usually discuss.",
+        "layerCaption2": "Now we add the biogenic emissions on top.",
+        "layerCaption3": "And finally the consumption-based emissions abroad – the full picture.",
         "changeContext": "The change since 1990 looks very different depending on which emissions you include:",
         "changeTerritorialLabel": "Production-based (territorial fossil)",
         "changeCombinedLabel": "All three emission types combined",
