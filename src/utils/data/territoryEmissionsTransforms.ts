@@ -35,6 +35,32 @@ function toDisplayTonnes(
   return valuesInKg ? value / KG_PER_TONNE : value;
 }
 
+function getLastReportedEmissionsYear(
+  emissions: (EmissionDataPoint | null)[],
+): number | undefined {
+  const reportedYears = emissions
+    .filter((d): d is EmissionDataPoint => d != null)
+    .map((d) => d.year);
+
+  return reportedYears.length > 0 ? Math.max(...reportedYears) : undefined;
+}
+
+function shouldShowApproximatedForYear(
+  yearNum: number,
+  lastReportedYear: number | undefined,
+  historical: number | undefined,
+): boolean {
+  if (historical !== undefined) {
+    return false;
+  }
+
+  if (lastReportedYear !== undefined && yearNum <= lastReportedYear) {
+    return false;
+  }
+
+  return true;
+}
+
 export function transformTerritoryEmissionsData(
   territory: TerritoryEmissionsSource,
   now: Date = new Date(),
@@ -61,11 +87,14 @@ export function transformTerritoryEmissionsData(
     .filter((d): d is EmissionDataPoint => d != null && d.year <= calendarYear)
     .sort((a, b) => b.year - a.year)[0];
 
-  const approximatedDataAtPreviousYear = territory.approximatedHistoricalEmission
-    .find((d) => d?.year === calendarYear - 1)?.value;
+  const approximatedDataAtPreviousYear =
+    territory.approximatedHistoricalEmission.find(
+      (d) => d?.year === calendarYear - 1,
+    )?.value;
 
   const carbonLawBaseValue = approximatedDataAtCurrentYear?.value;
   const carbonLawBaseYear = approximatedDataAtCurrentYear?.year ?? calendarYear;
+  const lastReportedYear = getLastReportedEmissionsYear(territory.emissions);
 
   return Array.from(years)
     .sort((a, b) => a - b)
@@ -112,7 +141,8 @@ export function transformTerritoryEmissionsData(
         total: toDisplayTonnes(
           getEstimatedEmissionsAtToday(
             historical,
-            territory.emissions.find((d) => d?.year === calendarYear - 1)?.value,
+            territory.emissions.find((d) => d?.year === calendarYear - 1)
+              ?.value,
             yearNum,
             calendarYear,
             yearProgress,
@@ -120,16 +150,22 @@ export function transformTerritoryEmissionsData(
           valuesInKg,
         ),
         trend: toDisplayTonnes(trendRaw, valuesInKg),
-        approximated: toDisplayTonnes(
-          getEstimatedEmissionsAtToday(
-            approximated,
-            approximatedDataAtPreviousYear,
-            yearNum,
-            calendarYear,
-            yearProgress,
-          ),
-          valuesInKg,
-        ),
+        approximated: shouldShowApproximatedForYear(
+          yearNum,
+          lastReportedYear,
+          historical,
+        )
+          ? toDisplayTonnes(
+              getEstimatedEmissionsAtToday(
+                approximated,
+                approximatedDataAtPreviousYear,
+                yearNum,
+                calendarYear,
+                yearProgress,
+              ),
+              valuesInKg,
+            )
+          : undefined,
         carbonLaw: toDisplayTonnes(carbonLawRaw, valuesInKg),
       };
     })
