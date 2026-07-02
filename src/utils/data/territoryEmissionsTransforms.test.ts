@@ -18,21 +18,28 @@ describe("transformTerritoryEmissionsData", () => {
     ],
   };
 
-  it("prorates current-year estimated and trend values to year-to-date", () => {
+  it("prorates current-year estimated values to year-to-date and projects trend from today", () => {
     const midYear = new Date("2026-07-02T12:00:00Z");
     const data = transformTerritoryEmissionsData(territory, midYear);
     const yearProgress = (midYear.getTime() - Date.UTC(2026, 0, 1)) /
       (Date.UTC(2027, 0, 1) - Date.UTC(2026, 0, 1));
+    const annualSlope = 42_000 - 44_000;
+    const trendAtToday = 44_000 + annualSlope * yearProgress;
 
     const point2025 = data.find((point) => point.year === 2025);
     const point2026 = data.find(
       (point) => point.year > 2026 && point.year < 2027,
     );
+    const point2027 = data.find((point) => point.year === 2027);
 
     expect(point2025?.approximated).toBe(46_000);
     expect(point2026?.year).toBeCloseTo(2026 + yearProgress, 5);
     expect(point2026?.approximated).toBeCloseTo(44_000 * yearProgress, 0);
-    expect(point2026?.trend).toBeCloseTo(44_000 * yearProgress, 0);
+    expect(point2026?.trend).toBeCloseTo(trendAtToday, 0);
+    expect(point2027?.trend).toBeCloseTo(
+      trendAtToday + annualSlope * (2027 - (2026 + yearProgress)),
+      0,
+    );
   });
 
   it("leaves completed years unchanged", () => {

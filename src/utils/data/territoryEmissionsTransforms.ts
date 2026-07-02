@@ -33,6 +33,40 @@ function applyCurrentYearToDate<T extends number | undefined>(
   return (value * yearProgress) as T;
 }
 
+/** Project trend from today's position instead of Jan 1 full-year regression points. */
+function adjustTrendFromToday(
+  trend: number | undefined,
+  yearNum: number,
+  calendarYear: number,
+  yearProgress: number,
+  trendAtCalendarYear: number | undefined,
+  trendAtNextYear: number | undefined,
+): number | undefined {
+  if (
+    trend === undefined ||
+    yearNum < calendarYear ||
+    yearProgress <= 0 ||
+    yearProgress >= 1 ||
+    trendAtCalendarYear === undefined
+  ) {
+    return trend;
+  }
+
+  const annualSlope =
+    trendAtNextYear !== undefined
+      ? trendAtNextYear - trendAtCalendarYear
+      : 0;
+  const todayPosition = calendarYear + yearProgress;
+  const trendAtToday =
+    trendAtCalendarYear + annualSlope * yearProgress;
+
+  if (yearNum === calendarYear) {
+    return trendAtToday;
+  }
+
+  return trendAtToday + annualSlope * (yearNum - todayPosition);
+}
+
 export function transformTerritoryEmissionsData(
   territory: TerritoryEmissionsSource,
   now: Date = new Date(),
@@ -47,6 +81,12 @@ export function transformTerritoryEmissionsData(
 
   const calendarYear = now.getFullYear();
   const yearProgress = getYearProgress(now);
+  const trendAtCalendarYear = territory.trend.find(
+    (d) => d?.year === calendarYear,
+  )?.value;
+  const trendAtNextYear = territory.trend.find(
+    (d) => d?.year === calendarYear + 1,
+  )?.value;
 
   const approximatedDataAtCurrentYear = territory.approximatedHistoricalEmission
     .filter((d): d is EmissionDataPoint => d != null && d.year <= calendarYear)
@@ -91,7 +131,14 @@ export function transformTerritoryEmissionsData(
           ),
         ),
         trend: toTonnes(
-          applyCurrentYearToDate(trend, yearNum, calendarYear, yearProgress),
+          adjustTrendFromToday(
+            trend,
+            yearNum,
+            calendarYear,
+            yearProgress,
+            trendAtCalendarYear,
+            trendAtNextYear,
+          ),
         ),
         approximated: toTonnes(
           applyCurrentYearToDate(
