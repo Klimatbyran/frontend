@@ -83,11 +83,7 @@ export function EuropeanCountryKpiComparisonChart({
 
   const maxMagnitude = useMemo(
     () =>
-      Math.max(
-        Math.abs(countryValue),
-        Math.abs(averageValue),
-        Number.EPSILON,
-      ),
+      Math.max(Math.abs(countryValue), Math.abs(averageValue), Number.EPSILON),
     [averageValue, countryValue],
   );
 
@@ -119,7 +115,9 @@ export function EuropeanCountryKpiComparisonChart({
             }}
           >
             <div className="flex min-w-0 items-baseline justify-between gap-3 text-xs">
-              <span className="min-w-0 truncate text-white/70">{item.label}</span>
+              <span className="min-w-0 truncate text-white/70">
+                {item.label}
+              </span>
               <span className="shrink-0 text-right tabular-nums text-grey">
                 {item.formattedValue}
               </span>
