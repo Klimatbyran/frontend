@@ -5,7 +5,6 @@ import { PageError } from "@/components/pageStates/Error";
 import { PageNoData } from "@/components/pageStates/NoData";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";
 import { EuropeanCountryDetailHeader } from "@/components/europe/EuropeanCountryDetailHeader";
-import { EuropeanCountryKpiComparisonsPanel } from "@/components/europe/EuropeanCountryKpiComparisonsPanel";
 import { ComparisonDetailChip } from "@/components/compare/ComparisonDetailChip";
 import { buildComparisonLinkTo } from "@/utils/compare/comparisonUtils";
 import { useEuropeanCountryPageData } from "@/hooks/europe/useEuropeanCountryPageData";
@@ -22,7 +21,6 @@ export function EuropeanCountryDetailPage() {
     error,
     emissionsData,
     headerStats,
-    kpiComparisons,
   } = pageData;
 
   if (id?.toUpperCase() === SWEDEN_ISO3) {
@@ -48,12 +46,6 @@ export function EuropeanCountryDetailPage() {
           />
         }
       />
-      {kpiComparisons && (
-        <EuropeanCountryKpiComparisonsPanel
-          countryName={country.name}
-          comparisons={kpiComparisons}
-        />
-      )}
       <TerritoryEmissions
         emissionsData={emissionsData}
         sectorEmissions={null}

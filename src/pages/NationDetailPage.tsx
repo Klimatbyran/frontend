@@ -10,7 +10,6 @@ import { buildComparisonLinkTo } from "@/utils/compare/comparisonUtils";
 import { useNationPageData } from "@/hooks/nation/useNationPageData";
 import { useLanguage } from "@/components/LanguageProvider";
 import { EuropeanCountryDetailHeader } from "@/components/europe/EuropeanCountryDetailHeader";
-import { EuropeanCountryKpiComparisonsPanel } from "@/components/europe/EuropeanCountryKpiComparisonsPanel";
 import { SWEDEN_ISO3 } from "@/utils/routing";
 
 function NationDetailContent({
@@ -24,7 +23,6 @@ function NationDetailContent({
   selectedYear,
   setSelectedYear,
   headerStats,
-  kpiComparisons,
   availableYears,
   currentYear,
 }: ReturnType<typeof useNationPageData>) {
@@ -46,12 +44,6 @@ function NationDetailContent({
           />
         }
       />
-      {kpiComparisons && (
-        <EuropeanCountryKpiComparisonsPanel
-          countryName={nation.country[currentLanguage]}
-          comparisons={kpiComparisons}
-        />
-      )}
       <TerritoryEmissions
         emissionsData={emissionsData}
         sectorEmissions={sectorEmissions}
