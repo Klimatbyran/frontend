@@ -14,7 +14,7 @@ interface OverviewSplitLayoutProps {
   listMode?: OverviewViewMode;
   visualization: ReactNode;
   list: ReactNode;
-  /** Map/list toggle — above the active panel on all screen sizes */
+  /** Map/list toggle — full width above panel on mobile; compact on desktop */
   toggle?: ReactNode;
 }
 
@@ -44,7 +44,10 @@ export function OverviewSplitLayout({
     // layout shift when toggling between them.
     <div className={`flex flex-col ${OVERVIEW_PANEL_HEIGHT}`}>
       {toggle && (showVisualization || showList) && (
-        <div className="shrink-0 mb-3">{toggle}</div>
+        <div className="md:hidden shrink-0 mb-3">{toggle}</div>
+      )}
+      {toggle && showVisualization && (
+        <div className="hidden md:block shrink-0 mb-3 w-fit">{toggle}</div>
       )}
       <div className="flex-1 relative min-h-0">
         <div

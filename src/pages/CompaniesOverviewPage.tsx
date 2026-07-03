@@ -237,6 +237,7 @@ export function CompaniesOverviewPage() {
       searchKey="name"
       searchPlaceholder={t("rankedList.search.placeholder")}
       itemsPerPage={isMobile ? 6 : 8}
+      headerAction={viewToggle}
       colorItem={colorItem}
     />
   );
