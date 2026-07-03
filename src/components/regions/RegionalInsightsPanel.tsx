@@ -1,4 +1,3 @@
-import { COLORS } from "@/lib/colors";
 import { useTranslation } from "react-i18next";
 import { getSortedEntityKPIValues } from "@/utils/data/sorting";
 import { Region } from "@/types/region";
@@ -138,7 +137,7 @@ function RegionalInsightsPanel({
         { entityPlural },
       )}
       entities={topRegions}
-      totalCount={regionData.length}
+      totalCount={statistics.validData.length}
       dataPointKey={selectedKPI.key as keyof Region}
       unit={selectedKPI.unit}
       nullValues={selectedKPI.nullValues}
@@ -155,7 +154,7 @@ function RegionalInsightsPanel({
     <InsightsList<Region>
       title={t("rankedInsights.titleWorst", { entityPlural })}
       entities={bottomRegions}
-      totalCount={regionData.length}
+      totalCount={statistics.validData.length}
       isBottomRanking
       dataPointKey={selectedKPI.key as keyof Region}
       unit={selectedKPI.unit}

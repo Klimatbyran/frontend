@@ -218,7 +218,14 @@ export function RankedList<T extends Record<string, unknown>>({
     >
       <div className="flex items-center gap-4">
         <span className="text-white/30 text-sm w-8 shrink-0 tabular-nums text-left">
-          {selectedDataPoint.isBoolean ? "" : getOriginalRank(item)}
+          {selectedDataPoint.isBoolean
+            ? ""
+            : isMissingRankedValue(
+                  item[selectedDataPoint.key],
+                  selectedDataPoint.isBoolean,
+                )
+              ? "—"
+              : getOriginalRank(item)}
         </span>
         <span className="text-white/90 text-sm md:text-base text-left">
           {String(item[searchKey])}
