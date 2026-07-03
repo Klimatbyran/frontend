@@ -34,7 +34,9 @@ export function RegionalRankedList({
     booleanLabels: selectedKPI.booleanLabels,
     formatter: (value: unknown) => {
       if (value === null || value === undefined) {
-        return selectedKPI.nullValues ? t(selectedKPI.nullValues) : t("noData");
+        return t(`regions.list.kpis.${String(selectedKPI.key)}.nullValues`, {
+          defaultValue: t("noData"),
+        });
       }
 
       if (typeof value === "boolean") {

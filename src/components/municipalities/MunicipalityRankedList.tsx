@@ -25,7 +25,12 @@ export function MunicipalityRankedList({
 
   const formatValue = (value: unknown) => {
     if (value === null || value === undefined) {
-      return selectedKPI.nullValues ? t(selectedKPI.nullValues) : t("noData");
+      return t(
+        `municipalities.list.kpis.${String(selectedKPI.key)}.nullValues`,
+        {
+          defaultValue: t("noData"),
+        },
+      );
     }
 
     if (typeof value === "boolean") {

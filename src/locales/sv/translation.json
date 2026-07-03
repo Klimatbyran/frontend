@@ -1386,6 +1386,10 @@
         },
         "keyStatistics": {
           "average": "Genomsnitt:"
+        },
+        "distribution": {
+          "title": "Fördelning",
+          "subtitle": "Visar hur företagen sprider sig längs skalan för vald indikator. Blå staplar betyder bättre resultat, rosa sämre, och den streckade linjen markerar genomsnittet."
         }
       },
       "sort": {
@@ -1517,6 +1521,12 @@
           "aboveString": "är på väg att klara Parisavtalet",
           "belowString": "är på väg att missa Parisavtalet"
         }
+      },
+      "insights": {
+        "distribution": {
+          "title": "Fördelning",
+          "subtitle": "Visar hur länen sprider sig längs skalan för vald indikator. Blå staplar betyder bättre resultat, rosa sämre, och den streckade linjen markerar genomsnittet."
+        }
       }
     }
   },
@@ -1600,7 +1610,9 @@
           "description": "Antal elbilar per laddningspunkt",
           "detailedDescription": "Antal elbilar per publik laddningspunkt per kommun år 2025. Ju färre bilar per laddningspunkt desto bättre, god infrastruktur gynnar ökad elbilskonsumtion",
           "source": "Power Circle",
-          "nullValues": "Saknar laddpunkter"
+          "nullValues": "Saknar laddpunkter",
+          "missingCount_one": "{{count}} kommun saknar laddpunkter",
+          "missingCount_other": "{{count}} kommuner saknar laddpunkter"
         },
         "bicycleMetrePerCapita": {
           "label": "Cyklarna",
@@ -1948,9 +1960,9 @@
   "rankedInsights": {
     "belowAverage": "{{entityPlural}} under genomsnittet",
     "aboveAverage": "{{entityPlural}} över genomsnittet",
-    "titleBest": "Topp 10 {{entityPlural}}",
-    "titleTop": "Bästa 10 {{entityPlural}}",
-    "titleWorst": "Sämsta 10 {{entityPlural}}"
+    "titleBest": "Topp {{nrOfEntities}} {{entityPlural}}",
+    "titleTop": "Bästa {{nrOfEntities}} {{entityPlural}}",
+    "titleWorst": "Sämsta {{nrOfEntities}} {{entityPlural}}"
   },
   "chartLegend": {
     "clickToFilterOut": "Klicka för att filtrera bort",

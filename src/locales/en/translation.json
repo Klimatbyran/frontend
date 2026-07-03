@@ -1333,6 +1333,10 @@
         },
         "keyStatistics": {
           "average": "Average:"
+        },
+        "distribution": {
+          "title": "Distribution",
+          "subtitle": "Shows how companies are spread across the scale for the selected indicator. Blue bars mean better results, pink worse, and the dashed line marks the average."
         }
       },
       "sort": {
@@ -1462,6 +1466,12 @@
             "false": "Fails Paris Agreement"
           }
         }
+      },
+      "insights": {
+        "distribution": {
+          "title": "Distribution",
+          "subtitle": "Shows how regions are spread across the scale for the selected indicator. Blue bars mean better results, pink worse, and the dashed line marks the average."
+        }
       }
     }
   },
@@ -1545,7 +1555,9 @@
           "description": "Number of electric vehicles per charging point",
           "detailedDescription": "Number of electric vehicles per public charging point, per municipality in 2025. Lower numbers are better, as good infrastructure promotes increased electric vehicle adoption.",
           "source": "Power Circle",
-          "nullValues": "No charging points"
+          "nullValues": "No charging points",
+          "missingCount_one": "{{count}} municipality without charging points",
+          "missingCount_other": "{{count}} municipalities without charging points"
         },
         "bicycleMetrePerCapita": {
           "label": "Bicycles",
@@ -1893,9 +1905,9 @@
   "rankedInsights": {
     "belowAverage": "{{entityPlural}} below average",
     "aboveAverage": "{{entityPlural}} above average",
-    "titleBest": "Top 10 {{entityPlural}}",
-    "titleTop": "Top Performing 10 {{entityPlural}}",
-    "titleWorst": "Bottom 10 {{entityPlural}}"
+    "titleBest": "Top {{nrOfEntities}} {{entityPlural}}",
+    "titleTop": "Top Performing {{nrOfEntities}} {{entityPlural}}",
+    "titleWorst": "Bottom {{nrOfEntities}} {{entityPlural}}"
   },
   "chartLegend": {
     "clickToFilterOut": "Click to filter out",
