@@ -108,7 +108,7 @@ function InsightsPanel({
           <KPIDistributionChart
             data={municipalityData}
             selectedKPI={selectedKPI}
-            entityLabel={t("header.municipalities").toLowerCase()}
+            entityLabel={entityPlural}
             translationPrefix="municipalities.list"
           />
         ) : undefined

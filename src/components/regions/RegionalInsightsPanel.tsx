@@ -100,7 +100,7 @@ function RegionalInsightsPanel({
       bottomPerformer={bottomPerformer}
       chart={
         selectedKPI.isBoolean ? (
-          <KPIDistributionChart
+          <KPIDistributionChart<Region>
             data={regionData}
             selectedKPI={selectedKPI}
             entityLabel={entityPlural}

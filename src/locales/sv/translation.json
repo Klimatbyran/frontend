@@ -1367,7 +1367,7 @@
         "emissionsChangeFromBaseYear": {
           "label": "Utsläppsförändring",
           "description": "Förändring i utsläpp från basår till senaste rapporteringsår. Endast företag med jämförbara utsläppsdata rankas.",
-          "detailedDescription": "Procentuell förändring i totala utsläpp från företagets basår till senaste rapporteringsår. Rankningen omfattar endast företag med definierat basår, giltiga basårsutsläpp och minst ett senare rapporteringsår med jämförbar data. Lägre värden indikerar bättre prestation.",
+          "detailedDescription": "Procentuell förändring i totala utsläpp från företagets basår till senaste rapporteringsår. Rankningen omfattar endast företag med definierat basår, giltiga basårsutsläpp och minst ett senare rapporteringsår med jämförbar data.",
           "source": "Företagsrapporteringsdata",
           "nullValues": "Ej jämförbar"
         },

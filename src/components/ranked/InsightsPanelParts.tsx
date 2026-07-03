@@ -10,6 +10,7 @@ const STAT_COLOR_MAP: Record<string, string> = {
   "text-pink-3": COLORS.pink3,
   "text-green-3": COLORS.green3,
   "text-orange-2": COLORS.orange2,
+  "text-grey": COLORS.grey,
 };
 
 interface DistributionStat {
@@ -41,7 +42,7 @@ export function DistributionBox({
   const { t } = useTranslation();
   const distributionKey = `${entityType}.list.insights.distribution`;
   return (
-    <div className="bg-white/5 rounded-level-2 p-6 flex flex-col justify-between h-full gap-6">
+    <div className="bg-white/5 rounded-level-2 p-6 flex flex-col h-full gap-6">
       <div>
         <h3 className="text-2xl font-bold text-white">
           {title ?? t(`${distributionKey}.title`)}
@@ -50,7 +51,7 @@ export function DistributionBox({
           {subtitle ?? t(`${distributionKey}.subtitle`)}
         </p>
       </div>
-      {chart}
+      <div className="w-full flex-1 min-h-[180px]">{chart}</div>
     </div>
   );
 }

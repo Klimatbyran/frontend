@@ -105,7 +105,7 @@ function CompanyInsightsPanel({
       bottomPerformer={bottomPerformer}
       chart={
         selectedKPI.isBoolean ? (
-          <KPIDistributionChart
+          <KPIDistributionChart<CompanyWithKPIs>
             data={companyData}
             selectedKPI={selectedKPI}
             entityLabel={entityPlural}
