@@ -118,6 +118,7 @@ function InsightsPanel({
 
   const distributionPanel = (
     <DistributionBox
+      entityType="municipalities"
       chart={
         <KPIDistributionChart
           data={municipalityData}

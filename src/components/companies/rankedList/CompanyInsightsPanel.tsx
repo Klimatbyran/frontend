@@ -116,6 +116,7 @@ function CompanyInsightsPanel({
 
   const distributionPanel = (
     <DistributionBox
+      entityType="companies"
       chart={
         <KPIDistributionChart<CompanyWithKPIs>
           data={companyData}
