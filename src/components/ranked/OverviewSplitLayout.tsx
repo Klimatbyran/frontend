@@ -48,7 +48,7 @@ export function OverviewSplitLayout({
       )}
       <div className="flex-1 relative min-h-0">
         {toggle && showVisualization && (
-          <div className="hidden md:block absolute top-[20px] right-4 z-40">
+          <div className="hidden md:block absolute top-[21px] right-4 z-40">
             {toggle}
           </div>
         )}
