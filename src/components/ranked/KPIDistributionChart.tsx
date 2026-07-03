@@ -83,6 +83,8 @@ function BooleanPieTooltip({
   );
 }
 
+const PIE_CORNER_RADIUS = 8;
+
 function BooleanKPIPieChart({
   slices,
   entityLabel,
@@ -94,31 +96,43 @@ function BooleanKPIPieChart({
   animationKey: string;
   maxOuterRadius?: number;
 }) {
-  const { size, containerRef } = useResponsiveChartSize(false, maxOuterRadius);
+  const { size, containerRef } = useResponsiveChartSize(
+    false,
+    maxOuterRadius,
+    true,
+  );
   const { pieDuration, reduceMotion } = useChartMotion();
 
   const total = slices.reduce((sum, item) => sum + item.value, 0);
   const pieData = slices.map((item) => ({ ...item, total }));
-  const side = size.outerRadius * 2;
   const pieAnimationKey = pieData
     .map((entry) => `${entry.name}-${entry.value}`)
     .join("|");
 
+  const outerRadius = size.outerRadius;
+  const innerRadius = size.innerRadius;
+  const side = Math.ceil(outerRadius * 2 + PIE_CORNER_RADIUS * 2);
+  const center = side / 2;
+
   return (
-    <div ref={containerRef} className="w-full min-w-0 flex justify-center">
-      <ResponsiveContainer width={side} height={side}>
-        <PieChart>
+    <div
+      ref={containerRef}
+      className="w-full h-full min-h-[200px] flex items-center justify-center overflow-visible"
+    >
+      {outerRadius > 0 && (
+        <PieChart width={side} height={side}>
           <Pie
             key={`${animationKey}-${pieAnimationKey}`}
             data={pieData}
             dataKey="value"
             nameKey="name"
-            cx="50%"
-            cy="50%"
-            innerRadius={size.innerRadius}
-            outerRadius={size.outerRadius}
-            cornerRadius={8}
-            paddingAngle={2}
+            cx={center}
+            cy={center}
+            innerRadius={innerRadius}
+            outerRadius={outerRadius}
+            cornerRadius={PIE_CORNER_RADIUS}
+            paddingAngle={pieData.length > 1 ? 2 : 0}
+            minAngle={4}
             isAnimationActive={!reduceMotion}
             animationBegin={0}
             animationDuration={pieDuration}
@@ -140,7 +154,7 @@ function BooleanKPIPieChart({
             isAnimationActive={false}
           />
         </PieChart>
-      </ResponsiveContainer>
+      )}
     </div>
   );
 }

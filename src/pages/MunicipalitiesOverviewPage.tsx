@@ -225,7 +225,9 @@ export function MunicipalitiesOverviewPage() {
             list={municipalityRankedList}
             toggle={viewToggle}
           />
-          <div className={`min-h-0 h-full min-w-0 ${OVERVIEW_PANEL_MD_HEIGHT}`}>
+          <div
+            className={`min-h-0 h-full min-w-0 overflow-visible ${OVERVIEW_PANEL_MD_HEIGHT}`}
+          >
             <InsightsPanel
               municipalityData={municipalities}
               selectedKPI={selectedKPI}

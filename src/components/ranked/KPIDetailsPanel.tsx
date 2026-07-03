@@ -106,7 +106,7 @@ export default function KPIDetailsPanel({
 
   return (
     <div
-      className={`p-6 md:p-8 flex flex-col gap-6 md:gap-0 md:justify-between h-auto md:h-full min-h-0 min-w-0 bg-white/5 rounded-level-2 shadow-lg ${className}`}
+      className={`p-6 md:p-8 flex flex-col gap-6 md:gap-0 md:justify-between h-auto md:h-full min-h-0 min-w-0 overflow-visible bg-white/5 rounded-level-2 shadow-lg ${className}`}
     >
       {/* Title + description + direction badge */}
       <div className="space-y-3 shrink-0">
@@ -141,7 +141,13 @@ export default function KPIDetailsPanel({
       </div>
 
       {chart && (
-        <div className="shrink-0 w-full min-w-0 flex justify-center">
+        <div
+          className={
+            compactBooleanLayout
+              ? "flex-1 min-h-[200px] w-full min-w-0 flex items-center justify-center overflow-visible"
+              : "shrink-0 w-full min-w-0 flex justify-center overflow-visible py-1"
+          }
+        >
           {chart}
         </div>
       )}
@@ -256,7 +262,11 @@ export default function KPIDetailsPanel({
       )}
 
       {showFooter && (
-        <div className="space-y-2 shrink-0">
+        <div
+          className={`space-y-2 shrink-0 ${
+            isBoolean && sourceLinks.length > 0 ? "pt-4 md:pt-6" : ""
+          }`}
+        >
           {typeof missingDataCount === "number" &&
             missingDataCount > 0 &&
             !isBoolean &&

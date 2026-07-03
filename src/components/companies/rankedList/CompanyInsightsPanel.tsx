@@ -110,7 +110,6 @@ function CompanyInsightsPanel({
             selectedKPI={selectedKPI}
             entityLabel={entityPlural}
             translationPrefix="companies.list"
-            maxOuterRadius={130}
           />
         ) : undefined
       }
