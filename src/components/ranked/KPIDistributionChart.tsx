@@ -21,6 +21,8 @@ interface KPIDistributionChartProps<T> {
   average?: number;
   /** Plural label used in tooltips, e.g. "kommuner" */
   entityLabel?: string;
+  /** i18n prefix for KPI labels, e.g. "municipalities.list" */
+  translationPrefix?: string;
 }
 
 const NUM_BINS = 12;
@@ -112,28 +114,36 @@ function useBooleanValues<T>(
   data: T[],
   selectedKPI: KPIValue<T>,
   t: ReturnType<typeof useTranslation>["t"],
+  translationPrefix?: string,
 ) {
   return useMemo(() => {
     if (!selectedKPI.isBoolean) return null;
     const trueCount = data.filter((m) => m[selectedKPI.key] === true).length;
     const falseCount = data.filter((m) => m[selectedKPI.key] === false).length;
+    const kpiKey = String(selectedKPI.key);
+    const trueLabel = translationPrefix
+      ? t(`${translationPrefix}.kpis.${kpiKey}.booleanLabels.true`)
+      : selectedKPI.booleanLabels?.true || t("yes");
+    const falseLabel = translationPrefix
+      ? t(`${translationPrefix}.kpis.${kpiKey}.booleanLabels.false`)
+      : selectedKPI.booleanLabels?.false || t("no");
     // When higherIsBetter: true = good (blue), false = bad (pink).
     // When !higherIsBetter: true = bad (pink), false = good (blue).
     const trueColor = selectedKPI.higherIsBetter ? COLORS.blue3 : COLORS.pink3;
     const falseColor = selectedKPI.higherIsBetter ? COLORS.pink3 : COLORS.blue3;
     return [
       {
-        name: selectedKPI.booleanLabels?.true || t("yes"),
+        name: trueLabel,
         value: trueCount,
         fill: trueColor,
       },
       {
-        name: selectedKPI.booleanLabels?.false || t("no"),
+        name: falseLabel,
         value: falseCount,
         fill: falseColor,
       },
     ];
-  }, [data, selectedKPI, t]);
+  }, [data, selectedKPI, t, translationPrefix]);
 }
 
 export function KPIDistributionChart<T>({
@@ -141,6 +151,7 @@ export function KPIDistributionChart<T>({
   selectedKPI,
   average,
   entityLabel,
+  translationPrefix,
 }: KPIDistributionChartProps<T>) {
   const { t } = useTranslation();
   const label = entityLabel ?? t("header.municipalities").toLowerCase();
@@ -153,7 +164,12 @@ export function KPIDistributionChart<T>({
     [data, selectedKPI.key],
   );
 
-  const booleanValues = useBooleanValues(data, selectedKPI, t);
+  const booleanValues = useBooleanValues(
+    data,
+    selectedKPI,
+    t,
+    translationPrefix,
+  );
 
   const bins = useMemo(
     () => (!selectedKPI.isBoolean ? buildHistogramBins(values, NUM_BINS) : []),

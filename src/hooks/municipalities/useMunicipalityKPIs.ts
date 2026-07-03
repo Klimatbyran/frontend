@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { KPIValue } from "@/types/rankings";
 import type { Municipality } from "@/types/municipality";
@@ -32,5 +33,5 @@ export function useMunicipalityKPIs(options?: { enabled?: boolean }) {
 
 export const useMunicipalityKPIDefinitions = (): KPIValue<Municipality>[] => {
   const { t } = useTranslation();
-  return buildMunicipalityKpiDefinitions(t);
+  return useMemo(() => buildMunicipalityKpiDefinitions(t), [t]);
 };

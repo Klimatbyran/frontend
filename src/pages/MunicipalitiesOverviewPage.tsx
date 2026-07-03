@@ -104,11 +104,8 @@ export function MunicipalitiesOverviewPage() {
   const viewMode = getViewModeFromURL();
 
   useEffect(() => {
-    const kpiFromUrl = getKPIFromURL();
-    if (String(kpiFromUrl.key) !== String(selectedKPI.key)) {
-      setSelectedKPI(kpiFromUrl);
-    }
-  }, [getKPIFromURL, selectedKPI.label]);
+    setSelectedKPI(getKPIFromURL());
+  }, [getKPIFromURL]);
 
   const handleMunicipalityClick = createEntityClickHandler(
     navigate,

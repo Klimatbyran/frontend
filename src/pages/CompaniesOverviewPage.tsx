@@ -118,11 +118,8 @@ export function CompaniesOverviewPage() {
   }, [availableSectors, selectedSector, setSectorInURL]);
 
   useEffect(() => {
-    const kpiFromUrl = getKPIFromURL();
-    if (kpiFromUrl.key !== selectedKPI.key) {
-      setSelectedKPI(kpiFromUrl);
-    }
-  }, [getKPIFromURL, selectedKPI.key]);
+    setSelectedKPI(getKPIFromURL());
+  }, [getKPIFromURL]);
 
   useEffect(() => {
     const sectorFromUrl = getSectorFromURL();
