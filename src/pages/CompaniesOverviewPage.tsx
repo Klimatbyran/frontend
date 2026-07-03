@@ -297,7 +297,20 @@ export function CompaniesOverviewPage() {
           />
         </div>
 
-        {!selectedKPI.isBoolean && (
+        {selectedKPI.isBoolean ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+            <CompanyInsightsPanel
+              companyData={companiesWithKPIs}
+              selectedKPI={selectedKPI}
+              section="top"
+            />
+            <CompanyInsightsPanel
+              companyData={companiesWithKPIs}
+              selectedKPI={selectedKPI}
+              section="distribution"
+            />
+          </div>
+        ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
             <CompanyInsightsPanel
               companyData={companiesWithKPIs}

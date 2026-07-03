@@ -100,15 +100,6 @@ function InsightsPanel({
       averageLabel={t("municipalities.list.insights.keyStatistics.average")}
       topPerformer={topPerformer}
       bottomPerformer={bottomPerformer}
-      chart={
-        selectedKPI.isBoolean ? (
-          <KPIDistributionChart
-            data={municipalityData}
-            selectedKPI={selectedKPI}
-            entityLabel={t("header.municipalities").toLowerCase()}
-          />
-        ) : undefined
-      }
       distributionStats={statistics.distributionStats}
       missingDataCount={statistics.nullCount}
       missingDataCountKey={`municipalities.list.kpis.${String(selectedKPI.key)}.missingCount`}

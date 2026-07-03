@@ -95,15 +95,6 @@ function RegionalInsightsPanel({
       averageLabel={t("municipalities.list.insights.keyStatistics.average")}
       topPerformer={topPerformer}
       bottomPerformer={bottomPerformer}
-      chart={
-        selectedKPI.isBoolean ? (
-          <KPIDistributionChart
-            data={regionData}
-            selectedKPI={selectedKPI}
-            entityLabel={entityPlural}
-          />
-        ) : undefined
-      }
       distributionStats={statistics.distributionStats}
       missingDataCount={statistics.nullCount}
       missingDataLabel={selectedKPI.nullValues}

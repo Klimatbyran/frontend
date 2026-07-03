@@ -100,15 +100,6 @@ function CompanyInsightsPanel({
       averageLabel={t("companies.list.insights.keyStatistics.average")}
       topPerformer={topPerformer}
       bottomPerformer={bottomPerformer}
-      chart={
-        selectedKPI.isBoolean ? (
-          <KPIDistributionChart
-            data={companyData}
-            selectedKPI={selectedKPI}
-            entityLabel={entityPlural}
-          />
-        ) : undefined
-      }
       distributionStats={statistics.distributionStats}
       sourceLinks={sourceLinks}
     />

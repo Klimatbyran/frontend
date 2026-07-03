@@ -190,7 +190,20 @@ export function RegionalOverviewPage() {
           />
         </div>
 
-        {!selectedKPI.isBoolean && (
+        {selectedKPI.isBoolean ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+            <RegionalInsightsPanel
+              regionsData={regionsAsEntities}
+              selectedKPI={selectedKPI}
+              section="top"
+            />
+            <RegionalInsightsPanel
+              regionsData={regionsAsEntities}
+              selectedKPI={selectedKPI}
+              section="distribution"
+            />
+          </div>
+        ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
             <RegionalInsightsPanel
               regionsData={regionsAsEntities}

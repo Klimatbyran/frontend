@@ -163,7 +163,7 @@ export function KPIDistributionChart<T>({
   if (selectedKPI.isBoolean && booleanValues) {
     const total = booleanValues.reduce((s, d) => s + d.value, 0);
     return (
-      <div className="flex flex-col items-center">
+      <div className="w-full min-h-[180px]">
         <ResponsiveContainer
           key={String(selectedKPI.key)}
           width="100%"
