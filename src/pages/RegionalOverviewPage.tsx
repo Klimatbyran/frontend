@@ -145,7 +145,7 @@ export function RegionalOverviewPage() {
       data={mapData}
       selectedKPI={selectedKPI}
       onAreaClick={handleRegionAreaClick}
-      defaultCenter={[63.7, 17]}
+      defaultCenter={[63.55, 17]}
       className="max-w-none"
     />
   );

@@ -102,7 +102,7 @@ export const MunicipalitiesSection = () => {
                   mapBackgroundColor="transparent"
                   scrollWheelZoom={false}
                   defaultCenter={
-                    territoryMode === "regions" ? [63.7, 17] : [63, 17]
+                    territoryMode === "regions" ? [63.55, 17] : [63, 17]
                   }
                 />
               )}
