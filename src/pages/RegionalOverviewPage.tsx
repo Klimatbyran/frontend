@@ -23,6 +23,7 @@ import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import { OverviewSplitLayout } from "@/components/ranked/OverviewSplitLayout";
 import { createEntityClickHandler } from "@/utils/routing";
 import { RankedListItem } from "@/types/rankings";
+import { useScreenSize } from "@/hooks/useScreenSize";
 
 const REGION_KPI_ICONS: Record<string, React.ReactNode> = {
   historicalEmissionChangePercent: <ArrowDownCircle className="w-4 h-4" />,
@@ -31,6 +32,7 @@ const REGION_KPI_ICONS: Record<string, React.ReactNode> = {
 
 export function RegionalOverviewPage() {
   const { t } = useTranslation();
+  const { isMobile } = useScreenSize();
   const regionalKPIs = useRegionalKPIs();
   const [geoData] = useState(regionGeoJson);
   const {
@@ -145,7 +147,8 @@ export function RegionalOverviewPage() {
       data={mapData}
       selectedKPI={selectedKPI}
       onAreaClick={handleRegionAreaClick}
-      defaultCenter={[63.7, 17]}
+      defaultCenter={[63.55, 17]}
+      defaultZoom={isMobile ? 4 : undefined}
       className="max-w-none"
     />
   );

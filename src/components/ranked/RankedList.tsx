@@ -240,10 +240,12 @@ export function RankedList<T extends Record<string, unknown>>({
 
   return (
     <div
-      className={`bg-black-2 rounded-2xl border border-white/10 flex flex-col ${className}`}
+      className={cn(
+        "bg-black-2 rounded-2xl border border-white/10 flex flex-col h-full",
+        className,
+      )}
     >
       <div className="p-4 border-b border-white/10">
-        {headerAction && <div className="mb-3 md:hidden">{headerAction}</div>}
         <div className="flex items-center gap-3">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/50 w-5 h-5" />
@@ -294,7 +296,7 @@ export function RankedList<T extends Record<string, unknown>>({
           </div>
         )}
       </div>
-      <div className="overflow-y-auto ranked-list-items">
+      <div className="overflow-y-auto ranked-list-items flex-1 min-h-0">
         <div className="h-full bg-black/40 grid grid-cols-1 auto-rows-fr [&>*:not(:last-child)]:border-b [&>*:not(:last-child)]:border-white/10">
           {paginatedData.map((item, index) =>
             renderItem

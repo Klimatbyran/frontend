@@ -12,6 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useMunicipalitiesSection } from "./useMunicipalitiesSection";
+import { useScreenSize } from "@/hooks/useScreenSize";
 
 export const MunicipalitiesSection = () => {
   const { t } = useTranslation();
@@ -31,6 +32,7 @@ export const MunicipalitiesSection = () => {
     explorePath,
     exploreLabel,
   } = useMunicipalitiesSection();
+  const { isMobile } = useScreenSize();
 
   if (!selectedKPI) {
     return null;
@@ -102,8 +104,9 @@ export const MunicipalitiesSection = () => {
                   mapBackgroundColor="transparent"
                   scrollWheelZoom={false}
                   defaultCenter={
-                    territoryMode === "regions" ? [63.7, 17] : [63, 17]
+                    territoryMode === "regions" ? [63.55, 17] : [63, 17]
                   }
+                  defaultZoom={isMobile ? 4 : undefined}
                 />
               )}
             </div>

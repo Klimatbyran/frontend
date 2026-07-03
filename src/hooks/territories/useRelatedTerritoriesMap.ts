@@ -30,7 +30,7 @@ interface UseRelatedTerritoriesMapOptions {
 }
 
 const DEFAULT_CENTERS: Record<MapEntityType, [number, number]> = {
-  regions: [63.7, 17],
+  regions: [63.55, 17],
   municipalities: [63, 17],
 };
 

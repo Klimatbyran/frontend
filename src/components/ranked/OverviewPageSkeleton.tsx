@@ -15,8 +15,8 @@ export function OverviewPageSkeleton() {
 
       {/* Row 1: map/graph (left) + stats panel (right) */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="h-[630px] bg-black-1 rounded-level-2" />
-        <div className="h-[630px] bg-black-1 rounded-level-2 p-8 flex flex-col justify-between">
+        <div className="h-[680px] bg-black-1 rounded-level-2" />
+        <div className="h-[680px] bg-black-1 rounded-level-2 p-8 flex flex-col justify-between">
           {/* Title + description */}
           <div className="space-y-3">
             <div className="h-8 w-3/4 bg-black-2 rounded" />
