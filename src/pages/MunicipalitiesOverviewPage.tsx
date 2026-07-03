@@ -104,11 +104,8 @@ export function MunicipalitiesOverviewPage() {
   const viewMode = getViewModeFromURL();
 
   useEffect(() => {
-    const kpiFromUrl = getKPIFromURL();
-    if (String(kpiFromUrl.key) !== String(selectedKPI.key)) {
-      setSelectedKPI(kpiFromUrl);
-    }
-  }, [getKPIFromURL, selectedKPI.label]);
+    setSelectedKPI(getKPIFromURL());
+  }, [getKPIFromURL]);
 
   const handleMunicipalityClick = createEntityClickHandler(
     navigate,
@@ -234,21 +231,8 @@ export function MunicipalitiesOverviewPage() {
           />
         </div>
 
-        {/* Row 2: boolean summary + distribution, or top/bottom/distribution for numeric KPIs */}
-        {selectedKPI.isBoolean ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
-            <InsightsPanel
-              municipalityData={municipalities}
-              selectedKPI={selectedKPI}
-              section="top"
-            />
-            <InsightsPanel
-              municipalityData={municipalities}
-              selectedKPI={selectedKPI}
-              section="distribution"
-            />
-          </div>
-        ) : (
+        {/* Row 2: top/bottom/distribution (numeric KPIs only) */}
+        {!selectedKPI.isBoolean && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
             <InsightsPanel
               municipalityData={municipalities}

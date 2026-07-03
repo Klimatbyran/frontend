@@ -31,6 +31,7 @@ function RegionalInsightsPanel({
   section,
 }: InsightsPanelProps) {
   const { t } = useTranslation();
+  const kpiKey = String(selectedKPI.key);
 
   if (!regionData?.length) {
     return (
@@ -51,7 +52,9 @@ function RegionalInsightsPanel({
     return (
       <div className="bg-white/5 backdrop-blur-sm rounded-level-2 p-8 h-full flex items-center justify-center">
         <p className="text-white text-lg">
-          {t("noData", { metric: selectedKPI.label })}
+          {t("noData", {
+            metric: t(`regions.list.kpis.${kpiKey}.label`),
+          })}
         </p>
       </div>
     );
@@ -87,17 +90,29 @@ function RegionalInsightsPanel({
 
   const statsPanel = (
     <KPIDetailsPanel
-      title={selectedKPI.label}
-      description={selectedKPI.description}
+      title={t(`regions.list.kpis.${kpiKey}.label`)}
+      description={t(`regions.list.kpis.${kpiKey}.description`)}
       isBoolean={selectedKPI.isBoolean}
       higherIsBetter={selectedKPI.higherIsBetter}
       averageValue={statistics.formattedAverage}
       averageLabel={t("municipalities.list.insights.keyStatistics.average")}
       topPerformer={topPerformer}
       bottomPerformer={bottomPerformer}
+      chart={
+        selectedKPI.isBoolean ? (
+          <KPIDistributionChart<Region>
+            data={regionData}
+            selectedKPI={selectedKPI}
+            entityLabel={entityPlural}
+            translationPrefix="regions.list"
+          />
+        ) : undefined
+      }
       distributionStats={statistics.distributionStats}
       missingDataCount={statistics.nullCount}
-      missingDataLabel={selectedKPI.nullValues}
+      missingDataLabel={t(`regions.list.kpis.${kpiKey}.nullValues`, {
+        defaultValue: "",
+      })}
       sourceLinks={sourceLinks}
     />
   );
@@ -111,6 +126,7 @@ function RegionalInsightsPanel({
           selectedKPI={selectedKPI}
           average={!selectedKPI.isBoolean ? statistics.average : undefined}
           entityLabel={entityPlural}
+          translationPrefix="regions.list"
         />
       }
     />
@@ -132,7 +148,9 @@ function RegionalInsightsPanel({
       totalCount={statistics.validData.length}
       dataPointKey={selectedKPI.key as keyof Region}
       unit={selectedKPI.unit}
-      nullValues={selectedKPI.nullValues}
+      nullValues={t(`regions.list.kpis.${kpiKey}.nullValues`, {
+        defaultValue: "",
+      })}
       entityType="regions"
       nameKey="name"
       showBars
@@ -153,7 +171,9 @@ function RegionalInsightsPanel({
       isBottomRanking
       dataPointKey={selectedKPI.key as keyof Region}
       unit={selectedKPI.unit}
-      nullValues={selectedKPI.nullValues}
+      nullValues={t(`regions.list.kpis.${kpiKey}.nullValues`, {
+        defaultValue: "",
+      })}
       entityType="regions"
       nameKey="name"
       showBars

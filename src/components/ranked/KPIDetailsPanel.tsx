@@ -128,7 +128,7 @@ export default function KPIDetailsPanel({
         )}
       </div>
 
-      {chart && <div className="w-full min-h-[180px]">{chart}</div>}
+      {chart && <div className="w-full shrink-0">{chart}</div>}
 
       {/* Top & bottom performers */}
       {(topPerformer || bottomPerformer) && (

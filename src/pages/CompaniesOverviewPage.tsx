@@ -118,11 +118,8 @@ export function CompaniesOverviewPage() {
   }, [availableSectors, selectedSector, setSectorInURL]);
 
   useEffect(() => {
-    const kpiFromUrl = getKPIFromURL();
-    if (kpiFromUrl.key !== selectedKPI.key) {
-      setSelectedKPI(kpiFromUrl);
-    }
-  }, [getKPIFromURL, selectedKPI.key]);
+    setSelectedKPI(getKPIFromURL());
+  }, [getKPIFromURL]);
 
   useEffect(() => {
     const sectorFromUrl = getSectorFromURL();
@@ -297,20 +294,7 @@ export function CompaniesOverviewPage() {
           />
         </div>
 
-        {selectedKPI.isBoolean ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
-            <CompanyInsightsPanel
-              companyData={companiesWithKPIs}
-              selectedKPI={selectedKPI}
-              section="top"
-            />
-            <CompanyInsightsPanel
-              companyData={companiesWithKPIs}
-              selectedKPI={selectedKPI}
-              section="distribution"
-            />
-          </div>
-        ) : (
+        {!selectedKPI.isBoolean && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
             <CompanyInsightsPanel
               companyData={companiesWithKPIs}

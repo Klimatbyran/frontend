@@ -32,6 +32,7 @@ function InsightsPanel({
   section,
 }: InsightsPanelProps) {
   const { t } = useTranslation();
+  const kpiKey = String(selectedKPI.key);
 
   if (!municipalityData?.length) {
     return (
@@ -54,7 +55,9 @@ function InsightsPanel({
       <div className="bg-white/5 backdrop-blur-sm rounded-level-2 p-8 h-full flex items-center justify-center">
         <p className="text-white text-lg">
           {t("municipalities.list.insights.noData.metric", {
-            metric: selectedKPI.label,
+            metric: t(
+              `municipalities.list.kpis.${String(selectedKPI.key)}.label`,
+            ),
           })}
         </p>
       </div>
@@ -92,14 +95,24 @@ function InsightsPanel({
 
   const statsPanel = (
     <KPIDetailsPanel
-      title={selectedKPI.label}
-      description={selectedKPI.description}
+      title={t(`municipalities.list.kpis.${kpiKey}.label`)}
+      description={t(`municipalities.list.kpis.${kpiKey}.description`)}
       isBoolean={selectedKPI.isBoolean}
       higherIsBetter={selectedKPI.higherIsBetter}
       averageValue={statistics.formattedAverage}
       averageLabel={t("municipalities.list.insights.keyStatistics.average")}
       topPerformer={topPerformer}
       bottomPerformer={bottomPerformer}
+      chart={
+        selectedKPI.isBoolean ? (
+          <KPIDistributionChart
+            data={municipalityData}
+            selectedKPI={selectedKPI}
+            entityLabel={entityPlural}
+            translationPrefix="municipalities.list"
+          />
+        ) : undefined
+      }
       distributionStats={statistics.distributionStats}
       missingDataCount={statistics.nullCount}
       missingDataCountKey={`municipalities.list.kpis.${String(selectedKPI.key)}.missingCount`}
@@ -117,6 +130,7 @@ function InsightsPanel({
           selectedKPI={selectedKPI}
           average={!selectedKPI.isBoolean ? statistics.average : undefined}
           entityLabel={entityPlural}
+          translationPrefix="municipalities.list"
         />
       }
     />
@@ -138,7 +152,9 @@ function InsightsPanel({
       totalCount={statistics.validData.length}
       dataPointKey={selectedKPI.key as keyof Municipality}
       unit={selectedKPI.unit}
-      nullValues={selectedKPI.nullValues}
+      nullValues={t(`municipalities.list.kpis.${kpiKey}.nullValues`, {
+        defaultValue: "",
+      })}
       entityType="municipalities"
       nameKey="name"
       showBars
@@ -159,7 +175,9 @@ function InsightsPanel({
       isBottomRanking
       dataPointKey={selectedKPI.key as keyof Municipality}
       unit={selectedKPI.unit}
-      nullValues={selectedKPI.nullValues}
+      nullValues={t(`municipalities.list.kpis.${kpiKey}.nullValues`, {
+        defaultValue: "",
+      })}
       entityType="municipalities"
       nameKey="name"
       showBars

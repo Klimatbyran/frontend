@@ -36,6 +36,7 @@ function CompanyInsightsPanel({
   section,
 }: InsightsPanelProps) {
   const { t } = useTranslation();
+  const kpiKey = String(selectedKPI.key);
 
   if (!companyData?.length) {
     return (
@@ -59,7 +60,7 @@ function CompanyInsightsPanel({
       <div className="bg-white/5 backdrop-blur-sm rounded-level-2 p-8 h-full flex items-center justify-center">
         <p className="text-white text-lg">
           {t("companies.list.insights.noData.metric", {
-            metric: selectedKPI.label,
+            metric: t(`companies.list.kpis.${kpiKey}.label`),
           })}
         </p>
       </div>
@@ -92,14 +93,26 @@ function CompanyInsightsPanel({
 
   const statsPanel = (
     <KPIDetailsPanel
-      title={selectedKPI.label}
-      description={selectedKPI.detailedDescription || selectedKPI.description}
+      title={t(`companies.list.kpis.${kpiKey}.label`)}
+      description={t(`companies.list.kpis.${kpiKey}.detailedDescription`, {
+        defaultValue: t(`companies.list.kpis.${kpiKey}.description`),
+      })}
       isBoolean={selectedKPI.isBoolean}
       higherIsBetter={selectedKPI.higherIsBetter}
       averageValue={statistics.formattedAverage}
       averageLabel={t("companies.list.insights.keyStatistics.average")}
       topPerformer={topPerformer}
       bottomPerformer={bottomPerformer}
+      chart={
+        selectedKPI.isBoolean ? (
+          <KPIDistributionChart<CompanyWithKPIs>
+            data={companyData}
+            selectedKPI={selectedKPI}
+            entityLabel={entityPlural}
+            translationPrefix="companies.list"
+          />
+        ) : undefined
+      }
       distributionStats={statistics.distributionStats}
       sourceLinks={sourceLinks}
     />
@@ -114,6 +127,7 @@ function CompanyInsightsPanel({
           selectedKPI={selectedKPI}
           average={!selectedKPI.isBoolean ? statistics.average : undefined}
           entityLabel={entityPlural}
+          translationPrefix="companies.list"
         />
       }
     />
@@ -135,7 +149,9 @@ function CompanyInsightsPanel({
       totalCount={statistics.validData.length}
       dataPointKey={selectedKPI.key}
       unit={selectedKPI.unit}
-      nullValues={selectedKPI.nullValues}
+      nullValues={t(`companies.list.kpis.${kpiKey}.nullValues`, {
+        defaultValue: "",
+      })}
       entityType="companies"
       nameKey="name"
       showBars
@@ -156,7 +172,9 @@ function CompanyInsightsPanel({
       isBottomRanking
       dataPointKey={selectedKPI.key}
       unit={selectedKPI.unit}
-      nullValues={selectedKPI.nullValues}
+      nullValues={t(`companies.list.kpis.${kpiKey}.nullValues`, {
+        defaultValue: "",
+      })}
       entityType="companies"
       nameKey="name"
       showBars

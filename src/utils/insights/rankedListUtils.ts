@@ -125,14 +125,18 @@ export function calculateEntityStatistics<
       count: aboveAverageCount,
       colorClass: selectedKPI.higherIsBetter ? "text-blue-3" : "text-pink-3",
       label: selectedKPI.isBoolean
-        ? selectedKPI.booleanLabels?.true || t("yes")
+        ? t(
+            `${entityType}.list.kpis.${String(selectedKPI.key)}.booleanLabels.true`,
+          )
         : aboveAverageLabel,
     },
     {
       count: belowAverageCount,
       colorClass: selectedKPI.higherIsBetter ? "text-pink-3" : "text-blue-3",
       label: selectedKPI.isBoolean
-        ? selectedKPI.booleanLabels?.false || t("no")
+        ? t(
+            `${entityType}.list.kpis.${String(selectedKPI.key)}.booleanLabels.false`,
+          )
         : belowAverageLabel,
     },
   ];

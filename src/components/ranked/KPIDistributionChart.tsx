@@ -12,8 +12,12 @@ import {
   PieChart,
   Pie,
 } from "recharts";
+import { useLanguage } from "@/components/LanguageProvider";
+import { useChartMotion } from "@/hooks/useChartMotion";
+import { useResponsiveChartSize } from "@/hooks/useResponsiveChartSize";
 import { KPIValue } from "@/types/rankings";
 import { COLORS } from "@/lib/colors";
+import { formatPercent } from "@/utils/formatting/localization";
 
 interface KPIDistributionChartProps<T> {
   data: T[];
@@ -21,9 +25,120 @@ interface KPIDistributionChartProps<T> {
   average?: number;
   /** Plural label used in tooltips, e.g. "kommuner" */
   entityLabel?: string;
+  /** i18n prefix for KPI labels, e.g. "municipalities.list" */
+  translationPrefix?: string;
 }
 
 const NUM_BINS = 12;
+
+interface BooleanPieSlice {
+  name: string;
+  value: number;
+  color: string;
+}
+
+function BooleanPieTooltip({
+  active,
+  payload,
+  entityLabel,
+}: {
+  active?: boolean;
+  payload?: Array<{ name?: string; value?: number; payload?: { total?: number } }>;
+  entityLabel: string;
+}) {
+  const { t } = useTranslation();
+  const { currentLanguage } = useLanguage();
+
+  if (!active || !payload?.length) return null;
+
+  const item = payload[0];
+  const value = item.value ?? 0;
+  const total = item.payload?.total;
+  const percentage =
+    total != null && total > 0
+      ? formatPercent(value / total, currentLanguage)
+      : null;
+
+  return (
+    <div className="bg-black-2 border border-black-1 rounded-lg shadow-xl p-4 text-white pointer-events-none z-50">
+      <p className="text-sm font-medium mb-1">{item.name}</p>
+      <div className="text-sm text-grey">
+        <div>
+          {value} {entityLabel}
+        </div>
+        {percentage && (
+          <div>
+            {percentage} {t("graphs.pieChart.ofTotal")}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function BooleanKPIPieChart({
+  slices,
+  entityLabel,
+  animationKey,
+}: {
+  slices: BooleanPieSlice[];
+  entityLabel: string;
+  animationKey: string;
+}) {
+  const { size, containerRef } = useResponsiveChartSize();
+  const { pieDuration, reduceMotion } = useChartMotion();
+
+  const total = slices.reduce((sum, item) => sum + item.value, 0);
+  const pieData = slices.map((item) => ({ ...item, total }));
+  const chartHeight = size.outerRadius * 2;
+  const pieAnimationKey = pieData
+    .map((entry) => `${entry.name}-${entry.value}`)
+    .join("|");
+
+  return (
+    <div
+      ref={containerRef}
+      className="w-full"
+      style={{ height: chartHeight }}
+    >
+      <ResponsiveContainer width="100%" height={chartHeight}>
+        <PieChart>
+          <Pie
+            key={`${animationKey}-${pieAnimationKey}`}
+            data={pieData}
+            dataKey="value"
+            nameKey="name"
+            cx="50%"
+            cy="50%"
+            innerRadius={size.innerRadius}
+            outerRadius={size.outerRadius}
+            cornerRadius={8}
+            paddingAngle={2}
+            isAnimationActive={!reduceMotion}
+            animationBegin={0}
+            animationDuration={pieDuration}
+            animationEasing="ease-out"
+          >
+            {pieData.map((entry) => (
+              <Cell
+                key={entry.name}
+                fill={entry.color}
+                stroke={entry.color}
+              />
+            ))}
+          </Pie>
+          <Tooltip
+            content={(props) => (
+              <BooleanPieTooltip {...props} entityLabel={entityLabel} />
+            )}
+            animationDuration={0}
+            isAnimationActive={false}
+          />
+        </PieChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
 
 function buildHistogramBins(
   values: number[],
@@ -112,28 +227,36 @@ function useBooleanValues<T>(
   data: T[],
   selectedKPI: KPIValue<T>,
   t: ReturnType<typeof useTranslation>["t"],
+  translationPrefix?: string,
 ) {
   return useMemo(() => {
     if (!selectedKPI.isBoolean) return null;
     const trueCount = data.filter((m) => m[selectedKPI.key] === true).length;
     const falseCount = data.filter((m) => m[selectedKPI.key] === false).length;
+    const kpiKey = String(selectedKPI.key);
+    const trueLabel = translationPrefix
+      ? t(`${translationPrefix}.kpis.${kpiKey}.booleanLabels.true`)
+      : selectedKPI.booleanLabels?.true || t("yes");
+    const falseLabel = translationPrefix
+      ? t(`${translationPrefix}.kpis.${kpiKey}.booleanLabels.false`)
+      : selectedKPI.booleanLabels?.false || t("no");
     // When higherIsBetter: true = good (blue), false = bad (pink).
     // When !higherIsBetter: true = bad (pink), false = good (blue).
     const trueColor = selectedKPI.higherIsBetter ? COLORS.blue3 : COLORS.pink3;
     const falseColor = selectedKPI.higherIsBetter ? COLORS.pink3 : COLORS.blue3;
     return [
       {
-        name: selectedKPI.booleanLabels?.true || t("yes"),
+        name: trueLabel,
         value: trueCount,
-        fill: trueColor,
+        color: trueColor,
       },
       {
-        name: selectedKPI.booleanLabels?.false || t("no"),
+        name: falseLabel,
         value: falseCount,
-        fill: falseColor,
+        color: falseColor,
       },
     ];
-  }, [data, selectedKPI, t]);
+  }, [data, selectedKPI, t, translationPrefix]);
 }
 
 export function KPIDistributionChart<T>({
@@ -141,6 +264,7 @@ export function KPIDistributionChart<T>({
   selectedKPI,
   average,
   entityLabel,
+  translationPrefix,
 }: KPIDistributionChartProps<T>) {
   const { t } = useTranslation();
   const label = entityLabel ?? t("header.municipalities").toLowerCase();
@@ -153,7 +277,12 @@ export function KPIDistributionChart<T>({
     [data, selectedKPI.key],
   );
 
-  const booleanValues = useBooleanValues(data, selectedKPI, t);
+  const booleanValues = useBooleanValues(
+    data,
+    selectedKPI,
+    t,
+    translationPrefix,
+  );
 
   const bins = useMemo(
     () => (!selectedKPI.isBoolean ? buildHistogramBins(values, NUM_BINS) : []),
@@ -161,54 +290,15 @@ export function KPIDistributionChart<T>({
   );
 
   if (selectedKPI.isBoolean && booleanValues) {
-    const total = booleanValues.reduce((s, d) => s + d.value, 0);
+    const slices = booleanValues.filter((d) => d.value > 0);
+    if (!slices.length) return null;
+
     return (
-      <div className="w-full min-h-[180px]">
-        <ResponsiveContainer
-          key={String(selectedKPI.key)}
-          width="100%"
-          height={180}
-        >
-          <PieChart>
-            <Pie
-              data={booleanValues}
-              cx="50%"
-              cy="50%"
-              innerRadius={50}
-              outerRadius={75}
-              paddingAngle={3}
-              dataKey="value"
-              strokeWidth={0}
-              isAnimationActive
-              animationBegin={0}
-              animationDuration={900}
-              animationEasing="ease-out"
-            >
-              {booleanValues.map((entry, i) => (
-                <Cell key={i} fill={entry.fill} />
-              ))}
-            </Pie>
-            <Tooltip
-              content={({ active, payload: p }) => {
-                if (!active || !p?.length) return null;
-                const item = p[0];
-                const pct =
-                  total > 0
-                    ? ((Number(item.value) / total) * 100).toFixed(1)
-                    : 0;
-                return (
-                  <div className="bg-black-1 border border-white/10 rounded-lg px-3 py-2 text-xs shadow-xl">
-                    <p className="text-white font-semibold">{item.name}</p>
-                    <p className="text-white/60">
-                      {item.value} {label} ({pct}%)
-                    </p>
-                  </div>
-                );
-              }}
-            />
-          </PieChart>
-        </ResponsiveContainer>
-      </div>
+      <BooleanKPIPieChart
+        slices={slices}
+        entityLabel={label}
+        animationKey={String(selectedKPI.key)}
+      />
     );
   }
 
