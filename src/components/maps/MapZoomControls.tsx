@@ -21,8 +21,8 @@ export function MapZoomControls({
     <div
       className={cn(
         "absolute flex flex-col gap-2",
-        // Mobile: keep clear of the top-left tooltip and overview view toggle.
-        "top-14 right-4",
+        // Mobile: top-right, opposite the hover tooltip in the top-left corner.
+        "top-4 right-4",
         // Desktop: place controls in the corner opposite the legend.
         legendPosition === "bottom-right" &&
           "md:top-auto md:right-auto md:bottom-4 md:left-4",
