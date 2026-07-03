@@ -214,7 +214,7 @@ export function RankedList<T extends Record<string, unknown>>({
     <button
       key={String(index)}
       onClick={() => onItemClick?.(item)}
-      className="w-full p-4 hover:bg-black/70 transition-colors flex items-center justify-between group"
+      className="w-full p-4 hover:bg-black/70 transition-colors flex items-start justify-between gap-4 group"
     >
       <div className="flex items-center gap-4">
         <span className="text-white/30 text-sm w-8 shrink-0 tabular-nums text-left">
@@ -227,7 +227,7 @@ export function RankedList<T extends Record<string, unknown>>({
               ? "—"
               : getOriginalRank(item)}
         </span>
-        <span className="text-white/90 text-sm md:text-base text-left">
+        <span className="text-white/90 text-sm md:text-base text-left break-words">
           {String(item[searchKey])}
         </span>
       </div>
@@ -236,7 +236,7 @@ export function RankedList<T extends Record<string, unknown>>({
           selectedDataPoint.isBoolean || item[selectedDataPoint.key] === null
             ? "font-medium"
             : "font-semibold",
-          "text-sm md:text-base text-right",
+          "text-sm md:text-base text-right shrink-0",
         )}
         style={{ color: color }}
       >
