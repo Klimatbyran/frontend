@@ -94,13 +94,20 @@ vi.mock("@/components/ranked/KPIChipSelector", () => ({
   KPIChipSelector: () => <div data-testid="kpi-selector" />,
 }));
 
-vi.mock("@/components/ranked/OverviewSplitLayout", () => ({
-  OverviewSplitLayout: ({
-    visualization,
-  }: {
-    visualization: React.ReactNode;
-  }) => <div data-testid="visualization">{visualization}</div>,
-}));
+vi.mock("@/components/ranked/OverviewSplitLayout", async (importOriginal) => {
+  const actual = await importOriginal<
+    typeof import("@/components/ranked/OverviewSplitLayout")
+  >();
+
+  return {
+    ...actual,
+    OverviewSplitLayout: ({
+      visualization,
+    }: {
+      visualization: React.ReactNode;
+    }) => <div data-testid="visualization">{visualization}</div>,
+  };
+});
 
 vi.mock("@/components/ranked/RankedList", () => ({
   default: () => <div data-testid="ranked-list" />,
