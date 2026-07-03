@@ -45,6 +45,7 @@ const STAT_COLOR_MAP: Record<string, string> = {
   "text-pink-3": COLORS.pink3,
   "text-green-3": COLORS.green3,
   "text-orange-2": COLORS.orange2,
+  "text-grey": COLORS.grey,
 };
 
 export default function KPIDetailsPanel({
@@ -96,17 +97,23 @@ export default function KPIDetailsPanel({
     0,
   );
 
+  const compactBooleanLayout = isBoolean && !!chart;
+
   return (
     <div
-      className={`p-8 flex flex-col justify-between gap-6 bg-white/5 rounded-level-2 shadow-lg h-full overflow-hidden ${className}`}
+      className={`p-6 md:p-8 flex flex-col gap-4 md:gap-5 bg-white/5 rounded-level-2 shadow-lg h-full min-h-0 overflow-hidden ${className}`}
     >
       {/* Title + description + direction badge */}
-      <div className="space-y-3">
-        <h2 className="text-3xl font-bold tracking-tight leading-tight">
+      <div className="space-y-2 shrink-0">
+        <h2 className="text-2xl md:text-3xl font-bold tracking-tight leading-tight">
           {title}
         </h2>
         {description && (
-          <p className="text-base text-white/60 leading-relaxed">
+          <p
+            className={`text-sm md:text-base text-white/60 leading-relaxed ${
+              compactBooleanLayout ? "line-clamp-2" : ""
+            }`}
+          >
             {description}
           </p>
         )}
@@ -128,10 +135,14 @@ export default function KPIDetailsPanel({
         )}
       </div>
 
-      {chart && <div className="w-full shrink-0">{chart}</div>}
+      {chart && (
+        <div className="w-full flex-1 min-h-0 flex items-center justify-center">
+          {chart}
+        </div>
+      )}
 
       {/* Top & bottom performers */}
-      {(topPerformer || bottomPerformer) && (
+      {!compactBooleanLayout && (topPerformer || bottomPerformer) && (
         <div className="grid grid-cols-2 gap-3">
           {topPerformer && (
             <div className="p-4 bg-white/10 rounded-2xl space-y-1">
@@ -188,7 +199,7 @@ export default function KPIDetailsPanel({
 
       {/* Distribution bar + legend */}
       {distributionStats.length > 0 && totalDistribution > 0 && (
-        <div className="space-y-4">
+        <div className="space-y-3 shrink-0">
           <div className="flex rounded-full overflow-hidden h-3">
             {distributionStats.map((stat, i) => {
               const pct = (stat.count / totalDistribution) * 100;
@@ -215,9 +226,9 @@ export default function KPIDetailsPanel({
               return (
                 <div
                   key={stat.label}
-                  className="flex items-center justify-between"
+                  className="flex items-center justify-between gap-3"
                 >
-                  <div className="flex items-center gap-2.5">
+                  <div className="flex items-center gap-2.5 min-w-0">
                     <span
                       className="inline-block w-3 h-3 rounded-full shrink-0"
                       style={{
@@ -225,12 +236,12 @@ export default function KPIDetailsPanel({
                           STAT_COLOR_MAP[stat.colorClass] ?? "#888",
                       }}
                     />
-                    <span className="text-white/70 text-sm md:text-base">
+                    <span className="text-white/70 text-sm md:text-base truncate">
                       {lowercaseFirstLetter(stat.label)}
                     </span>
                   </div>
                   <span
-                    className={`font-bold text-lg md:text-2xl ${stat.colorClass}`}
+                    className={`font-bold text-base md:text-xl shrink-0 ${stat.colorClass}`}
                   >
                     {stat.count}{" "}
                     <span className="text-white/40 font-normal text-sm">
@@ -245,9 +256,10 @@ export default function KPIDetailsPanel({
       )}
 
       {/* Footer: missing data + source */}
-      <div className="space-y-1.5">
+      <div className="space-y-1.5 shrink-0">
         {typeof missingDataCount === "number" &&
           missingDataCount > 0 &&
+          !isBoolean &&
           (missingDataCountKey ? (
             <p className="text-white/40 text-sm italic truncate">
               {t(missingDataCountKey, { count: missingDataCount })}

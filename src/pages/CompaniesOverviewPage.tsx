@@ -10,6 +10,7 @@ import { OverviewPageSkeleton } from "@/components/ranked/OverviewPageSkeleton";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import {
   OverviewSplitLayout,
+  OVERVIEW_PANEL_MD_HEIGHT,
   type OverviewViewMode,
 } from "@/components/ranked/OverviewSplitLayout";
 import RankedList from "@/components/ranked/RankedList";
@@ -287,11 +288,13 @@ export function CompaniesOverviewPage() {
             list={companyRankedList}
             toggle={viewToggle}
           />
-          <CompanyInsightsPanel
-            companyData={companiesWithKPIs}
-            selectedKPI={selectedKPI}
-            section="stats"
-          />
+          <div className={`min-h-0 h-full ${OVERVIEW_PANEL_MD_HEIGHT}`}>
+            <CompanyInsightsPanel
+              companyData={companiesWithKPIs}
+              selectedKPI={selectedKPI}
+              section="stats"
+            />
+          </div>
         </div>
 
         {!selectedKPI.isBoolean && (

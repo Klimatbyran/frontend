@@ -17,6 +17,7 @@ import { useChartMotion } from "@/hooks/useChartMotion";
 import { useResponsiveChartSize } from "@/hooks/useResponsiveChartSize";
 import { KPIValue } from "@/types/rankings";
 import { COLORS } from "@/lib/colors";
+import { isMissingRankedValue } from "@/utils/insights/rankedListUtils";
 import { formatPercent } from "@/utils/formatting/localization";
 
 interface KPIDistributionChartProps<T> {
@@ -27,6 +28,8 @@ interface KPIDistributionChartProps<T> {
   entityLabel?: string;
   /** i18n prefix for KPI labels, e.g. "municipalities.list" */
   translationPrefix?: string;
+  /** Caps pie outer radius — use in the stats panel beside map/graph */
+  maxOuterRadius?: number;
 }
 
 const NUM_BINS = 12;
@@ -43,7 +46,11 @@ function BooleanPieTooltip({
   entityLabel,
 }: {
   active?: boolean;
-  payload?: Array<{ name?: string; value?: number; payload?: { total?: number } }>;
+  payload?: Array<{
+    name?: string;
+    value?: number;
+    payload?: { total?: number };
+  }>;
   entityLabel: string;
 }) {
   const { t } = useTranslation();
@@ -80,12 +87,14 @@ function BooleanKPIPieChart({
   slices,
   entityLabel,
   animationKey,
+  maxOuterRadius,
 }: {
   slices: BooleanPieSlice[];
   entityLabel: string;
   animationKey: string;
+  maxOuterRadius?: number;
 }) {
-  const { size, containerRef } = useResponsiveChartSize();
+  const { size, containerRef } = useResponsiveChartSize(false, maxOuterRadius);
   const { pieDuration, reduceMotion } = useChartMotion();
 
   const total = slices.reduce((sum, item) => sum + item.value, 0);
@@ -96,11 +105,7 @@ function BooleanKPIPieChart({
     .join("|");
 
   return (
-    <div
-      ref={containerRef}
-      className="w-full"
-      style={{ height: chartHeight }}
-    >
+    <div ref={containerRef} className="w-full" style={{ height: chartHeight }}>
       <ResponsiveContainer width="100%" height={chartHeight}>
         <PieChart>
           <Pie
@@ -119,9 +124,9 @@ function BooleanKPIPieChart({
             animationDuration={pieDuration}
             animationEasing="ease-out"
           >
-            {pieData.map((entry) => (
+            {pieData.map((entry, index) => (
               <Cell
-                key={entry.name}
+                key={`${entry.name}-${index}`}
                 fill={entry.color}
                 stroke={entry.color}
               />
@@ -231,8 +236,17 @@ function useBooleanValues<T>(
 ) {
   return useMemo(() => {
     if (!selectedKPI.isBoolean) return null;
-    const trueCount = data.filter((m) => m[selectedKPI.key] === true).length;
-    const falseCount = data.filter((m) => m[selectedKPI.key] === false).length;
+
+    const getValue = (item: T) => item[selectedKPI.key];
+    const trueCount = data.filter(
+      (item) => getValue(item) === true,
+    ).length;
+    const falseCount = data.filter(
+      (item) => getValue(item) === false,
+    ).length;
+    const unknownCount = data.filter((item) =>
+      isMissingRankedValue(getValue(item), true),
+    ).length;
     const kpiKey = String(selectedKPI.key);
     const trueLabel = translationPrefix
       ? t(`${translationPrefix}.kpis.${kpiKey}.booleanLabels.true`)
@@ -240,11 +254,16 @@ function useBooleanValues<T>(
     const falseLabel = translationPrefix
       ? t(`${translationPrefix}.kpis.${kpiKey}.booleanLabels.false`)
       : selectedKPI.booleanLabels?.false || t("no");
+    const unknownLabel = translationPrefix
+      ? t(`${translationPrefix}.kpis.${kpiKey}.nullValues`, {
+          defaultValue: t("unknown"),
+        })
+      : selectedKPI.nullValues || t("unknown");
     // When higherIsBetter: true = good (blue), false = bad (pink).
     // When !higherIsBetter: true = bad (pink), false = good (blue).
     const trueColor = selectedKPI.higherIsBetter ? COLORS.blue3 : COLORS.pink3;
     const falseColor = selectedKPI.higherIsBetter ? COLORS.pink3 : COLORS.blue3;
-    return [
+    const slices: BooleanPieSlice[] = [
       {
         name: trueLabel,
         value: trueCount,
@@ -256,6 +275,14 @@ function useBooleanValues<T>(
         color: falseColor,
       },
     ];
+    if (unknownCount > 0) {
+      slices.push({
+        name: unknownLabel,
+        value: unknownCount,
+        color: COLORS.grey,
+      });
+    }
+    return slices;
   }, [data, selectedKPI, t, translationPrefix]);
 }
 
@@ -265,6 +292,7 @@ export function KPIDistributionChart<T>({
   average,
   entityLabel,
   translationPrefix,
+  maxOuterRadius,
 }: KPIDistributionChartProps<T>) {
   const { t } = useTranslation();
   const label = entityLabel ?? t("header.municipalities").toLowerCase();
@@ -298,6 +326,7 @@ export function KPIDistributionChart<T>({
         slices={slices}
         entityLabel={label}
         animationKey={String(selectedKPI.key)}
+        maxOuterRadius={maxOuterRadius}
       />
     );
   }
