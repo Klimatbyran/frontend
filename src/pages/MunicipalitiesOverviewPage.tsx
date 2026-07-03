@@ -142,7 +142,14 @@ export function MunicipalitiesOverviewPage() {
   }, [municipalities]);
 
   if (municipalitiesLoading) {
-    return <OverviewPageSkeleton />;
+    return (
+      <OverviewPageSkeleton
+        title={t("municipalitiesOverviewPage.title")}
+        description={t("municipalitiesOverviewPage.description")}
+        variant="municipalities"
+        chipCount={municipalityKPIs.length}
+      />
+    );
   }
 
   if (municipalitiesError) {

@@ -305,6 +305,7 @@ export function KPIDistributionChart<T>({
   maxOuterRadius,
 }: KPIDistributionChartProps<T>) {
   const { t } = useTranslation();
+  const { barDuration, reduceMotion } = useChartMotion();
   const label = entityLabel ?? t("header.municipalities").toLowerCase();
 
   const values = useMemo(
@@ -397,9 +398,9 @@ export function KPIDistributionChart<T>({
             dataKey="count"
             radius={[3, 3, 0, 0]}
             maxBarSize={32}
-            isAnimationActive
+            isAnimationActive={!reduceMotion}
             animationBegin={0}
-            animationDuration={800}
+            animationDuration={reduceMotion ? 0 : barDuration * 1000}
             animationEasing="ease-out"
           >
             {bins.map((bin, i) => {

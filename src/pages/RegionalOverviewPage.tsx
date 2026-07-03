@@ -20,7 +20,10 @@ import { RegionalRankedList } from "@/components/regions/RegionalRankedList";
 import { KPIChipSelector } from "@/components/ranked/KPIChipSelector";
 import { OverviewPageSkeleton } from "@/components/ranked/OverviewPageSkeleton";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
-import { OverviewSplitLayout, OVERVIEW_PANEL_MD_HEIGHT } from "@/components/ranked/OverviewSplitLayout";
+import {
+  OverviewSplitLayout,
+  OVERVIEW_PANEL_MD_HEIGHT,
+} from "@/components/ranked/OverviewSplitLayout";
 import { createEntityClickHandler } from "@/utils/routing";
 import { RankedListItem } from "@/types/rankings";
 import { useScreenSize } from "@/hooks/useScreenSize";
@@ -98,7 +101,14 @@ export function RegionalOverviewPage() {
   }, [regionEntities]);
 
   if (regionsLoading) {
-    return <OverviewPageSkeleton />;
+    return (
+      <OverviewPageSkeleton
+        title={t("regionalOverviewPage.title")}
+        description={t("regionalOverviewPage.description")}
+        variant="regions"
+        chipCount={regionalKPIs.length}
+      />
+    );
   }
 
   if (regionsError) {
@@ -183,7 +193,9 @@ export function RegionalOverviewPage() {
             list={regionalRankedList}
             toggle={viewToggle}
           />
-          <div className={`min-h-0 h-full min-w-0 ${OVERVIEW_PANEL_MD_HEIGHT}`}>
+          <div
+            className={`min-h-0 h-full min-w-0 overflow-visible ${OVERVIEW_PANEL_MD_HEIGHT}`}
+          >
             <RegionalInsightsPanel
               regionsData={regionsAsEntities}
               selectedKPI={selectedKPI}

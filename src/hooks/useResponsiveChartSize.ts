@@ -91,22 +91,38 @@ export function useResponsiveChartSize(
       if (container) {
         const width = container.clientWidth;
         const height = container.clientHeight;
-        setContainerWidth(width);
-        setContainerHeight(height);
-        setSize(
-          resolvePieSize(
-            width,
-            height,
-            includeLabels,
-            maxOuterRadius,
-            fillContainer,
-          ),
+        const nextSize = resolvePieSize(
+          width,
+          height,
+          includeLabels,
+          maxOuterRadius,
+          fillContainer,
+        );
+        setContainerWidth((prev) => (prev === width ? prev : width));
+        setContainerHeight((prev) => (prev === height ? prev : height));
+        setSize((prev) =>
+          prev.innerRadius === nextSize.innerRadius &&
+          prev.outerRadius === nextSize.outerRadius &&
+          prev.showLabels === nextSize.showLabels
+            ? prev
+            : nextSize,
         );
         return;
       }
 
-      setSize(
-        resolvePieSize(0, 0, includeLabels, maxOuterRadius, fillContainer),
+      const nextSize = resolvePieSize(
+        0,
+        0,
+        includeLabels,
+        maxOuterRadius,
+        fillContainer,
+      );
+      setSize((prev) =>
+        prev.innerRadius === nextSize.innerRadius &&
+        prev.outerRadius === nextSize.outerRadius &&
+        prev.showLabels === nextSize.showLabels
+          ? prev
+          : nextSize,
       );
     };
 

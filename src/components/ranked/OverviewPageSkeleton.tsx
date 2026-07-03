@@ -1,58 +1,177 @@
-/** Skeleton that mirrors the two-row overview page layout while data loads. */
-export function OverviewPageSkeleton() {
+import {
+  OVERVIEW_PANEL_HEIGHT,
+  OVERVIEW_PANEL_MD_HEIGHT,
+} from "@/components/ranked/OverviewSplitLayout";
+import { PageHeader } from "@/components/layout/PageHeader";
+
+export type OverviewPageSkeletonVariant =
+  | "municipalities"
+  | "regions"
+  | "companies";
+
+interface OverviewPageSkeletonProps {
+  title: string;
+  description?: string;
+  variant?: OverviewPageSkeletonVariant;
+  /** Number of KPI chip placeholders on desktop */
+  chipCount?: number;
+}
+
+const SHIMMER = "bg-white/10 rounded animate-pulse";
+
+const CHIP_WIDTHS = ["w-20", "w-28", "w-24", "w-32", "w-28", "w-36", "w-24"];
+const SECTOR_WIDTHS = ["w-16", "w-24", "w-20", "w-28", "w-20", "w-24"];
+
+function SkeletonBlock({ className = "" }: { className?: string }) {
+  return <div className={`${SHIMMER} ${className}`} />;
+}
+
+function KPIChipSelectorSkeleton({ chipCount }: { chipCount: number }) {
   return (
-    <div className="animate-pulse space-y-6">
-      {/* KPI chip selector row */}
-      <div className="flex gap-2 flex-wrap">
-        {[...Array(5)].map((_, i) => (
-          <div
+    <div className="mb-6 space-y-3">
+      <SkeletonBlock className="h-3 w-36 mx-1" />
+      <SkeletonBlock className="md:hidden h-12 w-full rounded-xl" />
+      <div className="hidden md:flex gap-2 flex-wrap">
+        {Array.from({ length: chipCount }, (_, i) => (
+          <SkeletonBlock
             key={i}
-            className="h-9 bg-black-1 rounded-full"
-            style={{ width: `${80 + i * 18}px` }}
+            className={`h-9 rounded-full ${CHIP_WIDTHS[i % CHIP_WIDTHS.length]}`}
           />
         ))}
       </div>
+    </div>
+  );
+}
 
-      {/* Row 1: map/graph (left) + stats panel (right) */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="h-[680px] bg-black-1 rounded-level-2" />
-        <div className="h-[680px] bg-black-1 rounded-level-2 p-8 flex flex-col justify-between">
-          {/* Title + description */}
-          <div className="space-y-3">
-            <div className="h-8 w-3/4 bg-black-2 rounded" />
-            <div className="h-4 w-full bg-black-2 rounded" />
-            <div className="h-4 w-5/6 bg-black-2 rounded" />
-            <div className="h-7 w-32 bg-black-2 rounded-full" />
+function IndustryFilterSkeleton() {
+  return (
+    <div className="mb-4 flex flex-wrap items-center gap-2">
+      <SkeletonBlock className="h-4 w-28" />
+      {Array.from({ length: 6 }, (_, i) => (
+        <SkeletonBlock
+          key={i}
+          className={`h-8 rounded-level-1 ${SECTOR_WIDTHS[i % SECTOR_WIDTHS.length]}`}
+        />
+      ))}
+    </div>
+  );
+}
+
+function StatsPanelSkeleton() {
+  return (
+    <div
+      className={`p-6 md:p-8 flex flex-col gap-6 md:gap-0 md:justify-between h-auto md:h-full min-h-0 bg-white/5 rounded-level-2 shadow-lg ${OVERVIEW_PANEL_MD_HEIGHT}`}
+    >
+      <div className="space-y-3 shrink-0">
+        <SkeletonBlock className="h-8 md:h-9 w-3/4" />
+        <SkeletonBlock className="h-4 w-full" />
+        <SkeletonBlock className="h-4 w-5/6" />
+        <SkeletonBlock className="h-7 w-36 rounded-full" />
+      </div>
+
+      <div className="p-5 md:p-4 bg-white/10 rounded-2xl space-y-2 shrink-0">
+        <SkeletonBlock className="h-3 w-16" />
+        <SkeletonBlock className="h-5 w-2/3" />
+        <SkeletonBlock className="h-4 w-1/3" />
+      </div>
+
+      <div className="p-5 md:p-4 bg-white/10 rounded-2xl space-y-2 shrink-0">
+        <SkeletonBlock className="h-3 w-16" />
+        <SkeletonBlock className="h-5 w-2/3" />
+        <SkeletonBlock className="h-4 w-1/3" />
+      </div>
+
+      <div className="p-4 bg-white/10 rounded-2xl shrink-0 space-y-2">
+        <SkeletonBlock className="h-3 w-20" />
+        <SkeletonBlock className="h-9 w-24" />
+      </div>
+
+      <div className="space-y-4 md:space-y-3 shrink-0">
+        <SkeletonBlock className="h-3 w-full rounded-full" />
+        <div className="space-y-3 md:space-y-2">
+          <div className="flex items-center justify-between gap-3">
+            <SkeletonBlock className="h-4 w-2/5" />
+            <SkeletonBlock className="h-5 w-16" />
           </div>
-          {/* Best/worst cards */}
-          <div className="grid grid-cols-2 gap-3">
-            <div className="h-20 bg-black-2 rounded-2xl" />
-            <div className="h-20 bg-black-2 rounded-2xl" />
+          <div className="flex items-center justify-between gap-3">
+            <SkeletonBlock className="h-4 w-2/5" />
+            <SkeletonBlock className="h-5 w-16" />
           </div>
-          {/* Average card */}
-          <div className="h-20 bg-black-2 rounded-2xl" />
-          {/* Distribution bar */}
-          <div className="space-y-3">
-            <div className="h-3 w-full bg-black-2 rounded-full" />
-            <div className="h-4 w-full bg-black-2 rounded" />
-            <div className="h-4 w-full bg-black-2 rounded" />
-          </div>
-          {/* Source */}
-          <div className="h-3 w-2/3 bg-black-2 rounded" />
         </div>
       </div>
 
-      {/* Row 2: top | bottom | distribution (numeric KPIs) */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {[...Array(3)].map((_, i) => (
-          <div key={i} className="bg-black-1 rounded-level-2 p-6 space-y-3">
-            <div className="h-5 w-2/3 bg-black-2 rounded" />
-            {[...Array(7)].map((_, j) => (
-              <div key={j} className="h-9 bg-black-2 rounded-lg" />
-            ))}
-          </div>
-        ))}
-      </div>
+      <SkeletonBlock className="h-3 w-2/3 shrink-0" />
     </div>
+  );
+}
+
+function VisualizationPanelSkeleton() {
+  return (
+    <div className={`flex flex-col ${OVERVIEW_PANEL_HEIGHT}`}>
+      <SkeletonBlock className="md:hidden shrink-0 mb-3 h-10 w-full rounded-xl" />
+      <SkeletonBlock className="flex-1 min-h-0 w-full rounded-level-2" />
+    </div>
+  );
+}
+
+function RankedListPanelSkeleton() {
+  return (
+    <div className="bg-white/5 rounded-level-2 p-6 h-full min-h-[320px] md:min-h-[400px] flex flex-col gap-4">
+      <SkeletonBlock className="h-6 w-3/4" />
+      {Array.from({ length: 8 }, (_, i) => (
+        <div key={i} className="flex items-center gap-3">
+          <SkeletonBlock className="h-4 w-6 shrink-0" />
+          <SkeletonBlock className="h-4 flex-1 max-w-[45%]" />
+          <SkeletonBlock className="h-3 flex-1 rounded-full" />
+          <SkeletonBlock className="h-4 w-12 shrink-0" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function DistributionPanelSkeleton() {
+  return (
+    <div className="bg-white/5 rounded-level-2 p-6 flex flex-col h-full min-h-[320px] md:min-h-[400px] gap-6">
+      <div className="space-y-2">
+        <SkeletonBlock className="h-7 w-1/2" />
+        <SkeletonBlock className="h-4 w-full" />
+        <SkeletonBlock className="h-4 w-5/6" />
+      </div>
+      <SkeletonBlock className="w-full flex-1 min-h-[180px] rounded-level-1" />
+    </div>
+  );
+}
+
+/** Skeleton that mirrors the overview page layout while data loads. */
+export function OverviewPageSkeleton({
+  title,
+  description,
+  variant = "municipalities",
+  chipCount = variant === "regions" ? 2 : variant === "companies" ? 2 : 7,
+}: OverviewPageSkeletonProps) {
+  return (
+    <>
+      <PageHeader title={title} description={description} className="-ml-4" />
+
+      <KPIChipSelectorSkeleton chipCount={chipCount} />
+
+      {variant === "companies" && <IndustryFilterSkeleton />}
+
+      <div className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-6 items-stretch">
+          <VisualizationPanelSkeleton />
+          <div className="min-h-0 h-full min-w-0 overflow-visible">
+            <StatsPanelSkeleton />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+          <RankedListPanelSkeleton />
+          <RankedListPanelSkeleton />
+          <DistributionPanelSkeleton />
+        </div>
+      </div>
+    </>
   );
 }

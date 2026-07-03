@@ -162,7 +162,14 @@ export function CompaniesOverviewPage() {
   };
 
   if (companiesLoading) {
-    return <OverviewPageSkeleton />;
+    return (
+      <OverviewPageSkeleton
+        title={t("companiesOverviewPage.title")}
+        description={t("companiesOverviewPage.description")}
+        variant="companies"
+        chipCount={companyKPIs.length}
+      />
+    );
   }
 
   if (companiesError) {
