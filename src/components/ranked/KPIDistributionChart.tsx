@@ -12,8 +12,13 @@ import {
   PieChart,
   Pie,
 } from "recharts";
+import { useLanguage } from "@/components/LanguageProvider";
+import { useChartMotion } from "@/hooks/useChartMotion";
+import { useResponsiveChartSize } from "@/hooks/useResponsiveChartSize";
 import { KPIValue } from "@/types/rankings";
 import { COLORS } from "@/lib/colors";
+import { isMissingRankedValue } from "@/utils/insights/rankedListUtils";
+import { formatPercent } from "@/utils/formatting/localization";
 
 interface KPIDistributionChartProps<T> {
   data: T[];
@@ -23,9 +28,136 @@ interface KPIDistributionChartProps<T> {
   entityLabel?: string;
   /** i18n prefix for KPI labels, e.g. "municipalities.list" */
   translationPrefix?: string;
+  /** Caps pie outer radius — use in the stats panel beside map/graph */
+  maxOuterRadius?: number;
 }
 
 const NUM_BINS = 12;
+
+interface BooleanPieSlice {
+  name: string;
+  value: number;
+  color: string;
+}
+
+function BooleanPieTooltip({
+  active,
+  payload,
+  entityLabel,
+}: {
+  active?: boolean;
+  payload?: Array<{
+    name?: string;
+    value?: number;
+    payload?: { total?: number };
+  }>;
+  entityLabel: string;
+}) {
+  const { t } = useTranslation();
+  const { currentLanguage } = useLanguage();
+
+  if (!active || !payload?.length) return null;
+
+  const item = payload[0];
+  const value = item.value ?? 0;
+  const total = item.payload?.total;
+  const percentage =
+    total != null && total > 0
+      ? formatPercent(value / total, currentLanguage)
+      : null;
+
+  return (
+    <div className="bg-black-2 border border-black-1 rounded-lg shadow-xl p-4 text-white pointer-events-none z-50">
+      <p className="text-sm font-medium mb-1">{item.name}</p>
+      <div className="text-sm text-grey">
+        <div>
+          {value} {entityLabel}
+        </div>
+        {percentage && (
+          <div>
+            {percentage} {t("graphs.pieChart.ofTotal")}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+const PIE_CORNER_RADIUS = 8;
+
+function BooleanKPIPieChart({
+  slices,
+  entityLabel,
+  animationKey,
+  maxOuterRadius,
+}: {
+  slices: BooleanPieSlice[];
+  entityLabel: string;
+  animationKey: string;
+  maxOuterRadius?: number;
+}) {
+  const { size, containerRef } = useResponsiveChartSize(
+    false,
+    maxOuterRadius,
+    true,
+  );
+  const { pieDuration, reduceMotion } = useChartMotion();
+
+  const total = slices.reduce((sum, item) => sum + item.value, 0);
+  const pieData = slices.map((item) => ({ ...item, total }));
+  const pieAnimationKey = pieData
+    .map((entry) => `${entry.name}-${entry.value}`)
+    .join("|");
+
+  const outerRadius = size.outerRadius;
+  const innerRadius = size.innerRadius;
+  const side = Math.ceil(outerRadius * 2 + PIE_CORNER_RADIUS * 2);
+  const center = side / 2;
+
+  return (
+    <div
+      ref={containerRef}
+      className="w-full h-full min-h-[200px] flex items-center justify-center overflow-visible"
+    >
+      {outerRadius > 0 && (
+        <PieChart width={side} height={side}>
+          <Pie
+            key={`${animationKey}-${pieAnimationKey}`}
+            data={pieData}
+            dataKey="value"
+            nameKey="name"
+            cx={center}
+            cy={center}
+            innerRadius={innerRadius}
+            outerRadius={outerRadius}
+            cornerRadius={PIE_CORNER_RADIUS}
+            paddingAngle={pieData.length > 1 ? 2 : 0}
+            minAngle={4}
+            isAnimationActive={!reduceMotion}
+            animationBegin={0}
+            animationDuration={pieDuration}
+            animationEasing="ease-out"
+          >
+            {pieData.map((entry, index) => (
+              <Cell
+                key={`${entry.name}-${index}`}
+                fill={entry.color}
+                stroke={entry.color}
+              />
+            ))}
+          </Pie>
+          <Tooltip
+            content={(props) => (
+              <BooleanPieTooltip {...props} entityLabel={entityLabel} />
+            )}
+            animationDuration={0}
+            isAnimationActive={false}
+          />
+        </PieChart>
+      )}
+    </div>
+  );
+}
 
 function buildHistogramBins(
   values: number[],
@@ -118,8 +250,13 @@ function useBooleanValues<T>(
 ) {
   return useMemo(() => {
     if (!selectedKPI.isBoolean) return null;
-    const trueCount = data.filter((m) => m[selectedKPI.key] === true).length;
-    const falseCount = data.filter((m) => m[selectedKPI.key] === false).length;
+
+    const getValue = (item: T) => item[selectedKPI.key];
+    const trueCount = data.filter((item) => getValue(item) === true).length;
+    const falseCount = data.filter((item) => getValue(item) === false).length;
+    const unknownCount = data.filter((item) =>
+      isMissingRankedValue(getValue(item), true),
+    ).length;
     const kpiKey = String(selectedKPI.key);
     const trueLabel = translationPrefix
       ? t(`${translationPrefix}.kpis.${kpiKey}.booleanLabels.true`)
@@ -127,22 +264,35 @@ function useBooleanValues<T>(
     const falseLabel = translationPrefix
       ? t(`${translationPrefix}.kpis.${kpiKey}.booleanLabels.false`)
       : selectedKPI.booleanLabels?.false || t("no");
+    const unknownLabel = translationPrefix
+      ? t(`${translationPrefix}.kpis.${kpiKey}.nullValues`, {
+          defaultValue: t("unknown"),
+        })
+      : selectedKPI.nullValues || t("unknown");
     // When higherIsBetter: true = good (blue), false = bad (pink).
     // When !higherIsBetter: true = bad (pink), false = good (blue).
     const trueColor = selectedKPI.higherIsBetter ? COLORS.blue3 : COLORS.pink3;
     const falseColor = selectedKPI.higherIsBetter ? COLORS.pink3 : COLORS.blue3;
-    return [
+    const slices: BooleanPieSlice[] = [
       {
         name: trueLabel,
         value: trueCount,
-        fill: trueColor,
+        color: trueColor,
       },
       {
         name: falseLabel,
         value: falseCount,
-        fill: falseColor,
+        color: falseColor,
       },
     ];
+    if (unknownCount > 0) {
+      slices.push({
+        name: unknownLabel,
+        value: unknownCount,
+        color: COLORS.grey,
+      });
+    }
+    return slices;
   }, [data, selectedKPI, t, translationPrefix]);
 }
 
@@ -152,8 +302,10 @@ export function KPIDistributionChart<T>({
   average,
   entityLabel,
   translationPrefix,
+  maxOuterRadius,
 }: KPIDistributionChartProps<T>) {
   const { t } = useTranslation();
+  const { barDuration, reduceMotion } = useChartMotion();
   const label = entityLabel ?? t("header.municipalities").toLowerCase();
 
   const values = useMemo(
@@ -177,54 +329,16 @@ export function KPIDistributionChart<T>({
   );
 
   if (selectedKPI.isBoolean && booleanValues) {
-    const total = booleanValues.reduce((s, d) => s + d.value, 0);
+    const slices = booleanValues.filter((d) => d.value > 0);
+    if (!slices.length) return null;
+
     return (
-      <div className="flex flex-col items-center">
-        <ResponsiveContainer
-          key={String(selectedKPI.key)}
-          width="100%"
-          height={180}
-        >
-          <PieChart>
-            <Pie
-              data={booleanValues}
-              cx="50%"
-              cy="50%"
-              innerRadius={50}
-              outerRadius={75}
-              paddingAngle={3}
-              dataKey="value"
-              strokeWidth={0}
-              isAnimationActive
-              animationBegin={0}
-              animationDuration={900}
-              animationEasing="ease-out"
-            >
-              {booleanValues.map((entry, i) => (
-                <Cell key={i} fill={entry.fill} />
-              ))}
-            </Pie>
-            <Tooltip
-              content={({ active, payload: p }) => {
-                if (!active || !p?.length) return null;
-                const item = p[0];
-                const pct =
-                  total > 0
-                    ? ((Number(item.value) / total) * 100).toFixed(1)
-                    : 0;
-                return (
-                  <div className="bg-black-1 border border-white/10 rounded-lg px-3 py-2 text-xs shadow-xl">
-                    <p className="text-white font-semibold">{item.name}</p>
-                    <p className="text-white/60">
-                      {item.value} {label} ({pct}%)
-                    </p>
-                  </div>
-                );
-              }}
-            />
-          </PieChart>
-        </ResponsiveContainer>
-      </div>
+      <BooleanKPIPieChart
+        slices={slices}
+        entityLabel={label}
+        animationKey={String(selectedKPI.key)}
+        maxOuterRadius={maxOuterRadius}
+      />
     );
   }
 
@@ -284,9 +398,9 @@ export function KPIDistributionChart<T>({
             dataKey="count"
             radius={[3, 3, 0, 0]}
             maxBarSize={32}
-            isAnimationActive
+            isAnimationActive={!reduceMotion}
             animationBegin={0}
-            animationDuration={800}
+            animationDuration={reduceMotion ? 0 : barDuration * 1000}
             animationEasing="ease-out"
           >
             {bins.map((bin, i) => {

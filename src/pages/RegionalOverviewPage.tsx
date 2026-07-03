@@ -20,7 +20,10 @@ import { RegionalRankedList } from "@/components/regions/RegionalRankedList";
 import { KPIChipSelector } from "@/components/ranked/KPIChipSelector";
 import { OverviewPageSkeleton } from "@/components/ranked/OverviewPageSkeleton";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
-import { OverviewSplitLayout } from "@/components/ranked/OverviewSplitLayout";
+import {
+  OverviewSplitLayout,
+  OVERVIEW_PANEL_MD_HEIGHT,
+} from "@/components/ranked/OverviewSplitLayout";
 import { createEntityClickHandler } from "@/utils/routing";
 import { RankedListItem } from "@/types/rankings";
 import { useScreenSize } from "@/hooks/useScreenSize";
@@ -98,7 +101,14 @@ export function RegionalOverviewPage() {
   }, [regionEntities]);
 
   if (regionsLoading) {
-    return <OverviewPageSkeleton />;
+    return (
+      <OverviewPageSkeleton
+        title={t("regionalOverviewPage.title")}
+        description={t("regionalOverviewPage.description")}
+        variant="regions"
+        chipCount={regionalKPIs.length}
+      />
+    );
   }
 
   if (regionsError) {
@@ -175,7 +185,7 @@ export function RegionalOverviewPage() {
 
       <div className="space-y-6">
         {/* Row 1: map/list toggle | stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-6 items-stretch">
           <OverviewSplitLayout
             viewMode={viewMode}
             visualizationMode="map"
@@ -183,11 +193,15 @@ export function RegionalOverviewPage() {
             list={regionalRankedList}
             toggle={viewToggle}
           />
-          <RegionalInsightsPanel
-            regionsData={regionsAsEntities}
-            selectedKPI={selectedKPI}
-            section="stats"
-          />
+          <div
+            className={`min-h-0 h-full min-w-0 overflow-visible ${OVERVIEW_PANEL_MD_HEIGHT}`}
+          >
+            <RegionalInsightsPanel
+              regionsData={regionsAsEntities}
+              selectedKPI={selectedKPI}
+              section="stats"
+            />
+          </div>
         </div>
 
         {!selectedKPI.isBoolean && (

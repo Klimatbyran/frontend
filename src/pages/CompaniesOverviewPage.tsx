@@ -10,6 +10,7 @@ import { OverviewPageSkeleton } from "@/components/ranked/OverviewPageSkeleton";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import {
   OverviewSplitLayout,
+  OVERVIEW_PANEL_MD_HEIGHT,
   type OverviewViewMode,
 } from "@/components/ranked/OverviewSplitLayout";
 import RankedList from "@/components/ranked/RankedList";
@@ -156,7 +157,14 @@ export function CompaniesOverviewPage() {
   };
 
   if (companiesLoading) {
-    return <OverviewPageSkeleton />;
+    return (
+      <OverviewPageSkeleton
+        title={t("companiesOverviewPage.title")}
+        description={t("companiesOverviewPage.description")}
+        variant="companies"
+        chipCount={companyKPIs.length}
+      />
+    );
   }
 
   if (companiesError) {
@@ -274,7 +282,7 @@ export function CompaniesOverviewPage() {
 
       <div className="space-y-6">
         {/* Row 1: graph/list toggle | stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-6 items-stretch">
           <OverviewSplitLayout
             viewMode={viewMode}
             visualizationMode="graph"
@@ -282,11 +290,13 @@ export function CompaniesOverviewPage() {
             list={companyRankedList}
             toggle={viewToggle}
           />
-          <CompanyInsightsPanel
-            companyData={companiesWithKPIs}
-            selectedKPI={selectedKPI}
-            section="stats"
-          />
+          <div className={`min-h-0 h-full ${OVERVIEW_PANEL_MD_HEIGHT}`}>
+            <CompanyInsightsPanel
+              companyData={companiesWithKPIs}
+              selectedKPI={selectedKPI}
+              section="stats"
+            />
+          </div>
         </div>
 
         {!selectedKPI.isBoolean && (
