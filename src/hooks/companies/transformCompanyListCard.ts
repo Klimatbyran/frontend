@@ -14,7 +14,9 @@ import { getCompanyDetailPath } from "@/utils/companyRouting";
 
 type TransformCompanyOptions = {
   sectorNames: Record<string, string>;
-  isEmissionsAIGenerated: (period: RankedCompany["reportingPeriods"][number]) => boolean;
+  isEmissionsAIGenerated: (
+    period: RankedCompany["reportingPeriods"][number],
+  ) => boolean;
   currentLanguage: SupportedLanguage;
   t: TFunction;
 };
@@ -24,14 +26,19 @@ function getMeetsParisStatus(company: RankedCompany): boolean | null {
   return trendAnalysis ? calculateMeetsParis(company, trendAnalysis) : null;
 }
 
-function getChangeRateTooltip(emissionsChange: number | null, t: TFunction): string {
+function getChangeRateTooltip(
+  emissionsChange: number | null,
+  t: TFunction,
+): string {
   if (emissionsChange && (emissionsChange <= -80 || emissionsChange >= 80)) {
     return `${t("companies.card.emissionsChangeRateInfo")}\n\n${t("companies.card.emissionsChangeRateInfoExtended")}`;
   }
   return t("companies.card.emissionsChangeRateInfo");
 }
 
-function getChangeRateColor(emissionsChange: number | null): string | undefined {
+function getChangeRateColor(
+  emissionsChange: number | null,
+): string | undefined {
   if (!emissionsChange) return undefined;
   return emissionsChange < 0 ? "text-orange-2" : "text-pink-3";
 }
@@ -44,7 +51,10 @@ function buildEmissionsFields(
   const { isEmissionsAIGenerated, currentLanguage, t } = options;
   const currentEmissions =
     latestPeriod?.emissions?.calculatedTotalEmissions || null;
-  const emissionsChange = calculateEmissionsChange(latestPeriod, previousPeriod);
+  const emissionsChange = calculateEmissionsChange(
+    latestPeriod,
+    previousPeriod,
+  );
   const totalEmissionsAIGenerated = latestPeriod
     ? isEmissionsAIGenerated(latestPeriod)
     : false;

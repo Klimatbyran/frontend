@@ -16,9 +16,7 @@ function getEmissionsData(data: ChartData[]) {
 }
 
 function getLastEmissionsValue(data: ChartData[]): number {
-  return (
-    getEmissionsData(data).sort((a, b) => b.year - a.year)[0]?.total || 0
-  );
+  return getEmissionsData(data).sort((a, b) => b.year - a.year)[0]?.total || 0;
 }
 
 function getLastYearWithData(data: ChartData[]): number {
@@ -39,10 +37,7 @@ function applyCoefficients(
     const expValue = lastDataValue * growthFactor;
     const maxReasonableValue = 1000000;
     const minReasonableValue = 0.1;
-    return Math.max(
-      minReasonableValue,
-      Math.min(expValue, maxReasonableValue),
-    );
+    return Math.max(minReasonableValue, Math.min(expValue, maxReasonableValue));
   }
 
   return lastDataValue;
@@ -81,7 +76,11 @@ function calculateEmissions2025(
 
   const lastDataValue = getLastEmissionsValue(data);
   const lastYearWithData = getLastYearWithData(data);
-  return applyCoefficients(lastDataValue, 2025 - lastYearWithData, coefficients);
+  return applyCoefficients(
+    lastDataValue,
+    2025 - lastYearWithData,
+    coefficients,
+  );
 }
 
 function calculateParisLineValue(

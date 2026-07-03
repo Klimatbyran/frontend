@@ -48,9 +48,7 @@ function DataGuideNavigation({
       {items.map((itemId) => (
         <div
           key={itemId}
-          className={cn(
-            activeItemId === itemId && "border-l-2 border-blue-2",
-          )}
+          className={cn(activeItemId === itemId && "border-l-2 border-blue-2")}
         >
           <button
             onClick={() => onItemChange(itemId)}
@@ -96,9 +94,7 @@ function DataGuideContent({
             "opacity 300ms ease-in-out, transform 300ms ease-in-out, height 300ms ease-in-out",
         }}
       >
-        <h2 className="text-lg font-bold mb-4">
-          {t(`${activeItemId}.title`)}
-        </h2>
+        <h2 className="text-lg font-bold mb-4">{t(`${activeItemId}.title`)}</h2>
         <DataGuideMarkdown item={activeItemId} className="max-w-prose" />
       </div>
     </div>

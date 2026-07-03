@@ -83,7 +83,13 @@ export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
         setMeetsParisFilter,
       ),
     ],
-    [t, selectedRegions, setSelectedRegions, meetsParisFilter, setMeetsParisFilter],
+    [
+      t,
+      selectedRegions,
+      setSelectedRegions,
+      meetsParisFilter,
+      setMeetsParisFilter,
+    ],
   );
 
   const activeFilters = useMemo(
@@ -95,7 +101,13 @@ export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
         setSelectedRegions,
         setMeetsParisFilter,
       ),
-    [selectedRegions, meetsParisFilter, t, setSelectedRegions, setMeetsParisFilter],
+    [
+      selectedRegions,
+      meetsParisFilter,
+      t,
+      setSelectedRegions,
+      setMeetsParisFilter,
+    ],
   );
 
   return {

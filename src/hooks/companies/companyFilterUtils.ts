@@ -49,8 +49,7 @@ function matchesSearch(
     const companyNamePattern = new RegExp(`\\b${term}`, "i");
     const sectorNamePattern = new RegExp(`\\b${term}`, "i");
     return (
-      companyNamePattern.test(companyName) ||
-      sectorNamePattern.test(sectorName)
+      companyNamePattern.test(companyName) || sectorNamePattern.test(sectorName)
     );
   });
 }
@@ -239,8 +238,7 @@ export function buildCompanyMeetsParisFilterGroup(
       },
     ],
     selectedValues: [meetsParisFilter],
-    onSelect: (value: string) =>
-      setMeetsParisFilter(value as MeetsParisFilter),
+    onSelect: (value: string) => setMeetsParisFilter(value as MeetsParisFilter),
     selectMultiple: false,
   };
 }

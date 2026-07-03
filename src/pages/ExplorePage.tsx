@@ -20,9 +20,7 @@ import {
 
 function isExploreFilter(value?: string): value is ExploreFilter {
   return (
-    value === "companies" ||
-    value === "municipalities" ||
-    value === "regions"
+    value === "companies" || value === "municipalities" || value === "regions"
   );
 }
 

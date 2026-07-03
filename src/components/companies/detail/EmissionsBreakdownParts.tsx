@@ -215,7 +215,9 @@ interface EmissionsBreakdownHeaderProps {
   year: number;
 }
 
-export function EmissionsBreakdownHeader({ year }: EmissionsBreakdownHeaderProps) {
+export function EmissionsBreakdownHeader({
+  year,
+}: EmissionsBreakdownHeaderProps) {
   const { t } = useTranslation();
 
   return (
@@ -232,7 +234,10 @@ interface BiogenicEmissionsCardProps {
   unit: string;
 }
 
-export function BiogenicEmissionsCard({ total, unit }: BiogenicEmissionsCardProps) {
+export function BiogenicEmissionsCard({
+  total,
+  unit,
+}: BiogenicEmissionsCardProps) {
   const { t } = useTranslation();
 
   return (

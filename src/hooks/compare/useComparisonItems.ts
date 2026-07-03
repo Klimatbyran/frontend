@@ -26,7 +26,9 @@ export function useComparisonItems() {
     loadRegions,
   } = viewState;
 
-  const { companies, companiesLoading } = useCompanies({ enabled: loadCompanies });
+  const { companies, companiesLoading } = useCompanies({
+    enabled: loadCompanies,
+  });
   const { municipalities, municipalitiesLoading } = useMunicipalities({
     enabled: loadMunicipalities,
   });

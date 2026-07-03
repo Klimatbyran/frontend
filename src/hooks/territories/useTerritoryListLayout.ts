@@ -136,11 +136,7 @@ export function useTerritoryListLayout(
     setCurrentPage(1);
   }, [itemCount, shouldPaginateList]);
 
-  const itemsPerPage = useItemsPerPage(
-    panelRef,
-    itemCount,
-    shouldPaginateList,
-  );
+  const itemsPerPage = useItemsPerPage(panelRef, itemCount, shouldPaginateList);
 
   const totalPages = Math.max(1, Math.ceil(itemCount / itemsPerPage));
   const currentPageSafe = Math.min(currentPage, totalPages);

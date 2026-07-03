@@ -1,7 +1,5 @@
 import { useMemo } from "react";
-import {
-  type LucideIcon,
-} from "lucide-react";
+import { type LucideIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { RankedCompany } from "@/types/company";
 import { useLanguage } from "@/components/LanguageProvider";

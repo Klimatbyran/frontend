@@ -28,10 +28,7 @@ function shouldHideCursor(
   currentText: string,
   isDeleting: boolean,
 ) {
-  return (
-    hideCursorOnType &&
-    (currentIndex < currentText.length || isDeleting)
-  );
+  return hideCursorOnType && (currentIndex < currentText.length || isDeleting);
 }
 
 const Typewriter = ({

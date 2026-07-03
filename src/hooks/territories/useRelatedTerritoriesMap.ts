@@ -70,7 +70,9 @@ function useTerritoryKpiData(entityType: MapEntityType) {
 function buildMapData(
   isRegions: boolean,
   regionsData: ReturnType<typeof useRegionsKPIs>["regionsData"],
-  municipalitiesData: ReturnType<typeof useMunicipalityKPIs>["municipalitiesData"],
+  municipalitiesData: ReturnType<
+    typeof useMunicipalityKPIs
+  >["municipalitiesData"],
   itemsSet: Set<string>,
 ): DataItem[] {
   if (isRegions) {

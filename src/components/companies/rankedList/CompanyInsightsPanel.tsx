@@ -42,7 +42,6 @@ function getCompanyInsightsData(
   selectedKPI: CompanyKPIValue,
   t: ReturnType<typeof useTranslation>["t"],
 ) {
-
   const statistics = calculateEntityStatistics(
     companyData,
     selectedKPI,

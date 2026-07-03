@@ -379,8 +379,15 @@ function useAddCompanyForm() {
 }
 
 export function AddCompanyPage() {
-  const { t, fields, setters, isSubmitting, error, createdCompanyId, handleSubmit } =
-    useAddCompanyForm();
+  const {
+    t,
+    fields,
+    setters,
+    isSubmitting,
+    error,
+    createdCompanyId,
+    handleSubmit,
+  } = useAddCompanyForm();
 
   return (
     <div className="container mx-auto max-w-3xl px-4 py-8">

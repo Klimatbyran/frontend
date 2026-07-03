@@ -3,12 +3,13 @@ import { parseNullableFormNumber } from "@/utils/ui/numberFormat";
 import { getFormValue, isFormCheckboxChecked } from "./helpers";
 
 type EmissionsUpdate = NonNullable<
-  NonNullable<
-    import("@/types/company").ReportingPeriodPayloadItem["emissions"]
-  >
+  NonNullable<import("@/types/company").ReportingPeriodPayloadItem["emissions"]>
 >;
 
-function hasScope2Changes(period: EditableReportingPeriod, formData: Map<string, string>): boolean {
+function hasScope2Changes(
+  period: EditableReportingPeriod,
+  formData: Map<string, string>,
+): boolean {
   return (
     formData.has("scope-2-mb-" + period.id) ||
     formData.has("scope-2-lb-" + period.id) ||

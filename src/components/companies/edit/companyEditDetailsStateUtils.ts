@@ -13,7 +13,9 @@ export function getGicsErrorMessage(
   error: unknown,
 ): string | null {
   if (!isError) return null;
-  return error instanceof Error ? error.message : "Failed to load industry options";
+  return error instanceof Error
+    ? error.message
+    : "Failed to load industry options";
 }
 
 export function getIndustryValidation(company: CompanyDetailsType) {

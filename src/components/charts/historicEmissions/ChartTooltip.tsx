@@ -196,9 +196,7 @@ function TrendInfo({
       })}
       <br />
       <span
-        className={cn(
-          trendData.slope >= 0 ? "text-pink-3" : "text-green-3",
-        )}
+        className={cn(trendData.slope >= 0 ? "text-pink-3" : "text-green-3")}
       >
         Trend: {trendData.slope >= 0 ? "↗ Increasing" : "↘ Decreasing"}
       </span>
@@ -335,9 +333,7 @@ function ChartTooltipBody({
       )}
       {dataRows}
       <BaseYearFootnote isBaseYear={isBaseYear} t={t} />
-      {trendData && (
-        <TrendInfo trendData={trendData} payload={payload} t={t} />
-      )}
+      {trendData && <TrendInfo trendData={trendData} payload={payload} t={t} />}
       <ApproximatedValueInfo
         dataView={dataView}
         filteredPayload={filteredPayload}

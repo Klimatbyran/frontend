@@ -153,11 +153,7 @@ function BeeswarmDot<T>({
       onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}
       className={`absolute cursor-pointer transition-transform z-10 ${
-        isHovered
-          ? "scale-150"
-          : !isMobile
-            ? "hover:scale-150"
-            : ""
+        isHovered ? "scale-150" : !isMobile ? "hover:scale-150" : ""
       }`}
       style={{
         left: `calc(${xPercent}% - 8px)`,
@@ -428,9 +424,7 @@ export function BeeswarmChart<T>({
         max={max}
         unit={unit}
         capThreshold={capThreshold}
-        cappedLabel={t(
-          "companiesOverviewPage.visualizations.beeswarm.capped",
-        )}
+        cappedLabel={t("companiesOverviewPage.visualizations.beeswarm.capped")}
       />
 
       <div className="mt-8 flex flex-col md:flex-row md:items-center md:justify-between gap-3 md:gap-0 text-xs text-grey">

@@ -4,7 +4,11 @@ import {
   formatEmissionsAbsoluteCompact,
   formatPercent,
 } from "@/utils/formatting/localization";
-import type { ChartInsight, InsightBar, InsightSegment } from "./useSectorChartInsights";
+import type {
+  ChartInsight,
+  InsightBar,
+  InsightSegment,
+} from "./useSectorChartInsights";
 import {
   countReportingCompanies,
   formatEmissionsLabel,
@@ -14,7 +18,9 @@ import {
   type SectorInsightsContext,
 } from "./sectorChartInsightsShared";
 
-function countMeetsParisStatuses(reportingCompanies: Parameters<typeof countReportingCompanies>[0]) {
+function countMeetsParisStatuses(
+  reportingCompanies: Parameters<typeof countReportingCompanies>[0],
+) {
   let meetsParisYes = 0;
   let meetsParisNo = 0;
   let meetsParisUnknown = 0;
@@ -222,13 +228,8 @@ function buildReportingCompaniesInsight(
 export function buildSectorOverviewInsights(
   context: SectorInsightsContext,
 ): ChartInsight[] {
-  const {
-    t,
-    companies,
-    pieChartData,
-    reportingYear,
-    currentLanguage,
-  } = context;
+  const { t, companies, pieChartData, reportingYear, currentLanguage } =
+    context;
 
   const largest = pieChartData[0];
   const largestShare = largest.value / largest.total;

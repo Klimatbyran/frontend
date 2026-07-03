@@ -35,10 +35,7 @@ function isTokenExpired(token: string): boolean {
   }
 }
 
-function useTokenAutoLogout(
-  token: string,
-  logout: () => void,
-) {
+function useTokenAutoLogout(token: string, logout: () => void) {
   const logoutTimeout = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
@@ -80,9 +77,7 @@ function createLoginHandler() {
   };
 }
 
-function createAuthenticateHandler(
-  setToken: (token: string) => void,
-) {
+function createAuthenticateHandler(setToken: (token: string) => void) {
   return async (code: string) => {
     try {
       const response = await authenticateWithGithub(code);

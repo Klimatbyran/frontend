@@ -134,16 +134,12 @@ function DistributionSection({
               ? ((stat.count / totalDistribution) * 100).toFixed(0)
               : 0;
           return (
-            <div
-              key={stat.label}
-              className="flex items-center justify-between"
-            >
+            <div key={stat.label} className="flex items-center justify-between">
               <div className="flex items-center gap-2.5">
                 <span
                   className="inline-block w-3 h-3 rounded-full shrink-0"
                   style={{
-                    backgroundColor:
-                      STAT_COLOR_MAP[stat.colorClass] ?? "#888",
+                    backgroundColor: STAT_COLOR_MAP[stat.colorClass] ?? "#888",
                   }}
                 />
                 <span className="text-white/70 text-sm md:text-base">

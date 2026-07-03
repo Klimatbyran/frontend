@@ -252,8 +252,8 @@ export function createSustainableTransportSection(
             translate("companies.card.noData"),
             {
               colorClass:
-                item.comparisonDetails
-                  ?.electricCarsPerChargePointColorClass ?? "text-white",
+                item.comparisonDetails?.electricCarsPerChargePointColorClass ??
+                "text-white",
             },
           ),
       },

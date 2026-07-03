@@ -1,7 +1,4 @@
-import {
-  Municipality,
-  type MunicipalitySortBy,
-} from "@/types/municipality";
+import { Municipality, type MunicipalitySortBy } from "@/types/municipality";
 import type { SortDirection } from "@/components/explore/SortPopover";
 import type { MeetsParisFilter } from "@/hooks/explore/useExploreFilters";
 import { getSearchTerms } from "@/hooks/explore/exploreFilterUtils";

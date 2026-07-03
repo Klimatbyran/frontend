@@ -190,7 +190,9 @@ export function CompanyOverviewMainStats({
                 )}
               </span>
             ) : (
-              <span className="text-grey">{t("companies.overview.noData")}</span>
+              <span className="text-grey">
+                {t("companies.overview.noData")}
+              </span>
             )
           }
           showAiIcon={yearOverYearAIGenerated}

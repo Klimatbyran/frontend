@@ -40,30 +40,30 @@ function isDataAIGenerated<T extends AIGeneratable>(
 
 function hasAIGeneratedScope3Categories(
   categories: Array<{ metadata?: unknown }> | undefined,
-  isAIGenerated: <T extends AIGeneratable>(data: T | undefined | null) => boolean,
+  isAIGenerated: <T extends AIGeneratable>(
+    data: T | undefined | null,
+  ) => boolean,
 ): boolean {
   if (!categories) {
     return false;
   }
 
   return categories.some(
-    (category) =>
-      hasAIGeneratableMetadata(category) && isAIGenerated(category),
+    (category) => hasAIGeneratableMetadata(category) && isAIGenerated(category),
   );
 }
 
 function hasAIGeneratedScopeEmissions(
   emissions: ReportingPeriod["emissions"],
-  isAIGenerated: <T extends AIGeneratable>(data: T | undefined | null) => boolean,
+  isAIGenerated: <T extends AIGeneratable>(
+    data: T | undefined | null,
+  ) => boolean,
 ): boolean {
   if (!emissions) {
     return false;
   }
 
-  if (
-    hasAIGeneratableMetadata(emissions) &&
-    isAIGenerated(emissions)
-  ) {
+  if (hasAIGeneratableMetadata(emissions) && isAIGenerated(emissions)) {
     return true;
   }
 

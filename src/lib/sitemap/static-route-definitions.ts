@@ -32,7 +32,12 @@ export function createSwedishStaticRoutes(currentDate: string): SitemapEntry[] {
     createRoute("/sv/privacy", currentDate, "yearly", "0.3"),
     createRoute("/sv/data-download", currentDate, "monthly", "0.6"),
     createRoute("/sv/insights/klimatmal", currentDate, "monthly", "0.6"),
-    createRoute("/sv/insights/utslappsberakning", currentDate, "monthly", "0.6"),
+    createRoute(
+      "/sv/insights/utslappsberakning",
+      currentDate,
+      "monthly",
+      "0.6",
+    ),
   ];
 }
 
@@ -54,6 +59,11 @@ export function createEnglishStaticRoutes(currentDate: string): SitemapEntry[] {
     createRoute("/en/privacy", currentDate, "yearly", "0.3"),
     createRoute("/en/data-download", currentDate, "monthly", "0.5"),
     createRoute("/en/insights/klimatmal", currentDate, "monthly", "0.5"),
-    createRoute("/en/insights/utslappsberakning", currentDate, "monthly", "0.5"),
+    createRoute(
+      "/en/insights/utslappsberakning",
+      currentDate,
+      "monthly",
+      "0.5",
+    ),
   ];
 }

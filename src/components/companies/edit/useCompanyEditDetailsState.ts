@@ -21,8 +21,12 @@ export function useCompanyEditDetailsState(company: CompanyDetailsType) {
   const initialIndustry = getInitialIndustryState(company);
 
   const [name, setName] = useState(initialBasic.name);
-  const [descriptionEn, setDescriptionEn] = useState(initialBasic.descriptionEn);
-  const [descriptionSv, setDescriptionSv] = useState(initialBasic.descriptionSv);
+  const [descriptionEn, setDescriptionEn] = useState(
+    initialBasic.descriptionEn,
+  );
+  const [descriptionSv, setDescriptionSv] = useState(
+    initialBasic.descriptionSv,
+  );
   const [logoUrl, setLogoUrl] = useState(initialBasic.logoUrl);
   const [lei, setLei] = useState(initialBasic.lei);
   const [tagsInput, setTagsInput] = useState("");

@@ -41,7 +41,9 @@ async function fetchMunicipalityRoutes(
   return [...municipalityRoutes, ...englishMunicipalityRoutes];
 }
 
-async function fetchCompanyRoutes(currentDate: string): Promise<SitemapEntry[]> {
+async function fetchCompanyRoutes(
+  currentDate: string,
+): Promise<SitemapEntry[]> {
   const companies = await getCompanies();
   if (!companies || companies.length === 0) {
     return [];

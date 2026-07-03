@@ -19,7 +19,9 @@ type CategoryFixture = {
   metadata: typeof baseMeta;
 };
 
-function makeCategory(overrides: Partial<CategoryFixture> = {}): CategoryFixture {
+function makeCategory(
+  overrides: Partial<CategoryFixture> = {},
+): CategoryFixture {
   return {
     id: "cat",
     category: 1,
@@ -289,7 +291,11 @@ describe("mapCompanyEditFormToRequestBody", () => {
             ...basePeriod.emissions!.scope3!,
             categories: [
               ...basePeriod.emissions!.scope3!.categories!,
-              makeCategory({ id: "c3", category: 3, total: undefined as unknown as number }),
+              makeCategory({
+                id: "c3",
+                category: 3,
+                total: undefined as unknown as number,
+              }),
             ],
           },
         },
@@ -362,7 +368,11 @@ describe("mapCompanyEditFormToRequestBody", () => {
             ...basePeriod.emissions!.scope3!,
             categories: [
               ...basePeriod.emissions!.scope3!.categories!,
-              makeCategory({ id: "c3", category: 3, total: undefined as unknown as number }),
+              makeCategory({
+                id: "c3",
+                category: 3,
+                total: undefined as unknown as number,
+              }),
             ],
           },
         },

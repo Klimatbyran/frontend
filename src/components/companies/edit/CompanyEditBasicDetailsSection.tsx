@@ -71,9 +71,7 @@ export function CompanyEditBasicDetailsSection({
             value={descriptionEn}
             originalValue={getDescriptionByLang(company, "EN")}
             onChange={setDescriptionEn}
-            onUndo={() =>
-              setDescriptionEn(getDescriptionByLang(company, "EN"))
-            }
+            onUndo={() => setDescriptionEn(getDescriptionByLang(company, "EN"))}
             type="textarea"
             textareaRows={3}
             aria-label={t("companyEditPage.aria.undoDescriptionEn")}
@@ -83,9 +81,7 @@ export function CompanyEditBasicDetailsSection({
             value={descriptionSv}
             originalValue={getDescriptionByLang(company, "SV")}
             onChange={setDescriptionSv}
-            onUndo={() =>
-              setDescriptionSv(getDescriptionByLang(company, "SV"))
-            }
+            onUndo={() => setDescriptionSv(getDescriptionByLang(company, "SV"))}
             type="textarea"
             textareaRows={3}
             aria-label={t("companyEditPage.aria.undoDescriptionSv")}

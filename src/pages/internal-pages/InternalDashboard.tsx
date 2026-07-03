@@ -23,7 +23,12 @@ function getEmissionsPerEmployeeRatio(company: RankedCompany): number {
 
 const SORT_COMPARATORS: Record<
   SortColumn,
-  (a: RankedCompany, b: RankedCompany, aChange: number, bChange: number) => number
+  (
+    a: RankedCompany,
+    b: RankedCompany,
+    aChange: number,
+    bChange: number,
+  ) => number
 > = {
   emissions: (a, b) => {
     const aEmissions =
@@ -66,10 +71,15 @@ function filterAndSortCompanies(
       company,
       emissionChange: companyChangeRate(company) || -1000000,
     }))
-    .sort(({ company: a, emissionChange: aChange }, { company: b, emissionChange: bChange }) => {
-      const comparison = compareCompanies(a, b, aChange, bChange, sortBy);
-      return sortOrder === "asc" ? comparison : -comparison;
-    })
+    .sort(
+      (
+        { company: a, emissionChange: aChange },
+        { company: b, emissionChange: bChange },
+      ) => {
+        const comparison = compareCompanies(a, b, aChange, bChange, sortBy);
+        return sortOrder === "asc" ? comparison : -comparison;
+      },
+    )
     .map(({ company }) => company);
 }
 
@@ -155,9 +165,7 @@ function formatEmissionsRatioDisplay(
   currentLanguage: string,
 ): string {
   const ratio = getEmissionsPerEmployeeRatio(company);
-  return ratio > 0
-    ? formatEmissionsAbsolute(ratio, currentLanguage)
-    : "N/A";
+  return ratio > 0 ? formatEmissionsAbsolute(ratio, currentLanguage) : "N/A";
 }
 
 function formatCompanyRowData(company: RankedCompany, currentLanguage: string) {
@@ -199,7 +207,9 @@ function CompanyTableRow({
         </div>
       </td>
       <td className="px-6 py-4 whitespace-nowrap">
-        <div className="text-sm font-medium text-gray-400">{row.latestYear}</div>
+        <div className="text-sm font-medium text-gray-400">
+          {row.latestYear}
+        </div>
       </td>
       <td className="px-6 py-4 whitespace-nowrap">
         <div className="text-sm font-medium text-gray-400">

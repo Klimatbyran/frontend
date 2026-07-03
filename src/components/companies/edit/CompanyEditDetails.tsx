@@ -139,9 +139,7 @@ export function CompanyEditDetails({
         onSave={handleSaveIndustryAndBaseYear}
       />
 
-      {displayError && (
-        <div className="text-red-500 mt-4">{displayError}</div>
-      )}
+      {displayError && <div className="text-red-500 mt-4">{displayError}</div>}
     </div>
   );
 }

@@ -71,7 +71,10 @@ function CardHeaderContent<T extends string>({
   effectiveLayout: "wide" | "narrow" | "page";
 }) {
   const showDataViewSelector =
-    (dataView && setDataView && dataViewOptions && dataViewOptions.length > 0) ||
+    (dataView &&
+      setDataView &&
+      dataViewOptions &&
+      dataViewOptions.length > 0) ||
     customDataViewSelector;
 
   return (

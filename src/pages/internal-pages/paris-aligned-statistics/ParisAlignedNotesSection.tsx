@@ -19,9 +19,9 @@ export function ParisAlignedNotesSection() {
           Companies with "Unknown" status are excluded from emissions totals
         </li>
         <li>
-          Companies with 0 or negative emissions at 2025 are marked as
-          "Unknown" rather than "Yes" or "No", as we cannot meaningfully assess
-          their Paris alignment when they have no emissions
+          Companies with 0 or negative emissions at 2025 are marked as "Unknown"
+          rather than "Yes" or "No", as we cannot meaningfully assess their
+          Paris alignment when they have no emissions
         </li>
         <li>
           Carbon budget uses the Carbon Law reduction rate (11.72% annual

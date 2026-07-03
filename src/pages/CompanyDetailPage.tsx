@@ -32,9 +32,8 @@ function selectPeriod(
 ): ReportingPeriod {
   if (selectedYear === "latest") return sortedPeriods[0];
   return (
-    sortedPeriods.find(
-      (p) => yearFromIsoDate(p.endDate) === selectedYear,
-    ) || sortedPeriods[0]
+    sortedPeriods.find((p) => yearFromIsoDate(p.endDate) === selectedYear) ||
+    sortedPeriods[0]
   );
 }
 

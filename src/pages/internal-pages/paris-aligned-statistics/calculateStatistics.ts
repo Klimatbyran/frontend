@@ -126,8 +126,11 @@ function processCalculableCompany({
     2025,
     2050,
   );
-  const carbonLawCumulativeEmissions =
-    calculateCarbonLawCumulativeEmissions(emissions2025, 2025, 2050);
+  const carbonLawCumulativeEmissions = calculateCarbonLawCumulativeEmissions(
+    emissions2025,
+    2025,
+    2050,
+  );
   const tonnesDiff = calculateCarbonBudgetTonnes(company, trendAnalysis);
 
   if (meetsParis) {
@@ -138,8 +141,7 @@ function processCalculableCompany({
       emissions2025,
       carbonBudget: carbonLawCumulativeEmissions,
       projectedEmissions: companyCumulativeEmissions,
-      diffFromBudget:
-        companyCumulativeEmissions - carbonLawCumulativeEmissions,
+      diffFromBudget: companyCumulativeEmissions - carbonLawCumulativeEmissions,
       hasScope3Categories: hasScope3,
     });
   }

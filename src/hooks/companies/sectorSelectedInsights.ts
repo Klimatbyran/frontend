@@ -32,8 +32,14 @@ function buildCompaniesInSectorInsight(
 export function buildSectorSelectedInsights(
   context: SectorInsightsContext & { selectedSector: string },
 ): ChartInsight[] {
-  const { t, companies, pieChartData, selectedSector, reportingYear, currentLanguage } =
-    context;
+  const {
+    t,
+    companies,
+    pieChartData,
+    selectedSector,
+    reportingYear,
+    currentLanguage,
+  } = context;
 
   const reportingCompanies = countReportingCompanies(
     companies,
@@ -72,7 +78,8 @@ export function buildSectorSelectedInsights(
       {
         titleKey: "sectorsOverviewPage.insights.reducingEmissions",
         statLabelKey: "sectorsOverviewPage.insights.sinceBaseYear",
-        topDescriptionKey: "sectorsOverviewPage.insights.topReducersDescription",
+        topDescriptionKey:
+          "sectorsOverviewPage.insights.topReducersDescription",
         fallbackDescriptionKey:
           "sectorsOverviewPage.insights.reducingEmissionsDescription",
         comparableCount,
@@ -89,7 +96,8 @@ export function buildSectorSelectedInsights(
       {
         titleKey: "sectorsOverviewPage.insights.increasingEmissions",
         statLabelKey: "sectorsOverviewPage.insights.increasingSinceBaseYear",
-        topDescriptionKey: "sectorsOverviewPage.insights.topIncreasersDescription",
+        topDescriptionKey:
+          "sectorsOverviewPage.insights.topIncreasersDescription",
         fallbackDescriptionKey:
           "sectorsOverviewPage.insights.increasingEmissionsDescription",
         comparableCount,

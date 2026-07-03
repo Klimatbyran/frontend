@@ -7,9 +7,7 @@ import {
 } from "./helpers";
 
 type EconomyUpdate = NonNullable<
-  NonNullable<
-    import("@/types/company").ReportingPeriodPayloadItem["economy"]
-  >
+  NonNullable<import("@/types/company").ReportingPeriodPayloadItem["economy"]>
 >;
 
 export function mapTurnover(
@@ -41,8 +39,7 @@ export function mapTurnover(
           : getFormValue(formData, turnoverCurrencyKey)
         : originalTurnover?.currency,
       verified:
-        turnoverNewVerified ??
-        isOriginallyVerified(originalTurnover?.metadata),
+        turnoverNewVerified ?? isOriginallyVerified(originalTurnover?.metadata),
     };
   } else if (turnoverVerifiedChanged && originalTurnover) {
     economy.turnover = {

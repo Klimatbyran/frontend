@@ -7,9 +7,7 @@ import {
 } from "./helpers";
 
 type EmissionsUpdate = NonNullable<
-  NonNullable<
-    import("@/types/company").ReportingPeriodPayloadItem["emissions"]
-  >
+  NonNullable<import("@/types/company").ReportingPeriodPayloadItem["emissions"]>
 >;
 
 export function mapEmissionsStatedTotal(

@@ -4,7 +4,10 @@ import type {
   GicsOption,
 } from "@/types/company";
 import { CommentSourceBlock } from "./CommentSourceBlock";
-import { BaseYearField, GicsSubIndustryField } from "./CompanyEditIndustryFields";
+import {
+  BaseYearField,
+  GicsSubIndustryField,
+} from "./CompanyEditIndustryFields";
 
 interface CompanyEditIndustrySectionProps {
   company: CompanyDetailsType;

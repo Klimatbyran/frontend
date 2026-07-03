@@ -35,9 +35,7 @@ export const blogMarkdownComponents: Components = {
       <table {...props} className="w-full overflow-hidden" />
     </div>
   ),
-  thead: ({ node, ...props }) => (
-    <thead {...props} className="bg-blue-5/20" />
-  ),
+  thead: ({ node, ...props }) => <thead {...props} className="bg-blue-5/20" />,
   th: ({ node, ...props }) => (
     <th
       {...props}
@@ -212,9 +210,7 @@ export function BlogRelatedPosts({
                 </span>
                 <div className="flex items-center gap-2 text-grey text-sm">
                   <CalendarDays className="w-4 h-4" />
-                  <span>
-                    {new Date(post.date).toLocaleDateString("sv-SE")}
-                  </span>
+                  <span>{new Date(post.date).toLocaleDateString("sv-SE")}</span>
                 </div>
                 <div className="flex items-center gap-2 text-grey text-sm">
                   <Clock className="w-4 h-4" />

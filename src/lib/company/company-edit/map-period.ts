@@ -5,10 +5,7 @@ import type {
 import { mapEmployees, mapTurnover } from "./economy-fields";
 import { mapScope1Emissions } from "./emissions-scope1";
 import { mapScope2Emissions } from "./emissions-scope2";
-import {
-  mapScope3Categories,
-  mapScope3StatedTotal,
-} from "./emissions-scope3";
+import { mapScope3Categories, mapScope3StatedTotal } from "./emissions-scope3";
 import {
   mapEmissionsStatedTotal,
   mapScope1And2Emissions,
@@ -38,8 +35,7 @@ export function mapSinglePeriodToPayload(
   mapTurnover(period, formData, periodUpdate.economy!);
   mapEmployees(period, formData, periodUpdate.economy!);
 
-  const hasEmissionsChanges =
-    Object.keys(periodUpdate.emissions!).length > 0;
+  const hasEmissionsChanges = Object.keys(periodUpdate.emissions!).length > 0;
   const hasEconomyChanges = Object.keys(periodUpdate.economy!).length > 0;
   const hasPeriodChanges =
     periodFields.startDate !== period.startDate ||

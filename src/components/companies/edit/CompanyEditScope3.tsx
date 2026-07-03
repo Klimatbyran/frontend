@@ -19,9 +19,7 @@ function getCategoryValue(
   index: number,
   categories: Scope3CategoryWithMetadata[] = [],
 ): number | string {
-  const category = categories.find(
-    (item) => item.category - 1 === index,
-  );
+  const category = categories.find((item) => item.category - 1 === index);
   if (!category || category.total === undefined || category.total === null) {
     return "";
   }
@@ -32,9 +30,7 @@ function getCategoryVerified(
   index: number,
   categories: Scope3CategoryWithMetadata[] = [],
 ): boolean {
-  const category = categories.find(
-    (item) => item.category - 1 === index,
-  );
+  const category = categories.find((item) => item.category - 1 === index);
   return isVerified(category?.metadata);
 }
 
@@ -47,9 +43,7 @@ function getScope3Categories(period: EditableReportingPeriod) {
     }));
 }
 
-function getStatedTotalValue(
-  period: EditableReportingPeriod,
-): number | string {
+function getStatedTotalValue(period: EditableReportingPeriod): number | string {
   const total = period.emissions?.scope3?.statedTotalEmissions?.total;
   if (total === undefined || total === null) {
     return "";

@@ -143,8 +143,7 @@ function computeSummaryMetrics(filteredCompanies: CompanyAnalysis[]) {
       (a) => a.yearlyPercentageChange < -11,
     ).length,
     meetsParisCount: filteredCompanies.filter((analysis) => {
-      const trendAnalysis =
-        analysis.method !== "none" ? analysis : null;
+      const trendAnalysis = analysis.method !== "none" ? analysis : null;
       return calculateMeetsParis(analysis.company, trendAnalysis);
     }).length,
   };

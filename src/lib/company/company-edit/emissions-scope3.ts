@@ -7,9 +7,7 @@ import {
 } from "./helpers";
 
 type EmissionsUpdate = NonNullable<
-  NonNullable<
-    import("@/types/company").ReportingPeriodPayloadItem["emissions"]
-  >
+  NonNullable<import("@/types/company").ReportingPeriodPayloadItem["emissions"]>
 >;
 
 function getChangedScope3CategoryIds(
@@ -20,7 +18,10 @@ function getChangedScope3CategoryIds(
   const prefix = "scope-3-" + period.id + "-";
 
   for (const formKey of formKeys) {
-    if (formKey.startsWith(prefix) && !formKey.includes("statedTotalEmissions")) {
+    if (
+      formKey.startsWith(prefix) &&
+      !formKey.includes("statedTotalEmissions")
+    ) {
       const parts = formKey.split("-");
       const categoryId = parts[3];
       if (categoryId) changedCategoryIds.add(categoryId);
@@ -33,9 +34,7 @@ function getChangedScope3CategoryIds(
 function buildVerifiedOnlyCategoryUpdate(
   categoryId: string,
   originalCategory: NonNullable<
-    NonNullable<
-      EditableReportingPeriod["emissions"]["scope3"]
-    >["categories"]
+    NonNullable<EditableReportingPeriod["emissions"]["scope3"]>["categories"]
   >[number],
   originalValue: number,
   newVerified: boolean | undefined,
@@ -51,11 +50,13 @@ function buildVerifiedOnlyCategoryUpdate(
 function buildValueChangedCategoryUpdate(
   categoryId: string,
   newValue: string | undefined,
-  originalCategory: NonNullable<
-    NonNullable<
-      EditableReportingPeriod["emissions"]["scope3"]
-    >["categories"]
-  >[number] | undefined,
+  originalCategory:
+    | NonNullable<
+        NonNullable<
+          EditableReportingPeriod["emissions"]["scope3"]
+        >["categories"]
+      >[number]
+    | undefined,
   verifiedChanged: boolean,
   newVerified: boolean | undefined,
 ) {

@@ -111,7 +111,9 @@ function MeetsParisTooltipContent({
     budgetValue < 0
       ? t("companiesOverviewPage.visualizations.meetsParis.tooltip.underBudget")
       : budgetValue > 0
-        ? t("companiesOverviewPage.visualizations.meetsParis.tooltip.overBudget")
+        ? t(
+            "companiesOverviewPage.visualizations.meetsParis.tooltip.overBudget",
+          )
         : t("companiesOverviewPage.visualizations.meetsParis.tooltip.onBudget");
 
   return (

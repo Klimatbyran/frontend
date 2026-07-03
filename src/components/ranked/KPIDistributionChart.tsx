@@ -163,9 +163,7 @@ function BooleanPieChart<T>({
               if (!active || !p?.length) return null;
               const item = p[0];
               const pct =
-                total > 0
-                  ? ((Number(item.value) / total) * 100).toFixed(1)
-                  : 0;
+                total > 0 ? ((Number(item.value) / total) * 100).toFixed(1) : 0;
               return (
                 <div className="bg-black-1 border border-white/10 rounded-lg px-3 py-2 text-xs shadow-xl">
                   <p className="text-white font-semibold">{item.name}</p>
@@ -189,9 +187,7 @@ function findClosestBinIndex(
   return bins.reduce((best, bin, i) => {
     const binMid = (bin.min + bin.max) / 2;
     const bestMid = (bins[best].min + bins[best].max) / 2;
-    return Math.abs(binMid - average) < Math.abs(bestMid - average)
-      ? i
-      : best;
+    return Math.abs(binMid - average) < Math.abs(bestMid - average) ? i : best;
   }, 0);
 }
 

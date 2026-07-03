@@ -194,9 +194,7 @@ function CSRDSection() {
         </div>
         <div className="grid md:grid-cols-2 gap-8">
           <SectionCard
-            icon={
-              <Target className="w-12 h-12 text-blue-3 mb-6 drop-shadow" />
-            }
+            icon={<Target className="w-12 h-12 text-blue-3 mb-6 drop-shadow" />}
             title={t("learnMorePage.parisAlignment")}
             description={t("learnMorePage.parisAlignmentDescription")}
             items={parisAlignmentItems}
