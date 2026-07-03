@@ -103,10 +103,7 @@ export function CompaniesOverviewPage() {
   };
 
   const [selectedKPI, setSelectedKPI] = useState(getKPIFromURL());
-  const selectedSector = useMemo(
-    () => getSectorFromURL(),
-    [getSectorFromURL],
-  );
+  const selectedSector = useMemo(() => getSectorFromURL(), [getSectorFromURL]);
   const viewMode = getViewModeFromURL();
 
   // Ensure a sector is written to the URL once sectors are known

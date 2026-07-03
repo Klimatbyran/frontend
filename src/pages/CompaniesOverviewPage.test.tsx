@@ -95,9 +95,11 @@ vi.mock("@/components/ranked/KPIChipSelector", () => ({
 }));
 
 vi.mock("@/components/ranked/OverviewSplitLayout", () => ({
-  OverviewSplitLayout: ({ visualization }: { visualization: React.ReactNode }) => (
-    <div data-testid="visualization">{visualization}</div>
-  ),
+  OverviewSplitLayout: ({
+    visualization,
+  }: {
+    visualization: React.ReactNode;
+  }) => <div data-testid="visualization">{visualization}</div>,
 }));
 
 vi.mock("@/components/ranked/RankedList", () => ({
@@ -138,7 +140,10 @@ vi.mock("@/components/companies/rankedList/CompanyInsightsPanel", () => ({
     companyData,
     section,
   }: {
-    companyData: Array<{ name: string; industry?: { industryGics?: { sectorCode?: string } } }>;
+    companyData: Array<{
+      name: string;
+      industry?: { industryGics?: { sectorCode?: string } };
+    }>;
     section?: string;
   }) => {
     if (section === "top") {
