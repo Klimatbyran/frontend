@@ -6,7 +6,7 @@ export type OverviewViewMode = "map" | "list" | "graph";
 const VISUALIZATION_PANEL_CLASS = "relative min-w-0 h-full";
 
 /** Mobile viewport fraction and fixed desktop pixel height for the map/list panel */
-export const OVERVIEW_PANEL_HEIGHT = "h-[85vh] md:h-[632px]" as const;
+export const OVERVIEW_PANEL_HEIGHT = "h-[85vh] md:h-[680px]" as const;
 
 interface OverviewSplitLayoutProps {
   viewMode: OverviewViewMode;

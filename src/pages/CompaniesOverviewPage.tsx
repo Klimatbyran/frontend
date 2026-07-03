@@ -242,7 +242,7 @@ export function CompaniesOverviewPage() {
   );
 
   const visualizationPanel = (
-    <div className="h-full min-h-[500px] md:min-h-[570px]">
+    <div className="h-full min-h-[500px] md:min-h-[620px]">
       <CompanyKPIVisualization
         companies={companiesWithKPIs}
         selectedKPI={selectedKPI}
