@@ -1610,7 +1610,9 @@
           "description": "Antal elbilar per laddningspunkt",
           "detailedDescription": "Antal elbilar per publik laddningspunkt per kommun år 2025. Ju färre bilar per laddningspunkt desto bättre, god infrastruktur gynnar ökad elbilskonsumtion",
           "source": "Power Circle",
-          "nullValues": "Saknar laddpunkter"
+          "nullValues": "Saknar laddpunkter",
+          "missingCount_one": "{{count}} kommun saknar laddpunkter",
+          "missingCount_other": "{{count}} kommuner saknar laddpunkter"
         },
         "bicycleMetrePerCapita": {
           "label": "Cyklarna",

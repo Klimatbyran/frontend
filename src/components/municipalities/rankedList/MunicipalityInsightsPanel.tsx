@@ -111,6 +111,7 @@ function InsightsPanel({
       }
       distributionStats={statistics.distributionStats}
       missingDataCount={statistics.nullCount}
+      missingDataCountKey={`municipalities.list.kpis.${String(selectedKPI.key)}.missingCount`}
       missingDataLabel={selectedKPI.nullValues}
       sourceLinks={sourceLinks}
     />
