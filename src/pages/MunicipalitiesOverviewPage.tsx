@@ -32,6 +32,7 @@ import {
   OverviewSplitLayout,
   type OverviewViewMode,
 } from "@/components/ranked/OverviewSplitLayout";
+import { useScreenSize } from "@/hooks/useScreenSize";
 import { KPIChipSelector } from "@/components/ranked/KPIChipSelector";
 import { OverviewPageSkeleton } from "@/components/ranked/OverviewPageSkeleton";
 import type { Municipality } from "@/types/municipality";
@@ -50,6 +51,7 @@ const MUNICIPALITY_KPI_ICONS: Record<string, React.ReactNode> = {
 
 export function MunicipalitiesOverviewPage() {
   const { t } = useTranslation();
+  const { isMobile } = useScreenSize();
   const {
     municipalitiesData,
     loading: municipalitiesLoading,
@@ -191,6 +193,7 @@ export function MunicipalitiesOverviewPage() {
       data={mapData}
       selectedKPI={selectedKPI}
       onAreaClick={handleMunicipalityAreaClick}
+      defaultZoom={isMobile ? 4 : undefined}
       className="max-w-none"
     />
   );
