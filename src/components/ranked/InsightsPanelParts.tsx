@@ -18,30 +18,36 @@ interface DistributionStat {
   label: string;
 }
 
+type DistributionEntityType = "municipalities" | "companies" | "regions";
+
 interface DistributionBoxProps {
   /** The chart or visualisation to display at the bottom */
   chart: React.ReactNode;
+  /** Entity type used to resolve distribution description copy */
+  entityType: DistributionEntityType;
   /** Override the default title (falls back to distribution.title key) */
   title?: string;
-  /** Override the default subtitle (falls back to distribution.subtitle key) */
+  /** Override the default subtitle (falls back to entity-specific distribution.subtitle key) */
   subtitle?: string;
 }
 
 /** Titled box that places a description at the top and a chart at the bottom. */
 export function DistributionBox({
   chart,
+  entityType,
   title,
   subtitle,
 }: DistributionBoxProps) {
   const { t } = useTranslation();
+  const distributionKey = `${entityType}.list.insights.distribution`;
   return (
     <div className="bg-white/5 rounded-level-2 p-6 flex flex-col justify-between h-full gap-6">
       <div>
         <h3 className="text-2xl font-bold text-white">
-          {title ?? t("municipalities.list.insights.distribution.title")}
+          {title ?? t(`${distributionKey}.title`)}
         </h3>
         <p className="text-sm text-white/60 leading-relaxed mt-2">
-          {subtitle ?? t("municipalities.list.insights.distribution.subtitle")}
+          {subtitle ?? t(`${distributionKey}.subtitle`)}
         </p>
       </div>
       {chart}

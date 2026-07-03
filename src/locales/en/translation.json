@@ -1333,6 +1333,10 @@
         },
         "keyStatistics": {
           "average": "Average:"
+        },
+        "distribution": {
+          "title": "Distribution",
+          "subtitle": "Shows how companies are spread across the scale for the selected indicator. Blue bars mean better results, pink worse, and the dashed line marks the average."
         }
       },
       "sort": {
@@ -1461,6 +1465,12 @@
             "true": "Meets Paris Agreement",
             "false": "Fails Paris Agreement"
           }
+        }
+      },
+      "insights": {
+        "distribution": {
+          "title": "Distribution",
+          "subtitle": "Shows how regions are spread across the scale for the selected indicator. Blue bars mean better results, pink worse, and the dashed line marks the average."
         }
       }
     }

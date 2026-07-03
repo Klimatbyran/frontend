@@ -114,6 +114,7 @@ function RegionalInsightsPanel({
 
   const distributionPanel = (
     <DistributionBox
+      entityType="regions"
       chart={
         <KPIDistributionChart<Region>
           data={regionData}
