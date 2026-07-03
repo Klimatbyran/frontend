@@ -1545,7 +1545,9 @@
           "description": "Number of electric vehicles per charging point",
           "detailedDescription": "Number of electric vehicles per public charging point, per municipality in 2025. Lower numbers are better, as good infrastructure promotes increased electric vehicle adoption.",
           "source": "Power Circle",
-          "nullValues": "No charging points"
+          "nullValues": "No charging points",
+          "missingCount_one": "{{count}} municipality without charging points",
+          "missingCount_other": "{{count}} municipalities without charging points"
         },
         "bicycleMetrePerCapita": {
           "label": "Bicycles",
