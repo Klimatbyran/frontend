@@ -19,7 +19,7 @@ interface ContentGridPageProps {
   canonicalUrl: string;
   items: ContentItem[];
   renderCard: (item: ContentItem) => React.ReactNode;
-  structuredData?: any;
+  structuredData?: Record<string, unknown>;
   featuredPost?: React.ReactNode;
 }
 

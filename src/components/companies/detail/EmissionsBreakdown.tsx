@@ -1,14 +1,15 @@
 import { useTranslation } from "react-i18next";
-import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
 import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { useLanguage } from "@/components/LanguageProvider";
-import { localizeUnit } from "@/utils/formatting/localization";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
-import { AiIcon } from "@/components/ui/ai-icon";
-import { CardHeader } from "@/components/layout/CardHeader";
-import { InfoTooltip } from "@/components/layout/InfoTooltip";
+import {
+  BiogenicEmissionsCard,
+  EmissionsBreakdownHeader,
+  Scope3CategoriesSection,
+  ScopeOverviewGrid,
+} from "./EmissionsBreakdownParts";
 
 interface EmissionsBreakdownProps {
   emissions: {
@@ -38,26 +39,11 @@ interface EmissionsBreakdownProps {
   showOnlyScope3?: boolean;
 }
 
-export function EmissionsBreakdown({
-  emissions,
-  year,
-  className,
-  showOnlyScope3 = false,
-}: EmissionsBreakdownProps) {
-  const { t } = useTranslation();
-  const {
-    getCategoryName,
-    getCategoryDescription,
-    getCategoryIcon,
-    upstreamCategories,
-    downstreamCategories,
-  } = useCategoryMetadata();
-  const { isMobile } = useScreenSize();
-  const { currentLanguage } = useLanguage();
-  const { isAIGenerated } = useVerificationStatus();
-  if (!emissions) return null;
-
-  const scopeData = [
+function buildScopeData(
+  emissions: NonNullable<EmissionsBreakdownProps["emissions"]>,
+  t: (key: string) => string,
+) {
+  return [
     {
       name: t("emissionsBreakdown.scope1"),
       value: emissions.scope1?.total || 0,
@@ -77,7 +63,29 @@ export function EmissionsBreakdown({
       color: "bg-blue-3",
     },
   ];
+}
 
+export function EmissionsBreakdown({
+  emissions,
+  year,
+  className,
+  showOnlyScope3 = false,
+}: EmissionsBreakdownProps) {
+  const { t } = useTranslation();
+  const {
+    getCategoryName,
+    getCategoryDescription,
+    getCategoryIcon,
+    upstreamCategories,
+    downstreamCategories,
+  } = useCategoryMetadata();
+  const { isMobile } = useScreenSize();
+  const { currentLanguage } = useLanguage();
+  const { isAIGenerated } = useVerificationStatus();
+
+  if (!emissions) return null;
+
+  const scopeData = buildScopeData(emissions, t);
   const totalEmissions = scopeData.reduce((sum, scope) => sum + scope.value, 0);
   const scope3Categories = emissions.scope3?.categories || [];
 
@@ -85,192 +93,32 @@ export function EmissionsBreakdown({
     <div className={cn("bg-black-2 rounded-level-1", className)}>
       {!showOnlyScope3 && (
         <>
-          <CardHeader
-            title={t("emissionsBreakdown.title", { year })}
-            tooltipContent={t("emissionsBreakdown.tooltip")}
-            className="mb-12"
+          <EmissionsBreakdownHeader year={year} />
+          <ScopeOverviewGrid
+            scopeData={scopeData}
+            totalEmissions={totalEmissions}
           />
-
-          <div className="grid grid-cols-3 gap-8 mb-16">
-            {scopeData.map((scope) => (
-              <div
-                key={scope.name}
-                className="bg-black-1 rounded-level-2 p-8 space-y-4"
-              >
-                <div className="flex items-center gap-4">
-                  <div className={cn("w-3 h-3 rounded-full", scope.color)} />
-                  <Text variant="body">{scope.name}</Text>
-                </div>
-
-                <Text className="text-4xl font-light">
-                  {scope.value.toLocaleString()}
-                  <span className="text-sm text-grey ml-2">
-                    {t("emissionsBreakdown.unit")}
-                  </span>
-                </Text>
-
-                <div className="h-2 bg-black-2 rounded-full overflow-hidden">
-                  <div
-                    className={cn("h-full rounded-full", scope.color)}
-                    style={{
-                      width: `${(scope.value / totalEmissions) * 100}%`,
-                    }}
-                  />
-                </div>
-
-                <Text variant="body" className="text-sm">
-                  {scope.description}
-                </Text>
-              </div>
-            ))}
-          </div>
         </>
       )}
 
-      {/* Scope 3 Categories */}
-      {scope3Categories.length > 0 && (
-        <div className={cn(!showOnlyScope3 && "mt-16", "space-y-8")}>
-          {!showOnlyScope3 && (
-            <Text variant="h4">{t("emissionsBreakdown.scope3Categories")}</Text>
-          )}
-
-          <div
-            className={`grid ${
-              isMobile ? "grid-cols-1" : "grid-cols-2"
-            } gap-16`}
-          >
-            {/* Upstream Categories */}
-            <div className="space-y-8">
-              <Text variant="h5" className="text-grey">
-                {t("emissionsBreakdown.upstream")}
-              </Text>
-              <div className="space-y-4">
-                {upstreamCategories.map((categoryId) => {
-                  const reportedCategory = scope3Categories.find(
-                    (c) => c.category === categoryId,
-                  );
-                  const Icon = getCategoryIcon(categoryId);
-
-                  return (
-                    <div
-                      key={categoryId}
-                      className="flex items-center gap-6 bg-black-1 rounded-level-2 p-6"
-                    >
-                      <div className="w-12 h-12 rounded-full bg-blue-5/30 flex items-center justify-center flex-shrink-0">
-                        <Icon className="w-6 h-6 text-blue-2" />
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2">
-                          <Text variant="body">
-                            {categoryId}. {getCategoryName(categoryId)}
-                          </Text>
-                          <InfoTooltip ariaLabel="Information about this emissions category">
-                            <p>{getCategoryDescription(categoryId)}</p>
-                          </InfoTooltip>
-                        </div>
-                        {reportedCategory && reportedCategory.total != null ? (
-                          <Text variant="body" className="text-blue-2">
-                            {localizeUnit(
-                              reportedCategory.total,
-                              currentLanguage,
-                            )}
-                            <span className="text-sm text-grey ml-2">
-                              {reportedCategory.unit}
-                            </span>
-                            {isAIGenerated(reportedCategory) && (
-                              <span className="ml-2">
-                                <AiIcon size="sm" />
-                              </span>
-                            )}
-                          </Text>
-                        ) : (
-                          <Text variant="body" className="text-grey">
-                            {t("emissionsBreakdown.notReported")}
-                          </Text>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Downstream Categories */}
-            <div className="space-y-8">
-              <Text variant="h5" className="text-grey">
-                {t("emissionsBreakdown.downstream")}
-              </Text>
-              <div className="space-y-4">
-                {downstreamCategories.map((categoryId) => {
-                  const reportedCategory = scope3Categories.find(
-                    (c) => c.category === categoryId,
-                  );
-                  const Icon = getCategoryIcon(categoryId);
-
-                  return (
-                    <div
-                      key={categoryId}
-                      className="flex items-center gap-6 bg-black-1 rounded-level-2 p-6"
-                    >
-                      <div className="w-12 h-12 rounded-full bg-blue-5/30 flex items-center justify-center flex-shrink-0">
-                        <Icon className="w-6 h-6 text-blue-2" />
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2">
-                          <Text variant="body">
-                            {categoryId}. {getCategoryName(categoryId)}
-                          </Text>
-                          <InfoTooltip ariaLabel="Information about this emissions category">
-                            <p>{getCategoryDescription(categoryId)}</p>
-                          </InfoTooltip>
-                        </div>
-                        {reportedCategory && reportedCategory.total != null ? (
-                          <Text variant="body" className="text-blue-2">
-                            {localizeUnit(
-                              reportedCategory.total,
-                              currentLanguage,
-                            )}
-                            <span className="text-sm text-grey ml-2">
-                              {reportedCategory.unit}
-                            </span>
-                            {isAIGenerated(reportedCategory) && (
-                              <span className="ml-2">
-                                <AiIcon size="sm" />
-                              </span>
-                            )}
-                          </Text>
-                        ) : (
-                          <Text variant="body" className="text-grey">
-                            {t("emissionsBreakdown.notReported")}
-                          </Text>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      <Scope3CategoriesSection
+        scope3Categories={scope3Categories}
+        upstreamCategories={upstreamCategories}
+        downstreamCategories={downstreamCategories}
+        getCategoryName={getCategoryName}
+        getCategoryDescription={getCategoryDescription}
+        getCategoryIcon={getCategoryIcon}
+        currentLanguage={currentLanguage}
+        isAIGenerated={isAIGenerated}
+        isMobile={isMobile}
+        showOnlyScope3={showOnlyScope3}
+      />
 
       {emissions.biogenicEmissions && (
-        <div className="mt-8 p-6 bg-black-1 rounded-level-2">
-          <div className="flex items-center gap-2">
-            <Text variant="h4">
-              {t("emissionsBreakdown.biogenicEmissions")}
-            </Text>
-            <InfoTooltip ariaLabel="Information about biogenic emissions">
-              <p>{t("scope.biogenic")}</p>
-            </InfoTooltip>
-          </div>
-          <Text variant="body" className="mt-2">
-            {emissions.biogenicEmissions.total.toLocaleString()}
-            <span className="text-sm text-grey ml-2">
-              {emissions.biogenicEmissions.unit}
-            </span>
-          </Text>
-        </div>
+        <BiogenicEmissionsCard
+          total={emissions.biogenicEmissions.total}
+          unit={emissions.biogenicEmissions.unit}
+        />
       )}
     </div>
   );

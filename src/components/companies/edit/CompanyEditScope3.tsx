@@ -15,114 +15,153 @@ interface Scope3CategoryWithMetadata {
   metadata?: { verifiedBy?: { name: string } | null };
 }
 
+function getCategoryValue(
+  index: number,
+  categories: Scope3CategoryWithMetadata[] = [],
+): number | string {
+  const category = categories.find(
+    (item) => item.category - 1 === index,
+  );
+  if (!category || category.total === undefined || category.total === null) {
+    return "";
+  }
+  return category.total;
+}
+
+function getCategoryVerified(
+  index: number,
+  categories: Scope3CategoryWithMetadata[] = [],
+): boolean {
+  const category = categories.find(
+    (item) => item.category - 1 === index,
+  );
+  return isVerified(category?.metadata);
+}
+
+function getScope3Categories(period: EditableReportingPeriod) {
+  return (period.emissions?.scope3?.categories || [])
+    .filter((category) => category.total !== null)
+    .map((category) => ({
+      ...category,
+      total: category.total as number,
+    }));
+}
+
+function getStatedTotalValue(
+  period: EditableReportingPeriod,
+): number | string {
+  const total = period.emissions?.scope3?.statedTotalEmissions?.total;
+  if (total === undefined || total === null) {
+    return "";
+  }
+  return total;
+}
+
+function Scope3StatedTotalRow({
+  periods,
+  onInputChange,
+  formData,
+}: CompanyEditComponentProps) {
+  const { t } = useTranslation();
+
+  return (
+    <CompanyEditRow
+      key="scope-3-stated-total"
+      name={t("companies.categories.statedTotal")}
+    >
+      {periods.map((period) => (
+        <CompanyEditInputField
+          name={`scope-3-statedTotalEmissions-${period.id}`}
+          type="number"
+          key={`scope-3-statedTotalEmissions-${period.id}`}
+          displayAddition="verification"
+          verified={
+            !!period.emissions?.scope3?.statedTotalEmissions?.metadata
+              ?.verifiedBy
+          }
+          originalVerified={
+            !!period.emissions?.scope3?.statedTotalEmissions?.metadata
+              ?.verifiedBy
+          }
+          value={getStatedTotalValue(period)}
+          onInputChange={onInputChange}
+          formData={formData}
+        />
+      ))}
+    </CompanyEditRow>
+  );
+}
+
+interface Scope3CategoryEditRowProps extends CompanyEditComponentProps {
+  categoryId: number;
+  categoryName: string;
+}
+
+function Scope3CategoryEditRow({
+  periods,
+  onInputChange,
+  formData,
+  categoryId,
+  categoryName,
+}: Scope3CategoryEditRowProps) {
+  return (
+    <CompanyEditRow key={`scope-3-${categoryId}`} name={categoryName}>
+      {periods.map((period) => {
+        const categories = getScope3Categories(period);
+        return (
+          <CompanyEditInputField
+            name={`scope-3-${period.id}-${categoryId}`}
+            type="number"
+            key={`scope-3-${period.id}-${categoryId}`}
+            displayAddition="verification"
+            verified={getCategoryVerified(categoryId - 1, categories)}
+            originalVerified={getCategoryVerified(categoryId - 1, categories)}
+            value={getCategoryValue(categoryId - 1, categories)}
+            onInputChange={onInputChange}
+            formData={formData}
+          />
+        );
+      })}
+    </CompanyEditRow>
+  );
+}
+
 export function CompanyEditScope3({
   periods,
   onInputChange,
   formData,
 }: CompanyEditComponentProps) {
   const { categoryMetadata } = useCategoryMetadata();
-  const { t } = useTranslation();
 
   if (periods.length <= 0) {
     return <></>;
   }
 
-  const getCategoryValue = (
-    index: number,
-    categories: Scope3CategoryWithMetadata[] = [],
-  ): number | string => {
-    const category = categories.find(
-      (category) => category.category - 1 === index,
-    );
-    if (!category || category.total === undefined || category.total === null)
-      return "";
-    return category.total;
-  };
-
-  const getCategoryVerified = (
-    index: number,
-    categories: Scope3CategoryWithMetadata[] = [],
-  ): boolean => {
-    const category = categories.find(
-      (category) => category.category - 1 === index,
-    );
-    // metadata may not exist, so coerce to boolean
-    return isVerified(category?.metadata);
-  };
-
-  // Instead of a static list, use categoryMetadata for all 16 categories
-  const categoryIds = Array.from({ length: 16 }, (_, i) => i + 1);
+  const categoryIds = Array.from({ length: 16 }, (_, index) => index + 1);
 
   return (
     <>
-      <CompanyEditRow key={"scope-3"} headerName noHover name="Scope 3">
-        {periods.map((period: EditableReportingPeriod) => (
+      <CompanyEditRow key="scope-3" headerName noHover name="Scope 3">
+        {periods.map((period) => (
           <CompanyEmptyField key={period.id} />
         ))}
       </CompanyEditRow>
 
-      {/* Add statedTotalEmissions (lump sum) row */}
-      <CompanyEditRow
-        key={"scope-3-stated-total"}
-        name={t("companies.categories.statedTotal")}
-      >
-        {periods.map((period: EditableReportingPeriod) => (
-          <CompanyEditInputField
-            name={`scope-3-statedTotalEmissions-${period.id}`}
-            type="number"
-            key={`scope-3-statedTotalEmissions-${period.id}`}
-            displayAddition="verification"
-            verified={
-              !!period.emissions?.scope3?.statedTotalEmissions?.metadata
-                ?.verifiedBy
-            }
-            originalVerified={
-              !!period.emissions?.scope3?.statedTotalEmissions?.metadata
-                ?.verifiedBy
-            }
-            value={
-              period.emissions?.scope3?.statedTotalEmissions?.total ===
-                undefined ||
-              period.emissions?.scope3?.statedTotalEmissions?.total === null
-                ? ""
-                : period.emissions?.scope3?.statedTotalEmissions?.total
-            }
-            onInputChange={onInputChange}
-            formData={formData}
-          />
-        ))}
-      </CompanyEditRow>
+      <Scope3StatedTotalRow
+        periods={periods}
+        onInputChange={onInputChange}
+        formData={formData}
+      />
 
       {categoryIds.map((categoryId) => (
-        <CompanyEditRow
-          key={"scope-3-" + categoryId}
-          name={`${categoryId}. ${categoryMetadata[categoryId]?.name || ""}`}
-        >
-          {periods.map((period: EditableReportingPeriod) => {
-            const categories = (period.emissions?.scope3?.categories || [])
-              .filter((cat) => cat.total !== null)
-              .map((cat) => ({
-                ...cat,
-                total: cat.total as number,
-              }));
-            return (
-              <CompanyEditInputField
-                name={`scope-3-${period.id}-${categoryId}`}
-                type="number"
-                key={`scope-3-${period.id}-${categoryId}`}
-                displayAddition="verification"
-                verified={getCategoryVerified(categoryId - 1, categories)}
-                originalVerified={getCategoryVerified(
-                  categoryId - 1,
-                  categories,
-                )}
-                value={getCategoryValue(categoryId - 1, categories)}
-                onInputChange={onInputChange}
-                formData={formData}
-              />
-            );
-          })}
-        </CompanyEditRow>
+        <Scope3CategoryEditRow
+          key={`scope-3-${categoryId}`}
+          periods={periods}
+          onInputChange={onInputChange}
+          formData={formData}
+          categoryId={categoryId}
+          categoryName={`${categoryId}. ${categoryMetadata[categoryId]?.name || ""}`}
+        />
       ))}
     </>
   );

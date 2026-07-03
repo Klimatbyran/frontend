@@ -20,7 +20,262 @@ const INPUT_CLASS_XL = "mt-1 w-full max-w-xl bg-black-1 border text-foreground";
 const TEXTAREA_CLASS =
   "mt-1 w-full max-w-xl p-2 rounded border text-foreground bg-black-1";
 
-export function AddCompanyPage() {
+interface FormFieldProps {
+  id: string;
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
+  required?: boolean;
+  type?: string;
+  rows?: number;
+  multiline?: boolean;
+  helpText?: string;
+}
+
+function FormField({
+  id,
+  label,
+  value,
+  onChange,
+  placeholder,
+  required,
+  type = "text",
+  rows,
+  multiline,
+  helpText,
+}: FormFieldProps) {
+  const inputClass = multiline ? TEXTAREA_CLASS : INPUT_CLASS;
+  return (
+    <div className={FIELD_WRAPPER}>
+      <Label htmlFor={id} className={LABEL_CLASS}>
+        {label}
+      </Label>
+      {multiline ? (
+        <textarea
+          id={id}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          rows={rows}
+          className={TEXTAREA_CLASS}
+          placeholder={placeholder}
+        />
+      ) : (
+        <Input
+          id={id}
+          type={type}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={placeholder}
+          className={inputClass}
+          required={required}
+        />
+      )}
+      {helpText && <p className="text-sm text-grey mt-1">{helpText}</p>}
+    </div>
+  );
+}
+
+function RequiredFieldsSection({
+  wikidataId,
+  name,
+  setWikidataId,
+  setName,
+  t,
+}: {
+  wikidataId: string;
+  name: string;
+  setWikidataId: (v: string) => void;
+  setName: (v: string) => void;
+  t: ReturnType<typeof useTranslation>["t"];
+}) {
+  return (
+    <AddCompanySection titleKey="addCompanyPage.sections.required">
+      <FormField
+        id="wikidataId"
+        label={t("addCompanyPage.fields.wikidataId")}
+        value={wikidataId}
+        onChange={setWikidataId}
+        placeholder="Q12345"
+        required
+        helpText={t("addCompanyPage.help.wikidataId")}
+      />
+      <FormField
+        id="name"
+        label={t("addCompanyPage.fields.name")}
+        value={name}
+        onChange={setName}
+        placeholder={t("addCompanyPage.placeholders.name")}
+        required
+      />
+    </AddCompanySection>
+  );
+}
+
+function DescriptionsSection({
+  descriptionEn,
+  descriptionSv,
+  setDescriptionEn,
+  setDescriptionSv,
+  t,
+}: {
+  descriptionEn: string;
+  descriptionSv: string;
+  setDescriptionEn: (v: string) => void;
+  setDescriptionSv: (v: string) => void;
+  t: ReturnType<typeof useTranslation>["t"];
+}) {
+  return (
+    <AddCompanySection titleKey="addCompanyPage.sections.descriptions">
+      <FormField
+        id="descriptionEn"
+        label={t("addCompanyPage.fields.descriptionEn")}
+        value={descriptionEn}
+        onChange={setDescriptionEn}
+        multiline
+        rows={3}
+      />
+      <FormField
+        id="descriptionSv"
+        label={t("addCompanyPage.fields.descriptionSv")}
+        value={descriptionSv}
+        onChange={setDescriptionSv}
+        multiline
+        rows={3}
+      />
+    </AddCompanySection>
+  );
+}
+
+function LinksAndMediaSection({
+  url,
+  logoUrl,
+  setUrl,
+  setLogoUrl,
+  t,
+}: {
+  url: string;
+  logoUrl: string;
+  setUrl: (v: string) => void;
+  setLogoUrl: (v: string) => void;
+  t: ReturnType<typeof useTranslation>["t"];
+}) {
+  return (
+    <AddCompanySection titleKey="addCompanyPage.sections.linksAndMedia">
+      <FormField
+        id="url"
+        label={t("addCompanyPage.fields.url")}
+        value={url}
+        onChange={setUrl}
+        type="url"
+        placeholder="https://..."
+      />
+      <div className={FIELD_WRAPPER}>
+        <Label htmlFor="logoUrl" className={LABEL_CLASS}>
+          {t("addCompanyPage.fields.logoUrl")}
+        </Label>
+        <Input
+          id="logoUrl"
+          type="url"
+          value={logoUrl}
+          onChange={(e) => setLogoUrl(e.target.value)}
+          placeholder="https://..."
+          className={INPUT_CLASS_XL}
+        />
+        <div className="w-full max-w-xl flex flex-col">
+          <LogoDevDialog
+            className="mt-2 place-self-end h-10 inline-block bg-black-1 hover:bg-grey text-white px-6 py-2 rounded-lg transition-colors duration-200"
+            logoUrl={logoUrl}
+            setLogoUrl={setLogoUrl}
+          />
+        </div>
+      </div>
+    </AddCompanySection>
+  );
+}
+
+function OtherFieldsSection({
+  lei,
+  tagsInput,
+  internalComment,
+  setLei,
+  setTagsInput,
+  setInternalComment,
+  t,
+}: {
+  lei: string;
+  tagsInput: string;
+  internalComment: string;
+  setLei: (v: string) => void;
+  setTagsInput: (v: string) => void;
+  setInternalComment: (v: string) => void;
+  t: ReturnType<typeof useTranslation>["t"];
+}) {
+  return (
+    <AddCompanySection titleKey="addCompanyPage.sections.other">
+      <FormField
+        id="lei"
+        label={t("addCompanyPage.fields.lei")}
+        value={lei}
+        onChange={setLei}
+        placeholder={t("addCompanyPage.placeholders.lei")}
+      />
+      <FormField
+        id="tags"
+        label={t("addCompanyPage.fields.tags")}
+        value={tagsInput}
+        onChange={setTagsInput}
+        placeholder={t("addCompanyPage.placeholders.tags")}
+      />
+      <FormField
+        id="internalComment"
+        label={t("addCompanyPage.fields.internalComment")}
+        value={internalComment}
+        onChange={setInternalComment}
+        multiline
+        rows={2}
+        placeholder={t("addCompanyPage.placeholders.internalComment")}
+      />
+    </AddCompanySection>
+  );
+}
+
+function MetadataSection({
+  metadataComment,
+  metadataSource,
+  setMetadataComment,
+  setMetadataSource,
+  t,
+}: {
+  metadataComment: string;
+  metadataSource: string;
+  setMetadataComment: (v: string) => void;
+  setMetadataSource: (v: string) => void;
+  t: ReturnType<typeof useTranslation>["t"];
+}) {
+  return (
+    <AddCompanySection titleKey="addCompanyPage.sections.metadata">
+      <FormField
+        id="metadataComment"
+        label={t("addCompanyPage.fields.metadataComment")}
+        value={metadataComment}
+        onChange={setMetadataComment}
+        multiline
+        rows={2}
+      />
+      <FormField
+        id="metadataSource"
+        label={t("addCompanyPage.fields.metadataSource")}
+        value={metadataSource}
+        onChange={setMetadataSource}
+        type="url"
+        placeholder="https://..."
+      />
+    </AddCompanySection>
+  );
+}
+
+function useAddCompanyForm() {
   const { t } = useTranslation();
   const { showToast } = useToast();
 
@@ -35,7 +290,6 @@ export function AddCompanyPage() {
   const [internalComment, setInternalComment] = useState("");
   const [metadataComment, setMetadataComment] = useState("");
   const [metadataSource, setMetadataSource] = useState("");
-
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [createdCompanyId, setCreatedCompanyId] = useState<string | null>(null);
@@ -68,8 +322,7 @@ export function AddCompanyPage() {
         metadataComment,
         metadataSource,
       };
-      const body = buildCreateCompanyBody(form);
-      const result = await createCompany(body);
+      const result = await createCompany(buildCreateCompanyBody(form));
       showToast(
         t("companyEditPage.successDetails.title"),
         t("addCompanyPage.success.description"),
@@ -89,6 +342,45 @@ export function AddCompanyPage() {
       setIsSubmitting(false);
     }
   };
+
+  return {
+    t,
+    fields: {
+      wikidataId,
+      name,
+      descriptionEn,
+      descriptionSv,
+      url,
+      logoUrl,
+      lei,
+      tagsInput,
+      internalComment,
+      metadataComment,
+      metadataSource,
+    },
+    setters: {
+      setWikidataId,
+      setName,
+      setDescriptionEn,
+      setDescriptionSv,
+      setUrl,
+      setLogoUrl,
+      setLei,
+      setTagsInput,
+      setInternalComment,
+      setMetadataComment,
+      setMetadataSource,
+    },
+    isSubmitting,
+    error,
+    createdCompanyId,
+    handleSubmit,
+  };
+}
+
+export function AddCompanyPage() {
+  const { t, fields, setters, isSubmitting, error, createdCompanyId, handleSubmit } =
+    useAddCompanyForm();
 
   return (
     <div className="container mx-auto max-w-3xl px-4 py-8">
@@ -113,168 +405,43 @@ export function AddCompanyPage() {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-8">
-        <AddCompanySection titleKey="addCompanyPage.sections.required">
-          <div className={FIELD_WRAPPER}>
-            <Label htmlFor="wikidataId" className={LABEL_CLASS}>
-              {t("addCompanyPage.fields.wikidataId")}
-            </Label>
-            <Input
-              id="wikidataId"
-              value={wikidataId}
-              onChange={(e) => setWikidataId(e.target.value)}
-              placeholder="Q12345"
-              className={INPUT_CLASS}
-              required
-            />
-            <p className="text-sm text-grey mt-1">
-              {t("addCompanyPage.help.wikidataId")}
-            </p>
-          </div>
-          <div className={FIELD_WRAPPER}>
-            <Label htmlFor="name" className={LABEL_CLASS}>
-              {t("addCompanyPage.fields.name")}
-            </Label>
-            <Input
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder={t("addCompanyPage.placeholders.name")}
-              className={INPUT_CLASS}
-              required
-            />
-          </div>
-        </AddCompanySection>
-
-        <AddCompanySection titleKey="addCompanyPage.sections.descriptions">
-          <div className={FIELD_WRAPPER}>
-            <Label htmlFor="descriptionEn" className={LABEL_CLASS}>
-              {t("addCompanyPage.fields.descriptionEn")}
-            </Label>
-            <textarea
-              id="descriptionEn"
-              value={descriptionEn}
-              onChange={(e) => setDescriptionEn(e.target.value)}
-              rows={3}
-              className={TEXTAREA_CLASS}
-            />
-          </div>
-          <div className={FIELD_WRAPPER}>
-            <Label htmlFor="descriptionSv" className={LABEL_CLASS}>
-              {t("addCompanyPage.fields.descriptionSv")}
-            </Label>
-            <textarea
-              id="descriptionSv"
-              value={descriptionSv}
-              onChange={(e) => setDescriptionSv(e.target.value)}
-              rows={3}
-              className={TEXTAREA_CLASS}
-            />
-          </div>
-        </AddCompanySection>
-
-        <AddCompanySection titleKey="addCompanyPage.sections.linksAndMedia">
-          <div className={FIELD_WRAPPER}>
-            <Label htmlFor="url" className={LABEL_CLASS}>
-              {t("addCompanyPage.fields.url")}
-            </Label>
-            <Input
-              id="url"
-              type="url"
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              placeholder="https://..."
-              className={INPUT_CLASS_XL}
-            />
-          </div>
-          <div className={FIELD_WRAPPER}>
-            <Label htmlFor="logoUrl" className={LABEL_CLASS}>
-              {t("addCompanyPage.fields.logoUrl")}
-            </Label>
-            <Input
-              id="logoUrl"
-              type="url"
-              value={logoUrl}
-              onChange={(e) => setLogoUrl(e.target.value)}
-              placeholder="https://..."
-              className={INPUT_CLASS_XL}
-            />
-            <div className="w-full max-w-xl flex flex-col">
-              <LogoDevDialog
-                className="mt-2 place-self-end h-10 inline-block bg-black-1 hover:bg-grey text-white px-6 py-2 rounded-lg transition-colors duration-200"
-                logoUrl={logoUrl}
-                setLogoUrl={setLogoUrl}
-              />
-            </div>
-          </div>
-        </AddCompanySection>
-
-        <AddCompanySection titleKey="addCompanyPage.sections.other">
-          <div className={FIELD_WRAPPER}>
-            <Label htmlFor="lei" className={LABEL_CLASS}>
-              {t("addCompanyPage.fields.lei")}
-            </Label>
-            <Input
-              id="lei"
-              value={lei}
-              onChange={(e) => setLei(e.target.value)}
-              placeholder={t("addCompanyPage.placeholders.lei")}
-              className={INPUT_CLASS}
-            />
-          </div>
-          <div className={FIELD_WRAPPER}>
-            <Label htmlFor="tags" className={LABEL_CLASS}>
-              {t("addCompanyPage.fields.tags")}
-            </Label>
-            <Input
-              id="tags"
-              value={tagsInput}
-              onChange={(e) => setTagsInput(e.target.value)}
-              placeholder={t("addCompanyPage.placeholders.tags")}
-              className={INPUT_CLASS_XL}
-            />
-          </div>
-          <div className={FIELD_WRAPPER}>
-            <Label htmlFor="internalComment" className={LABEL_CLASS}>
-              {t("addCompanyPage.fields.internalComment")}
-            </Label>
-            <textarea
-              id="internalComment"
-              value={internalComment}
-              onChange={(e) => setInternalComment(e.target.value)}
-              rows={2}
-              className={TEXTAREA_CLASS}
-              placeholder={t("addCompanyPage.placeholders.internalComment")}
-            />
-          </div>
-        </AddCompanySection>
-
-        <AddCompanySection titleKey="addCompanyPage.sections.metadata">
-          <div className={FIELD_WRAPPER}>
-            <Label htmlFor="metadataComment" className={LABEL_CLASS}>
-              {t("addCompanyPage.fields.metadataComment")}
-            </Label>
-            <textarea
-              id="metadataComment"
-              value={metadataComment}
-              onChange={(e) => setMetadataComment(e.target.value)}
-              rows={2}
-              className={TEXTAREA_CLASS}
-            />
-          </div>
-          <div className={FIELD_WRAPPER}>
-            <Label htmlFor="metadataSource" className={LABEL_CLASS}>
-              {t("addCompanyPage.fields.metadataSource")}
-            </Label>
-            <Input
-              id="metadataSource"
-              type="url"
-              value={metadataSource}
-              onChange={(e) => setMetadataSource(e.target.value)}
-              placeholder="https://..."
-              className={INPUT_CLASS_XL}
-            />
-          </div>
-        </AddCompanySection>
+        <RequiredFieldsSection
+          wikidataId={fields.wikidataId}
+          name={fields.name}
+          setWikidataId={setters.setWikidataId}
+          setName={setters.setName}
+          t={t}
+        />
+        <DescriptionsSection
+          descriptionEn={fields.descriptionEn}
+          descriptionSv={fields.descriptionSv}
+          setDescriptionEn={setters.setDescriptionEn}
+          setDescriptionSv={setters.setDescriptionSv}
+          t={t}
+        />
+        <LinksAndMediaSection
+          url={fields.url}
+          logoUrl={fields.logoUrl}
+          setUrl={setters.setUrl}
+          setLogoUrl={setters.setLogoUrl}
+          t={t}
+        />
+        <OtherFieldsSection
+          lei={fields.lei}
+          tagsInput={fields.tagsInput}
+          internalComment={fields.internalComment}
+          setLei={setters.setLei}
+          setTagsInput={setters.setTagsInput}
+          setInternalComment={setters.setInternalComment}
+          t={t}
+        />
+        <MetadataSection
+          metadataComment={fields.metadataComment}
+          metadataSource={fields.metadataSource}
+          setMetadataComment={setters.setMetadataComment}
+          setMetadataSource={setters.setMetadataSource}
+          t={t}
+        />
 
         {error && (
           <div className="rounded-lg border border-destructive bg-destructive/20 p-4 text-destructive">

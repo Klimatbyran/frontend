@@ -3,12 +3,14 @@ import { useHiddenItems } from "@/components/charts";
 import { useSectorEmissions } from "@/hooks/territories/useSectorEmissions";
 import { useSectors } from "@/hooks/territories/useSectors";
 import { useSectorYearSelection } from "@/hooks/territories/useSectorYearSelection";
-import { useTerritoryDetailHeaderStats } from "@/hooks/territories/useTerritoryDetailHeaderStats";
+import {
+  useTerritoryDetailHeaderStats,
+  type TerritoryDetailStatsSource,
+} from "@/hooks/territories/useTerritoryDetailHeaderStats";
 import {
   transformTerritoryEmissionsData,
   type TerritoryEmissionsSource,
 } from "@/utils/data/territoryEmissionsTransforms";
-import type { TerritoryDetailStatsSource } from "@/hooks/territories/useTerritoryDetailHeaderStats";
 
 type TerritoryDetailPageEntity = TerritoryEmissionsSource &
   TerritoryDetailStatsSource;

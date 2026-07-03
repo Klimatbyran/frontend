@@ -30,12 +30,10 @@ const COMPANY_KPI_ICONS: Record<string, React.ReactNode> = {
   emissionsChangeFromBaseYear: <ArrowDownCircle className="w-4 h-4" />,
 };
 
-export function CompaniesOverviewPage() {
-  const { t } = useTranslation();
-  const { isMobile } = useScreenSize();
-  const { companies, companiesLoading, companiesError } = useCompanies();
-  const companyKPIs = useCompanyKPIs();
-
+function useOverviewUrlState(
+  companyKPIs: CompanyKPIValue[],
+  availableSectors: string[],
+) {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -55,37 +53,20 @@ export function CompaniesOverviewPage() {
     navigate({ search: params.toString() }, { replace: true });
   };
 
-  // Get available sectors from companies
-  const availableSectors = useMemo(() => {
-    if (!companies) return [];
-    const sectors = new Set<string>();
-    companies.forEach((company) => {
-      const sectorCode = company.industry?.industryGics?.sectorCode;
-      if (sectorCode) {
-        sectors.add(sectorCode);
-      }
-    });
-    return Array.from(sectors).sort();
-  }, [companies]);
-
   const getSectorFromURL = useCallback(() => {
     const params = new URLSearchParams(location.search);
     const sectorParam = params.get("sector");
     if (sectorParam && availableSectors.includes(sectorParam)) {
       return sectorParam;
     }
-    // Default to first available sector if none selected
     return availableSectors.length > 0 ? availableSectors[0] : null;
   }, [location.search, availableSectors]);
 
   const setSectorInURL = useCallback(
     (sector: string | null) => {
       const params = new URLSearchParams(location.search);
-      if (sector) {
-        params.set("sector", sector);
-      } else {
-        params.delete("sector");
-      }
+      if (sector) params.set("sector", sector);
+      else params.delete("sector");
       navigate({ search: params.toString() }, { replace: true });
     },
     [location.search, navigate],
@@ -102,85 +83,45 @@ export function CompaniesOverviewPage() {
     navigate({ search: params.toString() }, { replace: true });
   };
 
-  const [selectedKPI, setSelectedKPI] = useState(getKPIFromURL());
-  const [selectedSector, setSelectedSector] = useState<string | null>(
-    getSectorFromURL(),
-  );
-  const viewMode = getViewModeFromURL();
+  return {
+    getKPIFromURL,
+    setKPIInURL,
+    getSectorFromURL,
+    setSectorInURL,
+    getViewModeFromURL,
+    setViewModeInURL,
+  };
+}
 
-  // Ensure a sector is selected on initial load
-  useEffect(() => {
-    if (!selectedSector && availableSectors.length > 0) {
-      const firstSector = availableSectors[0];
-      setSelectedSector(firstSector);
-      setSectorInURL(firstSector);
-    }
-  }, [availableSectors, selectedSector, setSectorInURL]);
-
-  useEffect(() => {
-    const kpiFromUrl = getKPIFromURL();
-    if (kpiFromUrl.key !== selectedKPI.key) {
-      setSelectedKPI(kpiFromUrl);
-    }
-  }, [getKPIFromURL, selectedKPI.key]);
-
-  useEffect(() => {
-    const sectorFromUrl = getSectorFromURL();
-    if (sectorFromUrl !== selectedSector) {
-      setSelectedSector(sectorFromUrl);
-    }
-  }, [getSectorFromURL, selectedSector]);
-
-  // Filter and enrich companies with KPI values
-  const companiesWithKPIs: CompanyWithKPIs[] = useMemo(() => {
+function useCompaniesWithKPIs(
+  companies: ReturnType<typeof useCompanies>["companies"],
+  selectedSector: string | null,
+  selectedKPI: CompanyKPIValue,
+) {
+  return useMemo(() => {
     if (!companies || !selectedSector) return [];
 
     const filtered = companies.filter((company) => {
       const sectorCode = company.industry?.industryGics?.sectorCode;
-      if (sectorCode !== selectedSector) {
-        return false;
-      }
-
+      if (sectorCode !== selectedSector) return false;
       if (
         selectedKPI.key === "emissionsChangeFromBaseYear" &&
         !company.baseYear?.year
       ) {
         return false;
       }
-
       return true;
     });
 
     return filtered.map((company) => enrichCompanyWithKPIs(company));
   }, [companies, selectedSector, selectedKPI.key]);
+}
 
-  const handleSectorChange = (sector: string) => {
-    setSelectedSector(sector);
-    setSectorInURL(sector);
-  };
-
-  const handleCompanyClick = (company: CompanyWithKPIs) => {
-    navigate(getCompanyDetailPath(company));
-  };
-
-  if (companiesLoading) {
-    return <OverviewPageSkeleton />;
-  }
-
-  if (companiesError) {
-    return (
-      <div className="text-center py-24">
-        <h3 className="text-red-500 mb-4 text-xl">
-          {t("companiesOverviewPage.errorTitle")}
-        </h3>
-        <p className="text-grey">
-          {t("companiesOverviewPage.errorDescription")}
-        </p>
-      </div>
-    );
-  }
-
-  const asDataPoint = (kpi: CompanyKPIValue): DataPoint<CompanyWithKPIs> => ({
+function asDataPoint(
+  kpi: CompanyKPIValue,
+  t: ReturnType<typeof useTranslation>["t"],
+): DataPoint<CompanyWithKPIs> {
+  return {
     label: kpi.label,
     key: kpi.key as keyof CompanyWithKPIs,
     unit: kpi.unit,
@@ -190,29 +131,48 @@ export function CompaniesOverviewPage() {
     isBoolean: kpi.isBoolean,
     booleanLabels: kpi.booleanLabels,
     formatter: (value: unknown) => {
-      if (value === null) {
-        return kpi.nullValues || t("noData");
-      }
-
+      if (value === null) return kpi.nullValues || t("noData");
       if (typeof value === "boolean") {
         return value
           ? t(`companies.list.kpis.${kpi.key}.booleanLabels.true`)
           : t(`companies.list.kpis.${kpi.key}.booleanLabels.false`);
       }
-
-      if (typeof value === "number") {
-        return `${value.toFixed(1)}${kpi.unit}`;
-      }
-
+      if (typeof value === "number") return `${value.toFixed(1)}${kpi.unit}`;
       return String(value);
     },
-  });
+  };
+}
+
+function CompaniesOverviewContent({
+  companiesWithKPIs,
+  selectedKPI,
+  availableSectors,
+  selectedSector,
+  viewMode,
+  onKPIChange,
+  onSectorChange,
+  onViewModeChange,
+  onCompanyClick,
+}: {
+  companiesWithKPIs: CompanyWithKPIs[];
+  selectedKPI: CompanyKPIValue;
+  availableSectors: string[];
+  selectedSector: string | null;
+  viewMode: OverviewViewMode;
+  onKPIChange: (kpi: CompanyKPIValue) => void;
+  onSectorChange: (sector: string) => void;
+  onViewModeChange: (mode: OverviewViewMode) => void;
+  onCompanyClick: (company: CompanyWithKPIs) => void;
+}) {
+  const { t } = useTranslation();
+  const { isMobile } = useScreenSize();
+  const companyKPIs = useCompanyKPIs();
 
   const viewToggle = (
     <ViewModeToggle
       viewMode={viewMode}
       modes={["graph", "list"]}
-      onChange={setViewModeInURL}
+      onChange={onViewModeChange}
       titles={{
         graph: t("companiesOverviewPage.viewToggle.showGraph", "Graf"),
         list: t("companiesOverviewPage.viewToggle.showList", "Lista"),
@@ -229,29 +189,6 @@ export function CompaniesOverviewPage() {
     ? selectedKPI.createKPIColorGetter(companiesWithKPIs)
     : undefined;
 
-  const companyRankedList = (
-    <RankedList
-      data={companiesWithKPIs}
-      selectedDataPoint={asDataPoint(selectedKPI)}
-      onItemClick={handleCompanyClick}
-      searchKey="name"
-      searchPlaceholder={t("rankedList.search.placeholder")}
-      itemsPerPage={isMobile ? 6 : 8}
-      headerAction={viewToggle}
-      colorItem={colorItem}
-    />
-  );
-
-  const visualizationPanel = (
-    <div className="h-full min-h-[500px] md:min-h-[620px]">
-      <CompanyKPIVisualization
-        companies={companiesWithKPIs}
-        selectedKPI={selectedKPI}
-        onCompanyClick={handleCompanyClick}
-      />
-    </div>
-  );
-
   return (
     <>
       <PageHeader
@@ -263,10 +200,7 @@ export function CompaniesOverviewPage() {
       <KPIChipSelector<CompanyWithKPIs>
         selectedKPI={selectedKPI}
         kpis={companyKPIs}
-        onKPIChange={(kpi) => {
-          setSelectedKPI(kpi);
-          setKPIInURL(String(kpi.key));
-        }}
+        onKPIChange={onKPIChange}
         iconMap={COMPANY_KPI_ICONS}
         translationPrefix="companies.list"
         label={t("municipalities.list.dataSelector.label")}
@@ -276,18 +210,36 @@ export function CompaniesOverviewPage() {
         <IndustryFilter
           availableSectors={availableSectors}
           selectedSector={selectedSector}
-          onSectorChange={handleSectorChange}
+          onSectorChange={onSectorChange}
         />
       </div>
 
       <div className="space-y-6">
-        {/* Row 1: graph/list toggle | stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
           <OverviewSplitLayout
             viewMode={viewMode}
             visualizationMode="graph"
-            visualization={visualizationPanel}
-            list={companyRankedList}
+            visualization={
+              <div className="h-full min-h-[500px] md:min-h-[620px]">
+                <CompanyKPIVisualization
+                  companies={companiesWithKPIs}
+                  selectedKPI={selectedKPI}
+                  onCompanyClick={onCompanyClick}
+                />
+              </div>
+            }
+            list={
+              <RankedList
+                data={companiesWithKPIs}
+                selectedDataPoint={asDataPoint(selectedKPI, t)}
+                onItemClick={onCompanyClick}
+                searchKey="name"
+                searchPlaceholder={t("rankedList.search.placeholder")}
+                itemsPerPage={isMobile ? 6 : 8}
+                headerAction={viewToggle}
+                colorItem={colorItem}
+              />
+            }
             toggle={viewToggle}
           />
           <CompanyInsightsPanel
@@ -318,5 +270,88 @@ export function CompaniesOverviewPage() {
         )}
       </div>
     </>
+  );
+}
+
+export function CompaniesOverviewPage() {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { companies, companiesLoading, companiesError } = useCompanies();
+  const companyKPIs = useCompanyKPIs();
+
+  const availableSectors = useMemo(() => {
+    if (!companies) return [];
+    const sectors = new Set<string>();
+    companies.forEach((company) => {
+      const sectorCode = company.industry?.industryGics?.sectorCode;
+      if (sectorCode) sectors.add(sectorCode);
+    });
+    return Array.from(sectors).sort();
+  }, [companies]);
+
+  const urlState = useOverviewUrlState(companyKPIs, availableSectors);
+  const [selectedKPI, setSelectedKPI] = useState(urlState.getKPIFromURL());
+  const [selectedSector, setSelectedSector] = useState<string | null>(
+    urlState.getSectorFromURL(),
+  );
+  const viewMode = urlState.getViewModeFromURL();
+
+  useEffect(() => {
+    if (!selectedSector && availableSectors.length > 0) {
+      const firstSector = availableSectors[0];
+      setSelectedSector(firstSector);
+      urlState.setSectorInURL(firstSector);
+    }
+  }, [availableSectors, selectedSector, urlState]);
+
+  useEffect(() => {
+    const kpiFromUrl = urlState.getKPIFromURL();
+    if (kpiFromUrl.key !== selectedKPI.key) setSelectedKPI(kpiFromUrl);
+  }, [urlState, selectedKPI.key]);
+
+  useEffect(() => {
+    const sectorFromUrl = urlState.getSectorFromURL();
+    if (sectorFromUrl !== selectedSector) setSelectedSector(sectorFromUrl);
+  }, [urlState, selectedSector]);
+
+  const companiesWithKPIs = useCompaniesWithKPIs(
+    companies,
+    selectedSector,
+    selectedKPI,
+  );
+
+  if (companiesLoading) return <OverviewPageSkeleton />;
+
+  if (companiesError) {
+    return (
+      <div className="text-center py-24">
+        <h3 className="text-red-500 mb-4 text-xl">
+          {t("companiesOverviewPage.errorTitle")}
+        </h3>
+        <p className="text-grey">
+          {t("companiesOverviewPage.errorDescription")}
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <CompaniesOverviewContent
+      companiesWithKPIs={companiesWithKPIs}
+      selectedKPI={selectedKPI}
+      availableSectors={availableSectors}
+      selectedSector={selectedSector}
+      viewMode={viewMode}
+      onKPIChange={(kpi) => {
+        setSelectedKPI(kpi);
+        urlState.setKPIInURL(String(kpi.key));
+      }}
+      onSectorChange={(sector) => {
+        setSelectedSector(sector);
+        urlState.setSectorInURL(sector);
+      }}
+      onViewModeChange={urlState.setViewModeInURL}
+      onCompanyClick={(company) => navigate(getCompanyDetailPath(company))}
+    />
   );
 }

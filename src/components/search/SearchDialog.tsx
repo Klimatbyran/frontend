@@ -4,6 +4,7 @@ import { Command as CommandPrimitive } from "cmdk";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 import { CombinedData, useCombinedData } from "@/hooks/useCombinedData";
+import type { HeroSearchResult } from "@/types/landing";
 import {
   Command,
   CommandEmpty,
@@ -42,7 +43,7 @@ export function SearchDialog({
   const {
     searchResults,
     isSearching,
-  }: { searchResults: any[]; isSearching: boolean } =
+  }: { searchResults: HeroSearchResult[]; isSearching: boolean } =
     useHeroGlobalSearch(inputValue);
 
   // Transform searchResults and include relevant blog posts

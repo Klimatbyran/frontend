@@ -1,8 +1,10 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
-import type { RegionForExplore } from "./useRegionsForExplore";
-import { getLastEmissionYear } from "./useRegionsForExplore";
+import {
+  type RegionForExplore,
+  getLastEmissionYear,
+} from "./useRegionsForExplore";
 import {
   formatEmissionsAbsolute,
   formatPercentChange,

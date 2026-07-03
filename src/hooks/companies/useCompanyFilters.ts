@@ -2,16 +2,11 @@ import { useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import type { RankedCompany } from "@/types/company";
-import { calculateTrendline } from "@/lib/calculations/trends/analysis";
-import { calculateMeetsParis } from "@/lib/calculations/trends/meetsParis";
-import { calculateEmissionsChange } from "@/utils/calculations/emissionsCalculations";
 import {
   useSectorNames,
   useSectors,
 } from "@/hooks/companies/useCompanySectors";
-import { getCompanySectorName } from "@/utils/data/industryGrouping";
-import { CompanySector, SECTORS } from "@/lib/constants/sectors";
-import { FilterGroup } from "@/components/explore/FilterPopover";
+import { CompanySector } from "@/lib/constants/sectors";
 import setOrDeleteSearchParam from "@/utils/data/setOrDeleteSearchParam";
 import {
   isSortOption,
@@ -19,293 +14,100 @@ import {
   type CompanySortBy,
 } from "./useCompanySorting";
 import { useExploreFilters } from "@/hooks/explore/useExploreFilters";
-import { getSearchTerms } from "@/hooks/explore/exploreFilterUtils";
-
-const MEETS_PARIS_OPTIONS = ["all", "yes", "no", "unknown"] as const;
-type MeetsParisFilter = (typeof MEETS_PARIS_OPTIONS)[number];
-
-const isMeetsParisFilter = (value: string): value is MeetsParisFilter =>
-  MEETS_PARIS_OPTIONS.includes(value as MeetsParisFilter);
+import {
+  buildCompanyFilterUi,
+  filterAndSortCompanies,
+  parseCompanySectors,
+  parseMeetsParisFilter,
+} from "./companyFilterUtils";
 
 type UseCompanyFiltersOptions = {
   includeSectorFilter?: boolean;
 };
+
+function useCompanySearchParamSetters() {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const setMeetsParisFilter = useCallback(
+    (value: string) =>
+      setOrDeleteSearchParam(setSearchParams, value, "meetsParisFilter"),
+    [setSearchParams],
+  );
+  const setSectors = useCallback(
+    (value: CompanySector[]) =>
+      setOrDeleteSearchParam(
+        setSearchParams,
+        value.length > 0 ? value.join(",") : null,
+        "sectors",
+      ),
+    [setSearchParams],
+  );
+
+  return { searchParams, setMeetsParisFilter, setSectors };
+}
 
 export const useCompanyFilters = (
   companies: RankedCompany[],
   options: UseCompanyFiltersOptions = {},
 ) => {
   const { includeSectorFilter = true } = options;
-  const [searchParams, setSearchParams] = useSearchParams();
-  const sortingOptions = useSortOptions();
-
-  const {
-    searchQuery,
-    setSearchQuery,
-    sortBy,
-    setSortBy,
-    sortDirection,
-    setSortDirection,
-  } = useExploreFilters<CompanySortBy>({
-    defaultSortBy: "total_emissions",
-    isValidSortBy: isSortOption,
-    sortOptions: sortingOptions,
-  });
-
-  const meetsParisRaw = searchParams.get("meetsParisFilter") ?? "";
-  const meetsParisFilter: MeetsParisFilter = isMeetsParisFilter(meetsParisRaw)
-    ? (meetsParisRaw as MeetsParisFilter)
-    : "all";
-  const sectors = (
-    includeSectorFilter
-      ? (searchParams
-          .get("sectors")
-          ?.split(",")
-          .filter((s) => SECTORS.some((sector) => sector.value === s)) ?? [
-          "all",
-        ])
-      : ["all"]
-  ) as CompanySector[];
-  const setMeetsParisFilter = useCallback(
-    (meetsParisFilter: string) =>
-      setOrDeleteSearchParam(
-        setSearchParams,
-        meetsParisFilter,
-        "meetsParisFilter",
-      ),
-    [],
-  );
-  const setSectors = useCallback(
-    (sectors: CompanySector[]) =>
-      setOrDeleteSearchParam(
-        setSearchParams,
-        sectors.length > 0 ? sectors.join(",") : null,
-        "sectors",
-      ),
-    [],
-  );
-
+  const { searchParams, setMeetsParisFilter, setSectors } =
+    useCompanySearchParamSetters();
+  const { t } = useTranslation();
   const sectorNames = useSectorNames();
   const sectorOptions = useSectors();
-  const { t } = useTranslation();
 
-  const filteredCompanies = useMemo(() => {
-    return companies
-      .filter((company) => {
-        // Filter by sector
-        const matchesSector =
-          sectors.includes("all") ||
-          (company.industry?.industryGics?.sectorCode != null &&
-            sectors.includes(company.industry?.industryGics?.sectorCode ?? ""));
+  const exploreFilters = useExploreFilters<CompanySortBy>({
+    defaultSortBy: "total_emissions",
+    isValidSortBy: isSortOption,
+    sortOptions: useSortOptions(),
+  });
 
-        // Filter by search query
-        const searchTerms = getSearchTerms(searchQuery);
+  const meetsParisFilter = parseMeetsParisFilter(searchParams);
+  const sectors = parseCompanySectors(searchParams, includeSectorFilter);
 
-        const matchesSearch =
-          searchTerms.length === 0 ||
-          searchTerms.some((term) => {
-            const companyName = company.name.toLowerCase();
-            const sectorName = getCompanySectorName(
-              company,
-              sectorNames,
-            ).toLowerCase();
+  const filteredCompanies = useMemo(
+    () =>
+      filterAndSortCompanies(companies, {
+        sectors,
+        searchQuery: exploreFilters.searchQuery,
+        meetsParisFilter,
+        sortBy: exploreFilters.sortBy,
+        sortDirection: exploreFilters.sortDirection,
+        sectorNames,
+      }),
+    [companies, sectors, exploreFilters, meetsParisFilter, sectorNames],
+  );
 
-            // For shorter terms, use substring matching but require it to be at the start of a word
-            const companyNamePattern = new RegExp(`\\b${term}`, "i");
-            const sectorNamePattern = new RegExp(`\\b${term}`, "i");
-            return (
-              companyNamePattern.test(companyName) ||
-              sectorNamePattern.test(sectorName)
-            );
-          });
-
-        // Filter by meets Paris
-        const matchesMeetsParis = (() => {
-          if (meetsParisFilter === "all") return true;
-
-          const trendAnalysis = calculateTrendline(company);
-          const meetsParis = trendAnalysis
-            ? calculateMeetsParis(company, trendAnalysis)
-            : null; // null = unknown
-
-          if (meetsParisFilter === "yes") return meetsParis === true;
-          if (meetsParisFilter === "no") return meetsParis === false;
-          if (meetsParisFilter === "unknown") return meetsParis === null;
-          return true;
-        })();
-
-        return matchesSector && matchesSearch && matchesMeetsParis;
-      })
-      .sort((a, b) => {
-        // Sort companies
-        switch (sortBy) {
-          case "emissions_reduction": {
-            // Calculate year-over-year emissions change for both companies
-            const aChange =
-              calculateEmissionsChange(a.reportingPeriods[0]) || 0;
-            const bChange =
-              calculateEmissionsChange(b.reportingPeriods[0]) || 0;
-
-            return sortDirection === "asc"
-              ? aChange - bChange
-              : bChange - aChange;
-          }
-          case "total_emissions": {
-            const aEmissions =
-              a.reportingPeriods[0]?.emissions?.calculatedTotalEmissions || 0;
-            const bEmissions =
-              b.reportingPeriods[0]?.emissions?.calculatedTotalEmissions || 0;
-            return sortDirection === "asc"
-              ? aEmissions - bEmissions
-              : bEmissions - aEmissions;
-          }
-          case "scope3_coverage": {
-            const aHasCategories =
-              (a.reportingPeriods[0]?.emissions?.scope3?.categories?.length ||
-                0) > 0
-                ? 1
-                : 0;
-            const bHasCategories =
-              (b.reportingPeriods[0]?.emissions?.scope3?.categories?.length ||
-                0) > 0
-                ? 1
-                : 0;
-            return sortDirection === "asc"
-              ? bHasCategories - aHasCategories
-              : aHasCategories - bHasCategories;
-          }
-          case "meets_paris": {
-            const aTrendAnalysis = calculateTrendline(a);
-            const bTrendAnalysis = calculateTrendline(b);
-            const aMeetsParis = aTrendAnalysis
-              ? calculateMeetsParis(a, aTrendAnalysis)
-              : null; // null = unknown
-            const bMeetsParis = bTrendAnalysis
-              ? calculateMeetsParis(b, bTrendAnalysis)
-              : null; // null = unknown
-
-            // Convert to number for sorting (true = 2, false = 1, null = 0)
-            const aValue =
-              aMeetsParis === true ? 2 : aMeetsParis === false ? 1 : 0;
-            const bValue =
-              bMeetsParis === true ? 2 : bMeetsParis === false ? 1 : 0;
-
-            return sortDirection === "asc" ? bValue - aValue : aValue - bValue;
-          }
-          case "name":
-          default:
-            return sortDirection === "asc"
-              ? a.name.localeCompare(b.name)
-              : b.name.localeCompare(a.name);
-        }
-      });
-  }, [
-    companies,
-    sectors,
-    searchQuery,
-    meetsParisFilter,
-    sortBy,
-    sortDirection,
-    sectorNames,
-  ]);
-
-  const filterGroups: FilterGroup[] = [
-    ...(includeSectorFilter
-      ? [
-          {
-            heading: t("explorePage.companies.sector"),
-            options: sectorOptions.map((s) => ({
-              value: s.value,
-              label: s.label,
-            })),
-            selectedValues: sectors,
-            onSelect: (value: string) => {
-              if (value === "all") {
-                setSectors(["all"]);
-              } else if (sectors.includes("all")) {
-                setSectors([value]);
-              } else if (sectors.includes(value)) {
-                setSectors(sectors.filter((s) => s !== value));
-              } else {
-                setSectors([...sectors, value]);
-              }
-            },
-            selectMultiple: true,
-          } satisfies FilterGroup,
-        ]
-      : []),
-    {
-      heading: t("explorePage.companies.filteringOptions.meetsParis"),
-      options: [
-        { value: "all", label: t("all") },
-        {
-          value: "yes",
-          label: t("explorePage.companies.filteringOptions.meetsParisYes"),
-        },
-        {
-          value: "no",
-          label: t("explorePage.companies.filteringOptions.meetsParisNo"),
-        },
-        {
-          value: "unknown",
-          label: t("explorePage.companies.filteringOptions.meetsParisUnknown"),
-        },
-      ],
-      selectedValues: [meetsParisFilter],
-      onSelect: (value: string) =>
-        setMeetsParisFilter(value as MeetsParisFilter),
-      selectMultiple: false,
-    },
-  ];
-
-  const activeFilters = useMemo(() => {
-    return [
-      ...(includeSectorFilter && !sectors.includes("all")
-        ? sectors.map((sector) => ({
-            type: "filter" as const,
-            label: sectorNames[sector as keyof typeof sectorNames] || sector,
-            onRemove: () => setSectors(sectors.filter((s) => s !== sector)),
-          }))
-        : []),
-      ...(meetsParisFilter !== "all"
-        ? [
-            {
-              type: "filter" as const,
-              label: `${t("explorePage.companies.filteringOptions.meetsParis")}: ${
-                meetsParisFilter === "yes"
-                  ? t("explorePage.companies.filteringOptions.meetsParisYes")
-                  : meetsParisFilter === "no"
-                    ? t("explorePage.companies.filteringOptions.meetsParisNo")
-                    : t(
-                        "explorePage.companies.filteringOptions.meetsParisUnknown",
-                      )
-              }`,
-              onRemove: () => setMeetsParisFilter("all"),
-            },
-          ]
-        : []),
-    ];
-  }, [
-    includeSectorFilter,
-    sectors,
-    meetsParisFilter,
-    sectorNames,
-    t,
-    setSectors,
-    setMeetsParisFilter,
-  ]);
+  const { filterGroups, activeFilters } = useMemo(
+    () =>
+      buildCompanyFilterUi(t, {
+        includeSectorFilter,
+        sectorOptions,
+        sectors,
+        meetsParisFilter,
+        sectorNames,
+        setSectors,
+        setMeetsParisFilter,
+      }),
+    [
+      t,
+      includeSectorFilter,
+      sectorOptions,
+      sectors,
+      meetsParisFilter,
+      sectorNames,
+      setSectors,
+      setMeetsParisFilter,
+    ],
+  );
 
   return {
-    searchQuery,
-    setSearchQuery,
+    ...exploreFilters,
     sectors,
     setSectors,
     meetsParisFilter,
     setMeetsParisFilter,
-    sortBy,
-    setSortBy,
-    sortDirection,
-    setSortDirection,
     filteredCompanies,
     filterGroups,
     activeFilters,

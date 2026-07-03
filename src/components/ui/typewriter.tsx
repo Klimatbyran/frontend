@@ -22,6 +22,18 @@ interface TypewriterProps {
   finalTextIndex?: number;
 }
 
+function shouldHideCursor(
+  hideCursorOnType: boolean,
+  currentIndex: number,
+  currentText: string,
+  isDeleting: boolean,
+) {
+  return (
+    hideCursorOnType &&
+    (currentIndex < currentText.length || isDeleting)
+  );
+}
+
 const Typewriter = ({
   text,
   speed = 50,
@@ -56,7 +68,6 @@ const Typewriter = ({
 
   const texts = useMemo(() => (Array.isArray(text) ? text : [text]), [text]);
 
-  // Reset display text when language is changed
   i18next.on("languageChanged", () => {
     setDisplayText("");
     setIsDeleting(true);
@@ -64,10 +75,9 @@ const Typewriter = ({
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
-
     const currentText = texts[currentTextIndex] || "";
 
-    const startTyping = () => {
+    const runTypewriterStep = () => {
       if (isDeleting) {
         if (displayText === "") {
           setIsDeleting(false);
@@ -80,33 +90,37 @@ const Typewriter = ({
           setCurrentTextIndex((prev) => (prev + 1) % texts.length);
           setCurrentIndex(0);
           timeout = setTimeout(() => {}, waitTime);
-        } else {
-          timeout = setTimeout(() => {
-            setDisplayText((prev) => prev.slice(0, -1));
-          }, deleteSpeed);
+          return;
         }
-      } else {
-        if (currentIndex < currentText.length) {
-          timeout = setTimeout(() => {
-            setDisplayText((prev) => prev + currentText[currentIndex]);
-            setCurrentIndex((prev) => prev + 1);
-          }, speed);
-        } else if (texts.length > 1) {
-          if (hasCompletedCycle && currentTextIndex === finalTextIndex) {
-            return;
-          }
-          timeout = setTimeout(() => {
-            setIsDeleting(true);
-          }, waitTime);
+
+        timeout = setTimeout(() => {
+          setDisplayText((prev) => prev.slice(0, -1));
+        }, deleteSpeed);
+        return;
+      }
+
+      if (currentIndex < currentText.length) {
+        timeout = setTimeout(() => {
+          setDisplayText((prev) => prev + currentText[currentIndex]);
+          setCurrentIndex((prev) => prev + 1);
+        }, speed);
+        return;
+      }
+
+      if (texts.length > 1) {
+        if (hasCompletedCycle && currentTextIndex === finalTextIndex) {
+          return;
         }
+        timeout = setTimeout(() => {
+          setIsDeleting(true);
+        }, waitTime);
       }
     };
 
-    // Apply initial delay only at the start
     if (currentIndex === 0 && !isDeleting && displayText === "") {
-      timeout = setTimeout(startTyping, initialDelay);
+      timeout = setTimeout(runTypewriterStep, initialDelay);
     } else {
-      startTyping();
+      runTypewriterStep();
     }
 
     return () => clearTimeout(timeout);
@@ -125,6 +139,8 @@ const Typewriter = ({
     hasCompletedCycle,
   ]);
 
+  const currentText = texts[currentTextIndex] || "";
+
   return (
     <div className={`inline whitespace-pre-wrap tracking-tight ${className}`}>
       <span>{displayText}</span>
@@ -133,9 +149,12 @@ const Typewriter = ({
           variants={cursorAnimationVariants}
           className={cn(
             cursorClassName,
-            hideCursorOnType &&
-              (currentIndex < (texts[currentTextIndex] || "").length ||
-                isDeleting)
+            shouldHideCursor(
+              hideCursorOnType,
+              currentIndex,
+              currentText,
+              isDeleting,
+            )
               ? "hidden"
               : "",
           )}

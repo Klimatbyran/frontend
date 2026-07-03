@@ -11,20 +11,22 @@ const baseMeta = {
   verifiedBy: null,
 };
 
-function makeCategory(overrides: any = {}) {
+type CategoryFixture = {
+  id: string;
+  category: number;
+  total: number;
+  unit: "tCO2e" | "tCO2" | null;
+  metadata: typeof baseMeta;
+};
+
+function makeCategory(overrides: Partial<CategoryFixture> = {}): CategoryFixture {
   return {
     id: "cat",
     category: 1,
     total: 10,
-    unit: "tCO2e" as "tCO2e" | "tCO2" | null,
+    unit: "tCO2e",
     metadata: baseMeta,
     ...overrides,
-  } as {
-    id: string;
-    category: number;
-    total: number;
-    unit: "tCO2e" | "tCO2" | null;
-    metadata: typeof baseMeta;
   };
 }
 
@@ -287,7 +289,7 @@ describe("mapCompanyEditFormToRequestBody", () => {
             ...basePeriod.emissions!.scope3!,
             categories: [
               ...basePeriod.emissions!.scope3!.categories!,
-              makeCategory({ id: "c3", category: 3, total: undefined as any }),
+              makeCategory({ id: "c3", category: 3, total: undefined as unknown as number }),
             ],
           },
         },
@@ -360,7 +362,7 @@ describe("mapCompanyEditFormToRequestBody", () => {
             ...basePeriod.emissions!.scope3!,
             categories: [
               ...basePeriod.emissions!.scope3!.categories!,
-              makeCategory({ id: "c3", category: 3, total: undefined as any }),
+              makeCategory({ id: "c3", category: 3, total: undefined as unknown as number }),
             ],
           },
         },
@@ -371,7 +373,7 @@ describe("mapCompanyEditFormToRequestBody", () => {
       );
       expect(
         (result.reportingPeriods[0].emissions.scope3.categories || []).find(
-          (c: any) => c.category === 3,
+          (c) => c.category === 3,
         ),
       ).toBeUndefined();
     });

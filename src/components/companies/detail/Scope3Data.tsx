@@ -7,9 +7,14 @@ import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
 import { YearSelector } from "@/components/layout/YearSelector";
 import { ProgressiveDataGuide } from "@/data-guide/ProgressiveDataGuide";
-import PieChartView from "../CompanyPieChartView";
-import Scope3PieLegend from "./Scope3PieLegend";
 import { EmissionsBreakdown } from "./EmissionsBreakdown";
+import { Scope3ChartTab } from "./Scope3ChartTab";
+import {
+  getAvailableYears,
+  getDisplayYear,
+  getSelectedCategories,
+  getSelectedScope3Total,
+} from "./scope3DataUtils";
 
 interface Scope3DataProps {
   emissions: {
@@ -62,30 +67,18 @@ export function Scope3Data({
     return null;
   }
 
-  const availableYears =
-    historicalData
-      ?.map((data) => data.year)
-      .filter((v, i, a) => a.indexOf(v) === i)
-      .sort((a, b) => b - a) || [];
-
-  const latestYear = availableYears[0] ?? new Date().getFullYear();
-
-  const selectedCategories =
-    selectedYear === "latest"
-      ? emissions.scope3.categories
-      : (historicalData?.find((data) => data.year === parseInt(selectedYear))
-          ?.categories ?? emissions.scope3.categories);
-
-  const displayYear =
-    selectedYear === "latest" ? latestYear : parseInt(selectedYear);
-
-  const selectedScope3Total =
-    selectedYear === "latest"
-      ? (emissions.scope3?.total ?? 0)
-      : (historicalData?.find((data) => data.year === parseInt(selectedYear))
-          ?.total ??
-        emissions.scope3?.total ??
-        0);
+  const availableYears = getAvailableYears(historicalData);
+  const selectedCategories = getSelectedCategories(
+    selectedYear,
+    emissions.scope3.categories,
+    historicalData,
+  );
+  const displayYear = getDisplayYear(selectedYear, availableYears);
+  const selectedScope3Total = getSelectedScope3Total(
+    selectedYear,
+    emissions.scope3?.total ?? 0,
+    historicalData,
+  );
 
   return (
     <div className={className}>
@@ -115,38 +108,16 @@ export function Scope3Data({
         </div>
 
         <TabsContent value="chart">
-          <div className="flex flex-col gap-4 mt-8 lg:flex-row lg:gap-8">
-            <div className="w-full lg:w-1/2 lg:h-full">
-              <PieChartView
-                pieChartData={selectedCategories.map((cat) => ({
-                  name: getCategoryName(cat.category),
-                  value: cat.total,
-                  color: getCategoryColor(cat.category),
-                  category: cat.category,
-                  total: selectedScope3Total,
-                }))}
-                size={size}
-                filterable
-                filteredCategories={filteredCategories}
-                onFilteredCategoriesChange={setFilteredCategories}
-                percentageLabel={t("companies.scope3Data.ofTotal")}
-              />
-            </div>
-            <div className={"w-full flex lg:w-1/2 lg:items-center"}>
-              <Scope3PieLegend
-                payload={selectedCategories.map((cat) => ({
-                  name: getCategoryName(cat.category),
-                  value: cat.total,
-                  total: selectedScope3Total,
-                  color: getCategoryColor(cat.category),
-                  category: cat.category,
-                  isAIGenerated: isAIGenerated(cat),
-                }))}
-                filteredCategories={filteredCategories}
-                onFilteredCategoriesChange={setFilteredCategories}
-              />
-            </div>
-          </div>
+          <Scope3ChartTab
+            selectedCategories={selectedCategories}
+            selectedScope3Total={selectedScope3Total}
+            size={size}
+            filteredCategories={filteredCategories}
+            onFilteredCategoriesChange={setFilteredCategories}
+            getCategoryName={getCategoryName}
+            getCategoryColor={getCategoryColor}
+            isAIGenerated={isAIGenerated}
+          />
         </TabsContent>
 
         <TabsContent value="data">

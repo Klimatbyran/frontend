@@ -100,6 +100,37 @@ type IsAIGeneratedFn = <T extends { metadata?: unknown }>(
   data: T | undefined | null,
 ) => boolean;
 
+function extractScopeValues(
+  emissions: RankedCompany["reportingPeriods"][number]["emissions"],
+) {
+  return {
+    scope1: emissions?.scope1?.total,
+    scope2: emissions?.scope2?.calculatedTotalEmissions,
+    scope3:
+      emissions?.scope3?.calculatedTotalEmissions ??
+      emissions?.scope3?.statedTotalEmissions?.total,
+  };
+}
+
+function formatScopeEmissions(
+  scope1: number | null | undefined,
+  scope2: number | null | undefined,
+  scope3: number | null | undefined,
+  currentLanguage: SupportedLanguage,
+): Pick<
+  ComparisonDetails,
+  "scope1Emissions" | "scope2Emissions" | "scope3Emissions"
+> {
+  return {
+    scope1Emissions:
+      scope1 != null ? formatEmissionsAbsolute(scope1, currentLanguage) : null,
+    scope2Emissions:
+      scope2 != null ? formatEmissionsAbsolute(scope2, currentLanguage) : null,
+    scope3Emissions:
+      scope3 != null ? formatEmissionsAbsolute(scope3, currentLanguage) : null,
+  };
+}
+
 export function buildCompanyComparisonDetails(
   company: RankedCompany,
   currentLanguage: SupportedLanguage,
@@ -111,12 +142,7 @@ export function buildCompanyComparisonDetails(
     return {};
   }
 
-  const emissions = latestPeriod.emissions;
-  const scope1 = emissions?.scope1?.total;
-  const scope2 = emissions?.scope2?.calculatedTotalEmissions;
-  const scope3 =
-    emissions?.scope3?.calculatedTotalEmissions ??
-    emissions?.scope3?.statedTotalEmissions?.total;
+  const { scope1, scope2, scope3 } = extractScopeValues(latestPeriod.emissions);
 
   return {
     turnover: formatTurnover(latestPeriod, currentLanguage, t),
@@ -128,12 +154,7 @@ export function buildCompanyComparisonDetails(
         )
       : null,
     employeesIsAIGenerated: isAIGenerated(latestPeriod.economy?.employees),
-    scope1Emissions:
-      scope1 != null ? formatEmissionsAbsolute(scope1, currentLanguage) : null,
-    scope2Emissions:
-      scope2 != null ? formatEmissionsAbsolute(scope2, currentLanguage) : null,
-    scope3Emissions:
-      scope3 != null ? formatEmissionsAbsolute(scope3, currentLanguage) : null,
+    ...formatScopeEmissions(scope1, scope2, scope3, currentLanguage),
   };
 }
 
