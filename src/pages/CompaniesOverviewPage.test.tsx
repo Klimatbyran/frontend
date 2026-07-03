@@ -95,9 +95,10 @@ vi.mock("@/components/ranked/KPIChipSelector", () => ({
 }));
 
 vi.mock("@/components/ranked/OverviewSplitLayout", async (importOriginal) => {
-  const actual = await importOriginal<
-    typeof import("@/components/ranked/OverviewSplitLayout")
-  >();
+  const actual =
+    await importOriginal<
+      typeof import("@/components/ranked/OverviewSplitLayout")
+    >();
 
   return {
     ...actual,
