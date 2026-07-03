@@ -56,7 +56,9 @@ function InsightsPanel({
       <div className="bg-white/5 backdrop-blur-sm rounded-level-2 p-8 h-full flex items-center justify-center">
         <p className="text-white text-lg">
           {t("municipalities.list.insights.noData.metric", {
-            metric: t(`municipalities.list.kpis.${String(selectedKPI.key)}.label`),
+            metric: t(
+              `municipalities.list.kpis.${String(selectedKPI.key)}.label`,
+            ),
           })}
         </p>
       </div>
