@@ -1,4 +1,3 @@
-import { COLORS } from "@/lib/colors";
 import { useTranslation } from "react-i18next";
 import { Municipality } from "@/types/municipality";
 import { KPIValue } from "@/types/rankings";
@@ -143,7 +142,7 @@ function InsightsPanel({
         { entityPlural },
       )}
       entities={topMunicipalities}
-      totalCount={municipalityData.length}
+      totalCount={statistics.validData.length}
       dataPointKey={selectedKPI.key as keyof Municipality}
       unit={selectedKPI.unit}
       nullValues={selectedKPI.nullValues}
@@ -160,7 +159,7 @@ function InsightsPanel({
     <InsightsList<Municipality>
       title={t("rankedInsights.titleWorst", { entityPlural })}
       entities={bottomMunicipalities}
-      totalCount={municipalityData.length}
+      totalCount={statistics.validData.length}
       isBottomRanking
       dataPointKey={selectedKPI.key as keyof Municipality}
       unit={selectedKPI.unit}
