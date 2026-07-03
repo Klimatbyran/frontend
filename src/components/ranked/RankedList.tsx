@@ -112,8 +112,9 @@ function useSortedRankedData<T extends Record<string, unknown>>({
     );
   });
 
-  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
+  const totalPages = Math.max(1, Math.ceil(filteredData.length / itemsPerPage));
+  const currentPageSafe = Math.min(currentPage, totalPages);
+  const startIndex = (currentPageSafe - 1) * itemsPerPage;
   const paginatedData = filteredData.slice(
     startIndex,
     startIndex + itemsPerPage,
@@ -124,6 +125,7 @@ function useSortedRankedData<T extends Record<string, unknown>>({
     originalRankMap,
     filteredData,
     totalPages,
+    currentPageSafe,
     startIndex,
     paginatedData,
     sortAscending,
