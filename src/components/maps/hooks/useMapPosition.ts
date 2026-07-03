@@ -1,10 +1,14 @@
 import { useCallback, useState } from "react";
+import { isMobile } from "react-device-detect";
 
 export function useMapPosition(
   defaultCenter: [number, number],
   defaultZoom?: number,
 ) {
-  const getInitialZoom = useCallback(() => defaultZoom || 5, [defaultZoom]);
+  const getInitialZoom = useCallback(
+    () => defaultZoom || (isMobile ? 6 : 5),
+    [defaultZoom],
+  );
 
   const [position, setPosition] = useState<{
     center: [number, number];
