@@ -104,30 +104,26 @@ export function CompaniesOverviewPage() {
   };
 
   const [selectedKPI, setSelectedKPI] = useState(getKPIFromURL());
-  const [selectedSector, setSelectedSector] = useState<string | null>(
-    getSectorFromURL(),
-  );
+  const selectedSector = useMemo(() => getSectorFromURL(), [getSectorFromURL]);
   const viewMode = getViewModeFromURL();
 
-  // Ensure a sector is selected on initial load
+  // Ensure a sector is written to the URL once sectors are known
   useEffect(() => {
-    if (!selectedSector && availableSectors.length > 0) {
-      const firstSector = availableSectors[0];
-      setSelectedSector(firstSector);
-      setSectorInURL(firstSector);
+    if (availableSectors.length === 0) return;
+
+    const params = new URLSearchParams(location.search);
+    const sectorParam = params.get("sector");
+
+    if (sectorParam && availableSectors.includes(sectorParam)) {
+      return;
     }
-  }, [availableSectors, selectedSector, setSectorInURL]);
+
+    setSectorInURL(availableSectors[0]);
+  }, [availableSectors, location.search, setSectorInURL]);
 
   useEffect(() => {
     setSelectedKPI(getKPIFromURL());
   }, [getKPIFromURL]);
-
-  useEffect(() => {
-    const sectorFromUrl = getSectorFromURL();
-    if (sectorFromUrl !== selectedSector) {
-      setSelectedSector(sectorFromUrl);
-    }
-  }, [getSectorFromURL, selectedSector]);
 
   // Filter and enrich companies with KPI values
   const companiesWithKPIs: CompanyWithKPIs[] = useMemo(() => {
@@ -153,7 +149,6 @@ export function CompaniesOverviewPage() {
   }, [companies, selectedSector, selectedKPI.key]);
 
   const handleSectorChange = (sector: string) => {
-    setSelectedSector(sector);
     setSectorInURL(sector);
   };
 
@@ -310,11 +305,13 @@ export function CompaniesOverviewPage() {
               companyData={companiesWithKPIs}
               selectedKPI={selectedKPI}
               section="top"
+              listKey={selectedSector ?? undefined}
             />
             <CompanyInsightsPanel
               companyData={companiesWithKPIs}
               selectedKPI={selectedKPI}
               section="bottom"
+              listKey={selectedSector ?? undefined}
             />
             <CompanyInsightsPanel
               companyData={companiesWithKPIs}

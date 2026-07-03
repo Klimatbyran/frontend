@@ -26,6 +26,8 @@ interface InsightsPanelProps {
   companyData: CompanyWithKPIs[];
   selectedKPI: CompanyKPIValue;
   section?: InsightsPanelSection;
+  /** Forces insight lists to remount when the active filter changes */
+  listKey?: string;
 }
 
 const MIN_COMPANIES = 2;
@@ -34,6 +36,7 @@ function CompanyInsightsPanel({
   companyData,
   selectedKPI,
   section,
+  listKey,
 }: InsightsPanelProps) {
   const { t } = useTranslation();
   const kpiKey = String(selectedKPI.key);
@@ -139,6 +142,7 @@ function CompanyInsightsPanel({
 
   const topPanel = !selectedKPI.isBoolean ? (
     <InsightsList<CompanyWithKPIs>
+      key={listKey ? `top-${listKey}` : undefined}
       title={t(
         selectedKPI.higherIsBetter
           ? "rankedInsights.titleTop"
@@ -163,6 +167,7 @@ function CompanyInsightsPanel({
 
   const bottomPanel = !selectedKPI.isBoolean ? (
     <InsightsList<CompanyWithKPIs>
+      key={listKey ? `bottom-${listKey}` : undefined}
       title={t("rankedInsights.titleWorst", {
         nrOfEntities: bottomCompanies.length,
         entityPlural: entityPlural,
