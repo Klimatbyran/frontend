@@ -29,6 +29,31 @@ function buildCompaniesInSectorInsight(
   };
 }
 
+function buildTrendComparisonData(
+  reportingCompanies: ReturnType<typeof countReportingCompanies>,
+  currentLanguage: SectorInsightsContext["currentLanguage"],
+) {
+  const comparableTrends = getComparableCompanyTrends(reportingCompanies);
+  return {
+    comparableTrends,
+    reducingCount: comparableTrends.filter((trend) => trend.changePercent < 0)
+      .length,
+    increasingCount: comparableTrends.filter((trend) => trend.changePercent > 0)
+      .length,
+    comparableCount: comparableTrends.length,
+    reducingBars: buildTrendChangeBars(
+      comparableTrends,
+      "reducing",
+      currentLanguage,
+    ),
+    increasingBars: buildTrendChangeBars(
+      comparableTrends,
+      "increasing",
+      currentLanguage,
+    ),
+  };
+}
+
 export function buildSectorSelectedInsights(
   context: SectorInsightsContext & { selectedSector: string },
 ): ChartInsight[] {
@@ -47,24 +72,13 @@ export function buildSectorSelectedInsights(
     selectedSector,
   );
 
-  const comparableTrends = getComparableCompanyTrends(reportingCompanies);
-  const reducingCount = comparableTrends.filter(
-    (trend) => trend.changePercent < 0,
-  ).length;
-  const increasingCount = comparableTrends.filter(
-    (trend) => trend.changePercent > 0,
-  ).length;
-  const comparableCount = comparableTrends.length;
-  const reducingBars = buildTrendChangeBars(
-    comparableTrends,
-    "reducing",
-    currentLanguage,
-  );
-  const increasingBars = buildTrendChangeBars(
-    comparableTrends,
-    "increasing",
-    currentLanguage,
-  );
+  const {
+    comparableCount,
+    reducingCount,
+    increasingCount,
+    reducingBars,
+    increasingBars,
+  } = buildTrendComparisonData(reportingCompanies, currentLanguage);
 
   return [
     buildCompaniesInSectorInsight(

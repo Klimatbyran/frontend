@@ -1,11 +1,5 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useCompanies } from "@/hooks/companies/useCompanies";
-import useTransformCompanyListCard from "@/hooks/companies/useTransformCompanyListCard";
-import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
-import useTransformMunicipalityListCard from "@/hooks/municipalities/useTransformMunicipalityListCard";
-import { useRegionsForExplore } from "@/hooks/regions/useRegionsForExplore";
-import { useTransformRegionListCard } from "@/hooks/regions/useTransformRegionListCard";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
 import { orderSelectedCards } from "@/utils/compare/comparisonUtils";
@@ -14,6 +8,7 @@ import {
   getComparisonLoading,
   useComparisonViewState,
 } from "./comparisonViewState";
+import { useComparisonSourceCards } from "./useComparisonSourceCards";
 
 export function useComparisonItems() {
   const viewState = useComparisonViewState();
@@ -26,28 +21,24 @@ export function useComparisonItems() {
     loadRegions,
   } = viewState;
 
-  const { companies, companiesLoading } = useCompanies({
-    enabled: loadCompanies,
-  });
-  const { municipalities, municipalitiesLoading } = useMunicipalities({
-    enabled: loadMunicipalities,
-  });
-  const { regions, loading: regionsLoading } = useRegionsForExplore({
-    enabled: loadRegions,
+  const {
+    allCompanyCards,
+    allMunicipalityCards,
+    allRegionCards,
+    companies,
+    municipalities,
+    regions,
+    companiesLoading,
+    municipalitiesLoading,
+    regionsLoading,
+  } = useComparisonSourceCards({
+    loadCompanies,
+    loadMunicipalities,
+    loadRegions,
   });
   const { currentLanguage } = useLanguage();
   const { t } = useTranslation();
   const { isAIGenerated } = useVerificationStatus();
-
-  const allCompanyCards = useTransformCompanyListCard({
-    filteredCompanies: loadCompanies ? (companies ?? []) : [],
-  });
-  const allMunicipalityCards = useTransformMunicipalityListCard({
-    filteredMunicipalities: loadMunicipalities ? (municipalities ?? []) : [],
-  });
-  const allRegionCards = useTransformRegionListCard({
-    filteredRegions: loadRegions ? (regions ?? []) : [],
-  });
 
   const items = useMemo(() => {
     if (!hasViewData || !activeVariant) return [];

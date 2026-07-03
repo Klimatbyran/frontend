@@ -10,12 +10,10 @@ import { useSortOptions } from "./useMunicipalitiesSorting";
 import setOrDeleteSearchParam from "@/utils/data/setOrDeleteSearchParam";
 import { useExploreFilters } from "@/hooks/explore/useExploreFilters";
 import {
-  buildMunicipalityActiveFilters,
-  buildMeetsParisFilterGroup,
-  buildRegionFilterGroup,
   parseSelectedRegions,
 } from "./municipalityFilterUtils";
 import { filterAndSortMunicipalities } from "./municipalityFilterSort";
+import { useMunicipalityFilterGroups } from "./useMunicipalityFilterGroups";
 
 function useMunicipalityRegionFilter() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -73,42 +71,13 @@ export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
     ],
   );
 
-  const filterGroups = useMemo(
-    () => [
-      buildRegionFilterGroup(t, selectedRegions, setSelectedRegions),
-      buildMeetsParisFilterGroup(
-        t,
-        "explorePage.municipalities.sortingOptions.meetsParis",
-        meetsParisFilter,
-        setMeetsParisFilter,
-      ),
-    ],
-    [
-      t,
-      selectedRegions,
-      setSelectedRegions,
-      meetsParisFilter,
-      setMeetsParisFilter,
-    ],
-  );
-
-  const activeFilters = useMemo(
-    () =>
-      buildMunicipalityActiveFilters(
-        t,
-        selectedRegions,
-        meetsParisFilter,
-        setSelectedRegions,
-        setMeetsParisFilter,
-      ),
-    [
-      selectedRegions,
-      meetsParisFilter,
-      t,
-      setSelectedRegions,
-      setMeetsParisFilter,
-    ],
-  );
+  const { filterGroups, activeFilters } = useMunicipalityFilterGroups({
+    t,
+    selectedRegions,
+    setSelectedRegions,
+    meetsParisFilter,
+    setMeetsParisFilter,
+  });
 
   return {
     searchQuery,
