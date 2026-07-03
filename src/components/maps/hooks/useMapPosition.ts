@@ -4,10 +4,7 @@ export function useMapPosition(
   defaultCenter: [number, number],
   defaultZoom?: number,
 ) {
-  const getInitialZoom = useCallback(
-    () => defaultZoom || 5,
-    [defaultZoom],
-  );
+  const getInitialZoom = useCallback(() => defaultZoom || 5, [defaultZoom]);
 
   const [position, setPosition] = useState<{
     center: [number, number];
