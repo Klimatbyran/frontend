@@ -50,17 +50,26 @@ function buildHistogramBins(
   return bins;
 }
 
-/** Color a histogram bin: good side = blue-3, bad side = pink-3, near avg = orange-2 */
+function findClosestBinIndex(
+  bins: { min: number; max: number }[],
+  average: number,
+): number {
+  return bins.reduce((best, bin, i) => {
+    const binMid = (bin.min + bin.max) / 2;
+    const bestMid = (bins[best].min + bins[best].max) / 2;
+    return Math.abs(binMid - average) < Math.abs(bestMid - average) ? i : best;
+  }, 0);
+}
+
+/** Color a histogram bin: good side = blue-3, bad side = pink-3, avg bin = orange-2 */
 function binColor(
+  binIndex: number,
+  averageBinIndex: number | undefined,
   binMid: number,
   average: number | undefined,
-  binWidth: number,
   higherIsBetter: boolean,
 ): string {
-  if (
-    average !== undefined &&
-    Math.abs(binMid - average) < Math.abs(binWidth) * 0.75
-  ) {
+  if (averageBinIndex !== undefined && binIndex === averageBinIndex) {
     return COLORS.orange2;
   }
   // "good" side depends on KPI direction
@@ -207,7 +216,8 @@ export function KPIDistributionChart<T>({
 
   const unit = selectedKPI.unit || "";
   const maxCount = Math.max(...bins.map((b) => b.count));
-  const binWidth = bins[1] ? bins[1].min - bins[0].min : 1;
+  const averageBinIndex =
+    average !== undefined ? findClosestBinIndex(bins, average) : undefined;
 
   // Both keys now translate to just "Bättre" / "Sämre"
   const betterLabel = t(
@@ -254,29 +264,6 @@ export function KPIDistributionChart<T>({
             )}
             cursor={{ fill: "rgba(255,255,255,0.05)" }}
           />
-          {average !== undefined &&
-            (() => {
-              const closestIdx = bins.reduce((best, bin, i) => {
-                const binMid = (bin.min + bin.max) / 2;
-                const bestMid = (bins[best].min + bins[best].max) / 2;
-                return Math.abs(binMid - average) < Math.abs(bestMid - average)
-                  ? i
-                  : best;
-              }, 0);
-              return (
-                <ReferenceLine
-                  x={bins[closestIdx]?.label}
-                  stroke={COLORS.orange2}
-                  strokeDasharray="3 3"
-                  label={{
-                    value: `Ø ${average.toFixed(1)}${unit}`,
-                    position: "top",
-                    fontSize: 11,
-                    fill: COLORS.orange2,
-                  }}
-                />
-              );
-            })()}
           <Bar
             dataKey="count"
             radius={[3, 3, 0, 0]}
@@ -289,15 +276,31 @@ export function KPIDistributionChart<T>({
             {bins.map((bin, i) => {
               const binMid = (bin.min + bin.max) / 2;
               const color = binColor(
+                i,
+                averageBinIndex,
                 binMid,
                 average,
-                binWidth,
                 selectedKPI.higherIsBetter,
               );
               const opacity = 0.5 + (bin.count / maxCount) * 0.5;
               return <Cell key={i} fill={color} fillOpacity={opacity} />;
             })}
           </Bar>
+          {average !== undefined && (
+            <ReferenceLine
+              x={bins[averageBinIndex!]?.label}
+              stroke={COLORS.orange3}
+              strokeWidth={2}
+              strokeDasharray="4 4"
+              ifOverflow="extendDomain"
+              label={{
+                value: `Ø ${average.toFixed(1)}${unit}`,
+                position: "top",
+                fontSize: 11,
+                fill: COLORS.orange3,
+              }}
+            />
+          )}
         </BarChart>
       </ResponsiveContainer>
       {/* Color legend — order mirrors the histogram: bad side matches its colour */}
