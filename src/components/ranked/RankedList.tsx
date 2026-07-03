@@ -216,9 +216,16 @@ export function RankedList<T extends Record<string, unknown>>({
       onClick={() => onItemClick?.(item)}
       className="w-full p-4 hover:bg-black/70 transition-colors flex items-start justify-between gap-4 group"
     >
-      <div className="flex items-start gap-4 min-w-0 flex-1">
-        <span className="text-white/30 text-sm w-8 shrink-0 tabular-nums text-left pt-0.5">
-          {selectedDataPoint.isBoolean ? "" : getOriginalRank(item)}
+      <div className="flex items-center gap-4">
+        <span className="text-white/30 text-sm w-8 shrink-0 tabular-nums text-left">
+          {selectedDataPoint.isBoolean
+            ? ""
+            : isMissingRankedValue(
+                  item[selectedDataPoint.key],
+                  selectedDataPoint.isBoolean,
+                )
+              ? "—"
+              : getOriginalRank(item)}
         </span>
         <span className="text-white/90 text-sm md:text-base text-left break-words">
           {String(item[searchKey])}

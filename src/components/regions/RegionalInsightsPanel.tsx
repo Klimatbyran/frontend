@@ -1,4 +1,3 @@
-import { COLORS } from "@/lib/colors";
 import { useTranslation } from "react-i18next";
 import { getSortedEntityKPIValues } from "@/utils/data/sorting";
 import { Region } from "@/types/region";
@@ -114,6 +113,7 @@ function RegionalInsightsPanel({
 
   const distributionPanel = (
     <DistributionBox
+      entityType="regions"
       chart={
         <KPIDistributionChart<Region>
           data={regionData}
@@ -135,10 +135,10 @@ function RegionalInsightsPanel({
         selectedKPI.higherIsBetter
           ? "rankedInsights.titleTop"
           : "rankedInsights.titleBest",
-        { entityPlural },
+        { nrOfEntities: topRegions.length, entityPlural: entityPlural },
       )}
       entities={topRegions}
-      totalCount={regionData.length}
+      totalCount={statistics.validData.length}
       dataPointKey={selectedKPI.key as keyof Region}
       unit={selectedKPI.unit}
       nullValues={selectedKPI.nullValues}
@@ -153,9 +153,12 @@ function RegionalInsightsPanel({
 
   const bottomPanel = !selectedKPI.isBoolean ? (
     <InsightsList<Region>
-      title={t("rankedInsights.titleWorst", { entityPlural })}
+      title={t("rankedInsights.titleWorst", {
+        nrOfEntities: bottomRegions.length,
+        entityPlural: entityPlural,
+      })}
       entities={bottomRegions}
-      totalCount={regionData.length}
+      totalCount={statistics.validData.length}
       isBottomRanking
       dataPointKey={selectedKPI.key as keyof Region}
       unit={selectedKPI.unit}

@@ -1,4 +1,3 @@
-import { COLORS } from "@/lib/colors";
 import { useTranslation } from "react-i18next";
 import { Municipality } from "@/types/municipality";
 import { KPIValue } from "@/types/rankings";
@@ -119,6 +118,7 @@ function InsightsPanel({
 
   const distributionPanel = (
     <DistributionBox
+      entityType="municipalities"
       chart={
         <KPIDistributionChart
           data={municipalityData}
@@ -140,10 +140,10 @@ function InsightsPanel({
         selectedKPI.higherIsBetter
           ? "rankedInsights.titleTop"
           : "rankedInsights.titleBest",
-        { entityPlural },
+        { nrOfEntities: topMunicipalities.length, entityPlural: entityPlural },
       )}
       entities={topMunicipalities}
-      totalCount={municipalityData.length}
+      totalCount={statistics.validData.length}
       dataPointKey={selectedKPI.key as keyof Municipality}
       unit={selectedKPI.unit}
       nullValues={selectedKPI.nullValues}
@@ -158,9 +158,12 @@ function InsightsPanel({
 
   const bottomPanel = !selectedKPI.isBoolean ? (
     <InsightsList<Municipality>
-      title={t("rankedInsights.titleWorst", { entityPlural })}
+      title={t("rankedInsights.titleWorst", {
+        nrOfEntities: bottomMunicipalities.length,
+        entityPlural: entityPlural,
+      })}
       entities={bottomMunicipalities}
-      totalCount={municipalityData.length}
+      totalCount={statistics.validData.length}
       isBottomRanking
       dataPointKey={selectedKPI.key as keyof Municipality}
       unit={selectedKPI.unit}
