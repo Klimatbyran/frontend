@@ -105,6 +105,7 @@ function RegionalInsightsPanel({
             selectedKPI={selectedKPI}
             entityLabel={entityPlural}
             translationPrefix="regions.list"
+            maxOuterRadius={130}
           />
         ) : undefined
       }

@@ -98,20 +98,25 @@ export default function KPIDetailsPanel({
   );
 
   const compactBooleanLayout = isBoolean && !!chart;
+  const showFooter =
+    (typeof missingDataCount === "number" &&
+      missingDataCount > 0 &&
+      !isBoolean) ||
+    !!sourceSection;
 
   return (
     <div
-      className={`p-6 md:p-8 flex flex-col gap-4 md:gap-5 bg-white/5 rounded-level-2 shadow-lg h-full min-h-0 overflow-hidden ${className}`}
+      className={`p-6 md:p-8 flex flex-col gap-6 md:gap-0 md:justify-between h-auto md:h-full min-h-0 min-w-0 bg-white/5 rounded-level-2 shadow-lg ${className}`}
     >
       {/* Title + description + direction badge */}
-      <div className="space-y-2 shrink-0">
+      <div className="space-y-3 shrink-0">
         <h2 className="text-2xl md:text-3xl font-bold tracking-tight leading-tight">
           {title}
         </h2>
         {description && (
           <p
             className={`text-sm md:text-base text-white/60 leading-relaxed ${
-              compactBooleanLayout ? "line-clamp-2" : ""
+              compactBooleanLayout ? "md:line-clamp-2" : ""
             }`}
           >
             {description}
@@ -136,60 +141,55 @@ export default function KPIDetailsPanel({
       </div>
 
       {chart && (
-        <div className="w-full flex-1 min-h-0 flex items-center justify-center">
+        <div className="shrink-0 w-full min-w-0 flex justify-center">
           {chart}
         </div>
       )}
 
-      {/* Top & bottom performers */}
-      {!compactBooleanLayout && (topPerformer || bottomPerformer) && (
-        <div className="grid grid-cols-2 gap-3">
-          {topPerformer && (
-            <div className="p-4 bg-white/10 rounded-2xl space-y-1">
-              <p className="text-xs text-white/50 uppercase tracking-wider">
-                {t("municipalities.list.insights.keyStatistics.best")}
-              </p>
-              {topPerformer.href ? (
-                <LocalizedLink
-                  to={topPerformer.href}
-                  className="block font-semibold text-blue-3 hover:underline truncate"
-                >
-                  {topPerformer.name}
-                </LocalizedLink>
-              ) : (
-                <p className="font-semibold text-blue-3 truncate">
-                  {topPerformer.name}
-                </p>
-              )}
-              <p className="text-sm text-white/60">{topPerformer.value}</p>
-            </div>
+      {topPerformer && !compactBooleanLayout && (
+        <div className="p-5 md:p-4 bg-white/10 rounded-2xl space-y-1.5 shrink-0">
+          <p className="text-xs text-white/50 uppercase tracking-wider">
+            {t("municipalities.list.insights.keyStatistics.best")}
+          </p>
+          {topPerformer.href ? (
+            <LocalizedLink
+              to={topPerformer.href}
+              className="block font-semibold text-blue-3 hover:underline truncate"
+            >
+              {topPerformer.name}
+            </LocalizedLink>
+          ) : (
+            <p className="font-semibold text-blue-3 truncate">
+              {topPerformer.name}
+            </p>
           )}
-          {bottomPerformer && (
-            <div className="p-4 bg-white/10 rounded-2xl space-y-1">
-              <p className="text-xs text-white/50 uppercase tracking-wider">
-                {t("municipalities.list.insights.keyStatistics.worst")}
-              </p>
-              {bottomPerformer.href ? (
-                <LocalizedLink
-                  to={bottomPerformer.href}
-                  className="block font-semibold text-pink-3 hover:underline truncate"
-                >
-                  {bottomPerformer.name}
-                </LocalizedLink>
-              ) : (
-                <p className="font-semibold text-pink-3 truncate">
-                  {bottomPerformer.name}
-                </p>
-              )}
-              <p className="text-sm text-white/60">{bottomPerformer.value}</p>
-            </div>
-          )}
+          <p className="text-sm text-white/60">{topPerformer.value}</p>
         </div>
       )}
 
-      {/* Average */}
+      {bottomPerformer && !compactBooleanLayout && (
+        <div className="p-5 md:p-4 bg-white/10 rounded-2xl space-y-1.5 shrink-0">
+          <p className="text-xs text-white/50 uppercase tracking-wider">
+            {t("municipalities.list.insights.keyStatistics.worst")}
+          </p>
+          {bottomPerformer.href ? (
+            <LocalizedLink
+              to={bottomPerformer.href}
+              className="block font-semibold text-pink-3 hover:underline truncate"
+            >
+              {bottomPerformer.name}
+            </LocalizedLink>
+          ) : (
+            <p className="font-semibold text-pink-3 truncate">
+              {bottomPerformer.name}
+            </p>
+          )}
+          <p className="text-sm text-white/60">{bottomPerformer.value}</p>
+        </div>
+      )}
+
       {averageValue !== undefined && (
-        <div className="p-4 bg-white/10 rounded-2xl">
+        <div className="p-4 bg-white/10 rounded-2xl shrink-0">
           <p className="text-xs text-white/50 uppercase tracking-wider mb-1">
             {averageLabel}
           </p>
@@ -199,7 +199,7 @@ export default function KPIDetailsPanel({
 
       {/* Distribution bar + legend */}
       {distributionStats.length > 0 && totalDistribution > 0 && (
-        <div className="space-y-3 shrink-0">
+        <div className="space-y-4 md:space-y-3 shrink-0">
           <div className="flex rounded-full overflow-hidden h-3">
             {distributionStats.map((stat, i) => {
               const pct = (stat.count / totalDistribution) * 100;
@@ -217,7 +217,7 @@ export default function KPIDetailsPanel({
               );
             })}
           </div>
-          <div className="space-y-2">
+          <div className="space-y-3 md:space-y-2">
             {distributionStats.map((stat, index) => {
               const pct =
                 totalDistribution > 0
@@ -255,24 +255,25 @@ export default function KPIDetailsPanel({
         </div>
       )}
 
-      {/* Footer: missing data + source */}
-      <div className="space-y-1.5 shrink-0">
-        {typeof missingDataCount === "number" &&
-          missingDataCount > 0 &&
-          !isBoolean &&
-          (missingDataCountKey ? (
-            <p className="text-white/40 text-sm italic truncate">
-              {t(missingDataCountKey, { count: missingDataCount })}
-            </p>
-          ) : (
-            missingDataLabel && (
+      {showFooter && (
+        <div className="space-y-2 shrink-0">
+          {typeof missingDataCount === "number" &&
+            missingDataCount > 0 &&
+            !isBoolean &&
+            (missingDataCountKey ? (
               <p className="text-white/40 text-sm italic truncate">
-                {missingDataCount} {lowercaseFirstLetter(missingDataLabel)}
+                {t(missingDataCountKey, { count: missingDataCount })}
               </p>
-            )
-          ))}
-        {sourceSection}
-      </div>
+            ) : (
+              missingDataLabel && (
+                <p className="text-white/40 text-sm italic truncate">
+                  {missingDataCount} {lowercaseFirstLetter(missingDataLabel)}
+                </p>
+              )
+            ))}
+          {sourceSection}
+        </div>
+      )}
     </div>
   );
 }

@@ -11,8 +11,7 @@ function resolvePieSize(
   includeLabels: boolean,
   maxOuterRadius?: number,
 ): ResponsiveSize {
-  const width =
-    containerWidth > 0 ? containerWidth : window.innerWidth || 360;
+  const width = containerWidth > 0 ? containerWidth : window.innerWidth || 360;
 
   let innerRadius: number;
   let outerRadius: number;
@@ -81,5 +80,5 @@ export function useResponsiveChartSize(
     };
   }, [container, includeLabels, maxOuterRadius]);
 
-  return { size, containerRef };
+  return { size, containerRef, containerWidth: container?.clientWidth ?? 0 };
 }

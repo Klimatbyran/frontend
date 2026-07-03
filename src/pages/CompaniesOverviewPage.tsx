@@ -280,7 +280,7 @@ export function CompaniesOverviewPage() {
 
       <div className="space-y-6">
         {/* Row 1: graph/list toggle | stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-6 items-stretch">
           <OverviewSplitLayout
             viewMode={viewMode}
             visualizationMode="graph"

@@ -110,6 +110,7 @@ function InsightsPanel({
             selectedKPI={selectedKPI}
             entityLabel={entityPlural}
             translationPrefix="municipalities.list"
+            maxOuterRadius={130}
           />
         ) : undefined
       }

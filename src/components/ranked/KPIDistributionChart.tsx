@@ -99,14 +99,14 @@ function BooleanKPIPieChart({
 
   const total = slices.reduce((sum, item) => sum + item.value, 0);
   const pieData = slices.map((item) => ({ ...item, total }));
-  const chartHeight = size.outerRadius * 2;
+  const side = size.outerRadius * 2;
   const pieAnimationKey = pieData
     .map((entry) => `${entry.name}-${entry.value}`)
     .join("|");
 
   return (
-    <div ref={containerRef} className="w-full" style={{ height: chartHeight }}>
-      <ResponsiveContainer width="100%" height={chartHeight}>
+    <div ref={containerRef} className="w-full min-w-0 flex justify-center">
+      <ResponsiveContainer width={side} height={side}>
         <PieChart>
           <Pie
             key={`${animationKey}-${pieAnimationKey}`}
@@ -238,12 +238,8 @@ function useBooleanValues<T>(
     if (!selectedKPI.isBoolean) return null;
 
     const getValue = (item: T) => item[selectedKPI.key];
-    const trueCount = data.filter(
-      (item) => getValue(item) === true,
-    ).length;
-    const falseCount = data.filter(
-      (item) => getValue(item) === false,
-    ).length;
+    const trueCount = data.filter((item) => getValue(item) === true).length;
+    const falseCount = data.filter((item) => getValue(item) === false).length;
     const unknownCount = data.filter((item) =>
       isMissingRankedValue(getValue(item), true),
     ).length;

@@ -30,6 +30,7 @@ import {
 } from "@/utils/territoryMapData";
 import {
   OverviewSplitLayout,
+  OVERVIEW_PANEL_MD_HEIGHT,
   type OverviewViewMode,
 } from "@/components/ranked/OverviewSplitLayout";
 import { useScreenSize } from "@/hooks/useScreenSize";
@@ -216,7 +217,7 @@ export function MunicipalitiesOverviewPage() {
 
       <div className="space-y-6">
         {/* Row 1: map/list (toggled) | stats panel */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-6 items-stretch">
           <OverviewSplitLayout
             viewMode={viewMode}
             visualizationMode="map"
@@ -224,11 +225,13 @@ export function MunicipalitiesOverviewPage() {
             list={municipalityRankedList}
             toggle={viewToggle}
           />
-          <InsightsPanel
-            municipalityData={municipalities}
-            selectedKPI={selectedKPI}
-            section="stats"
-          />
+          <div className={`min-h-0 h-full min-w-0 ${OVERVIEW_PANEL_MD_HEIGHT}`}>
+            <InsightsPanel
+              municipalityData={municipalities}
+              selectedKPI={selectedKPI}
+              section="stats"
+            />
+          </div>
         </div>
 
         {/* Row 2: top/bottom/distribution (numeric KPIs only) */}
