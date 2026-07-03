@@ -1893,9 +1893,9 @@
   "rankedInsights": {
     "belowAverage": "{{entityPlural}} below average",
     "aboveAverage": "{{entityPlural}} above average",
-    "titleBest": "Top 10 {{entityPlural}}",
-    "titleTop": "Top Performing 10 {{entityPlural}}",
-    "titleWorst": "Bottom 10 {{entityPlural}}"
+    "titleBest": "Top {{nrOfEntities}} {{entityPlural}}",
+    "titleTop": "Top Performing {{nrOfEntities}} {{entityPlural}}",
+    "titleWorst": "Bottom {{nrOfEntities}} {{entityPlural}}"
   },
   "chartLegend": {
     "clickToFilterOut": "Click to filter out",

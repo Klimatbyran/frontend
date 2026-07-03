@@ -135,7 +135,7 @@ function RegionalInsightsPanel({
         selectedKPI.higherIsBetter
           ? "rankedInsights.titleTop"
           : "rankedInsights.titleBest",
-        { entityPlural },
+        { nrOfEntities: topRegions.length, entityPlural: entityPlural },
       )}
       entities={topRegions}
       totalCount={regionData.length}
@@ -153,7 +153,10 @@ function RegionalInsightsPanel({
 
   const bottomPanel = !selectedKPI.isBoolean ? (
     <InsightsList<Region>
-      title={t("rankedInsights.titleWorst", { entityPlural })}
+      title={t("rankedInsights.titleWorst", {
+        nrOfEntities: bottomRegions.length,
+        entityPlural: entityPlural,
+      })}
       entities={bottomRegions}
       totalCount={regionData.length}
       isBottomRanking

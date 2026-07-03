@@ -140,7 +140,7 @@ function InsightsPanel({
         selectedKPI.higherIsBetter
           ? "rankedInsights.titleTop"
           : "rankedInsights.titleBest",
-        { entityPlural },
+        { nrOfEntities: topMunicipalities.length, entityPlural: entityPlural },
       )}
       entities={topMunicipalities}
       totalCount={municipalityData.length}
@@ -158,7 +158,10 @@ function InsightsPanel({
 
   const bottomPanel = !selectedKPI.isBoolean ? (
     <InsightsList<Municipality>
-      title={t("rankedInsights.titleWorst", { entityPlural })}
+      title={t("rankedInsights.titleWorst", {
+        nrOfEntities: bottomMunicipalities.length,
+        entityPlural: entityPlural,
+      })}
       entities={bottomMunicipalities}
       totalCount={municipalityData.length}
       isBottomRanking
