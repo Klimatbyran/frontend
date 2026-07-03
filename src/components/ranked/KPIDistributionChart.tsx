@@ -14,6 +14,7 @@ import {
 } from "recharts";
 import { KPIValue } from "@/types/rankings";
 import { COLORS } from "@/lib/colors";
+import { cn } from "@/lib/utils";
 
 interface KPIDistributionChartProps<T> {
   data: T[];
@@ -28,20 +29,38 @@ const NUM_BINS = 12;
 function buildHistogramBins(
   values: number[],
   numBins: number,
-): { label: string; count: number; min: number; max: number }[] {
+): {
+  label: string;
+  count: number;
+  min: number;
+  max: number;
+  index: number;
+}[] {
   if (!values.length) return [];
   const minVal = Math.min(...values);
   const maxVal = Math.max(...values);
   if (minVal === maxVal) {
     return [
-      { label: String(minVal), count: values.length, min: minVal, max: maxVal },
+      {
+        label: String(minVal),
+        count: values.length,
+        min: minVal,
+        max: maxVal,
+        index: 0,
+      },
     ];
   }
   const binSize = (maxVal - minVal) / numBins;
   const bins = Array.from({ length: numBins }, (_, i) => {
     const binMin = minVal + i * binSize;
     const binMax = i === numBins - 1 ? maxVal + 0.0001 : binMin + binSize;
-    return { label: binMin.toFixed(1), count: 0, min: binMin, max: binMax };
+    return {
+      label: binMin.toFixed(1),
+      count: 0,
+      min: binMin,
+      max: binMax,
+      index: i,
+    };
   });
   values.forEach((v) => {
     const idx = Math.min(Math.floor((v - minVal) / binSize), numBins - 1);
@@ -50,24 +69,28 @@ function buildHistogramBins(
   return bins;
 }
 
-/** Color a histogram bin: good side = blue-3, bad side = pink-3, near avg = orange-2 */
+/** Color a histogram bin: good side = blue-3, bad side = pink-3 */
 function binColor(
   binMid: number,
   average: number | undefined,
-  binWidth: number,
   higherIsBetter: boolean,
 ): string {
-  if (
-    average !== undefined &&
-    Math.abs(binMid - average) < Math.abs(binWidth) * 0.75
-  ) {
-    return COLORS.orange2;
-  }
-  // "good" side depends on KPI direction
-  const isGoodSide = higherIsBetter
-    ? binMid > (average ?? 0)
-    : binMid < (average ?? 0);
+  const pivot = average ?? 0;
+  const isGoodSide = higherIsBetter ? binMid > pivot : binMid < pivot;
   return isGoodSide ? COLORS.blue3 : COLORS.pink3;
+}
+
+function getAverageLinePosition(
+  average: number,
+  bins: { min: number; max: number; index: number }[],
+): number {
+  if (bins.length === 1) return 0;
+  const minVal = bins[0].min;
+  const maxVal = bins[bins.length - 1].max;
+  const range = maxVal - minVal;
+  if (range <= 0) return 0;
+  const position = ((average - minVal) / range) * (bins.length - 1);
+  return Math.max(0, Math.min(bins.length - 1, position));
 }
 
 function HistogramTooltip({
@@ -207,7 +230,14 @@ export function KPIDistributionChart<T>({
 
   const unit = selectedKPI.unit || "";
   const maxCount = Math.max(...bins.map((b) => b.count));
-  const binWidth = bins[1] ? bins[1].min - bins[0].min : 1;
+  const showAverageLine = average !== undefined && !Number.isNaN(average);
+  const averageLineX = showAverageLine
+    ? getAverageLinePosition(average, bins)
+    : undefined;
+  const xAxisTicks =
+    bins.length > 1
+      ? [0, Math.floor((bins.length - 1) / 2), bins.length - 1]
+      : [0];
 
   // Both keys now translate to just "Bättre" / "Sämre"
   const betterLabel = t(
@@ -235,12 +265,17 @@ export function KPIDistributionChart<T>({
           margin={{ top: 16, right: 4, bottom: 4, left: 4 }}
         >
           <XAxis
-            dataKey="label"
+            type="number"
+            dataKey="index"
+            domain={[0, Math.max(bins.length - 1, 0)]}
+            ticks={xAxisTicks}
             tick={{ fontSize: 11, fill: "rgba(255,255,255,0.45)" }}
             tickLine={false}
             axisLine={false}
-            interval="preserveStartEnd"
-            tickFormatter={(v) => `${Number(v).toFixed(0)}${unit}`}
+            tickFormatter={(idx) => {
+              const bin = bins[Math.min(Math.round(idx), bins.length - 1)];
+              return bin ? `${Number(bin.label).toFixed(0)}${unit}` : "";
+            }}
           />
           <YAxis hide domain={[0, maxCount]} />
           <Tooltip
@@ -254,29 +289,20 @@ export function KPIDistributionChart<T>({
             )}
             cursor={{ fill: "rgba(255,255,255,0.05)" }}
           />
-          {average !== undefined &&
-            (() => {
-              const closestIdx = bins.reduce((best, bin, i) => {
-                const binMid = (bin.min + bin.max) / 2;
-                const bestMid = (bins[best].min + bins[best].max) / 2;
-                return Math.abs(binMid - average) < Math.abs(bestMid - average)
-                  ? i
-                  : best;
-              }, 0);
-              return (
-                <ReferenceLine
-                  x={bins[closestIdx]?.label}
-                  stroke={COLORS.orange2}
-                  strokeDasharray="3 3"
-                  label={{
-                    value: `Ø ${average.toFixed(1)}${unit}`,
-                    position: "top",
-                    fontSize: 11,
-                    fill: COLORS.orange2,
-                  }}
-                />
-              );
-            })()}
+          {showAverageLine && averageLineX !== undefined && (
+            <ReferenceLine
+              x={averageLineX}
+              stroke={COLORS.orange2}
+              strokeDasharray="3 3"
+              ifOverflow="extendDomain"
+              label={{
+                value: `Ø ${average.toFixed(1)}${unit}`,
+                position: "top",
+                fontSize: 11,
+                fill: COLORS.orange2,
+              }}
+            />
+          )}
           <Bar
             dataKey="count"
             radius={[3, 3, 0, 0]}
@@ -291,7 +317,6 @@ export function KPIDistributionChart<T>({
               const color = binColor(
                 binMid,
                 average,
-                binWidth,
                 selectedKPI.higherIsBetter,
               );
               const opacity = 0.5 + (bin.count / maxCount) * 0.5;
@@ -301,7 +326,12 @@ export function KPIDistributionChart<T>({
         </BarChart>
       </ResponsiveContainer>
       {/* Color legend — order mirrors the histogram: bad side matches its colour */}
-      <div className="flex items-center justify-between mt-3 px-1 gap-3">
+      <div
+        className={cn(
+          "flex items-center mt-3 px-1 gap-3",
+          showAverageLine ? "justify-between" : "justify-around",
+        )}
+      >
         <div className="flex items-center gap-2">
           <span
             className="inline-block w-3 h-3 rounded-sm shrink-0"
@@ -309,15 +339,17 @@ export function KPIDistributionChart<T>({
           />
           <span className="text-xs text-white/40">{leftLabel}</span>
         </div>
-        <div className="flex items-center gap-2">
-          <span
-            className="inline-block w-3 h-3 rounded-sm shrink-0"
-            style={{ backgroundColor: COLORS.orange2 }}
-          />
-          <span className="text-xs text-white/40">
-            {t("municipalities.list.insights.distribution.average")}
-          </span>
-        </div>
+        {showAverageLine && (
+          <div className="flex items-center gap-2">
+            <span
+              className="inline-block w-3 h-0 border-t-2 border-dashed shrink-0"
+              style={{ borderColor: COLORS.orange2, width: 12 }}
+            />
+            <span className="text-xs text-white/40">
+              {t("municipalities.list.insights.distribution.average")}
+            </span>
+          </div>
+        )}
         <div className="flex items-center gap-2">
           <span
             className="inline-block w-3 h-3 rounded-sm shrink-0"

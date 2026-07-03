@@ -1581,6 +1581,7 @@
         "distribution": {
           "title": "Distribution",
           "subtitle": "Shows how municipalities are spread across the scale for the selected indicator. Blue bars mean better results, pink worse, and the dashed line marks the national average.",
+          "subtitleNoAverage": "Shows how municipalities are spread across the scale for the selected indicator. Blue bars mean better results, pink worse.",
           "summary": "Summary",
           "average": "Average",
           "higherBetter": "Better",

@@ -116,6 +116,7 @@ function CompanyInsightsPanel({
 
   const distributionPanel = (
     <DistributionBox
+      showAverageLine={!selectedKPI.isBoolean}
       chart={
         <KPIDistributionChart<CompanyWithKPIs>
           data={companyData}

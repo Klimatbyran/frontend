@@ -25,6 +25,8 @@ interface DistributionBoxProps {
   title?: string;
   /** Override the default subtitle (falls back to distribution.subtitle key) */
   subtitle?: string;
+  /** When false, uses subtitleNoAverage which omits the dashed-line mention */
+  showAverageLine?: boolean;
 }
 
 /** Titled box that places a description at the top and a chart at the bottom. */
@@ -32,16 +34,23 @@ export function DistributionBox({
   chart,
   title,
   subtitle,
+  showAverageLine = true,
 }: DistributionBoxProps) {
   const { t } = useTranslation();
+  const distributionKey = "municipalities.list.insights.distribution";
   return (
     <div className="bg-white/5 rounded-level-2 p-6 flex flex-col justify-between h-full gap-6">
       <div>
         <h3 className="text-2xl font-bold text-white">
-          {title ?? t("municipalities.list.insights.distribution.title")}
+          {title ?? t(`${distributionKey}.title`)}
         </h3>
         <p className="text-sm text-white/60 leading-relaxed mt-2">
-          {subtitle ?? t("municipalities.list.insights.distribution.subtitle")}
+          {subtitle ??
+            t(
+              showAverageLine
+                ? `${distributionKey}.subtitle`
+                : `${distributionKey}.subtitleNoAverage`,
+            )}
         </p>
       </div>
       {chart}

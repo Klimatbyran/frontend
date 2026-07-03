@@ -119,6 +119,7 @@ function InsightsPanel({
 
   const distributionPanel = (
     <DistributionBox
+      showAverageLine={!selectedKPI.isBoolean}
       chart={
         <KPIDistributionChart
           data={municipalityData}

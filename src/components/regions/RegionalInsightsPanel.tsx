@@ -114,6 +114,7 @@ function RegionalInsightsPanel({
 
   const distributionPanel = (
     <DistributionBox
+      showAverageLine={!selectedKPI.isBoolean}
       chart={
         <KPIDistributionChart<Region>
           data={regionData}

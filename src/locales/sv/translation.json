@@ -1636,6 +1636,7 @@
         "distribution": {
           "title": "Fördelning",
           "subtitle": "Visar hur kommunerna sprider sig längs skalan för vald indikator. Blå staplar betyder bättre resultat, rosa sämre, och den streckade linjen markerar riksgenomsnittet.",
+          "subtitleNoAverage": "Visar hur kommunerna sprider sig längs skalan för vald indikator. Blå staplar betyder bättre resultat, rosa sämre.",
           "summary": "Sammanfattning",
           "average": "Genomsnitt",
           "higherBetter": "Bättre",
