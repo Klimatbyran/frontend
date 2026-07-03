@@ -9,9 +9,7 @@ import {
 import { useSortOptions } from "./useMunicipalitiesSorting";
 import setOrDeleteSearchParam from "@/utils/data/setOrDeleteSearchParam";
 import { useExploreFilters } from "@/hooks/explore/useExploreFilters";
-import {
-  parseSelectedRegions,
-} from "./municipalityFilterUtils";
+import { parseSelectedRegions } from "./municipalityFilterUtils";
 import { filterAndSortMunicipalities } from "./municipalityFilterSort";
 import { useMunicipalityFilterGroups } from "./useMunicipalityFilterGroups";
 
