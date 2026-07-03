@@ -1958,9 +1958,9 @@
   "rankedInsights": {
     "belowAverage": "{{entityPlural}} under genomsnittet",
     "aboveAverage": "{{entityPlural}} över genomsnittet",
-    "titleBest": "Topp 10 {{entityPlural}}",
-    "titleTop": "Bästa 10 {{entityPlural}}",
-    "titleWorst": "Sämsta 10 {{entityPlural}}"
+    "titleBest": "Topp {{nrOfEntities}} {{entityPlural}}",
+    "titleTop": "Bästa {{nrOfEntities}} {{entityPlural}}",
+    "titleWorst": "Sämsta {{nrOfEntities}} {{entityPlural}}"
   },
   "chartLegend": {
     "clickToFilterOut": "Klicka för att filtrera bort",

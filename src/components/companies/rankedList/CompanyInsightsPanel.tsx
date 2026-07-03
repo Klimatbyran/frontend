@@ -138,7 +138,7 @@ function CompanyInsightsPanel({
         selectedKPI.higherIsBetter
           ? "rankedInsights.titleTop"
           : "rankedInsights.titleBest",
-        { entityPlural },
+        { nrOfEntities: topCompanies.length, entityPlural: entityPlural },
       )}
       entities={topCompanies}
       totalCount={statistics.validData.length}
@@ -156,7 +156,10 @@ function CompanyInsightsPanel({
 
   const bottomPanel = !selectedKPI.isBoolean ? (
     <InsightsList<CompanyWithKPIs>
-      title={t("rankedInsights.titleWorst", { entityPlural })}
+      title={t("rankedInsights.titleWorst", {
+        nrOfEntities: bottomCompanies.length,
+        entityPlural: entityPlural,
+      })}
       entities={bottomCompanies}
       totalCount={statistics.validData.length}
       isBottomRanking
