@@ -1482,9 +1482,19 @@
       "regions": "Län"
     }
   },
+  "mapControls": {
+    "zoomIn": "Zooma in",
+    "zoomOut": "Zooma ut",
+    "reset": "Återställ"
+  },
   "regions": {
     "detailPage": {
       "municipalities": "Kommuner"
+    },
+    "map": {
+      "legend": {
+        "null": "Saknar data"
+      }
     },
     "kpis": {
       "emissions": {
@@ -1507,7 +1517,8 @@
           "label": "Utsläppen",
           "description": "Historisk förändring av utsläpp",
           "detailedDescription": "Genomsnittlig årlig procentuell förändring av växthusgasutsläppen i Sveriges län sedan Parisavtalet år 2015.",
-          "source": "Nationella emissionsdatabasen"
+          "source": "Nationella emissionsdatabasen",
+          "nullValues": "Saknar data"
         },
         "meetsParis": {
           "label": "Parisavtalet",
@@ -1518,6 +1529,7 @@
             "true": "Klarar Parisavtalet",
             "false": "Missar Parisavtalet"
           },
+          "nullValues": "Okänt",
           "aboveString": "är på väg att klara Parisavtalet",
           "belowString": "är på väg att missa Parisavtalet"
         }
@@ -1955,6 +1967,10 @@
     "sort": {
       "asc": "Sortera från lågt till högt",
       "desc": "Sortera från högt till lågt"
+    },
+    "pagination": {
+      "previousPage": "Föregående sida",
+      "nextPage": "Nästa sida"
     }
   },
   "rankedInsights": {

@@ -381,7 +381,10 @@
       "back": "Back",
       "sectorTotal": "Sector Total Emissions",
       "total": "Total Emissions",
-      "emissionsUnit": "ton CO₂e"
+      "emissionsUnit": "ton CO₂e",
+      "noDataAvailablePieChart": "No data available for this year",
+      "pieLegendCompany": "View company details",
+      "pieLegendSector": "View sector details"
     }
   },
   "sectorsOverviewPage": {
@@ -1429,9 +1432,19 @@
       "regions": "Regions"
     }
   },
+  "mapControls": {
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "reset": "Reset"
+  },
   "regions": {
     "detailPage": {
       "municipalities": "Municipalities"
+    },
+    "map": {
+      "legend": {
+        "null": "No data"
+      }
     },
     "kpis": {
       "emissions": {
@@ -1454,7 +1467,8 @@
           "label": "Emissions",
           "description": "Historical change in emissions",
           "detailedDescription": "Average annual percentage change in greenhouse gas emissions since the Paris Agreement in 2015.",
-          "source": "National Emissions Database"
+          "source": "National Emissions Database",
+          "nullValues": "No data"
         },
         "meetsParis": {
           "label": "Paris Agreement",
@@ -1464,7 +1478,10 @@
           "booleanLabels": {
             "true": "Meets Paris Agreement",
             "false": "Fails Paris Agreement"
-          }
+          },
+          "nullValues": "Unknown",
+          "aboveString": "are on track to meet the Paris Agreement",
+          "belowString": "are on track to miss the Paris Agreement"
         }
       },
       "insights": {
@@ -1900,6 +1917,10 @@
     "sort": {
       "asc": "Sort from low to high",
       "desc": "Sort from high to low"
+    },
+    "pagination": {
+      "previousPage": "Previous page",
+      "nextPage": "Next page"
     }
   },
   "rankedInsights": {
