@@ -316,6 +316,7 @@
     "filterByIndustry": "Filter by industry",
     "clearFilters": "Clear all",
     "selectIndustry": "Select industry",
+    "selectCountry": "Select country",
     "viewToggle": {
       "showGraph": "Graph",
       "showList": "List"
@@ -2053,6 +2054,8 @@
       "errorTitle": "Failed to retrieve company information",
       "errorDescription": "Please try again later",
       "filteringOptions": {
+        "country": "Country",
+        "allCountries": "All countries",
         "meetsParis": "Meets the Paris Agreement",
         "meetsParisYes": "Yes",
         "meetsParisNo": "No",
@@ -2075,6 +2078,13 @@
       "sectionTitle": "Companies",
       "noCompaniesInSection": "No companies in this section"
     }
+  },
+  "companyCountries": {
+    "sweden": "Sweden",
+    "norway": "Norway",
+    "finland": "Finland",
+    "denmark": "Denmark",
+    "iceland": "Iceland"
   },
   "insightCategories": {
     "analysis": "Analysis",

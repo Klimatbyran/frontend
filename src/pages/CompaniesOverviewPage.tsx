@@ -17,6 +17,13 @@ import RankedList from "@/components/ranked/RankedList";
 import CompanyInsightsPanel from "@/components/companies/rankedList/CompanyInsightsPanel";
 import { CompanyKPIVisualization } from "@/components/companies/rankedList/CompanyKPIVisualization";
 import { IndustryFilter } from "@/components/companies/rankedList/IndustryFilter";
+import { CountryFilter } from "@/components/companies/rankedList/CountryFilter";
+import {
+  companyMatchesCountries,
+  getAvailableCountryOptions,
+  parseCountriesFromURL,
+} from "@/hooks/companies/companyCountryFilterUtils";
+import type { CompanyCountryTagSlug } from "@/lib/constants/companyCountryTags";
 import {
   useCompanyKPIs,
   CompanyKPIValue,
@@ -92,6 +99,29 @@ export function CompaniesOverviewPage() {
     [location.search, navigate],
   );
 
+  const selectedCountries = useMemo(
+    () => parseCountriesFromURL(new URLSearchParams(location.search)),
+    [location.search],
+  );
+
+  const availableCountries = useMemo(
+    () => getAvailableCountryOptions(companies ?? []),
+    [companies],
+  );
+
+  const setCountriesInURL = useCallback(
+    (countries: CompanyCountryTagSlug[]) => {
+      const params = new URLSearchParams(location.search);
+      if (countries.length === 0) {
+        params.delete("countries");
+      } else {
+        params.set("countries", countries.join(","));
+      }
+      navigate({ search: params.toString() }, { replace: true });
+    },
+    [location.search, navigate],
+  );
+
   const getViewModeFromURL = useCallback((): OverviewViewMode => {
     const params = new URLSearchParams(location.search);
     return params.get("view") === "list" ? "list" : "graph";
@@ -130,6 +160,10 @@ export function CompaniesOverviewPage() {
     if (!companies || !selectedSector) return [];
 
     const filtered = companies.filter((company) => {
+      if (!companyMatchesCountries(company, selectedCountries)) {
+        return false;
+      }
+
       const sectorCode = company.industry?.industryGics?.sectorCode;
       if (sectorCode !== selectedSector) {
         return false;
@@ -146,10 +180,14 @@ export function CompaniesOverviewPage() {
     });
 
     return filtered.map((company) => enrichCompanyWithKPIs(company));
-  }, [companies, selectedSector, selectedKPI.key]);
+  }, [companies, selectedCountries, selectedSector, selectedKPI.key]);
 
   const handleSectorChange = (sector: string) => {
     setSectorInURL(sector);
+  };
+
+  const handleCountriesChange = (countries: CompanyCountryTagSlug[]) => {
+    setCountriesInURL(countries);
   };
 
   const handleCompanyClick = (company: CompanyWithKPIs) => {
@@ -272,11 +310,16 @@ export function CompaniesOverviewPage() {
         label={t("municipalities.list.dataSelector.label")}
       />
 
-      <div className="mb-4">
+      <div className="mb-4 space-y-4">
         <IndustryFilter
           availableSectors={availableSectors}
           selectedSector={selectedSector}
           onSectorChange={handleSectorChange}
+        />
+        <CountryFilter
+          availableCountries={availableCountries}
+          selectedCountries={selectedCountries}
+          onCountriesChange={handleCountriesChange}
         />
       </div>
 
