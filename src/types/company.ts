@@ -4,13 +4,7 @@ import type { KPIValue } from "./rankings";
 // Base company type from API
 export type CompanyTag = {
   slug: string;
-  type:
-    | "COUNTRY"
-    | "REGION"
-    | "OWNERSHIP"
-    | "MARKET_CAP"
-    | "INDEX"
-    | "OTHER";
+  type: "COUNTRY" | "REGION" | "OWNERSHIP" | "MARKET_CAP" | "INDEX" | "OTHER";
   label?: string | null;
 };
 

@@ -93,7 +93,9 @@ export async function getCountryTagOptions(): Promise<CountryTagOption[]> {
   try {
     const response = await fetch(apiUrl("/tag-options/?type=COUNTRY"));
     if (!response.ok) {
-      throw new Error(`Failed to fetch country tag options (${response.status})`);
+      throw new Error(
+        `Failed to fetch country tag options (${response.status})`,
+      );
     }
 
     const data = (await response.json()) as CountryTagOption[];
