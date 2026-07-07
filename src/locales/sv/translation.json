@@ -316,6 +316,7 @@
     "filterByIndustry": "Filtrera efter bransch",
     "clearFilters": "Rensa alla",
     "selectIndustry": "Välj bransch",
+    "selectCountry": "Välj land",
     "viewToggle": {
       "showGraph": "Graf",
       "showList": "Lista"
@@ -2108,6 +2109,8 @@
       "errorTitle": "Det gick inte att hämta företagsinformation",
       "errorDescription": "Försök igen senare",
       "filteringOptions": {
+        "country": "Land",
+        "allCountries": "Alla länder",
         "meetsParis": "Klarar Parisavtalet",
         "meetsParisYes": "Ja",
         "meetsParisNo": "Nej",
@@ -2130,6 +2133,13 @@
       "sectionTitle": "Företag",
       "noCompaniesInSection": "Inga företag i denna kategori"
     }
+  },
+  "companyCountries": {
+    "sweden": "Sverige",
+    "norway": "Norge",
+    "finland": "Finland",
+    "denmark": "Danmark",
+    "iceland": "Island"
   },
   "insightCategories": {
     "analysis": "Analys",
