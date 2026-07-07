@@ -20,7 +20,7 @@ import {
 } from "./useCompanySorting";
 import { useExploreFilters } from "@/hooks/explore/useExploreFilters";
 import { getSearchTerms } from "@/hooks/explore/exploreFilterUtils";
-import type { CompanyCountryTagSlug } from "@/lib/constants/companyCountryTags";
+import { useCountryTagOptions } from "@/hooks/companies/useCountryTagOptions";
 import {
   buildCountryActiveFilters,
   buildCountryFilterGroup,
@@ -95,9 +95,22 @@ export const useCompanyFilters = (
     [setSearchParams],
   );
 
-  const selectedCountries = parseCountriesFromURL(searchParams);
+  const { data: countryOptions = [] } = useCountryTagOptions();
+  const countrySlugs = useMemo(
+    () => countryOptions.map((option) => option.slug),
+    [countryOptions],
+  );
+  const validCountrySlugs = useMemo(
+    () => new Set(countrySlugs),
+    [countrySlugs],
+  );
+
+  const selectedCountries = parseCountriesFromURL(
+    searchParams,
+    validCountrySlugs,
+  );
   const setSelectedCountries = useCallback(
-    (countries: CompanyCountryTagSlug[]) =>
+    (countries: string[]) =>
       setOrDeleteSearchParam(
         setSearchParams,
         countries.length > 0 ? countries.join(",") : null,
@@ -108,10 +121,10 @@ export const useCompanyFilters = (
 
   const sectorNames = useSectorNames();
   const sectorOptions = useSectors();
-  const countryNames = useCompanyCountryNames();
+  const countryNames = useCompanyCountryNames(countryOptions);
   const availableCountries = useMemo(
-    () => getAvailableCountryOptions(companies),
-    [companies],
+    () => getAvailableCountryOptions(companies, countrySlugs),
+    [companies, countrySlugs],
   );
   const { t } = useTranslation();
 
@@ -249,7 +262,9 @@ export const useCompanyFilters = (
     availableCountries,
     selectedCountries,
     onSelect: (value) =>
-      setSelectedCountries(toggleCountrySelection(selectedCountries, value)),
+      setSelectedCountries(
+        toggleCountrySelection(selectedCountries, value, validCountrySlugs),
+      ),
   });
 
   const filterGroups: FilterGroup[] = [

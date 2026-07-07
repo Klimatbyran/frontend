@@ -82,6 +82,28 @@ export async function getCompanies() {
   }
 }
 
+export type CountryTagOption = {
+  id: string;
+  slug: string;
+  label: string | null;
+  type: "COUNTRY";
+};
+
+export async function getCountryTagOptions(): Promise<CountryTagOption[]> {
+  try {
+    const response = await fetch(apiUrl("/tag-options/?type=COUNTRY"));
+    if (!response.ok) {
+      throw new Error(`Failed to fetch country tag options (${response.status})`);
+    }
+
+    const data = (await response.json()) as CountryTagOption[];
+    return Array.isArray(data) ? data : [];
+  } catch (error) {
+    console.error("Error fetching country tag options:", error);
+    return [];
+  }
+}
+
 export async function getCompanyDetails(id: string) {
   const { data, error } = await client.GET("/companies/{wikidataId}", {
     params: {
