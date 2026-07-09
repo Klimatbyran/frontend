@@ -2,6 +2,12 @@ import type { paths } from "@/lib/api-types";
 import type { KPIValue } from "./rankings";
 
 // Base company type from API
+export type CompanyTag = {
+  slug: string;
+  type: "COUNTRY" | "REGION" | "OWNERSHIP" | "MARKET_CAP" | "INDEX" | "OTHER";
+  label?: string | null;
+};
+
 export type CompanyDetails = NonNullable<
   paths["/companies/{wikidataId}"]["get"]["responses"][200]["content"]["application/json"]
 >;
@@ -75,9 +81,13 @@ export interface CompanyWithIndustryGics {
 }
 
 // Company type from the list endpoint (/companies/)
-export type CompanyListItem = NonNullable<
+type CompanyListItemFromApi = NonNullable<
   paths["/companies/"]["get"]["responses"][200]["content"]["application/json"][number]
 >;
+
+export type CompanyListItem = Omit<CompanyListItemFromApi, "tags"> & {
+  tags: CompanyTag[];
+};
 
 // Extended company type with metrics and optional rankings
 export interface RankedCompany

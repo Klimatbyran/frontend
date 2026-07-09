@@ -23,7 +23,7 @@ import {
   getAvailableCountryOptions,
   parseCountriesFromURL,
 } from "@/hooks/companies/companyCountryFilterUtils";
-import type { CompanyCountryTagSlug } from "@/lib/constants/companyCountryTags";
+import { useCountryTagOptions } from "@/hooks/companies/useCountryTagOptions";
 import {
   useCompanyKPIs,
   CompanyKPIValue,
@@ -99,18 +99,32 @@ export function CompaniesOverviewPage() {
     [location.search, navigate],
   );
 
+  const { data: countryOptions = [] } = useCountryTagOptions();
+  const countrySlugs = useMemo(
+    () => countryOptions.map((option) => option.slug),
+    [countryOptions],
+  );
+  const validCountrySlugs = useMemo(
+    () => new Set(countrySlugs),
+    [countrySlugs],
+  );
+
   const selectedCountries = useMemo(
-    () => parseCountriesFromURL(new URLSearchParams(location.search)),
-    [location.search],
+    () =>
+      parseCountriesFromURL(
+        new URLSearchParams(location.search),
+        validCountrySlugs,
+      ),
+    [location.search, validCountrySlugs],
   );
 
   const availableCountries = useMemo(
-    () => getAvailableCountryOptions(companies ?? []),
-    [companies],
+    () => getAvailableCountryOptions(companies ?? [], countrySlugs),
+    [companies, countrySlugs],
   );
 
   const setCountriesInURL = useCallback(
-    (countries: CompanyCountryTagSlug[]) => {
+    (countries: string[]) => {
       const params = new URLSearchParams(location.search);
       if (countries.length === 0) {
         params.delete("countries");

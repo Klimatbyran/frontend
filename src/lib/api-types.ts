@@ -372,7 +372,12 @@ export interface paths {
                                     } | null;
                                 };
                             } | null;
-                            tags: string[];
+                            tags: {
+                                slug: string;
+                                /** @enum {string} */
+                                type: "COUNTRY" | "REGION" | "OWNERSHIP" | "MARKET_CAP" | "INDEX" | "OTHER";
+                                label?: string | null;
+                            }[];
                         }[];
                     };
                 };
@@ -653,7 +658,12 @@ export interface paths {
                                     } | null;
                                 };
                             } | null;
-                            tags: string[];
+                            tags: {
+                                slug: string;
+                                /** @enum {string} */
+                                type: "COUNTRY" | "REGION" | "OWNERSHIP" | "MARKET_CAP" | "INDEX" | "OTHER";
+                                label?: string | null;
+                            }[];
                         }[];
                     };
                 };
@@ -1240,7 +1250,12 @@ export interface paths {
                                     } | null;
                                 };
                             } | null;
-                            tags: string[];
+                            tags: {
+                                slug: string;
+                                /** @enum {string} */
+                                type: "COUNTRY" | "REGION" | "OWNERSHIP" | "MARKET_CAP" | "INDEX" | "OTHER";
+                                label?: string | null;
+                            }[];
                         }[];
                     };
                 };
@@ -1430,7 +1445,12 @@ export interface paths {
                                     } | null;
                                 };
                             } | null;
-                            tags: string[];
+                            tags: {
+                                slug: string;
+                                /** @enum {string} */
+                                type: "COUNTRY" | "REGION" | "OWNERSHIP" | "MARKET_CAP" | "INDEX" | "OTHER";
+                                label?: string | null;
+                            }[];
                         }[];
                     };
                 };
@@ -1895,7 +1915,12 @@ export interface paths {
                                     } | null;
                                 };
                             }[] | null;
-                            tags: string[];
+                            tags: {
+                                slug: string;
+                                /** @enum {string} */
+                                type: "COUNTRY" | "REGION" | "OWNERSHIP" | "MARKET_CAP" | "INDEX" | "OTHER";
+                                label?: string | null;
+                            }[];
                         };
                     };
                 };
@@ -3981,7 +4006,12 @@ export interface paths {
                                     } | null;
                                 };
                             } | null;
-                            tags: string[];
+                            tags: {
+                                slug: string;
+                                /** @enum {string} */
+                                type: "COUNTRY" | "REGION" | "OWNERSHIP" | "MARKET_CAP" | "INDEX" | "OTHER";
+                                label?: string | null;
+                            }[];
                         }[];
                     };
                 };
@@ -4323,7 +4353,12 @@ export interface paths {
                                     } | null;
                                 };
                             }[] | null;
-                            tags: string[];
+                            tags: {
+                                slug: string;
+                                /** @enum {string} */
+                                type: "COUNTRY" | "REGION" | "OWNERSHIP" | "MARKET_CAP" | "INDEX" | "OTHER";
+                                label?: string | null;
+                            }[];
                         };
                     };
                 };
@@ -5859,7 +5894,10 @@ export interface paths {
     };
     "/tag-options/": {
         parameters: {
-            query?: never;
+            query?: {
+                /** @enum {string} */
+                type?: "COUNTRY" | "REGION" | "OWNERSHIP" | "MARKET_CAP" | "INDEX" | "OTHER";
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -5870,7 +5908,10 @@ export interface paths {
          */
         get: {
             parameters: {
-                query?: never;
+                query?: {
+                    /** @enum {string} */
+                    type?: "COUNTRY" | "REGION" | "OWNERSHIP" | "MARKET_CAP" | "INDEX" | "OTHER";
+                };
                 header?: never;
                 path?: never;
                 cookie?: never;
@@ -5887,6 +5928,8 @@ export interface paths {
                             id: string;
                             slug: string;
                             label: string | null;
+                            /** @enum {string} */
+                            type: "COUNTRY" | "REGION" | "OWNERSHIP" | "MARKET_CAP" | "INDEX" | "OTHER";
                         }[];
                     };
                 };

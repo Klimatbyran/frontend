@@ -1,14 +1,14 @@
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 import { useCompanyCountryNames } from "@/hooks/companies/companyCountryFilterUtils";
+import { useCountryTagOptions } from "@/hooks/companies/useCountryTagOptions";
 import { useScreenSize } from "@/hooks/useScreenSize";
-import type { CompanyCountryTagSlug } from "@/lib/constants/companyCountryTags";
 import { Checkbox } from "@/components/ui/checkbox";
 
 interface CountryFilterProps {
-  availableCountries: CompanyCountryTagSlug[];
-  selectedCountries: CompanyCountryTagSlug[];
-  onCountriesChange: (countries: CompanyCountryTagSlug[]) => void;
+  availableCountries: string[];
+  selectedCountries: string[];
+  onCountriesChange: (countries: string[]) => void;
 }
 
 export function CountryFilter({
@@ -17,10 +17,11 @@ export function CountryFilter({
   onCountriesChange,
 }: CountryFilterProps) {
   const { t } = useTranslation();
-  const countryNames = useCompanyCountryNames();
+  const { data: countryOptions = [] } = useCountryTagOptions();
+  const countryNames = useCompanyCountryNames(countryOptions);
   const { isMobile } = useScreenSize();
 
-  const handleCountryToggle = (country: CompanyCountryTagSlug) => {
+  const handleCountryToggle = (country: string) => {
     if (selectedCountries.includes(country)) {
       onCountriesChange(selectedCountries.filter((value) => value !== country));
       return;
@@ -52,7 +53,7 @@ export function CountryFilter({
                   checked={isSelected}
                   onCheckedChange={() => handleCountryToggle(country)}
                 />
-                {countryNames[country]}
+                {countryNames[country] ?? country}
               </label>
             );
           })}
@@ -82,7 +83,7 @@ export function CountryFilter({
                 : "bg-black-2 border-black-3 text-grey hover:bg-black-3 hover:border-black-4",
             )}
           >
-            {countryNames[country]}
+            {countryNames[country] ?? country}
           </button>
         );
       })}

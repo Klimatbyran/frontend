@@ -2,75 +2,80 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import type { TFunction } from "i18next";
 import type { FilterGroup } from "@/components/explore/FilterPopover";
-import {
-  COMPANY_COUNTRY_TAG_SLUGS,
-  isCompanyCountryTagSlug,
-  type CompanyCountryTagSlug,
-} from "@/lib/constants/companyCountryTags";
+import type { CompanyTag } from "@/types/company";
+import type { CountryTagOption } from "@/lib/api";
 
 type CompanyWithTags = {
-  tags?: string[] | null;
+  tags?: CompanyTag[] | null;
 };
 
-export function useCompanyCountryNames() {
+export function getCompanyCountrySlugs(tags?: CompanyTag[] | null): string[] {
+  return (tags ?? [])
+    .filter((tag) => tag.type === "COUNTRY")
+    .map((tag) => tag.slug);
+}
+
+export function useCompanyCountryNames(countryOptions: CountryTagOption[]) {
   const { t } = useTranslation();
 
   return useMemo(
     () =>
       Object.fromEntries(
-        COMPANY_COUNTRY_TAG_SLUGS.map((slug) => [
-          slug,
-          t(`companyCountries.${slug}`, slug),
+        countryOptions.map((option) => [
+          option.slug,
+          option.label ?? t(`companyCountries.${option.slug}`, option.slug),
         ]),
-      ) as Record<CompanyCountryTagSlug, string>,
-    [t],
+      ) as Record<string, string>,
+    [countryOptions, t],
   );
 }
 
 export function parseCountriesFromURL(
   searchParams: URLSearchParams,
-): CompanyCountryTagSlug[] {
+  validSlugs?: ReadonlySet<string>,
+): string[] {
   const raw = searchParams.get("countries");
   if (!raw) return [];
 
   return raw
     .split(",")
     .map((value) => value.trim())
-    .filter(isCompanyCountryTagSlug);
+    .filter((slug) => slug.length > 0)
+    .filter((slug) => !validSlugs || validSlugs.has(slug));
 }
 
 export function getAvailableCountryOptions(
   companies: CompanyWithTags[],
-): CompanyCountryTagSlug[] {
+  orderedCountrySlugs: string[],
+): string[] {
   const present = new Set<string>();
   for (const company of companies) {
-    for (const tag of company.tags ?? []) {
-      if (isCompanyCountryTagSlug(tag)) {
-        present.add(tag);
-      }
+    for (const slug of getCompanyCountrySlugs(company.tags)) {
+      present.add(slug);
     }
   }
 
-  return COMPANY_COUNTRY_TAG_SLUGS.filter((slug) => present.has(slug));
+  return orderedCountrySlugs.filter((slug) => present.has(slug));
 }
 
 export function companyMatchesCountries(
   company: CompanyWithTags,
-  selectedCountries: CompanyCountryTagSlug[],
+  selectedCountries: string[],
 ): boolean {
   if (selectedCountries.length === 0) return true;
 
-  const tags = company.tags ?? [];
-  return selectedCountries.some((country) => tags.includes(country));
+  const countrySlugs = getCompanyCountrySlugs(company.tags);
+  return selectedCountries.some((country) => countrySlugs.includes(country));
 }
 
 export function toggleCountrySelection(
-  selectedCountries: CompanyCountryTagSlug[],
+  selectedCountries: string[],
   value: string,
-): CompanyCountryTagSlug[] {
+  validSlugs?: ReadonlySet<string>,
+): string[] {
   if (value === "all") return [];
 
-  if (!isCompanyCountryTagSlug(value)) return selectedCountries;
+  if (validSlugs && !validSlugs.has(value)) return selectedCountries;
 
   if (selectedCountries.includes(value)) {
     return selectedCountries.filter((country) => country !== value);
@@ -87,9 +92,9 @@ export function buildCountryFilterGroup({
   onSelect,
 }: {
   t: TFunction;
-  countryNames: Record<CompanyCountryTagSlug, string>;
-  availableCountries: CompanyCountryTagSlug[];
-  selectedCountries: CompanyCountryTagSlug[];
+  countryNames: Record<string, string>;
+  availableCountries: string[];
+  selectedCountries: string[];
   onSelect: (value: string) => void;
 }): FilterGroup | null {
   if (availableCountries.length === 0) return null;
@@ -103,7 +108,7 @@ export function buildCountryFilterGroup({
       },
       ...availableCountries.map((slug) => ({
         value: slug,
-        label: countryNames[slug],
+        label: countryNames[slug] ?? slug,
       })),
     ],
     selectedValues:
@@ -118,9 +123,9 @@ export function buildCountryActiveFilters({
   selectedCountries,
   onRemove,
 }: {
-  countryNames: Record<CompanyCountryTagSlug, string>;
-  selectedCountries: CompanyCountryTagSlug[];
-  onRemove: (country: CompanyCountryTagSlug) => void;
+  countryNames: Record<string, string>;
+  selectedCountries: string[];
+  onRemove: (country: string) => void;
 }) {
   return selectedCountries.map((country) => ({
     type: "filter" as const,
