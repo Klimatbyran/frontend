@@ -180,7 +180,7 @@ export function RegionalOverviewPage() {
         }}
         iconMap={REGION_KPI_ICONS}
         translationPrefix="regions.list"
-        label={t("municipalities.list.dataSelector.label")}
+        label={t("regions.list.dataSelector.label")}
       />
 
       <div className="space-y-6">

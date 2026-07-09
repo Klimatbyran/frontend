@@ -58,7 +58,7 @@ function MapOverlays({
           nullValue={
             selectedKPI.key
               ? t(`${entityType}.list.kpis.${selectedKPI.key}.nullValues`)
-              : "No data"
+              : t("noData")
           }
           selectedKPI={selectedKPI as KPIValue}
           onClick={onAreaClick ? () => onAreaClick(hoveredArea) : undefined}

@@ -252,8 +252,8 @@ export function CompaniesOverviewPage() {
       modes={["graph", "list"]}
       onChange={setViewModeInURL}
       titles={{
-        graph: t("companiesOverviewPage.viewToggle.showGraph", "Graf"),
-        list: t("companiesOverviewPage.viewToggle.showList", "Lista"),
+        graph: t("companiesOverviewPage.viewToggle.showGraph"),
+        list: t("companiesOverviewPage.viewToggle.showList"),
       }}
       showTitles
       icons={{
@@ -307,7 +307,7 @@ export function CompaniesOverviewPage() {
         }}
         iconMap={COMPANY_KPI_ICONS}
         translationPrefix="companies.list"
-        label={t("municipalities.list.dataSelector.label")}
+        label={t("companies.list.dataSelector.label")}
       />
 
       <div className="mb-4 space-y-4">
