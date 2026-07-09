@@ -52,8 +52,8 @@ export function buildClimateTraceFetchYears(
 
 function buildYearDateRange(year: number): { start: string; end: string } {
   return {
-    start: `${year}-01-01`,
-    end: `${year}-12-31`,
+    start: `${year}`,
+    end: `${year}`,
   };
 }
 
