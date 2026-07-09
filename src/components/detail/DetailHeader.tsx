@@ -38,7 +38,9 @@ export function DetailHeader({
     <SectionWithHelp helpItems={helpItems}>
       <div className="flex items-start justify-between gap-4">
         <div className="flex min-w-0 flex-1 flex-col gap-3">
-          <Text className="text-4xl md:text-8xl">{name}</Text>
+          <Text className="break-words text-4xl md:text-7xl lg:text-8xl">
+            {name}
+          </Text>
           {headerChip && <div className="w-fit shrink-0">{headerChip}</div>}
         </div>
         {headerImage ??
@@ -52,8 +54,10 @@ export function DetailHeader({
       </div>
       <div
         className={cn(
-          "grid grid-cols-1 sm:grid-cols-2 gap-8 md:gap-16 mt-8",
-          stats.length >= 4 ? "lg:grid-cols-4" : "lg:grid-cols-3",
+          "mt-8 grid grid-cols-1 gap-6 sm:gap-8 md:gap-10",
+          stats.length >= 4
+            ? "sm:grid-cols-2"
+            : "sm:grid-cols-2 lg:grid-cols-3",
         )}
       >
         {stats.map((stat, index) => (
@@ -67,6 +71,7 @@ export function DetailHeader({
             info={stat.info}
             infoText={stat.infoText}
             useFlex1={false}
+            className="min-w-0"
           />
         ))}
       </div>
