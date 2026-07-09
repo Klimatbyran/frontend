@@ -27,10 +27,14 @@ describe("transformTerritoryEmissionsData", () => {
 
     expect(data.find((point) => point.year === 2024)?.total).toBe(47_490);
     expect(data.find((point) => point.year === 2025)?.total).toBe(46_000);
-    expect(data.find((point) => point.year === 2025)?.approximated).toBeUndefined();
+    expect(
+      data.find((point) => point.year === 2025)?.approximated,
+    ).toBeUndefined();
     expect(data.find((point) => point.year === 2025)?.trend).toBeUndefined();
     expect(data.find((point) => point.year === 2026)?.total).toBeUndefined();
-    expect(data.find((point) => point.year === 2026)?.approximated).toBe(44_000);
+    expect(data.find((point) => point.year === 2026)?.approximated).toBe(
+      44_000,
+    );
     expect(data.find((point) => point.year === 2026)?.trend).toBe(44_000);
     expect(data.find((point) => point.year === 2027)?.trend).toBe(42_000);
   });
@@ -39,19 +43,11 @@ describe("transformTerritoryEmissionsData", () => {
     const data = transformTerritoryEmissionsData(territory);
 
     const parisAt2025 =
-      calculateParisValue(
-        2025,
-        2025,
-        46_000_000,
-        CARBON_LAW_REDUCTION_RATE,
-      )! / 1000;
+      calculateParisValue(2025, 2025, 46_000_000, CARBON_LAW_REDUCTION_RATE)! /
+      1000;
     const parisAt2026 =
-      calculateParisValue(
-        2026,
-        2025,
-        46_000_000,
-        CARBON_LAW_REDUCTION_RATE,
-      )! / 1000;
+      calculateParisValue(2026, 2025, 46_000_000, CARBON_LAW_REDUCTION_RATE)! /
+      1000;
 
     expect(data.find((point) => point.year === 2025)?.carbonLaw).toBeCloseTo(
       parisAt2025,

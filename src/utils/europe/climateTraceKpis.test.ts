@@ -97,9 +97,7 @@ describe("climateTraceKpis", () => {
       2026: 94_674_716,
     };
 
-    expect(calculateMeetsParisFromTimeSeries(ukraineLikeEmissions)).toBe(
-      false,
-    );
+    expect(calculateMeetsParisFromTimeSeries(ukraineLikeEmissions)).toBe(false);
     expect(
       calculateClimateTraceCountryKpis(ukraineLikeEmissions).meetsParis,
     ).toBe(false);
