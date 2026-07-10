@@ -21,8 +21,7 @@ export function useClimateTraceSources(
       CLIMATE_TRACE_SOURCES_LIMIT,
       CLIMATE_TRACE_SOURCES_QUERY_VERSION,
     ],
-    queryFn: () =>
-      fetchClimateTraceSourcesForCountry(iso3!, reportedYear),
+    queryFn: () => fetchClimateTraceSourcesForCountry(iso3!, reportedYear),
     enabled: Boolean(iso3),
     staleTime: 1000 * 60 * 60,
   });

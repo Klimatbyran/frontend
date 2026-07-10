@@ -68,8 +68,7 @@ export async function fetchClimateTraceSourcesForCountry(
   }
 
   throw (
-    lastError ??
-    new Error(`Failed to fetch Climate TRACE sources for ${iso3}`)
+    lastError ?? new Error(`Failed to fetch Climate TRACE sources for ${iso3}`)
   );
 }
 
