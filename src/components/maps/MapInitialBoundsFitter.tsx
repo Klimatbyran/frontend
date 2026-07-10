@@ -18,11 +18,13 @@ export function MapInitialBoundsFitter({
 
   useEffect(() => {
     const boundsKey = bounds.toBBoxString();
-    if (lastFittedBoundsKey.current === boundsKey) {
+    const paddingKey = JSON.stringify(padding);
+    const fitKey = `${boundsKey}:${paddingKey}`;
+    if (lastFittedBoundsKey.current === fitKey) {
       return;
     }
 
-    lastFittedBoundsKey.current = boundsKey;
+    lastFittedBoundsKey.current = fitKey;
     fitMapToBounds(map, bounds, padding);
   }, [map, bounds, padding]);
 

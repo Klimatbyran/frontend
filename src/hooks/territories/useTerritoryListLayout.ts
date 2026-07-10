@@ -7,15 +7,19 @@ import {
 } from "@/utils/territoryMapUtils";
 
 /** Map panel height; keep md: height on TERRITORY_LIST_PANEL_CLASS in sync. */
-export const TERRITORY_PANEL_CLASS = "h-[min(32rem,55vh)] min-h-[20rem]";
+export const TERRITORY_PANEL_CLASS =
+  "h-[min(40rem,72vh)] min-h-[28rem] md:h-[min(32rem,55vh)] md:min-h-[20rem]";
 /** List column uses the same height as the map from the md side-by-side breakpoint. */
 export const TERRITORY_LIST_PANEL_CLASS =
   "flex flex-col min-w-0 md:h-[min(32rem,55vh)] md:min-h-[20rem]";
 export const SIDE_BY_SIDE_MIN_WIDTH = 768;
 
 const LIST_COLUMNS = 2;
-/** Matches TerritoryListRow text-sm leading-5 row (~28px). */
-const LIST_ROW_HEIGHT = 28;
+/** Mobile list paginates in pages of this size when item count exceeds the threshold. */
+export const MOBILE_TERRITORY_LIST_PAGE_SIZE = 7;
+export const MOBILE_TERRITORY_LIST_PAGINATION_THRESHOLD = 10;
+/** Matches TerritoryListRow single-line card row (~36px). */
+const LIST_ROW_HEIGHT = 36;
 /** Matches gap-y-2 between list rows. */
 const LIST_ROW_GAP = 8;
 /** Reserved height for MultiPagePagination below the list grid. */
@@ -59,7 +63,10 @@ export function useTerritoryListLayout(
   );
   const [layoutRef, isSideBySide] =
     useContainerQuery<HTMLDivElement>(sideBySideQuery);
-  const shouldPaginateList = isSideBySide && paginationEnabled;
+  const shouldPaginateDesktop = isSideBySide && paginationEnabled;
+  const shouldPaginateMobile =
+    !isSideBySide && itemCount > MOBILE_TERRITORY_LIST_PAGINATION_THRESHOLD;
+  const shouldPaginateList = shouldPaginateDesktop || shouldPaginateMobile;
 
   useEffect(() => {
     setCurrentPage(1);
@@ -68,6 +75,11 @@ export function useTerritoryListLayout(
   useEffect(() => {
     if (!shouldPaginateList) {
       setItemsPerPage(itemCount);
+      return;
+    }
+
+    if (shouldPaginateMobile) {
+      setItemsPerPage(MOBILE_TERRITORY_LIST_PAGE_SIZE);
       return;
     }
 
@@ -84,7 +96,7 @@ export function useTerritoryListLayout(
     observer.observe(panel);
 
     return () => observer.disconnect();
-  }, [itemCount, shouldPaginateList]);
+  }, [itemCount, shouldPaginateList, shouldPaginateMobile]);
 
   const totalPages = Math.max(1, Math.ceil(itemCount / itemsPerPage));
   const currentPageSafe = Math.min(currentPage, totalPages);
@@ -96,7 +108,7 @@ export function useTerritoryListLayout(
   }, [currentPage, currentPageSafe]);
 
   useEffect(() => {
-    if (!shouldPaginateList || !hoveredMapArea || itemsPerPage <= 0) {
+    if (!shouldPaginateDesktop || !hoveredMapArea || itemsPerPage <= 0) {
       return;
     }
 
@@ -106,16 +118,8 @@ export function useTerritoryListLayout(
     }
 
     const targetPage = getTerritoryListPage(index, itemsPerPage);
-    if (targetPage !== currentPageSafe) {
-      setCurrentPage(targetPage);
-    }
-  }, [
-    hoveredMapArea,
-    shouldPaginateList,
-    territories,
-    itemsPerPage,
-    currentPageSafe,
-  ]);
+    setCurrentPage(targetPage);
+  }, [hoveredMapArea, shouldPaginateDesktop, territories, itemsPerPage]);
 
   const visibleTerritories = useMemo(() => {
     if (!shouldPaginateList || itemsPerPage <= 0) {
