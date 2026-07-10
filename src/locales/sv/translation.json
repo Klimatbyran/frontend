@@ -1546,7 +1546,8 @@
         "title": "Karta över utsläppskällor",
         "description": "Topp {{count}} anläggningar och andra punktkällor {{year}}, rankade efter utsläpp.",
         "source": "Källa: Climate TRACE",
-        "noMapData": "Kartdata saknas för det här landet."
+        "noMapData": "Kartdata saknas för det här landet.",
+        "empty": "Ingen punktkällsdata tillgänglig för det här landet."
       },
       "sectors": {
         "transportation": "Transporter",

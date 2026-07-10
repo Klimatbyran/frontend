@@ -63,10 +63,7 @@ export function OverviewStat({
       return (
         <div className="flex min-w-0 flex-wrap items-baseline gap-x-2 gap-y-1">
           <Text
-            className={cn(
-              "text-3xl md:text-5xl lg:text-6xl",
-              valueClassName,
-            )}
+            className={cn("text-3xl md:text-5xl lg:text-6xl", valueClassName)}
           >
             {value}
           </Text>

@@ -23,6 +23,19 @@ export type ClimateTraceSourceSummary = {
   year: number;
 };
 
+export type RankedClimateTraceSource = ClimateTraceSourceSummary & {
+  rank: number;
+};
+
+export function rankClimateTraceSources(
+  sources: ClimateTraceSourceSummary[],
+): RankedClimateTraceSource[] {
+  return sources.map((source, index) => ({
+    ...source,
+    rank: index + 1,
+  }));
+}
+
 async function sleep(ms: number): Promise<void> {
   await new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -31,7 +44,7 @@ export async function fetchClimateTraceSourcesForCountry(
   iso3: string,
   year: number,
   limit: number = CLIMATE_TRACE_SOURCES_LIMIT,
-): Promise<ClimateTraceSourceSummary[]> {
+): Promise<RankedClimateTraceSource[]> {
   const url = new URL(`${CLIMATE_TRACE_API_BASE}/sources`);
   url.searchParams.set("year", String(year));
   url.searchParams.set("gas", CLIMATE_TRACE_EMISSIONS_PARAMS.gas);
@@ -52,12 +65,14 @@ export async function fetchClimateTraceSourcesForCountry(
       }
 
       const data = (await response.json()) as ClimateTraceSourceSummary[];
-      return data.filter(
-        (source) =>
-          source.centroid &&
-          Number.isFinite(source.centroid.latitude) &&
-          Number.isFinite(source.centroid.longitude) &&
-          source.emissionsQuantity > 0,
+      return rankClimateTraceSources(
+        data.filter(
+          (source) =>
+            source.centroid &&
+            Number.isFinite(source.centroid.latitude) &&
+            Number.isFinite(source.centroid.longitude) &&
+            source.emissionsQuantity > 0,
+        ),
       );
     } catch (error) {
       lastError = error instanceof Error ? error : new Error(String(error));

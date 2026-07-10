@@ -10,12 +10,15 @@ import { MapZoomControls } from "@/components/maps/MapZoomControls";
 import { MAP_FIT_BOUNDS_PADDING } from "@/components/maps/mapConstants";
 import { calculateGeoBounds } from "@/components/maps/utils/geoBounds";
 import { useMapZoom } from "@/components/maps/hooks/useMapZoom";
-import { TERRITORY_PANEL_CLASS } from "@/hooks/territories/useTerritoryListLayout";
+import {
+  TERRITORY_LIST_PANEL_CLASS,
+  TERRITORY_PANEL_CLASS,
+} from "@/hooks/territories/useTerritoryListLayout";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useClimateTraceSectors } from "@/hooks/europe/useClimateTraceSectors";
 import {
-  ClimateTraceSourceSummary,
   getEmissionSourceMarkerRadius,
+  RankedClimateTraceSource,
 } from "@/lib/climateTraceSources";
 import { formatEmissionsAbsoluteCompact } from "@/utils/formatting/localization";
 import { cn } from "@/lib/utils";
@@ -31,7 +34,7 @@ const COUNTRY_OUTLINE_STYLE: L.PathOptions = {
 
 interface CountryEmissionSourcesMapProps {
   countryGeoData: FeatureCollection;
-  sources: ClimateTraceSourceSummary[];
+  sources: RankedClimateTraceSource[];
   year: number;
   loading?: boolean;
   className?: string;
@@ -39,11 +42,14 @@ interface CountryEmissionSourcesMapProps {
 
 function EmissionSourceTooltip({
   source,
+  totalSources,
   getSectorInfo,
 }: {
-  source: ClimateTraceSourceSummary;
+  source: RankedClimateTraceSource;
+  totalSources: number;
   getSectorInfo: ReturnType<typeof useClimateTraceSectors>["getSectorInfo"];
 }) {
+  const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
   const sectorInfo = getSectorInfo(source.sector);
 
@@ -59,7 +65,70 @@ function EmissionSourceTooltip({
           )}{" "}
           tCO₂e
         </p>
+        <p className="text-white/50 text-sm">
+          {t("rankedList.rank", {
+            rank: String(source.rank),
+            total: String(totalSources),
+          })}
+        </p>
       </div>
+    </div>
+  );
+}
+
+function EmissionSourceListRow({
+  source,
+  isHovered,
+  onHover,
+  getSectorInfo,
+}: {
+  source: RankedClimateTraceSource;
+  isHovered: boolean;
+  onHover: (sourceId: number | null) => void;
+  getSectorInfo: ReturnType<typeof useClimateTraceSectors>["getSectorInfo"];
+}) {
+  const { currentLanguage } = useLanguage();
+  const sectorInfo = getSectorInfo(source.sector);
+
+  return (
+    <div
+      className="flex min-w-0 items-center gap-2"
+      onMouseEnter={() => onHover(source.id)}
+      onMouseLeave={() => onHover(null)}
+    >
+      <span
+        className={cn(
+          "shrink-0 w-6 text-xs tabular-nums text-grey",
+          isHovered && "text-white",
+        )}
+      >
+        {source.rank}
+      </span>
+      <span
+        className="h-2.5 w-2.5 shrink-0 rounded-sm"
+        style={{ backgroundColor: sectorInfo.color }}
+        aria-hidden
+      />
+      <span
+        className={cn(
+          "min-w-0 flex-1 truncate text-sm leading-5 text-grey md:text-base",
+          isHovered && "text-white",
+        )}
+        title={source.name}
+      >
+        {source.name}
+      </span>
+      <span
+        className={cn(
+          "shrink-0 text-xs tabular-nums text-grey",
+          isHovered && "text-white",
+        )}
+      >
+        {formatEmissionsAbsoluteCompact(
+          Math.round(source.emissionsQuantity),
+          currentLanguage,
+        )}
+      </span>
     </div>
   );
 }
@@ -67,16 +136,23 @@ function EmissionSourceTooltip({
 function EmissionSourcesMapContent({
   countryGeoData,
   sources,
+  hoveredSourceId,
+  onHoverSource,
   getSectorInfo,
 }: {
   countryGeoData: FeatureCollection;
-  sources: ClimateTraceSourceSummary[];
+  sources: RankedClimateTraceSource[];
+  hoveredSourceId: number | null;
+  onHoverSource: (sourceId: number | null) => void;
   getSectorInfo: ReturnType<typeof useClimateTraceSectors>["getSectorInfo"];
 }) {
   const [isMounted, setIsMounted] = useState(false);
-  const [hoveredSource, setHoveredSource] =
-    useState<ClimateTraceSourceSummary | null>(null);
   const mapId = useId();
+
+  const hoveredSource = useMemo(
+    () => sources.find((source) => source.id === hoveredSourceId) ?? null,
+    [hoveredSourceId, sources],
+  );
 
   const mapBounds = useMemo(
     () => calculateGeoBounds(countryGeoData, { padding: 0.08 }),
@@ -148,6 +224,7 @@ function EmissionSourcesMapContent({
             source.emissionsQuantity,
             maxEmissions,
           );
+          const isHovered = hoveredSourceId === source.id;
 
           return (
             <CircleMarker
@@ -157,12 +234,12 @@ function EmissionSourcesMapContent({
               pathOptions={{
                 color: sectorInfo.color,
                 fillColor: sectorInfo.color,
-                fillOpacity: 0.85,
-                weight: 1,
+                fillOpacity: isHovered ? 1 : 0.85,
+                weight: isHovered ? 2 : 1,
               }}
               eventHandlers={{
-                mouseover: () => setHoveredSource(source),
-                mouseout: () => setHoveredSource(null),
+                mouseover: () => onHoverSource(source.id),
+                mouseout: () => onHoverSource(null),
               }}
             />
           );
@@ -176,6 +253,7 @@ function EmissionSourcesMapContent({
       {hoveredSource && (
         <EmissionSourceTooltip
           source={hoveredSource}
+          totalSources={sources.length}
           getSectorInfo={getSectorInfo}
         />
       )}
@@ -201,6 +279,7 @@ export function CountryEmissionSourcesMap({
 }: CountryEmissionSourcesMapProps) {
   const { t } = useTranslation();
   const { getSectorInfo } = useClimateTraceSectors();
+  const [hoveredSourceId, setHoveredSourceId] = useState<number | null>(null);
 
   const hasCountryGeometry = countryGeoData.features.length > 0;
 
@@ -213,20 +292,56 @@ export function CountryEmissionSourcesMap({
           year,
         })}
       />
-      <div className={cn("relative mt-8", TERRITORY_PANEL_CLASS, className)}>
-        {loading ? (
-          <div className="h-full w-full rounded-xl bg-black-1 animate-pulse" />
-        ) : !hasCountryGeometry ? (
-          <div className="flex h-full items-center justify-center rounded-xl bg-black-1 px-6 text-center text-white/70">
-            {t("europe.detailPage.emissionSources.noMapData")}
-          </div>
-        ) : (
-          <EmissionSourcesMapContent
-            countryGeoData={countryGeoData}
-            sources={sources}
-            getSectorInfo={getSectorInfo}
-          />
+      <div
+        className={cn(
+          "mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6",
+          className,
         )}
+      >
+        <div className={cn("relative min-w-0", TERRITORY_PANEL_CLASS)}>
+          {loading ? (
+            <div className="h-full w-full rounded-xl bg-black-1 animate-pulse" />
+          ) : !hasCountryGeometry ? (
+            <div className="flex h-full items-center justify-center rounded-xl bg-black-1 px-6 text-center text-white/70">
+              {t("europe.detailPage.emissionSources.noMapData")}
+            </div>
+          ) : (
+            <EmissionSourcesMapContent
+              countryGeoData={countryGeoData}
+              sources={sources}
+              hoveredSourceId={hoveredSourceId}
+              onHoverSource={setHoveredSourceId}
+              getSectorInfo={getSectorInfo}
+            />
+          )}
+        </div>
+
+        <div
+          className={cn(
+            "min-w-0 overflow-y-auto rounded-xl bg-black-1 p-4",
+            TERRITORY_LIST_PANEL_CLASS,
+          )}
+        >
+          {loading ? (
+            <div className="h-full w-full animate-pulse rounded-xl bg-black-2" />
+          ) : sources.length === 0 ? (
+            <p className="text-sm text-white/70">
+              {t("europe.detailPage.emissionSources.empty")}
+            </p>
+          ) : (
+            <div className="flex flex-col gap-y-2">
+              {sources.map((source) => (
+                <EmissionSourceListRow
+                  key={source.id}
+                  source={source}
+                  isHovered={hoveredSourceId === source.id}
+                  onHover={setHoveredSourceId}
+                  getSectorInfo={getSectorInfo}
+                />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
       <p className="mt-4 text-sm text-white/50">
         {t("europe.detailPage.emissionSources.source")}
