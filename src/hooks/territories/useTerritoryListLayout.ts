@@ -107,7 +107,11 @@ export function useTerritoryListLayout(
   }, [currentPage, currentPageSafe]);
 
   useEffect(() => {
-    if (!shouldPaginateList || !hoveredMapArea || itemsPerPage <= 0) {
+    if (
+      !shouldPaginateDesktop ||
+      !hoveredMapArea ||
+      itemsPerPage <= 0
+    ) {
       return;
     }
 
@@ -117,15 +121,12 @@ export function useTerritoryListLayout(
     }
 
     const targetPage = getTerritoryListPage(index, itemsPerPage);
-    if (targetPage !== currentPageSafe) {
-      setCurrentPage(targetPage);
-    }
+    setCurrentPage(targetPage);
   }, [
     hoveredMapArea,
-    shouldPaginateList,
+    shouldPaginateDesktop,
     territories,
     itemsPerPage,
-    currentPageSafe,
   ]);
 
   const visibleTerritories = useMemo(() => {

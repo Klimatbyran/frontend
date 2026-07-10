@@ -22,8 +22,16 @@ export function TerritoryListRow({
         "flex min-w-0 items-center gap-2 rounded-md p-2 transition-colors hover:bg-black-1",
         isHovered && "bg-black-1",
       )}
-      onMouseEnter={() => onHover(territory.mapName)}
-      onMouseLeave={() => onHover(null)}
+      onMouseEnter={() => {
+        if (window.matchMedia("(hover: hover)").matches) {
+          onHover(territory.mapName);
+        }
+      }}
+      onMouseLeave={() => {
+        if (window.matchMedia("(hover: hover)").matches) {
+          onHover(null);
+        }
+      }}
     >
       <div
         className="h-3 w-3 shrink-0 rounded"

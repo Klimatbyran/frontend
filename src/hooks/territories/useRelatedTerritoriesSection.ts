@@ -23,9 +23,18 @@ export function useRelatedTerritoriesSection(
     hoveredMapName,
   );
 
+  const setCurrentPage = useCallback(
+    (page: number) => {
+      setHoveredMapName(null);
+      layout.setCurrentPage(page);
+    },
+    [layout.setCurrentPage],
+  );
+
   return {
     ...mapState,
     ...layout,
+    setCurrentPage,
     hoveredMapName,
     setHoveredMapName,
     isHovered,
