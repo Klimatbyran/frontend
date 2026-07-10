@@ -7,7 +7,8 @@ import {
 } from "@/utils/territoryMapUtils";
 
 /** Map panel height; keep md: height on TERRITORY_LIST_PANEL_CLASS in sync. */
-export const TERRITORY_PANEL_CLASS = "h-[min(32rem,55vh)] min-h-[20rem]";
+export const TERRITORY_PANEL_CLASS =
+  "h-[min(40rem,72vh)] min-h-[28rem] md:h-[min(32rem,55vh)] md:min-h-[20rem]";
 /** List column uses the same height as the map from the md side-by-side breakpoint. */
 export const TERRITORY_LIST_PANEL_CLASS =
   "flex flex-col min-w-0 md:h-[min(32rem,55vh)] md:min-h-[20rem]";
