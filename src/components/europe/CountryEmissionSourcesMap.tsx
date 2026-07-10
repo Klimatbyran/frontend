@@ -209,7 +209,7 @@ function EmissionSourcesMapContent({
         onReset={handleReset}
         canZoomIn
         canZoomOut
-        legendPosition="bottom-left"
+        position="bottom-left"
       />
     </div>
   );

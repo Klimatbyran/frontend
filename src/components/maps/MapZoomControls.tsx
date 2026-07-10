@@ -2,12 +2,35 @@ import { RotateCcw, ZoomIn, ZoomOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { MapLegendPosition } from "./MapLegend";
 
+export type MapZoomControlsPosition =
+  | "bottom-left"
+  | "bottom-right"
+  | "top-left"
+  | "top-right";
+
+const DESKTOP_POSITION_CLASSES: Record<MapZoomControlsPosition, string> = {
+  "bottom-left": "md:top-auto md:right-auto md:bottom-4 md:left-4",
+  "bottom-right": "md:top-auto md:left-auto md:bottom-4 md:right-4",
+  "top-left": "md:top-4 md:right-auto md:bottom-auto md:left-4",
+  "top-right": "md:top-4 md:left-auto md:bottom-auto md:right-4",
+};
+
+function resolveZoomControlsPosition(
+  position: MapZoomControlsPosition | undefined,
+  legendPosition: MapLegendPosition,
+): MapZoomControlsPosition {
+  if (position) return position;
+  // Place controls in the corner opposite the legend.
+  return legendPosition === "bottom-right" ? "bottom-left" : "top-left";
+}
+
 export function MapZoomControls({
   onZoomIn,
   onZoomOut,
   onReset,
   canZoomIn,
   canZoomOut,
+  position,
   legendPosition = "bottom-right",
 }: {
   onZoomIn: () => void;
@@ -15,19 +38,18 @@ export function MapZoomControls({
   onReset: () => void;
   canZoomIn: boolean;
   canZoomOut: boolean;
+  position?: MapZoomControlsPosition;
   legendPosition?: MapLegendPosition;
 }) {
+  const resolvedPosition = resolveZoomControlsPosition(position, legendPosition);
+
   return (
     <div
       className={cn(
         "absolute flex flex-col gap-2",
         // Mobile: keep clear of the top-left tooltip and overview view toggle.
         "top-14 right-4",
-        // Desktop: place controls in the corner opposite the legend.
-        legendPosition === "bottom-right" &&
-          "md:top-auto md:right-auto md:bottom-4 md:left-4",
-        legendPosition === "bottom-left" &&
-          "md:top-4 md:right-auto md:bottom-auto md:left-4",
+        DESKTOP_POSITION_CLASSES[resolvedPosition],
       )}
     >
       <button
