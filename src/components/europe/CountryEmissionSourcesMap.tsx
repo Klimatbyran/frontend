@@ -27,6 +27,9 @@ import "leaflet/dist/leaflet.css";
 
 type EmissionSourcesViewMode = "map" | "list";
 
+const EMISSION_SOURCES_MAP_CLASS =
+  "h-[min(34rem,58vh)] min-h-[20rem] md:h-[min(48rem,75vh)] md:min-h-[30rem]";
+
 const EMISSION_SOURCES_PANEL_CLASS =
   "h-[min(32rem,55vh)] min-h-[20rem] md:h-[min(42rem,70vh)] md:min-h-[28rem]";
 
@@ -260,6 +263,7 @@ export function CountryEmissionSourcesMap({
 
   const cardHeader = (
     <CardHeader
+      className="[&>div]:mb-2 [&>div]:@lg:mb-2"
       title={t("europe.detailPage.emissionSources.title")}
       description={t("europe.detailPage.emissionSources.description", {
         count: CLIMATE_TRACE_SOURCES_LIMIT,
@@ -282,7 +286,7 @@ export function CountryEmissionSourcesMap({
     <div
       className={cn(
         "relative min-w-0 overflow-hidden rounded-xl bg-black-3",
-        EMISSION_SOURCES_PANEL_CLASS,
+        EMISSION_SOURCES_MAP_CLASS,
       )}
     >
       {loading ? (
@@ -323,7 +327,7 @@ export function CountryEmissionSourcesMap({
       <div className="hidden md:grid md:grid-cols-2 md:items-stretch md:gap-6">
         <div className="flex min-w-0 flex-col">
           {cardHeader}
-          <div className="mt-8">{mapPanel}</div>
+          <div className="mt-4">{mapPanel}</div>
         </div>
 
         <div className="min-w-0 h-full">{rankedList}</div>
