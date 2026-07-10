@@ -16,7 +16,7 @@ export const SIDE_BY_SIDE_MIN_WIDTH = 768;
 
 const LIST_COLUMNS = 2;
 /** Mobile list paginates in pages of this size when item count exceeds the threshold. */
-export const MOBILE_TERRITORY_LIST_PAGE_SIZE = 10;
+export const MOBILE_TERRITORY_LIST_PAGE_SIZE = 7;
 export const MOBILE_TERRITORY_LIST_PAGINATION_THRESHOLD = 10;
 /** Matches TerritoryListRow legend-style card row (~52px). */
 const LIST_ROW_HEIGHT = 52;
