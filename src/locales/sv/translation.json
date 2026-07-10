@@ -13,7 +13,7 @@
     "sectors": "Branscher",
     "explore": "Utforska",
     "europe": "Europa",
-    "territories": "Territorier",
+    "territories": "Platser",
     "municipalities": "Kommuner",
     "nation": "Sverige",
     "regions": "Län",
@@ -318,6 +318,7 @@
     "filterByIndustry": "Filtrera efter bransch",
     "clearFilters": "Rensa alla",
     "selectIndustry": "Välj bransch",
+    "selectCountry": "Välj land",
     "viewToggle": {
       "showGraph": "Graf",
       "showList": "Lista"
@@ -387,7 +388,7 @@
       "yearTotal": "Årlig total",
       "unknownCompany": "Okänt företag",
       "pieLegendCompany": "Visa företagsdetaljer",
-      "pieLegendSector": "Visa branschedetaljer",
+      "pieLegendSector": "Visa branschdetaljer",
       "emissionsSourcesAnalysis": "Analys av utsläppskällor",
       "ghgProtocolScopes": "(Scopes i GHG-protokollet)",
       "totalEmissions": "Totala utsläpp",
@@ -1354,6 +1355,26 @@
       "totalEmissionsSaved": "totala utsläpp sparade jämfört med Paris-målet",
       "totalEmissionsExcess": "totala utsläpp i överskott jämfört med Paris-målet"
     },
+    "turnoverEmissionsHistory": {
+      "title": "Utsläpp och omsättning över tid",
+      "tooltip": "Jämför rapporterade utsläpp och omsättning över tid. Vänster axel visar utsläpp i ton CO₂e och höger axel visar omsättning i företagets rapporteringsvaluta.",
+      "unit": "Utsläpp i ton CO₂e · Omsättning i företagets valuta",
+      "intensityPanel": {
+        "title": "Utsläppsintensitet",
+        "tooltip": "Utsläppsintensitet är utsläpp delat med omsättning (t CO₂e per miljon). Jämför två år — lägre är bättre. Intensiteten minskar när utsläppen faller snabbare än omsättningen växer, eller när utsläppen minskar samtidigt som omsättningen ökar.",
+        "intensityUnit": "t CO₂e per miljon i omsättning",
+        "question": "Har utsläppsintensiteten minskat?",
+        "verdictStableLabel": "Oförändrad",
+        "intensityChange": "Intensitet",
+        "emissionsLabel": "Utsläpp",
+        "turnoverLabel": "Omsättning",
+        "periodBaseYearNote": "Basår jämfört med senast rapporterade året med utsläpps- och omsättningsdata. Lägre är bättre.",
+        "periodFirstYearNote": "Första året med utsläpps- och omsättningsdata, jämfört med senast rapporterade året. Lägre är bättre.",
+        "verdictYes": "Utsläppsintensiteten har minskat. Företaget släpper ut mindre per omsatt krona än tidigare.",
+        "verdictNoRed": "Utsläppsintensiteten har ökat. Företaget släpper ut mer per omsatt krona än tidigare.",
+        "verdictNoYellow": "Utsläppsintensiteten har legat ungefär oförändrad. Företaget släpper ut ungefär lika mycket per omsatt krona som tidigare."
+      }
+    },
     "list": {
       "error": {
         "fetchingCompanyInfo": "Det gick inte att hämta företagsinformation",
@@ -1377,7 +1398,7 @@
         "emissionsChangeFromBaseYear": {
           "label": "Utsläppsförändring",
           "description": "Förändring i utsläpp från basår till senaste rapporteringsår. Endast företag med jämförbara utsläppsdata rankas.",
-          "detailedDescription": "Procentuell förändring i totala utsläpp från företagets basår till senaste rapporteringsår. Rankningen omfattar endast företag med definierat basår, giltiga basårsutsläpp och minst ett senare rapporteringsår med jämförbar data. Lägre värden indikerar bättre prestation.",
+          "detailedDescription": "Procentuell förändring i totala utsläpp från företagets basår till senaste rapporteringsår. Rankningen omfattar endast företag med definierat basår, giltiga basårsutsläpp och minst ett senare rapporteringsår med jämförbar data.",
           "source": "Företagsrapporteringsdata",
           "nullValues": "Ej jämförbar"
         },
@@ -1396,6 +1417,10 @@
         },
         "keyStatistics": {
           "average": "Genomsnitt:"
+        },
+        "distribution": {
+          "title": "Fördelning",
+          "subtitle": "Visar hur företagen sprider sig längs skalan för vald indikator. Blå staplar betyder bättre resultat, rosa sämre, och den streckade linjen markerar genomsnittet."
         }
       },
       "sort": {
@@ -1488,9 +1513,19 @@
       "regions": "Län"
     }
   },
+  "mapControls": {
+    "zoomIn": "Zooma in",
+    "zoomOut": "Zooma ut",
+    "reset": "Återställ"
+  },
   "regions": {
     "detailPage": {
       "municipalities": "Kommuner"
+    },
+    "map": {
+      "legend": {
+        "null": "Saknar data"
+      }
     },
     "kpis": {
       "emissions": {
@@ -1513,7 +1548,8 @@
           "label": "Utsläppen",
           "description": "Historisk förändring av utsläpp",
           "detailedDescription": "Genomsnittlig årlig procentuell förändring av växthusgasutsläppen i Sveriges län sedan Parisavtalet år 2015.",
-          "source": "Nationella emissionsdatabasen"
+          "source": "Nationella emissionsdatabasen",
+          "nullValues": "Saknar data"
         },
         "meetsParis": {
           "label": "Parisavtalet",
@@ -1524,8 +1560,15 @@
             "true": "Klarar Parisavtalet",
             "false": "Missar Parisavtalet"
           },
+          "nullValues": "Okänt",
           "aboveString": "är på väg att klara Parisavtalet",
           "belowString": "är på väg att missa Parisavtalet"
+        }
+      },
+      "insights": {
+        "distribution": {
+          "title": "Fördelning",
+          "subtitle": "Visar hur länen sprider sig längs skalan för vald indikator. Blå staplar betyder bättre resultat, rosa sämre, och den streckade linjen markerar genomsnittet."
         }
       }
     }
@@ -1682,7 +1725,9 @@
           "description": "Antal elbilar per laddningspunkt",
           "detailedDescription": "Antal elbilar per publik laddningspunkt per kommun år 2025. Ju färre bilar per laddningspunkt desto bättre, god infrastruktur gynnar ökad elbilskonsumtion",
           "source": "Power Circle",
-          "nullValues": "Saknar laddpunkter"
+          "nullValues": "Saknar laddpunkter",
+          "missingCount_one": "{{count}} kommun saknar laddpunkter",
+          "missingCount_other": "{{count}} kommuner saknar laddpunkter"
         },
         "bicycleMetrePerCapita": {
           "label": "Cyklarna",
@@ -1975,7 +2020,15 @@
     "loading": "Laddar...",
     "error": "Fel",
     "company": "Företag",
-    "municipality": "Kommun"
+    "municipality": "Kommun",
+    "region": "Län"
+  },
+  "regionDetailPage": {
+    "metaDescription": "Se utsläppsdata och klimatomställning för {{region}} på Klimatkollen."
+  },
+  "nationDetailPage": {
+    "title": "Sveriges klimatomställning",
+    "description": "Nationell översikt över utsläpp och klimatomställning i Sverige jämfört med Parisavtalets mål."
   },
   "globalSearch": {
     "title": "Hitta ett företag, en kommun, ett län eller land",
@@ -2017,15 +2070,19 @@
     "sort": {
       "asc": "Sortera från lågt till högt",
       "desc": "Sortera från högt till lågt"
+    },
+    "pagination": {
+      "previousPage": "Föregående sida",
+      "nextPage": "Nästa sida"
     }
   },
   "rankedInsights": {
     "average": "Genomsnitt:",
     "belowAverage": "{{entityPlural}} under genomsnittet",
     "aboveAverage": "{{entityPlural}} över genomsnittet",
-    "titleBest": "Topp 10 {{entityPlural}}",
-    "titleTop": "Bästa 10 {{entityPlural}}",
-    "titleWorst": "Sämsta 10 {{entityPlural}}"
+    "titleBest": "Topp {{nrOfEntities}} {{entityPlural}}",
+    "titleTop": "Bästa {{nrOfEntities}} {{entityPlural}}",
+    "titleWorst": "Sämsta {{nrOfEntities}} {{entityPlural}}"
   },
   "chartLegend": {
     "clickToFilterOut": "Klicka för att filtrera bort",
@@ -2171,6 +2228,8 @@
       "errorTitle": "Det gick inte att hämta företagsinformation",
       "errorDescription": "Försök igen senare",
       "filteringOptions": {
+        "country": "Land",
+        "allCountries": "Alla länder",
         "meetsParis": "Klarar Parisavtalet",
         "meetsParisYes": "Ja",
         "meetsParisNo": "Nej",
@@ -2193,6 +2252,13 @@
       "sectionTitle": "Företag",
       "noCompaniesInSection": "Inga företag i denna kategori"
     }
+  },
+  "companyCountries": {
+    "sweden": "Sverige",
+    "norway": "Norge",
+    "finland": "Finland",
+    "denmark": "Danmark",
+    "iceland": "Island"
   },
   "insightCategories": {
     "analysis": "Analys",

@@ -2,6 +2,7 @@ import { SeoMeta } from "@/types/seo";
 import { CompanyDetails } from "@/types/company";
 import { Municipality } from "@/types/municipality";
 import { getCompanyIndustryFromData } from "@/utils/data/industryGrouping";
+import { DEFAULT_OG_IMAGE } from "@/utils/seo";
 
 /**
  * TODO: Expand entity SEO coverage
@@ -167,6 +168,7 @@ function generateEntitySeoMeta(
   entityName: string,
   pathname: string,
   description: string,
+  ogImage: string = DEFAULT_OG_IMAGE,
 ): SeoMeta {
   const title = `${entityName} - ${SITE_NAME}`;
 
@@ -177,12 +179,16 @@ function generateEntitySeoMeta(
     og: {
       title,
       description,
+      image: ogImage,
+      imageWidth: 1200,
+      imageHeight: 630,
       type: "website",
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
+      image: ogImage,
     },
   };
 }

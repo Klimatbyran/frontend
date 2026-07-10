@@ -26,6 +26,8 @@ interface InsightsPanelProps {
   companyData: CompanyWithKPIs[];
   selectedKPI: CompanyKPIValue;
   section?: InsightsPanelSection;
+  /** Forces insight lists to remount when the active filter changes */
+  listKey?: string;
 }
 
 const MIN_COMPANIES = 2;
@@ -34,8 +36,10 @@ function CompanyInsightsPanel({
   companyData,
   selectedKPI,
   section,
+  listKey,
 }: InsightsPanelProps) {
   const { t } = useTranslation();
+  const kpiKey = String(selectedKPI.key);
 
   if (!companyData?.length) {
     return (
@@ -59,7 +63,7 @@ function CompanyInsightsPanel({
       <div className="bg-white/5 backdrop-blur-sm rounded-level-2 p-8 h-full flex items-center justify-center">
         <p className="text-white text-lg">
           {t("companies.list.insights.noData.metric", {
-            metric: selectedKPI.label,
+            metric: t(`companies.list.kpis.${kpiKey}.label`),
           })}
         </p>
       </div>
@@ -92,8 +96,10 @@ function CompanyInsightsPanel({
 
   const statsPanel = (
     <KPIDetailsPanel
-      title={selectedKPI.label}
-      description={selectedKPI.detailedDescription || selectedKPI.description}
+      title={t(`companies.list.kpis.${kpiKey}.label`)}
+      description={t(`companies.list.kpis.${kpiKey}.detailedDescription`, {
+        defaultValue: t(`companies.list.kpis.${kpiKey}.description`),
+      })}
       isBoolean={selectedKPI.isBoolean}
       higherIsBetter={selectedKPI.higherIsBetter}
       averageValue={statistics.formattedAverage}
@@ -102,10 +108,11 @@ function CompanyInsightsPanel({
       bottomPerformer={bottomPerformer}
       chart={
         selectedKPI.isBoolean ? (
-          <KPIDistributionChart
+          <KPIDistributionChart<CompanyWithKPIs>
             data={companyData}
             selectedKPI={selectedKPI}
             entityLabel={entityPlural}
+            translationPrefix="companies.list"
           />
         ) : undefined
       }
@@ -116,12 +123,14 @@ function CompanyInsightsPanel({
 
   const distributionPanel = (
     <DistributionBox
+      entityType="companies"
       chart={
         <KPIDistributionChart<CompanyWithKPIs>
           data={companyData}
           selectedKPI={selectedKPI}
           average={!selectedKPI.isBoolean ? statistics.average : undefined}
           entityLabel={entityPlural}
+          translationPrefix="companies.list"
         />
       }
     />
@@ -133,17 +142,20 @@ function CompanyInsightsPanel({
 
   const topPanel = !selectedKPI.isBoolean ? (
     <InsightsList<CompanyWithKPIs>
+      key={listKey ? `top-${listKey}` : undefined}
       title={t(
         selectedKPI.higherIsBetter
           ? "rankedInsights.titleTop"
           : "rankedInsights.titleBest",
-        { entityPlural },
+        { nrOfEntities: topCompanies.length, entityPlural: entityPlural },
       )}
       entities={topCompanies}
       totalCount={statistics.validData.length}
       dataPointKey={selectedKPI.key}
       unit={selectedKPI.unit}
-      nullValues={selectedKPI.nullValues}
+      nullValues={t(`companies.list.kpis.${kpiKey}.nullValues`, {
+        defaultValue: "",
+      })}
       entityType="companies"
       nameKey="name"
       showBars
@@ -155,13 +167,19 @@ function CompanyInsightsPanel({
 
   const bottomPanel = !selectedKPI.isBoolean ? (
     <InsightsList<CompanyWithKPIs>
-      title={t("rankedInsights.titleWorst", { entityPlural })}
+      key={listKey ? `bottom-${listKey}` : undefined}
+      title={t("rankedInsights.titleWorst", {
+        nrOfEntities: bottomCompanies.length,
+        entityPlural: entityPlural,
+      })}
       entities={bottomCompanies}
       totalCount={statistics.validData.length}
       isBottomRanking
       dataPointKey={selectedKPI.key}
       unit={selectedKPI.unit}
-      nullValues={selectedKPI.nullValues}
+      nullValues={t(`companies.list.kpis.${kpiKey}.nullValues`, {
+        defaultValue: "",
+      })}
       entityType="companies"
       nameKey="name"
       showBars

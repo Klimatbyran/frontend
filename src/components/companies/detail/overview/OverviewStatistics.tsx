@@ -7,7 +7,7 @@ import {
   SupplementalDataPanel,
 } from "@/components/detail/SupplementalDataPanel";
 import { ReportingPeriod } from "@/types/company";
-import { localizeUnit } from "@/utils/formatting/localization";
+import { formatTurnoverValue } from "@/utils/formatting/turnoverFormatting";
 
 interface OverviewStatisticProps {
   selectedPeriod: ReportingPeriod;
@@ -27,14 +27,12 @@ export function OverviewStatistics({
   className,
 }: OverviewStatisticProps) {
   const formattedTurnover = selectedPeriod.economy?.turnover?.value
-    ? (() => {
-        const { value } = selectedPeriod.economy.turnover;
-        const useMillions = value < 1e9;
-        return `${localizeUnit(
-          value / (useMillions ? 1e6 : 1e9),
-          currentLanguage,
-        )} ${t(useMillions ? "companies.overview.million" : "companies.overview.billion")} ${selectedPeriod.economy.turnover.currency}`;
-      })()
+    ? formatTurnoverValue(
+        selectedPeriod.economy.turnover.value,
+        currentLanguage,
+        t,
+        selectedPeriod.economy.turnover.currency,
+      )
     : t("companies.overview.notReported");
 
   return (

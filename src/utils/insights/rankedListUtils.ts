@@ -123,23 +123,35 @@ export function calculateEntityStatistics<
     entityPlural,
   });
 
+  const kpiKey = String(selectedKPI.key);
+
   // Create distribution stats
   const distributionStats = [
     {
       count: aboveAverageCount,
       colorClass: selectedKPI.higherIsBetter ? "text-blue-3" : "text-pink-3",
       label: selectedKPI.isBoolean
-        ? selectedKPI.booleanLabels?.true || t("yes")
+        ? t(`${entityType}.list.kpis.${kpiKey}.booleanLabels.true`)
         : aboveAverageLabel,
     },
     {
       count: belowAverageCount,
       colorClass: selectedKPI.higherIsBetter ? "text-pink-3" : "text-blue-3",
       label: selectedKPI.isBoolean
-        ? selectedKPI.booleanLabels?.false || t("no")
+        ? t(`${entityType}.list.kpis.${kpiKey}.booleanLabels.false`)
         : belowAverageLabel,
     },
   ];
+
+  if (selectedKPI.isBoolean && nullCount > 0) {
+    distributionStats.push({
+      count: nullCount,
+      colorClass: "text-grey",
+      label: t(`${entityType}.list.kpis.${kpiKey}.nullValues`, {
+        defaultValue: t("unknown"),
+      }),
+    });
+  }
 
   const unit = selectedKPI.unit || "";
   const formattedAverage = selectedKPI.isBoolean

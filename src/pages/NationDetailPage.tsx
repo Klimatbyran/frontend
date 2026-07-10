@@ -21,8 +21,6 @@ function NationDetailContent({
   getSectorInfo,
   filteredSectors,
   setFilteredSectors,
-  selectedYear,
-  setSelectedYear,
   headerStats,
   availableYears,
   currentYear,
@@ -54,8 +52,6 @@ function NationDetailContent({
       <SectorEmissionsChart
         sectorEmissions={sectorEmissions}
         availableYears={availableYears}
-        selectedYear={selectedYear}
-        onYearChange={setSelectedYear}
         currentYear={currentYear}
         getSectorInfo={getSectorInfo}
         filteredSectors={filteredSectors}

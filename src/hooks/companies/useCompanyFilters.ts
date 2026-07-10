@@ -20,6 +20,16 @@ import {
 } from "./useCompanySorting";
 import { useExploreFilters } from "@/hooks/explore/useExploreFilters";
 import { getSearchTerms } from "@/hooks/explore/exploreFilterUtils";
+import type { CompanyCountryTagSlug } from "@/lib/constants/companyCountryTags";
+import {
+  buildCountryActiveFilters,
+  buildCountryFilterGroup,
+  companyMatchesCountries,
+  getAvailableCountryOptions,
+  parseCountriesFromURL,
+  toggleCountrySelection,
+  useCompanyCountryNames,
+} from "@/hooks/companies/companyCountryFilterUtils";
 
 const MEETS_PARIS_OPTIONS = ["all", "yes", "no", "unknown"] as const;
 type MeetsParisFilter = (typeof MEETS_PARIS_OPTIONS)[number];
@@ -82,11 +92,27 @@ export const useCompanyFilters = (
         sectors.length > 0 ? sectors.join(",") : null,
         "sectors",
       ),
-    [],
+    [setSearchParams],
+  );
+
+  const selectedCountries = parseCountriesFromURL(searchParams);
+  const setSelectedCountries = useCallback(
+    (countries: CompanyCountryTagSlug[]) =>
+      setOrDeleteSearchParam(
+        setSearchParams,
+        countries.length > 0 ? countries.join(",") : null,
+        "countries",
+      ),
+    [setSearchParams],
   );
 
   const sectorNames = useSectorNames();
   const sectorOptions = useSectors();
+  const countryNames = useCompanyCountryNames();
+  const availableCountries = useMemo(
+    () => getAvailableCountryOptions(companies),
+    [companies],
+  );
   const { t } = useTranslation();
 
   const filteredCompanies = useMemo(() => {
@@ -134,7 +160,14 @@ export const useCompanyFilters = (
           return true;
         })();
 
-        return matchesSector && matchesSearch && matchesMeetsParis;
+        const matchesCountry = companyMatchesCountries(
+          company,
+          selectedCountries,
+        );
+
+        return (
+          matchesSector && matchesSearch && matchesMeetsParis && matchesCountry
+        );
       })
       .sort((a, b) => {
         // Sort companies
@@ -202,12 +235,22 @@ export const useCompanyFilters = (
   }, [
     companies,
     sectors,
+    selectedCountries,
     searchQuery,
     meetsParisFilter,
     sortBy,
     sortDirection,
     sectorNames,
   ]);
+
+  const countryFilterGroup = buildCountryFilterGroup({
+    t,
+    countryNames,
+    availableCountries,
+    selectedCountries,
+    onSelect: (value) =>
+      setSelectedCountries(toggleCountrySelection(selectedCountries, value)),
+  });
 
   const filterGroups: FilterGroup[] = [
     ...(includeSectorFilter
@@ -234,6 +277,7 @@ export const useCompanyFilters = (
           } satisfies FilterGroup,
         ]
       : []),
+    ...(countryFilterGroup ? [countryFilterGroup] : []),
     {
       heading: t("explorePage.companies.filteringOptions.meetsParis"),
       options: [
@@ -267,6 +311,14 @@ export const useCompanyFilters = (
             onRemove: () => setSectors(sectors.filter((s) => s !== sector)),
           }))
         : []),
+      ...buildCountryActiveFilters({
+        countryNames,
+        selectedCountries,
+        onRemove: (country) =>
+          setSelectedCountries(
+            selectedCountries.filter((value) => value !== country),
+          ),
+      }),
       ...(meetsParisFilter !== "all"
         ? [
             {
@@ -288,10 +340,13 @@ export const useCompanyFilters = (
   }, [
     includeSectorFilter,
     sectors,
+    selectedCountries,
     meetsParisFilter,
     sectorNames,
+    countryNames,
     t,
     setSectors,
+    setSelectedCountries,
     setMeetsParisFilter,
   ]);
 
@@ -300,6 +355,8 @@ export const useCompanyFilters = (
     setSearchQuery,
     sectors,
     setSectors,
+    selectedCountries,
+    setSelectedCountries,
     meetsParisFilter,
     setMeetsParisFilter,
     sortBy,

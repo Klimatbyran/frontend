@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useLayoutEffect } from "react";
 import { ArrowDown, ArrowUp, Search } from "lucide-react";
 import { t } from "i18next";
 import MultiPagePagination from "@/components/ui/multi-page-pagination";
@@ -113,7 +113,8 @@ function useSortedRankedData<T extends Record<string, unknown>>({
   });
 
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
+  const safePage = Math.min(currentPage, Math.max(1, totalPages || 1));
+  const startIndex = (safePage - 1) * itemsPerPage;
   const paginatedData = filteredData.slice(
     startIndex,
     startIndex + itemsPerPage,
@@ -124,6 +125,7 @@ function useSortedRankedData<T extends Record<string, unknown>>({
     originalRankMap,
     filteredData,
     totalPages,
+    safePage,
     startIndex,
     paginatedData,
     sortAscending,
@@ -185,9 +187,14 @@ export function RankedList<T extends Record<string, unknown>>({
     setCurrentPage(1);
   }, [selectedDataPoint.key]);
 
+  useLayoutEffect(() => {
+    setCurrentPage(1);
+  }, [data]);
+
   const {
     originalRankMap,
     totalPages,
+    safePage,
     startIndex,
     paginatedData,
     sortAscending,
@@ -214,13 +221,20 @@ export function RankedList<T extends Record<string, unknown>>({
     <button
       key={String(index)}
       onClick={() => onItemClick?.(item)}
-      className="w-full p-4 hover:bg-black/70 transition-colors flex items-center justify-between group"
+      className="w-full p-4 hover:bg-black/70 transition-colors flex items-start justify-between gap-4 group"
     >
       <div className="flex items-center gap-4">
         <span className="text-white/30 text-sm w-8 shrink-0 tabular-nums text-left">
-          {selectedDataPoint.isBoolean ? "" : getOriginalRank(item)}
+          {selectedDataPoint.isBoolean
+            ? ""
+            : isMissingRankedValue(
+                  item[selectedDataPoint.key],
+                  selectedDataPoint.isBoolean,
+                )
+              ? "—"
+              : getOriginalRank(item)}
         </span>
-        <span className="text-white/90 text-sm md:text-base text-left">
+        <span className="text-white/90 text-sm md:text-base text-left break-words">
           {String(item[searchKey])}
         </span>
       </div>
@@ -229,7 +243,7 @@ export function RankedList<T extends Record<string, unknown>>({
           selectedDataPoint.isBoolean || item[selectedDataPoint.key] === null
             ? "font-medium"
             : "font-semibold",
-          "text-sm md:text-base text-right",
+          "text-sm md:text-base text-right shrink-0",
         )}
         style={{ color: color }}
       >
@@ -240,10 +254,12 @@ export function RankedList<T extends Record<string, unknown>>({
 
   return (
     <div
-      className={`bg-black-2 rounded-2xl border border-white/10 flex flex-col ${className}`}
+      className={cn(
+        "bg-black-2 rounded-2xl border border-white/10 flex flex-col h-full",
+        className,
+      )}
     >
       <div className="p-4 border-b border-white/10">
-        {headerAction && <div className="mb-3 md:hidden">{headerAction}</div>}
         <div className="flex items-center gap-3">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/50 w-5 h-5" />
@@ -309,7 +325,7 @@ export function RankedList<T extends Record<string, unknown>>({
       </div>
       {totalPages > 1 && (
         <MultiPagePagination
-          currentPage={currentPage}
+          currentPage={safePage}
           totalPages={totalPages}
           onPageChange={handlePageChange}
         />

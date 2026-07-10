@@ -13,7 +13,7 @@
     "sectors": "Sectors",
     "explore": "Explore",
     "europe": "Europe",
-    "territories": "Territories",
+    "territories": "Places",
     "municipalities": "Municipalities",
     "nation": "Sweden",
     "regions": "Regions",
@@ -318,6 +318,7 @@
     "filterByIndustry": "Filter by industry",
     "clearFilters": "Clear all",
     "selectIndustry": "Select industry",
+    "selectCountry": "Select country",
     "viewToggle": {
       "showGraph": "Graph",
       "showList": "List"
@@ -383,7 +384,10 @@
       "back": "Back",
       "sectorTotal": "Sector Total Emissions",
       "total": "Total Emissions",
-      "emissionsUnit": "ton CO₂e"
+      "emissionsUnit": "ton CO₂e",
+      "noDataAvailablePieChart": "No data available for this year",
+      "pieLegendCompany": "View company details",
+      "pieLegendSector": "View sector details"
     }
   },
   "sectorsOverviewPage": {
@@ -1301,6 +1305,26 @@
       "totalEmissionsSaved": "total emissions saved vs Paris target",
       "totalEmissionsExcess": "total emissions excess vs Paris target"
     },
+    "turnoverEmissionsHistory": {
+      "title": "Emissions and turnover over time",
+      "tooltip": "Compare reported emissions and turnover over time. The left axis shows emissions in tons of CO₂e and the right axis shows turnover in the company's reporting currency.",
+      "unit": "Emissions in tons CO₂e · Turnover in company currency",
+      "intensityPanel": {
+        "title": "Emissions intensity",
+        "tooltip": "Emissions intensity is total emissions divided by turnover (t CO₂e per million). Compare two years — lower is better. Intensity falls when emissions drop faster than turnover grows, or when emissions fall while turnover rises.",
+        "intensityUnit": "t CO₂e per million in turnover",
+        "question": "Has emissions intensity decreased?",
+        "verdictStableLabel": "Stable",
+        "intensityChange": "Intensity",
+        "emissionsLabel": "Emissions",
+        "turnoverLabel": "Turnover",
+        "periodBaseYearNote": "Base year compared to the latest reported year with emissions and turnover data. Lower is better.",
+        "periodFirstYearNote": "First year with emissions and turnover data, compared to the latest reported year. Lower is better.",
+        "verdictYes": "Emissions intensity has fallen. The company emits less per unit of turnover than before.",
+        "verdictNoRed": "Emissions intensity has risen. The company emits more per unit of turnover than before.",
+        "verdictNoYellow": "Emissions intensity has stayed roughly unchanged. The company emits about the same per unit of turnover as before."
+      }
+    },
     "list": {
       "error": {
         "fetchingCompanyInfo": "Failed to fetch company information",
@@ -1324,7 +1348,7 @@
         "emissionsChangeFromBaseYear": {
           "label": "Overall Emissions Change",
           "description": "Change in emissions from base year to latest reporting period. Only companies with comparable emissions data are ranked.",
-          "detailedDescription": "Percentage change in total emissions from the company's base year to their most recent reporting period. Rankings include only companies with a defined base year, valid baseline emissions, and at least one later reporting period with comparable data. Lower values indicate better performance.",
+          "detailedDescription": "Percentage change in total emissions from the company's base year to their most recent reporting period. Rankings include only companies with a defined base year, valid baseline emissions, and at least one later reporting period with comparable data.",
           "source": "Company Reporting Data",
           "nullValues": "Not comparable"
         },
@@ -1343,6 +1367,10 @@
         },
         "keyStatistics": {
           "average": "Average:"
+        },
+        "distribution": {
+          "title": "Distribution",
+          "subtitle": "Shows how companies are spread across the scale for the selected indicator. Blue bars mean better results, pink worse, and the dashed line marks the average."
         }
       },
       "sort": {
@@ -1435,9 +1463,19 @@
       "regions": "Regions"
     }
   },
+  "mapControls": {
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "reset": "Reset"
+  },
   "regions": {
     "detailPage": {
       "municipalities": "Municipalities"
+    },
+    "map": {
+      "legend": {
+        "null": "No data"
+      }
     },
     "kpis": {
       "emissions": {
@@ -1460,7 +1498,8 @@
           "label": "Emissions",
           "description": "Historical change in emissions",
           "detailedDescription": "Average annual percentage change in greenhouse gas emissions since the Paris Agreement in 2015.",
-          "source": "National Emissions Database"
+          "source": "National Emissions Database",
+          "nullValues": "No data"
         },
         "meetsParis": {
           "label": "Paris Agreement",
@@ -1470,7 +1509,16 @@
           "booleanLabels": {
             "true": "Meets Paris Agreement",
             "false": "Fails Paris Agreement"
-          }
+          },
+          "nullValues": "Unknown",
+          "aboveString": "are on track to meet the Paris Agreement",
+          "belowString": "are on track to miss the Paris Agreement"
+        }
+      },
+      "insights": {
+        "distribution": {
+          "title": "Distribution",
+          "subtitle": "Shows how regions are spread across the scale for the selected indicator. Blue bars mean better results, pink worse, and the dashed line marks the average."
         }
       }
     }
@@ -1627,7 +1675,9 @@
           "description": "Number of electric vehicles per charging point",
           "detailedDescription": "Number of electric vehicles per public charging point, per municipality in 2025. Lower numbers are better, as good infrastructure promotes increased electric vehicle adoption.",
           "source": "Power Circle",
-          "nullValues": "No charging points"
+          "nullValues": "No charging points",
+          "missingCount_one": "{{count}} municipality without charging points",
+          "missingCount_other": "{{count}} municipalities without charging points"
         },
         "bicycleMetrePerCapita": {
           "label": "Bicycles",
@@ -1920,7 +1970,15 @@
     "loading": "Loading...",
     "error": "Error",
     "company": "Company",
-    "municipality": "Municipality"
+    "municipality": "Municipality",
+    "region": "Region"
+  },
+  "regionDetailPage": {
+    "metaDescription": "View emissions data and climate transition progress for {{region}} on Klimatkollen."
+  },
+  "nationDetailPage": {
+    "title": "Sweden's Climate Transition",
+    "description": "National overview of emissions and climate transition in Sweden compared to the Paris Agreement targets."
   },
   "globalSearch": {
     "title": "Find a company, municipality, region or nation",
@@ -1962,15 +2020,19 @@
     "sort": {
       "asc": "Sort from low to high",
       "desc": "Sort from high to low"
+    },
+    "pagination": {
+      "previousPage": "Previous page",
+      "nextPage": "Next page"
     }
   },
   "rankedInsights": {
     "average": "Average:",
     "belowAverage": "{{entityPlural}} below average",
     "aboveAverage": "{{entityPlural}} above average",
-    "titleBest": "Top 10 {{entityPlural}}",
-    "titleTop": "Top Performing 10 {{entityPlural}}",
-    "titleWorst": "Bottom 10 {{entityPlural}}"
+    "titleBest": "Top {{nrOfEntities}} {{entityPlural}}",
+    "titleTop": "Top Performing {{nrOfEntities}} {{entityPlural}}",
+    "titleWorst": "Bottom {{nrOfEntities}} {{entityPlural}}"
   },
   "chartLegend": {
     "clickToFilterOut": "Click to filter out",
@@ -2116,6 +2178,8 @@
       "errorTitle": "Failed to retrieve company information",
       "errorDescription": "Please try again later",
       "filteringOptions": {
+        "country": "Country",
+        "allCountries": "All countries",
         "meetsParis": "Meets the Paris Agreement",
         "meetsParisYes": "Yes",
         "meetsParisNo": "No",
@@ -2138,6 +2202,13 @@
       "sectionTitle": "Companies",
       "noCompaniesInSection": "No companies in this section"
     }
+  },
+  "companyCountries": {
+    "sweden": "Sweden",
+    "norway": "Norway",
+    "finland": "Finland",
+    "denmark": "Denmark",
+    "iceland": "Iceland"
   },
   "insightCategories": {
     "analysis": "Analysis",

@@ -11,6 +11,21 @@ function calcBarWidth(
   return Math.min(100, (Math.abs(numVal) / absMax) * 100);
 }
 
+function getEntityKey<T>(
+  entity: T,
+  entityType: string,
+  nameKey: keyof T,
+): string {
+  const name = String(entity[nameKey]);
+
+  if (entityType === "companies") {
+    const company = entity as { id?: string; wikidataId?: string | null };
+    return company.id ?? company.wikidataId ?? name;
+  }
+
+  return name;
+}
+
 interface InsightsListProps<T> {
   title: string;
   entities: T[];
@@ -54,6 +69,7 @@ function InsightsList<T>({
         {entities.map((entity, index) => {
           const position = isBottomRanking ? totalCount - index : index + 1;
           const name = String(entity[nameKey]);
+          const entityKey = getEntityKey(entity, entityType, nameKey);
           const rawValue = entity[dataPointKey];
           const numVal =
             typeof rawValue === "number" && !isNaN(rawValue) ? rawValue : null;
@@ -102,7 +118,7 @@ function InsightsList<T>({
           if (entityType === "municipalities" || entityType === "regions") {
             return (
               <LocalizedLink
-                key={name}
+                key={entityKey}
                 to={`/${entityType}/${name.toLowerCase()}`}
                 className="block transition-colors hover:bg-white/5 rounded-lg"
               >
@@ -119,7 +135,7 @@ function InsightsList<T>({
             if (company.id) {
               return (
                 <LocalizedLink
-                  key={name}
+                  key={entityKey}
                   to={getCompanyDetailPath(company)}
                   className="block transition-colors hover:bg-white/5 rounded-lg"
                 >
@@ -149,7 +165,7 @@ function InsightsList<T>({
 
           return (
             <div
-              key={name}
+              key={entityKey}
               className="block transition-colors hover:bg-white/5 rounded-lg"
             >
               {content}

@@ -57,4 +57,16 @@ describe("computeNationDerivedMetrics", () => {
     expect(derived.trend.some((point) => point?.year === 2050)).toBe(true);
     expect(typeof derived.meetsParis).toBe("boolean");
   });
+
+  it("anchors the approximated series at the last observed data point", () => {
+    const derived = computeNationDerivedMetrics(territorialFixture, 2026);
+
+    const lastDataYear = 2024;
+    const lastDataValue = territorialFixture[lastDataYear];
+    const anchorPoint = derived.approximatedHistoricalEmission.find(
+      (point) => point?.year === lastDataYear,
+    );
+
+    expect(anchorPoint?.value).toBeCloseTo(lastDataValue, 0);
+  });
 });
