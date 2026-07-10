@@ -2,6 +2,7 @@ import { useEffect, useId, useMemo, useState } from "react";
 import { FeatureCollection } from "geojson";
 import { MapContainer, GeoJSON, CircleMarker } from "react-leaflet";
 import type L from "leaflet";
+import { List, Map } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { CardHeader } from "@/components/layout/CardHeader";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
@@ -10,8 +11,8 @@ import { MapZoomControls } from "@/components/maps/MapZoomControls";
 import { MAP_FIT_BOUNDS_PADDING } from "@/components/maps/mapConstants";
 import { calculateGeoBounds } from "@/components/maps/utils/geoBounds";
 import { useMapZoom } from "@/components/maps/hooks/useMapZoom";
+import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import {
-  TERRITORY_LIST_PANEL_CLASS,
   TERRITORY_PANEL_CLASS,
 } from "@/hooks/territories/useTerritoryListLayout";
 import { useLanguage } from "@/components/LanguageProvider";
@@ -24,6 +25,8 @@ import { formatEmissionsAbsoluteCompact } from "@/utils/formatting/localization"
 import { cn } from "@/lib/utils";
 
 import "leaflet/dist/leaflet.css";
+
+type EmissionSourcesViewMode = "map" | "list";
 
 const COUNTRY_OUTLINE_STYLE: L.PathOptions = {
   fillColor: "var(--black-3)",
@@ -129,6 +132,50 @@ function EmissionSourceListRow({
           currentLanguage,
         )}
       </span>
+    </div>
+  );
+}
+
+function EmissionSourcesList({
+  sources,
+  loading,
+  hoveredSourceId,
+  onHoverSource,
+  getSectorInfo,
+}: {
+  sources: RankedClimateTraceSource[];
+  loading: boolean;
+  hoveredSourceId: number | null;
+  onHoverSource: (sourceId: number | null) => void;
+  getSectorInfo: ReturnType<typeof useClimateTraceSectors>["getSectorInfo"];
+}) {
+  const { t } = useTranslation();
+
+  if (loading) {
+    return (
+      <div className="h-full w-full animate-pulse rounded-xl bg-black-2" />
+    );
+  }
+
+  if (sources.length === 0) {
+    return (
+      <p className="text-sm text-white/70">
+        {t("europe.detailPage.emissionSources.empty")}
+      </p>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-y-2">
+      {sources.map((source) => (
+        <EmissionSourceListRow
+          key={source.id}
+          source={source}
+          isHovered={hoveredSourceId === source.id}
+          onHover={onHoverSource}
+          getSectorInfo={getSectorInfo}
+        />
+      ))}
     </div>
   );
 }
@@ -280,8 +327,45 @@ export function CountryEmissionSourcesMap({
   const { t } = useTranslation();
   const { getSectorInfo } = useClimateTraceSectors();
   const [hoveredSourceId, setHoveredSourceId] = useState<number | null>(null);
+  const [mobileViewMode, setMobileViewMode] =
+    useState<EmissionSourcesViewMode>("map");
 
   const hasCountryGeometry = countryGeoData.features.length > 0;
+  const showMapOnMobile = mobileViewMode === "map";
+  const showListOnMobile = mobileViewMode === "list";
+
+  useEffect(() => {
+    if (showMapOnMobile) {
+      requestAnimationFrame(() => window.dispatchEvent(new Event("resize")));
+    }
+  }, [showMapOnMobile]);
+
+  const viewToggle = (
+    <ViewModeToggle
+      viewMode={mobileViewMode}
+      modes={["map", "list"]}
+      onChange={setMobileViewMode}
+      titles={{
+        map: t("viewModeToggle.map"),
+        list: t("viewModeToggle.list"),
+      }}
+      showTitles
+      icons={{
+        map: <Map className="w-4 h-4" />,
+        list: <List className="w-4 h-4" />,
+      }}
+    />
+  );
+
+  const listPanel = (
+    <EmissionSourcesList
+      sources={sources}
+      loading={loading}
+      hoveredSourceId={hoveredSourceId}
+      onHoverSource={setHoveredSourceId}
+      getSectorInfo={getSectorInfo}
+    />
+  );
 
   return (
     <SectionWithHelp helpItems={[]}>
@@ -292,13 +376,17 @@ export function CountryEmissionSourcesMap({
           year,
         })}
       />
-      <div
-        className={cn(
-          "mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6",
-          className,
-        )}
-      >
-        <div className={cn("relative min-w-0", TERRITORY_PANEL_CLASS)}>
+
+      <div className={cn("mt-8 md:hidden", className)}>{viewToggle}</div>
+
+      <div className="mt-4 grid grid-cols-1 gap-4 md:mt-8 md:grid-cols-2 md:gap-6">
+        <div
+          className={cn(
+            "relative min-w-0",
+            TERRITORY_PANEL_CLASS,
+            !showMapOnMobile && "hidden md:block",
+          )}
+        >
           {loading ? (
             <div className="h-full w-full rounded-xl bg-black-1 animate-pulse" />
           ) : !hasCountryGeometry ? (
@@ -318,31 +406,15 @@ export function CountryEmissionSourcesMap({
 
         <div
           className={cn(
-            "min-w-0 overflow-y-auto rounded-xl bg-black-1 p-4",
-            TERRITORY_LIST_PANEL_CLASS,
+            "flex min-w-0 flex-col overflow-y-auto rounded-xl bg-black-1 p-4",
+            TERRITORY_PANEL_CLASS,
+            !showListOnMobile && "hidden md:block",
           )}
         >
-          {loading ? (
-            <div className="h-full w-full animate-pulse rounded-xl bg-black-2" />
-          ) : sources.length === 0 ? (
-            <p className="text-sm text-white/70">
-              {t("europe.detailPage.emissionSources.empty")}
-            </p>
-          ) : (
-            <div className="flex flex-col gap-y-2">
-              {sources.map((source) => (
-                <EmissionSourceListRow
-                  key={source.id}
-                  source={source}
-                  isHovered={hoveredSourceId === source.id}
-                  onHover={setHoveredSourceId}
-                  getSectorInfo={getSectorInfo}
-                />
-              ))}
-            </div>
-          )}
+          {listPanel}
         </div>
       </div>
+
       <p className="mt-4 text-sm text-white/50">
         {t("europe.detailPage.emissionSources.source")}
       </p>
