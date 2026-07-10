@@ -18,34 +18,30 @@ export function TerritoryListRow({
 }: TerritoryListRowProps) {
   return (
     <div
-      className="flex min-w-0 items-center gap-2"
+      className={cn(
+        "flex min-w-0 items-center gap-2 rounded-md p-2 transition-colors hover:bg-black-1",
+        isHovered && "bg-black-1",
+      )}
       onMouseEnter={() => onHover(territory.mapName)}
       onMouseLeave={() => onHover(null)}
     >
-      <span
-        className="h-2.5 w-2.5 shrink-0 rounded-sm"
+      <div
+        className="h-3 w-3 shrink-0 rounded"
         style={{ backgroundColor: territory.fillColor }}
         aria-hidden
       />
-      <LocalizedLink
-        to={getEntityDetailPath(routingEntityType, territory.displayName)}
-        aria-label={`${territory.displayName}, ${territory.formattedValue}`}
-        className={cn(
-          "min-w-0 flex-1 truncate text-sm leading-5 text-grey hover:text-white md:text-base",
-          isHovered && "text-white",
-        )}
-      >
-        {territory.displayName}
-      </LocalizedLink>
-      <span
-        className={cn(
-          "shrink-0 text-xs tabular-nums text-grey",
-          isHovered && "text-white",
-        )}
-        aria-hidden
-      >
-        {territory.formattedValue}
-      </span>
+      <div className="min-w-0 flex-1">
+        <LocalizedLink
+          to={getEntityDetailPath(routingEntityType, territory.displayName)}
+          aria-label={`${territory.displayName}, ${territory.formattedValue}`}
+          className="block break-words text-sm text-white hover:text-white"
+        >
+          {territory.displayName}
+        </LocalizedLink>
+        <div className="text-xs tabular-nums text-grey">
+          {territory.formattedValue}
+        </div>
+      </div>
     </div>
   );
 }

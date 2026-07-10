@@ -81,7 +81,7 @@ export function RelatedTerritoriesSection({
         >
           <div
             className={cn(
-              "grid grid-cols-2 gap-x-3 gap-y-2 content-start",
+              "grid grid-cols-2 gap-2 content-start",
               showPagination && "flex-1 min-h-0",
             )}
           >
