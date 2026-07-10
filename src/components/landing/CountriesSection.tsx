@@ -16,7 +16,7 @@ export const CountriesSection = () => {
   const { getSectorInfo } = useSectors();
   const { hiddenItems: filteredSectors, setHiddenItems: setFilteredSectors } =
     useHiddenItems<string>([]);
-  const { selectedYear, setSelectedYear, availableYears, currentYear } =
+  const { availableYears, currentYear } =
     useSectorYearSelection(sectorEmissions);
 
   return (
@@ -37,8 +37,6 @@ export const CountriesSection = () => {
             <SectorEmissionsChart
               sectorEmissions={sectorEmissions}
               availableYears={availableYears}
-              selectedYear={selectedYear}
-              onYearChange={setSelectedYear}
               currentYear={currentYear}
               getSectorInfo={getSectorInfo}
               filteredSectors={filteredSectors}

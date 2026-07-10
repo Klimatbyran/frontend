@@ -19,17 +19,3 @@ export function getAvailableYearsFromSectors(
     )
     .sort((a, b) => b - a);
 }
-
-export function getCurrentYearFromAvailable(
-  selectedYear: string,
-  availableYears: number[],
-  defaultYear: number = 2023,
-): number {
-  if (
-    availableYears.length > 0 &&
-    availableYears.includes(parseInt(selectedYear))
-  ) {
-    return parseInt(selectedYear);
-  }
-  return availableYears[0] || defaultYear;
-}
