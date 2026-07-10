@@ -96,10 +96,7 @@ function MapContent({
         onEachFeature={onEachFeature}
       />
       {fitBounds && (
-        <MapInitialBoundsFitter
-          bounds={mapBounds}
-          padding={fitBoundsPadding}
-        />
+        <MapInitialBoundsFitter bounds={mapBounds} padding={fitBoundsPadding} />
       )}
       <MapController setPosition={setPosition} />
     </MapContainer>
