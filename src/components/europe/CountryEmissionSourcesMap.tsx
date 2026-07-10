@@ -12,9 +12,7 @@ import { MAP_FIT_BOUNDS_PADDING } from "@/components/maps/mapConstants";
 import { calculateGeoBounds } from "@/components/maps/utils/geoBounds";
 import { useMapZoom } from "@/components/maps/hooks/useMapZoom";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
-import {
-  TERRITORY_PANEL_CLASS,
-} from "@/hooks/territories/useTerritoryListLayout";
+import { TERRITORY_PANEL_CLASS } from "@/hooks/territories/useTerritoryListLayout";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useClimateTraceSectors } from "@/hooks/europe/useClimateTraceSectors";
 import {
