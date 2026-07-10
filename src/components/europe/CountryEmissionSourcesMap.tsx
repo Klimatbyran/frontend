@@ -258,58 +258,75 @@ export function CountryEmissionSourcesMap({
     />
   );
 
+  const cardHeader = (
+    <CardHeader
+      title={t("europe.detailPage.emissionSources.title")}
+      description={t("europe.detailPage.emissionSources.description", {
+        count: CLIMATE_TRACE_SOURCES_LIMIT,
+        year,
+      })}
+    />
+  );
+
+  const rankedList = (
+    <EmissionSourcesRankedList
+      sources={sources}
+      loading={loading}
+      hoveredSourceId={hoveredSourceId}
+      onHoverSource={setHoveredSourceId}
+      className="h-full"
+    />
+  );
+
+  const mapPanel = (
+    <div
+      className={cn(
+        "relative min-w-0 overflow-hidden rounded-xl bg-black-3",
+        EMISSION_SOURCES_PANEL_CLASS,
+      )}
+    >
+      {loading ? (
+        <div className="h-full w-full rounded-xl bg-black-3 animate-pulse" />
+      ) : !hasCountryGeometry ? (
+        <div className="flex h-full items-center justify-center rounded-xl bg-black-3 px-6 text-center text-white/70">
+          {t("europe.detailPage.emissionSources.noMapData")}
+        </div>
+      ) : (
+        <EmissionSourcesMapContent
+          countryGeoData={countryGeoData}
+          sources={sources}
+          hoveredSourceId={hoveredSourceId}
+          onHoverSource={setHoveredSourceId}
+          getSectorInfo={getSectorInfo}
+        />
+      )}
+    </div>
+  );
+
   return (
     <SectionWithHelp helpItems={[]} className="bg-black-3">
-      <CardHeader
-        title={t("europe.detailPage.emissionSources.title")}
-        description={t("europe.detailPage.emissionSources.description", {
-          count: CLIMATE_TRACE_SOURCES_LIMIT,
-          year,
-        })}
-      />
+      <div className="md:hidden">
+        {cardHeader}
 
-      <div className={cn("mt-8 md:hidden", className)}>{viewToggle}</div>
+        <div className={cn("mt-8", className)}>{viewToggle}</div>
 
-      <div className="mt-4 grid grid-cols-1 gap-4 md:mt-8 md:grid-cols-2 md:gap-6">
-        <div
-          className={cn(
-            "relative min-w-0 overflow-hidden rounded-xl bg-black-3",
-            EMISSION_SOURCES_PANEL_CLASS,
-            !showMapOnMobile && "hidden md:block",
-          )}
-        >
-          {loading ? (
-            <div className="h-full w-full rounded-xl bg-black-3 animate-pulse" />
-          ) : !hasCountryGeometry ? (
-            <div className="flex h-full items-center justify-center rounded-xl bg-black-3 px-6 text-center text-white/70">
-              {t("europe.detailPage.emissionSources.noMapData")}
+        <div className="mt-4 grid grid-cols-1 gap-4">
+          {showMapOnMobile && mapPanel}
+          {showListOnMobile && (
+            <div className={cn("min-w-0", EMISSION_SOURCES_PANEL_CLASS)}>
+              {rankedList}
             </div>
-          ) : (
-            <EmissionSourcesMapContent
-              countryGeoData={countryGeoData}
-              sources={sources}
-              hoveredSourceId={hoveredSourceId}
-              onHoverSource={setHoveredSourceId}
-              getSectorInfo={getSectorInfo}
-            />
           )}
+        </div>
+      </div>
+
+      <div className="hidden md:grid md:grid-cols-2 md:items-stretch md:gap-6">
+        <div className="flex min-w-0 flex-col">
+          {cardHeader}
+          <div className="mt-8">{mapPanel}</div>
         </div>
 
-        <div
-          className={cn(
-            "min-w-0",
-            EMISSION_SOURCES_PANEL_CLASS,
-            !showListOnMobile && "hidden md:block",
-          )}
-        >
-          <EmissionSourcesRankedList
-            sources={sources}
-            loading={loading}
-            hoveredSourceId={hoveredSourceId}
-            onHoverSource={setHoveredSourceId}
-            className="h-full"
-          />
-        </div>
+        <div className="min-w-0 h-full">{rankedList}</div>
       </div>
     </SectionWithHelp>
   );
