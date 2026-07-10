@@ -22,6 +22,9 @@ export function useNationPageData() {
     headerStats,
     kpiComparisons,
     lastYear,
+    countryGeoData,
+    emissionSources,
+    emissionSourcesLoading,
   } = useEuropeanCountryPageData(SWEDEN_ISO3);
 
   const { sectorEmissions } = useSectorEmissions("nation");
@@ -43,6 +46,9 @@ export function useNationPageData() {
     headerStats,
     kpiComparisons,
     lastYear,
+    countryGeoData,
+    emissionSources,
+    emissionSourcesLoading,
     sectorEmissions,
     getSectorInfo,
     filteredSectors,

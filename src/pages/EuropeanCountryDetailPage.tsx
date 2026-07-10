@@ -5,6 +5,7 @@ import { PageError } from "@/components/pageStates/Error";
 import { PageNoData } from "@/components/pageStates/NoData";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";
 import { EuropeanCountryDetailHeader } from "@/components/europe/EuropeanCountryDetailHeader";
+import { CountryEmissionSourcesMap } from "@/components/europe/CountryEmissionSourcesMap";
 import { SectorEmissionsChart } from "@/components/charts/sectorChart/SectorEmissions";
 import { useEuropeanCountryPageData } from "@/hooks/europe/useEuropeanCountryPageData";
 import { useLanguage } from "@/components/LanguageProvider";
@@ -21,6 +22,9 @@ export function EuropeanCountryDetailPage() {
     emissionsData,
     headerStats,
     sectorEmissions,
+    countryGeoData,
+    emissionSources,
+    emissionSourcesLoading,
     getSectorInfo,
     filteredSectors,
     setFilteredSectors,
@@ -28,6 +32,7 @@ export function EuropeanCountryDetailPage() {
     setSelectedYear,
     availableYears,
     currentYear,
+    lastYear,
   } = pageData;
 
   if (id?.toUpperCase() === SWEDEN_ISO3) {
@@ -46,6 +51,14 @@ export function EuropeanCountryDetailPage() {
         helpItems={["regionTotalEmissions", "detailWhyDataDelay"]}
         stats={headerStats}
       />
+      {lastYear && (
+        <CountryEmissionSourcesMap
+          countryGeoData={countryGeoData}
+          sources={emissionSources}
+          year={lastYear}
+          loading={emissionSourcesLoading}
+        />
+      )}
       <TerritoryEmissions
         emissionsData={emissionsData}
         sectorEmissions={sectorEmissions}

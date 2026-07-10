@@ -1542,6 +1542,12 @@
       "countryLabel": "Landet",
       "europeanAverage": "Europeiskt genomsnitt",
       "totalEmissionsTooltip": "Landets totala växthusgasutsläpp baserat på Climate TRACE-data, exklusive skogsbruk och markanvändning.",
+      "emissionSources": {
+        "title": "Karta över utsläppskällor",
+        "description": "Topp {{count}} anläggningar och andra punktkällor {{year}}, rankade efter utsläpp.",
+        "source": "Källa: Climate TRACE",
+        "noMapData": "Kartdata saknas för det här landet."
+      },
       "sectors": {
         "transportation": "Transporter",
         "manufacturing": "Tillverkning",

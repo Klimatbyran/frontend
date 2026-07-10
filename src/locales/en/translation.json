@@ -1487,6 +1487,12 @@
       "countryLabel": "This country",
       "europeanAverage": "European average",
       "totalEmissionsTooltip": "Total greenhouse gas emissions for the country based on Climate TRACE data, excluding forestry and land use.",
+      "emissionSources": {
+        "title": "Emission sources map",
+        "description": "Top {{count}} facilities and other point sources in {{year}}, ranked by emissions.",
+        "source": "Source: Climate TRACE",
+        "noMapData": "Map data is unavailable for this country."
+      },
       "sectors": {
         "transportation": "Transportation",
         "manufacturing": "Manufacturing",
