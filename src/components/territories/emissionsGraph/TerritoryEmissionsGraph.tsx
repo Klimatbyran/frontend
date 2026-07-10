@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { DataPoint, SectorEmissions } from "@/types/emissions";
+import { SectorInfo } from "@/types/charts";
 import { OverviewChart } from "@/components/territories/emissionsGraph/OverviewChart";
 import { SectorsChart } from "@/components/territories/emissionsGraph/SectorsChart";
 
@@ -12,6 +13,7 @@ interface TerritoryEmissionsGraphProps {
   dataView: DataView;
   hiddenSectors: Set<string>;
   setHiddenSectors: (sectors: Set<string>) => void;
+  getSectorInfo?: (name: string) => SectorInfo;
 }
 
 export const TerritoryEmissionsGraph: FC<TerritoryEmissionsGraphProps> = ({
@@ -20,6 +22,7 @@ export const TerritoryEmissionsGraph: FC<TerritoryEmissionsGraphProps> = ({
   dataView,
   hiddenSectors,
   setHiddenSectors,
+  getSectorInfo,
 }) => {
   const { t } = useTranslation();
 
@@ -36,6 +39,7 @@ export const TerritoryEmissionsGraph: FC<TerritoryEmissionsGraphProps> = ({
           sectorEmissions={sectorEmissions || null}
           hiddenSectors={hiddenSectors}
           setHiddenSectors={setHiddenSectors}
+          getSectorInfo={getSectorInfo}
         />
       )}
     </div>

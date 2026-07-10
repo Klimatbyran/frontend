@@ -1541,7 +1541,18 @@
       "dataSource": "Källa: Climate TRACE",
       "countryLabel": "Landet",
       "europeanAverage": "Europeiskt genomsnitt",
-      "totalEmissionsTooltip": "Landets totala växthusgasutsläpp baserat på Climate TRACE-data, exklusive skogsbruk och markanvändning."
+      "totalEmissionsTooltip": "Landets totala växthusgasutsläpp baserat på Climate TRACE-data, exklusive skogsbruk och markanvändning.",
+      "sectors": {
+        "transportation": "Transporter",
+        "manufacturing": "Tillverkning",
+        "agriculture": "Jordbruk",
+        "power": "Elproduktion",
+        "fossilFuelOperations": "Fossila bränslen",
+        "buildings": "Byggnader",
+        "waste": "Avfall",
+        "fluorinatedGases": "Fluorerade växthusgaser",
+        "mineralExtraction": "Mineralutvinning"
+      }
     },
     "map": {
       "legend": {

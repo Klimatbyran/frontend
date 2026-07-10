@@ -4,6 +4,11 @@ import {
   CLIMATE_TRACE_REPORTED_END_YEAR,
   EmissionsByYear,
 } from "@/utils/europe/climateTraceKpis";
+import {
+  CLIMATE_TRACE_EMISSIONS_SECTORS,
+  ClimateTraceEmissionsSector,
+  ClimateTraceSectorEmissionsByYear,
+} from "@/utils/europe/climateTraceSectors";
 
 const CLIMATE_TRACE_API_BASE = "https://api.climatetrace.org/v7";
 const FETCH_RETRY_ATTEMPTS = 4;
@@ -29,6 +34,7 @@ export type ClimateTraceCountryRanking = {
 
 export type ClimateTraceCountryData = ClimateTraceCountryRanking & {
   emissionsByYear: EmissionsByYear;
+  sectorEmissionsByYear: ClimateTraceSectorEmissionsByYear;
   historicalEmissionChangePercent: number | null;
   meetsParis: boolean | null;
 };
@@ -65,13 +71,14 @@ async function sleep(ms: number): Promise<void> {
 
 async function fetchClimateTraceCountryRankingsForYear(
   year: number,
+  sectors: string = CLIMATE_TRACE_EMISSIONS_PARAMS.sectors,
 ): Promise<ClimateTraceCountryRanking[]> {
   const { start, end } = buildYearDateRange(year);
   const url = new URL(`${CLIMATE_TRACE_API_BASE}/rankings/countries`);
   url.searchParams.set("gas", CLIMATE_TRACE_EMISSIONS_PARAMS.gas);
   url.searchParams.set("start", start);
   url.searchParams.set("end", end);
-  url.searchParams.set("sectors", CLIMATE_TRACE_EMISSIONS_PARAMS.sectors);
+  url.searchParams.set("sectors", sectors);
   url.searchParams.set("subsectors", "");
   url.searchParams.set("countryGroup", "");
   url.searchParams.set("continent", "");
@@ -89,12 +96,16 @@ async function fetchClimateTraceCountryRankingsForYear(
 
 async function fetchClimateTraceCountryRankingsForYearWithRetry(
   year: number,
+  sectors: string = CLIMATE_TRACE_EMISSIONS_PARAMS.sectors,
 ): Promise<ClimateTraceCountryRanking[]> {
   let lastError: Error | undefined;
 
   for (let attempt = 0; attempt < FETCH_RETRY_ATTEMPTS; attempt++) {
     try {
-      const rankings = await fetchClimateTraceCountryRankingsForYear(year);
+      const rankings = await fetchClimateTraceCountryRankingsForYear(
+        year,
+        sectors,
+      );
       if (rankings.length === 0) {
         throw new Error(`Climate TRACE API returned no rankings for ${year}`);
       }
@@ -132,9 +143,48 @@ function buildEmissionsByYearFromRankings(
   return emissionsByIso;
 }
 
+function buildSectorEmissionsByIso(
+  sectorRankingsByYear: Record<
+    number,
+    Partial<Record<ClimateTraceEmissionsSector, ClimateTraceCountryRanking[]>>
+  >,
+): Record<string, ClimateTraceSectorEmissionsByYear> {
+  const sectorEmissionsByIso: Record<string, ClimateTraceSectorEmissionsByYear> =
+    {};
+
+  for (const [year, sectorRankings] of Object.entries(sectorRankingsByYear)) {
+    const numericYear = Number(year);
+
+    for (const [sector, rankings] of Object.entries(sectorRankings)) {
+      if (!rankings) {
+        continue;
+      }
+
+      for (const ranking of rankings) {
+        if (!sectorEmissionsByIso[ranking.country]) {
+          sectorEmissionsByIso[ranking.country] = {};
+        }
+
+        if (!sectorEmissionsByIso[ranking.country][numericYear]) {
+          sectorEmissionsByIso[ranking.country][numericYear] = {};
+        }
+
+        if (ranking.emissionsQuantity > 0) {
+          sectorEmissionsByIso[ranking.country][numericYear][
+            sector as ClimateTraceEmissionsSector
+          ] = ranking.emissionsQuantity;
+        }
+      }
+    }
+  }
+
+  return sectorEmissionsByIso;
+}
+
 function enrichRankingsWithTimeSeries(
   latestRankings: ClimateTraceCountryRanking[],
   emissionsByIso: Record<string, EmissionsByYear>,
+  sectorEmissionsByIso: Record<string, ClimateTraceSectorEmissionsByYear>,
 ): ClimateTraceEmissionsByIso {
   return Object.fromEntries(
     latestRankings.map((ranking) => {
@@ -146,6 +196,8 @@ function enrichRankingsWithTimeSeries(
         {
           ...ranking,
           emissionsByYear,
+          sectorEmissionsByYear:
+            sectorEmissionsByIso[ranking.country] ?? {},
           ...kpis,
         },
       ];
@@ -174,21 +226,54 @@ export async function getClimateTraceCountryEmissions(): Promise<ClimateTraceEmi
   const years = buildClimateTraceFetchYears();
 
   const rankingsByYearEntries = await Promise.all(
-    years.map(
-      async (year) =>
-        [
-          year,
-          await fetchClimateTraceCountryRankingsForYearWithRetry(year),
-        ] as const,
-    ),
+    years.map(async (year) => {
+      const [totalRankings, sectorRankingsEntries] = await Promise.all([
+        fetchClimateTraceCountryRankingsForYearWithRetry(year),
+        Promise.all(
+          CLIMATE_TRACE_EMISSIONS_SECTORS.map(async (sector) => {
+            const rankings =
+              await fetchClimateTraceCountryRankingsForYearWithRetry(
+                year,
+                sector,
+              );
+            return [sector, rankings] as const;
+          }),
+        ),
+      ]);
+
+      return [
+        year,
+        {
+          totalRankings,
+          sectorRankings: Object.fromEntries(sectorRankingsEntries),
+        },
+      ] as const;
+    }),
   );
 
-  const rankingsByYear = Object.fromEntries(rankingsByYearEntries);
+  const rankingsByYear = Object.fromEntries(
+    rankingsByYearEntries.map(([year, { totalRankings }]) => [
+      year,
+      totalRankings,
+    ]),
+  );
+  const sectorRankingsByYear = Object.fromEntries(
+    rankingsByYearEntries.map(([year, { sectorRankings }]) => [
+      year,
+      sectorRankings,
+    ]),
+  );
+
   const latestYear = years[years.length - 1];
   const latestRankings = rankingsByYear[latestYear] ?? [];
   const emissionsByIso = buildEmissionsByYearFromRankings(rankingsByYear);
+  const sectorEmissionsByIso = buildSectorEmissionsByIso(sectorRankingsByYear);
 
   assertReportedEndYearCoverage(emissionsByIso, latestYear);
 
-  return enrichRankingsWithTimeSeries(latestRankings, emissionsByIso);
+  return enrichRankingsWithTimeSeries(
+    latestRankings,
+    emissionsByIso,
+    sectorEmissionsByIso,
+  );
 }

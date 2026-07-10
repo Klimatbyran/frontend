@@ -5,6 +5,7 @@ import { PageError } from "@/components/pageStates/Error";
 import { PageNoData } from "@/components/pageStates/NoData";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";
 import { EuropeanCountryDetailHeader } from "@/components/europe/EuropeanCountryDetailHeader";
+import { SectorEmissionsChart } from "@/components/charts/sectorChart/SectorEmissions";
 import { useEuropeanCountryPageData } from "@/hooks/europe/useEuropeanCountryPageData";
 import { useLanguage } from "@/components/LanguageProvider";
 import { localizedPath, SWEDEN_ISO3 } from "@/utils/routing";
@@ -13,7 +14,21 @@ export function EuropeanCountryDetailPage() {
   const { id } = useParams<{ id: string }>();
   const { currentLanguage } = useLanguage();
   const pageData = useEuropeanCountryPageData(id);
-  const { country, loading, error, emissionsData, headerStats } = pageData;
+  const {
+    country,
+    loading,
+    error,
+    emissionsData,
+    headerStats,
+    sectorEmissions,
+    getSectorInfo,
+    filteredSectors,
+    setFilteredSectors,
+    selectedYear,
+    setSelectedYear,
+    availableYears,
+    currentYear,
+  } = pageData;
 
   if (id?.toUpperCase() === SWEDEN_ISO3) {
     return <Navigate to={localizedPath(currentLanguage, "/nation")} replace />;
@@ -33,7 +48,19 @@ export function EuropeanCountryDetailPage() {
       />
       <TerritoryEmissions
         emissionsData={emissionsData}
-        sectorEmissions={null}
+        sectorEmissions={sectorEmissions}
+        getSectorInfo={getSectorInfo}
+      />
+      <SectorEmissionsChart
+        sectorEmissions={sectorEmissions}
+        availableYears={availableYears}
+        selectedYear={selectedYear}
+        onYearChange={setSelectedYear}
+        currentYear={currentYear}
+        getSectorInfo={getSectorInfo}
+        filteredSectors={filteredSectors}
+        onFilteredSectorsChange={setFilteredSectors}
+        helpItems={["municipalityAndRegionEmissionSources"]}
       />
     </DetailWrapper>
   );

@@ -1486,7 +1486,18 @@
       "dataSource": "Source: Climate TRACE",
       "countryLabel": "This country",
       "europeanAverage": "European average",
-      "totalEmissionsTooltip": "Total greenhouse gas emissions for the country based on Climate TRACE data, excluding forestry and land use."
+      "totalEmissionsTooltip": "Total greenhouse gas emissions for the country based on Climate TRACE data, excluding forestry and land use.",
+      "sectors": {
+        "transportation": "Transportation",
+        "manufacturing": "Manufacturing",
+        "agriculture": "Agriculture",
+        "power": "Power",
+        "fossilFuelOperations": "Fossil fuel operations",
+        "buildings": "Buildings",
+        "waste": "Waste",
+        "fluorinatedGases": "Fluorinated gases",
+        "mineralExtraction": "Mineral extraction"
+      }
     },
     "map": {
       "legend": {

@@ -12,6 +12,7 @@ import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { SectorEmissions } from "@/types/emissions";
+import { SectorInfo } from "@/types/charts";
 import { useSectors } from "@/hooks/territories/useSectors";
 import {
   DynamicLegendContainer,
@@ -34,17 +35,20 @@ interface SectorsChartProps {
   sectorEmissions: SectorEmissions | null;
   hiddenSectors?: Set<string>;
   setHiddenSectors?: (sectors: Set<string>) => void;
+  getSectorInfo?: (name: string) => SectorInfo;
 }
 
 export const SectorsChart: FC<SectorsChartProps> = ({
   sectorEmissions,
   hiddenSectors = new Set(),
   setHiddenSectors = () => {},
+  getSectorInfo: getSectorInfoProp,
 }) => {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
   const { isMobile } = useScreenSize();
-  const { getSectorInfo } = useSectors();
+  const { getSectorInfo: getDefaultSectorInfo } = useSectors();
+  const getSectorInfo = getSectorInfoProp ?? getDefaultSectorInfo;
 
   const MAX_YEAR = new Date().getFullYear() + 5;
   const CUTOFF_YEAR = new Date().getFullYear() - 1;

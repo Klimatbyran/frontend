@@ -17,6 +17,7 @@ const country: EuropeanCountryDetails = {
   name: "Sweden",
   englishName: "Sweden",
   emissionsByYear: { 2025: 50_000_000 },
+  sectorEmissionsByYear: {},
   emissionsPerCapita: 4,
   historicalEmissionChangePercent: -3,
   meetsParis: true,

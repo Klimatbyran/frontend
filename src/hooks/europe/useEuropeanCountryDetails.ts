@@ -21,6 +21,7 @@ export type EuropeanCountryDetails = {
   name: string;
   englishName: string;
   emissionsByYear: ClimateTraceCountryData["emissionsByYear"];
+  sectorEmissionsByYear: ClimateTraceCountryData["sectorEmissionsByYear"];
   emissionsPerCapita: number;
   historicalEmissionChangePercent: number | null;
   meetsParis: boolean | null;
@@ -61,6 +62,7 @@ export function useEuropeanCountryDetails(countryId: string | undefined) {
       ),
       englishName,
       emissionsByYear: ranking.emissionsByYear,
+      sectorEmissionsByYear: ranking.sectorEmissionsByYear,
       emissionsPerCapita: ranking.emissionsPerCapita,
       historicalEmissionChangePercent: ranking.historicalEmissionChangePercent,
       meetsParis: ranking.meetsParis,
