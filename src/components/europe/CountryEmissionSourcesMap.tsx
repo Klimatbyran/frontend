@@ -13,7 +13,6 @@ import { MAP_FIT_BOUNDS_PADDING } from "@/components/maps/mapConstants";
 import { calculateGeoBounds } from "@/components/maps/utils/geoBounds";
 import { useMapZoom } from "@/components/maps/hooks/useMapZoom";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
-import { TERRITORY_PANEL_CLASS } from "@/hooks/territories/useTerritoryListLayout";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useClimateTraceSectors } from "@/hooks/europe/useClimateTraceSectors";
 import {
@@ -27,6 +26,9 @@ import { cn } from "@/lib/utils";
 import "leaflet/dist/leaflet.css";
 
 type EmissionSourcesViewMode = "map" | "list";
+
+const EMISSION_SOURCES_PANEL_CLASS =
+  "h-[min(32rem,55vh)] min-h-[20rem] md:h-[min(42rem,70vh)] md:min-h-[28rem]";
 
 const COUNTRY_OUTLINE_STYLE: L.PathOptions = {
   fillColor: "var(--black-2)",
@@ -272,7 +274,7 @@ export function CountryEmissionSourcesMap({
         <div
           className={cn(
             "relative min-w-0 overflow-hidden rounded-xl bg-black-3",
-            TERRITORY_PANEL_CLASS,
+            EMISSION_SOURCES_PANEL_CLASS,
             !showMapOnMobile && "hidden md:block",
           )}
         >
@@ -296,7 +298,7 @@ export function CountryEmissionSourcesMap({
         <div
           className={cn(
             "min-w-0",
-            TERRITORY_PANEL_CLASS,
+            EMISSION_SOURCES_PANEL_CLASS,
             !showListOnMobile && "hidden md:block",
           )}
         >

@@ -294,7 +294,7 @@ export function RankedList<T extends Record<string, unknown>>({
           </div>
         )}
       </div>
-      <div className="overflow-y-auto ranked-list-items">
+      <div className="overflow-y-auto ranked-list-items flex-1 min-h-0">
         <div className="h-full bg-black/40 grid grid-cols-1 auto-rows-fr [&>*:not(:last-child)]:border-b [&>*:not(:last-child)]:border-white/10">
           {paginatedData.map((item, index) =>
             renderItem
