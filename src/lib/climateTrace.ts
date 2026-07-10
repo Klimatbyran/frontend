@@ -149,8 +149,10 @@ function buildSectorEmissionsByIso(
     Partial<Record<ClimateTraceEmissionsSector, ClimateTraceCountryRanking[]>>
   >,
 ): Record<string, ClimateTraceSectorEmissionsByYear> {
-  const sectorEmissionsByIso: Record<string, ClimateTraceSectorEmissionsByYear> =
-    {};
+  const sectorEmissionsByIso: Record<
+    string,
+    ClimateTraceSectorEmissionsByYear
+  > = {};
 
   for (const [year, sectorRankings] of Object.entries(sectorRankingsByYear)) {
     const numericYear = Number(year);
@@ -196,8 +198,7 @@ function enrichRankingsWithTimeSeries(
         {
           ...ranking,
           emissionsByYear,
-          sectorEmissionsByYear:
-            sectorEmissionsByIso[ranking.country] ?? {},
+          sectorEmissionsByYear: sectorEmissionsByIso[ranking.country] ?? {},
           ...kpis,
         },
       ];
