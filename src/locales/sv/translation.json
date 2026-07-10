@@ -1060,7 +1060,7 @@
     "changeSince2015": "Årlig utsläppsförändring sedan 2015",
     "emissionsPerCapita": "Utsläpp per capita",
     "emissionsPerCapitaUnit": " tCO₂e",
-    "emissionsPerCapitaTooltipClimateTrace": "Uppskattade årliga CO₂e-utsläpp per capita baserat på Climate TRACE-data.",
+    "emissionsPerCapitaTooltipClimateTrace": "Uppskattade årliga CO₂e-utsläpp per capita baserat på Climate TRACE-data, exklusive skogsbruk och markanvändning.",
     "sectorEmissions": "Utsläppskällor",
     "sectorEmissionsYear": "Utsläpp per sektor år {{year}}",
     "filteredSectors": "Filtrerade sektorer",
@@ -1541,7 +1541,7 @@
       "dataSource": "Källa: Climate TRACE",
       "countryLabel": "Landet",
       "europeanAverage": "Europeiskt genomsnitt",
-      "totalEmissionsTooltip": "Landets totala växthusgasutsläpp baserat på Climate TRACE-data."
+      "totalEmissionsTooltip": "Landets totala växthusgasutsläpp baserat på Climate TRACE-data, exklusive skogsbruk och markanvändning."
     },
     "map": {
       "legend": {
@@ -1560,14 +1560,14 @@
         "emissionsPerCapita": {
           "label": "Utsläpp per capita",
           "description": "Årliga växthusgasutsläpp per person",
-          "detailedDescription": "Uppskattade årliga CO₂e-utsläpp per capita per land för 2025.",
+          "detailedDescription": "Uppskattade årliga CO₂e-utsläpp per capita per land för 2025, exklusive skogsbruk och markanvändning.",
           "unit": " tCO₂e",
           "source": "Climate TRACE"
         },
         "historicalEmissionChangePercent": {
           "label": "Utsläppsförändring sedan 2015",
           "description": "Årlig utsläppsförändring sedan 2015",
-          "detailedDescription": "Genomsnittlig årlig procentuell förändring i CO₂e-utsläpp sedan 2015, baserad på Climate TRACE-data från 2015 till senaste tillgängliga år.",
+          "detailedDescription": "Genomsnittlig årlig procentuell förändring i CO₂e-utsläpp sedan 2015, baserad på Climate TRACE-data från 2015 till senaste tillgängliga år, exklusive skogsbruk och markanvändning.",
           "source": "Climate TRACE"
         },
         "meetsParis": {

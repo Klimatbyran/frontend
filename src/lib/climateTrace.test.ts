@@ -14,4 +14,8 @@ describe("buildClimateTraceFetchYears", () => {
   it("uses the configured reported end year", () => {
     expect(CLIMATE_TRACE_EMISSIONS_PARAMS.endYear).toBe(2025);
   });
+
+  it("excludes forestry and land use from country totals", () => {
+    expect(CLIMATE_TRACE_EMISSIONS_PARAMS.sectors).toBe("all_no_forest");
+  });
 });

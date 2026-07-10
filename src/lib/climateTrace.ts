@@ -11,6 +11,8 @@ const FETCH_RETRY_BASE_DELAY_MS = 1000;
 
 export const CLIMATE_TRACE_EMISSIONS_PARAMS = {
   gas: "co2e_100yr",
+  /** Excludes forestry-and-land-use so totals align with territorial-style emissions. */
+  sectors: "all_no_forest",
   startYear: CLIMATE_TRACE_BASE_YEAR,
   endYear: CLIMATE_TRACE_REPORTED_END_YEAR,
 } as const;
@@ -69,7 +71,7 @@ async function fetchClimateTraceCountryRankingsForYear(
   url.searchParams.set("gas", CLIMATE_TRACE_EMISSIONS_PARAMS.gas);
   url.searchParams.set("start", start);
   url.searchParams.set("end", end);
-  url.searchParams.set("sectors", "");
+  url.searchParams.set("sectors", CLIMATE_TRACE_EMISSIONS_PARAMS.sectors);
   url.searchParams.set("subsectors", "");
   url.searchParams.set("countryGroup", "");
   url.searchParams.set("continent", "");

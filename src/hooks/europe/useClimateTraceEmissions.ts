@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getClimateTraceCountryEmissions } from "@/lib/climateTrace";
 import { CLIMATE_TRACE_REPORTED_END_YEAR } from "@/utils/europe/climateTraceKpis";
 
-const CLIMATE_TRACE_QUERY_VERSION = "v4";
+const CLIMATE_TRACE_QUERY_VERSION = "v5";
 
 export function useClimateTraceEmissions() {
   const { data, isLoading, error } = useQuery({
