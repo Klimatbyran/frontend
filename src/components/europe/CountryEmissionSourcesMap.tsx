@@ -28,8 +28,8 @@ import "leaflet/dist/leaflet.css";
 type EmissionSourcesViewMode = "map" | "list";
 
 const COUNTRY_OUTLINE_STYLE: L.PathOptions = {
-  fillColor: "var(--black-3)",
-  fillOpacity: 0.35,
+  fillColor: "var(--black-2)",
+  fillOpacity: 0.5,
   color: "var(--grey)",
   weight: 1,
 };
@@ -135,7 +135,7 @@ function EmissionSourcesMapContent({
 
   if (!isMounted) {
     return (
-      <div className="h-full w-full rounded-xl bg-black-1 animate-pulse" />
+      <div className="h-full w-full rounded-xl bg-black-3 animate-pulse" />
     );
   }
 
@@ -148,7 +148,7 @@ function EmissionSourcesMapContent({
         style={{
           height: "100%",
           width: "100%",
-          backgroundColor: "var(--black-2)",
+          backgroundColor: "var(--black-3)",
           zIndex: 0,
         }}
         zoomControl={false}
@@ -256,7 +256,7 @@ export function CountryEmissionSourcesMap({
   );
 
   return (
-    <SectionWithHelp helpItems={[]}>
+    <SectionWithHelp helpItems={[]} className="bg-black-3">
       <CardHeader
         title={t("europe.detailPage.emissionSources.title")}
         description={t("europe.detailPage.emissionSources.description", {
@@ -270,15 +270,15 @@ export function CountryEmissionSourcesMap({
       <div className="mt-4 grid grid-cols-1 gap-4 md:mt-8 md:grid-cols-2 md:gap-6">
         <div
           className={cn(
-            "relative min-w-0",
+            "relative min-w-0 overflow-hidden rounded-xl bg-black-3",
             TERRITORY_PANEL_CLASS,
             !showMapOnMobile && "hidden md:block",
           )}
         >
           {loading ? (
-            <div className="h-full w-full rounded-xl bg-black-1 animate-pulse" />
+            <div className="h-full w-full rounded-xl bg-black-3 animate-pulse" />
           ) : !hasCountryGeometry ? (
-            <div className="flex h-full items-center justify-center rounded-xl bg-black-1 px-6 text-center text-white/70">
+            <div className="flex h-full items-center justify-center rounded-xl bg-black-3 px-6 text-center text-white/70">
               {t("europe.detailPage.emissionSources.noMapData")}
             </div>
           ) : (
