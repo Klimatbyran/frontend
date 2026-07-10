@@ -17,6 +17,7 @@ import { TERRITORY_PANEL_CLASS } from "@/hooks/territories/useTerritoryListLayou
 import { useLanguage } from "@/components/LanguageProvider";
 import { useClimateTraceSectors } from "@/hooks/europe/useClimateTraceSectors";
 import {
+  CLIMATE_TRACE_SOURCES_LIMIT,
   getEmissionSourceMarkerRadius,
   RankedClimateTraceSource,
 } from "@/lib/climateTraceSources";
@@ -260,7 +261,7 @@ export function CountryEmissionSourcesMap({
       <CardHeader
         title={t("europe.detailPage.emissionSources.title")}
         description={t("europe.detailPage.emissionSources.description", {
-          count: sources.length,
+          count: CLIMATE_TRACE_SOURCES_LIMIT,
           year,
         })}
       />

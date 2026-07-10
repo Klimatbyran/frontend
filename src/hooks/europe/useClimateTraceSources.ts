@@ -5,7 +5,7 @@ import {
 } from "@/lib/climateTraceSources";
 import { CLIMATE_TRACE_REPORTED_END_YEAR } from "@/utils/europe/climateTraceKpis";
 
-const CLIMATE_TRACE_SOURCES_QUERY_VERSION = "v1";
+const CLIMATE_TRACE_SOURCES_QUERY_VERSION = "v2";
 
 export function useClimateTraceSources(
   iso3: string | undefined,

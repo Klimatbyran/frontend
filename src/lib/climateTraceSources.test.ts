@@ -53,7 +53,7 @@ describe("rankClimateTraceSources", () => {
 });
 
 describe("CLIMATE_TRACE_SOURCES_LIMIT", () => {
-  it("requests the API maximum per country", () => {
-    expect(CLIMATE_TRACE_SOURCES_LIMIT).toBe(100);
+  it("requests the top sources per country", () => {
+    expect(CLIMATE_TRACE_SOURCES_LIMIT).toBe(50);
   });
 });

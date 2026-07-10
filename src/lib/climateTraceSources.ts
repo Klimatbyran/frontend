@@ -4,7 +4,7 @@ import type { ClimateTraceEmissionsSector } from "@/utils/europe/climateTraceSec
 const CLIMATE_TRACE_API_BASE = "https://api.climatetrace.org/v7";
 const FETCH_RETRY_ATTEMPTS = 4;
 const FETCH_RETRY_BASE_DELAY_MS = 1000;
-export const CLIMATE_TRACE_SOURCES_LIMIT = 100;
+export const CLIMATE_TRACE_SOURCES_LIMIT = 50;
 
 export type ClimateTraceSourceSummary = {
   id: number;
