@@ -38,17 +38,17 @@ export function TerritoryListRow({
         style={{ backgroundColor: territory.fillColor }}
         aria-hidden
       />
-      <div className="min-w-0 flex-1">
+      <div className="flex min-w-0 flex-1 items-center gap-2 md:block">
         <LocalizedLink
           to={getEntityDetailPath(routingEntityType, territory.displayName)}
           aria-label={`${territory.displayName}, ${territory.formattedValue}`}
-          className="block break-words text-sm text-white hover:text-white"
+          className="min-w-0 flex-1 truncate text-sm text-white hover:text-white md:overflow-visible md:whitespace-normal md:break-words"
         >
           {territory.displayName}
         </LocalizedLink>
-        <div className="text-xs tabular-nums text-grey">
+        <span className="shrink-0 text-xs tabular-nums text-grey">
           {territory.formattedValue}
-        </div>
+        </span>
       </div>
     </div>
   );
