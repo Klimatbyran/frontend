@@ -309,10 +309,6 @@ export function CountryEmissionSourcesMap({
           />
         </div>
       </div>
-
-      <p className="mt-4 text-sm text-white/50">
-        {t("europe.detailPage.emissionSources.source")}
-      </p>
     </SectionWithHelp>
   );
 }
