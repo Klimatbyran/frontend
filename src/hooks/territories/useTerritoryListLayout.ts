@@ -18,8 +18,8 @@ const LIST_COLUMNS = 2;
 /** Mobile list paginates in pages of this size when item count exceeds the threshold. */
 export const MOBILE_TERRITORY_LIST_PAGE_SIZE = 7;
 export const MOBILE_TERRITORY_LIST_PAGINATION_THRESHOLD = 10;
-/** Matches TerritoryListRow legend-style card row (~52px). */
-const LIST_ROW_HEIGHT = 52;
+/** Matches TerritoryListRow single-line card row (~36px). */
+const LIST_ROW_HEIGHT = 36;
 /** Matches gap-y-2 between list rows. */
 const LIST_ROW_GAP = 8;
 /** Reserved height for MultiPagePagination below the list grid. */
