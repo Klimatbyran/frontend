@@ -147,8 +147,10 @@ function useMunicipalityPageData(id: string | undefined) {
     ? transformEmissionsData(municipality)
     : [];
 
-  const { selectedYear, setSelectedYear, availableYears, currentYear } =
-    useSectorYearSelection(sectorEmissions, lastYear);
+  const { availableYears, currentYear } = useSectorYearSelection(
+    sectorEmissions,
+    lastYear,
+  );
 
   return {
     t,
@@ -160,8 +162,6 @@ function useMunicipalityPageData(id: string | undefined) {
     getSectorInfo,
     filteredSectors,
     setFilteredSectors,
-    selectedYear,
-    setSelectedYear,
     lastYear,
     lastYearEmissionsTon,
     headerStats,
@@ -201,8 +201,6 @@ export function MunicipalityDetailPage() {
     getSectorInfo,
     filteredSectors,
     setFilteredSectors,
-    selectedYear,
-    setSelectedYear,
     lastYear,
     lastYearEmissionsTon,
     headerStats,
@@ -269,8 +267,6 @@ export function MunicipalityDetailPage() {
         <SectorEmissionsChart
           sectorEmissions={sectorEmissions}
           availableYears={availableYears}
-          selectedYear={selectedYear}
-          onYearChange={setSelectedYear}
           currentYear={currentYear}
           getSectorInfo={getSectorInfo}
           filteredSectors={filteredSectors}

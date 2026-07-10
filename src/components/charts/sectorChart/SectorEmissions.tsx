@@ -1,6 +1,5 @@
 import { useTranslation } from "react-i18next";
 import { CardHeader } from "@/components/layout/CardHeader";
-import { YearSelector } from "@/components/layout/YearSelector";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { DetailPieSectorGrid } from "@/components/detail/DetailGrid";
 import { DataGuideItemId } from "@/data-guide/items";
@@ -12,8 +11,6 @@ import SectorPieLegend from "./SectorPieLegend";
 interface SectorEmissionsProps {
   sectorEmissions: SectorEmissions | null;
   availableYears: number[];
-  selectedYear: string;
-  onYearChange: (year: string) => void;
   currentYear: number;
   getSectorInfo: (name: string) => SectorInfo;
   filteredSectors: Set<string>;
@@ -27,8 +24,6 @@ interface SectorEmissionsProps {
 export function SectorEmissionsChart({
   sectorEmissions,
   availableYears,
-  selectedYear,
-  onYearChange,
   currentYear,
   getSectorInfo,
   filteredSectors,
@@ -63,13 +58,6 @@ export function SectorEmissionsChart({
           description={t("detailPage.sectorEmissionsYear", {
             year: currentYear,
           })}
-          customDataViewSelector={
-            <YearSelector
-              selectedYear={selectedYear}
-              onYearChange={onYearChange}
-              availableYears={availableYears}
-            />
-          }
           className="gap-8 md:gap-16"
         />
       )}

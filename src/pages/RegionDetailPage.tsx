@@ -24,8 +24,6 @@ export function RegionDetailPage() {
     getSectorInfo,
     filteredSectors,
     setFilteredSectors,
-    selectedYear,
-    setSelectedYear,
     availableYears,
     currentYear,
   } = useRegionPageData(id || "");
@@ -59,8 +57,6 @@ export function RegionDetailPage() {
         <SectorEmissionsChart
           sectorEmissions={sectorEmissions}
           availableYears={availableYears}
-          selectedYear={selectedYear}
-          onYearChange={setSelectedYear}
           currentYear={currentYear}
           getSectorInfo={getSectorInfo}
           filteredSectors={filteredSectors}
