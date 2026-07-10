@@ -6,6 +6,7 @@ import { List, Map } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { CardHeader } from "@/components/layout/CardHeader";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
+import { EmissionSourcesRankedList } from "@/components/europe/EmissionSourcesRankedList";
 import { MapInitialBoundsFitter } from "@/components/maps/MapInitialBoundsFitter";
 import { MapZoomControls } from "@/components/maps/MapZoomControls";
 import { MAP_FIT_BOUNDS_PADDING } from "@/components/maps/mapConstants";
@@ -73,107 +74,6 @@ function EmissionSourceTooltip({
           })}
         </p>
       </div>
-    </div>
-  );
-}
-
-function EmissionSourceListRow({
-  source,
-  isHovered,
-  onHover,
-  getSectorInfo,
-}: {
-  source: RankedClimateTraceSource;
-  isHovered: boolean;
-  onHover: (sourceId: number | null) => void;
-  getSectorInfo: ReturnType<typeof useClimateTraceSectors>["getSectorInfo"];
-}) {
-  const { currentLanguage } = useLanguage();
-  const sectorInfo = getSectorInfo(source.sector);
-
-  return (
-    <div
-      className="flex min-w-0 items-center gap-2"
-      onMouseEnter={() => onHover(source.id)}
-      onMouseLeave={() => onHover(null)}
-    >
-      <span
-        className={cn(
-          "shrink-0 w-6 text-xs tabular-nums text-grey",
-          isHovered && "text-white",
-        )}
-      >
-        {source.rank}
-      </span>
-      <span
-        className="h-2.5 w-2.5 shrink-0 rounded-sm"
-        style={{ backgroundColor: sectorInfo.color }}
-        aria-hidden
-      />
-      <span
-        className={cn(
-          "min-w-0 flex-1 truncate text-sm leading-5 text-grey md:text-base",
-          isHovered && "text-white",
-        )}
-        title={source.name}
-      >
-        {source.name}
-      </span>
-      <span
-        className={cn(
-          "shrink-0 text-xs tabular-nums text-grey",
-          isHovered && "text-white",
-        )}
-      >
-        {formatEmissionsAbsoluteCompact(
-          Math.round(source.emissionsQuantity),
-          currentLanguage,
-        )}
-      </span>
-    </div>
-  );
-}
-
-function EmissionSourcesList({
-  sources,
-  loading,
-  hoveredSourceId,
-  onHoverSource,
-  getSectorInfo,
-}: {
-  sources: RankedClimateTraceSource[];
-  loading: boolean;
-  hoveredSourceId: number | null;
-  onHoverSource: (sourceId: number | null) => void;
-  getSectorInfo: ReturnType<typeof useClimateTraceSectors>["getSectorInfo"];
-}) {
-  const { t } = useTranslation();
-
-  if (loading) {
-    return (
-      <div className="h-full w-full animate-pulse rounded-xl bg-black-2" />
-    );
-  }
-
-  if (sources.length === 0) {
-    return (
-      <p className="text-sm text-white/70">
-        {t("europe.detailPage.emissionSources.empty")}
-      </p>
-    );
-  }
-
-  return (
-    <div className="flex flex-col gap-y-2">
-      {sources.map((source) => (
-        <EmissionSourceListRow
-          key={source.id}
-          source={source}
-          isHovered={hoveredSourceId === source.id}
-          onHover={onHoverSource}
-          getSectorInfo={getSectorInfo}
-        />
-      ))}
     </div>
   );
 }
@@ -355,16 +255,6 @@ export function CountryEmissionSourcesMap({
     />
   );
 
-  const listPanel = (
-    <EmissionSourcesList
-      sources={sources}
-      loading={loading}
-      hoveredSourceId={hoveredSourceId}
-      onHoverSource={setHoveredSourceId}
-      getSectorInfo={getSectorInfo}
-    />
-  );
-
   return (
     <SectionWithHelp helpItems={[]}>
       <CardHeader
@@ -404,12 +294,18 @@ export function CountryEmissionSourcesMap({
 
         <div
           className={cn(
-            "flex min-w-0 flex-col overflow-y-auto rounded-xl bg-black-1 p-4",
+            "min-w-0",
             TERRITORY_PANEL_CLASS,
             !showListOnMobile && "hidden md:block",
           )}
         >
-          {listPanel}
+          <EmissionSourcesRankedList
+            sources={sources}
+            loading={loading}
+            hoveredSourceId={hoveredSourceId}
+            onHoverSource={setHoveredSourceId}
+            className="h-full"
+          />
         </div>
       </div>
 
