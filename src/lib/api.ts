@@ -95,7 +95,10 @@ export async function getCompanyParisOverview() {
       `Paris overview endpoint unavailable (${response.status}), falling back to full company list`,
     );
   } catch (error) {
-    console.warn("Paris overview fetch failed, falling back to full company list", error);
+    console.warn(
+      "Paris overview fetch failed, falling back to full company list",
+      error,
+    );
   }
 
   const companies = await getCompanies();

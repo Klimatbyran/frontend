@@ -43,8 +43,7 @@ export function getBestUnit(
   const absValue = Math.abs(maxAbsValue);
   const labels = UNIT_LABELS[unitSystem];
   const thresholds = [1_000_000_000, 1_000_000, 1_000, 1].filter(
-    (threshold) =>
-      !options?.maxDivisor || threshold <= options.maxDivisor,
+    (threshold) => !options?.maxDivisor || threshold <= options.maxDivisor,
   );
 
   for (const threshold of thresholds) {

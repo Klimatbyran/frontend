@@ -10,6 +10,7 @@ import type { CompanyParisEmissionsEntry } from "@/utils/insights/meetsParisChar
 const SEGMENT_RADIUS = 6;
 const BAR_MAX_WIDTH = 120;
 const Y_AXIS_WIDTH = 56;
+const TOP_EMITTERS_PER_BAR = 10;
 
 interface MeetsParisBarChartProps {
   entries: CompanyParisEmissionsEntry[];
@@ -17,15 +18,19 @@ interface MeetsParisBarChartProps {
   onCompanyClick?: (entry: CompanyParisEmissionsEntry) => void;
 }
 
+interface ChartSegment {
+  id: string;
+  emissions: number;
+  entry: CompanyParisEmissionsEntry | null;
+  aggregateCount?: number;
+}
+
 interface BarGroup {
   category: string;
+  categoryKey: "yes" | "no";
   color: string;
   total: number;
-  segments: Array<{
-    id: string;
-    entry: CompanyParisEmissionsEntry;
-    emissions: number;
-  }>;
+  segments: ChartSegment[];
 }
 
 function getEntryKey(entry: CompanyParisEmissionsEntry): string {
@@ -52,13 +57,16 @@ export function MeetsParisBarChart({
   const [activeCompanyId, setActiveCompanyId] = useState<string | null>(null);
   const [hoveredCompanyId, setHoveredCompanyId] = useState<string | null>(null);
   const [tooltip, setTooltip] = useState<{
-    entry: CompanyParisEmissionsEntry;
+    segment: ChartSegment;
     x: number;
     y: number;
   } | null>(null);
 
   const trueLabel = t("companiesOverviewPage.visualizations.meetsParis.yes");
   const falseLabel = t("companiesOverviewPage.visualizations.meetsParis.no");
+  const otherLabel = t(
+    "companiesOverviewPage.visualizations.meetsParis.otherSegment",
+  );
 
   const { groups, companyById, maxBarTotal } = useMemo(() => {
     const yesEntries = entries.filter((entry) => entry.meetsParis);
@@ -67,24 +75,48 @@ export function MeetsParisBarChart({
 
     const buildGroup = (
       category: string,
+      categoryKey: "yes" | "no",
       color: string,
       groupEntries: CompanyParisEmissionsEntry[],
-    ): BarGroup => ({
-      category,
-      color,
-      total: groupEntries.reduce((sum, entry) => sum + entry.emissions, 0),
-      segments: groupEntries
-        .sort((a, b) => a.emissions - b.emissions)
-        .map((entry) => ({
-          id: getEntryKey(entry),
-          entry,
-          emissions: entry.emissions,
-        })),
-    });
+    ): BarGroup => {
+      const sortedDesc = [...groupEntries].sort(
+        (a, b) => b.emissions - a.emissions,
+      );
+      const topEntries = sortedDesc.slice(0, TOP_EMITTERS_PER_BAR);
+      const remainingEntries = sortedDesc.slice(TOP_EMITTERS_PER_BAR);
+
+      const segments: ChartSegment[] = topEntries.map((entry) => ({
+        id: getEntryKey(entry),
+        entry,
+        emissions: entry.emissions,
+      }));
+
+      if (remainingEntries.length > 0) {
+        segments.push({
+          id: `other-${categoryKey}`,
+          entry: null,
+          emissions: remainingEntries.reduce(
+            (sum, entry) => sum + entry.emissions,
+            0,
+          ),
+          aggregateCount: remainingEntries.length,
+        });
+      }
+
+      segments.sort((a, b) => a.emissions - b.emissions);
+
+      return {
+        category,
+        categoryKey,
+        color,
+        total: groupEntries.reduce((sum, entry) => sum + entry.emissions, 0),
+        segments,
+      };
+    };
 
     const chartGroups = [
-      buildGroup(trueLabel, COLORS.blue3, yesEntries),
-      buildGroup(falseLabel, COLORS.pink3, noEntries),
+      buildGroup(trueLabel, "yes", COLORS.blue3, yesEntries),
+      buildGroup(falseLabel, "no", COLORS.pink3, noEntries),
     ];
 
     return {
@@ -112,27 +144,33 @@ export function MeetsParisBarChart({
   const highlightedCompanyId = hoveredCompanyId ?? activeCompanyId;
 
   const handleSegmentClick = useCallback(
-    (companyId: string) => {
-      const entry = companyById.get(companyId);
-      if (!entry) return;
+    (segment: ChartSegment) => {
+      if (!segment.entry) {
+        if (isMobile) {
+          setActiveCompanyId((current) =>
+            current === segment.id ? null : segment.id,
+          );
+        }
+        return;
+      }
 
       if (isMobile) {
         setActiveCompanyId((current) =>
-          current === companyId ? null : companyId,
+          current === segment.id ? null : segment.id,
         );
         return;
       }
 
-      onCompanyClick?.(entry);
+      onCompanyClick?.(segment.entry);
     },
-    [companyById, isMobile, onCompanyClick],
+    [isMobile, onCompanyClick],
   );
 
   const handleSegmentPointerEnter = useCallback(
-    (event: React.MouseEvent, entry: CompanyParisEmissionsEntry) => {
-      setHoveredCompanyId(getEntryKey(entry));
+    (event: React.MouseEvent, segment: ChartSegment) => {
+      setHoveredCompanyId(segment.id);
       setTooltip({
-        entry,
+        segment,
         x: event.clientX,
         y: event.clientY,
       });
@@ -141,9 +179,9 @@ export function MeetsParisBarChart({
   );
 
   const handleSegmentPointerMove = useCallback(
-    (event: React.MouseEvent, entry: CompanyParisEmissionsEntry) => {
+    (event: React.MouseEvent, segment: ChartSegment) => {
       setTooltip({
-        entry,
+        segment,
         x: event.clientX,
         y: event.clientY,
       });
@@ -218,13 +256,19 @@ export function MeetsParisBarChart({
                               ? "inset 0 0 0 2px rgba(255,255,255,0.9)"
                               : undefined,
                           }}
-                          aria-label={segment.entry.company.name}
-                          onClick={() => handleSegmentClick(segment.id)}
+                          aria-label={
+                            segment.entry?.company.name ??
+                            t(
+                              "companiesOverviewPage.visualizations.meetsParis.otherSegmentAria",
+                              { count: segment.aggregateCount ?? 0 },
+                            )
+                          }
+                          onClick={() => handleSegmentClick(segment)}
                           onMouseEnter={(event) =>
-                            handleSegmentPointerEnter(event, segment.entry)
+                            handleSegmentPointerEnter(event, segment)
                           }
                           onMouseMove={(event) =>
-                            handleSegmentPointerMove(event, segment.entry)
+                            handleSegmentPointerMove(event, segment)
                           }
                           onMouseLeave={handleSegmentPointerLeave}
                         />
@@ -258,19 +302,42 @@ export function MeetsParisBarChart({
             top: tooltip.y - 12,
           }}
         >
-          <p className="text-xl font-medium">{tooltip.entry.company.name}</p>
-          <div className="mt-2 space-y-1">
-            <p className="text-white/70">
-              <span className="text-orange-2">
-                {formatWithScale(tooltip.entry.emissions, unitScale)}
-              </span>
-            </p>
-            <p className="text-sm text-white/50">
-              {tooltip.entry.meetsParis
-                ? t("companies.list.kpis.meetsParis.booleanLabels.true")
-                : t("companies.list.kpis.meetsParis.booleanLabels.false")}
-            </p>
-          </div>
+          {tooltip.segment.entry ? (
+            <>
+              <p className="text-xl font-medium">
+                {tooltip.segment.entry.company.name}
+              </p>
+              <div className="mt-2 space-y-1">
+                <p className="text-white/70">
+                  <span className="text-orange-2">
+                    {formatWithScale(tooltip.segment.emissions, unitScale)}
+                  </span>
+                </p>
+                <p className="text-sm text-white/50">
+                  {tooltip.segment.entry.meetsParis
+                    ? t("companies.list.kpis.meetsParis.booleanLabels.true")
+                    : t("companies.list.kpis.meetsParis.booleanLabels.false")}
+                </p>
+              </div>
+            </>
+          ) : (
+            <>
+              <p className="text-xl font-medium">{otherLabel}</p>
+              <div className="mt-2 space-y-1">
+                <p className="text-white/70">
+                  <span className="text-orange-2">
+                    {formatWithScale(tooltip.segment.emissions, unitScale)}
+                  </span>
+                </p>
+                <p className="text-sm text-white/50">
+                  {t(
+                    "companiesOverviewPage.visualizations.meetsParis.otherSegmentCount",
+                    { count: tooltip.segment.aggregateCount ?? 0 },
+                  )}
+                </p>
+              </div>
+            </>
+          )}
         </div>
       )}
 
@@ -325,21 +392,41 @@ export function MeetsParisBarChart({
         </p>
       </div>
 
-      {isMobile && activeCompanyId && companyById.has(activeCompanyId) && (
+      {isMobile && activeCompanyId && (
         <button
           type="button"
           className="mt-3 w-full rounded-level-2 bg-black-1 px-4 py-3 text-left text-sm text-white transition-colors hover:bg-white/5"
-          onClick={() => onCompanyClick?.(companyById.get(activeCompanyId)!)}
+          onClick={() => {
+            const entry = companyById.get(activeCompanyId);
+            if (entry) onCompanyClick?.(entry);
+          }}
         >
-          <span className="font-medium">
-            {companyById.get(activeCompanyId)!.company.name}
-          </span>
-          <span className="mt-1 block text-orange-2">
-            {formatWithScale(
-              companyById.get(activeCompanyId)!.emissions,
-              unitScale,
-            )}
-          </span>
+          {companyById.has(activeCompanyId) ? (
+            <>
+              <span className="font-medium">
+                {companyById.get(activeCompanyId)!.company.name}
+              </span>
+              <span className="mt-1 block text-orange-2">
+                {formatWithScale(
+                  companyById.get(activeCompanyId)!.emissions,
+                  unitScale,
+                )}
+              </span>
+            </>
+          ) : (
+            <>
+              <span className="font-medium">{otherLabel}</span>
+              <span className="mt-1 block text-orange-2">
+                {formatWithScale(
+                  groups
+                    .flatMap((group) => group.segments)
+                    .find((segment) => segment.id === activeCompanyId)
+                    ?.emissions ?? 0,
+                  unitScale,
+                )}
+              </span>
+            </>
+          )}
         </button>
       )}
     </div>

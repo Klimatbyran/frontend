@@ -336,7 +336,12 @@
         "companiesCount": "{{count}} companies shown",
         "companiesCount_plural": "{{count}} companies shown",
         "emissionsUnit": "ton CO₂e (last reported year)",
-        "segmentHint": "Each company is a stacked segment within the bar. Hover or tap a segment for details.",
+        "otherSegment": "Other",
+        "otherSegmentCount": "{{count}} companies",
+        "otherSegmentCount_plural": "{{count}} companies",
+        "otherSegmentAria": "Other, {{count}} companies",
+        "otherSegmentAria_plural": "Other, {{count}} companies",
+        "segmentHint": "Top 10 emitters per bar are shown individually; remaining companies are grouped as Other. Hover or tap a segment for details.",
         "description": "Total emissions from the last reported year, stacked by company and grouped by whether each company is on track to meet the Paris Agreement.",
         "learnMore": "Learn more"
       },

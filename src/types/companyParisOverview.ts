@@ -20,8 +20,7 @@ export function mapCompanyListItemToParisOverview(
     (a, b) => new Date(b.endDate).getTime() - new Date(a.endDate).getTime(),
   )[0];
 
-  const emissions =
-    latestPeriod?.emissions?.calculatedTotalEmissions ?? null;
+  const emissions = latestPeriod?.emissions?.calculatedTotalEmissions ?? null;
   const emissionsYear = latestPeriod?.endDate
     ? new Date(latestPeriod.endDate).getFullYear()
     : null;
