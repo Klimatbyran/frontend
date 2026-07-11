@@ -414,6 +414,14 @@ export function getSeoForRoute(
         canonical,
       );
 
+    case "/valet-2026":
+      return buildSimpleSeo(
+        "valet2026Page.title",
+        "valet2026Page.description",
+        language,
+        canonical,
+      );
+
     case "/data-download":
       return buildSimpleSeo(
         "dataDownloadPage.title",

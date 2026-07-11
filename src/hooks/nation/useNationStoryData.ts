@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useNationDetails } from "@/hooks/nation/useNationDetails";
+import { useNationStoryDetails } from "@/hooks/nation/useNationStoryDetails";
 import { useRegionsList } from "@/hooks/regions/useRegionsList";
 import {
   computeNationStoryMetrics,
@@ -7,7 +7,7 @@ import {
 } from "@/utils/data/nationStoryMetrics";
 
 export function useNationStoryData() {
-  const { nation, loading, error } = useNationDetails();
+  const { nation, loading, error } = useNationStoryDetails();
   const { regions } = useRegionsList();
   const sortedRegions = useMemo(() => [...regions].sort(), [regions]);
 

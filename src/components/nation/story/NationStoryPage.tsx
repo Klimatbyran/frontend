@@ -5,11 +5,11 @@ import { NationConclusion } from "@/components/nation/story/NationConclusion";
 import { NationEmissionsJourney } from "@/components/nation/story/NationEmissionsJourney";
 import { NationStackedChart } from "@/components/nation/story/NationStackedChart";
 import { useLanguage } from "@/components/LanguageProvider";
-import type { NationDetails } from "@/hooks/nation/useNationDetails";
+import type { NationStoryDetails } from "@/hooks/nation/useNationStoryDetails";
 import type { NationStoryMetrics } from "@/utils/data/nationStoryMetrics";
 
 type NationStoryPageProps = {
-  nation: NationDetails;
+  nation: NationStoryDetails;
   metrics: NationStoryMetrics;
   sortedRegions: string[];
 };

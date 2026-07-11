@@ -26,6 +26,7 @@ import {
   MunicipalitiesOverviewPage,
   MunicipalityDetailPage,
   NationDetailPage,
+  Valet2026Page,
   NewsLetterArchivePage,
   NotFoundPage,
   ParisAlignedStatisticsPage,
@@ -126,6 +127,7 @@ function TerritoryRoutes({ basePath }: { basePath: string }) {
     <>
       <Route path={`${basePath}/regions`} element={<RegionalOverviewPage />} />
       <Route path={`${basePath}/nation`} element={<NationDetailPage />} />
+      <Route path={`${basePath}/valet-2026`} element={<Valet2026Page />} />
       <Route
         path={`${basePath}/municipalities`}
         element={<MunicipalitiesOverviewPage />}

@@ -1,117 +1,127 @@
 import { useQuery } from "@tanstack/react-query";
 import { getNationDetails } from "@/lib/api";
-import nationFixture from "@/data/nation-data.fixture.json";
-import type { NationEmissionSeries } from "@/utils/data/nationStoryMetrics";
+import type { EmissionDataPoint } from "@/types/municipality";
+import { mapEmissionArray } from "@/utils/data/emissionArrayUtils";
+import {
+  computeNationDerivedMetrics,
+  extractYearRecord,
+  type NationEmissionBreakdown,
+} from "@/utils/data/nationTerritorialTransforms";
 
 export type NationDetails = {
   country: { sv: string; en: string };
   logoUrl: string | null;
-} & NationEmissionSeries;
+  emissions: (EmissionDataPoint | null)[];
+  approximatedHistoricalEmission: (EmissionDataPoint | null)[];
+  trend: (EmissionDataPoint | null)[];
+  meetsParis: boolean;
+  historicalEmissionChangePercent: number;
+  emissionBreakdown: NationEmissionBreakdown;
+};
 
-type YearlyRecord = Record<string, number>;
-type EmissionSeries = ({ year: string; value: number } | null)[] | undefined;
+type EmissionSeries =
+  | ({ year: string | number; value: number } | null)[]
+  | Record<string, number>
+  | undefined;
 
-type RawNationResponse = {
+type ApiNationResponse = {
   country: { sv: string; en: string } | string;
   logoUrl?: string | null;
-  territorialFossilEmissions?: EmissionSeries | YearlyRecord;
-  productionBasedEmissions?: EmissionSeries | YearlyRecord;
-  biogenicEmissions?: EmissionSeries | YearlyRecord;
-  consumptionAbroadEmissions?: EmissionSeries | YearlyRecord;
-  emissions?: EmissionSeries | YearlyRecord;
+  territorialFossilEmissions?: EmissionSeries;
+  biogenicEmissions?: EmissionSeries;
+  consumptionAbroadEmissions?: EmissionSeries;
+  exportOfOilProductsEmissions?: EmissionSeries;
+  eCommerceEmissions?: EmissionSeries;
+  emissions?: EmissionSeries;
+  approximatedHistoricalEmission?: EmissionSeries;
+  trend?: EmissionSeries;
+  historicalEmissionChangePercent?: number;
+  meetsParis?: boolean;
 };
 
 function normalizeCountry(
-  country: RawNationResponse["country"],
+  country: ApiNationResponse["country"],
 ): NationDetails["country"] {
   if (typeof country === "string") {
     return { sv: country, en: country === "Sverige" ? "Sweden" : country };
   }
+
   return { sv: country.sv, en: country.en };
 }
 
-function isYearlyRecord(value: unknown): value is YearlyRecord {
+function getTerritorialFossilSeries(
+  response: ApiNationResponse,
+): EmissionSeries | undefined {
+  return response.territorialFossilEmissions ?? response.emissions;
+}
+
+function hasLegacyTrendFields(response: ApiNationResponse): boolean {
   return (
-    typeof value === "object" &&
-    value !== null &&
-    !Array.isArray(value) &&
-    Object.keys(value).some((key) => !Number.isNaN(Number(key)))
+    Array.isArray(response.approximatedHistoricalEmission) &&
+    Array.isArray(response.trend)
   );
 }
 
-function extractYearRecord(
-  emissions: EmissionSeries | YearlyRecord | undefined,
-): Record<number, number> {
-  const record: Record<number, number> = {};
-
-  if (!emissions) return record;
-
-  if (isYearlyRecord(emissions)) {
-    Object.entries(emissions).forEach(([year, value]) => {
-      const parsedYear = Number(year);
-      if (!Number.isNaN(parsedYear) && typeof value === "number") {
-        record[parsedYear] = value;
-      }
-    });
-    return record;
-  }
-
-  emissions.forEach((point) => {
-    if (!point) return;
-    const parsedYear = Number(point.year);
-    if (!Number.isNaN(parsedYear)) {
-      record[parsedYear] = point.value;
-    }
-  });
-
-  return record;
+function buildEmissionBreakdown(
+  response: ApiNationResponse,
+): NationEmissionBreakdown {
+  return {
+    territorialFossil: extractYearRecord(getTerritorialFossilSeries(response)),
+    biogenic: extractYearRecord(response.biogenicEmissions),
+    consumptionAbroad: extractYearRecord(response.consumptionAbroadEmissions),
+    exportOfOilProducts: extractYearRecord(
+      response.exportOfOilProductsEmissions,
+    ),
+    eCommerce: extractYearRecord(response.eCommerceEmissions),
+  };
 }
 
-function hasStorySchema(response: RawNationResponse): boolean {
-  const territorial = response.territorialFossilEmissions ?? response.emissions;
-  return (
-    !!territorial &&
-    !!response.productionBasedEmissions &&
-    !!response.biogenicEmissions &&
-    !!response.consumptionAbroadEmissions
+function transformLegacyNationResponse(
+  response: ApiNationResponse,
+): NationDetails {
+  return {
+    country: normalizeCountry(response.country),
+    logoUrl: response.logoUrl ?? null,
+    emissions: mapEmissionArray(getTerritorialFossilSeries(response)),
+    approximatedHistoricalEmission: mapEmissionArray(
+      response.approximatedHistoricalEmission,
+    ),
+    trend: mapEmissionArray(response.trend),
+    meetsParis: response.meetsParis ?? false,
+    historicalEmissionChangePercent:
+      response.historicalEmissionChangePercent ?? 0,
+    emissionBreakdown: buildEmissionBreakdown(response),
+  };
+}
+
+function transformNewNationResponse(
+  response: ApiNationResponse,
+): NationDetails {
+  const territorialFossil = extractYearRecord(
+    getTerritorialFossilSeries(response),
   );
-}
-
-function transformRawNation(response: RawNationResponse): NationDetails {
-  const territorialSource =
-    response.territorialFossilEmissions ?? response.emissions;
+  const derived = computeNationDerivedMetrics(territorialFossil);
 
   return {
     country: normalizeCountry(response.country),
     logoUrl: response.logoUrl ?? null,
-    territorialFossil: extractYearRecord(territorialSource),
-    productionBased: extractYearRecord(response.productionBasedEmissions),
-    biogenic: extractYearRecord(response.biogenicEmissions),
-    consumptionAbroad: extractYearRecord(response.consumptionAbroadEmissions),
+    emissions: derived.emissions,
+    approximatedHistoricalEmission: derived.approximatedHistoricalEmission,
+    trend: derived.trend,
+    meetsParis: derived.meetsParis,
+    historicalEmissionChangePercent: derived.historicalEmissionChangePercent,
+    emissionBreakdown: buildEmissionBreakdown(response),
   };
 }
 
-function getFixtureNation(): RawNationResponse {
-  const fixtureEntry = nationFixture[0] as RawNationResponse;
-  return fixtureEntry;
-}
-
-async function fetchNationDetails(): Promise<NationDetails> {
-  const data = await getNationDetails();
-  const raw = (Array.isArray(data) ? data[0] : data) as RawNationResponse;
-
-  if (hasStorySchema(raw)) {
-    return transformRawNation(raw);
+function transformApiNationToNationDetails(
+  response: ApiNationResponse,
+): NationDetails {
+  if (hasLegacyTrendFields(response)) {
+    return transformLegacyNationResponse(response);
   }
 
-  if (import.meta.env.DEV) {
-    console.warn(
-      "[nation] API response missing PR #1311 fields; using nation-data.fixture.json",
-    );
-    return transformRawNation(getFixtureNation());
-  }
-
-  return transformRawNation(raw);
+  return transformNewNationResponse(response);
 }
 
 export function useNationDetails() {
@@ -121,7 +131,13 @@ export function useNationDetails() {
     error,
   } = useQuery({
     queryKey: ["nation"],
-    queryFn: fetchNationDetails,
+    queryFn: async () => {
+      const data = await getNationDetails();
+      const response = (
+        Array.isArray(data) ? data[0] : data
+      ) as ApiNationResponse;
+      return transformApiNationToNationDetails(response);
+    },
   });
 
   return {

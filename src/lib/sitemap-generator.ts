@@ -66,6 +66,12 @@ export async function generateSitemap(outputPath: string): Promise<void> {
         priority: "0.7",
       },
       {
+        loc: "https://klimatkollen.se/sv/valet-2026",
+        lastmod: currentDate,
+        changefreq: "monthly",
+        priority: "0.7",
+      },
+      {
         loc: "https://klimatkollen.se/sv/about",
         lastmod: currentDate,
         changefreq: "monthly",
@@ -167,6 +173,12 @@ export async function generateSitemap(outputPath: string): Promise<void> {
       },
       {
         loc: "https://klimatkollen.se/en/nation",
+        lastmod: currentDate,
+        changefreq: "monthly",
+        priority: "0.6",
+      },
+      {
+        loc: "https://klimatkollen.se/en/valet-2026",
         lastmod: currentDate,
         changefreq: "monthly",
         priority: "0.6",
