@@ -82,100 +82,97 @@ export function KPIChipSelector<T>({
         </p>
       )}
 
-      {/* Mobile: dropdown + actions */}
+      {/* Mobile: dropdown, then actions on their own row */}
       <div className="md:hidden space-y-2">
-        <div className="flex items-center gap-2">
-          <div className="relative flex-1 min-w-0" ref={dropdownRef}>
-            <button
-              onClick={() => setMobileOpen((o) => !o)}
-              onKeyDown={handleTriggerKeyDown}
-              aria-haspopup="listbox"
-              aria-expanded={mobileOpen}
-              aria-controls={menuId}
-              className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-black-1 text-white"
+        <div className="relative" ref={dropdownRef}>
+          <button
+            onClick={() => setMobileOpen((o) => !o)}
+            onKeyDown={handleTriggerKeyDown}
+            aria-haspopup="listbox"
+            aria-expanded={mobileOpen}
+            aria-controls={menuId}
+            className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-black-1 text-white"
+          >
+            <span className="flex items-center gap-2 font-medium">
+              {iconMap[String(selectedKPI.key)]}
+              {getLabel(selectedKPI)}
+            </span>
+            <ChevronDown
+              aria-hidden="true"
+              className={cn(
+                "w-4 h-4 text-white/60 transition-transform",
+                mobileOpen && "rotate-180",
+              )}
+            />
+          </button>
+          {mobileOpen && (
+            <div
+              id={menuId}
+              role="listbox"
+              aria-label={selectorLabel || undefined}
+              className="absolute z-50 w-full mt-1 bg-black-1 rounded-xl shadow-xl overflow-hidden border border-white/10"
             >
-              <span className="flex items-center gap-2 font-medium">
-                {iconMap[String(selectedKPI.key)]}
-                {getLabel(selectedKPI)}
-              </span>
-              <ChevronDown
-                aria-hidden="true"
-                className={cn(
-                  "w-4 h-4 text-white/60 transition-transform",
-                  mobileOpen && "rotate-180",
-                )}
-              />
-            </button>
-            {mobileOpen && (
-              <div
-                id={menuId}
-                role="listbox"
-                aria-label={selectorLabel || undefined}
-                className="absolute z-50 w-full mt-1 bg-black-1 rounded-xl shadow-xl overflow-hidden border border-white/10"
-              >
-                {kpis.map((kpi) => {
-                  const isSelected = String(kpi.key) === String(selectedKPI.key);
-                  return (
-                    <button
-                      key={String(kpi.key)}
-                      role="option"
-                      aria-selected={isSelected}
-                      onClick={() => {
-                        onKPIChange(kpi);
-                        setMobileOpen(false);
-                      }}
-                      onKeyDown={(e) => handleItemKeyDown(e, kpi)}
-                      className={cn(
-                        "w-full flex items-center gap-2 px-4 py-3 text-sm text-left transition-colors",
-                        isSelected
-                          ? "bg-blue-3/20 text-blue-3"
-                          : "text-white hover:bg-white/10",
-                      )}
-                    >
-                      {iconMap[String(kpi.key)]}
-                      {getLabel(kpi)}
-                    </button>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-          {actions}
-        </div>
-      </div>
-
-      {/* Desktop: chips + actions */}
-      <div className="hidden md:flex flex-wrap items-center gap-2">
-        <div
-          className="flex gap-2 flex-wrap flex-1 min-w-0"
-          role="group"
-          aria-label={selectorLabel || undefined}
-        >
-          {kpis.map((kpi) => {
-            const isSelected = String(kpi.key) === String(selectedKPI.key);
-            return (
-              <button
-                key={String(kpi.key)}
-                onClick={() => onKPIChange(kpi)}
-                title={kpi.description}
-                aria-current={isSelected ? "true" : undefined}
-                className={cn(
-                  "flex items-center gap-2 px-3 py-2 rounded-full text-sm font-medium transition-all duration-200 border whitespace-nowrap",
-                  isSelected
-                    ? "bg-blue-3/20 border-blue-3 text-blue-3 shadow-[0_0_12px_rgba(76,155,232,0.3)]"
-                    : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10 hover:border-white/20 hover:text-white",
-                )}
-              >
-                {iconMap[String(kpi.key)]}
-                {getLabel(kpi)}
-              </button>
-            );
-          })}
+              {kpis.map((kpi) => {
+                const isSelected =
+                  String(kpi.key) === String(selectedKPI.key);
+                return (
+                  <button
+                    key={String(kpi.key)}
+                    role="option"
+                    aria-selected={isSelected}
+                    onClick={() => {
+                      onKPIChange(kpi);
+                      setMobileOpen(false);
+                    }}
+                    onKeyDown={(e) => handleItemKeyDown(e, kpi)}
+                    className={cn(
+                      "w-full flex items-center gap-2 px-4 py-3 text-sm text-left transition-colors",
+                      isSelected
+                        ? "bg-blue-3/20 text-blue-3"
+                        : "text-white hover:bg-white/10",
+                    )}
+                  >
+                    {iconMap[String(kpi.key)]}
+                    {getLabel(kpi)}
+                  </button>
+                );
+              })}
+            </div>
+          )}
         </div>
         {actions && (
-          <div className="flex flex-wrap items-center gap-2 shrink-0">
-            {actions}
-          </div>
+          <div className="flex flex-wrap items-center gap-2">{actions}</div>
+        )}
+      </div>
+
+      {/* Desktop: chips with actions inline at the end */}
+      <div
+        className="hidden md:flex flex-wrap items-center gap-2"
+        role="group"
+        aria-label={selectorLabel || undefined}
+      >
+        {kpis.map((kpi) => {
+          const isSelected = String(kpi.key) === String(selectedKPI.key);
+          return (
+            <button
+              key={String(kpi.key)}
+              onClick={() => onKPIChange(kpi)}
+              title={kpi.description}
+              aria-current={isSelected ? "true" : undefined}
+              className={cn(
+                "flex items-center gap-2 px-3 py-2 rounded-full text-sm font-medium transition-all duration-200 border whitespace-nowrap",
+                isSelected
+                  ? "bg-blue-3/20 border-blue-3 text-blue-3 shadow-[0_0_12px_rgba(76,155,232,0.3)]"
+                  : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10 hover:border-white/20 hover:text-white",
+              )}
+            >
+              {iconMap[String(kpi.key)]}
+              {getLabel(kpi)}
+            </button>
+          );
+        })}
+        {actions && (
+          <div className="flex flex-wrap items-center gap-2">{actions}</div>
         )}
       </div>
     </div>
