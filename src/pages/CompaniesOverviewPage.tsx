@@ -3,6 +3,7 @@ import { Leaf, ArrowDownCircle, BarChart2, List } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useCompanies } from "@/hooks/companies/useCompanies";
+import { useCompanyParisOverview } from "@/hooks/companies/useCompanyParisOverview";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { KPIChipSelector } from "@/components/ranked/KPIChipSelector";
@@ -49,7 +50,6 @@ const COMPANY_KPI_ICONS: Record<string, React.ReactNode> = {
 export function CompaniesOverviewPage() {
   const { t } = useTranslation();
   const { isMobile } = useScreenSize();
-  const { companies, companiesLoading, companiesError } = useCompanies();
   const companyKPIs = useCompanyKPIs();
   const sectorNames = useSectorNames();
   const countryNames = useCompanyCountryNames();
@@ -73,6 +73,33 @@ export function CompaniesOverviewPage() {
     params.set("kpi", kpiKey);
     navigate({ search: params.toString() }, { replace: true });
   };
+
+  const [selectedKPI, setSelectedKPI] = useState(getKPIFromURL());
+  const usesParisOverview = selectedKPI.key === "meetsParis";
+
+  const {
+    companies: fullCompanies,
+    companiesLoading: fullCompaniesLoading,
+    companiesError: fullCompaniesError,
+  } = useCompanies({ enabled: !usesParisOverview });
+
+  const {
+    companies: parisOverviewCompanies,
+    companiesLoading: parisOverviewLoading,
+    companiesError: parisOverviewError,
+  } = useCompanyParisOverview({ enabled: usesParisOverview });
+
+  const companies = usesParisOverview ? parisOverviewCompanies : fullCompanies;
+  const companiesLoading = usesParisOverview
+    ? parisOverviewLoading
+    : fullCompaniesLoading;
+  const companiesError = usesParisOverview
+    ? parisOverviewError
+    : fullCompaniesError;
+
+  useEffect(() => {
+    setSelectedKPI(getKPIFromURL());
+  }, [getKPIFromURL]);
 
   // Get available sectors from companies
   const availableSectors = useMemo(() => {
@@ -143,13 +170,8 @@ export function CompaniesOverviewPage() {
     navigate({ search: params.toString() }, { replace: true });
   };
 
-  const [selectedKPI, setSelectedKPI] = useState(getKPIFromURL());
   const selectedSector = useMemo(() => getSectorFromURL(), [getSectorFromURL]);
   const viewMode = getViewModeFromURL();
-
-  useEffect(() => {
-    setSelectedKPI(getKPIFromURL());
-  }, [getKPIFromURL]);
 
   // Filter and enrich companies with KPI values
   const companiesWithKPIs: CompanyWithKPIs[] = useMemo(() => {
@@ -177,8 +199,16 @@ export function CompaniesOverviewPage() {
       return true;
     });
 
-    return filtered.map((company) => enrichCompanyWithKPIs(company));
-  }, [companies, selectedCountries, selectedSector, selectedKPI.key]);
+    return usesParisOverview
+      ? filtered
+      : filtered.map((company) => enrichCompanyWithKPIs(company));
+  }, [
+    companies,
+    selectedCountries,
+    selectedSector,
+    selectedKPI.key,
+    usesParisOverview,
+  ]);
 
   const handleSectorChange = (sector: string) => {
     if (sector === "all") {

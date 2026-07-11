@@ -73,6 +73,14 @@ vi.mock("@/hooks/companies/useCompanies", () => ({
   }),
 }));
 
+vi.mock("@/hooks/companies/useCompanyParisOverview", () => ({
+  useCompanyParisOverview: () => ({
+    companies: [],
+    companiesLoading: false,
+    companiesError: null,
+  }),
+}));
+
 vi.mock("@/hooks/companies/useCompanyKPIs", () => ({
   useCompanyKPIs: () => mockKpiDefinitions,
   enrichCompanyWithKPIs: (company: RankedCompany) => ({
