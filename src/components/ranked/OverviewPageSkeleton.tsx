@@ -47,7 +47,7 @@ function KPIChipSelectorSkeleton({
             ))}
           </div>
           {showActions && (
-            <SkeletonBlock className="h-9 w-24 rounded-md w-full md:w-auto md:ml-auto" />
+            <SkeletonBlock className="h-9 w-24 rounded-md w-full md:w-auto" />
           )}
         </div>
       </div>

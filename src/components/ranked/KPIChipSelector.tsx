@@ -173,9 +173,15 @@ export function KPIChipSelector<T>({
           </div>
 
           {actions && (
-            <div className="flex flex-wrap items-center gap-2 w-full md:w-auto md:ml-auto md:max-w-full">
-              {actions}
-            </div>
+            <>
+              <div
+                className="hidden md:block grow shrink basis-0 min-w-0 h-0"
+                aria-hidden="true"
+              />
+              <div className="flex flex-wrap items-center gap-2 w-full md:w-auto md:max-w-full">
+                {actions}
+              </div>
+            </>
           )}
         </div>
       </div>
