@@ -233,9 +233,7 @@ export function MeetsParisBarChart({
                     key={tick}
                     className={cn(
                       "absolute whitespace-nowrap text-white/45",
-                      isMobile
-                        ? "left-1 text-[10px]"
-                        : "left-4 text-[11px]",
+                      isMobile ? "left-1 text-[10px]" : "left-4 text-[11px]",
                     )}
                     style={
                       isTopTick
