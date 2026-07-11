@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { Helmet } from "react-helmet-async";
 import { SeoMeta } from "@/types/seo";
 import { buildAbsoluteUrl, buildAbsoluteImageUrl } from "@/utils/seo";
@@ -25,21 +26,15 @@ function imageMimeType(imageUrl: string): string {
   return "image/png";
 }
 
-function HreflangLinks({
-  hreflang,
-}: {
-  hreflang: NonNullable<SeoMeta["hreflang"]>;
-}) {
-  return (
-    <>
-      {hreflang.map(({ lang: hLang, href }) => (
-        <link key={hLang} rel="alternate" hrefLang={hLang} href={href} />
-      ))}
-    </>
-  );
+function renderHreflangLinks(
+  hreflang: NonNullable<SeoMeta["hreflang"]>,
+): ReactNode {
+  return hreflang.map(({ lang: hLang, href }) => (
+    <link key={hLang} rel="alternate" hrefLang={hLang} href={href} />
+  ));
 }
 
-function OpenGraphMeta({
+function renderOpenGraphMeta({
   og,
   canonicalUrl,
   ogLocale,
@@ -55,7 +50,7 @@ function OpenGraphMeta({
   ogImageWidth: number;
   ogImageHeight: number;
   ogImageAlt: string;
-}) {
+}): ReactNode {
   return (
     <>
       <meta property="og:site_name" content="Klimatkollen" />
@@ -79,7 +74,7 @@ function OpenGraphMeta({
   );
 }
 
-function TwitterMeta({
+function renderTwitterMeta({
   twitter,
   twitterImage,
   twitterImageAlt,
@@ -87,7 +82,7 @@ function TwitterMeta({
   twitter: NonNullable<SeoMeta["twitter"]>;
   twitterImage?: string;
   twitterImageAlt: string;
-}) {
+}): ReactNode {
   return (
     <>
       {twitter.card && <meta name="twitter:card" content={twitter.card} />}
@@ -106,7 +101,7 @@ function TwitterMeta({
   );
 }
 
-function BasicMetaTags({
+function renderBasicMetaTags({
   title,
   description,
   canonicalUrl,
@@ -116,7 +111,7 @@ function BasicMetaTags({
   description?: string;
   canonicalUrl?: string;
   noindex?: boolean;
-}) {
+}): ReactNode {
   return (
     <>
       <title>{title}</title>
@@ -125,10 +120,6 @@ function BasicMetaTags({
       {noindex && <meta name="robots" content="noindex, nofollow" />}
     </>
   );
-}
-
-function StructuredDataScript({ data }: { data: Record<string, unknown> }) {
-  return <script type="application/ld+json">{JSON.stringify(data)}</script>;
 }
 
 function resolveSeoImageUrls(meta: SeoMeta) {
@@ -163,32 +154,34 @@ export function Seo({ meta }: SeoProps) {
 
   return (
     <Helmet>
-      <BasicMetaTags
-        title={title}
-        description={description}
-        canonicalUrl={canonicalUrl}
-        noindex={noindex}
-      />
-      {hreflang && <HreflangLinks hreflang={hreflang} />}
-      {og && (
-        <OpenGraphMeta
-          og={og}
-          canonicalUrl={canonicalUrl}
-          ogLocale={ogLocale}
-          ogImage={ogImage}
-          ogImageWidth={ogImageWidth}
-          ogImageHeight={ogImageHeight}
-          ogImageAlt={ogImageAlt}
-        />
+      {renderBasicMetaTags({
+        title,
+        description,
+        canonicalUrl,
+        noindex,
+      })}
+      {hreflang && renderHreflangLinks(hreflang)}
+      {og &&
+        renderOpenGraphMeta({
+          og,
+          canonicalUrl,
+          ogLocale,
+          ogImage,
+          ogImageWidth,
+          ogImageHeight,
+          ogImageAlt,
+        })}
+      {twitter &&
+        renderTwitterMeta({
+          twitter,
+          twitterImage,
+          twitterImageAlt,
+        })}
+      {structuredData && (
+        <script type="application/ld+json">
+          {JSON.stringify(structuredData)}
+        </script>
       )}
-      {twitter && (
-        <TwitterMeta
-          twitter={twitter}
-          twitterImage={twitterImage}
-          twitterImageAlt={twitterImageAlt}
-        />
-      )}
-      {structuredData && <StructuredDataScript data={structuredData} />}
     </Helmet>
   );
 }
