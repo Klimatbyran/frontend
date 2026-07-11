@@ -152,11 +152,7 @@ export function OverviewPageSkeleton({
 }: OverviewPageSkeletonProps) {
   return (
     <>
-      <PageHeader
-        variant="compact"
-        title={title}
-        description={description}
-      />
+      <PageHeader variant="compact" title={title} description={description} />
 
       <KPIChipSelectorSkeleton chipCount={chipCount} />
 

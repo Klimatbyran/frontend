@@ -45,7 +45,9 @@ export function PageHeader({
         </>
       )}
       {children && (
-        <div className={cn("flex flex-wrap gap-2", isCompact ? "mt-2" : "mt-0")}>
+        <div
+          className={cn("flex flex-wrap gap-2", isCompact ? "mt-2" : "mt-0")}
+        >
           {children}
         </div>
       )}
