@@ -329,10 +329,7 @@
         "description": "Only companies with a defined base year and comparable follow-up emissions data are ranked.",
         "noComparableData": "No companies in this sector with comparable emissions change data.",
         "unknown": "Unknown",
-        "yAxisLabel": "Total emissions (latest reported year, tCO2e)",
-        "xAxisLabel": "Change from base year ({{width}}% bins)",
         "binSummary": "{{range}}: {{count}} companies, {{emissions}} tCO2e total",
-        "segmentHint": "Each colored segment is one company, sized by its latest reported emissions.",
         "legend": {
           "reduction": "Reduction",
           "neutral": "Near zero",

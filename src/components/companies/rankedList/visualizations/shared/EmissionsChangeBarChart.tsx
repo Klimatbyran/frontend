@@ -180,18 +180,6 @@ export function EmissionsChangeBarChart({
         }
       }}
     >
-      <div className="flex shrink-0 items-center justify-between gap-3 text-xs text-grey">
-        <span>
-          {t("companiesOverviewPage.visualizations.emissionsChange.yAxisLabel")}
-        </span>
-        <span>
-          {t(
-            "companiesOverviewPage.visualizations.emissionsChange.xAxisLabel",
-            { width: histogram.binWidth },
-          )}
-        </span>
-      </div>
-
       <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
         <div className="flex h-full min-h-0 w-full min-w-0 flex-1 gap-2 overflow-hidden">
           <div className="flex h-full w-12 shrink-0 flex-col justify-between py-0 text-right text-[10px] text-grey">
@@ -345,11 +333,6 @@ export function EmissionsChangeBarChart({
             )}
           </span>
         </div>
-        <span className="text-white/50">
-          {t(
-            "companiesOverviewPage.visualizations.emissionsChange.segmentHint",
-          )}
-        </span>
       </div>
 
       {tooltip && (!isMobile || mobileTooltipOpen) && (
