@@ -263,7 +263,10 @@ export function MeetsParisBarChart({
                     }
                     transition={barTransition}
                     style={{
-                      transform: isTopTick || isBottomTick ? undefined : "translateY(50%)",
+                      transform:
+                        isTopTick || isBottomTick
+                          ? undefined
+                          : "translateY(50%)",
                     }}
                   >
                     {formatAxisTick(tick)}
@@ -307,7 +310,8 @@ export function MeetsParisBarChart({
                   >
                     <AnimatePresence initial={false} mode="popLayout">
                       {group.segments.map((segment) => {
-                        const isHighlighted = highlightedCompanyId === segment.id;
+                        const isHighlighted =
+                          highlightedCompanyId === segment.id;
                         const isDimmed =
                           highlightedCompanyId != null &&
                           highlightedCompanyId !== segment.id;
@@ -319,9 +323,7 @@ export function MeetsParisBarChart({
                             layout={!reduceMotion}
                             initial={reduceMotion ? false : { opacity: 0 }}
                             animate={{ opacity: isDimmed ? 0.45 : 1 }}
-                            exit={
-                              reduceMotion ? undefined : { opacity: 0 }
-                            }
+                            exit={reduceMotion ? undefined : { opacity: 0 }}
                             transition={segmentTransition}
                             className="w-full min-h-[1px] border-0 p-0 cursor-pointer"
                             style={{
