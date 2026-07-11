@@ -206,12 +206,13 @@ export function MunicipalitiesOverviewPage() {
   return (
     <>
       <PageHeader
+        variant="compact"
         title={t("municipalitiesOverviewPage.title")}
         description={t("municipalitiesOverviewPage.description")}
-        className="-ml-4"
       />
 
       <KPIChipSelector<Municipality>
+        compact
         selectedKPI={selectedKPI}
         kpis={municipalityKPIs}
         onKPIChange={(kpi) => {

@@ -28,7 +28,7 @@ function SkeletonBlock({ className = "" }: { className?: string }) {
 
 function KPIChipSelectorSkeleton({ chipCount }: { chipCount: number }) {
   return (
-    <div className="mb-6 space-y-3">
+    <div className="mb-4 space-y-2">
       <SkeletonBlock className="h-3 w-36 mx-1" />
       <SkeletonBlock className="md:hidden h-12 w-full rounded-xl" />
       <div className="hidden md:flex gap-2 flex-wrap">
@@ -152,7 +152,11 @@ export function OverviewPageSkeleton({
 }: OverviewPageSkeletonProps) {
   return (
     <>
-      <PageHeader title={title} description={description} className="-ml-4" />
+      <PageHeader
+        variant="compact"
+        title={title}
+        description={description}
+      />
 
       <KPIChipSelectorSkeleton chipCount={chipCount} />
 

@@ -293,12 +293,13 @@ export function CompaniesOverviewPage() {
   return (
     <>
       <PageHeader
+        variant="compact"
         title={t("companiesOverviewPage.title")}
         description={t("companiesOverviewPage.description")}
-        className="-ml-4"
       />
 
       <KPIChipSelector<CompanyWithKPIs>
+        compact
         selectedKPI={selectedKPI}
         kpis={companyKPIs}
         onKPIChange={(kpi) => {

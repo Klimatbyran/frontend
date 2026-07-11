@@ -122,9 +122,9 @@ export function ExplorePage() {
   return (
     <>
       <PageHeader
+        variant="compact"
         title={t("explorePage.title")}
         description={t("explorePage.description")}
-        className="-ml-4"
       />
 
       {/* Filters & Sorting Section */}

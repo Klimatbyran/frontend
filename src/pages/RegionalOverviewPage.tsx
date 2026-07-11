@@ -166,12 +166,13 @@ export function RegionalOverviewPage() {
   return (
     <>
       <PageHeader
+        variant="compact"
         title={t("regionalOverviewPage.title")}
         description={t("regionalOverviewPage.description")}
-        className="-ml-4"
       />
 
       <KPIChipSelector<Region>
+        compact
         selectedKPI={selectedKPI}
         kpis={regionalKPIs}
         onKPIChange={(kpi) => {
