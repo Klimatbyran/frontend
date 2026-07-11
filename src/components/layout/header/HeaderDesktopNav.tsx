@@ -2,7 +2,6 @@ import type { Token } from "@/types/token";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { localizedPath } from "@/utils/routing";
 import { useLanguage } from "../../LanguageProvider";
 import { NewsletterPopover } from "../../newsletters/NewsletterPopover";
 import { HeaderSearchButton } from "../../search/HeaderSearchButton";
@@ -16,6 +15,7 @@ import {
   NavigationMenuTrigger,
 } from "../../ui/navigation-menu";
 import { HeaderLanguageButtons } from "./HeaderLanguageButtons";
+import { isNavLinkActive } from "./navActive";
 import { INTERNAL_LINKS } from "./navConfig";
 import { SubLinksMenu } from "./SubLinksMenu";
 import { NavLink } from "./types";
@@ -43,18 +43,21 @@ export function HeaderDesktopNav({
       delayDuration={disableOpenOnHoverDelay}
     >
       <NavigationMenuList>
-        {navLinks.map((item) =>
-          item.sublinks ? (
+        {navLinks.map((item) => {
+          const isActive = isNavLinkActive(
+            location.pathname,
+            currentLanguage,
+            item,
+          );
+
+          return item.sublinks ? (
             <NavigationMenuItem key={item.path}>
               <NavigationMenuTrigger
                 className={cn(
                   "flex gap-2 p-3",
-                  "data-[state=open]:bg-black-1 data-[state=closed]:bg-transparent",
-                  location.pathname.startsWith(
-                    localizedPath(currentLanguage, item.path),
-                  )
-                    ? "text-white"
-                    : "text-grey hover:text-white",
+                  isActive
+                    ? "!text-white !bg-transparent data-[state=open]:!bg-transparent data-[state=closed]:bg-transparent"
+                    : "data-[state=open]:bg-black-1 data-[state=closed]:bg-transparent text-grey hover:text-white",
                 )}
               >
                 {item.icon}
@@ -69,11 +72,7 @@ export function HeaderDesktopNav({
               key={item.path}
               className={cn(
                 "h-10 lg:h12 flex items-center",
-                location.pathname.startsWith(
-                  localizedPath(currentLanguage, item.path),
-                )
-                  ? "text-white"
-                  : "text-grey hover:text-white",
+                isActive ? "!text-white" : "text-grey hover:text-white",
               )}
             >
               <NavigationMenuLink asChild>
@@ -86,8 +85,8 @@ export function HeaderDesktopNav({
                 </LocalizedLink>
               </NavigationMenuLink>
             </NavigationMenuItem>
-          ),
-        )}
+          );
+        })}
         {user && (
           <NavigationMenuItem>
             <NavigationMenuTrigger className="flex items-center gap-2 px-3 py-3 h-full transition-all text-sm cursor-pointer text-grey hover:text-white">

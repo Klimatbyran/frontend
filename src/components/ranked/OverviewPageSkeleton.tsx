@@ -2,7 +2,6 @@ import {
   OVERVIEW_PANEL_HEIGHT,
   OVERVIEW_PANEL_MD_HEIGHT,
 } from "@/components/ranked/OverviewSplitLayout";
-import { PageHeader } from "@/components/layout/PageHeader";
 
 export type OverviewPageSkeletonVariant =
   | "municipalities"
@@ -10,8 +9,6 @@ export type OverviewPageSkeletonVariant =
   | "companies";
 
 interface OverviewPageSkeletonProps {
-  title: string;
-  description?: string;
   variant?: OverviewPageSkeletonVariant;
   /** Number of KPI chip placeholders on desktop */
   chipCount?: number;
@@ -33,7 +30,7 @@ function KPIChipSelectorSkeleton({
   showActions?: boolean;
 }) {
   return (
-    <div className="mb-6 space-y-3">
+    <div className="mb-4 space-y-2">
       <SkeletonBlock className="h-3 w-36 mx-1" />
       <div className="flex flex-col gap-2">
         <SkeletonBlock className="md:hidden h-12 w-full rounded-xl" />
@@ -143,14 +140,12 @@ function DistributionPanelSkeleton() {
 
 /** Skeleton that mirrors the overview page layout while data loads. */
 export function OverviewPageSkeleton({
-  title,
-  description,
   variant = "municipalities",
   chipCount = variant === "regions" ? 2 : variant === "companies" ? 2 : 7,
 }: OverviewPageSkeletonProps) {
   return (
     <>
-      <PageHeader title={title} description={description} className="-ml-4" />
+      <SkeletonBlock className="h-9 w-56 md:w-72 mb-2 md:mb-3" />
 
       <KPIChipSelectorSkeleton
         chipCount={chipCount}

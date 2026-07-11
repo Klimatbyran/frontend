@@ -308,8 +308,6 @@ export function CompaniesOverviewPage() {
   if (companiesLoading) {
     return (
       <OverviewPageSkeleton
-        title={t("companiesOverviewPage.title")}
-        description={t("companiesOverviewPage.description")}
         variant="companies"
         chipCount={companyKPIs.length}
       />
@@ -404,9 +402,8 @@ export function CompaniesOverviewPage() {
   return (
     <>
       <PageHeader
+        variant="title-only"
         title={t("companiesOverviewPage.title")}
-        description={t("companiesOverviewPage.description")}
-        className="-ml-4"
       />
 
       <KPIChipSelector<CompanyWithKPIs>

@@ -27,7 +27,7 @@ interface CardHeaderProps<T extends string = string> {
   customDataViewSelector?: React.ReactNode;
 
   // Layout options
-  layout?: "wide" | "narrow" | "page";
+  layout?: "wide" | "narrow";
   className?: string;
 }
 
@@ -62,23 +62,7 @@ export const CardHeader = <T extends string = string>({
       dataViewOptions.length > 0) ||
     customDataViewSelector;
   const effectiveLayout =
-    layout === "narrow"
-      ? "narrow"
-      : layout === "page"
-        ? "page"
-        : isWide
-          ? "wide"
-          : "narrow";
-
-  // Different layouts for different use cases
-  if (layout === "page") {
-    return (
-      <div className={className}>
-        <h1 className="text-3xl font-light mb-2">{title}</h1>
-        {description && <p className="text-sm text-grey">{description}</p>}
-      </div>
-    );
-  }
+    layout === "narrow" ? "narrow" : isWide ? "wide" : "narrow";
 
   return (
     <div className={`@container ${className}`} ref={containerRef}>
@@ -113,7 +97,7 @@ export const CardHeader = <T extends string = string>({
                 setDataView={setDataView!}
                 availableViews={dataViewOptions!}
                 placeholder={dataViewPlaceholder}
-                layout={effectiveLayout === "page" ? "wide" : effectiveLayout}
+                layout={effectiveLayout}
               />
             )}
           </div>

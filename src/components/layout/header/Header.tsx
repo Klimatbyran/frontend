@@ -67,7 +67,7 @@ export function Header() {
       <div className="container lg:mx-auto px-4 flex justify-between">
         <LocalizedLink
           to="/"
-          className="flex items-center gap-2 text-base font-medium"
+          className="flex items-center gap-2 text-base font-medium text-grey hover:text-white"
         >
           Klimatkollen
         </LocalizedLink>
