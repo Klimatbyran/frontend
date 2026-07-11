@@ -80,6 +80,22 @@ export function createSymmetricKPIColorGetter<T>(
   };
 }
 
+export function createBooleanKPIColorGetter<T>(
+  kpiKey: keyof T,
+  higherIsBetter = true,
+): (entities: T[]) => (entity: T) => string {
+  return () => (entity: T) => {
+    const value = entity[kpiKey];
+    if (value === null || value === undefined || typeof value !== "boolean") {
+      return DEFAULT_NULL_DATA_COLOR;
+    }
+
+    return value === higherIsBetter
+      ? DEFAULT_BOOLEAN_DATA_COLORS.positive
+      : DEFAULT_BOOLEAN_DATA_COLORS.negative;
+  };
+}
+
 export function createBudgetKPIColorGetter(companies: CompanyWithKPIs[]) {
   const { companyBudgetData, minRaw, maxRaw } = getCompanyBudgetData(companies);
 
