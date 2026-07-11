@@ -12,6 +12,7 @@ import {
 import { useChartMotion } from "@/hooks/useChartMotion";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { COLORS } from "@/lib/colors";
+import { getCompanyUrlSegment } from "@/utils/companyRouting";
 import { formatWithBestUnit } from "@/utils/data/unitScaling";
 import type { CompanyParisEmissionsEntry } from "@/utils/insights/meetsParisChartData";
 
@@ -43,6 +44,10 @@ interface SegmentPattern {
   angle: number;
 }
 
+function getEntryKey(entry: CompanyParisEmissionsEntry): string {
+  return getCompanyUrlSegment(entry.company);
+}
+
 function getPatternId(companyId: string): string {
   return `paris-segment-${companyId.replace(/[^a-zA-Z0-9_-]/g, "_")}`;
 }
@@ -52,6 +57,8 @@ function buildSegmentPatterns(
   companyById: Map<string, CompanyParisEmissionsEntry>,
 ): SegmentPattern[] {
   return companyIds.flatMap((companyId, index) => {
+    if (!companyId) return [];
+
     const entry = companyById.get(companyId);
     if (!entry) return [];
 
@@ -67,11 +74,7 @@ function buildSegmentPatterns(
   });
 }
 
-function CompanySegmentPatterns({
-  patterns,
-}: {
-  patterns: SegmentPattern[];
-}) {
+function CompanySegmentPatterns({ patterns }: { patterns: SegmentPattern[] }) {
   return (
     <defs>
       {patterns.map((pattern) => (
@@ -191,7 +194,7 @@ export function MeetsParisBarChart({
       const noEntries = entries.filter((entry) => !entry.meetsParis);
 
       const byId = new Map(
-        entries.map((entry) => [entry.company.wikidataId, entry]),
+        entries.map((entry) => [getEntryKey(entry), entry]),
       );
 
       const buildRow = (
@@ -201,7 +204,7 @@ export function MeetsParisBarChart({
         const row: ChartRow = { category, total: 0 };
         for (const entry of group) {
           const scaled = entry.emissions / unitScale.divisor;
-          row[entry.company.wikidataId] = scaled;
+          row[getEntryKey(entry)] = scaled;
           row.total += scaled;
         }
         return row;
@@ -215,10 +218,10 @@ export function MeetsParisBarChart({
       const ids = [
         ...yesEntries
           .sort((a, b) => a.emissions - b.emissions)
-          .map((entry) => entry.company.wikidataId),
+          .map((entry) => getEntryKey(entry)),
         ...noEntries
           .sort((a, b) => a.emissions - b.emissions)
-          .map((entry) => entry.company.wikidataId),
+          .map((entry) => getEntryKey(entry)),
       ];
 
       const totals = data.map((row) => row.total);
