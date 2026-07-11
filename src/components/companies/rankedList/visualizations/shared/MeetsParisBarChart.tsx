@@ -13,7 +13,6 @@ const Y_AXIS_WIDTH = 72;
 const CHART_MIN_HEIGHT = 260;
 const OUTER_MIN_HEIGHT = 320;
 const PLOT_INSET_TOP = 8;
-const PLOT_INSET_BOTTOM = 16;
 const TOP_EMITTERS_PER_BAR = 10;
 
 interface MeetsParisBarChartProps {
@@ -207,11 +206,11 @@ export function MeetsParisBarChart({
         style={{ minHeight: CHART_MIN_HEIGHT }}
       >
         <div
-          className="absolute inset-x-0 flex"
-          style={{ top: PLOT_INSET_TOP, bottom: PLOT_INSET_BOTTOM }}
+          className="absolute inset-0 flex items-end"
+          style={{ paddingTop: PLOT_INSET_TOP }}
         >
           <div
-            className="relative shrink-0 pl-4 pt-3"
+            className="relative h-full shrink-0 pl-4"
             style={{ width: Y_AXIS_WIDTH }}
           >
             {yAxisTicks
@@ -248,7 +247,7 @@ export function MeetsParisBarChart({
               })}
           </div>
 
-          <div className="flex flex-1 items-end justify-center gap-[15%] px-2">
+          <div className="flex h-full flex-1 items-end justify-center gap-[15%] px-2">
             {groups.map((group) => {
               const barHeightPercent =
                 maxBarTotal > 0 ? (group.total / maxBarTotal) * 100 : 0;
@@ -313,8 +312,11 @@ export function MeetsParisBarChart({
             })}
           </div>
         </div>
+      </div>
 
-        <div className="absolute inset-x-0 bottom-1 flex justify-center gap-[15%] px-2">
+      <div className="flex shrink-0 pt-2">
+        <div className="shrink-0" style={{ width: Y_AXIS_WIDTH }} />
+        <div className="flex flex-1 justify-center gap-[15%] px-2">
           {groups.map((group) => (
             <span
               key={group.category}
