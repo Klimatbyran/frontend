@@ -44,13 +44,17 @@ function KPIChipSelectorSkeleton({
         )}
       </div>
       <div className="hidden md:flex flex-wrap items-center gap-2">
-        {Array.from({ length: chipCount }, (_, i) => (
-          <SkeletonBlock
-            key={i}
-            className={`h-9 rounded-full ${CHIP_WIDTHS[i % CHIP_WIDTHS.length]}`}
-          />
-        ))}
-        {showActions && <SkeletonBlock className="h-9 w-24 rounded-md" />}
+        <div className="flex gap-2 flex-wrap flex-1 min-w-0">
+          {Array.from({ length: chipCount }, (_, i) => (
+            <SkeletonBlock
+              key={i}
+              className={`h-9 rounded-full ${CHIP_WIDTHS[i % CHIP_WIDTHS.length]}`}
+            />
+          ))}
+        </div>
+        {showActions && (
+          <SkeletonBlock className="h-9 w-24 rounded-md shrink-0 ml-auto" />
+        )}
       </div>
     </div>
   );
