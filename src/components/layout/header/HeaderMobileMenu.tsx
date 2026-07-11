@@ -9,7 +9,7 @@ import { HeaderLanguageButtons } from "./HeaderLanguageButtons";
 import { isNavLinkActive } from "./navActive";
 import { NavSubGroupSection } from "./NavSubGroupSection";
 import { NavSubLinkItem } from "./NavSubLinkItem";
-import { NAV_ITEM_ACTIVE_CLASS, NAV_TITLE_CLASS } from "./navStyles";
+import { NAV_TITLE_CLASS } from "./navStyles";
 import { isNavSubGroup, NavLink } from "./types";
 
 export function HeaderMobileMenu({
@@ -74,7 +74,7 @@ export function HeaderMobileMenu({
                       className={cn(
                         "flex items-center gap-2 cursor-pointer rounded-md px-2 py-1 -mx-2",
                         isActive
-                          ? NAV_ITEM_ACTIVE_CLASS
+                          ? "!text-white font-medium"
                           : "text-grey hover:text-white",
                       )}
                       aria-current={isActive ? "page" : undefined}

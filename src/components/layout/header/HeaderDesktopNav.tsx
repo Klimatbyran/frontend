@@ -56,7 +56,7 @@ export function HeaderDesktopNav({
                 className={cn(
                   "flex gap-2 p-3",
                   "data-[state=open]:bg-black-1 data-[state=closed]:bg-transparent",
-                  isActive ? "text-white" : "text-grey hover:text-white",
+                  isActive ? "!text-white" : "text-grey hover:text-white",
                 )}
               >
                 {item.icon}
@@ -71,7 +71,7 @@ export function HeaderDesktopNav({
               key={item.path}
               className={cn(
                 "h-10 lg:h12 flex items-center",
-                isActive ? "text-white" : "text-grey hover:text-white",
+                isActive ? "!text-white" : "text-grey hover:text-white",
               )}
             >
               <NavigationMenuLink asChild>
