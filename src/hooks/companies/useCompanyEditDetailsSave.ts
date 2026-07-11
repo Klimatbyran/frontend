@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
-import { updateCompanyIndustry, updateCompanyBaseYear } from "@/lib/api";
-import { isVerified } from "@/utils/business/verification";
 import type { CompanyDetails } from "@/types/company";
+import { isVerified } from "@/utils/business/verification";
+import { updateCompanyIndustry, updateCompanyBaseYear } from "@/lib/api";
 
 interface SaveCompanyEditDetailsArgs {
   company: CompanyDetails;
@@ -14,6 +14,88 @@ interface SaveCompanyEditDetailsArgs {
   onSave?: () => void;
 }
 
+function getOriginalCompanyEditValues(company: CompanyDetails) {
+  return {
+    subIndustryCode: company.industry?.industryGics?.subIndustryCode
+      ? String(company.industry.industryGics.subIndustryCode)
+      : "",
+    industryVerified: isVerified(company.industry?.metadata),
+    baseYear: String(company.baseYear?.year || ""),
+    baseYearVerified: isVerified(company.baseYear?.metadata),
+  };
+}
+
+function buildEditMetadata(comment: string, source: string) {
+  const metadata: Record<string, string> = {};
+  if (comment) metadata.comment = comment;
+  if (source) metadata.source = source;
+  return metadata;
+}
+
+async function updateIndustryIfChanged({
+  company,
+  subIndustryCode,
+  industryVerified,
+  originalSubIndustryCode,
+  originalIndustryVerified,
+  metadata,
+}: {
+  company: CompanyDetails;
+  subIndustryCode: string;
+  industryVerified?: boolean;
+  originalSubIndustryCode: string;
+  originalIndustryVerified: boolean;
+  metadata: Record<string, string>;
+}) {
+  if (
+    subIndustryCode === originalSubIndustryCode &&
+    industryVerified === originalIndustryVerified
+  ) {
+    return false;
+  }
+
+  const hasMetadata = Object.keys(metadata).length > 0;
+  await updateCompanyIndustry(
+    company.id,
+    subIndustryCode,
+    hasMetadata ? metadata : undefined,
+    industryVerified,
+  );
+  return true;
+}
+
+async function updateBaseYearIfChanged({
+  company,
+  baseYear,
+  baseYearVerified,
+  originalBaseYear,
+  originalBaseYearVerified,
+  metadata,
+}: {
+  company: CompanyDetails;
+  baseYear: string | number;
+  baseYearVerified?: boolean;
+  originalBaseYear: string;
+  originalBaseYearVerified: boolean;
+  metadata: Record<string, string>;
+}) {
+  if (
+    String(baseYear) === originalBaseYear &&
+    baseYearVerified === originalBaseYearVerified
+  ) {
+    return false;
+  }
+
+  const hasMetadata = Object.keys(metadata).length > 0;
+  await updateCompanyBaseYear(
+    company.id,
+    Number(baseYear),
+    hasMetadata ? metadata : undefined,
+    baseYearVerified,
+  );
+  return true;
+}
+
 async function saveCompanyEditDetails({
   company,
   subIndustryCode,
@@ -24,52 +106,32 @@ async function saveCompanyEditDetails({
   baseYearVerified,
   onSave,
 }: SaveCompanyEditDetailsArgs): Promise<void> {
-  // Get original values
-  const originalSubIndustryCode = company.industry?.industryGics
-    ?.subIndustryCode
-    ? String(company.industry.industryGics.subIndustryCode)
-    : "";
-  const originalIndustryVerified = isVerified(company.industry?.metadata);
-  const originalBaseYear = String(company.baseYear?.year || "");
-  const originalBaseYearVerified = isVerified(company.baseYear?.metadata);
+  const {
+    subIndustryCode: originalSubIndustryCode,
+    industryVerified: originalIndustryVerified,
+    baseYear: originalBaseYear,
+    baseYearVerified: originalBaseYearVerified,
+  } = getOriginalCompanyEditValues(company);
+  const metadata = buildEditMetadata(comment, source);
 
-  // Prepare metadata if populated
-  const metadata: Record<string, string> = {};
-  if (comment) metadata.comment = comment;
-  if (source) metadata.source = source;
-  const hasMetadata = Object.keys(metadata).length > 0;
+  const industryChanged = await updateIndustryIfChanged({
+    company,
+    subIndustryCode,
+    industryVerified,
+    originalSubIndustryCode,
+    originalIndustryVerified,
+    metadata,
+  });
+  const baseYearChanged = await updateBaseYearIfChanged({
+    company,
+    baseYear,
+    baseYearVerified,
+    originalBaseYear,
+    originalBaseYearVerified,
+    metadata,
+  });
 
-  let didChange = false;
-
-  // Only update industry if code or verified changed
-  if (
-    subIndustryCode !== originalSubIndustryCode ||
-    industryVerified !== originalIndustryVerified
-  ) {
-    didChange = true;
-    await updateCompanyIndustry(
-      company.id,
-      subIndustryCode,
-      hasMetadata ? metadata : undefined,
-      industryVerified,
-    );
-  }
-
-  // Only update base year if year or verified changed
-  if (
-    String(baseYear) !== originalBaseYear ||
-    baseYearVerified !== originalBaseYearVerified
-  ) {
-    didChange = true;
-    await updateCompanyBaseYear(
-      company.id,
-      Number(baseYear),
-      hasMetadata ? metadata : undefined,
-      baseYearVerified,
-    );
-  }
-
-  if (didChange && onSave) {
+  if ((industryChanged || baseYearChanged) && onSave) {
     onSave();
   }
 }

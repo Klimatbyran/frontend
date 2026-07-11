@@ -5,6 +5,7 @@ import React, {
   useState,
   useEffect,
   useRef,
+  useCallback,
 } from "react";
 import { authenticateWithGithub, apiUrl } from "@/lib/api";
 import { Token } from "@/types/token";
@@ -23,48 +24,47 @@ export const useAuth = () => {
   return useContext(AuthContext);
 };
 
-const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [token, setToken] = useState(localStorage.getItem("token") || "");
-  const user: Token | null = token ? jwtDecode(token) : null;
+function isTokenExpired(token: string): boolean {
+  if (!token) return true;
+  try {
+    const decoded: Token = jwtDecode(token);
+    if (!decoded.exp) return true;
+    return Date.now() >= decoded.exp * 1000;
+  } catch {
+    return true;
+  }
+}
+
+function useTokenAutoLogout(token: string, logout: () => void) {
   const logoutTimeout = useRef<NodeJS.Timeout | null>(null);
 
-  // Helper to check if token is expired
-  const isTokenExpired = (token: string): boolean => {
-    if (!token) return true;
-    try {
-      const decoded: Token = jwtDecode(token);
-      if (!decoded.exp) return true;
-      // exp is in seconds since epoch
-      return Date.now() >= decoded.exp * 1000;
-    } catch {
-      return true;
-    }
-  };
-
-  // Set up auto-logout when token expires
   useEffect(() => {
     if (!token) return;
     if (isTokenExpired(token)) {
       logout();
       return;
     }
-    // Clear any previous timeout
+
     if (logoutTimeout.current) {
       clearTimeout(logoutTimeout.current);
     }
+
     const decoded: Token = jwtDecode(token);
     const msUntilExpiry = decoded.exp * 1000 - Date.now();
     logoutTimeout.current = setTimeout(() => {
       logout();
     }, msUntilExpiry);
+
     return () => {
       if (logoutTimeout.current) {
         clearTimeout(logoutTimeout.current);
       }
     };
-  }, [token]);
+  }, [token, logout]);
+}
 
-  const login = (redirectUri?: string) => {
+function createLoginHandler() {
+  return (redirectUri?: string) => {
     localStorage.setItem(
       "postLoginRedirect",
       window.location.pathname + window.location.search,
@@ -75,8 +75,10 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     url.searchParams.set("redirect_uri", callbackUrl);
     window.location.href = url.toString();
   };
+}
 
-  const authenticate = async (code: string) => {
+function createAuthenticateHandler(setToken: (token: string) => void) {
+  return async (code: string) => {
     try {
       const response = await authenticateWithGithub(code);
       if (response.token) {
@@ -89,14 +91,21 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       throw error;
     }
   };
+}
 
-  const logout = () => {
+const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const [token, setToken] = useState(localStorage.getItem("token") || "");
+  const user: Token | null = token ? jwtDecode(token) : null;
+
+  const logout = useCallback(() => {
     setToken("");
     localStorage.removeItem("token");
-    if (logoutTimeout.current) {
-      clearTimeout(logoutTimeout.current);
-    }
-  };
+  }, []);
+
+  useTokenAutoLogout(token, logout);
+
+  const login = useCallback(createLoginHandler(), []);
+  const authenticate = useCallback(createAuthenticateHandler(setToken), []);
 
   return (
     <AuthContext.Provider

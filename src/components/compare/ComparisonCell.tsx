@@ -8,13 +8,33 @@ interface ComparisonCellProps {
   align?: "start" | "end";
 }
 
+function getValueClassName(
+  value: ComparisonCellValue,
+  compact: boolean,
+  align: "start" | "end",
+) {
+  const showBadge = value.displayAsBadge;
+  const badgeColorClasses: Record<string, string> = {
+    "text-green-3": "bg-green-3/15 text-green-3",
+    "text-pink-3": "bg-pink-3/15 text-pink-3",
+    "text-grey": "bg-white/10 text-grey",
+  };
+
+  return cn(
+    "font-light",
+    compact ? "text-base" : "text-lg",
+    align === "end" && showBadge && "ml-auto",
+    showBadge && "inline-flex items-center rounded-full px-3 py-1 text-sm",
+    showBadge && badgeColorClasses[value.colorClass],
+    !showBadge && value.colorClass,
+  );
+}
+
 export function ComparisonCell({
   value,
   compact = false,
   align = "start",
 }: ComparisonCellProps) {
-  const showBadge = value.displayAsBadge;
-
   return (
     <div
       className={cn(
@@ -22,25 +42,7 @@ export function ComparisonCell({
         align === "end" && "text-right",
       )}
     >
-      <div
-        className={cn(
-          "font-light",
-          compact ? "text-base" : "text-lg",
-          align === "end" && showBadge && "ml-auto",
-          showBadge &&
-            "inline-flex items-center rounded-full px-3 py-1 text-sm",
-          showBadge &&
-            value.colorClass === "text-green-3" &&
-            "bg-green-3/15 text-green-3",
-          showBadge &&
-            value.colorClass === "text-pink-3" &&
-            "bg-pink-3/15 text-pink-3",
-          showBadge &&
-            value.colorClass === "text-grey" &&
-            "bg-white/10 text-grey",
-          !showBadge && value.colorClass,
-        )}
-      >
+      <div className={getValueClassName(value, compact, align)}>
         <span>{value.text}</span>
         {value.isAIGenerated && (
           <span className="ml-2 inline-flex">

@@ -1,7 +1,7 @@
 import { render, fireEvent, screen } from "@testing-library/react";
 import { vi } from "vitest";
 import { MemoryRouter } from "react-router-dom";
-import type { CompanyDetails } from "@/types/company";
+import type { CompanyDetails, ReportingPeriod } from "@/types/company";
 import { CompanyEditInputField } from "../CompanyEditField";
 import { CompanyEditScope1 } from "../CompanyEditScope1";
 import { CompanyEditScope2 } from "../CompanyEditScope2";
@@ -105,7 +105,7 @@ describe("Editor Logic Integration", () => {
             reportURL: null,
             emissions: {
               scope1: { total: 10, unit: "t", metadata: { verifiedBy: null } },
-            } as any,
+            } as unknown as NonNullable<ReportingPeriod["emissions"]>,
             economy: null,
           },
         ]}

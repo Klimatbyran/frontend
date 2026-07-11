@@ -12,7 +12,7 @@ type ApiMunicipality = NonNullable<
 interface IMunicipalitiesReturn {
   municipalities: Municipality[];
   municipalitiesLoading: boolean;
-  municipalitiesError: any;
+  municipalitiesError: unknown;
   getTopMunicipalities: (count?: number) => Municipality[];
 }
 

@@ -11,9 +11,12 @@ import { CompanyEditScope3 } from "./CompanyEditScope3";
 import { CompanyEditTurnover } from "./CompanyEditTurnover";
 import { CompanyEditEmployees } from "./CompanyEditEmployees";
 import { mapCompanyEditFormToRequestBody } from "@/lib/company/company-edit";
-import { stripNumberFormatting } from "@/utils/ui/numberFormat";
 import { updateReportingPeriods } from "@/lib/api";
 import { useToast } from "@/contexts/ToastContext";
+import {
+  collectFormDataFromElement,
+  isUnauthorizedError,
+} from "./companyEditEmissionsDataUtils";
 
 export interface CompanyEditEmissionsDataProps {
   company: CompanyDetails;
@@ -67,26 +70,9 @@ export function CompanyEditEmissionsData({
       onSubmittingChange?.(false);
       return;
     }
-    const nextFormData = new Map(formData);
-    for (const input of formRef.current.querySelectorAll("input")) {
-      if (input.type === "checkbox") {
-        if (input.checked !== input.defaultChecked) {
-          nextFormData.set(input.name, input.checked ? "true" : "false");
-        }
-      } else {
-        if (input.value !== input.defaultValue) {
-          const value = input.hasAttribute("data-formatted-number")
-            ? stripNumberFormatting(input.value)
-            : input.value;
-          nextFormData.set(input.name, value);
-        }
-      }
-    }
-    for (const textarea of formRef.current.querySelectorAll("textarea")) {
-      if (textarea.value !== textarea.defaultValue) {
-        nextFormData.set(textarea.name, textarea.value);
-      }
-    }
+
+    const nextFormData = collectFormDataFromElement(formRef.current, formData);
+
     try {
       const { reportingPeriods, metadata } = mapCompanyEditFormToRequestBody(
         selectedPeriods,
@@ -104,12 +90,7 @@ export function CompanyEditEmissionsData({
       );
       onSaveSuccess?.();
     } catch (error: unknown) {
-      if (
-        error &&
-        typeof error === "object" &&
-        "status" in error &&
-        error.status === 401
-      ) {
+      if (isUnauthorizedError(error)) {
         onAuthRequired?.();
       } else {
         showToast(

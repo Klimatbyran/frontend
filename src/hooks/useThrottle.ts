@@ -1,6 +1,6 @@
 import { useRef } from "react";
 
-const useThrottle = <T extends (...args: any[]) => any>(
+const useThrottle = <T extends (...args: unknown[]) => unknown>(
   callback: T,
   delay: number,
 ) => {

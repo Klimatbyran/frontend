@@ -70,6 +70,48 @@ export function filterValidData<T, KPI extends KPIValue<T> = KPIValue<T>>(
   });
 }
 
+function buildDistributionStats<T, KPI extends KPIValue<T>>(
+  selectedKPI: KPI,
+  entityType: "municipalities" | "companies" | "regions",
+  aboveAverageCount: number,
+  belowAverageCount: number,
+  nullCount: number,
+): EntityStatistics<T>["distributionStats"] {
+  const entityPlural = t("header." + entityType).toLowerCase();
+  const aboveAverageLabel = t("rankedInsights.aboveAverage", { entityPlural });
+  const belowAverageLabel = t("rankedInsights.belowAverage", { entityPlural });
+  const kpiKey = String(selectedKPI.key);
+
+  const distributionStats = [
+    {
+      count: aboveAverageCount,
+      colorClass: selectedKPI.higherIsBetter ? "text-blue-3" : "text-pink-3",
+      label: selectedKPI.isBoolean
+        ? t(`${entityType}.list.kpis.${kpiKey}.booleanLabels.true`)
+        : aboveAverageLabel,
+    },
+    {
+      count: belowAverageCount,
+      colorClass: selectedKPI.higherIsBetter ? "text-pink-3" : "text-blue-3",
+      label: selectedKPI.isBoolean
+        ? t(`${entityType}.list.kpis.${kpiKey}.booleanLabels.false`)
+        : belowAverageLabel,
+    },
+  ];
+
+  if (selectedKPI.isBoolean && nullCount > 0) {
+    distributionStats.push({
+      count: nullCount,
+      colorClass: "text-grey",
+      label: t(`${entityType}.list.kpis.${kpiKey}.nullValues`, {
+        defaultValue: t("unknown"),
+      }),
+    });
+  }
+
+  return distributionStats;
+}
+
 /**
  * Calculate statistics for entities based on KPI
  */
@@ -110,44 +152,13 @@ export function calculateEntityStatistics<
     return isMissingRankedValue(value, selectedKPI.isBoolean);
   }).length;
 
-  const entityPlural = t("header." + entityType).toLowerCase();
-
-  const aboveAverageLabel = t("rankedInsights.aboveAverage", {
-    entityPlural,
-  });
-  const belowAverageLabel = t("rankedInsights.belowAverage", {
-    entityPlural,
-  });
-
-  const kpiKey = String(selectedKPI.key);
-
-  // Create distribution stats
-  const distributionStats = [
-    {
-      count: aboveAverageCount,
-      colorClass: selectedKPI.higherIsBetter ? "text-blue-3" : "text-pink-3",
-      label: selectedKPI.isBoolean
-        ? t(`${entityType}.list.kpis.${kpiKey}.booleanLabels.true`)
-        : aboveAverageLabel,
-    },
-    {
-      count: belowAverageCount,
-      colorClass: selectedKPI.higherIsBetter ? "text-pink-3" : "text-blue-3",
-      label: selectedKPI.isBoolean
-        ? t(`${entityType}.list.kpis.${kpiKey}.booleanLabels.false`)
-        : belowAverageLabel,
-    },
-  ];
-
-  if (selectedKPI.isBoolean && nullCount > 0) {
-    distributionStats.push({
-      count: nullCount,
-      colorClass: "text-grey",
-      label: t(`${entityType}.list.kpis.${kpiKey}.nullValues`, {
-        defaultValue: t("unknown"),
-      }),
-    });
-  }
+  const distributionStats = buildDistributionStats(
+    selectedKPI,
+    entityType,
+    aboveAverageCount,
+    belowAverageCount,
+    nullCount,
+  );
 
   const unit = selectedKPI.unit || "";
   const formattedAverage = selectedKPI.isBoolean

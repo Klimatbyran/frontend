@@ -47,33 +47,16 @@ function calculateItemsPerPage(itemCount: number, panelHeight: number): number {
   return rowsWithPagination * LIST_COLUMNS;
 }
 
-export function useTerritoryListLayout(
-  territories: TerritoryListEntry[],
-  paginationEnabled: boolean,
-  hoveredMapArea: string | null,
+function useItemsPerPage(
+  panelRef: React.RefObject<HTMLDivElement | null>,
+  itemCount: number,
+  shouldPaginateDesktop: boolean,
+  shouldPaginateMobile: boolean,
 ) {
-  const itemCount = territories.length;
-  const panelRef = useRef<HTMLDivElement>(null);
   const [itemsPerPage, setItemsPerPage] = useState(itemCount);
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const sideBySideQuery = useCallback(
-    ({ width }: { width: number }) => width >= SIDE_BY_SIDE_MIN_WIDTH,
-    [],
-  );
-  const [layoutRef, isSideBySide] =
-    useContainerQuery<HTMLDivElement>(sideBySideQuery);
-  const shouldPaginateDesktop = isSideBySide && paginationEnabled;
-  const shouldPaginateMobile =
-    !isSideBySide && itemCount > MOBILE_TERRITORY_LIST_PAGINATION_THRESHOLD;
-  const shouldPaginateList = shouldPaginateDesktop || shouldPaginateMobile;
 
   useEffect(() => {
-    setCurrentPage(1);
-  }, [itemCount, shouldPaginateList]);
-
-  useEffect(() => {
-    if (!shouldPaginateList) {
+    if (!shouldPaginateDesktop && !shouldPaginateMobile) {
       setItemsPerPage(itemCount);
       return;
     }
@@ -96,16 +79,27 @@ export function useTerritoryListLayout(
     observer.observe(panel);
 
     return () => observer.disconnect();
-  }, [itemCount, shouldPaginateList, shouldPaginateMobile]);
+  }, [itemCount, shouldPaginateDesktop, shouldPaginateMobile, panelRef]);
 
-  const totalPages = Math.max(1, Math.ceil(itemCount / itemsPerPage));
-  const currentPageSafe = Math.min(currentPage, totalPages);
+  return itemsPerPage;
+}
 
-  useEffect(() => {
-    if (currentPage !== currentPageSafe) {
-      setCurrentPage(currentPageSafe);
-    }
-  }, [currentPage, currentPageSafe]);
+function useHoveredPageSync(options: {
+  shouldPaginateDesktop: boolean;
+  hoveredMapArea: string | null;
+  territories: TerritoryListEntry[];
+  itemsPerPage: number;
+  currentPageSafe: number;
+  setCurrentPage: (page: number) => void;
+}) {
+  const {
+    shouldPaginateDesktop,
+    hoveredMapArea,
+    territories,
+    itemsPerPage,
+    currentPageSafe,
+    setCurrentPage,
+  } = options;
 
   useEffect(() => {
     if (!shouldPaginateDesktop || !hoveredMapArea || itemsPerPage <= 0) {
@@ -118,8 +112,67 @@ export function useTerritoryListLayout(
     }
 
     const targetPage = getTerritoryListPage(index, itemsPerPage);
-    setCurrentPage(targetPage);
-  }, [hoveredMapArea, shouldPaginateDesktop, territories, itemsPerPage]);
+    if (targetPage !== currentPageSafe) {
+      setCurrentPage(targetPage);
+    }
+  }, [
+    hoveredMapArea,
+    shouldPaginateDesktop,
+    territories,
+    itemsPerPage,
+    currentPageSafe,
+    setCurrentPage,
+  ]);
+}
+
+export function useTerritoryListLayout(
+  territories: TerritoryListEntry[],
+  paginationEnabled: boolean,
+  hoveredMapArea: string | null,
+) {
+  const itemCount = territories.length;
+  const panelRef = useRef<HTMLDivElement>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const sideBySideQuery = useCallback(
+    ({ width }: { width: number }) => width >= SIDE_BY_SIDE_MIN_WIDTH,
+    [],
+  );
+  const [layoutRef, isSideBySide] =
+    useContainerQuery<HTMLDivElement>(sideBySideQuery);
+  const shouldPaginateDesktop = isSideBySide && paginationEnabled;
+  const shouldPaginateMobile =
+    !isSideBySide && itemCount > MOBILE_TERRITORY_LIST_PAGINATION_THRESHOLD;
+  const shouldPaginateList = shouldPaginateDesktop || shouldPaginateMobile;
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [itemCount, shouldPaginateList]);
+
+  const itemsPerPage = useItemsPerPage(
+    panelRef,
+    itemCount,
+    shouldPaginateDesktop,
+    shouldPaginateMobile,
+  );
+
+  const totalPages = Math.max(1, Math.ceil(itemCount / itemsPerPage));
+  const currentPageSafe = Math.min(currentPage, totalPages);
+
+  useEffect(() => {
+    if (currentPage !== currentPageSafe) {
+      setCurrentPage(currentPageSafe);
+    }
+  }, [currentPage, currentPageSafe]);
+
+  useHoveredPageSync({
+    shouldPaginateDesktop,
+    hoveredMapArea,
+    territories,
+    itemsPerPage,
+    currentPageSafe,
+    setCurrentPage,
+  });
 
   const visibleTerritories = useMemo(() => {
     if (!shouldPaginateList || itemsPerPage <= 0) {

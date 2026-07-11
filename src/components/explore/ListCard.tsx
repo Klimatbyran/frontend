@@ -5,72 +5,55 @@ import type { ComparisonDetails } from "@/utils/compare/buildComparisonDetails";
 import { ListCardBody } from "./ListCardBody";
 
 export interface ListCardProps {
-  // Basic info
   name: string;
-  description: string; // For municipalities: region, For companies: sector
+  description: string;
   linkTo: string;
   logoUrl?: string | null;
-
-  // Meets Paris
   meetsParis: boolean | null;
   meetsParisTranslationKey: string;
-
-  // Emissions data
   emissionsValue: string | null;
   emissionsYear?: string;
   emissionsUnit?: string;
   emissionsIsAIGenerated?: boolean;
-
-  // Change rate data
   changeRateValue: string | null;
   changeRateIsAIGenerated?: boolean;
   changeRateColor?: string;
   changeRateTooltip?: string;
-
-  //Reporting since (tracking)
   baseYear?: number | null;
-
-  //Scope 3 coverage
   hasScope3Coverage: boolean;
-
-  // Optional features
   isFinancialsSector?: boolean;
-
-  // Climate plan information (municipalities)
   climatePlanHasPlan?: boolean | null;
   climatePlanYear?: number | null;
-
   variant?: "company" | "municipality" | "region";
-
-  /** Extra metrics from detail pages, used in comparison view only */
   comparisonDetails?: ComparisonDetails;
-
-  // Comparison mode
   comparisonMode?: boolean;
   selected?: boolean;
   onSelect?: () => void;
   selectionDisabled?: boolean;
 }
 
-export function ListCard({
-  linkTo,
-  variant = "company",
-  comparisonMode = false,
-  selected = false,
-  onSelect,
-  selectionDisabled = false,
-  ...cardProps
-}: ListCardProps) {
-  const isRegion = variant === "region";
-  const isMunicipality = variant === "municipality";
+function getLinkMinHeightClass(variant: ListCardProps["variant"]) {
+  if (variant === "region") {
+    return "min-h-[300px]";
+  }
+  if (variant === "municipality") {
+    return "min-h-[400px]";
+  }
+  return "min-h-[418px]";
+}
 
-  const linkMinHeightClass = isRegion
-    ? "min-h-[300px]"
-    : isMunicipality
-      ? "min-h-[400px]"
-      : "min-h-[418px]";
-
-  const cardClassName = cn(
+function getListCardClassName({
+  linkMinHeightClass,
+  comparisonMode,
+  selectionDisabled,
+  selected,
+}: {
+  linkMinHeightClass: string;
+  comparisonMode: boolean;
+  selectionDisabled: boolean;
+  selected: boolean;
+}) {
+  return cn(
     "block bg-black-2 rounded-level-2 p-8 md:space-y-4 transition-all duration-300",
     linkMinHeightClass,
     !comparisonMode &&
@@ -82,51 +65,110 @@ export function ListCard({
     comparisonMode && selected && "ring-2 ring-blue-2",
     comparisonMode && selectionDisabled && "opacity-50 cursor-not-allowed",
   );
+}
 
+function getSelectionIndicatorClassName(
+  selected: boolean,
+  selectionDisabled: boolean,
+) {
+  if (selected) {
+    return "border-blue-2 bg-blue-5 text-white";
+  }
+  if (selectionDisabled) {
+    return "border-white/25 bg-white/5";
+  }
+  return "border-white/40 bg-white/10";
+}
+
+interface ListCardComparisonWrapperProps {
+  cardClassName: string;
+  cardContent: React.ReactNode;
+  name: string;
+  selected: boolean;
+  selectionDisabled: boolean;
+  onSelect?: () => void;
+}
+
+function ListCardComparisonWrapper({
+  cardClassName,
+  cardContent,
+  name,
+  selected,
+  selectionDisabled,
+  onSelect,
+}: ListCardComparisonWrapperProps) {
+  const handleSelect = () => {
+    if (!selectionDisabled && onSelect) {
+      onSelect();
+    }
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (
+      !selectionDisabled &&
+      onSelect &&
+      (event.key === "Enter" || event.key === " ")
+    ) {
+      event.preventDefault();
+      onSelect();
+    }
+  };
+
+  return (
+    <div className="relative rounded-level-2 @container">
+      <div
+        role="button"
+        tabIndex={selectionDisabled ? -1 : 0}
+        aria-pressed={selected}
+        aria-disabled={selectionDisabled}
+        aria-label={name}
+        className={cardClassName}
+        onClick={handleSelect}
+        onKeyDown={handleKeyDown}
+      >
+        <div
+          className={cn(
+            "absolute top-3 left-3 z-10 flex h-5 w-5 items-center justify-center rounded-full border transition-colors",
+            getSelectionIndicatorClassName(selected, selectionDisabled),
+          )}
+          aria-hidden
+        >
+          {selected && <Check className="h-3 w-3" strokeWidth={2.5} />}
+        </div>
+        {cardContent}
+      </div>
+    </div>
+  );
+}
+
+export function ListCard({
+  linkTo,
+  variant = "company",
+  comparisonMode = false,
+  selected = false,
+  onSelect,
+  selectionDisabled = false,
+  ...cardProps
+}: ListCardProps) {
+  const linkMinHeightClass = getLinkMinHeightClass(variant);
+  const cardClassName = getListCardClassName({
+    linkMinHeightClass,
+    comparisonMode,
+    selectionDisabled,
+    selected,
+  });
   const cardContent = <ListCardBody variant={variant} {...cardProps} />;
 
   if (comparisonMode) {
     return (
-      <div className="relative rounded-level-2 @container">
-        <div
-          role="button"
-          tabIndex={selectionDisabled ? -1 : 0}
-          aria-pressed={selected}
-          aria-disabled={selectionDisabled}
-          aria-label={cardProps.name}
-          className={cardClassName}
-          onClick={() => {
-            if (!selectionDisabled && onSelect) {
-              onSelect();
-            }
-          }}
-          onKeyDown={(e) => {
-            if (
-              !selectionDisabled &&
-              onSelect &&
-              (e.key === "Enter" || e.key === " ")
-            ) {
-              e.preventDefault();
-              onSelect();
-            }
-          }}
-        >
-          <div
-            className={cn(
-              "absolute top-3 left-3 z-10 flex h-5 w-5 items-center justify-center rounded-full border transition-colors",
-              selected
-                ? "border-blue-2 bg-blue-5 text-white"
-                : selectionDisabled
-                  ? "border-white/25 bg-white/5"
-                  : "border-white/40 bg-white/10",
-            )}
-            aria-hidden
-          >
-            {selected && <Check className="h-3 w-3" strokeWidth={2.5} />}
-          </div>
-          {cardContent}
-        </div>
-      </div>
+      <ListCardComparisonWrapper
+        cardClassName={cardClassName}
+        cardContent={cardContent}
+        name={cardProps.name}
+        selected={selected}
+        selectionDisabled={selectionDisabled}
+        onSelect={onSelect}
+      />
     );
   }
 

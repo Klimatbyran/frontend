@@ -76,7 +76,7 @@ export function NewsletterPopover({
 
   const handleFormSubmit = (
     event: React.SyntheticEvent<HTMLFormElement>,
-    subscribe: (data: any) => void,
+    subscribe: (data: { EMAIL: string }) => void,
   ) => {
     event.preventDefault();
     setStatus("idle");

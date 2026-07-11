@@ -7,6 +7,55 @@ import {
 } from "@/utils/ui/numberFormat";
 import { validateValue } from "../../../utils/ui/validation";
 
+function TopBracketIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="36"
+      height="36"
+      viewBox="0 0 36 36"
+    >
+      <rect x="18" y="18" width="2" height="18" fill="white"></rect>
+      <rect x="10" y="18" width="10" height="2" fill="white"></rect>
+    </svg>
+  );
+}
+
+function BottomBracketIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="36"
+      height="36"
+      viewBox="0 0 36 36"
+    >
+      <rect x="18" y="0" width="2" height="18" fill="white"></rect>
+      <rect x="10" y="18" width="10" height="2" fill="white"></rect>
+    </svg>
+  );
+}
+
+function getVerificationState(
+  displayAddition: CompanyEditInputFieldProps["displayAddition"],
+  rawValue: number | string | undefined,
+  value: number | string,
+  originalVerified: boolean | undefined,
+  currentVerified: boolean | undefined,
+) {
+  if (displayAddition !== "verification") {
+    return { isDisabled: false, badgeIconClass: "" };
+  }
+
+  const [isDisabled, badgeIconClass] = validateValue({
+    value: rawValue ?? "",
+    originalValue: value,
+    originalVerified: !!originalVerified,
+    verified: !!currentVerified,
+  });
+
+  return { isDisabled, badgeIconClass };
+}
+
 export interface CompanyEditInputFieldProps {
   type: "date" | "number" | "text";
   value: number | string;
@@ -46,6 +95,7 @@ export function CompanyEditInputField({
   const handleCheckboxChange = (event: boolean) => {
     onInputChange(name + "-checkbox", String(event), originalVerified);
   };
+
   const rawValue = formData.has(name) ? formData.get(name) : value;
   const displayValue = isNumericField
     ? formatNumberForInput(rawValue ?? "")
@@ -53,41 +103,12 @@ export function CompanyEditInputField({
   const currentVerified = formData.has(name + "-checkbox")
     ? formData.get(name + "-checkbox") === "true"
     : verified;
-
-  // Use shared validation helper for badge and disabled state
-  let isDisabled = false;
-  let badgeIconClass = "";
-  if (displayAddition === "verification") {
-    [isDisabled, badgeIconClass] = validateValue({
-      value: rawValue ?? "",
-      originalValue: value,
-      originalVerified: !!originalVerified,
-      verified: !!currentVerified,
-    });
-  }
-
-  const topBracket = (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="36"
-      height="36"
-      viewBox="0 0 36 36"
-    >
-      <rect x="18" y="18" width="2" height="18" fill="white"></rect>
-      <rect x="10" y="18" width="10" height="2" fill="white"></rect>
-    </svg>
-  );
-
-  const bottomBracket = (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="36"
-      height="36"
-      viewBox="0 0 36 36"
-    >
-      <rect x="18" y="0" width="2" height="18" fill="white"></rect>
-      <rect x="10" y="18" width="10" height="2" fill="white"></rect>
-    </svg>
+  const { isDisabled, badgeIconClass } = getVerificationState(
+    displayAddition,
+    rawValue,
+    value,
+    originalVerified,
+    currentVerified,
   );
 
   return (
@@ -119,8 +140,8 @@ export function CompanyEditInputField({
           badgeIconClass={badgeIconClass}
         />
       )}
-      {displayAddition === "topBracket" && topBracket}
-      {displayAddition === "bottomBracket" && bottomBracket}
+      {displayAddition === "topBracket" && <TopBracketIcon />}
+      {displayAddition === "bottomBracket" && <BottomBracketIcon />}
     </div>
   );
 }
