@@ -18,7 +18,7 @@ import {
 
 type MeetsParisFilter = "all" | "yes" | "no" | "unknown";
 
-export type CompanyFilterParams = {
+type CompanyFilterParams = {
   sectors: CompanySector[];
   selectedCountries: CompanyCountryTagSlug[];
   searchQuery: string;
@@ -196,7 +196,7 @@ export function filterAndSortCompanies(
     .sort((a, b) => compareCompanies(a, b, sortBy, sortDirection));
 }
 
-export function buildSectorFilterGroup(
+function buildSectorFilterGroup(
   t: TFunction,
   sectorOptions: { value: string; label: string }[],
   sectors: CompanySector[],
@@ -224,7 +224,7 @@ export function buildSectorFilterGroup(
   };
 }
 
-export function buildCompanyMeetsParisFilterGroup(
+function buildCompanyMeetsParisFilterGroup(
   t: TFunction,
   meetsParisFilter: MeetsParisFilter,
   setMeetsParisFilter: (value: MeetsParisFilter) => void,
@@ -265,7 +265,7 @@ function getMeetsParisFilterLabel(
   return t("explorePage.companies.filteringOptions.meetsParisUnknown");
 }
 
-export function buildCompanyActiveFilters(
+function buildCompanyActiveFilters(
   t: TFunction,
   options: {
     includeSectorFilter: boolean;
