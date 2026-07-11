@@ -1617,14 +1617,14 @@
         "question": "Så hur har de olika utsläppsperspektiven förändrats sedan 1990?"
       },
       "graph": {
-        "territorialFossil": "Produktionsbaserade (territoriella fossila)",
+        "productionBased": "Produktionsbaserade utsläpp",
         "biogenic": "Biogena utsläpp",
         "consumptionAbroad": "Konsumtionsbaserade utomlands"
       },
       "stacked": {
         "title": "De samlade utsläppen sedan 1990",
         "description": "När man slår samman produktionsbaserade, biogena och konsumtionsbaserade utsläpp ser bilden helt annorlunda ut. Stacken visar hur de tre lagren tillsammans knappt förändrats sedan 1990 – en annan berättelse än den officiella statistiken.",
-        "layerCaption1": "Först ritar vi ut de territoriella fossila utsläppen – det vi vanligtvis diskuterar.",
+        "layerCaption1": "Först ritar vi ut de produktionsbaserade utsläppen – fossila utsläpp kopplade till den svenska ekonomin.",
         "layerCaption2": "Nu lägger vi till de biogena utsläppen ovanpå.",
         "layerCaption3": "Och slutligen de konsumtionsbaserade utsläppen utomlands – hela bilden."
       },

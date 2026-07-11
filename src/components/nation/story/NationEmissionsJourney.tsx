@@ -26,11 +26,10 @@ type JourneyStep = {
 const MAX_DIAMETER = 300;
 
 function buildSteps(metrics: NationStoryMetrics): JourneyStep[] {
-  const territorial = metrics.territorialLatestMton; // ~47
-  const consumption = metrics.consumptionLatestMton; // ~60
-  const biogenic = metrics.biogenicLatestMton; // ~47
-  // Production-based is ~4 Mton above territorial per the report (51 vs 47)
-  const production = territorial + 4;
+  const territorial = metrics.territorialLatestMton;
+  const production = metrics.productionLatestMton;
+  const consumption = metrics.consumptionLatestMton;
+  const biogenic = metrics.biogenicLatestMton;
 
   return [
     {

@@ -33,9 +33,9 @@ import { usePinnedSteps } from "@/components/nation/story/usePinnedSteps";
 
 const LAYERS = [
   {
-    dataKey: "territorialFossil" as const,
+    dataKey: "productionBased" as const,
     color: "var(--orange-2)",
-    translationKey: "nation.story.graph.territorialFossil",
+    translationKey: "nation.story.graph.productionBased",
     captionKey: "nation.story.stacked.layerCaption1",
   },
   {

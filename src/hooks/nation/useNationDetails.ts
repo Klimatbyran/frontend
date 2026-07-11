@@ -15,6 +15,7 @@ type RawNationResponse = {
   country: { sv: string; en: string } | string;
   logoUrl?: string | null;
   territorialFossilEmissions?: EmissionSeries | YearlyRecord;
+  productionBasedEmissions?: EmissionSeries | YearlyRecord;
   biogenicEmissions?: EmissionSeries | YearlyRecord;
   consumptionAbroadEmissions?: EmissionSeries | YearlyRecord;
   emissions?: EmissionSeries | YearlyRecord;
@@ -70,6 +71,7 @@ function hasStorySchema(response: RawNationResponse): boolean {
   const territorial = response.territorialFossilEmissions ?? response.emissions;
   return (
     !!territorial &&
+    !!response.productionBasedEmissions &&
     !!response.biogenicEmissions &&
     !!response.consumptionAbroadEmissions
   );
@@ -83,6 +85,7 @@ function transformRawNation(response: RawNationResponse): NationDetails {
     country: normalizeCountry(response.country),
     logoUrl: response.logoUrl ?? null,
     territorialFossil: extractYearRecord(territorialSource),
+    productionBased: extractYearRecord(response.productionBasedEmissions),
     biogenic: extractYearRecord(response.biogenicEmissions),
     consumptionAbroad: extractYearRecord(response.consumptionAbroadEmissions),
   };

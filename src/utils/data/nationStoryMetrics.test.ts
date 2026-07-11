@@ -13,6 +13,7 @@ import type { NationEmissionSeries } from "@/utils/data/nationStoryMetrics";
 function fixtureToSeries(): NationEmissionSeries {
   const raw = nationFixture[0] as {
     territorialFossilEmissions: Record<string, number>;
+    productionBasedEmissions: Record<string, number>;
     biogenicEmissions: Record<string, number>;
     consumptionAbroadEmissions: Record<string, number>;
   };
@@ -24,6 +25,7 @@ function fixtureToSeries(): NationEmissionSeries {
 
   return {
     territorialFossil: toRecord(raw.territorialFossilEmissions),
+    productionBased: toRecord(raw.productionBasedEmissions),
     biogenic: toRecord(raw.biogenicEmissions),
     consumptionAbroad: toRecord(raw.consumptionAbroadEmissions),
   };
@@ -36,8 +38,8 @@ describe("nationStoryMetrics", () => {
     const combined1990 = sumSeriesAtYear(series, NATION_BASELINE_YEAR);
     const combined2024 = sumSeriesAtYear(series, 2024);
 
-    expect(toMton(combined1990)).toBeCloseTo(165.3, 0);
-    expect(toMton(combined2024)).toBeCloseTo(155.3, 0);
+    expect(toMton(combined1990)).toBeCloseTo(167.4, 0);
+    expect(toMton(combined2024)).toBeCloseTo(159.9, 0);
   });
 
   it("computes roughly 3x ratio between full and reported emissions in 2024", () => {
@@ -59,7 +61,8 @@ describe("nationStoryMetrics", () => {
     const stackData = buildStackChartData(series);
     const point2024 = stackData.find((point) => point.year === 2024);
 
-    expect(point2024?.combined).toBeCloseTo(155.3, 0);
+    expect(point2024?.combined).toBeCloseTo(159.9, 0);
+    expect(point2024?.productionBased).toBeCloseTo(52.1, 0);
   });
 
   it("calculates percent change correctly", () => {

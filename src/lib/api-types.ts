@@ -2839,6 +2839,10 @@ export interface paths {
                                 year: string;
                                 value: number;
                             } | null)[];
+                            productionBasedEmissions: ({
+                                year: string;
+                                value: number;
+                            } | null)[];
                             biogenicEmissions: ({
                                 year: string;
                                 value: number;

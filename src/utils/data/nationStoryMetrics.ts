@@ -4,13 +4,14 @@ export const NATION_BASELINE_YEAR = 1990;
 
 export type NationEmissionSeries = {
   territorialFossil: Record<number, number>;
+  productionBased: Record<number, number>;
   biogenic: Record<number, number>;
   consumptionAbroad: Record<number, number>;
 };
 
 export type NationStackDataPoint = {
   year: number;
-  territorialFossil: number;
+  productionBased: number;
   biogenic: number;
   consumptionAbroad: number;
   combined: number;
@@ -25,6 +26,9 @@ export type NationStoryMetrics = {
   territorialLatestMton: number;
   territorial1990Mton: number;
   territorialChangePercent: number;
+  productionLatestMton: number;
+  production1990Mton: number;
+  productionChangePercent: number;
   biogenic1990Mton: number;
   biogenicLatestMton: number;
   biogenicChangePercent: number;
@@ -60,7 +64,7 @@ export function sumSeriesAtYear(
   series: NationEmissionSeries,
   year: number,
   layers: Array<keyof NationEmissionSeries> = [
-    "territorialFossil",
+    "productionBased",
     "biogenic",
     "consumptionAbroad",
   ],
@@ -70,7 +74,9 @@ export function sumSeriesAtYear(
 
 function collectYears(series: NationEmissionSeries): number[] {
   const years = new Set<number>();
-  (["territorialFossil", "biogenic", "consumptionAbroad"] as const).forEach(
+  (
+    ["territorialFossil", "productionBased", "biogenic", "consumptionAbroad"] as const
+  ).forEach(
     (layer) => {
       Object.keys(series[layer]).forEach((year) => {
         const parsed = Number(year);
@@ -85,7 +91,7 @@ function getLatestCompleteYear(series: NationEmissionSeries): number {
   const years = collectYears(series);
   const completeYears = years.filter(
     (year) =>
-      series.territorialFossil[year] !== undefined &&
+      series.productionBased[year] !== undefined &&
       series.biogenic[year] !== undefined &&
       series.consumptionAbroad[year] !== undefined,
   );
@@ -96,16 +102,16 @@ export function buildStackChartData(
   series: NationEmissionSeries,
 ): NationStackDataPoint[] {
   return collectYears(series).map((year) => {
-    const territorialFossil = toMton(series.territorialFossil[year] ?? 0);
+    const productionBased = toMton(series.productionBased[year] ?? 0);
     const biogenic = toMton(series.biogenic[year] ?? 0);
     const consumptionAbroad = toMton(series.consumptionAbroad[year] ?? 0);
 
     return {
       year,
-      territorialFossil,
+      productionBased,
       biogenic,
       consumptionAbroad,
-      combined: territorialFossil + biogenic + consumptionAbroad,
+      combined: productionBased + biogenic + consumptionAbroad,
     };
   });
 }
@@ -120,6 +126,9 @@ export function computeNationStoryMetrics(
   const territorial1990Tonnes =
     series.territorialFossil[NATION_BASELINE_YEAR] ?? 0;
   const territorialLatestTonnes = series.territorialFossil[latestYear] ?? 0;
+  const production1990Tonnes =
+    series.productionBased[NATION_BASELINE_YEAR] ?? 0;
+  const productionLatestTonnes = series.productionBased[latestYear] ?? 0;
   const biogenic1990Tonnes = series.biogenic[NATION_BASELINE_YEAR] ?? 0;
   const biogenicLatestTonnes = series.biogenic[latestYear] ?? 0;
   const consumption1990Tonnes =
@@ -145,6 +154,12 @@ export function computeNationStoryMetrics(
     territorialChangePercent: percentChange(
       territorial1990Tonnes,
       territorialLatestTonnes,
+    ),
+    productionLatestMton: toMton(productionLatestTonnes),
+    production1990Mton: toMton(production1990Tonnes),
+    productionChangePercent: percentChange(
+      production1990Tonnes,
+      productionLatestTonnes,
     ),
     biogenic1990Mton: toMton(biogenic1990Tonnes),
     biogenicLatestMton: toMton(biogenicLatestTonnes),
