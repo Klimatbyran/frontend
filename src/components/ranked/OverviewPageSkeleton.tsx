@@ -20,7 +20,6 @@ interface OverviewPageSkeletonProps {
 const SHIMMER = "bg-white/10 rounded animate-pulse";
 
 const CHIP_WIDTHS = ["w-20", "w-28", "w-24", "w-32", "w-28", "w-36", "w-24"];
-const SECTOR_WIDTHS = ["w-16", "w-24", "w-20", "w-28", "w-20", "w-24"];
 
 function SkeletonBlock({ className = "" }: { className?: string }) {
   return <div className={`${SHIMMER} ${className}`} />;
@@ -43,16 +42,10 @@ function KPIChipSelectorSkeleton({ chipCount }: { chipCount: number }) {
   );
 }
 
-function IndustryFilterSkeleton() {
+function FilterBarSkeleton() {
   return (
     <div className="mb-4 flex flex-wrap items-center gap-2">
-      <SkeletonBlock className="h-4 w-28" />
-      {Array.from({ length: 6 }, (_, i) => (
-        <SkeletonBlock
-          key={i}
-          className={`h-8 rounded-level-1 ${SECTOR_WIDTHS[i % SECTOR_WIDTHS.length]}`}
-        />
-      ))}
+      <SkeletonBlock className="h-9 w-24 rounded-md" />
     </div>
   );
 }
@@ -156,7 +149,7 @@ export function OverviewPageSkeleton({
 
       <KPIChipSelectorSkeleton chipCount={chipCount} />
 
-      {variant === "companies" && <IndustryFilterSkeleton />}
+      {variant === "companies" && <FilterBarSkeleton />}
 
       <div className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-6 items-stretch">

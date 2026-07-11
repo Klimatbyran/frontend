@@ -118,27 +118,31 @@ vi.mock("@/components/companies/rankedList/CompanyKPIVisualization", () => ({
   CompanyKPIVisualization: () => <div data-testid="kpi-visualization" />,
 }));
 
-vi.mock("@/components/companies/rankedList/IndustryFilter", () => ({
-  IndustryFilter: ({
-    availableSectors,
-    selectedSector,
-    onSectorChange,
+vi.mock("@/components/explore/FilterPopover", () => ({
+  FilterPopover: ({
+    groups,
   }: {
-    availableSectors: string[];
-    selectedSector: string | null;
-    onSectorChange: (sector: string) => void;
+    groups: Array<{
+      options: Array<{ value: string; label: string }>;
+      selectedValues: string[];
+      onSelect: (value: string) => void;
+    }>;
   }) => (
-    <div>
-      {availableSectors.map((sector) => (
-        <button
-          key={sector}
-          type="button"
-          aria-pressed={selectedSector === sector}
-          onClick={() => onSectorChange(sector)}
-        >
-          {sector}
-        </button>
-      ))}
+    <div data-testid="filter-popover">
+      {groups.flatMap((group) =>
+        group.options
+          .filter((option) => option.value !== "all")
+          .map((option) => (
+            <button
+              key={option.value}
+              type="button"
+              aria-pressed={group.selectedValues.includes(option.value)}
+              onClick={() => group.onSelect(option.value)}
+            >
+              {option.value}
+            </button>
+          )),
+      )}
     </div>
   ),
 }));

@@ -16,12 +16,21 @@ import {
 import RankedList from "@/components/ranked/RankedList";
 import CompanyInsightsPanel from "@/components/companies/rankedList/CompanyInsightsPanel";
 import { CompanyKPIVisualization } from "@/components/companies/rankedList/CompanyKPIVisualization";
-import { IndustryFilter } from "@/components/companies/rankedList/IndustryFilter";
-import { CountryFilter } from "@/components/companies/rankedList/CountryFilter";
 import {
+  FilterPopover,
+  type FilterGroup,
+} from "@/components/explore/FilterPopover";
+import { FilterBadges } from "@/components/companies/list/FilterBadges";
+import { cn } from "@/lib/utils";
+import { useSectorNames } from "@/hooks/companies/useCompanySectors";
+import {
+  buildCountryActiveFilters,
+  buildCountryFilterGroup,
   companyMatchesCountries,
   getAvailableCountryOptions,
   parseCountriesFromURL,
+  toggleCountrySelection,
+  useCompanyCountryNames,
 } from "@/hooks/companies/companyCountryFilterUtils";
 import type { CompanyCountryTagSlug } from "@/lib/constants/companyCountryTags";
 import {
@@ -43,6 +52,9 @@ export function CompaniesOverviewPage() {
   const { isMobile } = useScreenSize();
   const { companies, companiesLoading, companiesError } = useCompanies();
   const companyKPIs = useCompanyKPIs();
+  const sectorNames = useSectorNames();
+  const countryNames = useCompanyCountryNames();
+  const [filterOpen, setFilterOpen] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -190,6 +202,84 @@ export function CompaniesOverviewPage() {
     setCountriesInURL(countries);
   };
 
+  const filterGroups: FilterGroup[] = useMemo(() => {
+    const groups: FilterGroup[] = [];
+
+    if (availableSectors.length > 0 && selectedSector) {
+      groups.push({
+        heading: t("companiesOverviewPage.filterByIndustry"),
+        options: availableSectors.map((code) => ({
+          value: code,
+          label: sectorNames[code as keyof typeof sectorNames] || code,
+        })),
+        selectedValues: [selectedSector],
+        onSelect: handleSectorChange,
+        selectMultiple: false,
+      });
+    }
+
+    const countryGroup = buildCountryFilterGroup({
+      t,
+      countryNames,
+      availableCountries,
+      selectedCountries,
+      onSelect: (value) =>
+        handleCountriesChange(toggleCountrySelection(selectedCountries, value)),
+    });
+
+    if (countryGroup) {
+      groups.push(countryGroup);
+    }
+
+    return groups;
+  }, [
+    availableSectors,
+    selectedSector,
+    availableCountries,
+    selectedCountries,
+    sectorNames,
+    countryNames,
+    t,
+  ]);
+
+  const activeFilters = useMemo(() => {
+    const filters = [];
+
+    if (selectedSector) {
+      filters.push({
+        type: "filter" as const,
+        label:
+          sectorNames[selectedSector as keyof typeof sectorNames] ||
+          selectedSector,
+        onRemove: () => {
+          if (availableSectors.length > 0) {
+            setSectorInURL(availableSectors[0]);
+          }
+        },
+      });
+    }
+
+    filters.push(
+      ...buildCountryActiveFilters({
+        countryNames,
+        selectedCountries,
+        onRemove: (country) =>
+          handleCountriesChange(
+            selectedCountries.filter((value) => value !== country),
+          ),
+      }),
+    );
+
+    return filters;
+  }, [
+    selectedSector,
+    availableSectors,
+    selectedCountries,
+    sectorNames,
+    countryNames,
+    setSectorInURL,
+  ]);
+
   const handleCompanyClick = (company: CompanyWithKPIs) => {
     navigate(getCompanyDetailPath(company));
   };
@@ -310,17 +400,22 @@ export function CompaniesOverviewPage() {
         label={t("companies.list.dataSelector.label")}
       />
 
-      <div className="mb-4 space-y-4">
-        <IndustryFilter
-          availableSectors={availableSectors}
-          selectedSector={selectedSector}
-          onSectorChange={handleSectorChange}
+      <div className={cn("flex flex-wrap items-center gap-2 mb-4")}>
+        <FilterPopover
+          filterOpen={filterOpen}
+          setFilterOpen={setFilterOpen}
+          groups={filterGroups}
         />
-        <CountryFilter
-          availableCountries={availableCountries}
-          selectedCountries={selectedCountries}
-          onCountriesChange={handleCountriesChange}
-        />
+        {activeFilters.length > 0 && (
+          <div
+            className={cn(
+              "flex flex-wrap gap-2",
+              isMobile ? "w-full" : "flex-1",
+            )}
+          >
+            <FilterBadges filters={activeFilters} view="graphs" />
+          </div>
+        )}
       </div>
 
       <div className="space-y-6">
