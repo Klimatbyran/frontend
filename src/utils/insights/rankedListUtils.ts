@@ -84,7 +84,7 @@ export function calculateEntityStatistics<
     | "municipalities"
     | "companies"
     | "regions"
-    | "countries" = "municipalities",
+    | "europe" = "municipalities",
 ): EntityStatistics<T> {
   const validData = filterValidData(entities, selectedKPI, getValue);
 

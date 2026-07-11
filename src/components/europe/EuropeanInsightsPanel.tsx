@@ -44,7 +44,7 @@ function EuropeanInsightsPanel({
     countryData,
     selectedKPI,
     (country) => country[selectedKPI.key as keyof EuropeanCountry],
-    "countries",
+    "europe",
   );
 
   if (!statistics.validData.length) {
