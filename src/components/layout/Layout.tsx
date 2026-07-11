@@ -16,10 +16,17 @@ export function Layout({ children }: LayoutProps) {
   const params = useParams();
   const isLandingPage = /^\/(sv|en)\/?$/.test(location.pathname);
 
+  const isStagingHost =
+    typeof window !== "undefined" && window.location.hostname.includes("stage");
+
   // Get SEO metadata for current route
   const seoMeta = useMemo(() => {
-    return getSeoForRoute(location.pathname, params as Record<string, string>);
-  }, [location.pathname, params]);
+    const meta = getSeoForRoute(
+      location.pathname,
+      params as Record<string, string>,
+    );
+    return isStagingHost ? { ...meta, noindex: true } : meta;
+  }, [location.pathname, params, isStagingHost]);
 
   // Scroll to top on route change
   useEffect(() => {

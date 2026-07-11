@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { KPIValue } from "@/types/rankings";
 import type { Municipality } from "@/types/municipality";
@@ -9,7 +10,7 @@ export type MunicipalityData = Awaited<
   ReturnType<typeof getMunicipalitiesKPIs>
 >[number];
 
-export function useMunicipalityKPIs() {
+export function useMunicipalityKPIs(options?: { enabled?: boolean }) {
   const {
     data: municipalitiesKPI = [],
     isLoading,
@@ -17,6 +18,7 @@ export function useMunicipalityKPIs() {
   } = useQuery({
     queryKey: ["municipalities-kpis"],
     queryFn: getMunicipalitiesKPIs,
+    enabled: options?.enabled ?? true,
   });
 
   const municipalitiesData: MunicipalityData[] = municipalitiesKPI;
@@ -31,5 +33,5 @@ export function useMunicipalityKPIs() {
 
 export const useMunicipalityKPIDefinitions = (): KPIValue<Municipality>[] => {
   const { t } = useTranslation();
-  return buildMunicipalityKpiDefinitions(t);
+  return useMemo(() => buildMunicipalityKpiDefinitions(t), [t]);
 };

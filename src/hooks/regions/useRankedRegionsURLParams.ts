@@ -12,7 +12,11 @@ export function useRankedRegionsURLParams(regionalKPIs: KPIValue<Region>[]) {
     const kpiKey = params.get("kpi");
 
     return (
-      regionalKPIs.find((kpi) => String(kpi.key) === kpiKey) || regionalKPIs[0]
+      regionalKPIs.find((kpi) => String(kpi.key) === kpiKey) ||
+      regionalKPIs.find(
+        (kpi) => String(kpi.key) === "historicalEmissionChangePercent",
+      ) ||
+      regionalKPIs[0]
     );
   }, [location.search, regionalKPIs]);
 
@@ -37,11 +41,11 @@ export function useRankedRegionsURLParams(regionalKPIs: KPIValue<Region>[]) {
   const viewMode = getViewModeFromURL();
 
   useEffect(() => {
-    const kpiFromUrl = getKPIFromURL();
-    if (kpiFromUrl && kpiFromUrl.key !== selectedKPI.key) {
-      setSelectedKPI(kpiFromUrl);
-    }
-  }, [getKPIFromURL, selectedKPI.key]);
+    const kpi = getKPIFromURL();
+    setSelectedKPI((prev) =>
+      String(prev.key) === String(kpi.key) ? prev : kpi,
+    );
+  }, [getKPIFromURL]);
 
   return {
     selectedKPI,

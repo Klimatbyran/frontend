@@ -13,6 +13,7 @@ import { CalculationsContent } from "./content/CalculationsContent";
 import { CarbonLawContent } from "./content/CarbonLaw";
 import { MunicipalityAndRegionDataOverviewContent } from "./content/MunicipalityAndRegionDataOverview";
 import { MunicipalityKPIsContent } from "./content/MunicipalityKPIsContent";
+import { NationDataOverviewContent } from "./content/NationDataOverview";
 import { ParisAlignmentMethodContent } from "./content/OnTrackForParisContent";
 import { TrendlineContent } from "./content/TrendLineMethodContent";
 import { InterpretingOnTrackContent } from "./content/InprepretingOnTrackContent";
@@ -78,6 +79,8 @@ export const MethodologyContent = forwardRef<
         return <DataCollectionProcessContent />;
       case "relatableNumbers":
         return <RelatableNumbersContent />;
+      case "nationDataOverview":
+        return <NationDataOverviewContent />;
     }
   };
 

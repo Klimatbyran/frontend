@@ -31,6 +31,7 @@ export function ErrorPage() {
         title={pageTitle}
         description={pageDescription}
         canonicalUrl={canonicalUrl}
+        noindex
         structuredData={structuredData}
       />
       <div className="flex flex-col items-center justify-center min-h-[70vh] px-4 text-center">

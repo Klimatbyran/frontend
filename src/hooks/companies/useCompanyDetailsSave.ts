@@ -63,7 +63,7 @@ async function saveCompanyDetails({
   const descriptions = buildDescriptions(company, descriptionEn, descriptionSv);
   const tags = parseTagsInput(tagsInput);
 
-  await updateCompanyDetails(company.wikidataId, {
+  await updateCompanyDetails(company.id, {
     wikidataId: company.wikidataId,
     name: name.trim(),
     ...(descriptions.length > 0 ? { descriptions } : undefined),

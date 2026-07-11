@@ -6,17 +6,20 @@ import { useSectors } from "@/hooks/territories/useSectors";
 import { useSectorYearSelection } from "@/hooks/territories/useSectorYearSelection";
 import { Text } from "../ui/text";
 import { Button } from "../ui/button";
+import { useLanguage } from "@/components/LanguageProvider";
 import { LocalizedLink } from "@/components/LocalizedLink";
+import { getNationDetailPath } from "@/utils/routing";
 import { ArrowRight } from "lucide-react";
 
 export const CountriesSection = () => {
   const { t } = useTranslation();
+  const { currentLanguage } = useLanguage();
   const { sectorEmissions, loading: sectorEmissionsLoading } =
     useSectorEmissions("nation", undefined);
   const { getSectorInfo } = useSectors();
   const { hiddenItems: filteredSectors, setHiddenItems: setFilteredSectors } =
     useHiddenItems<string>([]);
-  const { selectedYear, setSelectedYear, availableYears, currentYear } =
+  const { availableYears, currentYear } =
     useSectorYearSelection(sectorEmissions);
 
   return (
@@ -37,8 +40,6 @@ export const CountriesSection = () => {
             <SectorEmissionsChart
               sectorEmissions={sectorEmissions}
               availableYears={availableYears}
-              selectedYear={selectedYear}
-              onYearChange={setSelectedYear}
               currentYear={currentYear}
               getSectorInfo={getSectorInfo}
               filteredSectors={filteredSectors}
@@ -52,7 +53,10 @@ export const CountriesSection = () => {
         </div>
 
         <div className="w-full flex justify-start md:justify-end">
-          <LocalizedLink to="/nation" className="w-fit md:pt-2">
+          <LocalizedLink
+            to={getNationDetailPath(currentLanguage)}
+            className="w-fit md:pt-2"
+          >
             <Button
               variant="outline"
               size="lg"

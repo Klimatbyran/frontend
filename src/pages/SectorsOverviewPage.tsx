@@ -18,23 +18,13 @@ export function SectorsOverviewPage() {
   const sectorNames = useSectorNames();
 
   const {
-    sectors,
-    setSectors,
     meetsParisFilter,
     setMeetsParisFilter,
     filteredCompanies,
     filterGroups,
-  } = useCompanyFilters(companies);
+  } = useCompanyFilters(companies, { includeSectorFilter: false });
 
-  // Create active filters for badges
   const activeFilters = [
-    ...(sectors.length > 0 && !sectors.includes("all")
-      ? sectors.map((sector) => ({
-          type: "filter" as const,
-          label: sectorNames[sector as keyof typeof sectorNames] || sector,
-          onRemove: () => setSectors(sectors.filter((s) => s !== sector)),
-        }))
-      : []),
     ...(meetsParisFilter !== "all"
       ? [
           {
@@ -77,11 +67,7 @@ export function SectorsOverviewPage() {
 
   return (
     <>
-      <PageHeader
-        title={t("sectorsOverviewPage.title")}
-        description={t("sectorsOverviewPage.description")}
-        className="-ml-4"
-      />
+      <PageHeader variant="title-only" title={t("sectorsOverviewPage.title")} />
 
       {/* Filters Section */}
       <div
@@ -127,11 +113,9 @@ export function SectorsOverviewPage() {
       ) : (
         <SectorGraphs
           companies={filteredCompanies}
-          selectedSectors={
-            sectors.length > 0
-              ? sectors
-              : Object.keys(sectorNames).filter((key) => key !== "all")
-          }
+          selectedSectors={Object.keys(sectorNames).filter(
+            (key) => key !== "all",
+          )}
         />
       )}
     </>

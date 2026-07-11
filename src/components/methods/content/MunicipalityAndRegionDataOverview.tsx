@@ -25,25 +25,25 @@ export const MunicipalityAndRegionDataOverviewContent = () => {
     <div className="prose prose-invert mx-auto space-y-8">
       <p>
         {t(
-          "methodsPage.municipalityAndRegion.municipalityAndRegionDataOverview.paragraph1",
+          "methodsPage.territorial.municipalityAndRegionDataOverview.paragraph1",
         )}
       </p>
       {paragraphWithLink(
-        "methodsPage.municipalityAndRegion.municipalityAndRegionDataOverview.paragraph2",
+        "methodsPage.territorial.municipalityAndRegionDataOverview.paragraph2",
         "https://klimatkollen.se/reports/2025-06-19_ApplyingCarbonLawFrom2025.pdf",
       )}
       {paragraphWithLink(
-        "methodsPage.municipalityAndRegion.municipalityAndRegionDataOverview.paragraph3",
+        "methodsPage.territorial.municipalityAndRegionDataOverview.paragraph3",
         "https://docs.google.com/document/d/1MihysUkfunbV0LjwSUCiGSqWQSo5U03K0RMbRsVBL7U/edit?pli=1&tab=t.0#heading=h.oqnz3ereclbn",
       )}
       <p>
         {t(
-          "methodsPage.municipalityAndRegion.municipalityAndRegionDataOverview.paragraph4",
+          "methodsPage.territorial.municipalityAndRegionDataOverview.paragraph4",
         )}
       </p>
       <p>
         {t(
-          "methodsPage.municipalityAndRegion.municipalityAndRegionDataOverview.paragraph5",
+          "methodsPage.territorial.municipalityAndRegionDataOverview.paragraph5",
         )}
       </p>
     </div>

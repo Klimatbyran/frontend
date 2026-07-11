@@ -3,14 +3,8 @@ import { describe, expect, it, vi } from "vitest";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { MunicipalitiesOverviewPage } from "./MunicipalitiesOverviewPage";
 
-vi.mock("@/hooks/municipalities/useMunicipalityKPIs", () => ({
-  useMunicipalityKPIs: () => ({
-    municipalitiesData: [],
-    municipalities: [],
-    loading: false,
-    error: null,
-  }),
-  useMunicipalityKPIDefinitions: () => [
+const { mockKpiDefinitions } = vi.hoisted(() => ({
+  mockKpiDefinitions: [
     {
       key: "bicycleMetrePerCapita",
       label: "bicycleMetrePerCapita",
@@ -22,6 +16,16 @@ vi.mock("@/hooks/municipalities/useMunicipalityKPIs", () => ({
       higherIsBetter: false,
     },
   ],
+}));
+
+vi.mock("@/hooks/municipalities/useMunicipalityKPIs", () => ({
+  useMunicipalityKPIs: () => ({
+    municipalitiesData: [],
+    municipalities: [],
+    loading: false,
+    error: null,
+  }),
+  useMunicipalityKPIDefinitions: () => mockKpiDefinitions,
 }));
 
 vi.mock("@/components/layout/PageHeader", () => ({
@@ -51,8 +55,8 @@ vi.mock(
   }),
 );
 
-vi.mock("@/components/ranked/KPIDataSelector", () => ({
-  KPIDataSelector: ({ selectedKPI }: { selectedKPI: { key: unknown } }) => (
+vi.mock("@/components/ranked/KPIChipSelector", () => ({
+  KPIChipSelector: ({ selectedKPI }: { selectedKPI: { key: unknown } }) => (
     <div data-testid="kpi-selector">{String(selectedKPI.key)}</div>
   ),
 }));

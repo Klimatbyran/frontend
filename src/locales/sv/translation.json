@@ -9,9 +9,11 @@
   "header": {
     "data": "Data",
     "companies": "Företag",
+    "allCompanies": "Alla företag",
     "sectors": "Branscher",
     "explore": "Utforska",
     "europe": "Europa",
+    "territories": "Platser",
     "municipalities": "Kommuner",
     "nation": "Sverige",
     "regions": "Län",
@@ -88,32 +90,14 @@
       "region": "Län",
       "nation": "Land"
     },
-    "seeResults": "Se resultat",
-    "bestPerformers": "Topplistor",
-    "bestMunicipalities": "Kommuner med snabbast utsläppsminskning",
-    "municipalitiesDescription": "Årlig utsläppsminskning sedan Parisavtalet 2015",
-    "largestEmittor": "Företag med störst utsläpp",
-    "companiesDescription": "Utsläpp från senaste rapporterade året",
-    "aboutUsTitle": "Vilka är vi?",
     "aboutUsContent": "Klimatkollen är en medborgarplattform som tillgängliggör klimatdata och bygger stöd för minskade utsläpp enligt Parisavtalet. Vi tror på kraften i enkel och tilltalande datavisualisering för att öka kunskapen och engagemanget kring klimatdebatten.",
-    "tabName": {
-      "companies": "företagen",
-      "municipalities": "kommunerna"
-    },
     "reportCorrection": "Anmäl en korrigering",
     "questionPlaceholder": "Berätta vad och var ärendet gäller",
     "questionMissing": "Ange en kommentar",
     "submitQuestion": "Skicka",
     "emailTitle": "Förslag till",
     "ctaSection": {
-      "title": "Redo att utforska datan?",
-      "description": "Börja din resa in i klimatdata. Sök efter företag, kommuner, regioner och länder. Utforska rankningar och upptäck vem som leder kampen mot klimatförändringarna.",
-      "exploreData": "Utforska Data",
-      "stats": {
-        "companiesAvailable": "Tillgängliga företag",
-        "municipalitiesAdded": "Kommuner tillagda",
-        "esgAndAnnualReports": "ESG- och årsrapporter"
-      }
+      "description": "Börja din resa in i klimatdata. Sök efter företag, kommuner, regioner och länder. Utforska rankningar och upptäck vem som leder kampen mot klimatförändringarna."
     },
     "companiesSection": {
       "title": "Hur går det med företagens utsläpp?",
@@ -143,91 +127,6 @@
     "missionSection": {
       "title": "Vårt uppdrag",
       "button": "Vårt uppdrag"
-    },
-    "siteFeatures": {
-      "title": "Omfattande klimatspårning",
-      "description": "Övervaka utsläppsdata och klimatåtaganden i hela Sverige.",
-      "features": {
-        "municipalityRankings": {
-          "title": "Kommunöversikt",
-          "description": "Spåra klimatframsteg och utsläppsdata från kommuner och lokala myndigheter."
-        },
-        "companyRankings": {
-          "title": "Företagsöversikt",
-          "description": "Jämför utsläppsprestationer, minskningsmål och hållbarhetsmått för svenska företag."
-        },
-        "progressTracking": {
-          "title": "Framstegsspårning",
-          "description": "Övervaka år-till-år-förändringar och överensstämmelse med klimatmål och vetenskapsbaserade mål."
-        }
-      }
-    },
-    "scrollSteps": {
-      "mission": {
-        "badge": "Transparens för klimatåtgärder",
-        "heading": "Vårt uppdrag",
-        "paragraph": "Klimatkollen finns för att göra klimatdata tillgänglig för alla. Vi tror att transparens driver ansvar, och ansvar driver verklig klimatåtgärd. Genom att sätta utsläppsdata i medborgarnas händer ger vi samhällen möjlighet att hålla organisationer ansvariga för sina miljöåtaganden."
-      },
-      "transparency": {
-        "badge": "Ljuset är det bästa desinfektionsmedlet",
-        "heading": "Varför datatransparens\när viktigt",
-        "paragraph": "När utsläppsdata döljs bakom företagsrapporter och betalda databaser stagnerar framstegen. Transparent, tillgänglig klimatdata skapar marknadstryck för bättre prestanda. Företag och kommuner som vet att deras data är offentlig arbetar hårdare för att förbättra sina rankingar och uppfylla sina klimatåtaganden."
-      },
-      "methodology": {
-        "badge": "Vetenskapsbaserade rankingar",
-        "heading": "Vår metodik",
-        "paragraph": "Vi använder utsläppsdata från officiella rapporteringskällor för att skapa rättvisa, jämförbara rankingar. Våra mätvärden fokuserar på faktiska utsläppsminskningar, inte bara löften eller mål. Varje ranking baseras på verkliga prestationsdata, vilket säkerställer att klimatledare erkänns och klimatfördröjare hålls ansvariga.",
-        "linkText": "Läs mer om vår metodik"
-      },
-      "impact": {
-        "badge": "Från data till handling",
-        "heading": "Driva verklig påverkan",
-        "paragraph": "Vår plattform har redan hjälpt till att identifiera klimatledare och de som halkar efter i hela Sverige. Genom att ranka organisationer på deras faktiska utsläppsprestationer skapar vi hälsosam konkurrens som påskyndar klimatframsteg. Datan ljuger inte—och det borde inte klimatåtaganden heller."
-      },
-      "engagement": {
-        "badge": "Varje röst räknas",
-        "heading": "Medborgaråtgärder &\nengagemang",
-        "paragraph": "Klimatåtgärder är inte bara för regeringar och företag—det börjar med informerade medborgare. När du kan se hur din lokala kommun eller favoritföretag presterar på klimatmätvärden kan du fatta bättre beslut som konsument, väljare och samhällsmedlem. Ditt engagemang driver efterfrågan på bättre klimatprestanda."
-      },
-      "pathForward": {
-        "badge": "Bygga ett klimatmedvetet samhälle",
-        "heading": "Vägen framåt",
-        "paragraph": "Föreställ dig en värld där varje organisations klimatprestanda är lika synlig som deras finansiella resultat. Där medborgare enkelt kan jämföra miljöpåverkan av sina val. Där transparens driver en tävling mot toppen i klimatåtgärder. Det är framtiden vi bygger, en datapunkt i taget."
-      }
-    },
-    "didYouKnow": {
-      "title": "Visste du att?",
-      "subtitle": "Intressanta insikter från Sveriges klimatdata - {{action}}!",
-      "actionMobile": "klicka för att utforska",
-      "actionDesktop": "håll muspekaren för att utforska",
-      "cardActionMobile": "Tryck för att läsa mer →",
-      "cardActionDesktop": "Håll muspekaren för att läsa mer →",
-      "ariaLabelShow": "Visa detaljer",
-      "ariaLabelHide": "Dölj detaljer",
-      "stat1": {
-        "teaser": "Ledarna i klassen",
-        "description": "{{count}} av {{total}} företag har minskat sina utsläpp med mer än 20% sedan sitt basår"
-      },
-      "stat2": {
-        "teaser": "Ökade utsläpp",
-        "description": "{{count}} av {{total}} företag har ökat sina utsläpp sedan sitt basår"
-      },
-      "stat3": {
-        "teaser": "Paris-anpassade",
-        "description": "{{companyCount}} av {{companyTotal}} företag och {{municipalityCount}} av {{municipalityTotal}} kommuner är på väg att nå Parisavtalets mål"
-      },
-      "stat4": {
-        "teaser": "Transparent rapportering",
-        "description": "{{percentage}}% av de spårade företagen rapporterar Scope 3-utsläpp per kategori, vilket ger mer transparens i deras värdekedja"
-      },
-      "stat5": {
-        "teaser": "Med planer",
-        "description": "{{percentage}}% av kommunerna ({{count}} av {{total}}) har antagit klimatplaner"
-      },
-      "stat6": {
-        "teaser": "Spårade utsläpp",
-        "description": "{{total}} miljoner ton CO₂e spåras över {{companyCount}} företag och {{municipalityCount}} kommuner, med användning av det senaste rapporterade värdet för varje enhet"
-      }
     }
   },
   "aboutPage": {
@@ -265,6 +164,12 @@
         "and": "och",
         "antikorruptionspolicyLink": "antikorruptionspolicy"
       }
+    },
+    "emissionsSection": {
+      "title": "Våra utsläpp",
+      "paragraph1": "Som en organisation som arbetar för klimattransparens tycker vi att det är viktigt att vara öppna med vår egen klimatpåverkan. Vi arbetar löpande med att mäta och minska de utsläpp som är kopplade till vår verksamhet.",
+      "paragraph2": "Det omfattar bland annat utsläpp från resor, digital infrastruktur, kontorsverksamhet och andra delar av vårt arbete. Vi går igenom vårt klimatavtryck regelbundet och letar efter sätt att minska det över tid.",
+      "reportLink": "För att se vår fullständiga utsläppsredovisning, läs vår rapport <0>här</0>."
     },
     "financingSection": {
       "title": "Så finansieras vi",
@@ -413,6 +318,7 @@
     "filterByIndustry": "Filtrera efter bransch",
     "clearFilters": "Rensa alla",
     "selectIndustry": "Välj bransch",
+    "selectCountry": "Välj land",
     "viewToggle": {
       "showGraph": "Graf",
       "showList": "Lista"
@@ -422,6 +328,8 @@
       "noDataAvailable": "Ingen data tillgänglig",
       "emissionsChange": {
         "title": "Utsläppsförändring från basår",
+        "description": "Endast företag med ett definierat basår och jämförbara uppföljningsdata rankas.",
+        "noComparableData": "Inga företag i denna sektor med jämförbar utsläppsförändringsdata.",
         "unknown": "Okänt"
       },
       "meetsParis": {
@@ -475,11 +383,12 @@
       "back": "Tillbaka",
       "sectorTotal": "Totala utsläpp i branschen",
       "total": "Totala utsläpp",
+      "emissionsUnit": "ton CO₂e",
       "noDataAvailablePieChart": "Det finns inga data för detta år",
       "yearTotal": "Årlig total",
       "unknownCompany": "Okänt företag",
       "pieLegendCompany": "Visa företagsdetaljer",
-      "pieLegendSector": "Visa branschedetaljer",
+      "pieLegendSector": "Visa branschdetaljer",
       "emissionsSourcesAnalysis": "Analys av utsläppskällor",
       "ghgProtocolScopes": "(Scopes i GHG-protokollet)",
       "totalEmissions": "Totala utsläpp",
@@ -544,6 +453,38 @@
       "meetsParisYes": "Ja",
       "meetsParisNo": "Nej",
       "meetsParisUnknown": "Okänt"
+    },
+    "insights": {
+      "largestSector": "Största branschen",
+      "largestSectorDescription": "{{name}} står för {{share}} av totala utsläpp",
+      "topThreeSectors": "Topp 3 branscher",
+      "topThreeSectorsDescription": "De tre största branscherna står för {{share}} av utsläppen",
+      "reportingCompanies": "Rapporterande företag",
+      "reportingCompaniesDescription": "{{count}} företag rapporterade utsläpp för {{year}}",
+      "largestCompany": "Största utsläpparen",
+      "largestCompanyDescription": "{{name}} står för {{share}} av branschens utsläpp",
+      "companiesInSector": "Företag i branschen",
+      "companiesInSectorDescription": "{{count}} företag rapporterade utsläpp",
+      "reducingEmissions": "Minskar utsläppen",
+      "reducingEmissionsDescription": "{{count}} av {{total}} företag har minskat utsläppen sedan basår",
+      "increasingEmissions": "Ökar utsläppen",
+      "increasingEmissionsDescription": "{{count}} av {{total}} företag har ökat utsläppen sedan basår",
+      "noComparableTrendData": "Inte tillräckligt med jämförbar trenddata för företag i branschen",
+      "emissionsAmount": "{{amount}} {{unit}}",
+      "ofTotalEmissions": "av totala utsläpp",
+      "forReportingYear": "för {{year}}",
+      "reportingCompaniesAvg": "Genomsnitt {{amount}} {{unit}} per rapporterande företag",
+      "companiesReportingLabel": "rapporterande företag",
+      "topEmittersInSectorDescription": "Andel av branschens utsläpp bland de största företagen",
+      "sinceBaseYear": "minskar sedan basår",
+      "increasingSinceBaseYear": "ökar sedan basår",
+      "topReducersDescription": "Företag med störst minskning sedan basår",
+      "topIncreasersDescription": "Företag med störst ökning sedan basår",
+      "reducing": "Minskar",
+      "increasing": "Ökar",
+      "scope1": "Scope 1",
+      "scope2": "Scope 2",
+      "scope3": "Scope 3"
     }
   },
   "methodsPage": {
@@ -559,7 +500,7 @@
     "noResultsFound": "Inga resultat hittades",
     "categories": {
       "general": "Allmän information",
-      "municipalityAndRegion": "Kommun- och länsdata",
+      "territorial": "Platsdata",
       "company": "Företagsdata"
     },
     "general": {
@@ -764,12 +705,12 @@
       "emissionTypes": {
         "title": "Olika typer av utsläpp",
         "description": "Lär dig om olika typer av utsläpp och hur de mäts",
-        "paragraph1": "Klimatkollen är en oberoende faktabaserad plattform som följer etablerade standarder för utsläppsrapportering. Klimatdata vi presenterar speglar de gränser och antaganden som används i koldioxidbudgetberäkningar. Till exempel kan koldioxidbudgetar inte direkt kopplas till alla växthusgasutsläpp, eftersom andra gaser som metan, lustgas och vattenånga också ingår i klimatpåverkan.",
-        "paragraph2": "Utsläpp från cementproduktion exkluderas från IPCC:s globala koldioxidbudget och är därför också utelämnade från Sveriges koldioxidbudget och utsläppsdata. Detta påverkar särskilt kommunerna Gotland, Skövde och Mörbylånga där cementproduktion förekommer eller har förekommit.",
-        "paragraph3": "Sverige har också en betydande klimatpåverkan från varor som importeras från andra länder, vilket leder till utsläpp utomlands. Dessa konsumtionsbaserade utsläpp ingår inte i koldioxidbudgeten.",
-        "paragraph4": "På samma sätt exkluderas utsläpp från skog och mark (så kallade biogena utsläpp) från koldioxidbudgeten.",
-        "paragraph5": "I verkligheten är klimatpåverkande utsläpp mycket högre än de territoriella fossila koldioxidutsläpp som vanligtvis rapporteras av myndigheter och media. Den data som visas på Klimatkollen speglar dessa territoriella utsläpp.",
-        "paragraph6": "Klimatkollen undersöker aktivt hur andra växthusgasutsläpp kan inkluderas på webbplatsen i framtiden, samtidigt som möjligheten att jämföra nuvarande utsläpp med koldioxidbudgetar behålls."
+        "paragraph1": "Klimatkollen är en oberoende faktabaserad plattform som följer etablerade standarder för utsläppsrapportering. Den klimatdata vi presenterar speglar de avgränsningar som används i officiella territoriella utsläppsinventeringar. För kommuner och län visar vi utsläpp av alla växthusgaser (CO₂e) — inklusive gaser som metan och lustgas — från SMHI:s Nationella emissionsdatabas.",
+        "paragraph2": "Vissa kommuner har ovanligt höga utsläpp på grund av stora industriella anläggningar, inklusive cementproduktion. Detta påverkar särskilt kommuner som Gotland, Skövde och Mörbylånga, där cementproduktion pågår eller har pågått historiskt.",
+        "paragraph3": "Sverige har också en betydande klimatpåverkan från varor som importeras från andra länder, vilket leder till utsläpp utomlands. Dessa konsumtionsbaserade utsläpp ingår inte i de territoriella utsläppssummorna, men vi visar dem separat som ett nyckeltal där data finns tillgänglig.",
+        "paragraph4": "På samma sätt rapporteras utsläpp och upptag från skog och mark (så kallade biogena utsläpp) separat och ingår inte i de territoriella växthusgasutsläpp som visas på Klimatkollen.",
+        "paragraph5": "I verkligheten är en kommuns fulla klimatavtryck ofta större än vad de territoriella utsläppen ensamma antyder. Den data som visas på Klimatkollen speglar territoriella utsläpp — det vill säga utsläpp som fysiskt sker inom respektive kommuns eller längräns.",
+        "paragraph6": "Vi jämför territoriella utsläpp med den Parisanpassade minskningstakt som definieras av Carbon Law (cirka 12 % per år från 2025). Klimatkollen fortsätter att utforska hur vi kan presentera en mer fullständig bild av klimatpåverkan på plattformen."
       }
     },
     "company": {
@@ -790,7 +731,7 @@
         },
         "companiesIncluded": {
           "title": "Inkluderade företag",
-          "paragraph1": "Vår databas omfattar företag på OMX Large Cap, Mid Cap och Small Cap på Stockholmsbörsen, de 24 största statliga företagen, de fem största ekonomiska föreningarna samt de olistade företagen IKEA och ICA Gruppen.",
+          "paragraph1": "Vår databas omfattar alla företag på Stockholmsbörsen (OMX Large Cap, Mid Cap och Small Cap), de 24 största statliga företagen, de fem största ekonomiska föreningarna, de olistade företagen IKEA och ICA Gruppen samt företag noterade på Nasdaq Baltic (samt ett par olistade balttiska företag).",
           "paragraph2": "Företagen kategoriseras efter bransch enligt Global Industry Classification Standard (GICS).",
           "link": {
             "title": "GICS",
@@ -832,6 +773,10 @@
         "title": "Utsläpp och utsläppskategorier",
         "description": "Förstå olika typer av utsläpp och hur de kategoriseras",
         "paragraph1": "Företag rapporterar sina utsläpp enligt GHG-protokollets tre scope:",
+        "scope1": {
+          "title": "Scope 1: Direkta utsläpp",
+          "paragraph1": "Scope 1-utsläpp är direkta växthusgasutsläpp från källor som ägs eller kontrolleras av företaget, till exempel bränsleförbränning i företagsfordon, värmepannor på plats och tillverkningsprocesser. Klimatkollen presenterar scope 1-utsläpp som de rapporteras av företagen."
+        },
         "scope2": {
           "title": "Scope 2: Indirekta energiutsläpp",
           "paragraph1": "Scope 2-utsläpp beräknas primärt med marknadsbaserad metod, där det tas hänsyn till om företagen köper förnybar el. Om sådan data saknas används platsbaserad metod istället."
@@ -879,15 +824,28 @@
         }
       }
     },
-    "municipalityAndRegion": {
+    "territorial": {
       "municipalityAndRegionDataOverview": {
-        "title": "Kommun- och länsdata översikt",
-        "description": "Vilken data vi samlar in och presenterar om kommunerna och länen",
-        "paragraph1": "Klimatkollen visar data om utsläpp i Sveriges kommuner och län, med SMHI:s Nationella emissionsdatabas som främsta källa. För att vår kommundata, länsdata och företagsdata ska vara jämförbara visas sedan augusti 2025 utsläpp av alla växthusgaser (CO₂e) inte enbart koldioxid.",
+        "title": "Översikt platsdata",
+        "description": "Vilken data vi samlar in och presenterar om kommuner, län, nationer och europeiska länder",
+        "paragraph1": "Klimatkollen visar utsläppsdata för Sveriges kommuner och län, Sverige som nation och europeiska länder. SMHI:s Nationella emissionsdatabas är vår främsta källa för svensk territorial data på kommunal, regional och nationell sektorsnivå. Climate TRACE tillhandahåller utsläpp, trender och kartor över punktkällor på landsnivå för europeiska länder och Sverige. För att territorial och företagsdata ska vara jämförbar visas sedan augusti 2025 utsläpp av alla växthusgaser (CO₂e), inte enbart koldioxid.",
         "paragraph2": "Den genomsnittliga årliga utsläppsförändringen för respektive kommun eller län beräknas med hjälp av sammansatt årlig tillväxttakt (CAGR, compound annual growth rate).",
         "paragraph3": "Vi visar även hur utsläppen skulle behöva minska för att klara Parisavtalet. Tidigare användes lokala koldioxidbudgetar, baserade på en nationell budget framtagen av forskare vid Uppsala universitet och Tyndall Centre i Storbritannien. Sedan augusti 2025 baserar vi istället ”Pariskurvan” på <0>Carbon Law</0>.",
         "paragraph4": "Prognosen för framtida utsläpp baseras på hur utsläppen i respektive kommun eller län har utvecklats historiskt sedan Parisavtalet 2015. Trendlinjen viktas enligt den statistiska metoden least absolute deviations (LAD), som ger mindre vikt åt enskilda extremvärden och en mer rättvis och realistisk bild av de framtida utsläppen. Läs mer om våra utsläppsberäkningar <0>här</0>.",
-        "paragraph5": "Utöver utsläppsdata visas även nyckeltal för hur det går i kommunerna och länen med att ställa om och minska utsläppen."
+        "paragraph5": "Utöver utsläppsdata visas även nyckeltal för hur det går i kommunerna med att ställa om och minska utsläppen."
+      },
+      "nationDataOverview": {
+        "title": "Nationell data översikt",
+        "description": "Vilken data vi samlar in och presenterar om Sveriges nationella utsläpp",
+        "paragraph1": "Sveriges landsida kombinerar två kompletterande källor. Climate TRACE tillhandahåller nyckeltal på landsnivå, utsläppsdiagrammet över tid och kartan över de största punktkällorna. SMHI:s Nationella emissionsdatabas tillhandahåller Sveriges officiella territoriella sektorsuppdelning och länkar vidare till länsdata för varje län.",
+        "paragraph2": "Den genomsnittliga årliga utsläppsförändringen för Sverige beräknas med hjälp av Climate TRACE-data och sammansatt årlig tillväxttakt (CAGR, compound annual growth rate).",
+        "paragraph3": "Vi visar även hur utsläppen skulle behöva minska för att klara Parisavtalet. Tidigare användes lokala koldioxidbudgetar, baserade på en nationell budget framtagen av forskare vid Uppsala universitet och Tyndall Centre i Storbritannien. Sedan augusti 2025 baserar vi istället ”Pariskurvan” på <0>Carbon Law</0>.",
+        "paragraph4": "Prognosen för framtida utsläpp i landsdiagrammet baseras på hur Sveriges utsläpp har utvecklats historiskt i Climate TRACE sedan Parisavtalet 2015. Trendlinjen viktas enligt den statistiska metoden least absolute deviations (LAD), som ger mindre vikt åt enskilda extremvärden och en mer rättvis och realistisk bild av de framtida utsläppen. Läs mer om våra utsläppsberäkningar <0>här</0>.",
+        "paragraph5": "Utöver totala utsläpp visar Klimatkollen en sektorsuppdelning av Sveriges växthusgasutsläpp från SMHI och länkar till länsdata för varje län.",
+        "link": {
+          "title": "Sveriges nationella utsläpp",
+          "text": "Se Sveriges nationella utsläppsdata på Klimatkollen"
+        }
       },
       "municipalityKPIs": {
         "title": "Nyckeltal omställning i kommunerna",
@@ -905,14 +863,33 @@
       },
       "sources": {
         "title": "Våra källor",
-        "description": "Utforska de offentligt tillgängliga källorna och verifierade data som används av Klimatkollen",
+        "description": "Utforska de offentligt tillgängliga källorna och verifierade data som används av Klimatkollen för platsdata",
         "paragraph1": "Klimatkollen bygger på offentligt tillgängliga källor och verifierad data. Vi tillhandahåller alla källor så att du enkelt kan granska och utforska dem vidare. Om du upptäcker några fel, mejla oss gärna på hej@klimatkollen.se så vi kan rätta till dem.",
-        "paragraph2": "Företagsdata hämtas från deras egna årsredovisningar och hållbarhetsrapporter.",
+        "paragraph2": "Källorna nedan täcker kommuner, län, Sverige som nation och andra europeiska länder. Företagsdata dokumenteras separat under Företagsdata.",
+        "groups": {
+          "coreEmissions": {
+            "title": "Utsläppsdata",
+            "description": "Kärndata om utsläpp för platser i Sverige och Europa."
+          },
+          "municipalityIndicators": {
+            "title": "Kommunala omställningsnyckeltal",
+            "description": "Kompletterande indikatorer som används på kommunsidor."
+          },
+          "metadata": {
+            "title": "Referensdata",
+            "description": "Stöddata för kommuner och län."
+          }
+        },
         "links": {
           "smhi": {
             "title": "Nationella emissionsdatabasen",
-            "text": "Växthusgasutsläpp i kommunerna och länen",
+            "text": "Officiella växthusgasutsläpp för svenska kommuner, län och nationell sektorsuppdelning",
             "link": "https://nationellaemissionsdatabasen.smhi.se/"
+          },
+          "climateTrace": {
+            "title": "Climate TRACE",
+            "text": "Utsläpp, trender och de största punktkällorna på landsnivå för europeiska länder och Sverige",
+            "link": "https://climatetrace.org/"
           },
           "skr": {
             "title": "Sveriges Kommuner och Regioner",
@@ -958,11 +935,6 @@
             "title": "Greenpeace",
             "text": "Kartläggning av klimatkrav i offentliga upphandlingar",
             "link": "https://docs.google.com/spreadsheets/d/1EdHUa49HJZn0rXqM-6tChdim4TJzXnwA/edit#gid=1040317160"
-          },
-          "climateTrace": {
-            "title": "Climate TRACE",
-            "text": "Utsläppsdata för europeiska länder (CO₂e per capita och årlig förändring)",
-            "link": "https://climatetrace.org/"
           }
         }
       }
@@ -1085,6 +1057,8 @@
     }
   },
   "regionalOverviewPage": {
+    "errorTitle": "Det gick inte att hämta länsinformation",
+    "errorDescription": "Försök igen senare",
     "title": "Länsöversikt",
     "description": "Översikt över utsläpp och omställning på länsnivå"
   },
@@ -1096,6 +1070,9 @@
     "annualChange": "Årlig förändring",
     "meetsParisGoal": "Klarar Parisavtalet",
     "changeSince2015": "Årlig utsläppsförändring sedan 2015",
+    "emissionsPerCapita": "Utsläpp per capita",
+    "emissionsPerCapitaUnit": " tCO₂e",
+    "emissionsPerCapitaTooltipClimateTrace": "Uppskattade årliga CO₂e-utsläpp per capita baserat på Climate TRACE-data, exklusive skogsbruk och markanvändning.",
     "sectorEmissions": "Utsläppskällor",
     "sectorEmissionsYear": "Utsläpp per sektor år {{year}}",
     "filteredSectors": "Filtrerade sektorer",
@@ -1136,6 +1113,7 @@
       "medium": "Kanske",
       "low": "Nej"
     },
+    "region": "Län",
     "politicalRule": "Politiskt styre",
     "politicalKSO": "Kommunstyrelsens ordförande",
     "totalEmissionsTooltip": "Detta är de senast rapporterade utsläppen. För beräknade uppskattningar för innevarande år, se grafen Utsläppsutveckling nedan.",
@@ -1388,6 +1366,24 @@
       "totalEmissionsSaved": "totala utsläpp sparade jämfört med Paris-målet",
       "totalEmissionsExcess": "totala utsläpp i överskott jämfört med Paris-målet"
     },
+    "turnoverEmissionsHistory": {
+      "title": "Utsläppsintensitet",
+      "tooltip": "Utsläppsintensitet är utsläpp delat med omsättning (t CO₂e per miljon). Jämför två år — lägre är bättre. Intensiteten minskar när utsläppen faller snabbare än omsättningen växer, eller när utsläppen minskar samtidigt som omsättningen ökar.",
+      "unit": "Utsläpp i ton CO₂e · Omsättning i företagets valuta",
+      "intensityPanel": {
+        "intensityUnit": "t CO₂e per miljon i omsättning",
+        "question": "Har utsläppsintensiteten minskat?",
+        "verdictStableLabel": "Oförändrad",
+        "intensityChange": "Intensitet",
+        "emissionsLabel": "Utsläpp",
+        "turnoverLabel": "Omsättning",
+        "periodBaseYearNote": "Basår jämfört med senast rapporterade året med utsläpps- och omsättningsdata. Lägre är bättre.",
+        "periodFirstYearNote": "Första året med utsläpps- och omsättningsdata, jämfört med senast rapporterade året. Lägre är bättre.",
+        "verdictYes": "Utsläppsintensiteten har minskat. Företaget släpper ut mindre per omsatt krona än tidigare.",
+        "verdictNoRed": "Utsläppsintensiteten har ökat. Företaget släpper ut mer per omsatt krona än tidigare.",
+        "verdictNoYellow": "Utsläppsintensiteten har legat ungefär oförändrad. Företaget släpper ut ungefär lika mycket per omsatt krona som tidigare."
+      }
+    },
     "list": {
       "error": {
         "fetchingCompanyInfo": "Det gick inte att hämta företagsinformation",
@@ -1410,9 +1406,10 @@
         },
         "emissionsChangeFromBaseYear": {
           "label": "Utsläppsförändring",
-          "description": "Förändring i utsläpp från basår till senaste rapporteringsår",
-          "detailedDescription": "Procentuell förändring i totala utsläpp från företagets basår till senaste rapporteringsår. Lägre värden indikerar bättre prestation.",
-          "source": "Företagsrapporteringsdata"
+          "description": "Förändring i utsläpp från basår till senaste rapporteringsår. Endast företag med jämförbara utsläppsdata rankas.",
+          "detailedDescription": "Procentuell förändring i totala utsläpp från företagets basår till senaste rapporteringsår. Rankningen omfattar endast företag med definierat basår, giltiga basårsutsläpp och minst ett senare rapporteringsår med jämförbar data.",
+          "source": "Företagsrapporteringsdata",
+          "nullValues": "Ej jämförbar"
         },
         "trendSlope": {
           "label": "Utsläppstrend",
@@ -1429,6 +1426,10 @@
         },
         "keyStatistics": {
           "average": "Genomsnitt:"
+        },
+        "distribution": {
+          "title": "Fördelning",
+          "subtitle": "Visar hur företagen sprider sig längs skalan för vald indikator. Blå staplar betyder bättre resultat, rosa sämre, och den streckade linjen markerar genomsnittet."
         }
       },
       "sort": {
@@ -1521,9 +1522,19 @@
       "regions": "Län"
     }
   },
+  "mapControls": {
+    "zoomIn": "Zooma in",
+    "zoomOut": "Zooma ut",
+    "reset": "Återställ"
+  },
   "regions": {
     "detailPage": {
       "municipalities": "Kommuner"
+    },
+    "map": {
+      "legend": {
+        "null": "Saknar data"
+      }
     },
     "kpis": {
       "emissions": {
@@ -1537,8 +1548,8 @@
       "dataSelector": {
         "label": "Välj datapunkt",
         "tooltips": {
-          "higherBetter": "Högre värden är bättre",
-          "lowerBetter": "Lägre värden är bättre"
+          "higherBetter": "Bättre",
+          "lowerBetter": "Bättre"
         }
       },
       "kpis": {
@@ -1546,7 +1557,8 @@
           "label": "Utsläppen",
           "description": "Historisk förändring av utsläpp",
           "detailedDescription": "Genomsnittlig årlig procentuell förändring av växthusgasutsläppen i Sveriges län sedan Parisavtalet år 2015.",
-          "source": "Nationella emissionsdatabasen"
+          "source": "Nationella emissionsdatabasen",
+          "nullValues": "Saknar data"
         },
         "meetsParis": {
           "label": "Parisavtalet",
@@ -1557,17 +1569,52 @@
             "true": "Klarar Parisavtalet",
             "false": "Missar Parisavtalet"
           },
+          "nullValues": "Okänt",
           "aboveString": "är på väg att klara Parisavtalet",
           "belowString": "är på väg att missa Parisavtalet"
+        }
+      },
+      "insights": {
+        "distribution": {
+          "title": "Fördelning",
+          "subtitle": "Visar hur länen sprider sig längs skalan för vald indikator. Blå staplar betyder bättre resultat, rosa sämre, och den streckade linjen markerar genomsnittet."
         }
       }
     }
   },
   "europeanRankedPage": {
+    "errorTitle": "Det gick inte att hämta europeisk landsdata",
+    "errorDescription": "Försök igen senare",
     "title": "Europeisk översikt",
     "description": "Översikt över utsläpp och omställning på europeisk nivå"
   },
   "europe": {
+    "detailPage": {
+      "dataSource": "Källa: Climate TRACE",
+      "countryLabel": "Landet",
+      "europeanAverage": "Europeiskt genomsnitt",
+      "totalEmissionsTooltip": "Landets totala växthusgasutsläpp baserat på Climate TRACE-data, exklusive skogsbruk och markanvändning.",
+      "emissionSources": {
+        "title": "Karta över utsläppskällor",
+        "description": "Topp {{count}} anläggningar och andra punktkällor {{year}}, rankade efter utsläpp.",
+        "source": "Källa: Climate TRACE",
+        "listLabel": "Utsläpp",
+        "legendTitle": "Sektorer",
+        "noMapData": "Kartdata saknas för det här landet.",
+        "empty": "Ingen punktkällsdata tillgänglig för det här landet."
+      },
+      "sectors": {
+        "transportation": "Transporter",
+        "manufacturing": "Tillverkning",
+        "agriculture": "Jordbruk",
+        "power": "Elproduktion",
+        "fossilFuelOperations": "Fossila bränslen",
+        "buildings": "Byggnader",
+        "waste": "Avfall",
+        "fluorinatedGases": "Fluorerade växthusgaser",
+        "mineralExtraction": "Mineralutvinning"
+      }
+    },
     "map": {
       "legend": {
         "null": "Ingen data"
@@ -1585,15 +1632,31 @@
         "emissionsPerCapita": {
           "label": "Utsläpp per capita",
           "description": "Årliga växthusgasutsläpp per person",
-          "detailedDescription": "Uppskattade årliga CO₂e-utsläpp per capita per land för 2025.",
+          "detailedDescription": "Uppskattade årliga CO₂e-utsläpp per capita per land för 2025, exklusive skogsbruk och markanvändning.",
           "unit": " tCO₂e",
           "source": "Climate TRACE"
         },
-        "emissionsPercentChange": {
-          "label": "Förändring i utsläpp",
-          "description": "Förändring i utsläpp under 2025",
-          "detailedDescription": "Procentuell förändring i CO₂e-utsläpp under 2025.",
+        "historicalEmissionChangePercent": {
+          "label": "Utsläppsförändring sedan 2015",
+          "description": "Årlig utsläppsförändring sedan 2015",
+          "detailedDescription": "Genomsnittlig årlig procentuell förändring i CO₂e-utsläpp sedan 2015, baserad på Climate TRACE-data från 2015 till senaste tillgängliga år, exklusive skogsbruk och markanvändning.",
           "source": "Climate TRACE"
+        },
+        "meetsParis": {
+          "label": "Parisavtalet",
+          "description": "Utsläppstrend jämfört med Parisavtalet",
+          "detailedDescription": "Om landets projicerade utsläppsbana klarar Parisavtalet, baserat på en trendlinje från 2015 och en Carbon Law-väg (11,7% årlig minskning från 2025).",
+          "source": "Klimatkollen Analys",
+          "booleanLabels": {
+            "true": "Klarar Parisavtalet",
+            "false": "Missar Parisavtalet"
+          }
+        }
+      },
+      "insights": {
+        "distribution": {
+          "title": "Fördelning",
+          "subtitle": "Visar hur länder fördelar sig på skalan för den valda indikatorn. Blå staplar betyder bättre resultat, rosa sämre, och den streckade linjen markerar genomsnittet."
         }
       }
     }
@@ -1638,8 +1701,8 @@
       "dataSelector": {
         "label": "Välj datapunkt",
         "tooltips": {
-          "higherBetter": "Högre värden är bättre",
-          "lowerBetter": "Lägre värden är bättre"
+          "higherBetter": "Bättre",
+          "lowerBetter": "Bättre"
         }
       },
       "kpis": {
@@ -1658,7 +1721,7 @@
         "historicalEmissionChangePercent": {
           "label": "Utsläppen",
           "description": "Historisk förändring av utsläpp",
-          "detailedDescription": "Genomsnittlig årlig procentuell förändring av växthusgasutsläppen i Sveriges kommuner sedan Parisavtalet år 2015.",
+          "detailedDescription": "Genomsnittlig årlig procentuell förändring av växthusgasutsläppen sedan Parisavtalet år 2015.",
           "source": "Nationella emissionsdatabasen"
         },
         "electricCarChangePercent": {
@@ -1678,7 +1741,9 @@
           "description": "Antal elbilar per laddningspunkt",
           "detailedDescription": "Antal elbilar per publik laddningspunkt per kommun år 2025. Ju färre bilar per laddningspunkt desto bättre, god infrastruktur gynnar ökad elbilskonsumtion",
           "source": "Power Circle",
-          "nullValues": "Saknar laddpunkter"
+          "nullValues": "Saknar laddpunkter",
+          "missingCount_one": "{{count}} kommun saknar laddpunkter",
+          "missingCount_other": "{{count}} kommuner saknar laddpunkter"
         },
         "bicycleMetrePerCapita": {
           "label": "Cyklarna",
@@ -1707,12 +1772,23 @@
           "metric": "Ingen data tillgänglig för {{metric}}"
         },
         "keyStatistics": {
-          "average": "Genomsnitt:"
+          "average": "Genomsnitt",
+          "best": "Bäst",
+          "worst": "Sämst"
+        },
+        "distribution": {
+          "title": "Fördelning",
+          "subtitle": "Visar hur kommunerna sprider sig längs skalan för vald indikator. Blå staplar betyder bättre resultat, rosa sämre, och den streckade linjen markerar riksgenomsnittet.",
+          "summary": "Sammanfattning",
+          "average": "Genomsnitt",
+          "higherBetter": "Bättre",
+          "lowerBetter": "Bättre",
+          "higherWorse": "Sämre"
         }
       },
       "viewToggle": {
-        "showList": "Visa lista",
-        "showMap": "Visa karta"
+        "showList": "Lista",
+        "showMap": "Karta"
       }
     }
   },
@@ -1960,7 +2036,15 @@
     "loading": "Laddar...",
     "error": "Fel",
     "company": "Företag",
-    "municipality": "Kommun"
+    "municipality": "Kommun",
+    "region": "Län"
+  },
+  "regionDetailPage": {
+    "metaDescription": "Se utsläppsdata och klimatomställning för {{region}} på Klimatkollen."
+  },
+  "nationDetailPage": {
+    "title": "Sveriges klimatomställning",
+    "description": "Nationell översikt över utsläpp och klimatomställning i Sverige jämfört med Parisavtalets mål."
   },
   "globalSearch": {
     "title": "Hitta ett företag, en kommun, ett län eller land",
@@ -1998,15 +2082,23 @@
     "search": {
       "placeholder": "Sök..."
     },
-    "rank": "Placering: {{rank}} av {{total}}"
+    "rank": "Placering: {{rank}} av {{total}}",
+    "sort": {
+      "asc": "Sortera från lågt till högt",
+      "desc": "Sortera från högt till lågt"
+    },
+    "pagination": {
+      "previousPage": "Föregående sida",
+      "nextPage": "Nästa sida"
+    }
   },
   "rankedInsights": {
     "average": "Genomsnitt:",
     "belowAverage": "{{entityPlural}} under genomsnittet",
     "aboveAverage": "{{entityPlural}} över genomsnittet",
-    "titleBest": "Topp fem {{entityPlural}}",
-    "titleTop": "Bästa {{entityPlural}}",
-    "titleWorst": "Botten fem {{entityPlural}}"
+    "titleBest": "Topp {{nrOfEntities}} {{entityPlural}}",
+    "titleTop": "Bästa {{nrOfEntities}} {{entityPlural}}",
+    "titleWorst": "Sämsta {{nrOfEntities}} {{entityPlural}}"
   },
   "chartLegend": {
     "clickToFilterOut": "Klicka för att filtrera bort",
@@ -2027,6 +2119,69 @@
   "explorePage": {
     "title": "Utforska data",
     "description": "Utforska och jämför utsläppsdata och klimatmål för företag och kommuner.",
+    "comparison": {
+      "compare": "Jämför",
+      "compareModeActive": "Jämför aktivt",
+      "chipAriaWithCount": "Jämförelse: {{count}} av {{max}} valda",
+      "toggleMode": "Växla jämförelseläge",
+      "selected": "{{count}} valda ({{min}}–{{max}})",
+      "clearSelection": "Rensa val",
+      "viewComparison": "Visa jämförelse",
+      "backToList": "Tillbaka till listan",
+      "backToPrevious": "Gå tillbaka",
+      "title": "Jämförelse sida vid sida",
+      "comparing": "Jämför {{count}} enheter",
+      "viewDetails": "Visa all data",
+      "metric": "Värde",
+      "mobileScrollHint": "Alla enheter listas under varje värde för enkel jämförelse.",
+      "addToComparison": "Lägg till i jämförelse",
+      "addedToComparison": "Tillagd i jämförelse",
+      "variantMismatchTitle": "Kan inte blanda enhetstyper",
+      "variantMismatchMessage": "Du kan bara jämföra kommuner, län eller företag av samma typ. Rensa ditt val för att börja om.",
+      "notEnoughSelected": "Välj fler enheter att jämföra",
+      "notEnoughSelectedDescription": "Välj minst {{min}} enheter för att öppna jämförelsevyn.",
+      "addEntity": {
+        "default": "Lägg till enheter",
+        "company": "Lägg till företag",
+        "municipality": "Lägg till kommun",
+        "region": "Lägg till län"
+      },
+      "pickerTitle": {
+        "default": "Lägg till i jämförelse",
+        "company": "Lägg till företag i jämförelse",
+        "municipality": "Lägg till kommun i jämförelse",
+        "region": "Lägg till län i jämförelse"
+      },
+      "pickerPlaceholder": {
+        "default": "Sök kommuner, län eller företag",
+        "company": "Sök företag",
+        "municipality": "Sök kommuner",
+        "region": "Sök län"
+      },
+      "pickerDone": "Klar",
+      "pickerLoading": "Söker...",
+      "pickerEmpty": {
+        "default": "Inga resultat hittades",
+        "company": "Inga företag hittades",
+        "municipality": "Inga kommuner hittades",
+        "region": "Inga län hittades"
+      },
+      "pickerSelectedHeading": "Valda ({{count}}/{{max}})",
+      "sections": {
+        "climateTarget": "Klimatmål",
+        "emissions": "Utsläpp",
+        "sustainableTransport": "Hållbar transport",
+        "procurement": "Upphandling",
+        "politics": "Politik",
+        "climatePlan": "Klimatplan",
+        "companyOverview": "Företagsöversikt",
+        "reporting": "Rapportering",
+        "overview": "Översikt"
+      },
+      "metrics": {
+        "municipalityCount": "Kommuner i länet"
+      }
+    },
     "filter": "Filter:",
     "sorting": "Sorterar:",
     "sortingOptions": {
@@ -2089,6 +2244,8 @@
       "errorTitle": "Det gick inte att hämta företagsinformation",
       "errorDescription": "Försök igen senare",
       "filteringOptions": {
+        "country": "Land",
+        "allCountries": "Alla länder",
         "meetsParis": "Klarar Parisavtalet",
         "meetsParisYes": "Ja",
         "meetsParisNo": "Nej",
@@ -2111,6 +2268,13 @@
       "sectionTitle": "Företag",
       "noCompaniesInSection": "Inga företag i denna kategori"
     }
+  },
+  "companyCountries": {
+    "sweden": "Sverige",
+    "norway": "Norge",
+    "finland": "Finland",
+    "denmark": "Danmark",
+    "iceland": "Island"
   },
   "insightCategories": {
     "analysis": "Analys",

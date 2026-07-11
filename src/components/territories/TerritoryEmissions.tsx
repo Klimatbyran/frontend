@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { DataPoint, SectorEmissions } from "@/types/emissions";
+import { SectorInfo } from "@/types/charts";
 import {
   getDynamicChartHeight,
   useDataView,
@@ -17,11 +18,13 @@ interface TerritoryEmissionsProps {
   emissionsData: DataPoint[];
   sectorEmissions: SectorEmissions | null;
   className?: string;
+  getSectorInfo?: (name: string) => SectorInfo;
 }
 
 export const TerritoryEmissions: FC<TerritoryEmissionsProps> = ({
   emissionsData,
   sectorEmissions,
+  getSectorInfo,
 }) => {
   const { t } = useTranslation();
 
@@ -63,6 +66,7 @@ export const TerritoryEmissions: FC<TerritoryEmissionsProps> = ({
           dataView={dataView}
           hiddenSectors={hiddenSectors}
           setHiddenSectors={setHiddenSectors}
+          getSectorInfo={getSectorInfo}
         />
       </div>
     </SectionWithHelp>

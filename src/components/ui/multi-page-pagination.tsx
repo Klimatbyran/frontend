@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface PaginationProps {
@@ -12,6 +13,7 @@ const MultiPagePagination: React.FC<PaginationProps> = ({
   totalPages,
   onPageChange,
 }) => {
+  const { t } = useTranslation();
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -62,7 +64,7 @@ const MultiPagePagination: React.FC<PaginationProps> = ({
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        aria-label="Previous page"
+        aria-label={t("rankedList.pagination.previousPage")}
         className="p-2 text-white/70 disabled:text-white/20 disabled:cursor-not-allowed hover:bg-black/40 rounded-xl transition-colors"
       >
         <ChevronLeft className="w-5 h-5" />
@@ -71,7 +73,7 @@ const MultiPagePagination: React.FC<PaginationProps> = ({
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        aria-label="Next page"
+        aria-label={t("rankedList.pagination.nextPage")}
         className="p-2 text-white/70 disabled:text-white/20 disabled:cursor-not-allowed hover:bg-black/40 rounded-xl transition-colors"
       >
         <ChevronRight className="w-5 h-5" />

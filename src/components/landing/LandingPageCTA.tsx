@@ -5,8 +5,12 @@ import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { LandingSection } from "./LandingSection";
 import { useLanguage } from "@/components/LanguageProvider";
-import { getEntityDetailPath, localizedPath } from "@/utils/routing";
-import type { HeroSearchResult } from "@/hooks/usePopularHeroItems";
+import {
+  getEntityDetailPath,
+  getNationDetailPath,
+  localizedPath,
+} from "@/utils/routing";
+import type { HeroSearchResult } from "@/types/landing";
 import { Text } from "../ui/text";
 import { POPULAR_HERO_ITEMS } from "@/lib/constants/landingPage";
 import { useHeroGlobalSearch } from "../../hooks/landing/useHeroGlobalSearch";
@@ -64,7 +68,9 @@ export function LandingPageCTA() {
       }
 
       if (result.type === "nation") {
-        navigate(localizedPath(currentLanguage, `/nation`));
+        navigate(
+          localizedPath(currentLanguage, getNationDetailPath(currentLanguage)),
+        );
         return;
       }
 

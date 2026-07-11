@@ -3,7 +3,8 @@ import { useTranslation } from "react-i18next";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { updateCompanyDetails } from "@/lib/api";
+import { createCompany } from "@/lib/api";
+import { getCompanyUrlSegment } from "@/utils/companyRouting";
 import {
   buildCreateCompanyBody,
   type CreateCompanyFormValues,
@@ -68,12 +69,14 @@ export function AddCompanyPage() {
         metadataSource,
       };
       const body = buildCreateCompanyBody(form);
-      await updateCompanyDetails(id, body);
+      const result = await createCompany(body);
       showToast(
         t("companyEditPage.successDetails.title"),
         t("addCompanyPage.success.description"),
       );
-      setCreatedCompanyId(id);
+      setCreatedCompanyId(
+        getCompanyUrlSegment({ id: result.id, wikidataId: id || undefined }),
+      );
     } catch (err) {
       const message =
         err instanceof Error ? err.message : "Failed to create company";

@@ -2,12 +2,17 @@ import { t } from "i18next";
 import { ArrowUpRight } from "lucide-react";
 import { AiIcon } from "@/components/ui/ai-icon";
 import { Text } from "@/components/ui/text";
+import {
+  SupplementalDataField,
+  SupplementalDataPanel,
+} from "@/components/detail/SupplementalDataPanel";
 import { ReportingPeriod } from "@/types/company";
-import { localizeUnit } from "@/utils/formatting/localization";
+import { formatTurnoverValue } from "@/utils/formatting/turnoverFormatting";
 
 interface OverviewStatisticProps {
   selectedPeriod: ReportingPeriod;
   currentLanguage: "sv" | "en";
+  sectorName: string;
   formattedEmployeeCount: string;
   turnoverAIGenerated: boolean;
   employeesAIGenerated: boolean;
@@ -17,61 +22,56 @@ interface OverviewStatisticProps {
 export function OverviewStatistics({
   selectedPeriod,
   currentLanguage,
+  sectorName,
   formattedEmployeeCount,
   turnoverAIGenerated,
   employeesAIGenerated,
   className,
 }: OverviewStatisticProps) {
   const formattedTurnover = selectedPeriod.economy?.turnover?.value
-    ? (() => {
-        const { value } = selectedPeriod.economy.turnover;
-        const useMillions = value < 1e9;
-        return `${localizeUnit(
-          value / (useMillions ? 1e6 : 1e9),
-          currentLanguage,
-        )} ${t(useMillions ? "companies.overview.million" : "companies.overview.billion")} ${selectedPeriod.economy.turnover.currency}`;
-      })()
+    ? formatTurnoverValue(
+        selectedPeriod.economy.turnover.value,
+        currentLanguage,
+        t,
+        selectedPeriod.economy.turnover.currency,
+      )
     : t("companies.overview.notReported");
 
   return (
-    <div className={className ? `@container ${className}` : "@container"}>
-      <div className="mt-8 @md:mt-12 bg-black-1 rounded-level-2 p-6">
-        <div className="grid grid-cols-1 @md:grid-cols-3 gap-4 @md:gap-8">
-          <div>
-            <Text className="md:mb-2 font-bold">
-              {t("companies.overview.turnover")}
-            </Text>
-            <span className="flex items-center gap-2">
-              <Text>{formattedTurnover}</Text>
-              {turnoverAIGenerated && <AiIcon size="md" />}
-            </span>
-          </div>
+    <SupplementalDataPanel className={className}>
+      <SupplementalDataField label={t("companies.overview.sector")}>
+        <Text>{sectorName}</Text>
+      </SupplementalDataField>
 
-          <div>
-            <Text className="md:mb-2 font-bold">
-              {t("companies.overview.employees")}
-            </Text>
-            <span className="flex items-center gap-2">
-              <Text>{formattedEmployeeCount}</Text>
-              {employeesAIGenerated && <AiIcon size="md" />}
-            </span>
-          </div>
+      <SupplementalDataField label={t("companies.overview.turnover")}>
+        <span className="flex items-center gap-2">
+          <Text>{formattedTurnover}</Text>
+          {turnoverAIGenerated && <AiIcon size="md" />}
+        </span>
+      </SupplementalDataField>
 
-          {selectedPeriod?.reportURL && (
-            <div className="flex items-end self-start">
-              <a
-                href={selectedPeriod.reportURL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-blue-2 hover:text-blue-1 transition-colors"
-              >
-                {t("companies.overview.readAnnualReport")}
-                <ArrowUpRight className="w-4 h-4 sm:w-3 sm:h-3" />
-              </a>
-            </div>
-          )}
+      <SupplementalDataField label={t("companies.overview.employees")}>
+        <span className="flex items-center gap-2">
+          <Text>{formattedEmployeeCount}</Text>
+          {employeesAIGenerated && <AiIcon size="md" />}
+        </span>
+      </SupplementalDataField>
+
+      {selectedPeriod?.reportURL && (
+        <div>
+          <div className="md:mb-2">
+            <a
+              href={selectedPeriod.reportURL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-blue-2 hover:text-blue-1 transition-colors"
+            >
+              {t("companies.overview.readAnnualReport")}
+              <ArrowUpRight className="w-4 h-4 sm:w-3 sm:h-3" />
+            </a>
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </SupplementalDataPanel>
   );
 }

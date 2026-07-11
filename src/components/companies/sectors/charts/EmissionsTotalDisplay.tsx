@@ -1,29 +1,30 @@
 import React from "react";
+import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { formatEmissionsAbsolute } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
+import { useChartMotion } from "@/hooks/useChartMotion";
 
 interface EmissionsTotalDisplayProps {
   totalEmissions: number;
-  selectedYear: string;
-  years: string[];
-  onYearChange: (year: string) => void;
   isSectorView?: boolean;
   hideTotal?: boolean;
 }
 
 const EmissionsTotalDisplay: React.FC<EmissionsTotalDisplayProps> = ({
   totalEmissions,
-  selectedYear,
-  years,
-  onYearChange,
   isSectorView = false,
   hideTotal = false,
 }) => {
   const { t } = useTranslation();
   const { isMobile, isTablet } = useScreenSize();
   const { currentLanguage } = useLanguage();
+  const { reduceMotion, fadeDuration, ease } = useChartMotion();
+  const formattedTotal = formatEmissionsAbsolute(
+    Math.round(totalEmissions),
+    currentLanguage,
+  );
 
   return (
     <div
@@ -49,29 +50,21 @@ const EmissionsTotalDisplay: React.FC<EmissionsTotalDisplayProps> = ({
             {isSectorView
               ? t("companyDetailPage.sectorGraphs.sectorTotal")
               : t("companyDetailPage.sectorGraphs.total")}
-            <span className="ml-2 text-xl font-light text-white">
-              {formatEmissionsAbsolute(
-                Math.round(totalEmissions),
-                currentLanguage,
-              )}{" "}
-              {t("emissionsUnit")}
+            <motion.span
+              key={formattedTotal}
+              className="ml-2 text-xl font-light text-orange-2 inline-block"
+              initial={reduceMotion ? false : { opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: fadeDuration, ease }}
+            >
+              {formattedTotal}
+            </motion.span>
+            <span className="ml-1 text-xl font-light text-white">
+              {t("companyDetailPage.sectorGraphs.emissionsUnit")}
             </span>
           </div>
         </div>
       )}
-      <select
-        value={selectedYear}
-        onChange={(e) => onYearChange(e.target.value)}
-        className={`bg-black-2 border border-black-1 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-orange-3 transition-shadow ${
-          isMobile ? "w-full" : ""
-        }`}
-      >
-        {years.map((year) => (
-          <option key={year} value={year}>
-            {year}
-          </option>
-        ))}
-      </select>
     </div>
   );
 };

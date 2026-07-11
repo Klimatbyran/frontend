@@ -3,6 +3,13 @@ import path from "path";
 import { getCompanies, getMunicipalities } from "./api.js";
 import { createSlug } from "./utils.js";
 
+function getCompanyUrlSegment(company: {
+  id: string;
+  wikidataId?: string | null;
+}): string {
+  return company.wikidataId ?? company.id.split("-")[0];
+}
+
 // Set NODE_TLS_REJECT_UNAUTHORIZED to allow self-signed certificates during development
 // This is only used during sitemap generation in Node.js environment
 if (typeof process !== "undefined" && process.env.NODE_ENV !== "production") {
@@ -41,6 +48,24 @@ export async function generateSitemap(outputPath: string): Promise<void> {
         priority: "0.8",
       },
       {
+        loc: "https://klimatkollen.se/sv/sectors",
+        lastmod: currentDate,
+        changefreq: "monthly",
+        priority: "0.7",
+      },
+      {
+        loc: "https://klimatkollen.se/sv/regions",
+        lastmod: currentDate,
+        changefreq: "monthly",
+        priority: "0.7",
+      },
+      {
+        loc: "https://klimatkollen.se/sv/sverige",
+        lastmod: currentDate,
+        changefreq: "monthly",
+        priority: "0.7",
+      },
+      {
         loc: "https://klimatkollen.se/sv/about",
         lastmod: currentDate,
         changefreq: "monthly",
@@ -53,10 +78,46 @@ export async function generateSitemap(outputPath: string): Promise<void> {
         priority: "0.6",
       },
       {
-        loc: "https://klimatkollen.se/sv/insights",
+        loc: "https://klimatkollen.se/sv/support",
+        lastmod: currentDate,
+        changefreq: "monthly",
+        priority: "0.6",
+      },
+      {
+        loc: "https://klimatkollen.se/sv/articles",
         lastmod: currentDate,
         changefreq: "weekly",
         priority: "0.7",
+      },
+      {
+        loc: "https://klimatkollen.se/sv/reports",
+        lastmod: currentDate,
+        changefreq: "weekly",
+        priority: "0.7",
+      },
+      {
+        loc: "https://klimatkollen.se/sv/learn-more",
+        lastmod: currentDate,
+        changefreq: "monthly",
+        priority: "0.6",
+      },
+      {
+        loc: "https://klimatkollen.se/sv/newsletter-archive",
+        lastmod: currentDate,
+        changefreq: "weekly",
+        priority: "0.5",
+      },
+      {
+        loc: "https://klimatkollen.se/sv/privacy",
+        lastmod: currentDate,
+        changefreq: "yearly",
+        priority: "0.3",
+      },
+      {
+        loc: "https://klimatkollen.se/sv/data-download",
+        lastmod: currentDate,
+        changefreq: "monthly",
+        priority: "0.6",
       },
       {
         loc: "https://klimatkollen.se/sv/insights/klimatmal",
@@ -93,6 +154,24 @@ export async function generateSitemap(outputPath: string): Promise<void> {
         priority: "0.7",
       },
       {
+        loc: "https://klimatkollen.se/en/sectors",
+        lastmod: currentDate,
+        changefreq: "monthly",
+        priority: "0.6",
+      },
+      {
+        loc: "https://klimatkollen.se/en/regions",
+        lastmod: currentDate,
+        changefreq: "monthly",
+        priority: "0.6",
+      },
+      {
+        loc: "https://klimatkollen.se/en/sweden",
+        lastmod: currentDate,
+        changefreq: "monthly",
+        priority: "0.6",
+      },
+      {
         loc: "https://klimatkollen.se/en/about",
         lastmod: currentDate,
         changefreq: "monthly",
@@ -105,10 +184,46 @@ export async function generateSitemap(outputPath: string): Promise<void> {
         priority: "0.6",
       },
       {
-        loc: "https://klimatkollen.se/en/insights",
+        loc: "https://klimatkollen.se/en/support",
+        lastmod: currentDate,
+        changefreq: "monthly",
+        priority: "0.5",
+      },
+      {
+        loc: "https://klimatkollen.se/en/articles",
         lastmod: currentDate,
         changefreq: "weekly",
         priority: "0.6",
+      },
+      {
+        loc: "https://klimatkollen.se/en/reports",
+        lastmod: currentDate,
+        changefreq: "weekly",
+        priority: "0.6",
+      },
+      {
+        loc: "https://klimatkollen.se/en/learn-more",
+        lastmod: currentDate,
+        changefreq: "monthly",
+        priority: "0.5",
+      },
+      {
+        loc: "https://klimatkollen.se/en/newsletter-archive",
+        lastmod: currentDate,
+        changefreq: "weekly",
+        priority: "0.4",
+      },
+      {
+        loc: "https://klimatkollen.se/en/privacy",
+        lastmod: currentDate,
+        changefreq: "yearly",
+        priority: "0.3",
+      },
+      {
+        loc: "https://klimatkollen.se/en/data-download",
+        lastmod: currentDate,
+        changefreq: "monthly",
+        priority: "0.5",
       },
       {
         loc: "https://klimatkollen.se/en/insights/klimatmal",
@@ -173,7 +288,7 @@ export async function generateSitemap(outputPath: string): Promise<void> {
           const slug = createSlug(company.name);
 
           return {
-            loc: `https://klimatkollen.se/sv/foretag/${slug}-${company.wikidataId}`,
+            loc: `https://klimatkollen.se/sv/foretag/${slug}-${getCompanyUrlSegment(company)}`,
             lastmod: currentDate,
             changefreq: "monthly",
             priority: "0.6",
@@ -185,7 +300,7 @@ export async function generateSitemap(outputPath: string): Promise<void> {
           const slug = createSlug(company.name);
 
           return {
-            loc: `https://klimatkollen.se/en/companies/${company.wikidataId}/${slug}`,
+            loc: `https://klimatkollen.se/en/companies/${getCompanyUrlSegment(company)}/${slug}`,
             lastmod: currentDate,
             changefreq: "monthly",
             priority: "0.5", // Slightly lower priority for English versions

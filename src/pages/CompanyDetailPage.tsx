@@ -1,15 +1,16 @@
 import { useParams, useLocation } from "react-router-dom";
-import { useState, useMemo } from "react";
-import { useTranslation } from "react-i18next";
+import { useMemo, useState } from "react";
+import { ComparisonDetailChip } from "@/components/compare/ComparisonDetailChip";
+import { buildComparisonLinkTo } from "@/utils/compare/comparisonUtils";
 import { useCompanyDetails } from "@/hooks/companies/useCompanyDetails";
 import { CompanyOverview } from "@/components/companies/detail/overview/CompanyOverview";
 import { CompanyOverviewNoData } from "@/components/companies/detail/overview/CompanyOverviewNoData";
 import { EmissionsHistory } from "@/components/companies/detail/history/EmissionsHistory";
+import { TurnoverEmissionsHistory } from "@/components/companies/detail/history/TurnoverEmissionsHistory";
 import { Seo } from "@/components/SEO/Seo";
 import { CompanyScope3 } from "@/components/companies/detail/CompanyScope3";
 import { useLanguage } from "@/components/LanguageProvider";
 import RelatableNumbers from "@/components/relatableNumbers";
-import type { Scope3Category } from "@/types/company";
 import { PageLoading } from "@/components/pageStates/Loading";
 import { PageError } from "@/components/pageStates/Error";
 import { PageNoData } from "@/components/pageStates/NoData";
@@ -19,7 +20,6 @@ import { getSeoForRoute } from "@/seo/routes";
 import { yearFromIsoDate } from "@/utils/date";
 
 export function CompanyDetailPage() {
-  const { t } = useTranslation();
   const { id } = useParams<{ id: string; slug?: string }>();
   const location = useLocation();
   // The id parameter is always the Wikidata ID (Q-number)
@@ -64,12 +64,23 @@ export function CompanyDetailPage() {
     );
   }
 
+  const comparisonChip = (
+    <ComparisonDetailChip
+      linkTo={buildComparisonLinkTo("company", company.wikidataId)}
+      variant="company"
+      name={company.name}
+    />
+  );
+
   if (!company.reportingPeriods?.length) {
     return (
       <>
         <Seo meta={seoMeta} />
-        <div className="space-y-8 md:space-y-16 max-w-[1400px] mx-auto">
-          <CompanyOverviewNoData company={company} />
+        <div className="mx-auto max-w-[1400px] space-y-8 md:space-y-16">
+          <CompanyOverviewNoData
+            company={company}
+            headerChip={comparisonChip}
+          />
         </div>
       </>
     );
@@ -118,14 +129,13 @@ export function CompanyDetailPage() {
       {/* Only render SEO when data is available, otherwise Layout will use route-level SEO */}
       {company && <Seo meta={seoMeta} />}
 
-      <div className="space-y-8 md:space-y-16 max-w-[1400px] mx-auto">
+      <div className="mx-auto max-w-[1400px] space-y-8 md:space-y-16">
         <CompanyOverview
           company={company}
           selectedPeriod={selectedPeriod}
           previousPeriod={previousPeriod}
-          onYearSelect={setSelectedYear}
-          selectedYear={selectedYear}
           yearOverYearChange={yearOverYearChange}
+          headerChip={comparisonChip}
         />
         {validEmissionsChangeNumber && validEmissionsChangeNumber > 100 && (
           <RelatableNumbers
@@ -137,33 +147,12 @@ export function CompanyDetailPage() {
           />
         )}
 
-        <EmissionsHistory company={company} />
-        <CompanyScope3
-          emissions={selectedPeriod.emissions!}
-          historicalData={sortedPeriods
-            .filter(
-              (period) =>
-                period.emissions?.scope3?.categories &&
-                period.emissions.scope3.categories.length > 0,
-            )
-            .map((period) => ({
-              year: Number(yearFromIsoDate(period.endDate)),
-              total: period.emissions!.scope3!.calculatedTotalEmissions!,
-              unit:
-                period.emissions!.scope3!.statedTotalEmissions?.unit ||
-                t("emissionsUnit"),
-              categories: period
-                .emissions!.scope3!.categories!.filter(
-                  (cat: Scope3Category) => cat.total !== null,
-                )
-                .map((cat: Scope3Category) => ({
-                  category: cat.category,
-                  total: cat.total as number,
-                  unit: cat.unit,
-                })),
-            }))
-            .sort((a, b) => a.year - b.year)}
+        <EmissionsHistory company={company} onYearSelect={setSelectedYear} />
+        <TurnoverEmissionsHistory
+          company={company}
+          onYearSelect={setSelectedYear}
         />
+        <CompanyScope3 emissions={selectedPeriod.emissions!} />
       </div>
     </>
   );

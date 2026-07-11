@@ -20,6 +20,16 @@ import {
 } from "./useCompanySorting";
 import { useExploreFilters } from "@/hooks/explore/useExploreFilters";
 import { getSearchTerms } from "@/hooks/explore/exploreFilterUtils";
+import type { CompanyCountryTagSlug } from "@/lib/constants/companyCountryTags";
+import {
+  buildCountryActiveFilters,
+  buildCountryFilterGroup,
+  companyMatchesCountries,
+  getAvailableCountryOptions,
+  parseCountriesFromURL,
+  toggleCountrySelection,
+  useCompanyCountryNames,
+} from "@/hooks/companies/companyCountryFilterUtils";
 
 const MEETS_PARIS_OPTIONS = ["all", "yes", "no", "unknown"] as const;
 type MeetsParisFilter = (typeof MEETS_PARIS_OPTIONS)[number];
@@ -27,7 +37,15 @@ type MeetsParisFilter = (typeof MEETS_PARIS_OPTIONS)[number];
 const isMeetsParisFilter = (value: string): value is MeetsParisFilter =>
   MEETS_PARIS_OPTIONS.includes(value as MeetsParisFilter);
 
-export const useCompanyFilters = (companies: RankedCompany[]) => {
+type UseCompanyFiltersOptions = {
+  includeSectorFilter?: boolean;
+};
+
+export const useCompanyFilters = (
+  companies: RankedCompany[],
+  options: UseCompanyFiltersOptions = {},
+) => {
+  const { includeSectorFilter = true } = options;
   const [searchParams, setSearchParams] = useSearchParams();
   const sortingOptions = useSortOptions();
 
@@ -48,12 +66,16 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
   const meetsParisFilter: MeetsParisFilter = isMeetsParisFilter(meetsParisRaw)
     ? (meetsParisRaw as MeetsParisFilter)
     : "all";
-  const sectors = (searchParams
-    .get("sectors")
-    ?.split(",")
-    .filter((s) => SECTORS.some((sector) => sector.value === s)) ?? [
-    "all",
-  ]) as CompanySector[];
+  const sectors = (
+    includeSectorFilter
+      ? (searchParams
+          .get("sectors")
+          ?.split(",")
+          .filter((s) => SECTORS.some((sector) => sector.value === s)) ?? [
+          "all",
+        ])
+      : ["all"]
+  ) as CompanySector[];
   const setMeetsParisFilter = useCallback(
     (meetsParisFilter: string) =>
       setOrDeleteSearchParam(
@@ -70,10 +92,27 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
         sectors.length > 0 ? sectors.join(",") : null,
         "sectors",
       ),
-    [],
+    [setSearchParams],
+  );
+
+  const selectedCountries = parseCountriesFromURL(searchParams);
+  const setSelectedCountries = useCallback(
+    (countries: CompanyCountryTagSlug[]) =>
+      setOrDeleteSearchParam(
+        setSearchParams,
+        countries.length > 0 ? countries.join(",") : null,
+        "countries",
+      ),
+    [setSearchParams],
   );
 
   const sectorNames = useSectorNames();
+  const sectorOptions = useSectors();
+  const countryNames = useCompanyCountryNames();
+  const availableCountries = useMemo(
+    () => getAvailableCountryOptions(companies),
+    [companies],
+  );
   const { t } = useTranslation();
 
   const filteredCompanies = useMemo(() => {
@@ -121,7 +160,14 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
           return true;
         })();
 
-        return matchesSector && matchesSearch && matchesMeetsParis;
+        const matchesCountry = companyMatchesCountries(
+          company,
+          selectedCountries,
+        );
+
+        return (
+          matchesSector && matchesSearch && matchesMeetsParis && matchesCountry
+        );
       })
       .sort((a, b) => {
         // Sort companies
@@ -189,6 +235,7 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
   }, [
     companies,
     sectors,
+    selectedCountries,
     searchQuery,
     meetsParisFilter,
     sortBy,
@@ -196,24 +243,41 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
     sectorNames,
   ]);
 
+  const countryFilterGroup = buildCountryFilterGroup({
+    t,
+    countryNames,
+    availableCountries,
+    selectedCountries,
+    onSelect: (value) =>
+      setSelectedCountries(toggleCountrySelection(selectedCountries, value)),
+  });
+
   const filterGroups: FilterGroup[] = [
-    {
-      heading: t("explorePage.companies.sector"),
-      options: useSectors().map((s) => ({ value: s.value, label: s.label })),
-      selectedValues: sectors,
-      onSelect: (value: string) => {
-        if (value === "all") {
-          setSectors(["all"]);
-        } else if (sectors.includes("all")) {
-          setSectors([value]);
-        } else if (sectors.includes(value)) {
-          setSectors(sectors.filter((s) => s !== value));
-        } else {
-          setSectors([...sectors, value]);
-        }
-      },
-      selectMultiple: true,
-    },
+    ...(includeSectorFilter
+      ? [
+          {
+            heading: t("explorePage.companies.sector"),
+            options: sectorOptions.map((s) => ({
+              value: s.value,
+              label: s.label,
+            })),
+            selectedValues: sectors,
+            onSelect: (value: string) => {
+              if (value === "all") {
+                setSectors(["all"]);
+              } else if (sectors.includes("all")) {
+                setSectors([value]);
+              } else if (sectors.includes(value)) {
+                setSectors(sectors.filter((s) => s !== value));
+              } else {
+                setSectors([...sectors, value]);
+              }
+            },
+            selectMultiple: true,
+          } satisfies FilterGroup,
+        ]
+      : []),
+    ...(countryFilterGroup ? [countryFilterGroup] : []),
     {
       heading: t("explorePage.companies.filteringOptions.meetsParis"),
       options: [
@@ -240,13 +304,21 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
 
   const activeFilters = useMemo(() => {
     return [
-      ...(sectors.includes("all")
-        ? []
-        : sectors.map((sector) => ({
+      ...(includeSectorFilter && !sectors.includes("all")
+        ? sectors.map((sector) => ({
             type: "filter" as const,
             label: sectorNames[sector as keyof typeof sectorNames] || sector,
             onRemove: () => setSectors(sectors.filter((s) => s !== sector)),
-          }))),
+          }))
+        : []),
+      ...buildCountryActiveFilters({
+        countryNames,
+        selectedCountries,
+        onRemove: (country) =>
+          setSelectedCountries(
+            selectedCountries.filter((value) => value !== country),
+          ),
+      }),
       ...(meetsParisFilter !== "all"
         ? [
             {
@@ -266,11 +338,15 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
         : []),
     ];
   }, [
+    includeSectorFilter,
     sectors,
+    selectedCountries,
     meetsParisFilter,
     sectorNames,
+    countryNames,
     t,
     setSectors,
+    setSelectedCountries,
     setMeetsParisFilter,
   ]);
 
@@ -279,6 +355,8 @@ export const useCompanyFilters = (companies: RankedCompany[]) => {
     setSearchQuery,
     sectors,
     setSectors,
+    selectedCountries,
+    setSelectedCountries,
     meetsParisFilter,
     setMeetsParisFilter,
     sortBy,

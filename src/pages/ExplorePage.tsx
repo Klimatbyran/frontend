@@ -18,14 +18,20 @@ export function ExplorePage() {
   const screenSize = useScreenSize();
   const navigate = useNavigate();
   const { mainFilter } = useParams();
+  const isCompaniesTab = mainFilter === "companies";
+  const isMunicipalitiesTab = mainFilter === "municipalities";
+  const isRegionsTab = mainFilter === "regions";
+
   const { municipalities, municipalitiesLoading, municipalitiesError } =
-    useMunicipalities();
-  const { companies, companiesLoading, companiesError } = useCompanies();
+    useMunicipalities({ enabled: isMunicipalitiesTab });
+  const { companies, companiesLoading, companiesError } = useCompanies({
+    enabled: isCompaniesTab,
+  });
   const {
     regions,
     loading: regionsLoading,
     error: regionsError,
-  } = useRegionsForExplore();
+  } = useRegionsForExplore({ enabled: isRegionsTab });
 
   // Filter out search params that are not applicable to both municipalities and companies
   const urlSearchParams = new URLSearchParams(window.location.search);
@@ -46,7 +52,22 @@ export function ExplorePage() {
     return <NotFoundPage />;
   }
 
-  if (municipalitiesLoading || companiesLoading || regionsLoading) {
+  const isLoading =
+    (isCompaniesTab && companiesLoading && companies.length === 0) ||
+    (isMunicipalitiesTab &&
+      municipalitiesLoading &&
+      municipalities.length === 0) ||
+    (isRegionsTab && regionsLoading && regions.length === 0);
+
+  const activeError = isCompaniesTab
+    ? companiesError
+    : isMunicipalitiesTab
+      ? municipalitiesError
+      : isRegionsTab
+        ? regionsError
+        : null;
+
+  if (isLoading) {
     return (
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-pulse">
         {[...Array(4)].map((_, i) => (
@@ -56,7 +77,7 @@ export function ExplorePage() {
     );
   }
 
-  if (companiesError || municipalitiesError || regionsError) {
+  if (activeError) {
     const errorMessages = {
       companies: {
         title: t("explorePage.companies.errorTitle"),
@@ -100,11 +121,7 @@ export function ExplorePage() {
 
   return (
     <>
-      <PageHeader
-        title={t("explorePage.title")}
-        description={t("explorePage.description")}
-        className="-ml-4"
-      />
+      <PageHeader variant="title-only" title={t("explorePage.title")} />
 
       {/* Filters & Sorting Section */}
       <div

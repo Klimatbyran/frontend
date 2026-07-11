@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import { LanguageRedirect } from "@/components/LanguageRedirect";
 import ProtectedRoute from "./components/ProtectedRoute";
 import StagingProtectedRoute from "./components/StagingProtectedRoute";
@@ -6,51 +6,59 @@ import StagingProtectedRoute from "./components/StagingProtectedRoute";
 // Wrap the route(s) in <Route element={<StagingProtectedRoute />}> and nest your path(s) inside.
 // When ready for prod, remove the wrapper. Keep this import so dead-code scripts don't remove the component.
 import { useLanguage } from "./components/LanguageProvider";
-import { AboutPage } from "./pages/AboutPage";
+import {
+  AboutPage,
+  AddCompanyPage,
+  BlogDetailPage,
+  CompaniesOverviewPage,
+  CompanyDetailPage,
+  CompanyEditPage,
+  DataDownloadPage,
+  DownloadsPage,
+  ErrorPage,
+  ExplorePage,
+  ComparisonPage,
+  EuropeanCountryDetailPage,
+  EuropeanOverviewPage,
+  InsightsPage,
+  InternalDashboard,
+  LearnMoreArticle,
+  LearnMoreOverview,
+  MethodsPage,
+  MunicipalitiesOverviewPage,
+  MunicipalityDetailPage,
+  NationDetailRoute,
+  NewsLetterArchivePage,
+  NotFoundPage,
+  ParisAlignedStatisticsPage,
+  PrivacyPage,
+  RegionalOverviewPage,
+  RegionDetailPage,
+  ReportLandingPage,
+  ReportsPage,
+  RequestsDashboard,
+  SectorsOverviewPage,
+  SupportPage,
+  TrendAnalysisDashboard,
+  UnauthorizedErrorPage,
+  ValidationDashboard,
+} from "./lazyPages";
 import { AuthCallback } from "./pages/AuthCallback";
-import { BlogDetailPage } from "./pages/BlogDetailPage";
-import { CompanyEditPage } from "./pages/CompanyEditPage";
-import { CompanyDetailPage } from "./pages/CompanyDetailPage";
-import { SectorsOverviewPage } from "./pages/SectorsOverviewPage";
-import DownloadsPage from "./pages/DownloadsPage";
-import { ErrorPage } from "./pages/ErrorPage";
-import { InsightsPage } from "./pages/InsightsPage";
 import { LandingPage } from "./pages/LandingPage";
-import { LearnMoreOverview } from "./pages/LearnMoreOverview";
-import { LearnMoreArticle } from "./pages/LearnMoreArticle";
-import { MethodsPage } from "./pages/MethodsPage";
-import { MunicipalitiesOverviewPage } from "./pages/MunicipalitiesOverviewPage";
-import { MunicipalityDetailPage } from "./pages/MunicipalityDetailPage";
-import { NotFoundPage } from "./pages/NotFoundPage";
-import { ReportsPage } from "./pages/ReportsPage";
-import { PrivacyPage } from "./pages/PrivacyPage";
-import DataDownloadPage from "./pages/DataDownloadPage";
-import { UnauthorizedErrorPage } from "./pages/error/UnauthorizedErrorPage";
-import { SupportPage } from "./pages/SupportPage";
-import { ValidationDashboard } from "./pages/internal-pages/ValidationDashboard";
-import { InternalDashboard } from "./pages/internal-pages/InternalDashboard";
-import { ReportLandingPage } from "./pages/ReportLandingPage";
-import { RequestsDashboard } from "./pages/internal-pages/RequestsDashboard";
-import { TrendAnalysisDashboard } from "./pages/internal-pages/TrendAnalysisDashboard";
-import { ParisAlignedStatisticsPage } from "./pages/internal-pages/ParisAlignedStatisticsPage";
-import { AddCompanyPage } from "./pages/internal-pages/AddCompanyPage";
-import { NewsLetterArchivePage } from "./pages/NewslettersPage";
-import { RegionalOverviewPage } from "./pages/RegionalOverviewPage";
-import { RegionDetailPage } from "./pages/RegionDetailPage";
-import { NationDetailPage } from "./pages/NationDetailPage";
-import { CompaniesOverviewPage } from "./pages/CompaniesOverviewPage";
-import { ExplorePage } from "./pages/ExplorePage";
-import { EuropeanOverviewPage } from "./pages/EuropeanOverviewPage";
+import { ComparisonRouteLayout } from "./components/compare/ComparisonRouteLayout";
 
 void StagingProtectedRoute; // referenced so dead-code scripts keep the component; eslint/ts unused-import satisfied
 
-function CompanyRoutes({ basePath }: { basePath: string }) {
+function ComparisonRoutes({ basePath }: { basePath: string }) {
   return (
-    <>
-      <Route path={`${basePath}/sectors`} element={<SectorsOverviewPage />} />
+    <Route element={<ComparisonRouteLayout />}>
       <Route
-        path={`${basePath}/companies`}
-        element={<CompaniesOverviewPage />}
+        path={`${basePath}/explore/compare`}
+        element={<ComparisonPage />}
+      />
+      <Route
+        path={`${basePath}/explore/:mainFilter`}
+        element={<ExplorePage />}
       />
       <Route
         path={`${basePath}/companies/:id`}
@@ -63,6 +71,27 @@ function CompanyRoutes({ basePath }: { basePath: string }) {
       <Route
         path={`${basePath}/foretag/:slug-:id`}
         element={<CompanyDetailPage />}
+      />
+      <Route path={`${basePath}/regions/:id`} element={<RegionDetailPage />} />
+      <Route
+        path={`${basePath}/municipalities/:id`}
+        element={<MunicipalityDetailPage />}
+      />
+      <Route
+        path={`${basePath}/europe/:id`}
+        element={<EuropeanCountryDetailPage />}
+      />
+    </Route>
+  );
+}
+
+function CompanyRoutes({ basePath }: { basePath: string }) {
+  return (
+    <>
+      <Route path={`${basePath}/sectors`} element={<SectorsOverviewPage />} />
+      <Route
+        path={`${basePath}/companies`}
+        element={<CompaniesOverviewPage />}
       />
       <Route element={<ProtectedRoute />}>
         <Route
@@ -102,16 +131,13 @@ function TerritoryRoutes({ basePath }: { basePath: string }) {
   return (
     <>
       <Route path={`${basePath}/regions`} element={<RegionalOverviewPage />} />
-      <Route path={`${basePath}/regions/:id`} element={<RegionDetailPage />} />
       <Route path={`${basePath}/europe`} element={<EuropeanOverviewPage />} />
-      <Route path={`${basePath}/nation`} element={<NationDetailPage />} />
+      <Route path={`${basePath}/nation`} element={<NationDetailRoute />} />
+      <Route path={`${basePath}/sweden`} element={<NationDetailRoute />} />
+      <Route path={`${basePath}/sverige`} element={<NationDetailRoute />} />
       <Route
         path={`${basePath}/municipalities`}
         element={<MunicipalitiesOverviewPage />}
-      />
-      <Route
-        path={`${basePath}/municipalities/:id`}
-        element={<MunicipalityDetailPage />}
       />
     </>
   );
@@ -162,9 +188,10 @@ export function AppRoutes() {
       <Route path={`${basePath}`} element={<LandingPage />} />
       <Route path={`${basePath}/`} element={<LandingPage />} />
       <Route
-        path={`${basePath}/explore/:mainFilter`}
-        element={<ExplorePage />}
+        path={`${basePath}/explore`}
+        element={<Navigate to={`${basePath}/explore/municipalities`} replace />}
       />
+      {ComparisonRoutes({ basePath })}
       {CompanyRoutes({ basePath })}
       {TerritoryRoutes({ basePath })}
       {ContentRoutes({ basePath })}

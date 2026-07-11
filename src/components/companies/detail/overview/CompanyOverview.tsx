@@ -1,13 +1,7 @@
 import { Pen } from "lucide-react";
+import { type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Text } from "@/components/ui/text";
 import type { CompanyDetails, ReportingPeriod } from "@/types/company";
 import { useAuth } from "@/contexts/AuthContext";
@@ -32,24 +26,22 @@ import { CompanyDescription } from "./CompanyDescription";
 import { CompanyOverviewTooltip } from "./CompanyOverviewTooltip";
 import { OverviewStatistics } from "./OverviewStatistics";
 import { yearFromIsoDate } from "@/utils/date";
-import { CompanyLogo } from "../../CompanyLogo";
+import { CompanyDetailHeader } from "../CompanyDetailHeader";
 
 interface CompanyOverviewProps {
   company: CompanyDetails;
   selectedPeriod: ReportingPeriod;
   previousPeriod?: ReportingPeriod;
-  onYearSelect: (year: string) => void;
-  selectedYear: string;
   yearOverYearChange: number | null;
+  headerChip?: ReactNode;
 }
 
 export function CompanyOverview({
   company,
   selectedPeriod,
   previousPeriod,
-  onYearSelect,
-  selectedYear,
   yearOverYearChange,
+  headerChip,
 }: CompanyOverviewProps) {
   const { t } = useTranslation();
   const { token } = useAuth();
@@ -107,70 +99,32 @@ export function CompanyOverview({
         // "historicVsParis",
       ]}
     >
-      <div className="flex gap-1 items-start justify-between mb-4 md:mb-12">
-        <div className="space-y-4">
-          <div className="flex items-center gap-4">
-            <Text className="text-4xl lg:text-6xl">{company.name}</Text>
-            {token && (
-              <div className="flex flex-row gap-2 mt-2 md:mt-0 md:ml-4">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="gap-2"
-                  onClick={() => navigate("edit")}
-                >
-                  Edit
-                  <div className="w-5 h-5 rounded-full bg-orange-5/30 text-orange-2 text-xs flex items-center justify-center">
-                    <Pen />
-                  </div>
-                </Button>
-                <EmissionsAssessmentButton
-                  wikidataId={company.wikidataId}
-                  sortedPeriods={sortedPeriods}
-                />
-              </div>
-            )}
-          </div>
-          <CompanyDescription description={description} />
-          <div className="flex flex-row items-center gap-2 my-4">
-            <Text
-              variant="body"
-              className="text-grey text-sm md:text-base lg:text-lg"
+      <div className="mb-4 space-y-4 md:mb-12">
+        <CompanyDetailHeader
+          name={company.name}
+          logoUrl={company.logoUrl}
+          headerChip={headerChip}
+        />
+        {token && (
+          <div className="flex flex-row gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-2"
+              onClick={() => navigate("edit")}
             >
-              {t("companies.overview.sector")}:
-            </Text>
-            <Text variant="body" className="text-sm md:text-base lg:text-lg">
-              {sectorName}
-            </Text>
+              Edit
+              <div className="flex h-5 w-5 items-center justify-center rounded-full bg-orange-5/30 text-xs text-orange-2">
+                <Pen />
+              </div>
+            </Button>
+            <EmissionsAssessmentButton
+              companyId={company.id}
+              sortedPeriods={sortedPeriods}
+            />
           </div>
-          <div className="my-4 w-full max-w-[180px]">
-            <Select value={selectedYear} onValueChange={onYearSelect}>
-              <SelectTrigger className="w-full bg-black-1 text-white px-3 py-2 rounded-md">
-                <SelectValue placeholder={t("companies.overview.selectYear")} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="latest">
-                  {t("companies.overview.latestYear")}
-                </SelectItem>
-                {sortedPeriods.map((period) => {
-                  const year = yearFromIsoDate(period.endDate);
-                  return period.emissions?.calculatedTotalEmissions === null ||
-                    period.emissions?.calculatedTotalEmissions === 0 ? null : (
-                    <SelectItem key={year} value={year}>
-                      {year}
-                    </SelectItem>
-                  );
-                })}
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-        {company.logoUrl && (
-          <CompanyLogo
-            src={company.logoUrl}
-            className="rounded-xl size-[120px] object-contain hidden lg:inline"
-          />
         )}
+        <CompanyDescription description={description} />
       </div>
 
       <div className="mb-2 md:mb-4 space-y-4 md:space-y-6">
@@ -258,6 +212,7 @@ export function CompanyOverview({
       <OverviewStatistics
         selectedPeriod={selectedPeriod}
         currentLanguage={currentLanguage}
+        sectorName={sectorName}
         formattedEmployeeCount={formattedEmployeeCount}
         turnoverAIGenerated={turnoverAIGenerated}
         employeesAIGenerated={employeesAIGenerated}

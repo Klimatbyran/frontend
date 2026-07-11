@@ -132,26 +132,6 @@ export function BeeswarmChart<T>({
 
   return (
     <div className="relative w-full h-full min-h-[400px] flex flex-col">
-      {/* X-axis labels */}
-      <div
-        className="relative mb-2 text-xs text-grey px-1"
-        style={{ height: "16px" }}
-      >
-        <span className="absolute left-0">
-          {min.toFixed(1)}
-          {unit}
-        </span>
-        <span className="absolute right-0">
-          {max.toFixed(1)}
-          {unit}
-          {capThreshold !== undefined && max >= capThreshold && (
-            <span className="text-[10px] ml-1 opacity-70">
-              {t("companiesOverviewPage.visualizations.beeswarm.capped")}
-            </span>
-          )}
-        </span>
-      </div>
-
       {/* Main visualization area */}
       <div
         className="relative flex-1 border-t border-b border-black-4"
@@ -273,6 +253,26 @@ export function BeeswarmChart<T>({
         </div>
       </div>
 
+      {/* X-axis labels */}
+      <div
+        className="relative mt-2 text-xs text-grey px-1"
+        style={{ height: "16px" }}
+      >
+        <span className="absolute left-0">
+          {min.toFixed(1)}
+          {unit}
+        </span>
+        <span className="absolute right-0">
+          {max.toFixed(1)}
+          {unit}
+          {capThreshold !== undefined && max >= capThreshold && (
+            <span className="text-[10px] ml-1 opacity-70">
+              {t("companiesOverviewPage.visualizations.beeswarm.capped")}
+            </span>
+          )}
+        </span>
+      </div>
+
       {/* Legend and company count */}
       <div className="mt-8 flex flex-col md:flex-row md:items-center md:justify-between gap-3 md:gap-0 text-xs text-grey">
         {showLegend ? (
@@ -285,35 +285,9 @@ export function BeeswarmChart<T>({
                 gradientBackground={legendGradient}
               />
             </div>
-            <div className="text-center md:text-left order-1 md:order-2">
-              {t(
-                "companiesOverviewPage.visualizations.beeswarm.companiesShown",
-                {
-                  count: data.length,
-                },
-              )}
-              {data.length >= maxDisplayCount &&
-                ` ${t(
-                  "companiesOverviewPage.visualizations.beeswarm.showingFirst",
-                  {
-                    count: maxDisplayCount,
-                  },
-                )}`}
-            </div>
           </>
         ) : (
-          <div className="text-center w-full">
-            {t("companiesOverviewPage.visualizations.beeswarm.companiesShown", {
-              count: data.length,
-            })}
-            {data.length >= maxDisplayCount &&
-              ` ${t(
-                "companiesOverviewPage.visualizations.beeswarm.showingFirst",
-                {
-                  count: maxDisplayCount,
-                },
-              )}`}
-          </div>
+          <div />
         )}
       </div>
 

@@ -1,50 +1,59 @@
 import { useTranslation } from "react-i18next";
 import { Text } from "@/components/ui/text";
-import { LocalizedLink } from "@/components/LocalizedLink";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { DataGuideItemId } from "@/data-guide/items";
-
-type EntityType = "municipalities" | "regions";
+import { RelatedTerritoriesSection } from "@/components/detail/RelatedTerritoriesSection";
+import { useRelatedTerritoriesSection } from "@/hooks/territories/useRelatedTerritoriesSection";
+import { useScreenSize } from "@/hooks/useScreenSize";
+import { MapEntityType } from "@/types/rankings";
 
 interface EntityListBoxProps {
   items: string[];
-  entityType: EntityType;
+  entityType: MapEntityType;
   helpItems?: DataGuideItemId[];
   translateNamespace?: string;
 }
 
-export function EntityListBox({
+export function EntityListBox(props: EntityListBoxProps) {
+  if (props.items.length === 0) {
+    return null;
+  }
+
+  return <EntityListBoxContent {...props} />;
+}
+
+function EntityListBoxContent({
   items,
   entityType,
   helpItems = [],
   translateNamespace = "detailPage",
 }: EntityListBoxProps) {
   const { t } = useTranslation();
-
-  if (items.length === 0) {
-    return null;
-  }
+  const { isMobile } = useScreenSize();
+  const section = useRelatedTerritoriesSection(items, entityType, !isMobile);
+  const { selectedKPI, loading } = section;
 
   const translationKey = `${translateNamespace}.${entityType}`;
-  const basePath = `/${entityType}`;
 
   const content = (
     <div className="bg-black-2 rounded-level-3 p-4 md:p-8">
       <Text variant="h3" className="mb-4 md:mb-6">
         {t(translationKey)}
       </Text>
-      <div className="flex flex-wrap gap-2 md:gap-4">
-        {items.map((item) => (
-          <span key={item}>
-            <LocalizedLink
-              to={`${basePath}/${item}`}
-              className="text-orange-2 hover:text-orange-1 underline text-sm md:text-base"
-            >
-              {item}
-            </LocalizedLink>
-          </span>
-        ))}
-      </div>
+      {selectedKPI?.detailedDescription && (
+        <div className="mb-4 md:mb-6">
+          <p className="text-sm font-medium text-white">{selectedKPI.label}</p>
+          <p className="mt-1 text-sm leading-relaxed text-grey">
+            {selectedKPI.detailedDescription}
+          </p>
+        </div>
+      )}
+      {!loading && !selectedKPI && (
+        <p className="text-sm text-grey">{t("noData")}</p>
+      )}
+      {(loading || selectedKPI) && (
+        <RelatedTerritoriesSection entityType={entityType} state={section} />
+      )}
     </div>
   );
 

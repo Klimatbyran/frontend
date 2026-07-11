@@ -37,10 +37,12 @@ export function OverviewStat({
     if (typeof label === "string") {
       if (isDetailVariant) {
         return (
-          <div className="flex gap-2">
-            <Text className="text-lg md:text-xl">{label}</Text>
+          <div className="flex min-w-0 gap-2">
+            <Text className="text-lg leading-snug break-words md:text-xl">
+              {label}
+            </Text>
             {info && infoText && (
-              <span className="text-grey">
+              <span className="shrink-0 text-grey">
                 <InfoTooltip ariaLabel="Additional information">
                   <p>{infoText}</p>
                 </InfoTooltip>
@@ -59,12 +61,16 @@ export function OverviewStat({
     if (isDetailVariant && unit) {
       // Detail variant: separate Text components in flex container
       return (
-        <div className="flex items-baseline space-x-2">
-          <Text className={cn("text-4xl md:text-6xl", valueClassName)}>
+        <div className="flex min-w-0 flex-wrap items-baseline gap-x-2 gap-y-1">
+          <Text
+            className={cn("text-3xl md:text-5xl lg:text-6xl", valueClassName)}
+          >
             {value}
           </Text>
           {unit && (
-            <Text className="text-md md:text-2xl text-grey">{unit}</Text>
+            <Text className="text-md text-grey md:text-xl lg:text-2xl">
+              {unit}
+            </Text>
           )}
         </div>
       );

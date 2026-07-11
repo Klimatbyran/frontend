@@ -2,6 +2,9 @@
  * SEO utility functions
  */
 
+/** Default Open Graph / Twitter card image (landing page) */
+export const DEFAULT_OG_IMAGE = "/images/landing-page-og.png";
+
 /**
  * Get the site origin from environment variable
  * Falls back to a default if not set
@@ -23,10 +26,11 @@ export function buildAbsoluteUrl(path: string): string {
 
 /**
  * Build an absolute URL for an image or asset
- * @param path - Relative path to image (e.g., "/images/social-picture.png")
+ * @param path - Relative path to image (e.g., "/images/landing-page-og.png")
  * @returns Absolute URL
  */
 export function buildAbsoluteImageUrl(path: string): string {
+  if (!path) return buildAbsoluteUrl(DEFAULT_OG_IMAGE);
   if (path.startsWith("http://") || path.startsWith("https://")) {
     return path;
   }

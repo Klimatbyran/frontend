@@ -44,7 +44,6 @@ function buildCountryEntity(
     displayName: getLocalizedCountryName(iso2, language, mapName),
     mapName,
     emissionsPerCapita: null,
-    emissionsPercentChange: null,
     historicalEmissionChangePercent: null,
     meetsParis: null,
     ...values,
@@ -83,7 +82,9 @@ function buildClimateTraceEntities(
         language,
         {
           emissionsPerCapita: ranking.emissionsPerCapita,
-          emissionsPercentChange: ranking.emissionsPercentChange,
+          historicalEmissionChangePercent:
+            ranking.historicalEmissionChangePercent,
+          meetsParis: ranking.meetsParis,
         },
       ),
     ];
@@ -120,12 +121,12 @@ function toEuropeanCountries(
       typeof country.emissionsPerCapita === "number"
         ? country.emissionsPerCapita
         : null,
-    emissionsPercentChange:
-      typeof country.emissionsPercentChange === "number"
-        ? country.emissionsPercentChange
+    historicalEmissionChangePercent:
+      typeof country.historicalEmissionChangePercent === "number"
+        ? country.historicalEmissionChangePercent
         : null,
-    historicalEmissionChangePercent: null,
-    meetsParis: null,
+    meetsParis:
+      typeof country.meetsParis === "boolean" ? country.meetsParis : null,
   }));
 }
 

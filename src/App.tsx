@@ -1,10 +1,14 @@
+import { Suspense } from "react";
+import { PageLoading } from "@/components/pageStates/Loading";
 import { ToastProvider } from "./contexts/ToastContext";
 import { AppRoutes } from "./routes";
 
 function App() {
   return (
     <ToastProvider>
-      <AppRoutes />
+      <Suspense fallback={<PageLoading />}>
+        <AppRoutes />
+      </Suspense>
     </ToastProvider>
   );
 }

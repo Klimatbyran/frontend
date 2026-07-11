@@ -1,52 +1,60 @@
 import { useMemo } from "react";
-import {
-  useNationDetails,
-  useNationDetailHeaderStats,
-} from "@/hooks/nation/useNationDetails";
+import { useHiddenItems } from "@/components/charts";
 import { useSectorEmissions } from "@/hooks/territories/useSectorEmissions";
 import { useSectors } from "@/hooks/territories/useSectors";
-import { useHiddenItems } from "@/components/charts";
 import { useSectorYearSelection } from "@/hooks/territories/useSectorYearSelection";
-import { useRegions } from "@/hooks/useRegions";
-import { transformNationEmissionsData } from "@/utils/data/nationTransforms";
+import { useNationDetails } from "@/hooks/nation/useNationDetails";
+import { useRegionsList } from "@/hooks/regions/useRegionsList";
+import { useEuropeanCountryPageData } from "@/hooks/europe/useEuropeanCountryPageData";
+import { SWEDEN_ISO3 } from "@/hooks/europe/useEuropeanCountryDetails";
 
 export function useNationPageData() {
-  const { nation, loading, error } = useNationDetails();
-  const { regions } = useRegions();
-  const { sectorEmissions } = useSectorEmissions("nation", undefined);
+  const {
+    nation,
+    loading: nationLoading,
+    error: nationError,
+  } = useNationDetails();
+  const { regions } = useRegionsList();
+  const {
+    loading: climateTraceLoading,
+    error: climateTraceError,
+    emissionsData,
+    headerStats,
+    kpiComparisons,
+    lastYear,
+    countryGeoData,
+    emissionSources,
+    emissionSourcesLoading,
+  } = useEuropeanCountryPageData(SWEDEN_ISO3);
+
+  const { sectorEmissions } = useSectorEmissions("nation");
   const { getSectorInfo } = useSectors();
   const { hiddenItems: filteredSectors, setHiddenItems: setFilteredSectors } =
     useHiddenItems<string>([]);
-  const sortedRegions = useMemo(() => [...regions].sort(), [regions]);
-  const emissionsData = useMemo(
-    () => (nation ? transformNationEmissionsData(nation) : []),
-    [nation],
-  );
 
-  const lastYearEmissions = useMemo(() => {
-    return emissionsData
-      .filter((d) => d.total !== undefined)
-      .sort((a, b) => b.year - a.year)[0];
-  }, [emissionsData]);
-  const lastYear = lastYearEmissions?.year;
-  const headerStats = useNationDetailHeaderStats(nation, lastYear);
+  const sortedRegions = useMemo(() => [...regions].sort(), [regions]);
 
   const { selectedYear, setSelectedYear, availableYears, currentYear } =
-    useSectorYearSelection(sectorEmissions, lastYear ?? 2023);
+    useSectorYearSelection(sectorEmissions, lastYear ?? 2025);
 
   return {
     nation,
-    loading,
-    error,
+    loading: nationLoading || climateTraceLoading,
+    error: nationError || climateTraceError,
     sortedRegions,
     emissionsData,
+    headerStats,
+    kpiComparisons,
+    lastYear,
+    countryGeoData,
+    emissionSources,
+    emissionSourcesLoading,
     sectorEmissions,
     getSectorInfo,
     filteredSectors,
     setFilteredSectors,
     selectedYear,
     setSelectedYear,
-    headerStats,
     availableYears,
     currentYear,
   };

@@ -1,5 +1,8 @@
 import { useMemo } from "react";
 import { FeatureCollection } from "geojson";
+import type L from "leaflet";
+import { cn } from "@/lib/utils";
+import { TERRITORY_MAP_COLORS } from "@/utils/territoryMapUtils";
 import { DataItem, DataKPI, MapEntityType } from "@/types/rankings";
 import { calculateGeoBounds } from "./utils/geoBounds";
 import { useMapData } from "./hooks/useMapData";
@@ -9,6 +12,7 @@ import { useMapPosition } from "./hooks/useMapPosition";
 import { useMapLegendValues } from "./hooks/useMapLegendValues";
 import MapContent from "./MapContent";
 import MapOverlays from "./MapOverlays";
+import type { MapLegendPosition } from "./MapLegend";
 
 import "leaflet/dist/leaflet.css";
 
@@ -30,6 +34,18 @@ interface TerritoryMapProps {
   };
   mapBackgroundColor?: string;
   scrollWheelZoom?: boolean;
+  className?: string;
+  showTooltip?: boolean;
+  fitBounds?: boolean;
+  fitBoundsPadding?: L.FitBoundsOptions["padding"];
+  legendPosition?: MapLegendPosition;
+  /**
+   * Controlled hover state. Must be passed together with `onHoveredAreaChange`;
+   * providing only one will fall back to uncontrolled internal state.
+   */
+  hoveredArea?: string | null;
+  /** Pair with `hoveredArea` for controlled hover (e.g. list ↔ map sync). */
+  onHoveredAreaChange?: (area: string | null) => void;
 }
 
 function TerritoryMap({
@@ -41,15 +57,16 @@ function TerritoryMap({
   defaultCenter = [63, 17],
   defaultZoom,
   propertyNameField = "name",
-  colors = {
-    null: "var(--grey)",
-    gradientStart: "var(--pink-5)",
-    gradientMidLow: "var(--pink-4)",
-    gradientMidHigh: "var(--pink-3)",
-    gradientEnd: "var(--blue-3)",
-  },
+  colors = TERRITORY_MAP_COLORS,
   mapBackgroundColor = "var(--black-2)",
   scrollWheelZoom = true,
+  className,
+  showTooltip = true,
+  fitBounds = false,
+  fitBoundsPadding,
+  legendPosition = "bottom-right",
+  hoveredArea: hoveredAreaProp,
+  onHoveredAreaChange,
 }: TerritoryMapProps) {
   const { position, setPosition, getInitialZoom } = useMapPosition(
     defaultCenter,
@@ -61,6 +78,11 @@ function TerritoryMap({
     selectedKPI,
   );
 
+  const mapBounds = useMemo(
+    () => calculateGeoBounds(geoData, { padding: 0.05 }),
+    [geoData],
+  );
+
   const {
     mapRef,
     handleZoomIn,
@@ -68,7 +90,10 @@ function TerritoryMap({
     handleReset,
     MIN_ZOOM,
     MAX_ZOOM,
-  } = useMapZoom(defaultCenter, getInitialZoom);
+  } = useMapZoom(defaultCenter, getInitialZoom, {
+    mapBounds,
+    fitBounds,
+  });
 
   const {
     hoveredArea,
@@ -84,12 +109,10 @@ function TerritoryMap({
     propertyNameField,
     colors,
     onAreaClick,
+    hoveredArea: hoveredAreaProp,
+    onHoveredAreaChange,
+    showTooltip,
   });
-
-  const mapBounds = useMemo(
-    () => calculateGeoBounds(geoData, { padding: 0.05 }),
-    [geoData],
-  );
 
   const { leftValue, rightValue, hasNullValues } = useMapLegendValues(
     data,
@@ -99,7 +122,7 @@ function TerritoryMap({
   );
 
   return (
-    <div className="relative flex-1 h-full max-w-screen-lg">
+    <div className={cn("relative h-full w-full max-w-screen-lg", className)}>
       <MapContent
         geoData={geoData}
         position={position}
@@ -112,10 +135,14 @@ function TerritoryMap({
         setPosition={setPosition}
         backgroundColor={mapBackgroundColor}
         scrollWheelZoom={scrollWheelZoom}
+        fitBounds={fitBounds}
+        fitBoundsPadding={fitBoundsPadding}
       />
       <MapOverlays
         entityType={entityType}
         selectedKPI={selectedKPI}
+        showTooltip={showTooltip}
+        legendPosition={legendPosition}
         hoveredArea={hoveredArea}
         hoveredValue={hoveredValue}
         hoveredRank={hoveredRank}

@@ -3,6 +3,7 @@ import { ArrowUpRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { reports } from "@/lib/constants/reports";
 import { PageSEO } from "@/components/SEO/PageSEO";
+import { DEFAULT_OG_IMAGE } from "@/utils/seo";
 
 export function ReportLandingPage() {
   const { reportId } = useParams<{ reportId: string }>();
@@ -20,9 +21,9 @@ export function ReportLandingPage() {
     return pdfFile === reportId;
   });
 
-  const image = report?.image || "/images/social-picture.png";
   const title = report?.title || "Klimatkollen Rapport";
   const description = report?.excerpt || "Läs rapporten från Klimatkollen.";
+  const image = report?.image || DEFAULT_OG_IMAGE;
   const pdfUrl = report?.link || `/reports/${reportId}.pdf`;
   const canonicalUrl = `https://klimatkollen.se/reports/${reportId}`;
 

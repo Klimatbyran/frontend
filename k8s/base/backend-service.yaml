@@ -4,7 +4,7 @@ metadata:
   name: backend
 spec:
   type: ExternalName
-  externalName: garbo.garbo-stage.svc.cluster.local
+  externalName: unearth-api.unearth-api-stage.svc.cluster.local
   ports:
     - port: 80
       targetPort: 80

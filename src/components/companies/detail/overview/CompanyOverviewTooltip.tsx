@@ -13,7 +13,7 @@ export function CompanyOverviewTooltip({
   return (
     <InfoTooltip ariaLabel="Information about emissions change rate">
       {yearOverYearChange != null ? (
-        yearOverYearChange <= -0.8 || yearOverYearChange >= 0.8 ? (
+        yearOverYearChange <= -80 || yearOverYearChange >= 80 ? (
           <>
             <p>{t("companies.card.emissionsChangeRateInfo")}</p>
             <p className="my-2">

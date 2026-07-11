@@ -3,8 +3,6 @@ import { RankedCompany } from "@/types/company";
 import type { CompanySector } from "@/lib/constants/sectors";
 import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 import SectorEmissionsChart from "@/components/companies/sectors/charts/SectorEmissionsChart";
-import EmissionsTrendAnalysis from "./trends/EmissionsTrendAnalysis";
-import EmissionsSourcesAnalysis from "./scopes/EmissionsSourcesAnlaysis";
 
 interface SectorGraphsProps {
   companies: RankedCompany[];
@@ -20,26 +18,14 @@ const SectorGraphs: React.FC<SectorGraphsProps> = ({
   const sectorNames = useSectorNames();
 
   return (
-    <div className="bg-black">
-      <div className="bg-black-2 rounded-lg border p-6">
-        <SectorEmissionsChart
-          companies={companies}
-          selectedSectors={
-            sectorCodes.length > 0
-              ? sectorCodes
-              : Object.keys(sectorNames).filter((key) => key !== "all")
-          }
-        />
-      </div>
-
-      <EmissionsTrendAnalysis
+    <div className="bg-black space-y-4">
+      <SectorEmissionsChart
         companies={companies}
-        selectedSectors={selectedSectors}
-      />
-
-      <EmissionsSourcesAnalysis
-        companies={companies}
-        selectedSectors={selectedSectors}
+        selectedSectors={
+          sectorCodes.length > 0
+            ? sectorCodes
+            : Object.keys(sectorNames).filter((key) => key !== "all")
+        }
       />
     </div>
   );

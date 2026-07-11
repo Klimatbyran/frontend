@@ -6,11 +6,15 @@ import { EuropeanCountry } from "@/types/europe";
 interface EuropeanRankedListProps {
   countryEntities: RankedListItem[];
   selectedKPI: KPIValue<EuropeanCountry>;
+  onItemClick?: (item: RankedListItem) => void;
+  headerAction?: React.ReactNode;
 }
 
 export function EuropeanRankedList({
   countryEntities,
   selectedKPI,
+  onItemClick,
+  headerAction,
 }: EuropeanRankedListProps) {
   const { t } = useTranslation();
 
@@ -51,6 +55,8 @@ export function EuropeanRankedList({
       selectedDataPoint={selectedDataPoint}
       searchKey="displayName"
       searchPlaceholder={t("rankedList.search.placeholder")}
+      onItemClick={onItemClick}
+      headerAction={headerAction}
     />
   );
 }

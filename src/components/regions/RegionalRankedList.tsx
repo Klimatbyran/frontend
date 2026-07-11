@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { useScreenSize } from "@/hooks/useScreenSize";
 import RankedList from "@/components/ranked/RankedList";
 import { DataPoint, KPIValue, RankedListItem } from "@/types/rankings";
 import { Region } from "@/types/region";
@@ -7,14 +8,17 @@ interface RegionalRankedListProps {
   regionEntities: RankedListItem[];
   selectedKPI: KPIValue<Region>;
   onItemClick: (item: RankedListItem) => void;
+  headerAction?: React.ReactNode;
 }
 
 export function RegionalRankedList({
   regionEntities,
   selectedKPI,
   onItemClick,
+  headerAction,
 }: RegionalRankedListProps) {
   const { t } = useTranslation();
+  const { isMobile } = useScreenSize();
 
   const asDataPoint = (kpi: unknown): DataPoint<RankedListItem> =>
     kpi as DataPoint<RankedListItem>;
@@ -30,7 +34,9 @@ export function RegionalRankedList({
     booleanLabels: selectedKPI.booleanLabels,
     formatter: (value: unknown) => {
       if (value === null || value === undefined) {
-        return selectedKPI.nullValues ? t(selectedKPI.nullValues) : t("noData");
+        return t(`regions.list.kpis.${String(selectedKPI.key)}.nullValues`, {
+          defaultValue: t("noData"),
+        });
       }
 
       if (typeof value === "boolean") {
@@ -54,6 +60,8 @@ export function RegionalRankedList({
       onItemClick={onItemClick}
       searchKey="displayName"
       searchPlaceholder={t("rankedList.search.placeholder")}
+      itemsPerPage={isMobile ? 6 : 8}
+      headerAction={headerAction}
     />
   );
 }
