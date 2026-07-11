@@ -16,6 +16,9 @@ import { getCompanyUrlSegment } from "@/utils/companyRouting";
 import { formatWithBestUnit } from "@/utils/data/unitScaling";
 import type { CompanyParisEmissionsEntry } from "@/utils/insights/meetsParisChartData";
 
+const SEGMENT_RADIUS = 6;
+const SEGMENT_GAP = 2;
+
 interface MeetsParisBarChartProps {
   entries: CompanyParisEmissionsEntry[];
   unitScale: { unit: string; divisor: number };
@@ -36,95 +39,8 @@ interface TooltipPayloadItem {
   payload?: ChartRow;
 }
 
-interface SegmentPattern {
-  id: string;
-  baseColor: string;
-  variant: number;
-  size: number;
-  angle: number;
-}
-
 function getEntryKey(entry: CompanyParisEmissionsEntry): string {
   return getCompanyUrlSegment(entry.company);
-}
-
-function getPatternId(companyId: string): string {
-  return `paris-segment-${companyId.replace(/[^a-zA-Z0-9_-]/g, "_")}`;
-}
-
-function buildSegmentPatterns(
-  companyIds: string[],
-  companyById: Map<string, CompanyParisEmissionsEntry>,
-): SegmentPattern[] {
-  return companyIds.flatMap((companyId, index) => {
-    if (!companyId) return [];
-
-    const entry = companyById.get(companyId);
-    if (!entry) return [];
-
-    return [
-      {
-        id: getPatternId(companyId),
-        baseColor: entry.meetsParis ? COLORS.blue3 : COLORS.pink3,
-        variant: index % 3,
-        size: 5 + (index % 4),
-        angle: index % 3 === 2 ? 30 + (index % 5) * 12 : 0,
-      },
-    ];
-  });
-}
-
-function CompanySegmentPatterns({ patterns }: { patterns: SegmentPattern[] }) {
-  return (
-    <defs>
-      {patterns.map((pattern) => (
-        <pattern
-          key={pattern.id}
-          id={pattern.id}
-          width={pattern.size}
-          height={pattern.size}
-          patternUnits="userSpaceOnUse"
-          patternTransform={`rotate(${pattern.angle})`}
-        >
-          <rect
-            width={pattern.size}
-            height={pattern.size}
-            fill={pattern.baseColor}
-          />
-          {pattern.variant === 0 && (
-            <line
-              x1="0"
-              y1="0"
-              x2="0"
-              y2={pattern.size}
-              stroke="rgba(255,255,255,0.35)"
-              strokeWidth="1"
-            />
-          )}
-          {pattern.variant === 1 && (
-            <line
-              x1="0"
-              y1="0"
-              x2={pattern.size}
-              y2="0"
-              stroke="rgba(255,255,255,0.35)"
-              strokeWidth="1"
-            />
-          )}
-          {pattern.variant === 2 && (
-            <line
-              x1="0"
-              y1="0"
-              x2={pattern.size}
-              y2={pattern.size}
-              stroke="rgba(255,255,255,0.35)"
-              strokeWidth="1"
-            />
-          )}
-        </pattern>
-      ))}
-    </defs>
-  );
 }
 
 function MeetsParisBarTooltip({
@@ -193,9 +109,7 @@ export function MeetsParisBarChart({
       const yesEntries = entries.filter((entry) => entry.meetsParis);
       const noEntries = entries.filter((entry) => !entry.meetsParis);
 
-      const byId = new Map(
-        entries.map((entry) => [getEntryKey(entry), entry]),
-      );
+      const byId = new Map(entries.map((entry) => [getEntryKey(entry), entry]));
 
       const buildRow = (
         category: string,
@@ -234,11 +148,6 @@ export function MeetsParisBarChart({
         totalsByCategory: new Map(data.map((row) => [row.category, row.total])),
       };
     }, [entries, falseLabel, trueLabel, unitScale.divisor]);
-
-  const segmentPatterns = useMemo(
-    () => buildSegmentPatterns(companyIds, companyById),
-    [companyById, companyIds],
-  );
 
   const formatAxisTick = useCallback(
     (value: number) => `${value.toFixed(1)}${unitScale.unit}`,
@@ -282,7 +191,6 @@ export function MeetsParisBarChart({
             margin={{ top: 20, right: 16, bottom: 4, left: 4 }}
             barCategoryGap="30%"
           >
-            <CompanySegmentPatterns patterns={segmentPatterns} />
             <XAxis
               dataKey="category"
               tick={{ fontSize: 13, fill: "rgba(255,255,255,0.75)" }}
@@ -315,6 +223,7 @@ export function MeetsParisBarChart({
               const entry = companyById.get(companyId);
               if (!entry) return null;
 
+              const baseColor = entry.meetsParis ? COLORS.blue3 : COLORS.pink3;
               const isHighlighted = highlightedCompanyId === companyId;
               const isDimmed =
                 highlightedCompanyId != null &&
@@ -326,7 +235,12 @@ export function MeetsParisBarChart({
                   dataKey={companyId}
                   stackId="emissions"
                   maxBarSize={120}
-                  radius={[3, 3, 0, 0]}
+                  radius={[
+                    SEGMENT_RADIUS,
+                    SEGMENT_RADIUS,
+                    SEGMENT_RADIUS,
+                    SEGMENT_RADIUS,
+                  ]}
                   isAnimationActive={!reduceMotion}
                   animationBegin={0}
                   animationDuration={reduceMotion ? 0 : barDuration * 1000}
@@ -350,14 +264,16 @@ export function MeetsParisBarChart({
                     return (
                       <Cell
                         key={`${companyId}-${row.category}`}
-                        fill={`url(#${getPatternId(companyId)})`}
+                        fill={baseColor}
                         fillOpacity={isDimmed ? 0.45 : 1}
                         stroke={
                           isHighlighted
                             ? "rgba(255,255,255,0.9)"
-                            : "var(--black-4)"
+                            : COLORS.black2
                         }
-                        strokeWidth={isHighlighted ? 2 : 1}
+                        strokeWidth={
+                          isHighlighted ? 2 : SEGMENT_GAP
+                        }
                       />
                     );
                   })}

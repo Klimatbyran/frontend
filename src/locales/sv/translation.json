@@ -336,7 +336,7 @@
         "companiesCount": "{{count}} företag visas",
         "companiesCount_plural": "{{count}} företag visas",
         "emissionsUnit": "ton CO₂e (senaste rapporterade år)",
-        "segmentHint": "Varje företag är ett segment i stapeln. Mönster och kanter skiljer företag åt — hovra eller tryck på ett segment för detaljer.",
+        "segmentHint": "Varje företag är ett staplat segment i stapeln. Hovra eller tryck på ett segment för detaljer.",
         "description": "Totala utsläpp från senaste rapporterade år, staplade per företag och grupperade efter om företaget är på väg att klara Parisavtalet.",
         "learnMore": "Läs mer"
       },
