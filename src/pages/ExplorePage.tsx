@@ -122,7 +122,7 @@ export function ExplorePage() {
   return (
     <>
       <PageHeader
-        variant="compact"
+        variant="sr-only"
         title={t("explorePage.title")}
         description={t("explorePage.description")}
       />

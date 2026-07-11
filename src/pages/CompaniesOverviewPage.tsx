@@ -197,8 +197,6 @@ export function CompaniesOverviewPage() {
   if (companiesLoading) {
     return (
       <OverviewPageSkeleton
-        title={t("companiesOverviewPage.title")}
-        description={t("companiesOverviewPage.description")}
         variant="companies"
         chipCount={companyKPIs.length}
       />
@@ -293,7 +291,7 @@ export function CompaniesOverviewPage() {
   return (
     <>
       <PageHeader
-        variant="compact"
+        variant="sr-only"
         title={t("companiesOverviewPage.title")}
         description={t("companiesOverviewPage.description")}
       />

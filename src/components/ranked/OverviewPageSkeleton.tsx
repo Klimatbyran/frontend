@@ -2,7 +2,6 @@ import {
   OVERVIEW_PANEL_HEIGHT,
   OVERVIEW_PANEL_MD_HEIGHT,
 } from "@/components/ranked/OverviewSplitLayout";
-import { PageHeader } from "@/components/layout/PageHeader";
 
 export type OverviewPageSkeletonVariant =
   | "municipalities"
@@ -10,8 +9,6 @@ export type OverviewPageSkeletonVariant =
   | "companies";
 
 interface OverviewPageSkeletonProps {
-  title: string;
-  description?: string;
   variant?: OverviewPageSkeletonVariant;
   /** Number of KPI chip placeholders on desktop */
   chipCount?: number;
@@ -145,15 +142,11 @@ function DistributionPanelSkeleton() {
 
 /** Skeleton that mirrors the overview page layout while data loads. */
 export function OverviewPageSkeleton({
-  title,
-  description,
   variant = "municipalities",
   chipCount = variant === "regions" ? 2 : variant === "companies" ? 2 : 7,
 }: OverviewPageSkeletonProps) {
   return (
     <>
-      <PageHeader variant="compact" title={title} description={description} />
-
       <KPIChipSelectorSkeleton chipCount={chipCount} />
 
       {variant === "companies" && <IndustryFilterSkeleton />}

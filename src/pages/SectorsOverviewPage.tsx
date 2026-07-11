@@ -68,7 +68,7 @@ export function SectorsOverviewPage() {
   return (
     <>
       <PageHeader
-        variant="compact"
+        variant="sr-only"
         title={t("sectorsOverviewPage.title")}
         description={t("sectorsOverviewPage.description")}
       />

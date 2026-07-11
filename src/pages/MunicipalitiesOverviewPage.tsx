@@ -144,8 +144,6 @@ export function MunicipalitiesOverviewPage() {
   if (municipalitiesLoading) {
     return (
       <OverviewPageSkeleton
-        title={t("municipalitiesOverviewPage.title")}
-        description={t("municipalitiesOverviewPage.description")}
         variant="municipalities"
         chipCount={municipalityKPIs.length}
       />
@@ -206,7 +204,7 @@ export function MunicipalitiesOverviewPage() {
   return (
     <>
       <PageHeader
-        variant="compact"
+        variant="sr-only"
         title={t("municipalitiesOverviewPage.title")}
         description={t("municipalitiesOverviewPage.description")}
       />
