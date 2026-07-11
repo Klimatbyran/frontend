@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 interface PageHeaderProps {
   title: string;
   description?: string;
-  variant?: "default" | "compact" | "sr-only";
+  variant?: "default" | "compact" | "title-only" | "sr-only";
   children?: ReactNode;
   className?: string;
 }
@@ -17,6 +17,7 @@ export function PageHeader({
   className,
 }: PageHeaderProps) {
   const isCompact = variant === "compact";
+  const isTitleOnly = variant === "title-only";
   const isSrOnly = variant === "sr-only";
 
   if (isSrOnly) {
@@ -25,6 +26,14 @@ export function PageHeader({
         <h1 className="sr-only">{title}</h1>
         {description && <p className="sr-only">{description}</p>}
       </>
+    );
+  }
+
+  if (isTitleOnly) {
+    return (
+      <div className={cn("w-full mb-2 md:mb-3", className)}>
+        <h1 className="text-3xl font-light">{title}</h1>
+      </div>
     );
   }
 

@@ -67,11 +67,7 @@ export function SectorsOverviewPage() {
 
   return (
     <>
-      <PageHeader
-        variant="sr-only"
-        title={t("sectorsOverviewPage.title")}
-        description={t("sectorsOverviewPage.description")}
-      />
+      <PageHeader variant="title-only" title={t("sectorsOverviewPage.title")} />
 
       {/* Filters Section */}
       <div

@@ -161,9 +161,8 @@ export function RegionalOverviewPage() {
   return (
     <>
       <PageHeader
-        variant="sr-only"
+        variant="title-only"
         title={t("regionalOverviewPage.title")}
-        description={t("regionalOverviewPage.description")}
       />
 
       <KPIChipSelector<Region>

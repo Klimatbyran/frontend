@@ -291,9 +291,8 @@ export function CompaniesOverviewPage() {
   return (
     <>
       <PageHeader
-        variant="sr-only"
+        variant="title-only"
         title={t("companiesOverviewPage.title")}
-        description={t("companiesOverviewPage.description")}
       />
 
       <KPIChipSelector<CompanyWithKPIs>

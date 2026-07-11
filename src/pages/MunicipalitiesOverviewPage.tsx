@@ -204,9 +204,8 @@ export function MunicipalitiesOverviewPage() {
   return (
     <>
       <PageHeader
-        variant="sr-only"
+        variant="title-only"
         title={t("municipalitiesOverviewPage.title")}
-        description={t("municipalitiesOverviewPage.description")}
       />
 
       <KPIChipSelector<Municipality>

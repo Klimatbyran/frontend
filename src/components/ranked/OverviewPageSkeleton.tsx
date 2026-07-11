@@ -147,6 +147,8 @@ export function OverviewPageSkeleton({
 }: OverviewPageSkeletonProps) {
   return (
     <>
+      <SkeletonBlock className="h-9 w-56 md:w-72 mb-2 md:mb-3" />
+
       <KPIChipSelectorSkeleton chipCount={chipCount} />
 
       {variant === "companies" && <IndustryFilterSkeleton />}

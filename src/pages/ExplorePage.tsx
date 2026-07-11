@@ -121,11 +121,7 @@ export function ExplorePage() {
 
   return (
     <>
-      <PageHeader
-        variant="sr-only"
-        title={t("explorePage.title")}
-        description={t("explorePage.description")}
-      />
+      <PageHeader variant="title-only" title={t("explorePage.title")} />
 
       {/* Filters & Sorting Section */}
       <div
