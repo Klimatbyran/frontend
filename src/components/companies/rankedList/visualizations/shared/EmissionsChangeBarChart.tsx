@@ -110,10 +110,7 @@ function ChartTooltip({
         {t(
           "companiesOverviewPage.visualizations.emissionsChange.tooltip.emissions",
           {
-            value: formatEmissionsAbsolute(
-              company.emissions,
-              currentLanguage,
-            ),
+            value: formatEmissionsAbsolute(company.emissions, currentLanguage),
           },
         )}
       </p>
@@ -277,7 +274,9 @@ export function EmissionsChangeBarChart({
                 {chartData.map((row, binIndex) => {
                   const value = row[company.id];
                   if (typeof value !== "number" || value <= 0) {
-                    return <Cell key={`${company.id}-${binIndex}`} fill="none" />;
+                    return (
+                      <Cell key={`${company.id}-${binIndex}`} fill="none" />
+                    );
                   }
 
                   const bin = histogram.bins[binIndex];
