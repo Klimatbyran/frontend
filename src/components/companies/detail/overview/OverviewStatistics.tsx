@@ -12,6 +12,7 @@ import { formatTurnoverValue } from "@/utils/formatting/turnoverFormatting";
 interface OverviewStatisticProps {
   selectedPeriod: ReportingPeriod;
   currentLanguage: "sv" | "en";
+  sectorName: string;
   formattedEmployeeCount: string;
   turnoverAIGenerated: boolean;
   employeesAIGenerated: boolean;
@@ -21,6 +22,7 @@ interface OverviewStatisticProps {
 export function OverviewStatistics({
   selectedPeriod,
   currentLanguage,
+  sectorName,
   formattedEmployeeCount,
   turnoverAIGenerated,
   employeesAIGenerated,
@@ -37,6 +39,10 @@ export function OverviewStatistics({
 
   return (
     <SupplementalDataPanel className={className}>
+      <SupplementalDataField label={t("companies.overview.sector")}>
+        <Text>{sectorName}</Text>
+      </SupplementalDataField>
+
       <SupplementalDataField label={t("companies.overview.turnover")}>
         <span className="flex items-center gap-2">
           <Text>{formattedTurnover}</Text>
