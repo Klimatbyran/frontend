@@ -54,7 +54,7 @@ export function TurnoverEmissionsIntensityPanel({
   );
 
   return (
-    <div className="flex h-full flex-col gap-4 rounded-level-2 bg-black-1 px-4 py-4 sm:px-6 sm:py-5 md:px-8 md:py-8 lg:flex-1 lg:justify-evenly lg:gap-0">
+    <div className="flex h-full flex-col gap-4 rounded-level-2 bg-black-1 px-4 py-4 sm:px-6 sm:py-5 md:px-8 md:py-8 lg:flex-1 lg:justify-between lg:gap-10 lg:py-10">
       <div>
         <Text className="text-sm text-grey md:text-lg">
           {t("companies.turnoverEmissionsHistory.intensityPanel.question")}
@@ -105,7 +105,7 @@ export function TurnoverEmissionsIntensityPanel({
         </Text>
       </div>
 
-      <div className="grid grid-cols-3 gap-2 border-t border-white/20 pt-4 md:gap-6 md:pt-6">
+      <div className="grid grid-cols-3 gap-2 border-t border-white/20 pt-4 md:gap-6 md:pt-6 lg:pt-8">
         <FooterMetric
           label={t(
             "companies.turnoverEmissionsHistory.intensityPanel.intensityChange",
