@@ -1,14 +1,16 @@
+import { useNavigate } from "react-router-dom";
 import { TerritoryEmissions } from "@/components/territories/TerritoryEmissions";
 import { PageLoading } from "@/components/pageStates/Loading";
 import { PageError } from "@/components/pageStates/Error";
 import { PageNoData } from "@/components/pageStates/NoData";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";
 import { SectorEmissionsChart } from "@/components/charts/sectorChart/SectorEmissions";
-import { EntityListBox } from "@/components/detail/EntityListBox";
 import { useNationPageData } from "@/hooks/nation/useNationPageData";
 import { useLanguage } from "@/components/LanguageProvider";
 import { EuropeanCountryDetailHeader } from "@/components/europe/EuropeanCountryDetailHeader";
 import { CountryEmissionSourcesMap } from "@/components/europe/CountryEmissionSourcesMap";
+import { createEntityClickHandler } from "@/utils/routing";
+import { resolveRegionFromMapName } from "@/utils/regionUtils";
 import type { FeatureCollection } from "geojson";
 import regionGeoJson from "@/data/regionGeo.json";
 
@@ -29,7 +31,17 @@ function NationDetailContent({
   lastYear,
 }: ReturnType<typeof useNationPageData>) {
   const { currentLanguage } = useLanguage();
+  const navigate = useNavigate();
   if (!nation) return <PageNoData />;
+
+  const navigateToRegion = createEntityClickHandler(navigate, "region");
+  const handleRegionSelect = (regionMapName: string) => {
+    const region = resolveRegionFromMapName(
+      regionMapName,
+      sortedRegions.map((name) => ({ name })),
+    );
+    navigateToRegion(region?.name ?? regionMapName);
+  };
 
   return (
     <DetailWrapper>
@@ -46,6 +58,7 @@ function NationDetailContent({
           sources={emissionSources}
           year={lastYear}
           loading={emissionSourcesLoading}
+          onRegionSelect={handleRegionSelect}
         />
       )}
       <TerritoryEmissions
@@ -60,11 +73,6 @@ function NationDetailContent({
         filteredSectors={filteredSectors}
         onFilteredSectorsChange={setFilteredSectors}
         helpItems={["municipalityAndRegionEmissionSources"]}
-      />
-      <EntityListBox
-        items={sortedRegions}
-        entityType="regions"
-        translateNamespace="nation.detailPage"
       />
     </DetailWrapper>
   );

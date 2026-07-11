@@ -47,6 +47,15 @@ const REGION_OUTLINE_STYLE: L.PathOptions = {
   weight: 0.75,
 };
 
+const REGION_HOVER_STYLE: L.PathOptions = {
+  fillColor: "var(--white)",
+  fillOpacity: 0.12,
+  color: "var(--white)",
+  weight: 1.25,
+};
+
+const INTERACTIVE_REGION_CLASS = "cursor-pointer";
+
 interface CountryEmissionSourcesMapProps {
   countryGeoData: FeatureCollection;
   sources: RankedClimateTraceSource[];
@@ -58,6 +67,11 @@ interface CountryEmissionSourcesMapProps {
    * layer instead of the plain country outline, with point sources overlaid.
    */
   regionsGeoData?: FeatureCollection;
+  /**
+   * Called with the clicked region's map name when a region boundary is
+   * selected. Enables hover highlighting and navigation on the region layer.
+   */
+  onRegionSelect?: (regionMapName: string) => void;
 }
 
 function EmissionSourceTooltip({
@@ -102,6 +116,7 @@ function EmissionSourcesMapContent({
   sources,
   hoveredSourceId,
   onHoverSource,
+  onRegionSelect,
   getSectorInfo,
 }: {
   countryGeoData: FeatureCollection;
@@ -109,6 +124,7 @@ function EmissionSourcesMapContent({
   sources: RankedClimateTraceSource[];
   hoveredSourceId: number | null;
   onHoverSource: (sourceId: number | null) => void;
+  onRegionSelect?: (regionMapName: string) => void;
   getSectorInfo: ReturnType<typeof useClimateTraceSectors>["getSectorInfo"];
 }) {
   const [isMounted, setIsMounted] = useState(false);
@@ -185,7 +201,30 @@ function EmissionSourcesMapContent({
         className="rounded-xl"
       >
         {regionsGeoData ? (
-          <GeoJSON data={regionsGeoData} style={() => REGION_OUTLINE_STYLE} />
+          <GeoJSON
+            data={regionsGeoData}
+            style={() =>
+              onRegionSelect
+                ? { ...REGION_OUTLINE_STYLE, className: INTERACTIVE_REGION_CLASS }
+                : REGION_OUTLINE_STYLE
+            }
+            onEachFeature={(feature, layer) => {
+              if (!onRegionSelect) return;
+              const path = layer as L.Path;
+              const regionName = feature?.properties?.name;
+              layer.on({
+                mouseover: () => path.setStyle(REGION_HOVER_STYLE),
+                mouseout: () =>
+                  path.setStyle({
+                    ...REGION_OUTLINE_STYLE,
+                    className: INTERACTIVE_REGION_CLASS,
+                  }),
+                click: () => {
+                  if (regionName) onRegionSelect(String(regionName));
+                },
+              });
+            }}
+          />
         ) : (
           <GeoJSON data={countryGeoData} style={() => COUNTRY_OUTLINE_STYLE} />
         )}
@@ -248,6 +287,7 @@ export function CountryEmissionSourcesMap({
   loading = false,
   className,
   regionsGeoData,
+  onRegionSelect,
 }: CountryEmissionSourcesMapProps) {
   const { t } = useTranslation();
   const { getSectorInfo } = useClimateTraceSectors();
@@ -325,6 +365,7 @@ export function CountryEmissionSourcesMap({
           sources={sources}
           hoveredSourceId={hoveredSourceId}
           onHoverSource={setHoveredSourceId}
+          onRegionSelect={onRegionSelect}
           getSectorInfo={getSectorInfo}
         />
       )}
