@@ -7,7 +7,6 @@ import SectorPieChart, {
 } from "@/components/charts/sectorChart/SectorPieChart";
 import { COLORS } from "@/lib/colors";
 import { formatPercent } from "@/utils/formatting/localization";
-import { formatWithScale } from "@/utils/data/unitScaling";
 import { getParisEmissionsBreakdown } from "@/utils/insights/meetsParisChartData";
 import type { CompanyWithKPIs } from "@/hooks/companies/useCompanyKPIs";
 import MeetsParisPieTooltip from "./MeetsParisPieTooltip";
@@ -87,13 +86,7 @@ export function MeetsParisEmissionsPieChart({
               />
               <div className="min-w-0 flex-1">
                 <div className="text-sm text-white">{entry.name}</div>
-                <div className="flex justify-between text-xs text-grey">
-                  <span className="text-orange-2">
-                    {formatWithScale(
-                      entry.value * unitScale.divisor,
-                      unitScale,
-                    )}
-                  </span>
+                <div className="flex justify-end text-xs text-grey">
                   <span>{percentage}</span>
                 </div>
               </div>

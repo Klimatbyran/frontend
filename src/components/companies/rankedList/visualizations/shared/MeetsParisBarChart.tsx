@@ -144,11 +144,6 @@ export function MeetsParisBarChart({
     [unitScale.unit],
   );
 
-  const formatCategoryTotal = useCallback(
-    (total: number) => formatWithScale(total, unitScale),
-    [unitScale],
-  );
-
   const highlightedCompanyId = hoveredCompanyId ?? activeCompanyId;
 
   const handleSegmentClick = useCallback(
@@ -385,24 +380,14 @@ export function MeetsParisBarChart({
             className="inline-block h-3 w-3 shrink-0 rounded-sm"
             style={{ backgroundColor: COLORS.blue3 }}
           />
-          <span className="text-xs text-white/40">
-            {trueLabel}{" "}
-            <span className="text-orange-2">
-              ({formatCategoryTotal(groups[0]?.total ?? 0)})
-            </span>
-          </span>
+          <span className="text-xs text-white/40">{trueLabel}</span>
         </div>
         <div className="flex items-center gap-2">
           <span
             className="inline-block h-3 w-3 shrink-0 rounded-sm"
             style={{ backgroundColor: COLORS.pink3 }}
           />
-          <span className="text-xs text-white/40">
-            {falseLabel}{" "}
-            <span className="text-orange-2">
-              ({formatCategoryTotal(groups[1]?.total ?? 0)})
-            </span>
-          </span>
+          <span className="text-xs text-white/40">{falseLabel}</span>
         </div>
       </div>
 
