@@ -113,6 +113,7 @@ function EuropeanInsightsPanel({
 
   const distributionPanel = (
     <DistributionBox
+      entityType="europe"
       chart={
         <KPIDistributionChart<EuropeanCountry>
           data={countryData}

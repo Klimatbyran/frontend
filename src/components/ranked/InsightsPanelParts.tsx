@@ -19,7 +19,11 @@ interface DistributionStat {
   label: string;
 }
 
-type DistributionEntityType = "municipalities" | "companies" | "regions";
+type DistributionEntityType =
+  | "municipalities"
+  | "companies"
+  | "regions"
+  | "europe";
 
 interface DistributionBoxProps {
   /** The chart or visualisation to display at the bottom */

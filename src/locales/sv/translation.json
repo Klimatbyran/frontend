@@ -1651,6 +1651,12 @@
             "false": "Missar Parisavtalet"
           }
         }
+      },
+      "insights": {
+        "distribution": {
+          "title": "Fördelning",
+          "subtitle": "Visar hur länder fördelar sig på skalan för den valda indikatorn. Blå staplar betyder bättre resultat, rosa sämre, och den streckade linjen markerar genomsnittet."
+        }
       }
     }
   },

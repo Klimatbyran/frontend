@@ -1601,6 +1601,12 @@
             "false": "Fails Paris Agreement"
           }
         }
+      },
+      "insights": {
+        "distribution": {
+          "title": "Distribution",
+          "subtitle": "Shows how countries are spread across the scale for the selected indicator. Blue bars mean better results, pink worse, and the dashed line marks the average."
+        }
       }
     }
   },
