@@ -334,7 +334,12 @@
         "yes": "Yes",
         "no": "No",
         "unknown": "Unknown",
-        "emissionsUnit": " Mt",
+        "units": {
+          "Mt": "Mt",
+          "Gt": "Gt",
+          "kt": "kt",
+          "t": "t"
+        },
         "emissionsPieTitle": "Emissions by Paris status",
         "emissionsPieSubtitle": "Share of total reported emissions from companies that meet, miss, or have unknown Paris alignment.",
         "otherSegment": "Other",

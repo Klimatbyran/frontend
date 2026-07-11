@@ -334,7 +334,12 @@
         "yes": "Ja",
         "no": "Nej",
         "unknown": "Okänt",
-        "emissionsUnit": " Mt",
+        "units": {
+          "Mt": "mton",
+          "Gt": "gton",
+          "kt": "kton",
+          "t": "ton"
+        },
         "emissionsPieTitle": "Utsläpp per Parisstatus",
         "emissionsPieSubtitle": "Andel av totala rapporterade utsläpp från företag som klarar, missar eller har okänd Parisstatus.",
         "otherSegment": "Övriga",

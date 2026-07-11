@@ -1,14 +1,15 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
-import { DetailPieSectorGrid } from "@/components/detail/DetailGrid";
 import SectorPieChart, {
   type PieChartItem,
 } from "@/components/charts/sectorChart/SectorPieChart";
 import { COLORS } from "@/lib/colors";
 import { formatPercent } from "@/utils/formatting/localization";
+import type { UnitScale } from "@/utils/data/unitScaling";
 import { getParisEmissionsBreakdown } from "@/utils/insights/meetsParisChartData";
 import type { CompanyWithKPIs } from "@/hooks/companies/useCompanyKPIs";
+import { formatParisEmissionsAmount } from "./meetsParisEmissionsFormat";
 import MeetsParisPieTooltip from "./MeetsParisPieTooltip";
 
 const STATUS_COLORS = {
@@ -16,6 +17,11 @@ const STATUS_COLORS = {
   no: COLORS.pink3,
   unknown: COLORS.grey,
 } as const;
+
+type ParisPieChartItem = PieChartItem & {
+  rawEmissions: number;
+  unitScale: UnitScale;
+};
 
 interface MeetsParisEmissionsPieChartProps {
   companies: CompanyWithKPIs[];
@@ -37,9 +43,11 @@ export function MeetsParisEmissionsPieChart({
       unknown: t("companiesOverviewPage.visualizations.meetsParis.unknown"),
     };
 
-    const pieData: PieChartItem[] = segments.map((segment) => ({
+    const pieData: ParisPieChartItem[] = segments.map((segment) => ({
       name: statusLabels[segment.status],
       value: segment.emissions / unitScale.divisor,
+      rawEmissions: segment.emissions,
+      unitScale,
       color: STATUS_COLORS[segment.status],
       status: segment.status,
     }));
@@ -62,23 +70,31 @@ export function MeetsParisEmissionsPieChart({
   const totalScaled = totalEmissions / unitScale.divisor;
 
   return (
-    <DetailPieSectorGrid>
-      <SectorPieChart
-        data={pieData}
-        desktopScale
-        tooltipContent={MeetsParisPieTooltip}
-      />
+    <div className="flex w-full flex-col gap-4">
+      <div className="flex w-full justify-center">
+        <SectorPieChart
+          data={pieData}
+          desktopScale
+          tooltipContent={MeetsParisPieTooltip}
+        />
+      </div>
+
       <div className="grid w-full grid-cols-1 gap-2">
         {pieData.map((entry) => {
           const percentage =
             entry.value / totalScaled < 0.001
               ? "<0.1%"
               : formatPercent(entry.value / totalScaled, currentLanguage);
+          const amount = formatParisEmissionsAmount(
+            entry.rawEmissions,
+            unitScale,
+            t,
+          );
 
           return (
             <div
               key={entry.name}
-              className="flex items-center gap-2 rounded-md p-2"
+              className="flex items-center gap-3 rounded-md p-2"
             >
               <div
                 className="h-3 w-3 shrink-0 rounded"
@@ -86,7 +102,8 @@ export function MeetsParisEmissionsPieChart({
               />
               <div className="min-w-0 flex-1">
                 <div className="text-sm text-white">{entry.name}</div>
-                <div className="flex justify-end text-xs text-grey">
+                <div className="flex justify-between gap-3 text-xs text-grey">
+                  <span className="text-orange-2">{amount}</span>
                   <span>{percentage}</span>
                 </div>
               </div>
@@ -94,6 +111,6 @@ export function MeetsParisEmissionsPieChart({
           );
         })}
       </div>
-    </DetailPieSectorGrid>
+    </div>
   );
 }
