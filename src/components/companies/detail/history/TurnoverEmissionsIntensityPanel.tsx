@@ -54,7 +54,7 @@ export function TurnoverEmissionsIntensityPanel({
   );
 
   return (
-    <div className="flex h-full flex-col gap-4 rounded-level-2 bg-black-1 px-4 py-4 sm:px-6 sm:py-5 md:px-8 md:py-6 lg:justify-between lg:gap-5 lg:px-6 lg:py-5">
+    <div className="flex h-full min-h-0 flex-col gap-4 rounded-level-2 bg-black-1 px-4 py-4 sm:px-6 sm:py-5 md:px-8 md:py-6 lg:justify-between lg:gap-5 lg:px-6 lg:py-5">
       <div>
         <Text className="text-base text-grey md:text-lg">
           {t("companies.turnoverEmissionsHistory.intensityPanel.question")}

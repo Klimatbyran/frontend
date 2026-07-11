@@ -62,7 +62,7 @@ export function TurnoverEmissionsHistory({
             onYearSelect={(year) => onYearSelect?.(year.toString())}
           />
         </div>
-        <div className="flex w-full flex-col lg:col-start-2 lg:row-start-2 lg:h-full">
+        <div className="flex w-full flex-col lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:h-full lg:min-h-0">
           <TurnoverEmissionsIntensityPanel comparison={section.comparison} />
         </div>
       </div>
