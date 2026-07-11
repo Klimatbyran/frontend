@@ -29,9 +29,9 @@ function FooterMetric({
 }) {
   return (
     <div>
-      <Text className="text-xs text-grey md:text-sm">{label}</Text>
+      <Text className="text-xs text-grey md:text-sm lg:text-base">{label}</Text>
       <Text
-        className={`mt-0.5 text-lg font-light md:mt-1 md:text-2xl ${colorClass}`}
+        className={`mt-0.5 text-lg font-light md:mt-1 md:text-2xl lg:text-3xl ${colorClass}`}
       >
         {value}
       </Text>
@@ -60,12 +60,12 @@ export function TurnoverEmissionsIntensityPanel({
           {t("companies.turnoverEmissionsHistory.intensityPanel.question")}
         </Text>
         <Text
-          className={`mt-1.5 text-4xl font-light md:mt-2 lg:text-5xl ${verdictColorClass}`}
+          className={`mt-1.5 text-4xl font-light md:mt-2 lg:text-6xl ${verdictColorClass}`}
           aria-label={t(VERDICT_EXPLANATION_KEY[comparison.verdict])}
         >
           {t(VERDICT_LABEL_KEY[comparison.verdict])}
         </Text>
-        <Text className="mt-2 text-sm leading-snug text-white md:mt-2 md:text-base md:leading-relaxed">
+        <Text className="mt-2 text-sm leading-snug text-white md:mt-2 md:text-base md:leading-relaxed lg:text-lg">
           {t(VERDICT_EXPLANATION_KEY[comparison.verdict])}
         </Text>
       </div>
@@ -76,12 +76,12 @@ export function TurnoverEmissionsIntensityPanel({
             <Text className="text-xs text-grey md:text-base">
               {comparison.startYear}
             </Text>
-            <Text className="text-2xl font-light text-orange-2 md:text-3xl">
+            <Text className="text-2xl font-light text-orange-2 md:text-3xl lg:text-4xl">
               {localizeUnit(comparison.startIntensity, currentLanguage)}
             </Text>
           </div>
           <ArrowRight
-            className="mb-1 size-5 shrink-0 text-grey md:mb-1.5 md:size-6"
+            className="mb-1 size-5 shrink-0 text-grey md:mb-1.5 md:size-6 lg:size-7"
             aria-hidden
           />
           <div>
@@ -89,18 +89,18 @@ export function TurnoverEmissionsIntensityPanel({
               {comparison.endYear}
             </Text>
             <Text
-              className={`text-2xl font-light md:text-3xl ${verdictColorClass}`}
+              className={`text-2xl font-light md:text-3xl lg:text-4xl ${verdictColorClass}`}
             >
               {localizeUnit(comparison.endIntensity, currentLanguage)}
             </Text>
           </div>
         </div>
 
-        <Text className="mt-1.5 text-xs text-grey md:mt-1.5 md:text-sm">
+        <Text className="mt-1.5 text-xs text-grey md:mt-1.5 md:text-sm lg:text-base">
           {intensityUnit}
         </Text>
 
-        <Text className="mt-2 text-xs leading-snug text-grey md:mt-3 md:text-sm">
+        <Text className="mt-2 text-xs leading-snug text-grey md:mt-3 md:text-sm lg:text-base">
           {t(periodNoteKey)}
         </Text>
       </div>
