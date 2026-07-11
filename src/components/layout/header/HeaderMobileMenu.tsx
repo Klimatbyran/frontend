@@ -1,8 +1,12 @@
 import { Mail, Menu, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router-dom";
+import { cn } from "@/lib/utils";
+import { useLanguage } from "../../LanguageProvider";
 import { HeaderSearchButton } from "../../search/HeaderSearchButton";
 import { LocalizedLink } from "../../LocalizedLink";
 import { HeaderLanguageButtons } from "./HeaderLanguageButtons";
+import { isNavLinkActive } from "./navActive";
 import { NavSubGroupSection } from "./NavSubGroupSection";
 import { NavSubLinkItem } from "./NavSubLinkItem";
 import { NAV_TITLE_CLASS } from "./navStyles";
@@ -26,6 +30,8 @@ export function HeaderMobileMenu({
   onOpenNewsletter: () => void;
 }) {
   const { t } = useTranslation();
+  const location = useLocation();
+  const { currentLanguage } = useLanguage();
 
   return (
     <>
@@ -53,38 +59,52 @@ export function HeaderMobileMenu({
           <div className="p-8">
             <div className="flex flex-col gap-6 text-lg w-full">
               <HeaderLanguageButtons />
-              {navLinks.map((link) => (
-                <div key={link.path} className="flex flex-col">
-                  <LocalizedLink
-                    to={link.path}
-                    onClick={onToggleMenu}
-                    className="flex items-center gap-2 cursor-pointer"
-                  >
-                    {link.icon}
-                    {t(link.label)}
-                  </LocalizedLink>
-                  {link.sublinks && (
-                    <div className="flex flex-col gap-2 pl-4 mt-2">
-                      {link.sublinks.map((item) =>
-                        isNavSubGroup(item) ? (
-                          <NavSubGroupSection
-                            key={item.label}
-                            group={item}
-                            onNavigate={onToggleMenu}
-                          />
-                        ) : (
-                          <NavSubLinkItem
-                            key={item.path}
-                            sublink={item}
-                            className={NAV_TITLE_CLASS}
-                            onNavigate={onToggleMenu}
-                          />
-                        ),
+              {navLinks.map((link) => {
+                const isActive = isNavLinkActive(
+                  location.pathname,
+                  currentLanguage,
+                  link,
+                );
+
+                return (
+                  <div key={link.path} className="flex flex-col">
+                    <LocalizedLink
+                      to={link.path}
+                      onClick={onToggleMenu}
+                      className={cn(
+                        "flex items-center gap-2 cursor-pointer",
+                        isActive
+                          ? "!text-white font-medium"
+                          : "text-grey hover:text-white",
                       )}
-                    </div>
-                  )}
-                </div>
-              ))}
+                      aria-current={isActive ? "page" : undefined}
+                    >
+                      {link.icon}
+                      {t(link.label)}
+                    </LocalizedLink>
+                    {link.sublinks && (
+                      <div className="flex flex-col gap-2 pl-4 mt-2">
+                        {link.sublinks.map((item) =>
+                          isNavSubGroup(item) ? (
+                            <NavSubGroupSection
+                              key={item.label}
+                              group={item}
+                              onNavigate={onToggleMenu}
+                            />
+                          ) : (
+                            <NavSubLinkItem
+                              key={item.path}
+                              sublink={item}
+                              className={NAV_TITLE_CLASS}
+                              onNavigate={onToggleMenu}
+                            />
+                          ),
+                        )}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
               <button
                 onClick={onOpenNewsletter}
                 className="flex items-center gap-2 text-blue-3"
