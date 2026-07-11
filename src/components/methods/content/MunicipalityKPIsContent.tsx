@@ -6,7 +6,7 @@ export const MunicipalityKPIsContent = () => {
 
   // Get the list object with returnObjects: true
   const rawKpiList = t(
-    "methodsPage.municipalityAndRegion.municipalityKPIs.list",
+    "methodsPage.territorial.municipalityKPIs.list",
     {
       returnObjects: true,
     },
@@ -22,10 +22,10 @@ export const MunicipalityKPIsContent = () => {
   return (
     <div className="mx-auto space-y-8 prose prose-invert">
       <p>
-        {t("methodsPage.municipalityAndRegion.municipalityKPIs.paragraph1")}
+        {t("methodsPage.territorial.municipalityKPIs.paragraph1")}
       </p>
       <p>
-        {t("methodsPage.municipalityAndRegion.municipalityKPIs.paragraph2")}
+        {t("methodsPage.territorial.municipalityKPIs.paragraph2")}
       </p>
       <div className="space-y-6">
         {kpiList.map((item, index) => (

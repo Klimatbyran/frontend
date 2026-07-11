@@ -449,9 +449,8 @@
     "noResultsFound": "No results found",
     "categories": {
       "general": "General Information",
-      "municipalityAndRegion": "Municipality and Region Data",
-      "company": "Company Data",
-      "nation": "Nation Data"
+      "territorial": "Places Data",
+      "company": "Company Data"
     },
     "general": {
       "parisAgreement": {
@@ -774,30 +773,28 @@
         }
       }
     },
-    "nation": {
+    "territorial": {
+      "municipalityAndRegionDataOverview": {
+        "title": "Territorial Data Overview",
+        "description": "What data we collect and present about municipalities, regions, nations, and European countries",
+        "paragraph1": "Klimatkollen shows emissions data for Sweden's municipalities and regions, Sweden as a nation, and European countries. SMHI's National Emissions Database is our primary source for Swedish territorial data at municipal, regional, and national sector level. Climate TRACE provides country-level emissions, trends, and point source maps for European countries and Sweden. To make territorial and company data comparable, emissions of all greenhouse gases (CO₂e) are shown since August 2025, not just CO₂.",
+        "paragraph2": "The annual average emissions change for each municipality or region is calculated using the Compound Annual Growth Rate (CAGR).",
+        "paragraph3": "We also show how emissions would need to decrease to meet the Paris Agreement. Previously, this was based on local carbon budgets derived from a national budget calculated by researchers at Uppsala University and the Tyndall Centre in the UK. Since August 2025, we have switched to use the 'Paris Curve' based on an updated <0>Carbon Law</0>.",
+        "paragraph4": "The forecast for future emissions is based on how emissions in each municipality or region have developed historically since the Paris Agreement in 2015. The trend line is weighted using the statistical method Least Absolute Deviations (LAD), which gives less weight to individual extreme values and provides a more fair and realistic picture of future emissions. You can read more about our emissions calculations <0>here</0>.",
+        "paragraph5": "Alongside emissions data, Klimatkollen presents key indicators of municipal performance in the energy transition and emissions reductions, such as growth with EVs and bicycle lanes."
+      },
       "nationDataOverview": {
         "title": "Nation Data Overview",
         "description": "What data we collect and present about Sweden's national emissions",
-        "paragraph1": "Klimatkollen shows emissions data for Sweden at the national level, with SMHI's National Emissions Database as our primary source. To make our national, regional, municipal and company data comparable, emissions of all greenhouse gases (CO₂e) are shown since August 2025, not just CO₂.",
-        "paragraph2": "The annual average emissions change for Sweden is calculated using the Compound Annual Growth Rate (CAGR).",
+        "paragraph1": "Sweden's country page combines two complementary sources. Climate TRACE provides country-level KPIs, the historical emissions chart, and the map of top point emission sources. SMHI's National Emissions Database provides Sweden's official territorial sector breakdown and links through to regional data for each county.",
+        "paragraph2": "The annual average emissions change shown for Sweden is calculated using Climate TRACE data and the Compound Annual Growth Rate (CAGR).",
         "paragraph3": "We also show how emissions would need to decrease to meet the Paris Agreement. Previously, this was based on local carbon budgets derived from a national budget calculated by researchers at Uppsala University and the Tyndall Centre in the UK. Since August 2025, we have switched to use the 'Paris Curve' based on an updated <0>Carbon Law</0>.",
-        "paragraph4": "The forecast for future emissions is based on how Sweden's emissions have developed historically since the Paris Agreement in 2015. The trend line is weighted using the statistical method Least Absolute Deviations (LAD), which gives less weight to individual extreme values and provides a more fair and realistic picture of future emissions. You can read more about our emissions calculations <0>here</0>.",
-        "paragraph5": "Alongside total emissions, Klimatkollen shows a sector breakdown of Sweden's greenhouse gas emissions and links to regional data for each county.",
+        "paragraph4": "The forecast for future emissions on the country chart is based on how Sweden's emissions have developed historically in Climate TRACE since the Paris Agreement in 2015. The trend line is weighted using the statistical method Least Absolute Deviations (LAD), which gives less weight to individual extreme values and provides a more fair and realistic picture of future emissions. You can read more about our emissions calculations <0>here</0>.",
+        "paragraph5": "Alongside total emissions, Klimatkollen shows a sector breakdown of Sweden's greenhouse gas emissions from SMHI and links to regional data for each county.",
         "link": {
           "title": "Sweden's National Emissions",
           "text": "View Sweden's national emissions data on Klimatkollen"
         }
-      }
-    },
-    "municipalityAndRegion": {
-      "municipalityAndRegionDataOverview": {
-        "title": "Municipality and Region Data Overview",
-        "description": "What data we collect and present about the municipalities and regions",
-        "paragraph1": "Klimatkollen shows emissions data on Sweden's municipalities and regions, with SMHI's national emissions database as our primary source. To make our municipal, regional and company data comparable, emissions of all greenhouse gases (CO₂e) are shown since August 2025, not just CO₂.",
-        "paragraph2": "The annual average emissions change for each municipality or region is calculated using the Compound Annual Growth Rate (CAGR).",
-        "paragraph3": "We also show how emissions would need to decrease to meet the Paris Agreement. Previously, this was based on local carbon budgets derived from a national budget calculated by researchers at Uppsala University and the Tyndall Centre in the UK. Since August 2025, we have switched to use the 'Paris Curve' based on an updated <0>Carbon Law</0>.",
-        "paragraph4": "The forecast for future emissions is based on how emissions in each municipality or region have developed historically since the Paris Agreement in 2015. The trend line is weighted using the statistical method Least Absolute Deviations (LAD), which gives less weight to individual extreme values and provides a more fair and realistic picture of future emissions. You can read more about our emissions calculations <0>here</0>.",
-        "paragraph5": "Alongside emissions data, Klimatkollen presents key indicators of municipal and regional performance in the energy transition and emissions reductions, such as growth with EVs and bicycle lanes."
       },
       "municipalityKPIs": {
         "title": "Municipality KPIs",
@@ -815,14 +812,33 @@
       },
       "sources": {
         "title": "Our Sources",
-        "description": "Explore the publicly available sources and verified data used by Klimatkollen",
+        "description": "Explore the publicly available sources and verified data used by Klimatkollen for places data",
         "paragraph1": "Klimatkollen is based on publicly available sources and verified data. We provide all sources so you can easily review and explore them further. If you notice any errors, please email us at hej@klimatkollen.se so we can make corrections.",
-        "paragraph2": "Company data is sourced from their own annual reports and sustainability reports.",
+        "paragraph2": "The sources below cover municipalities, regions, Sweden as a nation, and other European countries. Company data is documented separately under Company Data.",
+        "groups": {
+          "coreEmissions": {
+            "title": "Emissions data",
+            "description": "Core emissions data for places in Sweden and Europe."
+          },
+          "municipalityIndicators": {
+            "title": "Municipality transition indicators",
+            "description": "Additional indicators used on municipality pages."
+          },
+          "metadata": {
+            "title": "Reference data",
+            "description": "Supporting metadata for municipalities and regions."
+          }
+        },
         "links": {
           "smhi": {
             "title": "National Emissions Database",
-            "text": "Greenhouse gas emissions in municipalities and regions",
+            "text": "Official greenhouse gas emissions for Swedish municipalities, regions, and national sector breakdown",
             "link": "https://nationellaemissionsdatabasen.smhi.se/"
+          },
+          "climateTrace": {
+            "title": "Climate TRACE",
+            "text": "Country-level emissions, trends, and top point emission sources for European countries and Sweden",
+            "link": "https://climatetrace.org/"
           },
           "skr": {
             "title": "Swedish Association of Local Authorities and Regions",
@@ -868,11 +884,6 @@
             "title": "Greenpeace",
             "text": "Mapping of climate requirements in public procurement",
             "link": "https://docs.google.com/spreadsheets/d/1EdHUa49HJZn0rXqM-6tChdim4TJzXnwA/edit#gid=1040317160"
-          },
-          "climateTrace": {
-            "title": "Climate TRACE",
-            "text": "European country emissions data (CO₂e per capita and year-over-year change)",
-            "link": "https://climatetrace.org/"
           }
         }
       }

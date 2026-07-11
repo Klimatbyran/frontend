@@ -20,15 +20,15 @@ export const methodologySections: MethodologySectionType = {
     // { id: "interpretingOnTrack", category: "general" },
     { id: "emissionTypes", category: "general" },
   ],
-  municipalityAndRegion: [
+  territorial: [
     {
       id: "municipalityAndRegionDataOverview",
-      category: "municipalityAndRegion",
+      category: "territorial",
     },
-    { id: "sources", category: "municipalityAndRegion" },
-    { id: "municipalityKPIs", category: "municipalityAndRegion" },
+    { id: "nationDataOverview", category: "territorial" },
+    { id: "sources", category: "territorial" },
+    { id: "municipalityKPIs", category: "territorial" },
   ],
-  nation: [{ id: "nationDataOverview", category: "nation" }],
   company: [
     { id: "companyDataOverview", category: "company" },
     { id: "companyDataCollection", category: "company" },

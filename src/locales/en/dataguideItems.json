@@ -12,6 +12,12 @@
       "To make the emissions change easier to understand, we compare it to the average annual conspumtion based greenhouse gas emissions per person per year. In our case, we assume that an average person accounts for 9 tons of CO₂-equivalents (tCO₂e) per year. (1)\n\n[(1) https://konsumtionskompassen.se/](https://konsumtionskompassen.se/)"
     ]
   },
+  "climateTraceCountryEmissions": {
+    "title": "Total Emissions",
+    "content": [
+      "This number shows the latest available year of CO₂e emissions per capita for the country, from Climate TRACE.\n\nClimate TRACE combines satellite data, ground sensors, and reported inventories to estimate emissions. Values may differ from officially reported national totals. For Sweden's official territorial sector breakdown, see the sector chart below."
+    ]
+  },
   "co2units": {
     "title": "Unit: tCO2e",
     "content": [

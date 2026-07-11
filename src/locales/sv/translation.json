@@ -500,9 +500,8 @@
     "noResultsFound": "Inga resultat hittades",
     "categories": {
       "general": "Allmän information",
-      "municipalityAndRegion": "Kommun- och länsdata",
-      "company": "Företagsdata",
-      "nation": "Nationell data"
+      "territorial": "Platsdata",
+      "company": "Företagsdata"
     },
     "general": {
       "parisAgreement": {
@@ -825,30 +824,28 @@
         }
       }
     },
-    "nation": {
+    "territorial": {
+      "municipalityAndRegionDataOverview": {
+        "title": "Översikt platsdata",
+        "description": "Vilken data vi samlar in och presenterar om kommuner, län, nationer och europeiska länder",
+        "paragraph1": "Klimatkollen visar utsläppsdata för Sveriges kommuner och län, Sverige som nation och europeiska länder. SMHI:s Nationella emissionsdatabas är vår främsta källa för svensk territorial data på kommunal, regional och nationell sektorsnivå. Climate TRACE tillhandahåller utsläpp, trender och kartor över punktkällor på landsnivå för europeiska länder och Sverige. För att territorial och företagsdata ska vara jämförbar visas sedan augusti 2025 utsläpp av alla växthusgaser (CO₂e), inte enbart koldioxid.",
+        "paragraph2": "Den genomsnittliga årliga utsläppsförändringen för respektive kommun eller län beräknas med hjälp av sammansatt årlig tillväxttakt (CAGR, compound annual growth rate).",
+        "paragraph3": "Vi visar även hur utsläppen skulle behöva minska för att klara Parisavtalet. Tidigare användes lokala koldioxidbudgetar, baserade på en nationell budget framtagen av forskare vid Uppsala universitet och Tyndall Centre i Storbritannien. Sedan augusti 2025 baserar vi istället ”Pariskurvan” på <0>Carbon Law</0>.",
+        "paragraph4": "Prognosen för framtida utsläpp baseras på hur utsläppen i respektive kommun eller län har utvecklats historiskt sedan Parisavtalet 2015. Trendlinjen viktas enligt den statistiska metoden least absolute deviations (LAD), som ger mindre vikt åt enskilda extremvärden och en mer rättvis och realistisk bild av de framtida utsläppen. Läs mer om våra utsläppsberäkningar <0>här</0>.",
+        "paragraph5": "Utöver utsläppsdata visas även nyckeltal för hur det går i kommunerna med att ställa om och minska utsläppen."
+      },
       "nationDataOverview": {
         "title": "Nationell data översikt",
         "description": "Vilken data vi samlar in och presenterar om Sveriges nationella utsläpp",
-        "paragraph1": "Klimatkollen visar utsläppsdata för Sverige på nationell nivå, med SMHI:s Nationella emissionsdatabas som främsta källa. För att vår nationella, läns-, kommun- och företagsdata ska vara jämförbar visas sedan augusti 2025 utsläpp av alla växthusgaser (CO₂e), inte enbart koldioxid.",
-        "paragraph2": "Den genomsnittliga årliga utsläppsförändringen för Sverige beräknas med hjälp av sammansatt årlig tillväxttakt (CAGR, compound annual growth rate).",
+        "paragraph1": "Sveriges landsida kombinerar två kompletterande källor. Climate TRACE tillhandahåller nyckeltal på landsnivå, utsläppsdiagrammet över tid och kartan över de största punktkällorna. SMHI:s Nationella emissionsdatabas tillhandahåller Sveriges officiella territoriella sektorsuppdelning och länkar vidare till länsdata för varje län.",
+        "paragraph2": "Den genomsnittliga årliga utsläppsförändringen för Sverige beräknas med hjälp av Climate TRACE-data och sammansatt årlig tillväxttakt (CAGR, compound annual growth rate).",
         "paragraph3": "Vi visar även hur utsläppen skulle behöva minska för att klara Parisavtalet. Tidigare användes lokala koldioxidbudgetar, baserade på en nationell budget framtagen av forskare vid Uppsala universitet och Tyndall Centre i Storbritannien. Sedan augusti 2025 baserar vi istället ”Pariskurvan” på <0>Carbon Law</0>.",
-        "paragraph4": "Prognosen för framtida utsläpp baseras på hur Sveriges utsläpp har utvecklats historiskt sedan Parisavtalet 2015. Trendlinjen viktas enligt den statistiska metoden least absolute deviations (LAD), som ger mindre vikt åt enskilda extremvärden och en mer rättvis och realistisk bild av de framtida utsläppen. Läs mer om våra utsläppsberäkningar <0>här</0>.",
-        "paragraph5": "Utöver totala utsläpp visar Klimatkollen en sektorsuppdelning av Sveriges växthusgasutsläpp och länkar till länsdata för varje län.",
+        "paragraph4": "Prognosen för framtida utsläpp i landsdiagrammet baseras på hur Sveriges utsläpp har utvecklats historiskt i Climate TRACE sedan Parisavtalet 2015. Trendlinjen viktas enligt den statistiska metoden least absolute deviations (LAD), som ger mindre vikt åt enskilda extremvärden och en mer rättvis och realistisk bild av de framtida utsläppen. Läs mer om våra utsläppsberäkningar <0>här</0>.",
+        "paragraph5": "Utöver totala utsläpp visar Klimatkollen en sektorsuppdelning av Sveriges växthusgasutsläpp från SMHI och länkar till länsdata för varje län.",
         "link": {
           "title": "Sveriges nationella utsläpp",
           "text": "Se Sveriges nationella utsläppsdata på Klimatkollen"
         }
-      }
-    },
-    "municipalityAndRegion": {
-      "municipalityAndRegionDataOverview": {
-        "title": "Kommun- och länsdata översikt",
-        "description": "Vilken data vi samlar in och presenterar om kommunerna och länen",
-        "paragraph1": "Klimatkollen visar data om utsläpp i Sveriges kommuner och län, med SMHI:s Nationella emissionsdatabas som främsta källa. För att vår kommundata, länsdata och företagsdata ska vara jämförbara visas sedan augusti 2025 utsläpp av alla växthusgaser (CO₂e) inte enbart koldioxid.",
-        "paragraph2": "Den genomsnittliga årliga utsläppsförändringen för respektive kommun eller län beräknas med hjälp av sammansatt årlig tillväxttakt (CAGR, compound annual growth rate).",
-        "paragraph3": "Vi visar även hur utsläppen skulle behöva minska för att klara Parisavtalet. Tidigare användes lokala koldioxidbudgetar, baserade på en nationell budget framtagen av forskare vid Uppsala universitet och Tyndall Centre i Storbritannien. Sedan augusti 2025 baserar vi istället ”Pariskurvan” på <0>Carbon Law</0>.",
-        "paragraph4": "Prognosen för framtida utsläpp baseras på hur utsläppen i respektive kommun eller län har utvecklats historiskt sedan Parisavtalet 2015. Trendlinjen viktas enligt den statistiska metoden least absolute deviations (LAD), som ger mindre vikt åt enskilda extremvärden och en mer rättvis och realistisk bild av de framtida utsläppen. Läs mer om våra utsläppsberäkningar <0>här</0>.",
-        "paragraph5": "Utöver utsläppsdata visas även nyckeltal för hur det går i kommunerna och länen med att ställa om och minska utsläppen."
       },
       "municipalityKPIs": {
         "title": "Nyckeltal omställning i kommunerna",
@@ -866,14 +863,33 @@
       },
       "sources": {
         "title": "Våra källor",
-        "description": "Utforska de offentligt tillgängliga källorna och verifierade data som används av Klimatkollen",
+        "description": "Utforska de offentligt tillgängliga källorna och verifierade data som används av Klimatkollen för platsdata",
         "paragraph1": "Klimatkollen bygger på offentligt tillgängliga källor och verifierad data. Vi tillhandahåller alla källor så att du enkelt kan granska och utforska dem vidare. Om du upptäcker några fel, mejla oss gärna på hej@klimatkollen.se så vi kan rätta till dem.",
-        "paragraph2": "Företagsdata hämtas från deras egna årsredovisningar och hållbarhetsrapporter.",
+        "paragraph2": "Källorna nedan täcker kommuner, län, Sverige som nation och andra europeiska länder. Företagsdata dokumenteras separat under Företagsdata.",
+        "groups": {
+          "coreEmissions": {
+            "title": "Utsläppsdata",
+            "description": "Kärndata om utsläpp för platser i Sverige och Europa."
+          },
+          "municipalityIndicators": {
+            "title": "Kommunala omställningsnyckeltal",
+            "description": "Kompletterande indikatorer som används på kommunsidor."
+          },
+          "metadata": {
+            "title": "Referensdata",
+            "description": "Stöddata för kommuner och län."
+          }
+        },
         "links": {
           "smhi": {
             "title": "Nationella emissionsdatabasen",
-            "text": "Växthusgasutsläpp i kommunerna och länen",
+            "text": "Officiella växthusgasutsläpp för svenska kommuner, län och nationell sektorsuppdelning",
             "link": "https://nationellaemissionsdatabasen.smhi.se/"
+          },
+          "climateTrace": {
+            "title": "Climate TRACE",
+            "text": "Utsläpp, trender och de största punktkällorna på landsnivå för europeiska länder och Sverige",
+            "link": "https://climatetrace.org/"
           },
           "skr": {
             "title": "Sveriges Kommuner och Regioner",
@@ -919,11 +935,6 @@
             "title": "Greenpeace",
             "text": "Kartläggning av klimatkrav i offentliga upphandlingar",
             "link": "https://docs.google.com/spreadsheets/d/1EdHUa49HJZn0rXqM-6tChdim4TJzXnwA/edit#gid=1040317160"
-          },
-          "climateTrace": {
-            "title": "Climate TRACE",
-            "text": "Utsläppsdata för europeiska länder (CO₂e per capita och årlig förändring)",
-            "link": "https://climatetrace.org/"
           }
         }
       }

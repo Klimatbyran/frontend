@@ -34,7 +34,7 @@ function NationDetailContent({
       <EuropeanCountryDetailHeader
         name={nation.country[currentLanguage]}
         iso2="SE"
-        helpItems={["regionTotalEmissions", "detailWhyDataDelay"]}
+        helpItems={["climateTraceCountryEmissions", "detailWhyDataDelay"]}
         stats={headerStats}
       />
       {lastYear && (

@@ -48,7 +48,7 @@ export function EuropeanCountryDetailPage() {
       <EuropeanCountryDetailHeader
         name={country.name}
         iso2={country.iso2}
-        helpItems={["regionTotalEmissions", "detailWhyDataDelay"]}
+        helpItems={["climateTraceCountryEmissions", "detailWhyDataDelay"]}
         stats={headerStats}
       />
       {lastYear && (

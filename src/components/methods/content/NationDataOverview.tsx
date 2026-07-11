@@ -26,26 +26,26 @@ export const NationDataOverviewContent = () => {
 
   return (
     <div className="prose prose-invert mx-auto space-y-8">
-      <p>{t("methodsPage.nation.nationDataOverview.paragraph1")}</p>
+      <p>{t("methodsPage.territorial.nationDataOverview.paragraph1")}</p>
       <div className="flex justify-center">
         <div className="w-full space-y-6">
           <LinkButton
-            title={t("methodsPage.nation.nationDataOverview.link.title")}
-            text={t("methodsPage.nation.nationDataOverview.link.text")}
+            title={t("methodsPage.territorial.nationDataOverview.link.title")}
+            text={t("methodsPage.territorial.nationDataOverview.link.text")}
             link={`${i18next.resolvedLanguage}/nation`}
           />
         </div>
       </div>
-      <p>{t("methodsPage.nation.nationDataOverview.paragraph2")}</p>
+      <p>{t("methodsPage.territorial.nationDataOverview.paragraph2")}</p>
       {paragraphWithLink(
-        "methodsPage.nation.nationDataOverview.paragraph3",
+        "methodsPage.territorial.nationDataOverview.paragraph3",
         "https://klimatkollen.se/reports/2025-06-19_ApplyingCarbonLawFrom2025.pdf",
       )}
       {paragraphWithLink(
-        "methodsPage.nation.nationDataOverview.paragraph4",
+        "methodsPage.territorial.nationDataOverview.paragraph4",
         "https://docs.google.com/document/d/1MihysUkfunbV0LjwSUCiGSqWQSo5U03K0RMbRsVBL7U/edit?pli=1&tab=t.0#heading=h.oqnz3ereclbn",
       )}
-      <p>{t("methodsPage.nation.nationDataOverview.paragraph5")}</p>
+      <p>{t("methodsPage.territorial.nationDataOverview.paragraph5")}</p>
     </div>
   );
 };
