@@ -39,29 +39,30 @@ export function TurnoverEmissionsHistory({
 
   return (
     <SectionWithHelp helpItems={["companyTurnover", "historicalEmissions"]}>
-      <div className="flex flex-col gap-8 lg:flex-row lg:items-stretch lg:gap-8">
-        <div className="flex w-full flex-col lg:w-1/2">
+      <div className="flex flex-col gap-8 lg:grid lg:grid-cols-2 lg:gap-x-8 lg:gap-y-0">
+        <div className="flex w-full flex-col lg:col-start-1 lg:row-start-1">
           <CardHeader
             title={t("companies.turnoverEmissionsHistory.title")}
             tooltipContent={t("companies.turnoverEmissionsHistory.tooltip")}
             unit={t("companies.turnoverEmissionsHistory.unit")}
             className="[&>div]:mb-3 lg:[&>div]:mb-6"
           />
-          <div
-            style={{
-              height: isMobile
-                ? "360px"
-                : getDynamicChartHeight("overview", isMobile),
-            }}
-          >
-            <TurnoverEmissionsChart
-              displayData={section.displayData}
-              companyBaseYear={companyBaseYear}
-              onYearSelect={(year) => onYearSelect?.(year.toString())}
-            />
-          </div>
         </div>
-        <div className="flex w-full flex-col lg:w-1/2">
+        <div
+          className="flex w-full flex-col lg:col-start-1 lg:row-start-2"
+          style={{
+            height: isMobile
+              ? "360px"
+              : getDynamicChartHeight("overview", isMobile),
+          }}
+        >
+          <TurnoverEmissionsChart
+            displayData={section.displayData}
+            companyBaseYear={companyBaseYear}
+            onYearSelect={(year) => onYearSelect?.(year.toString())}
+          />
+        </div>
+        <div className="flex w-full flex-col lg:col-start-2 lg:row-start-2 lg:h-full">
           <TurnoverEmissionsIntensityPanel comparison={section.comparison} />
         </div>
       </div>

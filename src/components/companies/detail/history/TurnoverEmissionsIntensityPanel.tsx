@@ -29,9 +29,9 @@ function FooterMetric({
 }) {
   return (
     <div>
-      <Text className="text-xs text-grey md:text-base">{label}</Text>
+      <Text className="text-xs text-grey md:text-sm">{label}</Text>
       <Text
-        className={`mt-0.5 text-lg font-light md:mt-1 md:text-3xl ${colorClass}`}
+        className={`mt-0.5 text-lg font-light md:mt-1 md:text-2xl ${colorClass}`}
       >
         {value}
       </Text>
@@ -54,34 +54,34 @@ export function TurnoverEmissionsIntensityPanel({
   );
 
   return (
-    <div className="flex h-full flex-col gap-4 rounded-level-2 bg-black-1 px-4 py-4 sm:px-6 sm:py-5 md:px-8 md:py-8 lg:flex-1 lg:justify-between lg:gap-10 lg:py-10">
+    <div className="flex h-full flex-col gap-4 rounded-level-2 bg-black-1 px-4 py-4 sm:px-6 sm:py-5 md:px-8 md:py-6 lg:justify-between lg:gap-5 lg:px-6 lg:py-5">
       <div>
         <Text className="text-sm text-grey md:text-lg">
           {t("companies.turnoverEmissionsHistory.intensityPanel.question")}
         </Text>
         <Text
-          className={`mt-1.5 text-4xl font-light md:mt-2 md:text-6xl ${verdictColorClass}`}
+          className={`mt-1.5 text-4xl font-light md:mt-2 lg:text-5xl ${verdictColorClass}`}
           aria-label={t(VERDICT_EXPLANATION_KEY[comparison.verdict])}
         >
           {t(VERDICT_LABEL_KEY[comparison.verdict])}
         </Text>
-        <Text className="mt-2 text-sm leading-snug text-white md:mt-3 md:text-lg md:leading-relaxed">
+        <Text className="mt-2 text-sm leading-snug text-white md:mt-2 md:text-base md:leading-relaxed">
           {t(VERDICT_EXPLANATION_KEY[comparison.verdict])}
         </Text>
       </div>
 
       <div>
-        <div className="grid grid-cols-[1fr_auto_1fr] items-end gap-3 md:gap-6">
+        <div className="grid grid-cols-[1fr_auto_1fr] items-end gap-3 md:gap-4">
           <div>
             <Text className="text-xs text-grey md:text-base">
               {comparison.startYear}
             </Text>
-            <Text className="text-2xl font-light text-orange-2 md:text-4xl">
+            <Text className="text-2xl font-light text-orange-2 md:text-3xl">
               {localizeUnit(comparison.startIntensity, currentLanguage)}
             </Text>
           </div>
           <ArrowRight
-            className="mb-1 size-5 shrink-0 text-grey md:mb-2 md:size-7"
+            className="mb-1 size-5 shrink-0 text-grey md:mb-1.5 md:size-6"
             aria-hidden
           />
           <div>
@@ -89,23 +89,23 @@ export function TurnoverEmissionsIntensityPanel({
               {comparison.endYear}
             </Text>
             <Text
-              className={`text-2xl font-light md:text-4xl ${verdictColorClass}`}
+              className={`text-2xl font-light md:text-3xl ${verdictColorClass}`}
             >
               {localizeUnit(comparison.endIntensity, currentLanguage)}
             </Text>
           </div>
         </div>
 
-        <Text className="mt-1.5 text-xs text-grey md:mt-2 md:text-base">
+        <Text className="mt-1.5 text-xs text-grey md:mt-1.5 md:text-sm">
           {intensityUnit}
         </Text>
 
-        <Text className="mt-3 text-xs leading-snug text-grey md:mt-5 md:text-base">
+        <Text className="mt-2 text-xs leading-snug text-grey md:mt-3 md:text-sm">
           {t(periodNoteKey)}
         </Text>
       </div>
 
-      <div className="grid grid-cols-3 gap-2 border-t border-white/20 pt-4 md:gap-6 md:pt-6 lg:pt-8">
+      <div className="grid grid-cols-3 gap-2 border-t border-white/20 pt-4 md:gap-4 md:pt-4">
         <FooterMetric
           label={t(
             "companies.turnoverEmissionsHistory.intensityPanel.intensityChange",
