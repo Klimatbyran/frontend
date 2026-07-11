@@ -139,5 +139,8 @@ export function getChartData(
     ),
   );
 
-  return [...historicalData, ...buildFutureDataPoints(futureYears, categoryKeys)];
+  return [
+    ...historicalData,
+    ...buildFutureDataPoints(futureYears, categoryKeys),
+  ];
 }

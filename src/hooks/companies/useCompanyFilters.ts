@@ -75,7 +75,9 @@ function useFilteredCompanies(
     searchQuery: string;
     meetsParisFilter: ReturnType<typeof parseMeetsParisFilter>;
     sortBy: CompanySortBy;
-    sortDirection: ReturnType<typeof useExploreFilters<CompanySortBy>>["sortDirection"];
+    sortDirection: ReturnType<
+      typeof useExploreFilters<CompanySortBy>
+    >["sortDirection"];
     sectorNames: Record<string, string>;
   },
 ) {

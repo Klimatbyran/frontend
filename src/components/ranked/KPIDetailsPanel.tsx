@@ -145,8 +145,7 @@ function DistributionSection({
                 <span
                   className="inline-block w-3 h-3 rounded-full shrink-0"
                   style={{
-                    backgroundColor:
-                      STAT_COLOR_MAP[stat.colorClass] ?? "#888",
+                    backgroundColor: STAT_COLOR_MAP[stat.colorClass] ?? "#888",
                   }}
                 />
                 <span className="text-white/70 text-sm md:text-base truncate">
