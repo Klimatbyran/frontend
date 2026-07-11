@@ -100,6 +100,9 @@ function CompanyInsightsPanel({
         selectedKPI.higherIsBetter,
       );
 
+  const isMeetsParisKpi =
+    selectedKPI.isBoolean && selectedKPI.key === MEETS_PARIS_KPI_KEY;
+
   const statsPanel = (
     <KPIDetailsPanel
       title={t(`companies.list.kpis.${kpiKey}.label`)}
@@ -156,9 +159,6 @@ function CompanyInsightsPanel({
   const booleanSummary = (
     <BooleanSummaryBox distributionStats={statistics.distributionStats} />
   );
-
-  const isMeetsParisKpi =
-    selectedKPI.isBoolean && selectedKPI.key === MEETS_PARIS_KPI_KEY;
 
   const renderParisEmissionsList = (meetsParis: boolean) => {
     const { entities, unitScale } = getTopParisEmissionsCompanies(
