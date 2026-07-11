@@ -21,7 +21,7 @@ export function MeetsParisVisualization({
     [companies],
   );
 
-  const { unitScale, maxEmissions } = useMemo(() => {
+  const { unitScale } = useMemo(() => {
     const emissionsValues = entries.map((entry) => entry.emissions);
     const max = emissionsValues.length ? Math.max(...emissionsValues) : 0;
     const groupTotals = [
@@ -34,8 +34,9 @@ export function MeetsParisVisualization({
     ];
     const maxGroupTotal = Math.max(...groupTotals, max);
     return {
-      unitScale: getBestUnit(maxGroupTotal),
-      maxEmissions: maxGroupTotal,
+      unitScale: getBestUnit(maxGroupTotal, "tonnes", {
+        maxDivisor: 1_000_000,
+      }),
     };
   }, [entries]);
 
@@ -57,7 +58,6 @@ export function MeetsParisVisualization({
         <MeetsParisBarChart
           entries={entries}
           unitScale={unitScale}
-          maxEmissions={maxEmissions}
           onCompanyClick={(entry) => onCompanyClick?.(entry.company)}
         />
       </div>

@@ -4,7 +4,7 @@ import { useChartMotion } from "@/hooks/useChartMotion";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { COLORS } from "@/lib/colors";
 import { getCompanyUrlSegment } from "@/utils/companyRouting";
-import { formatWithBestUnit } from "@/utils/data/unitScaling";
+import { formatWithScale } from "@/utils/data/unitScaling";
 import type { CompanyParisEmissionsEntry } from "@/utils/insights/meetsParisChartData";
 
 const SEGMENT_RADIUS = 6;
@@ -14,7 +14,6 @@ const Y_AXIS_WIDTH = 56;
 interface MeetsParisBarChartProps {
   entries: CompanyParisEmissionsEntry[];
   unitScale: { unit: string; divisor: number };
-  maxEmissions: number;
   onCompanyClick?: (entry: CompanyParisEmissionsEntry) => void;
 }
 
@@ -45,7 +44,6 @@ function buildYAxisTicks(maxValue: number, tickCount = 4): number[] {
 export function MeetsParisBarChart({
   entries,
   unitScale,
-  maxEmissions,
   onCompanyClick,
 }: MeetsParisBarChartProps) {
   const { t } = useTranslation();
@@ -107,8 +105,8 @@ export function MeetsParisBarChart({
   );
 
   const formatCategoryTotal = useCallback(
-    (total: number) => formatWithBestUnit(total, maxEmissions),
-    [maxEmissions],
+    (total: number) => formatWithScale(total, unitScale),
+    [unitScale],
   );
 
   const highlightedCompanyId = hoveredCompanyId ?? activeCompanyId;
@@ -162,10 +160,7 @@ export function MeetsParisBarChart({
     <div className="relative w-full h-full min-h-[400px] flex flex-col">
       <div className="relative flex-1 min-h-[320px] border-t border-b border-black-4">
         <div className="absolute inset-x-0 top-4 bottom-8 flex">
-          <div
-            className="relative shrink-0"
-            style={{ width: Y_AXIS_WIDTH }}
-          >
+          <div className="relative shrink-0" style={{ width: Y_AXIS_WIDTH }}>
             {yAxisTicks
               .slice()
               .reverse()
@@ -198,12 +193,13 @@ export function MeetsParisBarChart({
                     style={{
                       height: `${barHeightPercent}%`,
                       backgroundColor: COLORS.black2,
-                      transition: reduceMotion ? undefined : "height 0.5s ease-out",
+                      transition: reduceMotion
+                        ? undefined
+                        : "height 0.5s ease-out",
                     }}
                   >
                     {group.segments.map((segment) => {
-                      const isHighlighted =
-                        highlightedCompanyId === segment.id;
+                      const isHighlighted = highlightedCompanyId === segment.id;
                       const isDimmed =
                         highlightedCompanyId != null &&
                         highlightedCompanyId !== segment.id;
@@ -266,7 +262,7 @@ export function MeetsParisBarChart({
           <div className="mt-2 space-y-1">
             <p className="text-white/70">
               <span className="text-orange-2">
-                {formatWithBestUnit(tooltip.entry.emissions, maxEmissions)}
+                {formatWithScale(tooltip.entry.emissions, unitScale)}
               </span>
             </p>
             <p className="text-sm text-white/50">
@@ -339,9 +335,9 @@ export function MeetsParisBarChart({
             {companyById.get(activeCompanyId)!.company.name}
           </span>
           <span className="mt-1 block text-orange-2">
-            {formatWithBestUnit(
+            {formatWithScale(
               companyById.get(activeCompanyId)!.emissions,
-              maxEmissions,
+              unitScale,
             )}
           </span>
         </button>
