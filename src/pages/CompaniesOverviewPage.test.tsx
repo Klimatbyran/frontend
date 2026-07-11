@@ -182,6 +182,39 @@ describe("CompaniesOverviewPage", () => {
     capturedTopLists.length = 0;
   });
 
+  it("shows all companies by default when no sector filter is set", async () => {
+    render(
+      <MemoryRouter initialEntries={["/en/companies"]}>
+        <Routes>
+          <Route
+            path="/en/companies"
+            element={
+              <>
+                <CompaniesOverviewPage />
+                <LocationDisplay />
+              </>
+            }
+          />
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    await waitFor(() => {
+      expect(capturedTopLists.at(-1)).toEqual([
+        "Duni AB",
+        "Materials Two",
+        "Materials Three",
+        "Health One",
+        "Health Two",
+        "Health Three",
+      ]);
+    });
+
+    expect(screen.getByTestId("location-search")).not.toHaveTextContent(
+      "sector=",
+    );
+  });
+
   it("keeps the top insights list scoped to the selected sector when switching", async () => {
     render(
       <MemoryRouter initialEntries={["/en/companies?sector=15"]}>

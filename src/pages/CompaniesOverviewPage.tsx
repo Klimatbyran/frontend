@@ -94,8 +94,7 @@ export function CompaniesOverviewPage() {
     if (sectorParam && availableSectors.includes(sectorParam)) {
       return sectorParam;
     }
-    // Default to first available sector if none selected
-    return availableSectors.length > 0 ? availableSectors[0] : null;
+    return null;
   }, [location.search, availableSectors]);
 
   const setSectorInURL = useCallback(
@@ -149,36 +148,24 @@ export function CompaniesOverviewPage() {
   const selectedSector = useMemo(() => getSectorFromURL(), [getSectorFromURL]);
   const viewMode = getViewModeFromURL();
 
-  // Ensure a sector is written to the URL once sectors are known
-  useEffect(() => {
-    if (availableSectors.length === 0) return;
-
-    const params = new URLSearchParams(location.search);
-    const sectorParam = params.get("sector");
-
-    if (sectorParam && availableSectors.includes(sectorParam)) {
-      return;
-    }
-
-    setSectorInURL(availableSectors[0]);
-  }, [availableSectors, location.search, setSectorInURL]);
-
   useEffect(() => {
     setSelectedKPI(getKPIFromURL());
   }, [getKPIFromURL]);
 
   // Filter and enrich companies with KPI values
   const companiesWithKPIs: CompanyWithKPIs[] = useMemo(() => {
-    if (!companies || !selectedSector) return [];
+    if (!companies) return [];
 
     const filtered = companies.filter((company) => {
       if (!companyMatchesCountries(company, selectedCountries)) {
         return false;
       }
 
-      const sectorCode = company.industry?.industryGics?.sectorCode;
-      if (sectorCode !== selectedSector) {
-        return false;
+      if (selectedSector) {
+        const sectorCode = company.industry?.industryGics?.sectorCode;
+        if (sectorCode !== selectedSector) {
+          return false;
+        }
       }
 
       if (
@@ -195,6 +182,10 @@ export function CompaniesOverviewPage() {
   }, [companies, selectedCountries, selectedSector, selectedKPI.key]);
 
   const handleSectorChange = (sector: string) => {
+    if (sector === "all") {
+      setSectorInURL(null);
+      return;
+    }
     setSectorInURL(sector);
   };
 
@@ -205,14 +196,20 @@ export function CompaniesOverviewPage() {
   const filterGroups: FilterGroup[] = useMemo(() => {
     const groups: FilterGroup[] = [];
 
-    if (availableSectors.length > 0 && selectedSector) {
+    if (availableSectors.length > 0) {
       groups.push({
         heading: t("companiesOverviewPage.filterByIndustry"),
-        options: availableSectors.map((code) => ({
-          value: code,
-          label: sectorNames[code as keyof typeof sectorNames] || code,
-        })),
-        selectedValues: [selectedSector],
+        options: [
+          {
+            value: "all",
+            label: t("explorePage.companies.allSectors"),
+          },
+          ...availableSectors.map((code) => ({
+            value: code,
+            label: sectorNames[code as keyof typeof sectorNames] || code,
+          })),
+        ],
+        selectedValues: selectedSector ? [selectedSector] : ["all"],
         onSelect: handleSectorChange,
         selectMultiple: false,
       });
@@ -251,11 +248,7 @@ export function CompaniesOverviewPage() {
         label:
           sectorNames[selectedSector as keyof typeof sectorNames] ||
           selectedSector,
-        onRemove: () => {
-          if (availableSectors.length > 0) {
-            setSectorInURL(availableSectors[0]);
-          }
-        },
+        onRemove: () => setSectorInURL(null),
       });
     }
 
@@ -273,7 +266,6 @@ export function CompaniesOverviewPage() {
     return filters;
   }, [
     selectedSector,
-    availableSectors,
     selectedCountries,
     sectorNames,
     countryNames,
@@ -443,13 +435,13 @@ export function CompaniesOverviewPage() {
               companyData={companiesWithKPIs}
               selectedKPI={selectedKPI}
               section="top"
-              listKey={selectedSector ?? undefined}
+              listKey={selectedSector ?? "all"}
             />
             <CompanyInsightsPanel
               companyData={companiesWithKPIs}
               selectedKPI={selectedKPI}
               section="bottom"
-              listKey={selectedSector ?? undefined}
+              listKey={selectedSector ?? "all"}
             />
             <CompanyInsightsPanel
               companyData={companiesWithKPIs}
