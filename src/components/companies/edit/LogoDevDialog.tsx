@@ -44,7 +44,9 @@ export function LogoDevDialog({
         if (url.searchParams.has("theme")) {
           setTheme(url.searchParams.get("theme") ?? theme);
         }
-      } catch {}
+      } catch {
+        // Ignore invalid logo URLs when parsing
+      }
     }
   }, [open, logoUrl]);
 

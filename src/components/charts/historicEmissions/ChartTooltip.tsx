@@ -30,11 +30,8 @@ interface ChartTooltipProps {
   active?: boolean;
   payload?: PayloadEntry[];
   label?: string;
-  // Common props
   unit?: string;
   showUnit?: boolean;
-
-  // Company-specific props
   companyBaseYear?: number;
   filterDuplicateValues?: boolean;
   trendData?: {
@@ -42,185 +39,299 @@ interface ChartTooltipProps {
     baseYear: number;
     lastReportedYear: number;
   };
-
-  // Municipality-specific props
   dataView?: "overview" | "sectors";
   hiddenSectors?: Set<string>;
-
-  // Custom formatting
   customFormatter?: (
     value: number,
     name: string,
     entry: PayloadEntry,
   ) => string;
   customNameFormatter?: (name: string, entry: PayloadEntry) => string;
-
-  // AI data indicators
   showAIIndicators?: boolean;
 }
 
-export const ChartTooltip: React.FC<ChartTooltipProps> = ({
-  active,
-  payload,
-  label,
-  unit,
-  showUnit = true,
-  companyBaseYear,
-  filterDuplicateValues = false,
-  trendData,
-  dataView,
-  hiddenSectors = new Set(),
-  customFormatter,
-  customNameFormatter,
-  showAIIndicators = true,
-}) => {
-  const { t } = useTranslation();
-  const { currentLanguage } = useLanguage();
-  const { isMobile } = useScreenSize();
+function hasAIGeneratedScope3(
+  categories?: Array<Scope3Category & { isAIGenerated?: boolean }>,
+): boolean {
+  return categories?.some((cat) => cat.isAIGenerated) ?? false;
+}
 
-  if (!active || !payload || payload.length === 0) {
-    return null;
+function isAIGeneratedEntry(
+  entry: PayloadEntry,
+  showAIIndicators: boolean,
+): boolean {
+  if (!showAIIndicators) return false;
+  if (entry.dataKey === "turnover") {
+    return entry.payload?.turnoverIsAIGenerated ?? false;
   }
+  const payload = entry.payload;
+  if (!payload) return false;
+  if (payload.isAIGenerated) return true;
+  if (payload.scope1?.isAIGenerated) return true;
+  if (payload.scope2?.isAIGenerated) return true;
+  if (payload.scope3?.isAIGenerated) return true;
+  return hasAIGeneratedScope3(payload.scope3Categories);
+}
 
-  // Determine if this is base year
-  const isBaseYear = companyBaseYear === payload[0]?.payload?.year;
+function filterOverviewPayload(payload: PayloadEntry[]): PayloadEntry[] {
+  const hasActual = payload.some(
+    (entry) => entry.dataKey === "total" && entry.value != null,
+  );
+  let filtered = payload;
+  if (hasActual) {
+    filtered = filtered.filter((entry) => entry.dataKey !== "approximated");
+  }
+  const isApproximated = filtered.some(
+    (entry) => entry.dataKey === "approximated" && entry.value != null,
+  );
+  if (isApproximated) {
+    filtered = filtered.filter((entry) => entry.dataKey === "approximated");
+  }
+  return filtered;
+}
 
-  // Filter payload based on context
-  let filteredPayload = payload;
-
-  // First, filter out zero, undefined, or null values, but keep trend and Paris data
-  filteredPayload = payload.filter((entry) => {
-    // Keep trend and Paris data even if zero
+function filterTooltipPayload(
+  payload: PayloadEntry[],
+  options: {
+    filterDuplicateValues: boolean;
+    dataView?: "overview" | "sectors";
+    hiddenSectors: Set<string>;
+  },
+): { filteredPayload: PayloadEntry[]; showUnit: boolean } {
+  let showUnit = true;
+  let filteredPayload = payload.filter((entry) => {
     if (entry.dataKey === "approximated" || entry.dataKey === "carbonLaw") {
       return entry.value != null;
     }
-
     showUnit = false;
-    // For other data, only show if not null and > 0
     return entry.value != null && entry.value > 0;
   });
 
-  if (filterDuplicateValues) {
+  if (options.filterDuplicateValues) {
     const seenValues = new Set<string>();
     filteredPayload = filteredPayload.filter((entry) => {
       const valueKey = `${entry.value}_${entry.payload?.year ?? ""}`;
-      if (seenValues.has(valueKey)) {
-        return false;
-      }
+      if (seenValues.has(valueKey)) return false;
       seenValues.add(valueKey);
       return true;
     });
   }
 
-  // For municipality sectors view, filter hidden sectors
-  if (dataView === "sectors" && hiddenSectors.size > 0) {
+  if (options.dataView === "sectors" && options.hiddenSectors.size > 0) {
     filteredPayload = filteredPayload.filter(
-      (entry) => !hiddenSectors.has(entry.dataKey as string),
+      (entry) => !options.hiddenSectors.has(entry.dataKey as string),
     );
   }
 
-  // For municipality overview, handle approximated data logic
-  if (dataView === "overview") {
-    const hasActual = filteredPayload.some(
-      (entry) => entry.dataKey === "total" && entry.value != null,
-    );
-
-    if (hasActual) {
-      filteredPayload = filteredPayload.filter(
-        (entry) => entry.dataKey !== "approximated",
-      );
-    }
-
-    const isApproximated = filteredPayload.some(
-      (entry) => entry.dataKey === "approximated" && entry.value != null,
-    );
-
-    if (isApproximated) {
-      filteredPayload = filteredPayload.filter(
-        (entry) => entry.dataKey === "approximated",
-      );
-    }
+  if (options.dataView === "overview") {
+    filteredPayload = filterOverviewPayload(filteredPayload);
   }
 
-  // Default formatters
-  const defaultFormatter = (value: number) =>
-    formatEmissionsAbsolute(Math.round(value ?? 0), currentLanguage);
+  return { filteredPayload, showUnit };
+}
 
-  const defaultNameFormatter = (name: string, entry: PayloadEntry) => {
-    const dataKey = typeof entry.dataKey === "string" ? entry.dataKey : null;
+function TooltipDataRow({
+  entry,
+  formatName,
+  formatValue,
+  showAIIndicators,
+  currentLanguage,
+  t,
+}: {
+  entry: PayloadEntry;
+  formatName: (name: string, entry: PayloadEntry) => string;
+  formatValue: (value: number, name: string, entry: PayloadEntry) => string;
+  showAIIndicators: boolean;
+  currentLanguage: string;
+  t: ReturnType<typeof useTranslation>["t"];
+}) {
+  if (entry.dataKey === "gap") return null;
 
-    // Handle company category names
-    if (dataKey?.startsWith("cat")) {
-      const categoryId = parseInt(dataKey.replace("cat", ""));
-      return `${categoryId.toLocaleString()}. ${name}`;
-    }
-    if (dataKey === "turnover") {
-      return t("companies.overview.turnover");
-    }
-    return name;
-  };
+  const name = formatName(String(entry.name || entry.dataKey || ""), entry);
+  const isTurnoverEntry = entry.dataKey === "turnover";
+  const value = isTurnoverEntry
+    ? formatTurnoverValue(
+        entry.value as number,
+        currentLanguage,
+        t,
+        entry.payload?.turnoverCurrency,
+      )
+    : formatValue(
+        entry.value as number,
+        String(entry.name || entry.dataKey || ""),
+        entry,
+      );
+  const isDataAI = isAIGeneratedEntry(entry, showAIIndicators);
 
-  const formatValue = customFormatter || defaultFormatter;
-  const formatName = customNameFormatter || defaultNameFormatter;
-
-  const dataRows = filteredPayload.map((entry) => {
-    if (entry.dataKey === "gap") {
-      return null;
-    }
-
-    const name = formatName(String(entry.name || entry.dataKey || ""), entry);
-    const isTurnoverEntry = entry.dataKey === "turnover";
-    const value = isTurnoverEntry
-      ? formatTurnoverValue(
-          entry.value as number,
-          currentLanguage,
-          t,
-          entry.payload?.turnoverCurrency,
-        )
-      : formatValue(
-          entry.value as number,
-          String(entry.name || entry.dataKey || ""),
-          entry,
-        );
-    // Check if this data point is AI-generated
-    const isDataAI =
-      showAIIndicators &&
-      (isTurnoverEntry
-        ? entry.payload?.turnoverIsAIGenerated
-        : entry.payload?.isAIGenerated ||
-          entry.payload?.scope1?.isAIGenerated ||
-          entry.payload?.scope2?.isAIGenerated ||
-          entry.payload?.scope3?.isAIGenerated ||
-          entry.payload?.scope3Categories?.some(
-            (cat: Scope3Category & { isAIGenerated?: boolean }) =>
-              cat.isAIGenerated,
-          ) ||
-          false);
-
-    return (
+  return (
+    <div
+      key={entry.dataKey}
+      className={cn(
+        `${entry.dataKey === "total" ? "my-2 font-medium" : "my-0"}`,
+        "grid grid-cols-subgrid col-span-2 w-full",
+        "even:bg-black-1 odd:bg-black-2/20 py-0.5",
+      )}
+    >
+      <div className="text-grey mr-2">{name}</div>
       <div
-        key={entry.dataKey}
-        className={cn(
-          `${entry.dataKey === "total" ? "my-2 font-medium" : "my-0"}`,
-          "grid grid-cols-subgrid col-span-2 w-full",
-          "even:bg-black-1 odd:bg-black-2/20 py-0.5",
-        )}
+        className="flex pl-2 gap-1 justify-end"
+        style={{ color: entry.color }}
       >
-        <div className="text-grey mr-2">{name}</div>
-        <div
-          className="flex pl-2 gap-1 justify-end"
-          style={{ color: entry.color }}
-        >
-          {value}
-          {isDataAI && (
-            <span className="ml-2">
-              <AiIcon size="sm" />
-            </span>
-          )}
-        </div>
+        {value}
+        {isDataAI && (
+          <span className="ml-2">
+            <AiIcon size="sm" />
+          </span>
+        )}
       </div>
-    );
-  });
+    </div>
+  );
+}
+
+function TrendInfo({
+  trendData,
+  payload,
+  t,
+}: {
+  trendData: NonNullable<ChartTooltipProps["trendData"]>;
+  payload: PayloadEntry[];
+  t: ReturnType<typeof useTranslation>["t"];
+}) {
+  const hasApproximated = payload.some(
+    (entry) =>
+      entry.dataKey === "approximated" &&
+      entry.value != null &&
+      entry.value > 0,
+  );
+  if (!hasApproximated) return null;
+
+  return (
+    <span className="text-grey mr-2 text-xs col-span-2 mt-2">
+      <br />
+      {t("companies.emissionsHistory.trendInfo", {
+        percentage: Math.abs(trendData.slope).toFixed(1),
+        baseYear: trendData.baseYear,
+        lastYear: trendData.lastReportedYear,
+      })}
+      <br />
+      <span
+        className={cn(trendData.slope >= 0 ? "text-pink-3" : "text-green-3")}
+      >
+        Trend: {trendData.slope >= 0 ? "↗ Increasing" : "↘ Decreasing"}
+      </span>
+    </span>
+  );
+}
+
+function ApproximatedValueInfo({
+  dataView,
+  filteredPayload,
+  t,
+}: {
+  dataView?: "overview" | "sectors";
+  filteredPayload: PayloadEntry[];
+  t: ReturnType<typeof useTranslation>["t"];
+}) {
+  const hasApproximated = filteredPayload.some(
+    (entry) =>
+      entry.dataKey === "approximated" &&
+      entry.value != null &&
+      entry.value > 0,
+  );
+  if (dataView !== "overview" || !hasApproximated) return null;
+
+  return (
+    <div className="text-xs text-blue-2 mt-2">
+      {t("municipalities.graph.estimatedValue")}
+    </div>
+  );
+}
+
+function TooltipHeader({
+  label,
+  isBaseYear,
+  showUnit,
+  unit,
+  t,
+}: {
+  label?: string;
+  isBaseYear: boolean;
+  showUnit: boolean;
+  unit?: string;
+  t: ReturnType<typeof useTranslation>["t"];
+}) {
+  return (
+    <div className="text-sm font-medium mb-2 grid grid-cols-subgrid col-span-2">
+      <span>
+        {label}
+        {isBaseYear ? "*" : ""}
+      </span>
+      {showUnit && (
+        <span className="flex justify-end mr-1">
+          {unit || t("emissionsUnit")}
+        </span>
+      )}
+    </div>
+  );
+}
+
+function BaseYearFootnote({
+  isBaseYear,
+  t,
+}: {
+  isBaseYear: boolean;
+  t: ReturnType<typeof useTranslation>["t"];
+}) {
+  if (!isBaseYear) return null;
+  return (
+    <span className="text-grey mr-2 text-xs col-span-2">
+      <br />* {t("companies.emissionsHistory.baseYearInfo")}
+    </span>
+  );
+}
+
+function ChartTooltipBody({
+  label,
+  unit,
+  showUnit,
+  isBaseYear,
+  filteredPayload,
+  payload,
+  trendData,
+  dataView,
+  formatName,
+  formatValue,
+  showAIIndicators,
+  isMobile,
+  currentLanguage,
+  t,
+}: {
+  label?: string;
+  unit?: string;
+  showUnit: boolean;
+  isBaseYear: boolean;
+  filteredPayload: PayloadEntry[];
+  payload: PayloadEntry[];
+  trendData?: ChartTooltipProps["trendData"];
+  dataView?: "overview" | "sectors";
+  formatName: (name: string, entry: PayloadEntry) => string;
+  formatValue: (value: number, name: string, entry: PayloadEntry) => string;
+  showAIIndicators: boolean;
+  isMobile: boolean;
+  currentLanguage: string;
+  t: ReturnType<typeof useTranslation>["t"];
+}) {
+  const dataRows = filteredPayload.map((entry) => (
+    <TooltipDataRow
+      key={entry.dataKey}
+      entry={entry}
+      formatName={formatName}
+      formatValue={formatValue}
+      showAIIndicators={showAIIndicators}
+      currentLanguage={currentLanguage}
+      t={t}
+    />
+  ));
 
   return (
     <div
@@ -231,70 +342,78 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
         "z-[60] relative",
       )}
     >
-      {/* Header */}
-      <div className="text-sm font-medium mb-2 grid grid-cols-subgrid col-span-2">
-        <span>
-          {label}
-          {isBaseYear ? "*" : ""}
-        </span>
-        {showUnit && (
-          <span className="flex justify-end mr-1">
-            {unit || t("emissionsUnit")}
-          </span>
-        )}
-      </div>
-
-      {/* Data rows */}
+      <TooltipHeader
+        label={label}
+        isBaseYear={isBaseYear}
+        showUnit={showUnit}
+        unit={unit}
+        t={t}
+      />
       {dataRows.length === 0 && (
         <div className="text-grey mr-2 text-xs col-span-2">
           {t("charts.tooltip.noData")}
         </div>
       )}
       {dataRows}
-
-      {isBaseYear && (
-        <span className="text-grey mr-2 text-xs col-span-2">
-          <br />* {t("companies.emissionsHistory.baseYearInfo")}
-        </span>
-      )}
-
-      {trendData &&
-        payload?.some(
-          (entry) =>
-            entry.dataKey === "approximated" &&
-            entry.value != null &&
-            entry.value > 0,
-        ) && (
-          <span className="text-grey mr-2 text-xs col-span-2 mt-2">
-            <br />
-            {t("companies.emissionsHistory.trendInfo", {
-              percentage: Math.abs(trendData.slope).toFixed(1),
-              baseYear: trendData.baseYear,
-              lastYear: trendData.lastReportedYear,
-            })}
-            <br />
-            <span
-              className={cn(
-                trendData.slope >= 0 ? "text-pink-3" : "text-green-3",
-              )}
-            >
-              Trend: {trendData.slope >= 0 ? "↗ Increasing" : "↘ Decreasing"}
-            </span>
-          </span>
-        )}
-
-      {/* Municipality approximated value info */}
-      {dataView === "overview" &&
-        filteredPayload.some(
-          (entry) =>
-            entry.dataKey === "approximated" &&
-            entry.value != null &&
-            entry.value > 0,
-        ) && (
-          <div className="text-xs text-blue-2 mt-2">
-            {t("municipalities.graph.estimatedValue")}
-          </div>
-        )}
+      <BaseYearFootnote isBaseYear={isBaseYear} t={t} />
+      {trendData && <TrendInfo trendData={trendData} payload={payload} t={t} />}
+      <ApproximatedValueInfo
+        dataView={dataView}
+        filteredPayload={filteredPayload}
+        t={t}
+      />
     </div>
+  );
+}
+
+export const ChartTooltip: React.FC<ChartTooltipProps> = (props) => {
+  const { t } = useTranslation();
+  const { currentLanguage } = useLanguage();
+  const { isMobile } = useScreenSize();
+
+  if (!props.active || !props.payload || props.payload.length === 0) {
+    return null;
+  }
+
+  const isBaseYear = props.companyBaseYear === props.payload[0]?.payload?.year;
+  const { filteredPayload, showUnit: filteredShowUnit } = filterTooltipPayload(
+    props.payload,
+    {
+      filterDuplicateValues: props.filterDuplicateValues ?? false,
+      dataView: props.dataView,
+      hiddenSectors: props.hiddenSectors ?? new Set(),
+    },
+  );
+
+  const defaultFormatter = (value: number) =>
+    formatEmissionsAbsolute(Math.round(value ?? 0), currentLanguage);
+  const defaultNameFormatter = (name: string, entry: PayloadEntry) => {
+    if (entry.dataKey === "turnover") {
+      return t("companies.overview.turnover");
+    }
+    if (entry.dataKey?.startsWith("cat")) {
+      const categoryId = parseInt(entry.dataKey.replace("cat", ""));
+      return `${categoryId.toLocaleString()}. ${name}`;
+    }
+    return name;
+  };
+
+  return (
+    <ChartTooltipBody
+      label={props.label}
+      unit={props.unit}
+      showUnit={(props.showUnit ?? true) && filteredShowUnit}
+      isBaseYear={isBaseYear}
+      filteredPayload={filteredPayload}
+      payload={props.payload}
+      trendData={props.trendData}
+      dataView={props.dataView}
+      formatName={props.customNameFormatter || defaultNameFormatter}
+      formatValue={props.customFormatter || defaultFormatter}
+      showAIIndicators={props.showAIIndicators ?? true}
+      isMobile={isMobile}
+      currentLanguage={currentLanguage}
+      t={t}
+    />
   );
 };

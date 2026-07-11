@@ -26,6 +26,77 @@ interface ListCardMeta {
   categoryName: string;
 }
 
+function getClimatePlanAdoptedText(
+  isMunicipality: boolean,
+  climatePlanHasPlan: boolean | null | undefined,
+  climatePlanYear: number | null | undefined,
+  t: ReturnType<typeof useTranslation>["t"],
+) {
+  if (!isMunicipality) {
+    return null;
+  }
+
+  if (climatePlanHasPlan) {
+    return t("municipalities.card.adopted", {
+      year: climatePlanYear ?? t("unknown"),
+    });
+  }
+
+  return t("municipalities.card.noPlan");
+}
+
+function getClimatePlanStatusColor(
+  isMunicipality: boolean,
+  climatePlanHasPlan: boolean | null | undefined,
+) {
+  if (!isMunicipality) {
+    return "text-white";
+  }
+
+  if (climatePlanHasPlan === true) {
+    return "text-green-3";
+  }
+  if (climatePlanHasPlan === false) {
+    return "text-pink-3";
+  }
+  return "text-grey";
+}
+
+function getClimatePlanStatusLabel(
+  isMunicipality: boolean,
+  climatePlanHasPlan: boolean | null | undefined,
+  t: ReturnType<typeof useTranslation>["t"],
+) {
+  if (!isMunicipality) {
+    return "";
+  }
+
+  if (climatePlanHasPlan === true) {
+    return t("yes");
+  }
+  if (climatePlanHasPlan === false) {
+    return t("no");
+  }
+  return t("unknown");
+}
+
+function getLargestEmissionCategoryName(
+  largestEmission: LargestEmission,
+  getCategoryName: (categoryId: number) => string,
+  t: ReturnType<typeof useTranslation>["t"],
+) {
+  if (largestEmission?.type === "scope3" && largestEmission.key !== null) {
+    return getCategoryName(largestEmission.key as number);
+  }
+  if (largestEmission?.type === "scope1") {
+    return t("companies.card.scope1");
+  }
+  if (largestEmission?.type === "scope2") {
+    return t("companies.card.scope2");
+  }
+  return t("unknown");
+}
+
 export const useListCardMeta = ({
   variant,
   climatePlanHasPlan,
@@ -37,51 +108,30 @@ export const useListCardMeta = ({
   const isMunicipality = variant === "municipality";
   const isRegion = variant === "region";
 
-  const climatePlanAdoptedText = isMunicipality
-    ? climatePlanHasPlan
-      ? t("municipalities.card.adopted", {
-          year: climatePlanYear ?? t("unknown"),
-        })
-      : t("municipalities.card.noPlan")
-    : null;
-
-  const climatePlanStatusColor = isMunicipality
-    ? climatePlanHasPlan === true
-      ? "text-green-3"
-      : climatePlanHasPlan === false
-        ? "text-pink-3"
-        : "text-grey"
-    : "text-white";
-
-  const climatePlanAdoptedColor =
-    isMunicipality && !climatePlanHasPlan ? "text-grey" : "text-white";
-
-  const climatePlanStatusLabel = isMunicipality
-    ? climatePlanHasPlan === true
-      ? t("yes")
-      : climatePlanHasPlan === false
-        ? t("no")
-        : t("unknown")
-    : "";
-
-  let categoryName;
-  if (largestEmission?.type === "scope3" && largestEmission.key !== null) {
-    categoryName = getCategoryName(largestEmission?.key as number);
-  } else if (largestEmission?.type === "scope1") {
-    categoryName = t("companies.card.scope1");
-  } else if (largestEmission?.type === "scope2") {
-    categoryName = t("companies.card.scope2");
-  } else {
-    categoryName = t("unknown");
-  }
-
   return {
     isMunicipality,
     isRegion,
-    climatePlanAdoptedText,
-    climatePlanStatusColor,
-    climatePlanAdoptedColor,
-    climatePlanStatusLabel,
-    categoryName,
+    climatePlanAdoptedText: getClimatePlanAdoptedText(
+      isMunicipality,
+      climatePlanHasPlan,
+      climatePlanYear,
+      t,
+    ),
+    climatePlanStatusColor: getClimatePlanStatusColor(
+      isMunicipality,
+      climatePlanHasPlan,
+    ),
+    climatePlanAdoptedColor:
+      isMunicipality && !climatePlanHasPlan ? "text-grey" : "text-white",
+    climatePlanStatusLabel: getClimatePlanStatusLabel(
+      isMunicipality,
+      climatePlanHasPlan,
+      t,
+    ),
+    categoryName: getLargestEmissionCategoryName(
+      largestEmission,
+      getCategoryName,
+      t,
+    ),
   };
 };

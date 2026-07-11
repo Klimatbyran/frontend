@@ -5,8 +5,8 @@ import { useComparison } from "@/contexts/ComparisonContext";
 import {
   COMPARISON_MAX,
   isComparisonViewed,
+  type ComparisonEntityVariant,
 } from "@/utils/compare/comparisonUtils";
-import type { ComparisonEntityVariant } from "@/utils/compare/comparisonUtils";
 import { useComparisonPickerTrigger } from "@/hooks/compare/useComparisonPickerTrigger";
 import { ComparisonPickerDialog } from "./ComparisonPickerDialog";
 

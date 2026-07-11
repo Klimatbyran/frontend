@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useBlogPosts } from "./useBlogPosts";
+import type { HeroSearchResult } from "@/types/landing";
 
 export type CombinedData = {
   name: string;
@@ -15,7 +16,7 @@ export type CombinedData = {
 };
 
 export const useCombinedData = (
-  searchResults: any[] = [],
+  searchResults: HeroSearchResult[] = [],
   searchQuery: string = "",
 ) => {
   const { currentLanguage } = useLanguage();

@@ -1,117 +1,63 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import type { ListCardProps } from "@/components/explore/ListCard";
-import { useComparison } from "@/contexts/ComparisonContext";
-import { useCompanies } from "@/hooks/companies/useCompanies";
-import useTransformCompanyListCard from "@/hooks/companies/useTransformCompanyListCard";
-import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
-import useTransformMunicipalityListCard from "@/hooks/municipalities/useTransformMunicipalityListCard";
-import { useRegionsForExplore } from "@/hooks/regions/useRegionsForExplore";
-import { useTransformRegionListCard } from "@/hooks/regions/useTransformRegionListCard";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
+import { orderSelectedCards } from "@/utils/compare/comparisonUtils";
+import { enrichComparisonCards } from "./comparisonItemsUtils";
 import {
-  enrichComparisonItem,
-  getCompanyLinkTo,
-  getMunicipalityLinkTo,
-  getRegionLinkTo,
-} from "@/utils/compare/buildComparisonDetails";
-import {
-  getComparisonViewSnapshot,
-  isSameComparisonLink,
-  orderSelectedCards,
-} from "@/utils/compare/comparisonUtils";
+  getComparisonLoading,
+  useComparisonViewState,
+} from "./comparisonViewState";
+import { useComparisonSourceCards } from "./useComparisonSourceCards";
 
 export function useComparisonItems() {
-  const { selectedIds, variant, selectedCount } = useComparison();
-  const viewSnapshot = getComparisonViewSnapshot();
-  const activeIds =
-    selectedCount > 0 && variant
-      ? selectedIds
-      : (viewSnapshot?.selectedIds ?? []);
-  const activeVariant =
-    selectedCount > 0 && variant ? variant : (viewSnapshot?.variant ?? null);
-  const hasViewData = activeIds.length > 0 && activeVariant !== null;
-  const loadCompanies = hasViewData && activeVariant === "company";
-  const loadMunicipalities = hasViewData && activeVariant === "municipality";
-  const loadRegions = hasViewData && activeVariant === "region";
+  const viewState = useComparisonViewState();
+  const {
+    activeIds,
+    activeVariant,
+    hasViewData,
+    loadCompanies,
+    loadMunicipalities,
+    loadRegions,
+  } = viewState;
 
-  const { companies, companiesLoading } = useCompanies({
-    enabled: loadCompanies,
-  });
-  const { municipalities, municipalitiesLoading } = useMunicipalities({
-    enabled: loadMunicipalities,
-  });
-  const { regions, loading: regionsLoading } = useRegionsForExplore({
-    enabled: loadRegions,
+  const {
+    allCompanyCards,
+    allMunicipalityCards,
+    allRegionCards,
+    companies,
+    municipalities,
+    regions,
+    companiesLoading,
+    municipalitiesLoading,
+    regionsLoading,
+  } = useComparisonSourceCards({
+    loadCompanies,
+    loadMunicipalities,
+    loadRegions,
   });
   const { currentLanguage } = useLanguage();
   const { t } = useTranslation();
   const { isAIGenerated } = useVerificationStatus();
 
-  const allCompanyCards = useTransformCompanyListCard({
-    filteredCompanies: loadCompanies ? (companies ?? []) : [],
-  });
-  const allMunicipalityCards = useTransformMunicipalityListCard({
-    filteredMunicipalities: loadMunicipalities ? (municipalities ?? []) : [],
-  });
-  const allRegionCards = useTransformRegionListCard({
-    filteredRegions: loadRegions ? (regions ?? []) : [],
-  });
-
   const items = useMemo(() => {
-    if (!hasViewData || !activeVariant) {
-      return [];
-    }
+    if (!hasViewData || !activeVariant) return [];
 
-    const source =
-      activeVariant === "company"
-        ? allCompanyCards
-        : activeVariant === "municipality"
-          ? allMunicipalityCards
-          : allRegionCards;
-
+    const sourceByVariant = {
+      company: allCompanyCards,
+      municipality: allMunicipalityCards,
+      region: allRegionCards,
+    } as const;
+    const source = sourceByVariant[activeVariant];
     const selectedCards = orderSelectedCards(source, activeIds);
 
-    if (activeVariant === "municipality") {
-      return selectedCards.map((card) => {
-        const municipality = (municipalities ?? []).find((m) =>
-          isSameComparisonLink(getMunicipalityLinkTo(m.name), card.linkTo),
-        );
-
-        return enrichComparisonItem(card, {
-          municipality,
-          currentLanguage,
-          t,
-        });
-      });
-    }
-
-    if (activeVariant === "company") {
-      return selectedCards.map((card) => {
-        const company = (companies ?? []).find((c) =>
-          isSameComparisonLink(getCompanyLinkTo(c.wikidataId), card.linkTo),
-        );
-
-        return enrichComparisonItem(card, {
-          company,
-          currentLanguage,
-          t,
-          isAIGenerated,
-        });
-      });
-    }
-
-    return selectedCards.map((card) => {
-      const region = (regions ?? []).find((r) =>
-        isSameComparisonLink(getRegionLinkTo(r.name), card.linkTo),
-      );
-
-      return enrichComparisonItem(card, {
-        region,
-        currentLanguage,
-        t,
-      });
+    return enrichComparisonCards(selectedCards, activeVariant, {
+      municipalities: municipalities ?? [],
+      companies: companies ?? [],
+      regions: regions ?? [],
+      currentLanguage,
+      t,
+      isAIGenerated,
     });
   }, [
     activeIds,
@@ -128,17 +74,16 @@ export function useComparisonItems() {
     t,
   ]);
 
-  const loading = loadCompanies
-    ? companiesLoading
-    : loadMunicipalities
-      ? municipalitiesLoading
-      : loadRegions
-        ? regionsLoading
-        : false;
-
   return {
     items,
-    loading,
+    loading: getComparisonLoading({
+      loadCompanies,
+      loadMunicipalities,
+      loadRegions,
+      companiesLoading,
+      municipalitiesLoading,
+      regionsLoading,
+    }),
     variant: activeVariant,
     viewCount: activeIds.length,
   };
