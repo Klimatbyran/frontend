@@ -328,7 +328,21 @@
         "title": "Utsläppsförändring från basår",
         "description": "Endast företag med ett definierat basår och jämförbara uppföljningsdata rankas.",
         "noComparableData": "Inga företag i denna sektor med jämförbar utsläppsförändringsdata.",
-        "unknown": "Okänt"
+        "unknown": "Okänt",
+        "yAxisLabel": "Totala utsläpp (senast rapporterade år, ton CO2e)",
+        "xAxisLabel": "Förändring från basår ({{width}} %-intervall)",
+        "binSummary": "{{range}}: {{count}} företag, {{emissions}} ton CO2e totalt",
+        "segmentHint": "Varje färgat segment är ett företag, storleken baseras på senast rapporterade utsläpp.",
+        "legend": {
+          "reduction": "Minskning",
+          "neutral": "Nära noll",
+          "increase": "Ökning"
+        },
+        "tooltip": {
+          "change": "Förändring från basår: {{value}} %",
+          "emissions": "Senast rapporterade utsläpp: {{value}} ton CO2e",
+          "tapAgain": "Tryck igen för att öppna företaget"
+        }
       },
       "meetsParis": {
         "legend": {
