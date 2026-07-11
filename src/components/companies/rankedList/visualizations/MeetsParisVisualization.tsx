@@ -53,8 +53,8 @@ export function MeetsParisVisualization({
   }
 
   return (
-    <div className="w-full h-full flex flex-col gap-3">
-      <div className="relative flex-1 bg-black-2 rounded-level-2 p-4 overflow-hidden">
+    <div className="flex h-full w-full flex-col gap-2">
+      <div className="relative flex-1 overflow-hidden rounded-level-2 bg-black-2 p-3">
         <MeetsParisBarChart
           entries={entries}
           unitScale={unitScale}

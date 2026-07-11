@@ -9,7 +9,11 @@ import type { CompanyParisEmissionsEntry } from "@/utils/insights/meetsParisChar
 
 const SEGMENT_RADIUS = 6;
 const BAR_MAX_WIDTH = 120;
-const Y_AXIS_WIDTH = 56;
+const Y_AXIS_WIDTH = 72;
+const CHART_MIN_HEIGHT = 260;
+const OUTER_MIN_HEIGHT = 320;
+const PLOT_INSET_TOP = 8;
+const PLOT_INSET_BOTTOM = 16;
 const TOP_EMITTERS_PER_BAR = 10;
 
 interface MeetsParisBarChartProps {
@@ -199,24 +203,54 @@ export function MeetsParisBarChart({
   }, []);
 
   return (
-    <div className="relative w-full h-full min-h-[400px] flex flex-col">
-      <div className="relative flex-1 min-h-[320px] border-t border-b border-black-4">
-        <div className="absolute inset-x-0 top-4 bottom-8 flex">
-          <div className="relative shrink-0" style={{ width: Y_AXIS_WIDTH }}>
+    <div
+      className="relative flex h-full w-full flex-col"
+      style={{ minHeight: OUTER_MIN_HEIGHT }}
+    >
+      <div
+        className="relative flex-1 border-t border-b border-black-4"
+        style={{ minHeight: CHART_MIN_HEIGHT }}
+      >
+        <div
+          className="absolute inset-x-0 flex"
+          style={{ top: PLOT_INSET_TOP, bottom: PLOT_INSET_BOTTOM }}
+        >
+          <div
+            className="relative shrink-0 pl-4 pt-3"
+            style={{ width: Y_AXIS_WIDTH }}
+          >
             {yAxisTicks
               .slice()
               .reverse()
-              .map((tick) => (
-                <span
-                  key={tick}
-                  className="absolute right-2 -translate-y-1/2 text-[11px] text-white/45"
-                  style={{
-                    bottom: `${maxBarTotal > 0 ? (tick / (maxBarTotal / unitScale.divisor)) * 100 : 0}%`,
-                  }}
-                >
-                  {formatAxisTick(tick)}
-                </span>
-              ))}
+              .map((tick, _index, ticks) => {
+                const maxTick = ticks[0];
+                const isTopTick = tick === maxTick;
+                const isBottomTick = tick === 0;
+
+                return (
+                  <span
+                    key={tick}
+                    className="absolute left-4 whitespace-nowrap text-[11px] text-white/45"
+                    style={
+                      isTopTick
+                        ? { top: 0 }
+                        : isBottomTick
+                          ? { bottom: 0 }
+                          : {
+                              bottom: `${
+                                maxBarTotal > 0
+                                  ? (tick / (maxBarTotal / unitScale.divisor)) *
+                                    100
+                                  : 0
+                              }%`,
+                              transform: "translateY(50%)",
+                            }
+                    }
+                  >
+                    {formatAxisTick(tick)}
+                  </span>
+                );
+              })}
           </div>
 
           <div className="flex flex-1 items-end justify-center gap-[15%] px-2">
@@ -345,7 +379,7 @@ export function MeetsParisBarChart({
         </div>
       )}
 
-      <div className="mt-6 flex items-center justify-center gap-6">
+      <div className="mt-4 flex items-center justify-center gap-6">
         <div className="flex items-center gap-2">
           <span
             className="inline-block h-3 w-3 shrink-0 rounded-sm"
