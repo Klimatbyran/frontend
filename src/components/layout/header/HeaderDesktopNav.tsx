@@ -55,8 +55,9 @@ export function HeaderDesktopNav({
               <NavigationMenuTrigger
                 className={cn(
                   "flex gap-2 p-3",
-                  "data-[state=open]:bg-black-1 data-[state=closed]:bg-transparent",
-                  isActive ? "!text-white" : "text-grey hover:text-white",
+                  isActive
+                    ? "!text-white !bg-transparent data-[state=open]:!bg-transparent data-[state=closed]:bg-transparent"
+                    : "data-[state=open]:bg-black-1 data-[state=closed]:bg-transparent text-grey hover:text-white",
                 )}
               >
                 {item.icon}

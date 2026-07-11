@@ -72,7 +72,7 @@ export function HeaderMobileMenu({
                       to={link.path}
                       onClick={onToggleMenu}
                       className={cn(
-                        "flex items-center gap-2 cursor-pointer rounded-md px-2 py-1 -mx-2",
+                        "flex items-center gap-2 cursor-pointer",
                         isActive
                           ? "!text-white font-medium"
                           : "text-grey hover:text-white",
