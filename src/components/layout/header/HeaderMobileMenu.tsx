@@ -67,42 +67,42 @@ export function HeaderMobileMenu({
                 );
 
                 return (
-                <div key={link.path} className="flex flex-col">
-                  <LocalizedLink
-                    to={link.path}
-                    onClick={onToggleMenu}
-                    className={cn(
-                      "flex items-center gap-2 cursor-pointer rounded-md px-2 py-1 -mx-2",
-                      isActive
-                        ? NAV_ITEM_ACTIVE_CLASS
-                        : "text-grey hover:text-white",
-                    )}
-                    aria-current={isActive ? "page" : undefined}
-                  >
-                    {link.icon}
-                    {t(link.label)}
-                  </LocalizedLink>
-                  {link.sublinks && (
-                    <div className="flex flex-col gap-2 pl-4 mt-2">
-                      {link.sublinks.map((item) =>
-                        isNavSubGroup(item) ? (
-                          <NavSubGroupSection
-                            key={item.label}
-                            group={item}
-                            onNavigate={onToggleMenu}
-                          />
-                        ) : (
-                          <NavSubLinkItem
-                            key={item.path}
-                            sublink={item}
-                            className={NAV_TITLE_CLASS}
-                            onNavigate={onToggleMenu}
-                          />
-                        ),
+                  <div key={link.path} className="flex flex-col">
+                    <LocalizedLink
+                      to={link.path}
+                      onClick={onToggleMenu}
+                      className={cn(
+                        "flex items-center gap-2 cursor-pointer rounded-md px-2 py-1 -mx-2",
+                        isActive
+                          ? NAV_ITEM_ACTIVE_CLASS
+                          : "text-grey hover:text-white",
                       )}
-                    </div>
-                  )}
-                </div>
+                      aria-current={isActive ? "page" : undefined}
+                    >
+                      {link.icon}
+                      {t(link.label)}
+                    </LocalizedLink>
+                    {link.sublinks && (
+                      <div className="flex flex-col gap-2 pl-4 mt-2">
+                        {link.sublinks.map((item) =>
+                          isNavSubGroup(item) ? (
+                            <NavSubGroupSection
+                              key={item.label}
+                              group={item}
+                              onNavigate={onToggleMenu}
+                            />
+                          ) : (
+                            <NavSubLinkItem
+                              key={item.path}
+                              sublink={item}
+                              className={NAV_TITLE_CLASS}
+                              onNavigate={onToggleMenu}
+                            />
+                          ),
+                        )}
+                      </div>
+                    )}
+                  </div>
                 );
               })}
               <button
