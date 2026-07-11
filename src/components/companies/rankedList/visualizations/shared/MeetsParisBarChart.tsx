@@ -17,7 +17,7 @@ import { formatWithBestUnit } from "@/utils/data/unitScaling";
 import type { CompanyParisEmissionsEntry } from "@/utils/insights/meetsParisChartData";
 
 const SEGMENT_RADIUS = 6;
-const SEGMENT_GAP = 2;
+const SEGMENT_GAP = 1;
 
 interface MeetsParisBarChartProps {
   entries: CompanyParisEmissionsEntry[];
@@ -271,9 +271,7 @@ export function MeetsParisBarChart({
                             ? "rgba(255,255,255,0.9)"
                             : COLORS.black2
                         }
-                        strokeWidth={
-                          isHighlighted ? 2 : SEGMENT_GAP
-                        }
+                        strokeWidth={isHighlighted ? 2 : SEGMENT_GAP}
                       />
                     );
                   })}
