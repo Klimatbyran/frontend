@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useChartMotion } from "@/hooks/useChartMotion";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { COLORS } from "@/lib/colors";
+import { cn } from "@/lib/utils";
 import { getCompanyUrlSegment } from "@/utils/companyRouting";
 import { formatWithScale } from "@/utils/data/unitScaling";
 import type { CompanyParisEmissionsEntry } from "@/utils/insights/meetsParisChartData";
@@ -144,6 +145,9 @@ export function MeetsParisBarChart({
   );
 
   const highlightedCompanyId = hoveredCompanyId ?? activeCompanyId;
+  const yAxisWidth = isMobile ? 52 : Y_AXIS_WIDTH;
+  const chartMinHeight = isMobile ? 220 : CHART_MIN_HEIGHT;
+  const outerMinHeight = isMobile ? 280 : OUTER_MIN_HEIGHT;
 
   const handleSegmentClick = useCallback(
     (segment: ChartSegment) => {
@@ -198,20 +202,23 @@ export function MeetsParisBarChart({
 
   return (
     <div
-      className="relative flex h-full w-full flex-col"
-      style={{ minHeight: OUTER_MIN_HEIGHT }}
+      className="relative flex h-full w-full min-w-0 flex-col"
+      style={{ minHeight: outerMinHeight }}
     >
       <div
-        className="relative flex-1 border-t border-b border-black-4"
-        style={{ minHeight: CHART_MIN_HEIGHT }}
+        className="relative min-w-0 flex-1 border-t border-b border-black-4"
+        style={{ minHeight: chartMinHeight }}
       >
         <div
-          className="absolute inset-0 flex items-end"
+          className="absolute inset-0 flex min-w-0 items-end"
           style={{ paddingTop: PLOT_INSET_TOP }}
         >
           <div
-            className="relative h-full shrink-0 pl-4"
-            style={{ width: Y_AXIS_WIDTH }}
+            className={cn(
+              "relative h-full shrink-0",
+              isMobile ? "pl-2" : "pl-4",
+            )}
+            style={{ width: yAxisWidth }}
           >
             {yAxisTicks
               .slice()
@@ -224,7 +231,12 @@ export function MeetsParisBarChart({
                 return (
                   <span
                     key={tick}
-                    className="absolute left-4 whitespace-nowrap text-[11px] text-white/45"
+                    className={cn(
+                      "absolute whitespace-nowrap text-white/45",
+                      isMobile
+                        ? "left-1 text-[10px]"
+                        : "left-4 text-[11px]",
+                    )}
                     style={
                       isTopTick
                         ? { top: 0 }
@@ -247,7 +259,12 @@ export function MeetsParisBarChart({
               })}
           </div>
 
-          <div className="flex h-full flex-1 items-end justify-center gap-[10%] px-2">
+          <div
+            className={cn(
+              "flex h-full min-w-0 flex-1 items-end justify-center",
+              isMobile ? "gap-3 px-1" : "gap-[10%] px-2",
+            )}
+          >
             {groups.map((group) => {
               const barHeightPercent =
                 maxBarTotal > 0 ? (group.total / maxBarTotal) * 100 : 0;
@@ -255,8 +272,15 @@ export function MeetsParisBarChart({
               return (
                 <div
                   key={group.category}
-                  className="flex h-full flex-col items-center justify-end"
-                  style={{ width: BAR_MAX_WIDTH, maxWidth: "48%" }}
+                  className={cn(
+                    "flex h-full flex-col items-center justify-end",
+                    isMobile ? "min-w-0 flex-1" : "",
+                  )}
+                  style={
+                    isMobile
+                      ? { maxWidth: "50%" }
+                      : { width: BAR_MAX_WIDTH, maxWidth: "48%" }
+                  }
                 >
                   <div
                     className="flex w-full flex-col gap-px overflow-hidden rounded-md"
@@ -314,14 +338,26 @@ export function MeetsParisBarChart({
         </div>
       </div>
 
-      <div className="flex shrink-0 pt-2">
-        <div className="shrink-0" style={{ width: Y_AXIS_WIDTH }} />
-        <div className="flex flex-1 justify-center gap-[10%] px-2">
+      <div className="flex min-w-0 shrink-0 pt-2">
+        <div className="shrink-0" style={{ width: yAxisWidth }} />
+        <div
+          className={cn(
+            "flex min-w-0 flex-1 justify-center",
+            isMobile ? "gap-3 px-1" : "gap-[10%] px-2",
+          )}
+        >
           {groups.map((group) => (
             <span
               key={group.category}
-              className="text-center text-[13px] text-white/75"
-              style={{ width: BAR_MAX_WIDTH, maxWidth: "48%" }}
+              className={cn(
+                "text-center text-white/75",
+                isMobile ? "min-w-0 flex-1 text-[12px]" : "text-[13px]",
+              )}
+              style={
+                isMobile
+                  ? { maxWidth: "50%" }
+                  : { width: BAR_MAX_WIDTH, maxWidth: "48%" }
+              }
             >
               {group.category}
             </span>
