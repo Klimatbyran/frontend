@@ -84,56 +84,51 @@ export function MeetsParisBarChart({
   const trueLabel = t("companiesOverviewPage.visualizations.meetsParis.yes");
   const falseLabel = t("companiesOverviewPage.visualizations.meetsParis.no");
 
-  const {
-    chartData,
-    companyIds,
-    colorById,
-    companyById,
-    maxBarTotal,
-  } = useMemo(() => {
-    const yesEntries = entries.filter((entry) => entry.meetsParis);
-    const noEntries = entries.filter((entry) => !entry.meetsParis);
+  const { chartData, companyIds, colorById, companyById, maxBarTotal } =
+    useMemo(() => {
+      const yesEntries = entries.filter((entry) => entry.meetsParis);
+      const noEntries = entries.filter((entry) => !entry.meetsParis);
 
-    const sortedAll = [...entries].sort((a, b) => b.emissions - a.emissions);
-    const colors = new Map(
-      sortedAll.map((entry, index) => [
-        entry.company.wikidataId,
-        getCompanyColors(index).base,
-      ]),
-    );
-    const byId = new Map(
-      entries.map((entry) => [entry.company.wikidataId, entry]),
-    );
+      const sortedAll = [...entries].sort((a, b) => b.emissions - a.emissions);
+      const colors = new Map(
+        sortedAll.map((entry, index) => [
+          entry.company.wikidataId,
+          getCompanyColors(index).base,
+        ]),
+      );
+      const byId = new Map(
+        entries.map((entry) => [entry.company.wikidataId, entry]),
+      );
 
-    const buildRow = (
-      category: string,
-      group: CompanyParisEmissionsEntry[],
-    ): ChartRow => {
-      const row: ChartRow = { category, total: 0 };
-      for (const entry of group) {
-        const scaled = entry.emissions / unitScale.divisor;
-        row[entry.company.wikidataId] = scaled;
-        row.total += scaled;
-      }
-      return row;
-    };
+      const buildRow = (
+        category: string,
+        group: CompanyParisEmissionsEntry[],
+      ): ChartRow => {
+        const row: ChartRow = { category, total: 0 };
+        for (const entry of group) {
+          const scaled = entry.emissions / unitScale.divisor;
+          row[entry.company.wikidataId] = scaled;
+          row.total += scaled;
+        }
+        return row;
+      };
 
-    const data = [
-      buildRow(trueLabel, yesEntries),
-      buildRow(falseLabel, noEntries),
-    ];
-    const ids = sortedAll.map((entry) => entry.company.wikidataId);
-    const totals = data.map((row) => row.total);
-    const maxTotal = Math.max(...totals, 0);
+      const data = [
+        buildRow(trueLabel, yesEntries),
+        buildRow(falseLabel, noEntries),
+      ];
+      const ids = sortedAll.map((entry) => entry.company.wikidataId);
+      const totals = data.map((row) => row.total);
+      const maxTotal = Math.max(...totals, 0);
 
-    return {
-      chartData: data,
-      companyIds: ids,
-      colorById: colors,
-      companyById: byId,
-      maxBarTotal: maxTotal,
-    };
-  }, [entries, falseLabel, trueLabel, unitScale.divisor]);
+      return {
+        chartData: data,
+        companyIds: ids,
+        colorById: colors,
+        companyById: byId,
+        maxBarTotal: maxTotal,
+      };
+    }, [entries, falseLabel, trueLabel, unitScale.divisor]);
 
   const formatAxisTick = useCallback(
     (value: number) => `${value.toFixed(1)}${unitScale.unit}`,

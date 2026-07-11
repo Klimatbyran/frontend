@@ -2,9 +2,7 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { CompanyWithKPIs } from "@/hooks/companies/useCompanyKPIs";
 import { getBestUnit } from "@/utils/data/unitScaling";
-import {
-  getCompanyParisEmissionsData,
-} from "@/utils/insights/meetsParisChartData";
+import { getCompanyParisEmissionsData } from "@/utils/insights/meetsParisChartData";
 import { MeetsParisBarChart } from "./shared/MeetsParisBarChart";
 
 interface MeetsParisVisualizationProps {
