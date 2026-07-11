@@ -333,6 +333,10 @@
       "meetsParis": {
         "yes": "Ja",
         "no": "Nej",
+        "unknown": "Okänt",
+        "emissionsUnit": " Mt",
+        "emissionsPieTitle": "Utsläpp per Parisstatus",
+        "emissionsPieSubtitle": "Andel av totala rapporterade utsläpp från företag som klarar, missar eller har okänd Parisstatus.",
         "otherSegment": "Övriga",
         "otherSegmentCount": "{{count}} företag",
         "otherSegmentCount_plural": "{{count}} företag",

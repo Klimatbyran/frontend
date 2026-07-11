@@ -27,6 +27,14 @@ interface SectorPieChartProps {
   customActionLabel?: string;
   desktopScale?: boolean;
   animationKey?: string;
+  tooltipContent?: React.ComponentType<{
+    active?: boolean;
+    payload?: Array<{
+      name?: string;
+      value?: number | null;
+      payload?: { total?: number | null } | null;
+    }>;
+  }>;
 }
 
 const PIE_CORNER_RADIUS = 8;
@@ -43,6 +51,7 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
   customActionLabel,
   desktopScale = false,
   animationKey,
+  tooltipContent: TooltipContentComponent,
 }) => {
   const { isMobile } = useScreenSize();
   const { pieDuration, reduceMotion } = useChartMotion();
@@ -159,7 +168,13 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
             ))}
           </Pie>
           <Tooltip
-            content={<PieTooltip customActionLabel={customActionLabel} />}
+            content={
+              TooltipContentComponent ? (
+                <TooltipContentComponent />
+              ) : (
+                <PieTooltip customActionLabel={customActionLabel} />
+              )
+            }
             animationDuration={0}
             isAnimationActive={false}
           />

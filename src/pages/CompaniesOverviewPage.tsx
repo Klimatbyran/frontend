@@ -453,13 +453,7 @@ export function CompaniesOverviewPage() {
         </div>
 
         {(selectedKPI.key === "meetsParis" || !selectedKPI.isBoolean) && (
-          <div
-            className={`grid grid-cols-1 gap-6 items-stretch ${
-              selectedKPI.isBoolean
-                ? "md:grid-cols-2"
-                : "md:grid-cols-3"
-            }`}
-          >
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
             <CompanyInsightsPanel
               companyData={companiesWithKPIs}
               selectedKPI={selectedKPI}
@@ -472,13 +466,11 @@ export function CompaniesOverviewPage() {
               section="bottom"
               listKey={selectedSector ?? "all"}
             />
-            {!selectedKPI.isBoolean && (
-              <CompanyInsightsPanel
-                companyData={companiesWithKPIs}
-                selectedKPI={selectedKPI}
-                section="distribution"
-              />
-            )}
+            <CompanyInsightsPanel
+              companyData={companiesWithKPIs}
+              selectedKPI={selectedKPI}
+              section="distribution"
+            />
           </div>
         )}
       </div>

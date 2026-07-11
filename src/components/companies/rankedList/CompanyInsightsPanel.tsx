@@ -16,6 +16,7 @@ import KPIDetailsPanel from "../../ranked/KPIDetailsPanel";
 import InsightsList from "../../ranked/InsightsList";
 import { KPIDistributionChart } from "../../ranked/KPIDistributionChart";
 import { getTopParisEmissionsCompanies } from "@/utils/insights/meetsParisChartData";
+import { MeetsParisEmissionsPieChart } from "@/components/companies/rankedList/visualizations/shared/MeetsParisEmissionsPieChart";
 import { DEFAULT_BOOLEAN_DATA_COLORS } from "@/utils/ui/colors";
 import {
   DistributionBox,
@@ -126,7 +127,18 @@ function CompanyInsightsPanel({
     />
   );
 
-  const distributionPanel = (
+  const distributionPanel = isMeetsParisKpi ? (
+    <DistributionBox
+      entityType="companies"
+      title={t(
+        "companiesOverviewPage.visualizations.meetsParis.emissionsPieTitle",
+      )}
+      subtitle={t(
+        "companiesOverviewPage.visualizations.meetsParis.emissionsPieSubtitle",
+      )}
+      chart={<MeetsParisEmissionsPieChart companies={companyData} />}
+    />
+  ) : (
     <DistributionBox
       entityType="companies"
       chart={
