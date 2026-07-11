@@ -137,8 +137,6 @@ export function CompanyDetailPage() {
           company={company}
           selectedPeriod={selectedPeriod}
           previousPeriod={previousPeriod}
-          onYearSelect={setSelectedYear}
-          selectedYear={selectedYear}
           yearOverYearChange={yearOverYearChange}
           headerChip={comparisonChip}
         />
