@@ -122,8 +122,8 @@ export function MeetsParisBarChart({
     };
 
     const chartGroups = [
-      buildGroup(trueLabel, "yes", COLORS.blue3, yesEntries),
       buildGroup(falseLabel, "no", COLORS.pink3, noEntries),
+      buildGroup(trueLabel, "yes", COLORS.blue3, yesEntries),
     ];
 
     return {
