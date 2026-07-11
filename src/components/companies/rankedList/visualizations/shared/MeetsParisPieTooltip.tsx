@@ -13,10 +13,7 @@ interface MeetsParisPieTooltipProps {
   }>;
 }
 
-function MeetsParisPieTooltip({
-  active,
-  payload,
-}: MeetsParisPieTooltipProps) {
+function MeetsParisPieTooltip({ active, payload }: MeetsParisPieTooltipProps) {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
 
