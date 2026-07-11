@@ -12,6 +12,7 @@ import { formatTurnoverValue } from "@/utils/formatting/turnoverFormatting";
 interface OverviewStatisticProps {
   selectedPeriod: ReportingPeriod;
   currentLanguage: "sv" | "en";
+  sectorName: string;
   formattedEmployeeCount: string;
   turnoverAIGenerated: boolean;
   employeesAIGenerated: boolean;
@@ -21,6 +22,7 @@ interface OverviewStatisticProps {
 export function OverviewStatistics({
   selectedPeriod,
   currentLanguage,
+  sectorName,
   formattedEmployeeCount,
   turnoverAIGenerated,
   employeesAIGenerated,
@@ -37,6 +39,10 @@ export function OverviewStatistics({
 
   return (
     <SupplementalDataPanel className={className}>
+      <SupplementalDataField label={t("companies.overview.sector")}>
+        <Text>{sectorName}</Text>
+      </SupplementalDataField>
+
       <SupplementalDataField label={t("companies.overview.turnover")}>
         <span className="flex items-center gap-2">
           <Text>{formattedTurnover}</Text>
@@ -52,16 +58,18 @@ export function OverviewStatistics({
       </SupplementalDataField>
 
       {selectedPeriod?.reportURL && (
-        <div className="flex items-end self-start">
-          <a
-            href={selectedPeriod.reportURL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-blue-2 hover:text-blue-1 transition-colors"
-          >
-            {t("companies.overview.readAnnualReport")}
-            <ArrowUpRight className="w-4 h-4 sm:w-3 sm:h-3" />
-          </a>
+        <div>
+          <div className="md:mb-2">
+            <a
+              href={selectedPeriod.reportURL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-blue-2 hover:text-blue-1 transition-colors"
+            >
+              {t("companies.overview.readAnnualReport")}
+              <ArrowUpRight className="w-4 h-4 sm:w-3 sm:h-3" />
+            </a>
+          </div>
         </div>
       )}
     </SupplementalDataPanel>

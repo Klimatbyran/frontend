@@ -14,6 +14,10 @@ import { getCompanyDescription } from "@/utils/business/company";
 import { CompanyDescription } from "./CompanyDescription";
 import { PageNoData } from "@/components/pageStates/NoData";
 import { CompanyDetailHeader } from "../CompanyDetailHeader";
+import {
+  SupplementalDataField,
+  SupplementalDataPanel,
+} from "@/components/detail/SupplementalDataPanel";
 
 interface CompanyOverviewNoDataProps {
   company: CompanyDetails;
@@ -57,18 +61,13 @@ export function CompanyOverviewNoData({
           </div>
         )}
         <CompanyDescription description={description} />
-        <div className="my-4 flex flex-row items-center gap-2">
-          <Text
-            variant="body"
-            className="text-grey text-sm md:text-base lg:text-lg"
-          >
-            {t("companies.overview.sector")}:
-          </Text>
-          <Text variant="body" className="text-sm md:text-base lg:text-lg">
-            {sectorName}
-          </Text>
-        </div>
       </div>
+
+      <SupplementalDataPanel>
+        <SupplementalDataField label={t("companies.overview.sector")}>
+          <Text>{sectorName}</Text>
+        </SupplementalDataField>
+      </SupplementalDataPanel>
 
       <div className="py-8">
         <PageNoData

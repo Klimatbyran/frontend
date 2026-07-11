@@ -55,9 +55,6 @@ export function SectorEmissionsChart({
       {showHeader && (
         <CardHeader
           title={t("detailPage.sectorEmissions")}
-          description={t("detailPage.sectorEmissionsYear", {
-            year: currentYear,
-          })}
           className="gap-8 md:gap-16"
         />
       )}

@@ -1356,12 +1356,10 @@
       "totalEmissionsExcess": "totala utsläpp i överskott jämfört med Paris-målet"
     },
     "turnoverEmissionsHistory": {
-      "title": "Utsläpp och omsättning över tid",
-      "tooltip": "Jämför rapporterade utsläpp och omsättning över tid. Vänster axel visar utsläpp i ton CO₂e och höger axel visar omsättning i företagets rapporteringsvaluta.",
+      "title": "Utsläppsintensitet",
+      "tooltip": "Utsläppsintensitet är utsläpp delat med omsättning (t CO₂e per miljon). Jämför två år — lägre är bättre. Intensiteten minskar när utsläppen faller snabbare än omsättningen växer, eller när utsläppen minskar samtidigt som omsättningen ökar.",
       "unit": "Utsläpp i ton CO₂e · Omsättning i företagets valuta",
       "intensityPanel": {
-        "title": "Utsläppsintensitet",
-        "tooltip": "Utsläppsintensitet är utsläpp delat med omsättning (t CO₂e per miljon). Jämför två år — lägre är bättre. Intensiteten minskar när utsläppen faller snabbare än omsättningen växer, eller när utsläppen minskar samtidigt som omsättningen ökar.",
         "intensityUnit": "t CO₂e per miljon i omsättning",
         "question": "Har utsläppsintensiteten minskat?",
         "verdictStableLabel": "Oförändrad",

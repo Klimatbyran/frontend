@@ -1306,12 +1306,10 @@
       "totalEmissionsExcess": "total emissions excess vs Paris target"
     },
     "turnoverEmissionsHistory": {
-      "title": "Emissions and turnover over time",
-      "tooltip": "Compare reported emissions and turnover over time. The left axis shows emissions in tons of CO₂e and the right axis shows turnover in the company's reporting currency.",
+      "title": "Emissions intensity",
+      "tooltip": "Emissions intensity is total emissions divided by turnover (t CO₂e per million). Compare two years — lower is better. Intensity falls when emissions drop faster than turnover grows, or when emissions fall while turnover rises.",
       "unit": "Emissions in tons CO₂e · Turnover in company currency",
       "intensityPanel": {
-        "title": "Emissions intensity",
-        "tooltip": "Emissions intensity is total emissions divided by turnover (t CO₂e per million). Compare two years — lower is better. Intensity falls when emissions drop faster than turnover grows, or when emissions fall while turnover rises.",
         "intensityUnit": "t CO₂e per million in turnover",
         "question": "Has emissions intensity decreased?",
         "verdictStableLabel": "Stable",

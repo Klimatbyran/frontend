@@ -186,11 +186,16 @@ interface PerformerResult {
 export function buildPerformerProps<T extends { name: string }>(
   sortedData: T[],
   kpi: { key: keyof T; unit?: string; isBoolean?: boolean },
-  hrefPrefix?: string,
+  hrefResolver?: string | ((item: T) => string | undefined),
 ): { topPerformer?: PerformerResult; bottomPerformer?: PerformerResult } {
   if (kpi.isBoolean || !sortedData.length) return {};
   const unit = kpi.unit || "";
   const fmt = (item: T) => `${(item[kpi.key] as number)?.toFixed(1)}${unit}`;
+  const getHref = (item: T): string | undefined => {
+    if (!hrefResolver) return undefined;
+    if (typeof hrefResolver === "function") return hrefResolver(item);
+    return `${hrefResolver}/${item.name.toLowerCase()}`;
+  };
   const best = sortedData[0];
   const worst = sortedData[sortedData.length - 1];
   return {
@@ -198,9 +203,7 @@ export function buildPerformerProps<T extends { name: string }>(
       ? {
           name: best.name,
           value: fmt(best),
-          href: hrefPrefix
-            ? `${hrefPrefix}/${best.name.toLowerCase()}`
-            : undefined,
+          href: getHref(best),
         }
       : undefined,
     bottomPerformer:
@@ -208,9 +211,7 @@ export function buildPerformerProps<T extends { name: string }>(
         ? {
             name: worst.name,
             value: fmt(worst),
-            href: hrefPrefix
-              ? `${hrefPrefix}/${worst.name.toLowerCase()}`
-              : undefined,
+            href: getHref(worst),
           }
         : undefined,
   };

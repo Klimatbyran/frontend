@@ -14,7 +14,7 @@ export function SupplementalDataPanel({
   return (
     <div className={cn("@container mt-3 md:mt-0", className)}>
       <div className="mt-8 @md:mt-12 bg-black-1 rounded-level-2 p-6">
-        <div className="grid grid-cols-1 @md:grid-cols-3 gap-4 @md:gap-8">
+        <div className="grid grid-cols-1 @md:grid-cols-2 @lg:grid-flow-col @lg:grid-cols-none @lg:auto-cols-fr gap-4 @md:gap-8">
           {children}
         </div>
       </div>

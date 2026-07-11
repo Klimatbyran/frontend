@@ -2,13 +2,6 @@ import { Pen } from "lucide-react";
 import { type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Text } from "@/components/ui/text";
 import type { CompanyDetails, ReportingPeriod } from "@/types/company";
 import { useAuth } from "@/contexts/AuthContext";
@@ -39,8 +32,6 @@ interface CompanyOverviewProps {
   company: CompanyDetails;
   selectedPeriod: ReportingPeriod;
   previousPeriod?: ReportingPeriod;
-  onYearSelect: (year: string) => void;
-  selectedYear: string;
   yearOverYearChange: number | null;
   headerChip?: ReactNode;
 }
@@ -49,8 +40,6 @@ export function CompanyOverview({
   company,
   selectedPeriod,
   previousPeriod,
-  onYearSelect,
-  selectedYear,
   yearOverYearChange,
   headerChip,
 }: CompanyOverviewProps) {
@@ -136,38 +125,6 @@ export function CompanyOverview({
           </div>
         )}
         <CompanyDescription description={description} />
-        <div className="flex flex-row items-center gap-2 my-4">
-          <Text
-            variant="body"
-            className="text-grey text-sm md:text-base lg:text-lg"
-          >
-            {t("companies.overview.sector")}:
-          </Text>
-          <Text variant="body" className="text-sm md:text-base lg:text-lg">
-            {sectorName}
-          </Text>
-        </div>
-        <div className="my-4 w-full max-w-[180px]">
-          <Select value={selectedYear} onValueChange={onYearSelect}>
-            <SelectTrigger className="w-full bg-black-1 text-white px-3 py-2 rounded-md">
-              <SelectValue placeholder={t("companies.overview.selectYear")} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="latest">
-                {t("companies.overview.latestYear")}
-              </SelectItem>
-              {sortedPeriods.map((period) => {
-                const year = yearFromIsoDate(period.endDate);
-                return period.emissions?.calculatedTotalEmissions === null ||
-                  period.emissions?.calculatedTotalEmissions === 0 ? null : (
-                  <SelectItem key={year} value={year}>
-                    {year}
-                  </SelectItem>
-                );
-              })}
-            </SelectContent>
-          </Select>
-        </div>
       </div>
 
       <div className="mb-2 md:mb-4 space-y-4 md:space-y-6">
@@ -255,6 +212,7 @@ export function CompanyOverview({
       <OverviewStatistics
         selectedPeriod={selectedPeriod}
         currentLanguage={currentLanguage}
+        sectorName={sectorName}
         formattedEmployeeCount={formattedEmployeeCount}
         turnoverAIGenerated={turnoverAIGenerated}
         employeesAIGenerated={employeesAIGenerated}
