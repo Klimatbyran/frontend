@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { FeatureCollection } from "geojson";
+import type L from "leaflet";
 import { cn } from "@/lib/utils";
 import { TERRITORY_MAP_COLORS } from "@/utils/territoryMapUtils";
 import { DataItem, DataKPI, MapEntityType } from "@/types/rankings";
@@ -36,6 +37,7 @@ interface TerritoryMapProps {
   className?: string;
   showTooltip?: boolean;
   fitBounds?: boolean;
+  fitBoundsPadding?: L.FitBoundsOptions["padding"];
   legendPosition?: MapLegendPosition;
   /**
    * Controlled hover state. Must be passed together with `onHoveredAreaChange`;
@@ -61,6 +63,7 @@ function TerritoryMap({
   className,
   showTooltip = true,
   fitBounds = false,
+  fitBoundsPadding,
   legendPosition = "bottom-right",
   hoveredArea: hoveredAreaProp,
   onHoveredAreaChange,
@@ -133,6 +136,7 @@ function TerritoryMap({
         backgroundColor={mapBackgroundColor}
         scrollWheelZoom={scrollWheelZoom}
         fitBounds={fitBounds}
+        fitBoundsPadding={fitBoundsPadding}
       />
       <MapOverlays
         entityType={entityType}

@@ -10,6 +10,9 @@ export interface ChartData {
     value: number;
     isAIGenerated?: boolean;
   }>;
+  turnover?: number;
+  turnoverCurrency?: string;
+  turnoverIsAIGenerated?: boolean;
   originalValues?: Record<string, number | null>; // Keeps track of original null values
   // Index signature for dynamically added category keys (cat1, cat2, etc.)
   // Category keys are added at runtime based on available scope3 categories

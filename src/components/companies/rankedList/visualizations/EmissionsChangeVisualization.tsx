@@ -71,9 +71,6 @@ export function EmissionsChangeVisualization({
           totalCount={withData.length}
         />
       </div>
-      <p className="text-sm text-white/50 px-1">
-        {t("companiesOverviewPage.visualizations.emissionsChange.description")}
-      </p>
     </div>
   );
 }

@@ -10,12 +10,20 @@ import { OverviewPageSkeleton } from "@/components/ranked/OverviewPageSkeleton";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import {
   OverviewSplitLayout,
+  OVERVIEW_PANEL_MD_HEIGHT,
   type OverviewViewMode,
 } from "@/components/ranked/OverviewSplitLayout";
 import RankedList from "@/components/ranked/RankedList";
 import CompanyInsightsPanel from "@/components/companies/rankedList/CompanyInsightsPanel";
 import { CompanyKPIVisualization } from "@/components/companies/rankedList/CompanyKPIVisualization";
 import { IndustryFilter } from "@/components/companies/rankedList/IndustryFilter";
+import { CountryFilter } from "@/components/companies/rankedList/CountryFilter";
+import {
+  companyMatchesCountries,
+  getAvailableCountryOptions,
+  parseCountriesFromURL,
+} from "@/hooks/companies/companyCountryFilterUtils";
+import type { CompanyCountryTagSlug } from "@/lib/constants/companyCountryTags";
 import {
   useCompanyKPIs,
   CompanyKPIValue,
@@ -91,6 +99,29 @@ export function CompaniesOverviewPage() {
     [location.search, navigate],
   );
 
+  const selectedCountries = useMemo(
+    () => parseCountriesFromURL(new URLSearchParams(location.search)),
+    [location.search],
+  );
+
+  const availableCountries = useMemo(
+    () => getAvailableCountryOptions(companies ?? []),
+    [companies],
+  );
+
+  const setCountriesInURL = useCallback(
+    (countries: CompanyCountryTagSlug[]) => {
+      const params = new URLSearchParams(location.search);
+      if (countries.length === 0) {
+        params.delete("countries");
+      } else {
+        params.set("countries", countries.join(","));
+      }
+      navigate({ search: params.toString() }, { replace: true });
+    },
+    [location.search, navigate],
+  );
+
   const getViewModeFromURL = useCallback((): OverviewViewMode => {
     const params = new URLSearchParams(location.search);
     return params.get("view") === "list" ? "list" : "graph";
@@ -103,39 +134,36 @@ export function CompaniesOverviewPage() {
   };
 
   const [selectedKPI, setSelectedKPI] = useState(getKPIFromURL());
-  const [selectedSector, setSelectedSector] = useState<string | null>(
-    getSectorFromURL(),
-  );
+  const selectedSector = useMemo(() => getSectorFromURL(), [getSectorFromURL]);
   const viewMode = getViewModeFromURL();
 
-  // Ensure a sector is selected on initial load
+  // Ensure a sector is written to the URL once sectors are known
   useEffect(() => {
-    if (!selectedSector && availableSectors.length > 0) {
-      const firstSector = availableSectors[0];
-      setSelectedSector(firstSector);
-      setSectorInURL(firstSector);
+    if (availableSectors.length === 0) return;
+
+    const params = new URLSearchParams(location.search);
+    const sectorParam = params.get("sector");
+
+    if (sectorParam && availableSectors.includes(sectorParam)) {
+      return;
     }
-  }, [availableSectors, selectedSector, setSectorInURL]);
+
+    setSectorInURL(availableSectors[0]);
+  }, [availableSectors, location.search, setSectorInURL]);
 
   useEffect(() => {
-    const kpiFromUrl = getKPIFromURL();
-    if (kpiFromUrl.key !== selectedKPI.key) {
-      setSelectedKPI(kpiFromUrl);
-    }
-  }, [getKPIFromURL, selectedKPI.key]);
-
-  useEffect(() => {
-    const sectorFromUrl = getSectorFromURL();
-    if (sectorFromUrl !== selectedSector) {
-      setSelectedSector(sectorFromUrl);
-    }
-  }, [getSectorFromURL, selectedSector]);
+    setSelectedKPI(getKPIFromURL());
+  }, [getKPIFromURL]);
 
   // Filter and enrich companies with KPI values
   const companiesWithKPIs: CompanyWithKPIs[] = useMemo(() => {
     if (!companies || !selectedSector) return [];
 
     const filtered = companies.filter((company) => {
+      if (!companyMatchesCountries(company, selectedCountries)) {
+        return false;
+      }
+
       const sectorCode = company.industry?.industryGics?.sectorCode;
       if (sectorCode !== selectedSector) {
         return false;
@@ -152,11 +180,14 @@ export function CompaniesOverviewPage() {
     });
 
     return filtered.map((company) => enrichCompanyWithKPIs(company));
-  }, [companies, selectedSector, selectedKPI.key]);
+  }, [companies, selectedCountries, selectedSector, selectedKPI.key]);
 
   const handleSectorChange = (sector: string) => {
-    setSelectedSector(sector);
     setSectorInURL(sector);
+  };
+
+  const handleCountriesChange = (countries: CompanyCountryTagSlug[]) => {
+    setCountriesInURL(countries);
   };
 
   const handleCompanyClick = (company: CompanyWithKPIs) => {
@@ -164,7 +195,14 @@ export function CompaniesOverviewPage() {
   };
 
   if (companiesLoading) {
-    return <OverviewPageSkeleton />;
+    return (
+      <OverviewPageSkeleton
+        title={t("companiesOverviewPage.title")}
+        description={t("companiesOverviewPage.description")}
+        variant="companies"
+        chipCount={companyKPIs.length}
+      />
+    );
   }
 
   if (companiesError) {
@@ -214,8 +252,8 @@ export function CompaniesOverviewPage() {
       modes={["graph", "list"]}
       onChange={setViewModeInURL}
       titles={{
-        graph: t("companiesOverviewPage.viewToggle.showGraph", "Graf"),
-        list: t("companiesOverviewPage.viewToggle.showList", "Lista"),
+        graph: t("companiesOverviewPage.viewToggle.showGraph"),
+        list: t("companiesOverviewPage.viewToggle.showList"),
       }}
       showTitles
       icons={{
@@ -243,7 +281,7 @@ export function CompaniesOverviewPage() {
   );
 
   const visualizationPanel = (
-    <div className="h-full min-h-[500px] md:min-h-[570px]">
+    <div className="h-full min-h-[500px] md:min-h-[620px]">
       <CompanyKPIVisualization
         companies={companiesWithKPIs}
         selectedKPI={selectedKPI}
@@ -269,20 +307,25 @@ export function CompaniesOverviewPage() {
         }}
         iconMap={COMPANY_KPI_ICONS}
         translationPrefix="companies.list"
-        label={t("municipalities.list.dataSelector.label")}
+        label={t("companies.list.dataSelector.label")}
       />
 
-      <div className="mb-4">
+      <div className="mb-4 space-y-4">
         <IndustryFilter
           availableSectors={availableSectors}
           selectedSector={selectedSector}
           onSectorChange={handleSectorChange}
         />
+        <CountryFilter
+          availableCountries={availableCountries}
+          selectedCountries={selectedCountries}
+          onCountriesChange={handleCountriesChange}
+        />
       </div>
 
       <div className="space-y-6">
         {/* Row 1: graph/list toggle | stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-6 items-stretch">
           <OverviewSplitLayout
             viewMode={viewMode}
             visualizationMode="graph"
@@ -290,11 +333,13 @@ export function CompaniesOverviewPage() {
             list={companyRankedList}
             toggle={viewToggle}
           />
-          <CompanyInsightsPanel
-            companyData={companiesWithKPIs}
-            selectedKPI={selectedKPI}
-            section="stats"
-          />
+          <div className={`min-h-0 h-full ${OVERVIEW_PANEL_MD_HEIGHT}`}>
+            <CompanyInsightsPanel
+              companyData={companiesWithKPIs}
+              selectedKPI={selectedKPI}
+              section="stats"
+            />
+          </div>
         </div>
 
         {!selectedKPI.isBoolean && (
@@ -303,11 +348,13 @@ export function CompaniesOverviewPage() {
               companyData={companiesWithKPIs}
               selectedKPI={selectedKPI}
               section="top"
+              listKey={selectedSector ?? undefined}
             />
             <CompanyInsightsPanel
               companyData={companiesWithKPIs}
               selectedKPI={selectedKPI}
               section="bottom"
+              listKey={selectedSector ?? undefined}
             />
             <CompanyInsightsPanel
               companyData={companiesWithKPIs}

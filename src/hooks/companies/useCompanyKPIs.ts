@@ -31,10 +31,7 @@ export const useCompanyKPIs = (): CompanyKPIValue[] => {
   return useMemo<CompanyKPIValue[]>(() => {
     return [
       {
-        label: t(
-          "companies.list.kpis.emissionsChangeFromBaseYear.label",
-          "Overall Emissions Change",
-        ),
+        label: t("companies.list.kpis.emissionsChangeFromBaseYear.label"),
         key: "emissionsChangeFromBaseYear",
         unit: "%",
         source: "companies.list.kpis.emissionsChangeFromBaseYear.source",

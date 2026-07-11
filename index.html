@@ -14,31 +14,79 @@
     />
     <meta
       name="keywords"
-      content="klimat, klimatomställning, klimatdata, kommuner, företag, utsläpp, hållbarhet"
+      content="klimat, klimatomställning, klimatdata, kommuner, företag, utsläpp, hållbarhet, Parisavtalet"
     />
+
+    <!-- Open Graph -->
+    <meta property="og:site_name" content="Klimatkollen" />
     <meta property="og:title" content="Klimatkollen" />
     <meta
       property="og:description"
       content="Klimatkollen - Vi visar hur det går med utsläppen och omställningen jämfört med hur det borde gå"
     />
-    <meta property="og:image" content="/images/landing-page-og.png" />
-    <meta property="og:url" content="https://klimatkollen.se" />
+    <meta property="og:image" content="https://klimatkollen.se/images/landing-page-og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Klimatkollen – öppen klimatdata för medborgare" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:url" content="https://klimatkollen.se/sv/" />
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content="sv_SE" />
+
+    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@klimatkollen" />
+    <meta name="twitter:creator" content="@klimatkollen" />
     <meta name="twitter:title" content="Klimatkollen" />
     <meta
       name="twitter:description"
       content="Klimatkollen - Vi visar hur det går med utsläppen och omställningen jämfört med hur det borde gå"
     />
-    <meta name="twitter:image" content="/images/landing-page-og.png" />
-    <meta name="twitter:url" content="https://twitter.com/klimatkollen" />
-    <link rel="canonical" href="https://klimatkollen.se" />
-    <link rel="alternate" hreflang="sv" href="https://klimatkollen.se" />
-    <link rel="alternate" hreflang="en" href="https://klimatkollen.se/en" />
-    <link rel="alternate" hreflang="x-default" href="https://klimatkollen.se" />
+    <meta name="twitter:image" content="https://klimatkollen.se/images/landing-page-og.png" />
+    <meta name="twitter:image:alt" content="Klimatkollen – öppen klimatdata för medborgare" />
+
+    <!-- Canonical and hreflang -->
+    <link rel="canonical" href="https://klimatkollen.se/sv/" />
+    <link rel="alternate" hreflang="sv" href="https://klimatkollen.se/sv/" />
+    <link rel="alternate" hreflang="en" href="https://klimatkollen.se/en/" />
+    <link rel="alternate" hreflang="x-default" href="https://klimatkollen.se/sv/" />
+
     <script defer data-domain="klimatkollen.se" src="https://plausible.io/js/script.js"></script>
     <meta http-equiv="content-language" content="sv" />
     <title>Klimatkollen - Följ klimatomställningen i Sverige</title>
+
+    <!-- Organization structured data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Klimatkollen",
+        "url": "https://klimatkollen.se",
+        "logo": "https://klimatkollen.se/images/social-picture.png",
+        "sameAs": [
+          "https://twitter.com/klimatkollen",
+          "https://github.com/klimatkollen"
+        ],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "email": "hej@klimatkollen.se",
+          "contactType": "customer support"
+        }
+      }
+    </script>
+
+    <!-- WebSite structured data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Klimatkollen",
+        "url": "https://klimatkollen.se",
+        "description": "Klimatkollen är en medborgarplattform som tillgängliggör klimatdata och bygger stöd för minskade utsläpp enligt Parisavtalet.",
+        "inLanguage": ["sv", "en"]
+      }
+    </script>
+
     <style>
       html {
         background-color: #000;

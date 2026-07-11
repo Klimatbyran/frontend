@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
@@ -17,6 +17,8 @@ import { useComparisonPickerDialogState } from "@/hooks/compare/useComparisonPic
 import { useComparisonPickerPrefill } from "@/hooks/compare/useComparisonPickerPrefill";
 import { useComparisonPickerSearch } from "@/hooks/compare/useComparisonPickerSearch";
 import { useComparisonPickerToggle } from "@/hooks/compare/useComparisonPickerToggle";
+import { useScreenSize } from "@/hooks/useScreenSize";
+import { useVisualViewportBottomInset } from "@/hooks/useVisualViewportBottomInset";
 import { combinedDataToComparison } from "@/utils/compare/comparisonUtils";
 import { getComparisonCopyKey } from "@/utils/compare/comparisonCopy";
 import { PICKER_RESULT_LIST_HEIGHT } from "@/components/compare/comparisonPicker.constants";
@@ -38,8 +40,23 @@ export function ComparisonPickerDialog({
 }: ComparisonPickerDialogProps) {
   const { t } = useTranslation();
   const navigateToComparisonPage = useNavigateToComparison();
+  const { isMobile } = useScreenSize();
   const [inputValue, setInputValue] = useState("");
   const commandListRef = useRef<HTMLDivElement | null>(null);
+  const useMobileSheetLayout = sheetOnMobile && isMobile;
+  const { bottomInset, viewportHeight } = useVisualViewportBottomInset(
+    open && useMobileSheetLayout,
+  );
+  const mobileSheetStyle = useMemo(
+    () =>
+      useMobileSheetLayout
+        ? {
+            bottom: bottomInset,
+            maxHeight: viewportHeight * 0.92,
+          }
+        : undefined,
+    [bottomInset, useMobileSheetLayout, viewportHeight],
+  );
 
   const { selectedCount, canViewComparison, clearSelection, variant } =
     useComparison();
@@ -105,9 +122,10 @@ export function ComparisonPickerDialog({
           className={cn(
             "fixed z-50 w-full focus:outline-none",
             sheetOnMobile
-              ? "inset-x-0 bottom-0 top-auto max-h-[92vh] md:top-[7vh] md:bottom-auto md:left-1/2 md:max-w-lg md:-translate-x-1/2"
+              ? "inset-x-0 bottom-0 top-auto max-h-[92dvh] md:top-[7vh] md:bottom-auto md:left-1/2 md:max-w-lg md:-translate-x-1/2 md:max-h-none"
               : "top-[7vh] left-1/2 max-w-lg -translate-x-1/2 transform",
           )}
+          style={mobileSheetStyle}
         >
           <div
             className={cn(

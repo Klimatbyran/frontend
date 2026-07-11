@@ -9,8 +9,10 @@
   "header": {
     "data": "Data",
     "companies": "Companies",
+    "allCompanies": "All companies",
     "sectors": "Sectors",
     "explore": "Explore",
+    "territories": "Places",
     "municipalities": "Municipalities",
     "nation": "Sweden",
     "regions": "Regions",
@@ -86,27 +88,14 @@
       "region": "Region",
       "nation": "Nation"
     },
-    "seeResults": "See results",
-    "bestPerformers": "Top Lists",
-    "bestMunicipalities": "Municipalities with the fastest emission reduction",
-    "municipalitiesDescription": "By average annual reduction in emissions since the Paris Agreement (2015)",
-    "largestEmittor": "Companies with the largest emissions",
-    "companiesDescription": "Emissions from the most recently reported year",
-    "aboutUsTitle": "Who are we?",
     "aboutUsContent": "Klimatkollen is a citizen platform that provides climate data and builds support for reducing emissions in line with the Paris Agreement. We believe in the power of simple, engaging data visualisation to enhance knowledge and drive participation in the climate conversation.",
-    "tabName": {
-      "companies": "the companies",
-      "municipalities": "the municipalities"
-    },
     "reportCorrection": "Report a data correction",
     "questionPlaceholder": "Please tell us what data value needs to be modified and where on site",
     "questionMissing": "Please enter a comment",
     "submitQuestion": "Submit",
     "emailTitle": "Suggestion for",
     "ctaSection": {
-      "title": "Ready to Explore the Data?",
-      "description": "Start your journey into climate data. Search for companies, municipalities, regions, and countries. Explore rankings and discover who's leading the fight against climate change.",
-      "exploreData": "Explore Data"
+      "description": "Start your journey into climate data. Search for companies, municipalities, regions, and countries. Explore rankings and discover who's leading the fight against climate change."
     },
     "companiesSection": {
       "title": "How's it going with company emissions?",
@@ -136,91 +125,6 @@
     "missionSection": {
       "title": "About Us",
       "button": "About Us"
-    },
-    "siteFeatures": {
-      "title": "Comprehensive Climate Tracking",
-      "description": "Monitor emissions data and climate commitments across Sweden.",
-      "features": {
-        "municipalityRankings": {
-          "title": "Municipalities Overview",
-          "description": "Track climate progress and emissions data from municipalities and local governments."
-        },
-        "companyRankings": {
-          "title": "Companies Overview",
-          "description": "Compare emissions performance, reduction targets, and sustainability metrics across Swedish companies."
-        },
-        "progressTracking": {
-          "title": "Progress Tracking",
-          "description": "Monitor year-over-year changes and alignment with climate targets and science based goals."
-        }
-      }
-    },
-    "scrollSteps": {
-      "mission": {
-        "badge": "Transparency for Climate Action",
-        "heading": "Our Mission",
-        "paragraph": "Klimatkollen exists to make climate data accessible to everyone. We believe that transparency drives accountability, and accountability drives real climate action. By putting emissions data in the hands of citizens, we empower communities to hold organizations accountable for their environmental commitments."
-      },
-      "transparency": {
-        "badge": "Sunlight is the Best Disinfectant",
-        "heading": "Why Data\nTransparency Matters",
-        "paragraph": "When emissions data is hidden behind corporate reports and paid databases, progress stagnates. Transparent, accessible climate data creates market pressure for better performance. Companies and municipalities that know their data is public work harder to improve their rankings and meet their climate commitments."
-      },
-      "methodology": {
-        "badge": "Science-Based Rankings",
-        "heading": "Our Methodology",
-        "paragraph": "We use emissions data from official reporting sources to create fair, comparable rankings. Our metrics focus on actual emissions reductions, not just promises or targets. Every ranking is based on real performance data, ensuring that climate leaders are recognized and climate laggards are held accountable.",
-        "linkText": "Read more about our methodology"
-      },
-      "impact": {
-        "badge": "From Data to Action",
-        "heading": "Driving Real Impact",
-        "paragraph": "Our platform has already helped identify climate leaders and those falling behind across Sweden. By ranking organizations on their actual emissions performance, we create healthy competition that accelerates climate progress. The data doesn't lie—and neither should climate commitments."
-      },
-      "engagement": {
-        "badge": "Every Voice Counts",
-        "heading": "Citizen Action &\nEngagement",
-        "paragraph": "Climate action isn't just for governments and corporations—it starts with informed citizens. When you can see how your local municipality or favorite company performs on climate metrics, you can make better choices as a consumer, voter, and community member. Your engagement drives the demand for better climate performance."
-      },
-      "pathForward": {
-        "badge": "Building a Climate-Conscious Society",
-        "heading": "The Path Forward",
-        "paragraph": "Imagine a world where every organization's climate performance is as visible as their financial results. Where citizens can easily compare the environmental impact of their choices. Where transparency drives a race to the top in climate action. That's the future we're building, one data point at a time."
-      }
-    },
-    "didYouKnow": {
-      "title": "Did You Know?",
-      "subtitle": "Interesting insights from Sweden's climate data - {{action}}!",
-      "actionMobile": "click to explore",
-      "actionDesktop": "hover to explore",
-      "cardActionMobile": "Tap to learn more →",
-      "cardActionDesktop": "Hover to learn more →",
-      "ariaLabelShow": "Show details",
-      "ariaLabelHide": "Hide details",
-      "stat1": {
-        "teaser": "Leaders of the Pack",
-        "description": "{{count}} out of {{total}} companies have reduced emissions by more than 20% since their base reporting year"
-      },
-      "stat2": {
-        "teaser": "Increased Emissions",
-        "description": "{{count}} out of {{total}} companies have increased emissions since their base reporting year"
-      },
-      "stat3": {
-        "teaser": "Paris Aligned",
-        "description": "{{companyCount}} out of {{companyTotal}} companies and {{municipalityCount}} out of {{municipalityTotal}} municipalities are on track to meet Paris Agreement goals"
-      },
-      "stat4": {
-        "teaser": "Transparent Reporting",
-        "description": "{{percentage}}% of tracked companies report Scope 3 emissions by category, providing more transparency into their value chain"
-      },
-      "stat5": {
-        "teaser": "With Plans",
-        "description": "{{percentage}}% of municipalities ({{count}} out of {{total}}) have adopted climate plans"
-      },
-      "stat6": {
-        "teaser": "Tracked Emissions",
-        "description": "{{total}} million tonnes of CO₂e tracked across {{companyCount}} companies and {{municipalityCount}} municipalities, using the latest reported value for each entity"
-      }
     }
   },
   "aboutPage": {
@@ -412,6 +316,7 @@
     "filterByIndustry": "Filter by industry",
     "clearFilters": "Clear all",
     "selectIndustry": "Select industry",
+    "selectCountry": "Select country",
     "viewToggle": {
       "showGraph": "Graph",
       "showList": "List"
@@ -477,7 +382,10 @@
       "back": "Back",
       "sectorTotal": "Sector Total Emissions",
       "total": "Total Emissions",
-      "emissionsUnit": "ton CO₂e"
+      "emissionsUnit": "ton CO₂e",
+      "noDataAvailablePieChart": "No data available for this year",
+      "pieLegendCompany": "View company details",
+      "pieLegendSector": "View sector details"
     }
   },
   "sectorsOverviewPage": {
@@ -1387,6 +1295,24 @@
       "totalEmissionsSaved": "total emissions saved vs Paris target",
       "totalEmissionsExcess": "total emissions excess vs Paris target"
     },
+    "turnoverEmissionsHistory": {
+      "title": "Emissions intensity",
+      "tooltip": "Emissions intensity is total emissions divided by turnover (t CO₂e per million). Compare two years — lower is better. Intensity falls when emissions drop faster than turnover grows, or when emissions fall while turnover rises.",
+      "unit": "Emissions in tons CO₂e · Turnover in company currency",
+      "intensityPanel": {
+        "intensityUnit": "t CO₂e per million in turnover",
+        "question": "Has emissions intensity decreased?",
+        "verdictStableLabel": "Stable",
+        "intensityChange": "Intensity",
+        "emissionsLabel": "Emissions",
+        "turnoverLabel": "Turnover",
+        "periodBaseYearNote": "Base year compared to the latest reported year with emissions and turnover data. Lower is better.",
+        "periodFirstYearNote": "First year with emissions and turnover data, compared to the latest reported year. Lower is better.",
+        "verdictYes": "Emissions intensity has fallen. The company emits less per unit of turnover than before.",
+        "verdictNoRed": "Emissions intensity has risen. The company emits more per unit of turnover than before.",
+        "verdictNoYellow": "Emissions intensity has stayed roughly unchanged. The company emits about the same per unit of turnover as before."
+      }
+    },
     "list": {
       "error": {
         "fetchingCompanyInfo": "Failed to fetch company information",
@@ -1410,7 +1336,7 @@
         "emissionsChangeFromBaseYear": {
           "label": "Overall Emissions Change",
           "description": "Change in emissions from base year to latest reporting period. Only companies with comparable emissions data are ranked.",
-          "detailedDescription": "Percentage change in total emissions from the company's base year to their most recent reporting period. Rankings include only companies with a defined base year, valid baseline emissions, and at least one later reporting period with comparable data. Lower values indicate better performance.",
+          "detailedDescription": "Percentage change in total emissions from the company's base year to their most recent reporting period. Rankings include only companies with a defined base year, valid baseline emissions, and at least one later reporting period with comparable data.",
           "source": "Company Reporting Data",
           "nullValues": "Not comparable"
         },
@@ -1429,6 +1355,10 @@
         },
         "keyStatistics": {
           "average": "Average:"
+        },
+        "distribution": {
+          "title": "Distribution",
+          "subtitle": "Shows how companies are spread across the scale for the selected indicator. Blue bars mean better results, pink worse, and the dashed line marks the average."
         }
       },
       "sort": {
@@ -1580,9 +1510,19 @@
       }
     }
   },
+  "mapControls": {
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "reset": "Reset"
+  },
   "regions": {
     "detailPage": {
       "municipalities": "Municipalities"
+    },
+    "map": {
+      "legend": {
+        "null": "No data"
+      }
     },
     "kpis": {
       "emissions": {
@@ -1605,7 +1545,8 @@
           "label": "Emissions",
           "description": "Historical change in emissions",
           "detailedDescription": "Average annual percentage change in greenhouse gas emissions since the Paris Agreement in 2015.",
-          "source": "National Emissions Database"
+          "source": "National Emissions Database",
+          "nullValues": "No data"
         },
         "meetsParis": {
           "label": "Paris Agreement",
@@ -1615,7 +1556,16 @@
           "booleanLabels": {
             "true": "Meets Paris Agreement",
             "false": "Fails Paris Agreement"
-          }
+          },
+          "nullValues": "Unknown",
+          "aboveString": "are on track to meet the Paris Agreement",
+          "belowString": "are on track to miss the Paris Agreement"
+        }
+      },
+      "insights": {
+        "distribution": {
+          "title": "Distribution",
+          "subtitle": "Shows how regions are spread across the scale for the selected indicator. Blue bars mean better results, pink worse, and the dashed line marks the average."
         }
       }
     }
@@ -1700,7 +1650,9 @@
           "description": "Number of electric vehicles per charging point",
           "detailedDescription": "Number of electric vehicles per public charging point, per municipality in 2025. Lower numbers are better, as good infrastructure promotes increased electric vehicle adoption.",
           "source": "Power Circle",
-          "nullValues": "No charging points"
+          "nullValues": "No charging points",
+          "missingCount_one": "{{count}} municipality without charging points",
+          "missingCount_other": "{{count}} municipalities without charging points"
         },
         "bicycleMetrePerCapita": {
           "label": "Bicycles",
@@ -1993,7 +1945,15 @@
     "loading": "Loading...",
     "error": "Error",
     "company": "Company",
-    "municipality": "Municipality"
+    "municipality": "Municipality",
+    "region": "Region"
+  },
+  "regionDetailPage": {
+    "metaDescription": "View emissions data and climate transition progress for {{region}} on Klimatkollen."
+  },
+  "nationDetailPage": {
+    "title": "Sweden's Climate Transition",
+    "description": "National overview of emissions and climate transition in Sweden compared to the Paris Agreement targets."
   },
   "globalSearch": {
     "title": "Find a company, municipality, region or nation",
@@ -2035,14 +1995,18 @@
     "sort": {
       "asc": "Sort from low to high",
       "desc": "Sort from high to low"
+    },
+    "pagination": {
+      "previousPage": "Previous page",
+      "nextPage": "Next page"
     }
   },
   "rankedInsights": {
     "belowAverage": "{{entityPlural}} below average",
     "aboveAverage": "{{entityPlural}} above average",
-    "titleBest": "Top 10 {{entityPlural}}",
-    "titleTop": "Top Performing 10 {{entityPlural}}",
-    "titleWorst": "Bottom 10 {{entityPlural}}"
+    "titleBest": "Top {{nrOfEntities}} {{entityPlural}}",
+    "titleTop": "Top Performing {{nrOfEntities}} {{entityPlural}}",
+    "titleWorst": "Bottom {{nrOfEntities}} {{entityPlural}}"
   },
   "chartLegend": {
     "clickToFilterOut": "Click to filter out",
@@ -2188,6 +2152,8 @@
       "errorTitle": "Failed to retrieve company information",
       "errorDescription": "Please try again later",
       "filteringOptions": {
+        "country": "Country",
+        "allCountries": "All countries",
         "meetsParis": "Meets the Paris Agreement",
         "meetsParisYes": "Yes",
         "meetsParisNo": "No",
@@ -2210,6 +2176,13 @@
       "sectionTitle": "Companies",
       "noCompaniesInSection": "No companies in this section"
     }
+  },
+  "companyCountries": {
+    "sweden": "Sweden",
+    "norway": "Norway",
+    "finland": "Finland",
+    "denmark": "Denmark",
+    "iceland": "Iceland"
   },
   "insightCategories": {
     "analysis": "Analysis",

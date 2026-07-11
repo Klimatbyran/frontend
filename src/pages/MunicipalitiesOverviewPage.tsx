@@ -30,8 +30,10 @@ import {
 } from "@/utils/territoryMapData";
 import {
   OverviewSplitLayout,
+  OVERVIEW_PANEL_MD_HEIGHT,
   type OverviewViewMode,
 } from "@/components/ranked/OverviewSplitLayout";
+import { useScreenSize } from "@/hooks/useScreenSize";
 import { KPIChipSelector } from "@/components/ranked/KPIChipSelector";
 import { OverviewPageSkeleton } from "@/components/ranked/OverviewPageSkeleton";
 import type { Municipality } from "@/types/municipality";
@@ -50,6 +52,7 @@ const MUNICIPALITY_KPI_ICONS: Record<string, React.ReactNode> = {
 
 export function MunicipalitiesOverviewPage() {
   const { t } = useTranslation();
+  const { isMobile } = useScreenSize();
   const {
     municipalitiesData,
     loading: municipalitiesLoading,
@@ -102,11 +105,8 @@ export function MunicipalitiesOverviewPage() {
   const viewMode = getViewModeFromURL();
 
   useEffect(() => {
-    const kpiFromUrl = getKPIFromURL();
-    if (String(kpiFromUrl.key) !== String(selectedKPI.key)) {
-      setSelectedKPI(kpiFromUrl);
-    }
-  }, [getKPIFromURL, selectedKPI.label]);
+    setSelectedKPI(getKPIFromURL());
+  }, [getKPIFromURL]);
 
   const handleMunicipalityClick = createEntityClickHandler(
     navigate,
@@ -142,7 +142,14 @@ export function MunicipalitiesOverviewPage() {
   }, [municipalities]);
 
   if (municipalitiesLoading) {
-    return <OverviewPageSkeleton />;
+    return (
+      <OverviewPageSkeleton
+        title={t("municipalitiesOverviewPage.title")}
+        description={t("municipalitiesOverviewPage.description")}
+        variant="municipalities"
+        chipCount={municipalityKPIs.length}
+      />
+    );
   }
 
   if (municipalitiesError) {
@@ -191,6 +198,7 @@ export function MunicipalitiesOverviewPage() {
       data={mapData}
       selectedKPI={selectedKPI}
       onAreaClick={handleMunicipalityAreaClick}
+      defaultZoom={isMobile ? 4 : undefined}
       className="max-w-none"
     />
   );
@@ -216,7 +224,7 @@ export function MunicipalitiesOverviewPage() {
 
       <div className="space-y-6">
         {/* Row 1: map/list (toggled) | stats panel */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-6 items-stretch">
           <OverviewSplitLayout
             viewMode={viewMode}
             visualizationMode="map"
@@ -224,14 +232,18 @@ export function MunicipalitiesOverviewPage() {
             list={municipalityRankedList}
             toggle={viewToggle}
           />
-          <InsightsPanel
-            municipalityData={municipalities}
-            selectedKPI={selectedKPI}
-            section="stats"
-          />
+          <div
+            className={`min-h-0 h-full min-w-0 overflow-visible ${OVERVIEW_PANEL_MD_HEIGHT}`}
+          >
+            <InsightsPanel
+              municipalityData={municipalities}
+              selectedKPI={selectedKPI}
+              section="stats"
+            />
+          </div>
         </div>
 
-        {/* Row 2: top list | bottom list | distribution (numeric KPIs only) */}
+        {/* Row 2: top/bottom/distribution (numeric KPIs only) */}
         {!selectedKPI.isBoolean && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
             <InsightsPanel

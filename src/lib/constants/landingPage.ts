@@ -1,4 +1,4 @@
-import type { HeroSearchResult } from "@/hooks/usePopularHeroItems";
+import type { HeroSearchResult } from "@/types/landing";
 
 // Landing page animation and interaction constants
 export const TYPEWRITER_SPEED = 70;

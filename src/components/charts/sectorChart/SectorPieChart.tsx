@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from "recharts";
+import { PieChart, Pie, Cell, Tooltip } from "recharts";
 import { useResponsiveChartSize } from "@/hooks/useResponsiveChartSize";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { useChartMotion } from "@/hooks/useChartMotion";
@@ -29,6 +29,8 @@ interface SectorPieChartProps {
   animationKey?: string;
 }
 
+const PIE_CORNER_RADIUS = 8;
+
 const SectorPieChart: React.FC<SectorPieChartProps> = ({
   sectorEmissions,
   year,
@@ -45,7 +47,7 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
   const { isMobile } = useScreenSize();
   const { pieDuration, reduceMotion } = useChartMotion();
   const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const { size } = useResponsiveChartSize();
+  const { size, containerRef } = useResponsiveChartSize();
 
   const pieData: PieChartItem[] = data
     ? data
@@ -71,9 +73,10 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
   const displayNameKey = nameKey ?? (data ? "name" : "translatedName");
 
   const scale = desktopScale && !isMobile ? 1.2 : 1;
-  const innerRadius = size.innerRadius * scale;
   const outerRadius = size.outerRadius * scale;
-  const chartHeight = outerRadius * 2;
+  const innerRadius = size.innerRadius * scale;
+  const side = Math.ceil(outerRadius * 2 + PIE_CORNER_RADIUS * 2);
+  const center = side / 2;
   const pieAnimationKey =
     animationKey ??
     pieDataWithTotal.map((entry) => `${entry.name}-${entry.value}`).join("|");
@@ -123,41 +126,46 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
   };
 
   return (
-    <ResponsiveContainer width="100%" height={chartHeight}>
-      <PieChart>
-        <Pie
-          key={pieAnimationKey}
-          data={pieDataWithTotal}
-          dataKey="value"
-          nameKey={displayNameKey}
-          cx="50%"
-          cy="50%"
-          innerRadius={innerRadius}
-          outerRadius={outerRadius}
-          cornerRadius={8}
-          paddingAngle={2}
-          onClick={handleSectorClick}
-          isAnimationActive={!reduceMotion}
-          animationBegin={0}
-          animationDuration={pieDuration}
-          animationEasing="ease-out"
-        >
-          {pieDataWithTotal.map((entry) => (
-            <Cell
-              key={entry.name}
-              fill={entry.color}
-              stroke={entry.color}
-              style={{ cursor: "pointer" }}
-            />
-          ))}
-        </Pie>
-        <Tooltip
-          content={<PieTooltip customActionLabel={customActionLabel} />}
-          animationDuration={0}
-          isAnimationActive={false}
-        />
-      </PieChart>
-    </ResponsiveContainer>
+    <div
+      ref={containerRef}
+      className="w-full min-h-[200px] flex items-center justify-center"
+    >
+      {outerRadius > 0 && (
+        <PieChart width={side} height={side}>
+          <Pie
+            key={pieAnimationKey}
+            data={pieDataWithTotal}
+            dataKey="value"
+            nameKey={displayNameKey}
+            cx={center}
+            cy={center}
+            innerRadius={innerRadius}
+            outerRadius={outerRadius}
+            cornerRadius={PIE_CORNER_RADIUS}
+            paddingAngle={2}
+            onClick={handleSectorClick}
+            isAnimationActive={!reduceMotion}
+            animationBegin={0}
+            animationDuration={pieDuration}
+            animationEasing="ease-out"
+          >
+            {pieDataWithTotal.map((entry) => (
+              <Cell
+                key={entry.name}
+                fill={entry.color}
+                stroke={entry.color}
+                style={{ cursor: "pointer" }}
+              />
+            ))}
+          </Pie>
+          <Tooltip
+            content={<PieTooltip customActionLabel={customActionLabel} />}
+            animationDuration={0}
+            isAnimationActive={false}
+          />
+        </PieChart>
+      )}
+    </div>
   );
 };
 
