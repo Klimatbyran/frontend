@@ -27,7 +27,7 @@ import {
   MethodsPage,
   MunicipalitiesOverviewPage,
   MunicipalityDetailPage,
-  NationDetailPage,
+  NationDetailRoute,
   NewsLetterArchivePage,
   NotFoundPage,
   ParisAlignedStatisticsPage,
@@ -132,7 +132,9 @@ function TerritoryRoutes({ basePath }: { basePath: string }) {
     <>
       <Route path={`${basePath}/regions`} element={<RegionalOverviewPage />} />
       <Route path={`${basePath}/europe`} element={<EuropeanOverviewPage />} />
-      <Route path={`${basePath}/nation`} element={<NationDetailPage />} />
+      <Route path={`${basePath}/nation`} element={<NationDetailRoute />} />
+      <Route path={`${basePath}/sweden`} element={<NationDetailRoute />} />
+      <Route path={`${basePath}/sverige`} element={<NationDetailRoute />} />
       <Route
         path={`${basePath}/municipalities`}
         element={<MunicipalitiesOverviewPage />}

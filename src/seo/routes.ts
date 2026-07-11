@@ -1,6 +1,7 @@
 import { SeoMeta } from "@/types/seo";
 import { detectLanguageFromPath } from "@/lib/languageDetection";
 import { DEFAULT_OG_IMAGE, buildAbsoluteUrl } from "@/utils/seo";
+import { getNationDetailPath, isNationUrlSlug } from "@/utils/routing";
 // @ts-expect-error - i18n.js doesn't have TypeScript definitions
 import i18n from "@/i18n";
 
@@ -105,6 +106,16 @@ function parseRoute(pathname: string, params?: Record<string, string>) {
     };
   }
 
+  if (
+    segments[0] === "nation" ||
+    (segments.length === 1 && isNationUrlSlug(segments[0]))
+  ) {
+    return {
+      pattern: "/nations/:slug",
+      params: { slug: segments[0], ...(params || {}) },
+    };
+  }
+
   if (segments[0] === "insights" && segments[1]) {
     return {
       pattern: "/insights/:id",
@@ -129,6 +140,17 @@ function parseRoute(pathname: string, params?: Record<string, string>) {
   }
 
   return { pattern: normalized, params: params || {} };
+}
+
+function buildNationHreflang(): SeoMeta["hreflang"] {
+  return [
+    { lang: "sv", href: buildAbsoluteUrl(`/sv${getNationDetailPath("sv")}`) },
+    { lang: "en", href: buildAbsoluteUrl(`/en${getNationDetailPath("en")}`) },
+    {
+      lang: "x-default",
+      href: buildAbsoluteUrl(`/sv${getNationDetailPath("sv")}`),
+    },
+  ];
 }
 
 /** Build hreflang alternates for a language-neutral path (e.g. "/about"). */
@@ -406,13 +428,24 @@ export function getSeoForRoute(
         canonical,
       );
 
-    case "/nation":
-      return buildSimpleSeo(
-        "nationDetailPage.title",
+    case "/nations/:slug": {
+      const rawTitle = getTranslation("nationDetailPage.title", language);
+      const title = `${rawTitle} - ${SITE_NAME}`;
+      const description = getTranslation(
         "nationDetailPage.description",
         language,
-        canonical,
       );
+      const social = withDefaultOg(title, description);
+
+      return {
+        ...baseSeo,
+        title,
+        description,
+        canonical,
+        hreflang: buildNationHreflang(),
+        ...social,
+      };
+    }
 
     case "/data-download":
       return buildSimpleSeo(

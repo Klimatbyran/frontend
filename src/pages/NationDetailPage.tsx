@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { TerritoryEmissions } from "@/components/territories/TerritoryEmissions";
 import { PageLoading } from "@/components/pageStates/Loading";
 import { PageError } from "@/components/pageStates/Error";
@@ -9,7 +9,13 @@ import { useNationPageData } from "@/hooks/nation/useNationPageData";
 import { useLanguage } from "@/components/LanguageProvider";
 import { EuropeanCountryDetailHeader } from "@/components/europe/EuropeanCountryDetailHeader";
 import { CountryEmissionSourcesMap } from "@/components/europe/CountryEmissionSourcesMap";
-import { createEntityClickHandler } from "@/utils/routing";
+import {
+  createEntityClickHandler,
+  getNationDetailPath,
+  getNationUrlSlug,
+  isNationUrlSlug,
+  localizedPath,
+} from "@/utils/routing";
 import { resolveRegionFromMapName } from "@/utils/regionUtils";
 import type { FeatureCollection } from "geojson";
 import regionGeoJson from "@/data/regionGeo.json";
@@ -76,6 +82,27 @@ function NationDetailContent({
       />
     </DetailWrapper>
   );
+}
+
+export function NationDetailRoute() {
+  const { currentLanguage } = useLanguage();
+  const location = useLocation();
+  const slug = location.pathname.split("/").filter(Boolean).pop()?.toLowerCase();
+  const expectedSlug = getNationUrlSlug(currentLanguage);
+
+  if (
+    slug === "nation" ||
+    (slug && isNationUrlSlug(slug) && slug !== expectedSlug)
+  ) {
+    return (
+      <Navigate
+        to={localizedPath(currentLanguage, getNationDetailPath(currentLanguage))}
+        replace
+      />
+    );
+  }
+
+  return <NationDetailPage />;
 }
 
 export function NationDetailPage() {

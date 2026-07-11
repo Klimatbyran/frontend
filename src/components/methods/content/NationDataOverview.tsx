@@ -1,5 +1,6 @@
 import { Trans, useTranslation } from "react-i18next";
 import i18next from "i18next";
+import { getNationDetailPath } from "@/utils/routing";
 import { LinkButton } from "@/components/layout/LinkButton";
 
 export const NationDataOverviewContent = () => {
@@ -32,7 +33,7 @@ export const NationDataOverviewContent = () => {
           <LinkButton
             title={t("methodsPage.territorial.nationDataOverview.link.title")}
             text={t("methodsPage.territorial.nationDataOverview.link.text")}
-            link={`${i18next.resolvedLanguage}/nation`}
+            link={`/${i18next.resolvedLanguage}${getNationDetailPath(i18next.resolvedLanguage ?? "sv")}`}
           />
         </div>
       </div>

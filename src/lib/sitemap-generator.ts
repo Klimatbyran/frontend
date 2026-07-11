@@ -60,7 +60,7 @@ export async function generateSitemap(outputPath: string): Promise<void> {
         priority: "0.7",
       },
       {
-        loc: "https://klimatkollen.se/sv/nation",
+        loc: "https://klimatkollen.se/sv/sverige",
         lastmod: currentDate,
         changefreq: "monthly",
         priority: "0.7",
@@ -166,7 +166,7 @@ export async function generateSitemap(outputPath: string): Promise<void> {
         priority: "0.6",
       },
       {
-        loc: "https://klimatkollen.se/en/nation",
+        loc: "https://klimatkollen.se/en/sweden",
         lastmod: currentDate,
         changefreq: "monthly",
         priority: "0.6",

@@ -119,6 +119,11 @@ export const RegionDetailPage = lazy(() =>
     default: m.RegionDetailPage,
   })),
 );
+export const NationDetailRoute = lazy(() =>
+  import("./pages/NationDetailPage").then((m) => ({
+    default: m.NationDetailRoute,
+  })),
+);
 export const NationDetailPage = lazy(() =>
   import("./pages/NationDetailPage").then((m) => ({
     default: m.NationDetailPage,

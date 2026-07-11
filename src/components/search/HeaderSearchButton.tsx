@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { CombinedData } from "@/hooks/useCombinedData";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/components/LanguageProvider";
+import { getNationDetailPath, localizedPath } from "@/utils/routing";
 import { SearchDialog } from "./SearchDialog";
 
 type HeaderSearchButtonProps = {
@@ -19,6 +21,7 @@ export const HeaderSearchButton = ({
   const [commandOpen, setCommandOpen] = useState(false);
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { currentLanguage } = useLanguage();
 
   const openSearch = () => {
     closeMobileNav?.();
@@ -51,7 +54,7 @@ export const HeaderSearchButton = ({
         navigate(`/regions/${response.id}`);
         break;
       case "nations":
-        navigate(`/nation`);
+        navigate(localizedPath(currentLanguage, getNationDetailPath(currentLanguage)));
         break;
       case "blogPosts":
         navigate(`/insights/${response.id}`);

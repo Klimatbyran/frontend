@@ -1,6 +1,7 @@
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { getCompanyDetailPath } from "@/utils/companyRouting";
 import { getEntityDetailPath } from "@/utils/routing";
+import { useLanguage } from "@/components/LanguageProvider";
 
 function calcBarWidth(
   showBars: boolean,
@@ -53,6 +54,7 @@ function InsightsList<T>({
   showBars = false,
   colorItem,
 }: InsightsListProps<T>) {
+  const { currentLanguage } = useLanguage();
   const numericValues = entities
     .map((e) => e[dataPointKey])
     .filter((v): v is number => typeof v === "number" && !isNaN(v));
@@ -151,10 +153,15 @@ function InsightsList<T>({
               return (
                 <LocalizedLink
                   key={name}
-                  to={getEntityDetailPath("europe", {
-                    id: country.id,
-                    name: country.id,
-                  })}
+                  to={getEntityDetailPath(
+                    "europe",
+                    {
+                      id: country.id,
+                      name: country.id,
+                    },
+                    undefined,
+                    currentLanguage,
+                  )}
                   className="block transition-colors hover:bg-white/5 rounded-lg"
                 >
                   {content}

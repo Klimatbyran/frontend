@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { resolveNavPath } from "@/utils/routing";
 import { useLanguage } from "../../LanguageProvider";
 import { LocalizedLink } from "../../LocalizedLink";
 import { isPathActive } from "./navActive";
@@ -41,7 +42,7 @@ export function NavSubLinkItem({
 
   return (
     <LocalizedLink
-      to={sublink.path}
+      to={resolveNavPath(sublink.path, currentLanguage)}
       className={cn("w-full", className, isActive && NAV_ITEM_ACTIVE_CLASS)}
       aria-current={isActive ? "page" : undefined}
       onClick={onNavigate}

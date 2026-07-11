@@ -1,4 +1,4 @@
-import { localizedPath } from "@/utils/routing";
+import { localizedPath, resolveNavPath, isNationDetailPath } from "@/utils/routing";
 import { isNavSubGroup, NavLink, NavSubItem } from "./types";
 
 function stripQuery(path: string): string {
@@ -16,7 +16,12 @@ export function isPathActive(
   }
 
   const normalizedPath = stripQuery(path);
-  const fullPath = localizedPath(lang, normalizedPath);
+
+  if (path === "/nation") {
+    return isNationDetailPath(pathname);
+  }
+
+  const fullPath = localizedPath(lang, resolveNavPath(normalizedPath, lang));
 
   return pathname === fullPath || pathname.startsWith(`${fullPath}/`);
 }
