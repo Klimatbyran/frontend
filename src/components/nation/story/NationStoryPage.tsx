@@ -1,6 +1,5 @@
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
-import { EntityListBox } from "@/components/detail/EntityListBox";
 import { NationConclusion } from "@/components/nation/story/NationConclusion";
 import { NationEmissionsJourney } from "@/components/nation/story/NationEmissionsJourney";
 import { NationStackedChart } from "@/components/nation/story/NationStackedChart";
@@ -11,7 +10,6 @@ import type { NationStoryMetrics } from "@/utils/data/nationStoryMetrics";
 type NationStoryPageProps = {
   nation: NationStoryDetails;
   metrics: NationStoryMetrics;
-  sortedRegions: string[];
 };
 
 function FullScreenSection({ children }: { children: React.ReactNode }) {
@@ -22,11 +20,7 @@ function FullScreenSection({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function NationStoryPage({
-  nation,
-  metrics,
-  sortedRegions,
-}: NationStoryPageProps) {
+export function NationStoryPage({ nation, metrics }: NationStoryPageProps) {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
   const countryName = nation.country[currentLanguage];
@@ -88,22 +82,6 @@ export function NationStoryPage({
       <FullScreenSection>
         <NationConclusion metrics={metrics} />
       </FullScreenSection>
-
-      {/* Footer */}
-      <section className="max-w-5xl mx-auto px-4 md:px-8 py-20 md:py-28">
-        <motion.div
-          initial={{ opacity: 0, y: 32 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.25 }}
-          transition={{ duration: 0.5 }}
-        >
-          <EntityListBox
-            items={sortedRegions}
-            entityType="regions"
-            translateNamespace="nation.detailPage"
-          />
-        </motion.div>
-      </section>
     </div>
   );
 }
