@@ -1,5 +1,5 @@
-import { COLORS } from "@/lib/colors";
 import { useTranslation } from "react-i18next";
+import { getCompanyDetailPath } from "@/utils/companyRouting";
 import {
   CompanyWithKPIs,
   CompanyKPIValue,
@@ -83,6 +83,7 @@ function CompanyInsightsPanel({
   const { topPerformer, bottomPerformer } = buildPerformerProps(
     sortedValidData,
     { key: selectedKPI.key, unit, isBoolean: selectedKPI.isBoolean },
+    (company) => getCompanyDetailPath(company),
   );
 
   const colorItem = selectedKPI.createKPIColorGetter
