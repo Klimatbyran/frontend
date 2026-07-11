@@ -333,7 +333,8 @@
         "legend": {
           "reduction": "Reduction",
           "neutral": "Near zero",
-          "increase": "Increase"
+          "increase": "Increase",
+          "companyDivider": "Dark lines separate companies within each bar"
         },
         "tooltip": {
           "change": "Change from base year: {{value}}%",

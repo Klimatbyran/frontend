@@ -333,7 +333,8 @@
         "legend": {
           "reduction": "Minskning",
           "neutral": "Nära noll",
-          "increase": "Ökning"
+          "increase": "Ökning",
+          "companyDivider": "Mörka linjer skiljer företag åt inom varje stapel"
         },
         "tooltip": {
           "change": "Förändring från basår: {{value}} %",

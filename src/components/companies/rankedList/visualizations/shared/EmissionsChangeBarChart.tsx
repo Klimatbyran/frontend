@@ -11,7 +11,6 @@ import {
   YAxis,
 } from "recharts";
 import type { CompanyWithKPIs } from "@/types/company";
-import { COLORS } from "@/lib/colors";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { useChartMotion } from "@/hooks/useChartMotion";
@@ -19,10 +18,12 @@ import {
   formatEmissionsAbsolute,
   formatEmissionsAbsoluteCompact,
 } from "@/utils/formatting/localization";
+import { createSymmetricRangeGradient } from "@/utils/ui/colorGradients";
 import {
   buildEmissionsChangeHistogram,
   type EmissionsChangeCompanyEntry,
 } from "@/utils/visualizations/emissionsChangeHistogram";
+import { BeeswarmLegend } from "./BeeswarmLegend";
 
 interface EmissionsChangeBarChartProps {
   companies: CompanyWithKPIs[];
@@ -42,25 +43,34 @@ function formatCompactBinLabel(label: string): string {
   return start.replace("%", "");
 }
 
-function getBinBarColor(binMid: number): string {
-  if (binMid < 0) {
-    return COLORS.blue3;
-  }
-
-  if (binMid > 0) {
-    return COLORS.pink3;
-  }
-
-  return COLORS.blue3;
+function getChangeColor(
+  changePercent: number,
+  minChange: number,
+  maxChange: number,
+): string {
+  return createSymmetricRangeGradient(minChange, maxChange, changePercent);
 }
 
-function getSegmentOpacity(segmentIndex: number, segmentCount: number): number {
-  if (segmentCount <= 1) {
-    return 1;
+function buildLegendGradient(
+  minChange: number,
+  maxChange: number,
+): string | undefined {
+  if (!Number.isFinite(minChange) || !Number.isFinite(maxChange)) {
+    return undefined;
   }
 
-  const minOpacity = 0.5;
-  return minOpacity + (segmentIndex / (segmentCount - 1)) * (1 - minOpacity);
+  if (minChange === maxChange) {
+    return getChangeColor(minChange, minChange, maxChange);
+  }
+
+  const steps = 5;
+  const stops = Array.from({ length: steps }, (_, index) => {
+    const percent = (index / (steps - 1)) * 100;
+    const value = minChange + ((maxChange - minChange) * index) / (steps - 1);
+    return `${getChangeColor(value, minChange, maxChange)} ${percent}%`;
+  });
+
+  return `linear-gradient(to right, ${stops.join(", ")})`;
 }
 
 function ChartTooltip({
@@ -185,6 +195,26 @@ export function EmissionsChangeBarChart({
     return { chartData, stackCompanies, companyEntryById: entries };
   }, [histogram]);
 
+  const changeRange = useMemo(() => {
+    const values = Array.from(companyEntryById.values()).map(
+      (company) => company.changePercent,
+    );
+
+    if (values.length === 0) {
+      return { min: 0, max: 0 };
+    }
+
+    return {
+      min: Math.min(...values),
+      max: Math.max(...values),
+    };
+  }, [companyEntryById]);
+
+  const legendGradient = useMemo(
+    () => buildLegendGradient(changeRange.min, changeRange.max),
+    [changeRange.max, changeRange.min],
+  );
+
   const handleCompanyClick = useCallback(
     (companyId: string) => {
       const company = companySourceById.get(companyId);
@@ -283,20 +313,19 @@ export function EmissionsChangeBarChart({
                   const companiesInBin = bin.companies.filter(
                     (entry) => entry.emissions > 0,
                   );
-                  const segmentIndex = companiesInBin.findIndex(
-                    (entry) => entry.id === company.id,
+                  const color = getChangeColor(
+                    company.changePercent,
+                    changeRange.min,
+                    changeRange.max,
                   );
-                  const color = getBinBarColor(row.binMid as number);
-                  const opacity = getSegmentOpacity(
-                    segmentIndex,
-                    companiesInBin.length,
-                  );
+                  const hasMultipleCompanies = companiesInBin.length > 1;
 
                   return (
                     <Cell
                       key={`${company.id}-${binIndex}`}
                       fill={color}
-                      fillOpacity={opacity}
+                      stroke={hasMultipleCompanies ? "var(--black-1)" : "none"}
+                      strokeWidth={hasMultipleCompanies ? 1.5 : 0}
                       cursor="pointer"
                       onClick={() => handleCompanyClick(company.id)}
                     />
@@ -308,29 +337,18 @@ export function EmissionsChangeBarChart({
         </ResponsiveContainer>
       </div>
 
-      <div className="flex shrink-0 flex-wrap items-center justify-between gap-3 px-1">
-        <div className="flex items-center gap-2">
-          <span
-            className="inline-block h-3 w-3 shrink-0 rounded-sm"
-            style={{ backgroundColor: COLORS.blue3 }}
-          />
-          <span className="text-xs text-white/40">
-            {t(
-              "companiesOverviewPage.visualizations.emissionsChange.legend.reduction",
-            )}
-          </span>
-        </div>
-        <div className="flex items-center gap-2">
-          <span
-            className="inline-block h-3 w-3 shrink-0 rounded-sm"
-            style={{ backgroundColor: COLORS.pink3 }}
-          />
-          <span className="text-xs text-white/40">
-            {t(
-              "companiesOverviewPage.visualizations.emissionsChange.legend.increase",
-            )}
-          </span>
-        </div>
+      <div className="flex shrink-0 flex-col items-center gap-2 px-1">
+        <BeeswarmLegend
+          min={changeRange.min}
+          max={changeRange.max}
+          unit="%"
+          gradientBackground={legendGradient}
+        />
+        <p className="text-center text-xs text-white/40">
+          {t(
+            "companiesOverviewPage.visualizations.emissionsChange.legend.companyDivider",
+          )}
+        </p>
       </div>
 
       {isMobile && mobileSelectedCompanyId && (
