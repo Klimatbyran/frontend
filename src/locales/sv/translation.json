@@ -330,6 +330,8 @@
         "noComparableData": "Inga företag i denna sektor med jämförbar utsläppsförändringsdata.",
         "unknown": "Okänt",
         "binSummary": "{{range}}: {{count}} företag, {{emissions}} ton CO2e totalt",
+        "companiesCount": "{{count}} företag",
+        "segmentHint": "Varje företag är ett staplat segment i stapeln. Hovra eller tryck på ett segment för detaljer.",
         "legend": {
           "reduction": "Minskning",
           "neutral": "Nära noll",

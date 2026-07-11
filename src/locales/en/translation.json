@@ -330,6 +330,8 @@
         "noComparableData": "No companies in this sector with comparable emissions change data.",
         "unknown": "Unknown",
         "binSummary": "{{range}}: {{count}} companies, {{emissions}} tCO2e total",
+        "companiesCount": "{{count}} companies",
+        "segmentHint": "Each company is a stacked segment within the bar. Hover or tap a segment for details.",
         "legend": {
           "reduction": "Reduction",
           "neutral": "Near zero",
