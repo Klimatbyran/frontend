@@ -6,7 +6,10 @@ import {
   createSymmetricRangeGradient,
 } from "@/utils/ui/colorGradients";
 import type { ColorFunction } from "@/types/visualizations";
-import { DEFAULT_NULL_DATA_COLOR } from "../ui/colors";
+import {
+  DEFAULT_BOOLEAN_DATA_COLORS,
+  DEFAULT_NULL_DATA_COLOR,
+} from "../ui/colors";
 
 export interface CompanyBudgetData {
   company: CompanyWithKPIs;
