@@ -21,23 +21,19 @@ export function PageHeader({
   return (
     <div
       className={cn(
-        "max-w-[1200px] mx-auto",
-        isCompact ? "mb-2 md:mb-3" : "p-4 mb-4 md:mb-8",
+        isCompact
+          ? "w-full mb-3 md:mb-4"
+          : "max-w-[1200px] mx-auto p-4 mb-4 md:mb-8",
         className,
       )}
     >
       {isCompact ? (
-        <div className="flex flex-col md:flex-row md:items-baseline md:gap-3 gap-0.5">
-          <h1 className="text-xl md:text-2xl font-medium shrink-0">{title}</h1>
+        <>
+          <h1 className="text-2xl font-light leading-tight">{title}</h1>
           {description && (
-            <>
-              <span className="hidden md:inline text-white/20" aria-hidden>
-                ·
-              </span>
-              <p className="text-sm text-white/50 md:truncate">{description}</p>
-            </>
+            <p className="text-sm text-grey mt-1">{description}</p>
           )}
-        </div>
+        </>
       ) : (
         <>
           <h1 className="text-3xl font-light mb-2">{title}</h1>
