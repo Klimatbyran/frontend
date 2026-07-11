@@ -30,6 +30,7 @@ import {
 } from "@/utils/territoryMapData";
 import {
   OverviewSplitLayout,
+  OVERVIEW_PANEL_MD_HEIGHT,
   type OverviewViewMode,
 } from "@/components/ranked/OverviewSplitLayout";
 import { useScreenSize } from "@/hooks/useScreenSize";
@@ -129,9 +130,8 @@ function MunicipalitiesOverviewContent({
   return (
     <>
       <PageHeader
+        variant="title-only"
         title={t("municipalitiesOverviewPage.title")}
-        description={t("municipalitiesOverviewPage.description")}
-        className="-ml-4"
       />
 
       <KPIChipSelector<Municipality>
@@ -143,7 +143,7 @@ function MunicipalitiesOverviewContent({
       />
 
       <div className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-6 items-stretch">
           <OverviewSplitLayout
             viewMode={viewMode}
             visualizationMode="map"
@@ -168,11 +168,15 @@ function MunicipalitiesOverviewContent({
             }
             toggle={viewToggle}
           />
-          <InsightsPanel
-            municipalityData={municipalities}
-            selectedKPI={selectedKPI}
-            section="stats"
-          />
+          <div
+            className={`min-h-0 h-full min-w-0 overflow-visible ${OVERVIEW_PANEL_MD_HEIGHT}`}
+          >
+            <InsightsPanel
+              municipalityData={municipalities}
+              selectedKPI={selectedKPI}
+              section="stats"
+            />
+          </div>
         </div>
 
         {!selectedKPI.isBoolean && (
@@ -226,7 +230,7 @@ export function MunicipalitiesOverviewPage() {
     if (String(kpiFromUrl.key) !== String(selectedKPI.key)) {
       setSelectedKPI(kpiFromUrl);
     }
-  }, [urlState, selectedKPI.label]);
+  }, [urlState, selectedKPI.key]);
 
   const handleMunicipalityClick = createEntityClickHandler(
     navigate,
@@ -258,7 +262,14 @@ export function MunicipalitiesOverviewPage() {
     handleMunicipalityClick(municipality ?? name);
   };
 
-  if (municipalitiesLoading) return <OverviewPageSkeleton />;
+  if (municipalitiesLoading) {
+    return (
+      <OverviewPageSkeleton
+        variant="municipalities"
+        chipCount={municipalityKPIs.length}
+      />
+    );
+  }
 
   if (municipalitiesError) {
     return (

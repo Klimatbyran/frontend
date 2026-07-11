@@ -91,11 +91,7 @@ export function ExplorePage() {
 
   return (
     <>
-      <PageHeader
-        title={t("explorePage.title")}
-        description={t("explorePage.description")}
-        className="-ml-4"
-      />
+      <PageHeader variant="title-only" title={t("explorePage.title")} />
 
       <div
         className={cn(

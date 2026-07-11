@@ -1,6 +1,5 @@
 import { type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import { Text } from "@/components/ui/text";
 import type { CompanyDetails, ReportingPeriod } from "@/types/company";
 import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 import { getCompanySectorName } from "@/utils/data/industryGrouping";
@@ -13,20 +12,17 @@ import { calculateTrendline } from "@/lib/calculations/trends/analysis";
 import { calculateMeetsParis } from "@/lib/calculations/trends/meetsParis";
 import { CompanyDescription } from "./CompanyDescription";
 import { OverviewStatistics } from "./OverviewStatistics";
-import { CompanyDetailHeader } from "../CompanyDetailHeader";
 import { yearFromIsoDate } from "@/utils/date";
+import { CompanyDetailHeader } from "../CompanyDetailHeader";
 import {
   CompanyOverviewActions,
   CompanyOverviewMainStats,
-  CompanyOverviewYearSelect,
 } from "./CompanyOverviewParts";
 
 interface CompanyOverviewProps {
   company: CompanyDetails;
   selectedPeriod: ReportingPeriod;
   previousPeriod?: ReportingPeriod;
-  onYearSelect: (year: string) => void;
-  selectedYear: string;
   yearOverYearChange: number | null;
   headerChip?: ReactNode;
 }
@@ -35,8 +31,6 @@ export function CompanyOverview({
   company,
   selectedPeriod,
   previousPeriod,
-  onYearSelect,
-  selectedYear,
   yearOverYearChange,
   headerChip,
 }: CompanyOverviewProps) {
@@ -92,22 +86,6 @@ export function CompanyOverview({
           sortedPeriods={sortedPeriods}
         />
         <CompanyDescription description={description} />
-        <div className="flex flex-row items-center gap-2 my-4">
-          <Text
-            variant="body"
-            className="text-grey text-sm md:text-base lg:text-lg"
-          >
-            {t("companies.overview.sector")}:
-          </Text>
-          <Text variant="body" className="text-sm md:text-base lg:text-lg">
-            {sectorName}
-          </Text>
-        </div>
-        <CompanyOverviewYearSelect
-          selectedYear={selectedYear}
-          onYearSelect={onYearSelect}
-          sortedPeriods={sortedPeriods}
-        />
       </div>
 
       <CompanyOverviewMainStats
@@ -124,6 +102,7 @@ export function CompanyOverview({
       <OverviewStatistics
         selectedPeriod={selectedPeriod}
         currentLanguage={currentLanguage}
+        sectorName={sectorName}
         formattedEmployeeCount={formattedEmployeeCount}
         turnoverAIGenerated={turnoverAIGenerated}
         employeesAIGenerated={employeesAIGenerated}

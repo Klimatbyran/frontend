@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { getCompanyDetailPath } from "@/utils/companyRouting";
 import {
   CompanyWithKPIs,
   CompanyKPIValue,
@@ -25,6 +26,8 @@ interface InsightsPanelProps {
   companyData: CompanyWithKPIs[];
   selectedKPI: CompanyKPIValue;
   section?: InsightsPanelSection;
+  /** Forces insight lists to remount when the active filter changes */
+  listKey?: string;
 }
 
 const MIN_COMPANIES = 2;
@@ -42,13 +45,13 @@ function getCompanyInsightsData(
   selectedKPI: CompanyKPIValue,
   t: ReturnType<typeof useTranslation>["t"],
 ) {
+  const kpiKey = String(selectedKPI.key);
   const statistics = calculateEntityStatistics(
     companyData,
     selectedKPI,
     (company) => company[selectedKPI.key],
     "companies",
   );
-
   const sortedValidData = getSortedEntityKPIValues(
     statistics.validData,
     selectedKPI,
@@ -61,6 +64,7 @@ function getCompanyInsightsData(
   const { topPerformer, bottomPerformer } = buildPerformerProps(
     sortedValidData,
     { key: selectedKPI.key, unit, isBoolean: selectedKPI.isBoolean },
+    (company) => getCompanyDetailPath(company),
   );
   const colorItem = selectedKPI.createKPIColorGetter
     ? selectedKPI.createKPIColorGetter(companyData)
@@ -72,9 +76,8 @@ function getCompanyInsightsData(
       );
 
   return {
-    t,
+    kpiKey,
     statistics,
-    sortedValidData,
     topCompanies,
     bottomCompanies,
     sourceLinks,
@@ -82,20 +85,18 @@ function getCompanyInsightsData(
     topPerformer,
     bottomPerformer,
     colorItem,
+    t,
   };
 }
 
-function CompanyInsightsPanels({
-  companyData,
-  selectedKPI,
-  insightsData,
-}: {
-  companyData: CompanyWithKPIs[];
-  selectedKPI: CompanyKPIValue;
-  insightsData: ReturnType<typeof getCompanyInsightsData>;
-}) {
+function buildCompanyInsightsPanels(
+  companyData: CompanyWithKPIs[],
+  selectedKPI: CompanyKPIValue,
+  insightsData: ReturnType<typeof getCompanyInsightsData>,
+  listKey?: string,
+) {
   const {
-    t,
+    kpiKey,
     statistics,
     topCompanies,
     bottomCompanies,
@@ -104,6 +105,7 @@ function CompanyInsightsPanels({
     topPerformer,
     bottomPerformer,
     colorItem,
+    t,
   } = insightsData;
 
   const booleanSummary = (
@@ -113,8 +115,10 @@ function CompanyInsightsPanels({
   return {
     stats: (
       <KPIDetailsPanel
-        title={selectedKPI.label}
-        description={selectedKPI.detailedDescription || selectedKPI.description}
+        title={t(`companies.list.kpis.${kpiKey}.label`)}
+        description={t(`companies.list.kpis.${kpiKey}.detailedDescription`, {
+          defaultValue: t(`companies.list.kpis.${kpiKey}.description`),
+        })}
         isBoolean={selectedKPI.isBoolean}
         higherIsBetter={selectedKPI.higherIsBetter}
         averageValue={statistics.formattedAverage}
@@ -123,10 +127,11 @@ function CompanyInsightsPanels({
         bottomPerformer={bottomPerformer}
         chart={
           selectedKPI.isBoolean ? (
-            <KPIDistributionChart
+            <KPIDistributionChart<CompanyWithKPIs>
               data={companyData}
               selectedKPI={selectedKPI}
               entityLabel={entityPlural}
+              translationPrefix="companies.list"
             />
           ) : undefined
         }
@@ -143,12 +148,14 @@ function CompanyInsightsPanels({
             selectedKPI={selectedKPI}
             average={!selectedKPI.isBoolean ? statistics.average : undefined}
             entityLabel={entityPlural}
+            translationPrefix="companies.list"
           />
         }
       />
     ),
     top: !selectedKPI.isBoolean ? (
       <InsightsList<CompanyWithKPIs>
+        key={listKey ? `top-${listKey}` : undefined}
         title={t(
           selectedKPI.higherIsBetter
             ? "rankedInsights.titleTop"
@@ -159,7 +166,9 @@ function CompanyInsightsPanels({
         totalCount={statistics.validData.length}
         dataPointKey={selectedKPI.key}
         unit={selectedKPI.unit}
-        nullValues={selectedKPI.nullValues}
+        nullValues={t(`companies.list.kpis.${kpiKey}.nullValues`, {
+          defaultValue: "",
+        })}
         entityType="companies"
         nameKey="name"
         showBars
@@ -170,6 +179,7 @@ function CompanyInsightsPanels({
     ),
     bottom: !selectedKPI.isBoolean ? (
       <InsightsList<CompanyWithKPIs>
+        key={listKey ? `bottom-${listKey}` : undefined}
         title={t("rankedInsights.titleWorst", {
           nrOfEntities: bottomCompanies.length,
           entityPlural,
@@ -179,7 +189,9 @@ function CompanyInsightsPanels({
         isBottomRanking
         dataPointKey={selectedKPI.key}
         unit={selectedKPI.unit}
-        nullValues={selectedKPI.nullValues}
+        nullValues={t(`companies.list.kpis.${kpiKey}.nullValues`, {
+          defaultValue: "",
+        })}
         entityType="companies"
         nameKey="name"
         showBars
@@ -193,6 +205,7 @@ function CompanyInsightsPanel({
   companyData,
   selectedKPI,
   section,
+  listKey,
 }: InsightsPanelProps) {
   const { t } = useTranslation();
 
@@ -210,17 +223,18 @@ function CompanyInsightsPanel({
     return (
       <InsightsEmptyState
         message={t("companies.list.insights.noData.metric", {
-          metric: selectedKPI.label,
+          metric: t(`companies.list.kpis.${insightsData.kpiKey}.label`),
         })}
       />
     );
   }
 
-  const panels = CompanyInsightsPanels({
+  const panels = buildCompanyInsightsPanels(
     companyData,
     selectedKPI,
     insightsData,
-  });
+    listKey,
+  );
 
   if (section === "stats") return panels.stats;
   if (section === "distribution") return panels.distribution;

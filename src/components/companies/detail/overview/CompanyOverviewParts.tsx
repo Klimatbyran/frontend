@@ -1,13 +1,6 @@
 import { Pen } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Text } from "@/components/ui/text";
 import type { ReportingPeriod } from "@/types/company";
 import { useAuth } from "@/contexts/AuthContext";
@@ -20,7 +13,6 @@ import { EmissionsAssessmentButton } from "../emissions-assessment/EmissionsAsse
 import { OverviewStat } from "./OverviewStat";
 import { FinancialsTooltip } from "./FinancialsTooltip";
 import { CompanyOverviewTooltip } from "./CompanyOverviewTooltip";
-import { yearFromIsoDate } from "@/utils/date";
 
 interface CompanyOverviewActionsProps {
   companyId: string;
@@ -55,50 +47,6 @@ export function CompanyOverviewActions({
         companyId={companyId}
         sortedPeriods={sortedPeriods}
       />
-    </div>
-  );
-}
-
-interface CompanyOverviewYearSelectProps {
-  selectedYear: string;
-  onYearSelect: (year: string) => void;
-  sortedPeriods: ReportingPeriod[];
-}
-
-export function CompanyOverviewYearSelect({
-  selectedYear,
-  onYearSelect,
-  sortedPeriods,
-}: CompanyOverviewYearSelectProps) {
-  const { t } = useTranslation();
-
-  return (
-    <div className="my-4 w-full max-w-[180px]">
-      <Select value={selectedYear} onValueChange={onYearSelect}>
-        <SelectTrigger className="w-full bg-black-1 text-white px-3 py-2 rounded-md">
-          <SelectValue placeholder={t("companies.overview.selectYear")} />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="latest">
-            {t("companies.overview.latestYear")}
-          </SelectItem>
-          {sortedPeriods.map((period) => {
-            const year = yearFromIsoDate(period.endDate);
-            if (
-              period.emissions?.calculatedTotalEmissions === null ||
-              period.emissions?.calculatedTotalEmissions === 0
-            ) {
-              return null;
-            }
-
-            return (
-              <SelectItem key={year} value={year}>
-                {year}
-              </SelectItem>
-            );
-          })}
-        </SelectContent>
-      </Select>
     </div>
   );
 }
@@ -190,9 +138,7 @@ export function CompanyOverviewMainStats({
                 )}
               </span>
             ) : (
-              <span className="text-grey">
-                {t("companies.overview.noData")}
-              </span>
+              <span className="text-grey">{t("companies.overview.noData")}</span>
             )
           }
           showAiIcon={yearOverYearAIGenerated}

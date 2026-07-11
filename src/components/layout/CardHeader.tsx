@@ -7,116 +7,34 @@ import {
   ViewOption,
 } from "@/components/charts/DataViewSelector";
 
+// Generic card header props
 interface CardHeaderProps<T extends string = string> {
+  // Required fields
   title: string;
+
+  // Optional fields with defaults
   tooltipContent?: string;
   unit?: string;
   description?: string;
+
+  // Data view selector options (for charts)
   dataView?: T;
   setDataView?: (value: T) => void;
   dataViewOptions?: ViewOption<T>[];
   dataViewPlaceholder?: string;
+
+  // Custom data view selector (if provided, overrides default behavior)
   customDataViewSelector?: React.ReactNode;
-  layout?: "wide" | "narrow" | "page";
+
+  // Layout options
+  layout?: "wide" | "narrow";
   className?: string;
 }
 
-function getEffectiveLayout<T extends string>(
-  layout: CardHeaderProps<T>["layout"],
-  isWide: boolean,
-): "wide" | "narrow" | "page" {
-  if (layout === "narrow") {
-    return "narrow";
-  }
-  if (layout === "page") {
-    return "page";
-  }
-  return isWide ? "wide" : "narrow";
-}
-
-function CardHeaderPageLayout({
-  title,
-  description,
-  className = "",
-}: Pick<CardHeaderProps, "title" | "description" | "className">) {
-  return (
-    <div className={className}>
-      <h1 className="text-3xl font-light mb-2">{title}</h1>
-      {description && <p className="text-sm text-grey">{description}</p>}
-    </div>
-  );
-}
-
-function CardHeaderContent<T extends string>({
-  title,
-  tooltipContent,
-  unit,
-  description,
-  dataView,
-  setDataView,
-  dataViewOptions,
-  dataViewPlaceholder,
-  customDataViewSelector,
-  effectiveLayout,
-}: {
-  title: string;
-  tooltipContent?: string;
-  unit?: string;
-  description?: string;
-  dataView?: T;
-  setDataView?: (value: T) => void;
-  dataViewOptions?: ViewOption<T>[];
-  dataViewPlaceholder?: string;
-  customDataViewSelector?: React.ReactNode;
-  effectiveLayout: "wide" | "narrow" | "page";
-}) {
-  const showDataViewSelector =
-    (dataView &&
-      setDataView &&
-      dataViewOptions &&
-      dataViewOptions.length > 0) ||
-    customDataViewSelector;
-
-  return (
-    <div className="flex flex-col @lg:flex-row @lg:items-center @lg:justify-between mb-6 @lg:mb-12 gap-4 @lg:gap-0">
-      <div className="space-y-2">
-        <div className="flex items-center gap-2">
-          <Text variant="h3">{title}</Text>
-          {tooltipContent && (
-            <InfoTooltip ariaLabel="Information about this data">
-              <p>{tooltipContent}</p>
-            </InfoTooltip>
-          )}
-        </div>
-        {unit && (
-          <Text variant="body" className="text-grey">
-            {unit}
-          </Text>
-        )}
-        {description && (
-          <Text variant="body" className="text-grey">
-            {description}
-          </Text>
-        )}
-      </div>
-
-      {showDataViewSelector && (
-        <div>
-          {customDataViewSelector || (
-            <DataViewSelector
-              dataView={dataView!}
-              setDataView={setDataView!}
-              availableViews={dataViewOptions!}
-              placeholder={dataViewPlaceholder}
-              layout={effectiveLayout === "page" ? "wide" : effectiveLayout}
-            />
-          )}
-        </div>
-      )}
-    </div>
-  );
-}
-
+/**
+ * Unified card header component that can be used for charts, data displays, and other card-like components.
+ * All fields except title are optional to accommodate different use cases.
+ */
 export const CardHeader = <T extends string = string>({
   title,
   tooltipContent,
@@ -131,35 +49,60 @@ export const CardHeader = <T extends string = string>({
   className = "",
 }: CardHeaderProps<T>): React.ReactElement => {
   const [containerRef, isWide] = useContainerQuery<HTMLDivElement>(
-    ({ width }) => width >= 512,
+    ({ width }) => {
+      return width >= 512;
+    },
   );
 
-  if (layout === "page") {
-    return (
-      <CardHeaderPageLayout
-        title={title}
-        description={description}
-        className={className}
-      />
-    );
-  }
-
-  const effectiveLayout = getEffectiveLayout(layout, isWide);
+  // Determine if we should show the data view selector
+  const showDataViewSelector =
+    (dataView &&
+      setDataView &&
+      dataViewOptions &&
+      dataViewOptions.length > 0) ||
+    customDataViewSelector;
+  const effectiveLayout =
+    layout === "narrow" ? "narrow" : isWide ? "wide" : "narrow";
 
   return (
     <div className={`@container ${className}`} ref={containerRef}>
-      <CardHeaderContent
-        title={title}
-        tooltipContent={tooltipContent}
-        unit={unit}
-        description={description}
-        dataView={dataView}
-        setDataView={setDataView}
-        dataViewOptions={dataViewOptions}
-        dataViewPlaceholder={dataViewPlaceholder}
-        customDataViewSelector={customDataViewSelector}
-        effectiveLayout={effectiveLayout}
-      />
+      <div className="flex flex-col @lg:flex-row @lg:items-center @lg:justify-between mb-6 @lg:mb-12 gap-4 @lg:gap-0">
+        <div className="space-y-2">
+          <div className="flex items-center gap-2">
+            <Text variant="h3">{title}</Text>
+            {tooltipContent && (
+              <InfoTooltip ariaLabel="Information about this data">
+                <p>{tooltipContent}</p>
+              </InfoTooltip>
+            )}
+          </div>
+          {unit && (
+            <Text variant="body" className="text-grey">
+              {unit}
+            </Text>
+          )}
+          {description && (
+            <Text variant="body" className="text-grey">
+              {description}
+            </Text>
+          )}
+        </div>
+
+        {/* Data view selector - either custom or default */}
+        {showDataViewSelector && (
+          <div>
+            {customDataViewSelector || (
+              <DataViewSelector
+                dataView={dataView!}
+                setDataView={setDataView!}
+                availableViews={dataViewOptions!}
+                placeholder={dataViewPlaceholder}
+                layout={effectiveLayout}
+              />
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

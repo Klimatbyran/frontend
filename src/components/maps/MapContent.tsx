@@ -29,6 +29,7 @@ interface MapContentProps {
   backgroundColor?: string;
   scrollWheelZoom?: boolean;
   fitBounds?: boolean;
+  fitBoundsPadding?: L.FitBoundsOptions["padding"];
 }
 
 function MapContent({
@@ -44,6 +45,7 @@ function MapContent({
   backgroundColor = "var(--black-2)",
   scrollWheelZoom = true,
   fitBounds = false,
+  fitBoundsPadding = MAP_FIT_BOUNDS_PADDING,
 }: MapContentProps) {
   const [isMounted, setIsMounted] = useState(false);
   const mapId = useId();
@@ -93,10 +95,7 @@ function MapContent({
         onEachFeature={onEachFeature}
       />
       {fitBounds && (
-        <MapInitialBoundsFitter
-          bounds={mapBounds}
-          padding={MAP_FIT_BOUNDS_PADDING}
-        />
+        <MapInitialBoundsFitter bounds={mapBounds} padding={fitBoundsPadding} />
       )}
       <MapController setPosition={setPosition} />
     </MapContainer>

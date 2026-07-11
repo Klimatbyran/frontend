@@ -44,8 +44,10 @@ export function useTerritoryDetailPageData(
   const lastYear = lastYearEmissions?.year;
   const headerStats = useTerritoryDetailHeaderStats(entity, lastYear);
 
-  const { selectedYear, setSelectedYear, availableYears, currentYear } =
-    useSectorYearSelection(sectorEmissions, lastYear ?? 2023);
+  const { availableYears, currentYear } = useSectorYearSelection(
+    sectorEmissions,
+    lastYear ?? 2023,
+  );
 
   return {
     emissionsData,
@@ -55,8 +57,6 @@ export function useTerritoryDetailPageData(
     getSectorInfo,
     filteredSectors,
     setFilteredSectors,
-    selectedYear,
-    setSelectedYear,
     availableYears,
     currentYear,
   };

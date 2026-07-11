@@ -41,11 +41,11 @@ export function useRankedRegionsURLParams(regionalKPIs: KPIValue<Region>[]) {
   const viewMode = getViewModeFromURL();
 
   useEffect(() => {
-    const kpiFromUrl = getKPIFromURL();
-    if (kpiFromUrl && kpiFromUrl.key !== selectedKPI.key) {
-      setSelectedKPI(kpiFromUrl);
-    }
-  }, [getKPIFromURL, selectedKPI.key]);
+    const kpi = getKPIFromURL();
+    setSelectedKPI((prev) =>
+      String(prev.key) === String(kpi.key) ? prev : kpi,
+    );
+  }, [getKPIFromURL]);
 
   return {
     selectedKPI,

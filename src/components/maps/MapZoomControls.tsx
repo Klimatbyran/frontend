@@ -1,4 +1,5 @@
 import { RotateCcw, ZoomIn, ZoomOut } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 import type { MapLegendPosition } from "./MapLegend";
 
@@ -17,6 +18,8 @@ export function MapZoomControls({
   canZoomOut: boolean;
   legendPosition?: MapLegendPosition;
 }) {
+  const { t } = useTranslation();
+
   return (
     <div
       className={cn(
@@ -33,7 +36,7 @@ export function MapZoomControls({
       <button
         onClick={onZoomIn}
         disabled={!canZoomIn}
-        aria-label="Zoom in"
+        aria-label={t("mapControls.zoomIn")}
         className="p-2 bg-black/40 backdrop-blur-sm rounded-xl hover:bg-black/60 transition-colors disabled:opacity-50"
       >
         <ZoomIn className="w-5 h-5 text-white/70" />
@@ -41,14 +44,14 @@ export function MapZoomControls({
       <button
         onClick={onZoomOut}
         disabled={!canZoomOut}
-        aria-label="Zoom out"
+        aria-label={t("mapControls.zoomOut")}
         className="p-2 bg-black/40 backdrop-blur-sm rounded-xl hover:bg-black/60 transition-colors disabled:opacity-50"
       >
         <ZoomOut className="w-5 h-5 text-white/70" />
       </button>
       <button
         onClick={onReset}
-        aria-label="Reset"
+        aria-label={t("mapControls.reset")}
         className="p-2 bg-black/40 backdrop-blur-sm rounded-xl hover:bg-black/60 transition-colors"
       >
         <RotateCcw className="w-5 h-5 text-white/70" />

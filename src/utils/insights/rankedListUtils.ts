@@ -70,6 +70,48 @@ export function filterValidData<T, KPI extends KPIValue<T> = KPIValue<T>>(
   });
 }
 
+function buildDistributionStats<T, KPI extends KPIValue<T>>(
+  selectedKPI: KPI,
+  entityType: "municipalities" | "companies" | "regions",
+  aboveAverageCount: number,
+  belowAverageCount: number,
+  nullCount: number,
+): EntityStatistics<T>["distributionStats"] {
+  const entityPlural = t("header." + entityType).toLowerCase();
+  const aboveAverageLabel = t("rankedInsights.aboveAverage", { entityPlural });
+  const belowAverageLabel = t("rankedInsights.belowAverage", { entityPlural });
+  const kpiKey = String(selectedKPI.key);
+
+  const distributionStats = [
+    {
+      count: aboveAverageCount,
+      colorClass: selectedKPI.higherIsBetter ? "text-blue-3" : "text-pink-3",
+      label: selectedKPI.isBoolean
+        ? t(`${entityType}.list.kpis.${kpiKey}.booleanLabels.true`)
+        : aboveAverageLabel,
+    },
+    {
+      count: belowAverageCount,
+      colorClass: selectedKPI.higherIsBetter ? "text-pink-3" : "text-blue-3",
+      label: selectedKPI.isBoolean
+        ? t(`${entityType}.list.kpis.${kpiKey}.booleanLabels.false`)
+        : belowAverageLabel,
+    },
+  ];
+
+  if (selectedKPI.isBoolean && nullCount > 0) {
+    distributionStats.push({
+      count: nullCount,
+      colorClass: "text-grey",
+      label: t(`${entityType}.list.kpis.${kpiKey}.nullValues`, {
+        defaultValue: t("unknown"),
+      }),
+    });
+  }
+
+  return distributionStats;
+}
+
 /**
  * Calculate statistics for entities based on KPI
  */
@@ -110,32 +152,13 @@ export function calculateEntityStatistics<
     return isMissingRankedValue(value, selectedKPI.isBoolean);
   }).length;
 
-  const entityPlural = t("header." + entityType).toLowerCase();
-
-  const aboveAverageLabel = t("rankedInsights.aboveAverage", {
-    entityPlural,
-  });
-  const belowAverageLabel = t("rankedInsights.belowAverage", {
-    entityPlural,
-  });
-
-  // Create distribution stats
-  const distributionStats = [
-    {
-      count: aboveAverageCount,
-      colorClass: selectedKPI.higherIsBetter ? "text-blue-3" : "text-pink-3",
-      label: selectedKPI.isBoolean
-        ? selectedKPI.booleanLabels?.true || t("yes")
-        : aboveAverageLabel,
-    },
-    {
-      count: belowAverageCount,
-      colorClass: selectedKPI.higherIsBetter ? "text-pink-3" : "text-blue-3",
-      label: selectedKPI.isBoolean
-        ? selectedKPI.booleanLabels?.false || t("no")
-        : belowAverageLabel,
-    },
-  ];
+  const distributionStats = buildDistributionStats(
+    selectedKPI,
+    entityType,
+    aboveAverageCount,
+    belowAverageCount,
+    nullCount,
+  );
 
   const unit = selectedKPI.unit || "";
   const formattedAverage = selectedKPI.isBoolean
@@ -170,11 +193,16 @@ interface PerformerResult {
 export function buildPerformerProps<T extends { name: string }>(
   sortedData: T[],
   kpi: { key: keyof T; unit?: string; isBoolean?: boolean },
-  hrefPrefix?: string,
+  hrefResolver?: string | ((item: T) => string | undefined),
 ): { topPerformer?: PerformerResult; bottomPerformer?: PerformerResult } {
   if (kpi.isBoolean || !sortedData.length) return {};
   const unit = kpi.unit || "";
   const fmt = (item: T) => `${(item[kpi.key] as number)?.toFixed(1)}${unit}`;
+  const getHref = (item: T): string | undefined => {
+    if (!hrefResolver) return undefined;
+    if (typeof hrefResolver === "function") return hrefResolver(item);
+    return `${hrefResolver}/${item.name.toLowerCase()}`;
+  };
   const best = sortedData[0];
   const worst = sortedData[sortedData.length - 1];
   return {
@@ -182,9 +210,7 @@ export function buildPerformerProps<T extends { name: string }>(
       ? {
           name: best.name,
           value: fmt(best),
-          href: hrefPrefix
-            ? `${hrefPrefix}/${best.name.toLowerCase()}`
-            : undefined,
+          href: getHref(best),
         }
       : undefined,
     bottomPerformer:
@@ -192,9 +218,7 @@ export function buildPerformerProps<T extends { name: string }>(
         ? {
             name: worst.name,
             value: fmt(worst),
-            href: hrefPrefix
-              ? `${hrefPrefix}/${worst.name.toLowerCase()}`
-              : undefined,
+            href: getHref(worst),
           }
         : undefined,
   };

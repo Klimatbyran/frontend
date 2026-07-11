@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { CompanyWithKPIs } from "@/hooks/companies/useCompanyKPIs";
 import { getBestUnit } from "@/utils/data/unitScaling";
 import { calculateCapThreshold } from "@/utils/data/capping";
-import { useScreenSize } from "@/hooks/useScreenSize";
 import { getCompanyUrlSegment } from "@/utils/companyRouting";
 import { BeeswarmChart } from "./shared/BeeswarmChart";
 import {
@@ -21,11 +20,12 @@ export function MeetsParisVisualization({
   onCompanyClick,
 }: MeetsParisVisualizationProps) {
   const { t } = useTranslation();
-  const { isMobile } = useScreenSize();
 
   // Calculate budget data and basic statistics
-  const { companyBudgetData, noBudgetCompanies, minRaw, maxRaw, budgetValues } =
-    useMemo(() => getCompanyBudgetData(companies), [companies]);
+  const { companyBudgetData, minRaw, maxRaw, budgetValues } = useMemo(
+    () => getCompanyBudgetData(companies),
+    [companies],
+  );
 
   // Calculate unit scaling, capping, and display values
   const {
@@ -133,15 +133,6 @@ export function MeetsParisVisualization({
           legendMax={legendMax}
         />
       </div>
-
-      {!isMobile && (
-        <div className="text-sm text-grey">
-          {t("companies.list.kpis.meetsParis.label")}
-          {" · "}
-          {t("companies.list.kpis.meetsParis.nullValues", "Unknown")}:{" "}
-          {noBudgetCompanies.length}
-        </div>
-      )}
     </div>
   );
 }

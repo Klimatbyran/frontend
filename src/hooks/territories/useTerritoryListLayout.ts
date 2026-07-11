@@ -7,15 +7,19 @@ import {
 } from "@/utils/territoryMapUtils";
 
 /** Map panel height; keep md: height on TERRITORY_LIST_PANEL_CLASS in sync. */
-export const TERRITORY_PANEL_CLASS = "h-[min(32rem,55vh)] min-h-[20rem]";
+export const TERRITORY_PANEL_CLASS =
+  "h-[min(40rem,72vh)] min-h-[28rem] md:h-[min(32rem,55vh)] md:min-h-[20rem]";
 /** List column uses the same height as the map from the md side-by-side breakpoint. */
 export const TERRITORY_LIST_PANEL_CLASS =
   "flex flex-col min-w-0 md:h-[min(32rem,55vh)] md:min-h-[20rem]";
 export const SIDE_BY_SIDE_MIN_WIDTH = 768;
 
 const LIST_COLUMNS = 2;
-/** Matches TerritoryListRow text-sm leading-5 row (~28px). */
-const LIST_ROW_HEIGHT = 28;
+/** Mobile list paginates in pages of this size when item count exceeds the threshold. */
+export const MOBILE_TERRITORY_LIST_PAGE_SIZE = 7;
+export const MOBILE_TERRITORY_LIST_PAGINATION_THRESHOLD = 10;
+/** Matches TerritoryListRow single-line card row (~36px). */
+const LIST_ROW_HEIGHT = 36;
 /** Matches gap-y-2 between list rows. */
 const LIST_ROW_GAP = 8;
 /** Reserved height for MultiPagePagination below the list grid. */
@@ -44,15 +48,21 @@ function calculateItemsPerPage(itemCount: number, panelHeight: number): number {
 }
 
 function useItemsPerPage(
-  panelRef: React.RefObject<HTMLDivElement>,
+  panelRef: React.RefObject<HTMLDivElement | null>,
   itemCount: number,
-  shouldPaginateList: boolean,
+  shouldPaginateDesktop: boolean,
+  shouldPaginateMobile: boolean,
 ) {
   const [itemsPerPage, setItemsPerPage] = useState(itemCount);
 
   useEffect(() => {
-    if (!shouldPaginateList) {
+    if (!shouldPaginateDesktop && !shouldPaginateMobile) {
       setItemsPerPage(itemCount);
+      return;
+    }
+
+    if (shouldPaginateMobile) {
+      setItemsPerPage(MOBILE_TERRITORY_LIST_PAGE_SIZE);
       return;
     }
 
@@ -69,13 +79,13 @@ function useItemsPerPage(
     observer.observe(panel);
 
     return () => observer.disconnect();
-  }, [itemCount, shouldPaginateList, panelRef]);
+  }, [itemCount, shouldPaginateDesktop, shouldPaginateMobile, panelRef]);
 
   return itemsPerPage;
 }
 
 function useHoveredPageSync(options: {
-  shouldPaginateList: boolean;
+  shouldPaginateDesktop: boolean;
   hoveredMapArea: string | null;
   territories: TerritoryListEntry[];
   itemsPerPage: number;
@@ -83,7 +93,7 @@ function useHoveredPageSync(options: {
   setCurrentPage: (page: number) => void;
 }) {
   const {
-    shouldPaginateList,
+    shouldPaginateDesktop,
     hoveredMapArea,
     territories,
     itemsPerPage,
@@ -92,7 +102,7 @@ function useHoveredPageSync(options: {
   } = options;
 
   useEffect(() => {
-    if (!shouldPaginateList || !hoveredMapArea || itemsPerPage <= 0) {
+    if (!shouldPaginateDesktop || !hoveredMapArea || itemsPerPage <= 0) {
       return;
     }
 
@@ -107,7 +117,7 @@ function useHoveredPageSync(options: {
     }
   }, [
     hoveredMapArea,
-    shouldPaginateList,
+    shouldPaginateDesktop,
     territories,
     itemsPerPage,
     currentPageSafe,
@@ -130,13 +140,21 @@ export function useTerritoryListLayout(
   );
   const [layoutRef, isSideBySide] =
     useContainerQuery<HTMLDivElement>(sideBySideQuery);
-  const shouldPaginateList = isSideBySide && paginationEnabled;
+  const shouldPaginateDesktop = isSideBySide && paginationEnabled;
+  const shouldPaginateMobile =
+    !isSideBySide && itemCount > MOBILE_TERRITORY_LIST_PAGINATION_THRESHOLD;
+  const shouldPaginateList = shouldPaginateDesktop || shouldPaginateMobile;
 
   useEffect(() => {
     setCurrentPage(1);
   }, [itemCount, shouldPaginateList]);
 
-  const itemsPerPage = useItemsPerPage(panelRef, itemCount, shouldPaginateList);
+  const itemsPerPage = useItemsPerPage(
+    panelRef,
+    itemCount,
+    shouldPaginateDesktop,
+    shouldPaginateMobile,
+  );
 
   const totalPages = Math.max(1, Math.ceil(itemCount / itemsPerPage));
   const currentPageSafe = Math.min(currentPage, totalPages);
@@ -148,7 +166,7 @@ export function useTerritoryListLayout(
   }, [currentPage, currentPageSafe]);
 
   useHoveredPageSync({
-    shouldPaginateList,
+    shouldPaginateDesktop,
     hoveredMapArea,
     territories,
     itemsPerPage,

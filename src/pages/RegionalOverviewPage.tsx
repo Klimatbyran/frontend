@@ -20,7 +20,10 @@ import { RegionalRankedList } from "@/components/regions/RegionalRankedList";
 import { KPIChipSelector } from "@/components/ranked/KPIChipSelector";
 import { OverviewPageSkeleton } from "@/components/ranked/OverviewPageSkeleton";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
-import { OverviewSplitLayout } from "@/components/ranked/OverviewSplitLayout";
+import {
+  OverviewSplitLayout,
+  OVERVIEW_PANEL_MD_HEIGHT,
+} from "@/components/ranked/OverviewSplitLayout";
 import { createEntityClickHandler } from "@/utils/routing";
 import { RankedListItem } from "@/types/rankings";
 import { useScreenSize } from "@/hooks/useScreenSize";
@@ -98,7 +101,9 @@ export function RegionalOverviewPage() {
   }, [regionEntities]);
 
   if (regionsLoading) {
-    return <OverviewPageSkeleton />;
+    return (
+      <OverviewPageSkeleton variant="regions" chipCount={regionalKPIs.length} />
+    );
   }
 
   if (regionsError) {
@@ -156,9 +161,8 @@ export function RegionalOverviewPage() {
   return (
     <>
       <PageHeader
+        variant="title-only"
         title={t("regionalOverviewPage.title")}
-        description={t("regionalOverviewPage.description")}
-        className="-ml-4"
       />
 
       <KPIChipSelector<Region>
@@ -170,12 +174,12 @@ export function RegionalOverviewPage() {
         }}
         iconMap={REGION_KPI_ICONS}
         translationPrefix="regions.list"
-        label={t("municipalities.list.dataSelector.label")}
+        label={t("regions.list.dataSelector.label")}
       />
 
       <div className="space-y-6">
         {/* Row 1: map/list toggle | stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-6 items-stretch">
           <OverviewSplitLayout
             viewMode={viewMode}
             visualizationMode="map"
@@ -183,11 +187,15 @@ export function RegionalOverviewPage() {
             list={regionalRankedList}
             toggle={viewToggle}
           />
-          <RegionalInsightsPanel
-            regionsData={regionsAsEntities}
-            selectedKPI={selectedKPI}
-            section="stats"
-          />
+          <div
+            className={`min-h-0 h-full min-w-0 overflow-visible ${OVERVIEW_PANEL_MD_HEIGHT}`}
+          >
+            <RegionalInsightsPanel
+              regionsData={regionsAsEntities}
+              selectedKPI={selectedKPI}
+              section="stats"
+            />
+          </div>
         </div>
 
         {!selectedKPI.isBoolean && (

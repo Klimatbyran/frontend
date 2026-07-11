@@ -9,11 +9,18 @@ import type { FilterGroup } from "@/components/explore/FilterPopover";
 import type { CompanySortBy } from "./useCompanySorting";
 import type { SortDirection } from "@/components/explore/SortPopover";
 import { getSearchTerms } from "@/hooks/explore/exploreFilterUtils";
+import type { CompanyCountryTagSlug } from "@/lib/constants/companyCountryTags";
+import {
+  buildCountryActiveFilters,
+  buildCountryFilterGroup,
+  companyMatchesCountries,
+} from "./companyCountryFilterUtils";
 
 type MeetsParisFilter = "all" | "yes" | "no" | "unknown";
 
 export type CompanyFilterParams = {
   sectors: CompanySector[];
+  selectedCountries: CompanyCountryTagSlug[];
   searchQuery: string;
   meetsParisFilter: MeetsParisFilter;
   sortBy: CompanySortBy;
@@ -170,6 +177,7 @@ export function filterAndSortCompanies(
 ): RankedCompany[] {
   const {
     sectors,
+    selectedCountries,
     searchQuery,
     meetsParisFilter,
     sortBy,
@@ -182,7 +190,8 @@ export function filterAndSortCompanies(
       (company) =>
         matchesSector(company, sectors) &&
         matchesSearch(company, searchQuery, sectorNames) &&
-        matchesMeetsParis(company, meetsParisFilter),
+        matchesMeetsParis(company, meetsParisFilter) &&
+        companyMatchesCountries(company, selectedCountries),
     )
     .sort((a, b) => compareCompanies(a, b, sortBy, sortDirection));
 }
@@ -261,18 +270,24 @@ export function buildCompanyActiveFilters(
   options: {
     includeSectorFilter: boolean;
     sectors: CompanySector[];
+    selectedCountries: CompanyCountryTagSlug[];
     meetsParisFilter: MeetsParisFilter;
     sectorNames: Record<string, string>;
+    countryNames: Record<CompanyCountryTagSlug, string>;
     setSectors: (sectors: CompanySector[]) => void;
+    setSelectedCountries: (countries: CompanyCountryTagSlug[]) => void;
     setMeetsParisFilter: (value: MeetsParisFilter) => void;
   },
 ) {
   const {
     includeSectorFilter,
     sectors,
+    selectedCountries,
     meetsParisFilter,
     sectorNames,
+    countryNames,
     setSectors,
+    setSelectedCountries,
     setMeetsParisFilter,
   } = options;
 
@@ -284,6 +299,14 @@ export function buildCompanyActiveFilters(
           onRemove: () => setSectors(sectors.filter((s) => s !== sector)),
         }))
       : []),
+    ...buildCountryActiveFilters({
+      countryNames,
+      selectedCountries,
+      onRemove: (country) =>
+        setSelectedCountries(
+          selectedCountries.filter((value) => value !== country),
+        ),
+    }),
     ...(meetsParisFilter !== "all"
       ? [
           {
@@ -318,9 +341,14 @@ export function buildCompanyFilterUi(
     includeSectorFilter: boolean;
     sectorOptions: { value: string; label: string }[];
     sectors: CompanySector[];
+    selectedCountries: CompanyCountryTagSlug[];
+    availableCountries: CompanyCountryTagSlug[];
     meetsParisFilter: MeetsParisFilter;
     sectorNames: Record<string, string>;
+    countryNames: Record<CompanyCountryTagSlug, string>;
     setSectors: (value: CompanySector[]) => void;
+    setSelectedCountries: (countries: CompanyCountryTagSlug[]) => void;
+    onCountrySelect: (value: string) => void;
     setMeetsParisFilter: (value: MeetsParisFilter) => void;
   },
 ) {
@@ -328,25 +356,42 @@ export function buildCompanyFilterUi(
     includeSectorFilter,
     sectorOptions,
     sectors,
+    selectedCountries,
+    availableCountries,
     meetsParisFilter,
     sectorNames,
+    countryNames,
     setSectors,
+    setSelectedCountries,
+    onCountrySelect,
     setMeetsParisFilter,
   } = options;
+
+  const countryFilterGroup = buildCountryFilterGroup({
+    t,
+    countryNames,
+    availableCountries,
+    selectedCountries,
+    onSelect: onCountrySelect,
+  });
 
   const filterGroups = [
     ...(includeSectorFilter
       ? [buildSectorFilterGroup(t, sectorOptions, sectors, setSectors)]
       : []),
+    ...(countryFilterGroup ? [countryFilterGroup] : []),
     buildCompanyMeetsParisFilterGroup(t, meetsParisFilter, setMeetsParisFilter),
   ];
 
   const activeFilters = buildCompanyActiveFilters(t, {
     includeSectorFilter,
     sectors,
+    selectedCountries,
     meetsParisFilter,
     sectorNames,
+    countryNames,
     setSectors,
+    setSelectedCountries,
     setMeetsParisFilter,
   });
 

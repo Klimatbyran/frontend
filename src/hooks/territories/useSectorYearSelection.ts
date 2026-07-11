@@ -1,8 +1,5 @@
-import { useEffect, useState } from "react";
-import {
-  getAvailableYearsFromSectors,
-  getCurrentYearFromAvailable,
-} from "@/utils/detail/sectorYearUtils";
+import { useMemo } from "react";
+import { getAvailableYearsFromSectors } from "@/utils/detail/sectorYearUtils";
 import type { SectorEmissionsResponse } from "@/types/emissions";
 
 type SectorEmissionsInput =
@@ -14,21 +11,12 @@ export function useSectorYearSelection(
   sectorEmissions: SectorEmissionsInput,
   defaultYear?: number,
 ) {
-  const [selectedYear, setSelectedYear] = useState<string>("");
-
-  const availableYears = getAvailableYearsFromSectors(sectorEmissions);
-
-  useEffect(() => {
-    if (selectedYear === "" && availableYears.length > 0) {
-      setSelectedYear(availableYears[0].toString());
-    }
-  }, [availableYears, selectedYear]);
-
-  const currentYear = getCurrentYearFromAvailable(
-    selectedYear,
-    availableYears,
-    defaultYear ?? 2023,
+  const availableYears = useMemo(
+    () => getAvailableYearsFromSectors(sectorEmissions),
+    [sectorEmissions],
   );
 
-  return { selectedYear, setSelectedYear, availableYears, currentYear };
+  const currentYear = availableYears[0] ?? defaultYear ?? 2023;
+
+  return { availableYears, currentYear };
 }

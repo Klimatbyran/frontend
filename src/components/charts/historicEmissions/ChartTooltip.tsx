@@ -2,6 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
 import { formatEmissionsAbsolute } from "@/utils/formatting/localization";
+import { formatTurnoverValue } from "@/utils/formatting/turnoverFormatting";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { cn } from "@/lib/utils";
 import { AiIcon } from "@/components/ui/ai-icon";
@@ -19,6 +20,9 @@ interface PayloadEntry {
     scope2?: { isAIGenerated?: boolean };
     scope3?: { isAIGenerated?: boolean };
     scope3Categories?: Array<Scope3Category & { isAIGenerated?: boolean }>;
+    turnover?: number;
+    turnoverCurrency?: string;
+    turnoverIsAIGenerated?: boolean;
   };
 }
 
@@ -57,6 +61,9 @@ function isAIGeneratedEntry(
   showAIIndicators: boolean,
 ): boolean {
   if (!showAIIndicators) return false;
+  if (entry.dataKey === "turnover") {
+    return entry.payload?.turnoverIsAIGenerated ?? false;
+  }
   const payload = entry.payload;
   if (!payload) return false;
   if (payload.isAIGenerated) return true;
@@ -128,20 +135,32 @@ function TooltipDataRow({
   formatName,
   formatValue,
   showAIIndicators,
+  currentLanguage,
+  t,
 }: {
   entry: PayloadEntry;
   formatName: (name: string, entry: PayloadEntry) => string;
   formatValue: (value: number, name: string, entry: PayloadEntry) => string;
   showAIIndicators: boolean;
+  currentLanguage: string;
+  t: ReturnType<typeof useTranslation>["t"];
 }) {
   if (entry.dataKey === "gap") return null;
 
   const name = formatName(String(entry.name || entry.dataKey || ""), entry);
-  const value = formatValue(
-    entry.value as number,
-    String(entry.name || entry.dataKey || ""),
-    entry,
-  );
+  const isTurnoverEntry = entry.dataKey === "turnover";
+  const value = isTurnoverEntry
+    ? formatTurnoverValue(
+        entry.value as number,
+        currentLanguage,
+        t,
+        entry.payload?.turnoverCurrency,
+      )
+    : formatValue(
+        entry.value as number,
+        String(entry.name || entry.dataKey || ""),
+        entry,
+      );
   const isDataAI = isAIGeneratedEntry(entry, showAIIndicators);
 
   return (
@@ -196,7 +215,9 @@ function TrendInfo({
       })}
       <br />
       <span
-        className={cn(trendData.slope >= 0 ? "text-pink-3" : "text-green-3")}
+        className={cn(
+          trendData.slope >= 0 ? "text-pink-3" : "text-green-3",
+        )}
       >
         Trend: {trendData.slope >= 0 ? "↗ Increasing" : "↘ Decreasing"}
       </span>
@@ -284,6 +305,7 @@ function ChartTooltipBody({
   formatValue,
   showAIIndicators,
   isMobile,
+  currentLanguage,
   t,
 }: {
   label?: string;
@@ -298,6 +320,7 @@ function ChartTooltipBody({
   formatValue: (value: number, name: string, entry: PayloadEntry) => string;
   showAIIndicators: boolean;
   isMobile: boolean;
+  currentLanguage: string;
   t: ReturnType<typeof useTranslation>["t"];
 }) {
   const dataRows = filteredPayload.map((entry) => (
@@ -307,6 +330,8 @@ function ChartTooltipBody({
       formatName={formatName}
       formatValue={formatValue}
       showAIIndicators={showAIIndicators}
+      currentLanguage={currentLanguage}
+      t={t}
     />
   ));
 
@@ -333,7 +358,9 @@ function ChartTooltipBody({
       )}
       {dataRows}
       <BaseYearFootnote isBaseYear={isBaseYear} t={t} />
-      {trendData && <TrendInfo trendData={trendData} payload={payload} t={t} />}
+      {trendData && (
+        <TrendInfo trendData={trendData} payload={payload} t={t} />
+      )}
       <ApproximatedValueInfo
         dataView={dataView}
         filteredPayload={filteredPayload}
@@ -365,6 +392,9 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = (props) => {
   const defaultFormatter = (value: number) =>
     formatEmissionsAbsolute(Math.round(value ?? 0), currentLanguage);
   const defaultNameFormatter = (name: string, entry: PayloadEntry) => {
+    if (entry.dataKey === "turnover") {
+      return t("companies.overview.turnover");
+    }
     if (entry.dataKey?.startsWith("cat")) {
       const categoryId = parseInt(entry.dataKey.replace("cat", ""));
       return `${categoryId.toLocaleString()}. ${name}`;
@@ -386,6 +416,7 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = (props) => {
       formatValue={props.customFormatter || defaultFormatter}
       showAIIndicators={props.showAIIndicators ?? true}
       isMobile={isMobile}
+      currentLanguage={currentLanguage}
       t={t}
     />
   );

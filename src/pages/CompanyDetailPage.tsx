@@ -2,16 +2,16 @@ import { useParams, useLocation } from "react-router-dom";
 import { useMemo, useState } from "react";
 import { ComparisonDetailChip } from "@/components/compare/ComparisonDetailChip";
 import { buildComparisonLinkTo } from "@/utils/compare/comparisonUtils";
-import { useTranslation } from "react-i18next";
 import { useCompanyDetails } from "@/hooks/companies/useCompanyDetails";
 import { CompanyOverview } from "@/components/companies/detail/overview/CompanyOverview";
 import { CompanyOverviewNoData } from "@/components/companies/detail/overview/CompanyOverviewNoData";
 import { EmissionsHistory } from "@/components/companies/detail/history/EmissionsHistory";
+import { TurnoverEmissionsHistory } from "@/components/companies/detail/history/TurnoverEmissionsHistory";
 import { Seo } from "@/components/SEO/Seo";
 import { CompanyScope3 } from "@/components/companies/detail/CompanyScope3";
 import { useLanguage } from "@/components/LanguageProvider";
 import RelatableNumbers from "@/components/relatableNumbers";
-import type { Company, ReportingPeriod, Scope3Category } from "@/types/company";
+import type { CompanyDetails, ReportingPeriod } from "@/types/company";
 import { PageLoading } from "@/components/pageStates/Loading";
 import { PageError } from "@/components/pageStates/Error";
 import { PageNoData } from "@/components/pageStates/NoData";
@@ -32,37 +32,10 @@ function selectPeriod(
 ): ReportingPeriod {
   if (selectedYear === "latest") return sortedPeriods[0];
   return (
-    sortedPeriods.find((p) => yearFromIsoDate(p.endDate) === selectedYear) ||
-    sortedPeriods[0]
+    sortedPeriods.find(
+      (p) => yearFromIsoDate(p.endDate) === selectedYear,
+    ) || sortedPeriods[0]
   );
-}
-
-function buildScope3HistoricalData(
-  sortedPeriods: ReportingPeriod[],
-  emissionsUnit: string,
-) {
-  return sortedPeriods
-    .filter(
-      (period) =>
-        period.emissions?.scope3?.categories &&
-        period.emissions.scope3.categories.length > 0,
-    )
-    .map((period) => ({
-      year: Number(yearFromIsoDate(period.endDate)),
-      total: period.emissions!.scope3!.calculatedTotalEmissions!,
-      unit:
-        period.emissions!.scope3!.statedTotalEmissions?.unit || emissionsUnit,
-      categories: period
-        .emissions!.scope3!.categories!.filter(
-          (cat: Scope3Category) => cat.total !== null,
-        )
-        .map((cat: Scope3Category) => ({
-          category: cat.category,
-          total: cat.total as number,
-          unit: cat.unit,
-        })),
-    }))
-    .sort((a, b) => a.year - b.year);
 }
 
 function computeEmissionsChangeInfo(
@@ -97,14 +70,12 @@ function CompanyDetailContent({
   onYearSelect,
   currentLanguage,
 }: {
-  company: Company;
+  company: CompanyDetails;
   seoMeta: ReturnType<typeof generateCompanySeoMeta>;
   selectedYear: string;
   onYearSelect: (year: string) => void;
   currentLanguage: string;
 }) {
-  const { t } = useTranslation();
-
   const comparisonChip = (
     <ComparisonDetailChip
       linkTo={buildComparisonLinkTo("company", company.wikidataId)}
@@ -143,11 +114,6 @@ function CompanyDetailContent({
     yearOverYearChange,
   } = computeEmissionsChangeInfo(selectedPeriod, previousPeriod);
 
-  const scope3HistoricalData = buildScope3HistoricalData(
-    sortedPeriods,
-    t("emissionsUnit"),
-  );
-
   return (
     <>
       <Seo meta={seoMeta} />
@@ -156,8 +122,6 @@ function CompanyDetailContent({
           company={company}
           selectedPeriod={selectedPeriod}
           previousPeriod={previousPeriod}
-          onYearSelect={onYearSelect}
-          selectedYear={selectedYear}
           yearOverYearChange={yearOverYearChange}
           headerChip={comparisonChip}
         />
@@ -170,11 +134,12 @@ function CompanyDetailContent({
             yearOverYearChange={yearOverYearChange}
           />
         )}
-        <EmissionsHistory company={company} />
-        <CompanyScope3
-          emissions={selectedPeriod.emissions!}
-          historicalData={scope3HistoricalData}
+        <EmissionsHistory company={company} onYearSelect={onYearSelect} />
+        <TurnoverEmissionsHistory
+          company={company}
+          onYearSelect={onYearSelect}
         />
+        <CompanyScope3 emissions={selectedPeriod.emissions!} />
       </div>
     </>
   );
