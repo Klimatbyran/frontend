@@ -9,6 +9,8 @@ import { useNationPageData } from "@/hooks/nation/useNationPageData";
 import { useLanguage } from "@/components/LanguageProvider";
 import { EuropeanCountryDetailHeader } from "@/components/europe/EuropeanCountryDetailHeader";
 import { CountryEmissionSourcesMap } from "@/components/europe/CountryEmissionSourcesMap";
+import type { FeatureCollection } from "geojson";
+import regionGeoJson from "@/data/regionGeo.json";
 
 function NationDetailContent({
   nation,
@@ -40,6 +42,7 @@ function NationDetailContent({
       {lastYear && (
         <CountryEmissionSourcesMap
           countryGeoData={countryGeoData}
+          regionsGeoData={regionGeoJson as FeatureCollection}
           sources={emissionSources}
           year={lastYear}
           loading={emissionSourcesLoading}

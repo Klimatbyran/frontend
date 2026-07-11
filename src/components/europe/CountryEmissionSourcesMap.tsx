@@ -40,12 +40,24 @@ const COUNTRY_OUTLINE_STYLE: L.PathOptions = {
   weight: 1,
 };
 
+const REGION_OUTLINE_STYLE: L.PathOptions = {
+  fillColor: "var(--black-1)",
+  fillOpacity: 0.6,
+  color: "var(--grey)",
+  weight: 0.75,
+};
+
 interface CountryEmissionSourcesMapProps {
   countryGeoData: FeatureCollection;
   sources: RankedClimateTraceSource[];
   year: number;
   loading?: boolean;
   className?: string;
+  /**
+   * Optional sub-national boundaries (e.g. regions/counties) drawn as the base
+   * layer instead of the plain country outline, with point sources overlaid.
+   */
+  regionsGeoData?: FeatureCollection;
 }
 
 function EmissionSourceTooltip({
@@ -86,12 +98,14 @@ function EmissionSourceTooltip({
 
 function EmissionSourcesMapContent({
   countryGeoData,
+  regionsGeoData,
   sources,
   hoveredSourceId,
   onHoverSource,
   getSectorInfo,
 }: {
   countryGeoData: FeatureCollection;
+  regionsGeoData?: FeatureCollection;
   sources: RankedClimateTraceSource[];
   hoveredSourceId: number | null;
   onHoverSource: (sourceId: number | null) => void;
@@ -105,9 +119,11 @@ function EmissionSourcesMapContent({
     [hoveredSourceId, sources],
   );
 
+  const baseGeoData = regionsGeoData ?? countryGeoData;
+
   const mapBounds = useMemo(
-    () => calculateGeoBounds(countryGeoData, { padding: 0.08 }),
-    [countryGeoData],
+    () => calculateGeoBounds(baseGeoData, { padding: 0.08 }),
+    [baseGeoData],
   );
 
   const defaultCenter = useMemo(
@@ -168,7 +184,11 @@ function EmissionSourcesMapContent({
         }}
         className="rounded-xl"
       >
-        <GeoJSON data={countryGeoData} style={() => COUNTRY_OUTLINE_STYLE} />
+        {regionsGeoData ? (
+          <GeoJSON data={regionsGeoData} style={() => REGION_OUTLINE_STYLE} />
+        ) : (
+          <GeoJSON data={countryGeoData} style={() => COUNTRY_OUTLINE_STYLE} />
+        )}
         {sources.map((source) => {
           const sectorInfo = getSectorInfo(source.sector);
           const radius = getEmissionSourceMarkerRadius(
@@ -227,6 +247,7 @@ export function CountryEmissionSourcesMap({
   year,
   loading = false,
   className,
+  regionsGeoData,
 }: CountryEmissionSourcesMapProps) {
   const { t } = useTranslation();
   const { getSectorInfo } = useClimateTraceSectors();
@@ -234,7 +255,9 @@ export function CountryEmissionSourcesMap({
   const [mobileViewMode, setMobileViewMode] =
     useState<EmissionSourcesViewMode>("map");
 
-  const hasCountryGeometry = countryGeoData.features.length > 0;
+  const hasCountryGeometry =
+    (regionsGeoData?.features.length ?? 0) > 0 ||
+    countryGeoData.features.length > 0;
   const showMapOnMobile = mobileViewMode === "map";
   const showListOnMobile = mobileViewMode === "list";
 
@@ -298,6 +321,7 @@ export function CountryEmissionSourcesMap({
       ) : (
         <EmissionSourcesMapContent
           countryGeoData={countryGeoData}
+          regionsGeoData={regionsGeoData}
           sources={sources}
           hoveredSourceId={hoveredSourceId}
           onHoverSource={setHoveredSourceId}
