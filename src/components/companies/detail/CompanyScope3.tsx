@@ -1,16 +1,12 @@
 import { useTranslation } from "react-i18next";
-import type { Emissions, Scope3HistoricalData } from "@/types/company";
+import type { Emissions } from "@/types/company";
 import { Scope3Data } from "./Scope3Data";
 
 interface CompanyScope3Props {
   emissions: Emissions;
-  historicalData?: Scope3HistoricalData[];
 }
 
-export function CompanyScope3({
-  emissions,
-  historicalData,
-}: CompanyScope3Props) {
+export function CompanyScope3({ emissions }: CompanyScope3Props) {
   const { t } = useTranslation();
 
   if (!emissions?.scope3?.categories?.length) {
@@ -30,10 +26,5 @@ export function CompanyScope3({
       : null,
   };
 
-  return (
-    <Scope3Data
-      emissions={transformedEmissions}
-      historicalData={historicalData}
-    />
-  );
+  return <Scope3Data emissions={transformedEmissions} />;
 }

@@ -2,7 +2,6 @@ import { useParams, useLocation } from "react-router-dom";
 import { useMemo, useState } from "react";
 import { ComparisonDetailChip } from "@/components/compare/ComparisonDetailChip";
 import { buildComparisonLinkTo } from "@/utils/compare/comparisonUtils";
-import { useTranslation } from "react-i18next";
 import { useCompanyDetails } from "@/hooks/companies/useCompanyDetails";
 import { CompanyOverview } from "@/components/companies/detail/overview/CompanyOverview";
 import { CompanyOverviewNoData } from "@/components/companies/detail/overview/CompanyOverviewNoData";
@@ -12,7 +11,6 @@ import { Seo } from "@/components/SEO/Seo";
 import { CompanyScope3 } from "@/components/companies/detail/CompanyScope3";
 import { useLanguage } from "@/components/LanguageProvider";
 import RelatableNumbers from "@/components/relatableNumbers";
-import type { Scope3Category } from "@/types/company";
 import { PageLoading } from "@/components/pageStates/Loading";
 import { PageError } from "@/components/pageStates/Error";
 import { PageNoData } from "@/components/pageStates/NoData";
@@ -22,7 +20,6 @@ import { getSeoForRoute } from "@/seo/routes";
 import { yearFromIsoDate } from "@/utils/date";
 
 export function CompanyDetailPage() {
-  const { t } = useTranslation();
   const { id } = useParams<{ id: string; slug?: string }>();
   const location = useLocation();
   // The id parameter is always the Wikidata ID (Q-number)
@@ -155,32 +152,7 @@ export function CompanyDetailPage() {
           company={company}
           onYearSelect={setSelectedYear}
         />
-        <CompanyScope3
-          emissions={selectedPeriod.emissions!}
-          historicalData={sortedPeriods
-            .filter(
-              (period) =>
-                period.emissions?.scope3?.categories &&
-                period.emissions.scope3.categories.length > 0,
-            )
-            .map((period) => ({
-              year: Number(yearFromIsoDate(period.endDate)),
-              total: period.emissions!.scope3!.calculatedTotalEmissions!,
-              unit:
-                period.emissions!.scope3!.statedTotalEmissions?.unit ||
-                t("emissionsUnit"),
-              categories: period
-                .emissions!.scope3!.categories!.filter(
-                  (cat: Scope3Category) => cat.total !== null,
-                )
-                .map((cat: Scope3Category) => ({
-                  category: cat.category,
-                  total: cat.total as number,
-                  unit: cat.unit,
-                })),
-            }))
-            .sort((a, b) => a.year - b.year)}
-        />
+        <CompanyScope3 emissions={selectedPeriod.emissions!} />
       </div>
     </>
   );
