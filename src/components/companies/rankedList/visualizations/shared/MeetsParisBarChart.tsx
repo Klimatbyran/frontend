@@ -8,7 +8,7 @@ import { formatWithScale } from "@/utils/data/unitScaling";
 import type { CompanyParisEmissionsEntry } from "@/utils/insights/meetsParisChartData";
 
 const SEGMENT_RADIUS = 6;
-const BAR_MAX_WIDTH = 120;
+const BAR_MAX_WIDTH = 180;
 const Y_AXIS_WIDTH = 72;
 const CHART_MIN_HEIGHT = 260;
 const OUTER_MIN_HEIGHT = 320;
@@ -247,7 +247,7 @@ export function MeetsParisBarChart({
               })}
           </div>
 
-          <div className="flex h-full flex-1 items-end justify-center gap-[15%] px-2">
+          <div className="flex h-full flex-1 items-end justify-center gap-[10%] px-2">
             {groups.map((group) => {
               const barHeightPercent =
                 maxBarTotal > 0 ? (group.total / maxBarTotal) * 100 : 0;
@@ -256,7 +256,7 @@ export function MeetsParisBarChart({
                 <div
                   key={group.category}
                   className="flex h-full flex-col items-center justify-end"
-                  style={{ width: BAR_MAX_WIDTH, maxWidth: "40%" }}
+                  style={{ width: BAR_MAX_WIDTH, maxWidth: "48%" }}
                 >
                   <div
                     className="flex w-full flex-col gap-px overflow-hidden rounded-md"
@@ -316,12 +316,12 @@ export function MeetsParisBarChart({
 
       <div className="flex shrink-0 pt-2">
         <div className="shrink-0" style={{ width: Y_AXIS_WIDTH }} />
-        <div className="flex flex-1 justify-center gap-[15%] px-2">
+        <div className="flex flex-1 justify-center gap-[10%] px-2">
           {groups.map((group) => (
             <span
               key={group.category}
               className="text-center text-[13px] text-white/75"
-              style={{ width: BAR_MAX_WIDTH, maxWidth: "40%" }}
+              style={{ width: BAR_MAX_WIDTH, maxWidth: "48%" }}
             >
               {group.category}
             </span>
