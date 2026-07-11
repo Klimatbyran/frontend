@@ -209,7 +209,6 @@ export function MunicipalitiesOverviewPage() {
       />
 
       <KPIChipSelector<Municipality>
-        compact
         selectedKPI={selectedKPI}
         kpis={municipalityKPIs}
         onKPIChange={(kpi) => {

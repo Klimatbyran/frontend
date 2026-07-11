@@ -14,8 +14,6 @@ interface KPIChipSelectorProps<T> {
   translationPrefix?: string;
   /** Label shown above the chips / as the dropdown trigger label */
   label?: string;
-  /** Tighter spacing for data-dense overview pages */
-  compact?: boolean;
 }
 
 export function KPIChipSelector<T>({
@@ -25,7 +23,6 @@ export function KPIChipSelector<T>({
   iconMap = {},
   translationPrefix,
   label,
-  compact = false,
 }: KPIChipSelectorProps<T>) {
   const { t } = useTranslation();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -75,7 +72,7 @@ export function KPIChipSelector<T>({
   };
 
   return (
-    <div className={cn(compact ? "mb-4 space-y-2" : "mb-6 space-y-3")}>
+    <div className="mb-4 space-y-2">
       {selectorLabel && (
         <p className="text-xs text-white/50 uppercase tracking-wider px-1">
           {selectorLabel}

@@ -166,7 +166,6 @@ export function RegionalOverviewPage() {
       />
 
       <KPIChipSelector<Region>
-        compact
         selectedKPI={selectedKPI}
         kpis={regionalKPIs}
         onKPIChange={(kpi) => {

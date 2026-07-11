@@ -296,7 +296,6 @@ export function CompaniesOverviewPage() {
       />
 
       <KPIChipSelector<CompanyWithKPIs>
-        compact
         selectedKPI={selectedKPI}
         kpis={companyKPIs}
         onKPIChange={(kpi) => {
