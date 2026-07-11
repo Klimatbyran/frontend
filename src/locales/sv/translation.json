@@ -333,15 +333,11 @@
       "meetsParis": {
         "yes": "Ja",
         "no": "Nej",
-        "companiesCount": "{{count}} företag visas",
-        "companiesCount_plural": "{{count}} företag visas",
-        "emissionsUnit": "ton CO₂e (senaste rapporterade år)",
         "otherSegment": "Övriga",
         "otherSegmentCount": "{{count}} företag",
         "otherSegmentCount_plural": "{{count}} företag",
         "otherSegmentAria": "Övriga, {{count}} företag",
         "otherSegmentAria_plural": "Övriga, {{count}} företag",
-        "segmentHint": "Tio största utsläpparna per stapel visas var för sig; övriga företag grupperas som Övriga. Hovra eller tryck på ett segment för detaljer.",
         "description": "Totala utsläpp från senaste rapporterade år, staplade per företag och grupperade efter om företaget är på väg att klara Parisavtalet.",
         "learnMore": "Läs mer"
       },

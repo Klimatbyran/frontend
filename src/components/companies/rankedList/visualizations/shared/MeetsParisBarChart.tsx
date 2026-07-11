@@ -345,55 +345,31 @@ export function MeetsParisBarChart({
         </div>
       )}
 
-      <div className="mt-6 flex flex-col gap-3">
-        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-          <div className="flex items-center justify-center gap-6">
-            <div className="flex items-center gap-2">
-              <span
-                className="inline-block h-3 w-3 shrink-0 rounded-sm"
-                style={{ backgroundColor: COLORS.blue3 }}
-              />
-              <span className="text-xs text-white/40">
-                {trueLabel}{" "}
-                <span className="text-orange-2">
-                  ({formatCategoryTotal(groups[0]?.total ?? 0)})
-                </span>
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span
-                className="inline-block h-3 w-3 shrink-0 rounded-sm"
-                style={{ backgroundColor: COLORS.pink3 }}
-              />
-              <span className="text-xs text-white/40">
-                {falseLabel}{" "}
-                <span className="text-orange-2">
-                  ({formatCategoryTotal(groups[1]?.total ?? 0)})
-                </span>
-              </span>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-between gap-4 px-1 text-xs text-grey md:justify-end">
-            <span>
-              {t(
-                "companiesOverviewPage.visualizations.meetsParis.companiesCount",
-                {
-                  count: entries.length,
-                },
-              )}
+      <div className="mt-6 flex items-center justify-center gap-6">
+        <div className="flex items-center gap-2">
+          <span
+            className="inline-block h-3 w-3 shrink-0 rounded-sm"
+            style={{ backgroundColor: COLORS.blue3 }}
+          />
+          <span className="text-xs text-white/40">
+            {trueLabel}{" "}
+            <span className="text-orange-2">
+              ({formatCategoryTotal(groups[0]?.total ?? 0)})
             </span>
-            <span>
-              {t(
-                "companiesOverviewPage.visualizations.meetsParis.emissionsUnit",
-              )}
-            </span>
-          </div>
+          </span>
         </div>
-
-        <p className="px-1 text-center text-xs text-white/40 md:text-left">
-          {t("companiesOverviewPage.visualizations.meetsParis.segmentHint")}
-        </p>
+        <div className="flex items-center gap-2">
+          <span
+            className="inline-block h-3 w-3 shrink-0 rounded-sm"
+            style={{ backgroundColor: COLORS.pink3 }}
+          />
+          <span className="text-xs text-white/40">
+            {falseLabel}{" "}
+            <span className="text-orange-2">
+              ({formatCategoryTotal(groups[1]?.total ?? 0)})
+            </span>
+          </span>
+        </div>
       </div>
 
       {isMobile && activeCompanyId && (
