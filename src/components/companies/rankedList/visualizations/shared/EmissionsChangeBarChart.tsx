@@ -192,8 +192,8 @@ export function EmissionsChangeBarChart({
         </span>
       </div>
 
-      <div className="flex min-h-0 flex-1 flex-col justify-end overflow-hidden">
-        <div className="flex min-h-[180px] w-full min-w-0 gap-2 overflow-hidden">
+      <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
+        <div className="flex h-full min-h-0 w-full min-w-0 flex-1 gap-2 overflow-hidden">
           <div className="flex h-full w-12 shrink-0 flex-col justify-between py-0 text-right text-[10px] text-grey">
             {[...yTicks].reverse().map((tick) => (
               <span key={tick}>
@@ -202,8 +202,8 @@ export function EmissionsChangeBarChart({
             ))}
           </div>
 
-          <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
-            <div className="flex min-h-0 flex-1 items-end gap-px border-b border-black-4">
+          <div className="flex h-full min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
+            <div className="flex h-full min-h-0 flex-1 items-end gap-px border-b border-black-4">
               {histogram.bins.map((bin) => {
                 const barHeight =
                   histogram.maxTotalEmissions > 0
