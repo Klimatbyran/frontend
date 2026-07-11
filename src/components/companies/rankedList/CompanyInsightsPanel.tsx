@@ -190,8 +190,7 @@ function CompanyInsightsPanel({
             ? "companiesOverviewPage.visualizations.meetsParis.topEmittersMeetingGoal"
             : "companiesOverviewPage.visualizations.meetsParis.topEmittersMissingGoal",
           {
-            nrOfEntities: entities.length,
-            entityPlural,
+            nrOfEntries: entities.length,
           },
         )}
         entities={entities}
