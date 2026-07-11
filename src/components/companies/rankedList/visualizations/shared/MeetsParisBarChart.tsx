@@ -85,25 +85,29 @@ export function MeetsParisBarChart({
       const topEntries = sortedDesc.slice(0, TOP_EMITTERS_PER_BAR);
       const remainingEntries = sortedDesc.slice(TOP_EMITTERS_PER_BAR);
 
-      const segments: ChartSegment[] = topEntries.map((entry) => ({
+      const individualSegments: ChartSegment[] = topEntries.map((entry) => ({
         id: getEntryKey(entry),
         entry,
         emissions: entry.emissions,
       }));
 
-      if (remainingEntries.length > 0) {
-        segments.push({
-          id: `other-${categoryKey}`,
-          entry: null,
-          emissions: remainingEntries.reduce(
-            (sum, entry) => sum + entry.emissions,
-            0,
-          ),
-          aggregateCount: remainingEntries.length,
-        });
-      }
+      const otherSegment: ChartSegment | null =
+        remainingEntries.length > 0
+          ? {
+              id: `other-${categoryKey}`,
+              entry: null,
+              emissions: remainingEntries.reduce(
+                (sum, entry) => sum + entry.emissions,
+                0,
+              ),
+              aggregateCount: remainingEntries.length,
+            }
+          : null;
 
-      segments.sort((a, b) => a.emissions - b.emissions);
+      // Stack top-to-bottom: largest emitters on top, smaller above Other, Other at bottom.
+      const segments = otherSegment
+        ? [...individualSegments, otherSegment]
+        : individualSegments;
 
       return {
         category,
